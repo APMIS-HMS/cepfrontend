@@ -64,12 +64,17 @@
                     </tr>
                 </thead>
             
-                <tbody>
+                <tbody *ngIf="facilityModules > 0">
                     <tr *ngFor="let module of facilityModules">
                         <td>{{module?.name}}</td>
                         <td class="th-act">
                             <button class="tbl-btn-red" *ngIf="module.canDisable==true" (click)="onDeactive(module)"><i class="fa fa-ban" aria-hidden="true"></i> {{module.status}}</button>
                         </td>
+                    </tr>
+                </tbody>
+                <tbody *ngIf="facilityModules == 0">
+                    <tr>
+                        <td class="table-content" colspan="6" style="text-align: center "> No data available in table</td>
                     </tr>
                 </tbody>
             </table>
@@ -85,7 +90,7 @@
                     </tr>
                 </thead>
             
-                <tbody>
+                <tbody *ngIf="systemModules.length > 0">
                     <tr *ngFor="let module of systemModules">
                         <td>
                             {{module.name}}
@@ -93,6 +98,11 @@
                         <td>
                             <div class="tbl-btn-green" (click)="onActive(module)"><i class="fa fa-check" aria-hidden="true"></i> Activate</div>
                         </td>
+                    </tr>
+                </tbody>
+                <tbody *ngIf="systemModules.length == 0">
+                    <tr>
+                        <td class="table-content" colspan="6" style="text-align: center "> No data available in table</td>
                     </tr>
                 </tbody>
             </table>
