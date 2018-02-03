@@ -31,6 +31,8 @@ export class AddOtherComponent implements OnInit {
   searchedLength;
 
   removeFacilities = [];
+  facRemove: any = <any>{};
+  fac: any = <any>{};
 
   checboxLen;
   uncheck;
@@ -44,7 +46,7 @@ export class AddOtherComponent implements OnInit {
     private userService: UserService,
     private personService: PersonService,
     private locker: CoolLocalStorage,
-  private systemService: SystemModuleService) { }
+    private systemService: SystemModuleService) { }
 
   ngOnInit() {
     this.LoggedInFacility = <any>this.locker.getObject("selectedFacility");
@@ -59,8 +61,8 @@ export class AddOtherComponent implements OnInit {
       .switchMap(value => this.searchEntries(value))
       .subscribe((por: any) => {
         console.log(por);
-        this.searchedFacilities = por.data;
-        this.searchedLength = por.data.length;
+        this.searchedFacilities = por;
+        this.searchedLength = por.length;
       })
 
 
@@ -69,61 +71,30 @@ export class AddOtherComponent implements OnInit {
     if (value.length < 3) {
       return Observable.of({ data: [] })
     }
-    return this.facilityService.find({ query: { name: { $regex: value, '$options': 'i' } } })
+    return this.facilityService.searchNetworks(this.LoggedInFacility._id, { query: { name: value, isMemberOf: true } });
   }
   close_onClick($event) {
     this.closeModal.emit(true);
   }
 
 
-  add() {
-    this.loading = true;
-    this.systemModuleService.on();
-    let fac = {
-      hostId: this.LoggedInFacility._id,
-      memberFacilities: this.selectedFacilityIds
-    }
-    this.facilityService.joinNetwork(fac, false).then(payload => {
-      console.log(payload);
-      this.facilityService.get(fac.hostId, {}).then(payl => {
-        this.loading = false;
-        let facc = payl.data;
-        console.log(payl);
-        this.systemService.announceSweetProxy('You have Successfully Joined A Network!.', 'success', this);
-        this.close_onClick(true);
-        this.systemModuleService.off();
-      }, error => {
-        this.systemModuleService.off();
-      })
-
-    }).catch(err => {
-      this.loading = false;
-      console.log(err);
-      this.systemService.announceSweetProxy('Something went wrong. Please Try Again!', 'error');
-
-    });
-  }
-
   update() {
     this.loading = true;
     this.systemModuleService.on();
-    let facRemove = {
+    this.facRemove = {
       hostId: this.LoggedInFacility._id,
       memberFacilities: this.removeFacilities
     }
-    let fac = {
+    this.fac = {
       hostId: this.LoggedInFacility._id,
       memberFacilities: this.selectedFacilityIds
     }
-    this.facilityService.joinNetwork(facRemove, true).then(paylRemove => {
-      console.log(paylRemove);
-      this.facilityService.joinNetwork(fac, false).then(payload => {
-        console.log(payload);
-        this.facilityService.get(fac.hostId, {}).then(payl => {
+    this.facilityService.joinNetwork(this.facRemove, true).then(paylRemove => {
+      this.facilityService.joinNetwork(this.fac, false).then(payload => {
+        this.facilityService.get(this.fac.hostId, {}).then(payl => {
           this.loading = false;
           let facc = payl.data;
-          console.log(payl);
-          this.systemService.announceSweetProxy('Network has successfully been Updated!', 'success', this);
+          this.systemService.announceSweetProxy('Network has successfully been Updated!', 'success');
           this.close_onClick(true);
           this.systemModuleService.off();
         }, error => {
@@ -132,13 +103,11 @@ export class AddOtherComponent implements OnInit {
 
       }, error => {
         this.loading = false;
-        console.log(error);
         this.systemModuleService.off();
         this.systemService.announceSweetProxy('Something went wrong. Please Try Again!', 'error');
       });
 
     }, error => {
-      console.log(error);
       this.systemModuleService.off();
       this.systemService.announceSweetProxy('Something went wrong. Please Try Again!', 'error');
     });
@@ -160,7 +129,7 @@ export class AddOtherComponent implements OnInit {
       } else {
         this.selectedFacilityIds.push(id.toString());
       }
-    }else{
+    } else {
       let ind = this.selectedFacilityIds.indexOf(id.toString());
       this.selectedFacilityIds.splice(ind, 1);
       console.log(ind);
@@ -181,6 +150,7 @@ export class AddOtherComponent implements OnInit {
   }
 
   sweetAlertCallback(result) {
+    this.update();
     this.networkJoined.emit(true);
   }
   confirmUpdate(from) {
