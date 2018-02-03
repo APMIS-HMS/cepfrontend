@@ -18,7 +18,7 @@ class Service {
   async create(data, params) {
     const facilitiesService = this.app.service('facilities');
     var _memberFacilities = [];
-    if (params.query.isdelete.toString() == 'false') {
+    if (params.query.isdelete === false) {
       let len = data.memberFacilities.length - 1;
       for (let i = len; i >= 0; i--) {
         var awaitfacilities = await facilitiesService.get(data.memberFacilities[i], {});
@@ -55,18 +55,16 @@ class Service {
           let index = awaitfacilitiesService.memberFacilities.indexOf(data.hostId);
           awaitfacilitiesService.memberFacilities.splice(index, 1);
         }
-        var awaitfacilitiesService_ = await facilitiesService.patch(awaitfacilitiesService._id, {
-          memberFacilities: awaitfacilitiesService.memberFacilities
-        });
+        var awaitfacilitiesService_ = await facilitiesService.patch(awaitfacilitiesService._id, {memberFacilities: awaitfacilitiesService.memberFacilities});
         _memberFacilities.push(awaitfacilitiesService_);
         var awaitGetFacilitiesService = await facilitiesService.get(data.hostId, {});
-        let checkId2 = awaitfacilitiesService.memberof.filter(x => x.toString() == data.memberFacilities[i].toString());
+        let checkId2 = awaitGetFacilitiesService.memberof.filter(x => x.toString() == data.memberFacilities[i].toString());
         if (checkId2.length > 0) {
-          let index = awaitfacilitiesService.memberof.indexOf(data.hostId);
-          awaitfacilitiesService.memberof.splice(index, 1);
+          let index = awaitGetFacilitiesService.memberof.indexOf(data.memberFacilities[i]);
+          awaitGetFacilitiesService.memberof.splice(index, 1);
         }
-        var awaitPatchFacilitiesService = await facilitiesService.patch(awaitfacilitiesService._id, {
-          memberof: awaitfacilitiesService.memberof
+        var awaitPatchFacilitiesService = await facilitiesService.patch(awaitGetFacilitiesService._id, {
+          memberof: awaitGetFacilitiesService.memberof
         });
         var success = {
           'members': _memberFacilities,
