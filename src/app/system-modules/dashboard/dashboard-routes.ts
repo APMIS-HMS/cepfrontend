@@ -13,10 +13,10 @@ const appRoutes: Routes = [
                 path: 'facility',
                 loadChildren: '../module-menu/facility-page/facility-page.module.ts#FacilityPageModule',
             },
-            {
-                path: 'access-manager',
-                loadChildren: '../module-menu/access-manager/access-manager.module#AccessManagerModule'
-            },
+            // {
+            //     path: 'access-manager',
+            //     loadChildren: '../module-menu/access-manager/access-manager.module#AccessManagerModule'
+            // },
             // {
             //     path: 'patient-portal',
             //     loadChildren: '../module-menu/patient-portal/patient-portal.module#PatientPortalModule',
