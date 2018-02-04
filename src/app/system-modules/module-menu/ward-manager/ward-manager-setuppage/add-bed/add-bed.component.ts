@@ -70,21 +70,20 @@ export class AddBedComponent implements OnInit {
 
 	addbed(value: any, valid: boolean) {
 		if (valid) {
+      const bed = {
+        facilityId: this.facility._id,
+        action: (!!this.selectedBed && !!this.selectedBed._id) ? 'edit-bed' : 'create-bed',
+        name: value.bed,
+        minorLocationId: this.wardId,
+        roomId: this.roomId,
+        bedId: (!!this.selectedBed && !!this.selectedBed._id) ? this.selectedBed._id : undefined
+      };
+
 			// Edit bed
 			if (!!this.selectedBed) {
         this.disableAddBtn = true;
         this.editBed = false;
         this.editingBed = false;
-
-
-        const bed = {
-          facilityId: this.facility._id,
-          action: 'edit-bed',
-          name: value.bed,
-          minorLocationId: this.wardId,
-          roomId: this.roomId,
-          bedId: this.selectedBed._id
-        };
 
         this._roomGroupService.wardSetup(bed).then(res => {
           if (res.status === 'success') {
@@ -102,43 +101,11 @@ export class AddBedComponent implements OnInit {
         }).catch(err => {
           console.log(err);
         });
-				// this.addBedBtnText = 'Editing Bed... <i class="fa fa-spinner fa-spin"></i>';
-				// this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
-				// 	res.data[0].locations.forEach(item => {
-				// 		if (item.minorLocationId._id === this.wardId) {
-				// 			item.rooms.forEach(itm => {
-				// 				if (itm._id === this.roomId) {
-				// 					itm.beds.forEach(bed => {
-				// 						if (bed._id === this.selectedBed._id) {
-				// 							bed.name = value.bed;
-				// 						}
-				// 					});
-				// 				}
-				// 			});
-				// 		}
-				// 	});
-				// 	this._wardAdmissionService.update(res.data[0]).then(updateRes => {
-				// 		const text = this.selectedBed.name + ' has been updated to ' + value.bed;
-				// 		this._notification('Success', text);
-				// 		this.disableAddBtn = false;
-				// 		// this.addBedBtnText = '<i class="fa fa-plus"></i> Add Bed';
-				// 		this.closeModal.emit(true);
-				// 		this.addBedFormGroup.reset();
-				// 	});
-				// });
 			} else {
 				// Creating
         this.disableAddBtn = true;
         this.addBed = false;
         this.addingBed = true;
-
-        const bed = {
-          facilityId: this.facility._id,
-          action: 'create-bed',
-          name: value.bed,
-          minorLocationId: this.wardId,
-          roomId: this.roomId
-        };
 
         this._roomGroupService.wardSetup(bed).then(res => {
           if (res.status === 'success') {
@@ -156,35 +123,6 @@ export class AddBedComponent implements OnInit {
         }).catch(err => {
           console.log(err);
         });
-
-
-				// this.addBedBtnText = 'Adding Bed... <i class="fa fa-spinner fa-spin"></i>';
-				// this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
-				// 	if (res.data.length > 0) {
-				// 		res.data[0].locations.forEach(item => {
-				// 			if (item.minorLocationId._id === this.wardId) {
-				// 				item.rooms.forEach(itm => {
-				// 					if (itm._id === this.roomId) {
-				// 						const bed = {
-				// 							name: value.bed,
-				// 							isAvailable: true,
-				// 							state: 'Available'
-				// 						};
-				// 						itm.beds.push(bed);
-				// 						this._wardAdmissionService.update(res.data[0]).then(updateRes => {
-				// 							const text = value.bed + ' has been created successfully';
-				// 							this._notification('Success', text);
-				// 							this.disableAddBtn = false;
-				// 							// this.addBedBtnText = '<i class="fa fa-plus"></i> Add Bed';
-				// 							this.closeModal.emit(true);
-				// 							this.addBedFormGroup.reset();
-				// 						});
-				// 					}
-				// 				});
-				// 			}
-				// 		});
-				// 	}
-				// });
 			}
 		} else {
       this._notification('Error', 'Please fill all required fields!');
@@ -199,7 +137,7 @@ export class AddBedComponent implements OnInit {
 		  type: type,
 		  text: text
 		});
-	  }
+	}
 
 	close_onClick(event) {
 		this.closeModal.emit(true);

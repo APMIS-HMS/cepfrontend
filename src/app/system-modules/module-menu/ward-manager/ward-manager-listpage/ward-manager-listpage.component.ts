@@ -4,6 +4,7 @@ import { WardEmitterService } from '../../../../services/facility-manager/ward-e
 import { WardAdmissionService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { Facility } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { LocationService } from 'app/services/module-manager/setup';
 
 @Component({
 	selector: 'app-ward-manager-listpage',
@@ -21,26 +22,48 @@ export class WardManagerListpageComponent implements OnInit {
 		private _wardEventEmitter: WardEmitterService,
 		private _wardAdmissionService: WardAdmissionService,
 		private _facilitiesService: FacilitiesService,
-		private _locker: CoolLocalStorage
+    private _locker: CoolLocalStorage,
+    private _locationService: LocationService
 	) {
-		this._wardAdmissionService.listenerCreate.subscribe(payload => {
-			this.getFacilityWard();
-		});
+		// this._wardAdmissionService.listenerCreate.subscribe(payload => {
+		// 	this.getFacilityWard();
+		// });
 
-		this._wardAdmissionService.listenerUpdate.subscribe(payload => {
-			this.getFacilityWard();
-		});
+		// this._wardAdmissionService.listenerUpdate.subscribe(payload => {
+		// 	this.getFacilityWard();
+		// });
 	}
 
 	ngOnInit() {
 		this._wardEventEmitter.setRouteUrl('Wards');
-		this.facility = <Facility>  this._locker.getObject('selectedFacility');
-		this.getFacilityWard();
+    this.facility = <Facility>  this._locker.getObject('selectedFacility');
+    this._getWardLocation();
 	}
 
-	getFacilityWard() {
+	getFacilityWard(wardId: string) {
     this._facilitiesService.get(this.facility._id, {}).then(res => {
       console.log(res);
+      if (!!res._id) {
+        this.wards = res.minorLocations.filter(x => x.locationId === wardId);
+      }
+      // res.minorLocations.forEach(ward => {
+      //    console.log(ward);
+      //     // ward.rooms.forEach(room => {
+      //     //   let bedCount = 0;
+			// 		// 	if (room.beds.length > 0) {
+      //     //     room.beds.forEach(bed => {
+			// 		// 			if (bed.isAvailable) {
+			// 		// 				room.availableBeds = ++bedCount;
+			// 		// 			} else {
+      //     //         room.availableBeds = 0;
+      //     //       }
+			// 		// 		});
+			// 		// 	} else {
+			// 		// 		room.availableBeds = 0;
+			// 		// 	}
+			// 		// });
+      // });
+      // this.wards = res.data[0].locations;
     }).catch(err => {
       console.log(err);
     });
@@ -66,7 +89,20 @@ export class WardManagerListpageComponent implements OnInit {
     //     this.wards = res.data[0].locations;
 		// 	}
 		// });
-	}
+  }
+
+  private _getWardLocation() {
+    this._locationService.findAll().then(res => {
+      if (res.data.length > 0) {
+        const ward = res.data.filter(x => x.name.toLowerCase() === 'ward');
+        if (ward.length > 0) {
+          this.getFacilityWard(ward[0]._id);
+        }
+      }
+    }).catch(err => {
+      console.log(err);
+    });
+  }
 
 	goToFacility() {
 		this._route.navigate(['/dashboard/facility/locations']);

@@ -116,21 +116,21 @@ export class AddRoomComponent implements OnInit {
 
 	addroom(value: any, valid: boolean) {
 		if (valid) {
-			this.disableAddRoomBtn = true;
+      this.disableAddRoomBtn = true;
+      const payload = {
+        facilityId: this.facility._id,
+        action: (!!this.selectedRoom && !!this.selectedRoom._id) ? 'edit-room' : 'create-room',
+        name: value.room,
+        group: value.group,
+        service: value.service,
+        minorLocationId: this.wardId,
+        desc: value.desc,
+        roomId: (!!this.selectedRoom && !!this.selectedRoom._id) ? this.selectedRoom._id : undefined
+      };
+
       if (!!this.selectedRoom) {
         this.editRoom = false;
         this.editingRoom = true;
-
-        const payload = {
-          facilityId: this.facility._id,
-          action: 'edit-room',
-          name: value.room,
-          group: value.group,
-          service: value.service,
-          minorLocationId: this.wardId,
-          desc: value.desc,
-          roomId: this.selectedRoom._id
-        };
 
         this._roomGroupService.wardSetup(payload).then(res => {
           if (res.status === 'success') {
@@ -151,16 +151,6 @@ export class AddRoomComponent implements OnInit {
       } else {
         this.addRoom = false;
         this.addingRoom = true;
-
-        const payload = {
-          facilityId: this.facility._id,
-          action: 'create-room',
-          name: value.room,
-          group: value.group,
-          service: value.service,
-          minorLocationId: this.wardId,
-          desc: value.desc
-        };
 
         this._roomGroupService.wardSetup(payload).then(res => {
           if (res.status === 'success') {
