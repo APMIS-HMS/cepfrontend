@@ -12,76 +12,57 @@ class Service {
     return Promise.resolve([]);
   }
 
-  getMemberFacilities(id, params) {
+  async get(id, params) {
     const facilitiesService = this.app.service('facilities');
     var results = [];
     var errors = [];
-    return new Promise(function (resolve, reject) {
-      facilitiesService.get(id, {}).then(networkMember => {
-        facilitiesService.find({
-          query: {
-            name: {
-              $regex: params.query.name,
-              '$options': 'i'
-            }
+    if (params.query.isMemberOf === false) {
+      let facilities_ = await facilitiesService.find({
+        query: {
+          name: {
+            $regex: params.query.name,
+            '$options': 'i'
           }
-        }).then(memberFacilities => {
-          memberFacilities.data.forEach((facility, i) => {
-            let index = facility.memberof.filter(x => x.toString() == id.toString());
-            if (index.length > 0) {
-              facility.isMember = true;
-              results.push(facility);
-            } else {
-              facility.isMember = false;
-              results.push(facility);
-            }
-            if (i == memberFacilities.data.length - 1) {
-              resolve(results)
-            }
-          }, error => {
-            reject(error);
-          });
-        }, error => {
-          reject(error);
-        });
+        }
       });
-    });
-  }
-
-  getMemberOf(id, params) {
-    const facilitiesService = this.app.service('facilities');
-    var results = [];
-    var errors = [];
-    return new Promise(function (resolve, reject) {
-      facilitiesService.get(id, {}).then(networkMember => {
-        facilitiesService.find({
-          query: {
-            name: {
-              $regex: params.query.name,
-              '$options': 'i'
-            }
+      if(facilities_.data != undefined){
+        let len2 = facilities_.data.length - 1;
+        for (let i = len2; i >= 0; i--) {
+          let index = facilities_.data[i].memberof.filter(x => x.toString() == id.toString());
+          if (index.length > 0) {
+            facilities_.data[i].isMember = true;
+            results.push(facilities_.data[i]);
+          } else {
+            facilities_.data[i].isMember = false;
+            results.push(facilities_.data[i]);
           }
-        }).then(memberFacilities => {
-          memberFacilities.data.forEach((facility, i) => {
-            let index = facility.memberFacilities.filter(x => x.toString() == id.toString());
-            if (index.length > 0) {
-              facility.isMember = true;
-              results.push(facility);
-            } else {
-              facility.isMember = false;
-              results.push(facility);
-            }
-            if (i == memberFacilities.data.length - 1) {
-              resolve(results)
-            }
-          }, error => {
-            reject(error);
-          });
-        }, error => {
-          reject(error);
-        });
+        }
+      }
+      return results;
+    } else {
+      let facilities_ = await facilitiesService.find({
+        query: {
+          name: {
+            $regex: params.query.name,
+            '$options': 'i'
+          }
+        }
       });
-    });
+      if(facilities_.data != undefined){
+        let len2 = facilities_.data.length - 1;
+        for (let i = len2; i >= 0; i--) {
+          let index = facilities_.data[i].memberFacilities.filter(x => x.toString() == id.toString());
+          if (index.length > 0) {
+            facilities_.data[i].isMember = true;
+            results.push(facilities_.data[i]);
+          } else {
+            facilities_.data[i].isMember = false;
+            results.push(facilities_.data[i]);
+          }
+        }
+      }
+      return results;
+    }
   }
 
   create(data, params) {
