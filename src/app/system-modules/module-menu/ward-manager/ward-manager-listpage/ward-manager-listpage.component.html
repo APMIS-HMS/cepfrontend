@@ -48,7 +48,7 @@
                         <tr class="tr-header-group" (click)="showDetails(i);">
                             <td class="table-content" colspan="4">{{ward?.name}}</td>
                         </tr>
-                        <tr *ngIf="ward.wardSetup.rooms.length === 0 && (selectedIndex === i)">
+                        <tr *ngIf="(ward?.wardSetup === undefined) && (ward.wardSetup.rooms.length === 0) && (selectedIndex === i)">
                             <td class="table-content " colspan="4 " style="text-align: center ">
                                 No added room and bed
                             </td>

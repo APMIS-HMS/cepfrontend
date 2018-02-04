@@ -25,13 +25,7 @@ export class WardManagerListpageComponent implements OnInit {
     private _locker: CoolLocalStorage,
     private _locationService: LocationService
 	) {
-		// this._wardAdmissionService.listenerCreate.subscribe(payload => {
-		// 	this.getFacilityWard();
-		// });
 
-		// this._wardAdmissionService.listenerUpdate.subscribe(payload => {
-		// 	this.getFacilityWard();
-		// });
 	}
 
 	ngOnInit() {
@@ -42,28 +36,9 @@ export class WardManagerListpageComponent implements OnInit {
 
 	getFacilityWard(wardId: string) {
     this._facilitiesService.get(this.facility._id, {}).then(res => {
-      console.log(res);
       if (!!res._id) {
         this.wards = res.minorLocations.filter(x => x.locationId === wardId);
       }
-      // res.minorLocations.forEach(ward => {
-      //    console.log(ward);
-      //     // ward.rooms.forEach(room => {
-      //     //   let bedCount = 0;
-			// 		// 	if (room.beds.length > 0) {
-      //     //     room.beds.forEach(bed => {
-			// 		// 			if (bed.isAvailable) {
-			// 		// 				room.availableBeds = ++bedCount;
-			// 		// 			} else {
-      //     //         room.availableBeds = 0;
-      //     //       }
-			// 		// 		});
-			// 		// 	} else {
-			// 		// 		room.availableBeds = 0;
-			// 		// 	}
-			// 		// });
-      // });
-      // this.wards = res.data[0].locations;
     }).catch(err => {
       console.log(err);
     });
