@@ -113,6 +113,7 @@ class Service {
         const facility = await facilityService.get(data.facilityId);
         if (facility._id !== undefined) {
             const minorLocation = facility.minorLocations.filter(x => x._id == data.minorLocationId);
+            const locationId = (minorLocation.length > 0) ? minorLocation[0].locationId : undefined;
 
             if (minorLocation.length > 0) {
                 const room = {
@@ -127,17 +128,32 @@ class Service {
 
                 // Add Room
                 if (data.action === 'create-room') {
-                    if (minorLocation[0].wardSetup === undefined) {
-                        minorLocation[0].wardSetup = { minorLocationId: data.minorLocationId, rooms: [] };
-                        minorLocation[0].wardSetup.rooms.push(room);
-                    } else {
-                        if (minorLocation[0].wardSetup.rooms !== undefined) {
-                            minorLocation[0].wardSetup.rooms.push(room);
-                        } else {
-                            minorLocation[0].wardSetup.rooms = [];
-                            minorLocation[0].wardSetup.minorLocationId = data.minorLocationId;
-                            minorLocation[0].wardSetup.rooms.push(room);
+                    const wardLength = facility.minorLocations.length;
+                    let i = facility.minorLocations.length;
+                    let counter = 0;
+
+                    while (i--) {
+                        const ward = facility.minorLocations[i];
+
+                        if (ward.locationId.toString() === locationId.toString()) {
+                            if (ward.wardSetup === undefined) {
+                                ward.wardSetup = { minorLocationId: data.minorLocationId, rooms: [] };
+                                if (ward._id.toString() === data.minorLocationId) {
+                                    ward.wardSetup.rooms.push(room);
+                                }
+                            } else {
+                                if (ward._id.toString() === data.minorLocationId) {
+                                    if (ward.wardSetup.rooms !== undefined) {
+                                        ward.wardSetup.rooms.push(room);
+                                    } else {
+                                        ward.wardSetup.rooms = [];
+                                        ward.wardSetup.minorLocationId = data.minorLocationId;
+                                        ward.wardSetup.rooms.push(room);
+                                    }
+                                }
+                            }
                         }
+                        counter++;
                     }
                 } else if (data.action === 'edit-room') {
                     const room = minorLocation[0].wardSetup.rooms.filter(x => x._id == data.roomId);
@@ -150,6 +166,7 @@ class Service {
                         room[0].description = data.desc;
                     }
                 }
+
                 // Update facility
                 const updateFacility = await facilityService.patch(facility._id, facility);
 
