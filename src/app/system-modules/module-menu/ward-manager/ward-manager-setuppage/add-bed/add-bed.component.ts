@@ -7,6 +7,7 @@ import {
 import { Facility, WardDetail, Room, WardRoom, Bed, User } from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
 	selector: 'app-add-bed',
@@ -19,18 +20,17 @@ export class AddBedComponent implements OnInit {
 	addBedFormGroup: FormGroup;
 	mainErr = true;
 	errMsg = 'You have unresolved errors';
-
 	wardId: string;
 	roomId: string;
 	facility: Facility = <Facility>{};
 	miniFacility: Facility = <Facility>{};
-	wardDetail: WardDetail = <WardDetail>{};
 	employeeDetails: any = <any>{};
 	user: User = <User>{};
-	room: Room = <Room>{};
 	bed: Bed = <Bed>{};
-	wardRoom: WardRoom = <WardRoom>{};
-	addBedBtnText: String = '<i class="fa fa-plus"></i> Add Bed';
+  addBed: boolean = true;
+  addingBed: boolean = false;
+  editBed: boolean = false;
+  editingBed: boolean = false;
 	disableAddBtn: boolean = false;
 
 	wardGroupItems: any[] = [];
@@ -38,9 +38,9 @@ export class AddBedComponent implements OnInit {
 	constructor(
 		private _route: ActivatedRoute,
 		private _router: Router,
-		private _wardGroupService: RoomGroupService,
-		private _wardAdmissionService: WardAdmissionService,
-		private _locker: CoolLocalStorage,
+    private _roomGroupService: RoomGroupService,
+    private _systemModuleService: SystemModuleService,
+    private _locker: CoolLocalStorage,
 		private fb: FormBuilder,
 		private facilityService: FacilitiesService
 	) { }
@@ -61,8 +61,10 @@ export class AddBedComponent implements OnInit {
 		});
 
 		if (!!this.selectedBed) {
-			this.addBedFormGroup.controls['bed'].setValue(this.selectedBed.name);
-			this.addBedBtnText = 'Edit bed';
+      this.addBedFormGroup.controls['bed'].setValue(this.selectedBed.name);
+      this.editBed = true;
+      this.addBed = false;
+			// this.addBedBtnText = 'Edit bed';
 		}
 	}
 
@@ -70,63 +72,123 @@ export class AddBedComponent implements OnInit {
 		if (valid) {
 			// Edit bed
 			if (!!this.selectedBed) {
-				this.disableAddBtn = true;
-				this.addBedBtnText = 'Editing Bed... <i class="fa fa-spinner fa-spin"></i>';
-				this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
-					res.data[0].locations.forEach(item => {
-						if (item.minorLocationId._id === this.wardId) {
-							item.rooms.forEach(itm => {
-								if (itm._id === this.roomId) {
-									itm.beds.forEach(bed => {
-										if (bed._id === this.selectedBed._id) {
-											bed.name = value.bed;
-										}
-									});
-								}
-							});
-						}
-					});
-					this._wardAdmissionService.update(res.data[0]).then(updateRes => {
-						const text = this.selectedBed.name + ' has been updated to ' + value.bed;
-						this._notification('Success', text);
-						this.disableAddBtn = false;
-						this.addBedBtnText = '<i class="fa fa-plus"></i> Add Bed';
-						this.closeModal.emit(true);
-						this.addBedFormGroup.reset();
-					});
-				});
+        this.disableAddBtn = true;
+        this.editBed = false;
+        this.editingBed = false;
+
+
+        const bed = {
+          facilityId: this.facility._id,
+          action: 'edit-bed',
+          name: value.bed,
+          minorLocationId: this.wardId,
+          roomId: this.roomId,
+          bedId: this.selectedBed._id
+        };
+
+        this._roomGroupService.wardSetup(bed).then(res => {
+          if (res.status === 'success') {
+            this.close_onClick(true);
+            this.editBed = true;
+            this.editingBed = false;
+            this.disableAddBtn = true;
+            const text = `${value.bed} bed has been edited successfully!`;
+            this._systemModuleService.announceSweetProxy(text, 'success');
+          } else {
+            this.disableAddBtn = false;
+            const text = `There was a problem editing ${value.bed} bed!`;
+            this._systemModuleService.announceSweetProxy(text, 'error');
+          }
+        }).catch(err => {
+          console.log(err);
+        });
+				// this.addBedBtnText = 'Editing Bed... <i class="fa fa-spinner fa-spin"></i>';
+				// this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
+				// 	res.data[0].locations.forEach(item => {
+				// 		if (item.minorLocationId._id === this.wardId) {
+				// 			item.rooms.forEach(itm => {
+				// 				if (itm._id === this.roomId) {
+				// 					itm.beds.forEach(bed => {
+				// 						if (bed._id === this.selectedBed._id) {
+				// 							bed.name = value.bed;
+				// 						}
+				// 					});
+				// 				}
+				// 			});
+				// 		}
+				// 	});
+				// 	this._wardAdmissionService.update(res.data[0]).then(updateRes => {
+				// 		const text = this.selectedBed.name + ' has been updated to ' + value.bed;
+				// 		this._notification('Success', text);
+				// 		this.disableAddBtn = false;
+				// 		// this.addBedBtnText = '<i class="fa fa-plus"></i> Add Bed';
+				// 		this.closeModal.emit(true);
+				// 		this.addBedFormGroup.reset();
+				// 	});
+				// });
 			} else {
 				// Creating
-				this.disableAddBtn = true;
-				this.addBedBtnText = 'Adding Bed... <i class="fa fa-spinner fa-spin"></i>';
-				this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
-					if (res.data.length > 0) {
-						res.data[0].locations.forEach(item => {
-							if (item.minorLocationId._id === this.wardId) {
-								item.rooms.forEach(itm => {
-									if (itm._id === this.roomId) {
-										const bed = {
-											name: value.bed,
-											isAvailable: true,
-											state: 'Available'
-										};
-										itm.beds.push(bed);
-										this._wardAdmissionService.update(res.data[0]).then(updateRes => {
-											const text = value.bed + ' has been created successfully';
-											this._notification('Success', text);
-											this.disableAddBtn = false;
-											this.addBedBtnText = '<i class="fa fa-plus"></i> Add Bed';
-											this.closeModal.emit(true);
-											this.addBedFormGroup.reset();
-										});
-									}
-								});
-							}
-						});
-					}
-				});
+        this.disableAddBtn = true;
+        this.addBed = false;
+        this.addingBed = true;
+
+        const bed = {
+          facilityId: this.facility._id,
+          action: 'create-bed',
+          name: value.bed,
+          minorLocationId: this.wardId,
+          roomId: this.roomId
+        };
+
+        this._roomGroupService.wardSetup(bed).then(res => {
+          if (res.status === 'success') {
+            this.close_onClick(true);
+            this.addBed = true;
+            this.addingBed = false;
+            this.disableAddBtn = true;
+            const text = `${value.bed} bed has been added successfully!`;
+            this._systemModuleService.announceSweetProxy(text, 'success');
+          } else {
+            this.disableAddBtn = false;
+            const text = `There was a problem adding ${value.bed} bed!`;
+            this._systemModuleService.announceSweetProxy(text, 'error');
+          }
+        }).catch(err => {
+          console.log(err);
+        });
+
+
+				// this.addBedBtnText = 'Adding Bed... <i class="fa fa-spinner fa-spin"></i>';
+				// this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
+				// 	if (res.data.length > 0) {
+				// 		res.data[0].locations.forEach(item => {
+				// 			if (item.minorLocationId._id === this.wardId) {
+				// 				item.rooms.forEach(itm => {
+				// 					if (itm._id === this.roomId) {
+				// 						const bed = {
+				// 							name: value.bed,
+				// 							isAvailable: true,
+				// 							state: 'Available'
+				// 						};
+				// 						itm.beds.push(bed);
+				// 						this._wardAdmissionService.update(res.data[0]).then(updateRes => {
+				// 							const text = value.bed + ' has been created successfully';
+				// 							this._notification('Success', text);
+				// 							this.disableAddBtn = false;
+				// 							// this.addBedBtnText = '<i class="fa fa-plus"></i> Add Bed';
+				// 							this.closeModal.emit(true);
+				// 							this.addBedFormGroup.reset();
+				// 						});
+				// 					}
+				// 				});
+				// 			}
+				// 		});
+				// 	}
+				// });
 			}
-		}
+		} else {
+      this._notification('Error', 'Please fill all required fields!');
+    }
 
 	}
 

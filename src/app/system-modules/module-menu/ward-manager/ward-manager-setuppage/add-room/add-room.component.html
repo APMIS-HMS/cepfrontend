@@ -5,13 +5,12 @@
         <div class="modal_mini_title">All Purpose Medical Information System</div>
     </div>
     <div class="modal-baseWrap">
-
         <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
         <legend *ngIf="selectedRoom === undefined" class="modal_title">Add Room</legend>
         <legend *ngIf="selectedRoom !== undefined" class="modal_title">Edit Room</legend>
         <!-- <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div> -->
         <div class="survery">
-            <div class="row">
+            <div class="row" *ngIf="!serviceLoading && !groupLoading">
                 <div class="col-xs-12">
                     <form [formGroup]="addRoomFormGroup" novalidate>
                         <div class="padding-up">
@@ -22,23 +21,40 @@
                             </div>
                             <div class="frm-item-wrap">
                                 <mat-form-field>
-                                    <mat-select placeholder="Group" formControlName="group" [(ngModel)]="groupId">
+                                    <mat-select placeholder="Group" formControlName="group" [compareWith]="compareGroup">
                                         <mat-option *ngFor="let group of groups" [value]="group">{{group.name}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
                             <div class="frm-item-wrap" style="margin-top: 30px;">
                                 <mat-form-field>
-                                    <mat-select placeholder="Select Service" formControlName="service">
-                                        <mat-option *ngFor="let service of servicePriceTags" #serviceId (change)="onChangeService($event, serviceId);" [attr.serviceId]="service" [value]="service">{{service.name}} &#x20A6;{{service.price}}</mat-option>
+                                    <mat-select placeholder="Select Service" formControlName="service" [compareWith]="compareService">
+                                        <mat-option *ngFor="let service of servicePriceTags" [value]="service">{{service.name}} &#x20A6;{{service.price}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
+                            <div class="frm-item-wrap" style="margin-top: 30px;">
+                                <mat-form-field>
+                                    <textarea formControlName="desc" matInput placeholder="Description"></textarea>
+                                </mat-form-field>
+                            </div>
                             <div class="btn-box">
-                                <button mat-raised-button [disabled]="!addRoomFormGroup.valid || disableAddRoomBtn" (click)="addroom(addRoomFormGroup.value, addRoomFormGroup.valid)" class="btn" [innerHtml]="addRoomBtnText">Add Room</button>
+                                <button mat-raised-button [disabled]="!addRoomFormGroup.valid || disableAddRoomBtn" (click)="addroom(addRoomFormGroup.value, addRoomFormGroup.valid)" class="btn">
+                                  <span *ngIf="addRoom"><i class="fa fa-plus"></i> Add Room</span>
+                                  <span *ngIf="addingRoom">Adding Room... <i class="fa fa-spin fa-spinner"></i></span>
+                                  <span *ngIf="editRoom"><i class="fa fa-plus"></i> Edit Room</span>
+                                  <span *ngIf="editingRoom">Editing Room... <i class="fa fa-spin fa-spinner"></i></span>
+                                </button>
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+            <div class="row" *ngIf="serviceLoading && groupLoading">
+                <div class="col-xs-12">
+                    <div class="text-center">
+                        <i class="fa fa-spin fa-spinner fa-4x"></i>
+                    </div>
                 </div>
             </div>
         </div>
