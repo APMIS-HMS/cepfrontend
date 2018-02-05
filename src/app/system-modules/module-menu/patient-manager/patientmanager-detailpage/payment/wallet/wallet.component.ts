@@ -162,6 +162,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
     this.personService.get(this.patient.personId, {}).then(payload => {
       console.log(payload);
       this.loading = false;
+
       if (payload.wallet === undefined) {
         payload.wallet = {
           balance: 0,
@@ -176,6 +177,10 @@ export class WalletComponent implements OnInit, AfterViewInit {
         this.transactions = payload.wallet.transactions.reverse().slice(0, 10);
       }
     });
+
+    if(this.patient.personDetails.email === undefined){
+      this.patient.personDetails.email = this.patient.personDetails.apmisId+'@apmis.ng';
+    }
 
     this.refKey = (this.user ? this.user.data._id.substr(20) : '') + new Date().getTime();
 
