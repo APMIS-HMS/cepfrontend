@@ -14,15 +14,20 @@ export class FacilitiesServiceCategoryService {
   private _rest;
   private _restLogin;
   public createListener;
+  public _wardRoomPriceSocket;
+  public _wardRoomPriceRest;
+
   constructor(
     private _socketService: SocketService,
     private _restService: RestService,
     private sanitizer: DomSanitizer,
     private locker: CoolLocalStorage,
-    private _http: Http
+    private _http: Http,
   ) {
     this._rest = _restService.getService('organisation-services');
     this._socket = _socketService.getService('organisation-services');
+    this._wardRoomPriceSocket = _socketService.getService('ward-room-prices');
+    this._wardRoomPriceRest = _restService.getService('ward-room-prices');
     this._socket.timeout = 30000;
     this.createListener = Observable.fromEvent(this._socket, 'created');
     this.listner = Observable.fromEvent(this._socket, 'updated');
@@ -54,6 +59,11 @@ export class FacilitiesServiceCategoryService {
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }
+
+  wardRoomPrices(payload: any) {
+    return this._wardRoomPriceSocket.get(payload);
+  }
+
   searchCategory(facilityId: string, searchText: string) {
     const host = this._restService.getHost();
     const path = host + '/category';

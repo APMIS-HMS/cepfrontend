@@ -8,12 +8,17 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class RoomGroupService {
   public _socket;
   private _rest;
+  public _wardSetupSocket;
+  public _wardSetupRest;
+
   constructor(
     private _socketService: SocketService,
     private _restService: RestService
   ) {
     this._rest = _restService.getService('wardroomgroups');
     this._socket = _socketService.getService('wardroomgroups');
+    this._wardSetupSocket = _socketService.getService('ward-setup');
+    this._wardSetupRest = _restService.getService('ward-setup');
   }
 
   find(query: any) {
@@ -35,5 +40,9 @@ export class RoomGroupService {
   }
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
+  }
+
+  wardSetup(payload: any) {
+    return this._wardSetupSocket.create(payload);
   }
 }

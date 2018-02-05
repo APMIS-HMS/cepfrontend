@@ -30,14 +30,8 @@ export class BedComponent implements OnInit {
 		public facilityService: FacilitiesService,
 		private _locker: CoolLocalStorage,
 		private _wardAdmissionService: WardAdmissionService,
-		private _wardEventEmitter: WardEmitterService) {
-		this._wardAdmissionService.listenerCreate.subscribe(payload => {
-			this.getRooomBedItems();
-		});
-
-		this._wardAdmissionService.listenerUpdate.subscribe(payload => {
-			this.getRooomBedItems();
-		});
+    private _wardEventEmitter: WardEmitterService
+  ) {
 	}
 
 	ngOnInit() {
@@ -57,21 +51,19 @@ export class BedComponent implements OnInit {
 	}
 
 	getRooomBedItems() {
-		this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
-			if (res.data.length > 0) {
-				res.data[0].locations.forEach(item => {
-					if (item.minorLocationId._id === this.wardId) {
-						item.rooms.forEach(itm => {
-							if (itm._id === this.roomId) {
-								this.beds = itm.beds;
-								this.wardRoom = itm;
-								this.bedNameEditShow = this.beds.map(i => false);
-							}
-						})
-					}
-				});
-			}
-		});
+    this.facilityService.get(this.facility._id, {}).then(res => {
+      this.loading = false;
+      if (!!res._id) {
+        const minorLocation = res.minorLocations.filter(x => x._id === this.wardId);
+        if (minorLocation.length > 0) {
+          const room = minorLocation[0].wardSetup.rooms.filter(x => x._id === this.roomId);
+          if (room.length > 0) {
+            this.wardRoom = room[0];
+            this.beds = room[0].beds;
+          }
+        }
+      }
+    });
 	}
 
 	// Notification
@@ -88,6 +80,7 @@ export class BedComponent implements OnInit {
 	}
 
 	close_onClick() {
+    this.getRooomBedItems();
 		this.selectedBed = undefined;
 		this.addbed = false;
 	}

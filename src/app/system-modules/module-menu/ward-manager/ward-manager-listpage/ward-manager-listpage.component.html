@@ -46,14 +46,14 @@
                     </tbody>
                     <tbody class="custom-tbody" *ngFor="let ward of wards;let i=index">
                         <tr class="tr-header-group" (click)="showDetails(i);">
-                            <td class="table-content" colspan="4">{{ward.minorLocationId?.name}}</td>
+                            <td class="table-content" colspan="4">{{ward?.name}}</td>
                         </tr>
-                        <tr *ngIf="ward.rooms.length === 0 && (selectedIndex === i)">
+                        <tr *ngIf="(ward?.wardSetup === undefined) && (ward.wardSetup.rooms.length === 0) && (selectedIndex === i)">
                             <td class="table-content " colspan="4 " style="text-align: center ">
                                 No added room and bed
                             </td>
                         </tr>
-                        <tr *ngFor="let room of ward?.rooms; let j=index;">
+                        <tr *ngFor="let room of ward?.wardSetup?.rooms; let j=index;">
                             <td *ngIf="selectedIndex === i" class="table-content">{{j+1}}</td>
                             <td *ngIf="selectedIndex === i" class="table-content">{{room.name}}</td>
                             <td *ngIf="selectedIndex === i" class="table-content">{{room.beds.length}}</td>
