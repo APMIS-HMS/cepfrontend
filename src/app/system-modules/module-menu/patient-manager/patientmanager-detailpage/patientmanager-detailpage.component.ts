@@ -19,6 +19,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
+
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() employeeDetails: any;
   patientDetails: any;
@@ -115,8 +116,8 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.appointmentService.appointmentAnnounced$.subscribe((appointment: any) => {
       this.selectedAppointment = appointment;
-      this.patient = appointment.patientId;
-      this.patientDetails = appointment.patientId;
+      this.patient = appointment.patientDetails;
+      this.patientDetails = appointment.patientDetails;
       this.employeeDetails = this.loginEmployee;
       this._documentationService.find({ query: { patientId: this.patient._id } }).then(payloadPatient => {
         this.documentations = payloadPatient.data;

@@ -86,18 +86,18 @@
             <tr *ngFor="let appointment of checkedInAppointments">
                 <td>
                     <div class="empWrap" (click)="goToPatientPage(appointment,false)">
-                        <div class="list-img" *ngIf="appointment?.patientId?.personDetails?.profileImageObject == undefined">
+                        <div class="list-img" *ngIf="appointment?.patientDetails?.personDetails?.profileImageObject == undefined">
                             <img src="assets/images/users/default.png">
                         </div>
-                        <div class="list-img" *ngIf="appointment?.patientId?.personDetails?.profileImageObject !== undefined">
-                            <img [src]="facilityService.transform(appointment.patientId.personDetails?.profileImageObject?.thumbnail)">
+                        <div class="list-img" *ngIf="appointment?.patientDetails?.personDetails?.profileImageObject !== undefined">
+                            <img [src]="facilityService.transform(appointment.patientDetails.personDetails?.profileImageObject?.thumbnail)">
                         </div>
-                        <div>{{appointment?.patientId?.personDetails?.lastName}} {{appointment?.patientId?.personDetails?.firstName}}</div>
+                        <div>{{appointment?.patientDetails?.personDetails?.lastName}} {{appointment?.patientDetails?.personDetails?.firstName}}</div>
                     </div>
                 </td>
-                <td>{{appointment.clinicId?.clinicName}}</td>
+                <td>{{appointment.clinicId}}</td>
                 <td>
-                    <div>{{appointment.doctorId?.personDetails?.lastName}} {{appointment.doctorId?.personDetails?.firstName}}</div>
+                    <div>{{appointment.providerDetails?.personDetails?.lastName}} {{appointment.providerDetails?.personDetails?.firstName}}</div>
                     <div class="caregiver-room">{{getConsultingRoom(appointment)}}</div>
                 </td>
                 <td>{{appointment?.attendance?.dateCheckIn | date:'shortTime'}}</td>

@@ -118,10 +118,6 @@ export class ScheduleFrmComponent implements OnInit {
             this.updateAppointment = true;
             this.saveAppointment = false;
             this.savingAppointment = false;
-            const filterClinic = this.clinics.filter(x => x._id === payload.clinicId._id);
-            if (filterClinic.length > 0) {
-                this.clinic.setValue(filterClinic[0]);
-            }
 
             this.provider.setValue(payload.providerDetails);
             this.selectedPatient = payload.patientDetails;
@@ -306,6 +302,11 @@ export class ScheduleFrmComponent implements OnInit {
             const categoryIndex = this.categoryServices.findIndex(x =>x.name === this.appointment.category);
             if(categoryIndex > -1){
                 this.category.setValue(this.categoryServices[categoryIndex]);
+            }
+
+            const clinicIndex = this.clinics.findIndex(x =>x.clinicName === this.appointment.clinicId);
+            if(clinicIndex > -1){
+                this.clinic.setValue(this.clinics[clinicIndex]);
             }
         }
     }

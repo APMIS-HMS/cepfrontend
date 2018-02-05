@@ -18,7 +18,7 @@ export class FeatureModuleService {
     this._roleSocket.timeout = 30000;
     this._socket.on('created', function (features) {
     });
-    this._roleSocket.on('created', function (features) {});
+    this._roleSocket.on('created', function (features) { });
   }
 
   find(query: any) {
@@ -40,11 +40,15 @@ export class FeatureModuleService {
     return this._socket.remove(id, query);
   }
 
-  getFacilityRoles(id: string, query: any){
+  getFacilityRoles(id: string, query: any) {
     return this._roleSocket.get(id, query);
   }
 
-  assignUserRole(data){
+  getUserRoles(query: any) {
+    return this._roleSocket.find(query);
+  }
+
+  assignUserRole(data) {
     return this._roleSocket.create(data);
   }
 

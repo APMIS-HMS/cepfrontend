@@ -1,3 +1,5 @@
+import { DONT_USE_AUTH_GUARD } from './../../shared-module/helpers/global-config';
+import { FeatureModuleService } from './../../services/module-manager/setup/feature-module.service';
 import { AuthFacadeService } from './../service-facade/auth-facade.service';
 import { Component, OnInit, ViewChild, ElementRef, ViewContainerRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -46,25 +48,14 @@ export class DashboardHomeComponent implements OnInit {
   loadIndicatorVisible = false;
   subscription: Subscription;
   loginEmployee: Employee = <Employee>{};
+  access: any = [];
 
   checkedInObject: any = <any>{};
   constructor(private _elRef: ElementRef, private locker: CoolLocalStorage, private userService: UserService,
     private router: Router, public facilityService: FacilitiesService, private employeeService: EmployeeService,
-    private workSpaceService: WorkSpaceService, private authFacadeService: AuthFacadeService) {
-    // router.events.subscribe((routerEvent: Event) => {
-    //   this.checkRouterEvent(routerEvent);
-    // });
+    private workSpaceService: WorkSpaceService, private authFacadeService: AuthFacadeService, private featureService: FeatureModuleService) {
   }
-  // checkRouterEvent(routerEvent: Event): void {
-  //   if (routerEvent instanceof NavigationStart) {
-  //     this.loadIndicatorVisible = true;
-  //   }
-  //   if (routerEvent instanceof NavigationEnd ||
-  //     routerEvent instanceof NavigationCancel ||
-  //     routerEvent instanceof NavigationError) {
-  //     this.loadIndicatorVisible = false;
-  //   }
-  // }
+
   ngOnInit() {
     this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
     if (this.facilityObj !== undefined && this.facilityObj != null) {
@@ -126,6 +117,21 @@ export class DashboardHomeComponent implements OnInit {
 
       this.loadIndicatorVisible = false;
     })
+
+    this.getUserRoles();
+  }
+  getUserRoles() {
+    this.authFacadeService.getUserAccessControls().then(payload => {
+      console.log(payload);
+      this.access = payload;
+    }, error => {
+      console.log(error);
+    })
+  }
+  accessHas(menu) {
+    let modules: any = this.access.modules;
+    const index = modules.findIndex(x => x.moduleName.includes(menu));
+    return(index > -1 || DONT_USE_AUTH_GUARD);
   }
   laboratorySubmenuShow() {
     this.innerMenuShow = false;
