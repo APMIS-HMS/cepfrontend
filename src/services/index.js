@@ -126,6 +126,7 @@ const wardRoomPrices = require('./ward-room-prices/ward-room-prices.service.js')
 const saveAppointment = require('./save-appointment/save-appointment.service.js');
 const insuranceEnrollees = require('./insurance-enrollees/insurance-enrollees.service.js');
 const familyDependants = require('./family-dependants/family-dependants.service.js');
+const vitals = require('./vitals/vitals.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -255,4 +256,5 @@ module.exports = function (app) {
   app.configure(saveAppointment);
   app.configure(insuranceEnrollees);
   app.configure(familyDependants);
+  app.configure(vitals);
 };
