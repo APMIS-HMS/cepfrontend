@@ -32,7 +32,7 @@
                         </td>
                         <td>
                             <label class="control control--checkbox">
-                                <input type="checkbox" [checked]="facility.memberof.includes(LoggedInFacility._id)" (change)="pickFacilitiesMemberOf($event,facility._id)"
+                                <input type="checkbox" [checked]="facility.isMember" (change)="pickFacilitiesMemberOf($event,facility._id)"
                                 />
                                 <div class="control__indicator"></div>
                             </label>
@@ -40,11 +40,7 @@
                     </tr>
                 </tbody>
             </table>
-            <button [ngClass]="{'cta-1':selectedFacilityIds.length > 0 && !loading, 'cta-1-disable':selectedFacilityIds.length === 0 || loading}" [disabled]="selectedFacilityIds.length === 0 || loading" *ngIf="!uncheck" (click)="confirmUpdate('add')">
-                <span *ngIf="!loading">Add</span>
-                <span *ngIf="loading">Loading...</span>
-            </button>
-            <button [ngClass]="{'cta-1':selectedFacilityIds.length > 0 && !loading, 'cta-1-disable':selectedFacilityIds.length === 0 || loading}" [disabled]="checkboxLen !> 1" *ngIf="uncheck" (click)="confirmUpdate('update')">
+            <button [ngClass]="{'cta-1':removeFacilities.length > 0 || selectedFacilityIds.length > 0 && !loading, 'cta-1-disable':removeFacilities.length === 0|| selectedFacilityIds.length === 0 || loading}" [disabled]="fac.memberFacilities?.length == 0 && facRemove?.memberFacilities?.length == 0" *ngIf="uncheck" (click)="confirmUpdate('update')">
                 <span *ngIf="!loading">Update</span>
                 <span *ngIf="loading">Loading...</span>
             </button>
