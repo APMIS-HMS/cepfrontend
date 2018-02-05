@@ -1,11 +1,9 @@
 /* eslint-disable no-unused-vars */
+const logger = require('winston');
+const jsend = require('jsend');
 class Service {
   constructor(options) {
     this.options = options || {};
-  }
-
-  setup(app) {
-    this.app = app;
   }
 
   find(params) {
@@ -14,7 +12,7 @@ class Service {
 
   async get(id, params) {
     const usersService = this.app.service('users');
-    const featuresService = this.app.service('features');
+    const featuresService = this.app.service('facility-access-control');
     var results = [];
     var errors = [];
 
@@ -23,16 +21,22 @@ class Service {
         'personId': id
       }
     });
-    let features = await featuresService.find({});
+    let features = await featuresService.find({
+      query: {
+        facilityId: params.query.facilityId
+      }
+    });
     if (selectedUser.data.length == 0) {
       results = [];
     } else {
-      if (selectedUser.data[0].userRole) {
-        let index = selectedUser.data[0].userRole.filter(x => x.facilityId.toString() == params.query.facilityId.toString());
-
-        if(index[0].roles.length > 0){
+      if (selectedUser.data[0].userRoles === undefined) {
+        selectedUser.data[0].userRoles = [];
+      }
+      if (selectedUser.data[0].userRoles) {
+        let index = selectedUser.data[0].userRoles.filter(x => x.facilityId.toString() == params.query.facilityId.toString());
+        if (index[0] !== undefined && index[0].roles.length > 0) {
           features.data.forEach((feature, i) => {
-            if (index[0].roles.includes(feature._id.toString())) {
+            if (index[0].roles.filter(x =>  x.toString() === feature._id.toString()).length > 0) {
               feature.isAssigned = true;
               results.push(feature);
             } else {
@@ -40,13 +44,13 @@ class Service {
               results.push(feature);
             }
           });
-        }else{
-          results = [];
+        } else {
+          results = features.data;
         }
       }
     }
 
-    return results;
+    return jsend.success(features.data);
   }
 
   async create(data, params) {
@@ -57,21 +61,48 @@ class Service {
       }
     });
 
+    if (selectedUser.data[0].userRoles === undefined) {
+      selectedUser.data[0].userRoles = [];
+    }
+
     let index = selectedUser.data[0].userRoles.findIndex(x => x.facilityId.toString() == data.facilityId.toString());
-    selectedUser.data[0].userRoles[index].roles.forEach(ind => {
-      data.roles.forEach(indx => {
-        if(ind != indx){
-          selectedUser.data[0].userRoles[index].roles.push(indx);
+
+    // selectedUser.data[0]. [index].roles.forEach(ind => {
+    //   data.roles.forEach(indx => {
+    //     if (ind != indx) {
+    //       selectedUser.data[0].userRoles[index].roles.push(indx);
+    //     }
+    //   });
+    // });
+
+    data.roles.forEach(indx => {
+      if (index > -1) {
+        selectedUser.data[0].userRoles[index].roles.forEach(ind => {
+          if (ind != indx) {
+            selectedUser.data[0].userRoles[index].roles.push(indx);
+          }
+        });
+      } else {
+        if (selectedUser.data[0].userRoles.length === 0) {
+          let userRole = {
+            facilityId: data.facilityId,
+            roles: []
+          };
+          userRole.roles.push(indx);
+          selectedUser.data[0].userRoles.push(userRole);
+        } else {
+          selectedUser.data[0].userRoles[0].roles.push(indx);
         }
-      })
+
+      }
     });
 
     let updatedUser = await usersService.patch(selectedUser.data[0]._id, {
       userRoles: selectedUser.data[0].userRoles
     });
-    
+
     return updatedUser;
-  
+
   }
 
   update(id, data, params) {
@@ -84,6 +115,10 @@ class Service {
 
   remove(id, params) {
     return Promise.resolve({ id });
+  }
+
+  setup(app) {
+    this.app = app;
   }
 }
 
