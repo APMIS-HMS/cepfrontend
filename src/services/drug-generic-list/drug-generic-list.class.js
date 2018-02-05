@@ -10,40 +10,32 @@ class Service {
     }
 
     async find(params) {
-        let url = process.env.EMDEX_BASEURL + '/list/?query=' + params.query.searchtext +
-            '&po=' + params.query.po + '&brandonly=' + params.query.brandonly + '&genericonly=' + params.query.genericonly;
+        let url = '';
 
-        // var args = { headers: { Authorization: process.env.EMDEX_AUTHORISATION_KEY } };
+        if (params.query.method === 'drug-details') {
+            url = process.env.EMDEX_BASEURL + '/products/' + params.query.productId;
+        } else {
+            url = process.env.EMDEX_BASEURL + '/list/?query=' + params.query.searchtext +
+                '&po=' + params.query.po + '&brandonly=' + params.query.brandonly + '&genericonly=' + params.query.genericonly;
+        }
+
         const options = {
             method: 'GET',
             uri: url,
-            headers: { Authorization: process.env.EMDEX_AUTHORISATION_KEY }
+            headers: { authorisation: process.env.EMDEX_AUTHORISATION_KEY }
         };
         const makeRequest = await requestPromise(options);
-        console.log('---------- makeRequest -----------');
-        console.log(makeRequest);
-        console.log('---------- End makeRequest -----------');
-        // request.get(url, args, function(drugs, response) {
-        //     if (drugs.results !== undefined) {
-        //         let dataLength = drugs.results.length;
-        //         let counter = 0;
-        //         let resultItems = [];
+        const parsed = JSON.parse(makeRequest);
 
-        //         drugs.results.forEach(function(element) {
-        //             counter++;
-        //             if (element.details.toLowerCase().includes(params.query.searchtext.toLowerCase())) {
-        //                 resultItems.push(element);
-        //             }
-        //         });
-
-        //         if (dataLength === counter) {
-        //             return jsend.success(resultItems);
-        //         }
-        //     } else {
-        //         return jsend.success([]);
-        //     }
-        // });
-        //return Promise.resolve([]);
+        if (params.query.method === 'drug-details') {
+            return jsend.success(parsed);
+        } else {
+            if (parsed.results !== undefined) {
+                return jsend.success(parsed.results);
+            } else {
+                return jsend.success([]);
+            }
+        }
     }
 
     get(id, params) {
