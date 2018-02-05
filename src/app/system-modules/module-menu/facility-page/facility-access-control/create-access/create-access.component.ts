@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
-import { FeatureModuleService } from '../../../../services/module-manager/setup/index';
-import { AccessControlService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
+import { FeatureModuleService } from '../../../../../services/module-manager/setup/index';
+import { AccessControlService, FacilitiesService } from '../../../../../services/facility-manager/setup/index';
 // tslint:disable-next-line:max-line-length
 import {
   FeatureModule, AccessControl, FeatureModuleViewModel, User, Facility
-} from '../../../../models/index';
+} from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-create-access',
@@ -15,6 +16,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./create-access.component.scss']
 })
 export class CreateAccessComponent implements OnInit {
+  @Input() selectedRole: any;
   txtAccessName = new FormControl();
   searchFeature = new FormControl();
   // searchfeatureActive = false;
@@ -33,6 +35,7 @@ export class CreateAccessComponent implements OnInit {
   updatingRole: boolean = false;
   disableBtn: boolean = true;
   routeId: string;
+  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   // superGroups: any[] = [];
   // btnTitle = 'Create Access';
   // innerMenuShow = false;
@@ -43,7 +46,8 @@ export class CreateAccessComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private _facilityService: FacilitiesService,
-    private accessControlService: AccessControlService
+    private accessControlService: AccessControlService,
+    private _systemModuleService: SystemModuleService
   ) { }
 
   ngOnInit() {
@@ -58,26 +62,18 @@ export class CreateAccessComponent implements OnInit {
     });
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.user = <User>this.locker.getObject('auth');
+    console.log(this.selectedRole);
 
-    this.route.params.subscribe(params => {
-      if (!!params.id) {
-        this.routeId = params.id;
-        this.getModules(params.id);
-      } else {
-        this.getModules(params.id);
-      }
-    });
+    this.getModules();
   }
 
-  private _getRole(roleId: string) {
-    this.accessControlService.get(roleId, {}).then(res => {
-      const roleName = res.name;
+  private _getRole(role: any) {
+      const roleName = role.name;
       this.txtAccessName.setValue(roleName);
-      this.populateAccessControl(res.features);
+      this.populateAccessControl(role.features);
       this.updateRole = true;
       this.createRole = false;
-      this.disableBtn = false;
-    });
+      this.disableBtn = false
   }
 
   populateAccessControl(accessibilities: any) {
@@ -101,6 +97,10 @@ export class CreateAccessComponent implements OnInit {
         });
       });
     }
+  }
+
+  close_onClick() {
+    this.closeModal.emit(true);
   }
 
   onClickCheckInput(action: any, checked: boolean) {
@@ -128,13 +128,13 @@ export class CreateAccessComponent implements OnInit {
     });
   }
 
-  getModules(roleId?: string) {
+  getModules() {
     this.featureModuleService.findAll().then(res => {
       this.loading = false;
       if (res.data.length > 0) {
         this.modules = res.data;
-        if (!!roleId) {
-          this._getRole(roleId);
+        if (!!this.selectedRole) {
+          this._getRole(this.selectedRole);
         }
       }
     });
@@ -155,7 +155,7 @@ export class CreateAccessComponent implements OnInit {
         accessControl.features.push(contains);
       });
 
-      if (this.routeId === undefined) {
+      if (this.selectedRole === undefined) {
         this.createRole = false;
         this.creatingRole = true;
 
@@ -165,28 +165,22 @@ export class CreateAccessComponent implements OnInit {
             this.creatingRole = false;
             this.disableBtn = true;
             const text = `${roleName} role has been created successfully!`;
-            this._notification('Success', text);
-            this._notification('Info', 'Redirecting...');
-            setTimeout(() => {
-              this.router.navigate(['/dashboard/access-manager/access']);
-            }, 2000);
+            this._systemModuleService.announceSweetProxy(text, 'success');
+            this.close_onClick();
         }, error => {
           console.log(error);
         }).catch(err => console.log(err));
       } else {
         this.updateRole = false;
         this.updatingRole = true;
-        accessControl._id = this.routeId;
+        accessControl._id = this.selectedRole._id;
         this.accessControlService.update(accessControl).then(res => {
           this.updateRole = true;
           this.updatingRole = false;
           this.disableBtn = true;
           const text = `${roleName} role has been updated successfully!`;
-          this._notification('Success', text);
-          this._notification('Info', 'Redirecting...');
-          setTimeout(() => {
-            this.router.navigate(['/dashboard/access-manager/access']);
-          }, 2000);
+          this._systemModuleService.announceSweetProxy(text, 'success');
+          this.close_onClick();
         }).catch(err => console.log(err));
       }
     } else {
