@@ -19,6 +19,7 @@ export class ServicesComponent implements OnInit {
   tags: Tag[] = [];
   globalCategories: CustomCategory[] = [];
   globalCategoriesToBePaginated: CustomCategory[] = [];
+  selectedServices = [];
   searchCategory = new FormControl();
   searchService = new FormControl();
   searchTag = new FormControl();
@@ -70,9 +71,6 @@ export class ServicesComponent implements OnInit {
     subscribeForCategory.subscribe((payload: any) => {
     });
 
-
-
-
     const subscribeForService = this.searchService.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
@@ -103,10 +101,14 @@ export class ServicesComponent implements OnInit {
 
     subscribeForTag.subscribe((payload: any) => {
     });
-
-
-
   }
+
+  selectCategory(category){
+    this.selectedCategory = category;
+    console.log(this.selectedCategory);
+    this.selectedServices = this.globalCategories.filter(e => e.category === category.name);
+  }
+
   onDoubleClick(value: any) {
     this.selectedService = value;
     this.newServicePopup = true;
@@ -190,6 +192,7 @@ export class ServicesComponent implements OnInit {
         console.log(this.globalCategoriesToBePaginated);
         this.globalCategories = this.paginate(this.globalCategoriesToBePaginated, this.pageSize, this.index);
         console.log(this.globalCategories);
+        this.selectCategory(this.categories[0]);
         });
       });
   }
