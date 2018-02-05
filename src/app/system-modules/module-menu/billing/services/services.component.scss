@@ -37,6 +37,7 @@
     max-height: 300px;
     overflow-x: hidden;    
     overflow-y: auto;
+    box-sizing: border-box;
 }
 
 .red-text{
@@ -85,7 +86,7 @@
         cursor: pointer;
     }
 
-    .active { 
+    .undefined { 
         border-left: solid 3px#337ab7 !important;   
         background: #eee !important;                     
     }
