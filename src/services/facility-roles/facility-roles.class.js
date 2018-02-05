@@ -6,8 +6,31 @@ class Service {
     this.options = options || {};
   }
 
-  find(params) {
-    return Promise.resolve([]);
+  async find(params) {
+    const facilityId = params.query.facilityId;
+    const featuresService = this.app.service('facility-access-control');
+    let userRoles = [];
+    userRoles = userRoles.concat.apply([], params.user.userRoles).map(x => x.roles);
+
+    userRoles = [].concat.apply([], userRoles);
+    let features = await featuresService.find({
+      query: {
+        facilityId: facilityId,
+        _id: { $in: userRoles }
+      }
+    });
+
+    let outArray = [];
+    outArray = outArray.concat(features.data.map(x => x.features));
+    var merged = [].concat.apply([], outArray);
+    const distinctModules = this.getDistinctModules(merged);
+    return { features: merged, modules: distinctModules };
+  }
+
+  getDistinctModules(list) {
+    const data = list;
+    const result = Object.values(data.reduce((r, { moduleName, moduleId }) => (r[moduleName + '|' + moduleId] = { moduleName, moduleId }, r), {}));
+    return result;
   }
 
   async get(id, params) {
@@ -36,7 +59,7 @@ class Service {
         let index = selectedUser.data[0].userRoles.filter(x => x.facilityId.toString() == params.query.facilityId.toString());
         if (index[0] !== undefined && index[0].roles.length > 0) {
           features.data.forEach((feature, i) => {
-            if (index[0].roles.filter(x =>  x.toString() === feature._id.toString()).length > 0) {
+            if (index[0].roles.filter(x => x.toString() === feature._id.toString()).length > 0) {
               feature.isAssigned = true;
               results.push(feature);
             } else {
