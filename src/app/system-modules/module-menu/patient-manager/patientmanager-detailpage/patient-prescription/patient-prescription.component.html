@@ -95,7 +95,7 @@
             <form [formGroup]="addPrescriptionForm" novalidate>
                 <div class="row padding-top-20px">
                     <div class="col-sm-6 col-md-6">
-                        <apmis-lookup formControlName="drug" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Drug" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                        <apmis-lookup formControlName="drug" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="true" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Drug" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                     </div>
                     <div class="col-sm-3 col-md-3">
                         <mat-form-field>
@@ -177,13 +177,16 @@
                         <div class="col-sm-8">
                             <div class="col-sm-6" style="margin-top: 10px;">
                                 <mat-form-field class="mat-select">
-                                    <mat-select placeholder="Priority" formControlName="priority">
-                                        <mat-option *ngFor="let priority of priorities" [(value)]="priority._id">{{ priority.name }}</mat-option>
+                                    <mat-select placeholder="Priority" formControlName="priority" [compareWith]="comparePriority">
+                                        <mat-option *ngFor="let priority of priorities" [value]="priority">{{ priority.name }}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
                             <div class="col-sm-6 text-center">
-                                <button mat-raised-button [disabled]="!allPrescriptionsForm.valid || disableAuthorizeRx" (click)="onClickAuthorizePrescription(allPrescriptionsForm.value, allPrescriptionsForm.valid);" type="submit" class="mat-lg-btn" [innerHtml]="authorizeRx"></button>
+                                <button mat-raised-button [disabled]="!allPrescriptionsForm.valid || disableAuthorizeRx" (click)="onClickAuthorizePrescription(allPrescriptionsForm.value, allPrescriptionsForm.valid);" type="submit" class="mat-lg-btn">
+                                  <span *ngIf="authorizeRx"><i class="fa fa-check"></i> Authorize Rx</span>
+                                  <span *ngIf="authorizingRx">Authorizing Rx... <i class="fa fa-spin fa-spinner"></i></span>
+                                </button>
                             </div>
                         </div>
                         <div class="col-sm-2"></div>
