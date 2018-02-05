@@ -8,7 +8,8 @@ module.exports = function (app) {
 
   const options = {
     name: 'insurance-enrollees',
-    paginate
+    paginate,
+    app:app
   };
 
   // Initialize our service with any options it requires

@@ -4,10 +4,14 @@ class Service {
     this.options = options || {};
   }
 
+  setup(app) {
+    this.app = app;
+  }
+
   async find(params) {
     let result = {};
     const hmoService = this.app.service('hmos');
-    let findHmoService = hmoService.find({
+    let findHmoService = await hmoService.find({
       query: {
         facilityId:params.query.facilityId,
         $limit: false
