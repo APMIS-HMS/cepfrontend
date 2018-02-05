@@ -7,6 +7,7 @@ import {
 import { Facility, Documentation, Employee, Patient, PatientDocumentation, Document } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
+import { error } from 'util';
 
 
 @Component({
@@ -180,17 +181,17 @@ export class AddVitalsComponent implements OnInit {
   getVitalPosition() {
     this._vitalPositionService.findAll().then(payload => {
       this.vitalPosition = payload.data;
-    });
+    },error=>{});
   }
   getVitalRythm() {
     this._vitalRythmService.findAll().then(payload => {
       this.vitalRythm = payload.data;
-    });
+    },error=>{});
   }
   getVitalLocation() {
     this._vitaLocationService.findAll().then(payload => {
       this.vitalLocation = payload.data;
-    });
+    },error=>{});
   }
 
   close_onClick() {
