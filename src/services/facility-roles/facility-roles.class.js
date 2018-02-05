@@ -66,7 +66,9 @@ class Service {
       })
     });
 
-    let updatedUser = await usersService.update(selectedUser.data[0]._id, selectedUser.data[0]);
+    let updatedUser = await usersService.patch(selectedUser.data[0]._id, {
+      userRoles: selectedUser.data[0].userRoles
+    });
     
     return updatedUser;
   
