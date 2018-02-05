@@ -16,6 +16,7 @@ export class FacilitiesServiceCategoryService {
   public createListener;
   public _wardRoomPriceSocket;
   public _wardRoomPriceRest;
+  public _socketOrganisationServices;
 
   constructor(
     private _socketService: SocketService,
@@ -28,6 +29,7 @@ export class FacilitiesServiceCategoryService {
     this._socket = _socketService.getService('organisation-services');
     this._wardRoomPriceSocket = _socketService.getService('ward-room-prices');
     this._wardRoomPriceRest = _restService.getService('ward-room-prices');
+    this._socketOrganisationServices = _socketService.getService('bill-managers');
     this._socket.timeout = 30000;
     this.createListener = Observable.fromEvent(this._socket, 'created');
     this.listner = Observable.fromEvent(this._socket, 'updated');
@@ -38,6 +40,10 @@ export class FacilitiesServiceCategoryService {
   }
   find(query: any) {
     return this._socket.find(query);
+  }
+
+  allServices(query: any) {
+    return this._socketOrganisationServices.find(query);
   }
 
   findAll() {

@@ -81,9 +81,9 @@
                 <div class="card-content scrollable">
                     <div *ngFor="let service of selectedServices" class="card-list-item">
                         <div class="row">
-                            <div class="col-xs-6">{{service.service}}</div>
-                            <div class="col-xs-2">{{service.serviceCode}}</div>
-                            <div class="col-xs-2">N 1000</div>
+                            <div class="col-xs-6">{{service.name}}</div>
+                            <div class="col-xs-2">{{service?.code}}</div>
+                            <div class="col-xs-2"><span>&#x20a6;</span>{{service?.price | number:'1.2-2'}}</div>
                             <div class="col-xs-1 options"><i class="fa fa-edit blue-text"></i></div>
                             <div class="col-xs-1 options"><i class="fa fa-trash red-text"></i></div>
                         </div>
