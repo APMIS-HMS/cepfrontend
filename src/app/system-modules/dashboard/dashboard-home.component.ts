@@ -122,10 +122,8 @@ export class DashboardHomeComponent implements OnInit {
   }
   getUserRoles() {
     this.authFacadeService.getUserAccessControls().then(payload => {
-      console.log(payload);
       this.access = payload;
     }, error => {
-      console.log(error);
     })
   }
   accessHas(menu) {

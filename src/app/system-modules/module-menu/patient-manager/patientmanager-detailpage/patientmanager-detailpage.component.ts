@@ -1,3 +1,4 @@
+import { AuthFacadeService } from './../../../service-facade/auth-facade.service';
 import { Component, OnInit, OnDestroy, EventEmitter, Output, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import {
@@ -86,7 +87,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   pRChart: any[] = [];
   timeVal: Date;
   routeId: any;
-  checkedIn:any;
+  checkedIn: any;
 
   menuResp = false;
 
@@ -100,6 +101,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     private formsService: FormsService,
     private router: Router, private route: ActivatedRoute,
     private locker: CoolLocalStorage,
+    private authFacadeService: AuthFacadeService,
     private _documentationService: DocumentationService) {
 
     // this.router.events
@@ -113,7 +115,10 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       this.patient.personDetails = payload;
     });
 
-    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+    });
+
     this.appointmentService.appointmentAnnounced$.subscribe((appointment: any) => {
       this.selectedAppointment = appointment;
       this.patient = appointment.patientDetails;
@@ -133,8 +138,8 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   setAppointment() {
     if (this.patient !== undefined && this.loginEmployee !== undefined && this.loginEmployee !== null) {
       this.router.navigate(['/dashboard/clinic/schedule-appointment', this.patient._id, this.loginEmployee._id]);
-    }else{
-      
+    } else {
+
     }
 
   }
@@ -145,35 +150,40 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     if (<any>this.locker.getObject('patient') !== null) {
       this.patient = <any>this.locker.getObject('patient');
     } else {
-      console.log(<any>this.locker.getObject('patient'));
       this.router.navigate(['/dashboard/patient-manager']);
     }
     this.getForms();
 
     this.route.params.subscribe(payloadk => {
-      console.log(payloadk);
-      if (payloadk['checkInId'] !== undefined) {
-        let isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x._id);
-        console.log(isOnList);
-        if (isOnList.length > 0) {
-          const isOnObj = isOnList[0];
-          isOnObj.isOn = true;
-          let coo = <any>this.locker.getObject('appointment');
-          console.log(coo);
-          this.checkedIn = !coo.isCheckedOut || false;
-          this.employeeService.update(this.loginEmployee).subscribe(payloadu => {
-            this.loginEmployee = payloadu;
-            if (this.selectedAppointment !== undefined) {
-              isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
-              if (isOnList.length > 0) {
-                const isOn = isOnList[0];
-                const checkingObject = this.locker.getObject('checkingObject');
+      this.authFacadeService.getLogingEmployee().then((payload: any) => {
+        this.loginEmployee = payload;
+        if (payloadk['checkInId'] !== undefined) {
+          let isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x._id);
+          if (isOnList.length > 0) {
+            const isOnObj = isOnList[0];
+            isOnObj.isOn = true;
+            let coo = <any>this.locker.getObject('appointment');
+            this.checkedIn = !coo.isCheckedOut || false;
+            this.employeeService.update(this.loginEmployee).subscribe(payloadu => {
+              this.loginEmployee = payloadu;
+              if (this.selectedAppointment !== undefined) {
+                isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
+                if (isOnList.length > 0) {
+                  const isOn = isOnList[0];
+                  const checkingObject = this.locker.getObject('checkingObject');
+                }
               }
-            }
-          });
+            });
+          }
+  
         }
+      })
 
-      }
+
+
+
+
+     
 
     });
   }
@@ -262,7 +272,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       this.contentSecMenuShow = false;
     }
   }
- 
+
   menuSummary_click() {
     this.menuSummary = true;
     this.menuUploads = false;
@@ -557,7 +567,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuExternalPrescription = false;
     this.menuFinance = false;
     this.menuMedicationHistory = false;
-    this. menuPayment = false;
+    this.menuPayment = false;
 
     this.menuResp = false;
   }
@@ -674,13 +684,13 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   }
   checkoutPatient_show() {
     // Check is this patient has an appointment. If not, redirect the user to the appointment page
-		// if (!!this.selectedAppointment && this.selectedAppointment._id !== undefined) {
-      this.patientDetails = this.patient;
-      this.checkoutPatient = true;
-		// } else {
+    // if (!!this.selectedAppointment && this.selectedAppointment._id !== undefined) {
+    this.patientDetails = this.patient;
+    this.checkoutPatient = true;
+    // } else {
     //   let text = 'Please set appointment for ' + this.patient.personDetails.personFullName + '';
 
-		// 	this._notification('Info', text.concat(' before you can continue this process.'));
+    // 	this._notification('Info', text.concat(' before you can continue this process.'));
     // }
   }
 
@@ -712,7 +722,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     }
   }
 
-  patientMenu(){
+  patientMenu() {
     this.menuResp = !this.menuResp;
   }
 

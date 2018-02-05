@@ -15,10 +15,6 @@ export class CanActivateViaAuthGuardAccessService implements CanActivate {
       self.authFacadeService.getUserAccessControls().then((payload: any) => {
         let modules: any = payload.modules;
         const index = modules.findIndex(x => x.moduleName.includes(route.routeConfig.path));
-        console.log(modules);
-        console.log(index);
-        console.log(DONT_USE_AUTH_GUARD)
-        console.log(route.routeConfig.path);
         resolve(index > -1 || DONT_USE_AUTH_GUARD);
       }, error => {
         reject(error);

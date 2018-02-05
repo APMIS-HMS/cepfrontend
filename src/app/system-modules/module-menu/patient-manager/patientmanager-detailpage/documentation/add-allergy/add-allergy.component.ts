@@ -65,7 +65,7 @@ export class AddAllergyComponent implements OnInit {
       });
   }
   getPersonDocumentation() {
-    this.documentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
+    this.documentationService.find({ query: { 'personId': this.patient.personId } }).subscribe((payload: any) => {
       if (payload.data.length === 0) {
         this.patientDocumentation.personId = this.patient.personDetails;
         this.patientDocumentation.documentations = [];
@@ -79,7 +79,7 @@ export class AddAllergyComponent implements OnInit {
           this.documentationService.find({
             query:
               {
-                'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
+                'personId': this.patient.personId, 'documentations.patientId': this.patient._id,
                 // $select: ['documentations.documents', 'documentations.facilityId']
               }
           }).subscribe((mload: any) => {
@@ -115,13 +115,12 @@ export class AddAllergyComponent implements OnInit {
       }
     });
     if (!isExisting) {
-      console.log('shce');
-      console.log(this.loginEmployee);
-      console.log(this.selectedFacility);
       const doc: PatientDocumentation = <PatientDocumentation>{};
-      doc.facilityId = this.selectedFacility;
-      doc.createdBy = this.loginEmployee;
-      doc.patientId = this.patient._id;
+      doc.createdBy = this.loginEmployee.personDetails.title + ' ' + this.loginEmployee.personDetails.lastName + ' ' + this.loginEmployee.personDetails.firstName;
+      doc.facilityId = this.selectedFacility._id;
+      doc.facilityName = this.selectedFacility.name;
+      doc.patientId = this.patient._id,
+      doc.patientName = this.patient.personDetails.title + ' ' + this.patient.personDetails.lastName + ' ' + this.patient.personDetails.firstName;
       doc.document = {
         documentType: this.selectedForm,
         body: {

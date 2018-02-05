@@ -1,3 +1,4 @@
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { SystemModuleService } from './../../../../../../services/module-manager/setup/system-module.service';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
@@ -38,10 +39,10 @@ export class AddPatientProblemComponent implements OnInit {
   constructor(private formBuilder: FormBuilder, private orderStatusService: OrderStatusService,
     private formService: FormsService, private locker: CoolLocalStorage,
     private documentationService: DocumentationService, private SystemModuleService: SystemModuleService,
-    private formTypeService: FormTypeService, private sharedService: SharedService,
+    private formTypeService: FormTypeService, private sharedService: SharedService, private authFacadeService: AuthFacadeService,
     private facilityService: FacilitiesService) {
 
-    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    // this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.problemFormCtrl = new FormControl();
     this.noteFormCtrl = new FormControl();
 
@@ -49,10 +50,14 @@ export class AddPatientProblemComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.getOrderStatuses();
-    this.getPersonDocumentation();
-    this.getForm();
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+      this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+      this.getOrderStatuses();
+      this.getPersonDocumentation();
+      this.getForm();
+    });
+   
   }
   getForm() {
     this.SystemModuleService.on();
@@ -68,7 +73,7 @@ export class AddPatientProblemComponent implements OnInit {
   }
   getPersonDocumentation() {
     this.SystemModuleService.on();
-    this.documentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
+    this.documentationService.find({ query: { 'personId': this.patient.personId } }).subscribe((payload: any) => {
       if (payload.data.length === 0) {
         this.patientDocumentation.personId = this.patient.personDetails;
         this.patientDocumentation.documentations = [];
@@ -83,7 +88,7 @@ export class AddPatientProblemComponent implements OnInit {
           this.documentationService.find({
             query:
               {
-                'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
+                'personId': this.patient.personId, 'documentations.patientId': this.patient._id,
                 // $select: ['documentations.documents', 'documentations.facilityId']
               }
           }).subscribe((mload: any) => {
@@ -142,8 +147,6 @@ export class AddPatientProblemComponent implements OnInit {
       if (documentation.document.documentType._id !== undefined &&
         documentation.document.documentType._id === this.selectedForm._id) {
         isExisting = true;
-        console.log('is true');
-        console.log(documentation);
         documentation.document.body.problems.push({
           problem: this.problemFormCtrl.value,
           status: this.statusFormCtrl.value,
@@ -154,9 +157,11 @@ export class AddPatientProblemComponent implements OnInit {
     if (!isExisting) {
       console.log(this.loginEmployee)
       const doc: PatientDocumentation = <PatientDocumentation>{};
-      doc.facilityId = this.selectedFacility;
-      doc.createdBy = this.loginEmployee;
-      doc.patientId = this.patient._id;
+      doc.createdBy = this.loginEmployee.personDetails.title + ' ' + this.loginEmployee.personDetails.lastName + ' ' + this.loginEmployee.personDetails.firstName;
+      doc.facilityId = this.selectedFacility._id;
+      doc.facilityName = this.selectedFacility.name;
+      doc.patientId = this.patient._id,
+      doc.patientName = this.patient.personDetails.title + ' ' + this.patient.personDetails.lastName + ' ' + this.patient.personDetails.firstName;
       doc.document = {
         documentType: this.selectedForm,
         body: {

@@ -68,7 +68,7 @@ export class RightTabComponent implements OnInit {
                 this.laboratoryLoading = true;
             }
         }
-        Observable.fromPromise(this.documentationService.find({ query: { 'personId._id': this.patient.personId } }))
+        Observable.fromPromise(this.documentationService.find({ query: { 'personId': this.patient.personId } }))
             .subscribe((payload: any) => {
                 if (payload.data.length === 0) {
                     this.patientDocumentation.personId = this.patient.personDetails;
@@ -91,7 +91,7 @@ export class RightTabComponent implements OnInit {
                         Observable.fromPromise(this.documentationService.find({
                             query:
                                 {
-                                    'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
+                                    'personId': this.patient.personId, 'documentations.patientId': this.patient._id,
                                     // $select: ['documentations.documents', 'documentations.facilityId']
                                 }
                         })).subscribe((mload: any) => {

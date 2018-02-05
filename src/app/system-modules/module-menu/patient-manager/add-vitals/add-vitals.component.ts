@@ -140,12 +140,12 @@ export class AddVitalsComponent implements OnInit {
 
 
   getPersonDocumentation() {
-    this.documentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
+    this.documentationService.find({ query: { 'personId': this.patient.personId } }).subscribe((payload: any) => {
      
       if (payload.data.length === 0) {
         this.patientDocumentation.personId = this.patient.personDetails;
         this.patientDocumentation.documentations = [];
-        this.documentationService.create(this.patientDocumentation).subscribe(pload => {
+        this.documentationService.create(this.patientDocumentation).subscribe(pload => { 
           this.patientDocumentation = pload;
         })
       } else {

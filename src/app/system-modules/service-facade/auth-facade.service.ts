@@ -44,7 +44,6 @@ export class AuthFacadeService {
       } else {
         self.featureService.getUserRoles({ query: { facilityId: facId } }).then(payload => {
           self.access = payload;
-          console.log(payload);
           resolve(self.access);
         }, error => {
         });
