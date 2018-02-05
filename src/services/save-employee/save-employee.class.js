@@ -48,11 +48,12 @@ class Service {
         facilitiesRole: facilitiesRole
       });
       return patchedUser;
+
     } else {
       return [];
+
+
     }
-
-
   }
 
   update(id, data, params) {
