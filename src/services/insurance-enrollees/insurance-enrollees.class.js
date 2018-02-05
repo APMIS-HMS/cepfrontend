@@ -9,6 +9,7 @@ class Service {
     const hmoService = this.app.service('hmos');
     let findHmoService = hmoService.find({
       query: {
+        facilityId:params.query.facilityId,
         $limit: false
       }
     });
