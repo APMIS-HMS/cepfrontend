@@ -56,18 +56,6 @@
     <div class="card2-exo">
         <div class="card-tbl shadow-grey tbl-active">
             <div class="card-title">Active Modules</div>
-            <!-- <mat-form-field>
-            <mat-select placeholder="Time Interval" [formControl]="inInterval">
-                <mat-option [value]="1">Last 48Hours</mat-option>
-                <mat-option [value]="1">Last 24Hours</mat-option>
-                <mat-option [value]="1">Last 18Hours</mat-option>
-                <mat-option [value]="1">Last 12Hours</mat-option>
-                <mat-option [value]="1">Last 6Hours</mat-option>
-                <mat-option [value]="1">Last 4Hours</mat-option>
-                <mat-option [value]="1">Last 2Hours</mat-option>
-                <mat-option [value]="1">Last Hours</mat-option>
-            </mat-select>
-            </mat-form-field> -->
             <table cellpadding="0" cellspacing="0" border="0.5">
                 <thead>
                     <tr>
@@ -76,32 +64,17 @@
                     </tr>
                 </thead>
             
-                <tbody>
-                    <tr>
-                        <td>Pharmacy</td>
-                        <td>
-                            <div class="tbl-btn-red"><i class="fa fa-ban" aria-hidden="true"></i> Deactivate</div>
+                <tbody *ngIf="facilityModules > 0">
+                    <tr *ngFor="let module of facilityModules">
+                        <td>{{module?.name}}</td>
+                        <td class="th-act">
+                            <button class="tbl-btn-red" *ngIf="module.canDisable==true" (click)="onDeactive(module)"><i class="fa fa-ban" aria-hidden="true"></i> {{module.status}}</button>
                         </td>
                     </tr>
+                </tbody>
+                <tbody *ngIf="facilityModules == 0">
                     <tr>
-                        <td>Laboratory</td>
-                        <td>
-                            <div class="tbl-btn-red"><i class="fa fa-ban" aria-hidden="true"></i> Deactivate</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Store</td>
-                        <td>
-                            <div class="tbl-btn-red"><i class="fa fa-ban" aria-hidden="true"></i> Deactivate</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Radiology
-                        </td>
-                        <td>
-                            <div class="tbl-btn-red"><i class="fa fa-ban" aria-hidden="true"></i> Deactivate</div>
-                        </td>
+                        <td class="table-content" colspan="6" style="text-align: center "> No data available in table</td>
                     </tr>
                 </tbody>
             </table>
@@ -109,18 +82,6 @@
 
         <div class="card-tbl shadow-grey tbl-inactive">
             <div class="card-title">Inactive Modules</div>
-            <!-- <mat-form-field>
-            <mat-select placeholder="Time Interval" [formControl]="outInterval">
-                <mat-option [value]="1">Last 48Hours</mat-option>
-                <mat-option [value]="1">Last 24Hours</mat-option>
-                <mat-option [value]="1">Last 18Hours</mat-option>
-                <mat-option [value]="1">Last 12Hours</mat-option>
-                <mat-option [value]="1">Last 6Hours</mat-option>
-                <mat-option [value]="1">Last 4Hours</mat-option>
-                <mat-option [value]="1">Last 2Hours</mat-option>
-                <mat-option [value]="1">Last Hours</mat-option>
-            </mat-select>
-            </mat-form-field> -->
             <table cellpadding="0" cellspacing="0" border="0.5">
                 <thead>
                     <tr>
@@ -129,38 +90,19 @@
                     </tr>
                 </thead>
             
-                <tbody>
+                <tbody *ngIf="systemModules.length > 0">
                     <tr *ngFor="let module of systemModules">
                         <td>
-                            {{modules.name}}
+                            {{module.name}}
                         </td>
                         <td>
-                            <div class="tbl-btn-green"><i class="fa fa-check" aria-hidden="true" (click)="activate(modules._id)"></i> Activate</div>
+                            <div class="tbl-btn-green" (click)="onActive(module)"><i class="fa fa-check" aria-hidden="true"></i> Activate</div>
                         </td>
                     </tr>
+                </tbody>
+                <tbody *ngIf="systemModules.length == 0">
                     <tr>
-                        <td>
-                            Telemedicine
-                        </td>
-                        <td>
-                            <div class="tbl-btn-green"><i class="fa fa-check" aria-hidden="true"></i> Activate</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Payment
-                        </td>
-                        <td>
-                            <div class="tbl-btn-green"><i class="fa fa-check" aria-hidden="true"></i> Activate</div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            Payment
-                        </td>
-                        <td>
-                            <div class="tbl-btn-green"><i class="fa fa-check" aria-hidden="true"></i> Activate</div>
-                        </td>
+                        <td class="table-content" colspan="6" style="text-align: center "> No data available in table</td>
                     </tr>
                 </tbody>
             </table>

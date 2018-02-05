@@ -1,4 +1,154 @@
-<div class="pgWrapper">
+<!-- <ul class="pg-menuWrap">
+    <li (click)="changeRoute('service')" [class.pg-menuActive]="">
+        <i class="fa fa-home" aria-hidden="true"></i> Services</li>
+    <li (click)="changeRoute('Price List')" [class.pg-menuActive]="">
+        <i class="fa fa-file-text-o" aria-hidden="true"></i> Price List</li>
+    <li (click)="changeRoute('payment')" [class.pg-menuActive]=" ">
+        <li [routerLink]="['/dashboard/payment/bill']"><i class="fa fa-money" aria-hidden="true"></i> Payment</li>
+</ul>-->
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-4 col-xs-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row" *ngIf="!searchShowc">
+                        <div class="col-xs-10">
+                            Category
+                        </div>
+                        <div class="col-xs-1">
+                            <i (click)="newCategoryPopup_show()" class="fa fa-plus fa-fw"></i>
+                            <div *ngIf="newCategoryPopup" class="modal-overlay">
+                                <app-new-category [selectedCategory]='selectedCategory' (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-category>
+                            </div>
+                        </div>
+                        <div class="col-xs-1">
+                            <i (click)="showSearchc()" class="fa fa-search fa-fw"></i>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="searchShowc">
+                        <div class="col-xs-11">
+                            <input type="text" placeholder="Search..." class="card-header-box">
+                        </div>
+                        <div class="col-xs-1">
+                            <i (click)="closeSearchc()" class="fa fa-close fa-fw"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-content scrollable">
+                    <div class="card-list-item ">
+                        <div class="row">
+                            <div class="col-xs-10">
+                                fsjlfsf
+                            </div>
+                            <div class="col-xs-1 options">
+                                <i class="fa fa-edit blue-text fa-fw"></i>
+                            </div>
+                            <div class="col-xs-1 options">
+                                <i class="fa fa-trash red-text fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-list-item">
+                        <div class="row">
+                            <div class="col-xs-10">
+                                fsjlfsf
+                            </div>
+                            <div class="col-xs-1 options">
+                                <i class="fa fa-edit fa-fw"></i>
+                            </div>
+                            <div class="col-xs-1 options">
+                                <i class="fa fa-trash fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-list-item ">
+                        <div class="row">
+                            <div class="col-xs-10">
+                                fsjlfsf
+                            </div>
+                            <div class="col-xs-1 options">
+                                <i class="fa fa-edit fa-fw"></i>
+                            </div>
+                            <div class="col-xs-1 options">
+                                <i class="fa fa-trash fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-list-item active">
+                        <div class="row">
+                            <div class="col-xs-10">
+                                fsjlfsf
+                            </div>
+                            <div class="col-xs-1 options">
+                                <i class="fa fa-edit fa-fw"></i>
+                            </div>
+                            <div class="col-xs-1 options">
+                                <i class="fa fa-trash fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-list-item">
+                        <div class="row">
+                            <div class="col-xs-10">
+                                fsjlfsf
+                            </div>
+                            <div class="col-xs-1 options">
+                                <i class="fa fa-edit fa-fw"></i>
+                            </div>
+                            <div class="col-xs-1 options">
+                                <i class="fa fa-trash fa-fw"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8 col-xs-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="row" *ngIf="!searchShow">
+                        <div class="col-xs-10">
+                            Service
+                        </div>
+                        <div class="col-xs-1">
+                            <i (click)="newServicePopup_show()" class="fa fa-plus fa-fw"></i>
+                            <div *ngIf="newServicePopup" class="modal-overlay">
+                                <app-new-service [selectedService]="selectedService" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-service>
+                            </div>
+                        </div>
+                        <div class="col-xs-1">
+                            <i (click)="showSearch()" class="fa fa-search fa-fw"></i>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="searchShow">
+                        <div class="col-xs-11">
+                            <input type="text" placeholder="Search..." class="card-header-box">
+                        </div>
+                        <div class="col-xs-1">
+                            <i (click)="closeSearch()" class="fa fa-close fa-fw"></i>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="card-list-item">
+                        <div class="row">
+                            <div class="col-xs-6">Kidney Examination</div>
+                            <div class="col-xs-4">Service Code | 002W</div>
+                            <div class="col-xs-1 options"><i class="fa fa-edit blue-text"></i></div>
+                            <div class="col-xs-1 options"><i class="fa fa-trash red-text"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- <div class="pgWrapper">
 
     <div class="service">
         <div class="tblWrap">
@@ -76,8 +226,5 @@
         <app-new-category [selectedCategory]='selectedCategory' (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-category>
     </div>
 
-    <!--<div *ngIf="newTagPopup" class="modal-overlay">
-    <app-new-tag (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-tag>
-  </div>-->
 
-</div>
+</div> -->

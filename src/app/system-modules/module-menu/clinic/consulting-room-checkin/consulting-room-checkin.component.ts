@@ -1,7 +1,8 @@
+import { AuthFacadeService } from './../../../service-facade/auth-facade.service';
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ConsultingRoomService, EmployeeService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
-import { ConsultingRoomModel, Employee, User } from '../../../../models/index';
+import { ConsultingRoomModel, Employee, User, Facility } from '../../../../models/index';
 import { ClinicHelperService } from '../services/clinic-helper.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 
@@ -28,17 +29,34 @@ export class ConsultingRoomCheckinComponent implements OnInit {
     public facilityService: FacilitiesService,
     private consultingRoomService: ConsultingRoomService,
     private employeeService: EmployeeService,
+    private authFacadeService: AuthFacadeService,
     private locker: CoolLocalStorage
   ) { }
 
   ngOnInit() {
-    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
-    this.user = <User>this.locker.getObject('auth');
-    this.loginEmployee.workSpaces.forEach(work => {
-      work.locations.forEach(loc => {
-        this.locations.push(loc.minorLocationId);
+    let selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+      this.user = <User>this.locker.getObject('auth');
+      // this.loginEmployee.workSpaces.forEach(work => {
+      //   work.locations.forEach(loc => {
+      //     this.locations.push(loc.minorLocationId);
+      //   })
+      // })
+      let minorLocations = selectedFacility.minorLocations;
+      let locations = this.loginEmployee.workSpaces.map(m => m.locations);
+      console.log(locations);
+      let locationIds = [];
+      locations.forEach(location =>{
+        (location.map(m =>m.minorLocationId)).forEach(p =>{
+          locationIds.push(p);
+        })
       })
-    })
+      // let locationIds = locations.map(m=>m.minorLocationId);
+      console.log(locationIds);
+      this.locations = minorLocations.filter(x => locationIds.includes(x._id));
+    });
+
     this.roomCheckin = this.formBuilder.group({
       location: ['', [<any>Validators.required]],
       room: ['', [<any>Validators.required]],
@@ -118,9 +136,9 @@ export class ConsultingRoomCheckinComponent implements OnInit {
   // Notification
   private _notification(type: String, text: String): void {
     this.facilityService.announceNotification({
-        users: [this.user._id],
-        type: type,
-        text: text
+      users: [this.user._id],
+      type: type,
+      text: text
     });
-}
+  }
 }

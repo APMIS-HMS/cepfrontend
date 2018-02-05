@@ -192,7 +192,7 @@
                     </mat-input-container>
                 </div>
     
-                <div class="frm-item-wrap">
+                <!-- <div class="frm-item-wrap">
                     <mat-form-field class="example-full-width">
                         <mat-select placeholder="Security Questions" formControlName="securityQuestion">
                             <mat-option *ngFor="let item of securityQuestions" [value]="item.name">{{item.name}}</mat-option>
@@ -203,18 +203,17 @@
                     <mat-input-container class="example-full-width">
                         <input matInput mat-error placeholder="Security Question's Answer" formControlName="securityAnswer">
                     </mat-input-container>
-                </div>
+                </div> -->
                 <div class="clear"></div>
     
                 <button [disabled]="(!frmPerson.valid && !isSaving) || isSaving || validatingPerson()" (click)="submit(frmPerson.valid, frmPerson.value)" [ngClass]="{'cta-1':(frmPerson.valid && !isSaving && !validatingPerson()), 'cta-1-disable':(!frmPerson.valid && !isSaving) || isSaving || validatingPerson()}">
                     Register
                     <i *ngIf="isSaving" class="fa fa-spinner fa-spin fa-2x"></i>
                 </button>
-                <button (click)="clickMe()">Click</button>
             </form>
         </div>
 
-        <div *ngIf="frmNewPerson1_showzz">
+        <div *ngIf="false">
             <form [formGroup]="frmNewEmp1" novalidate>
                 <div class="lhs">
                     <div class="frm-item-wrap">

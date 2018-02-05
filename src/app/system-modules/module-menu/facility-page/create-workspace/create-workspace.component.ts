@@ -45,9 +45,12 @@ export class CreateWorkspaceComponent implements OnInit {
     private employeeService: EmployeeService,
     private workspaceService: WorkSpaceService,
     private systemModuleService: SystemModuleService,
-    public facilityService: FacilitiesService) { }
+    public facilityService: FacilitiesService) {
+      console.log(this.selectedEmployee);
+     }
 
   ngOnInit() {
+    console.log(this.selectedEmployee);
     this.frmNewEmp1 = this.formBuilder.group({
       dept: ['', [Validators.required]],
       unit: ['', [Validators.required]],
@@ -63,6 +66,7 @@ export class CreateWorkspaceComponent implements OnInit {
       this.filteredEmployees = [];
     });
     this.frmNewEmp1.controls['unit'].valueChanges.subscribe((value: any) => {
+      console.log(value);
       this.selectedUnit = value;
 
       if (this.selectedEmployee === undefined) {
@@ -78,6 +82,7 @@ export class CreateWorkspaceComponent implements OnInit {
       this.filteredEmployees = this.employees;
     });
     this.frmNewEmp1.controls['minorLoc'].valueChanges.subscribe((value) => {
+      console.log(value);
       this.selectedMinorLocation = value;
       this.getWorkSpace();
     });
@@ -168,14 +173,14 @@ export class CreateWorkspaceComponent implements OnInit {
           query:
             {
               facilityId: this.selectedFacility._id,
-              'locations.minorLocationId._id': minorLocationId, $limit: 100
+              'locations.minorLocationId': minorLocationId, $limit: 100
             }
         }).then(payload => {
           const filteredEmployee: Employee[] = [];
           this.filteredEmployees.forEach((emp, i) => {
             let workInSpace = false;
             payload.data.forEach((work, j) => {
-              if (work.employeeId._id === emp._id) {
+              if (work.employeeId === emp._id) {
                 workInSpace = true;
               }
             });
@@ -185,6 +190,44 @@ export class CreateWorkspaceComponent implements OnInit {
           });
           this.filteredEmployees = filteredEmployee;
           this.loadIndicatorVisible = false;
+        }, error => {
+          this.loadIndicatorVisible = false;
+        });
+      } else {
+        this.workSpaces = [];
+        this.loadIndicatorVisible = false;
+      }
+    } else {
+      console.log(222);
+      const minorLocationId = this.frmNewEmp1.controls['minorLoc'].value._id;
+      if (minorLocationId !== undefined) {
+        this.loadIndicatorVisible = true;
+        this.workspaceService.find({
+          query:
+            {
+              facilityId: this.selectedFacility._id,
+              employeeId: this.selectedEmployee._id,
+              'locations.minorLocationId': minorLocationId, $limit: 100
+            }
+        }).then(payload => {
+          if (payload.data.length > 0) {
+            const filteredEmployee: Employee[] = [];
+            this.filteredEmployees.forEach((emp, i) => {
+              let workInSpace = false;
+              payload.data.forEach((work, j) => {
+                if (work.employeeId === emp._id) {
+                  workInSpace = true;
+                }
+              });
+              if (!workInSpace) {
+                filteredEmployee.push(emp);
+              }
+            });
+            this.filteredEmployees = filteredEmployee;
+            this.loadIndicatorVisible = false;
+          } else {
+            this.filteredEmployees = this.employees;
+          }
         }, error => {
           this.loadIndicatorVisible = false;
         });
@@ -225,8 +268,10 @@ export class CreateWorkspaceComponent implements OnInit {
       this.workspaceService.assignworkspace(body).then(payload =>{
         this.getWorkSpace();
         this.systemModuleService.off();
+        this.systemModuleService.announceSweetProxy('Workspace successfully set!', 'success');
       }, error =>{
         this.systemModuleService.off();
+        this.systemModuleService.announceSweetProxy('There was an error while saving the workspace', 'error');
       });
     } else {
       this.mainErr = false;

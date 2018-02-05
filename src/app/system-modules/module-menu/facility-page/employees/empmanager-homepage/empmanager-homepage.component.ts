@@ -25,7 +25,7 @@ export class EmpmanagerHomepageComponent implements OnInit, OnDestroy, OnChanges
   pageSize = 1;
   index:any = 0;
   inde:any = [];
-  limit = 2;
+  limit = 10;
   total = 0;
   showLoadMore: Boolean = false;
   loadIndicatorVisible = false;
@@ -36,10 +36,14 @@ export class EmpmanagerHomepageComponent implements OnInit, OnDestroy, OnChanges
     private router: Router, private route: ActivatedRoute, private systemService:SystemModuleService) {
     this.employeeService.listner.subscribe(payload => {
       console.log(1)
+      this.employees = [];
       this.getEmployees(this.limit, true);
     });
     this.employeeService.createListener.subscribe(payload => {
       console.log(2)
+      this.employees = [];
+      this.limit = 10;
+      this.index = 0;
       this.getEmployees(this.limit, true);
     });
 

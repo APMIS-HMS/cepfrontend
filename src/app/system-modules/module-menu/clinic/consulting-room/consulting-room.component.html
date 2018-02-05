@@ -6,7 +6,7 @@
                 <div class="frmitemwrap">
                     <mat-form-field>
                         <mat-select placeholder="Location" [formControl]="locationTypeControl">
-                            <mat-option *ngFor="let cliniclocation of clinicLocations" [value]="cliniclocation">{{ cliniclocation.name }}</mat-option>
+                            <mat-option *ngFor="let cliniclocation of clinicLocations" [value]="cliniclocation.name">{{ cliniclocation.name }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
@@ -65,7 +65,7 @@
                 </div>
             </li>
             <li (click)="onSelectSchedulerManager(manager)" *ngFor="let manager of roomManager" class="li-itemWrap">
-                <div class="li-Item">{{manager.minorLocationDetails.name}}</div>
+                <div class="li-Item">{{manager.minorLocationId}}</div>
                 <div class="li-Item-group">
                     <div class="group-wrap" *ngFor="let room of manager.rooms">
                         <div class="group-Item">{{room.name}}</div>

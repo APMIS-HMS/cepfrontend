@@ -16,7 +16,9 @@ export class FacilitiesService {
   private _rest;
   private _restLogin;
   private _socketAddNetwork;
+  private _socketModule;
   private _socketJoinNetwork;
+  private _socketSearchNetwork;
 
   private sliderAnnouncedSource = new Subject<Object>();
   sliderAnnounced$ = this.sliderAnnouncedSource.asObservable();
@@ -40,6 +42,8 @@ export class FacilitiesService {
     this.patchListner = Observable.fromEvent(this._socket, 'patched');
     this._socketAddNetwork = _socketService.getService('add-networks');
     this._socketJoinNetwork = _socketService.getService('join-network');
+    this._socketModule = _socketService.getService('custom-facility-modules');
+    this._socketSearchNetwork = _socketService.getService('search-network-facilities');
     // client.service('messages').on('created', addMessage);
 
   }
@@ -189,15 +193,12 @@ export class FacilitiesService {
     });
   }
 
-  joinNetwork(facility: any, isDelete) {
-    let that = this;
-    return new Promise(function (resolve, reject) {
-      resolve(that._socketJoinNetwork.create(facility, {
-        query: {
-          'isdelete': isDelete
-        }
-      }))
-    });
+  joinNetwork(facility: any, isDelete:boolean) {
+    return this._socketJoinNetwork.create(facility, {
+      query: {
+        'isdelete': isDelete
+      }
+    })
   }
 
   getNetwork(fac, isMemberOf) {
@@ -208,4 +209,15 @@ export class FacilitiesService {
     })
   }
 
+  getModule(id, query) {
+    return this._socketModule.get(id, query);
+  }
+
+  createModule(facility: any, param: any) {
+    return this._socketModule.create(facility, param);
+  }
+
+  searchNetworks(id: string, query: any) {
+    return this._socketSearchNetwork.get(id, query);
+  }
 }

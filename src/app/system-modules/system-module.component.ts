@@ -55,7 +55,6 @@ export class SystemModuleComponent implements OnInit {
     });
 
     this.employeeService.checkInAnnounced$.subscribe(payload => {
-      console.log(payload);
       this.checkedInObject = payload;
     });
     let auth: any = this.locker.getObject('auth');
@@ -63,9 +62,7 @@ export class SystemModuleComponent implements OnInit {
     this.personService.get(authData.personId, {}).then(ppayload => {
       this.selectedPerson = ppayload;
     });
-    // this.employeeService.checkInAnnounced$.subscribe(payload => {
-    //   this.checkedInObject = payload;
-    // });
+
     this.personService.updateListener.subscribe((payload: Person) => {
       auth = this.locker.getObject('auth');
       authData = auth.data;

@@ -1,8 +1,10 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FacilitiesService, FacilityModuleService } from '../../../../services/facility-manager/setup/index';
 import { FacilityModule, Facility } from '../../../../models/index';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ActivatedRoute } from '@angular/router';
+
 @Component({
   selector: 'app-facilitypage-modulespage',
   templateUrl: './facilitypage-modulespage.component.html',
@@ -15,16 +17,21 @@ export class FacilitypageModulespageComponent implements OnInit {
   allModulesShow = true;
   integratedModulesShow = false;
   unintegratedModulesShow = false;
-
-  systemModules: FacilityModule[] = [];
-  facilityModules: FacilityModule[] = [];
+  facility: any = <any>{};
+  systemModules: any[] = [];
+  facilityModules: any[] = [];
+  idToRemove: any = <any>{}
   constructor(private facilityModuleService: FacilityModuleService,
     private locker: CoolLocalStorage,
     private route: ActivatedRoute,
+    private systemModuleService: SystemModuleService,
     public facilityService: FacilitiesService) { }
 
   ngOnInit() {
     this.pageInView.emit('Facility Modules');
+    this.facility = this.locker.getObject('selectedFacility');
+    this.getFacility();
+    this.getModules();
     /* this.route.data.subscribe(data => {
       console.log(data);
       data['systemModules'].subscribe((payload: any[]) => {
@@ -45,20 +52,37 @@ export class FacilitypageModulespageComponent implements OnInit {
     return false;
   }
   getModules() {
-    this.facilityModuleService.findAll().then((payload) => {
-      this.systemModules = payload.data;
+    this.systemModuleService.on;
+    this.facilityService.getModule(this.facility._id, {
+      query: {
+        isAll: true
+      }
+    }).then((payload) => {
+      console.log(payload);
+      this.systemModuleService.off;
+      this.systemModules = payload;
+    }, err => {
+      this.systemModuleService.off;
     });
   }
   getFacility() {
-    let tokenObj: any = this.locker.getObject('auth');
-    this.facilityService.get(tokenObj.data.facilitiesRole[0].facilityId, {}).then((payload) => {
-      this.facilityModules = payload.facilityModules;
-    },
-      error => {
-      })
+    this.systemModuleService.on;
+    this.facilityService.getModule(this.facility._id, {
+      query: {
+        isAll: false
+      }
+    }).then((payload) => {
+      console.log(payload);
+      this.systemModuleService.off;
+      if (payload.facilitymoduleId.length > 0) {
+        this.facilityModules = payload.facilitymoduleId;
+      }
+    }, error => {
+      this.systemModuleService.off;
+    })
   }
 
-  activate(id){
+  activate(id) {
     let facility = <any>this.locker.getObject("selectedFacility");
     facility.facilityModulesId.push(id);
 
@@ -69,16 +93,49 @@ export class FacilitypageModulespageComponent implements OnInit {
 
   }
 
-  deactivate(id){
-    let facility = <any>this.locker.getObject("selectedFacility");
-    let ind = facility.facilityModulesId.indexOf(id.toString());
-
-    facility.facilityModulesId.splice(ind, 1);
-    this.facilityService.update(facility).then(payload => {
+  deactivate(id) {
+    
+  }
+  
+  onActive(value) {
+    this.facilityService.createModule({}, {
+      query: {
+        isRemove: false,
+        moduleId: value._id,
+        facilityId: this.facility._id
+      }
+    }).then((payload) => {
+      console.log(payload);
       this.getModules();
       this.getFacility();
-    });
+    }, error => {
+      console.log(error);
+    })
+  }
 
+  onDeactive(value) {
+    this.systemModuleService.on;
+    this.idToRemove = value;
+    this.systemModuleService.announceSweetProxy('Are you sure you want to deactive this module', 'question', this);
+  }
+
+  sweetAlertCallback(result) {
+    if (result.value) {
+      this.facilityService.createModule({}, {
+        query: {
+          isRemove: true,
+          moduleId: this.idToRemove._id,
+          facilityId: this.facility._id
+        }
+      }).then((payload) => {
+        console.log(payload);
+        this.getModules();
+        this.getFacility();
+        this.idToRemove=<any>{};
+      }, error => {
+        console.log(error);
+      })
+    }
   }
 
   allModuleTab() {

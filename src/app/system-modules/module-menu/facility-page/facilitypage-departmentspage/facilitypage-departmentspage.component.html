@@ -10,7 +10,7 @@
                         <i [hidden]="showUnit_selectedDepartmentUnit(dept)" (click)="showUnit_click(dept)" class="fa fa-expand" aria-hidden="true"></i>
                         <i *ngIf="showUnit_selectedDepartmentUnit(dept)" (click)="showUnit_hide(dept)" class="fa fa-compress" aria-hidden="true"></i>
                         <i (click)="newUnit_onClick(dept)" class="fa fa-plus" aria-hidden="true"></i>
-                        <i (click)="newDept_onClick()" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        <i (click)="editDept_onClick(dept)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
                         <i (click)="deptDetalContentArea_remove(dept)" class="fa fa-trash-o" aria-hidden="true"></i>
                     </div>
                 </div> 
@@ -36,7 +36,7 @@
                                 </tr>
                             </thead>
             
-                            <tbody>
+                            <tbody *ngIf="dept.units.length > 0">
                                 <tr *ngFor="let unit of dept.units">
                                     <td> {{unit.name}}</td>
                                     <td>{{unit.shortName}}</td>
@@ -70,9 +70,14 @@
                                     <td class="action-icons">
                                         <i (click)="editUnit_onClick(dept, unit)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                         <!--<i *ngIf="unitEditNameIcoShow" (click)="unitEditNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>-->
-                                        <i class="fa fa-trash" aria-hidden="true"></i>
+                                        <i (click)="remove(dept, unit)" class="fa fa-trash" aria-hidden="true"></i>
                                     </td>
                                 </tr> 
+                            </tbody>
+                            <tbody *ngIf="dept.units.length == 0">
+                                <tr>
+                                    <td class="table-content" colspan="6" style="text-align: center "> No data available in table</td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -88,7 +93,7 @@
 </div>
 
 <div *ngIf="newDept" class="modal-overlay">
-    <app-new-department (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-department>
+    <app-new-department [selectedDepartment]="selectedDepartment" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-department>
 </div>
 <div *ngIf="newUnit" class="modal-overlay">
     <app-new-unit [department]="selectedDepartment" (closeModal)="close_onClick($event)" [unit]="selectedUnit" id="form-modal" class="form-modal center-center"></app-new-unit>

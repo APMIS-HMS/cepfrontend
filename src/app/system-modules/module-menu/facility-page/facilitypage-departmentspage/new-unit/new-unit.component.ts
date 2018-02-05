@@ -1,3 +1,4 @@
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { FacilitiesService } from '../../../../../services/facility-manager/setup/index';
@@ -28,6 +29,7 @@ export class NewUnitComponent implements OnInit {
   clinicsToDelele: any[] = [];
   constructor(private formBuilder: FormBuilder,
     private locker: CoolLocalStorage,
+    private systemModuleService: SystemModuleService,
     public facilityService: FacilitiesService) { }
 
   ngOnInit() {
@@ -43,16 +45,16 @@ export class NewUnitComponent implements OnInit {
     });
     this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
     this.deptsObj = this.facilityObj.departments;
-    if(this.department !== undefined){
+    if (this.department !== undefined) {
       this.frmNewUnit.controls['unitParent'].setValue(this.department._id);
     }
-    if(this.unit !== undefined){
+    if (this.unit !== undefined) {
       this.frmNewUnit.controls['unitName'].setValue(this.unit.name);
       this.frmNewUnit.controls['unitAlias'].setValue(this.unit.shortName);
       // this.frmNewUnit.controls['unitDesc'].setValue(this.unit.description);
       this.frmNewUnit.controls['_id'].setValue(this.unit._id);
     }
-    
+
 
 
 
@@ -128,7 +130,7 @@ export class NewUnitComponent implements OnInit {
 
         if (children != null) {
           children.value.readonly = true;
-          // children.disabled = true;
+          console.log(children);
           (<FormArray>this.clinicForm.controls['clinicArray'])
             .push(
             this.formBuilder.group({
@@ -149,6 +151,7 @@ export class NewUnitComponent implements OnInit {
     }
   }
   newUnit(valid, val) {
+    console.log(0);
     if (valid) {
       if (val.unitName === '' || val.unitName === ' ') {
         this.mainErr = false;
@@ -157,13 +160,19 @@ export class NewUnitComponent implements OnInit {
         if (this.unit === undefined) {
           const id = this.department._id;
           const clinics = (<FormArray>this.clinicForm.controls['clinicArray']).controls.filter((x: any) => x.value.readonly);
-        
+
+          console.log(clinics);
           const clinicList = [];
           clinics.forEach((itemi, i) => {
             clinicList.push(itemi.value);
           });
+          console.log(2);
+          console.log(clinicList);
           this.facilityObj.departments.forEach(function (item, i) {
+            console.log(item._id);
+            console.log(id);
             if (item._id === id) {
+              console.log('inini')
               item.units.push({
                 name: val.unitName,
                 shortName: val.unitAlias,
@@ -172,25 +181,37 @@ export class NewUnitComponent implements OnInit {
               });
             }
           });
+          console.log(3);
+          console.log(this.facilityObj)
           this.facilityService.update(this.facilityObj).then((payload) => {
+            console.log(4);
             this.facilityObj = payload;
             this.frmNewUnit.controls['isClinic'].reset(false);
             this.clinicForm.controls['clinicArray'] = this.formBuilder.array([]);
             this.frmNewUnit.reset();
+            this.systemModuleService.announceSweetProxy('Unit saved successfully', 'success');
+            this.closeModal.emit(true);
+          },eror =>{
+            this.systemModuleService.announceSweetProxy('There was an eror saving the unit', 'error');
           })
 
           this.mainErr = true;
         } else {
+          console.log(5);
           let that = this;
           const clinicList = [];
           this.facilityObj.departments.forEach(function (item, i) {
             if (item._id === val.unitParent) {
+              console.log(6);
               item.units.forEach((unit, u) => {
+                console.log('6b');
+                console.log(unit);
+                console.log(val);
                 if (unit._id === val._id) {
                   unit.name = val.unitName;
                   unit.shortName = val.unitAlias;
                   unit.description = val.unitDesc;
-
+                  console.log(7);
                   (<FormArray>that.clinicForm.controls['clinicArray'])
                     .controls.forEach((itemi: any, i) => {
                       let isExisting = false;
@@ -206,10 +227,15 @@ export class NewUnitComponent implements OnInit {
                       }
                     })
                   let realClinics: any[] = [];
+                  console.log(8);
                   if (that.clinicsToDelele.length > 0) {
+                    console.log(9);
                     unit.clinics.forEach((clinic, k) => {
                       let shouldDelete = false;
                       that.clinicsToDelele.forEach((toDelete) => {
+                        console.log('am deleting');
+                        console.log(clinic);
+                        console.log(toDelete);
                         if (clinic._id === toDelete._id) {
                           shouldDelete = true;
                         }
@@ -228,15 +254,21 @@ export class NewUnitComponent implements OnInit {
             }
           });
 
-
+          console.log(12);
           //update here
           this.facilityService.update(this.facilityObj).then((payload) => {
+            console.log(13);
             this.facilityObj = payload;
             this.frmNewUnit.controls['isClinic'].reset(false);
             this.clinicForm.controls['clinicArray'] = this.formBuilder.array([]);
             this.frmNewUnit.reset();
             this.close_onClick();
-          })
+            this.closeModal.emit(true);
+            this.systemModuleService.announceSweetProxy('Unit saved successfully', 'success');
+          }, err => {
+            console.log(4);
+            this.systemModuleService.announceSweetProxy('There was an error saving the unit, try again', 'error');
+          });
 
 
         }

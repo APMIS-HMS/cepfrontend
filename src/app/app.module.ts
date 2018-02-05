@@ -1,3 +1,4 @@
+import { AuthFacadeService } from './system-modules/service-facade/auth-facade.service';
 import { TitleCasePipe } from '@angular/common';
 import { SecurityQuestionsService } from './services/facility-manager/setup/security-questions.service';
 import { CountryServiceFacadeService } from './system-modules/service-facade/country-service-facade.service';
@@ -91,7 +92,7 @@ import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
       customClass: 'modal-content',
       confirmButtonClass: 'btn btn-primary',
       cancelButtonClass: 'btn'
-  })
+    })
     // PdfViewerModule
   ],
   providers: [
@@ -123,12 +124,12 @@ import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
     SetupService.InventoryInitialiserService, SetupService.SmsAlertService, SetupService.MakePaymentService, SystemModuleService,
     SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService, SetupService.LocSummaryCashService,
     CountryServiceFacadeService, TitleGenderFacadeService, FacilityFacadeService, UserFacadeService,
-    SetupService.InventoryInitialiserService, SetupService.SmsAlertService,SetupService.MakePaymentService, SystemModuleService,
-    SetupService.SearchInvoicesService,SetupService.PendingBillService,SetupService.TodayInvoiceService,SetupService.LocSummaryCashService,
+    SetupService.InventoryInitialiserService, SetupService.SmsAlertService, SetupService.MakePaymentService, SystemModuleService,
+    SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService, SetupService.LocSummaryCashService,
     SetupService.TimeLineService, FacilityTypeFacilityClassFacadeService, JoinChannelService, SetupService.DocumentUploadService, RadiologyInvestigationService,
     SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService,
-    SetupService.LocSummaryCashService,SetupService.TimeLineService, SetupService.DocumentUploadService, RadiologyInvestigationService,
-    SetupService.FluidService, SecurityQuestionsService,TitleCasePipe
+    SetupService.LocSummaryCashService, SetupService.TimeLineService, SetupService.DocumentUploadService, RadiologyInvestigationService,
+    SetupService.FluidService, SecurityQuestionsService, TitleCasePipe, AuthFacadeService, SetupService.DepartmentService
   ],
   bootstrap: [AppComponent]
 })

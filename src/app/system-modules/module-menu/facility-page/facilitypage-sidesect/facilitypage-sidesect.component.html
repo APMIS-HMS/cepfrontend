@@ -33,7 +33,7 @@
 
 <div class="pp-card shadow-grey">
 
-    <i (click)="editBasicInfo_onClick()" class="fa fa-pencil-square-o card-edit" aria-hidden="true"></i>
+    <i (click)="changeRoute('network')" class="fa fa-pencil-square-o card-edit" aria-hidden="true"></i>
 
     <!-- <div *ngIf="selectedFacility.isNetworkFacility" class="facility-count-sect card-seperator clickable-sect"> -->
     <div class="facility-count-sect card-seperator">
@@ -42,7 +42,7 @@
                 <div *ngIf="selectedFacility.isNetworkFacility" class="isnetwork">NETWORK</div>
                 <div *ngIf="selectedFacility.isNetworkFacility" class="network-membership">HOST</div>
             </div>
-            <div class="facility-count">{{selectedFacility.memberFacilities.length}}</div>
+            <div class="facility-count">{{(selectedFacility.memberFacilities) ? selectedFacility.memberFacilities.length : '0'}}</div>
             <div class="count-label">Facilities In Network</div>
             <div class="head-tag">HOST</div>
             <div class="oda-nets-link">

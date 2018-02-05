@@ -107,6 +107,7 @@ export class UserAccountsComponent implements OnInit {
         
       }
       this.locker.setObject('selectedFacility', this.selectedFacility);
+      this.locker.setObject('fac',this.selectedFacility._id);
       this.logoutConfirm_on = false;
     })
 

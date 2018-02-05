@@ -7,6 +7,7 @@ import {
 import { Facility, WardDetail, Room, WardRoom, User } from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
 	selector: 'app-add-room',
@@ -31,8 +32,13 @@ export class AddRoomComponent implements OnInit {
 	serviceId: any = <any>{};
 	groups: any[] = [];
 	errMsg = 'You have unresolved errors';
-	addRoomBtnText: String = '<i class="fa fa-plus"></i> Add Room';
+	addRoom: boolean = true;
+	addingRoom: boolean = false;
+	editRoom: boolean = false;
+	editingRoom: boolean = false;
 	disableAddRoomBtn: boolean = false;
+  serviceLoading: boolean = true;
+  groupLoading: boolean = true;
 
 	constructor(
 		private _route: ActivatedRoute,
@@ -43,6 +49,7 @@ export class AddRoomComponent implements OnInit {
 		private _locker: CoolLocalStorage,
     private fb: FormBuilder,
     private _facilityPrice: FacilityPriceService,
+    private _systemModuleService: SystemModuleService,
 		private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService) {
 
 	}
@@ -56,7 +63,8 @@ export class AddRoomComponent implements OnInit {
 		this.addRoomFormGroup = this.fb.group({
 			room: ['', [<any>Validators.required]],
 			group: ['', [<any>Validators.required]],
-			service: ['', [<any>Validators.required]]
+			service: ['', [<any>Validators.required]],
+			desc: ['']
 		});
 
 		this._route.params.subscribe(params => {
@@ -70,109 +78,100 @@ export class AddRoomComponent implements OnInit {
 			if (!!this.selectedRoom) {
 				if (this.groups.length > 0 && this.servicePriceTags.length > 0) {
 					this.addRoomFormGroup.controls['room'].setValue(this.selectedRoom.name);
-					this.addRoomFormGroup.controls['group'].setValue(this.selectedRoom.groupId);
-					this.addRoomFormGroup.controls['service'].setValue(this.selectedRoom.serviceId);
+					this.addRoomFormGroup.controls['group'].setValue(this.selectedRoom.group);
+					this.addRoomFormGroup.controls['service'].setValue(this.selectedRoom.service);
+					this.addRoomFormGroup.controls['desc'].setValue(this.selectedRoom.description);
 					this.serviceId = this.selectedRoom.serviceId;
-          this.addRoomBtnText = 'Edit Room';
-          this.disableAddRoomBtn = true;
+          this.editRoom = true;
+          this.addRoom = false;
+          this.disableAddRoomBtn = false;
 				}
 			}
 		}, 2000);
+  }
 
-		// this.addRoomFormGroup.controls['service'].valueChanges.subscribe(val => {
-		// 	this.noPrescriptionForm.controls['product'].setValue(event.srcElement.innerText);
-		// 	this.selectedProductId = drugId.getAttribute('data-p-id');
-		// });
-	}
+  compareGroup(l1: any, l2: any) {
+    return l1._id === l2.groupId;
+  }
+
+  compareService(l1: any, l2: any) {
+    return l1._id === l2.serviceId;
+  }
 
 	getWaitGroupItems() {
 		this._roomGroupService.findAll().then(res => {
+      this.groupLoading = false;
 			this.groups = res.data;
 		});
 	}
 
-	getServicePriceTag() {
-		this._facilitiesServiceCategoryService.find({query: {
-      facilityId: this.facility._id,
-    }}).then(res => {
-			if (res.data.length > 0) {
-        const category = res.data[0].categories.filter(x => x.name === 'Ward');
-        if (category.length > 0) {
-          const categoryId = category[0]._id;
-          this._facilityPrice.find({ query: {
-            facilityId: this.facility._id,
-          }}).then(data => {
-            this.servicePriceTags = data.data.filter(x => x.categoryId === categoryId);
-          });
-        }
-			}
-		}).catch(err => console.log(err));
+	async getServicePriceTag() {
+    const payload = { facilityId: this.facility._id };
+    const wardPrice = await this._facilitiesServiceCategoryService.wardRoomPrices(payload);
+    if (wardPrice.status === 'success' && wardPrice.data.length > 0) {
+      this.serviceLoading = false;
+      this.servicePriceTags = wardPrice.data;
+    }
   }
 
 	addroom(value: any, valid: boolean) {
 		if (valid) {
-			this.disableAddRoomBtn = true;
+      this.disableAddRoomBtn = true;
+      const payload = {
+        facilityId: this.facility._id,
+        action: (!!this.selectedRoom && !!this.selectedRoom._id) ? 'edit-room' : 'create-room',
+        name: value.room,
+        group: value.group,
+        service: value.service,
+        minorLocationId: this.wardId,
+        desc: value.desc,
+        roomId: (!!this.selectedRoom && !!this.selectedRoom._id) ? this.selectedRoom._id : undefined
+      };
+
       if (!!this.selectedRoom) {
-        this.addRoomBtnText = 'Editing Room... <i class="fa fa-spinner fa-spin"></i>';
-        this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
-          // Delete serviceId records that are not required.
-          delete value.service.modifiers;
-          delete value.service.serviceItem;
+        this.editRoom = false;
+        this.editingRoom = true;
 
-          if (res.data.length > 0) {
-              res.data[0].locations.forEach(item => {
-                if (item.minorLocationId._id === this.wardId) {
-                  item.rooms.forEach(roomItem => {
-                    if (roomItem._id === this.selectedRoom._id) {
-                      roomItem.serviceId = value.service;
-                      roomItem.name = value.room;
-                      roomItem.groupId = value.group;
-                    }
-                  });
-                }
-              });
-
-              this._wardAdmissionService.update(res.data[0]).then(updateRes => {
-              	const text = value.room + ' has been Updated successfully';
-              	this._notification('Success', text);
-              	this.addRoomBtnText = '<i class="fa fa-plus"></i> Add Room';
-              	this.disableAddRoomBtn = false;
-              	this.addRoomFormGroup.reset();
-              	this.closeModal.emit(true);
-              }).catch(err => console.log(err));
+        this._roomGroupService.wardSetup(payload).then(res => {
+          if (res.status === 'success') {
+            this.close_onClick();
+            this.addRoom = true;
+            this.addingRoom = false;
+            this.disableAddRoomBtn = true;
+            const text = `${value.room} room has been edited successfully!`;
+            this._systemModuleService.announceSweetProxy(text, 'success');
+          } else {
+            this.disableAddRoomBtn = false;
+            const text = `There was a problem editing ${value.room} room!`;
+            this._systemModuleService.announceSweetProxy(text, 'error');
           }
-        }).catch(err => console.log(err));
+        }).catch(err => {
+          console.log(err);
+        });
       } else {
-        this.addRoomBtnText = 'Adding Room... <i class="fa fa-spinner fa-spin"></i>';
-        this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
-          // Delete serviceId records that are not required.
-          delete value.service.modifiers;
-          delete value.service.serviceItem;
-          const room = {
-            name: value.room,
-            groupId: value.group,
-            serviceId: value.service
-          };
+        this.addRoom = false;
+        this.addingRoom = true;
 
-          if (res.data.length > 0) {
-              res.data[0].locations.forEach(item => {
-                if (item.minorLocationId._id === this.wardId) {
-                  item.rooms.push(room);
-                }
-              });
-
-              this._wardAdmissionService.update(res.data[0]).then(updateRes => {
-              	const text = value.room + ' has been added successfully';
-              	this._notification('Success', text);
-              	this.addRoomBtnText = '<i class="fa fa-plus"></i> Add Room';
-              	this.disableAddRoomBtn = false;
-              	this.addRoomFormGroup.reset();
-              	this.closeModal.emit(true);
-              }).catch(err => console.log(err));
+        this._roomGroupService.wardSetup(payload).then(res => {
+          if (res.status === 'success') {
+            this.close_onClick();
+            this.addRoom = true;
+            this.addingRoom = false;
+            this.disableAddRoomBtn = true;
+            const text = `${value.room} room has been created successfully!`;
+            this._systemModuleService.announceSweetProxy(text, 'success');
+          } else {
+            this.disableAddRoomBtn = false;
+            const text = `There was a problem trying to create ${value.room} room!`;
+            this._systemModuleService.announceSweetProxy(text, 'error');
           }
-        }).catch(err => console.log(err));
+        }).catch(err => {
+          console.log(err);
+        });
       }
-		}
+		} else {
+      this._notification('Error', 'Please fill required fields');
+    }
 	}
 
 	onChangeService(item, serviceId) {

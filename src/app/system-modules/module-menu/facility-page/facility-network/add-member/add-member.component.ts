@@ -58,15 +58,18 @@ export class AddMemberComponent implements OnInit {
       .distinctUntilChanged()
       .switchMap(value => this.searchEntries(value))
       .subscribe((por: any) => {
-        this.searchedFacilities = por.data;
-        this.searchedLength = por.data.length;
+        console.log(por);
+        this.searchedFacilities = por;
+        this.searchedLength = por.length;
+      },err=>{
+        console.log(err);
       })
   }
   searchEntries(value) {
     if (value.length < 3) {
       return Observable.of({ data: [] })
     }
-    return this.facilityService.find({ query: { name: { $regex: value, '$options': 'i' } } })
+    return this.facilityService.searchNetworks(this.LoggedInFacility._id, { query: { name: value, isMemberOf: false } });
   }
   close_onClick($event) {
     this.closeModal.emit(true);

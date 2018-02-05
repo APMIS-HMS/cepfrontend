@@ -1,3 +1,4 @@
+import { ChangePasswordComponent } from './../module-menu/change-password/change-password.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -15,6 +16,8 @@ import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
     declarations: [
         DashboardComponent,
         DashboardHomeComponent,
+        // SystemModuleComponent,
+        ChangePasswordComponent
     ],
     exports: [
     ],

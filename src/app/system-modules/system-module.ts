@@ -15,6 +15,7 @@ import { ChangePasswordComponent } from './module-menu/change-password/change-pa
   declarations: [
     // SystemModuleComponent,
     LogoutConfirmComponent
+    // ChangePasswordComponent,
   ],
   exports: [
   ],
@@ -22,7 +23,7 @@ import { ChangePasswordComponent } from './module-menu/change-password/change-pa
     // CommonModule,
     // ReactiveFormsModule,
     // FormsModule 
-    ChangePasswordComponent,
+
     LogOutConfirmModule,
     systemModulesRoutes,
     SharedModule,

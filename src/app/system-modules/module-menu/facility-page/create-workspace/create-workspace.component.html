@@ -23,7 +23,7 @@
                     <div class="frm-item-wrap">
                         <mat-form-field>
                             <mat-select formControlName="unit" placeholder="Unit" >
-                                <mat-option *ngFor="let unit of units" [value]="unit._id">
+                                <mat-option *ngFor="let unit of units" [value]="unit.name">
                                     {{unit.name}}
                                 </mat-option>
                             </mat-select>
@@ -126,7 +126,4 @@
         </form>
 
     </div>
-</div>
-<div *ngIf="loadIndicatorVisible" class="div_loading">
-    <mat-spinner></mat-spinner>
 </div>
