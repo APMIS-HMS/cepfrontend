@@ -24,19 +24,10 @@ class Service {
     }
 
     async create(data, params) {
-        console.log('-------- data --------');
-        console.log(data);
-        console.log('-------- data --------');
-        console.log('-------- End params --------');
-        console.log(params);
-        console.log('--------End params --------');
         const facilityId = data.facilityId;
         const action = data.action;
         if (action === 'create-room' || action === 'edit-room') {
             const createRoom = await this.createEditRoom(data);
-            console.log('-------- createRoom --------');
-            console.log(createRoom);
-            console.log('--------End createRoom --------');
             if (createRoom) {
                 return jsend.success(data);
             } else {
@@ -44,9 +35,6 @@ class Service {
             }
         } else if (action === 'create-bed' || action === 'edit-bed') {
             const createBed = await this.createEditBed(data);
-            console.log('-------- createBed --------');
-            console.log(createBed);
-            console.log('--------End createBed --------');
             if (createBed) {
                 return jsend.success(data);
             } else {
