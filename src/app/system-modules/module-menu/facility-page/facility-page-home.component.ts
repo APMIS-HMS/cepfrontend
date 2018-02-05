@@ -310,7 +310,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.empContentArea = true;
       // this.dashboardContentArea = false;
     }
-  }
+  } 
   close_onClick(e) {
     this.newDept = false;
     this.newUnit = false;
