@@ -27,7 +27,7 @@ class Service {
       for (let j = len2; j >= 0; j--) {
         let len3 = awaitOrgServices.data[i].categories[j].services.length - 1;
         for (let k = len3; k >= 0; k--) {
-          awaitOrgServices.data[i].categories[j].services[k].prices = [];
+          // awaitOrgServices.data[i].categories[j].services[k].price = [];
           var awaitPriceServices = await facilityPricesService.find({
             query: {
               facilityId: params.query.facilityId,
@@ -37,12 +37,12 @@ class Service {
             }
           });
           awaitPriceServices.data.forEach(element => {
-            awaitOrgServices.data[i].categories[j].services[k].prices.push(element.price);
+            awaitOrgServices.data[i].categories[j].services[k].price =element.price;
           });
         }
       }
     }
-    return awaitOrgServices.data;
+    return awaitOrgServices;
   }
 
   async get(id, params) {
