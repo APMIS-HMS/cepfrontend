@@ -59,7 +59,7 @@ class Service {
         let index = selectedUser.data[0].userRoles.filter(x => x.facilityId.toString() == params.query.facilityId.toString());
         if (index[0] !== undefined && index[0].roles.length > 0) {
           features.data.forEach((feature, i) => {
-            if (index[0].roles.filter(x => x.toString() === feature._id.toString()).length > 0) {
+            if (index[0].roles.filter(x =>  x.toString() === feature._id.toString()).length > 0) {
               feature.isAssigned = true;
               results.push(feature);
             } else {
@@ -120,7 +120,9 @@ class Service {
       }
     });
 
-    let updatedUser = await usersService.update(selectedUser.data[0]._id, selectedUser.data[0]);
+    let updatedUser = await usersService.patch(selectedUser.data[0]._id, {
+      userRoles: selectedUser.data[0].userRoles
+    });
 
     return updatedUser;
 
