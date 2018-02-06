@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class StoreService {
   public _socket;
+  public _socket_list;
   private _rest;
   public listenerCreate;
   public listenerUpdate;
@@ -15,7 +16,9 @@ export class StoreService {
   ) {
     this._rest = _restService.getService('stores');
     this._socket = _socketService.getService('stores');
+    this._socket_list = _socketService.getService('list-of-stores');
     this._socket.timeout = 30000;
+    this._socket_list.timeout = 30000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
     this.listenerDelete = Observable.fromEvent(this._socket, 'deleted');
@@ -39,7 +42,14 @@ export class StoreService {
   update(serviceprice: any) {
     return this._socket.update(serviceprice._id, serviceprice);
   }
+  patch(id,serviceprice: any) {
+    return this._socket.patch(serviceprice._id, serviceprice);
+  }
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
+  }
+
+  getList(id: string, query: any) {
+    return this._socket_list.get(id, query);
   }
 }
