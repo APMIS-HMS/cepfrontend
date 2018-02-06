@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FacilitiesService, EmployeeService } from '../../../services/facility-manager/setup/index';
 import { Employee, Facility } from '../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 
 @Component({
   selector: 'app-lab',
@@ -32,59 +33,63 @@ export class LabComponent implements OnInit, OnDestroy {
     private _router: Router,
     private _locker: CoolLocalStorage,
     public facilityService: FacilitiesService,
-    private _employeeService: EmployeeService
+    private _employeeService: EmployeeService,
+    private _authFacadeService: AuthFacadeService
   ) { }
 
   ngOnInit() {
     const page: string = this._router.url;
     this.checkPageUrl(page);
     this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
-    this.loginEmployee = <Employee>this._locker.getObject('loginEmployee');
-    if ((this.loginEmployee.workbenchCheckIn === undefined
-      || this.loginEmployee.workbenchCheckIn.length === 0)) {
-      this.modal_on = true;
-    } else {
-      let isOn = false;
-      this.loginEmployee.workbenchCheckIn.forEach((x, r) => {
-        if (x.isDefault) {
-          x.isOn = true;
-          x.lastLogin = new Date();
-          isOn = true;
-          let checkingObject = { typeObject: x, type: 'workbench' };
-          this.checkedInObject = checkingObject;
-          this._employeeService.announceCheckIn(checkingObject);
-          // Set page title
-          this.isWorkbenchAvailable = true;
-          this.workbenchTitle = x.workbenchObject.name;
-          this._employeeService.update(this.loginEmployee).then(res => {
-            this.loginEmployee = res;
-            checkingObject = { typeObject: x, type: 'workbench' };
-            this.checkedInObject = checkingObject;
-            this._employeeService.announceCheckIn(checkingObject);
-            this._locker.setObject('workbenchCheckingObject', checkingObject);
-          });
-        }
-      });
-
-      if (!isOn) {
+    // this.loginEmployee = <Employee>this._locker.getObject('loginEmployee');
+    this._authFacadeService.getLogingEmployee().then((res: any) => {
+      this.loginEmployee = res;
+      if ((this.loginEmployee.workbenchCheckIn === undefined
+        || this.loginEmployee.workbenchCheckIn.length === 0)) {
+        this.modal_on = true;
+      } else {
+        let isOn = false;
         this.loginEmployee.workbenchCheckIn.forEach((x, r) => {
-          if (r === 0) {
+          if (x.isDefault) {
             x.isOn = true;
             x.lastLogin = new Date();
+            isOn = true;
+            let checkingObject = { typeObject: x, type: 'workbench' };
+            this.checkedInObject = checkingObject;
+            this._employeeService.announceCheckIn(checkingObject);
             // Set page title
             this.isWorkbenchAvailable = true;
             this.workbenchTitle = x.workbenchObject.name;
-            this._employeeService.update(this.loginEmployee).then(payload => {
-              this.loginEmployee = payload;
-              const checkingObject = { typeObject: x, type: 'workbench' };
+            this._employeeService.update(this.loginEmployee).then((res: any) => {
+              this.loginEmployee = res;
+              checkingObject = { typeObject: x, type: 'workbench' };
               this.checkedInObject = checkingObject;
               this._employeeService.announceCheckIn(checkingObject);
               this._locker.setObject('workbenchCheckingObject', checkingObject);
             });
           }
         });
+
+        if (!isOn) {
+          this.loginEmployee.workbenchCheckIn.forEach((x, r) => {
+            if (r === 0) {
+              x.isOn = true;
+              x.lastLogin = new Date();
+              // Set page title
+              this.isWorkbenchAvailable = true;
+              this.workbenchTitle = x.workbenchObject.name;
+              this._employeeService.update(this.loginEmployee).then(payload => {
+                this.loginEmployee = payload;
+                const checkingObject = { typeObject: x, type: 'workbench' };
+                this.checkedInObject = checkingObject;
+                this._employeeService.announceCheckIn(checkingObject);
+                this._locker.setObject('workbenchCheckingObject', checkingObject);
+              });
+            }
+          });
+        }
       }
-    }
+    }).catch(err => console.log(err));
   }
 
   contentSecMenuToggle() {

@@ -19,12 +19,17 @@ export class AuthFacadeService {
     let self = this;
 
     return new Promise(function (resolve, reject) {
-      if (self.logingEmployee !== undefined && self.logingEmployee._id !== undefined) {
+      console.log(self.logingEmployee);
+      if (self.logingEmployee !== undefined) {
+        console.log('from client');
         resolve(self.logingEmployee);
       } else {
         self._socketService.authenticateService();
         self._socketService.getService('save-employee').get(facId).then(payload => {
+          console.log(payload)
           self.logingEmployee = payload.data[0];
+          self.setLogingEmployee(payload.data[0]);
+          console.log('to server');
           resolve(self.logingEmployee)
         }, error => {
         });

@@ -68,6 +68,7 @@ export class ClinicComponent implements OnInit, OnDestroy {
 					&& (this.loginEmployee.consultingRoomCheckIn === undefined
 						|| this.loginEmployee.consultingRoomCheckIn.length === 0)) {
 					this.modal_on = true;
+					this.isDoctor = true;
 				} else if (this.loginEmployee.professionId === 'Doctor') {
 					let isOn = false;
 					this.isDoctor = true;
