@@ -147,7 +147,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       priorityObject: this.priority,
       facilityId: this.selectedMiniFacility._id,
       employeeId: this.loginEmployee._id,
-      employeeObject: this.facilityService.trimEmployee(this.loginEmployee),
+      employeeObject: this.loginEmployee,
       patientId: this.patient._id,
       patientObject: this.patient,
       personId: this.patient.personId,
@@ -220,7 +220,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   private _saveLabRequest(labRequests) {
     this.deleteUnncessaryPatientData();
 
-    const logEmp = <any>this.locker.getObject('loginEmployee');
+    const logEmp = this.loginEmployee;
     delete logEmp.department;
     delete logEmp.employeeFacilityDetails;
     delete logEmp.role;
