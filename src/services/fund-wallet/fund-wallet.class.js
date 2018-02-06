@@ -6,7 +6,6 @@ const Client = require('node-rest-client').Client;
 const request = require('request');
 const requestPromise = require('request-promise');
 const logger = require('winston');
-const console = require('console');
 
 
 class FundWalletService {

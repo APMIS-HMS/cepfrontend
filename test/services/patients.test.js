@@ -14,7 +14,6 @@ describe('\'patients\' service', () => {
       assert.isNotOk(facilityModule._id);
       // assert.strictEqual(facilityModule.name, 'Medical Records');
     }, error => {
-      // logger.info(error);
       assert.ifError(error);
     });
 

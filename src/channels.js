@@ -68,4 +68,7 @@ module.exports = function (app) {
   app.service('employees').publish('created', (data) => {
     return app.channel(data.facilityId);
   });
+  app.service('doc-upload').publish('created', (data) => {
+    return app.channel(data.facilityId);
+  });
 };
