@@ -179,7 +179,6 @@ class FundWalletService {
     }
     // });
   }
-
   verifyPayment(url, secKey, ref) {
     const options = {
       method: 'POST',
