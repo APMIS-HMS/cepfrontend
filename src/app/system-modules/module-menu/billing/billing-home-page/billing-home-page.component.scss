@@ -1,3 +1,6 @@
+@import "../../wallet/wallet.component.scss";
+
+
 .pgWrapper{
     display: flex;
     flex-wrap: wrap;
@@ -73,7 +76,8 @@ input.searchInput {
     border: 1px solid #9fa8da;
     border-radius: 8px;
     padding-bottom: 2px;
-    float:right;
+    font-size: 20%;
+    float: left;
 }
 i.fa.fa-search {
     color: #fff;
