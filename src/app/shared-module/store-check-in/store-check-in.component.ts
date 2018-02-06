@@ -6,9 +6,9 @@ import { ClinicHelperService } from '../../system-modules/module-menu/clinic/ser
 import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
-	selector: 'app-store-check-in',
-	templateUrl: './store-check-in.component.html',
-	styleUrls: ['./store-check-in.component.scss']
+  selector: 'app-store-check-in',
+  templateUrl: './store-check-in.component.html',
+  styleUrls: ['./store-check-in.component.scss']
 })
 export class StoreCheckInComponent implements OnInit {
 	mainErr = true;

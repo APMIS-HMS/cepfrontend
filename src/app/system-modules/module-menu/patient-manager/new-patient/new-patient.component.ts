@@ -287,7 +287,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     ngOnInit() {
 
         // this.uploadEvents = new EventEmitter();
-        this.facility = <Facility>this.locker.getObject('selectedFacility');
+        this.facility = <Facility> this.locker.getObject('selectedFacility');
         this.departments = this.facility.departments;
         this.minorLocations = this.facility.minorLocations;
         this.newEmpIdControl.valueChanges.subscribe(value => {
@@ -1966,10 +1966,10 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     close_onClick() {
         console.log('close me');
         this.closeModal.emit(true);
-        // this.facilityService.announceNotification({
-        //     type: 'Info',
-        //     text: 'This operation has been canceled!'
-        // });
+        this.facilityService.announceNotification({
+            type: 'Info',
+            text: 'This operation has been canceled!'
+        });
     }
 
     tabWallet_click() {

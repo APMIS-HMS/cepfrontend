@@ -72,7 +72,7 @@ export class AccessRoleDetailsComponent implements OnInit {
     }
   }
 
-  newAccessrole_onClick(role) {
+  newAccessrole_onClick(role?) {
     this.selectedRole = role;
     this.createAccessrole = true;
   }

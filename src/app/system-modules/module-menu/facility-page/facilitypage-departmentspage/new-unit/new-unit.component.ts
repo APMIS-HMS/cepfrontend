@@ -139,8 +139,8 @@ export class NewUnitComponent implements OnInit {
               'readonly': [false],
             })
             );
-          this.mainErrClinic = true;
-          this.errMsgClinic = '';
+            this.mainErrClinic = true;
+            this.errMsgClinic = '';
         } else {
           const innerChildren: any = children.value;
         }

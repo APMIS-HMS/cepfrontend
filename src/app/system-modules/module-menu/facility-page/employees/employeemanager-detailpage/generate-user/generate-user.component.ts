@@ -55,7 +55,8 @@ export class GenerateUserComponent implements OnInit {
               });
               this.getAccessList();
             } else {
-              this.getAccessList();
+              console.log(2)
+              // this.getAccessList();
             }
           });
         });
