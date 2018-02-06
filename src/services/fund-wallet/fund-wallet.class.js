@@ -6,11 +6,9 @@ const Client = require('node-rest-client').Client;
 const request = require('request');
 const requestPromise = require('request-promise');
 const logger = require('winston');
-<<<<<<< HEAD
-=======
 const console = require('console');
 const rxjs = require('rxjs');
->>>>>>> remotes/origin/fundwallet
+
 
 
 class FundWalletService {
@@ -30,16 +28,6 @@ class FundWalletService {
   }
 
   async create(data, params) {
-<<<<<<< HEAD
-=======
-    console.log('----------data---------');
-    console.log(data);
-    console.log('----------End data---------');
-    console.log('----------params---------');
-    console.log(params);
-    console.log('----------End params---------');
-    
->>>>>>> remotes/origin/fundwallet
     const facilityService = this.app.service('facilities');
     const employeeService = this.app.service('employees');
     const peopleService = this.app.service('people');
@@ -78,11 +66,6 @@ class FundWalletService {
           if (parsedResponse.status === 'success') {
             paymentRes.isActive = true;
             paymentRes.paymentResponse = parsedResponse.data;
-<<<<<<< HEAD
-=======
-            console.log('Success 1');
-            // Update payment record.
->>>>>>> remotes/origin/fundwallet
             const updatedPayment = await paymentService.update(paymentRes._id, paymentRes);
 
             if (entity !== undefined && entity.toLowerCase() === 'person') {
@@ -107,12 +90,6 @@ class FundWalletService {
               return personUpdate;
             } else if (entity !== undefined && entity.toLowerCase() === 'facility') {
               const facility = await facilityService.get(facilityId);
-<<<<<<< HEAD
-=======
-              console.log('----------facility---------***********************************************');
-              console.log(facility);
-              console.log('----------End facility---------************************');
->>>>>>> remotes/origin/fundwallet
               const userWallet = facility.wallet;
               const cParam = {
                 amount: amount,
