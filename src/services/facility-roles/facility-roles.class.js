@@ -6,8 +6,31 @@ class Service {
     this.options = options || {};
   }
 
-  find(params) {
-    return Promise.resolve([]);
+  async find(params) {
+    const facilityId = params.query.facilityId;
+    const featuresService = this.app.service('facility-access-control');
+    let userRoles = [];
+    userRoles = userRoles.concat.apply([], params.user.userRoles).map(x => x.roles);
+
+    userRoles = [].concat.apply([], userRoles);
+    let features = await featuresService.find({
+      query: {
+        facilityId: facilityId,
+        _id: { $in: userRoles }
+      }
+    });
+
+    let outArray = [];
+    outArray = outArray.concat(features.data.map(x => x.features));
+    var merged = [].concat.apply([], outArray);
+    const distinctModules = this.getDistinctModules(merged);
+    return { features: merged, modules: distinctModules };
+  }
+
+  getDistinctModules(list) {
+    const data = list;
+    const result = Object.values(data.reduce((r, { moduleName, moduleId }) => (r[moduleName + '|' + moduleId] = { moduleName, moduleId }, r), {}));
+    return result;
   }
 
   async get(id, params) {
@@ -97,7 +120,9 @@ class Service {
       }
     });
 
-    let updatedUser = await usersService.update(selectedUser.data[0]._id, selectedUser.data[0]);
+    let updatedUser = await usersService.patch(selectedUser.data[0]._id, {
+      userRoles: selectedUser.data[0].userRoles
+    });
 
     return updatedUser;
 
