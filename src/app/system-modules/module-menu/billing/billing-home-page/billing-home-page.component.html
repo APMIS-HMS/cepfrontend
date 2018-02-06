@@ -4,7 +4,44 @@
         <div class="tblTop">
             <div (click)="newPricePopup_show()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> New Price</div>
         </div>
-        <table class="tblBg">
+
+
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="card blue-gradient" style="padding: 10px;border-radius: 5px 5px 0 0;">
+                    <div class="row thick-text small-text">
+                        <div class="col-xs-1 center">No</div>
+                        <div class="col-xs-1 center">Category</div>
+                        <div class="col-xs-1 center">Service</div>
+                        <div class="col-xs-2 center">Price</div>
+                        <div class="col-xs-1 center">action</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="row" style="margin-top: -13px;">
+            <div class="col-xs-12">
+                <div style="padding: 0px 10px;border: 1px solid #ccc;">                    
+                    <div class="card-list-item" *ngFor="let price of prices; let i=index; ">
+                        <div class="row">
+                            <div class="col-xs-1 center">{{i+1}}</div>
+                            <div class="col-xs-1 center" style="cursor: pointer;" (click)="serviceDetail_show(price)">{{price?.service?.name}}</div>
+                            <div class="col-xs-2 center" style="cursor: pointer;" (click)="serviceDetail_show(price)">{{price?.category}}</div>
+                            <div class="col-xs-1 center" style="cursor: pointer;" (click)="serviceDetail_show(price)">{{price?.price}}</div>
+                            <div class="col-xs-1 center">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                <div (click)="newModefierPopup_show(price)" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> Add Modifier</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- <table class="tblBg">
             <thead>
                 <tr>
                     <th>Service</th>
@@ -34,7 +71,7 @@
                     </td>
                 </tr>
             </tbody>
-        </table>
+        </table> -->
     </div>
 
     <div *ngIf="serviceDetail" class="modal-overlay">
