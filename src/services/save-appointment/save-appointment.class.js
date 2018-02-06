@@ -26,11 +26,14 @@ class Service {
     {
       let appointments = [];
       if (hook.isCheckedIn) {
+        console.log('......In.....');
+        console.log(appointmentResult);
         appointmentResult.data.forEach(function (appointment) {
           if (isToday(appointment.startDate) && appointment.attendance !== undefined) {
             appointments.push(appointment);
           }
         });
+        console.log('......Out.....');
         appointmentResult.data = appointments;
       }
 
