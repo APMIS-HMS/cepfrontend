@@ -49,5 +49,7 @@ export class BillingComponent implements OnInit {
   pgMenu_click() {
     this.pgMenuToggle = !this.pgMenuToggle;
   }
+  changeRoute('route'){
 
+  }
 }
