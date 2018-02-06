@@ -9,39 +9,37 @@ class Service {
   }
 
   async find(params) {
-    let result = {};
+    let result = [];
     const hmoService = this.app.service('hmos');
+    const facilityService = this.app.service('facilities');
     let findHmoService = await hmoService.find({
       query: {
         facilityId:params.query.facilityId,
         $limit: false
       }
     });
+    console.log(findHmoService);
     if (findHmoService.data.length > 0) {
       let len = findHmoService.data.length - 1;
+      console.log(len, 'data.length');
       for (let i = len; i >= 0; i--) {
+        console.log(findHmoService.data[i].hmos.length, 'data[i].hmos');
         if (findHmoService.data[i].hmos.length > 0) {
           let len2 = findHmoService.data[i].hmos.length - 1;
+          console.log(len2, 'len2');
           for (let j = len2; j >= 0; j--) {
-            if (findHmoService.data[i].hmos[j].enrolleeList.length > 0) {
-              let len3 = findHmoService.data[i].hmos[j].enrolleeList.length - 1;
-              for (let k = len3; k >= 0; k--) {
-                let len4 = findHmoService.data[i].hmos[j].enrolleeList[k].enrollees.length - 1;
-                for (let l = len4; l >= 0; l--) {
-                  if (findHmoService.data[i].hmos[j].enrolleeList[k].enrollees.length > 0) {
-                    if (findHmoService.data[i].hmos[j].enrolleeList[k].enrollees[l].filNo != undefined) {
-                      if (findHmoService.data[i].hmos[j].enrolleeList[k].enrollees[l].filNo.toLowerCase() == req.query.fillno.toLowerCase()) {
-                        result = {
-                          "hmoId": findHmoService.data[i].hmos[j].hmo._id,
-                          "hmoName": findHmoService.data[i].hmos[j].hmo.name,
-                          "enrollees": findHmoService.data[i].hmos[j].enrolleeList[k].enrollees[l]
-                        };
-                      }
-                    }
-                  }
-                }
+            let facility = await facilityService.find({
+              query: {
+                '_id': findHmoService.data[i].hmos[j].hmo
               }
-            }
+            });
+            console.log(facility.data[0]);
+            let res = {
+              hmoId: findHmoService.data[i].hmos[j].hmo,
+              hmoName: facility.data[0].name,
+              enrollees: findHmoService.data[i].hmos[j].enrolleeList
+            };
+            result.push(res);
           }
         }
       }
