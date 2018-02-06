@@ -10,7 +10,6 @@ const console = require('console');
 const rxjs = require('rxjs');
 
 
-
 class FundWalletService {
   constructor(options) {
     this.options = options || {};
@@ -28,6 +27,13 @@ class FundWalletService {
   }
 
   async create(data, params) {
+    console.log('----------data---------');
+    console.log(data);
+    console.log('----------End data---------');
+    console.log('----------params---------');
+    console.log(params);
+    console.log('----------End params---------');
+    
     const facilityService = this.app.service('facilities');
     const employeeService = this.app.service('employees');
     const peopleService = this.app.service('people');
@@ -66,6 +72,8 @@ class FundWalletService {
           if (parsedResponse.status === 'success') {
             paymentRes.isActive = true;
             paymentRes.paymentResponse = parsedResponse.data;
+            console.log('Success 1');
+            // Update payment record.
             const updatedPayment = await paymentService.update(paymentRes._id, paymentRes);
 
             if (entity !== undefined && entity.toLowerCase() === 'person') {
@@ -90,6 +98,9 @@ class FundWalletService {
               return personUpdate;
             } else if (entity !== undefined && entity.toLowerCase() === 'facility') {
               const facility = await facilityService.get(facilityId);
+              console.log('----------facility---------***********************************************');
+              console.log(facility);
+              console.log('----------End facility---------************************');
               const userWallet = facility.wallet;
               const cParam = {
                 amount: amount,
@@ -108,6 +119,8 @@ class FundWalletService {
               const facilityUpdate = await facilityService.update(facility._id, facility);
               return facilityUpdate;
             }
+          }else{
+            return new Error('There was an error while verifying this payment');
           }
         } else if (paymentRoute !== undefined && paymentRoute.toLowerCase() === 'paystack') {
           paymentService.create(paymentPayload).then(payment => {
