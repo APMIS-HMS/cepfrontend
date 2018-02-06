@@ -37,12 +37,12 @@ export class ConsultingRoomComponent implements OnInit {
     private locker: CoolLocalStorage,
     private schedulerTypeService: SchedulerTypeService,
     private consultingRoomService: ConsultingRoomService,
-  private facilityService: FacilitiesService) {
+    private facilityService: FacilitiesService) {
   }
   ngOnInit() {
     this.subscribToFormControls();
     this.getClinicMajorLocation();
-    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     // this.selectedFacility.departments.forEach((itemi, i) => {
     //   itemi.units.forEach((itemj, j) => {
     //     itemj.clinics.forEach((itemk, k) => {
@@ -69,10 +69,8 @@ export class ConsultingRoomComponent implements OnInit {
       }
     }).then(payload => {
       this.loading = false;
-      console.log(payload.data);
       this.roomManager = payload.data;
-    },error =>{
-      console.log(error);
+    }, error => {
     });
   }
   subscribToFormControls() {
@@ -81,7 +79,7 @@ export class ConsultingRoomComponent implements OnInit {
       this.clearAllRooms();
       this.consultingRoomService.find({
         query: {
-          minorLocationId: value.name,
+          minorLocationId: value,
           facilityId: this.selectedFacility._id
         }
       }).then(payload => {
@@ -94,7 +92,6 @@ export class ConsultingRoomComponent implements OnInit {
   }
   onSelectSchedulerManager(manager: ConsultingRoomModel) {
     this.selectedManager = manager;
-    console.log(this.selectedManager);
     const filteredClinic = this.clinicLocations.filter(x => x.name === this.selectedManager.minorLocationId);
     if (filteredClinic.length > 0) {
       this.selectedMinorLocation = filteredClinic[0];
@@ -192,7 +189,7 @@ export class ConsultingRoomComponent implements OnInit {
     } else {
       const manager: ConsultingRoomModel = <ConsultingRoomModel>{ rooms: [] };
       manager.majorLocationId = this.clinic._id;
-      manager.minorLocationId = this.selectedMinorLocation.name;
+      manager.minorLocationId = this.selectedMinorLocation;
       manager.facilityId = this.selectedFacility._id;
 
       (<FormArray>this.consultingRoomForm.controls['consultingRoomArray'])
