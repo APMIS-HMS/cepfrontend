@@ -11,29 +11,36 @@ class Service {
   }
 
   async find(params) {
-    // console.log(params.query);
     let hook = params.query;
     const appointmentService = this.app.service('appointments');
-    const appointmentResult = await appointmentService.find({
-      query: {
-        facilityId: hook.facilityId,
-        clinicId: { $in: hook.clinicIds },
-        $sort: { 'createdAt': -1 }
-      }
-    });
-    // console.log(appointmentResult);
+    let appointmentResult;
+    if (hook.clinicIds !== undefined && hook.facilityId !== undefined) {
+      appointmentResult = await appointmentService.find({
+        query: {
+          facilityId: hook.facilityId,
+          clinicId: { $in: hook.clinicIds },
+          $sort: { 'createdAt': -1 }
+        }
+      });
+    } else if(hook.patientId !== undefined) {
+
+      appointmentResult = await appointmentService.find({
+        query: {
+          patientId: hook.patientId,
+          $sort: { 'createdAt': -1 }
+        }
+      });
+    }
+
 
     {
       let appointments = [];
       if (hook.isCheckedIn) {
-        console.log('......In.....');
-        console.log(appointmentResult);
         appointmentResult.data.forEach(function (appointment) {
           if (isToday(appointment.startDate) && appointment.attendance !== undefined) {
             appointments.push(appointment);
           }
         });
-        console.log('......Out.....');
         appointmentResult.data = appointments;
       }
 

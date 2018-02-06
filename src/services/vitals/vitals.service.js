@@ -3,12 +3,13 @@ const createService = require('./vitals.class.js');
 const hooks = require('./vitals.hooks');
 
 module.exports = function (app) {
-  
+
   const paginate = app.get('paginate');
 
   const options = {
     name: 'vitals',
-    paginate
+    paginate,
+    app: app
   };
 
   // Initialize our service with any options it requires

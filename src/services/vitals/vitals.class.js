@@ -17,31 +17,40 @@ class Service {
 
   async create(data, params) {
     var patientDocumentation = {};
-    var vitalObjs = req.body;
+    var vitalObjs = data;
+    const req = params;
     const documentationsService = this.app.service('documentations');
-    let findDocumentationsService = await app.service('documentations').find({
+    const personService = this.app.service('people');
+    let selectedPerson = await personService.get(req.query.personId, {});
+    let findDocumentationsService = await documentationsService.find({
       query: {
-        'personId._id': req.query.personId
+        'personId': req.query.personId
       }
     });
     if (findDocumentationsService.data.length === 0) {
       patientDocumentation.personId = req.query.personId;
       patientDocumentation.documentations = [];
-      let createDocumentationsService = documentationsService.create(patientDocumentation);
+      let createDocumentationsService = await documentationsService.create(patientDocumentation);
       patientDocumentation = createDocumentationsService;
-      addVitals(documentationsService, patientDocumentation, vitalObjs);
+      addVitals(documentationsService, patientDocumentation, vitalObjs, req, selectedPerson);
     } else {
       if (findDocumentationsService.data[0].documentations.length === 0) {
         patientDocumentation = findDocumentationsService.data[0];
       } else {
-        let findDocumentationsService_ = documentationsService.find({
+        let findDocumentationsService_ = await documentationsService.find({
           query: {
-            'personId._id': req.query.personId,
+            'personId': req.query.personId,
             'documentations.patientId': req.query.patientId,
           }
         });
-        patientDocumentation = findDocumentationsService_.data[0];
-        addVitals(documentationsService, patientDocumentation, vitalObjs);
+        if (findDocumentationsService_.data.length > 0) {
+          patientDocumentation = findDocumentationsService_.data[0];
+          addVitals(documentationsService, patientDocumentation, vitalObjs, req, selectedPerson);
+        }else{
+          return new Error('Patient record not found!');
+        }
+
+
       }
     }
   }
@@ -59,9 +68,12 @@ class Service {
       id
     });
   }
+  setup(app) {
+    this.app = app;
+  }
 }
 
-function addVitals(documentationsService, patientDocumentation, vitalObjs) {
+function addVitals(documentationsService, patientDocumentation, vitalObjs, req, person) {
   let isExisting = false;
   let len = patientDocumentation.documentations.length - 1;
   for (let k = len; k >= 0; k--) {
@@ -86,15 +98,17 @@ function addVitals(documentationsService, patientDocumentation, vitalObjs) {
     if (k == 0) {
       if (!isExisting) {
         var doc = {};
-        doc.facilityId = vitalObjs.facilityObj;
-        doc.createdBy = vitalObjs.employeeObj;
+        doc.facilityId = vitalObjs.facilityObj._id;
+        doc.facilityName = vitalObjs.facilityObj.name;
+        doc.createdBy = vitalObjs.employeeObj.personDetails.title +' '+vitalObjs.employeeObj.personDetails.lastName +' '+vitalObjs.employeeObj.personDetails.firstName;
         doc.patientId = req.query.patientId;
+        doc.patientName = person.title + ' ' + person.lastName + ' ' + person.firstName;
         doc.document = {
           documentType: vitalObjs.documentType,
           body: {
             vitals: []
           }
-        }
+        };
         doc.document.body.vitals.push({
           pulseRate: vitalObjs.pulseRate,
           respiratoryRate: vitalObjs.respiratoryRate,
@@ -106,12 +120,12 @@ function addVitals(documentationsService, patientDocumentation, vitalObjs) {
         });
         patientDocumentation.documentations.push(doc);
       }
-      documentationsService.patch(patientDocumentation._id,{documentations:patientDocumentation.documentations}).then(payload => {
+      documentationsService.patch(patientDocumentation._id, { documentations: patientDocumentation.documentations }).then(payload => {
         return vitalObjs;
-      })
+      });
     }
   }
-};
+}
 
 module.exports = function (options) {
   return new Service(options);

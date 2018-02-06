@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-const console = require('console');
 const toLowerCase = require('../../helpers/toLower');
 var Client = require('node-rest-client').Client;
 var jsend = require('jsend');

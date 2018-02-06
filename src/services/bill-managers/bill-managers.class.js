@@ -10,7 +10,6 @@ class Service {
   }
 
   async find(params) {
-    console.log("inside find");
     const organisationService = this.app.service('organisation-services');
     const facilityPricesService = this.app.service('facility-prices');
     var awaitOrgServices = await organisationService.find({
@@ -18,12 +17,10 @@ class Service {
         facilityId: params.query.facilityId
       }
     });
-    console.log(awaitOrgServices);
     let len = awaitOrgServices.data.length - 1;
-    console.log(len);
+
     for (let i = len; i >= 0; i--) {
       let len2 = awaitOrgServices.data[i].categories.length - 1;
-      console.log(len2 + " -----------------");
       for (let j = len2; j >= 0; j--) {
         let len3 = awaitOrgServices.data[i].categories[j].services.length - 1;
         for (let k = len3; k >= 0; k--) {
@@ -71,7 +68,7 @@ class Service {
       } else {
         awaitOrgServices.data[0].categories.push(facilityCategoryeModel);
         await organisationService.patch(awaitOrgServices.data[0]._id, {
-          "categories": awaitOrgServices.data[0].categories
+          'categories': awaitOrgServices.data[0].categories
         });
         return organisationService;
       }
@@ -102,11 +99,11 @@ class Service {
                 item.services[l].name = data.serviceName;
                 item.services[l].code = data.serviceCode;
               }
-            })
+            });
           }
         });
         await organisationService.patch(awaitOrgServices.data[0]._id, {
-          "categories": awaitOrgServices.data[0].categories
+          'categories': awaitOrgServices.data[0].categories
         });
       } else {
         awaitOrgServices.data[0].categories.forEach((item, i) => {
@@ -116,7 +113,7 @@ class Service {
         });
       }
       await organisationService.patch(awaitOrgServices.data[0]._id, {
-        "categories": awaitOrgServices.data[0].categories
+        'categories': awaitOrgServices.data[0].categories
       });
       var awaitTagDicService = tagDictioneriesService.find({
         query: {
