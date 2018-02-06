@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 const tokenLabel = require('../../parameters/token-label');
 const sms = require('../../templates/sms-sender');
+const console = require('console');
 class Service {
   constructor(options) {
     this.options = options || {};
@@ -17,6 +18,7 @@ class Service {
   }
 
   create(data, params) {
+    console.log('******Entry*********');
     const userService = this.app.service('users');
     return new Promise(function (resolve, reject) {
       userService.find({
@@ -24,10 +26,14 @@ class Service {
           verificationToken: data.token
         }
       }).then(users => {
+        console.log('******User*********');
+        console.log(users);
         if (users.data.length > 0) {
           const context = users.data[0];
           context.password = data.password;
           context.verificationToken = '';
+          console.log('******User Data*********');
+          console.log(users.data[0]);
           userService.update(context._id, context).then(user => {
             resolve({ isPasswordChanged: true });
           }, userError => {

@@ -13,55 +13,33 @@ class Service {
     return Promise.resolve([]);
   }
 
-  get(id, params) {
+  async get(id, params) {
     const facilitiesService = this.app.service('facilities');
     var members = [];
-    if (params.query.ismember.toString() == 'true') {
-      return new Promise(function (resolve, reject) {
-        facilitiesService.get(id, {}).then(networkMember => {
-          if (networkMember.memberof.length == 0) {
-            resolve([]);
-          } else {
-            networkMember.memberof.forEach((item, i) => {
-              facilitiesService.get(item, {}).then(networkMemberOf => {
-                members.push(networkMemberOf);
-                if (i == networkMember.memberof.length - 1) {
-                  resolve(members);
-                }
-              }, error => {
-                reject(error);
-              });
-            });
+    if (params.query.ismember === true) {
+      let awaitedFacility = await facilitiesService.get(id, {});
+      if (awaitedFacility.memberof != undefined) {
+        if (awaitedFacility.memberof.length > 0) {
+          let len = awaitedFacility.memberof.length - 1;
+          for (let i = len; i >= 0; i--) {
+            let awaitedFacility2 = await facilitiesService.get(awaitedFacility.memberof[i], {});
+            members.push(awaitedFacility2);
           }
-
-        }, error => {
-          reject(error);
-        });
-      });
+        }
+      }
+      return members;
     } else {
-      return new Promise(function (resolve, reject) {
-        facilitiesService.get(id, {}).then(networkMember => {
-          networkMember.memberFacilities.forEach((item, i) => {
-            facilitiesService.get(item, {}).then(networkMemberOf => {
-              if (networkMember.memberFacilities.length == 0) {
-                resolve([]);
-              } else {
-                members.push(networkMemberOf);
-                if (i == networkMember.memberFacilities.length - 1) {
-                  resolve(members);
-                }
-              }
-            }, error => {
-              reject(error);
-            });
-          });
-          if (networkMember.memberFacilities.length == 0) {
-            resolve([]);
+      let awaitedFacility = await facilitiesService.get(id, {});
+      if (awaitedFacility.memberFacilities != undefined) {
+        if (awaitedFacility.memberFacilities.length > 0) {
+          let len = awaitedFacility.memberFacilities.length - 1;
+          for (let i = len; i >= 0; i--) {
+            let awaitedFacility2 = await facilitiesService.get(awaitedFacility.memberFacilities[i], {});
+            members.push(awaitedFacility2);
           }
-        }, error => {
-          reject(error);
-        });
-      });
+        }
+      }
+      return members;
     }
 
   }
@@ -70,7 +48,7 @@ class Service {
     const facilitiesService = this.app.service('facilities');
     var results = [];
     var errors = [];
-    if (params.query.isdelete.toString() === 'false') {
+    if (params.query.isdelete === false) {
       if (data.memberFacilities.length > 0) {
         var l = data.memberFacilities.length;
         while (l--) {

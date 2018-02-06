@@ -21,8 +21,6 @@ class Service {
       let facility = await facilityService.get(id);
       let facilityModule = await facilityModuleService.find({});
       let len = facility.facilitymoduleId.length - 1;
-      console.log(facility.facilitymoduleId);
-
       if (facility.facilitymoduleId.length > 0) {
         for (let i = len; i >= 0; i--) {
           facilityModule.data.forEach((item, j) => {
