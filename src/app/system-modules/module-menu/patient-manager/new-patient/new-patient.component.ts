@@ -285,9 +285,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     ngOnInit() {
-
         // this.uploadEvents = new EventEmitter();
-        this.facility = <Facility>this.locker.getObject('selectedFacility');
+        this.facility = <Facility> this.locker.getObject('selectedFacility');
         this.departments = this.facility.departments;
         this.minorLocations = this.facility.minorLocations;
         this.newEmpIdControl.valueChanges.subscribe(value => {
@@ -359,6 +358,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         insur.subscribe((payload: any) => {
             console.log(payload);
         });
+
+        this.gethmos();
 
         this.frmNewEmp1 = this.formBuilder.group({
 
@@ -567,6 +568,18 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     }
 
+    gethmos(){
+        console.log(this.facility._id);
+        this.hmoService.find({
+            query: {
+                facilityId: this.facility._id
+            }
+        }).then(payload => {
+            console.log(payload);
+        }).catch(err => {
+            console.log(err);
+        });
+    }
     nextInsuranceCover(hmoPlanId, hmoPlan) {
         this.loading = true;
         this.hmoInsuranceId = hmoPlanId;
@@ -709,7 +722,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.errMsg = 'Invalid APMIS ID, correct the value entered and try again!';
                 this.mainErr = false;
             } else if (result.data.length > 0) {
-                this.errMsg = 'This APMIS ID is valid or has been previously used to generate an employee!';
+                this.errMsg = 'This APMIS ID is valid or has been previously used to generate a patient!';
                 this.mainErr = false;
             } else {
                 this.frmNewEmp4_show = false;
@@ -1966,10 +1979,10 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     close_onClick() {
         console.log('close me');
         this.closeModal.emit(true);
-        // this.facilityService.announceNotification({
-        //     type: 'Info',
-        //     text: 'This operation has been canceled!'
-        // });
+        this.facilityService.announceNotification({
+            type: 'Info',
+            text: 'This operation has been canceled!'
+        });
     }
 
     tabWallet_click() {

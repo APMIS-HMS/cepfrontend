@@ -12,8 +12,8 @@ export class DocumentationTemplateService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('documentationtemplates');
-    this._socket = _socketService.getService('documentationtemplates');
+    this._rest = _restService.getService('documentation-templates');
+    this._socket = _socketService.getService('documentation-templates');
     this._socket.timeout = 30000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');

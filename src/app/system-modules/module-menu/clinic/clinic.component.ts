@@ -172,7 +172,7 @@ export class ClinicComponent implements OnInit, OnDestroy {
 		// 			}
 		// 		});
 
-	}
+  }
 
 	changeRoom() {
 		this.modal_on = true;

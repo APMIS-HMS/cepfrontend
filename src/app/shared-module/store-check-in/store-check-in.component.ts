@@ -7,9 +7,9 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 
 @Component({
-	selector: 'app-store-check-in',
-	templateUrl: './store-check-in.component.html',
-	styleUrls: ['./store-check-in.component.scss']
+  selector: 'app-store-check-in',
+  templateUrl: './store-check-in.component.html',
+  styleUrls: ['./store-check-in.component.scss']
 })
 export class StoreCheckInComponent implements OnInit {
 	mainErr = true;

@@ -36,70 +36,16 @@
                     </div>
                 </div>
                 <div class="card-content scrollable">
-                    <div class="card-list-item ">
+                    <div *ngFor="let category of categories" [ngClass]="{ 'undefined' : category.name == selectedCategory.name}" class="card-list-item" (click)="selectCategory(category)">
                         <div class="row">
                             <div class="col-xs-10">
-                                fsjlfsf
+                                {{category.name}}
                             </div>
                             <div class="col-xs-1 options">
                                 <i class="fa fa-edit blue-text fa-fw"></i>
                             </div>
                             <div class="col-xs-1 options">
                                 <i class="fa fa-trash red-text fa-fw"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-list-item">
-                        <div class="row">
-                            <div class="col-xs-10">
-                                fsjlfsf
-                            </div>
-                            <div class="col-xs-1 options">
-                                <i class="fa fa-edit fa-fw"></i>
-                            </div>
-                            <div class="col-xs-1 options">
-                                <i class="fa fa-trash fa-fw"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-list-item ">
-                        <div class="row">
-                            <div class="col-xs-10">
-                                fsjlfsf
-                            </div>
-                            <div class="col-xs-1 options">
-                                <i class="fa fa-edit fa-fw"></i>
-                            </div>
-                            <div class="col-xs-1 options">
-                                <i class="fa fa-trash fa-fw"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-list-item active">
-                        <div class="row">
-                            <div class="col-xs-10">
-                                fsjlfsf
-                            </div>
-                            <div class="col-xs-1 options">
-                                <i class="fa fa-edit fa-fw"></i>
-                            </div>
-                            <div class="col-xs-1 options">
-                                <i class="fa fa-trash fa-fw"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-list-item">
-                        <div class="row">
-                            <div class="col-xs-10">
-                                fsjlfsf
-                            </div>
-                            <div class="col-xs-1 options">
-                                <i class="fa fa-edit fa-fw"></i>
-                            </div>
-                            <div class="col-xs-1 options">
-                                <i class="fa fa-trash fa-fw"></i>
                             </div>
                         </div>
                     </div>
@@ -111,7 +57,7 @@
                 <div class="card-header">
                     <div class="row" *ngIf="!searchShow">
                         <div class="col-xs-10">
-                            Service
+                            {{selectedCategory.name}} | Services
                         </div>
                         <div class="col-xs-1">
                             <i (click)="newServicePopup_show()" class="fa fa-plus fa-fw"></i>
@@ -132,13 +78,19 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-content">
-                    <div class="card-list-item">
+                <div class="card-content scrollable">
+                    <div *ngFor="let service of selectedServices" class="card-list-item">
                         <div class="row">
-                            <div class="col-xs-6">Kidney Examination</div>
-                            <div class="col-xs-4">Service Code | 002W</div>
+                            <div class="col-xs-6">{{service.name}}</div>
+                            <div class="col-xs-2">{{service?.code}}</div>
+                            <div class="col-xs-2"><span>&#x20a6;</span>{{service?.price | number:'1.2-2'}}</div>
                             <div class="col-xs-1 options"><i class="fa fa-edit blue-text"></i></div>
                             <div class="col-xs-1 options"><i class="fa fa-trash red-text"></i></div>
+                        </div>
+                    </div>
+                    <div *ngIf="selectedServices.length == 0" style="text-align : center" class="card-list-item">
+                        <div class="row">
+                            <div class="col-xs-12">No service in this category</div>
                         </div>
                     </div>
                 </div>

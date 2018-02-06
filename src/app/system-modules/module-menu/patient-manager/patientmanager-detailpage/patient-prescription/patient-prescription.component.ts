@@ -137,27 +137,27 @@ export class PatientPrescriptionComponent implements OnInit {
         this._drugListApi.find({ query: { method: 'drug-details', 'productId': item.productId } }).then(res => {
             let sRes = res.data;
             if (res.status === 'success') {
-              if (!!sRes.ingredients && sRes.ingredients.length > 0) {
-                  this.selectedForm = sRes.form;
-                  this.selectedIngredients = sRes.ingredients;
-                  let drugName: string = sRes.form + ' ';
-                  let strength = '';
-                  const ingredientLength: number = sRes.ingredients.length;
-                  let index = 0;
-                  sRes.ingredients.forEach(element => {
-                      index++;
-                      drugName += element.name;
-                      strength += element.strength + element.strengthUnit;
+                if (!!sRes.ingredients && sRes.ingredients.length > 0) {
+                    this.selectedForm = sRes.form;
+                    this.selectedIngredients = sRes.ingredients;
+                    let drugName: string = sRes.form + ' ';
+                    let strength = '';
+                    const ingredientLength: number = sRes.ingredients.length;
+                    let index = 0;
+                    sRes.ingredients.forEach(element => {
+                        index++;
+                        drugName += element.name;
+                        strength += element.strength + element.strengthUnit;
 
-                      if (index !== ingredientLength) {
-                          drugName += '/';
-                          strength += '/';
-                      }
-                  });
-                  this.addPrescriptionForm.controls['drug'].setValue(drugName);
-                  this.addPrescriptionForm.controls['strength'].setValue(strength);
-                  this.addPrescriptionForm.controls['route'].setValue(sRes.route);
-              }
+                        if (index !== ingredientLength) {
+                            drugName += '/';
+                            strength += '/';
+                        }
+                    });
+                    this.addPrescriptionForm.controls['drug'].setValue(drugName);
+                    this.addPrescriptionForm.controls['strength'].setValue(strength);
+                    this.addPrescriptionForm.controls['route'].setValue(sRes.route);
+                }
             }
         }).catch(err => console.error(err));
     }
@@ -420,5 +420,8 @@ export class PatientPrescriptionComponent implements OnInit {
             type: type,
             text: text
         });
+    }
+    onClickSavePrescription(value, valid) {
+
     }
 }

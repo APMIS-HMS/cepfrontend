@@ -8,12 +8,12 @@
     <div class="docCard-header">
       <div class="empWrap">
         <div class="list-img">
-          <img *ngIf="document?.createdBy?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
-          <div *ngIf="document?.createdBy?.employeeDetails?.profileImageObject !== undefined"> <img class="shadow" [src]="facilityService.transform(document?.createdBy?.employeeDetails?.profileImageObject?.thumbnail)"></div> 
+          <!-- <img *ngIf="document?.createdBy?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
+          <div *ngIf="document?.createdBy?.employeeDetails?.profileImageObject !== undefined"> <img class="shadow" [src]="facilityService.transform(document?.createdBy?.employeeDetails?.profileImageObject?.thumbnail)"></div>  -->
         </div>
         <div>
           <div class="val-tag">Practitioner</div>
-          <div class="list-label">{{document?.createdBy?.employeeDetails?.personFullName}}</div>
+          <div class="list-label">{{document?.createdBy}}</div>
         </div>
       </div>
 

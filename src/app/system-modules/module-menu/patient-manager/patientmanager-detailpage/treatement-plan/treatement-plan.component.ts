@@ -77,7 +77,7 @@ export class TreatementPlanComponent implements OnInit {
   }
 
   getPersonDocumentation() {
-    this.documentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
+    this.documentationService.find({ query: { 'personId': this.patient.personId } }).subscribe((payload: any) => {
       if (payload.data.length === 0) {
         this.patientDocumentation.personId = this.patient.personDetails;
         this.patientDocumentation.documentations = [];
@@ -93,7 +93,7 @@ export class TreatementPlanComponent implements OnInit {
           this.documentationService.find({
             query:
               {
-                'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
+                'personId': this.patient.personId, 'documentations.patientId': this.patient._id,
               }
           }).subscribe((mload: any) => {
             if (mload.data.length > 0) {
@@ -130,6 +130,7 @@ export class TreatementPlanComponent implements OnInit {
     this.patientDocumentation.documentations.push(doc);
     console.log(this.patientDocumentation.documentations)
     this.documentationService.update(this.patientDocumentation).subscribe(payload => {
+      console.log(33333333333)
       nursingCare.comment = '';
       this.patientDocumentation = payload;
       this.documentationService.announceDocumentation({ type: 'Allergies' });

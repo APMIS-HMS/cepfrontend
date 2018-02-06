@@ -22,8 +22,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   nextOfKinForm: FormGroup;
   patientEditForm: FormGroup;
 
-  
-  isEdit:boolean = false;
+
+  isEdit: boolean = false;
   tabWallet = true;
   tabInsurance = false;
   tabCompany = false;
@@ -140,7 +140,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       title: ['', [<any>Validators.required]],
       firstName: ['', [<any>Validators.required]],
       lastName: ['', [<any>Validators.required]],
-      email: [{ value: '', disabled: true }, [<any>Validators.required]],
+      email: [{ value: '', disabled: false }, [<any>Validators.required]],
       phoneNumber: [{ value: '', disabled: true }, [<any>Validators.required]],
       gender: ['', [<any>Validators.required]],
       country: ['', [<any>Validators.required]],
@@ -357,15 +357,23 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
   private _populateAndSelectData(value: any) {
     console.log(value);
-    this.patientEditForm.controls['street'].setValue(value.homeAddress.street);
+    if (value.homeAddress) {
+      this.patientEditForm.controls['street'].setValue(value.homeAddress.street);
+      this.patientEditForm.controls['country'].setValue(value.homeAddress.country);
+      this.patientEditForm.controls['state'].setValue(value.homeAddress.state);
+      this.patientEditForm.controls['city'].setValue(value.homeAddress.city);
+      this.patientEditForm.controls['lga'].setValue(value.homeAddress.lga);
+    }
+
+    if(value.email !== undefined) {
+      this.patientEditForm.controls['email'].disable();
+      // this.patientEditForm.get('email').disable();
+    }
+
     this.patientEditForm.controls['phoneNumber'].setValue(value.primaryContactPhoneNo);
 
     this.patientEditForm.controls['title'].setValue(value.title);
     this.patientEditForm.controls['gender'].setValue(value.gender);
-    this.patientEditForm.controls['country'].setValue(value.homeAddress.country);
-    this.patientEditForm.controls['state'].setValue(value.homeAddress.state);
-    this.patientEditForm.controls['city'].setValue(value.homeAddress.city);
-    this.patientEditForm.controls['lga'].setValue(value.homeAddress.lga);
   }
 
   private _populateNextOfKin(nextOfKin) {
@@ -445,9 +453,9 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.newUpload = true;
   }
   compareState(l1: any, l2: any) {
-		return l1.includes(l2);
+    return l1.includes(l2);
   }
-  
+
 
 
   tabWallet_click() {
@@ -455,25 +463,25 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.tabCompany = false;
     this.tabFamily = false;
     this.tabInsurance = false;
-}
-tabCompany_click() {
+  }
+  tabCompany_click() {
     this.tabWallet = false;
     this.tabCompany = true;
     this.tabFamily = false;
     this.tabInsurance = false;
-}
-tabFamily_click() {
+  }
+  tabFamily_click() {
     this.tabWallet = false;
     this.tabCompany = false;
     this.tabFamily = true;
     this.tabInsurance = false;
-}
-tabInsurance_click() {
+  }
+  tabInsurance_click() {
     this.tabWallet = false;
     this.tabCompany = false;
     this.tabFamily = false;
     this.tabInsurance = true;
-}
+  }
 
 
 
