@@ -5,9 +5,6 @@ const walletTransModel = require('../../custom-models/wallet-transaction-model')
 const Client = require('node-rest-client').Client;
 const request = require('request');
 const requestPromise = require('request-promise');
-const logger = require('winston');
-const console = require('console');
-const rxjs = require('rxjs');
 
 
 class FundWalletService {
@@ -27,19 +24,12 @@ class FundWalletService {
   }
 
   async create(data, params) {
-    console.log('----------data---------');
-    console.log(data);
-    console.log('----------End data---------');
-    console.log('----------params---------');
-    console.log(params);
-    console.log('----------End params---------');
-    
     const facilityService = this.app.service('facilities');
     const employeeService = this.app.service('employees');
     const peopleService = this.app.service('people');
     const paymentService = this.app.service('payments');
 
-    // return new Promise(function(resolve, reject) {
+
     const accessToken = params.accessToken; /* Not required */
     if (accessToken !== undefined) {
       const ref = data.ref; /* Not required. This is for e-payment */
@@ -72,8 +62,6 @@ class FundWalletService {
           if (parsedResponse.status === 'success') {
             paymentRes.isActive = true;
             paymentRes.paymentResponse = parsedResponse.data;
-            console.log('Success 1');
-            // Update payment record.
             const updatedPayment = await paymentService.update(paymentRes._id, paymentRes);
 
             if (entity !== undefined && entity.toLowerCase() === 'person') {
@@ -98,9 +86,7 @@ class FundWalletService {
               return personUpdate;
             } else if (entity !== undefined && entity.toLowerCase() === 'facility') {
               const facility = await facilityService.get(facilityId);
-              console.log('----------facility---------***********************************************');
-              console.log(facility);
-              console.log('----------End facility---------************************');
+            
               const userWallet = facility.wallet;
               const cParam = {
                 amount: amount,
@@ -119,14 +105,14 @@ class FundWalletService {
               const facilityUpdate = await facilityService.update(facility._id, facility);
               return facilityUpdate;
             }
-          }else{
+          } else {
             return new Error('There was an error while verifying this payment');
           }
         } else if (paymentRoute !== undefined && paymentRoute.toLowerCase() === 'paystack') {
           paymentService.create(paymentPayload).then(payment => {
             let url = process.env.PAYSTACK_VERIFICATION_URL + data.ref.trxref;
             var client = new Client();
-            var args = { 
+            var args = {
               headers: {
                 Authorization: 'Bearer' + process.env.PAYSTACK_SECRET_KEY
               }
@@ -135,11 +121,9 @@ class FundWalletService {
               if (data.status === 'success') {
                 payment.isActive = true;
                 payment.paymentResponse = data;
-                // Update payment record.
                 paymentService.update(payment._id, payment).then(updatedPayment => {
 
                   peopleService.get(data.destinationId, {}).then(person => {
-                    // Update person wallet.
                     let param = {
                       transactionType: 'Cr',
                       wallet: person.wallet
@@ -148,9 +132,7 @@ class FundWalletService {
                     person.ledgerBalance = parseFloat(person.ledgerBalance) + parseFloat(data.amount);
                     peopleService.update(person._id, person).then(personUpdate => {
                       return personUpdate;
-                      // resolve(personUpdate);
                     }).catch(err => {
-                      // reject(err);
                     });
                   });
                 });
@@ -158,7 +140,6 @@ class FundWalletService {
 
             });
           }).catch(err => {
-            // reject(err);
           });
         } else {
           return false;
@@ -177,7 +158,6 @@ class FundWalletService {
       };
       return data;
     }
-    // });
   }
 
   verifyPayment(url, secKey, ref) {
@@ -218,7 +198,6 @@ class FundWalletService {
 function transaction(wallet, param) {
   const prevAmount = wallet.balance;
   const ledgerBalance = wallet.ledgerBalance;
-  // Update person wallet.
   let transaction = {
     transactionType: param.transactionType,
     transactionMedium: param.transactionMedium,
