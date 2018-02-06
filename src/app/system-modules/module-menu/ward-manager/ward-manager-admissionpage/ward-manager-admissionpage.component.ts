@@ -6,6 +6,7 @@ import { Facility, InPatient, WardTransfer, User } from '../../../../models/inde
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { WardEmitterService } from '../../../../services/facility-manager/ward-emitter.service';
 import * as myGlobals from '../../../../shared-module/helpers/global-config';
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 
 @Component({
   selector: 'app-ward-manager-admissionpage',
@@ -43,13 +44,36 @@ export class WardManagerAdmissionpageComponent implements OnInit {
     private _locker: CoolLocalStorage,
     private _wardEventEmitter: WardEmitterService,
     private _inPatientService: InPatientService,
-    private facilityService: FacilitiesService // private gvariable: globalConfig
+    private facilityService: FacilitiesService,
+    private _authFacadeService: AuthFacadeService
   ) {
     this._inPatientListService.listenerCreate.subscribe(payload => {
       // this.getWaitingList(this.selectedWard);
     });
     this._inPatientListService.listenerUpdate.subscribe(payload => {
       // this.getWaitingList(this.selectedWard);
+    });
+
+    this._authFacadeService.getLogingEmployee().then((res: any) => {
+      if (!!res._id) {
+        this.employeeDetails = res;
+        if (this.employeeDetails.wardCheckIn.length > 0) {
+          const wardCheckedIn = this.employeeDetails.wardCheckIn.filter(x => x.isOn)[0];
+
+          const wardType = {
+            type: 'ward',
+            typeObject: wardCheckedIn
+          };
+          this.getWaitingList(wardType);
+          this.getTransferInList(wardType);
+          this.getDischargeList(wardType);
+          this.getTransferOutList(wardType);
+        }
+      } else {
+        this._notification('Error', 'Couldn\'t get Logged in user! Please try again later');
+      }
+    }).catch(err => {
+      console.log(err);
     });
   }
 
@@ -68,22 +92,20 @@ export class WardManagerAdmissionpageComponent implements OnInit {
       this.getTransferOutList(val);
     });
 
-    if (this.selectedWard === undefined) {
-      if (this.employeeDetails.wardCheckIn.length > 0) {
-        const wardCheckedIn = this.employeeDetails.wardCheckIn.filter(
-          x => x.isOn
-        )[0];
+    // if (this.selectedWard === undefined) {
+    //   if (this.employeeDetails.wardCheckIn.length > 0) {
+    //     const wardCheckedIn = this.employeeDetails.wardCheckIn.filter(x => x.isOn)[0];
 
-        const wardType = {
-          type: 'ward',
-          typeObject: wardCheckedIn
-        };
-        this.getWaitingList(wardType);
-        this.getTransferInList(wardType);
-        this.getDischargeList(wardType);
-        this.getTransferOutList(wardType);
-      }
-    }
+    //     const wardType = {
+    //       type: 'ward',
+    //       typeObject: wardCheckedIn
+    //     };
+    //     this.getWaitingList(wardType);
+    //     this.getTransferInList(wardType);
+    //     this.getDischargeList(wardType);
+    //     this.getTransferOutList(wardType);
+    //   }
+    // }
   }
 
   // newAdmissionTab() {
