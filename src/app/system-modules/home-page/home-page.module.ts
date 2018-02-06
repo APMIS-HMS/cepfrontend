@@ -6,6 +6,8 @@ import { CommonModule } from '@angular/common';
 import { HomePageComponent } from './home-page.component';
 import { HomePageHomeComponent } from './home-page-home.component';
 import { PersonLandingComponent } from './person-landing/person-landing.component';
+import { PersonScheduleAppointmentComponent } from './person-landing/person-schedule-appointment/person-schedule-appointment.component';
+import { BiodataPopupComponent } from './biodata-popup/biodata-popup.component';
 
 @NgModule({
   imports: [
@@ -18,6 +20,8 @@ import { PersonLandingComponent } from './person-landing/person-landing.componen
     HomePageComponent,
     HomePageHomeComponent,
     PersonLandingComponent,
+    PersonScheduleAppointmentComponent,
+    BiodataPopupComponent,
   ]
 })
 export class HomePageModule { }

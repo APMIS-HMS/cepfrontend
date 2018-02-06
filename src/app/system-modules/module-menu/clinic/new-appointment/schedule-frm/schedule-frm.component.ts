@@ -122,7 +122,7 @@ export class ScheduleFrmComponent implements OnInit {
             if (filterClinic.length > 0) {
                 this.clinic.setValue(filterClinic[0]);
             }
-
+ 
             this.provider.setValue(payload.providerDetails);
             this.selectedPatient = payload.patientDetails;
 

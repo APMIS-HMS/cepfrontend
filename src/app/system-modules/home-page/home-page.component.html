@@ -1,37 +1,4 @@
 <div class="portal-wrap">
-    <!-- <app-system-module></app-system-module> -->
-
-    <ul class="pg-menuWrap">
-      <li (click)="changeRoute('home')" [class.pg-menuActive]="homeContentArea">
-          <i class="fa fa-home" aria-hidden="true"></i> Home</li>
-      <li (click)="changeRoute('medical-records')" [class.pg-menuActive]="docsContentArea">
-          <i class="fa fa-folder-open" aria-hidden="true"></i> Medical Records</li>
-      <li (click)="changeRoute('appointment')" [class.pg-menuActive]="appointmentContentArea">
-          <i class="fa fa-calendar" aria-hidden="true"></i> Appointment</li>
-      <li (click)="changeRoute('prescription')" [class.pg-menuActive]="prescriptionContentArea">
-          <i class="fa fa-plus-square" aria-hidden="true"></i> Prescription</li>
-      <li (click)="changeRoute('consultation')" [class.pg-menuActive]="consultationContentArea">
-          <i class="fa fa-user-md" aria-hidden="true"></i> Consultation</li>
-      <li (click)="changeRoute('payment')" [class.pg-menuActive]="paymentContentArea">
-          <i class="fa fa-th-large" aria-hidden="true"></i> Payment</li> 
-  </ul>
-  <div class="pgMenu-wrapa">
-      <i (click)="pgMenu_click()" class="fa fa-chevron-down pgMenu-ico" aria-hidden="true"></i>
-      <ul *ngIf="pgMenuToggle"  class="pg-menuWrap-mobile">
-        <li (click)="changeRoute('home')" [class.pg-menuActive]="homeContentArea">
-            <i class="fa fa-home" aria-hidden="true"></i> Home</li>
-        <li (click)="changeRoute('medical-records')" [class.pg-menuActive]="docsContentArea">
-            <i class="fa fa-folder-open" aria-hidden="true"></i> Medical Records</li>
-        <li (click)="changeRoute('appointment')" [class.pg-menuActive]="appointmentContentArea">
-            <i class="fa fa-calendar" aria-hidden="true"></i> Appointment</li>
-        <li (click)="changeRoute('prescription')" [class.pg-menuActive]="prescriptionContentArea">
-            <i class="fa fa-plus-square" aria-hidden="true"></i> Prescription</li>
-        <li (click)="changeRoute('consultation')" [class.pg-menuActive]="consultationContentArea">
-            <i class="fa fa-user-md" aria-hidden="true"></i> Consultation</li>
-        <li (click)="changeRoute('payment')" [class.pg-menuActive]="paymentContentArea">
-            <i class="fa fa-credit-card" aria-hidden="true"></i> Payment</li>
-      </ul>
-  </div>
 
   <div class="content-sect">
 
@@ -46,47 +13,66 @@
           </div>
     
           <div class="basic-info-wrap">
-            <div class="basic-info-name">Jonathan Nelson</div>
+            <div class="basic-info-name">DR. Jonathan Nelson</div>
             <div class="basic-info-others"><i class="fa fa-envelope-o" aria-hidden="true"></i>jonathan.nelson@gmail.com</div>
             <div class="basic-info-others"><i class="fa fa-phone" aria-hidden="true"></i>080999009988</div>
+            <div class="basic-info-others">AR-22100</div>
           </div>
-        </div>
-    
-        <div class="facility-count-sect card-seperator clickable-sect">
-          <div class="facility-count">3</div>
-          <div class="count-label">My Work Places</div>
-    
-          <ul class="work-places-list shadow-RB animated pulse">
-            <li class="work-places-item">
-              <div class="wp-img-wrap">
-                <img src="../../../../assets/images/logos/lagoon.png">
-              </div>
-              <div class="wp-name">
-                Lagoon Hospital
-              </div>
-            </li>
-    
-            <li class="work-places-item">
-              <div class="wp-img-wrap">
-                <img src="../../../../assets/images/logos/microsoft.png">
-              </div>
-              <div class="wp-name">
-                Light Hospital
-              </div>
-            </li>
-    
-            <li class="work-places-item">
-              <div class="wp-img-wrap">
-                <img src="../../../../assets/images/logos/cocacola.png">
-              </div>
-              <div class="wp-name">
-                Continental Hospital
-              </div>
-            </li>
-          </ul>
+
+          <div (click)="basicData_show()" class="profile-cta">My Profile</div>
         </div>
       </div>
     
+      <div class="pp-card shadow-grey">
+        <div class="card-title">My Work Places</div>
+        <ul class="feed-ul">
+          <li class="feed-li">
+            <div class="fac-wrap">
+              <div class="fac-notfc">3</div>
+              <div class="fac-img-wrap">
+                <img src="../../../assets/images/logos/default.png">
+              </div>
+              <div class="fac-data">
+                <div class="fac-name">Continental Hospital</div>
+                <div class="fac-others">
+                  <div>Department</div>
+                  <div>Unit</div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="feed-li">
+            <div class="fac-wrap">
+              <div class="fac-img-wrap">
+                <img src="../../../assets/images/logos/default.png">
+              </div>
+              <div class="fac-data">
+                <div class="fac-name">Lagoon Hospital</div>
+                <div class="fac-others">
+                  <div>Department</div>
+                  <div>Unit</div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="feed-li">
+            <div class="fac-wrap">
+              <div class="fac-notfc">10</div>  
+              <div class="fac-img-wrap">
+                <img src="../../../assets/images/logos/default.png">
+              </div>
+              <div class="fac-data">
+                <div class="fac-name">Lagos State University Teaching Hospital</div>
+                <div class="fac-others">
+                  <div>Department</div>
+                  <div>Unit</div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div> 
+
       <div class="pp-card shadow-grey">
         <div class="card-title">Activities Feed</div>
         <ul class="feed-ul">
@@ -105,8 +91,46 @@
         </ul>
       </div> 
     </div>
+
     <div class="mid-sect">
-      <app-person-landing class="content-wrap"></app-person-landing>
+      <div class="tabs">
+        <div (click)="tab1_click()" class="pg-tab" [class.pg-tab-active]="tab1">Work Space</div>
+        <div (click)="tab2_click()" class="pg-tab" [class.pg-tab-active]="tab2">Healthcare Space</div>
+      </div>
+      <div *ngIf="tab1">
+        <!-- <ul class="pg-menuWrap">
+          <li (click)="changeRoute('home')" [class.pg-menuActive]="homeContentArea">
+              <i class="fa fa-home" aria-hidden="true"></i> Home</li>
+          <li (click)="changeRoute('medical-records')" [class.pg-menuActive]="docsContentArea">
+              <i class="fa fa-folder-open" aria-hidden="true"></i> Medical Records</li>
+          <li (click)="changeRoute('prescription')" [class.pg-menuActive]="prescriptionContentArea">
+              <i class="fa fa-plus-square" aria-hidden="true"></i> Prescription</li>
+          <li (click)="changeRoute('consultation')" [class.pg-menuActive]="consultationContentArea">
+              <i class="fa fa-user-md" aria-hidden="true"></i> Consultation</li>
+          <li (click)="changeRoute('payment')" [class.pg-menuActive]="paymentContentArea">
+              <i class="fa fa-th-large" aria-hidden="true"></i> Payment</li> 
+        </ul>
+        <div class="pgMenu-wrapa">
+            <i (click)="pgMenu_click()" class="fa fa-chevron-down pgMenu-ico" aria-hidden="true"></i>
+            <ul *ngIf="pgMenuToggle"  class="pg-menuWrap-mobile">
+              <li (click)="changeRoute('home')" [class.pg-menuActive]="homeContentArea">
+                  <i class="fa fa-home" aria-hidden="true"></i> Home</li>
+              <li (click)="changeRoute('medical-records')" [class.pg-menuActive]="docsContentArea">
+                  <i class="fa fa-folder-open" aria-hidden="true"></i> Medical Records</li>
+              <li (click)="changeRoute('prescription')" [class.pg-menuActive]="prescriptionContentArea">
+                  <i class="fa fa-plus-square" aria-hidden="true"></i> Prescription</li>
+              <li (click)="changeRoute('consultation')" [class.pg-menuActive]="consultationContentArea">
+                  <i class="fa fa-user-md" aria-hidden="true"></i> Consultation</li>
+              <li (click)="changeRoute('payment')" [class.pg-menuActive]="paymentContentArea">
+                  <i class="fa fa-credit-card" aria-hidden="true"></i> Payment</li>
+            </ul>
+        </div> -->
+        <app-person-landing></app-person-landing>
+      </div>
     </div>
   </div>
+</div>
+
+<div *ngIf="basicData_popup" class="modal-overlay"> 
+    <app-biodata-popup (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-biodata-popup>
 </div>

@@ -9,6 +9,9 @@ import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, Naviga
 export class HomePageComponent implements OnInit {
 
   pgMenuToggle = false;
+  basicData_popup = false;
+  tab1 = true;
+  tab2 = false;
 
   constructor(private router: Router) { }
 
@@ -29,6 +32,20 @@ export class HomePageComponent implements OnInit {
     if(value == ''){
       // this.dashboardContentArea = false;
     } else if(value == 'employees'){}
+  }
+  tab1_click(){
+    this.tab1 = true;
+    this.tab2 = false;
+  }
+  tab2_click(){
+    this.tab1 = false;
+    this.tab2 = true;
+  }
+  basicData_show(){
+    this.basicData_popup = true;
+  }
+  close_onClick(){
+    this.basicData_popup = false;
   }
 
 }
