@@ -173,16 +173,18 @@ export class RightTabComponent implements OnInit {
     }
     getPastAppointments() {
         this.pastAppointments = [];
-        Observable.fromPromise(this.appointmentService.find({ query: { 'patientId._id': this.patient._id, isPast: true } }))
+        Observable.fromPromise(this.appointmentService.findAppointment({ query: { 'patientId': this.patient._id, isPast: true } }))
             .subscribe((payload: any) => {
                 this.pastAppointments = payload.data;
+                console.log(this.pastAppointments)
             })
     }
     getFutureAppointments() {
         this.futureAppointments = [];
-        Observable.fromPromise(this.appointmentService.find({ query: { 'patientId._id': this.patient._id, isFuture: true } }))
+        Observable.fromPromise(this.appointmentService.findAppointment({ query: { 'patientId': this.patient._id, isFuture: true } }))
             .subscribe((payload: any) => {
                 this.futureAppointments = payload.data;
+                console.log(this.futureAppointments)
             })
     }
     addProblem_show() {

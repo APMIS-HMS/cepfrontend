@@ -162,7 +162,7 @@ export class PatientVitalsComponent implements OnInit {
       { data: [], label: '' }
 
     ];
-    this._DocumentationService.find({ query: { 'personId._id': this.patient.personId } }).then((payload: any) => {
+    this._DocumentationService.find({ query: { 'personId': this.patient.personId } }).then((payload: any) => {
       console.log(payload);
       if (payload.data.length !== 0) {
         let len2 = payload.data[0].documentations.length - 1;
@@ -232,7 +232,7 @@ export class PatientVitalsComponent implements OnInit {
   }
 
   setReturnValue(e) {
-    this._DocumentationService.find({ query: { 'personId._id': this.patient.personId } }).then((payload: any) => {
+    this._DocumentationService.find({ query: { 'personId': this.patient.personId } }).then((payload: any) => {
       if (payload.data.length !== 0) {
         let len2 = payload.data[0].documentations.length - 1;
         for (let k = len2; k >= 0; k--) {

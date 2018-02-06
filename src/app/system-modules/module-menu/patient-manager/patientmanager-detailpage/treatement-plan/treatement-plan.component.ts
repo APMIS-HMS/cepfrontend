@@ -93,7 +93,7 @@ export class TreatementPlanComponent implements OnInit {
           this.documentationService.find({
             query:
               {
-                'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
+                'personId': this.patient.personId, 'documentations.patientId': this.patient._id,
               }
           }).subscribe((mload: any) => {
             if (mload.data.length > 0) {

@@ -67,8 +67,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         body: payload,
       };
 
-      console.log(this.patient);
-      console.log(this.loginEmployee);
       doc.createdBy = this.loginEmployee.personDetails.title + ' ' + this.loginEmployee.personDetails.lastName + ' ' + this.loginEmployee.personDetails.firstName;
       doc.facilityId = this.selectedMiniFacility._id;
       doc.facilityName = this.selectedMiniFacility.name;
@@ -77,9 +75,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       this.patientDocumentation.documentations.push(doc);
       // Get the raw orderset data and send to different destination.
       this._listenAndSaveRawOrderSetData();
-      console.log(this.patientDocumentation);
+
       this.documentationService.update(this.patientDocumentation).then(pay => {
-        console.log(pay);
         this.getPersonDocumentation();
         this._notification('Success', 'Documentation successfully saved!');
       });
@@ -204,7 +201,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
           this._prescriptionService.create(prescriptions).then(pRes => {
             this._notification('Success', 'Prescription has been sent!');
           }).catch(err => {
-            console.log(err);
             this._notification('Error', 'There was an error creating prescription. Please try again later.');
           });
         } else {
@@ -362,10 +358,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         this.documents.push(documentation);
       } else {
         if (documentation.document.documentType.isSide === true && documentation.document.documentType.title === 'Problems') {
-          console.log(documentation);
           this.documents.push(documentation);
         } else {
-          console.log(documentation);
           this.documents.push(documentation);
         }
       }

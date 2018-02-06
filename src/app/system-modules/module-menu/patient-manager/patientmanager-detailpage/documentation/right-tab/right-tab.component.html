@@ -454,14 +454,14 @@
                                 <td>{{appointment.startDate | date:'short'}}</td>
                                 <td>
                                     <div class="empWrap">
-                                        <div class="list-img" *ngIf="appointment?.doctorId !== null">
-                                            <img *ngIf="appointment?.doctorId?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
-                                            <div *ngIf="appointment?.doctorId?.employeeDetails?.profileImageObject !== undefined">
-                                                <img class="shadow" [src]="facilityService.transform(appointment?.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
+                                        <div class="list-img" *ngIf="appointment?.providerDetails !== null">
+                                            <img *ngIf="appointment?.providerDetails?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
+                                            <div *ngIf="appointment?.providerDetails?.personDetails?.profileImageObject !== undefined">
+                                                <img class="shadow" [src]="facilityService.transform(appointment?.providerDetails?.personDetails?.profileImageObject?.thumbnail)">
                                             </div>
                                         </div>
                                         <div>
-                                            <div class="list-label">{{appointment.doctorId?.employeeDetails.personFullName}}</div>
+                                            <div class="list-label">{{appointment.providerDetails?.personDetails.lastName}} {{appointment.providerDetails?.personDetails.firstName}}</div>
                                         </div>
                                     </div>
                                 </td>
@@ -506,14 +506,14 @@
                                 <td>{{appointment.startDate | date:'short'}}</td>
                                 <td>
                                     <div class="empWrap">
-                                        <div class="list-img" *ngIf="appointment?.doctorId !== null">
-                                            <img *ngIf="appointment?.doctorId?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
-                                            <div *ngIf="appointment?.doctorId?.employeeDetails?.profileImageObject !== undefined">
-                                                <img class="shadow" [src]="facilityService.transform(appointment?.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
+                                        <div class="list-img" *ngIf="appointment?.providerDetails !== null">
+                                            <img *ngIf="appointment?.providerDetails?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
+                                            <div *ngIf="appointment?.providerDetails?.personDetails?.profileImageObject !== undefined">
+                                                <img class="shadow" [src]="facilityService.transform(appointment?.providerDetails?.personDetails?.profileImageObject?.thumbnail)">
                                             </div>
                                         </div>
                                         <div>
-                                            <div class="list-label">{{appointment.doctorId?.employeeDetails.personFullName}}</div>
+                                            <div class="list-label">{{appointment.providerDetails?.personDetails.personFullName}}</div>
                                         </div>
                                     </div>
                                 </td>

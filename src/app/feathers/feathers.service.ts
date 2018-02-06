@@ -25,7 +25,6 @@ export class SocketService {
   private _app: any;
 
   errorHandler = error => {
-    console.log('auth error')
     this._app.authenticate({
       strategy: 'local',
       email: 'admin@feathersjs.com',
@@ -96,7 +95,6 @@ export class RestService {
     }
   }
   loginIntoApp(query) {
-    console.log(query);
     return this._app.authenticate({
       "strategy": 'local',
       'email': query.email,

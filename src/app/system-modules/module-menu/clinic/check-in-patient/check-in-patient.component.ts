@@ -192,7 +192,6 @@ getSchedules(){
       }
     })
       .then(payload => {
-        console.log(payload);
         this.loading = false;
         this.checkedInAppointments = payload.data;
       });
@@ -393,11 +392,9 @@ getSchedules(){
     this.slideTimeline = false;
   }
 
-  goToPatientPage(appointment, append) {
-    console.log(appointment.patientId);
+  goToPatientPage(appointment, append) { //TO DO - 1. While is this taking time.  2. Move this to backend
     if (append === true) {
       const isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
-      console.log(isOnList);
       this.locker.setObject('patient', appointment.patientDetails);
       this.locker.setObject('appointment', '');
       this.locker.setObject('appointment', appointment);
