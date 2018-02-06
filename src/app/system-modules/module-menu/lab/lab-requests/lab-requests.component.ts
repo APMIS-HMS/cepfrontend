@@ -31,7 +31,7 @@ export class LabRequestsComponent implements OnInit {
   paramDiagnosis = "";
 
   selectedFacility: Facility = <Facility>{};
-  apmisLookupUrl = 'patient';
+  apmisLookupUrl = 'patients';
   isValidateForm = false;
   apmisLookupText = '';
   apmisLookupQuery: any = {};
@@ -102,7 +102,8 @@ export class LabRequestsComponent implements OnInit {
               'facilityId._id': this.selectedFacility._id,
               name: { $regex: -1, '$options': 'i' }
             }
-          }).subscribe(payload => {
+          }).then(payload => {
+            console.log(payload);
             this.investigations = [];
             payload.data.forEach(item => {
               const investigation: InvestigationModel = <InvestigationModel>{};
@@ -127,14 +128,16 @@ export class LabRequestsComponent implements OnInit {
                 this.investigations.push(investigation);
               }
             })
-          })
+          }).catch(err => {
+            console.log(err);
+          });
         } else {
           this.investigationService.find({
             query: {
               'facilityId._id': this.selectedFacility._id,
               name: { $regex: value, '$options': 'i' }
             }
-          }).subscribe(payload => {
+          }).then(payload => {
             this.investigations = [];
             payload.data.forEach(item => {
               const investigation: InvestigationModel = <InvestigationModel>{};
@@ -159,9 +162,10 @@ export class LabRequestsComponent implements OnInit {
                 this.investigations.push(investigation);
               }
             })
-          })
+          }).catch(err => {
+            console.log(err);
+          });
         }
-
       })
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.frmNewRequest = this.formBuilder.group({
