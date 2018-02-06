@@ -6,6 +6,8 @@ const Client = require('node-rest-client').Client;
 const request = require('request');
 const requestPromise = require('request-promise');
 const logger = require('winston');
+const console = require('console');
+const rxjs = require('rxjs');
 
 
 class FundWalletService {
@@ -25,6 +27,13 @@ class FundWalletService {
   }
 
   async create(data, params) {
+    console.log('----------data---------');
+    console.log(data);
+    console.log('----------End data---------');
+    console.log('----------params---------');
+    console.log(params);
+    console.log('----------End params---------');
+    
     const facilityService = this.app.service('facilities');
     const employeeService = this.app.service('employees');
     const peopleService = this.app.service('people');
@@ -63,6 +72,8 @@ class FundWalletService {
           if (parsedResponse.status === 'success') {
             paymentRes.isActive = true;
             paymentRes.paymentResponse = parsedResponse.data;
+            console.log('Success 1');
+            // Update payment record.
             const updatedPayment = await paymentService.update(paymentRes._id, paymentRes);
 
             if (entity !== undefined && entity.toLowerCase() === 'person') {
@@ -87,6 +98,9 @@ class FundWalletService {
               return personUpdate;
             } else if (entity !== undefined && entity.toLowerCase() === 'facility') {
               const facility = await facilityService.get(facilityId);
+              console.log('----------facility---------***********************************************');
+              console.log(facility);
+              console.log('----------End facility---------************************');
               const userWallet = facility.wallet;
               const cParam = {
                 amount: amount,
@@ -110,7 +124,7 @@ class FundWalletService {
           paymentService.create(paymentPayload).then(payment => {
             let url = process.env.PAYSTACK_VERIFICATION_URL + data.ref.trxref;
             var client = new Client();
-            var args = {
+            var args = { 
               headers: {
                 Authorization: 'Bearer' + process.env.PAYSTACK_SECRET_KEY
               }
