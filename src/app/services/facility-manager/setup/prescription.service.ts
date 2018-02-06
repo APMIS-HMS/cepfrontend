@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class PrescriptionService {
   public _socket;
+  public _autorizeSocket;
   private _rest;
   constructor(
     private _socketService: SocketService,
@@ -11,6 +12,7 @@ export class PrescriptionService {
   ) {
     this._rest = _restService.getService('prescriptions');
     this._socket = _socketService.getService('prescriptions');
+    this._autorizeSocket = _socketService.getService('authorize-prescription');
     this._socket.timeout = 50000;
     this._socket.on('created', function (gender) {
     });
@@ -28,6 +30,7 @@ export class PrescriptionService {
   }
 
   create(prescription: any) {
+    // return this._rest.create(prescription);
     return this._socket.create(prescription);
   }
 
@@ -37,6 +40,10 @@ export class PrescriptionService {
 
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
+  }
+
+  authorizePresciption(prescription) {
+    return this._autorizeSocket.create(prescription);
   }
 
 }
