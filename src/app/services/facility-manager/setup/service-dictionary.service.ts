@@ -17,8 +17,8 @@ export class ServiceDictionaryService {
     private sanitizer: DomSanitizer,
     private locker: CoolLocalStorage
   ) {
-    this._rest = _restService.getService('servicedictioneries');
-    this._socket = _socketService.getService('servicedictioneries');
+    this._rest = _restService.getService('tag-dictioneries');
+    this._socket = _socketService.getService('tag-dictioneries');
     this._restLogin = _restService.getService('auth/local');
     this.listner = Observable.fromEvent(this._socket, 'updated');
     this.createListener = Observable.fromEvent(this._socket, 'created');

@@ -1,3 +1,4 @@
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 import { Component, OnInit, EventEmitter, Input } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
@@ -107,7 +108,7 @@ export class ScheduleFrmComponent implements OnInit {
         private appointmentService: AppointmentService, private patientService: PatientService, private router: Router,
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
         private employeeService: EmployeeService, private workSpaceService: WorkSpaceService, private timeZoneService: TimezoneService,
-        private orderStatusService: OrderStatusService,
+        private orderStatusService: OrderStatusService, private systemModuleService: SystemModuleService,
         private authFacadeService: AuthFacadeService,
         private locationService: LocationService, private facilityServiceCategoryService: FacilitiesServiceCategoryService,
         private _smsAlertService: SmsAlertService,
@@ -118,10 +119,6 @@ export class ScheduleFrmComponent implements OnInit {
             this.updateAppointment = true;
             this.saveAppointment = false;
             this.savingAppointment = false;
-            const filterClinic = this.clinics.filter(x => x._id === payload.clinicId._id);
-            if (filterClinic.length > 0) {
-                this.clinic.setValue(filterClinic[0]);
-            }
 
             this.provider.setValue(payload.providerDetails);
             this.selectedPatient = payload.patientDetails;
@@ -298,14 +295,19 @@ export class ScheduleFrmComponent implements OnInit {
             }
 
             const statusIndex = this.orderStatuses.findIndex(x => x.name === this.appointment.orderStausId);
-            if(statusIndex > -1){
+            if (statusIndex > -1) {
                 this.status.setValue(this.orderStatuses[statusIndex]);
                 console.log('is')
             }
 
-            const categoryIndex = this.categoryServices.findIndex(x =>x.name === this.appointment.category);
-            if(categoryIndex > -1){
+            const categoryIndex = this.categoryServices.findIndex(x => x.name === this.appointment.category);
+            if (categoryIndex > -1) {
                 this.category.setValue(this.categoryServices[categoryIndex]);
+            }
+
+            const clinicIndex = this.clinics.findIndex(x => x.clinicName === this.appointment.clinicId);
+            if (clinicIndex > -1) {
+                this.clinic.setValue(this.clinics[clinicIndex]);
             }
         }
     }
@@ -586,6 +588,7 @@ export class ScheduleFrmComponent implements OnInit {
 
     scheduleAppointment() {
         if (this.dateCtrl.valid && this.patient.valid && this.type.valid && this.category.valid && this.clinic.valid) {
+            this.systemModuleService.on();
             this.disableBtn = true;
             this.updateAppointment = false;
             this.saveAppointment = false;
@@ -645,7 +648,13 @@ export class ScheduleFrmComponent implements OnInit {
                                 this.updateAppointment = false;
                                 this.saveAppointment = true;
                                 this.savingAppointment = false;
+                                this.systemModuleService.off();
                                 this.router.navigate(['/dashboard/clinic/appointment']);
+                                this.systemModuleService.off();
+                                this.systemModuleService.announceSweetProxy('Appointment updated successfully', 'success');
+                            },error =>{
+                                this.systemModuleService.off();
+                                this.systemModuleService.announceSweetProxy('Clinic Appointment updated successfully but telemedice appointment not updated or created', 'warning');
                             })
                     } else {
                         this.appointmentService.patientAnnounced(this.patient);
@@ -663,6 +672,8 @@ export class ScheduleFrmComponent implements OnInit {
                             clinic.name,
                             this.selectedPatient.personDetails.email);
                         this.router.navigate(['/dashboard/clinic/appointment']);
+                        this.systemModuleService.off();
+                        this.systemModuleService.announceSweetProxy('Appointment updated successfully', 'success');
                     }
 
 
@@ -670,6 +681,8 @@ export class ScheduleFrmComponent implements OnInit {
                     this.savingAppointment = false;
                     this.disableBtn = false;
                     this.loadIndicatorVisible = false;
+                    this.systemModuleService.off();
+                    this.systemModuleService.announceSweetProxy('There was an error setting the appointment', 'error');
                 })
             } else {
                 this.appointmentService.create(this.appointment).then(payload => {
@@ -689,7 +702,12 @@ export class ScheduleFrmComponent implements OnInit {
                                     this.selectedClinic.name,
                                     this.selectedPatient.personDetails.email);
                                 this.router.navigate(['/dashboard/clinic/appointment']);
+                                this.systemModuleService.off();
+                                this.systemModuleService.announceSweetProxy('Appointment set successfully', 'success');
 
+                            },error =>{
+                                this.systemModuleService.off();
+                                this.systemModuleService.announceSweetProxy('Appointment set successfully but there was an error creating Telemedice appointment', 'warning');
                             })
                     } else {
                         this.disableBtn = true;
@@ -704,12 +722,18 @@ export class ScheduleFrmComponent implements OnInit {
                             clinic.name,
                             this.selectedPatient.personDetails.email);
                         this.router.navigate(['/dashboard/clinic/appointment']);
+                        this.systemModuleService.off();
+                        this.systemModuleService.announceSweetProxy('Appointment set successfully', 'success');
                     }
                 }, error => {
                     this.loadIndicatorVisible = false;
+                    this.systemModuleService.off();
+                    this.systemModuleService.announceSweetProxy('There was an error setting the appointment', 'error');
                 })
             }
         } else {
+            this.systemModuleService.off();
+            this.systemModuleService.announceSweetProxy('Some required field missing, please try again!', 'warning');
         }
     }
 

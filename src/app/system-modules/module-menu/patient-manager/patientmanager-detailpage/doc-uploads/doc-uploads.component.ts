@@ -30,7 +30,7 @@ export class DocUploadsComponent implements OnInit {
     private locker: CoolLocalStorage) {
     this.docUploadService.listner.subscribe(payload => {
       this.getDocuments();
-    })
+    });
   }
 
   ngOnInit() {
@@ -39,6 +39,7 @@ export class DocUploadsComponent implements OnInit {
 
   getDocuments(){
     let patient = <any>this.locker.getObject('patient');
+    console.log(patient);
     this.docUploadService.socketFind({query: {
       facilityId: this.facilityService.getSelectedFacilityId()._id,
       patientId: patient._id,
