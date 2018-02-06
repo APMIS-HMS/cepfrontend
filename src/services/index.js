@@ -129,6 +129,7 @@ const severity = require('./severity/severity.service.js');
 const insuranceEnrollees = require('./insurance-enrollees/insurance-enrollees.service.js');
 const familyDependants = require('./family-dependants/family-dependants.service.js');
 const vitals = require('./vitals/vitals.service.js');
+const listOfStores = require('./list-of-stores/list-of-stores.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -261,4 +262,5 @@ module.exports = function (app) {
   app.configure(insuranceEnrollees);
   app.configure(familyDependants);
   app.configure(vitals);
+  app.configure(listOfStores);
 };
