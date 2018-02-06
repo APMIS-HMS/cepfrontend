@@ -32,7 +32,8 @@ export class LabCheckInComponent implements OnInit {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.loginEmployee = res;
       console.log(this.loginEmployee);
-      if (!!this.loginEmployee.workSpaces) {
+      console.log(this.loginEmployee.workSpaces);
+      if (!!this.loginEmployee.workSpaces && this.loginEmployee.workSpaces.length > 0) {
         this.loginEmployee.workSpaces.forEach(workspace => {
           if (workspace.isActive && workspace.locations.length > 0) {
             workspace.locations.forEach(x => {
