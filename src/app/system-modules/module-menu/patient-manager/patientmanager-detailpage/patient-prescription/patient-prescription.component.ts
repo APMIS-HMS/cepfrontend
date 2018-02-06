@@ -87,7 +87,7 @@ export class PatientPrescriptionComponent implements OnInit {
 
     ngOnInit() {
         this.facility = <Facility>this._locker.getObject('selectedFacility');
-        this.user = <User> this._locker.getObject('auth');
+        this.user = <User>this._locker.getObject('auth');
         this.employeeDetails = this._locker.getObject('loginEmployee');
 
         this.prescriptionItems.prescriptionItems = [];
@@ -132,27 +132,27 @@ export class PatientPrescriptionComponent implements OnInit {
         this._drugDetailsApi.find({ query: { 'productId': item.productId } }).then(res => {
             let sRes = res.data;
             if (res.status === 'success') {
-              if (!!sRes.ingredients && sRes.ingredients.length > 0) {
-                  this.selectedForm = sRes.form;
-                  this.selectedIngredients = sRes.ingredients;
-                  let drugName: string = sRes.form + ' ';
-                  let strength = '';
-                  const ingredientLength: number = sRes.ingredients.length;
-                  let index = 0;
-                  sRes.ingredients.forEach(element => {
-                      index++;
-                      drugName += element.name;
-                      strength += element.strength + element.strengthUnit;
+                if (!!sRes.ingredients && sRes.ingredients.length > 0) {
+                    this.selectedForm = sRes.form;
+                    this.selectedIngredients = sRes.ingredients;
+                    let drugName: string = sRes.form + ' ';
+                    let strength = '';
+                    const ingredientLength: number = sRes.ingredients.length;
+                    let index = 0;
+                    sRes.ingredients.forEach(element => {
+                        index++;
+                        drugName += element.name;
+                        strength += element.strength + element.strengthUnit;
 
-                      if (index !== ingredientLength) {
-                          drugName += '/';
-                          strength += '/';
-                      }
-                  });
-                  this.addPrescriptionForm.controls['drug'].setValue(drugName);
-                  this.addPrescriptionForm.controls['strength'].setValue(strength);
-                  this.addPrescriptionForm.controls['route'].setValue(sRes.route);
-              }
+                        if (index !== ingredientLength) {
+                            drugName += '/';
+                            strength += '/';
+                        }
+                    });
+                    this.addPrescriptionForm.controls['drug'].setValue(drugName);
+                    this.addPrescriptionForm.controls['strength'].setValue(strength);
+                    this.addPrescriptionForm.controls['route'].setValue(sRes.route);
+                }
             }
         }).catch(err => console.error(err));
     }
@@ -226,7 +226,7 @@ export class PatientPrescriptionComponent implements OnInit {
             this.disableAuthorizeRx = true;
             this.authorizeRx = 'Authorizing Rx... <i class="fa fa-spinner fa-spin"></i>';
             this.prescriptions.priorityId = value.priority;
-            this.prescriptions.priorityObject = { id: value.priority, name: value.priority  };
+            this.prescriptions.priorityObject = { id: value.priority, name: value.priority };
             this.prescriptions.totalCost = value.totalCost;
             this.prescriptions.totalQuantity = value.totalQuantity;
 
@@ -317,7 +317,7 @@ export class PatientPrescriptionComponent implements OnInit {
             this.priorities = res.data;
             const priority = res.data.filter(x => x.name.toLowerCase().includes('normal'));
             this.allPrescriptionsForm.controls['priority'].setValue(priority[0]._id);
-        }).catch(err =>  console.error(err));
+        }).catch(err => console.error(err));
     }
 
     private _getAllRoutes() {
@@ -388,5 +388,8 @@ export class PatientPrescriptionComponent implements OnInit {
             type: type,
             text: text
         });
+    }
+    onClickSavePrescription(value, valid) {
+
     }
 }

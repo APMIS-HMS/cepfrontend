@@ -1,14 +1,24 @@
 @import "../documentation.component.scss";
 
-.modal-baseWrap {
-    position: relative;
-    width: 80%;
-    height: 90%;
-    box-sizing: border-box;
-    background: #fff;
-    overflow: hidden;
-    padding: 50px;
-    border-radius: 7px;
+// .modal-baseWrap {
+//     position: relative;
+//     width: 80%;
+//     height: 90%;
+//     box-sizing: border-box;
+//     background: #fff;
+//     overflow: hidden;
+//     padding: 50px;
+//     border-radius: 7px;
+// }
+.modal-baseWrap{
+    width: 590px;
+    padding: 10px 50px;
+}
+.modal_title{
+    text-align: center;
+    border: 0;
+    width: 500px;
+    color: #fff;
 }
 .cont-wrap{
     width: 100%;

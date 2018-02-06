@@ -63,9 +63,7 @@ export class LoginComponent implements OnInit {
         password: this.frm_login.controls['password'].value
       };
       this.userService.login(query).then(result => {
-        console.log(result);
         this.userServiceFacade.authenticateResource().then(payload => {
-          console.log(payload)
           let auth = {
             data: result.user
           };
@@ -80,7 +78,6 @@ export class LoginComponent implements OnInit {
           });
         }, error => {
           this.systemModule.off();
-          console.log(error);
         }).catch(merr => {
           this.systemModule.off();
           this.frm_login.controls['password'].reset();

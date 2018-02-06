@@ -77,6 +77,7 @@ export class AppComponent implements OnInit {
       // this.systemModuleService.announceSweetProxy('Authentication is required, please log-in with your credentials', 'warning');
       this.router.navigate(['/']);
       this.locker.clear();
+      window.localStorage.clear();
     });
 
   }

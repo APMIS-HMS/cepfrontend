@@ -151,6 +151,7 @@ export class AppointmentComponent implements OnInit {
         this._getAppointments(clinicIds);
     }
 
+    
     _getAppointments(clinicIds: any) {
         this.loading = true;
         this.appointmentService.findAppointment({
