@@ -118,44 +118,41 @@ function addVitals(documentationsService, patientDocumentation, vitalObjs, req, 
       });
       console.log(5);
     }
-    if (k == 0) {
-      console.log(6);
-      if (!isExisting) {
-        console.log(7);
-        var doc = {};
-        console.log(9);
-        doc.facilityId = vitalObjs.facilityObj._id;
-        doc.facilityName = vitalObjs.facilityObj.name;
-        doc.createdBy = vitalObjs.employeeObj.personDetails.title + ' ' + vitalObjs.employeeObj.personDetails.lastName + ' ' + vitalObjs.employeeObj.personDetails.firstName;
-        doc.patientId = req.query.patientId;
-        doc.patientName = person.title + ' ' + person.lastName + ' ' + person.firstName;
-        doc.document = {
-          documentType: vitalObjs.documentType,
-          body: {
-            vitals: []
-          }
-        };
-        console.log(10);
-        doc.document.body.vitals.push({
-          pulseRate: vitalObjs.pulseRate,
-          respiratoryRate: vitalObjs.respiratoryRate,
-          temperature: vitalObjs.temperature,
-          bodyMass: vitalObjs.heightWeight,
-          bloodPressure: vitalObjs.bloodPressure,
-          abdominalCondition: vitalObjs.abdominalCondition,
-          updatedAt: new Date()
-        });
-        console.log(11);
-        patientDocumentation.documentations.push(doc);
-        console.log(12);
-      }
-      let docS = documentationsService.patch(patientDocumentation._id, {
-        documentations: patientDocumentation.documentations
-      });
-      console.log(13);
-      return vitalObjs;
-    }
   }
+  if (!isExisting) {
+    console.log(7);
+    var doc = {};
+    console.log(9);
+    doc.facilityId = vitalObjs.facilityObj._id;
+    doc.facilityName = vitalObjs.facilityObj.name;
+    doc.createdBy = vitalObjs.employeeObj.personDetails.title + ' ' + vitalObjs.employeeObj.personDetails.lastName + ' ' + vitalObjs.employeeObj.personDetails.firstName;
+    doc.patientId = req.query.patientId;
+    doc.patientName = person.title + ' ' + person.lastName + ' ' + person.firstName;
+    doc.document = {
+      documentType: vitalObjs.documentType,
+      body: {
+        vitals: []
+      }
+    };
+    console.log(10);
+    doc.document.body.vitals.push({
+      pulseRate: vitalObjs.pulseRate,
+      respiratoryRate: vitalObjs.respiratoryRate,
+      temperature: vitalObjs.temperature,
+      bodyMass: vitalObjs.heightWeight,
+      bloodPressure: vitalObjs.bloodPressure,
+      abdominalCondition: vitalObjs.abdominalCondition,
+      updatedAt: new Date()
+    });
+    console.log(11);
+    patientDocumentation.documentations.push(doc);
+    console.log(12);
+  }
+  let docS = documentationsService.patch(patientDocumentation._id, {
+    documentations: patientDocumentation.documentations
+  });
+  console.log(13);
+  return vitalObjs;
 }
 
 module.exports = function (options) {
