@@ -36,17 +36,17 @@ class Service {
     } else {
       if (findDocumentationsService.data[0].documentations.length === 0) {
         patientDocumentation = findDocumentationsService.data[0];
+        addVitals(documentationsService, patientDocumentation, vitalObjs, req, selectedPerson);
       } else {
         let findDocumentationsService_ = await documentationsService.find({
           query: {
-            'personId': req.query.personId,
-            'documentations.patientId': req.query.patientId,
+            'personId': req.query.personId
           }
         });
         if (findDocumentationsService_.data.length > 0) {
           patientDocumentation = findDocumentationsService_.data[0];
           addVitals(documentationsService, patientDocumentation, vitalObjs, req, selectedPerson);
-        }else{
+        } else {
           return new Error('Patient record not found!');
         }
 
@@ -95,36 +95,35 @@ function addVitals(documentationsService, patientDocumentation, vitalObjs, req, 
         updatedAt: new Date()
       });
     }
-    if (k == 0) {
-      if (!isExisting) {
-        var doc = {};
-        doc.facilityId = vitalObjs.facilityObj._id;
-        doc.facilityName = vitalObjs.facilityObj.name;
-        doc.createdBy = vitalObjs.employeeObj.personDetails.title +' '+vitalObjs.employeeObj.personDetails.lastName +' '+vitalObjs.employeeObj.personDetails.firstName;
-        doc.patientId = req.query.patientId;
-        doc.patientName = person.title + ' ' + person.lastName + ' ' + person.firstName;
-        doc.document = {
-          documentType: vitalObjs.documentType,
-          body: {
-            vitals: []
-          }
-        };
-        doc.document.body.vitals.push({
-          pulseRate: vitalObjs.pulseRate,
-          respiratoryRate: vitalObjs.respiratoryRate,
-          temperature: vitalObjs.temperature,
-          bodyMass: vitalObjs.heightWeight,
-          bloodPressure: vitalObjs.bloodPressure,
-          abdominalCondition: vitalObjs.abdominalCondition,
-          updatedAt: new Date()
-        });
-        patientDocumentation.documentations.push(doc);
-      }
-      documentationsService.patch(patientDocumentation._id, { documentations: patientDocumentation.documentations }).then(payload => {
-        return vitalObjs;
-      });
-    }
   }
+  if (!isExisting) {
+    var doc = {};
+    doc.facilityId = vitalObjs.facilityObj._id;
+    doc.facilityName = vitalObjs.facilityObj.name;
+    doc.createdBy = vitalObjs.employeeObj.personDetails.title + ' ' + vitalObjs.employeeObj.personDetails.lastName + ' ' + vitalObjs.employeeObj.personDetails.firstName;
+    doc.patientId = req.query.patientId;
+    doc.patientName = person.title + ' ' + person.lastName + ' ' + person.firstName;
+    doc.document = {
+      documentType: vitalObjs.documentType,
+      body: {
+        vitals: []
+      }
+    };
+    doc.document.body.vitals.push({
+      pulseRate: vitalObjs.pulseRate,
+      respiratoryRate: vitalObjs.respiratoryRate,
+      temperature: vitalObjs.temperature,
+      bodyMass: vitalObjs.heightWeight,
+      bloodPressure: vitalObjs.bloodPressure,
+      abdominalCondition: vitalObjs.abdominalCondition,
+      updatedAt: new Date()
+    });
+    patientDocumentation.documentations.push(doc);
+  }
+  let docS = documentationsService.patch(patientDocumentation._id, {
+    documentations: patientDocumentation.documentations
+  });
+  return vitalObjs;
 }
 
 module.exports = function (options) {
