@@ -125,6 +125,8 @@ const wardroomgroups = require('./wardroomgroups/wardroomgroups.service.js');
 const wardRoomPrices = require('./ward-room-prices/ward-room-prices.service.js');
 const saveAppointment = require('./save-appointment/save-appointment.service.js');
 const authorizePrescription = require('./authorize-prescription/authorize-prescription.service.js');
+const admitPatient = require('./admit-patient/admit-patient.service.js');
+const investigationSpecimens = require('./investigation-specimens/investigation-specimens.service.js');
 module.exports = function (app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -253,4 +255,6 @@ module.exports = function (app) {
   app.configure(wardRoomPrices);
   app.configure(saveAppointment);
   app.configure(authorizePrescription);
+  app.configure(admitPatient);
+  app.configure(investigationSpecimens);
 };

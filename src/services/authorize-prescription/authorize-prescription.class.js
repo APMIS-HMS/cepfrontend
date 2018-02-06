@@ -30,12 +30,6 @@ class Service {
         const facilityId = data.facilityId;
         const prescription = data;
 
-        console.log('-------- params -----------');
-        console.log(params);
-        console.log('-------- End params -----------');
-        console.log('-------- Data -----------');
-        console.log(data);
-        console.log('-------- End Data -----------');
         if (accessToken !== undefined) {
             const userRole = params.user.facilitiesRole.filter(x => x.facilityId === facilityId);
             if (userRole.length > 0) {
@@ -75,9 +69,7 @@ class Service {
                     }
                 } else {
                     const createPrescription = await prescriptionService.create(prescription);
-                    console.log('-------- createPrescription -----------');
-                    console.log(createPrescription);
-                    console.log('-------- End createPrescription -----------');
+
                     if (createPrescription._id !== undefined) {
                         return jsend.success(createPrescription);
                     } else {
