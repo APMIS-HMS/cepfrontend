@@ -1,3 +1,4 @@
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { Component, OnInit, EventEmitter, Output, Input, ElementRef } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
@@ -80,6 +81,7 @@ export class PatientPrescriptionComponent implements OnInit {
         private _drugListApi: DrugListApiService,
         private _drugDetailsApi: DrugDetailsService,
         private _billingService: BillingService,
+        private _authFacadeService:AuthFacadeService,
         private _medicationListService: MedicationListService
     ) {
 
@@ -88,7 +90,11 @@ export class PatientPrescriptionComponent implements OnInit {
     ngOnInit() {
         this.facility = <Facility>this._locker.getObject('selectedFacility');
         this.user = <User>this._locker.getObject('auth');
-        this.employeeDetails = this._locker.getObject('loginEmployee');
+
+        this._authFacadeService.getLogingEmployee().then((payload:any)=>{
+            this.employeeDetails = payload;
+        });
+
 
         this.prescriptionItems.prescriptionItems = [];
         this.durationUnits = DurationUnits;
@@ -198,7 +204,7 @@ export class PatientPrescriptionComponent implements OnInit {
             const prescription = <Prescription>{
                 facilityId: this.facility._id,
                 employeeId: this.employeeDetails._id,
-                employeeObject: this._facilityService.trimEmployee(this.employeeDetails),
+                employeeObject: this.employeeDetails,
                 clinicId: (!!this.selectedAppointment.clinicId) ? this.selectedAppointment.clinicId : undefined,
                 priorityId: '',
                 priorityObject: '',
