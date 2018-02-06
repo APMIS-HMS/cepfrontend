@@ -25,9 +25,7 @@ export class LandingPageComponent implements OnInit {
   searchControl = new FormControl();
   constructor(private locker: CoolLocalStorage, private productTypeService: ProductTypeService,
     private storeService: StoreService, private _storeEventEmitter: StoreEmitterService) {
-    this.storeService.listenerUpdate.subscribe(payload => {
-      this.getStores();
-    });
+      
     this.selMinorLocation.valueChanges.subscribe(value => {
       this.loading = true;
       this.storeService.find({ query: { minorLocationId: value } }).then(payload => {
@@ -78,6 +76,10 @@ export class LandingPageComponent implements OnInit {
     this.newStore = false;
   }
 
+  refreshStore(value){
+    this.getStores();
+  }
+
 
   newStoreShow() {
     this.newStore = true;
@@ -86,7 +88,8 @@ export class LandingPageComponent implements OnInit {
 
   getStores() {
     this.loading = true;
-    this.storeService.find({ query: { facilityId: this.selectedFacility._id } }).then(res => {
+    this.storeService.getList(this.selectedFacility._id,{}).then(res => {
+      console.log(res);
       this.loading = false;
       if (res.data.length != 0) {
         this.stores = res.data;
