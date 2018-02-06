@@ -107,7 +107,8 @@ export class SurveyComponent implements OnInit, OnDestroy {
                 }
             });
 
-            obj.symptoms = symptom;
+            if (!!symptom)
+                obj.symptoms = symptom;
 
             // Diagnoses
 
@@ -124,7 +125,8 @@ export class SurveyComponent implements OnInit, OnDestroy {
                 }
             });
 
-            obj.diagnoses = diagnosis;
+            if (!!diagnosis)
+                obj.diagnoses = diagnosis;
 
 
             // Medication
@@ -243,7 +245,7 @@ export class SurveyComponent implements OnInit, OnDestroy {
     }
 
     ngOnDestroy(): void {
-    this.surveyModel = undefined;
+        this.surveyModel = undefined;
         this.isTemplate = false;
         this.ngOnInit();
     }

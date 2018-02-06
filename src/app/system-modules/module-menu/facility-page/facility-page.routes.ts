@@ -10,6 +10,7 @@ import { FacilitypageWorkspaceComponent } from './facilitypage-workspace/facilit
 import { FacilityOptionsComponent } from './facility-options/facility-options.component';
 import { ProfessionComponent } from './profession/profession.component';
 import { FacilityNetworkComponent } from './facility-network/facility-network.component';
+import { AccessRoleDetailsComponent } from './facility-access-control/access-role-details/access-role-details.component';
 import {
     WorkspaceResolverService, FacilityResolverService, SystemModulesResolverService,
     LocationsResolverService
@@ -49,6 +50,7 @@ const FACLITYPAGE_ROUTES: Routes = [
             { path: 'profession', component: ProfessionComponent },
             { path: 'modules', component: FacilitypageModulespageComponent },
             { path: 'network', component: FacilityNetworkComponent },
+            { path: 'access', component:AccessRoleDetailsComponent},
         ]
     }
 ];

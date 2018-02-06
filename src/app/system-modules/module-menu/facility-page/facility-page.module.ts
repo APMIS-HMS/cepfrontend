@@ -1,3 +1,4 @@
+import { AccessManagerHomeComponent } from './facility-access-control/access-manager-home.component';
 import { NewFacEmployeeComponent } from './employees/new-fac-employee/new-fac-employee.component';
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 import { ApmisCheckboxFeatureComponent } from './employees/employeemanager-detailpage/apmis-checkbox/apmis-checkbox-feature.component';
@@ -49,6 +50,12 @@ import { FacilityNetworkComponent } from './facility-network/facility-network.co
 import { AddMemberComponent } from './facility-network/add-member/add-member.component';
 import { AddOtherComponent } from './facility-network/add-other/add-other.component';
 import { EmployeeAccessRolesComponent } from './employees/employeemanager-detailpage/employee-access-roles/employee-access-roles.component';
+import { AccessManagerComponent } from './facility-access-control/access-manager.component';
+import { AccessRoleDetailsComponent } from './facility-access-control/access-role-details/access-role-details.component';
+import { CreateAccessComponent } from './facility-access-control/create-access/create-access.component';
+import { ViewAccessComponent } from './facility-access-control/view-access/view-access.component';
+
+    import { from } from 'rxjs/observable/from';
 
 @NgModule({
     declarations: [
@@ -86,7 +93,9 @@ import { EmployeeAccessRolesComponent } from './employees/employeemanager-detail
         AddMemberComponent,
         AddOtherComponent,
         NewFacEmployeeComponent,
-        EmployeeAccessRolesComponent
+        EmployeeAccessRolesComponent, 
+        AccessManagerComponent, AccessRoleDetailsComponent, CreateAccessComponent, ViewAccessComponent,
+        AccessManagerHomeComponent
     ],
     exports: [
     ],

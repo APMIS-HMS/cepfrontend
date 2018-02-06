@@ -1,7 +1,7 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import { FacilitiesService, UserService } from '../../../services/facility-manager/setup/index';
-import { Facility, User } from '../../../models/index';
+import { FacilitiesService, UserService } from '../../../../services/facility-manager/setup/index';
+import { Facility, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router } from '@angular/router';
 

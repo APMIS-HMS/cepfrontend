@@ -100,7 +100,6 @@ export class ClinicalNoteComponent implements OnInit {
   }
 
   getForms() {
-    console.log(22)
     const formType$ = Observable.fromPromise(this.formTypeService.find({ query: { name: 'Documentation' } }));
     formType$.mergeMap(((formTypes: any) =>
       Observable.fromPromise(this.formService.find({
@@ -110,7 +109,6 @@ export class ClinicalNoteComponent implements OnInit {
         }
       }))
     )).subscribe((results: any) => {
-      console.log(results);
       this.forms = results.data;
     }, error => {
       this.getForms();
@@ -170,7 +168,6 @@ export class ClinicalNoteComponent implements OnInit {
       this.symptoms.push(item);
     }
     this.sharedService.announceDiagnosisSystemOrder({ type: 'Symptoms', action: 'add', data: item });
-    console.log(this.symptoms);
   }
 
   deleteSymptom(item) {
@@ -187,7 +184,6 @@ export class ClinicalNoteComponent implements OnInit {
       this.diagnoses.push(item);
     }
     this.sharedService.announceDiagnosisSystemOrder({ type: 'Diagnoses', action: 'add', data: item });
-    console.log(this.diagnoses);
   }
 
   removeDiagnosis(item) {

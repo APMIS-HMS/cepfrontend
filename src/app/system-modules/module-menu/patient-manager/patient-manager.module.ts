@@ -1,3 +1,4 @@
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { FacilityFamilyCoverService } from './../../../services/facility-manager/setup/facility-family-cover.service';
@@ -128,7 +129,7 @@ import { FluidTypeComponent } from './patientmanager-detailpage/fluid/fluid-type
     providers: [PatientResolverService, AppointmentResolverService, LoginEmployeeResolverService, FacilityFamilyCoverService,
       OrderSetTemplateService, TreatmentSheetService,
         FormsService, FormTypeService, SharedService, WorkbenchService, LaboratoryRequestService, HmoService, FacilityCompanyCoverService,
-    DocumentationTemplateService]
+    DocumentationTemplateService, SystemModuleService]
 })
 export class PatientManagerModule { }
 

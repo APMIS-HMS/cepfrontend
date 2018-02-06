@@ -52,7 +52,6 @@ export class EmployeeAccessRolesComponent implements OnInit {
     // this.selectedEmployee = <any>this.locker.getObject('selectedEmployee');
 
     this.getRoles();
-
   }
 
   close_onClick() {
@@ -71,7 +70,7 @@ export class EmployeeAccessRolesComponent implements OnInit {
       }
     }).then(payload => {
       console.log(payload);
-      if(payload.status === 'success'){
+      if (payload.status === 'success') {
         this.roles = payload.data;
         console.log(this.roles);
       }
@@ -133,7 +132,7 @@ export class EmployeeAccessRolesComponent implements OnInit {
     this.featureService.assignUserRole(data).then(payload => {
       this.loading = false;
       console.log(payload);
-    }, error =>{
+    }, error => {
       console.log(error);
     });
   }

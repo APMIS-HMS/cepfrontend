@@ -2,7 +2,7 @@
     <div class="card-title">Location(s)</div>
 
     <ul class="dept-wrap">
-        <li class="dept-li">
+        <li class="dept-li" *ngIf="locationsObj.length > 0">
             <div *ngFor="let location of locationsObj">
                 <div class="dept-item">
                     <div class="dept-name">{{location.name}}</div>
@@ -27,7 +27,7 @@
                                 </tr>
                             </thead>
 
-                            <tbody>
+                            <tbody *ngIf="filteredMinorLocations.length > 0">
                                 <tr *ngFor="let minor of filteredMinorLocations">
                                     <td>{{minor.name}}</td>
                                     <td class="action-icons">
@@ -37,9 +37,21 @@
                                     </td>
                                 </tr>
                             </tbody>
+                            <tbody *ngIf="filteredMinorLocations.length == 0">
+                                <tr>
+                                    <td class="table-content" colspan="6" border="0.5" style="text-align: center "> No data available in table</td>
+                                </tr>
+                            </tbody>
                         </table>
                     </div>
                 </div>
+            </div>
+        </li>
+        <li *ngIf="locationsObj.length == 0">
+            <div>
+                <tr>
+                    <td class="table-content" colspan="6" border="0.5" style="text-align: center "> No data available</td>
+                </tr>
             </div>
         </li>
     </ul>
