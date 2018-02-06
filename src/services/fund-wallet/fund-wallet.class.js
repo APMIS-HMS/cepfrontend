@@ -119,6 +119,8 @@ class FundWalletService {
               const facilityUpdate = await facilityService.update(facility._id, facility);
               return facilityUpdate;
             }
+          }else{
+            return new Error('There was an error while verifying this payment');
           }
         } else if (paymentRoute !== undefined && paymentRoute.toLowerCase() === 'paystack') {
           paymentService.create(paymentPayload).then(payment => {
