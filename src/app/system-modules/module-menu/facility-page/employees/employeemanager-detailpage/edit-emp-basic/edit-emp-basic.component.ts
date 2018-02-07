@@ -108,7 +108,7 @@ export class EditEmpBasicComponent implements OnInit {
 		/* this.facilityForm2.controls['gender'].setValue(this.selectedPerson.gender);
 		this.facilityForm2.controls['maritalStatus'].setValue(this.selectedPerson.maritalStatus);
 		this.facilityForm2.controls['nationality'].setValue(this.selectedPerson.nationality);
-		
+
 		this.facilityForm2.controls['lgaofresidence'].setValue(this.selectedPerson.homeAddress.lga) */
 
 		this.facilityForm1.controls['dept'].setValue(this.selectedDepartment);
@@ -241,7 +241,7 @@ export class EditEmpBasicComponent implements OnInit {
 		} else {
 			this.loading = true;
 			let person = {
-				_id: this.selectedPerson._id, 
+				_id: this.selectedPerson._id,
 				title: this.facilityForm2.controls['title'].value,
 				apmisId: this.selectedPerson.apmisId,
 				firstName: this.facilityForm2.controls['firstname'].value,
@@ -344,8 +344,8 @@ export class EditEmpBasicComponent implements OnInit {
 
 		console.log(this.selectedDepartment);
 
-		
-	}
+
+  }
 
 
 
