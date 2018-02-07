@@ -77,7 +77,7 @@ import { OrderSetSharedService } from '../services/facility-manager/order-set-sh
     TemplateProcedureComponent,
     TemplateNursingCareComponent,
     TemplatePhysicianOrderComponent,
-    SystemModuleComponent
+    // SystemModuleComponent
     // VerifyTokenComponent,
     // FacilityInfoComponent,
     // ContactInfoComponent,
@@ -106,7 +106,7 @@ import { OrderSetSharedService } from '../services/facility-manager/order-set-sh
     TemplateProcedureComponent,
     TemplateNursingCareComponent,
     TemplatePhysicianOrderComponent,
-    SystemModuleComponent
+    // SystemModuleComponent
     // VerifyTokenComponent,
     // FacilityInfoComponent,
     // ContactInfoComponent,
