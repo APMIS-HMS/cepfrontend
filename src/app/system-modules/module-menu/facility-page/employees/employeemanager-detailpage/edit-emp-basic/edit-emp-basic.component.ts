@@ -292,9 +292,10 @@ export class EditEmpBasicComponent implements OnInit {
 		const depts = this.facility.departments;
 		console.log(depts);
 		const dept = depts.filter(x => x.name == deptId);
-		this.selectedDepartment = dept[0].name;
+		if(dept.length > 0){
+			this.selectedDepartment = dept[0].name;
+		}
 	}
-
 
 
 }
