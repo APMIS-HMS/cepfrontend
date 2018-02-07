@@ -71,4 +71,7 @@ module.exports = function (app) {
   app.service('doc-upload').publish('created', (data) => {
     return app.channel(data.facilityId);
   });
+  app.service('people').publish('updated', (data, context) => {
+    return app.channel(context.params.query.facilityId);
+  });
 };
