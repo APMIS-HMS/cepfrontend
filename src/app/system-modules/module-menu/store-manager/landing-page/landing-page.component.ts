@@ -28,7 +28,7 @@ export class LandingPageComponent implements OnInit {
       
     this.selMinorLocation.valueChanges.subscribe(value => {
       this.loading = true;
-      this.storeService.find({ query: { minorLocationId: value } }).then(payload => {
+      this.storeService.getList(this.selectedFacility._id,{ query: { minorLocationId: value } }).then(payload => {
         this.loading = false;
         this.stores = payload.data;
       });
@@ -36,7 +36,7 @@ export class LandingPageComponent implements OnInit {
 
     this.selProductType.valueChanges.subscribe(value => {
       this.loading = true;
-      this.storeService.find({ query: { 'productTypeId.productTypeId': value } }).then(payload => {
+      this.storeService.getList(this.selectedFacility._id,{ query: { 'productTypeId': value } }).then(payload => {
         this.loading = false;
         this.stores = payload.data;
       });
@@ -53,11 +53,10 @@ export class LandingPageComponent implements OnInit {
     let subscribeForPerson = this.searchControl.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
-      .switchMap((term: any[]) => this.storeService.find({
+      .switchMap((term: any[]) => this.storeService.getList(this.selectedFacility._id,{
         query:
         {
-          name: this.searchControl.value,
-          facilityId: this.selectedFacility._id
+          name: this.searchControl.value
         }
       }).then(payload => {
         this.loading = false;
@@ -88,7 +87,12 @@ export class LandingPageComponent implements OnInit {
 
   getStores() {
     this.loading = true;
-    this.storeService.getList(this.selectedFacility._id,{}).then(res => {
+    this.storeService.getList(this.selectedFacility._id,{
+      query:
+        {
+          name: ''
+        }
+    }).then(res => {
       console.log(res);
       this.loading = false;
       if (res.data.length != 0) {
