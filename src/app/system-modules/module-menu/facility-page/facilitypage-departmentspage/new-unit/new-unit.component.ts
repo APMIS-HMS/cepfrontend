@@ -212,10 +212,13 @@ export class NewUnitComponent implements OnInit {
                   unit.shortName = val.unitAlias;
                   unit.description = val.unitDesc;
                   console.log(7);
-                  (<FormArray>that.clinicForm.controls['clinicArray'])
-                    .controls.forEach((itemi: any, i) => {
+                  // console.log((<FormArray>that.clinicForm.controls['clinicArray']));
+                  const clinicsArray = (<FormArray>that.clinicForm.controls['clinicArray']).controls.filter((x: any) => x.value.readonly);
+                  clinicsArray.forEach((itemi: any, i) => {
                       let isExisting = false;
                       unit.clinics.forEach((clinic, c) => {
+                        console.log(clinic);
+                        console.log(itemi.value)
                         if (clinic._id === itemi.value._id) {
                           isExisting = true;
                           clinic.clinicName = itemi.value.clinicName;
@@ -223,6 +226,8 @@ export class NewUnitComponent implements OnInit {
                         }
                       });
                       if (!isExisting) {
+                        console.log('not available before')
+                        console.log(itemi.value);
                         unit.clinics.push(itemi.value);
                       }
                     })
@@ -253,7 +258,7 @@ export class NewUnitComponent implements OnInit {
               })
             }
           });
-
+          console.log()
           console.log(12);
           //update here
           this.facilityService.update(this.facilityObj).then((payload) => {
