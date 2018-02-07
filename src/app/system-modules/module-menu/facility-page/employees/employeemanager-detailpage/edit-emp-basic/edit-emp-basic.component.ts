@@ -265,7 +265,7 @@ export class EditEmpBasicComponent implements OnInit {
 
 			}
 			if (person.motherMaidenName === undefined) {
-				person.motherMaidenName = 'ade';
+				person.motherMaidenName = ' ';
 			}
 			console.log(person);
 			this.personService.update(person).then(payload => {
