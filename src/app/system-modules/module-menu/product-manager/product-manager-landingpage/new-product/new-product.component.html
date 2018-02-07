@@ -17,7 +17,7 @@
             <div class="productNameLabel animated fadeIn" *ngIf="productNameLabel">{{productNameLabel_txt}}</div>-->
         <form novalidate [formGroup]="frm_newProduct">
             <div class="mainfrmwrap">
-                <div class="row" Class="col-xs-12">
+                <div class="row" Class="col-xs-12 col-lg-12">
                     <div class="sec-1">
                         <div class="frm-item-wrap">
                             <mat-form-field>
@@ -59,11 +59,11 @@
 
 
                     <div class="clear"></div>
-                    <div class="row" class="col-xs-12">
+                    <div class="row" class="col-xs-12 col-lg-12">
                         <div>
                             <div class="sectLabel">Active
                             </div>
-                            <i class="fa fa-plus faplus pull-right" (click)="addIngredient()"></i>
+                            <i class="fa fa-plus faplus" (click)="addIngredient()"></i>
                         </div>
                         <div class="sec-3">
                             <div class="sec3-headWrap">
@@ -73,21 +73,23 @@
                                             <div class="panel-heading">
                                                 <span class="glyphicon glyphicon-remove pull-right" (click)="removeIngredient(i)"></span>
                                             </div>
-                                            <div class="frmArr-wrap" formGroupName="{{i}}">
-                                                <div class="frm-item-wrap">
-                                                    <mat-input-container class="example-full-width">
-                                                        <input matInput mat-error placeholder="Name" formControlName="name">
-                                                    </mat-input-container>
-                                                </div>
-                                                <div class="frm-item-wrap">
-                                                    <mat-input-container class="example-full-width">
-                                                        <input matInput mat-error placeholder="Strength" formControlName="strength">
-                                                    </mat-input-container>
-                                                </div>
-                                                <div class="frm-item-wrap">
-                                                    <mat-input-container class="example-full-width">
-                                                        <input matInput mat-error placeholder="Strength Unit" formControlName="strengthUnit">
-                                                    </mat-input-container>
+                                            <div class="row">
+                                                <div class="frmArr-wrap" formGroupName="{{i}}">
+                                                    <div class="frm-item-wrap" class="col-xs-4">
+                                                        <mat-input-container class="example-full-width">
+                                                            <input matInput mat-error placeholder="Name" formControlName="name">
+                                                        </mat-input-container>
+                                                    </div>
+                                                    <div class="frm-item-wrap" class="col-xs-4">
+                                                        <mat-input-container class="example-full-width">
+                                                            <input matInput mat-error placeholder="Strength" formControlName="strength">
+                                                        </mat-input-container>
+                                                    </div>
+                                                    <div class="frm-item-wrap" class="col-xs-4">
+                                                        <mat-input-container class="example-full-width">
+                                                            <input matInput mat-error placeholder="Strength Unit" formControlName="strengthUnit">
+                                                        </mat-input-container>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -110,12 +112,12 @@
                                                 <span class="glyphicon glyphicon-remove pull-right" (click)="removeVariant(i)"></span>
                                             </div>
                                             <div class="frmArr-wrap" formGroupName="{{i}}">
-                                                <div class="frm-item-wrap">
+                                                <div class="frm-item-wrap" class="col-xs-6">
                                                     <mat-input-container class="example-full-width">
                                                         <input matInput mat-error placeholder="Size" formControlName="size">
                                                     </mat-input-container>
                                                 </div>
-                                                <div class="frm-item-wrap">
+                                                <div class="frm-item-wrap" class="col-xs-6">
                                                     <mat-input-container class="example-full-width">
                                                         <input matInput mat-error placeholder="Max. Unit" formControlName="unit">
                                                     </mat-input-container>
