@@ -1,3 +1,5 @@
+import { LogOutConfirmModule } from './log-out-module';
+import { SystemModuleComponent } from './../system-modules/system-module.component';
 import { ImageUpdateComponent } from './../system-modules/module-menu/facility-page/employees/image-update/image-update.component';
 import { PasswordResetComponent } from './../password-reset/password-reset.component';
 import { NgModule } from '@angular/core';
@@ -58,7 +60,8 @@ import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/che
         PersonAccountComponent,
         LabRequestsComponent, RequestDetailComponent,
         CheckoutPatientComponent,
-        PasswordResetComponent
+        PasswordResetComponent,
+        SystemModuleComponent
         //  SurveyComponent, SurveyEditorComponent
     ],
     exports: [
@@ -110,7 +113,8 @@ import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/che
         DragulaModule,
         NgPipesModule,
         CheckoutPatientComponent,
-        PasswordResetComponent
+        PasswordResetComponent,
+        SystemModuleComponent
 
         // SurveyComponent, SurveyEditorComponent
     ],
@@ -144,7 +148,8 @@ import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/che
         NgUploaderModule,
         CurrencyMaskModule,
         DragulaModule,
-        NgPipesModule
+        NgPipesModule,
+        LogOutConfirmModule
     ],
     providers: [OrderStatusService, SeverityService]
 })
