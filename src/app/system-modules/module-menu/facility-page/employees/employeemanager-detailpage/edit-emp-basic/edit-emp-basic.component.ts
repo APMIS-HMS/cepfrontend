@@ -1,3 +1,4 @@
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { EMAIL_REGEX, WEBSITE_REGEX, PHONE_REGEX, GEO_LOCATIONS } from 'app/shared-module/helpers/global-config';
@@ -54,7 +55,6 @@ export class EditEmpBasicComponent implements OnInit {
 		geoCountryRestriction: [GEO_LOCATIONS],
 		showCurrentLocation: false,
 		resOnSearchButtonClickOnly: false,
-		// inputPlaceholderText: 'Type anything and you will get a location',
 		recentStorageName: 'componentData3'
 	};
 
@@ -70,13 +70,13 @@ export class EditEmpBasicComponent implements OnInit {
 		private locker: CoolLocalStorage,
 		private systemModulesService: SystemModuleService,
 		private departmentService: DepartmentService,
+		private authFacadeService: AuthFacadeService,
 		private _countryServiceFacade: CountryServiceFacadeService) { }
 
 	ngOnInit() {
 		console.log(this.selectedPerson);
 		this.facility = <any>this.locker.getObject("selectedFacility");
 		this.selectedEmployee = this.locker.getObject("selectedEmployee");
-		//this.selectedFacility = this.locker.getObject("selectedFacility");
 
 		this.getDepartmentById();
 
@@ -85,7 +85,7 @@ export class EditEmpBasicComponent implements OnInit {
 		});
 
 		this.facilityForm2 = this.formBuilder.group({
-			title: ['', [<any>Validators.required]],
+			title: [this.selectedPerson.title, [<any>Validators.required]],
 			firstname: [this.selectedPerson.firstName, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
 			lastname: [this.selectedPerson.lastName, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
 			othernames: [this.selectedPerson.otherNames, []],
@@ -98,26 +98,18 @@ export class EditEmpBasicComponent implements OnInit {
 			homeaddress: [this.selectedPerson.homeAddress.street, [<any>Validators.required]],
 			stateofresidence: [this.selectedPerson.homeAddress.state, [<any>Validators.required]],
 			lgaofresidence: [this.selectedPerson.homeAddress.lga, [<any>Validators.required]],
-			//phone: ['', [<any>Validators.required]],
+			mothermaidenname:[this.selectedPerson.mothermaidenname, [<any>Validators.required]],
 			email: [this.selectedPerson.email, [<any>Validators.required, Validators.pattern(EMAIL_REGEX)]],
-			// network: ['', [<any>Validators.minLength(2)]],
-			//status: ['', [<any>Validators.required]],
 			phoneno: [this.selectedPerson.primaryContactPhoneNo, [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
 		});
 
-		/* this.facilityForm2.controls['gender'].setValue(this.selectedPerson.gender);
-		this.facilityForm2.controls['maritalStatus'].setValue(this.selectedPerson.maritalStatus);
-		this.facilityForm2.controls['nationality'].setValue(this.selectedPerson.nationality);
+		// this.facilityForm1.controls['dept'].setValue(this.selectedDepartment);
 
-		this.facilityForm2.controls['lgaofresidence'].setValue(this.selectedPerson.homeAddress.lga) */
+		// this.facilityForm2.controls['stateofOrigin'].setValue(this.selectedPerson.stateOfOrigin);
+		// this.facilityForm2.controls['localgovtarea'].setValue(this.selectedPerson.lgaOfOrigin);
+		// this.facilityForm2.controls['lgaofresidence'].setValue(this.selectedPerson.homeAddress.lga);
 
-		this.facilityForm1.controls['dept'].setValue(this.selectedDepartment);
-
-		this.facilityForm2.controls['stateofOrigin'].setValue(this.selectedPerson.stateOfOrigin);
-		this.facilityForm2.controls['localgovtarea'].setValue(this.selectedPerson.lgaOfOrigin);
-		this.facilityForm2.controls['lgaofresidence'].setValue(this.selectedPerson.homeAddress.lga);
-
-		console.log(this.selectedPerson.homeAddress.lga);
+		// console.log(this.selectedPerson.homeAddress.lga);
 
 		this.getDepartments();
 		/* this.getCountries();
@@ -166,8 +158,6 @@ export class EditEmpBasicComponent implements OnInit {
 			this.titles = results[0].data;
 			this.genders = results[1].data;
 			this.maritalStatuses = results[2].data;
-
-			console.log(this.maritalStatuses);
 
 			this.countries = results[3];
 			console.log(this.countries);
@@ -240,7 +230,7 @@ export class EditEmpBasicComponent implements OnInit {
 			this.errMsg = 'A required field has been left empty';
 		} else {
 			this.loading = true;
-			let person:any = {
+			let person: any = {
 				_id: this.selectedPerson._id,
 				title: this.facilityForm2.controls['title'].value,
 				apmisId: this.selectedPerson.apmisId,
