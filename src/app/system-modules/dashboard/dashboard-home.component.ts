@@ -74,10 +74,13 @@ export class DashboardHomeComponent implements OnInit {
     this.authFacadeService.getLogingEmployee().then((payload:any) =>{
       this.loginEmployee = payload;
       const auth = <any>this.locker.getObject('auth');
-      this.locker.setObject('workspaces', this.loginEmployee.workSpaces);
+      if(this.loginEmployee !== undefined){
+        this.locker.setObject('workspaces', this.loginEmployee.workSpaces);
+      }
+
       this.locker.setObject('miniFacility', this.loginEmployee);
       this.getUserRoles();
-      if (this.loginEmployee !== null && this.loginEmployee._id !== undefined && auth.data.personId === this.loginEmployee.personId) {
+      if (this.loginEmployee !== undefined && this.loginEmployee._id !== undefined && auth.data.personId === this.loginEmployee.personId) {
         return;
       }
     });
