@@ -22,7 +22,7 @@
       "subject": "anonymous",
       "issuer": "feathers",
       "algorithm": "HS256",
-      "expiresIn": "2d"
+      "expiresIn": "1d"
     },
     "local": {
       "entity": "user",
