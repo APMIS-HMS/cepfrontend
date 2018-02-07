@@ -13,11 +13,13 @@ export class NewCategoryComponent implements OnInit {
 
   facility: Facility = <Facility>{};
   categories: ServiceCategory = <ServiceCategory>{};
-
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input() selectedCategory;
+  @Input() selectedCategory: any;
+  @Input() categoryBool: Boolean;
   mainErr = true;
   errMsg = 'you have unresolved errors';
+  edit = false;
+  editCategory = false;
 
   public frmNewcat: FormGroup;
   btnTitle = 'CREATE CATEGORY';
@@ -33,7 +35,8 @@ export class NewCategoryComponent implements OnInit {
     if (this.selectedCategory.name !== undefined && this.selectedCategory.name.length > 1) {
       this.btnTitle = 'UPDATE CATEGORY';
       this.frmNewcat.controls['catName'].setValue(this.selectedCategory.name);
-    }
+    };
+    console.log(this.categoryBool);
   }
   addNew() {
     this.frmNewcat = this.formBuilder.group({
@@ -43,6 +46,7 @@ export class NewCategoryComponent implements OnInit {
 
   close_onClick() {
     this.closeModal.emit(true);
+      this.categoryBool = false;
   }
 
   newcat(model: any, valid: boolean) {
