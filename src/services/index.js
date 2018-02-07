@@ -133,6 +133,8 @@ const insuranceEnrollees = require('./insurance-enrollees/insurance-enrollees.se
 const familyDependants = require('./family-dependants/family-dependants.service.js');
 const vitals = require('./vitals/vitals.service.js');
 const listOfStores = require('./list-of-stores/list-of-stores.service.js');
+const workbenches = require('./workbenches/workbenches.service.js');
+const getWorkbenches = require('./get-workbenches/get-workbenches.service.js');
 module.exports = function(app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -269,6 +271,8 @@ module.exports = function(app) {
   app.configure(familyDependants);
   app.configure(vitals);
   app.configure(listOfStores);
+  app.configure(workbenches);
+  app.configure(getWorkbenches);
 };
 
 
