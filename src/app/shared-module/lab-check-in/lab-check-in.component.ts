@@ -1,9 +1,10 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { EmployeeService, FacilitiesService, WorkbenchService } from '../../services/facility-manager/setup/index';
-import { Employee } from '../../models/index';
+import { Employee, Facility } from '../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
+import { LocationService } from 'app/services/module-manager/setup';
 
 @Component({
   selector: 'app-lab-check-in',
@@ -18,7 +19,8 @@ export class LabCheckInComponent implements OnInit {
   mainErr = true;
 	errMsg = 'You have unresolved errors';
 	workbenches: any[] = [];
-	locations: any[] = [];
+  locations: any[] = [];
+  selectedFacility: Facility = <Facility>{};
   checkInBtnText: String = '<i class="fa fa-check-circle"></i> Check In';
 
   constructor(
@@ -27,22 +29,28 @@ export class LabCheckInComponent implements OnInit {
 		public facilityService: FacilitiesService,
     private _employeeService: EmployeeService,
     private _workbenchService: WorkbenchService,
-    private _authFacadeService: AuthFacadeService
+    private _authFacadeService: AuthFacadeService,
+    private _locationService: LocationService
   ) {
+    this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.loginEmployee = res;
       console.log(this.loginEmployee);
-      console.log(this.loginEmployee.workSpaces);
+      console.log(this.selectedFacility);
       if (!!this.loginEmployee.workSpaces && this.loginEmployee.workSpaces.length > 0) {
-        this.loginEmployee.workSpaces.forEach(workspace => {
-          if (workspace.isActive && workspace.locations.length > 0) {
-            workspace.locations.forEach(x => {
-              if (x.isActive && new RegExp('lab', 'i').test(x.majorLocationId.name)) {
-                this.locations.push(x.minorLocationId);
-              }
+        if (!!this.selectedFacility.minorLocations && this.selectedFacility.minorLocations.length > 0) {
+          const minorLocations = this.selectedFacility.minorLocations;
+          const locations = this.loginEmployee.workSpaces.map(m => m.locations);
+          const locationIds = [];
+          locations.forEach(location => {
+            (location.map(m => m.minorLocationId)).forEach(p => {
+              locationIds.push(p);
             });
-          }
-        });
+          });
+          console.log(locations);
+          console.log(minorLocations);
+          this.locations = minorLocations.filter(x => locationIds.includes(x._id));
+        }
       }
     }).catch(err => console.log(err));
   }
@@ -55,13 +63,14 @@ export class LabCheckInComponent implements OnInit {
     });
 
 		this.labCheckin.controls['location'].valueChanges.subscribe(val => {
-      this._workbenchService.find({ query: { 'laboratoryId._id': val._id } }).then(res => {
-				if (res.data.length > 0) {
-					this.workbenches = res.data;
-				} else {
-					this.workbenches = [];
-				}
-			});
+      console.log(val);
+      // this._workbenchService.find({ query: { 'laboratoryId._id': val._id } }).then(res => {
+			// 	if (res.data.length > 0) {
+			// 		this.workbenches = res.data;
+			// 	} else {
+			// 		this.workbenches = [];
+			// 	}
+			// });
 		});
   }
 
@@ -106,6 +115,14 @@ export class LabCheckInComponent implements OnInit {
       this._employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'workbench' });
       this.checkInBtnText = '<i class="fa fa-check-circle"></i> Check In';
       this.close_onClick();
+    });
+  }
+
+  private _getLabLocation() {
+    this._locationService.find({ query: { facilityId: this.selectedFacility._id}}).then(res => {
+      console.log(res);
+    }).catch(err => {
+      console.log(err);
     });
   }
 
