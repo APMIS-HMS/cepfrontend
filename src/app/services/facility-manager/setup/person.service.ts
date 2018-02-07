@@ -61,11 +61,11 @@ export class PersonService {
   createPerson(body: any) {
     return this._personSocket.create(body);
   }
-  update(person: any, param) {
+  update(person: any, param?) {
     return this._socket.update(person._id, person, { query: { facilityId: param } });
   }
 
-  remove(id: string, query: any) {
+  remove(id: string, query?: any) {
     return this._socket.remove(id, query);
   }
 
