@@ -4,7 +4,7 @@ legend.modal-title {
     text-align: center !important;
     font-family: "Josefin Sans", sans-serif !important;
     font-size: 20px !important;
-    color: #0D47A1 !important;
+    color: white !important;
 }
 
 .modal-baseWrap {
@@ -12,11 +12,11 @@ legend.modal-title {
 }
 
 .sec-1 {
-    width: 45%;
+    width: 100%;
 }
 
 .sec-2 {
-    width: 45%;
+    width: 100%;
 }
 
 .frm-item-wrap small,
@@ -27,6 +27,7 @@ legend.modal-title {
 .cta-1 {
     color: #fff;
     margin: 10px auto;
+    font-size: 1.6rem;
 }
 
 .frm-item-wrap {
@@ -58,10 +59,9 @@ legend.modal-title {
 .productNameLabel {
     text-align: center;
     background: #ccc;
-    padding: 5px;
     font-size: 1.2rem;
     margin-top: -15px;
-    margin-bottom: 10px;
+    // margin-bottom: 10px;
 }
 
 .flex {
@@ -74,7 +74,7 @@ legend.modal-title {
     margin: 10px 0;
     overflow-y: auto;
     border: 1px solid #ccc;
-    height: 120px;
+    // height: 120px;
     padding: 10px;
     box-sizing: border-box;
 }
@@ -100,6 +100,7 @@ infrmArr-wrap {
 
 .sectLabel {
     margin-bottom: 10px;
+    text-align: left;
 }
 
 .sec3-headWrap {
