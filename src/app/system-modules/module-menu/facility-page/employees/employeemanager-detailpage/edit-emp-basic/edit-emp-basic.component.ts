@@ -108,7 +108,7 @@ export class EditEmpBasicComponent implements OnInit {
 		/* this.facilityForm2.controls['gender'].setValue(this.selectedPerson.gender);
 		this.facilityForm2.controls['maritalStatus'].setValue(this.selectedPerson.maritalStatus);
 		this.facilityForm2.controls['nationality'].setValue(this.selectedPerson.nationality);
-		
+
 		this.facilityForm2.controls['lgaofresidence'].setValue(this.selectedPerson.homeAddress.lga) */
 
 		this.facilityForm1.controls['dept'].setValue(this.selectedDepartment);
@@ -240,7 +240,11 @@ export class EditEmpBasicComponent implements OnInit {
 			this.errMsg = 'A required field has been left empty';
 		} else {
 			this.loading = true;
+<<<<<<< HEAD
 			let person:any = {
+=======
+			let person = {
+>>>>>>> 730c9617d49b7d6c76f01f14281b30af150bdec5
 				_id: this.selectedPerson._id,
 				title: this.facilityForm2.controls['title'].value,
 				apmisId: this.selectedPerson.apmisId,
@@ -348,7 +352,11 @@ export class EditEmpBasicComponent implements OnInit {
 		console.log(this.selectedDepartment);
 
 
+<<<<<<< HEAD
 	}
+=======
+  }
+>>>>>>> 730c9617d49b7d6c76f01f14281b30af150bdec5
 
 
 
