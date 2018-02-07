@@ -8,6 +8,7 @@ import { FacilitiesService, PrescriptionService, InventoryService, EmployeeServi
 	 InventoryTransactionTypeService, DispenseCollectionDrugService, BillingService, InvoiceService,
 	 DispenseService, ProductService, FacilityPriceService, AssessmentDispenseService } from '../../../../../services/facility-manager/setup/index';
 import { Observable } from 'rxjs/Observable';
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 
 @Component({
 	selector: 'app-noprescription',
@@ -72,7 +73,8 @@ export class NoprescriptionComponent implements OnInit {
 		private _inventoryTransactionTypeService: InventoryTransactionTypeService,
 		private _dispenseCollectionDrugs: DispenseCollectionDrugService,
 		private _billingService: BillingService,
-		private _invoiceService: InvoiceService
+    private _invoiceService: InvoiceService,
+    private _authFacadeService: AuthFacadeService
 	) {
 
 	}
@@ -81,8 +83,10 @@ export class NoprescriptionComponent implements OnInit {
 		this._pharmacyEventEmitter.setRouteUrl('Dispense');
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		this.storeId = this._locker.getObject('checkingObject');
-		this.employeeDetails = <Employee> this._locker.getObject('loginEmployee');
-		this.user = this._locker.getObject('auth');
+    this.user = this._locker.getObject('auth');
+    this._authFacadeService.getLogingEmployee().then(res => {
+      this.employeeDetails = res;
+    }).catch(err => console.log(err));
 
 		this.clients = Clients;
 		this.selectedClient = Clients[0].name;
@@ -145,7 +149,7 @@ export class NoprescriptionComponent implements OnInit {
 							prescription['companyPhone'] = value.companyPhone;
 							break;
 						case 'Internal':
-							if(this.internalType.toLowerCase() === 'department') {
+							if (this.internalType.toLowerCase() === 'department') {
 								prescription['department'] = {
 									id: value.dept._id,
 									name: value.dept.name
@@ -239,7 +243,7 @@ export class NoprescriptionComponent implements OnInit {
 							};
 							break;
 						case 'Internal':
-							if(this.internalType.toLowerCase() === 'department') {
+							if (this.internalType.toLowerCase() === 'department') {
 								prescription['department'] = {
 									id: element.department.id,
 									name: element.department.name

@@ -57,7 +57,7 @@
                     <tbody>
                         <tr *ngFor="let checkIn of loginEmployee.consultingRoomCheckIn">
                             <td>{{checkIn?.minorLocationId}}</td>
-                            <td>{{checkIn?.roomObject?.name}}</td>
+                            <td>{{checkIn?.roomId}}</td>
                             <td>{{checkIn?.lastLogin | date:'medium'}}</td>
                             <td class="tblMenu">
                                 <i class="fa fa-ellipsis-h" aria-hidden="true"></i>

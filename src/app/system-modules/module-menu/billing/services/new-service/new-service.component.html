@@ -13,7 +13,7 @@
 
                 <div class="frm-item-wrap">
                     <mat-input-container class="example-full-width">
-                        <input type="text" matInput mat-error placeholder="Service Name" formControlName="serviceName">
+                        <input type="text" matInput mat-error placeholder="Service Name" formControlName="serviceName" class="input">
                     </mat-input-container>
                     <div class="suggestionFeeds">
                         <div *ngFor="let dic of dictionaries" class="suggestedItem">
@@ -29,10 +29,9 @@
                         </mat-select>
                     </mat-form-field>
                 </div>
-
                 <div class="frm-item-wrap">
                     <mat-input-container class="example-full-width">
-                        <input type="text" matInput mat-error placeholder="Supply Service Code" formControlName="serviceCode">
+                        <input type="text" matInput mat-error placeholder="Supply Service Code" formControlName="serviceCode" class="input">
                     </mat-input-container>
                 </div>
 

@@ -184,16 +184,16 @@ export class AppointmentComponent implements OnInit {
                 this.getClinics();
                 this.subscription = Observable.forkJoin(
                     [
-                        Observable.fromPromise(this.workSpaceService.find({ query: { 'employeeId._id': this.loginEmployee._id } })),
+                        // Observable.fromPromise(this.workSpaceService.find({ query: { 'employeeId._id': this.loginEmployee._id } })),
                         Observable.fromPromise(this.appointmentTypeService.find({})),
                         Observable.fromPromise(this.professionService.find({})),
                         Observable.fromPromise(this.scheduleService.find({ query: { facilityId: this.selectedFacility._id } }))
                     ])
                     .subscribe((results: any) => {
-                        this.loginEmployee.workSpaces = results[0].data;
-                        this.appointmentTypes = results[1].data;
-                        const professions = results[2].data;
-                        this.schedules = results[3].data;
+                        // this.loginEmployee.workSpaces = results[0].data;
+                        this.appointmentTypes = results[0].data;
+                        const professions = results[1].data;
+                        this.schedules = results[2].data;
                         const filteredProfessions = professions.filter(x => x.name === 'Doctor');
                         if (filteredProfessions.length > 0) {
                             this.selectedProfession = filteredProfessions[0];

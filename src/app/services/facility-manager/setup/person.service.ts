@@ -61,8 +61,8 @@ export class PersonService {
   createPerson(body: any) {
     return this._personSocket.create(body);
   }
-  update(person: any) {
-    return this._socket.update(person._id, person);
+  update(person: any, param) {
+    return this._socket.update(person._id, person, { query: { facilityId: param } });
   }
 
   remove(id: string, query: any) {
@@ -136,7 +136,7 @@ export class PersonService {
   //   //     transactionDirection: TransactionDirection[walletTransaction.transactionDirection]
   //   //   }); // query string
   // }
-  searchPerson(body:any){
+  searchPerson(body: any) {
     return this._socketService.getService('search-people').find(body);
   }
 }

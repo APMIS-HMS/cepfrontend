@@ -107,64 +107,64 @@ export class FacilitiesService {
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }
-  trimEmployee(loginEmployee) {
-    const logEmp: any = loginEmployee;
-    if (logEmp !== null && logEmp.department !== undefined) {
-      delete logEmp.department;
-    }
-    if (logEmp !== null && logEmp.professionObject !== undefined) {
-      delete logEmp.professionObject;
-    }
-    if (logEmp !== null && logEmp.employeeDetails.countryItem !== undefined) {
-      delete logEmp.employeeDetails.countryItem;
-    }
-    if (logEmp !== null && logEmp.wardCheckIn !== undefined) {
-      delete logEmp.wardCheckIn;
-    }
-    if (logEmp !== null && logEmp.workbenchCheckIn !== undefined) {
-      delete logEmp.workbenchCheckIn;
-    }
-    if (logEmp !== null && logEmp.workSpaces !== undefined) {
-      delete logEmp.workSpaces;
-    }
-    if (logEmp !== null && logEmp.employeeDetails.homeAddress !== undefined) {
-      delete logEmp.employeeDetails.homeAddress;
-    }
-    if (logEmp !== null && logEmp.employeeDetails.gender !== undefined) {
-      delete logEmp.employeeDetails.gender;
-    }
-    if (logEmp !== null && logEmp.employeeDetails.maritalStatus !== undefined) {
-      delete logEmp.employeeDetails.maritalStatus;
-    }
-    if (logEmp !== null && logEmp.employeeDetails.countryItem !== undefined) {
-      delete logEmp.employeeDetails.countryItem;
-    }
-    if (logEmp !== null && logEmp.employeeDetails.nationalityObject !== undefined) {
-      delete logEmp.employeeDetails.nationalityObject;
-    }
-    if (logEmp !== null && logEmp.employeeDetails.nextOfKin !== undefined) {
-      delete logEmp.employeeDetails.nextOfKin;
-    }
-    if (logEmp !== null && logEmp.unitDetails !== undefined) {
-      delete logEmp.unitDetails;
-    }
-    if (logEmp !== null && logEmp.storeCheckIn !== undefined) {
-      delete logEmp.storeCheckIn;
-    }
-    if (logEmp !== null && logEmp.consultingRoomCheckIn !== undefined) {
-      delete logEmp.consultingRoomCheckIn;
-    }
-    if (logEmp !== null && logEmp.units !== undefined) {
-      delete logEmp.units;
-    }
-    if (logEmp !== null && logEmp.role !== undefined) {
-      delete logEmp.role;
-    }
-    if (logEmp !== null && logEmp.employeeFacilityDetails !== undefined) {
-      delete logEmp.employeeFacilityDetails;
-    }
-    return logEmp;
-  }
+  // trimEmployee(loginEmployee) {
+  //   const logEmp: any = loginEmployee;
+  //   if (logEmp !== null && logEmp.department !== undefined) {
+  //     delete logEmp.department;
+  //   }
+  //   if (logEmp !== null && logEmp.professionObject !== undefined) {
+  //     delete logEmp.professionObject;
+  //   }
+  //   if (logEmp !== null && logEmp.employeeDetails.countryItem !== undefined) {
+  //     delete logEmp.employeeDetails.countryItem;
+  //   }
+  //   if (logEmp !== null && logEmp.wardCheckIn !== undefined) {
+  //     delete logEmp.wardCheckIn;
+  //   }
+  //   if (logEmp !== null && logEmp.workbenchCheckIn !== undefined) {
+  //     delete logEmp.workbenchCheckIn;
+  //   }
+  //   if (logEmp !== null && logEmp.workSpaces !== undefined) {
+  //     delete logEmp.workSpaces;
+  //   }
+  //   if (logEmp !== null && logEmp.employeeDetails.homeAddress !== undefined) {
+  //     delete logEmp.employeeDetails.homeAddress;
+  //   }
+  //   if (logEmp !== null && logEmp.employeeDetails.gender !== undefined) {
+  //     delete logEmp.employeeDetails.gender;
+  //   }
+  //   if (logEmp !== null && logEmp.employeeDetails.maritalStatus !== undefined) {
+  //     delete logEmp.employeeDetails.maritalStatus;
+  //   }
+  //   if (logEmp !== null && logEmp.employeeDetails.countryItem !== undefined) {
+  //     delete logEmp.employeeDetails.countryItem;
+  //   }
+  //   if (logEmp !== null && logEmp.employeeDetails.nationalityObject !== undefined) {
+  //     delete logEmp.employeeDetails.nationalityObject;
+  //   }
+  //   if (logEmp !== null && logEmp.employeeDetails.nextOfKin !== undefined) {
+  //     delete logEmp.employeeDetails.nextOfKin;
+  //   }
+  //   if (logEmp !== null && logEmp.unitDetails !== undefined) {
+  //     delete logEmp.unitDetails;
+  //   }
+  //   if (logEmp !== null && logEmp.storeCheckIn !== undefined) {
+  //     delete logEmp.storeCheckIn;
+  //   }
+  //   if (logEmp !== null && logEmp.consultingRoomCheckIn !== undefined) {
+  //     delete logEmp.consultingRoomCheckIn;
+  //   }
+  //   if (logEmp !== null && logEmp.units !== undefined) {
+  //     delete logEmp.units;
+  //   }
+  //   if (logEmp !== null && logEmp.role !== undefined) {
+  //     delete logEmp.role;
+  //   }
+  //   if (logEmp !== null && logEmp.employeeFacilityDetails !== undefined) {
+  //     delete logEmp.employeeFacilityDetails;
+  //   }
+  //   return logEmp;
+  // }
   upload(formData, id) {
     // const host = this._restService.getHost();
     // const path = host + '/uploadexcel';

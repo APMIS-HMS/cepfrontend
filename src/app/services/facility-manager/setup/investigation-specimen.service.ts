@@ -12,8 +12,8 @@ export class InvestigationSpecimenService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('investigationspecimens');
-    this._socket = _socketService.getService('investigationspecimens');
+    this._rest = _restService.getService('investigation-specimens');
+    this._socket = _socketService.getService('investigation-specimens');
      this._socket.timeout = 90000;
     this._socket.on('created', function (investigationspecimens) {
 

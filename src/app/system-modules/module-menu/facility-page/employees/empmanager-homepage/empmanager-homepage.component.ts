@@ -1,3 +1,4 @@
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { Component, OnInit, EventEmitter, Output, OnChanges, OnDestroy, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { FacilitiesService, EmployeeService, PersonService } from '../../../../../services/facility-manager/setup/index';
@@ -32,7 +33,7 @@ export class EmpmanagerHomepageComponent implements OnInit, OnDestroy, OnChanges
   constructor(private employeeService: EmployeeService,
     private facilityService: FacilitiesService,
     private personService: PersonService, private locker: CoolLocalStorage,
-    private toast: ToastsManager,
+    private toast: ToastsManager, private authFacadeService:AuthFacadeService,
     private router: Router, private route: ActivatedRoute, private systemService:SystemModuleService) {
     this.employeeService.listner.subscribe(payload => {
       console.log(1)
@@ -68,6 +69,9 @@ export class EmpmanagerHomepageComponent implements OnInit, OnDestroy, OnChanges
   }
 
   ngOnInit() {
+    this.authFacadeService.getLogingEmployee().then((payload:any)=>{
+      console.log(payload);
+    });
     this.route.data.subscribe(data => {
       console.log(data);
       data['employees'].subscribe((payload) => {

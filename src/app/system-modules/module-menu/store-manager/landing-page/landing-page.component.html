@@ -43,7 +43,7 @@
                 </tr>
                 <tr *ngFor="let store of stores">
                     <td>{{store.name}}</td>
-                    <td>{{store?.minorlocation?.name}}</td>
+                    <td>{{store?.minorLocation?.name}}</td>
                     <td>{{store.description}}</td>
                     <td class="td-worspace">
                         <div class="workspace-count"> {{store.productTypeId.length}} Product Type(s)</div>
@@ -88,7 +88,7 @@
 
 
     <div *ngIf="newStore" class="modal-overlay">
-        <app-new-store [selectedStore]="selectedStore" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-store>
+        <app-new-store [selectedStore]="selectedStore" (refreshStore)="refreshStore($event)"  (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-store>
     </div>
 
 </div>

@@ -4,6 +4,7 @@ import { ConsultingRoomService, EmployeeService, FacilitiesService, StoreService
 import { ConsultingRoomModel, Employee } from '../../models/index';
 import { ClinicHelperService } from '../../system-modules/module-menu/clinic/services/clinic-helper.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 
 @Component({
   selector: 'app-store-check-in',
@@ -31,26 +32,32 @@ export class StoreCheckInComponent implements OnInit {
 		public consultingRoomService: ConsultingRoomService,
 		public employeeService: EmployeeService,
 		public storeService: StoreService,
-		public locker: CoolLocalStorage
+    public locker: CoolLocalStorage,
+    private _authFacadeService: AuthFacadeService
 	) {
-    this.workSpaces = this.locker.getObject('workspaces');
-		this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    // this.workSpaces = this.locker.getObject('workspaces');
+    this._authFacadeService.getLogingEmployee().then((res: any) => {
+      console.log(res);
+      this.loginEmployee = res;
+      this.workSpaces = res.workSpaces;
+      if (this.workSpaces !== undefined) {
+        this.workSpaces.forEach(workspace => {
+          console.log(workspace);
+          if (workspace.isActive && workspace.locations.length > 0) {
+            workspace.locations.forEach(x => {
+              console.log(x);
+              if (x.isActive) {
+                this.locations.push(x.minorLocationId);
+              }
+            });
+          }
+        });
+      }
+    }).catch(err => console.log(err));
 	}
 
 	ngOnInit() {
-		if (this.workSpaces !== undefined) {
-			this.workSpaces.forEach(workspace => {
-				if(workspace.isActive && workspace.locations.length > 0) {
-					workspace.locations.forEach(x => {
-					  if(x.isActive) {
-						this.locations.push(x.minorLocationId);
-					  }
-					});
-				  }
-			});
-		}
-
-		this.storeCheckin = this.formBuilder.group({
+	  this.storeCheckin = this.formBuilder.group({
 			location: ['', [<any>Validators.required]],
 			room: ['', [<any>Validators.required]],
 			isDefault: [false, [<any>Validators.required]]
@@ -67,10 +74,12 @@ export class StoreCheckInComponent implements OnInit {
 
 		this.storeCheckin.controls['room'].valueChanges.subscribe(value => {
 		});
-	}
+  }
+
 	close_onClick() {
 		this.closeModal.emit(true);
-	}
+  }
+
 	checkIn(valid, value) {
 		console.log(value);
 		this.checkInBtnText = '<i class="fa fa-spinner fa-spin"></i> Checking in...';
@@ -91,7 +100,7 @@ export class StoreCheckInComponent implements OnInit {
 				itemi.isDefault = false;
 			}
 		});
-		
+
 		this.loginEmployee.storeCheckIn.push(checkIn);
 		console.log(2);
 		// this.loadIndicatorVisible = true;
