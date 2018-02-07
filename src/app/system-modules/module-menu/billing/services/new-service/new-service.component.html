@@ -34,7 +34,11 @@
                         <input type="text" matInput mat-error placeholder="Supply Service Code" formControlName="serviceCode" class="input">
                     </mat-input-container>
                 </div>
-
+                <div class="frm-item-wrap">
+                    <mat-input-container class="example-full-width">
+                        <input type="text" matInput mat-error placeholder="Supply Service Charge(Amount)" formControlName="price" class="input">
+                    </mat-input-container>
+                </div>
                 <div class="text-center">
                     <button mat-raised-button (click)="newService(frmNewservice.value, frmNewservice.valid)">
                     {{btnTitle}}
