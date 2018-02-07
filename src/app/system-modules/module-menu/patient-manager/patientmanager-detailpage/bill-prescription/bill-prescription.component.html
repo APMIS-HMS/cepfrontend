@@ -1,8 +1,8 @@
 <div class="survery">
     <div class="">
         <!-- purchase order details-->
-        <div class="inPatient-activityTimeline shadow-RB animated slideInRight">
-            <div (click)="onClickClose($event);" class="hide-actionWrap">
+        <div class="inPatient-activityTimeline shadow-RB animated slideInRight" #closeclick>
+            <div (click)="closeclick.hidden = !closeclick.hidden" class="hide-actionWrap">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
             </div>
             <div class="purchasedetails">

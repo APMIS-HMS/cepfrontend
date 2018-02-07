@@ -15,20 +15,21 @@
                             <input matInput mat-error placeholder="Name" formControlName="name">
                         </mat-input-container>
                     </div>
+
+                    <div class="frm-item-wrap">
+                        <mat-form-field>
+                            <mat-select class="example-full-width" placeholder="Location" formControlName="minorLocationId">
+                                <mat-option *ngFor="let minorLocation of minorLocations" [value]="minorLocation._id">{{minorLocation.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <mat-input-container class="example-full-width">
+                            <textarea formControlName="description" matInput placeholder="Description"></textarea>
+                        </mat-input-container>
+                    </div>
                 </div>
 
-                <div class="frm-item-wrap">
-                    <mat-form-field>
-                        <mat-select class="example-full-width" placeholder="Location" formControlName="minorLocationId">
-                            <mat-option *ngFor="let minorLocation of minorLocations" [value]="minorLocation._id">{{minorLocation.name}}</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                </div>
-                <div class="frm-item-wrap">
-                    <mat-input-container class="example-full-width">
-                        <textarea formControlName="description" matInput placeholder="Description"></textarea>
-                    </mat-input-container>
-                </div>
                 <div class="sec-2">
                     <div class="frm-item-wrap">
                         <span class="frm-label">Product Type</span>

@@ -101,7 +101,10 @@ export class DashboardComponent implements OnInit {
         }
 
         // this.locker.setObject('loginEmployee', this.loginEmployee);
-        this.authFacadeService.setLogingEmployee(this.loginEmployee);
+        // this.authFacadeService.setLogingEmployee(this.loginEmployee);
+        this.authFacadeService.getLogingEmployee().then((payload: any) => {
+          this.loginEmployee = payload;
+        });
       }
 
       this.loadIndicatorVisible = false;

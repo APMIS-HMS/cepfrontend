@@ -37,6 +37,7 @@ export class ConsultingRoomCheckinComponent implements OnInit {
     let selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
+      console.log(this.loginEmployee);
       this.user = <User>this.locker.getObject('auth');
       // this.loginEmployee.workSpaces.forEach(work => {
       //   work.locations.forEach(loc => {

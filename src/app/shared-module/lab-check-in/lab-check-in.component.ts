@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { EmployeeService, FacilitiesService, WorkbenchService } from '../../services/facility-manager/setup/index';
 import { Employee } from '../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 
 @Component({
   selector: 'app-lab-check-in',
@@ -25,28 +26,32 @@ export class LabCheckInComponent implements OnInit {
 		private _locker: CoolLocalStorage,
 		public facilityService: FacilitiesService,
     private _employeeService: EmployeeService,
-    private _workbenchService: WorkbenchService
-  ) {}
+    private _workbenchService: WorkbenchService,
+    private _authFacadeService: AuthFacadeService
+  ) {
+    this._authFacadeService.getLogingEmployee().then((res: any) => {
+      this.loginEmployee = res;
+      console.log(this.loginEmployee);
+      if (!!this.loginEmployee.workSpaces) {
+        this.loginEmployee.workSpaces.forEach(workspace => {
+          if (workspace.isActive && workspace.locations.length > 0) {
+            workspace.locations.forEach(x => {
+              if (x.isActive && new RegExp('lab', 'i').test(x.majorLocationId.name)) {
+                this.locations.push(x.minorLocationId);
+              }
+            });
+          }
+        });
+      }
+    }).catch(err => console.log(err));
+  }
 
   ngOnInit() {
-    this.loginEmployee = <Employee>this._locker.getObject('loginEmployee');
     this.labCheckin = this._fb.group({
       location: ['', [<any>Validators.required]],
       workbench: ['', [<any>Validators.required]],
       isDefault: [false, [<any>Validators.required]]
     });
-
-    if (!!this.loginEmployee.workSpaces) {
-			this.loginEmployee.workSpaces.forEach(workspace => {
-        if (workspace.isActive && workspace.locations.length > 0) {
-          workspace.locations.forEach(x => {
-            if (x.isActive && new RegExp('lab', 'i').test(x.majorLocationId.name)) {
-              this.locations.push(x.minorLocationId);
-            }
-          });
-        }
-      });
-    }
 
 		this.labCheckin.controls['location'].valueChanges.subscribe(val => {
       this._workbenchService.find({ query: { 'laboratoryId._id': val._id } }).then(res => {

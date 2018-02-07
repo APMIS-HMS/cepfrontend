@@ -24,8 +24,8 @@ export class InPatientService {
     private _restService: RestService,
     private _http: Http
   ) {
-    this._rest = _restService.getService('inpatients');
-    this._socket = _socketService.getService('inpatients');
+    this._rest = _restService.getService('in-patients');
+    this._socket = _socketService.getService('in-patients');
     this._socket.timeout = 50000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');

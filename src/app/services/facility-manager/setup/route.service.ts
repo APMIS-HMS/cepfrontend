@@ -13,8 +13,8 @@ export class RouteService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('productroutes');
-    this._socket = _socketService.getService('productroutes');
+    this._rest = _restService.getService('product-routes');
+    this._socket = _socketService.getService('product-routes');
     this._socket.timeout = 30000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');

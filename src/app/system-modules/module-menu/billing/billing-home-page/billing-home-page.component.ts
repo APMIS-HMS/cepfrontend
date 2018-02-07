@@ -12,6 +12,7 @@ export class BillingHomePageComponent implements OnInit {
 
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
 
+  loading= false;
   newPricePopup = false;
   newModefierPopup = false;
   serviceDetail = false;
