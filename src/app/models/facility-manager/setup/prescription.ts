@@ -17,5 +17,6 @@ export interface Prescription {
     clinicDetails?: any;
     patientName?: any;
     employeeName?: any;
+    priorityObject?:any;
 }
 
