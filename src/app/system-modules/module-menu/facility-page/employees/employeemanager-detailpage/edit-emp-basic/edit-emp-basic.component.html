@@ -70,7 +70,7 @@
 
             <mat-form-field>
                 <mat-select placeholder="Title" formControlName="title">
-                    <mat-option *ngFor="let title of titles" [value]="title">{{title.name}}</mat-option>
+                    <mat-option *ngFor="let title of titles" [value]="title.name">{{title.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
             <div class="frm-item-wrap">
@@ -90,12 +90,12 @@
             </div>
             <mat-form-field>
                 <mat-select placeholder="Gender" formControlName="gender" [compareWith]="compare">
-                    <mat-option *ngFor="let gender of genders" [value]="gender">{{gender.name}}</mat-option>
+                    <mat-option *ngFor="let gender of genders" [value]="gender.name">{{gender.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field>
                 <mat-select placeholder="Marital-Status" formControlName="maritalStatus" [compareWith]="compare">
-                    <mat-option *ngFor="let maritalStatus of maritalStatuses" [value]="maritalStatus">{{maritalStatus.name}}</mat-option>
+                    <mat-option *ngFor="let maritalStatus of maritalStatuses" [value]="maritalStatus.name">{{maritalStatus.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
             <div class="frm-item-wrap">
@@ -105,17 +105,17 @@
             </div>
             <mat-form-field>
                 <mat-select placeholder="Nationality" formControlName="nationality" [compareWith]="compare">
-                    <mat-option *ngFor="let cntry of countries" [value]="cntry">{{cntry.name}}</mat-option>
+                    <mat-option *ngFor="let cntry of countries" [value]="cntry.name">{{cntry.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field>
                 <mat-select placeholder="State of Origin" formControlName="stateofOrigin" [compareWith]="compare">
-                    <mat-option *ngFor="let state of statesOfOrigin" [value]="state">{{state.name}}</mat-option>
+                    <mat-option *ngFor="let state of statesOfOrigin" [value]="state.name">{{state.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field>
                 <mat-select placeholder="LGA" formControlName="localgovtarea" [compareWith]="compare">
-                    <mat-option *ngFor="let item of lgasOfOrigin" [value]="item">{{item.name}}</mat-option>
+                    <mat-option *ngFor="let item of lgasOfOrigin" [value]="item.name">{{item.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
             <div class="frm-item-wrap">
@@ -125,7 +125,7 @@
             </div>
             <mat-form-field>
                 <mat-select placeholder="State-of-Residence" formControlName="stateofresidence" [compareWith]="compare">
-                    <mat-option *ngFor="let state of states" [value]="state">{{state.name}}</mat-option>
+                    <mat-option *ngFor="let state of states" [value]="state.name">{{state.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
             <mat-form-field>

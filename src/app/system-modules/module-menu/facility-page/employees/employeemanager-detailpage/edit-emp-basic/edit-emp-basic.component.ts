@@ -240,8 +240,8 @@ export class EditEmpBasicComponent implements OnInit {
 			this.errMsg = 'A required field has been left empty';
 		} else {
 			this.loading = true;
-			let person = {
-				_id: this.selectedPerson._id, 
+			let person:any = {
+				_id: this.selectedPerson._id,
 				title: this.facilityForm2.controls['title'].value,
 				apmisId: this.selectedPerson.apmisId,
 				firstName: this.facilityForm2.controls['firstname'].value,
@@ -263,6 +263,9 @@ export class EditEmpBasicComponent implements OnInit {
 				//secondaryContactPhoneNo: this.facilityForm2.controls['phone'].value,
 				primaryContactPhoneNo: this.facilityForm2.controls['phoneno'].value,
 
+			}
+			if (person.motherMaidenName === undefined) {
+				person.motherMaidenName = 'ade';
 			}
 			console.log(person);
 			this.personService.update(person).then(payload => {
@@ -327,13 +330,13 @@ export class EditEmpBasicComponent implements OnInit {
 		return l1.name == l2;
 	}
 
-	compareDepartments(d1:any, d2:any){
+	compareDepartments(d1: any, d2: any) {
 		console.log('d1: ', d1);
 		console.log('d2: ', d2);
 		return d1._id == d2;
 	}
 
-	getDepartmentById(){
+	getDepartmentById() {
 		const deptId = this.selectedEmployee.departmentId;
 		const depts = this.facility.departments;
 
@@ -344,7 +347,7 @@ export class EditEmpBasicComponent implements OnInit {
 
 		console.log(this.selectedDepartment);
 
-		
+
 	}
 
 
