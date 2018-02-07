@@ -8,6 +8,7 @@ import { HomePageHomeComponent } from './home-page-home.component';
 import { PersonLandingComponent } from './person-landing/person-landing.component';
 import { PersonScheduleAppointmentComponent } from './person-landing/person-schedule-appointment/person-schedule-appointment.component';
 import { BiodataPopupComponent } from './biodata-popup/biodata-popup.component';
+import { MedRecordsComponent } from './med-records/med-records.component';
 
 @NgModule({
   imports: [
@@ -22,6 +23,7 @@ import { BiodataPopupComponent } from './biodata-popup/biodata-popup.component';
     PersonLandingComponent,
     PersonScheduleAppointmentComponent,
     BiodataPopupComponent,
+    MedRecordsComponent,
   ]
 })
 export class HomePageModule { }
