@@ -16,11 +16,34 @@ class Service {
     const facilityService = this.app.service('facilities');
     const storesService = this.app.service('stores');
     let getFacility = await facilityService.get(id);
-    let getFacilityStore = await storesService.find({
-      query: {
-        facilityId: id
-      }
-    });
+    let getFacilityStore = {};
+    if(params.query.name != undefined){
+      getFacilityStore = await storesService.find({
+        query: {
+          facilityId: id,
+          name: {
+            $regex: params.query.name,
+            '$options': 'i'
+          }
+        }
+      });
+    }else if(params.query.minorLocationId != undefined){
+
+      getFacilityStore = await storesService.find({
+        query: {
+          facilityId: id,
+          minorLocationId: params.query.minorLocationId
+        }
+      });
+    }else if(params.query.productTypeId != undefined){
+      getFacilityStore = await storesService.find({
+        query: {
+          facilityId: id,
+          'productTypeId.productTypeId':params.query.productTypeId
+        }
+      });
+    }
+    
     if (getFacilityStore.data.length > 0) {
       let len = getFacilityStore.data.length - 1;
       for (let j = len; j >= 0; j--) {
