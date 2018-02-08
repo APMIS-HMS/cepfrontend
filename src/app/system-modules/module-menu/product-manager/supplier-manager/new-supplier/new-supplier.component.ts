@@ -2,6 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { SupplierService } from '../../../../../services/facility-manager/setup/index';
+import { EMAIL_REGEX, WEBSITE_REGEX, PHONE_REGEX, GEO_LOCATIONS } from 'app/shared-module/helpers/global-config';
 import { Facility } from '../../../../../models/index';
 
 @Component({
@@ -18,6 +19,13 @@ export class NewSupplierComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() selectedSupplier: any = <any>{};
   selectedFacility: Facility = <Facility>{};
+  userSettings: any = {
+		geoCountryRestriction: [GEO_LOCATIONS],
+		showCurrentLocation: false,
+		resOnSearchButtonClickOnly: false,
+		// inputPlaceholderText: 'Type anything and you will get a location',
+		recentStorageName: 'componentData3'
+	};
   constructor(private formBuilder: FormBuilder, private locker: CoolLocalStorage,
     private supplierService: SupplierService) {
   }
@@ -28,6 +36,11 @@ export class NewSupplierComponent implements OnInit {
     this.frm_newSupplier = this.formBuilder.group({
       name: ['', [<any>Validators.required]],
       contact: ['', [<any>Validators.required]],
+      frmState: ['', [<any>Validators.required]],
+      frmCountry: ['', [<any>Validators.required]],
+      frmCity: ['', [<any>Validators.required]],
+      frmContact: ['', [<any>Validators.required]],
+      frmStreet: ['', [<any>Validators.required]],
       email: ['', [<any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|CO.UK|co.uk|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
       phoneNumber: ['', [<any>Validators.required]],
       address: ['', [<any>Validators.required]],
