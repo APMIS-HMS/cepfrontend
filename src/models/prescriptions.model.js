@@ -1,5 +1,5 @@
 // prescription-model.js - A mongoose model
-// 
+//
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
 const prescribe = require('../custom-models/prescription-item-model');
@@ -24,5 +24,5 @@ module.exports = function (app) {
     timestamps: true
   }); 
 
-  return mongooseClient.model('prescription', prescription);
-}; 
+    return mongooseClient.model('prescription', prescription);
+};

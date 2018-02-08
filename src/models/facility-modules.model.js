@@ -7,10 +7,10 @@ module.exports = function (app) {
   const { Schema } = mongooseClient;
   const facilityModules = new Schema({
     name: { type: String, required: true },
-    code: { type: String, required: true }
-  }, {
-    timestamps: true
-  });
+    code: { type: String, required: true },
+    canDisable:{ type: Boolean, require: true },
+    route: { type:String, required: true }
+  }, { timestamps: true });
 
   return mongooseClient.model('facilityModules', facilityModules);
 };

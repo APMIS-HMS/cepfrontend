@@ -9,9 +9,7 @@ class Service {
   }
 
   find(params) {
-    logger.info('find me');
     return new Promise(function (resolve, reject) {
-      logger.info('find me');
       const ACCESS_KEY = process.env.AZURE_STORAGE_ACCESS_KEY;
       var blobSvc = azure.createBlobService('apmisstorageaccount', ACCESS_KEY);
       let blobUrl = blobSvc.getUrl(params.query.container, params.query.fileName);
@@ -22,7 +20,6 @@ class Service {
   }
 
   get(id, params) {
-    logger.info('get me');
   }
 
   setup(app) {

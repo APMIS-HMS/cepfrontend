@@ -48,7 +48,7 @@ class Service {
       console.log(data.facilityId);
       console.log('***************End Data**********************');
       let pres = await prescriptionService.find({ query: data.facilityId });
-      
+
     } else {
       return 'No prescription found';
     }

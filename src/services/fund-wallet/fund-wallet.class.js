@@ -7,6 +7,7 @@ const request = require('request');
 const requestPromise = require('request-promise');
 const logger = require('winston');
 const console = require('console');
+const rxjs = require('rxjs');
 
 
 class FundWalletService {
@@ -32,6 +33,7 @@ class FundWalletService {
     console.log('----------params---------');
     console.log(params);
     console.log('----------End params---------');
+    
     const facilityService = this.app.service('facilities');
     const employeeService = this.app.service('employees');
     const peopleService = this.app.service('people');
@@ -67,17 +69,12 @@ class FundWalletService {
           const url = process.env.FLUTTERWAVE_VERIFICATION_URL;
           const verifyResponse = await this.verifyPayment(url, process.env.FLUTTERWAVE_SECRET_KEY, paymentRes.reference.flwRef);
           const parsedResponse = JSON.parse(verifyResponse);
-          console.log('----------parsedResponse---------');
-          console.log(parsedResponse);
-          console.log('----------End parsedResponse---------');
           if (parsedResponse.status === 'success') {
             paymentRes.isActive = true;
             paymentRes.paymentResponse = parsedResponse.data;
+            console.log('Success 1');
             // Update payment record.
             const updatedPayment = await paymentService.update(paymentRes._id, paymentRes);
-            console.log('----------updatedPayment---------');
-            console.log(updatedPayment);
-            console.log('----------End updatedPayment---------');
 
             if (entity !== undefined && entity.toLowerCase() === 'person') {
               const person = await peopleService.get(destinationId);
@@ -101,9 +98,9 @@ class FundWalletService {
               return personUpdate;
             } else if (entity !== undefined && entity.toLowerCase() === 'facility') {
               const facility = await facilityService.get(facilityId);
-              console.log('----------facility---------');
+              console.log('----------facility---------***********************************************');
               console.log(facility);
-              console.log('----------End facility---------');
+              console.log('----------End facility---------************************');
               const userWallet = facility.wallet;
               const cParam = {
                 amount: amount,
@@ -120,17 +117,16 @@ class FundWalletService {
               facility.wallet = transaction(userWallet, cParam);
 
               const facilityUpdate = await facilityService.update(facility._id, facility);
-              console.log('----------facilityUpdate---------');
-              console.log(facilityUpdate);
-              console.log('----------End facilityUpdate---------');
               return facilityUpdate;
             }
+          }else{
+            return new Error('There was an error while verifying this payment');
           }
         } else if (paymentRoute !== undefined && paymentRoute.toLowerCase() === 'paystack') {
           paymentService.create(paymentPayload).then(payment => {
             let url = process.env.PAYSTACK_VERIFICATION_URL + data.ref.trxref;
             var client = new Client();
-            var args = {
+            var args = { 
               headers: {
                 Authorization: 'Bearer' + process.env.PAYSTACK_SECRET_KEY
               }

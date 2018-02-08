@@ -34,7 +34,6 @@ class Service {
         personId: data.personId
       }
     });
-    logger.info(userList);
     if (userList.data.length > 0) {
       let selectedUser = userList.data[0];
       if (selectedUser.facilitiesRole === undefined) {
@@ -49,11 +48,12 @@ class Service {
         facilitiesRole: facilitiesRole
       });
       return patchedUser;
+
     } else {
       return [];
+
+
     }
-
-
   }
 
   update(id, data, params) {

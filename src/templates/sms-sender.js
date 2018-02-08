@@ -1,6 +1,6 @@
 'use strict';
 const request = require('request');
-const logger = require('winston');
+
 
 function sender(mesage, data, isScheduler) {
   var url = 'http://portal.bulksmsnigeria.net/api/?username=apmis&password=apmis&message=' + mesage + '&sender=APMIS&mobiles=@@' + data.primaryContactPhoneNo + '@@';
@@ -9,10 +9,8 @@ function sender(mesage, data, isScheduler) {
   }
   request.get(url, null, (error, response, body) => {
     if (error) {
-      // logger.error(error);
     }
     if (response && body) {
-      // logger.error(error);
     }
   });
 }
@@ -23,7 +21,6 @@ function sendToken(data) {
 }
 
 function sendPasswordResetToken(data) {
-  logger.info(data);
   const message = 'Complete your password reset by verifing your account with this OTP: ' + data.verificationToken + ' to complete your registration';
   sender(message, data, false);
 }
