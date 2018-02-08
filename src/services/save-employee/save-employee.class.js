@@ -19,7 +19,6 @@ class Service {
       let workspaces = await workspaceService.find({ query: { facilityId: id, employeeId: emp._id } });
       emp.workSpaces = workspaces.data;
       selectedEmployee.data[0] = emp;
-      console.log(emp);
       return selectedEmployee;
     } else {
       return {};
@@ -35,7 +34,6 @@ class Service {
         personId: data.personId
       }
     });
-    logger.info(userList);
     if (userList.data.length > 0) {
       let selectedUser = userList.data[0];
       if (selectedUser.facilitiesRole === undefined) {
@@ -50,11 +48,12 @@ class Service {
         facilitiesRole: facilitiesRole
       });
       return patchedUser;
+
     } else {
       return [];
+
+
     }
-
-
   }
 
   update(id, data, params) {

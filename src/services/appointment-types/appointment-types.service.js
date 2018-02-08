@@ -1,4 +1,4 @@
-// Initializes the `appointmentTypes` service on path `/appointment-types`
+// Initializes the `appointment-types` service on path `/appointment-types`
 const createService = require('feathers-mongoose');
 const createModel = require('../../models/appointment-types.model');
 const hooks = require('./appointment-types.hooks');

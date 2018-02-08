@@ -64,7 +64,6 @@ const productTypes = require('./product-types/product-types.service.js');
 const productVariants = require('./product-variants/product-variants.service.js');
 const assignWorkspace = require('./assign-workspace/assign-workspace.service.js');
 const workspaces = require('./workspaces/workspaces.service.js');
-const appointmentTypes = require('./appointment-types/appointment-types.service.js');
 const auditTray = require('./audit-tray/audit-tray.service.js');
 const bedTypes = require('./bed-types/bed-types.service.js');
 const clientTypes = require('./client-types/client-types.service.js');
@@ -116,8 +115,32 @@ const facilityRoles = require('./facility-roles/facility-roles.service.js');
 const saveEmployee = require('./save-employee/save-employee.service.js');
 const scheduleTypes = require('./schedule-types/schedule-types.service.js');
 const schedules = require('./schedules/schedules.service.js');
+<<<<<<< HEAD
 const getPrescription = require('./get-prescription/get-prescription.service.js');
 module.exports = function (app) {
+=======
+const timezones = require('./timezones/timezones.service.js');
+const billManagers = require('./bill-managers/bill-managers.service.js');
+const customFacilityModules = require('./custom-facility-modules/custom-facility-modules.service.js');
+const appointmentTypes = require('./appointment-types/appointment-types.service.js');
+const orderstatus = require('./orderstatus/orderstatus.service.js');
+const wardSetup = require('./ward-setup/ward-setup.service.js');
+const wardroomgroups = require('./wardroomgroups/wardroomgroups.service.js');
+const wardRoomPrices = require('./ward-room-prices/ward-room-prices.service.js');
+const saveAppointment = require('./save-appointment/save-appointment.service.js');
+const authorizePrescription = require('./authorize-prescription/authorize-prescription.service.js');
+const admitPatient = require('./admit-patient/admit-patient.service.js');
+const investigationSpecimens = require('./investigation-specimens/investigation-specimens.service.js');
+const documentationTemplates = require('./documentation-templates/documentation-templates.service.js');
+const severity = require('./severity/severity.service.js');
+const insuranceEnrollees = require('./insurance-enrollees/insurance-enrollees.service.js');
+const familyDependants = require('./family-dependants/family-dependants.service.js');
+const vitals = require('./vitals/vitals.service.js');
+const listOfStores = require('./list-of-stores/list-of-stores.service.js');
+const drugDetailsApis = require('./drug-details-apis/drug-details-apis.service.js');
+const listOfProducts = require('./list-of-products/list-of-products.service.js');
+module.exports = function(app) {
+>>>>>>> e5f6e9295a501a6e9568f2f4b18e88452422171c
   app.configure(users);
   app.configure(facilityOwnerships);
   app.configure(facilityTypes);
@@ -184,7 +207,6 @@ module.exports = function (app) {
   app.configure(productVariants);
   app.configure(assignWorkspace);
   app.configure(workspaces);
-  app.configure(appointmentTypes);
   app.configure(auditTray);
   app.configure(bedTypes);
   app.configure(clientTypes);
@@ -236,5 +258,30 @@ module.exports = function (app) {
   app.configure(saveEmployee);
   app.configure(scheduleTypes);
   app.configure(schedules);
+<<<<<<< HEAD
   app.configure(getPrescription);
+=======
+  app.configure(timezones);
+  app.configure(billManagers);
+  app.configure(customFacilityModules);
+  app.configure(appointmentTypes);
+  app.configure(orderstatus);
+  app.configure(wardSetup);
+  app.configure(wardroomgroups);
+  app.configure(wardRoomPrices);
+  app.configure(saveAppointment);
+  app.configure(authorizePrescription);
+  app.configure(admitPatient);
+  app.configure(investigationSpecimens);
+  app.configure(documentationTemplates);
+  app.configure(severity);
+  app.configure(insuranceEnrollees);
+  app.configure(familyDependants);
+  app.configure(vitals);
+  app.configure(listOfStores);
+  app.configure(drugDetailsApis);
+  app.configure(listOfProducts);
+>>>>>>> e5f6e9295a501a6e9568f2f4b18e88452422171c
 };
+
+

@@ -17,7 +17,6 @@ class Service {
 
   async create(data, params) {
     if (data.uploadType === 'documentUpload') {
-      logger.info('am in');
       var rawdata = data.base64;
       let docType = data.docType;
       let docName = data.docName;
@@ -26,7 +25,6 @@ class Service {
       let description = data.description;
       let fileType = data.fileType;
 
-      logger.info(fileType);
       let fileName;
       if (fileType == 'application/pdf') {
         fileName = patientId + '_' + docType + '_' + Date.now() + '.pdf';
@@ -36,13 +34,11 @@ class Service {
       }
       const uploadImageService = this.app.service('upload-images');
       var result = await uploadImageService.create(data, { fileName: fileName });
-      logger.info('before find');
       let blobUrl = await uploadImageService.find({
         query: {
           container: 'personcontainer', fileName: fileName
         }
       });
-      logger.info(blobUrl);
       let doc = {
         patientId: patientId,
         facilityId: facilityId,

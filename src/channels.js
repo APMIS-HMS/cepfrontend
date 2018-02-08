@@ -63,11 +63,15 @@ module.exports = function (app) {
     return app.channel(data._id);
   });
   app.service('patients').publish('created', (data) => {
-    // logger.info(data.facilityId);
     return app.channel(data.facilityId);
   });
   app.service('employees').publish('created', (data) => {
-    logger.info(data.facilityId);
     return app.channel(data.facilityId);
+  });
+  app.service('doc-upload').publish('created', (data) => {
+    return app.channel(data.facilityId);
+  });
+  app.service('people').publish('updated', (data, context) => {
+    return app.channel(context.params.query.facilityId);
   });
 };

@@ -1,15 +1,15 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
-const { populate } = require('feathers-hooks-common');
+const { fastJoin } = require('feathers-hooks-common');
 
-const personSchema = {
-  include: {
-    service: 'people',
-    nameAs: 'personDetails',
-    parentField: 'personId',
-    childField: '_id',
-    query: {
-      $sort: { createdAt: -1 }
-    },
+
+const resolvers = {
+  joins: {
+    personDetails: () => async (employee, context) => {
+      const person = await context.app
+        .service('people')
+        .get(employee.personId, {});
+      employee.personDetails = person;
+    }
   }
 };
 
@@ -25,7 +25,7 @@ module.exports = {
   },
 
   after: {
-    all: [populate({ schema: personSchema })],
+    all: [fastJoin(resolvers)],
     find: [],
     get: [],
     create: [],

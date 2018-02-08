@@ -17,31 +17,24 @@ class Service {
   }
 
   async create(data, params) {
-    console.log("Facility service Item=================");
     const facilitiesItemService = this.app.service('organisation-services');
-    console.log("OOO");
     const serviceModifiersService = this.app.service('servicemodifiers');
     let len2 = data.length - 1;
-    console.log("TTT");
-    console.log(len2);
     for (let i = len2; i >= 0; i--) {
       let len3 = data[i].billItems.length - 1;
       for (let j = len3; j >= 0; j--) {
         data[i].billItems[j].facilityServiceObject = {};
         data[i].billItems[j].serviceModifierObject = [];
         var awaitFacilitiesItemService = await facilitiesItemService.get(data[i].billItems[j].facilityServiceId, {});
-        console.log( awaitFacilitiesItemService.categories.length);
-        awaitFacilitiesItemService.categories.forEach(category => {
-          console.log(category.services.length); 
+        awaitFacilitiesItemService.categories.forEach(category => { 
           category.services.forEach(itm => {
-            console.log(itm._id); 
             if (itm._id.toString() == data[i].billItems[j].serviceId.toString()) {
               data[i].billItems[j].facilityServiceObject.categoryId = category._id;
               data[i].billItems[j].facilityServiceObject.category = category.name;
               data[i].billItems[j].facilityServiceObject.service = itm.name;
               data[i].billItems[j].facilityServiceObject.serviceId = itm._id;
             }
-          })
+          });
         });
       }
     }
