@@ -32,8 +32,8 @@
                         <td>{{supplier.name}}</td>
                         <td>{{supplier.contact}}</td>
                         <td>{{supplier.email}}</td>
-                        <td>{{supplier.phoneNumber}}</td>
-                        <td>{{supplier.address}}</td>
+                        <td>{{supplier.contact}}</td>
+                        <td>{{supplier.address.street}}</td>
                         <td class="last-td-action">
                             <span><a (click)="onEdit(supplier)" class=""><i class="fa fa-pencil"></i></a></span>
                             <span><a class=""><i class="fa  fa-trash"></i></a></span>
@@ -51,7 +51,7 @@
 
 
         <div *ngIf="newSupply" class="modal-overlay">
-            <app-new-supplier [selectedSupplier]="selectedSupplier" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-supplier>
+            <app-new-supplier [selectedSupplier]="selectedSupplier" (refreshSupplier)="onRefreshSupplier($event)" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-supplier>
         </div>
 
     </div>

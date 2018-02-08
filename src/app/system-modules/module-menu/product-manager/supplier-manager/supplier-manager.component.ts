@@ -32,7 +32,7 @@ export class SupplierManagerComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this._productEventEmitter.setRouteUrl('Supplier Manager');
     this.getSuppliers();
   }
@@ -56,7 +56,11 @@ export class SupplierManagerComponent implements OnInit {
   newSupplyShow() {
     this.newSupply = true;
   }
+  onRefreshSupplier(value) {
+    console.log("Come back");
+    this.getSuppliers();
+  }
   refresh(): void {
     // window.location.reload();
-}
+  }
 }

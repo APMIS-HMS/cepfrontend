@@ -21,7 +21,7 @@
                 <input type="tel" matInput mat-error placeholder="Contact Number" formControlName="frmContact">
             </mat-input-container>
         </div>
-          <ng4geo-autocomplete [userSettings]="userSettings" (componentCallback)="autoCompleteCallback1($event)"></ng4geo-autocomplete>
+          <ng4geo-autocomplete [userSettings]="userSettings" (componentCallback)="autoCompleteCallback($event)"></ng4geo-autocomplete>
         <div class="frm-item-wrap">
             <div class="frm-item-x2">
                 <mat-input-container class="example-full-width">
@@ -35,7 +35,7 @@
         <div class="frm-item-wrap">
             <div class="frm-item-x2">
                 <mat-form-field class="example-full-width">
-                    <mat-select placeholder="Country" formControlName="frmCountry">
+                    <mat-select placeholder="Country" formControlName="frmCountry" [compareWith]="compareCountry">
                         <mat-option  [value]="country.name" *ngFor="let country of countries">{{country.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -49,16 +49,6 @@
           <div class="frm-item-wrap">
             <mat-input-container class="example-full-width">
               <input matInput mat-error placeholder="Email" formControlName="email">
-            </mat-input-container>
-          </div>
-          <div class="frm-item-wrap">
-            <mat-input-container class="example-full-width">
-              <input matInput mat-error placeholder="Phone Number" formControlName="phoneNumber">
-            </mat-input-container>
-          </div>
-          <div class="frm-item-wrap">
-            <mat-input-container class="example-full-width">
-              <textarea matInput mat-error placeholder="Address" formControlName="address"></textarea>
             </mat-input-container>
           </div>
         </div>
