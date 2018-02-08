@@ -23,13 +23,23 @@ class Service {
 
 
     var prescription = {
-      patient: String,
-      location: String,
-      prescriber: String,
+      patient: Object,
+      location: Object,
+      prescriber: Object,
       date: Date
       //priority:String 
     };
-    console.log('***************Params**********************');
+
+    // console.log('***************Prescriptions**********************');
+    //     console.log(presCallback);
+    //     console.log('***************End Prescriptions**********************');
+    //     if (presCallback.length > 0) {
+    //       presCallback.forEach(element => {
+    //         prescription.patient = patientService.find(element.patientId);
+    //         prescription.location = locationService.find(element.locationId);
+    //         prescription.prescriber = employeeService.find(element.employeeId);
+    //         prescription.data = element.createdAt;
+    // console.log('***************Params**********************');
     console.log(params);
     console.log('***************End Params**********************');
     //Check for facility Id 
@@ -37,24 +47,15 @@ class Service {
       console.log('***************Data**********************');
       console.log(data.facilityId);
       console.log('***************End Data**********************');
-      prescriptionService.find({ query: data.facilityId }).then(presCallback => {
-        console.log('***************Prescriptions**********************');
-        console.log(presCallback);
-        console.log('***************End Prescriptions**********************');
-        if (presCallback.length > 0) {
-          presCallback.forEach(element => {
-            prescription.patient = patientService.find(element.patientId);
-            prescription.location = locationService.find(element.locationId);
-            prescription.prescriber = employeeService.find(element.employeeId);
-            prescription.data = element.createdAt;
-          });
-        } else {
-          return 'No prescription found';
-        }
-        return prescription;
-      });
-
+      let pres = await prescriptionService.find({ query: data.facilityId });
+      
+    } else {
+      return 'No prescription found';
     }
+    return prescription;
+  };
+
+}
 
 
     // if (Array.isArray(data)) {
@@ -64,21 +65,21 @@ class Service {
     //return Promise.resolve(data);
   }
 
-  setup(app) {
-    this.app = app;
-  }
+setup(app) {
+  this.app = app;
+}
 
-  update(id, data, params) {
-    return Promise.resolve(data);
-  }
+update(id, data, params) {
+  return Promise.resolve(data);
+}
 
-  patch(id, data, params) {
-    return Promise.resolve(data);
-  }
+patch(id, data, params) {
+  return Promise.resolve(data);
+}
 
-  remove(id, params) {
-    return Promise.resolve({ id });
-  }
+remove(id, params) {
+  return Promise.resolve({ id });
+}
 
 }
 
