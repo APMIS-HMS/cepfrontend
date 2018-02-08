@@ -33,26 +33,7 @@ export class LabCheckInComponent implements OnInit {
     private _locationService: LocationService
   ) {
     this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
-    this._authFacadeService.getLogingEmployee().then((res: any) => {
-      this.loginEmployee = res;
-      console.log(this.loginEmployee);
-      console.log(this.selectedFacility);
-      if (!!this.loginEmployee.workSpaces && this.loginEmployee.workSpaces.length > 0) {
-        if (!!this.selectedFacility.minorLocations && this.selectedFacility.minorLocations.length > 0) {
-          const minorLocations = this.selectedFacility.minorLocations;
-          const locations = this.loginEmployee.workSpaces.map(m => m.locations);
-          const locationIds = [];
-          locations.forEach(location => {
-            (location.map(m => m.minorLocationId)).forEach(p => {
-              locationIds.push(p);
-            });
-          });
-          console.log(locations);
-          console.log(minorLocations);
-          this.locations = minorLocations.filter(x => locationIds.includes(x._id));
-        }
-      }
-    }).catch(err => console.log(err));
+    this._getLabLocation();
   }
 
   ngOnInit() {
@@ -63,14 +44,11 @@ export class LabCheckInComponent implements OnInit {
     });
 
 		this.labCheckin.controls['location'].valueChanges.subscribe(val => {
-      console.log(val);
-      // this._workbenchService.find({ query: { 'laboratoryId._id': val._id } }).then(res => {
-			// 	if (res.data.length > 0) {
-			// 		this.workbenches = res.data;
-			// 	} else {
-			// 		this.workbenches = [];
-			// 	}
-			// });
+      this._workbenchService.find({ query: { 'minorLocationId': val._id } }).then(res => {
+				if (res.data.length > 0) {
+					this.workbenches = res.data;
+				}
+			});
 		});
   }
 
@@ -118,12 +96,29 @@ export class LabCheckInComponent implements OnInit {
     });
   }
 
+  private _getEmployee(labId: string) {
+    this._authFacadeService.getLogingEmployee().then((res: any) => {
+      this.loginEmployee = res;
+      if (!!this.loginEmployee.workSpaces && this.loginEmployee.workSpaces.length > 0) {
+        if (!!this.selectedFacility.minorLocations && this.selectedFacility.minorLocations.length > 0) {
+          const minorLocations = this.selectedFacility.minorLocations;
+          const locations = this.loginEmployee.workSpaces.map(m => m.locations);
+          const locationIds = [];
+          locations.forEach(location => {
+            (location.map(m => m.minorLocationId)).forEach(p => { locationIds.push(p) });
+          });
+          this.locations = minorLocations.filter(x => x.locationId === labId && locationIds.includes(x._id));
+        }
+      }
+    }).catch(err => console.log(err));
+  }
+
   private _getLabLocation() {
-    this._locationService.find({ query: { facilityId: this.selectedFacility._id}}).then(res => {
-      console.log(res);
-    }).catch(err => {
-      console.log(err);
-    });
+    this._locationService.find({ query: { name: 'Laboratory'}}).then(res => {
+      if (res.data.length > 0) {
+        this._getEmployee(res.data[0]._id);
+      }
+    }).catch(err => console.log(err));
   }
 
   close_onClick() {

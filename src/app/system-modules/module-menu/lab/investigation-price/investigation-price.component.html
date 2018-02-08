@@ -16,11 +16,11 @@
                         <div class="frm-wrap">
                             <div class="frm-l">
                                 <div class="frm-item-wrap">
-                                    <apmis-lookup formControlName="workbench" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Select Workbench" [isSocket]="false" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"
+                                    <apmis-lookup formControlName="workbench" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Select Workbench" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"
                                         [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys"></apmis-lookup>
                                 </div>
                                 <div class="frm-item-wrap">
-                                    <apmis-lookup formControlName="investigation" [(ngModel)]="apmisInvestigationLookupText" [url]="apmisInvestigationLookupUrl" [query]="apmisInvestigationLookupQuery" placeholder="Select Investigation" [isSocket]="false" [displayKey]="apmisInvestigationLookupDisplayKey"
+                                    <apmis-lookup formControlName="investigation" [(ngModel)]="apmisInvestigationLookupText" [url]="apmisInvestigationLookupUrl" [query]="apmisInvestigationLookupQuery" placeholder="Select Investigation" [isSocket]="true" [displayKey]="apmisInvestigationLookupDisplayKey"
                                         (selectedItem)="apmisInvestigationLookupHandleSelectedItem($event)"></apmis-lookup>
                                 </div>
                             </div>
@@ -78,9 +78,9 @@
                                 <td colspan="6">
                                     <div class="tbl-actionRow">
                                         <!-- <div class="tbl-title">Employee Workspace</div> -->
-                                        <div class="frm-item-wrap">
+                                        <!-- <div class="frm-item-wrap">
                                             <apmis-lookup [(ngModel)]="apmisLookupText" url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Investigation" isSocket="false" displayKey="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                                        </div>
+                                        </div> -->
                                         <div class="frm-item-wrap">
                                             <mat-form-field>
                                                 <mat-select placeholder="Status">

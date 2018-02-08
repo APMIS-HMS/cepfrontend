@@ -18,9 +18,9 @@
                                 <div class="frm-item-wrap">
                                     <div>
                                         <mat-input-container>
-                                            <input matInput placeholder="Select Laboratory Unit" [matAutocomplete]="autoPatient" formControlName="minorLocation">
+                                            <input matInput placeholder="Select Laboratory Unit" [matAutocomplete]="autoMinorLocation" formControlName="minorLocation">
                                         </mat-input-container>
-                                        <mat-autocomplete #autoPatient="matAutocomplete" [displayWith]="patientDisplayFn">
+                                        <mat-autocomplete #autoMinorLocation="matAutocomplete" [displayWith]="minorLocationDisplayFn">
                                             <mat-option *ngFor="let minor of minorLocations" [value]="minor">
                                                 {{ minor.name }}
                                             </mat-option>

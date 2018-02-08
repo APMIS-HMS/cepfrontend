@@ -73,11 +73,12 @@ export class WorkbenchComponent implements OnInit {
     });
   }
   getLaboratoryMajorLocation() {
-    this.locationService.find({ query: { name: 'Laboratory' } }).then(payload => {
-      if (payload.data.length > 0) {
-        this.selectedMajorLocation = payload.data[0];
-        this.minorLocations = this.selectedFacility.minorLocations.
-          filter(x => x.locationId === this.selectedMajorLocation._id);
+    this.locationService.find({ query: { name: 'Laboratory' } }).then(res => {
+      console.log(res);
+      if (res.data.length > 0) {
+        this.selectedMajorLocation = res.data[0];
+        this.minorLocations = this.selectedFacility.minorLocations.filter(x => x.locationId === this.selectedMajorLocation._id);
+        console.log(this.minorLocations);
       }
     })
   }
@@ -87,8 +88,18 @@ export class WorkbenchComponent implements OnInit {
   workbench_show() {
     this.workbench_view = !this.workbench_view;
   }
-  patientDisplayFn(minor: any) {
+  minorLocationDisplayFn(minor: any) {
+    console.log(minor);
     return minor ? minor.name : minor;
+    // if (typeof minor === 'string') {
+    //   console.log('string');
+    //   // console.log(this.minorLocations);
+    //   // const ml = this.minorLocations.filter(x => x._id === minor);
+    //   // console.log(ml);
+    //   return minor;
+    // } else {
+    //   return minor._id;
+    // }
   }
   close_onClick(message: boolean): void {
 
