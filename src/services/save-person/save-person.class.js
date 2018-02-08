@@ -20,7 +20,7 @@ class Service {
   async create(data, params) {
     const userService = this.app.service('users');
     const personService = this.app.service('people');
-    const getTokenService = this.app.service('get-tokens');
+    const getTokenService = this.app.service('get-tokens'); 
 
     let person = data.person;
     person.wallet = {

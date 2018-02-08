@@ -22,7 +22,7 @@ module.exports = function (app) {
     updatedAt: { type: Date, 'default': Date.now }
   }, {
     timestamps: true
-  });
+  }); 
 
   return mongooseClient.model('prescription', prescription);
 }; 
