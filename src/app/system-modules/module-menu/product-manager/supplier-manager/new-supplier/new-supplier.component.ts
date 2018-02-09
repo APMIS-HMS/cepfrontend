@@ -19,6 +19,7 @@ export class NewSupplierComponent implements OnInit {
   loadIndicatorVisible = false;
   public frm_newSupplier: FormGroup;
   selectedLocation: any = <any>{};
+  btnLabel = "Add";
   countries: any[] = [];
   states: any[] = [];
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -55,6 +56,7 @@ export class NewSupplierComponent implements OnInit {
 
     this.frm_newSupplier.controls['frmCountry'].valueChanges.subscribe(country => {
       this._countryServiceFacade.getOnlyStates(country).then((payload: any) => {
+        console.log("Am here");
         this.states = payload;
       }).catch(error => {
 
@@ -64,14 +66,18 @@ export class NewSupplierComponent implements OnInit {
   }
   populateSupplier() {
     if (this.selectedSupplier._id !== undefined) {
+      this.btnLabel = "Update";
+      console.log(this.selectedSupplier.address);
       this.frm_newSupplier.controls['name'].setValue(this.selectedSupplier.name);
       this.frm_newSupplier.controls['email'].setValue(this.selectedSupplier.email);
-      this.frm_newSupplier.controls['frmContact'].setValue(this.selectedSupplier.phoneNumber);
-      this.frm_newSupplier.controls['frmState'].setValue(this.selectedSupplier.address.state);
+      this.frm_newSupplier.controls['frmContact'].setValue(this.selectedSupplier.contact);
       this.frm_newSupplier.controls['frmCountry'].setValue(this.selectedSupplier.address.country);
+      this._countryServiceFacade.getOnlyStates(this.selectedSupplier.address.country).then((payload: any) => { this.states = payload; }).catch(error => { });
+      this.frm_newSupplier.controls['frmState'].setValue(this.selectedSupplier.address.state);
       this.frm_newSupplier.controls['frmStreet'].setValue(this.selectedSupplier.address.street);
       this.frm_newSupplier.controls['frmCity'].setValue(this.selectedSupplier.address.city);
     } else {
+      this.btnLabel = "Add";
       this.frm_newSupplier.reset();
     }
   }
@@ -154,8 +160,8 @@ export class NewSupplierComponent implements OnInit {
           this.frm_newSupplier.reset();
           this.userSettings['inputString'] = '';
           this._systemModuleService.off();
-          this._systemModuleService.announceSweetProxy('Supplier created successfully', 'success',this);
-        },err=>{
+          this._systemModuleService.announceSweetProxy('Supplier created successfully', 'success', this);
+        }, err => {
           this._systemModuleService.announceSweetProxy('There was an error while creating supplier, try again!', 'error');
           console.log(err);
           this._systemModuleService.off();
@@ -172,8 +178,8 @@ export class NewSupplierComponent implements OnInit {
           this.frm_newSupplier.reset();
           this.userSettings['inputString'] = '';
           this._systemModuleService.off();
-          this._systemModuleService.announceSweetProxy('Supplier updated successfully', 'success',this);
-        },err=>{
+          this._systemModuleService.announceSweetProxy('Supplier updated successfully', 'success', this);
+        }, err => {
           this._systemModuleService.announceSweetProxy('There was an error while updating supplier, try again!', 'error');
           this._systemModuleService.off();
         });

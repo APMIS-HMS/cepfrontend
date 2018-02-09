@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AuthFacadeService } from '../../service-facade/auth-facade.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PurchaseEmitterService } from '../../../services/facility-manager/purchase-emitter.service';
 import { Employee, Facility } from '../../../models/index';
@@ -31,50 +32,53 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
   constructor(
     private _purchaseEventEmitter: PurchaseEmitterService, private route: ActivatedRoute,
     private _router: Router, private employeeService: EmployeeService,
+    private authFacadeService: AuthFacadeService,
     private locker: CoolLocalStorage, private workSpaceService: WorkSpaceService) {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
-    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
-
-    if ((this.loginEmployee.storeCheckIn === undefined
-      || this.loginEmployee.storeCheckIn.length === 0)) {
-      this.modal_on = true;
-    } else {
-      let isOn = false;
-      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
-        if (itemr.isDefault === true) {
-          itemr.isOn = true;
-          itemr.lastLogin = new Date();
-          isOn = true;
-          let checkingObject = { typeObject: itemr, type: 'store' };
-          this.employeeService.announceCheckIn(checkingObject);
-
-          this.employeeService.update(this.loginEmployee).then(payload => {
-            this.loginEmployee = payload;
-            checkingObject = { typeObject: itemr, type: 'store' };
-            this.employeeService.announceCheckIn(checkingObject);
-            this.locker.setObject('checkingObject', checkingObject);
-          });
-        }
-      });
-      if (isOn === false) {
+    // this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    this.authFacadeService.getLogingEmployee().then((payload:any) =>{
+      this.loginEmployee = payload;
+      console.log(this.loginEmployee);
+      if ((this.loginEmployee.storeCheckIn === undefined
+        || this.loginEmployee.storeCheckIn.length === 0)) {
+        this.modal_on = true;
+      } else {
+        let isOn = false;
         this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
-          if (r === 0) {
+          if (itemr.isDefault === true) {
             itemr.isOn = true;
             itemr.lastLogin = new Date();
+            isOn = true;
+            let checkingObject = { typeObject: itemr, type: 'store' };
+            this.employeeService.announceCheckIn(checkingObject);
+  
             this.employeeService.update(this.loginEmployee).then(payload => {
               this.loginEmployee = payload;
-              const checkingObject = { typeObject: itemr, type: 'store' };
+              checkingObject = { typeObject: itemr, type: 'store' };
               this.employeeService.announceCheckIn(checkingObject);
               this.locker.setObject('checkingObject', checkingObject);
             });
           }
-
         });
+        if (isOn === false) {
+          this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+            if (r === 0) {
+              itemr.isOn = true;
+              itemr.lastLogin = new Date();
+              this.employeeService.update(this.loginEmployee).then(payload => {
+                this.loginEmployee = payload;
+                const checkingObject = { typeObject: itemr, type: 'store' };
+                this.employeeService.announceCheckIn(checkingObject);
+                this.locker.setObject('checkingObject', checkingObject);
+              });
+            }
+  
+          });
+        }
+  
       }
-
-    }
-
+    });
   }
 
   ngOnInit() {

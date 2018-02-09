@@ -7,17 +7,17 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 
 @Component({
-  selector: 'app-store-check-in',
-  templateUrl: './store-check-in.component.html',
-  styleUrls: ['./store-check-in.component.scss']
+	selector: 'app-store-check-in',
+	templateUrl: './store-check-in.component.html',
+	styleUrls: ['./store-check-in.component.scss']
 })
 export class StoreCheckInComponent implements OnInit {
 	mainErr = true;
 	errMsg = 'You have unresolved errors';
-	@Input() loginEmployee: Employee;
+	@Input() loginEmployee: any;
 	@Input() workSpace: any;
 	workSpaces: any;
-
+	isLoading = false;
 	public storeCheckin: FormGroup;
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 	selectedStore: ConsultingRoomModel = <ConsultingRoomModel>{};
@@ -32,37 +32,44 @@ export class StoreCheckInComponent implements OnInit {
 		public consultingRoomService: ConsultingRoomService,
 		public employeeService: EmployeeService,
 		public storeService: StoreService,
-    public locker: CoolLocalStorage,
-    private _authFacadeService: AuthFacadeService
+		public locker: CoolLocalStorage,
+		private _authFacadeService: AuthFacadeService
 	) {
-    // this.workSpaces = this.locker.getObject('workspaces');
-    this._authFacadeService.getLogingEmployee().then((res: any) => {
-      console.log(res);
-      this.loginEmployee = res;
-      this.workSpaces = res.workSpaces;
-      if (this.workSpaces !== undefined) {
-        this.workSpaces.forEach(workspace => {
-          console.log(workspace);
-          if (workspace.isActive && workspace.locations.length > 0) {
-            workspace.locations.forEach(x => {
-              console.log(x);
-              if (x.isActive) {
-                this.locations.push(x.minorLocationId);
-              }
-            });
-          }
-        });
-      }
-    }).catch(err => console.log(err));
+		// this.workSpaces = this.locker.getObject('workspaces');
+		this.isLoading = true;
+		this._authFacadeService.getLogingEmployee().then((res: any) => {
+			console.log(res);
+			this.loginEmployee = res;
+			this.workSpaces = res.workSpaces;
+			if (this.workSpaces !== undefined) {
+				this.workSpaces.forEach(workspace => {
+					console.log(workspace);
+					if (workspace.isActive && workspace.locations.length > 0) {
+						workspace.locations.forEach(p => {
+							console.log(p);
+							if (p.isActive) {
+								let index = this.locations.filter(x => x.minorLocationId.toString() === p.minorLocationId.toString());
+								if (index.length == 0) {
+									this.locations.push(p);
+								}
+							}
+						});
+					}
+				});
+				this.isLoading = false;
+			}
+			console.log(this.locations);
+		}).catch(err => console.log(err));
 	}
 
 	ngOnInit() {
-	  this.storeCheckin = this.formBuilder.group({
+		this.storeCheckin = this.formBuilder.group({
 			location: ['', [<any>Validators.required]],
 			room: ['', [<any>Validators.required]],
 			isDefault: [false, [<any>Validators.required]]
 		});
 		this.storeCheckin.controls['location'].valueChanges.subscribe(value => {
+			console.log(value);
 			this.storeService.find({ query: { minorLocationId: value } }).then(res => {
 				if (res.data.length > 0) {
 					this.stores = res.data;
@@ -74,11 +81,11 @@ export class StoreCheckInComponent implements OnInit {
 
 		this.storeCheckin.controls['room'].valueChanges.subscribe(value => {
 		});
-  }
+	}
 
 	close_onClick() {
 		this.closeModal.emit(true);
-  }
+	}
 
 	checkIn(valid, value) {
 		console.log(value);
@@ -105,27 +112,38 @@ export class StoreCheckInComponent implements OnInit {
 		console.log(2);
 		// this.loadIndicatorVisible = true;
 		console.log(this.loginEmployee);
-		this.employeeService.update(this.loginEmployee).then(payload => {
+		this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
 			console.log(3);
 			this.loginEmployee = payload;
-			const workspaces = <any>this.locker.getObject('workspaces');
-			this.loginEmployee.workSpaces = workspaces;
-			this.locker.setObject('loginEmployee', payload);
-			let keepCheckIn;
-			this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
-				itemi.isOn = false;
-				if (itemi.storeId === checkIn.storeId) {
-					console.log(4);
-					console.log(checkIn.storeId);
-					itemi.isOn = true;
-					keepCheckIn = itemi;
-				}
+			this._authFacadeService.getLogingEmployee().then((res: any) => {
+				this.loginEmployee = res;
+				let keepCheckIn;
+				this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
+					itemi.isOn = false;
+					if (itemi.storeId === checkIn.storeId) {
+						console.log(4);
+						console.log(checkIn.storeId);
+						if (this.locations.length > 0) {
+							let index = this.locations.filter(x => x.minorLocationId.toString() === checkIn.minorLocationId.toString());
+							if(index.length == 0){
+								itemi.minorLocation = index[0].name;
+							}
+						}
+						if (this.stores.length > 0) {
+							let index = this.stores.filter(x => x._id.toString() === checkIn.storeId.toString());
+							if(index.length == 0){
+								itemi.store = index[0].name;
+							}
+						}
+						itemi.isOn = true;
+						keepCheckIn = itemi;
+					}
+				});
+				this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'store' });
+				this.checkInBtnText = '<i class="fa fa-check-circle"></i> Check In';
+				console.log(this.loginEmployee.storeCheckIn);
+				// this.close_onClick();
 			});
-
-
-			this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'store' });
-			this.checkInBtnText = '<i class="fa fa-check-circle"></i> Check In';
-			this.close_onClick();
 		});
 	}
 	changeRoom(checkIn: any) {
@@ -137,7 +155,7 @@ export class StoreCheckInComponent implements OnInit {
 				keepCheckIn = itemi;
 			}
 		});
-		this.employeeService.update(this.loginEmployee).then(payload => {
+		this.employeeService.patch(this.loginEmployee._id,{storeCheckIn:this.loginEmployee.storeCheckIn}).then(payload => {
 			this.loginEmployee = payload;
 			this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'store' });
 			this.close_onClick();

@@ -15,7 +15,7 @@ export class CategoryManagerComponent implements OnInit {
 	categories: any[] = [];
 	selectedItem: any = <Category>{};
 	btnLabel = 'Create';
-
+	searchControl = new FormControl();
 	mainErr: Boolean = true;
 	errMsg: String = 'You have unresolved errors';
 
@@ -32,6 +32,15 @@ export class CategoryManagerComponent implements OnInit {
 		});
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
 		this.getManufacturer();
+		this.searchControl.valueChanges
+			.debounceTime(200)
+			.distinctUntilChanged()
+			.subscribe((por: any) => {
+				this._categoryService.find({ query: { facilityId: this.selectedFacility._id,name: {$regex: this.searchControl.value,'$options': 'i'} } })
+				.then(data => {
+					this.categories = data.data;
+				});
+			})
 	}
 
 	onClickAdd(value: any, valid: boolean) {

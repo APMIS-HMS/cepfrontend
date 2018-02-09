@@ -53,7 +53,7 @@ export class NewProductComponent implements OnInit {
   createText: string = 'Create Product';
 
   constructor(
-   private _locker: CoolLocalStorage,
+    private _locker: CoolLocalStorage,
     private formBuilder: FormBuilder, private manufacturerService: ManufacturerService, private genericService: GenericService,
     private presentationService: PresentationService, private productTypeService: ProductTypeService,
     private _facilityService: FacilitiesService,
@@ -63,7 +63,7 @@ export class NewProductComponent implements OnInit {
 
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.user = <User> this._locker.getObject('auth');
+    this.user = <User>this._locker.getObject('auth');
 
     this.frm_newProduct = this.formBuilder.group({
       productTypeId: ['', [<any>Validators.required]],
@@ -286,7 +286,7 @@ export class NewProductComponent implements OnInit {
     });
   }
   getProductTypes() {
-    this.productTypeService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
+    this.productTypeService.find({ query: { facilityId: this.selectedFacility._id, isActive: true } }).then(payload => {
       this.productTypes = payload.data;
     });
   }
@@ -336,10 +336,10 @@ export class NewProductComponent implements OnInit {
                   }
                 });
               }
-             
+
             });
           });
-          
+
         }, error => {
         });
       } else {
@@ -372,7 +372,7 @@ export class NewProductComponent implements OnInit {
       // manufacturerItem.name = payload.company;
       // manufacturerItem._id = "0";
       // this.manufacturers.push(manufacturerItem);
-    },error=>{
+    }, error => {
       console.log(error);
     })
   }
@@ -468,10 +468,10 @@ export class NewProductComponent implements OnInit {
   }
 
   private _notification(type: string, text: string): void {
-      this._facilityService.announceNotification({
-          users: [this.user._id],
-          type: type,
-          text: text
-      });
+    this._facilityService.announceNotification({
+      users: [this.user._id],
+      type: type,
+      text: text
+    });
   }
 }

@@ -6,7 +6,7 @@
                      <div class="col-md-4 pull-right">
                         <!--<input type="text" placeholder="search here" class="searchInput" />-->
                         <mat-input-container>
-                            <input matInput placeholder="Search here">
+                            <input matInput [formControl]="searchControl" placeholder="Search here">
                         </mat-input-container>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                         <td>{{supplier.address.street}}</td>
                         <td class="last-td-action">
                             <span><a (click)="onEdit(supplier)" class=""><i class="fa fa-pencil"></i></a></span>
-                            <span><a class=""><i class="fa  fa-trash"></i></a></span>
+                            <span><a class=""><i class="fa  fa-trash" (click)="onDelete(supplier)"></i></a></span>
                             <span><a (click)="onSelect(supplier)" class=""><i class="fa fa-eye"></i></a></span>
                         </td>
                     </tr>

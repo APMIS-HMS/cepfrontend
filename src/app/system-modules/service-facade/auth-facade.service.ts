@@ -21,6 +21,8 @@ export class AuthFacadeService {
     return new Promise(function (resolve, reject) {
       console.log(self.logingEmployee);
       if (self.logingEmployee !== undefined) {
+        let n = self.logingEmployee.storeCheckIn.length;
+        console.log(n);
         resolve(self.logingEmployee);
       } else {
         self._socketService.authenticateService();

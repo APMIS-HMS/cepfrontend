@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AuthFacadeService } from '../../service-facade/auth-facade.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { InventoryEmitterService } from '../../../services/facility-manager/inventory-emitter.service';
 import { Employee, Facility } from '../../../models/index';
@@ -33,19 +34,21 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   checkedInStore: any;
   constructor(
     private _inventoryEventEmitter: InventoryEmitterService,
-    private route: ActivatedRoute, private _router: Router, private employeeService: EmployeeService,
+    private route: ActivatedRoute, private _router: Router, 
+    private employeeService: EmployeeService,
+    private authFacadeService: AuthFacadeService,
     private locker: CoolLocalStorage, private workSpaceService: WorkSpaceService) {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
-    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    this.authFacadeService.getLogingEmployee().then((payload:any) =>{
+    this.loginEmployee = payload;
+    console.log(this.loginEmployee);
     let checkIn = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
-    console.log(checkIn.storeObject.name);
+    
     this.checkedInStore = checkIn.storeObject.name;
     if(Object.keys(checkIn).length > 0){
       console.log(checkIn);
     }
-    
-    
     if ((this.loginEmployee.storeCheckIn === undefined
       || this.loginEmployee.storeCheckIn.length === 0)) {
       this.modal_on = true;
@@ -59,7 +62,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
           let checkingObject = { typeObject: itemr, type: 'store' };
           this.employeeService.announceCheckIn(checkingObject);
           this.locker.setObject('checkingObject', checkingObject);
-          this.employeeService.update(this.loginEmployee).then(payload => {
+          this.employeeService.patch(this.loginEmployee._id,{storeCheckIn:this.loginEmployee.storeCheckIn}).then(payload => {
             this.loginEmployee = payload;
             checkingObject = { typeObject: itemr, type: 'store' };
             this.employeeService.announceCheckIn(checkingObject);
@@ -72,7 +75,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
           if (r === 0) {
             itemr.isOn = true;
             itemr.lastLogin = new Date();
-            this.employeeService.update(this.loginEmployee).then(payload => {
+            this.employeeService.patch(this.loginEmployee._id,{storeCheckIn:this.loginEmployee.storeCheckIn}).then(payload => {
               this.loginEmployee = payload;
               const checkingObject = { typeObject: itemr, type: 'store' };
               this.employeeService.announceCheckIn(checkingObject);
@@ -84,7 +87,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
       }
 
     }
-
+  });
 
   }
 
