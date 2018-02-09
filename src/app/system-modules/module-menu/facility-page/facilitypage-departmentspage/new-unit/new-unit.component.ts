@@ -14,6 +14,7 @@ export class NewUnitComponent implements OnInit {
   @Input() department: Department;
   @Input() unit: any;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() onRefresh: EventEmitter<boolean> = new EventEmitter<boolean>();
   deptsObj: Department[] = [];
   mainErr = true;
   errMsg = 'you have unresolved errors';
@@ -124,6 +125,7 @@ export class NewUnitComponent implements OnInit {
   onAddHobby(children: any, valid: boolean) {
     if (valid) {
       if (children.clinicName === '' || children.clinicName === ' ') {
+        console.log(children);
         this.mainErrClinic = false;
         this.errMsgClinic = 'you left out a required field';
       } else {
@@ -157,6 +159,7 @@ export class NewUnitComponent implements OnInit {
         this.mainErr = false;
         this.errMsg = 'you left out a required field';
       } else {
+        console.log('Unit', this.unit);                              
         if (this.unit === undefined) {
           const id = this.department._id;
           const clinics = (<FormArray>this.clinicForm.controls['clinicArray']).controls.filter((x: any) => x.value.readonly);
@@ -182,13 +185,14 @@ export class NewUnitComponent implements OnInit {
             }
           });
           console.log(3);
-          console.log(this.facilityObj)
-          this.facilityService.update(this.facilityObj).then((payload) => {
-            console.log(4);
+          console.log(this.facilityObj);
+          this.facilityService.patch(this.facilityObj._id,{departments: this.facilityObj.departments}, {}).then((payload) => {
+            console.log(payload);
             this.facilityObj = payload;
             this.frmNewUnit.controls['isClinic'].reset(false);
             this.clinicForm.controls['clinicArray'] = this.formBuilder.array([]);
             this.frmNewUnit.reset();
+            this.onRefresh.emit(true);
             this.systemModuleService.announceSweetProxy('Unit saved successfully', 'success');
             this.closeModal.emit(true);
           },eror =>{
@@ -202,6 +206,7 @@ export class NewUnitComponent implements OnInit {
           const clinicList = [];
           this.facilityObj.departments.forEach(function (item, i) {
             if (item._id === val.unitParent) {
+              console.log(item, val);
               console.log(6);
               item.units.forEach((unit, u) => {
                 console.log('6b');
@@ -218,6 +223,7 @@ export class NewUnitComponent implements OnInit {
                       unit.clinics.forEach((clinic, c) => {
                         if (clinic._id === itemi.value._id) {
                           isExisting = true;
+                          console.log(itemi.value);
                           clinic.clinicName = itemi.value.clinicName;
                           clinic.clinicCapacity = itemi.value.clinicCapacity;
                         }
@@ -256,14 +262,17 @@ export class NewUnitComponent implements OnInit {
 
           console.log(12);
           //update here
-          this.facilityService.update(this.facilityObj).then((payload) => {
-            console.log(13);
+          this.facilityService.patch(this.facilityObj._id, {departments: this.facilityObj.departments}, {}).then((payload) => {
+            console.log(payload);
             this.facilityObj = payload;
+            console.log(this.frmNewUnit.controls['isClinic']);
             this.frmNewUnit.controls['isClinic'].reset(false);
+            console.log(this.frmNewUnit.controls['isClinic']);
             this.clinicForm.controls['clinicArray'] = this.formBuilder.array([]);
             this.frmNewUnit.reset();
             this.close_onClick();
             this.closeModal.emit(true);
+            this.onRefresh.emit(true);
             this.systemModuleService.announceSweetProxy('Unit saved successfully', 'success');
           }, err => {
             console.log(4);

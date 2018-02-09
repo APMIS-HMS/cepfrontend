@@ -18,7 +18,9 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { NgUploaderOptions } from 'ngx-uploader';
 import { ImageUploaderEnum } from '../../../../shared-module/helpers/image-uploader-enum';
 import { Observable } from 'rxjs/Observable';
-import { EMAIL_REGEX, PHONE_REGEX, ALPHABET_REGEX } from 'app/shared-module/helpers/global-config';
+import { startWith } from 'rxjs/operators/startWith';
+import { map } from 'rxjs/operators/map';
+import { EMAIL_REGEX, PHONE_REGEX, ALPHABET_REGEX, HTML_SAVE_PATIENT } from 'app/shared-module/helpers/global-config';
 
 @Component({
     selector: 'app-new-patient',
@@ -122,6 +124,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     insurancePlans: any = [];
     planInput: any;
 
+    hmos;
+    filteredHmos: Observable<any[]>;
+
+    planDetails:any;
+
     // ***
     uploadFile: any;
     hasBaseDropZoneOver: Boolean = false;
@@ -167,6 +174,12 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.cropperSettings.keepAspect = false;
 
         this.empImg = {};
+
+        this.filteredHmos = this.hmoPlanId.valueChanges
+            .pipe(
+            startWith(''),
+            map((hmo: any) => hmo ? this.filterHmos(hmo) : this.hmos.slice())
+            );
     }
     cropped(bounds: Bounds) {
         this.croppedHeight = bounds.bottom - bounds.top;
@@ -346,18 +359,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             console.log(this.ccPlanId.value);
             console.log(payload);
         }); */
-
-        const insur = this.hmoPlanId.valueChanges
-            .debounceTime(400)
-            .distinctUntilChanged()
-            .switchMap((term: any) => this.hmoService.find({
-                query: {
-                    facilityId: this.facility._id
-                }
-            }));
-        insur.subscribe((payload: any) => {
-            console.log(payload);
-        });
 
         this.gethmos();
 
@@ -568,53 +569,64 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     }
 
-    gethmos(){
+    gethmos() {
         console.log(this.facility._id);
-        this.hmoService.find({
+        this.hmoService.getHmos({
             query: {
                 facilityId: this.facility._id
             }
         }).then(payload => {
             console.log(payload);
+            this.hmos = payload;
         }).catch(err => {
             console.log(err);
         });
     }
+
+    filterHmos(val: any) {
+        if (val.hmoName === undefined) {
+            return this.hmos.filter(hmo =>
+                hmo.hmoName.toLowerCase().indexOf(val.toLowerCase()) === 0);
+        } else {
+            return this.hmos.filter(hmo =>
+                hmo.hmoName.toLowerCase().indexOf(val.hmoName.toLowerCase()) === 0);
+        }
+    }
+
+    displayFn(hmo: any): string {
+        return hmo ? hmo.hmoName : hmo;
+    }
     nextInsuranceCover(hmoPlanId, hmoPlan) {
         this.loading = true;
-        this.hmoInsuranceId = hmoPlanId;
+        this.hmoInsuranceId = hmoPlanId.hmoId;
         this.planId = hmoPlan;
-        //this.insurance = true;
+        this.planDetails = {
+            name: this.hmoInsuranceId.hmoName,
+            _id: this.hmoInsuranceId.hmoId
+        }
         this.coverType = 'insurance';
 
-        console.log(this.hmoInsuranceId, this.planId);
-
-        this.hmoService.getEnrollee(this.hmoInsuranceId).then(de => {
-            let data = de.data/* .body["0"].employeeDetails */;
-            console.log(data);
-            //this.person_Id = de.body[0].personId;
-
-            //this.frmNewEmp1.controls['empPersonId'].setValue(de.body[0].personId);
-            this.frmNewEmp1.controls['empFirstName'].setValue(data.enrollees.firstName);
-            this.frmNewEmp1.controls['empLastName'].setValue(data.enrollees.lastName);
-            this.frmNewEmp1.controls['empGender'].setValue(data.enrollees);
-            this.frmNewEmp1.controls['hmoId'].setValue(data.hmoId);
-            this.frmNewEmp1.controls['hmoName'].setValue(data.hmoName);
-
-            /* this.planInput = data; */
+        if (this.shouldMoveFirst === true) {
+            this.personService.find({
+                query: {
+                    'apmisId': this.newEmpIdControl.value.toUpperCase()
+                }
+            }).then(payload => {
+                console.log(payload);
+                this.savePatientData(this.coverType);
+            }).catch(err => {
+                console.log(err);
+            });
+        } else {
+            console.log(this.hmoInsuranceId, this.planId);
             this.frmNewEmp4_show = false;
             this.frmNewPerson1_show = true;
             this.frmNewPerson2_show = false;
             this.frmNewPerson3_show = false;
             this.paymentPlan = false;
-
-
             this.loading = false;
+        }
 
-
-        }).catch(err => {
-            console.log(err);
-        });
 
     }
 
@@ -709,15 +721,15 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         })).mergeMap((person: any) => {
             if (person.data.length > 0) {
                 this.selectedPerson = person.data[0];
+                console.log(this.selectedPerson);
                 return Observable.fromPromise(this.patientService.find({ query: { personId: this.selectedPerson._id } }));
             } else {
                 this.errMsg = 'Invalid APMIS ID, correct the value entered and try again!';
                 this.mainErr = false;
                 return Observable.of(undefined);
             }
-
-
         }).subscribe((result: any) => {
+            console.log(result.data);
             if (result === undefined) {
                 this.errMsg = 'Invalid APMIS ID, correct the value entered and try again!';
                 this.mainErr = false;
@@ -1272,229 +1284,88 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     }
 
-    saveInsurancePerson() {
-        const facId = this.frmNewEmp1.controls['facId'].value;
-        const facName = this.frmNewEmp1.controls['facName'].value;
-        if (this.selectedPerson === undefined && this.selectedPerson._id === undefined) {
-            const person: Person = <Person>{ nextOfKin: [] };
-            person.dateOfBirth = this.frmNewEmp2.controls['empDOB'].value;
-            person.email = this.frmNewEmp1.controls['empEmail'].value;
-            person.firstName = this.frmNewEmp1.controls['empFirstName'].value;
-            person.gender = this.frmNewEmp1.controls['empGender'].value;
-            person.homeAddress = <Address>{
-                street: this.frmNewEmp2.controls['empHomeAddress'].value,
-                city: this.frmNewEmp2.controls['empCity'].value,
-                // lga: this.frmNewEmp1.controls["empLga"].value,
-                country: this.frmNewEmp2.controls['empCountry'].value.name,
-                state: this.frmNewEmp2.controls['empContactState'].value.name
+    savePatientData(planType?) {
 
-            }
-            person._id = this.person_Id;
-            person.lastName = this.frmNewEmp1.controls['empLastName'].value;
-            person.maritalStatus = this.frmNewEmp2.controls['empMaritalStatus'].value;
-            if (!this.skipNok) {
-                person.nextOfKin.push(
-                    {
-                        fullName: this.frmNewEmp3.controls['nok_fullname'].value,
-                        address: this.frmNewEmp3.controls['nok_Address'].value,
-                        phoneNumber: this.frmNewEmp3.controls['nok_phoneNo'].value,
-                        email: this.frmNewEmp3.controls['nok_email'].value,
-                        relationship: this.frmNewEmp3.controls['nok_relationship'].value,
-
+        const patient: any = {
+            personId: this.selectedPerson._id,
+            facilityId: this.facility._id,
+            paymentPlan: [
+                {
+                    planType: 'wallet',
+                    isDefault: true,
+                    planDetails: {
+                        name: this.selectedPerson.firstName + ' ' + this.selectedPerson.lastName,
+                        _id: this.selectedPerson._id
                     }
-                );
-
-                person.otherNames = this.frmNewEmp1.controls['empOtherNames'].value;
-                person.primaryContactPhoneNo = this.frmNewEmp1.controls['empPhonNo'].value;
-                person.title = this.frmNewEmp1.controls['empTitle'].value;
-                person.lgaOfOriginId = this.frmNewEmp1.controls['empLga'].value;
-                person.nationalityId = this.frmNewEmp1.controls['empNationality'].value;
-                person.stateOfOriginId = this.frmNewEmp1.controls['empState'].value;
-
-                /* console.log(planValue);
-                this.planInput = planValue; */
-            } else {
-                person.otherNames = this.frmNewEmp1.controls['empOtherNames'].value;
-                person.primaryContactPhoneNo = this.frmNewEmp1.controls['empPhonNo'].value;
-                person.title = this.frmNewEmp1.controls['empTitle'].value;
-                person.lgaOfOriginId = this.frmNewEmp1.controls['empLga'].value;
-                person.nationalityId = this.frmNewEmp1.controls['empNationality'].value;
-                person.stateOfOriginId = this.frmNewEmp1.controls['empState'].value;
-            }
-
-
-
-
-            this.personService.create(person).then(personPayload => {
-                console.log(personPayload);
-                const patient: any = {
-                    personId: personPayload._id,
+                },
+                {
+                    planType: planType,
+                    isDefault: false,
+                    planDetails: this.planDetails
+                }
+            ]
+        }
+        /* this.patientService.create(patient).then(payl => {
+            console.log(payl);
+            this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
+                console.log(payloadPrice.data);
+                const servicePrice = payloadPrice.data[0];
+                const billing: any = {
+                    discount: 0,
                     facilityId: this.facility._id,
-                    paymentPlan: [
+                    grandTotal: servicePrice.price,
+                    patientId: payl._id,
+                    subTotal: servicePrice.price,
+                    billItems: [
                         {
-                            planType: 'wallet',
-                            isDefault: true,
-                            planDetails: {
-                                name: personPayload.firstName + ' ' + personPayload.lastName,
-                                _id: personPayload._id
-                            }
-                        },
-                        {
-                            planType: 'insurance',
-                            isDefault: false,
-                            planDetails: {
-                                name: facName,
-                                _id: facId
-                            }
+                            unitPrice: servicePrice.price,
+                            facilityId: this.facility._id,
+                            description: '',
+                            facilityServiceId: servicePrice.facilityServiceId,
+                            serviceId: this.planId,
+                            patientId: payl._id,
+                            quantity: 1,
+                            totalPrice: servicePrice.price,
+                            unitDiscountedAmount: 0,
+                            totalDiscoutedAmount: 0,
+                            modifierId: [],
+                            covered: {
+                                coverType: this.coverType,
+                                _id: facId,
+                                name: facName
+                            },
+                            isServiceEnjoyed: false,
+                            paymentCompleted: false,
+                            paymentStatus: [],
+                            payments: []
+
                         }
                     ]
                 }
-                this.patientService.create(patient).then(payl => {
-                    // this.uploadButton();
-                    this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
-
-                        // this.prices = payload.data;
-                        console.log(payloadPrice.data);
-                        const servicePrice = payloadPrice.data[0];
-                        const billing: any = {
-                            discount: 0,
-                            facilityId: this.facility._id,
-                            grandTotal: servicePrice.price,
-                            patientId: payl._id,
-                            subTotal: servicePrice.price,
-                            billItems: [
-                                {
-                                    unitPrice: servicePrice.price,
-                                    facilityId: this.facility._id,
-                                    description: '',
-                                    facilityServiceId: servicePrice.facilityServiceId,
-                                    serviceId: this.planInput,
-                                    patientId: payl._id,
-                                    quantity: 1,
-                                    totalPrice: servicePrice.price,
-                                    unitDiscountedAmount: 0,
-                                    totalDiscoutedAmount: 0,
-                                    modifierId: [],
-                                    covered: {
-                                        coverType: this.coverType,
-                                        _id: facId,
-                                        name: facName
-                                    },
-                                    isServiceEnjoyed: false,
-                                    paymentCompleted: false,
-                                    paymentStatus: [],
-                                    payments: []
-
-                                }
-                            ]
-                        }
-                        this.billingService.create(billing).then(billingPayload => {
-                            console.log(billingPayload);
-                            this.close_onClick();
-                            this.paymentPlan = false;
-                            this.frmNewPerson1_show = false;
-                            this.frmNewPerson2_show = false;
-                            this.frmNewPerson3_show = false;
-                            this.frmNewEmp4_show = false;
-                            this.apmisId_show = false;
-                            this.loading = false
-                        }).catch(errr => {
-                            this.loading = false;
-                            console.log(errr);
-                        });
-
-                    }).catch(err => {
-                        this.loading = false
-                        console.log(err);
-                    });
-
-                });
-            });
-        } else {
-            const patient: any = {
-                personId: this.selectedPerson._id,
-                facilityId: this.facility._id,
-                paymentPlan: [
-                    {
-                        planType: 'wallet',
-                        isDefault: true,
-                        planDetails: {
-                            name: this.selectedPerson.firstName + ' ' + this.selectedPerson.lastName,
-                            _id: this.selectedPerson._id
-                        }
-                    },
-                    {
-                        planType: 'insurance',
-                        isDefault: false,
-                        planDetails: {
-                            name: facName,
-                            _id: facId
-                        }
-                    }
-                ]
-            }
-            this.patientService.create(patient).then(payl => {
-                // this.uploadButton();
-                this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
-
-                    // this.prices = payload.data;
-                    console.log(payloadPrice.data);
-                    const servicePrice = payloadPrice.data[0];
-                    const billing: any = {
-                        discount: 0,
-                        facilityId: this.facility._id,
-                        grandTotal: servicePrice.price,
-                        patientId: payl._id,
-                        subTotal: servicePrice.price,
-                        billItems: [
-                            {
-                                unitPrice: servicePrice.price,
-                                facilityId: this.facility._id,
-                                description: '',
-                                facilityServiceId: servicePrice.facilityServiceId,
-                                serviceId: this.planInput,
-                                patientId: payl._id,
-                                quantity: 1,
-                                totalPrice: servicePrice.price,
-                                unitDiscountedAmount: 0,
-                                totalDiscoutedAmount: 0,
-                                modifierId: [],
-                                covered: {
-                                    coverType: this.coverType,
-                                    _id: facId,
-                                    name: facName
-                                },
-                                isServiceEnjoyed: false,
-                                paymentCompleted: false,
-                                paymentStatus: [],
-                                payments: []
-
-                            }
-                        ]
-                    }
-                    this.billingService.create(billing).then(billingPayload => {
-                        console.log(billingPayload);
-                        this.close_onClick();
-                        this.paymentPlan = false;
-                        this.frmNewPerson1_show = false;
-                        this.frmNewPerson2_show = false;
-                        this.frmNewPerson3_show = false;
-                        this.frmNewEmp4_show = false;
-                        this.apmisId_show = false;
-                        this.loading = false
-                    }).catch(errr => {
-                        this.loading = false;
-                        console.log(errr);
-                    });
-
-                }).catch(err => {
+                this.billingService.create(billing).then(billingPayload => {
+                    console.log(billingPayload);
+                    this.close_onClick();
+                    this.isSaving = false;
+                    this.paymentPlan = false;
+                    this.frmNewPerson1_show = false;
+                    this.frmNewPerson2_show = false;
+                    this.frmNewPerson3_show = false;
+                    this.frmNewEmp4_show = false;
+                    this.apmisId_show = false;
                     this.loading = false
-                    console.log(err);
+                    this.systemModuleService.off();
+                    this.systemModuleService.announceSweetProxy('Patient Successfully added a patient!', 'success', this, HTML_SAVE_PATIENT);
+                }).catch(errr => {
+                    this.loading = false;
+                    console.log(errr);
                 });
 
+            }).catch(err => {
+                this.loading = false
+                console.log(err);
             });
-        }
 
+        }); */
     }
 
     saveFamilyPerson() {
@@ -1760,15 +1631,17 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     saveData() {
-        if (this.coverType == 'insurance') {
-            this.saveInsurancePerson();
+        console.log(this.coverType);
+        this.savePatientData(this.coverType);
+        /* if (this.coverType == 'insurance') {
+            this.savePatientData('insurance');
         } else if (this.coverType === 'company') {
             this.saveCompanyPerson();
         } else if (this.coverType === 'wallet') {
             this.savePerson();
         } else if (this.coverType === 'family') {
             this.saveFamilyPerson();
-        }
+        } */
     }
 
 
