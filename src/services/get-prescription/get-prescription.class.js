@@ -1,3 +1,4 @@
+
 const console = require('console');
 /* eslint-disable no-unused-vars */
 class Service {
@@ -18,69 +19,39 @@ class Service {
   async create(data, params) {
     const prescriptionService = this.app.service('prescriptions');
     const patientService = this.app.service('patients');
-    const locationService = this.app.service('location');
+    const locationService = this.app.service('locations');
     const employeeService = this.app.service('employees');
-    const personService = this.app.service('people');
+    const personService = this.app.service('peoples');
 
-
-    const person = {
-      firstName: String,
-      lastName: String,
-      otherNames: String,
-      email: String,
-      apmisId: String
-      //priority:String 
-    };
-    console.log(params);
-    console.log('***************End Params**********************');
+    const person = [];
     //Check for facility Id 
     if (data.facilityId !== undefined) {
-      console.log('***************Data**********************');
-      console.log(data.facilityId);
       const facilityId = data.facilityId;
-      console.log('***************End Data**********************');
-      let pres = await prescriptionService.find({query:{facilityId:facilityId}});
-      console.log(pres);
-      console.log('Got here');
-
+      let pres = await prescriptionService.find({ query: { facilityId: facilityId } });
+      console.log('I got here................................');
       if (pres.data.length > 0) {
-        const pcounter = pres.data.length;
-        let counter = 0;
-        //pres = pres.data;
-        //while(pres.data.length >= 0)
-        pres.data.forEach(element => {
-          console.log('***********Start***********');
-          console.log(element.patientId);
-          console.log('***********End***********');
-          patientService.get(element.patientId).then(resPatient => {
-            console.log('***********Start***********');
-            console.log(resPatient);
-            console.log('***********End***********');
-            const patientObj = {
-              firstName: resPatient.personDetails.firstName,
-              lastName: resPatient.personDetails.lastName,
-              email: resPatient.personDetails.email,
-              apmisId: resPatient.personDetails.apmisId
-            };
-            element.patient = patientObj;
-            // let employee = employeeService.get(element.employeeId);
-            // if (patient !== undefined || employee !== undefined) {
-            //   console.log('Found patient!********');
-            //   let person = personService.get(patient.data.personId);
-            //   employee = employee.get(employee.data.personId);
-            //   pres.push(person);
-            //   pres.push(employee);
-            //   console.log(pres);
-            // }
-          }).catch(err => {
-            console.log(err);
-          });
-          counter++;
-        });
+        const pcounter = 0;
+        let counter = pres.data.length;
+        while (counter--) {
+          pres = pres.data[counter];
+          let patientObj = await patientService.get(pres.patientId);
+          console.log('=================Patient Id======================');
+          console.log(patientObj);
+          console.log('====================Patient Id End====================');
+          delete patientObj.personDetails.wallet;
+          pres.patientDetails = patientObj.personDetails;
+          let employeeObj = await employeeService.get(pres.employeeId);
+          console.log('=================employeeObj=====================');
+          console.log(employeeObj);
+          console.log('====================employeeObj End====================');
+          delete employeeObj.personDetails.wallet;
+          pres.employeeDetails = employeeObj.personDetails;
+          counter--;
+        }
         if (pcounter === counter) {
           return pres;
         }
-      }else{
+      } else {
         return 'No prescription found';
       }
     } else {
