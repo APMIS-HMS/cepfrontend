@@ -62,6 +62,7 @@ import {
   TemplatePhysicianOrderComponent
 } from '../system-modules/module-menu/forms-manager/treatement-template/template-physician-order/template-physician-order.component';
 import { OrderSetSharedService } from '../services/facility-manager/order-set-shared-service';
+import { SharedModuleMaterialModule } from '../shared-common-modules/sharedmodule-materialsmodule';
 // import { LabCheckInComponent } from './lab-check-in/lab-check-in.component';
 // import { ApmisLookupMultiselectComponent } from './apmis-lookup-multiselect/apmis-lookup-multiselect.component';
 @NgModule({
@@ -77,7 +78,8 @@ import { OrderSetSharedService } from '../services/facility-manager/order-set-sh
     TemplateProcedureComponent,
     TemplateNursingCareComponent,
     TemplatePhysicianOrderComponent,
-    SystemModuleComponent
+    
+    // SystemModuleComponent
     // VerifyTokenComponent,
     // FacilityInfoComponent,
     // ContactInfoComponent,
@@ -86,7 +88,7 @@ import { OrderSetSharedService } from '../services/facility-manager/order-set-sh
     // LabRequestsComponent, RequestDetailComponent
   ],
   exports: [
-    LogoUpdateComponent,
+    // LogoUpdateComponent,
     NgUploaderModule,
     NgPipesModule,
     // NewTagComponent,
@@ -106,7 +108,8 @@ import { OrderSetSharedService } from '../services/facility-manager/order-set-sh
     TemplateProcedureComponent,
     TemplateNursingCareComponent,
     TemplatePhysicianOrderComponent,
-    SystemModuleComponent
+    SharedModuleMaterialModule
+    // SystemModuleComponent
     // VerifyTokenComponent,
     // FacilityInfoComponent,
     // ContactInfoComponent,
@@ -120,11 +123,10 @@ import { OrderSetSharedService } from '../services/facility-manager/order-set-sh
     FormsModule,
     NgUploaderModule,
     NgPipesModule,
-    // MomentModule,
     Ng2PaginationModule,
     ImageCropperModule,
-    MaterialModule
-    // DragulaModule
+    MaterialModule,
+    SharedModuleMaterialModule
   ],
   providers: [StoreService, WindowRef, OrderSetSharedService, SystemModuleService]
 })

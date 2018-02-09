@@ -9,6 +9,8 @@ import { OrderSetTemplate }  from '../../../../models/index';
 import { Facility, User } from 'app/models';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { SharedService } from 'app/shared-module/shared.service';
+import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
+import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-treatement-template',
@@ -52,9 +54,13 @@ export class TreatementTemplateComponent implements OnInit {
     private _facilityService: FacilitiesService,
     private documentationTemplateService: DocumentationTemplateService,
     private _orderSetTemplateService: OrderSetTemplateService,
-    private _orderSetSharedService: OrderSetSharedService
+    private _orderSetSharedService: OrderSetSharedService,
+    private _authFacadeService:AuthFacadeService,
+    private _systemModuleService:SystemModuleService
   ) {
     this.sharedService.submitForm$.subscribe(payload => {
+      console.log('in')
+      this._systemModuleService.on();
       const isVisibilityValid = this.frmnewTemplate.controls.visibility.valid;
       const isFormValid = this.frmnewTemplate.controls.docFrmList.valid;
       const isNameValid = this.frmnewTemplate.controls.name.valid;
@@ -69,9 +75,18 @@ export class TreatementTemplateComponent implements OnInit {
         this.documentationTemplateService
           .create(doc)
           .then(payload2 => {
+            console.log('inin')
+            this._systemModuleService.off();
+            this._systemModuleService.announceSweetProxy('Template has been saved successfully!','success');
+             this.isOrderSet = false;
             this.frmnewTemplate.reset();
+            this.isOrderSet = false;
+            this.frmnewTemplate.controls.type.setValue('Documentation');
           })
-          .catch(err => {});
+          .catch(err => {
+            this._systemModuleService.off();
+            this._systemModuleService.announceSweetProxy('There was an error while saving template','error');
+          });
       } else {
         this.frmnewTemplate.controls.visibility.markAsTouched();
         this.frmnewTemplate.controls.visibility.markAsDirty();
@@ -178,6 +193,7 @@ export class TreatementTemplateComponent implements OnInit {
 
   save(valid: boolean, value: any) {
     // validate form
+    this._systemModuleService.on();
     const validateForm = this.validateForm(value, 'Order Set');
     if (validateForm) {
       const orderSet = JSON.stringify(this.orderSet);
@@ -194,6 +210,7 @@ export class TreatementTemplateComponent implements OnInit {
 
       // Save to database
       this._orderSetTemplateService.create(payload).then(res => {
+        this._systemModuleService.off();
         if (res._id) {
           this.orderSet = <OrderSetTemplate>{};
           this.onClickRadioBtn('medication');
@@ -201,13 +218,14 @@ export class TreatementTemplateComponent implements OnInit {
           this.frmnewTemplate.controls['visibility'].setValue('');
           this.frmnewTemplate.controls['name'].setValue('');
           this.frmnewTemplate.controls['category'].setValue('medication');
-          this._notification('Success', 'Template has been saved successfully!');
+          this._systemModuleService.announceSweetProxy('Template has been saved successfully!','success');
         }
       }).catch(err => {
+        this._systemModuleService.off();
         console.log(err);
       });
     } else {
-      this._notification('Error', 'Some fields are required! Please fill all required fields.');
+      this._systemModuleService.announceSweetProxy('Some fields are required! Please fill all required fields.','error');
     }
   }
 
@@ -269,6 +287,8 @@ export class TreatementTemplateComponent implements OnInit {
       } else {
         return true;
       }
+    }else{
+      return true;
     }
   }
 

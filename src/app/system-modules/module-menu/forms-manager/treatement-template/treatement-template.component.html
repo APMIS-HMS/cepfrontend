@@ -170,7 +170,7 @@
                             </div>
                         </div>
                     </form>
-                    <div class="frmNoteWrap" *ngIf="newTemplate" style="padding-top:10px;margin-top:-10px;">
+                    <div class="frmNoteWrap" *ngIf="newTemplate && frmnewTemplate.controls.type.value==='Order Set'" style="padding-top:10px;margin-top:-10px;">
                         <button (click)="save(frmnewTemplate.valid, frmnewTemplate.value);" class="cta-1 ">
                         <span *ngIf="saveTemplateText">Save Template</span>
                         <span *ngIf="savingTemplateText">Saving Template... <i class="fa fa-spinner fa-spin"></i></span>
