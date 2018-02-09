@@ -79,9 +79,14 @@ export class TreatementTemplateComponent implements OnInit {
             this._systemModuleService.off();
             this._systemModuleService.announceSweetProxy('Template has been saved successfully!','success');
              this.isOrderSet = false;
-            this.frmnewTemplate.reset();
+             this.isDocumentation = true;
+            //  name, visibility, isEditable, docFrmList
+            this.frmnewTemplate.controls.name.reset();
+            this.frmnewTemplate.controls.visibility.reset();
+            this.frmnewTemplate.controls.isEditable.setValue(false);
+            this.frmnewTemplate.controls.docFrmList.reset();
             this.isOrderSet = false;
-            this.frmnewTemplate.controls.type.setValue('Documentation');
+            this.frmnewTemplate.controls.type.reset();
           })
           .catch(err => {
             this._systemModuleService.off();
