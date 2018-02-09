@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility, MinorLocation, StoreModel } from '../../../../models/index';
 import { ProductTypeService, StoreService } from '../../../../services/facility-manager/setup/index';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 
 @Component({
@@ -27,8 +28,12 @@ export class NewStoreComponent implements OnInit {
   loadIndicatorVisible = false;
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() refreshStore: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() selectedStore: any = <any>{};
-  constructor(private formBuilder: FormBuilder, private locker: CoolLocalStorage, private productTypeService: ProductTypeService,
+  constructor(private formBuilder: FormBuilder, 
+    private locker: CoolLocalStorage, 
+    private productTypeService: ProductTypeService,
+    private systemModuleService: SystemModuleService,
     private storeService: StoreService) { }
 
   ngOnInit() {
@@ -47,8 +52,10 @@ export class NewStoreComponent implements OnInit {
   }
 
   getProductTypes() {
+    console.log("Inside Get Product Types");
     this.productTypeService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
       payload.data.forEach((item, i) => {
+        console.log(item);
         let newItem: StoreModel = <StoreModel>{};
         newItem._id = item._id;
         newItem.name = item.name;
@@ -56,6 +63,8 @@ export class NewStoreComponent implements OnInit {
         newItem.isChecked = false;
         this.productTypes.push(newItem);
       });
+      console.log(this.selectedStore);
+      console.log(this.productTypes);
       if (this.selectedStore._id !== undefined) {
         this.productTypes.forEach((item, i) => {
           this.selectedStore.productTypeId.forEach((item2, j) => {
@@ -88,14 +97,17 @@ export class NewStoreComponent implements OnInit {
     this.closeModal.emit(true);
   }
   onValueChanged(e, productType) {
-    productType.isChecked = e.value;
+    productType.isChecked = e.checked;
   }
   create(valid, value) {
+    console.log(this.selectedStore);
+    console.log(this.productTypes);
     if (valid) {
       this.mainErr = true;
       if (this.selectedStore._id === undefined) {
         value.facilityId = this.selectedFacility._id;
         value.productTypeId = [];
+        console.log(this.productTypes);
         this.productTypes.forEach((item, i) => {
           if (item.isChecked === true) {
             value.productTypeId.push({ productTypeId: item._id });
@@ -106,6 +118,7 @@ export class NewStoreComponent implements OnInit {
           this.productTypes.forEach((item, i) => {
             item.isChecked = false;
           });
+          this.refreshStore.emit(true);
           this.closeModal.emit(true);
         }, error => {
         });
@@ -121,7 +134,15 @@ export class NewStoreComponent implements OnInit {
             this.selectedStore.productTypeId.push({ productTypeId: item._id });
           }
         });
-        this.storeService.update(this.selectedStore).then(payload => {
+        this.storeService.patch(this.selectedStore._id,{
+          name:this.selectedStore.name,
+          minorLocationId:this.selectedStore.minorLocationId,
+          description:this.selectedStore.description,
+          canDespense:this.selectedStore.canDespense,
+          canReceivePurchaseOrder: this.selectedStore.canReceivePurchaseOrder,
+          productTypeId: this.selectedStore.productTypeId
+        }).then(payload => {
+          this.refreshStore.emit(true);
           this.close_onClick();
         });
       }

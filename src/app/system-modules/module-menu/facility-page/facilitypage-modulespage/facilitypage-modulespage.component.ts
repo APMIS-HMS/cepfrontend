@@ -18,8 +18,8 @@ export class FacilitypageModulespageComponent implements OnInit {
   integratedModulesShow = false;
   unintegratedModulesShow = false;
   facility: any = <any>{};
-  systemModules: any[] = [];
-  facilityModules: any[] = [];
+  systemModules: any = [];
+  facilityModules: any = [];
   idToRemove: any = <any>{}
   constructor(private facilityModuleService: FacilityModuleService,
     private locker: CoolLocalStorage,
@@ -74,7 +74,7 @@ export class FacilitypageModulespageComponent implements OnInit {
     }).then((payload) => {
       console.log(payload);
       this.systemModuleService.off;
-      if (payload.facilitymoduleId.length > 0) {
+      if (payload.facilitymoduleId !== undefined && payload.facilitymoduleId.length > 0) {
         this.facilityModules = payload.facilitymoduleId;
       }
     }, error => {

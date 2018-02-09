@@ -2,13 +2,12 @@ import { UserFacadeService } from 'app/system-modules/service-facade/user-facade
 import { SystemModuleService } from './../services/module-manager/setup/system-module.service';
 import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage'; 
 import { Router } from '@angular/router';
 import { FacilitiesService } from '../services/facility-manager/setup/index';
 import { Facility } from '../models/index';
 import { UserService } from '../services/facility-manager/setup/index';
 import { JoinChannelService } from 'app/services/facility-manager/setup/join-channel.service';
-
 
 @Component({
   selector: 'app-login',

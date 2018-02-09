@@ -362,7 +362,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.networkContentArea = false;
       // this.dashboardContentArea = false;
     }
-  }
+  } 
   close_onClick(e) {
     this.newDept = false;
     this.newUnit = false;

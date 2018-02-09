@@ -9,14 +9,13 @@ export class DrugDetailsService {
         private _socketService: SocketService,
         private _restService: RestService
     ) {
-        this._rest = _restService.getService('drug-details-api');
-        this._socket = _socketService.getService('drug-details-api');
+        this._socket = _socketService.getService('drug-details-apis');
         this._socket.on('created', function (gender) {
         });
     }
 
     find(query: any) {
-        return this._rest.find(query);
+        return this._socket.find(query);
     }
 
     findAll() {
