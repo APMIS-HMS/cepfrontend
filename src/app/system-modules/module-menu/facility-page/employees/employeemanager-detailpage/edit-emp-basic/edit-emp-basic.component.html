@@ -31,7 +31,7 @@
 
             <mat-form-field>
                 <mat-select placeholder="Department" formControlName="dept" [compareWith]="compareDepartments">
-                    <mat-option *ngFor="let department of departments" [value]="department">{{department.name}}</mat-option>
+                    <mat-option *ngFor="let department of departments" [value]="department.name">{{department.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
 

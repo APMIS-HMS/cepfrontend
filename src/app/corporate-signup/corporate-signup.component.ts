@@ -19,6 +19,7 @@ export class CorporateSignupComponent implements OnInit {
   mainErr = true;
   errMsg = 'you have unresolved errors';
 
+
   //uploader variables
   private zone: NgZone;
   // private options: NgUploaderOptions;
@@ -167,6 +168,7 @@ export class CorporateSignupComponent implements OnInit {
 
 
   }
+  
 
   // ---------------- Beggining of image methods ------------------
   handleUpload(data: any): void {

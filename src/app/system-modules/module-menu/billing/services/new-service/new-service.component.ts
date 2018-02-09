@@ -19,7 +19,7 @@ export class NewServiceComponent implements OnInit {
   @Input() selectedService: any = <any>{};
   mainErr = true;
   errMsg = 'you have unresolved errors';
-  btnTitle = 'ADD SERVICE';
+  btnTitle = 'CREATE SERVICE';
 
   public frmNewservice: FormGroup;
 
@@ -30,7 +30,7 @@ export class NewServiceComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.btnTitle = 'ADD SERVICE';
+    this.btnTitle = 'CREATE SERVICE';
     this.addNew();
     const subscribeForServiceDictionary = this.frmNewservice.controls['serviceName'].valueChanges
       .debounceTime(200)
@@ -57,10 +57,11 @@ export class NewServiceComponent implements OnInit {
     this.facility = <Facility> this._locker.getObject('selectedFacility');
     this.getCategories();
     if (this.selectedService.categoryId !== undefined) {
-      this.btnTitle = 'UPDATE SERVICE';
+      this.btnTitle = 'CREATE SERVICE';
       this.frmNewservice.controls['serviceName'].setValue(this.selectedService.service);
       this.frmNewservice.controls['serviceCode'].setValue(this.selectedService.serviceCode);
       this.frmNewservice.controls['serviceCat'].setValue(this.selectedService.categoryId);
+      this.frmNewservice.controls['servicePrice'].setValue(this.selectedService.categoryId);
     }
 
   }
@@ -77,7 +78,8 @@ export class NewServiceComponent implements OnInit {
       serviceName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
       serviceCat: ['', [<any>Validators.required]],
       serviceAutoCode: ['', []],
-      serviceCode: ['', []]
+      serviceCode: ['', []],
+      servicePrice: ['', []]
     });
   }
   onSelectDictionary(dic: any) {
@@ -98,7 +100,7 @@ export class NewServiceComponent implements OnInit {
         let goingIndex = -1;
         payload.data[0].categories.forEach((item, i) => {
 
-          if (this.btnTitle === 'ADD SERVICE') {
+          if (this.btnTitle === 'CREATE SERVICE') {
             if (item._id === this.frmNewservice.controls['serviceCat'].value) {
               item.services.push(serviceItem);
             }

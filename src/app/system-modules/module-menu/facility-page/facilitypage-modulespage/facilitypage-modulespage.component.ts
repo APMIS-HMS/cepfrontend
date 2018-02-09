@@ -74,7 +74,7 @@ export class FacilitypageModulespageComponent implements OnInit {
     }).then((payload) => {
       console.log(payload);
       this.systemModuleService.off;
-      if (payload.facilitymoduleId.length > 0) {
+      if (payload.facilitymoduleId !== undefined && payload.facilitymoduleId.length > 0) {
         this.facilityModules = payload.facilitymoduleId;
       }
     }, error => {

@@ -103,15 +103,24 @@ export class SystemModuleComponent implements OnInit {
     this.moduleManagerActive = true;
     this.facilityManagerActive = false;
   }
-  close_onClick(){
+  close_onClick() {
     this.logoutConfirm_on = false;
     this.logoutConfirm_on = false;
   }
-  userOpt_toggle(){
+  userOpt_toggle() {
     this.userOpt = !this.userOpt;
   }
   changePass() {
     this.changePassword = true;
     this.logoutConfirm_on = false;
+  }
+
+  goHome() {
+    this.router.navigate(['/home-page']).then(payload =>{
+      console.log(payload);
+    },error =>{
+      console.log(error);
+    })
+    // [routerLink]="['/home-page']"
   }
 }

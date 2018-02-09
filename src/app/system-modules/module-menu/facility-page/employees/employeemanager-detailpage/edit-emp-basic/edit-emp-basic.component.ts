@@ -80,7 +80,7 @@ export class EditEmpBasicComponent implements OnInit {
 		this.getDepartmentById();
 
 		this.facilityForm1 = this.formBuilder.group({
-			dept: ['', [<any>Validators.required]],
+			dept: [this.selectedEmployee.departmentId, [<any>Validators.required]],
 		});
 		this.facilityForm2 = this.formBuilder.group({
 			title: [this.selectedPerson.title, [<any>Validators.required]],
@@ -281,16 +281,21 @@ export class EditEmpBasicComponent implements OnInit {
 	}
 
 	compareDepartments(d1: any, d2: any) {
-		return d1._id == d2;
+		console.log(d1);
+		console.log(d2);
+		return d1 == d2;
 	}
 
 	getDepartmentById() {
+
 		const deptId = this.selectedEmployee.departmentId;
 		const depts = this.facility.departments;
-		const dept = depts.filter(x => x._id == deptId);
-		this.selectedDepartment = dept[0]._id;
+		console.log(depts);
+		const dept = depts.filter(x => x.name == deptId);
+		if(dept.length > 0){
+			this.selectedDepartment = dept[0].name;
+		}
 	}
-
 
 
 }
