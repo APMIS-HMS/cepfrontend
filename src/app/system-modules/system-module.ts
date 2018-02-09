@@ -14,7 +14,7 @@ import { ChangePasswordComponent } from './module-menu/change-password/change-pa
 @NgModule({
   declarations: [
     // SystemModuleComponent,
-    LogoutConfirmComponent
+    // LogoutConfirmComponent
     // ChangePasswordComponent,
   ],
   exports: [
