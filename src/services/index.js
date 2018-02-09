@@ -133,6 +133,9 @@ const insuranceEnrollees = require('./insurance-enrollees/insurance-enrollees.se
 const familyDependants = require('./family-dependants/family-dependants.service.js');
 const vitals = require('./vitals/vitals.service.js');
 const listOfStores = require('./list-of-stores/list-of-stores.service.js');
+const drugDetailsApis = require('./drug-details-apis/drug-details-apis.service.js');
+const listOfProducts = require('./list-of-products/list-of-products.service.js');
+const formscopelevels = require('./formscopelevels/formscopelevels.service.js');
 module.exports = function(app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -269,6 +272,9 @@ module.exports = function(app) {
   app.configure(familyDependants);
   app.configure(vitals);
   app.configure(listOfStores);
+  app.configure(drugDetailsApis);
+  app.configure(listOfProducts);
+  app.configure(formscopelevels);
 };
 
 
