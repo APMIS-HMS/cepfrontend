@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class PersonLandingComponent implements OnInit {
 
   scheduleAppointment = false;
-
+login_on= false;
   constructor() { }
 
   ngOnInit() {
