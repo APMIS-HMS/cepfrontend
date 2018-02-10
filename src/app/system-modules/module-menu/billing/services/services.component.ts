@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FacilitiesServiceCategoryService, TagService } from '../../../../services/facility-manager/setup/index';
-import { FacilityService, Facility, CustomCategory, Tag } from '../../../../models/index';
+import { FacilitiesServiceCategoryService, TagService, FacilityPriceService } from '../../../../services/facility-manager/setup/index';
+import { FacilityService, Facility, CustomCategory, Tag, FacilityServicePrice } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
 
@@ -15,6 +15,7 @@ export class ServicesComponent implements OnInit {
   searchShow = false;
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
   facility: Facility = <Facility>{};
+  prices: FacilityServicePrice[] = [];
   categories: FacilityService[] = [];
   tags: Tag[] = [];
   globalCategories: CustomCategory[] = [];
@@ -26,6 +27,11 @@ export class ServicesComponent implements OnInit {
   newServicePopup = false;
   newCategoryPopup = false;
   newTagPopup = false;
+  newModefierPopup = false;
+  serviceDetail = false;
+  newPricePopup = false;
+  selectedFacilityServicePrice = FacilityPriceService;
+
 
   selectedService: any = <any>{};
   selectedCategory: any = <any>{};
@@ -38,7 +44,7 @@ export class ServicesComponent implements OnInit {
   constructor(
     private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
     private _locker: CoolLocalStorage, private _tagService: TagService) {
-      
+
   }
 
   ngOnInit() {
@@ -223,6 +229,16 @@ export class ServicesComponent implements OnInit {
     this.selectedService = <any>{};
     this.newServicePopup = true;
   }
+
+  addModifierPopup_show() {
+    this.newModefierPopup = false;
+    this.serviceDetail = false;
+  }
+  newModefierPopup_show(price: FacilityServicePrice) {
+    this.newModefierPopup = true;
+    this.newPricePopup = false;
+    this.serviceDetail = false;
+  }
   newCategoryPopup_show() {
     this.newCategoryPopup = true;
   }
@@ -233,8 +249,15 @@ export class ServicesComponent implements OnInit {
     this.newServicePopup = false;
     this.newCategoryPopup = false;
     this.newTagPopup = false;
+    this.newModefierPopup = false;
   }
 
+  serviceDetail_show(price) {
+    this.serviceDetail = true;
+    this.newPricePopup = false;
+    this.newModefierPopup = false;
+    this.selectedFacilityServicePrice = price;
+  }
   paginate(array, page_size, page_number) {
     --page_number; // because pages logically start with 1, but technically with 0
     return array.slice(page_number * page_size, (page_number + 1) * page_size);
