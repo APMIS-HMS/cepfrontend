@@ -7,7 +7,7 @@
     <div class="modal-baseWrap">
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
         <form [formGroup]="frm_appointment" novalidate>
-            
+
             <mat-form-field>
                 <mat-select placeholder="Hospital" formControlName="hospital">
                     <mat-option>Continental Hospital</mat-option>
@@ -29,7 +29,7 @@
                 <span (click)="reset()" class="forgetPword">forgot password?</span>
             </div>
             <div class="example-full-width" id="example-full-width">
-                <button class="small-btn" [disabled]="!frm_login.valid" (click)="login(frm_login.valid)" mat-raised-button>Login</button>
+                <button class="small-btn" [disabled]="!frm_appointment.valid" (click)="login(frm_appointment.valid)" mat-raised-button>Login</button>
             </div>
         </form>
     </div>
