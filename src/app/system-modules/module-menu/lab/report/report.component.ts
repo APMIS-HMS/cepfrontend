@@ -7,6 +7,8 @@ import {
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, User, PendingLaboratoryRequest } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
+import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 
 @Component({
   selector: 'app-report',
@@ -25,13 +27,14 @@ export class ReportComponent implements OnInit {
   selectedInvestigation: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
   selectedLab: any = {};
   selectedWorkbench: any = {};
-  apmisLookupUrl = 'patient';
+  apmisLookupUrl = 'patient-search';
   apmisLookupText = '';
   apmisLookupQuery: any = {};
-  apmisLookupDisplayKey = 'personDetails.personFullName';
+  apmisLookupDisplayKey = 'firstName';
   apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
   apmisInvestigationLookupUrl = 'investigations';
-  apmisLookupOtherKeys = ['personDetails.email', 'personDetails.dateOfBirth'];
+  // apmisLookupOtherKeys = ['personDetails.email', 'personDetails.dateOfBirth'];
+  apmisLookupOtherKeys = ['lastName', 'firstName', 'apmisId', 'email'];
   selectedPatient: any = <any>{};
   patientSelected: Boolean = false;
   loading: Boolean = true;
@@ -66,13 +69,18 @@ export class ReportComponent implements OnInit {
     private _formService: FormsService,
     private _laboratoryRequestService: LaboratoryRequestService,
     private _documentationService: DocumentationService,
-    private _billingService: BillingService
-  ) { }
+    private _billingService: BillingService,
+    private _systemModuleService: SystemModuleService,
+    private _authFacadeService: AuthFacadeService
+  ) {
+    this._authFacadeService.getLogingEmployee().then((res: any) => {
+      this.employeeDetails = res;
+      console.log(this.employeeDetails);
+    }).catch(err => console.log(err));
+  }
 
   ngOnInit() {
     this.facility = <Facility>this._locker.getObject('selectedFacility');
-    this.miniFacility = <Facility>this._locker.getObject('miniFacility');
-    this.employeeDetails = this._locker.getObject('loginEmployee');
     this.user = <User>this._locker.getObject('auth');
     this.selectedLab = <any>this._locker.getObject('workbenchCheckingObject');
 
@@ -90,8 +98,8 @@ export class ReportComponent implements OnInit {
     this.patientFormGroup.controls['patient'].valueChanges.subscribe(value => {
       if (value.length > 2) {
         this.apmisLookupQuery = {
-          'facilityid': this.facility._id,
-          'searchtext': value
+          'facilityId': this.facility._id,
+          'searchText': value
         };
       } else {
         this.activeInvestigationNo = -1;
@@ -147,7 +155,7 @@ export class ReportComponent implements OnInit {
       // Call the request service and update the investigation.
       this._laboratoryRequestService.find({
         query: {
-          'facilityId._id': this.facility._id,
+          'facilityId': this.facility._id,
           '_id': this.selectedInvestigation.labRequestId,
         }
       }).then(res => {
@@ -164,11 +172,14 @@ export class ReportComponent implements OnInit {
               }
             });
 
-            this._laboratoryRequestService.update(labRequest).then(res => {
+            this._laboratoryRequestService.patch(labRequest._id, labRequest, {}).then(res => {
               this._getAllReports();
               this.saveToDraftBtnText = 'SAVE AS DRAFT';
-              this._notification('Success', 'Report has been saved successfully!');
-            }).catch(err => this._notification('Error', 'There was an error saving report. Please try again later!'));
+              // this._notification('Success', 'Report has been saved successfully!');
+              this._systemModuleService.announceSweetProxy('Report has been saved successfully!', 'success');
+            }).catch(err => {
+              this._notification('Error', 'There was an error saving report. Please try again later!')
+            });
           } else {
             this._notification('Error', 'There was an error saving report. Please try again later!');
           }
@@ -211,31 +222,29 @@ export class ReportComponent implements OnInit {
               }
             });
 
-            this._laboratoryRequestService.update(labRequest).then(res => {
-              if (res) {
+            this._laboratoryRequestService.patch(labRequest._id, labRequest, {}).then(res => {
+              if (!!res._id) {
                 // Delete irrelevant data from employee
-                delete this.employeeDetails.employeeDetails.countryItem;
-                delete this.employeeDetails.employeeDetails.nationalityObject;
-                delete this.employeeDetails.employeeDetails.nationality;
+                delete this.employeeDetails.personDetails.wallet;
 
                 // Build documentation model
                 const patientDocumentation = {
                   document: saveDocument,
-                  createdBy: this.employeeDetails.employeeDetails,
-                  facilityId: this.miniFacility,
-                  patientId: this.selectedPatient,
+                  createdBy: this.employeeDetails._id,
+                  facilityId: this.facility._id,
+                  facilityName: this.facility.name,
+                  patientId: this.selectedPatient.patientId,
+                  patientName: `${this.selectedPatient.firstName} ${this.selectedPatient.lastName}`,
                 };
 
                 const documentation = {
-                  personId: this.selectedPatient.personDetails,
+                  personId: this.selectedPatient._id,
                   documentations: patientDocumentation,
                 };
 
                 // Check if documentation has been created for the user
                 this._documentationService.find({
-                  query: {
-                    'personId': this.selectedPatient.personDetails._id
-                  }
+                  query: { 'personId': this.selectedPatient._id }
                 }).then(res => {
                   // Update the lists
                   this._getAllReports();
@@ -248,18 +257,27 @@ export class ReportComponent implements OnInit {
                     // Update the existing documentation
                     this._documentationService.update(res.data[0]).then(res => {
                       this.saveAndUploadBtnText = 'SAVE AND UPLOAD';
-                      this._notification('Success', 'Report has been saved successfully!');
+                      this._systemModuleService.announceSweetProxy('Report has been saved successfully!', 'success');
+                      // this._notification('Success', 'Report has been saved successfully!');
+                    }).catch(err => {
+                      console.log(err);
                     });
                   } else {
                     // Save into documentation
                     this._documentationService.create(documentation).then(res => {
                       this.saveAndUploadBtnText = 'SAVE AND UPLOAD';
-                      this._notification('Success', 'Report has been saved and uploaded successfully!');
+                      this._systemModuleService.announceSweetProxy('Report has been saved and uploaded successfully!', 'success');
+                      // this._notification('Success', 'Report has been saved and uploaded successfully!');
+                    }).catch(err => {
+                       console.log(err);
                     });
                   }
                 });
               }
-            }).catch(err => this._notification('Error', 'There was an error saving report. Please try again later!'));
+            }).catch(err => {
+              console.log(err);
+              this._notification('Error', 'There was an error saving report. Please try again later!');
+            });
           } else {
             this._notification('Error', 'There was an error saving report. Please try again later!');
           }
@@ -272,13 +290,10 @@ export class ReportComponent implements OnInit {
 
   apmisLookupHandleSelectedItem(value) {
     this.pendingReLoading = true;
-    this.apmisLookupText = value.personDetails.personFullName;
+    this.apmisLookupText = `${value.firstName} ${value.lastName}`;
     this.selectedPatient = value;
     this._laboratoryRequestService.find({
-      query: {
-        'facilityId._id': this.facility._id,
-        'patientId._id': value._id,
-      }
+      query: { 'facilityId': this.facility._id, 'patientId': value.patientId }
     }).then(res => {
       this.pendingReLoading = false;
       if (res.data.length > 0) {
@@ -331,10 +346,7 @@ export class ReportComponent implements OnInit {
 
   private _getSelectedPendingRequests(requestId, investigationId) {
     this._laboratoryRequestService.find({
-      query: {
-        'facilityId._id': this.facility._id,
-        '_id': requestId,
-      }
+      query: { 'facilityId': this.facility._id, '_id': requestId }
     }).then(res => {
       this.pendingReLoading = false;
       if (res.data.length > 0) {
@@ -377,13 +389,11 @@ export class ReportComponent implements OnInit {
   }
 
   private _getAllPendingRequests() {
-    this._laboratoryRequestService.find({
-      query: {
-        'facilityId._id': this.facility._id,
-      }
+    this._laboratoryRequestService.customFind({
+      query: { 'facilityId': this.facility._id }
     }).then(res => {
       this.pendingReLoading = false;
-      if (res.data.length > 0) {
+      if (res.status === 'success' && res.data.length > 0) {
         const pendingRequests = this._modelPendingRequests(res.data);
         if (pendingRequests.length > 0) {
           this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
@@ -409,9 +419,10 @@ export class ReportComponent implements OnInit {
 
     if (investigation.isPaid) {
       if (investigation.sampleTaken) {
+        investigation.patient.patientId = investigation.patientId;
         this.selectedPatient = investigation.patient;
         this.selectedInvestigation = investigation;
-        this.apmisLookupText = investigation.patient.personDetails.personFullName;
+        this.apmisLookupText = `${investigation.patient.firstName} ${investigation.patient.lastName}`;
         if (this.selectedInvestigation.reportType.name.toLowerCase() === 'text'.toLowerCase()) {
           this.textReport = true;
           this.numericReport = false;
@@ -447,10 +458,8 @@ export class ReportComponent implements OnInit {
   }
 
   private _getAllReports() {
-    this._laboratoryRequestService.find({
-      query: {
-        'facilityId._id': this.facility._id,
-      }
+    this._laboratoryRequestService.customFind({
+      query: { 'facilityId': this.facility._id }
     }).then(res => {
       if (!!this.selectedLab.typeObject.minorLocationId || this.selectedLab.typeObject.minorLocationId !== undefined) {
         this.reportLoading = false;
@@ -516,8 +525,10 @@ export class ReportComponent implements OnInit {
             pendingLabReq.clinicalInformation = labRequest.clinicalInformation;
             pendingLabReq.diagnosis = labRequest.diagnosis;
             pendingLabReq.labNumber = labRequest.labNumber;
-            pendingLabReq.patient = labRequest.patientId;
-            pendingLabReq.createdBy = labRequest.createdBy;
+            pendingLabReq.patient = labRequest.personDetails;
+            pendingLabReq.patientId = labRequest.patientId;
+            pendingLabReq.createdBy = labRequest.employeeDetails;
+            pendingLabReq.createdById = labRequest.createdBy;
             pendingLabReq.isExternal = investigation.isExternal;
             pendingLabReq.isUrgent = investigation.isUrgent;
             pendingLabReq.minorLocation = investigation.investigation.LaboratoryWorkbenches[0].laboratoryId._id;
@@ -552,14 +563,14 @@ export class ReportComponent implements OnInit {
           query: {
             facilityId: this.facility._id,
             '_id': request.billingId._id,
-            patientId: request.patient._id
+            patientId: request.patientId
           }
         }).then(res => {
           const billingItem = res.data[0];
           let counter = 0;
           billingItem.billItems.forEach(billItem => {
             counter++;
-            if (billItem.serviceId === request.service._id) {
+            if (billItem.serviceId === request.service) {
               request.isPaid = billItem.paymentCompleted;
             }
           });
@@ -569,6 +580,9 @@ export class ReportComponent implements OnInit {
             this.paymentStatusText = '<i class="fa fa-refresh"></i> Refresh Payment Status';
           }
         }).catch(err => console.log(err));
+      } else {
+        this.disablePaymentBtn = false;
+        this.paymentStatusText = '<i class="fa fa-refresh"></i> Refresh Payment Status';
       }
     });
   }
@@ -590,6 +604,7 @@ export class ReportComponent implements OnInit {
 
   private _getDocumentationForm() {
     this._formService.findAll().then(res => {
+      console.log(res);
       this.selectedForm = res.data.filter(x => new RegExp('laboratory', 'i').test(x.title))[0];
     }).catch(err => this._notification('Error', 'There was a problem getting documentations!'));
   }
