@@ -1,0 +1,16 @@
+@import '../med-records.component.scss';
+
+.card-x2{
+    flex-direction: row;
+}
+.card-long ul{
+    max-height: fit-content;
+}
+.rhs .card-title{
+    text-align: left;
+}
+.rhs .pp-card{
+    border: 0;
+    margin-bottom: 20px;
+    min-height: fit-content;
+}
