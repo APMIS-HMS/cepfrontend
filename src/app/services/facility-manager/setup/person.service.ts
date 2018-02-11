@@ -65,7 +65,7 @@ export class PersonService {
     return this._socket.update(person._id, person, { query: { facilityId: param } });
   }
 
-  remove(id: string, query: any) {
+  remove(id: string, query?: any) {
     return this._socket.remove(id, query);
   }
 

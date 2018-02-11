@@ -63,6 +63,7 @@ export class AppComponent implements OnInit {
     });
 
     this.systemModuleService.sweetAnnounced$.subscribe((value: any) => {
+      console.log('received sweet announced')
       this._sweetNotification(value);
     });
   }
