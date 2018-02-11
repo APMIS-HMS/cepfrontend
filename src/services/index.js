@@ -141,6 +141,7 @@ const crudLabRequest = require('./crud-lab-request/crud-lab-request.service.js')
 const drugDetailsApis = require('./drug-details-apis/drug-details-apis.service.js');
 const listOfProducts = require('./list-of-products/list-of-products.service.js');
 const formscopelevels = require('./formscopelevels/formscopelevels.service.js');
+const templates = require('./templates/templates.service.js');
 module.exports = function(app) {
     app.configure(users);
     app.configure(facilityOwnerships);
@@ -285,4 +286,5 @@ module.exports = function(app) {
     app.configure(drugDetailsApis);
     app.configure(listOfProducts);
     app.configure(formscopelevels);
+    app.configure(templates);
 };
