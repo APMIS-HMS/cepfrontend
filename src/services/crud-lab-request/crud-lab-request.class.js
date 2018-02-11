@@ -108,16 +108,27 @@ class Service {
                     }
                 });
 
-                const saveBilling = await billingService.create(billGroup);
-                if (saveBilling._id !== undefined) {
+                if (billGroup.billItems.length > 0) {
+                    const saveBilling = await billingService.create(billGroup);
+                    if (saveBilling._id !== undefined) {
+                        // Attach billing items before saving.
+                        data.billingId = saveBilling;
+                        const saveRequest = await requestService.create(data);
+                        if (saveRequest._id !== undefined) {
+                            return jsend.success(saveRequest);
+                        } else {
+                            return jsend.error('There was a problem trying to save to billing.');
+                        }
+                    } else {
+                        return jsend.error('There was a problem trying to save to billing.');
+                    }
+                } else {
                     const saveRequest = await requestService.create(data);
                     if (saveRequest._id !== undefined) {
                         return jsend.success(saveRequest);
                     } else {
                         return jsend.error('There was a problem trying to save to billing.');
                     }
-                } else {
-                    return jsend.error('There was a problem trying to save to billing.');
                 }
             } else {
                 return jsend.error('Sorry! But you can not perform this transaction.');
