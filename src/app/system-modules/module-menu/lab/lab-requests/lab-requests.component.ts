@@ -45,7 +45,8 @@ export class LabRequestsComponent implements OnInit {
   apmisInvestigationLookupQuery: any = {};
   apmisInvestigationLookupDisplayKey = 'name';
   apmisInvestigationLookupImgKey = '';
-  apmisLookupOtherKeys = ['lastName', 'email'];
+  // apmisLookupOtherKeys = ['lastName', 'email'];
+  apmisLookupOtherKeys = ['lastName', 'firstName', 'apmisId', 'email'];
 
   request_view = false;
   reqDetail_view = false;

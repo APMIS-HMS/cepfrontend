@@ -51,4 +51,8 @@ export class LaboratoryRequestService {
   update(laboratoryrequest: any) {
     return this._rest.update(laboratoryrequest._id, laboratoryrequest);
   }
+
+  patch(_id: any, data: any, param: any) {
+    return this._socket.patch(_id, data, param);
+  }
 }
