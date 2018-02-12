@@ -31,7 +31,7 @@ export class ServicesComponent implements OnInit {
   serviceDetail = false;
   newPricePopup = false;
   selectedFacilityServicePrice = FacilityPriceService;
-
+  showNewModifer = false;
 
   selectedService: any = <any>{};
   selectedCategory: any = <any>{};
@@ -101,6 +101,7 @@ export class ServicesComponent implements OnInit {
 
   selectCategory(category) {
     console.log(category);
+    this.selectedCategory = category;
     this.selectedServices = category.services;
   }
 
@@ -109,6 +110,7 @@ export class ServicesComponent implements OnInit {
     this.newServicePopup = true;
   }
   onDoubleClickCategory(value: any) {
+    console.log(value);
     this.selectedCategory = value;
     this.newCategoryPopup = true;
   }
@@ -239,7 +241,11 @@ export class ServicesComponent implements OnInit {
     this.newPricePopup = false;
     this.serviceDetail = false;
   }
-  newCategoryPopup_show() {
+  newCategoryPopup_show(value?: any) {
+    console.log(value);
+    if (!!value) {
+      this.selectedCategory = value;
+    }
     this.newCategoryPopup = true;
   }
   newTagPopup_show() {
@@ -250,6 +256,11 @@ export class ServicesComponent implements OnInit {
     this.newCategoryPopup = false;
     this.newTagPopup = false;
     this.newModefierPopup = false;
+    this.showNewModifer = false;
+  }
+  onClickshowNewModifer () {
+    this.showNewModifer = !this.showNewModifer;
+
   }
 
   serviceDetail_show(price) {
