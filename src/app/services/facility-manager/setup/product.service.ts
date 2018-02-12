@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ProductService {
   public _socket;
+  public _socketList;
   private _rest;
   public listenerCreate;
   public listenerUpdate;
@@ -15,6 +16,7 @@ export class ProductService {
   ) {
     this._rest = _restService.getService('products');
     this._socket = _socketService.getService('products');
+    this._socketList = _socketService.getService('list-of-products');
     this._socket.timeout = 30000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
@@ -25,6 +27,10 @@ export class ProductService {
 
   find(query: any) {
     return this._socket.find(query);
+  }
+
+  findList(query: any) {
+    return this._socketList.find(query);
   }
 
   findAll() {

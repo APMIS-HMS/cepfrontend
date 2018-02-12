@@ -46,18 +46,17 @@
         <div class="frm-l">
             <div class="selected-patient-wrap">
                 <div class="sel-patient-img">
-                    <img *ngIf="selectedInvestigationData?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
-                    <img class="shadow" *ngIf="selectedInvestigationData?.patient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(selectedInvestigationData?.patient?.personDetails?.profileImageObject?.thumbnail)">
+                    <img *ngIf="selectedInvestigationData?.patient?.profileImageObject == undefined" src="assets/images/users/default.png">
+                    <img class="shadow" *ngIf="selectedInvestigationData?.patient?.profileImageObject != undefined" [src]="facilityService.transform(selectedInvestigationData?.patient?.profileImageObject?.thumbnail)">
                 </div>
-                <div class="sel-patient-name">{{ selectedInvestigationData?.patient?.personDetails?.firstName }} {{ selectedInvestigationData?.patient?.personDetails?.lastName
-                    }}
+                <div class="sel-patient-name">{{ selectedInvestigationData?.patient?.firstName }} {{ selectedInvestigationData?.patient?.lastName }}
                 </div>
                 <div class="sel-patient-detaills">
-                    <div>{{ selectedInvestigationData?.patient?.personDetails.apmisId }}</div>
-                    <div>{{ selectedInvestigationData?.patient?.personDetails.age }} year(s)</div>
-                    <div>{{ selectedInvestigationData?.patient?.personDetails.gender.name }}</div>
-                    <div>{{ selectedInvestigationData?.patient?.personDetails.phoneNumber }}</div>
-                    <div>{{ selectedInvestigationData?.patient?.personDetails.email }}</div>
+                    <div>{{ selectedInvestigationData?.patient?.apmisId }}</div>
+                    <div>{{ selectedInvestigationData?.patient?.dateOfBirth | date: 'shortDate' }}</div>
+                    <div>{{ selectedInvestigationData?.patient?.gender }}</div>
+                    <div>{{ selectedInvestigationData?.patient?.phoneNumber }}</div>
+                    <div>{{ selectedInvestigationData?.patient?.email }}</div>
                 </div>
             </div>
             <div class="act-right-actions">
@@ -111,8 +110,7 @@
                                     <div class="invstn-val">
                                         <div class="val-label">Reference:</div>
                                         <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Text'">{{ selectedInvestigationData?.reportType.ref }}</div>
-                                        <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Numeric'">{{ selectedInvestigationData?.reportType.ref.min }} - {{ selectedInvestigationData?.reportType.ref.min
-                                            }}({{ selectedInvestigationData?.unit }})</div>
+                                        <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Numeric'">{{ selectedInvestigationData?.reportType.ref.min }} - {{ selectedInvestigationData?.reportType.ref.min }}({{ selectedInvestigationData?.unit }})</div>
                                     </div>
                                     <div class="invstn-val">
                                         <div class="val-label">Sample NO:</div>
@@ -121,8 +119,7 @@
                                     <div class="invstn-val">
                                         <div class="val-label">Test Result:</div>
                                         <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Text'">{{ selectedInvestigationData?.report.result }}</div>
-                                        <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Numeric'">{{ selectedInvestigationData?.report.result }}({{ selectedInvestigationData?.unit
-                                            }})
+                                        <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Numeric'">{{ selectedInvestigationData?.report.result }}({{ selectedInvestigationData?.unit }})
                                         </div>
                                     </div>
                                 </div>

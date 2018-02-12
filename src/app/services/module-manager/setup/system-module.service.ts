@@ -40,6 +40,7 @@ export class SystemModuleService {
     this.announceLoading({ status: 'On' });
   }
   announceSweetProxy(title, type, cp?, html?, text?, from?) {
+    console.log('calling announcedsweet');
     this.announceSweet({
       title: title,
       type: type,

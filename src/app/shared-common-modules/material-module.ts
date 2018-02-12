@@ -1,3 +1,4 @@
+import { SharedModuleMaterialModule } from './sharedmodule-materialsmodule';
 import { LogOutConfirmModule } from './log-out-module';
 import { SystemModuleComponent } from './../system-modules/system-module.component';
 import { ImageUpdateComponent } from './../system-modules/module-menu/facility-page/employees/image-update/image-update.component';
@@ -14,7 +15,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CreateWorkspaceComponent } from '../system-modules/module-menu/facility-page/create-workspace/create-workspace.component';
 import { GlobalDialogComponent } from '../shared-module/global-dialog/global-dialog.component';
-import { LogoUpdateComponent } from '../system-modules/module-menu/facility-page/logo-update/logo-update.component';
+// import { LogoUpdateComponent } from '../system-modules/module-menu/facility-page/logo-update/logo-update.component';
 import { ImageCropperModule } from 'ng2-img-cropper';
 import { NgUploaderModule } from 'ngx-uploader';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
@@ -44,7 +45,7 @@ import { NgPipesModule } from 'ngx-pipes';
 import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/checkout-patient.component';
 @NgModule({
     declarations: [CreateWorkspaceComponent, GlobalDialogComponent,
-        LogoUpdateComponent,
+        // LogoUpdateComponent,
         AddVitalsComponent,
         AddPrescriptionComponent,
         BillPrescriptionComponent,
@@ -61,7 +62,7 @@ import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/che
         LabRequestsComponent, RequestDetailComponent,
         CheckoutPatientComponent,
         PasswordResetComponent,
-        SystemModuleComponent
+        // SystemModuleComponent
         //  SurveyComponent, SurveyEditorComponent
     ],
     exports: [
@@ -89,7 +90,7 @@ import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/che
         FormsModule,
         CreateWorkspaceComponent,
         GlobalDialogComponent,
-        LogoUpdateComponent,
+        // LogoUpdateComponent,
         ImageCropperModule,
         ImageUpdateComponent,
         NgUploaderModule,
@@ -114,8 +115,8 @@ import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/che
         NgPipesModule,
         CheckoutPatientComponent,
         PasswordResetComponent,
-        SystemModuleComponent
-
+        SharedModuleMaterialModule
+        // SystemModuleComponent
         // SurveyComponent, SurveyEditorComponent
     ],
     imports: [
@@ -138,6 +139,7 @@ import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/che
         NgbModule.forRoot(),
         ToastModule.forRoot(),
         CoolStorageModule,
+        
         // MomentModule,
 
 
@@ -149,7 +151,8 @@ import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/che
         CurrencyMaskModule,
         DragulaModule,
         NgPipesModule,
-        LogOutConfirmModule
+        LogOutConfirmModule,
+        SharedModuleMaterialModule
     ],
     providers: [OrderStatusService, SeverityService]
 })

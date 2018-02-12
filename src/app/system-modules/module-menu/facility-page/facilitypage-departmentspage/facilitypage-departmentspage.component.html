@@ -93,7 +93,7 @@
 </div>
 
 <div *ngIf="newDept" class="modal-overlay">
-    <app-new-department [selectedDepartment]="selectedDepartment" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-department>
+    <app-new-department [selectedDepartment]="selectedDepartment" (closeModal)="close_onClick($event)" (onRefresh)="getFacility($event)" id="form-modal" class="form-modal center-center"></app-new-department>
 </div>
 <div *ngIf="newUnit" class="modal-overlay">
     <app-new-unit [department]="selectedDepartment" (closeModal)="close_onClick($event)" [unit]="selectedUnit" id="form-modal" class="form-modal center-center"></app-new-unit>

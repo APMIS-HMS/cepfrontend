@@ -152,7 +152,7 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
     // this.facilityObj = this.facilityService.getSelectedFacilityId();
     // this.deptsObj = this.facilityObj.departments;
   }
-  getFacility() {
+  getFacility(evnt?) {
     const facility = <Facility>this.locker.getObject('selectedFacility');
     this.facilityService.get(facility._id, {}).then((payload) => {
       this.facilityObj = payload;
@@ -237,6 +237,9 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
   close_onClick(message: boolean): void {
     this.newDept = false;
     this.newUnit = false;
+    if(message === true){
+      this.getFacility();
+    }
   }
   editUnit(unit) {
     this.selectedUnit = unit;
