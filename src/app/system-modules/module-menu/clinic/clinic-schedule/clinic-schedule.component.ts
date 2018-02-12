@@ -279,4 +279,8 @@ export class ClinicScheduleComponent implements OnInit {
     (<FormArray>this.clinicScheduleForm.controls['clinicScheduleArray']).controls.splice(i, 1);
     this.loadManagerSchedules(false);
   }
+
+  onSubmit(){
+    
+  }
 }
