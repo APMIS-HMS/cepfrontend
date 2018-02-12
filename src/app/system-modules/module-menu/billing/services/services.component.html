@@ -9,20 +9,20 @@
 
 <div class="container">
     <div class="row">
-        <div class="col-md-4 col-xs-12">
+        <div class="col-md-3 col-xs-12">
             <div class="card">
                 <div class="card-header">
                     <div class="row" *ngIf="!searchShowc">
-                        <div class="col-xs-10">
+                        <div class="col-xs-9">
                             Category
                         </div>
                         <div class="col-xs-1">
-                            <i (click)="newCategoryPopup_show()" class="fa fa-plus fa-fw"></i>
+                            <i (click)="newCategoryPopup_show({})" class="fa fa-plus fa-fw"></i>
                             <div *ngIf="newCategoryPopup" class="modal-overlay">
                                 <app-new-category [selectedCategory]='selectedCategory' (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-category>
                             </div>
                         </div>
-                        <div class="col-xs-1">
+                        <div class="col-xs-2">
                             <i (click)="showSearchc()" class="fa fa-search fa-fw"></i>
                         </div>
                     </div>
@@ -38,21 +38,29 @@
                 <div class="card-content scrollable">
                     <div *ngFor="let category of categories" [ngClass]="{ 'undefined' : category.name == selectedCategory.name}" class="card-list-item" (click)="selectCategory(category)">
                         <div class="row">
-                            <div class="col-xs-10">
+                            <div class="col-xs-8">
                                 {{category.name}}
                             </div>
                             <div class="col-xs-1 options">
-                                <i (click)="newCategoryPopup_show()" data-toggle="tooltip" title="Edit" data-placement="left" class="fa fa-edit blue-text fa-fw"></i>
+                                <i (click)="newCategoryPopup_show(category);" data-toggle="tooltip" title="Edit" data-placement="left" class="fa fa-edit blue-text fa-fw media-tooltip"></i>
                             </div>
                             <div class="col-xs-1 options">
                                 <i data-toggle="tooltip" title="delete" data-placement="left" class="fa fa-trash red-text fa-fw"></i>
                             </div>
+                            <div class="col-xs-2  addService">
+                                <i (click)="newServicePopup_show()" data-toggle="tooltip" title="Add Service" data-placement="left" class="fa fa-plus-square  blue-text"></i>
+                            </div>
+                            <!-- <div class="col-xs-1 options">
+                                  <i (click)="newServicePopup_show()" data-toggle="tooltip" title="Add New Service" data-placement="left" class="fa fa-plus blue-text"></i>
+                                 <div *ngIf="newServicePopup" class="modal-overlay">
+                                    <app-new-service [selectedService]="selectedService" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-service>
+                                </div>-->
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-8 col-xs-12">
+        <div class="col-md-9 col-xs-12">
             <div class="card">
                 <div class="card-header">
                     <div class="row" *ngIf="!searchShow">
@@ -87,14 +95,32 @@
                 <div class="card-content scrollable">
                     <div *ngFor="let service of selectedServices" class="card-list-item">
                         <div class="row">
-                            <div class="col-xs-4">{{service.name}}</div>
+                            <div class="col-xs-4">{{service.name}}
+                                <div class="Container">
+                                    <ol class="listOfPanels">
+                                        <li> jlhsjhudhkdj</li><br/>
+                                        <li>hbdhuhkbj rj</li>
+                                        <li>hbdhuhkbj rj</li>
+                                    </ol>
+                                </div>
+                            </div>
                             <div class="col-xs-2">{{service?.code}}</div>
-                            <div class="col-xs-3"><span>&#x20a6;</span>{{service?.price | number:'1.2-2'}}</div>
+                            <div class="col-xs-3">
+                                <div class="label label-info1">
+                                    <span class="base">Base Price</span>
+                                    <span class="prixe">&#x20a6; {{service?.price | number:'1.2-2'}}</span>
+                                </div>
+                                <!-- Price with Tags -->
+                                <div class="label label-info1">
+                                    <span class="base">Taged Price </span>
+                                    <span class="prixe">&#x20a6;{{service?.price | number:'1.2-2'}}</span>
+                                </div>
+                            </div>
                             <div class="col-xs-3 options">
                                 <i (click)="newServicePopup_show()" data-toggle="tooltip" title="edit" data-placement="left" class="fa fa-pencil-square-o blue-text" aria-hidden="true"></i>
                                 <i class="fa fa-trash red-text" data-toggle="tooltip" title="delete" data-placement="left" aria-hidden="true"></i>
-                                <div (click)="newModefierPopup_show(price)" class="btn-1 btn-blue">
-                                    <i class="fa fa-plus-square" aria-hidden="true"></i> Add Modifier</div>
+                                <div (click)="onClickshowNewModifer()" class="btn-1 btn-blue">
+                                    <span class="fa fa-plus-square" aria-hidden="true"></span> Add Modifier</div>
                             </div>
                             <!--<div class="col-xs-1 options"><i (click)="newServicePopup_show()" class="fa fa-edit blue-text"></i></div>
                             <div class="col-xs-1 options"><i class="fa fa-trash red-text"></i></div>-->
@@ -109,6 +135,10 @@
             </div>
         </div>
     </div>
+</div>
+
+<div *ngIf="showNewModifer" class="modal-overlay">
+    <app-new-modefier (closeModal)="close_onClick($event)" class="form-modal center-center"></app-new-modefier>
 </div>
 
 
