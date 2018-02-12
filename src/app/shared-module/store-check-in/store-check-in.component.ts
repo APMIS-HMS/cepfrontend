@@ -112,38 +112,20 @@ export class StoreCheckInComponent implements OnInit {
 		console.log(2);
 		// this.loadIndicatorVisible = true;
 		console.log(this.loginEmployee);
-		this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
-			console.log(3);
+		this._authFacadeService.getCheckedInEmployee(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+			console.log(payload);
 			this.loginEmployee = payload;
-			this._authFacadeService.getLogingEmployee().then((res: any) => {
-				this.loginEmployee = res;
-				let keepCheckIn;
-				this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
-					itemi.isOn = false;
-					if (itemi.storeId === checkIn.storeId) {
-						console.log(4);
-						console.log(checkIn.storeId);
-						if (this.locations.length > 0) {
-							let index = this.locations.filter(x => x.minorLocationId.toString() === checkIn.minorLocationId.toString());
-							if(index.length == 0){
-								itemi.minorLocation = index[0].name;
-							}
-						}
-						if (this.stores.length > 0) {
-							let index = this.stores.filter(x => x._id.toString() === checkIn.storeId.toString());
-							if(index.length == 0){
-								itemi.store = index[0].name;
-							}
-						}
-						itemi.isOn = true;
-						keepCheckIn = itemi;
-					}
-				});
-				this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'store' });
-				this.checkInBtnText = '<i class="fa fa-check-circle"></i> Check In';
-				console.log(this.loginEmployee.storeCheckIn);
-				// this.close_onClick();
+			let keepCheckIn;
+			this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
+				itemi.isOn = false;
+				if (itemi.storeId === checkIn.storeId) {
+					itemi.isOn = true;
+					keepCheckIn = itemi;
+				}
 			});
+			this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'store' });
+			this.checkInBtnText = '<i class="fa fa-check-circle"></i> Check In';
+			console.log(this.loginEmployee.storeCheckIn);
 		});
 	}
 	changeRoom(checkIn: any) {
@@ -155,7 +137,7 @@ export class StoreCheckInComponent implements OnInit {
 				keepCheckIn = itemi;
 			}
 		});
-		this.employeeService.patch(this.loginEmployee._id,{storeCheckIn:this.loginEmployee.storeCheckIn}).then(payload => {
+		this._authFacadeService.getCheckedInEmployee(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
 			this.loginEmployee = payload;
 			this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'store' });
 			this.close_onClick();

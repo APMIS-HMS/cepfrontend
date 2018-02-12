@@ -3,6 +3,7 @@ import { InventoryEmitterService } from '../../../../services/facility-manager/i
 // tslint:disable-next-line:max-line-length
 import { InventoryService, InventoryTransferService, InventoryTransferStatusService, InventoryTransactionTypeService, StoreService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import {
   Facility, InventoryTransferStatus, InventoryTransactionType, InventoryTransferTransaction,
   InventoryTransfer, Employee
@@ -25,13 +26,13 @@ export class StockTransferComponent implements OnInit {
 
   selectedFacility: Facility = <Facility>{};
   checkingStore: any = <any>{};
-
+  maxQty = 0;
   superGroups: any[] = [];
   products: any[] = [];
   productTables: any[] = [];
   stores: any[] = [];
   user: any = <any>{};
-
+  searchControl = new FormControl();
   frmDestinationStore: FormControl = new FormControl();
   product: FormControl = new FormControl();
   productTableForm: FormGroup;
@@ -48,8 +49,9 @@ export class StockTransferComponent implements OnInit {
     private inventoryTransferStatusService: InventoryTransferStatusService,
     private route: ActivatedRoute, private storeService: StoreService,
     private locker: CoolLocalStorage, private formBuilder: FormBuilder,
-    private facilityService:FacilitiesService,
-    private toastr: ToastsManager
+    private facilityService: FacilitiesService,
+    private toastr: ToastsManager,
+    private _authFacadeService: AuthFacadeService
   ) { }
 
   ngOnInit() {
@@ -57,25 +59,40 @@ export class StockTransferComponent implements OnInit {
     this._inventoryEventEmitter.setRouteUrl('Stock Transfer');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.checkingStore = this.locker.getObject('checkingObject');
-    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
-
     this.newTransfer.facilityId = this.selectedFacility._id;
     this.newTransfer.storeId = this.checkingStore.typeObject.storeId;
     this.newTransfer.inventoryTransferTransactions = [];
-    this.newTransfer.transferBy = this.loginEmployee._id;
+    this._authFacadeService.getLogingEmployee().then((res: any) => {
+      this.loginEmployee = res;
+      this.newTransfer.transferBy = this.loginEmployee._id;
+    });
 
-
-    // this.route.data.subscribe(data => {
-    //   data['loginEmployee'].subscribe((payload) => {
-    //     this.loginEmployee = payload.loginEmployee;
-    //     this.newTransfer.facilityId = this.selectedFacility._id;
-    //     this.newTransfer.storeId = this.checkingStore.typeObject.storeId;
-    //     this.newTransfer.inventoryTransferTransactions = [];
-    //     this.newTransfer.transferBy = this.loginEmployee._id;
-    //   });
-    // });
+    this.searchControl.valueChanges
+      .debounceTime(200)
+      .distinctUntilChanged()
+      .subscribe((por: any) => {
+        // console.log(this.checkingStore.typeObject.storeId);
+        // console.log(this.selectedFacility._id);
+        // console.log(this.searchControl.value);
+        // this.inventoryService.findList({
+        //   query: {
+        //     facilityId: this.selectedFacility._id,
+        //     name: this.searchControl.value,
+        //     storeId: this.checkingStore.typeObject.storeId
+        //   }
+        // }).subscribe(payload => {
+        //   console.log(payload.data.length);
+        //   this.products = [];
+        //   this.getProductTables(this.products);
+        //   payload.data.forEach((item, i) => {
+        //     this.products.push(item.productObject);
+        //   });
+        //   this.getProductTables(this.products);
+        // });
+      })
 
     this.addNewProductTables();
+    console.log("About to call Inventory");
     this.getMyInventory();
     this.primeComponent();
   }
@@ -88,6 +105,7 @@ export class StockTransferComponent implements OnInit {
       const statusResult: any = results[0];
       const typeResult: any = results[1];
       const storeResult: any = results[2];
+      console.log(storeResult);
 
       if (statusResult.data.length > 0) {
         this.selectedInventoryTransferStatus = statusResult.data[0];
@@ -96,8 +114,8 @@ export class StockTransferComponent implements OnInit {
         this.selectedInventoryTransactionType = typeResult.data[0];
         this.newTransfer.inventorytransactionTypeId = this.selectedInventoryTransactionType._id;
       }
-      storeResult.data.forEach((store)=>{
-        if(store._id !== this.checkingStore.typeObject.storeId){
+      storeResult.data.forEach((store) => {
+        if (store._id.toString() !== this.checkingStore.typeObject.storeId.toString()) {
           this.stores.push(store);
         }
       })
@@ -105,12 +123,16 @@ export class StockTransferComponent implements OnInit {
     });
   }
   getMyInventory() {
-    this.inventoryService.find({
+    console.log(this.selectedFacility);
+    console.log(this.checkingStore.typeObject);
+    this.inventoryService.findList({
       query: {
         facilityId: this.selectedFacility._id,
+        name: '',
         storeId: this.checkingStore.typeObject.storeId
       }
     }).subscribe(payload => {
+      console.log(payload);
       this.products = [];
       this.getProductTables(this.products);
       payload.data.forEach((item, i) => {
@@ -190,6 +212,7 @@ export class StockTransferComponent implements OnInit {
   }
   onProductCheckChange(event, value, index?) {
     value.checked = event.checked;
+    this.maxQty = 0;
     if (event.checked === true) {
       this.inventoryService.find({ query: { productId: value._id, facilityId: this.selectedFacility._id } }).subscribe(payload => {
         if (payload.data.length > 0) {
@@ -246,7 +269,8 @@ export class StockTransferComponent implements OnInit {
     const filterValue = value.filter(x => x._id === $event.value);
     if (filterValue.length > 0) {
       (<FormGroup>(<FormArray>this.productTableForm.controls['productTableArray'])
-        .controls[index]).controls['qty'].setValue(filterValue[0].quantity);
+        .controls[index]).controls['qty'].setValue(filterValue[0].availableQuantity);
+        this.maxQty = filterValue[0].quantity;
       (<FormGroup>(<FormArray>this.productTableForm.controls['productTableArray'])
         .controls[index]).controls['costPrice'].setValue(filterValue[0].costPrice);
       (<FormGroup>(<FormArray>this.productTableForm.controls['productTableArray'])
@@ -371,10 +395,10 @@ export class StockTransferComponent implements OnInit {
   }
   saveTransfer() {
     this.populateInventoryTransferTransactions();
-    this.inventoryTransferService.create(this.newTransfer).then(payload => {
+    this.inventoryTransferService.create2(this.newTransfer).then(payload => {
       (<FormArray>this.productTableForm.controls['productTableArray']).controls = [];
       this.unCheckedProducts();
-      this._notification("Success","Your transfer was successful");
+      this._notification("Success", "Your transfer was successful");
       this.frmDestinationStore.reset();
     });
   }

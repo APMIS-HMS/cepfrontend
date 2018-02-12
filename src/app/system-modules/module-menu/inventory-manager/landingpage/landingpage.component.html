@@ -13,6 +13,7 @@
                 <div class="prod-rowItem item1">Product</div>
                 <div class="prod-rowItem item2">Batches</div>
                 <div class="prod-rowItem item3">Quantity</div>
+                <div class="prod-rowItem item3">Av. Quantity</div>
             </div>
 
             <div class="prodParent-content">
@@ -24,7 +25,7 @@
                             <ul class="shadow-RB workspace-listWrap animated zoomIn">
                                 <li *ngFor="let store of inventory.transactions" class="workspace-listItem">
                                     <ng-container>
-                                        <span>{{store.batchNumber}}, Qty: {{store.quantity}}</span>
+                                        <span>{{store.batchNumber}}, Qty: {{store.quantity}}, Ex.: {{store.expiration}}</span>
                                     </ng-container>
                                 </li>
                                 <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
@@ -32,6 +33,9 @@
                         </div>
                         <div (click)="onShowBatch(inventory)" class="prod-rowItem item3">
                             <div style="width: 100%;text-align: center;">{{inventory.totalQuantity}}</div>
+                        </div>
+                        <div (click)="onShowBatch(inventory)" class="prod-rowItem item3">
+                            {{inventory.availableQuantity}}
                         </div>
                     </div>
                     <div *ngIf="inventory.isOpen===true && (selectedInventory._id === inventory._id)" class="prodBatch-wrap animated flipInX">

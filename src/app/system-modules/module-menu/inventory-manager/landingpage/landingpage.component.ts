@@ -21,9 +21,9 @@ export class LandingpageComponent implements OnInit {
   comment: FormControl = new FormControl();
 
   foods = [
-    {value: 'steak-0', viewValue: 'Steak'},
-    {value: 'pizza-1', viewValue: 'Pizza'},
-    {value: 'tacos-2', viewValue: 'Tacos'}
+    { value: 'steak-0', viewValue: 'Steak' },
+    { value: 'pizza-1', viewValue: 'Pizza' },
+    { value: 'tacos-2', viewValue: 'Tacos' }
   ];
 
   inventories: any[] = [];
@@ -67,7 +67,7 @@ export class LandingpageComponent implements OnInit {
       .distinctUntilChanged()
       .switchMap((term: any[]) => this.inventoryService.find({
         query:
-        { search: this.searchControl.value, facilityId: this.selectedFacility._id }
+          { search: this.searchControl.value, facilityId: this.selectedFacility._id }
       }).
         then(payload => {
           this.loading = false;
@@ -78,13 +78,15 @@ export class LandingpageComponent implements OnInit {
     subscribeForCategory.subscribe((payload: any) => {
     });
   }
+
   getInventories() {
     if (this.checkingStore !== undefined && this.checkingStore.typeObject !== undefined) {
-      this.inventoryService.find({
+      this.inventoryService.findList({
         query:
-        { facilityId: this.selectedFacility._id, storeId: this.checkingStore.typeObject.storeId, $limit: 200 }
+          { facilityId: this.selectedFacility._id,name:'', storeId: this.checkingStore.typeObject.storeId }//, $limit: 200 }
       })
         .then(payload => {
+          console.log(payload);
           this.loading = false;
           this.inventories = payload.data.filter(x => x.totalQuantity > 0);
         });
@@ -154,11 +156,11 @@ export class LandingpageComponent implements OnInit {
   }
 
   // Notification
-	private _notification(type: string, text: string): void {
-		this._facilityService.announceNotification({
-			users: [this.user._id],
-			type: type,
-			text: text
-		});
-	}
+  private _notification(type: string, text: string): void {
+    this._facilityService.announceNotification({
+      users: [this.user._id],
+      type: type,
+      text: text
+    });
+  }
 }

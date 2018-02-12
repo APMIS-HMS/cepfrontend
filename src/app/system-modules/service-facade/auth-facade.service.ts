@@ -19,25 +19,52 @@ export class AuthFacadeService {
     let self = this;
 
     return new Promise(function (resolve, reject) {
-      console.log(self.logingEmployee);
+      console.log(1);
       if (self.logingEmployee !== undefined) {
-        let n = self.logingEmployee.storeCheckIn.length;
-        console.log(n);
+        console.log(2);
         resolve(self.logingEmployee);
       } else {
+        console.log(3);
         self._socketService.authenticateService();
+        console.log(4);
         self._socketService.getService('save-employee').get(facId).then(payload => {
-          if(payload.data !== undefined){
+          console.log(5);
+          if (payload.data !== undefined) {
             self.logingEmployee = payload.data[0];
             self.setLogingEmployee(payload.data[0]);
             resolve(self.logingEmployee)
-          }else{
+          } else {
             resolve(undefined)
           }
-          
+
         }, error => {
         });
       }
+
+
+    });
+
+  }
+
+  getCheckedInEmployee(id, data) {
+    let self = this;
+    return new Promise(function (resolve, reject) {
+      console.log(1);
+      self._socketService.authenticateService();
+      self._socketService.getService('employee-checkins').patch(id, data).then(payload => {
+        console.log(payload);
+        console.log(" PATCHED");
+        if (payload !== null) {
+          self.logingEmployee = payload;
+          self.setLogingEmployee(payload);
+          resolve(self.logingEmployee)
+        } else {
+          resolve(undefined)
+        }
+
+      }, error => {
+        console.log(error);
+      });
 
 
     });
