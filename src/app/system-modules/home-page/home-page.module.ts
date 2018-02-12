@@ -14,6 +14,7 @@ import { MedRecordHomeComponent } from './med-records/med-record-home/med-record
 import { MedRecordDocumentationComponent } from './med-records/med-record-documentation/med-record-documentation.component';
 import { MedRecordPrescriptionComponent } from './med-records/med-record-prescription/med-record-prescription.component';
 import { MedRecordDiagnosticsComponent } from './med-records/med-record-diagnostics/med-record-diagnostics.component';
+import { MedRecordPaymentComponent } from './med-records/med-record-payment/med-record-payment.component';
 
 @NgModule({
   imports: [
@@ -33,6 +34,7 @@ import { MedRecordDiagnosticsComponent } from './med-records/med-record-diagnost
     MedRecordDocumentationComponent,
     MedRecordPrescriptionComponent,
     MedRecordDiagnosticsComponent,
+    MedRecordPaymentComponent,
   ]
 })
 export class HomePageModule { }
