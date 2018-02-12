@@ -76,11 +76,9 @@ export class ServicesComponent implements OnInit {
       }).
         then(payload => {
           this.filterOutService(payload);
-          console.log(payload);
         }));
 
     subscribeForService.subscribe((payload: any) => {
-      console.log(payload);
     });
 
 
@@ -91,7 +89,6 @@ export class ServicesComponent implements OnInit {
         query:
           { search: this.searchTag.value, facilityId: this.facility._id }
       }).then(payload => {
-          console.log(payload)
           this.tags = payload.data;
         }));
 
@@ -100,7 +97,6 @@ export class ServicesComponent implements OnInit {
   }
 
   selectCategory(category) {
-    console.log(category);
     this.selectedCategory = category;
     this.selectedServices = category.services;
   }
@@ -110,7 +106,6 @@ export class ServicesComponent implements OnInit {
     this.newServicePopup = true;
   }
   onDoubleClickCategory(value: any) {
-    console.log(value);
     this.selectedCategory = value;
     this.newCategoryPopup = true;
   }
@@ -242,7 +237,6 @@ export class ServicesComponent implements OnInit {
     this.serviceDetail = false;
   }
   newCategoryPopup_show(value?: any) {
-    console.log(value);
     if (!!value) {
       this.selectedCategory = value;
     }
@@ -279,11 +273,9 @@ export class ServicesComponent implements OnInit {
       this.showLoadMore = false;
     } else {
       let goo = this.paginate(this.globalCategoriesToBePaginated, this.pageSize, this.index);
-      console.log(goo);
       this.globalCategories.push(...goo);
       this.index++;
     }
-    console.log(this.index);
   }
 
   showSearch() {

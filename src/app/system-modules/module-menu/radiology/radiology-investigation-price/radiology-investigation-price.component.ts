@@ -93,9 +93,7 @@ export class RadiologyInvestigationPriceComponent implements OnInit {
 
     this.getWorkBenches();
     this.getTags();
-    console.log("About to call all investigations");
     this.getInvestigations();
-    console.log("After calling all investigations");
   }
 
   getInvestigations() {
@@ -106,7 +104,6 @@ export class RadiologyInvestigationPriceComponent implements OnInit {
     }).then(payload => {
       this.loading = false;
       this.investigations = payload.data;
-      console.log(this.investigations);
     })
   }
   getWorkBenches() {
@@ -124,7 +121,6 @@ export class RadiologyInvestigationPriceComponent implements OnInit {
         }
       }).then(payload => {
         if (payload.data.length > 0) {
-          console.log(payload.data);
           this.selectedTag = payload.data[0];
         }
       });
@@ -191,7 +187,6 @@ export class RadiologyInvestigationPriceComponent implements OnInit {
     // price:{ type: Number, require: true },
     this.facilitiesServiceCtyService.get(this.selectedInvestigation.facilityServiceId, {}).then(payload => {
       var ctgy = payload.categories.filter(x => x.name == 'Radiology');
-      console.log(ctgy);
       var priceObj = {
         'facilityServiceId': this.selectedInvestigation.facilityServiceId,
         'categoryId': ctgy[0]._id,

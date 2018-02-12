@@ -85,16 +85,12 @@ export class TreatementTemplateComponent implements OnInit {
       const isVisibilityValid = this.frmnewTemplate.controls.visibility.valid;
       const isFormValid = this.frmnewTemplate.controls.docFrmList.valid;
       const isNameValid = this.frmnewTemplate.controls.name.valid;
-      console.log(isVisibilityValid);
-      console.log(isFormValid);
-      console.log(isNameValid)
       if (isVisibilityValid && isFormValid && isNameValid) {
         let doc: any;
         if (
           this.selectedTemplate !== undefined &&
           this.selectedTemplate._id !== undefined
         ) {
-          console.log(payload);
           this.selectedTemplate.data = payload;
           this.selectedTemplate.isEditable = this.frmnewTemplate.controls.isEditable.value;
           this.selectedTemplate.name = this.frmnewTemplate.controls.name.value;
@@ -127,7 +123,6 @@ export class TreatementTemplateComponent implements OnInit {
             this.frmnewTemplate.controls.type.reset();
           })
           .catch(err => {
-            console.log(err)
             this._systemModuleService.off();
             this.frmnewTemplate.controls.name.reset();
             this.frmnewTemplate.controls.visibility.reset();
@@ -312,7 +307,6 @@ export class TreatementTemplateComponent implements OnInit {
     });
   }
   getTemplates() {
-    console.log(this.selectedFacility._id);
     this.documentationTemplateService
       .find({
         query: {
@@ -324,7 +318,6 @@ export class TreatementTemplateComponent implements OnInit {
       })
       .then(payload => {
         this.templates = payload.data;
-        console.log(this.templates);
       })
       .catch(errr => {});
   }
@@ -463,7 +456,6 @@ export class TreatementTemplateComponent implements OnInit {
 
   newTemplate_show(force?) {
     if (force) {
-      console.log(11);
       this.newTemplate = !this.newTemplate;
       this.showDocument = false;
       this.frmnewTemplate.reset();
@@ -479,10 +471,6 @@ export class TreatementTemplateComponent implements OnInit {
         this.showDocument = true;
       }
     }
-
-    // this.json = undefined;
-    // this.showDocument = !this.showDocument;
-    // this.isTemplate = true;
   }
 
   _getScopeLevels() {
@@ -620,13 +608,9 @@ export class TreatementTemplateComponent implements OnInit {
     const index = this.forms.findIndex(x => x._id === template.form);
 
     this.frmnewTemplate.controls.docFrmList.setValue(this.forms[index]);
-    // this.showDocument = true;
     if (this.newTemplate === true) {
-      console.log(1);
-      this.sharedService.announceTemplate(template);
       this.sharedService.announceTemplate(template);
     }
 
-    console.log(template);
   }
 }

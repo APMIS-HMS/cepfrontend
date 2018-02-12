@@ -52,7 +52,6 @@ export class AuthFacadeService {
     });
   }
   getLogingUser() {
-    console.log(939393)
     let facId = this.locker.getObject("fac");
     let self = this;
     return new Promise(function(resolve, reject) {
@@ -74,7 +73,6 @@ export class AuthFacadeService {
               }
             },
             error => {
-              console.log(error)
             }
           );
       }

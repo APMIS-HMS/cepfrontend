@@ -35,7 +35,6 @@ export class EmployeesResolverService implements Resolve<Employee>, OnDestroy, O
         $limit: this.limit,
       }
     }).then(payload => {
-      console.log(payload);
       if (payload.data.length > 0) {
         payload.index = this.index;
         return Observable.of(payload);

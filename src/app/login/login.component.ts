@@ -77,10 +77,8 @@ export class LoginComponent implements OnInit {
             this.frm_login.controls['password'].reset();
           });
         }, error => {
-          console.log(error)
           this.systemModule.off();
         }).catch(merr => {
-          console.log(merr)
           this.systemModule.off();
           this.frm_login.controls['password'].reset();
         });

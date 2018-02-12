@@ -53,12 +53,10 @@ export class EmpmanagerHomepageComponent
     private systemService: SystemModuleService
   ) {
     this.employeeService.listner.subscribe(payload => {
-      console.log(1);
       this.employees = [];
       this.getEmployees();
     });
     this.employeeService.createListener.subscribe(payload => {
-      console.log(2);
       this.employees = [];
       this.limit = 10;
       this.index = 0;
@@ -188,7 +186,6 @@ export class EmpmanagerHomepageComponent
       })
       .then(
         payload => {
-          console.log(payload);
           this.total = payload.total;
           if (this.resetData !== true) {
             this.employees.push(...payload.data);

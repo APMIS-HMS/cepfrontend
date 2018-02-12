@@ -659,7 +659,6 @@ export class LabRequestsComponent implements OnInit {
   }
 
   validateForm() {
-    console.log(this.selectedPatient);
     if (this.frmNewRequest.valid) {
       this.isValidateForm =true;
     } else if (this.selectedPatient._id != undefined && this.selectedPatient._id.length > 0) {

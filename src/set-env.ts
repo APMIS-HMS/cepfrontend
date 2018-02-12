@@ -54,5 +54,4 @@ writeFile(targetPath, envConfigFile, function (err) {
   if (err) {
   }
 
-  // console.log(`Output generated at ${targetPath}`);
 });

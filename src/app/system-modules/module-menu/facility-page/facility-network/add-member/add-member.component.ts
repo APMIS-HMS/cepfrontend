@@ -58,11 +58,9 @@ export class AddMemberComponent implements OnInit {
       .distinctUntilChanged()
       .switchMap(value => this.searchEntries(value))
       .subscribe((por: any) => {
-        console.log(por);
         this.searchedFacilities = por;
         this.searchedLength = por.length;
       },err=>{
-        console.log(err);
       })
   }
   searchEntries(value) {

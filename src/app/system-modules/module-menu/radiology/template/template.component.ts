@@ -41,7 +41,6 @@ export class TemplateComponent implements OnInit {
     ) {
       this._authFacadeService.getLogingEmployee().then((res: any) => {
         this.employeeDetails = res;
-        console.log(this.employeeDetails);
       }).catch(err => console.log(err));
     }
 
@@ -151,7 +150,6 @@ export class TemplateComponent implements OnInit {
 
     private _getAllTemplates() {
         this._templateService.find({ query: { 'facilityId': this.facility._id }}).then(res => {
-          console.log(res);
             this.loading = false;
             this.templates = res.data;
         }).catch(err => this._notification('Error', 'There was a problem getting templates'));

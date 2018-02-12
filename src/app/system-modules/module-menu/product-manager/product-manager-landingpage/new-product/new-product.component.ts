@@ -373,7 +373,6 @@ export class NewProductComponent implements OnInit {
       // manufacturerItem._id = "0";
       // this.manufacturers.push(manufacturerItem);
     },error=>{
-      console.log(error);
     })
   }
 

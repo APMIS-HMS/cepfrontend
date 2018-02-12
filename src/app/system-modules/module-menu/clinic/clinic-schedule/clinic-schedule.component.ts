@@ -28,7 +28,7 @@ export class ClinicScheduleComponent implements OnInit {
   clinicLocations: any[] = [];
   schedules: any[] = [];
   scheduleManagers: ScheduleRecordModel[] = [];
-  loading: Boolean = true;
+  loading: Boolean = false;
 
   sorter = {
     // "sunday": 0, // << if sunday is first day of week

@@ -99,7 +99,6 @@ export class AddBedComponent implements OnInit {
             this._systemModuleService.announceSweetProxy(text, 'error');
           }
         }).catch(err => {
-          console.log(err);
         });
 			} else {
 				// Creating
@@ -121,7 +120,6 @@ export class AddBedComponent implements OnInit {
             this._systemModuleService.announceSweetProxy(text, 'error');
           }
         }).catch(err => {
-          console.log(err);
         });
 			}
 		} else {

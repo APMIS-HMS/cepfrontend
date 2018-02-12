@@ -72,7 +72,7 @@ export class FacilityInfoComponent implements OnInit {
 		this._countryServiceFacade.getOnlyCountries().then((payload: any) => {
 			this.countries = payload;
 		}).catch(error => {
-			console.log(error);
+		
 		});
 	}
 	close_onClick() {
