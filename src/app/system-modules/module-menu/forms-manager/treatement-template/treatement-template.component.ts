@@ -38,6 +38,7 @@ import { SystemModuleService } from "../../../../services/module-manager/setup/s
   styleUrls: ["./treatement-template.component.scss"]
 })
 export class TreatementTemplateComponent implements OnInit {
+  selectedTemplate: any;
   templates: any[] = [];
   @ViewChild("fileInput") fileInput: ElementRef;
   @ViewChild("surveyjs") surveyjs: any;
@@ -79,36 +80,46 @@ export class TreatementTemplateComponent implements OnInit {
     private _authFacadeService: AuthFacadeService,
     private _systemModuleService: SystemModuleService
   ) {
-    this.sharedService.submitForm$.subscribe(payload => {
+    this.sharedService.submitForm$.subscribe((payload: any) => {
       this._systemModuleService.on();
       const isVisibilityValid = this.frmnewTemplate.controls.visibility.valid;
       const isFormValid = this.frmnewTemplate.controls.docFrmList.valid;
       const isNameValid = this.frmnewTemplate.controls.name.valid;
+      console.log(isVisibilityValid);
+      console.log(isFormValid);
+      console.log(isNameValid)
       if (isVisibilityValid && isFormValid && isNameValid) {
-        const doc = {
-          data: payload,
-          isEditable: this.frmnewTemplate.controls.isEditable.value,
-          name: this.frmnewTemplate.controls.name.value,
-          visibility: this.frmnewTemplate.controls.visibility.value,
-          form: this.frmnewTemplate.controls.docFrmList.value._id,
-          facilityId: this.selectedFacility._id,
-          userId: this.user._id
-        };
-        this.documentationTemplateService
-          .create(doc)
+        let doc: any;
+        if (
+          this.selectedTemplate !== undefined &&
+          this.selectedTemplate._id !== undefined
+        ) {
+          console.log(payload);
+          this.selectedTemplate.data = payload;
+          this.selectedTemplate.isEditable = this.frmnewTemplate.controls.isEditable.value;
+          this.selectedTemplate.name = this.frmnewTemplate.controls.name.value;
+          this.selectedTemplate.visibility = this.frmnewTemplate.controls.visibility.value;
+          this.selectedTemplate.form = this.frmnewTemplate.controls.docFrmList.value._id;
+          if(this.selectedTemplate.userId === undefined){
+            this.selectedTemplate.userId = this.user._id;
+          }
+
+          this.documentationTemplateService
+          .update(this.selectedTemplate)
           .then(payload2 => {
             this._systemModuleService.off();
             this._notification(
               "Success",
-              "Template has been saved successfully!"
+              "Template has been updated successfully!"
             );
             this._systemModuleService.announceSweetProxy(
               "Template has been saved successfully!",
               "success"
             );
+            // this.newTemplate_show(true);
+            this.getTemplates();
             this.isOrderSet = false;
             this.isTemplate = true;
-            //  name, visibility, isEditable, docFrmList
             this.frmnewTemplate.controls.name.reset();
             this.frmnewTemplate.controls.visibility.reset();
             this.frmnewTemplate.controls.isEditable.setValue(false);
@@ -116,6 +127,7 @@ export class TreatementTemplateComponent implements OnInit {
             this.frmnewTemplate.controls.type.reset();
           })
           .catch(err => {
+            console.log(err)
             this._systemModuleService.off();
             this.frmnewTemplate.controls.name.reset();
             this.frmnewTemplate.controls.visibility.reset();
@@ -131,8 +143,56 @@ export class TreatementTemplateComponent implements OnInit {
               "error"
             );
           });
+          
+        } else {
+          doc = {
+            data: payload,
+            isEditable: this.frmnewTemplate.controls.isEditable.value,
+            name: this.frmnewTemplate.controls.name.value,
+            visibility: this.frmnewTemplate.controls.visibility.value,
+            form: this.frmnewTemplate.controls.docFrmList.value._id,
+            facilityId: this.selectedFacility._id,
+            userId: this.user._id
+          };
+          this.documentationTemplateService
+            .create(doc)
+            .then(payload2 => {
+              this._systemModuleService.off();
+              this._notification(
+                "Success",
+                "Template has been saved successfully!"
+              );
+              this._systemModuleService.announceSweetProxy(
+                "Template has been saved successfully!",
+                "success"
+              );
+              this.getTemplates();
+              this.isOrderSet = false;
+              this.isTemplate = true;
+              this.frmnewTemplate.controls.name.reset();
+              this.frmnewTemplate.controls.visibility.reset();
+              this.frmnewTemplate.controls.isEditable.setValue(false);
+              this.frmnewTemplate.controls.docFrmList.reset();
+              this.frmnewTemplate.controls.type.reset();
+            })
+            .catch(err => {
+              this._systemModuleService.off();
+              this.frmnewTemplate.controls.name.reset();
+              this.frmnewTemplate.controls.visibility.reset();
+              this.frmnewTemplate.controls.isEditable.setValue(false);
+              this.frmnewTemplate.controls.docFrmList.reset();
+              this.frmnewTemplate.controls.type.reset();
+              this._notification(
+                "Error",
+                "There was an error while saving template"
+              );
+              this._systemModuleService.announceSweetProxy(
+                "There was an error while saving template",
+                "error"
+              );
+            });
+        }
       } else {
-        console.log(payload);
         this.frmnewTemplate.controls.visibility.markAsTouched();
         this.frmnewTemplate.controls.visibility.markAsDirty();
         this.frmnewTemplate.controls.visibility.markAsPristine();
@@ -258,7 +318,7 @@ export class TreatementTemplateComponent implements OnInit {
         query: {
           $or: [
             { facilityId: this.selectedFacility._id },
-            { visibility: 'Units' }
+            { visibility: "Units" }
           ]
         }
       })
@@ -401,8 +461,28 @@ export class TreatementTemplateComponent implements OnInit {
     }
   }
 
-  newTemplate_show() {
-    this.newTemplate = !this.newTemplate;
+  newTemplate_show(force?) {
+    if (force) {
+      console.log(11);
+      this.newTemplate = !this.newTemplate;
+      this.showDocument = false;
+      this.frmnewTemplate.reset();
+      this.selectedTemplate = undefined;
+    } else {
+      if (this.selectedTemplate === undefined) {
+        this.newTemplate = !this.newTemplate;
+        this.showDocument = false;
+        this.frmnewTemplate.reset();
+        this.selectedTemplate = undefined;
+      } else {
+        this.newTemplate = true;
+        this.showDocument = true;
+      }
+    }
+
+    // this.json = undefined;
+    // this.showDocument = !this.showDocument;
+    // this.isTemplate = true;
   }
 
   _getScopeLevels() {
@@ -520,5 +600,33 @@ export class TreatementTemplateComponent implements OnInit {
       type: type,
       text: text
     });
+  }
+
+  getIsEditable(isEditable) {
+    if (isEditable) {
+      return "Yes";
+    } else {
+      return "No";
+    }
+  }
+  editTemplate(template) {
+    this.newTemplate_show();
+    this.selectedTemplate = template;
+    this.isDocumentation = true;
+    this.frmnewTemplate.controls.type.setValue("Documentation");
+    this.frmnewTemplate.controls.name.setValue(template.name);
+    this.frmnewTemplate.controls.visibility.setValue(template.visibility);
+    this.frmnewTemplate.controls.isEditable.setValue(template.isEditable);
+    const index = this.forms.findIndex(x => x._id === template.form);
+
+    this.frmnewTemplate.controls.docFrmList.setValue(this.forms[index]);
+    // this.showDocument = true;
+    if (this.newTemplate === true) {
+      console.log(1);
+      this.sharedService.announceTemplate(template);
+      this.sharedService.announceTemplate(template);
+    }
+
+    console.log(template);
   }
 }

@@ -40,6 +40,7 @@ import { AuthFacadeService } from "./system-modules/service-facade/auth-facade.s
   styleUrls: ["./app.component.scss"]
 })
 export class AppComponent implements OnInit {
+  auth: any;
   loadIndicatorVisible = true;
   selectedFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
@@ -90,29 +91,17 @@ export class AppComponent implements OnInit {
     });
   }
   ngOnInit() {
-    this.authFacadeService.getLogingUser().then(payload => {
-      this.loginUser = payload;
-      this.userServiceFacade
-        .authenticateResource()
-        .then(result => {
-          this.selectedFacility = <Facility>this.locker.getObject(
-            "selectedFacility"
-          );
-          this.joinService
-            .create({
-              _id: this.selectedFacility._id,
-              userId: this.loginUser._id
-            })
-            .then(paylo => {},eror =>{
-              console.log(eror);
-            });
-        })
-        .catch(err => {
-          // this.systemModuleService.announceSweetProxy('Authentication is required, please log-in with your credentials', 'warning');
-          this.router.navigate(["/"]);
-          this.locker.clear();
-          window.localStorage.clear();
-        });
+    this.userServiceFacade.authenticateResource().then((result) => {
+
+      this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+      this.auth = <any>this.locker.getObject('auth');
+      this.joinService.create({ _id: this.selectedFacility._id, userId: this.auth.data._id }).then(paylo => {
+      });
+    }).catch(err => {
+      // this.systemModuleService.announceSweetProxy('Authentication is required, please log-in with your credentials', 'warning');
+      this.router.navigate(['/']);
+      this.locker.clear();
+      window.localStorage.clear();
     });
   }
   processNotification(obj) {

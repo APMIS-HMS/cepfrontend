@@ -1,6 +1,6 @@
 import { FeatureModuleService } from "./../../services/module-manager/setup/feature-module.service";
 import { CoolLocalStorage } from "angular2-cool-storage/src/cool-local-storage";
-import { SocketService } from "./../../feathers/feathers.service";
+import { SocketService, RestService } from "./../../feathers/feathers.service";
 import { Injectable } from "@angular/core";
 
 @Injectable()
@@ -10,6 +10,7 @@ export class AuthFacadeService {
   loginUser: any;
   constructor(
     private _socketService: SocketService,
+    private _restService:RestService,
     private locker: CoolLocalStorage,
     private featureService: FeatureModuleService
   ) {}
@@ -27,7 +28,6 @@ export class AuthFacadeService {
     let self = this;
 
     return new Promise(function(resolve, reject) {
-      console.log(self.logingEmployee);
       if (self.logingEmployee !== undefined) {
         resolve(self.logingEmployee);
       } else {
@@ -52,33 +52,30 @@ export class AuthFacadeService {
     });
   }
   getLogingUser() {
+    console.log(939393)
     let facId = this.locker.getObject("fac");
     let self = this;
-console.log(facId);
     return new Promise(function(resolve, reject) {
-      console.log(self.loginUser);
       if (self.loginUser !== undefined) {
-        console.log(1);
         resolve(self.loginUser);
       } else {
-        console.log(2)
         self._socketService.authenticateService();
         self._socketService
           .getService("save-employee")
           .get(facId)
           .then(
             payload => {
-              console.log(payload);
               if (payload !== undefined) {
                 self.setLogingEmployee(payload.selectedEmployee);
                 self.setLoginUser(payload.selectedUser);
                 resolve(self.loginUser);
               } else {
-                console.log(3)
                 resolve(undefined);
               }
             },
-            error => {}
+            error => {
+              console.log(error)
+            }
           );
       }
     });

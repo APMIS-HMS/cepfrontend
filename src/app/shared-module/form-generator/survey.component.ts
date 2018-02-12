@@ -68,9 +68,10 @@ export class SurveyComponent implements OnInit, OnDestroy {
         });
 
         this.shareService.announceTemplate$.subscribe((payload: any) => {
+            console.log(payload);
             this.surveyModel.data = payload.data;
             SurveyNG.render('surveyElement', { model: this.surveyModel });
-        })
+        });
     }
 
     ngOnInit() {
