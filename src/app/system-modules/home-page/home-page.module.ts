@@ -12,6 +12,8 @@ import { BiodataPopupComponent } from './biodata-popup/biodata-popup.component';
 import { MedRecordsComponent } from './med-records/med-records.component';
 import { MedRecordHomeComponent } from './med-records/med-record-home/med-record-home.component';
 import { MedRecordDocumentationComponent } from './med-records/med-record-documentation/med-record-documentation.component';
+import { MedRecordPrescriptionComponent } from './med-records/med-record-prescription/med-record-prescription.component';
+import { MedRecordDiagnosticsComponent } from './med-records/med-record-diagnostics/med-record-diagnostics.component';
 
 @NgModule({
   imports: [
@@ -29,6 +31,8 @@ import { MedRecordDocumentationComponent } from './med-records/med-record-docume
     MedRecordsComponent,
     MedRecordHomeComponent,
     MedRecordDocumentationComponent,
+    MedRecordPrescriptionComponent,
+    MedRecordDiagnosticsComponent,
   ]
 })
 export class HomePageModule { }

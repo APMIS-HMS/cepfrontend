@@ -12,6 +12,7 @@ export class MedRecordsComponent implements OnInit {
   prescriptionContentArea = false;
   consultationContentArea = false;
   paymentContentArea = false;
+  diagnosticsContentArea = false;
 
   constructor() { }
 
@@ -24,6 +25,7 @@ export class MedRecordsComponent implements OnInit {
     this.prescriptionContentArea = false;
     this.consultationContentArea = false;
     this.paymentContentArea = false;
+    this.diagnosticsContentArea = false;
   }
   doc(){
     this.homeContentArea = false;
@@ -31,6 +33,7 @@ export class MedRecordsComponent implements OnInit {
     this.prescriptionContentArea = false;
     this.consultationContentArea = false;
     this.paymentContentArea = false;
+    this.diagnosticsContentArea = false;
   }
   prescription(){
     this.homeContentArea = false;
@@ -38,6 +41,15 @@ export class MedRecordsComponent implements OnInit {
     this.prescriptionContentArea = true;
     this.consultationContentArea = false;
     this.paymentContentArea = false;
+    this.diagnosticsContentArea = false;
+  }
+  diagnostics(){
+    this.homeContentArea = false;
+    this.docsContentArea= false;
+    this.prescriptionContentArea = false;
+    this.consultationContentArea = false;
+    this.paymentContentArea = false;
+    this.diagnosticsContentArea = true;
   }
   consultation(){
     this.homeContentArea = false;
@@ -45,6 +57,7 @@ export class MedRecordsComponent implements OnInit {
     this.prescriptionContentArea = false;
     this.consultationContentArea = true;
     this.paymentContentArea = false;
+    this.diagnosticsContentArea = false;
   }
   payment(){
     this.homeContentArea = false;
@@ -52,6 +65,7 @@ export class MedRecordsComponent implements OnInit {
     this.prescriptionContentArea = false;
     this.consultationContentArea = false;
     this.paymentContentArea = true;
+    this.diagnosticsContentArea = false;
   }
 
 }
