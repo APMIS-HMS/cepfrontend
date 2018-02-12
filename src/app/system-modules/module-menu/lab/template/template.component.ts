@@ -118,7 +118,6 @@ export class TemplateComponent implements OnInit {
                             this._getAllTemplates();
                             this.templateFormGroup.reset();
                             this.templateBtnText = 'Create Template';
-                            // this._notification('Success', 'Template has been updated successfully!');
                           this._systemModuleService.announceSweetProxy('Template has been updated successfully!', 'success');
                         }).catch(err => this._notification('Error', 'There was an error getting Template. Please try again later!'));
                     } else {
