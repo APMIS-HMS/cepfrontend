@@ -6,6 +6,8 @@ import {
 import { ScopeLevelService } from '../../../../services/module-manager/setup/index';
 import { Facility, User, LabTemplate } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
+import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 
 @Component({
   selector: 'app-template',
@@ -33,13 +35,19 @@ export class TemplateComponent implements OnInit {
         private _facilityService: FacilitiesService,
         private _investigationService: InvestigationService,
         private _templateService: TemplateService,
-        private _scopeLevelService: ScopeLevelService
-    ) { }
+        private _scopeLevelService: ScopeLevelService,
+      private _systemModuleService: SystemModuleService,
+      private _authFacadeService: AuthFacadeService
+    ) {
+      this._authFacadeService.getLogingEmployee().then((res: any) => {
+        this.employeeDetails = res;
+        console.log(this.employeeDetails);
+      }).catch(err => console.log(err));
+    }
 
     ngOnInit() {
         this.facility = <Facility>this._locker.getObject('selectedFacility');
         this.miniFacility = <Facility>this._locker.getObject('miniFacility');
-        this.employeeDetails = this._locker.getObject('loginEmployee');
         this.user = <User>this._locker.getObject('auth');
         this.selectedLab = <any>this._locker.getObject('workbenchCheckingObject');
 
@@ -82,20 +90,17 @@ export class TemplateComponent implements OnInit {
     createTemplate(valid: boolean, value: any) {
         if (!!this.selectedLab.typeObject || this.selectedLab.typeObject !== undefined) {
             if (valid) {
-                delete this.employeeDetails.employeeDetails.countryItem;
-                delete this.employeeDetails.employeeDetails.nationalityObject;
-                delete this.employeeDetails.employeeDetails.nationality;
                 delete value.investigation.serviceId;
                 delete value.investigation.facilityServiceId;
                 delete value.investigation.facilityId;
                 delete value.investigation.LaboratoryWorkbenches;
 
                 const myTemplate = <LabTemplate> {
-                    facility: this.miniFacility,
+                    facilityId: this.facility._id,
                     investigation: value.investigation,
                     scopeLevel: value.apmisScopeLevel,
                     minorLocation: this.selectedLab.typeObject.minorLocationObject,
-                    createdBy: this.employeeDetails.employeeDetails,
+                    createdBy: this.employeeDetails._id,
                     name: value.name,
                     result: value.result,
                     outcome: value.outcome,
@@ -104,15 +109,16 @@ export class TemplateComponent implements OnInit {
                 };
 
                 // Check if this uses has created a template before.
-                this._templateService.find({ query: { 'facility._id': this.miniFacility._id }}).then(res => {
+                this._templateService.find({ query: { 'facilityId': this.facility._id }}).then(res => {
                     const containsSelected = res.data.filter(x => x.investigation._id === value.investigation._id);
+
                     if (containsSelected.length > 0) {
                         this.templateBtnText = 'Updating Template...';
                         this._templateService.update(containsSelected[0]).then(res => {
                             this._getAllTemplates();
                             this.templateFormGroup.reset();
                             this.templateBtnText = 'Create Template';
-                            this._notification('Success', 'Template has been updated successfully!');
+                          this._systemModuleService.announceSweetProxy('Template has been updated successfully!', 'success');
                         }).catch(err => this._notification('Error', 'There was an error getting Template. Please try again later!'));
                     } else {
                         this.templateBtnText = 'Creating Template...';
@@ -120,7 +126,8 @@ export class TemplateComponent implements OnInit {
                             this._getAllTemplates();
                             this.templateFormGroup.reset();
                             this.templateBtnText = 'Create Template';
-                            this._notification('Success', 'Template has been created successfully!');
+                            // this._notification('Success', 'Template has been created successfully!');
+                          this._systemModuleService.announceSweetProxy('Template has been created successfully!', 'success');
                         }).catch(err => this._notification('Error', 'There was an error creating Template. Please try again later!'));
                     }
                 }).catch(err => this._notification('Error', 'There was an error creating Template. Please try again later!'));
@@ -143,13 +150,14 @@ export class TemplateComponent implements OnInit {
     }
 
     private _getAllTemplates() {
-        this._templateService.find({ query: { 'facility._id': this.miniFacility._id }}).then(res => {
+        this._templateService.find({ query: { 'facilityId': this.facility._id }}).then(res => {
+          console.log(res);
             this.loading = false;
             this.templates = res.data;
         }).catch(err => this._notification('Error', 'There was a problem getting templates'));
     }
     private _getAllInvestigations() {
-        this._investigationService.find({ query: { 'facilityId._id': this.facility._id }}).then(res => {
+        this._investigationService.find({ query: { 'facilityId': this.facility._id }}).then(res => {
             this.investigations = res.data;
         }).catch(err => this._notification('Error', 'There was a problem getting investigations'));
     }
