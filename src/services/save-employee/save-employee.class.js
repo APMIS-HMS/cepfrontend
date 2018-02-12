@@ -22,7 +22,6 @@ class Service {
                 query: { facilityId: id, employeeId: emp._id }
             });
             emp.workSpaces = workspaces.data;
-            // selectedEmployee.data[0] = emp;
             return { selectedEmployee: emp, selectedUser: params.user };
         } else {
             return {};
