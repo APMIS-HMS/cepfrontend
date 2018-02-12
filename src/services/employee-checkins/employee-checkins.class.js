@@ -62,14 +62,16 @@ class Service {
               console.log(17);
               if (selectedfacility.minorLocations.length > 0) {
                 console.log(18);
-                let loc = selectedfacility.minorLocations.filter(x => x._id.toString() === emp.workSpaces[i].locations[j].minorLocationId.toString());
+                let loc = selectedfacility.minorLocations.filter(x => x._id.toString() == emp.workSpaces[i].locations[j].minorLocationId.toString());
                 console.log(19);
                 emp.workSpaces[i].locations[j].name = loc[0].name;
                 if (emp.storeCheckIn != undefined) {
                   if (emp.storeCheckIn.length > 0) {
-                    let index = emp.storeCheckIn.filter(x => x.minorLocationId.toString() === emp.workSpaces[i].locations[j].minorLocationId.toString());
+                    let index = emp.storeCheckIn.filter(x => x.minorLocationId.toString() == emp.workSpaces[i].locations[j].minorLocationId.toString());
                     if (index.length > 0) {
-                      index[0].minorLocation = loc[0].name;
+                      index.forEach(element => {
+                        element.minorLocation = loc[0].name;
+                      });
                     }
                   }
                 }
@@ -93,7 +95,9 @@ class Service {
               for (let k = len3; k >= 0; k--) {
                 let index3 = emp.storeCheckIn.filter(x => x.storeId.toString() === storeItems.data[k]._id.toString());
                 if (index3.length > 0) {
-                  index3[0].store = storeItems.data[k].name;
+                  index3.forEach(element=>{
+                    element.store = storeItems.data[k].name;
+                  });
                 }
               }
             }

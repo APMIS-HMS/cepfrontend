@@ -77,7 +77,6 @@ const dischargeType = require('./discharge-type/discharge-type.service.js');
 const dispense = require('./dispense/dispense.service.js');
 const dispenseAssessment = require('./dispense-assessment/dispense-assessment.service.js');
 const docUpload = require('./doc-upload/doc-upload.service.js');
-const drugStrength = require('./drug-strength/drug-strength.service.js');
 const externalPrescription = require('./external-prescription/external-prescription.service.js');
 const facilityAccessControl = require('./facility-access-control/facility-access-control.service.js');
 const feature = require('./feature/feature.service.js');
@@ -141,6 +140,8 @@ const inventoryInitialisers = require('./inventory-initialisers/inventory-initia
 const listOfInventories = require('./list-of-inventories/list-of-inventories.service.js');
 const inventoryTransferStatuses = require('./inventory-transfer-statuses/inventory-transfer-statuses.service.js');
 const stockTransfers = require('./stock-transfers/stock-transfers.service.js');
+const listOfStockTransfers = require('./list-of-stock-transfers/list-of-stock-transfers.service.js');
+const drugStrengths = require('./drug-strengths/drug-strengths.service.js');
 module.exports = function(app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -221,7 +222,6 @@ module.exports = function(app) {
   app.configure(dispense);
   app.configure(dispenseAssessment);
   app.configure(docUpload);
-  app.configure(drugStrength);
   app.configure(externalPrescription);
   app.configure(facilityAccessControl);
   app.configure(feature);
@@ -285,6 +285,8 @@ module.exports = function(app) {
   app.configure(listOfInventories);
   app.configure(inventoryTransferStatuses);
   app.configure(stockTransfers);
+  app.configure(listOfStockTransfers);
+  app.configure(drugStrengths);
 };
 
 
