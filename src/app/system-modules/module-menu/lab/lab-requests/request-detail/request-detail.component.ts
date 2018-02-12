@@ -45,7 +45,7 @@ export class RequestDetailComponent implements OnInit {
     this.getIncomingPatient();
   }
   getIncomingPatient() {
-    this.patientService.get(this.investigation.patient._id, {}).then(patient => {
+    this.patientService.get(this.investigation.patientId, {}).then(patient => {
       if (patient !== undefined) {
         this.selectedPatient = patient;
         if (this.selectedPatient.clientsNo === undefined) {

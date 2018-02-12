@@ -160,8 +160,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
     });
 
     this.personService.get(this.patient.personId, {}).then(payload => {
-      console.log(payload);
-      this.loading = false;
+       this.loading = false;
 
       if (payload.wallet === undefined) {
         payload.wallet = {
@@ -319,10 +318,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
       // paidBy: this.user.data.person._id
     };
 
-    console.log(walletTransaction);
-
     this.personService.fundWallet(walletTransaction).then((res: any) => {
-      console.log(res);
       this.loading = false;
       if (res.body.status === 'success') {
         this.paymentFormGroup.reset();
@@ -339,10 +335,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
       }
     }).catch(err => {
       if (err instanceof Error) {
-        console.log('Error - ', err.message);
-        console.log('Error - ', err.stack);
       } else {
-        console.log('Error status - ${err.error}, and Error Detail - ${err.error}');
       }
     });
   }

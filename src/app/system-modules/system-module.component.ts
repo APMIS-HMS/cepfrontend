@@ -117,10 +117,7 @@ export class SystemModuleComponent implements OnInit {
 
   goHome() {
     this.router.navigate(['/home-page']).then(payload =>{
-      console.log(payload);
     },error =>{
-      console.log(error);
     })
-    // [routerLink]="['/home-page']"
   }
 }

@@ -81,22 +81,11 @@ export class ApmisLookupComponent
     this._socket = this._socketService.getService(this.url);
     this.baseUrl = this._restService.HOST;
     this.form = this.fb.group({ searchtext: [""] });
-    console.log(this.query);
-    // this.facilityServiceCategory.find(this.query).then(
-    //   payload => {
-    //     console.log(payload);
-    //   },
-    //   error => {
-    //     console.log(error);
-    //   }
-    // );
     this.form.controls["searchtext"].valueChanges
     .debounceTime(200)
     .distinctUntilChanged()
     .switchMap(value => this.filter({ query: this.query }, this.isSocket))
     .subscribe((payload: any) => {
-      console.log(payload)
-
         this.cuDropdownLoading = false;
          if (payload !== undefined && payload.data !== undefined) {
             this.results = payload.data;
@@ -130,7 +119,6 @@ export class ApmisLookupComponent
 
   filter(query: any, isSocket: boolean) {
     this.cuDropdownLoading = true;
-    console.log(query);
     if (isSocket) {
       return this._socket.find(query);
     } else {

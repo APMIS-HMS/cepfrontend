@@ -65,8 +65,8 @@
 
                 </form>
 
-                <div *ngIf="clinicScheduleForm.controls['clinicScheduleArray'].value.length === 0 && locationTypeControl.value != null" (click)="pushNewClinicSchedule(schedule)" class="addFrmLink"><i class="fa fa-plus" aria-hidden="true"></i><span>Add Schedule</span></div>
-                <button *ngIf="locationTypeControl.value != null" [disabled]="clinicScheduleForm.controls['clinicScheduleArray'].valid == false || 
+                <!-- <div *ngIf="clinicScheduleForm.controls['clinicScheduleArray'].value.length === 0 && locationTypeControl.value != null" (click)="pushNewClinicSchedule(schedule)" class="addFrmLink"><i class="fa fa-plus" aria-hidden="true"></i><span>Add Schedule</span></div> -->
+                <button *ngIf="locationTypeControl.value != null" [disabled]="clinicScheduleForm.controls['clinicScheduleArray'].valid == false ||
                 clinicScheduleForm.controls['clinicScheduleArray'].value.length === 0" class="apmis-blue" (click)="onCreateSchedule()" mat-raised-button>Create</button>
             </form>
 

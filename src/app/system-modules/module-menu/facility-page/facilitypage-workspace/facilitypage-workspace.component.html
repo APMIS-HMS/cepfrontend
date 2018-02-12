@@ -21,24 +21,24 @@
                 </tr>
             </thead>
 
-            <tbody>
-                <tr>
+            <tbody *ngIf="workSpaces.length > 0">
+                <tr *ngFor="let workspace of workSpaces">
                     <td>
                         <div class="empWrap">
                             <div class="list-img">
                                 <img src="assets/images/users/default.png">
                             </div>
-                            <div>Olori James</div>
+                            <div>{{workspace.employee.personDetails.lastName}} {{workspace.employee.personDetails.firstName}}</div>
                         </div>
                     </td>
-                    <td>Surgery</td>
+                    <td>{{workspace.employee.departmentId}}</td>
                     <td class="td-worspace">
-                        <div class="workspace-count">3 workspaces</div>
-                        <ul class="shadow-RB workspace-listWrap animated zoomIn">
-                            <li class="workspace-listItem">
+                        <div class="workspace-count">{{getActiveWorkSpaceCount(workspace)}} workspaces</div>
+                        <ul class="shadow-RB workspace-listWrap animated zoomIn" *ngIf="getActiveWorkSpaceCount(workspace) > 0">
+                            <li class="workspace-listItem" *ngFor="let location of workspace.locations">
                                 <ng-container>
-                                    <span>SOP</span>
-                                    <i (click)="removeLocation()" class="fa fa-trash" aria-hidden="true"></i>
+                                    <span>{{location.majorLocation.name}}</span>
+                                    <i (click)="deleteLocation_popup(location._id, workspace)" class="fa fa-trash" aria-hidden="true"></i>
                                 </ng-container>
                             </li>
                             <div class="pointer-wrap">
@@ -48,17 +48,17 @@
                     </td>
                     <td>
                         <div class="td-ctaWrap">
-                            <i (click)="newWorkspace_onClick()" class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                            <i (click)="deletion_popup()" class="fa fa-trash" aria-hidden="true"></i>
+                            <i (click)="newWorkspace_onClick(workspace.employee)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                            <i (click)="deletion_popup(workspace)" class="fa fa-trash" aria-hidden="true"></i>
                         </div>
                     </td>
                 </tr>
             </tbody>
-            <!-- <tbody>
+            <tbody *ngIf="workSpaces.length == 0">
                 <tr>
                     <td class="table-content" colspan="6" border="0.5" style="text-align: center "> No data available in table</td>
                 </tr>
-            </tbody> -->
+            </tbody>
         </table>
     </div>
 
@@ -68,7 +68,7 @@
 </div>
 
 <div *ngIf="createWorkspace" class="modal-overlay">
-    <app-create-workspace (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-create-workspace>
+    <app-create-workspace [selectedEmployee]="employee" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-create-workspace>
 </div>
 
 <div *ngIf="globalDialog">

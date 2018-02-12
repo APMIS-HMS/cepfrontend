@@ -183,7 +183,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         this.cities = lgsAndCities.cities;
         this.lgas = lgsAndCities.lgs;
       }).catch(err => {
-        console.log(err);
       });
     });
 
@@ -231,12 +230,10 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     });
   }
   navEpDetail(patient) {
-    console.log(patient);
     this.locker.setObject('patient', patient);
     this.router.navigate(['/dashboard/patient-manager/patient-manager-detail', patient.personId]).then(() => {
       this.patientService.announcePatient(patient);
     }).catch(err => {
-      console.log(err);
     });
   }
   getPatients(limit?) {
@@ -253,7 +250,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.systemService.off();
       this.loading = false;
       this.total = payload.total;
-      console.log(payload.data)
       if (payload.data.length > 0) {
         if (this.resetData !== true) {
           this.patients.push(...payload.data);
@@ -313,7 +309,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     })
   }
   updatePatient(value: any, valid: boolean) {
-    console.log(value);
     this.updatePatientBtnText = 'Updating... <i class="fa fa-spinner fa-spin"></i>';
     const nextOfKinArray = [];
     this.selectedPatient['firstName'] = value.firstName;
@@ -337,7 +332,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
     if (value.nextOfKin.length > 0) {
       value.nextOfKin.forEach(element => {
-        console.log(element);
         nextOfKinArray.push(element);
       });
     }
@@ -349,14 +343,12 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.close_onClick();
       this._notification('Success', 'Patient details has been updated successfully.');
     }).catch(err => {
-      console.log(err);
       this.updatePatientBtnText = 'Update';
       this._notification('Error', 'There was an error updating user record, Please try again later.');
     });
   }
 
   private _populateAndSelectData(value: any) {
-    console.log(value);
     if (value.homeAddress) {
       this.patientEditForm.controls['street'].setValue(value.homeAddress.street);
       this.patientEditForm.controls['country'].setValue(value.homeAddress.country);

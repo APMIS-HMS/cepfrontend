@@ -301,7 +301,6 @@ export class ScheduleFrmComponent implements OnInit {
             const statusIndex = this.orderStatuses.findIndex(x => x.name === this.appointment.orderStausId);
             if (statusIndex > -1) {
                 this.status.setValue(this.orderStatuses[statusIndex]);
-                console.log('is')
             }
 
             const categoryIndex = this.categoryServices.findIndex(x => x.name === this.appointment.category);

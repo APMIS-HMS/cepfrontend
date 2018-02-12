@@ -238,7 +238,6 @@ export class PatientPrescriptionComponent implements OnInit {
             this.prescriptions.totalQuantity = value.totalQuantity;
 
             this._prescriptionService.authorizePresciption(this.prescriptions).then(res => {
-              console.log(res);
               if (res.status === 'success') {
                 this._systemModuleService.announceSweetProxy('Prescription has been sent successfully!', 'success');
                 this.isDispensed.next(true);
@@ -260,7 +259,6 @@ export class PatientPrescriptionComponent implements OnInit {
                 this.authorizingRx = false;
               }
             }).catch(err => {
-              console.log(err);
             });
             // bill model
             // const billItemArray = [];
@@ -347,8 +345,7 @@ export class PatientPrescriptionComponent implements OnInit {
         this._priorityService.findAll().then(res => {
             this.priorities = res.data;
             const priority = res.data.filter(x => x.name.toLowerCase().includes('normal'));
-            console.log(priority);
-            if (priority.length > 0) {
+               if (priority.length > 0) {
               this.allPrescriptionsForm.controls['priority'].setValue(priority[0]);
             }
         }).catch(err =>  console.error(err));
