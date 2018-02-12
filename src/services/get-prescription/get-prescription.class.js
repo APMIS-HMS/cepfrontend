@@ -33,19 +33,34 @@ class Service {
         const pcounter = 0;
         let counter = pres.data.length;
         while (counter--) {
-          pres = pres.data[counter];
+          person.push(pres.data[counter--]);
+          pres =pres.data[counter--];
           let patientObj = await patientService.get(pres.patientId);
-          console.log('=================Patient Id======================');
-          console.log(patientObj);
-          console.log('====================Patient Id End====================');
+          // console.log('=================Patient Id======================');
+          // console.log(patientObj);
+          // console.log('====================Patient Id End====================');
           delete patientObj.personDetails.wallet;
+          person.push(patientObj.personDetails);
           pres.patientDetails = patientObj.personDetails;
+          console.log('=================patientDetails=====================');
+          console.log(pres.patientDetails);
+          console.log('=================patientDetails End=====================');
           let employeeObj = await employeeService.get(pres.employeeId);
-          console.log('=================employeeObj=====================');
-          console.log(employeeObj);
-          console.log('====================employeeObj End====================');
+          // console.log('=================employeeObj=====================');
+          // console.log(employeeObj);
+          // console.log('====================employeeObj End====================');
           delete employeeObj.personDetails.wallet;
+          person.push(employeeObj.personDetails);
           pres.employeeDetails = employeeObj.personDetails;
+          console.log('=================employeeDetails=====================');
+          console.log(pres.employeeDetails);
+          console.log('=================employeeDetails End=====================');
+          console.log('=================pres=====================');
+          console.log(pres);
+          console.log('=================pres End=====================');
+          console.log('=================person=====================');
+          console.log(person);
+          console.log('=================person End=====================');
           counter--;
         }
         if (pcounter === counter) {
