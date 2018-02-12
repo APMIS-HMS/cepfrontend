@@ -7,6 +7,7 @@ import { ClinicHelperService } from '../../../../system-modules/module-menu/clin
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { LocationService } from 'app/services/module-manager/setup';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-ward-check-in',
@@ -23,8 +24,9 @@ export class WardCheckInComponent implements OnInit {
 	wardCheckin: FormGroup;
 	wards: any[] = [];
   locations: any[] = [];
-  checkInBtnText: String = '<i class="fa fa-check-circle"></i> Check In';
   switchBtnText: String = 'Switch To Room';
+  addCheckin: boolean = true;
+  addingCheckin: boolean = false;
   disableSwitch: boolean = false;
   disableCheckIn: boolean = false;
 
@@ -36,7 +38,8 @@ export class WardCheckInComponent implements OnInit {
     public employeeService: EmployeeService,
     private _wardEventEmitter: WardEmitterService,
     private _locationService: LocationService,
-		public locker: CoolLocalStorage
+    public locker: CoolLocalStorage,
+    private _systemModuleService: SystemModuleService
 	) {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       console.log(res);
@@ -79,7 +82,8 @@ export class WardCheckInComponent implements OnInit {
     if (valid) {
       console.log(value);
       this.disableCheckIn = true;
-      this.checkInBtnText = '<i class="fa fa-spinner fa-spin"></i> Checking in...';
+      this.addCheckin = false;
+      this.addingCheckin = true;
       const checkIn: any = <any>{};
       // checkIn.majorLocationId = value.location;
       checkIn.minorLocationId = value.room;
@@ -110,11 +114,13 @@ export class WardCheckInComponent implements OnInit {
           }
         });
         const text = 'You have successfully checked into ' + value.room.name + ' ward';
-        this._notification('Success', text);
+        // this._notification('Success', text);
+        this._systemModuleService.announceSweetProxy(text, 'success');
         this.disableCheckIn = false;
+        this.addCheckin = true;
+        this.addingCheckin = false;
         this._wardEventEmitter.announceWardChange({ typeObject: keepCheckIn, type: 'ward' });
         this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'ward' });
-        this.checkInBtnText = '<i class="fa fa-check-circle"></i> Check In';
         this.close_onClick();
       });
     } else {
@@ -140,8 +146,11 @@ export class WardCheckInComponent implements OnInit {
       this.loginEmployee = payload;
       this.switchBtnText = 'Switch To Room';
       const text = 'You have successfully changed ward to ' + checkIn.minorLocationId.name + ' ward';
-      this._notification('Success', text);
-      this.disableSwitch = false;
+      // this._notification('Success', text);
+      this._systemModuleService.announceSweetProxy(text, 'success');
+      this.disableCheckIn = false;
+      this.addCheckin = true;
+      this.addingCheckin = false;
       this._wardEventEmitter.announceWardChange({ typeObject: keepCheckIn, type: 'ward' });
 			this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'ward' });
 			this.close_onClick();
@@ -174,12 +183,6 @@ export class WardCheckInComponent implements OnInit {
       this.wards = res.data[0].minorLocations.filter(x => x.locationId === locationId);
       console.log(this.wards);
     }).catch(err => console.log(err));
-    // this._wardAdmissionService.find({query: {'facilityId._id': this.facility._id}}).then(res => {
-    // 	this.loading = false;
-    // 	if (res.data.length > 0) {
-    // 		this.wards = res.data[0].locations;
-    // 	}
-    // });
   }
 
   // Notification

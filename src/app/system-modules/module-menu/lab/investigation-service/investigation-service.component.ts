@@ -7,6 +7,7 @@ import { Facility, MinorLocation, FacilityService, FacilityServicePrice, User } 
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 import { Observable } from 'rxjs/Observable';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 
 @Component({
@@ -20,19 +21,23 @@ export class InvestigationServiceComponent implements OnInit {
   apmisLookupText = '';
   apmisLookupQuery = {};
   apmisLookupDisplayKey = '';
-  btnText = 'Create Investigation';
-  panelBtnText = 'Create Panel';
-
+  addInvestBtn = true;
+  addingInvestBtn = false;
+  editInvestBtn = false;
+  editingInvestBtn = false;
+  addPInvestBtn = true;
+  addingPInvestBtn = false;
+  editPInvestBtn = false;
+  editingPInvestBtn = false;
   investigation_view = false;
   pannel_view = false;
   mainErr = true;
-  errMsg = 'you have unresolved errors';
+  errMsg = 'You have unresolved errors';
   isNumeric = false;
   selectedFacility: Facility = <Facility>{};
   selectedInvestigation: any = <any>{};
   selectedFacilityService: FacilityService = <FacilityService>{};
   selectedServiceCategory: any = <any>{};
-
   reportTypes: any[] = ['Numeric', 'Text'];
   specimens: any[] = [];
   investigations: any[] = [];
@@ -49,7 +54,10 @@ export class InvestigationServiceComponent implements OnInit {
     private specimenService: InvestigationSpecimenService,
     private locker: CoolLocalStorage, private investigationService: InvestigationService,
     private dragulaService: DragulaService, private _facilityService: FacilitiesService,
-    private facilityServiceCategoryService: FacilitiesServiceCategoryService, private servicePriceService: ServicePriceService) {
+    private facilityServiceCategoryService: FacilitiesServiceCategoryService,
+    private servicePriceService: ServicePriceService,
+    private _systemModuleService: SystemModuleService
+  ) {
     dragulaService.drag.subscribe((value) => {
       this.onDrag(value.slice(1));
     });
@@ -77,7 +85,7 @@ export class InvestigationServiceComponent implements OnInit {
     // do something
   }
   ngOnInit() {
-    this.selectedFacility = <Facility>this.locker.getObject('miniFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.user = <User> this.locker.getObject('auth');
 
     this.frmNewInvestigationh = this.formBuilder.group({
@@ -108,23 +116,27 @@ export class InvestigationServiceComponent implements OnInit {
   }
 
   getInvestigations() {
-    this.investigationService.find({ query: { 'facilityId._id': this.selectedFacility._id } }).then(payload => {
+    this.investigationService.find({ query: { 'facilityId': this.selectedFacility._id } }).then(res => {
       this.loading = false;
-      this.investigations = payload.data;
-      this.bindInvestigations = JSON.parse(JSON.stringify(payload.data));
+      if (res.data.length > 0) {
+        this.investigations = res.data;
+        this.bindInvestigations = JSON.parse(JSON.stringify(res.data));
+      }
     }).catch(err => this._notification('Error', 'There was a problem getting investigations. Please try again later!'));
   }
   getServiceCategories() {
-    this.facilityServiceCategoryService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
-     if (payload.data.length > 0) {
-        this.selectedFacilityService = payload.data[0];
-        this.categories = payload.data[0].categories;
+    this.facilityServiceCategoryService.find({ query: { facilityId: this.selectedFacility._id } }).then(res => {
+     if (res.data.length > 0) {
+        this.selectedFacilityService = res.data[0];
+        this.categories = res.data[0].categories;
         const index = this.categories.findIndex(x => x.name === 'Laboratory');
         this.selectedServiceCategory = this.categories[index];
+      } else {
+        this._notification('This facility does not have service category', 'Error');
       }
     });
   }
-  
+
   editInvestigation(investigation) {
     if (!investigation.isPanel) {
       this.selectedInvestigation = investigation;
@@ -143,7 +155,8 @@ export class InvestigationServiceComponent implements OnInit {
         }
       }
 
-      this.btnText = 'Update Investigation';
+      this.addInvestBtn = false;
+      this.editInvestBtn = true;
       this.investigation_view = true;
       this.pannel_view = false;
     } else {
@@ -158,14 +171,17 @@ export class InvestigationServiceComponent implements OnInit {
       }))
       this.bindInvestigations = filteredArray;
       this.frmNewPanel.controls['panelName'].setValue(investigation.name);
-      this.panelBtnText = 'Update Panel';
+      this.addPInvestBtn = false;
+      this.editPInvestBtn = true;
       this.investigation_view = false;
       this.pannel_view = true;
     }
   }
   getSpecimens() {
-    this.specimenService.findAll().then(payload => {
-      this.specimens = payload.data;
+    this.specimenService.findAll().then(res => {
+      if (res.data.length > 0) {
+        this.specimens = res.data;
+      }
     });
   }
 
@@ -195,10 +211,11 @@ export class InvestigationServiceComponent implements OnInit {
   }
 
   createInvestigation(valid, value) {
+    console.log(value);
     if (valid) {
       if (this.selectedInvestigation._id === undefined) {
         const investigation: any = {
-          facilityId: this.locker.getObject('miniFacility'),
+          facilityId: this.selectedFacility._id,
           name: value.investigationName,
           unit: value.unit,
           specimen: value.specimen,
@@ -246,8 +263,7 @@ export class InvestigationServiceComponent implements OnInit {
                       this.frmNewInvestigationh.reset();
                       this.frmNewInvestigationh.controls['isPanel'].setValue(false);
                       this.investigations.push(payload);
-                      // this.addToast('Investigation created successfully');
-                      this._notification('Success', 'Investigation created successfully.');
+                      this._systemModuleService.announceSweetProxy('Investigation has been created successfully.', 'success');
                       this.getInvestigations();
                     });
                   }
@@ -302,14 +318,15 @@ export class InvestigationServiceComponent implements OnInit {
                       const investigation$ = Observable.fromPromise(this.investigationService.update(payload));
                       Observable.forkJoin([facilityService$, investigation$]).subscribe(results => {
                         this.investigation_view = false;
-                        this.btnText = 'Create Investigation';
+                        this.addInvestBtn = true;
+                        this.editInvestBtn = false;
+                        this.addingInvestBtn = false;
                         this.selectedInvestigation = <any>{};
                         this.frmNewInvestigationh.reset();
                         this.frmNewInvestigationh.controls['isPanel'].setValue(false);
                         const index = this.investigations.findIndex((obj => obj._id === payload._id));
                         this.investigations.splice(index, 1, payload);
-                        // this.addToast('Investigation updated successfully');
-                        this._notification('Success', 'Investigation updated successfully.');
+                        this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success');
                         this.getInvestigations();
                       })
                     }
@@ -319,19 +336,21 @@ export class InvestigationServiceComponent implements OnInit {
             });
           } else {
             this.investigation_view = false;
-            this.btnText = 'Create Investigation';
+            this.addInvestBtn = true;
+            this.editInvestBtn = false;
+            this.addingInvestBtn = false;
             this.selectedInvestigation = <any>{};
             this.frmNewInvestigationh.reset();
             this.frmNewInvestigationh.controls['isPanel'].setValue(false);
             const index = this.investigations.findIndex((obj => obj._id === payload._id));
             this.investigations.splice(index, 1, payload);
-            // this.addToast('Investigation updated successfully');
-            this._notification('Success', 'Investigation updated successfully.');
+            this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success');
             this.getInvestigations();
           }
 
         }, error => {
-          this.btnText = 'Create Investigation';
+          this.addInvestBtn = true;
+          this.addingInvestBtn = false;
           this.frmNewInvestigationh.reset();
           this.frmNewInvestigationh.controls['isPanel'].setValue(false);
         })
@@ -444,7 +463,8 @@ export class InvestigationServiceComponent implements OnInit {
                       const investigation$ = Observable.fromPromise(this.investigationService.update(payload));
                       Observable.forkJoin([facilityService$, investigation$]).subscribe(results => {
                         this.pannel_view = false;
-                        this.btnText = 'Create Panel';
+                        this.addPInvestBtn = true;
+                        this.addingPInvestBtn = false;
                         this.selectedInvestigation = <any>{};
                         this.frmNewPanel.reset();
                         this.frmNewPanel.controls['isPanel'].setValue(false);
@@ -470,7 +490,8 @@ export class InvestigationServiceComponent implements OnInit {
 
           }
         }, error => {
-          this.btnText = 'Create Panel';
+          this.addPInvestBtn = true;
+          this.addingPInvestBtn = false;
           this.frmNewPanel.reset();
           this.frmNewPanel.controls['isPanel'].setValue(false);
         })

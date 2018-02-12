@@ -39,7 +39,7 @@
                             <div class="frm-item-wrap">
                                 <mat-form-field>
                                     <mat-select placeholder="Set Visibility" formControlName="visibility">
-                                        <mat-option *ngFor="let item of scopeLevels" [value]="item">{{item.name}}</mat-option>
+                                        <mat-option *ngFor="let item of scopeLevels" [value]="item.name">{{item.name}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
@@ -170,7 +170,7 @@
                             </div>
                         </div>
                     </form>
-                    <div class="frmNoteWrap" *ngIf="newTemplate && frmnewTemplate.controls.type.value==='Order Set'" style="padding-top:10px;margin-top:-10px;">
+                    <div class="frmNoteWrap" *ngIf="newTemplate && isOrderSet" style="padding-top:10px;margin-top:-10px;">
                         <button (click)="save(frmnewTemplate.valid, frmnewTemplate.value);" class="cta-1 ">
                         <span *ngIf="saveTemplateText">Save Template</span>
                         <span *ngIf="savingTemplateText">Saving Template... <i class="fa fa-spinner fa-spin"></i></span>
