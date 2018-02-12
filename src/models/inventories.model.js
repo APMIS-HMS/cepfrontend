@@ -13,9 +13,10 @@ module.exports = function (app) {
     storeId: { type: Schema.Types.ObjectId, require: true, index: true },
     serviceId: { type: Schema.Types.ObjectId, require: false },
     categoryId: { type: Schema.Types.ObjectId, require: false },
-    facilityServiceId: { type: Schema.Types.ObjectId, require: false }, // Segun put comment here.
+    facilityServiceId: { type: Schema.Types.ObjectId, require: false },
     productId: { type: Schema.Types.ObjectId, require: true, index: true },
     totalQuantity: { type: Number, required: true },
+    availableQuantity:{ type: Number, required: true },
     reorderLevel: { type: Number, required: false },
     reorderQty: { type: Number, required: false },
     transactions: [inventoryTransactionSchema]

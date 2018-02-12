@@ -136,6 +136,11 @@ const listOfStores = require('./list-of-stores/list-of-stores.service.js');
 const drugDetailsApis = require('./drug-details-apis/drug-details-apis.service.js');
 const listOfProducts = require('./list-of-products/list-of-products.service.js');
 const suppliers = require('./suppliers/suppliers.service.js');
+const employeeCheckins = require('./employee-checkins/employee-checkins.service.js');
+const inventoryInitialisers = require('./inventory-initialisers/inventory-initialisers.service.js');
+const listOfInventories = require('./list-of-inventories/list-of-inventories.service.js');
+const inventoryTransferStatuses = require('./inventory-transfer-statuses/inventory-transfer-statuses.service.js');
+const stockTransfers = require('./stock-transfers/stock-transfers.service.js');
 module.exports = function(app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -275,6 +280,11 @@ module.exports = function(app) {
   app.configure(drugDetailsApis);
   app.configure(listOfProducts);
   app.configure(suppliers);
+  app.configure(employeeCheckins);
+  app.configure(inventoryInitialisers);
+  app.configure(listOfInventories);
+  app.configure(inventoryTransferStatuses);
+  app.configure(stockTransfers);
 };
 
 

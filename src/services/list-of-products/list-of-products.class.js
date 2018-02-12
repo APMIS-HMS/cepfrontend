@@ -16,7 +16,6 @@ class Service {
     if(params.query.name != undefined){
       findProductsService = await productsService.find({
         query: {
-          facilityId: params.query.facilityId,
           name: {
             $regex: params.query.name,
             '$options': 'i'
@@ -26,12 +25,13 @@ class Service {
     }else if(params.query.productTypeId != undefined){
       findProductsService = await productsService.find({
         query: {
-          facilityId: params.query.facilityId,
           'productTypeId':params.query.productTypeId
         }
       });
-    }else{}
-    
+    }else{
+
+    }
+    console.log(findProductsService.data.length + " -----------findProductsService");
     if (findProductsService.data.length > 0) {
       let len = findProductsService.data.length - 1;
       for (let j = len; j >= 0; j--) {
