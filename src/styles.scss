@@ -1188,6 +1188,14 @@ select {
     font-size: 1.4rem;
     color: #37474F;
 }
+.acc-img-name{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+.list-img-name{
+    margin-right: 10px;
+}
 
 .list-img img {
     width: 100%;
