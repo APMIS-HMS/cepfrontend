@@ -1,5 +1,5 @@
 export interface LabTemplate {
-    _id: String;
+    _id?: String;
     facilityId: any;
     investigation: any;
     scopeLevel: any;
