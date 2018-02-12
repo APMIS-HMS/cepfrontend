@@ -17,8 +17,36 @@
     min-height: fit-content;
 }
 .feed-card{
+    display: block;
     border: 1px solid #f1f1f1;
-    -webkit-box-shadow: 0 8px 6px -6px black;
-    -moz-box-shadow: 0 8px 6px -6px black;
-    box-shadow: 0 8px 6px -6px black;
+    background: #f1f1f1;
+    margin-bottom: 10px;
+}
+.list-img{
+    border: 2px solid #fff;
+    margin-bottom: 10px;
+}
+.fx-rhs{
+    display: flex;
+    justify-content: flex-end;
+}
+.rec-content {
+    margin: 10px 0;
+}
+.rec-title {
+    font-size: 1.4rem;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+.rec-data {
+    max-height: 150px;
+    overflow-y: auto;
+    background: #fff;
+    padding: 5px;
+    box-sizing: border-box;
+}
+.rec-date{
+    position: absolute;
+    right: 0;
+    color: #ff2500;
 }

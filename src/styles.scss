@@ -1189,12 +1189,13 @@ select {
     color: #37474F;
 }
 .acc-img-name{
+    position: relative;
     display: flex;
     justify-content: flex-start;
     align-items: center;
 }
-.list-img-name{
-    margin-right: 10px;
+.list-img-labels-wrap{
+    margin-left: 10px;
 }
 
 .list-img img {
@@ -1208,7 +1209,15 @@ select {
     height: 40px;
     overflow: hidden;
 }
-
+.list-img-name {
+    font-size: 1.4rem;
+    color: #000;
+    border-bottom: 1px solid #000;
+    margin-bottom: 5px;
+}
+.list-img-labels {
+    margin-left: 10px;
+}
 .notification-tag {
     position: fixed;
     display: none;

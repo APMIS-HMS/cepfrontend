@@ -13,6 +13,7 @@
 
 <app-med-record-home *ngIf="homeContentArea"></app-med-record-home>
 <app-med-record-documentation *ngIf="docsContentArea"></app-med-record-documentation>
+<app-med-record-prescription *ngIf="prescriptionContentArea"></app-med-record-prescription>
 
 <div *ngIf="login_on" class="modal-overlay">
     <app-person-schedule-appointment (closeModal)="close_onClick($event)" class="form-modal center-center"></app-person-schedule-appointment>
