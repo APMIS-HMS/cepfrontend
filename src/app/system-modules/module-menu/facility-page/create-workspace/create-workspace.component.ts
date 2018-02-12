@@ -269,6 +269,7 @@ export class CreateWorkspaceComponent implements OnInit {
         this.getWorkSpace();
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy('Workspace successfully set!', 'success');
+        this.close_onClick();
       }, error =>{
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy('There was an error while saving the workspace', 'error');
@@ -276,6 +277,7 @@ export class CreateWorkspaceComponent implements OnInit {
     } else {
       this.mainErr = false;
       this.errMsg = 'An error occured while setting the workspace, please try again!';
+      this.systemModuleService.announceSweetProxy(this.errMsg, 'error');
     }
   }
 
