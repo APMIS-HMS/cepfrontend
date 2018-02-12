@@ -52,6 +52,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
       || this.loginEmployee.storeCheckIn.length === 0)) {
       this.modal_on = true;
     } else {
+      console.log("STREET");
       let isOn = false;
       this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
         if (itemr.isDefault === true) {
@@ -102,6 +103,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     this.modal_on = false;
   }
   onChangeCheckedIn() {
+    console.log("Click once");
     this.modal_on = true;
     this.contentSecMenuShow = false;
   }

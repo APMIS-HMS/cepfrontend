@@ -69,16 +69,19 @@ export class RequisitionComponent implements OnInit {
       deliveryDate: [this.now, [<any>Validators.required]],
       desc: ['', [<any>Validators.required]],
     });
-
+    console.log(this.selectedFacility._id);
+    console.log(auth.data.personId);
 
     const emp$ = Observable.fromPromise(this.employeeService.find({
       query: {
-        facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
+        facilityId: this.selectedFacility._id, personId: auth.data.personId
       }
     }));
+    console.log(emp$);
     emp$.mergeMap((emp: any) => Observable.forkJoin([Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
     ]))
       .subscribe((results: any) => {
+        console.log(results);
         this.loginEmployee = results[0];
       });
 
@@ -89,7 +92,8 @@ export class RequisitionComponent implements OnInit {
   }
 
   getStores() {
-    this.storeService.find({ query: { facilityId: this.selectedFacility } }).subscribe(payload => {
+    this.storeService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
+      console.log(payload);
       payload.data.forEach((item, i) => {
         if (item._id !== this.checkingObject.typeObject.storeId) {
           this.stores.push(item);

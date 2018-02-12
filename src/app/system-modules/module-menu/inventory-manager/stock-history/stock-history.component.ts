@@ -42,8 +42,10 @@ export class StockHistoryComponent implements OnInit {
   ) {
     this.employeeService.checkInAnnounced$.subscribe(payload => {
       console.log(payload);
-      this.checkingStore = payload;
-      this.getTransfers();
+      if (payload != undefined) {
+        this.checkingStore = payload;
+        this.getTransfers();
+      }
     });
   }
 
@@ -55,16 +57,19 @@ export class StockHistoryComponent implements OnInit {
   }
   getTransfers() {
     this.systemModuleService.on();
-    this.inventoryTransferService.find({
+    console.log(this.checkingStore.typeObject.storeId);
+    this.inventoryTransferService.findTransferHistories({
       query: {
         facilityId: this.selectedFacility._id,
         storeId: this.checkingStore.typeObject.storeId,
-        $limit: 200
+        limit: 200
       }
     }).then(payload => {
       this.systemModuleService.off();
-      this.transferHistories = payload.data;
-      console.log(this.transferHistories);
+      if (payload.data != undefined) {
+        this.transferHistories = payload.data;
+        console.log(this.transferHistories);
+      }
     }, error => {
       console.log(error);
       this.systemModuleService.off();
