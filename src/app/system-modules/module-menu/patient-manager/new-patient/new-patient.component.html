@@ -46,9 +46,17 @@
                         <div class="plan">
                             <div class="plan-title">Insurance</div>
                             <div class="frm-item-wrap">
-                                <mat-input-container class="example-full-width">
+                                <!-- <mat-input-container class="example-full-width">
                                     <input matInput mat-error placeholder="Insurance ID" [formControl]="hmoPlanId">
-                                </mat-input-container>
+                                </mat-input-container> -->
+                                <mat-form-field class="example-full-width">
+                                    <input matInput placeholder="Pick HMO" aria-label="HMOs" [matAutocomplete]="auto" [formControl]="hmoPlanId">
+                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                                        <mat-option *ngFor="let hmo of filteredHmos | async" [value]="hmo">
+                                            {{hmo.hmoName}} 
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
                             </div>
                             <div class="frm-item-wrap">
                                 <mat-form-field>
@@ -103,11 +111,12 @@
                             <span *ngIf="!loading">Next</span>
                             <span *ngIf="loading">Loading...</span>
                         </button>
-                        <button class="small-btn" (click)="nextInsuranceCover(hmoPlanId.value, hmoPlan.value)" *ngIf="tabInsurance" mat-raised-button>
+                        <button class="small-btn" (click)="nextInsuranceCover(hmoPlanId.value, hmoPlan.value)" [disabled]="!hmoPlanId.valid && !hmoPlan.valid" *ngIf="tabInsurance" mat-raised-button>
                             <span *ngIf="!loading">Next</span>
                             <span *ngIf="loading">Loading...</span>
                         </button>
-                        <button class="small-btn" (click)="nextCompanyCover(ccPlanId.value, ccPlan.value)" *ngIf="tabCompany" [disabled]="!ccPlan.valid || loading" mat-raised-button>
+                        <button class="small-btn" (click)="nextCompanyCover(ccPlanId.value, ccPlan.value)" *ngIf="tabCompany" [disabled]="!ccPlan.valid || loading"
+                            mat-raised-button>
                             <span *ngIf="!loading">Next</span>
                             <span *ngIf="loading">Loading...</span>
                         </button>
@@ -124,10 +133,10 @@
             </div>
         </div>
 
-        
+
         <div *ngIf="frmNewPerson1_show">
             <form [formGroup]="frmPerson" novalidate>
-            
+
                 <div class="frm-x2">
                     <div class="frm-item-wrap">
                         <mat-input-container class="example-full-width">
@@ -137,14 +146,14 @@
                             </mat-error>
                         </mat-input-container>
                     </div>
-    
+
                     <div class="frm-item-wrap">
                         <mat-input-container class="example-full-width">
                             <input matInput mat-error placeholder="Last Name" formControlName="lastname">
                         </mat-input-container>
                     </div>
                 </div>
-    
+
                 <div class="frm-x2">
                     <div class="frm-item-wrap">
                         <mat-input-container class="example-full-width">
@@ -159,7 +168,7 @@
                         </mat-form-field>
                     </div>
                 </div>
-    
+
                 <div class="frm-x2">
                     <div class="frm-item-wrap">
                         <mat-form-field class="example-full-width">
@@ -174,9 +183,9 @@
                                 <mat-option [value]="title.name" *ngFor="let title of titles">{{title.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
-                    </div> 
+                    </div>
                 </div>
-    
+
                 <div class="frm-item-wrap">
                     <mat-input-container class="example-full-width">
                         <input type="tel" matInput mat-error placeholder="Phone Number" formControlName="phone">
@@ -184,14 +193,14 @@
                             Only numbers are allowed
                         </mat-error>
                         <mat-error *ngIf="frmPerson.controls.phone.hasError('required')">
-                           Telephone number is required
+                            Telephone number is required
                         </mat-error>
                         <mat-error *ngIf="frmPerson.controls.phone.hasError('minlength')">
                             This field required minimum of 10 characters.
-                         </mat-error>
+                        </mat-error>
                     </mat-input-container>
                 </div>
-    
+
                 <!-- <div class="frm-item-wrap">
                     <mat-form-field class="example-full-width">
                         <mat-select placeholder="Security Questions" formControlName="securityQuestion">
@@ -205,8 +214,9 @@
                     </mat-input-container>
                 </div> -->
                 <div class="clear"></div>
-    
-                <button [disabled]="(!frmPerson.valid && !isSaving) || isSaving || validatingPerson()" (click)="submit(frmPerson.valid, frmPerson.value)" [ngClass]="{'cta-1':(frmPerson.valid && !isSaving && !validatingPerson()), 'cta-1-disable':(!frmPerson.valid && !isSaving) || isSaving || validatingPerson()}">
+
+                <button [disabled]="(!frmPerson.valid && !isSaving) || isSaving || validatingPerson()" (click)="submit(frmPerson.valid, frmPerson.value)"
+                    [ngClass]="{'cta-1':(frmPerson.valid && !isSaving && !validatingPerson()), 'cta-1-disable':(!frmPerson.valid && !isSaving) || isSaving || validatingPerson()}">
                     Register
                     <i *ngIf="isSaving" class="fa fa-spinner fa-spin fa-2x"></i>
                 </button>
@@ -443,7 +453,8 @@
                     <div *ngIf="loading" class="backBtn">Loading</div>
                 </div>
                 <div class="btn-box">
-                    <button class="small-btn" [disabled]="!frmNewEmp3.valid || loading" (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value);" mat-raised-button>CONTINUE</button>
+                    <button class="small-btn" [disabled]="!frmNewEmp3.valid || loading" (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value);"
+                        mat-raised-button>CONTINUE</button>
                 </div>
                 <!-- <div (click)="newPerson3(frmNewEmp3.valid, frmNewEmp3.value)" class="cta-1">CONTINUE</div> -->
             </form>

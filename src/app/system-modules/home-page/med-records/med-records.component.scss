@@ -1,9 +1,6 @@
 @import "../home-page.component.scss";
 @import "../../../../globals/variables.scss";
 
-.pp-card{
-    margin-bottom: 10px !important;
-}
 .pp-card table{
     margin-top: 10px;
 }
@@ -11,20 +8,4 @@
     font-style:italic; 
     margin-right:10px;
     color:#ff2500;
-}
-.pg-menuWrap{
-    padding: 0 10px;
-    margin-bottom: 10px;
-    justify-content: flex-end;
-}
-.pg-menuWrap, .pg-menuWrap-mobile{
-    border-bottom: 3px solid #11315b;
-    border-top: 0px solid transparent;
-}
-.pg-menuWrap li:hover, .pg-menuActive{
-    background: #11315b;
-    color: #fff;
-}
-.card-long{
-    margin-bottom: 10px !important;
 }

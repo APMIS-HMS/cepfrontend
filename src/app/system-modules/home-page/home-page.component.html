@@ -7,7 +7,7 @@
     
         <i class="fa fa-pencil-square-o card-edit" aria-hidden="true"></i>
     
-        <div>
+        <div class="card-seperator">
           <div class="patient-img-wrap">
             <img src="../../../../assets/images/users/default.png">
           </div>
@@ -22,8 +22,60 @@
           <div (click)="basicData_show()" class="profile-cta">My Profile</div>
         </div>
       </div>
+    
+      <!-- <div class="pp-card shadow-grey">
+        <div class="card-title">Health Insurance</div>
+        <ul class="feed-ul">
+          <li class="feed-li">
+            <div class="fac-wrap">
+              <div class="fac-notfc">3</div>
+              <div class="fac-img-wrap">
+                <img src="../../../assets/images/logos/default.png">
+              </div>
+              <div class="fac-data">
+                <div class="fac-name">Asa Mansard</div>
+                <div class="fac-others">
+                  <div>Continental Hospital</div>
+                  <div>Premium Cover</div>
+                  <div>Principal</div>
+                  <div>4 Dependants</div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="feed-li">
+            <div class="fac-wrap">
+              <div class="fac-img-wrap">
+                <img src="../../../assets/images/logos/default.png">
+              </div>
+              <div class="fac-data">
+                <div class="fac-name">Lagoon Hospital</div>
+                <div class="fac-others">
+                  <div>Department</div>
+                  <div>Unit</div>
+                </div>
+              </div>
+            </div>
+          </li>
+          <li class="feed-li">
+            <div class="fac-wrap">
+              <div class="fac-notfc">10</div>  
+              <div class="fac-img-wrap">
+                <img src="../../../assets/images/logos/default.png">
+              </div>
+              <div class="fac-data">
+                <div class="fac-name">Lagos State University Teaching Hospital</div>
+                <div class="fac-others">
+                  <div>Department</div>
+                  <div>Unit</div>
+                </div>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>  -->
 
-      <div class="pp-card shadow-grey">
+      <div class="pp-card card-long shadow-grey">
         <div class="card-title">Notifications</div>
         <ul class="feed-ul">
           <li class="feed-li">
@@ -40,110 +92,6 @@
           </li>
         </ul>
       </div> 
-
-      <div *ngIf="tab1" class="pp-card shadow-grey">
-        <div class="card-title">My Work Places</div>
-        <ul class="feed-ul">
-          <li class="feed-li">
-            <div class="fac-wrap">
-              <div class="fac-notfc">3</div>
-              <div class="fac-img-wrap">
-                <img src="../../../assets/images/logos/default.png">
-              </div>
-              <div class="fac-data">
-                <div class="fac-name">Asa Mansard</div>
-                <div class="fac-others">
-                  <div>Continental Hospital</div>
-                  <div>Premium Cover</div>
-                  <div>Principal</div>
-                  <div>4 Dependants</div>
-                </div>
-              </div>
-            </div>
-          </li>
-          <li class="feed-li">
-            <div class="fac-wrap">
-              <div class="fac-img-wrap">
-                <img src="../../../assets/images/logos/default.png">
-              </div>
-              <div class="fac-data">
-                <div class="fac-name">Lagoon Hospital</div>
-                <div class="fac-others">
-                  <div>Department</div>
-                  <div>Unit</div>
-                </div>
-              </div>
-            </div>
-          </li>
-          <li class="feed-li">
-            <div class="fac-wrap">
-              <div class="fac-notfc">10</div>  
-              <div class="fac-img-wrap">
-                <img src="../../../assets/images/logos/default.png">
-              </div>
-              <div class="fac-data">
-                <div class="fac-name">Lagos State University Teaching Hospital</div>
-                <div class="fac-others">
-                  <div>Department</div>
-                  <div>Unit</div>
-                </div>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div> 
-
-      <div *ngIf="tab2" class="pp-card shadow-grey">
-        <div class="card-title">Hospitals</div>
-        <ul class="feed-ul">
-          <li class="feed-li">
-            <div class="fac-wrap">
-              <div class="fac-notfc">3</div>
-              <div class="fac-img-wrap">
-                <img src="../../../assets/images/logos/default.png">
-              </div>
-              <div class="fac-data">
-                <div class="fac-name">Asa Mansard</div>
-                <div class="fac-others">
-                  <div>Continental Hospital</div>
-                  <div>Premium Cover</div>
-                  <div>Principal</div>
-                  <div>4 Dependants</div>
-                </div>
-              </div>
-            </div>
-          </li>
-          <li class="feed-li">
-            <div class="fac-wrap">
-              <div class="fac-img-wrap">
-                <img src="../../../assets/images/logos/default.png">
-              </div>
-              <div class="fac-data">
-                <div class="fac-name">Lagoon Hospital</div>
-                <div class="fac-others">
-                  <div>Department</div>
-                  <div>Unit</div>
-                </div>
-              </div>
-            </div>
-          </li>
-          <li class="feed-li">
-            <div class="fac-wrap">
-              <div class="fac-notfc">10</div>  
-              <div class="fac-img-wrap">
-                <img src="../../../assets/images/logos/default.png">
-              </div>
-              <div class="fac-data">
-                <div class="fac-name">Lagos State University Teaching Hospital</div>
-                <div class="fac-others">
-                  <div>Department</div>
-                  <div>Unit</div>
-                </div>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div> 
     </div>
 
     <div class="mid-sect">
@@ -151,11 +99,29 @@
         <div (click)="tab1_click()" class="pg-tab" [class.pg-tab-active]="tab1">Work Space</div>
         <div (click)="tab2_click()" class="pg-tab" [class.pg-tab-active]="tab2">Healthcare Space</div>
       </div>
-      <div *ngIf="tab1">
-        <app-person-landing></app-person-landing>
-      </div>
-      <div *ngIf="tab2">
-        <app-med-records></app-med-records>
+
+      <div class="pg-inwrap">
+        <div *ngIf="tab1">
+          <app-person-landing></app-person-landing>
+        </div>
+        <div *ngIf="tab2">
+          <!-- <div class="pgMenu-wrapa">
+            <i (click)="pgMenu_click()" class="fa fa-chevron-down pgMenu-ico" aria-hidden="true"></i>
+            <ul *ngIf="pgMenuToggle"  class="pg-menuWrap-mobile">
+              <li (click)="changeRoute('home')" [class.pg-menuActive]="homeContentArea">
+                  <i class="fa fa-home" aria-hidden="true"></i> Home</li>
+              <li (click)="changeRoute('medical-records')" [class.pg-menuActive]="docsContentArea">
+                  <i class="fa fa-folder-open" aria-hidden="true"></i> Medical Records</li>
+              <li (click)="changeRoute('prescription')" [class.pg-menuActive]="prescriptionContentArea">
+                  <i class="fa fa-plus-square" aria-hidden="true"></i> Prescription</li>
+              <li (click)="changeRoute('consultation')" [class.pg-menuActive]="consultationContentArea">
+                  <i class="fa fa-user-md" aria-hidden="true"></i> Consultation</li>
+              <li (click)="changeRoute('payment')" [class.pg-menuActive]="paymentContentArea">
+                  <i class="fa fa-credit-card" aria-hidden="true"></i> Payment</li>
+            </ul>
+          </div> -->
+          <app-med-records></app-med-records>
+        </div>
       </div>
     </div>
   </div>

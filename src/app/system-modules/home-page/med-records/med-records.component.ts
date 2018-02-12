@@ -7,50 +7,51 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MedRecordsComponent implements OnInit {
 
-  inmenu_home = true;
-  inmenu_med = false;
-  inmenu_prescription = false;
-  inmenu_consultation = false;
-  inmenu_payment = false;
+  homeContentArea = true;
+  docsContentArea= false;
+  prescriptionContentArea = false;
+  consultationContentArea = false;
+  paymentContentArea = false;
 
   constructor() { }
 
   ngOnInit() {
   }
 
-  inmenu_home_click(){
-    this.inmenu_home = true;
-    this.inmenu_med = false;
-    this.inmenu_prescription = false;
-    this.inmenu_consultation = false;
-    this.inmenu_payment = false;
+  home(){
+    this.homeContentArea = true;
+    this.docsContentArea= false;
+    this.prescriptionContentArea = false;
+    this.consultationContentArea = false;
+    this.paymentContentArea = false;
   }
-  inmenu_med_click(){
-    this.inmenu_home = false;
-    this.inmenu_med = true;
-    this.inmenu_prescription = false;
-    this.inmenu_consultation = false;
-    this.inmenu_payment = false;
+  doc(){
+    this.homeContentArea = false;
+    this.docsContentArea= true;
+    this.prescriptionContentArea = false;
+    this.consultationContentArea = false;
+    this.paymentContentArea = false;
   }
-  inmenu_prescription_click(){
-    this.inmenu_home = false;
-    this.inmenu_med = false;
-    this.inmenu_prescription = true;
-    this.inmenu_consultation = false;
-    this.inmenu_payment = false;
+  prescription(){
+    this.homeContentArea = false;
+    this.docsContentArea= false;
+    this.prescriptionContentArea = true;
+    this.consultationContentArea = false;
+    this.paymentContentArea = false;
   }
-  inmenu_consultation_click(){
-    this.inmenu_home = false;
-    this.inmenu_med = false;
-    this.inmenu_prescription = false;
-    this.inmenu_consultation = true;
-    this.inmenu_payment = false;
+  consultation(){
+    this.homeContentArea = false;
+    this.docsContentArea= false;
+    this.prescriptionContentArea = false;
+    this.consultationContentArea = true;
+    this.paymentContentArea = false;
   }
-  inmenu_payment_click(){
-    this.inmenu_home = false;
-    this.inmenu_med = false;
-    this.inmenu_prescription = false;
-    this.inmenu_consultation = false;
-    this.inmenu_payment = true;
+  payment(){
+    this.homeContentArea = false;
+    this.docsContentArea= false;
+    this.prescriptionContentArea = false;
+    this.consultationContentArea = false;
+    this.paymentContentArea = true;
   }
+
 }

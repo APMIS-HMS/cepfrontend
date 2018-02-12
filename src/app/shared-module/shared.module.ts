@@ -62,6 +62,7 @@ import {
   TemplatePhysicianOrderComponent
 } from '../system-modules/module-menu/forms-manager/treatement-template/template-physician-order/template-physician-order.component';
 import { OrderSetSharedService } from '../services/facility-manager/order-set-shared-service';
+import { SharedModuleMaterialModule } from '../shared-common-modules/sharedmodule-materialsmodule';
 // import { LabCheckInComponent } from './lab-check-in/lab-check-in.component';
 // import { ApmisLookupMultiselectComponent } from './apmis-lookup-multiselect/apmis-lookup-multiselect.component';
 @NgModule({
@@ -77,6 +78,7 @@ import { OrderSetSharedService } from '../services/facility-manager/order-set-sh
     TemplateProcedureComponent,
     TemplateNursingCareComponent,
     TemplatePhysicianOrderComponent,
+    
     // SystemModuleComponent
     // VerifyTokenComponent,
     // FacilityInfoComponent,
@@ -86,7 +88,7 @@ import { OrderSetSharedService } from '../services/facility-manager/order-set-sh
     // LabRequestsComponent, RequestDetailComponent
   ],
   exports: [
-    LogoUpdateComponent,
+    // LogoUpdateComponent,
     NgUploaderModule,
     NgPipesModule,
     // NewTagComponent,
@@ -106,6 +108,7 @@ import { OrderSetSharedService } from '../services/facility-manager/order-set-sh
     TemplateProcedureComponent,
     TemplateNursingCareComponent,
     TemplatePhysicianOrderComponent,
+    SharedModuleMaterialModule
     // SystemModuleComponent
     // VerifyTokenComponent,
     // FacilityInfoComponent,
@@ -114,17 +117,16 @@ import { OrderSetSharedService } from '../services/facility-manager/order-set-sh
     // DragulaModule,
     // LabRequestsComponent, RequestDetailComponent
   ],
-  imports: [
+  imports: [ 
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
     NgUploaderModule,
     NgPipesModule,
-    // MomentModule,
     Ng2PaginationModule,
     ImageCropperModule,
-    MaterialModule
-    // DragulaModule
+    MaterialModule,
+    SharedModuleMaterialModule
   ],
   providers: [StoreService, WindowRef, OrderSetSharedService, SystemModuleService]
 })

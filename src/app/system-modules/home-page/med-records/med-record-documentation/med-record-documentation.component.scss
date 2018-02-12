@@ -1,0 +1,24 @@
+@import '../med-records.component.scss';
+
+.card-x2{
+    flex-direction: row;
+}
+.card-long ul{
+    max-height: fit-content;
+}
+.rhs .card-title{
+    text-align: left;
+}
+.pp-card{
+    border: 0;
+}
+.rhs .pp-card{
+    margin-bottom: 20px;
+    min-height: fit-content;
+}
+.feed-card{
+    border: 1px solid #f1f1f1;
+    -webkit-box-shadow: 0 8px 6px -6px black;
+    -moz-box-shadow: 0 8px 6px -6px black;
+    box-shadow: 0 8px 6px -6px black;
+}

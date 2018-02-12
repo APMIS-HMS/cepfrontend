@@ -39,7 +39,7 @@
                             <div class="frm-item-wrap">
                                 <mat-form-field>
                                     <mat-select placeholder="Set Visibility" formControlName="visibility">
-                                        <mat-option *ngFor="let item of scopeLevels" [value]="item">{{item.name}}</mat-option>
+                                        <mat-option *ngFor="let item of scopeLevels" [value]="item.name">{{item.name}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
@@ -170,7 +170,7 @@
                             </div>
                         </div>
                     </form>
-                    <div class="frmNoteWrap" *ngIf="newTemplate" style="padding-top:10px;margin-top:-10px;">
+                    <div class="frmNoteWrap" *ngIf="newTemplate && isOrderSet" style="padding-top:10px;margin-top:-10px;">
                         <button (click)="save(frmnewTemplate.valid, frmnewTemplate.value);" class="cta-1 ">
                         <span *ngIf="saveTemplateText">Save Template</span>
                         <span *ngIf="savingTemplateText">Saving Template... <i class="fa fa-spinner fa-spin"></i></span>
@@ -186,23 +186,21 @@
                             <tr>
                                 <th>
                                     <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
-                                    <span style="padding-left: 3px; ">Date</span>
+                                    <span style="padding-left: 3px; ">Date Created</span>
                                 </th>
                                 <th>
                                     <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
-                                    <span style="padding-left: 3px; ">Payment Mode</span>
+                                    <span style="padding-left: 3px; ">Template Title</span>
                                 </th>
                                 <th>
                                     <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
-                                    <span style="padding-left: 3px; ">Amount</span>
+                                    <span style="padding-left: 3px; ">Documentation Form</span>
                                 </th>
                                 <th>
                                     <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
-                                    <span style="padding-left: 3px; ">Recieved For</span>
+                                    <span style="padding-left: 3px; ">Visibility</span>
                                 </th>
-                                <th>Invoice No.</th>
-                                <th>Comment</th>
-                                <th></th>
+                                <th>Editable By Others</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -212,29 +210,12 @@
                                     </div>
                                 </td>
                             </tr>
-                            <tr>
-                                <td (click)="show_beneficiaries() ">11th Oct, 2016.</td>
-                                <td>Paystack</td>
-                                <td>&#x20a6; 25,000</td>
-                                <td>Family Cover</td>
-                                <td>AC2001</td>
-                                <td>blah blah blah</td>
-                                <td class="action-placeholder " style="text-align:center; ">
-                                    <i class="fa fa-ellipsis-h " aria-hidden="true "></i>
-                                    <div class="action-container shadow-RB ">
-                                        <form>
-                                            <div (click)="showImageBrowseDlg() " class="action-item ">
-                                                <i class="fa fa-cloud-upload " aria-hidden="true "></i>
-                                                <span>Upload Beneficiary List</span>
-                                                <input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel " style="display:none; " #fileInput type="file " id="uploadResult " (change)="upload($event) ">
-                                            </div>
-                                        </form>
-                                        <div class="action-item ">
-                                            <i class="fa fa-pencil-square-o " aria-hidden="true "></i>
-                                            <span>Update HMO</span>
-                                        </div>
-                                    </div>
-                                </td>
+                            <tr *ngFor="let template of templates">
+                                <td (click)="show_beneficiaries() ">{{template.createdAt | date:'short'}}</td>
+                                <td>{{template.name}}</td>
+                                <td>{{template.formDetails}}</td>
+                                <td>{{template.visibility}}</td>
+                                <td>{{template.isEditable}}</td>
                             </tr>
                         </tbody>
                     </table>
