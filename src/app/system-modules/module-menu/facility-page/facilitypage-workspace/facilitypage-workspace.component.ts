@@ -175,8 +175,11 @@ export class FacilitypageWorkspaceComponent implements OnInit {
       });
     }
   }
-  newWorkspace_onClick(employee) {
+  newWorkspace_onClick(employee?) {
     this.employee = employee;
+    if(!!employee){
+      this.employee = employee;
+    }
     this.createWorkspace = true;
   }
 }
