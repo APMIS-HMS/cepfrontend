@@ -54,6 +54,10 @@ export class HmoService {
     return this._socket.update(hmo._id, hmo);
   }
 
+  patch(id:string, data: any, params: any){
+    return this._socket.patch(id, data, params);
+  }
+
   hmos(facilityId, hmoId?, search?) {
     const host = this._restService.getHost();
     const path = host + '/distinct-hmo-plans';

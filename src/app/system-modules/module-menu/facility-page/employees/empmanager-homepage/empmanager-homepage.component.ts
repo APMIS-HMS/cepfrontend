@@ -72,7 +72,7 @@ export class EmpmanagerHomepageComponent implements OnInit, OnDestroy, OnChanges
     this.authFacadeService.getLogingEmployee().then((payload:any)=>{
       console.log(payload);
     });
-    this.route.data.subscribe(data => {
+    /* this.route.data.subscribe(data => {
       console.log(data);
       data['employees'].subscribe((payload) => {
         if (payload !== null) {
@@ -86,10 +86,10 @@ export class EmpmanagerHomepageComponent implements OnInit, OnDestroy, OnChanges
 
       });
       this.index = this.inde[0];
-    });
+    }); */
     this.pageInView.emit('Employee Manager');
     this.facility = <Facility>this.locker.getObject('selectedFacility');
-    // this.getEmployees(this.limit);
+    this.getEmployees();
   }
   searchEmployees(searchText: string) {
     this.searchControl.setValue(searchText);
