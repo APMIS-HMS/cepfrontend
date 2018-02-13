@@ -38,32 +38,21 @@ class Service {
     let emp = await employeeService.patch(id, data);
     if (emp != null) {
       let selectedfacility = await facilitiesService.get(emp.facilityId);
-      console.log(8);
       let workspaces = await workspaceService.find({
         query: {
           facilityId: emp.facilityId,
           employeeId: emp._id
         }
       });
-      console.log(10);
       emp.workSpaces = workspaces.data;
-      console.log(11);
       if (emp.workSpaces.length > 0) {
-        console.log(12);
         let len = emp.workSpaces.length - 1;
-        console.log(13);
         for (let i = len; i >= 0; i--) {
-          console.log(14);
           if (emp.workSpaces[i].locations.length > 0) {
-            console.log(15);
             let len2 = emp.workSpaces[i].locations.length - 1;
-            console.log(16);
             for (let j = len2; j >= 0; j--) {
-              console.log(17);
               if (selectedfacility.minorLocations.length > 0) {
-                console.log(18);
                 let loc = selectedfacility.minorLocations.filter(x => x._id.toString() == emp.workSpaces[i].locations[j].minorLocationId.toString());
-                console.log(19);
                 emp.workSpaces[i].locations[j].name = loc[0].name;
                 if (emp.storeCheckIn != undefined) {
                   if (emp.storeCheckIn.length > 0) {
@@ -75,7 +64,6 @@ class Service {
                     }
                   }
                 }
-                console.log(20);
               }
             }
           }
@@ -86,7 +74,6 @@ class Service {
           facilityId: emp.facilityId
         }
       });
-      console.log(emp.storeCheckIn.length +" -----------emp.storeCheckIn");
       if (emp.storeCheckIn != undefined) {
         if (emp.storeCheckIn.length > 0) {
           if (storeItems.data != undefined) {
@@ -104,7 +91,6 @@ class Service {
           }
         }
       }
-      console.log(emp.workSpaces[0]);
       return emp;
     } else {
       return {};

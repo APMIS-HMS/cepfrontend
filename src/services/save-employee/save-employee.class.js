@@ -10,54 +10,35 @@ class Service {
   }
 
   async get(id, params) {
-    console.log(1);
     const employeeService = this.app.service('employees');
-    console.log(2);
     const workspaceService = this.app.service('workspaces');
-    console.log(3);
     const facilitiesService = this.app.service('facilities');
     const storeService = this.app.service('stores');
-    console.log(4);
     const personId = params.user.personId;
-    console.log(5);
     let selectedfacility = await facilitiesService.get(id);
-    console.log(6);
     let selectedEmployee = await employeeService.find({
       query: {
         facilityId: id,
         personId: personId
       }
     });
-    console.log(7);
     if (selectedEmployee.data.length > 0) {
-      console.log(8);
       let emp = selectedEmployee.data[0];
-      console.log(9);
       let workspaces = await workspaceService.find({
         query: {
           facilityId: id,
           employeeId: emp._id
         }
       });
-      console.log(10);
       emp.workSpaces = workspaces.data;
-      console.log(11);
       if (emp.workSpaces.length > 0) {
-        console.log(12);
         let len = emp.workSpaces.length - 1;
-        console.log(13);
         for (let i = len; i >= 0; i--) {
-          console.log(14);
           if (emp.workSpaces[i].locations.length > 0) {
-            console.log(15);
             let len2 = emp.workSpaces[i].locations.length - 1;
-            console.log(16);
             for (let j = len2; j >= 0; j--) {
-              console.log(17);
               if (selectedfacility.minorLocations.length > 0) {
-                console.log(18);
                 let loc = selectedfacility.minorLocations.filter(x => x._id.toString() === emp.workSpaces[i].locations[j].minorLocationId.toString());
-                console.log(19);
                 emp.workSpaces[i].locations[j].name = loc[0].name;
                 if (emp.storeCheckIn != undefined) {
                   if (emp.storeCheckIn.length > 0) {
@@ -67,7 +48,6 @@ class Service {
                     }
                   }
                 }
-                console.log(20);
               }
             }
           }
@@ -78,7 +58,6 @@ class Service {
           facilityId: id
         }
       });
-      console.log(emp.storeCheckIn.length +" -----------emp.storeCheckIn");
       if (emp.storeCheckIn != undefined) {
         if (emp.storeCheckIn.length > 0) {
           if (storeItems.data != undefined) {
@@ -95,7 +74,6 @@ class Service {
         }
       }
       selectedEmployee.data[0] = emp;
-      console.log(selectedEmployee.data[0].workSpaces[0]);
       return selectedEmployee;
     } else {
       return {};

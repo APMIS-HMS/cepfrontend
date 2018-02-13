@@ -92,7 +92,7 @@ class Service {
             }
           }
           let updatedInv = await inventoriesService.patch(inventory._id, {
-            quantity: inventory.availableQuantity,
+            totalQuantity: inventory.availableQuantity,
             transactions: inventory.transactions
           });
           let result = {

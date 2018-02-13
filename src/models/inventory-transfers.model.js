@@ -14,8 +14,7 @@ module.exports = function (app) {
     inventorytransactionTypeId: { type: Schema.Types.ObjectId, require: true },
     transferBy: { type: Schema.Types.ObjectId, require: true },
     inventoryTransferTransactions: [inventorytransferTransactionSchema],
-    totalCostPrice: { type: Number },
-    isCompleted:{ type: Boolean, 'default': false}
+    totalCostPrice: { type: Number }
   }, {
     timestamps: true
   });

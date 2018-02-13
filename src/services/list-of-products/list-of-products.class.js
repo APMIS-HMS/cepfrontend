@@ -9,7 +9,6 @@ class Service {
   }
 
   async find (params) {
-    console.log(params.query);
     const productsService = this.app.service('products');
     const productTypesService = this.app.service('product-types');
     let findProductsService = {};
@@ -31,7 +30,6 @@ class Service {
     }else{
 
     }
-    console.log(findProductsService.data.length + " -----------findProductsService");
     if (findProductsService.data.length > 0) {
       let len = findProductsService.data.length - 1;
       for (let j = len; j >= 0; j--) {
