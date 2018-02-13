@@ -3,6 +3,7 @@
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
 const walletSchema = require('../custom-models/wallet-model');
+const personProfessionsSchema = require('../custom-models/person-professions-model');
 
 module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
@@ -22,6 +23,7 @@ module.exports = function (app) {
     email: { type: String, required: false },
     otherNames: { type: String, required: false },
     biometric: { type: Buffer, required: false },
+    personProfessions: [personProfessionsSchema],
     nationality: { type: String, required: false },
     stateOfOrigin: { type: String, required: false },
     lgaOfOrigin: { type: String, required: false },
