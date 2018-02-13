@@ -23,7 +23,6 @@ import { SocketService, RestService } from './feathers/feathers.service';
 import * as SetupService from './services/facility-manager/setup/index';
 import * as ModuleManagerService from './services/module-manager/setup/index';
 import { UserAccountsComponent } from './system-modules/user-accounts/user-accounts.component';
-import { PatientPortalComponent } from './system-modules/patient-portal/patient-portal.component';
 import { SharedModule } from './shared-module/shared.module';
 // tslint:disable-next-line:max-line-length
 import { UserAccountsInnerPopupComponent } from './system-modules/user-accounts/user-accounts-inner-popup/user-accounts-inner-popup.component';
