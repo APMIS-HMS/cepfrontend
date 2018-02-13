@@ -135,6 +135,7 @@ export class FacilityInfoComponent implements OnInit {
 			this.close_onClick();
 			this._systemModuleService.announceSweetProxy('Facility created successfully', 'success');
 		}, error => {
+			console.log(error);
 			this._systemModuleService.off();
 			const errMsg = 'There was an error while creating the facility, try again!';
 			this._systemModuleService.announceSweetProxy(errMsg, 'success');
