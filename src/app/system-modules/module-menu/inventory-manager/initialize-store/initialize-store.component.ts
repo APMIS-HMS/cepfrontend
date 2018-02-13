@@ -3,9 +3,10 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
 import { Facility, Inventory, InventoryTransaction } from '../../../../models/index';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
-import { StoreService, ProductService, InventoryService, InventoryInitialiserService, VitalService } from '../../../../services/facility-manager/setup/index';
+import { ProductService, InventoryInitialiserService } from '../../../../services/facility-manager/setup/index';
 
 @Component({
   selector: 'app-initialize-store',
@@ -39,12 +40,14 @@ export class InitializeStoreComponent implements OnInit {
     private _inventoryEventEmitter: InventoryEmitterService,
     private _productService: ProductService,
     private _inventoryInitialiserService: InventoryInitialiserService,
-    private _vitalService: VitalService,
-    private systemModuleService: SystemModuleService, ) {
+    private authFacadeService: AuthFacadeService,
+    private systemModuleService: SystemModuleService ) {
   }
 
   ngOnInit() {
-    this.checkingObject = this._locker.getObject('checkingObject');
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.checkingObject = payload.storeCheckIn.find(x => x.isOn === true);
+    });
     this._inventoryEventEmitter.setRouteUrl('Initialize Store');
     this.myForm = this._fb.group({
       initproduct: this._fb.array([
@@ -126,7 +129,7 @@ export class InitializeStoreComponent implements OnInit {
       });
       batches.batchItems = value.initproduct;
       batches.product = product;
-      batches.storeId = this.checkingObject.typeObject.storeId;
+      batches.storeId = this.checkingObject.storeId;
       this.isProcessing = true;
       console.log(batches);
       this._inventoryInitialiserService.create(batches).then(result => {
@@ -140,10 +143,10 @@ export class InitializeStoreComponent implements OnInit {
             });
             this.isEnable = false;
             this.isProcessing = false;
-            this.systemModuleService.announceSweetProxy('Your product has been initialised successfully', 'success', this);
+            this.systemModuleService.announceSweetProxy('Your product has been initialised successfully', 'success');
           } else {
             let text = "This product exist in your inventory";
-            this.systemModuleService.announceSweetProxy(text, 'info', this);
+            this.systemModuleService.announceSweetProxy(text, 'info');
             this.isEnable = false;
             this.isProcessing = false;
           }

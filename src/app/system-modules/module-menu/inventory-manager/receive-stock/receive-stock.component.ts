@@ -7,6 +7,7 @@ import {
   StoreService, FacilitiesService, EmployeeService
 } from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import {
   Facility, InventoryTransferStatus, InventoryTransactionType, InventoryTransferTransaction,
   InventoryTransfer, Employee
@@ -36,12 +37,15 @@ export class ReceiveStockComponent implements OnInit {
     private inventoryTransactionTypeService: InventoryTransactionTypeService,
     private inventoryTransferStatusService: InventoryTransferStatusService, private route: ActivatedRoute,
     private locker: CoolLocalStorage, private facilityService: FacilitiesService, private employeeService: EmployeeService,
-    private systemModuleService: SystemModuleService
+    private systemModuleService: SystemModuleService,
+    private authFacadeService: AuthFacadeService
   ) {
     this.employeeService.checkInAnnounced$.subscribe(payload => {
       console.log(payload);
-      this.checkingStore = payload;
-      this.getTransfers();
+      if (payload.typeObject !== undefined) {
+        this.checkingStore = payload.typeObject;
+        this.getTransfers();
+      }
     });
   }
 
@@ -49,29 +53,30 @@ export class ReceiveStockComponent implements OnInit {
     this.user = this.locker.getObject('auth');
     this._inventoryEventEmitter.setRouteUrl('Receive Stock');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.checkingStore = this.locker.getObject('checkingObject');
-    console.log(this.checkingStore);
-
-    this.route.data.subscribe(data => {
-      data['loginEmployee'].subscribe((payload) => {
-        this.loginEmployee = payload.loginEmployee;
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+      this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn == true);
+      console.log(this.checkingStore);
+      this.route.data.subscribe(data => {
+        data['loginEmployee'].subscribe((payload) => {
+          this.loginEmployee = payload.loginEmployee;
+        });
       });
+      this.getTransfers();
+      this.getTransferStatus();
     });
-    this.getTransfers();
-    this.getTransferStatus();
+
   }
   getTransfers() {
     if (this.checkingStore !== undefined) {
-      console.log(this.checkingStore.typeObject);
       this.systemModuleService.on();
       this.inventoryTransferService.findTransferHistories({
         query: {
           facilityId: this.selectedFacility._id,
-          destinationStoreId: this.checkingStore.typeObject.storeId,
+          destinationStoreId: this.checkingStore.storeId,
           limit: 200
         }
       }).then(payload => {
-        console.log(payload);
         this.systemModuleService.off();
         this.receivedTransfers = payload.data;
       }, error => {
@@ -152,7 +157,7 @@ export class ReceiveStockComponent implements OnInit {
     this.inventoryTransferService.patch(this.selectedInventoryTransfer._id, { inventoryTransferTransactions: this.selectedInventoryTransfer.inventoryTransferTransactions }).then(payload => {
       this.slideDetailsShow(payload.inventoryTransfers, false);
       this.getTransfers();
-      this.systemModuleService.announceSweetProxy('Stock tran successfully', 'success', this);
+      this.systemModuleService.announceSweetProxy('Stock tran successfully', 'success');
     }, error => {
       this._notification("Error", "Failed to accept stock, please try again");
     });
@@ -171,7 +176,6 @@ export class ReceiveStockComponent implements OnInit {
     });
   }
   getStatus(transaction) {
-    console.log(transaction.inventoryTransferTransactions);
     const receivedTransactions = transaction.inventoryTransferTransactions.filter(item => item.transferStatusId === this.completedInventoryStatus._id);
     if (receivedTransactions.length === transaction.inventoryTransferTransactions.length) {
       return this.completedInventoryStatus.name;

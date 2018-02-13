@@ -25,7 +25,7 @@
                             <ul class="shadow-RB workspace-listWrap animated zoomIn">
                                 <li *ngFor="let store of inventory.transactions" class="workspace-listItem">
                                     <ng-container>
-                                        <span>{{store.batchNumber}}, Qty: {{store.quantity}}, Ex.: {{store.expiration}}</span>
+                                        <span>{{store.batchNumber}}, Qty: {{store.availableQuantity}}, Ex.: {{store.expiration}}</span>
                                     </ng-container>
                                 </li>
                                 <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
@@ -43,12 +43,14 @@
                             <div class="prodBatch-item batchItem1">Batch No</div>
                             <div class="prodBatch-item batchItem2">Expiry Date</div>
                             <div class="prodBatch-item batchItem3">Quantity</div>
+                            <div class="prodBatch-item batchItem3">Av. Quantity</div>
                             <div class="prodBatch-item batchItem4">Actions</div>
                         </div>
                         <div class="prodBatch-row batchContent" *ngFor="let transaction of inventory.transactions">
                             <div class="prodBatch-item batchItem1">{{transaction.batchNumber}}</div>
                             <div class="prodBatch-item batchItem2">{{transaction.expiryDate | date:'shortDate'}}</div>
                             <div class="prodBatch-item batchItem3">{{transaction.quantity}}</div>
+                            <div class="prodBatch-item batchItem3">{{transaction.availableQuantity}}</div>
                             <div class="prodBatch-item batchItem4">
                                 <div (click)="onAdjustStock(inventory,transaction)" class="btn-liner">Adjust Stock</div>
                             </div>

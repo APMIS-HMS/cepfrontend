@@ -60,13 +60,11 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
           itemr.lastLogin = new Date();
           isOn = true;
           let checkingObject = { typeObject: itemr, type: 'store' };
-          this.employeeService.announceCheckIn(checkingObject);
-          this.locker.setObject('checkingObject', checkingObject);
+          this.employeeService.announceCheckIn({ typeObject: checkingObject, type: 'store' });
           this.authFacadeService.getCheckedInEmployee(this.loginEmployee._id,{storeCheckIn:this.loginEmployee.storeCheckIn}).then(payload => {
             this.loginEmployee = payload;
             checkingObject = { typeObject: itemr, type: 'store' };
-            this.employeeService.announceCheckIn(checkingObject);
-            this.locker.setObject('checkingObject', checkingObject);
+            this.employeeService.announceCheckIn({ typeObject: checkingObject, type: 'store' });
           });
         }
       });
@@ -79,7 +77,6 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
               this.loginEmployee = payload;
               const checkingObject = { typeObject: itemr, type: 'store' };
               this.employeeService.announceCheckIn(checkingObject);
-              this.locker.setObject('checkingObject', checkingObject);
             });
           }
 
@@ -222,7 +219,6 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
       });
     }
     this.employeeService.announceCheckIn(undefined);
-    this.locker.setObject('checkingObject', {});
   }
   pageInViewLoader(e) {
 

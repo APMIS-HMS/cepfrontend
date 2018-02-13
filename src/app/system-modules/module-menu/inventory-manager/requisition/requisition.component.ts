@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@ang
 // tslint:disable-next-line:max-line-length
 import { StoreService, ProductService, StrengthService, ProductRequisitionService, EmployeeService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Requisition, RequisitionProduct, Employee } from '../../../../models/index';
+import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 
@@ -55,13 +56,22 @@ export class RequisitionComponent implements OnInit {
     private productService: ProductService,
     private strengthService: StrengthService,
     private employeeService: EmployeeService,
-    private requisitionService: ProductRequisitionService
-  ) { }
+    private requisitionService: ProductRequisitionService,
+    private authFacadeService: AuthFacadeService
+  ) {
+    this.stores = [];
+    this.employeeService.checkInAnnounced$.subscribe(payload => {
+      console.log(payload);
+      if (payload.typeObject !== undefined) {
+        this.checkingObject = payload.typeObject;
+        this.getStores();
+      }
+    });
+  }
 
   ngOnInit() {
     this._inventoryEventEmitter.setRouteUrl('Requisition');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.checkingObject = this.locker.getObject('checkingObject');
     const auth: any = this.locker.getObject('auth');
     this.frm_purchaseOrder = this.formBuilder.group({
       product: ['', [<any>Validators.required]],
@@ -69,33 +79,35 @@ export class RequisitionComponent implements OnInit {
       deliveryDate: [this.now, [<any>Validators.required]],
       desc: ['', [<any>Validators.required]],
     });
-    console.log(this.selectedFacility._id);
-    console.log(auth.data.personId);
-
-    const emp$ = Observable.fromPromise(this.employeeService.find({
-      query: {
-        facilityId: this.selectedFacility._id, personId: auth.data.personId
-      }
-    }));
-    console.log(emp$);
-    emp$.mergeMap((emp: any) => Observable.forkJoin([Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
-    ]))
-      .subscribe((results: any) => {
-        console.log(results);
-        this.loginEmployee = results[0];
-      });
-
     this.addNewProductTables();
-    this.getStores();
-    this.getAllProducts();
-    this.getStrengths();
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+      this.checkingObject = this.loginEmployee.storeCheckIn.find(x => x.isOn == true);
+      const emp$ = Observable.fromPromise(this.employeeService.find({
+        query: {
+          facilityId: this.selectedFacility._id, personId: auth.data.personId
+        }
+      }));
+      emp$.mergeMap((emp: any) => Observable.forkJoin([Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
+      ]))
+        .subscribe((results: any) => {
+          console.log(results);
+          this.loginEmployee = results[0];
+        });
+      this.getStores();
+      this.getAllProducts();
+      this.getStrengths();
+    });
   }
 
   getStores() {
+    this.stores = [];
+    console.log(this.checkingObject);
     this.storeService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
       console.log(payload);
       payload.data.forEach((item, i) => {
-        if (item._id !== this.checkingObject.typeObject.storeId) {
+        console.log(item);
+        if (item._id !== this.checkingObject.storeId) {
           this.stores.push(item);
         }
       });
@@ -103,8 +115,9 @@ export class RequisitionComponent implements OnInit {
   }
 
   getAllProducts() {
-    this.productService.find({ query: { facilityId: this.selectedFacility._id, $paginate: false } }).then(payload => {
-      this.products = payload;
+    this.productService.find({ query: { facilityId: this.selectedFacility._id, $limit: false } }).then(payload => {
+      this.products = payload.data;
+      console.log(this.products);
       this.getProductTables(this.products);
     });
   }
@@ -237,7 +250,7 @@ export class RequisitionComponent implements OnInit {
     const requisition: Requisition = <Requisition>{};
     requisition.employeeId = this.loginEmployee._id;
     requisition.facilityId = this.selectedFacility._id;
-    requisition.storeId = this.checkingObject.typeObject.storeId;
+    requisition.storeId = this.checkingObject.storeId;
     requisition.comment = this.desc.value;
     requisition.products = [];
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
@@ -255,7 +268,7 @@ export class RequisitionComponent implements OnInit {
 
   flyout_toggle(e) {
     this.flyout = !this.flyout;
-    e.stopPropagation();
+    // e.stopPropagation();
   }
   flyout_close(e) {
     if (this.flyout === true) {

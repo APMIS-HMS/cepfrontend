@@ -4,6 +4,7 @@ import { InventoryEmitterService } from '../../../../services/facility-manager/i
 // tslint:disable-next-line:max-line-length
 import { InventoryService, InventoryTransferService, InventoryTransferStatusService, InventoryTransactionTypeService, StoreService, EmployeeService } from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import {
   Facility, InventoryTransferStatus, InventoryTransactionType, InventoryTransferTransaction,
   InventoryTransfer, Employee
@@ -38,7 +39,8 @@ export class StockHistoryComponent implements OnInit {
     private inventoryService: InventoryService, private inventoryTransferService: InventoryTransferService,
     private inventoryTransactionTypeService: InventoryTransactionTypeService,
     private inventoryTransferStatusService: InventoryTransferStatusService, private employeeService: EmployeeService,
-    private locker: CoolLocalStorage, private systemModuleService: SystemModuleService
+    private locker: CoolLocalStorage, private systemModuleService: SystemModuleService,
+    private authFacadeService: AuthFacadeService
   ) {
     this.employeeService.checkInAnnounced$.subscribe(payload => {
       console.log(payload);
@@ -52,16 +54,20 @@ export class StockHistoryComponent implements OnInit {
   ngOnInit() {
     this._inventoryEventEmitter.setRouteUrl('Stock History');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.checkingStore = this.locker.getObject('checkingObject');
-    this.getTransfers();
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.checkingStore = payload.storeCheckIn.find(x => x.isOn == true);
+      console.log(this.checkingStore);
+      this.getTransfers();
+    });
+
   }
   getTransfers() {
     this.systemModuleService.on();
-    console.log(this.checkingStore.typeObject.storeId);
+    console.log(this.checkingStore.storeId);
     this.inventoryTransferService.findTransferHistories({
       query: {
         facilityId: this.selectedFacility._id,
-        storeId: this.checkingStore.typeObject.storeId,
+        storeId: this.checkingStore.storeId,
         limit: 200
       }
     }).then(payload => {

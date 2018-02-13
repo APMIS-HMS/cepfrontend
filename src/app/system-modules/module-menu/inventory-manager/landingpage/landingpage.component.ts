@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
 import { InventoryService, ProductService, EmployeeService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import { Facility, Inventory, Employee, User } from '../../../../models/index';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
@@ -44,24 +45,22 @@ export class LandingpageComponent implements OnInit {
     private route: ActivatedRoute,
     private productService: ProductService,
     private locker: CoolLocalStorage,
+    private authFacadeService: AuthFacadeService,
     private employeeService: EmployeeService
   ) { }
 
   ngOnInit() {
     this._inventoryEventEmitter.setRouteUrl('Inventory Manager');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.checkingStore = this.locker.getObject('checkingObject');
-    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.user = <User>this.locker.getObject('auth');
-
-    if (this.checkingStore !== null && this.checkingStore.typeObject !== undefined) {
-      this.getInventories();
-    }
-    this.employeeService.checkInAnnounced$.subscribe(payload => {
-      this.checkingStore = payload;
-      this.getInventories();
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+      this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+      console.log(this.checkingStore);
+      if (this.checkingStore !== null) {
+        this.getInventories();
+      }
     });
-
     const subscribeForCategory = this.searchControl.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
@@ -80,13 +79,12 @@ export class LandingpageComponent implements OnInit {
   }
 
   getInventories() {
-    if (this.checkingStore !== undefined && this.checkingStore.typeObject !== undefined) {
+    if (this.checkingStore !== undefined) {
       this.inventoryService.findList({
         query:
-          { facilityId: this.selectedFacility._id,name:'', storeId: this.checkingStore.typeObject.storeId }//, $limit: 200 }
+          { facilityId: this.selectedFacility._id, name: '', storeId: this.checkingStore.storeId }//, $limit: 200 }
       })
         .then(payload => {
-          console.log(payload);
           this.loading = false;
           this.inventories = payload.data.filter(x => x.totalQuantity > 0);
         });
