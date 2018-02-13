@@ -71,7 +71,6 @@ export class FacilitypageWorkspaceComponent implements OnInit {
     this.workspaceService.find({ query: { facilityId: this.selectedFacility._id, $limit: 40 } })
       .then(payload => {
         const result = payload.data.filter(x => x.isActive === true || x.isActive === undefined);
-        console.log(result);
         result.forEach((itemi: WorkSpace, i) => {
           itemi.locations = itemi.locations.filter(x => x.isActive === true);
         });
@@ -85,7 +84,6 @@ export class FacilitypageWorkspaceComponent implements OnInit {
         facilityId: this.selectedFacility._id
       }
     }).then(payload => {
-      console.log(payload);
       this.workSpaces = payload.data;
     });
   }
@@ -104,28 +102,20 @@ export class FacilitypageWorkspaceComponent implements OnInit {
     this.systemModule.on();
     let filteredLocation = workspace.locations.filter(x => x._id == id);
     let workspaceI = workspace.locations.indexOf(filteredLocation[0]);
-    console.log(workspaceI);
     if(workspaceI > -1){
       workspace.locations[workspaceI].isActive = false;
     }
-    console.log(workspace, workspace.locations[workspaceI]);
 
     this.workspaceService.patch(workspace._id, {
       locations: workspace.locations
     }, {}).then(payload => {
-      console.log(payload);
       this.systemModule.off();
       this.systemModule.announceSweetProxy('Location successfully Deleted', 'success');
     }).catch(err => {
       this.systemModule.off();
-      console.log(err);
       this.systemModule.announceSweetProxy('Something went wrong! Please try again', 'error');
     });
-    // workSpace.locations[i].isActive = false;
-
-    // this.workspaceService.update(workSpace).then(payload => {
-    //   this.getWorkSpace();
-    // });
+    
   }
   deletion_popup(workspace) {
     this.deleteLocation = false;
@@ -134,8 +124,6 @@ export class FacilitypageWorkspaceComponent implements OnInit {
     this.systemModule.announceSweetProxy(text, 'question', this);
     
     this.selectedWorkSpace = workspace;
-    // this.gdItem = workSpace.employeeObject.employeeDetails.lastName + ' ' + workSpace.employeeObject.employeeDetails.firstName;
-    // this.globalDialog = true;
   }
 
   removeWorkspace(){
@@ -151,10 +139,8 @@ export class FacilitypageWorkspaceComponent implements OnInit {
   sweetAlertCallback(result){
     if(result.value){
       if(this.deleteLocation === true){
-        console.log('Delete Location = ', this.deleteLocation);
         this.removeLocation(this.selectedLocationId, this.selectedWorkSpace);
       }else if(this.deleteWorkspace === true){
-        console.log('Delete Workspace = ', this.deleteWorkspace);
         this.removeWorkspace();
       }
     }
@@ -189,9 +175,11 @@ export class FacilitypageWorkspaceComponent implements OnInit {
       });
     }
   }
-  newWorkspace_onClick(employee) {
-    console.log(employee);
+  newWorkspace_onClick(employee?) {
     this.employee = employee;
+    if(!!employee){
+      this.employee = employee;
+    }
     this.createWorkspace = true;
   }
 }

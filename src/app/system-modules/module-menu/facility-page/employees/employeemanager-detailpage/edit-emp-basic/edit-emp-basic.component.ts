@@ -281,8 +281,6 @@ export class EditEmpBasicComponent implements OnInit {
 	}
 
 	compareDepartments(d1: any, d2: any) {
-		console.log(d1);
-		console.log(d2);
 		return d1 == d2;
 	}
 
@@ -290,7 +288,6 @@ export class EditEmpBasicComponent implements OnInit {
 
 		const deptId = this.selectedEmployee.departmentId;
 		const depts = this.facility.departments;
-		console.log(depts);
 		const dept = depts.filter(x => x.name == deptId);
 		if(dept.length > 0){
 			this.selectedDepartment = dept[0].name;

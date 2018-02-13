@@ -74,11 +74,9 @@ export class WorkbenchComponent implements OnInit {
   }
   getLaboratoryMajorLocation() {
     this.locationService.find({ query: { name: 'Laboratory' } }).then(res => {
-      console.log(res);
       if (res.data.length > 0) {
         this.selectedMajorLocation = res.data[0];
         this.minorLocations = this.selectedFacility.minorLocations.filter(x => x.locationId === this.selectedMajorLocation._id);
-        console.log(this.minorLocations);
       }
     })
   }
@@ -89,7 +87,6 @@ export class WorkbenchComponent implements OnInit {
     this.workbench_view = !this.workbench_view;
   }
   minorLocationDisplayFn(minor: any) {
-    console.log(minor);
     return minor ? minor.name : minor;
     // if (typeof minor === 'string') {
     //   console.log('string');

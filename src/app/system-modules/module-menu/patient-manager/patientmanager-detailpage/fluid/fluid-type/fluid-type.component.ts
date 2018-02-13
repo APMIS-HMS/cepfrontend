@@ -56,7 +56,6 @@ export class FluidTypeComponent implements OnInit {
         }
       }
     }).then(payload => {
-      console.log(payload);
       this.fluidsList = payload.data;
     })
   }
@@ -82,12 +81,10 @@ export class FluidTypeComponent implements OnInit {
 
     this.fluidService.create(fluids).then(payload => {
       this._notification('Success', 'Fluid Successfully Deleted!!');
-      console.log(payload);
       this.frm_addfluid.reset();
       this.getFluids();
     }).catch(err => {
       this._notification('Error', 'Something Went Wrong... Please Try Again!');
-      console.log(err);
     });
   }
 

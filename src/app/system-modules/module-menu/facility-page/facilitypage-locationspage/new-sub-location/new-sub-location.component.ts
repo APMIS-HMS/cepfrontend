@@ -28,7 +28,7 @@ export class NewSubLocationComponent implements OnInit {
   facility: Facility = <Facility>{};
   miniFacility: Facility = <Facility>{};
   selectedForm: any = <any>{};
-  user: User = <User>{};
+  user: any = <any>{};
   employeeDetails: any = <any>{};
   public frmNewSubLoc: FormGroup;
 
@@ -46,6 +46,13 @@ export class NewSubLocationComponent implements OnInit {
       this.facility = payload;
       this.locker.setObject('selectedFacility', payload);
     });
+    this.user = <User>this.locker.getObject('auth');
+   
+  }
+
+  ngOnInit() {
+    this.facility = <Facility>this.locker.getObject('selectedFacility');
+    this.miniFacility = <Facility>this.locker.getObject('miniFacility');
 
     this.addNew();
     this.frmNewSubLoc.controls['sublocParent'].setValue(this.location._id);
@@ -53,15 +60,11 @@ export class NewSubLocationComponent implements OnInit {
       this.ActionButton = 'Update';
       this.frmNewSubLoc.controls['sublocName'].setValue(this.subLocation.name);
     }
-  }
-
-  ngOnInit() {
-    this.facility = <Facility>this.locker.getObject('selectedFacility');
-    this.miniFacility = <Facility>this.locker.getObject('miniFacility');
+    
     this.authFacadeService.getLogingEmployee().then(payload =>{
       this.employeeDetails = payload;
     })
-    this.user = <User>this.locker.getObject('auth');
+    
     this.getTags();
   }
 
@@ -273,7 +276,7 @@ export class NewSubLocationComponent implements OnInit {
   // Notification
   private _notification(type: String, text: String): void {
     this.facilityService.announceNotification({
-      users: [this.user._id],
+      users: [this.user.data._id],
       type: type,
       text: text
     });

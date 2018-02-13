@@ -42,15 +42,10 @@ export class EmployeeAccessRolesComponent implements OnInit {
     private systemModuleService: SystemModuleService) { }
 
   ngOnInit() {
-    /* this.userPrivileges = this.FormBuilder.group({
 
-    }); */
-    console.log(this.selectedEmployee);
     this.selectedFacility = <any>this.locker.getObject('selectedFacility');
     let auth = <any>this.locker.getObject('auth');
     this.loggedInUser = auth.data;
-    // this.selectedEmployee = <any>this.locker.getObject('selectedEmployee');
-
     this.getRoles();
   }
 
@@ -59,36 +54,23 @@ export class EmployeeAccessRolesComponent implements OnInit {
   }
 
   getRoles() {
-    /* this.featureService.findAll().then(payload => {
-      console.log(payload);
-      this.roles = payload.data;
-    }); */
-    console.log(this.selectedEmployee.personId);
+
     this.featureService.getFacilityRoles(this.selectedEmployee.personId, {
       query: {
         facilityId: this.selectedFacility._id
       }
     }).then(payload => {
-      console.log(payload);
       if (payload.status === 'success') {
         this.roles = payload.data;
-        console.log(this.roles);
       }
     });
   }
 
   pickRoles(event, id) {
-    //console.log(this.checboxBool);
-    //this.uncheck = true;
-    console.log(event.checked);
     var checkedStatus = event.checked;
-    console.log(checkedStatus);
     if (checkedStatus) {
-      // let index = this.selectedFacilityIds.filter(x=>x.toString()==id.toString());
       let ind = this.rolesPicked.indexOf(id.toString());
-      /* let indr = this.rolesRemoved.indexOf(id.toString());
-      this.rolesRemoved.splice(indr, 1); */
-      console.log(ind);
+
       if (ind > -1) {
 
       } else {
@@ -97,7 +79,6 @@ export class EmployeeAccessRolesComponent implements OnInit {
     } else {
       let ind = this.rolesPicked.indexOf(id.toString());
       this.rolesPicked.splice(ind, 1);
-      console.log(ind);
 
       let indr = this.rolesRemoved.indexOf(id.toString());
       if (indr > -1) {
@@ -109,9 +90,6 @@ export class EmployeeAccessRolesComponent implements OnInit {
 
     this.checboxLen = this.rolesPicked.length;
 
-    console.log(this.rolesPicked);
-    console.log(this.rolesRemoved);
-
   }
 
   saveRoles() {
@@ -122,23 +100,18 @@ export class EmployeeAccessRolesComponent implements OnInit {
   }
 
   createRoles() {
-    console.log(this.selectedEmployee)
     var data = {
       personId: this.selectedEmployee.personId,
       facilityId: this.selectedFacility._id,
       roles: this.rolesPicked
     }
-    console.log(data);
     this.featureService.assignUserRole(data).then(payload => {
       this.loading = false;
-      console.log(payload);
     }, error => {
-      console.log(error);
     });
   }
 
   sweetAlertCallback(result) {
-    console.log(result);
     if (result.value) {
       this.createRoles();
     }

@@ -12,14 +12,27 @@
             <form [formGroup]="frmNewmodefier" novalidate>
 
                 <div class="headWrap">
-                    <div class="service-name">{{selectedFacilityServicePrice.service.name}}</div>
+                    <div class="serviceName">
+                        Service Name
+                    </div>
+                    <div class="service-cat">
+                        Service-Category
+                    </div>
+                    <div class="serviceAmount">
+                        Price
+                    </div>
+                    <!-- <div class="service-name">{{selectedFacilityServicePrice.service.name}}</div>
                     <div class="service-cat">{{selectedFacilityServicePrice.category}}</div>
-                    <div class="service-amount">{{selectedFacilityServicePrice.price}}</div>
+                    <div class="service-amount">{{selectedFacilityServicePrice.price}}</div>-->
                 </div>
 
                 <div class="frm-item-wrap">
                     <i class="fa fa-user" aria-hidden="true"></i>
                     <mat-input-container class="example-full-width">
+                        <div>
+                            <div class="sectLabel"></div>
+                            <i class="fa fa-plus faplus pull-right" data-toggle="tooltip" title="Add Tag" data-placement="left"> </i>
+                        </div>
                         <input autofocus matInput mat-error placeholder="Select Tag" formControlName="tag">
                     </mat-input-container>
                     <div class="suggestionFeeds">

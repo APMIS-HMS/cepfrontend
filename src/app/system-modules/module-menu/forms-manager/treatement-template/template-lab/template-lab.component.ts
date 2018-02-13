@@ -32,11 +32,9 @@ export class TemplateLabComponent implements OnInit {
     this.apmisLookupText = value.name;
     this.selectedInvestigation = value;
     this.addInvestigationForm.controls['investigation'].setValue(value.name);
-    console.log(value);
   }
 
   onClickAddInvestigation(valid: boolean, value: any) {
-    console.log(value);
     if (valid) {
       this.selectedInvestigation.comment = '';
       this.selectedInvestigation.status = 'Not Done';

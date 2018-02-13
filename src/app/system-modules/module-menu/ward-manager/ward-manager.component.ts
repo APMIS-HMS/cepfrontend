@@ -39,7 +39,6 @@ export class WardManagerComponent implements OnInit, OnDestroy {
     private _authFacadeService: AuthFacadeService
 	) {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
-      console.log(res);
       if (!!res._id) {
         this.loginEmployee = res;
         if ((this.loginEmployee.wardCheckIn === undefined || this.loginEmployee.wardCheckIn.length === 0)) {
@@ -92,7 +91,6 @@ export class WardManagerComponent implements OnInit, OnDestroy {
         this._notification('Error', 'Couldn\'t get Logged in user! Please try again later');
       }
     }).catch(err => {
-      console.log(err);
     });
 	}
 
@@ -110,7 +108,6 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 		this._wardEventEmitter.announceWard.subscribe(val => {
 			this.checkedInObject = val;
     });
-    console.log(this.loginEmployee);
 
 
 	}

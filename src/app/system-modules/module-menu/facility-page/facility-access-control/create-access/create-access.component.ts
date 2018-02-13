@@ -62,7 +62,6 @@ export class CreateAccessComponent implements OnInit {
     });
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.user = <User>this.locker.getObject('auth');
-    console.log(this.selectedRole);
 
     this.getModules();
   }
@@ -168,7 +167,6 @@ export class CreateAccessComponent implements OnInit {
             this._systemModuleService.announceSweetProxy(text, 'success');
             this.close_onClick();
         }, error => {
-          console.log(error);
         }).catch(err => console.log(err));
       } else {
         this.updateRole = false;

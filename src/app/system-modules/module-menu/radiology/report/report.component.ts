@@ -540,7 +540,6 @@ export class ReportComponent implements OnInit {
     this.paymentStatusText = 'Getting Payment Status... <i class="fa fa-spinner fa-spin"></i>';
 
     this.pendingRequests.forEach((request: PendingLaboratoryRequest) => {
-      console.log(request);
       if (!!request.billingId) {
         this._billingService.find({
           query: {

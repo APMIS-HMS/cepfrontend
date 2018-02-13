@@ -126,7 +126,6 @@ export class InvestigationPriceComponent implements OnInit {
   }
 
   getInvestigations() {
-    console.log(this.checkingObject);
     this.investigationService.find({
       query: {
         'facilityId': this.selelctedFacility._id,
@@ -306,7 +305,6 @@ export class InvestigationPriceComponent implements OnInit {
 
   getLaboratoryMajorLocation(loginEmployee) {
     this._locationService.find({ query: { name: 'Laboratory' } }).then(res => {
-      console.log(res);
       if (res.data.length > 0) {
         this.selectedMajorLocation = res.data[0];
         this._getLoginEmployee(loginEmployee, this.selectedMajorLocation._id);

@@ -73,7 +73,6 @@ export class WardManagerAdmissionpageComponent implements OnInit {
         this._notification('Error', 'Couldn\'t get Logged in user! Please try again later');
       }
     }).catch(err => {
-      console.log(err);
     });
   }
 

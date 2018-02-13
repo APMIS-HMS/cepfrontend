@@ -69,7 +69,6 @@ export class OrderSetComponent implements OnInit {
 
     // Listen to the event from children components
     this._orderSetSharedService.itemSubject.subscribe(value => {
-      console.log(value);
       if (!!value.medications) {
         if (!!this.orderSet.medications) {
             const findItem = this.orderSet.medications
@@ -146,7 +145,6 @@ export class OrderSetComponent implements OnInit {
       this.sharedService.announceOrderSet(this.orderSet);
       this.close_onClickModal();
     }).catch(err => {
-      console.log(err);
     });
     this.showDoc.emit(true);
   }
@@ -183,7 +181,6 @@ export class OrderSetComponent implements OnInit {
         this.orderSet.physicianOrders.splice(index, 1);
       }
     }
-    console.log(this.orderSet);
   }
 
   private _getPatient(id) {
@@ -191,12 +188,10 @@ export class OrderSetComponent implements OnInit {
       facilityId: this.miniFacility._id,
       personId: id
     }}).then(res => {
-      console.log(res);
       if (res.data.length > 0) {
         this.selectedPatient = res.data[0];
       }
     }).catch(err => {
-      console.log(err);
     });
   }
 
@@ -232,11 +227,9 @@ export class OrderSetComponent implements OnInit {
       query: { facilityId: this.facility._id }
     }).then(res => {
       if (res.data.length > 0) {
-        console.log(JSON.parse(res.data[0].body));
         this.orderSet = JSON.parse(res.data[0].body);
       }
     }).catch(err => {
-      console.log(err);
     });
   }
 

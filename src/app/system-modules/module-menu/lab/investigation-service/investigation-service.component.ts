@@ -211,7 +211,6 @@ export class InvestigationServiceComponent implements OnInit {
   }
 
   createInvestigation(valid, value) {
-    console.log(value);
     if (valid) {
       if (this.selectedInvestigation._id === undefined) {
         const investigation: any = {
@@ -362,17 +361,13 @@ export class InvestigationServiceComponent implements OnInit {
     if (valid) {
       if (this.selectedInvestigation._id === undefined) {
         const investigation: any = {
-          facilityId: this.locker.getObject('miniFacility'),
+          facilityId: this.selectedFacility._id,
           isPanel: true,
           name: value.panelName,
           panel: this.movedInvestigations
-        }
+        };
+
         this.investigationService.create(investigation).then(payload => {
-
-
-
-
-
           //
           const service: any = <any>{};
           service.name = value.panelName;
@@ -390,7 +385,6 @@ export class InvestigationServiceComponent implements OnInit {
                     payload.serviceId = items;
                     payload.facilityServiceId = this.selectedFacilityService._id;
 
-
                     const price: FacilityServicePrice = <FacilityServicePrice>{};
                     price.categoryId = itemi._id;
                     price.facilityId = this.selectedFacility._id;
@@ -404,26 +398,14 @@ export class InvestigationServiceComponent implements OnInit {
                       this.frmNewPanel.reset();
                       this.frmNewPanel.controls['isPanel'].setValue(true);
                       this.investigations.push(payload);
+                      this._systemModuleService.announceSweetProxy('Investigation has been created successfully.', 'success');
                     })
                   }
                 });
               }
             });
           });
-
-          //
-
-
-
-
-
-
-
-
-
-
-
-        })
+        });
       } else {
         this.selectedInvestigation.name = this.frmNewPanel.controls['panelName'].value;
         this.selectedInvestigation.isPanel = this.frmNewPanel.controls['isPanel'].value;
@@ -431,8 +413,6 @@ export class InvestigationServiceComponent implements OnInit {
         this.investigationService.update(this.selectedInvestigation).then(payload => {
 
           if (this.selectedInvestigation.serviceId === undefined) {
-
-
             //
             const service: any = <any>{};
             service.name = this.selectedInvestigation.name;
@@ -448,9 +428,6 @@ export class InvestigationServiceComponent implements OnInit {
                     if (items.name === service.name) {
                       payload.serviceId = items;
                       payload.facilityServiceId = this.selectedFacilityService._id;
-
-
-
 
                       const price: FacilityServicePrice = <FacilityServicePrice>{};
                       price.categoryId = itemi._id;
@@ -470,33 +447,20 @@ export class InvestigationServiceComponent implements OnInit {
                         this.frmNewPanel.controls['isPanel'].setValue(false);
                         const index = this.investigations.findIndex((obj => obj._id === payload._id));
                         this.investigations.splice(index, 1, payload);
+                        this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success');
                       })
                     }
                   });
                 }
               });
             });
-
-            //
-
-
-
-
-
-
-
-
-
-
           }
         }, error => {
           this.addPInvestBtn = true;
           this.addingPInvestBtn = false;
           this.frmNewPanel.reset();
           this.frmNewPanel.controls['isPanel'].setValue(false);
-        })
-
-
+        });
       }
     }
   }

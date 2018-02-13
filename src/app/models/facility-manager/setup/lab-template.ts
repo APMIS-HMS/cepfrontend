@@ -1,6 +1,6 @@
 export interface LabTemplate {
-    _id: String;
-    facility: any;
+    _id?: String;
+    facilityId: any;
     investigation: any;
     scopeLevel: any;
     minorLocation: any;

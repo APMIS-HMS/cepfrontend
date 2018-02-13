@@ -53,7 +53,6 @@ export class HmoListComponent implements OnInit {
 
   ngOnInit() {
     this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
-    console.log(this.selectedFacilityType);
     this.user = <User>this.locker.getObject('auth');
     this.frmNewHmo = this.formBuilder.group({
       name: ['', [Validators.required]],
@@ -105,7 +104,6 @@ export class HmoListComponent implements OnInit {
     this.facilityService.find({
       query: { _id: { $in: flist } }
     }).then(payload => {
-      console.log(payload);
       this.hmoFacilities = payload.data;
     });
   }
@@ -355,7 +353,6 @@ export class HmoListComponent implements OnInit {
     return new Date(date);
   }
   checkHmo() {
-    console.log(this.loginHMOListObject.hmos)
     return this.loginHMOListObject.hmos.findIndex(x => x.hmo === this.selectedHMO._id) > -1;
   }
   save(valid, value) {
