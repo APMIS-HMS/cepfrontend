@@ -1,5 +1,6 @@
 
-const console = require('console');
+//const console = require('console');
+const jsend = require('jsend');
 /* eslint-disable no-unused-vars */
 class Service {
   constructor(options) {
@@ -23,54 +24,42 @@ class Service {
     const employeeService = this.app.service('employees');
     const personService = this.app.service('peoples');
 
-    const person = [];
+    //const person = [];
     //Check for facility Id 
-    if (data.facilityId !== undefined) {
-      const facilityId = data.facilityId;
-      let pres = await prescriptionService.find({ query: { facilityId: facilityId } });
-      console.log('I got here................................');
-      if (pres.data.length > 0) {
-        const pcounter = 0;
-        let counter = pres.data.length;
-        while (counter--) {
-          person.push(pres.data[counter--]);
-          pres =pres.data[counter--];
-          let patientObj = await patientService.get(pres.patientId);
-          // console.log('=================Patient Id======================');
-          // console.log(patientObj);
-          // console.log('====================Patient Id End====================');
-          delete patientObj.personDetails.wallet;
-          person.push(patientObj.personDetails);
-          pres.patientDetails = patientObj.personDetails;
-          console.log('=================patientDetails=====================');
-          console.log(pres.patientDetails);
-          console.log('=================patientDetails End=====================');
-          let employeeObj = await employeeService.get(pres.employeeId);
-          // console.log('=================employeeObj=====================');
-          // console.log(employeeObj);
-          // console.log('====================employeeObj End====================');
-          delete employeeObj.personDetails.wallet;
-          person.push(employeeObj.personDetails);
-          pres.employeeDetails = employeeObj.personDetails;
-          console.log('=================employeeDetails=====================');
-          console.log(pres.employeeDetails);
-          console.log('=================employeeDetails End=====================');
-          console.log('=================pres=====================');
-          console.log(pres);
-          console.log('=================pres End=====================');
-          console.log('=================person=====================');
-          console.log(person);
-          console.log('=================person End=====================');
-          counter--;
+    const facilityId = data.query.facilityId;
+    if (facilityId !== undefined) {
+      let prescriptions = await prescriptionService.find({ query: { facilityId: facilityId } });
+
+      const pLength = prescriptions.data.length;
+      let i = prescriptions.data.length;
+      let counter = 0;
+      if (pLength === 0) {
+        return jsend.success([]);
+      } else if (pLength > 0) {
+        prescriptions = prescriptions.data;
+        while (i--) {
+
+          let prescription = prescriptions[i];
+          let patientId = prescription.patientId;
+          let employeeId = prescription.employeeId;
+
+          const patient = await patientService.get(patientId);
+          delete patient.personDetails.wallet;
+          prescription.personDetails = patient.personDetails;
+          let employee = await employeeService.get(employeeId);
+          delete employee.personDetails.wallet;
+          prescription.employeeDetails = employee.personDetails;
+          counter++;
+          if (pLength === counter) {
+            return jsend.success(prescription);
+          }
         }
-        if (pcounter === counter) {
-          return pres;
-        }
+
       } else {
-        return 'No prescription found';
+        return jsend.error('Prescription not properly referenced!');
       }
     } else {
-      return 'No prescription found';
+      return jsend.error('Facility does not exist!');
     }
   }
 
