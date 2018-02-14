@@ -52,14 +52,13 @@ export class NewUnitComponent implements OnInit {
       });
     });
     this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
-    this.deptsObj = this.facilityObj.departments;
+    this.deptsObj = this.facilityObj.departments.filter(x => x.isActive);
     if (this.department !== undefined) {
       this.frmNewUnit.controls["unitParent"].setValue(this.department._id);
     }
     if (this.unit !== undefined) {
       this.frmNewUnit.controls["unitName"].setValue(this.unit.name);
       this.frmNewUnit.controls["unitAlias"].setValue(this.unit.shortName);
-      // this.frmNewUnit.controls['unitDesc'].setValue(this.unit.description);
       this.frmNewUnit.controls["_id"].setValue(this.unit._id);
     }
 
@@ -72,7 +71,6 @@ export class NewUnitComponent implements OnInit {
       this.btnText = "UPDATE UNIT";
       this.frmNewUnit.controls["unitName"].setValue(this.unit.name);
       this.frmNewUnit.controls["unitAlias"].setValue(this.unit.shortName);
-      //this.frmNewUnit.controls['unitDesc'].setValue(this.unit.description);
       this.frmNewUnit.controls["_id"].setValue(this.unit._id);
       if (this.unit.clinics.length > 0) {
         this.frmNewUnit.controls["isClinic"].setValue(true);
@@ -196,6 +194,7 @@ export class NewUnitComponent implements OnInit {
           this.facilityObj.departments.forEach(function(item, i) {
             if (item._id === id) {
               item.units.push({
+                isActive: true,
                 name: val.unitName,
                 shortName: val.unitAlias,
                 description: val.unitDesc,
@@ -241,6 +240,7 @@ export class NewUnitComponent implements OnInit {
               item.units.forEach((unit, u) => {
                 if (unit._id === val._id) {
                   unit.name = val.unitName;
+                  unit.isActive = true;
                   unit.shortName = val.unitAlias;
                   unit.description = val.unitDesc;
                   const clinicsArray = (<FormArray>that.clinicForm.controls[

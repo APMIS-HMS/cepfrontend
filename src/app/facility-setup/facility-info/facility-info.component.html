@@ -53,10 +53,6 @@
         <button [disabled]="(!facilityForm1.valid && !isSaving) || isSaving" class="cta-1" [ngClass]="{'cta-1':(facilityForm1.valid && !isSaving), 'cta-1-disable':(!facilityForm1.valid && !isSaving) || isSaving}"> 
         SIGN UP
         </button>
-        <!-- <button [disabled]="(!frmPerson.valid && !isSaving) || isSaving || validatingPerson()" (click)="submit(frmPerson.valid, frmPerson.value)" [ngClass]="{'cta-1':(frmPerson.valid && !isSaving && !validatingPerson()), 'cta-1-disable':(!frmPerson.valid && !isSaving) || isSaving || validatingPerson()}">
-            Register
-            <i *ngIf="isSaving" class="fa fa-spinner fa-spin fa-2x"></i>
-        </button> -->
 
     </form>
 </div>

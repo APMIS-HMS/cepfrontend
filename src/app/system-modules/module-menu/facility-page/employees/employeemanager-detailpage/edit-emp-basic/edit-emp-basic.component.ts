@@ -82,7 +82,6 @@ export class EditEmpBasicComponent implements OnInit {
 		this.facilityForm1 = this.formBuilder.group({
 			dept: [this.selectedEmployee.departmentId, [<any>Validators.required]],
 		});
-		console.log(this.selectedPerson);
 		this.facilityForm2 = this.formBuilder.group({
 			title: [this.selectedPerson.title, [<any>Validators.required]],
 			firstname: [this.selectedPerson.firstName, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
@@ -185,6 +184,7 @@ export class EditEmpBasicComponent implements OnInit {
 		this.employeeService.update(this.selectedEmployee).then(payload => {
 			this.loading = false;
 			this.locker.setObject('selectedEmployee', payload);
+			this.employeeService.announceEmployee(payload);
 			this.systemModulesService.announceSweetProxy('Department Successfully Updated.', 'success');
 			this.close_onClick(true);
 		}).catch(err => {
