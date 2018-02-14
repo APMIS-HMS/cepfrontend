@@ -8,14 +8,14 @@ class Service {
 
     async find(params) {
         const facilityId = params.query.facilityId;
-        const featuresService = this.app.service('facility-access-control');
+        const facilityAccessControlService = this.app.service('facility-access-control');
         const facilityService = this.app.service('facilities');
         const selectedFacility = await facilityService.get(facilityId, {});
         let userRoles = [];
-        userRoles = userRoles.concat.apply([], params.user.userRoles).map(x => x.roles);
+        userRoles = userRoles.concat.apply([], params.user.userRoles.filter(u => u.facilityId == facilityId)).map(x => x.roles);
 
         userRoles = [].concat.apply([], userRoles);
-        let features = await featuresService.find({
+        let features = await facilityAccessControlService.find({
             query: {
                 facilityId: facilityId,
                 _id: { $in: userRoles }
@@ -37,7 +37,7 @@ class Service {
 
     async get(id, params) {
         const usersService = this.app.service('users');
-        const featuresService = this.app.service('facility-access-control');
+        const facilityAccessControlService = this.app.service('facility-access-control');
         var results = [];
         var errors = [];
 
@@ -46,7 +46,7 @@ class Service {
                 'personId': id
             }
         });
-        let features = await featuresService.find({
+        let features = await facilityAccessControlService.find({
             query: {
                 facilityId: params.query.facilityId
             }
