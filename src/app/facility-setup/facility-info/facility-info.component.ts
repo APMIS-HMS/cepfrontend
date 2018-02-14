@@ -59,7 +59,7 @@ export class FacilityInfoComponent implements OnInit {
 			facilityphonNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
 		});
 		this.facilityForm1.controls.facilitycountry.valueChanges.subscribe(country => {
-			this._countryServiceFacade.getOnlyStates(country).then((payload: any) => {
+			this._countryServiceFacade.getOnlyStates(country, true).then((payload: any) => {
 				this.states = payload;
 			}).catch(error => {
 
@@ -135,7 +135,6 @@ export class FacilityInfoComponent implements OnInit {
 			this.close_onClick();
 			this._systemModuleService.announceSweetProxy('Facility created successfully', 'success');
 		}, error => {
-			console.log(error);
 			this._systemModuleService.off();
 			const errMsg = 'There was an error while creating the facility, try again!';
 			this._systemModuleService.announceSweetProxy(errMsg, 'success');

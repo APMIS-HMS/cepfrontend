@@ -5,7 +5,8 @@ import { CanActivate, ActivatedRouteSnapshot } from "@angular/router";
 import { RouterStateSnapshot } from "@angular/router/src/router_state";
 
 @Injectable()
-export class CanActivateViaAuthGuardAccessService implements CanActivate {
+export class CanActivateViaAuthGuardCompleteFacilityService
+  implements CanActivate {
   constructor(private authFacadeService: AuthFacadeService) {}
 
   canActivate(
@@ -23,12 +24,7 @@ export class CanActivateViaAuthGuardAccessService implements CanActivate {
           );
           const facility = self.authFacadeService.getSelectedFacility();
           const validate = self.validateFacility(facility);
-          const resulm = (index > -1 || DONT_USE_AUTH_GUARD) &&
-          (validate || route.routeConfig.path === "facility");
-          resolve(
-            (index > -1 || DONT_USE_AUTH_GUARD) &&
-              (validate || route.routeConfig.path === "facility")
-          );
+          resolve(validate || route.routeConfig.path === "facility");
         },
         error => {
           reject(error);

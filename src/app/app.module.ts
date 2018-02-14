@@ -1,3 +1,4 @@
+import { CanActivateViaAuthGuardCompleteFacilityService } from './services/facility-manager/setup/can-activate-via-auth-guard-complete-facility.service';
 import { AuthInterceptor } from './feathers/auth.interceptor';
 import { AuthFacadeService } from './system-modules/service-facade/auth-facade.service';
 import { TitleCasePipe } from '@angular/common';
@@ -137,7 +138,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    }, CanActivateViaAuthGuardCompleteFacilityService
   ],
   bootstrap: [AppComponent]
 })
