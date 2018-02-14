@@ -83,13 +83,11 @@ export class BillLookupComponent implements OnInit {
       this.subTotal = 0;
       this.total = 0;
       this.discount = 0;
-      console.log(this.selectedPatient);
       this.getPatientBills();
     });
 
     this.invoiceService.receiveDiscount().subscribe((payload: any) => {
       const valueCheck = payload.valueCheck;
-      console.log(valueCheck);
       const modifier = payload.modifier;
       if (valueCheck === 'Percentage') {
         this.discount = ((modifier / 100) * this.total);
@@ -100,14 +98,12 @@ export class BillLookupComponent implements OnInit {
     });
 
     this.invoiceService.receiveInvoice().subscribe((payload: any) => {
-      console.log(payload);
       payload.forEach((itemi, i) => {
 
         if (itemi.isModified !== undefined) {
           this.fixedModifiedBill(itemi);
         } else {
           this.fixedGroup(itemi);
-          console.log("adding new item");
         }
       });
 
@@ -123,7 +119,6 @@ export class BillLookupComponent implements OnInit {
       if (!!params.id && params.id !== undefined) {
         this.patientService.find({ query: { facilityId: this.selectedFacility._id, personId: params.id } }).then(res => {
           this.selectedPatient = res.data[0];
-          console.log(this.selectedPatient);
           this.getPatientBills();
         }).catch(err => console.log(err));
       }
@@ -158,7 +153,6 @@ export class BillLookupComponent implements OnInit {
           this.invoiceGroups = payload.invoices;
           this.isLoadingInvoice = false;
         },err => {
-          console.log(err);
           this._notification('Error', 'There was a problem getting pending bills. Please try again later!');
         });
       });
@@ -181,7 +175,6 @@ export class BillLookupComponent implements OnInit {
   }
 
   onPersonValueUpdated(item) {
-    console.log(item);
     this.selectedPatient.personDetails = item.person;
     this._getAllPendingBills();
     this._getAllInvoices();
@@ -214,14 +207,11 @@ export class BillLookupComponent implements OnInit {
       subTotal: this.subTotal,
       totalPrice: this.total
     }
-    console.log(billToInvoice);
     this.billingService.generateInvoice(billToInvoice).then(payload => {
-      console.log(payload);
       this.isProcessing = false;
       this.router.navigate(['/dashboard/payment/invoice', payload.patientId]);
     },error=>{
       this.isProcessing = false;
-      console.log(error);
     });
   }
 
@@ -250,8 +240,6 @@ export class BillLookupComponent implements OnInit {
         this.subTotal = this.subTotal + existingGroup.total;
         this.total = this.subTotal - this.discount;
       }
-      console.log(this.total);
-      console.log(bill);
       this.setNewBillItem(bill);
       existingGroup.isOpened = false;
       this.toggleCurrentCategory(existingGroup);
@@ -262,16 +250,13 @@ export class BillLookupComponent implements OnInit {
       };
       bill.isChecked = false;
       group.bills.push(bill);
-      console.log(group);
       this.billGroups.push(group);
       this.total = this.subTotal - this.discount;
-      console.log(bill);
       this.setNewBillItem(bill);
       group.isOpened = false;
       this.toggleCurrentCategory(group);
     }
     //this.reCalculateBillTotal();
-    console.log(this.billGroups);
   }
 
   getItemSum(items, key) {
@@ -284,7 +269,6 @@ export class BillLookupComponent implements OnInit {
 
   setNewBillItem(bill) {
     if (bill._id == undefined) {
-      console.log("am here");
       var newBillItem = {
         "facilityServiceId": bill.facilityServiceObject.facilityServiceId,
         "serviceId": bill.facilityServiceObject.serviceId,
@@ -296,20 +280,16 @@ export class BillLookupComponent implements OnInit {
         "unitPrice": bill.unitPrice
       };
       if (this.recentBillModelId != undefined) {
-        console.log(this.recentBillModelId);
         this.billingService.get(this.recentBillModelId, {}).then((recentBill: any) => {
           if (recentBill._id != undefined) {
             recentBill.subTotal += bill.amount;
             recentBill.grandTotal += bill.amount;
             recentBill.billItems.push(newBillItem);
-            console.log(recentBill);
             this.billingService.update(recentBill).then((updatedBill: any) => {
-              console.log(updatedBill);
               this.getPatientBills();
               this.isProcessing = false;
               this._notification("Success", "Updated newly added item(s) to existing billitems");
             }, error => {
-              console.log(error);
               this.isProcessing = false;
               this._notification("Error", "Failed to update newly added item(s) to existing billitems");
             });
@@ -328,7 +308,6 @@ export class BillLookupComponent implements OnInit {
           this.isProcessing = false;
           this._notification("Success", "Created new billitems");
         }, error => {
-          console.log(error);
           this.isProcessing = false;
           this._notification("Error", "Failed to create new billitems");
         });
@@ -401,7 +380,6 @@ export class BillLookupComponent implements OnInit {
     this.billGroups = [];
     this.masterBillGroups = [];
     this.txtSelectAll.setValue(false);
-    console.log(this.selectedPatient);
     if(this.selectedPatient != undefined){
       this.billingService.findBillService({ query: { facilityId: this.selectedFacility._id, patientId: this.selectedPatient._id, isinvoice: false } })
       .then(payload => {
@@ -415,7 +393,6 @@ export class BillLookupComponent implements OnInit {
     this.selectedPatient = {};
     this.selectedPatient._id = pendingBill.patientId;
     this.selectedPatient.personDetails = pendingBill.personDetails;
-    console.log(this.selectedPatient);
     this.getPatientBills();
   }
 
@@ -427,28 +404,23 @@ export class BillLookupComponent implements OnInit {
         "isQuery": false
       }
     }).then((res: any) => {
-      console.log(res);
       this.pendingBills = res.bills;
       this.loadingPendingBills = false;
     },err => {
-      console.log(err);
       this._notification('Error', 'There was a problem getting pending bills. Please try again later!')
     });
   }
 
   private _getAllInvoices() {
     this.isLoadingInvoice = true;
-    console.log(this.selectedFacility._id);
     this._todayInvoiceService.get(this.selectedFacility._id, {
       query: {
         'isQuery': false
       }
     }).then(payload => {
-      console.log(payload);
       this.invoiceGroups = payload.invoices;
       this.isLoadingInvoice = false;
     },err => {
-      console.log(err);
       this._notification('Error', 'There was a problem getting pending invoices. Please try again later!')});
   }
 
@@ -472,7 +444,6 @@ export class BillLookupComponent implements OnInit {
       });
     });
     this.total = (this.subTotal - this.discount);
-    console.log(this.total);
   }
 
   onRemoveBill(bill: BillModel, group: any) {

@@ -81,7 +81,6 @@ export class FcListComponent implements OnInit {
 
   addDependant(beneficiary?) {
     if (beneficiary) {
-      console.log(beneficiary);
       this.showEdit(beneficiary, true);
       this.pushNewDependant(undefined, undefined);
     } else {
@@ -150,7 +149,6 @@ export class FcListComponent implements OnInit {
       this.frmDependant.controls['dependantArray'] = this.formBuilder.array([]);
       filtered.forEach((filter, i) => {
         if (this.getRole(filter) === 'D') {
-          console.log(i);
           hasRecord = true;
           (<FormArray>this.frmDependant.controls['dependantArray'])
             .push(
@@ -241,12 +239,8 @@ export class FcListComponent implements OnInit {
       };
       let filtered = dependantValue.controls.dependantArray.controls.filter(x => x.value.readOnly === true);
       filtered.forEach((item, i) => {
-        console.log(i);
-        console.log(item.value);
         param.dependants.push(item.value);
       });
-      console.log(param);
-
       this.familyCoverService.updateBeneficiaryList(param).then(payload => {
         this.getBeneficiaryList(this.selectedFacility._id);
         this.cancel();

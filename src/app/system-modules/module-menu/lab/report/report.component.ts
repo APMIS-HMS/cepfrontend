@@ -75,7 +75,6 @@ export class ReportComponent implements OnInit {
   ) {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.employeeDetails = res;
-      console.log(this.employeeDetails);
     }).catch(err => console.log(err));
   }
 
@@ -260,7 +259,6 @@ export class ReportComponent implements OnInit {
                       this._systemModuleService.announceSweetProxy('Report has been saved successfully!', 'success');
                       // this._notification('Success', 'Report has been saved successfully!');
                     }).catch(err => {
-                      console.log(err);
                     });
                   } else {
                     // Save into documentation
@@ -269,13 +267,11 @@ export class ReportComponent implements OnInit {
                       this._systemModuleService.announceSweetProxy('Report has been saved and uploaded successfully!', 'success');
                       // this._notification('Success', 'Report has been saved and uploaded successfully!');
                     }).catch(err => {
-                       console.log(err);
                     });
                   }
                 });
               }
             }).catch(err => {
-              console.log(err);
               this._notification('Error', 'There was an error saving report. Please try again later!');
             });
           } else {
@@ -604,7 +600,6 @@ export class ReportComponent implements OnInit {
 
   private _getDocumentationForm() {
     this._formService.findAll().then(res => {
-      console.log(res);
       this.selectedForm = res.data.filter(x => new RegExp('laboratory', 'i').test(x.title))[0];
     }).catch(err => this._notification('Error', 'There was a problem getting documentations!'));
   }

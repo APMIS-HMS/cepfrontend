@@ -90,7 +90,6 @@ export class EmployeeService {
     return this._socket.update(employee._id, employee);
   }
   assignUnit(body: any) {
-    console.log(body);
     return this._assignSocket.update(body.unitId, body.employees);
   }
   updateMany(employees: any) {

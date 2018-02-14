@@ -51,7 +51,6 @@ export class HmoListComponent implements OnInit {
 
   ngOnInit() {
     this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
-    console.log(this.selectedFacilityType);
     this.user = <User>this.locker.getObject('auth');
     this.frmNewHmo = this.formBuilder.group({
       name: ['', [Validators.required]],
@@ -101,7 +100,6 @@ export class HmoListComponent implements OnInit {
     this.facilityService.find({
       query: { _id: { $in: flist } }
     }).then(payload => {
-      console.log(payload);
       this.hmoFacilities = payload.data;
     });
   }
@@ -182,7 +180,6 @@ export class HmoListComponent implements OnInit {
 
       /* save data */
       let data = <AOA>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
-      console.log(data[100]);
     };
     reader.readAsBinaryString(target.files[0]);
   }
@@ -195,8 +192,6 @@ export class HmoListComponent implements OnInit {
           'file': this.excelFile
         }
     }).then(res => {
-
-      console.log(res);
 
       let enrolleeList: any[] = [];
       if (res.body !== undefined && res.body.error_code === 0) {
@@ -226,14 +221,11 @@ export class HmoListComponent implements OnInit {
         facHmo.enrolleeList.push(enrolleeItem);
         this.loginHMOListObject.hmos[index] = facHmo;
 
-        console.log(this.loginHMOListObject);
-
         /* this.hmoService.update(this.loginHMOListObject).then(pay => {
           this.getLoginHMOList();
         }) */
       }
     }).catch(err => {
-      console.log(err);
       this.systemModuleService.announceSweetProxy('There was an error uploading the file', 'error');
     });
   }
@@ -249,7 +241,6 @@ export class HmoListComponent implements OnInit {
     return new Date(Math.round((date - 25569) * 86400 * 1000));
   }
   checkHmo() {
-    console.log(this.loginHMOListObject.hmos)
     return this.loginHMOListObject.hmos.findIndex(x => x.hmo === this.selectedHMO._id) > -1;
   }
   save(valid, value) {

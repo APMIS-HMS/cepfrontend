@@ -139,20 +139,17 @@ export class FacilityBasicinfoEditComponent implements OnInit {
 			isNetworkFacility: (form.network === true) ? true : false
 			
 		}
-		console.log(facility);
 		this.systemModuleService.on();
 		this.facilityService.patch(facility._id, facility, {}).then(payload => {
 			this.systemModuleService.off();
 			this.systemModuleService.announceSweetProxy('Facility updated successfully', 'success');
 			this.close_onClick();
 		}, error => {
-			console.log(error);
 			this.systemModuleService.off();
 		});
 	}
 	
 	public callBack(value){
-		console.log(value);
 	}
 	autoCompleteCallback1(selectedData: any) {
 		if (selectedData.response) {

@@ -390,6 +390,10 @@ export class LabRequestsComponent implements OnInit {
   }
   childChanged($event, investigation: InvestigationModel,
     childInvestigation?: InvestigationModel, isChild = false) {
+      console.log($event);
+      console.log(investigation);
+      console.log(childInvestigation);
+      console.log(isChild);
     if ($event.checked || childInvestigation !== undefined) {
       if (investigation.investigation.isPanel) {
         // isPanel
@@ -436,6 +440,10 @@ export class LabRequestsComponent implements OnInit {
   }
   investigationChanged($event, investigation: InvestigationModel,
     childInvestigation?: InvestigationModel, isChild = false) {
+    console.log($event);
+    console.log(investigation);
+    console.log(childInvestigation);
+    console.log(isChild);
     if ($event.checked || childInvestigation !== undefined) {
       if (investigation.investigation.isPanel) {
         // isPanel
@@ -485,7 +493,6 @@ export class LabRequestsComponent implements OnInit {
 
           }
         } else {
-
           // without child investigation
           const copyInvestigation = JSON.parse(JSON.stringify(investigation));
           const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === copyInvestigation.investigation._id);
@@ -493,10 +500,11 @@ export class LabRequestsComponent implements OnInit {
             if ($event.checked) {
               // investigation.isChecked = true;
               investigation.investigation.panel.forEach((child, k) => {
-                if (this.bindInvestigations[isInBind].investigation.panel
-                  .findIndex(x => x.investigation._id === child.investigation._id) < 0) {
+                const thisBindInvest = this.bindInvestigations[isInBind];
+                const findIndex = thisBindInvest.investigation.panel.findIndex(x => x.investigation._id === child.investigation._id)
+                if (findIndex < 0) {
                   // child.isChecked = true;
-                  if (this.bindInvestigations[isInBind].investigation.panel.length === investigation.investigation.panel.length) {
+                  if (thisBindInvest.investigation.panel.length === investigation.investigation.panel.length) {
                     investigation.isChecked = true;
                   } else {
                     investigation.isChecked = false;

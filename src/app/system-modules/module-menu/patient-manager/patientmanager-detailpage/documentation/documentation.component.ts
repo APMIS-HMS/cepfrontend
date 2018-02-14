@@ -312,14 +312,12 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         this.requestService.update(results[0]).then(payload => {
           this._notification('Success', 'Request has been sent successfully!');
         }).catch(err => {
-          console.log(err);
         });
       });
     } else {
       this.requestService.create(request).then(payload => {
         this._notification('Success', 'Request has been sent successfully!');
       }).catch(err => {
-        console.log(err);
       });
     }
   }

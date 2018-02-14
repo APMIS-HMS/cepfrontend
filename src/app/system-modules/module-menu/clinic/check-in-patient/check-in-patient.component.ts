@@ -152,7 +152,6 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
                         }
                     });
                 } else if (this.loginEmployee !== undefined && this.loginEmployee.professionId !== 'Doctor') {
-                  console.log(this.loginEmployee);
                     this.loginEmployee.workSpaces.forEach((wrk, ii) => {
                         wrk.locations.forEach((lct, li) => {
                             this.schedules.forEach((sch: any, ji) => {
