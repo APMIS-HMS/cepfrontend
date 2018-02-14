@@ -1,7 +1,9 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
-import { SupplierService, ProductService, PurchaseOrderService, StoreService } from '../../../../services/facility-manager/setup/index';
+import { SupplierService, ProductService, PurchaseOrderService, StoreService, EmployeeService } from '../../../../services/facility-manager/setup/index';
 import { Facility } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
+import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import { PurchaseOrder } from '../../../../models/index';
 import { Router } from '@angular/router';
 import { FormControl } from '@angular/forms';
@@ -18,6 +20,8 @@ export class PurchaseOrderComponent implements OnInit {
 
   orders: any[] = [];
   suppliers: any[] = [];
+  checkingObject: any = <any>{};
+  loginEmployee: any = <any>{};
 
   selectedFacility: Facility = <Facility>{};
   selectedOrder: any = <any>{};
@@ -25,14 +29,16 @@ export class PurchaseOrderComponent implements OnInit {
     private supplierService: SupplierService, private router: Router,
     private storeService: StoreService, private locker: CoolLocalStorage, private productService: ProductService,
     private purchaseOrderService: PurchaseOrderService,
-    private _purchaseEventEmitter: PurchaseEmitterService) { }
+    private _purchaseEventEmitter: PurchaseEmitterService,
+    private systemModuleService: SystemModuleService,
+    private authFacadeService: AuthFacadeService,
+    private employeeService: EmployeeService) { }
 
   ngOnInit() {
     this._purchaseEventEmitter.setRouteUrl('Purchase Orders');
-    this.selectedFacility =  <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.getPurchaseOrders();
     this.getSuppliers();
-
     this.frmSupplier.valueChanges.subscribe(value => {
       if (value !== null) {
         this.purchaseOrderService.find({ query: { supplierId: value } }).subscribe(payload => {
@@ -41,7 +47,6 @@ export class PurchaseOrderComponent implements OnInit {
       } else {
         this.getPurchaseOrders();
       }
-
     });
   }
   getSuppliers() {
@@ -50,7 +55,8 @@ export class PurchaseOrderComponent implements OnInit {
     });
   }
   getPurchaseOrders() {
-    this.purchaseOrderService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
+    this.purchaseOrderService.findOrder({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
+      console.log(payload);
       this.orders = payload.data;
     });
   }

@@ -309,7 +309,7 @@ export class PurchaseEntryComponent implements OnInit {
     this.storeService.find({ query: { canReceivePurchaseOrder: true, facilityId: this.selectedFacility._id } }).subscribe(payload => {
       this.stores = payload.data;
       if (this.orderId === undefined) {
-        this.frm_purchaseOrder.controls['store'].setValue(this.checkingObject.typeObject.storeId);
+        this.frm_purchaseOrder.controls['store'].setValue(this.checkingObject.storeId);
         if (this.orderId === undefined && this.invoiceId === undefined) {
           this.myInventory.setValue(true);
         }

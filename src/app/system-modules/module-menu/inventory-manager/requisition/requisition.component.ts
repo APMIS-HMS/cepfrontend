@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
 import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
+import { SystemModuleService } from './../../../../services/module-manager/setup/system-module.service';
 // tslint:disable-next-line:max-line-length
-import { StoreService, ProductService, StrengthService, ProductRequisitionService, EmployeeService } from '../../../../services/facility-manager/setup/index';
+import { StoreService, ProductService, StrengthService, ProductRequisitionService, EmployeeService, InventoryService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Requisition, RequisitionProduct, Employee } from '../../../../models/index';
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -30,8 +31,9 @@ export class RequisitionComponent implements OnInit {
   searchControl = new FormControl();
   productsControl = new FormControl();
   desc = new FormControl();
-
-
+  checkBoxLabel = [];
+  isChecked = false;
+  indexChecked = 0;
   value: Date = new Date(1981, 3, 27);
   now: Date = new Date();
   min: Date = new Date(1900, 0, 1);
@@ -57,14 +59,19 @@ export class RequisitionComponent implements OnInit {
     private strengthService: StrengthService,
     private employeeService: EmployeeService,
     private requisitionService: ProductRequisitionService,
-    private authFacadeService: AuthFacadeService
+    private authFacadeService: AuthFacadeService,
+    private systemModuleService: SystemModuleService,
+    private inventoryService: InventoryService
   ) {
-    this.stores = [];
+
     this.employeeService.checkInAnnounced$.subscribe(payload => {
       console.log(payload);
-      if (payload.typeObject !== undefined) {
-        this.checkingObject = payload.typeObject;
-        this.getStores();
+      if (payload !== undefined) {
+        this.stores = [];
+        if (payload.typeObject !== undefined) {
+          this.checkingObject = payload.typeObject;
+          this.getStores();
+        }
       }
     });
   }
@@ -73,6 +80,7 @@ export class RequisitionComponent implements OnInit {
     this._inventoryEventEmitter.setRouteUrl('Requisition');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
+    this.checkBoxLabel = [{ name: 'All', checked: true }, { name: 'Out of stock', checked: false }, { name: 'Re-order Level', checked: false }];
     this.frm_purchaseOrder = this.formBuilder.group({
       product: ['', [<any>Validators.required]],
       supplier: ['', [<any>Validators.required]],
@@ -115,10 +123,12 @@ export class RequisitionComponent implements OnInit {
   }
 
   getAllProducts() {
+    this.systemModuleService.on();
     this.productService.find({ query: { facilityId: this.selectedFacility._id, $limit: false } }).then(payload => {
       this.products = payload.data;
       console.log(this.products);
       this.getProductTables(this.products);
+      this.systemModuleService.off();
     });
   }
   getProductTables(products: any[]) {
@@ -253,16 +263,22 @@ export class RequisitionComponent implements OnInit {
     requisition.storeId = this.checkingObject.storeId;
     requisition.comment = this.desc.value;
     requisition.products = [];
+    console.log(requisition);
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
       const requisitionProduct: RequisitionProduct = <RequisitionProduct>{};
       requisitionProduct.productId = item.value.productObject._id;
       requisitionProduct.qty = item.value.qty;
       requisition.products.push(requisitionProduct);
     });
-    this.requisitionService.create(requisition).subscribe(payload => {
+    console.log(requisition);
+    this.requisitionService.create(requisition).then(payload => {
+      console.log(755555555555656567);
+      this.systemModuleService.announceSweetProxy('Requisition successfull', 'success');
       this.addNewProductTables();
       this.desc.reset();
       this.resetGroups();
+    }, err => {
+      this.systemModuleService.announceSweetProxy('Requisition failed', 'error');
     });
   }
 
@@ -273,6 +289,55 @@ export class RequisitionComponent implements OnInit {
   flyout_close(e) {
     if (this.flyout === true) {
       this.flyout = false;
+    }
+  }
+
+  getInventories() {
+    this.systemModuleService.on();
+    this.products = [];
+    if (this.checkingObject !== null) {
+      this.inventoryService.findList({
+        query:
+          { facilityId: this.selectedFacility._id, name: '', storeId: this.checkingObject.storeId }//, $limit: 200 }
+      })
+        .then(payload => {
+          console.log(payload);
+          let products = payload.data.filter(x => x.availableQuantity == 0);
+          products.forEach(element => {
+            this.products.push(element.productObject);
+            this.getProductTables(this.products);
+          });
+          this.systemModuleService.off();
+        });
+    }
+
+  }
+
+  onChecked(e, item, checkBoxLabel, i) {
+    item.checked = e.checked;
+    this.products = [];
+    this.getProductTables(this.products);
+    if (e.checked) {
+      if (i === 0) {
+        checkBoxLabel[1].checked = false;
+        checkBoxLabel[2].checked = false;
+        this.getAllProducts();
+      } else if (i === 1) {
+        checkBoxLabel[0].checked = false;
+        checkBoxLabel[2].checked = false;
+        this.getInventories();
+      } else if (i === 2) {
+        checkBoxLabel[1].checked = false;
+        checkBoxLabel[0].checked = false;
+        this.products = [];
+        this.getProductTables(this.products);
+      }
+    } else {
+      checkBoxLabel[0].checked = false;
+      checkBoxLabel[1].checked = false;
+      checkBoxLabel[2].checked = false;
+      this.products = [];
+      this.getProductTables(this.products);
     }
   }
 }

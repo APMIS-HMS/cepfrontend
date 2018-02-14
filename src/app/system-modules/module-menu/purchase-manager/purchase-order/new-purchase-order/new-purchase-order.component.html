@@ -53,20 +53,8 @@
                         </div>
 
                         <div class="check-filterWrap">
-                            <div class="frm-item-wrap chkbox-wrap">
-                                <mat-checkbox [formControl]="checkAll">All</mat-checkbox>
-                            </div>
-                            <div class="frm-item-wrap chkbox-wrap">
-                                <mat-checkbox [formControl]="myInventory">My Inventory</mat-checkbox>
-                            </div>
-                            <div class="frm-item-wrap chkbox-wrap">
-                                <mat-checkbox [formControl]="zeroQuantity">Out of stock</mat-checkbox>
-                            </div>
-                            <div class="frm-item-wrap chkbox-wrap">
-                                <mat-checkbox [formControl]="reOrderLevelQuantity">Re-order Level</mat-checkbox>
-                            </div>
-                            <div class="frm-item-wrap chkbox-wrap">
-                                <mat-checkbox [formControl]="expired">Expired</mat-checkbox>
+                            <div class="frm-item-wrap chkbox-wrap" *ngFor ="let item of checkBoxLabels; let i=index">
+                                <mat-checkbox [checked]="item.checked" (change)="onChecked($event,item,checkBoxLabels,i)">{{item.name}}</mat-checkbox>
                             </div>
                         </div>
                     </div>
