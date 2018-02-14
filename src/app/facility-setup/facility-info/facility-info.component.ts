@@ -17,6 +17,7 @@ import { FacilityFacadeService } from 'app/system-modules/service-facade/facilit
 	styleUrls: ['../facility-setup.component.scss']
 })
 export class FacilityInfoComponent implements OnInit {
+	isSaving = false;
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 	@Input() inputFacility: Facility = <Facility>{};
 
@@ -112,6 +113,7 @@ export class FacilityInfoComponent implements OnInit {
 
 	save(form) {
 		this._systemModuleService.on();
+		this.isSaving = true;
 		let facility: any = {
 			name: this.titleCasePipe.transform(form.facilityname),
 			email: this.titleCasePipe.transform(form.facilityemail),
@@ -129,12 +131,14 @@ export class FacilityInfoComponent implements OnInit {
 			personId: this._facilityServiceFacade.facilityCreatorPersonId
 		}
 		this._facilityServiceFacade.saveFacility(payload).then(payload => {
+			this.isSaving = false;
 			this.facilityForm1.reset();
 			this.userSettings['inputString'] = '';
 			this._systemModuleService.off();
 			this.close_onClick();
 			this._systemModuleService.announceSweetProxy('Facility created successfully', 'success');
 		}, error => {
+			this.isSaving = false;
 			this._systemModuleService.off();
 			const errMsg = 'There was an error while creating the facility, try again!';
 			this._systemModuleService.announceSweetProxy(errMsg, 'success');

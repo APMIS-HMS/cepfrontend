@@ -1,6 +1,6 @@
 <div class="modal-baseWrap">
-    <div class="infoAlert"><i class="fa fa-info-circle" aria-hidden="true"></i>Note that a verification token will be sent to the number supplied
-      below</div>
+    <div class="infoAlert"><i class="fa fa-info-circle" aria-hidden="true"></i>Note that a verification token will be sent to the number supplied below
+    </div>
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
     <form [formGroup]="facilityForm1" novalidate (submit)="save(facilityForm1.value)">
 
@@ -24,7 +24,7 @@
             <div class="frm-item-x2">
                 <mat-form-field class="example-full-width">
                     <mat-select placeholder="Country" formControlName="facilitycountry">
-                        <mat-option  [value]="country.name" *ngFor="let country of countries">{{country.name}}</mat-option>
+                        <mat-option [value]="country.name" *ngFor="let country of countries">{{country.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
                 <mat-form-field class="example-full-width">
@@ -50,9 +50,13 @@
             </mat-input-container>
         </div>
 
-        <button [disabled]="!facilityForm1.valid" class="cta-1"> 
+        <button [disabled]="(!facilityForm1.valid && !isSaving) || isSaving" class="cta-1" [ngClass]="{'cta-1':(facilityForm1.valid && !isSaving), 'cta-1-disable':(!facilityForm1.valid && !isSaving) || isSaving}"> 
         SIGN UP
         </button>
+        <!-- <button [disabled]="(!frmPerson.valid && !isSaving) || isSaving || validatingPerson()" (click)="submit(frmPerson.valid, frmPerson.value)" [ngClass]="{'cta-1':(frmPerson.valid && !isSaving && !validatingPerson()), 'cta-1-disable':(!frmPerson.valid && !isSaving) || isSaving || validatingPerson()}">
+            Register
+            <i *ngIf="isSaving" class="fa fa-spinner fa-spin fa-2x"></i>
+        </button> -->
 
-    </form> 
+    </form>
 </div>
