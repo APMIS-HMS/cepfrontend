@@ -89,7 +89,7 @@ import { SharedModuleMaterialModule } from '../shared-common-modules/sharedmodul
     TemplatePhysicianOrderComponent,
     SharedModuleMaterialModule
   ],
-  imports: [
+  imports: [ 
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
