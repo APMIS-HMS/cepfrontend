@@ -5,12 +5,25 @@ import { ChartsModule } from 'ng2-charts'
 import { reportRoutes } from './report.routes';
 import { ReportComponent } from './report.component';
 import { SummaryComponent } from './summary/summary.component';
+import { PaymentComponent } from './payment/payment.component';
+import { PatientComponent } from './patient/patient.component';
+import { ClinicComponent } from './clinic/clinic.component';
+import { LabComponent } from './lab/lab.component';
+import { PharmacyComponent } from './pharmacy/pharmacy.component';
+import { StoreComponent } from './store/store.component';
+
 
 
 @NgModule({
     declarations: [
         ReportComponent,
-        SummaryComponent
+        SummaryComponent,
+        PaymentComponent,
+        PatientComponent,
+        ClinicComponent,
+        LabComponent,
+        PharmacyComponent,
+        StoreComponent
     ],
     exports: [
     ],
