@@ -4,6 +4,10 @@ class Service {
     this.options = options || {};
   }
 
+  setup(app) {
+    this.app = app;
+  }
+
   async find(params) {
     const suppliersService = this.app.service('suppliers');
     const productsService = this.app.service('products');
@@ -15,9 +19,7 @@ class Service {
     });
     let orders = await orderService.find({
       query: {
-        facilityId: params.query.facilityId,
-        storeId: params.query.storeId,
-        supplierId: params.query.supplierId,
+        facilityId: params.query.facilityId
       }
     }); //supplierObject
 
@@ -25,7 +27,7 @@ class Service {
       if (orders.data.length > 0) {
         let len = orders.data.length - 1;
         for (let i = 0; i <= len; i++) {
-          let index = supplier.data.filter(x => x._id.toString() === orders.data[i].toString());
+          let index = supplier.data.filter(x => x._id.toString() === orders.data[i].supplierId.toString());
           if (index.length > 0) {
             orders.data[i].supplierObject = index[0];
           }
@@ -33,13 +35,14 @@ class Service {
             if (orders.data[i].orderedProducts.length > 0) {
               let len2 = orders.data[i].orderedProducts.length - 1;
               for (let j = 0; j <= len2; j++) {
-                let getProduct = productsService.get(orders.data[i].orderedProducts[j].productId);
+                let getProduct = await productsService.get(orders.data[i].orderedProducts[j].productId);
                 orders.data[i].orderedProducts[j].productObject = getProduct;
               }
             }
           }
 
         }
+        return orders;
       } else {
         return {};
       }
