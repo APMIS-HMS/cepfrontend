@@ -82,6 +82,7 @@ export class EditEmpBasicComponent implements OnInit {
 		this.facilityForm1 = this.formBuilder.group({
 			dept: [this.selectedEmployee.departmentId, [<any>Validators.required]],
 		});
+		console.log(this.selectedPerson);
 		this.facilityForm2 = this.formBuilder.group({
 			title: [this.selectedPerson.title, [<any>Validators.required]],
 			firstname: [this.selectedPerson.firstName, [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
@@ -89,7 +90,7 @@ export class EditEmpBasicComponent implements OnInit {
 			othernames: [this.selectedPerson.otherNames, []],
 			gender: [this.selectedPerson.gender, [<any>Validators.required]],
 			maritalStatus: [this.selectedPerson.maritalStatus, [<any>Validators.required]],
-			date: [this.selectedPerson.dateOfBirth, [<any>Validators.required]],
+			date: [new Date(this.selectedPerson.dateOfBirth).toDateString(), [<any>Validators.required]],
 			nationality: [this.selectedPerson.nationality, [<any>Validators.required]],
 			stateofOrigin: [this.selectedPerson.stateOfOrigin, [<any>Validators.required]],
 			localgovtarea: [this.selectedPerson.lgaOfOrigin, [<any>Validators.required]],
