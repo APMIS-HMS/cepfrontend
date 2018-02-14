@@ -1,3 +1,5 @@
+import { DONT_USE_AUTH_GUARD } from './../../shared-module/helpers/global-config';
+import { FeatureModuleService } from './../../services/module-manager/setup/feature-module.service';
 import { AuthFacadeService } from './../service-facade/auth-facade.service';
 import { Component, OnInit, ViewChild, ElementRef, ViewContainerRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -46,25 +48,14 @@ export class DashboardHomeComponent implements OnInit {
   loadIndicatorVisible = false;
   subscription: Subscription;
   loginEmployee: Employee = <Employee>{};
+  access: any = [];
 
   checkedInObject: any = <any>{};
   constructor(private _elRef: ElementRef, private locker: CoolLocalStorage, private userService: UserService,
     private router: Router, public facilityService: FacilitiesService, private employeeService: EmployeeService,
-    private workSpaceService: WorkSpaceService, private authFacadeService: AuthFacadeService) {
-    // router.events.subscribe((routerEvent: Event) => {
-    //   this.checkRouterEvent(routerEvent);
-    // });
+    private workSpaceService: WorkSpaceService, private authFacadeService: AuthFacadeService, private featureService: FeatureModuleService) {
   }
-  // checkRouterEvent(routerEvent: Event): void {
-  //   if (routerEvent instanceof NavigationStart) {
-  //     this.loadIndicatorVisible = true;
-  //   }
-  //   if (routerEvent instanceof NavigationEnd ||
-  //     routerEvent instanceof NavigationCancel ||
-  //     routerEvent instanceof NavigationError) {
-  //     this.loadIndicatorVisible = false;
-  //   }
-  // }
+
   ngOnInit() {
     this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
     if (this.facilityObj !== undefined && this.facilityObj != null) {
@@ -79,53 +70,81 @@ export class DashboardHomeComponent implements OnInit {
     this.facilityService.patchListner.subscribe(pay => {
       this.facilityName = pay.name;
     });
-    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
-    const auth = <any>this.locker.getObject('auth');
-    if (this.loginEmployee !== null && this.loginEmployee._id !== undefined && auth.data.personId === this.loginEmployee.personId) {
-      return;
-    }
+    // this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    this.authFacadeService.getLogingEmployee().then((payload:any) =>{
+      this.loginEmployee = payload;
+      const auth = <any>this.locker.getObject('auth');
+      if(this.loginEmployee !== undefined){
+        this.locker.setObject('workspaces', this.loginEmployee.workSpaces);
+      }
+
+      this.locker.setObject('miniFacility', this.loginEmployee);
+      this.getUserRoles();
+      if (this.loginEmployee !== undefined && this.loginEmployee._id !== undefined && auth.data.personId === this.loginEmployee.personId) {
+        return;
+      }
+    });
+
+
+  
     this.loadIndicatorVisible = true;
 
-    const emp$ = Observable.fromPromise(this.employeeService.find({
-      query: {
-        facilityId: this.facilityObj._id, personId: auth.data.personId, $select: ['personId']
-      }
-    }));
-    this.subscription = emp$.mergeMap((emp: any) => {
-      if (emp.data.length > 0) {
-        return Observable.forkJoin(
-          [
-            Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
-            Observable.fromPromise(this.workSpaceService.find({ query: { 'employeeId._id': emp.data[0]._id } })),
-            Observable.fromPromise(this.facilityService
-              .find({
-                query: {
-                  '_id': this.facilityObj._id,
-                  $select: ['name', 'email', 'contactPhoneNo', 'contactFullName', 'shortName', 'website', 'logoObject']
-                }
-              }))
-          ])
-      } else {
-        this.loadIndicatorVisible = false;
-        return Observable.of({})
-      }
-    }
-    ).subscribe((results: any) => {
-      if (results[0] !== undefined) {
-        this.loginEmployee = results[0];
-        this.loginEmployee.workSpaces = results[1].data;
-        this.locker.setObject('workspaces', this.loginEmployee.workSpaces)
+    // const emp$ = Observable.fromPromise(this.employeeService.find({
+    //   query: {
+    //     facilityId: this.facilityObj._id, personId: auth.data.personId, $select: ['personId']
+    //   }
+    // }));
+    // this.subscription = emp$.mergeMap((emp: any) => {
+    //   if (emp.data.length > 0) {
+    //     return Observable.forkJoin(
+    //       [
+    //         Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
+    //         Observable.fromPromise(this.workSpaceService.find({ query: { 'employeeId._id': emp.data[0]._id } })),
+    //         Observable.fromPromise(this.facilityService
+    //           .find({
+    //             query: {
+    //               '_id': this.facilityObj._id,
+    //               $select: ['name', 'email', 'contactPhoneNo', 'contactFullName', 'shortName', 'website', 'logoObject']
+    //             }
+    //           }))
+    //       ])
+    //   } else {
+    //     this.loadIndicatorVisible = false;
+    //     return Observable.of({})
+    //   }
+    // }
+    // ).subscribe((results: any) => {
+    //   if (results[0] !== undefined) {
+    //     this.loginEmployee = results[0];
+    //     this.loginEmployee.workSpaces = results[1].data;
+    //     this.locker.setObject('workspaces', this.loginEmployee.workSpaces);
 
-        if (results[2].data.length > 0) {
-          this.locker.setObject('miniFacility', results[2].data[0])
-        }
+    //     if (results[2].data.length > 0) {
+    //       this.locker.setObject('miniFacility', results[2].data[0])
+    //     }
 
-        // this.locker.setObject('loginEmployee', this.loginEmployee);
-        this.authFacadeService.setLogingEmployee(this.loginEmployee)
-      }
+    //     // this.locker.setObject('loginEmployee', this.loginEmployee);
+    //     // this.authFacadeService.setLogingEmployee(this.loginEmployee);
+    //     this.authFacadeService.getLogingEmployee().then((payload: any) => {
+    //       this.loginEmployee = payload;
+    //     });
+    //   }
 
-      this.loadIndicatorVisible = false;
+    //   this.loadIndicatorVisible = false;
+    // })
+
+    
+  }
+  getUserRoles() {
+    this.authFacadeService.getUserAccessControls().then(payload => {
+      this.access = payload;
+    }, error => {
     })
+  }
+  accessHas(menu) {
+    let modules: any = this.access.modules;
+    const index = modules.findIndex(x => x.moduleName.includes(menu));
+    return (index > -1 || DONT_USE_AUTH_GUARD);
   }
   laboratorySubmenuShow() {
     this.innerMenuShow = false;

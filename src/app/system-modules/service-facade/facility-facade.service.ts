@@ -10,13 +10,10 @@ export class FacilityFacadeService {
 
   saveFacility(facility) {
     let that = this;
-    console.log(facility);
     return new Promise(function (resolve, reject) {
       that._facilityService.createFacility(facility).then((payload) => {
-        console.log(payload);
         resolve(payload);
       }, error => {
-        // console.log(error);
         reject(error);
       });
     });

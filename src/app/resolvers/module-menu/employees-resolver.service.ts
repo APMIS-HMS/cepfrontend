@@ -10,8 +10,8 @@ export class EmployeesResolverService implements Resolve<Employee>, OnDestroy, O
   previousUrl = '/';
   selectedFacility: Facility = <Facility>{};
   pageSize = 1;
-  limit = 2;
-  index = 1;
+  limit = 10;
+  index = 0;
   constructor(private employeeService: EmployeeService,
     private locker: CoolLocalStorage,
     private router: Router) {

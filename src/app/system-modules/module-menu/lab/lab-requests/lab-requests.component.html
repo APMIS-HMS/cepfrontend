@@ -34,7 +34,7 @@
                         <div class="frm-wrap">
                             <div class="frm-l">
                                 <div *ngIf="isLaboratory" class="frm-item-wrap">
-                                    <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="search for patient" [isSocket]="false" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
+                                    <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Search for patient" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
                                         [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                 </div>
 
@@ -80,10 +80,8 @@
                                                 </div>
                                                 <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
                                             </div>
-
                                             <div class="panel-loc" *ngIf="investigation.isChecked">
                                                 <div class="inner-radio">
-
                                                     <mat-checkbox (change)="markExternal($event, investigation)" [checked]="investigation.isExternal">External</mat-checkbox>
                                                     <mat-radio-group [value]="location" *ngIf="!investigation.isExternal">
                                                         <mat-radio-button class="opt" *ngFor="let location of investigation.LaboratoryWorkbenches" (change)="locationChanged($event, investigation, location, investigation.LaboratoryWorkbenches)" [value]="location" [checked]="false">
@@ -294,18 +292,26 @@
                             </tr>
                             <tr *ngFor="let request of pendingRequests; let i = index;">
                                 <td>{{ i+1 }}</td>
-                                <td>{{request.createdAt | date:'short'}}</td>
+                                <td>{{request?.createdAt | date:'short'}}</td>
                                 <td>
                                     <div class="empWrap">
                                         <div class="list-img">
-                                            <div *ngIf="request?.patient?.personDetails?.profileImageObject === undefined"><img src="assets/images/users/default.png"></div>
-                                            <img *ngIf="request?.patient?.personDetails?.profileImageObject !== undefined" [src]="facilityService.transform(request?.patient?.personDetails?.profileImageObject?.thumbnail)">
+                                            <div *ngIf="request?.patient?.profileImageObject === undefined"><img src="assets/images/users/default.png"></div>
+                                            <img *ngIf="request?.patient?.profileImageObject !== undefined" [src]="facilityService.transform(request?.patient?.profileImageObject?.thumbnail)">
                                         </div>
-                                        <div>{{request.patient.personDetails.firstName }} {{request.patient.personDetails.lastName }}</div>
+                                        <div>{{request?.patient?.firstName }} {{request?.patient?.lastName }}</div>
                                     </div>
                                 </td>
-                                <td>{{request.name}}</td>
-                                <td> </td>
+                                <td>{{request?.name}}</td>
+                                <td>
+                                    <div class="empWrap">
+                                        <div class="list-img">
+                                            <div *ngIf="request?.createdBy?.profileImageObject === undefined"><img src="assets/images/users/default.png"></div>
+                                            <img *ngIf="request?.createdBy?.profileImageObject !== undefined" [src]="facilityService.transform(request?.createdBy?.profileImageObject?.thumbnail)">
+                                        </div>
+                                        <div>{{request?.createdBy?.firstName }} {{request?.createdBy?.lastName }}</div>
+                                    </div>
+                                </td>
                                 <td>
                                     <div class="status-wrap">
                                         <div class="status-item">
@@ -342,7 +348,7 @@
                                             <span>View Investigation</span>
                                         </div>
 
-                                        <div *ngIf="request.isPaid && request.sampleTaken" class="action-item" (click)="goToWriteReport(request);">
+                                        <div *ngIf="request?.isPaid && request?.sampleTaken" class="action-item" (click)="goToWriteReport(request);">
                                             <i class="fa fa-file-text" aria-hidden="true"></i>
                                             <span>Write Report</span>
                                         </div>
@@ -350,7 +356,7 @@
                                         <div (click)="showImageBrowseDlg()" class="action-item">
                                             <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                                             <span>Upload File</span>
-                                        </div> 
+                                        </div>
                                         <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
                                     </div>
                                 </td>

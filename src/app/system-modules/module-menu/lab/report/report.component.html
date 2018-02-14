@@ -27,22 +27,22 @@
                             <div class="frm-l" [class.frm-container-l]="!patientSelected">
                                 <div class="frm-item-wrap">
                                     <form [formGroup]="patientFormGroup" novalidate>
-                                        <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Search for patient" [isSocket]="false" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
+                                        <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Search for patient" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
                                             [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                     </form>
                                 </div>
                                 <div class="selected-patient-wrap" *ngIf="patientSelected">
                                     <div class="sel-patient-img">
-                                        <img *ngIf="selectedPatient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                        <img class="shadow" *ngIf="selectedPatient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(selectedPatient?.personDetails?.profileImageObject?.thumbnail)">
+                                        <img *ngIf="selectedPatient?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                        <img class="shadow" *ngIf="selectedPatient?.profileImageObject != undefined" [src]="facilityService.transform(selectedPatient?.profileImageObject?.thumbnail)">
                                     </div>
                                     <div class="sel-patient-details">
-                                        <div style="font-size: 1.4rem;"><b>{{ selectedPatient?.personDetails?.firstName }} {{ selectedPatient?.personDetails?.lastName }}</b></div>
-                                        <div class="patient-details-left">{{ selectedPatient?.personDetails?.apmisId }}</div>
-                                        <div class="patient-details-right">{{ selectedPatient?.personDetails?.age }} year(s)</div>
-                                        <div class="patient-details-left">{{ selectedPatient?.personDetails?.phoneNumber }}</div>
-                                        <div class="patient-details-right">{{ selectedPatient?.personDetails?.gender?.name }}</div>
-                                        <div>{{ selectedPatient?.personDetails?.email }}</div>
+                                        <div style="font-size: 1.4rem;"><b>{{ selectedPatient?.firstName }} {{ selectedPatient?.lastName }}</b></div>
+                                        <div class="patient-details-left">{{ selectedPatient?.apmisId }}</div>
+                                        <div class="patient-details-right">{{ selectedPatient?.dateOfBirth | date: 'shortDate' }}</div>
+                                        <div class="patient-details-left">{{ selectedPatient?.phoneNumber }}</div>
+                                        <div class="patient-details-right">{{ selectedPatient?.gender }}</div>
+                                        <div>{{ selectedPatient?.email }}</div>
                                     </div>
                                 </div>
 
@@ -88,10 +88,10 @@
                                                 <td>
                                                     <div class="empWrap">
                                                         <div class="list-img">
-                                                            <img *ngIf="pendingRequest?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                                            <img class="shadow" *ngIf="pendingRequest?.patient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingRequest?.patient?.personDetails?.profileImageObject?.thumbnail)">
+                                                            <img *ngIf="pendingRequest?.patient?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                                            <img class="shadow" *ngIf="pendingRequest?.patient?.profileImageObject != undefined" [src]="facilityService.transform(pendingRequest?.patient?.profileImageObject?.thumbnail)">
                                                         </div>
-                                                        <div>{{ pendingRequest?.patient?.personDetails?.firstName }} {{ pendingRequest?.patient?.personDetails?.lastName }}</div>
+                                                        <div>{{ pendingRequest?.patient?.firstName }} {{ pendingRequest?.patient?.lastName }}</div>
                                                     </div>
                                                 </td>
                                                 <td>{{ pendingRequest?.name}}</td>
@@ -150,10 +150,10 @@
                                                 <td>
                                                     <div class="empWrap">
                                                         <div class="list-img">
-                                                            <img *ngIf="pendingRequest?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                                            <img class="shadow" *ngIf="pendingRequest?.patient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingRequest?.patient?.personDetails?.profileImageObject?.thumbnail)">
+                                                            <img *ngIf="pendingRequest?.patient?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                                            <img class="shadow" *ngIf="pendingRequest?.patient?.profileImageObject != undefined" [src]="facilityService.transform(pendingRequest?.patient?.profileImageObject?.thumbnail)">
                                                         </div>
-                                                        <div>{{ pendingRequest?.patient?.personDetails?.firstName }} {{ pendingRequest?.patient?.personDetails?.lastName }}</div>
+                                                        <div>{{ pendingRequest?.patient?.firstName }} {{ pendingRequest?.patient?.lastName }}</div>
                                                     </div>
                                                 </td>
                                                 <td>{{ pendingRequest?.name}}</td>
@@ -196,7 +196,7 @@
                             <div class="frm-r" [class.frm-container-r]="!patientSelected">
                                 <div *ngIf="!hasRequest" class="text-center" style="min-height: 300px;margin-top: 200px;">
                                     <div *ngIf="requests.length === 0 && !loading">
-                                        <span class="table-content" colspan="5" style="text-align: center"> No pending request is associated to {{ selectedPatient?.personDetails?.firstName }} {{ selectedPatient?.personDetails?.lastName }}</span>
+                                        <span class="table-content" colspan="5" style="text-align: center"> No pending request is associated to {{ selectedPatient?.firstName }} {{ selectedPatient?.personDetails?.lastName }}</span>
                                     </div>
                                     <div *ngIf="requests.length === 0 && loading">
                                         <span class="table-content" colspan="5" style="text-align: center">
@@ -390,10 +390,10 @@
                                 <td>
                                     <div class="empWrap">
                                         <div class="list-img">
-                                            <img *ngIf="report?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                            <img class="shadow" *ngIf="report?.patient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(report?.patient?.personDetails?.profileImageObject?.thumbnail)">
+                                            <img *ngIf="report?.patient?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                            <img class="shadow" *ngIf="report?.patient?.profileImageObject != undefined" [src]="facilityService.transform(report?.patient?.profileImageObject?.thumbnail)">
                                         </div>
-                                        <div>{{ report?.patient?.personDetails?.firstName }} {{ report?.patient?.personDetails?.lastName }}</div>
+                                        <div>{{ report?.patient?.firstName }} {{ report?.patient?.lastName }}</div>
                                     </div>
                                 </td>
                                 <td>{{ report.name }}</td>
@@ -401,10 +401,10 @@
                                 <td>
                                     <div class="empWrap">
                                         <div class="list-img">
-                                            <img *ngIf="report?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                            <img class="shadow" *ngIf="report?.createdBy?.employeeDetails?.profileImageObject != undefined" [src]="facilityService.transform(report?.createdBy?.employeeDetails?.profileImageObject?.thumbnail)">
+                                            <img *ngIf="report?.patient?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                            <img class="shadow" *ngIf="report?.createdBy?.profileImageObject != undefined" [src]="facilityService.transform(report?.createdBy?.profileImageObject?.thumbnail)">
                                         </div>
-                                        <div>{{ report?.createdBy?.employeeDetails?.firstName }} {{ report?.createdBy?.employeeDetails?.lastName}}</div>
+                                        <div>{{ report?.createdBy?.firstName }} {{ report?.createdBy?.lastName}}</div>
                                     </div>
                                 </td>
                                 <td>

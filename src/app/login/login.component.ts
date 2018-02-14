@@ -2,13 +2,12 @@ import { UserFacadeService } from 'app/system-modules/service-facade/user-facade
 import { SystemModuleService } from './../services/module-manager/setup/system-module.service';
 import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { CoolLocalStorage } from 'angular2-cool-storage'; 
 import { Router } from '@angular/router';
 import { FacilitiesService } from '../services/facility-manager/setup/index';
 import { Facility } from '../models/index';
 import { UserService } from '../services/facility-manager/setup/index';
 import { JoinChannelService } from 'app/services/facility-manager/setup/join-channel.service';
-
 
 @Component({
   selector: 'app-login',
@@ -64,9 +63,7 @@ export class LoginComponent implements OnInit {
         password: this.frm_login.controls['password'].value
       };
       this.userService.login(query).then(result => {
-        console.log(result);
         this.userServiceFacade.authenticateResource().then(payload => {
-          console.log(payload)
           let auth = {
             data: result.user
           };
@@ -81,7 +78,6 @@ export class LoginComponent implements OnInit {
           });
         }, error => {
           this.systemModule.off();
-          console.log(error);
         }).catch(merr => {
           this.systemModule.off();
           this.frm_login.controls['password'].reset();

@@ -28,7 +28,7 @@ export class ClinicScheduleComponent implements OnInit {
   clinicLocations: any[] = [];
   schedules: any[] = [];
   scheduleManagers: ScheduleRecordModel[] = [];
-  loading: Boolean = true;
+  loading: Boolean = false;
 
   sorter = {
     // "sunday": 0, // << if sunday is first day of week
@@ -68,7 +68,6 @@ export class ClinicScheduleComponent implements OnInit {
           this.clinics.push(clinicModel);
         });
       });
-      console.log(this.clinics)
     });
     this.getSchedulerType();
     this.addNewClinicSchedule();
@@ -98,8 +97,6 @@ export class ClinicScheduleComponent implements OnInit {
 
   subscribToFormControls() {
     this.locationTypeControl.valueChanges.subscribe(value => {
-      console.log(value);
-      console.log(this.clinics);
       if (value !== undefined) {
         this.clearAllSchedules();
         this.schedulerService.find({ query: { 'clinic': value.clinicName } }).then(payload => {
@@ -256,7 +253,6 @@ export class ClinicScheduleComponent implements OnInit {
             itemi.value.endTime = endTime;
             manager.schedules.push(itemi.value);
           });
-          console.log(manager);
 
         this.schedulerService.create(manager).then(payload => {
           this.selectedManager = payload;
@@ -282,5 +278,9 @@ export class ClinicScheduleComponent implements OnInit {
   closeClinicSchedule(clinic: any, i: any) {
     (<FormArray>this.clinicScheduleForm.controls['clinicScheduleArray']).controls.splice(i, 1);
     this.loadManagerSchedules(false);
+  }
+
+  onSubmit(){
+    
   }
 }

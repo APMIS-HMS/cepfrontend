@@ -16,7 +16,7 @@ import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
     declarations: [
         DashboardComponent,
         DashboardHomeComponent,
-        SystemModuleComponent,
+        // SystemModuleComponent,
         ChangePasswordComponent
     ],
     exports: [

@@ -227,7 +227,7 @@ export class ReportComponent implements OnInit {
                 // Check if documentation has been created for the user
                 this._documentationService.find({
                   query: {
-                    'personId._id': this.selectedPatient.personDetails._id
+                    'personId': this.selectedPatient.personDetails._id
                   }
                 }).then(res => {
                   // Update the lists
@@ -540,7 +540,6 @@ export class ReportComponent implements OnInit {
     this.paymentStatusText = 'Getting Payment Status... <i class="fa fa-spinner fa-spin"></i>';
 
     this.pendingRequests.forEach((request: PendingLaboratoryRequest) => {
-      console.log(request);
       if (!!request.billingId) {
         this._billingService.find({
           query: {

@@ -16,6 +16,7 @@ import { FormTypeService, ScopeLevelService } from '../../../../../../services/m
   styleUrls: ['./doc-upload.component.scss']
 })
 export class DocUploadComponent implements OnInit {
+  user: any;
   @Input() selectedPatient: any;
   loading: boolean;
   mainErr = true;
@@ -39,9 +40,11 @@ export class DocUploadComponent implements OnInit {
     private formTypeService: FormTypeService,
     private systemModuleService:SystemModuleService,
     private locker: CoolLocalStorage
-  ) { }
+  ) {
+   }
 
   ngOnInit() {
+    this.user = <any>this.locker.getObject('auth');
     this.frmNewUpload = this.formBuilder.group({
       fileUpload: ['', [<any>Validators.required]],
       fileName: ['', [<any>Validators.required]],
@@ -71,11 +74,13 @@ export class DocUploadComponent implements OnInit {
           };
         } else {
           this.systemModuleService.announceSweetProxy('Size Of Document Too BIG!', 'info');
+          this._notification('Error','Size Of Document Too BIG!');
           this.frmNewUpload.controls['fileUpload'].setErrors({ sizeTooBig: true });
         }
 
       } else {
         this.systemModuleService.announceSweetProxy('Type of document not supported.', 'info');
+        this._notification('Error','Type of document not supported.');
         this.frmNewUpload.controls['fileUpload'].setErrors({ typeDenied: true });
       }
     }
@@ -115,12 +120,14 @@ export class DocUploadComponent implements OnInit {
 
     this.docUploadService.post(uploadDoc).then(payload => {
       this.systemModuleService.announceSweetProxy('Document Successfully Uploaded!', 'success');
+      this._notification('Success', 'Document Successfully Uploaded!');
       this.loading = false;
       this.close_onClick(true);
       this.systemModuleService.off();
     }).catch(err => {
       this.systemModuleService.off();
       this.systemModuleService.announceSweetProxy('There was an uploading the file, try again!', 'error');
+      this._notification('Eror','There was an uploading the file, try again!');
       this.loading = false;
     })
 
@@ -128,10 +135,15 @@ export class DocUploadComponent implements OnInit {
 
   documentTypeFn() {
     this.formTypeService.findAll().then(payload => {
-      console.log(payload);
       this.documentTypes = payload.data
     }).catch(err => {
-      console.log(err);
     });
   }
+  private _notification(type: String, text: String): void {
+		this.facilityService.announceNotification({
+			users: [this.user._id],
+			type: type,
+			text: text
+		});
+	}
 }

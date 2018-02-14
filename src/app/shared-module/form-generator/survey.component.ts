@@ -70,7 +70,7 @@ export class SurveyComponent implements OnInit, OnDestroy {
         this.shareService.announceTemplate$.subscribe((payload: any) => {
             this.surveyModel.data = payload.data;
             SurveyNG.render('surveyElement', { model: this.surveyModel });
-        })
+        });
     }
 
     ngOnInit() {
@@ -107,7 +107,8 @@ export class SurveyComponent implements OnInit, OnDestroy {
                 }
             });
 
-            obj.symptoms = symptom;
+            if (!!symptom)
+                obj.symptoms = symptom;
 
             // Diagnoses
 
@@ -124,7 +125,8 @@ export class SurveyComponent implements OnInit, OnDestroy {
                 }
             });
 
-            obj.diagnoses = diagnosis;
+            if (!!diagnosis)
+                obj.diagnoses = diagnosis;
 
 
             // Medication
@@ -225,7 +227,6 @@ export class SurveyComponent implements OnInit, OnDestroy {
             this.symptoms.forEach((item, i) => {
                 this.surveyModel.data.symptoms = '(' + i + 1 + ') ' + item.name + '(' + item.code + ')';
             });
-            console.log(this.surveyModel.data);
             this.shareService.submitForm(this.surveyModel.data);
             this.json = null;
         }
@@ -235,15 +236,13 @@ export class SurveyComponent implements OnInit, OnDestroy {
         document.getElementById('surveyElement').innerHTML = 'Document saved successfully!';
         const resultAsString = JSON.stringify(survey.data);
         this.symptoms.forEach((item, i) => {
-            console.log(i);
             survey.data.symptoms = '(' + i + 1 + ') ' + item.name + '(' + item.code + ')';
         });
-        console.log(survey.data);
         this.shareService.submitForm(survey.data)
     }
 
     ngOnDestroy(): void {
-    this.surveyModel = undefined;
+        this.surveyModel = undefined;
         this.isTemplate = false;
         this.ngOnInit();
     }

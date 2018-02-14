@@ -1,3 +1,4 @@
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { SystemModuleService } from './../../../../../../services/module-manager/setup/system-module.service';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
@@ -37,11 +38,11 @@ export class AddPatientProblemComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder, private orderStatusService: OrderStatusService,
     private formService: FormsService, private locker: CoolLocalStorage,
-    private documentationService: DocumentationService, private SystemModuleService: SystemModuleService,
-    private formTypeService: FormTypeService, private sharedService: SharedService,
+    private documentationService: DocumentationService, private systemModuleService: SystemModuleService,
+    private formTypeService: FormTypeService, private sharedService: SharedService, private authFacadeService: AuthFacadeService,
     private facilityService: FacilitiesService) {
 
-    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    // this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.problemFormCtrl = new FormControl();
     this.noteFormCtrl = new FormControl();
 
@@ -49,26 +50,30 @@ export class AddPatientProblemComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.getOrderStatuses();
-    this.getPersonDocumentation();
-    this.getForm();
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+      this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+      this.getOrderStatuses();
+      this.getPersonDocumentation();
+      this.getForm();
+    });
+   
   }
   getForm() {
-    this.SystemModuleService.on();
+    this.systemModuleService.on();
     Observable.fromPromise(this.formService.find({ query: { title: 'Problems' } }))
       .subscribe((payload: any) => {
         if (payload.data.length > 0) {
           this.selectedForm = payload.data[0];
         }
-        this.SystemModuleService.off();
+        this.systemModuleService.off();
       }, error => {
-        this.SystemModuleService.off();
+        this.systemModuleService.off();
       });
   }
   getPersonDocumentation() {
-    this.SystemModuleService.on();
-    this.documentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
+    this.systemModuleService.on();
+    this.documentationService.find({ query: { 'personId': this.patient.personId } }).subscribe((payload: any) => {
       if (payload.data.length === 0) {
         this.patientDocumentation.personId = this.patient.personDetails;
         this.patientDocumentation.documentations = [];
@@ -78,21 +83,21 @@ export class AddPatientProblemComponent implements OnInit {
       } else {
         if (payload.data[0].documentations.length === 0) {
           this.patientDocumentation = payload.data[0];
-          this.SystemModuleService.off();
+          this.systemModuleService.off();
         } else {
           this.documentationService.find({
             query:
               {
-                'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
+                'personId': this.patient.personId, 'documentations.patientId': this.patient._id,
                 // $select: ['documentations.documents', 'documentations.facilityId']
               }
           }).subscribe((mload: any) => {
             if (mload.data.length > 0) {
               this.patientDocumentation = mload.data[0];
-              this.SystemModuleService.off();
+              this.systemModuleService.off();
             }
           }, error => {
-            this.SystemModuleService.off();
+            this.systemModuleService.off();
           })
         }
       }
@@ -110,12 +115,12 @@ export class AddPatientProblemComponent implements OnInit {
         name: 'InActive'
       }
     ];
-    // this.SystemModuleService.on();
+    // this.systemModuleService.on();
     // this.orderStatusService.findAll().subscribe(payload => {
     //   this.orderStatuses = payload.data;
-    //   this.SystemModuleService.off();
+    //   this.systemModuleService.off();
     // }, error => {
-    //   this.SystemModuleService.off();
+    //   this.systemModuleService.off();
     // });
   }
   close_onClick() {
@@ -127,12 +132,9 @@ export class AddPatientProblemComponent implements OnInit {
     return status ? status.name : status;
   }
   save() {
-    console.log('saving')
     this.isSaving = true;
-    this.SystemModuleService.on();
+    this.systemModuleService.on();
     let isExisting = false;
-    console.log(this.selectedForm);
-    console.log(this.loginEmployee);
     this.patientDocumentation.documentations.forEach(documentation => {
       if (documentation.document === undefined) {
         documentation.document = {
@@ -142,8 +144,6 @@ export class AddPatientProblemComponent implements OnInit {
       if (documentation.document.documentType._id !== undefined &&
         documentation.document.documentType._id === this.selectedForm._id) {
         isExisting = true;
-        console.log('is true');
-        console.log(documentation);
         documentation.document.body.problems.push({
           problem: this.problemFormCtrl.value,
           status: this.statusFormCtrl.value,
@@ -152,11 +152,12 @@ export class AddPatientProblemComponent implements OnInit {
       }
     });
     if (!isExisting) {
-      console.log(this.loginEmployee)
       const doc: PatientDocumentation = <PatientDocumentation>{};
-      doc.facilityId = this.selectedFacility;
-      doc.createdBy = this.loginEmployee;
-      doc.patientId = this.patient._id;
+      doc.createdBy = this.loginEmployee.personDetails.title + ' ' + this.loginEmployee.personDetails.lastName + ' ' + this.loginEmployee.personDetails.firstName;
+      doc.facilityId = this.selectedFacility._id;
+      doc.facilityName = this.selectedFacility.name;
+      doc.patientId = this.patient._id,
+      doc.patientName = this.patient.personDetails.title + ' ' + this.patient.personDetails.lastName + ' ' + this.patient.personDetails.firstName;
       doc.document = {
         documentType: this.selectedForm,
         body: {
@@ -170,7 +171,6 @@ export class AddPatientProblemComponent implements OnInit {
       });
       this.patientDocumentation.documentations.push(doc);
     }
-    console.log(this.patientDocumentation)
     this.documentationService.update(this.patientDocumentation).subscribe(payload => {
       this.isSaving = false;
       this.patientDocumentation = payload;
@@ -178,11 +178,12 @@ export class AddPatientProblemComponent implements OnInit {
       this.statusFormCtrl.reset();
       this.noteFormCtrl.reset();
       this.documentationService.announceDocumentation({ type: 'Problem' });
-      this.SystemModuleService.off();
+      this.systemModuleService.off();
+      this.systemModuleService.announceSweetProxy('Problem added successfully!','success');
     }, error => {
-      console.log(error);
       this.isSaving = false;
-      this.SystemModuleService.off();
+      this.systemModuleService.off();
+      this.systemModuleService.announceSweetProxy('Problem not added due error while saving!','error');
     })
   }
 }

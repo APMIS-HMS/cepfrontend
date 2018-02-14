@@ -17,94 +17,45 @@
             <span>{{facilityName}}</span>
         </div>
         <div class="rhs">
-            <!-- <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='clinic'"
-        class="user-loc">{{checkedInObject?.typeObject?.minorLocationObject?.name}} - {{checkedInObject?.typeObject?.roomObject?.name}}</div>
-      <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='store'"
-        class="user-loc">{{checkedInObject?.typeObject?.minorLocationObject?.name}} - {{checkedInObject?.typeObject?.storeObject?.name}}</div>
-      <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='workbench'"
-        class="user-loc">{{checkedInObject?.typeObject?.minorLocationObject?.name}} - {{checkedInObject?.typeObject?.workbenchObject?.name}}</div> -->
         </div>
     </div>
 </div>
 
 <div class="menu-content-wrap">
-    <!-- <div class="mainmenu-stripe">
-    <ul id="innerMenu-ul" class="innerMenu-ul">
-
-      <li (click)="facilitySubmenuShow()" [routerLink]="['facility']"><i class="fa fa-building" aria-hidden="true"></i></li>
-      <li (click)="employeeSubmenuShow()" [routerLink]="['employee-manager']"><i class="fa fa-users" aria-hidden="true"></i></li>
-      <li (click)="patientSubmenuShow()" [routerLink]="['patient-manager']"><i class="fa fa-user" aria-hidden="true"></i></li>
-      <li (click)="patientSubmenuShow()" [routerLink]="['ward-manager']"><i class="fa fa-bed" aria-hidden="true"></i></li>
-      <li (click)="patientSubmenuShow()" [routerLink]="['payment']"><i class="fa fa-money" aria-hidden="true"></i></li>
-      <li (click)="patientSubmenuShow()" [routerLink]="['wallet']"><i class="fa fa-credit-card-alt" aria-hidden="true"></i></li>
-      <li (click)="userSubmenuShow()" [routerLink]="['access-manager']"><i class="fa fa-first-order" aria-hidden="true"></i></li>
-
-      <li (click)="facilitySubmenuShow()" [routerLink]="['clinic']"><i class="fa fa-medkit" aria-hidden="true"></i></li>
-      <li (click)="employeeSubmenuShow()" [routerLink]="['employee-manager']"><i class="fa fa-file-text" aria-hidden="true"></i></li>
-      <li (click)="patientSubmenuShow()" [routerLink]="['store']"><i class="fa fa-plus-square" aria-hidden="true"></i></li>
-      <li (click)="patientSubmenuShow()" [routerLink]="['pharmacy']"><i class="fa fa-plus-square" aria-hidden="true"></i></li>
-
-      <li (click)="laboratorySubmenuShow()" [routerLink]="['laboratory']"><i class="fa fa-flask" aria-hidden="true"></i></li>
-      <li (click)="employeeSubmenuShow()" [routerLink]="['employee-manager']"><i class="fa fa-picture-o" aria-hidden="true"></i></li>
-      <li (click)="patientSubmenuShow()" [routerLink]="['patient-manager']"><i class="fa fa-tint" aria-hidden="true"></i></li>
-      <li (click)="patientSubmenuShow()" [routerLink]="['patient-manager']"><i class="fa fa-bed" aria-hidden="true"></i></li>
-
-      <li><i class="fa fa-user" aria-hidden="true"></i></li>
-      <li (click)="patientSubmenuShow()" [routerLink]="['payment']"><i class="fa fa-credit-card-alt" aria-hidden="true"></i></li>
-      <li (click)="onHealthCoverage()"><i class="fa fa-heartbeat" [routerLink]="['health-coverage']" aria-hidden="true"></i></li>
-      <li (click)="onSwitchAccount()"><i class="fa fa-users" aria-hidden="true"></i></li>
-      <li (click)="logoutConfirm_show()"><i class="fa fa-sign-out" aria-hidden="true"></i></li>
-      <li (click)="onTags()" [routerLink]="['billing/tags']"><i class="fa fa-users" aria-hidden="true"></i></li>
-
-      <li (click)="facilitySubmenuShow()" [routerLink]="['facility-page']"><i class="fa fa-cog" aria-hidden="true"></i></li>
-      <li (click)="employeeSubmenuShow()" [routerLink]="['employee-manager']"><i class="fa fa-user" aria-hidden="true"></i></li>
-      <li (click)="userSubmenuShow()" [routerLink]="['access-manager']"><i class="fa fa-sign-in" aria-hidden="true"></i></li>
-      <li (click)="changePass()"><i class="fa fa-lock" aria-hidden="true"></i></li>
-      <li (click)="billingSubmenuShow()" [routerLink]="['billing']"><i class="fa fa-file-text" aria-hidden="true"></i></li>
-      <li (click)="formsSubmenuShow()" [routerLink]="['forms-manager']"><i class="fa fa-newspaper-o" aria-hidden="true"></i></li>
-    </ul>
-  </div> -->
+   
     <div class="mc-wrap">
         <div *ngIf="innerMenuShow" id="style-1" class="mainmenu-content animated slideInLeft">
-
-            <!-- <div class="search-wrap">
-        <input class="top-tab-search" type="search" placeholder="Search here..." [formControl]="searchControl">
-        <i class="fa fa-search" aria-hidden="true"></i>
-        <div class="x">x</div>
-      </div> -->
-
             <ul id="innerMenu-ul" class="innerMenu-ul">
 
-                <li (click)="facilitySubmenuShow()" [routerLink]="['facility']"><i class="fa fa-building" aria-hidden="true"></i> <span>Facility</span></li>
-                <li  [routerLink]="['report']"><i class="fa fa-bar-chart" aria-hidden="true"></i> <span>Report</span></li>
-                <!-- <li (click)="employeeSubmenuShow()" [routerLink]="['employee-manager']"><i class="fa fa-users" aria-hidden="true"></i> <span>Employee Manager</span></li> -->
-                <li (click)="patientSubmenuShow()" [routerLink]="['patient-manager']"><i class="fa fa-user" aria-hidden="true"></i> <span>Patient Manager</span></li>
-                <li (click)="patientSubmenuShow()" [routerLink]="['ward-manager']"><i class="fa fa-bed" aria-hidden="true"></i> <span>Ward Manager</span></li>
-                <li (click)="patientSubmenuShow()" [routerLink]="['payment']"><i class="fa fa-money" aria-hidden="true"></i> <span>Payment</span></li>
-                <li (click)="patientSubmenuShow()" [routerLink]="['wallet']"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> <span>Wallet</span></li>
-                <li (click)="userSubmenuShow()" [routerLink]="['access-manager']"><i class="fa fa-first-order" aria-hidden="true"></i> <span>Order Management</span></li>
+                <li *ngIf="accessHas('Facility')" (click)="facilitySubmenuShow()" [routerLink]="['facility']"><i class="fa fa-building" aria-hidden="true"></i> <span>Facility</span></li>
+                <li *ngIf="accessHas('Patient')" (click)="patientSubmenuShow()" [routerLink]="['patient-manager']"><i class="fa fa-user" aria-hidden="true"></i> <span>Patient Manager</span></li>
+                <li *ngIf="accessHas('Ward')" (click)="patientSubmenuShow()" [routerLink]="['ward-manager']"><i class="fa fa-bed" aria-hidden="true"></i> <span>Ward Manager</span></li>
+                <li *ngIf="accessHas('Payment')" (click)="patientSubmenuShow()" [routerLink]="['payment']"><i class="fa fa-money" aria-hidden="true"></i> <span>Payment</span></li>
+                <li *ngIf="accessHas('Wallet')" (click)="patientSubmenuShow()" [routerLink]="['wallet']"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> <span>Wallet</span></li>
+                <li *ngIf="accessHas('Order')" (click)="userSubmenuShow()" [routerLink]="['access-manager']"><i class="fa fa-first-order" aria-hidden="true"></i> <span>Order Management</span></li>
 
-                <li (click)="facilitySubmenuShow()" [routerLink]="['clinic']"><i class="fa fa-medkit" aria-hidden="true"></i> <span>Clinic Management</span></li>
-                <li (click)="employeeSubmenuShow()" [routerLink]="['employee-manager']"><i class="fa fa-file-text" aria-hidden="true"></i> <span>Clinical Documentation</span></li>
-                <li (click)="patientSubmenuShow()" [routerLink]="['store']"><i class="fa fa-plus-square" aria-hidden="true"></i> <span>Store</span></li>
-                <li (click)="patientSubmenuShow()" [routerLink]="['pharmacy']"><i class="fa fa-plus-square" aria-hidden="true"></i> <span>Pharmacy</span></li>
+                <li *ngIf="accessHas('Clinic')" (click)="facilitySubmenuShow()" [routerLink]="['clinic']"><i class="fa fa-medkit" aria-hidden="true"></i> <span>Clinic Management</span></li>
+                <li *ngIf="accessHas('Forms')" (click)="formsSubmenuShow()" [routerLink]="['forms-manager']"><i class="fa fa-newspaper-o" aria-hidden="true"></i> <span>Clinical Documentation</span></li>
+                <li *ngIf="accessHas('Store')" (click)="patientSubmenuShow()" [routerLink]="['store']"><i class="fa fa-plus-square" aria-hidden="true"></i> <span>Store</span></li>
+                <li *ngIf="accessHas('Pharmacy')" (click)="patientSubmenuShow()" [routerLink]="['pharmacy']"><i class="fa fa-plus-square" aria-hidden="true"></i> <span>Pharmacy</span></li>
 
-                <li (click)="laboratorySubmenuShow()" [routerLink]="['laboratory']"><i class="fa fa-flask" aria-hidden="true"></i> <span>Laboratory</span></li>
-                <li (click)="employeeSubmenuShow()" [routerLink]="['radiology']"><i class="fa fa-picture-o" aria-hidden="true"></i> <span>Radiology</span></li>
-                <li (click)="patientSubmenuShow()" [routerLink]="['patient-manager']"><i class="fa fa-tint" aria-hidden="true"></i> <span>Blood Bank</span></li>
-                <li (click)="patientSubmenuShow()" [routerLink]="['patient-manager']"><i class="fa fa-bed" aria-hidden="true"></i> <span>Theatre</span></li>
+                <li *ngIf="accessHas('Laboratory')" (click)="laboratorySubmenuShow()" [routerLink]="['laboratory']"><i class="fa fa-flask" aria-hidden="true"></i> <span>Laboratory</span></li>
+                <li *ngIf="accessHas('Radiology')" (click)="employeeSubmenuShow()" [routerLink]="['radiology']"><i class="fa fa-picture-o" aria-hidden="true"></i> <span>Radiology</span></li>
+                <li *ngIf="accessHas('Blood')" (click)="patientSubmenuShow()" [routerLink]="['patient-manager']"><i class="fa fa-tint" aria-hidden="true"></i> <span>Blood Bank</span></li>
+                <li *ngIf="accessHas('Theatre')" (click)="patientSubmenuShow()" [routerLink]="['patient-manager']"><i class="fa fa-bed" aria-hidden="true"></i> <span>Theatre</span></li>
 
-                <li (click)="onHealthCoverage()"><i class="fa fa-heartbeat" [routerLink]="['health-coverage']" aria-hidden="true"></i><span> Health Care Coverage</span></li>
+                <li *ngIf="accessHas('Health')" (click)="onHealthCoverage()"><i class="fa fa-heartbeat" [routerLink]="['health-coverage']" aria-hidden="true"></i><span> Health Care Coverage</span></li>
                 <!-- <li (click)="onSwitchAccount()"><i class="fa fa-users" aria-hidden="true"></i> <span>Switch Account</span></li> -->
                 <!-- <li (click)="logoutConfirm_show()"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Log Out</span></li> -->
-                <li (click)="onTags()" [routerLink]="['billing/tags']"><i class="fa fa-users" aria-hidden="true"></i> <span>Tags</span></li>
+                <li *ngIf="accessHas('Tag')" (click)="onTags()" [routerLink]="['billing/tags']"><i class="fa fa-users" aria-hidden="true"></i> <span>Tags</span></li>
 
-                <li (click)="facilitySubmenuShow()" [routerLink]="['facility-page']"><i class="fa fa-cog" aria-hidden="true"></i> <span>Facility Settings</span></li>
+                <li *ngIf="accessHas('Setting')" (click)="facilitySubmenuShow()" [routerLink]="['facility-page']"><i class="fa fa-cog" aria-hidden="true"></i> <span>Facility Settings</span></li>
                 <!-- <li (click)="employeeSubmenuShow()" [routerLink]="['employee-manager']"><i class="fa fa-user" aria-hidden="true"></i> <span>Profile Settings</span></li> -->
                 <!-- <li (click)="userSubmenuShow()" [routerLink]="['access-manager/access-role-details']"><i class="fa fa-sign-in" aria-hidden="true"></i> <span>Access Control</span></li> -->
                 <!-- <li (click)="changePass()"><i class="fa fa-lock" aria-hidden="true"></i> <span>Change Password</span></li> -->
-                <li (click)="billingSubmenuShow()" [routerLink]="['billing']"><i class="fa fa-file-text" aria-hidden="true"></i> <span>Billing Manager</span></li>
-                <li (click)="formsSubmenuShow()" [routerLink]="['forms-manager']"><i class="fa fa-newspaper-o" aria-hidden="true"></i> <span>Forms Manager</span></li>
+                <li *ngIf="accessHas('Billing')" (click)="billingSubmenuShow()" [routerLink]="['billing']"><i class="fa fa-file-text" aria-hidden="true"></i> <span>Billing Manager</span></li>
+                <li *ngIf="accessHas('Report')" (click)="billingSubmenuShow()" [routerLink]="['report']"><i class="fa fa-file-text" aria-hidden="true"></i> <span>Report</span></li>
+                
             </ul>
         </div>
 

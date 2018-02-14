@@ -75,7 +75,6 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.route.data.subscribe(data => {
       data['locations'].subscribe((payload: any) => {
         this.locationsObj = payload;
-        console.log(this.locationsObj);
       });
     });
   }
@@ -117,7 +116,7 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.locationObj = model;
 
     this.filteredMinorLocations = this.facility.minorLocations.filter(x => x.locationId === this.locationObj._id);
-    console.log(this.filteredMinorLocations);
+
   }
 
   locationDetailContentArea_remove(model: Location) {

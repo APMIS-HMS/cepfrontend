@@ -30,7 +30,7 @@ export class DocUploadsComponent implements OnInit {
     private locker: CoolLocalStorage) {
     this.docUploadService.listner.subscribe(payload => {
       this.getDocuments();
-    })
+    });
   }
 
   ngOnInit() {
@@ -47,10 +47,8 @@ export class DocUploadsComponent implements OnInit {
         createdAt: -1
       }
     }}).then(payload => {
-      console.log(payload);
       this.documents = payload.data;
     }).catch(err => {
-      console.log(err);
     })
   }
 

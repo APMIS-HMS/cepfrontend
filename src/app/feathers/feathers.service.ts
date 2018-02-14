@@ -11,10 +11,8 @@ import { Injectable } from '@angular/core';
 const rx = require('feathers-reactive');
 const RxJS = require('rxjs/Rx');
 // const HOST = 'http://13.84.217.251:8082'; // thn
-// const HOST = 'http://172.16.16.27:3031'; // Mr Segun
-// const HOST = 'http://40.68.100.29:3030'; // Online
+// const HOST = 'http://172.16.16.35:3031'; // Mr Segun
 // const HOST = 'http://192.168.20.101:3030'; // Sunday
-// const HOST = 'http://192.168.4.176:3031'; // Sunday
 const HOST = 'http://localhost:3031'; // Local Server
 
 
@@ -25,7 +23,6 @@ export class SocketService {
   private _app: any;
 
   errorHandler = error => {
-    console.log('auth error')
     this._app.authenticate({
       strategy: 'local',
       email: 'admin@feathersjs.com',
@@ -96,7 +93,6 @@ export class RestService {
     }
   }
   loginIntoApp(query) {
-    console.log(query);
     return this._app.authenticate({
       "strategy": 'local',
       'email': query.email,

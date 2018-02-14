@@ -40,7 +40,6 @@ export class WardManagerListpageComponent implements OnInit {
         this.wards = res.minorLocations.filter(x => x.locationId === wardId);
       }
     }).catch(err => {
-      console.log(err);
     });
 		// this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
     //   this.loading = false;
@@ -75,7 +74,6 @@ export class WardManagerListpageComponent implements OnInit {
         }
       }
     }).catch(err => {
-      console.log(err);
     });
   }
 

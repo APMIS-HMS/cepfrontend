@@ -69,7 +69,6 @@ export class PatientService {
   }
 
   abridgePatient(patient) {
-    console.log(patient);
     return {
       _id: patient._id,
       personId: patient.personId,

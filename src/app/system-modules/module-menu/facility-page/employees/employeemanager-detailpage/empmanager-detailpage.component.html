@@ -205,7 +205,7 @@
                         <div class="lhs">Home Address</div>
                         <div *ngIf="!contacts" class="rhs">
                             {{employee?.personDetails?.homeAddress?.street}}
-                            <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span> {{employee?.personDetails?.homeAddress?.city}}
+                            <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span> {{employee?.personDetails?.homeAddress?.lga}}
                             <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span>{{employee?.personDetails?.homeAddress?.state}}
                             <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span> {{employee?.personDetails?.homeAddress?.country}}
                             <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">.</span>

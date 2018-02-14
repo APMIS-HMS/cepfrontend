@@ -1,3 +1,4 @@
+import { AuthInterceptor } from './feathers/auth.interceptor';
 import { AuthFacadeService } from './system-modules/service-facade/auth-facade.service';
 import { TitleCasePipe } from '@angular/common';
 import { SecurityQuestionsService } from './services/facility-manager/setup/security-questions.service';
@@ -62,6 +63,8 @@ import { JoinChannelService } from 'app/services/facility-manager/setup/join-cha
 import { RadiologyInvestigationService } from 'app/services/facility-manager/setup/radiologyinvestigation.service';
 // import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
+import { CanActivateViaAuthGuardAccessService } from 'app/services/facility-manager/setup/can-activate-via-auth-guard-access.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -129,7 +132,12 @@ import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
     SetupService.TimeLineService, FacilityTypeFacilityClassFacadeService, JoinChannelService, SetupService.DocumentUploadService, RadiologyInvestigationService,
     SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService,
     SetupService.LocSummaryCashService, SetupService.TimeLineService, SetupService.DocumentUploadService, RadiologyInvestigationService,
-    SetupService.FluidService, SecurityQuestionsService, TitleCasePipe, AuthFacadeService, SetupService.DepartmentService
+    SetupService.FluidService, SecurityQuestionsService, TitleCasePipe, AuthFacadeService, SetupService.DepartmentService, CanActivateViaAuthGuardAccessService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

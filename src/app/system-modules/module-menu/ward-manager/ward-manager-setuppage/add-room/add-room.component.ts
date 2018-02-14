@@ -146,7 +146,6 @@ export class AddRoomComponent implements OnInit {
             this._systemModuleService.announceSweetProxy(text, 'error');
           }
         }).catch(err => {
-          console.log(err);
         });
       } else {
         this.addRoom = false;
@@ -166,7 +165,6 @@ export class AddRoomComponent implements OnInit {
             this._systemModuleService.announceSweetProxy(text, 'error');
           }
         }).catch(err => {
-          console.log(err);
         });
       }
 		} else {

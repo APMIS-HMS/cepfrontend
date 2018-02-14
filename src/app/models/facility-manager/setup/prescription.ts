@@ -4,20 +4,19 @@ export interface Prescription {
     facilityId: string;
     employeeId: string;
     patientId: string;
-    patientObject: any;
     personId: string;
     title?: string;
     index?: number;
-    priorityId: string;
+    priority: any;
     prescriptionItems: PrescriptionItem[];
     isAuthorised: Boolean;
     isDispensed?: Boolean;
     billId?: string,
     totalQuantity?: number;
     totalCost?: number;
-    priorityObject?: any;
     clinicDetails?: any;
     patientName?: any;
     employeeName?: any;
+    priorityObject?:any;
 }
 

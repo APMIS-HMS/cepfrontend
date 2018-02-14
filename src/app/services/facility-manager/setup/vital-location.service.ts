@@ -15,8 +15,8 @@ export class VitaLocationService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('vitalocations');
-    this._socket = _socketService.getService('vitalocations');
+    this._rest = _restService.getService('vita-locations');
+    this._socket = _socketService.getService('vita-locations');
     this._socket.timeout = 30000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');

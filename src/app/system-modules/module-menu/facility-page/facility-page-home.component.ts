@@ -362,7 +362,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.networkContentArea = false;
       // this.dashboardContentArea = false;
     }
-  }
+  } 
   close_onClick(e) {
     this.newDept = false;
     this.newUnit = false;
@@ -388,8 +388,6 @@ export class FacilityPageHomeComponent implements OnInit {
     this.createWorkspace = true;
   }
   autoCompleteCallback1(selectedData: any) {
-    //do any necessery stuff.
-    console.log(selectedData);
   }
   pgMenu_click() {
     this.pgMenuToggle = !this.pgMenuToggle;

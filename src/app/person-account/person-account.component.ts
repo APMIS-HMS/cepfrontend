@@ -109,7 +109,6 @@ export class PersonAccountComponent implements OnInit {
       .debounceTime(400)
       .distinctUntilChanged()
       .subscribe(value => {
-        console.log(value);
         this.errMsg ='';
         this.mainErr = true;
         this.validating = true;

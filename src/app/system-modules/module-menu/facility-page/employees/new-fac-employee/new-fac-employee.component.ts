@@ -153,7 +153,6 @@ export class NewFacEmployeeComponent implements OnInit {
             .debounceTime(400)
             .distinctUntilChanged()
             .subscribe(value => {
-                console.log(value);
                 this.errMsg = '';
                 this.mainErr = true;
                 this.validating = true;
@@ -213,7 +212,6 @@ export class NewFacEmployeeComponent implements OnInit {
             this.countryFacadeService.getOnlyLGAndCities(country, value, true).then((lgsAndCities: any) => {
                 this.lgs = lgsAndCities.lgs;
             }).catch(err => {
-                console.log(err);
             });
         });
 
@@ -237,7 +235,6 @@ export class NewFacEmployeeComponent implements OnInit {
             this.countryFacadeService.getOnlyLGAndCities(country, value, true).then((lgsAndCities: any) => {
                 this.cities = lgsAndCities.cities;
             }).catch(err => {
-                console.log(err);
             });
         });
         this.frmNewEmp3 = this.formBuilder.group({
@@ -606,7 +603,7 @@ export class NewFacEmployeeComponent implements OnInit {
         model.professionId = this.frmNewEmp4.controls['empJobTitle'].value;
         model.cadre = this.frmNewEmp4.controls['empLevel'].value;
 
-        
+    
         this.employeeService.create(model).then(payload => {
 
             this.employeeService.saveEmployee(model).then(pay =>{
@@ -624,7 +621,6 @@ export class NewFacEmployeeComponent implements OnInit {
             })
               
         }).catch(err => {
-            console.log(err.message);
         });
     }
     submit(frm, valid) {
@@ -736,13 +732,10 @@ export class NewFacEmployeeComponent implements OnInit {
     onEmpLgaChange(val) { }
     onEmpMaritalStatusChange(val) { }
     onEmpDeptChange(val) {
-        console.log(val)
         this.units = [];
         if (val !== undefined) {
             let deptIndex = this.facility.departments.findIndex(x => x.name === val);
-            console.log(deptIndex)
             if (deptIndex > -1) {
-                console.log(this.facility.departments[deptIndex].units);
                 this.units = this.facility.departments[deptIndex].units;
             }
 
@@ -754,9 +747,7 @@ export class NewFacEmployeeComponent implements OnInit {
         this.cadres = [];
         if (val !== undefined) {
             let proIndex = this.professions.findIndex(x => x.name === val);
-            console.log(proIndex);
             if (proIndex > -1) {
-                console.log(this.professions[proIndex])
                 this.cadres = this.professions[proIndex].caders;
             }
         }

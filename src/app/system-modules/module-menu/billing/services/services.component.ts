@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FacilitiesServiceCategoryService, TagService } from '../../../../services/facility-manager/setup/index';
-import { FacilityService, Facility, CustomCategory, Tag } from '../../../../models/index';
+import { FacilitiesServiceCategoryService, TagService, FacilityPriceService } from '../../../../services/facility-manager/setup/index';
+import { FacilityService, Facility, CustomCategory, Tag, FacilityServicePrice } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
 
@@ -15,6 +15,7 @@ export class ServicesComponent implements OnInit {
   searchShow = false;
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
   facility: Facility = <Facility>{};
+  prices: FacilityServicePrice[] = [];
   categories: FacilityService[] = [];
   tags: Tag[] = [];
   globalCategories: CustomCategory[] = [];
@@ -26,6 +27,11 @@ export class ServicesComponent implements OnInit {
   newServicePopup = false;
   newCategoryPopup = false;
   newTagPopup = false;
+  newModefierPopup = false;
+  serviceDetail = false;
+  newPricePopup = false;
+  selectedFacilityServicePrice = FacilityPriceService;
+  showNewModifer = false;
 
   selectedService: any = <any>{};
   selectedCategory: any = <any>{};
@@ -35,34 +41,24 @@ export class ServicesComponent implements OnInit {
 
   showLoadMore: Boolean = true;
 
-  constructor(private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
+  constructor(
+    private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
     private _locker: CoolLocalStorage, private _tagService: TagService) {
-    this._facilitiesServiceCategoryService.listner.subscribe(payload => {
-      this.getCategories();
-      this.getTags();
-    });
-    this._tagService.createListener.subscribe(payload => {
-      this.getTags();
-    });
-    this._facilitiesServiceCategoryService.createListener.subscribe(payload => {
-      this.getCategories();
-      this.getTags();
-    });
+
   }
 
   ngOnInit() {
     this.pageInView.emit('Services/Billing Manager');
-    this.facility = <Facility> this._locker.getObject('selectedFacility');
+    this.facility = <Facility>this._locker.getObject('selectedFacility');
     this.getCategories();
     this.getTags();
-    this.getCategory();
 
     const subscribeForCategory = this.searchCategory.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
       .switchMap((term: FacilityService[]) => this._facilitiesServiceCategoryService.find({
         query:
-        { searchCategory: this.searchCategory.value, facilityId: this.facility._id }
+          { searchCategory: this.searchCategory.value, facilityId: this.facility._id }
       }).
         then(payload => {
           this.filterOutCategory(payload);
@@ -76,15 +72,13 @@ export class ServicesComponent implements OnInit {
       .distinctUntilChanged()
       .switchMap((term: FacilityService[]) => this._facilitiesServiceCategoryService.find({
         query:
-        { search: this.searchService.value, facilityId: this.facility._id }
+          { search: this.searchService.value, facilityId: this.facility._id }
       }).
         then(payload => {
           this.filterOutService(payload);
-          console.log(payload);
         }));
 
     subscribeForService.subscribe((payload: any) => {
-      console.log(payload);
     });
 
 
@@ -93,9 +87,8 @@ export class ServicesComponent implements OnInit {
       .distinctUntilChanged()
       .switchMap((term: Tag[]) => this._tagService.find({
         query:
-        { search: this.searchTag.value, facilityId: this.facility._id }
-      }).
-        then(payload => {
+          { search: this.searchTag.value, facilityId: this.facility._id }
+      }).then(payload => {
           this.tags = payload.data;
         }));
 
@@ -103,10 +96,9 @@ export class ServicesComponent implements OnInit {
     });
   }
 
-  selectCategory(category){
+  selectCategory(category) {
     this.selectedCategory = category;
-    console.log(this.selectedCategory);
-    this.selectedServices = this.globalCategories.filter(e => e.category === category.name);
+    this.selectedServices = category.services;
   }
 
   onDoubleClick(value: any) {
@@ -152,68 +144,76 @@ export class ServicesComponent implements OnInit {
     });
   }
   getCategories() {
-    this._facilitiesServiceCategoryService.find({
+    this._facilitiesServiceCategoryService.allServices({
       query: {
-        $or: [
-          { facilityId: this.facility._id }
-          // { facilityId: undefined }
-        ]
+        facilityId: this.facility._id
       }
-    })
-      .then(payload => {
-        this.categories = [];
-        let goo = [];
-        console.log(payload);
-        payload.data.forEach((itemi, i) => {
-        itemi.categories.forEach((itemj, j) => {
-          if (itemi.facilityId !== undefined) {
-            this.categories.push(itemj);
-          }
-          itemj.services.forEach((itemk, k) => {
-            const customCategory: CustomCategory = <CustomCategory>{};
-            customCategory.facilityService = itemi;
-            customCategory.service = itemk.name;
-            customCategory.serviceId = itemk._id;
-            customCategory.category = itemj.name;
-            customCategory.categoryId = itemj._id;
-            customCategory.serviceCode = itemk.code;
-            if (itemi.facilityId === undefined) {
-              customCategory.isGlobal = true;
-            } else {
-              customCategory.isGlobal = false;
-            }
-            this.globalCategoriesToBePaginated.push(customCategory);
-            
-          });
-        });
-        if(this.globalCategoriesToBePaginated.length <= this.globalCategories.length){
-          this.showLoadMore = false;
-        }
-        console.log(this.globalCategoriesToBePaginated);
-        this.globalCategories = this.paginate(this.globalCategoriesToBePaginated, this.pageSize, this.index);
-        console.log(this.globalCategories);
-        this.selectCategory(this.categories[0]);
-        });
-      });
+    }).then(payload => {
+      this.categories = payload.data[0].categories;
+      this.selectedServices = payload.data[0].categories[0].services;
+    });
+
+    // this._facilitiesServiceCategoryService.find({
+    //   query: {
+    //     $or: [
+    //       { facilityId: this.facility._id }
+    //       // { facilityId: undefined }
+    //     ]
+    //   }
+    // }).then(payload => {
+    //   this.categories = [];
+    //   let goo = [];
+    //   console.log(payload);
+    //   payload.data.forEach((itemi, i) => {
+    //     itemi.categories.forEach((itemj, j) => {
+    //       if (itemi.facilityId !== undefined) {
+    //         this.categories.push(itemj);
+    //       }
+    //       itemj.services.forEach((itemk, k) => {
+    //         const customCategory: CustomCategory = <CustomCategory>{};
+    //         customCategory.facilityService = itemi;
+    //         customCategory.service = itemk.name;
+    //         customCategory.serviceId = itemk._id;
+    //         customCategory.category = itemj.name;
+    //         customCategory.categoryId = itemj._id;
+    //         customCategory.serviceCode = itemk.code;
+    //         if (itemi.facilityId === undefined) {
+    //           customCategory.isGlobal = true;
+    //         } else {
+    //           customCategory.isGlobal = false;
+    //         }
+    //         this.globalCategoriesToBePaginated.push(customCategory);
+
+    //       });
+    //     });
+    //     if (this.globalCategoriesToBePaginated.length <= this.globalCategories.length) {
+    //       this.showLoadMore = false;
+    //     }
+    //     console.log(this.globalCategoriesToBePaginated);
+    //     this.globalCategories = this.paginate(this.globalCategoriesToBePaginated, this.pageSize, this.index);
+    //     console.log(this.globalCategories);
+    //     this.selectCategory(this.categories[0]);
+    //   });
+    // });
   }
 
   getCategory() {
     this._facilitiesServiceCategoryService.find({
       query:
-      { searchCategory: "Medical Records", facilityId: this.facility._id }
+        { searchCategory: "Medical Records", facilityId: this.facility._id }
     }).
-    then(payload => {
-      //this.filterOutCategory(payload);
-      //this.categories = [];
-      let cat: any = [];
-      payload.data.forEach((itemi, i) => {
-        itemi.categories.forEach((itemj, j) => {
-          if (itemi.facilityId !== undefined) {
-            cat.push(itemj);
-          }
+      then(payload => {
+        //this.filterOutCategory(payload);
+        //this.categories = [];
+        let cat: any = [];
+        payload.data.forEach((itemi, i) => {
+          itemi.categories.forEach((itemj, j) => {
+            if (itemi.facilityId !== undefined) {
+              cat.push(itemj);
+            }
+          });
         });
       });
-    });
   }
 
   getTags() {
@@ -226,7 +226,20 @@ export class ServicesComponent implements OnInit {
     this.selectedService = <any>{};
     this.newServicePopup = true;
   }
-  newCategoryPopup_show() {
+
+  addModifierPopup_show() {
+    this.newModefierPopup = false;
+    this.serviceDetail = false;
+  }
+  newModefierPopup_show(price: FacilityServicePrice) {
+    this.newModefierPopup = true;
+    this.newPricePopup = false;
+    this.serviceDetail = false;
+  }
+  newCategoryPopup_show(value?: any) {
+    if (!!value) {
+      this.selectedCategory = value;
+    }
     this.newCategoryPopup = true;
   }
   newTagPopup_show() {
@@ -236,38 +249,48 @@ export class ServicesComponent implements OnInit {
     this.newServicePopup = false;
     this.newCategoryPopup = false;
     this.newTagPopup = false;
+    this.newModefierPopup = false;
+    this.showNewModifer = false;
+  }
+  onClickshowNewModifer () {
+    this.showNewModifer = !this.showNewModifer;
+
   }
 
-  paginate (array, page_size, page_number) {
+  serviceDetail_show(price) {
+    this.serviceDetail = true;
+    this.newPricePopup = false;
+    this.newModefierPopup = false;
+    this.selectedFacilityServicePrice = price;
+  }
+  paginate(array, page_size, page_number) {
     --page_number; // because pages logically start with 1, but technically with 0
     return array.slice(page_number * page_size, (page_number + 1) * page_size);
   }
 
-  loadMoreGlobalCategories(){
-    if(this.globalCategoriesToBePaginated.length <= this.globalCategories.length){
+  loadMoreGlobalCategories() {
+    if (this.globalCategoriesToBePaginated.length <= this.globalCategories.length) {
       this.showLoadMore = false;
-    }else{
+    } else {
       let goo = this.paginate(this.globalCategoriesToBePaginated, this.pageSize, this.index);
-      console.log(goo);
       this.globalCategories.push(...goo);
       this.index++;
     }
-    console.log(this.index);
   }
 
-  showSearch(){
+  showSearch() {
     this.searchShow = true;
   }
 
-  closeSearch(){
+  closeSearch() {
     this.searchShow = false;
   }
 
-  showSearchc(){
+  showSearchc() {
     this.searchShowc = true;
   }
 
-  closeSearchc(){
+  closeSearchc() {
     this.searchShowc = false;
   }
 }

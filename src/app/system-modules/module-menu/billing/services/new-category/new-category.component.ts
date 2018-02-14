@@ -13,12 +13,15 @@ export class NewCategoryComponent implements OnInit {
 
   facility: Facility = <Facility>{};
   categories: ServiceCategory = <ServiceCategory>{};
-
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input() selectedCategory;
+  @Input() selectedCategory: any;
+  @Input() categoryBool: Boolean;
   mainErr = true;
   errMsg = 'you have unresolved errors';
+  edit = false;
+  editCategory = false;
 
+  public frmEditcat: FormGroup;
   public frmNewcat: FormGroup;
   btnTitle = 'CREATE CATEGORY';
 
@@ -29,10 +32,11 @@ export class NewCategoryComponent implements OnInit {
   ngOnInit() {
     this.btnTitle = 'CREATE CATEGORY';
     this.addNew();
+    this.editCat();
     this.facility = <Facility> this._locker.getObject('selectedFacility');
-    if (this.selectedCategory.name !== undefined && this.selectedCategory.name.length > 1) {
-      this.btnTitle = 'UPDATE CATEGORY';
-      this.frmNewcat.controls['catName'].setValue(this.selectedCategory.name);
+    if (!!this.selectedCategory) {
+        this.btnTitle = 'UPDATE CATEGORY';
+        this.frmNewcat.controls['catName'].setValue(this.selectedCategory.name);
     }
   }
   addNew() {
@@ -40,9 +44,15 @@ export class NewCategoryComponent implements OnInit {
       catName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]]
     });
   }
+  editCat() {
+    this.frmEditcat = this.formBuilder.group({
+      catName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]]
+    });
+  }
 
   close_onClick() {
     this.closeModal.emit(true);
+      this.categoryBool = false;
   }
 
   newcat(model: any, valid: boolean) {
