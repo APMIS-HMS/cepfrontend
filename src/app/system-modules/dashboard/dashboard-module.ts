@@ -1,4 +1,3 @@
-import { ChangePasswordComponent } from './../module-menu/change-password/change-password.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -15,9 +14,7 @@ import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
 @NgModule({
     declarations: [
         DashboardComponent,
-        DashboardHomeComponent,
-        // SystemModuleComponent,
-        ChangePasswordComponent
+        DashboardHomeComponent
     ],
     exports: [
     ],
@@ -25,7 +22,6 @@ import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
         LogOutConfirmModule,
         MaterialModule,
         LoadingBarHttpModule,
-        // SharedModule,
         Routing
     ],
     providers: [

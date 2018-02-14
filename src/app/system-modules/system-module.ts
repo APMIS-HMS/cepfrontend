@@ -10,27 +10,12 @@ import { SharedModule } from '../shared-module/shared.module';
 import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
 import { LogOutConfirmModule } from '../shared-common-modules/log-out-module';
 import { ChangePasswordComponent } from './module-menu/change-password/change-password.component';
-
 @NgModule({
   declarations: [
-    // SystemModuleComponent,
-    // LogoutConfirmComponent
-    // ChangePasswordComponent,
   ],
   exports: [
   ],
-  imports: [
-    // CommonModule,
-    // ReactiveFormsModule,
-    // FormsModule 
-
-    LogOutConfirmModule,
-    systemModulesRoutes,
-    SharedModule,
-    LoadingBarHttpModule,
-    RouterModule
-
-  ],
+  imports: [],
   providers: []
 })
 export class SystemModule { }

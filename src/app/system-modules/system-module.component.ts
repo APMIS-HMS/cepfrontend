@@ -106,6 +106,7 @@ export class SystemModuleComponent implements OnInit {
   close_onClick() {
     this.logoutConfirm_on = false;
     this.logoutConfirm_on = false;
+    this.changePassword = false;
   }
   userOpt_toggle() {
     this.userOpt = !this.userOpt;

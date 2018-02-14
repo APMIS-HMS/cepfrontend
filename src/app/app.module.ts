@@ -1,3 +1,4 @@
+import { OnlyMaterialModule } from './shared-common-modules/only-material-module';
 import { CanActivateViaAuthGuardCompleteFacilityService } from './services/facility-manager/setup/can-activate-via-auth-guard-complete-facility.service';
 import { AuthInterceptor } from './feathers/auth.interceptor';
 import { AuthFacadeService } from './system-modules/service-facade/auth-facade.service';
@@ -75,18 +76,13 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     ApmisCheckboxComponent
   ],
   exports: [
-    // MaterialModule,
-    // PdfViewerModule
   ],
   imports: [
     BrowserModule,
     HttpModule,
-    // FormsModule,
     Routing,
-    // ReactiveFormsModule,
     BrowserAnimationsModule,
-    // ToastModule.forRoot(),
-    // CoolStorageModule,
+    OnlyMaterialModule,
     MaterialModule,
     SingUpAccountsSharedModule,
     LoadingBarHttpModule,
@@ -97,7 +93,6 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
       confirmButtonClass: 'btn btn-primary',
       cancelButtonClass: 'btn'
     })
-    // PdfViewerModule
   ],
   providers: [
     { provide: ErrorHandler, useClass: ApmisErrorHandler },
