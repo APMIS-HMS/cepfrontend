@@ -2,7 +2,7 @@
 //
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
-module.exports = function(app) {
+module.exports = function (app) {
     const mongooseClient = app.get('mongooseClient');
     const { Schema } = mongooseClient;
     const payments = new Schema({
@@ -18,8 +18,8 @@ module.exports = function(app) {
         paymentRoute: { type: Schema.Types.String, required: true }, // This could either be Flutterwave, cash, cheque...
         comment: { type: Schema.Types.String, required: false },
     }, {
-        timestamps: true
-    });
+            timestamps: true
+        });
 
     return mongooseClient.model('payments', payments);
 };
