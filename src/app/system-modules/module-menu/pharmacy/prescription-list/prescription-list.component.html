@@ -1,10 +1,11 @@
 <!-- <div class="backBtn" routerLink="/dashboard/store/home">
     Go To Store
 </div> -->
+
 <section id="presc-list">
     <mat-tab-group>
         <mat-tab label="Prescription">
-            <div class="survery">
+            <!-- <div class="survery">
                 <div class="col-xs-12 " style="padding: 0; ">
                     <table cellpadding="0 " cellspacing="0 " border="0.5 ">
                         <thead>
@@ -38,9 +39,8 @@
                                 </th>
                             </tr>
                         </thead>
-
                         <tbody>
-                            <tr>
+                            <tr class="search-bar">
                                 <td class="table-content " colspan="7">
                                     <form [formGroup]="prescriptionFormGroup">
                                         <div class="col-sm-4">
@@ -62,16 +62,6 @@
                                                 </mat-icon>
                                             </mat-form-field>
                                             <mat-datepicker #pickerr></mat-datepicker>
-                                            <!-- <mat-input-container>
-                                                <input matInput formControlName="date" [matDatepicker]="pickerr" placeholder="Choose a date">
-                                                <mat-datepicker-toggle mdSuffix [for]="pickerr"></mat-datepicker-toggle>
-                                            </mat-input-container>
-                                            <mat-datepicker #pickerr></mat-datepicker> -->
-                                            <!-- <mat-input-container>
-                                                <input formControlName="date" matInput [matDatepicker]="picker1" placeholder="Choose a date">
-                                                <button mdSuffix [matDatepickerToggle]="picker1"></button>
-                                            </mat-input-container>
-                                            <mat-datepicker #picker1></mat-datepicker> -->
                                         </div>
                                     </form>
                                 </td>
@@ -100,10 +90,15 @@
                         </tbody>
                     </table>
                 </div>
+            </div> -->
+            <div class="card">
+                <div class="card-header">
+                    Good
+                </div>
             </div>
         </mat-tab>
         <mat-tab label="Walk in">
-            <div class="survery">
+            <!-- <div class="survery">
                 <div class="col-xs-12 " style="padding: 0; ">
                     <table cellpadding="0 " cellspacing="0 " border="0.5 ">
                         <thead>
@@ -161,13 +156,7 @@
                                                 </mat-icon>
                                             </mat-form-field>
                                             <mat-datepicker #picker></mat-datepicker>
-                                            <!-- <mat-form-field>
-                                                <mat-input-container>
-                                                    <input formControlName="date" matInput [matDatepicker]="picker" placeholder="Choose a date">
-                                                    <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
-                                                </mat-input-container>
-                                            </mat-form-field>
-                                            <mat-datepicker #picker></mat-datepicker> -->
+                            
                                         </div>
                                     </form>
                                 </td>
@@ -194,7 +183,7 @@
                         </tbody>
                     </table>
                 </div>
-            </div>
+            </div> -->
         </mat-tab>
     </mat-tab-group>
 </section>
