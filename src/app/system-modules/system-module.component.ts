@@ -136,6 +136,7 @@ export class SystemModuleComponent implements OnInit {
   }
 
   goHome() {
-    this.router.navigate(["/home-page"]).then(payload => {}, error => {});
+    this.router.navigate(["/home-page"]).then(payload => {}, error => {
+    });
   }
 }

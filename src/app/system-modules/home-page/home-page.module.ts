@@ -8,10 +8,12 @@ import { HomePageHomeComponent } from './home-page-home.component';
 import { PersonLandingComponent } from './person-landing/person-landing.component';
 import { PersonScheduleAppointmentComponent } from './person-landing/person-schedule-appointment/person-schedule-appointment.component';
 import { BiodataPopupComponent } from './biodata-popup/biodata-popup.component';
+import { OnlyMaterialModule } from '../../shared-common-modules/only-material-module';
 
 @NgModule({
   imports: [
     CommonModule,
+    OnlyMaterialModule,
     MaterialModule,
     homePageRoutes,
     
