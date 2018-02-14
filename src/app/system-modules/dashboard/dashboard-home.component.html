@@ -54,6 +54,7 @@
                 <!-- <li (click)="userSubmenuShow()" [routerLink]="['access-manager/access-role-details']"><i class="fa fa-sign-in" aria-hidden="true"></i> <span>Access Control</span></li> -->
                 <!-- <li (click)="changePass()"><i class="fa fa-lock" aria-hidden="true"></i> <span>Change Password</span></li> -->
                 <li *ngIf="accessHas('Billing')" (click)="billingSubmenuShow()" [routerLink]="['billing']"><i class="fa fa-file-text" aria-hidden="true"></i> <span>Billing Manager</span></li>
+                <li *ngIf="accessHas('Report')" (click)="billingSubmenuShow()" [routerLink]="['report']"><i class="fa fa-file-text" aria-hidden="true"></i> <span>Report</span></li>
                 
             </ul>
         </div>
