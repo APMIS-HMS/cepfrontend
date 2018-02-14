@@ -206,6 +206,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
     this.systemModuleService.on();
     this.facilityService.patch(facility._id, facility, {}).then(
       payload => {
+        this.authFacadeService.setSelectedFacility(payload);
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy(
           "Facility updated successfully",

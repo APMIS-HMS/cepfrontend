@@ -20,7 +20,7 @@ export class CanActivateViaAuthGuardCompleteFacilityService
         (payload: any) => {
           let modules: any = payload.modules;
           const index = modules.findIndex(
-            x => x.moduleName.toLowerCase() === route.routeConfig.path
+            x => x.name.toLowerCase() === route.routeConfig.path
           );
           const facility = self.authFacadeService.getSelectedFacility();
           const validate = self.validateFacility(facility);

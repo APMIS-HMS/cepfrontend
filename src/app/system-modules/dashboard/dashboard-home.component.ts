@@ -143,7 +143,7 @@ export class DashboardHomeComponent implements OnInit {
   }
   accessHas(menu) {
     let modules: any = this.access.modules;
-    const index = modules.findIndex(x => x.moduleName.includes(menu));
+    const index = modules.findIndex(x => x.route.substring(1)===(menu.toLowerCase()));
     return (index > -1 || DONT_USE_AUTH_GUARD);
   }
   laboratorySubmenuShow() {

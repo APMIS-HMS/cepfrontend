@@ -19,11 +19,11 @@ export class CanActivateViaAuthGuardAccessService implements CanActivate {
         (payload: any) => {
           let modules: any = payload.modules;
           const index = modules.findIndex(
-            x => x.moduleName.toLowerCase() === route.routeConfig.path
+            x => x.route.substring(1) === route.routeConfig.path
           );
           const facility = self.authFacadeService.getSelectedFacility();
           const validate = self.validateFacility(facility);
-          const resulm = (index > -1 || DONT_USE_AUTH_GUARD) &&
+          const resulm = (index > -1 || DONT_USE_AUTH_GUARD) &&          
           (validate || route.routeConfig.path === "facility");
           resolve(
             (index > -1 || DONT_USE_AUTH_GUARD) &&

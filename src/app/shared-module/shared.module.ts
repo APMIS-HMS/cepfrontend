@@ -1,3 +1,4 @@
+import { OnlyMaterialModule } from './../shared-common-modules/only-material-module';
 import { SystemModuleComponent } from './../system-modules/system-module.component';
 import { NgModule } from '@angular/core';
 import { LogoutConfirmComponent } from '../system-modules/module-menu/logout-confirm/logout-confirm.component';
@@ -97,6 +98,7 @@ import { SharedModuleMaterialModule } from '../shared-common-modules/sharedmodul
     NgPipesModule,
     Ng2PaginationModule,
     ImageCropperModule,
+    OnlyMaterialModule,
     MaterialModule,
     SharedModuleMaterialModule
   ],

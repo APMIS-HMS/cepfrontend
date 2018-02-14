@@ -22,13 +22,13 @@
 </div>
 
 <div class="menu-content-wrap">
-   
+
     <div class="mc-wrap">
         <div *ngIf="innerMenuShow" id="style-1" class="mainmenu-content animated slideInLeft">
             <ul id="innerMenu-ul" class="innerMenu-ul">
 
                 <li *ngIf="accessHas('Facility')" (click)="facilitySubmenuShow()" [routerLink]="['facility']"><i class="fa fa-building" aria-hidden="true"></i> <span>Facility</span></li>
-                <li *ngIf="accessHas('Patient')" (click)="patientSubmenuShow()" [routerLink]="['patient-manager']"><i class="fa fa-user" aria-hidden="true"></i> <span>Patient Manager</span></li>
+                <li *ngIf="accessHas('Patient-Manager')" (click)="patientSubmenuShow()" [routerLink]="['patient-manager']"><i class="fa fa-user" aria-hidden="true"></i> <span>Patient Manager</span></li>
                 <li *ngIf="accessHas('Ward')" (click)="patientSubmenuShow()" [routerLink]="['ward-manager']"><i class="fa fa-bed" aria-hidden="true"></i> <span>Ward Manager</span></li>
                 <li *ngIf="accessHas('Payment')" (click)="patientSubmenuShow()" [routerLink]="['payment']"><i class="fa fa-money" aria-hidden="true"></i> <span>Payment</span></li>
                 <li *ngIf="accessHas('Wallet')" (click)="patientSubmenuShow()" [routerLink]="['wallet']"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> <span>Wallet</span></li>
@@ -55,7 +55,7 @@
                 <!-- <li (click)="changePass()"><i class="fa fa-lock" aria-hidden="true"></i> <span>Change Password</span></li> -->
                 <li *ngIf="accessHas('Billing')" (click)="billingSubmenuShow()" [routerLink]="['billing']"><i class="fa fa-file-text" aria-hidden="true"></i> <span>Billing Manager</span></li>
                 <li *ngIf="accessHas('Report')" (click)="billingSubmenuShow()" [routerLink]="['report']"><i class="fa fa-file-text" aria-hidden="true"></i> <span>Report</span></li>
-                
+
             </ul>
         </div>
 
