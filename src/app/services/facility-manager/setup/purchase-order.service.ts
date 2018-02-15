@@ -39,6 +39,10 @@ export class PurchaseOrderService {
     return this._socket.get(id, query);
   }
 
+  getOrder(id: string, query: any) {
+    return this._socket2.get(id, query);
+  }
+
   create(serviceprice: any) {
     return this._socket.create(serviceprice);
   }

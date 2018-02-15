@@ -22,7 +22,7 @@
                     <div class="frm-item-wrap">
                         <mat-form-field>
                             <mat-select style="width: 350px;" class="example-full-width" placeholder="Order Id" formControlName="orderId">
-                                <mat-option *ngFor="let order of orders" [value]="order._id">{{order.purchaseOrderNumber}}</mat-option>
+                                <mat-option *ngFor="let order of orders" (change)="onOrderChange($event)" [value]="order._id">{{order.purchaseOrderNumber}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>

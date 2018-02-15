@@ -60,7 +60,7 @@ export class PurchaseEntryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.checkBoxLabels = [{ name: 'All', checked: false }, { name: 'Out of stock', checked: true },{ name: 'Out of stock', checked: false }, { name: 'Re-order Level', checked: false }, { name: 'Expired', checked: false }];
+    this.checkBoxLabels = [{ name: 'All', checked: false }, { name: 'Out of stock', checked: true }, { name: 'Out of stock', checked: false }, { name: 'Re-order Level', checked: false }, { name: 'Expired', checked: false }];
     this._purchaseEventEmitter.setRouteUrl('Purchase Entry');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.authFacadeService.getLogingEmployee().then((res: any) => {
@@ -69,19 +69,18 @@ export class PurchaseEntryComponent implements OnInit {
       this.getSuppliers();
       this.getStores();
       this.getStrengths();
-      
+
     });
 
     this.route.params.subscribe(params => {
       const id = params['id'];
       this.orderId = id;
+      console.log("Dont giveup");
       console.log(this.orderId);
       if (this.orderId !== undefined) {
-        console.log("Dont giveup");
         this.getAllProducts();
         this.getOrderDetails(this.orderId);
       }
-
       const invoiceId = params['invoiceId'];
       if (invoiceId !== undefined) {
         this.invoiceId = invoiceId;
@@ -109,13 +108,13 @@ export class PurchaseEntryComponent implements OnInit {
         }
       }
     });
-    
+
     this.myInventory.valueChanges.subscribe(value => {
       if (value === true) {
         this.checkAll.setValue(false);
         this.getMyInventory();
       }
-    });  
+    });
 
 
     // this.route.data.subscribe(data => {
@@ -152,7 +151,7 @@ export class PurchaseEntryComponent implements OnInit {
 
     this.frm_purchaseOrder.controls['supplier'].valueChanges.subscribe(value => {
       if (value !== undefined && value !== null) {
-        this.purchaseOrderService.find({ query: { supplierId: value,facilityId:this.selectedFacility._id } }).subscribe(payload => {
+        this.purchaseOrderService.find({ query: { supplierId: value, facilityId: this.selectedFacility._id } }).subscribe(payload => {
           this.orders = payload.data;
         });
       }
@@ -160,8 +159,32 @@ export class PurchaseEntryComponent implements OnInit {
 
     this.frm_purchaseOrder.controls['orderId'].valueChanges.subscribe(value => {
       if (value !== undefined && value !== null) {
-        this.purchaseOrderService.get(value, {}).subscribe(payload => {
+        this.purchaseOrderService.getOrder(value, {
+          query: {
+            facilityId: this.selectedFacility._id
+          }
+        }).then((payload: PurchaseOrder) => {
           this.selectedOrder = payload;
+          this.frm_purchaseOrder.controls['store'].setValue(payload.storeId);
+          this.frm_purchaseOrder.controls['supplier'].setValue(payload.supplierId);
+          this.frm_purchaseOrder.controls['deliveryDate'].setValue(payload.expectedDate);
+          this.frm_purchaseOrder.controls['desc'].setValue(payload.remark);
+          this.frm_purchaseOrder.controls['orderId'].setValue(payload._id);
+
+          payload.orderedProducts.forEach((item, i) => {
+            (<FormArray>this.productTableForm.controls['productTableArray']).push(
+              this.formBuilder.group({
+                product: [item.productObject.name, [<any>Validators.required]],
+                batchNo: ['', [<any>Validators.required]],
+                costPrice: [0, [<any>Validators.required]],
+                qty: [item.quantity, [<any>Validators.required]],
+                expiryDate: [this.now, [<any>Validators.required]],
+                readOnly: [false],
+                id: [item.productId],
+                productObject: [item.productObject],
+              })
+              );
+          });
         });
       }
     });
@@ -187,7 +210,7 @@ export class PurchaseEntryComponent implements OnInit {
     this.inventoryService.findList({
       query: {
         facilityId: this.selectedFacility._id,
-        name:'',
+        name: '',
         storeId: this.frm_purchaseOrder.controls['store'].value
       }
     }).then(payload => {
@@ -197,9 +220,11 @@ export class PurchaseEntryComponent implements OnInit {
       payload.data.forEach((item, i) => {
         this.products.push(item.productObject);
       });
+      // this.invoiceId = '';
       this.getProductTables(this.products);
     });
   }
+
   getInvoiceDetails(id) {
     this.purchaseEntryService.get(id, {}).then(payload => {
       this.selectedPurchaseEntry = payload;
@@ -210,7 +235,7 @@ export class PurchaseEntryComponent implements OnInit {
       this.frm_purchaseOrder.controls['orderId'].setValue(payload.orderId);
       this.frm_purchaseOrder.controls['invoiceNo'].setValue(payload.invoiceNumber);
       this.frm_purchaseOrder.controls['amount'].setValue(payload.amountPaid);
-
+      console.log(payload.products);
       payload.products.forEach((item, i) => {
         this.inventoryService.find({
           query: {
@@ -245,9 +270,7 @@ export class PurchaseEntryComponent implements OnInit {
                       productObject: [item.product],
                     })
                     );
-
                 }
-
               });
             });
           });
@@ -296,9 +319,7 @@ export class PurchaseEntryComponent implements OnInit {
                       productObject: [item.product],
                     })
                     );
-
                 }
-
               });
             });
             // if (this.frm_purchaseOrder.controls['invoiceNo'].value !== null &&
@@ -383,8 +404,11 @@ export class PurchaseEntryComponent implements OnInit {
 
       }
     }
+    console.log(this.superGroups);
+    console.log(this.invoiceId);
     if (this.superGroups.length > 0 && this.invoiceId !== undefined) {
-      this.getInvoiceDetails(this.invoiceId);
+      console.log(this.invoiceId);
+      // this.getInvoiceDetails(this.invoiceId);
     }
   }
   getCostSummary(value) {
@@ -710,7 +734,7 @@ export class PurchaseEntryComponent implements OnInit {
           }
           if (existingInventories.length > 0) {
             existingInventories.forEach((ivn, iv) => {
-              this.inventoryService.patch(ivn._id,ivn,{}).subscribe(payResult => {
+              this.inventoryService.patch(ivn._id, ivn, {}).subscribe(payResult => {
                 this.frm_purchaseOrder.controls['invoiceNo'].reset();
                 this.getAllProducts();
                 this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
