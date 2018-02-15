@@ -84,8 +84,9 @@
 .card{
     position: relative;
     background: #fff;
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.16);
     width: 100%;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.16);
+
     .card-header{
         background: #337ab7;
         color: #fff;
@@ -94,10 +95,30 @@
         vertical-align: middle;
         line-height: 30px;
         border-bottom: solid 1px #fff;
-        font-weight: 900;
+        font-weight: 600;
         .table-head{
             border-right: solid 1px #fff;
             text-align: center;
+        }
+        .table-header-input{
+            background: rgba(255, 255, 255, 0.233);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            text-align: center;
+            font-size: 1.2rem !important; 
+            height: 30px;       
+        }
+        .table-header-select{
+            background: rgba(255, 255, 255, 0.233);
+            color: #dddddd;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            text-align: center;
+            height: 30px;            
+            font-size: 1.2rem !important;                    
         }
         .table-head:last-of-type{
             border: none;

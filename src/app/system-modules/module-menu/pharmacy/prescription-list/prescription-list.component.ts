@@ -21,6 +21,8 @@ export class PrescriptionListComponent implements OnInit {
 	loading: Boolean = true;
 	noPresLoading: Boolean = true;
 	currentDate: Date = new Date();
+	psearchOpen = false;
+	wsearchOpen = false;
 
 	constructor(
 		private _fb: FormBuilder,
@@ -79,6 +81,15 @@ export class PrescriptionListComponent implements OnInit {
 	}
 
 	onChangeCategory(value: any) {
+	}
+
+	openSearch(){
+		this.psearchOpen = true;
+		this.wsearchOpen = true;
+	}
+	closeSearch(){
+		this.psearchOpen = false;
+		this.wsearchOpen = false;
 	}
 
 	// Get all drugs from generic
