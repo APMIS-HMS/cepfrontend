@@ -141,14 +141,7 @@ export class PurchaseEntryComponent implements OnInit {
       this.errMsg = '';
     });
 
-    this.frm_purchaseOrder.controls['store'].valueChanges.subscribe(value => {
-      if (value !== undefined && value !== null) {
-        this.purchaseOrderService.find({ query: { storeId: value } }).subscribe(payload => {
-          this.orders = payload.data;
-        });
-      }
-    });
-
+    
     this.frm_purchaseOrder.controls['supplier'].valueChanges.subscribe(value => {
       if (value !== undefined && value !== null) {
         this.purchaseOrderService.find({ query: { supplierId: value, facilityId: this.selectedFacility._id } }).subscribe(payload => {
