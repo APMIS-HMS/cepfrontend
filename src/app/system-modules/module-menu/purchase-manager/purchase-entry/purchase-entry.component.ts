@@ -158,33 +158,11 @@ export class PurchaseEntryComponent implements OnInit {
     });
 
     this.frm_purchaseOrder.controls['orderId'].valueChanges.subscribe(value => {
+      console.log(value);
       if (value !== undefined && value !== null) {
-        this.purchaseOrderService.getOrder(value, {
-          query: {
-            facilityId: this.selectedFacility._id
-          }
-        }).then((payload: PurchaseOrder) => {
+        this.purchaseOrderService.get(value, {}).subscribe(payload => {
           this.selectedOrder = payload;
-          this.frm_purchaseOrder.controls['store'].setValue(payload.storeId);
-          this.frm_purchaseOrder.controls['supplier'].setValue(payload.supplierId);
-          this.frm_purchaseOrder.controls['deliveryDate'].setValue(payload.expectedDate);
-          this.frm_purchaseOrder.controls['desc'].setValue(payload.remark);
-          this.frm_purchaseOrder.controls['orderId'].setValue(payload._id);
-
-          payload.orderedProducts.forEach((item, i) => {
-            (<FormArray>this.productTableForm.controls['productTableArray']).push(
-              this.formBuilder.group({
-                product: [item.productObject.name, [<any>Validators.required]],
-                batchNo: ['', [<any>Validators.required]],
-                costPrice: [0, [<any>Validators.required]],
-                qty: [item.quantity, [<any>Validators.required]],
-                expiryDate: [this.now, [<any>Validators.required]],
-                readOnly: [false],
-                id: [item.productId],
-                productObject: [item.productObject],
-              })
-              );
-          });
+          console.log(this.selectedOrder);
         });
       }
     });
