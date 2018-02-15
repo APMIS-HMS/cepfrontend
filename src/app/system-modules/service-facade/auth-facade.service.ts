@@ -1,6 +1,6 @@
 import { FeatureModuleService } from "./../../services/module-manager/setup/feature-module.service";
 import { CoolLocalStorage } from "angular2-cool-storage/src/cool-local-storage";
-import { SocketService } from "./../../feathers/feathers.service";
+import { SocketService, RestService } from "./../../feathers/feathers.service";
 import { Injectable } from "@angular/core";
 
 @Injectable()
@@ -8,8 +8,10 @@ export class AuthFacadeService {
   logingEmployee: any;
   access: any;
   loginUser: any;
+  private selectedFacility:any;
   constructor(
     private _socketService: SocketService,
+    private _restService:RestService,
     private locker: CoolLocalStorage,
     private featureService: FeatureModuleService
   ) {}
@@ -22,12 +24,18 @@ export class AuthFacadeService {
     this.loginUser = user;
   }
 
+  setSelectedFacility(facility) {
+    this.selectedFacility = facility;
+  }
+  getSelectedFacility(){
+    return this.selectedFacility;
+  }
+
   getLogingEmployee() {
     let facId = this.locker.getObject("fac");
     let self = this;
 
     return new Promise(function(resolve, reject) {
-      console.log(self.logingEmployee);
       if (self.logingEmployee !== undefined) {
         resolve(self.logingEmployee);
       } else {
@@ -54,31 +62,26 @@ export class AuthFacadeService {
   getLogingUser() {
     let facId = this.locker.getObject("fac");
     let self = this;
-console.log(facId);
     return new Promise(function(resolve, reject) {
-      console.log(self.loginUser);
       if (self.loginUser !== undefined) {
-        console.log(1);
         resolve(self.loginUser);
       } else {
-        console.log(2)
         self._socketService.authenticateService();
         self._socketService
           .getService("save-employee")
           .get(facId)
           .then(
             payload => {
-              console.log(payload);
               if (payload !== undefined) {
                 self.setLogingEmployee(payload.selectedEmployee);
                 self.setLoginUser(payload.selectedUser);
                 resolve(self.loginUser);
               } else {
-                console.log(3)
                 resolve(undefined);
               }
             },
-            error => {}
+            error => {
+            }
           );
       }
     });
@@ -93,6 +96,7 @@ console.log(facId);
         self.featureService.getUserRoles({ query: { facilityId: facId } }).then(
           payload => {
             self.access = payload;
+            self.setSelectedFacility(payload.selectedFacility);
             resolve(self.access);
           },
           error => {}

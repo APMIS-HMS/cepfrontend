@@ -1,3 +1,4 @@
+import { OnlyMaterialModule } from './../../../shared-common-modules/only-material-module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -32,6 +33,7 @@ import { NewTagComponent } from '../billing/services/new-tag/new-tag.component';
     exports: [
     ],
     imports: [
+        OnlyMaterialModule,
         MaterialModule,
         billingRoutes
     ],

@@ -42,12 +42,10 @@ export class WardCheckInComponent implements OnInit {
     private _systemModuleService: SystemModuleService
 	) {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
-      console.log(res);
       if (!!res._id) {
         this.loginEmployee = res;
         if (!!this.loginEmployee && !!this.loginEmployee.workSpaces && this.loginEmployee.workSpaces.length > 0) {
           this.loginEmployee.workSpaces.forEach(workspace => {
-            console.log(workspace);
             if (workspace.isActive && workspace.locations.length > 0) {
               workspace.locations.forEach(x => {
                 if (x.isActive && x.majorLocationId.name === 'Ward') {
@@ -61,7 +59,6 @@ export class WardCheckInComponent implements OnInit {
         this._notification('Error', 'Couldn\'t get Logged in user! Please try again later');
       }
     }).catch(err => {
-      console.log(err);
     });
 	}
 
@@ -80,7 +77,6 @@ export class WardCheckInComponent implements OnInit {
 
 	checkIn(valid: boolean, value: any) {
     if (valid) {
-      console.log(value);
       this.disableCheckIn = true;
       this.addCheckin = false;
       this.addingCheckin = true;
@@ -160,28 +156,23 @@ export class WardCheckInComponent implements OnInit {
 
   private _getMajorLocation() {
     this._locationService.find({ query: { name: 'Ward' } }).then(res => {
-      console.log(res);
       if (res.data.length > 0) {
         const locationId = res.data[0]._id;
         this._getFacilityWard(locationId);
       }
     }).catch(err => {
-      console.log(err);
     });
   }
 
 
   private _getFacilityWard(locationId) {
-    console.log(locationId);
     this.facilityService.find({
       query: {
         '_id': this.facility._id,
         'minorLocations.locationId': locationId,
       }
     }).then(res => {
-      console.log(res);
       this.wards = res.data[0].minorLocations.filter(x => x.locationId === locationId);
-      console.log(this.wards);
     }).catch(err => console.log(err));
   }
 

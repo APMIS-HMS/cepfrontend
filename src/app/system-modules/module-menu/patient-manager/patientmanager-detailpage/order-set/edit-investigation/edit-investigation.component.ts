@@ -35,7 +35,6 @@ export class EditInvestigationComponent implements OnInit {
     this.apmisLookupText = value.name;
     this.selectedInvestigation = value;
     this.addInvestigationForm.controls['investigation'].setValue(value.name);
-    console.log(value);
   }
 
   onClickAddInvestigation(valid: boolean, value: any) {

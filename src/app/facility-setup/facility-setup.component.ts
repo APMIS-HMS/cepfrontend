@@ -251,7 +251,6 @@ export class FacilitySetupComponent implements OnInit {
   getCountries() {
     this.countryFacadeService.getOnlyCountries().then(payload =>{
     }).catch(error =>{
-      console.log(error);
     });
   }
   getGenders() {

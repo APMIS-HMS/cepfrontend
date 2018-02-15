@@ -118,7 +118,6 @@ export class InvestigationServiceComponent implements OnInit {
   getInvestigations() {
     this.investigationService.find({ query: { 'facilityId': this.selectedFacility._id } }).then(res => {
       this.loading = false;
-      console.log(res);
       if (res.data.length > 0) {
         this.investigations = res.data;
         this.bindInvestigations = JSON.parse(JSON.stringify(res.data));
@@ -212,7 +211,6 @@ export class InvestigationServiceComponent implements OnInit {
   }
 
   createInvestigation(valid, value) {
-    console.log(value);
     if (valid) {
       if (this.selectedInvestigation._id === undefined) {
         const investigation: any = {
@@ -361,7 +359,6 @@ export class InvestigationServiceComponent implements OnInit {
 
   createPanel(valid, value) {
     if (valid) {
-      console.log(this.movedInvestigations);
       if (this.selectedInvestigation._id === undefined) {
         const investigation: any = {
           facilityId: this.selectedFacility._id,

@@ -41,7 +41,6 @@ export class StockHistoryComponent implements OnInit {
     private locker: CoolLocalStorage, private systemModuleService: SystemModuleService
   ) {
     this.employeeService.checkInAnnounced$.subscribe(payload => {
-      console.log(payload);
       this.checkingStore = payload;
       this.getTransfers();
     });
@@ -64,9 +63,7 @@ export class StockHistoryComponent implements OnInit {
     }).then(payload => {
       this.systemModuleService.off();
       this.transferHistories = payload.data;
-      console.log(this.transferHistories);
     }, error => {
-      console.log(error);
       this.systemModuleService.off();
     });
   }

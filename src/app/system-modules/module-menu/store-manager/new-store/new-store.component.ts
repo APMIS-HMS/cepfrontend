@@ -52,10 +52,8 @@ export class NewStoreComponent implements OnInit {
   }
 
   getProductTypes() {
-    console.log("Inside Get Product Types");
     this.productTypeService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
       payload.data.forEach((item, i) => {
-        console.log(item);
         let newItem: StoreModel = <StoreModel>{};
         newItem._id = item._id;
         newItem.name = item.name;
@@ -63,8 +61,6 @@ export class NewStoreComponent implements OnInit {
         newItem.isChecked = false;
         this.productTypes.push(newItem);
       });
-      console.log(this.selectedStore);
-      console.log(this.productTypes);
       if (this.selectedStore._id !== undefined) {
         this.productTypes.forEach((item, i) => {
           this.selectedStore.productTypeId.forEach((item2, j) => {
@@ -100,14 +96,11 @@ export class NewStoreComponent implements OnInit {
     productType.isChecked = e.checked;
   }
   create(valid, value) {
-    console.log(this.selectedStore);
-    console.log(this.productTypes);
     if (valid) {
       this.mainErr = true;
       if (this.selectedStore._id === undefined) {
         value.facilityId = this.selectedFacility._id;
         value.productTypeId = [];
-        console.log(this.productTypes);
         this.productTypes.forEach((item, i) => {
           if (item.isChecked === true) {
             value.productTypeId.push({ productTypeId: item._id });

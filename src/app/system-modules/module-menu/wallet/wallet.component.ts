@@ -76,7 +76,6 @@ export class WalletComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    console.log('Loaded');
     this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
     this.user = <User>this._locker.getObject('auth');
 
@@ -122,7 +121,6 @@ export class WalletComponent implements OnInit {
 
     this._facilityService.get(this.selectedFacility._id, {}).then(res => {
       this.loading = false;
-      console.log(res);
       if (!!res._id) {
         if (!!res.wallet) {
           this.facility = res;
@@ -182,10 +180,8 @@ export class WalletComponent implements OnInit {
       // paidBy: this.user.data.person._id
     };
 
-    console.log(walletTransaction);
 
     this._personService.fundWallet(walletTransaction).then((res: any) => {
-      console.log(res);
       this.loading = false;
       if (res.body.status === 'success') {
         this.paymentFormGroup.reset();
@@ -199,13 +195,7 @@ export class WalletComponent implements OnInit {
         // this._notification('Error', res.body.message);
       }
     }).catch(err => {
-      console.log(err);
-      // if (err instanceof Error) {
-      //   console.log('Error - ', err.message);
-      //   console.log('Error - ', err.stack);
-      // } else {
-      //   console.log('Error status - ${err.error}, and Error Detail - ${err.error}');
-      // }
+     
     });
   }
 
@@ -237,11 +227,9 @@ export class WalletComponent implements OnInit {
 
   // events
   public chartClicked(e: any): void {
-    console.log(e);
   }
 
   public chartHovered(e: any): void {
-    console.log(e);
   }
 }
 

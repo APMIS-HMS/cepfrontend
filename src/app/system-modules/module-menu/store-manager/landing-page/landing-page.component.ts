@@ -93,7 +93,6 @@ export class LandingPageComponent implements OnInit {
           name: ''
         }
     }).then(res => {
-      console.log(res);
       this.loading = false;
       if (res.data.length != 0) {
         this.stores = res.data;

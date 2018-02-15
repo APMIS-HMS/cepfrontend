@@ -32,4 +32,4 @@ export const ALPHABET_REGEX = '[a-zA-Z][a-zA-Z ]+'
 export const GEO_LOCATIONS = ['ng'];
 export const HTML_SAVE_PATIENT = `  <i class="fa fa-info-circle" aria-hidden="true"></i>
 SUCCESS!!! An auto-generated password has been sent to your phone number`;
-export const DONT_USE_AUTH_GUARD = true;
+export const DONT_USE_AUTH_GUARD = false;
