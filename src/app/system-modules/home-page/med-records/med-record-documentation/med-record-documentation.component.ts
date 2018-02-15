@@ -7,6 +7,10 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MedRecordDocumentationComponent implements OnInit {
 
+  tab1 = true;
+  tab2 = false;
+  tab3 = false;
+
   public lineChartData:Array<any> = [
     {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
     {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'},
@@ -50,11 +54,19 @@ export class MedRecordDocumentationComponent implements OnInit {
   ngOnInit() {
   }
 
-  public chartClicked(e:any):void {
-    console.log(e);
+  vital_tab(){
+    this.tab1 = true;
+    this.tab2 = false;
+    this.tab3 = false;
   }
- 
-  public chartHovered(e:any):void {
-    console.log(e);
+  allergies_tab(){
+    this.tab1 = false;
+    this.tab2 = true;
+    this.tab3 = false;
+  }
+  problem_tab(){
+    this.tab1 = false;
+    this.tab2 = false;
+    this.tab3 = true;
   }
 }

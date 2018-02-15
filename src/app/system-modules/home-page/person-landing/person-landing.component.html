@@ -245,6 +245,6 @@
   </table>
 </div>
 
-<div *ngIf="login_on" class="modal-overlay">
-    <app-person-schedule-appointment (closeModal)="close_onClick($event)" class="form-modal center-center"></app-person-schedule-appointment>
+<div *ngIf="schedule_appointment" class="modal-overlay">
+  <app-person-schedule-appointment (closeModal)="close_onClick($event)" class="form-modal center-center"></app-person-schedule-appointment>
 </div>
