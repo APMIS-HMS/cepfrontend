@@ -1,3 +1,4 @@
+import { OnlyMaterialModule } from './../../../shared-common-modules/only-material-module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -37,6 +38,7 @@ import { FormsService, TimezoneService } from '../../../services/facility-manage
     ],
     imports: [
         clinicRoutes,
+        OnlyMaterialModule,
         MaterialModule,
         DateRangePickerModule,
         DateTimePickerModule

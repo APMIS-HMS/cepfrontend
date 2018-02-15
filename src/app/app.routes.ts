@@ -37,11 +37,6 @@ const appRoutes: Routes = [
     data: { preload: false },
   },
   {
-    path: 'patient-portal',
-    loadChildren: './system-modules/patient-portal/patient-portal.module.ts#PatientPortalModule',
-    data: { preload: true }
-  },
-  {
     path: 'signup', loadChildren: './signup/signup-module#SingUpModule',
     data: { preload: true },
   },

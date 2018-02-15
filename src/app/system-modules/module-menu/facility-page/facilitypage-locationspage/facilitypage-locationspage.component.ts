@@ -1,19 +1,19 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { FacilitiesService } from '../../../../services/facility-manager/setup/index';
-import { LocationService } from '../../../../services/module-manager/setup/index';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { Component, OnInit, EventEmitter, Output } from "@angular/core";
+import { FormControl } from "@angular/forms";
+import { FacilitiesService } from "../../../../services/facility-manager/setup/index";
+import { LocationService } from "../../../../services/module-manager/setup/index";
 
-import { Facility, Location } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
-import { ActivatedRoute } from '@angular/router';
+import { Facility, Location } from "../../../../models/index";
+import { CoolLocalStorage } from "angular2-cool-storage";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
-  selector: 'app-facilitypage-locationspage',
-  templateUrl: './facilitypage-locationspage.component.html',
-  styleUrls: ['./facilitypage-locationspage.component.scss']
+  selector: "app-facilitypage-locationspage",
+  templateUrl: "./facilitypage-locationspage.component.html",
+  styleUrls: ["./facilitypage-locationspage.component.scss"]
 })
 export class FacilitypageLocationspageComponent implements OnInit {
-  
   selectedLocation: any;
 
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
@@ -53,15 +53,21 @@ export class FacilitypageLocationspageComponent implements OnInit {
   isWardSelected: Boolean = false;
   facility: Facility = <Facility>{};
 
-  constructor(private locationService: LocationService, private locker: CoolLocalStorage,
-    public facilityService: FacilitiesService, private route: ActivatedRoute) {
+  constructor(
+    private locationService: LocationService,
+    private locker: CoolLocalStorage,
+    public facilityService: FacilitiesService,
+    private systemModuleService:SystemModuleService,
+    private route: ActivatedRoute
+  ) {
     this.facilityService.listner.subscribe(payload => {
       this.facility = payload;
-      this.filteredMinorLocations = this.facility.minorLocations.filter(x => x.locationId === this.locationObj._id);
+      this.filteredMinorLocations = this.facility.minorLocations.filter(
+        x => x.locationId === this.locationObj._id
+      );
     });
     this.locationService.listner.subscribe(payload => {
       this.getLocations();
-
     });
   }
 
@@ -69,11 +75,13 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.facility = <Facility>this.facilityService.getSelectedFacilityId();
     this.facilityService.listner.subscribe(payload => {
       this.facility = payload;
-      this.filteredMinorLocations = this.facility.minorLocations.filter(x => x.locationId === this.locationObj._id);
+      this.filteredMinorLocations = this.facility.minorLocations.filter(
+        x => x.locationId === this.locationObj._id
+      );
     });
-    this.pageInView.emit('Locations');
+    this.pageInView.emit("Locations");
     this.route.data.subscribe(data => {
-      data['locations'].subscribe((payload: any) => {
+      data["locations"].subscribe((payload: any) => {
         this.locationsObj = payload;
       });
     });
@@ -97,6 +105,43 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.subLocation = minor;
     this.newSubLocModal_on = true;
   }
+  sweetAlertCallback(result, payload) {
+    if (result.value) {
+      this.removeMinorLocation(payload);
+    }
+  }
+  removeMinorLocationFacade(minor){
+    const question = "Are you sure you want to remove from unit?";
+    this.systemModuleService.announceSweetProxy(
+      question,
+      "question",
+      this,
+      null,
+      null,
+      minor
+    );
+  }
+  removeMinorLocation(minor) {
+    const index = this.facility.minorLocations.findIndex(
+      x => x._id === minor._id
+    );
+    let minorLocation = this.facility.minorLocations[index];
+    minorLocation.isActive = false;
+    this.facility.minorLocations[index] = minorLocation;
+    this.facilityService
+      .patch(
+        this.facility._id,
+        { minorLocations: this.facility.minorLocations },
+        {}
+      )
+      .then(payload => {
+        this.locker.setObject("selectedFacility", payload);
+        this.facility = payload;
+      });
+  }
+  getActiveMinorLocations(filteredMinorLocations){
+    return filteredMinorLocations.filter(x =>x.isActive);
+  }
   getLocations() {
     this.locationService.findAll().then(payload => {
       this.locationsObj = payload.data;
@@ -107,7 +152,7 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.locationHomeContentArea = false;
     this.locationDetailContentArea = true;
     this.innerMenuShow = false;
-    if (model.name !== undefined && model.name.toLowerCase() == 'ward') {
+    if (model.name !== undefined && model.name.toLowerCase() == "ward") {
       this.isWardSelected = true;
     } else {
       this.isWardSelected = false;
@@ -115,14 +160,14 @@ export class FacilitypageLocationspageComponent implements OnInit {
 
     this.locationObj = model;
 
-    this.filteredMinorLocations = this.facility.minorLocations.filter(x => x.locationId === this.locationObj._id);
-
+    this.filteredMinorLocations = this.facility.minorLocations.filter(
+      x => x.locationId === this.locationObj._id
+    );
   }
 
   locationDetailContentArea_remove(model: Location) {
     this.locationService.remove(model._id, model);
   }
-
 
   locationHomeContentArea_show() {
     this.locationHomeContentArea = true;
@@ -179,7 +224,7 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.innerMenuShow = !this.innerMenuShow;
   }
   innerMenuHide(e) {
-    if (e.srcElement.id !== 'submenu_ico') {
+    if (e.srcElement.id !== "submenu_ico") {
       this.innerMenuShow = false;
     }
   }

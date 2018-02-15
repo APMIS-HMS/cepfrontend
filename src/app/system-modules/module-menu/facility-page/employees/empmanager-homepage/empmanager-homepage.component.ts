@@ -31,7 +31,7 @@ export class EmpmanagerHomepageComponent
   @Input() resetData: Boolean;
   @Output() resetDataNew: EventEmitter<Boolean> = new EventEmitter<Boolean>();
 
-  facility: Facility = <Facility>{};
+  facility: any = <any>{};
   employees: Employee[] = [];
   searchControl = new FormControl();
 

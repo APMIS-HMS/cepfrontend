@@ -8,6 +8,7 @@ export class AuthFacadeService {
   logingEmployee: any;
   access: any;
   loginUser: any;
+  private selectedFacility:any;
   constructor(
     private _socketService: SocketService,
     private _restService:RestService,
@@ -21,6 +22,13 @@ export class AuthFacadeService {
 
   setLoginUser(user) {
     this.loginUser = user;
+  }
+
+  setSelectedFacility(facility) {
+    this.selectedFacility = facility;
+  }
+  getSelectedFacility(){
+    return this.selectedFacility;
   }
 
   getLogingEmployee() {
@@ -88,6 +96,7 @@ export class AuthFacadeService {
         self.featureService.getUserRoles({ query: { facilityId: facId } }).then(
           payload => {
             self.access = payload;
+            self.setSelectedFacility(payload.selectedFacility);
             resolve(self.access);
           },
           error => {}
