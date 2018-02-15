@@ -21,6 +21,7 @@ import { Observable } from 'rxjs/Observable';
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 import { EMAIL_REGEX, PHONE_REGEX, ALPHABET_REGEX, HTML_SAVE_PATIENT } from 'app/shared-module/helpers/global-config';
+import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 
 @Component({
     selector: 'app-new-patient',
@@ -28,6 +29,7 @@ import { EMAIL_REGEX, PHONE_REGEX, ALPHABET_REGEX, HTML_SAVE_PATIENT } from 'app
     styleUrls: ['./new-patient.component.scss']
 })
 export class NewPatientComponent implements OnInit, AfterViewInit {
+    user: any;
     securityQuestions: any[] = [];
 
     isSuccessful = false;
@@ -158,7 +160,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         private systemModuleService: SystemModuleService,
         private titleCasePipe: TitleCasePipe,
         private securityQuestionService: SecurityQuestionsService,
-        private faService: FamilyHealthCoverService
+        private faService: FamilyHealthCoverService,
+        private authFacadeService:AuthFacadeService
     ) {
         // this.uploadEvents = new EventEmitter();
         this.cropperSettings = new CropperSettings();
@@ -297,6 +300,9 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     ngOnInit() {
         // this.uploadEvents = new EventEmitter();
+        this.authFacadeService.getLogingUser().then(payload =>{
+            this.user = payload;
+        })
         this.facility = <Facility> this.locker.getObject('selectedFacility');
         this.departments = this.facility.departments;
         this.minorLocations = this.facility.minorLocations;
@@ -966,42 +972,56 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             }
             this.patientService.create(patient).then(payl => {
                 this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planInput } }).then(payloadPrice => {
-                    let servicePrice = payloadPrice.data[0];
-                    let billing: any = {
-                        discount: 0,
-                        facilityId: this.facility._id,
-                        grandTotal: servicePrice.price,
-                        patientId: payl._id,
-                        subTotal: servicePrice.price,
-                        billItems: [
-                            {
-                                unitPrice: servicePrice.price,
-                                facilityId: this.facility._id,
-                                description: "",
-                                facilityServiceId: servicePrice.facilityServiceId,
-                                serviceId: this.planInput,
-                                patientId: payl._id,
-                                quantity: 1,
-                                totalPrice: servicePrice.price,
-                                unitDiscountedAmount: 0,
-                                totalDiscoutedAmount: 0,
-                                modifierId: [],
-                                covered: {
-                                    coverType: this.coverType
-                                },
-                                isServiceEnjoyed: false,
-                                paymentCompleted: false,
-                                paymentStatus: [],
-                                payments: []
-
-                            }
-                        ]
-                    }
-                    this.billingService.create(billing).then(billingPayload => {
+                     if(payloadPrice.data.length > 0){
+                        let servicePrice = payloadPrice.data[0];
+                        let billing: any = {
+                            discount: 0,
+                            facilityId: this.facility._id,
+                            grandTotal: servicePrice.price,
+                            patientId: payl._id,
+                            subTotal: servicePrice.price,
+                            billItems: [
+                                {
+                                    unitPrice: servicePrice.price,
+                                    facilityId: this.facility._id,
+                                    description: "",
+                                    facilityServiceId: servicePrice.facilityServiceId,
+                                    serviceId: this.planInput,
+                                    patientId: payl._id,
+                                    quantity: 1,
+                                    totalPrice: servicePrice.price,
+                                    unitDiscountedAmount: 0,
+                                    totalDiscoutedAmount: 0,
+                                    modifierId: [],
+                                    covered: {
+                                        coverType: this.coverType
+                                    },
+                                    isServiceEnjoyed: false,
+                                    paymentCompleted: false,
+                                    paymentStatus: [],
+                                    payments: []
+    
+                                }
+                            ]
+                        }
+                        this.billingService.create(billing).then(billingPayload => {
+                            this.facilityService.announceNotification({
+                                type: 'Success',
+                                text: this.selectedPerson.lastName +' '+ this.selectedPerson.firstName + ' added successfully but bill not generated because price not yet set for this service',
+                                users: [this.facilityService.getLoginUserId()]
+                            })
+                            this.close_onClick();
+                        }).catch(errr => {
+                        });
+                    }else{
+                        //
                         this.close_onClick();
-                    }).catch(errr => {
-                    });
-
+                        this.facilityService.announceNotification({
+                            type: 'Success',
+                            text: this.selectedPerson.lastName +' '+ this.selectedPerson.firstName + ' added successfully but bill not generated because price not yet set for this service',
+                            users: [this.user._id]
+                        })
+                    }
                 }).catch(err => {
                 });
 
@@ -1555,17 +1575,29 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         return null;
     }
 
+    // saveData() {
+    //     this.savePatientData(this.coverType);
+    //     /* if (this.coverType == 'insurance') {
+    //         this.savePatientData('insurance');
+    //     } else if (this.coverType === 'company') {
+    //         this.saveCompanyPerson();
+    //     } else if (this.coverType === 'wallet') {
+    //         this.savePerson();
+    //     } else if (this.coverType === 'family') {
+    //         this.saveFamilyPerson();
+    //     } */
+    // }
+
     saveData() {
-        this.savePatientData(this.coverType);
-        /* if (this.coverType == 'insurance') {
-            this.savePatientData('insurance');
+        if (this.coverType == 'insurance') {
+            // this.saveInsurancePerson();
         } else if (this.coverType === 'company') {
             this.saveCompanyPerson();
         } else if (this.coverType === 'wallet') {
             this.savePerson();
         } else if (this.coverType === 'family') {
             this.saveFamilyPerson();
-        } */
+        }
     }
 
 

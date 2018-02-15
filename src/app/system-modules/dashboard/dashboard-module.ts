@@ -8,9 +8,9 @@ import { Routing } from './dashboard-routes';
 import { LogOutConfirmModule } from '../../shared-common-modules/log-out-module';
 import {SingUpAccountsSharedModule } from '../../shared-common-modules/signup-accounts-shared-module'
 import {SharedModule } from '../../shared-module/shared.module';
-import { SystemModuleComponent } from '../system-module.component';
 import { MaterialModule } from '../../shared-common-modules/material-module';
 import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
+import { OnlyMaterialModule } from '../../shared-common-modules/only-material-module';
 @NgModule({
     declarations: [
         DashboardComponent,
@@ -20,6 +20,7 @@ import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
     ],
     imports: [
         LogOutConfirmModule,
+        OnlyMaterialModule,
         MaterialModule,
         LoadingBarHttpModule,
         Routing
