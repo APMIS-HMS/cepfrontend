@@ -186,20 +186,25 @@ export class ClinicalNoteComponent implements OnInit {
       );
   }
   setSelectedForm(form) {
-    this.selectedForm = form;
-    this.showDocument = false;
-    this.json = form.body;
-    this.sharedService.announceNewForm({
-      json: this.json,
-      form: this.selectedForm
-    });
-    this.showDocument = true;
-    if (this.surveyjs !== undefined) {
-      this.surveyjs.ngOnInit();
+    console.log(form);
+    if (typeof form === "object" && form !== null) {
+      this.selectedForm = form;
+      this.showDocument = false;
+      this.json = form.body;
+      this.sharedService.announceNewForm({
+        json: this.json,
+        form: this.selectedForm
+      });
+      this.showDocument = true;
+      if (this.surveyjs !== undefined) {
+        this.surveyjs.ngOnInit();
+      }
+      this.documentationTemplateService.find({
+        query: {}
+      });
+    }else{
+      this.systemModuleService.announceSweetProxy('wow', 'success');
     }
-    this.documentationTemplateService.find({
-      query: {}
-    });
   }
 
   close_onClick() {
