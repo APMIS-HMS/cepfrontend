@@ -24,7 +24,7 @@ class Service {
         const personService = this.app.service('peoples');
 
         //const person = [];
-        //Check for facility Id 
+        //Check for facility Id
         const facilityId = data.query.facilityId;
         if (facilityId !== undefined) {
             let prescriptions = await prescriptionService.find({ query: { facilityId: facilityId } });
@@ -37,7 +37,6 @@ class Service {
             } else if (pLength > 0) {
                 prescriptions = prescriptions.data;
                 while (i--) {
-
                     let prescription = prescriptions[i];
                     let patientId = prescription.patientId;
                     let employeeId = prescription.employeeId;
@@ -49,11 +48,10 @@ class Service {
                     delete employee.personDetails.wallet;
                     prescription.employeeDetails = employee.personDetails;
                     counter++;
-                    if (pLength === counter) {
-                        return jsend.success(prescription);
-                    }
                 }
-
+                if (pLength === counter) {
+                    return jsend.success(prescriptions);
+                }
             } else {
                 return jsend.error('Prescription not properly referenced!');
             }
