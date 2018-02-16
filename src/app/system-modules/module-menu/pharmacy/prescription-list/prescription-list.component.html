@@ -87,10 +87,10 @@
                             <tr *ngFor="let prescription of prescriptionLists; let i = index;" routerLink='/dashboard/pharmacy/prescriptions/{{prescription._id}}'>
                                 <td class="table-content">{{ i+1 }}</td>
                                 <td class="table-content">{{prescription?.updatedAt | date}}</td>
-                                <td class="table-content">{{prescription?.patientName}}</td>
+                                <td class="table-content">{{prescription?.personDetails.firstName }} {{prescription?.personDetails.lastName }}</td>
                                 <td class="table-content">{{prescription?.clinicDetails?.clinicName}}</td>
                                 <td class="table-content">{{prescription?.priority?.name}}</td>
-                                <td class="table-content">{{prescription?.employeeName}}</td>
+                                <td class="table-content">{{prescription?.employeeDetails.firstName }} {{prescription?.employeeDetails.lastName }}</td>
                                 <td class="table-content">
                                     <span *ngIf="prescription.status == 'completely'" style="color:forestgreen">Completely<br>Assessed</span>
                                     <span *ngIf="prescription.status == 'partly'" style="color:blue">Partly<br>Assessed</span>
