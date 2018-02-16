@@ -116,7 +116,7 @@ export class EmployeeAccessRolesComponent implements OnInit {
       facilityId: this.selectedFacility._id,
       roles: this.rolesPicked
     };
-    this.featureService.assignUserRole(data).then(
+    this.featureService.assignUserRole(data,{facilityId:this.selectedFacility._id}).then(
       payload => {
         this.loading = false;
         let text = "Selected roles applied to this employee successfully";

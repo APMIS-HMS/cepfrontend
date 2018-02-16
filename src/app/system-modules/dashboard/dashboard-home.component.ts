@@ -57,6 +57,9 @@ export class DashboardHomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.featureService.listner.subscribe(payload =>{
+      this.getUserRoles();
+    })
     this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
     if (this.facilityObj !== undefined && this.facilityObj != null) {
       this.facilityName = this.facilityObj.name;
@@ -136,16 +139,17 @@ export class DashboardHomeComponent implements OnInit {
     
   }
   getUserRoles() {
-    this.authFacadeService.getUserAccessControls().then(payload => {
+    this.authFacadeService.getUserAccessControls(true).then(payload => {
       this.access = payload;
     }, error => {
     })
   }
   accessHas(menu) {
     let modules: any = this.access.modules;
-    console.log(modules);
-    const index = modules.findIndex(x => x.route.substring(1)===(menu.toLowerCase()));
-    return (index > -1 || DONT_USE_AUTH_GUARD);
+    if(modules !== undefined){
+      const index = modules.findIndex(x => x.route.substring(1)===(menu.toLowerCase()));
+      return (index > -1 || DONT_USE_AUTH_GUARD);
+    }
   }
   laboratorySubmenuShow() {
     this.innerMenuShow = false;

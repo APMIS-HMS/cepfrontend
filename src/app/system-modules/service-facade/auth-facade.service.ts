@@ -99,7 +99,8 @@ export class AuthFacadeService {
             self.setSelectedFacility(payload.selectedFacility);
             resolve(self.access);
           },
-          error => {}
+          error => {
+          }
         );
       }
     });
