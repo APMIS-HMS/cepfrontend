@@ -59,14 +59,14 @@ class Service {
 
             const allModules = await facilityModuleService.find({
                 query: {
-                    $or: [{ name: 'Facility' }, { name: 'Access Control' }]
+                    $or: [{ name: 'facility' }, { name: 'access control' }]
                 }
             });
             let allModulesData = allModules.data;
-            const facilityModuleIndex = allModulesData.findIndex(x => x.name === 'Facility');
+            const facilityModuleIndex = allModulesData.findIndex(x => x.name === 'facility');
             const facilityModuleObj = allModulesData[facilityModuleIndex];
 
-            const AccessModuleIndex = allModulesData.findIndex(x => x.name === 'Access Control');
+            const AccessModuleIndex = allModulesData.findIndex(x => x.name === 'access control');
             const AccessModuleObj = allModulesData[AccessModuleIndex];
 
 
