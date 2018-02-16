@@ -143,12 +143,13 @@ export class DashboardHomeComponent implements OnInit {
   }
   accessHas(menu) {
     let modules: any = this.access.modules;
+    console.log(modules);
     const index = modules.findIndex(x => x.route.substring(1)===(menu.toLowerCase()));
     return (index > -1 || DONT_USE_AUTH_GUARD);
   }
   laboratorySubmenuShow() {
     this.innerMenuShow = false;
-    this.router.navigate(['/dashboard/laboratory'])
+    this.router.navigate(['/dashboard/laboratory']);
   }
 
   onSwitchAccount() {
