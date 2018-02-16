@@ -29,34 +29,21 @@ class Service {
         let len2 = inventories.data.length - 1;
         for (let index2 = len2; index2 >= 0; index2--) {
           if (inventories.data[index2].productId.toString() === products.data[index]._id.toString()) {
-            console.log("COMPARED");
             inventories.data[index2].productObject = products.data[index];
-            console.log("COMPARED-------");
             if (inventories.data[index2].transactions.length > 0) {
-              console.log("COMPARED-------2");
               let len3 = inventories.data[index2].transactions.length - 1;
-              console.log("COMPARED-------3");
               for (let index3 = len3; index3 >= 0; index3--) {
-                console.log("COMPARED-------4");
                 if (inventories.data[index2].transactions[index3].expiryDate != undefined) {
-                  console.log("COMPARED-------5");
                   inventories.data[index2].transactions[index3].expiration = expiration(inventories.data[index2].transactions[index3].expiryDate, new Date());
-                  console.log("COMPARED-------6");
                 }
-                console.log("COMPARED-------7");
                 if (inventories.data[index2].transactions[index3].availableQuantity <= 0) {
-                  console.log("COMPARED-------8");
                   inventories.data[index2].transactions.splice(index3, 1);
-                  console.log("COMPARED-------9");
                 }
-                console.log("COMPARED-------10");
               }
             }
-            console.log("COMPARED-------11");
           }
         }
       }
-      console.log(inventories.data.length + "000000000000000000000000000000");
       return inventories
     } else {
       let result = {
