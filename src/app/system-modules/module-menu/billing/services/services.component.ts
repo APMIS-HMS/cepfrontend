@@ -91,9 +91,9 @@ export class ServicesComponent implements OnInit {
         query:
           { search: this.searchTag.value, facilityId: this.facility._id }
       }).then(payload => {
-          console.log(payload)
-          this.tags = payload.data;
-        }));
+        console.log(payload)
+        this.tags = payload.data;
+      }));
 
     subscribeForTag.subscribe((payload: any) => {
     });
@@ -156,6 +156,7 @@ export class ServicesComponent implements OnInit {
     }).then(payload => {
       this.categories = payload.data[0].categories;
       this.selectedServices = payload.data[0].categories[0].services;
+      this.selectedCategory = payload.data[0].categories[0].name;
     });
 
     // this._facilitiesServiceCategoryService.find({
@@ -258,7 +259,7 @@ export class ServicesComponent implements OnInit {
     this.newModefierPopup = false;
     this.showNewModifer = false;
   }
-  onClickshowNewModifer () {
+  onClickshowNewModifer() {
     this.showNewModifer = !this.showNewModifer;
 
   }

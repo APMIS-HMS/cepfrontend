@@ -47,7 +47,7 @@
                             <div class="col-xs-1 options">
                                 <i data-toggle="tooltip" title="delete" data-placement="left" class="fa fa-trash red-text fa-fw"></i>
                             </div>
-                            <div class="col-xs-2  addService">
+                            <div class="col-xs-2  options">
                                 <i (click)="newServicePopup_show()" data-toggle="tooltip" title="Add Service" data-placement="left" class="fa fa-plus-square  blue-text"></i>
                             </div>
                             <!-- <div class="col-xs-1 options">
@@ -96,25 +96,19 @@
                     <div *ngFor="let service of selectedServices" class="card-list-item">
                         <div class="row">
                             <div class="col-xs-5 cat-name">
-                                <i class="fa fa-file-text-o"> {{service.name}} </i>
+                                <i class="{{ service.panels.length>0 ? ' fa fa-file-text-o': ' div'}}"> {{service.name}} </i>
                                 <div class="Container">
-                                    <ol class="listOfPanels ">
-                                        <li> jlhsjhudhkdj</li>
-                                        <li>hbdhuhkbj rj</li>
-                                        <li>hbdhuhkbj rj</li>
+                                    <ol class="listOfPanels" *ngFor="let item of service.panels">
+                                        <li>{{item.name}}</li>
                                     </ol>
                                 </div>
                             </div>
                             <!-- <div class="col-xs-2">{{service?.code}}</div>-->
-                            <div class="col-xs-4 cat-name">
-                                <div class="label label-info1">
-                                    <span class="base">Base Price</span>
-                                    <span class="prixe">&#x20a6; {{service?.price | number:'1.2-2'}}</span>
-                                </div>
+                            <div class="col-xs-4 cat-name" >
                                 <!-- Price with Tags -->
-                                <div class="label label-info1">
-                                    <span class="base">Taged Price </span>
-                                    <span class="prixe">&#x20a6;{{service?.price | number:'1.2-2'}}</span>
+                                <div class="label label-info1" *ngFor="let item of service.price">
+                                    <span class="base">{{item.name}} </span>
+                                    <span class="prixe">&#x20a6;{{item?.price | number:'1.2-2'}}</span>
                                 </div>
                             </div>
                             <div class="col-xs-3 options">
