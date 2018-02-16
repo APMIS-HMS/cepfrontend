@@ -737,19 +737,23 @@ export class LabRequestsComponent implements OnInit {
       const copyBindInvestigation = JSON.parse(JSON.stringify(this.bindInvestigations));
       const readyCollection: any[] = [];
 
+      console.log(copyBindInvestigation);
       copyBindInvestigation.forEach((item: InvestigationModel, i) => {
+        console.log(item);
         if (item.investigation.isPanel) {
           delete item.isChecked;
+          delete item.temporaryInvestigationList;
           item.investigation.panel.forEach((panel, j) => {
             delete panel.isChecked;
-          })
+          });
         } else {
           delete item.isChecked;
           delete item.LaboratoryWorkbenches;
           delete item.location;
-          readyCollection.push(item);
+          // readyCollection.push(item);
         }
-      })
+        readyCollection.push(item);
+      });
 
       const request: any = {
         facilityId: this.selectedFacility._id,
@@ -759,7 +763,9 @@ export class LabRequestsComponent implements OnInit {
         diagnosis: this.frmNewRequest.controls['diagnosis'].value,
         investigations: readyCollection,
         createdBy: this.loginEmployee._id
-      }
+      };
+
+      console.log(request);
       // const billGroup: BillIGroup = <BillIGroup>{};
       // billGroup.discount = 0;
       // billGroup.facilityId = this.selectedFacility._id;

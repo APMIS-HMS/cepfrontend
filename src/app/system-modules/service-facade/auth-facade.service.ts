@@ -86,11 +86,11 @@ export class AuthFacadeService {
       }
     });
   }
-  getUserAccessControls() {
+  getUserAccessControls(force?) {
     let facId = this.locker.getObject("fac"); // TO Do: check if fac is in user's facilityRoles
     let self = this;
     return new Promise(function(resolve, reject) {
-      if (self.access !== undefined && self.access.modules !== undefined) {
+      if (self.access !== undefined && self.access.modules !== undefined && !force) {
         resolve(self.access);
       } else {
         self.featureService.getUserRoles({ query: { facilityId: facId } }).then(

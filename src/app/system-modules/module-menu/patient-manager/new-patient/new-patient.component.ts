@@ -723,9 +723,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             }
         }).subscribe((result: any) => {
             if (result === undefined) {
+                this.selectedPerson = undefined;
                 this.errMsg = 'Invalid APMIS ID, correct the value entered and try again!';
                 this.mainErr = false;
             } else if (result.data.length > 0) {
+                this.selectedPerson = undefined;
                 this.errMsg = 'This APMIS ID is valid or has been previously used to generate a patient!';
                 this.mainErr = false;
             } else {

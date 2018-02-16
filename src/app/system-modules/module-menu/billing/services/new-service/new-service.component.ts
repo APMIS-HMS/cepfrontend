@@ -11,17 +11,18 @@ import { FacilitiesServiceCategoryService, ServiceDictionaryService } from '../.
   styleUrls: ['./new-service.component.scss']
 })
 export class NewServiceComponent implements OnInit {
+  frmNewservice: FormGroup;
+  addPanelFormGroup: FormGroup;
   facility: Facility = <Facility>{};
   categories: FacilityService[] = [];
   dictionaries: any[] = [];
-
+  showPanel = false;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() selectedService: any = <any>{};
   mainErr = true;
   errMsg = 'you have unresolved errors';
   btnTitle = 'CREATE SERVICE';
 
-  public frmNewservice: FormGroup;
 
   constructor(private formBuilder: FormBuilder, private _locker: CoolLocalStorage,
     private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
@@ -64,6 +65,11 @@ export class NewServiceComponent implements OnInit {
       this.frmNewservice.controls['servicePrice'].setValue(this.selectedService.categoryId);
     }
 
+    // This is to check and uncheck panel
+    this.frmNewservice.controls['isPanel'].valueChanges.subscribe(value => {
+      console.log(value);
+      this.onClickShowPanel();
+    });
   }
 
   getCategories() {
@@ -79,7 +85,12 @@ export class NewServiceComponent implements OnInit {
       serviceCat: ['', [<any>Validators.required]],
       serviceAutoCode: ['', []],
       serviceCode: ['', []],
-      servicePrice: ['', []]
+      servicePrice: ['', []],
+      isPanel: [false]
+    });
+
+    this.addPanelFormGroup = this.formBuilder.group({
+      panelService: ['', [<any>Validators.required]]
     });
   }
   onSelectDictionary(dic: any) {
@@ -153,8 +164,20 @@ export class NewServiceComponent implements OnInit {
     }
   }
 
+  onClickAddToPanel(valid: boolean, value: any) {
+    console.log(valid);
+    if (valid) {
+
+    } else {
+      console.log('Throw an exception');
+    }
+  }
+
   close_onClick() {
     this.closeModal.emit(true);
+  }
+  onClickShowPanel() {
+    this.showPanel = !this.showPanel;
   }
 
 }

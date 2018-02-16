@@ -331,7 +331,7 @@ export class NewFacEmployeeComponent implements OnInit {
         })).mergeMap((person: any) => {
             if (person.data.length > 0) {
                 this.selectedPerson = person.data[0];
-                return Observable.fromPromise(this.employeeService.find({ query: { personId: this.selectedPerson._id } }));
+                return Observable.fromPromise(this.employeeService.find({ query: { personId: this.selectedPerson._id, facilityId:this.facility._id } }));
             } else {
                 this.errMsg = 'Invalid APMIS ID, correct the value entered and try again!';
                 this.mainErr = false;

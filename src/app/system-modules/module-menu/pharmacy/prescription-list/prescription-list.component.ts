@@ -83,7 +83,8 @@ export class PrescriptionListComponent implements OnInit {
 
 	// Get all drugs from generic
 	getAllPrescriptions() {
-		this._prescriptionService.find({ query: { facilityId : this.facility._id }}).then(res => {
+    this._prescriptionService.customGet({ query: { facilityId : this.facility._id }}).then(res => {
+      console.log(res);
 				this.loading = false;
 				res.data.forEach(element => {
 					if (!element.isDispensed) {
