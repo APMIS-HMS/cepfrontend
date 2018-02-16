@@ -25,14 +25,22 @@ class Service {
         let outArray = [];
         outArray = outArray.concat(features.data.map(x => x.features));
         var merged = [].concat.apply([], outArray);
-        const distinctModules = this.getDistinctModules(merged);
+        const distinctModules = await this.getDistinctModules(merged);
         return { features: merged, modules: distinctModules, selectedFacility: selectedFacility };
     }
 
-    getDistinctModules(list) {
-        const data = list;
-        const result = Object.values(data.reduce((r, { moduleName, moduleId }) => (r[moduleName + '|' + moduleId] = { moduleName, moduleId }, r), {}));
-        return result;
+    async getDistinctModules(list) {
+        // const data = list;
+
+        // const result = Object.values(data.reduce((r, { moduleName, moduleId, route }) => (r[moduleName + '|' + moduleId + '|' + route] = { moduleName, moduleId, route }, r), {}));
+        // console.log(result);
+        const facilityModuleService = this.app.service('facility-modules');
+        const modules = await facilityModuleService.find({
+            query: {
+                _id: { $in: list.map(x => x.moduleId) }
+            }
+        });
+        return modules.data;
     }
 
     async get(id, params) {
