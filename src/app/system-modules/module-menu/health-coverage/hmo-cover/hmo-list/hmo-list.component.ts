@@ -213,6 +213,7 @@ export class HmoListComponent implements OnInit {
         let lastMonthEnrLen = lastMonthEnrollees[0].enrollees.length;
         let lastMonthIndex = hmoData[0].enrolleeList.findIndex(x => x.month == prevMonth && x.year == year);
         let presentMonthEnrollees = hmoData[0].enrolleeList.filter(x => x.month == prevMonth && x.year == year);
+        let thisMonth: boolean;
         console.log(lastMonthIndex);
         console.log(lastMonthEnrollees);
         if (lastMonthEnrollees.length > 0) {
@@ -223,8 +224,8 @@ export class HmoListComponent implements OnInit {
               enr[0].status = "active";
               enr[0].updatedAt = Date.now();
               rowObj = enr[0];
-            } else if (enr.length! > 0) {
-              console.log('Serial = ' + data[dataLength][0]);
+              thisMonth = true;
+            } else {
               rowObj.serial = data[dataLength][0];
               rowObj.surname = data[dataLength][1];
               rowObj.firstname = data[dataLength][2];
@@ -236,19 +237,40 @@ export class HmoListComponent implements OnInit {
               rowObj.type = data[dataLength][8];
               rowObj.date = this.excelDateToJSDate(data[dataLength][9]);
               rowObj.status = 'active';
+              thisMonth = false;
             }
             enrolleeList.push(rowObj);
           }
-          console.log(enrolleeList);
+          if (thisMonth === true) {
+            console.log(lastMonthEnrollees);
+          } else {
+            console.log(enrolleeList);
+            /* let enrolleeItem = {
+              month: new Date().getMonth() + 1,
+              year: new Date().getFullYear(),
+              enrollees: enrolleeList
+            }
+            const index = payload.data[0].hmos.findIndex(x => x.hmo === hmo._id);
+            let facHmo = payload.data[0].hmos[index];
+            facHmo.enrolleeList.push(enrolleeItem);
+            payload.data[0].hmos[index] = facHmo;
+            console.log(facHmo);
+            console.log(payload.data[0].hmos);
+            this.hmoService.patch(payload.data[0]._id, {
+              hmos: payload.data[0].hmos
+            }, {}).then(hmoPayload => {
+              console.log(hmoPayload);
+            }); */
+          }
 
           let noChangeEnrollees = lastMonthEnrollees[0].enrollees.filter(x => new Date(x.updatedAt).getMonth() == prevMonth);
           console.log(noChangeEnrollees);
-          if(noChangeEnrollees.length > 0){
-            for(let n = 0; n <= noChangeEnrollees.length; n++){
+          if (noChangeEnrollees.length > 0) {
+            for (let n = 0; n <= noChangeEnrollees.length; n++) {
               console.log(noChangeEnrollees[n]);
             }
           }
-          
+
         } else {
           for (let m = 0; m <= data.length - 1; m++) {
             var rowObj: any = <any>{};
@@ -273,7 +295,7 @@ export class HmoListComponent implements OnInit {
           }
         }
         const index = payload.data[0].hmos.findIndex(x => x.hmo === hmo._id);
-        let facHmo = payload.data[0].hmos[index]; 
+        let facHmo = payload.data[0].hmos[index];
       } else {
         console.log(data, hmoData);
         for (let m = 0; m <= data.length - 1; m++) {
@@ -308,28 +330,6 @@ export class HmoListComponent implements OnInit {
           console.log(hmoPayload);
         });
       }
-
-      /* if(LastMonthEnrollees){
-        if(hmoData.enrolleeList.enrollees){
-          let len = hmo.enrolleeList.enrollees
-        }
-      }else{
-        data.forEach(row => {
-          let rowObj: any = <any>{};
-          rowObj.serial = row[0];
-          rowObj.surname = row[1];
-          rowObj.firstname = row[2];
-          rowObj.gender = row[3];
-          rowObj.filNo = row[4];
-          rowObj.category = row[5];
-          rowObj.sponsor = row[6];
-          rowObj.plan = row[7];
-          rowObj.type = row[8];
-          rowObj.date = this.excelDateToJSDate(row[9]);
-          rowObj.status = 'active';
-          enrolleeList.push(rowObj);
-        });
-      } */
     }).catch(err => {
       console.log(err);
     });
@@ -355,7 +355,7 @@ export class HmoListComponent implements OnInit {
       let len = hmoData[0].enrolleeList.length - 1;
       console.log(len);
       if (len == -1) {
-        
+
         for (let m = 0; m <= data.length - 1; m++) {
           {
 
