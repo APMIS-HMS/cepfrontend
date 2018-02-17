@@ -25,6 +25,7 @@ class Service {
         const facilityModuleService = this.app.service('facility-modules');
         const facilityAccessControlService = this.app.service('facility-access-control');
         const featuresService = this.app.service('features');
+        const organisationService = this.app.service('organisation-services');
 
         const pay = await userService.find({ query: { personId: data.personId } });
 
@@ -102,7 +103,53 @@ class Service {
                 accessControlObjRole.features.push(feature);
             }
 
+            let orgServiceModel = {};
+            orgServiceModel.facilityId = facPayload._id;
+            orgServiceModel.categories = [];
 
+            let labCategory = {};
+            labCategory.name = 'Laboratory';
+            labCategory.services = [];
+            labCategory.canRemove = false;
+            orgServiceModel.categories.push(labCategory);
+
+            let medRecCategory = {};
+            medRecCategory.name = 'Medical Records';
+            medRecCategory.services = [];
+            medRecCategory.canRemove = false;
+            orgServiceModel.categories.push(medRecCategory);
+
+            let pharCategory = {};
+            pharCategory.name = 'Pharmacy';
+            pharCategory.services = [];
+            pharCategory.canRemove = false;
+            orgServiceModel.categories.push(pharCategory);
+
+            let imaginCategory = {};
+            imaginCategory.name = 'Imaging';
+            imaginCategory.services = [];
+            imaginCategory.canRemove = false;
+            orgServiceModel.categories.push(imaginCategory);
+
+            let wardCategory = {};
+            wardCategory.name = 'Ward';
+            wardCategory.services = [];
+            wardCategory.canRemove = false;
+            orgServiceModel.categories.push(wardCategory);
+
+            let appCategory = {};
+            appCategory.name = 'Appointment';
+            appCategory.services = [];
+            appCategory.canRemove = false;
+            orgServiceModel.categories.push(appCategory);
+
+            let procedureCategory = {};
+            procedureCategory.name = 'Procedures';
+            procedureCategory.services = [];
+            procedureCategory.canRemove = false;
+            orgServiceModel.categories.push(procedureCategory);
+
+            let orgServiceResult = await organisationService.create(orgServiceModel);
 
 
 
@@ -117,6 +164,19 @@ class Service {
                 userRoles = [];
             }
             userRoles.push(userRole);
+
+
+
+
+
+
+
+
+
+
+
+
+
             const payload = await userService.patch(user._id, { facilitiesRole: facilitiesRole, userRoles: userRoles });
             return facPayload;
 
