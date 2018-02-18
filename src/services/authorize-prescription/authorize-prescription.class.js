@@ -1,8 +1,6 @@
 'use strict';
 /* eslint-disable no-unused-vars */
 const jsend = require('jsend');
-const console = require('console');
-
 class Service {
     constructor(options) {
         this.options = options || {};
@@ -35,12 +33,8 @@ class Service {
             if (userRole.length > 0) {
                 /* Create Billing for any item that has been billed */
                 const billingItems = prescription.prescriptionItems.filter(x => x.isBilled);
-                console.log('-------- billingItems -----------');
-                console.log(billingItems);
-                console.log('-------- End billingItems -----------');
                 if (billingItems.length > 0) {
                     const totalCost = prescription.prescriptionItems.reduce((acc, obj) => { return acc + obj.cost; }, 0);
-                    console.log(totalCost);
                     const bill = {
                         facilityId: this.facility._id,
                         patientId: this.prescriptions.patientId,
@@ -51,14 +45,8 @@ class Service {
                     };
 
                     const createBill = await billingService.create(bill);
-                    console.log('-------- createBill -----------');
-                    console.log(createBill);
-                    console.log('-------- End createBill -----------');
                     if (createBill._id !== undefined) {
                         const createPrescription = await prescriptionService.create(prescription);
-                        console.log('-------- createPrescription -----------');
-                        console.log(createPrescription);
-                        console.log('-------- End createPrescription -----------');
                         if (createPrescription._id !== undefined) {
                             return jsend.success(createPrescription);
                         } else {

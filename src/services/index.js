@@ -115,6 +115,7 @@ const facilityRoles = require('./facility-roles/facility-roles.service.js');
 const saveEmployee = require('./save-employee/save-employee.service.js');
 const scheduleTypes = require('./schedule-types/schedule-types.service.js');
 const schedules = require('./schedules/schedules.service.js');
+const getPrescription = require('./get-prescription/get-prescription.service.js');
 const timezones = require('./timezones/timezones.service.js');
 const billManagers = require('./bill-managers/bill-managers.service.js');
 const customFacilityModules = require('./custom-facility-modules/custom-facility-modules.service.js');
@@ -142,6 +143,7 @@ const crudInvestigation = require('./crud-investigation/crud-investigation.servi
 const patientSearch = require('./patient-search/patient-search.service.js');
 const crudLabRequest = require('./crud-lab-request/crud-lab-request.service.js');
 const templates = require('./templates/templates.service.js');
+const crudLabReport = require('./crud-lab-report/crud-lab-report.service.js');
 module.exports = function(app) {
     app.configure(users);
     app.configure(facilityOwnerships);
@@ -286,4 +288,7 @@ module.exports = function(app) {
     app.configure(crudLabRequest);
     app.configure(listOfProducts);
     app.configure(templates);
+    app.configure(getPrescription);
+    app.configure(associations);
+    app.configure(crudLabReport);
 };

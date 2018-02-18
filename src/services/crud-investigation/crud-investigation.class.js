@@ -19,16 +19,7 @@ class Service {
         });
     }
 
-    async create(data, params) {
-        console.log('--------- Data ----------');
-        console.log(data);
-        console.log('--------- Data ----------');
-        console.log('--------- params ----------');
-        console.log(params);
-        console.log('--------- params ----------');
-
-
-    }
+    async create(data, params) {}
 
     update(id, data, params) {
         return Promise.resolve(data);
