@@ -74,6 +74,7 @@ import { DateRangePickerModule } from "ng-pick-daterange";
 import { DateTimePickerModule } from "ng-pick-datetime";
 import { FluidTypeComponent } from "./patientmanager-detailpage/fluid/fluid-type/fluid-type.component";
 import { ScopeLevelService } from "../../../services/module-manager/setup/scope-level.service";
+import { OnlyMaterialModule } from "../../../shared-common-modules/only-material-module";
 
 @NgModule({
   declarations: [
@@ -123,6 +124,7 @@ import { ScopeLevelService } from "../../../services/module-manager/setup/scope-
   imports: [
     SharedModule,
     patientManagerRoutes,
+    OnlyMaterialModule,
     MaterialModule,
     ChartsModule,
     PdfViewerModule,

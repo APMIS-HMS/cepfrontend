@@ -1,3 +1,4 @@
+import { OnlyMaterialModule } from './../../../shared-common-modules/only-material-module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -40,6 +41,7 @@ import { ExternalPrescriptionComponent } from './external-prescription/external-
         // ReactiveFormsModule,
         // FormsModule,
         pharmacyManagerRoutes,
+        OnlyMaterialModule,
         MaterialModule
     ],
     providers: [PharmacyEmitterService, StoreService, PresentationService,

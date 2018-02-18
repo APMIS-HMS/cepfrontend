@@ -25,6 +25,7 @@ export interface PendingLaboratoryRequest {
     isExternal: boolean;
     isUrgent: boolean;
     isPanel: boolean;
+    panel?: any;
     isPaid: boolean;
     updatedAt: Date;
     createdAt: Date;

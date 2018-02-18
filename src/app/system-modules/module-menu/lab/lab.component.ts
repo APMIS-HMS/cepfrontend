@@ -257,4 +257,10 @@ export class LabComponent implements OnInit, OnDestroy {
     this._locker.setObject('workbenchCheckingObject', {});
     this.checkedInObject = {};
   }
+  chartClicked(e){
+
+  }
+  chartHovered(e){
+    
+  }
 }

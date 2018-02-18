@@ -2,10 +2,11 @@
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { User } from './../../../../../models/facility-manager/setup/user';
 import { LaboratoryRequestService } from './../../../../../services/facility-manager/setup/laboratoryrequest.service';
-import { Investigation, Patient } from './../../../../../models/index';
+import { Investigation, Patient, Employee } from './../../../../../models/index';
 import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild, Input } from '@angular/core';
 import { FacilitiesService, PatientService } from '../../../../../services/facility-manager/setup/index';
 import { FormControl } from '@angular/forms';
+import { AuthFacadeService } from '../../../../service-facade/auth-facade.service';
 
 @Component({
   selector: 'app-request-detail',
@@ -20,7 +21,7 @@ export class RequestDetailComponent implements OnInit {
 
   specimenNumber: FormControl = new FormControl();
   labNumber: FormControl = new FormControl();
-
+  loginEmployee: Employee;
   showDocument = false;
   hasNo = false;
   hasSample = false;
@@ -36,7 +37,13 @@ export class RequestDetailComponent implements OnInit {
 
   constructor(private renderer: Renderer, private facilityService: FacilitiesService,
     private _locker: CoolLocalStorage, private patientService: PatientService,
-    private _laboratoryRequestService: LaboratoryRequestService) { }
+    private _laboratoryRequestService: LaboratoryRequestService,
+    private _authFacadeService: AuthFacadeService
+  ) {
+    this._authFacadeService.getLogingEmployee().then((res: any) => {
+      this.loginEmployee = res;
+    }).catch(err => console.log(err));
+    }
 
   ngOnInit() {
     this.user = <User>this._locker.getObject('auth');
@@ -90,33 +97,17 @@ export class RequestDetailComponent implements OnInit {
   }
   takeSample() {
     this.localInvestigation.sampleTaken = true;
-    const logEmp = <any>this._locker.getObject('loginEmployee');
-    delete logEmp.department;
-    delete logEmp.employeeFacilityDetails;
-    delete logEmp.role;
-    delete logEmp.units;
-    delete logEmp.consultingRoomCheckIn;
-    delete logEmp.storeCheckIn;
-    delete logEmp.unitDetails;
-    delete logEmp.professionObject;
-    delete logEmp.workSpaces;
-    delete logEmp.employeeDetails.countryItem;
-    delete logEmp.employeeDetails.homeAddress;
-    delete logEmp.employeeDetails.gender;
-    delete logEmp.employeeDetails.maritalStatus;
-    delete logEmp.employeeDetails.nationality;
-    delete logEmp.employeeDetails.nationalityObject;
-    delete logEmp.employeeDetails.nextOfKin;
-    delete logEmp.workbenchCheckIn;
-    this.localInvestigation.sampleTakenBy = logEmp;
+    const logEmp = this.loginEmployee;
+    delete logEmp.personDetails.wallet;
+    this.localInvestigation.sampleTakenBy = logEmp.personDetails;
     this.localRequest.investigations[this.localInvestigationIndex] = this.localInvestigation;
-    this._laboratoryRequestService.update(this.localRequest).then(pay => {
+    this._laboratoryRequestService.patch(this.localRequest._id, this.localRequest, {}).then(pay => {
+      this._notification('Success', 'Specimen taken successfully!');
       let index = pay.investigations.findIndex(x => x.investigation._id === this.investigation.investigationId);
       let _investigation = pay.investigations[index];
       this.localInvestigation = _investigation;
       this.localRequest = pay;
       this.hasSample = true;
-      this._notification('Success', 'Specimen taken successfully!');
     }).catch(err => this._notification('Error', 'There was an error taken specimen. Please try again later!'));
   }
   receiveSpecimen() {
@@ -124,14 +115,16 @@ export class RequestDetailComponent implements OnInit {
     this.localInvestigation.specimenNumber = this.specimenNumber.value;
 
     this.localRequest.investigations[this.localInvestigationIndex] = this.localInvestigation;
-    this._laboratoryRequestService.update(this.localRequest).then(pay => {
+    this._laboratoryRequestService.patch(this.localRequest._id, this.localRequest, {}).then(pay => {
+      this._notification('Success', 'Specimen Number has been updated successfully!');
       let index = pay.investigations.findIndex(x => x.investigation._id === this.investigation.investigationId);
       let _investigation = pay.investigations[index];
       this.localInvestigation = _investigation;
       this.localRequest = pay;
       this.hasSpecimen = true;
-      this._notification('Success', 'Specimen Number has been updated successfully!');
-    })
+    }).catch(err => {
+      console.log(err);
+    });
   }
   assignLabNo() {
     let clientNo = {

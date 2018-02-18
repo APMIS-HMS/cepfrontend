@@ -110,10 +110,11 @@ export class DocumentationComponent implements OnInit, OnDestroy {
           this.documentationService.find({
             query:
               {
-                'personId': this.patient.personId, 'documentations.patientId': this.patient._id,
+                'personId': this.patient.personId, //'documentations.patientId': this.patient._id,
                 // $select: ['documentations.documents', 'documentations.facilityId']
               }
           }).subscribe((mload: any) => {
+            console.log(mload)
             if (mload.data.length > 0) {
               this.patientDocumentation = mload.data[0];
               this.populateDocuments();

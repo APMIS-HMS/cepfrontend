@@ -1,6 +1,6 @@
 <div class="tbl-resp-wrap">
     <table cellpadding="0" cellspacing="0" border="0.5">
-        <thead> 
+        <thead>
             <tr>
                 <th>
                     <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
@@ -169,7 +169,7 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <mat-form-field>
-                                                            <mat-select placeholder="Country" formControlName="country">
+                                                            <mat-select placeholder="Contact Country" formControlName="country">
                                                                 <mat-option *ngFor="let country of countries" [value]="country.name">
                                                                     {{country.name}}
                                                                 </mat-option>
@@ -178,7 +178,7 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <mat-form-field>
-                                                            <mat-select placeholder="State" formControlName="state" [compareWith]="compareState">
+                                                            <mat-select placeholder="Contact State" formControlName="state" [compareWith]="compareState">
                                                                 <mat-option *ngFor="let state of states" [value]="state.name">
                                                                     {{state.name}}
                                                                 </mat-option>
@@ -187,7 +187,7 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <mat-form-field>
-                                                            <mat-select placeholder="City" formControlName="city" [compareWith]="compareState">
+                                                            <mat-select placeholder="Contact City" formControlName="city" [compareWith]="compareState">
                                                                 <mat-option *ngFor="let city of cities" [value]="city.name">
                                                                     {{city.name}}
                                                                 </mat-option>
@@ -196,7 +196,7 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <mat-form-field>
-                                                            <mat-select placeholder="L.G.A" formControlName="lga" [compareWith]="compareState">
+                                                            <mat-select placeholder="Contact L.G.A" formControlName="lga" [compareWith]="compareState">
                                                                 <mat-option *ngFor="let lga of lgas" [value]="lga.name">
                                                                     {{lga.name}}
                                                                 </mat-option>
@@ -245,7 +245,7 @@
                                                     </div>
                                                 </div>
 
-                                               
+
                                                 <div class="add-next-of-kin-box">
                                                     <a (click)="addNewNextOfKin();"> Add Next Of Kin
                                                         <i class="fa fa-plus"></i>
@@ -352,8 +352,7 @@
                                     </form>
                                 </div>
                                 <div class="example-full-width" id="example-full-width">
-                                    <button [disabled]="!patientEditForm.valid" (click)="updatePatient(patientEditForm.value, patientEditForm.valid)" class="apmis-blue"
-                                        mat-raised-button [innerHtml]="updatePatientBtnText"></button>
+                                    <button [disabled]="!patientEditForm.valid" (click)="updatePatient(patientEditForm.value, patientEditForm.valid)" class="apmis-blue" mat-raised-button [innerHtml]="updatePatientBtnText"></button>
                                 </div>
                             </div>
                         </div>

@@ -1,3 +1,4 @@
+import { OnlyMaterialModule } from './../shared-common-modules/only-material-module';
 import { SystemModuleComponent } from './../system-modules/system-module.component';
 import { NgModule } from '@angular/core';
 import { LogoutConfirmComponent } from '../system-modules/module-menu/logout-confirm/logout-confirm.component';
@@ -38,10 +39,6 @@ import { SingUpAccountsSharedModule } from '../shared-common-modules/signup-acco
 import { MaterialModule } from '../shared-common-modules/material-module';
 import { LabRequestsComponent } from '../system-modules/module-menu/lab/lab-requests/lab-requests.component';
 import { RequestDetailComponent } from '../system-modules/module-menu/lab/lab-requests/request-detail/request-detail.component';
-import {
-    MatDatepickerModule, MatNativeDateModule, MatButtonModule, MatCheckboxModule, MatProgressSpinnerModule,
-    MatInputModule, MatOptionModule, MatSelectionList, MatSelectModule, MatRadioButton
-} from '@angular/material';
 import { Angular4PaystackModule } from 'angular4-paystack';
 import { Angular4FlutterwaveComponent } from './angular-4-flutterwave/angular-4-flutterwave.component';
 import { WindowRef } from '../services/facility-manager/setup/winref.service';
@@ -63,12 +60,8 @@ import {
 } from '../system-modules/module-menu/forms-manager/treatement-template/template-physician-order/template-physician-order.component';
 import { OrderSetSharedService } from '../services/facility-manager/order-set-shared-service';
 import { SharedModuleMaterialModule } from '../shared-common-modules/sharedmodule-materialsmodule';
-// import { LabCheckInComponent } from './lab-check-in/lab-check-in.component';
-// import { ApmisLookupMultiselectComponent } from './apmis-lookup-multiselect/apmis-lookup-multiselect.component';
 @NgModule({
   declarations: [
-    // NewTagComponent,
-    // AddTagComponent,
     SurveyComponent,
     SurveyEditorComponent,
     ProductSearchComponent,
@@ -77,23 +70,10 @@ import { SharedModuleMaterialModule } from '../shared-common-modules/sharedmodul
     TemplateLabComponent,
     TemplateProcedureComponent,
     TemplateNursingCareComponent,
-    TemplatePhysicianOrderComponent,
-    
-    // SystemModuleComponent
-    // VerifyTokenComponent,
-    // FacilityInfoComponent,
-    // ContactInfoComponent,
-    // AddLogoComponent
-    // LabCheckInComponent,
-    // LabRequestsComponent, RequestDetailComponent
-  ],
+    TemplatePhysicianOrderComponent  ],
   exports: [
-    // LogoUpdateComponent,
     NgUploaderModule,
     NgPipesModule,
-    // NewTagComponent,
-    // AddTagComponent,
-    // MomentModule,
     Ng2PaginationModule,
     SurveyComponent,
     SurveyEditorComponent,
@@ -109,15 +89,8 @@ import { SharedModuleMaterialModule } from '../shared-common-modules/sharedmodul
     TemplateNursingCareComponent,
     TemplatePhysicianOrderComponent,
     SharedModuleMaterialModule
-    // SystemModuleComponent
-    // VerifyTokenComponent,
-    // FacilityInfoComponent,
-    // ContactInfoComponent,
-    // AddLogoComponent
-    // DragulaModule,
-    // LabRequestsComponent, RequestDetailComponent
   ],
-  imports: [
+  imports: [ 
     CommonModule,
     ReactiveFormsModule,
     FormsModule,
@@ -125,6 +98,7 @@ import { SharedModuleMaterialModule } from '../shared-common-modules/sharedmodul
     NgPipesModule,
     Ng2PaginationModule,
     ImageCropperModule,
+    OnlyMaterialModule,
     MaterialModule,
     SharedModuleMaterialModule
   ],
