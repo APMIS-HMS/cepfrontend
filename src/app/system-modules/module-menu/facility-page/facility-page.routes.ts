@@ -30,8 +30,8 @@ const FACLITYPAGE_ROUTES: Routes = [
     children: [
       {
         path: "",
-        component: EmpManagerComponent,
-        resolve: { employees: EmployeesResolverService }
+        component: FacilitypageLocationspageComponent,
+        resolve: { locations: LocationsResolverService }
       },
       // { path: 'facility', component: FacilitypageHomepageComponent },
       // {

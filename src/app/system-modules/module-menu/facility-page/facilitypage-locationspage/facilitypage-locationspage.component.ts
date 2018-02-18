@@ -72,6 +72,13 @@ export class FacilitypageLocationspageComponent implements OnInit {
   }
 
   ngOnInit() {
+    const facility = <any>this.locker.getObject("selectedFacility");
+    if (
+      facility.isValidRegistration === undefined ||
+      facility.isValidRegistration === false
+    ) {
+      this.facilityService.announcePopupEditFacility(true);
+    }
     this.facility = <Facility>this.facilityService.getSelectedFacilityId();
     this.facilityService.listner.subscribe(payload => {
       this.facility = payload;

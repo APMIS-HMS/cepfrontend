@@ -56,12 +56,12 @@ export class EmpManagerComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject("selectedFacility");
-    if (
-      this.selectedFacility.isValidRegistration === undefined ||
-      this.selectedFacility.isValidRegistration === false
-    ) {
-      this.facilityService.announcePopupEditFacility(true);
-    }
+    // if (
+    //   this.selectedFacility.isValidRegistration === undefined ||
+    //   this.selectedFacility.isValidRegistration === false
+    // ) {
+    //   this.facilityService.announcePopupEditFacility(true);
+    // }
     this.departments = this.selectedFacility.departments;
     this.department.valueChanges.subscribe(value => {
       this.selectedDepartment = value;
