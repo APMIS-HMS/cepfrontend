@@ -31,7 +31,7 @@
                     <mat-input-container class="example-full-width">
                         <div>
                             <div class="sectLabel"></div>
-                            <i class="fa fa-plus faplus pull-right" data-toggle="tooltip" title="Add Tag" data-placement="left"> </i>
+                            <i *ngIf="showBtn" class="fa fa-plus faplus pull-right" (click)="onCreateNewTag()" data-toggle="tooltip" title="Add Tag" data-placement="left"> </i>
                         </div>
                         <input autofocus matInput mat-error placeholder="Select Tag" formControlName="tag">
                     </mat-input-container>

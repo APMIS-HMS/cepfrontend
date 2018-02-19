@@ -39,7 +39,7 @@ export class NewServiceComponent implements OnInit {
   mainErr = true;
   errMsg = 'you have unresolved errors';
   btnTitle = 'CREATE SERVICE';
-
+  btnPanel = 'ADD PANEL';
 
   constructor(private formBuilder: FormBuilder, private _locker: CoolLocalStorage,
     private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
@@ -128,6 +128,14 @@ export class NewServiceComponent implements OnInit {
       let basedPrice = this.selectedService.price.filter(x => x.isBase === true)[0];
       this.frmNewservice.controls['servicePrice'].setValue(basedPrice.price);
       this.priceItems = JSON.parse(JSON.stringify(this.selectedService.price));
+      if (this.selectedService.panels !== undefined) {
+        if (this.selectedService.panels.length > 0) {
+          this.btnPanel = 'UPDATE PANEL';
+          this.panelNameControl.setValue(this.selectedService.name);
+          this.costControl.setValue(basedPrice.price);
+        }
+      }
+      this.selectedService.panels
     }
   }
 
@@ -184,44 +192,58 @@ export class NewServiceComponent implements OnInit {
   }
 
   panelItemTemplate(payload) {
+    this.allServiceItems = [];
     if (payload.data[0].categories.length > 0) {
+      console.log(1);
       let len = payload.data[0].categories.length - 1;
+      console.log(2);
       for (let l = 0; l <= len; l++) {
-        console.log(this.allServiceItems);
+        console.log(3);
         if (payload.data[0].categories[l].services.length > 0) {
+          console.log(4);
           let len2 = payload.data[0].categories[l].services.length - 1;
+          console.log(5);
           for (let i = 0; i <= len2; i++) {
-            if (this.selectedService.length > 0) {
-              let len3 = this.selectedService.panels.length - 1;
-              for (let j = 0; j <= len3; j++) {
-                if (payload.data[0].categories[l].services[i]._id.toString() === this.selectedService.panels[j].serviceId.toString()
-                  && payload.data[0].categories[l]._id.toString() === this.selectedService.panels[j].categoryId.toString()) {
-                    console.log("iTs Exist");
-                  this.allServiceItems.push({
-                    category: payload.data[0].categories[l].name,
-                    categoryId: payload.data[0].categories[l]._id,
-                    service: payload.data[0].categories[l].services[i].name,
-                    serviceId: payload.data[0].categories[l].services[i]._id,
-                    price: payload.data[0].categories[l].services[i].price,
-                    checked: true
-                  });
-                } else {
-                  console.log("Not Exist");
-                  this.allServiceItems.push({
-                    category: payload.data[0].categories[l].name,
-                    categoryId: payload.data[0].categories[l]._id,
-                    service: payload.data[0].categories[l].services[i].name,
-                    serviceId: payload.data[0].categories[l].services[i]._id,
-                    price: payload.data[0].categories[l].services[i].price,
-                    checked: false
-                  });
+            console.log(6);
+            this.allServiceItems.push({
+              category: payload.data[0].categories[l].name,
+              categoryId: payload.data[0].categories[l]._id,
+              service: payload.data[0].categories[l].services[i].name,
+              serviceId: payload.data[0].categories[l].services[i]._id,
+              price: payload.data[0].categories[l].services[i].price,
+              checked: false
+            });
+            if (this.selectedService.panels !== undefined) {
+              if (this.selectedService.panels.length > 0) {
+                console.log(7);
+                let len3 = this.selectedService.panels.length - 1;
+                console.log(8);
+                for (let j = 0; j <= len3; j++) {
+                  let index4 = this.allServiceItems.filter(x => x.categoryId.toString() === this.selectedService.panels[j].categoryId.toString()
+                    && x.serviceId.toString() === this.selectedService.panels[j].serviceId.toString());
+                  if (index4.length > 0) {
+                    index4[0].checked = true;
+                  }
                 }
               }
             }
+
           }
         }
 
       }
+      console.log(this.allServiceItems);
+      let sort = this.allServiceItems.sort(function (a, b) {
+        var checked = a.checked, unchecked = b.checked;
+        if (checked < unchecked)
+          return 1;
+        if (checked > unchecked)
+          return -1;
+        return 0;
+
+      })
+      this.allServiceItems = sort;
+      this.selectedServiceItems = this.allServiceItems.filter(x => x.checked === true);
     }
   }
 
@@ -266,9 +288,6 @@ export class NewServiceComponent implements OnInit {
       this.serviceItemModel.code = data.code;
       this.serviceItemModel._id = this.selectedService._id;
       this.serviceItemModel.name = data.name;
-      // this.selectedService.panels.forEach((element,index) => {
-      //   if(element._id.toString()===)
-      // });
       this.serviceItemModel.panels = this.selectedServiceItems;
       this.serviceItemModel.price = {};
       this.serviceItemModel.price.base = this.priceItems.filter(x => x.isBase === true)[0];

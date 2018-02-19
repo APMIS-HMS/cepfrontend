@@ -250,6 +250,10 @@ export class ServicesComponent implements OnInit {
     });
   }
 
+  onRefreshModifier(event){
+    this.getCategories();
+  }
+
   newServicePopup_show(val) {
     console.log(val);
     this.selectedService = val;
