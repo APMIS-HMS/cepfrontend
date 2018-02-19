@@ -1,4 +1,17 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
+const { fastJoin } = require('feathers-hooks-common');
+
+
+const resolvers = {
+  joins: {
+    supplierObject: () => async (entryItem, context) => {
+      const supplier = await context.app
+        .service('suppliers')
+        .get(entryItem.supplierId, {});
+        entryItem.supplierObject = supplier;
+    }
+  }
+};
 
 module.exports = {
   before: {
@@ -13,7 +26,7 @@ module.exports = {
 
   after: {
     all: [],
-    find: [],
+    find: [fastJoin(resolvers)],
     get: [],
     create: [],
     update: [],

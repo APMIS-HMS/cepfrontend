@@ -1,11 +1,13 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 
+const purchaseOrderId = require('../../hooks/purchase-order-id');
+
 module.exports = {
   before: {
     all: [ authenticate('jwt') ],
     find: [],
     get: [],
-    create: [],
+    create: [purchaseOrderId()],
     update: [],
     patch: [],
     remove: []
