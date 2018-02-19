@@ -33,7 +33,7 @@
                             <div class="sectLabel"></div>
                             <i *ngIf="showBtn" class="fa fa-plus faplus pull-right" (click)="onCreateNewTag()" data-toggle="tooltip" title="Add Tag" data-placement="left"> </i>
                         </div>
-                        <input autofocus matInput mat-error placeholder="Select Tag" formControlName="tag">
+                        <input autofocus matInput mat-error autocomplete="off"  placeholder="Select Tag" formControlName="tag">
                     </mat-input-container>
                     <div class="suggestionFeeds">
                         <div (click)="onSelectedTag(tag)" *ngFor="let tag of tags" class="suggestedItem">

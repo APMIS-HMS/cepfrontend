@@ -34,7 +34,7 @@
             </div>
             <div class="frm-item-wrap">
               <mat-input-container class="example-full-width">
-                <input type="text" matInput mat-error placeholder="Supply Service Code" formControlName="serviceCode" class="input">
+                <input type="text" matInput mat-error placeholder="Supply Service Code" autocomplete="off"  formControlName="serviceCode" class="input">
               </mat-input-container>
             </div>
             <div class="frm-item-wrap">
@@ -48,10 +48,10 @@
               <form [formGroup]="addPanelFormGroup">
                 <div class="frm-item-wrap">
                   <mat-input-container class="example-full-width">
-                    <input type="text" matInput mat-error placeholder="Search...." [formControl]="panelSearchControl" class="input">
+                    <input type="text" matInput mat-error placeholder="Search...." autocomplete="off"  [formControl]="panelSearchControl" class="input">
                   </mat-input-container>
                   <div class="row">
-                    <input class="col-4" type="text" [formControl]="panelNameControl" placeholder="Name">
+                    <input class="col-4" type="text" [formControl]="panelNameControl" autocomplete="off" placeholder="Name">
                     <input class="col-4" type="number" min="0" [formControl]="costControl" placeholder="Cost">
                     <button class="col-4" (click)="addPanel()">
                       {{btnPanel}}
