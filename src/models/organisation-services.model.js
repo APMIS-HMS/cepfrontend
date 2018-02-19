@@ -5,7 +5,7 @@
 module.exports = function (app) {
   const mongooseClient = app.get('mongooseClient');
   const { Schema } = mongooseClient;
-  const categoryScheme = require('./category-model');
+  const categoryScheme = require('../custom-models/category-model');
   
   const organisationServices = new Schema({
     facilityId: { type: Schema.Types.ObjectId, require: false },
