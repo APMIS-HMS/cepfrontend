@@ -221,8 +221,9 @@ export class CheckoutPatientComponent implements OnInit {
 						this.admittedWard = resp.data[0];
           } else {
             console.log('Got here');
+            console.log(res.data);
             // Get minorLocation name from facility.
-						let text = patientName + ' has been sent to ' + res.data[0].wardId.name + ' ward for admission.';
+            let text = patientName + ' has been sent to ' + res.data[0].minorLocationId.name + ' ward for admission.';
 						res.data[0].isAdmitted = true;
 						res.data[0].msg = text;
 						this.admittedWard = res.data[0];
