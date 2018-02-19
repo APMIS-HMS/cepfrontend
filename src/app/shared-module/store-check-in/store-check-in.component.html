@@ -8,11 +8,11 @@
     <div class="modal-baseWrap">
         <div class="modal-userStrap">
             <div class="strapImgWrap">
-                <img *ngIf="loginEmployee?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
-                <img *ngIf="loginEmployee?.employeeDetails?.profileImageObject !== undefined" [src]="facilityService.transform(loginEmployee?.employeeDetails?.profileImageObject?.thumbnail)">
-                <!-- <img [src]="facilityService.transform(loginEmployee?.employeeDetails?.profileImageObject?.thumbnail)"> -->
+                <img *ngIf="loginEmployee?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
+                <img *ngIf="loginEmployee?.personDetails?.profileImageObject !== undefined" [src]="facilityService.transform(loginEmployee?.personDetails?.profileImageObject?.thumbnail)">
+                <!-- <img [src]="facilityService.transform(loginEmployee?.personDetails?.profileImageObject?.thumbnail)"> -->
             </div>
-            <div class="strapUser">{{loginEmployee.employeeDetails?.lastName}} {{loginEmployee.employeeDetails?.firstName}}</div>
+            <div class="strapUser">{{loginEmployee.personDetails?.lastName}} {{loginEmployee.personDetails?.firstName}}</div>
         </div>
 
         <!-- <div class="postStrap-title">Check Into Store</div> -->
@@ -45,7 +45,10 @@
                     </div>
 
                     <div class="btn-group">
-                        <button mat-raised-button [disabled]="!storeCheckin.valid" (click)="checkIn(storeCheckin.valid, storeCheckin.value);" style="color: #fff; margin-right: 5px;" [innerHtml]="checkInBtnText"> </button>
+                        <button mat-raised-button [disabled]="!storeCheckin.valid || disableBtn" (click)="checkIn(storeCheckin.valid, storeCheckin.value);" style="color: #fff; margin-right: 5px;" [innerHtml]="checkInBtnText">
+                          <span *ngIf="checkInBtn"><i class="fa fa-check-circle"></i> Check In</span>
+                          <span *ngIf="checkingInBtn"><i class="fa fa-spinner fa-spin"></i> Checking in...</span>
+                        </button>
                         <button mat-raised-button (click)="close_onClick();" style="color: #fff; background-color: #B71C1C;">Cancel</button>
                     </div>
                 </form>

@@ -77,17 +77,17 @@ export class DischargePatientComponent implements OnInit {
         status: myGlobals.discharge
       };
 
-      this._inPatientService.discharge(payload).then(res => {
-        if (res.status === 'success') {
-          this._notification('Success', 'Patient has been discharged successfully.');
-          setTimeout(e => {
-            this._router.navigate(['/dashboard/ward-manager/admitted']);
-          }, 2000);
-        } else {
-          this._notification('Error', 'There was a problem discharging patient. Please try again later.');
-        }
-      }).catch(err => {
-      });
+      // this._inPatientService.discharge(payload).then(res => {
+      //   if (res.status === 'success') {
+      //     this._notification('Success', 'Patient has been discharged successfully.');
+      //     setTimeout(e => {
+      //       this._router.navigate(['/dashboard/ward-manager/admitted']);
+      //     }, 2000);
+      //   } else {
+      //     this._notification('Error', 'There was a problem discharging patient. Please try again later.');
+      //   }
+      // }).catch(err => {
+      // });
 
       // this._inPatientService.get(this.inPatientId, {}).then(payload => {
       // 	const inPatientVal = payload;

@@ -172,30 +172,30 @@ export class AdmitPatientComponent implements OnInit {
         payload.statusId = myGlobals.onAdmission;
         payload.patientId = this.inPatientItem.patientId._id;
 
-        this._inPatientService.admit(payload).then(res => {
-          if (res.status === 'success') {
-            let patient = this.inPatientItem.patientId.personDetails.personFullName;
-            let text = 'You have successfully admitted ' + patient;
-            let wardRoom = ' into ' + value.bed.name + ' in ' + value.room.name;
-            const fullText = text + wardRoom;
-            // const msgObj = {
-            //   msg: fullText,
-            //   occupant: this.inPatientItem.patientId,
-            //   bed: value.bed,
-            //   room: value.room
-            // };
-            this.admitBtnText = 'Navigating... <i class="fa fa-spinner fa-spin"></i>';
-            // this.updateWardAdissionService(msgObj);
-            this._notification('Success', fullText);
-            setTimeout(e => {
-              this.close_onClick();
-              this.router.navigate(['/dashboard/ward-manager/admitted']);
-            }, 2000);
-          } else {
-            this._notification('Error', 'There was a problem discharging patient. Please try again later.');
-          }
-        }).catch(err => {
-        });
+        // this._inPatientService.admit(payload).then(res => {
+        //   if (res.status === 'success') {
+        //     let patient = this.inPatientItem.patientId.personDetails.personFullName;
+        //     let text = 'You have successfully admitted ' + patient;
+        //     let wardRoom = ' into ' + value.bed.name + ' in ' + value.room.name;
+        //     const fullText = text + wardRoom;
+        //     // const msgObj = {
+        //     //   msg: fullText,
+        //     //   occupant: this.inPatientItem.patientId,
+        //     //   bed: value.bed,
+        //     //   room: value.room
+        //     // };
+        //     this.admitBtnText = 'Navigating... <i class="fa fa-spinner fa-spin"></i>';
+        //     // this.updateWardAdissionService(msgObj);
+        //     this._notification('Success', fullText);
+        //     setTimeout(e => {
+        //       this.close_onClick();
+        //       this.router.navigate(['/dashboard/ward-manager/admitted']);
+        //     }, 2000);
+        //   } else {
+        //     this._notification('Error', 'There was a problem discharging patient. Please try again later.');
+        //   }
+        // }).catch(err => {
+        // });
         // this._inPatientListService.find({
         //     query: {
         //       'facilityId._id': this.facility._id,
@@ -261,17 +261,17 @@ export class AdmitPatientComponent implements OnInit {
         payload.type = 'acceptTransfer';
         payload.statusId = myGlobals.transfer;
 
-        this._inPatientService.admit(payload).then(res => {
-          if (res.status === 'success') {
-            this._notification('Success', 'Patient has been accepted successfully.');
-            setTimeout(e => {
-              this.router.navigate(['/dashboard/ward-manager/admitted']);
-            }, 2000);
-          } else {
-            this._notification('Error', 'There was a problem discharging patient. Please try again later.');
-          }
-        }).catch(err => {
-        });
+        // this._inPatientService.admit(payload).then(res => {
+        //   if (res.status === 'success') {
+        //     this._notification('Success', 'Patient has been accepted successfully.');
+        //     setTimeout(e => {
+        //       this.router.navigate(['/dashboard/ward-manager/admitted']);
+        //     }, 2000);
+        //   } else {
+        //     this._notification('Error', 'There was a problem discharging patient. Please try again later.');
+        //   }
+        // }).catch(err => {
+        // });
         // this._inPatientService.get(this.inPatientItem._id, {})
         // 	.then(payload => {
         // 		payload.statusId = myGlobals.onAdmission;
