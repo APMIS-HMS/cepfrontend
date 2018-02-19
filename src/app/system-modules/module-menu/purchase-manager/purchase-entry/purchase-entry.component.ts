@@ -73,9 +73,7 @@ export class PurchaseEntryComponent implements OnInit {
     });
 
     this.route.params.subscribe(params => {
-      const id = params['id'];
-      console.log(params);
-      this.orderId = id;
+      this.orderId = params.invoiceId;
       console.log("Dont giveup");
       console.log(this.orderId);
       if (this.orderId !== undefined) {
