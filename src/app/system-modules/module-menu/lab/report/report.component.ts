@@ -295,7 +295,8 @@ export class ReportComponent implements OnInit {
       if (res.data.length > 0) {
         const pendingRequests = this._modelPendingRequests(res.data);
         if (pendingRequests.length > 0) {
-          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
+          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved)
+          && (x.isUploaded === undefined || (x.isUploaded === false)));
 
           // If pendingRequests contains at least a value, then get payment status
           if (this.pendingRequests.length > 0) {
@@ -350,7 +351,8 @@ export class ReportComponent implements OnInit {
         this.hasRequest = true;
         const pendingRequests = this._modelPendingRequests(res.data);
         if (pendingRequests.length > 0) {
-          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
+          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved)
+          && (x.isUploaded === undefined || (x.isUploaded === false)));
 
           // Highlight the investigation that was selected fro the route parameters
           this.pendingRequests.forEach((invesigation, i) => {
@@ -392,7 +394,8 @@ export class ReportComponent implements OnInit {
       if (res.status === 'success' && res.data.length > 0) {
         const pendingRequests = this._modelPendingRequests(res.data);
         if (pendingRequests.length > 0) {
-          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
+          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved)
+          && (x.isUploaded === undefined || (x.isUploaded === false)));
 
           // If pendingRequests contains at least a value, then get payment status
           if (this.pendingRequests.length > 0) {

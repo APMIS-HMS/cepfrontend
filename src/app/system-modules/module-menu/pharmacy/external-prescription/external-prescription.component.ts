@@ -39,11 +39,11 @@ export class ExternalPrescriptionComponent implements OnInit {
     });
   }
 
-	openSearch(){
+	openSearch() {
 		this.psearchOpen = true;
 		this.wsearchOpen = true;
 	}
-	closeSearch(){
+	closeSearch() {
 		this.psearchOpen = false;
 		this.wsearchOpen = false;
 	}
