@@ -10,6 +10,7 @@ const inventoryTransactionSchema = new Schema({
   expiryDate: { type: Date, required: false },
   costPrice: { type: Number, required: false },
   quantity: { type: Number, require: true },
+  availableQuantity: { type: Number, require: true },
   strengthId: { type: Schema.Types.ObjectId, require: false },
   purchaseEntryId: { type: Schema.Types.ObjectId, require: false },
   purchaseEntryDetailId: { type: Schema.Types.ObjectId, require: false },

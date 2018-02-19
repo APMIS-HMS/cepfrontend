@@ -73,4 +73,7 @@ module.exports = function(app) {
     app.service('people').publish('updated', (data, context) => {
         return app.channel(context.params.query.facilityId);
     });
+    app.service('facility-roles').publish('created', (data, context) => {
+        return app.channel(context.params.query.facilityId);
+    });
 };
