@@ -22,5 +22,10 @@ export class ClinicComponent implements OnInit {
 
   ngOnInit() {
   }
+	chartClicked(e){
 
+	}
+	chartHovered(e){
+	  
+	}
 }
