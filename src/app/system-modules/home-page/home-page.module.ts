@@ -1,6 +1,7 @@
 import { SystemModuleComponent } from './../system-module.component';
 import { homePageRoutes } from './home-page.routes';
 import { MaterialModule } from './../../shared-common-modules/material-module';
+import { SharedModule } from '../../shared-module/shared.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ChartsModule } from 'ng2-charts';
@@ -15,11 +16,13 @@ import { MedRecordDocumentationComponent } from './med-records/med-record-docume
 import { MedRecordPrescriptionComponent } from './med-records/med-record-prescription/med-record-prescription.component';
 import { MedRecordDiagnosticsComponent } from './med-records/med-record-diagnostics/med-record-diagnostics.component';
 import { MedRecordPaymentComponent } from './med-records/med-record-payment/med-record-payment.component';
+import { BiodataUpdateComponent } from './biodata-update/biodata-update.component';
 
 @NgModule({
   imports: [
     CommonModule,
     MaterialModule,
+    SharedModule,
     homePageRoutes,
     ChartsModule
   ],
@@ -35,6 +38,7 @@ import { MedRecordPaymentComponent } from './med-records/med-record-payment/med-
     MedRecordPrescriptionComponent,
     MedRecordDiagnosticsComponent,
     MedRecordPaymentComponent,
+    BiodataUpdateComponent,
   ]
 })
 export class HomePageModule { }

@@ -10,6 +10,7 @@ export class HomePageComponent implements OnInit {
 
   pgMenuToggle = false;
   basicData_popup = false;
+  basicData_update = false;
   tab1 = true;
   tab2 = false;
 
@@ -44,8 +45,12 @@ export class HomePageComponent implements OnInit {
   basicData_show(){
     this.basicData_popup = true;
   }
+  basicDataUpdate_show(){
+    this.basicData_update = true;
+  }
   close_onClick(){
     this.basicData_popup = false;
+    this.basicData_update = false;
   }
 
 }
