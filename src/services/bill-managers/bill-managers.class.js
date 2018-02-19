@@ -52,12 +52,8 @@ class Service {
                         for (let m = 0; m <= len6; m++) {
                           let tag = await serviceTagsService.get(awaitPriceServices.data[n].modifiers[m].tagId);
                           if (awaitPriceServices.data[n].modifiers[m].modifierType === 'Percentage') {
-                            console.log(19);
                             let p = awaitPriceServices.data[n].modifiers[m].modifierValue / 100;
-                            console.log(20);
-                            console.log(p);
                             let calculatedP = p * awaitPriceServices.data[n].price;
-                            console.log(21);
                             awaitOrgServices.data[i].categories[j].services[k].price.push({
                               name: tag.name,
                               isBase: false,
@@ -65,7 +61,6 @@ class Service {
                               _id: awaitPriceServices.data[n].modifiers[m]._id,
                               price: calculatedP
                             });
-                            console.log(22);
                           } else if (awaitPriceServices.data[n].modifiers[m].modifierType === 'Amount') {
                             awaitOrgServices.data[i].categories[j].services[k].price.push({
                               name: tag.name,
@@ -88,12 +83,9 @@ class Service {
     }
     // results = awaitOrgServices;
     if (params.query.isQueryCategory !== undefined) {
-      console.log(1);
       if (params.query.isQueryCategory.toString() === 'true') {
-        console.log(2);
         awaitOrgServices.data[0].categories = awaitOrgServices.data[0].categories
           .filter(x => x.name.toLowerCase().includes(params.query.searchString.toLowerCase()));
-        console.log(results);
       }
     }
     if (params.query.isQueryService !== undefined) {
@@ -101,7 +93,6 @@ class Service {
         if (awaitOrgServices.data[0].categories.length > 0) {
           let lt = awaitOrgServices.data[0].categories.length - 1;
           for (let l = 0; l <= lt; l++) {
-            console.log(params.query.searchString);
             if (awaitOrgServices.data[0].categories[l].services.length > 0) {
               awaitOrgServices.data[0].categories[l].services = awaitOrgServices.data[0].categories[l].services
                 .filter(x => {
@@ -125,7 +116,6 @@ class Service {
   }
 
   async create(data, params) {
-    console.log(params.query)
     const orgService = this.app.service('organisation-services');
     const priceService = this.app.service('facility-prices');
     const tagDictioneriesService = this.app.service('tag-dictioneries');
@@ -137,27 +127,20 @@ class Service {
         }
       }
     });
-    console.log(queryDico);
     if (queryDico.data.length == 0) {
       let exactWord = queryDico.data.filter(x => x.word.toLowerCase() === data.name.toLowerCase());
-      console.log(exactWord);
       if (exactWord.length == 0) {
         let dic = await tagDictioneriesService.create({
           word: data.name
         });
       }
     }
-    console.log('What happen here');
     let organizationServiceItem = await orgService.find({
       query: {
         facilityId: params.query.facilityId
       }
     });
-    console.log(organizationServiceItem);
-    console.log('0000000');
     if (organizationServiceItem.data.length > 0) {
-      console.log(1);
-      console.log(params.query);
       if (params.query.isCategory.toString() === 'true') {
         organizationServiceItem.data[0].categories.push(data);
         let updatedOrganizationService = await orgService.patch(organizationServiceItem.data[0]._id, {
@@ -172,7 +155,6 @@ class Service {
           lastIndex = index[0].services.length - 1;
         }
 
-        console.log(index[0].services);
         let updatedOrganizationService = await orgService.patch(organizationServiceItem.data[0]._id, {
           categories: organizationServiceItem.data[0].categories
         });
@@ -192,7 +174,6 @@ class Service {
         return updatedOrganizationService;
       }
     } else {
-      console.log(2);
       if (data.categories === undefined) {
         data.categories = [];
       }
