@@ -295,4 +295,6 @@ module.exports = function(app) {
     app.configure(listOfPurchaseOrders);
     app.configure(priceModifiers);
     app.configure(makePurchaseEntries);
+    app.configure(associations);
+    app.configure(getPrescription);
 };
