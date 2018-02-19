@@ -84,7 +84,7 @@ export class NewCategoryComponent implements OnInit {
           this.systemModuleService.announceSweetProxy('Failed to add category', 'error');
         });
       } else {
-        this._facilitiesServiceCategoryService.update(this.facility._id, facilityCategoryeModel, {
+        this._facilitiesServiceCategoryService.update2(this.facility._id, facilityCategoryeModel, {
           query: {
             facilityId: this.facility._id,
             isCategory: true,
