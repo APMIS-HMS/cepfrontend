@@ -100,7 +100,8 @@ export class FacilitySetupComponent implements OnInit {
       facilitycategory: ['', [<any>Validators.required]],
 
       facilityownership: ['', [<any>Validators.required]],
-      facilityemail: ['', [<any>Validators.required, <any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|CO.UK|co.uk|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
+      facilityemail: ['', [<any>Validators.required,
+        <any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|CO.UK|co.uk|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
       facilitywebsite: ['', [<any>Validators.pattern('^[a-zA-Z0-9\-\.]+\.(com|org|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
       facilitycountry: ['', [<any>Validators.required]]
     });

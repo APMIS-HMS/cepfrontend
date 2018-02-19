@@ -83,14 +83,9 @@ export class LabRequestsComponent implements OnInit {
   totalPrice: Number = 0;
   constructor(
     private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolLocalStorage,
-<<<<<<< HEAD
-    private route: ActivatedRoute,
-    private billingService: BillingService, private facilityService: FacilitiesService,
-=======
    private route: ActivatedRoute,
     private billingService: BillingService,
     private facilityService: FacilitiesService,
->>>>>>> a05a9edadb9d4672be4d3138f1ca0cdee405e7bd
     private _router: Router,
     private investigationService: InvestigationService,
     private requestService: LaboratoryRequestService,
@@ -699,13 +694,7 @@ export class LabRequestsComponent implements OnInit {
         .valid && this.frmNewRequest.controls['investigation'].valid) {
         this.isValidateForm = true;
       }
-<<<<<<< HEAD
-    }
-    // tslint:disable-next-line:one-line
-    else {
-=======
     } else {
->>>>>>> a05a9edadb9d4672be4d3138f1ca0cdee405e7bd
       this.isValidateForm = false;
     }
   }
@@ -816,23 +805,6 @@ export class LabRequestsComponent implements OnInit {
           this.investigations = [];
           this.apmisLookupText = '';
           this.selectedPatient = undefined;
-<<<<<<< HEAD
-          this._notification('Success', 'Request has been sent successfully!');
-        }).catch(ex => {
-        })
-
-      })
-    } else {
-      this.requestService.create(request).then(payload => {
-        this.frmNewRequest.reset();
-        this.bindInvestigations = [];
-        this.investigations = [];
-        this.apmisLookupText = '';
-        this.selectedPatient = undefined;
-        this._notification('Success', 'Request has been sent successfully!');
-      }, err => {
-      })
-=======
           this._systemModuleService.announceSweetProxy('Request has been sent successfully!', 'success');
         } else {
           this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
@@ -881,7 +853,6 @@ export class LabRequestsComponent implements OnInit {
       //   }, err => {
       //   })
       // }
->>>>>>> a05a9edadb9d4672be4d3138f1ca0cdee405e7bd
     }
   }
 
@@ -987,7 +958,7 @@ export class LabRequestsComponent implements OnInit {
               pendingLabReq.clinicalInformation = labRequest.clinicalInformation;
               pendingLabReq.diagnosis = labRequest.diagnosis;
               pendingLabReq.labNumber = labRequest.labNumber;
-              pendingLabReq.patientId = labRequest.patientId;
+              pendingLabReq.personId = labRequest.patientId;
               pendingLabReq.patient = labRequest.personDetails;
               pendingLabReq.isExternal = investigation.isExternal;
               pendingLabReq.isUrgent = investigation.isUrgent;
@@ -1005,7 +976,7 @@ export class LabRequestsComponent implements OnInit {
               pendingLabReq.investigationId = investigation.investigation._id;
               pendingLabReq.createdAt = labRequest.createdAt;
               pendingLabReq.updatedAt = labRequest.updatedAt;
-              pendingLabReq.createdById = labRequest.createdBy;
+              pendingLabReq.createdBy = labRequest.createdBy;
               pendingLabReq.createdBy = labRequest.employeeDetails;
               if (investigation.specimenReceived !== undefined) {
                 pendingLabReq.specimenReceived = investigation.specimenReceived;

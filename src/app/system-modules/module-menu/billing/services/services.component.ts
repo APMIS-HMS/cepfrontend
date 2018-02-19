@@ -62,7 +62,6 @@ export class ServicesComponent implements OnInit {
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe(value => {
-        console.log(value);
         this.systemModuleService.on();
         this._facilitiesServiceCategoryService.allServices({
           query:
@@ -73,7 +72,6 @@ export class ServicesComponent implements OnInit {
             }
         }).then(payload => {
           this.systemModuleService.off();
-          console.log(payload);
           this.filterOutCategory(payload);
         })
       });
@@ -91,7 +89,6 @@ export class ServicesComponent implements OnInit {
               searchString: value
             }
         }).then(payload => {
-          console.log(payload);
           this.systemModuleService.off();
           this.categories = payload.data[0].categories.filter(x => x.isHost === true);
           this.selectedServices = this.categories[0].services;
@@ -106,7 +103,6 @@ export class ServicesComponent implements OnInit {
         query:
           { search: this.searchTag.value, facilityId: this.facility._id }
       }).then(payload => {
-        console.log(payload)
         this.tags = payload.data;
       }));
 
@@ -169,11 +165,9 @@ export class ServicesComponent implements OnInit {
       }
     }).then(payload => {
       this.systemModuleService.off();
-      console.log(payload);
       this.categories = payload.data[0].categories;
       this.facilityServiceId = payload.data[0]._id;
       this.selectedServices = payload.data[0].categories[0].services;
-      console.log(payload.data[0].categories[0].name);
       this.selectedCategory = payload.data[0].categories[0];
     }, error => {
       this.systemModuleService.off();
@@ -226,12 +220,12 @@ export class ServicesComponent implements OnInit {
   getCategory() {
     this._facilitiesServiceCategoryService.find({
       query:
-        { searchCategory: "Medical Records", facilityId: this.facility._id }
+        { searchCategory: 'Medical Records', facilityId: this.facility._id }
     }).
       then(payload => {
-        //this.filterOutCategory(payload);
-        //this.categories = [];
-        let cat: any = [];
+        // this.filterOutCategory(payload);
+        // this.categories = [];
+        const cat: any = [];
         payload.data.forEach((itemi, i) => {
           itemi.categories.forEach((itemj, j) => {
             if (itemi.facilityId !== undefined) {
@@ -248,12 +242,11 @@ export class ServicesComponent implements OnInit {
     });
   }
 
-  onRefreshModifier(event){
+  onRefreshModifier(event) {
     this.getCategories();
   }
 
   newServicePopup_show(val) {
-    console.log(val);
     this.selectedService = val;
     this.selectedService.categoryId = this.selectedCategory._id;
     this.selectedService.facilityServiceId = this.facilityServiceId;
@@ -272,7 +265,6 @@ export class ServicesComponent implements OnInit {
 
   onRefreshService(event) {
     this.systemModuleService.on();
-    console.log(event);
     this._facilitiesServiceCategoryService.allServices({
       query: {
         facilityId: this.facility._id
@@ -282,7 +274,6 @@ export class ServicesComponent implements OnInit {
       this.categories = payload.data[0].categories;
       this.selectedCategory = payload.data[0].categories.filter(x => x._id.toString() === event.categoryId.toString())[0];
       this.selectedServices = this.selectedCategory.services;
-      console.log(payload.data[0].categories[0].name);
 
     }, error => {
       this.systemModuleService.off();
@@ -330,7 +321,7 @@ export class ServicesComponent implements OnInit {
     if (this.globalCategoriesToBePaginated.length <= this.globalCategories.length) {
       this.showLoadMore = false;
     } else {
-      let goo = this.paginate(this.globalCategoriesToBePaginated, this.pageSize, this.index);
+      const goo = this.paginate(this.globalCategoriesToBePaginated, this.pageSize, this.index);
       this.globalCategories.push(...goo);
       this.index++;
     }
