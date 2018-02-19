@@ -144,6 +144,7 @@ const listOfStockTransfers = require('./list-of-stock-transfers/list-of-stock-tr
 const drugStrengths = require('./drug-strengths/drug-strengths.service.js');
 const listOfPurchaseOrders = require('./list-of-purchase-orders/list-of-purchase-orders.service.js');
 const priceModifiers = require('./price-modifiers/price-modifiers.service.js');
+const makePurchaseEntries = require('./make-purchase-entries/make-purchase-entries.service.js');
 module.exports = function(app) {
   app.configure(users);
   app.configure(facilityOwnerships);
@@ -291,6 +292,7 @@ module.exports = function(app) {
   app.configure(drugStrengths);
   app.configure(listOfPurchaseOrders);
   app.configure(priceModifiers);
+  app.configure(makePurchaseEntries);
 };
 
 
