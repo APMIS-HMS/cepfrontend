@@ -38,6 +38,9 @@ export class ServicePriceService {
   update(serviceprice: any) {
     return this._socket.update(serviceprice._id, serviceprice);
   }
+  patch(id,serviceprice: any) {
+    return this._socket.patch(id, serviceprice);
+  }
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }

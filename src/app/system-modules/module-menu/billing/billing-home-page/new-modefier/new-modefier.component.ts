@@ -12,7 +12,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 export class NewModefierComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input() selectedFacilityServicePrice: FacilityServicePrice = <FacilityServicePrice>{};
+  @Input() selectedFacilityServicePrice: any = <any>{};
   mainErr = true;
   errMsg = 'you have unresolved errors';
   categories: FacilityService[] = [];
@@ -23,7 +23,7 @@ export class NewModefierComponent implements OnInit {
   selectedTag: Tag = <Tag>{};
   public frmNewmodefier: FormGroup;
 
-  
+
   constructor(private formBuilder: FormBuilder,
     private _tagService: TagService,
     private servicePriceService: ServicePriceService,
@@ -32,25 +32,21 @@ export class NewModefierComponent implements OnInit {
 
   ngOnInit() {
     this.addNew();
-    this.facility = <Facility> this._locker.getObject('selectedFacility');
+    this.facility = <Facility>this._locker.getObject('selectedFacility');
     this.getCategories();
-    const subscribeForTag = this.frmNewmodefier.controls['tag'].valueChanges
+    this.frmNewmodefier.controls['tag'].valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
-      .switchMap((term: Tag[]) => this._tagService.find({
-        query:
-        { search: this.frmNewmodefier.controls['tag'].value, facilityId: this.facility._id }
-      }).
-        then(payload => {
-          if (this.frmNewmodefier.controls['tag'].value.length > 0) {
+      .subscribe(value => {
+        this._tagService.find({
+          query:
+            { name: { $regex: this.frmNewmodefier.controls['tag'].value, '$options': 'i' }, facilityId: this.facility._id }
+        }).
+          then(payload => {
+            console.log(payload);
             this.tags = payload.data;
-          } else {
-            this.tags = [];
-          }
-        }));
-
-    subscribeForTag.subscribe((payload: any) => {
-    });
+          })
+      });
   }
   getCategories() {
     this._facilitiesServiceCategoryService.find({
@@ -89,15 +85,18 @@ export class NewModefierComponent implements OnInit {
     this.frmNewmodefier.controls['tag'].setValue(this.selectedTag.name);
   }
   newModefier(value, valid) {
-    const modifier: any = <any>{};
-    modifier.tagId = this.selectedTag._id;
-    modifier.modifierType = this.frmNewmodefier.controls['valueCheck'].value;
-    modifier.modifierValue = this.frmNewmodefier.controls['value'].value;
-    this.selectedFacilityServicePrice.modifiers.push(modifier);
+    this.servicePriceService.get(this.selectedFacilityServicePrice.priceId, {}).then(payload => {
+      const modifier: any = <any>{};
+      modifier.tagId = this.selectedTag._id;
+      modifier.modifierType = this.frmNewmodefier.controls['valueCheck'].value;
+      modifier.modifierValue = this.frmNewmodefier.controls['value'].value;
+      payload.modifiers.push(modifier);
 
-    this.servicePriceService.update(this.selectedFacilityServicePrice).then(payload => {
-      this.selectedFacilityServicePrice = payload;
-      this.close_onClick();
-    });
+      this.servicePriceService.patch(payload._id, payload).then(payload => {
+        this.selectedFacilityServicePrice = payload;
+        this.close_onClick();
+      });
+    })
+
   }
 }

@@ -170,3 +170,21 @@
         justify-content: space-between;
         align-items: center;
     }
+
+    .panelcost{
+        align-items: right;
+        border-radius: 25px;
+    }
+
+    .input-wrap {
+        width: 90%;
+        max-width: 500px;
+        margin: 0 auto;
+        margin-top: 20px;
+    }
+
+    .td-icos {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }
