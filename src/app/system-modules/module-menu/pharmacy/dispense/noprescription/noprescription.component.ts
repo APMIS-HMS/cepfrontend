@@ -57,6 +57,8 @@ export class NoprescriptionComponent implements OnInit {
 	internalType: string = 'Department';
 	deptLocationShow: boolean = true;
 
+	laoding = false;
+
 	constructor(
 		private _fb: FormBuilder,
 		private _el: ElementRef,
