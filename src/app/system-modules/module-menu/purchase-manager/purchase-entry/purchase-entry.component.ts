@@ -73,17 +73,20 @@ export class PurchaseEntryComponent implements OnInit {
     });
 
     this.route.params.subscribe(params => {
-      this.orderId = params.invoiceId;
+      const id = params['id'];
+      this.orderId = id;
       console.log("Dont giveup");
       console.log(this.orderId);
+      this.getAllProducts();
       if (this.orderId !== undefined) {
-        this.getAllProducts();
         this.getOrderDetails(this.orderId, false);
       }
       const invoiceId = params['invoiceId'];
+      console.log(invoiceId);
       if (invoiceId !== undefined) {
         this.invoiceId = invoiceId;
         this.checkAll.setValue(true);
+        this.getInvoiceDetails(this.invoiceId);
       }
     });
 
@@ -137,7 +140,7 @@ export class PurchaseEntryComponent implements OnInit {
 
     this.frm_purchaseOrder.controls['supplier'].valueChanges.subscribe(value => {
       if (value !== undefined && value !== null) {
-        this.purchaseOrderService.find({ query: { supplierId: value, facilityId: this.selectedFacility._id } }).subscribe(payload => {
+        this.purchaseOrderService.find({ query: { supplierId: value, facilityId: this.selectedFacility._id, isSupplied: false } }).subscribe(payload => {
           this.orders = payload.data;
         });
       }
@@ -633,8 +636,9 @@ export class PurchaseEntryComponent implements OnInit {
               delete productObj.existingInventory.productObject;
             }
 
-            const inventory: Inventory = productObj.existingInventory;
+            const inventory = productObj.existingInventory;
             inventory.totalQuantity = inventory.totalQuantity + productObj.qty;
+            inventory.availableQuantity = inventory.availableQuantity + productObj.qty;
             const inventoryTransaction: InventoryTransaction = <InventoryTransaction>{};
             inventoryTransaction.batchNumber = productObj.batchNo;
             inventoryTransaction.costPrice = productObj.costPrice;
@@ -645,45 +649,59 @@ export class PurchaseEntryComponent implements OnInit {
             existingInventories.push(inventory);
           }
         });
-        this.purchaseEntryService.create(purchaseEntry).then(payload => {
-          payload.products.forEach((pl, ip) => {
-            inventories.forEach((itemi, i) => {
-              itemi.transactions.forEach((itemt, t) => {
-                itemt.purchaseEntryId = payload._id;
-                itemt.purchaseEntryDetailId = pl._id;
-              });
-            });
 
-            existingInventories.forEach((itemi, i) => {
-              if (itemi.transactions.length > 0) {
-                const transactionLength = itemi.transactions.length;
-                const index = transactionLength - 1;
-                const lastTransaction = itemi.transactions[index];
-                lastTransaction.purchaseEntryId = payload._id;
-                lastTransaction.purchaseEntryDetailId = pl._id;
-              }
-            });
-          });
-          if (inventories.length > 0) {
-            this.inventoryService.create(inventories).subscribe(payResult => {
-              this.frm_purchaseOrder.controls['invoiceNo'].reset();
-              this.getAllProducts();
-              this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
-              this.router.navigate(['dashboard/purchase-manager/invoices']);
-            });
-          }
-          if (existingInventories.length > 0) {
-            existingInventories.forEach((ivn, iv) => {
-              this.inventoryService.patch(ivn._id, ivn, {}).subscribe(payResult => {
-                this.frm_purchaseOrder.controls['invoiceNo'].reset();
-                this.getAllProducts();
-                this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
-                this.router.navigate(['dashboard/purchase-manager/invoices']);
-              });
-            });
-
-          }
+        const data = {
+          purchaseEntry: purchaseEntry,
+          orderId: this.selectedOrder._id,
+          inventories: inventories,
+          existingInventories: existingInventories
+        }
+        this.purchaseEntryService.create2(data).then(payload => {
+          this.frm_purchaseOrder.controls['invoiceNo'].reset();
+          this.getAllProducts();
+          this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
+          this.router.navigate(['dashboard/purchase-manager/invoices']);
         });
+
+        // this.purchaseEntryService.create(purchaseEntry).then(payload => {
+        //   payload.products.forEach((pl, ip) => {
+        //     inventories.forEach((itemi, i) => {
+        //       itemi.transactions.forEach((itemt, t) => {
+        //         itemt.purchaseEntryId = payload._id;
+        //         itemt.purchaseEntryDetailId = pl._id;
+        //       });
+        //     });
+
+        //     existingInventories.forEach((itemi, i) => {
+        //       if (itemi.transactions.length > 0) {
+        //         const transactionLength = itemi.transactions.length;
+        //         const index = transactionLength - 1;
+        //         const lastTransaction = itemi.transactions[index];
+        //         lastTransaction.purchaseEntryId = payload._id;
+        //         lastTransaction.purchaseEntryDetailId = pl._id;
+        //       }
+        //     });
+        //   });
+        //   if (inventories.length > 0) {
+        //     this.inventoryService.create(inventories).subscribe(payResult => {
+        //       this.frm_purchaseOrder.controls['invoiceNo'].reset();
+        //       this.getAllProducts();
+        //       this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
+        //       this.router.navigate(['dashboard/purchase-manager/invoices']);
+        //     });
+        //   }
+        //   if (existingInventories.length > 0) {
+        //     existingInventories.forEach((ivn, iv) => {
+        //       this.inventoryService.patch(ivn._id, ivn, {}).subscribe(payResult => {
+        //         this.frm_purchaseOrder.controls['invoiceNo'].reset();
+        //         this.getAllProducts();
+        //         this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
+        //         this.router.navigate(['dashboard/purchase-manager/invoices']);
+        //       });
+        //     });
+
+        //   }
+        // });
       }
     } else {
       this.mainErr = false;
