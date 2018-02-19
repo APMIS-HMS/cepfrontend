@@ -74,12 +74,13 @@ export class PurchaseEntryComponent implements OnInit {
 
     this.route.params.subscribe(params => {
       const id = params['id'];
+      console.log(params);
       this.orderId = id;
       console.log("Dont giveup");
       console.log(this.orderId);
       if (this.orderId !== undefined) {
         this.getAllProducts();
-        this.getOrderDetails(this.orderId,false);
+        this.getOrderDetails(this.orderId, false);
       }
       const invoiceId = params['invoiceId'];
       if (invoiceId !== undefined) {
@@ -116,12 +117,6 @@ export class PurchaseEntryComponent implements OnInit {
       }
     });
 
-
-    // this.route.data.subscribe(data => {
-    //   data['loginEmployee'].subscribe((payload) => {
-    //     this.loginEmployee = payload.loginEmployee;
-    //   });
-    // });
     this.frm_purchaseOrder = this.formBuilder.group({
       orderId: [, []],
       store: [, [<any>Validators.required]],
@@ -153,7 +148,7 @@ export class PurchaseEntryComponent implements OnInit {
     this.frm_purchaseOrder.controls['orderId'].valueChanges.subscribe(value => {
       console.log(value);
       if (value !== undefined && value !== null) {
-        this.getOrderDetails(value,true);
+        this.getOrderDetails(value, true);
       }
     });
 
@@ -245,14 +240,14 @@ export class PurchaseEntryComponent implements OnInit {
       });
     });
   }
-  getOrderDetails(id,isHasVal) {
+  getOrderDetails(id, isHasVal) {
     this.purchaseOrderService.get(id, {}).subscribe((payload: PurchaseOrder) => {
       this.selectedOrder = payload;
       this.frm_purchaseOrder.controls['store'].setValue(payload.storeId);
       this.frm_purchaseOrder.controls['supplier'].setValue(payload.supplierId);
       this.frm_purchaseOrder.controls['deliveryDate'].setValue(payload.expectedDate);
       this.frm_purchaseOrder.controls['desc'].setValue(payload.remark);
-      if(!isHasVal){
+      if (!isHasVal) {
         this.frm_purchaseOrder.controls['orderId'].setValue(payload._id);
       }
       console.log(payload.orderedProducts);
@@ -273,55 +268,22 @@ export class PurchaseEntryComponent implements OnInit {
               items.forEach((itemg, g) => {
                 if (itemg._id === item.productId) {
                   itemg.checked = true;
-                  // (<FormArray>this.productTableForm.controls['productTableArray']).push(
-                  //   this.formBuilder.group({
-                  //     product: [itemg.name, [<any>Validators.required]],
-                  //     batchNo: ['', [<any>Validators.required]],
-                  //     costPrice: [0, [<any>Validators.required]],
-                  //     qty: [item.quantity, [<any>Validators.required]],
-                  //     expiryDate: [this.now, [<any>Validators.required]],
-                  //     readOnly: [false],
-                  //     id: [item.productId],
-                  //     existingInventory: [existingInventory],
-                  //     productObject: [item.product],
-                  //   }));
-                  (<FormArray>this.productTableForm.controls['productTableArray'])
-          .push(
-          this.formBuilder.group({
-            product: [itemg.name, [<any>Validators.required]],
-            batchNo: ['', [<any>Validators.required]],
-            costPrice: [0.00, [<any>Validators.required]],
-            qty: [item.quantity, [<any>Validators.required]],
-            expiryDate: [this.now, [<any>Validators.required]],
-            // total: [{ value: "₦ 0", disabled: true }],
-            readOnly: [false],
-            existingInventory: [existingInventory],
-            productObject: [item.product],
-            id: [item.productId]
-          }));
+                  (<FormArray>this.productTableForm.controls['productTableArray']).push(
+                    this.formBuilder.group({
+                      product: [itemg.name, [<any>Validators.required]],
+                      batchNo: ['', [<any>Validators.required]],
+                      costPrice: [0.00, [<any>Validators.required]],
+                      qty: [item.quantity, [<any>Validators.required]],
+                      expiryDate: [this.now, [<any>Validators.required]],
+                      total: [{ value: "₦ 0", disabled: true }],
+                      readOnly: [false],
+                      existingInventory: [existingInventory],
+                      productObject: [item.product],
+                      id: [item.productId]
+                    }));
                 }
               });
             });
-            // if (this.frm_purchaseOrder.controls['invoiceNo'].value !== null &&
-            //   this.frm_purchaseOrder.controls['invoiceNo'].value.length > 0) {
-            //   (<FormArray>this.productTableForm.controls['productTableArray'])
-            //     .push(
-            //     this.formBuilder.group({
-            //       product: [value.name, [<any>Validators.required]],
-            //       batchNo: ['', [<any>Validators.required]],
-            //       strength: [, []],
-            //       costPrice: [0.00, [<any>Validators.required]],
-            //       qty: [0, [<any>Validators.required]],
-            //       expiryDate: [this.now, [<any>Validators.required]],
-            //       readOnly: [false],
-            //       existingInventory: [existingInventory],
-            //       productObject: [value.product],
-            //       id: [value._id]
-            //     })
-            //     );
-            // } else {
-            //   value.checked = false;
-            // }
           });
       });
 
