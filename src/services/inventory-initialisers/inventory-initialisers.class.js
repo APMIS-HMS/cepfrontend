@@ -28,8 +28,6 @@ class Service {
         productId: data.product._id
       }
     });
-    //console.log(data.product);
-    console.log(inventory);
     if (inventory.data.length > 0) {
       return {};
       // let batches = data;
@@ -69,23 +67,16 @@ class Service {
       inventoryModel.transactions = [];
       inventoryModel.totalQuantity = 0;
       inventoryModel.availableQuantity = 0;
-      console.log(batches.batchItems);
+
       let len = batches.batchItems.length - 1;
-      console.log("Lenght " + len);
       for (let index = len; index >= 0; index--) {
         if (index >= 0) {
-          console.log(1);
-          console.log(batches.batchItems[index].quantity);
           inventoryModel.totalQuantity += batches.batchItems[index].quantity;
           inventoryModel.availableQuantity += batches.batchItems[index].quantity;
-          console.log(2);
           inventoryModel.transactions.push(batches.batchItems[index]);
-          console.log(3);
         }
       }
-      console.log(41);
       let inventory = await inventoriesService.create(inventoryModel);
-      console.log(4);
       // let product = await productsService.get(batches.product._id);
       // console.log(5);
       // if (product != null) {
@@ -93,12 +84,12 @@ class Service {
       //   let updatedProduct = await productsService.patch(product._id, {
       //     isInventory: product.isInventory
       //   });
-        
+
       // }
       let res = {
         inventory: inventory
         //product: updatedProduct
-      }
+      };
       return res;
     }
   }

@@ -17,28 +17,18 @@ class Service {
                 query: {
                     name: {
                         $regex: params.query.name,
-                        $options: 'i'
+                        '$options': 'i'
                     }
                 }
             });
         } else if (params.query.productTypeId != undefined) {
             findProductsService = await productsService.find({
                 query: {
-                    productTypeId: params.query.productTypeId
+                    'productTypeId': params.query.productTypeId
                 }
             });
-        }
-        if (findProductsService.data.length > 0) {
-            let len = findProductsService.data.length - 1;
-            for (let j = len; j >= 0; j--) {
-                let getProductType = await productTypesService.get(
-                    findProductsService.data[j].productTypeId
-                );
-                findProductsService.data[j].productType = getProductType;
-            }
-            return findProductsService;
         } else {
-            return findProductsService;
+            return '';
         }
     }
 
@@ -66,7 +56,9 @@ class Service {
     }
 
     remove(id, params) {
-        return Promise.resolve({ id });
+        return Promise.resolve({
+            id
+        });
     }
 }
 module.exports = function(options) {

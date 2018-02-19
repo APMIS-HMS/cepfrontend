@@ -51,8 +51,6 @@ class Service {
   }
 
   async get(id, params) {
-    console.log(id);
-    console.log(params.query);
     const suppliersService = this.app.service('suppliers');
     const productsService = this.app.service('products');
     const orderService = this.app.service('purchase-orders');
@@ -67,14 +65,11 @@ class Service {
       if (index.length > 0) {
         orders.supplierObject = index[0];
       }
-      console.log(orders.orderedProducts);
       if (orders.orderedProducts !== null || orders.orderedProducts !== undefined) {
         if (orders.orderedProducts.length > 0) {
           let len2 = orders.orderedProducts.length - 1;
           for (let j = 0; j <= len2; j++) {
-            console.log(j);
             let getProduct = await productsService.get(orders.orderedProducts[j].productId);
-            // console.log(getProduct);
             orders.orderedProducts[j].productObject = getProduct;
           }
         }

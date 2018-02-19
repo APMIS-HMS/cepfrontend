@@ -44,11 +44,11 @@ class Service {
           }
         }
       }
-      return inventories
+      return inventories;
     } else {
       let result = {
         data: []
-      }
+      };
       return result;
     }
   }
@@ -82,44 +82,44 @@ class Service {
 
 function expiration(date1, date2) {
   let days = difference_in_calendar_days(date1, date2);
-  let dateRemains = "";
+  let dateRemains = '';
   let rem = days % 365;
   if (rem > 0) {
     let rationalNo = days - rem;
     let year = rationalNo / 365;
     if (year >= 2) {
-      dateRemains = year + " Years ";
+      dateRemains = year + ' Years ';
     } else if (year == 1) {
-      dateRemains = year + " Year ";
+      dateRemains = year + ' Year ';
     }
     let mRem = rem % 31;
     if (mRem > 0) {
       let nRational = rem - mRem;
       let m = nRational / 31;
       if (m >= 2) {
-        dateRemains += m + " Months ";
+        dateRemains += m + ' Months ';
       } else if (m == 1) {
-        dateRemains += m + " Month ";
+        dateRemains += m + ' Month ';
       }
       if (mRem >= 2) {
-        dateRemains += mRem + " Days ";
+        dateRemains += mRem + ' Days ';
       } else if (mRem == 1) {
-        dateRemains += mRem + " Day ";
+        dateRemains += mRem + ' Day ';
       }
     } else {
       mRem = rem / 31;
       if (mRem >= 2) {
-        dateRemains += mRem + " Months ";
+        dateRemains += mRem + ' Months ';
       } else if (mRem == 1) {
-        dateRemains += mRem + " Month ";
+        dateRemains += mRem + ' Month ';
       }
     }
   } else {
     rem = days / 365;
     if (rem >= 2) {
-      dateRemains = rem + " Years ";
+      dateRemains = rem + ' Years ';
     } else if (rem == 1) {
-      dateRemains = rem + " Year ";
+      dateRemains = rem + ' Year ';
     }
   }
   return dateRemains;
