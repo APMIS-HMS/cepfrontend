@@ -166,7 +166,7 @@ class Service {
           serviceId: serviceId,
           facilityId: params.query.facilityId,
           price: data.price
-        }
+        };
         if (priceItem.price === '') {
           priceItem.price = 0;
         }
@@ -179,7 +179,7 @@ class Service {
       }
       data.categories.push({
         name: data.name
-      })
+      });
       let createdOrgServiceItem = await orgService.create(data);
       return createdOrgServiceItem;
     }
@@ -189,7 +189,7 @@ class Service {
     const orgService = this.app.service('organisation-services');
     const priceService = this.app.service('facility-prices');
     const tagDictioneriesService = this.app.service('tag-dictioneries');
-    if (params.query.name !== "") {
+    if (params.query.name !== '') {
       let queryDico = await tagDictioneriesService.find({
         query: {
           word: {
