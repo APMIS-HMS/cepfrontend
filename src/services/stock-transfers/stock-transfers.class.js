@@ -51,7 +51,7 @@ class Service {
           let result = {
             inventoryTransfers: inventoryTransfers,
             inventory: updatedInv
-          }
+          };
           return result;
         } else {
           return {};
@@ -98,7 +98,7 @@ class Service {
           let result = {
             inventoryTransfers: inventoryTransfers,
             inventory: updatedInv
-          }
+          };
           return result;
         } else {
           return {};
