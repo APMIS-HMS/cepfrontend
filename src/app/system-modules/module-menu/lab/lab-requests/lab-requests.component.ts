@@ -25,10 +25,10 @@ export class LabRequestsComponent implements OnInit {
   @Input() isLaboratory = true;
   @Input() patientId;
 
-  paramLabNo = "";
-  paramPersonFullName = "";
-  paramcLinicalInformation = "";
-  paramDiagnosis = "";
+  paramLabNo = '';
+  paramPersonFullName = '';
+  paramcLinicalInformation = '';
+  paramDiagnosis = '';
 
   selectedFacility: Facility = <Facility>{};
   apmisLookupUrl = 'patients';
@@ -79,7 +79,7 @@ export class LabRequestsComponent implements OnInit {
   totalPrice: Number = 0;
   constructor(
     private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolLocalStorage,
-   private route: ActivatedRoute,
+    private route: ActivatedRoute,
     private billingService: BillingService, private facilityService: FacilitiesService,
     private _router: Router,
     private investigationService: InvestigationService, private requestService: LaboratoryRequestService) {
@@ -670,10 +670,12 @@ export class LabRequestsComponent implements OnInit {
     if (this.frmNewRequest.valid) {
       this.isValidateForm = true;
     } else if (this.selectedPatient !== undefined && this.selectedPatient._id !== undefined && this.selectedPatient._id.length > 0) {
-      if(this.frmNewRequest.controls['clinicalInfo'].valid && this.frmNewRequest.controls['diagnosis'].valid && this.frmNewRequest.controls['investigation'].valid){
+      if (this.frmNewRequest.controls['clinicalInfo'].valid && this.frmNewRequest.controls['diagnosis']
+        .valid && this.frmNewRequest.controls['investigation'].valid) {
         this.isValidateForm = true;
       }
     }
+    // tslint:disable-next-line:one-line
     else {
       this.isValidateForm = false;
     }
@@ -786,7 +788,7 @@ export class LabRequestsComponent implements OnInit {
         results[0].billingId = billing;
         this.requestService.update(results[0]).then(payload => {
           this.frmNewRequest.reset();
-         this._getAllPendingRequests();
+          this._getAllPendingRequests();
           this.bindInvestigations = [];
           this.investigations = [];
           this.apmisLookupText = '';
@@ -803,7 +805,7 @@ export class LabRequestsComponent implements OnInit {
         this.investigations = [];
         this.apmisLookupText = '';
         this.selectedPatient = undefined;
-          this._notification('Success', 'Request has been sent successfully!');
+        this._notification('Success', 'Request has been sent successfully!');
       }, err => {
       })
     }
@@ -897,7 +899,7 @@ export class LabRequestsComponent implements OnInit {
         // Filter investigations based on the laboratory Id
         res.data.forEach(labRequest => {
           labRequest.investigations.forEach(investigation => {
-            console.log(investigation.location);
+
             if (
               (investigation.isSaved === undefined || !investigation.isSaved) ||
               (investigation.isUploaded === undefined || !investigation.isUploaded) &&
@@ -959,11 +961,11 @@ export class LabRequestsComponent implements OnInit {
   }
 
   // Notification
-	private _notification(type: string, text: string): void {
-		this.facilityService.announceNotification({
+  private _notification(type: string, text: string): void {
+    this.facilityService.announceNotification({
       users: [this.user._id],
       type: type,
       text: text
     });
-	}
+  }
 }
