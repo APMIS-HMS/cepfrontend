@@ -26,6 +26,9 @@ export class FacilitiesService {
   private notificationAnnouncedSource = new Subject<Object>();
   notificationAnnounced$ = this.notificationAnnouncedSource.asObservable();
 
+  private popUpEditFacilitySource = new Subject<Object>();
+  popUpEditFacility$ = this.popUpEditFacilitySource.asObservable();
+
   constructor(
     private _socketService: SocketService,
     private _restService: RestService,
@@ -55,6 +58,10 @@ export class FacilitiesService {
   }
   announceNotification(notification: Object) {
     this.notificationAnnouncedSource.next(notification);
+  }
+
+  announcePopupEditFacility(edit: Object) {
+    this.popUpEditFacilitySource.next(edit);
   }
   transform(url) {
     url = this._restService.getHost() + '/' + url + '?';// + new Date().getTime();

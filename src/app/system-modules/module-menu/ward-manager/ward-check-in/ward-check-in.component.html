@@ -41,7 +41,10 @@
                         </div>
                     </div>
                     <div class="btn-group">
-                        <button mat-raised-button [disabled]="!wardCheckin.valid || disableCheckIn" (click)="checkIn(wardCheckin.valid, wardCheckin.value);" style="color: #fff; margin-right: 5px;" [innerHtml]="checkInBtnText"> </button>
+                        <button mat-raised-button [disabled]="!wardCheckin.valid || disableCheckIn" (click)="checkIn(wardCheckin.valid, wardCheckin.value);" style="color: #fff; margin-right: 5px;">
+                          <span *ngIf="addCheckin"><i class="fa fa-check-circle"></i> Check In</span>
+                          <span *ngIf="addingCheckin">Checking In <i class="fa fa-spin fa-spinner"></i></span>
+                        </button>
                         <button mat-raised-button style="color: #fff; background-color: #B71C1C;">Cancel</button>
                     </div>
                 </form>

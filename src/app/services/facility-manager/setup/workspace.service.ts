@@ -41,6 +41,12 @@ export class WorkSpaceService {
   assignworkspace(body: any) {
     return this._assignsocket.create(body);
   }
+  findworkspaces(query){
+    return this._assignsocket.find(query);
+  }
+  patch(_id: any, data: any, param: any) {
+    return this._socket.patch(_id, data, param);
+  }
   update(workspace: any) {
     return this._socket.update(workspace._id, workspace);
   }

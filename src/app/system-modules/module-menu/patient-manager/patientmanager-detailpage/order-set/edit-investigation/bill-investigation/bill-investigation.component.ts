@@ -51,14 +51,12 @@ export class BillInvestigationComponent implements OnInit {
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
     this.user = this._locker.getObject('auth');
-    console.log(this.investigationData);
 
 		this.getInvestigationPrice();
 	}
 
 	//
 	onClickSaveCost() {
-    console.log(this.investigationData);
     this.onClickClose(true);
 		// if (valid) {
 		// 	if (this.cost > 0 && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
@@ -91,7 +89,6 @@ export class BillInvestigationComponent implements OnInit {
 		this.title = this.investigationData.investigationItems[index].name;
 
     this._investigationService.find({ query: { 'facilityId._id': this.facility._id, name: this.title } }).then(res => {
-      console.log(res);
       this.loading = false;
       res.data.forEach(item => {
         const investigation: InvestigationModel = <InvestigationModel>{};
@@ -117,7 +114,6 @@ export class BillInvestigationComponent implements OnInit {
         //   this.investigations.push(investigation);
         // }
       });
-      console.log(this.investigations);
     });
   }
 
@@ -256,10 +252,6 @@ export class BillInvestigationComponent implements OnInit {
   // }
 
   locationChanged($event, investigation: InvestigationModel, location, LaboratoryWorkbenches) {
-    console.log($event);
-    console.log(investigation);
-    console.log(location);
-    console.log(LaboratoryWorkbenches);
     const ids: any[] = [];
     // if (investigation.investigation.isPanel) {
     //   const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
@@ -302,8 +294,6 @@ export class BillInvestigationComponent implements OnInit {
       this.investigationData.investigationItems[index].investigation = copyBindInvestigation;
       this.investigationData.investigationItems[index].isBilled = true;
       this.bindInvestigations.push(copyBindInvestigation);
-      console.log(copyBindInvestigation);
-      console.log(this.investigationData);
     // }
   }
 
@@ -312,7 +302,6 @@ export class BillInvestigationComponent implements OnInit {
   }
 
 	onClickCustomSearchItem(event, drugId) {
-    console.log(drugId);
 		// this.selectedDrug = drugId.viewValue;
 		// const pId = drugId._element.nativeElement.getAttribute('data-p-id');
 		// this.serviceId = drugId._element.nativeElement.getAttribute('data-p-sId');

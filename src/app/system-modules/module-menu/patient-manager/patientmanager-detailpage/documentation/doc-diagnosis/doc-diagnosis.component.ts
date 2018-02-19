@@ -113,7 +113,6 @@ export class DocDiagnosisComponent implements OnInit {
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = value.name;
     this._tempDiagnosis = value;
-    console.log(this._tempDiagnosis);
   }
 
   add_onClick() {
@@ -123,7 +122,6 @@ export class DocDiagnosisComponent implements OnInit {
       obj.name = obj.name + '---' + type;
       this.diagnoses.push(obj);
       this.diagnosis.emit(obj);
-      console.log(obj);
     }
   }
 

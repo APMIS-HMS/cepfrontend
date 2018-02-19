@@ -139,6 +139,10 @@ const appRoutes: Routes = [
             ]
             },
             {
+                path: 'report',
+                loadChildren: '../module-menu/report/report.module#ReportModule'
+            },
+            {
                 path: 'corporate',
                 loadChildren: '../corporate-account/corporate-account.module#CorporateAccountModule',
                 canActivate: [

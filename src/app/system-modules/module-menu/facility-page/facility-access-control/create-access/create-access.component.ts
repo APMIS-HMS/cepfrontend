@@ -62,7 +62,6 @@ export class CreateAccessComponent implements OnInit {
     });
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.user = <User>this.locker.getObject('auth');
-    console.log(this.selectedRole);
 
     this.getModules();
   }
@@ -129,7 +128,7 @@ export class CreateAccessComponent implements OnInit {
   }
 
   getModules() {
-    this.featureModuleService.findAll().then(res => {
+    this.featureModuleService.find({query:{$limit:100}}).then(res => {
       this.loading = false;
       if (res.data.length > 0) {
         this.modules = res.data;
@@ -168,7 +167,6 @@ export class CreateAccessComponent implements OnInit {
             this._systemModuleService.announceSweetProxy(text, 'success');
             this.close_onClick();
         }, error => {
-          console.log(error);
         }).catch(err => console.log(err));
       } else {
         this.updateRole = false;

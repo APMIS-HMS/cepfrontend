@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FacilitiesServiceCategoryService, TagService, FacilityPriceService } from '../../../../services/facility-manager/setup/index';
 import { FacilityService, Facility, CustomCategory, Tag, FacilityServicePrice } from '../../../../models/index';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
 
@@ -16,7 +17,8 @@ export class ServicesComponent implements OnInit {
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
   facility: Facility = <Facility>{};
   prices: FacilityServicePrice[] = [];
-  categories: FacilityService[] = [];
+  categories: any[] = [];
+  facilityServiceId: any;
   tags: Tag[] = [];
   globalCategories: CustomCategory[] = [];
   globalCategoriesToBePaginated: CustomCategory[] = [];
@@ -33,9 +35,10 @@ export class ServicesComponent implements OnInit {
   selectedFacilityServicePrice = FacilityPriceService;
   showNewModifer = false;
 
+
   selectedService: any = <any>{};
   selectedCategory: any = <any>{};
-
+  selectedPriceItem: any = <any>{};
   index = 1;
   pageSize = 10;
 
@@ -43,7 +46,9 @@ export class ServicesComponent implements OnInit {
 
   constructor(
     private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
-    private _locker: CoolLocalStorage, private _tagService: TagService) {
+    private _locker: CoolLocalStorage,
+    private _tagService: TagService,
+    private systemModuleService: SystemModuleService) {
 
   }
 
@@ -56,33 +61,43 @@ export class ServicesComponent implements OnInit {
     const subscribeForCategory = this.searchCategory.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
-      .switchMap((term: FacilityService[]) => this._facilitiesServiceCategoryService.find({
-        query:
-          { searchCategory: this.searchCategory.value, facilityId: this.facility._id }
-      }).
-        then(payload => {
+      .subscribe(value => {
+        console.log(value);
+        this.systemModuleService.on();
+        this._facilitiesServiceCategoryService.allServices({
+          query:
+            {
+              facilityId: this.facility._id,
+              isQueryCategory: true,
+              searchString: value
+            }
+        }).then(payload => {
+          this.systemModuleService.off();
+          console.log(payload);
           this.filterOutCategory(payload);
-        }));
+        })
+      });
 
-    subscribeForCategory.subscribe((payload: any) => {
-    });
-
-    const subscribeForService = this.searchService.valueChanges
+    this.searchService.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
-      .switchMap((term: FacilityService[]) => this._facilitiesServiceCategoryService.find({
-        query:
-          { search: this.searchService.value, facilityId: this.facility._id }
-      }).
-        then(payload => {
-          this.filterOutService(payload);
+      .subscribe(value => {
+        this.systemModuleService.on();
+        this._facilitiesServiceCategoryService.allServices({
+          query:
+            {
+              facilityId: this.facility._id,
+              isQueryService: true,
+              searchString: value
+            }
+        }).then(payload => {
           console.log(payload);
-        }));
-
-    subscribeForService.subscribe((payload: any) => {
-      console.log(payload);
-    });
-
+          this.systemModuleService.off();
+          this.categories = payload.data[0].categories.filter(x => x.isHost === true);
+          this.selectedServices = this.categories[0].services;
+          this.selectedCategory = this.categories[0];
+        })
+      });
 
     const subscribeForTag = this.searchTag.valueChanges
       .debounceTime(200)
@@ -91,16 +106,15 @@ export class ServicesComponent implements OnInit {
         query:
           { search: this.searchTag.value, facilityId: this.facility._id }
       }).then(payload => {
-          console.log(payload)
-          this.tags = payload.data;
-        }));
+        console.log(payload)
+        this.tags = payload.data;
+      }));
 
     subscribeForTag.subscribe((payload: any) => {
     });
   }
 
   selectCategory(category) {
-    console.log(category);
     this.selectedCategory = category;
     this.selectedServices = category.services;
   }
@@ -110,7 +124,6 @@ export class ServicesComponent implements OnInit {
     this.newServicePopup = true;
   }
   onDoubleClickCategory(value: any) {
-    console.log(value);
     this.selectedCategory = value;
     this.newCategoryPopup = true;
   }
@@ -149,13 +162,21 @@ export class ServicesComponent implements OnInit {
     });
   }
   getCategories() {
+    this.systemModuleService.on();
     this._facilitiesServiceCategoryService.allServices({
       query: {
         facilityId: this.facility._id
       }
     }).then(payload => {
+      this.systemModuleService.off();
+      console.log(payload);
       this.categories = payload.data[0].categories;
+      this.facilityServiceId = payload.data[0]._id;
       this.selectedServices = payload.data[0].categories[0].services;
+      console.log(payload.data[0].categories[0].name);
+      this.selectedCategory = payload.data[0].categories[0];
+    }, error => {
+      this.systemModuleService.off();
     });
 
     // this._facilitiesServiceCategoryService.find({
@@ -227,8 +248,15 @@ export class ServicesComponent implements OnInit {
     });
   }
 
-  newServicePopup_show() {
-    this.selectedService = <any>{};
+  onRefreshModifier(event){
+    this.getCategories();
+  }
+
+  newServicePopup_show(val) {
+    console.log(val);
+    this.selectedService = val;
+    this.selectedService.categoryId = this.selectedCategory._id;
+    this.selectedService.facilityServiceId = this.facilityServiceId;
     this.newServicePopup = true;
   }
 
@@ -241,13 +269,33 @@ export class ServicesComponent implements OnInit {
     this.newPricePopup = false;
     this.serviceDetail = false;
   }
+
+  onRefreshService(event) {
+    this.systemModuleService.on();
+    console.log(event);
+    this._facilitiesServiceCategoryService.allServices({
+      query: {
+        facilityId: this.facility._id
+      }
+    }).then(payload => {
+      this.systemModuleService.off();
+      this.categories = payload.data[0].categories;
+      this.selectedCategory = payload.data[0].categories.filter(x => x._id.toString() === event.categoryId.toString())[0];
+      this.selectedServices = this.selectedCategory.services;
+      console.log(payload.data[0].categories[0].name);
+
+    }, error => {
+      this.systemModuleService.off();
+    });
+  }
+
   newCategoryPopup_show(value?: any) {
-    console.log(value);
     if (!!value) {
       this.selectedCategory = value;
     }
     this.newCategoryPopup = true;
   }
+
   newTagPopup_show() {
     this.newTagPopup = true;
   }
@@ -258,9 +306,13 @@ export class ServicesComponent implements OnInit {
     this.newModefierPopup = false;
     this.showNewModifer = false;
   }
-  onClickshowNewModifer () {
+  onClickshowNewModifer(value) {
+    this.selectedPriceItem = value.price.filter(x => x.isBase === true)[0];
     this.showNewModifer = !this.showNewModifer;
+  }
 
+  onRefreshCategory(event) {
+    this.getCategories();
   }
 
   serviceDetail_show(price) {
@@ -279,11 +331,9 @@ export class ServicesComponent implements OnInit {
       this.showLoadMore = false;
     } else {
       let goo = this.paginate(this.globalCategoriesToBePaginated, this.pageSize, this.index);
-      console.log(goo);
       this.globalCategories.push(...goo);
       this.index++;
     }
-    console.log(this.index);
   }
 
   showSearch() {
