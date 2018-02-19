@@ -131,6 +131,14 @@ select {
     padding: 3px 5px;
 }
 
+.badge-blue {
+    color:whitesmoke;
+    background: rgb(17, 108, 184);
+    padding: 3px 5px;
+    padding-left: 5px;
+    border-radius: 25px;
+}
+
 .badge-red {
     color: #fff;
     background: $red;

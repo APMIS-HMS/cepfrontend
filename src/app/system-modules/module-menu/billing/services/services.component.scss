@@ -125,16 +125,19 @@
         }
         .base {
             // border-right: 1px solid white;
-            padding-right: 10px;
+            padding-right: 5px;
             color: #eee;
             //font-weight: bold;
+            border-radius: 7px;
         }
         .prixe {
-            padding-left: 10px;
-            padding-right: 10px;
-            background-color: #fff;
+            //padding-left: 10px;
+            padding-right: 5px;
+            //background-color: #fff;
             text-align: center;
             margin: 0 auto;
+            color: white;
+            font-weight: bold;
         }
         .media-tooltip+.tooltip .tooltip-inner:after {
             border-color: rgba(219, 242, 239, 0);
