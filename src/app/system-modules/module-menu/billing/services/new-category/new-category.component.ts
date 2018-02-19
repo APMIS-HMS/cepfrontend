@@ -37,7 +37,6 @@ export class NewCategoryComponent implements OnInit {
     this.addNew();
     this.editCat();
     this.facility = <Facility>this._locker.getObject('selectedFacility');
-    console.log(this.selectedCategory);
     if (this.selectedCategory.name !== undefined) {
       this.btnTitle = 'UPDATE CATEGORY';
       this.frmNewcat.controls['catName'].setValue(this.selectedCategory.name);
@@ -87,7 +86,7 @@ export class NewCategoryComponent implements OnInit {
           query: {
             facilityId: this.facility._id,
             isCategory: true,
-            categoryId:this.selectedCategory._id,
+            categoryId: this.selectedCategory._id,
             name: facilityCategoryeModel.name
           }
         }).then(payload => {
@@ -96,7 +95,6 @@ export class NewCategoryComponent implements OnInit {
           this.refreshCategory.emit(true);
           this.close_onClick();
         }, error => {
-          console.log(error);
           this.systemModuleService.off();
           this.systemModuleService.announceSweetProxy('Failed to add category', 'error');
         });

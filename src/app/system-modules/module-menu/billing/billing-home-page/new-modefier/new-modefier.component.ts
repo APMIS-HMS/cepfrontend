@@ -50,10 +50,10 @@ export class NewModefierComponent implements OnInit {
           query:
             { name: { $regex: this.frmNewmodefier.controls['tag'].value, '$options': 'i' }, facilityId: this.facility._id }
         }).then(payload => {
-          if (this.frmNewmodefier.controls['tag'].value !== "") {
+          if (this.frmNewmodefier.controls['tag'].value !== '') {
             if (payload.data !== undefined) {
               if (payload.data.length > 0) {
-                let index = payload.data.filter(x => x.name.toLowerCase() === this.frmNewmodefier.controls['tag'].value.toLowerCase());
+                const index = payload.data.filter(x => x.name.toLowerCase() === this.frmNewmodefier.controls['tag'].value.toLowerCase());
                 if (index.length > 0) {
                   this.tags = payload.data;
                 } else {
@@ -109,7 +109,7 @@ export class NewModefierComponent implements OnInit {
 
   onCreateNewTag() {
     this.systemModuleService.on();
-    let newServiceTag = {
+    const newServiceTag = {
       name: this.frmNewmodefier.controls['tag'].value,
       facilityId: this.facility._id
     }

@@ -32,11 +32,11 @@ export class ServicePriceService {
   }
   get(id: string, query: any) {
     return this._socket.get(id, query);
-  }//price-modifiers
+  }// price-modifiers
 
   createModifier(obj: any) {
     return this._socketModifier.create(obj);
-  }//price-modifiers
+  }// price-modifiers
 
   create(serviceprice: any) {
     return this._socket.create(serviceprice);

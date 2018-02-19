@@ -3,6 +3,6 @@ export interface ServiceItem {
     name: string;
     code: string;
     description: string;
-    panels:any[],
-    price:any
+    panels: any[],
+    price: any
 }
