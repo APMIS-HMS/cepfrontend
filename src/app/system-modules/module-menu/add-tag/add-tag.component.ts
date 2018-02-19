@@ -65,7 +65,6 @@ export class AddTagComponent implements OnInit {
   }
 
   onTagEdit(tag) {
-    console.log(tag);
     let text = "You are about to edit " + tag.name.toUpperCase() + " tag";
     this.systemModuleService.announceSweetProxy(text, 'info', this);
     this.editedTag = tag;
@@ -79,7 +78,6 @@ export class AddTagComponent implements OnInit {
   }
   
   sweetAlertCallback(result) {
-    console.log(result);
     if(result.value){
       this._tagService.remove(this.editedTag._id, {}).then(callback_remove => {
         this.systemModuleService.announceSweetProxy(this.editedTag.name + " is deleted", 'success');

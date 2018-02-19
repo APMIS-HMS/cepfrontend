@@ -31,6 +31,6 @@ export interface PendingLaboratoryRequest {
     personId: string;
     specimenReceived: boolean;
     specimenNumber: string;
-    sampleTaken:boolean;
-    sampleTakenBy:any;
+    sampleTaken: boolean;
+    sampleTakenBy: any;
 }

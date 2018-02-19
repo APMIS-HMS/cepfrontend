@@ -164,7 +164,6 @@ export class RightTabComponent implements OnInit {
                 this.populateLaboratoryInvestigations(reqList[l]);
             }
         }, error => {
-            console.log(error);
         })
         this.laboratoryLoading = false;
     }
@@ -176,7 +175,6 @@ export class RightTabComponent implements OnInit {
         Observable.fromPromise(this.appointmentService.findAppointment({ query: { 'patientId': this.patient._id, isPast: true } }))
             .subscribe((payload: any) => {
                 this.pastAppointments = payload.data;
-                console.log(this.pastAppointments)
             })
     }
     getFutureAppointments() {
@@ -184,7 +182,6 @@ export class RightTabComponent implements OnInit {
         Observable.fromPromise(this.appointmentService.findAppointment({ query: { 'patientId': this.patient._id, isFuture: true } }))
             .subscribe((payload: any) => {
                 this.futureAppointments = payload.data;
-                console.log(this.futureAppointments)
             })
     }
     addProblem_show() {

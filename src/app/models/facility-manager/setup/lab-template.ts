@@ -1,10 +1,10 @@
 export interface LabTemplate {
-    _id: String;
-    facility: any;
+    _id?: String;
+    facilityId?: String;
     investigation: any;
     scopeLevel: any;
     minorLocation: any;
-    createdBy: any;
+    createdBy: String;
     name: String;
     result: String;
     outcome: String;

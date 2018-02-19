@@ -39,10 +39,8 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     const auth: any = this.locker.getObject('auth');
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     let checkIn = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
-    console.log(checkIn.storeObject.name);
     this.checkedInStore = checkIn.storeObject.name;
     if(Object.keys(checkIn).length > 0){
-      console.log(checkIn);
     }
     
     

@@ -14,7 +14,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
   styleUrls: ['./new-product.component.scss']
 })
 export class NewProductComponent implements OnInit {
-
+  @Output() refreshProductList: EventEmitter<boolean> = new EventEmitter<boolean>();
   isManufacturer: boolean = false;
   isPresentation: boolean = false;
   isStrength = false;
@@ -330,19 +330,23 @@ export class NewProductComponent implements OnInit {
                     payload.serviceId = items._id;
                     payload.facilityServiceId = this.selectedFacilityService._id;
                     this.productService.update(payload).then(result => {
+                      this.refreshProductList.emit(true);
+                      this.close_onClick();
                     });
                   }
                 });
               }
+             
             });
           });
-          this.close_onClick();
+          
         }, error => {
         });
       } else {
         value._id = this.selectedProduct._id;
         this.productService.update(value).then(payload => {
-          this._notification('Success', 'Product has been updated successfully!');
+          // this._notification('Success', 'Product has been updated successfully!');
+          this.refreshProductList.emit(true);
           this.close_onClick();
         });
       }
@@ -353,6 +357,8 @@ export class NewProductComponent implements OnInit {
   }
   onSelectProductSuggestion(suggestion) {
     this.drugDetailsService.find({ query: { productId: suggestion.productId } }).subscribe(payload => {
+      let data = JSON.parse(payload.body);
+      payload.data = data;
       this.frm_newProduct.controls['name'].setValue(payload.data.brand + '-' + suggestion.activeIngredient);
       this.frm_newProduct.controls['genericName'].setValue(suggestion.activeIngredient);
       this.frm_newProduct.controls['presentation'].setValue(payload.data.form);
@@ -366,6 +372,7 @@ export class NewProductComponent implements OnInit {
       // manufacturerItem.name = payload.company;
       // manufacturerItem._id = "0";
       // this.manufacturers.push(manufacturerItem);
+    },error=>{
     })
   }
 

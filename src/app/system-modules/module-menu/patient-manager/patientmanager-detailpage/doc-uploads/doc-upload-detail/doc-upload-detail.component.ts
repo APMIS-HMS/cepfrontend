@@ -24,8 +24,6 @@ export class DocUploadDetailComponent implements OnInit {
 
   ngOnInit() {
     this.auth = this.locker.getObject('auth');
-    
-    console.log(this.selectedDocument);
     if(this.selectedDocument.fileType == "application/pdf"){
       this.docPdf = true;
       this.docImg = false;

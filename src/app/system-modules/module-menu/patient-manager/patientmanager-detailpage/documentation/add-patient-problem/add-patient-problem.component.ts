@@ -135,8 +135,6 @@ export class AddPatientProblemComponent implements OnInit {
     this.isSaving = true;
     this.systemModuleService.on();
     let isExisting = false;
-    console.log(this.selectedForm);
-    console.log(this.loginEmployee);
     this.patientDocumentation.documentations.forEach(documentation => {
       if (documentation.document === undefined) {
         documentation.document = {
@@ -154,7 +152,6 @@ export class AddPatientProblemComponent implements OnInit {
       }
     });
     if (!isExisting) {
-      console.log(this.loginEmployee)
       const doc: PatientDocumentation = <PatientDocumentation>{};
       doc.createdBy = this.loginEmployee.personDetails.title + ' ' + this.loginEmployee.personDetails.lastName + ' ' + this.loginEmployee.personDetails.firstName;
       doc.facilityId = this.selectedFacility._id;
@@ -174,7 +171,6 @@ export class AddPatientProblemComponent implements OnInit {
       });
       this.patientDocumentation.documentations.push(doc);
     }
-    console.log(this.patientDocumentation)
     this.documentationService.update(this.patientDocumentation).subscribe(payload => {
       this.isSaving = false;
       this.patientDocumentation = payload;
@@ -185,7 +181,6 @@ export class AddPatientProblemComponent implements OnInit {
       this.systemModuleService.off();
       this.systemModuleService.announceSweetProxy('Problem added successfully!','success');
     }, error => {
-      console.log(error);
       this.isSaving = false;
       this.systemModuleService.off();
       this.systemModuleService.announceSweetProxy('Problem not added due error while saving!','error');

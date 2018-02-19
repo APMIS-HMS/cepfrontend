@@ -57,7 +57,6 @@ export class RoomComponent implements OnInit {
 
 	getWardRooomItems() {
     this._facilitiesService.get(this.facility._id, {}).then(res => {
-      console.log(res);
 			this.loading = false;
 			if (!!res._id) {
         const rooms = res.minorLocations.filter(x => x._id === this.wardId);

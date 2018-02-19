@@ -36,7 +36,6 @@ export class TitleGenderFacadeService {
           that.genders = payload.data;
           resolve(that.genders);
         }, error => {
-          console.log(error);
           reject(error);
         });
       }

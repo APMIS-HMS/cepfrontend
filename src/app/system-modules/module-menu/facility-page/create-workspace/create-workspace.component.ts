@@ -46,11 +46,9 @@ export class CreateWorkspaceComponent implements OnInit {
     private workspaceService: WorkSpaceService,
     private systemModuleService: SystemModuleService,
     public facilityService: FacilitiesService) {
-      console.log(this.selectedEmployee);
      }
 
   ngOnInit() {
-    console.log(this.selectedEmployee);
     this.frmNewEmp1 = this.formBuilder.group({
       dept: ['', [Validators.required]],
       unit: ['', [Validators.required]],
@@ -66,7 +64,6 @@ export class CreateWorkspaceComponent implements OnInit {
       this.filteredEmployees = [];
     });
     this.frmNewEmp1.controls['unit'].valueChanges.subscribe((value: any) => {
-      console.log(value);
       this.selectedUnit = value;
 
       if (this.selectedEmployee === undefined) {
@@ -82,7 +79,6 @@ export class CreateWorkspaceComponent implements OnInit {
       this.filteredEmployees = this.employees;
     });
     this.frmNewEmp1.controls['minorLoc'].valueChanges.subscribe((value) => {
-      console.log(value);
       this.selectedMinorLocation = value;
       this.getWorkSpace();
     });
@@ -198,7 +194,6 @@ export class CreateWorkspaceComponent implements OnInit {
         this.loadIndicatorVisible = false;
       }
     } else {
-      console.log(222);
       const minorLocationId = this.frmNewEmp1.controls['minorLoc'].value._id;
       if (minorLocationId !== undefined) {
         this.loadIndicatorVisible = true;
@@ -269,6 +264,7 @@ export class CreateWorkspaceComponent implements OnInit {
         this.getWorkSpace();
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy('Workspace successfully set!', 'success');
+        this.close_onClick();
       }, error =>{
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy('There was an error while saving the workspace', 'error');
@@ -276,6 +272,7 @@ export class CreateWorkspaceComponent implements OnInit {
     } else {
       this.mainErr = false;
       this.errMsg = 'An error occured while setting the workspace, please try again!';
+      this.systemModuleService.announceSweetProxy(this.errMsg, 'error');
     }
   }
 

@@ -1,3 +1,4 @@
+import { OnlyMaterialModule } from './../../../shared-common-modules/only-material-module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -41,6 +42,7 @@ import { WardCheckInComponent } from './ward-check-in/ward-check-in.component';
     exports: [
     ],
     imports: [
+        OnlyMaterialModule,
         MaterialModule,
         wardManagerRoutes
     ],

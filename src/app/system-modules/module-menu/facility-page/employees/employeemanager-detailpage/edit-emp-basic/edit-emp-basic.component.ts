@@ -89,7 +89,7 @@ export class EditEmpBasicComponent implements OnInit {
 			othernames: [this.selectedPerson.otherNames, []],
 			gender: [this.selectedPerson.gender, [<any>Validators.required]],
 			maritalStatus: [this.selectedPerson.maritalStatus, [<any>Validators.required]],
-			date: [this.selectedPerson.dateOfBirth, [<any>Validators.required]],
+			date: [new Date(this.selectedPerson.dateOfBirth).toDateString(), [<any>Validators.required]],
 			nationality: [this.selectedPerson.nationality, [<any>Validators.required]],
 			stateofOrigin: [this.selectedPerson.stateOfOrigin, [<any>Validators.required]],
 			localgovtarea: [this.selectedPerson.lgaOfOrigin, [<any>Validators.required]],
@@ -184,6 +184,7 @@ export class EditEmpBasicComponent implements OnInit {
 		this.employeeService.update(this.selectedEmployee).then(payload => {
 			this.loading = false;
 			this.locker.setObject('selectedEmployee', payload);
+			this.employeeService.announceEmployee(payload);
 			this.systemModulesService.announceSweetProxy('Department Successfully Updated.', 'success');
 			this.close_onClick(true);
 		}).catch(err => {
@@ -281,8 +282,6 @@ export class EditEmpBasicComponent implements OnInit {
 	}
 
 	compareDepartments(d1: any, d2: any) {
-		console.log(d1);
-		console.log(d2);
 		return d1 == d2;
 	}
 
@@ -290,7 +289,6 @@ export class EditEmpBasicComponent implements OnInit {
 
 		const deptId = this.selectedEmployee.departmentId;
 		const depts = this.facility.departments;
-		console.log(depts);
 		const dept = depts.filter(x => x.name == deptId);
 		if(dept.length > 0){
 			this.selectedDepartment = dept[0].name;

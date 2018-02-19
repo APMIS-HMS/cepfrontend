@@ -28,8 +28,8 @@
             <ul id="innerMenu-ul" class="innerMenu-ul">
 
                 <li *ngIf="accessHas('Facility')" (click)="facilitySubmenuShow()" [routerLink]="['facility']"><i class="fa fa-building" aria-hidden="true"></i> <span>Facility</span></li>
-                <li *ngIf="accessHas('Patient')" (click)="patientSubmenuShow()" [routerLink]="['patient-manager']"><i class="fa fa-user" aria-hidden="true"></i> <span>Patient Manager</span></li>
-                <li *ngIf="accessHas('Ward')" (click)="patientSubmenuShow()" [routerLink]="['ward-manager']"><i class="fa fa-bed" aria-hidden="true"></i> <span>Ward Manager</span></li>
+                <li *ngIf="accessHas('Patient-Manager')" (click)="patientSubmenuShow()" [routerLink]="['patient-manager']"><i class="fa fa-user" aria-hidden="true"></i> <span>Patient Manager</span></li>
+                <li *ngIf="accessHas('Ward-Manager')" (click)="patientSubmenuShow()" [routerLink]="['ward-manager']"><i class="fa fa-bed" aria-hidden="true"></i> <span>Ward Manager</span></li>
                 <li *ngIf="accessHas('Payment')" (click)="patientSubmenuShow()" [routerLink]="['payment']"><i class="fa fa-money" aria-hidden="true"></i> <span>Payment</span></li>
                 <li *ngIf="accessHas('Wallet')" (click)="patientSubmenuShow()" [routerLink]="['wallet']"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> <span>Wallet</span></li>
                 <li *ngIf="accessHas('Order')" (click)="userSubmenuShow()" [routerLink]="['access-manager']"><i class="fa fa-first-order" aria-hidden="true"></i> <span>Order Management</span></li>

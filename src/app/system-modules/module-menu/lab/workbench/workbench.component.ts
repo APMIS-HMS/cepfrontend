@@ -6,6 +6,7 @@ import { Location } from '../../../../models/index'
 import { Facility, MinorLocation, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { WorkbenchService } from '../../../../services/facility-manager/setup/index';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-workbench',
@@ -13,34 +14,39 @@ import { WorkbenchService } from '../../../../services/facility-manager/setup/in
   styleUrls: ['./workbench.component.scss']
 })
 export class WorkbenchComponent implements OnInit {
-
   apmisLookupUrl = '';
   apmisLookupText = '';
   apmisLookupQuery = {};
   apmisLookupDisplayKey = '';
   selectedFacility: Facility = <Facility>{};
   selectedMajorLocation: Location = <Location>{};
-
   minorLocations: MinorLocation[] = [];
   workbenches: any[] = []
   selectedWorkBench: any = <any>{};
-
   workbench_view = false;
   Active = true;
   Inactive = false;
-
   mainErr = true;
   errMsg = 'You have unresolved errors';
-  btnText = 'Create Workbench';
+  disableBtn = false;
+  createWorkbenchBtn = true;
+  creatingWorkbenchBtn = false;
+  editWorkbenchBtn = false;
+  editingWorkbenchBtn = false;
   reqDetail_view = false;
   personAcc_view = false;
   loading: Boolean = true;
   user: User = <User>{};
-
   public frmNewWorkbench: FormGroup;
 
-  constructor(private formBuilder: FormBuilder, private locker: CoolLocalStorage, private locationService: LocationService,
-    private workBenchService: WorkbenchService, private _facilityService: FacilitiesService) { }
+  constructor(
+    private formBuilder: FormBuilder,
+    private locker: CoolLocalStorage,
+    private locationService: LocationService,
+    private workBenchService: WorkbenchService,
+    private _facilityService: FacilitiesService,
+    private _systemModuleService: SystemModuleService
+  ) { }
 
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
@@ -54,17 +60,23 @@ export class WorkbenchComponent implements OnInit {
     this.getWorkBenches();
   }
   getWorkBenches() {
-    this.workBenchService.find({ query: { 'facilityId._id': this.selectedFacility._id, $limit: 100 } }).then(payload => {
+    const payload = {
+      facilityId: this.selectedFacility._id,
+      query: { 'facilityId._id': this.selectedFacility._id, $limit: 100 }
+    };
+    this.workBenchService.customGet(payload, payload).then(res => {
       this.loading = false;
-      this.workbenches = payload.data;
-    })
+      if (res.status === 'success') {
+        this.workbenches = res.data;
+      }
+    }).catch(err => {
+    });
   }
   getLaboratoryMajorLocation() {
-    this.locationService.find({ query: { name: 'Laboratory' } }).then(payload => {
-      if (payload.data.length > 0) {
-        this.selectedMajorLocation = payload.data[0];
-        this.minorLocations = this.selectedFacility.minorLocations.
-          filter(x => x.locationId === this.selectedMajorLocation._id);
+    this.locationService.find({ query: { name: 'Laboratory' } }).then(res => {
+      if (res.data.length > 0) {
+        this.selectedMajorLocation = res.data[0];
+        this.minorLocations = this.selectedFacility.minorLocations.filter(x => x.locationId === this.selectedMajorLocation._id);
       }
     })
   }
@@ -74,65 +86,105 @@ export class WorkbenchComponent implements OnInit {
   workbench_show() {
     this.workbench_view = !this.workbench_view;
   }
-  patientDisplayFn(minor: any) {
+  minorLocationDisplayFn(minor: any) {
     return minor ? minor.name : minor;
+    // if (typeof minor === 'string') {
+    //   console.log('string');
+    //   // console.log(this.minorLocations);
+    //   // const ml = this.minorLocations.filter(x => x._id === minor);
+    //   // console.log(ml);
+    //   return minor;
+    // } else {
+    //   return minor._id;
+    // }
   }
   close_onClick(message: boolean): void {
 
   }
   createWorkbench(valid, value) {
     if (valid) {
+      this.disableBtn = true;
+
       if (this.selectedWorkBench._id === undefined) {
+        this.createWorkbenchBtn = false;
+        this.creatingWorkbenchBtn = true;
+
         const workBench = {
           name: value.benchName,
-          facilityId: this.locker.getObject('miniFacility'),
-          laboratoryId: value.minorLocation
-        }
+          facilityId: this.selectedFacility._id,
+          laboratoryId: value.minorLocation.locationId,
+          minorLocationId: value.minorLocation._id
+        };
+
         this.workBenchService.create(workBench).then(payload => {
-          this._notification('Success', 'Workbench has been created successufully!');
-          this.workbenches.push(payload);
+          this.disableBtn = false;
+          this.createWorkbenchBtn = true;
+          this.creatingWorkbenchBtn = false;
+          this.editWorkbenchBtn = false;
+          this.editingWorkbenchBtn = false;
+          this._systemModuleService.announceSweetProxy('Workbench has been created successufully!', 'success');
+          this.getWorkBenches();
           this.frmNewWorkbench.reset();
           this.frmNewWorkbench.controls['isActive'].setValue(true);
           this.selectedWorkBench = <any>{};
-        }, error => {
-        })
+        }).catch(err => {
+          this.disableBtn = false;
+          this.createWorkbenchBtn = true;
+          this.creatingWorkbenchBtn = false;
+          this.editWorkbenchBtn = false;
+          this.editingWorkbenchBtn = false;
+          this.frmNewWorkbench.reset();
+          this.frmNewWorkbench.controls['isActive'].setValue(true);
+        });
       } else {
-        this.selectedWorkBench.name = this.frmNewWorkbench.controls['benchName'].value;
-        this.selectedWorkBench.laboratoryId = this.frmNewWorkbench.controls['minorLocation'].value;
-        this.selectedWorkBench.isActive = this.frmNewWorkbench.controls['isActive'].value;
-        this.workBenchService.update(this.selectedWorkBench).then(payload => {
-          this._notification('Success', 'Workbench has been updated successufully!');
+        this.editWorkbenchBtn = false;
+        this.editingWorkbenchBtn = true;
+        this.selectedWorkBench.name = value.benchName;
+        this.selectedWorkBench.minorLocationId = value.minorLocation._id;
+        this.selectedWorkBench.isActive = value.isActive;
+        this.workBenchService.patch(this.selectedWorkBench._id, this.selectedWorkBench, {}).then(payload => {
+          this._systemModuleService.announceSweetProxy('Workbench has been updated successufully!', 'success');
           this.workbench_view = false;
-          this.btnText = 'Create Workbench';
+          this.disableBtn = false;
+          this.createWorkbenchBtn = true;
+          this.creatingWorkbenchBtn = false;
+          this.editWorkbenchBtn = false;
+          this.editingWorkbenchBtn = false;
           this.selectedWorkBench = <any>{};
           this.frmNewWorkbench.reset();
           this.frmNewWorkbench.controls['isActive'].setValue(true);
-          const index = this.workbenches.findIndex((obj => obj._id === payload._id));
-          this.workbenches.splice(index, 1, payload);
-        }, error => {
-          this.btnText = 'Create Workbench';
+          this.getWorkBenches();
+        }).catch(err => {
+          this.disableBtn = false;
+          this.createWorkbenchBtn = false;
+          this.creatingWorkbenchBtn = false;
+          this.editWorkbenchBtn = true;
+          this.editingWorkbenchBtn = false;
           this.frmNewWorkbench.reset();
           this.frmNewWorkbench.controls['isActive'].setValue(true);
-        })
+        });
       }
+    } else {
+      this._notification('Error', 'Some fields are required');
     }
   }
 
   editWorkBench(bench) {
     this.selectedWorkBench = bench;
     this.frmNewWorkbench.controls['benchName'].setValue(this.selectedWorkBench.name);
-    this.frmNewWorkbench.controls['minorLocation'].setValue(this.selectedWorkBench.laboratoryId);
+    this.frmNewWorkbench.controls['minorLocation'].setValue(this.selectedWorkBench.minorLocationId);
     this.frmNewWorkbench.controls['isActive'].setValue(this.selectedWorkBench.isActive);
-    this.btnText = 'Update Workbench';
+    this.editWorkbenchBtn = true;
+    this.createWorkbenchBtn = false;
     this.workbench_view = true;
   }
   toggleActivate(bench) {
     bench.isActive = !bench.isActive;
     this.selectedWorkBench = bench;
     this.frmNewWorkbench.controls['benchName'].setValue(bench.name);
-    this.frmNewWorkbench.controls['minorLocation'].setValue(bench.laboratoryId);
+    this.frmNewWorkbench.controls['minorLocation'].setValue({ _id : bench.minorLocationId });
     this.frmNewWorkbench.controls['isActive'].setValue(bench.isActive);
-    this.createWorkbench(this.frmNewWorkbench.valid, bench);
+    this.createWorkbench(this.frmNewWorkbench.valid, this.frmNewWorkbench.value);
   }
 
   private _notification(type: string, text: string): void {

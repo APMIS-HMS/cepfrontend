@@ -11,7 +11,8 @@ export class PersonScheduleAppointmentComponent implements OnInit {
   mainErr = true;
   errMsg = 'you have unresolved errors';
   public frm_appointment: FormGroup;
-
+  show = false;
+  input_password;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(private formBuilder: FormBuilder) { }
@@ -27,4 +28,13 @@ export class PersonScheduleAppointmentComponent implements OnInit {
     this.closeModal.emit(true);
   }
 
+  toggleShow(e) {
+
+  }
+  reset() {
+
+  }
+  login(valid) {
+
+  }
 }

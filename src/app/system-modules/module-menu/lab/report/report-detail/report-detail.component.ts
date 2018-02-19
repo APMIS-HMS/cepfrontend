@@ -25,9 +25,9 @@ export class ReportDetailComponent implements OnInit {
     this.closeModal.emit(true);
   }
   showImageBrowseDlg(){
-    
+
   }
   onChange(event){
-    
+
   }
 }

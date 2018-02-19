@@ -37,12 +37,9 @@ export class AccessManagerComponent implements OnInit {
     this.getUsers(this.limit);
   }
   getUsers(limit) {
-    console.log(limit)
     const facilityId = this.selectedFacility._id;
-    console.log(facilityId);
     this.userService.find({query: { 'facilitiesRole.facilityId': facilityId } }).then(payload => {
       this.users = payload.data;
-      console.log(payload);
     });
   }
   edit(item: any) {
