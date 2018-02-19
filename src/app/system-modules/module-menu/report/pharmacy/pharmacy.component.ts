@@ -14,5 +14,10 @@ export class PharmacyComponent implements OnInit {
 
   ngOnInit() {
   }
+  chartClicked(e){
 
+  }
+  chartHovered(e){
+    
+  }
 }

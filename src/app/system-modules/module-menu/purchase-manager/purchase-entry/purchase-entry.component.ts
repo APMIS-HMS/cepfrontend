@@ -250,7 +250,7 @@ export class PurchaseEntryComponent implements OnInit {
             let existingInventory = {};
             if (result.data.length > 0) {
               existingInventory = result.data[0];
-            }
+          }
 
 
             this.superGroups.forEach((items, s) => {

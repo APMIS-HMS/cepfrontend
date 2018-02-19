@@ -11,11 +11,9 @@ import { AddFacilityModuleComponent } from '../facility-setup/add-facility-modul
 import { SingUpAccountsSharedModule} from './signup-accounts-shared-module';
 import { SystemModuleComponent } from '../system-modules/system-module.component';
 import { LogoUpdateComponent } from '../system-modules/module-menu/facility-page/logo-update/logo-update.component';
-import { CpasswordComponent } from '../system-modules/cpassword/cpassword.component';
 import { OnlyMaterialModule } from './only-material-module';
 @NgModule({
     declarations: [
-        CpasswordComponent,
         ChangePasswordComponent,
         SystemModuleComponent,
         LogoUpdateComponent

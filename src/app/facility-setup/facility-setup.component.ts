@@ -68,7 +68,7 @@ export class FacilitySetupComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private facilityOwnershipService: FacilityOwnershipService,
     // private countriesService: CountriesService,
-    private countryFacadeService:CountryServiceFacadeService,
+    private countryFacadeService: CountryServiceFacadeService,
     private genderService: GenderService,
     private titleService: TitleService,
     private maritalStatusService: MaritalStatusService,
@@ -100,7 +100,8 @@ export class FacilitySetupComponent implements OnInit {
       facilitycategory: ['', [<any>Validators.required]],
 
       facilityownership: ['', [<any>Validators.required]],
-      facilityemail: ['', [<any>Validators.required, <any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|CO.UK|co.uk|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
+      facilityemail: ['', [<any>Validators.required,
+        <any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|CO.UK|co.uk|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
       facilitywebsite: ['', [<any>Validators.pattern('^[a-zA-Z0-9\-\.]+\.(com|org|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
       facilitycountry: ['', [<any>Validators.required]]
     });
@@ -142,7 +143,8 @@ export class FacilitySetupComponent implements OnInit {
     });
 
     this.frm_numberVerifier = this.formBuilder.group({
-      txt_numberVerifier: ['', [<any>Validators.required, <any>Validators.minLength(6), <any>Validators.maxLength(6), <any>Validators.pattern('^[0-9]+$')]]
+      txt_numberVerifier: ['', [<any>Validators.required, <any>Validators.minLength(6),
+         <any>Validators.maxLength(6), <any>Validators.pattern('^[0-9]+$')]]
     });
     this.facilityForm1.controls['facilitycountry'].valueChanges.subscribe((value: any) => {
       this.stateAvailable = false;
@@ -168,6 +170,7 @@ export class FacilitySetupComponent implements OnInit {
       if (payload.data.length > 0) {
         this.isEmailExist = false;
       }
+      // tslint:disable-next-line:one-line
       else {
         this.isEmailExist = true;
       }
@@ -249,8 +252,8 @@ export class FacilitySetupComponent implements OnInit {
     });
   }
   getCountries() {
-    this.countryFacadeService.getOnlyCountries().then(payload =>{
-    }).catch(error =>{
+    this.countryFacadeService.getOnlyCountries().then(payload => {
+    }).catch(error => {
     });
   }
   getGenders() {

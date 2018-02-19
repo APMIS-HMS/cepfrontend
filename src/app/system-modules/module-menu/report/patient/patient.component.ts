@@ -18,4 +18,11 @@ export class PatientComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {}
+
+  chartClicked(e){
+
+  }
+  chartHovered(e){
+    
+  }
 }

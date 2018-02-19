@@ -14,6 +14,7 @@ export class MedRecordsComponent implements OnInit {
   paymentContentArea = false;
   diagnosticsContentArea = false;
 
+  login_on= false;
   constructor() { }
 
   ngOnInit() {
