@@ -11,15 +11,119 @@ class Service {
     }
 
 
-    find(params) {
-        return Promise.resolve([]);
+    async find(params) {
+        // // Get inpatient
+        // console.log('-------- params ----------');
+        // console.log(params);
+        // console.log('-------- End params ----------');
+        // const inPatientListService = this.app.service('inpatient-waiting-lists');
+        // const patientService = this.app.service('patients');
+        // const locationService = this.app.service('locations');
+        // const employeeService = this.app.service('employees');
+        // const facilityId = params.query.facilityId;
+        // const action = params.query;
+
+        // //Check for facility Id
+        // if (facilityId !== undefined) {
+        //     let prescriptions = await inPatientListService.find({ query: { facilityId: facilityId } });
+
+        //     const pLength = prescriptions.data.length;
+        //     let i = prescriptions.data.length;
+        //     let counter = 0;
+        //     if (pLength === 0) {
+        //         return jsend.success([]);
+        //     } else if (pLength > 0) {
+        //         prescriptions = prescriptions.data;
+        //         while (i--) {
+        //             let prescription = prescriptions[i];
+        //             let patientId = prescription.patientId;
+        //             let employeeId = prescription.employeeId;
+
+        //             const patient = await patientService.get(patientId);
+        //             delete patient.personDetails.wallet;
+        //             prescription.personDetails = patient.personDetails;
+        //             let employee = await employeeService.get(employeeId);
+        //             delete employee.personDetails.wallet;
+        //             prescription.employeeDetails = employee.personDetails;
+        //             counter++;
+        //         }
+        //         if (pLength === counter) {
+        //             return jsend.success(prescriptions);
+        //         }
+        //     } else {
+        //         return jsend.error('Prescription not properly referenced!');
+        //     }
+        // } else {
+        //     return jsend.error('Facility does not exist!');
+        // }
     }
 
-    get(id, params) {
-        return Promise.resolve({
-            id,
-            text: `A new message with ID: ${id}!`
-        });
+    async get(data, params) {
+        // Get inpatient
+        console.log('-------- data ----------');
+        console.log(data);
+        console.log('-------- End data ----------');
+        console.log('-------- params ----------');
+        console.log(params);
+        console.log('-------- End params ----------');
+        const inPatientListService = this.app.service('inpatient-waiting-lists');
+        const patientService = this.app.service('patients');
+        const locationService = this.app.service('locations');
+        const employeeService = this.app.service('employees');
+        const facilityService = this.app.service('facilities');
+        const facilityId = params.query.facilityId;
+        const action = data.action;
+
+        //Check for facility Id
+        if (facilityId !== undefined) {
+            // Get inpatientwaiting list
+            if (action === 'getInPatientWaitingList') {
+                let facility = await facilityService.get(facilityId);
+                console.log('-------- facility ----------');
+                console.log(facility);
+                console.log('-------- End facility ----------');
+                let waitingLists = await inPatientListService.find(params);
+                console.log('-------- waitingLists ----------');
+                console.log(waitingLists);
+                console.log('-------- End waitingLists ----------');
+
+                const pLength = waitingLists.data.length;
+                let i = waitingLists.data.length;
+                let counter = 0;
+                if (pLength === 0) {
+                    return jsend.success([]);
+                } else if (pLength > 0) {
+                    waitingLists = waitingLists.data;
+                    while (i--) {
+                        let waitingList = waitingLists[i];
+                        let patientId = waitingList.patientId;
+                        let employeeId = waitingList.employeeId;
+                        let minorLocationId = waitingList.minorLocationId;
+
+                        const patient = await patientService.get(patientId);
+                        delete patient.personDetails.wallet;
+                        waitingList.personDetails = patient.personDetails;
+                        let employee = await employeeService.get(employeeId);
+                        delete employee.personDetails.wallet;
+                        waitingList.employeeDetails = employee.personDetails;
+                        // Attach minorLocation.
+                        const minorLocation = facility.minorLocations.filter(x => x._id.toString() === minorLocationId.toString());
+                        console.log('-------- minorLocation ----------');
+                        console.log(minorLocation);
+                        console.log('-------- End minorLocation ----------');
+                        waitingList.minorLocation = minorLocation[0];
+                        counter++;
+                    }
+                    if (pLength === counter) {
+                        return jsend.success(waitingLists);
+                    }
+                } else {
+                    return jsend.error('Prescription not properly referenced!');
+                }
+            }
+        } else {
+            return jsend.error('Facility does not exist!');
+        }
     }
 
     async create(data, params) {
