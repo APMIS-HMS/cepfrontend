@@ -10,17 +10,9 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Injectable } from '@angular/core';
 const rx = require('feathers-reactive');
 const RxJS = require('rxjs/Rx');
-// const HOST = 'http://13.84.217.251:8082'; // thn
-<<<<<<< HEAD
-// const HOST = 'http://172.16.16.33:3031'; // Mr Segun
+
 const HOST = 'https://apmisapilive.azurewebsites.net'; // Online
-// const HOST = 'http://192.168.20.101:3030'; // Sunday
-// const HOST = 'http://localhost:3031'; // Local Server
-=======
-// const HOST = 'http://172.16.16.35:3031'; // Mr Segun
-// const HOST = 'https://apmisapitest.azurewebsites.net'; // Sunday
-const HOST = 'http://localhost:3031'; // Local Server
->>>>>>> remotes/origin/development
+
 
 
 @Injectable()
