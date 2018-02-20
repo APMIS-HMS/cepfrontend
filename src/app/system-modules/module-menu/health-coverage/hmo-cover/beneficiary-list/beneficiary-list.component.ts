@@ -17,8 +17,8 @@ export class BeneficiaryListComponent implements OnInit {
   newHmo = false;
   selectedFacility: any = <any>{};
   beneficiaries: any[] = [];
-  filteredBeneficiaries:any[] = [];
-  operateBeneficiaries:any[] = [];
+  filteredBeneficiaries: any[] = [];
+  operateBeneficiaries: any[] = [];
   selectedHMO: any = <any>{};
 
   pageSize = 10;
@@ -41,25 +41,33 @@ export class BeneficiaryListComponent implements OnInit {
 
 
     this.route.params.subscribe(parameters => {
+      console.log(parameters);
       this.getBeneficiaryList(parameters.id);
     })
   }
   getBeneficiaryList(id) {
-    this.hmoService.find({ query: { 'facilityId._id': this.selectedFacility._id } }).then(payload => {
+    console.log(id);
+    this.hmoService.find({ query: { 'facilityId': this.selectedFacility._id } }).then(payload => {
+      console.log(payload);
       if (payload.data.length > 0) {
         let facHmo = payload.data[0];
-        const index = facHmo.hmos.findIndex(x => x.hmo._id === id);
+        const index = facHmo.hmos.findIndex(x => x.hmo === id);
+        console.log(index, facHmo);
         if (index > -1) {
           if (facHmo.hmos[index].enrolleeList.length > 0) {
-            this.selectedHMO = facHmo.hmos[index].hmo;
-            this.beneficiaries = facHmo.hmos[index].enrolleeList[0].enrollees;
+            let bene = [];
+            for (let s = 0; s < facHmo.hmos[index].enrolleeList.length; s++) {
+              this.selectedHMO = facHmo.hmos[index].hmo;
+              bene.push(...facHmo.hmos[index].enrolleeList[s].enrollees);
+            }
+            this.beneficiaries = bene;
             const startIndex = 0 * 10;
             this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
             this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
           }
         }
       }
-    })
+    }).catch(err => { console.log(err) });
   }
   getRole(beneficiary) {
     let filNo = beneficiary.filNo;

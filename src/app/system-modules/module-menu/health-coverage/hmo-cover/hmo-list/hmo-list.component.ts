@@ -181,7 +181,6 @@ export class HmoListComponent implements OnInit {
       var data = datas.filter(function (x) { // Removing empty rows from the array.
         return x.length;
       });
-      console.log(data);
       this.finalExcelFileUpload(data, hmo);
     };
     reader.readAsBinaryString(target.files[0]);
@@ -194,9 +193,7 @@ export class HmoListComponent implements OnInit {
         facilityId: this.selelctedFacility._id
       }
     }).then(payload => {
-      console.log(payload);
       let hmoData = payload.data[0].hmos.filter(x => x.hmo == hmo._id);
-      console.log(hmoData);
 
       const index = payload.data[0].hmos.findIndex(x => x.hmo === hmo._id);
       let facHmo = payload.data[0].hmos[index];
@@ -206,112 +203,101 @@ export class HmoListComponent implements OnInit {
       let year = currentDate.getFullYear();
       let dataLength = data.length - 1;
       var rowObj: any = <any>{};
-      console.log(hmoData[0].enrolleeList.length);
+      let lastMonth: boolean = false;
+      let lastMonthEnrollees;
+      var lastMonthEnrolleesListIndex = payload.data[0].hmos[index].enrolleeList.findIndex(x => x.month == prevMonth && x.year == year);
+
       if (hmoData[0].enrolleeList.length >= 1) {
-        console.log('---- Inside The first If --------');
-        let lastMonthEnrollees = hmoData[0].enrolleeList.filter(x => x.month == prevMonth && x.year == year);
-        let lastMonthEnrLen = lastMonthEnrollees[0].enrollees.length;
+        lastMonthEnrollees = hmoData[0].enrolleeList.filter(x => x.month == prevMonth && x.year == year);
+        let lastMonthEnrLen;
+
+        if (lastMonthEnrollees.length > 0) { lastMonthEnrLen = lastMonthEnrollees[0].enrollees.length; }
+
         let lastMonthIndex = hmoData[0].enrolleeList.findIndex(x => x.month == prevMonth && x.year == year);
         let presentMonthEnrollees = hmoData[0].enrolleeList.filter(x => x.month == prevMonth && x.year == year);
-        let thisMonth: boolean;
-        console.log(lastMonthIndex);
-        console.log(lastMonthEnrollees);
+
+
         if (lastMonthEnrollees.length > 0) {
-          for (let m = 0; m <= data.length - 1; m++) {
-            var rowObj: any = <any>{};
+
+          lastMonth = true;
+
+          for (let m = 0; m < data.length; m++) {
             let enr = lastMonthEnrollees[0].enrollees.filter(x => x.filNo == data[dataLength][4]);
-            if (enr.length > 0) {
-              enr[0].status = "active";
-              enr[0].updatedAt = Date.now();
-              rowObj = enr[0];
-              thisMonth = true;
-            } else {
-              rowObj.serial = data[dataLength][0];
-              rowObj.surname = data[dataLength][1];
-              rowObj.firstname = data[dataLength][2];
-              rowObj.gender = data[dataLength][3];
-              rowObj.filNo = data[dataLength][4];
-              rowObj.category = data[dataLength][5];
-              rowObj.sponsor = data[dataLength][6];
-              rowObj.plan = data[dataLength][7];
-              rowObj.type = data[dataLength][8];
-              rowObj.date = this.excelDateToJSDate(data[dataLength][9]);
-              rowObj.status = 'active';
-              thisMonth = false;
+            if (Boolean(data[m][0])) {
+              if (enr.length == 0) {
+                var rowObj: any = <any>{};
+                rowObj.serial = data[m][0];
+                rowObj.surname = data[m][1];
+                rowObj.firstname = data[m][2];
+                rowObj.gender = data[m][3];
+                rowObj.filNo = data[m][4];
+                rowObj.category = data[m][5];
+                rowObj.sponsor = data[m][6];
+                rowObj.plan = data[m][7];
+                rowObj.type = data[m][8];
+                rowObj.date = this.excelDateToJSDate(data[m][9]);
+                rowObj.status = 'active';
+                //thisMonth = true;
+              }
             }
             enrolleeList.push(rowObj);
           }
-          if (thisMonth === true) {
-            console.log(lastMonthEnrollees);
-          } else {
-            console.log(enrolleeList);
-            /* let enrolleeItem = {
-              month: new Date().getMonth() + 1,
-              year: new Date().getFullYear(),
-              enrollees: enrolleeList
-            }
-            const index = payload.data[0].hmos.findIndex(x => x.hmo === hmo._id);
-            let facHmo = payload.data[0].hmos[index];
-            facHmo.enrolleeList.push(enrolleeItem);
-            payload.data[0].hmos[index] = facHmo;
-            console.log(facHmo);
-            console.log(payload.data[0].hmos);
-            this.hmoService.patch(payload.data[0]._id, {
-              hmos: payload.data[0].hmos
-            }, {}).then(hmoPayload => {
-              console.log(hmoPayload);
-            }); */
+
+          let enrolleeItem = {
+            month: new Date().getMonth() + 1,
+            year: new Date().getFullYear(),
+            enrollees: enrolleeList
           }
 
-          let noChangeEnrollees = lastMonthEnrollees[0].enrollees.filter(x => new Date(x.updatedAt).getMonth() == prevMonth);
-          console.log(noChangeEnrollees);
-          if (noChangeEnrollees.length > 0) {
-            for (let n = 0; n <= noChangeEnrollees.length; n++) {
-              console.log(noChangeEnrollees[n]);
-            }
-          }
+          const index = payload.data[0].hmos.findIndex(x => x.hmo === hmo._id);
+          let facHmo = payload.data[0].hmos[index];
+          facHmo.enrolleeList.push(enrolleeItem);
+          payload.data[0].hmos[index] = facHmo;
 
         } else {
-          for (let m = 0; m <= data.length - 1; m++) {
-            var rowObj: any = <any>{};
-            let enr = hmoData[0].enrolleeList[0].enrollees.filter(x => x.filNo == data[dataLength][4]);
-            if (enr.length > 0) {
-              rowObj = enr[0];
-            } else {
-              rowObj.serial = data[dataLength][0];
-              rowObj.surname = data[dataLength][1];
-              rowObj.firstname = data[dataLength][2];
-              rowObj.gender = data[dataLength][3];
-              rowObj.filNo = data[dataLength][4];
-              rowObj.category = data[dataLength][5];
-              rowObj.sponsor = data[dataLength][6];
-              rowObj.plan = data[dataLength][7];
-              rowObj.type = data[dataLength][8];
-              rowObj.date = this.excelDateToJSDate(data[dataLength][9]);
-              rowObj.status = 'active';
-              console.log(rowObj);
+          for (let m = 0; m < data.length; m++) {
+            let enr = hmoData[0].enrolleeList[0].enrollees.filter(x => x.filNo == data[m][4]);
+            if (Boolean(data[m][0])) {
+              if (enr.length == 0) {
+                var rowObjs: any = <any>{};
+                rowObjs.serial = data[m][0];
+                rowObjs.surname = data[m][1];
+                rowObjs.firstname = data[m][2];
+                rowObjs.gender = data[m][3];
+                rowObjs.filNo = data[m][4];
+                rowObjs.category = data[m][5];
+                rowObjs.sponsor = data[m][6];
+                rowObjs.plan = data[m][7];
+                rowObjs.type = data[m][8];
+                rowObjs.date = this.excelDateToJSDate(data[m][9]);
+                rowObjs.status = 'active';
+
+                enrolleeList.push(rowObjs);
+              }
             }
-            enrolleeList.push(rowObj);
           }
+          facHmo.enrolleeList[0].enrollees.push(...enrolleeList);
+          payload.data[0].hmos[index] = facHmo;
         }
-        const index = payload.data[0].hmos.findIndex(x => x.hmo === hmo._id);
-        let facHmo = payload.data[0].hmos[index];
+
       } else {
         console.log(data, hmoData);
-        for (let m = 0; m <= data.length - 1; m++) {
-          var rowObj: any = <any>{};
-          rowObj.serial = (data[m][0] == undefined) ? '' : data[m][0];
-          rowObj.surname = (data[m][1] == undefined) ? '' : data[m][1];
-          rowObj.firstname = (data[m][2] == undefined) ? '' : data[m][2];
-          rowObj.gender = (data[m][3] == undefined) ? '' : data[m][3];
-          rowObj.filNo = (data[m][4] == undefined) ? '' : data[m][4];
-          rowObj.category = (data[m][5] == undefined) ? '' : data[m][5];
-          rowObj.sponsor = (data[m][6] == undefined) ? '' : data[m][6];
-          rowObj.plan = (data[m][7] == undefined) ? '' : data[m][7];
-          rowObj.type = (data[m][8] == undefined) ? '' : data[m][8];
-          rowObj.date = (data[m][9] != undefined) ? this.excelDateToJSDate(data[m][9]) : '';
-          rowObj.status = 'active';
-          enrolleeList.push(rowObj);
+        for (let m = 0; m < data.length; m++) {
+          if (Boolean(data[m][0])) {
+            var rowObj: any = <any>{};
+            rowObj.serial = data[m][0];
+            rowObj.surname = data[m][1];
+            rowObj.firstname = data[m][2];
+            rowObj.gender = data[m][3];
+            rowObj.filNo = data[m][4];
+            rowObj.category = data[m][5];
+            rowObj.sponsor = data[m][6];
+            rowObj.plan = data[m][7];
+            rowObj.type = data[m][8];
+            rowObj.date = this.excelDateToJSDate(data[m][9]);
+            rowObj.status = 'active';
+            enrolleeList.push(rowObj);
+          }
         }
         let enrolleeItem = {
           month: new Date().getMonth() + 1,
@@ -322,98 +308,35 @@ export class HmoListComponent implements OnInit {
         let facHmo = payload.data[0].hmos[index];
         facHmo.enrolleeList.push(enrolleeItem);
         payload.data[0].hmos[index] = facHmo;
-        console.log(facHmo);
-        console.log(payload.data[0].hmos);
-        this.hmoService.patch(payload.data[0]._id, {
-          hmos: payload.data[0].hmos
-        }, {}).then(hmoPayload => {
-          console.log(hmoPayload);
-        });
       }
-    }).catch(err => {
-      console.log(err);
-    });
-  }
 
-  anotherExcelFileUpload(data, hmo?) {
-    let uniqueData = [];
-    let notUniqueData = [];
-    this.hmoService.find({
-      query: {
-        facilityId: this.selelctedFacility._id
-      }
-    }).then(payload => {
-      console.log(payload.data[0]);
-      let incomingDataLength = data.length - 1;
-      let hmoData = payload.data[0].hmos.filter(x => x.hmo == hmo._id);
-      let enrolleeList = [];
-
-      console.log(hmoData[0]);
-
-      let isCurrent = false;
-      let isPrevious = false;
-      let len = hmoData[0].enrolleeList.length - 1;
-      console.log(len);
-      if (len == -1) {
-
-        for (let m = 0; m <= data.length - 1; m++) {
-          {
-
-            var rowObj: any = {};
-            //console.log('Below the If statement ', data[m][0]);
-            rowObj.serial = (data[m][0] == undefined) ? '' : data[m][0];
-            rowObj.surname = (data[m][1] == undefined) ? '' : data[m][1];
-            rowObj.firstname = (data[m][2] == undefined) ? '' : data[m][2];
-            rowObj.gender = (data[m][3] == undefined) ? '' : data[m][3];
-            rowObj.filNo = (data[m][4] == undefined) ? '' : data[m][4];
-            rowObj.category = (data[m][5] == undefined) ? '' : data[m][5];
-            rowObj.sponsor = (data[m][6] == undefined) ? '' : data[m][6];
-            rowObj.plan = (data[m][7] == undefined) ? '' : data[m][7];
-            rowObj.type = (data[m][8] == undefined) ? '' : data[m][8];
-            rowObj.date = (data[m][9] != undefined) ? this.excelDateToJSDate(data[m][9]) : '';
-            rowObj.status = 'active';
-            enrolleeList.push(rowObj);
-            console.log(rowObj);
-          }
-        }
-        let enrolleeItem = {
-          month: new Date().getMonth() + 1,
-          year: new Date().getFullYear(),
-          enrollees: enrolleeList
-        }
-        console.log(enrolleeItem);
-      } else {
-        for (let i = 0; i <= len; i++) {
-          let len2 = hmoData[0].enrolleeList[i].enrollees.length - 1;
-          let len2End = len2 - 1;
-          console.log(len2);
-          for (let j = len2; j >= len2End; j--) {
-            for (let k = incomingDataLength; k >= 0; k--) {
-              if (j == len2) {
-                if (hmoData[0].enrolleeList[i].enrollees[j].fileNo === data[k][4]) {
-                  isCurrent = true;
-                }
-              } else if (j === len2End) {
-                if (hmoData[0].enrolleeList[i].enrollees[j].fileNo === data[k][4]) {
-                  isPrevious = true
-                  data[k] //Exist in the previous month
-                }
-              }
-              if (isCurrent === true && isPrevious === false) {
-                data[k] // Exist in Present month
-                console.log('Present Month', data[k]);
-              } else if (isCurrent === false && isPrevious === true) {
-                data[k] // Exist in Previous month
-                console.log('Previous Month', data[k]);
-              } else if (isCurrent === false && isPrevious === false) {
-                data[k] // Exist in Previous month
+      this.hmoService.patch(payload.data[0]._id, {
+        hmos: payload.data[0].hmos
+      }, {}).then(hmoPayload => {
+        if(lastMonth === true){
+          let noChangeEnrollees = lastMonthEnrollees[0].enrollees.filter(x => new Date(x.updatedAt).getMonth() == prevMonth);
+          if (noChangeEnrollees.length > 0) {
+            for (let n = 0; n < noChangeEnrollees.length; n++) {
+              if(Boolean(noChangeEnrollees)){
+                
+                let noChangeIndex = payload.data[0].hmos[index].enrolleeList[lastMonthEnrolleesListIndex].enrollees.findIndex(x => x.filNo == noChangeEnrollees[n].filNo);
+                payload.data[0].hmos[index].enrolleeList[lastMonthEnrolleesListIndex].enrollees[noChangeIndex].status = 'inactive';
+                payload.data[0].hmos[index].enrolleeList[lastMonthEnrolleesListIndex].enrollees[noChangeIndex].updatedAt = Date.now();
+                
+                this.hmoService.patch(payload.data[0]._id, {
+                  hmos: payload.data[0].hmos
+                }, {}).then(noChangPayload => {
+                  this.systemModuleService.announceSweetProxy(`You have successfully uploaded ${data.length} enrollees to ${hmo.name}`, 'success');
+                });
               }
             }
-          }
+          } 
         }
-      }
+      });
+
     }).catch(err => {
       console.log(err);
+      this.systemModuleService.announceSweetProxy('Something went wrong while uploading the enrollees. Please try again', 'warning');
     });
   }
 

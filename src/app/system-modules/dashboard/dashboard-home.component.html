@@ -44,7 +44,7 @@
                 <li *ngIf="accessHas('Blood')" (click)="patientSubmenuShow()" [routerLink]="['patient-manager']"><i class="fa fa-tint" aria-hidden="true"></i> <span>Blood Bank</span></li>
                 <li *ngIf="accessHas('Theatre')" (click)="patientSubmenuShow()" [routerLink]="['patient-manager']"><i class="fa fa-bed" aria-hidden="true"></i> <span>Theatre</span></li>
 
-                <li *ngIf="accessHas('Health')" (click)="onHealthCoverage()"><i class="fa fa-heartbeat" [routerLink]="['health-coverage']" aria-hidden="true"></i><span> Health Care Coverage</span></li>
+                <li *ngIf="accessHas('Health-Coverage')" (click)="onHealthCoverage()"><i class="fa fa-heartbeat" [routerLink]="['health-coverage']" aria-hidden="true"></i><span> Health Care Coverage</span></li>
                 <!-- <li (click)="onSwitchAccount()"><i class="fa fa-users" aria-hidden="true"></i> <span>Switch Account</span></li> -->
                 <!-- <li (click)="logoutConfirm_show()"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Log Out</span></li> -->
                 <li *ngIf="accessHas('Tag')" (click)="onTags()" [routerLink]="['billing/tags']"><i class="fa fa-users" aria-hidden="true"></i> <span>Tags</span></li>
