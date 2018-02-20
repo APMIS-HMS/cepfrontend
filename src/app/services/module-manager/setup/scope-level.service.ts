@@ -9,8 +9,8 @@ export class ScopeLevelService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('formscopelevels');
-    this._socket = _socketService.getService('formscopelevels');
+    this._rest = _restService.getService('form-scope-levels');
+    this._socket = _socketService.getService('form-scope-levels');
     this._socket.on('created', function (facilityownership) {
     });
   }

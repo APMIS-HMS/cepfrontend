@@ -128,7 +128,7 @@ export class CreateAccessComponent implements OnInit {
   }
 
   getModules() {
-    this.featureModuleService.findAll().then(res => {
+    this.featureModuleService.find({query:{$limit:100}}).then(res => {
       this.loading = false;
       if (res.data.length > 0) {
         this.modules = res.data;

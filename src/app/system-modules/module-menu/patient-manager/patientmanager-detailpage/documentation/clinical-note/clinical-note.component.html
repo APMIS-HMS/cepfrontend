@@ -1,5 +1,6 @@
 <div class="frmNoteWrap">
     <legend class="modal_title">Clinical Note</legend>
+    <div class="save-blinker">...saving draft</div>
 
     <ul *ngIf="showDocument" class="links-ul">
         <li (click)="docSymptom_show()">
@@ -51,7 +52,7 @@
             <div *ngIf="symptoms.length !== 0">Symptoms <br>
                 <button *ngFor="let symptom of symptoms" class="tags">{{symptom.name}}&nbsp; <i (click)="deleteSymptom(symptom)" class="fa fa-close"></i> </button>
             </div>
-            <div *ngIf="diagnoses.length > 0 && viewDiagnosis" class="modal-overlay">
+            <div *ngIf="diagnoses.length > 0 && viewDiagnosis && !showDocument" class="modal-overlay">
                 <div class="diagnosis-view">
                     <div class="modal-baseWrap animated pulse" style="width:100%">
                         <div (click)="docDiagnosisView()" class="modal-close-ico">X</div>

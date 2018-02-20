@@ -76,6 +76,7 @@ import { FluidTypeComponent } from "./patientmanager-detailpage/fluid/fluid-type
 import { ScopeLevelService } from "../../../services/module-manager/setup/scope-level.service";
 import { PatientTagsComponent } from './patientmanager-detailpage/patient-tags/patient-tags.component';
 import { PatientAddTagComponent } from './patientmanager-detailpage/patient-tags/patient-add-tag/patient-add-tag.component';
+import { OnlyMaterialModule } from "../../../shared-common-modules/only-material-module";
 
 @NgModule({
   declarations: [
@@ -127,6 +128,7 @@ import { PatientAddTagComponent } from './patientmanager-detailpage/patient-tags
   imports: [
     SharedModule,
     patientManagerRoutes,
+    OnlyMaterialModule,
     MaterialModule,
     ChartsModule,
     PdfViewerModule,

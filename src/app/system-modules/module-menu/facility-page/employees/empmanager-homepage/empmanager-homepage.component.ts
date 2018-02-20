@@ -31,7 +31,7 @@ export class EmpmanagerHomepageComponent
   @Input() resetData: Boolean;
   @Output() resetDataNew: EventEmitter<Boolean> = new EventEmitter<Boolean>();
 
-  facility: Facility = <Facility>{};
+  facility: any = <any>{};
   employees: Employee[] = [];
   searchControl = new FormControl();
 
@@ -88,6 +88,13 @@ export class EmpmanagerHomepageComponent
   }
 
   ngOnInit() {
+    this.facility = <any>this.locker.getObject("selectedFacility");
+    if (
+      this.facility.isValidRegistration === undefined ||
+      this.facility.isValidRegistration === false
+    ) {
+      this.facilityService.announcePopupEditFacility(true);
+    }
     this.authFacadeService.getLogingEmployee().then((payload: any) => {});
     this.route.data.subscribe(data => {
       data["employees"].subscribe(payload => {
@@ -106,7 +113,7 @@ export class EmpmanagerHomepageComponent
       // this.index = this.inde[0];
     });
     this.pageInView.emit("Employee Manager");
-    this.facility = <Facility>this.locker.getObject("selectedFacility");
+   
     // this.getEmployees(this.limit);
   }
   searchEmployees(searchText: string) {

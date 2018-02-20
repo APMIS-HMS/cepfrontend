@@ -6,6 +6,8 @@ export interface PendingLaboratoryRequest {
     facility: any;
     patient: any;
     patientId?: any;
+    createdById?: any;
+    panel?: any;
     specimen: any;
     price: number;
     unit: number;
@@ -29,10 +31,10 @@ export interface PendingLaboratoryRequest {
     updatedAt: Date;
     createdAt: Date;
     createdBy: any;
-    createdById?: any;
     personId: string;
     specimenReceived: boolean;
     specimenNumber: string;
-    sampleTaken:boolean;
-    sampleTakenBy:any;
+    sampleTaken: boolean;
+    sampleTakenBy: any;
 }
+

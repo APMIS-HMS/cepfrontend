@@ -690,7 +690,8 @@ export class LabRequestsComponent implements OnInit {
     if (this.frmNewRequest.valid) {
       this.isValidateForm = true;
     } else if (this.selectedPatient !== undefined && this.selectedPatient._id !== undefined && this.selectedPatient._id.length > 0) {
-      if(this.frmNewRequest.controls['clinicalInfo'].valid && this.frmNewRequest.controls['diagnosis'].valid && this.frmNewRequest.controls['investigation'].valid){
+      if (this.frmNewRequest.controls['clinicalInfo'].valid && this.frmNewRequest.controls['diagnosis']
+        .valid && this.frmNewRequest.controls['investigation'].valid) {
         this.isValidateForm = true;
       }
     } else {
@@ -737,19 +738,23 @@ export class LabRequestsComponent implements OnInit {
       const copyBindInvestigation = JSON.parse(JSON.stringify(this.bindInvestigations));
       const readyCollection: any[] = [];
 
+      console.log(copyBindInvestigation);
       copyBindInvestigation.forEach((item: InvestigationModel, i) => {
+        console.log(item);
         if (item.investigation.isPanel) {
           delete item.isChecked;
+          delete item.temporaryInvestigationList;
           item.investigation.panel.forEach((panel, j) => {
             delete panel.isChecked;
-          })
+          });
         } else {
           delete item.isChecked;
           delete item.LaboratoryWorkbenches;
           delete item.location;
-          readyCollection.push(item);
+          // readyCollection.push(item);
         }
-      })
+        readyCollection.push(item);
+      });
 
       const request: any = {
         facilityId: this.selectedFacility._id,
@@ -759,7 +764,9 @@ export class LabRequestsComponent implements OnInit {
         diagnosis: this.frmNewRequest.controls['diagnosis'].value,
         investigations: readyCollection,
         createdBy: this.loginEmployee._id
-      }
+      };
+
+      console.log(request);
       // const billGroup: BillIGroup = <BillIGroup>{};
       // billGroup.discount = 0;
       // billGroup.facilityId = this.selectedFacility._id;
@@ -934,7 +941,7 @@ export class LabRequestsComponent implements OnInit {
         // Filter investigations based on the laboratory Id
         res.data.forEach(labRequest => {
           labRequest.investigations.forEach(investigation => {
-            console.log(investigation.location);
+
             if (
               (investigation.isSaved === undefined || !investigation.isSaved) ||
               (investigation.isUploaded === undefined || !investigation.isUploaded) &&
@@ -951,7 +958,7 @@ export class LabRequestsComponent implements OnInit {
               pendingLabReq.clinicalInformation = labRequest.clinicalInformation;
               pendingLabReq.diagnosis = labRequest.diagnosis;
               pendingLabReq.labNumber = labRequest.labNumber;
-              pendingLabReq.patientId = labRequest.patientId;
+              pendingLabReq.personId = labRequest.patientId;
               pendingLabReq.patient = labRequest.personDetails;
               pendingLabReq.isExternal = investigation.isExternal;
               pendingLabReq.isUrgent = investigation.isUrgent;
@@ -969,7 +976,7 @@ export class LabRequestsComponent implements OnInit {
               pendingLabReq.investigationId = investigation.investigation._id;
               pendingLabReq.createdAt = labRequest.createdAt;
               pendingLabReq.updatedAt = labRequest.updatedAt;
-              pendingLabReq.createdById = labRequest.createdBy;
+              pendingLabReq.createdBy = labRequest.createdBy;
               pendingLabReq.createdBy = labRequest.employeeDetails;
               if (investigation.specimenReceived !== undefined) {
                 pendingLabReq.specimenReceived = investigation.specimenReceived;
@@ -999,11 +1006,11 @@ export class LabRequestsComponent implements OnInit {
   }
 
   // Notification
-	private _notification(type: string, text: string): void {
-		this.facilityService.announceNotification({
+  private _notification(type: string, text: string): void {
+    this.facilityService.announceNotification({
       users: [this.user._id],
       type: type,
       text: text
     });
-	}
+  }
 }

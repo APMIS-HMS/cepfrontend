@@ -49,6 +49,7 @@ export class MedRecordDocumentationComponent implements OnInit {
   public lineChartLegend:boolean = true;
   public lineChartType:string = 'line';
 
+  problem:any;
   constructor() { }
 
   ngOnInit() {

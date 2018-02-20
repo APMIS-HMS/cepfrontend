@@ -27,13 +27,13 @@
                 </div>
 
                 <div class="frm-item-wrap">
-                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <!--<i class="fa fa-user" aria-hidden="true"></i>-->
                     <mat-input-container class="example-full-width">
                         <div>
                             <div class="sectLabel"></div>
-                            <i class="fa fa-plus faplus pull-right" data-toggle="tooltip" title="Add Tag" data-placement="left"> </i>
+                            <i *ngIf="showBtn" class="fa fa-plus faplus pull-right" (click)="onCreateNewTag()" data-toggle="tooltip" title="Add Tag" data-placement="left"> </i>
                         </div>
-                        <input autofocus matInput mat-error placeholder="Select Tag" formControlName="tag">
+                        <input autofocus matInput mat-error autocomplete="off"  placeholder="Select Tag" formControlName="tag">
                     </mat-input-container>
                     <div class="suggestionFeeds">
                         <div (click)="onSelectedTag(tag)" *ngFor="let tag of tags" class="suggestedItem">
@@ -61,7 +61,7 @@
                 </div>
 
                 <div class="frm-item-wrap">
-                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <!-- <i class="fa fa-user" aria-hidden="true"></i>-->
                     <mat-input-container class="example-full-width">
                         <input type="number" matInput mat-error placeholder="Value" formControlName="value">
                     </mat-input-container>

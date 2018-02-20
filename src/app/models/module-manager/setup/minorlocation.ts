@@ -5,4 +5,5 @@ export interface MinorLocation {
     description?: string;
     locationId: string;
     text?: string;
+    isActive:any;
 }

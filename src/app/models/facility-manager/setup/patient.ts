@@ -6,5 +6,6 @@ export interface Patient {
     facilityDetails: any;
     personDetails: any;
     nextOfKin?: any;
-    clientsNo:any
+    clientsNo:any;
+    age?:any;
 }

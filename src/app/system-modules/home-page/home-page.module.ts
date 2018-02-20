@@ -10,6 +10,7 @@ import { HomePageHomeComponent } from './home-page-home.component';
 import { PersonLandingComponent } from './person-landing/person-landing.component';
 import { PersonScheduleAppointmentComponent } from './person-landing/person-schedule-appointment/person-schedule-appointment.component';
 import { BiodataPopupComponent } from './biodata-popup/biodata-popup.component';
+import { OnlyMaterialModule } from '../../shared-common-modules/only-material-module';
 import { MedRecordsComponent } from './med-records/med-records.component';
 import { MedRecordHomeComponent } from './med-records/med-record-home/med-record-home.component';
 import { MedRecordDocumentationComponent } from './med-records/med-record-documentation/med-record-documentation.component';
@@ -21,6 +22,7 @@ import { BiodataUpdateComponent } from './biodata-update/biodata-update.componen
 @NgModule({
   imports: [
     CommonModule,
+    OnlyMaterialModule,
     MaterialModule,
     SharedModule,
     homePageRoutes,

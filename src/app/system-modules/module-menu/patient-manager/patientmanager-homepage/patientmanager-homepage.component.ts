@@ -1,3 +1,4 @@
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { EMAIL_REGEX } from 'app/shared-module/helpers/global-config';
 import { NUMERIC_REGEX, ALPHABET_REGEX } from './../../../../shared-module/helpers/global-config';
 import { CountryServiceFacadeService } from './../../../service-facade/country-service-facade.service';
@@ -66,6 +67,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     private route: ActivatedRoute, private toast: ToastsManager, private genderService: TitleGenderFacadeService,
     private relationshipService: RelationshipService, private formBuilder: FormBuilder,
     private _countryService: CountriesService, private systemService: SystemModuleService,
+    private authFacadeService:AuthFacadeService,
     private _titleService: TitleService, private countryFacadeService: CountryServiceFacadeService
   ) {
     this.systemService.on();
@@ -126,12 +128,15 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
   ngOnInit() {
     this.pageInView.emit('Patient Manager');
+    this.authFacadeService.getLogingEmployee().then((payload:any) =>{
+      this.loginEmployee = payload;
+    })
     this.facility = <Facility>this.locker.getObject('selectedFacility');
     this.user = <User>this.locker.getObject('auth');
     this.getGender();
     this.getRelationships();
-    this.facility = <Facility>this.locker.getObject('selectedFacility');
-    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    // this.facility = <Facility>this.locker.getObject('selectedFacility');
+    // this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.getPatients(this.limit);
     this._getAllCountries();
     this._getAllTitles();
