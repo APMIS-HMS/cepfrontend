@@ -56,6 +56,10 @@ export class PurchaseEntryService {
   update(serviceprice: any) {
     return this._socket.update(serviceprice._id, serviceprice);
   }
+
+  patch(id,obj) {
+    return this._socket.patch(id, obj);
+  }
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }

@@ -15,7 +15,7 @@ export class TransactionHistoryComponent implements OnInit {
   newPayment = false;
   paymentHistory = false;
   invoices = [];
-  selected_supplier = "Maiden Pharmaceuticals";
+  selected_supplier = "";
 
   frmFilterSupplier: FormControl = new FormControl();
 
@@ -29,19 +29,26 @@ export class TransactionHistoryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
-    this.route.params.subscribe(params => {
-      let id = params['id'];
-      if (id !== undefined) {
-        this.invoiceService.find({ query: { supplierId: id, facilityId: this.selectedFacility._id } }).subscribe(value => {
-          this.invoices = value.data;
-        });
-      }
-    });
-
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.getHistory();
     this.getSuppliers();
     this.frmFilterSupplier.valueChanges.subscribe(payload => {
       this.router.navigate(['/dashboard/product-manager/supplier-details', payload]);
+    });
+  }
+
+  getHistory(){
+    this.route.params.subscribe(params => {
+      let id = params['id'];
+      if (id !== undefined) {
+        this.invoiceService.getInvoice(id, { query: { supplierId: id, facilityId: this.selectedFacility._id } }).subscribe(value => {
+          console.log(value);
+          this.invoices = value;
+          this.selected_supplier = value.supplier;
+        }, error => {
+          console.log(error);
+        });
+      }
     });
   }
 
@@ -62,5 +69,9 @@ export class TransactionHistoryComponent implements OnInit {
   PaymentHistoryShow(invoice) {
     this.selectedInvoice = invoice;
     this.paymentHistory = !this.paymentHistory;
+  }
+
+  onRefreshHistory(value){
+    this.getHistory();
   }
 }
