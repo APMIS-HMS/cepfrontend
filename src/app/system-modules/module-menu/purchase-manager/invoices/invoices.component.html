@@ -72,7 +72,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let product of selectedProduct.products">
-                            <td>{{product.product.name}}</td>
+                            <td>{{product?.productObject?.name}}</td>
                             <td>{{product.quantity}}</td>
                             <td>{{product.batchNo}}</td>
                             <td>{{product.expiryDate | date}}</td>

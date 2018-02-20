@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 export class PurchaseEntryService {
   public _socket;
   public _socket2;
+  public _socketInvoice;
   private _rest;
   public listenerCreate;
   public listenerUpdate;
@@ -16,6 +17,7 @@ export class PurchaseEntryService {
   ) {
     this._rest = _restService.getService('purchase-entries');
     this._socket = _socketService.getService('purchase-entries');
+    this._socketInvoice = _socketService.getService('purchase-invoices');
     this._socket2 = _socketService.getService('make-purchase-entries');
     this._socket.timeout = 30000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
@@ -28,11 +30,19 @@ export class PurchaseEntryService {
     return this._socket.find(query);
   }
 
+  findInvoices(query: any) {
+    return this._socketInvoice.find(query);
+  }
+
   findAll() {
     return this._socket.find();
   }
   get(id: string, query: any) {
     return this._socket.get(id, query);
+  }
+
+  getInvoice(id: string, query: any) {
+    return this._socketInvoice.get(id, query);
   }
 
   create(serviceprice: any) {
