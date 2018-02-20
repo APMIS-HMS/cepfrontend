@@ -10,8 +10,8 @@ module.exports = function (app) {
         minorLocationId: { type: Schema.Types.ObjectId, required: true },
         roomId: { type: Schema.Types.ObjectId, required: true },
         bedId: { type: Schema.Types.ObjectId, required: true },
-        patientId: { type: Schema.Types.ObjectId, required: true }, // not required
-        admittedDate: { type: Schema.Types.Date, required: true }, // not required
+        patientId: { type: Schema.Types.ObjectId, required: false }, 
+        admittedDate: { type: Schema.Types.Date, required: false },
         bedState: {type: Schema.Types.Date, required: true}, // Available, Occupied
         admittedBy: {type: Schema.Types.Date, required: true},
         history: [
