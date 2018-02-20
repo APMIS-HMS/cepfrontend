@@ -10,7 +10,6 @@ class Service {
         this.app = app;
     }
 
-
     async find(params) {
         // // Get inpatient
         // console.log('-------- params ----------');
@@ -120,6 +119,12 @@ class Service {
                 } else {
                     return jsend.error('Prescription not properly referenced!');
                 }
+            } else if (action === 'getTransferredPatients') {
+
+            } else if (action === 'getAdmittedPatients') {
+
+            } else if (action === 'getDischargedPatients') {
+
             }
         } else {
             return jsend.error('Facility does not exist!');
