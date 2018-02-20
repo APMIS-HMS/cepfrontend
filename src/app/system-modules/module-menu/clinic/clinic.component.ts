@@ -307,4 +307,11 @@ export class ClinicComponent implements OnInit, OnDestroy {
 			this.clinicRoom = false;
 		}
 	}
+
+	chartClicked(e){
+
+	}
+	chartHovered(e){
+	  
+	}
 }

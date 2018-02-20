@@ -89,7 +89,7 @@ export class EditEmpBasicComponent implements OnInit {
 			othernames: [this.selectedPerson.otherNames, []],
 			gender: [this.selectedPerson.gender, [<any>Validators.required]],
 			maritalStatus: [this.selectedPerson.maritalStatus, [<any>Validators.required]],
-			date: [this.selectedPerson.dateOfBirth, [<any>Validators.required]],
+			date: [new Date(this.selectedPerson.dateOfBirth).toDateString(), [<any>Validators.required]],
 			nationality: [this.selectedPerson.nationality, [<any>Validators.required]],
 			stateofOrigin: [this.selectedPerson.stateOfOrigin, [<any>Validators.required]],
 			localgovtarea: [this.selectedPerson.lgaOfOrigin, [<any>Validators.required]],
@@ -184,6 +184,7 @@ export class EditEmpBasicComponent implements OnInit {
 		this.employeeService.update(this.selectedEmployee).then(payload => {
 			this.loading = false;
 			this.locker.setObject('selectedEmployee', payload);
+			this.employeeService.announceEmployee(payload);
 			this.systemModulesService.announceSweetProxy('Department Successfully Updated.', 'success');
 			this.close_onClick(true);
 		}).catch(err => {

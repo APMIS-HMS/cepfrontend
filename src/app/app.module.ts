@@ -1,6 +1,8 @@
+import { OnlyMaterialModule } from './shared-common-modules/only-material-module';
+import { CanActivateViaAuthGuardCompleteFacilityService } from './services/facility-manager/setup/can-activate-via-auth-guard-complete-facility.service';
 import { AuthInterceptor } from './feathers/auth.interceptor';
 import { AuthFacadeService } from './system-modules/service-facade/auth-facade.service';
-import { TitleCasePipe } from '@angular/common';
+import { TitleCasePipe, UpperCasePipe } from '@angular/common';
 import { SecurityQuestionsService } from './services/facility-manager/setup/security-questions.service';
 import { CountryServiceFacadeService } from './system-modules/service-facade/country-service-facade.service';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
@@ -24,7 +26,6 @@ import { SocketService, RestService } from './feathers/feathers.service';
 import * as SetupService from './services/facility-manager/setup/index';
 import * as ModuleManagerService from './services/module-manager/setup/index';
 import { UserAccountsComponent } from './system-modules/user-accounts/user-accounts.component';
-import { PatientPortalComponent } from './system-modules/patient-portal/patient-portal.component';
 import { SharedModule } from './shared-module/shared.module';
 // tslint:disable-next-line:max-line-length
 import { UserAccountsInnerPopupComponent } from './system-modules/user-accounts/user-accounts-inner-popup/user-accounts-inner-popup.component';
@@ -74,18 +75,13 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     ApmisCheckboxComponent
   ],
   exports: [
-    // MaterialModule,
-    // PdfViewerModule
   ],
   imports: [
     BrowserModule,
     HttpModule,
-    // FormsModule,
     Routing,
-    // ReactiveFormsModule,
     BrowserAnimationsModule,
-    // ToastModule.forRoot(),
-    // CoolStorageModule,
+    OnlyMaterialModule,
     MaterialModule,
     SingUpAccountsSharedModule,
     LoadingBarHttpModule,
@@ -96,7 +92,6 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
       confirmButtonClass: 'btn btn-primary',
       cancelButtonClass: 'btn'
     })
-    // PdfViewerModule
   ],
   providers: [
     { provide: ErrorHandler, useClass: ApmisErrorHandler },
@@ -137,7 +132,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }
+    }, CanActivateViaAuthGuardCompleteFacilityService, UpperCasePipe
   ],
   bootstrap: [AppComponent]
 })

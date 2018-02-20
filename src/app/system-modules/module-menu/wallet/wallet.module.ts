@@ -1,3 +1,4 @@
+import { OnlyMaterialModule } from './../../../shared-common-modules/only-material-module';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../../shared-module/shared.module';
 import { MaterialModule } from '../../../shared-common-modules/material-module';
@@ -14,6 +15,7 @@ import { ChartsModule } from 'ng2-charts'
     ],
     imports: [
       SharedModule,
+      OnlyMaterialModule,
         MaterialModule,
         walletRoutes,
         ChartsModule

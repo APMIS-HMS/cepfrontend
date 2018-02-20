@@ -1,3 +1,4 @@
+import { OnlyMaterialModule } from './../../../shared-common-modules/only-material-module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -25,6 +26,7 @@ import { StoreEmitterService } from '../../../services/facility-manager/store-em
     exports: [
     ],
     imports: [
+        OnlyMaterialModule,
         MaterialModule,
         storeRoutes
     ],

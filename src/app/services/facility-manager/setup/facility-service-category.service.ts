@@ -53,14 +53,17 @@ export class FacilitiesServiceCategoryService {
     return this._socket.get(id, query);
   }
   getSelectedFacilityId() {
-    const facility =  <any> this.locker.getObject('selectedFacility');
+    const facility = <any>this.locker.getObject('selectedFacility');
     return facility;
   }
-  create(facilityservice: any) {
-    return this._socket.create(facilityservice);
+  create(facilityservice: any, params) {
+    return this._socketOrganisationServices.create(facilityservice, params);
   }
   update(facilityservice: any) {
-    return this._socket.update(facilityservice._id, facilityservice);
+    return this._socket.update(facilityservice._id,facilityservice);
+  }
+  update2(id,facilityservice: any,params) {
+    return this._socketOrganisationServices.update(id,facilityservice,params);
   }
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
@@ -83,7 +86,7 @@ export class FacilitiesServiceCategoryService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
-    return this._http.post(host, payload, { headers: headers}).toPromise()
+    return this._http.post(host, payload, { headers: headers }).toPromise()
       .then((res) => this.extractData(res)).catch(error => this.handleErrorPromise(error));
   }
 

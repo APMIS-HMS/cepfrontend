@@ -187,7 +187,7 @@ export class ClinicScheduleComponent implements OnInit {
       ])
     });
   }
-  pushNewClinicSchedule(schedule: any) {
+  pushNewClinicSchedule() {
     (<FormArray>this.clinicScheduleForm.controls['clinicScheduleArray'])
       .push(
       this.formBuilder.group({

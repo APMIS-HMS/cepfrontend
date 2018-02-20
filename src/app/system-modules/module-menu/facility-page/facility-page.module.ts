@@ -1,3 +1,4 @@
+import { OnlyMaterialModule } from './../../../shared-common-modules/only-material-module';
 import { AccessManagerHomeComponent } from './facility-access-control/access-manager-home.component';
 import { NewFacEmployeeComponent } from './employees/new-fac-employee/new-fac-employee.component';
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
@@ -102,6 +103,7 @@ import { ViewAccessComponent } from './facility-access-control/view-access/view-
     imports: [
         facilityPageRoutes,
         facilityPageRoutes,
+        OnlyMaterialModule,
         MaterialModule,
         Ng4GeoautocompleteModule,
         SweetAlert2Module

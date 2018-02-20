@@ -1,3 +1,4 @@
+import { OnlyMaterialModule } from './../../../shared-common-modules/only-material-module';
 import { NgModule } from '@angular/core';
 import { SharedModule } from '../../../shared-module/shared.module';
 import { MaterialModule } from '../../../shared-common-modules/material-module';
@@ -29,6 +30,7 @@ import { StoreComponent } from './store/store.component';
     ],
     imports: [
         SharedModule,
+        OnlyMaterialModule,
         MaterialModule,
         reportRoutes,
         ChartsModule
