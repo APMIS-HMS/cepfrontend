@@ -16,6 +16,20 @@
 .frm-x2 .frm-item-wrap{
     width: 49% !important;
 }
+.card-title {
+    margin-top: 20px;
+    width: 100%;
+    font-size: 1.6rem;
+    color: #ff2500;
+    font-weight: bold;
+}
+.btn-1{
+    height: auto;
+}
+.right-wrap{
+    display: flex;
+    justify-content: flex-end;
+}
 
 @media only screen and (max-width: 700px) {
     .modal-baseWrap {

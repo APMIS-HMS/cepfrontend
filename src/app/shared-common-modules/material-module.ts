@@ -82,9 +82,6 @@ import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/che
         MatListModule,
         MatTabsModule,
         NgbModule,
-
-
-
         CommonModule,
         ReactiveFormsModule,
         FormsModule,
