@@ -147,6 +147,14 @@ const drugStrengths = require('./drug-strengths/drug-strengths.service.js');
 const listOfPurchaseOrders = require('./list-of-purchase-orders/list-of-purchase-orders.service.js');
 const priceModifiers = require('./price-modifiers/price-modifiers.service.js');
 const makePurchaseEntries = require('./make-purchase-entries/make-purchase-entries.service.js');
+const workbenches = require('./workbenches/workbenches.service.js');
+const getWorkbenches = require('./get-workbenches/get-workbenches.service.js');
+const crudInvestigation = require('./crud-investigation/crud-investigation.service.js');
+const patientSearch = require('./patient-search/patient-search.service.js');
+const crudLabRequest = require('./crud-lab-request/crud-lab-request.service.js');
+const templates = require('./templates/templates.service.js');
+const crudLabReport = require('./crud-lab-report/crud-lab-report.service.js');
+const bedOccupancy = require('./bed-occupancy/bed-occupancy.service.js');
 module.exports = function(app) {
     app.configure(users);
     app.configure(facilityOwnerships);
@@ -297,4 +305,12 @@ module.exports = function(app) {
     app.configure(makePurchaseEntries);
     app.configure(associations);
     app.configure(getPrescription);
+    app.configure(crudLabReport);
+    app.configure(bedOccupancy);
+    app.configure(workbenches);
+    app.configure(crudInvestigation);
+    app.configure(getWorkbenches);
+    app.configure(patientSearch);
+    app.configure(crudLabRequest);
+    app.configure(templates);
 };
