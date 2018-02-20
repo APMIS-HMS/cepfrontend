@@ -31,6 +31,7 @@ import { CoolLocalStorage } from "angular2-cool-storage";
 import { SharedService } from "app/shared-module/shared.service";
 import { AuthFacadeService } from "../../../service-facade/auth-facade.service";
 import { SystemModuleService } from "../../../../services/module-manager/setup/system-module.service";
+import { VISIBILITY_GLOBAL } from "../../../../shared-module/helpers/global-config";
 
 @Component({
   selector: "app-treatement-template",
@@ -65,6 +66,7 @@ export class TreatementTemplateComponent implements OnInit {
   editingTemplateText = false;
   disableBtn = true;
   user: any = <any>{};
+  loginEmployee: any;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -96,49 +98,48 @@ export class TreatementTemplateComponent implements OnInit {
           this.selectedTemplate.name = this.frmnewTemplate.controls.name.value;
           this.selectedTemplate.visibility = this.frmnewTemplate.controls.visibility.value;
           this.selectedTemplate.form = this.frmnewTemplate.controls.docFrmList.value._id;
-          if(this.selectedTemplate.userId === undefined){
+          if (this.selectedTemplate.userId === undefined) {
             this.selectedTemplate.userId = this.user._id;
           }
 
           this.documentationTemplateService
-          .update(this.selectedTemplate)
-          .then(payload2 => {
-            this._systemModuleService.off();
-            this._notification(
-              "Success",
-              "Template has been updated successfully!"
-            );
-            this._systemModuleService.announceSweetProxy(
-              "Template has been saved successfully!",
-              "success"
-            );
-            // this.newTemplate_show(true);
-            this.getTemplates();
-            this.isOrderSet = false;
-            this.isTemplate = true;
-            this.frmnewTemplate.controls.name.reset();
-            this.frmnewTemplate.controls.visibility.reset();
-            this.frmnewTemplate.controls.isEditable.setValue(false);
-            this.frmnewTemplate.controls.docFrmList.reset();
-            this.frmnewTemplate.controls.type.reset();
-          })
-          .catch(err => {
-            this._systemModuleService.off();
-            this.frmnewTemplate.controls.name.reset();
-            this.frmnewTemplate.controls.visibility.reset();
-            this.frmnewTemplate.controls.isEditable.setValue(false);
-            this.frmnewTemplate.controls.docFrmList.reset();
-            this.frmnewTemplate.controls.type.reset();
-            this._notification(
-              "Error",
-              "There was an error while saving template"
-            );
-            this._systemModuleService.announceSweetProxy(
-              "There was an error while saving template",
-              "error"
-            );
-          });
-          
+            .update(this.selectedTemplate)
+            .then(payload2 => {
+              this._systemModuleService.off();
+              this._notification(
+                "Success",
+                "Template has been updated successfully!"
+              );
+              this._systemModuleService.announceSweetProxy(
+                "Template has been saved successfully!",
+                "success"
+              );
+              // this.newTemplate_show(true);
+              this.getTemplates();
+              this.isOrderSet = false;
+              this.isTemplate = true;
+              this.frmnewTemplate.controls.name.reset();
+              this.frmnewTemplate.controls.visibility.reset();
+              this.frmnewTemplate.controls.isEditable.setValue(false);
+              this.frmnewTemplate.controls.docFrmList.reset();
+              this.frmnewTemplate.controls.type.reset();
+            })
+            .catch(err => {
+              this._systemModuleService.off();
+              this.frmnewTemplate.controls.name.reset();
+              this.frmnewTemplate.controls.visibility.reset();
+              this.frmnewTemplate.controls.isEditable.setValue(false);
+              this.frmnewTemplate.controls.docFrmList.reset();
+              this.frmnewTemplate.controls.type.reset();
+              this._notification(
+                "Error",
+                "There was an error while saving template"
+              );
+              this._systemModuleService.announceSweetProxy(
+                "There was an error while saving template",
+                "error"
+              );
+            });
         } else {
           doc = {
             data: payload,
@@ -207,6 +208,9 @@ export class TreatementTemplateComponent implements OnInit {
     this._authFacadeService.getLogingUser().then(payload => {
       this.user = payload;
     });
+    this._authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+    });
     this.frmnewTemplate = this.formBuilder.group({
       name: ["", [Validators.required]],
       diagnosis: [""],
@@ -232,7 +236,9 @@ export class TreatementTemplateComponent implements OnInit {
     });
 
     this.frmnewTemplate.controls["docFrmList"].valueChanges.subscribe(value => {
-      this._setSelectedForm(value);
+      if (value !== undefined && value !== null) {
+        this._setSelectedForm(value);
+      }
     });
 
     // Listen to the event from children components
@@ -492,10 +498,23 @@ export class TreatementTemplateComponent implements OnInit {
           Observable.fromPromise(
             this.formService.find({
               query: {
-                $limit: 200,
-                facilityId: this.selectedFacility._id,
-                typeOfDocumentId: formTypes.data[0]._id,
-                isSide: false
+                // $limit: 200,
+                // facilityId: this.selectedFacility._id,
+                // typeOfDocumentId: formTypes.data[0]._id,
+                // isSide: false
+                $or: [
+                  { selectedFacilityId: this.selectedFacility._id },
+                  {
+                    $and: [
+                      { departmenId: this.loginEmployee.departmentId },
+                      { selectedFacilityId: this.selectedFacility._id }
+                    ]
+                  },
+                  { personId: this.loginEmployee.personId },
+                  { scopeLevelId: VISIBILITY_GLOBAL }
+                ],
+                isSide: false,
+                typeOfDocumentId: formTypes.data[0]._id
               }
             })
           )
@@ -514,7 +533,7 @@ export class TreatementTemplateComponent implements OnInit {
   }
 
   _setSelectedForm(form) {
-    if (form !== null) {
+    if (form !== null && form !== undefined) {
       this.selectedForm = form;
       this.showDocument = false;
       this.json = form.body;
@@ -606,11 +625,9 @@ export class TreatementTemplateComponent implements OnInit {
     this.frmnewTemplate.controls.visibility.setValue(template.visibility);
     this.frmnewTemplate.controls.isEditable.setValue(template.isEditable);
     const index = this.forms.findIndex(x => x._id === template.form);
-
     this.frmnewTemplate.controls.docFrmList.setValue(this.forms[index]);
     if (this.newTemplate === true) {
       this.sharedService.announceTemplate(template);
     }
-
   }
 }

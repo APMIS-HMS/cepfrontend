@@ -82,7 +82,7 @@ const appRoutes: Routes = [
                 ]
             },
             {
-                path: 'forms-manager',
+                path: 'clinical-documentation',
                 loadChildren: '../module-menu/forms-manager/forms-manager.module#FormsManagerModule',
                 canActivate: [
                     CanActivateViaAuthGuardAccessService

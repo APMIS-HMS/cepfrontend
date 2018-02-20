@@ -22,13 +22,13 @@ export class FormsManagerComponent implements OnInit {
     this.treatementTemplate = true;
     this.formGen = false;
     this.pageInView = 'Treatement Template Manager';
-    this.router.navigate(['/dashboard/forms-manager/treatement-template']);
+    this.router.navigate(['/dashboard/clinical-documentation/treatement-template']);
   }
   formGen_show() {
     this.treatementTemplate = false;
     this.formGen = true;
     this.pageInView = 'Form Generator';
-    this.router.navigate(['/dashboard/forms-manager/forms']);
+    this.router.navigate(['/dashboard/clinical-documentation/forms']);
   }
   private checkPageUrl(param: string) {
 		if (param.includes('treatement-template')) {
