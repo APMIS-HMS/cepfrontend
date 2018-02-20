@@ -1,6 +1,6 @@
 <form [formGroup]="noPrescriptionForm" novalidate>
     <div class="row padding-10" style="margin-top: 20px;">
-        <div class="col-sm-5">
+        <div class="col-sm-3">
             <div class="input-group-btn">
                 <i class="fa fa-caret-right pull-right" style="position: absolute;right: 7px;vertical-align: middle;top: 10px;"></i>
                 <mat-form-field>
@@ -46,7 +46,7 @@
             <!--end corporate-->
             <!-- begin Internal -->
                 <div *ngIf="internalShow"  class="col-xs-12 col-sm-3" style="padding: 10px 0;">
-                    <label class="example-margin">Internal Type:</label>
+                    <label class="example-margin">Internal Type:</label><br><br>
                     <mat-radio-group [(ngModel)]="internalType" [ngModelOptions]="{standalone: true}" (change)="onChangeInternalType($event.value);">
                         <mat-radio-button class="example-margin" value="Department">Department/Unit</mat-radio-button>
                         <mat-radio-button class="example-margin" value="Location">Location</mat-radio-button>
