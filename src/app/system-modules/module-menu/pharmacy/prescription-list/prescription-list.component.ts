@@ -83,12 +83,16 @@ export class PrescriptionListComponent implements OnInit {
 	onChangeCategory(value: any) {
 	}
 
-	openSearch(){
+	popenSearch(){
 		this.psearchOpen = true;
+	}
+	pcloseSearch(){
+		this.psearchOpen = false;
+	}
+	openSearch(){
 		this.wsearchOpen = true;
 	}
 	closeSearch(){
-		this.psearchOpen = false;
 		this.wsearchOpen = false;
 	}
 
