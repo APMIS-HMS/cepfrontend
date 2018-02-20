@@ -71,7 +71,6 @@ export class BiodataUpdateComponent implements OnInit {
     this.tab2= false;
     this.tab3 = true;
   }
-
   close_onClick() {
     this.closeModal.emit(true);
   }
