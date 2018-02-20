@@ -16,6 +16,7 @@ import { AddDepartmentComponent } from './departments/add-department/add-departm
 import { CorporateEmitterService } from '../../services/facility-manager/corporate-emitter.service';
 import {LogOutConfirmModule } from '../../shared-common-modules/log-out-module';
 import { MaterialModule } from '../../shared-common-modules/material-module';
+import { OnlyMaterialModule } from '../../shared-common-modules/only-material-module';
 
 @NgModule({
     declarations: [
@@ -31,6 +32,7 @@ import { MaterialModule } from '../../shared-common-modules/material-module';
     exports: [
     ],
     imports: [
+        OnlyMaterialModule,
         MaterialModule,
         //SharedModule,
         // CommonModule,

@@ -1,3 +1,4 @@
+import { ChangePasswordComponent } from './../system-modules/module-menu/change-password/change-password.component';
 import { LogOutConfirmModule } from './log-out-module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -10,8 +11,10 @@ import { AddFacilityModuleComponent } from '../facility-setup/add-facility-modul
 import { SingUpAccountsSharedModule} from './signup-accounts-shared-module';
 import { SystemModuleComponent } from '../system-modules/system-module.component';
 import { LogoUpdateComponent } from '../system-modules/module-menu/facility-page/logo-update/logo-update.component';
+import { OnlyMaterialModule } from './only-material-module';
 @NgModule({
     declarations: [
+        ChangePasswordComponent,
         SystemModuleComponent,
         LogoUpdateComponent
     ],
@@ -19,7 +22,8 @@ import { LogoUpdateComponent } from '../system-modules/module-menu/facility-page
         CommonModule,
         ReactiveFormsModule,
         FormsModule, 
-        LogOutConfirmModule
+        LogOutConfirmModule,
+        OnlyMaterialModule
     ],
     exports: [
         CommonModule,

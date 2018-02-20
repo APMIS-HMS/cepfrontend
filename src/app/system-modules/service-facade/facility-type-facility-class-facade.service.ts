@@ -14,7 +14,6 @@ export class FacilityTypeFacilityClassFacadeService {
       if (that.facilityTypes.length > 0) {
         resolve(that.facilityTypes);
       } else {
-        console.log('refresh');
         that.facilityTypeService.find({
           query: {
             $select: { 'facilityClasses': 0 }
@@ -31,13 +30,10 @@ export class FacilityTypeFacilityClassFacadeService {
 
   getFacilityClasses(facilityType:string, refresh: boolean) {
     let that = this;
-    console.log(facilityType);
     return new Promise(function (resolve, reject) {
       if (that.facilityTypes.length > 0 && !refresh) {
-        console.log('am not')
         resolve(that.facilityTypes);
       } else {
-        console.log('refresh state');
         that.facilityTypeService.find({
           query: {
             name: facilityType,
@@ -47,10 +43,8 @@ export class FacilityTypeFacilityClassFacadeService {
             that.facilityClasses = payload.data[0].facilityClasses;
           }
           
-          console.log(payload);
           resolve(that.facilityClasses);
         }, error => {
-          console.log(error);
           reject(error);
         });
       }

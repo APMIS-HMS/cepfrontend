@@ -14,6 +14,7 @@ import { OrderSetTemplateService } from '../../../services/facility-manager/setu
 import { FormsService } from '../../../services/facility-manager/setup/index';
 import { TreatementTemplateComponent } from './treatement-template/treatement-template.component';
 import { MaterialModule } from 'app/shared-common-modules/material-module';
+import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-module';
 import { SystemModuleService } from '../../../services/module-manager/setup/system-module.service';
 
 @NgModule({
@@ -26,6 +27,7 @@ import { SystemModuleService } from '../../../services/module-manager/setup/syst
     ],
     imports: [
         SharedModule,
+        OnlyMaterialModule,
         MaterialModule,
         formsManagerRoutes
     ],

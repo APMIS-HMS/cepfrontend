@@ -5,7 +5,8 @@
 }
 
 .facility-title {
-    margin-bottom: 20px;
+    margin-bottom: 0px;
+    margin-top: 10px;
 }
 
 .cta-1 {
@@ -68,6 +69,7 @@
     background: #BDBDBD;
     padding: 10px;
     border-radius: 7px;
+    font-size: 1.7em;
 }
 
 .service-amount {
@@ -87,4 +89,25 @@
 
 .f_sg1 form {
     text-align: center;
+}
+
+.faplus:hover {
+    background: #8e8e8e;
+    color: #fff;
+}
+
+.faplus {
+    border: 1px solid #8e8e8e;
+    color: #8e8e8e;
+    padding: 5px;
+    width: 26px;
+    height: 26px;
+    text-align: center;
+    border-radius: 100%;
+    cursor: pointer;
+    line-height: 27px;
+}
+
+.text-center {
+    padding-top: 10px;
 }

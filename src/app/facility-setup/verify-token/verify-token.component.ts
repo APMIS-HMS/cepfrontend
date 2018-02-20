@@ -73,12 +73,9 @@ export class VerifyTokenComponent implements OnInit {
     }
   }
   resendToken() {
-    console.log(this.facility);
     let selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this._facilityService.resendToken(selectedFacility).then(payload => {
-      console.log(payload);
     }).catch(error => {
-      console.log(error);
     })
   }
 

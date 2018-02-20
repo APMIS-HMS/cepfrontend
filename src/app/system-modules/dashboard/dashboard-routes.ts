@@ -82,7 +82,7 @@ const appRoutes: Routes = [
                 ]
             },
             {
-                path: 'forms-manager',
+                path: 'clinical-documentation',
                 loadChildren: '../module-menu/forms-manager/forms-manager.module#FormsManagerModule',
                 canActivate: [
                     CanActivateViaAuthGuardAccessService
@@ -137,6 +137,10 @@ const appRoutes: Routes = [
              canActivate: [
                 CanActivateViaAuthGuardAccessService
             ]
+            },
+            {
+                path: 'report',
+                loadChildren: '../module-menu/report/report.module#ReportModule'
             },
             {
                 path: 'corporate',
