@@ -8,6 +8,7 @@
     <ul class="pg-menuWrap">
         <li (click)="tab1_click()" [class.pg-menuActive]="tab1">Bio Data</li>
         <li (click)="tab2_click()" [class.pg-menuActive]="tab2">Next Of Kin</li>
+        <li (click)="tab3_click()" [class.pg-menuActive]="tab3">Security Questions</li>
     </ul>
 
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
@@ -111,22 +112,6 @@
                 </mat-form-field>
             </div>
         </div> -->
-
-        <div class="frm-item-wrap">
-            <mat-form-field class="example-full-width">
-                <mat-select placeholder="Security Questions" formControlName="securityQuestion">
-                    <mat-option *ngFor="let item of securityQuestions" [value]="item.name">{{item.name}}</mat-option>
-                </mat-select>
-            </mat-form-field>
-        </div>
-        <div class="frm-item-wrap">
-            <mat-input-container class="example-full-width">
-                <input matInput mat-error placeholder="Security Question's Answer" formControlName="securityAnswer">
-            </mat-input-container>
-        </div>
-        <div class="clear"></div>
-
-        
     </form>
 
     <form *ngIf="tab2" [formGroup]="frmPersonNok" novalidate>
@@ -179,6 +164,23 @@
         </div>
         <div class="right-wrap">
             <button class="btn-1 btn-green center-center">Add Another</button>
+        </div>
+    </form>
+
+    <form *ngIf="tab3" [formGroup]="frmPersonSecQst" novalidate>
+        <div class="card-title">Security Question</div>
+
+        <div class="frm-item-wrap">
+            <mat-form-field class="example-full-width">
+                <mat-select placeholder="Security Questions" formControlName="securityQuestion">
+                    <mat-option *ngFor="let item of securityQuestions" [value]="item.name">{{item.name}}</mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        <div class="frm-item-wrap">
+            <mat-input-container class="example-full-width">
+                <input matInput mat-error placeholder="Security Question's Answer" formControlName="securityAnswer">
+            </mat-input-container>
         </div>
     </form>
 

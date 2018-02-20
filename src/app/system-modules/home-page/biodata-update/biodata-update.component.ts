@@ -16,8 +16,10 @@ export class BiodataUpdateComponent implements OnInit {
   mainErr = true;
   tab1=true;
   tab2 = false;
+  tab3 = false;
   public frmPerson: FormGroup;
   public frmPersonNok: FormGroup;
+  public frmPersonSecQst: FormGroup;
 
   constructor(private formBuilder: FormBuilder) { }
 
@@ -47,15 +49,27 @@ export class BiodataUpdateComponent implements OnInit {
       nok_phone: [[]],
       nok_gender: [[]]
     });
+
+    this.frmPersonSecQst = this.formBuilder.group({
+      securityQuestion: ['', [<any>Validators.required]],
+      securityAnswer: ['', [<any>Validators.required]],
+    });
   }
 
   tab1_click(){
     this.tab1 = true;
     this.tab2= false;
+    this.tab3 = false;
   }
   tab2_click(){
     this.tab1 = false;
     this.tab2= true;
+    this.tab3 = false;
+  }
+  tab3_click(){
+    this.tab1 = false;
+    this.tab2= false;
+    this.tab3 = true;
   }
 
   close_onClick() {
