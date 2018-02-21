@@ -12,12 +12,8 @@ const rx = require('feathers-reactive');
 const RxJS = require('rxjs/Rx');
 // const HOST = 'http://13.84.217.251:8082'; // thn
 // const HOST = 'http://172.16.16.35:3031'; // Mr Segun
-<<<<<<< HEAD
 // const HOST = 'https://apmisapilive.azurewebsites.net'; // Online
 // const HOST = 'http://192.168.20.101:3030'; // Sunday
-=======
-// const HOST = 'https://apmisapitest.azurewebsites.net'; // Sunday
->>>>>>> f46dc8a6833e2c47b99bdd27cfce89d3ec6e6f23
 const HOST = 'http://localhost:3031'; // Local Server
 
 
@@ -37,7 +33,7 @@ export class SocketService {
     });
   };
 
-  constructor(public locker: CoolLocalStorage, private _router:Router) {
+  constructor(public locker: CoolLocalStorage, private _router: Router) {
     this.HOST = HOST;
     this.socket = io(this.HOST);
     this._app = feathers()
@@ -54,7 +50,7 @@ export class SocketService {
   }
   loginIntoApp(query: any) {
     return this._app.authenticate({
-      "strategy": 'local',
+      'strategy': 'local',
       'email': query.email,
       'password': query.password
     });
@@ -76,7 +72,7 @@ export class RestService {
   logOut() {
     this.locker.clear();
   }
-  constructor(private locker: CoolLocalStorage, private _router:Router) {
+  constructor(private locker: CoolLocalStorage, private _router: Router) {
     this.HOST = HOST;
     if (this.locker.getObject('auth') !== undefined && this.locker.getObject('auth') != null) {
       const auth: any = this.locker.getObject('token')
@@ -99,7 +95,7 @@ export class RestService {
   }
   loginIntoApp(query) {
     return this._app.authenticate({
-      "strategy": 'local',
+      'strategy': 'local',
       'email': query.email,
       'password': query.password
     });
