@@ -1,5 +1,6 @@
 <div class="frmNoteWrap">
     <legend class="modal_title">Clinical Note</legend>
+    <div *ngIf="isSavingDraft" class="save-blinker">...saving draft</div>
 
     <ul *ngIf="showDocument" class="links-ul">
         <li (click)="docSymptom_show()">

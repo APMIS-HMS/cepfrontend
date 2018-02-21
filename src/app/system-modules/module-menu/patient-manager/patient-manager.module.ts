@@ -74,6 +74,8 @@ import { DateRangePickerModule } from "ng-pick-daterange";
 import { DateTimePickerModule } from "ng-pick-datetime";
 import { FluidTypeComponent } from "./patientmanager-detailpage/fluid/fluid-type/fluid-type.component";
 import { ScopeLevelService } from "../../../services/module-manager/setup/scope-level.service";
+import { PatientTagsComponent } from './patientmanager-detailpage/patient-tags/patient-tags.component';
+import { PatientAddTagComponent } from './patientmanager-detailpage/patient-tags/patient-add-tag/patient-add-tag.component';
 import { OnlyMaterialModule } from "../../../shared-common-modules/only-material-module";
 
 @NgModule({
@@ -118,7 +120,9 @@ import { OnlyMaterialModule } from "../../../shared-common-modules/only-material
     DocUploadComponent,
     DocUploadDetailComponent,
     PatientVitalsComponent,
-    FluidTypeComponent
+    FluidTypeComponent,
+    PatientTagsComponent,
+    PatientAddTagComponent
   ],
   exports: [],
   imports: [

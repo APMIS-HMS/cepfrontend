@@ -60,7 +60,7 @@ export class NoprescriptionComponent implements OnInit {
 	internalType = 'Department';
 	deptLocationShow = true;
 
-	laoding = false;
+	loading = false;
 
 	constructor(
 		private _fb: FormBuilder,
