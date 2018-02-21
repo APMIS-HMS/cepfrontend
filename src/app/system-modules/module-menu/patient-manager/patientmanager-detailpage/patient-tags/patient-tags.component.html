@@ -46,7 +46,7 @@
   <div *ngIf="docDetail_view" class="modal-overlay">
     <app-documentation-detail [document] ="selectedDocument" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-documentation-detail>
   </div>
-
+ 
   <div *ngIf="addProblem_view" class="modal-overlay">
     <app-add-patient-problem [patient]="patient" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-patient-problem>
   </div>
