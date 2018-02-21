@@ -163,7 +163,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
           if (isOnList.length > 0) {
             const isOnObj = isOnList[0];
             isOnObj.isOn = true;
-            let coo = <any>this.locker.getObject('appointment');
+            const coo = <any>this.locker.getObject('appointment');
             this.checkedIn = !coo.isCheckedOut || false;
             this.employeeService.update(this.loginEmployee).subscribe(payloadu => {
               this.loginEmployee = payloadu;
@@ -176,7 +176,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
               }
             });
           }
-  
+
         }
       })
     });
@@ -379,7 +379,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuFinance = false;
     this.menuMedicationHistory = true;
     this.menuPayment = false;
-    this.menuTags =false;
+    this.menuTags = false;
     this.menuResp = false;
   }
   menuImaging_click() {
