@@ -2,7 +2,7 @@
 
 module.exports = {
   before: {
-    all: [ ],
+    all: [],
     find: [],
     get: [],
     create: [],

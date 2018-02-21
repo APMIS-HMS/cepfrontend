@@ -36,7 +36,7 @@ class Service {
             if (type === 'admitPatient') {
                 // Admit patient into the selected ward.
                 // Get the patient from the inpatientwaitinglists.
-                this.app.service('inpatientwaitinglists').find({
+                app.service('inpatientwaitinglists').find({
                     query: {
                         'facilityId._id': facilityId,
                         'patientId._id': patientId,
@@ -48,8 +48,7 @@ class Service {
                         inPatientWaiting.data[0].admittedDate = new Date();
 
                         // Update the inpatientWaitingList.
-                        this.app.service('inpatientwaitinglists').update(inPatientWaiting.data[0]._id, inPatientWaiting.data[0]).then(inPatientWaitingUpdated => {
-
+                        app.service('inpatientwaitinglists').update(inPatientWaiting.data[0]._id, inPatientWaiting.data[0]).then(inPatientWaitingUpdated => {
                             // Delete Items that are not relevant in the room
                             delete inPatientWaitingUpdated.patientId.personDetails.countryItem;
                             delete inPatientWaitingUpdated.patientId.personDetails.nationalityObject;
@@ -82,9 +81,9 @@ class Service {
                             };
 
                             // Create inpatient
-                            this.app.service('inpatients').create(payload).then(inPatient => {
+                            app.service('inpatients').create(payload).then(inPatient => {
                                 // Update the wardAdmissionService
-                                this.app.service('warddetails').find({
+                                app.service('warddetails').find({
                                     query: { 'facilityId._id': inPatient.facilityId._id }
                                 }).then(wardDetails => {
                                     // Delete the patient from the room and bed
@@ -114,8 +113,7 @@ class Service {
                                     }
 
                                     // Update wardDetails.
-                                    this.app.service('warddetails').update(wardDetails.data[0]._id, wardDetails.data[0]).then(wardDetailsUpdate => {
-
+                                    app.service('warddetails').update(wardDetails.data[0]._id, wardDetails.data[0]).then(wardDetailsUpdate => {
                                         res.jsend.success(wardDetailsUpdate);
                                     }).catch(err => {
                                         res.jsend.error(err);
@@ -164,7 +162,7 @@ class Service {
                             let location = wardDetails.data[0].locations[i];
                             // Remove the patient from the current room.
                             if (wardId === location.minorLocationId._id) {
-                                let j = location.rooms.length
+                                let j = location.rooms.length;
                                 while (j--) {
                                     let loopRoom = location.rooms[j];
                                     if (prevRoom._id == loopRoom._id) {
@@ -208,7 +206,6 @@ class Service {
 
                         // Update wardDetails.
                         app.service('warddetails').update(wardDetails.data[0]._id, wardDetails.data[0]).then(wardDetailsUpdate => {
-
                             if (serviceId !== undefined || serviceId !== null || serviceId !== '') {
                                 // Get the current price for the ward
                                 app.service('facilityprices').get(serviceId).then(servicePrice => {

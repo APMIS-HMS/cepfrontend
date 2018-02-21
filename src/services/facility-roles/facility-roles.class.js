@@ -127,8 +127,8 @@ class Service {
         //     }
         //   });
         // });
-
-        data.roles.forEach(indx => {
+        const roleCount = selectedUser.data[0].userRoles.length;
+        data.roles.forEach((indx, i) => {
             if (index > -1) {
                 selectedUser.data[0].userRoles[index].roles.forEach(ind => {
                     if (ind != indx) {
@@ -144,16 +144,46 @@ class Service {
                     userRole.roles.push(indx);
                     selectedUser.data[0].userRoles.push(userRole);
                 } else {
-                    selectedUser.data[0].userRoles[0].roles.push(indx);
+                    // selectedUser.data[0].userRoles[0].roles.push(indx);
+                    if (i === 0) {
+                        let userRole = {
+                            facilityId: data.facilityId,
+                            roles: []
+                        };
+                        userRole.roles.push(indx);
+                        selectedUser.data[0].userRoles.push(userRole);
+                    } else {
+                        selectedUser.data[0].userRoles[roleCount].roles.push(indx);
+                    }
                 }
             }
         });
+
+        if (data.rolesRemoved.length > 0) {
+            const roles = selectedUser.data[0].userRoles[index].roles;
+            var l = data.rolesRemoved.length;
+            while (l--) {
+                const role = data.rolesRemoved[l];
+                selectedUser = this.removeRole(selectedUser, role, index);
+            }
+        }
 
         let updatedUser = await usersService.patch(selectedUser.data[0]._id, {
             userRoles: selectedUser.data[0].userRoles
         });
 
         return updatedUser;
+    }
+
+    removeRole(selectedUser, role, index) {
+        selectedUser.data[0].userRoles[index].roles.forEach((rol, i) => {
+            if (rol.toString() == role.toString()) {
+                selectedUser.data[0].userRoles[index].roles.splice(i, 1);
+                this.removeRole(selectedUser, role, index);
+            }
+        });
+
+        return selectedUser;
     }
 
     update(id, data, params) {
