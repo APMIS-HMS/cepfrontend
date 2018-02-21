@@ -1,4 +1,4 @@
-import { AuthFacadeService } from "app/system-modules/service-facade/auth-facade.service";
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import {
   Component,
   OnInit,
@@ -7,22 +7,22 @@ import {
   OnChanges,
   OnDestroy,
   Input
-} from "@angular/core";
-import { FormControl } from "@angular/forms";
+} from '@angular/core';
+import { FormControl } from '@angular/forms';
 import {
   FacilitiesService,
   EmployeeService,
   PersonService
-} from "../../../../../services/facility-manager/setup/index";
-import { Facility, Employee } from "../../../../../models/index";
-import { CoolLocalStorage } from "angular2-cool-storage";
-import { Router, ActivatedRoute } from "@angular/router";
-import { ToastsManager } from "ng2-toastr/ng2-toastr";
-import { SystemModuleService } from "app/services/module-manager/setup/system-module.service";
+} from '../../../../../services/facility-manager/setup/index';
+import { Facility, Employee } from '../../../../../models/index';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 @Component({
-  selector: "app-empmanager-homepage",
-  templateUrl: "./empmanager-homepage.component.html",
-  styleUrls: ["./empmanager-homepage.component.scss"]
+  selector: 'app-empmanager-homepage',
+  templateUrl: './empmanager-homepage.component.html',
+  styleUrls: ['./empmanager-homepage.component.scss']
 })
 export class EmpmanagerHomepageComponent
   implements OnInit, OnDestroy, OnChanges {
@@ -88,7 +88,7 @@ export class EmpmanagerHomepageComponent
   }
 
   ngOnInit() {
-    this.authFacadeService.getLogingEmployee().then((payload:any)=>{
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
       console.log(payload);
     });
     /* this.route.data.subscribe(data => {
@@ -120,10 +120,10 @@ export class EmpmanagerHomepageComponent
   }
   navEpDetail(val) {
     this.router
-      .navigate(["/dashboard/facility/employees", val._id])
+      .navigate(['/dashboard/facility/employees', val._id])
       .then(result => {
         // this.employeeService.announceEmployee(val);
-        this.locker.setObject("selectedEmployee", val);
+        this.locker.setObject('selectedEmployee', val);
       });
   }
   getByDepartment(departmentId: string) {

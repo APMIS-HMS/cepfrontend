@@ -30,9 +30,9 @@ export class HmoListComponent implements OnInit {
   newHMO = false;
 
   apmisLookupUrl = 'facilities';
-  apmisLookupText = "";
+  apmisLookupText = '';
   apmisLookupQuery = {};
-  apmisLookupDisplayKey = "name";
+  apmisLookupDisplayKey = 'name';
   apmisLookupOtherKeys = [];
 
   excelFile: any;
@@ -155,7 +155,8 @@ export class HmoListComponent implements OnInit {
   submitExcel(e, hmo) {
     this.ev = e;
     this.HMO = hmo;
-    this.systemModuleService.announceSweetProxy('You are trying to upload an excel file. Please make sure it conforms with the accepted excel sheet format', 'question', this);
+    this.systemModuleService.announceSweetProxy
+      ('You are trying to upload an excel file. Please make sure it conforms with the accepted excel sheet format', 'question', this);
   }
   sweetAlertCallback(result) {
     if (result.value) {
@@ -165,7 +166,9 @@ export class HmoListComponent implements OnInit {
   }
   upload(e, hmo) {
     const target: DataTransfer = <DataTransfer>(e.target);
-    if (target.files.length !== 1) throw new Error('Cannot use multiple files');
+    if (target.files.length !== 1) {
+      throw new Error('Cannot use multiple files');
+    }
     const reader: FileReader = new FileReader();
     reader.onload = (e: any) => {
       /* read workbook */
@@ -177,8 +180,8 @@ export class HmoListComponent implements OnInit {
       const ws: XLSX.WorkSheet = wb.Sheets[wsname];
 
       /* save data */
-      let datas = <AOA>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
-      var data = datas.filter(function (x) { // Removing empty rows from the array.
+      const datas = <AOA>(XLSX.utils.sheet_to_json(ws, { header: 1 }));
+      const data = datas.filter(function (x) { // Removing empty rows from the array.
         return x.length;
       });
       this.finalExcelFileUpload(data, hmo);
@@ -187,25 +190,25 @@ export class HmoListComponent implements OnInit {
   }
 
   finalExcelFileUpload(data, hmo?) {
-    var enrolleeList = [];
+    const enrolleeList = [];
     this.hmoService.find({
       query: {
         facilityId: this.selelctedFacility._id
       }
     }).then(payload => {
-      let hmoData = payload.data[0].hmos.filter(x => x.hmo == hmo._id);
+      const hmoData = payload.data[0].hmos.filter(x => x.hmo === hmo._id);
 
       const index = payload.data[0].hmos.findIndex(x => x.hmo === hmo._id);
-      let facHmo = payload.data[0].hmos[index];
+      const facHmo = payload.data[0].hmos[index];
 
-      let currentDate = new Date();
-      let prevMonth = currentDate.getMonth();
-      let year = currentDate.getFullYear();
-      let dataLength = data.length - 1;
-      var rowObj: any = <any>{};
-      let lastMonth: boolean = false;
+      const currentDate = new Date();
+      const prevMonth = currentDate.getMonth();
+      const year = currentDate.getFullYear();
+      const dataLength = data.length - 1;
+      let rowObj: any = <any>{};
+      let lastMonth = false;
       let lastMonthEnrollees;
-      var lastMonthEnrolleesListIndex = payload.data[0].hmos[index].enrolleeList.findIndex(x => x.month == prevMonth && x.year == year);
+      const lastMonthEnrolleesListIndex = payload.data[0].hmos[index].enrolleeList.findIndex(x => x.month == prevMonth && x.year == year);
 
       if (hmoData[0].enrolleeList.length >= 1) {
         lastMonthEnrollees = hmoData[0].enrolleeList.filter(x => x.month == prevMonth && x.year == year);
@@ -213,8 +216,8 @@ export class HmoListComponent implements OnInit {
 
         if (lastMonthEnrollees.length > 0) { lastMonthEnrLen = lastMonthEnrollees[0].enrollees.length; }
 
-        let lastMonthIndex = hmoData[0].enrolleeList.findIndex(x => x.month == prevMonth && x.year == year);
-        let presentMonthEnrollees = hmoData[0].enrolleeList.filter(x => x.month == prevMonth && x.year == year);
+        const lastMonthIndex = hmoData[0].enrolleeList.findIndex(x => x.month === prevMonth && x.year === year);
+        const presentMonthEnrollees = hmoData[0].enrolleeList.filter(x => x.month === prevMonth && x.year === year);
 
 
         if (lastMonthEnrollees.length > 0) {
@@ -222,10 +225,10 @@ export class HmoListComponent implements OnInit {
           lastMonth = true;
 
           for (let m = 0; m < data.length; m++) {
-            let enr = lastMonthEnrollees[0].enrollees.filter(x => x.filNo == data[dataLength][4]);
+            const enr = lastMonthEnrollees[0].enrollees.filter(x => x.filNo === data[dataLength][4]);
             if (Boolean(data[m][0])) {
-              if (enr.length == 0) {
-                var rowObj: any = <any>{};
+              if (enr.length === 0) {
+                const rowObj: any = <any>{};
                 rowObj.serial = data[m][0];
                 rowObj.surname = data[m][1];
                 rowObj.firstname = data[m][2];
@@ -237,29 +240,29 @@ export class HmoListComponent implements OnInit {
                 rowObj.type = data[m][8];
                 rowObj.date = this.excelDateToJSDate(data[m][9]);
                 rowObj.status = 'active';
-                //thisMonth = true;
+                // thisMonth = true;
               }
             }
             enrolleeList.push(rowObj);
           }
 
-          let enrolleeItem = {
+          const enrolleeItem = {
             month: new Date().getMonth() + 1,
             year: new Date().getFullYear(),
             enrollees: enrolleeList
           }
 
           const index = payload.data[0].hmos.findIndex(x => x.hmo === hmo._id);
-          let facHmo = payload.data[0].hmos[index];
+          const facHmo = payload.data[0].hmos[index];
           facHmo.enrolleeList.push(enrolleeItem);
           payload.data[0].hmos[index] = facHmo;
 
         } else {
           for (let m = 0; m < data.length; m++) {
-            let enr = hmoData[0].enrolleeList[0].enrollees.filter(x => x.filNo == data[m][4]);
+            const enr = hmoData[0].enrolleeList[0].enrollees.filter(x => x.filNo == data[m][4]);
             if (Boolean(data[m][0])) {
               if (enr.length == 0) {
-                var rowObjs: any = <any>{};
+                let rowObjs: any = <any>{};
                 rowObjs.serial = data[m][0];
                 rowObjs.surname = data[m][1];
                 rowObjs.firstname = data[m][2];
@@ -284,7 +287,7 @@ export class HmoListComponent implements OnInit {
         console.log(data, hmoData);
         for (let m = 0; m < data.length; m++) {
           if (Boolean(data[m][0])) {
-            var rowObj: any = <any>{};
+            let rowObj: any = <any>{};
             rowObj.serial = data[m][0];
             rowObj.surname = data[m][1];
             rowObj.firstname = data[m][2];
@@ -299,13 +302,13 @@ export class HmoListComponent implements OnInit {
             enrolleeList.push(rowObj);
           }
         }
-        let enrolleeItem = {
+        const enrolleeItem = {
           month: new Date().getMonth() + 1,
           year: new Date().getFullYear(),
           enrollees: enrolleeList
         }
         const index = payload.data[0].hmos.findIndex(x => x.hmo === hmo._id);
-        let facHmo = payload.data[0].hmos[index];
+        const facHmo = payload.data[0].hmos[index];
         facHmo.enrolleeList.push(enrolleeItem);
         payload.data[0].hmos[index] = facHmo;
       }
@@ -313,24 +316,26 @@ export class HmoListComponent implements OnInit {
       this.hmoService.patch(payload.data[0]._id, {
         hmos: payload.data[0].hmos
       }, {}).then(hmoPayload => {
-        if(lastMonth === true){
-          let noChangeEnrollees = lastMonthEnrollees[0].enrollees.filter(x => new Date(x.updatedAt).getMonth() == prevMonth);
+        if (lastMonth === true) {
+          const noChangeEnrollees = lastMonthEnrollees[0].enrollees.filter(x => new Date(x.updatedAt).getMonth() === prevMonth);
           if (noChangeEnrollees.length > 0) {
             for (let n = 0; n < noChangeEnrollees.length; n++) {
-              if(Boolean(noChangeEnrollees)){
-                
-                let noChangeIndex = payload.data[0].hmos[index].enrolleeList[lastMonthEnrolleesListIndex].enrollees.findIndex(x => x.filNo == noChangeEnrollees[n].filNo);
+              if (Boolean(noChangeEnrollees)) {
+
+                const noChangeIndex = payload.data[0].hmos[index].enrolleeList[lastMonthEnrolleesListIndex]
+                  .enrollees.findIndex(x => x.filNo === noChangeEnrollees[n].filNo);
                 payload.data[0].hmos[index].enrolleeList[lastMonthEnrolleesListIndex].enrollees[noChangeIndex].status = 'inactive';
                 payload.data[0].hmos[index].enrolleeList[lastMonthEnrolleesListIndex].enrollees[noChangeIndex].updatedAt = Date.now();
-                
+
                 this.hmoService.patch(payload.data[0]._id, {
                   hmos: payload.data[0].hmos
                 }, {}).then(noChangPayload => {
-                  this.systemModuleService.announceSweetProxy(`You have successfully uploaded ${data.length} enrollees to ${hmo.name}`, 'success');
+                  this.systemModuleService.announceSweetProxy
+                    (`You have successfully uploaded ${data.length} enrollees to ${hmo.name}`, 'success');
                 });
               }
             }
-          } 
+          }
         }
       });
 
@@ -341,15 +346,15 @@ export class HmoListComponent implements OnInit {
   }
 
   getEnrolleeCount(hmo) {
-    let retCount = 0;
-    let index = this.hmoEnrolleList.findIndex(x => x.hmo === hmo);
+    const retCount = 0;
+    const index = this.hmoEnrolleList.findIndex(x => x.hmo === hmo);
     if (index > -1) {
       return this.hmoEnrolleList[index].enrolles.length;
     }
     return retCount;
   }
   excelDateToJSDate(date) {
-    //return new Date(Math.round((date - 25569) * 86400 * 1000));
+    // return new Date(Math.round((date - 25569) * 86400 * 1000));
     return new Date(date);
   }
   checkHmo() {
@@ -366,7 +371,7 @@ export class HmoListComponent implements OnInit {
         this.systemModuleService.announceSweetProxy('Please select an HMO to continue!', 'warning');
         this.systemModuleService.off();
       } else {
-        let newHmo = {
+        const newHmo = {
           hmo: this.selectedHMO._id,
           enrolleeList: []
         }
