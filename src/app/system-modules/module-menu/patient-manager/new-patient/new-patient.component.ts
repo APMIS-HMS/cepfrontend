@@ -478,7 +478,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     getCashPlans() {
         this._facilitiesServiceCategoryService.find({
             query:
-                { 'categories.name': "Medical Records", facilityId: this.facility._id }
+                { 'categories.name': "Appointment", facilityId: this.facility._id }
         }).then(payload => {
             //this.filterOutCategory(payload);
             //this.categories = [];
@@ -1002,7 +1002,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                                     paymentCompleted: false,
                                     paymentStatus: [],
                                     payments: []
-    
+
                                 }
                             ]
                         }
