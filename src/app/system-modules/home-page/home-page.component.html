@@ -5,7 +5,7 @@
     <div class="side-sect">
       <div class="pp-card shadow-grey">
     
-        <i class="fa fa-pencil-square-o card-edit" aria-hidden="true"></i>
+        <i (click)="basicDataUpdate_show()" class="fa fa-pencil-square-o card-edit" aria-hidden="true"></i>
     
         <div class="card-seperator">
           <div class="patient-img-wrap">
@@ -129,4 +129,7 @@
 
 <div *ngIf="basicData_popup" class="modal-overlay"> 
     <app-biodata-popup (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-biodata-popup>
+</div>
+<div *ngIf="basicData_update" class="modal-overlay"> 
+  <app-biodata-update (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-biodata-update>
 </div>
