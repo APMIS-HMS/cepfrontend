@@ -26,7 +26,6 @@ class FundWalletService {
     }
 
     async create(data, params) {
-
         const facilityService = this.app.service('facilities');
         const employeeService = this.app.service('employees');
         const peopleService = this.app.service('people');
