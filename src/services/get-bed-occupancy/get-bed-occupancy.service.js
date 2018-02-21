@@ -2,20 +2,21 @@
 const createService = require('./get-bed-occupancy.class.js');
 const hooks = require('./get-bed-occupancy.hooks');
 
-module.exports = function (app) {
-  
-  const paginate = app.get('paginate');
+module.exports = function(app) {
 
-  const options = {
-    name: 'get-bed-occupancy',
-    paginate
-  };
+    const paginate = app.get('paginate');
 
-  // Initialize our service with any options it requires
-  app.use('/get-bed-occupancy', createService(options));
+    const options = {
+        name: 'get-bed-occupancy',
+        paginate,
+        app: app
+    };
 
-  // Get our initialized service so that we can register hooks and filters
-  const service = app.service('get-bed-occupancy');
+    // Initialize our service with any options it requires
+    app.use('/get-bed-occupancy', createService(options));
 
-  service.hooks(hooks);
+    // Get our initialized service so that we can register hooks and filters
+    const service = app.service('get-bed-occupancy');
+
+    service.hooks(hooks);
 };
