@@ -9,11 +9,8 @@ class Service {
   }
 
   async find(params) {
-    // console.log(params.query);
     const purchaseService = this.app.service('purchase-entries');
-    console.log(1);
     const productsService = this.app.service('products');
-    console.log(2);
     const purchase = await purchaseService.find({
       query: {
         facilityId: params.query.facilityId,
@@ -35,7 +32,6 @@ class Service {
         }
       }
     }
-    console.log(purchase);
     return purchase;
   }
 
