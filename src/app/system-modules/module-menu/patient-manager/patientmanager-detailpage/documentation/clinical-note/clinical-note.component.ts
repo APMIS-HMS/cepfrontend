@@ -186,7 +186,6 @@ export class ClinicalNoteComponent implements OnInit {
       );
   }
   setSelectedForm(form) {
-    console.log(form);
     if (typeof form === "object" && form !== null) {
       this.selectedForm = form;
       this.showDocument = false;
