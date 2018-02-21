@@ -41,7 +41,6 @@ export class ReceiveStockComponent implements OnInit {
     private authFacadeService: AuthFacadeService
   ) {
     this.employeeService.checkInAnnounced$.subscribe(payload => {
-      console.log(payload);
       if (payload.typeObject !== undefined) {
         this.checkingStore = payload.typeObject;
         this.getTransfers();
@@ -56,7 +55,6 @@ export class ReceiveStockComponent implements OnInit {
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
       this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn == true);
-      console.log(this.checkingStore);
       this.route.data.subscribe(data => {
         data['loginEmployee'].subscribe((payload) => {
           this.loginEmployee = payload.loginEmployee;
@@ -105,9 +103,7 @@ export class ReceiveStockComponent implements OnInit {
   slideDetailsShow(receive, reload = true) {
     this.systemModuleService.on();
     if (reload === true) {
-      console.log("Am in slider");
       this.inventoryTransferService.getItemDetails(receive._id, {}).subscribe(payload => {
-        console.log(payload);
         if (payload.storeId != undefined) {
           const that = this;
           this.selectedInventoryTransfer = payload;

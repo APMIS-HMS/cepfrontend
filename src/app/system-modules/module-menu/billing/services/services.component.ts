@@ -70,11 +70,9 @@ export class ServicesComponent implements OnInit {
       }).
         then(payload => {
           this.filterOutService(payload);
-          console.log(payload);
         }));
 
     subscribeForService.subscribe((payload: any) => {
-      console.log(payload);
     });
 
 
@@ -85,7 +83,6 @@ export class ServicesComponent implements OnInit {
         query:
           { search: this.searchTag.value, facilityId: this.facility._id }
       }).then(payload => {
-          console.log(payload)
           this.tags = payload.data;
         }));
 
@@ -94,7 +91,6 @@ export class ServicesComponent implements OnInit {
   }
 
   selectCategory(category) {
-    console.log(category);
     this.selectedServices = category.services;
   }
 
@@ -160,7 +156,6 @@ export class ServicesComponent implements OnInit {
     // }).then(payload => {
     //   this.categories = [];
     //   let goo = [];
-    //   console.log(payload);
     //   payload.data.forEach((itemi, i) => {
     //     itemi.categories.forEach((itemj, j) => {
     //       if (itemi.facilityId !== undefined) {
@@ -186,9 +181,7 @@ export class ServicesComponent implements OnInit {
     //     if (this.globalCategoriesToBePaginated.length <= this.globalCategories.length) {
     //       this.showLoadMore = false;
     //     }
-    //     console.log(this.globalCategoriesToBePaginated);
     //     this.globalCategories = this.paginate(this.globalCategoriesToBePaginated, this.pageSize, this.index);
-    //     console.log(this.globalCategories);
     //     this.selectCategory(this.categories[0]);
     //   });
     // });
@@ -245,11 +238,9 @@ export class ServicesComponent implements OnInit {
       this.showLoadMore = false;
     } else {
       let goo = this.paginate(this.globalCategoriesToBePaginated, this.pageSize, this.index);
-      console.log(goo);
       this.globalCategories.push(...goo);
       this.index++;
     }
-    console.log(this.index);
   }
 
   showSearch() {

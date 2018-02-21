@@ -75,14 +75,11 @@ export class PurchaseEntryComponent implements OnInit {
     this.route.params.subscribe(params => {
       const id = params['id'];
       this.orderId = id;
-      console.log("Dont giveup");
-      console.log(this.orderId);
       this.getAllProducts();
       if (this.orderId !== undefined) {
         this.getOrderDetails(this.orderId, false);
       }
       const invoiceId = params['invoiceId'];
-      console.log(invoiceId);
       if (invoiceId !== undefined) {
         this.invoiceId = invoiceId;
         this.checkAll.setValue(true);
@@ -147,7 +144,6 @@ export class PurchaseEntryComponent implements OnInit {
     });
 
     this.frm_purchaseOrder.controls['orderId'].valueChanges.subscribe(value => {
-      console.log(value);
       if (value !== undefined && value !== null) {
         this.addNewProductTables();
         this.getOrderDetails(value, true);
@@ -171,7 +167,6 @@ export class PurchaseEntryComponent implements OnInit {
     });
   }
   getMyInventory() {
-    console.log(this.frm_purchaseOrder.controls['store'].value);
     this.inventoryService.findList({
       query: {
         facilityId: this.selectedFacility._id,
@@ -179,7 +174,6 @@ export class PurchaseEntryComponent implements OnInit {
         storeId: this.frm_purchaseOrder.controls['store'].value
       }
     }).then(payload => {
-      console.log(payload.data);
       this.products = [];
       this.getProductTables(this.products);
       payload.data.forEach((item, i) => {
@@ -200,7 +194,6 @@ export class PurchaseEntryComponent implements OnInit {
       this.frm_purchaseOrder.controls['orderId'].setValue(payload.orderId);
       this.frm_purchaseOrder.controls['invoiceNo'].setValue(payload.invoiceNumber);
       this.frm_purchaseOrder.controls['amount'].setValue(payload.invoiceAmount);
-      console.log(payload.products);
       payload.products.forEach((item, i) => {
         this.inventoryService.find({
           query: {
@@ -252,7 +245,6 @@ export class PurchaseEntryComponent implements OnInit {
       if (!isHasVal) {
         this.frm_purchaseOrder.controls['orderId'].setValue(payload._id);
       }
-      console.log(payload.orderedProducts);
       payload.orderedProducts.forEach((item, i) => {
 
         this.inventoryService.find({
@@ -303,17 +295,13 @@ export class PurchaseEntryComponent implements OnInit {
     });
   }
   getAllProducts() {
-    console.log("Am here to stay so respect your self");
     this.productService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
-      console.log(99999999999);
-      console.log(payload);
       this.products = payload.data;
       this.getProductTables(this.products);
     });
   }
   getProductTables(products: any[]) {
     this.productTables = products;
-    console.log(this.productTables);
     this.superGroups = [];
     let group: any[] = [];
 
@@ -348,11 +336,7 @@ export class PurchaseEntryComponent implements OnInit {
 
       }
     }
-    console.log(this.superGroups);
-    console.log(this.invoiceId);
     if (this.superGroups.length > 0 && this.invoiceId !== undefined) {
-      console.log(this.invoiceId);
-      // this.getInvoiceDetails(this.invoiceId);
     }
   }
   getCostSummary(value) {
@@ -472,9 +456,7 @@ export class PurchaseEntryComponent implements OnInit {
   }
 
   create(valid, value) {
-    console.log(valid);
     if (valid) {
-      console.log(this.selectedPurchaseEntry);
       /* purchase entry object initialization*/
       if (this.selectedPurchaseEntry._id !== undefined) {
         const purchaseEntry = this.selectedPurchaseEntry;

@@ -64,7 +64,6 @@ export class NewPurchaseOrderComponent implements OnInit {
     private employeeService: EmployeeService,
     private inventoryService: InventoryService) {
     this.employeeService.checkInAnnounced$.subscribe(payload => {
-      console.log(payload);
       if (payload !== undefined) {
         this.stores = [];
         if (payload.typeObject !== undefined) {
@@ -132,7 +131,6 @@ export class NewPurchaseOrderComponent implements OnInit {
       this.frm_purchaseOrder.controls['supplier'].setValue(payload.supplierId);
       this.frm_purchaseOrder.controls['deliveryDate'].setValue(payload.expectedDate);
       this.frm_purchaseOrder.controls['desc'].setValue(payload.remark);
-      console.log(payload.orderedProducts);
       payload.orderedProducts.forEach((item, i) => {
         this.superGroups.forEach((items, s) => {
           items.forEach((itemg, g) => {
@@ -235,7 +233,6 @@ export class NewPurchaseOrderComponent implements OnInit {
   getAllProducts() {
     this.systemModuleService.on();
     this.productService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
-      console.log(payload);
       this.products = payload.data;
       this.getProductTables(this.products);
       this.systemModuleService.off();
@@ -257,7 +254,6 @@ export class NewPurchaseOrderComponent implements OnInit {
         obj = this.mergeTable(obj);
         group.push(obj);
         this.superGroups.push(group);
-        console.log(this.superGroups);
       } else {
         if (counter < 1) {
           let obj = <any>{ checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id };
@@ -317,7 +313,6 @@ export class NewPurchaseOrderComponent implements OnInit {
           { facilityId: this.selectedFacility._id, name: '', storeId: this.checkingObject.storeId }//, $limit: 200 }
       })
         .then(payload => {
-          console.log(payload);
           let products = payload.data.filter(x => x.availableQuantity == 0);
           products.forEach(element => {
             this.products.push(element.productObject);
@@ -390,7 +385,6 @@ export class NewPurchaseOrderComponent implements OnInit {
         this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
         this.systemModuleService.announceSweetProxy('Purchase order ' + payload.purchaseOrderNumber + ' was created', 'success');
       }, error => {
-        console.log(error);
         this.systemModuleService.announceSweetProxy('Failed to create purchase order', 'error');
       });
     } else {

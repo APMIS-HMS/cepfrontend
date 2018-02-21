@@ -43,11 +43,9 @@ export class TransactionHistoryComponent implements OnInit {
       let id = params['id'];
       if (id !== undefined) {
         this.invoiceService.getInvoice(id, { query: { supplierId: id, facilityId: this.selectedFacility._id } }).subscribe(value => {
-          console.log(value);
           this.invoices = value;
           this.selected_supplier = value.supplier;
         }, error => {
-          console.log(error);
         });
       }
     });
@@ -83,7 +81,6 @@ export class TransactionHistoryComponent implements OnInit {
   }
 
   onRefreshHistory(value) {
-    console.log(value);
     this.getHistory();
   }
 }

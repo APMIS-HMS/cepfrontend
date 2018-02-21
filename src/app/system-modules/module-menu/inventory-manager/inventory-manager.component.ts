@@ -42,17 +42,14 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     const auth: any = this.locker.getObject('auth');
     this.authFacadeService.getLogingEmployee().then((payload:any) =>{
     this.loginEmployee = payload;
-    console.log(this.loginEmployee);
     let checkIn = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
     this.checkedInStore = checkIn.store;
     if(Object.keys(checkIn).length > 0){
-      console.log(checkIn);
     }
     if ((this.loginEmployee.storeCheckIn === undefined
       || this.loginEmployee.storeCheckIn.length === 0)) {
       this.modal_on = true;
     } else {
-      console.log("STREET");
       let isOn = false;
       this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
         if (itemr.isDefault === true) {
@@ -100,7 +97,6 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     this.modal_on = false;
   }
   onChangeCheckedIn() {
-    console.log("Click once");
     this.modal_on = true;
     this.contentSecMenuShow = false;
   }

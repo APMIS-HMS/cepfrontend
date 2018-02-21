@@ -93,7 +93,6 @@ export class ProductManagerLandingpageComponent implements OnInit {
   }
 
   onRefreshProductList(value) {
-    console.log(value);
     this.getProducts();
   }
 

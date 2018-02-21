@@ -56,7 +56,6 @@ export class PurchaseOrderComponent implements OnInit {
   }
   getPurchaseOrders() {
     this.purchaseOrderService.findOrder({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
-      console.log(payload);
       this.orders = payload.data;
     });
   }

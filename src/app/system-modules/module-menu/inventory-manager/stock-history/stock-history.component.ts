@@ -43,7 +43,6 @@ export class StockHistoryComponent implements OnInit {
     private authFacadeService: AuthFacadeService
   ) {
     this.employeeService.checkInAnnounced$.subscribe(payload => {
-      console.log(payload);
       if (payload != undefined) {
         this.checkingStore = payload;
         this.getTransfers();
@@ -56,14 +55,12 @@ export class StockHistoryComponent implements OnInit {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.checkingStore = payload.storeCheckIn.find(x => x.isOn == true);
-      console.log(this.checkingStore);
       this.getTransfers();
     });
 
   }
   getTransfers() {
     this.systemModuleService.on();
-    console.log(this.checkingStore.storeId);
     this.inventoryTransferService.findTransferHistories({
       query: {
         facilityId: this.selectedFacility._id,
@@ -74,10 +71,8 @@ export class StockHistoryComponent implements OnInit {
       this.systemModuleService.off();
       if (payload.data != undefined) {
         this.transferHistories = payload.data;
-        console.log(this.transferHistories);
       }
     }, error => {
-      console.log(error);
       this.systemModuleService.off();
     });
   }

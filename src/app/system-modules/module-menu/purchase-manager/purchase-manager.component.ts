@@ -39,7 +39,6 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
     // this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.authFacadeService.getLogingEmployee().then((payload:any) =>{
       this.loginEmployee = payload;
-      console.log(this.loginEmployee);
       if ((this.loginEmployee.storeCheckIn === undefined
         || this.loginEmployee.storeCheckIn.length === 0)) {
         this.modal_on = true;

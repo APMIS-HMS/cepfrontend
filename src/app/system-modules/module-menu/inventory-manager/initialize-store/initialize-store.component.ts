@@ -61,7 +61,6 @@ export class InitializeStoreComponent implements OnInit {
         this._productService.find({ query: { facilityId: this.selectedFacility._id, name: { $regex: por, '$options': 'i' } } }).then(payload => {
           this.products = payload.data;
         }, err => {
-          console.log(err);
         });
       })
     this.getProducts();
@@ -123,7 +122,6 @@ export class InitializeStoreComponent implements OnInit {
         "product": {},
         "storeId": 0
       }
-      console.log(value);
       value.initproduct.forEach(element => {
         element.availableQuantity = element.quantity;
       });
@@ -131,9 +129,7 @@ export class InitializeStoreComponent implements OnInit {
       batches.product = product;
       batches.storeId = this.checkingObject.storeId;
       this.isProcessing = true;
-      console.log(batches);
       this._inventoryInitialiserService.create(batches).then(result => {
-        console.log(result);
         if (result != null) {
           if (result.inventory != undefined) {
             this.getProducts();

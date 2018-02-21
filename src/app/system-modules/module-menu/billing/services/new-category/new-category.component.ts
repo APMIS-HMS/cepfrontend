@@ -36,7 +36,6 @@ export class NewCategoryComponent implements OnInit {
       this.btnTitle = 'UPDATE CATEGORY';
       this.frmNewcat.controls['catName'].setValue(this.selectedCategory.name);
     };
-    console.log(this.categoryBool);
   }
   addNew() {
     this.frmNewcat = this.formBuilder.group({

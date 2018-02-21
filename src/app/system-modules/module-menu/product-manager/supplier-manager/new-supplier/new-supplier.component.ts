@@ -56,7 +56,6 @@ export class NewSupplierComponent implements OnInit {
 
     this.frm_newSupplier.controls['frmCountry'].valueChanges.subscribe(country => {
       this._countryServiceFacade.getOnlyStates(country).then((payload: any) => {
-        console.log("Am here");
         this.states = payload;
       }).catch(error => {
 
@@ -67,7 +66,6 @@ export class NewSupplierComponent implements OnInit {
   populateSupplier() {
     if (this.selectedSupplier._id !== undefined) {
       this.btnLabel = "Update";
-      console.log(this.selectedSupplier.address);
       this.frm_newSupplier.controls['name'].setValue(this.selectedSupplier.name);
       this.frm_newSupplier.controls['email'].setValue(this.selectedSupplier.email);
       this.frm_newSupplier.controls['frmContact'].setValue(this.selectedSupplier.contact);
@@ -90,18 +88,13 @@ export class NewSupplierComponent implements OnInit {
     this._countryServiceFacade.getOnlyCountries().then((payload: any) => {
       this.countries = payload;
     }).catch(error => {
-      console.log(error);
     });
   }
 
   autoCompleteCallback(selectedData: any) {
-    console.log(selectedData);
     if (selectedData.response) {
       let res = selectedData;
-      console.log("A-A");
       this.selectedLocation = res.data;
-      console.log("A-B");
-      console.log(res.data.address_components[0].types[0]);
       if (res.data.address_components[0].types[0] === 'route') {
         let streetAddress = res.data.formatted_address;
         let city = res.data.address_components[1].long_name;
@@ -163,7 +156,6 @@ export class NewSupplierComponent implements OnInit {
           this._systemModuleService.announceSweetProxy('Supplier created successfully', 'success', this);
         }, err => {
           this._systemModuleService.announceSweetProxy('There was an error while creating supplier, try again!', 'error');
-          console.log(err);
           this._systemModuleService.off();
         });
       } else {
@@ -190,7 +182,6 @@ export class NewSupplierComponent implements OnInit {
     }
   }
   sweetAlertCallback(result) {
-    console.log(result);
     this.refreshSupplier.emit(true);
   }
 }

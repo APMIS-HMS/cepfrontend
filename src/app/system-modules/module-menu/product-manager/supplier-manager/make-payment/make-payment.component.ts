@@ -40,9 +40,7 @@ export class MakePaymentComponent implements OnInit {
       cheque_number: [''],
       transfer_number: ['']
     });
-    console.log(this.selectedInvoice);
     this._authFacadeService.getLogingEmployee().then((res: any) => {
-      // console.log(res);
       this.loginEmployee = res;
     });
 
@@ -57,7 +55,6 @@ export class MakePaymentComponent implements OnInit {
   login(valid) {
     if (valid) {
       this.isDisableBtn = true;
-      console.log(this.selectedInvoice);
       const txn = {
         paidBy: this.loginEmployee._id,
         amount: this.frm_supplierPayment.controls['amount'].value,
@@ -69,13 +66,10 @@ export class MakePaymentComponent implements OnInit {
       if (this.selectedInvoice.transactions === undefined) {
         this.selectedInvoice.transactions = [];
       }
-      console.log(1);
       this.selectedInvoice.transactions.push(txn);
-      console.log(2);
       this.selectedInvoice.transactions.forEach(x => {
         sum += x.amount;
       });
-      console.log(3);
       this.selectedInvoice.amountPaid = sum.toString();
       if (sum >= this.selectedInvoice.invoiceAmount) {
         this.selectedInvoice.paymentCompleted = true;
@@ -85,7 +79,6 @@ export class MakePaymentComponent implements OnInit {
         this.isDisableBtn = true;
         this.paymentItem.emit(true);
       },error=>{
-        console.log(error);
       });
     } else {
       

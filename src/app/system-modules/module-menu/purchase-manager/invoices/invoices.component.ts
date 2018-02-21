@@ -33,7 +33,6 @@ export class InvoicesComponent implements OnInit {
     private route: ActivatedRoute
   ) {
     this.employeeService.checkInAnnounced$.subscribe(payload => {
-      console.log(payload);
       if (payload !== undefined) {
         this.checkingStore = payload;
         if (payload.typeObject !== undefined) {
@@ -48,7 +47,6 @@ export class InvoicesComponent implements OnInit {
     this._purchaseEventEmitter.setRouteUrl('Purchase Invoices');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
-      console.log(payload);
       this.checkingStore = payload.storeCheckIn.find(x => x.isOn == true);
       this.getInvoices();
       this.getSuppliers();
@@ -67,7 +65,6 @@ export class InvoicesComponent implements OnInit {
   }
   getSuppliers() {
     this.supplierService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
-      console.log(payload);
       this.suppliers = payload.data;
     });
   }
@@ -79,13 +76,11 @@ export class InvoicesComponent implements OnInit {
           storeId: this.checkingStore.storeId, $limit: 100
         }
       }).then(payload => {
-        console.log(payload);
         this.invoices = payload.data;
       });
     }
   }
   slideInvoiceDetailsToggle(value, event) {
-    console.log(value);
     this.selectedProduct = value;
     if (this.selectedProduct !== undefined) {
       this.invoiceService.get(this.selectedProduct._id, {}).then(payload => {

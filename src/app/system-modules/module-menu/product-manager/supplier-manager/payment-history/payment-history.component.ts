@@ -13,7 +13,6 @@ export class PaymentHistoryComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    console.log(this.selectedInvoice);
   }
   slideProductDetailsToggle(a, b) {
     this.closeModal.emit(true);
