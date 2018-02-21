@@ -17,10 +17,11 @@ export class MakePaymentComponent implements OnInit {
   loadIndicatorVisible = false;
   payMethod = PaymentChannels;
   loginEmployee: any = <any>{};
+  isDisableBtn = false;
 
   public frm_supplierPayment: FormGroup;
 
-  @Input() selectedInvoice: any = <any>{};
+  @Input() selectedInvoice;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() paymentItem: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -39,8 +40,9 @@ export class MakePaymentComponent implements OnInit {
       cheque_number: [''],
       transfer_number: ['']
     });
+    console.log(this.selectedInvoice);
     this._authFacadeService.getLogingEmployee().then((res: any) => {
-      console.log(res);
+      // console.log(res);
       this.loginEmployee = res;
     });
 
@@ -54,31 +56,41 @@ export class MakePaymentComponent implements OnInit {
 
   login(valid) {
     if (valid) {
+      this.isDisableBtn = true;
       console.log(this.selectedInvoice);
       const txn = {
         paidBy: this.loginEmployee._id,
-        amount: this.frm_supplierPayment.controls['amount'].valueChanges,
-        paymentChannel: this.frm_supplierPayment.controls['payment_type'].valueChanges,
-        cheque: this.frm_supplierPayment.controls['cheque_number'].valueChanges,
-        transactionNumber: this.frm_supplierPayment.controls['transfer_number'].valueChanges
+        amount: this.frm_supplierPayment.controls['amount'].value,
+        paymentChannel: this.frm_supplierPayment.controls['payment_type'].value,
+        cheque: this.frm_supplierPayment.controls['cheque_number'].value,
+        transactionNumber: this.frm_supplierPayment.controls['transfer_number'].value
       }
       let sum = 0;
-      if (this.selectedInvoice.transactions !== undefined) {
+      if (this.selectedInvoice.transactions === undefined) {
         this.selectedInvoice.transactions = [];
       }
+      console.log(1);
       this.selectedInvoice.transactions.push(txn);
+      console.log(2);
       this.selectedInvoice.transactions.forEach(x => {
         sum += x.amount;
       });
-      if (sum >= this.selectedInvoice.amountPaid) {
+      console.log(3);
+      this.selectedInvoice.amountPaid = sum.toString();
+      if (sum >= this.selectedInvoice.invoiceAmount) {
         this.selectedInvoice.paymentCompleted = true;
       }
       this.purchaseEntryService.patch(this.selectedInvoice._id, this.selectedInvoice).then(payload => {
         this.systemModuleService.announceSweetProxy('Payment made', 'success');
+        this.isDisableBtn = true;
         this.paymentItem.emit(true);
+      },error=>{
+        console.log(error);
       });
     } else {
+      
       this.systemModuleService.announceSweetProxy('Missing field required', 'error');
+      this.isDisableBtn = true;
     }
 
   }

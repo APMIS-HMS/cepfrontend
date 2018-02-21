@@ -4,6 +4,7 @@ export interface PurchaseEntry {
     orderId: any;
     invoiceNumber: string;
     amountPaid: string;
+    invoiceAmount:string;
     storeId: string;
     supplierId: string;
     createdBy: string;

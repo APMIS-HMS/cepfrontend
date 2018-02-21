@@ -13,8 +13,18 @@ export class PaymentHistoryComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    console.log(this.selectedInvoice);
   }
   slideProductDetailsToggle(a, b) {
     this.closeModal.emit(true);
+  }
+
+  checkForOutstanding(value) {
+    const val = value.invoiceAmount - value.amountPaid;
+    if (isNaN(val)) {
+      return 0;
+    }else{
+      return val;
+    }
   }
 }

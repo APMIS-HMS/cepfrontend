@@ -34,11 +34,14 @@
                     <tr *ngFor="let details of invoices.data">
                         <td>{{details.deliveryDate | date:'medium'}}</td>
                         <td>{{details.orderObject?.purchaseOrderNumber}}</td>
-                        <td>{{details.amountPaid}}</td>
-                        <td>{{details.amountPaid}}</td>
-                        <td>{{details.amountPaid}}</td>
+                        <td>{{details.invoiceAmount}}</td>
                         <td>
-                            <a (click)="newPaymentShow()" class="payment-link"><span>Make Payment</span></a>
+                            <span *ngIf="details.amountPaid !== undefined">&#8358;{{details.amountPaid}}</span>
+                            <span *ngIf="details.amountPaid === undefined">&#8358;0</span>
+                        </td>
+                        <td>&#8358;{{checkForOutstanding(details)}}</td>
+                        <td>
+                            <a (click)="newPaymentShow(details)" *ngIf="!details.paymentCompleted" class="payment-link"><span>Make Payment</span></a>
                             <a (click)="PaymentHistoryShow(details)" class="payment-link"><span>Payment History</span></a>
                         </td>
                     </tr>

@@ -5,6 +5,7 @@ export interface InventoryTransaction {
     expiryDate: Date;
     costPrice: number;
     quantity: number;
+    availableQuantity:number;
     purchaseEntryId: string;
     purchaseEntryDetailId: string;
     batchTransactions?: BatchTransaction[],
@@ -20,6 +21,7 @@ export interface BatchTransaction {
     preQuantity: number, // Before Operation.
     postQuantity: number, // After Operation.
     quantity: number, // Operational qty.
+    availableQuantity:number;
     comment?: string,
     referenceId?: string, // Dispense id, Transfer id...
     referenceService?: string, // Dispense, Transfer...

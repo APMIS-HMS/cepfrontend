@@ -30,7 +30,7 @@
                 <tr *ngFor="let invoice of invoices">
                     <td>{{invoice.invoiceNumber}}</td>
                     <td>{{invoice.supplierObject?.name}}</td>
-                    <td>&#8358; {{invoice.amountPaid}}</td>
+                    <td>&#8358; {{invoice.invoiceAmount}}</td>
                     <td>
                         <a class="action-btn" (click)="slideInvoiceDetailsToggle(invoice, $event)"><i class="fa fa-eye"></i></a>
                         <!-- <a class="action-btn" (click)="onEditInvoice(invoice)"><i class="fa fa-pencil"></i></a> -->

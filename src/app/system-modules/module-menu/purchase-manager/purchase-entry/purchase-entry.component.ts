@@ -149,6 +149,7 @@ export class PurchaseEntryComponent implements OnInit {
     this.frm_purchaseOrder.controls['orderId'].valueChanges.subscribe(value => {
       console.log(value);
       if (value !== undefined && value !== null) {
+        this.addNewProductTables();
         this.getOrderDetails(value, true);
       }
     });
@@ -198,7 +199,7 @@ export class PurchaseEntryComponent implements OnInit {
       this.frm_purchaseOrder.controls['desc'].setValue(payload.remark);
       this.frm_purchaseOrder.controls['orderId'].setValue(payload.orderId);
       this.frm_purchaseOrder.controls['invoiceNo'].setValue(payload.invoiceNumber);
-      this.frm_purchaseOrder.controls['amount'].setValue(payload.amountPaid);
+      this.frm_purchaseOrder.controls['amount'].setValue(payload.invoiceAmount);
       console.log(payload.products);
       payload.products.forEach((item, i) => {
         this.inventoryService.find({
@@ -477,7 +478,7 @@ export class PurchaseEntryComponent implements OnInit {
       /* purchase entry object initialization*/
       if (this.selectedPurchaseEntry._id !== undefined) {
         const purchaseEntry = this.selectedPurchaseEntry;
-        purchaseEntry.amountPaid = value.amount.toString();
+        purchaseEntry.invoiceAmount = value.amount.toString();
         purchaseEntry.deliveryDate = value.deliveryDate;
         purchaseEntry.facilityId = this.selectedFacility._id;
         purchaseEntry.invoiceNumber = value.invoiceNo;
@@ -502,6 +503,7 @@ export class PurchaseEntryComponent implements OnInit {
           product.expiryDate = productObj.expiryDate;
           product.productId = productObj.id;
           product.quantity = productObj.qty;
+          product.availableQuantity = productObj.qty;
           purchaseEntry.products.push(product);
           if (productObj.existingInventory !== undefined && productObj.existingInventory._id === undefined) {
             const inventory: Inventory = <Inventory>{};
@@ -512,6 +514,7 @@ export class PurchaseEntryComponent implements OnInit {
             inventory.facilityServiceId = productObj.productObject.facilityServiceId;
             inventory.productId = productObj.id;
             inventory.totalQuantity = productObj.qty;
+            inventory.availableQuantity = productObj.qty;
             inventory.reorderLevel = 0;
             inventory.reorderQty = 0;
             inventory.transactions = [];
@@ -522,6 +525,7 @@ export class PurchaseEntryComponent implements OnInit {
             inventoryTransaction.costPrice = productObj.costPrice;
             inventoryTransaction.expiryDate = productObj.expiryDate;
             inventoryTransaction.quantity = productObj.qty;
+            inventoryTransaction.availableQuantity = productObj.qty;
             inventory.transactions.push(inventoryTransaction);
 
             inventories.push(inventory);
@@ -537,6 +541,7 @@ export class PurchaseEntryComponent implements OnInit {
             inventoryTransaction.costPrice = productObj.costPrice;
             inventoryTransaction.expiryDate = productObj.expiryDate;
             inventoryTransaction.quantity = productObj.qty;
+            inventoryTransaction.availableQuantity = productObj.qty;
             inventory.transactions.push(inventoryTransaction);
 
             existingInventories.push(inventory);
@@ -583,7 +588,7 @@ export class PurchaseEntryComponent implements OnInit {
         });
       } else {
         const purchaseEntry: PurchaseEntry = <PurchaseEntry>{};
-        purchaseEntry.amountPaid = value.amount.toString();
+        purchaseEntry.invoiceAmount = value.amount.toString();
         purchaseEntry.deliveryDate = value.deliveryDate;
         purchaseEntry.facilityId = this.selectedFacility._id;
         purchaseEntry.invoiceNumber = value.invoiceNo;
@@ -608,6 +613,7 @@ export class PurchaseEntryComponent implements OnInit {
           product.expiryDate = productObj.expiryDate;
           product.productId = productObj.id;
           product.quantity = productObj.qty;
+          product.availableQuantity = productObj.qty;
           purchaseEntry.products.push(product);
           if (productObj.existingInventory !== undefined && productObj.existingInventory._id === undefined) {
             const inventory: Inventory = <Inventory>{};
@@ -628,6 +634,7 @@ export class PurchaseEntryComponent implements OnInit {
             inventoryTransaction.costPrice = productObj.costPrice;
             inventoryTransaction.expiryDate = productObj.expiryDate;
             inventoryTransaction.quantity = productObj.qty;
+            inventoryTransaction.availableQuantity = productObj.qty;
             inventory.transactions.push(inventoryTransaction);
 
             inventories.push(inventory);
@@ -644,6 +651,7 @@ export class PurchaseEntryComponent implements OnInit {
             inventoryTransaction.costPrice = productObj.costPrice;
             inventoryTransaction.expiryDate = productObj.expiryDate;
             inventoryTransaction.quantity = productObj.qty;
+            inventoryTransaction.availableQuantity = productObj.qty;
             inventory.transactions.push(inventoryTransaction);
 
             existingInventories.push(inventory);

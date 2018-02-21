@@ -4,6 +4,7 @@ import { SupplierService, PurchaseEntryService } from '../../../../../services/f
 import { Facility, PurchaseEntry } from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
+import { invalid } from 'moment';
 
 @Component({
   selector: 'app-transaction-history',
@@ -37,7 +38,7 @@ export class TransactionHistoryComponent implements OnInit {
     });
   }
 
-  getHistory(){
+  getHistory() {
     this.route.params.subscribe(params => {
       let id = params['id'];
       if (id !== undefined) {
@@ -63,7 +64,8 @@ export class TransactionHistoryComponent implements OnInit {
   closeHistory_onClick(message: boolean): void {
     this.paymentHistory = false;
   }
-  newPaymentShow() {
+  newPaymentShow(invoice) {
+    this.selectedInvoice = invoice;
     this.newPayment = true;
   }
   PaymentHistoryShow(invoice) {
@@ -71,7 +73,17 @@ export class TransactionHistoryComponent implements OnInit {
     this.paymentHistory = !this.paymentHistory;
   }
 
-  onRefreshHistory(value){
+  checkForOutstanding(value) {
+    const val = value.invoiceAmount - value.amountPaid;
+    if (isNaN(val)) {
+      return 0;
+    }else{
+      return val;
+    }
+  }
+
+  onRefreshHistory(value) {
+    console.log(value);
     this.getHistory();
   }
 }

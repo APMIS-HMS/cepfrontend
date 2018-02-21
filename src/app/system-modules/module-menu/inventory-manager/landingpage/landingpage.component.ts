@@ -4,6 +4,7 @@ import { InventoryService, ProductService, EmployeeService, FacilitiesService } 
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import { Facility, Inventory, Employee, User } from '../../../../models/index';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
@@ -20,12 +21,6 @@ export class LandingpageComponent implements OnInit {
   systemQuantity: FormControl = new FormControl();
   physicalQuantity: FormControl = new FormControl();
   comment: FormControl = new FormControl();
-
-  foods = [
-    { value: 'steak-0', viewValue: 'Steak' },
-    { value: 'pizza-1', viewValue: 'Pizza' },
-    { value: 'tacos-2', viewValue: 'Tacos' }
-  ];
 
   inventories: any[] = [];
 
@@ -46,8 +41,19 @@ export class LandingpageComponent implements OnInit {
     private productService: ProductService,
     private locker: CoolLocalStorage,
     private authFacadeService: AuthFacadeService,
-    private employeeService: EmployeeService
-  ) { }
+    private employeeService: EmployeeService,
+    private systemModuleService: SystemModuleService
+  ) {
+    this.employeeService.checkInAnnounced$.subscribe(payload => {
+      console.log(payload);
+      if (payload !== undefined) {
+        if (payload.typeObject !== undefined) {
+          this.checkingStore = payload.typeObject;
+          this.getInventories();
+        }
+      }
+    });
+  }
 
   ngOnInit() {
     this._inventoryEventEmitter.setRouteUrl('Inventory Manager');
@@ -116,6 +122,7 @@ export class LandingpageComponent implements OnInit {
     this.selectedInventory.isOpen = !this.selectedInventory.isOpen;
   }
   auditProduct() {
+    this.systemModuleService.on();
     if (this.selectedTransaction.adjustStocks === undefined) {
       this.selectedTransaction.adjustStocks = [];
     }
@@ -132,6 +139,7 @@ export class LandingpageComponent implements OnInit {
       if (itemi._id === this.selectedTransaction._id) {
         itemi = this.selectedTransaction;
         itemi.quantity = this.physicalQuantity.value;
+        itemi.availableQuantity = this.physicalQuantity.value;
       }
     });
     let difference = 0;
@@ -144,12 +152,13 @@ export class LandingpageComponent implements OnInit {
     }
 
     this.inventoryService.update(this.selectedInventory).then(result => {
+      this.systemModuleService.off();
       this.physicalQuantity.setValue(0);
       this.systemQuantity.setValue(0);
       this.comment.reset();
       this.closeAdjustStock();
       const message = 'Batch number "' + this.selectedTransaction.batchNumber + '" has been adjusted';
-      this._notification('Success', message);
+      this.systemModuleService.announceSweetProxy(message, 'success');
     });
   }
 
