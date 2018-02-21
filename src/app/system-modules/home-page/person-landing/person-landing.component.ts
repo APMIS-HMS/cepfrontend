@@ -16,7 +16,7 @@ ngOnInit() {
 close_onClick(message: boolean): void {
   this.schedule_appointment = false;
 }
-set_appointment(){
+set_appointment() {
   this.schedule_appointment = true;
 }
 

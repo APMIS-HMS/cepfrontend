@@ -379,7 +379,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuFinance = false;
     this.menuMedicationHistory = true;
     this.menuPayment = false;
-    this.menuTags =false;
+    this.menuTags = false;
     this.menuResp = false;
   }
   menuImaging_click() {

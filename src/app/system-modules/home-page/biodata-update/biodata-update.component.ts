@@ -14,7 +14,7 @@ export class BiodataUpdateComponent implements OnInit {
   show = false;
   errMsg: string;
   mainErr = true;
-  tab1=true;
+  tab1= true;
   tab2 = false;
   tab3 = false;
   public frmPerson: FormGroup;
@@ -26,8 +26,10 @@ export class BiodataUpdateComponent implements OnInit {
   ngOnInit() {
     this.frmPerson = this.formBuilder.group({
       persontitle: [new Date(), [<any>Validators.required]],
-      firstname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
-      lastname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+      firstname: ['', [<any>Validators.required, <any>Validators.minLength(3),
+        <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+      lastname: ['', [<any>Validators.required, <any>Validators.minLength(3),
+        <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
       otherNames: [[]],
       gender: [[<any>Validators.minLength(2)]],
       dob: [new Date(), [<any>Validators.required]],
@@ -35,7 +37,8 @@ export class BiodataUpdateComponent implements OnInit {
 			addressCity: ['', [<any>Validators.required]],
 			addressState: ['', [<any>Validators.required]],
 			addressCountry: ['', [<any>Validators.required]],
-      motherMaidenName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+      motherMaidenName: ['', [<any>Validators.required, <any>Validators.minLength(3),
+        <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
       securityQuestion: ['', [<any>Validators.required]],
       securityAnswer: ['', [<any>Validators.required]],
       // email: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
@@ -43,8 +46,10 @@ export class BiodataUpdateComponent implements OnInit {
     });
 
     this.frmPersonNok = this.formBuilder.group({
-      nok_firstname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
-      nok_lastname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+      nok_firstname: ['', [<any>Validators.required, <any>Validators.minLength(3),
+        <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+      nok_lastname: ['', [<any>Validators.required, <any>Validators.minLength(3),
+        <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
       nok_otherNames: [[]],
       nok_phone: [[]],
       nok_gender: [[]]
@@ -56,19 +61,19 @@ export class BiodataUpdateComponent implements OnInit {
     });
   }
 
-  tab1_click(){
+  tab1_click() {
     this.tab1 = true;
-    this.tab2= false;
+    this.tab2 = false;
     this.tab3 = false;
   }
-  tab2_click(){
+  tab2_click() {
     this.tab1 = false;
-    this.tab2= true;
+    this.tab2 = true;
     this.tab3 = false;
   }
-  tab3_click(){
+  tab3_click() {
     this.tab1 = false;
-    this.tab2= false;
+    this.tab2 = false;
     this.tab3 = true;
   }
   close_onClick() {

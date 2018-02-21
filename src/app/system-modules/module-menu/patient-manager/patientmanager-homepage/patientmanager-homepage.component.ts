@@ -24,7 +24,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   patientEditForm: FormGroup;
 
 
-  isEdit: boolean = false;
+  isEdit = false;
   tabWallet = true;
   tabInsurance = false;
   tabCompany = false;
@@ -67,7 +67,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     private route: ActivatedRoute, private toast: ToastsManager, private genderService: TitleGenderFacadeService,
     private relationshipService: RelationshipService, private formBuilder: FormBuilder,
     private _countryService: CountriesService, private systemService: SystemModuleService,
-    private authFacadeService:AuthFacadeService,
+    private authFacadeService: AuthFacadeService,
     private _titleService: TitleService, private countryFacadeService: CountryServiceFacadeService
   ) {
     this.systemService.on();
@@ -128,7 +128,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
   ngOnInit() {
     this.pageInView.emit('Patient Manager');
-    this.authFacadeService.getLogingEmployee().then((payload:any) =>{
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
     })
     this.facility = <Facility>this.locker.getObject('selectedFacility');
@@ -183,7 +183,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       //   this.lgas = this.states.filter(x => x._id === val._id)[0].lgs;
       //   this.cities = this.states.filter(x => x._id === val._id)[0].cities;
       // }
-      let country = this.patientEditForm.controls['country'].value;
+      const country = this.patientEditForm.controls['country'].value;
       this.countryFacadeService.getOnlyLGAndCities(country, val, true).then((lgsAndCities: any) => {
         this.cities = lgsAndCities.cities;
         this.lgas = lgsAndCities.lgs;
@@ -362,7 +362,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.patientEditForm.controls['lga'].setValue(value.homeAddress.lga);
     }
 
-    if(value.email !== undefined) {
+    if (value.email !== undefined) {
       this.patientEditForm.controls['email'].disable();
       // this.patientEditForm.get('email').disable();
     }
@@ -440,7 +440,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     });
   }
   onChange(e) {
-    //upload stuff
+    // upload stuff
   }
   showImageBrowseDlg() {
     this.fileInput.nativeElement.click()

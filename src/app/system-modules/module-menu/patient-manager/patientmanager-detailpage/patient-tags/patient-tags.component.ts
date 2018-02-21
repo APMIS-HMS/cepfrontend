@@ -31,7 +31,7 @@ export class PatientTagsComponent implements OnInit {
   addVitals_show(e) {
     this.addVitals_view = true;
   }
-  addTag_popup(){
+  addTag_popup() {
     this.addTag_pop = true;
   }
 
