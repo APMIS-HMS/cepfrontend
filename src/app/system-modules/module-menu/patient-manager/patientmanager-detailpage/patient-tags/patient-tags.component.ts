@@ -13,7 +13,8 @@ export class PatientTagsComponent implements OnInit {
   addVitals_view = false;
   docDetail_view = false;
   addTag_pop = false;
-
+  patient:any;
+  selectedDocument:any;
   constructor() { }
 
   ngOnInit() {
