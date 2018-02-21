@@ -114,7 +114,8 @@ export class EmployeeAccessRolesComponent implements OnInit {
     var data = {
       personId: this.selectedEmployee.personId,
       facilityId: this.selectedFacility._id,
-      roles: this.rolesPicked
+      roles: this.rolesPicked,
+      rolesRemoved:this.rolesRemoved
     };
     this.featureService.assignUserRole(data,{facilityId:this.selectedFacility._id}).then(
       payload => {

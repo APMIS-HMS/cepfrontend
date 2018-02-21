@@ -81,12 +81,16 @@
     width: 100%;
     box-sizing: border-box;
 }
+.mat-form-field{
+    width: 100% !important;
+}
 .card{
     position: relative;
     background: #fff;
     width: 100%;
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.16);
-
+    margin-top: 20px;
+    
     .card-header{
         background: #337ab7;
         color: #fff;
@@ -99,6 +103,9 @@
         .table-head{
             border-right: solid 1px #fff;
             text-align: center;
+            .search-box{
+                margin-top: 10px;
+            }
         }
         .table-header-input{
             background: rgba(255, 255, 255, 0.233);

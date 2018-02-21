@@ -74,7 +74,7 @@ export class RestService {
           {
             headers: { 'authorization': 'Bearer ' + auth }
           }
-        )) 
+        ))
         .configure(rx(RxJS, { listStrategy: 'always' }))
         .configure(authentication({ storage: window.localStorage }));
     } else {
