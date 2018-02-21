@@ -85,8 +85,8 @@ export class SurveyComponent implements OnInit, OnDestroy {
             this.surveyResult();
         });
         this.surveyModel.onValueChanged.add((a, b) => {
-            console.log(a);
-            console.log(b.question.data.data);
+            // console.log(a);
+            // console.log(b.question.data.data);
             this.shareService.announceSaveDraft(b.question.data.data);
         });
 

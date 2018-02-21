@@ -9,4 +9,7 @@ export interface PatientDocumentation {
     createdAt: Date,
     updatedAt: Date,
     facilityIdName?:any;
+    documentationStatus?:any;
+    createdById?:any;
+    apmisGuid?:any;
 }
