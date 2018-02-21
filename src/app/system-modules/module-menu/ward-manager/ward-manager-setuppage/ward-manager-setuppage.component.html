@@ -34,8 +34,8 @@
                         <td class="table-content">{{ward?.name}}</td>
                         <td class="table-content">{{ward?.description}}</td>
                         <td class="table-content">
-                            <span *ngIf="ward?.setup === undefined">0</span>
-                            <span *ngIf="ward?.setup !== undefined">{{ward?.setup?.rooms?.length}}</span>
+                            <span *ngIf="ward?.wardSetup === undefined">0</span>
+                            <span *ngIf="ward?.wardSetup !== undefined">{{ward?.wardSetup?.rooms?.length}}</span>
                         </td>
                     </tr>
                 </tbody>

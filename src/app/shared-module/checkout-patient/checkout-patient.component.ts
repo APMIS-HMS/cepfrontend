@@ -51,7 +51,6 @@ export class CheckoutPatientComponent implements OnInit {
 		private _appointmentService: AppointmentService
 	) {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
-      console.log(res);
       this.employeeDetails = res;
     }).catch(err => console.log(err));
   }
@@ -59,8 +58,6 @@ export class CheckoutPatientComponent implements OnInit {
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
     this.user = <any>this._locker.getObject('auth');
-
-    console.log(this.facility);
 
 		this.admittedWard.isAdmitted = false;
 
@@ -74,8 +71,6 @@ export class CheckoutPatientComponent implements OnInit {
 			desc: ['']
 		});
 
-    console.log(this.patientDetails);
-    console.log(this.employeeDetails);
 		this._getWardLocation();
 		this._CheckIfPatientIsAdmitted();
 	}
@@ -83,7 +78,6 @@ export class CheckoutPatientComponent implements OnInit {
 	onClickAdmit(value: any, valid: boolean) {
 		if (valid) {
       if (!!this.employeeDetails._id && !!this.patientDetails._id) {
-        console.log(value);
         this.admitBtn = false;
         this.admittingBtn = true;
         this.disableAdmissionBtn = true;
@@ -98,10 +92,7 @@ export class CheckoutPatientComponent implements OnInit {
           description: value.desc
         };
 
-        console.log(patient);
-
         this._inpatientService.customCreate(patient).then(res => {
-          console.log(res);
           if (res.status === 'success') {
             this.admitFormGroup.reset();
             this.admitBtn = true;
@@ -207,12 +198,11 @@ export class CheckoutPatientComponent implements OnInit {
 
 	private _CheckIfPatientIsAdmitted() {
     this._inPatientListService.find({ query: { facilityId: this.facility._id, patientId: this.patientDetails._id, isAdmitted: false }}).then(res => {
+      const patientName = `${this.patientDetails.personDetails.firstName} ${this.patientDetails.personDetails.lastName}`;
       this.loading = false;
       console.log(res);
 			if (res.data.length > 0) {
 				this._inpatientService.find({ query: { facilityId: this.facility._id, patientId: this.patientDetails._id, isDischarged: false }}).then(resp => {
-          console.log(resp);
-          const patientName = `${this.patientDetails.personDetails.firstName} ${this.patientDetails.personDetails.firstName}`;
 					if (resp.data.length > 0) {
 						const locationIndex = (resp.data[0].transfers.length > 0) ? resp.data[0].transfers.length - 1 : resp.data[0].transfers.length;
 						let text = patientName + ' has been admitted to ' + resp.data[0].tranfers[locationIndex].name + ' ward';
@@ -220,10 +210,9 @@ export class CheckoutPatientComponent implements OnInit {
 						resp.data[0].msg = text;
 						this.admittedWard = resp.data[0];
           } else {
-            console.log('Got here');
-            console.log(res.data);
             // Get minorLocation name from facility.
-            let text = patientName + ' has been sent to ' + res.data[0].minorLocationId.name + ' ward for admission.';
+            const minorLocation = this.facility.minorLocations.filter(x => x._id === res.data[0].minorLocationId);
+            let text = patientName + ' has been sent to ' + minorLocation[0].name + ' ward for admission.';
 						res.data[0].isAdmitted = true;
 						res.data[0].msg = text;
 						this.admittedWard = res.data[0];
@@ -231,10 +220,9 @@ export class CheckoutPatientComponent implements OnInit {
 				}).catch(err => this._notification('Error', 'There was a problem getting admitted patient. Please try again later.'));
 			} else {
 				this._inpatientService.find({ query: {facilityId: this.facility._id, patientId: this.patientDetails._id, isDischarged: false }}).then(resp => {
-          console.log(resp);
 					if (resp.data.length > 0) {
             const minorLocation = this.facility.minorLocations.filter(x => x._id === res.data[0].minorLocationId);
-						let text = this.patientDetails.personDetails.personFullName + ' has been admitted to ' + minorLocation[0].name + ' ward';
+            let text = patientName + ' has been admitted to ' + minorLocation[0].name + ' ward';
 						resp.data[0].isAdmitted = true;
 						resp.data[0].msg = text;
 						this.admittedWard = resp.data[0];
@@ -249,7 +237,6 @@ export class CheckoutPatientComponent implements OnInit {
 	getAllWards(majorLocationId) {
 		this._facilitiesService.get(this.facility._id, {}).then(res => {
       this.wards = res.minorLocations.filter(x => x.locationId === majorLocationId);
-      console.log(this.wards);
 		}).catch(err => this._notification('Error', 'There was a problem getting all wards. Please try again later.'));
   }
 

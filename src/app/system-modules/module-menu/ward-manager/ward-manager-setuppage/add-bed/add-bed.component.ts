@@ -2,7 +2,7 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 // tslint:disable-next-line:max-line-length
 import {
-	RoomGroupService, WardAdmissionService, FacilitiesServiceCategoryService, FacilitiesService
+	RoomGroupService, BedOccupancyService, FacilitiesServiceCategoryService, FacilitiesService
 } from '../../../../../services/facility-manager/setup/index';
 import { Facility, WardDetail, Room, WardRoom, Bed, User } from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';

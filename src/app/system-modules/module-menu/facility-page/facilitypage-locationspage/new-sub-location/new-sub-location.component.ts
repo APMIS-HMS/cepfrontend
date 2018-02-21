@@ -4,7 +4,7 @@ import { Component, OnInit, NgZone, EventEmitter, Output, Input } from '@angular
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Http } from '@angular/http';
 import {
-  FacilitiesService, FacilityModuleService, TagService, WardAdmissionService
+  FacilitiesService, FacilityModuleService, TagService, BedOccupancyService
 } from '../../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../../services/module-manager/setup/index';
 import { FacilityModule, Facility, Location, MinorLocation, Tag, User } from '../../../../../models/index';
@@ -40,15 +40,15 @@ export class NewSubLocationComponent implements OnInit {
     private tagService: TagService,
     public facilityService: FacilitiesService,
     private authFacadeService:AuthFacadeService,
-    private _wardDetailsService: WardAdmissionService,
+    private _bedOccupancyService: BedOccupancyService,
     private systemModuleService:SystemModuleService
   ) {
     this.facilityService.listner.subscribe(payload => {
       this.facility = payload;
       this.locker.setObject('selectedFacility', payload);
     });
-  
-   
+
+
   }
 
   ngOnInit() {
@@ -62,11 +62,11 @@ export class NewSubLocationComponent implements OnInit {
       this.ActionButton = 'Update';
       this.frmNewSubLoc.controls['sublocName'].setValue(this.subLocation.name);
     }
-    
+
     this.authFacadeService.getLogingEmployee().then(payload =>{
       this.employeeDetails = payload;
     })
-    
+
     this.getTags();
   }
 

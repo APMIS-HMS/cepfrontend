@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FacilitiesService, WardAdmissionService, } from '../../../../services/facility-manager/setup/index';
+import { FacilitiesService, BedOccupancyService, } from '../../../../services/facility-manager/setup/index';
 import { Facility } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
@@ -20,17 +20,17 @@ export class WardManagerSetuppageComponent implements OnInit {
 
 	constructor(private _facilitiesService: FacilitiesService,
 		private _locker: CoolLocalStorage,
-    private _wardAdmissionService: WardAdmissionService,
+    private _bedOccupancyService: BedOccupancyService,
     private _locationService: LocationService,
 		private _wardEventEmitter: WardEmitterService,
 		private _route: Router,
 		private _router: ActivatedRoute) {
 
-		// this._wardAdmissionService.listenerCreate.subscribe(payload => {
+		// this._bedOccupancyService.listenerCreate.subscribe(payload => {
 		// 	this.getFacilityWard();
 		// });
 
-		// this._wardAdmissionService.listenerUpdate.subscribe(payload => {
+		// this._bedOccupancyService.listenerUpdate.subscribe(payload => {
 		// 	this.getFacilityWard();
 		// });
 	}
@@ -54,8 +54,9 @@ export class WardManagerSetuppageComponent implements OnInit {
     }).then(res => {
       this.loading = false;
       this.wards = res.data[0].minorLocations.filter(x => x.locationId === locationId);
+      console.log(this.wards);
 		}).catch(err => console.log(err));
-		// this._wardAdmissionService.find({query: {'facilityId._id': this.facility._id}}).then(res => {
+		// this._bedOccupancyService.find({query: {'facilityId._id': this.facility._id}}).then(res => {
 		// 	this.loading = false;
 		// 	if (res.data.length > 0) {
 		// 		this.wards = res.data[0].locations;

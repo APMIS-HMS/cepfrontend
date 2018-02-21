@@ -2,11 +2,13 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 // tslint:disable-next-line:max-line-length
-import { WardAdmissionService, InPatientService, InPatientListService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
+import { BedOccupancyService, InPatientService, InPatientListService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { Facility, InPatient, WardTransfer, User} from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 // import { WardEmitterService } from '../../../../services/facility-manager/ward-emitter.service';
 import * as myGlobals from '../../../../shared-module/helpers/global-config';
+import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
+import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
 
 @Component({
   selector: "app-admit-patient",
@@ -30,75 +32,71 @@ export class AdmitPatientComponent implements OnInit {
   availableBeds: any[] = [];
   occupiedBeds: any[] = [];
   admitPatient = false;
-  mainErr = true;
-  errMsg = 'You have unresolved errors';
-  admitBtnText: String = '<i class="fa fa-plus"></i> Admit Patient';
+  admitBtn: boolean = true;
+  admittingBtn: boolean = false;
   loadContent: Boolean = true;
   loadAvailableBeds: Boolean = true;
   disableAdmitBtn: Boolean = false;
   loggedInWard;
 
   constructor(
-    private _wardAdmissionService: WardAdmissionService,
+    private _bedOccupancyService: BedOccupancyService,
     private fb: FormBuilder,
     private _locker: CoolLocalStorage,
     private router: Router,
     private _facilitiesService: FacilitiesService,
     private _inPatientService: InPatientService,
-    private _inPatientListService: InPatientListService
+    private _inPatientListService: InPatientListService,
+    private _authFacadeService: AuthFacadeService,
+    private _systemModuleService: SystemModuleService
   ) {
-    // this._wardAdmissionService.listenerCreate.subscribe(payload => {
-    // 	this.getwardRoomLocationItems();
-    // });
-
-    // this._wardAdmissionService.listenerUpdate.subscribe(payload => {
-    // 	this.getwardRoomLocationItems();
-    // });
-    // Subscribe to the event when ward changes.
+    this._authFacadeService.getLogingEmployee().then((res: any) => {
+      if (!!res._id) {
+        this.employeeDetails = res;
+      }
+    }).catch(err => {});
   }
 
   ngOnInit() {
     this.facility = <Facility>this._locker.getObject('selectedFacility');
-    this.miniFacility = <Facility>this._locker.getObject('miniFacility');
-    this.employeeDetails = this._locker.getObject('loginEmployee');
+    console.log(this.inPatientItem);
     this.user = <User>this._locker.getObject('auth');
 
     // this.getwardRoomLocationItems();
     this.getWardsDetails();
 
     this.admitFormGroup = this.fb.group({
-      ward: [''],
+      ward: ['', [<any>Validators.required]],
       room: ['', [<any>Validators.required]],
       bed: ['', [<any>Validators.required]],
       desc: ['']
     });
 
     this.admitFormGroup.controls['ward'].valueChanges.subscribe(val => {
+      console.log(val);
       this.loadAvailableBeds = true;
       this.beds = [];
       this.rooms = [];
       if (val !== '') {
         this.loadAvailableBeds = false;
-        this.rooms = this.wards.filter(
-          x => x.minorLocationId._id === val
-        )[0].rooms;
-        this.admitFormGroup.controls['room'].setValue('');
-        this.admitFormGroup.controls['bed'].setValue('');
+        const wards = this.wards.filter(x => x._id === val);
+        if (wards.length > 0 && !!wards[0].wardSetup) {
+          this.rooms = wards[0].wardSetup.rooms;
+          this.admitFormGroup.controls['room'].setValue('');
+          this.admitFormGroup.controls['bed'].setValue('');
+        }
       }
     });
 
     if (!!this.inPatientItem) {
-      if (!!this.inPatientItem.wardId) {
+      console.log(this.inPatientItem);
+      if (!!this.inPatientItem.minorLocationId) {
         setTimeout(e => {
-          this.admitFormGroup.controls['ward'].setValue(
-            this.inPatientItem.wardId._id
-          );
+          this.admitFormGroup.controls['ward'].setValue(this.inPatientItem.minorLocationId);
         }, 1000);
       } else {
         setTimeout(e => {
-          this.admitFormGroup.controls['ward'].setValue(
-            this.inPatientItem.transfers[0].minorLocationId
-          );
+          this.admitFormGroup.controls['ward'].setValue(this.inPatientItem.transfers[0].minorLocationId);
         }, 1000);
       }
     }
@@ -107,15 +105,33 @@ export class AdmitPatientComponent implements OnInit {
       this.loadAvailableBeds = false;
       this.beds = [];
       if (val !== '') {
-        this.beds = this.rooms.filter(x => x._id === val._id)[0].beds;
-        this.availableBeds = this.beds.filter(x => x.isAvailable);
-        this.occupiedBeds = this.beds.filter(x => !x.isAvailable);
+        const rooms = this.rooms.filter(x => x._id === val._id);
+        console.log(rooms);
+        if (rooms.length > 0) {
+          const payload = {
+            action: 'getAvailableBeds',
+            facilityId: this.facility._id,
+            minorLocationId: this.admitFormGroup.controls['ward'].value,
+            roomId: val._id
+          };
+
+          this._bedOccupancyService.customGet(payload, {}).then(res => {
+            console.log(res);
+            if (res.status === 'success') {
+              this.beds = res.data;
+            } else {
+              this.beds = [];
+            }
+          }).catch(err => {});
+          // this.availableBeds = this.beds.filter(x => x.isAvailable);
+          // this.occupiedBeds = this.beds.filter(x => !x.isAvailable);
+        }
       }
     });
   }
 
   // onWardChange(param) {
-  // 	this._wardAdmissionService.find({ query: { facilityId: this.facility._id } })
+  // 	this._bedOccupancyService.find({ query: { facilityId: this.facility._id } })
   // 		.then(payload => {
   // 			if (payload.data != []) {
   // 				payload.data[0].locations.forEach(item => {
@@ -128,7 +144,7 @@ export class AdmitPatientComponent implements OnInit {
   // }
 
   // onRoomChange(param) {
-  // 	this._wardAdmissionService.find({ query: { facilityId: this.facility._id } }).then(res => {
+  // 	this._bedOccupancyService.find({ query: { facilityId: this.facility._id } }).then(res => {
   // 		if (res.data !== []) {
   // 			res.data[0].locations.forEach(item => {
   // 				item.rooms.forEach(itm => {
@@ -147,21 +163,21 @@ export class AdmitPatientComponent implements OnInit {
 
   onAdmit(value: any, valid: boolean) {
     if (valid) {
+      console.log(value);
+      this.admitBtn = false;
+      this.admittingBtn = true;
       this.disableAdmitBtn = true;
-      this.admitBtnText = 'Admitting... <i class="fa fa-spinner fa-spin"></i>';
-      this.mainErr = true;
-      // Delete beds from the room.
-      delete value.room.beds;
-
       // payload to send to the server;
       let payload = {
         inPatientId: this.inPatientItem._id,
         facilityId: this.facility._id,
         patientId: '',
-        statusId: '',
-        ward: value.ward,
-        room: value.room,
-        bed: value.bed,
+        status: '',
+        action: '',
+        employeeId: this.employeeDetails._id,
+        minorLocationId: value.ward,
+        roomId: value.room._id,
+        bedId: value.bed._id,
         desc: value.desc,
         type: ''
       };
@@ -169,33 +185,22 @@ export class AdmitPatientComponent implements OnInit {
       // Patient is coming in on admission.
       if (this.inPatientItem.typeChecker === myGlobals.onAdmission) {
         payload.type = 'admitPatient';
-        payload.statusId = myGlobals.onAdmission;
-        payload.patientId = this.inPatientItem.patientId._id;
+        payload.action = 'admitPatient';
+        payload.status = myGlobals.onAdmission;
+        payload.patientId = this.inPatientItem.patientId;
 
-        // this._inPatientService.admit(payload).then(res => {
-        //   if (res.status === 'success') {
-        //     let patient = this.inPatientItem.patientId.personDetails.personFullName;
-        //     let text = 'You have successfully admitted ' + patient;
-        //     let wardRoom = ' into ' + value.bed.name + ' in ' + value.room.name;
-        //     const fullText = text + wardRoom;
-        //     // const msgObj = {
-        //     //   msg: fullText,
-        //     //   occupant: this.inPatientItem.patientId,
-        //     //   bed: value.bed,
-        //     //   room: value.room
-        //     // };
-        //     this.admitBtnText = 'Navigating... <i class="fa fa-spinner fa-spin"></i>';
-        //     // this.updateWardAdissionService(msgObj);
-        //     this._notification('Success', fullText);
-        //     setTimeout(e => {
-        //       this.close_onClick();
-        //       this.router.navigate(['/dashboard/ward-manager/admitted']);
-        //     }, 2000);
-        //   } else {
-        //     this._notification('Error', 'There was a problem discharging patient. Please try again later.');
-        //   }
-        // }).catch(err => {
-        // });
+        this._inPatientService.customCreate(payload).then(res => {
+          console.log(res);
+          if (res.status === 'success') {
+            let patient = `${this.inPatientItem.personDetails.firstName} ${this.inPatientItem.personDetails.lastName}`;
+            let text = `You have successfully admitted ${patient} into ${value.bed.name} bed in ${value.room.name} room`;
+            // this._notification('Success', fullText);
+            this._systemModuleService.announceSweetProxy(text, 'success');
+            this.close_onClick();
+          } else {
+            this._notification('Error', 'There was a admitting patient. Please try again later.');
+          }
+        }).catch(err => {});
         // this._inPatientListService.find({
         //     query: {
         //       'facilityId._id': this.facility._id,
@@ -259,7 +264,7 @@ export class AdmitPatientComponent implements OnInit {
         //   });
       } else if (this.inPatientItem.typeChecker === myGlobals.transfer) {
         payload.type = 'acceptTransfer';
-        payload.statusId = myGlobals.transfer;
+        payload.status = myGlobals.transfer;
 
         // this._inPatientService.admit(payload).then(res => {
         //   if (res.status === 'success') {
@@ -293,7 +298,7 @@ export class AdmitPatientComponent implements OnInit {
         // 	});
       }
     } else {
-      this.mainErr = false;
+      this._notification('Error', 'Please fill in all required fields.');
     }
   }
 
@@ -311,19 +316,20 @@ export class AdmitPatientComponent implements OnInit {
   // }
 
   getWardsDetails() {
-    this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
-      if (res.data.length > 0) {
-        this.loadContent = false;
-        if (!!this.inPatientItem) {
-          // Filter the wards to the current logged ward.
-          this.wards = res.data[0].locations.filter(x => x.minorLocationId._id === this.inPatientItem.loggedInWard.minorLocationId._id);
-        }
-      }
-    });
+    this.wards = this.facility.minorLocations.filter(x => x.locationId === this.inPatientItem.loggedInWard.minorLocationId.locationId);
+    this.loadContent = false;
+    // this._bedOccupancyService.find({ query: { facilityId: this.facility._id } }).then(res => {
+    //   if (res.data.length > 0) {
+    //     if (!!this.inPatientItem) {
+    //       // Filter the wards to the current logged ward.
+    //       this.wards = res.data[0].locations.filter(x => x.minorLocationId._id === this.inPatientItem.loggedInWard.minorLocationId._id);
+    //     }
+    //   }
+    // });
   }
 
   // updateWardAdissionService(value: any) {
-  //   this._wardAdmissionService
+  //   this._bedOccupancyService
   //     .find({ query: { 'facilityId._id': this.facility._id } })
   //     .then(payload => {
   //       if (payload.data.length > 0) {
@@ -337,7 +343,7 @@ export class AdmitPatientComponent implements OnInit {
   //                   bed.isAvailable = false;
   //                   bed.occupant = value.occupant;
   //                   bed.state = 'In-use';
-  //                   this._wardAdmissionService
+  //                   this._bedOccupancyService
   //                     .update(payload.data[0])
   //                     .then(completed => {
   //                       this.admitBtnText = 'Admit';

@@ -49,31 +49,31 @@
                         <td>
                             <div class="empWrap">
                                 <div class="list-img">
-                                    <div *ngIf="inPatientWaitingItem?.patientId?.personDetails?.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
-                                    <div *ngIf="inPatientWaitingItem?.patientId?.personDetails?.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.patientId?.personDetails.profileImageObject?.thumbnail)"></div>
+                                    <div *ngIf="inPatientWaitingItem?.personDetails?.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                    <div *ngIf="inPatientWaitingItem?.personDetails?.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem?.personDetails.profileImageObject?.thumbnail)"></div>
                                 </div>
                                 <div>
-                                    <b>{{inPatientWaitingItem.patientId?.personDetails?.personFullName}}</b><br>
-                                    <small>{{inPatientWaitingItem.patientId?.personDetails?.gender.name}}, </small>
-                                    <small>{{inPatientWaitingItem.patientId?.personDetails?.age}} year(s) old, </small>
-                                    <small>{{inPatientWaitingItem.patientId?.personDetails?.phoneNumber}}</small>
+                                    <b>{{inPatientWaitingItem?.personDetails?.firstName}} {{inPatientWaitingItem?.personDetails?.lastName}}</b><br>
+                                    <small>{{inPatientWaitingItem?.personDetails?.gender}}, </small>
+                                    <small>{{inPatientWaitingItem?.personDetails?.age}} old, </small>
+                                    <small>{{inPatientWaitingItem?.personDetails?.phoneNumber}}</small>
                                 </div>
                             </div>
                         </td>
                         <td class="table-content" (click)="navEpDetail(item)">
                             <div class="empWrap">
                                 <div class="list-img">
-                                    <div *ngIf="inPatientWaitingItem.employeeId?.employeeDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
-                                    <div *ngIf="inPatientWaitingItem.employeeId?.employeeDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.employeeId?.employeeDetails.profileImageObject?.thumbnail)"></div>
+                                    <div *ngIf="inPatientWaitingItem?.employeeDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                    <div *ngIf="inPatientWaitingItem?.employeeDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem?.employeeDetails.profileImageObject?.thumbnail)"></div>
                                 </div>
                                 <div>
-                                    <b>{{inPatientWaitingItem.employeeId?.employeeDetails?.personFullName}}</b><br>
-                                    <small>{{inPatientWaitingItem.employeeId?.employeeDetails?.phoneNumber}}</small>
+                                    <b>{{inPatientWaitingItem?.employeeDetails?.firstName}} {{inPatientWaitingItem?.employeeDetails?.lastName}}</b><br>
+                                    <small>{{inPatientWaitingItem?.employeeDetails?.phoneNumber}}</small>
                                 </div>
                             </div>
                         </td>
-                        <td class="table-content">{{inPatientWaitingItem.clinicId?.clinicName}}</td>
-                        <td class="table-content">{{inPatientWaitingItem.wardId?.name}}</td>
+                        <td class="table-content">{{inPatientWaitingItem?.clinicId?.clinicName}}</td>
+                        <td class="table-content">{{inPatientWaitingItem?.minorLocation?.name}}</td>
                         <td class="table-content">
                             <b>{{inPatientWaitingItem.createdAt | date }}</b><br>
                             <small>{{inPatientWaitingItem.createdAt | amTimeAgo }}</small>

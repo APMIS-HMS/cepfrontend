@@ -1,6 +1,6 @@
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { WardAdmissionService, FacilitiesService, InPatientService } from '../../../../services/facility-manager/setup/index';
+import { BedOccupancyService, FacilitiesService, InPatientService } from '../../../../services/facility-manager/setup/index';
 import { Facility, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import * as myGlobals from '../../../../shared-module/helpers/global-config';
@@ -31,7 +31,7 @@ export class TransferPatientComponent implements OnInit {
 		private _route: Router,
 		private _router: ActivatedRoute,
 		private _facilitiesService: FacilitiesService,
-		private _wardAdmissionService: WardAdmissionService,
+		private _bedOccupancyService: BedOccupancyService,
 		private _locker: CoolLocalStorage,
 		private _inPatientService: InPatientService
 	) { }

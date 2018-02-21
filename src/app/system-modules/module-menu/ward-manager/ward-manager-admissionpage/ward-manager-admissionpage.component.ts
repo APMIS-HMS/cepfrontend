@@ -1,7 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import {
-	WardAdmissionService, InPatientListService, InPatientService, FacilitiesService
-} from '../../../../services/facility-manager/setup/index';
+import { InPatientListService, InPatientService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { Facility, InPatient, WardTransfer, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { WardEmitterService } from '../../../../services/facility-manager/ward-emitter.service';
@@ -47,12 +45,14 @@ export class WardManagerAdmissionpageComponent implements OnInit {
     private facilityService: FacilitiesService,
     private _authFacadeService: AuthFacadeService
   ) {
-    this._inPatientListService.listenerCreate.subscribe(payload => {
-      // this.getWaitingList(this.selectedWard);
-    });
-    this._inPatientListService.listenerUpdate.subscribe(payload => {
-      // this.getWaitingList(this.selectedWard);
-    });
+    // this._inPatientListService.listenerCreate.subscribe(payload => {
+    //   // this.getWaitingList(this.selectedWard);
+    // });
+    // this._inPatientListService.listenerUpdate.subscribe(payload => {
+    //   // this.getWaitingList(this.selectedWard);
+    // });
+
+    this.facility = <Facility>this._locker.getObject('selectedFacility');
 
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       if (!!res._id) {
@@ -78,8 +78,6 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 
   ngOnInit() {
     this._wardEventEmitter.setRouteUrl('Admission waiting list');
-    this.facility = <Facility>this._locker.getObject('selectedFacility');
-    this.employeeDetails = this._locker.getObject('loginEmployee');
     this.user = <User>this._locker.getObject('auth');
 
     // Subscribe to the event when ward changes.
@@ -139,6 +137,8 @@ export class WardManagerAdmissionpageComponent implements OnInit {
   // }
 
   admitPatient_onClick(value: any, typeChecker = myGlobals) {
+    console.log(value);
+    console.log(this.selectedWard);
     if (!!this.selectedWard && !!this.selectedWard.typeObject) {
       this.selectInpatient = value;
       this.selectInpatient.typeChecker = typeChecker.onAdmission;
@@ -156,7 +156,8 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 
   close_onClick() {
     this.admitPatient = false;
-    this.ngOnInit();
+    // this.ngOnInit();
+    this.getWaitingList(this.selectedWard);
   }
 
   onClickDeclineTransfer(inpatientItem) {
@@ -164,77 +165,65 @@ export class WardManagerAdmissionpageComponent implements OnInit {
       payload.statusId = myGlobals.onAdmission;
       payload.transfers[payload.lastIndex].proposedWard = {};
       // Update the checkOutDate of the last tranfer
-      this._inPatientService
-        .update(payload)
-        .then(payload1 => {
+      this._inPatientService.update(payload).then(payload1 => {
           this.getTransferInList(this.selectedWard);
-        })
-        .catch(err => {
-        });
+      }).catch(err => {});
     });
   }
 
   getWaitingList(checkedInWard: any) {
-    this._inPatientListService
-      .find({
-        query: {
-          'facilityId._id': this.facility._id,
-          'wardId._id': checkedInWard.typeObject.minorLocationId._id,
-          isAdmitted: false
-        }
-      })
-      .then(res => {
-        this.newAdmissionLoading = false;
+    this._inPatientListService.customGet({ action: 'getInPatientWaitingList'}, { query: {
+        'facilityId': this.facility._id,
+        'minorLocationId': checkedInWard.typeObject.minorLocationId._id,
+        isAdmitted: false
+      }
+    }).then(res => {
+      console.log(res);
+      this.newAdmissionLoading = false;
+      if (res.status === 'success') {
         this.listPatientAdmissionWaiting = res.data;
-      });
+      }
+    });
   }
 
   getTransferInList(checkedInWard: any) {
-    this._inPatientService
-      .find({
-        query: {
-          'facilityId._id': this.facility._id,
-          'proposedWard.minorLocationId': checkedInWard.typeObject.minorLocationId._id,
-          statusId: myGlobals.transfer,
-          discharge: undefined
-        }
-      })
-      .then(payload => {
-        this.transferInLoading = false;
-        this.listPatientTransferWaiting = payload.data;
-      });
+    this._inPatientService.find({
+      query: {
+        'facilityId': this.facility._id,
+        'proposedWard.minorLocationId': checkedInWard.typeObject.minorLocationId._id,
+        statusId: myGlobals.transfer,
+        discharge: undefined
+      }
+    }).then(payload => {
+      this.transferInLoading = false;
+      this.listPatientTransferWaiting = payload.data;
+    });
   }
 
   getTransferOutList(checkedInWard: any) {
-    this._inPatientService
-      .find({
+    this._inPatientService.find({
         query: {
-          'facilityId._id': this.facility._id,
-          'prevWard._id': checkedInWard.typeObject.minorLocationId._id,
+          'facilityId': this.facility._id,
+          'prevWard': checkedInWard.typeObject.minorLocationId._id,
           statusId: myGlobals.transfer,
           discharge: undefined
         }
-      })
-      .then(payload => {
+      }).then(payload => {
         this.transferOutLoading = false;
         this.listPatientTransferOutWaiting = payload.data;
       });
   }
 
   getDischargeList(checkedInWard: any) {
-    this._inPatientService.find({
-        query: {
-          'facilityId._id': this.facility._id,
-          statusId: myGlobals.discharge
-        }
-      }).then(res => {
-        this.dischargeLoading = false;
-        this.listPatientDischarge = res.data;
-      });
+    this._inPatientService.find({ query: {
+        'facilityId': this.facility._id,
+        statusId: myGlobals.discharge
+      }
+    }).then(res => {
+      this.dischargeLoading = false;
+      this.listPatientDischarge = res.data;
+    });
   }
-
-  // navEpDetail(patient) {
-  // }
 
   // Notification
   private _notification(type: String, text: String): void {

@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 // tslint:disable-next-line:max-line-length
 import {
-  WardDischargeTypesService, InPatientService, WardAdmissionService, BillingService, FacilitiesService
+  WardDischargeTypesService, InPatientService, BedOccupancyService, BillingService, FacilitiesService
 } from '../../../../services/facility-manager/setup/index';
 import { ActivatedRoute } from '@angular/router';
 import { WardDischarge, Facility, BillModel, BillItem, User } from '../../../../models/index';
@@ -40,7 +40,7 @@ export class DischargePatientComponent implements OnInit {
     private _router: Router,
     private _locker: CoolLocalStorage,
     private _inPatientService: InPatientService,
-    private _wardAdmissionService: WardAdmissionService,
+    private _bedOccupancyService: BedOccupancyService,
     private _billingService: BillingService,
     private _facilityService: FacilitiesService
   ) {}
@@ -99,7 +99,7 @@ export class DischargePatientComponent implements OnInit {
       // 	this._inPatientService.update(payload).then(payload2 => {
       // 		this.close_onClick();
       // 		const currentWard = payload.transfers[payload.lastIndex];
-      // 		this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id }}).then(payload3 => {
+      // 		this._bedOccupancyService.find({ query: { 'facilityId._id': this.facility._id }}).then(payload3 => {
       // 				payload3.data[0].locations.forEach(location => {
       // 					if (location.minorLocationId._id === currentWard.minorLocationId) {
       // 						location.rooms.forEach(room => {
@@ -109,7 +109,7 @@ export class DischargePatientComponent implements OnInit {
       // 										bed.isAvailable = true;
       // 										bed.state = 'Available';
       // 										delete bed.occupant;
-      // 										this._wardAdmissionService.update(payload3.data[0]).then(payload4 => {
+      // 										this._bedOccupancyService.update(payload3.data[0]).then(payload4 => {
       // 											this._router.navigate(['/dashboard/ward-manager/admitted']);
       // 										});
       // 									}
