@@ -31,6 +31,7 @@ export class NewServiceComponent implements OnInit {
   panelSearchControl = new FormControl();
   editPriceControl = new FormControl();
   newPanel = new FormControl();
+  isDisableBtn = false;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() refreshService: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() selectedService: any;
@@ -137,6 +138,7 @@ export class NewServiceComponent implements OnInit {
       }
       this.selectedService.panels
     }
+    this.frmNewservice.controls['serviceCat'].setValue(this.selectedService.categoryId);
   }
 
   getCategories() {
@@ -265,6 +267,7 @@ export class NewServiceComponent implements OnInit {
 
   onCreate(data) {
     this.systemModuleService.on();
+    this.isDisableBtn = true;
     console.log(this.selectedService);
     if (this.selectedService.name === undefined) {
       data.panels = this.selectedServiceItems;
@@ -277,9 +280,12 @@ export class NewServiceComponent implements OnInit {
       }).then(payload => {
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy('Service added successful', 'success');
+        this.isDisableBtn = false;
+        this.frmNewservice.reset();
         this.refreshService.emit(this.selectedService);
       }, error => {
         console.log(error);
+        this.isDisableBtn = false;
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy('Failed to add Service', 'error');
       });
@@ -310,12 +316,15 @@ export class NewServiceComponent implements OnInit {
       }).then(payload => {
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy('Service added successful', 'success');
+        this.isDisableBtn = false;
         this.refreshService.emit(this.selectedService);
+        this.frmNewservice.reset();
         this.close_onClick();
       }, error => {
         console.log(error);
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy('Failed to add service', 'error');
+        this.isDisableBtn = false;
       });
     }
   }

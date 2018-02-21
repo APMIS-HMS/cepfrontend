@@ -1,121 +1,121 @@
 <div class="animated pulse" class="container">
-  <div class="modal-header-wrap">
-    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <div class="facility-title">New Service</div>
-    <legend class="modal_mini_title">All Purpose Medical Information System</legend>
-  </div>
-  <div class="modal-baseWrap">
-    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+    <div class="modal-header-wrap">
+        <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+        <div class="facility-title">New Service</div>
+        <legend class="modal_mini_title">All Purpose Medical Information System</legend>
+    </div>
+    <div class="modal-baseWrap">
+        <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
-    <form [formGroup]="frmNewservice" novalidate>
-      <div class="mainfrmwrap">
-        <div class="sec-1">
-          <div class="frm-checkBox-wrap">
-            <mat-checkbox name="newPanel" formControlName="isPanel" value="Panel">Panel</mat-checkbox>
-          </div>
-          <div *ngIf="showServelLayout">
-            <div class="frm-item-wrap">
-              <mat-input-container class="example-full-width">
-                <input type="text" matInput mat-error placeholder="Service Name" formControlName="serviceName" class="input">
-              </mat-input-container>
-              <div class="suggestionFeeds">
-                <div *ngFor="let dic of dictionaries" class="suggestedItem">
-                  <div (click)="onSelectDictionary(dic)" class="suggetedName">{{dic.word}}</div>
-                </div>
-              </div>
-            </div>
-            <div class="frm-item-wrap">
-              <mat-form-field>
-                <mat-select class="example-full-width" placeholder="Service Category" formControlName="serviceCat" [compareWith]="compareCategory">
-                    <mat-option selected>Select Category</mat-option>
-                  <mat-option *ngFor="let category of categories" [value]="category._id">{{category.name}}</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div>
-            <div class="frm-item-wrap">
-              <mat-input-container class="example-full-width">
-                <input type="text" matInput mat-error placeholder="Supply Service Code" autocomplete="off"  formControlName="serviceCode" class="input">
-              </mat-input-container>
-            </div>
-            <div class="frm-item-wrap">
-              <mat-input-container class="example-full-width">
-                <input type="number" matInput mat-error placeholder="Service Charge(Base Price)" formControlName="servicePrice" class="input">
-              </mat-input-container>
-            </div>
-          </div>
-          <div *ngIf="showPanel">
-            <div class="line-up">
-              <form [formGroup]="addPanelFormGroup">
-                <div class="frm-item-wrap">
-                  <mat-input-container class="example-full-width">
-                    <input type="text" matInput mat-error placeholder="Search...." autocomplete="off"  [formControl]="panelSearchControl" class="input">
-                  </mat-input-container>
-                  <div class="row">
-                    <input class="col-4" type="text" [formControl]="panelNameControl" autocomplete="off" placeholder="Name">
-                    <input class="col-4" type="number" min="0" [formControl]="costControl" placeholder="Cost">
-                    <button class="col-4" (click)="addPanel()">
+        <form [formGroup]="frmNewservice" novalidate>
+            <div class="mainfrmwrap">
+                <div class="sec-1">
+                    <div class="frm-checkBox-wrap">
+                        <mat-checkbox name="newPanel" formControlName="isPanel" value="Panel">Panel</mat-checkbox>
+                    </div>
+                    <div *ngIf="showServelLayout">
+                        <div class="frm-item-wrap">
+                            <mat-input-container class="example-full-width">
+                                <input type="text" matInput mat-error placeholder="Service Name" formControlName="serviceName" class="input">
+                            </mat-input-container>
+                            <div class="suggestionFeeds">
+                                <div *ngFor="let dic of dictionaries" class="suggestedItem">
+                                    <div (click)="onSelectDictionary(dic)" class="suggetedName">{{dic.word}}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="frm-item-wrap">
+                            <mat-form-field>
+                                <mat-select class="example-full-width" placeholder="Service Category" formControlName="serviceCat" [compareWith]="compareCategory">
+                                    <mat-option selected>Select Category</mat-option>
+                                    <mat-option *ngFor="let category of categories" [value]="category._id">{{category.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="frm-item-wrap">
+                            <mat-input-container class="example-full-width">
+                                <input type="text" matInput mat-error placeholder="Supply Service Code" autocomplete="off" formControlName="serviceCode" class="input">
+                            </mat-input-container>
+                        </div>
+                        <div class="frm-item-wrap">
+                            <mat-input-container class="example-full-width">
+                                <input type="number" matInput mat-error placeholder="Service Charge(Base Price)" formControlName="servicePrice" class="input">
+                            </mat-input-container>
+                        </div>
+                    </div>
+                    <div *ngIf="showPanel">
+                        <div class="line-up">
+                            <form [formGroup]="addPanelFormGroup">
+                                <div class="frm-item-wrap">
+                                    <mat-input-container class="example-full-width">
+                                        <input type="text" matInput mat-error placeholder="Search...." autocomplete="off" [formControl]="panelSearchControl" class="input">
+                                    </mat-input-container>
+                                    <div class="row">
+                                        <input class="col-4" type="text" [formControl]="panelNameControl" autocomplete="off" placeholder="Name">
+                                        <input class="col-4" type="number" min="0" [formControl]="costControl" placeholder="Cost">
+                                        <button class="col-4" (click)="addPanel()">
                       {{btnPanel}}
                     </button>
-                  </div>
+                                    </div>
 
+                                </div>
+                            </form>
+
+                        </div>
+
+                        <div class="wrapper wrap">
+                            <table class="text">
+                                <thead class="tableHeader">
+                                    <tr>
+                                        <th>Select</th>
+                                        <th>Category</th>
+                                        <th>Service</th>
+                                        <th>Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="listItem">
+                                    <tr *ngFor="let item of allServiceItems; let i=index">
+                                        <td>
+                                            <input type="checkbox" [checked]="item.checked" (change)="onCheckPanelItem($event,item,i)">
+                                        </td>
+                                        <td>{{item.category}}</td>
+                                        <td>{{item.service}}</td>
+                                        <td>
+                                            <ul *ngFor="let p of item.price">
+                                                <li>{{p.price| number:'1.2-2'}}</li>
+                                            </ul>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tbody>
+                                    <tr>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
                 </div>
-              </form>
-
+            </div>
+            <div class="row" *ngIf="selectedService.name !== undefined">
+                <h5 style="color:black">Other Prices</h5>
+                <div class="input-wrap col" *ngFor="let p of selectedService.price; let i=index">
+                    <div *ngIf="p.isBase===false">
+                        <span style="color:blue">{{p.name}}</span>
+                        <input [formControl]="editPriceControl" (change)="onEditPrice($event,i)" min="0" value="{{p.price}}" type="number">
+                    </div>
+                </div>
             </div>
 
-            <div class="wrapper wrap">
-              <table class="text">
-                <thead class="tableHeader">
-                  <tr>
-                    <th>Select</th>
-                    <th>Category</th>
-                    <th>Service</th>
-                    <th>Price</th>
-                  </tr>
-                </thead>
-                <tbody class="listItem">
-                  <tr *ngFor="let item of allServiceItems; let i=index">
-                    <td>
-                      <input type="checkbox" [checked]="item.checked" (change)="onCheckPanelItem($event,item,i)">
-                    </td>
-                    <td>{{item.category}}</td>
-                    <td>{{item.service}}</td>
-                    <td>
-                      <ul *ngFor="let p of item.price">
-                        <li>{{p.price| number:'1.2-2'}}</li>
-                      </ul>
-                    </td>
-                  </tr>
-                </tbody>
-                <tbody>
-                  <tr>
-
-                  </tr>
-                </tbody>
-              </table>
-
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="row" *ngIf="selectedService.name !== undefined">
-        <h5 style="color:black">Other Prices</h5>
-        <div class="input-wrap col" *ngFor="let p of selectedService.price; let i=index">
-          <div *ngIf="p.isBase===false">
-            <span style="color:blue">{{p.name}}</span>
-            <input [formControl]="editPriceControl" (change)="onEditPrice($event,i)" min="0" value="{{p.price}}" type="number">
-          </div>
-        </div>
-      </div>
-
-      <div class="text-center" *ngIf="showServelLayout">
-        <button mat-raised-button (click)="newService(frmNewservice.value, frmNewservice.valid)">
+            <div class="text-center" *ngIf="showServelLayout">
+                <button mat-raised-button [hidden]="isDisableBtn" (click)="newService(frmNewservice.value, frmNewservice.valid)">
           {{btnTitle}}
         </button>
-      </div>
-    </form>
+            </div>
+        </form>
 
-  </div>
+    </div>
 
 </div>
 <!-- <div class="modal-baseWrap">
