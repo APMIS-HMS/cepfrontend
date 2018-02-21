@@ -25,7 +25,12 @@
               <ul class="shadow-RB workspace-listWrap animated zoomIn">
                 <li *ngFor="let store of inventory.transactions" class="workspace-listItem">
                   <ng-container>
-                    <span>{{store.batchNumber}}, Qty: {{store.availableQuantity}}, Ex.: {{store.expiration}}</span>
+                    <span>
+                      <span>Batch: {{store.batchNumber}},</span>
+                      <span>Qty: {{store.availableQuantity}},</span>
+                      <span *ngIf="store.expiration !== ''"> Ex.: {{store.expiration}}</span>
+                      <span *ngIf="store.expiration === ''">EXPIRED</span>
+                    </span>
                   </ng-container>
                 </li>
                 <div class="pointer-wrap">
