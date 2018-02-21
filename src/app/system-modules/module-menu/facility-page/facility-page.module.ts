@@ -1,3 +1,5 @@
+import { OnlyMaterialModule } from './../../../shared-common-modules/only-material-module';
+import { AccessManagerHomeComponent } from './facility-access-control/access-manager-home.component';
 import { NewFacEmployeeComponent } from './employees/new-fac-employee/new-fac-employee.component';
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 import { ApmisCheckboxFeatureComponent } from './employees/employeemanager-detailpage/apmis-checkbox/apmis-checkbox-feature.component';
@@ -93,13 +95,15 @@ import { ViewAccessComponent } from './facility-access-control/view-access/view-
         AddOtherComponent,
         NewFacEmployeeComponent,
         EmployeeAccessRolesComponent, 
-        AccessManagerComponent, AccessRoleDetailsComponent, CreateAccessComponent, ViewAccessComponent
+        AccessManagerComponent, AccessRoleDetailsComponent, CreateAccessComponent, ViewAccessComponent,
+        AccessManagerHomeComponent
     ],
     exports: [
     ],
     imports: [
         facilityPageRoutes,
         facilityPageRoutes,
+        OnlyMaterialModule,
         MaterialModule,
         Ng4GeoautocompleteModule,
         SweetAlert2Module

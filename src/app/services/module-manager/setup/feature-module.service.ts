@@ -1,8 +1,11 @@
-import { SocketService, RestService } from '../../../feathers/feathers.service';
-import { Injectable } from '@angular/core';
+import { SocketService, RestService } from "../../../feathers/feathers.service";
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class FeatureModuleService {
+  public listner;
+  public patchListner;
   public _socket;
   private _rest;
   private _roleSocket;
@@ -11,14 +14,14 @@ export class FeatureModuleService {
     private _restService: RestService
   ) {
     // this._rest = _restService.getService('featuremodules');
-    this._rest = _restService.getService('features');
-    this._socket = _socketService.getService('features');
-    this._roleSocket = _socketService.getService('facility-roles');
+    this._rest = _restService.getService("features");
+    this._socket = _socketService.getService("features");
+    this._roleSocket = _socketService.getService("facility-roles");
     this._socket.timeout = 30000;
     this._roleSocket.timeout = 30000;
-    this._socket.on('created', function (features) {
-    });
-    this._roleSocket.on('created', function (features) {});
+    this._socket.on("created", function(features) {});
+    this._roleSocket.on("created", function(features) {});
+    this.listner = Observable.fromEvent(this._roleSocket, "created");
   }
 
   find(query: any) {
@@ -40,12 +43,15 @@ export class FeatureModuleService {
     return this._socket.remove(id, query);
   }
 
-  getFacilityRoles(id: string, query: any){
+  getFacilityRoles(id: string, query: any) {
     return this._roleSocket.get(id, query);
   }
 
-  assignUserRole(data){
-    return this._roleSocket.create(data);
+  getUserRoles(query: any) {
+    return this._roleSocket.find(query);
   }
 
+  assignUserRole(data, params?) {
+    return this._roleSocket.create(data, { query: params  });
+  }
 }

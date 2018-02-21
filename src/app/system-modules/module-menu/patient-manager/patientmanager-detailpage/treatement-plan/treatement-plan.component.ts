@@ -69,7 +69,6 @@ export class TreatementPlanComponent implements OnInit {
       }
     }).then(res => {
       if (res.data.length > 0) {
-        console.log(res.data)
         this.treatmentSheetData = res.data[0];
         this.treatmentSheet = res.data[0].treatmentSheet;
       }
@@ -77,28 +76,25 @@ export class TreatementPlanComponent implements OnInit {
   }
 
   getPersonDocumentation() {
-    this.documentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
+    this.documentationService.find({ query: { 'personId': this.patient.personId } }).subscribe((payload: any) => {
       if (payload.data.length === 0) {
         this.patientDocumentation.personId = this.patient.personDetails;
         this.patientDocumentation.documentations = [];
         this.documentationService.create(this.patientDocumentation).subscribe(pload => {
           this.patientDocumentation = pload;
-          console.log(this.patientDocumentation);
         })
       } else {
         if (payload.data[0].documentations.length === 0) {
           this.patientDocumentation = payload.data[0];
-          console.log(this.patientDocumentation);
         } else {
           this.documentationService.find({
             query:
               {
-                'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
+                'personId': this.patient.personId, 'documentations.patientId': this.patient._id,
               }
           }).subscribe((mload: any) => {
             if (mload.data.length > 0) {
               this.patientDocumentation = mload.data[0];
-              console.log(this.patientDocumentation);
             }
           })
         }
@@ -128,7 +124,6 @@ export class TreatementPlanComponent implements OnInit {
     }
 
     this.patientDocumentation.documentations.push(doc);
-    console.log(this.patientDocumentation.documentations)
     this.documentationService.update(this.patientDocumentation).subscribe(payload => {
       nursingCare.comment = '';
       this.patientDocumentation = payload;
@@ -139,7 +134,6 @@ export class TreatementPlanComponent implements OnInit {
     });
   }
   administer(medication, index) {
-    console.log(medication);
     medication.staus = 'Started';
     const doc: PatientDocumentation = <PatientDocumentation>{};
     doc.facilityId = this.selectedFacility;
@@ -159,11 +153,8 @@ export class TreatementPlanComponent implements OnInit {
         'comment': medication.comment
       }
     }
-    console.log(doc);
 
     this.patientDocumentation.documentations.push(doc);
-
-    console.log(this.patientDocumentation.documentations)
     this.documentationService.update(this.patientDocumentation).subscribe(payload => {
       medication.comment = '';
       this.patientDocumentation = payload;
@@ -182,16 +173,13 @@ export class TreatementPlanComponent implements OnInit {
     this.treatmentSheet.medications[index] = medicationObj;
     this.treatmentSheetData.treatmentSheet = this.treatmentSheet;
     this._treatmentSheetService.update(this.treatmentSheetData).then(payload => {
-      console.log(payload);
       this.isSaving = false;
     }).catch(error => {
       this.isSaving = false;
-      console.log(error);
     });
   }
 
   completeMedication(medication, index) {
-    console.log(medication);
     const medicationObj = this.treatmentSheet.medications[index];
     this.isSaving = true;
     medicationObj.status = 'Completed';
@@ -200,15 +188,12 @@ export class TreatementPlanComponent implements OnInit {
     this.treatmentSheet.medications[index] = medicationObj;
     this.treatmentSheetData.treatmentSheet = this.treatmentSheet;
     this._treatmentSheetService.update(this.treatmentSheetData).then(payload => {
-      console.log(payload);
       this.isSaving = false;
     }).catch(error => {
       this.isSaving = false;
-      console.log(error);
     });
   }
   discontinueMedication(medication, index) {
-    console.log(medication);
     const medicationObj = this.treatmentSheet.medications[index];
     this.isSaving = true;
     medicationObj.status = 'Discontinued';
@@ -217,15 +202,12 @@ export class TreatementPlanComponent implements OnInit {
     this.treatmentSheet.medications[index] = medicationObj;
     this.treatmentSheetData.treatmentSheet = this.treatmentSheet;
     this._treatmentSheetService.update(this.treatmentSheetData).then(payload => {
-      console.log(payload);
       this.isSaving = false;
     }).catch(error => {
       this.isSaving = false;
-      console.log(error);
     })
   }
   suspendMedication(medication, index) {
-    console.log(medication);
     const medicationObj = this.treatmentSheet.medications[index];
     this.isSaving = true;
     medicationObj.status = 'Suspended';
@@ -234,15 +216,12 @@ export class TreatementPlanComponent implements OnInit {
     this.treatmentSheet.medications[index] = medicationObj;
     this.treatmentSheetData.treatmentSheet = this.treatmentSheet;
     this._treatmentSheetService.update(this.treatmentSheetData).then(payload => {
-      console.log(payload);
       this.isSaving = false;
     }).catch(error => {
       this.isSaving = false;
-      console.log(error);
     })
   }
   activateMedication(medication, index){
-    console.log(medication);
     const medicationObj = this.treatmentSheet.medications[index];
     this.isSaving = true;
     medicationObj.status = 'Started';
@@ -251,11 +230,9 @@ export class TreatementPlanComponent implements OnInit {
     this.treatmentSheet.medications[index] = medicationObj;
     this.treatmentSheetData.treatmentSheet = this.treatmentSheet;
     this._treatmentSheetService.update(this.treatmentSheetData).then(payload => {
-      console.log(payload);
       this.isSaving = false;
     }).catch(error => {
       this.isSaving = false;
-      console.log(error);
     });
   }
 }

@@ -33,21 +33,12 @@ export class RoomComponent implements OnInit {
 		private _route: ActivatedRoute,
 		private router: Router,
 		private _facilitiesService: FacilitiesService,
-		private _locker: CoolLocalStorage,
 		private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
+		private _locker: CoolLocalStorage,
 		private _wardAdmissionService: WardAdmissionService,
 		private _wardEventEmitter: WardEmitterService,
 		private _roomGroupService: RoomGroupService) {
 
-		this._wardAdmissionService.listenerCreate.subscribe(payload => {
-			this.getWardRooomItems();
-		});
-
-		this._wardAdmissionService.listenerUpdate.subscribe(payload => {
-			this.getWardRooomItems();
-		});
-		this.getWaitGroupItems();
-		this.getServicePriceTag();
 	}
 
 	ngOnInit() {
@@ -57,65 +48,22 @@ export class RoomComponent implements OnInit {
 		this._wardEventEmitter.setRouteUrl('Room Setup');
 		this.facility = <Facility> this._locker.getObject('selectedFacility');
 		this.getWardRooomItems();
-		this.getWaitGroupItems();
-		this.getServicePriceTag();
 	}
 
 	editRoom(index: Number, selectedRoom: any) {
 		this.addRoom = true;
 		this.selectedRoom = selectedRoom;
-		// this.roomNameEditShow[index] = !this.roomNameEditShow[index];
-	}
-
-	roomNameEdit(indx, model) {
-		this.roomNameEditShow[indx] = !this.roomNameEditShow[indx];
-		this._wardAdmissionService.find({ query: { facilityId: this.facility._id }}).then(payload => {
-				payload.data[0].locations.forEach(item => {
-					if (item.minorLocationId._id === this.wardId) {
-						item.rooms.forEach(itm => {
-							if (itm._id === model._id) {
-								if (this.editRoomName.value != null || this.editRoomName.value !== undefined) {
-									itm.name = this.editRoomName.value;
-								}
-								if (this.editRoomGroup.value != null || this.editRoomGroup.value !== undefined) {
-									itm.groupId = this.editRoomGroup.value;
-								}
-								if (this.editServicePrice.value != null || this.editServicePrice.value !== undefined) {
-									itm.serviceId = this.editServicePrice.value;
-								}
-								this._wardAdmissionService.update(payload.data[0]).then(t => {
-									this.close_onClick();
-								});
-							}
-						});
-					}
-				});
-			});
-	}
-
-	getServicePriceTag() {
-		this._facilitiesServiceCategoryService.find({query: {facilityId: this.facility._id}}).then(payload => {
-			payload.data[0].categories.forEach(item => {
-				if (item.name === 'Ward') {
-					this.wardServicePriceTags = item.services;
-				}
-			});
-		});
-	}
-
-	getWaitGroupItems() {
-		this._roomGroupService.findAll().then(payload => {
-			this.roomGroupItems = payload.data;
-		});
 	}
 
 	getWardRooomItems() {
-		this._wardAdmissionService.find({ query: {'facilityId._id': this.facility._id}}).then(res => {
+    this._facilitiesService.get(this.facility._id, {}).then(res => {
 			this.loading = false;
-			if (res.data.length > 0) {
-				const rooms = res.data[0].locations.filter(x => x.minorLocationId._id === this.wardId);
-				this.wardDetail = rooms[0];
-        this.rooms = rooms[0].rooms;
+			if (!!res._id) {
+        const rooms = res.minorLocations.filter(x => x._id === this.wardId);
+        this.wardDetail = rooms[0];
+        if (!!rooms[0].wardSetup && !!rooms[0].wardSetup.rooms && rooms[0].wardSetup.rooms.length > 0) {
+          this.rooms = rooms[0].wardSetup.rooms;
+        }
 			}
 		});
 	}
@@ -125,6 +73,7 @@ export class RoomComponent implements OnInit {
 	}
 
 	close_onClick() {
+    this.getWardRooomItems();
     this.selectedRoom = undefined;
 		this.addRoom = false;
 	}

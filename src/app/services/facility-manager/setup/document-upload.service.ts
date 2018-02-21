@@ -18,8 +18,8 @@ export class DocumentUploadService {
     private sanitizer: DomSanitizer,
     private locker: CoolLocalStorage
   ) {
-    this._rest = _restService.getService('docupload');
-    this._socket = _socketService.getService('docupload');
+    this._rest = _restService.getService('doc-upload');
+    this._socket = _socketService.getService('doc-upload');
     // this._restLogin = _restService.getService('auth/local');
     this.listner = Observable.fromEvent(this._socket, 'created');
   }

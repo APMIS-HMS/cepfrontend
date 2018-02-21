@@ -1,19 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { UserService, FacilitiesService, PersonService, EmployeeService } from '../services/facility-manager/setup/index';
-import { Person, Facility } from '../models/index';
-import { Router } from '@angular/router';
-import { CoolLocalStorage } from 'angular2-cool-storage';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
-
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
+import { Component, OnInit } from "@angular/core";
+import { FormControl } from "@angular/forms";
+import {
+  UserService,
+  FacilitiesService,
+  PersonService,
+  EmployeeService
+} from "../services/facility-manager/setup/index";
+import { Person, Facility } from "../models/index";
+import { Router } from "@angular/router";
+import { CoolLocalStorage } from "angular2-cool-storage";
+import { ToastsManager } from "ng2-toastr/ng2-toastr";
 
 @Component({
-  selector: 'app-system-module',
-  templateUrl: './system-module.component.html',
-  styleUrls: ['./system-module.component.scss']
+  selector: "app-system-module",
+  templateUrl: "./system-module.component.html",
+  styleUrls: ["./system-module.component.scss"]
 })
 export class SystemModuleComponent implements OnInit {
-
   searchControl = new FormControl();
 
   facilityManagerActive = true;
@@ -27,44 +31,51 @@ export class SystemModuleComponent implements OnInit {
   userOpt = false;
   changePassword = false;
 
-  constructor(private userService: UserService,
+  constructor(
+    private userService: UserService,
     public facilityService: FacilitiesService,
     private personService: PersonService,
     private employeeService: EmployeeService,
     private toast: ToastsManager,
-    private router: Router, private locker: CoolLocalStorage) {
+    private router: Router,
+    private locker: CoolLocalStorage,
+    private authFacadeService:AuthFacadeService
+  ) {
     this.facilityService.listner.subscribe(payload => {
-      const facility: Facility = <Facility>this.locker.getObject('selectedFacility');
+      const facility: Facility = <Facility>this.locker.getObject(
+        "selectedFacility"
+      );
       if (facility._id === payload._id) {
-        this.locker.setObject('selectedFacility', payload);
+        this.locker.setObject("selectedFacility", payload);
       }
     });
     this.facilityService.patchListner.subscribe(payload => {
-      const facility: Facility = <Facility>this.locker.getObject('selectedFacility');
+      const facility: Facility = <Facility>this.locker.getObject(
+        "selectedFacility"
+      );
       if (facility._id === payload._id) {
-        this.locker.setObject('selectedFacility', payload);
+        this.locker.setObject("selectedFacility", payload);
       }
     });
     this.userService.missionAnnounced$.subscribe(payload => {
-      if (payload === 'out') {
+      if (payload === "out") {
         this.isLoggedOut = true;
-        this.router.navigate(['/']);
-      } else if (payload === 'in') {
-
+        this.router.navigate(["/"]);
+      } else if (payload === "in") {
       }
     });
 
     this.employeeService.checkInAnnounced$.subscribe(payload => {
       this.checkedInObject = payload;
     });
-    let auth: any = this.locker.getObject('auth');
+    let auth: any = this.locker.getObject("auth");
     let authData = auth.data;
     this.personService.get(authData.personId, {}).then(ppayload => {
       this.selectedPerson = ppayload;
     });
 
     this.personService.updateListener.subscribe((payload: Person) => {
-      auth = this.locker.getObject('auth');
+      auth = this.locker.getObject("auth");
       authData = auth.data;
       if (authData.personId === payload._id) {
         this.selectedPerson = payload;
@@ -73,13 +84,13 @@ export class SystemModuleComponent implements OnInit {
   }
 
   ngOnInit() {
-    const auth: any = this.locker.getObject('auth');
+    const auth: any = this.locker.getObject("auth");
     this.authData = auth.data;
   }
 
   signOut() {
     this.userService.logOut();
-    this.userService.announceMission('out');
+    this.userService.announceMission("out");
     this.userService.isLoggedIn = false;
   }
   logOut() {
@@ -87,13 +98,13 @@ export class SystemModuleComponent implements OnInit {
   }
 
   success(text) {
-    this.toast.success(text, 'Success!');
+    this.toast.success(text, "Success!");
   }
   error(text) {
-    this.toast.error(text, 'Error!');
+    this.toast.error(text, "Error!");
   }
   info(text) {
-    this.toast.info(text, 'Info');
+    this.toast.info(text, "Info");
   }
   facilityManager_onClick() {
     this.facilityManagerActive = true;
@@ -103,15 +114,29 @@ export class SystemModuleComponent implements OnInit {
     this.moduleManagerActive = true;
     this.facilityManagerActive = false;
   }
-  close_onClick(){
+  close_onClick() {
     this.logoutConfirm_on = false;
     this.logoutConfirm_on = false;
+    this.changePassword = false;
   }
-  userOpt_toggle(){
+  userOpt_toggle() {
     this.userOpt = !this.userOpt;
   }
   changePass() {
     this.changePassword = true;
     this.logoutConfirm_on = false;
+  }
+  onSwitchAccount() {
+    this.router.navigate(["/accounts"]).then(payload => {
+      this.authFacadeService.setLogingEmployee(undefined);
+      this.authFacadeService.setLoginUser(undefined);
+      this.authFacadeService.setSelectedFacility(undefined);
+      this.authFacadeService.access = undefined;
+    });
+  }
+
+  goHome() {
+    this.router.navigate(["/home-page"]).then(payload => {}, error => {
+    });
   }
 }

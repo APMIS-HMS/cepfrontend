@@ -46,7 +46,6 @@ export class WardManagerSetuppageComponent implements OnInit {
 	}
 
   getFacilityWard(locationId) {
-    console.log(locationId);
     this._facilitiesService.find({
       query: {
         '_id': this.facility._id,
@@ -54,9 +53,7 @@ export class WardManagerSetuppageComponent implements OnInit {
       }
     }).then(res => {
       this.loading = false;
-      console.log(res);
       this.wards = res.data[0].minorLocations.filter(x => x.locationId === locationId);
-      console.log(this.wards);
 		}).catch(err => console.log(err));
 		// this._wardAdmissionService.find({query: {'facilityId._id': this.facility._id}}).then(res => {
 		// 	this.loading = false;
@@ -68,13 +65,11 @@ export class WardManagerSetuppageComponent implements OnInit {
 
   private _getMajorLocation() {
     this._locationService.find({query: { name: 'Ward' }}).then(res => {
-      console.log(res);
       if (res.data.length > 0) {
         const locationId = res.data[0]._id;
         this.getFacilityWard(locationId);
       }
     }).catch(err => {
-      console.log(err);
     });
   }
 }

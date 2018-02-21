@@ -68,7 +68,7 @@ export class RightTabComponent implements OnInit {
                 this.laboratoryLoading = true;
             }
         }
-        Observable.fromPromise(this.documentationService.find({ query: { 'personId._id': this.patient.personId } }))
+        Observable.fromPromise(this.documentationService.find({ query: { 'personId': this.patient.personId } }))
             .subscribe((payload: any) => {
                 if (payload.data.length === 0) {
                     this.patientDocumentation.personId = this.patient.personDetails;
@@ -91,7 +91,7 @@ export class RightTabComponent implements OnInit {
                         Observable.fromPromise(this.documentationService.find({
                             query:
                                 {
-                                    'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
+                                    'personId': this.patient.personId, 'documentations.patientId': this.patient._id,
                                     // $select: ['documentations.documents', 'documentations.facilityId']
                                 }
                         })).subscribe((mload: any) => {
@@ -164,7 +164,6 @@ export class RightTabComponent implements OnInit {
                 this.populateLaboratoryInvestigations(reqList[l]);
             }
         }, error => {
-            console.log(error);
         })
         this.laboratoryLoading = false;
     }
@@ -173,14 +172,14 @@ export class RightTabComponent implements OnInit {
     }
     getPastAppointments() {
         this.pastAppointments = [];
-        Observable.fromPromise(this.appointmentService.find({ query: { 'patientId._id': this.patient._id, isPast: true } }))
+        Observable.fromPromise(this.appointmentService.findAppointment({ query: { 'patientId': this.patient._id, isPast: true } }))
             .subscribe((payload: any) => {
                 this.pastAppointments = payload.data;
             })
     }
     getFutureAppointments() {
         this.futureAppointments = [];
-        Observable.fromPromise(this.appointmentService.find({ query: { 'patientId._id': this.patient._id, isFuture: true } }))
+        Observable.fromPromise(this.appointmentService.findAppointment({ query: { 'patientId': this.patient._id, isFuture: true } }))
             .subscribe((payload: any) => {
                 this.futureAppointments = payload.data;
             })

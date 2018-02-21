@@ -199,7 +199,7 @@ export class ReportComponent implements OnInit {
                   'clinicalInformation': labRequest.clinicalInformation,
                   'labNumber': labRequest.labNumber,
                   'investigation': investigation.investigation.name,
-                  
+
                 })
               }
             });
@@ -227,7 +227,7 @@ export class ReportComponent implements OnInit {
                 // Check if documentation has been created for the user
                 this._documentationService.find({
                   query: {
-                    'personId._id': this.selectedPatient.personDetails._id
+                    'personId': this.selectedPatient.personDetails._id
                   }
                 }).then(res => {
                   // Update the lists
@@ -277,7 +277,8 @@ export class ReportComponent implements OnInit {
       if (res.data.length > 0) {
         const pendingRequests = this._modelPendingRequests(res.data);
         if (pendingRequests.length > 0) {
-          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
+          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved)
+          && (x.isUploaded === undefined || (x.isUploaded === false)));
 
           // If pendingRequests contains at least a value, then get payment status
           if (this.pendingRequests.length > 0) {
@@ -335,7 +336,8 @@ export class ReportComponent implements OnInit {
         this.hasRequest = true;
         const pendingRequests = this._modelPendingRequests(res.data);
         if (pendingRequests.length > 0) {
-          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
+          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved)
+          && (x.isUploaded === undefined || (x.isUploaded === false)));
 
           // Highlight the investigation that was selected fro the route parameters
           this.pendingRequests.forEach((invesigation, i) => {
@@ -379,7 +381,8 @@ export class ReportComponent implements OnInit {
       if (res.data.length > 0) {
         const pendingRequests = this._modelPendingRequests(res.data);
         if (pendingRequests.length > 0) {
-          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
+          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved)
+          && (x.isUploaded === undefined || (x.isUploaded === false)));
 
           // If pendingRequests contains at least a value, then get payment status
           if (this.pendingRequests.length > 0) {
@@ -540,7 +543,6 @@ export class ReportComponent implements OnInit {
     this.paymentStatusText = 'Getting Payment Status... <i class="fa fa-spinner fa-spin"></i>';
 
     this.pendingRequests.forEach((request: PendingLaboratoryRequest) => {
-      console.log(request);
       if (!!request.billingId) {
         this._billingService.find({
           query: {

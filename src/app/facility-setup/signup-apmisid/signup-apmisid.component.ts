@@ -66,7 +66,6 @@ export class SignupApmisid implements OnInit {
 		}).then(payload => {
 			this._facilityFacadeService.facilityCreatorApmisID = '';
 			this._facilityFacadeService.facilityCreatorPersonId = '';
-			console.log(payload);
 			if(payload !== null){
 				this._facilityFacadeService.facilityCreatorApmisID = form.apmisId;
 				this._facilityFacadeService.facilityCreatorPersonId = payload;

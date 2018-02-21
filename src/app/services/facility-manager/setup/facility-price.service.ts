@@ -11,8 +11,8 @@ export class FacilityPriceService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('facilityprices');
-    this._socket = _socketService.getService('facilityprices');
+    this._rest = _restService.getService('facility-prices');
+    this._socket = _socketService.getService('facility-prices');
     this._socket.on('created', function (facilityprices) {
     });
     this.listner = Observable.fromEvent(this._socket, 'remove');

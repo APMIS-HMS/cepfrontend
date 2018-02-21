@@ -1,5 +1,5 @@
 <div class="c-page-header">
-    <h3 class="c-page-title">List of Rooms in {{wardDetail.minorLocationId?.name}}</h3>
+    <h3 class="c-page-title">List of Rooms in {{wardDetail?.name}}</h3>
     <div class="pull-right btn-box">
         <div class="add-action-box">
             <button mat-raised-button (click)="addRoomModal()" class="btn pull-right"><i class="fa fa-plus-square" aria-hidden="true "></i> Add Room</button>
@@ -19,18 +19,19 @@
                         <th>Room</th>
                         <th>Group</th>
                         <th>Service</th>
+                        <th>Description</th>
                         <th>No. of Bed(s)</th>
                         <th style="width: 15%">Action</th>
                     </tr>
                 </thead>
                 <tbody class="custom-tbody">
                     <tr *ngIf="rooms.length === 0 && loading">
-                        <td class="table-content " colspan="6" style="text-align: center">
+                        <td class="table-content " colspan="7" style="text-align: center">
                             <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </td>
                     </tr>
                     <tr *ngIf="rooms.length === 0 && !loading">
-                        <td class="table-content " colspan="6" style="text-align: center">
+                        <td class="table-content " colspan="7" style="text-align: center">
                             No data available in table
                         </td>
                     </tr>
@@ -43,34 +44,22 @@
                         </td>
                         <td class="table-content">
                             <div routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">
-                                {{room.groupId?.name}}
+                                {{room.group?.name}}
                             </div>
-                            <!-- <div [hidden]="roomNameEditShow[i]" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">
-                                {{room.groupId?.name}}
-                            </div> -->
-                            <!-- <select *ngIf="roomNameEditShow[i]" [formControl]="editRoomGroup">
-                                <option  value="" disabled selected>Select Room's Group</option>
-                                <option *ngFor="let item of roomGroupItems" value={{item._id}}>{{item?.name}}</option>
-                            </select> -->
                         </td>
                         <td class="table-content">
                             <div routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">
-                                {{room?.serviceId?.service?.name}}
+                                {{room?.service?.name}}
                             </div>
-                            <!-- <div [hidden]="roomNameEditShow[i]" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">
-                                {{room?.serviceId?.name}}
-                            </div> -->
-                            <!-- <select *ngIf="roomNameEditShow[i]" [formControl]="editServicePrice">
-                                <option  value="" disabled selected>Select Room's Group</option>
-                                <option *ngFor="let item of wardServicePriceTags" value={{item._id}}>{{item?.name}}</option>
-                            </select> -->
+                        </td>
+                        <td class="table-content">
+                            <div routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">
+                                {{room?.description}}
+                            </div>
                         </td>
                         <td class="table-content" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{room.beds?.length}}</td>
                         <td class="table-content-action">
                             <i (click)="editRoom(i, room)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                            <!-- <i [hidden]="roomNameEditShow[i]" (click)="roomNameEditToggle(i)" class="fa fa-pencil-square-o" aria-hidden="true"></i> -->
-                            <!-- <i *ngIf="roomNameEditShow[i]" (click)="roomNameEdit(i,room)" class="fa fa-check" aria-hidden="true"></i> -->
-                            <i class="fa fa-trash" aria-hidden="true"></i>
                         </td>
                     </tr>
                 </tbody>

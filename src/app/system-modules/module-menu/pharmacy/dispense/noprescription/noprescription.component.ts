@@ -4,10 +4,14 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility, Appointment, BatchTransaction, Employee, BillItem, BillIGroup, Department } from '../../../../../models/index';
 import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
-import { FacilitiesService, PrescriptionService, InventoryService, EmployeeService, PurchaseEntryService,
-	 InventoryTransactionTypeService, DispenseCollectionDrugService, BillingService, InvoiceService,
-	 DispenseService, ProductService, FacilityPriceService, AssessmentDispenseService } from '../../../../../services/facility-manager/setup/index';
+import {
+	FacilitiesService, PrescriptionService, InventoryService, EmployeeService, PurchaseEntryService,
+	InventoryTransactionTypeService, DispenseCollectionDrugService, BillingService, InvoiceService,
+	DispenseService, ProductService, FacilityPriceService, AssessmentDispenseService
+}
+	from '../../../../../services/facility-manager/setup/index';
 import { Observable } from 'rxjs/Observable';
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 
 @Component({
 	selector: 'app-noprescription',
@@ -45,16 +49,18 @@ export class NoprescriptionComponent implements OnInit {
 	price = 0;
 	totalPrice = 0;
 	totalQuantity = 0;
-	selectedBatch: string = '';
-	disableDispenseBtn: boolean = false;
-	dispenseBtnText: string = 'Dispense';
-	inventoryTransactionTypeId: string = '';
-	selectedIventoryId: string = '';
-	selectedFsId: string = '';
-	selectedSId: string = '';
-	selectedCId: string = '';
-	internalType: string = 'Department';
-	deptLocationShow: boolean = true;
+	selectedBatch = '';
+	disableDispenseBtn = false;
+	dispenseBtnText = 'Dispense';
+	inventoryTransactionTypeId = '';
+	selectedIventoryId = '';
+	selectedFsId = '';
+	selectedSId = '';
+	selectedCId = '';
+	internalType = 'Department';
+	deptLocationShow = true;
+
+	loading = false;
 
 	constructor(
 		private _fb: FormBuilder,
@@ -72,7 +78,8 @@ export class NoprescriptionComponent implements OnInit {
 		private _inventoryTransactionTypeService: InventoryTransactionTypeService,
 		private _dispenseCollectionDrugs: DispenseCollectionDrugService,
 		private _billingService: BillingService,
-		private _invoiceService: InvoiceService
+		private _invoiceService: InvoiceService,
+		private _authFacadeService: AuthFacadeService
 	) {
 
 	}
@@ -81,8 +88,10 @@ export class NoprescriptionComponent implements OnInit {
 		this._pharmacyEventEmitter.setRouteUrl('Dispense');
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		this.storeId = this._locker.getObject('checkingObject');
-		this.employeeDetails = <Employee> this._locker.getObject('loginEmployee');
 		this.user = this._locker.getObject('auth');
+		this._authFacadeService.getLogingEmployee().then(res => {
+			this.employeeDetails = res;
+		}).catch(err => console.log(err));
 
 		this.clients = Clients;
 		this.selectedClient = Clients[0].name;
@@ -115,7 +124,7 @@ export class NoprescriptionComponent implements OnInit {
 		});
 
 		// Disable dispense button if there are no items in the prescription array.
-		if(this.prescriptions.length === 0) {
+		if (this.prescriptions.length === 0) {
 			this.disableDispenseBtn = true;
 		} else {
 			this.disableDispenseBtn = false;
@@ -125,8 +134,8 @@ export class NoprescriptionComponent implements OnInit {
 	// Add items to the prescriptions array.
 	onClickSaveNoPrescription(value: any, valid: boolean) {
 		const prescription = {};
-		if(valid) {
-			if(this.storeId.typeObject.storeId !== '') {
+		if (valid) {
+			if (this.storeId.typeObject.storeId !== '') {
 				if (value.drug === '' || value.qty === '' || value.qty === 0 || value.batchNumber === '') {
 					this._facilityService.announceNotification({
 						users: [this.user._id],
@@ -145,7 +154,7 @@ export class NoprescriptionComponent implements OnInit {
 							prescription['companyPhone'] = value.companyPhone;
 							break;
 						case 'Internal':
-							if(this.internalType.toLowerCase() === 'department') {
+							if (this.internalType.toLowerCase() === 'department') {
 								prescription['department'] = {
 									id: value.dept._id,
 									name: value.dept.name
@@ -207,7 +216,7 @@ export class NoprescriptionComponent implements OnInit {
 
 	// Save Nonpresciption form data in to the database.
 	onClickDispense() {
-		if(this.prescriptions.length > 0) {
+		if (this.prescriptions.length > 0) {
 			if (this.storeId !== '') {
 				const prescription = {};
 				const drugs = [];
@@ -239,7 +248,7 @@ export class NoprescriptionComponent implements OnInit {
 							};
 							break;
 						case 'Internal':
-							if(this.internalType.toLowerCase() === 'department') {
+							if (this.internalType.toLowerCase() === 'department') {
 								prescription['department'] = {
 									id: element.department.id,
 									name: element.department.name
@@ -321,108 +330,108 @@ export class NoprescriptionComponent implements OnInit {
 
 				// Call a service to
 				this._dispenseCollectionDrugs.create(collectionDrugs).then(res => {
-						// bill model
-						const billItemArray = [];
-						let totalCost = 0;
-						const clientDetails: any = <any>{};
-						this.prescriptions.forEach((element, i) => {
-							if (i === 0) {
-								switch (element.client.toLowerCase()) {
-									case 'individual':
-										clientDetails.name = element.firstName + ' ' + element.lastName;
-										clientDetails.phone = element.phoneNumber;
-										break;
-									case 'corporate':
-										clientDetails.name = element.companyName;
-										clientDetails.phone = element.companyPhone;
-										break;
-									case 'internal':
-										clientDetails.dept = element.dept;
-										clientDetails.unit = element.unit;
-										clientDetails.location = element.minorLocation;
-										break;
-								}
+					// bill model
+					const billItemArray = [];
+					let totalCost = 0;
+					const clientDetails: any = <any>{};
+					this.prescriptions.forEach((element, i) => {
+						if (i === 0) {
+							switch (element.client.toLowerCase()) {
+								case 'individual':
+									clientDetails.name = element.firstName + ' ' + element.lastName;
+									clientDetails.phone = element.phoneNumber;
+									break;
+								case 'corporate':
+									clientDetails.name = element.companyName;
+									clientDetails.phone = element.companyPhone;
+									break;
+								case 'internal':
+									clientDetails.dept = element.dept;
+									clientDetails.unit = element.unit;
+									clientDetails.location = element.minorLocation;
+									break;
 							}
-
-							const billItem = <BillItem> {
-								facilityServiceId: element.facilityServiceId,
-								serviceId: element.serviceId,
-								facilityId: this.facility._id,
-								description: element.productName,
-								quantity: element.qty,
-								totalPrice: element.cost * element.qty,
-								unitPrice: element.cost,
-								unitDiscountedAmount: 0,
-								totalDiscoutedAmount: 0,
-							};
-
-							totalCost += element.totalCost;
-							billItemArray.push(billItem);
-						});
-
-						const bill = <BillIGroup> {
-							facilityId: this.facility._id,
-							walkInClientDetails: clientDetails,
-							isWalkIn: true,
-							billItems: billItemArray,
-							discount: 0,
-							subTotal: totalCost,
-							grandTotal: totalCost,
 						}
-						// Create a bill.
-						this._billingService.create(bill).then(res => {
-								const billingIds = [];
-								// Get all the billing items
-								// res.drugs.forEach(element => {
-								// 	const ids = {
-								// 		productId: element._id,
-								// 		productName: element.productName
-								// 	}
-								// 	billingIds.push(ids);
-								// });
 
-								// const invoice = {
-								// 	facilityId: this.facility._id,
-								// 	walkInClientDetails: clientDetails,
-								// 	isWalkIn: true,
-								// 	billingIds: billingIds,
-								// 	payments: billingIds, // Don't know what to insert in this.
-								// 	paymentStatus: [{ type: Schema.Types.Mixed, required: true }], // waved, insurance, partpayment, paid
-								// 	paymentCompleted: true,
-								// 	invoiceNo: { type: String, require: false },
-								// 	totalDiscount: { type: Number, require: false },
-								// 	totalPrice: { type: Number, require: false },
-								// };
-								// // call the invoice service.
-								// this._invoiceService.create(invoice)
-								// 	.then(res => {
-								// 	})
-								// 	.catch(err => { console.log(err); });
-							}).catch(err => { console.log(err); });
+						const billItem = <BillItem>{
+							facilityServiceId: element.facilityServiceId,
+							serviceId: element.serviceId,
+							facilityId: this.facility._id,
+							description: element.productName,
+							quantity: element.qty,
+							totalPrice: element.cost * element.qty,
+							unitPrice: element.cost,
+							unitDiscountedAmount: 0,
+							totalDiscoutedAmount: 0,
+						};
+
+						totalCost += element.totalCost;
+						billItemArray.push(billItem);
+					});
+
+					const bill = <BillIGroup>{
+						facilityId: this.facility._id,
+						walkInClientDetails: clientDetails,
+						isWalkIn: true,
+						billItems: billItemArray,
+						discount: 0,
+						subTotal: totalCost,
+						grandTotal: totalCost,
+					}
+					// Create a bill.
+					this._billingService.create(bill).then(res => {
+						const billingIds = [];
+						// Get all the billing items
+						// res.drugs.forEach(element => {
+						// 	const ids = {
+						// 		productId: element._id,
+						// 		productName: element.productName
+						// 	}
+						// 	billingIds.push(ids);
+						// });
+
+						// const invoice = {
+						// 	facilityId: this.facility._id,
+						// 	walkInClientDetails: clientDetails,
+						// 	isWalkIn: true,
+						// 	billingIds: billingIds,
+						// 	payments: billingIds, // Don't know what to insert in this.
+						// 	paymentStatus: [{ type: Schema.Types.Mixed, required: true }], // waved, insurance, partpayment, paid
+						// 	paymentCompleted: true,
+						// 	invoiceNo: { type: String, require: false },
+						// 	totalDiscount: { type: Number, require: false },
+						// 	totalPrice: { type: Number, require: false },
+						// };
+						// // call the invoice service.
+						// this._invoiceService.create(invoice)
+						// 	.then(res => {
+						// 	})
+						// 	.catch(err => { console.log(err); });
 					}).catch(err => { console.log(err); });
+				}).catch(err => { console.log(err); });
 
 				// Call the dispense service.
 				this._dispenseService.create(payload).then(res => {
-						this.dispenseBtnText = 'Dispense';
-						this.disableDispenseBtn = true;
-						this.selectedProducts = [];
-						this.prescriptions = [];
-						this.prescription = {};
-						this.totalPrice = 0;
-						this.totalQuantity = 0;
-						this.price = 0;
-						this.noPrescriptionForm.reset();
-						this.noPrescriptionForm.controls['qty'].reset(0);
-            this.noPrescriptionForm.controls['client'].reset(this.clients[0].name);
-            this._notification('Success', 'Prescription has been sent!');
-					}).catch(err => {
-            console.log(err);
-					});
+					this.dispenseBtnText = 'Dispense';
+					this.disableDispenseBtn = true;
+					this.selectedProducts = [];
+					this.prescriptions = [];
+					this.prescription = {};
+					this.totalPrice = 0;
+					this.totalQuantity = 0;
+					this.price = 0;
+					this.noPrescriptionForm.reset();
+					this.noPrescriptionForm.controls['qty'].reset(0);
+					this.noPrescriptionForm.controls['client'].reset(this.clients[0].name);
+					this._notification('Success', 'Prescription has been sent!');
+				}).catch(err => {
+					console.log(err);
+				});
 			} else {
-        this._notification('Error', 'You need to check into store.');
+				this._notification('Error', 'You need to check into store.');
 			}
 		} else {
-      this._notification('Error', 'Please use to "Save" button above to add drugs.');
+			this._notification('Error', 'Please use to "Save" button above to add drugs.');
 		}
 	}
 
@@ -438,26 +447,28 @@ export class NoprescriptionComponent implements OnInit {
 					.debounceTime(1000)
 					.switchMap((term) => Observable.fromPromise(
 						this._inventoryService.find(
-							{ query: {
-								facilityId : this.facility._id,
-								storeId: this.storeId.typeObject.storeId
-							}
-					}))).subscribe((res: any) => {
-						// Get all products in the facility, then search for the item you are looing for.
-						let contains = res.data.filter(x => (x.totalQuantity > 0) && x.productObject.name.toLowerCase().includes(this.searchText.toLowerCase()));
+							{
+								query: {
+									facilityId: this.facility._id,
+									storeId: this.storeId.typeObject.storeId
+								}
+							}))).subscribe((res: any) => {
+								// Get all products in the facility, then search for the item you are looing for.
+								const contains = res.data.filter(x => (x.totalQuantity > 0)
+								&& x.productObject.name.toLowerCase().includes(this.searchText.toLowerCase()));
 
-						if (contains.length !== 0) {
-							this.products = contains;
-							this.batches = contains[0].transactions;
-							this.cuDropdownLoading = false;
-						} else {
-							this.products = [];
-							this.batches = [];
-							this.cuDropdownLoading = false;
-						}
-					});
+								if (contains.length !== 0) {
+									this.products = contains;
+									this.batches = contains[0].transactions;
+									this.cuDropdownLoading = false;
+								} else {
+									this.products = [];
+									this.batches = [];
+									this.cuDropdownLoading = false;
+								}
+							});
 			} else {
-        this._notification('Error', 'You need to check into store.');
+				this._notification('Error', 'You need to check into store.');
 			}
 		}
 	}
@@ -550,9 +561,9 @@ export class NoprescriptionComponent implements OnInit {
 	// Get facility data then extract the departments, minorlocations, and units.
 	getFacilityData() {
 		this._facilityService.get(this.facility._id, {}).then(res => {
-				this.departments = res.departments;
-				this.minorLocations = res.minorLocations;
-			}).catch(err => console.error(err));
+			this.departments = res.departments;
+			this.minorLocations = res.minorLocations;
+		}).catch(err => console.error(err));
 	}
 
 	onChangeDepartment(value) {
@@ -565,7 +576,7 @@ export class NoprescriptionComponent implements OnInit {
 		this.noPrescriptionForm.controls['dept'].setValue('');
 		this.noPrescriptionForm.controls['unit'].setValue('');
 		this.noPrescriptionForm.controls['minorLocation'].setValue('');
-		switch(value) {
+		switch (value) {
 			case 'Department':
 				this.deptLocationShow = true;
 				break;
@@ -609,11 +620,11 @@ export class NoprescriptionComponent implements OnInit {
 	// Get all the inventory transaction types.
 	private _getInventoryTransactionTypes() {
 		this._inventoryTransactionTypeService.findAll().then(res => {
-				if(res.data.length > 0) {
-					const inventoryType = res.data.filter(x => x.name.toLowerCase().includes('dispense'));
-					this.inventoryTransactionTypeId = inventoryType[0]._id;
-				}
-			}).catch(err => { console.log(err); });
+			if (res.data.length > 0) {
+				const inventoryType = res.data.filter(x => x.name.toLowerCase().includes('dispense'));
+				this.inventoryTransactionTypeId = inventoryType[0]._id;
+			}
+		}).catch(err => { console.log(err); });
 	}
 
 	// Notification
@@ -624,14 +635,16 @@ export class NoprescriptionComponent implements OnInit {
 			text: text
 		});
 	}
-	private  _minValue(min: Number): ValidatorFn {
-		return (control: AbstractControl): {[key: string]: any} => {
+	private _minValue(min: Number): ValidatorFn {
+		return (control: AbstractControl): { [key: string]: any } => {
 			const input = control.value,
 				isValid = input < min;
-			if(isValid)
-				return { 'maxValue': {min} }
-			else
+			if (isValid) {
+				return { 'maxValue': { min } }
+			} else {
 				return null;
+			}
+
 		};
 	}
 }

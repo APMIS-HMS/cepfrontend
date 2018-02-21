@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Facility,User } from '../../../../models/index';
+import { Facility, User } from '../../../../models/index';
 import { FormControl } from '@angular/forms';
 import { ProductTypeService, ProductService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { ProductEmitterService } from '../../../../services/facility-manager/product-emitter.service';
@@ -33,13 +33,8 @@ export class ProductManagerLandingpageComponent implements OnInit {
   searchControl = new FormControl();
   constructor(private locker: CoolLocalStorage, private productTypeService: ProductTypeService,
     private productService: ProductService, private _productEventEmitter: ProductEmitterService,
-   private facilitiesService: FacilitiesService) {
-    this.productService.listenerUpdate.subscribe(payload => {
-      this.getProducts();
-    });
-    this.productService.listenerCreate.subscribe(payload => {
-      this.getProducts();
-    });
+    private facilitiesService: FacilitiesService) {
+
   }
 
   ngOnInit() {
@@ -49,28 +44,22 @@ export class ProductManagerLandingpageComponent implements OnInit {
     this.getProducts();
     this.getProductTypes();
 
-    // const subscribeForPerson = this.searchControl.valueChanges
-    //   .debounceTime(200)
-    //   .distinctUntilChanged()
-    //   .switchMap((term: any[]) =>
-    //     this.productService.find({
-    //       query: {
-    //         name: { $regex: this.searchControl.value, '$options': 'i' },
-    //         facilityId: this.selectedFacility._id,
-    //         $limit: 30
-    //       }
-    //     })
-    //       .then(payload => {
-    //         this.products = payload.data;
-    //       }));
+    this.searchControl.valueChanges
+      .debounceTime(200)
+      .distinctUntilChanged()
+      .subscribe((por: any) => {
+        this.productService.findList({ query: { facilityId: this.selectedFacility._id, name: por } }).then(payload => {
+          this.products = payload.data;
+        });
+      })
 
     // subscribeForPerson.subscribe((payload: any) => {
     // });
-    // this.selProductType.valueChanges.subscribe(value => {
-    //   this.productService.find({ query: { facilityId: this.selectedFacility._id, productTypeId: value, $limit: 30 } }).then(payload => {
-    //     this.products = payload.data;
-    //   });
-    // });
+    this.selProductType.valueChanges.subscribe(value => {
+      this.productService.findList({ query: { facilityId: this.selectedFacility._id, productTypeId: value } }).then(payload => {
+        this.products = payload.data;
+      });
+    });
   }
 
   private _notification(type: string, text: string): void {
@@ -82,7 +71,7 @@ export class ProductManagerLandingpageComponent implements OnInit {
   }
 
   getProducts() {
-    this.productService.find({ query: { facilityId: this.selectedFacility._id, $limit: 30 } }).then(payload => {
+    this.productService.findList({ query: { facilityId: this.selectedFacility._id, name: '' } }).then(payload => {
       this.products = payload.data;
     });
   }
@@ -102,6 +91,13 @@ export class ProductManagerLandingpageComponent implements OnInit {
     this.selectedProduct = <any>{};
     this.addProduct = false;
   }
+
+  onRefreshProductList(value) {
+    console.log(value);
+    this.getProducts();
+  }
+
+
   onSelectProduct(product) {
     this.deactivateButton = product.isActive ? 'Deactivate' : 'Activate';
     this.selectedProduct = product;

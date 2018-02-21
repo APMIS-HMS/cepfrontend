@@ -45,7 +45,6 @@ export class ConsultingRoomCheckinComponent implements OnInit {
       // })
       let minorLocations = selectedFacility.minorLocations;
       let locations = this.loginEmployee.workSpaces.map(m => m.locations);
-      console.log(locations);
       let locationIds = [];
       locations.forEach(location =>{
         (location.map(m =>m.minorLocationId)).forEach(p =>{
@@ -53,7 +52,6 @@ export class ConsultingRoomCheckinComponent implements OnInit {
         })
       })
       // let locationIds = locations.map(m=>m.minorLocationId);
-      console.log(locationIds);
       this.locations = minorLocations.filter(x => locationIds.includes(x._id));
     });
 

@@ -60,7 +60,6 @@ export class EmpAssignUnitComponent implements OnInit {
     }
 
     this.frmNewEmp1.controls['unit'].valueChanges.subscribe((value: any) => {
-      console.log(value);
       this.selectedUnit = value;
       this.filterDownEmployees(this.selectedUnit);
   
@@ -133,7 +132,6 @@ export class EmpAssignUnitComponent implements OnInit {
       this.getEmployees(this.selectedDepartment.name);
       this.systemModuleService.announceSweetProxy('Employee assigned successfully','success');
     }, error => {
-      console.log(error);
       this.systemModuleService.announceSweetProxy('There was an error assigning this employee to this unit','error');
     });
   }

@@ -1,3 +1,5 @@
+import { AuthFacadeService } from './../../../service-facade/auth-facade.service';
+import { VISIBILITY_GLOBAL, VISIBILITY_FACILITY, VISIBILITY_DEPARTMENT, VISIBILITY_INDIVIDUAL, VISIBILITY_UNIT } from './../../../../shared-module/helpers/global-config';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FormsService, FacilityModuleService } from '../../../../services/facility-manager/setup/index';
@@ -184,10 +186,11 @@ export class FormsComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
   selectedForm: any = <any>{};
   checkboxArray = new FormArray([]);
+  loginEmployee:any;
 
   constructor(private route: ActivatedRoute, private formsService: FormsService, private scopeLevelService: ScopeLevelService,
     private locker: CoolLocalStorage, private facilityModuleService: FacilityModuleService, private formTypeService: FormTypeService,
-    private formBuilder: FormBuilder) {
+    private formBuilder: FormBuilder, private authFacadeService:AuthFacadeService) {
 
     this.txtForm.valueChanges.subscribe(value => {
       const filteredForms = this.forms.filter(x => x._id === value);
@@ -226,7 +229,7 @@ export class FormsComponent implements OnInit {
           this.getForms();
         });
       } else {
-        const full = {
+        const full:any = {
           moduleIds: checkedModuleIds,
           typeOfDocumentId: this.frm_document.value.documentType,
           scopeLevelId: this.frm_document.value.scopeLevel,
@@ -235,6 +238,18 @@ export class FormsComponent implements OnInit {
           facilityId: this.selectedFacility._id,
           isSide: false
         };
+        if(full.scopeLevelId === VISIBILITY_FACILITY){
+          full.selectedFacilityId = this.selectedFacility._id;
+        }else if(full.scopeLevelId === VISIBILITY_DEPARTMENT){
+          full.departmenId = this.loginEmployee.department;
+          full.selectedFacilityId = this.loginEmployee.facilityId;
+        }else if(full.scopeLevelId === VISIBILITY_INDIVIDUAL){
+          full.personId = this.loginEmployee.personId;
+        }else if(full.scopeLevelId === VISIBILITY_UNIT){
+          full.personId = this.loginEmployee.units;
+          full.selectedFacilityId = this.loginEmployee.facilityId;
+        }
+        console.log(full);
         this.formsService.create(full).then(payloads => {
           this.primeForms();
           this.onCreate();
@@ -249,6 +264,9 @@ export class FormsComponent implements OnInit {
 
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.authFacadeService.getLogingEmployee().then((payload:any)=>{
+      this.loginEmployee = payload;
+    });
     this.prime();
     this.getForms();
   }

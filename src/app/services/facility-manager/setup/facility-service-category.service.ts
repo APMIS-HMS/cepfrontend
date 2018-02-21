@@ -14,15 +14,22 @@ export class FacilitiesServiceCategoryService {
   private _rest;
   private _restLogin;
   public createListener;
+  public _wardRoomPriceSocket;
+  public _wardRoomPriceRest;
+  public _socketOrganisationServices;
+
   constructor(
     private _socketService: SocketService,
     private _restService: RestService,
     private sanitizer: DomSanitizer,
     private locker: CoolLocalStorage,
-    private _http: Http
+    private _http: Http,
   ) {
     this._rest = _restService.getService('organisation-services');
     this._socket = _socketService.getService('organisation-services');
+    this._wardRoomPriceSocket = _socketService.getService('ward-room-prices');
+    this._wardRoomPriceRest = _restService.getService('ward-room-prices');
+    this._socketOrganisationServices = _socketService.getService('bill-managers');
     this._socket.timeout = 30000;
     this.createListener = Observable.fromEvent(this._socket, 'created');
     this.listner = Observable.fromEvent(this._socket, 'updated');
@@ -35,6 +42,10 @@ export class FacilitiesServiceCategoryService {
     return this._socket.find(query);
   }
 
+  allServices(query: any) {
+    return this._socketOrganisationServices.find(query);
+  }
+
   findAll() {
     return this._socket.find();
   }
@@ -42,18 +53,26 @@ export class FacilitiesServiceCategoryService {
     return this._socket.get(id, query);
   }
   getSelectedFacilityId() {
-    const facility =  <any> this.locker.getObject('selectedFacility');
+    const facility = <any>this.locker.getObject('selectedFacility');
     return facility;
   }
-  create(facilityservice: any) {
-    return this._socket.create(facilityservice);
+  create(facilityservice: any, params) {
+    return this._socketOrganisationServices.create(facilityservice, params);
   }
   update(facilityservice: any) {
-    return this._socket.update(facilityservice._id, facilityservice);
+    return this._socket.update(facilityservice._id,facilityservice);
+  }
+  update2(id,facilityservice: any,params) {
+    return this._socketOrganisationServices.update(id,facilityservice,params);
   }
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }
+
+  wardRoomPrices(payload: any) {
+    return this._wardRoomPriceSocket.get(payload);
+  }
+
   searchCategory(facilityId: string, searchText: string) {
     const host = this._restService.getHost();
     const path = host + '/category';
@@ -67,7 +86,7 @@ export class FacilitiesServiceCategoryService {
     const headers = new Headers();
     headers.append('Content-Type', 'application/json');
 
-    return this._http.post(host, payload, { headers: headers}).toPromise()
+    return this._http.post(host, payload, { headers: headers }).toPromise()
       .then((res) => this.extractData(res)).catch(error => this.handleErrorPromise(error));
   }
 

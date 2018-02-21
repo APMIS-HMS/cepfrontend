@@ -18,8 +18,8 @@ export class FacilitypageModulespageComponent implements OnInit {
   integratedModulesShow = false;
   unintegratedModulesShow = false;
   facility: any = <any>{};
-  systemModules: any[] = [];
-  facilityModules: any[] = [];
+  systemModules: any = [];
+  facilityModules: any = [];
   idToRemove: any = <any>{}
   constructor(private facilityModuleService: FacilityModuleService,
     private locker: CoolLocalStorage,
@@ -32,17 +32,6 @@ export class FacilitypageModulespageComponent implements OnInit {
     this.facility = this.locker.getObject('selectedFacility');
     this.getFacility();
     this.getModules();
-    /* this.route.data.subscribe(data => {
-      console.log(data);
-      data['systemModules'].subscribe((payload: any[]) => {
-        this.systemModules = payload;
-      });
-      data['facility'].subscribe((payload: any) => {
-        if (payload.facilityModules !== undefined) {
-          this.facilityModules = payload.facilityModules;
-        }
-      });
-    }); */
   }
   isIntegrated(value: any): boolean {
     let obj = this.facilityModules.find(x => x._id === value.toString());
@@ -58,7 +47,6 @@ export class FacilitypageModulespageComponent implements OnInit {
         isAll: true
       }
     }).then((payload) => {
-      console.log(payload);
       this.systemModuleService.off;
       this.systemModules = payload;
     }, err => {
@@ -72,9 +60,8 @@ export class FacilitypageModulespageComponent implements OnInit {
         isAll: false
       }
     }).then((payload) => {
-      console.log(payload);
       this.systemModuleService.off;
-      if (payload.facilitymoduleId.length > 0) {
+      if (payload.facilitymoduleId !== undefined && payload.facilitymoduleId.length > 0) {
         this.facilityModules = payload.facilitymoduleId;
       }
     }, error => {
@@ -105,11 +92,9 @@ export class FacilitypageModulespageComponent implements OnInit {
         facilityId: this.facility._id
       }
     }).then((payload) => {
-      console.log(payload);
       this.getModules();
       this.getFacility();
     }, error => {
-      console.log(error);
     })
   }
 
@@ -128,12 +113,10 @@ export class FacilitypageModulespageComponent implements OnInit {
           facilityId: this.facility._id
         }
       }).then((payload) => {
-        console.log(payload);
         this.getModules();
         this.getFacility();
         this.idToRemove=<any>{};
       }, error => {
-        console.log(error);
       })
     }
   }

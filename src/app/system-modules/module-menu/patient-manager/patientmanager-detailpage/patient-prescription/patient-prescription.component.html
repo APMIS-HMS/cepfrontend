@@ -95,7 +95,7 @@
             <form [formGroup]="addPrescriptionForm" novalidate>
                 <div class="row padding-top-20px">
                     <div class="col-sm-6 col-md-6">
-                        <apmis-lookup formControlName="drug" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Drug" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                        <apmis-lookup formControlName="drug" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="true" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Drug" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                     </div>
                     <div class="col-sm-3 col-md-3">
                         <mat-form-field>
@@ -171,25 +171,63 @@
             <app-add-prescription [isDispensed]="isDispensed" [prescriptionItems]="prescriptionItems"></app-add-prescription>
 
             <form [formGroup]="allPrescriptionsForm">
+                <!-- begin total bill-->
+                <!--<div class="row">
+                    <div class="col-sm-12 col-md-12 padding-10px">
+                        <div class="col-sm-6 pull-right">
+                            <p class="pull-right"><strong>Total Bill</strong> <span style="color:red;">N200</span></p>
+                        </div>
+                    </div>
+                </div>-->
+                <!-- end total bill-->
+                <!--<div class="row">
+                    <div class="col-sm-12 col-md-12 padding-10px text-center">
+                        <div class="col-sm-12 col-md-12">
+                                <label class="pull-left"> Priority </label>
+                                <dx-lookup formControlName="priority" [items]="priorities" displayExpr="name" valueExpr="_id">
+                                </dx-lookup>
+                        </div>
+                    </div>
+                </div>-->
+                <!-- <div class="row">
+                     <div class="col-md-4 col-sm-4 col-xs-12">
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                        <label> Priority </label>
+                        <div>
+                            <dx-lookup formControlName="priority" [items]="priorities" displayExpr="name" valueExpr="_id">
+                            </dx-lookup>
+                        </div>
+                    </div>
+                    <div class="col-md-4 col-sm-4 col-xs-12">
+                    </div>
+                </div> -->
                 <div class="row">
                     <div class="col-xs-12 no-padding">
                         <div class="col-sm-2"></div>
                         <div class="col-sm-8">
                             <div class="col-sm-6" style="margin-top: 10px;">
                                 <mat-form-field class="mat-select">
-                                    <mat-select placeholder="Priority" formControlName="priority">
-                                        <mat-option *ngFor="let priority of priorities" [(value)]="priority._id">{{ priority.name }}</mat-option>
+                                    <mat-select placeholder="Priority" formControlName="priority" [compareWith]="comparePriority">
+                                        <mat-option *ngFor="let priority of priorities" [value]="priority">{{ priority.name }}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
                             <div class="col-sm-6 text-center">
-                                <button mat-raised-button [disabled]="!allPrescriptionsForm.valid || disableAuthorizeRx" (click)="onClickAuthorizePrescription(allPrescriptionsForm.value, allPrescriptionsForm.valid);" type="submit" class="mat-lg-btn" [innerHtml]="authorizeRx"></button>
+                                <button mat-raised-button [disabled]="!allPrescriptionsForm.valid || disableAuthorizeRx" (click)="onClickAuthorizePrescription(allPrescriptionsForm.value, allPrescriptionsForm.valid);" type="submit" class="mat-lg-btn">
+                                  <span *ngIf="authorizeRx"><i class="fa fa-check"></i> Authorize Rx</span>
+                                  <span *ngIf="authorizingRx">Authorizing Rx... <i class="fa fa-spin fa-spinner"></i></span>
+                                </button>
                             </div>
                         </div>
-                        <div class="col-sm-2"></div>
+                        <div class="col-sm-6 col-md-6 text-center">
+                            <button (click)="onClickSavePrescription(allPrescriptionsForm.value, allPrescriptionsForm.valid);" type="submit" class="cta-1">Authorize RX</button>
+                        </div>
                     </div>
                 </div>
+                <!-- end authorize RX button -->
             </form>
         </div>
     </div>
+    <!-- end survery -->
 </section>

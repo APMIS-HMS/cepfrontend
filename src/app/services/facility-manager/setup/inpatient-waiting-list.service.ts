@@ -22,8 +22,8 @@ export class InPatientListService {
     private sanitizer: DomSanitizer,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('inpatientwaitinglists');
-    this._socket = _socketService.getService('inpatientwaitinglists');
+    this._rest = _restService.getService('inpatient-waiting-lists');
+    this._socket = _socketService.getService('inpatient-waiting-lists');
     this._socket.timeout = 50000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');

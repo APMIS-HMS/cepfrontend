@@ -36,11 +36,13 @@ export class FacilitypageSidesectComponent implements OnInit {
     private locker: CoolLocalStorage,
     private router: Router) {
     this.facilityService.patchListner.subscribe(payload => {
-      console.log(payload);
       this.selectedFacility = payload;
       this.locker.setObject('selectedFacility', payload);
       this.ngOnInit();
     });
+    this.facilityService.popUpEditFacility$.subscribe(payload =>{
+      this.editBasicInfo_onClick();
+    })
   }
 
   ngOnInit() {
@@ -57,17 +59,12 @@ export class FacilitypageSidesectComponent implements OnInit {
 
   getNetworkMembers(isMemberOf) {
     this.facilityService.getNetwork(this.selectedFacility._id, isMemberOf).then((payload: any) => {
-      console.log(payload);
       if (isMemberOf) {
         this.membersOf = payload;
-        console.log(this.membersOf);
       } else {
         this.memberFacilities = payload;
-        console.log(this.memberFacilities);
       }
-      //console.log(payload);
     },error =>{
-      console.log(error);
     });
   }
 

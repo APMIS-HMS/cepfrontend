@@ -8,143 +8,133 @@
 </ul>-->
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-4 col-xs-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="row" *ngIf="!searchShowc">
-                        <div class="col-xs-10">
-                            Category
-                        </div>
-                        <div class="col-xs-1">
-                            <i (click)="newCategoryPopup_show()" class="fa fa-plus fa-fw"></i>
-                            <div *ngIf="newCategoryPopup" class="modal-overlay">
-                                <app-new-category [selectedCategory]='selectedCategory' (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-category>
-                            </div>
-                        </div>
-                        <div class="col-xs-1">
-                            <i (click)="showSearchc()" class="fa fa-search fa-fw"></i>
-                        </div>
-                    </div>
-                    <div class="row" *ngIf="searchShowc">
-                        <div class="col-xs-11">
-                            <input type="text" placeholder="Search..." class="card-header-box">
-                        </div>
-                        <div class="col-xs-1">
-                            <i (click)="closeSearchc()" class="fa fa-close fa-fw"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-content scrollable">
-                    <div class="card-list-item ">
-                        <div class="row">
-                            <div class="col-xs-10">
-                                fsjlfsf
-                            </div>
-                            <div class="col-xs-1 options">
-                                <i class="fa fa-edit blue-text fa-fw"></i>
-                            </div>
-                            <div class="col-xs-1 options">
-                                <i class="fa fa-trash red-text fa-fw"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-list-item">
-                        <div class="row">
-                            <div class="col-xs-10">
-                                fsjlfsf
-                            </div>
-                            <div class="col-xs-1 options">
-                                <i class="fa fa-edit fa-fw"></i>
-                            </div>
-                            <div class="col-xs-1 options">
-                                <i class="fa fa-trash fa-fw"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-list-item ">
-                        <div class="row">
-                            <div class="col-xs-10">
-                                fsjlfsf
-                            </div>
-                            <div class="col-xs-1 options">
-                                <i class="fa fa-edit fa-fw"></i>
-                            </div>
-                            <div class="col-xs-1 options">
-                                <i class="fa fa-trash fa-fw"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-list-item active">
-                        <div class="row">
-                            <div class="col-xs-10">
-                                fsjlfsf
-                            </div>
-                            <div class="col-xs-1 options">
-                                <i class="fa fa-edit fa-fw"></i>
-                            </div>
-                            <div class="col-xs-1 options">
-                                <i class="fa fa-trash fa-fw"></i>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-list-item">
-                        <div class="row">
-                            <div class="col-xs-10">
-                                fsjlfsf
-                            </div>
-                            <div class="col-xs-1 options">
-                                <i class="fa fa-edit fa-fw"></i>
-                            </div>
-                            <div class="col-xs-1 options">
-                                <i class="fa fa-trash fa-fw"></i>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+  <div class="row">
+    <div class="col-md-3 col-xs-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row" *ngIf="!searchShowc">
+            <div class="col-xs-9">
+              Category
             </div>
-        </div>
-        <div class="col-md-8 col-xs-12">
-            <div class="card">
-                <div class="card-header">
-                    <div class="row" *ngIf="!searchShow">
-                        <div class="col-xs-10">
-                            Service
-                        </div>
-                        <div class="col-xs-1">
-                            <i (click)="newServicePopup_show()" class="fa fa-plus fa-fw"></i>
-                            <div *ngIf="newServicePopup" class="modal-overlay">
-                                <app-new-service [selectedService]="selectedService" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-service>
-                            </div>
-                        </div>
-                        <div class="col-xs-1">
-                            <i (click)="showSearch()" class="fa fa-search fa-fw"></i>
-                        </div>
-                    </div>
-                    <div class="row" *ngIf="searchShow">
-                        <div class="col-xs-11">
-                            <input type="text" placeholder="Search..." class="card-header-box">
-                        </div>
-                        <div class="col-xs-1">
-                            <i (click)="closeSearch()" class="fa fa-close fa-fw"></i>
-                        </div>
-                    </div>
-                </div>
-                <div class="card-content">
-                    <div class="card-list-item">
-                        <div class="row">
-                            <div class="col-xs-6">Kidney Examination</div>
-                            <div class="col-xs-4">Service Code | 002W</div>
-                            <div class="col-xs-1 options"><i class="fa fa-edit blue-text"></i></div>
-                            <div class="col-xs-1 options"><i class="fa fa-trash red-text"></i></div>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-xs-1">
+              <i (click)="newCategoryPopup_show({})" class="fa fa-plus fa-fw"></i>
+              <div *ngIf="newCategoryPopup" class="modal-overlay">
+                <app-new-category [selectedCategory]="selectedCategory" (refreshCategory)="onRefreshCategory($event)" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-category>
+              </div>
             </div>
+            <div class="col-xs-2">
+              <i (click)="showSearchc()" class="fa fa-search fa-fw"></i>
+            </div>
+          </div>
+          <div class="row" *ngIf="searchShowc">
+            <div class="col-xs-11">
+              <input type="text" placeholder="Search..." [formControl]="searchCategory" class="card-header-box">
+            </div>
+            <div class="col-xs-1">
+              <i (click)="closeSearchc()" class="fa fa-close fa-fw"></i>
+            </div>
+          </div>
         </div>
+        <div class="card-content scrollable">
+          <div *ngFor="let category of categories" [ngClass]="{ 'undefined' : category.name == selectedCategory.name}" class="card-list-item"
+            (click)="selectCategory(category)">
+            <div class="row">
+              <div class="col-xs-8 cat-name">
+                {{category.name}}
+              </div>
+              <div class="col-xs-1 options">
+                <i (click)="newCategoryPopup_show(category);" data-toggle="tooltip" title="Edit" data-placement="left" class="fa fa-edit blue-text fa-fw media-tooltip"></i>
+              </div>
+              <div class="col-xs-1 options">
+                <i data-toggle="tooltip" title="delete" data-placement="left" class="fa fa-trash red-text fa-fw"></i>
+              </div>
+              <div class="col-xs-2  options">
+                <i (click)="newServicePopup_show({})" data-toggle="tooltip" title="Add Service" data-placement="left" class="fa fa-plus-square  blue-text"></i>
+              </div>
+              <!-- <div class="col-xs-1 options">
+                                  <i (click)="newServicePopup_show()" data-toggle="tooltip" title="Add New Service" data-placement="left" class="fa fa-plus blue-text"></i>
+                                 <div *ngIf="newServicePopup" class="modal-overlay">
+                                    <app-new-service [selectedService]="selectedService" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-service>
+                                </div>-->
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+    <div class="col-md-9 col-xs-12">
+      <div class="card">
+        <div class="card-header">
+          <div class="row" *ngIf="!searchShow">
+            <div class="col-xs-5">
+              {{selectedCategory.name}} | Services
+            </div>
+            <!--<div class="col-xs-2">
+                            {{selectedCategory.serviceCode}} | Service Code
+                        </div>-->
+            <div class="col-xs-4">
+              <!-- {{selectedCategory.serviceCharge}} | Price -->
+            </div>
+            <div class="col-xs-1">
+              <i (click)="newServicePopup_show({})" class="fa fa-plus fa-fw"></i>
+              <div *ngIf="newServicePopup" class="modal-overlay">
+                <app-new-service [selectedService]="selectedService" [selectedCategory]="selectedCategory" (refreshService)="onRefreshService($event)" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-service>
+              </div>
+            </div>
+            <div class="col-xs-1">
+              <i (click)="showSearch()" class="fa fa-search fa-fw"></i>
+            </div>
+          </div>
+          <div class="row" *ngIf="searchShow">
+            <div class="col-xs-11">
+              <input type="text" placeholder="Search..." [formControl]="searchService" class="card-header-box">
+            </div>
+            <div class="col-xs-1">
+              <i (click)="closeSearch()" class="fa fa-close fa-fw"></i>
+            </div>
+          </div>
+        </div>
+        <div class="card-content scrollable">
+          <div *ngFor="let service of selectedServices" class="card-list-item">
+            <div class="row">
+              <div class="col-xs-5 cat-name">
+                <i class="{{ service.panels.length>0 ? ' fa fa-file-text-o': ' div'}}"> {{service.name}} </i>
+                <div class="Container">
+                  <ul class="listOfPanels" *ngFor="let item of service.panels; let i=index">
+                    <li>• {{item.service}}</li>
+                  </ul>
+                </div>
+              </div>
+              <!-- <div class="col-xs-2">{{service?.code}}</div>-->
+              <div class="col-xs-4 cat-name">
+                <!-- Price with Tags -->
+                <div *ngFor="let item of service.price">
+                        <div> {{ item.name }} <span class="badge-blue">  &#x20a6;{{item?.price | number:'1.2-2'}} </span></div><br/>
+                </div>
+              </div>
+              <div class="col-xs-3 options">
+                <i (click)="newServicePopup_show(service)" data-toggle="tooltip" title="edit" 
+                data-placement="left" class="fa fa-pencil-square-o blue-text" aria-hidden="true"></i>
+                <!-- <i class="fa fa-trash red-text" data-toggle="tooltip" title="delete" data-placement="left" aria-hidden="true"></i> -->
+                <div (click)="onClickshowNewModifer(service)" class="btn-1 btn-blue">
+                  <span class="fa fa-plus-square" aria-hidden="true"></span> Add Modifier</div>
+              </div>
+              <!--<div class="col-xs-1 options"><i (click)="newServicePopup_show()" class="fa fa-edit blue-text"></i></div>
+                            <div class="col-xs-1 options"><i class="fa fa-trash red-text"></i></div>-->
+            </div>
+          </div>
+          <div *ngIf="selectedServices.length == 0" style="text-align : center" class="card-list-item">
+            <div class="row">
+              <div class="col-xs-12">No service in this category</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="showNewModifer" class="modal-overlay">
+  <app-new-modefier (closeModal)="close_onClick($event)" (refreshModifiers)="onRefreshModifier($event)" [selectedFacilityServicePrice]="selectedPriceItem" class="form-modal center-center"></app-new-modefier>
 </div>
 
 
