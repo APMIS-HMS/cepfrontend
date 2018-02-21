@@ -2,7 +2,6 @@ import { NativeDateAdapter } from "@angular/material";
 
 export class ApmisDateAdapter extends NativeDateAdapter {
     parse(value: any): Date | null {
-        console.log('am here');
         if ((typeof value === 'string') && (value.indexOf('/') > -1)) {
           const str = value.split('/');
           const year = Number(str[2]);

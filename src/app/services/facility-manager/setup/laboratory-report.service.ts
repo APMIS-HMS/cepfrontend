@@ -6,6 +6,7 @@ import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class LaboratoryReportService {
   public _socket;
+  public _customSocket;
   private _rest;
 
   constructor(
@@ -14,7 +15,8 @@ export class LaboratoryReportService {
   ) {
     this._rest = _restService.getService('laboratoryreports');
     this._socket = _socketService.getService('laboratoryreports');
-    //this._socket.timeout = 90000;
+    this._customSocket = _socketService.getService('crud-lab-report');
+    // this._socket.timeout = 90000;
     this._socket.on('created', function (laboratoryreports) {
 
     });
@@ -33,6 +35,10 @@ export class LaboratoryReportService {
 
   create(laboratoryreport: any) {
     return this._socket.create(laboratoryreport);
+  }
+
+  customCreate(laboratoryreport: any) {
+    return this._customSocket.create(laboratoryreport);
   }
 
   remove(id: string, query: any) {

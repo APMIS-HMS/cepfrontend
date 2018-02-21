@@ -35,6 +35,7 @@ export class StoreCheckInComponent implements OnInit {
 		public locker: CoolLocalStorage,
 		private _authFacadeService: AuthFacadeService
 	) {
+<<<<<<< HEAD
 		// this.workSpaces = this.locker.getObject('workspaces');
 		this.isLoading = true;
 		this._authFacadeService.getLogingEmployee().then((res: any) => {
@@ -60,6 +61,24 @@ export class StoreCheckInComponent implements OnInit {
 			}
 			console.log(this.locations);
 		}).catch(err => console.log(err));
+=======
+    // this.workSpaces = this.locker.getObject('workspaces');
+    this._authFacadeService.getLogingEmployee().then((res: any) => {
+      this.loginEmployee = res;
+      this.workSpaces = res.workSpaces;
+      if (this.workSpaces !== undefined) {
+        this.workSpaces.forEach(workspace => {
+          if (workspace.isActive && workspace.locations.length > 0) {
+            workspace.locations.forEach(x => {
+              if (x.isActive) {
+                this.locations.push(x.minorLocationId);
+              }
+            });
+          }
+        });
+      }
+    }).catch(err => console.log(err));
+>>>>>>> f46dc8a6833e2c47b99bdd27cfce89d3ec6e6f23
 	}
 
 	ngOnInit() {
@@ -88,7 +107,6 @@ export class StoreCheckInComponent implements OnInit {
 	}
 
 	checkIn(valid, value) {
-		console.log(value);
 		this.checkInBtnText = '<i class="fa fa-spinner fa-spin"></i> Checking in...';
 		const checkIn: any = <any>{};
 		checkIn.minorLocationId = value.location;
@@ -97,11 +115,9 @@ export class StoreCheckInComponent implements OnInit {
 		checkIn.isOn = true;
 		checkIn.isDefault = value.isDefault;
 		if (this.loginEmployee.storeCheckIn === undefined) {
-			console.log(1);
 			this.loginEmployee.storeCheckIn = [];
 		}
 		this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
-			console.log(i);
 			itemi.isOn = false;
 			if (value.isDefault === true) {
 				itemi.isDefault = false;
@@ -109,11 +125,15 @@ export class StoreCheckInComponent implements OnInit {
 		});
 
 		this.loginEmployee.storeCheckIn.push(checkIn);
+<<<<<<< HEAD
 		console.log(2);
 		// this.loadIndicatorVisible = true;
 		console.log(this.loginEmployee);
 		this._authFacadeService.getCheckedInEmployee(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
 			console.log(payload);
+=======
+		this.employeeService.update(this.loginEmployee).then(payload => {
+>>>>>>> f46dc8a6833e2c47b99bdd27cfce89d3ec6e6f23
 			this.loginEmployee = payload;
 			let keepCheckIn;
 			this.loginEmployee.storeCheckIn.forEach((itemi, i) => {

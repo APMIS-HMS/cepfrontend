@@ -1,7 +1,7 @@
 <div class="pgWrapper drop-shadow raised">
     <div class="tblWrap">
         <div class="tblTitle">Price List</div>
-        
+
         <div class="row">
             <div class="tblTop start-xs">
                 <div (click)="newPricePopup_show()" class="btn-1 btn-blue"><i class="fa fa-plus-square" aria-hidden="true"></i> New Price</div>
@@ -28,15 +28,15 @@
         <br>
         <div class="row" style="margin-top: -13px;">
             <div class="col-xs-12">
-                <div style="padding: 0px 10px;border: 1px solid #ccc;">   
-                        <div class="card-list-item" *ngIf="prices.length===0 && !loading">
-                                <div class="col-xs-12 center">No data available in table</div>
-                            </div>
-                            <div class="card-list-item" *ngIf="prices.length===0 && loading ">
-                                <div class="col-xs-12 center">
-                                   <mat-spinner class="small-spinner "></mat-spinner>
-                                </div>
-                            </div>                 
+                <div style="padding: 0px 10px;border: 1px solid #ccc;">
+                    <div class="card-list-item" *ngIf="prices.length===0 && !loading">
+                        <div class="col-xs-12 center">No data available in table</div>
+                    </div>
+                    <div class="card-list-item" *ngIf="prices.length===0 && loading ">
+                        <div class="col-xs-12 center">
+                            <mat-spinner class="small-spinner "></mat-spinner>
+                        </div>
+                    </div>
                     <div class="card-list-item" *ngFor="let price of prices; let i=index; ">
                         <div class="row middle-xs">
                             <div class="col-xs-1 center">{{i+1}}</div>

@@ -1,5 +1,6 @@
 <div class="frmNoteWrap">
     <legend class="modal_title">Clinical Note</legend>
+    <div *ngIf="isSavingDraft" class="save-blinker">...saving draft</div>
 
     <ul *ngIf="showDocument" class="links-ul">
         <li (click)="docSymptom_show()">
@@ -10,16 +11,6 @@
 
     <div class="docCard-header">
         <div>
-            <!-- <mat-form-field>
-                <input matInput placeholder="Select Document" [matAutocomplete]="autoForm" [formControl]="selectFormCtrl">
-            </mat-form-field>
-
-            <mat-autocomplete #autoForm="matAutocomplete" [displayWith]="formDisplayFn">
-                <mat-option *ngFor="let form of forms" [value]="form">
-                    {{ form.title }}
-                </mat-option>
-            </mat-autocomplete> -->
-
             <mat-form-field>
                 <input matInput placeholder="Select Document" [matAutocomplete]="autoForm" [formControl]="selectFormCtrl">
                 <mat-autocomplete #autoForm="matAutocomplete" [displayWith]="formDisplayFn">
@@ -61,7 +52,7 @@
             <div *ngIf="symptoms.length !== 0">Symptoms <br>
                 <button *ngFor="let symptom of symptoms" class="tags">{{symptom.name}}&nbsp; <i (click)="deleteSymptom(symptom)" class="fa fa-close"></i> </button>
             </div>
-            <div *ngIf="diagnoses.length > 0 && viewDiagnosis" class="modal-overlay">
+            <div *ngIf="diagnoses.length > 0 && viewDiagnosis && !showDocument" class="modal-overlay">
                 <div class="diagnosis-view">
                     <div class="modal-baseWrap animated pulse" style="width:100%">
                         <div (click)="docDiagnosisView()" class="modal-close-ico">X</div>

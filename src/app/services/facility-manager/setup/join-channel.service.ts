@@ -12,6 +12,7 @@ export class JoinChannelService {
   ) {
     this._rest = _restService.getService('join-facility-channel');
     this._socket = _socketService.getService('join-facility-channel');
+    this._socket.timeout = 10000;
   }
 
   find(query: any) {

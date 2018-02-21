@@ -257,7 +257,13 @@ export class PurchaseEntryComponent implements OnInit {
             let existingInventory = {};
             if (result.data.length > 0) {
               existingInventory = result.data[0];
+<<<<<<< HEAD
             }
+=======
+          }
+
+
+>>>>>>> f46dc8a6833e2c47b99bdd27cfce89d3ec6e6f23
             this.superGroups.forEach((items, s) => {
               items.forEach((itemg, g) => {
                 if (itemg._id === item.productId) {

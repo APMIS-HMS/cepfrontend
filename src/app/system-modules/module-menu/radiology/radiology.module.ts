@@ -19,12 +19,14 @@ import { RadRequestDetailComponent } from './lab-requests/request-detail/request
 import { RadiologyInvestigationService } from 'app/services/facility-manager/setup/radiologyinvestigation.service';
 // tslint:disable-next-line:max-line-length
 import { RadiologyInvestigationServiceComponent } from '../radiology/radiology-investigation-service/radiology-investigation-service.component';
+import { OnlyMaterialModule } from '../../../shared-common-modules/only-material-module';
 
 
 @NgModule({
   imports: [
     // CommonModule,
     radiologyRoutes,
+    OnlyMaterialModule,
     MaterialModule
   ],
   declarations: [RadiologyComponent, LabRequestsComponent, RadiologyInvestigationServiceComponent, RadRequestDetailComponent,

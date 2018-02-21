@@ -344,7 +344,6 @@ export class StockTransferComponent implements OnInit {
   populateInventoryTransferTransactions() {
     this.newTransfer.inventoryTransferTransactions = [];
     this.newTransfer.destinationStoreId = this.frmDestinationStore.value;
-    console.log(this.frmDestinationStore.value);
     this.newTransfer.totalCostPrice = 0;
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
       const transferTransaction: InventoryTransferTransaction = <InventoryTransferTransaction>{};
@@ -380,7 +379,6 @@ export class StockTransferComponent implements OnInit {
     this.previewObject.products = [];
     this.stores.forEach((itemi, i) => {
       if (itemi._id === this.newTransfer.storeId) {
-        console.log(itemi);
         this.previewObject.store = itemi.name;
       }
       if (itemi._id === this.newTransfer.destinationStoreId) {

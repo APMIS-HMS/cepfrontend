@@ -24,6 +24,7 @@ import { PaymentHistoryComponent } from './supplier-manager/payment-history/paym
 import { TransactionHistoryComponent } from './supplier-manager/transaction-history/transaction-history.component';
 import { StrengthManagerComponent } from './strength-manager/strength-manager.component';
 import { MaterialModule } from '../../../shared-common-modules/material-module';
+import { OnlyMaterialModule } from '../../../shared-common-modules/only-material-module';
 
 @NgModule({
     declarations: [
@@ -47,6 +48,7 @@ import { MaterialModule } from '../../../shared-common-modules/material-module';
     ],
     imports: [
         // SharedModule,
+        OnlyMaterialModule,
         MaterialModule,
         // CommonModule,
         // ReactiveFormsModule,

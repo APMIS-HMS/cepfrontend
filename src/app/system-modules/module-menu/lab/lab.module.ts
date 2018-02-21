@@ -16,11 +16,13 @@ import { ExternalInvestigationsComponent } from './external-investigations/exter
 import { TemplateComponent } from './template/template.component';
 import { SelectTemplateComponent } from './template/select-template/select-template.component';
 import { ScopeLevelService } from '../../../services/module-manager/setup/index';
+import { OnlyMaterialModule } from '../../../shared-common-modules/only-material-module';
 
 @NgModule({
   imports: [
     // CommonModule,
     labRoutes,
+    OnlyMaterialModule,
     // SharedModule,
     MaterialModule
   ],

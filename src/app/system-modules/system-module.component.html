@@ -34,10 +34,10 @@
                     <img *ngIf="selectedPerson?.profileImageObject === undefined" src="assets/images/users/default.png">
                 </div>
 
-                <ul *ngIf="userOpt" class="user-opts shadow-B"> 
-                    <li><i class="fa fa-user" aria-hidden="true"></i> User Profile</li>
-                    <li><i class="fa fa-arrows-h" aria-hidden="true"></i> Switch Account</li>
-                    <li><i (click)="changePass()" class="fa fa-unlock" aria-hidden="true"></i> Change Password</li>
+                <ul *ngIf="userOpt" class="user-opts shadow-B">
+                    <li (click)="goHome()"><i class="fa fa-user" aria-hidden="true"></i> User Profile</li>
+                    <li (click)="onSwitchAccount()"><i class="fa fa-arrows-h" aria-hidden="true"></i> Switch Account</li>
+                    <li (click)="changePass()"><i class="fa fa-unlock" aria-hidden="true"></i> Change Password</li>
                     <li (click)="logOut()"><i class="fa fa-sign-out" aria-hidden="true"></i> Logout</li>
                 </ul>
             </div>
@@ -48,6 +48,6 @@
     <app-logout-confirm (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-logout-confirm>
 </div>
 
-<!-- <div *ngIf="changePassword" class="modal-overlay">
+<div *ngIf="changePassword" class="modal-overlay">
     <app-change-password (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-change-password>
-</div> -->
+</div>

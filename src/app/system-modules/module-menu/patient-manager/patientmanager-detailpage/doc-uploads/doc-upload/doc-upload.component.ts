@@ -135,10 +135,8 @@ export class DocUploadComponent implements OnInit {
 
   documentTypeFn() {
     this.formTypeService.findAll().then(payload => {
-      console.log(payload);
       this.documentTypes = payload.data
     }).catch(err => {
-      console.log(err);
     });
   }
   private _notification(type: String, text: String): void {

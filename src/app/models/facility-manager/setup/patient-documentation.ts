@@ -7,5 +7,9 @@ export interface PatientDocumentation {
     document: any;
     createdBy:any;
     createdAt: Date,
-    updatedAt: Date
+    updatedAt: Date,
+    facilityIdName?:any;
+    documentationStatus?:any;
+    createdById?:any;
+    apmisGuid?:any;
 }

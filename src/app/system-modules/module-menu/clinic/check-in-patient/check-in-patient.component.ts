@@ -152,7 +152,6 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
                         }
                     });
                 } else if (this.loginEmployee !== undefined && this.loginEmployee.professionId !== 'Doctor') {
-                  console.log(this.loginEmployee);
                     this.loginEmployee.workSpaces.forEach((wrk, ii) => {
                         wrk.locations.forEach((lct, li) => {
                             this.schedules.forEach((sch: any, ji) => {
@@ -395,22 +394,28 @@ getSchedules(){
 
   goToPatientPage(appointment, append) { //TO DO - 1. While is this taking time.  2. Move this to backend
     if (append === true) {
+      console.log(1)
       const isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
       this.locker.setObject('patient', appointment.patientDetails);
       this.locker.setObject('appointment', '');
       this.locker.setObject('appointment', appointment);
       if (isOnList.length > 0) {
-
+        console.log(2)
         this.router.navigate(['/dashboard/patient-manager/patient-manager-detail',
           appointment.patientDetails.personDetails._id, { checkInId: isOnList[0]._id }])
           .then((payload) => {
+            console.log(payload);
             this.appointmentService.appointmentAnnounced(appointment);
+          }, error =>{
+            console.log(error);
           });
       } else {
+        console.log(3)
         this.router.navigate(['/dashboard/patient-manager/patient-manager-detail',
           appointment.patientDetails.personDetails._id, { appId: appointment._id }]);
       }
     } else {
+      console.log(4)
       this.locker.setObject('patient', appointment.patientDetails);
       this.router.navigate(['/dashboard/patient-manager/patient-manager-detail',
         appointment.patientDetails.personDetails._id]);

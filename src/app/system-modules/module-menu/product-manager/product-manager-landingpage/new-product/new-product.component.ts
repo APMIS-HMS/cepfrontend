@@ -372,8 +372,12 @@ export class NewProductComponent implements OnInit {
       // manufacturerItem.name = payload.company;
       // manufacturerItem._id = "0";
       // this.manufacturers.push(manufacturerItem);
+<<<<<<< HEAD
     }, error => {
       console.log(error);
+=======
+    },error=>{
+>>>>>>> f46dc8a6833e2c47b99bdd27cfce89d3ec6e6f23
     })
   }
 

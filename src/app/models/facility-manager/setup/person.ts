@@ -7,6 +7,7 @@ export interface Person {
     lastName: string;
     otherNames?: string;
     gender: string;
+    motherMaidenName: string;
     biometric?: any;
     homeAddress: Address;
     primaryContactPhoneNo: string;

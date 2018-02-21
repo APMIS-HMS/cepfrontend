@@ -43,7 +43,11 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     this.authFacadeService.getLogingEmployee().then((payload:any) =>{
     this.loginEmployee = payload;
     let checkIn = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+<<<<<<< HEAD
     this.checkedInStore = checkIn.store;
+=======
+    this.checkedInStore = checkIn.storeObject.name;
+>>>>>>> f46dc8a6833e2c47b99bdd27cfce89d3ec6e6f23
     if(Object.keys(checkIn).length > 0){
     }
     if ((this.loginEmployee.storeCheckIn === undefined

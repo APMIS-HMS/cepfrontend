@@ -12,8 +12,12 @@ const rx = require('feathers-reactive');
 const RxJS = require('rxjs/Rx');
 // const HOST = 'http://13.84.217.251:8082'; // thn
 // const HOST = 'http://172.16.16.35:3031'; // Mr Segun
+<<<<<<< HEAD
 // const HOST = 'https://apmisapilive.azurewebsites.net'; // Online
 // const HOST = 'http://192.168.20.101:3030'; // Sunday
+=======
+// const HOST = 'https://apmisapitest.azurewebsites.net'; // Sunday
+>>>>>>> f46dc8a6833e2c47b99bdd27cfce89d3ec6e6f23
 const HOST = 'http://localhost:3031'; // Local Server
 
 
