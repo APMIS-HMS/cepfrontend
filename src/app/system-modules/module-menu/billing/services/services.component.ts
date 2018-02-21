@@ -79,7 +79,6 @@ export class ServicesComponent implements OnInit {
     this.searchService.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
-<<<<<<< HEAD
       .switchMap((term: FacilityService[]) => this._facilitiesServiceCategoryService.find({
         query:
           { search: this.searchService.value, facilityId: this.facility._id }
@@ -91,24 +90,6 @@ export class ServicesComponent implements OnInit {
     subscribeForService.subscribe((payload: any) => {
     });
 
-=======
-      .subscribe(value => {
-        this.systemModuleService.on();
-        this._facilitiesServiceCategoryService.allServices({
-          query:
-            {
-              facilityId: this.facility._id,
-              isQueryService: true,
-              searchString: value
-            }
-        }).then(payload => {
-          this.systemModuleService.off();
-          this.categories = payload.data[0].categories.filter(x => x.isHost === true);
-          this.selectedServices = this.categories[0].services;
-          this.selectedCategory = this.categories[0];
-        })
-      });
->>>>>>> f46dc8a6833e2c47b99bdd27cfce89d3ec6e6f23
 
     const subscribeForTag = this.searchTag.valueChanges
       .debounceTime(200)
@@ -117,23 +98,14 @@ export class ServicesComponent implements OnInit {
         query:
           { search: this.searchTag.value, facilityId: this.facility._id }
       }).then(payload => {
-<<<<<<< HEAD
           this.tags = payload.data;
         }));
-=======
-        this.tags = payload.data;
-      }));
->>>>>>> f46dc8a6833e2c47b99bdd27cfce89d3ec6e6f23
 
     subscribeForTag.subscribe((payload: any) => {
     });
   }
 
   selectCategory(category) {
-<<<<<<< HEAD
-=======
-    this.selectedCategory = category;
->>>>>>> f46dc8a6833e2c47b99bdd27cfce89d3ec6e6f23
     this.selectedServices = category.services;
   }
 
@@ -340,11 +312,7 @@ export class ServicesComponent implements OnInit {
     if (this.globalCategoriesToBePaginated.length <= this.globalCategories.length) {
       this.showLoadMore = false;
     } else {
-<<<<<<< HEAD
-      let goo = this.paginate(this.globalCategoriesToBePaginated, this.pageSize, this.index);
-=======
       const goo = this.paginate(this.globalCategoriesToBePaginated, this.pageSize, this.index);
->>>>>>> f46dc8a6833e2c47b99bdd27cfce89d3ec6e6f23
       this.globalCategories.push(...goo);
       this.index++;
     }

@@ -80,7 +80,8 @@ export class RequisitionComponent implements OnInit {
     this._inventoryEventEmitter.setRouteUrl('Requisition');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
-    this.checkBoxLabel = [{ name: 'All', checked: true }, { name: 'Out of stock', checked: false }, { name: 'Re-order Level', checked: false }];
+    this.checkBoxLabel = [{ name: 'All', checked: true }, { name: 'Out of stock', checked: false },
+    { name: 'Re-order Level', checked: false }];
     this.frm_purchaseOrder = this.formBuilder.group({
       product: ['', [<any>Validators.required]],
       supplier: ['', [<any>Validators.required]],
@@ -90,7 +91,7 @@ export class RequisitionComponent implements OnInit {
     this.addNewProductTables();
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
-      this.checkingObject = this.loginEmployee.storeCheckIn.find(x => x.isOn == true);
+      this.checkingObject = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
       const emp$ = Observable.fromPromise(this.employeeService.find({
         query: {
           facilityId: this.selectedFacility._id, personId: auth.data.personId
@@ -298,11 +299,11 @@ export class RequisitionComponent implements OnInit {
     if (this.checkingObject !== null) {
       this.inventoryService.findList({
         query:
-          { facilityId: this.selectedFacility._id, name: '', storeId: this.checkingObject.storeId }//, $limit: 200 }
+          { facilityId: this.selectedFacility._id, name: '', storeId: this.checkingObject.storeId }// , $limit: 200 }
       })
         .then(payload => {
           console.log(payload);
-          let products = payload.data.filter(x => x.availableQuantity == 0);
+          const products = payload.data.filter(x => x.availableQuantity === 0);
           products.forEach(element => {
             this.products.push(element.productObject);
             this.getProductTables(this.products);

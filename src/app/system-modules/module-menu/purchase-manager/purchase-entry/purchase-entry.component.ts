@@ -60,12 +60,13 @@ export class PurchaseEntryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.checkBoxLabels = [{ name: 'All', checked: false }, { name: 'Out of stock', checked: true }, { name: 'Out of stock', checked: false }, { name: 'Re-order Level', checked: false }, { name: 'Expired', checked: false }];
+    this.checkBoxLabels = [{ name: 'All', checked: false }, { name: 'Out of stock', checked: true },
+    { name: 'Out of stock', checked: false }, { name: 'Re-order Level', checked: false }, { name: 'Expired', checked: false }];
     this._purchaseEventEmitter.setRouteUrl('Purchase Entry');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.authFacadeService.getLogingEmployee().then((res: any) => {
       this.loginEmployee = res;
-      this.checkingObject = this.loginEmployee.storeCheckIn.find(x => x.isOn == true);
+      this.checkingObject = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
       this.getSuppliers();
       this.getStores();
       this.getStrengths();
@@ -137,7 +138,8 @@ export class PurchaseEntryComponent implements OnInit {
 
     this.frm_purchaseOrder.controls['supplier'].valueChanges.subscribe(value => {
       if (value !== undefined && value !== null) {
-        this.purchaseOrderService.find({ query: { supplierId: value, facilityId: this.selectedFacility._id, isSupplied: false } }).subscribe(payload => {
+        this.purchaseOrderService.find({ query: { supplierId: value, facilityId:
+          this.selectedFacility._id, isSupplied: false } }).subscribe(payload => {
           this.orders = payload.data;
         });
       }
@@ -212,7 +214,7 @@ export class PurchaseEntryComponent implements OnInit {
               items.forEach((itemg, g) => {
                 if (itemg._id === item.productId) {
                   itemg.checked = true;
-                  let total = item.quantity * item.costPrice;
+                  const total = item.quantity * item.costPrice;
                   (<FormArray>this.productTableForm.controls['productTableArray'])
                     .push(
                     this.formBuilder.group({
@@ -257,13 +259,7 @@ export class PurchaseEntryComponent implements OnInit {
             let existingInventory = {};
             if (result.data.length > 0) {
               existingInventory = result.data[0];
-<<<<<<< HEAD
             }
-=======
-          }
-
-
->>>>>>> f46dc8a6833e2c47b99bdd27cfce89d3ec6e6f23
             this.superGroups.forEach((items, s) => {
               items.forEach((itemg, g) => {
                 if (itemg._id === item.productId) {
@@ -275,7 +271,7 @@ export class PurchaseEntryComponent implements OnInit {
                       costPrice: [0.00, [<any>Validators.required]],
                       qty: [item.quantity, [<any>Validators.required]],
                       expiryDate: [this.now, [<any>Validators.required]],
-                      total: [{ value: "₦ 0", disabled: true }],
+                      total: [{ value: '₦ 0', disabled: true }],
                       readOnly: [false],
                       existingInventory: [existingInventory],
                       productObject: [item.product],
@@ -354,7 +350,7 @@ export class PurchaseEntryComponent implements OnInit {
     this.frm_purchaseOrder.controls['amount'].setValue(this.totalCost);
 
     // Set totalcost for each item
-    let total = "₦ " + (value.value.qty * value.value.costPrice);
+    const total = '₦ ' + (value.value.qty * value.value.costPrice);
     value.controls['total'].setValue(total);
   }
   mergeTable(obj) {
@@ -383,7 +379,7 @@ export class PurchaseEntryComponent implements OnInit {
           product: ['', [<any>Validators.required]],
           batchNo: ['', [<any>Validators.required]],
           costPrice: ['', [<any>Validators.required]],
-          total: [{ value: "₦ 0", disabled: true }],
+          total: [{ value: '₦ 0', disabled: true }],
           qty: ['', [<any>Validators.required]],
           expiryDate: [new Date(), [<any>Validators.required]],
           readOnly: [false],
@@ -415,7 +411,7 @@ export class PurchaseEntryComponent implements OnInit {
                 costPrice: [0.00, [<any>Validators.required]],
                 qty: [0, [<any>Validators.required]],
                 expiryDate: [this.now, [<any>Validators.required]],
-                total: [{ value: "₦ 0", disabled: true }],
+                total: [{ value: '₦ 0', disabled: true }],
                 readOnly: [false],
                 existingInventory: [existingInventory],
                 productObject: [value.product],

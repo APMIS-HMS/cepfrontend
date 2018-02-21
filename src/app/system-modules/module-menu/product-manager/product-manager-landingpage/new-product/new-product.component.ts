@@ -15,8 +15,8 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 })
 export class NewProductComponent implements OnInit {
   @Output() refreshProductList: EventEmitter<boolean> = new EventEmitter<boolean>();
-  isManufacturer: boolean = false;
-  isPresentation: boolean = false;
+  isManufacturer = false;
+  isPresentation = false;
   isStrength = false;
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -50,7 +50,7 @@ export class NewProductComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
   selectedFacilityService: FacilityService = <FacilityService>{};
 
-  createText: string = 'Create Product';
+  createText = 'Create Product';
 
   constructor(
     private _locker: CoolLocalStorage,
@@ -111,7 +111,7 @@ export class NewProductComponent implements OnInit {
     this.subscribeToControls();
 
     this.frm_newProduct.controls['presentation'].valueChanges.subscribe(value => {
-      let presentation = this.presentations.filter(x => x._id === value);
+      const presentation = this.presentations.filter(x => x._id === value);
       if (presentation.length > 0) {
         this.presentationName = presentation[0].name;
         if (this.frm_newProduct.controls['name'].value !== null) {
@@ -357,7 +357,7 @@ export class NewProductComponent implements OnInit {
   }
   onSelectProductSuggestion(suggestion) {
     this.drugDetailsService.find({ query: { productId: suggestion.productId } }).subscribe(payload => {
-      let data = JSON.parse(payload.body);
+      const data = JSON.parse(payload.body);
       payload.data = data;
       this.frm_newProduct.controls['name'].setValue(payload.data.brand + '-' + suggestion.activeIngredient);
       this.frm_newProduct.controls['genericName'].setValue(suggestion.activeIngredient);
@@ -372,12 +372,8 @@ export class NewProductComponent implements OnInit {
       // manufacturerItem.name = payload.company;
       // manufacturerItem._id = "0";
       // this.manufacturers.push(manufacturerItem);
-<<<<<<< HEAD
     }, error => {
       console.log(error);
-=======
-    },error=>{
->>>>>>> f46dc8a6833e2c47b99bdd27cfce89d3ec6e6f23
     })
   }
 

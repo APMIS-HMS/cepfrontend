@@ -70,7 +70,7 @@ export class StockTransferComponent implements OnInit {
       this.newTransfer.storeId = this.checkingStore.storeId;
       this.newTransfer.inventoryTransferTransactions = [];
       console.log(this.checkingStore);
-      console.log("About to call Inventory");
+      console.log('About to call Inventory');
       this.getMyInventory();
       this.primeComponent();
     });
@@ -350,7 +350,7 @@ export class StockTransferComponent implements OnInit {
       transferTransaction.inventoryId = item.value.inventoryId;
       transferTransaction.productId = item.value.id;
       transferTransaction.quantity = item.value.qty;
-      if (item.value.qty == undefined || item.value.qty == NaN || item.value.qty == null) {
+      if (item.value.qty === undefined || item.value.qty === NaN || item.value.qty == null) {
         transferTransaction.quantity = 0;
       }
       transferTransaction.costPrice = item.value.costPrice;
@@ -368,7 +368,8 @@ export class StockTransferComponent implements OnInit {
         }
       });
       this.newTransfer.totalCostPrice = this.newTransfer.totalCostPrice + transferTransaction.lineCostPrice;
-      if (isNaN(this.newTransfer.totalCostPrice) || this.newTransfer.totalCostPrice === undefined || this.newTransfer.totalCostPrice === null) {
+      if (isNaN(this.newTransfer.totalCostPrice) || this.newTransfer.totalCostPrice === undefined
+       || this.newTransfer.totalCostPrice === null) {
         this.newTransfer.totalCostPrice = 0;
       }
 

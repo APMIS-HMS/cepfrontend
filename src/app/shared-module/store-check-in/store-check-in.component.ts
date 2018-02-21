@@ -35,33 +35,6 @@ export class StoreCheckInComponent implements OnInit {
 		public locker: CoolLocalStorage,
 		private _authFacadeService: AuthFacadeService
 	) {
-<<<<<<< HEAD
-		// this.workSpaces = this.locker.getObject('workspaces');
-		this.isLoading = true;
-		this._authFacadeService.getLogingEmployee().then((res: any) => {
-			console.log(res);
-			this.loginEmployee = res;
-			this.workSpaces = res.workSpaces;
-			if (this.workSpaces !== undefined) {
-				this.workSpaces.forEach(workspace => {
-					console.log(workspace);
-					if (workspace.isActive && workspace.locations.length > 0) {
-						workspace.locations.forEach(p => {
-							console.log(p);
-							if (p.isActive) {
-								let index = this.locations.filter(x => x.minorLocationId.toString() === p.minorLocationId.toString());
-								if (index.length == 0) {
-									this.locations.push(p);
-								}
-							}
-						});
-					}
-				});
-				this.isLoading = false;
-			}
-			console.log(this.locations);
-		}).catch(err => console.log(err));
-=======
     // this.workSpaces = this.locker.getObject('workspaces');
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.loginEmployee = res;
@@ -78,7 +51,6 @@ export class StoreCheckInComponent implements OnInit {
         });
       }
     }).catch(err => console.log(err));
->>>>>>> f46dc8a6833e2c47b99bdd27cfce89d3ec6e6f23
 	}
 
 	ngOnInit() {
@@ -88,7 +60,6 @@ export class StoreCheckInComponent implements OnInit {
 			isDefault: [false, [<any>Validators.required]]
 		});
 		this.storeCheckin.controls['location'].valueChanges.subscribe(value => {
-			console.log(value);
 			this.storeService.find({ query: { minorLocationId: value } }).then(res => {
 				if (res.data.length > 0) {
 					this.stores = res.data;
@@ -125,15 +96,7 @@ export class StoreCheckInComponent implements OnInit {
 		});
 
 		this.loginEmployee.storeCheckIn.push(checkIn);
-<<<<<<< HEAD
-		console.log(2);
-		// this.loadIndicatorVisible = true;
-		console.log(this.loginEmployee);
-		this._authFacadeService.getCheckedInEmployee(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
-			console.log(payload);
-=======
 		this.employeeService.update(this.loginEmployee).then(payload => {
->>>>>>> f46dc8a6833e2c47b99bdd27cfce89d3ec6e6f23
 			this.loginEmployee = payload;
 			let keepCheckIn;
 			this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
@@ -145,7 +108,6 @@ export class StoreCheckInComponent implements OnInit {
 			});
 			this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'store' });
 			this.checkInBtnText = '<i class="fa fa-check-circle"></i> Check In';
-			console.log(this.loginEmployee.storeCheckIn);
 		});
 	}
 	changeRoom(checkIn: any) {

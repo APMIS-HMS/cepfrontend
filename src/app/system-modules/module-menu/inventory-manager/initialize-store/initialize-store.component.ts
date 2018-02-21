@@ -28,7 +28,7 @@ export class InitializeStoreComponent implements OnInit {
   checkingObject: any = <any>{};
   inventoryModel: Inventory = <Inventory>{};
   InventoryTxnModel: InventoryTransaction = <InventoryTransaction>{};
-  //initializePriduct: InitProduct[];
+  // initializePriduct: InitProduct[];
   errorMessage = 'an error occured';
   addinside = false;
   productname: any;
@@ -58,7 +58,8 @@ export class InitializeStoreComponent implements OnInit {
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe((por: any) => {
-        this._productService.find({ query: { facilityId: this.selectedFacility._id, name: { $regex: por, '$options': 'i' } } }).then(payload => {
+        this._productService.find({ query: { facilityId: this.selectedFacility._id, name:
+          { $regex: por, '$options': 'i' } } }).then(payload => {
           this.products = payload.data;
         }, err => {
         });
@@ -117,10 +118,10 @@ export class InitializeStoreComponent implements OnInit {
 
   save(valid, value, product) {
     if (valid) {
-      var batches = {
-        "batchItems": [],
-        "product": {},
-        "storeId": 0
+      const batches = {
+        'batchItems': [],
+        'product': {},
+        'storeId': 0
       }
       value.initproduct.forEach(element => {
         element.availableQuantity = element.quantity;
@@ -131,7 +132,7 @@ export class InitializeStoreComponent implements OnInit {
       this.isProcessing = true;
       this._inventoryInitialiserService.create(batches).then(result => {
         if (result != null) {
-          if (result.inventory != undefined) {
+          if (result.inventory !== undefined) {
             this.getProducts();
             this.myForm = this._fb.group({
               initproduct: this._fb.array([
@@ -141,7 +142,7 @@ export class InitializeStoreComponent implements OnInit {
             this.isProcessing = false;
             this.systemModuleService.announceSweetProxy('Your product has been initialised successfully', 'success');
           } else {
-            let text = "This product exist in your inventory";
+            const text = 'This product exist in your inventory';
             this.systemModuleService.announceSweetProxy(text, 'info');
             this.isEnable = false;
             this.isProcessing = false;

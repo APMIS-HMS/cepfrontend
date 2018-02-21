@@ -36,7 +36,8 @@ export class CategoryManagerComponent implements OnInit {
 			.debounceTime(200)
 			.distinctUntilChanged()
 			.subscribe((por: any) => {
-				this._categoryService.find({ query: { facilityId: this.selectedFacility._id,name: {$regex: this.searchControl.value,'$options': 'i'} } })
+				this._categoryService.find({ query: { facilityId: this.selectedFacility._id, name:
+					{$regex: this.searchControl.value, '$options': 'i'} } })
 				.then(data => {
 					this.categories = data.data;
 				});

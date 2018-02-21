@@ -71,14 +71,14 @@ export class SupplierManagerComponent implements OnInit {
   sweetAlertCallback(result) {
     if (result.value) {
       if (this.selectedSupplier.isDelete) {
-        this._systemModuleService.off;
+        this._systemModuleService.off();
         this.supplierService.remove(this.selectedSupplier._id, {}).then(callback_remove => {
-          this._systemModuleService.announceSweetProxy(this.selectedSupplier.name + " is deleted", 'success');
-          this._systemModuleService.off;
+          this._systemModuleService.announceSweetProxy(this.selectedSupplier.name + ' is deleted', 'success');
+          this._systemModuleService.off();
           this.selectedSupplier = <any>{};
           this.getSuppliers();
         }, error => {
-          this._systemModuleService.off;
+          this._systemModuleService.off();
         });
       } else {
         this.newSupply = true;

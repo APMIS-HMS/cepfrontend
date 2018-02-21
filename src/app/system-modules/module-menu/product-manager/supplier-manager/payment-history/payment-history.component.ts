@@ -22,7 +22,7 @@ export class PaymentHistoryComponent implements OnInit {
     const val = value.invoiceAmount - value.amountPaid;
     if (isNaN(val)) {
       return 0;
-    }else{
+    }else {
       return val;
     }
   }

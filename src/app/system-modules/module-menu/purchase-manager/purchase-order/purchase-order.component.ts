@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
-import { SupplierService, ProductService, PurchaseOrderService, StoreService, EmployeeService } from '../../../../services/facility-manager/setup/index';
+import { SupplierService, ProductService, PurchaseOrderService,
+  StoreService, EmployeeService } from '../../../../services/facility-manager/setup/index';
 import { Facility } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';

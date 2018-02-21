@@ -46,12 +46,11 @@ export class PurchaseOrderService {
   create(serviceprice: any) {
     return this._socket.create(serviceprice);
   }
-  
   update(serviceprice: any) {
     return this._socket.update(serviceprice._id, serviceprice);
   }
 
-  patch(id,data) {
+  patch(id, data) {
     return this._socket.patch(id, data);
   }
 

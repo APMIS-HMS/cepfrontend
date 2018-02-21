@@ -47,7 +47,7 @@ export class InvoicesComponent implements OnInit {
     this._purchaseEventEmitter.setRouteUrl('Purchase Invoices');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
-      this.checkingStore = payload.storeCheckIn.find(x => x.isOn == true);
+      this.checkingStore = payload.storeCheckIn.find(x => x.isOn === true);
       this.getInvoices();
       this.getSuppliers();
     });

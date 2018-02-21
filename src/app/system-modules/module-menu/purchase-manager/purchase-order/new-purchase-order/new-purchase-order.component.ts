@@ -47,11 +47,11 @@ export class NewPurchaseOrderComponent implements OnInit {
   productTables: any[] = [];
   superGroups: any[] = [];
   stores: any[] = [];
-  removingRecord: boolean = false;
+  removingRecord = false;
 
   loginEmployee: Employee = <Employee>{};
 
-  saveBtnText: string = 'Done';
+  saveBtnText = 'Done';
 
   constructor(private formBuilder: FormBuilder, private supplierService: SupplierService,
     private facilitiesService: FacilitiesService,
@@ -75,12 +75,13 @@ export class NewPurchaseOrderComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.checkBoxLabels = [{ name: 'All', checked: true }, { name: 'Out of stock', checked: false }, { name: 'Re-order Level', checked: false }, { name: 'Expired', checked: false }];
+    this.checkBoxLabels = [{ name: 'All', checked: true }, { name: 'Out of stock', checked: false },
+    { name: 'Re-order Level', checked: false }, { name: 'Expired', checked: false }];
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
 
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
-      this.checkingObject = this.loginEmployee.storeCheckIn.find(x => x.isOn == true);
+      this.checkingObject = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
 
       this.getStores();
       this.getAllProducts();
@@ -95,7 +96,7 @@ export class NewPurchaseOrderComponent implements OnInit {
       });
     });
 
-    //this.getStrengths();
+    // this.getStrengths();
     this.frm_purchaseOrder = this.formBuilder.group({
       product: ['', [<any>Validators.required]],
       store: ['', [<any>Validators.required]],
@@ -310,10 +311,10 @@ export class NewPurchaseOrderComponent implements OnInit {
     if (this.checkingObject !== null) {
       this.inventoryService.findList({
         query:
-          { facilityId: this.selectedFacility._id, name: '', storeId: this.checkingObject.storeId }//, $limit: 200 }
+          { facilityId: this.selectedFacility._id, name: '', storeId: this.checkingObject.storeId }// , $limit: 200 }
       })
         .then(payload => {
-          let products = payload.data.filter(x => x.availableQuantity == 0);
+          const products = payload.data.filter(x => x.availableQuantity === 0);
           products.forEach(element => {
             this.products.push(element.productObject);
             this.getProductTables(this.products);
@@ -346,6 +347,7 @@ export class NewPurchaseOrderComponent implements OnInit {
         this.products = [];
         this.getProductTables(this.products);
       }
+      // tslint:disable-next-line:one-line
       else if (i === 3) {
         checkBoxLabel[1].checked = false;
         checkBoxLabel[0].checked = false;
@@ -406,7 +408,7 @@ export class NewPurchaseOrderComponent implements OnInit {
         this.selectedPurchaseOrder.orderedProducts.push(product);
       });
 
-      this.purchaseOrderService.patch(this.selectedPurchaseOrder._id,this.selectedPurchaseOrder).subscribe(payload => {
+      this.purchaseOrderService.patch(this.selectedPurchaseOrder._id, this.selectedPurchaseOrder).subscribe(payload => {
         this.systemModuleService.announceSweetProxy('Purchase order ' + payload.purchaseOrderNumber + ' was updated', 'success');
         this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
         this.unCheckedAllProducts();

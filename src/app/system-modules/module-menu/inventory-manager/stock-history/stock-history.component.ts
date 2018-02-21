@@ -43,15 +43,10 @@ export class StockHistoryComponent implements OnInit {
     private authFacadeService: AuthFacadeService
   ) {
     this.employeeService.checkInAnnounced$.subscribe(payload => {
-<<<<<<< HEAD
-      if (payload != undefined) {
+      if (payload !== undefined) {
         this.checkingStore = payload;
         this.getTransfers();
       }
-=======
-      this.checkingStore = payload;
-      this.getTransfers();
->>>>>>> f46dc8a6833e2c47b99bdd27cfce89d3ec6e6f23
     });
   }
 
@@ -59,7 +54,7 @@ export class StockHistoryComponent implements OnInit {
     this._inventoryEventEmitter.setRouteUrl('Stock History');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
-      this.checkingStore = payload.storeCheckIn.find(x => x.isOn == true);
+      this.checkingStore = payload.storeCheckIn.find(x => x.isOn === true);
       this.getTransfers();
     });
 
@@ -74,13 +69,9 @@ export class StockHistoryComponent implements OnInit {
       }
     }).then(payload => {
       this.systemModuleService.off();
-<<<<<<< HEAD
-      if (payload.data != undefined) {
+      if (payload.data !== undefined) {
         this.transferHistories = payload.data;
       }
-=======
-      this.transferHistories = payload.data;
->>>>>>> f46dc8a6833e2c47b99bdd27cfce89d3ec6e6f23
     }, error => {
       this.systemModuleService.off();
     });

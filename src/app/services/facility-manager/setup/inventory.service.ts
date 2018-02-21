@@ -67,11 +67,10 @@ export class InventoryService {
   }
 
   patch(_id: any, data: any, param: any) {
-      return this._socket.patch(_id, data, param);
+    return this._socket.patch(_id, data, param);
   }
 
   update(inventory: any) {
     return this._socket.update(inventory._id, inventory);
   }
-  
 }

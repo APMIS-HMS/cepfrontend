@@ -16,7 +16,7 @@ export class TransactionHistoryComponent implements OnInit {
   newPayment = false;
   paymentHistory = false;
   invoices = [];
-  selected_supplier = "";
+  selected_supplier = '';
 
   frmFilterSupplier: FormControl = new FormControl();
 
@@ -40,7 +40,7 @@ export class TransactionHistoryComponent implements OnInit {
 
   getHistory() {
     this.route.params.subscribe(params => {
-      let id = params['id'];
+      const id = params['id'];
       if (id !== undefined) {
         this.invoiceService.getInvoice(id, { query: { supplierId: id, facilityId: this.selectedFacility._id } }).subscribe(value => {
           this.invoices = value;
@@ -75,7 +75,7 @@ export class TransactionHistoryComponent implements OnInit {
     const val = value.invoiceAmount - value.amountPaid;
     if (isNaN(val)) {
       return 0;
-    }else{
+    }else {
       return val;
     }
   }

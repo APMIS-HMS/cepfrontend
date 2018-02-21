@@ -34,21 +34,17 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   checkedInStore: any;
   constructor(
     private _inventoryEventEmitter: InventoryEmitterService,
-    private route: ActivatedRoute, private _router: Router, 
+    private route: ActivatedRoute, private _router: Router,
     private employeeService: EmployeeService,
     private authFacadeService: AuthFacadeService,
     private locker: CoolLocalStorage, private workSpaceService: WorkSpaceService) {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
-    this.authFacadeService.getLogingEmployee().then((payload:any) =>{
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
     this.loginEmployee = payload;
-    let checkIn = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
-<<<<<<< HEAD
+    const checkIn = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
     this.checkedInStore = checkIn.store;
-=======
-    this.checkedInStore = checkIn.storeObject.name;
->>>>>>> f46dc8a6833e2c47b99bdd27cfce89d3ec6e6f23
-    if(Object.keys(checkIn).length > 0){
+    if (Object.keys(checkIn).length > 0) {
     }
     if ((this.loginEmployee.storeCheckIn === undefined
       || this.loginEmployee.storeCheckIn.length === 0)) {
@@ -62,7 +58,9 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
           isOn = true;
           let checkingObject = { typeObject: itemr, type: 'store' };
           this.employeeService.announceCheckIn({ typeObject: checkingObject, type: 'store' });
-          this.authFacadeService.getCheckedInEmployee(this.loginEmployee._id,{storeCheckIn:this.loginEmployee.storeCheckIn}).then(payload => {
+          this.authFacadeService.getCheckedInEmployee
+          // tslint:disable-next-line:no-shadowed-variable
+          (this.loginEmployee._id, {storeCheckIn: this.loginEmployee.storeCheckIn}).then( payload => {
             this.loginEmployee = payload;
             checkingObject = { typeObject: itemr, type: 'store' };
             this.employeeService.announceCheckIn({ typeObject: checkingObject, type: 'store' });
@@ -74,7 +72,9 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
           if (r === 0) {
             itemr.isOn = true;
             itemr.lastLogin = new Date();
-            this.authFacadeService.getCheckedInEmployee(this.loginEmployee._id,{storeCheckIn:this.loginEmployee.storeCheckIn}).then(payload => {
+            this.authFacadeService.getCheckedInEmployee(this.loginEmployee._id,
+              // tslint:disable-next-line:no-shadowed-variable
+              {storeCheckIn: this.loginEmployee.storeCheckIn}).then( payload => {
               this.loginEmployee = payload;
               const checkingObject = { typeObject: itemr, type: 'store' };
               this.employeeService.announceCheckIn(checkingObject);
@@ -114,9 +114,9 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
       this.modal_on = false;
     }
   }
-  
+
   changeRoute(val) {
-    if (val == '/dashboard/inventory-manager/inventory') {
+    if (val === '/dashboard/inventory-manager/inventory') {
       this.inventoryNavMenu = true;
       this.stockTakingNavMenu = false;
       this.stockHistoryNavMenu = false;
@@ -127,7 +127,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
       this._inventoryEventEmitter.announcedUrl.subscribe(url => {
         this.pageInView = url;
       });
-    } else if (val == '/dashboard/inventory-manager/initialize-store') {
+    } else if (val === '/dashboard/inventory-manager/initialize-store') {
       this.stockTakingNavMenu = false;
       this.inventoryNavMenu = false;
       this.stockHistoryNavMenu = false;
@@ -138,7 +138,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
       this._inventoryEventEmitter.announcedUrl.subscribe(url => {
         this.pageInView = url;
       });
-    } else if (val == '/dashboard/inventory-manager/stock-transfer') {
+    } else if (val === '/dashboard/inventory-manager/stock-transfer') {
       this.stockTransferNavMenu = true;
       this.inventoryNavMenu = false;
       this.stockTakingNavMenu = false;
@@ -149,7 +149,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
       this._inventoryEventEmitter.announcedUrl.subscribe(url => {
         this.pageInView = url;
       });
-    } else if (val == '/dashboard/inventory-manager/stock-history') {
+    } else if (val === '/dashboard/inventory-manager/stock-history') {
       this.stockHistoryNavMenu = true;
       this.inventoryNavMenu = false;
       this.stockTakingNavMenu = false;
@@ -160,7 +160,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
       this._inventoryEventEmitter.announcedUrl.subscribe(url => {
         this.pageInView = url;
       });
-    } else if (val == '/dashboard/inventory-manager/receive-stock') {
+    } else if (val === '/dashboard/inventory-manager/receive-stock') {
       this.receiveStockNavMenu = true;
       this.stockHistoryNavMenu = false;
       this.inventoryNavMenu = false;
@@ -171,7 +171,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
       this._inventoryEventEmitter.announcedUrl.subscribe(url => {
         this.pageInView = url;
       });
-    } else if (val == '/dashboard/inventory-manager/requisition') {
+    } else if (val === '/dashboard/inventory-manager/requisition') {
       this.requisitionNavMenu = true;
       this.stockHistoryNavMenu = false;
       this.inventoryNavMenu = false;
@@ -212,7 +212,8 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
       this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
         if (itemr.isDefault === true && itemr.isOn === true) {
           itemr.isOn = false;
-          this.authFacadeService.getCheckedInEmployee(this.loginEmployee._id,{consultingRoomCheckIn:this.loginEmployee.consultingRoomCheckIn}).then(payload => {
+          this.authFacadeService.getCheckedInEmployee
+          (this.loginEmployee._id, {consultingRoomCheckIn: this.loginEmployee.consultingRoomCheckIn}).then(payload => {
             this.loginEmployee = payload;
           });
         }

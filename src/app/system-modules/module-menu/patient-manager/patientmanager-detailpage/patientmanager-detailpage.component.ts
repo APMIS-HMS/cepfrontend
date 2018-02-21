@@ -175,7 +175,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
               }
             });
           }
-  
+
         }
       })
 
@@ -183,7 +183,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
 
 
-     
+
 
     });
   }

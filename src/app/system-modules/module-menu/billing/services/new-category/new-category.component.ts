@@ -40,12 +40,8 @@ export class NewCategoryComponent implements OnInit {
     if (this.selectedCategory.name !== undefined) {
       this.btnTitle = 'UPDATE CATEGORY';
       this.frmNewcat.controls['catName'].setValue(this.selectedCategory.name);
-<<<<<<< HEAD
     };
-=======
     }
->>>>>>> f46dc8a6833e2c47b99bdd27cfce89d3ec6e6f23
-  }
   addNew() {
     this.frmNewcat = this.formBuilder.group({
       catName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]]

@@ -41,15 +41,10 @@ export class ReceiveStockComponent implements OnInit {
     private authFacadeService: AuthFacadeService
   ) {
     this.employeeService.checkInAnnounced$.subscribe(payload => {
-<<<<<<< HEAD
       if (payload.typeObject !== undefined) {
         this.checkingStore = payload.typeObject;
         this.getTransfers();
       }
-=======
-      this.checkingStore = payload;
-      this.getTransfers();
->>>>>>> f46dc8a6833e2c47b99bdd27cfce89d3ec6e6f23
     });
   }
 
@@ -57,21 +52,14 @@ export class ReceiveStockComponent implements OnInit {
     this.user = this.locker.getObject('auth');
     this._inventoryEventEmitter.setRouteUrl('Receive Stock');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-<<<<<<< HEAD
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
-      this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn == true);
+      this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
       this.route.data.subscribe(data => {
+        // tslint:disable-next-line:no-shadowed-variable
         data['loginEmployee'].subscribe((payload) => {
           this.loginEmployee = payload.loginEmployee;
         });
-=======
-    this.checkingStore = this.locker.getObject('checkingObject');
-
-    this.route.data.subscribe(data => {
-      data['loginEmployee'].subscribe((payload) => {
-        this.loginEmployee = payload.loginEmployee;
->>>>>>> f46dc8a6833e2c47b99bdd27cfce89d3ec6e6f23
       });
       this.getTransfers();
       this.getTransferStatus();
@@ -117,7 +105,7 @@ export class ReceiveStockComponent implements OnInit {
     this.systemModuleService.on();
     if (reload === true) {
       this.inventoryTransferService.getItemDetails(receive._id, {}).subscribe(payload => {
-        if (payload.storeId != undefined) {
+        if (payload.storeId !== undefined) {
           const that = this;
           this.selectedInventoryTransfer = payload;
           this.selectedInventoryTransfer.inventoryTransferTransactions.forEach(function (itemi: any) {
@@ -163,12 +151,13 @@ export class ReceiveStockComponent implements OnInit {
         item.transferStatusId = this.completedInventoryStatus._id;
       }
     });
-    this.inventoryTransferService.patch(this.selectedInventoryTransfer._id, { inventoryTransferTransactions: this.selectedInventoryTransfer.inventoryTransferTransactions }).then(payload => {
+    this.inventoryTransferService.patch(this.selectedInventoryTransfer._id,
+      { inventoryTransferTransactions: this.selectedInventoryTransfer.inventoryTransferTransactions }).then(payload => {
       this.slideDetailsShow(payload.inventoryTransfers, false);
       this.getTransfers();
       this.systemModuleService.announceSweetProxy('Stock tran successfully', 'success');
     }, error => {
-      this._notification("Error", "Failed to accept stock, please try again");
+      this._notification('Error', 'Failed to accept stock, please try again');
     });
 
   }
@@ -180,12 +169,14 @@ export class ReceiveStockComponent implements OnInit {
         item.transferStatusId = this.rejectedInventoryStatus._id;
       }
     });
-    this.inventoryTransferService.patch(this.selectedInventoryTransfer._id, { inventoryTransferTransactions: this.selectedInventoryTransfer.inventoryTransferTransactions }).then(payload => {
+    this.inventoryTransferService.patch(this.selectedInventoryTransfer._id,
+      { inventoryTransferTransactions: this.selectedInventoryTransfer.inventoryTransferTransactions }).then(payload => {
       this.slideDetailsShow(payload.inventoryTransfers, false);
     });
   }
   getStatus(transaction) {
-    const receivedTransactions = transaction.inventoryTransferTransactions.filter(item => item.transferStatusId === this.completedInventoryStatus._id);
+    const receivedTransactions = transaction.inventoryTransferTransactions
+    .filter(item => item.transferStatusId === this.completedInventoryStatus._id);
     if (receivedTransactions.length === transaction.inventoryTransferTransactions.length) {
       return this.completedInventoryStatus.name;
     }

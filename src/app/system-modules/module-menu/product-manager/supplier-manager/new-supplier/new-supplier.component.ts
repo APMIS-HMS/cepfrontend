@@ -19,7 +19,7 @@ export class NewSupplierComponent implements OnInit {
   loadIndicatorVisible = false;
   public frm_newSupplier: FormGroup;
   selectedLocation: any = <any>{};
-  btnLabel = "Add";
+  btnLabel = 'Add';
   countries: any[] = [];
   states: any[] = [];
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -65,17 +65,18 @@ export class NewSupplierComponent implements OnInit {
   }
   populateSupplier() {
     if (this.selectedSupplier._id !== undefined) {
-      this.btnLabel = "Update";
+      this.btnLabel = 'Update';
       this.frm_newSupplier.controls['name'].setValue(this.selectedSupplier.name);
       this.frm_newSupplier.controls['email'].setValue(this.selectedSupplier.email);
       this.frm_newSupplier.controls['frmContact'].setValue(this.selectedSupplier.contact);
       this.frm_newSupplier.controls['frmCountry'].setValue(this.selectedSupplier.address.country);
-      this._countryServiceFacade.getOnlyStates(this.selectedSupplier.address.country).then((payload: any) => { this.states = payload; }).catch(error => { });
+      this._countryServiceFacade.getOnlyStates(this.selectedSupplier.address.country)
+      .then((payload: any) => { this.states = payload; }).catch(error => { });
       this.frm_newSupplier.controls['frmState'].setValue(this.selectedSupplier.address.state);
       this.frm_newSupplier.controls['frmStreet'].setValue(this.selectedSupplier.address.street);
       this.frm_newSupplier.controls['frmCity'].setValue(this.selectedSupplier.address.city);
     } else {
-      this.btnLabel = "Add";
+      this.btnLabel = 'Add';
       this.frm_newSupplier.reset();
     }
   }
@@ -93,23 +94,23 @@ export class NewSupplierComponent implements OnInit {
 
   autoCompleteCallback(selectedData: any) {
     if (selectedData.response) {
-      let res = selectedData;
+      const res = selectedData;
       this.selectedLocation = res.data;
       if (res.data.address_components[0].types[0] === 'route') {
-        let streetAddress = res.data.formatted_address;
-        let city = res.data.address_components[1].long_name;
-        let country = res.data.address_components[5].long_name;
-        let state = res.data.address_components[4].long_name;
+        const streetAddress = res.data.formatted_address;
+        const city = res.data.address_components[1].long_name;
+        const country = res.data.address_components[5].long_name;
+        const state = res.data.address_components[4].long_name;
 
         this.frm_newSupplier.controls['frmState'].setValue(state);
         this.frm_newSupplier.controls['frmCountry'].setValue(country);
         this.frm_newSupplier.controls['frmStreet'].setValue(streetAddress);
         this.frm_newSupplier.controls['frmCity'].setValue(city);
       } else {
-        let streetAddress = res.data.formatted_address;
-        let city = res.data.address_components[2].long_name;
-        let country = res.data.address_components[6].long_name;
-        let state = res.data.address_components[3].long_name;
+        const streetAddress = res.data.formatted_address;
+        const city = res.data.address_components[2].long_name;
+        const country = res.data.address_components[6].long_name;
+        const state = res.data.address_components[3].long_name;
 
         this.frm_newSupplier.controls['frmState'].setValue(state);
         this.frm_newSupplier.controls['frmCountry'].setValue(country);
@@ -134,7 +135,7 @@ export class NewSupplierComponent implements OnInit {
       // this.supplierService.create(form.value).then(payload => {
       //   this.frm_newSupplier.reset();
       // });
-      let value: any = {
+      const value: any = {
         facilityId: this.selectedFacility._id,
         name: this.frm_newSupplier.controls['name'].value,
         contact: this.frm_newSupplier.controls['frmContact'].value,
