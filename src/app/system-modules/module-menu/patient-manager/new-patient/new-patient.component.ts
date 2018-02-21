@@ -478,17 +478,15 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     getCashPlans() {
         this._facilitiesServiceCategoryService.find({
             query:
-                { 'categories.name': "Appointment", facilityId: this.facility._id }
+                { facilityId: this.facility._id, 'categories.name': "Appointment",$select: { 'categories.$': 1}  }
         }).then(payload => {
             //this.filterOutCategory(payload);
             //this.categories = [];
             let cat: any = [];
             payload.data.forEach((itemi, i) => {
                 itemi.categories.forEach((itemj, j) => {
-                    if (itemi.facilityId !== undefined) {
-                        cat.push(itemj);
-                        this.cashPlans = cat[0].services;
-                    }
+                  cat.push(itemj);
+                  this.cashPlans = cat[0].services;
                 });
             });
         });
