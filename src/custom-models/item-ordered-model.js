@@ -6,6 +6,8 @@ const orderSchema = new Schema({
   quantity: { type: Number, required: true },
   costPrice: { type: Number, required: false },
   expiryDate: { type: Date, required: false },
-  batchNo: { type: String, required: false }
+  batchNo: { type: String, required: false },
+  createdAt: { type: Date, 'default': Date.now },
+  updatedAt: { type: Date, 'default': Date.now }
 });
 module.exports = orderSchema;
