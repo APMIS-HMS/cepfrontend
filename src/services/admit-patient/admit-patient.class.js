@@ -21,6 +21,12 @@ class Service {
     }
 
     async create(data, params) {
+        console.log('-------- data -----------');
+        console.log(data);
+        console.log('-------- End data -----------');
+        console.log('-------- params -----------');
+        console.log(params);
+        console.log('-------- End params -----------');
         const prescriptionService = this.app.service('prescriptions');
         const billingService = this.app.service('billings');
         const facilityId = data.query.facilityId;
@@ -36,20 +42,25 @@ class Service {
             if (type === 'admitPatient') {
                 // Admit patient into the selected ward.
                 // Get the patient from the inpatientwaitinglists.
-                this.app.service('inpatientwaitinglists').find({
+                app.service('inpatientwaitinglists').find({
                     query: {
                         'facilityId._id': facilityId,
                         'patientId._id': patientId,
                         isAdmitted: false
                     }
                 }).then(inPatientWaiting => {
+                    console.log('----------- inPatientWaiting -----------');
+                    console.log(inPatientWaiting);
+                    console.log('----------- End inPatientWaiting -----------');
                     if (inPatientWaiting.data.length > 0) {
                         inPatientWaiting.data[0].isAdmitted = true;
                         inPatientWaiting.data[0].admittedDate = new Date();
 
                         // Update the inpatientWaitingList.
-                        this.app.service('inpatientwaitinglists').update(inPatientWaiting.data[0]._id, inPatientWaiting.data[0]).then(inPatientWaitingUpdated => {
-
+                        app.service('inpatientwaitinglists').update(inPatientWaiting.data[0]._id, inPatientWaiting.data[0]).then(inPatientWaitingUpdated => {
+                            console.log('----------- inPatientWaitingUpdated -----------');
+                            console.log(inPatientWaitingUpdated);
+                            console.log('----------- End inPatientWaitingUpdated -----------');
                             // Delete Items that are not relevant in the room
                             delete inPatientWaitingUpdated.patientId.personDetails.countryItem;
                             delete inPatientWaitingUpdated.patientId.personDetails.nationalityObject;
@@ -82,11 +93,14 @@ class Service {
                             };
 
                             // Create inpatient
-                            this.app.service('inpatients').create(payload).then(inPatient => {
+                            app.service('inpatients').create(payload).then(inPatient => {
                                 // Update the wardAdmissionService
-                                this.app.service('warddetails').find({
+                                app.service('warddetails').find({
                                     query: { 'facilityId._id': inPatient.facilityId._id }
                                 }).then(wardDetails => {
+                                    console.log('----------- wardDetails -----------');
+                                    console.log(wardDetails);
+                                    console.log('----------- End wardDetails -----------');
                                     // Delete the patient from the room and bed
                                     let i = wardDetails.data[0].locations.length;
                                     while (i--) {
@@ -94,13 +108,16 @@ class Service {
                                         // Update the new room
                                         if (ward === location.minorLocationId._id) {
                                             let j = location.rooms.length;
+                                            console.log('j');
                                             while (j--) {
                                                 let loopRoom = location.rooms[j];
                                                 if (room._id == loopRoom._id) {
                                                     let k = loopRoom.beds.length;
+                                                    console.log('k');
                                                     while (k--) {
                                                         let loopBed = loopRoom.beds[k];
                                                         if (bed._id == loopBed._id) {
+                                                            console.log('k 2');
                                                             loopBed.occupant = inPatient.patientId;
                                                             loopBed.state = 'In-use';
                                                             loopBed.isAvailable = false;
@@ -114,29 +131,39 @@ class Service {
                                     }
 
                                     // Update wardDetails.
-                                    this.app.service('warddetails').update(wardDetails.data[0]._id, wardDetails.data[0]).then(wardDetailsUpdate => {
-
+                                    app.service('warddetails').update(wardDetails.data[0]._id, wardDetails.data[0]).then(wardDetailsUpdate => {
+                                        console.log('----------- wardDetailsUpdate -----------');
+                                        console.log(wardDetailsUpdate);
+                                        console.log('----------- End wardDetailsUpdate -----------');
                                         res.jsend.success(wardDetailsUpdate);
                                     }).catch(err => {
+                                        console.log(err);
                                         res.jsend.error(err);
                                     });
                                 }).catch(err => {
+                                    console.log(err);
                                     res.jsend.error(err);
                                 });
                             }).catch(err => {
+                                console.log(err);
                                 res.jsend.error(err);
                             });
                         }).catch(err => {
+                            console.log(err);
                             res.jsend.error(err);
                         });
                     } else {
                         res.jsend.error('Sorry! We could not find the patient');
                     }
                 }).catch(err => {
+                    console.log(err);
                     res.jsend.error(err);
                 });
             } else if (type === 'acceptTransfer') {
                 app.service('inpatients').get(inPatientId).then(inPatient => {
+                    console.log('----------- InPatient -----------');
+                    console.log(inPatient);
+                    console.log('----------- End inPatient -----------');
                     // Get the number of days the patient has stayed in the ward.
                     let lastTransfer = inPatient.transfers[inPatient.transfers.length - 1];
                     let startDate;
@@ -154,6 +181,9 @@ class Service {
                     app.service('warddetails').find({
                         query: { 'facilityId._id': inPatient.facilityId._id }
                     }).then(wardDetails => {
+                        console.log('----------- wardDetails -----------');
+                        console.log(wardDetails);
+                        console.log('----------- End wardDetails -----------');
                         const wardId = inPatient.transfers[inPatient.transfers.length - 1].minorLocationId;
                         const prevRoom = inPatient.transfers[inPatient.transfers.length - 1].roomId;
                         const prevBed = inPatient.transfers[inPatient.transfers.length - 1].bedId;
@@ -164,13 +194,15 @@ class Service {
                             let location = wardDetails.data[0].locations[i];
                             // Remove the patient from the current room.
                             if (wardId === location.minorLocationId._id) {
-                                let j = location.rooms.length
+                                let j = location.rooms.length;
+                                console.log('j');
                                 while (j--) {
                                     let loopRoom = location.rooms[j];
                                     if (prevRoom._id == loopRoom._id) {
                                         serviceId = loopRoom.serviceId._id;
                                         let k = loopRoom.beds.length;
                                         while (k--) {
+                                            console.log('k');
                                             let loopBed = loopRoom.beds[k];
                                             if (prevBed._id == loopBed._id) {
                                                 delete loopBed.occupant;
@@ -187,13 +219,16 @@ class Service {
                             // Update the new room
                             if (ward === location.minorLocationId._id) {
                                 let y = location.rooms.length;
+                                console.log('y');
                                 while (y--) {
                                     let loopRoom = location.rooms[y];
                                     if (room._id == loopRoom._id) {
                                         let z = loopRoom.beds.length;
+                                        console.log('z');
                                         while (z--) {
                                             let loopBed = loopRoom.beds[z];
                                             if (bed._id == loopBed._id) {
+                                                console.log('z 2');
                                                 loopBed.occupant = inPatient.patientId;
                                                 loopBed.state = 'In-use';
                                                 loopBed.isAvailable = false;
@@ -208,7 +243,9 @@ class Service {
 
                         // Update wardDetails.
                         app.service('warddetails').update(wardDetails.data[0]._id, wardDetails.data[0]).then(wardDetailsUpdate => {
-
+                            console.log('----------- wardDetailsUpdate -----------');
+                            console.log(wardDetailsUpdate);
+                            console.log('----------- End wardDetailsUpdate -----------');
                             if (serviceId !== undefined || serviceId !== null || serviceId !== '') {
                                 // Get the current price for the ward
                                 app.service('facilityprices').get(serviceId).then(servicePrice => {
@@ -249,25 +286,34 @@ class Service {
                                             checkInDate: new Date()
                                         };
 
+                                        console.log('----------- transfer -----------');
+                                        console.log(transfer);
+                                        console.log('----------- End transfer -----------');
                                         inPatient.transfers.push(transfer);
                                         inPatient.prevWard = inPatient.currentWard;
                                         inPatient.currentWard = transfer;
                                         // Updated Inpatient data
                                         app.service('inpatients').update(inPatient._id, inPatient).then(updateInpatient => {
                                             res.jsend.success(bill);
-                                        }).catch(err => {});
+                                        }).catch(err => {
+                                            console.log(err);
+                                        });
                                     }).catch(err => {
+                                        console.log(err);
                                         res.jsend.error(err);
                                     });
                                 }).catch(err => {
+                                    console.log(err);
                                     res.jsend.error(err);
                                 });
                             }
                         });
                     }).catch(err => {
+                        console.log(err);
                         res.jsend.error(err);
                     });
                 }).catch(err => {
+                    console.log(err);
                     res.jsend.error(err);
                 });
             }

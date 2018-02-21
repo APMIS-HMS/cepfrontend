@@ -78,7 +78,6 @@ class Service {
       }
       let inventory = await inventoriesService.create(inventoryModel);
       // let product = await productsService.get(batches.product._id);
-      // console.log(5);
       // if (product != null) {
       //   product.isInventory = true;
       //   let updatedProduct = await productsService.patch(product._id, {
