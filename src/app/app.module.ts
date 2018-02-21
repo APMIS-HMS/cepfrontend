@@ -127,7 +127,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     SetupService.TimeLineService, FacilityTypeFacilityClassFacadeService, JoinChannelService, SetupService.DocumentUploadService, RadiologyInvestigationService,
     SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService,
     SetupService.LocSummaryCashService, SetupService.TimeLineService, SetupService.DocumentUploadService, RadiologyInvestigationService,
-    SetupService.FluidService, SecurityQuestionsService, TitleCasePipe, AuthFacadeService, SetupService.DepartmentService, CanActivateViaAuthGuardAccessService,
+    SetupService.FluidService, SecurityQuestionsService, TitleCasePipe, UpperCasePipe, AuthFacadeService, SetupService.DepartmentService, CanActivateViaAuthGuardAccessService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
