@@ -12,7 +12,9 @@ export class PersonScheduleAppointmentComponent implements OnInit {
   errMsg = 'you have unresolved errors';
   public frm_appointment: FormGroup;
   show = false;
-
+  apmisLookupDisplayKey:any;
+  apmisLookupUrl:any;
+  apmisLookupQuery:any;
   // patient: FormControl;
   // clinic: FormControl;
   // provider: FormControl;
@@ -57,5 +59,8 @@ export class PersonScheduleAppointmentComponent implements OnInit {
   }
   login(valid) {
 
+  }
+  apmisLookupHandleSelectedItem(e){
+    
   }
 }
