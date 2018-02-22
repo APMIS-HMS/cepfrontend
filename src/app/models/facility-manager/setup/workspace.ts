@@ -4,4 +4,5 @@ export interface WorkSpace {
     employeeId: any;
     locations: any[];
     isActive: boolean;
+    employee?:any;
 }

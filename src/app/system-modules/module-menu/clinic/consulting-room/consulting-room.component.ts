@@ -1,17 +1,32 @@
-import { Component, OnInit } from '@angular/core';
-import { ConsultingRoomService, SchedulerTypeService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
-import { RoomModel, Facility, Location, ConsultingRoomModel, User } from '../../../../models/index';
-import { LocationService } from '../../../../services/module-manager/setup/index';
-import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { Component, OnInit } from "@angular/core";
+import {
+  ConsultingRoomService,
+  SchedulerTypeService,
+  FacilitiesService
+} from "../../../../services/facility-manager/setup/index";
+import {
+  RoomModel,
+  Facility,
+  Location,
+  ConsultingRoomModel,
+  User
+} from "../../../../models/index";
+import { LocationService } from "../../../../services/module-manager/setup/index";
+import {
+  FormGroup,
+  FormControl,
+  FormArray,
+  FormBuilder,
+  Validators
+} from "@angular/forms";
+import { CoolLocalStorage } from "angular2-cool-storage";
 
 @Component({
-  selector: 'app-consulting-room',
-  templateUrl: './consulting-room.component.html',
-  styleUrls: ['./consulting-room.component.scss']
+  selector: "app-consulting-room",
+  templateUrl: "./consulting-room.component.html",
+  styleUrls: ["./consulting-room.component.scss"]
 })
 export class ConsultingRoomComponent implements OnInit {
-
   value: Date = new Date(1981, 3, 27);
   now: Date = new Date();
   min: Date = new Date(1900, 0, 1);
@@ -31,18 +46,18 @@ export class ConsultingRoomComponent implements OnInit {
   roomManager: ConsultingRoomModel[] = [];
   loading: Boolean = true;
 
-
-  constructor(private formBuilder: FormBuilder,
+  constructor(
+    private formBuilder: FormBuilder,
     private locationService: LocationService,
     private locker: CoolLocalStorage,
     private schedulerTypeService: SchedulerTypeService,
     private consultingRoomService: ConsultingRoomService,
-  private facilityService: FacilitiesService) {
-  }
+    private facilityService: FacilitiesService
+  ) {}
   ngOnInit() {
     this.subscribToFormControls();
     this.getClinicMajorLocation();
-    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
+    this.selectedFacility = <Facility>this.locker.getObject("selectedFacility");
     // this.selectedFacility.departments.forEach((itemi, i) => {
     //   itemi.units.forEach((itemj, j) => {
     //     itemj.clinics.forEach((itemk, k) => {
@@ -62,47 +77,62 @@ export class ConsultingRoomComponent implements OnInit {
   }
   getConsultingRooms(majorLocation: Location) {
     this.clearAllRooms();
-    this.consultingRoomService.find({
-      query: {
-        facilityId: this.selectedFacility._id,
-        majorLocationId: majorLocation._id
-      }
-    }).then(payload => {
-      this.loading = false;
-      this.roomManager = payload.data;
-    });
+    this.consultingRoomService
+      .find({
+        query: {
+          facilityId: this.selectedFacility._id,
+          majorLocationId: majorLocation._id
+        }
+      })
+      .then(
+        payload => {
+          this.loading = false;
+          this.roomManager = payload.data;
+        },
+        error => {}
+      );
   }
   subscribToFormControls() {
     this.locationTypeControl.valueChanges.subscribe(value => {
       this.selectedMinorLocation = value;
       this.clearAllRooms();
-      this.consultingRoomService.find({
-        query: {
-          minorLocationId: value._id.toString(),
-          facilityId: this.selectedFacility._id
-        }
-      }).then(payload => {
-        if (payload.data.length > 0) {
-          this.selectedManager = payload.data[0];
-          this.loadManagerRooms(false);
-        }
-      });
+      this.consultingRoomService
+        .find({
+          query: {
+            minorLocationId: value,
+            facilityId: this.selectedFacility._id
+          }
+        })
+        .then(payload => {
+          if (payload.data.length > 0) {
+            this.selectedManager = payload.data[0];
+            this.loadManagerRooms(false);
+          }
+        });
     });
   }
   onSelectSchedulerManager(manager: ConsultingRoomModel) {
     this.selectedManager = manager;
-    const filteredClinic = this.clinicLocations.filter(x => x._id === this.selectedManager.minorLocationId);
+    const filteredClinic = this.clinicLocations.filter(
+      x => x.name === this.selectedManager.minorLocationId
+    );
     if (filteredClinic.length > 0) {
       this.selectedMinorLocation = filteredClinic[0];
     }
-    this.locationTypeControl.setValue(this.selectedMinorLocation);
+    this.locationTypeControl.setValue(this.selectedManager.minorLocationId);
     this.loadManagerRooms(false);
   }
   loadManagerRooms(force: boolean) {
     this.clearAllRooms();
-    if (this.selectedManager !== undefined && force === false) {
+    if (
+      this.selectedManager !== undefined &&
+      this.selectedManager.rooms !== undefined &&
+      force === false
+    ) {
       this.selectedManager.rooms.forEach((itemi, i) => {
-        (<FormArray>this.consultingRoomForm.controls['consultingRoomArray']).push(
+        (<FormArray>this.consultingRoomForm.controls[
+          "consultingRoomArray"
+        ]).push(
           this.formBuilder.group({
             name: [itemi.name, [<any>Validators.required]],
             capacity: [itemi.capacity, [<any>Validators.required]],
@@ -113,15 +143,16 @@ export class ConsultingRoomComponent implements OnInit {
     } else {
       this.getConsultingRooms(this.clinic);
     }
-
   }
   clearAllRooms() {
-    this.consultingRoomForm.controls['consultingRoomArray'] = this.formBuilder.array([]);
+    this.consultingRoomForm.controls[
+      "consultingRoomArray"
+    ] = this.formBuilder.array([]);
   }
   getClinicMajorLocation() {
     this.locationService.findAll().then(payload => {
       payload.data.forEach((itemi, i) => {
-        if (itemi.name === 'Clinic') {
+        if (itemi.name === "Clinic") {
           this.clinic = itemi;
           this.getConsultingRooms(this.clinic);
           this.getClinicLocation();
@@ -132,20 +163,22 @@ export class ConsultingRoomComponent implements OnInit {
   getSchedulerType() {
     this.schedulerTypeService.findAll().then(payload => {
       payload.data.forEach((itemi, i) => {
-        if (itemi.name === 'Clinic') {
+        if (itemi.name === "Clinic") {
           this.selectedSchedulerType = itemi;
         }
       });
     });
   }
   getClinicLocation() {
-    this.clinicLocations = this.selectedFacility.minorLocations.filter(x => x.locationId === this.clinic._id);
+    this.clinicLocations = this.selectedFacility.minorLocations.filter(
+      x => x.locationId === this.clinic._id
+    );
   }
   addNewConsultingRoom() {
     this.consultingRoomForm = this.formBuilder.group({
-      'consultingRoomArray': this.formBuilder.array([
+      consultingRoomArray: this.formBuilder.array([
         this.formBuilder.group({
-          name: ['', [<any>Validators.required]],
+          name: ["", [<any>Validators.required]],
           capacity: [0, [<any>Validators.required]],
           readOnly: [false]
         })
@@ -153,14 +186,13 @@ export class ConsultingRoomComponent implements OnInit {
     });
   }
   pushNewConsultingRoom(schedule: any) {
-    (<FormArray>this.consultingRoomForm.controls['consultingRoomArray'])
-      .push(
+    (<FormArray>this.consultingRoomForm.controls["consultingRoomArray"]).push(
       this.formBuilder.group({
-        name: ['', [<any>Validators.required]],
+        name: ["", [<any>Validators.required]],
         capacity: [0, [<any>Validators.required]],
         readOnly: [false]
       })
-      );
+    );
     // (<FormArray>this.consultingRoomForm.controls['consultingRoomArray']).controls.reverse();
     this.subscribToFormControls();
   }
@@ -168,36 +200,45 @@ export class ConsultingRoomComponent implements OnInit {
     this.schedules = [];
     let hasReadOnly = false;
 
-    (<FormArray>this.consultingRoomForm.controls['consultingRoomArray'])
-      .controls.forEach((itemi, i) => {
-        if (itemi.value.readOnly === true) {
-          hasReadOnly = true;
-        }
-      });
+    (<FormArray>this.consultingRoomForm.controls[
+      "consultingRoomArray"
+    ]).controls.forEach((itemi, i) => {
+      if (itemi.value.readOnly === true) {
+        hasReadOnly = true;
+      }
+    });
     if (this.selectedManager !== undefined && hasReadOnly) {
       this.selectedManager.rooms = [];
-      (<FormArray>this.consultingRoomForm.controls['consultingRoomArray'])
-        .controls.forEach((itemi, i) => {
-          this.selectedManager.rooms.push(itemi.value);
-        });
+      (<FormArray>this.consultingRoomForm.controls[
+        "consultingRoomArray"
+      ]).controls.forEach((itemi, i) => {
+        this.selectedManager.rooms.push(itemi.value);
+      });
       this.consultingRoomService.update(this.selectedManager).then(payload => {
         this.selectedManager = payload;
-        this._notification('Success', 'Consulting Room has been updated successfully.');
+        this._notification(
+          "Success",
+          "Consulting Room has been updated successfully."
+        );
         this.loadManagerRooms(true);
       });
     } else {
       const manager: ConsultingRoomModel = <ConsultingRoomModel>{ rooms: [] };
       manager.majorLocationId = this.clinic._id;
-      manager.minorLocationId = this.selectedMinorLocation._id;
+      manager.minorLocationId = this.selectedMinorLocation;
       manager.facilityId = this.selectedFacility._id;
 
-      (<FormArray>this.consultingRoomForm.controls['consultingRoomArray'])
-        .controls.forEach((itemi, i) => {
-          manager.rooms.push(itemi.value);
-        });
+      (<FormArray>this.consultingRoomForm.controls[
+        "consultingRoomArray"
+      ]).controls.forEach((itemi, i) => {
+        manager.rooms.push(itemi.value);
+      });
       this.consultingRoomService.create(manager).then(payload => {
         this.loading = false;
-        this._notification('Success', 'Consulting Room has been created successfully.');
+        this._notification(
+          "Success",
+          "Consulting Room has been created successfully."
+        );
         this.roomManager = payload.data;
         this.loadManagerRooms(true);
       });
@@ -214,7 +255,9 @@ export class ConsultingRoomComponent implements OnInit {
   }
 
   closeConsultingRoom(clinic: any, i: any) {
-    (<FormArray>this.consultingRoomForm.controls['consultingRoomArray']).controls.splice(i, 1);
+    (<FormArray>this.consultingRoomForm.controls[
+      "consultingRoomArray"
+    ]).controls.splice(i, 1);
     this.loadManagerRooms(false);
   }
 }

@@ -3,6 +3,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { FacilitiesService, EmployeeService } from '../../../../../services/facility-manager/setup/index';
 import { Facility, Employee, Department } from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-emp-assign-unit',
@@ -34,6 +35,7 @@ export class EmpAssignUnitComponent implements OnInit {
   constructor(private formBuilder: FormBuilder,
     private locker: CoolLocalStorage,
     private employeeService: EmployeeService,
+    private systemModuleService:SystemModuleService,
     public facilityService: FacilitiesService) { }
 
   ngOnInit() {
@@ -60,6 +62,7 @@ export class EmpAssignUnitComponent implements OnInit {
     this.frmNewEmp1.controls['unit'].valueChanges.subscribe((value: any) => {
       this.selectedUnit = value;
       this.filterDownEmployees(this.selectedUnit);
+  
     });
     this.frmNewEmp1.controls['dept'].valueChanges.subscribe((value: any) => {
       const deptIndex = this.departments.findIndex(x => x.name === value);
@@ -79,7 +82,7 @@ export class EmpAssignUnitComponent implements OnInit {
       let hasUnit = false;
       if (emp.units !== undefined) {
         emp.units.forEach((itemu, u) => {
-          if (unit !== null && itemu === unit._id) {
+          if (unit !== null && itemu === unit.name) {
             hasUnit = true;
           }
         });
@@ -125,10 +128,11 @@ export class EmpAssignUnitComponent implements OnInit {
   assignUnit(valid, value) {
     const checkedEmployees = this.filteredEmployees.filter(emp => emp.isChecked === true);
 
-    this.employeeService.assignUnit({ unitId: this.selectedUnit._id, employees: checkedEmployees }).then(payload => {
+    this.employeeService.assignUnit({ unitId: this.selectedUnit.name, employees: checkedEmployees }).then(payload => {
       this.getEmployees(this.selectedDepartment.name);
+      this.systemModuleService.announceSweetProxy('Employee assigned successfully','success');
     }, error => {
-      console.log(error);
+      this.systemModuleService.announceSweetProxy('There was an error assigning this employee to this unit','error');
     });
   }
 }

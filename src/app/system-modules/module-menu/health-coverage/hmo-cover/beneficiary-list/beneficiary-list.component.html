@@ -37,7 +37,7 @@
               </tr>
             </thead>
 
-            <tbody>
+            <tbody *ngIf="beneficiaries.length > 0">
 
               <tr>
                 <td colspan="10">
@@ -66,13 +66,6 @@
                 </td>
               </tr>
 
-
-
-
-              <!-- category : "STAFF" date : "2017-11-30T00:00:00.000Z" filNo : "ACN0439" firstName : "MICHAEL O." gender : "M" plan : "TOP-UP"
-              serial : 1 sponsor : "AERO CONTRACTORS CO. NIG LTD." surname : "ESEIGBE" type : "FEE-FOR-SERVICE" -->
-
-
               <tr *ngFor="let beneficiary of filteredBeneficiaries">
                 <td>{{beneficiary?.surname}} {{beneficiary?.firstName}}</td>
                 <td>{{beneficiary?.gender}}</td>
@@ -84,9 +77,11 @@
                 <td>{{beneficiary?.date | date:'shortDate'}}</td>
               </tr>
             </tbody>
-            <!-- <tfoot>
-
-            </tfoot> -->
+            <tbody *ngIf="beneficiaries.length == 0">
+              <tr>
+                <td class="table-content" colspan="6" style="text-align: center"> No data available in table</td>
+              </tr>
+            </tbody>
           </table>
           <mat-paginator [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
             [pageSizeOptions]="pageSizeOptions">

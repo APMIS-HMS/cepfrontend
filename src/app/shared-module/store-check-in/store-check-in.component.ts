@@ -4,11 +4,12 @@ import { ConsultingRoomService, EmployeeService, FacilitiesService, StoreService
 import { ConsultingRoomModel, Employee } from '../../models/index';
 import { ClinicHelperService } from '../../system-modules/module-menu/clinic/services/clinic-helper.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 
 @Component({
-	selector: 'app-store-check-in',
-	templateUrl: './store-check-in.component.html',
-	styleUrls: ['./store-check-in.component.scss']
+  selector: 'app-store-check-in',
+  templateUrl: './store-check-in.component.html',
+  styleUrls: ['./store-check-in.component.scss']
 })
 export class StoreCheckInComponent implements OnInit {
 	mainErr = true;
@@ -31,26 +32,29 @@ export class StoreCheckInComponent implements OnInit {
 		public consultingRoomService: ConsultingRoomService,
 		public employeeService: EmployeeService,
 		public storeService: StoreService,
-		public locker: CoolLocalStorage
+    public locker: CoolLocalStorage,
+    private _authFacadeService: AuthFacadeService
 	) {
-    this.workSpaces = this.locker.getObject('workspaces');
-		this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    // this.workSpaces = this.locker.getObject('workspaces');
+    this._authFacadeService.getLogingEmployee().then((res: any) => {
+      this.loginEmployee = res;
+      this.workSpaces = res.workSpaces;
+      if (this.workSpaces !== undefined) {
+        this.workSpaces.forEach(workspace => {
+          if (workspace.isActive && workspace.locations.length > 0) {
+            workspace.locations.forEach(x => {
+              if (x.isActive) {
+                this.locations.push(x.minorLocationId);
+              }
+            });
+          }
+        });
+      }
+    }).catch(err => console.log(err));
 	}
 
 	ngOnInit() {
-		if (this.workSpaces !== undefined) {
-			this.workSpaces.forEach(workspace => {
-				if(workspace.isActive && workspace.locations.length > 0) {
-					workspace.locations.forEach(x => {
-					  if(x.isActive) {
-						this.locations.push(x.minorLocationId);
-					  }
-					});
-				  }
-			});
-		}
-
-		this.storeCheckin = this.formBuilder.group({
+	  this.storeCheckin = this.formBuilder.group({
 			location: ['', [<any>Validators.required]],
 			room: ['', [<any>Validators.required]],
 			isDefault: [false, [<any>Validators.required]]
@@ -67,12 +71,13 @@ export class StoreCheckInComponent implements OnInit {
 
 		this.storeCheckin.controls['room'].valueChanges.subscribe(value => {
 		});
-	}
+  }
+
 	close_onClick() {
 		this.closeModal.emit(true);
-	}
+  }
+
 	checkIn(valid, value) {
-		console.log(value);
 		this.checkInBtnText = '<i class="fa fa-spinner fa-spin"></i> Checking in...';
 		const checkIn: any = <any>{};
 		checkIn.minorLocationId = value.location;
@@ -81,23 +86,17 @@ export class StoreCheckInComponent implements OnInit {
 		checkIn.isOn = true;
 		checkIn.isDefault = value.isDefault;
 		if (this.loginEmployee.storeCheckIn === undefined) {
-			console.log(1);
 			this.loginEmployee.storeCheckIn = [];
 		}
 		this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
-			console.log(i);
 			itemi.isOn = false;
 			if (value.isDefault === true) {
 				itemi.isDefault = false;
 			}
 		});
-		
+
 		this.loginEmployee.storeCheckIn.push(checkIn);
-		console.log(2);
-		// this.loadIndicatorVisible = true;
-		console.log(this.loginEmployee);
 		this.employeeService.update(this.loginEmployee).then(payload => {
-			console.log(3);
 			this.loginEmployee = payload;
 			const workspaces = <any>this.locker.getObject('workspaces');
 			this.loginEmployee.workSpaces = workspaces;
@@ -106,8 +105,6 @@ export class StoreCheckInComponent implements OnInit {
 			this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
 				itemi.isOn = false;
 				if (itemi.storeId === checkIn.storeId) {
-					console.log(4);
-					console.log(checkIn.storeId);
 					itemi.isOn = true;
 					keepCheckIn = itemi;
 				}

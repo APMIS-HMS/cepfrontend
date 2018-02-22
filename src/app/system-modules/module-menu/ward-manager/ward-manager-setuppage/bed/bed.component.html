@@ -37,22 +37,22 @@
                     <tr *ngFor="let bed of beds;let i = index">
                         <td class="table-content ">{{i+1}}</td>
                         <td class="table-content ">
-                            <div [hidden]="bedNameEditShow[i]">{{bed.name}}</div>
-                            <mat-form-field *ngIf="bedNameEditShow[i]">
+                            <div>{{bed.name}}</div>
+                            <!-- <mat-form-field *ngIf="bedNameEditShow[i]">
                                 <input matInput placeholder="Edit {{bed.name}}" [value]="bed.name" [formControl]="editBedName">
-                            </mat-form-field>
+                            </mat-form-field> -->
                         </td>
                         <td class="table-content" style="padding: 0;">
                             <div *ngIf="bed.occupant === undefined"> No Occupant</div>
                             <div *ngIf="!!bed.occupant">
                                 <div class="empWrap" style="text-align: center;">
                                     <div class="list-img">
-                                        <div *ngIf="bed?.occupant?.personDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
-                                        <div *ngIf="bed?.occupant?.personDetails.profileImageObject?.thumbnail != undefined"><img [src]="facilityService.transform(bed.occupant?.personDetails.profileImageObject?.thumbnail)"></div>
+                                        <div *ngIf="bed?.occupant?.personDetails?.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                        <div *ngIf="bed?.occupant?.personDetails?.profileImageObject?.thumbnail != undefined"><img [src]="facilityService.transform(bed?.occupant?.personDetails?.profileImageObject?.thumbnail)"></div>
                                     </div>
                                     <div>
                                         <b>{{bed.occupant?.personDetails?.personFullName}}</b><br>
-                                        <small>{{bed.occupant?.personDetails?.gender.name}}, </small>
+                                        <small>{{bed.occupant?.personDetails?.gender?.name}}, </small>
                                         <small>{{bed.occupant?.personDetails?.age}} year(s) old, </small>
                                         <small>{{bed.occupant?.personDetails?.phoneNumber}}</small>
                                     </div>
@@ -60,13 +60,13 @@
                             </div>
                         </td>
                         <td class="table-content ">
-                            <div *ngIf="bed.isAvailable" style="color: green"> Available</div>
-                            <div *ngIf="!bed.isAvailable" style="color: blue"> Occupied</div>
+                            <div *ngIf="bed?.isAvailable" style="color: green"> Available</div>
+                            <div *ngIf="!bed?.isAvailable" style="color: blue"> Occupied</div>
                         </td>
-                        <td class="table-content ">{{ bed.state }}</td>
+                        <td class="table-content">{{ bed?.state }}</td>
                         <td class="table-content-action">
                             <i (click)="bedNameEdit(i, bed)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                            <i class="fa fa-trash" aria-hidden="true"></i>
+                            <!-- <i class="fa fa-trash" aria-hidden="true"></i> -->
                         </td>
                     </tr>
                 </tbody>

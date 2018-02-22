@@ -39,10 +39,10 @@
             </div>
         </div>
         <ul class="topmenuwrap">
-            <li class="sort-btn" (click)="sort_pop()">
+            <!-- <li class="sort-btn" (click)="sort_pop()">
                 <i class="fa fa-sort" aria-hidden="true"></i>
                 <span>Sort List</span>
-            </li>
+            </li> -->
             <li (click)="assignUnit_pop()">
                 <i class="fa fa-plus-circle" aria-hidden="true"></i>
                 <span>Assign Unit</span>
@@ -61,7 +61,7 @@
         <!-- <app-employeemanager-detailpage [employee]="employee" *ngIf="employeeDetailArea" class="fullwidth"></app-employeemanager-detailpage> -->
 
         <div *ngIf="newEmp" class="modal-overlay">
-            <!-- <app-new-employee (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-employee> -->
+            <app-new-fac-employee (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-fac-employee>
         </div>
         <div *ngIf="assignUnitPop" class="modal-overlay">
             <!-- <app-assign-unit [selectedEmployee]="employee" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-assign-unit> -->

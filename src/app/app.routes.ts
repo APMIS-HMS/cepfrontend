@@ -32,9 +32,9 @@ const appRoutes: Routes = [
     data: { preload: true }, resolve: { switchUsers: SwitchUserResolverService }
   },
   {
-      path: 'patient-portal',
-      loadChildren: './system-modules/patient-portal/patient-portal.module.ts#PatientPortalModule',
-      data: { preload: true }
+    path: 'home-page',
+    loadChildren: './system-modules/home-page/home-page.module.ts#HomePageModule',
+    data: { preload: false },
   },
   {
     path: 'signup', loadChildren: './signup/signup-module#SingUpModule',
@@ -47,4 +47,4 @@ const appRoutes: Routes = [
 
 // export default RouterModule.forRoot(appRoutes);
 // export const Routing = RouterModule.forRoot(appRoutes, { useHash: true, preloadingStrategy: CustomPreloading });
-export const Routing = RouterModule.forRoot(appRoutes, { useHash: true});
+export const Routing = RouterModule.forRoot(appRoutes, { useHash: true });

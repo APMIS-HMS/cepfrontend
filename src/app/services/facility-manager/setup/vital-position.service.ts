@@ -13,8 +13,8 @@ export class VitalPositionService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('vitalpositions');
-    this._socket = _socketService.getService('vitalpositions');
+    this._rest = _restService.getService('vital-positions');
+    this._socket = _socketService.getService('vital-positions');
     this._socket.timeout = 30000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');

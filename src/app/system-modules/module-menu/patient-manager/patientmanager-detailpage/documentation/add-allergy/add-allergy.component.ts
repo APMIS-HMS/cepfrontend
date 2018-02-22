@@ -1,3 +1,4 @@
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { FormsService, FacilitiesService, DocumentationService } from '../../../../../../services/facility-manager/setup/index';
@@ -6,6 +7,7 @@ import { Facility, Patient, Employee, Documentation, PatientDocumentation, Docum
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 import { SharedService } from '../../../../../../shared-module/shared.service';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-add-allergy',
@@ -35,14 +37,16 @@ export class AddAllergyComponent implements OnInit {
 
 
   constructor(private formBuilder: FormBuilder, private formService: FormsService, private locker: CoolLocalStorage,
-    private documentationService: DocumentationService,
-    private formTypeService: FormTypeService, private sharedService: SharedService,
+    private documentationService: DocumentationService,private systemModuleService:SystemModuleService,
+    private formTypeService: FormTypeService, private sharedService: SharedService,private authFacadeService:AuthFacadeService,
     private facilityService: FacilitiesService, private severityService: SeverityService) {
     this.allergyFormCtrl = new FormControl();
     this.severityFormCtrl = new FormControl();
     this.reactionFormCtrl = new FormControl();
     this.noteFormCtrl = new FormControl();
-    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    this.authFacadeService.getLogingEmployee().then((payload:any) =>{
+      this.loginEmployee = payload;
+    });
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
   }
 
@@ -65,7 +69,7 @@ export class AddAllergyComponent implements OnInit {
       });
   }
   getPersonDocumentation() {
-    this.documentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
+    this.documentationService.find({ query: { 'personId': this.patient.personId } }).subscribe((payload: any) => {
       if (payload.data.length === 0) {
         this.patientDocumentation.personId = this.patient.personDetails;
         this.patientDocumentation.documentations = [];
@@ -79,14 +83,11 @@ export class AddAllergyComponent implements OnInit {
           this.documentationService.find({
             query:
               {
-                'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
-                // $select: ['documentations.documents', 'documentations.facilityId']
+                'personId': this.patient.personId, 'documentations.patientId': this.patient._id,
               }
           }).subscribe((mload: any) => {
             if (mload.data.length > 0) {
               this.patientDocumentation = mload.data[0];
-              // this.populateDocuments();
-              // mload.data[0].documentations[0].documents.push(doct);
             }
           })
         }
@@ -101,6 +102,7 @@ export class AddAllergyComponent implements OnInit {
     return severity ? severity.name : severity;
   }
   save() {
+    this.systemModuleService.on();
     this.isSaving = true;
     let isExisting = false;
     this.patientDocumentation.documentations.forEach(documentation => {
@@ -115,13 +117,12 @@ export class AddAllergyComponent implements OnInit {
       }
     });
     if (!isExisting) {
-      console.log('shce');
-      console.log(this.loginEmployee);
-      console.log(this.selectedFacility);
       const doc: PatientDocumentation = <PatientDocumentation>{};
-      doc.facilityId = this.selectedFacility;
-      doc.createdBy = this.loginEmployee;
-      doc.patientId = this.patient._id;
+      doc.createdBy = this.loginEmployee.personDetails.title + ' ' + this.loginEmployee.personDetails.lastName + ' ' + this.loginEmployee.personDetails.firstName;
+      doc.facilityId = this.selectedFacility._id;
+      doc.facilityName = this.selectedFacility.name;
+      doc.patientId = this.patient._id,
+      doc.patientName = this.patient.personDetails.title + ' ' + this.patient.personDetails.lastName + ' ' + this.patient.personDetails.firstName;
       doc.document = {
         documentType: this.selectedForm,
         body: {
@@ -144,8 +145,12 @@ export class AddAllergyComponent implements OnInit {
       this.noteFormCtrl.reset();
       this.documentationService.announceDocumentation({ type: 'Allergies' });
       this.isSaving = false;
+      this.systemModuleService.off();
+      this.systemModuleService.announceSweetProxy('Allergy added successfully!','success');
     }, error => {
       this.isSaving = false;
+      this.systemModuleService.off();
+      this.systemModuleService.announceSweetProxy('There was an error saving allergy!','error');
     })
   }
 }

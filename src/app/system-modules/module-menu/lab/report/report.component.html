@@ -27,22 +27,22 @@
                             <div class="frm-l" [class.frm-container-l]="!patientSelected">
                                 <div class="frm-item-wrap">
                                     <form [formGroup]="patientFormGroup" novalidate>
-                                        <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Search for patient" [isSocket]="false" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
+                                        <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Search for patient" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
                                             [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                     </form>
                                 </div>
                                 <div class="selected-patient-wrap" *ngIf="patientSelected">
                                     <div class="sel-patient-img">
-                                        <img *ngIf="selectedPatient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                        <img class="shadow" *ngIf="selectedPatient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(selectedPatient?.personDetails?.profileImageObject?.thumbnail)">
+                                        <img *ngIf="selectedPatient?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                        <img class="shadow" *ngIf="selectedPatient?.profileImageObject != undefined" [src]="facilityService.transform(selectedPatient?.profileImageObject?.thumbnail)">
                                     </div>
                                     <div class="sel-patient-details">
-                                        <div style="font-size: 1.4rem;"><b>{{ selectedPatient?.personDetails?.firstName }} {{ selectedPatient?.personDetails?.lastName }}</b></div>
-                                        <div class="patient-details-left">{{ selectedPatient?.personDetails?.apmisId }}</div>
-                                        <div class="patient-details-right">{{ selectedPatient?.personDetails?.age }} year(s)</div>
-                                        <div class="patient-details-left">{{ selectedPatient?.personDetails?.phoneNumber }}</div>
-                                        <div class="patient-details-right">{{ selectedPatient?.personDetails?.gender?.name }}</div>
-                                        <div>{{ selectedPatient?.personDetails?.email }}</div>
+                                        <div style="font-size: 1.4rem;"><b>{{ selectedPatient?.firstName }} {{ selectedPatient?.lastName }}</b></div>
+                                        <div class="patient-details-left">{{ selectedPatient?.apmisId }}</div>
+                                        <div class="patient-details-right">{{ selectedPatient?.dateOfBirth | date: 'shortDate' }}</div>
+                                        <div class="patient-details-left">{{ selectedPatient?.phoneNumber }}</div>
+                                        <div class="patient-details-right">{{ selectedPatient?.gender }}</div>
+                                        <div>{{ selectedPatient?.email }}</div>
                                     </div>
                                 </div>
 
@@ -88,10 +88,10 @@
                                                 <td>
                                                     <div class="empWrap">
                                                         <div class="list-img">
-                                                            <img *ngIf="pendingRequest?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                                            <img class="shadow" *ngIf="pendingRequest?.patient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingRequest?.patient?.personDetails?.profileImageObject?.thumbnail)">
+                                                            <img *ngIf="pendingRequest?.patient?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                                            <img class="shadow" *ngIf="pendingRequest?.patient?.profileImageObject != undefined" [src]="facilityService.transform(pendingRequest?.patient?.profileImageObject?.thumbnail)">
                                                         </div>
-                                                        <div>{{ pendingRequest?.patient?.personDetails?.firstName }} {{ pendingRequest?.patient?.personDetails?.lastName }}</div>
+                                                        <div>{{ pendingRequest?.patient?.firstName }} {{ pendingRequest?.patient?.lastName }}</div>
                                                     </div>
                                                 </td>
                                                 <td>{{ pendingRequest?.name}}</td>
@@ -150,10 +150,10 @@
                                                 <td>
                                                     <div class="empWrap">
                                                         <div class="list-img">
-                                                            <img *ngIf="pendingRequest?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                                            <img class="shadow" *ngIf="pendingRequest?.patient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingRequest?.patient?.personDetails?.profileImageObject?.thumbnail)">
+                                                            <img *ngIf="pendingRequest?.patient?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                                            <img class="shadow" *ngIf="pendingRequest?.patient?.profileImageObject != undefined" [src]="facilityService.transform(pendingRequest?.patient?.profileImageObject?.thumbnail)">
                                                         </div>
-                                                        <div>{{ pendingRequest?.patient?.personDetails?.firstName }} {{ pendingRequest?.patient?.personDetails?.lastName }}</div>
+                                                        <div>{{ pendingRequest?.patient?.firstName }} {{ pendingRequest?.patient?.lastName }}</div>
                                                     </div>
                                                 </td>
                                                 <td>{{ pendingRequest?.name}}</td>
@@ -196,7 +196,7 @@
                             <div class="frm-r" [class.frm-container-r]="!patientSelected">
                                 <div *ngIf="!hasRequest" class="text-center" style="min-height: 300px;margin-top: 200px;">
                                     <div *ngIf="requests.length === 0 && !loading">
-                                        <span class="table-content" colspan="5" style="text-align: center"> No pending request is associated to {{ selectedPatient?.personDetails?.firstName }} {{ selectedPatient?.personDetails?.lastName }}</span>
+                                        <span class="table-content" colspan="5" style="text-align: center"> No pending request is associated to {{ selectedPatient?.firstName }} {{ selectedPatient?.personDetails?.lastName }}</span>
                                     </div>
                                     <div *ngIf="requests.length === 0 && loading">
                                         <span class="table-content" colspan="5" style="text-align: center">
@@ -223,81 +223,207 @@
                                             <div *ngIf="diagnosisAction" class="initial-val">{{ selectedInvestigation?.diagnosis }}</div>
                                         </div>
                                     </div>
-                                    <form [formGroup]="reportFormGroup" novalidate>
-                                        <div class="resultSect-title">Investigation Result</div>
-                                        <div class="template-box" (click)="onClickImportTemplate(selectedInvestigation);"><i class="fa fa-download"></i> Import template</div>
-                                        <div class="invstn-wrap">
-                                            <div *ngIf="numericReport" class="lettering-wrap">
-                                                <div class="report-title">{{ selectedInvestigation?.name }}</div>
-                                                <div class="invstn-vals">
-                                                    <div class="invstn-val">
-                                                        <div class="val-label">Reference:</div>
-                                                        <div class="val-val">
-                                                            {{ selectedInvestigation?.reportType?.ref?.min }} - {{ selectedInvestigation?.reportType?.ref?.max }} ({{ selectedInvestigation?.unit }})
+                                    <div>
+                                        <form [formGroup]="reportFormGroup" novalidate>
+                                            <div class="resultSect-title">Investigation Result</div>
+                                            <div class="template-box" (click)="onClickImportTemplate(selectedInvestigation);"><i class="fa fa-download"></i> Import template</div>
+
+                                            <div class="invstn-wrap" *ngIf="!selectedInvestigation.isPanel" formArrayName="results">
+                                                <div *ngFor="let resultForm of reportFormGroup.controls.results.controls; let i=index;">
+                                                    <div *ngIf="numericReport" class="lettering-wrap">
+                                                        <div class="report-title">{{ selectedInvestigation?.name }}</div>
+                                                        <div class="invstn-vals">
+                                                            <div class="invstn-val">
+                                                                <div class="val-label">Reference:</div>
+                                                                <div class="val-val">
+                                                                    {{ selectedInvestigation?.reportType?.ref?.min }} - {{ selectedInvestigation?.reportType?.ref?.max }} ({{ selectedInvestigation?.unit }})
+                                                                </div>
+                                                            </div>
+                                                            <div class="invstn-val">
+                                                                <div class="val-label">Sample NO:</div>
+                                                                <div class="val-val">{{ selectedInvestigation?.specimenNumber }}</div>
+                                                            </div>
+                                                            <div class="frm-item-wrap" [formGroupName]="i">
+                                                                <mat-input-container>
+                                                                    <input type="number" matInput placeholder="Enter Result" formControlName="result">
+                                                                </mat-input-container>
+                                                                <div style="width: 100%; text-align: right;padding:5px 0;">
+                                                                    <small style="position: relative; bottom: 8px;">{{ referenceValue }}</small>
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    <div class="invstn-val">
-                                                        <div class="val-label">Sample NO:</div>
-                                                        <div class="val-val">1220</div>
-                                                    </div>
-                                                    <div class="frm-item-wrap">
-                                                        <mat-input-container>
-                                                            <input type="number" matInput placeholder="Enter Result" formControlName="result">
-                                                        </mat-input-container>
-                                                        <div style="width: 100%; text-align: right;padding:5px 0;">
-                                                            <small style="position: relative; bottom: 8px;">{{ referenceValue }}</small>
+
+                                                    <div *ngIf="textReport" class="lettering-wrap">
+                                                        <div class="report-title">{{ selectedInvestigation?.name }}</div>
+                                                        <div class="invstn-vals">
+                                                            <div class="invstn-val">
+                                                                <div class="val-label">Reference:</div>
+                                                                <div class="val-val">{{ selectedInvestigation?.reportType?.ref }}</div>
+                                                            </div>
+                                                            <div class="invstn-val">
+                                                                <div class="val-label">Sample NO:</div>
+                                                                <div class="val-val">{{ selectedInvestigation?.specimenNumber }}</div>
+                                                            </div>
+                                                            <div class="frm-item-wrap" [formGroupName]="i">
+                                                                <mat-input-container>
+                                                                    <textarea formControlName="result" matInput placeholder="Enter Result"></textarea>
+                                                                </mat-input-container>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
 
-                                            <div *ngIf="textReport" class="lettering-wrap">
+                                            <div class="invstn-wrap" *ngIf="selectedInvestigation.isPanel" formArrayName="results">
                                                 <div class="report-title">{{ selectedInvestigation?.name }}</div>
-                                                <div class="invstn-vals">
-                                                    <div class="invstn-val">
-                                                        <div class="val-label">Reference:</div>
-                                                        <div class="val-val">{{ selectedInvestigation?.reportType?.ref }}</div>
+                                                <div class="invstn-vals" *ngFor="let panel of selectedInvestigation.panel; let resultForm of reportFormGroup.controls.results.controls; let i=index;">
+                                                    <div>{{ panel?.investigation?.name }}</div>
+                                                    <div *ngIf="panel.investigation.reportType.name !== 'Text'">
+                                                        <div class="invstn-val">
+                                                            <div class="val-label">Reference:</div>
+                                                            <div class="val-val">
+                                                                {{ panel?.investigation?.reportType?.ref?.min }} - {{ panel?.investigation?.reportType?.ref?.max }} ({{ panel?.investigation?.unit }})
+                                                            </div>
+                                                        </div>
+                                                        <div class="invstn-val">
+                                                            <div class="val-label">Sample NO:</div>
+                                                            <div class="val-val">1220</div>
+                                                        </div>
+                                                        <div class="frm-item-wrap" [formGroupName]="i">
+                                                            <mat-input-container>
+                                                                <input type="number" matInput placeholder="Enter Result" formControlName="result">
+                                                            </mat-input-container>
+                                                            <div style="width: 100%; text-align: right;padding:5px 0;">
+                                                                <small style="position: relative; bottom: 8px;">{{ referenceValue }}</small>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="invstn-val">
-                                                        <div class="val-label">Sample NO:</div>
-                                                        <div class="val-val">1220</div>
-                                                    </div>
-                                                    <div class="frm-item-wrap">
-                                                        <mat-input-container>
-                                                            <textarea formControlName="result" matInput placeholder="Enter Result"></textarea>
-                                                        </mat-input-container>
+                                                    <div *ngIf="panel.investigation.reportType.name === 'Text'">
+                                                        <div class="invstn-val">
+                                                            <div class="val-label">Reference:</div>
+                                                            <div class="val-val">{{ panel?.investigation?.reportType?.ref }}</div>
+                                                        </div>
+                                                        <div class="invstn-val">
+                                                            <div class="val-label">Sample NO:</div>
+                                                            <div class="val-val">1220</div>
+                                                        </div>
+                                                        <div class="frm-item-wrap" [formGroupName]="i">
+                                                            <mat-input-container>
+                                                                <textarea formControlName="result" matInput placeholder="Enter Result"></textarea>
+                                                            </mat-input-container>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="frm-item-wrap">
-                                            <mat-form-field>
-                                                <mat-select formControlName="outcome" placeholder="Investigation Outcome">
-                                                    <mat-option [value]="'Normal'">Normal</mat-option>
-                                                    <mat-option [value]="'Low'">Low</mat-option>
-                                                    <mat-option [value]="'High'">High</mat-option>
-                                                </mat-select>
-                                            </mat-form-field>
-                                        </div>
-                                        <div class="frm-item-wrap">
-                                            <mat-input-container>
-                                                <textarea formControlName="conclusion" matInput placeholder="Conclusion"></textarea>
-                                            </mat-input-container>
-                                        </div>
-                                        <div class="frm-item-wrap">
-                                            <mat-input-container>
-                                                <textarea formControlName="recommendation" matInput placeholder="Recommendation"></textarea>
-                                            </mat-input-container>
-                                        </div>
-                                        <div class="frm-item-wrap">
-                                            <span style="color:rgba(0,0,0,.38);">Optionally attach a file</span>
-                                            <div (click)="showImageBrowseDlg()" class="action-item" style="color:#FF9800;">
-                                                <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                                                <span>Upload File</span>
-                                                <input type="file" (change)="selectImage($event)" />
+
+                                            <div class="frm-item-wrap">
+                                                <mat-form-field>
+                                                    <mat-select formControlName="outcome" placeholder="Investigation Outcome">
+                                                        <mat-option [value]="'Normal'">Normal</mat-option>
+                                                        <mat-option [value]="'Low'">Low</mat-option>
+                                                        <mat-option [value]="'High'">High</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
                                             </div>
-                                        </div>
-                                    </form>
+                                            <div class="frm-item-wrap">
+                                                <mat-input-container>
+                                                    <textarea formControlName="conclusion" matInput placeholder="Conclusion"></textarea>
+                                                </mat-input-container>
+                                            </div>
+                                            <div class="frm-item-wrap">
+                                                <mat-input-container>
+                                                    <textarea formControlName="recommendation" matInput placeholder="Recommendation"></textarea>
+                                                </mat-input-container>
+                                            </div>
+                                            <div class="frm-item-wrap">
+                                                <span style="color:rgba(0,0,0,.38);">Optionally attach a file</span>
+                                                <div (click)="showImageBrowseDlg()" class="action-item" style="color:#FF9800;">
+                                                    <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                                                    <span>Upload File</span>
+                                                    <input type="file" (change)="selectImage($event)" />
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    <!-- <div *ngIf="selectedInvestigation.isPanel">
+                                        <form [formGroup]="panelReportFormGroup" novalidate>
+                                            <div class="resultSect-title">Investigation Result</div>
+                                            <div class="template-box" (click)="onClickImportTemplate(selectedInvestigation);"><i class="fa fa-download"></i> Import template</div>
+
+                                            <div class="invstn-wrap">
+                                                <div class="lettering-wrap">
+                                                    <div class="report-title">{{ selectedInvestigation?.name }}</div>
+                                                    <div class="invstn-vals" *ngFor="let panel of selectedInvestigation.panel;">
+                                                        <div>{{ panel?.investigation?.name }}</div>
+                                                        <div *ngIf="panel.investigation.reportType.name !== 'Text'">
+                                                            <div class="invstn-val">
+                                                                <div class="val-label">Reference:</div>
+                                                                <div class="val-val">
+                                                                    {{ panel?.investigation?.reportType?.ref?.min }} - {{ panel?.investigation?.reportType?.ref?.max }} ({{ panel?.investigation?.unit }})
+                                                                </div>
+                                                            </div>
+                                                            <div class="invstn-val">
+                                                                <div class="val-label">Sample NO:</div>
+                                                                <div class="val-val">1220</div>
+                                                            </div>
+                                                            <div class="frm-item-wrap">
+                                                                <mat-input-container>
+                                                                    <input type="number" matInput placeholder="Enter Result" formControlName="result">
+                                                                </mat-input-container>
+                                                                <div style="width: 100%; text-align: right;padding:5px 0;">
+                                                                    <small style="position: relative; bottom: 8px;">{{ referenceValue }}</small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div *ngIf="panel.investigation.reportType.name === 'Text'">
+                                                            <div class="invstn-val">
+                                                                <div class="val-label">Reference:</div>
+                                                                <div class="val-val">{{ panel?.investigation?.reportType?.ref }}</div>
+                                                            </div>
+                                                            <div class="invstn-val">
+                                                                <div class="val-label">Sample NO:</div>
+                                                                <div class="val-val">1220</div>
+                                                            </div>
+                                                            <div class="frm-item-wrap">
+                                                                <mat-input-container>
+                                                                    <textarea formControlName="result" matInput placeholder="Enter Result"></textarea>
+                                                                </mat-input-container>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="frm-item-wrap">
+                                                <mat-form-field>
+                                                    <mat-select formControlName="outcome" placeholder="Investigation Outcome">
+                                                        <mat-option [value]="'Normal'">Normal</mat-option>
+                                                        <mat-option [value]="'Low'">Low</mat-option>
+                                                        <mat-option [value]="'High'">High</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                            <div class="frm-item-wrap">
+                                                <mat-input-container>
+                                                    <textarea formControlName="conclusion" matInput placeholder="Conclusion"></textarea>
+                                                </mat-input-container>
+                                            </div>
+                                            <div class="frm-item-wrap">
+                                                <mat-input-container>
+                                                    <textarea formControlName="recommendation" matInput placeholder="Recommendation"></textarea>
+                                                </mat-input-container>
+                                            </div>
+                                            <div class="frm-item-wrap">
+                                                <span style="color:rgba(0,0,0,.38);">Optionally attach a file</span>
+                                                <div (click)="showImageBrowseDlg()" class="action-item" style="color:#FF9800;">
+                                                    <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                                                    <span>Upload File</span>
+                                                    <input type="file" (change)="selectImage($event)" />
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div> -->
                                 </div>
 
                                 <div class="btns" *ngIf="hasRequest">
@@ -390,10 +516,10 @@
                                 <td>
                                     <div class="empWrap">
                                         <div class="list-img">
-                                            <img *ngIf="report?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                            <img class="shadow" *ngIf="report?.patient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(report?.patient?.personDetails?.profileImageObject?.thumbnail)">
+                                            <img *ngIf="report?.patient?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                            <img class="shadow" *ngIf="report?.patient?.profileImageObject != undefined" [src]="facilityService.transform(report?.patient?.profileImageObject?.thumbnail)">
                                         </div>
-                                        <div>{{ report?.patient?.personDetails?.firstName }} {{ report?.patient?.personDetails?.lastName }}</div>
+                                        <div>{{ report?.patient?.firstName }} {{ report?.patient?.lastName }}</div>
                                     </div>
                                 </td>
                                 <td>{{ report.name }}</td>
@@ -401,10 +527,10 @@
                                 <td>
                                     <div class="empWrap">
                                         <div class="list-img">
-                                            <img *ngIf="report?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                            <img class="shadow" *ngIf="report?.createdBy?.employeeDetails?.profileImageObject != undefined" [src]="facilityService.transform(report?.createdBy?.employeeDetails?.profileImageObject?.thumbnail)">
+                                            <img *ngIf="report?.patient?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                            <img class="shadow" *ngIf="report?.createdBy?.profileImageObject != undefined" [src]="facilityService.transform(report?.createdBy?.profileImageObject?.thumbnail)">
                                         </div>
-                                        <div>{{ report?.createdBy?.employeeDetails?.firstName }} {{ report?.createdBy?.employeeDetails?.lastName}}</div>
+                                        <div>{{ report?.createdBy?.firstName }} {{ report?.createdBy?.lastName}}</div>
                                     </div>
                                 </td>
                                 <td>

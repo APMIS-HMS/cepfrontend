@@ -1,3 +1,4 @@
+import { CanActivateViaAuthGuardAccessService } from './../../services/facility-manager/setup/can-activate-via-auth-guard-access.service';
 import { PreloadAllModules, Routes, RouterModule } from '@angular/router';
 import { DashboardComponent } from './dashboard.component';
 import { DashboardHomeComponent } from './dashboard-home.component';
@@ -12,11 +13,14 @@ const appRoutes: Routes = [
             {
                 path: 'facility',
                 loadChildren: '../module-menu/facility-page/facility-page.module.ts#FacilityPageModule',
+                canActivate: [
+                    CanActivateViaAuthGuardAccessService
+                ]
             },
-            {
-                path: 'access-manager',
-                loadChildren: '../module-menu/access-manager/access-manager.module#AccessManagerModule'
-            },
+            // {
+            //     path: 'access-manager',
+            //     loadChildren: '../module-menu/access-manager/access-manager.module#AccessManagerModule'
+            // },
             // {
             //     path: 'patient-portal',
             //     loadChildren: '../module-menu/patient-portal/patient-portal.module#PatientPortalModule',
@@ -24,48 +28,72 @@ const appRoutes: Routes = [
             {
                 path: 'patient-manager',
                 loadChildren: '../module-menu/patient-manager/patient-manager.module#PatientManagerModule',
+                canActivate: [
+                    CanActivateViaAuthGuardAccessService
+                ]
             },
             {
                 path: 'patient-manager/:id',
                 loadChildren: '../module-menu/patient-manager/patient-manager.module#PatientManagerModule',
+                canActivate: [
+                    CanActivateViaAuthGuardAccessService
+                ]
             },
             {
                 path: 'ward-manager',
                 loadChildren: '../module-menu/ward-manager/ward-manager.module#WardManagerModule',
+                canActivate: [
+                    CanActivateViaAuthGuardAccessService
+                ]
             },
             {
                 path: 'health-coverage',
                 loadChildren: '../module-menu/health-coverage/health-coverage.module#HealthCoverageModule',
                 canActivate: [
-                    SetupService.CanActivateViaAuthGuardService
+                    CanActivateViaAuthGuardAccessService
                 ]
             },
             {
                 path: 'billing',
                 loadChildren: '../module-menu/billing/billing.module#BillingModule',
                 canActivate: [
-                    SetupService.CanActivateViaAuthGuardService
+                    CanActivateViaAuthGuardAccessService
                 ]
             },
             {
                 path: 'payment',
-                loadChildren: '../module-menu/payment/payment.module#PaymentModule'
+                loadChildren: '../module-menu/payment/payment.module#PaymentModule',
+                canActivate: [
+                    CanActivateViaAuthGuardAccessService
+                ]
             },
             {
                 path: 'wallet',
-                loadChildren: '../module-menu/wallet/wallet.module#WalletModule'
+                loadChildren: '../module-menu/wallet/wallet.module#WalletModule',
+                canActivate: [
+                    CanActivateViaAuthGuardAccessService
+                ]
             },
             {
                 path: 'clinic',
-                loadChildren: '../module-menu/clinic/clinic.module#ClinicModule'
+                loadChildren: '../module-menu/clinic/clinic.module#ClinicModule',
+                canActivate: [
+                    CanActivateViaAuthGuardAccessService
+                ]
             },
             {
-                path: 'forms-manager',
-                loadChildren: '../module-menu/forms-manager/forms-manager.module#FormsManagerModule'
+                path: 'clinical-documentation',
+                loadChildren: '../module-menu/forms-manager/forms-manager.module#FormsManagerModule',
+                canActivate: [
+                    CanActivateViaAuthGuardAccessService
+                ]
             },
             {
                 path: 'store',
-                loadChildren: '../module-menu/store-manager/store.module#StoreModule'
+                loadChildren: '../module-menu/store-manager/store.module#StoreModule',
+                canActivate: [
+                    CanActivateViaAuthGuardAccessService
+                ]
             },
             {
                 path: 'product-manager',
@@ -73,15 +101,24 @@ const appRoutes: Routes = [
             },
             {
                 path: 'purchase-manager',
-                loadChildren: '../module-menu/purchase-manager/purchase-manager.module#PurchaseManagerModule'
+                loadChildren: '../module-menu/purchase-manager/purchase-manager.module#PurchaseManagerModule',
+                canActivate: [
+                    CanActivateViaAuthGuardAccessService
+                ]
             },
             {
                 path: 'inventory-manager',
-                loadChildren: '../module-menu/inventory-manager/inventory-manager.module#InventoryManagerModule'
+                loadChildren: '../module-menu/inventory-manager/inventory-manager.module#InventoryManagerModule',
+                canActivate: [
+                    CanActivateViaAuthGuardAccessService
+                ]
             },
             {
                 path: 'pharmacy',
-                loadChildren: '../module-menu/pharmacy/pharmacy-manager.module#PharmacyManagerModule'
+                loadChildren: '../module-menu/pharmacy/pharmacy-manager.module#PharmacyManagerModule',
+                canActivate: [
+                    CanActivateViaAuthGuardAccessService
+                ]
             },
             // {
             //     path: 'laboratory',
@@ -89,16 +126,28 @@ const appRoutes: Routes = [
             // },
             {
                 path: 'laboratory',
-                loadChildren: '../module-menu/lab/lab.module#LabModule'
+                loadChildren: '../module-menu/lab/lab.module#LabModule',
+                canActivate: [
+                    CanActivateViaAuthGuardAccessService
+                ]
             },
             {
              path: 'radiology',
-             loadChildren: '../module-menu/radiology/radiology.module#RadiologyModule'
+             loadChildren: '../module-menu/radiology/radiology.module#RadiologyModule',
+             canActivate: [
+                CanActivateViaAuthGuardAccessService
+            ]
+            },
+            {
+                path: 'report',
+                loadChildren: '../module-menu/report/report.module#ReportModule'
             },
             {
                 path: 'corporate',
                 loadChildren: '../corporate-account/corporate-account.module#CorporateAccountModule',
-                data: { preload: false },
+                canActivate: [
+                    CanActivateViaAuthGuardAccessService
+                ]
             },
         ]
     }

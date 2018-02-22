@@ -29,7 +29,6 @@ export class NewTagComponent implements OnInit {
 
   ngOnInit() {
     this.addNew();
-    console.log(this.tag);
     if(this.tag.name != undefined){
       this.btnLabel = 'UPDATE TAG';
       this.frmNewtag.controls['tagName'].setValue(this.tag.name);
@@ -71,7 +70,6 @@ export class NewTagComponent implements OnInit {
     this.frmNewtag.controls['tagName'].setValue(dic.word);
   }
   newTag(model: any, valid: boolean) {
-    console.log(valid);
     this.systemModuleService.off;
     if (valid) {
       if(this.tag.name == undefined){
@@ -81,14 +79,12 @@ export class NewTagComponent implements OnInit {
         const authObj: any = this._locker.getObject('auth')
         const auth: any = authObj.data;
         tag.createdBy = auth._id;
-        console.log(tag);
         this._tagService.create(tag).then(callback => {
           this.systemModuleService.off;
           this.tagValueChanged.emit(true);
           this.frmNewtag.controls['tagName'].setValue('');
         }, error => {
           this.systemModuleService.off;
-          console.log(error);
         });
         if (this.dictionaries.length === 0) {
           this.tagDictionaryService.create({ word: this.frmNewtag.controls['tagName'].value }).then(inPayload => {
@@ -102,7 +98,6 @@ export class NewTagComponent implements OnInit {
           this.frmNewtag.controls['tagName'].setValue('');
           this.btnLabel = 'CREATE TAG';
         }, error => {
-          console.log(error);
         });
         if (this.dictionaries.length === 0) {
           this.tagDictionaryService.create({ word: this.frmNewtag.controls['tagName'].value }).then(inPayload => {

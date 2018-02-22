@@ -19,17 +19,18 @@ export class CorporateSignupComponent implements OnInit {
   mainErr = true;
   errMsg = 'you have unresolved errors';
 
-  //uploader variables
+
+  // uploader variables
   private zone: NgZone;
   // private options: NgUploaderOptions;
-  private progress: number = 0;
+  private progress = 0;
   private response: any = {};
-  hasBaseDropZoneOver: boolean = true;
+  hasBaseDropZoneOver = true;
   sizeLimit = 2000000;
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  //facility setup stage switch controls
+  // facility setup stage switch controls
   sg1_show = true;
   sg1_1_show = false;
   sg1_1_1_show = false;
@@ -153,7 +154,7 @@ export class CorporateSignupComponent implements OnInit {
     });
     this.facilityForm1.controls['facilitycountry'].valueChanges.subscribe((value: any) => {
       this.stateAvailable = false;
-      let country = this.countries.find(item => item._id === value);
+      const country = this.countries.find(item => item._id === value);
       this.selectedCountry = country;
       if (this.selectedCountry.states.length > 0) {
         this.stateAvailable = true;
@@ -167,6 +168,7 @@ export class CorporateSignupComponent implements OnInit {
 
 
   }
+
 
   // ---------------- Beggining of image methods ------------------
   handleUpload(data: any): void {
@@ -191,7 +193,7 @@ export class CorporateSignupComponent implements OnInit {
   imageChange(fileInput: any) {
     this.previewFile(fileInput.target.files[0]);
     if (fileInput.target.files && fileInput.target.files[0]) {
-      let reader = new FileReader();
+      const reader = new FileReader();
 
       reader.onload = function (e: any) {
       };
@@ -203,9 +205,9 @@ export class CorporateSignupComponent implements OnInit {
   }
 
   previewFile(value: File) {
-    let file = value;
-    let reader = new FileReader();
-    let facility = this.selectedFacility;
+    const file = value;
+    const reader = new FileReader();
+    const facility = this.selectedFacility;
     reader.addEventListener('load', function () {
       facility.logo = reader.result;
     }, false);
@@ -216,10 +218,10 @@ export class CorporateSignupComponent implements OnInit {
   }
 
   getDataUri(url, callback) {
-    let image = new Image();
+    const image = new Image();
 
     image.onload = function () {
-      let canvas = document.createElement('canvas');
+      const canvas = document.createElement('canvas');
       canvas.width = image.width; // or 'width' if you want a special/scaled size
       canvas.height = image.width; // or 'height' if you want a special/scaled size
 
@@ -259,13 +261,13 @@ export class CorporateSignupComponent implements OnInit {
 
   /* Component Events */
   onFacilityTypeChange(value: any) {
-    let facilityType = this.facilityTypes.find(item => item._id === value);
+    const facilityType = this.facilityTypes.find(item => item._id === value);
     this.selectedFacilityType = facilityType;
   }
   onStateChange(value: any) {
   }
   onChangeCountry(value: any) {
-    let country = this.countries.find(item => item._id === value);
+    const country = this.countries.find(item => item._id === value);
     this.selectedCountry = country;
   }
 
@@ -324,7 +326,7 @@ export class CorporateSignupComponent implements OnInit {
             this.selectedFacility = fpayload;
           });
         } else {
-          let model: CorporateFacility = <CorporateFacility>{
+          const model: CorporateFacility = <CorporateFacility>{
             name: this.facilityForm1.controls['facilityname'].value,
             email: this.facilityForm1.controls['facilityemail'].value,
             contactPhoneNo: val.facilityphonNo,
@@ -343,7 +345,7 @@ export class CorporateSignupComponent implements OnInit {
           this.corporateFacilityService.create(model).then((payload) => {
             this.selectedFacility = payload;
             // create person and user
-            let personModel = <Person>{
+            const personModel = <Person>{
               title: this.titles[0]._id,
               firstName: this.facilityForm1_1.controls['contactFName'].value,
               lastName: this.facilityForm1_1.controls['contactLName'].value,
@@ -356,7 +358,7 @@ export class CorporateSignupComponent implements OnInit {
               email: model.email,
               maritalStatus: this.maritalStatuses[0].name
             };
-            let userModel = <User>{
+            const userModel = <User>{
               email: model.email,
               corporateOrganisationId: this.selectedFacility._id,
               password: this.facilityForm1_1.controls['password'].value

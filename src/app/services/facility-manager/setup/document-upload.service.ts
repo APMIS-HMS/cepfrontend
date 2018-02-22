@@ -18,8 +18,8 @@ export class DocumentUploadService {
     private sanitizer: DomSanitizer,
     private locker: CoolLocalStorage
   ) {
-    this._rest = _restService.getService('docupload');
-    this._socket = _socketService.getService('docupload');
+    this._rest = _restService.getService('doc-upload');
+    this._socket = _socketService.getService('doc-upload');
     // this._restLogin = _restService.getService('auth/local');
     this.listner = Observable.fromEvent(this._socket, 'created');
   }
@@ -48,11 +48,13 @@ export class DocumentUploadService {
   }
 
   post(body: any) {
-    const host = this._restService.getHost();
-    const path = host + '/upload-docs';
-    return request
-        .post(path)
-        .send(body);
+    // const host = this._restService.getHost();
+    // const path = host + '/upload-facade';
+    // return request
+    //     .post(path)
+    //     .send(body);
+
+    return this._socketService.getService('upload-facade').create(body);
   }
 
 }

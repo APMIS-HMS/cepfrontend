@@ -1,48 +1,57 @@
-<div  class="pp-card shadow-grey">
+<div class="pp-card shadow-grey">
     <div class="card-title">Location(s)</div>
 
     <ul class="dept-wrap">
-        <li class="dept-li">
-            <div class="dept-item">
-                <div class="dept-name">Laboratory</div>
-                <div class="action-icons">
-                    <i [hidden]="showLoc" (click)="showLoc_click()" class="fa fa-expand" aria-hidden="true"></i>
-                    <i *ngIf="showLoc" (click)="showLoc_hide()" class="fa fa-compress" aria-hidden="true"></i>
-                    <i (click)="newLoc_onClick()" class="fa fa-plus" aria-hidden="true"></i>
-                    <!-- <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+        <li class="dept-li" *ngIf="locationsObj.length > 0">
+            <div *ngFor="let location of locationsObj">
+                <div class="dept-item">
+                    <div class="dept-name">{{location.name}}</div>
+                    <div class="action-icons">
+                        <i [hidden]="showMinorLocation_selectedLocation(location)" (click)="showLoc_click(location); locationDetailContentArea_show(location)" class="fa fa-expand" aria-hidden="true"></i>
+                        <i *ngIf="showMinorLocation_selectedLocation(location)" (click)="showLoc_hide()" class="fa fa-compress" aria-hidden="true"></i>
+                        <i (click)="newSubLocationModal_show(location)" class="fa fa-plus" aria-hidden="true"></i>
+                        <!-- <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                     <i class="fa fa-trash-o" aria-hidden="true"></i> -->
+                    </div>
+                </div>
+
+                <div *ngIf="showMinorLocation_selectedLocation(location)" class="dept-units">
+                    <div class="tbl-resp-wrap">
+                        <table cellpadding="0" cellspacing="0" border="0.5">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <span style="padding-left: 3px;">Minor Location</span>
+                                    </th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+
+                            <tbody *ngIf="filteredMinorLocations.length > 0">
+                                <tr *ngFor="let minor of getActiveMinorLocations(filteredMinorLocations)">
+                                    <td>{{minor.name}}</td>
+                                    <td class="action-icons">
+                                        <i (click)="newLoc_onClick(minor)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        <!--<i *ngIf="unitEditNameIcoShow" (click)="unitEditNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>-->
+                                        <i (click)="removeMinorLocationFacade(minor)" class="fa fa-trash" aria-hidden="true"></i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tbody *ngIf="filteredMinorLocations.length == 0">
+                                <tr>
+                                    <td class="table-content" colspan="6" border="0.5" style="text-align: center "> No data available in table</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-            <div *ngIf="showLoc" class="dept-units">
-                <table cellpadding="0" cellspacing="0" border="0.5"> 
-                    <thead>
-                        <tr>
-                            <th>
-                                <span style="padding-left: 3px;">Minor Location</span>
-                            </th>
-                            <th>
-                                <span style="padding-left: 3px;">Short Name</span>
-                            </th>
-                            <th>
-                                <span style="padding-left: 3px;">Describtion</span>
-                            </th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-    
-                    <tbody>
-                        <tr>
-                            <td> Surgical Out Patient Unit</td>
-                            <td>SOP Unit</td>
-                            <td>All them surgicall operations takes place right here at this department</td>
-                            <td class="action-icons">
-                                <i (click)="newLoc_onClick()" class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                <!--<i *ngIf="unitEditNameIcoShow" (click)="unitEditNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>-->
-                                <i class="fa fa-trash" aria-hidden="true"></i>
-                            </td>
-                        </tr> 
-                    </tbody>
-                </table>
+        </li>
+        <li *ngIf="locationsObj.length == 0">
+            <div>
+                <tr>
+                    <td class="table-content" colspan="6" border="0.5" style="text-align: center "> No data available</td>
+                </tr>
             </div>
         </li>
     </ul>

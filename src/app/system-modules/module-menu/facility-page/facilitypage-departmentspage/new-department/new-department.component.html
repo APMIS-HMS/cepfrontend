@@ -1,53 +1,30 @@
 <div class="animated pulse">
-  <div class="modal-header-wrap">
-    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <legend class="modal_title">Create Department</legend>
-    <div class="modal_mini_title">{{facilityObj.name}}</div>
-  </div>
-  <div class="modal-baseWrap">
-    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-
-    <div class="f_sg1">
-
-      <form [formGroup]="frmNewDept" novalidate>
-                  
-          <div class="frm-item-wrap">
-            <small class="alert-label" [hidden]="frmNewDept.controls.deptName.valid || frmNewDept.controls.deptName.pristine">
-              this is a required field (minimum 3 and max of 50 characters).
-            </small>
-            <!--<input type="text" formControlName="deptName" placeholder="Department Name" autocomplete="off">-->
-              <mat-input-container class="example-full-width">
-                    <input matInput type="text" formControlName="deptName" placeholder="Department Name" autocomplete="off">
-              </mat-input-container>
-          </div>
-
-          <!-- <div class="frm-item-wrap">
-            <small class="alert-label" [hidden]="frmNewDept.controls.deptAlias.valid || frmNewDept.controls.deptAlias.pristine">
-              A minimum of 3 characters required.
-            </small>
-            <i class="fa fa-circle-o" aria-hidden="true"></i>
-            <mat-input-container class="example-full-width">
-                    <input matInput type="text" formControlName="deptAlias" placeholder="Short Name" autocomplete="off">
-              </mat-input-container>
-          </div>
-
-          <div class="frm-item-wrap">
-            <small class="alert-label" [hidden]="frmNewDept.controls.deptDesc.valid || frmNewDept.controls.deptDesc.pristine">
-              This is a required field (minimum 10 characters).
-            </small>
-            <mat-input-container class="example-full-width">
-                  <textarea matInput formControlName="deptDesc" placeholder="Description" autocomplete="off"></textarea>
-            </mat-input-container>
-          </div> -->
-
-        <!--<div (click)="newDept(frmNewDept.valid, frmNewDept.value)" class="cta-1">
-          CREATE DEPARTMENT
-        </div>-->
-        <div class="example-full-width" id="example-full-width">
-            <button [disabled]="!frmNewDept.valid || isBusy" (click)="newDept(frmNewDept.valid, frmNewDept.value)" mat-raised-button>CREATE DEPARTMENT</button>
-        </div>
-      </form>
+    <div class="modal-header-wrap">
+        <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+        <legend class="modal_title">Create Department</legend>
+        <div class="modal_mini_title">{{facilityObj.name}}</div>
     </div>
+    <div class="modal-baseWrap">
+        <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
-  </div>
+        <form [formGroup]="frmNewDept" novalidate>
+
+            <div class="frm-item-wrap">
+                <small class="alert-label" [hidden]="frmNewDept.controls.deptName.valid || frmNewDept.controls.deptName.pristine">
+            this is a required field (minimum 3 and max of 50 characters).
+          </small>
+                <mat-input-container class="example-full-width">
+                    <input matInput type="text" formControlName="deptName" placeholder="Department Name" autocomplete="off">
+                </mat-input-container>
+            </div>
+
+
+            <!-- <div class="example-full-width" id="example-full-width">
+                <button [disabled]="isBusy" (click)="newDept(frmNewDept.valid, frmNewDept.value)" mat-raised-button>CREATE DEPARTMENT</button>
+            </div> -->
+            <button [disabled]="(!frmNewDept.valid && !isBusy) || isBusy" (click)="newDept(frmNewDept.valid, frmNewDept.value)" class="cta-1" [ngClass]="{'cta-1':(frmNewDept.valid && !isBusy), 'cta-1-disable':(!frmNewDept.valid && !isBusy) || isBusy}"> 
+               {{btnText}}
+                </button>
+        </form>
+    </div>
 </div>

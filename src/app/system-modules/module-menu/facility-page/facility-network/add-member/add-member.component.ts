@@ -1,3 +1,4 @@
+import { Observable } from 'rxjs/Observable';
 import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 
@@ -7,6 +8,7 @@ import {
 } from '../../../../../services/facility-manager/setup/index';
 import { Facility, User, Employee, Person, Country, Gender, Relationship, MaritalStatus } from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-add-member',
@@ -16,6 +18,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 export class AddMemberComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() memberAdded: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   mainErr = true;
   errMsg = "";
@@ -39,6 +42,7 @@ export class AddMemberComponent implements OnInit {
     public facilityService: FacilitiesService,
     private userService: UserService,
     private personService: PersonService,
+    private systemModuleService: SystemModuleService,
     private locker: CoolLocalStorage) { }
 
   ngOnInit() {
@@ -48,79 +52,80 @@ export class AddMemberComponent implements OnInit {
     });
 
     this.selectedFacilityIds = this.LoggedInFacility.memberFacilities;
-    console.log(this.selectedFacilityIds);
 
     this.facilityForm1.controls['facilitySearch'].valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
-      .switchMap(value => this.facilityService.find({ query: { name: { $regex: value, '$options': 'i' } } }))
+      .switchMap(value => this.searchEntries(value))
       .subscribe((por: any) => {
-        console.log(por);
-        this.searchedFacilities = por.data;
-        this.searchedLength = por.data.length;
+        this.searchedFacilities = por;
+        this.searchedLength = por.length;
+      },err=>{
       })
   }
-  close_onClick() {
+  searchEntries(value) {
+    if (value.length < 3) {
+      return Observable.of({ data: [] })
+    }
+    return this.facilityService.searchNetworks(this.LoggedInFacility._id, { query: { name: value, isMemberOf: false } });
+  }
+  close_onClick($event) {
     this.closeModal.emit(true);
   }
 
   pickMemberFacilities(event, id) {
-    //console.log(this.checboxBool);
     this.uncheck = true;
     var checkedStatus = event.srcElement.checked;
-    console.log(checkedStatus);
     if (checkedStatus) {
-      // let index = this.selectedFacilityIds.filter(x=>x.toString()==id.toString());
       let ind = this.selectedFacilityIds.indexOf(id.toString());
       let indr = this.removeFacilities.indexOf(id.toString());
       this.removeFacilities.splice(indr, 1);
-      console.log(ind);
       if (ind > -1) {
-        
+
       } else {
         this.selectedFacilityIds.push(id.toString());
       }
-    }else{
+    } else {
       let ind = this.selectedFacilityIds.indexOf(id.toString());
       this.selectedFacilityIds.splice(ind, 1);
-      console.log(ind); 
 
       let indr = this.removeFacilities.indexOf(id.toString());
       if (indr > -1) {
-        
+
       } else {
         this.removeFacilities.push(id.toString());
       }
     }
 
     this.checboxLen = this.selectedFacilityIds.length;
-
-    console.log(this.selectedFacilityIds);
-    console.log(this.removeFacilities);
-
   }
 
   add() {
+    this.systemModuleService.on();
     this.loading = true;
     let fac = {
       hostId: this.LoggedInFacility._id,
       memberFacilities: this.selectedFacilityIds
     }
     this.facilityService.addNetwork(fac, false).then(payload => {
-      console.log(payload);
       this.facilityService.get(fac.hostId, {}).then(payl => {
         this.loading = false;
+        this.systemModuleService.off();
         let facc = payl.data;
-        console.log(payl);
-        this.close_onClick();
+        this.close_onClick(true);
+        this.systemModuleService.announceSweetProxy('Facility Network Updated Successfully', 'success');
       })
-      
     }, error => {
-      console.log(error);
+      this.systemModuleService.off();
     });
   }
 
-  update(){
+  confirmUpdate(from){
+    const question = 'Are you sure you want to add/remove from netweork?';
+    this.systemModuleService.announceSweetProxy(question, 'question', this, null, null, 'update');
+  }
+  update() {
+    this.systemModuleService.on();
     this.loading = true;
     let facRemove = {
       hostId: this.LoggedInFacility._id,
@@ -131,23 +136,31 @@ export class AddMemberComponent implements OnInit {
       memberFacilities: this.selectedFacilityIds
     }
     this.facilityService.addNetwork(facRemove, true).then(paylRemove => {
-      console.log(paylRemove);
       this.facilityService.addNetwork(fac, false).then(payload => {
-        console.log(payload);
         this.facilityService.get(fac.hostId, {}).then(payl => {
           this.loading = false;
           let facc = payl.data;
-          console.log(payl);
-          this.close_onClick();
+          this.close_onClick(true);
+          this.systemModuleService.off();
+          this.systemModuleService.announceSweetProxy('Facility Network Updated Successfully', 'success');
         })
-        
+
       }, error => {
-        console.log(error);
+        this.systemModuleService.off();
       });
-      
+
     }, error => {
-      console.log(error);
+      this.systemModuleService.off();
     });
   }
 
+  sweetAlertCallback(result, from){
+    if(result.value){
+      if(from === 'update'){
+        this.update();
+      }else{
+        this.add();
+      }
+    }
+  }
 }

@@ -1,18 +1,20 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { FacilitiesService } from '../../../../services/facility-manager/setup/index';
-import { LocationService } from '../../../../services/module-manager/setup/index';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { Component, OnInit, EventEmitter, Output } from "@angular/core";
+import { FormControl } from "@angular/forms";
+import { FacilitiesService } from "../../../../services/facility-manager/setup/index";
+import { LocationService } from "../../../../services/module-manager/setup/index";
 
-import { Facility, Location } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
-import { ActivatedRoute } from '@angular/router';
+import { Facility, Location } from "../../../../models/index";
+import { CoolLocalStorage } from "angular2-cool-storage";
+import { ActivatedRoute } from "@angular/router";
 
 @Component({
-  selector: 'app-facilitypage-locationspage',
-  templateUrl: './facilitypage-locationspage.component.html',
-  styleUrls: ['./facilitypage-locationspage.component.scss']
+  selector: "app-facilitypage-locationspage",
+  templateUrl: "./facilitypage-locationspage.component.html",
+  styleUrls: ["./facilitypage-locationspage.component.scss"]
 })
 export class FacilitypageLocationspageComponent implements OnInit {
+  selectedLocation: any;
 
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
 
@@ -51,60 +53,101 @@ export class FacilitypageLocationspageComponent implements OnInit {
   isWardSelected: Boolean = false;
   facility: Facility = <Facility>{};
 
-  constructor(private locationService: LocationService, private locker: CoolLocalStorage,
-  public facilityService: FacilitiesService, private route: ActivatedRoute) {
+  constructor(
+    private locationService: LocationService,
+    private locker: CoolLocalStorage,
+    public facilityService: FacilitiesService,
+    private systemModuleService:SystemModuleService,
+    private route: ActivatedRoute
+  ) {
     this.facilityService.listner.subscribe(payload => {
       this.facility = payload;
-      this.filteredMinorLocations = this.facility.minorLocations.filter(x => x.locationId === this.locationObj._id);
+      this.filteredMinorLocations = this.facility.minorLocations.filter(
+        x => x.locationId === this.locationObj._id
+      );
     });
     this.locationService.listner.subscribe(payload => {
       this.getLocations();
-
     });
   }
 
   ngOnInit() {
-    this.facility =   <Facility> this.facilityService.getSelectedFacilityId();
+    const facility = <any>this.locker.getObject("selectedFacility");
+    if (
+      facility.isValidRegistration === undefined ||
+      facility.isValidRegistration === false
+    ) {
+      this.facilityService.announcePopupEditFacility(true);
+    }
+    this.facility = <Facility>this.facilityService.getSelectedFacilityId();
     this.facilityService.listner.subscribe(payload => {
       this.facility = payload;
-      this.filteredMinorLocations = this.facility.minorLocations.filter(x => x.locationId === this.locationObj._id);
+      this.filteredMinorLocations = this.facility.minorLocations.filter(
+        x => x.locationId === this.locationObj._id
+      );
     });
-    this.pageInView.emit('Locations');
-
-    this.locationNameEdit.valueChanges.subscribe(value => {
-      // do something with value here
-    });
-    this.locationshortNameEdit.valueChanges.subscribe(value => {
-      // do something with value here
-    });
-    this.locationDescEdit.valueChanges.subscribe(value => {
-      // do something with value here
-    });
-
-    this.sublocNameEdit.valueChanges.subscribe(value => {
-      // do something with value here
-    });
-    this.sublocshortNameEdit.valueChanges.subscribe(value => {
-      // do something with value here
-    });
-    this.sublocDescEdit.valueChanges.subscribe(value => {
-      // do something with value here
-    });
-    // this.getLocations();
+    this.pageInView.emit("Locations");
     this.route.data.subscribe(data => {
-      data['locations'].subscribe((payload: any) => {
+      data["locations"].subscribe((payload: any) => {
         this.locationsObj = payload;
       });
     });
   }
-  showLoc_click() {
+  showLoc_click(location) {
+    this.selectedLocation = location;
     this.showLoc = true;
+  }
+  showMinorLocation_selectedLocation(location) {
+    if (this.selectedLocation !== undefined) {
+      return location._id === this.selectedLocation._id;
+    }
+    return false;
   }
   showLoc_hide() {
     this.showLoc = false;
+    this.selectedLocation = undefined;
   }
-  newLoc_onClick() {
+  newLoc_onClick(minor) {
+    this.locationObj = this.selectedLocation;
+    this.subLocation = minor;
     this.newSubLocModal_on = true;
+  }
+  sweetAlertCallback(result, payload) {
+    if (result.value) {
+      this.removeMinorLocation(payload);
+    }
+  }
+  removeMinorLocationFacade(minor){
+    const question = "Are you sure you want to remove from unit?";
+    this.systemModuleService.announceSweetProxy(
+      question,
+      "question",
+      this,
+      null,
+      null,
+      minor
+    );
+  }
+  removeMinorLocation(minor) {
+    const index = this.facility.minorLocations.findIndex(
+      x => x._id === minor._id
+    );
+    let minorLocation = this.facility.minorLocations[index];
+    minorLocation.isActive = false;
+    this.facility.minorLocations[index] = minorLocation;
+    this.facilityService
+      .patch(
+        this.facility._id,
+        { minorLocations: this.facility.minorLocations },
+        {}
+      )
+      .then(payload => {
+        this.locker.setObject("selectedFacility", payload);
+        this.facility = payload;
+      });
+  }
+  getActiveMinorLocations(filteredMinorLocations){
+    return filteredMinorLocations.filter(x =>x.isActive);
   }
   getLocations() {
     this.locationService.findAll().then(payload => {
@@ -116,7 +159,7 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.locationHomeContentArea = false;
     this.locationDetailContentArea = true;
     this.innerMenuShow = false;
-    if (model.name !== undefined && model.name.toLowerCase() == 'ward') {
+    if (model.name !== undefined && model.name.toLowerCase() == "ward") {
       this.isWardSelected = true;
     } else {
       this.isWardSelected = false;
@@ -124,13 +167,14 @@ export class FacilitypageLocationspageComponent implements OnInit {
 
     this.locationObj = model;
 
-    this.filteredMinorLocations = this.facility.minorLocations.filter(x => x.locationId === this.locationObj._id);
+    this.filteredMinorLocations = this.facility.minorLocations.filter(
+      x => x.locationId === this.locationObj._id
+    );
   }
 
   locationDetailContentArea_remove(model: Location) {
     this.locationService.remove(model._id, model);
   }
-
 
   locationHomeContentArea_show() {
     this.locationHomeContentArea = true;
@@ -164,7 +208,8 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.newSubLocModal_on = false;
     this.innerMenuShow = false;
   }
-  newSubLocationModal_show() {
+  newSubLocationModal_show(location) {
+    this.locationObj = location;
     this.modal_on = false;
     this.newSubLocModal_on = true;
     this.newLocationModal_on = false;
@@ -186,7 +231,7 @@ export class FacilitypageLocationspageComponent implements OnInit {
     this.innerMenuShow = !this.innerMenuShow;
   }
   innerMenuHide(e) {
-    if (e.srcElement.id !== 'submenu_ico') {
+    if (e.srcElement.id !== "submenu_ico") {
       this.innerMenuShow = false;
     }
   }

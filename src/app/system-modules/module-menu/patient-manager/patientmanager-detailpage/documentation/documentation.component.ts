@@ -1,3 +1,4 @@
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import {
   FormsService, FacilitiesService, DocumentationService, LaboratoryRequestService, BillingService, PrescriptionService,
@@ -11,7 +12,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 import { SharedService } from '../../../../../shared-module/shared.service';
 import { Subscription } from 'rxjs/Subscription';
-
+import { UUID } from 'angular2-uuid';
 @Component({
   selector: 'app-documentation',
   templateUrl: './documentation.component.html',
@@ -31,7 +32,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
   selectedFacility: Facility = <Facility>{};
   selectedMiniFacility: Facility = <Facility>{};
-  loginEmployee: Employee = <Employee>{};
+  loginEmployee: any = <any>{};
   selectedForm: any = <any>{};
   selectedDocument: PatientDocumentation = <PatientDocumentation>{};
   patientDocumentation: Documentation = <Documentation>{};
@@ -40,6 +41,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   priority: any = <any>{};
 
+  hasSavedDraft = false;
+  draftDocument:any;
   constructor(
     private formService: FormsService, private locker: CoolLocalStorage,
     private documentationService: DocumentationService,
@@ -48,53 +51,126 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     private requestService: LaboratoryRequestService,
     private billingService: BillingService,
     private _prescriptionService: PrescriptionService,
-    private _priorityService: PrescriptionPriorityService
+    private authFacadeService: AuthFacadeService,
+    private _priorityService: PrescriptionPriorityService,
   ) {
-    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+    });
+
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.selectedMiniFacility = <Facility>this.locker.getObject('miniFacility');
 
     this.subscription = this.sharedService.submitForm$.subscribe(payload => {
-      console.log(payload);
-      const doc: PatientDocumentation = <PatientDocumentation>{};
-      doc.document = {
-        documentType: this.selectedForm,
-        body: payload,
-      };
+      if(!this.hasSavedDraft){
+        console.log('has no draft');
+        const doc: PatientDocumentation = <PatientDocumentation>{};
+        doc.document = {
+          documentType: this.selectedForm,
+          body: payload,
+        };
 
-      // limit loginEmployee detail
-      // const logEmp: any = this.loginEmployee;
-      // delete logEmp.department;
-      // delete logEmp.employeeFacilityDetails;
-      // delete logEmp.role;
-      // delete logEmp.units;
-      // delete logEmp.consultingRoomCheckIn;
-      // delete logEmp.storeCheckIn;
-      // delete logEmp.unitDetails;
-      // delete logEmp.professionObject;
-      // delete logEmp.employeeDetails.countryItem;
-      // delete logEmp.employeeDetails.homeAddress;
-      // delete logEmp.employeeDetails.gender;
-      // delete logEmp.employeeDetails.maritalStatus;
-      // delete logEmp.employeeDetails.nationality;
-      // delete logEmp.employeeDetails.nationalityObject;
-      // delete logEmp.employeeDetails.nextOfKin;
+        doc.createdBy = this.loginEmployee.personDetails.title + ' ' + this.loginEmployee.personDetails.lastName + ' ' + this.loginEmployee.personDetails.firstName;
+        doc.facilityId = this.selectedMiniFacility._id;
+        doc.facilityName = this.selectedMiniFacility.name;
+        doc.patientId = this.patient._id,
+        doc.patientName = this.patient.personDetails.title + ' ' + this.patient.personDetails.lastName + ' ' + this.patient.personDetails.firstName;
+        this.patientDocumentation.documentations.push(doc);
+        // Get the raw orderset data and send to different destination.
+        this._listenAndSaveRawOrderSetData();
 
-      doc.createdBy = this.loginEmployee._id;
-      doc.facilityId = this.selectedMiniFacility._id;
-      doc.patientId = this.patient._id;
-      this.patientDocumentation.documentations.push(doc);
-      // Get the raw orderset data and send to different destination.
-      this._listenAndSaveRawOrderSetData();
-      this.documentationService.update(this.patientDocumentation).then(pay => {
-        console.log(pay);
-        this.getPersonDocumentation();
-        this._notification('Success', 'Documentation successfully saved!');
-      });
+        this.documentationService.update(this.patientDocumentation).then(pay => {
+          this.getPersonDocumentation();
+          this._notification('Success', 'Documentation successfully saved!');
+        });
+      }else{
+        const doc = this.draftDocument;
+        doc.documentationStatus = 'Completed';
+        const draftIndex = this.patientDocumentation.documentations.findIndex(x =>x.apmisGuid=== this.draftDocument.apmisGuid);
+        if(draftIndex > -1){
+          console.log('completing document');
+          this.patientDocumentation.documentations[draftIndex] = doc;
+        }
+        // this.patientDocumentation.documentations.push(doc);
+        // Get the raw orderset data and send to different destination.
+        // this._listenAndSaveRawOrderSetData();
+
+        this.documentationService.update(this.patientDocumentation).then(pay => {
+          this.draftDocument = undefined;
+          this.hasSavedDraft = false;
+          this.sharedService.announceFinishedSavingDraft(false);
+          this.getPersonDocumentation();
+          this._notification('Success', 'Documentation successfully saved!');
+        });
+      }
     });
+    
+
     this.sharedService.newFormAnnounced$.subscribe((payload: any) => {
       this.selectedForm = payload.form;
-    })
+      this.draftDocument = undefined;
+      this.hasSavedDraft = false;
+    });
+
+    this.documentationService.announceDocumentation$.subscribe(payload =>{
+      this.getPersonDocumentation();
+    });
+
+    this.sharedService.announceSaveDraft$.subscribe(payload =>{
+      if(!this.hasSavedDraft){
+        this.sharedService.announceFinishedSavingDraft(true);
+        console.log('creating draft');
+        console.log(payload);
+        const apmisGuid = UUID.UUID();
+        console.log(apmisGuid);
+        const doc: PatientDocumentation = <PatientDocumentation>{};
+        doc.document = {
+          documentType: this.selectedForm,
+          body: payload,
+        };
+
+        doc.createdBy = this.loginEmployee.personDetails.title + ' ' + this.loginEmployee.personDetails.lastName + ' ' + this.loginEmployee.personDetails.firstName;
+        doc.createdById = this.loginEmployee._id;
+        doc.facilityId = this.selectedFacility._id;
+        doc.facilityName = this.selectedFacility.name;
+        doc.patientId = this.patient._id,
+        doc.patientName = this.patient.personDetails.title + ' ' + this.patient.personDetails.lastName + ' ' + this.patient.personDetails.firstName;
+        doc.documentationStatus = 'Draft';
+        doc.apmisGuid = apmisGuid;
+
+
+        // this.hasSavedDraft = true;
+        this.draftDocument = doc;
+        console.log(doc);
+        this.patientDocumentation.documentations.push(doc);
+
+
+        this.documentationService.update(this.patientDocumentation).then(pay => {
+          this.hasSavedDraft = true;
+          this.getPersonDocumentation();
+          // this.sharedService.announceFinishedSavingDraft(false);
+          // this._notification('Success', 'Documentation successfully saved!');
+        },error =>{
+          console.log(error);
+        });
+      }else{
+        this.sharedService.announceFinishedSavingDraft(true);
+        console.log('updating draft');
+        console.log(this.draftDocument);
+        this.draftDocument.document.body = payload;
+
+        const draftIndex = this.patientDocumentation.documentations.findIndex(x =>x.apmisGuid=== this.draftDocument.apmisGuid);
+        if(draftIndex > -1){
+          this.patientDocumentation.documentations[draftIndex] = this.draftDocument;
+          this.documentationService.update(this.patientDocumentation).then(pay => {
+            this.hasSavedDraft = true;
+            this.getPersonDocumentation();
+          });
+        }
+      }
+    }, error =>{
+      console.log(error);
+    });
   }
 
   ngOnInit() {
@@ -103,7 +179,9 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this._getAllPriorities();
   }
   getPersonDocumentation() {
-    this.documentationService.find({ query: { 'personId._id': this.patient.personId } }).then((payload: any) => {
+    this.documentationService.find({ query: { 'personId': this.patient.personId, $sort: {
+      'documentations.updatedAt': -1
+    } } }).then((payload: any) => {
       if (payload.data.length === 0) {
         this.patientDocumentation.personId = this.patient.personDetails;
         this.patientDocumentation.documentations = [];
@@ -117,12 +195,21 @@ export class DocumentationComponent implements OnInit, OnDestroy {
           this.documentationService.find({
             query:
               {
-                'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
+                'personId': this.patient.personId, //'documentations.patientId': this.patient._id,
                 // $select: ['documentations.documents', 'documentations.facilityId']
               }
           }).subscribe((mload: any) => {
+            console.log(mload)
             if (mload.data.length > 0) {
               this.patientDocumentation = mload.data[0];
+              if(this.hasSavedDraft && this.draftDocument !== undefined){
+                const draftIndex = this.patientDocumentation.documentations.findIndex(x =>x.apmisGuid=== this.draftDocument.apmisGuid);
+                if(draftIndex > -1){
+                  this.draftDocument = this.patientDocumentation.documentations[draftIndex];
+                  this.sharedService.announceFinishedSavingDraft(false);
+                }
+              }
+
               this.populateDocuments();
               // mload.data[0].documentations[0].documents.push(doct);
             }
@@ -135,7 +222,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
   private _listenAndSaveRawOrderSetData() {
     this.sharedService.announceBilledOrderSet$.subscribe((value: any) => {
-      console.log(value);
       if (!!value) {
         if (!!value.investigations) {
           this._saveLabRequest(value.investigations);
@@ -155,7 +241,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       priorityObject: this.priority,
       facilityId: this.selectedMiniFacility._id,
       employeeId: this.loginEmployee._id,
-      employeeObject: this.facilityService.trimEmployee(this.loginEmployee),
+      employeeObject: this.loginEmployee,
       patientId: this.patient._id,
       patientObject: this.patient,
       personId: this.patient.personId,
@@ -170,66 +256,65 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     const billItemArray = [];
     let totalCost = 0;
     prescriptions.prescriptionItems.forEach(element => {
-        if (element.isBilled) {
-            const billItem = <BillItem>{
-                facilityServiceId: element.facilityServiceId,
-                serviceId: element.serviceId,
-                facilityId: this.selectedMiniFacility._id,
-                patientId: this.patient._id,
-                patientObject: this.patient,
-                description: element.productName,
-                quantity: element.quantity,
-                totalPrice: element.totalCost,
-                unitPrice: element.cost,
-                unitDiscountedAmount: 0,
-                totalDiscoutedAmount: 0,
-            };
+      if (element.isBilled) {
+        const billItem = <BillItem>{
+          facilityServiceId: element.facilityServiceId,
+          serviceId: element.serviceId,
+          facilityId: this.selectedMiniFacility._id,
+          patientId: this.patient._id,
+          patientObject: this.patient,
+          description: element.productName,
+          quantity: element.quantity,
+          totalPrice: element.totalCost,
+          unitPrice: element.cost,
+          unitDiscountedAmount: 0,
+          totalDiscoutedAmount: 0,
+        };
 
-            totalCost += element.totalCost;
-            billItemArray.push(billItem);
-        }
+        totalCost += element.totalCost;
+        billItemArray.push(billItem);
+      }
     });
 
     const bill = <BillIGroup>{
-        facilityId: this.selectedMiniFacility._id,
-        patientId: this.patient._id,
-        billItems: billItemArray,
-        discount: 0,
-        subTotal: totalCost,
-        grandTotal: totalCost,
+      facilityId: this.selectedMiniFacility._id,
+      patientId: this.patient._id,
+      billItems: billItemArray,
+      discount: 0,
+      subTotal: totalCost,
+      grandTotal: totalCost,
     }
 
     // If any item was billed, then call the billing service
     if (billItemArray.length > 0) {
-        // send the billed items to the billing service
-        this.billingService.create(bill).then(res => {
-            if (res._id !== undefined) {
-                prescriptions.billId = res._id;
-                // if this is true, send the prescribed drugs to the prescription service
-                this._prescriptionService.create(prescriptions).then(pRes => {
-                    this._notification('Success', 'Prescription has been sent!');
-                }).catch(err => {
-                  console.log(err);
-                    this._notification('Error', 'There was an error creating prescription. Please try again later.');
-                });
-            } else {
-                this._notification('Error', 'There was an error generating bill. Please try again later.');
-            }
-        }).catch(err => console.error(err));
-    } else {
-        // Else, if no item was billed, just save to the prescription table.
-        this._prescriptionService.create(prescriptions).then(res => {
+      // send the billed items to the billing service
+      this.billingService.create(bill).then(res => {
+        if (res._id !== undefined) {
+          prescriptions.billId = res._id;
+          // if this is true, send the prescribed drugs to the prescription service
+          this._prescriptionService.create(prescriptions).then(pRes => {
             this._notification('Success', 'Prescription has been sent!');
-        }).catch(err => {
+          }).catch(err => {
             this._notification('Error', 'There was an error creating prescription. Please try again later.');
-        });
+          });
+        } else {
+          this._notification('Error', 'There was an error generating bill. Please try again later.');
+        }
+      }).catch(err => console.error(err));
+    } else {
+      // Else, if no item was billed, just save to the prescription table.
+      this._prescriptionService.create(prescriptions).then(res => {
+        this._notification('Success', 'Prescription has been sent!');
+      }).catch(err => {
+        this._notification('Error', 'There was an error creating prescription. Please try again later.');
+      });
     }
   }
 
   private _saveLabRequest(labRequests) {
     this.deleteUnncessaryPatientData();
 
-    const logEmp = <any>this.locker.getObject('loginEmployee');
+    const logEmp = this.loginEmployee;
     delete logEmp.department;
     delete logEmp.employeeFacilityDetails;
     delete logEmp.role;
@@ -321,14 +406,12 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         this.requestService.update(results[0]).then(payload => {
           this._notification('Success', 'Request has been sent successfully!');
         }).catch(err => {
-          console.log(err);
         });
       });
     } else {
       this.requestService.create(request).then(payload => {
-          this._notification('Success', 'Request has been sent successfully!');
+        this._notification('Success', 'Request has been sent successfully!');
       }).catch(err => {
-        console.log(err);
       });
     }
   }
@@ -356,8 +439,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       } else {
         this.priority = res.data[0];
       }
-      console.log(this.priority);
-    }).catch(err =>  console.error(err));
+    }).catch(err => console.error(err));
   }
 
   populateDocuments() {
@@ -365,13 +447,20 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this.patientDocumentation.documentations.forEach(documentation => {
       if ((documentation.document.documentType && documentation.document.documentType.isSide === false)
         || (documentation.document.documentType && documentation.document.documentType.isSide === undefined)) {
-        this.documents.push(documentation);
+
+          const createdById = this.loginEmployee._id;
+          const facilityId = this.selectedMiniFacility._id;
+
+          if(documentation.documentationStatus !== 'Draft'){
+            this.documents.push(documentation);
+          }else if(documentation.createdById === createdById && documentation.facilityId === facilityId){
+            this.hasSavedDraft = true;
+            this.draftDocument = documentation;
+          }
       } else {
         if (documentation.document.documentType.isSide === true && documentation.document.documentType.title === 'Problems') {
-          console.log(documentation);
           this.documents.push(documentation);
         } else {
-          console.log(documentation);
           this.documents.push(documentation);
         }
       }

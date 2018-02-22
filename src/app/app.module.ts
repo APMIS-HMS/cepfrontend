@@ -1,3 +1,9 @@
+import { OnlyMaterialModule } from './shared-common-modules/only-material-module';
+import { CanActivateViaAuthGuardCompleteFacilityService } from './services/facility-manager/setup/can-activate-via-auth-guard-complete-facility.service';
+import { AuthInterceptor } from './feathers/auth.interceptor';
+import { AuthFacadeService } from './system-modules/service-facade/auth-facade.service';
+import { TitleCasePipe, UpperCasePipe } from '@angular/common';
+import { SecurityQuestionsService } from './services/facility-manager/setup/security-questions.service';
 import { CountryServiceFacadeService } from './system-modules/service-facade/country-service-facade.service';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { PayStackService } from './services/facility-manager/setup/paystack.service';
@@ -20,7 +26,6 @@ import { SocketService, RestService } from './feathers/feathers.service';
 import * as SetupService from './services/facility-manager/setup/index';
 import * as ModuleManagerService from './services/module-manager/setup/index';
 import { UserAccountsComponent } from './system-modules/user-accounts/user-accounts.component';
-import { PatientPortalComponent } from './system-modules/patient-portal/patient-portal.component';
 import { SharedModule } from './shared-module/shared.module';
 // tslint:disable-next-line:max-line-length
 import { UserAccountsInnerPopupComponent } from './system-modules/user-accounts/user-accounts-inner-popup/user-accounts-inner-popup.component';
@@ -43,7 +48,7 @@ import { FacilitySetupComponent } from './facility-setup/facility-setup.componen
 import { ContactInfoComponent } from './facility-setup/contact-info/contact-info.component';
 import { AddLogoComponent } from './facility-setup/add-logo/add-logo.component';
 import { FacilityInfoComponent } from './facility-setup/facility-info/facility-info.component';
-import { AddFacilityModuleComponent } from './facility-setup/add-facility-module/add-facility-module.component';
+// import { AddFacilityModuleComponent } from './facility-setup/add-facility-module/add-facility-module.component';
 import { DashboardHomeComponent } from './system-modules/dashboard/dashboard-home.component';
 import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accounts-shared-module';
 import { MaterialModule } from './shared-common-modules/material-module';
@@ -59,6 +64,8 @@ import { JoinChannelService } from 'app/services/facility-manager/setup/join-cha
 import { RadiologyInvestigationService } from 'app/services/facility-manager/setup/radiologyinvestigation.service';
 // import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
+import { CanActivateViaAuthGuardAccessService } from 'app/services/facility-manager/setup/can-activate-via-auth-guard-access.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -68,18 +75,13 @@ import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
     ApmisCheckboxComponent
   ],
   exports: [
-    // MaterialModule,
-    // PdfViewerModule
   ],
   imports: [
     BrowserModule,
     HttpModule,
-    // FormsModule,
     Routing,
-    // ReactiveFormsModule,
     BrowserAnimationsModule,
-    // ToastModule.forRoot(),
-    // CoolStorageModule,
+    OnlyMaterialModule,
     MaterialModule,
     SingUpAccountsSharedModule,
     LoadingBarHttpModule,
@@ -89,8 +91,7 @@ import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
       customClass: 'modal-content',
       confirmButtonClass: 'btn btn-primary',
       cancelButtonClass: 'btn'
-  })
-    // PdfViewerModule
+    })
   ],
   providers: [
     { provide: ErrorHandler, useClass: ApmisErrorHandler },
@@ -121,12 +122,17 @@ import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
     SetupService.InventoryInitialiserService, SetupService.SmsAlertService, SetupService.MakePaymentService, SystemModuleService,
     SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService, SetupService.LocSummaryCashService,
     CountryServiceFacadeService, TitleGenderFacadeService, FacilityFacadeService, UserFacadeService,
-    SetupService.InventoryInitialiserService, SetupService.SmsAlertService,SetupService.MakePaymentService, SystemModuleService,
-    SetupService.SearchInvoicesService,SetupService.PendingBillService,SetupService.TodayInvoiceService,SetupService.LocSummaryCashService,
+    SetupService.InventoryInitialiserService, SetupService.SmsAlertService, SetupService.MakePaymentService, SystemModuleService,
+    SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService, SetupService.LocSummaryCashService,
     SetupService.TimeLineService, FacilityTypeFacilityClassFacadeService, JoinChannelService, SetupService.DocumentUploadService, RadiologyInvestigationService,
     SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService,
-    SetupService.LocSummaryCashService,SetupService.TimeLineService, SetupService.DocumentUploadService, RadiologyInvestigationService,
-    SetupService.FluidService
+    SetupService.LocSummaryCashService, SetupService.TimeLineService, SetupService.DocumentUploadService, RadiologyInvestigationService,
+    SetupService.FluidService, SecurityQuestionsService, TitleCasePipe, UpperCasePipe, AuthFacadeService, SetupService.DepartmentService, CanActivateViaAuthGuardAccessService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }, CanActivateViaAuthGuardCompleteFacilityService, UpperCasePipe
   ],
   bootstrap: [AppComponent]
 })

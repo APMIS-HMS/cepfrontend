@@ -79,6 +79,10 @@ export class EmployeeService {
     return this._socket.create(employee);
   }
 
+  saveEmployee(employee: any) {
+    return this._socketService.getService('save-employee').create(employee);
+  }
+
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }
@@ -86,7 +90,6 @@ export class EmployeeService {
     return this._socket.update(employee._id, employee);
   }
   assignUnit(body: any) {
-    console.log(body);
     return this._assignSocket.update(body.unitId, body.employees);
   }
   updateMany(employees: any) {

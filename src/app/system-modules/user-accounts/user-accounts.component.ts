@@ -89,7 +89,6 @@ export class UserAccountsComponent implements OnInit {
 
   popListing(item: any) {
     const auth: any = this.locker.getObject('auth');
-    console.log(auth);
     this.item = item;
     this.facilityService.get(item._id,{}).then(payload =>{
       this.selectedFacility = payload;
@@ -98,15 +97,15 @@ export class UserAccountsComponent implements OnInit {
         this.popup_listing = false;
       } else {
         this.joinChannelService.create({_id:this.selectedFacility._id, userId:auth.data._id}).then(pay =>{
-          console.log(pay);
           this.popup_listing = true;
           this.popup_verifyToken = false;
         }, err =>{
-          console.log(err)
+          
         })
         
       }
       this.locker.setObject('selectedFacility', this.selectedFacility);
+      this.locker.setObject('fac',this.selectedFacility._id);
       this.logoutConfirm_on = false;
     })
 
@@ -118,9 +117,7 @@ export class UserAccountsComponent implements OnInit {
   }
   close_onClick2(){
     this.popup_verifyToken = false;
-    console.log('am called again')
     if(this.item !== undefined && this.item._id !== undefined){
-      console.log('am called again2')
       this.popListing(this.item); 
     }
   }

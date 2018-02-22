@@ -446,17 +446,18 @@ export class MakePaymentComponent implements OnInit {
     }
     console.log(paymantObj);
     this._makePaymentService.create(paymantObj).then(payload => {
-      this.personValueChanged.emit(payload.data);
+      this.personValueChanged.emit(payload);
       this.isProcessing = false;
       this.balance.setValue(0);
       this.close_onClick();
-      if(!payload.data.isWaved){
+      if(!payload.isWaved){
         this._notification('Success', 'Payment successfull.');
       }else{
         this._notification('Success', 'Payment waved successfull.');
       }
       
     }, error => {
+      console.log(error);
       this._notification('Error', 'Fail to make payment pls try again later');
     });
   }

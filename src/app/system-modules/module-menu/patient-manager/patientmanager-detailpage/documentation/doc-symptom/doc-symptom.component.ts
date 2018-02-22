@@ -58,7 +58,6 @@ export class DocSymptomComponent implements OnInit {
     this.apmisLookupText = value.name;
     const isExisting = false;
     this._tempSympton = value;
-    console.log(this._tempSympton);
 
 
 

@@ -1,3 +1,4 @@
+import { AuthFacadeService } from './../service-facade/auth-facade.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import {
@@ -20,11 +21,11 @@ export class DashboardComponent implements OnInit {
   unitCount: any = 0
   clinicCount: any = 0;
 
-  facilityObj:any;
-  checkedInObject:any;
-  loginEmployee:any;
-  loadIndicatorVisible:any;
-  subscription:Subscription;
+  facilityObj: any;
+  checkedInObject: any;
+  loginEmployee: any;
+  loadIndicatorVisible: any;
+  subscription: Subscription;
   ;
   constructor(private countryService: CountriesService,
     private router: Router,
@@ -35,25 +36,21 @@ export class DashboardComponent implements OnInit {
     private genderService: GenderService,
     private relationshipService: RelationshipService,
     private maritalStatusService: MaritalStatusService,
-    private workSpaceService:WorkSpaceService,
+    private workSpaceService: WorkSpaceService,
+    private authFacadeService: AuthFacadeService,
     private locker: CoolLocalStorage) {
 
   }
 
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    const loginEmployee = this.locker.getObject('loginEmployee');
+    // const loginEmployee = this.locker.getObject('loginEmployee');
+
     this.departments = this.selectedFacility.departments;
-    // this.departments.forEach((item, i) => {
-    //   this.unitCount = this.unitCount + item.units.length;
-    //   item.units.forEach((itemu, u) => {
-    //     this.clinicCount = this.clinicCount + itemu.clinics.length;
-    //   })
-    // })
     this.primeApp();
   }
 
-  primeApp(){
+  primeApp() {
     this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
     if (this.facilityObj !== undefined && this.facilityObj != null) {
     }
@@ -71,7 +68,7 @@ export class DashboardComponent implements OnInit {
     this.loadIndicatorVisible = true;
     const emp$ = Observable.fromPromise(this.employeeService.find({
       query: {
-        facilityId: this.facilityObj._id, personId: auth.data.personId, $select:[]
+        facilityId: this.facilityObj._id, personId: auth.data.personId, $select: []
       }
     }));
     this.subscription = emp$.mergeMap((emp: any) => {
@@ -103,7 +100,11 @@ export class DashboardComponent implements OnInit {
           this.locker.setObject('miniFacility', results[2].data[0])
         }
 
-        this.locker.setObject('loginEmployee', this.loginEmployee);
+        // this.locker.setObject('loginEmployee', this.loginEmployee);
+        // this.authFacadeService.setLogingEmployee(this.loginEmployee);
+        this.authFacadeService.getLogingEmployee().then((payload: any) => {
+          this.loginEmployee = payload;
+        });
       }
 
       this.loadIndicatorVisible = false;

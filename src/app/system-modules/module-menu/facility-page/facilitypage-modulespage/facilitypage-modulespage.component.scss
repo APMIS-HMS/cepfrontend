@@ -12,6 +12,11 @@
 .tbl-inactive tr{
     background-color: #fae5e5;
 }
+.th-act{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .tbl-btn-red{
     border: 1px solid #ff2500;
     color: #ff2500;
@@ -20,6 +25,7 @@
     width: 100px;
     margin: 0 auto;
     cursor: pointer;
+    background: transparent;
 }
 .tbl-btn-red:hover{
     background: #ff2500;

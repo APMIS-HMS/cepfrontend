@@ -49,7 +49,6 @@ export class OrderBillItemComponent implements OnInit {
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
     this.user = this._locker.getObject('auth');
-    console.log(this.prescriptionData);
 
 		this.getProductsForGeneric();
 
@@ -74,7 +73,6 @@ export class OrderBillItemComponent implements OnInit {
 
 	//
 	onClickSaveCost(valid: boolean, value: any) {
-    console.log(value);
 		if (valid) {
 			if (this.cost > 0 && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
 				let index = this.prescriptionData.index;
@@ -102,7 +100,6 @@ export class OrderBillItemComponent implements OnInit {
 	}
 
 	getProductsForGeneric() {
-    console.log(this.prescriptionData);
 		const index = this.prescriptionData.index;
 		this.title = this.prescriptionData.prescriptionItems[index].genericName;
 		const ingredients = this.prescriptionData.prescriptionItems[index].ingredients;
@@ -121,7 +118,6 @@ export class OrderBillItemComponent implements OnInit {
 	}
 
 	onClickCustomSearchItem(event, drugId) {
-    console.log(drugId);
 		this.selectedDrug = drugId.viewValue;
 		const pId = drugId._element.nativeElement.getAttribute('data-p-id');
 		this.serviceId = drugId._element.nativeElement.getAttribute('data-p-sId');

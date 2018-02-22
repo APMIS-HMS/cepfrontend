@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormArray, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
   FacilitiesService, LaboratoryRequestService,
@@ -7,6 +7,8 @@ import {
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, User, PendingLaboratoryRequest } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
+import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 
 @Component({
   selector: 'app-report',
@@ -16,6 +18,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 export class ReportComponent implements OnInit {
   @Output() selectedInvestigationData: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
   reportFormGroup: FormGroup;
+  // panelReportFormGroup: FormGroup;
   patientFormGroup: FormGroup;
   facility: Facility = <Facility>{};
   miniFacility: Facility = <Facility>{};
@@ -25,13 +28,14 @@ export class ReportComponent implements OnInit {
   selectedInvestigation: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
   selectedLab: any = {};
   selectedWorkbench: any = {};
-  apmisLookupUrl = 'patient';
+  apmisLookupUrl = 'patient-search';
   apmisLookupText = '';
   apmisLookupQuery: any = {};
-  apmisLookupDisplayKey = 'personDetails.personFullName';
+  apmisLookupDisplayKey = 'firstName';
   apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
   apmisInvestigationLookupUrl = 'investigations';
-  apmisLookupOtherKeys = ['personDetails.email', 'personDetails.dateOfBirth'];
+  // apmisLookupOtherKeys = ['personDetails.email', 'personDetails.dateOfBirth'];
+  apmisLookupOtherKeys = ['lastName', 'firstName', 'apmisId', 'email'];
   selectedPatient: any = <any>{};
   patientSelected: Boolean = false;
   loading: Boolean = true;
@@ -65,14 +69,19 @@ export class ReportComponent implements OnInit {
     public facilityService: FacilitiesService,
     private _formService: FormsService,
     private _laboratoryRequestService: LaboratoryRequestService,
+    private _laboratoryReportService: LaboratoryReportService,
     private _documentationService: DocumentationService,
-    private _billingService: BillingService
-  ) { }
+    private _billingService: BillingService,
+    private _systemModuleService: SystemModuleService,
+    private _authFacadeService: AuthFacadeService
+  ) {
+    this._authFacadeService.getLogingEmployee().then((res: any) => {
+      this.employeeDetails = res;
+    }).catch(err => {});
+  }
 
   ngOnInit() {
     this.facility = <Facility>this._locker.getObject('selectedFacility');
-    this.miniFacility = <Facility>this._locker.getObject('miniFacility');
-    this.employeeDetails = this._locker.getObject('loginEmployee');
     this.user = <User>this._locker.getObject('auth');
     this.selectedLab = <any>this._locker.getObject('workbenchCheckingObject');
 
@@ -81,7 +90,7 @@ export class ReportComponent implements OnInit {
     });
 
     this.reportFormGroup = this.formBuilder.group({
-      result: ['', [Validators.required]],
+      results: this.formBuilder.array([this.initResultBuilder()]),
       outcome: ['', [Validators.required]],
       conclusion: [''],
       recommendation: ['']
@@ -90,8 +99,8 @@ export class ReportComponent implements OnInit {
     this.patientFormGroup.controls['patient'].valueChanges.subscribe(value => {
       if (value.length > 2) {
         this.apmisLookupQuery = {
-          'facilityid': this.facility._id,
-          'searchtext': value
+          'facilityId': this.facility._id,
+          'searchText': value
         };
       } else {
         this.activeInvestigationNo = -1;
@@ -99,19 +108,19 @@ export class ReportComponent implements OnInit {
       }
     });
 
-    this.reportFormGroup.controls['result'].valueChanges.subscribe(val => {
-      if (this.numericReport) {
-        if (this.selectedInvestigation.reportType.name.toLowerCase() === 'numeric'.toLowerCase()) {
-          if (this.selectedInvestigation.reportType.ref.min > val) {
-            this.referenceValue = 'Low';
-          } else if (this.selectedInvestigation.reportType.ref.min < val && this.selectedInvestigation.reportType.ref.max > val) {
-            this.referenceValue = 'Normal';
-          } else if (this.selectedInvestigation.reportType.ref.max < val) {
-            this.referenceValue = 'High';
-          }
-        }
-      }
-    });
+    // this.reportFormGroup.controls['result'].valueChanges.subscribe(val => {
+    //   if (this.numericReport) {
+    //     if (this.selectedInvestigation.reportType.name.toLowerCase() === 'numeric'.toLowerCase()) {
+    //       if (this.selectedInvestigation.reportType.ref.min > val) {
+    //         this.referenceValue = 'Low';
+    //       } else if (this.selectedInvestigation.reportType.ref.min < val && this.selectedInvestigation.reportType.ref.max > val) {
+    //         this.referenceValue = 'Normal';
+    //       } else if (this.selectedInvestigation.reportType.ref.max < val) {
+    //         this.referenceValue = 'High';
+    //       }
+    //     }
+    //   }
+    // });
 
     this._getAllReports();
     this._getDocumentationForm();
@@ -128,6 +137,26 @@ export class ReportComponent implements OnInit {
     });
   }
 
+  initResultBuilder(investigation?: any) {
+    return this.formBuilder.group({
+      result: ['', Validators.required],
+      investigation: investigation
+    });
+  }
+
+  private _populateInvestigation(result, investigation) {
+    return this.formBuilder.group({
+      result: [result],
+      investigation: investigation
+    });
+  }
+
+  addResultBuilder(investigation) {
+    // add address to the list
+    const control = <FormArray>this.reportFormGroup.controls['results'];
+    control.push(this.initResultBuilder(investigation));
+  }
+
   createReport(valid: Boolean, value: any, action: String) {
     if (valid) {
       if (action === 'save') {
@@ -135,136 +164,171 @@ export class ReportComponent implements OnInit {
       } else if (action === 'upload') {
         this.saveAndUploadBtnText = 'UPLOADING...';
       }
+      console.log(this.selectedPatient);
       const isUploaded: Boolean = false;
       const isSaved: Boolean = false;
       const report = {
+        employeeId: this.employeeDetails._id,
+        patientId: this.selectedPatient.patientId,
+        facilityId: this.facility._id,
+        action: action,
+        investigationId: this.selectedInvestigation.investigationId,
+        labRequestId: this.selectedInvestigation.labRequestId,
         conclusion: value.conclusion,
         outcome: value.outcome,
         recommendation: value.recommendation,
-        result: value.result
+        result: value.results
       };
 
+      this._laboratoryReportService.customCreate(report).then(res => {
+        if (res.status === 'success') {
+          this.patientSelected = false;
+          this.report_show();
+          this._getAllReports();
+          this._getAllPendingRequests();
+          if (action === 'save') {
+            this.saveToDraftBtnText = 'SAVE AS DRAFT';
+            this._systemModuleService.announceSweetProxy('Report has been saved successfully!', 'success');
+          } else {
+            this.saveAndUploadBtnText = 'SAVE AND UPLOAD';
+            this._systemModuleService.announceSweetProxy('Report has been saved and uploaded successfully!', 'success');
+          }
+        } else {
+
+        }
+      }).catch(err => {});
+
       // Call the request service and update the investigation.
-      this._laboratoryRequestService.find({
-        query: {
-          'facilityId._id': this.facility._id,
-          '_id': this.selectedInvestigation.labRequestId,
-        }
-      }).then(res => {
-        // Check the action that the user wants to carry out.
-        if (action === 'save') {
-          if (res.data.length > 0) {
-            const labRequest = res.data[0];
+      // this._laboratoryRequestService.find({
+      //   query: {
+      //     'facilityId': this.facility._id,
+      //     '_id': this.selectedInvestigation.labRequestId,
+      //   }
+      // }).then(res => {
+      //   // Check the action that the user wants to carry out.
+      //   if (action === 'save') {
+      //     if (res.data.length > 0) {
+      //       const labRequest = res.data[0];
 
-            labRequest.investigations.forEach(investigation => {
-              if (investigation.investigation._id === this.selectedInvestigation.investigationId) {
-                investigation.report = report;
-                investigation.isUploaded = isUploaded;
-                investigation.isSaved = !isSaved;
-              }
-            });
+      //       labRequest.investigations.forEach(investigation => {
+      //         if (investigation.investigation._id === this.selectedInvestigation.investigationId) {
+      //           investigation.report = report;
+      //           investigation.isUploaded = isUploaded;
+      //           investigation.isSaved = !isSaved;
+      //         }
+      //       });
 
-            this._laboratoryRequestService.update(labRequest).then(res => {
-              this._getAllReports();
-              this.saveToDraftBtnText = 'SAVE AS DRAFT';
-              this._notification('Success', 'Report has been saved successfully!');
-            }).catch(err => this._notification('Error', 'There was an error saving report. Please try again later!'));
-          } else {
-            this._notification('Error', 'There was an error saving report. Please try again later!');
-          }
-        } else if (action === 'upload') {
-          if (res.data.length > 0) {
-            const labRequest = res.data[0];
-            const saveDocument = {
-              documentType: this.selectedForm,
-              body: {}
-            };
+      //       this._laboratoryRequestService.patch(labRequest._id, labRequest, {}).then(res => {
+      //         this._getAllReports();
+      //         this.saveToDraftBtnText = 'SAVE AS DRAFT';
+      //         // this._notification('Success', 'Report has been saved successfully!');
+      //         this._systemModuleService.announceSweetProxy('Report has been saved successfully!', 'success');
+      //       }).catch(err => {
+      //         this._notification('Error', 'There was an error saving report. Please try again later!')
+      //       });
+      //     } else {
+      //       this._notification('Error', 'There was an error saving report. Please try again later!');
+      //     }
+      //   } else if (action === 'upload') {
+      //     if (res.data.length > 0) {
+      //       const labRequest = res.data[0];
+      //       const saveDocument = {
+      //         documentType: this.selectedForm,
+      //         body: {}
+      //       };
 
-            labRequest.investigations.forEach(investigation => {
-              if (investigation.investigation._id === this.selectedInvestigation.investigationId) {
-                investigation.report = report;
-                investigation.isUploaded = !isUploaded;
-                investigation.isSaved = !isSaved;
+      //       labRequest.investigations.forEach(investigation => {
+      //         if (investigation.investigation._id === this.selectedInvestigation.investigationId) {
+      //           investigation.report = report;
+      //           investigation.isUploaded = !isUploaded;
+      //           investigation.isSaved = !isSaved;
 
-                saveDocument.body['conclusion'] = investigation.report.conclusion;
-                saveDocument.body['recommendation'] = investigation.report.recommendation;
-                saveDocument.body['outcome'] = investigation.report.outcome;
-                saveDocument.body['result'] = investigation.report.result;
-                saveDocument.body['specimen'] = investigation.investigation.specimen.name;
-                saveDocument.body['investigation'] = investigation.investigation.name;
-                saveDocument.body['diagnosis'] = labRequest.diagnosis;
-                saveDocument.body['clinicalInformation'] = labRequest.clinicalInformation;
-                saveDocument.body['labNumber'] = labRequest.labNumber;
+      //           saveDocument.body['conclusion'] = investigation.report.conclusion;
+      //           saveDocument.body['recommendation'] = investigation.report.recommendation;
+      //           saveDocument.body['outcome'] = investigation.report.outcome;
+      //           saveDocument.body['result'] = investigation.report.result;
+      //           saveDocument.body['specimen'] = investigation.investigation.specimen.name;
+      //           saveDocument.body['investigation'] = investigation.investigation.name;
+      //           saveDocument.body['diagnosis'] = labRequest.diagnosis;
+      //           saveDocument.body['clinicalInformation'] = labRequest.clinicalInformation;
+      //           saveDocument.body['labNumber'] = labRequest.labNumber;
 
-                // // Build document to save in documentation
-                // saveDocument.body.laboratory.push({
-                //   'conclusion': investigation.report.conclusion,
-                //   'recommendation': investigation.report.outcome,
-                //   'outcome': investigation.report.outcome,
-                //   'result': investigation.report.result,
-                //   'specimen': investigation.investigation.specimen.name,
-                //   'diagnosis': labRequest.diagnosis,
-                //   'clinicalInformation': labRequest.clinicalInformation,
-                //   'labNumber': labRequest.labNumber,
-                //   'investigation': investigation.investigation.name,
-                // })
-              }
-            });
+      //           // // Build document to save in documentation
+      //           // saveDocument.body.laboratory.push({
+      //           //   'conclusion': investigation.report.conclusion,
+      //           //   'recommendation': investigation.report.outcome,
+      //           //   'outcome': investigation.report.outcome,
+      //           //   'result': investigation.report.result,
+      //           //   'specimen': investigation.investigation.specimen.name,
+      //           //   'diagnosis': labRequest.diagnosis,
+      //           //   'clinicalInformation': labRequest.clinicalInformation,
+      //           //   'labNumber': labRequest.labNumber,
+      //           //   'investigation': investigation.investigation.name,
+      //           // })
+      //         }
+      //       });
 
-            this._laboratoryRequestService.update(labRequest).then(res => {
-              if (res) {
-                // Delete irrelevant data from employee
-                delete this.employeeDetails.employeeDetails.countryItem;
-                delete this.employeeDetails.employeeDetails.nationalityObject;
-                delete this.employeeDetails.employeeDetails.nationality;
+      //       this._laboratoryRequestService.patch(labRequest._id, labRequest, {}).then(res => {
+      //         if (!!res._id) {
+      //           // Delete irrelevant data from employee
+      //           delete this.employeeDetails.personDetails.wallet;
 
-                // Build documentation model
-                const patientDocumentation = {
-                  document: saveDocument,
-                  createdBy: this.employeeDetails.employeeDetails,
-                  facilityId: this.miniFacility,
-                  patientId: this.selectedPatient,
-                };
+      //           // Build documentation model
+      //           const patientDocumentation = {
+      //             document: saveDocument,
+      //             createdBy: this.employeeDetails._id,
+      //             facilityId: this.facility._id,
+      //             facilityName: this.facility.name,
+      //             patientId: this.selectedPatient.patientId,
+      //             patientName: `${this.selectedPatient.firstName} ${this.selectedPatient.lastName}`,
+      //           };
 
-                const documentation = {
-                  personId: this.selectedPatient.personDetails,
-                  documentations: patientDocumentation,
-                };
+      //           const documentation = {
+      //             personId: this.selectedPatient._id,
+      //             documentations: patientDocumentation,
+      //           };
 
-                // Check if documentation has been created for the user
-                this._documentationService.find({
-                  query: {
-                    'personId._id': this.selectedPatient.personDetails._id
-                  }
-                }).then(res => {
-                  // Update the lists
-                  this._getAllReports();
-                  // Updated this.pendingRequests
-                  this._getAllPendingRequests();
-                  this.patientSelected = false;
+      //           // Check if documentation has been created for the user
+      //           this._documentationService.find({
+      //             query: { 'personId': this.selectedPatient._id }
+      //           }).then(res => {
+      //             // Update the lists
+      //             this._getAllReports();
+      //             // Updated this.pendingRequests
+      //             this._getAllPendingRequests();
+      //             this.patientSelected = false;
 
-                  if (res.data.length > 0) {
-                    res.data[0].documentations.push(patientDocumentation);
-                    // Update the existing documentation
-                    this._documentationService.update(res.data[0]).then(res => {
-                      this.saveAndUploadBtnText = 'SAVE AND UPLOAD';
-                      this._notification('Success', 'Report has been saved successfully!');
-                    });
-                  } else {
-                    // Save into documentation
-                    this._documentationService.create(documentation).then(res => {
-                      this.saveAndUploadBtnText = 'SAVE AND UPLOAD';
-                      this._notification('Success', 'Report has been saved and uploaded successfully!');
-                    });
-                  }
-                });
-              }
-            }).catch(err => this._notification('Error', 'There was an error saving report. Please try again later!'));
-          } else {
-            this._notification('Error', 'There was an error saving report. Please try again later!');
-          }
-        }
-      }).catch(err => this._notification('Error', 'There was an error saving report. Please try again later!'));
+      //             if (res.data.length > 0) {
+      //               res.data[0].documentations.push(patientDocumentation);
+      //               // Update the existing documentation
+      //               this._documentationService.update(res.data[0]).then(res => {
+      //                 this.saveAndUploadBtnText = 'SAVE AND UPLOAD';
+      //                 this._systemModuleService.announceSweetProxy('Report has been saved successfully!', 'success');
+      //                 // this._notification('Success', 'Report has been saved successfully!');
+      //               }).catch(err => {
+      //                 console.log(err);
+      //               });
+      //             } else {
+      //               // Save into documentation
+      //               this._documentationService.create(documentation).then(res => {
+      //                 this.saveAndUploadBtnText = 'SAVE AND UPLOAD';
+      //                 this._systemModuleService.announceSweetProxy('Report has been saved and uploaded successfully!', 'success');
+      //                 // this._notification('Success', 'Report has been saved and uploaded successfully!');
+      //               }).catch(err => {
+      //                  console.log(err);
+      //               });
+      //             }
+      //           });
+      //         }
+      //       }).catch(err => {
+      //         console.log(err);
+      //         this._notification('Error', 'There was an error saving report. Please try again later!');
+      //       });
+      //     } else {
+      //       this._notification('Error', 'There was an error saving report. Please try again later!');
+      //     }
+      //   }
+      // }).catch(err => this._notification('Error', 'There was an error saving report. Please try again later!'));
     } else {
       this._notification('Error', 'Some fields are empty. Please fill in the required fields!');
     }
@@ -272,19 +336,17 @@ export class ReportComponent implements OnInit {
 
   apmisLookupHandleSelectedItem(value) {
     this.pendingReLoading = true;
-    this.apmisLookupText = value.personDetails.personFullName;
+    this.apmisLookupText = `${value.firstName} ${value.lastName}`;
     this.selectedPatient = value;
     this._laboratoryRequestService.find({
-      query: {
-        'facilityId._id': this.facility._id,
-        'patientId._id': value._id,
-      }
+      query: { 'facilityId': this.facility._id, 'patientId': value.patientId }
     }).then(res => {
       this.pendingReLoading = false;
       if (res.data.length > 0) {
         const pendingRequests = this._modelPendingRequests(res.data);
         if (pendingRequests.length > 0) {
-          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
+          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved)
+          && (x.isUploaded === undefined || (x.isUploaded === false)));
 
           // If pendingRequests contains at least a value, then get payment status
           if (this.pendingRequests.length > 0) {
@@ -331,10 +393,7 @@ export class ReportComponent implements OnInit {
 
   private _getSelectedPendingRequests(requestId, investigationId) {
     this._laboratoryRequestService.find({
-      query: {
-        'facilityId._id': this.facility._id,
-        '_id': requestId,
-      }
+      query: { 'facilityId': this.facility._id, '_id': requestId }
     }).then(res => {
       this.pendingReLoading = false;
       if (res.data.length > 0) {
@@ -342,7 +401,8 @@ export class ReportComponent implements OnInit {
         this.hasRequest = true;
         const pendingRequests = this._modelPendingRequests(res.data);
         if (pendingRequests.length > 0) {
-          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
+          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved)
+          && (x.isUploaded === undefined || (x.isUploaded === false)));
 
           // Highlight the investigation that was selected fro the route parameters
           this.pendingRequests.forEach((invesigation, i) => {
@@ -377,16 +437,15 @@ export class ReportComponent implements OnInit {
   }
 
   private _getAllPendingRequests() {
-    this._laboratoryRequestService.find({
-      query: {
-        'facilityId._id': this.facility._id,
-      }
+    this._laboratoryRequestService.customFind({
+      query: { 'facilityId': this.facility._id }
     }).then(res => {
       this.pendingReLoading = false;
-      if (res.data.length > 0) {
+      if (res.status === 'success' && res.data.length > 0) {
         const pendingRequests = this._modelPendingRequests(res.data);
         if (pendingRequests.length > 0) {
-          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
+          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved)
+          && (x.isUploaded === undefined || (x.isUploaded === false)));
 
           // If pendingRequests contains at least a value, then get payment status
           if (this.pendingRequests.length > 0) {
@@ -409,25 +468,44 @@ export class ReportComponent implements OnInit {
 
     if (investigation.isPaid) {
       if (investigation.sampleTaken) {
+        investigation.patient.patientId = investigation.patientId;
         this.selectedPatient = investigation.patient;
         this.selectedInvestigation = investigation;
-        this.apmisLookupText = investigation.patient.personDetails.personFullName;
-        if (this.selectedInvestigation.reportType.name.toLowerCase() === 'text'.toLowerCase()) {
-          this.textReport = true;
-          this.numericReport = false;
+        this.apmisLookupText = `${investigation.patient.firstName} ${investigation.patient.lastName}`;
+
+        // if The investigation is a panel, then there is no need for the reportType and specimen
+        if (!investigation.isPanel) {
+          if (this.selectedInvestigation.reportType.name.toLowerCase() === 'text'.toLowerCase()) {
+            this.textReport = true;
+            this.numericReport = false;
+          } else {
+            this.numericReport = true;
+            this.textReport = false;
+          }
+          this.reportFormGroup.controls['results'] = this.formBuilder.array([]);
+          this.addResultBuilder(investigation);
         } else {
-          this.numericReport = true;
-          this.textReport = false;
+          this.reportFormGroup.controls['results'] = this.formBuilder.array([]);
+          investigation.panel.forEach(panel => {
+            this.addResultBuilder(panel);
+          });
         }
         this.CheckIfSelectedPatient();
 
         if (investigation.report === undefined) {
-          this.reportFormGroup.controls['result'].reset();
+          // this.reportFormGroup.controls['results'].reset();
           this.reportFormGroup.controls['outcome'].reset();
           this.reportFormGroup.controls['recommendation'].reset();
           this.reportFormGroup.controls['conclusion'].reset();
         } else if (!investigation.isSaved || !investigation.isUploaded) {
-          this.reportFormGroup.controls['result'].setValue(this.selectedInvestigation.report.result);
+          // Clear the formArray and then push the result and investigation into the new formArray.
+          this.reportFormGroup.controls['results'] = this.formBuilder.array([]);
+          const control = <FormArray>this.reportFormGroup.controls['results'];
+          investigation.report.result.forEach(result => {
+            control.push(this._populateInvestigation(result.result, result.investigation));
+          });
+
+          // this.reportFormGroup.controls['result'].setValue(this.selectedInvestigation.report.result);
           this.reportFormGroup.controls['outcome'].setValue(this.selectedInvestigation.report.outcome);
           this.reportFormGroup.controls['recommendation'].setValue(this.selectedInvestigation.report.recommendation);
           this.reportFormGroup.controls['conclusion'].setValue(this.selectedInvestigation.report.conclusion);
@@ -447,10 +525,8 @@ export class ReportComponent implements OnInit {
   }
 
   private _getAllReports() {
-    this._laboratoryRequestService.find({
-      query: {
-        'facilityId._id': this.facility._id,
-      }
+    this._laboratoryRequestService.customFind({
+      query: { 'facilityId': this.facility._id }
     }).then(res => {
       if (!!this.selectedLab.typeObject.minorLocationId || this.selectedLab.typeObject.minorLocationId !== undefined) {
         this.reportLoading = false;
@@ -510,14 +586,20 @@ export class ReportComponent implements OnInit {
               pendingLabReq.sampleTakenBy = investigation.sampleTakenBy;
             }
 
+            if (investigation.investigation.isPanel) {
+              pendingLabReq.panel = investigation.investigation.panel;
+            }
+
             pendingLabReq.billingId = labRequest.billingId;
             pendingLabReq.labRequestId = labRequest._id;
             pendingLabReq.facility = labRequest.facilityId;
             pendingLabReq.clinicalInformation = labRequest.clinicalInformation;
             pendingLabReq.diagnosis = labRequest.diagnosis;
             pendingLabReq.labNumber = labRequest.labNumber;
-            pendingLabReq.patient = labRequest.patientId;
-            pendingLabReq.createdBy = labRequest.createdBy;
+            pendingLabReq.patient = labRequest.personDetails;
+            pendingLabReq.patientId = labRequest.patientId;
+            pendingLabReq.createdBy = labRequest.employeeDetails;
+            pendingLabReq.createdById = labRequest.createdBy;
             pendingLabReq.isExternal = investigation.isExternal;
             pendingLabReq.isUrgent = investigation.isUrgent;
             pendingLabReq.minorLocation = investigation.investigation.LaboratoryWorkbenches[0].laboratoryId._id;
@@ -552,14 +634,14 @@ export class ReportComponent implements OnInit {
           query: {
             facilityId: this.facility._id,
             '_id': request.billingId._id,
-            patientId: request.patient._id
+            patientId: request.patientId
           }
         }).then(res => {
           const billingItem = res.data[0];
           let counter = 0;
           billingItem.billItems.forEach(billItem => {
             counter++;
-            if (billItem.serviceId === request.service._id) {
+            if (billItem.serviceId === request.service) {
               request.isPaid = billItem.paymentCompleted;
             }
           });
@@ -568,7 +650,10 @@ export class ReportComponent implements OnInit {
             this.disablePaymentBtn = false;
             this.paymentStatusText = '<i class="fa fa-refresh"></i> Refresh Payment Status';
           }
-        }).catch(err => console.log(err));
+        }).catch(err => {});
+      } else {
+        this.disablePaymentBtn = false;
+        this.paymentStatusText = '<i class="fa fa-refresh"></i> Refresh Payment Status';
       }
     });
   }
@@ -589,6 +674,10 @@ export class ReportComponent implements OnInit {
   }
 
   private _getDocumentationForm() {
+    // this._formService.find({ query: { title: { $regex: 'laboratory', '$options': 'i' } }}).then(res => {
+    //   console.log(res);
+    //   // this.selectedForm = res.data.filter(x => new RegExp('laboratory', 'i').test(x.title))[0];
+    // }).catch(err => this._notification('Error', 'There was a problem getting documentations!'));
     this._formService.findAll().then(res => {
       this.selectedForm = res.data.filter(x => new RegExp('laboratory', 'i').test(x.title))[0];
     }).catch(err => this._notification('Error', 'There was a problem getting documentations!'));

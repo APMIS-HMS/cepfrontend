@@ -2,9 +2,10 @@ import { Component, Input, Output, OnInit, AfterViewInit, ViewChild, OnDestroy, 
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FacilitiesService, EmployeeService } from '../../../services/facility-manager/setup/index';
-import { Employee, Facility } from '../../../models/index';
+import { Employee, Facility, User } from '../../../models/index';
 import { WardEmitterService } from '../../../services/facility-manager/ward-emitter.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 
 @Component({
 	selector: 'app-ward-manager',
@@ -26,21 +27,77 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 	transferNavMenu = false;
 	contentSecMenuShow = false;
 	checkedInObject: any = <any>{};
-
+  user: User = <User>{};
 	searchControl = new FormControl();
 
 	constructor(
 		private _locker: CoolLocalStorage,
 		private _wardEventEmitter: WardEmitterService,
-		private _router: Router,
-		private _employeeService: EmployeeService
+    private _router: Router,
+    private _facilityService: FacilitiesService,
+    private _employeeService: EmployeeService,
+    private _authFacadeService: AuthFacadeService
 	) {
+    this._authFacadeService.getLogingEmployee().then((res: any) => {
+      if (!!res._id) {
+        this.loginEmployee = res;
+        if ((this.loginEmployee.wardCheckIn === undefined || this.loginEmployee.wardCheckIn.length === 0)) {
+          this.modal_on = true;
+        } else {
+          let isOn = false;
+          this.loginEmployee.wardCheckIn.forEach((x, r) => {
+            if (x.isDefault) {
+              x.isOn = true;
+              x.lastLogin = new Date();
+              isOn = true;
+              let checkingObject = { typeObject: x, type: 'ward' };
+              this.checkedInObject = checkingObject;
+              // this._employeeService.announceCheckIn(checkingObject);
+              // Set page title
+              this.isWardAvailable = true;
+              this.wardTitle = x.minorLocationId.name;
+              this._employeeService.update(this.loginEmployee).then(res => {
+                this.loginEmployee = res;
+                checkingObject = { typeObject: x, type: 'ward' };
+                this.checkedInObject = checkingObject;
+                this._wardEventEmitter.announceWardChange(checkingObject);
+                this._employeeService.announceCheckIn(checkingObject);
+                this._locker.setObject('wardCheckingObject', checkingObject);
+              });
+            }
+          });
 
+          if (!isOn) {
+            this.loginEmployee.wardCheckIn.forEach((x, r) => {
+              if (r === 0) {
+                x.isOn = true;
+                x.lastLogin = new Date();
+                // Set page title
+                this.isWardAvailable = true;
+                this.wardTitle = x.minorLocationId.name;
+                this._employeeService.update(this.loginEmployee).then(payload => {
+                  this.loginEmployee = payload;
+                  const checkingObject = { typeObject: x, type: 'ward' };
+                  this.checkedInObject = checkingObject;
+                  this._wardEventEmitter.announceWardChange(checkingObject);
+                  this._employeeService.announceCheckIn(checkingObject);
+                  this._locker.setObject('wardCheckingObject', checkingObject);
+                });
+              }
+            });
+          }
+        }
+      } else {
+        this._notification('Error', 'Couldn\'t get Logged in user! Please try again later');
+      }
+    }).catch(err => {
+    });
 	}
 
 	ngOnInit() {
-		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
-		this.loginEmployee = <Employee>this._locker.getObject('loginEmployee');
+    this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
+    this.user = <User>this._locker.getObject('auth');
+
 		const page: string = this._router.url;
 		this.checkPageUrl(page);
 		this._wardEventEmitter.announcedUrl.subscribe(url => {
@@ -50,55 +107,9 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 		// Update the wardCheckedIn object when it changes.
 		this._wardEventEmitter.announceWard.subscribe(val => {
 			this.checkedInObject = val;
-		});
+    });
 
-		if ((this.loginEmployee.wardCheckIn === undefined
-		  || this.loginEmployee.wardCheckIn.length === 0)) {
-		  this.modal_on = true;
-		} else {
-		  let isOn = false;
-		  this.loginEmployee.wardCheckIn.forEach((x, r) => {
-			if (x.isDefault) {
-			  x.isOn = true;
-			  x.lastLogin = new Date();
-			  isOn = true;
-			  let checkingObject = { typeObject: x, type: 'ward' };
-			  this.checkedInObject = checkingObject;
-			  // this._employeeService.announceCheckIn(checkingObject);
-			  // Set page title
-			  this.isWardAvailable = true;
-			  this.wardTitle = x.minorLocationId.name;
-			  this._employeeService.update(this.loginEmployee).then(res => {
-				this.loginEmployee = res;
-				checkingObject = { typeObject: x, type: 'ward' };
-				this.checkedInObject = checkingObject;
-				this._wardEventEmitter.announceWardChange(checkingObject);
-				this._employeeService.announceCheckIn(checkingObject);
-				this._locker.setObject('wardCheckingObject', checkingObject);
-			  });
-			}
-		  });
 
-		  if (!isOn) {
-			this.loginEmployee.wardCheckIn.forEach((x, r) => {
-			  if (r === 0) {
-				x.isOn = true;
-				x.lastLogin = new Date();
-				// Set page title
-				this.isWardAvailable = true;
-				this.wardTitle = x.minorLocationId.name;
-				this._employeeService.update(this.loginEmployee).then(payload => {
-				  this.loginEmployee = payload;
-				  const checkingObject = { typeObject: x, type: 'ward' };
-					this.checkedInObject = checkingObject;
-					this._wardEventEmitter.announceWardChange(checkingObject);
-				  this._employeeService.announceCheckIn(checkingObject);
-				  this._locker.setObject('wardCheckingObject', checkingObject);
-				});
-			  }
-			});
-		  }
-		}
 	}
 
 	checkIntoWard() {
@@ -161,5 +172,14 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 		this._employeeService.announceCheckIn(undefined);
 		this._locker.setObject('wardCheckingObject', {});
 		this.checkedInObject = {};
-	}
+  }
+
+  // Notification
+  private _notification(type: String, text: String): void {
+    this._facilityService.announceNotification({
+      users: [this.user._id],
+      type: type,
+      text: text
+    });
+  }
 }

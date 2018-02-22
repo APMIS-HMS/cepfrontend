@@ -19,6 +19,9 @@ label {
 .modal-baseWrap {
     max-width: 750px;
     padding: 30px;
+    .mat-input-container {
+        width: 100%;
+    }
 }
 
 .strapImgWrap img {

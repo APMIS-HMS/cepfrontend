@@ -67,6 +67,7 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
   createWorkspace = false;
   assignUnitPop = false;
   editBasicPop = false;
+  userPrivileges = false;
   
 
   departmentbool = false;
@@ -103,27 +104,6 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.prime();
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.departments = this.selectedFacility.departments;
-    // this.getEmployees();
-
-
-
-    // this.homeCountryControl.valueChanges.subscribe(value => {
-    //   this.countryFacadeService.getOnlyStates(value, true).then((states: any) => {
-    //             this.homeStates = states;
-    //         }).catch(err => { });
-    // });
-    // this.homeStateControl.valueChanges.subscribe(value => {
-    //   let country = this.homeCountryControl.value;
-    //       this.countryFacadeService.getOnlyLGAndCities(country, value, true).then((lgsAndCities: any) => {
-    //           this.homeCities = lgsAndCities.cities;
-    //       }).catch(err => {
-    //           console.log(err);
-    //       });
-    // });
-
-
-
-
 
     this.countryControl.valueChanges.subscribe(value => {
       this.countryFacadeService.getOnlyStates(value, true).then((states: any) => {
@@ -132,12 +112,10 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
     });
     this.stateControl.valueChanges.subscribe(value => {
       let country = this.countryControl.value;
-      // let stateIndex = this.states.findIndex(x => x.name === value);
       if (country && value !== undefined) {
         this.countryFacadeService.getOnlyLGAndCities(country, value, true).then((lgsAndCities: any) => {
           this.lgs = lgsAndCities.lgs;
         }).catch(err => {
-          console.log(err);
         });
       }
     });
@@ -153,7 +131,6 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
       this.countryFacadeService.getOnlyLGAndCities(country, value, true).then((lgsAndCities: any) => {
         this.homeCities = lgsAndCities.cities;
       }).catch(err => {
-        console.log(err);
       });
     });
 
@@ -184,7 +161,6 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
     const employee$ = this.employeeService.get(id, {});
     const user$ = this.userService.find({ query: { personId: auth.data.personId } });
     Observable.forkJoin([Observable.fromPromise(employee$), Observable.fromPromise(user$)]).subscribe(results => {
-      console.log(results)
       this.employee = <Employee>{};
       this.selectedPerson = <Person>{};
       this.loadIndicatorVisible = false;
@@ -259,6 +235,8 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.assignUnitPop = false;
     this.createWorkspace = false;
     this.editBasicPop = false;
+    this.userPrivileges = false;
+
   }
   show_changeUserImg() {
     this.changeUserImg = true;
@@ -313,31 +291,28 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.employee.departmentId = this.selectedValue;
     this.employeeService.update(this.employee).then(value => {
       this.employee = value;
+      this.systemService.announceSweetProxy('Employee information successfully updated.', 'success');
       this.editDepartment = !this.editDepartment;
     });
   }
   UpdatePerson() {
-    const person = this.employee.personDetails;
-    this.biodatas = !this.biodatas;
-    this.personService.update(person).then(payload => {
-      console.log(payload);
-    });
+    // const person = this.employee.personDetails;
+    // this.biodatas = !this.biodatas;
+    // this.personService.update(person).then(payload => {
+    // });
   }
   UpdatePersonContact() {
-    const person = this.employee.personDetails;
-    this.contacts = !this.contacts;
-    console.log(person);
-    this.personService.update(person).then(payload => {
-      console.log(payload);
-    }, error => {
-      console.log(error);
-    });
+    // const person = this.employee.personDetails;
+    // this.contacts = !this.contacts;
+    // this.personService.update(person).then(payload => {
+    // }, error => {
+    // });
   }
   UpdatePersonNextOfKin() {
-    const person = this.employee.personDetails;
-    this.nextofkin = !this.nextofkin;
-    this.personService.update(person).then(payload => {
-    });
+    // const person = this.employee.personDetails;
+    // this.nextofkin = !this.nextofkin;
+    // this.personService.update(person).then(payload => {
+    // });
   }
   toggleDepartmentShow() {
     this.editDepartment = !this.editDepartment;
@@ -360,4 +335,9 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
   nextofkinShow() {
     this.nextofkin = !this.nextofkin;
   }
+  employeeAccessRoleShow() {
+    this.userPrivileges = !this.userPrivileges;
+    
+  }
+
 }

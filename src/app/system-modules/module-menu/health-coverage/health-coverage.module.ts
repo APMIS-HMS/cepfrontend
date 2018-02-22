@@ -1,3 +1,4 @@
+import { OnlyMaterialModule } from './../../../shared-common-modules/only-material-module';
 import { FacilityFamilyCoverService } from './../../../services/facility-manager/setup/facility-family-cover.service';
 import { FacilityCompanyCoverService } from './../../../services/facility-manager/setup/facility-company-cover.service';
 import { NgModule } from '@angular/core';
@@ -64,6 +65,7 @@ import { RecievePaymentComponent } from './recieve-payment/recieve-payment.compo
     exports: [
     ],
     imports: [
+        OnlyMaterialModule,
         MaterialModule,
         healthCoverRoutes
     ],

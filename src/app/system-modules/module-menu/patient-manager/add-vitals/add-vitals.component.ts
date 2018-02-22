@@ -1,3 +1,4 @@
+import { AuthFacadeService } from './../../../service-facade/auth-facade.service';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder } from '@angular/forms';
 import {
@@ -7,6 +8,7 @@ import {
 import { Facility, Documentation, Employee, Patient, PatientDocumentation, Document } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
+import { error } from 'util';
 
 
 @Component({
@@ -15,6 +17,7 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./add-vitals.component.scss']
 })
 export class AddVitalsComponent implements OnInit {
+  user: any;
   @Input() patient: any = <any>{};
   @Output() refreshVitalsChanged = new EventEmitter();
   mainErr = true;
@@ -57,13 +60,17 @@ export class AddVitalsComponent implements OnInit {
     private _FormsService: FormsService,
     private _PatientService: PatientService,
     private _facilityService: FacilitiesService,
+    private _authFacadeServic:AuthFacadeService,
     private _vitalService: VitalService) {
-    this.loginEmployee = <Employee>this._locker.getObject('loginEmployee');
+    this._authFacadeServic.getLogingEmployee().then((payload:any)=>{
+      this.loginEmployee = payload;
+    })
   }
 
   ngOnInit() {
     this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
     const auth: any = this._locker.getObject('auth');
+    this.user = auth;
     this.getVitalLocation();
     this.getVitalPosition();
     this.getVitalRythm();
@@ -140,12 +147,12 @@ export class AddVitalsComponent implements OnInit {
 
 
   getPersonDocumentation() {
-    this.documentationService.find({ query: { 'personId._id': this.patient.personId } }).subscribe((payload: any) => {
+    this.documentationService.find({ query: { 'personId': this.patient.personId } }).subscribe((payload: any) => {
      
       if (payload.data.length === 0) {
         this.patientDocumentation.personId = this.patient.personDetails;
         this.patientDocumentation.documentations = [];
-        this.documentationService.create(this.patientDocumentation).subscribe(pload => {
+        this.documentationService.create(this.patientDocumentation).subscribe(pload => { 
           this.patientDocumentation = pload;
         })
       } else {
@@ -155,7 +162,7 @@ export class AddVitalsComponent implements OnInit {
           this.documentationService.find({
             query:
             {
-              'personId._id': this.patient.personId, 'documentations.patientId': this.patient._id,
+              'personId': this.patient.personId, 'documentations.patientId': this.patient._id,
             }
           }).subscribe((mload: any) => {
             if (mload.data.length > 0) {
@@ -180,17 +187,17 @@ export class AddVitalsComponent implements OnInit {
   getVitalPosition() {
     this._vitalPositionService.findAll().then(payload => {
       this.vitalPosition = payload.data;
-    });
+    },error=>{});
   }
   getVitalRythm() {
     this._vitalRythmService.findAll().then(payload => {
       this.vitalRythm = payload.data;
-    });
+    },error=>{});
   }
   getVitalLocation() {
     this._vitaLocationService.findAll().then(payload => {
       this.vitalLocation = payload.data;
-    });
+    },error=>{});
   }
 
   close_onClick() {
@@ -199,7 +206,6 @@ export class AddVitalsComponent implements OnInit {
 
   addVitals(valid, value) {
     if (valid) {
-      console.log(this.patient);
       this.disableSaveBtn = true;
       this.saveBtnText = "Processing... <i class='fa fa-spinner fa-spin'></i>";
       let isExisting = false;
@@ -226,7 +232,7 @@ export class AddVitalsComponent implements OnInit {
       vitalValue.bloodPressure = this.bloodPressure;
       vitalValue.abdominalCondition = this.abdominal;
       vitalValue.facilityObj = this._locker.getObject('miniFacility');
-      vitalValue.employeeObj = this._facilityService.trimEmployee(this.loginEmployee);
+      vitalValue.employeeObj = this.loginEmployee;
       vitalValue.patientId = this.patient._id;
       vitalValue.documentType = this.selectedForm;
       vitalValue.personId = this.patient.personDetails;
@@ -235,15 +241,16 @@ export class AddVitalsComponent implements OnInit {
         patientId: this.patient._id,
         personId: this.patient.personDetails._id
       }
-      console.log(vitalValue);
-      this._vitalService.post(vitalValue, params).then(payload => {
+      this._vitalService.create(vitalValue, params).then(payload => {
         this.frmAddVitals.reset();
         this.disableSaveBtn = false;
         this.saveBtnText = "Add Vitals";
-        this.refreshVitalsChanged.emit(payload);
         this._notification('Success', 'Vitals saved successfully');
+        this.refreshVitalsChanged.emit(payload);
+       
       },error=>{
-        console.log(error);
+        this._notification('Error', 'There was an error while saving the vitals');
+        this.disableSaveBtn = false;
       })
 
       // this._ServerDateService.find({ query: {} }).then(datePayload => {
@@ -340,7 +347,7 @@ export class AddVitalsComponent implements OnInit {
 
   private _notification(type: string, text: string): void {
 		this._facilityService.announceNotification({
-			users: [this.loginedUser._id],
+			users: [this.user._id],
 			type: type,
 			text: text
 		});

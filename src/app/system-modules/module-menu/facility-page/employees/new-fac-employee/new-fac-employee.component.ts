@@ -1,3 +1,7 @@
+import { error } from 'util';
+import { HTML_SAVE_PATIENT } from './../../../../../shared-module/helpers/global-config';
+import { TitleCasePipe } from '@angular/common';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { CountryServiceFacadeService } from './../../../../service-facade/country-service-facade.service';
 import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
@@ -6,12 +10,13 @@ import {
     ProfessionService, RelationshipService, MaritalStatusService, GenderService, TitleService, CountriesService, EmployeeService,
     PersonService, UserService
 } from '../../../../../services/facility-manager/setup/index';
-
+import { EMAIL_REGEX, PHONE_REGEX, ALPHABET_REGEX } from 'app/shared-module/helpers/global-config';
 import {
     Facility, Address, Profession, Relationship, Employee, Person, Department, MinorLocation, Gender, Title, Country, User, Role
 } from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
+import { SecurityQuestionsService } from 'app/services/facility-manager/setup/security-questions.service';
 
 @Component({
     selector: 'app-new-fac-employee',
@@ -19,6 +24,14 @@ import { Observable } from 'rxjs/Observable';
     styleUrls: ['./new-fac-employee.component.scss']
 })
 export class NewFacEmployeeComponent implements OnInit {
+
+    securityQuestions: any[] = [];
+
+    isSuccessful = false;
+    isSaving = false;
+    validating = false;
+    duplicate = false;
+
 
     mainErr = true;
     skipNok = false;
@@ -31,12 +44,14 @@ export class NewFacEmployeeComponent implements OnInit {
     frmNewPerson2_show = false;
     frmNewPerson3_show = false;
     frmNewEmp4_show = false;
+    frmPerson_show = false;
 
     newEmpIdControl = new FormControl();
     public frmNewEmp1: FormGroup;
     public frmNewEmp2: FormGroup;
     public frmNewEmp3: FormGroup;
     public frmNewEmp4: FormGroup;
+    public frmPerson: FormGroup;
 
     @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
     @ViewChild('cropper', undefined)
@@ -72,6 +87,9 @@ export class NewFacEmployeeComponent implements OnInit {
         private professionService: ProfessionService,
         private locker: CoolLocalStorage, private employeeService: EmployeeService,
         private personService: PersonService, private userService: UserService,
+        private systemModuleService: SystemModuleService,
+        private titleCasePipe: TitleCasePipe,
+        private securityQuestionService: SecurityQuestionsService,
         private countryFacadeService: CountryServiceFacadeService
     ) {
         this.cropperSettings = new CropperSettings();
@@ -117,6 +135,54 @@ export class NewFacEmployeeComponent implements OnInit {
             this.errMsg = '';
         });
 
+        this.frmPerson = this.formBuilder.group({
+            persontitle: [new Date(), [<any>Validators.required]],
+            firstname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+            lastname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+            gender: [[<any>Validators.minLength(2)]],
+            dob: [new Date(), [<any>Validators.required]],
+            motherMaidenName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+            securityQuestion: ['', [<any>Validators.required]],
+            securityAnswer: ['', [<any>Validators.required]],
+            // email: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
+            phone: ['', [<any>Validators.required, <any>Validators.pattern(PHONE_REGEX)]]
+        });
+
+
+        this.frmPerson.valueChanges
+            .debounceTime(400)
+            .distinctUntilChanged()
+            .subscribe(value => {
+                this.errMsg = '';
+                this.mainErr = true;
+                this.validating = true;
+                this.personService.searchPerson({
+                    query: {
+                        firstName: value.firstname,
+                        lastName: value.lastname,
+                        primaryContactPhoneNo: value.phone,
+                        motherMaidenName: value.motherMaidenName,
+                        isValidating: true
+                    }
+                }).then(payload => {
+                    this.validating = false;
+                    if (payload.status === 'success') {
+                        this.duplicate = true;
+                        this.errMsg = 'Duplicate record detected, please check and try again!';
+                        this.mainErr = false;
+                    } else {
+                        this.duplicate = false;
+                    }
+                }, error => {
+                });
+            });
+
+
+
+
+
+
+
         this.frmNewEmp1 = this.formBuilder.group({
             empTitle: ['', [<any>Validators.required]],
             empFirstName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(20)]],
@@ -146,7 +212,6 @@ export class NewFacEmployeeComponent implements OnInit {
             this.countryFacadeService.getOnlyLGAndCities(country, value, true).then((lgsAndCities: any) => {
                 this.lgs = lgsAndCities.lgs;
             }).catch(err => {
-                console.log(err);
             });
         });
 
@@ -170,7 +235,6 @@ export class NewFacEmployeeComponent implements OnInit {
             this.countryFacadeService.getOnlyLGAndCities(country, value, true).then((lgsAndCities: any) => {
                 this.cities = lgsAndCities.cities;
             }).catch(err => {
-                console.log(err);
             });
         });
         this.frmNewEmp3 = this.formBuilder.group({
@@ -228,6 +292,9 @@ export class NewFacEmployeeComponent implements OnInit {
         this.frmNewEmp4.controls['empJobTitle'].valueChanges.subscribe((value) => {
             this.cadres = value.caders;
         });
+
+        this.getSecurityQuestions();
+
     }
     prime() {
         const profession$ = Observable.fromPromise(this.professionService.findAll());
@@ -245,6 +312,17 @@ export class NewFacEmployeeComponent implements OnInit {
             this.countries = results[5].data;
         });
     }
+    validatingPerson() {
+        return this.validating || this.duplicate;
+    }
+    getSecurityQuestions() {
+        this.securityQuestionService.find({})
+            .then(payload => {
+                this.securityQuestions = payload.data;
+            }, error => {
+
+            });
+    }
     empApmisID() {
         // validate apimisID
 
@@ -253,7 +331,7 @@ export class NewFacEmployeeComponent implements OnInit {
         })).mergeMap((person: any) => {
             if (person.data.length > 0) {
                 this.selectedPerson = person.data[0];
-                return Observable.fromPromise(this.employeeService.find({ query: { personId: this.selectedPerson._id } }));
+                return Observable.fromPromise(this.employeeService.find({ query: { personId: this.selectedPerson._id, facilityId:this.facility._id } }));
             } else {
                 this.errMsg = 'Invalid APMIS ID, correct the value entered and try again!';
                 this.mainErr = false;
@@ -323,7 +401,8 @@ export class NewFacEmployeeComponent implements OnInit {
     }
 
     newPerson1_show() {
-        this.frmNewPerson1_show = true;
+        this.frmPerson_show = true;
+        this.frmNewPerson1_show = false;
         this.frmNewPerson2_show = false;
         this.frmNewPerson3_show = false;
         this.frmNewEmp4_show = false;
@@ -507,6 +586,7 @@ export class NewFacEmployeeComponent implements OnInit {
 
     }
     saveEmployee() {
+        this.systemModuleService.on();
         const model: Employee = <Employee>{};
         model.facilityId = this.facility._id;
         model.departmentId = this.frmNewEmp4.controls['empDept'].value;
@@ -523,18 +603,98 @@ export class NewFacEmployeeComponent implements OnInit {
         model.professionId = this.frmNewEmp4.controls['empJobTitle'].value;
         model.cadre = this.frmNewEmp4.controls['empLevel'].value;
 
+    
         this.employeeService.create(model).then(payload => {
-            console.log(payload);
-            this.frmNewPerson1_show = false;
-            this.frmNewPerson2_show = false;
-            this.frmNewPerson3_show = false;
-            this.frmNewEmp4_show = false;
-            this.apmisId_show = false;
-            this.mainErr = true;
 
-            this.closeModal.emit(true);
+            this.employeeService.saveEmployee(model).then(pay =>{
+                this.frmNewPerson1_show = false;
+                this.frmNewPerson2_show = false;
+                this.frmNewPerson3_show = false;
+                this.frmNewEmp4_show = false;
+                this.apmisId_show = false;
+                this.mainErr = true;
+                this.systemModuleService.off();
+                this.systemModuleService.announceSweetProxy('Employee created successfully!', 'success');
+                this.closeModal.emit(true);
+            }, err =>{
+                this.systemModuleService.announceSweetProxy('There was an error saving employee, try again!', error);
+            })
+              
+        }).catch(err => {
         });
     }
+    submit(frm, valid) {
+
+        if (valid) {
+
+            this.isSaving = true;
+            this.systemModuleService.on();
+            const personModel = <any>{
+                title: this.titleCasePipe.transform(this.frmPerson.controls['persontitle'].value),
+                firstName: this.titleCasePipe.transform(this.frmPerson.controls['firstname'].value),
+                lastName: this.titleCasePipe.transform(this.frmPerson.controls['lastname'].value),
+                gender: this.frmPerson.controls['gender'].value,
+                dateOfBirth: this.frmPerson.controls['dob'].value,
+                motherMaidenName: this.titleCasePipe.transform(this.frmPerson.controls['motherMaidenName'].value),
+                // email: this.frmPerson.controls['email'].value,
+                primaryContactPhoneNo: this.frmPerson.controls['phone'].value,
+                securityQuestion: this.frmPerson.controls['securityQuestion'].value,
+                securityAnswer: this.titleCasePipe.transform(this.frmPerson.controls['securityAnswer'].value)
+            };
+            let body = {
+                person: personModel
+            }
+            const errMsg = 'There was an error while creating person, try again!';
+            this.personService.createPerson(body).then((ppayload) => {
+                this.isSaving = false;
+                this.isSuccessful = true;
+                this.systemModuleService.off();
+                this.selectedPerson = ppayload;
+                // this.isSuccessful = true;
+                // let text = this.frmPerson.controls['firstname'].value + ' '
+                //     + this.frmPerson.controls['lastname'].value + ' '
+                //     + 'added successful';
+                // this.frmPerson.reset();
+                // this.isSaving = false;
+                // this.systemModuleService.off();
+                // this.systemModuleService.announceSweetProxy(text, 'success', this, HTML_SAVE_PATIENT);
+
+                this.frmNewPerson1_show = false;
+                this.frmPerson_show = false;
+                this.frmNewPerson2_show = false;
+                this.frmNewPerson3_show = false;
+                this.frmNewEmp4_show = true;
+                this.apmisId_show = false;
+            }, err => {
+                this.isSaving = false;
+                this.systemModuleService.off();
+                this.systemModuleService.announceSweetProxy(errMsg, 'error');
+            }).catch(err => {
+                this.isSaving = false;
+                this.systemModuleService.off();
+                this.systemModuleService.announceSweetProxy(errMsg, 'error');
+            });
+        } else {
+            this.isSaving = false;
+            this.mainErr = false;
+            this.errMsg = 'An error has occured, please check and try again!';
+            this.systemModuleService.off();
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    }
+
     newEmp4(valid, val) {
         if (valid) {
             if (val.empDept === '' || val.empLoc === '' || val.empJobTitle === '') {
@@ -572,13 +732,10 @@ export class NewFacEmployeeComponent implements OnInit {
     onEmpLgaChange(val) { }
     onEmpMaritalStatusChange(val) { }
     onEmpDeptChange(val) {
-        console.log(val)
         this.units = [];
         if (val !== undefined) {
             let deptIndex = this.facility.departments.findIndex(x => x.name === val);
-            console.log(deptIndex)
             if (deptIndex > -1) {
-                console.log(this.facility.departments[deptIndex].units);
                 this.units = this.facility.departments[deptIndex].units;
             }
 
@@ -590,9 +747,7 @@ export class NewFacEmployeeComponent implements OnInit {
         this.cadres = [];
         if (val !== undefined) {
             let proIndex = this.professions.findIndex(x => x.name === val);
-            console.log(proIndex);
             if (proIndex > -1) {
-                console.log(this.professions[proIndex])
                 this.cadres = this.professions[proIndex].caders;
             }
         }

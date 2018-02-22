@@ -30,7 +30,7 @@
                 <div class="basic-info-wrap">
                     <div class="basic-info-name">{{employee?.personDetails?.lastName}} {{employee?.personDetails?.firstName}}</div>
                     <div class="name-class">
-                        <div class="basic-info-others">{{employee?.department}}</div>
+                        <div class="basic-info-others">{{employee?.departmentId}}</div>
                         <div class="basic-info-others">{{employee?.personDetails?.email}}</div>
                         <div class="basic-info-others">{{employee?.personDetails?.primaryContactPhoneNo}}</div>
                     </div>
@@ -49,7 +49,7 @@
                     <button *ngIf="selectedUser?._id==undefined" (click)="generateUserShow()" [class.pg-menuActive]="requestContentArea" mat-raised-button>Generate User</button>
                     <button (click)="generateUnit()" [class.pg-menuActive]="externalContentArea" mat-raised-button>Assign Unit</button>
                     <button (click)="generateWorkSpace()" [class.pg-menuActive]="reportContentArea" mat-raised-button>Assign Workspace</button>
-                    <button *ngIf="selectedUser?._id != undefined" (click)="editUserShow()" [class.pg-menuActive]="workbenchContentArea" mat-raised-button>User Privileges</button>
+                    <button *ngIf="selectedUser?._id != undefined" (click)="employeeAccessRoleShow()" [class.pg-menuActive]="workbenchContentArea" mat-raised-button>User Privileges</button>
                     <button *ngIf="employee?.isActive" (click)="toggleActivate()" [class.pg-menuActive]="investigationContentArea" style="background-color:#E53935 !important;" mat-raised-button>Deactivate Employee</button>
                     <!-- <button [hidden]="employee?.isActive" [class.pg-menuActive]="investigationContentArea" style="color:#E53935;" mat-raised-button>Deactivate Employee</button> -->
                     <button *ngIf="!employee?.isActive" (click)="toggleActivate()" [class.pg-menuActive]="pricingContentArea" style="background-color: #43A047 !important;" mat-raised-button>Activate Employee</button>
@@ -205,7 +205,7 @@
                         <div class="lhs">Home Address</div>
                         <div *ngIf="!contacts" class="rhs">
                             {{employee?.personDetails?.homeAddress?.street}}
-                            <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span> {{employee?.personDetails?.homeAddress?.city}}
+                            <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span> {{employee?.personDetails?.homeAddress?.lga}}
                             <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span>{{employee?.personDetails?.homeAddress?.state}}
                             <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">, </span> {{employee?.personDetails?.homeAddress?.country}}
                             <span *ngIf="employee?.personDetails?.homeAddress?.street !== undefined">.</span>
@@ -338,5 +338,8 @@
     </div>
     <div *ngIf="editBasicPop" class="modal-overlay">
         <app-edit-emp-basic [departmentBool]="departmentbool" [selectedPerson]="employee.personDetails" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-edit-emp-basic>
+    </div>
+    <div *ngIf="userPrivileges" class="modal-overlay">
+        <app-employee-access-roles [selectedEmployee]="employee" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-employee-access-roles>
     </div>
 </div>

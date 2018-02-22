@@ -1,21 +1,17 @@
-import { SocketService, RestService } from '../../../feathers/feathers.service';
+import { SocketService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 
 @Injectable()
 export class MakePaymentService {
   public _socket;
-  private _rest;
   constructor(
-    private _socketService: SocketService,
-    private _restService: RestService
-  ) {
-    this._rest = _restService.getService('make-payment');
-    this._socket = _socketService.getService('make-payment');
+    private _socketService: SocketService) {
+    this._socket = _socketService.getService('make-payments');
     
   }
 
   create(obj: any) {
-    return this._rest.create(obj);
+    return this._socket.create(obj);
   }
 
 }

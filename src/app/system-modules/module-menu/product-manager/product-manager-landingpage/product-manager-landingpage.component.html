@@ -69,10 +69,6 @@
                     <i class="fa fa-trash"></i>
                 </td>
             </tr>
-
-            <!--<div *ngIf="loadIndicatorVisible" class="div_loading">
-                <mat-spinner></mat-spinner>
-            </div>-->
         </tbody>
     </table>
 
@@ -88,7 +84,7 @@
 
 <!--end float button -->
 <div *ngIf="addProduct" class="modal-overlay">
-    <app-new-product [selectedProduct]="selectedProduct" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-product>
+    <app-new-product [selectedProduct]="selectedProduct" (refreshProductList)="onRefreshProductList($event)" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-product>
 </div>
 
 <div *ngIf="slideProductDetails" class="inPatient-activityTimeline shadow-RB animated slideInRight">

@@ -1,43 +1,190 @@
+    .frm-label {
+        position: absolute;
+        top: -10px;
+        left: 0;
+        font-size: 1.2rem;
+        color: #515151;
+    }
+    
+    .modalbase-wrap {
+        width: auto;
+    }
+    
+    .text-center {
+        text-align: center;
+        margin-top: 14px;
+    }
+    
+    .frm-checkBox-wrap {
+        //border: 1px solid #eee;
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        padding: 5px;
+        margin: 0px auto;
+        color: black;
+    }
+    
+    .modal_title {
+        text-align: center;
+        border-bottom: 0px;
+        color: #0d47a1;
+        margin-bottom: 0;
+    }
+    
+    textarea {
+        // border: 1px solid #626262;
+        // width: 100%;
+        // background: transparent;
+        // border-radius: 10px;
+        // margin-top: 10px;
+        // height: 100px;
+    }
+    
+    .mainfrmwrap {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+    
+    .tableHeader {
+        background-color: #aaa;
+    }
+    
+    .tblActions {
+        cursor: pointer;
+        text-align: center;
+    }
+    
+    .tblActions:hover {
+        color: #4bb8ef;
+    }
+    
+    .text {
+        color: black;
+    }
+    
+    tr,
+    td {
+        cursor: default;
+    }
+    
+    td {
+        position: relative;
+    }
+    
+    th,
+    td {
+        height: auto;
+        padding: 3px;
+    }
+    
+    .listItem {
+        color: black;
+    }
+    
+    .sec-1 {
+        min-width: 40%;
+        width: 100%;
+        border: 1px solid #eee;
+        border-radius: 7px;
+        padding-left: 5px;
+        padding-right: 5px;
+        color: black;
+    }
+    
+    .sec-2 {
+        width: 50%;
+        //margin-bottom: 20px;
+        border: 1px solid #eee;
+        border-radius: 7px;
+        padding-left: 10px;
+        padding-right: 5px;
+    }
+    
+    .faplus:hover {
+        background: #8e8e8e;
+        color: #fff;
+    }
+    
+    .faplus {
+        border: 1px solid #8e8e8e;
+        color: #8e8e8e;
+        padding: 5px;
+        width: 26px;
+        height: 26px;
+        text-align: center;
+        border-radius: 100%;
+        cursor: pointer;
+        line-height: 27px;
+        margin-right: 10px;
+    }
+    
+    .checkbox-wrap {
+        //display: flex;
+        //width: 100%;
+    }
+    
+    .check-item {
+        position: relative;
+        display: flex;
+        width: 140px;
+    }
+    
+    .chk-label {
+        top: -10px;
+        left: 0;
+        font-size: 1.2rem;
+        color: #515151;
+        margin-top: 4px;
+        margin-left: 2px;
+    }
+    
+    .survery legend {
+        text-align: center !important;
+        margin-top: 4px;
+        margin-left: 10px;
+        border-bottom: 0;
+    }
+    
+    .chk-group-wrap {
+        margin-top: 10px;
+        border-radius: 10px;
+        border: 1px solid #ccc;
+        padding: 15px;
+        height: 145px;
+        overflow-y: auto;
+        margin-bottom: 10px;
+    }
+    
+    .chk-group-wrap .checkbox-wrap {
+        flex-wrap: wrap;
+    }
+    
+    .sec-2 .frm-label {
+        top: -20px;
+    }
+    
+    .line-up {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
-.facility-title{
-    margin-bottom: 20px;
-}
-.cta-1{
-    font-size: 1.4rem;
-}
-.modal-baseWrap {
-    width: 340px;
-}
-.suggestionFeeds{
-    width: 245px;
-    margin: 0 auto;
-    display: flex;
-    flex-wrap: wrap;
-}
-.suggestedItem{
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    max-width: 185px;
-    background: #BDBDBD;
-    border-radius: 20px;
-    padding: 3px;
-    border: 0.5px solid #9E9E9E;
-    margin-top: 5px;
-    margin-left: 3px;
-    cursor: pointer;
-}
-.suggestedItem:hover{
-    background: #9E9E9E;
-}
-.suggestedItem img{
-    width: 20px;
-    margin-right: 10px;
-}
-.suggetedName {
-    font-size: 1.2rem;
-}
+    .panelcost{
+        align-items: right;
+        border-radius: 25px;
+    }
 
-.apmis-blue {
-    color: #fff;
-}
+    .input-wrap {
+        width: 90%;
+        max-width: 500px;
+        margin: 0 auto;
+        margin-top: 20px;
+    }
+
+    .td-icos {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+    }

@@ -12,3 +12,11 @@
     width: 80px;
     margin: 0 auto;
 }
+.tbl-resp-wrap{
+    min-width: 100%;
+    overflow-y: auto; 
+    padding-bottom: 100px;
+}
+.tbl-resp-wrap table{
+    min-width: 850px;
+}

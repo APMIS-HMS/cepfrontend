@@ -5,6 +5,9 @@ import { Employee, Facility, User } from '../../../../models/index';
 import { WardEmitterService } from '../../../../services/facility-manager/ward-emitter.service';
 import { ClinicHelperService } from '../../../../system-modules/module-menu/clinic/services/clinic-helper.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
+import { LocationService } from 'app/services/module-manager/setup';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-ward-check-in',
@@ -21,62 +24,64 @@ export class WardCheckInComponent implements OnInit {
 	wardCheckin: FormGroup;
 	wards: any[] = [];
   locations: any[] = [];
-  checkInBtnText: String = '<i class="fa fa-check-circle"></i> Check In';
   switchBtnText: String = 'Switch To Room';
+  addCheckin: boolean = true;
+  addingCheckin: boolean = false;
   disableSwitch: boolean = false;
   disableCheckIn: boolean = false;
 
 	constructor(
 		public formBuilder: FormBuilder,
 		public clinicHelperService: ClinicHelperService,
-		public facilityService: FacilitiesService,
+    public facilityService: FacilitiesService,
+    private _authFacadeService: AuthFacadeService,
     public employeeService: EmployeeService,
     private _wardEventEmitter: WardEmitterService,
-		public locker: CoolLocalStorage
+    private _locationService: LocationService,
+    public locker: CoolLocalStorage,
+    private _systemModuleService: SystemModuleService
 	) {
-
+    this._authFacadeService.getLogingEmployee().then((res: any) => {
+      if (!!res._id) {
+        this.loginEmployee = res;
+        if (!!this.loginEmployee && !!this.loginEmployee.workSpaces && this.loginEmployee.workSpaces.length > 0) {
+          this.loginEmployee.workSpaces.forEach(workspace => {
+            if (workspace.isActive && workspace.locations.length > 0) {
+              workspace.locations.forEach(x => {
+                if (x.isActive && x.majorLocationId.name === 'Ward') {
+                  this.locations.push(x.majorLocationId);
+                }
+              });
+            }
+          });
+        }
+      } else {
+        this._notification('Error', 'Couldn\'t get Logged in user! Please try again later');
+      }
+    }).catch(err => {
+    });
 	}
 
 	ngOnInit() {
-    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.facility = <Facility>this.locker.getObject('selectedFacility');
     this.miniFacility = <Facility>this.locker.getObject('miniFacility');
     this.user = <User>this.locker.getObject('auth');
 
-		if (this.loginEmployee.workSpaces !== undefined) {
-			this.loginEmployee.workSpaces.forEach(workspace => {
-				if (workspace.isActive && workspace.locations.length > 0) {
-					workspace.locations.forEach(x => {
-					  if (x.isActive && x.majorLocationId.name === 'Ward') {
-						  this.locations.push(x.majorLocationId);
-					  }
-					});
-				  }
-			})
-
-		}
+    this._getMajorLocation();
 
 		this.wardCheckin = this.formBuilder.group({
-			location: ['', [<any>Validators.required]],
 			room: ['', [<any>Validators.required]],
 			isDefault: [true, [<any>Validators.required]]
     });
-
-		this.wardCheckin.controls['location'].valueChanges.subscribe(value => {
-			this.facilityService.find({ query: { '_id': this.facility._id, 'minorLocations.locationId': value._id } }).then(res => {
-				if (res.data.length > 0) {
-					this.wards = res.data[0].minorLocations.filter(x => x.locationId === value._id);
-				}
-			});
-		});
 	}
 
 	checkIn(valid: boolean, value: any) {
     if (valid) {
       this.disableCheckIn = true;
-      this.checkInBtnText = '<i class="fa fa-spinner fa-spin"></i> Checking in...';
+      this.addCheckin = false;
+      this.addingCheckin = true;
       const checkIn: any = <any>{};
-      checkIn.majorLocationId = value.location;
+      // checkIn.majorLocationId = value.location;
       checkIn.minorLocationId = value.room;
       checkIn.lastLogin = new Date();
       checkIn.isOn = true;
@@ -105,11 +110,13 @@ export class WardCheckInComponent implements OnInit {
           }
         });
         const text = 'You have successfully checked into ' + value.room.name + ' ward';
-        this._notification('Success', text);
+        // this._notification('Success', text);
+        this._systemModuleService.announceSweetProxy(text, 'success');
         this.disableCheckIn = false;
+        this.addCheckin = true;
+        this.addingCheckin = false;
         this._wardEventEmitter.announceWardChange({ typeObject: keepCheckIn, type: 'ward' });
         this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'ward' });
-        this.checkInBtnText = '<i class="fa fa-check-circle"></i> Check In';
         this.close_onClick();
       });
     } else {
@@ -135,12 +142,38 @@ export class WardCheckInComponent implements OnInit {
       this.loginEmployee = payload;
       this.switchBtnText = 'Switch To Room';
       const text = 'You have successfully changed ward to ' + checkIn.minorLocationId.name + ' ward';
-      this._notification('Success', text);
-      this.disableSwitch = false;
+      // this._notification('Success', text);
+      this._systemModuleService.announceSweetProxy(text, 'success');
+      this.disableCheckIn = false;
+      this.addCheckin = true;
+      this.addingCheckin = false;
       this._wardEventEmitter.announceWardChange({ typeObject: keepCheckIn, type: 'ward' });
 			this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'ward' });
 			this.close_onClick();
 		});
+  }
+
+
+  private _getMajorLocation() {
+    this._locationService.find({ query: { name: 'Ward' } }).then(res => {
+      if (res.data.length > 0) {
+        const locationId = res.data[0]._id;
+        this._getFacilityWard(locationId);
+      }
+    }).catch(err => {
+    });
+  }
+
+
+  private _getFacilityWard(locationId) {
+    this.facilityService.find({
+      query: {
+        '_id': this.facility._id,
+        'minorLocations.locationId': locationId,
+      }
+    }).then(res => {
+      this.wards = res.data[0].minorLocations.filter(x => x.locationId === locationId);
+    }).catch(err => console.log(err));
   }
 
   // Notification

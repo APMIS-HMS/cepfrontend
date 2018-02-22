@@ -1,6 +1,6 @@
 @import "../../../facility-page-home.component.scss";
 .modal-baseWrap {
-    width: 560px;
+    width: 450px;
 }
 
 .modal-baseWrap .mat-input-container {
@@ -139,4 +139,8 @@
 
 .basic-info-others {
     text-align: center;
+}
+
+.cta-1 {
+    font-size: 1.5rem;
 }

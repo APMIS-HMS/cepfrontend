@@ -8,6 +8,8 @@ import { Location } from '../../../../models/index'
 import { Facility, MinorLocation, Employee, Tag, FacilityServicePrice, User} from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 
 @Component({
@@ -21,7 +23,7 @@ export class InvestigationPriceComponent implements OnInit {
   apmisLookupText = '';
   apmisLookupQuery = {};
   apmisLookupDisplayKey = 'name';
-  apmisLookupOtherKeys = ['laboratoryId.name']
+  apmisLookupOtherKeys = ['name']
 
   apmisInvestigationLookupUrl = 'investigations';
   apmisInvestigationLookupText = '';
@@ -51,12 +53,21 @@ export class InvestigationPriceComponent implements OnInit {
   selectedModifier: any = <any>{};
   loading: Boolean = true;
   foundPrice: Boolean = false;
+  selectedMajorLocation: any;
 
   constructor(private formBuilder: FormBuilder, private locker: CoolLocalStorage,
     private investigationService: InvestigationService, private workbenchService: WorkbenchService,
     private facilityPriceService: ServicePriceService, private tagService: TagService,
-    private _facilityService: FacilitiesService
-  ) { }
+    private _facilityService: FacilitiesService,
+    private _locationService: LocationService,
+    private _authFacadeService: AuthFacadeService,
+    private _systemModuleService: SystemModuleService
+  ) {
+    this._authFacadeService.getLogingEmployee().then((res: any) => {
+      this.loginEmployee = res;
+      this.getLaboratoryMajorLocation(this.loginEmployee);
+    }).catch(err => console.log(err));
+  }
 
   ngOnInit() {
     this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
@@ -71,12 +82,12 @@ export class InvestigationPriceComponent implements OnInit {
     this.frmNewPrice.controls['investigation'].valueChanges.subscribe(value => {
       if (value !== null && value.length === 0) {
         this.apmisInvestigationLookupQuery = {
-          'facilityId._id': this.selelctedFacility._id,
+          'facilityId': this.selelctedFacility._id,
           name: { $regex: -1, '$options': 'i' },
         }
       } else {
         this.apmisInvestigationLookupQuery = {
-          'facilityId._id': this.selelctedFacility._id,
+          'facilityId': this.selelctedFacility._id,
           name: { $regex: value, '$options': 'i' },
         }
       }
@@ -85,66 +96,69 @@ export class InvestigationPriceComponent implements OnInit {
     this.frmNewPrice.controls['workbench'].valueChanges.subscribe(value => {
       if (value !== null && value.length === 0) {
         this.apmisLookupQuery = {
-          'facilityId._id': this.selelctedFacility._id,
+          'facilityId': this.selelctedFacility._id,
           name: { $regex: -1, '$options': 'i' },
         }
       } else {
         this.apmisLookupQuery = {
-          'facilityId._id': this.selelctedFacility._id,
-          'laboratoryId._id': { $in: this.locationIds },
+          'facilityId': this.selelctedFacility._id,
+          'minorLocationId': { $in: this.locationIds },
           name: { $regex: value, '$options': 'i' },
         }
       }
     })
 
-  
-    if (this.loginEmployee.workSpaces !== undefined) {
-      this.loginEmployee.workSpaces.forEach(work => {
-        work.locations.forEach(loc => {
-          if (loc.majorLocationId.name === 'Laboratory') {
-            this.locationIds.push(loc.minorLocationId._id);
-          }
-        })
-      })
-
-    }
     this.getWorkBenches();
     this.getTags();
     this.getInvestigations();
   }
 
+  private _getLoginEmployee(loginEmployee, majorLocationId) {
+    if (loginEmployee.workSpaces !== undefined) {
+      loginEmployee.workSpaces.forEach(work => {
+        work.locations.forEach(loc => {
+          if (loc.majorLocationId === majorLocationId) {
+            this.locationIds.push(loc.minorLocationId);
+          }
+        })
+      });
+    }
+  }
+
   getInvestigations() {
-    console.log(this.checkingObject);
     this.investigationService.find({
       query: {
-        'facilityId._id': this.selelctedFacility._id,
+        'facilityId': this.selelctedFacility._id,
         'LaboratoryWorkbenches.laboratoryId._id': this.checkingObject.typeObject.minorLocationObject._id
         // "LaboratoryWorkbenches": { $elemMatch: { 'laboratoryId._id': this.checkingObject.typeObject.minorLocationObject._id } }
       }
-    }).then(payload => {
+    }).then(res => {
       this.loading = false;
-      this.investigations = payload.data;
+      if (res.data.length > 0) {
+        this.investigations = res.data;
+      }
     })
   }
   getWorkBenches() {
-    this.workbenchService.find({ query: { 'laboratoryId._id': { $in: this.locationIds } } })
-      .then(payload => {
-        this.workBenches = payload.data;
-      })
+    this.workbenchService.find({ query: { 'laboratoryId': { $in: this.locationIds } } }).then(res => {
+      if (res.data.length > 0) {
+        this.workBenches = res.data;
+      }
+    });
   }
   getTags() {
     this.checkingObject = this.locker.getObject('workbenchCheckingObject');
     if (this.checkingObject.typeObject !== undefined) {
       this.tagService.find({ query: {
         tagType: 'Laboratory Location', name: this.checkingObject.typeObject.minorLocationObject.name }
-      }).then(payload => {
-        if (payload.data.length > 0) {
-          this.selectedTag = payload.data[0];
+      }).then(res => {
+        if (res.data.length > 0) {
+          this.selectedTag = res.data[0];
         }
       });
     }
-
   }
+
   getLaboratoryFromInvestigation(labworkBenches) {
     let retVal = '';
     const labIndex = labworkBenches.forEach(item => {
@@ -202,12 +216,14 @@ export class InvestigationPriceComponent implements OnInit {
           delete item.tagDetails;
         }
 
-        if (item.tagId._id === this.selectedTag._id && item.tagId.tagType === 'Laboratory Location'
-          && item.tagId.name === this.checkingObject.typeObject.minorLocationObject.name) {
-          this.foundPrice = true;
-          this.selectedModifier = item;
-          this.selectedModifierIndex = i;
-          this.frmNewPrice.controls['price'].setValue(item.modifierValue);
+        if (!!this.selectedTag._id) {
+          if (item.tagId._id === this.selectedTag._id && item.tagId.tagType === 'Laboratory Location'
+            && item.tagId.name === this.checkingObject.typeObject.minorLocationObject.name) {
+            this.foundPrice = true;
+            this.selectedModifier = item;
+            this.selectedModifierIndex = i;
+            this.frmNewPrice.controls['price'].setValue(item.modifierValue);
+          }
         }
       })
       if (!this.foundPrice) {
@@ -224,64 +240,76 @@ export class InvestigationPriceComponent implements OnInit {
 
   }
   setPrice(valid, value) {
-    if (this.selectedTag.tagDetails !== undefined) {
-      delete this.selectedTag.tagDetails;
-    }
-    if (this.foundPrice) {
-      this.selectedModifier.modifierValue = this.frmNewPrice.controls['price'].value;
-      this.selectedFacilityServicePrice.modifiers[this.selectedModifierIndex] = this.selectedModifier;
-    } else {
-      const modifier: any = <any>{};
-      modifier.tagId = this.selectedTag;
-      modifier.modifierType = 'Amount';
-      modifier.modifierValue = this.frmNewPrice.controls['price'].value;
-      this.selectedFacilityServicePrice.modifiers.push(modifier);
-    }
-
-
-    const isLabExisting = false;
-    let labCollectionObject: any;
-    const labIndex = this.selectedInvestigation.LaboratoryWorkbenches.findIndex(x => x.laboratoryId._id === this.checkingObject.typeObject.minorLocationObject._id);
-    if (labIndex === -1) {
-      // is not existing
-      // create a new collection object;
-      labCollectionObject = {
-        laboratoryId: this.checkingObject.typeObject.minorLocationObject,
-        workbenches: [{ workBench: this.selectedWorkBench, price: this.frmNewPrice.controls['price'].value }],
+    if (valid) {
+      if (this.selectedTag.tagDetails !== undefined) {
+        delete this.selectedTag.tagDetails;
       }
-      this.selectedInvestigation.LaboratoryWorkbenches.push(labCollectionObject);
+      if (this.foundPrice) {
+        this.selectedModifier.modifierValue = this.frmNewPrice.controls['price'].value;
+        this.selectedFacilityServicePrice.modifiers[this.selectedModifierIndex] = this.selectedModifier;
+      } else {
+        const modifier: any = <any>{};
+        modifier.tagId = this.selectedTag;
+        modifier.modifierType = 'Amount';
+        modifier.modifierValue = this.frmNewPrice.controls['price'].value;
+        this.selectedFacilityServicePrice.modifiers.push(modifier);
+      }
 
+      const isLabExisting = false;
+      let labCollectionObject: any;
+      const labIndex = this.selectedInvestigation.LaboratoryWorkbenches.findIndex(x => x.laboratoryId._id === this.checkingObject.typeObject.minorLocationObject._id);
+
+      if (labIndex === -1) {
+        // is not existing
+        // create a new collection object;
+        labCollectionObject = {
+          laboratoryId: this.checkingObject.typeObject.minorLocationObject,
+          workbenches: [{ workBench: this.selectedWorkBench, price: value.price }],
+        }
+        this.selectedInvestigation.LaboratoryWorkbenches.push(labCollectionObject);
+      } else {
+        // is existing
+        labCollectionObject = this.selectedInvestigation.LaboratoryWorkbenches[labIndex];
+        const index = labCollectionObject.workbenches.findIndex(x => x.workBench._id === this.selectedWorkBench._id);
+        labCollectionObject.workbenches[index].price = value.price;
+        // labCollectionObject.workbenches[index].price = this.frmNewPrice.controls['price'].value;
+        // labCollectionObject.price = this.frmNewPrice.controls['price'].value;
+        this.selectedInvestigation.LaboratoryWorkbenches[labIndex] = labCollectionObject;
+      }
+
+      const updateInvestigation$ = Observable.fromPromise(this.investigationService.update(this.selectedInvestigation));
+      const updatePrice$ = Observable.fromPromise(this.facilityPriceService.update(this.selectedFacilityServicePrice));
+
+      Observable.forkJoin([updateInvestigation$, updatePrice$]).subscribe((result: any) => {
+        this.selectedInvestigation = result[0];
+        this.selectedFacilityServicePrice = result[1];
+
+        this.frmNewPrice.reset();
+        this.frmNewPrice.controls['investigation'].reset();
+        this.frmNewPrice.controls['workbench'].reset();
+        this.getInvestigations();
+        this.pricing_view = false;
+        this._systemModuleService.announceSweetProxy('Price has been set/updated successfully!', 'success');
+      });
+
+      // this.facilityPriceService.update(this.selectedFacilityServicePrice).then(payload => {
+      //   this.selectedFacilityServicePrice = payload;
+      //   this.frmNewPrice.reset();
+      //   this.frmNewPrice.controls['investigation'].reset();
+      //   this.frmNewPrice.controls['workbench'].reset();
+      // });
     } else {
-      // is existing
-      labCollectionObject = this.selectedInvestigation.LaboratoryWorkbenches[labIndex];
-      const index = labCollectionObject.workbenches.findIndex(x => x.workBench.id === this.selectedWorkBench._id);
-      labCollectionObject.workbenches[index].price = this.frmNewPrice.controls['price'].value;
-      // labCollectionObject.price = this.frmNewPrice.controls['price'].value;
-      this.selectedInvestigation.LaboratoryWorkbenches[labIndex] = labCollectionObject;
+      this._notification('Error', 'Please fill in all required fields!');
     }
+  }
 
-    const updateInvestigation$ = Observable.fromPromise(this.investigationService.update(this.selectedInvestigation));
-    const updatePrice$ = Observable.fromPromise(this.facilityPriceService.update(this.selectedFacilityServicePrice));
-
-    Observable.forkJoin([updateInvestigation$, updatePrice$]).subscribe((result: any) => {
-      this.selectedInvestigation = result[0];
-      this.selectedFacilityServicePrice = result[1];
-
-
-      this.frmNewPrice.reset();
-      this.frmNewPrice.controls['investigation'].reset();
-      this.frmNewPrice.controls['workbench'].reset();
-      this.getInvestigations();
-      // this.addToast('Price set/updated successfully');
-      this._notification('Success', 'Price set/updated successfully');
+  getLaboratoryMajorLocation(loginEmployee) {
+    this._locationService.find({ query: { name: 'Laboratory' } }).then(res => {
+      if (res.data.length > 0) {
+        this.selectedMajorLocation = res.data[0];
+        this._getLoginEmployee(loginEmployee, this.selectedMajorLocation._id);
+      }
     })
-
-    // this.facilityPriceService.update(this.selectedFacilityServicePrice).then(payload => {
-    //   this.selectedFacilityServicePrice = payload;
-    //   this.frmNewPrice.reset();
-    //   this.frmNewPrice.controls['investigation'].reset();
-    //   this.frmNewPrice.controls['workbench'].reset();
-    // });
   }
 
   private _notification(type: string, text: string): void {

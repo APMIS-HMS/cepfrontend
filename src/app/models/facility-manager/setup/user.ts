@@ -4,7 +4,7 @@ export interface User {
     email: string;
     password: string;
     personId: string;
-    facilitiesRole: Role[];
+    facilitiesRole: any[];
     person: any;
     corporateOrganisationId: string;
     passwordToken: string;
