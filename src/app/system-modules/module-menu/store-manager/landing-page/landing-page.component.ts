@@ -15,7 +15,7 @@ export class LandingPageComponent implements OnInit {
   selectedMinorLocation: MinorLocation = <MinorLocation>{};
   selectedStore: any = <any>{};
   newStore = false;
-  loading: boolean = true;
+  loading = true;
   minorLocations: MinorLocation[] = [];
   productTypes: any[] = [];
   stores: any[] = [];
@@ -52,7 +52,7 @@ export class LandingPageComponent implements OnInit {
     this.minorLocations = this.selectedFacility.minorLocations;
     this.getProductTypes();
 
-    let subscribeForPerson = this.searchControl.valueChanges
+    const subscribeForPerson = this.searchControl.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
       .switchMap((term: any[]) => this.storeService.find({
@@ -88,7 +88,7 @@ export class LandingPageComponent implements OnInit {
     this.loading = true;
     this.storeService.find({ query: { facilityId: this.selectedFacility._id } }).then(res => {
       this.loading = false;
-      if (res.data.length != 0) {
+      if (res.data.length !== 0) {
         this.stores = res.data;
       } else {
         this.stores = [];

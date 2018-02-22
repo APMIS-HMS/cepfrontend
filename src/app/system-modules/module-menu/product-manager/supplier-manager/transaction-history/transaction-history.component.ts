@@ -15,7 +15,7 @@ export class TransactionHistoryComponent implements OnInit {
   newPayment = false;
   paymentHistory = false;
   invoices = [];
-  selected_supplier = "Maiden Pharmaceuticals";
+  selected_supplier = 'Maiden Pharmaceuticals';
 
   frmFilterSupplier: FormControl = new FormControl();
 
@@ -31,7 +31,7 @@ export class TransactionHistoryComponent implements OnInit {
   ngOnInit() {
     this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
     this.route.params.subscribe(params => {
-      let id = params['id'];
+      const id = params['id'];
       if (id !== undefined) {
         this.invoiceService.find({ query: { supplierId: id, facilityId: this.selectedFacility._id } }).subscribe(value => {
           this.invoices = value.data;

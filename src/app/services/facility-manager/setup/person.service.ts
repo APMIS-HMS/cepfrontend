@@ -97,8 +97,8 @@ export class PersonService {
   }
 
   fundWallet(payload: any) {
-    // return this._fundWalletSocket.create(payload);
-    return this._fundWalletRest.create(payload);
+    return this._fundWalletSocket.create(payload);
+    // return this._fundWalletRest.create(payload);
   }
 
   // fundWallet(walletTransaction: WalletTransaction) {

@@ -187,7 +187,7 @@ export class WalletComponent implements OnInit {
     this._personService.fundWallet(walletTransaction).then((res: any) => {
       console.log(res);
       this.loading = false;
-      if (res.body.status === 'success') {
+      if (res.status === 'success') {
         this.paymentFormGroup.reset();
         this.paymentFormGroup.controls['fundAmount'].setValue(0);
         this.flutterwavePayment = false;
@@ -200,12 +200,6 @@ export class WalletComponent implements OnInit {
       }
     }).catch(err => {
       console.log(err);
-      // if (err instanceof Error) {
-      //   console.log('Error - ', err.message);
-      //   console.log('Error - ', err.stack);
-      // } else {
-      //   console.log('Error status - ${err.error}, and Error Detail - ${err.error}');
-      // }
     });
   }
 
