@@ -16,8 +16,6 @@ import { constructDependencies } from '@angular/core/src/di/reflective_provider'
 export class NewServiceComponent implements OnInit {
   frmNewservice: FormGroup;
   addPanelFormGroup: FormGroup;
-  panelNameControl = new FormControl();
-  costControl = new FormControl();
 
   facility: Facility = <Facility>{};
   categories: FacilityService[] = [];
@@ -27,11 +25,13 @@ export class NewServiceComponent implements OnInit {
   showPanel = false;
   showServelLayout = true;
   selectedServiceItems: any[] = [];
+  selectedIndex: any;
   priceItems: any[] = [];
   panelSearchControl = new FormControl();
   editPriceControl = new FormControl();
   newPanel = new FormControl();
   isDisableBtn = false;
+  selectedServices: any[] = [];
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() refreshService: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() selectedService: any;
@@ -53,7 +53,7 @@ export class NewServiceComponent implements OnInit {
     this.btnTitle = 'CREATE SERVICE';
     this.facility = <Facility>this._locker.getObject('selectedFacility');
     this.addNew();
-    this.allServices();
+    // this.allServices();
     this.onEditService();
 
     const subscribeForServiceDictionary = this.frmNewservice.controls['serviceName'].valueChanges
@@ -81,37 +81,51 @@ export class NewServiceComponent implements OnInit {
       .subscribe(value => {
         this.allServiceItems = [];
         this.systemModuleService.on();
-        this._facilitiesServiceCategoryService.allServices({
-          query:
-            {
-              facilityId: this.facility._id,
-              isQueryService: true,
-              searchString: value
-            }
-        }).then(payload => {
+        if (value !== '') {
+          this._facilitiesServiceCategoryService.allServices({
+            query:
+              {
+                facilityId: this.facility._id,
+                isQueryService: true,
+                searchString: value
+              }
+          }).then(payload => {
+            // this.allServiceItems = payload.data;
+            this.panelItemTemplate(payload);
+            this.systemModuleService.off();
+          })
+        } else {
+          this.allServiceItems = [];
           this.systemModuleService.off();
-          this.panelItemTemplate(payload);
-        })
+        }
       });
 
     this.getCategories();
     this.frmNewservice.controls['isPanel'].valueChanges.subscribe(value => {
       if (value) {
-        this.showServelLayout = false;
         this.showPanel = true;
       } else {
-        this.showServelLayout = true;
         this.showPanel = false;
       }
     });
   }
 
-  onCheckPanelItem(event, item, index) {
-    if (event.srcElement.checked) {
-      this.selectedServiceItems.push(item);
-    } else {
-      this.selectedServiceItems.splice(index, 1);
+  onRemoveServiceItem(item, i) {
+    this.selectedIndex = i;
+    this.systemModuleService.announceSweetProxy('You are about to delete this service', 'question', this);
+  }
+  sweetAlertCallback(result) {
+    if (result.value) {
+      this.selectedServiceItems.splice(this.selectedIndex, 1);
     }
+  }
+
+  onCheckPanelItem(event, item, index) {
+    // if (event.srcElement.checked) {
+    //   this.selectedServiceItems.push(item);
+    // } else {
+    //   this.selectedServiceItems.splice(index, 1);
+    // }
   }
 
   compareCategory(l1: any, l2: any) {
@@ -129,14 +143,8 @@ export class NewServiceComponent implements OnInit {
       let basedPrice = this.selectedService.price.filter(x => x.isBase === true)[0];
       this.frmNewservice.controls['servicePrice'].setValue(basedPrice.price);
       this.priceItems = JSON.parse(JSON.stringify(this.selectedService.price));
-      if (this.selectedService.panels !== undefined) {
-        if (this.selectedService.panels.length > 0) {
-          this.btnPanel = 'UPDATE PANEL';
-          this.panelNameControl.setValue(this.selectedService.name);
-          this.costControl.setValue(basedPrice.price);
-        }
-      }
-      this.selectedService.panels
+      
+      this.selectedServiceItems = this.selectedService.panels;
     }
     this.frmNewservice.controls['serviceCat'].setValue(this.selectedService.categoryId);
   }
@@ -166,17 +174,6 @@ export class NewServiceComponent implements OnInit {
     this.frmNewservice.controls['serviceName'].setValue(dic.word);
   }
 
-  addPanel() {
-    let value = {
-      name: this.panelNameControl.value,
-      price: this.costControl.value,
-      facilityId: this.facility._id,
-      categoryId: this.selectedCategory._id,
-      isCategory: false
-    }
-    this.onCreate(value);
-  }
-
   allServices() {
     this.systemModuleService.on();
     console.log(this.facility._id);
@@ -196,17 +193,11 @@ export class NewServiceComponent implements OnInit {
   panelItemTemplate(payload) {
     this.allServiceItems = [];
     if (payload.data[0].categories.length > 0) {
-      console.log(1);
       let len = payload.data[0].categories.length - 1;
-      console.log(2);
       for (let l = 0; l <= len; l++) {
-        console.log(3);
         if (payload.data[0].categories[l].services.length > 0) {
-          console.log(4);
           let len2 = payload.data[0].categories[l].services.length - 1;
-          console.log(5);
           for (let i = 0; i <= len2; i++) {
-            console.log(6);
             this.allServiceItems.push({
               category: payload.data[0].categories[l].name,
               categoryId: payload.data[0].categories[l]._id,
@@ -215,43 +206,15 @@ export class NewServiceComponent implements OnInit {
               price: payload.data[0].categories[l].services[i].price,
               checked: false
             });
-            if (this.selectedService.panels !== undefined) {
-              if (this.selectedService.panels.length > 0) {
-                console.log(7);
-                let len3 = this.selectedService.panels.length - 1;
-                console.log(8);
-                for (let j = 0; j <= len3; j++) {
-                  let index4 = this.allServiceItems.filter(x => x.categoryId.toString() === this.selectedService.panels[j].categoryId.toString()
-                    && x.serviceId.toString() === this.selectedService.panels[j].serviceId.toString());
-                  if (index4.length > 0) {
-                    index4[0].checked = true;
-                  }
-                }
-              }
-            }
-
+            this.compare(this.allServiceItems, this.selectedServiceItems);
           }
         }
 
       }
-      console.log(this.allServiceItems);
-      let sort = this.allServiceItems.sort(function (a, b) {
-        var checked = a.checked, unchecked = b.checked;
-        if (checked < unchecked)
-          return 1;
-        if (checked > unchecked)
-          return -1;
-        return 0;
-
-      })
-      this.allServiceItems = sort;
-      this.selectedServiceItems = this.allServiceItems.filter(x => x.checked === true);
     }
   }
 
   newService(model: any, valid: boolean) {
-    console.log(this.frmNewservice.controls);
-    console.log(this.frmNewservice.controls['serviceCat'].value);
     if (valid) {
       let value = {
         name: this.frmNewservice.controls['serviceName'].value,
@@ -262,6 +225,8 @@ export class NewServiceComponent implements OnInit {
 
       }
       this.onCreate(value);
+    }else{
+      this.systemModuleService.announceSweetProxy('Missing field','error');
     }
   }
 
@@ -333,8 +298,32 @@ export class NewServiceComponent implements OnInit {
     this.priceItems[i].price = event.srcElement.value;
   }
 
-  onClickAddToPanel() {
+  compare(arrayA, arrayB) {
+    if ((arrayA !== undefined && arrayB !== undefined) && (arrayA !== null && arrayB !== null)) {
+      if (arrayA.length > 0) {
+        if (arrayB.length > 0) {
+          let len1 = arrayA.length - 1;
+          for (let index = 0; index <= len1; index++) {
+            let len2 = arrayB.length - 1;
+            for (let index2 = 0; index2 <= len2; index2++) {
+              if (arrayA[index].serviceId.toString() === arrayB[index2].serviceId.toString()) {
+                arrayA[index].checked = true;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 
+  onServiceSelected(item) {
+    this.allServiceItems = [];
+    const index = this.selectedServiceItems.filter(x => x.serviceId.toString() === item.serviceId.toString());
+    if (index.length == 0) {
+      this.selectedServiceItems.push(item);
+    } else {
+      this.systemModuleService.announceSweetProxy('This service has been selected', 'error');
+    }
   }
 
   close_onClick() {
@@ -342,7 +331,6 @@ export class NewServiceComponent implements OnInit {
   }
   onClickShowPanel() {
     this.showPanel = !this.showPanel;
-    this.showServelLayout = false;
   }
 
 }
