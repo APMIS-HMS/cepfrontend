@@ -17,8 +17,8 @@ export class BeneficiaryListComponent implements OnInit {
   newHmo = false;
   selectedFacility: any = <any>{};
   beneficiaries: any[] = [];
-  filteredBeneficiaries:any[] = [];
-  operateBeneficiaries:any[] = [];
+  filteredBeneficiaries: any[] = [];
+  operateBeneficiaries: any[] = [];
   selectedHMO: any = <any>{};
 
   pageSize = 10;
@@ -34,7 +34,8 @@ export class BeneficiaryListComponent implements OnInit {
     this.frmNewHmo = this.formBuilder.group({
       name: ['', [Validators.required]],
       address: ['', [Validators.required]],
-      email: ['', [<any>Validators.required, <any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|CO.UK|co.uk|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
+      email: ['', [<any>Validators.required, <any>Validators
+        .pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)(com|org|CO.UK|co.uk|net|mil|edu|ng|COM|ORG|NET|MIL|EDU|NG)$')]],
       phone: ['', [<any>Validators.required]],
       plans: ['', [<any>Validators.required]]
     });
@@ -45,24 +46,28 @@ export class BeneficiaryListComponent implements OnInit {
     })
   }
   getBeneficiaryList(id) {
-    this.hmoService.find({ query: { 'facilityId._id': this.selectedFacility._id } }).then(payload => {
+    this.hmoService.find({ query: { 'facilityId': this.selectedFacility._id } }).then(payload => {
       if (payload.data.length > 0) {
-        let facHmo = payload.data[0];
-        const index = facHmo.hmos.findIndex(x => x.hmo._id === id);
+        const facHmo = payload.data[0];
+        const index = facHmo.hmos.findIndex(x => x.hmo === id);
         if (index > -1) {
           if (facHmo.hmos[index].enrolleeList.length > 0) {
-            this.selectedHMO = facHmo.hmos[index].hmo;
-            this.beneficiaries = facHmo.hmos[index].enrolleeList[0].enrollees;
+            const bene = [];
+            for (let s = 0; s < facHmo.hmos[index].enrolleeList.length; s++) {
+              this.selectedHMO = facHmo.hmos[index].hmo;
+              bene.push(...facHmo.hmos[index].enrolleeList[s].enrollees);
+            }
+            this.beneficiaries = bene;
             const startIndex = 0 * 10;
             this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
             this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
           }
         }
       }
-    })
+    }).catch(err => { console.log(err) });
   }
   getRole(beneficiary) {
-    let filNo = beneficiary.filNo;
+    const filNo = beneficiary.filNo;
     if (filNo !== undefined) {
       const filNoLength = filNo.length;
       const lastCharacter = filNo[filNoLength - 1];
@@ -74,7 +79,7 @@ export class BeneficiaryListComponent implements OnInit {
   }
 
   showImageBrowseDlg() {
-    this.fileInput.nativeElement.click()
+    this.fileInput.nativeElement.click();
   }
 
   onPaginateChange(event) {

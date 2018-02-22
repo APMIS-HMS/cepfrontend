@@ -37,15 +37,12 @@ export class StoreCheckInComponent implements OnInit {
 	) {
     // this.workSpaces = this.locker.getObject('workspaces');
     this._authFacadeService.getLogingEmployee().then((res: any) => {
-      console.log(res);
       this.loginEmployee = res;
       this.workSpaces = res.workSpaces;
       if (this.workSpaces !== undefined) {
         this.workSpaces.forEach(workspace => {
-          console.log(workspace);
           if (workspace.isActive && workspace.locations.length > 0) {
             workspace.locations.forEach(x => {
-              console.log(x);
               if (x.isActive) {
                 this.locations.push(x.minorLocationId);
               }
@@ -81,7 +78,6 @@ export class StoreCheckInComponent implements OnInit {
   }
 
 	checkIn(valid, value) {
-		console.log(value);
 		this.checkInBtnText = '<i class="fa fa-spinner fa-spin"></i> Checking in...';
 		const checkIn: any = <any>{};
 		checkIn.minorLocationId = value.location;
@@ -90,11 +86,9 @@ export class StoreCheckInComponent implements OnInit {
 		checkIn.isOn = true;
 		checkIn.isDefault = value.isDefault;
 		if (this.loginEmployee.storeCheckIn === undefined) {
-			console.log(1);
 			this.loginEmployee.storeCheckIn = [];
 		}
 		this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
-			console.log(i);
 			itemi.isOn = false;
 			if (value.isDefault === true) {
 				itemi.isDefault = false;
@@ -102,11 +96,7 @@ export class StoreCheckInComponent implements OnInit {
 		});
 
 		this.loginEmployee.storeCheckIn.push(checkIn);
-		console.log(2);
-		// this.loadIndicatorVisible = true;
-		console.log(this.loginEmployee);
 		this.employeeService.update(this.loginEmployee).then(payload => {
-			console.log(3);
 			this.loginEmployee = payload;
 			const workspaces = <any>this.locker.getObject('workspaces');
 			this.loginEmployee.workSpaces = workspaces;
@@ -115,8 +105,6 @@ export class StoreCheckInComponent implements OnInit {
 			this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
 				itemi.isOn = false;
 				if (itemi.storeId === checkIn.storeId) {
-					console.log(4);
-					console.log(checkIn.storeId);
 					itemi.isOn = true;
 					keepCheckIn = itemi;
 				}

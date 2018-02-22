@@ -1,3 +1,4 @@
+import { OnlyMaterialModule } from './../../../shared-common-modules/only-material-module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -27,6 +28,7 @@ import { MaterialModule } from '../../../shared-common-modules/material-module';
   imports: [
     // SharedModule,
     MaterialModule,
+    OnlyMaterialModule,
     // CommonModule,
     // ReactiveFormsModule,
     // FormsModule,

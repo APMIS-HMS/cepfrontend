@@ -7,15 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PersonLandingComponent implements OnInit {
 
-  scheduleAppointment = false;
+schedule_appointment = false;
+constructor() { }
 
-  constructor() { }
+ngOnInit() {
+}
 
-  ngOnInit() {
-  }
-
-  close_onClick(message: boolean): void {
-    this.scheduleAppointment = false;
-  }
+close_onClick(message: boolean): void {
+  this.schedule_appointment = false;
+}
+set_appointment() {
+  this.schedule_appointment = true;
+}
 
 }

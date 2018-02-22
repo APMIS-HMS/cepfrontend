@@ -28,7 +28,7 @@ export class ClinicScheduleComponent implements OnInit {
   clinicLocations: any[] = [];
   schedules: any[] = [];
   scheduleManagers: ScheduleRecordModel[] = [];
-  loading: Boolean = true;
+  loading: Boolean = false;
 
   sorter = {
     // "sunday": 0, // << if sunday is first day of week
@@ -187,7 +187,7 @@ export class ClinicScheduleComponent implements OnInit {
       ])
     });
   }
-  pushNewClinicSchedule(schedule: any) {
+  pushNewClinicSchedule() {
     (<FormArray>this.clinicScheduleForm.controls['clinicScheduleArray'])
       .push(
       this.formBuilder.group({
@@ -278,5 +278,9 @@ export class ClinicScheduleComponent implements OnInit {
   closeClinicSchedule(clinic: any, i: any) {
     (<FormArray>this.clinicScheduleForm.controls['clinicScheduleArray']).controls.splice(i, 1);
     this.loadManagerSchedules(false);
+  }
+
+  onSubmit(){
+    
   }
 }

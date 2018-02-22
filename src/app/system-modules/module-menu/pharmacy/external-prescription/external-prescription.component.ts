@@ -16,6 +16,8 @@ export class ExternalPrescriptionComponent implements OnInit {
 	extPrescriptions: any[] = [];
 	tempExtPrescriptions: any[] = [];
 	loading: Boolean = true;
+	psearchOpen = false;
+	wsearchOpen = false;
 
   constructor(
     private _fb: FormBuilder,
@@ -37,6 +39,14 @@ export class ExternalPrescriptionComponent implements OnInit {
     });
   }
 
+	openSearch() {
+		this.psearchOpen = true;
+		this.wsearchOpen = true;
+	}
+	closeSearch() {
+		this.psearchOpen = false;
+		this.wsearchOpen = false;
+	}
   // Get all drugs from generic
 	private _getAllPrescriptions() {
 		this._prescriptionService.findAll().then(res => {

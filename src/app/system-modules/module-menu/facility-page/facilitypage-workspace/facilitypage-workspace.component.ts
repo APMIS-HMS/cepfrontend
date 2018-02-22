@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
 import { FacilitiesService, EmployeeService, WorkSpaceService } from '../../../../services/facility-manager/setup/index';
 import { Facility, WorkSpace } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -14,6 +15,8 @@ import { Observable } from 'rxjs/Observable';
 })
 export class FacilitypageWorkspaceComponent implements OnInit {
 
+  employee: any;
+
   del_workspace = false;
   globalDialog = false;
 
@@ -21,6 +24,11 @@ export class FacilitypageWorkspaceComponent implements OnInit {
   searchControl: FormControl = new FormControl();
   selectedFacility: Facility = <Facility>{};
   workSpaces: WorkSpace[] = [];
+
+  deleteWorkspace;
+  deleteLocation;
+
+  selectedLocationId;
 
 
   public title = 'Popover title';
@@ -39,7 +47,8 @@ export class FacilitypageWorkspaceComponent implements OnInit {
     private employeeService: EmployeeService,
     private route: ActivatedRoute,
     private workspaceService: WorkSpaceService,
-    public facilityService: FacilitiesService) {
+    public facilityService: FacilitiesService,
+    private systemModule: SystemModuleService,) {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.workspaceService.listenerCreate.subscribe(payload => {
       this.getWorkSpace();
@@ -56,7 +65,7 @@ export class FacilitypageWorkspaceComponent implements OnInit {
     //     this.workSpaces = payload;
     //   });
     // });
-    this.getWorkSpace();
+    this.getWorkspaces();
   }
   getWorkSpace() {
     this.workspaceService.find({ query: { facilityId: this.selectedFacility._id, $limit: 40 } })
@@ -68,18 +77,76 @@ export class FacilitypageWorkspaceComponent implements OnInit {
         this.workSpaces = result;
       });
   }
-  removeLocation() {
-    // workSpace.locations[i].isActive = false;
 
-    // this.workspaceService.update(workSpace).then(payload => {
-    //   this.getWorkSpace();
-    // });
+  getWorkspaces(){
+    this.workspaceService.findworkspaces({
+      query : {
+        facilityId: this.selectedFacility._id
+      }
+    }).then(payload => {
+      this.workSpaces = payload.data;
+    });
   }
-  deletion_popup() {
-    // this.selectedWorkSpace = workSpace;
+  deleteLocation_popup(locationId, workspace) {
+    this.deleteLocation = true;
+    this.deleteWorkspace = true;
+    let text = "You are about to delete this location from employee workspace";
+    this.systemModule.announceSweetProxy(text, 'question', this);
+    
+    this.selectedLocationId = locationId;
+    this.selectedWorkSpace = workspace;
     // this.gdItem = workSpace.employeeObject.employeeDetails.lastName + ' ' + workSpace.employeeObject.employeeDetails.firstName;
     // this.globalDialog = true;
   }
+  removeLocation(id, workspace) {
+    this.systemModule.on();
+    let filteredLocation = workspace.locations.filter(x => x._id == id);
+    let workspaceI = workspace.locations.indexOf(filteredLocation[0]);
+    if(workspaceI > -1){
+      workspace.locations[workspaceI].isActive = false;
+    }
+
+    this.workspaceService.patch(workspace._id, {
+      locations: workspace.locations
+    }, {}).then(payload => {
+      this.systemModule.off();
+      this.systemModule.announceSweetProxy('Location successfully Deleted', 'success');
+    }).catch(err => {
+      this.systemModule.off();
+      this.systemModule.announceSweetProxy('Something went wrong! Please try again', 'error');
+    });
+    
+  }
+  deletion_popup(workspace) {
+    this.deleteLocation = false;
+    this.deleteWorkspace = true;
+    let text = "You are about to delete " + workspace.employee.personDetails.lastName.toUpperCase()+' '+workspace.employee.personDetails.firstName.toUpperCase() + " from workspace";
+    this.systemModule.announceSweetProxy(text, 'question', this);
+    
+    this.selectedWorkSpace = workspace;
+  }
+
+  removeWorkspace(){
+    this.workspaceService.patch(this.selectedWorkSpace._id, {
+      isActive: false
+    }, {}).then(payload => {
+      this.systemModule.announceSweetProxy('Workspace was successfully Deleted', 'success');
+      this.getWorkspaces();
+      this.close_onClick(true);
+    });
+  }
+
+  sweetAlertCallback(result){
+    if(result.value){
+      if(this.deleteLocation === true){
+        this.removeLocation(this.selectedLocationId, this.selectedWorkSpace);
+      }else if(this.deleteWorkspace === true){
+        this.removeWorkspace();
+      }
+    }
+  }
+
+
   createWorkspace_pop() {
     this.createWorkspace = true;
   }
@@ -108,7 +175,11 @@ export class FacilitypageWorkspaceComponent implements OnInit {
       });
     }
   }
-  newWorkspace_onClick() {
+  newWorkspace_onClick(employee?) {
+    this.employee = employee;
+    if(!!employee){
+      this.employee = employee;
+    }
     this.createWorkspace = true;
   }
 }

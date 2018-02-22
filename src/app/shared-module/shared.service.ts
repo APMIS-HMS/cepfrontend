@@ -24,8 +24,21 @@ export class SharedService {
   private announceDiagnosisSystemOrderSource = new Subject<Object>();
   announceDiagnosisSystemOrder$ = this.announceDiagnosisSystemOrderSource.asObservable();
 
+  private announceSaveDraftSource = new Subject<Object>();
+  announceSaveDraft$ = this.announceSaveDraftSource.asObservable();
+
+  private announceFinishedSavingDraftSource = new Subject<Object>();
+  announceFinishedSavingDraft$ = this.announceFinishedSavingDraftSource.asObservable();
+
   constructor() { }
 
+  announceSaveDraft(temp: Object) {
+    this.announceSaveDraftSource.next(temp);
+  }
+
+  announceFinishedSavingDraft(temp: Object) {
+    this.announceFinishedSavingDraftSource.next(temp);
+  }
   announceTemplate(temp: Object) {
     this.announceTemplateSource.next(temp);
   }

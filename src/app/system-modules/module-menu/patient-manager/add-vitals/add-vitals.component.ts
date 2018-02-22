@@ -205,9 +205,7 @@ export class AddVitalsComponent implements OnInit {
   }
 
   addVitals(valid, value) {
-    console.log('inin')
     if (valid) {
-      console.log(this.patient);
       this.disableSaveBtn = true;
       this.saveBtnText = "Processing... <i class='fa fa-spinner fa-spin'></i>";
       let isExisting = false;
@@ -243,7 +241,6 @@ export class AddVitalsComponent implements OnInit {
         patientId: this.patient._id,
         personId: this.patient.personDetails._id
       }
-      console.log(params);
       this._vitalService.create(vitalValue, params).then(payload => {
         this.frmAddVitals.reset();
         this.disableSaveBtn = false;
@@ -252,7 +249,6 @@ export class AddVitalsComponent implements OnInit {
         this.refreshVitalsChanged.emit(payload);
        
       },error=>{
-        console.log(error);
         this._notification('Error', 'There was an error while saving the vitals');
         this.disableSaveBtn = false;
       })

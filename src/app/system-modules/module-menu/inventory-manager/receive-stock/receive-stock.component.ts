@@ -39,7 +39,6 @@ export class ReceiveStockComponent implements OnInit {
     private systemModuleService: SystemModuleService
   ) {
     this.employeeService.checkInAnnounced$.subscribe(payload => {
-      console.log(payload);
       this.checkingStore = payload;
       this.getTransfers();
     });
@@ -50,7 +49,6 @@ export class ReceiveStockComponent implements OnInit {
     this._inventoryEventEmitter.setRouteUrl('Receive Stock');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.checkingStore = this.locker.getObject('checkingObject');
-    console.log(this.checkingStore);
 
     this.route.data.subscribe(data => {
       data['loginEmployee'].subscribe((payload) => {
@@ -62,7 +60,6 @@ export class ReceiveStockComponent implements OnInit {
   }
   getTransfers() {
     if (this.checkingStore !== undefined) {
-      console.log(this.checkingStore.typeObject);
       this.systemModuleService.on();
       this.inventoryTransferService.find({
         query: {
@@ -71,7 +68,6 @@ export class ReceiveStockComponent implements OnInit {
           $limit: 200
         }
       }).then(payload => {
-        console.log(payload);
         this.systemModuleService.off();
         this.receivedTransfers = payload.data;
       }, error => {

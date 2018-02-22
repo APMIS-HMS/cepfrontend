@@ -5,7 +5,7 @@
     <div class="side-sect">
       <div class="pp-card shadow-grey">
     
-        <i class="fa fa-pencil-square-o card-edit" aria-hidden="true"></i>
+        <i (click)="basicDataUpdate_show()" class="fa fa-pencil-square-o card-edit" aria-hidden="true"></i>
     
         <div class="card-seperator">
           <div class="patient-img-wrap">
@@ -99,20 +99,13 @@
         <div (click)="tab1_click()" class="pg-tab" [class.pg-tab-active]="tab1">Work Space</div>
         <div (click)="tab2_click()" class="pg-tab" [class.pg-tab-active]="tab2">Healthcare Space</div>
       </div>
-      <div *ngIf="tab1">
-        <!-- <ul class="pg-menuWrap">
-          <li (click)="changeRoute('home')" [class.pg-menuActive]="homeContentArea">
-              <i class="fa fa-home" aria-hidden="true"></i> Home</li>
-          <li (click)="changeRoute('medical-records')" [class.pg-menuActive]="docsContentArea">
-              <i class="fa fa-folder-open" aria-hidden="true"></i> Medical Records</li>
-          <li (click)="changeRoute('prescription')" [class.pg-menuActive]="prescriptionContentArea">
-              <i class="fa fa-plus-square" aria-hidden="true"></i> Prescription</li>
-          <li (click)="changeRoute('consultation')" [class.pg-menuActive]="consultationContentArea">
-              <i class="fa fa-user-md" aria-hidden="true"></i> Consultation</li>
-          <li (click)="changeRoute('payment')" [class.pg-menuActive]="paymentContentArea">
-              <i class="fa fa-th-large" aria-hidden="true"></i> Payment</li> 
-        </ul>
-        <div class="pgMenu-wrapa">
+
+      <div class="pg-inwrap">
+        <div *ngIf="tab1">
+          <app-person-landing></app-person-landing>
+        </div>
+        <div *ngIf="tab2">
+          <!-- <div class="pgMenu-wrapa">
             <i (click)="pgMenu_click()" class="fa fa-chevron-down pgMenu-ico" aria-hidden="true"></i>
             <ul *ngIf="pgMenuToggle"  class="pg-menuWrap-mobile">
               <li (click)="changeRoute('home')" [class.pg-menuActive]="homeContentArea">
@@ -126,8 +119,9 @@
               <li (click)="changeRoute('payment')" [class.pg-menuActive]="paymentContentArea">
                   <i class="fa fa-credit-card" aria-hidden="true"></i> Payment</li>
             </ul>
-        </div> -->
-        <app-person-landing></app-person-landing>
+          </div> -->
+          <app-med-records></app-med-records>
+        </div>
       </div>
     </div>
   </div>
@@ -135,4 +129,7 @@
 
 <div *ngIf="basicData_popup" class="modal-overlay"> 
     <app-biodata-popup (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-biodata-popup>
+</div>
+<div *ngIf="basicData_update" class="modal-overlay"> 
+  <app-biodata-update (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-biodata-update>
 </div>
