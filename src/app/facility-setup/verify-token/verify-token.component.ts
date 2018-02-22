@@ -9,7 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-verify-token',
   templateUrl: './verify-token.component.html',
-  styleUrls: ['../facility-setup.component.scss']
+  styleUrls: ['./verify-token.component.scss', '../facility-setup.component.scss']
 })
 export class VerifyTokenComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
