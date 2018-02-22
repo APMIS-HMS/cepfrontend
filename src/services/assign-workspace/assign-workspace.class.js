@@ -4,8 +4,46 @@ class Service {
     this.options = options || {};
   }
 
-  find(params) {
-    return Promise.resolve([]);
+  async find(params) {
+    //return Promise.resolve([]);
+    const employeeService = this.app.service('employees');
+    const workspaceService = this.app.service('workspaces');
+    const locationService = this.app.service('locations');
+    let workspaces = await workspaceService.find({
+      query: {
+        facilityId: params.query.facilityId
+      }
+    });
+    let length = workspaces.data.length;
+    while (length--) {
+      if (workspaces.data[length].isActive === false) {
+        workspaces.data.splice(length, 1);
+      } else {
+        let emp = await employeeService.find({
+          query: {
+            _id: workspaces.data[length].employeeId
+          }
+        });
+        let locLen = workspaces.data[length].locations.length;
+        while (locLen--) {
+          if (workspaces.data[length].locations[locLen].isActive === true) {
+            let loc = await locationService.find({
+              query: {
+                _id: workspaces.data[length].locations[locLen].majorLocationId
+              }
+            })
+            workspaces.data[length].locations[locLen].majorLocation = loc.data[0];
+            delete workspaces.data[length].locations[locLen].majorLocationId;
+          } else {
+            workspaces.data[length].locations.splice(locLen, 1);
+          }
+
+        }
+        workspaces.data[length].employee = emp.data[0];
+        delete workspaces.data[length].employeeId;
+      }
+    }
+    return workspaces;
   }
 
   get(id, params) {

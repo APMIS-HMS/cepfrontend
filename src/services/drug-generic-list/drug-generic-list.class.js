@@ -1,5 +1,4 @@
 /* eslint-disable no-unused-vars */
-const console = require('console');
 const request = require('request');
 const requestPromise = require('request-promise');
 const jsend = require('jsend');

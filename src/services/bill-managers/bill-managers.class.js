@@ -1,153 +1,277 @@
 /* eslint-disable no-unused-vars */
 const logger = require('winston');
 class Service {
-  constructor(options) {
-    this.options = options || {};
-  }
+    constructor(options) {
+        this.options = options || {};
+    }
 
-  setup(app) {
-    this.app = app;
-  }
+    setup(app) {
+        this.app = app;
+    }
 
-  async find(params) {
-    const organisationService = this.app.service('organisation-services');
-    const facilityPricesService = this.app.service('facility-prices');
-    var awaitOrgServices = await organisationService.find({
-      query: {
-        facilityId: params.query.facilityId
-      }
-    });
-    let len = awaitOrgServices.data.length - 1;
-
-    for (let i = len; i >= 0; i--) {
-      let len2 = awaitOrgServices.data[i].categories.length - 1;
-      for (let j = len2; j >= 0; j--) {
-        let len3 = awaitOrgServices.data[i].categories[j].services.length - 1;
-        for (let k = len3; k >= 0; k--) {
-          // awaitOrgServices.data[i].categories[j].services[k].price = [];
-          var awaitPriceServices = await facilityPricesService.find({
+    async find(params) {
+        let results = [];
+        const organisationService = this.app.service('organisation-services');
+        const facilityPricesService = this.app.service('facility-prices');
+        const serviceTagsService = this.app.service('service-tags');
+        var awaitOrgServices = await organisationService.find({
             query: {
-              facilityId: params.query.facilityId,
-              categoryId: awaitOrgServices.data[i].categories[j]._id,
-              serviceId: awaitOrgServices.data[i].categories[j].services[k]._id,
-              facilityServiceId: awaitOrgServices.data[i]._id
+                facilityId: params.query.facilityId
             }
-          });
-          awaitPriceServices.data.forEach(element => {
-            awaitOrgServices.data[i].categories[j].services[k].price =element.price;
-          });
+        });
+        let len = awaitOrgServices.data.length - 1;
+        if (awaitOrgServices.data.length > 0) {
+            for (let i = len; i >= 0; i--) {
+                if (awaitOrgServices.data[i].categories.length > 0) {
+                    let len2 = awaitOrgServices.data[i].categories.length - 1;
+                    for (let j = len2; j >= 0; j--) {
+                        if (awaitOrgServices.data[i].categories[j].services.length > 0) {
+                            let len3 = awaitOrgServices.data[i].categories[j].services.length - 1;
+                            for (let k = len3; k >= 0; k--) {
+                                awaitOrgServices.data[i].categories[j].services[k].price = [];
+                                var awaitPriceServices = await facilityPricesService.find({
+                                    query: {
+                                        facilityId: params.query.facilityId,
+                                        categoryId: awaitOrgServices.data[i].categories[j]._id,
+                                        serviceId: awaitOrgServices.data[i].categories[j].services[k]._id,
+                                        facilityServiceId: awaitOrgServices.data[i]._id
+                                    }
+                                });
+                                if (awaitPriceServices.data.length > 0) {
+                                    let len5 = awaitPriceServices.data.length - 1;
+                                    for (let n = 0; n <= len5; n++) {
+                                        awaitOrgServices.data[i].categories[j].services[k].price.push({
+                                            name: 'Base',
+                                            isBase: true,
+                                            priceId: awaitPriceServices.data[n]._id,
+                                            price: awaitPriceServices.data[n].price
+                                        });
+                                        if (awaitPriceServices.data[n].modifiers !== undefined) {
+                                            if (awaitPriceServices.data[n].modifiers.length > 0) {
+                                                let len6 = awaitPriceServices.data[n].modifiers.length - 1;
+                                                for (let m = 0; m <= len6; m++) {
+                                                    let tag = await serviceTagsService.get(awaitPriceServices.data[n].modifiers[m].tagId);
+                                                    if (awaitPriceServices.data[n].modifiers[m].modifierType === 'Percentage') {
+                                                        let p = awaitPriceServices.data[n].modifiers[m].modifierValue / 100;
+                                                        let calculatedP = p * awaitPriceServices.data[n].price;
+                                                        awaitOrgServices.data[i].categories[j].services[k].price.push({
+                                                            name: tag.name,
+                                                            isBase: false,
+                                                            priceId: awaitPriceServices.data[n]._id,
+                                                            _id: awaitPriceServices.data[n].modifiers[m]._id,
+                                                            price: calculatedP
+                                                        });
+                                                    } else if (awaitPriceServices.data[n].modifiers[m].modifierType === 'Amount') {
+                                                        awaitOrgServices.data[i].categories[j].services[k].price.push({
+                                                            name: tag.name,
+                                                            isBase: false,
+                                                            priceId: awaitPriceServices.data[n]._id,
+                                                            _id: awaitPriceServices.data[n].modifiers[m]._id,
+                                                            price: awaitPriceServices.data[n].modifiers[m].modifierValue
+                                                        });
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
-      }
+        // results = awaitOrgServices;
+        if (params.query.isQueryCategory !== undefined) {
+            if (params.query.isQueryCategory.toString() === 'true') {
+                awaitOrgServices.data[0].categories = awaitOrgServices.data[0].categories
+                    .filter(x => x.name.toLowerCase().includes(params.query.searchString.toLowerCase()));
+            }
+        }
+        if (params.query.isQueryService !== undefined) {
+            if (params.query.isQueryService.toString() === 'true') {
+                if (awaitOrgServices.data[0].categories.length > 0) {
+                    let lt = awaitOrgServices.data[0].categories.length - 1;
+                    for (let l = 0; l <= lt; l++) {
+                        if (awaitOrgServices.data[0].categories[l].services.length > 0) {
+                            awaitOrgServices.data[0].categories[l].services = awaitOrgServices.data[0].categories[l].services
+                                .filter(x => {
+                                    if (x.name != undefined) {
+                                        if (x.name.toLowerCase().includes(params.query.searchString.toLowerCase())) {
+                                            awaitOrgServices.data[0].categories[l].isHost = true;
+                                            return x;
+                                        }
+                                    }
+                                });
+                        }
+                    }
+                }
+            }
+        }
+        return awaitOrgServices;
     }
-    return awaitOrgServices;
-  }
 
-  async get(id, params) {
+    async get(id, params) {
 
-  }
+    }
 
-  async create(data, params) {
-    if (params.query.isCategoryId == true) {
-      const organisationService = this.app.service('organisation-services'); //servicedictioneries
-      const tagDictioneriesService = this.app.service('tag-dictioneries'); //servicedictioneries
-      var awaitOrgServices = await organisationService.find({
-        query: {
-          facilityId: params.query.facilityId
-        }
-      });
-      var facilityServiceModel = {};
-      var facilityCategoryeModel = {};
-      facilityServiceModel.facilityId = params.query.facilityId;
-      facilityCategoryeModel.name = data.categoryName;
-      facilityCategoryeModel.services = [];
-      facilityServiceModel.categories = [];
-      if (awaitOrgServices.data.length === 0) {
-        facilityServiceModel.categories.push(facilityCategoryeModel);
-        await organisationService.create(facilityServiceModel);
-        return organisationService;
-      } else {
-        awaitOrgServices.data[0].categories.push(facilityCategoryeModel);
-        await organisationService.patch(awaitOrgServices.data[0]._id, {
-          'categories': awaitOrgServices.data[0].categories
+    async create(data, params) {
+        const orgService = this.app.service('organisation-services');
+        const priceService = this.app.service('facility-prices');
+        const tagDictioneriesService = this.app.service('tag-dictioneries');
+        let queryDico = await tagDictioneriesService.find({
+            query: {
+                word: {
+                    $regex: data.name,
+                    '$options': 'i'
+                }
+            }
         });
-        return organisationService;
-      }
-      var awaitTagDicService = tagDictioneriesService.find({
-        query: {
-          word: {
-            $regex: data.categoryName,
-            '$options': 'i'
-          }
+        if (queryDico.data.length == 0) {
+            let exactWord = queryDico.data.filter(x => x.word.toLowerCase() === data.name.toLowerCase());
+            if (exactWord.length == 0) {
+                let dic = await tagDictioneriesService.create({
+                    word: data.name
+                });
+            }
         }
-      });
-      if (awaitTagDicService.data.length === 0) {
-        await tagDictioneriesService.create({
-          word: data.serviceName
+        let organizationServiceItem = await orgService.find({
+            query: {
+                facilityId: params.query.facilityId
+            }
         });
-      }
-    } else {
-      var awaitOrgServices = await organisationService.find({
-        query: {
-          facilityId: this.facility._id
-        }
-      });
-      if (params.query.isUpdateService) {
-        awaitOrgServices.data[0].categories.forEach((item, i) => {
-          if (item._id.toString() == data.categoryId.toString()) {
-            item.services.forEach((itm, l) => {
-              if (itm._id.toString() == data.serviceId.toString()) {
-                item.services[l].name = data.serviceName;
-                item.services[l].code = data.serviceCode;
-              }
+        if (organizationServiceItem.data.length > 0) {
+            if (params.query.isCategory.toString() === 'true') {
+                organizationServiceItem.data[0].categories.push(data);
+                let updatedOrganizationService = await orgService.patch(organizationServiceItem.data[0]._id, {
+                    categories: organizationServiceItem.data[0].categories
+                });
+                return updatedOrganizationService;
+            } else {
+                let index = organizationServiceItem.data[0].categories.filter(x => x._id.toString() === params.query.categoryId.toString());
+                index[0].services.push(data);
+                let lastIndex = 0;
+                if (index[0].services.length > 0) {
+                    lastIndex = index[0].services.length - 1;
+                }
+
+                let updatedOrganizationService = await orgService.patch(organizationServiceItem.data[0]._id, {
+                    categories: organizationServiceItem.data[0].categories
+                });
+                let index2 = updatedOrganizationService.categories.filter(x => x._id.toString() === params.query.categoryId.toString());
+                let serviceId = index2[0].services[lastIndex]._id;
+                let priceItem = {
+                    facilityServiceId: updatedOrganizationService._id,
+                    categoryId: params.query.categoryId,
+                    serviceId: serviceId,
+                    facilityId: params.query.facilityId,
+                    price: data.price
+                };
+                if (priceItem.price === '') {
+                    priceItem.price = 0;
+                }
+                let createPrice = await priceService.create(priceItem);
+                return updatedOrganizationService;
+            }
+        } else {
+            if (data.categories === undefined) {
+                data.categories = [];
+            }
+            data.categories.push({
+                name: data.name
             });
-          }
-        });
-        await organisationService.patch(awaitOrgServices.data[0]._id, {
-          'categories': awaitOrgServices.data[0].categories
-        });
-      } else {
-        awaitOrgServices.data[0].categories.forEach((item, i) => {
-          if (item._id.toString() == data.categoryId.toString()) {
-            item.services.push(data.serviceName);
-          }
-        });
-      }
-      await organisationService.patch(awaitOrgServices.data[0]._id, {
-        'categories': awaitOrgServices.data[0].categories
-      });
-      var awaitTagDicService = tagDictioneriesService.find({
-        query: {
-          word: {
-            $regex: data.serviceName,
-            '$options': 'i'
-          }
+            let createdOrgServiceItem = await orgService.create(data);
+            return createdOrgServiceItem;
         }
-      });
-      if (awaitTagDicService.data.length === 0) {
-        await tagDictioneriesService.create({
-          word: data.serviceName
-        });
-      }
     }
-  }
 
-  update(id, data, params) {
-    return Promise.resolve(data);
-  }
+    async update(id, data, params) {
+        const orgService = this.app.service('organisation-services');
+        const priceService = this.app.service('facility-prices');
+        const tagDictioneriesService = this.app.service('tag-dictioneries');
+        if (params.query.name !== '') {
+            let queryDico = await tagDictioneriesService.find({
+                query: {
+                    word: {
+                        $regex: params.query.name,
+                        '$options': 'i'
+                    }
+                }
+            });
+            if (queryDico.data.length > 0) {
+                let exactWord = queryDico.data.filter(x => x.word.toString().toLowerCase() === params.query.name.toString().toLowerCase());
+                if (exactWord.length == 0) {
+                    let dic = await tagDictioneriesService.create({
+                        word: params.query.name
+                    });
+                }
+            } else {
+                let dic = await tagDictioneriesService.create({
+                    word: params.query.name
+                });
+            }
+        }
+        let organizationServiceItem = await orgService.find({
+            query: {
+                facilityId: params.query.facilityId
+            }
+        });
+        if (organizationServiceItem.data.length > 0) {
+            if (params.query.isCategory.toString() === 'true') {
+                let index = organizationServiceItem.data[0].categories.filter(x => x._id.toString() === params.query.categoryId.toString());
+                index[0].name = params.query.name;
+            } else {
+                let index = organizationServiceItem.data[0].categories.filter(x => x._id.toString() === params.query.categoryId.toString());
+                let index2 = index[0].services.filter(x => x._id.toString() === params.query.serviceId.toString());
+                if (index2.length > 0) {
+                    index2[0].name = data.name;
+                    index2[0].code = data.code;
+                    index2[0].panels = data.panels;
+                }
 
-  patch(id, data, params) {
-    return Promise.resolve(data);
-  }
+            }
+            let updatedOrganizationService = await orgService.patch(organizationServiceItem.data[0]._id, { categories: organizationServiceItem.data[0].categories });
+            if (data.price !== undefined) {
+                let getPrice = await priceService.get(data.price.base.priceId);
+                getPrice.price = data.price.base.price;
+                if (data.price.others !== undefined) {
+                    if (data.price.others.length > 0) {
+                        let len4 = data.price.others.length - 1;
+                        for (let t = 0; t <= len4; t++) {
+                            let index3 = getPrice.modifiers.filter(x => x._id.toString() === data.price.others[t]._id.toString());
+                            if (index3.length > 0) {
+                                if (index3[0].modifierType === 'Percentage') {
+                                    let val = data.price.others[t].price / (100 * data.price.base.price);
+                                    index3[0].price = val;
+                                } else if (index3[0].modifierType === 'Amount') {
+                                    index3[0].modifierValue = data.price.others[t].price;
+                                }
+                            }
 
-  remove(id, params) {
-    return Promise.resolve({
-      id
-    });
-  }
+                        }
+                    }
+                }
+                await priceService.patch(getPrice._id, getPrice);
+            }
+            return updatedOrganizationService;
+        } else {
+            return {};
+        }
+    }
+
+    patch(id, data, params) {
+        return Promise.resolve(data);
+    }
+
+    remove(id, params) {
+        return Promise.resolve({
+            id
+        });
+    }
 }
 
-module.exports = function (options) {
-  return new Service(options);
+module.exports = function(options) {
+    return new Service(options);
 };
 
 module.exports.Service = Service;

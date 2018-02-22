@@ -1,46 +1,73 @@
 const { authenticate } = require('@feathersjs/authentication').hooks;
 const alerts = require('../../hooks/alerts');
 const { fastJoin } = require('feathers-hooks-common');
-
+var differenceInYears = require('date-fns/difference_in_years');
+var differenceInMonths = require('date-fns/difference_in_months');
+var differenceInWeeks = require('date-fns/difference_in_weeks');
+var differenceInDays = require('date-fns/difference_in_days');
 const resolvers = {
-  joins: {
-    personDetails: () => async (employee, context) => {
-      const person = await context.app
-        .service('people')
-        .get(employee.personId, {});
-      employee.personDetails = person;
+    joins: {
+        personDetails: () => async(patient, context) => {
+            const person = await context.app
+                .service('people')
+                .get(patient.personId, {});
+            var age = differenceInYears(Date.now(), person.dateOfBirth);
+            if (age < 1) {
+                const monthResult = differenceInMonths(Date.now(), person.dateOfBirth);
+                if (monthResult < 1) {
+                    const weekResult = differenceInWeeks(
+                        Date.now(),
+                        person.dateOfBirth
+                    );
+                    if (weekResult < 1) {
+                        const dayResult = differenceInDays(
+                            Date.now(),
+                            person.dateOfBirth
+                        );
+                        age = dayResult + ' days';
+                    } else {
+                        age = weekResult + ' weeks';
+                    }
+                } else {
+                    age = monthResult + ' months';
+                }
+            } else {
+                age = age + ' years';
+            }
+            patient.age = age;
+            patient.personDetails = person;
+        }
     }
-  }
 };
 
 module.exports = {
-  before: {
-    all: [authenticate('jwt')],
-    find: [],
-    get: [],
-    create: [],
-    update: [],
-    patch: [],
-    remove: []
-  },
+    before: {
+        all: [authenticate('jwt')],
+        find: [],
+        get: [],
+        create: [],
+        update: [],
+        patch: [],
+        remove: []
+    },
 
-  after: {
-    all: [fastJoin(resolvers)],
-    find: [],
-    get: [],
-    create: [alerts()],
-    update: [],
-    patch: [],
-    remove: []
-  },
+    after: {
+        all: [fastJoin(resolvers)],
+        find: [],
+        get: [],
+        create: [alerts()],
+        update: [],
+        patch: [],
+        remove: []
+    },
 
-  error: {
-    all: [],
-    find: [],
-    get: [],
-    create: [],
-    update: [],
-    patch: [],
-    remove: []
-  }
+    error: {
+        all: [],
+        find: [],
+        get: [],
+        create: [],
+        update: [],
+        patch: [],
+        remove: []
+    }
 };
