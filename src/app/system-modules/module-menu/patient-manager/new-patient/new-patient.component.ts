@@ -1000,7 +1000,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                                     paymentCompleted: false,
                                     paymentStatus: [],
                                     payments: []
-
                                 }
                             ]
                         }

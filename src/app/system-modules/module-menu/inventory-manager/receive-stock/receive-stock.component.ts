@@ -7,6 +7,7 @@ import {
   StoreService, FacilitiesService, EmployeeService
 } from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import {
   Facility, InventoryTransferStatus, InventoryTransactionType, InventoryTransferTransaction,
   InventoryTransfer, Employee
@@ -23,7 +24,7 @@ export class ReceiveStockComponent implements OnInit {
   clickslide = false;
   user: any = <any>{};
   selectedFacility: Facility = <Facility>{};
-  selectedInventoryTransfer: InventoryTransfer = <InventoryTransfer>{};
+  selectedInventoryTransfer: any = <any>{};
   checkingStore: any = <any>{};
   loginEmployee: Employee = <Employee>{};
   receivedTransfers: InventoryTransfer[] = [];
@@ -36,11 +37,14 @@ export class ReceiveStockComponent implements OnInit {
     private inventoryTransactionTypeService: InventoryTransactionTypeService,
     private inventoryTransferStatusService: InventoryTransferStatusService, private route: ActivatedRoute,
     private locker: CoolLocalStorage, private facilityService: FacilitiesService, private employeeService: EmployeeService,
-    private systemModuleService: SystemModuleService
+    private systemModuleService: SystemModuleService,
+    private authFacadeService: AuthFacadeService
   ) {
     this.employeeService.checkInAnnounced$.subscribe(payload => {
-      this.checkingStore = payload;
-      this.getTransfers();
+      if (payload.typeObject !== undefined) {
+        this.checkingStore = payload.typeObject;
+        this.getTransfers();
+      }
     });
   }
 
@@ -48,24 +52,28 @@ export class ReceiveStockComponent implements OnInit {
     this.user = this.locker.getObject('auth');
     this._inventoryEventEmitter.setRouteUrl('Receive Stock');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.checkingStore = this.locker.getObject('checkingObject');
-
-    this.route.data.subscribe(data => {
-      data['loginEmployee'].subscribe((payload) => {
-        this.loginEmployee = payload.loginEmployee;
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+      this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+      this.route.data.subscribe(data => {
+        // tslint:disable-next-line:no-shadowed-variable
+        data['loginEmployee'].subscribe((payload) => {
+          this.loginEmployee = payload.loginEmployee;
+        });
       });
+      this.getTransfers();
+      this.getTransferStatus();
     });
-    this.getTransfers();
-    this.getTransferStatus();
+
   }
   getTransfers() {
     if (this.checkingStore !== undefined) {
       this.systemModuleService.on();
-      this.inventoryTransferService.find({
+      this.inventoryTransferService.findTransferHistories({
         query: {
           facilityId: this.selectedFacility._id,
-          destinationStoreId: this.checkingStore.typeObject.storeId,
-          $limit: 200
+          destinationStoreId: this.checkingStore.storeId,
+          limit: 200
         }
       }).then(payload => {
         this.systemModuleService.off();
@@ -94,20 +102,23 @@ export class ReceiveStockComponent implements OnInit {
     this.clickslide = false;
   }
   slideDetailsShow(receive, reload = true) {
+    this.systemModuleService.on();
     if (reload === true) {
-      this.inventoryTransferService.get(receive._id, {}).subscribe(payload => {
-        const that = this;
-        this.selectedInventoryTransfer = payload;
-
-        this.selectedInventoryTransfer.inventoryTransferTransactions.forEach(function (itemi: any) {
-          itemi.checked = false;
-          if (itemi.transferStatusId === that.completedInventoryStatus._id) {
-            itemi.checked = true;
-          } else if (itemi.transferStatusId === that.rejectedInventoryStatus._id) {
-            itemi.checked = undefined;
-          }
-        });
-        this.slideDetails = !this.slideDetails;
+      this.inventoryTransferService.getItemDetails(receive._id, {}).subscribe(payload => {
+        if (payload.storeId !== undefined) {
+          const that = this;
+          this.selectedInventoryTransfer = payload;
+          this.selectedInventoryTransfer.inventoryTransferTransactions.forEach(function (itemi: any) {
+            itemi.checked = false;
+            if (itemi.transferStatusId === that.completedInventoryStatus._id) {
+              itemi.checked = true;
+            } else if (itemi.transferStatusId === that.rejectedInventoryStatus._id) {
+              itemi.checked = undefined;
+            }
+          });
+          this.slideDetails = !this.slideDetails;
+          this.systemModuleService.off();
+        }
       });
     } else {
       this.selectedInventoryTransfer = receive;
@@ -121,12 +132,13 @@ export class ReceiveStockComponent implements OnInit {
         }
       });
       this.slideDetails = !this.slideDetails;
+      this.systemModuleService.off();
     }
 
 
   }
   onValueChanged(event, transaction) {
-    transaction.checked = event.value;
+    transaction.checked = event.checked;
   }
   shouldDisabled(transaction) {
     return transaction.transferStatusId === this.completedInventoryStatus._id ||
@@ -139,11 +151,13 @@ export class ReceiveStockComponent implements OnInit {
         item.transferStatusId = this.completedInventoryStatus._id;
       }
     });
-    this.inventoryTransferService.update(this.selectedInventoryTransfer).then(payload => {
-      this.slideDetailsShow(payload, false);
-      this._notification("Success", "Stock accepted");
+    this.inventoryTransferService.patch(this.selectedInventoryTransfer._id,
+      { inventoryTransferTransactions: this.selectedInventoryTransfer.inventoryTransferTransactions }).then(payload => {
+      this.slideDetailsShow(payload.inventoryTransfers, false);
+      this.getTransfers();
+      this.systemModuleService.announceSweetProxy('Stock tran successfully', 'success');
     }, error => {
-      this._notification("Error", "Failed to accept stock, please try again");
+      this._notification('Error', 'Failed to accept stock, please try again');
     });
 
   }
@@ -155,13 +169,14 @@ export class ReceiveStockComponent implements OnInit {
         item.transferStatusId = this.rejectedInventoryStatus._id;
       }
     });
-    this.inventoryTransferService.update(this.selectedInventoryTransfer).then(payload => {
-      this.slideDetailsShow(payload, false);
+    this.inventoryTransferService.patch(this.selectedInventoryTransfer._id,
+      { inventoryTransferTransactions: this.selectedInventoryTransfer.inventoryTransferTransactions }).then(payload => {
+      this.slideDetailsShow(payload.inventoryTransfers, false);
     });
   }
   getStatus(transaction) {
     const receivedTransactions = transaction.inventoryTransferTransactions
-      .filter(item => item.transferStatusId === this.completedInventoryStatus._id);
+    .filter(item => item.transferStatusId === this.completedInventoryStatus._id);
     if (receivedTransactions.length === transaction.inventoryTransferTransactions.length) {
       return this.completedInventoryStatus.name;
     }

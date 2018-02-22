@@ -8,14 +8,14 @@
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
         <div class="schedule-wrap">
             <form [formGroup]="frm_appointment" novalidate class="frm-appointment">
-                <div class="sect-wrap"> 
+                <div class="sect-wrap">
                     <div class="frm-item-wrap">
                         <apmis-lookup formControlName="hospital" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Hospital" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                     </div>
                     <div class="frm-item-wrap">
                         <apmis-lookup formControlName="clinic" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Clinic" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                     </div>
-            
+
                     <!-- <div>
                         <div class="survery">
                             <mat-input-container>
@@ -26,22 +26,22 @@
                             </mat-input-container>
                         </div>
                     </div> -->
-        
+
                     <div>
                         <mat-input-container>
                             <input matInput placeholder="AppointmentType" formControlName="type">
                         </mat-input-container>
-        
+
                         <mat-autocomplete>
                             <mat-option>Clinic</mat-option>
                         </mat-autocomplete>
                     </div>
-        
+
                     <div>
                         <mat-input-container>
                             <input matInput placeholder="Status" formControlName="status">
                         </mat-input-container>
-        
+
                         <mat-autocomplete>
                             <mat-option>Active</mat-option>
                         </mat-autocomplete>
@@ -51,9 +51,9 @@
                     <div class="tr-act-btn3">
                         <mat-checkbox formControlName="teleMed">Tele Medicine Consultation</mat-checkbox>
                     </div>
-        
+
                 </div>
-        
+
                 <div class="sect-wrap">
                     <div class="filter-xxx">
                         <mat-input-container>
@@ -63,17 +63,17 @@
                             <mat-option>Sam Dede</mat-option>
                         </mat-autocomplete>
                     </div>
-        
+
                     <div>
                         <mat-input-container>
                             <input matInput placeholder="Appointment Category" formControlName="category">
                         </mat-input-container>
-        
+
                         <mat-autocomplete>
                             <mat-option>Cat B</mat-option>
                         </mat-autocomplete>
                     </div>
-        
+
                     <div>
                         <mat-input-container class="example-full-width">
                             <textarea matInput formControlName="reason" placeholder="Reason"></textarea>
@@ -83,7 +83,7 @@
                         <mat-input-container>
                             <input matInput placeholder="Select Timezone" [matAutocomplete]="timezoneAuto" [formControl]="timezone">
                         </mat-input-container>
-        
+
                         <mat-autocomplete #timezoneAuto="matAutocomplete" [displayWith]="timezoneDisplayFn">
                             <mat-option *ngFor="let timezone of timezones" [value]="timezone">
                                 {{ timezone.name }}
@@ -92,11 +92,11 @@
                     </div> -->
                 </div>
             </form>
-        
+
             <div class="btn-box">
                 <button mat-raised-button class="btn">Schedule Appointment</button>
             </div>
-        
+
         </div>
     </div>
 </div>

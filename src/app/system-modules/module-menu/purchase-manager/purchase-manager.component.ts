@@ -1,4 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AuthFacadeService } from '../../service-facade/auth-facade.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { PurchaseEmitterService } from '../../../services/facility-manager/purchase-emitter.service';
 import { Employee, Facility } from '../../../models/index';
@@ -31,50 +32,54 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
   constructor(
     private _purchaseEventEmitter: PurchaseEmitterService, private route: ActivatedRoute,
     private _router: Router, private employeeService: EmployeeService,
+    private authFacadeService: AuthFacadeService,
     private locker: CoolLocalStorage, private workSpaceService: WorkSpaceService) {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
-    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
-
-    if ((this.loginEmployee.storeCheckIn === undefined
-      || this.loginEmployee.storeCheckIn.length === 0)) {
-      this.modal_on = true;
-    } else {
-      let isOn = false;
-      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
-        if (itemr.isDefault === true) {
-          itemr.isOn = true;
-          itemr.lastLogin = new Date();
-          isOn = true;
-          let checkingObject = { typeObject: itemr, type: 'store' };
-          this.employeeService.announceCheckIn(checkingObject);
-
-          this.employeeService.update(this.loginEmployee).then(payload => {
-            this.loginEmployee = payload;
-            checkingObject = { typeObject: itemr, type: 'store' };
-            this.employeeService.announceCheckIn(checkingObject);
-            this.locker.setObject('checkingObject', checkingObject);
-          });
-        }
-      });
-      if (isOn === false) {
+    // this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+      if ((this.loginEmployee.storeCheckIn === undefined
+        || this.loginEmployee.storeCheckIn.length === 0)) {
+        this.modal_on = true;
+      } else {
+        let isOn = false;
         this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
-          if (r === 0) {
+          if (itemr.isDefault === true) {
             itemr.isOn = true;
             itemr.lastLogin = new Date();
+            isOn = true;
+            let checkingObject = { typeObject: itemr, type: 'store' };
+            this.employeeService.announceCheckIn(checkingObject);
+
+            // tslint:disable-next-line:no-shadowed-variable
             this.employeeService.update(this.loginEmployee).then(payload => {
               this.loginEmployee = payload;
-              const checkingObject = { typeObject: itemr, type: 'store' };
+              checkingObject = { typeObject: itemr, type: 'store' };
               this.employeeService.announceCheckIn(checkingObject);
               this.locker.setObject('checkingObject', checkingObject);
             });
           }
-
         });
+        if (isOn === false) {
+          this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+            if (r === 0) {
+              itemr.isOn = true;
+              itemr.lastLogin = new Date();
+              // tslint:disable-next-line:no-shadowed-variable
+              this.employeeService.update(this.loginEmployee).then(payload => {
+                this.loginEmployee = payload;
+                const checkingObject = { typeObject: itemr, type: 'store' };
+                this.employeeService.announceCheckIn(checkingObject);
+                this.locker.setObject('checkingObject', checkingObject);
+              });
+            }
+
+          });
+        }
+
       }
-
-    }
-
+    });
   }
 
   ngOnInit() {
@@ -216,7 +221,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
   }
 
   changeRoute(val) {
-    if (val == '') {
+    if (val === '') {
       this.purchaseHistoryNavMenu = false;
       this.purchaseOrderNavMenu = true;
       this.purchaseEntryNavMenu = false;
@@ -224,7 +229,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
       this._purchaseEventEmitter.announcedUrl.subscribe(url => {
         this.pageInView = url;
       });
-    } else if (val == 'histories') {
+    } else if (val === 'histories') {
       this.purchaseHistoryNavMenu = true;
       this.purchaseOrderNavMenu = false;
       this.invoicesNavMenu = false;
@@ -232,7 +237,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
       this._purchaseEventEmitter.announcedUrl.subscribe(url => {
         this.pageInView = url;
       });
-    } else if (val == 'invoices') {
+    } else if (val === 'invoices') {
       this.purchaseHistoryNavMenu = false;
       this.purchaseOrderNavMenu = false;
       this.invoicesNavMenu = true;
@@ -240,7 +245,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
       this._purchaseEventEmitter.announcedUrl.subscribe(url => {
         this.pageInView = url;
       });
-    } else if (val == 'purchase-entry') {
+    } else if (val === 'purchase-entry') {
       this.purchaseEntryNavMenu = true;
       this.newpurchaseNavMenu = false;
       this.purchaseHistoryNavMenu = false;

@@ -27,7 +27,7 @@ export class AuthFacadeService {
   setSelectedFacility(facility) {
     this.selectedFacility = facility;
   }
-  getSelectedFacility(){
+  getSelectedFacility() {
     return this.selectedFacility;
   }
 
@@ -57,6 +57,27 @@ export class AuthFacadeService {
             error => {}
           );
       }
+
+      });
+  }
+
+  getCheckedInEmployee(id, data) {
+    const self = this;
+    return new Promise(function (resolve, reject) {
+      self._socketService.authenticateService();
+      self._socketService.getService('employee-checkins').patch(id, data).then(payload => {
+        if (payload !== null) {
+          self.logingEmployee = payload;
+          self.setLogingEmployee(payload);
+          resolve(self.logingEmployee)
+        } else {
+          resolve(undefined)
+        }
+
+      }, error => {
+      });
+
+
     });
   }
   getLogingUser() {

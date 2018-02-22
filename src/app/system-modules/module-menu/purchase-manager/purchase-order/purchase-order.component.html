@@ -90,7 +90,7 @@
                                         <th>Qty</th>
                                     </tr>
                                     <tr *ngFor="let product of selectedOrder.orderedProducts">
-                                        <td>{{product.product?.name}}</td>
+                                        <td>{{product.productObject?.name}}</td>
                                         <td>{{product.quantity}}</td>
                                     </tr>
                                 </tbody>

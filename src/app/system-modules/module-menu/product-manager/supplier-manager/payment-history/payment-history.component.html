@@ -7,9 +7,6 @@
                 <div class="">
                     <select>
                       <option value="volvo">Select Supply</option>
-                      <option value="saab">Saab</option>
-                      <option value="mercedes">Mercedes</option>
-                      <option value="audi">Audi</option>
                     </select>
                 </div>
                 <div class=" text-center">
@@ -19,25 +16,23 @@
                 </div>
                 <div class="">
                     <div class="border-box">
-                      <!--<ul>
-                        <li>Total Bill: <span>N1,5000</span></li>
-                        <li>Paid Bills: <span>N15000</span></li>
-                        <li>Outstanding Bills: <span style="">N15000</span></li>
-                      </ul>-->
                       <table class="table-borderless table-condensed table-hover">
                           <tbody>
                             <tr>
                               <td style="color:#9b5c0b;">Total Bill  </td> 
                              
-                              <td>&#8358; {{selectedInvoice.amountPaid}}</td>
+                              <td>&#8358; {{selectedInvoice.invoiceAmount}}</td>
                             </tr>
                              <tr>
                               <td style="color:#9b5c0b;">Paid Bills  </td>
-                              <td>&#8358; {{selectedInvoice.amountPaid}}</td>
+                              <td>
+                                  <span *ngIf="selectedInvoice.amountPaid !== undefined">&#8358; {{selectedInvoice.amountPaid}}</span>
+                                  <span *ngIf="selectedInvoice.amountPaid === undefined">0</span>
+                              </td>
                             </tr>
                              <tr>
                               <td style="color:#9b5c0b;">Outstanding  </td> 
-                              <td style="color:#e50000">&#8358; {{selectedInvoice.amountPaid}}</td>
+                              <td style="color:#e50000">&#8358; {{checkForOutstanding(selectedInvoice)}}</td>
                             </tr>
                           </tbody>
                       </table>
@@ -53,25 +48,10 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr>
-                          <td>10-12-17</td>
-                          <td>N20000</td>
-                          <td>Johnson Daniel</td>
-                        </tr>
-                        <tr>
-                          <td>10-12-17</td>
-                          <td>N20000</td>
-                          <td>Johnson Daniel</td>
-                        </tr>
-                        <tr>
-                          <td>10-12-17</td>
-                          <td>N20000</td>
-                          <td>Johnson Daniel</td>
-                        </tr>
-                        <tr>
-                          <td>10-12-17</td>
-                          <td>N20000</td>
-                          <td>Johnson Daniel</td>
+                        <tr *ngFor="let product of selectedInvoice.products">
+                          <td>{{product.updatedAt|date:'medium'}}</td>
+                          <td>{{product.costPrice * product.quantity}}</td>
+                          <td>{{selectedInvoice.employeeObject?.personDetails?.firstName}} {{selectedInvoice?.employeeObject?.personDetails?.lastName}}</td>
                         </tr>
                       </tbody>
                     </table>

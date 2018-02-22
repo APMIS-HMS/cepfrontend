@@ -312,6 +312,5 @@ export class ClinicComponent implements OnInit, OnDestroy {
 
 	}
 	chartHovered(e){
-
 	}
 }
