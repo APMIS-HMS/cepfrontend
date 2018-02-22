@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Person } from '../../../models/index';
+import { Http, Headers, RequestOptions } from '@angular/http'
 const request = require('superagent');
 
 @Injectable()
@@ -25,7 +26,8 @@ export class PersonService {
 
   constructor(
     private _socketService: SocketService,
-    private _restService: RestService
+    private _restService: RestService,
+    private http: Http
   ) {
     this._rest = _restService.getService('people');
     this._socket = _socketService.getService('people');
@@ -99,6 +101,19 @@ export class PersonService {
   fundWallet(payload: any) {
     return this._fundWalletSocket.create(payload);
     // return this._fundWalletRest.create(payload);
+  }
+
+  altFundWallet(payload) {
+    const host = this._restService.getHost();
+    const path = host + '/fund-wallet';
+    const token = localStorage.getItem('token');
+    const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', token);
+    const options = new RequestOptions({headers: headers});
+    this.http.post(path, payload, options).subscribe(subPayload => {
+      console.log(subPayload);
+    });
   }
 
   // fundWallet(walletTransaction: WalletTransaction) {
