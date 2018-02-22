@@ -1,0 +1,38 @@
+<div class="pp-card shadow-grey">
+  <div class="card-title">Pending Bills</div>
+
+  <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5">
+    <thead>
+        <tr>
+            <th>
+                <span style="padding-left: 3px;">Date</span>
+            </th>
+            <th>
+                <span style="padding-left: 3px;">Patient</span>
+            </th>
+            <th>
+                <span style="padding-left: 3px;">Amount</span>
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr (click)="billDetail()">
+            <td>11th October 2017</td>
+            <td>
+                <div class="empWrap">
+                    <div class="list-img">
+                        <img src="assets/images/users/default.png">
+                    </div>
+                    <div>Jonathan Nelson</div>
+                </div>
+            </td>
+            <td class="td-worspace">&#8358; 12,200</td>
+        </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="billDetail_show" class="modal-overlay">
+  <app-hmo-bill-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-hmo-bill-detail>
+</div>

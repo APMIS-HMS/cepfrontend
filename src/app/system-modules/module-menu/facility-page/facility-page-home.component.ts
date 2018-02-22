@@ -32,6 +32,7 @@ export class FacilityPageHomeComponent implements OnInit {
   dashboardContentArea = false;
   networkContentArea = false;
   accessContentArea = false;
+  hmokContentArea = false;
 
   showUnit = false;
   showLoc = false;
@@ -136,6 +137,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.empContentArea = false;
       this.networkContentArea = false;
       this.accessContentArea = false;
+      this.hmokContentArea = false;
     } else if (value == 'employees') {
       this.empContentArea = true;
       this.optionsContentArea = false;
@@ -145,6 +147,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.professionContentArea = false;
       this.networkContentArea = false;
       this.accessContentArea = false;
+      this.hmokContentArea = false;
     } else if (value == 'departments') {
       this.modulesContentArea = false;
       this.optionsContentArea = false;
@@ -154,6 +157,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.professionContentArea = false;
       this.empContentArea = false;
       this.accessContentArea = false;
+      this.hmokContentArea = false;
     } else if (value == 'locations') {
       this.modulesContentArea = false;
       this.optionsContentArea = false;
@@ -164,6 +168,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.empContentArea = false;
       this.networkContentArea = false;
       this.accessContentArea = false;
+      this.hmokContentArea = false;
     } else if (value == 'workspaces') {
       this.modulesContentArea = false;
       this.optionsContentArea = false;
@@ -173,6 +178,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.professionContentArea = false;
       this.empContentArea = false;
       this.accessContentArea = false;
+      this.hmokContentArea = false;
     } else if (value == 'options') {
       this.modulesContentArea = false;
       this.optionsContentArea = true;
@@ -182,6 +188,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.professionContentArea = false;
       this.empContentArea = false;
       this.accessContentArea = false;
+      this.hmokContentArea = false;
     } else if (value == 'profession') {
       this.modulesContentArea = false;
       this.optionsContentArea = false;
@@ -192,6 +199,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.empContentArea = false;
       this.networkContentArea = false;
       this.accessContentArea = false;
+      this.hmokContentArea = false;
     } else if (value == 'modules') {
       this.modulesContentArea = true;
       this.optionsContentArea = false;
@@ -202,6 +210,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.empContentArea = false;
       this.networkContentArea = false;
       this.accessContentArea = false;
+      this.hmokContentArea = false;
     } else if (value == 'network') {
       this.modulesContentArea = false;
       this.optionsContentArea = false;
@@ -212,6 +221,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.empContentArea = false;
       this.networkContentArea = true;
       this.accessContentArea = false;
+      this.hmokContentArea = false;
     } else if(value == 'access'){
       this.modulesContentArea = false;
       this.optionsContentArea = false;
@@ -222,6 +232,18 @@ export class FacilityPageHomeComponent implements OnInit {
       this.empContentArea = false;
       this.networkContentArea = false;
       this.accessContentArea = true;
+      this.hmokContentArea = false;
+    } else if(value == 'hmo-officer'){
+      this.modulesContentArea = false;
+      this.optionsContentArea = false;
+      this.departmentsContentArea = false;
+      this.locationsContentArea = false;
+      this.workspaceContentArea = false;
+      this.professionContentArea = false;
+      this.empContentArea = false;
+      this.networkContentArea = false;
+      this.accessContentArea = false;
+      this.hmokContentArea = true;
     }
   }
   getModules() {
