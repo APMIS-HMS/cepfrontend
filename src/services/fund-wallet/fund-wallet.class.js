@@ -124,7 +124,7 @@ class FundWalletService {
           }
         } else if (paymentRoute !== undefined && paymentRoute.toLowerCase() === 'paystack') {
           paymentService.create(paymentPayload).then(payment => {
-            let url = process.env.PAYSTACK_VERIFICATION_URL + data.ref.trxref;
+            var url = process.env.PAYSTACK_VERIFICATION_URL + data.ref.trxref;
             var client = new Client();
             var args = { 
               headers: {

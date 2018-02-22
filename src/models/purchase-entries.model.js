@@ -18,7 +18,7 @@ module.exports = function (app) {
     deliveryDate: { type: Date, required: false },
     remark: { type: String, required: false },
     products: [itemOrdered]
-  }, {
+  }, {         
     timestamps: true
   });
 
