@@ -478,7 +478,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     getCashPlans() {
         this._facilitiesServiceCategoryService.find({
             query:
-                { facilityId: this.facility._id, 'categories.name': "Appointment",$select: { 'categories.$': 1}  }
+                { facilityId: this.facility._id, 'categories.name': "Medical Records",$select: { 'categories.$': 1}  }
         }).then(payload => {
             //this.filterOutCategory(payload);
             //this.categories = [];
