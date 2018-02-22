@@ -189,21 +189,8 @@ export class WardManagerAdmittedpageComponent implements OnInit {
       }
     }).then(res => {
         this.loading = false;
-        console.log(res);
 				if (res.data.length > 0) {
-          this.admittedPatient = res.data
-					// res.data.forEach(item => {
-					// 	if (item.discharge == null) {
-					// 		// wardDetails.ward = res.data.transfers[res.data.lastIndex].name;
-					// 		// wardDetails.room = res.data.transfers[res.data.lastIndex].room;
-					// 		// wardDetails.bed = res.data.transfers[res.data.lastIndex].bed;
-
-					// 		this.admittedPatient = res.data;
-					// 		// this.admittedPatient.wardItem = res.data.transfers[res.data.lastIndex];
-					// 		// this.admittedPatient.wardDetails = res.data.transfers[res.data.lastIndex];
-					// 		// this.admittedPatient.wardDetails = wardDetails;
-					// 	}
-					// });
+          this.admittedPatient = res.data;
 				}
 			});
 	}

@@ -137,8 +137,6 @@ export class WardManagerAdmissionpageComponent implements OnInit {
   // }
 
   admitPatient_onClick(value: any, typeChecker = myGlobals) {
-    console.log(value);
-    console.log(this.selectedWard);
     if (!!this.selectedWard && !!this.selectedWard.typeObject) {
       this.selectInpatient = value;
       this.selectInpatient.typeChecker = typeChecker.onAdmission;
@@ -149,9 +147,13 @@ export class WardManagerAdmissionpageComponent implements OnInit {
   }
 
   transferAdmitPatient_onClick(model: any, typeChecker = myGlobals) {
-    this.selectInpatient = model;
-    this.selectInpatient.typeChecker = typeChecker.transfer;
-    this.admitPatient = true;
+    if (!!this.selectedWard && !!this.selectedWard.typeObject) {
+      this.selectInpatient = model;
+      this.selectInpatient.typeChecker = typeChecker.transfer;
+      // Pass the loggedInWard to the selectedInpatient.
+      this.selectInpatient.loggedInWard = this.selectedWard.typeObject;
+      this.admitPatient = true;
+    }
   }
 
   close_onClick() {
@@ -187,31 +189,56 @@ export class WardManagerAdmissionpageComponent implements OnInit {
   }
 
   getTransferInList(checkedInWard: any) {
-    this._inPatientService.find({
+    console.log(checkedInWard);
+    this._inPatientListService.customGet({ action: 'getInPatientTransferList' }, {
       query: {
-        'facilityId': this.facility._id,
-        'proposedWard.minorLocationId': checkedInWard.typeObject.minorLocationId._id,
-        statusId: myGlobals.transfer,
-        discharge: undefined
+        facilityId: this.facility._id,
+        proposedWard: checkedInWard.typeObject.minorLocationId._id,
+        status: myGlobals.transfer,
+        isDischarged: false
       }
-    }).then(payload => {
+    }).then(res => {
+      console.log(res);
       this.transferInLoading = false;
-      this.listPatientTransferWaiting = payload.data;
+      this.listPatientTransferWaiting = res.data;
     });
+    // this._inPatientService.find({
+    //   query: {
+    //     'facilityId': this.facility._id,
+    //     'proposedWard.minorLocationId': checkedInWard.typeObject.minorLocationId._id,
+    //     statusId: myGlobals.transfer,
+    //     discharge: undefined
+    //   }
+    // }).then(res => {
+    //   this.transferInLoading = false;
+    //   this.listPatientTransferWaiting = res.data;
+    // });
   }
 
   getTransferOutList(checkedInWard: any) {
-    this._inPatientService.find({
-        query: {
-          'facilityId': this.facility._id,
-          'prevWard': checkedInWard.typeObject.minorLocationId._id,
-          statusId: myGlobals.transfer,
-          discharge: undefined
-        }
-      }).then(payload => {
-        this.transferOutLoading = false;
-        this.listPatientTransferOutWaiting = payload.data;
-      });
+    this._inPatientListService.customGet({ action: 'getInPatientTransferList' }, {
+      query: {
+        facilityId: this.facility._id,
+        currentWard: checkedInWard.typeObject.minorLocationId._id,
+        status: myGlobals.transfer,
+        isDischarged: false
+      }
+    }).then(res => {
+      console.log(res);
+      this.transferOutLoading = false;
+      this.listPatientTransferOutWaiting = res.data;
+    });
+    // this._inPatientService.find({
+    //     query: {
+    //       'facilityId': this.facility._id,
+    //       'prevWard': checkedInWard.typeObject.minorLocationId._id,
+    //       statusId: myGlobals.transfer,
+    //       discharge: undefined
+    //     }
+    //   }).then(payload => {
+    //     this.transferOutLoading = false;
+    //     this.listPatientTransferOutWaiting = payload.data;
+    //   });
   }
 
   getDischargeList(checkedInWard: any) {

@@ -44,7 +44,7 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
 				this.selectedPatient = res;
 				this.selectedPatient.wardItem = wardDetails;
 			}
-		});
+    });
 	}
 
 	onClickDischargePatient() {

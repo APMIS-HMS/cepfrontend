@@ -200,7 +200,6 @@ export class CheckoutPatientComponent implements OnInit {
     this._inPatientListService.find({ query: { facilityId: this.facility._id, patientId: this.patientDetails._id, isAdmitted: false }}).then(res => {
       const patientName = `${this.patientDetails.personDetails.firstName} ${this.patientDetails.personDetails.lastName}`;
       this.loading = false;
-      console.log(res);
 			if (res.data.length > 0) {
 				this._inpatientService.find({ query: { facilityId: this.facility._id, patientId: this.patientDetails._id, isDischarged: false }}).then(resp => {
 					if (resp.data.length > 0) {

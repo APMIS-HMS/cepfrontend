@@ -59,7 +59,6 @@ export class AdmitPatientComponent implements OnInit {
 
   ngOnInit() {
     this.facility = <Facility>this._locker.getObject('selectedFacility');
-    console.log(this.inPatientItem);
     this.user = <User>this._locker.getObject('auth');
 
     // this.getwardRoomLocationItems();
@@ -89,10 +88,13 @@ export class AdmitPatientComponent implements OnInit {
     });
 
     if (!!this.inPatientItem) {
-      console.log(this.inPatientItem);
       if (!!this.inPatientItem.minorLocationId) {
         setTimeout(e => {
           this.admitFormGroup.controls['ward'].setValue(this.inPatientItem.minorLocationId);
+        }, 1000);
+      } else if (this.inPatientItem.typeChecker === myGlobals.transfer) {
+        setTimeout(e => {
+          this.admitFormGroup.controls['ward'].setValue(this.inPatientItem.proposedWard);
         }, 1000);
       } else {
         setTimeout(e => {
@@ -106,7 +108,6 @@ export class AdmitPatientComponent implements OnInit {
       this.beds = [];
       if (val !== '') {
         const rooms = this.rooms.filter(x => x._id === val._id);
-        console.log(rooms);
         if (rooms.length > 0) {
           const payload = {
             action: 'getAvailableBeds',
@@ -116,15 +117,12 @@ export class AdmitPatientComponent implements OnInit {
           };
 
           this._bedOccupancyService.customGet(payload, {}).then(res => {
-            console.log(res);
             if (res.status === 'success') {
               this.beds = res.data;
             } else {
               this.beds = [];
             }
           }).catch(err => {});
-          // this.availableBeds = this.beds.filter(x => x.isAvailable);
-          // this.occupiedBeds = this.beds.filter(x => !x.isAvailable);
         }
       }
     });
@@ -190,7 +188,6 @@ export class AdmitPatientComponent implements OnInit {
         payload.patientId = this.inPatientItem.patientId;
 
         this._inPatientService.customCreate(payload).then(res => {
-          console.log(res);
           if (res.status === 'success') {
             let patient = `${this.inPatientItem.personDetails.firstName} ${this.inPatientItem.personDetails.lastName}`;
             let text = `You have successfully admitted ${patient} into ${value.bed.name} bed in ${value.room.name} room`;
@@ -265,7 +262,20 @@ export class AdmitPatientComponent implements OnInit {
       } else if (this.inPatientItem.typeChecker === myGlobals.transfer) {
         payload.type = 'acceptTransfer';
         payload.status = myGlobals.transfer;
+        payload.action = 'admitPatient';
+        payload.patientId = this.inPatientItem.patientId;
 
+        this._inPatientService.customCreate(payload).then(res => {
+          if (res.status === 'success') {
+            let patient = `${this.inPatientItem.personDetails.firstName} ${this.inPatientItem.personDetails.lastName}`;
+            let text = `You have successfully admitted ${patient} into ${value.bed.name} bed in ${value.room.name} room`;
+            // this._notification('Success', fullText);
+            this._systemModuleService.announceSweetProxy(text, 'success');
+            this.close_onClick();
+          } else {
+            this._notification('Error', 'There was a admitting patient. Please try again later.');
+          }
+        }).catch(err => {});
         // this._inPatientService.admit(payload).then(res => {
         //   if (res.status === 'success') {
         //     this._notification('Success', 'Patient has been accepted successfully.');
