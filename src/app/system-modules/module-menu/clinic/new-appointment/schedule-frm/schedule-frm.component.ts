@@ -419,10 +419,12 @@ export class ScheduleFrmComponent implements OnInit {
         })
         .subscribe(payload => {
           if (payload.data.length > 0) {
+            console.log('11')
             this.canCheckIn = true;
             this.checkIn.enable();
             this.appointmentIsToday = true;
           } else {
+            console.log('12')
             this.canCheckIn = false;
             this.checkIn.disable();
             this.appointmentIsToday = false;
@@ -769,9 +771,10 @@ export class ScheduleFrmComponent implements OnInit {
       this.updateAppointment = false;
       this.saveAppointment = false;
       this.savingAppointment = true;
+      console.log(this.patient.value);
       const patient = this.patient.value._id;
       const clinic = this.clinic.value.clinicName;
-      const provider = this.provider.value._id;
+
       const type = this.type.value.name;
       const category = this.category.value.name;
       const orderStatus = this.status.value.name;
@@ -784,7 +787,11 @@ export class ScheduleFrmComponent implements OnInit {
       this.appointment.appointmentReason = reason;
       this.appointment.appointmentTypeId = type;
       this.appointment.clinicId = clinic;
-      this.appointment.doctorId = provider;
+      if(this.provider.value !== null){
+        const provider = this.provider.value._id;
+        this.appointment.doctorId = provider;
+      }
+
       this.appointment.facilityId = facility;
       this.appointment.patientId = patient;
       this.appointment.startDate = this.date;
@@ -972,6 +979,7 @@ export class ScheduleFrmComponent implements OnInit {
       }
     } else {
       this.systemModuleService.off();
+      this.disableBtn = false;
       this.systemModuleService.announceSweetProxy(
         "Some required field missing, please try again!",
         "warning"
