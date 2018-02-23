@@ -59,6 +59,7 @@ import { ViewAccessComponent } from './facility-access-control/view-access/view-
 import { from } from 'rxjs/observable/from';
 import { HmoOfficerComponent } from './hmo-officer/hmo-officer.component';
 import { HmoBillDetailComponent } from './hmo-officer/hmo-bill-detail/hmo-bill-detail.component';
+import { HmoBillHistoryDetailComponent } from './hmo-officer/hmo-bill-history-detail/hmo-bill-history-detail.component';
 
 @NgModule({
     declarations: [
@@ -100,7 +101,8 @@ import { HmoBillDetailComponent } from './hmo-officer/hmo-bill-detail/hmo-bill-d
         AccessManagerComponent, AccessRoleDetailsComponent, CreateAccessComponent, ViewAccessComponent,
         AccessManagerHomeComponent,
         HmoOfficerComponent,
-        HmoBillDetailComponent
+        HmoBillDetailComponent,
+        HmoBillHistoryDetailComponent
     ],
     exports: [
     ],

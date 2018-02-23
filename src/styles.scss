@@ -124,6 +124,12 @@ select {
 .hover {
     cursor: pointer;
 }
+.green-txt{
+    color: $green;
+}
+.red-txt{
+    color: #ff2500;
+}
 
 .badge-green {
     color: $white;
