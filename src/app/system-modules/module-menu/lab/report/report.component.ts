@@ -164,7 +164,6 @@ export class ReportComponent implements OnInit {
       } else if (action === 'upload') {
         this.saveAndUploadBtnText = 'UPLOADING...';
       }
-      console.log(this.selectedPatient);
       const isUploaded: Boolean = false;
       const isSaved: Boolean = false;
       const report = {

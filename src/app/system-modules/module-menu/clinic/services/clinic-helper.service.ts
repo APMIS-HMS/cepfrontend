@@ -7,6 +7,7 @@ import { LocationService } from '../../../../services/module-manager/setup/index
 import { ScheduleRecordModel, Profession, ConsultingRoomModel, Employee, Facility, Location, MinorLocation } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class ClinicHelperService {
@@ -28,6 +29,7 @@ export class ClinicHelperService {
     private consultingRoomService: ConsultingRoomService,
     private employeeService: EmployeeService,
     private authFacadeService: AuthFacadeService,
+    private router:Router,
     private locationService: LocationService, ) {
     this.getProfessions();
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
@@ -135,14 +137,19 @@ export class ClinicHelperService {
 
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
-      if (this.loginEmployee.professionId === 'Doctor') {
-        this.selectedProfession = this.professions.filter(x => x._id === this.loginEmployee.professionId)[0];
-        this.isDoctor = true;
-        this.getSchedules();
-      } else {
-        this.isDoctor = false;
-        this.getClinicLocation();
+      if(this.loginEmployee === undefined){
+        this.router.navigate(['/dashboard']);
+      }else{
+        if (this.loginEmployee.professionId === 'Doctor') {
+          this.selectedProfession = this.professions.filter(x => x._id === this.loginEmployee.professionId)[0];
+          this.isDoctor = true;
+          this.getSchedules();
+        } else {
+          this.isDoctor = false;
+          this.getClinicLocation();
+        }
       }
+
     })
 
     // Observable.fromPromise(this.employeeService.find({

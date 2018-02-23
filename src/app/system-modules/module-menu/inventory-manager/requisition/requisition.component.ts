@@ -65,7 +65,6 @@ export class RequisitionComponent implements OnInit {
   ) {
 
     this.employeeService.checkInAnnounced$.subscribe(payload => {
-      console.log(payload);
       if (payload !== undefined) {
         this.stores = [];
         if (payload.typeObject !== undefined) {
@@ -100,7 +99,6 @@ export class RequisitionComponent implements OnInit {
       emp$.mergeMap((emp: any) => Observable.forkJoin([Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
       ]))
         .subscribe((results: any) => {
-          console.log(results);
           this.loginEmployee = results[0];
         });
       this.getStores();
@@ -111,23 +109,18 @@ export class RequisitionComponent implements OnInit {
 
   getStores() {
     this.stores = [];
-    console.log(this.checkingObject);
-    this.storeService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
-      console.log(payload);
+    this.storeService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload =>
       payload.data.forEach((item, i) => {
-        console.log(item);
         if (item._id !== this.checkingObject.storeId) {
           this.stores.push(item);
         }
-      });
-    });
-  }
+      }))
+    }
 
   getAllProducts() {
     this.systemModuleService.on();
     this.productService.find({ query: { facilityId: this.selectedFacility._id, $limit: false } }).then(payload => {
       this.products = payload.data;
-      console.log(this.products);
       this.getProductTables(this.products);
       this.systemModuleService.off();
     });
@@ -264,16 +257,13 @@ export class RequisitionComponent implements OnInit {
     requisition.storeId = this.checkingObject.storeId;
     requisition.comment = this.desc.value;
     requisition.products = [];
-    console.log(requisition);
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
       const requisitionProduct: RequisitionProduct = <RequisitionProduct>{};
       requisitionProduct.productId = item.value.productObject._id;
       requisitionProduct.qty = item.value.qty;
       requisition.products.push(requisitionProduct);
     });
-    console.log(requisition);
     this.requisitionService.create(requisition).then(payload => {
-      console.log(755555555555656567);
       this.systemModuleService.announceSweetProxy('Requisition successfull', 'success');
       this.addNewProductTables();
       this.desc.reset();
@@ -302,7 +292,6 @@ export class RequisitionComponent implements OnInit {
           { facilityId: this.selectedFacility._id, name: '', storeId: this.checkingObject.storeId }// , $limit: 200 }
       })
         .then(payload => {
-          console.log(payload);
           const products = payload.data.filter(x => x.availableQuantity === 0);
           products.forEach(element => {
             this.products.push(element.productObject);

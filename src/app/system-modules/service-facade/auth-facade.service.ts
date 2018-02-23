@@ -46,13 +46,11 @@ export class AuthFacadeService {
           .then(
             payload => {
               if (payload !== undefined) {
-                console.log(payload);
                 self.logingEmployee = payload.selectedEmployee;
                 self.setLogingEmployee(payload.selectedEmployee);
                 self.setLoginUser(payload.selectedUser);
                 resolve(self.logingEmployee);
               } else {
-                console.log('nothing')
                 resolve(undefined);
               }
             },

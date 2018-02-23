@@ -1,3 +1,4 @@
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { UserService } from './../../../services/facility-manager/setup/user.service';
 import { AuthFacadeService } from './../../service-facade/auth-facade.service';
 import { Component, OnInit, AfterContentChecked, OnDestroy } from '@angular/core';
@@ -45,6 +46,7 @@ export class ClinicComponent implements OnInit, OnDestroy {
 		public clinicHelperService: ClinicHelperService,
     private authFacadeService: AuthFacadeService,
     private userService:UserService,
+    private systemModuleService:SystemModuleService,
 		private locationService: LocationService) {
 
 		// this.route.data.subscribe(data => {
@@ -64,7 +66,6 @@ export class ClinicComponent implements OnInit, OnDestroy {
 		this.checkPageUrl(page);
 		this.authFacadeService.getLogingEmployee().then((payload) => {
 			this.loginEmployee = payload;
-      console.log(this.loginEmployee);
 			if (this.loginEmployee !== undefined && this.loginEmployee.professionId !== undefined) {
 				if (this.loginEmployee.professionId === 'Doctor'
 					&& (this.loginEmployee.consultingRoomCheckIn === undefined
@@ -108,7 +109,9 @@ export class ClinicComponent implements OnInit, OnDestroy {
 				} else {
 					this.isDoctor = false;
 				}
-			}
+			}else{
+        this.systemModuleService.announceSweetProxy('You are not an employee of this facility','error');
+      }
 		});
 
 
@@ -279,7 +282,7 @@ export class ClinicComponent implements OnInit, OnDestroy {
 				}
 			});
 		}else{
-      this.userService.logOut();
+
     }
 		this.employeeService.announceCheckIn(undefined);
 	}

@@ -120,10 +120,8 @@ export class FacilityPageHomeComponent implements OnInit {
   changeRoute(value: string) {
     this.router.navigate(['/dashboard/facility/' + value]).then(
       payload =>{
-        console.log(payload);
       }
     ).catch(error =>{
-      console.log(error);
     });
     this.pgMenuToggle = false;
     if (value == '') {
@@ -359,7 +357,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.networkContentArea = false;
       // this.dashboardContentArea = false;
     }
-  } 
+  }
   close_onClick(e) {
     this.newDept = false;
     this.newUnit = false;

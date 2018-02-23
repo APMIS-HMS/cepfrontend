@@ -116,7 +116,7 @@ export class CheckoutPatientComponent implements OnInit {
 							res.msg = text;
 							this.admittedWard = res;
 							this._notification('Success', text);
-						}).catch(err => console.log(err));
+						}).catch(err => {});
 					} else {
 						this.admitFormGroup.reset();
 						this.admitBtnText = 'Send <i class=\'fa fa-check-circle-o\'></i>';
@@ -126,8 +126,8 @@ export class CheckoutPatientComponent implements OnInit {
 						this.admittedWard = res;
 						this._notification('Success', text);
 					}
-				}).catch(err => console.log(err));
-			}).catch(err => console.log(err));
+				}).catch(err =>{} );
+			}).catch(err =>{});
 		} else {
 			this._notification('Error', 'Please select a ward for patient to be admitted into.');
 		}

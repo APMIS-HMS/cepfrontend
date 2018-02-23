@@ -91,7 +91,6 @@ export class LandingpageComponent implements OnInit {
         .then(payload => {
           this.loading = false;
           this.inventories = payload.data.filter(x => x.totalQuantity > 0);
-          console.log(this.inventories);
         });
     }
 

@@ -287,7 +287,6 @@ export class ScheduleFrmComponent implements OnInit {
   }
 
   primeComponent() {
-    console.log(1);
     const majorLocation$ = Observable.fromPromise(
       this.locationService.find({ query: { name: "Clinic" } })
     );
@@ -308,7 +307,6 @@ export class ScheduleFrmComponent implements OnInit {
         query: { facilityId: this.selectedFacility._id }
       })
     );
-    console.log(this.loginEmployee);
     const workSpaces$ = Observable.fromPromise(
       this.workSpaceService.find({
         query: { employeeId: this.loginEmployee._id }
@@ -327,23 +325,18 @@ export class ScheduleFrmComponent implements OnInit {
       orderStatuses$
     ]).subscribe(
       (results: any) => {
-        console.log(2);
         results[0].data.forEach((itemi, i) => {
           if (itemi.name === "Clinic") {
             this.clinicMajorLocation = itemi;
           }
         });
-        console.log(3);
         this.appointmentTypes = results[1].data;
         const schedules = results[5].data;
         this.professions = results[2].data;
-        console.log(4);
         if (results[4].data.length > 0) {
-          console.log(5);
         }
 
         const categories = results[3].data[0].categories;
-        console.log(categories);
         const filterCategories = categories.filter(
           x => x.name === "Appointment"
         );
@@ -353,7 +346,6 @@ export class ScheduleFrmComponent implements OnInit {
         if (this.appointment._id !== undefined) {
           this.category.setValue(this.appointment.category);
         }
-        console.log(6);
         this.orderStatuses = results[6].data;
         this.orderStatuses.forEach(item => {
           if (item.name === "Scheduled") {
@@ -377,7 +369,6 @@ export class ScheduleFrmComponent implements OnInit {
         this.validateCurrentAppointment();
       },
       error => {
-        console.log(error);
       }
     );
   }
@@ -415,21 +406,20 @@ export class ScheduleFrmComponent implements OnInit {
   isAppointmentToday() {
     Observable.fromPromise(
       this.appointmentService
-        .find({
+        .findAppointment({
           query: { _id: this.appointment._id, isAppointmentToday: true }
         })
         .subscribe(payload => {
           if (payload.data.length > 0) {
-            console.log('11')
             this.canCheckIn = true;
             this.checkIn.enable();
             this.appointmentIsToday = true;
           } else {
-            console.log('12')
             this.canCheckIn = false;
             this.checkIn.disable();
             this.appointmentIsToday = false;
           }
+        },error =>{
         })
     );
   }
@@ -772,7 +762,6 @@ export class ScheduleFrmComponent implements OnInit {
       this.updateAppointment = false;
       this.saveAppointment = false;
       this.savingAppointment = true;
-      console.log(this.patient.value);
       const patient = this.patient.value._id;
       const clinic = this.clinic.value.clinicName;
 
@@ -890,7 +879,6 @@ export class ScheduleFrmComponent implements OnInit {
             }
           },
           error => {
-            console.log(error);
             this.savingAppointment = false;
             this.disableBtn = false;
             this.loadIndicatorVisible = false;
@@ -938,7 +926,6 @@ export class ScheduleFrmComponent implements OnInit {
                     );
                   },
                   error => {
-                    console.log(error);
                     this.savingAppointment = false;
                     this.disableBtn = false;
                     this.loadIndicatorVisible = false;
@@ -974,7 +961,6 @@ export class ScheduleFrmComponent implements OnInit {
             }
           },
           error => {
-            console.log(error);
             this.savingAppointment = false;
             this.disableBtn = false;
             this.loadIndicatorVisible = false;
