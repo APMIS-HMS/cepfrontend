@@ -22,4 +22,7 @@ export class HmoBillDetailComponent implements OnInit {
     this.closeModal.emit(true);
   }
 
+  newWorkspace_onClick(employee) { }
+  deletion_popup(workspace) {}
+
 }
