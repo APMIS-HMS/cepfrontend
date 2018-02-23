@@ -19,6 +19,7 @@ module.exports = function(app) {
         prevWard: { type: Schema.Types.ObjectId, require: false },
         currentWard: { type: Schema.Types.ObjectId, require: false },
         discharge: dischargeTransfer,
+        dischargedBy: { type: Schema.Types.ObjectId, required: false },
         proposedWard: { type: Schema.Types.ObjectId, required: false },
         isDischarged: { type: Boolean, default: false }
     }, {

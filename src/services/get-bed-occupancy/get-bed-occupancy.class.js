@@ -48,11 +48,10 @@ class Service {
                     const bedOccupancies = getBedOccupancies.data;
                     // get the available bed space.
                     rooms[0].beds.forEach(bed => {
+                        bed.isAvailable = true;
                         bedOccupancies.forEach(bedOccupancy => {
                             if ((bedOccupancy.roomId.toString() === rooms[0]._id.toString()) && (bedOccupancy.bedId.toString() === bed._id.toString())) {
                                 bed.isAvailable = bedOccupancy.isAvailable;
-                            } else {
-                                bed.isAvailable = true;
                             }
                         });
                     });

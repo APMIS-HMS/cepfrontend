@@ -15,7 +15,7 @@ module.exports = function(app) {
         admittedDate: { type: Schema.Types.Date, required: false },
         bedState: { type: Schema.Types.String, required: true }, // Available, Occupied
         isAvailable: { type: Schema.Types.Boolean, default: true },
-        admittedBy: { type: Schema.Types.ObjectId, required: true },
+        admittedBy: { type: Schema.Types.ObjectId, required: false },
         history: [bedOccupancyHistoryScheme]
     }, {
         timestamps: true
