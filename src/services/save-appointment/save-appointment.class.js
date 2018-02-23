@@ -30,6 +30,13 @@ class Service {
                     $sort: { 'createdAt': -1 }
                 }
             });
+        } else if (hook._id !== undefined) {
+            appointmentResult = await appointmentService.find({
+                query: {
+                    _id: hook._id,
+                    $sort: { 'createdAt': -1 }
+                }
+            });
         }
 
 
