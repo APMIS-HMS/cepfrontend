@@ -219,8 +219,7 @@ export class NewUnitComponent implements OnInit {
                 this.onRefresh.emit(true);
                 this.systemModuleService.announceSweetProxy(
                   "Unit saved successfully",
-                  "success"
-                );
+                  'success', null, null, null, null, null, null, null);
                 this.closeModal.emit(true);
               },
               eror => {
@@ -298,8 +297,7 @@ export class NewUnitComponent implements OnInit {
                 this.onRefresh.emit(true);
                 this.systemModuleService.announceSweetProxy(
                   "Unit saved successfully",
-                  "success"
-                );
+                  'success', null, null, null, null, null, null, null);
               },
               err => {
                 this.systemModuleService.announceSweetProxy(

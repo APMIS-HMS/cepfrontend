@@ -845,10 +845,7 @@ export class ScheduleFrmComponent implements OnInit {
                     this.systemModuleService.off();
                     this.router.navigate(["/dashboard/clinic/appointment"]);
                     this.systemModuleService.off();
-                    this.systemModuleService.announceSweetProxy(
-                      "Appointment updated successfully",
-                      "success"
-                    );
+                    this.systemModuleService.announceSweetProxy('Appointment updated successfully', 'success', null, null, null, null, null, null, null);
                   },
                   error => {
                     this.systemModuleService.off();
@@ -884,8 +881,7 @@ export class ScheduleFrmComponent implements OnInit {
               this.systemModuleService.off();
               this.systemModuleService.announceSweetProxy(
                 "Appointment updated successfully",
-                "success"
-              );
+                'success', null, null, null, null, null, null, null);
             }
           },
           error => {
@@ -932,8 +928,7 @@ export class ScheduleFrmComponent implements OnInit {
                     this.systemModuleService.off();
                     this.systemModuleService.announceSweetProxy(
                       "Appointment set successfully",
-                      "success"
-                    );
+                      'success', null, null, null, null, null, null, null);
                   },
                   error => {
                     this.systemModuleService.off();
@@ -963,8 +958,7 @@ export class ScheduleFrmComponent implements OnInit {
               this.systemModuleService.off();
               this.systemModuleService.announceSweetProxy(
                 "Appointment set successfully",
-                "success"
-              );
+                'success', null, null, null, null, null, null, null);
             }
           },
           error => {

@@ -143,7 +143,7 @@ export class NewServiceComponent implements OnInit {
       let basedPrice = this.selectedService.price.filter(x => x.isBase === true)[0];
       this.frmNewservice.controls['servicePrice'].setValue(basedPrice.price);
       this.priceItems = JSON.parse(JSON.stringify(this.selectedService.price));
-      
+
       this.selectedServiceItems = this.selectedService.panels;
     }
     this.frmNewservice.controls['serviceCat'].setValue(this.selectedService.categoryId);
@@ -244,7 +244,7 @@ export class NewServiceComponent implements OnInit {
         }
       }).then(payload => {
         this.systemModuleService.off();
-        this.systemModuleService.announceSweetProxy('Service added successful', 'success');
+        this.systemModuleService.announceSweetProxy('Service added successful', 'success', null, null, null, null, null, null, null);
         this.isDisableBtn = false;
         this.frmNewservice.reset();
         this.refreshService.emit(this.selectedService);
@@ -280,7 +280,7 @@ export class NewServiceComponent implements OnInit {
         }
       }).then(payload => {
         this.systemModuleService.off();
-        this.systemModuleService.announceSweetProxy('Service added successful', 'success');
+        this.systemModuleService.announceSweetProxy('Service added successful', 'success', null, null, null, null, null, null, null);
         this.isDisableBtn = false;
         this.refreshService.emit(this.selectedService);
         this.frmNewservice.reset();

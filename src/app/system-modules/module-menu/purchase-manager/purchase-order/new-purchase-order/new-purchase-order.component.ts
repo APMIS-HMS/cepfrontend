@@ -385,7 +385,7 @@ export class NewPurchaseOrderComponent implements OnInit {
       });
       this.purchaseOrderService.create(purchaseOrder).subscribe(payload => {
         this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
-        this.systemModuleService.announceSweetProxy('Purchase order ' + payload.purchaseOrderNumber + ' was created', 'success');
+        this.systemModuleService.announceSweetProxy('Purchase order ' + payload.purchaseOrderNumber + ' was created', 'success', null, null, null, null, null, null, null);
       }, error => {
         this.systemModuleService.announceSweetProxy('Failed to create purchase order', 'error');
       });
@@ -409,7 +409,7 @@ export class NewPurchaseOrderComponent implements OnInit {
       });
 
       this.purchaseOrderService.patch(this.selectedPurchaseOrder._id, this.selectedPurchaseOrder).subscribe(payload => {
-        this.systemModuleService.announceSweetProxy('Purchase order ' + payload.purchaseOrderNumber + ' was updated', 'success');
+        this.systemModuleService.announceSweetProxy('Purchase order ' + payload.purchaseOrderNumber + ' was updated', 'success', null, null, null, null, null, null, null);
         this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
         this.unCheckedAllProducts();
         this.router.navigate(['/dashboard/purchase-manager/orders']);

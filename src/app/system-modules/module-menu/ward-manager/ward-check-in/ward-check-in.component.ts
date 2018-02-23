@@ -111,7 +111,7 @@ export class WardCheckInComponent implements OnInit {
         });
         const text = 'You have successfully checked into ' + value.room.name + ' ward';
         // this._notification('Success', text);
-        this._systemModuleService.announceSweetProxy(text, 'success');
+        this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
         this.disableCheckIn = false;
         this.addCheckin = true;
         this.addingCheckin = false;
@@ -143,7 +143,7 @@ export class WardCheckInComponent implements OnInit {
       this.switchBtnText = 'Switch To Room';
       const text = 'You have successfully changed ward to ' + checkIn.minorLocationId.name + ' ward';
       // this._notification('Success', text);
-      this._systemModuleService.announceSweetProxy(text, 'success');
+      this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
       this.disableCheckIn = false;
       this.addCheckin = true;
       this.addingCheckin = false;

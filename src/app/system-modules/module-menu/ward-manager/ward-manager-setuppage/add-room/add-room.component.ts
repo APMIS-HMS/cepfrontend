@@ -138,7 +138,7 @@ export class AddRoomComponent implements OnInit {
             this.addingRoom = false;
             this.disableAddRoomBtn = true;
             const text = `${value.room} room has been edited successfully!`;
-            this._systemModuleService.announceSweetProxy(text, 'success');
+            this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
           } else {
             this.disableAddRoomBtn = false;
             const text = `There was a problem editing ${value.room} room!`;
@@ -157,7 +157,7 @@ export class AddRoomComponent implements OnInit {
             this.addingRoom = false;
             this.disableAddRoomBtn = true;
             const text = `${value.room} room has been created successfully!`;
-            this._systemModuleService.announceSweetProxy(text, 'success');
+            this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
           } else {
             this.disableAddRoomBtn = false;
             const text = `There was a problem trying to create ${value.room} room!`;

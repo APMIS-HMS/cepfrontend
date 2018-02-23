@@ -137,7 +137,7 @@ export class EmpAssignUnitComponent implements OnInit {
       {
         this.employeeService.announceEmployee(this.selectedEmployee);
       }
-      this.systemModuleService.announceSweetProxy('Employee assigned successfully','success');
+      this.systemModuleService.announceSweetProxy('Employee assigned successfully', 'success', null, null, null, null, null, null, null);
     }, error => {
       this.isSaving = false;
       this.systemModuleService.announceSweetProxy('There was an error assigning this employee to this unit','error');

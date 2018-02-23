@@ -157,7 +157,7 @@ export class LandingpageComponent implements OnInit {
       this.comment.reset();
       this.closeAdjustStock();
       const message = 'Batch number "' + this.selectedTransaction.batchNumber + '" has been adjusted';
-      this.systemModuleService.announceSweetProxy(message, 'success');
+      this.systemModuleService.announceSweetProxy(message, 'success', null, null, null, null, null, null, null);
     });
   }
 

@@ -123,7 +123,7 @@ export class NewSubLocationComponent implements OnInit {
               const text = val.sublocName + ' has been created successfully';
               this._notification('Success', text);
               this.systemModuleService.off();
-              this.systemModuleService.announceSweetProxy(text,'success');
+              this.systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
               this.close_onClick();
               const locations = this.locations.filter(t => t._id === val.sublocParent);
               // If minorLocation is ward, we want to also create minorLocation in wardDetails service.
@@ -176,7 +176,7 @@ export class NewSubLocationComponent implements OnInit {
                   const text = val.sublocName + ' has been created successfully';
                   this._notification('Success', text);
                   this.systemModuleService.off();
-                  this.systemModuleService.announceSweetProxy(text,'success');
+                  this.systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
                   this.close_onClick();
                 }).catch(err => console.log(err));
               } else {
@@ -186,7 +186,7 @@ export class NewSubLocationComponent implements OnInit {
                 const text = val.sublocName + ' has been created successfully';
                 this._notification('Success', text);
                 this.systemModuleService.off();
-                this.systemModuleService.announceSweetProxy(text,'success');
+                this.systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
                 this.close_onClick();
               }
             });
@@ -216,7 +216,7 @@ export class NewSubLocationComponent implements OnInit {
             const text = this.subLocation.name + ' has been updated to ' + val.sublocName + ' successfully';
             this._notification('Success', text);
             this.systemModuleService.off();
-            this.systemModuleService.announceSweetProxy(text,'success');
+            this.systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
             this.close_onClick();
             // this._wardDetailsService.find({ query: {'facilityId._id': this.facility._id}}).then(wardFindRes => {
             //   const wardDetails = wardFindRes.data[0];
@@ -258,7 +258,7 @@ export class NewSubLocationComponent implements OnInit {
                 const text = this.subLocation.name + ' has been updated to ' + val.sublocName + ' successfully';
                 this._notification('Success', text);
                 this.systemModuleService.off();
-                this.systemModuleService.announceSweetProxy(text,'success');
+                this.systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
                 this.close_onClick();
               });
             });
@@ -277,7 +277,7 @@ export class NewSubLocationComponent implements OnInit {
                 this.ActionButton = 'Create';
                 this.systemModuleService.off();
                 const text = this.subLocation.name + ' has been updated to ' + val.sublocName + ' successfully';
-                this.systemModuleService.announceSweetProxy(text,'success');
+                this.systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
                 this._notification('Success', text);
                 this.close_onClick();
               });
@@ -294,7 +294,7 @@ export class NewSubLocationComponent implements OnInit {
             this.systemModuleService.off();
             const text = this.subLocation.name + ' has been updated to ' + val.sublocName + ' successfully';
             this._notification('Success', text);
-            this.systemModuleService.announceSweetProxy(text,'success');
+            this.systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
             this.close_onClick();
           });
         }

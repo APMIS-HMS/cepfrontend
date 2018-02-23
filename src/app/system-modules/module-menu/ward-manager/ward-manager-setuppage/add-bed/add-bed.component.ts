@@ -92,7 +92,7 @@ export class AddBedComponent implements OnInit {
             this.editingBed = false;
             this.disableAddBtn = true;
             const text = `${value.bed} bed has been edited successfully!`;
-            this._systemModuleService.announceSweetProxy(text, 'success');
+            this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
           } else {
             this.disableAddBtn = false;
             const text = `There was a problem editing ${value.bed} bed!`;
@@ -113,7 +113,7 @@ export class AddBedComponent implements OnInit {
             this.addingBed = false;
             this.disableAddBtn = true;
             const text = `${value.bed} bed has been added successfully!`;
-            this._systemModuleService.announceSweetProxy(text, 'success');
+            this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
           } else {
             this.disableAddBtn = false;
             const text = `There was a problem adding ${value.bed} bed!`;

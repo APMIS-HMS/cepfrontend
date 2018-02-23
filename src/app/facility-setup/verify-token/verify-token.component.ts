@@ -56,7 +56,7 @@ export class VerifyTokenComponent implements OnInit {
             this.inputFacility.isTokenVerified = true;
             this._facilityService.update(this.inputFacility).then(payload2 => {
               this.locker.setObject('selectedFacility', payload2);
-              this.systemModuleService.announceSweetProxy('Facility has been verified successfully', 'success');
+              this.systemModuleService.announceSweetProxy('Facility has been verified successfully', 'success', null, null, null, null, null, null, null);
               this._router.navigate(['/accounts']);
               this.close_onClick();
             });

@@ -274,7 +274,7 @@ export class RequisitionComponent implements OnInit {
     console.log(requisition);
     this.requisitionService.create(requisition).then(payload => {
       console.log(755555555555656567);
-      this.systemModuleService.announceSweetProxy('Requisition successfull', 'success');
+      this.systemModuleService.announceSweetProxy('Requisition successfull', 'success', null, null, null, null, null, null, null);
       this.addNewProductTables();
       this.desc.reset();
       this.resetGroups();

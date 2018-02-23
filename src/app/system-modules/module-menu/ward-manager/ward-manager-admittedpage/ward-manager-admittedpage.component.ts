@@ -42,135 +42,120 @@ export class WardManagerAdmittedpageComponent implements OnInit {
     private _authFacadeService: AuthFacadeService,
     private _systemModuleService: SystemModuleService,
     private _inPatientListService: InPatientListService
-		// private gvariable: globalConfig
 	) {
-		// this._inPatientService.listenerCreate.subscribe(payload => {
-		// 	this.getAdmittedItems(this.selectedWard);
-		// });
+    this.facility = <Facility>this._locker.getObject('selectedFacility');
 
-		// this._inPatientService.listenerUpdate.subscribe(payload => {
-		// 	this.getAdmittedItems(this.selectedWard);
-    // });
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       if (!!res._id) {
         this.employeeDetails = res;
-      }
-    }).catch(err => { });
-	}
-
-	ngOnInit() {
-		this.facility = <Facility>this._locker.getObject('selectedFacility');
-		this._wardEventEmitter.setRouteUrl('Admitted Patients');
-
-		this._wardEventEmitter.announceWard.subscribe(val => {
-      console.log(val);
-			this.selectedWard = val;
-			this.getAdmittedItems(val);
-			this.getwardLocationItems(val);
-		});
-
-		if (this.selectedWard === undefined) {
-      console.log(this.employeeDetails);
-      if (!!this.employeeDetails._id) {
         const wardCheckedIn = this.employeeDetails.wardCheckIn.filter(x => x.isOn)[0];
         const wardType = {
           type: 'ward',
           typeObject: wardCheckedIn
         }
         this.getAdmittedItems(wardType);
-        this.getwardLocationItems(wardType);
+        // this.getwardLocationItems(wardType);
       }
-		}
+    }).catch(err => { });
+	}
+
+	ngOnInit() {
+		this._wardEventEmitter.setRouteUrl('Admitted Patients');
+
+		this._wardEventEmitter.announceWard.subscribe(val => {
+			this.selectedWard = val;
+			this.getAdmittedItems(val);
+			// this.getwardLocationItems(val);
+		});
 
 		// this.searchControl.valueChanges.subscribe(searchText => {
 		// 	this.filterInPatientList(searchText);
 		// });
 	}
 
-	onWardChange(param) {
-		this.filterAdmittedPatient = [];
-		this._bedOccupancyService.find({ query: {'facilityId._id': this.facility._id }}).then(payload => {
-			if (payload.data.length > 0) {
-				this.admittedPatient = [];
-				payload.data[0].locations.forEach(item => {
-					if (item.minorLocationId === param) {
-						this.wardRoomLocationItems = item.rooms;
-						this._inPatientService.find({ query: {'facilityId._id': this.facility._id}}).then(res => {
-							res.data.forEach(inPatientItem => {
-								inPatientItem.transfers.forEach(transferItem => {
-									if (transferItem.minorLocationId === param) {
-										this.filterAdmittedPatient.push(inPatientItem);
-									}
-								})
-								if (this.filterAdmittedPatient.length === 0) {
-									this.getAdmittedItems(this.selectedWard);
-								}else {
-									this.admittedPatient = this.filterAdmittedPatient;
-								}
-							});
-						});
-					}
-				});
-			}
-		});
-	}
+	// onWardChange(param) {
+	// 	this.filterAdmittedPatient = [];
+	// 	this._bedOccupancyService.find({ query: {'facilityId._id': this.facility._id }}).then(payload => {
+	// 		if (payload.data.length > 0) {
+	// 			this.admittedPatient = [];
+	// 			payload.data[0].locations.forEach(item => {
+	// 				if (item.minorLocationId === param) {
+	// 					this.wardRoomLocationItems = item.rooms;
+	// 					this._inPatientService.find({ query: {'facilityId._id': this.facility._id}}).then(res => {
+	// 						res.data.forEach(inPatientItem => {
+	// 							inPatientItem.transfers.forEach(transferItem => {
+	// 								if (transferItem.minorLocationId === param) {
+	// 									this.filterAdmittedPatient.push(inPatientItem);
+	// 								}
+	// 							})
+	// 							if (this.filterAdmittedPatient.length === 0) {
+	// 								this.getAdmittedItems(this.selectedWard);
+	// 							}else {
+	// 								this.admittedPatient = this.filterAdmittedPatient;
+	// 							}
+	// 						});
+	// 					});
+	// 				}
+	// 			});
+	// 		}
+	// 	});
+	// }
 
-	onRoomChange(param) {
-		this.filterAdmittedPatient = [];
-		this._bedOccupancyService.find({ query: { 'facilityId._id': this.facility._id } }).then(payload => {
-			if (payload.data !== []) {
-				this.admittedPatient = []
-				payload.data[0].locations.forEach(item => {
-					item.rooms.forEach(itm => {
-						if (itm._id.toString() === param.toString()) {
-							this.wardRoomBedLocationItems = itm.beds;
-							this._inPatientService.find({ query: { facilityId: this.facility._id } }).then(payload2 => {
-								payload2.data.forEach(inPatientItem => {
-									inPatientItem.transfers.forEach(transferItem => {
-										if (transferItem.roomId.toString() === param.toString()) {
-											this.filterAdmittedPatient.push(inPatientItem);
-										}
-									});
-								});
+	// onRoomChange(param) {
+	// 	this.filterAdmittedPatient = [];
+	// 	this._bedOccupancyService.find({ query: { 'facilityId._id': this.facility._id } }).then(payload => {
+	// 		if (payload.data !== []) {
+	// 			this.admittedPatient = []
+	// 			payload.data[0].locations.forEach(item => {
+	// 				item.rooms.forEach(itm => {
+	// 					if (itm._id.toString() === param.toString()) {
+	// 						this.wardRoomBedLocationItems = itm.beds;
+	// 						this._inPatientService.find({ query: { facilityId: this.facility._id } }).then(payload2 => {
+	// 							payload2.data.forEach(inPatientItem => {
+	// 								inPatientItem.transfers.forEach(transferItem => {
+	// 									if (transferItem.roomId.toString() === param.toString()) {
+	// 										this.filterAdmittedPatient.push(inPatientItem);
+	// 									}
+	// 								});
+	// 							});
 
-								if (this.filterAdmittedPatient.length === 0) {
-									this.getAdmittedItems(this.selectedWard);
-								} else {
-									this.admittedPatient =
-									this.admittedPatient = this.filterAdmittedPatient;
-								}
-							});
-						}
-					});
-				});
-			}
-		});
-	}
+	// 							if (this.filterAdmittedPatient.length === 0) {
+	// 								this.getAdmittedItems(this.selectedWard);
+	// 							} else {
+	// 								this.admittedPatient =
+	// 								this.admittedPatient = this.filterAdmittedPatient;
+	// 							}
+	// 						});
+	// 					}
+	// 				});
+	// 			});
+	// 		}
+	// 	});
+	// }
 
-	filterInPatientList(param) {
-		this._bedOccupancyService.find({ query: { 'facilityId': this.facility._id } }).then(res => {
-			if (res.data !== []) {
-        this.admittedPatient = []
-        console.log(res);
-				// res.data[0].locations.forEach(item => {
-				// 	item.rooms.forEach(itm => {
-				// 		if (itm._id === this.roomVal.value) {
-				// 			this.wardRoomBedLocationItems = itm.beds;
-				// 			this._inPatientService.find({ query: { 'facilityId._id': this.facility._id } }).then(res2 => {
-				// 				res2.data.forEach(inPatientItem => {
-				// 					if (inPatientItem.patientDetails.personDetails.personFullName.includes(param)
-				// 						|| inPatientItem.patientDetails.personDetails.age.toString() === param
-				// 						|| inPatientItem.patientDetails.personDetails.personFullName.gender.name === param) {
-				// 						this.admittedPatient.push(inPatientItem);
-				// 					}
-				// 				});
-				// 			});
-				// 		}
-				// 	});
-				// });
-			}
-		});
-	}
+	// filterInPatientList(param) {
+	// 	this._bedOccupancyService.find({ query: { 'facilityId': this.facility._id } }).then(res => {
+	// 		if (res.data !== []) {
+  //       this.admittedPatient = [];
+	// 			// res.data[0].locations.forEach(item => {
+	// 			// 	item.rooms.forEach(itm => {
+	// 			// 		if (itm._id === this.roomVal.value) {
+	// 			// 			this.wardRoomBedLocationItems = itm.beds;
+	// 			// 			this._inPatientService.find({ query: { 'facilityId._id': this.facility._id } }).then(res2 => {
+	// 			// 				res2.data.forEach(inPatientItem => {
+	// 			// 					if (inPatientItem.patientDetails.personDetails.personFullName.includes(param)
+	// 			// 						|| inPatientItem.patientDetails.personDetails.age.toString() === param
+	// 			// 						|| inPatientItem.patientDetails.personDetails.personFullName.gender.name === param) {
+	// 			// 						this.admittedPatient.push(inPatientItem);
+	// 			// 					}
+	// 			// 				});
+	// 			// 			});
+	// 			// 		}
+	// 			// 	});
+	// 			// });
+	// 		}
+	// 	});
+	// }
 
 	onClickDischargePatient() {
 		this.dischargePatient = true;
@@ -189,19 +174,19 @@ export class WardManagerAdmittedpageComponent implements OnInit {
       }
     }).then(res => {
         this.loading = false;
-				if (res.data.length > 0) {
+				if (res.status === 'success' && res.data.length > 0) {
           this.admittedPatient = res.data;
 				}
 			});
 	}
 
-	getwardLocationItems(wardCheckedIn: any) {
-		this._facilitiesService.find({ query: { _id: this.facility._id }}).then(res => {
-			// if (res.data.length !== 0) {
-			// 	this.wardLocationItems = res.data[0].wards;
-			// }
-		});
-	}
+	// getwardLocationItems(wardCheckedIn: any) {
+	// 	this._facilitiesService.find({ query: { _id: this.facility._id }}).then(res => {
+	// 		// if (res.data.length !== 0) {
+	// 		// 	this.wardLocationItems = res.data[0].wards;
+	// 		// }
+	// 	});
+	// }
 
 
 }

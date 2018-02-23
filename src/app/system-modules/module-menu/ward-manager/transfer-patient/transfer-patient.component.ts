@@ -40,6 +40,7 @@ export class TransferPatientComponent implements OnInit {
     private _authFacadeService: AuthFacadeService,
     private _systemModuleService: SystemModuleService
 	) {
+    this.facility = <Facility>this._locker.getObject('selectedFacility');
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       if (!!res._id) {
         this.employeeDetails = res;
@@ -48,9 +49,7 @@ export class TransferPatientComponent implements OnInit {
   }
 
 	ngOnInit() {
-		this.facility = <Facility>this._locker.getObject('selectedFacility');
     this.user = <User>this._locker.getObject('auth');
-    console.log(this.selectedPatient);
 
 		this.transferFormGroup = this.fb.group({
 			ward: ['', [<any>Validators.required]]
@@ -65,7 +64,6 @@ export class TransferPatientComponent implements OnInit {
 
 	onClickTransfer(value: any, valid: boolean) {
 		if (valid) {
-      console.log(value);
       const name = `${this.selectedPatient.patient.personDetails.firstName} ${this.selectedPatient.patient.personDetails.lastName}`;
       const question = `Are you sure you want to transfer ${name} to ${value.ward.name} ward?`;
       this._systemModuleService.announceSweetProxy(question, 'question', this, null, null, value);
@@ -90,15 +88,14 @@ export class TransferPatientComponent implements OnInit {
     };
 
     this._inPatientService.customCreate(payload).then(res => {
-      console.log(res);
       if (res.status === 'success') {
         const name = `${this.selectedPatient.patient.personDetails.firstName} ${this.selectedPatient.patient.personDetails.lastName}`;
         let text = `You have successfully transfered ${name} to ${data.ward.name}`;
         // this._notification('Success', fullText);
-        this._systemModuleService.announceSweetProxy(text, 'success');
+        this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
         this.close_onClick();
       } else {
-        this._notification('Error', 'There was a admitting patient. Please try again later.');
+        this._systemModuleService.announceSweetProxy(res.message, 'error');
       }
     }).catch(err => {});
 
@@ -124,8 +121,6 @@ export class TransferPatientComponent implements OnInit {
   }
 
   sweetAlertCallback(result, data) {
-    console.log(result);
-    console.log(data);
     if (result.value) {
       this.transfer(data);
     } else {

@@ -214,7 +214,7 @@ export class ClinicalNoteComponent implements OnInit {
         query: {}
       });
     } else {
-      this.systemModuleService.announceSweetProxy("wow", "success");
+      this.systemModuleService.announceSweetProxy("wow", 'success', null, null, null, null, null, null, null);
     }
   }
 

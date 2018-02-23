@@ -102,7 +102,7 @@ export class CheckoutPatientComponent implements OnInit {
             res.isAdmitted = true;
             res.msg = text;
             this.admittedWard = res;
-            this._systemModuleService.announceSweetProxy(text, 'success');
+            this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
           }
         }).catch(err => {
           console.log(err);

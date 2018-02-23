@@ -72,7 +72,6 @@ export class AdmitPatientComponent implements OnInit {
     });
 
     this.admitFormGroup.controls['ward'].valueChanges.subscribe(val => {
-      console.log(val);
       this.loadAvailableBeds = true;
       this.beds = [];
       this.rooms = [];
@@ -128,40 +127,12 @@ export class AdmitPatientComponent implements OnInit {
     });
   }
 
-  // onWardChange(param) {
-  // 	this._bedOccupancyService.find({ query: { facilityId: this.facility._id } })
-  // 		.then(payload => {
-  // 			if (payload.data != []) {
-  // 				payload.data[0].locations.forEach(item => {
-  // 					if (item.minorLocationId.toString() === param.toString()) {
-  // 						this.wardRoomLocationItems = item.rooms;
-  // 					}
-  // 				})
-  // 			}
-  // 		});
-  // }
-
-  // onRoomChange(param) {
-  // 	this._bedOccupancyService.find({ query: { facilityId: this.facility._id } }).then(res => {
-  // 		if (res.data !== []) {
-  // 			res.data[0].locations.forEach(item => {
-  // 				item.rooms.forEach(itm => {
-  // 					if (itm._id.toString() === param.toString()) {
-  // 						this.beds = itm.availableBed;
-  // 					}
-  // 				});
-  // 			})
-  // 		}
-  // 	});
-  // }
-
   close_onClick() {
     this.closeModal.emit(true);
   }
 
   onAdmit(value: any, valid: boolean) {
     if (valid) {
-      console.log(value);
       this.admitBtn = false;
       this.admittingBtn = true;
       this.disableAdmitBtn = true;
@@ -171,6 +142,7 @@ export class AdmitPatientComponent implements OnInit {
         facilityId: this.facility._id,
         patientId: '',
         status: '',
+        newStatus: '',
         action: '',
         employeeId: this.employeeDetails._id,
         minorLocationId: value.ward,
@@ -192,76 +164,16 @@ export class AdmitPatientComponent implements OnInit {
             let patient = `${this.inPatientItem.personDetails.firstName} ${this.inPatientItem.personDetails.lastName}`;
             let text = `You have successfully admitted ${patient} into ${value.bed.name} bed in ${value.room.name} room`;
             // this._notification('Success', fullText);
-            this._systemModuleService.announceSweetProxy(text, 'success');
+            this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
             this.close_onClick();
           } else {
-            this._notification('Error', 'There was a admitting patient. Please try again later.');
+            this._systemModuleService.announceSweetProxy(res.message, 'error');
           }
         }).catch(err => {});
-        // this._inPatientListService.find({
-        //     query: {
-        //       'facilityId._id': this.facility._id,
-        //       'patientId._id': this.inPatientItem.patientId._id,
-        //       isAdmitted: false
-        //     }
-        //   }).then(payload1 => {
-        //     // Delete Items that are not relevant in the room
-        //     delete value.room.beds;
-
-        //     delete this.inPatientItem.patientId.personDetails.countryItem;
-        //     delete this.inPatientItem.patientId.personDetails.nationalityObject;
-        //     delete this.inPatientItem.patientId.personDetails.addressObj;
-        //     delete this.inPatientItem.patientId.personDetails.nationality;
-        //     delete this.inPatientItem.patientId.personDetails.maritalStatus;
-        //     delete this.inPatientItem.patientId.personDetails.nextOfKin;
-        //     delete this.inPatientItem.patientId.personDetails.genderId;
-        //     delete this.inPatientItem.patientId.personDetails.homeAddress;
-        //     delete this.inPatientItem.patientId.personDetails.wallet;
-
-        //     payload1.data[0].isAdmitted = true;
-        //     payload1.data[0].admittedDate = new Date();
-        //     this._inPatientListService.update(payload1.data[0]).then(callback1 => {
-        //         this.inPatient.facilityId = this.miniFacility;
-        //         this.inPatient.statusId = myGlobals.onAdmission;
-        //         this.inPatient.admitByEmployeeId = this._facilitiesService.trimEmployee(
-        //           this.employeeDetails
-        //         );
-        //         this.inPatient.patientId = this.inPatientItem.patientId;
-        //         this._wardTransfer.minorLocationId = value.ward;
-        //         this._wardTransfer.roomId = value.room;
-        //         this._wardTransfer.bedId = value.bed;
-        //         this._wardTransfer.description = value.desc;
-        //         this._wardTransfer.checkInDate = new Date();
-        //         this.inPatient.transfers = [];
-        //         this.inPatient.transfers.push(this._wardTransfer);
-        //         this.inPatient.admissionDate = new Date();
-        //         this.inPatient.prevWard = callback1.wardId;
-        //         this._inPatientService.create(this.inPatient).then(callback => {
-        //           let patient = this.inPatientItem.patientId.personDetails
-        //             .personFullName;
-        //           let text = 'You have successfully admitted ' + patient;
-        //           let wardRoom =
-        //             ' into ' + value.bed.name + ' in ' + value.room.name;
-        //           const fullText = text + wardRoom;
-        //           const msgObj = {
-        //             msg: fullText,
-        //             occupant: this.inPatientItem.patientId,
-        //             bed: value.bed,
-        //             room: value.room
-        //           };
-        //           this.admitBtnText =
-        //             'Navigating... <i class="fa fa-spinner fa-spin"></i>';
-        //           this.updateWardAdissionService(msgObj);
-        //           setTimeout(e => {
-        //             this.close_onClick();
-        //             this.router.navigate(['/dashboard/ward-manager/admitted']);
-        //           }, 2000);
-        //         });
-        //       });
-        //   });
       } else if (this.inPatientItem.typeChecker === myGlobals.transfer) {
         payload.type = 'acceptTransfer';
         payload.status = myGlobals.transfer;
+        payload.newStatus = myGlobals.onAdmission;
         payload.action = 'admitPatient';
         payload.patientId = this.inPatientItem.patientId;
 
@@ -270,60 +182,17 @@ export class AdmitPatientComponent implements OnInit {
             let patient = `${this.inPatientItem.personDetails.firstName} ${this.inPatientItem.personDetails.lastName}`;
             let text = `You have successfully admitted ${patient} into ${value.bed.name} bed in ${value.room.name} room`;
             // this._notification('Success', fullText);
-            this._systemModuleService.announceSweetProxy(text, 'success');
+            this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
             this.close_onClick();
           } else {
-            this._notification('Error', 'There was a admitting patient. Please try again later.');
+            this._systemModuleService.announceSweetProxy(res.message, 'error');
           }
         }).catch(err => {});
-        // this._inPatientService.admit(payload).then(res => {
-        //   if (res.status === 'success') {
-        //     this._notification('Success', 'Patient has been accepted successfully.');
-        //     setTimeout(e => {
-        //       this.router.navigate(['/dashboard/ward-manager/admitted']);
-        //     }, 2000);
-        //   } else {
-        //     this._notification('Error', 'There was a problem discharging patient. Please try again later.');
-        //   }
-        // }).catch(err => {
-        // });
-        // this._inPatientService.get(this.inPatientItem._id, {})
-        // 	.then(payload => {
-        // 		payload.statusId = myGlobals.onAdmission;
-        // 		payload.transfers[payload.lastIndex].checkOutDate = new Date();
-        // 		this._wardTransfer.minorLocationId = payload.transfers[payload.lastIndex].proposeWard.minorLocationId;
-        // 		this._wardTransfer.roomId = this.admitFormGroup.controls['room'].value;
-        // 		this._wardTransfer.bedId = this.admitFormGroup.controls['bed'].value;
-        // 		this._wardTransfer.description = this.admitFormGroup.controls['desc'].value;
-        // 		this._wardTransfer.checkInDate = new Date();
-        // 		payload.transfers.push(this._wardTransfer);
-        // 		// Update the checkOutDate of the last tranfer
-        // 		this._inPatientService.update(payload)
-        // 			.then(payload1 => {
-        // 				this.router.navigate(['/dashboard/ward-manager/admitted']);
-        // 			}, err => {
-        // 			})
-        // 			.catch(err => {
-        // 			});
-        // 	});
       }
     } else {
       this._notification('Error', 'Please fill in all required fields.');
     }
   }
-
-  // getwardRoomLocationItems() {
-  // 	if (this.inpatientItem.typeChecker === myGlobals.transfer) {
-  // 		this._inPatientService.get(this.inpatientItem._id, {}).then(payload => {
-  // 			const rooms = payload.transfers[payload.lastIndex].proposeWard.ward.wardDetails.rooms;
-  // 			// this.wardRoomLocationItems = rooms;
-  // 		});
-  // 	} else if (this.inpatientItem.typeChecker === myGlobals.onAdmission) {
-  // 		this._inPatientListService.get(this.inpatientItem._id, {}).then(payload => {
-  // 			// this.wardRoomLocationItems = payload.wardId;
-  // 		});
-  // 	}
-  // }
 
   getWardsDetails() {
     this.wards = this.facility.minorLocations.filter(x => x.locationId === this.inPatientItem.loggedInWard.minorLocationId.locationId);
@@ -337,37 +206,6 @@ export class AdmitPatientComponent implements OnInit {
     //   }
     // });
   }
-
-  // updateWardAdissionService(value: any) {
-  //   this._bedOccupancyService
-  //     .find({ query: { 'facilityId._id': this.facility._id } })
-  //     .then(payload => {
-  //       if (payload.data.length > 0) {
-  //         payload.data[0].locations.forEach(item => {
-  //           item.rooms.forEach(itm => {
-  //             if (itm._id === this.admitFormGroup.controls['room'].value._id) {
-  //               itm.beds.forEach(bed => {
-  //                 if (
-  //                   bed._id === this.admitFormGroup.controls['bed'].value._id
-  //                 ) {
-  //                   bed.isAvailable = false;
-  //                   bed.occupant = value.occupant;
-  //                   bed.state = 'In-use';
-  //                   this._bedOccupancyService
-  //                     .update(payload.data[0])
-  //                     .then(completed => {
-  //                       this.admitBtnText = 'Admit';
-  //                       this.disableAdmitBtn = false;
-  //                       this._notification('Success', value.msg);
-  //                     });
-  //                 }
-  //               });
-  //             }
-  //           });
-  //         });
-  //       }
-  //     });
-  // }
 
   // Notification
   private _notification(type: String, text: String): void {
