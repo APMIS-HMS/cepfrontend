@@ -8,17 +8,17 @@ import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade
 import { LocationService } from '../../services/module-manager/setup';
 
 @Component({
-  selector: 'app-store-check-in',
-  templateUrl: './store-check-in.component.html',
-  styleUrls: ['./store-check-in.component.scss']
+	selector: 'app-store-check-in',
+	templateUrl: './store-check-in.component.html',
+	styleUrls: ['./store-check-in.component.scss']
 })
 export class StoreCheckInComponent implements OnInit {
 	mainErr = true;
 	errMsg = 'You have unresolved errors';
-	@Input() loginEmployee: Employee;
+	@Input() loginEmployee: any;
 	@Input() workSpace: any;
 	workSpaces: any;
-
+	isLoading = false;
 	public storeCheckin: FormGroup;
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   selectedStore: ConsultingRoomModel = <ConsultingRoomModel>{};
@@ -38,15 +38,15 @@ export class StoreCheckInComponent implements OnInit {
 		public consultingRoomService: ConsultingRoomService,
 		public employeeService: EmployeeService,
 		public storeService: StoreService,
-    public locker: CoolLocalStorage,
-    private _authFacadeService: AuthFacadeService
+		public locker: CoolLocalStorage,
+		private _authFacadeService: AuthFacadeService
 	) {
     this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
     this._getLabLocation();
 	}
 
 	ngOnInit() {
-	  this.storeCheckin = this.formBuilder.group({
+		this.storeCheckin = this.formBuilder.group({
 			location: ['', [<any>Validators.required]],
 			room: ['', [<any>Validators.required]],
 			isDefault: [false, [<any>Validators.required]]
@@ -65,11 +65,11 @@ export class StoreCheckInComponent implements OnInit {
 
 		this.storeCheckin.controls['room'].valueChanges.subscribe(value => {
 		});
-  }
+	}
 
 	close_onClick() {
 		this.closeModal.emit(true);
-  }
+	}
 
 	checkIn(valid, value) {
     this.checkInBtn = false;
@@ -94,9 +94,6 @@ export class StoreCheckInComponent implements OnInit {
 		this.loginEmployee.storeCheckIn.push(checkIn);
 		this.employeeService.update(this.loginEmployee).then(payload => {
 			this.loginEmployee = payload;
-			const workspaces = <any>this.locker.getObject('workspaces');
-			this.loginEmployee.workSpaces = workspaces;
-			this.locker.setObject('loginEmployee', payload);
 			let keepCheckIn;
 			this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
 				itemi.isOn = false;
@@ -148,7 +145,7 @@ export class StoreCheckInComponent implements OnInit {
 				keepCheckIn = itemi;
 			}
 		});
-		this.employeeService.update(this.loginEmployee).then(payload => {
+		this._authFacadeService.getCheckedInEmployee(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
 			this.loginEmployee = payload;
 			this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'store' });
 			this.close_onClick();

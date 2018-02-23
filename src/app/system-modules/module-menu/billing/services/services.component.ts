@@ -183,7 +183,6 @@ export class ServicesComponent implements OnInit {
     // }).then(payload => {
     //   this.categories = [];
     //   let goo = [];
-    //   console.log(payload);
     //   payload.data.forEach((itemi, i) => {
     //     itemi.categories.forEach((itemj, j) => {
     //       if (itemi.facilityId !== undefined) {
@@ -209,9 +208,7 @@ export class ServicesComponent implements OnInit {
     //     if (this.globalCategoriesToBePaginated.length <= this.globalCategories.length) {
     //       this.showLoadMore = false;
     //     }
-    //     console.log(this.globalCategoriesToBePaginated);
     //     this.globalCategories = this.paginate(this.globalCategoriesToBePaginated, this.pageSize, this.index);
-    //     console.log(this.globalCategories);
     //     this.selectCategory(this.categories[0]);
     //   });
     // });

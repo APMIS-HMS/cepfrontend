@@ -94,7 +94,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     })
   ],
   providers: [
-    { provide: ErrorHandler, useClass: ApmisErrorHandler },
+    // { provide: ErrorHandler, useClass: ApmisErrorHandler },
     SocketService, RestService, SetupService.CountriesService, SetupService.FacilityTypesService,
     SetupService.FacilitiesService, SetupService.FacilityModuleService, SetupService.ConsultingRoomService,
     SetupService.FacilitiesService, SetupService.FacilityModuleService, SetupService.UserService, SetupService.GenderService,

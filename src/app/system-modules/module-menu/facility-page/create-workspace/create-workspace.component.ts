@@ -36,6 +36,7 @@ export class CreateWorkspaceComponent implements OnInit {
   majorLocations: Location[] = [];
   minorLocations: MinorLocation[] = [];
   workSpaces: WorkSpace[] = [];
+  isSaving = false;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() selectedEmployee: any;
 
@@ -236,6 +237,14 @@ export class CreateWorkspaceComponent implements OnInit {
     const checkedItems = this.filteredEmployees.filter(x => x.isChecked);
     return checkedItems.length > 0;
   }
+  enable(){
+    const result = (!this.frmNewEmp1.valid && !this.isSaving)|| this.isSaving || !this.isAnyChecked();
+    return !result;
+  }
+  disable(){
+    const result = (!this.frmNewEmp1.valid && !this.isSaving)|| this.isSaving || !this.isAnyChecked();
+    return result;
+  }
   getEmployeeIdFromFiltered(filtered: Employee[]) {
     const retVal: string[] = [];
     filtered.forEach((itemi, i) => {
@@ -246,6 +255,7 @@ export class CreateWorkspaceComponent implements OnInit {
   setWorkspace(valid: boolean, value: any) {
     if (valid) {
       this.systemModuleService.on();
+      this.isSaving = true;
       const filtered = this.filteredEmployees.filter(x => x.isChecked);
       const employeesId = this.getEmployeeIdFromFiltered(filtered);
       const facilityId = this.selectedFacility._id;
@@ -261,11 +271,17 @@ export class CreateWorkspaceComponent implements OnInit {
       }
 
       this.workspaceService.assignworkspace(body).then(payload =>{
-        this.getWorkSpace();
+        this.isSaving = false;
         this.systemModuleService.off();
+        this.getWorkSpace();
         this.systemModuleService.announceSweetProxy('Workspace successfully set!', 'success');
+        if(this.selectedEmployee !== undefined && this.selectedEmployee._id !== undefined)
+        {
+          this.employeeService.announceEmployee(this.selectedEmployee);
+        }
         this.close_onClick();
       }, error =>{
+        this.isSaving = false;
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy('There was an error while saving the workspace', 'error');
       });

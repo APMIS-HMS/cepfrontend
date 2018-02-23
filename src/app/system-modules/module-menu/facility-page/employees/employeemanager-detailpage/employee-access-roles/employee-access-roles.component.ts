@@ -107,7 +107,6 @@ export class EmployeeAccessRolesComponent implements OnInit {
     this.loading = true;
     let text = "You are about to assign roles to this employee";
     this.systemModuleService.announceSweetProxy(text, "question", this);
-    this.closeModal.emit(true);
   }
 
   createRoles() {
@@ -123,7 +122,7 @@ export class EmployeeAccessRolesComponent implements OnInit {
         let text = "Selected roles applied to this employee successfully";
         this.systemModuleService.announceSweetProxy(text, "success");
         this.authFacadeService.getUserAccessControls(true).then(payload =>{
-          
+          this.closeModal.emit(true);
         });
       },
       error => {}
@@ -134,5 +133,14 @@ export class EmployeeAccessRolesComponent implements OnInit {
     if (result.value) {
       this.createRoles();
     }
+  }
+
+  enable(){
+    const result = this.loading;
+    return !result;
+  }
+  disable(){
+    const result = this.loading;
+    return result;
   }
 }

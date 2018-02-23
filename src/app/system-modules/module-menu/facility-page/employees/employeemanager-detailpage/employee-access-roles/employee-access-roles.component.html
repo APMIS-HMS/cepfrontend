@@ -14,7 +14,7 @@
         </form>
         <span *ngIf="roles.length == 0">No roles available to be assigned</span>
         <div *ngIf="roles.length > 0" class="example-full-width" id="example-full-width">
-            <button class="btn-saveroles" mat-raised-button (click)="saveRoles()" [disabled]="loading">
+            <button (click)="saveRoles()" [disabled]="loading" [ngClass]="{'cta-1':enable(), 'cta-1-disable':disable()}">
                 <span *ngIf="!loading">Save</span>
                 <span *ngIf="loading">Loading</span>
             </button>
