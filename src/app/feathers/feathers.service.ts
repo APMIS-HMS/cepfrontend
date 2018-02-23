@@ -49,7 +49,7 @@ export class SocketService {
   }
   loginIntoApp(query: any) {
     return this._app.authenticate({
-      "strategy": 'local',
+      'strategy': 'local',
       'email': query.email,
       'password': query.password
     });

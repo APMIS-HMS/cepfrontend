@@ -24,9 +24,9 @@ export class WalletComponent implements OnInit {
   flutterwaveClientKey: string = FLUTTERWAVE_PUBLIC_KEY;
   paystackClientKey: string = PAYSTACK_CLIENT_KEY;
   refKey: string;
-  loading: boolean = true;
-  flutterwavePayment: boolean = false;
-  paystackPayment: boolean = false;
+  loading = true;
+  flutterwavePayment = false;
+  paystackPayment = false;
   paymentChannels = [];
 
   // lineChart
@@ -181,7 +181,7 @@ export class WalletComponent implements OnInit {
     };
 
 
-    this._personService.fundWallet(walletTransaction).then((res: any) => {
+    this._personService.altFundWallet(walletTransaction).add((res: any) => {
       this.loading = false;
       if (res.status === 'success') {
         this.paymentFormGroup.reset();
@@ -194,13 +194,11 @@ export class WalletComponent implements OnInit {
       } else {
         // this._notification('Error', res.body.message);
       }
-    }).catch(err => {
-     
     });
   }
 
   paymentCancel() {
-    
+
   }
 
   // Notification
@@ -215,7 +213,7 @@ export class WalletComponent implements OnInit {
 
 
   public randomize(): void {
-    let _lineChartData: Array<any> = new Array(this.lineChartData.length);
+    const _lineChartData: Array<any> = new Array(this.lineChartData.length);
     for (let i = 0; i < this.lineChartData.length; i++) {
       _lineChartData[i] = { data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label };
       for (let j = 0; j < this.lineChartData[i].data.length; j++) {
