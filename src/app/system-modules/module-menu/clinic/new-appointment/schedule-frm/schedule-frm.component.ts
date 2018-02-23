@@ -308,6 +308,7 @@ export class ScheduleFrmComponent implements OnInit {
         query: { facilityId: this.selectedFacility._id }
       })
     );
+    console.log(this.loginEmployee);
     const workSpaces$ = Observable.fromPromise(
       this.workSpaceService.find({
         query: { employeeId: this.loginEmployee._id }
@@ -889,6 +890,7 @@ export class ScheduleFrmComponent implements OnInit {
             }
           },
           error => {
+            console.log(error);
             this.savingAppointment = false;
             this.disableBtn = false;
             this.loadIndicatorVisible = false;
@@ -936,6 +938,10 @@ export class ScheduleFrmComponent implements OnInit {
                     );
                   },
                   error => {
+                    console.log(error);
+                    this.savingAppointment = false;
+                    this.disableBtn = false;
+                    this.loadIndicatorVisible = false;
                     this.systemModuleService.off();
                     this.systemModuleService.announceSweetProxy(
                       "Appointment set successfully but there was an error creating Telemedice appointment",
@@ -968,6 +974,9 @@ export class ScheduleFrmComponent implements OnInit {
             }
           },
           error => {
+            console.log(error);
+            this.savingAppointment = false;
+            this.disableBtn = false;
             this.loadIndicatorVisible = false;
             this.systemModuleService.off();
             this.systemModuleService.announceSweetProxy(
@@ -979,7 +988,9 @@ export class ScheduleFrmComponent implements OnInit {
       }
     } else {
       this.systemModuleService.off();
+      this.savingAppointment = false;
       this.disableBtn = false;
+      this.loadIndicatorVisible = false;
       this.systemModuleService.announceSweetProxy(
         "Some required field missing, please try again!",
         "warning"

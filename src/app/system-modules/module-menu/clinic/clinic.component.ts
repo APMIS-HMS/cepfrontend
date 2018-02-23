@@ -1,3 +1,4 @@
+import { UserService } from './../../../services/facility-manager/setup/user.service';
 import { AuthFacadeService } from './../../service-facade/auth-facade.service';
 import { Component, OnInit, AfterContentChecked, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
@@ -42,7 +43,8 @@ export class ClinicComponent implements OnInit, OnDestroy {
 		private route: ActivatedRoute,
 		private employeeService: EmployeeService,
 		public clinicHelperService: ClinicHelperService,
-		private authFacadeService: AuthFacadeService,
+    private authFacadeService: AuthFacadeService,
+    private userService:UserService,
 		private locationService: LocationService) {
 
 		// this.route.data.subscribe(data => {
@@ -267,7 +269,7 @@ export class ClinicComponent implements OnInit, OnDestroy {
 		this.clinicRoom = true;
 	}
 	ngOnDestroy() {
-		if (this.clinicHelperService.loginEmployee.consultingRoomCheckIn !== undefined) {
+		if (this.clinicHelperService.loginEmployee !== undefined && this.clinicHelperService.loginEmployee.consultingRoomCheckIn !== undefined) {
 			this.clinicHelperService.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
 				if (itemr.isDefault === true && itemr.isOn === true) {
 					itemr.isOn = false;
@@ -276,7 +278,9 @@ export class ClinicComponent implements OnInit, OnDestroy {
 					});
 				}
 			});
-		}
+		}else{
+      this.userService.logOut();
+    }
 		this.employeeService.announceCheckIn(undefined);
 	}
 	private checkPageUrl(param: string) {

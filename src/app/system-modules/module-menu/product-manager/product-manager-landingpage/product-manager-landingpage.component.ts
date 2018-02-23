@@ -72,6 +72,8 @@ export class ProductManagerLandingpageComponent implements OnInit {
   getProducts() {
     this.productService.findList({ query: { facilityId: this.selectedFacility._id, name: '' } }).then(payload => {
       this.products = payload.data;
+    }, error =>{
+      console.log(error)
     });
   }
   getProductTypes() {
