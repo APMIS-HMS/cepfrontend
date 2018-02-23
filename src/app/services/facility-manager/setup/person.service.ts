@@ -111,12 +111,7 @@ export class PersonService {
         headers.append('Content-Type', 'application/json');
         headers.append('Authorization', token);
     const options = new RequestOptions({headers: headers});
-    const result = this.http.post(path, payload, options).subscribe(subPayload => {
-      console.log('***********SubPaylod****************');
-      console.log(subPayload);
-      console.log('***********SubPaylod End************');
-    });
-    return result;
+   return this.http.post(path, payload, options);
   }
 
   // fundWallet(walletTransaction: WalletTransaction) {
