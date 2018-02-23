@@ -421,7 +421,7 @@ export class PrescriptionComponent implements OnInit {
 		// Deduct from the batches before updating the batches in the inventory.
 		this.transactions.transactions.forEach(element => {
 			if(element._id === batch._id) {
-				let batchTransaction: BatchTransaction = {
+				let batchTransaction: any = {
 					batchNumber: batch.batchNumber,
 					employeeId: this.prescriptionItems.employeeId,
 					employeeName: this.prescriptionItems.employeeName,
