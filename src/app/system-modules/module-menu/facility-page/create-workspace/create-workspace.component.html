@@ -13,7 +13,7 @@
                     <div class="frm-item-wrap">
                         <mat-form-field>
                             <mat-select formControlName="dept" placeholder="Department">
-                                <mat-option [disabled]="disableDepartment"  *ngFor="let department of departments" [value]="department.name">
+                                <mat-option [disabled]="disableDepartment" *ngFor="let department of departments" [value]="department.name">
                                     {{department.name}}
                                 </mat-option>
                             </mat-select>
@@ -22,7 +22,7 @@
 
                     <div class="frm-item-wrap">
                         <mat-form-field>
-                            <mat-select formControlName="unit" placeholder="Unit" >
+                            <mat-select formControlName="unit" placeholder="Unit">
                                 <mat-option *ngFor="let unit of units" [value]="unit.name">
                                     {{unit.name}}
                                 </mat-option>
@@ -33,7 +33,7 @@
                 <div class="sec-2">
                     <div class="frm-item-wrap">
                         <mat-form-field>
-                            <mat-select formControlName="majorLoc" placeholder ="Major Location" >
+                            <mat-select formControlName="majorLoc" placeholder="Major Location">
                                 <mat-option *ngFor="let major of majorLocations" [value]="major">
                                     {{major.name}}
                                 </mat-option>
@@ -43,7 +43,7 @@
 
                     <div class="frm-item-wrap">
                         <mat-form-field>
-                            <mat-select formControlName="minorLoc" placeholder="Minor Location" >
+                            <mat-select formControlName="minorLoc" placeholder="Minor Location">
                                 <mat-option *ngFor="let minor of minorLocations" [value]="minor">
                                     {{minor.name}}
                                 </mat-option>
@@ -112,17 +112,13 @@
                             </tr>
                         </tbody>
                     </table>
-                </div> 
+                </div>
             </div>
 
-
-
-            <!--<button [disabled]="!frmNewEmp1.valid || !isAnyChecked()" (click)="setWorkspace(frmNewEmp1.valid, frmNewEmp1.value)" class="cta-1">
-        Assign Workspace
-        </button>-->
             <div class="example-full-width" id="example-full-width">
-                <button class="apmis-bllue" [disabled]="!frmNewEmp1.valid || !isAnyChecked()" (click)="setWorkspace(frmNewEmp1.valid, frmNewEmp1.value)" mat-raised-button> Assign Workspace</button>
+                <button [disabled]="disable()" (click)="setWorkspace(frmNewEmp1.valid, frmNewEmp1.value)" [ngClass]="{'cta-1':enable(), 'cta-1-disable':disable()}"> Assign Workspace</button>
             </div>
+
         </form>
 
     </div>

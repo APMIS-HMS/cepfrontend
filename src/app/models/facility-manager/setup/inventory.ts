@@ -13,4 +13,5 @@ export interface Inventory {
     createdAt: Date;
     updatedAt: Date;
     isOpen: boolean;
+    availableQuantity:number;
 }

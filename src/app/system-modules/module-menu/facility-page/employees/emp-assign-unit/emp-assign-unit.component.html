@@ -97,10 +97,9 @@
 
 
 
-            <button [disabled]="!frmNewEmp1.valid || !hasMinimumChecked()" (click)="assignUnit(frmNewEmp1.valid, frmNewEmp1.value)" [ngClass]="{'cta-1':frmNewEmp1.valid && hasMinimumChecked(), 'cta-1-disable':(!frmNewEmp1.valid || !hasMinimumChecked())}">
+            <button [disabled]="(!frmNewEmp1.valid && !isSaving) || !hasMinimumChecked() || isSaving" (click)="assignUnit(frmNewEmp1.valid, frmNewEmp1.value)" [ngClass]="{'cta-1':frmNewEmp1.valid && hasMinimumChecked(), 'cta-1-disable':(!frmNewEmp1.valid || !hasMinimumChecked())}">
                 Assign Unit
             </button>
-
         </form>
 
     </div>

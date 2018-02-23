@@ -61,6 +61,6 @@ export class PersonScheduleAppointmentComponent implements OnInit {
 
   }
   apmisLookupHandleSelectedItem(e){
-    
+
   }
 }

@@ -19,7 +19,6 @@ export class ProductManagerLandingpageComponent implements OnInit {
   manufacturer = false;
   presentation = false;
 
-
   deactivateButton = 'Deactivate';
   selectedFacility: Facility = <Facility>{};
   slideProductDetails = false;
@@ -93,7 +92,6 @@ export class ProductManagerLandingpageComponent implements OnInit {
   }
 
   onRefreshProductList(value) {
-    console.log(value);
     this.getProducts();
   }
 
