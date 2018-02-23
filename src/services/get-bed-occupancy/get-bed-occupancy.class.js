@@ -15,13 +15,6 @@ class Service {
     }
 
     async get(data, params) {
-        // Get inpatient
-        console.log('-------- data ----------');
-        console.log(data);
-        console.log('-------- End data ----------');
-        console.log('-------- params ----------');
-        console.log(params);
-        console.log('-------- End params ----------');
         const bedOccupancyService = this.app.service('bed-occupancy');
         const patientService = this.app.service('patients');
         const locationService = this.app.service('locations');
