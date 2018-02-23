@@ -32,7 +32,7 @@ export class FacilitypageSidesectComponent implements OnInit {
 
   pgMenuToggle = false;
 
-  constructor(private facilityService: FacilitiesService, 
+  constructor(private facilityService: FacilitiesService,
     private locker: CoolLocalStorage,
     private router: Router) {
     this.facilityService.patchListner.subscribe(payload => {
@@ -40,7 +40,7 @@ export class FacilitypageSidesectComponent implements OnInit {
       this.locker.setObject('selectedFacility', payload);
       this.ngOnInit();
     });
-    this.facilityService.popUpEditFacility$.subscribe(payload =>{
+    this.facilityService.popUpEditFacility$.subscribe(payload => {
       this.editBasicInfo_onClick();
     })
   }
@@ -64,14 +64,14 @@ export class FacilitypageSidesectComponent implements OnInit {
       } else {
         this.memberFacilities = payload;
       }
-    },error =>{
+    }, error => {
     });
   }
 
   changeRoute(value: string) {
     this.router.navigate(['/dashboard/facility/' + value]);
     this.pgMenuToggle = false;
-    if(value == ''){
+    if (value === '') {
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
@@ -82,7 +82,7 @@ export class FacilitypageSidesectComponent implements OnInit {
       this.empContentArea = false;
       this.networkContentArea = false;
       // this.dashboardContentArea = false;
-    } else if(value == 'employees'){
+    } else if (value === 'employees') {
       this.empContentArea = true;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
@@ -92,7 +92,7 @@ export class FacilitypageSidesectComponent implements OnInit {
       this.professionContentArea = false;
       this.networkContentArea = false;
       // this.dashboardContentArea = false;
-    } else if(value == 'departments'){
+    } else if (value === 'departments') {
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
@@ -102,7 +102,7 @@ export class FacilitypageSidesectComponent implements OnInit {
       this.professionContentArea = false;
       this.empContentArea = false;
       // this.dashboardContentArea = false;
-    } else if(value == 'locations'){
+    } else if (value === 'locations') {
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
@@ -113,7 +113,7 @@ export class FacilitypageSidesectComponent implements OnInit {
       this.empContentArea = false;
       this.networkContentArea = false;
       // this.dashboardContentArea = false;
-    } else if(value == 'workspaces'){
+    } else if (value === 'workspaces') {
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
@@ -123,7 +123,7 @@ export class FacilitypageSidesectComponent implements OnInit {
       this.professionContentArea = false;
       this.empContentArea = false;
       // this.dashboardContentArea = false;
-    } else if(value == 'options'){
+    } else if (value === 'options') {
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = true;
@@ -133,7 +133,7 @@ export class FacilitypageSidesectComponent implements OnInit {
       this.professionContentArea = false;
       this.empContentArea = false;
       // this.dashboardContentArea = false;
-    } else if(value == 'profession'){
+    } else if (value === 'profession') {
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
@@ -144,7 +144,7 @@ export class FacilitypageSidesectComponent implements OnInit {
       this.empContentArea = false;
       this.networkContentArea = false;
       // this.dashboardContentArea = false;
-    } else if(value == 'modules'){
+    } else if (value === 'modules') {
       this.modulesContentArea = true;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
@@ -154,8 +154,8 @@ export class FacilitypageSidesectComponent implements OnInit {
       this.professionContentArea = false;
       this.empContentArea = false;
       this.networkContentArea = false;
-      // this.dashboardContentArea = false; 
-    } else if(value == 'network'){
+      // this.dashboardContentArea = false;
+    } else if (value === 'network') {
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
@@ -165,7 +165,7 @@ export class FacilitypageSidesectComponent implements OnInit {
       this.professionContentArea = false;
       this.empContentArea = false;
       this.networkContentArea = true;
-      // this.dashboardContentArea = false; 
+      // this.dashboardContentArea = false;
     }
   }
 

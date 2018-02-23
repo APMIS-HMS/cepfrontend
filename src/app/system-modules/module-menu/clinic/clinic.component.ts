@@ -62,8 +62,8 @@ export class ClinicComponent implements OnInit, OnDestroy {
 		this.checkPageUrl(page);
 		this.authFacadeService.getLogingEmployee().then((payload) => {
 			this.loginEmployee = payload;
-
-			if (this.loginEmployee.professionId !== undefined) {
+      console.log(this.loginEmployee);
+			if (this.loginEmployee !== undefined && this.loginEmployee.professionId !== undefined) {
 				if (this.loginEmployee.professionId === 'Doctor'
 					&& (this.loginEmployee.consultingRoomCheckIn === undefined
 						|| this.loginEmployee.consultingRoomCheckIn.length === 0)) {
@@ -312,6 +312,5 @@ export class ClinicComponent implements OnInit, OnDestroy {
 
 	}
 	chartHovered(e){
-	  
 	}
 }

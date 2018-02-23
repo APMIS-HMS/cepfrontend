@@ -98,6 +98,9 @@ export class EmployeeService {
   patchMany(data: any, param: any) {
     return this._socket.patch(null, data, param);
   }
+  patch(id, data: any) {
+    return this._socket.patch(id, data);
+  }
   searchEmployee(facilityId: string, searchText: string, showbasicinfo: boolean) {
     const host = this._restService.getHost();
     const path = host + '/employee';

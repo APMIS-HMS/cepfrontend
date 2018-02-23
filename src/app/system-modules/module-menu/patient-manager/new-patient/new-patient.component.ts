@@ -469,17 +469,15 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     getCashPlans() {
         this._facilitiesServiceCategoryService.find({
             query:
-                { 'categories.name': "Medical Records", facilityId: this.facility._id }
+                { facilityId: this.facility._id, 'categories.name': "Medical Records",$select: { 'categories.$': 1}  }
         }).then(payload => {
             //this.filterOutCategory(payload);
             //this.categories = [];
             let cat: any = [];
             payload.data.forEach((itemi, i) => {
                 itemi.categories.forEach((itemj, j) => {
-                    if (itemi.facilityId !== undefined) {
-                        cat.push(itemj);
-                        this.cashPlans = cat[0].services;
-                    }
+                  cat.push(itemj);
+                  this.cashPlans = cat[0].services;
                 });
             });
         });
@@ -921,17 +919,19 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             }
             console.log(billing);
             this.billingService.create(billing).then(billingPayload => {
-                this.facilityService.announceNotification({
-                    type: 'Success',
-                    text: this.selectedPerson.lastName + ' ' + this.selectedPerson.firstName + ' added successfully but bill not generated because price not yet set for this service',
-                    users: [this.facilityService.getLoginUserId()]
-                });
+                this.systemModuleService.off();
+                const text =  this.selectedPerson.lastName + ' ' + this.selectedPerson.firstName + ' added successfully but bill not generated because price not yet set for this service';
+                this.systemModuleService.announceSweetProxy(text, 'success');
                 this.close_onClick();
             }).catch(errr => {
+                this.systemModuleService.off();
+                this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
                 console.log(errr);
             });
 
         }).catch(err => {
+            this.systemModuleService.off();
+            this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
             this.loading = false;
         });
 
@@ -1173,67 +1173,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 }
             ]
         }
-        /* this.patientService.create(patient).then(payl => {
-            console.log(payl);
-            this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planId } }).then(payloadPrice => {
-                console.log(payloadPrice.data);
-                const servicePrice = payloadPrice.data[0];
-                const billing: any = {
-                    discount: 0,
-                    facilityId: this.facility._id,
-                    grandTotal: this.planPrice,
-                    patientId: payl._id,
-                    subTotal: this.planPrice,
-                    billItems: [
-                        {
-                            unitPrice: this.planPrice,
-                            facilityId: this.facility._id,
-                            description: '',
-                            facilityServiceId: this.facilityServiceId,
-                            serviceId: this.planId,
-                            patientId: payl._id,
-                            quantity: 1,
-                            totalPrice: this.planPrice,
-                            unitDiscountedAmount: 0,
-                            totalDiscoutedAmount: 0,
-                            modifierId: [],
-                            covered: {
-                                coverType: this.coverType,
-                                _id: facId,
-                                name: facName
-                            },
-                            isServiceEnjoyed: false,
-                            paymentCompleted: false,
-                            paymentStatus: [],
-                            payments: []
-
-                        }
-                    ]
-                }
-                this.billingService.create(billing).then(billingPayload => {
-                    console.log(billingPayload);
-                    this.close_onClick();
-                    this.isSaving = false;
-                    this.paymentPlan = false;
-                    this.frmNewPerson1_show = false;
-                    this.frmNewPerson2_show = false;
-                    this.frmNewPerson3_show = false;
-                    this.frmNewEmp4_show = false;
-                    this.apmisId_show = false;
-                    this.loading = false
-                    this.systemModuleService.off();
-                    this.systemModuleService.announceSweetProxy('Patient Successfully added a patient!', 'success', this, HTML_SAVE_PATIENT);
-                }).catch(errr => {
-                    this.loading = false;
-                    console.log(errr);
-                });
-
-            }).catch(err => {
-                this.loading = false
-                console.log(err);
-            });
-
-        }); */
     }
 
     saveFamilyPerson() {
@@ -1701,10 +1640,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     close_onClick() {
         this.closeModal.emit(true);
-        this.facilityService.announceNotification({
-            type: 'Info',
-            text: 'This operation has been canceled!'
-        });
     }
 
     tabWallet_click() {

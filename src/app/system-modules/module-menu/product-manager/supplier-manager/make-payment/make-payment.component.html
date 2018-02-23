@@ -1,7 +1,6 @@
 <div class="animated pulse">
     <div class="modal-header-wrap">
         <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-        <legend class="modal_title">B&B Pharmaceuticals LTD</legend>
         <div class="modal_mini_title">Make Payment</div>
     </div>
     <div class="modal-baseWrap">
@@ -11,14 +10,14 @@
                 <div class="sec-1">
                     <div class="frm-item-wrap">
                         <mat-input-container class="example-full-width">
-                            <input matInput formControlName="amount" autocomplete="off" placeholder="Amount">
+                            <input matInput formControlName="amount" type="number" autocomplete="off" placeholder="Amount">
                         </mat-input-container>
                     </div>
                     <div class="frm-item-wrap">
                         <mat-form-field>
-                            <mat-select placeholder="Payment Mode" name="food">
-                                <mat-option *ngFor="let food of foods" [value]="food.value">
-                                    {{food}}
+                            <mat-select placeholder="Payment Mode" formControlName="payment_type">
+                                <mat-option *ngFor="let channel of payMethod" [value]="channel.name">
+                                    {{channel.name}}
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
@@ -36,13 +35,9 @@
                         </mat-input-container>
                     </div>
 
-                    <div (click)="login()" class="cta-1">
+                    <div (click)="login(frm_supplierPayment.valid)" class="cta-1">
                         Make Payment
                     </div>
-                </div>
-
-                <div (click)="login()" class="cta-1">
-                    Make Payment
                 </div>
             </div>
         </form>
