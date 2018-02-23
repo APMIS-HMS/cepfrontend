@@ -24,9 +24,9 @@ export class WalletComponent implements OnInit {
   flutterwaveClientKey: string = FLUTTERWAVE_PUBLIC_KEY;
   paystackClientKey: string = PAYSTACK_CLIENT_KEY;
   refKey: string;
-  loading: boolean = true;
-  flutterwavePayment: boolean = false;
-  paystackPayment: boolean = false;
+  loading = true;
+  flutterwavePayment = false;
+  paystackPayment = false;
   paymentChannels = [];
 
   // lineChart
@@ -65,8 +65,8 @@ export class WalletComponent implements OnInit {
       pointHoverBorderColor: 'rgba(255,0,0,0.8)'
     }
   ];
-  lineChartLegend: boolean = true;
-  lineChartType: string = 'line';
+  lineChartLegend = true;
+  lineChartType = 'line';
 
   constructor(
     private _fb: FormBuilder,
@@ -195,12 +195,12 @@ export class WalletComponent implements OnInit {
         // this._notification('Error', res.body.message);
       }
     }).catch(err => {
-     
+
     });
   }
 
   paymentCancel() {
-    
+
   }
 
   // Notification

@@ -42,7 +42,7 @@ export class ServicesComponent implements OnInit {
   index = 1;
   pageSize = 10;
 
-  showLoadMore: Boolean = true;
+  showLoadMore = true;
 
   constructor(
     private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,

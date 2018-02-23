@@ -313,11 +313,14 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         });
         this.frmPerson = this.formBuilder.group({
             persontitle: [new Date(), [<any>Validators.required]],
-            firstname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
-            lastname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+            firstname: ['', [<any>Validators.required,
+                <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+            lastname: ['', [<any>Validators.required,
+                <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
             gender: [[<any>Validators.minLength(2)]],
             dob: [new Date(), [<any>Validators.required]],
-            motherMaidenName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+            motherMaidenName: ['', [<any>Validators.required,
+                <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
             // securityQuestion: ['', [<any>Validators.required]],
             // securityAnswer: ['', [<any>Validators.required]],
             // email: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
@@ -469,11 +472,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     getCashPlans() {
         this._facilitiesServiceCategoryService.find({
             query:
-                { facilityId: this.facility._id, 'categories.name': "Medical Records",$select: { 'categories.$': 1}  }
+                { facilityId: this.facility._id, 'categories.name': 'Medical Records', $select: { 'categories.$': 1}  }
         }).then(payload => {
-            //this.filterOutCategory(payload);
-            //this.categories = [];
-            let cat: any = [];
+            // this.filterOutCategory(payload);
+            // this.categories = [];
+            const cat: any = [];
             payload.data.forEach((itemi, i) => {
                 itemi.categories.forEach((itemj, j) => {
                   cat.push(itemj);
@@ -491,7 +494,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         }).then(payload => {
             console.log(payload);
             this.categories = payload.data[0].categories;
-            let cat = this.categories.filter(x => x.name == "Medical Records");
+            const cat = this.categories.filter(x => x.name === 'Medical Records');
             for (let n = 0; n < cat[0].services.length; n++) {
                 cat[0].services[n].facilityServiceId = payload.data[0]._id
             }
@@ -560,7 +563,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.coverType = 'company';
 
         this.employeeService.searchEmployee(this.facility._id, this.ccEmployeeId, false).then(de => {
-            let data = de.body['0'].employeeDetails;
+            const data = de.body['0'].employeeDetails;
             this.person_Id = de.body[0].personId;
 
 
@@ -577,7 +580,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             this.frmNewPerson2_show = false;
             this.frmNewPerson3_show = false;
             this.paymentPlan = false;
-            //this.employee = true;
+            // this.employee = true;
 
             this.loading = false;
 
@@ -692,14 +695,14 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             this.relationships = payload.data;
         }).catch(err => {
 
-        });;
+        });
     }
     getMaritalStatus() {
         this.maritalStatusService.findAll().then(payload => {
             this.maritalStatuses = payload.data;
         }).catch(err => {
 
-        });;
+        });
     }
     getGenders() {
         this.genderService.findAll().then(payload => {
@@ -730,7 +733,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         })).mergeMap((person: any) => {
             if (person.data.length > 0) {
                 this.selectedPerson = person.data[0];
-                return Observable.fromPromise(this.patientService.find({ query: { personId: this.selectedPerson._id, facilityId: this.facility._id } }));
+                return Observable.fromPromise(this.patientService
+                    .find({ query: { personId: this.selectedPerson._id, facilityId: this.facility._id } }));
             } else {
                 this.errMsg = 'Invalid APMIS ID, correct the value entered and try again!';
                 this.mainErr = false;
@@ -875,7 +879,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     savePerson() {
-        let patient: any = {
+        const patient: any = {
             personId: this.selectedPerson._id,
             facilityId: this.facility._id,
             paymentPlan: [
@@ -887,7 +891,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         }
         console.log(patient);
         this.patientService.create(patient).then(payl => {
-            let billing: any = {
+            const billing: any = {
                 discount: 0,
                 facilityId: this.facility._id,
                 grandTotal: this.planPrice,
@@ -897,7 +901,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     {
                         unitPrice: this.planPrice,
                         facilityId: this.facility._id,
-                        description: "",
+                        description: '',
                         facilityServiceId: this.facilityServiceId,
                         serviceId: this.planId,
                         patientId: payl._id,
@@ -920,7 +924,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             console.log(billing);
             this.billingService.create(billing).then(billingPayload => {
                 this.systemModuleService.off();
-                const text =  this.selectedPerson.lastName + ' ' + this.selectedPerson.firstName + ' added successfully but bill not generated because price not yet set for this service';
+                const text =  this.selectedPerson.lastName + ' ' + this.selectedPerson.firstName
+                + ' added successfully but bill not generated because price not yet set for this service';
                 this.systemModuleService.announceSweetProxy(text, 'success');
                 this.close_onClick();
             }).catch(errr => {
@@ -939,8 +944,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
 
     saveCompanyPerson() {
-        let facId = this.frmNewEmp1.controls['facId'].value;
-        let facName = this.frmNewEmp1.controls['facName'].value;
+        const facId = this.frmNewEmp1.controls['facId'].value;
+        const facName = this.frmNewEmp1.controls['facName'].value;
         if (this.selectedPerson === undefined && this.selectedPerson._id === undefined) {
             const person: Person = <Person>{ nextOfKin: [] };
             person.dateOfBirth = this.frmNewEmp2.controls['empDOB'].value;
@@ -1018,7 +1023,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     ]
                 }
                 this.patientService.create(patient).then(payl => {
-                    this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planId } }).then(payloadPrice => {
+                    this.servicePriceService
+                    .find({ query: { facilityId: this.facility._id, serviceId: this.planId } }).then(payloadPrice => {
 
                         const servicePrice = payloadPrice.data[0];
                         const billing: any = {
@@ -1252,24 +1258,26 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
 
 
+                // tslint:disable-next-line:no-shadowed-variable
                 this.personService.create(person).then(personPayload => {
                     this.patientService.create(patient).then(payl => {
                         this.faService.findFamily({
                             _id: facId,
                             facilityId: empFcltiId
                         }).then(familyPayload => {
-                            let object = this.findObjectByKey(familyPayload.data[0].familyCovers, 'filNo', this.faId);
+                            const object = this.findObjectByKey(familyPayload.data[0].familyCovers, 'filNo', this.faId);
 
-                            let ii = object.i;
+                            const ii = object.i;
                             delete object.i;
 
                             familyPayload.data[0].familyCovers[ii].patientId = payl._id;
 
                             this.faService.updateFamily(familyPayload.data[0]).then(famPayl => {
-                                this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planId } }).then(payloadPrice => {
+                                this.servicePriceService
+                                .find({ query: { facilityId: this.facility._id, serviceId: this.planId } }).then(payloadPrice => {
 
-                                    let servicePrice = payloadPrice.data[0];
-                                    let billing: any = {
+                                    const servicePrice = payloadPrice.data[0];
+                                    const billing: any = {
                                         discount: 0,
                                         facilityId: this.facility._id,
                                         grandTotal: this.planPrice,
@@ -1279,7 +1287,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                                             {
                                                 unitPrice: this.planPrice,
                                                 facilityId: this.facility._id,
-                                                description: "",
+                                                description: '',
                                                 facilityServiceId: this.facilityServiceId,
                                                 serviceId: this.planId,
                                                 patientId: payl._id,
@@ -1345,22 +1353,23 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
             this.patientService.create(patient).then(payl => {
                 // this.uploadButton();
-                //this.family[0].enrollees.patientId = payl._id;
+                // this.family[0].enrollees.patientId = payl._id;
                 this.faService.findFamily({
                     _id: facId,
                     facilityId: empFcltiId
                 }).then(familyPayload => {
-                    let object = this.findObjectByKey(familyPayload.data[0].familyCovers, 'filNo', this.faId);
+                    const object = this.findObjectByKey(familyPayload.data[0].familyCovers, 'filNo', this.faId);
 
-                    let ii = object.i;
+                    const ii = object.i;
                     delete object.i;
 
                     familyPayload.data[0].familyCovers[ii].patientId = payl._id;
 
                     this.faService.updateFamily(familyPayload.data[0]).then(famPayl => {
-                        this.servicePriceService.find({ query: { facilityId: this.facility._id, serviceId: this.planId } }).then(payloadPrice => {
-                            let servicePrice = payloadPrice.data[0];
-                            let billing: any = {
+                        this.servicePriceService
+                        .find({ query: { facilityId: this.facility._id, serviceId: this.planId } }).then(payloadPrice => {
+                            const servicePrice = payloadPrice.data[0];
+                            const billing: any = {
                                 discount: 0,
                                 facilityId: this.facility._id,
                                 grandTotal: this.planPrice,
@@ -1370,7 +1379,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                                     {
                                         unitPrice: this.planPrice,
                                         facilityId: this.facility._id,
-                                        description: "",
+                                        description: '',
                                         facilityServiceId: this.facilityServiceId,
                                         serviceId: this.planId,
                                         patientId: payl._id,
@@ -1410,7 +1419,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     findObjectByKey(array, key, value) {
-        for (var i = 0; i < array.length; i++) {
+        for (let i = 0; i < array.length; i++) {
             if (array[i][key] === value) {
                 array[i].i = i;
                 return array[i];
@@ -1421,7 +1430,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     saveData() {
         console.log(this.coverType);
-        if (this.coverType == 'insurance') {
+        if (this.coverType === 'insurance') {
             // this.saveInsurancePerson();
         } else if (this.coverType === 'company') {
             this.saveCompanyPerson();
@@ -1507,7 +1516,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 // securityQuestion: this.frmPerson.controls['securityQuestion'].value,
                 // securityAnswer: this.titleCasePipe.transform(this.frmPerson.controls['securityAnswer'].value)
             };
-            let body = {
+            const body = {
                 person: personModel
             }
             const errMsg = 'There was an error while creating person, try again!';
