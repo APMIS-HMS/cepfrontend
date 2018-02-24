@@ -35,22 +35,22 @@ export class StoreCheckInComponent implements OnInit {
 		public locker: CoolLocalStorage,
 		private _authFacadeService: AuthFacadeService
 	) {
-    // this.workSpaces = this.locker.getObject('workspaces');
-    this._authFacadeService.getLogingEmployee().then((res: any) => {
-      this.loginEmployee = res;
-      this.workSpaces = res.workSpaces;
-      if (this.workSpaces !== undefined) {
-        this.workSpaces.forEach(workspace => {
-          if (workspace.isActive && workspace.locations.length > 0) {
-            workspace.locations.forEach(x => {
-              if (x.isActive) {
-                this.locations.push(x.minorLocationId);
-              }
-            });
-          }
-        });
-      }
-    }).catch(err => console.log(err));
+		// this.workSpaces = this.locker.getObject('workspaces');
+		this._authFacadeService.getLogingEmployee().then((res: any) => {
+			this.loginEmployee = res;
+			this.workSpaces = res.workSpaces;
+			if (this.workSpaces !== undefined) {
+				this.workSpaces.forEach(workspace => {
+					if (workspace.isActive && workspace.locations.length > 0) {
+						workspace.locations.forEach(x => {
+							if (x.isActive) {
+								this.locations.push(x.minorLocationObject);
+							}
+						});
+					}
+				});
+			}
+		}).catch(err => console.log(err));
 	}
 
 	ngOnInit() {

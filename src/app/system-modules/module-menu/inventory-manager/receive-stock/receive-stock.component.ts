@@ -43,7 +43,9 @@ export class ReceiveStockComponent implements OnInit {
     this.employeeService.checkInAnnounced$.subscribe(payload => {
       if (payload.typeObject !== undefined) {
         this.checkingStore = payload.typeObject;
-        this.getTransfers();
+        if(this.checkingStore.storeId !== undefined){
+          this.getTransfers();
+        }
       }
     });
   }

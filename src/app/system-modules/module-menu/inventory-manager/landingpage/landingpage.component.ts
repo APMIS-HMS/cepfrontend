@@ -48,7 +48,9 @@ export class LandingpageComponent implements OnInit {
       if (payload !== undefined) {
         if (payload.typeObject !== undefined) {
           this.checkingStore = payload.typeObject;
-          this.getInventories();
+          if(this.checkingStore.storeId !== undefined){
+            this.getInventories();
+          }
         }
       }
     });
@@ -91,7 +93,6 @@ export class LandingpageComponent implements OnInit {
         .then(payload => {
           this.loading = false;
           this.inventories = payload.data.filter(x => x.totalQuantity > 0);
-          console.log(this.inventories);
         });
     }
 

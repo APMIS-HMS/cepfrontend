@@ -87,13 +87,6 @@ export class NewPurchaseOrderComponent implements OnInit {
       this.getAllProducts();
       this.getStrengths();
       this.getSuppliers();
-      this.route.params.subscribe(params => {
-        const id = params['id'];
-        if (id !== undefined) {
-          this.getOrderDetails(id);
-          this.saveBtnText = 'Update';
-        }
-      });
     });
 
     // this.getStrengths();
@@ -241,11 +234,11 @@ export class NewPurchaseOrderComponent implements OnInit {
       this.systemModuleService.off();
     });
   }
+
   getProductTables(products: any[]) {
     this.productTables = products;
     this.superGroups = [];
     let group: any[] = [];
-
     let counter = 0;
     for (let i = 0; i < this.productTables.length; i++) {
 
@@ -271,6 +264,13 @@ export class NewPurchaseOrderComponent implements OnInit {
 
       }
     }
+    this.route.params.subscribe(params => {
+      const id = params['id'];
+      if (id !== undefined) {
+        this.getOrderDetails(id);
+        this.saveBtnText = 'Update';
+      }
+    });
   }
   mergeTable(obj) {
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
@@ -385,7 +385,9 @@ export class NewPurchaseOrderComponent implements OnInit {
       });
       this.purchaseOrderService.create(purchaseOrder).subscribe(payload => {
         this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
+        this.frm_purchaseOrder.reset();
         this.systemModuleService.announceSweetProxy('Purchase order ' + payload.purchaseOrderNumber + ' was created', 'success');
+        this.router.navigate(['/dashboard/purchase-manager/orders']);
       }, error => {
         this.systemModuleService.announceSweetProxy('Failed to create purchase order', 'error');
       });
