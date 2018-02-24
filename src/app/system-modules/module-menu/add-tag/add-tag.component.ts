@@ -85,7 +85,7 @@ export class AddTagComponent implements OnInit {
         this.getTags();
         this.editedTag = {};
       }, error => {
-        this.systemModuleService.off;
+        this.systemModuleService.off();
       });
     }
   }

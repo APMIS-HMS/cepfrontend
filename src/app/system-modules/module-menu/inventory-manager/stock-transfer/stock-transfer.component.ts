@@ -62,15 +62,13 @@ export class StockTransferComponent implements OnInit {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.addNewProductTables();
     this._authFacadeService.getLogingEmployee().then((res: any) => {
-      console.log(res);
       this.loginEmployee = res;
       this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+      this.getCurrentStoreDetails(this.checkingStore.storeId);
       this.newTransfer.transferBy = this.loginEmployee._id;
       this.newTransfer.facilityId = this.selectedFacility._id;
       this.newTransfer.storeId = this.checkingStore.storeId;
       this.newTransfer.inventoryTransferTransactions = [];
-      console.log(this.checkingStore);
-      console.log('About to call Inventory');
       this.getMyInventory();
       this.primeComponent();
     });
@@ -99,6 +97,12 @@ export class StockTransferComponent implements OnInit {
         // });
       });
   }
+  getCurrentStoreDetails(id) {
+    this.storeService.get(id, {}).then(payload => {
+      this.checkingStore.storeObject = payload;
+    });
+  }
+
   primeComponent() {
     const status$ = Observable.fromPromise(this.inventoryTransferStatusService.find({ query: { name: 'Pending' } }));
     const type$ = Observable.fromPromise(this.inventoryTransactionTypeService.find({ query: { name: 'transfer', $limit: 20 } }));
@@ -108,7 +112,6 @@ export class StockTransferComponent implements OnInit {
       const statusResult: any = results[0];
       const typeResult: any = results[1];
       const storeResult: any = results[2];
-      console.log(storeResult);
 
       if (statusResult.data.length > 0) {
         this.selectedInventoryTransferStatus = statusResult.data[0];
@@ -126,8 +129,6 @@ export class StockTransferComponent implements OnInit {
     });
   }
   getMyInventory() {
-    console.log(this.selectedFacility);
-    console.log(this.checkingStore);
     this.inventoryService.findList({
       query: {
         facilityId: this.selectedFacility._id,
@@ -135,7 +136,6 @@ export class StockTransferComponent implements OnInit {
         storeId: this.checkingStore.storeId
       }
     }).subscribe(payload => {
-      console.log(payload);
       this.products = [];
       this.getProductTables(this.products);
       payload.data.forEach((item, i) => {
@@ -369,7 +369,7 @@ export class StockTransferComponent implements OnInit {
       });
       this.newTransfer.totalCostPrice = this.newTransfer.totalCostPrice + transferTransaction.lineCostPrice;
       if (isNaN(this.newTransfer.totalCostPrice) || this.newTransfer.totalCostPrice === undefined
-       || this.newTransfer.totalCostPrice === null) {
+        || this.newTransfer.totalCostPrice === null) {
         this.newTransfer.totalCostPrice = 0;
       }
 
@@ -379,7 +379,7 @@ export class StockTransferComponent implements OnInit {
     this.previewObject = <any>{};
     this.previewObject.products = [];
     this.stores.forEach((itemi, i) => {
-      if (itemi._id === this.newTransfer.storeId) {
+      if (itemi._id.toString() === this.newTransfer.storeId.toString()) {
         this.previewObject.store = itemi.name;
       }
       if (itemi._id === this.newTransfer.destinationStoreId) {
@@ -410,7 +410,6 @@ export class StockTransferComponent implements OnInit {
   }
   saveTransfer() {
     this.populateInventoryTransferTransactions();
-    console.log(this.newTransfer);
     this.inventoryTransferService.create2(this.newTransfer).then(payload => {
       (<FormArray>this.productTableForm.controls['productTableArray']).controls = [];
       this.unCheckedProducts();

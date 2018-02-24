@@ -41,8 +41,22 @@ export class StoreCheckInComponent implements OnInit {
 		public locker: CoolLocalStorage,
 		private _authFacadeService: AuthFacadeService
 	) {
-    this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
-    this._getLabLocation();
+		// this.workSpaces = this.locker.getObject('workspaces');
+		this._authFacadeService.getLogingEmployee().then((res: any) => {
+			this.loginEmployee = res;
+			this.workSpaces = res.workSpaces;
+			if (this.workSpaces !== undefined) {
+				this.workSpaces.forEach(workspace => {
+					if (workspace.isActive && workspace.locations.length > 0) {
+						workspace.locations.forEach(x => {
+							if (x.isActive) {
+								this.locations.push(x.minorLocationObject);
+							}
+						});
+					}
+				});
+			}
+		}).catch(err => {});
 	}
 
 	ngOnInit() {
@@ -52,9 +66,7 @@ export class StoreCheckInComponent implements OnInit {
 			isDefault: [false, [<any>Validators.required]]
 		});
 		this.storeCheckin.controls['location'].valueChanges.subscribe(value => {
-      console.log(value);
 			this.storeService.find({ query: { minorLocationId: value } }).then(res => {
-        console.log(res);
 				if (res.data.length > 0) {
 					this.stores = res.data;
 				} else {
@@ -116,7 +128,7 @@ export class StoreCheckInComponent implements OnInit {
       if (res.data.length > 0) {
         this._getEmployee(res.data[0]._id);
       }
-    }).catch(err => console.log(err));
+    }).catch(err => {});
   }
 
   private _getEmployee(pharmId: string) {
@@ -133,7 +145,7 @@ export class StoreCheckInComponent implements OnInit {
           this.locations = minorLocations.filter(x => x.locationId === pharmId && locationIds.includes(x._id));
         }
       }
-    }).catch(err => console.log(err));
+    }).catch(err =>{});
   }
 
 	changeRoom(checkIn: any) {

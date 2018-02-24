@@ -48,7 +48,9 @@ export class LandingpageComponent implements OnInit {
       if (payload !== undefined) {
         if (payload.typeObject !== undefined) {
           this.checkingStore = payload.typeObject;
-          this.getInventories();
+          if(this.checkingStore.storeId !== undefined){
+            this.getInventories();
+          }
         }
       }
     });

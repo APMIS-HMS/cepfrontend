@@ -8,13 +8,13 @@ export class AuthFacadeService {
   logingEmployee: any;
   access: any;
   loginUser: any;
-  private selectedFacility:any;
+  private selectedFacility: any;
   constructor(
     private _socketService: SocketService,
-    private _restService:RestService,
+    private _restService: RestService,
     private locker: CoolLocalStorage,
     private featureService: FeatureModuleService
-  ) {}
+  ) { }
 
   setLogingEmployee(employee) {
     this.logingEmployee = employee;
@@ -35,7 +35,7 @@ export class AuthFacadeService {
     let facId = this.locker.getObject("fac");
     let self = this;
 
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       if (self.logingEmployee !== undefined) {
         resolve(self.logingEmployee);
       } else {
@@ -44,21 +44,42 @@ export class AuthFacadeService {
           .getService("save-employee")
           .get(facId)
           .then(
-            payload => {
-              if (payload !== undefined) {
-                self.logingEmployee = payload.selectedEmployee;
-                self.setLogingEmployee(payload.selectedEmployee);
-                self.setLoginUser(payload.selectedUser);
-                resolve(self.logingEmployee);
-              } else {
-                resolve(undefined);
+          payload => {
+            if (payload !== undefined) {
+              const selectedFacility: any = self.locker.getObject('selectedFacility');
+              self.logingEmployee = payload.selectedEmployee;
+              self.setLogingEmployee(payload.selectedEmployee);
+              self.setLoginUser(payload.selectedUser);
+              if (self.logingEmployee.workSpaces !== undefined && selectedFacility.minorLocations !== undefined) {
+                if (self.logingEmployee.workSpaces.length > 0 && selectedFacility.minorLocations.length > 0) {
+                  const len = self.logingEmployee.workSpaces.length - 1;
+                  for (let index = 0; index <= len; index++) {
+                    const len2 = selectedFacility.minorLocations.length - 1;
+                    for (let index2 = 0; index2 <= len2; index2++) {
+                      if (self.logingEmployee.workSpaces[index].locations !== undefined) {
+                        if (self.logingEmployee.workSpaces[index].locations.length > 0) {
+                          const len3 = self.logingEmployee.workSpaces[index].locations.length - 1;
+                          for (let index3 = 0; index3 <= len3; index3++) {
+                            if (selectedFacility.minorLocations[index2]._id.toString() === self.logingEmployee.workSpaces[index].locations[index3].minorLocationId.toString()) {
+                              self.logingEmployee.workSpaces[index].locations[index3].minorLocationObject = selectedFacility.minorLocations[index2];
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
               }
-            },
-            error => {}
+              resolve(self.logingEmployee);
+            } else {
+              resolve(undefined);
+            }
+          },
+          error => { }
           );
       }
 
-      });
+    });
   }
 
   getCheckedInEmployee(id, data) {
@@ -66,9 +87,30 @@ export class AuthFacadeService {
     return new Promise(function (resolve, reject) {
       self._socketService.authenticateService();
       self._socketService.getService('employee-checkins').patch(id, data).then(payload => {
+        const selectedFacility: any = self.locker.getObject('selectedFacility');
         if (payload !== null) {
           self.logingEmployee = payload;
           self.setLogingEmployee(payload);
+          if (self.logingEmployee.workSpaces !== undefined && selectedFacility.minorLocations !== undefined) {
+            if (self.logingEmployee.workSpaces.length > 0 && selectedFacility.minorLocations.length > 0) {
+              const len = self.logingEmployee.workSpaces.length - 1;
+              for (let index = 0; index <= len; index++) {
+                const len2 = selectedFacility.minorLocations.length - 1;
+                for (let index2 = 0; index2 <= len2; index2++) {
+                  if (self.logingEmployee.workSpaces[index].locations !== undefined) {
+                    if (self.logingEmployee.workSpaces[index].locations.length > 0) {
+                      const len3 = self.logingEmployee.workSpaces[index].locations.length - 1;
+                      for (let index3 = 0; index3 <= len3; index3++) {
+                        if (selectedFacility.minorLocations[index2]._id.toString() === self.logingEmployee.workSpaces[index].locations[index3].minorLocationId.toString()) {
+                          self.logingEmployee.workSpaces[index].locations[index3].minorLocationObject = selectedFacility.minorLocations[index2];
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
           resolve(self.logingEmployee)
         } else {
           resolve(undefined)
@@ -83,7 +125,7 @@ export class AuthFacadeService {
   getLogingUser() {
     let facId = this.locker.getObject("fac");
     let self = this;
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       if (self.loginUser !== undefined) {
         resolve(self.loginUser);
       } else {
@@ -92,17 +134,17 @@ export class AuthFacadeService {
           .getService("save-employee")
           .get(facId)
           .then(
-            payload => {
-              if (payload !== undefined) {
-                self.setLogingEmployee(payload.selectedEmployee);
-                self.setLoginUser(payload.selectedUser);
-                resolve(self.loginUser);
-              } else {
-                resolve(undefined);
-              }
-            },
-            error => {
+          payload => {
+            if (payload !== undefined) {
+              self.setLogingEmployee(payload.selectedEmployee);
+              self.setLoginUser(payload.selectedUser);
+              resolve(self.loginUser);
+            } else {
+              resolve(undefined);
             }
+          },
+          error => {
+          }
           );
       }
     });
@@ -110,7 +152,7 @@ export class AuthFacadeService {
   getUserAccessControls(force?) {
     let facId = this.locker.getObject("fac"); // TO Do: check if fac is in user's facilityRoles
     let self = this;
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
       if (self.access !== undefined && self.access.modules !== undefined && !force) {
         resolve(self.access);
       } else {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PurchaseEmitterService } from '../../../../services/facility-manager/purchase-emitter.service';
 import { PurchaseEntryService, EmployeeService, SupplierService } from '../../../../services/facility-manager/setup/index';
+import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility, Employee } from '../../../../models/index';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -30,7 +31,8 @@ export class InvoicesComponent implements OnInit {
     private supplierService: SupplierService,
     private router: Router,
     private authFacadeService: AuthFacadeService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private systemModuleService: SystemModuleService
   ) {
     this.employeeService.checkInAnnounced$.subscribe(payload => {
       if (payload !== undefined) {
@@ -57,18 +59,18 @@ export class InvoicesComponent implements OnInit {
         this.invoiceService.find({ query: { supplierId: value } }).subscribe(payload => {
           this.invoices = payload.data;
         });
-      } else {
-        this.getInvoices();
       }
-
     });
   }
   getSuppliers() {
+    this.systemModuleService.on();
     this.supplierService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
       this.suppliers = payload.data;
+      this.systemModuleService.off();
     });
   }
   getInvoices() {
+    this.systemModuleService.on();
     if (this.checkingStore !== null) {
       this.invoiceService.findInvoices({
         query: {
@@ -77,6 +79,7 @@ export class InvoicesComponent implements OnInit {
         }
       }).then(payload => {
         this.invoices = payload.data;
+        this.systemModuleService.off();
       });
     }
   }
