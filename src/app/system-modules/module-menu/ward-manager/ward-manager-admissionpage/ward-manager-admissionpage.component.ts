@@ -194,7 +194,6 @@ export class WardManagerAdmissionpageComponent implements OnInit {
         isDischarged: true
       }
     }).then(res => {
-      console.log(res);
       this.dischargeLoading = false;
       this.listPatientDischarge = res.data;
     });
