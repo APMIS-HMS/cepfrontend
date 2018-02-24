@@ -1,8 +1,22 @@
-const { authenticate } = require('@feathersjs/authentication').hooks;
+const {
+  authenticate
+} = require('@feathersjs/authentication').hooks;
+const {
+  fastJoin
+} = require('feathers-hooks-common');
+
+const resolvers = {
+  joins: {
+    productTypeObject: () => async (item, context) => {
+      const productType = await context.app.service('product-types').get(item.productTypeId, {});
+      item.productTypeObject = productType;
+    }
+  }
+}
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt') ],
+    all: [authenticate('jwt')],
     find: [],
     get: [],
     create: [],
@@ -13,7 +27,7 @@ module.exports = {
 
   after: {
     all: [],
-    find: [],
+    find: [fastJoin(resolvers)],
     get: [],
     create: [],
     update: [],

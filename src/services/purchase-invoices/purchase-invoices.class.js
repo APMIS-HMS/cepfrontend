@@ -14,9 +14,11 @@ class Service {
     const purchase = await purchaseService.find({
       query: {
         facilityId: params.query.facilityId,
-        storeId: params.query.storeId
+        storeId: params.query.storeId,
+        $limit: 100
       }
     });
+
     if (purchase.data !== undefined) {
       if (purchase.data.length > 0) {
         let len = purchase.data.length - 1;
