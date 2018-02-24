@@ -4,6 +4,7 @@ import { Facility } from '../../../models/index';
 import { UserService } from '../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { DomSanitizer } from '@angular/platform-browser';
+
 @Component({
   selector: 'app-facility-page',
   templateUrl: './facility-page.component.html',
