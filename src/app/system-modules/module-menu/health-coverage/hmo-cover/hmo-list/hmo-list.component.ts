@@ -160,6 +160,7 @@ export class HmoListComponent implements OnInit {
     }
   }
   upload(e, hmo) {
+    this.systemModuleService.on();
     const target: DataTransfer = <DataTransfer>(e.target);
     if (target.files.length !== 1) {
       throw new Error('Cannot use multiple files');
@@ -324,12 +325,20 @@ export class HmoListComponent implements OnInit {
                 this.hmoService.patch(payload.data[0]._id, {
                   hmos: payload.data[0].hmos
                 }, {}).then(noChangPayload => {
-                  this.systemModuleService.announceSweetProxy
-                    (`You have successfully uploaded ${data.length} enrollees to ${hmo.name}`, 'success');
+                  this.systemModuleService.announceSweetProxy(`You have successfully uploaded ${data.length} enrollees to ${hmo.name}`, 'success');
+                  this.systemModuleService.off();
+                }).catch(err => {
+                  console.log(err);
                 });
               }
             }
+          } else {
+            this.systemModuleService.announceSweetProxy(`You have successfully uploaded ${data.length} enrollees to ${hmo.name}`, 'success');
+            this.systemModuleService.off();
           }
+        } else {
+          this.systemModuleService.announceSweetProxy(`You have successfully uploaded ${data.length} enrollees to ${hmo.name}`, 'success');
+          this.systemModuleService.off();
         }
       });
 

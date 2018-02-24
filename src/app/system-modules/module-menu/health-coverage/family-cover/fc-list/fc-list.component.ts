@@ -77,6 +77,7 @@ export class FcListComponent implements OnInit {
     });
     this.addDependant();
     this.getBeneficiaryList(this.selectedFacility._id);
+
   }
 
   addDependant(beneficiary?) {
@@ -109,18 +110,18 @@ export class FcListComponent implements OnInit {
     }
     (<FormArray>this.frmDependant.controls['dependantArray'])
       .push(
-      this.formBuilder.group({
-        surname: ['', [Validators.required]],
-        othernames: ['', [Validators.required]],
-        gender: ['', [Validators.required]],
-        email: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
-        phone: ['', []],
-        status: ['', [<any>Validators.required]],
-        filNo: [''],
-        readOnly: [false],
-        operation: ['save'],
-        serial: [0]
-      })
+        this.formBuilder.group({
+          surname: ['', [Validators.required]],
+          othernames: ['', [Validators.required]],
+          gender: ['', [Validators.required]],
+          email: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
+          phone: ['', []],
+          status: ['', [<any>Validators.required]],
+          filNo: [''],
+          readOnly: [false],
+          operation: ['save'],
+          serial: [0]
+        })
       );
   }
   closeDependant(dependant, i) {
@@ -152,19 +153,19 @@ export class FcListComponent implements OnInit {
           hasRecord = true;
           (<FormArray>this.frmDependant.controls['dependantArray'])
             .push(
-            this.formBuilder.group({
-              surname: [filter.surname],
-              othernames: [filter.othernames],
-              gender: [filter.gender],
-              email: [filter.email],
-              phone: [filter.phone],
-              status: [filter.status],
-              operation: ['update'],
-              filNo: [filter.filNo],
-              serial: [filter.serial],
-              category: 'Dependant',
-              readOnly: [true],
-            }));
+              this.formBuilder.group({
+                surname: [filter.surname],
+                othernames: [filter.othernames],
+                gender: [filter.gender],
+                email: [filter.email],
+                phone: [filter.phone],
+                status: [filter.status],
+                operation: ['update'],
+                filNo: [filter.filNo],
+                serial: [filter.serial],
+                category: 'Dependant',
+                readOnly: [true],
+              }));
 
         }
       })
@@ -185,19 +186,19 @@ export class FcListComponent implements OnInit {
           hasRecord = true;
           (<FormArray>this.frmDependant.controls['dependantArray'])
             .push(
-            this.formBuilder.group({
-              surname: [filter.surname],
-              othernames: [filter.othernames],
-              gender: [filter.gender],
-              email: [filter.email],
-              phone: [filter.phone],
-              status: [filter.status],
-              operation: ['update'],
-              filNo: [filter.filNo],
-              serial: [filter.serial],
-              category: 'Dependant',
-              readOnly: [true],
-            }));
+              this.formBuilder.group({
+                surname: [filter.surname],
+                othernames: [filter.othernames],
+                gender: [filter.gender],
+                email: [filter.email],
+                phone: [filter.phone],
+                status: [filter.status],
+                operation: ['update'],
+                filNo: [filter.filNo],
+                serial: [filter.serial],
+                category: 'Dependant',
+                readOnly: [true],
+              }));
           if (!hasRecord) {
             this.addDependant();
           }
@@ -244,7 +245,7 @@ export class FcListComponent implements OnInit {
       this.familyCoverService.updateBeneficiaryList(param).then(payload => {
         this.getBeneficiaryList(this.selectedFacility._id);
         this.cancel();
-        this.systemModuleService.announceSweetProxy('Family Cover Records Updated Successfully','success');
+        this.systemModuleService.announceSweetProxy('Family Cover Records Updated Successfully', 'success');
       })
     } else {
       this.systemModuleService.announceSweetProxy('A value is missing, please fill all required field and try again!', 'warning');
