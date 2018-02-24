@@ -12,10 +12,10 @@ import { invalid } from 'moment';
   styleUrls: ['./transaction-history.component.scss']
 })
 export class TransactionHistoryComponent implements OnInit {
-  suppliers: string[];
+  suppliers: any[];
   newPayment = false;
   paymentHistory = false;
-  invoices = [];
+  invoices:any = [];
   selected_supplier = '';
 
   frmFilterSupplier: FormControl = new FormControl();
