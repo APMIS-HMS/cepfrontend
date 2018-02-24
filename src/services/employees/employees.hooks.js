@@ -1,5 +1,9 @@
-const { authenticate } = require('@feathersjs/authentication').hooks;
-const { fastJoin } = require('feathers-hooks-common');
+const {
+  authenticate
+} = require('@feathersjs/authentication').hooks;
+const {
+  fastJoin
+} = require('feathers-hooks-common');
 
 
 const resolvers = {
