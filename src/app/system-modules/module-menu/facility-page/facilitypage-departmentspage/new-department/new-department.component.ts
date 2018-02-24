@@ -4,7 +4,7 @@ import { FacilitiesService } from "../../../../../services/facility-manager/setu
 import { Facility } from "../../../../../models/index";
 import { CoolLocalStorage } from "angular2-cool-storage";
 import { SystemModuleService } from "app/services/module-manager/setup/system-module.service";
-
+ 
 @Component({
   selector: "app-new-department",
   templateUrl: "./new-department.component.html",

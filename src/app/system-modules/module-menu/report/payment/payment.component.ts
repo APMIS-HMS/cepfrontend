@@ -14,7 +14,7 @@ export class PaymentComponent implements OnInit {
   public invoiceChartLabels:string[] = ['HMO', 'Company', 'Family', 'Self'];
   public invoiceChartData:number[] = [450, 100, 38, 350];
   public invoiceChartType:string = 'doughnut';
- 
+
   constructor() { }
 
   ngOnInit() {
@@ -22,11 +22,9 @@ export class PaymentComponent implements OnInit {
 
   // events
   public chartClicked(e:any):void {
-    console.log(e);
   }
- 
+
   public chartHovered(e:any):void {
-    console.log(e);
   }
 
 }

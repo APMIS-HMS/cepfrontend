@@ -29,7 +29,7 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
   biodatas = false;
   contacts = false;
   nextofkin = false;
-  
+
 
   externalContentArea = false;
   contentSecMenuShow = false;
@@ -68,7 +68,7 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
   assignUnitPop = false;
   editBasicPop = false;
   userPrivileges = false;
-  
+
 
   departmentbool = false;
 
@@ -98,6 +98,9 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
       this.getEmployee(employee);
     });
 
+    this.employeeService.employeeAnnounced$.subscribe(payload =>{
+      this.employee = payload;
+    });
   }
 
   ngOnInit() {
@@ -327,7 +330,7 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
     }else{
       this.departmentbool = false;
     }
-    
+
   }
   contactShow() {
     this.contacts = !this.contacts;
@@ -337,7 +340,7 @@ export class EmpmanagerDetailpageComponent implements OnInit, OnDestroy {
   }
   employeeAccessRoleShow() {
     this.userPrivileges = !this.userPrivileges;
-    
+
   }
 
 }

@@ -249,7 +249,6 @@ export class FormsComponent implements OnInit {
           full.personId = this.loginEmployee.units;
           full.selectedFacilityId = this.loginEmployee.facilityId;
         }
-        console.log(full);
         this.formsService.create(full).then(payloads => {
           this.primeForms();
           this.onCreate();

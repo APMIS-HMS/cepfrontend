@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./med-record-home.component.scss', '../med-records.component.scss']
 })
 export class MedRecordHomeComponent implements OnInit {
-  
+
   schedule_appointment = false;
 
   constructor() { }
