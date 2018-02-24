@@ -112,7 +112,6 @@ export class StockTransferComponent implements OnInit {
       const statusResult: any = results[0];
       const typeResult: any = results[1];
       const storeResult: any = results[2];
-      console.log(storeResult);
 
       if (statusResult.data.length > 0) {
         this.selectedInventoryTransferStatus = statusResult.data[0];
@@ -130,8 +129,6 @@ export class StockTransferComponent implements OnInit {
     });
   }
   getMyInventory() {
-    console.log(this.selectedFacility);
-    console.log(this.checkingStore);
     this.inventoryService.findList({
       query: {
         facilityId: this.selectedFacility._id,
@@ -139,7 +136,6 @@ export class StockTransferComponent implements OnInit {
         storeId: this.checkingStore.storeId
       }
     }).subscribe(payload => {
-      console.log(payload);
       this.products = [];
       this.getProductTables(this.products);
       payload.data.forEach((item, i) => {
@@ -414,7 +410,6 @@ export class StockTransferComponent implements OnInit {
   }
   saveTransfer() {
     this.populateInventoryTransferTransactions();
-    console.log(this.newTransfer);
     this.inventoryTransferService.create2(this.newTransfer).then(payload => {
       (<FormArray>this.productTableForm.controls['productTableArray']).controls = [];
       this.unCheckedProducts();
