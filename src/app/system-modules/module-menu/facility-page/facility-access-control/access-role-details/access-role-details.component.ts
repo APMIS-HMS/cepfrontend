@@ -66,7 +66,7 @@ export class AccessRoleDetailsComponent implements OnInit {
       this._accessControlService.remove(this.selectedRole._id, {}).then(res => {
         this.roles = [];
         const text = `${roleName} role has been deleted successfully!`;
-        this._systemModuleService.announceSweetProxy(text, 'success');
+        this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
         this._getAllRoles();
       }).catch(err => console.log(err));
     }

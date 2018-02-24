@@ -120,7 +120,7 @@ export class EmployeeAccessRolesComponent implements OnInit {
       payload => {
         this.loading = false;
         let text = "Selected roles applied to this employee successfully";
-        this.systemModuleService.announceSweetProxy(text, "success");
+        this.systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
         this.authFacadeService.getUserAccessControls(true).then(payload =>{
           this.closeModal.emit(true);
         });

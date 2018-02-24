@@ -136,7 +136,7 @@ export class GenerateUserComponent implements OnInit {
     });
     this.userService.generateUser(user).then(payload => {
       this.systemModuleService.off();
-      this.systemModuleService.announceSweetProxy('User Generated Successfully','success');
+      this.systemModuleService.announceSweetProxy('User Generated Successfully', 'success', null, null, null, null, null, null, null);
       this.getAccessList();
     },error =>{
       this.systemModuleService.off();

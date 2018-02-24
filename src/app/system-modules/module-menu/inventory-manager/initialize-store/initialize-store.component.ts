@@ -140,7 +140,7 @@ export class InitializeStoreComponent implements OnInit {
             });
             this.isEnable = false;
             this.isProcessing = false;
-            this.systemModuleService.announceSweetProxy('Your product has been initialised successfully', 'success');
+            this.systemModuleService.announceSweetProxy('Your product has been initialised successfully', 'success', null, null, null, null, null, null, null);
           } else {
             const text = 'This product exist in your inventory';
             this.systemModuleService.announceSweetProxy(text, 'info');

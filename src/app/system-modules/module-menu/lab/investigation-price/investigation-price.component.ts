@@ -289,7 +289,7 @@ export class InvestigationPriceComponent implements OnInit {
         this.frmNewPrice.controls['workbench'].reset();
         this.getInvestigations();
         this.pricing_view = false;
-        this._systemModuleService.announceSweetProxy('Price has been set/updated successfully!', 'success');
+        this._systemModuleService.announceSweetProxy('Price has been set/updated successfully!', 'success', null, null, null, null, null, null, null);
       });
 
       // this.facilityPriceService.update(this.selectedFacilityServicePrice).then(payload => {

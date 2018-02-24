@@ -155,7 +155,7 @@ export class ReceiveStockComponent implements OnInit {
       { inventoryTransferTransactions: this.selectedInventoryTransfer.inventoryTransferTransactions }).then(payload => {
       this.slideDetailsShow(payload.inventoryTransfers, false);
       this.getTransfers();
-      this.systemModuleService.announceSweetProxy('Stock tran successfully', 'success');
+        this.systemModuleService.announceSweetProxy('Stock tran successfully', 'success', null, null, null, null, null, null, null);
     }, error => {
       this._notification('Error', 'Failed to accept stock, please try again');
     });

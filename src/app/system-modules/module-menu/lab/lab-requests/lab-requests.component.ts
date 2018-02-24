@@ -805,7 +805,7 @@ export class LabRequestsComponent implements OnInit {
           this.investigations = [];
           this.apmisLookupText = '';
           this.selectedPatient = undefined;
-          this._systemModuleService.announceSweetProxy('Request has been sent successfully!', 'success');
+          this._systemModuleService.announceSweetProxy('Request has been sent successfully!', 'success', null, null, null, null, null, null, null);
         } else {
           this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
         }

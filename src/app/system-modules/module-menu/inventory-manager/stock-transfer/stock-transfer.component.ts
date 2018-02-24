@@ -414,7 +414,7 @@ export class StockTransferComponent implements OnInit {
     this.inventoryTransferService.create2(this.newTransfer).then(payload => {
       (<FormArray>this.productTableForm.controls['productTableArray']).controls = [];
       this.unCheckedProducts();
-      this.systemModuleService.announceSweetProxy('Your transfer was successful', 'success');
+      this.systemModuleService.announceSweetProxy('Your transfer was successful', 'success', null, null, null, null, null, null, null);
       this.frmDestinationStore.reset();
     }, err => {
       const errMsg = 'There was an error while initialising product, please try again!';
