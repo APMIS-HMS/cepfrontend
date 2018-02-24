@@ -384,7 +384,7 @@ export class HmoListComponent implements OnInit {
               this.apmisLookupText = '';
               this.getLoginHMOList();
               this.systemModuleService.off();
-              this.systemModuleService.announceSweetProxy('Selected HMO added to your HMO list successfully', 'success');
+              this.systemModuleService.announceSweetProxy('Selected HMO added to your HMO list successfully', 'success', null, null, null, null, null, null, null);
             })
           } else {
             this.hmoService.update(this.loginHMOListObject).then(payload => {
@@ -392,7 +392,7 @@ export class HmoListComponent implements OnInit {
               this.apmisLookupText = '';
               this.getLoginHMOList();
               this.systemModuleService.off();
-              this.systemModuleService.announceSweetProxy('Selected HMO added to your HMO list successfully', 'success');
+              this.systemModuleService.announceSweetProxy('Selected HMO added to your HMO list successfully', 'success', null, null, null, null, null, null, null);
             })
           }
         }

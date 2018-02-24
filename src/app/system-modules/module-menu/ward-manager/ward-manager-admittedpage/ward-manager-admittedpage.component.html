@@ -1,0 +1,91 @@
+<div class="c-page-body">
+    <div class="inPatients">
+        <div class="topFilters">
+            <div class="filter-title">FILTER BY</div>
+            <div class="filter-wrap">
+                <select class="filter-select" name="" id="" [formControl]="wardVal" (change)="onWardChange($event.target.value)">
+                    <option  value="" disabled selected>Select Ward</option>
+					<option *ngFor="let ward of wardLocationItems" value="{{ward._id}}">{{ward.name}}</option>
+                </select>
+            </div>
+            <div class="filter-wrap">
+                <select class="filter-select" name="" id="" [formControl]="roomVal" (change)="onRoomChange($event.target.value)">
+                    <option value="" disabled selected>Select room</option>
+                    <option *ngFor="let room of wardRoomLocationItems" value="{{room._id}}">{{room.name}}</option>
+                </select>
+            </div>
+            <div class="filter-wrap">
+                <input type="search" class="filter-select" [formControl]="searchControl" name="" value="" placeholder="Search">
+            </div>
+        </div>
+        <div class="">
+            <table cellpadding="0" cellspacing="0" border="0.5">
+                <thead>
+                    <tr>
+                        <th><span style="padding-left: 3px;">S/N</span></th>
+                        <th><span style="padding-left: 3px;">Patient</span></th>
+                        <th><span style="padding-left: 3px;">Ward</span></th>
+                        <th>Admitted Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngIf="admittedPatient.length === 0 && loading">
+                        <td class="table-content " colspan="5" style="text-align: center">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
+                        </td>
+                    </tr>
+                    <tr *ngIf="admittedPatient.length === 0 && !loading">
+                        <td class="table-content " colspan="5" style="text-align: center">
+                            No data available in table
+                        </td>
+                    </tr>
+
+                    <tr *ngFor="let admittedPatientItem of admittedPatient; let i = index;">
+                        <td class="table-content" routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}">{{ i+1 }}</td>
+                        <td routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}" class="table-content" style="padding:0;">
+                            <div class="empWrap">
+                                <div class="list-img">
+                                    <div *ngIf="admittedPatientItem?.personDetails.profileImageObject?.thumbnail == undefined">
+                                        <img src="assets/images/users/default.png">
+                                    </div>
+                                    <div *ngIf="admittedPatientItem?.personDetails.profileImageObject?.thumbnail != undefined">
+                                        <img [src]="_inPatientService.transform(admittedPatientItem?.personDetails.profileImageObject?.thumbnail)">
+                                    </div>
+                                </div>
+                                <div>
+                                    <b>{{admittedPatientItem?.personDetails?.firstName}} {{admittedPatientItem?.personDetails?.lastName}}</b><br>
+                                    <small>{{admittedPatientItem?.personDetails?.gender}}, </small>
+                                    <small>{{admittedPatientItem?.personDetails?.age}} old, </small>
+                                    <small>{{admittedPatientItem?.personDetails?.phoneNumber}}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}" class="table-content">
+                            <div>
+                                <b>{{admittedPatientItem?.minorLocation?.name}}</b><br>
+                                <small><b>Room: </b>{{admittedPatientItem?.transfers[admittedPatientItem?.transfers.length -1]?.room?.name}}, </small><br>
+                                <small><b>Bed: </b>{{admittedPatientItem?.transfers[admittedPatientItem?.transfers.length -1]?.bed?.name}} </small>
+                            </div>
+                        </td>
+                        <td routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}" class="table-content">
+                            <b>{{admittedPatientItem?.admissionDate | date }}</b><br>
+                            <small>{{admittedPatientItem?.admissionDate | amTimeAgo }}</small>
+                        </td>
+                        <td>
+                            <div class="tbl-actions-wrap">
+                                <div class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Vitals</div>
+                                <div class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Administer&nbsp;Drugs</div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div *ngIf="dischargePatient" class="modal-overlay">
+            <app-discharge-patient (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-discharge-patient>
+        </div>
+    </div>
+</div>

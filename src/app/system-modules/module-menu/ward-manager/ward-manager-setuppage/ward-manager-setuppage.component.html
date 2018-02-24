@@ -1,0 +1,44 @@
+<div class="c-page-header">
+    <div class="top-button-box">
+        <ul class="topmenuwrap pull-right" (click)="goToFacility();">
+            <li tabindex="0">
+                <i class="fa fa-arrow-circle-o-right"></i>
+                <span>Create Ward</span>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="c-page-body">
+    <div class="inPatients">
+        <div class="table-responsive">
+            <table class="table table-striped no-margin" cellspacing="0" width="100%">
+                <thead>
+                    <tr class="table-bordered">
+                        <th style="width: 5%">No</th>
+                        <th style="width: 30%">Ward</th>
+                        <th style="width: 50%">Description</th>
+                        <th style="width: 15%">No. of Rooms</th>
+                    </tr>
+                </thead>
+                <tbody class="custom-tbody">
+                    <tr *ngIf="wards.length === 0 && !loading">
+                        <td class="table-content" colspan="4" style="text-align: center"> No data available in table</td>
+                    </tr>
+                    <tr *ngIf="wards.length === 0 && loading">
+                        <td class="table-content" colspan="4" style="text-align: center">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
+                        </td>
+                    </tr>
+                    <tr class="details-link" routerLink="/dashboard/ward-manager/setup/ward/{{ward._id}}" *ngFor="let ward of wards; let i = index">
+                        <td class="table-content">{{i+1}}</td>
+                        <td class="table-content">{{ward?.name}}</td>
+                        <td class="table-content">{{ward?.description}}</td>
+                        <td class="table-content">
+                            <span *ngIf="ward?.wardSetup === undefined">0</span>
+                            <span *ngIf="ward?.wardSetup !== undefined">{{ward?.wardSetup?.rooms?.length}}</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
