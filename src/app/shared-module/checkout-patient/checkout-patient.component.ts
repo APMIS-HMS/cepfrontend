@@ -105,7 +105,6 @@ export class CheckoutPatientComponent implements OnInit {
             this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
           }
         }).catch(err => {
-          console.log(err);
         });
         // this._inPatientListService.create(patient).then(res => {
         // 	// Get Appointment
@@ -244,7 +243,7 @@ export class CheckoutPatientComponent implements OnInit {
       if (res.data.length > 0) {
         this.getAllWards(res.data[0]._id);
       }
-    }).catch(err => console.log(err));
+    }).catch({});
   }
 
 	// Notification
