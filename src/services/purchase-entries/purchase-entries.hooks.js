@@ -8,25 +8,41 @@ const {
 const resolvers = {
   joins: {
     supplierObject: () => async (entryItem, context) => {
-      const supplier = await context.app.service('suppliers').get(entryItem.supplierId, {});
-      entryItem.supplierObject = supplier;
+      try {
+        const supplier = await context.app.service('suppliers').get(entryItem.supplierId, {});
+        entryItem.supplierObject = supplier;
+      } catch (error) {
+        entryItem.supplierObject = {};
+      }
     },
     orderObject: () => async (entryItem, context) => {
       if (entryItem.orderId !== null) {
-        const purchase = await context.app.service('purchase-orders').get(entryItem.orderId, {});
-        entryItem.orderObject = purchase;
+        try {
+          const purchase = await context.app.service('purchase-orders').get(entryItem.orderId, {});
+          entryItem.orderObject = purchase;
+        } catch (error) {
+          entryItem.orderObject = {};
+        }
       }
     },
     employeeObject: () => async (entryItem, context) => {
-      const employee = await context.app.service('employees').get(entryItem.createdBy, {});
-      entryItem.employeeObject = employee;
+      try {
+        const employee = await context.app.service('employees').get(entryItem.createdBy, {});
+        entryItem.employeeObject = employee;
+      } catch (error) {
+        entryItem.employeeObject = {};
+      }
     },
     productObject: () => async (entryItem, context) => {
       if (entryItem.products.length > 0) {
         const len = entryItem.products.length - 1;
         for (let index = 0; index <= len; index++) {
-          const product = await context.app.service('products').get(entryItem.products[index].productId, {});
-          entryItem.products[index].productObject = product;
+          try {
+            const product = await context.app.service('products').get(entryItem.products[index].productId, {});
+            entryItem.products[index].productObject = product;
+          } catch (error) {
+            entryItem.products[index].productObject = {};
+          }
         }
       }
     }

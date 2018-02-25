@@ -4,7 +4,6 @@ const Schema = mongoose.Schema;
 const batchTransactionSchema = new Schema({
   batchNumber: { type: String, required: true },
   employeeId: { type: Schema.Types.ObjectId, required: true },
-  employeeName: { type: String, required: true },
   preQuantity: { type: Number, required: true }, // Before Operation.
   postQuantity: { type: Number, required: true }, // After Operation.
   quantity: { type: Number, require: true }, // Operational qty.

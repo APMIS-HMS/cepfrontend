@@ -20,9 +20,9 @@ class Service {
   }
 
   async create(data, params) {
-    const inventoriesService = this.app.service('inventories');
-    const purchaseEntriesService = this.app.service('purchase-entries');
-    const purchaseOrderService = this.app.service('purchase-orders');
+    let inventoriesService = this.app.service('inventories');
+    let purchaseEntriesService = this.app.service('purchase-entries');
+    let purchaseOrderService = this.app.service('purchase-orders');
     let _createInventory = {};
     let purchaseEntry = await purchaseEntriesService.create(data.purchaseEntry);
     if (purchaseEntry.products !== undefined) {
@@ -49,11 +49,10 @@ class Service {
             if (data.existingInventories.length > 0) {
               let len4 = data.existingInventories.length - 1;
               for (let index = 0; index <= len4; index++) {
-
                 if (data.existingInventories[index].transactions.length > 0) {
-                  const transactionLength = data.existingInventories[index].transactions.length;
-                  const indx = transactionLength - 1;
-                  const lastTransaction = data.existingInventories[index].transactions[indx];
+                  let transactionLength = data.existingInventories[index].transactions.length;
+                  let indx = transactionLength - 1;
+                  let lastTransaction = data.existingInventories[index].transactions[indx];
                   lastTransaction.purchaseEntryId = purchaseEntry._id;
                   lastTransaction.purchaseEntryDetailId = purchaseEntry.products[i]._id;
                 }
@@ -61,26 +60,27 @@ class Service {
             }
           }
         }
-      }
-    }
-    if (data.inventories.length > 0) {
-      let createInventory = await inventoriesService.create(data.inventories, {});
-      _createInventory = createInventory;
-    }
-    if (data.existingInventories !== undefined) {
-      if (data.existingInventories.length > 0) {
-        let len5 = data.existingInventories.length - 1
-        for (let index2 = 0; index2 <= len5; index2++) {
-          let createInventory = await inventoriesService.patch(data.existingInventories[index2]._id, data.existingInventories[index2], {});
+        if (data.inventories.length > 0) {
+          let createInventory = await inventoriesService.create(data.inventories);
           _createInventory = createInventory;
+        }
+        if (data.existingInventories.length > 0) {
+          if (data.existingInventories.length > 0) {
+            let len5 = data.existingInventories.length - 1
+            for (let index2 = 0; index2 <= len5; index2++) {
+              let createInventory = await inventoriesService.patch(data.existingInventories[index2]._id, data.existingInventories[index2], {});
+              _createInventory = createInventory;
+            }
+          }
+        }
+        if (data.orderId !== undefined) {
+          let updatePurchase = await purchaseOrderService.patch(data.orderId, {
+            isSupplied: true
+          });
         }
       }
     }
-    if (data.orderId !== undefined) {
-      let updatePurchase = await purchaseOrderService.patch(data.orderId, {
-        isSupplied: true
-      });
-    }
+
     return _createInventory;
   }
 

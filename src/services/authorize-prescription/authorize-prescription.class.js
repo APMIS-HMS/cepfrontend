@@ -33,6 +33,7 @@ class Service {
             if (userRole.length > 0) {
                 /* Create Billing for any item that has been billed */
                 const billingItems = prescription.prescriptionItems.filter(x => x.isBilled);
+
                 if (billingItems.length > 0) {
                     const totalCost = prescription.prescriptionItems.reduce((acc, obj) => { return acc + obj.cost; }, 0);
                     const bill = {

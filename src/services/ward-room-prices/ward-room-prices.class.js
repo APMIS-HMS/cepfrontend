@@ -90,7 +90,7 @@ class Service {
     }
 }
 
-module.exports = function (options) {
+module.exports = function(options) {
     return new Service(options);
 };
 
