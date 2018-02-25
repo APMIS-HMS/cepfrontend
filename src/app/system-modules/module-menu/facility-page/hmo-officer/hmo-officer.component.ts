@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { BillingService,FacilitiesService } from '../../../../services/facility-manager/setup/index';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+
 
 @Component({
   selector: 'app-hmo-officer',
@@ -11,13 +16,27 @@ export class HmoOfficerComponent implements OnInit {
   billHistoryDetail_show = false;
   tab1 = true;
   tab2 = false;
+  selectedFacility: any = <any>{}
+  selectedBill: any = <any>{}
+  bills = []
 
-  constructor() { }
+  constructor(private billingService: BillingService,
+    private locker: CoolLocalStorage,
+    private authFacadeService: AuthFacadeService,
+    private systemModuleService: SystemModuleService,
+    private facilitiesService:FacilitiesService
+  ) { }
 
   ngOnInit() {
+    this.selectedFacility = this.locker.getObject('selectedFacility');
+    this.billingService.find({ query: { facilityId: this.selectedFacility._id, 'billItems.covered.coverType': 'insurance' } }).then(payload => {
+      this.bills = payload.data;
+      console.log(this.bills);
+    });
   }
 
-  billDetail() {
+  billDetail(bill) {
+    this.selectedBill = bill;
     this.billDetail_show = true;
   }
   billHistoryDetail() {
