@@ -28,6 +28,7 @@ export class StoreCheckInComponent implements OnInit {
   checkInBtn = true;
   checkingInBtn = false;
   disableBtn = true;
+  checkInBtnText:any;
 
 	constructor(
     public formBuilder: FormBuilder,
