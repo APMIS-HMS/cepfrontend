@@ -71,6 +71,7 @@ class Service {
     const inventoriesService = this.app.service('inventories');
     let inventoryTransfers = await transferService.patch(id, data);
     let inventory = {};
+    
     let batchDetail = {};
     if (inventoryTransfers != null) {
       if (inventoryTransfers.inventoryTransferTransactions != undefined) {
@@ -84,73 +85,81 @@ class Service {
                   let len2 = inventory.transactions.length - 1;
                   for (let index2 = len2; index2 >= 0; index2--) {
                     if (inventory.transactions[index2]._id.toString() == inventoryTransfers.inventoryTransferTransactions[index].transactionId.toString()) {
+                      batchDetail = inventory.transactions[index2];
+                      const qty = inventory.transactions[index2].quantity;
+                      let transaction = {
+                        batchNumber: batchDetail.batchNumber,
+                        employeeId: inventoryTransfers.transferBy,
+                        preQuantity: qty, // Before Operation.
+                        postQuantity: (inventory.totalQuantity - inventoryTransfers.inventoryTransferTransactions[index].quantity), // After Operation.
+                        quantity: (inventory.totalQuantity - inventoryTransfers.inventoryTransferTransactions[index].quantity), // Operational qty.
+                        inventorytransactionTypeId: inventoryTransfers.inventorytransactionTypeId
+                      }
+                      inventory.transactions[index2].batchTransactions.push(transaction);
                       inventory.transactions[index2].quantity -= inventoryTransfers.inventoryTransferTransactions[index].quantity;
                       inventory.totalQuantity -= inventoryTransfers.inventoryTransferTransactions[index].quantity;
-                      batchDetail = inventory.transactions[index2];
+
+                      let updatedInv = await inventoriesService.patch(inventory._id, inventory);
+
+                      let inventory2 = await inventoriesService.find({
+                        query: {
+                          facilityId: updatedInv.facilityId,
+                          productId: inventoryTransfers.inventoryTransferTransactions[index].productId,
+                          storeId: inventoryTransfers.destinationStoreId
+                        }
+                      });
+                      if (inventory2.data.length > 0) {
+                        let batchTxn = inventory2.data[0].transactions.filter(x => x._id.toString() === inventoryTransfers.inventoryTransferTransactions[index].transactionId.toString());
+                        if (batchTxn.length > 0) {
+                          const qty2 = batchTxn[0].quantity;
+                          let transaction = {
+                            batchNumber: batchDetail.batchNumber,
+                            employeeId: inventoryTransfers.transferBy,
+                            preQuantity: qty2, // Before Operation.
+                            postQuantity: (qty2 + inventoryTransfers.inventoryTransferTransactions[index].quantity), // After Operation.
+                            quantity: (qty2 + inventoryTransfers.inventoryTransferTransactions[index].quantity), // Operational qty.
+                            inventorytransactionTypeId: inventoryTransfers.inventorytransactionTypeId
+                          }
+                          batchTxn[0].quantity += inventoryTransfers.inventoryTransferTransactions[index].quantity;
+                          batchTxn[0].availableQuantity += inventoryTransfers.inventoryTransferTransactions[index].quantity;
+                          inventory2.data[0].totalQuantity += inventoryTransfers.inventoryTransferTransactions[index].quantity;
+                          inventory2.data[0].availableQuantity += inventoryTransfers.inventoryTransferTransactions[index].quantity;
+                          if (inventory2.data[0].batchTransactions == undefined) {
+                            inventory2.data[0].batchTransactions = [];
+                          }
+                          batchTxn[0].batchTransactions.push(transaction);
+                        }
+                        await inventoriesService.patch(inventory2.data[0]._id, inventory2.data[0]);
+
+                      } else {
+                        const inventoryModel = {
+                          facilityId: updatedInv.facilityId,
+                          storeId: inventoryTransfers.destinationStoreId,
+                          serviceId: updatedInv.serviceId,
+                          categoryId: updatedInv.categoryId,
+                          facilityServiceId: updatedInv.facilityServiceId,
+                          productId: updatedInv.productId,
+                          transactions: [],
+                          totalQuantity: inventoryTransfers.inventoryTransferTransactions[index].quantity,
+                          availableQuantity: inventoryTransfers.inventoryTransferTransactions[index].quantity
+                        };
+
+                        batchDetail.quantity = inventoryTransfers.inventoryTransferTransactions[index].quantity;
+                        batchDetail.availableQuantity = inventoryTransfers.inventoryTransferTransactions[index].quantity;
+                        batchDetail.batchTransactions = [];
+                        inventoryModel.transactions.push(batchDetail);
+                        await inventoriesService.create(inventoryModel);
+                      }
                     }
                   }
                 }
               }
             }
-            let updatedInv = await inventoriesService.patch(inventory._id, {
-              totalQuantity: inventory.availableQuantity,
-              transactions: inventory.transactions
-            });
-
-            let inventory2 = await inventoriesService.find({
-              query: {
-                facilityId: updatedInv.facilityId,
-                productId: inventoryTransfers.inventoryTransferTransactions[index].productId,
-                storeId: inventoryTransfers.destinationId
-              }
-            });
-            if (inventory2.data.length > 0) {
-              let batchTxn = inventory2.data[0].transactions.filter(x => x._id.toString() === inventoryTransfers.inventoryTransferTransactions[index].transactionId);
-              if (batchTxn.length > 0) {
-                let transaction = {
-                  batchNumber: batchDetail.batchNumber,
-                  employeeId: inventoryTransfers.transferBy,
-                  preQuantity: batchTxn[0].quantity, // Before Operation.
-                  postQuantity: inventoryTransfers.inventoryTransferTransactions[index].quantity, // After Operation.
-                  quantity: batchTxn[0].availableQuantity, // Operational qty.
-                  inventorytransactionTypeId: inventoryTransfers.inventorytransactionTypeId
-                }
-                batchTxn[0].availableQuantity += inventoryTransfers.inventoryTransferTransactions[index].quantity;
-                batchTxn[0].availableQuantity += inventoryTransfers.inventoryTransferTransactions[index].quantity;
-                inventory2.data[0].quantity += inventoryTransfers.inventoryTransferTransactions[index].quantity;
-                inventory2.data[0].availableQuantity += inventoryTransfers.inventoryTransferTransactions[index].quantity;
-              }
-              await inventoriesService.patch(inventory2.data[0]._id, inventory2.data[0]);
-
-            } else {
-              let inventoryModel = {};
-              inventoryModel.facilityId = updatedInv.facilityId;
-              inventoryModel.storeId = updatedInv.storeId;
-              inventoryModel.serviceId = updatedInv.serviceId;
-              inventoryModel.categoryId = updatedInv.categoryId;
-              inventoryModel.facilityServiceId = updatedInv.facilityServiceId;
-              inventoryModel.productId = updatedInv.productId;
-              inventoryModel.transactions = [];
-              inventoryModel.totalQuantity = inventoryTransfers.inventoryTransferTransactions[index].quantity;
-              inventoryModel.availableQuantity = inventoryTransfers.inventoryTransferTransactions[index].quantity;
-
-              inventoryModel.transactions.push(batchDetail);
-              await inventoriesService.create(inventoryModel);
-            }
           }
-
-          let result = {
-            inventoryTransfers: inventoryTransfers,
-            inventory: updatedInv
-          };
-          return result;
-        } else {
-          return {};
         }
-      } else {
-        return {};
       }
     }
+    return inventoryTransfers;
   }
 
   remove(id, params) {
