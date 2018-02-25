@@ -32,7 +32,7 @@ export * from './appointment-type.service';
 export * from './appointment.service';
 export * from './consulting-room.service';
 export * from './inpatient-waiting-list.service';
-export * from './ward-admission.service';
+export * from './bed-occupancy.service';
 export * from './ward-group.service';
 export * from './workspace.service';
 export * from './inpatient.service';

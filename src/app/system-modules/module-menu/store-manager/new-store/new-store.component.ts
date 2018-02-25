@@ -97,6 +97,7 @@ export class NewStoreComponent implements OnInit {
   }
   create(valid, value) {
     if (valid) {
+      this.systemModuleService.on();
       this.mainErr = true;
       if (this.selectedStore._id === undefined) {
         value.facilityId = this.selectedFacility._id;
@@ -111,9 +112,12 @@ export class NewStoreComponent implements OnInit {
           this.productTypes.forEach((item, i) => {
             item.isChecked = false;
           });
+          this.systemModuleService.off();
+          this.systemModuleService.announceSweetProxy('New store added','success');
           this.refreshStore.emit(true);
           this.closeModal.emit(true);
         }, error => {
+          this.systemModuleService.off();
         });
       } else {
         this.selectedStore.name = value.name;
@@ -135,8 +139,12 @@ export class NewStoreComponent implements OnInit {
           canReceivePurchaseOrder: this.selectedStore.canReceivePurchaseOrder,
           productTypeId: this.selectedStore.productTypeId
         }).then(payload => {
+          this.systemModuleService.off();
+          this.systemModuleService.announceSweetProxy('Store updated','success');
           this.refreshStore.emit(true);
           this.close_onClick();
+        },error=>{
+          this.systemModuleService.off();
         });
       }
 

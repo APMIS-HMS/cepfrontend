@@ -239,7 +239,7 @@ export class NewServiceComponent implements OnInit {
         }
       }).then(payload => {
         this.systemModuleService.off();
-        this.systemModuleService.announceSweetProxy('Service added successful', 'success');
+        this.systemModuleService.announceSweetProxy('Service added successful', 'success', null, null, null, null, null, null, null);
         this.isDisableBtn = false;
         this.frmNewservice.reset();
         this.refreshService.emit(this.selectedService);
@@ -271,7 +271,7 @@ export class NewServiceComponent implements OnInit {
         }
       }).then(payload => {
         this.systemModuleService.off();
-        this.systemModuleService.announceSweetProxy('Service added successful', 'success');
+        this.systemModuleService.announceSweetProxy('Service added successful', 'success', null, null, null, null, null, null, null);
         this.isDisableBtn = false;
         this.refreshService.emit(this.selectedService);
         this.frmNewservice.reset();

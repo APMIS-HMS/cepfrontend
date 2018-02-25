@@ -46,9 +46,12 @@ export class LandingpageComponent implements OnInit {
   ) {
     this.employeeService.checkInAnnounced$.subscribe(payload => {
       if (payload !== undefined) {
+       
         if (payload.typeObject !== undefined) {
           this.checkingStore = payload.typeObject;
-          this.getInventories();
+          if(this.checkingStore.storeId !== undefined){
+            this.getInventories();
+          }
         }
       }
     });
@@ -144,9 +147,11 @@ export class LandingpageComponent implements OnInit {
     if (this.systemQuantity.value > this.physicalQuantity.value) {
       difference = this.systemQuantity.value - this.physicalQuantity.value;
       this.selectedInventory.totalQuantity = this.selectedInventory.totalQuantity - difference;
+      this.selectedInventory.availableQuantity = this.selectedInventory.totalQuantity;
     } else {
       difference = this.physicalQuantity.value - this.systemQuantity.value;
       this.selectedInventory.totalQuantity = this.selectedInventory.totalQuantity + difference;
+      this.selectedInventory.availableQuantity = this.selectedInventory.totalQuantity;
     }
 
     this.inventoryService.update(this.selectedInventory).then(result => {
@@ -156,7 +161,7 @@ export class LandingpageComponent implements OnInit {
       this.comment.reset();
       this.closeAdjustStock();
       const message = 'Batch number "' + this.selectedTransaction.batchNumber + '" has been adjusted';
-      this.systemModuleService.announceSweetProxy(message, 'success');
+      this.systemModuleService.announceSweetProxy(message, 'success', null, null, null, null, null, null, null);
     });
   }
 

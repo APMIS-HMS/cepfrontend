@@ -113,7 +113,7 @@ export class AddMemberComponent implements OnInit {
         this.systemModuleService.off();
         let facc = payl.data;
         this.close_onClick(true);
-        this.systemModuleService.announceSweetProxy('Facility Network Updated Successfully', 'success');
+        this.systemModuleService.announceSweetProxy('Facility Network Updated Successfully', 'success', null, null, null, null, null, null, null);
       })
     }, error => {
       this.systemModuleService.off();
@@ -142,7 +142,7 @@ export class AddMemberComponent implements OnInit {
           let facc = payl.data;
           this.close_onClick(true);
           this.systemModuleService.off();
-          this.systemModuleService.announceSweetProxy('Facility Network Updated Successfully', 'success');
+          this.systemModuleService.announceSweetProxy('Facility Network Updated Successfully', 'success', null, null, null, null, null, null, null);
         })
 
       }, error => {

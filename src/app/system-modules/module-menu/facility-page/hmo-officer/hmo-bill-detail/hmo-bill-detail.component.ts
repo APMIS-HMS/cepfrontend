@@ -23,6 +23,6 @@ export class HmoBillDetailComponent implements OnInit {
   }
 
   newWorkspace_onClick() { }
-  // deletion_popup() {}
+  deletion_popup() {}
 
 }

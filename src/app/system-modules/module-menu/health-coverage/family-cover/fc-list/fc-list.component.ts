@@ -245,7 +245,7 @@ export class FcListComponent implements OnInit {
       this.familyCoverService.updateBeneficiaryList(param).then(payload => {
         this.getBeneficiaryList(this.selectedFacility._id);
         this.cancel();
-        this.systemModuleService.announceSweetProxy('Family Cover Records Updated Successfully', 'success');
+        this.systemModuleService.announceSweetProxy('Family Cover Records Updated Successfully', 'success', null, null, null, null, null, null, null);
       })
     } else {
       this.systemModuleService.announceSweetProxy('A value is missing, please fill all required field and try again!', 'warning');

@@ -8,6 +8,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { LocationService } from 'app/services/module-manager/setup';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-ward-check-in',
@@ -19,7 +20,6 @@ export class WardCheckInComponent implements OnInit {
 	@Input() loginEmployee: Employee;
   @Input() workSpace: any;
   facility: Facility = <Facility>{};
-  miniFacility: Facility = <Facility>{};
   user: User = <User>{};
 	wardCheckin: FormGroup;
 	wards: any[] = [];
@@ -39,6 +39,7 @@ export class WardCheckInComponent implements OnInit {
     private _wardEventEmitter: WardEmitterService,
     private _locationService: LocationService,
     public locker: CoolLocalStorage,
+    private _router:Router,
     private _systemModuleService: SystemModuleService
 	) {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
@@ -64,7 +65,6 @@ export class WardCheckInComponent implements OnInit {
 
 	ngOnInit() {
     this.facility = <Facility>this.locker.getObject('selectedFacility');
-    this.miniFacility = <Facility>this.locker.getObject('miniFacility');
     this.user = <User>this.locker.getObject('auth');
 
     this._getMajorLocation();
@@ -111,7 +111,7 @@ export class WardCheckInComponent implements OnInit {
         });
         const text = 'You have successfully checked into ' + value.room.name + ' ward';
         // this._notification('Success', text);
-        this._systemModuleService.announceSweetProxy(text, 'success');
+        this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
         this.disableCheckIn = false;
         this.addCheckin = true;
         this.addingCheckin = false;
@@ -143,7 +143,7 @@ export class WardCheckInComponent implements OnInit {
       this.switchBtnText = 'Switch To Room';
       const text = 'You have successfully changed ward to ' + checkIn.minorLocationId.name + ' ward';
       // this._notification('Success', text);
-      this._systemModuleService.announceSweetProxy(text, 'success');
+      this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
       this.disableCheckIn = false;
       this.addCheckin = true;
       this.addingCheckin = false;
@@ -172,7 +172,14 @@ export class WardCheckInComponent implements OnInit {
         'minorLocations.locationId': locationId,
       }
     }).then(res => {
-      this.wards = res.data[0].minorLocations.filter(x => x.locationId === locationId);
+       //*Starday Check if no ward location has been set
+       if(res.data.length > 0){
+        this.wards = res.data[0].minorLocations.filter(x => x.locationId === locationId);
+      }else{
+        const text = 'No ward location has been created! Please create one!!';
+        this._systemModuleService.announceSweetProxy(text, 'info', null, null, null, null, null, null, null);
+        this._router.navigate(['/dashboard/facility']);
+      }
     }).catch(err => console.log(err));
   }
 

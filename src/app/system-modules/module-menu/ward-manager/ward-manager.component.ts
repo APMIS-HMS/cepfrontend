@@ -1,3 +1,4 @@
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { Component, Input, Output, OnInit, AfterViewInit, ViewChild, OnDestroy, EventEmitter } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -36,7 +37,8 @@ export class WardManagerComponent implements OnInit, OnDestroy {
     private _router: Router,
     private _facilityService: FacilitiesService,
     private _employeeService: EmployeeService,
-    private _authFacadeService: AuthFacadeService
+    private _authFacadeService: AuthFacadeService,
+    private _systemModuleService:SystemModuleService
 	) {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       if (!!res._id) {
@@ -88,9 +90,14 @@ export class WardManagerComponent implements OnInit, OnDestroy {
           }
         }
       } else {
-        this._notification('Error', 'Couldn\'t get Logged in user! Please try again later');
+        const text ='Couldn\'t get Logged in user! Please try again later';
+      this._systemModuleService.announceSweetProxy(text, 'error', null, null, null, null, null, null, null);
       }
     }).catch(err => {
+      //Starday * redirect non employee of this facility to the dashboard
+      const text ='Only an employee of this facility can have access to this module';
+      this._systemModuleService.announceSweetProxy(text, 'info', null, null, null, null, null, null, null);
+      this._router.navigate(['/dashboard']);
     });
 	}
 

@@ -16,7 +16,7 @@ export class TransactionHistoryComponent implements OnInit {
   newPayment = false;
   paymentHistory = false;
   invoices:any = [];
-  selected_supplier = '';
+  selected_supplier:any;
 
   frmFilterSupplier: FormControl = new FormControl();
 

@@ -119,15 +119,15 @@ export class DocUploadComponent implements OnInit {
     }
 
     this.docUploadService.post(uploadDoc).then(payload => {
-      this.systemModuleService.announceSweetProxy('Document Successfully Uploaded!', 'success');
-      this._notification('Success', 'Document Successfully Uploaded!');
+      this.systemModuleService.announceSweetProxy('Document Successfully Uploaded!', 'success', null, null, null, null, null, null, null);
+      // this._notification('Success', 'Document Successfully Uploaded!');
       this.loading = false;
       this.close_onClick(true);
       this.systemModuleService.off();
     }).catch(err => {
       this.systemModuleService.off();
       this.systemModuleService.announceSweetProxy('There was an uploading the file, try again!', 'error');
-      this._notification('Eror','There was an uploading the file, try again!');
+      // this._notification('Eror','There was an uploading the file, try again!');
       this.loading = false;
     })
 
