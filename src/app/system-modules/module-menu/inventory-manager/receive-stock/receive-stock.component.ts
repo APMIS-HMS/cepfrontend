@@ -157,7 +157,7 @@ export class ReceiveStockComponent implements OnInit {
     });
     this.inventoryTransferService.patch(this.selectedInventoryTransfer._id,
       { inventoryTransferTransactions: this.selectedInventoryTransfer.inventoryTransferTransactions }).then(payload => {
-        this.slideDetailsShow(payload.inventoryTransfers, false);
+        this.slideDetailsShow(payload, false);
         this.getTransfers();
         this.systemModuleService.announceSweetProxy('Stock tran successfully', 'success', null, null, null, null, null, null, null);
       }, error => {
