@@ -192,7 +192,7 @@ export class PersonAccountComponent implements OnInit {
         this.frmPerson.reset();
         this.isSaving = false;
         this.systemModuleService.off();
-        this.systemModuleService.announceSweetProxy(text, 'success', this, HTML_SAVE_PATIENT);
+        this.systemModuleService.announceSweetProxy(text, 'success', this, HTML_SAVE_PATIENT, null, null, null, null, null);
       }, err => {
         this.isSaving = false;
         this.systemModuleService.off();

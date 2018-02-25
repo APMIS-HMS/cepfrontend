@@ -73,7 +73,7 @@ export class SupplierManagerComponent implements OnInit {
       if (this.selectedSupplier.isDelete) {
         this._systemModuleService.off();
         this.supplierService.remove(this.selectedSupplier._id, {}).then(callback_remove => {
-          this._systemModuleService.announceSweetProxy(this.selectedSupplier.name + ' is deleted', 'success');
+          this._systemModuleService.announceSweetProxy(this.selectedSupplier.name + ' is deleted', 'success', null, null, null, null, null, null, null);
           this._systemModuleService.off();
           this.selectedSupplier = <any>{};
           this.getSuppliers();

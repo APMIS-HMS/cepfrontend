@@ -287,7 +287,6 @@ export class ScheduleFrmComponent implements OnInit {
   }
 
   primeComponent() {
-    console.log(1);
     const majorLocation$ = Observable.fromPromise(
       this.locationService.find({ query: { name: "Clinic" } })
     );
@@ -326,23 +325,18 @@ export class ScheduleFrmComponent implements OnInit {
       orderStatuses$
     ]).subscribe(
       (results: any) => {
-        console.log(2);
         results[0].data.forEach((itemi, i) => {
           if (itemi.name === "Clinic") {
             this.clinicMajorLocation = itemi;
           }
         });
-        console.log(3);
         this.appointmentTypes = results[1].data;
         const schedules = results[5].data;
         this.professions = results[2].data;
-        console.log(4);
         if (results[4].data.length > 0) {
-          console.log(5);
         }
 
         const categories = results[3].data[0].categories;
-        console.log(categories);
         const filterCategories = categories.filter(
           x => x.name === "Appointment"
         );
@@ -352,7 +346,6 @@ export class ScheduleFrmComponent implements OnInit {
         if (this.appointment._id !== undefined) {
           this.category.setValue(this.appointment.category);
         }
-        console.log(6);
         this.orderStatuses = results[6].data;
         this.orderStatuses.forEach(item => {
           if (item.name === "Scheduled") {
@@ -376,7 +369,6 @@ export class ScheduleFrmComponent implements OnInit {
         this.validateCurrentAppointment();
       },
       error => {
-        console.log(error);
       }
     );
   }
@@ -414,21 +406,20 @@ export class ScheduleFrmComponent implements OnInit {
   isAppointmentToday() {
     Observable.fromPromise(
       this.appointmentService
-        .find({
+        .findAppointment({
           query: { _id: this.appointment._id, isAppointmentToday: true }
         })
         .subscribe(payload => {
           if (payload.data.length > 0) {
-            console.log('11')
             this.canCheckIn = true;
             this.checkIn.enable();
             this.appointmentIsToday = true;
           } else {
-            console.log('12')
             this.canCheckIn = false;
             this.checkIn.disable();
             this.appointmentIsToday = false;
           }
+        },error =>{
         })
     );
   }
@@ -771,7 +762,6 @@ export class ScheduleFrmComponent implements OnInit {
       this.updateAppointment = false;
       this.saveAppointment = false;
       this.savingAppointment = true;
-      console.log(this.patient.value);
       const patient = this.patient.value._id;
       const clinic = this.clinic.value.clinicName;
 
@@ -845,10 +835,7 @@ export class ScheduleFrmComponent implements OnInit {
                     this.systemModuleService.off();
                     this.router.navigate(["/dashboard/clinic/appointment"]);
                     this.systemModuleService.off();
-                    this.systemModuleService.announceSweetProxy(
-                      "Appointment updated successfully",
-                      "success"
-                    );
+                    this.systemModuleService.announceSweetProxy('Appointment updated successfully', 'success', null, null, null, null, null, null, null);
                   },
                   error => {
                     this.systemModuleService.off();
@@ -884,8 +871,7 @@ export class ScheduleFrmComponent implements OnInit {
               this.systemModuleService.off();
               this.systemModuleService.announceSweetProxy(
                 "Appointment updated successfully",
-                "success"
-              );
+                'success', null, null, null, null, null, null, null);
             }
           },
           error => {
@@ -932,10 +918,12 @@ export class ScheduleFrmComponent implements OnInit {
                     this.systemModuleService.off();
                     this.systemModuleService.announceSweetProxy(
                       "Appointment set successfully",
-                      "success"
-                    );
+                      'success', null, null, null, null, null, null, null);
                   },
                   error => {
+                    this.savingAppointment = false;
+                    this.disableBtn = false;
+                    this.loadIndicatorVisible = false;
                     this.systemModuleService.off();
                     this.systemModuleService.announceSweetProxy(
                       "Appointment set successfully but there was an error creating Telemedice appointment",
@@ -963,11 +951,12 @@ export class ScheduleFrmComponent implements OnInit {
               this.systemModuleService.off();
               this.systemModuleService.announceSweetProxy(
                 "Appointment set successfully",
-                "success"
-              );
+                'success', null, null, null, null, null, null, null);
             }
           },
           error => {
+            this.savingAppointment = false;
+            this.disableBtn = false;
             this.loadIndicatorVisible = false;
             this.systemModuleService.off();
             this.systemModuleService.announceSweetProxy(
@@ -979,7 +968,9 @@ export class ScheduleFrmComponent implements OnInit {
       }
     } else {
       this.systemModuleService.off();
+      this.savingAppointment = false;
       this.disableBtn = false;
+      this.loadIndicatorVisible = false;
       this.systemModuleService.announceSweetProxy(
         "Some required field missing, please try again!",
         "warning"

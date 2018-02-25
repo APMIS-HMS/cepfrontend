@@ -239,7 +239,7 @@ export class PatientPrescriptionComponent implements OnInit {
 
             this._prescriptionService.authorizePresciption(this.prescriptions).then(res => {
               if (res.status === 'success') {
-                this._systemModuleService.announceSweetProxy('Prescription has been sent successfully!', 'success');
+                this._systemModuleService.announceSweetProxy('Prescription has been sent successfully!', 'success', null, null, null, null, null, null, null);
                 this.isDispensed.next(true);
                 this.prescriptionItems = <Prescription>{};
                 this.prescriptionItems.prescriptionItems = [];
@@ -259,6 +259,7 @@ export class PatientPrescriptionComponent implements OnInit {
                 this.authorizingRx = false;
               }
             }).catch(err => {
+              console.log(err);
             });
             // bill model
             // const billItemArray = [];

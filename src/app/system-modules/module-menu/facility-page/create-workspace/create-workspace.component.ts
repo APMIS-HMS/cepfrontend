@@ -99,7 +99,7 @@ export class CreateWorkspaceComponent implements OnInit {
           this.selectedEmployee.units.forEach((item, i) => {
             const unitsList = deptList[0].units.filter(x => x._id === item);
             if (unitsList.length > 0) {
-              if (this.units == undefined) {
+              if (this.units === undefined) {
                 this.units = [];
                 this.units.push(unitsList[0]);
               }
@@ -237,12 +237,12 @@ export class CreateWorkspaceComponent implements OnInit {
     const checkedItems = this.filteredEmployees.filter(x => x.isChecked);
     return checkedItems.length > 0;
   }
-  enable(){
-    const result = (!this.frmNewEmp1.valid && !this.isSaving)|| this.isSaving || !this.isAnyChecked();
+  enable() {
+    const result = (!this.frmNewEmp1.valid && !this.isSaving) || this.isSaving || !this.isAnyChecked();
     return !result;
   }
-  disable(){
-    const result = (!this.frmNewEmp1.valid && !this.isSaving)|| this.isSaving || !this.isAnyChecked();
+  disable() {
+    const result = (!this.frmNewEmp1.valid && !this.isSaving) || this.isSaving || !this.isAnyChecked();
     return result;
   }
   getEmployeeIdFromFiltered(filtered: Employee[]) {
@@ -262,7 +262,7 @@ export class CreateWorkspaceComponent implements OnInit {
       const majorLocationId = this.frmNewEmp1.controls['majorLoc'].value;
       const minorLocationId = this.frmNewEmp1.controls['minorLoc'].value;
 
-      let body = {
+      const body = {
         filtered: filtered,
         employeesId: employeesId,
         facilityId: facilityId,
@@ -270,17 +270,17 @@ export class CreateWorkspaceComponent implements OnInit {
         minorLocationId: minorLocationId
       }
 
-      this.workspaceService.assignworkspace(body).then(payload =>{
+      this.workspaceService.assignworkspace(body).then(payload => {
         this.isSaving = false;
         this.systemModuleService.off();
         this.getWorkSpace();
-        this.systemModuleService.announceSweetProxy('Workspace successfully set!', 'success');
+        this.systemModuleService.announceSweetProxy('Workspace successfully set!', 'success', null, null, null, null, null, null, null);
         if(this.selectedEmployee !== undefined && this.selectedEmployee._id !== undefined)
         {
           this.employeeService.announceEmployee(this.selectedEmployee);
         }
         this.close_onClick();
-      }, error =>{
+      }, error => {
         this.isSaving = false;
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy('There was an error while saving the workspace', 'error');

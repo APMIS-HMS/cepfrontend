@@ -75,13 +75,13 @@ export class MakePaymentComponent implements OnInit {
         this.selectedInvoice.paymentCompleted = true;
       }
       this.purchaseEntryService.patch(this.selectedInvoice._id, this.selectedInvoice).then(payload => {
-        this.systemModuleService.announceSweetProxy('Payment made', 'success');
+        this.systemModuleService.announceSweetProxy('Payment made', 'success', null, null, null, null, null, null, null);
         this.isDisableBtn = true;
         this.paymentItem.emit(true);
       },error=>{
       });
     } else {
-      
+
       this.systemModuleService.announceSweetProxy('Missing field required', 'error');
       this.isDisableBtn = true;
     }

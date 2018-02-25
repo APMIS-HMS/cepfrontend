@@ -60,7 +60,6 @@ export class InvoiceComponent implements OnInit {
         private _todayInvoiceService: TodayInvoiceService) {
         this.user = <User>this.locker.getObject('auth');
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-        console.log(this.selectedFacility);
         this.patientService.receivePatient().subscribe((payload: Patient) => {
             this.selectedPatient = payload;
             this.selectedInvoiceGroup = <Invoice>{ invoiceNo: '', createdAt: undefined };
@@ -78,17 +77,15 @@ export class InvoiceComponent implements OnInit {
         this.invoiceService.find({ query: { patientId: this.selectedPatient._id, facilityId: this.selectedFacility._id, $sort: { paymentCompleted: 1 }, $limit: 5 } })
             .then(payload => {
                 this.invoiceGroups = payload.data;
-                console.log(this.invoiceGroups);
                 this.isLoadingInvoice = false;
             }).catch(err => this._notification('Error', 'There was a problem getting invoices. Please try again later!'));
 
         this.isLoadingOtherInvoice = true;
         this._todayInvoiceService.get(this.selectedFacility._id,{
             query:{
-                "isQuery": false  
+                "isQuery": false
             }
         }).then(payload => {
-            console.log(payload)
             this.otherInvoiceGroups = payload.invoices.filter(x => x.patientId != this.selectedPatient._id);
             this.isLoadingOtherInvoice = false;
         }).catch(err => this._notification('Error', 'There was a problem getting other invoices. Please try again later!'));
@@ -104,7 +101,6 @@ export class InvoiceComponent implements OnInit {
             if (id !== undefined) {
                 this.patientService.get(id, {}).then(payload => {
                     this.selectedPatient = payload;
-                    console.log(this.selectedPatient);
                     this.getPatientInvoices();
                 });
             }
@@ -144,11 +140,9 @@ export class InvoiceComponent implements OnInit {
 
     onSelectedInvoice(group: Invoice) {
         this.selectedInvoiceGroup = group;
-        console.log(this.selectedInvoiceGroup);
     }
 
     onPersonValueUpdated(item) {
-        console.log(item);
         if(item.person != undefined){
             this.selectedPatient.personDetails = item.person;
         }

@@ -172,46 +172,6 @@ export class ServicesComponent implements OnInit {
     }, error => {
       this.systemModuleService.off();
     });
-
-    // this._facilitiesServiceCategoryService.find({
-    //   query: {
-    //     $or: [
-    //       { facilityId: this.facility._id }
-    //       // { facilityId: undefined }
-    //     ]
-    //   }
-    // }).then(payload => {
-    //   this.categories = [];
-    //   let goo = [];
-    //   payload.data.forEach((itemi, i) => {
-    //     itemi.categories.forEach((itemj, j) => {
-    //       if (itemi.facilityId !== undefined) {
-    //         this.categories.push(itemj);
-    //       }
-    //       itemj.services.forEach((itemk, k) => {
-    //         const customCategory: CustomCategory = <CustomCategory>{};
-    //         customCategory.facilityService = itemi;
-    //         customCategory.service = itemk.name;
-    //         customCategory.serviceId = itemk._id;
-    //         customCategory.category = itemj.name;
-    //         customCategory.categoryId = itemj._id;
-    //         customCategory.serviceCode = itemk.code;
-    //         if (itemi.facilityId === undefined) {
-    //           customCategory.isGlobal = true;
-    //         } else {
-    //           customCategory.isGlobal = false;
-    //         }
-    //         this.globalCategoriesToBePaginated.push(customCategory);
-
-    //       });
-    //     });
-    //     if (this.globalCategoriesToBePaginated.length <= this.globalCategories.length) {
-    //       this.showLoadMore = false;
-    //     }
-    //     this.globalCategories = this.paginate(this.globalCategoriesToBePaginated, this.pageSize, this.index);
-    //     this.selectCategory(this.categories[0]);
-    //   });
-    // });
   }
 
   getCategory() {

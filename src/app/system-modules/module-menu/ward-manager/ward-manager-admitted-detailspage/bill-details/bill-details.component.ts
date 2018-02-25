@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility } from '../../../../../models/index';
 import { WardEmitterService } from '../../../../../services/facility-manager/ward-emitter.service';
-import { WardAdmissionService, InPatientService, FacilitiesService } from '../../../../../services/facility-manager/setup/index';
+import { BedOccupancyService, InPatientService, FacilitiesService } from '../../../../../services/facility-manager/setup/index';
 
 @Component({
 	selector: 'app-bill-details',
@@ -22,7 +22,7 @@ export class BillDetailsComponent implements OnInit {
 		private _router: Router,
 		public _inPatientService: InPatientService,
 		private _locker: CoolLocalStorage,
-		private _wardAdmissionService: WardAdmissionService,
+		private _BedOccupancyService: BedOccupancyService,
 		private _facilitiesService: FacilitiesService
 	) {
 		this.getAdmittedPatientItems();

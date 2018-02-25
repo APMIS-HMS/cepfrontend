@@ -48,7 +48,9 @@ export class LandingpageComponent implements OnInit {
       if (payload !== undefined) {
         if (payload.typeObject !== undefined) {
           this.checkingStore = payload.typeObject;
-          this.getInventories();
+          if(this.checkingStore.storeId !== undefined){
+            this.getInventories();
+          }
         }
       }
     });
@@ -91,7 +93,6 @@ export class LandingpageComponent implements OnInit {
         .then(payload => {
           this.loading = false;
           this.inventories = payload.data.filter(x => x.totalQuantity > 0);
-          console.log(this.inventories);
         });
     }
 
@@ -157,7 +158,7 @@ export class LandingpageComponent implements OnInit {
       this.comment.reset();
       this.closeAdjustStock();
       const message = 'Batch number "' + this.selectedTransaction.batchNumber + '" has been adjusted';
-      this.systemModuleService.announceSweetProxy(message, 'success');
+      this.systemModuleService.announceSweetProxy(message, 'success', null, null, null, null, null, null, null);
     });
   }
 

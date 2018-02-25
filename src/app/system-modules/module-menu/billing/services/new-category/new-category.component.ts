@@ -75,7 +75,7 @@ export class NewCategoryComponent implements OnInit {
           }
         }).then(payload => {
           this.systemModuleService.off();
-          this.systemModuleService.announceSweetProxy('Category added successful', 'success');
+          this.systemModuleService.announceSweetProxy('Category added successful', 'success', null, null, null, null, null, null, null);
           this.refreshCategory.emit(true);
         }, error => {
           this.systemModuleService.off();
@@ -91,7 +91,7 @@ export class NewCategoryComponent implements OnInit {
           }
         }).then(payload => {
           this.systemModuleService.off();
-          this.systemModuleService.announceSweetProxy('Category added successful', 'success');
+          this.systemModuleService.announceSweetProxy('Category added successful', 'success', null, null, null, null, null, null, null);
           this.refreshCategory.emit(true);
           this.close_onClick();
         }, error => {

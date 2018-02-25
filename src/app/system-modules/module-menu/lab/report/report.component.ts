@@ -164,7 +164,6 @@ export class ReportComponent implements OnInit {
       } else if (action === 'upload') {
         this.saveAndUploadBtnText = 'UPLOADING...';
       }
-      console.log(this.selectedPatient);
       const isUploaded: Boolean = false;
       const isSaved: Boolean = false;
       const report = {
@@ -188,10 +187,10 @@ export class ReportComponent implements OnInit {
           this._getAllPendingRequests();
           if (action === 'save') {
             this.saveToDraftBtnText = 'SAVE AS DRAFT';
-            this._systemModuleService.announceSweetProxy('Report has been saved successfully!', 'success');
+            this._systemModuleService.announceSweetProxy('Report has been saved successfully!', 'success', null, null, null, null, null, null, null);
           } else {
             this.saveAndUploadBtnText = 'SAVE AND UPLOAD';
-            this._systemModuleService.announceSweetProxy('Report has been saved and uploaded successfully!', 'success');
+            this._systemModuleService.announceSweetProxy('Report has been saved and uploaded successfully!', 'success', null, null, null, null, null, null, null);
           }
         } else {
 

@@ -112,8 +112,7 @@ export class TreatementTemplateComponent implements OnInit {
               );
               this._systemModuleService.announceSweetProxy(
                 "Template has been saved successfully!",
-                "success"
-              );
+                'success', null, null, null, null, null, null, null);
               // this.newTemplate_show(true);
               this.getTemplates();
               this.isOrderSet = false;
@@ -160,8 +159,7 @@ export class TreatementTemplateComponent implements OnInit {
               );
               this._systemModuleService.announceSweetProxy(
                 "Template has been saved successfully!",
-                "success"
-              );
+                'success', null, null, null, null, null, null, null);
               this.getTemplates();
               this.isOrderSet = false;
               this.isTemplate = true;
@@ -357,8 +355,7 @@ export class TreatementTemplateComponent implements OnInit {
             this.frmnewTemplate.controls["category"].setValue("medication");
             this._systemModuleService.announceSweetProxy(
               "Template has been saved successfully!",
-              "success"
-            );
+              'success', null, null, null, null, null, null, null);
           }
         })
         .catch(err => {
