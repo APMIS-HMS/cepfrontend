@@ -89,10 +89,8 @@ export class EmpmanagerHomepageComponent
 
   ngOnInit() {
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
-      console.log(payload);
     });
     /* this.route.data.subscribe(data => {
-      console.log(data);
       data['employees'].subscribe((payload) => {
         if (payload !== null) {
           this.total = payload.total;

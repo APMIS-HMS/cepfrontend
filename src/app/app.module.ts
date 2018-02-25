@@ -94,7 +94,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     })
   ],
   providers: [
-    { provide: ErrorHandler, useClass: ApmisErrorHandler },
+    // { provide: ErrorHandler, useClass: ApmisErrorHandler },
     SocketService, RestService, SetupService.CountriesService, SetupService.FacilityTypesService,
     SetupService.FacilitiesService, SetupService.FacilityModuleService, SetupService.ConsultingRoomService,
     SetupService.FacilitiesService, SetupService.FacilityModuleService, SetupService.UserService, SetupService.GenderService,
@@ -107,7 +107,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     SetupService.TagDictionaryService, SetupService.ServiceDictionaryService, SetupService.CompanyCoverCategoryService,
     ModuleManagerService.FeatureModuleService, SetupService.AccessControlService, SetupService.ServicePriceService,
     SetupService.CanActivateViaAuthGuardService, SetupService.FacilitiesServiceCategoryService, SetupService.TagService,
-    SetupService.InPatientListService, SetupService.RoomGroupService, SetupService.WardAdmissionService,
+    SetupService.InPatientListService, SetupService.RoomGroupService, SetupService.BedOccupancyService,
     SetupService.WorkSpaceService, SetupService.InPatientService, SetupService.WardDischargeTypesService, SetupService.DocumentationService,
     SetupService.InPatientTransferStatusService, ClinicHelperService, SwitchUserResolverService, SetupService.DictionariesService,
     SetupService.VitaLocationService, SetupService.VitalPositionService, SetupService.VitalRythmService, SetupService.PrescriptionService,

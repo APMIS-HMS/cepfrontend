@@ -1,7 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import {
-	WardAdmissionService, InPatientListService, InPatientService, FacilitiesService
-} from '../../../../services/facility-manager/setup/index';
+import { InPatientListService, InPatientService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { Facility, InPatient, WardTransfer, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { WardEmitterService } from '../../../../services/facility-manager/ward-emitter.service';
@@ -47,12 +45,14 @@ export class WardManagerAdmissionpageComponent implements OnInit {
     private facilityService: FacilitiesService,
     private _authFacadeService: AuthFacadeService
   ) {
-    this._inPatientListService.listenerCreate.subscribe(payload => {
-      // this.getWaitingList(this.selectedWard);
-    });
-    this._inPatientListService.listenerUpdate.subscribe(payload => {
-      // this.getWaitingList(this.selectedWard);
-    });
+    // this._inPatientListService.listenerCreate.subscribe(payload => {
+    //   // this.getWaitingList(this.selectedWard);
+    // });
+    // this._inPatientListService.listenerUpdate.subscribe(payload => {
+    //   // this.getWaitingList(this.selectedWard);
+    // });
+
+    this.facility = <Facility>this._locker.getObject('selectedFacility');
 
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       if (!!res._id) {
@@ -64,6 +64,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
             type: 'ward',
             typeObject: wardCheckedIn
           };
+          this.selectedWard = wardType;
           this.getWaitingList(wardType);
           this.getTransferInList(wardType);
           this.getDischargeList(wardType);
@@ -78,8 +79,6 @@ export class WardManagerAdmissionpageComponent implements OnInit {
 
   ngOnInit() {
     this._wardEventEmitter.setRouteUrl('Admission waiting list');
-    this.facility = <Facility>this._locker.getObject('selectedFacility');
-    this.employeeDetails = this._locker.getObject('loginEmployee');
     this.user = <User>this._locker.getObject('auth');
 
     // Subscribe to the event when ward changes.
@@ -90,53 +89,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
       this.getDischargeList(val);
       this.getTransferOutList(val);
     });
-
-    // if (this.selectedWard === undefined) {
-    //   if (this.employeeDetails.wardCheckIn.length > 0) {
-    //     const wardCheckedIn = this.employeeDetails.wardCheckIn.filter(x => x.isOn)[0];
-
-    //     const wardType = {
-    //       type: 'ward',
-    //       typeObject: wardCheckedIn
-    //     };
-    //     this.getWaitingList(wardType);
-    //     this.getTransferInList(wardType);
-    //     this.getDischargeList(wardType);
-    //     this.getTransferOutList(wardType);
-    //   }
-    // }
   }
-
-  // newAdmissionTab() {
-  // 	this.newAdmissionShow = true;
-  // 	this.transferInShow = false;
-  // 	this.transferOutShow = false;
-  // 	this.dischargeShow = false;
-  // 	this.getWaitingList();
-  // }
-
-  // transferInTab() {
-  // 	this.newAdmissionShow = false;
-  // 	this.transferInShow = true;
-  // 	this.transferOutShow = false;
-  // 	this.dischargeShow = false;
-  // 	this.getTransferInList();
-  // }
-
-  // transferOutTab() {
-  // 	this.newAdmissionShow = false;
-  // 	this.transferInShow = false;
-  // 	this.transferOutShow = true;
-  // 	this.dischargeShow = false;
-  // }
-
-  // dischargeTab() {
-  // 	this.newAdmissionShow = false;
-  // 	this.transferInShow = false;
-  // 	this.transferOutShow = false;
-  // 	this.dischargeShow = true;
-  // 	this.getDischargeList();
-  // }
 
   admitPatient_onClick(value: any, typeChecker = myGlobals) {
     if (!!this.selectedWard && !!this.selectedWard.typeObject) {
@@ -145,96 +98,106 @@ export class WardManagerAdmissionpageComponent implements OnInit {
       // Pass the loggedInWard to the selectedInpatient.
       this.selectInpatient.loggedInWard = this.selectedWard.typeObject;
       this.admitPatient = true;
+    } else {
+      this._notification('Error', 'There was problem getting selected ward.');
     }
   }
 
   transferAdmitPatient_onClick(model: any, typeChecker = myGlobals) {
-    this.selectInpatient = model;
-    this.selectInpatient.typeChecker = typeChecker.transfer;
-    this.admitPatient = true;
+    if (!!this.selectedWard && !!this.selectedWard.typeObject) {
+      this.selectInpatient = model;
+      this.selectInpatient.typeChecker = typeChecker.transfer;
+      // Pass the loggedInWard to the selectedInpatient.
+      this.selectInpatient.loggedInWard = this.selectedWard.typeObject;
+      this.admitPatient = true;
+    }
   }
 
   close_onClick() {
     this.admitPatient = false;
-    this.ngOnInit();
+    this.getWaitingList(this.selectedWard);
+    this.getTransferInList(this.selectedWard);
+    this.getDischargeList(this.selectedWard);
+    this.getTransferOutList(this.selectedWard);
   }
 
   onClickDeclineTransfer(inpatientItem) {
     this._inPatientService.get(inpatientItem._id, {}).then(payload => {
       payload.statusId = myGlobals.onAdmission;
-      payload.transfers[payload.lastIndex].proposedWard = {};
+      payload.transfers[payload.lastIndex].proposedWard = undefined;
       // Update the checkOutDate of the last tranfer
-      this._inPatientService
-        .update(payload)
-        .then(payload1 => {
+      this._inPatientService.update(payload).then(res => {
           this.getTransferInList(this.selectedWard);
-        })
-        .catch(err => {
-        });
+      }).catch(err => {});
     });
   }
 
   getWaitingList(checkedInWard: any) {
-    this._inPatientListService
-      .find({
-        query: {
-          'facilityId._id': this.facility._id,
-          'wardId._id': checkedInWard.typeObject.minorLocationId._id,
-          isAdmitted: false
-        }
-      })
-      .then(res => {
-        this.newAdmissionLoading = false;
+    this._inPatientListService.customGet({ action: 'getInPatientWaitingList'}, { query: {
+        'facilityId': this.facility._id,
+        'minorLocationId': checkedInWard.typeObject.minorLocationId._id,
+        isAdmitted: false
+      }
+    }).then(res => {
+      this.newAdmissionLoading = false;
+      if (res.status === 'success') {
         this.listPatientAdmissionWaiting = res.data;
-      });
+      }
+    });
   }
 
   getTransferInList(checkedInWard: any) {
-    this._inPatientService
-      .find({
-        query: {
-          'facilityId._id': this.facility._id,
-          'proposedWard.minorLocationId': checkedInWard.typeObject.minorLocationId._id,
-          statusId: myGlobals.transfer,
-          discharge: undefined
-        }
-      })
-      .then(payload => {
-        this.transferInLoading = false;
-        this.listPatientTransferWaiting = payload.data;
-      });
+    this._inPatientListService.customGet({ action: 'getInPatientTransferList' }, {
+      query: {
+        facilityId: this.facility._id,
+        proposedWard: checkedInWard.typeObject.minorLocationId._id,
+        status: myGlobals.transfer,
+        isDischarged: false
+      }
+    }).then(res => {
+      this.transferInLoading = false;
+      this.listPatientTransferWaiting = res.data;
+    });
   }
 
   getTransferOutList(checkedInWard: any) {
-    this._inPatientService
-      .find({
-        query: {
-          'facilityId._id': this.facility._id,
-          'prevWard._id': checkedInWard.typeObject.minorLocationId._id,
-          statusId: myGlobals.transfer,
-          discharge: undefined
-        }
-      })
-      .then(payload => {
-        this.transferOutLoading = false;
-        this.listPatientTransferOutWaiting = payload.data;
-      });
+    this._inPatientListService.customGet({ action: 'getInPatientTransferList' }, {
+      query: {
+        facilityId: this.facility._id,
+        currentWard: checkedInWard.typeObject.minorLocationId._id,
+        status: myGlobals.transfer,
+        isDischarged: false
+      }
+    }).then(res => {
+      this.transferOutLoading = false;
+      this.listPatientTransferOutWaiting = res.data;
+    });
+    // this._inPatientService.find({
+    //     query: {
+    //       'facilityId': this.facility._id,
+    //       'prevWard': checkedInWard.typeObject.minorLocationId._id,
+    //       statusId: myGlobals.transfer,
+    //       discharge: undefined
+    //     }
+    //   }).then(payload => {
+    //     this.transferOutLoading = false;
+    //     this.listPatientTransferOutWaiting = payload.data;
+    //   });
   }
 
   getDischargeList(checkedInWard: any) {
-    this._inPatientService.find({
-        query: {
-          'facilityId._id': this.facility._id,
-          statusId: myGlobals.discharge
-        }
-      }).then(res => {
-        this.dischargeLoading = false;
-        this.listPatientDischarge = res.data;
-      });
+    this._inPatientListService.customGet({ action: 'getDischargedPatients' }, {
+      query: {
+        facilityId: this.facility._id,
+        currentWard: checkedInWard.typeObject.minorLocationId._id,
+        status: myGlobals.discharge,
+        isDischarged: true
+      }
+    }).then(res => {
+      this.dischargeLoading = false;
+      this.listPatientDischarge = res.data;
+    });
   }
-
-  // navEpDetail(patient) {
-  // }
 
   // Notification
   private _notification(type: String, text: String): void {

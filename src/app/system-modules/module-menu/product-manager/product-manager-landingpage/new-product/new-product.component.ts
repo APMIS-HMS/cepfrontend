@@ -15,8 +15,8 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 })
 export class NewProductComponent implements OnInit {
   @Output() refreshProductList: EventEmitter<boolean> = new EventEmitter<boolean>();
-  isManufacturer: boolean = false;
-  isPresentation: boolean = false;
+  isManufacturer = false;
+  isPresentation = false;
   isStrength = false;
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -50,10 +50,10 @@ export class NewProductComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
   selectedFacilityService: FacilityService = <FacilityService>{};
 
-  createText: string = 'Create Product';
+  createText = 'Create Product';
 
   constructor(
-   private _locker: CoolLocalStorage,
+    private _locker: CoolLocalStorage,
     private formBuilder: FormBuilder, private manufacturerService: ManufacturerService, private genericService: GenericService,
     private presentationService: PresentationService, private productTypeService: ProductTypeService,
     private _facilityService: FacilitiesService,
@@ -63,7 +63,7 @@ export class NewProductComponent implements OnInit {
 
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.user = <User> this._locker.getObject('auth');
+    this.user = <User>this._locker.getObject('auth');
 
     this.frm_newProduct = this.formBuilder.group({
       productTypeId: ['', [<any>Validators.required]],
@@ -111,7 +111,7 @@ export class NewProductComponent implements OnInit {
     this.subscribeToControls();
 
     this.frm_newProduct.controls['presentation'].valueChanges.subscribe(value => {
-      let presentation = this.presentations.filter(x => x._id === value);
+      const presentation = this.presentations.filter(x => x._id === value);
       if (presentation.length > 0) {
         this.presentationName = presentation[0].name;
         if (this.frm_newProduct.controls['name'].value !== null) {
@@ -286,7 +286,7 @@ export class NewProductComponent implements OnInit {
     });
   }
   getProductTypes() {
-    this.productTypeService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
+    this.productTypeService.find({ query: { facilityId: this.selectedFacility._id, isActive: true } }).then(payload => {
       this.productTypes = payload.data;
     });
   }
@@ -336,10 +336,10 @@ export class NewProductComponent implements OnInit {
                   }
                 });
               }
-             
+
             });
           });
-          
+
         }, error => {
         });
       } else {
@@ -357,7 +357,7 @@ export class NewProductComponent implements OnInit {
   }
   onSelectProductSuggestion(suggestion) {
     this.drugDetailsService.find({ query: { productId: suggestion.productId } }).subscribe(payload => {
-      let data = JSON.parse(payload.body);
+      const data = JSON.parse(payload.body);
       payload.data = data;
       this.frm_newProduct.controls['name'].setValue(payload.data.brand + '-' + suggestion.activeIngredient);
       this.frm_newProduct.controls['genericName'].setValue(suggestion.activeIngredient);
@@ -372,7 +372,8 @@ export class NewProductComponent implements OnInit {
       // manufacturerItem.name = payload.company;
       // manufacturerItem._id = "0";
       // this.manufacturers.push(manufacturerItem);
-    },error=>{
+    }, error => {
+      console.log(error);
     })
   }
 
@@ -467,10 +468,10 @@ export class NewProductComponent implements OnInit {
   }
 
   private _notification(type: string, text: string): void {
-      this._facilityService.announceNotification({
-          users: [this.user._id],
-          type: type,
-          text: text
-      });
+    this._facilityService.announceNotification({
+      users: [this.user._id],
+      type: type,
+      text: text
+    });
   }
 }

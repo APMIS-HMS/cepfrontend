@@ -1,5 +1,3 @@
-
-
 <div class="card-x2">
   <div class="pp-card card-long x2-child">
     <div class="card-title">Activities Feed</div>
@@ -157,7 +155,7 @@
 </div>
 
 <div class="pp-card shadow-grey">
-  <i class="fa fa-plus-square card-edit" aria-hidden="true"></i>
+  <i (click)="set_appointment()" class="fa fa-plus-square card-edit" aria-hidden="true"></i>
   <div class="card-title">My Appointments</div>
 
   <table cellpadding="0" cellspacing="0" border="0.5">
@@ -245,6 +243,6 @@
   </table>
 </div>
 
-<div *ngIf="login_on" class="modal-overlay">
-    <app-person-schedule-appointment (closeModal)="close_onClick($event)" class="form-modal center-center"></app-person-schedule-appointment>
+<div *ngIf="schedule_appointment" class="modal-overlay">
+  <app-person-schedule-appointment (closeModal)="close_onClick($event)" class="form-modal center-center"></app-person-schedule-appointment>
 </div>

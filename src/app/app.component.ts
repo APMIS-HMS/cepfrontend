@@ -126,9 +126,12 @@ export class AppComponent implements OnInit {
         title: value.title,
         type: "success",
         text: value.text,
-        html: value.html
+        html: value.html,
+        position: (value.position !== null) ? value.position : 'top-end',
+        showConfirmButton: (value.showConfirmButton !== null) ? value.showConfirmButton : false,
+        timer: (value.timer !== null) ? value.timer : 1500
       }).then(result => {
-        if (value.cp !== undefined) {
+        if (value.cp !== undefined && value.cp !== null) {
           value.cp.sweetAlertCallback(result);
         }
       });

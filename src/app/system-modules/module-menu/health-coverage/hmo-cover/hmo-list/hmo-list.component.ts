@@ -86,7 +86,6 @@ export class HmoListComponent implements OnInit {
     }).then(payload => {
       if (payload.data.length > 0) {
         this.loginHMOListObject = payload.data[0];
-        console.log(this.loginHMOListObject);
         this._getHMOFacilities(payload.data[0]);
       } else {
         this.loginHMOListObject.facilityId = this.selelctedFacility._id;
@@ -95,7 +94,6 @@ export class HmoListComponent implements OnInit {
     })
   }
   _getHMOFacilities(facilityHMOs) {
-    console.log(facilityHMOs);
     this.hmoEnrolleList = facilityHMOs.hmos.map(obj => {
       return { hmo: obj.hmo, enrolles: obj.enrolleeList };
     });
@@ -158,11 +156,11 @@ export class HmoListComponent implements OnInit {
   }
   sweetAlertCallback(result) {
     if (result.value) {
-      console.log(this.ev, this.HMO);
       this.upload(this.ev, this.HMO);
     }
   }
   upload(e, hmo) {
+    this.systemModuleService.on();
     const target: DataTransfer = <DataTransfer>(e.target);
     if (target.files.length !== 1) {
       throw new Error('Cannot use multiple files');
@@ -282,7 +280,6 @@ export class HmoListComponent implements OnInit {
         }
 
       } else {
-        console.log(data, hmoData);
         for (let m = 0; m < data.length; m++) {
           if (Boolean(data[m][0])) {
             let rowObj: any = <any>{};
@@ -328,17 +325,24 @@ export class HmoListComponent implements OnInit {
                 this.hmoService.patch(payload.data[0]._id, {
                   hmos: payload.data[0].hmos
                 }, {}).then(noChangPayload => {
-                  this.systemModuleService.announceSweetProxy
-                    (`You have successfully uploaded ${data.length} enrollees to ${hmo.name}`, 'success');
+                  this.systemModuleService.announceSweetProxy(`You have successfully uploaded ${data.length} enrollees to ${hmo.name}`, 'success');
+                  this.systemModuleService.off();
+                }).catch(err => {
+                  console.log(err);
                 });
               }
             }
+          } else {
+            this.systemModuleService.announceSweetProxy(`You have successfully uploaded ${data.length} enrollees to ${hmo.name}`, 'success');
+            this.systemModuleService.off();
           }
+        } else {
+          this.systemModuleService.announceSweetProxy(`You have successfully uploaded ${data.length} enrollees to ${hmo.name}`, 'success');
+          this.systemModuleService.off();
         }
       });
 
     }).catch(err => {
-      console.log(err);
       this.systemModuleService.announceSweetProxy('Something went wrong while uploading the enrollees. Please try again', 'warning');
     });
   }
@@ -380,7 +384,7 @@ export class HmoListComponent implements OnInit {
               this.apmisLookupText = '';
               this.getLoginHMOList();
               this.systemModuleService.off();
-              this.systemModuleService.announceSweetProxy('Selected HMO added to your HMO list successfully', 'success');
+              this.systemModuleService.announceSweetProxy('Selected HMO added to your HMO list successfully', 'success', null, null, null, null, null, null, null);
             })
           } else {
             this.hmoService.update(this.loginHMOListObject).then(payload => {
@@ -388,7 +392,7 @@ export class HmoListComponent implements OnInit {
               this.apmisLookupText = '';
               this.getLoginHMOList();
               this.systemModuleService.off();
-              this.systemModuleService.announceSweetProxy('Selected HMO added to your HMO list successfully', 'success');
+              this.systemModuleService.announceSweetProxy('Selected HMO added to your HMO list successfully', 'success', null, null, null, null, null, null, null);
             })
           }
         }

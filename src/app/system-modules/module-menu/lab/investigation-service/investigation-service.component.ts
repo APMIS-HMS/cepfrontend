@@ -262,7 +262,7 @@ export class InvestigationServiceComponent implements OnInit {
                       this.frmNewInvestigationh.reset();
                       this.frmNewInvestigationh.controls['isPanel'].setValue(false);
                       this.investigations.push(payload);
-                      this._systemModuleService.announceSweetProxy('Investigation has been created successfully.', 'success');
+                      this._systemModuleService.announceSweetProxy('Investigation has been created successfully.', 'success', null, null, null, null, null, null, null);
                       this.getInvestigations();
                     });
                   }
@@ -325,7 +325,7 @@ export class InvestigationServiceComponent implements OnInit {
                         this.frmNewInvestigationh.controls['isPanel'].setValue(false);
                         const index = this.investigations.findIndex((obj => obj._id === payload._id));
                         this.investigations.splice(index, 1, payload);
-                        this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success');
+                        this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success', null, null, null, null, null, null, null);
                         this.getInvestigations();
                       })
                     }
@@ -343,7 +343,7 @@ export class InvestigationServiceComponent implements OnInit {
             this.frmNewInvestigationh.controls['isPanel'].setValue(false);
             const index = this.investigations.findIndex((obj => obj._id === payload._id));
             this.investigations.splice(index, 1, payload);
-            this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success');
+            this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success', null, null, null, null, null, null, null);
             this.getInvestigations();
           }
 
@@ -398,7 +398,7 @@ export class InvestigationServiceComponent implements OnInit {
                       this.frmNewPanel.reset();
                       this.frmNewPanel.controls['isPanel'].setValue(true);
                       this.investigations.push(payload);
-                      this._systemModuleService.announceSweetProxy('Investigation has been created successfully.', 'success');
+                      this._systemModuleService.announceSweetProxy('Investigation has been created successfully.', 'success', null, null, null, null, null, null, null);
                     })
                   }
                 });
@@ -447,7 +447,7 @@ export class InvestigationServiceComponent implements OnInit {
                         this.frmNewPanel.controls['isPanel'].setValue(false);
                         const index = this.investigations.findIndex((obj => obj._id === payload._id));
                         this.investigations.splice(index, 1, payload);
-                        this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success');
+                        this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success', null, null, null, null, null, null, null);
                       })
                     }
                   });

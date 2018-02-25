@@ -66,7 +66,7 @@ export class ClinicalNoteComponent implements OnInit {
   showOrderSet = false;
   viewOrderManagement: boolean = false;
   viewDiagnosis: boolean = false;
-
+  public isSavingDraft = false;
   constructor(
     private formService: FormsService,
     private locker: CoolLocalStorage,
@@ -98,6 +98,18 @@ export class ClinicalNoteComponent implements OnInit {
       this.diagnoses = [];
       this.showDocument = false;
       this.orderSet = {};
+    });
+
+    // this.sharedService.announceSaveDraft$.subscribe(payload => {
+    //   console.log('saving');
+    //   console.log(this.isSavingDraft);
+    //   this.isSavingDraft = !this.isSavingDraft;
+    //   console.log(this.isSavingDraft)
+    // });
+
+    this.sharedService.announceFinishedSavingDraft$.subscribe((payload:any) => {
+      console.log(payload);
+      this.isSavingDraft = payload;
     });
 
     this.templateFormCtrl = new FormControl();
@@ -201,8 +213,8 @@ export class ClinicalNoteComponent implements OnInit {
       this.documentationTemplateService.find({
         query: {}
       });
-    }else{
-      this.systemModuleService.announceSweetProxy('wow', 'success');
+    } else {
+      this.systemModuleService.announceSweetProxy("wow", 'success', null, null, null, null, null, null, null);
     }
   }
 

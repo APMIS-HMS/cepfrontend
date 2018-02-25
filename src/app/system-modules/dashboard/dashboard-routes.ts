@@ -102,16 +102,16 @@ const appRoutes: Routes = [
             {
                 path: 'purchase-manager',
                 loadChildren: '../module-menu/purchase-manager/purchase-manager.module#PurchaseManagerModule',
-                canActivate: [
+                /* canActivate: [
                     CanActivateViaAuthGuardAccessService
-                ]
+                ] */
             },
             {
                 path: 'inventory-manager',
                 loadChildren: '../module-menu/inventory-manager/inventory-manager.module#InventoryManagerModule',
-                canActivate: [
-                    CanActivateViaAuthGuardAccessService
-                ]
+                // canActivate: [
+                //     CanActivateViaAuthGuardAccessService
+                // ]
             },
             {
                 path: 'pharmacy',

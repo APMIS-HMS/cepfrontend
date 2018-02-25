@@ -23,7 +23,7 @@
                 </tr>
             </thead>
             <tbody>
-                <tr *ngIf="orders.length === 0">
+                <tr *ngIf="orders?.length === 0">
                     <td colspan="5"> No data available in table</td>
                 </tr>
                 <tr *ngFor="let order of orders">
@@ -34,8 +34,8 @@
                     <td class="last-td-col">
                         <a (click)="slidePurchaseDetailsToggle(order, $event)"><span><i class="fa fa-eye"></i></span></a>
                         <a (click)="onNavigateToDetail(order)"><span><i class="fa fa-pencil"></i></span></a>
-                        <a style="color:#ff2500;"><i class="fa fa-times" aria-hidden="true"></i></a>
-                        <a (click)="onNavigateToAddStore(order)"><span class="txt-link">Add to Stock</span>
+                        <a (click)="onRemoveOrder(order)" style="color:#ff2500;"><i class="fa fa-times" aria-hidden="true"></i></a>
+                        <a *ngIf = "!order.isSupplied" (click)="onNavigateToAddStore(order)"><span class="txt-link">Add to Stock</span>
                         </a>
                     </td>
                 </tr>
@@ -90,7 +90,7 @@
                                         <th>Qty</th>
                                     </tr>
                                     <tr *ngFor="let product of selectedOrder.orderedProducts">
-                                        <td>{{product.product?.name}}</td>
+                                        <td>{{product.productObject?.name}}</td>
                                         <td>{{product.quantity}}</td>
                                     </tr>
                                 </tbody>

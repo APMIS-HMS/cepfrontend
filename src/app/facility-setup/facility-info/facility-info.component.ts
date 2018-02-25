@@ -74,7 +74,7 @@ export class FacilityInfoComponent implements OnInit {
 		this._countryServiceFacade.getOnlyCountries().then((payload: any) => {
 			this.countries = payload;
 		}).catch(error => {
-		
+
 		});
 	}
 	close_onClick() {
@@ -137,13 +137,12 @@ export class FacilityInfoComponent implements OnInit {
 			this.userSettings['inputString'] = '';
 			this._systemModuleService.off();
 			this.close_onClick();
-			this._systemModuleService.announceSweetProxy('Facility created successfully', 'success');
+			this._systemModuleService.announceSweetProxy('Facility created successfully', 'success', null, null, null, null, null, null, null);
 		}, error => {
-			console.log(error);
 			this.isSaving = false;
 			this._systemModuleService.off();
 			const errMsg = 'There was an error while creating the facility, try again!';
-			this._systemModuleService.announceSweetProxy(errMsg, 'success');
+			this._systemModuleService.announceSweetProxy(errMsg, 'error');
 		})
 	}
 }

@@ -1,5 +1,5 @@
 <div class="subtitleWrap">
-    <div class="pg-subTitle">{{selected_supplier}}</div>
+    <div class="pg-subTitle">{{selected_supplier.name}}</div>
     <div class="pg-subTitle2">Transaction History</div>
 </div>
 
@@ -31,14 +31,17 @@
                             </div>
                         </td>
                     </tr>
-                    <tr *ngFor="let details of invoices">
+                    <tr *ngFor="let details of invoices.data">
                         <td>{{details.deliveryDate | date:'medium'}}</td>
                         <td>{{details.orderObject?.purchaseOrderNumber}}</td>
-                        <td>{{details.amountPaid}}</td>
-                        <td>{{details.amountPaid}}</td>
-                        <td>{{details.amountPaid}}</td>
+                        <td>{{details.invoiceAmount}}</td>
                         <td>
-                            <a (click)="newPaymentShow()" class="payment-link"><span>Make Payment</span></a>
+                            <span *ngIf="details.amountPaid !== undefined">&#8358;{{details.amountPaid}}</span>
+                            <span *ngIf="details.amountPaid === undefined">&#8358;0</span>
+                        </td>
+                        <td>&#8358;{{checkForOutstanding(details)}}</td>
+                        <td>
+                            <a (click)="newPaymentShow(details)" *ngIf="!details.paymentCompleted" class="payment-link"><span>Make Payment</span></a>
                             <a (click)="PaymentHistoryShow(details)" class="payment-link"><span>Payment History</span></a>
                         </td>
                     </tr>
@@ -52,7 +55,7 @@
         </div>
     </div>
     <div *ngIf="newPayment" class="modal-overlay">
-        <app-make-payment (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-make-payment>
+        <app-make-payment (closeModal)="close_onClick($event)" (paymentItem)="onRefreshHistory($event)" [selectedInvoice]="selectedInvoice"  id="form-modal" class="form-modal center-center"></app-make-payment>
     </div>
     <div *ngIf="paymentHistory">
         <app-payment-history [selectedInvoice]="selectedInvoice" (closeModal)="closeHistory_onClick($event)"> </app-payment-history>

@@ -21,7 +21,7 @@ export class CcListComponent implements OnInit {
 
   public frmAddCompany: FormGroup;
   addCompany = false;
-  apmisLookupUrl = 'corporatefacilities';
+  apmisLookupUrl = 'corperate-facilities';
   apmisLookupText = "";
   apmisLookupQuery = {};
   apmisLookupDisplayKey = "name";
