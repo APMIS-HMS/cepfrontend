@@ -38,6 +38,7 @@ export class RightTabComponent implements OnInit {
     allergies: any[] = [];
     pastAppointments: any[] = [];
     futureAppointments: any[] = [];
+    vitals:any[] = [];
 
     constructor(private orderStatusService: OrderStatusService,
         private formService: FormsService, private locker: CoolLocalStorage,
@@ -81,6 +82,7 @@ export class RightTabComponent implements OnInit {
                     this.getPastAppointments();
                     this.getFutureAppointments();
                     this.getLabInvestigation();
+                    this.getVitals();
                 } else {
                     if (payload.data[0].documentations.length === 0) {
                         this.patientDocumentation = payload.data[0];
@@ -102,6 +104,7 @@ export class RightTabComponent implements OnInit {
                                 this.getPastAppointments();
                                 this.getFutureAppointments();
                                 this.getLabInvestigation();
+                                this.getVitals();
                             } else {
                                 this.problemLoading = false;
                                 this.allergiesLoading = false;
@@ -135,6 +138,17 @@ export class RightTabComponent implements OnInit {
         });
         this.problemLoading = false;
     }
+    getVitals() {
+      this.vitals = [];
+      this.patientDocumentation.documentations.forEach(documentation => {
+          if (documentation.document.documentType !== undefined && documentation.document.documentType.title === 'Vitals') {
+              documentation.document.body.vitals.forEach(vital => {
+                  this.vitals.push(vital);
+              })
+          }
+      });
+      console.log(this.vitals)
+  }
     getAllergies() {
         this.allergies = [];
         try {
