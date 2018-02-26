@@ -328,7 +328,7 @@ export class HmoListComponent implements OnInit {
                   this.systemModuleService.announceSweetProxy(`You have successfully uploaded ${data.length} enrollees to ${hmo.name}`, 'success');
                   this.systemModuleService.off();
                 }).catch(err => {
-                  console.log(err);
+                
                 });
               }
             }

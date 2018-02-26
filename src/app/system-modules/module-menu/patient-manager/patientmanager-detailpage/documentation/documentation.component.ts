@@ -63,7 +63,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
     this.subscription = this.sharedService.submitForm$.subscribe(payload => {
       if(!this.hasSavedDraft){
-        console.log('has no draft');
         const doc: PatientDocumentation = <PatientDocumentation>{};
         doc.document = {
           documentType: this.selectedForm,
@@ -88,7 +87,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         doc.documentationStatus = 'Completed';
         const draftIndex = this.patientDocumentation.documentations.findIndex(x =>x.apmisGuid=== this.draftDocument.apmisGuid);
         if(draftIndex > -1){
-          console.log('completing document');
           this.patientDocumentation.documentations[draftIndex] = doc;
         }
         // this.patientDocumentation.documentations.push(doc);
@@ -104,7 +102,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         });
       }
     });
-    
+
 
     this.sharedService.newFormAnnounced$.subscribe((payload: any) => {
       this.selectedForm = payload.form;
@@ -119,10 +117,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this.sharedService.announceSaveDraft$.subscribe(payload =>{
       if(!this.hasSavedDraft){
         this.sharedService.announceFinishedSavingDraft(true);
-        console.log('creating draft');
-        console.log(payload);
+
         const apmisGuid = UUID.UUID();
-        console.log(apmisGuid);
         const doc: PatientDocumentation = <PatientDocumentation>{};
         doc.document = {
           documentType: this.selectedForm,
@@ -141,7 +137,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
         // this.hasSavedDraft = true;
         this.draftDocument = doc;
-        console.log(doc);
         this.patientDocumentation.documentations.push(doc);
 
 
@@ -151,12 +146,9 @@ export class DocumentationComponent implements OnInit, OnDestroy {
           // this.sharedService.announceFinishedSavingDraft(false);
           // this._notification('Success', 'Documentation successfully saved!');
         },error =>{
-          console.log(error);
         });
       }else{
         this.sharedService.announceFinishedSavingDraft(true);
-        console.log('updating draft');
-        console.log(this.draftDocument);
         this.draftDocument.document.body = payload;
 
         const draftIndex = this.patientDocumentation.documentations.findIndex(x =>x.apmisGuid=== this.draftDocument.apmisGuid);
@@ -169,7 +161,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         }
       }
     }, error =>{
-      console.log(error);
     });
   }
 
@@ -199,7 +190,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
                 // $select: ['documentations.documents', 'documentations.facilityId']
               }
           }).subscribe((mload: any) => {
-            console.log(mload)
             if (mload.data.length > 0) {
               this.patientDocumentation = mload.data[0];
               if(this.hasSavedDraft && this.draftDocument !== undefined){

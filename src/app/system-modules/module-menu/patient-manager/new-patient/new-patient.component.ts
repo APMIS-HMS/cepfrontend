@@ -489,7 +489,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 facilityId: this.facility._id
             }
         }).then(payload => {
-            console.log(payload);
             this.categories = payload.data[0].categories;
             let cat = this.categories.filter(x => x.name == "Medical Records");
             for (let n = 0; n < cat[0].services.length; n++) {
@@ -498,7 +497,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             this.services = cat[0].services;
         }, error => {
             /* this.systemModuleService.off(); */
-            console.log(error);
         });
     }
 
@@ -885,7 +883,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 }
             ]
         }
-        console.log(patient);
         this.patientService.create(patient).then(payl => {
             let billing: any = {
                 discount: 0,
@@ -917,7 +914,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     }
                 ]
             }
-            console.log(billing);
             this.billingService.create(billing).then(billingPayload => {
                 this.systemModuleService.off();
                 const text =  this.selectedPerson.lastName + ' ' + this.selectedPerson.firstName + ' added successfully but bill not generated because price not yet set for this service';
@@ -926,7 +922,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             }).catch(errr => {
                 this.systemModuleService.off();
                 this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
-                console.log(errr);
             });
 
         }).catch(err => {
@@ -1420,7 +1415,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     saveData() {
-        console.log(this.coverType);
         if (this.coverType == 'insurance') {
             // this.saveInsurancePerson();
         } else if (this.coverType === 'company') {
@@ -1516,7 +1510,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.isSuccessful = true;
                 this.systemModuleService.off();
                 this.selectedPerson = ppayload;
-                console.log(this.selectedPerson);
                 // this.isSuccessful = true;
                 // let text = this.frmPerson.controls['firstname'].value + ' '
                 //     + this.frmPerson.controls['lastname'].value + ' '
