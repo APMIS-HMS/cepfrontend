@@ -1,6 +1,6 @@
 import { Component, OnInit, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { FacilitiesService, WardAdmissionService } from '../../../../../services/facility-manager/setup/index';
+import { FacilitiesService, BedOccupancyService } from '../../../../../services/facility-manager/setup/index';
 import { Facility, WardDetail, Room, WardRoom, User } from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
@@ -29,7 +29,7 @@ export class BedComponent implements OnInit {
 		private router: Router,
 		public facilityService: FacilitiesService,
 		private _locker: CoolLocalStorage,
-		private _wardAdmissionService: WardAdmissionService,
+		private _bedOccupancyService: BedOccupancyService,
     private _wardEventEmitter: WardEmitterService
   ) {
 	}

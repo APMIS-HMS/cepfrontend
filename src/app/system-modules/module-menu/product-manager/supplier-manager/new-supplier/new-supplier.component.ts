@@ -154,7 +154,7 @@ export class NewSupplierComponent implements OnInit {
           this.frm_newSupplier.reset();
           this.userSettings['inputString'] = '';
           this._systemModuleService.off();
-          this._systemModuleService.announceSweetProxy('Supplier created successfully', 'success', this);
+          this._systemModuleService.announceSweetProxy('Supplier created successfully', 'success', this, null, null, null, null, null, null);
         }, err => {
           this._systemModuleService.announceSweetProxy('There was an error while creating supplier, try again!', 'error');
           this._systemModuleService.off();
@@ -171,7 +171,7 @@ export class NewSupplierComponent implements OnInit {
           this.frm_newSupplier.reset();
           this.userSettings['inputString'] = '';
           this._systemModuleService.off();
-          this._systemModuleService.announceSweetProxy('Supplier updated successfully', 'success', this);
+          this._systemModuleService.announceSweetProxy('Supplier updated successfully', 'success', this, null, null, null, null, null, null);
         }, err => {
           this._systemModuleService.announceSweetProxy('There was an error while updating supplier, try again!', 'error');
           this._systemModuleService.off();

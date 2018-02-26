@@ -15,8 +15,8 @@ export class WardDischargeTypesService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('dischargeTypes');
-    this._socket = _socketService.getService('dischargeTypes');
+    this._rest = _restService.getService('discharge-types');
+    this._socket = _socketService.getService('discharge-types');
     this._socket.timeout = 30000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');

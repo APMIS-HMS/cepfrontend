@@ -133,17 +133,15 @@ export class NewServiceComponent implements OnInit {
   }
 
   onEditService() {
-    console.log(this.selectedService);
     if (this.selectedService.name !== undefined) {
       this.btnTitle = 'Update Service';
-      console.log(this.selectedService);
       this.frmNewservice.controls['serviceName'].setValue(this.selectedService.name);
       this.frmNewservice.controls['serviceCat'].setValue(this.selectedService.categoryId);
       this.frmNewservice.controls['serviceCode'].setValue(this.selectedService.code);
       let basedPrice = this.selectedService.price.filter(x => x.isBase === true)[0];
       this.frmNewservice.controls['servicePrice'].setValue(basedPrice.price);
       this.priceItems = JSON.parse(JSON.stringify(this.selectedService.price));
-      
+
       this.selectedServiceItems = this.selectedService.panels;
     }
     this.frmNewservice.controls['serviceCat'].setValue(this.selectedService.categoryId);
@@ -176,14 +174,12 @@ export class NewServiceComponent implements OnInit {
 
   allServices() {
     this.systemModuleService.on();
-    console.log(this.facility._id);
     this._facilitiesServiceCategoryService.allServices({
       query: {
         facilityId: this.facility._id
       }
     }).then(payload => {
       this.systemModuleService.off();
-      console.log(payload);
       this.panelItemTemplate(payload);
     }, error => {
       this.systemModuleService.off();
@@ -233,7 +229,6 @@ export class NewServiceComponent implements OnInit {
   onCreate(data) {
     this.systemModuleService.on();
     this.isDisableBtn = true;
-    console.log(this.selectedService);
     if (this.selectedService.name === undefined) {
       data.panels = this.selectedServiceItems;
       this._facilitiesServiceCategoryService.create(data, {
@@ -244,18 +239,16 @@ export class NewServiceComponent implements OnInit {
         }
       }).then(payload => {
         this.systemModuleService.off();
-        this.systemModuleService.announceSweetProxy('Service added successful', 'success');
+        this.systemModuleService.announceSweetProxy('Service added successful', 'success', null, null, null, null, null, null, null);
         this.isDisableBtn = false;
         this.frmNewservice.reset();
         this.refreshService.emit(this.selectedService);
       }, error => {
-        console.log(error);
         this.isDisableBtn = false;
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy('Failed to add Service', 'error');
       });
     } else {
-      console.log(data.code);
       this.serviceItemModel.code = data.code;
       this.serviceItemModel._id = this.selectedService._id;
       this.serviceItemModel.name = data.name;
@@ -263,13 +256,11 @@ export class NewServiceComponent implements OnInit {
       this.serviceItemModel.price = {};
       this.serviceItemModel.price.base = this.priceItems.filter(x => x.isBase === true)[0];
       this.serviceItemModel.price.base.price = data.price;
-      console.log(this.priceItems);
       if (this.selectedService.price != undefined) {
         if (this.selectedService.price.length > 0) {
           this.serviceItemModel.price.others = this.priceItems.filter(x => x.isBase === false);
         }
       }
-      console.log(this.serviceItemModel);
       this._facilitiesServiceCategoryService.update2(this.facility._id, this.serviceItemModel, {
         query: {
           facilityId: this.facility._id,
@@ -280,13 +271,12 @@ export class NewServiceComponent implements OnInit {
         }
       }).then(payload => {
         this.systemModuleService.off();
-        this.systemModuleService.announceSweetProxy('Service added successful', 'success');
+        this.systemModuleService.announceSweetProxy('Service added successful', 'success', null, null, null, null, null, null, null);
         this.isDisableBtn = false;
         this.refreshService.emit(this.selectedService);
         this.frmNewservice.reset();
         this.close_onClick();
       }, error => {
-        console.log(error);
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy('Failed to add service', 'error');
         this.isDisableBtn = false;

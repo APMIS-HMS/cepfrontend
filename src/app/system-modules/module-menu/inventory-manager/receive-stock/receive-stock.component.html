@@ -133,7 +133,7 @@
                         <h4> Quantity </h4>
                     </div>
                 </div>
-                <div class="row" *ngFor="let transaction of selectedInventoryTransfer.inventoryTransferTransactions">
+                <div class="row" *ngFor="let transaction of selectedInventoryTransfer?.inventoryTransferTransactions">
                     <div class="col-sm-6 col-md-6">
                         <mat-checkbox [disabled]="shouldDisabled(transaction)" (change)="onValueChanged($event,transaction)" class="control__indicator" [value]="transaction.checked">{{transaction?.productObject?.name}}</mat-checkbox>
                     </div>

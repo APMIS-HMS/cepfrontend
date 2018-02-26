@@ -89,7 +89,7 @@ export class DashboardHomeComponent implements OnInit {
     });
 
 
-  
+
     this.loadIndicatorVisible = true;
 
     // const emp$ = Observable.fromPromise(this.employeeService.find({
@@ -136,7 +136,7 @@ export class DashboardHomeComponent implements OnInit {
     //   this.loadIndicatorVisible = false;
     // })
 
-    
+
   }
   getUserRoles() {
     this.authFacadeService.getUserAccessControls(true).then(payload => {
