@@ -92,6 +92,9 @@ export class PatientService {
   update(patient: any) {
     return this._socket.update(patient._id, patient);
   }
+  patch(id, patient:any, query){
+    return this._socket.patch(id, patient, query);
+  }
   searchPatient(facilityId: string, searchText: string) {
     const host = this._restService.getHost();
     const path = host + '/patient';

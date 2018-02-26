@@ -499,6 +499,7 @@ export class TreatementTemplateComponent implements OnInit {
                 // facilityId: this.selectedFacility._id,
                 // typeOfDocumentId: formTypes.data[0]._id,
                 // isSide: false
+                
                 $or: [
                   { selectedFacilityId: this.selectedFacility._id },
                   {

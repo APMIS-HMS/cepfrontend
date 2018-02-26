@@ -46,7 +46,7 @@ export class AccessRoleDetailsComponent implements OnInit {
       if (res.data.length > 0) {
         this.roles = res.data;
       }
-    }).catch(err => console.log(err));
+    }).catch(err => {});
   }
 
   close_onClick(e) {
@@ -68,7 +68,7 @@ export class AccessRoleDetailsComponent implements OnInit {
         const text = `${roleName} role has been deleted successfully!`;
         this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
         this._getAllRoles();
-      }).catch(err => console.log(err));
+      }).catch(err => {});
     }
   }
 
