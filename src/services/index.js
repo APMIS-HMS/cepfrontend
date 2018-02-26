@@ -155,6 +155,7 @@ const crudLabRequest = require('./crud-lab-request/crud-lab-request.service.js')
 const templates = require('./templates/templates.service.js');
 const crudLabReport = require('./crud-lab-report/crud-lab-report.service.js');
 const bedOccupancy = require('./bed-occupancy/bed-occupancy.service.js');
+const getBedOccupancy = require('./get-bed-occupancy/get-bed-occupancy.service.js');
 const purchaseInvoices = require('./purchase-invoices/purchase-invoices.service.js');
 const patientfluids = require('./patientfluids/patientfluids.service.js');
 module.exports = function(app) {
@@ -315,6 +316,7 @@ module.exports = function(app) {
     app.configure(patientSearch);
     app.configure(crudLabRequest);
     app.configure(templates);
+    app.configure(getBedOccupancy);
     app.configure(purchaseInvoices);
     app.configure(patientfluids);
 };
