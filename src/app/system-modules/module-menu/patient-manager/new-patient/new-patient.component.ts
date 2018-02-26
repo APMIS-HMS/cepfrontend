@@ -480,11 +480,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     getCashPlans() {
         this._facilitiesServiceCategoryService.find({
             query:
-<<<<<<< HEAD
-                { facilityId: this.facility._id, 'categories.name': "Medical Records", $select: { 'categories.$': 1 } }
-=======
                 { facilityId: this.facility._id, 'categories.name': 'Medical Records', $select: { 'categories.$': 1}  }
->>>>>>> ff3c74d016c01f3df405c506c49bf03470c23f07
         }).then(payload => {
             // this.filterOutCategory(payload);
             // this.categories = [];
@@ -980,12 +976,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
             this.billingService.create(billing).then(billingPayload => {
                 this.systemModuleService.off();
-<<<<<<< HEAD
-                const text = this.selectedPerson.lastName + ' ' + this.selectedPerson.firstName + ' added successfully but bill not generated because price not yet set for this service';
-=======
                 const text =  this.selectedPerson.lastName + ' ' + this.selectedPerson.firstName
                 + ' added successfully but bill not generated because price not yet set for this service';
->>>>>>> ff3c74d016c01f3df405c506c49bf03470c23f07
                 this.systemModuleService.announceSweetProxy(text, 'success');
                 this.close_onClick();
             }).catch(errr => {
@@ -1325,87 +1317,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     planType: this.coverType,
                     isDefault: true
                 }
-<<<<<<< HEAD
             ]
         }
         this.patientService.create(patient).then(payl => {
             let billing: any = {
                 discount: 0,
-=======
-
-
-
-                // tslint:disable-next-line:no-shadowed-variable
-                this.personService.create(person).then(personPayload => {
-                    this.patientService.create(patient).then(payl => {
-                        this.faService.findFamily({
-                            _id: facId,
-                            facilityId: empFcltiId
-                        }).then(familyPayload => {
-                            const object = this.findObjectByKey(familyPayload.data[0].familyCovers, 'filNo', this.faId);
-
-                            const ii = object.i;
-                            delete object.i;
-
-                            familyPayload.data[0].familyCovers[ii].patientId = payl._id;
-
-                            this.faService.updateFamily(familyPayload.data[0]).then(famPayl => {
-                                this.servicePriceService
-                                .find({ query: { facilityId: this.facility._id, serviceId: this.planId } }).then(payloadPrice => {
-
-                                    const servicePrice = payloadPrice.data[0];
-                                    const billing: any = {
-                                        discount: 0,
-                                        facilityId: this.facility._id,
-                                        grandTotal: this.planPrice,
-                                        patientId: payl._id,
-                                        subTotal: this.planPrice,
-                                        billItems: [
-                                            {
-                                                unitPrice: this.planPrice,
-                                                facilityId: this.facility._id,
-                                                description: '',
-                                                facilityServiceId: this.facilityServiceId,
-                                                serviceId: this.planId,
-                                                patientId: payl._id,
-                                                quantity: 1,
-                                                totalPrice: this.planPrice,
-                                                unitDiscountedAmount: 0,
-                                                totalDiscoutedAmount: 0,
-                                                modifierId: [],
-                                                covered: {
-                                                    coverType: this.coverType,
-                                                    _id: facId,
-                                                    name: facName
-                                                },
-                                                isServiceEnjoyed: false,
-                                                paymentCompleted: false,
-                                                paymentStatus: [],
-                                                payments: []
-
-                                            }
-                                        ]
-                                    }
-                                    this.billingService.create(billing).then(billingPayload => {
-                                        this.close_onClick();
-                                    }).catch(errr => {
-                                    });
-
-                                }).catch(err => {
-                                });
-                            });
-                        });
-
-
-                    });
-
-
-                });
-            });
-        } else {
-            const patient: any = {
-                personId: this.selectedPerson._id,
->>>>>>> ff3c74d016c01f3df405c506c49bf03470c23f07
                 facilityId: this.facility._id,
                 grandTotal: this.planPrice,
                 patientId: payl._id,
@@ -1436,7 +1352,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     }
                 ]
             }
-<<<<<<< HEAD
             this.billingService.create(billing).then(billingPayload => {
                 this.systemModuleService.off();
                 const text = this.selectedPerson.lastName + ' ' + this.selectedPerson.firstName + ' added successfully but bill not generated because price not yet set for this service';
@@ -1447,72 +1362,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
                 this.loading = false;
                 console.log(errr);
-=======
-
-
-
-            this.patientService.create(patient).then(payl => {
-                // this.uploadButton();
-                // this.family[0].enrollees.patientId = payl._id;
-                this.faService.findFamily({
-                    _id: facId,
-                    facilityId: empFcltiId
-                }).then(familyPayload => {
-                    const object = this.findObjectByKey(familyPayload.data[0].familyCovers, 'filNo', this.faId);
-
-                    const ii = object.i;
-                    delete object.i;
-
-                    familyPayload.data[0].familyCovers[ii].patientId = payl._id;
-
-                    this.faService.updateFamily(familyPayload.data[0]).then(famPayl => {
-                        this.servicePriceService
-                        .find({ query: { facilityId: this.facility._id, serviceId: this.planId } }).then(payloadPrice => {
-                            const servicePrice = payloadPrice.data[0];
-                            const billing: any = {
-                                discount: 0,
-                                facilityId: this.facility._id,
-                                grandTotal: this.planPrice,
-                                patientId: payl._id,
-                                subTotal: this.planPrice,
-                                billItems: [
-                                    {
-                                        unitPrice: this.planPrice,
-                                        facilityId: this.facility._id,
-                                        description: '',
-                                        facilityServiceId: this.facilityServiceId,
-                                        serviceId: this.planId,
-                                        patientId: payl._id,
-                                        quantity: 1,
-                                        totalPrice: this.planPrice,
-                                        unitDiscountedAmount: 0,
-                                        totalDiscoutedAmount: 0,
-                                        modifierId: [],
-                                        covered: {
-                                            coverType: this.coverType,
-                                            _id: facId,
-                                            name: facName
-                                        },
-                                        isServiceEnjoyed: false,
-                                        paymentCompleted: false,
-                                        paymentStatus: [],
-                                        payments: []
-
-                                    }
-                                ]
-                            }
-                            this.billingService.create(billing).then(billingPayload => {
-                                this.close_onClick();
-                            }).catch(errr => {
-                            });
-
-                        }).catch(err => {
-                        });
-                    });
-                });
-
-
->>>>>>> ff3c74d016c01f3df405c506c49bf03470c23f07
             });
 
         }).catch(err => {
@@ -1536,13 +1385,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     saveData() {
         console.log(this.coverType);
-<<<<<<< HEAD
         if (this.coverType == 'insurance') {
             this.saveInsurancePerson();
-=======
-        if (this.coverType === 'insurance') {
-            // this.saveInsurancePerson();
->>>>>>> ff3c74d016c01f3df405c506c49bf03470c23f07
         } else if (this.coverType === 'company') {
             this.saveCompanyPerson();
         } else if (this.coverType === 'wallet') {
