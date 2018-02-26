@@ -96,8 +96,8 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
       pointHoverBorderColor: 'rgba(229,115,115,0.8)'
     }
   ];
-  public lineChartLegend: boolean = true;
-  public lineChartType: string = 'line';
+  public lineChartLegend = true;
+  public lineChartType = 'line';
   subsect_biodata = true;
   subsect_contacts = false;
   subsect_vitals = true;
@@ -138,11 +138,11 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   searchControl = new FormControl();
   patients: Patient[] = [];
   documentations: Documentation[] = [];
-  homeAddress: string = '';
+  homeAddress = '';
   selectedUser: User = <User>{};
   loginEmployee: Employee = <Employee>{};
   clinicInteraction: ClinicInteraction = <ClinicInteraction>{};
-  previousUrl: string = '/';
+  previousUrl = '/';
   minorLocationList: MinorLocation[] = [];
   selectedAppointment: Appointment = <Appointment>{};
   json: any = {};
@@ -193,11 +193,11 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
     }
 
     this._DocumentationService.listenerCreate.subscribe(payload => {
-      //this.bindVitalsDataToChart();
+      // this.bindVitalsDataToChart();
       // window.location.reload();
     });
     this._DocumentationService.listenerUpdate.subscribe(payload => {
-      //this.bindVitalsDataToChart();
+      // this.bindVitalsDataToChart();
       // window.location.reload();
     });
   }
@@ -220,7 +220,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   // }
 
   bindVitalsDataToChart() {
-    var vitalsObjArray = [];
+    let vitalsObjArray = [];
     this.lineChartLabels = [];
     this.lineChartData = [
       { data: [], label: '' },
@@ -233,27 +233,28 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
     ];
     this._DocumentationService.find({ query: { 'personId': this.patient.personId } }).then((payload: any) => {
       if (payload.data.length !== 0) {
-        let len2 = payload.data[0].documentations.length - 1;
+        const len2 = payload.data[0].documentations.length - 1;
         for (let k = len2; k >= 0; k--) {
-          if (payload.data[0].documentations[k].document !== undefined && payload.data[0].documentations[k].document.documentType.title === 'Vitals') {
+          if (payload.data[0].documentations[k].document !== undefined && payload.data[0]
+            .documentations[k].document.documentType.title === 'Vitals') {
             vitalsObjArray = payload.data[0].documentations[k].document.body.vitals;
             if (vitalsObjArray !== undefined) {
-              let len3 = vitalsObjArray.length - 1;
+              const len3 = vitalsObjArray.length - 1;
               for (let l = 0; l <= len3; l++) {
                 this.lineChartData[0].data.push(vitalsObjArray[l].bloodPressure.systolic);
-                this.lineChartData[0].label = "Systolic";
+                this.lineChartData[0].label = 'Systolic';
                 this.lineChartData[1].data.push(vitalsObjArray[l].bloodPressure.diastolic);
-                this.lineChartData[1].label = "Diastolic";
+                this.lineChartData[1].label = 'Diastolic';
                 this.lineChartData[2].data.push(vitalsObjArray[l].temperature);
-                this.lineChartData[2].label = "Temperature";
+                this.lineChartData[2].label = 'Temperature';
                 this.lineChartData[3].data.push(vitalsObjArray[l].bodyMass.height);
-                this.lineChartData[3].label = "Height";
+                this.lineChartData[3].label = 'Height';
                 this.lineChartData[4].data.push(vitalsObjArray[l].bodyMass.weight);
-                this.lineChartData[4].label = "Weight";
+                this.lineChartData[4].label = 'Weight';
                 this.lineChartData[5].data.push(vitalsObjArray[l].bodyMass.bmi);
-                this.lineChartData[5].label = "BMI";
+                this.lineChartData[5].label = 'BMI';
                 const d = new Date(vitalsObjArray[l].updatedAt);
-                let dt = format(d, 'DD/MM/YY HH:mm:ss a');
+                const dt = format(d, 'DD/MM/YY HH:mm:ss a');
                 JSON.parse(JSON.stringify(this.lineChartLabels.push(dt)));
               };
               this.lineChartData = JSON.parse(JSON.stringify(this.refreshVitalsGraph(this.lineChartData)));
@@ -268,7 +269,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   }
 
   refreshVitalsGraph(lineChartData: any[]) {
-    let _lineChartData: Array<any> = new Array(lineChartData.length);
+    const _lineChartData: Array<any> = new Array(lineChartData.length);
     for (let i = 0; i < lineChartData.length; i++) {
       _lineChartData[i] = { data: new Array(lineChartData[i].data.length), label: lineChartData[i].label };
       for (let j = 0; j < lineChartData[i].data.length; j++) {

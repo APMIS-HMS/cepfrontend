@@ -84,7 +84,7 @@ export class PersonAccountComponent implements OnInit {
     this.getTitles();
     this.getSecurityQuestions();
     this.frmPerson = this.formBuilder.group({
-      persontitle: [new Date(), [<any>Validators.required]],
+      persontitle: ['', [<any>Validators.required]],
       firstname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
       lastname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
       gender: [[<any>Validators.minLength(2)]],
@@ -115,8 +115,8 @@ export class PersonAccountComponent implements OnInit {
         this.personService.searchPerson({
           query: {
             firstName: value.firstname,
-            lastName: value.lastname,
-            primaryContactPhoneNo: value.phone,
+            dateOfBirth: value.dob,
+            gender: value.gender,
             motherMaidenName: value.motherMaidenName,
             isValidating: true
           }
