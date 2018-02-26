@@ -41,6 +41,9 @@ export class NewServiceComponent implements OnInit {
   errMsg = 'you have unresolved errors';
   btnTitle = 'CREATE SERVICE';
   btnPanel = 'ADD PANEL';
+  searchText = '';
+  showServiceDropdown: boolean = false;
+  serviceDropdownLoading: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private _locker: CoolLocalStorage,
     private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
