@@ -41,21 +41,47 @@
           <td class="td-worspace">&#8358; {{bill.totalPrice|number:'1.2-2'}}</td>
           <td>
             <div class="input-x2-wrap">
-              <mat-form-field class="sel-rap">
+              <!-- <mat-form-field class="sel-rap">
                 <mat-select [formControl]="hmoTypeControl" placeholder="Cover Type">
-                  <mat-option >
+                  <mat-option>
                     </mat-option>
                 </mat-select>
-              </mat-form-field>
-              <mat-form-field class="sel-rap" *ngIf="authCode_show">
-                <input matInput [formControl]="authCodeControl" placeholder="Code">
-              </mat-form-field>
+              </mat-form-field> -->
+              <div *ngIf="bill.covered.isVerify===undefined">
+                <mat-form-field class="sel-rap">
+                  <mat-select [formControl]="hmoTypeControl" placeholder="Cover Type">
+                    <mat-option *ngFor="let item of hmoPaymentType" [value]="item.id">
+                      {{ item.name }}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <mat-form-field class="sel-rap" *ngIf="authCode_show">
+                  <input matInput [formControl]="authCodeControl" placeholder="Code">
+                </mat-form-field>
+              </div>
+              <div class="sel-rap" *ngIf="bill.covered.isVerify">
+                <span>
+                  <div *ngIf="bill.covered.authorizationCode !== undefined">
+                    Fee for service :
+                  </div>
+                  <div *ngIf="bill.covered.authorizationCode === undefined">
+                    Capitalization
+                  </div>
+                </span>
+                <span>
+                  {{bill.covered.authorizationCode}}
+                </span>
+              </div>
             </div>
           </td>
           <td>
-            <div class="td-ctaWrap">
-              <i (click)="newWorkspace_onClick()" class="fa fa-check-circle" aria-hidden="true"></i>
-              <i (click)="deletion_popup()" class="fa fa-times-circle" aria-hidden="true"></i>
+            <div class="td-ctaWrap" *ngIf="bill.covered.isVerify===undefined">
+              <i (click)="confirmBill_onClick(bill)" class="fa fa-check-circle" aria-hidden="true"></i>
+              <i (click)="declineBill_onClick(bill)" class="fa fa-times-circle" aria-hidden="true"></i>
+            </div>
+            <div class="td-ctaWrap" *ngIf="bill.covered.isVerify!==undefined">
+              <span style="color:green" *ngIf="bill.covered.billAccepted">Approved</span>
+              <span style="color:red" *ngIf="!bill.covered.billAccepted">Denied</span>
             </div>
           </td>
         </tr>

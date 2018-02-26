@@ -12,9 +12,9 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
 export class HmoBillHistoryDetailComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-
+  @Input() selectedBill;
+  filterBills = [];
   selectedFacility: any = <any>{}
-  bills = []
 
   constructor(private billingService: BillingService,
     private locker: CoolLocalStorage,
@@ -22,8 +22,7 @@ export class HmoBillHistoryDetailComponent implements OnInit {
     private systemModuleService: SystemModuleService) { }
 
   ngOnInit() {
-    this.selectedFacility = this.locker.getObject('selectedFacility');
-    
+    this.filterBills = this.selectedBill.billItems.filter(x => x.covered.isVerify !== undefined);
   }
 
   close_onClick() {

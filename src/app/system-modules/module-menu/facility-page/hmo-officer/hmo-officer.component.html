@@ -61,7 +61,7 @@
             </thead>
 
             <tbody>
-                <tr (click)="billHistoryDetail()" *ngFor="let bill of bills">
+                <tr (click)="billHistoryDetail(bill)" *ngFor="let bill of bills">
                     <td>{{bill.updatedAt|date:'medium'}}</td>
                     <td>
                         <div class="empWrap">
@@ -71,7 +71,7 @@
                             <div>{{bill.principalObject.personDetails.firstName}} {{bill.principalObject.personDetails.lastName}}</div>
                         </div>
                     </td>
-                    <td class="td-worspace">&#8358; 12,200</td>
+                    <td class="td-worspace">&#8358; {{bill.grandTotal|number:'1.2-2'}}</td>
                 </tr>
             </tbody>
         </table>
@@ -82,5 +82,5 @@
   <app-hmo-bill-detail (closeModal)="close_onClick($event)" [selectedBill]="selectedBill" id="form-modal" class="form-modal center-center"></app-hmo-bill-detail>
 </div>
 <div *ngIf="billHistoryDetail_show" class="modal-overlay">
-    <app-hmo-bill-history-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-hmo-bill-history-detail>
+    <app-hmo-bill-history-detail (closeModal)="close_onClick($event)" [selectedBill]="selectedBill" id="form-modal" class="form-modal center-center"></app-hmo-bill-history-detail>
 </div>

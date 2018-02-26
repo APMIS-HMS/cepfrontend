@@ -39,7 +39,8 @@ export class HmoOfficerComponent implements OnInit {
     this.selectedBill = bill;
     this.billDetail_show = true;
   }
-  billHistoryDetail() {
+  billHistoryDetail(bill) {
+    this.selectedBill = bill;
     this.billHistoryDetail_show = true;
   }
   close_onClick() {

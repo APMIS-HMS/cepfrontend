@@ -19,7 +19,7 @@ export class HmoBillDetailComponent implements OnInit {
   hmoPaymentType = [];
   hmoTypeControl: FormControl = new FormControl();
   authCodeControl: FormControl = new FormControl();
-
+  
   constructor(private billingService: BillingService,
     private locker: CoolLocalStorage,
     private authFacadeService: AuthFacadeService,
@@ -34,7 +34,8 @@ export class HmoBillDetailComponent implements OnInit {
       name: 'Fee For Service',
       id: 1
     }];
-    console.log(this.selectedBill);
+    this.hmoTypeControl.setValue(this.hmoPaymentType[0]);
+
     this.hmoTypeControl.valueChanges.subscribe(value => {
       if (value === 0) {
         this.authCode_show = false;
@@ -47,8 +48,60 @@ export class HmoBillDetailComponent implements OnInit {
   close_onClick() {
     this.closeModal.emit(true);
   }
+  bill: any = <any>{};
+  confirmBill_onClick(bill) {
+    this.bill = bill;
+    this.bill.acceptFunction = true;
+    this.systemModuleService.announceSweetProxy('You are about to confirm this bill', 'question', this)
+  }
+  sweetAlertCallback(result) {
+    if (result.value) {
+      if (this.bill.acceptFunction === true) {
+        this.hmoConfirmBill(true);
+      } else {
+        this.hmoConfirmBill(false);
+      }
+    }
+  }
 
-  newWorkspace_onClick() { }
-  // deletion_popup() {}
+  hmoConfirmBill(isAccept: boolean) {
+    console.log(isAccept);
+    if (this.hmoTypeControl.value === 1 && isAccept === true) {
+      if (this.authCodeControl.value !== null) {
+        const index = this.selectedBill.billItems.filter(x => x._id.toString() === this.bill._id.toString());
+        index[0].covered.authorizationCode = this.authCodeControl.value;
+        index[0].covered.isVerify = true;
+        if (isAccept) {
+          index[0].covered.billAccepted = true;
+        }
+        index[0].covered.verifiedAt = new Date();
+        this.billingService.patch(this.selectedBill._id, this.selectedBill, {}).then(payload => {
+          this.systemModuleService.announceSweetProxy('Service successfully cleared', 'success');
+        });
+      } else {
+        this.systemModuleService.announceSweetProxy('This service require an authorization code', 'error');
+      }
+    } else if(this.hmoTypeControl.value === 0 || isAccept === false) {
+      const index = this.selectedBill.billItems.filter(x => x._id.toString() === this.bill._id.toString());
+      index[0].covered.isVerify = true;
+      if (isAccept) {
+        index[0].covered.billAccepted = true;
+      } else {
+        index[0].covered.billAccepted = false;
+      }
+      index[0].covered.verifiedAt = new Date();
+      this.billingService.patch(this.selectedBill._id, this.selectedBill, {}).then(payload => {
+        this.systemModuleService.announceSweetProxy('Service successfully cleared', 'success');
+      });
+    }else{
+      this.systemModuleService.announceSweetProxy('Please select a cover type', 'error');
+    }
+  }
+
+  declineBill_onClick(bill) {
+    this.bill = bill;
+    this.bill.acceptFunction = false;
+    this.systemModuleService.announceSweetProxy('You are about to DECLINE this bill', 'question', this)
+  }
 
 }
