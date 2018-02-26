@@ -91,9 +91,9 @@ const appRoutes: Routes = [
             {
                 path: 'store',
                 loadChildren: '../module-menu/store-manager/store.module#StoreModule',
-                canActivate: [
-                    CanActivateViaAuthGuardAccessService
-                ]
+                // canActivate: [
+                //     CanActivateViaAuthGuardAccessService
+                // ]
             },
             {
                 path: 'product-manager',

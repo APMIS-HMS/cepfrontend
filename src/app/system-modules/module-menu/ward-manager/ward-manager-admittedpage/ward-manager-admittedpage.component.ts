@@ -187,6 +187,10 @@ export class WardManagerAdmittedpageComponent implements OnInit {
 	// 		// }
 	// 	});
 	// }
+  onRoomChange(e){
 
+  }
+onWardChange(e){
 
+}
 }

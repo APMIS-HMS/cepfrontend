@@ -777,7 +777,7 @@ export class ScheduleFrmComponent implements OnInit {
       this.appointment.appointmentReason = reason;
       this.appointment.appointmentTypeId = type;
       this.appointment.clinicId = clinic;
-      if(this.provider.value !== null){
+      if(this.provider.value !== null && this.provider.value !== undefined){
         const provider = this.provider.value._id;
         this.appointment.doctorId = provider;
       }
@@ -799,7 +799,7 @@ export class ScheduleFrmComponent implements OnInit {
         );
         if (activeFilter.length > 0) {
           const active = activeFilter[0];
-          this.appointment.orderStatusId = active;
+          this.appointment.orderStatusId = active.name;
         }
       }
       if (this.appointment._id !== undefined) {
