@@ -382,11 +382,11 @@
                                                                 </div>
 
                                                                 <div class="btn-box">
-                                                                    <button class="small-btn" (click)="next('wallet')" *ngIf="tabWallet" [disabled]="!walletPlan.valid" mat-raised-button>
+                                                                    <button class="small-btn" (click)="next('wallet')" *ngIf="tabWallet" [disabled]="!walletPlan.valid || loading" mat-raised-button>
                                                                         <span *ngIf="!loading">Next</span>
                                                                         <span *ngIf="loading">Loading...</span>
                                                                     </button>
-                                                                    <button class="small-btn" (click)="next('insurance')" [disabled]="!hmoPlanId.valid && !hmoPlan.valid"
+                                                                    <button class="small-btn" (click)="next('insurance')" [disabled]="!hmoPlanId.valid && !hmoPlan.valid || loading"
                                                                         *ngIf="tabInsurance" mat-raised-button>
                                                                         <span *ngIf="!loading">Next</span>
                                                                         <span *ngIf="loading">Loading...</span>
@@ -396,7 +396,7 @@
                                                                         <span *ngIf="!loading">Next</span>
                                                                         <span *ngIf="loading">Loading...</span>
                                                                     </button>
-                                                                    <button class="small-btn" (click)="next('family')" *ngIf="tabFamily" mat-raised-button>
+                                                                    <button class="small-btn" (click)="next('family')" *ngIf="tabFamily" mat-raised-button [disabled]="(!familyPlanId.valid && !faPlan.valid && !faPlanPrice) || loading">
                                                                         <span *ngIf="!loading">Next</span>
                                                                         <span *ngIf="loading">Loading...</span>
                                                                     </button>
