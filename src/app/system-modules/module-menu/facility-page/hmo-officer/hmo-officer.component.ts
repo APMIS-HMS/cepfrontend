@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { BillingService,FacilitiesService } from '../../../../services/facility-manager/setup/index';
+import { BillingService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
@@ -19,19 +19,30 @@ export class HmoOfficerComponent implements OnInit {
   selectedFacility: any = <any>{}
   selectedBill: any = <any>{}
   bills = []
+  historyBills = []
 
   constructor(private billingService: BillingService,
     private locker: CoolLocalStorage,
     private authFacadeService: AuthFacadeService,
     private systemModuleService: SystemModuleService,
-    private facilitiesService:FacilitiesService
+    private facilitiesService: FacilitiesService
   ) { }
 
   ngOnInit() {
     this.selectedFacility = this.locker.getObject('selectedFacility');
     this.billingService.find({ query: { facilityId: this.selectedFacility._id, 'billItems.covered.coverType': 'insurance' } }).then(payload => {
-      this.bills = payload.data;
-      console.log(this.bills);
+
+      payload.data.forEach(element => {
+        let index = element.billItems.filter(x => x.covered.isVerify !== undefined);
+        console.log(index);
+        if (index.length === 0) {
+          element.isPending = true;
+        } else {
+          element.isPending = false;
+        }
+      });
+      this.bills = payload.data.filter(x => x.isPending === true);
+      this.historyBills = payload.data.filter(x => x.isPending === false);
     });
   }
 
