@@ -30,10 +30,11 @@ export class HmoOfficerComponent implements OnInit {
 
   ngOnInit() {
     this.selectedFacility = this.locker.getObject('selectedFacility');
-    this.billingService.find({ query: { facilityId: this.selectedFacility._id, 'billItems.covered.coverType': 'insurance' } }).then(payload => {
+    this.billingService.find({ query: { facilityId: this.selectedFacility._id,
+      'billItems.covered.coverType': 'insurance' } }).then(payload => {
 
       payload.data.forEach(element => {
-        let index = element.billItems.filter(x => x.covered.isVerify !== undefined);
+        const index = element.billItems.filter(x => x.covered.isVerify !== undefined);
         console.log(index);
         if (index.length === 0) {
           element.isPending = true;

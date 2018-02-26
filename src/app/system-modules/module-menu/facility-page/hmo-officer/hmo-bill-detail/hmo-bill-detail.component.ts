@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, Input } from "@angular/core";
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { BillingService, FacilitiesService } from '../../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -19,7 +19,7 @@ export class HmoBillDetailComponent implements OnInit {
   hmoPaymentType = [];
   hmoTypeControl: FormControl = new FormControl();
   authCodeControl: FormControl = new FormControl();
-  
+
   constructor(private billingService: BillingService,
     private locker: CoolLocalStorage,
     private authFacadeService: AuthFacadeService,
@@ -48,7 +48,10 @@ export class HmoBillDetailComponent implements OnInit {
   close_onClick() {
     this.closeModal.emit(true);
   }
+
+  // tslint:disable-next-line:member-ordering
   bill: any = <any>{};
+
   confirmBill_onClick(bill) {
     this.bill = bill;
     this.bill.acceptFunction = true;
@@ -81,7 +84,7 @@ export class HmoBillDetailComponent implements OnInit {
       } else {
         this.systemModuleService.announceSweetProxy('This service require an authorization code', 'error');
       }
-    } else if(this.hmoTypeControl.value === 0 || isAccept === false) {
+    } else if (this.hmoTypeControl.value === 0 || isAccept === false) {
       const index = this.selectedBill.billItems.filter(x => x._id.toString() === this.bill._id.toString());
       index[0].covered.isVerify = true;
       if (isAccept) {
@@ -93,7 +96,7 @@ export class HmoBillDetailComponent implements OnInit {
       this.billingService.patch(this.selectedBill._id, this.selectedBill, {}).then(payload => {
         this.systemModuleService.announceSweetProxy('Service successfully cleared', 'success');
       });
-    }else{
+    }else {
       this.systemModuleService.announceSweetProxy('Please select a cover type', 'error');
     }
   }
