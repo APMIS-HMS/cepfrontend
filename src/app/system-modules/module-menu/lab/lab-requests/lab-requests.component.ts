@@ -279,7 +279,9 @@ export class LabRequestsComponent implements OnInit {
         })
       } else {
         this.selectedPatient = this.patientId;
-
+        console.log(this.selectedPatient);
+        this.frmNewRequest.controls['labNo'].setValue('N/A');
+        this.frmNewRequest.controls['patient'].setValue(this.selectedPatient.personDetails.firstName+' '+this.selectedPatient.personDetails.lastName );
       }
 
     });
@@ -701,8 +703,62 @@ export class LabRequestsComponent implements OnInit {
 
 
   save(valid, value) {
+    console.log(value);
+      const copyBindInvestigation = JSON.parse(JSON.stringify(this.bindInvestigations));
+      const readyCollection: any[] = [];
+
+      console.log(copyBindInvestigation);
+      copyBindInvestigation.forEach((item: InvestigationModel, i) => {
+        console.log(item);
+        if (item.investigation.isPanel) {
+          delete item.isChecked;
+          delete item.temporaryInvestigationList;
+          item.investigation.panel.forEach((panel, j) => {
+            delete panel.isChecked;
+          });
+        } else {
+          delete item.isChecked;
+          delete item.LaboratoryWorkbenches;
+          delete item.location;
+        }
+        readyCollection.push(item);
+      });
+
+      const request: any = {
+        facilityId: this.selectedFacility._id,
+        patientId: this.selectedPatient._id,
+        labNumber: (!this.isLaboratory) ? this.frmNewRequest.controls['labNo'].value : '',
+        clinicalInformation: this.frmNewRequest.controls['clinicalInfo'].value,
+        diagnosis: this.frmNewRequest.controls['diagnosis'].value,
+        investigations: readyCollection,
+        createdBy: this.loginEmployee._id
+      };
+
+      console.log(request);
+
+      /* this.requestService.customCreate(request).then(res => {
+        console.log(res);
+        if (res.status === 'success') {
+          this.frmNewRequest.reset();
+          this._getAllPendingRequests();
+          this.bindInvestigations = [];
+          this.investigations = [];
+          this.apmisLookupText = '';
+          this.selectedPatient = undefined;
+          this._systemModuleService.announceSweetProxy('Request has been sent successfully!', 'success', null, null, null, null, null, null, null);
+        } else {
+          this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
+        }
+      }).catch(err => {
+        this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
+      }); */
+    
+  }
+
+  /* save(valid, value) {
+    console.log(value);
     if (valid) {
-      console.log(value);
+      
       // delete this.selectedPatient.appointments;
       // delete this.selectedPatient.encounterRecords;
       // delete this.selectedPatient.orders;
@@ -854,7 +910,7 @@ export class LabRequestsComponent implements OnInit {
       //   })
       // }
     }
-  }
+  } */
 
   externalChanged($event, investigation) {
     investigation.isExternal = $event.checked;
