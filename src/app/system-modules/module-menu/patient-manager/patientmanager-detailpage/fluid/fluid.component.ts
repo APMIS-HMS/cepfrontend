@@ -77,6 +77,7 @@ export class FluidComponent implements OnInit {
         "facilityId": this.facility._id,
       }
     }).then(payload => {
+      console.log(payload);
       if (type == "intake") {
         this.intakeFluidList = payload.data;
       } else if (type == "output") {

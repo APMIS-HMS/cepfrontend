@@ -83,9 +83,9 @@ export class DashboardHomeComponent implements OnInit {
 
       this.locker.setObject('miniFacility', this.loginEmployee);
       this.getUserRoles();
-      if (this.loginEmployee !== undefined && this.loginEmployee._id !== undefined && auth.data.personId === this.loginEmployee.personId) {
+      /* if (this.loginEmployee !== undefined && this.loginEmployee._id !== undefined && auth.data.personId === this.loginEmployee.personId) {
         return;
-      }
+      } */
     });
 
 
