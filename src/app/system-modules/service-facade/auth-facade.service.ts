@@ -50,7 +50,7 @@ export class AuthFacadeService {
               self.logingEmployee = payload.selectedEmployee;
               self.setLogingEmployee(payload.selectedEmployee);
               self.setLoginUser(payload.selectedUser);
-              if (self.logingEmployee.workSpaces !== undefined && selectedFacility.minorLocations !== undefined) {
+              if (self.logingEmployee !== undefined && self.logingEmployee.workSpaces !== undefined && selectedFacility.minorLocations !== undefined) {
                 if (self.logingEmployee.workSpaces.length > 0 && selectedFacility.minorLocations.length > 0) {
                   const len = self.logingEmployee.workSpaces.length - 1;
                   for (let index = 0; index <= len; index++) {

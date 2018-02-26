@@ -140,7 +140,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         startWith(''),
         map((hmo: any) => hmo ? this.filterHmos(hmo) : this.hmos.slice())
       );
-    console.log(this.filteredHmos);
 
 
   }
@@ -451,13 +450,15 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
     this.selectedPatient['nextOfKin'] = nextOfKinArray;
 
-    this.personService.update(this.selectedPatient).then(res => {
+    const patientIndex = this.patients.findIndex(p => p.personDetails._id === this.selectedPatient._id);
+    this.personService.patch(this.selectedPatient._id, this.selectedPatient, {}).then(res => {
       this.updatePatientBtnText = 'Update';
+      this.patients[patientIndex].personDetails = res;
       this.close_onClick();
-      this._notification('Success', 'Patient details has been updated successfully.');
+      this.systemService.announceSweetProxy('Patient details has been updated successfully.', 'Success');
     }).catch(err => {
       this.updatePatientBtnText = 'Update';
-      this._notification('Error', 'There was an error updating user record, Please try again later.');
+      this.systemService.announceSweetProxy('There was an error updating user record, Please try again later.', 'Error');
     });
   }
 
@@ -501,10 +502,11 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
 
   next(cover) {
+    this.systemService.on();
     console.log(this.patient);
     console.log(this.isDefault);
-    let data = [];
-    data = this.patient.paymentPlan;
+    const data = JSON.parse(JSON.stringify(this.patient.paymentPlan));
+    const check = data.filter(x => x.planType === cover);
     console.log(this.isDefault.value);
     if (this.isDefault.value === true) {
       const index = data.findIndex(c => c.isDefault === true);
@@ -514,16 +516,22 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       }
     }
 
-    console.log(Boolean(this.isDefault.value));
-    const check = data.filter(x => x.planType === cover);
-    console.log(check);
     if (check.length < 1) {
       data.push({
         planType: cover,
         isDefault: Boolean(this.isDefault.value)
       });
     }
-    console.log(data);
+    console.log(data, this.patient.paymentPlan);
+    this.patientService.patch(this.patient._id, {
+      paymentPlan: data
+    }, {}).then(payload => {
+      console.log(payload);
+      this.systemService.off();
+      this.patient = payload;
+      this.systemService.announceSweetProxy('Payment Methods successfully updated', 'success');
+      this.backBtn();
+    });
   }
 
   private _populateNextOfKin(nextOfKin) {
