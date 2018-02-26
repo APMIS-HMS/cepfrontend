@@ -5,13 +5,20 @@ import { CountryServiceFacadeService } from './../../../service-facade/country-s
 import { TitleGenderFacadeService } from 'app/system-modules/service-facade/title-gender-facade.service';
 import { Component, OnInit, EventEmitter, ElementRef, ViewChild, Output, OnChanges, Input } from '@angular/core';
 // tslint:disable-next-line:max-line-length
-import { PatientService, PersonService, FacilitiesService, GenderService, RelationshipService, CountriesService, TitleService } from '../../../../services/facility-manager/setup/index';
+import {
+  PatientService, PersonService, FacilitiesService, FacilitiesServiceCategoryService,
+  HmoService, GenderService, RelationshipService, CountriesService, TitleService
+} from '../../../../services/facility-manager/setup/index';
 import { Facility, Patient, Gender, Relationship, Employee, Person, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl, FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+
+import { Observable } from 'rxjs/Observable';
+import { startWith } from 'rxjs/operators/startWith';
+import { map } from 'rxjs/operators/map';
 
 @Component({
   selector: 'app-patientmanager-homepage',
@@ -54,6 +61,30 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   cities: any = [];
   titles: any = [];
 
+  walletPlanPrice = new FormControl('', Validators.required);
+  walletPlan = new FormControl('', Validators.required);
+  walletPlanCheck = new FormControl('');
+  insuranceId = new FormControl('', Validators.required);
+  hmoPlan = new FormControl('', Validators.required);
+  hmoPlanId = new FormControl('', Validators.required);
+  hmoPlanPrice = new FormControl('', Validators.required);
+  hmoPlanCheck = new FormControl('');
+  ccPlan = new FormControl('', Validators.required);
+  ccPlanId = new FormControl('', Validators.required);
+  ccPlanCheck = new FormControl('');
+  familyPlanId = new FormControl('', Validators.required);
+  familyPlanCheck = new FormControl('');
+  faPlanPrice = new FormControl('');
+  faPlan = new FormControl('');
+  isDefault = new FormControl('');
+  patient: any;
+
+  filteredHmos: Observable<any[]>;
+  hmos;
+
+  services: any;
+  servicePricePlans: any;
+
   pageSize = 1;
   index: any = 0;
   limit: any = 5;
@@ -67,8 +98,9 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     private route: ActivatedRoute, private toast: ToastsManager, private genderService: TitleGenderFacadeService,
     private relationshipService: RelationshipService, private formBuilder: FormBuilder,
     private _countryService: CountriesService, private systemService: SystemModuleService,
-    private authFacadeService: AuthFacadeService,
-    private _titleService: TitleService, private countryFacadeService: CountryServiceFacadeService
+    private authFacadeService: AuthFacadeService, private hmoService: HmoService,
+    private _titleService: TitleService, private countryFacadeService: CountryServiceFacadeService,
+    private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService
   ) {
     this.systemService.on();
     this.patientService.listner.subscribe(payload => {
@@ -102,6 +134,14 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     away.subscribe((payload: any) => {
       this.patients = payload.body;
     });
+
+    this.filteredHmos = this.hmoPlanId.valueChanges
+      .pipe(
+        startWith(''),
+        map((hmo: any) => hmo ? this.filterHmos(hmo) : this.hmos.slice())
+      );
+
+
   }
   searchPatients(searchText: string) {
     this.searchControl.setValue(searchText);
@@ -140,6 +180,9 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.getPatients(this.limit);
     this._getAllCountries();
     this._getAllTitles();
+
+    this.gethmos();
+    this.getCategories();
 
     this.patientEditForm = this.formBuilder.group({
       title: ['', [<any>Validators.required]],
@@ -276,6 +319,68 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     });
     this.index++;
   }
+
+  getPatientCovers(patientId) {
+    this.patientService.find({
+      facilityId: this.facility._id,
+      patientId: patientId
+    }).then(payload => {
+      console.log(payload);
+    })
+  }
+
+  getCategories() {
+    this._facilitiesServiceCategoryService.allServices({
+      query: {
+        facilityId: this.facility._id
+      }
+    }).then(payload => {
+      console.log(payload);
+      const categories = payload.data[0].categories;
+      console.log(categories);
+      const cat = categories.filter(x => x.name === 'Medical Records');
+      console.log(cat);
+      for (let n = 0; n < cat[0].services.length; n++) {
+        cat[0].services[n].facilityServiceId = payload.data[0]._id
+      }
+      this.services = cat[0].services;
+    }, error => {
+      /* this.systemModuleService.off(); */
+      console.log(error);
+    });
+  }
+
+  getServicePlans(service) {
+    this.servicePricePlans = service.price;
+  }
+
+  filterHmos(val: any) {
+    console.log(val);
+    if (val.hmoName === undefined) {
+      return this.hmos.filter(hmo =>
+        hmo.hmoName.toLowerCase().indexOf(val.toLowerCase()) === 0);
+    } else {
+      return this.hmos.filter(hmo =>
+        hmo.hmoName.toLowerCase().indexOf(val.hmoName.toLowerCase()) === 0);
+    }
+  }
+
+  gethmos() {
+    this.hmoService.getHmos({
+      query: {
+        facilityId: this.facility._id
+      }
+    }).then(payload => {
+      this.hmos = payload;
+    }).catch(err => {
+    });
+  }
+
+  displayFn(hmo: any): string {
+    return hmo ? hmo.hmoName : hmo;
+  }
+
+
   getShowing() {
     const ret = this.index * this.limit
     if (ret >= this.total && this.index > 0) {
@@ -302,6 +407,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   slideEdit(patient) {
     this.patientService.get(patient._id, {}).then(payload => {
       this.selectedPatient = payload.personDetails;
+      this.patient = payload;
+      console.log(payload);
       this.editPatient = true;
       if (this.selectedPatient.nextOfKin.length > 0) {
         const nextOfKincontrol = <FormArray>this.patientEditForm.controls['nextOfKin'];
@@ -343,13 +450,15 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
     this.selectedPatient['nextOfKin'] = nextOfKinArray;
 
-    this.personService.update(this.selectedPatient).then(res => {
+    const patientIndex = this.patients.findIndex(p => p.personDetails._id === this.selectedPatient._id);
+    this.personService.patch(this.selectedPatient._id, this.selectedPatient, {}).then(res => {
       this.updatePatientBtnText = 'Update';
+      this.patients[patientIndex].personDetails = res;
       this.close_onClick();
-      this._notification('Success', 'Patient details has been updated successfully.');
+      this.systemService.announceSweetProxy('Patient details has been updated successfully.', 'Success');
     }).catch(err => {
       this.updatePatientBtnText = 'Update';
-      this._notification('Error', 'There was an error updating user record, Please try again later.');
+      this.systemService.announceSweetProxy('There was an error updating user record, Please try again later.', 'Error');
     });
   }
 
@@ -371,6 +480,58 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
     this.patientEditForm.controls['title'].setValue(value.title);
     this.patientEditForm.controls['gender'].setValue(value.gender);
+  }
+
+  isEditFn(patient?, cover?) {
+    this.isEdit = !this.isEdit;
+    if (cover === 'wallet') {
+      this.tabWallet_click();
+    } else if (cover === 'company') {
+      this.tabCompany_click();
+    } else if (cover === 'insurance') {
+      this.tabInsurance_click();
+    } else if (cover === 'family') {
+      this.tabFamily_click();
+    } else {
+
+    }
+  }
+
+  backBtn() {
+    this.isEdit = false;
+  }
+
+  next(cover) {
+    this.systemService.on();
+    console.log(this.patient);
+    console.log(this.isDefault);
+    const data = JSON.parse(JSON.stringify(this.patient.paymentPlan));
+    const check = data.filter(x => x.planType === cover);
+    console.log(this.isDefault.value);
+    if (this.isDefault.value === true) {
+      const index = data.findIndex(c => c.isDefault === true);
+      console.log(index);
+      if (index > -1) {
+        data[index].isDefault = false;
+      }
+    }
+
+    if (check.length < 1) {
+      data.push({
+        planType: cover,
+        isDefault: Boolean(this.isDefault.value)
+      });
+    }
+    console.log(data, this.patient.paymentPlan);
+    this.patientService.patch(this.patient._id, {
+      paymentPlan: data
+    }, {}).then(payload => {
+      console.log(payload);
+      this.systemService.off();
+      this.patient = payload;
+      this.systemService.announceSweetProxy('Payment Methods successfully updated', 'success');
+      this.backBtn();
+    });
   }
 
   private _populateNextOfKin(nextOfKin) {

@@ -166,6 +166,7 @@ export class HmoListComponent implements OnInit {
       throw new Error('Cannot use multiple files');
     }
     const reader: FileReader = new FileReader();
+    // tslint:disable-next-line:no-shadowed-variable
     reader.onload = (e: any) => {
       /* read workbook */
       const bstr: string = e.target.result;
@@ -201,13 +202,13 @@ export class HmoListComponent implements OnInit {
       const prevMonth = currentDate.getMonth();
       const year = currentDate.getFullYear();
       const dataLength = data.length - 1;
-      let rowObj: any = <any>{};
+      const rowObj: any = <any>{};
       let lastMonth = false;
       let lastMonthEnrollees;
-      const lastMonthEnrolleesListIndex = payload.data[0].hmos[index].enrolleeList.findIndex(x => x.month == prevMonth && x.year == year);
+      const lastMonthEnrolleesListIndex = payload.data[0].hmos[index].enrolleeList.findIndex(x => x.month === prevMonth && x.year === year);
 
       if (hmoData[0].enrolleeList.length >= 1) {
-        lastMonthEnrollees = hmoData[0].enrolleeList.filter(x => x.month == prevMonth && x.year == year);
+        lastMonthEnrollees = hmoData[0].enrolleeList.filter(x => x.month === prevMonth && x.year === year);
         let lastMonthEnrLen;
 
         if (lastMonthEnrollees.length > 0) { lastMonthEnrLen = lastMonthEnrollees[0].enrollees.length; }
@@ -224,6 +225,7 @@ export class HmoListComponent implements OnInit {
             const enr = lastMonthEnrollees[0].enrollees.filter(x => x.filNo === data[dataLength][4]);
             if (Boolean(data[m][0])) {
               if (enr.length === 0) {
+                // tslint:disable-next-line:no-shadowed-variable
                 const rowObj: any = <any>{};
                 rowObj.serial = data[m][0];
                 rowObj.surname = data[m][1];
@@ -248,17 +250,19 @@ export class HmoListComponent implements OnInit {
             enrollees: enrolleeList
           }
 
+          // tslint:disable-next-line:no-shadowed-variable
           const index = payload.data[0].hmos.findIndex(x => x.hmo === hmo._id);
+          // tslint:disable-next-line:no-shadowed-variable
           const facHmo = payload.data[0].hmos[index];
           facHmo.enrolleeList.push(enrolleeItem);
           payload.data[0].hmos[index] = facHmo;
 
         } else {
           for (let m = 0; m < data.length; m++) {
-            const enr = hmoData[0].enrolleeList[0].enrollees.filter(x => x.filNo == data[m][4]);
+            const enr = hmoData[0].enrolleeList[0].enrollees.filter(x => x.filNo === data[m][4]);
             if (Boolean(data[m][0])) {
-              if (enr.length == 0) {
-                let rowObjs: any = <any>{};
+              if (enr.length === 0) {
+                const rowObjs: any = <any>{};
                 rowObjs.serial = data[m][0];
                 rowObjs.surname = data[m][1];
                 rowObjs.firstname = data[m][2];
@@ -282,7 +286,8 @@ export class HmoListComponent implements OnInit {
       } else {
         for (let m = 0; m < data.length; m++) {
           if (Boolean(data[m][0])) {
-            let rowObj: any = <any>{};
+            // tslint:disable-next-line:no-shadowed-variable
+            const rowObj: any = <any>{};
             rowObj.serial = data[m][0];
             rowObj.surname = data[m][1];
             rowObj.firstname = data[m][2];
@@ -302,7 +307,9 @@ export class HmoListComponent implements OnInit {
           year: new Date().getFullYear(),
           enrollees: enrolleeList
         }
+        // tslint:disable-next-line:no-shadowed-variable
         const index = payload.data[0].hmos.findIndex(x => x.hmo === hmo._id);
+        // tslint:disable-next-line:no-shadowed-variable
         const facHmo = payload.data[0].hmos[index];
         facHmo.enrolleeList.push(enrolleeItem);
         payload.data[0].hmos[index] = facHmo;
@@ -325,7 +332,8 @@ export class HmoListComponent implements OnInit {
                 this.hmoService.patch(payload.data[0]._id, {
                   hmos: payload.data[0].hmos
                 }, {}).then(noChangPayload => {
-                  this.systemModuleService.announceSweetProxy(`You have successfully uploaded ${data.length} enrollees to ${hmo.name}`, 'success');
+                  this.systemModuleService.announceSweetProxy
+                  (`You have successfully uploaded ${data.length} enrollees to ${hmo.name}`, 'success');
                   this.systemModuleService.off();
                 }).catch(err => {
                 
@@ -333,7 +341,8 @@ export class HmoListComponent implements OnInit {
               }
             }
           } else {
-            this.systemModuleService.announceSweetProxy(`You have successfully uploaded ${data.length} enrollees to ${hmo.name}`, 'success');
+            this.systemModuleService.announceSweetProxy
+            (`You have successfully uploaded ${data.length} enrollees to ${hmo.name}`, 'success');
             this.systemModuleService.off();
           }
         } else {
@@ -384,7 +393,8 @@ export class HmoListComponent implements OnInit {
               this.apmisLookupText = '';
               this.getLoginHMOList();
               this.systemModuleService.off();
-              this.systemModuleService.announceSweetProxy('Selected HMO added to your HMO list successfully', 'success', null, null, null, null, null, null, null);
+              this.systemModuleService.announceSweetProxy('Selected HMO added to your HMO list successfully',
+              'success', null, null, null, null, null, null, null);
             })
           } else {
             this.hmoService.update(this.loginHMOListObject).then(payload => {
@@ -392,7 +402,8 @@ export class HmoListComponent implements OnInit {
               this.apmisLookupText = '';
               this.getLoginHMOList();
               this.systemModuleService.off();
-              this.systemModuleService.announceSweetProxy('Selected HMO added to your HMO list successfully', 'success', null, null, null, null, null, null, null);
+              this.systemModuleService.announceSweetProxy('Selected HMO added to your HMO list successfully',
+              'success', null, null, null, null, null, null, null);
             })
           }
         }

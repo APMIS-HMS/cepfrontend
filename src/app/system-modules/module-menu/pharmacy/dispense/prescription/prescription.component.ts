@@ -2,13 +2,17 @@ import { Component, OnInit, Output, Input } from '@angular/core';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Facility, Prescription, PrescriptionItem, Dispense, Inventory, InventoryTransaction, User,
+import {
+	Facility, Prescription, PrescriptionItem, Dispense, Inventory, InventoryTransaction, User,
 	Dispensed, DispensedArray, BatchTransaction,
-	DispenseByPrescription, DispenseByNoprescription, DispenseItem, MedicationList, BillIGroup, BillItem } from '../../../../../models/index';
+	DispenseByPrescription, DispenseByNoprescription, DispenseItem, MedicationList, BillIGroup, BillItem
+} from '../../../../../models/index';
 import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
-import { FacilitiesService, PrescriptionService, InventoryTransactionTypeService, ExternalPrescriptionService,
-	DispenseService, MedicationListService, InventoryService, BillingService} from '../../../../../services/facility-manager/setup/index';
+import {
+	FacilitiesService, PrescriptionService, InventoryTransactionTypeService, ExternalPrescriptionService,
+	DispenseService, MedicationListService, InventoryService, BillingService
+} from '../../../../../services/facility-manager/setup/index';
 
 @Component({
 	selector: 'app-prescription',
@@ -17,7 +21,7 @@ import { FacilitiesService, PrescriptionService, InventoryTransactionTypeService
 })
 export class PrescriptionComponent implements OnInit {
 	@Output() prescriptionItems: Prescription = <Prescription>{};
-	@Output() isExternalPrescription: boolean = false;
+	@Output() isExternalPrescription = false;
 	@Input() employeeDetails: any;
 	facility: Facility = <Facility>{};
 	user: User = <User>{};
@@ -32,19 +36,19 @@ export class PrescriptionComponent implements OnInit {
 	totalQuantity = 0;
 	totalCost = 0;
 	loading = true;
-	batchLoading: boolean = true;
-	disableDispenseBtn: Boolean = false;
-	disableDispenseAllBtn: Boolean = true;
-	qtyDispenseBtn: string = 'Dispense';
-	inventoryTransactionTypeId: string = '';
-	disablePaymentBtn: boolean = false;
-	disableSaveBtn: boolean = false;
-	paymentStatusText: string = '<i class="fa fa-refresh"></i> Refresh Payment Status';
-	dispenseAllBtnText: string = 'Save';
-	saveBtn: string = 'Save';
+	batchLoading = true;
+	disableDispenseBtn = false;
+	disableDispenseAllBtn = true;
+	qtyDispenseBtn = 'Dispense';
+	inventoryTransactionTypeId = '';
+	disablePaymentBtn = false;
+	disableSaveBtn = false;
+	paymentStatusText = '<i class="fa fa-refresh"></i> Refresh Payment Status';
+	dispenseAllBtnText = 'Save';
+	saveBtn = 'Save';
 
 	constructor(
-		//private _fb: FormBuilder,
+		// private _fb: FormBuilder,
 		private _route: ActivatedRoute,
 		private _router: Router,
 		private _locker: CoolLocalStorage,
@@ -69,7 +73,7 @@ export class PrescriptionComponent implements OnInit {
 
 	ngOnInit() {
 		this._pharmacyEventEmitter.setRouteUrl('Prescription Details');
-		this.facility = <Facility> this._locker.getObject('selectedFacility');
+		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		this.storeId = this._locker.getObject('checkingObject');
 		this.user = <User>this._locker.getObject('auth');
 
@@ -81,9 +85,10 @@ export class PrescriptionComponent implements OnInit {
 		this._getInventoryTransactionTypes();
 
 		if (this.prescriptionItems.prescriptionItems !== undefined) {
-			const notBilled = this.prescriptionItems.prescriptionItems.filter(x => ((x.quantity !== x.quantityDispensed || !x.paymentCompleted) && !x.paymentCompleted && !x.isExternal) );
+			const notBilled = this.prescriptionItems.prescriptionItems
+				.filter(x => ((x.quantity !== x.quantityDispensed || !x.paymentCompleted) && !x.paymentCompleted && !x.isExternal));
 
-			if(notBilled.length > 0) {
+			if (notBilled.length > 0) {
 				this.disableDispenseAllBtn = true;
 			} else {
 				this.disableDispenseAllBtn = false;
@@ -97,16 +102,16 @@ export class PrescriptionComponent implements OnInit {
 		// Get the billed items from the unbilled items
 		this.unBilledArray.forEach((element, i) => {
 			// Billed items
-			if(element.isBilled || element.isExternal) {
+			if (element.isBilled || element.isExternal) {
 				tempArray.push(element);
 			}
 		});
 
-		if(tempArray.length > 0) {
+		if (tempArray.length > 0) {
 			this.disableSaveBtn = true;
 			this.saveBtn = 'Saving... <i class="fa fa-spinner fa-spin"></i>';
 
-			if(!this.isExternalPrescription) {
+			if (!this.isExternalPrescription) {
 				this._isPrescriptionLogic();
 			} else {
 				this._isExternalPrescriptonLogic();
@@ -118,7 +123,7 @@ export class PrescriptionComponent implements OnInit {
 
 	// Dispense prescription
 	onClickDispense() {
-		if(this.prescriptions.length > 0) {
+		if (this.prescriptions.length > 0) {
 			this.disableDispenseAllBtn = true;
 			this.dispenseAllBtnText = 'Saving... <i class="fa fa-spinner fa-spin"></i>';
 			const dispenseArray = [];
@@ -128,7 +133,7 @@ export class PrescriptionComponent implements OnInit {
 				if (!element.isExternal && element.isBilled) {
 					// Change the value of isDispensed to true;
 					element.isDispensed = true;
-					const dispenseItem = <DispenseItem> {
+					const dispenseItem = <DispenseItem>{
 						productId: (element.isExternal === false) ? element.productId : '',
 						cost: element.cost,
 						quantity: (element.quantity === undefined) ? 0 : element.quantity,
@@ -158,7 +163,7 @@ export class PrescriptionComponent implements OnInit {
 			// 	prescribeById: this.prescriptionItems.employeeId,
 			// }
 
-			const prescription = <DispenseByPrescription> {
+			const prescription = <DispenseByPrescription>{
 				prescriptionId: this.prescriptionItems._id,
 				employeeId: this.prescriptionItems.employeeId,
 				patientId: this.prescriptionItems.patientId,
@@ -166,7 +171,7 @@ export class PrescriptionComponent implements OnInit {
 				totalQuantity: this.totalQuantity,
 				totalCost: this.totalCost
 			};
-			const dispense = <Dispense> {
+			const dispense = <Dispense>{
 				facilityId: this.facility._id,
 				prescription: prescription,
 				isPrescription: true,
@@ -175,6 +180,7 @@ export class PrescriptionComponent implements OnInit {
 			this._dispenseService.create(dispense).then(res => {
 				this.prescriptionItems.isDispensed = true;
 				// Call the prescription service to change the isDispensed to true.
+				// tslint:disable-next-line:no-shadowed-variable
 				this._prescriptionService.update(this.prescriptionItems).then(res => {
 					this.disableDispenseAllBtn = true;
 					this.dispenseAllBtnText = 'Saved';
@@ -205,17 +211,18 @@ export class PrescriptionComponent implements OnInit {
 			this.loading = false;
 
 			// Check if the page is for prescription or external prescription
-			if(!this.isExternalPrescription) {
+			if (!this.isExternalPrescription) {
 				this.prescriptionItems = res;
 
-				const notBilled = this.prescriptionItems.prescriptionItems.filter(x => ((x.quantity !== x.quantityDispensed || !x.paymentCompleted) && !x.paymentCompleted && !x.isExternal) );
-				if(notBilled.length > 0) {
+				const notBilled = this.prescriptionItems.prescriptionItems
+					.filter(x => ((x.quantity !== x.quantityDispensed || !x.paymentCompleted) && !x.paymentCompleted && !x.isExternal));
+				if (notBilled.length > 0) {
 					this.disableDispenseAllBtn = true;
 				} else {
 					this.disableDispenseAllBtn = false;
 				}
 
-				if(this.prescriptionItems.isDispensed) {
+				if (this.prescriptionItems.isDispensed) {
 					this.disableDispenseAllBtn = true;
 					this.dispenseAllBtnText = 'Saved';
 				}
@@ -223,13 +230,13 @@ export class PrescriptionComponent implements OnInit {
 				// Reset all the prescriptionItem.transactions to an empty array.
 				this.prescriptionItems.prescriptionItems.forEach(element => {
 					// Billed items
-					if(element.isBilled || element.isExternal) {
-						if(element.quantity !== undefined && element.totalCost !== undefined) {
+					if (element.isBilled || element.isExternal) {
+						if (element.quantity !== undefined && element.totalCost !== undefined) {
 							this.totalQuantity += element.quantity;
 							this.totalCost += element.totalCost;
 						}
 
-						if(element.isExternal) {
+						if (element.isExternal) {
 							element.quantity = 0;
 							element.quantityDispensed = 0;
 						}
@@ -239,31 +246,32 @@ export class PrescriptionComponent implements OnInit {
 					}
 
 					// Unbilled items
-					if(!element.isBilled) {
+					if (!element.isBilled) {
 						this.unBilledArray.push(element);
 					}
 					element.transactions = [];
 				});
 
-				if(this.prescriptions.length > 0) {
+				if (this.prescriptions.length > 0) {
 					this._getPaymentStatus();
 				}
 			} else {
 				// Filter the external prescriptions only
-				const external = res.prescriptionItems.filter(x => !x.isDispensed && (!!x.facilityId && x.isBilled && (x.facilityId === this.facility._id)) || x.isExternal);
+				const external = res.prescriptionItems
+				.filter(x => !x.isDispensed && (!!x.facilityId && x.isBilled && (x.facilityId === this.facility._id)) || x.isExternal);
 				res.prescriptionItems = external;
 				this.prescriptionItems = res;
 
 				// Reset all the prescriptionItem.transactions to an empty array.
 				this.prescriptionItems.prescriptionItems.forEach(element => {
 					// Billed items
-					if(element.isBilled || element.isExternal) {
-						if(element.quantity !== undefined && element.totalCost !== undefined) {
+					if (element.isBilled || element.isExternal) {
+						if (element.quantity !== undefined && element.totalCost !== undefined) {
 							this.totalQuantity += element.quantity;
 							this.totalCost += element.totalCost;
 						}
 
-						if(element.isExternal) {
+						if (element.isExternal) {
 							element.quantity = 0;
 							element.quantityDispensed = 0;
 						}
@@ -273,22 +281,22 @@ export class PrescriptionComponent implements OnInit {
 					}
 
 					// Unbilled items
-					if(!element.isBilled) {
+					if (!element.isBilled) {
 						this.unBilledArray.push(element);
 					}
 					element.transactions = [];
 				});
 			}
-		}).catch(err => console.error(err) );
+		}).catch(err => console.error(err));
 	}
 
 	onClickEachPrescription(index, prescription) {
-		if(prescription.isBilled) {
-			if(prescription.paymentCompleted) {
+		if (prescription.isBilled) {
+			if (prescription.paymentCompleted) {
 				this.selectedPrescription = prescription;
 				this.selectedPrescription.isOpen = !this.selectedPrescription.isOpen;
 				const productId = prescription.productId;
-				//const productId = '592419145fbce732205cf0ba';
+				// const productId = '592419145fbce732205cf0ba';
 				if (this.storeId.typeObject.storeId !== undefined) {
 					// Get the batches for the selected product
 					this._inventoryService.find({
@@ -296,21 +304,22 @@ export class PrescriptionComponent implements OnInit {
 							facilityId: this.facility._id,
 							productId: productId,
 							storeId: this.storeId.typeObject.storeId
-						}})
+						}
+					})
 						.then(res => {
 							this.batchLoading = false;
-							if(res.data.length > 0) {
+							if (res.data.length > 0) {
 								this.transactions = res.data[0];
 								const tempArray = [];
 								// Display only batches that have qty greater than 0.
-								if(res.data[0].transactions.length !== 0) {
+								if (res.data[0].transactions.length !== 0) {
 									res.data[0].transactions.forEach(element => {
-										if(element.quantity > 0) {
+										if (element.quantity > 0) {
 											tempArray.push(element);
 										}
 									});
 								}
-								if(tempArray.length !== 0) {
+								if (tempArray.length !== 0) {
 									this.viewTransactions = tempArray;
 								} else {
 									this.viewTransactions = [];
@@ -334,31 +343,33 @@ export class PrescriptionComponent implements OnInit {
 		const item = this.prescriptionItems.prescriptionItems.filter(e => e._id === this.prescriptions[parentIndex]._id);
 		const itemId = item[0]._id;
 		// Input validation
-		if(inputBatch[index] <= 0 || inputBatch[index] === '' || isNaN(inputBatch[index]) ) {
+		if (inputBatch[index] <= 0 || inputBatch[index] === '' || isNaN(inputBatch[index])) {
 			this._notification('Info', 'Please enter a valid number greater than 0');
 		} else {
 			// Check if the qty entered is less than or equal to the qty needed.
-			if(inputBatch[index] <= item[0].quantity) {
+			if (inputBatch[index] <= item[0].quantity) {
 				// Check if the qty entered plus the quantity dispensed already,
 				// if it's less than or equal to the qty needed to dispense.
-				let qtyPlusQtyToDispense = item[0].quantityDispensed + inputBatch[index];
-				if((item[0].quantity - qtyPlusQtyToDispense) >= 0) {
-					if(this.storeId.typeObject.storeId !== undefined) {
+				const qtyPlusQtyToDispense = item[0].quantityDispensed + inputBatch[index];
+				if ((item[0].quantity - qtyPlusQtyToDispense) >= 0) {
+					if (this.storeId.typeObject.storeId !== undefined) {
 						// disable the dispense button.
 						this.disableDispenseBtn = true;
 						this.qtyDispenseBtn = 'Dispensing... <i class="fa fa-spinner fa-spin"></i>';
 						// Update the quantityDispensed in the selected item.
-						const itemIndex = this.prescriptionItems.prescriptionItems.findIndex(item => item._id == itemId);
+						// tslint:disable-next-line:no-shadowed-variable
+						const itemIndex = this.prescriptionItems.prescriptionItems.findIndex(item => item._id === itemId);
 						this.prescriptionItems.prescriptionItems[itemIndex].quantityDispensed += inputBatch[index];
 						// Build the dispense client model
 						this._dispensedBatchTracking(itemIndex, inputBatch[index], batch.batchNumber);
 
 						// Make a call to update the prescription with the qty dispensed
 						this._prescriptionService.update(this.prescriptionItems).then(res => {
-							if(res._id !== undefined) {
+							if (res._id !== undefined) {
 								this._batchTransactionTracking(index, inputBatch[index], batch);
 								// Make a call to the inventory service so that you can deduct the quantity from the inventory
 								this._inventoryService.patch(this.transactions._id, this.transactions, {})
+									// tslint:disable-next-line:no-shadowed-variable
 									.then(res => {
 										// disable the dispense button.
 										this.disableDispenseBtn = false;
@@ -390,11 +401,11 @@ export class PrescriptionComponent implements OnInit {
 	}
 
 	// Dispense resolver
-	private _dispensedBatchTracking(index:number, qty:number, bNumber:string): void {
+	private _dispensedBatchTracking(index: number, qty: number, bNumber: string): void {
 		const dispensedKey = this.prescriptionItems.prescriptionItems[index];
-		let orderIndex: number = 0;
+		let orderIndex = 0;
 
-		if(dispensedKey.dispensed.dispensedArray === undefined) {
+		if (dispensedKey.dispensed.dispensedArray === undefined) {
 			orderIndex = orderIndex;
 		} else {
 			orderIndex = dispensedKey.dispensed.dispensedArray.length;
@@ -403,7 +414,7 @@ export class PrescriptionComponent implements OnInit {
 		dispensedKey.dispensed.totalQtyDispensed = dispensedKey.quantityDispensed;
 		dispensedKey.dispensed.outstandingBalance = dispensedKey.quantity - dispensedKey.quantityDispensed;
 
-		let item: DispensedArray = {
+		const item: DispensedArray = {
 			orderIndex: orderIndex, // unique
 			dispensedDate: new Date,
 			batchNumber: bNumber,
@@ -420,8 +431,8 @@ export class PrescriptionComponent implements OnInit {
 	private _batchTransactionTracking(index: number, qty: number, batch: any) {
 		// Deduct from the batches before updating the batches in the inventory.
 		this.transactions.transactions.forEach(element => {
-			if(element._id === batch._id) {
-				let batchTransaction: BatchTransaction = {
+			if (element._id === batch._id) {
+				const batchTransaction: BatchTransaction = {
 					batchNumber: <string>batch.batchNumber,
 					employeeId: <string>this.prescriptionItems.employeeId,
 					employeeName: <string>this.prescriptionItems.employeeName,
@@ -443,14 +454,14 @@ export class PrescriptionComponent implements OnInit {
 	private _getPaymentStatus() {
 		this.disablePaymentBtn = true;
 		this.paymentStatusText = 'Getting Payment Status... <i class="fa fa-spinner fa-spin"></i>';
-		if(this.prescriptionItems.billId !== undefined) {
+		if (this.prescriptionItems.billId !== undefined) {
 			this._billingService.get(this.prescriptionItems.billId, {}).then(res => {
-				if(res._id !== undefined) {
+				if (res._id !== undefined) {
 					this.disablePaymentBtn = false;
 					this.paymentStatusText = '<i class="fa fa-refresh"></i> Refresh Payment Status';
 					res.billItems.forEach(i => {
 						this.prescriptions.forEach(j => {
-							if(i.serviceId === j.serviceId) {
+							if (i.serviceId === j.serviceId) {
 								j.paymentCompleted = i.paymentCompleted;
 							}
 						});
@@ -458,15 +469,16 @@ export class PrescriptionComponent implements OnInit {
 
 					setTimeout(e => {
 						const condition = this.prescriptionItems.prescriptionItems.length !== this.prescriptions.length;
-						const notBilled = this.prescriptions.filter( x => ((x.quantity !== x.quantityDispensed || !x.paymentCompleted) && !x.paymentCompleted && !x.isExternal) );
-						if(notBilled.length > 0 || condition) {
+						const notBilled = this.prescriptions
+						.filter(x => ((x.quantity !== x.quantityDispensed || !x.paymentCompleted) && !x.paymentCompleted && !x.isExternal));
+						if (notBilled.length > 0 || condition) {
 							this.disableDispenseAllBtn = true;
 						} else {
 							this.disableDispenseAllBtn = false;
 						}
 					}, 5000);
 				}
-			}).catch(err => console.error(err) );
+			}).catch(err => console.error(err));
 		} else {
 			this.disablePaymentBtn = true;
 			this.paymentStatusText = '<i class="fa fa-refresh"></i> Refresh Payment Status';
@@ -485,29 +497,29 @@ export class PrescriptionComponent implements OnInit {
 	// Get all the inventory transaction types.
 	private _getInventoryTransactionTypes() {
 		this._inventoryTransactionTypeService.findAll().then(res => {
-			if(res.data.length > 0) {
+			if (res.data.length > 0) {
 				const inventoryType = res.data.filter(x => x.name.toLowerCase().includes('dispense'));
 				this.inventoryTransactionTypeId = inventoryType[0]._id;
 			}
-		}).catch(err => console.log(err) );
+		}).catch(err => console.log(err));
 	}
 
 	// Prescription logic.
 	private _isPrescriptionLogic() {
 		// this has been billed before.
-		if(!!this.prescriptionItems.billId && this.prescriptionItems.hasOwnProperty('billId')) {
+		if (!!this.prescriptionItems.billId && this.prescriptionItems.hasOwnProperty('billId')) {
 			// Call the billing service
-			this._billingService.find({query: {_id: this.prescriptionItems.billId, facilityId: this.facility._id }})
+			this._billingService.find({ query: { _id: this.prescriptionItems.billId, facilityId: this.facility._id } })
 				.then(res => {
 					// Check if the initial generated billingId exist with this facility
-					if(res.data.length > 0) {
+					if (res.data.length > 0) {
 						const containsIsBilled = this.unBilledArray.filter(x => x.isBilled);
 						let totalCost = 0;
 						let totalQuantity = 0;
-						if(containsIsBilled.length > 0) {
+						if (containsIsBilled.length > 0) {
 							this.unBilledArray.forEach(element => {
-								if(element.isBilled) {
-									const billItem = <BillItem> {
+								if (element.isBilled) {
+									const billItem = <BillItem>{
 										facilityServiceId: element.facilityServiceId,
 										serviceId: element.serviceId,
 										facilityId: res.facilityId,
@@ -537,10 +549,12 @@ export class PrescriptionComponent implements OnInit {
 							this.prescriptionItems.totalQuantity = this.totalQuantity;
 							// Update the Billing service
 							this._billingService.update(res)
+								// tslint:disable-next-line:no-shadowed-variable
 								.then(res => {
-									if(res._id !== undefined) {
+									if (res._id !== undefined) {
+										// tslint:disable-next-line:no-shadowed-variable
 										this._prescriptionService.update(this.prescriptionItems).then(res => {
-											if(res._id !== undefined) {
+											if (res._id !== undefined) {
 												this.disableSaveBtn = false;
 												this.saveBtn = 'Save';
 												// clear prescriptions then call the getPrescriptionsDetails again.
@@ -549,7 +563,7 @@ export class PrescriptionComponent implements OnInit {
 												this.totalQuantity = 0;
 												this._getPrescriptionDetails();
 											}
-										}).catch(err => console.error(err) );
+										}).catch(err => console.error(err));
 									}
 								})
 								.catch(err => { console.log(err); });
@@ -580,8 +594,8 @@ export class PrescriptionComponent implements OnInit {
 		let totalQuantity = 0;
 
 		this.unBilledArray.forEach(element => {
-			if(element.isBilled) {
-				const billItem = <BillItem> {
+			if (element.isBilled) {
+				const billItem = <BillItem>{
 					facilityServiceId: element.facilityServiceId,
 					serviceId: element.serviceId,
 					facilityId: this.prescriptionItems.facilityId,
@@ -602,8 +616,8 @@ export class PrescriptionComponent implements OnInit {
 				billItemArray.push(billItem);
 			}
 		});
-		if(billItemArray.length > 0) {
-			const bill = <BillIGroup> {
+		if (billItemArray.length > 0) {
+			const bill = <BillIGroup>{
 				facilityId: this.facility._id,
 				patientId: this.prescriptionItems.patientId,
 				billItems: billItemArray,
@@ -614,14 +628,15 @@ export class PrescriptionComponent implements OnInit {
 			// send the billed items to the billing service
 			this._billingService.create(bill)
 				.then(res => {
-					if(res._id !== undefined) {
+					if (res._id !== undefined) {
 						// Update the totalCost and totalQuantity in the prescriptionItems object.
 						this.prescriptionItems.totalCost = this.totalCost;
 						this.prescriptionItems.totalQuantity = this.totalQuantity;
 						this.prescriptionItems.billId = res._id
 						this._prescriptionService.update(this.prescriptionItems)
+							// tslint:disable-next-line:no-shadowed-variable
 							.then(res => {
-								if(res._id !== undefined) {
+								if (res._id !== undefined) {
 									this.disableSaveBtn = false;
 									this.saveBtn = 'Save';
 									// clear prescriptions then call the getPrescriptionsDetails again.

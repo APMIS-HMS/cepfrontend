@@ -2,7 +2,7 @@
 
 <div class="doc-mainWrap">
   <div class="doc-contentArea">
-    <ul>
+    <ul *ngIf="timeLineLists.length > 0">
       <li class="timeline-wrap" *ngFor="let timeLine of timeLineLists">
         <div class="timeline-liner">
           <div class="date-time">
@@ -24,6 +24,9 @@
           <div class="content">{{timeLine.description}}</div>
         </div>
       </li>
+    </ul>
+    <ul *ngIf="timeLineLists.length !> 0">
+      <li>No data exist in this timeline.</li>
     </ul>    
   </div>
   <div class="doc-rArea">
