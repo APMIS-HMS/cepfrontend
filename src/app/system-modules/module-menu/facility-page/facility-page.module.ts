@@ -60,6 +60,7 @@ import { from } from 'rxjs/observable/from';
 import { HmoOfficerComponent } from './hmo-officer/hmo-officer.component';
 import { HmoBillDetailComponent } from './hmo-officer/hmo-bill-detail/hmo-bill-detail.component';
 import { HmoBillHistoryDetailComponent } from './hmo-officer/hmo-bill-history-detail/hmo-bill-history-detail.component';
+import { FacilityHealthCoverComponent } from './facility-health-cover/facility-health-cover.component';
 
 @NgModule({
     declarations: [
@@ -102,7 +103,8 @@ import { HmoBillHistoryDetailComponent } from './hmo-officer/hmo-bill-history-de
         AccessManagerHomeComponent,
         HmoOfficerComponent,
         HmoBillDetailComponent,
-        HmoBillHistoryDetailComponent
+        HmoBillHistoryDetailComponent,
+        FacilityHealthCoverComponent
     ],
     exports: [
     ],
