@@ -20,8 +20,8 @@ export class FluidService {
     private sanitizer: DomSanitizer,
     private locker: CoolLocalStorage
   ) {
-    this._rest = _restService.getService('fluids');
-    this._socket = _socketService.getService('fluids');
+    this._rest = _restService.getService('fluid');
+    this._socket = _socketService.getService('fluid');
     this._patientRest = _restService.getService('patientfluids');
     this._patientSocket = _socketService.getService('patientfluids');
     this._socket.timeout = 50000;
@@ -33,7 +33,7 @@ export class FluidService {
   }
 
   find(query: any) {
-    return this._rest.find(query);
+    return this._socket.find(query);
   }
 
   findPatientFluid(query: any) {

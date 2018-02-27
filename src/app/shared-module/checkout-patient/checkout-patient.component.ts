@@ -52,7 +52,7 @@ export class CheckoutPatientComponent implements OnInit {
 	) {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.employeeDetails = res;
-    }).catch(err => console.log(err));
+    }).catch(err => {});
   }
 
 	ngOnInit() {

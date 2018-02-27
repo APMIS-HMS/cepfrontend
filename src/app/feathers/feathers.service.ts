@@ -9,8 +9,16 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Injectable } from '@angular/core';
 const rx = require('feathers-reactive');
 const RxJS = require('rxjs/Rx');
+<<<<<<< HEAD
 
 const HOST = 'https://apmisapitest.azurewebsites.net';
+=======
+// const HOST = 'http://13.84.217.251:8082'; // thn
+ // const HOST = 'http://172.16.16.28:3031'; // Simbi
+// const HOST = 'http://172.16.16.35:3031'; // Mr Segun
+// const HOST = 'https://apmisapitest.azurewebsites.net'; // Sunday
+ const HOST = 'http://localhost:3031'; // Local Server
+>>>>>>> remotes/origin/development
 
 
 @Injectable()
@@ -83,13 +91,13 @@ export class RestService {
         .configure(authentication({ storage: window.localStorage })); // Configure feathers-hooks
     }
   }
-  loginIntoApp(query) {
-    return this._app.authenticate({
-      'strategy': 'local',
-      'email': query.email,
-      'password': query.password
-    });
-  }
+  // loginIntoApp(query) {
+  //   return this._app.authenticate({
+  //     'strategy': 'local',
+  //     'email': query.email,
+  //     'password': query.password
+  //   });
+  // }
   getService(value: any) {
     return this._app.service(value);
   }

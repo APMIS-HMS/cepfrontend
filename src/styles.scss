@@ -124,10 +124,12 @@ select {
 .hover {
     cursor: pointer;
 }
-.green-txt{
+
+.green-txt {
     color: $green;
 }
-.red-txt{
+
+.red-txt {
     color: #ff2500;
 }
 
@@ -465,6 +467,28 @@ select {
     margin-top: 10px;
 }
 
+.vital-taken {
+    background: $green !important;
+    color: #fff !important;
+    border: 1px solid $green !important;
+}
+
+.vital-taken:hover {
+    background: $green-1 !important;
+    border: 1px solid $green-1 !important;
+}
+
+.patient-is-engaged {
+    background: $orange !important;
+    color: #fff !important;
+    border: 1px solid $orange !important;
+}
+
+.patient-is-engaged:hover {
+    background: $orange-1 !important;
+    border: 1px solid $orange-1 !important;
+}
+
 .save-blinker {
     position: absolute;
     top: 10px;
@@ -531,7 +555,7 @@ select {
     box-shadow: 0 8px 6px -6px white;
 }
 
-.shadow-B { 
+.shadow-B {
     -webkit-box-shadow: 0 8px 6px -6px black;
     -moz-box-shadow: 0 8px 6px -6px black;
     box-shadow: 0 8px 6px -6px black;
@@ -663,7 +687,7 @@ select {
     height: auto;
     max-height: 90vh;
     background: #fff;
-    overflow: auto;
+    overflow-y: auto;
     padding: 20px 50px;
     box-sizing: border-box;
     -webkit-box-shadow: 2px 16px 31px 0px rgba(0, 0, 0, 0.54);

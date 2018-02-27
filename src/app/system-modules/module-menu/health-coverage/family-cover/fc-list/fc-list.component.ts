@@ -145,7 +145,7 @@ export class FcListComponent implements OnInit {
       if (beneficiary.isActive === undefined) {
         this.frmNewBeneficiary.controls['status'].setValue(this.statuses[0]._id);
       }
-      let filtered = this.beneficiaries.filter(x => x.filNo.includes(beneficiary.filNo));
+      const filtered = this.beneficiaries.filter(x => x.filNo.includes(beneficiary.filNo));
       let hasRecord = false;
       this.frmDependant.controls['dependantArray'] = this.formBuilder.array([]);
       filtered.forEach((filter, i) => {
@@ -177,8 +177,8 @@ export class FcListComponent implements OnInit {
       this.frmNewBeneficiary.reset();
       const filNoLength = beneficiary.filNo.length;
       const lastCharacter = beneficiary.filNo[filNoLength - 1];
-      let sub = beneficiary.filNo.substring(0, (filNoLength - 1));
-      let filtered = this.beneficiaries.filter(x => x.filNo.includes(sub));
+      const sub = beneficiary.filNo.substring(0, (filNoLength - 1));
+      const filtered = this.beneficiaries.filter(x => x.filNo.includes(sub));
       let hasRecord = false;
       this.frmDependant.controls['dependantArray'] = this.formBuilder.array([]);
       filtered.forEach((filter, i) => {
@@ -225,27 +225,29 @@ export class FcListComponent implements OnInit {
   change(value) {
   }
   save(valid, value, dependantValid, dependantValue) {
-    let unsavedFiltered = dependantValue.controls.dependantArray.controls.filter(x => x.value.readOnly === false && x.valid);
+    const unsavedFiltered = dependantValue.controls.dependantArray.controls.filter(x => x.value.readOnly === false && x.valid);
     if (unsavedFiltered.length > 0) {
-      this.systemModuleService.announceSweetProxy('There seems to unsaved but valid dependant yet to be saved, please save and try again!', 'warning', );
+      this.systemModuleService.
+      announceSweetProxy('There seems to unsaved but valid dependant yet to be saved, please save and try again!', 'warning' );
       return;
     }
     if (valid) {
-      let param = {
+      const param = {
         model: value,
         operation: value.operation,
         dependants: [],
         facilityId: this.selectedFacility._id,
         // facilityObject:this.selectedFacility
       };
-      let filtered = dependantValue.controls.dependantArray.controls.filter(x => x.value.readOnly === true);
+      const filtered = dependantValue.controls.dependantArray.controls.filter(x => x.value.readOnly === true);
       filtered.forEach((item, i) => {
         param.dependants.push(item.value);
       });
       this.familyCoverService.updateBeneficiaryList(param).then(payload => {
         this.getBeneficiaryList(this.selectedFacility._id);
         this.cancel();
-        this.systemModuleService.announceSweetProxy('Family Cover Records Updated Successfully', 'success', null, null, null, null, null, null, null);
+        this.systemModuleService.announceSweetProxy('Family Cover Records Updated Successfully',
+        'success', null, null, null, null, null, null, null);
       })
     } else {
       this.systemModuleService.announceSweetProxy('A value is missing, please fill all required field and try again!', 'warning');
@@ -262,7 +264,7 @@ export class FcListComponent implements OnInit {
   getBeneficiaryList(id) {
     this.familyCoverService.find({ query: { 'facilityId': this.selectedFacility._id } }).then(payload => {
       if (payload.data.length > 0) {
-        let facFamilyCover = payload.data[0];
+        const facFamilyCover = payload.data[0];
         this.selectedFamilyCover = facFamilyCover;
         this.beneficiaries = facFamilyCover.familyCovers;
         const startIndex = 0 * 10;
@@ -272,7 +274,7 @@ export class FcListComponent implements OnInit {
     })
   }
   getRole(beneficiary) {
-    let filNo = beneficiary.filNo;
+    const filNo = beneficiary.filNo;
     if (filNo !== undefined) {
       const filNoLength = filNo.length;
       const lastCharacter = filNo[filNoLength - 1];
