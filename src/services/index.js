@@ -157,6 +157,7 @@ const crudLabReport = require('./crud-lab-report/crud-lab-report.service.js');
 const bedOccupancy = require('./bed-occupancy/bed-occupancy.service.js');
 const getBedOccupancy = require('./get-bed-occupancy/get-bed-occupancy.service.js');
 const purchaseInvoices = require('./purchase-invoices/purchase-invoices.service.js');
+const billCreators = require('./bill-creators/bill-creators.service.js');
 module.exports = function(app) {
     app.configure(users);
     app.configure(facilityOwnerships);
@@ -317,4 +318,5 @@ module.exports = function(app) {
     app.configure(templates);
     app.configure(getBedOccupancy);
     app.configure(purchaseInvoices);
+    app.configure(billCreators);
 };
