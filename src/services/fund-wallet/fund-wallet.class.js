@@ -30,10 +30,13 @@ class FundWalletService {
         const employeeService = this.app.service('employees');
         const peopleService = this.app.service('people');
         const paymentService = this.app.service('payments');
-
+        console.log('****************Params************************');
+        console.log(params);
         // return new Promise(function(resolve, reject) {
         const accessToken = params.accessToken; /* Not required */
         if (accessToken !== undefined) {
+            console.log('****************Auth************************');
+            console.log(accessToken);
             const ref = data.ref; /* Not required. This is for e-payment */
             const payment = data.payment;
             const paymentType = payment.type; /* Required. This is either "Cash*, "Cheque", "e-Payment" */
