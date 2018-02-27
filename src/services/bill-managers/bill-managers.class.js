@@ -50,26 +50,28 @@ class Service {
                       if (awaitPriceServices.data[n].modifiers.length > 0) {
                         let len6 = awaitPriceServices.data[n].modifiers.length - 1;
                         for (let m = 0; m <= len6; m++) {
-                          let tag = await serviceTagsService.get(awaitPriceServices.data[n].modifiers[m].tagId);
-                          if (awaitPriceServices.data[n].modifiers[m].modifierType === 'Percentage') {
-                            let p = awaitPriceServices.data[n].modifiers[m].modifierValue / 100;
-                            let calculatedP = p * awaitPriceServices.data[n].price;
-                            awaitOrgServices.data[i].categories[j].services[k].price.push({
-                              name: tag.name,
-                              isBase: false,
-                              priceId: awaitPriceServices.data[n]._id,
-                              _id: awaitPriceServices.data[n].modifiers[m]._id,
-                              price: calculatedP
-                            });
-                          } else if (awaitPriceServices.data[n].modifiers[m].modifierType === 'Amount') {
-                            awaitOrgServices.data[i].categories[j].services[k].price.push({
-                              name: tag.name,
-                              isBase: false,
-                              priceId: awaitPriceServices.data[n]._id,
-                              _id: awaitPriceServices.data[n].modifiers[m]._id,
-                              price: awaitPriceServices.data[n].modifiers[m].modifierValue
-                            });
-                          }
+                            if(awaitPriceServices.data[n].modifiers[m].tagId !== undefined){
+                                let tag = await serviceTagsService.get(awaitPriceServices.data[n].modifiers[m].tagId);
+                                if (awaitPriceServices.data[n].modifiers[m].modifierType === 'Percentage') {
+                                  let p = awaitPriceServices.data[n].modifiers[m].modifierValue / 100;
+                                  let calculatedP = p * awaitPriceServices.data[n].price;
+                                  awaitOrgServices.data[i].categories[j].services[k].price.push({
+                                    name: tag.name,
+                                    isBase: false,
+                                    priceId: awaitPriceServices.data[n]._id,
+                                    _id: awaitPriceServices.data[n].modifiers[m]._id,
+                                    price: calculatedP
+                                  });
+                                } else if (awaitPriceServices.data[n].modifiers[m].modifierType === 'Amount') {
+                                  awaitOrgServices.data[i].categories[j].services[k].price.push({
+                                    name: tag.name,
+                                    isBase: false,
+                                    priceId: awaitPriceServices.data[n]._id,
+                                    _id: awaitPriceServices.data[n].modifiers[m]._id,
+                                    price: awaitPriceServices.data[n].modifiers[m].modifierValue
+                                  });
+                                }
+                            }
                         }
                       }
                     }
