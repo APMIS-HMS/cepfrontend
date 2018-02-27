@@ -31,22 +31,12 @@ class FundWalletService {
         const employeeService = this.app.service('employees');
         const peopleService = this.app.service('people');
         const paymentService = this.app.service('payments');
-<<<<<<< HEAD
-        console.log('****************Params************************');
-        console.log(params);
-        // return new Promise(function(resolve, reject) {
-        const accessToken = params.accessToken; /* Not required */
-        if (accessToken !== undefined) {
-            console.log('****************Auth************************');
-            console.log(accessToken);
-=======
 
         // console.log(params);
         // return new Promise(function(resolve, reject) {
         const accessToken = params.accessToken; /* Not required */
         if (accessToken !== undefined) {
             console.log(data);
->>>>>>> e248ca97dac5d777c8e71487310e545537ab94ab
             const ref = data.ref; /* Not required. This is for e-payment */
             const payment = data.payment;
             const paymentType = payment.type; /* Required. This is either "Cash*, "Cheque", "e-Payment" */
