@@ -112,7 +112,7 @@ export class LabRequestsComponent implements OnInit {
             query: {
               'facilityId': this.selectedFacility._id,
               name: { $regex: -1, '$options': 'i' }
-            }
+            } 
           }).then(payload => {
             this.investigations = [];
             payload.data.forEach(item => {
