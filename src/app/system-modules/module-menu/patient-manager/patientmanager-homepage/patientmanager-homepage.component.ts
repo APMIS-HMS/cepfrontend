@@ -185,7 +185,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.getCategories();
 
     this.systemService.currentMessage.subscribe(message => {
-      if(message){
+      if (message) {
         this.slideEdit(message);
       }
     });
