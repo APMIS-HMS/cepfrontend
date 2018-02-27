@@ -41,7 +41,7 @@ export class AccessRoleDetailsComponent implements OnInit {
 
 
   private _getAllRoles() {
-    this._accessControlService.find({ query: {facilityId: this.selectedFacility._id } }).then(res => {
+    this._accessControlService.find({ query: {facilityId: this.selectedFacility._id, $limit:100 } }).then(res => {
       this.loading = false;
       if (res.data.length > 0) {
         this.roles = res.data;
