@@ -185,7 +185,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.getCategories();
 
     this.systemService.currentMessage.subscribe(message => {
-      if(message){
+      if (message) {
         this.slideEdit(message);
       }
     });
@@ -523,10 +523,38 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     }
 
     if (check.length < 1) {
-      data.push({
-        planType: cover,
-        isDefault: Boolean(this.isDefault.value)
-      });
+      if (cover === 'wallet') {
+        data.push({
+          planType: cover,
+          isDefault: Boolean(this.isDefault.value)
+        });
+      }else if(cover === 'insurance'){
+        data.push({
+          planType: cover,
+          isDefault: Boolean(this.isDefault.value),
+          planDetails: {
+            hmoId: this.hmoPlanId.value.hmoId,
+            principalId: this.insuranceId.value
+          }
+        });
+      }else if(cover === 'company'){
+        data.push({
+          planType: cover,
+          isDefault: Boolean(this.isDefault.value),
+          planDetails: {
+            companyId: this.ccPlanId.value.hmoId,
+            principalId: this.insuranceId.value
+          }
+        });
+      }else if(cover === 'family'){
+        data.push({
+          planType: cover,
+          isDefault: Boolean(this.isDefault.value),
+          planDetails: {
+            principalId: this.familyPlanId.value
+          }
+        });
+      }
     }
     console.log(data, this.patient.paymentPlan);
     this.patientService.patch(this.patient._id, {
