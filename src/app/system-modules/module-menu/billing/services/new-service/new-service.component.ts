@@ -42,8 +42,8 @@ export class NewServiceComponent implements OnInit {
   btnTitle = 'CREATE SERVICE';
   btnPanel = 'ADD PANEL';
   searchText = '';
-  showServiceDropdown: boolean = false;
-  serviceDropdownLoading: boolean = false;
+  showServiceDropdown = false;
+  serviceDropdownLoading = false;
 
   constructor(private formBuilder: FormBuilder, private _locker: CoolLocalStorage,
     private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
@@ -141,7 +141,7 @@ export class NewServiceComponent implements OnInit {
       this.frmNewservice.controls['serviceName'].setValue(this.selectedService.name);
       this.frmNewservice.controls['serviceCat'].setValue(this.selectedService.categoryId);
       this.frmNewservice.controls['serviceCode'].setValue(this.selectedService.code);
-      let basedPrice = this.selectedService.price.filter(x => x.isBase === true)[0];
+      const basedPrice = this.selectedService.price.filter(x => x.isBase === true)[0];
       this.frmNewservice.controls['servicePrice'].setValue(basedPrice.price);
       this.priceItems = JSON.parse(JSON.stringify(this.selectedService.price));
 
@@ -192,10 +192,10 @@ export class NewServiceComponent implements OnInit {
   panelItemTemplate(payload) {
     this.allServiceItems = [];
     if (payload.data[0].categories.length > 0) {
-      let len = payload.data[0].categories.length - 1;
+      const len = payload.data[0].categories.length - 1;
       for (let l = 0; l <= len; l++) {
         if (payload.data[0].categories[l].services.length > 0) {
-          let len2 = payload.data[0].categories[l].services.length - 1;
+          const len2 = payload.data[0].categories[l].services.length - 1;
           for (let i = 0; i <= len2; i++) {
             this.allServiceItems.push({
               category: payload.data[0].categories[l].name,
@@ -224,8 +224,8 @@ export class NewServiceComponent implements OnInit {
 
       }
       this.onCreate(value);
-    }else{
-      this.systemModuleService.announceSweetProxy('Missing field','error');
+    }else {
+      this.systemModuleService.announceSweetProxy('Missing field', 'error');
     }
   }
 
