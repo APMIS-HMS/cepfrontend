@@ -159,7 +159,7 @@ export class NewServiceComponent implements OnInit {
   }
   addNew() {
     this.frmNewservice = this.formBuilder.group({
-      serviceName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+      serviceName: ['', [<any>Validators.required]],
       serviceCat: ['', [<any>Validators.required]],
       serviceAutoCode: ['', []],
       serviceCode: ['', []],
@@ -214,6 +214,7 @@ export class NewServiceComponent implements OnInit {
   }
 
   newService(model: any, valid: boolean) {
+    console.log(this.frmNewservice.controls);
     if (valid) {
       const value = {
         name: this.frmNewservice.controls['serviceName'].value,
@@ -247,6 +248,7 @@ export class NewServiceComponent implements OnInit {
         this.frmNewservice.reset();
         this.refreshService.emit(this.selectedService);
       }, error => {
+        console.log(error);
         this.isDisableBtn = false;
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy('Failed to add Service', 'error');
