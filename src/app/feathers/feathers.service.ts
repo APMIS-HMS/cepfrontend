@@ -12,7 +12,7 @@ const rx = require('feathers-reactive');
 const RxJS = require('rxjs/Rx');
 // const HOST = 'http://13.84.217.251:8082'; // thn
 // const HOST = 'http://172.16.16.35:3031'; // Mr Segun
- const HOST = 'https://apmisapitest.azurewebsites.net'; // Sunday
+   const HOST = 'https://apmisapitest.azurewebsites.net'; // Sunday
 // const HOST = 'http://localhost:3031'; // Local Server
 
 
@@ -32,7 +32,7 @@ export class SocketService {
     });
   };
 
-  constructor(public locker: CoolLocalStorage, private _router:Router) {
+  constructor(public locker: CoolLocalStorage, private _router: Router) {
     this.HOST = HOST;
     this.socket = io(this.HOST);
     this._app = feathers()
@@ -71,7 +71,7 @@ export class RestService {
   logOut() {
     this.locker.clear();
   }
-  constructor(private locker: CoolLocalStorage, private _router:Router) {
+  constructor(private locker: CoolLocalStorage, private _router: Router) {
     this.HOST = HOST;
     if (this.locker.getObject('auth') !== undefined && this.locker.getObject('auth') != null) {
       const auth: any = this.locker.getObject('token')
@@ -92,13 +92,13 @@ export class RestService {
         .configure(authentication({ storage: window.localStorage })); // Configure feathers-hooks
     }
   }
-  loginIntoApp(query) {
-    return this._app.authenticate({
-      "strategy": 'local',
-      'email': query.email,
-      'password': query.password
-    });
-  }
+  // loginIntoApp(query) {
+  //   return this._app.authenticate({
+  //     'strategy': 'local',
+  //     'email': query.email,
+  //     'password': query.password
+  //   });
+  // }
   getService(value: any) {
     // this._app.authenticate();
     return this._app.service(value);

@@ -103,10 +103,10 @@ export class PersonService {
     // return this._fundWalletRest.create(payload);
   }
 
-  altFundWallet(payload) {
+  httpFundWallet(payload) {
     const host = this._restService.getHost();
     const path = host + '/fund-wallet';
-    const token = localStorage.getItem('token');
+    const token = 'Bearer' + localStorage.getItem('token');
     const headers = new Headers();
         headers.append('Content-Type', 'application/json');
         headers.append('Authorization', token);
