@@ -35,6 +35,7 @@ export class PersonService {
     this._fundWalletSocket = _socketService.getService('fund-wallet');
     this._fundWalletRest = _restService.getService('fund-wallet');
     this._socket.timeout = 30000;
+    this._fundWalletSocket.timeout = 50000;
     this.createListener = Observable.fromEvent(this._socket, 'created');
     this.updateListener = Observable.fromEvent(this._socket, 'updated');
   }
@@ -99,6 +100,7 @@ export class PersonService {
   }
 
   fundWallet(payload: any) {
+    console.log(payload);
     return this._fundWalletSocket.create(payload);
     // return this._fundWalletRest.create(payload);
   }
@@ -111,7 +113,7 @@ export class PersonService {
         headers.append('Content-Type', 'application/json');
         headers.append('Authorization', token);
     const options = new RequestOptions({headers: headers});
-   return this.http.post(path, payload, options);
+   return this.http.post(path, payload);
   }
 
   // fundWallet(walletTransaction: WalletTransaction) {
