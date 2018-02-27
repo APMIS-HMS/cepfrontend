@@ -102,7 +102,7 @@ export class ConsultingRoomCheckinComponent implements OnInit {
       if (res.data.length > 0) {
         this._getEmployee(res.data[0]._id);
       }
-    }).catch(err => console.log(err));
+    }).catch(err => {});
   }
 
   private _getEmployee(pharmId: string) {
@@ -117,7 +117,7 @@ export class ConsultingRoomCheckinComponent implements OnInit {
           this.locations = minorLocations.filter(x => x.locationId === pharmId && locationIds.includes(x._id));
         }
       }
-    }).catch(err => console.log(err));
+    }).catch(err => {});
   }
 
   changeRoom(checkIn: any) {

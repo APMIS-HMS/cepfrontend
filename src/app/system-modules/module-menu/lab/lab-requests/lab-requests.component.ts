@@ -94,7 +94,6 @@ export class LabRequestsComponent implements OnInit {
   ) {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.loginEmployee = res;
-      console.log(this.loginEmployee);
     }).catch(err => console.log(err));
   }
 
@@ -115,7 +114,6 @@ export class LabRequestsComponent implements OnInit {
               name: { $regex: -1, '$options': 'i' }
             }
           }).then(payload => {
-            console.log(payload);
             this.investigations = [];
             payload.data.forEach(item => {
               const investigation: InvestigationModel = <InvestigationModel>{};
@@ -141,7 +139,6 @@ export class LabRequestsComponent implements OnInit {
               }
             })
           }).catch(err => {
-            console.log(err);
           });
         } else {
           this.investigationService.find({
@@ -175,7 +172,6 @@ export class LabRequestsComponent implements OnInit {
               }
             })
           }).catch(err => {
-            console.log(err);
           });
         }
       })
@@ -389,11 +385,7 @@ export class LabRequestsComponent implements OnInit {
   }
   childChanged($event, investigation: InvestigationModel,
     childInvestigation?: InvestigationModel, isChild = false) {
-      console.log($event);
-      console.log(investigation);
-      console.log(childInvestigation);
-      console.log(isChild);
-    if ($event.checked || childInvestigation !== undefined) {
+        if ($event.checked || childInvestigation !== undefined) {
       if (investigation.investigation.isPanel) {
         // isPanel
         if (childInvestigation !== undefined) {
@@ -439,10 +431,6 @@ export class LabRequestsComponent implements OnInit {
   }
   investigationChanged($event, investigation: InvestigationModel,
     childInvestigation?: InvestigationModel, isChild = false) {
-    console.log($event);
-    console.log(investigation);
-    console.log(childInvestigation);
-    console.log(isChild);
     if ($event.checked || childInvestigation !== undefined) {
       if (investigation.investigation.isPanel) {
         // isPanel
@@ -701,7 +689,6 @@ export class LabRequestsComponent implements OnInit {
 
   save(valid, value) {
     if (valid) {
-      console.log(value);
       // delete this.selectedPatient.appointments;
       // delete this.selectedPatient.encounterRecords;
       // delete this.selectedPatient.orders;
@@ -736,10 +723,7 @@ export class LabRequestsComponent implements OnInit {
       // const selectedFacility = <any>this.locker.getObject('miniFacility');
       const copyBindInvestigation = JSON.parse(JSON.stringify(this.bindInvestigations));
       const readyCollection: any[] = [];
-
-      console.log(copyBindInvestigation);
       copyBindInvestigation.forEach((item: InvestigationModel, i) => {
-        console.log(item);
         if (item.investigation.isPanel) {
           delete item.isChecked;
           delete item.temporaryInvestigationList;
@@ -765,7 +749,6 @@ export class LabRequestsComponent implements OnInit {
         createdBy: this.loginEmployee._id
       };
 
-      console.log(request);
       // const billGroup: BillIGroup = <BillIGroup>{};
       // billGroup.discount = 0;
       // billGroup.facilityId = this.selectedFacility._id;
@@ -796,7 +779,6 @@ export class LabRequestsComponent implements OnInit {
       // })
 
       this.requestService.customCreate(request).then(res => {
-        console.log(res);
         if (res.status === 'success') {
           this.frmNewRequest.reset();
           this._getAllPendingRequests();
@@ -930,7 +912,6 @@ export class LabRequestsComponent implements OnInit {
       }).catch(err => console.error(err));
     } else {
       this.requestService.customFind({ query: { 'facilityId': this.selectedFacility._id }}).then(res => {
-        console.log(res);
         this.loading = false;
         let labId = '';
         if (this.selectedLab !== null && this.selectedLab.typeObject !== undefined) {
@@ -992,7 +973,6 @@ export class LabRequestsComponent implements OnInit {
               }
 
               this.pendingRequests.push(pendingLabReq);
-              console.log(this.pendingRequests);
             }
           });
         });

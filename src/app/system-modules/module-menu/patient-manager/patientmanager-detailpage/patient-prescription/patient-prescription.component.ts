@@ -259,7 +259,6 @@ export class PatientPrescriptionComponent implements OnInit {
                 this.authorizingRx = false;
               }
             }).catch(err => {
-              console.log(err);
             });
             // bill model
             // const billItemArray = [];
