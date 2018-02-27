@@ -136,7 +136,7 @@ export class NewModefierComponent implements OnInit {
     this.servicePriceService.createModifier(modifier).then(payload => {
       this.systemModuleService.off();
       this.selectedFacilityServicePrice = payload;
-      this.systemModuleService.announceSweetProxy('Price modifier added successful', 'success', null, null, null, null, null, null, null);
+      this.systemModuleService.announceSweetProxy('Price modifier added successful', 'success', null, null, null, null);
       this.refreshModifiers.emit(true);
       this.close_onClick();
     }, err => {
