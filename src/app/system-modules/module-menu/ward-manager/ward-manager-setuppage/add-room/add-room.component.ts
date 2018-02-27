@@ -2,7 +2,7 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 // tslint:disable-next-line:max-line-length
 import {
-	RoomGroupService, WardAdmissionService, FacilitiesServiceCategoryService, FacilitiesService, FacilityPriceService
+	RoomGroupService, BedOccupancyService, FacilitiesServiceCategoryService, FacilitiesService, FacilityPriceService
 } from '../../../../../services/facility-manager/setup/index';
 import { Facility, WardDetail, Room, WardRoom, User } from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -44,7 +44,7 @@ export class AddRoomComponent implements OnInit {
 		private _route: ActivatedRoute,
 		private _router: Router,
 		private _roomGroupService: RoomGroupService,
-		private _wardAdmissionService: WardAdmissionService,
+		private _bedOccupancyService: BedOccupancyService,
 		public facilityService: FacilitiesService,
 		private _locker: CoolLocalStorage,
     private fb: FormBuilder,
@@ -56,7 +56,6 @@ export class AddRoomComponent implements OnInit {
 
 	ngOnInit() {
 		this.facility = <Facility> this._locker.getObject('selectedFacility');
-		this.miniFacility = <Facility>this._locker.getObject('miniFacility');
 		this.employeeDetails = this._locker.getObject('loginEmployee');
 		this.user = <User>this._locker.getObject('auth');
 
@@ -108,8 +107,8 @@ export class AddRoomComponent implements OnInit {
 	async getServicePriceTag() {
     const payload = { facilityId: this.facility._id };
     const wardPrice = await this._facilitiesServiceCategoryService.wardRoomPrices(payload);
+    this.serviceLoading = false;
     if (wardPrice.status === 'success' && wardPrice.data.length > 0) {
-      this.serviceLoading = false;
       this.servicePriceTags = wardPrice.data;
     }
   }
@@ -139,7 +138,7 @@ export class AddRoomComponent implements OnInit {
             this.addingRoom = false;
             this.disableAddRoomBtn = true;
             const text = `${value.room} room has been edited successfully!`;
-            this._systemModuleService.announceSweetProxy(text, 'success');
+            this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
           } else {
             this.disableAddRoomBtn = false;
             const text = `There was a problem editing ${value.room} room!`;
@@ -158,7 +157,7 @@ export class AddRoomComponent implements OnInit {
             this.addingRoom = false;
             this.disableAddRoomBtn = true;
             const text = `${value.room} room has been created successfully!`;
-            this._systemModuleService.announceSweetProxy(text, 'success');
+            this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
           } else {
             this.disableAddRoomBtn = false;
             const text = `There was a problem trying to create ${value.room} room!`;

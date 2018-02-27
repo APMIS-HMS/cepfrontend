@@ -13,8 +13,8 @@ export class InventoryTransferStatusService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('inventorytransferstatuses');
-    this._socket = _socketService.getService('inventorytransferstatuses');
+    this._rest = _restService.getService('inventory-transfer-statuses');
+    this._socket = _socketService.getService('inventory-transfer-statuses');
        this._socket.timeout = 30000;
   }
 

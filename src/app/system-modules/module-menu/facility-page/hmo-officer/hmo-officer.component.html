@@ -1,0 +1,86 @@
+<div class="pp-card shadow-grey">
+    <ul class="pg-menuWrap">
+        <li (click)="tab1_click()" [class.pg-menuActive]="tab1">
+            <i class="fa fa-pause" aria-hidden="true"></i> Pending Bills</li>
+        <li (click)="tab2_click()" [class.pg-menuActive]="tab2">
+            <i class="fa fa-history" aria-hidden="true"></i>Billing History</li>
+    </ul>
+    <div *ngIf="tab1">
+        <div class="card-title">Pending Bills</div>
+
+        <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5">
+            <thead>
+                <tr>
+                    <th>
+                        <span style="padding-left: 3px;">Date</span>
+                    </th>
+                    <th>
+                        <span style="padding-left: 3px;">Principal</span>
+                    </th>
+                    <th>
+                        <span style="padding-left: 3px;">Amount</span>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr (click)="billDetail(bill)" *ngFor="let bill of bills">
+                    <td>{{bill.updatedAt|date:'medium'}}</td>
+                    <td>
+                        <div class="empWrap">
+                            <div class="list-img" *ngIf="bill.principalObject.personDetails.profileImageObject === undefined">
+                                <img src="assets/images/users/default.png">
+                            </div>
+                            <div class="list-img" *ngIf="bill.principalObject.personDetails.profileImageObject !== undefined">
+                                <img [src]="facilitiesService.transform(bill.principalObject.personDetails.profileImageObject?.thumbnail)">
+                            </div>
+                            <div>{{bill.principalObject.personDetails.firstName}} {{bill.principalObject.personDetails.lastName}}</div>
+                        </div>
+                    </td>
+                    <td class="td-worspace">&#8358; {{bill.grandTotal|number:'1.2-2'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div *ngIf="tab2">
+        <div class="card-title">Billing History</div>
+
+        <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5">
+            <thead>
+                <tr> 
+                    <th>
+                        <span style="padding-left: 3px;">Date</span>
+                    </th>
+                    <th>
+                        <span style="padding-left: 3px;">Patient</span>
+                    </th>
+                    <th>
+                        <span style="padding-left: 3px;">Amount</span>
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr (click)="billHistoryDetail(bill)" *ngFor="let bill of historyBills">
+                    <td>{{bill.updatedAt|date:'medium'}}</td>
+                    <td>
+                        <div class="empWrap">
+                            <div class="list-img">
+                                <img src="assets/images/users/default.png">
+                            </div>
+                            <div>{{bill.principalObject.personDetails.firstName}} {{bill.principalObject.personDetails.lastName}}</div>
+                        </div>
+                    </td>
+                    <td class="td-worspace">&#8358; {{bill.grandTotal|number:'1.2-2'}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div *ngIf="billDetail_show" class="modal-overlay">
+  <app-hmo-bill-detail (closeModal)="close_onClick($event)" [selectedBill]="selectedBill" id="form-modal" class="form-modal center-center"></app-hmo-bill-detail>
+</div>
+<div *ngIf="billHistoryDetail_show" class="modal-overlay">
+    <app-hmo-bill-history-detail (closeModal)="close_onClick($event)" [selectedBill]="selectedBill" id="form-modal" class="form-modal center-center"></app-hmo-bill-history-detail>
+</div>

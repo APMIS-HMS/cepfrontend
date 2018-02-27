@@ -4,6 +4,7 @@ import { SupplierService, PurchaseEntryService } from '../../../../../services/f
 import { Facility, PurchaseEntry } from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
+import { invalid } from 'moment';
 
 @Component({
   selector: 'app-transaction-history',
@@ -11,11 +12,11 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./transaction-history.component.scss']
 })
 export class TransactionHistoryComponent implements OnInit {
-  suppliers: string[];
+  suppliers: any[];
   newPayment = false;
   paymentHistory = false;
-  invoices = [];
-  selected_supplier = 'Maiden Pharmaceuticals';
+  invoices:any = [];
+  selected_supplier:any;
 
   frmFilterSupplier: FormControl = new FormControl();
 
@@ -29,19 +30,24 @@ export class TransactionHistoryComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.selectedFacility = <Facility> this.locker.getObject('selectedFacility');
-    this.route.params.subscribe(params => {
-      const id = params['id'];
-      if (id !== undefined) {
-        this.invoiceService.find({ query: { supplierId: id, facilityId: this.selectedFacility._id } }).subscribe(value => {
-          this.invoices = value.data;
-        });
-      }
-    });
-
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.getHistory();
     this.getSuppliers();
     this.frmFilterSupplier.valueChanges.subscribe(payload => {
       this.router.navigate(['/dashboard/product-manager/supplier-details', payload]);
+    });
+  }
+
+  getHistory() {
+    this.route.params.subscribe(params => {
+      const id = params['id'];
+      if (id !== undefined) {
+        this.invoiceService.getInvoice(id, { query: { supplierId: id, facilityId: this.selectedFacility._id } }).subscribe(value => {
+          this.invoices = value;
+          this.selected_supplier = value.supplier;
+        }, error => {
+        });
+      }
     });
   }
 
@@ -56,11 +62,25 @@ export class TransactionHistoryComponent implements OnInit {
   closeHistory_onClick(message: boolean): void {
     this.paymentHistory = false;
   }
-  newPaymentShow() {
+  newPaymentShow(invoice) {
+    this.selectedInvoice = invoice;
     this.newPayment = true;
   }
   PaymentHistoryShow(invoice) {
     this.selectedInvoice = invoice;
     this.paymentHistory = !this.paymentHistory;
+  }
+
+  checkForOutstanding(value) {
+    const val = value.invoiceAmount - value.amountPaid;
+    if (isNaN(val)) {
+      return 0;
+    }else {
+      return val;
+    }
+  }
+
+  onRefreshHistory(value) {
+    this.getHistory();
   }
 }

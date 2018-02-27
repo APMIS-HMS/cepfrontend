@@ -32,6 +32,7 @@ export class FacilityPageHomeComponent implements OnInit {
   dashboardContentArea = false;
   networkContentArea = false;
   accessContentArea = false;
+  hmoContentArea = false;
 
   showUnit = false;
   showLoc = false;
@@ -68,7 +69,7 @@ export class FacilityPageHomeComponent implements OnInit {
     this.router.events
       .filter((event) => event instanceof NavigationEnd)
       .subscribe((event: any) => {
-        const page:string = event.url;
+        const page: string = event.url;
         this.checkPageUrl(page);
       });
   }
@@ -87,7 +88,7 @@ export class FacilityPageHomeComponent implements OnInit {
 
   deptDetalContentArea_remove(model: Department) {
     this.systemModuleService.on();
-    let index = this.selectedFacility.departments.findIndex(x => x._id === model._id);
+    const index = this.selectedFacility.departments.findIndex(x => x._id === model._id);
     this.selectedFacility.departments.splice(index, 1);
     this.facilityService.update(this.selectedFacility).then(payload => {
       this.systemModuleService.off();
@@ -120,13 +121,11 @@ export class FacilityPageHomeComponent implements OnInit {
   changeRoute(value: string) {
     this.router.navigate(['/dashboard/facility/' + value]).then(
       payload =>{
-        console.log(payload);
       }
     ).catch(error =>{
-      console.log(error);
     });
     this.pgMenuToggle = false;
-    if (value == '') {
+    if (value === '') {
       this.modulesContentArea = false;
       this.optionsContentArea = false;
       this.departmentsContentArea = false;
@@ -136,7 +135,8 @@ export class FacilityPageHomeComponent implements OnInit {
       this.empContentArea = false;
       this.networkContentArea = false;
       this.accessContentArea = false;
-    } else if (value == 'employees') {
+      this.hmoContentArea = false;
+    } else if (value === 'employees') {
       this.empContentArea = true;
       this.optionsContentArea = false;
       this.departmentsContentArea = false;
@@ -145,7 +145,8 @@ export class FacilityPageHomeComponent implements OnInit {
       this.professionContentArea = false;
       this.networkContentArea = false;
       this.accessContentArea = false;
-    } else if (value == 'departments') {
+      this.hmoContentArea = false;
+    } else if (value === 'departments') {
       this.modulesContentArea = false;
       this.optionsContentArea = false;
       this.departmentsContentArea = true;
@@ -154,7 +155,8 @@ export class FacilityPageHomeComponent implements OnInit {
       this.professionContentArea = false;
       this.empContentArea = false;
       this.accessContentArea = false;
-    } else if (value == 'locations') {
+      this.hmoContentArea = false;
+    } else if (value === 'locations') {
       this.modulesContentArea = false;
       this.optionsContentArea = false;
       this.departmentsContentArea = false;
@@ -164,7 +166,8 @@ export class FacilityPageHomeComponent implements OnInit {
       this.empContentArea = false;
       this.networkContentArea = false;
       this.accessContentArea = false;
-    } else if (value == 'workspaces') {
+      this.hmoContentArea = false;
+    } else if (value === 'workspaces') {
       this.modulesContentArea = false;
       this.optionsContentArea = false;
       this.departmentsContentArea = false;
@@ -173,7 +176,8 @@ export class FacilityPageHomeComponent implements OnInit {
       this.professionContentArea = false;
       this.empContentArea = false;
       this.accessContentArea = false;
-    } else if (value == 'options') {
+      this.hmoContentArea = false;
+    } else if (value === 'options') {
       this.modulesContentArea = false;
       this.optionsContentArea = true;
       this.departmentsContentArea = false;
@@ -182,7 +186,8 @@ export class FacilityPageHomeComponent implements OnInit {
       this.professionContentArea = false;
       this.empContentArea = false;
       this.accessContentArea = false;
-    } else if (value == 'profession') {
+      this.hmoContentArea = false;
+    } else if (value === 'profession') {
       this.modulesContentArea = false;
       this.optionsContentArea = false;
       this.departmentsContentArea = false;
@@ -192,7 +197,8 @@ export class FacilityPageHomeComponent implements OnInit {
       this.empContentArea = false;
       this.networkContentArea = false;
       this.accessContentArea = false;
-    } else if (value == 'modules') {
+      this.hmoContentArea = false;
+    } else if (value === 'modules') {
       this.modulesContentArea = true;
       this.optionsContentArea = false;
       this.departmentsContentArea = false;
@@ -202,6 +208,9 @@ export class FacilityPageHomeComponent implements OnInit {
       this.empContentArea = false;
       this.networkContentArea = false;
       this.accessContentArea = false;
+      this.hmoContentArea = false;
+    } else if (value === 'network') {
+      // this.dashboardContentArea = false;
     } else if (value == 'network') {
       this.modulesContentArea = false;
       this.optionsContentArea = false;
@@ -212,6 +221,9 @@ export class FacilityPageHomeComponent implements OnInit {
       this.empContentArea = false;
       this.networkContentArea = true;
       this.accessContentArea = false;
+      this.hmoContentArea = false;
+    } else if (value === 'access') {
+      // this.dashboardContentArea = false;
     } else if(value == 'access'){
       this.modulesContentArea = false;
       this.optionsContentArea = false;
@@ -222,6 +234,19 @@ export class FacilityPageHomeComponent implements OnInit {
       this.empContentArea = false;
       this.networkContentArea = false;
       this.accessContentArea = true;
+      this.hmoContentArea = false;
+    } else if (value === 'hmo-officer') {
+      this.modulesContentArea = false;
+      this.optionsContentArea = false;
+      this.departmentsContentArea = false;
+      this.locationsContentArea = false;
+      this.workspaceContentArea = false;
+      this.professionContentArea = false;
+      this.empContentArea = false;
+      this.networkContentArea = false;
+      this.accessContentArea = false;
+      this.hmoContentArea = true;
+      // this.dashboardContentArea = false;
     }
   }
   getModules() {
@@ -259,7 +284,9 @@ export class FacilityPageHomeComponent implements OnInit {
       this.locationsContentArea = false;
       this.workspaceContentArea = false;
       this.professionContentArea = false;
+      this.accessContentArea = false;
       this.empContentArea = false;
+      this.hmoContentArea = false;
       // this.dashboardContentArea = false;
     } else if (param.includes('facility/departments')) {
       this.modulesContentArea = false;
@@ -269,7 +296,9 @@ export class FacilityPageHomeComponent implements OnInit {
       this.locationsContentArea = false;
       this.workspaceContentArea = false;
       this.professionContentArea = false;
+      this.accessContentArea = false;
       this.empContentArea = false;
+      this.hmoContentArea = false;
       // this.dashboardContentArea = false;
     } else if (param.includes('facility/locations')) {
       this.modulesContentArea = false;
@@ -280,7 +309,9 @@ export class FacilityPageHomeComponent implements OnInit {
       this.workspaceContentArea = false;
       this.professionContentArea = false;
       this.empContentArea = false;
+      this.accessContentArea = false;
       this.networkContentArea = false;
+      this.hmoContentArea = false;
       // this.dashboardContentArea = false;
     } else if (param.includes('facility/workspaces')) {
       this.modulesContentArea = false;
@@ -290,8 +321,10 @@ export class FacilityPageHomeComponent implements OnInit {
       this.locationsContentArea = false;
       this.workspaceContentArea = true;
       this.professionContentArea = false;
+      this.accessContentArea = false;
       this.empContentArea = false;
       this.networkContentArea = false;
+      this.hmoContentArea = false;
       // this.dashboardContentArea = false;
     } else if (param.includes('facility/options')) {
       this.modulesContentArea = false;
@@ -301,8 +334,10 @@ export class FacilityPageHomeComponent implements OnInit {
       this.locationsContentArea = false;
       this.workspaceContentArea = false;
       this.professionContentArea = false;
+      this.accessContentArea = false;
       this.empContentArea = false;
       this.networkContentArea = false;
+      this.hmoContentArea = false;
       // this.dashboardContentArea = false;
     } else if (param.includes('facility/profession')) {
       this.modulesContentArea = false;
@@ -312,8 +347,10 @@ export class FacilityPageHomeComponent implements OnInit {
       this.locationsContentArea = false;
       this.workspaceContentArea = false;
       this.professionContentArea = true;
+      this.accessContentArea = false;
       this.empContentArea = false;
       this.networkContentArea = false;
+      this.hmoContentArea = false;
       // this.dashboardContentArea = false;
     } else if (param.includes('facility/employee')) {
       this.modulesContentArea = false;
@@ -323,10 +360,12 @@ export class FacilityPageHomeComponent implements OnInit {
       this.locationsContentArea = false;
       this.workspaceContentArea = false;
       this.professionContentArea = false;
+      this.accessContentArea = false;
       this.empContentArea = true;
       this.networkContentArea = false;
+      this.hmoContentArea = false;
       // this.dashboardContentArea = false;
-    } else if(param.includes('facility/network')){
+    } else if (param.includes('facility/network')) {
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
@@ -334,9 +373,10 @@ export class FacilityPageHomeComponent implements OnInit {
       this.locationsContentArea = false;
       this.workspaceContentArea = false;
       this.professionContentArea = false;
+      this.accessContentArea = false;
       this.empContentArea = false;
       this.networkContentArea = true;
-    }else if(param.includes('facility/access')){
+    } else if (param.includes('facility/access')) {
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
@@ -347,7 +387,33 @@ export class FacilityPageHomeComponent implements OnInit {
       this.empContentArea = false;
       this.networkContentArea = false;
       this.accessContentArea = true;
-    }else{
+      // this.dashboardContentArea = false;
+    } else if(param.includes('facility/access')){
+      this.modulesContentArea = false;
+      // this.contentSecMenuToggle = false;
+      this.optionsContentArea = false;
+      this.departmentsContentArea = false;
+      this.locationsContentArea = false;
+      this.workspaceContentArea = false;
+      this.professionContentArea = false;
+      this.accessContentArea = false;
+      this.empContentArea = false;
+      this.networkContentArea = false;
+      this.accessContentArea = true;
+      this.hmoContentArea = false;
+    }else if (param.includes('facility/hmo-officer')) {
+      this.modulesContentArea = false;
+      // this.contentSecMenuToggle = false;
+      this.optionsContentArea = false;
+      this.departmentsContentArea = false;
+      this.locationsContentArea = false;
+      this.workspaceContentArea = false;
+      this.professionContentArea = false;
+      this.empContentArea = false;
+      this.networkContentArea = false;
+      this.accessContentArea = false;
+      this.hmoContentArea = true;
+    }else {
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
@@ -357,9 +423,10 @@ export class FacilityPageHomeComponent implements OnInit {
       this.professionContentArea = false;
       this.empContentArea = false;
       this.networkContentArea = false;
+      this.hmoContentArea = false;
       // this.dashboardContentArea = false;
     }
-  } 
+  }
   close_onClick(e) {
     this.newDept = false;
     this.newUnit = false;

@@ -1,5 +1,7 @@
 import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 
 @Injectable()
 export class SystemModuleService {
@@ -15,6 +17,9 @@ export class SystemModuleService {
 
   private loggedInUserAnnouncedSource = new Subject<Object>();
   loggedInUserAnnounced = this.loggedInUserAnnouncedSource.asObservable();
+  
+  private messageSource = new BehaviorSubject<Object>(false);
+  currentMessage = this.messageSource.asObservable();
 
   constructor() {
   }
@@ -39,15 +44,22 @@ export class SystemModuleService {
   on() {
     this.announceLoading({ status: 'On' });
   }
-  announceSweetProxy(title, type, cp?, html?, text?, from?) {
+  announceSweetProxy(title, type, cp?, html?, text?, from?, position?, showConfirmButton?, timer?) {
     this.announceSweet({
       title: title,
       type: type,
       cp,
       html: html,
       text: text,
-      from: from
+      from: from,
+      position: position,
+      showConfirmButton: showConfirmButton,
+      timer: timer
     });
+  }
+
+  changeMessage(message: Object) {
+    this.messageSource.next(message);
   }
 
 }

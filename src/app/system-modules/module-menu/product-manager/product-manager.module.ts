@@ -9,7 +9,7 @@ import {
     ProductTypeService, StoreService, ProductService, ManufacturerService, GenericService,
     RouteService, SupplierService, PresentationService, StrengthService, PurchaseEntryService
 } from '../../../services/facility-manager/setup/index';
-
+import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
 import { ProductEmitterService } from '../../../services/facility-manager/product-emitter.service';
 import { ProductManagerLandingpageComponent } from './product-manager-landingpage/product-manager-landingpage.component';
 import { CategoryManagerComponent } from './category-manager/category-manager.component';
@@ -53,7 +53,8 @@ import { OnlyMaterialModule } from '../../../shared-common-modules/only-material
         // CommonModule,
         // ReactiveFormsModule,
         // FormsModule,
-        productManagerRoutes
+        productManagerRoutes,
+        Ng4GeoautocompleteModule.forRoot()
     ],
     providers: [ProductEmitterService, ProductTypeService, StoreService, ProductService, PresentationService,
         GenericService, ManufacturerService, RouteService, SupplierService, StrengthService, PurchaseEntryService]

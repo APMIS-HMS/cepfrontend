@@ -21,4 +21,6 @@ export interface Appointment {
     category: any;
     orderStatusId: any;
     zoom: any;
+    isEngaged:any;
+    isCheckedOut:any;
 }

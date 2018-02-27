@@ -29,6 +29,7 @@ export class EmpAssignUnitComponent implements OnInit {
   units: any[] = [];
   employees: Employee[] = [];
   filteredEmployees: Employee[] = [];
+  isSaving = false;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() selectedEmployee: any = <any>{};
 
@@ -62,7 +63,7 @@ export class EmpAssignUnitComponent implements OnInit {
     this.frmNewEmp1.controls['unit'].valueChanges.subscribe((value: any) => {
       this.selectedUnit = value;
       this.filterDownEmployees(this.selectedUnit);
-  
+
     });
     this.frmNewEmp1.controls['dept'].valueChanges.subscribe((value: any) => {
       const deptIndex = this.departments.findIndex(x => x.name === value);
@@ -126,12 +127,19 @@ export class EmpAssignUnitComponent implements OnInit {
     employee.isChecked = e.checked;
   }
   assignUnit(valid, value) {
+    this.isSaving = true;
     const checkedEmployees = this.filteredEmployees.filter(emp => emp.isChecked === true);
 
     this.employeeService.assignUnit({ unitId: this.selectedUnit.name, employees: checkedEmployees }).then(payload => {
       this.getEmployees(this.selectedDepartment.name);
-      this.systemModuleService.announceSweetProxy('Employee assigned successfully','success');
+      this.isSaving = false;
+      if(this.selectedEmployee !== undefined && this.selectedEmployee._id !== undefined)
+      {
+        this.employeeService.announceEmployee(this.selectedEmployee);
+      }
+      this.systemModuleService.announceSweetProxy('Employee assigned successfully', 'success', null, null, null, null, null, null, null);
     }, error => {
+      this.isSaving = false;
       this.systemModuleService.announceSweetProxy('There was an error assigning this employee to this unit','error');
     });
   }

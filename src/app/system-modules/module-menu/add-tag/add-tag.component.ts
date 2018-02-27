@@ -76,16 +76,16 @@ export class AddTagComponent implements OnInit {
     this.systemModuleService.announceSweetProxy('You are about to delete this tag', 'question', this);
     this.editedTag = tag;
   }
-  
+
   sweetAlertCallback(result) {
     if(result.value){
       this._tagService.remove(this.editedTag._id, {}).then(callback_remove => {
-        this.systemModuleService.announceSweetProxy(this.editedTag.name + " is deleted", 'success');
+        this.systemModuleService.announceSweetProxy(this.editedTag.name + " is deleted", 'success', null, null, null, null, null, null, null);
         this.systemModuleService.off;
         this.getTags();
         this.editedTag = {};
       }, error => {
-        this.systemModuleService.off;
+        this.systemModuleService.off();
       });
     }
   }

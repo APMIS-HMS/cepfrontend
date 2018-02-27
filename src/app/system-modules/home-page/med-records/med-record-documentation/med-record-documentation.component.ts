@@ -70,4 +70,10 @@ export class MedRecordDocumentationComponent implements OnInit {
     this.tab2 = false;
     this.tab3 = true;
   }
+  chartClicked(e){
+
+  }
+  chartHovered(e){
+    
+  }
 }

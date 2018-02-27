@@ -47,26 +47,26 @@
                         <td routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}" class="table-content" style="padding:0;">
                             <div class="empWrap">
                                 <div class="list-img">
-                                    <div *ngIf="admittedPatientItem?.patientId?.personDetails.profileImageObject?.thumbnail == undefined">
+                                    <div *ngIf="admittedPatientItem?.personDetails.profileImageObject?.thumbnail == undefined">
                                         <img src="assets/images/users/default.png">
                                     </div>
-                                    <div *ngIf="admittedPatientItem?.patientId?.personDetails.profileImageObject?.thumbnail != undefined">
-                                        <img [src]="_inPatientService.transform(admittedPatientItem?.patientId?.personDetails.profileImageObject?.thumbnail)">
+                                    <div *ngIf="admittedPatientItem?.personDetails.profileImageObject?.thumbnail != undefined">
+                                        <img [src]="_inPatientService.transform(admittedPatientItem?.personDetails.profileImageObject?.thumbnail)">
                                     </div>
                                 </div>
                                 <div>
-                                    <b>{{admittedPatientItem.patientId?.personDetails?.personFullName}}</b><br>
-                                    <small>{{admittedPatientItem.patientId?.personDetails?.gender.name}}, </small>
-                                    <small>{{admittedPatientItem.patientId?.personDetails?.age}} year(s) old, </small>
-                                    <small>{{admittedPatientItem.patientId?.personDetails?.phoneNumber}}</small>
+                                    <b>{{admittedPatientItem?.personDetails?.firstName}} {{admittedPatientItem?.personDetails?.lastName}}</b><br>
+                                    <small>{{admittedPatientItem?.personDetails?.gender}}, </small>
+                                    <small>{{admittedPatientItem?.personDetails?.age}} old, </small>
+                                    <small>{{admittedPatientItem?.personDetails?.phoneNumber}}</small>
                                 </div>
                             </div>
                         </td>
                         <td routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}" class="table-content">
                             <div>
-                                <b>{{admittedPatientItem?.transfers[admittedPatientItem?.transfers.length -1]?.name}}</b><br>
-                                <small><b>Room: </b>{{admittedPatientItem?.transfers[admittedPatientItem?.transfers.length -1]?.roomId.name}}, </small><br>
-                                <small><b>Bed: </b>{{admittedPatientItem?.transfers[admittedPatientItem?.transfers.length -1]?.bedId.name}} </small>
+                                <b>{{admittedPatientItem?.minorLocation?.name}}</b><br>
+                                <small><b>Room: </b>{{admittedPatientItem?.transfers[admittedPatientItem?.transfers.length -1]?.room?.name}}, </small><br>
+                                <small><b>Bed: </b>{{admittedPatientItem?.transfers[admittedPatientItem?.transfers.length -1]?.bed?.name}} </small>
                             </div>
                         </td>
                         <td routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}" class="table-content">

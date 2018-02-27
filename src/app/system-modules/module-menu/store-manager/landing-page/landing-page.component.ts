@@ -25,10 +25,10 @@ export class LandingPageComponent implements OnInit {
   searchControl = new FormControl();
   constructor(private locker: CoolLocalStorage, private productTypeService: ProductTypeService,
     private storeService: StoreService, private _storeEventEmitter: StoreEmitterService) {
-      
+
     this.selMinorLocation.valueChanges.subscribe(value => {
       this.loading = true;
-      this.storeService.getList(this.selectedFacility._id,{ query: { minorLocationId: value } }).then(payload => {
+      this.storeService.getList(this.selectedFacility._id, { query: { minorLocationId: value } }).then(payload => {
         this.loading = false;
         this.stores = payload.data;
       });
@@ -36,7 +36,7 @@ export class LandingPageComponent implements OnInit {
 
     this.selProductType.valueChanges.subscribe(value => {
       this.loading = true;
-      this.storeService.getList(this.selectedFacility._id,{ query: { 'productTypeId': value } }).then(payload => {
+      this.storeService.getList(this.selectedFacility._id, { query: { 'productTypeId': value } }).then(payload => {
         this.loading = false;
         this.stores = payload.data;
       });
@@ -53,7 +53,7 @@ export class LandingPageComponent implements OnInit {
     const subscribeForPerson = this.searchControl.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
-      .switchMap((term: any[]) => this.storeService.getList(this.selectedFacility._id,{
+      .switchMap((term: any[]) => this.storeService.getList(this.selectedFacility._id, {
         query:
         {
           name: this.searchControl.value
@@ -75,7 +75,7 @@ export class LandingPageComponent implements OnInit {
     this.newStore = false;
   }
 
-  refreshStore(value){
+  refreshStore(value) {
     this.getStores();
   }
 
@@ -87,7 +87,7 @@ export class LandingPageComponent implements OnInit {
 
   getStores() {
     this.loading = true;
-    this.storeService.getList(this.selectedFacility._id,{
+    this.storeService.getList(this.selectedFacility._id, {
       query:
         {
           name: ''

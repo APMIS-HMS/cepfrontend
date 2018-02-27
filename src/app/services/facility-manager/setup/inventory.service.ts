@@ -6,6 +6,7 @@ import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class InventoryService {
   public _socket;
+  public _socketList;
   private _rest;
   public createlistner;
   public updatelistner;
@@ -23,6 +24,7 @@ export class InventoryService {
   ) {
     this._rest = _restService.getService('inventories');
     this._socket = _socketService.getService('inventories');
+    this._socketList = _socketService.getService('list-of-inventories');
     this._socket.timeout = 30000;
     this.createlistner = Observable.fromEvent(this._socket, 'created');
     this.updatelistner = Observable.fromEvent(this._socket, 'updated');
@@ -45,6 +47,10 @@ export class InventoryService {
     return this._socket.find(query);
   }
 
+  findList(query: any) {
+    return this._socketList.find(query);
+  }
+
   findAll() {
     return this._socket.find();
   }
@@ -61,11 +67,10 @@ export class InventoryService {
   }
 
   patch(_id: any, data: any, param: any) {
-      return this._socket.patch(_id, data, param);
+    return this._socket.patch(_id, data, param);
   }
 
   update(inventory: any) {
     return this._socket.update(inventory._id, inventory);
   }
-  
 }

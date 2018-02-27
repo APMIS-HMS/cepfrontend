@@ -1,3 +1,4 @@
+import { VISIBILITY_GLOBAL } from './../../../../../../shared-module/helpers/global-config';
 import { ScopeLevelService } from "app/services/module-manager/setup";
 import { AuthFacadeService } from "app/system-modules/service-facade/auth-facade.service";
 import {
@@ -173,29 +174,74 @@ export class ClinicalNoteComponent implements OnInit {
     };
   }
 
+  // getForms() {
+  //   const formType$ = Observable.fromPromise(
+  //     this.formTypeService.find({ query: { name: "Documentation" } })
+  //   );
+  //   formType$
+  //     .mergeMap((formTypes: any) =>
+  //       Observable.fromPromise(
+  //         this.formService.find({
+  //           query: {
+  //             facilityId: this.selectedFacility._id,
+  //             typeOfDocumentId: formTypes.data[0]._id
+  //           }
+  //         })
+  //       )
+  //     )
+  //     .subscribe(
+  //       (results: any) => {
+  //         this.forms = results.data;
+  //       },
+  //       error => {
+  //         this.getForms();
+  //       }
+  //     );
+  // }
+
   getForms() {
-    const formType$ = Observable.fromPromise(
-      this.formTypeService.find({ query: { name: "Documentation" } })
-    );
-    formType$
-      .mergeMap((formTypes: any) =>
-        Observable.fromPromise(
-          this.formService.find({
-            query: {
-              facilityId: this.selectedFacility._id,
-              typeOfDocumentId: formTypes.data[0]._id
-            }
-          })
-        )
-      )
-      .subscribe(
-        (results: any) => {
-          this.forms = results.data;
-        },
-        error => {
-          this.getForms();
-        }
+    try {
+      const formType$ = Observable.fromPromise(
+        this.formTypeService.find({ query: { name: "Documentation" } })
       );
+      formType$
+        .mergeMap((formTypes: any) =>
+          Observable.fromPromise(
+            this.formService.find({
+              query: {
+                // $limit: 200,
+                // facilityId: this.selectedFacility._id,
+                // typeOfDocumentId: formTypes.data[0]._id,
+                // isSide: false
+
+                $or: [
+                  { selectedFacilityId: this.selectedFacility._id },
+                  {
+                    $and: [
+                      { departmenId: this.loginEmployee.departmentId },
+                      { selectedFacilityId: this.selectedFacility._id }
+                    ]
+                  },
+                  { personId: this.loginEmployee.personId },
+                  { scopeLevelId: VISIBILITY_GLOBAL }
+                ],
+                isSide: false,
+                typeOfDocumentId: formTypes.data[0]._id
+              }
+            })
+          )
+        )
+        .subscribe(
+          (results: any) => {
+            this.forms = results.data;
+          },
+          error => {
+            this.getForms();
+          }
+        );
+    } catch (error) {
+      this.getForms();
+    }
   }
   setSelectedForm(form) {
     if (typeof form === "object" && form !== null) {
@@ -214,7 +260,7 @@ export class ClinicalNoteComponent implements OnInit {
         query: {}
       });
     } else {
-      this.systemModuleService.announceSweetProxy("wow", "success");
+      this.systemModuleService.announceSweetProxy("wow", 'success', null, null, null, null, null, null, null);
     }
   }
 

@@ -28,7 +28,7 @@
                     <div (click)="onShowBatch(producthistory)" class="prod-rowItem item1">{{producthistory.destinationStoreObject?.name}}</div>
                     <div (click)="onShowBatch(producthistory)" class="prod-rowItem item4">{{producthistory.totalCostPrice|number:'1.2-2'}}</div>
                     <div (click)="onShowBatch(producthistory)" class="prod-rowItem item2">{{producthistory.createdAt|date:'short'}}</div>
-                    <div (click)="onShowBatch(producthistory)" class="prod-rowItem item3">{{producthistory.storeObject?.name}}</div>
+                    <div (click)="onShowBatch(producthistory)" class="prod-rowItem item3">{{producthistory.transferByObject?.firstName}} {{producthistory.transferByObject?.lastName}}</div>
                 </div>
                 <div *ngIf="producthistory.isOpen===true && (selectedInventoryTransfer._id === producthistory._id)" class="prodBatch-wrap animated flipInX">
                     <div class="prodBatch-row batchHeader">

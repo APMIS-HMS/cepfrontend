@@ -56,7 +56,10 @@ import { AccessRoleDetailsComponent } from './facility-access-control/access-rol
 import { CreateAccessComponent } from './facility-access-control/create-access/create-access.component';
 import { ViewAccessComponent } from './facility-access-control/view-access/view-access.component';
 
-    import { from } from 'rxjs/observable/from';
+import { from } from 'rxjs/observable/from';
+import { HmoOfficerComponent } from './hmo-officer/hmo-officer.component';
+import { HmoBillDetailComponent } from './hmo-officer/hmo-bill-detail/hmo-bill-detail.component';
+import { HmoBillHistoryDetailComponent } from './hmo-officer/hmo-bill-history-detail/hmo-bill-history-detail.component';
 
 @NgModule({
     declarations: [
@@ -96,7 +99,10 @@ import { ViewAccessComponent } from './facility-access-control/view-access/view-
         NewFacEmployeeComponent,
         EmployeeAccessRolesComponent, 
         AccessManagerComponent, AccessRoleDetailsComponent, CreateAccessComponent, ViewAccessComponent,
-        AccessManagerHomeComponent
+        AccessManagerHomeComponent,
+        HmoOfficerComponent,
+        HmoBillDetailComponent,
+        HmoBillHistoryDetailComponent
     ],
     exports: [
     ],

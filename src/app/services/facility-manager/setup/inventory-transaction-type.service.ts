@@ -11,8 +11,8 @@ export class InventoryTransactionTypeService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('inventorytransactiontypes');
-    this._socket = _socketService.getService('inventorytransactiontypes');
+    this._rest = _restService.getService('inventory-transaction-types');
+    this._socket = _socketService.getService('inventory-transaction-types');
     this._socket.timeout = 30000;
   }
 
