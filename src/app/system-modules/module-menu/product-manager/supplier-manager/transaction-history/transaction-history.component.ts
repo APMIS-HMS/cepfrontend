@@ -15,8 +15,13 @@ export class TransactionHistoryComponent implements OnInit {
   suppliers: any[];
   newPayment = false;
   paymentHistory = false;
+<<<<<<< HEAD
   invoices:any = [];
   selected_supplier:any;
+=======
+  invoices = [];
+  selected_supplier = 'Maiden Pharmaceuticals';
+>>>>>>> remotes/origin/patient-fund-wallet
 
   frmFilterSupplier: FormControl = new FormControl();
 
@@ -70,6 +75,7 @@ export class TransactionHistoryComponent implements OnInit {
     this.selectedInvoice = invoice;
     this.paymentHistory = !this.paymentHistory;
   }
+<<<<<<< HEAD
 
   checkForOutstanding(value) {
     const val = value.invoiceAmount - value.amountPaid;
@@ -83,4 +89,6 @@ export class TransactionHistoryComponent implements OnInit {
   onRefreshHistory(value) {
     this.getHistory();
   }
+=======
+>>>>>>> remotes/origin/patient-fund-wallet
 }
