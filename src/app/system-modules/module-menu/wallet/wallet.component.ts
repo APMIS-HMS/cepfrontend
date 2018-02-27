@@ -181,7 +181,7 @@ export class WalletComponent implements OnInit {
     };
 
 
-    this._personService.httpFundWallet(walletTransaction).subscribe((res: any) => {
+    this._personService.fundWallet(walletTransaction).subscribe((res: any) => {
       this.loading = false;
       if (res.status === 'success') {
         this.paymentFormGroup.reset();
