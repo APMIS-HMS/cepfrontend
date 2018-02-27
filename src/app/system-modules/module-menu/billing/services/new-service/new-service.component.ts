@@ -215,7 +215,7 @@ export class NewServiceComponent implements OnInit {
 
   newService(model: any, valid: boolean) {
     if (valid) {
-      let value = {
+      const value = {
         name: this.frmNewservice.controls['serviceName'].value,
         code: this.frmNewservice.controls['serviceCode'].value,
         categoryId: this.frmNewservice.controls['serviceCat'].value,
@@ -259,7 +259,7 @@ export class NewServiceComponent implements OnInit {
       this.serviceItemModel.price = {};
       this.serviceItemModel.price.base = this.priceItems.filter(x => x.isBase === true)[0];
       this.serviceItemModel.price.base.price = data.price;
-      if (this.selectedService.price != undefined) {
+      if (this.selectedService.price !== undefined) {
         if (this.selectedService.price.length > 0) {
           this.serviceItemModel.price.others = this.priceItems.filter(x => x.isBase === false);
         }
@@ -295,9 +295,9 @@ export class NewServiceComponent implements OnInit {
     if ((arrayA !== undefined && arrayB !== undefined) && (arrayA !== null && arrayB !== null)) {
       if (arrayA.length > 0) {
         if (arrayB.length > 0) {
-          let len1 = arrayA.length - 1;
+          const len1 = arrayA.length - 1;
           for (let index = 0; index <= len1; index++) {
-            let len2 = arrayB.length - 1;
+            const len2 = arrayB.length - 1;
             for (let index2 = 0; index2 <= len2; index2++) {
               if (arrayA[index].serviceId.toString() === arrayB[index2].serviceId.toString()) {
                 arrayA[index].checked = true;
@@ -312,7 +312,7 @@ export class NewServiceComponent implements OnInit {
   onServiceSelected(item) {
     this.allServiceItems = [];
     const index = this.selectedServiceItems.filter(x => x.serviceId.toString() === item.serviceId.toString());
-    if (index.length == 0) {
+    if (index.length === 0) {
       this.selectedServiceItems.push(item);
     } else {
       this.systemModuleService.announceSweetProxy('This service has been selected', 'error');

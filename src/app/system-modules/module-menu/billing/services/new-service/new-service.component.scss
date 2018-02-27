@@ -4,9 +4,9 @@
 //left: 0;
 //font-size: 1.2rem;
 //color: #515151;
-.modalbase-wrap {
+.modal-baseWrap {
     width: auto;
-    padding: 10px;
+    padding: 10px 10px !important;
 }
 
 .text-center {
@@ -226,12 +226,6 @@ td {
     margin-bottom: 0;
 } */
 
-.mainfrmwrap {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-
 .tableHeader {
     background-color: #aaa;
 }
@@ -301,11 +295,22 @@ td {
     cursor: pointer;
 }
 
-@media only screen and (max-width: 750px) {
+@media only screen and (max-width: 820px) {
     .mainfrmwrap {
-        display: flex;
+        display: block;
         .search-wrap {
             width: auto;
+            display: block !important;
         }
+    }
+    .sec-2 {
+        width: 100%;
+        margin-top: 20px;
+        padding-left: 8px;
+        padding-right: 8px;
+        margin-left: none;
+    }
+    .modal-baseWrap {
+        padding: 10px 10px;
     }
 }
