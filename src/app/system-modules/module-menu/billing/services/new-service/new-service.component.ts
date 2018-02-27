@@ -225,11 +225,7 @@ export class NewServiceComponent implements OnInit {
       }
       this.onCreate(value);
     }else {
-<<<<<<< HEAD
-      this.systemModuleService.announceSweetProxy('Missing field', 'error');
-=======
       this.systemModuleService.announceSweetProxy('Missing field','error');
->>>>>>> remotes/origin/feature-bill-manager-fix-1
     }
   }
 
