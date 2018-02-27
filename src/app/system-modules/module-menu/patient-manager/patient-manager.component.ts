@@ -33,8 +33,11 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
     });
   }
   ngOnInit() {
-    this.searchControl.valueChanges.subscribe(value => {
-      // do something with value here
+    this.searchControl.valueChanges
+    .debounceTime(200)
+    .distinctUntilChanged()
+    .subscribe(value => {
+      console.log(value);
     });
     this.route.params.subscribe(params => {
     })
