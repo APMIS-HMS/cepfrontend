@@ -723,7 +723,7 @@ export class LabRequestsComponent implements OnInit {
 
       console.log(request);
 
-      /* this.requestService.customCreate(request).then(res => {
+      this.requestService.customCreate(request).then(res => {
         console.log(res);
         if (res.status === 'success') {
           this.frmNewRequest.reset();
@@ -738,7 +738,7 @@ export class LabRequestsComponent implements OnInit {
         }
       }).catch(err => {
         this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
-      }); */
+      });
     
   }
 
