@@ -976,6 +976,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.systemModuleService.off();
                 const text =  this.selectedPerson.lastName + ' ' + this.selectedPerson.firstName
                 + ' added successfully but bill not generated because price not yet set for this service';
+                this.systemModuleService.changeMessage(payl);
                 this.systemModuleService.announceSweetProxy(text, 'success');
                 this.close_onClick();
             }).catch(errr => {
