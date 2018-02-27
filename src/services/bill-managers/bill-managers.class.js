@@ -9,7 +9,6 @@ class Service {
         this.app = app;
     }
 
-<<<<<<< HEAD
     async find(params) {
         let results = [];
         const organisationService = this.app.service('organisation-services');
@@ -88,83 +87,10 @@ class Service {
                                         isBase: true,
                                         price: 0
                                     });
-=======
-  async find(params) {
-    let results = [];
-    const organisationService = this.app.service('organisation-services');
-    const facilityPricesService = this.app.service('facility-prices');
-    const serviceTagsService = this.app.service('service-tags');
-    var awaitOrgServices = await organisationService.find({
-      query: {
-        facilityId: params.query.facilityId
-      }
-    });
-    let len = awaitOrgServices.data.length - 1;
-    if (awaitOrgServices.data.length > 0) {
-      for (let i = len; i >= 0; i--) {
-        if (awaitOrgServices.data[i].categories.length > 0) {
-          let len2 = awaitOrgServices.data[i].categories.length - 1;
-          for (let j = len2; j >= 0; j--) {
-            if (awaitOrgServices.data[i].categories[j].services.length > 0) {
-              let len3 = awaitOrgServices.data[i].categories[j].services.length - 1;
-              for (let k = len3; k >= 0; k--) {
-                awaitOrgServices.data[i].categories[j].services[k].price = [];
-                var awaitPriceServices = await facilityPricesService.find({
-                  query: {
-                    facilityId: params.query.facilityId,
-                    categoryId: awaitOrgServices.data[i].categories[j]._id,
-                    serviceId: awaitOrgServices.data[i].categories[j].services[k]._id,
-                    facilityServiceId: awaitOrgServices.data[i]._id
-                  }
-                });
-                if (awaitPriceServices.data.length > 0) {
-                  let len5 = awaitPriceServices.data.length - 1;
-                  for (let n = 0; n <= len5; n++) {
-                    awaitOrgServices.data[i].categories[j].services[k].price.push({
-                      name: 'Base',
-                      isBase: true,
-                      priceId: awaitPriceServices.data[n]._id,
-                      price: awaitPriceServices.data[n].price
-                    });
-                    if (awaitPriceServices.data[n].modifiers !== undefined) {
-                      if (awaitPriceServices.data[n].modifiers.length > 0) {
-                        let len6 = awaitPriceServices.data[n].modifiers.length - 1;
-                        for (let m = 0; m <= len6; m++) {
-                            if(awaitPriceServices.data[n].modifiers[m].tagId !== undefined){
-                                let tag = await serviceTagsService.get(awaitPriceServices.data[n].modifiers[m].tagId);
-                                if (awaitPriceServices.data[n].modifiers[m].modifierType === 'Percentage') {
-                                  let p = awaitPriceServices.data[n].modifiers[m].modifierValue / 100;
-                                  let calculatedP = p * awaitPriceServices.data[n].price;
-                                  awaitOrgServices.data[i].categories[j].services[k].price.push({
-                                    name: tag.name,
-                                    isBase: false,
-                                    priceId: awaitPriceServices.data[n]._id,
-                                    _id: awaitPriceServices.data[n].modifiers[m]._id,
-                                    price: calculatedP
-                                  });
-                                } else if (awaitPriceServices.data[n].modifiers[m].modifierType === 'Amount') {
-                                  awaitOrgServices.data[i].categories[j].services[k].price.push({
-                                    name: tag.name,
-                                    isBase: false,
-                                    priceId: awaitPriceServices.data[n]._id,
-                                    _id: awaitPriceServices.data[n].modifiers[m]._id,
-                                    price: awaitPriceServices.data[n].modifiers[m].modifierValue
-                                  });
->>>>>>> 2f52c890e146925816b8ac308940990c2c07cc37
                                 }
                             }
                         }
                     }
-<<<<<<< HEAD
-=======
-                  }
-                } else {
-                  awaitOrgServices.data[i].categories[j].services[k].price.push({
-                    name: 'Base',
-                    isBase: true,
-                    price: ''
-                  });
->>>>>>> 2f52c890e146925816b8ac308940990c2c07cc37
                 }
             }
         }
