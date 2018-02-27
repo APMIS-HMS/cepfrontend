@@ -12,7 +12,7 @@ const resolvers = {
                 .service('people')
                 .get(patient.personId, {});
             var age = differenceInYears(Date.now(), person.dateOfBirth);
-            if (age < 1) {
+            if (age < 5) {
                 const monthResult = differenceInMonths(Date.now(), person.dateOfBirth);
                 if (monthResult < 1) {
                     const weekResult = differenceInWeeks(
@@ -24,15 +24,15 @@ const resolvers = {
                             Date.now(),
                             person.dateOfBirth
                         );
-                        age = dayResult + ' days';
+                        age = (dayResult > 1) ? dayResult + ' days' : dayResult + ' day';
                     } else {
-                        age = weekResult + ' weeks';
+                        age = (weekResult > 1) ? weekResult + ' weeks' : weekResult + ' week';
                     }
                 } else {
-                    age = monthResult + ' months';
+                    age = (monthResult > 1) ? monthResult + ' months' : monthResult + ' month';
                 }
             } else {
-                age = age + ' years';
+                age = (age > 1) ? age + ' years' : age + ' year' ;
             }
             patient.age = age;
             patient.personDetails = person;
