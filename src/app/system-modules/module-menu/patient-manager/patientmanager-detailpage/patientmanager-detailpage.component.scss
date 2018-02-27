@@ -37,7 +37,7 @@
 }
 
 .sideTab-header {
-    background: #f8f8f8;
+    background: $grey-bg;
     padding: 10px;
     box-sizing: border-box;
 }
@@ -127,7 +127,7 @@
     font-size: 1.1rem;
     display: flex;
     justify-content: space-between;
-    color: #154360;
+    color: #000;
     line-height: 2;
     margin-bottom: 5px;
 }
@@ -138,7 +138,7 @@
 }
 
 .sideTab-nav, .sideTab-nav-resp {
-    background: #f4f4f4;
+    background: $grey-bg;
     padding: 10px;
     box-sizing: border-box;
 }

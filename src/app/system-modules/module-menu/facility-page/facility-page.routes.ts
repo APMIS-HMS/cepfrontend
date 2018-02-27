@@ -21,7 +21,6 @@ import {
 import { FacilitypageHomepageComponent } from "./facilitypage-homepage/facilitypage-homepage.component";
 import { EmpManagerComponent } from "./employees/emp-manager.component";
 import { EditUserComponent } from "./employees/employeemanager-detailpage/edit-user/edit-user.component";
-import { HmoOfficerComponent } from './hmo-officer/hmo-officer.component';
 
 const FACLITYPAGE_ROUTES: Routes = [
   {
@@ -52,7 +51,7 @@ const FACLITYPAGE_ROUTES: Routes = [
         canActivate: [CanActivateViaAuthGuardCompleteFacilityService]
       },
       {
-        path: "edit-user",
+        path: "edit-user", 
         component: EditUserComponent,
         canActivate: [CanActivateViaAuthGuardCompleteFacilityService]
       },
@@ -81,7 +80,10 @@ const FACLITYPAGE_ROUTES: Routes = [
         canActivate: [CanActivateViaAuthGuardCompleteFacilityService]
       },
       { path: "options", component: FacilityOptionsComponent },
-      { path: "hmo-officer", component: HmoOfficerComponent },
+      {
+        path: 'health-coverage',
+        loadChildren: './facility-health-cover/facility-health-cover.module#FacilityHealthCoverModule'
+      },
       { path: "profession", component: ProfessionComponent },
       {
         path: "modules",

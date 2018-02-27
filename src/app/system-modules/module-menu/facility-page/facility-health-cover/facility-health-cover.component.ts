@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
+
 
 @Component({
   selector: 'app-facility-health-cover',
