@@ -31,7 +31,11 @@ class Service {
     //Collection of insurance billitems
     let filteredInsurance = [];
     let len = insurance.length;
+    console.log(insurance);
     for (let index = 0; index < len; index++) {
+      if(filteredInsurance.length > 0){
+        
+      }
       const indx = filteredInsurance.filter(x => x.covered.hmoId.toString() === insurance[index].covered.hmoId.toString());
       const patient = await patientsService.get(params.query.patientId);
       const patientPaymentType = patient.paymentPlan.filter(x => x.planDetails.hmoId.toString() === insurance[index].covered.hmoId.toString());
