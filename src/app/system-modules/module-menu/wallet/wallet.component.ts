@@ -183,7 +183,6 @@ export class WalletComponent implements OnInit {
 
     this._personService.httpFundWallet(walletTransaction).subscribe((res: any) => {
       this.loading = false;
-      console.log(res);
       if (res.status === 'success') {
         this.paymentFormGroup.reset();
         this.paymentFormGroup.controls['fundAmount'].setValue(0);
