@@ -99,7 +99,8 @@ export class PrescriptionListComponent implements OnInit {
 	// Get all drugs from generic
 	getAllPrescriptions() {
     this._prescriptionService.customGet({ query: { facilityId : this.facility._id }}).then(res => {
-				this.loading = false;
+        this.loading = false;
+        console.log(res);
 				res.data.forEach(element => {
 					if (!element.isDispensed) {
 						let isBilledCount = 0;
@@ -122,8 +123,7 @@ export class PrescriptionListComponent implements OnInit {
 						this.prescriptionLists.push(element);
 					}
 				});
-			}).catch(err => {
-			});
+			}).catch(err => {});
 	}
 
 	getDispenses() {

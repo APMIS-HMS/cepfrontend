@@ -42,6 +42,8 @@ export class WardCheckInComponent implements OnInit {
     private _router:Router,
     private _systemModuleService: SystemModuleService
 	) {
+    this.facility = <Facility>this.locker.getObject('selectedFacility');
+    this.user = <User>this.locker.getObject('auth');
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       if (!!res._id) {
         this.loginEmployee = res;
@@ -64,9 +66,6 @@ export class WardCheckInComponent implements OnInit {
 	}
 
 	ngOnInit() {
-    this.facility = <Facility>this.locker.getObject('selectedFacility');
-    this.user = <User>this.locker.getObject('auth');
-
     this._getMajorLocation();
 
 		this.wardCheckin = this.formBuilder.group({

@@ -32,8 +32,8 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		// this is for the pageInView header
-		this._wardEventEmitter.setRouteUrl('Admitted Patient Details');
+    // this is for the pageInView header
+    this._wardEventEmitter.setRouteUrl('Admitted Patient Details');
 
 		this._route.params.subscribe(params => {
 			this.admittedPatientId = params.id;
@@ -55,7 +55,23 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
         }
 			}
     });
-	}
+  }
+
+  onClickPatientDocumentation(patient: any) {
+    const text = 'If you click on yes, you will be redirected to the patient documentation.';
+    this._systemModuleService.announceSweetProxy(text, 'question', this, null, null, patient, null, null, null);
+    // routerLink="/dashboard/patient-manager/patient-manager-detail/{{ selectedPatient?.patient?.personId }}"
+  }
+
+  sweetAlertCallback(result, data) {
+    if (result.value) {
+      this._router.navigate([`/dashboard/patient-manager/patient-manager-detail`, data.patient.personId]).then(res => {
+        console.log(res);
+      }).catch(err => {
+        console.log(err);
+      });
+    }
+  }
 
 	onClickDischargePatient() {
 		this.dischargePatient = true;

@@ -335,7 +335,6 @@ export class LabRequestsComponent implements OnInit {
   }
 
   apmisLookupHandleSelectedItem(value) {
-    console.log(value);
     this.apmisLookupText = `${value.firstName} ${value.lastName}` ;
     this.selectedPatient = value;
     this.frmNewRequest.controls['labNo'].setValue('');
