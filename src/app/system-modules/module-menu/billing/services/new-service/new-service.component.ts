@@ -214,7 +214,6 @@ export class NewServiceComponent implements OnInit {
   }
 
   newService(model: any, valid: boolean) {
-    console.log(this.frmNewservice.controls);
     if (valid) {
       const value = {
         name: this.frmNewservice.controls['serviceName'].value,
@@ -226,7 +225,11 @@ export class NewServiceComponent implements OnInit {
       }
       this.onCreate(value);
     }else {
+<<<<<<< HEAD
       this.systemModuleService.announceSweetProxy('Missing field', 'error');
+=======
+      this.systemModuleService.announceSweetProxy('Missing field','error');
+>>>>>>> remotes/origin/feature-bill-manager-fix-1
     }
   }
 
@@ -248,7 +251,6 @@ export class NewServiceComponent implements OnInit {
         this.frmNewservice.reset();
         this.refreshService.emit(this.selectedService);
       }, error => {
-        console.log(error);
         this.isDisableBtn = false;
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy('Failed to add Service', 'error');
@@ -266,6 +268,7 @@ export class NewServiceComponent implements OnInit {
           this.serviceItemModel.price.others = this.priceItems.filter(x => x.isBase === false);
         }
       }
+
       this._facilitiesServiceCategoryService.update2(this.facility._id, this.serviceItemModel, {
         query: {
           facilityId: this.facility._id,

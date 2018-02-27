@@ -66,7 +66,7 @@ export class WalletComponent implements OnInit {
     }
   ];
   lineChartLegend = true;
-  lineChartType = 'line';
+  lineChartType: string = 'line';
 
   constructor(
     private _fb: FormBuilder,
@@ -181,9 +181,9 @@ export class WalletComponent implements OnInit {
     };
 
 
-    this._personService.fundWallet(walletTransaction).then((res: any) => {
+    this._personService.httpFundWallet(walletTransaction).subscribe((res: any) => {
       this.loading = false;
-      if (res.body.status === 'success') {
+      if (res.status === 'success') {
         this.paymentFormGroup.reset();
         this.paymentFormGroup.controls['fundAmount'].setValue(0);
         this.flutterwavePayment = false;
@@ -194,7 +194,6 @@ export class WalletComponent implements OnInit {
       } else {
         // this._notification('Error', res.body.message);
       }
-    }).catch(err => {
     });
   }
 
