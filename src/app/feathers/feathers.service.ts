@@ -93,13 +93,13 @@ export class RestService {
         .configure(authentication({ storage: window.localStorage })); // Configure feathers-hooks
     }
   }
-  loginIntoApp(query) {
-    return this._app.authenticate({
-      'strategy': 'local',
-      'email': query.email,
-      'password': query.password
-    });
-  }
+  // loginIntoApp(query) {
+  //   return this._app.authenticate({
+  //     'strategy': 'local',
+  //     'email': query.email,
+  //     'password': query.password
+  //   });
+  // }
   getService(value: any) {
     // this._app.authenticate();
     return this._app.service(value);
