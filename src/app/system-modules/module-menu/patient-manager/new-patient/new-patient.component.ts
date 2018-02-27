@@ -1036,8 +1036,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         totalDiscoutedAmount: 0,
                         modifierId: [],
                         covered: {
-                            name: this.hmo.hmoName,
-                            _id: this.hmo.hmoId,
+                            hmoId: this.hmo.hmoId,
                             coverType: this.coverType
                         },
                         isServiceEnjoyed: false,
@@ -1349,8 +1348,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         totalDiscoutedAmount: 0,
                         modifierId: [],
                         covered: {
-                            name: this.family.othernames + ' ' + this.family.surname,
-                            _id: this.family._id,
+                            familyId: this.family._id,
                             coverType: this.coverType
                         },
                         isServiceEnjoyed: false,
