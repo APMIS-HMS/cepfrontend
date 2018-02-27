@@ -108,7 +108,6 @@ export class MakePaymentComponent implements OnInit {
       const bal = this.cost - value;
       if (bal >= 0) {
         this.balance.setValue(bal);
-        console.log(this.balance.value);
       } else {
         this.amount.setValue(this.cost);
         this._notification('Error', 'Balance cannot be lesser than zero');
@@ -161,7 +160,6 @@ export class MakePaymentComponent implements OnInit {
     } else {
       this._notification('Error', 'No payment plan is attached to patient');
     }
-    console.log(this.patientInsuranceLists);
   }
 
   getPatientCompanyLists() {
@@ -314,7 +312,6 @@ export class MakePaymentComponent implements OnInit {
               }
             }
             this.bAmount = this.balanceInsurance.value;
-            console.log(this.bAmount);
             this.makePayment(paymentValue);
           }
         } else {
@@ -348,7 +345,6 @@ export class MakePaymentComponent implements OnInit {
               }
             }
             this.bAmount = this.balanceFamily.value;
-            console.log(this.bAmount);
             this.makePayment(paymentValue);
           }
         } else {
@@ -380,7 +376,6 @@ export class MakePaymentComponent implements OnInit {
               }
             }
             this.bAmount = this.balanceCompany.value;
-            console.log(this.bAmount);
             this.makePayment(paymentValue);
           }
         } else {
@@ -395,7 +390,6 @@ export class MakePaymentComponent implements OnInit {
 
 
   makePayment(val) {
-    console.log(val);
     this.isProcessing = true;
     let paymantObj: any = {};
     if (this.isInvoicePage === false) {
@@ -444,7 +438,6 @@ export class MakePaymentComponent implements OnInit {
         paymantObj.transactionStatus = TransactionStatus.Complete;
       }
     }
-    console.log(paymantObj);
     this._makePaymentService.create(paymantObj).then(payload => {
       this.personValueChanged.emit(payload);
       this.isProcessing = false;
@@ -457,7 +450,6 @@ export class MakePaymentComponent implements OnInit {
       }
 
     }, error => {
-      console.log(error);
       this._notification('Error', 'Fail to make payment pls try again later');
     });
   }

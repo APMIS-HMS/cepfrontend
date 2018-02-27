@@ -500,7 +500,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 facilityId: this.facility._id
             }
         }).then(payload => {
-            console.log(payload);
             this.categories = payload.data[0].categories;
             const cat = this.categories.filter(x => x.name === 'Medical Records');
             for (let n = 0; n < cat[0].services.length; n++) {
@@ -509,7 +508,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             this.services = cat[0].services;
         }, error => {
             /* this.systemModuleService.off(); */
-            console.log(error);
         });
     }
 
@@ -517,7 +515,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.familyCoverService.find({ query: { 'facilityId': this.facility._id } }).then(payload => {
             console.log(payload);
             if (payload.data.length > 0) {
-                let facFamilyCover = payload.data[0];
+                const facFamilyCover = payload.data[0];
                 this.selectedFamilyCover = facFamilyCover;
                 this.beneficiaries = facFamilyCover.familyCovers;
                 console.log(this.beneficiaries);
@@ -551,7 +549,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     next() {
-        this.coverType = "wallet";
+        this.coverType = 'wallet';
         if (this.selectedPerson !== undefined && this.selectedPerson._id !== undefined) {
             if (this.paymentPlan === true) {
                 this.planPrice = this.walletPlanPrice.value;
@@ -638,7 +636,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     nextInsuranceCover(hmoPlanId, hmoPlan) {
         this.systemModuleService.on();
 
-        this.coverType = "insurance";
+        this.coverType = 'insurance';
         this.hmo = this.hmoPlanId.value;
         const insuranceId = this.insuranceId.value;
         this.planPrice = this.hmoPlanPrice.value;
@@ -653,14 +651,15 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     if (facHmo.hmos[index].enrolleeList.length > 0) {
                         const bene = [];
                         for (let s = 0; s < facHmo.hmos[index].enrolleeList.length; s++) {
-                            let hmo = facHmo.hmos[index].hmo;
+                            const hmo = facHmo.hmos[index].hmo;
                             bene.push(...facHmo.hmos[index].enrolleeList[s].enrollees);
                         }
-                        let fil = bene.filter(x => x.filNo == insuranceId);
+                        const fil = bene.filter(x => x.filNo === insuranceId);
                         if (fil.length > 0) {
                             if (fil[0].status === false) {
                                 this.systemModuleService.off();
-                                this.systemModuleService.announceSweetProxy("Insurance Id doesn't have an active status for the selected HMO", 'error');
+                                this.systemModuleService
+                                .announceSweetProxy('Insurance Id does not have an active status for the selected HMO', 'error');
                             } else {
                                 if (this.shouldMoveFirst === true) {
                                     this.saveInsurancePerson();
@@ -676,7 +675,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                             }
                         } else {
                             this.systemModuleService.off();
-                            this.systemModuleService.announceSweetProxy("Insurance Id doesn't exist for the selected HMO", 'error');
+                            this.systemModuleService
+                            .announceSweetProxy('Insurance Id does not exist for the selected HMO', 'error');
                         }
                     }
                 }
@@ -693,20 +693,20 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.planId = this.faPlan.value._id;
         this.facilityServiceId = this.faPlan.value.facilityServiceId;
 
-        if (this.getRole(this.faId) != "P") {
+        if (this.getRole(this.faId) !== 'P') {
             this.systemModuleService.off();
-            this.systemModuleService.announceSweetProxy("Principal Id entered doens't belong to a Principal of a family", 'error');
+            this.systemModuleService.announceSweetProxy('Principal Id entered doens\'t belong to a Principal of a family', 'error');
         } else {
             this.familyCoverService.find({ query: { 'facilityId': this.facility._id } }).then(payload => {
                 if (payload.data.length > 0) {
-                    let facFamilyCover = payload.data[0];
+                    const facFamilyCover = payload.data[0];
                     this.selectedFamilyCover = facFamilyCover;
                     this.beneficiaries = facFamilyCover.familyCovers;
-                    const info = this.beneficiaries.filter(x => x.filNo == this.faId);
+                    const info = this.beneficiaries.filter(x => x.filNo === this.faId);
                     this.family = info[0];
-                    if (info.length == 0) {
+                    if (info.length === 0) {
                         this.systemModuleService.off();
-                        this.systemModuleService.announceSweetProxy("Principal Id doesn't exist", 'error');
+                        this.systemModuleService.announceSweetProxy('Principal Id doesn\'t exist', 'error');
                     } else {
                         if (this.shouldMoveFirst === true) {
                             this.saveFamilyPerson();
@@ -725,7 +725,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     getRole(beneficiary) {
-        let filNo = beneficiary;
+        const filNo = beneficiary;
         console.log(filNo);
         if (filNo !== undefined) {
             const filNoLength = filNo.length;
@@ -941,7 +941,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 }
             ]
         }
-        console.log(patient);
         this.patientService.create(patient).then(payl => {
             const billing: any = {
                 discount: 0,
@@ -973,7 +972,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     }
                 ]
             }
-
             this.billingService.create(billing).then(billingPayload => {
                 this.systemModuleService.off();
                 const text =  this.selectedPerson.lastName + ' ' + this.selectedPerson.firstName
@@ -997,7 +995,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     saveInsurancePerson() {
-        let patient: any = {
+        const patient: any = {
             personId: this.selectedPerson._id,
             facilityId: this.facility._id,
             paymentPlan: [
@@ -1013,7 +1011,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         }
         console.log(patient);
         this.patientService.create(patient).then(payl => {
-            let billing: any = {
+            const billing: any = {
                 discount: 0,
                 facilityId: this.facility._id,
                 grandTotal: this.planPrice,
@@ -1023,7 +1021,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     {
                         unitPrice: this.planPrice,
                         facilityId: this.facility._id,
-                        description: "",
+                        description: '',
                         facilityServiceId: this.facilityServiceId,
                         serviceId: this.planId,
                         patientId: payl._id,
@@ -1047,7 +1045,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             }
             this.billingService.create(billing).then(billingPayload => {
                 this.systemModuleService.off();
-                const text = this.selectedPerson.lastName + ' ' + this.selectedPerson.firstName + ' added successfully but bill not generated because price not yet set for this service';
+                const text = this.selectedPerson.lastName + ' '
+                + this.selectedPerson.firstName + ' added successfully but bill not generated because price not yet set for this service';
                 this.systemModuleService.announceSweetProxy(text, 'success');
                 this.close_onClick();
             }).catch(errr => {
@@ -1306,7 +1305,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     saveFamilyPerson() {
-        let patient: any = {
+        const patient: any = {
             personId: this.selectedPerson._id,
             facilityId: this.facility._id,
             paymentPlan: [
@@ -1321,7 +1320,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             ]
         }
         this.patientService.create(patient).then(payl => {
-            let billing: any = {
+            const billing: any = {
                 discount: 0,
                 facilityId: this.facility._id,
                 grandTotal: this.planPrice,
@@ -1331,7 +1330,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     {
                         unitPrice: this.planPrice,
                         facilityId: this.facility._id,
-                        description: "",
+                        description: '',
                         facilityServiceId: this.facilityServiceId,
                         serviceId: this.planId,
                         patientId: payl._id,
@@ -1341,7 +1340,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         totalDiscoutedAmount: 0,
                         modifierId: [],
                         covered: {
-                            name: this.family.othernames + " " + this.family.surname,
+                            name: this.family.othernames + ' ' + this.family.surname,
                             _id: this.family._id,
                             coverType: this.coverType
                         },
@@ -1355,7 +1354,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             }
             this.billingService.create(billing).then(billingPayload => {
                 this.systemModuleService.off();
-                const text = this.selectedPerson.lastName + ' ' + this.selectedPerson.firstName + ' added successfully but bill not generated because price not yet set for this service';
+                const text = this.selectedPerson.lastName + ' '
+                + this.selectedPerson.firstName + ' added successfully but bill not generated because price not yet set for this service';
                 this.systemModuleService.announceSweetProxy(text, 'success');
                 this.close_onClick();
             }).catch(errr => {
@@ -1386,7 +1386,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     saveData() {
         console.log(this.coverType);
-        if (this.coverType == 'insurance') {
+        if (this.coverType === 'insurance') {
             this.saveInsurancePerson();
         } else if (this.coverType === 'company') {
             this.saveCompanyPerson();
@@ -1481,7 +1481,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.isSuccessful = true;
                 this.systemModuleService.off();
                 this.selectedPerson = ppayload;
-                console.log(this.selectedPerson);
                 // this.isSuccessful = true;
                 // let text = this.frmPerson.controls['firstname'].value + ' '
                 //     + this.frmPerson.controls['lastname'].value + ' '
@@ -1552,9 +1551,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         text: 'An error has occured preventing this operation to be successful!'
                     });
                 });
-            } else {
-
-            }
+            } else {}
 
         });
     }

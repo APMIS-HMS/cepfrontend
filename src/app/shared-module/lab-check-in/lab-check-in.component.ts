@@ -110,7 +110,7 @@ export class LabCheckInComponent implements OnInit {
           this.locations = minorLocations.filter(x => x.locationId === labId && locationIds.includes(x._id));
         }
       }
-    }).catch(err => console.log(err));
+    }).catch(err => {});
   }
 
   private _getLabLocation() {
@@ -118,7 +118,7 @@ export class LabCheckInComponent implements OnInit {
       if (res.data.length > 0) {
         this._getEmployee(res.data[0]._id);
       }
-    }).catch(err => console.log(err));
+    }).catch(err => {});
   }
 
   close_onClick() {

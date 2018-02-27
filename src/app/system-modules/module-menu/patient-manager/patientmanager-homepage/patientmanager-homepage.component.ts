@@ -344,7 +344,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       console.log(payload);
       const categories = payload.data[0].categories;
       console.log(categories);
-      let cat = categories.filter(x => x.name == "Medical Records");
+      const cat = categories.filter(x => x.name === 'Medical Records');
       console.log(cat);
       for (let n = 0; n < cat[0].services.length; n++) {
         cat[0].services[n].facilityServiceId = payload.data[0]._id
@@ -456,8 +456,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
     this.selectedPatient['nextOfKin'] = nextOfKinArray;
 
-    const patientIndex = this.patients.findIndex(p => p.personDetails._id == this.selectedPatient._id);
-    
+    const patientIndex = this.patients.findIndex(p => p.personDetails._id === this.selectedPatient._id);
     this.personService.patch(this.selectedPatient._id, this.selectedPatient, {}).then(res => {
       this.updatePatientBtnText = 'Update';
       this.patients[patientIndex].personDetails = res;
@@ -491,13 +490,13 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
   isEditFn(patient?, cover?) {
     this.isEdit = !this.isEdit;
-    if (cover == "wallet") {
+    if (cover === 'wallet') {
       this.tabWallet_click();
-    } else if (cover == "company") {
+    } else if (cover === 'company') {
       this.tabCompany_click();
-    } else if (cover == "insurance") {
+    } else if (cover === 'insurance') {
       this.tabInsurance_click();
-    } else if (cover == "family") {
+    } else if (cover === 'family') {
       this.tabFamily_click();
     } else {
 
@@ -512,8 +511,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.systemService.on();
     console.log(this.patient);
     console.log(this.isDefault);
-    let data = JSON.parse(JSON.stringify(this.patient.paymentPlan));
-    const check = data.filter(x => x.planType == cover);
+    const data = JSON.parse(JSON.stringify(this.patient.paymentPlan));
+    const check = data.filter(x => x.planType === cover);
     console.log(this.isDefault.value);
     if (this.isDefault.value === true) {
       const index = data.findIndex(c => c.isDefault === true);

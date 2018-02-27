@@ -195,7 +195,6 @@ export class WalletComponent implements OnInit {
         // this._notification('Error', res.body.message);
       }
     }).catch(err => {
-
     });
   }
 
@@ -215,7 +214,7 @@ export class WalletComponent implements OnInit {
 
 
   public randomize(): void {
-    let _lineChartData: Array<any> = new Array(this.lineChartData.length);
+    const _lineChartData: Array<any> = new Array(this.lineChartData.length);
     for (let i = 0; i < this.lineChartData.length; i++) {
       _lineChartData[i] = { data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label };
       for (let j = 0; j < this.lineChartData[i].data.length; j++) {
