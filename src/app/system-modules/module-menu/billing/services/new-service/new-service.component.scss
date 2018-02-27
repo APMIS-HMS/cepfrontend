@@ -1,11 +1,9 @@
-.frm-label {
-    position: absolute;
-    top: -10px;
-    left: 0;
-    font-size: 1.2rem;
-    color: #515151;
-}
-
+//.frm-label {
+// position: absolute;
+// top: -10px;
+//left: 0;
+//font-size: 1.2rem;
+//color: #515151;
 .modalbase-wrap {
     width: auto;
     padding: 10px;
@@ -136,10 +134,9 @@ td {
     margin-right: 10px;
 } */
 
-.sec-2 .frm-label {
-    top: -20px;
-}
-
+//.sec-2 .frm-label {
+// top: -20px;
+//}
 .line-up {
     //display: flex;
     //justify-content: space-between;
@@ -260,10 +257,6 @@ td {
     width: 140px;
 }
 
-.sec-2 .frm-label {
-    top: -20px;
-}
-
 // .line-up {
 //   display: flex;
 //   justify-content: space-between;
@@ -275,7 +268,7 @@ td {
 
 .input-wrap {
     width: 90%;
-    max-width: 500px;
+    //max-width: 500px;
     margin: 0 auto;
     margin-top: 20px;
 }
@@ -306,4 +299,13 @@ td {
     left: 15px;
     font-size: 16px;
     cursor: pointer;
+}
+
+@media only screen and (max-width: 750px) {
+    .mainfrmwrap {
+        display: flex;
+        .search-wrap {
+            width: auto;
+        }
+    }
 }
