@@ -83,7 +83,7 @@ export class LabRequestsComponent implements OnInit {
   totalPrice: Number = 0;
   constructor(
     private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolLocalStorage,
-   private route: ActivatedRoute,
+    private route: ActivatedRoute,
     private billingService: BillingService,
     private facilityService: FacilitiesService,
     private _router: Router,
@@ -274,10 +274,14 @@ export class LabRequestsComponent implements OnInit {
           this.request_view = true;
         })
       } else {
-        this.selectedPatient = this.patientId;
-        console.log(this.selectedPatient);
-        this.frmNewRequest.controls['labNo'].setValue('N/A');
-        this.frmNewRequest.controls['patient'].setValue(this.selectedPatient.personDetails.firstName+' '+this.selectedPatient.personDetails.lastName );
+        if (this.isLaboratory === false) {
+          console.log(this.patientId);
+          this.selectedPatient = this.patientId;
+          console.log(this.selectedPatient);
+          this.frmNewRequest.controls['labNo'].setValue('N/A');
+          this.frmNewRequest.controls['patient'].setValue(this.selectedPatient.personDetails.firstName + ' ' + this.selectedPatient.personDetails.lastName);
+
+        }
       }
 
     });
@@ -333,7 +337,7 @@ export class LabRequestsComponent implements OnInit {
   }
 
   apmisLookupHandleSelectedItem(value) {
-    this.apmisLookupText = `${value.firstName} ${value.lastName}` ;
+    this.apmisLookupText = `${value.firstName} ${value.lastName}`;
     this.selectedPatient = value;
     this.frmNewRequest.controls['labNo'].setValue('');
     if (this.selectedPatient.clientsNo !== undefined) {
@@ -387,7 +391,7 @@ export class LabRequestsComponent implements OnInit {
   }
   childChanged($event, investigation: InvestigationModel,
     childInvestigation?: InvestigationModel, isChild = false) {
-        if ($event.checked || childInvestigation !== undefined) {
+    if ($event.checked || childInvestigation !== undefined) {
       if (investigation.investigation.isPanel) {
         // isPanel
         if (childInvestigation !== undefined) {
@@ -691,55 +695,55 @@ export class LabRequestsComponent implements OnInit {
 
   save(valid, value) {
     console.log(value);
-      const copyBindInvestigation = JSON.parse(JSON.stringify(this.bindInvestigations));
-      const readyCollection: any[] = [];
+    const copyBindInvestigation = JSON.parse(JSON.stringify(this.bindInvestigations));
+    const readyCollection: any[] = [];
 
-      console.log(copyBindInvestigation);
-      copyBindInvestigation.forEach((item: InvestigationModel, i) => {
-        console.log(item);
-        if (item.investigation.isPanel) {
-          delete item.isChecked;
-          delete item.temporaryInvestigationList;
-          item.investigation.panel.forEach((panel, j) => {
-            delete panel.isChecked;
-          });
-        } else {
-          delete item.isChecked;
-          delete item.LaboratoryWorkbenches;
-          delete item.location;
-        }
-        readyCollection.push(item);
-      });
+    console.log(copyBindInvestigation);
+    copyBindInvestigation.forEach((item: InvestigationModel, i) => {
+      console.log(item);
+      if (item.investigation.isPanel) {
+        delete item.isChecked;
+        delete item.temporaryInvestigationList;
+        item.investigation.panel.forEach((panel, j) => {
+          delete panel.isChecked;
+        });
+      } else {
+        delete item.isChecked;
+        delete item.LaboratoryWorkbenches;
+        delete item.location;
+      }
+      readyCollection.push(item);
+    });
 
-      const request: any = {
-        facilityId: this.selectedFacility._id,
-        patientId: this.selectedPatient._id,
-        labNumber: (!this.isLaboratory) ? this.frmNewRequest.controls['labNo'].value : '',
-        clinicalInformation: this.frmNewRequest.controls['clinicalInfo'].value,
-        diagnosis: this.frmNewRequest.controls['diagnosis'].value,
-        investigations: readyCollection,
-        createdBy: this.loginEmployee._id
-      };
+    const request: any = {
+      facilityId: this.selectedFacility._id,
+      patientId: this.selectedPatient._id,
+      labNumber: (!this.isLaboratory) ? this.frmNewRequest.controls['labNo'].value : '',
+      clinicalInformation: this.frmNewRequest.controls['clinicalInfo'].value,
+      diagnosis: this.frmNewRequest.controls['diagnosis'].value,
+      investigations: readyCollection,
+      createdBy: this.loginEmployee._id
+    };
 
-      console.log(request);
+    console.log(request);
 
-      this.requestService.customCreate(request).then(res => {
-        console.log(res);
-        if (res.status === 'success') {
-          this.frmNewRequest.reset();
-          this._getAllPendingRequests();
-          this.bindInvestigations = [];
-          this.investigations = [];
-          this.apmisLookupText = '';
-          this.selectedPatient = undefined;
-          this._systemModuleService.announceSweetProxy('Request has been sent successfully!', 'success', null, null, null, null, null, null, null);
-        } else {
-          this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
-        }
-      }).catch(err => {
+    this.requestService.customCreate(request).then(res => {
+      console.log(res);
+      if (res.status === 'success') {
+        this.frmNewRequest.reset();
+        this._getAllPendingRequests();
+        this.bindInvestigations = [];
+        this.investigations = [];
+        this.apmisLookupText = '';
+        this.selectedPatient = undefined;
+        this._systemModuleService.announceSweetProxy('Request has been sent successfully!', 'success', null, null, null, null, null, null, null);
+      } else {
         this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
-      });
-    
+      }
+    }).catch(err => {
+      this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
+    });
+
   }
 
   /* save(valid, value) {
@@ -968,7 +972,7 @@ export class LabRequestsComponent implements OnInit {
         });
       }).catch(err => console.error(err));
     } else {
-      this.requestService.customFind({ query: { 'facilityId': this.selectedFacility._id }}).then(res => {
+      this.requestService.customFind({ query: { 'facilityId': this.selectedFacility._id } }).then(res => {
         this.loading = false;
         let labId = '';
         if (this.selectedLab !== null && this.selectedLab.typeObject !== undefined) {
