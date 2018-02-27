@@ -68,7 +68,8 @@ class Service {
         });
         let features = await facilityAccessControlService.find({
             query: {
-                facilityId: params.query.facilityId
+                facilityId: params.query.facilityId,
+                $limit: 200
             }
         });
         if (selectedUser.data.length == 0) {
