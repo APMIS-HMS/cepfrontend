@@ -20,19 +20,14 @@ class Service {
             }
         });
         let len = awaitOrgServices.data.length - 1;
-        console.log(len);
         if (awaitOrgServices.data.length > 0) {
             for (let i = len; i >= 0; i--) {
-                console.log(2)
                 if (awaitOrgServices.data[i].categories.length > 0) {
                     let len2 = awaitOrgServices.data[i].categories.length - 1;
                     for (let j = len2; j >= 0; j--) {
-                        console.log(3)
                         if (awaitOrgServices.data[i].categories[j].services.length > 0) {
                             let len3 = awaitOrgServices.data[i].categories[j].services.length - 1;
-                            console.log(4)
                             for (let k = len3; k >= 0; k--) {
-                                console.log(5)
                                 awaitOrgServices.data[i].categories[j].services[k].price = [];
                                 var awaitPriceServices = await facilityPricesService.find({
                                     query: {
@@ -43,7 +38,6 @@ class Service {
                                     }
                                 });
                                 if (awaitPriceServices.data.length > 0) {
-                                    console.log(6)
                                     let len5 = awaitPriceServices.data.length - 1;
                                     for (let n = 0; n <= len5; n++) {
                                         awaitOrgServices.data[i].categories[j].services[k].price.push({
@@ -52,7 +46,6 @@ class Service {
                                             priceId: awaitPriceServices.data[n]._id,
                                             price: awaitPriceServices.data[n].price
                                         });
-                                        console.log(7)
                                         if (awaitPriceServices.data[n].modifiers !== undefined) {
                                             if (awaitPriceServices.data[n].modifiers.length > 0) {
                                                 let len6 = awaitPriceServices.data[n].modifiers.length - 1;
