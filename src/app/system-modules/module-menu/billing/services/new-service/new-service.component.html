@@ -7,145 +7,12 @@
     <div class="modal-baseWrap">
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
-<<<<<<< HEAD
-=======
-
->>>>>>> a292cec29d1c8185494dac52f46317abef618aeb
         <form [formGroup]="frmNewservice" novalidate>
             <div class="mainfrmwrap">
                 <div class="sec-1">
                     <div class="frm-checkBox-wrap">
                         <mat-checkbox name="newPanel" formControlName="isPanel" value="Panel">Panel</mat-checkbox>
                     </div>
-<<<<<<< HEAD
-                    <div>
-                        <div class="frm-item-wrap">
-                            <mat-input-container class="example-full-width">
-                                <input type="text" matInput mat-error placeholder="Service Name(min. of 3 characters)*" formControlName="serviceName" class="input">
-                            </mat-input-container>
-                            <div class="suggestionFeeds">
-                                <div *ngFor="let dic of dictionaries" class="suggestedItem">
-                                    <div (click)="onSelectDictionary(dic)" class="suggetedName">{{dic.word}}</div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="frm-item-wrap">
-                            <mat-form-field>
-                                <mat-select class="example-full-width" placeholder="Service Category*" formControlName="serviceCat" [compareWith]="compareCategory">
-                                    <mat-option selected>Select Category</mat-option>
-                                    <mat-option *ngFor="let category of categories" [value]="category._id">{{category.name}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="frm-item-wrap">
-                            <mat-input-container class="example-full-width">
-                                <input type="text" matInput mat-error placeholder="Supply Service Code" autocomplete="off" formControlName="serviceCode" class="input">
-                            </mat-input-container>
-                        </div>
-                        <div class="frm-item-wrap">
-                            <mat-input-container class="example-full-width">
-                                <input type="number" matInput mat-error placeholder="Service Charge(Base Price)" formControlName="servicePrice" class="input">
-                            </mat-input-container>
-                        </div>
-                    </div>
-                </div>
-                <div *ngIf="showPanel" class="sec-2">
-                    <div class="col-xs-12">
-                        <form [formGroup]="addPanelFormGroup">
-                            <div class="frm-item-wrap pad">
-                                <div class="menuBar-facilityName">
-                                    <form>
-                                        <div class="frm-item-wrap">
-                                            <mat-input-container class="example-full-width">
-                                                <input matInput mat-error placeholder="Search for service" [formControl]="panelSearchControl">
-                                            </mat-input-container>
-                                        </div>
-                                    </form>
-                                    <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5" *ngIf="allServiceItems.length>0">
-                                        <tbody>
-                                            <tr *ngFor="let item of allServiceItems">
-                                                <td>
-                                                    <div class="empWrap">
-                                                        <div>{{item.category}}</div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="empWrap">
-                                                        <div>{{item.service}}</div>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="empWrap">
-                                                        <ul *ngFor="let p of item.price">
-                                                            <li>{{p.price| number:'1.2-2'}}</li>
-                                                        </ul>
-                                                    </div>
-                                                </td>
-                                                <td *ngIf="!item.checked">
-                                                    <div class="empWrap">
-                                                        <i class="fa fa-plus tblActions" (click)="onServiceSelected(item)"></i>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <br/>
-                    <div class="wrapper wrap">
-                        <table class="text">
-                            <thead class="tableHeader">
-                                <tr>
-                                    <th>Category</th>
-                                    <th>Service</th>
-                                    <th>Price</th>
-                                    <th>Remove</th>
-                                </tr>
-                            </thead>
-                            <tbody class="listItem">
-                                <tr *ngFor="let item of selectedServiceItems; let i=index">
-                                    <td>{{item.category}}</td>
-                                    <td>{{item.service}}</td>
-                                    <td>
-                                        <ul *ngFor="let p of item.price">
-                                            <li>{{p.price| number:'1.2-2'}}</li>
-                                        </ul>
-                                    </td>
-                                    <td>
-                                        <i class="fa fa-trash tblActions" (click)="onRemoveServiceItem(item,i)"></i>
-                                    </td>
-                                </tr>
-                            </tbody>
-                            <tbody>
-                                <tr>
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-            <div class="row" *ngIf="selectedService.name !== undefined">
-                <h5 style="color:black">Other Prices</h5>
-                <div class="input-wrap col" *ngFor="let p of selectedService.price; let i=index">
-                    <div *ngIf="p.isBase===false">
-                        <span style="color:blue">{{p.name}}</span>
-                        <input [formControl]="editPriceControl" (change)="onEditPrice($event,i)" min="0" value="{{p.price}}" type="number">
-                    </div>
-                </div>
-            </div>
-
-            <div class="text-center" *ngIf="showServelLayout">
-                <button mat-raised-button [hidden]="isDisableBtn" (click)="newService(frmNewservice.value, frmNewservice.valid)">
-          {{btnTitle}}
-        </button>
-            </div>
-        </form>
-
-    </div>
-=======
                     <div class="frm-item-wrap">
                         <mat-input-container class="example-full-width">
                             <input type="text" matInput mat-error placeholder="Service Name(min. of 3 characters)*" formControlName="serviceName" class="input">
@@ -237,7 +104,6 @@
                                                                   </table>-->
                     </div>
 
->>>>>>> a292cec29d1c8185494dac52f46317abef618aeb
 
 
                     <div class="wrapper wrap">
@@ -290,8 +156,4 @@
 
     </div>
 
-<<<<<<< HEAD
-      </div>-->
-=======
 </div>
->>>>>>> a292cec29d1c8185494dac52f46317abef618aeb
