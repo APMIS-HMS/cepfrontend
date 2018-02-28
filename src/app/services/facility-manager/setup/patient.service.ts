@@ -11,6 +11,7 @@ export class PatientService {
   private _rest;
   public listner;
   public createListener;
+  public patchListener;
 
   private patientAnnouncedSource = new Subject<Patient>();
   patientAnnounced$ = this.patientAnnouncedSource.asObservable();
@@ -23,6 +24,7 @@ export class PatientService {
     this._socket = _socketService.getService('patients');
     this.createListener = Observable.fromEvent(this._socket, 'created');
     this.listner = Observable.fromEvent(this._socket, 'updated');
+    this.patchListener = Observable.fromEvent(this._socket, 'patched');
   }
   announcePatient(patient: Patient) {
     this.patientAnnouncedSource.next(patient);
