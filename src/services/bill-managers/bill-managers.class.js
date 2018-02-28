@@ -52,7 +52,6 @@ class Service {
                         for (let m = 0; m <= len6; m++) {
                             if(awaitPriceServices.data[n].modifiers[m].tagId !== undefined){
                                 let tag = await serviceTagsService.get(awaitPriceServices.data[n].modifiers[m].tagId);
-                                
                                 if (awaitPriceServices.data[n].modifiers[m].modifierType === 'Percentage') {
                                   let p = awaitPriceServices.data[n].modifiers[m].modifierValue / 100;
                                   let calculatedP = p * awaitPriceServices.data[n].price;
