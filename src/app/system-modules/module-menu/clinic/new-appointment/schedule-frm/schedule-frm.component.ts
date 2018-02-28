@@ -433,7 +433,7 @@ export class ScheduleFrmComponent implements OnInit {
       payload.data.forEach((itemi, i) => {
         if (itemi.name === "Clinic") {
           this.clinicMajorLocation = itemi;
-          this.getLoginEmployee();
+          // this.getLoginEmployee();
         }
       });
     });
@@ -463,19 +463,19 @@ export class ScheduleFrmComponent implements OnInit {
             });
           } else if (
             this.loginEmployee !== undefined &&
-            this.loginEmployee.professionObject.name !== "Doctor"
+            this.loginEmployee.professionId !== "Doctor"
           ) {
             this.loginEmployee.workSpaces.forEach((wrk, ii) => {
               wrk.locations.forEach((lct, li) => {
                 this.scheduleManagers.forEach((sch: any, ji) => {
                   sch.schedules.forEach((sch2, jji) => {
                     if (
-                      sch2.location._id === lct.minorLocationId._id &&
-                      sch.clinicObject.clinic._id === itemk._id
+                      sch2.location._id === lct.minorLocationId &&
+                      sch.clinic === itemk.clinicName
                     ) {
                       if (clinicIds.filter(x => x === itemk._id).length === 0) {
                         const clinicModel: ClinicModel = <ClinicModel>{};
-                        clinicModel.clinic = sch.clinicObject.clinic;
+                        clinicModel.clinic = sch.clinic;
                         clinicModel.department = itemi;
                         clinicModel.unit = itemj;
                         clinicModel._id = itemk._id;
@@ -529,8 +529,8 @@ export class ScheduleFrmComponent implements OnInit {
       inClinicLocations.push(minorLocation);
     });
     if (
-      this.loginEmployee.professionObject !== undefined &&
-      this.loginEmployee.professionObject.name === "Doctor"
+      this.loginEmployee.professionId !== undefined &&
+      this.loginEmployee.professionId === "Doctor"
     ) {
       this.schedules.forEach((items, s) => {
         this.loginEmployee.units.forEach((itemu, u) => {
@@ -572,38 +572,38 @@ export class ScheduleFrmComponent implements OnInit {
       });
   }
 
-  getLoginEmployee() {
-    this.loadIndicatorVisible = true;
-    const emp$ = Observable.fromPromise(
-      this.employeeService.find({
-        query: {
-          facilityId: this.selectedFacility._id,
-          personId: this.auth.data.personId,
-          showbasicinfo: true
-        }
-      })
-    );
-    // tslint:disable-next-line:max-line-length
-    this.subscription = emp$
-      .mergeMap((emp: any) =>
-        Observable.forkJoin([
-          Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {}))
-        ])
-      )
-      .subscribe((results: any) => {
-        this.loginEmployee = results[0];
-        if (
-          this.loginEmployee !== undefined &&
-          this.loginEmployee.professionObject !== undefined
-        ) {
-          this.selectedProfession = this.loginEmployee.professionObject;
-          if (this.loginEmployee.professionObject.name === "Doctor") {
-            this.isDoctor = true;
-          }
-          this.getClinics();
-        }
-      });
-  }
+  // getLoginEmployee() {
+  //   this.loadIndicatorVisible = true;
+  //   const emp$ = Observable.fromPromise(
+  //     this.employeeService.find({
+  //       query: {
+  //         facilityId: this.selectedFacility._id,
+  //         personId: this.auth.data.personId,
+  //         showbasicinfo: true
+  //       }
+  //     })
+  //   );
+  //   // tslint:disable-next-line:max-line-length
+  //   this.subscription = emp$
+  //     .mergeMap((emp: any) =>
+  //       Observable.forkJoin([
+  //         Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {}))
+  //       ])
+  //     )
+  //     .subscribe((results: any) => {
+  //       this.loginEmployee = results[0];
+  //       if (
+  //         this.loginEmployee !== undefined &&
+  //         this.loginEmployee.professionId !== undefined
+  //       ) {
+  //         this.selectedProfession = this.loginEmployee.professionId;
+  //         if (this.loginEmployee.professionId === "Doctor") {
+  //           this.isDoctor = true;
+  //         }
+  //         this.getClinics();
+  //       }
+  //     });
+  // }
 
   getEmployees() {
     this.loadingProviders = true;

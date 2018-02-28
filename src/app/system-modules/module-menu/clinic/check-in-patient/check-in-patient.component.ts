@@ -66,6 +66,8 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
     });
     this.subscription = this.appointmentService.updatelistner.subscribe(payload => {
       this.selectedCheckedInAppointment = payload;
+      this.getClinics();
+
     });
     this.subscription = this.appointmentService.timelineAnnounced$.subscribe(value => {
       if (value === true) {
@@ -397,6 +399,7 @@ getSchedules(){
       const isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
       this.locker.setObject('patient', appointment.patientDetails);
       this.locker.setObject('appointment', '');
+      appointment.isEngaged = true;
       this.locker.setObject('appointment', appointment);
       if (isOnList.length > 0) {
         this.router.navigate(['/dashboard/patient-manager/patient-manager-detail',
