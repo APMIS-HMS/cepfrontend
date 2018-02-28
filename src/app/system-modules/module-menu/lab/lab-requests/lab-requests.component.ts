@@ -690,7 +690,8 @@ export class LabRequestsComponent implements OnInit {
     if (this.frmNewRequest.valid) {
       this.isValidateForm = true;
     } else if (this.selectedPatient !== undefined && this.selectedPatient._id !== undefined && this.selectedPatient._id.length > 0) {
-      if(this.frmNewRequest.controls['clinicalInfo'].valid && this.frmNewRequest.controls['diagnosis'].valid && this.frmNewRequest.controls['investigation'].valid){
+      if (this.frmNewRequest.controls['clinicalInfo'].valid &&
+      this.frmNewRequest.controls['diagnosis'].valid && this.frmNewRequest.controls['investigation'].valid) {
         this.isValidateForm = true;
       }
     } else {
