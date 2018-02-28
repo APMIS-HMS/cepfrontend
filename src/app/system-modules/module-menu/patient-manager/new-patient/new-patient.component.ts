@@ -1412,7 +1412,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
 
-
     newPerson3(valid, val) {
         this.loading = true;
         if (this.skipNok || valid) {
@@ -1524,18 +1523,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             this.errMsg = 'An error has occured, please check and try again!';
             this.systemModuleService.off();
         }
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
     saveEmployee() {

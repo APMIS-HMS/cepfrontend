@@ -6,7 +6,11 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Person } from '../../../models/index';
+<<<<<<< HEAD
 import { Http, Headers, RequestOptions } from '@angular/http'
+=======
+import { RequestOptions, Http, Headers } from '@angular/http';
+>>>>>>> 6aab991cbc2c1065395104cba67efbd501d6fe86
 const request = require('superagent');
 
 @Injectable()
@@ -20,6 +24,7 @@ export class PersonService {
   public createListener;
   public updateListener;
   private _rest;
+  public http;
 
   private personAnnouncedSource = new Subject<Person>();
   personAnnounced$ = this.personAnnouncedSource.asObservable();
@@ -156,5 +161,19 @@ export class PersonService {
   // }
   searchPerson(body: any) {
     return this._socketService.getService('search-people').find(body);
+  }
+
+  altFundWallet(payload) {
+    const host = this._restService.getHost();
+    const path = host + '/fund-wallet';
+    const token = 'Bearer' + localStorage.getItem('token');
+    // const bearer = '';
+    const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', token);
+    const options = new RequestOptions({headers: headers});
+    this.http.post(path, payload, options).subscribe(subPayload => {
+      console.log(subPayload);
+    });
   }
 }

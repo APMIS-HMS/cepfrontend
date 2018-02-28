@@ -17,7 +17,7 @@ export class SystemModuleService {
 
   private loggedInUserAnnouncedSource = new Subject<Object>();
   loggedInUserAnnounced = this.loggedInUserAnnouncedSource.asObservable();
-  
+
   private messageSource = new BehaviorSubject<Object>(false);
   currentMessage = this.messageSource.asObservable();
 
