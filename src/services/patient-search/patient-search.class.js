@@ -56,13 +56,10 @@ class Service {
                                 }else{
                                     patients.data[0].personDetails = person;
                                     patientz.push(patients.data[0]);
-                                    console.log(patientz);
                                 }
                             }
                             counter++;
                         }
-
-                        console.log(patientz);
 
                         if (pLength === counter) {
                             if(patientTable !== true){
