@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FacilityHealthCoverRoutingModule } from './facility-health-cover-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { FacilityHealthCoverComponent } from './facility-health-cover.component';
 import { OnlyMaterialModule } from '../../../../shared-common-modules/only-material-module';
@@ -9,10 +10,13 @@ import { HmoBillHistoryDetailComponent } from '../hmo-officer/hmo-bill-history-d
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 import { MaterialModule } from '../../../../shared-common-modules/material-module';
 import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
+import { FacilityCompanyCoverComponent } from './facility-company-cover/facility-company-cover.component';
+import { FacilityFamilyCoverComponent } from './facility-family-cover/facility-family-cover.component';
 
 @NgModule({
   imports: [
     CommonModule,
+    FacilityHealthCoverRoutingModule, 
     OnlyMaterialModule,
     SweetAlert2Module,
     MaterialModule,   
@@ -22,7 +26,7 @@ import { Ng4GeoautocompleteModule } from 'ng4-geoautocomplete';
     FacilityHealthCoverComponent,
     HmoOfficerComponent,
     HmoBillDetailComponent, 
-    HmoBillHistoryDetailComponent
+    HmoBillHistoryDetailComponent, FacilityCompanyCoverComponent, FacilityFamilyCoverComponent
   ]
 })
 export class FacilityHealthCoverModule { }

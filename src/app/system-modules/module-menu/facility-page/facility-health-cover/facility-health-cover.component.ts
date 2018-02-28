@@ -9,9 +9,32 @@ import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, Naviga
 })
 export class FacilityHealthCoverComponent implements OnInit {
 
-  constructor() { }
+  hmo = true;
+  company = false;
+  family = false;
+
+  constructor(private router: Router) { }
 
   ngOnInit() {
+  }
+
+  hmo_tab(){
+    this.hmo = true;
+    this.company = false;
+    this.family = false;
+    this.router.navigate(['/health-coverage/hmo']);
+  }
+  company_tab(){
+    this.hmo = false;
+    this.company = true;
+    this.family = false;
+    this.router.navigate(['/health-coverage/company-cover']);
+  }
+  family_tab(){
+    this.hmo = false;
+    this.company = false;
+    this.family = true;
+    this.router.navigate(['/health-coverage/family-cover']); 
   }
 
 }

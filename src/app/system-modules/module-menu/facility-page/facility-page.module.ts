@@ -102,7 +102,6 @@ import { from } from 'rxjs/observable/from';
     ],
     imports: [
         facilityPageRoutes,
-        facilityPageRoutes,
         OnlyMaterialModule,
         MaterialModule,
         Ng4GeoautocompleteModule,

@@ -232,7 +232,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.networkContentArea = false;
       this.accessContentArea = true;
       this.hmoContentArea = false;
-    } else if(value == 'health-coverage/hmo'){
+    } else if(value == 'health-coverage'){
       this.modulesContentArea = false;
       this.optionsContentArea = false;
       this.departmentsContentArea = false;
@@ -377,7 +377,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.networkContentArea = false;
       this.accessContentArea = true;
       this.hmoContentArea = false;
-    }else if(param.includes('facilityhealth-coverage/hmo')){
+    }else if(param.includes('health-coverage')){
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
