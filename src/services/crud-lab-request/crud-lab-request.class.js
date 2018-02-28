@@ -18,7 +18,7 @@ class Service {
         const employeeService = this.app.service('employees');
         const accessToken = params.accessToken;
         const facilityId = params.query.facilityId;
-        const cQuery = params.query;
+        const cQuery = params;
 
         if (accessToken !== undefined) {
             const hasFacility = params.user.facilitiesRole.filter(x => x.facilityId.toString() === facilityId);
