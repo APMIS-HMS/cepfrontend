@@ -459,11 +459,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       });
     }
     this.selectedPatient['nextOfKin'] = nextOfKinArray;
-<<<<<<< HEAD
-=======
-    console.log(this.selectedPatient);
 
->>>>>>> d20feab8ec779c28145be9d8590c3f9391dfffd7
     const patientIndex = this.patients.findIndex(p => p.personDetails._id === this.selectedPatient._id);
     this.personService.patch(this.selectedPatient._id, this.selectedPatient, {}).then(res => {
       console.log(res);

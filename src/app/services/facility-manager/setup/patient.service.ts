@@ -11,11 +11,8 @@ export class PatientService {
   private _rest;
   public listner;
   public createListener;
-<<<<<<< HEAD
   public patchListener;
-=======
   public _patientSearchSocket;
->>>>>>> d20feab8ec779c28145be9d8590c3f9391dfffd7
 
   private patientAnnouncedSource = new Subject<Patient>();
   patientAnnounced$ = this.patientAnnouncedSource.asObservable();
