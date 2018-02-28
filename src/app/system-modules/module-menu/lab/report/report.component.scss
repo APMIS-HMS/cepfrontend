@@ -35,10 +35,6 @@
     padding: 5px;
 }
 
-.doc-mainWrap {
-    //margin-bottom: 100px;
-}
-
 .listWrap {
     background: #f8f8f8;
     padding: 10px;
@@ -144,11 +140,9 @@
 }
 
 .frm-l .frm-item-wrap {
-    //background: #f8f8f8;
     width: 100%;
     padding: 0 10px;
     box-sizing: border-box;
-    border-radius: 10px 10px 0 0;
 }
 
 .tbl-panel {
@@ -174,10 +168,6 @@
     display: table;
 }
 
-// .sel-patient-img {
-//     width: 40%;
-//     margin: 10px auto;
-// }
 .sel-patient-img {
     width: 25%;
     padding: 5px;
@@ -189,32 +179,9 @@
     border-radius: 50%;
 }
 
-// .sel-patient-name {
-//     font-family: "Josefin Sans", sans-serif;
-//     width: 80%;
-//     margin: 0 auto;
-//     text-align: center;
-//     font-size: 2.2rem;
-//     color: #5f5f5f;
-// }
-// .sel-patient-details {
-//     // display: flex;
-//     // justify-content: space-between;
-//     margin: 10px auto;
-//     width: 75%;
-//     flex-wrap: wrap;
-//     font-size: 1.2rem;
-//     color: #000;
-//     background: #FFE0B2;
-//     padding: 10px;
-//     box-sizing: border-box;
-// }
+
 .sel-patient-details {
-    // display: flex;
-    // justify-content: space-between;
-    // margin: 10px auto;
-    // width: 75%;
-    // flex-wrap: wrap;
+
     line-height: 1.5;
     width: 64%;
     float: left;
@@ -231,11 +198,6 @@
     }
 }
 
-// .sel-patient-details div {
-//     width: 40%;
-//     margin: 2px;
-//     margin-right: 5px;
-// }
 .pending-req-wrap {
     max-height: 350px;
     overflow-y: auto;

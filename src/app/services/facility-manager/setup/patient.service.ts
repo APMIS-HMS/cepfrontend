@@ -11,7 +11,11 @@ export class PatientService {
   private _rest;
   public listner;
   public createListener;
+<<<<<<< HEAD
   public patchListener;
+=======
+  public _patientSearchSocket;
+>>>>>>> d20feab8ec779c28145be9d8590c3f9391dfffd7
 
   private patientAnnouncedSource = new Subject<Patient>();
   patientAnnounced$ = this.patientAnnouncedSource.asObservable();
@@ -22,6 +26,8 @@ export class PatientService {
   ) {
     this._rest = _restService.getService('patients');
     this._socket = _socketService.getService('patients');
+    this._patientSearchSocket = _socketService.getService('patient-search');
+    this._patientSearchSocket.timeout = 30000;
     this.createListener = Observable.fromEvent(this._socket, 'created');
     this.listner = Observable.fromEvent(this._socket, 'updated');
     this.patchListener = Observable.fromEvent(this._socket, 'patched');
@@ -54,7 +60,7 @@ export class PatientService {
     });
   }
   reload() {
-    //this._restService.reload();
+    // this._restService.reload();
   }
   find(query: any) {
     this.reload();
@@ -64,6 +70,9 @@ export class PatientService {
   findAll() {
     this.reload();
     return this._socket.find();
+  }
+  findPatient(query: any) {
+    return this._patientSearchSocket.find(query);
   }
   get(id: string, query: any) {
     this.reload();
@@ -94,7 +103,7 @@ export class PatientService {
   update(patient: any) {
     return this._socket.update(patient._id, patient);
   }
-  patch(id, patient:any, query){
+  patch(id, patient: any, query) {
     return this._socket.patch(id, patient, query);
   }
   searchPatient(facilityId: string, searchText: string) {

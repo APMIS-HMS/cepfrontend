@@ -3,7 +3,7 @@ import { EMAIL_REGEX } from 'app/shared-module/helpers/global-config';
 import { NUMERIC_REGEX, ALPHABET_REGEX } from './../../../../shared-module/helpers/global-config';
 import { CountryServiceFacadeService } from './../../../service-facade/country-service-facade.service';
 import { TitleGenderFacadeService } from 'app/system-modules/service-facade/title-gender-facade.service';
-import { Component, OnInit, EventEmitter, ElementRef, ViewChild, Output, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, ElementRef, ViewChild, Output, OnChanges, Input, SimpleChanges, SimpleChange } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import {
   PatientService, PersonService, FacilitiesService, FacilitiesServiceCategoryService,
@@ -43,6 +43,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
   @Output() empDetail: EventEmitter<string> = new EventEmitter<string>();
   @Input() resetData: Boolean;
+  @Input() searchedPatients: any;
   @Output() resetDataNew: EventEmitter<Boolean> = new EventEmitter<Boolean>();
   @ViewChild('fileInput') fileInput: ElementRef;
 
@@ -126,14 +127,14 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
     });
 
-    const away = this.searchControl.valueChanges
+    /* const away = this.searchControl.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       .switchMap((term: Patient[]) => this.patientService.searchPatient(this.facility._id, this.searchControl.value));
 
     away.subscribe((payload: any) => {
       this.patients = payload.body;
-    });
+    }); */
 
     this.filteredHmos = this.hmoPlanId.valueChanges
       .pipe(
@@ -143,9 +144,9 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
 
   }
-  searchPatients(searchText: string) {
+  /* searchPatients(searchText: string) {
     this.searchControl.setValue(searchText);
-  }
+  } */
   getGender() {
     this.genderService.getGenders().then((payload: any) => {
       this.genders = payload;
@@ -185,7 +186,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.getCategories();
 
     this.systemService.currentMessage.subscribe(message => {
-      if(message){
+      if (message) {
         this.slideEdit(message);
       }
     });
@@ -242,11 +243,22 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes: SimpleChanges) {
     if (this.resetData === true) {
       this.index = 0;
       this.getPatients();
       this.showLoadMore = true;
+    }
+    if (changes.searchedPatients.currentValue) {
+      console.log(changes);
+      this.patients = changes.searchedPatients.currentValue;
+      this.total = this.patients.length;
+      console.log(this.total);
+      if (this.total <= this.patients.length) {
+        this.showLoadMore = false;
+      }
+      this.getShowing();
+      console.log(this.patients);
     }
   }
 
@@ -447,13 +459,20 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       });
     }
     this.selectedPatient['nextOfKin'] = nextOfKinArray;
+<<<<<<< HEAD
+=======
+    console.log(this.selectedPatient);
+
+>>>>>>> d20feab8ec779c28145be9d8590c3f9391dfffd7
     const patientIndex = this.patients.findIndex(p => p.personDetails._id === this.selectedPatient._id);
     this.personService.patch(this.selectedPatient._id, this.selectedPatient, {}).then(res => {
+      console.log(res);
       this.updatePatientBtnText = 'Update';
       this.patients[patientIndex].personDetails = res;
       this.close_onClick();
       this.systemService.announceSweetProxy('Patient details has been updated successfully.', 'Success');
     }).catch(err => {
+      console.log(err);
       this.updatePatientBtnText = 'Update';
       this.systemService.announceSweetProxy('There was an error updating user record, Please try again later.', 'Error');
     });
@@ -489,9 +508,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.tabInsurance_click();
     } else if (cover === 'family') {
       this.tabFamily_click();
-    } else {
-
-    }
+    } else {  }
   }
 
   backBtn() {
@@ -510,10 +527,38 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     }
 
     if (check.length < 1) {
-      data.push({
-        planType: cover,
-        isDefault: Boolean(this.isDefault.value)
-      });
+      if (cover === 'wallet') {
+        data.push({
+          planType: cover,
+          isDefault: Boolean(this.isDefault.value)
+        });
+      } else if (cover === 'insurance') {
+        data.push({
+          planType: cover,
+          isDefault: Boolean(this.isDefault.value),
+          planDetails: {
+            hmoId: this.hmoPlanId.value.hmoId,
+            principalId: this.insuranceId.value
+          }
+        });
+      } else if (cover === 'company') {
+        data.push({
+          planType: cover,
+          isDefault: Boolean(this.isDefault.value),
+          planDetails: {
+            companyId: this.ccPlanId.value.hmoId,
+            principalId: this.insuranceId.value
+          }
+        });
+      } else if (cover === 'family') {
+        data.push({
+          planType: cover,
+          isDefault: Boolean(this.isDefault.value),
+          planDetails: {
+            principalId: this.familyPlanId.value
+          }
+        });
+      }
     }
     this.patientService.patch(this.patient._id, {
       paymentPlan: data
