@@ -219,7 +219,7 @@ export class CheckoutPatientComponent implements OnInit {
 			} else {
 				this._inpatientService.find({ query: {facilityId: this.facility._id, patientId: this.patientDetails._id, isDischarged: false }}).then(resp => {
 					if (resp.data.length > 0) {
-            const minorLocation = this.facility.minorLocations.filter(x => x._id === res.data[0].minorLocationId);
+            const minorLocation = this.facility.minorLocations.filter(x => x._id === resp.data[0].minorLocationId);
             let text = patientName + ' has been admitted to ' + minorLocation[0].name + ' ward';
 						resp.data[0].isAdmitted = true;
 						resp.data[0].msg = text;

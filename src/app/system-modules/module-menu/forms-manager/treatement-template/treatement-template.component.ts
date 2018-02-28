@@ -34,15 +34,15 @@ import { SystemModuleService } from "../../../../services/module-manager/setup/s
 import { VISIBILITY_GLOBAL } from "../../../../shared-module/helpers/global-config";
 
 @Component({
-  selector: "app-treatement-template",
-  templateUrl: "./treatement-template.component.html",
-  styleUrls: ["./treatement-template.component.scss"]
+  selector: 'app-treatement-template',
+  templateUrl: './treatement-template.component.html',
+  styleUrls: ['./treatement-template.component.scss']
 })
 export class TreatementTemplateComponent implements OnInit {
   selectedTemplate: any;
   templates: any[] = [];
-  @ViewChild("fileInput") fileInput: ElementRef;
-  @ViewChild("surveyjs") surveyjs: any;
+  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChild('surveyjs') surveyjs: any;
   public frmnewTemplate: FormGroup;
   newTemplate = false;
   isOrderSet = false;
@@ -60,11 +60,13 @@ export class TreatementTemplateComponent implements OnInit {
   scopeLevels: any[] = [];
   forms: any[] = [];
   orderSet: OrderSetTemplate = <OrderSetTemplate>{};
+  // orderSet: any = <any>{};
   saveTemplateText = true;
   savingTemplateText = false;
   editTemplateText = false;
   editingTemplateText = false;
   disableBtn = true;
+  disableSaveBtn = false;
   user: any = <any>{};
   loginEmployee: any;
 
@@ -89,10 +91,7 @@ export class TreatementTemplateComponent implements OnInit {
       const isNameValid = this.frmnewTemplate.controls.name.valid;
       if (isVisibilityValid && isFormValid && isNameValid) {
         let doc: any;
-        if (
-          this.selectedTemplate !== undefined &&
-          this.selectedTemplate._id !== undefined
-        ) {
+        if (this.selectedTemplate !== undefined && this.selectedTemplate._id !== undefined) {
           this.selectedTemplate.data = payload;
           this.selectedTemplate.isEditable = this.frmnewTemplate.controls.isEditable.value;
           this.selectedTemplate.name = this.frmnewTemplate.controls.name.value;
@@ -102,17 +101,9 @@ export class TreatementTemplateComponent implements OnInit {
             this.selectedTemplate.userId = this.user._id;
           }
 
-          this.documentationTemplateService
-            .update(this.selectedTemplate)
-            .then(payload2 => {
+          this.documentationTemplateService.update(this.selectedTemplate).then(payload2 => {
               this._systemModuleService.off();
-              this._notification(
-                "Success",
-                "Template has been updated successfully!"
-              );
-              this._systemModuleService.announceSweetProxy(
-                "Template has been saved successfully!",
-                'success', null, null, null, null, null, null, null);
+              this._systemModuleService.announceSweetProxy('Template has been saved successfully!', 'success');
               // this.newTemplate_show(true);
               this.getTemplates();
               this.isOrderSet = false;
@@ -122,22 +113,14 @@ export class TreatementTemplateComponent implements OnInit {
               this.frmnewTemplate.controls.isEditable.setValue(false);
               this.frmnewTemplate.controls.docFrmList.reset();
               this.frmnewTemplate.controls.type.reset();
-            })
-            .catch(err => {
+            }).catch(err => {
               this._systemModuleService.off();
               this.frmnewTemplate.controls.name.reset();
               this.frmnewTemplate.controls.visibility.reset();
               this.frmnewTemplate.controls.isEditable.setValue(false);
               this.frmnewTemplate.controls.docFrmList.reset();
               this.frmnewTemplate.controls.type.reset();
-              this._notification(
-                "Error",
-                "There was an error while saving template"
-              );
-              this._systemModuleService.announceSweetProxy(
-                "There was an error while saving template",
-                "error"
-              );
+              this._systemModuleService.announceSweetProxy('There was an error while saving template', 'error');
             });
         } else {
           doc = {
@@ -153,13 +136,7 @@ export class TreatementTemplateComponent implements OnInit {
             .create(doc)
             .then(payload2 => {
               this._systemModuleService.off();
-              this._notification(
-                "Success",
-                "Template has been saved successfully!"
-              );
-              this._systemModuleService.announceSweetProxy(
-                "Template has been saved successfully!",
-                'success', null, null, null, null, null, null, null);
+              this._systemModuleService.announceSweetProxy('Template has been saved successfully!', 'success');
               this.getTemplates();
               this.isOrderSet = false;
               this.isTemplate = true;
@@ -168,22 +145,14 @@ export class TreatementTemplateComponent implements OnInit {
               this.frmnewTemplate.controls.isEditable.setValue(false);
               this.frmnewTemplate.controls.docFrmList.reset();
               this.frmnewTemplate.controls.type.reset();
-            })
-            .catch(err => {
+            }).catch(err => {
               this._systemModuleService.off();
               this.frmnewTemplate.controls.name.reset();
               this.frmnewTemplate.controls.visibility.reset();
               this.frmnewTemplate.controls.isEditable.setValue(false);
               this.frmnewTemplate.controls.docFrmList.reset();
               this.frmnewTemplate.controls.type.reset();
-              this._notification(
-                "Error",
-                "There was an error while saving template"
-              );
-              this._systemModuleService.announceSweetProxy(
-                "There was an error while saving template",
-                "error"
-              );
+              this._systemModuleService.announceSweetProxy('There was an error while saving template', 'error');
             });
         }
       } else {
@@ -193,16 +162,13 @@ export class TreatementTemplateComponent implements OnInit {
         this.frmnewTemplate.controls.docFrmList.markAsTouched();
         this.frmnewTemplate.controls.name.markAsTouched();
         this.frmnewTemplate.controls.docFrmList.reset();
-        this._notification("Warning", "One or more required field is missing!");
+        this._notification('Warning', 'One or more required field is missing!');
       }
     });
   }
 
   ngOnInit() {
-    this.selectedFacility = <Facility>this._locker.getObject(
-      "selectedFacility"
-    );
-
+    this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
     this._authFacadeService.getLogingUser().then(payload => {
       this.user = payload;
     });
@@ -210,30 +176,32 @@ export class TreatementTemplateComponent implements OnInit {
       this.loginEmployee = payload;
     });
     this.frmnewTemplate = this.formBuilder.group({
-      name: ["", [Validators.required]],
-      diagnosis: [""],
-      visibility: [""],
-      isEditable: [""],
-      type: ["Documentation", [<any>Validators.required]],
-      docFrmList: [""],
-      category: ["medication"]
+      name: ['', [Validators.required]],
+      diagnosis: [''],
+      visibility: [''],
+      isEditable: [''],
+      type: ['Documentation', [<any>Validators.required]],
+      docFrmList: [''],
+      category: ['medication']
     });
 
     this._getScopeLevels();
     this._getForms();
-    this.getTemplates();
 
-    this.frmnewTemplate.controls["type"].valueChanges.subscribe(value => {
-      if (value === "Documentation") {
+    this.frmnewTemplate.controls['type'].valueChanges.subscribe(value => {
+      if (value === 'Documentation') {
+        this.getTemplates();
         this.isDocumentation = true;
         this.isOrderSet = false;
-      } else if (value === "Order Set") {
+      } else if (value === 'Order Set') {
+        this.getOrderSet();
         this.isOrderSet = true;
+        this.frmnewTemplate.controls['category'].setValue('medication');
         this.isDocumentation = false;
       }
     });
 
-    this.frmnewTemplate.controls["docFrmList"].valueChanges.subscribe(value => {
+    this.frmnewTemplate.controls['docFrmList'].valueChanges.subscribe(value => {
       if (value !== undefined && value !== null) {
         this._setSelectedForm(value);
       }
@@ -243,36 +211,29 @@ export class TreatementTemplateComponent implements OnInit {
     this._orderSetSharedService.itemSubject.subscribe(value => {
       if (!!value.medications) {
         if (!!this.orderSet.medications) {
-          const findItem = this.orderSet.medications.filter(
-            x =>
-              x.genericName === value.medications[0].genericName &&
-              x.strength === value.medications[0].strength
+          const findItem = this.orderSet.medications.filter(x =>
+            x.genericName === value.medications[0].genericName &&
+            x.strength === value.medications[0].strength
           );
           if (findItem.length === 0) {
             this.orderSet.medications.push(value.medications[0]);
           }
         } else {
-          this.orderSet.medications = [];
-          this.orderSet.medications.push(value.medications[0]);
+          this.orderSet.medications = value.medications;
         }
       } else if (!!value.investigations) {
         if (!!this.orderSet.investigations) {
-          const findItem = this.orderSet.investigations.filter(
-            x => x._id === value.investigations[0]._id
-          );
+          const findItem = this.orderSet.investigations.filter(x => x._id === value.investigations[0]._id);
           if (findItem.length === 0) {
             this.orderSet.investigations.push(value.investigations[0]);
           }
         } else {
-          this.orderSet.investigations = [];
-          this.orderSet.investigations.push(value.investigations[0]);
+          this.orderSet.investigations = value.investigations;
         }
       } else if (!!value.procedures) {
         if (!!this.orderSet.procedures) {
           if (this.orderSet.procedures.length > 0) {
-            const findItem = this.orderSet.procedures.filter(
-              x => x._id === value.procedures[0]._id
-            );
+            const findItem = this.orderSet.procedures.filter(x => x._id === value.procedures[0]._id);
             if (findItem.length === 0) {
               this.orderSet.procedures.push(value.procedures[0]);
             }
@@ -280,55 +241,53 @@ export class TreatementTemplateComponent implements OnInit {
             this.orderSet.procedures.push(value.procedures[0]);
           }
         } else {
-          // this.orderSet.procedures = [];
           this.orderSet.procedures = value.procedures;
         }
       } else if (!!value.nursingCares) {
         if (!!this.orderSet.nursingCares) {
-          const findItem = this.orderSet.nursingCares.filter(
-            x => x.name === value.nursingCares[0].name
-          );
+          const findItem = this.orderSet.nursingCares.filter(x => x.name === value.nursingCares[0].name);
           if (findItem.length === 0) {
             this.orderSet.nursingCares.push(value.nursingCares[0]);
           }
         } else {
-          this.orderSet.nursingCares = [];
-          this.orderSet.nursingCares.push(value.nursingCares[0]);
+          this.orderSet.nursingCares = value.nursingCares;
         }
       } else if (!!value.physicianOrders) {
         if (!!this.orderSet.physicianOrders) {
-          const findItem = this.orderSet.physicianOrders.filter(
-            x => x.name === value.physicianOrders[0].name
-          );
+          const findItem = this.orderSet.physicianOrders.filter(x => x.name === value.physicianOrders[0].name);
           if (findItem.length === 0) {
             this.orderSet.physicianOrders.push(value.physicianOrders[0]);
           }
         } else {
-          this.orderSet.physicianOrders = [];
-          this.orderSet.physicianOrders.push(value.physicianOrders[0]);
+          this.orderSet.physicianOrders = value.physicianOrders;
         }
       }
     });
   }
+
   getTemplates() {
-    this.documentationTemplateService
-      .find({
-        query: {
-          $or: [
-            { facilityId: this.selectedFacility._id },
-            { visibility: "Units" }
-          ]
-        }
-      })
-      .then(payload => {
-        this.templates = payload.data;
-      })
-      .catch(errr => {});
+    this.documentationTemplateService.find({
+        query: {$or: [{ facilityId: this.selectedFacility._id },  { visibility: 'Units' }]}
+      }).then(res => {
+        this.templates = res.data;
+      }).catch(errr => {});
   }
+
+  getOrderSet() {
+    this._orderSetTemplateService.find({ query: { facilityId: this.selectedFacility._id }}).then(res => {
+        this.templates = res.data;
+      }).catch(errr => {});
+  }
+
   save(valid: boolean, value: any) {
     this._systemModuleService.on();
-    const validateForm = this.validateForm(value, "Order Set");
+    const validateForm = this.validateForm(value, 'Order Set');
+
     if (validateForm) {
+      this.disableSaveBtn = true;
+      this.savingTemplateText = true;
+      this.saveTemplateText = false;
+
       const orderSet = JSON.stringify(this.orderSet);
       const payload = {
         name: value.name,
@@ -342,71 +301,56 @@ export class TreatementTemplateComponent implements OnInit {
       };
 
       // Save to database
-      this._orderSetTemplateService
-        .create(payload)
-        .then(res => {
+      this._orderSetTemplateService.create(payload).then(res => {
           this._systemModuleService.off();
           if (res._id) {
+            this.disableSaveBtn = false;
+            this.savingTemplateText = false;
+            this.saveTemplateText = true;
             this.orderSet = <OrderSetTemplate>{};
-            this.onClickRadioBtn("medication");
-            this.frmnewTemplate.controls["diagnosis"].setValue("");
-            this.frmnewTemplate.controls["visibility"].setValue("");
-            this.frmnewTemplate.controls["name"].setValue("");
-            this.frmnewTemplate.controls["category"].setValue("medication");
-            this._systemModuleService.announceSweetProxy(
-              "Template has been saved successfully!",
-              'success', null, null, null, null, null, null, null);
+            this.onClickRadioBtn('medication');
+            this.frmnewTemplate.controls['diagnosis'].setValue('');
+            this.frmnewTemplate.controls['visibility'].setValue('');
+            this.frmnewTemplate.controls['name'].setValue('');
+            this.frmnewTemplate.controls['category'].setValue('medication');
+            this._systemModuleService.announceSweetProxy('Template has been saved successfully!', 'success');
           }
-        })
-        .catch(err => {
+        }).catch(err => {
           this._systemModuleService.off();
         });
     } else {
-      this._systemModuleService.announceSweetProxy(
-        "Some fields are required! Please fill all required fields.",
-        "error"
-      );
+      this._notification('Error', 'Some fields are required! Please fill all required fields.');
+      this._systemModuleService.announceSweetProxy('Some fields are required! Please fill all required fields.', 'error');
     }
   }
 
   deleteOrderSetItem(index: number, value: any, type: string) {
-    if (type === "medication") {
-      const findItem = this.orderSet.medications.filter(
-        x =>
-          x.genericName === value.genericName && x.strength === value.strength
-      );
+    if (type === 'medication') {
+      const findItem = this.orderSet.medications.filter(x => x.genericName === value.genericName && x.strength === value.strength);
 
       if (findItem.length > 0) {
         this.orderSet.medications.splice(index, 1);
       }
-    } else if (type === "investigation") {
-      const findItem = this.orderSet.investigations.filter(
-        x => x._id === value._id
-      );
+    } else if (type === 'investigation') {
+      const findItem = this.orderSet.investigations.filter(x => x._id === value._id);
 
       if (findItem.length > 0) {
         this.orderSet.investigations.splice(index, 1);
       }
-    } else if (type === "procedure") {
-      const findItem = this.orderSet.procedures.filter(
-        x => x._id === value._id
-      );
+    } else if (type === 'procedure') {
+      const findItem = this.orderSet.procedures.filter(x => x._id === value._id);
 
       if (findItem.length > 0) {
         this.orderSet.procedures.splice(index, 1);
       }
-    } else if (type === "nursingCare") {
-      const findItem = this.orderSet.nursingCares.filter(
-        x => x.name === value.name
-      );
+    } else if (type === 'nursingCare') {
+      const findItem = this.orderSet.nursingCares.filter(x => x.name === value.name);
 
       if (findItem.length > 0) {
         this.orderSet.nursingCares.splice(index, 1);
       }
-    } else if (type === "physicianOrder") {
-      const findItem = this.orderSet.physicianOrders.filter(
-        x => x.name === value.name
-      );
+    } else if (type === 'physicianOrder') {
+      const findItem = this.orderSet.physicianOrders.filter(x => x.name === value.name);
 
       if (findItem.length > 0) {
         this.orderSet.physicianOrders.splice(index, 1);
@@ -416,16 +360,11 @@ export class TreatementTemplateComponent implements OnInit {
 
   getCondition() {
     if (
-      (this.orderSet.medications === undefined ||
-        this.orderSet.medications.length === 0) &&
-      (this.orderSet.procedures === undefined ||
-        this.orderSet.procedures.length === 0) &&
-      (this.orderSet.investigations === undefined ||
-        this.orderSet.investigations.length === 0) &&
-      (this.orderSet.physicianOrders === undefined ||
-        this.orderSet.physicianOrders.length === 0) &&
-      (this.orderSet.nursingCares === undefined ||
-        this.orderSet.nursingCares.length === 0)
+      (this.orderSet.medications === undefined || this.orderSet.medications.length === 0) &&
+      (this.orderSet.procedures === undefined || this.orderSet.procedures.length === 0) &&
+      (this.orderSet.investigations === undefined || this.orderSet.investigations.length === 0) &&
+      (this.orderSet.physicianOrders === undefined || this.orderSet.physicianOrders.length === 0) &&
+      (this.orderSet.nursingCares === undefined || this.orderSet.nursingCares.length === 0)
     ) {
       return true;
     } else {
@@ -440,14 +379,8 @@ export class TreatementTemplateComponent implements OnInit {
     const nur = o.nursingCares === undefined;
     const phy = o.physicianOrders === undefined;
     const pro = o.procedures === undefined;
-    if (type === "Order Set") {
-      if (
-        form.diagnosis === "" ||
-        form.name === "" ||
-        form.type === "" ||
-        form.visibility === "" ||
-        (inves && med && nur && phy && pro)
-      ) {
+    if (type === 'Order Set') {
+      if ( form.diagnosis === '' || form.name === '' || form.type === '' || form.visibility === '' || (inves && med && nur && phy && pro)) {
         return false;
       } else {
         return true;
@@ -481,17 +414,15 @@ export class TreatementTemplateComponent implements OnInit {
       .find({})
       .then(payload => {
         this.scopeLevels = payload.data;
-      })
-      .catch(err => {});
+      }).catch(err => {});
   }
 
   _getForms() {
     try {
       const formType$ = Observable.fromPromise(
-        this.formTypeService.find({ query: { name: "Documentation" } })
+        this.formTypeService.find({ query: { name: 'Documentation' } })
       );
-      formType$
-        .mergeMap((formTypes: any) =>
+      formType$.mergeMap((formTypes: any) =>
           Observable.fromPromise(
             this.formService.find({
               query: {
@@ -499,7 +430,7 @@ export class TreatementTemplateComponent implements OnInit {
                 // facilityId: this.selectedFacility._id,
                 // typeOfDocumentId: formTypes.data[0]._id,
                 // isSide: false
-                
+
                 $or: [
                   { selectedFacilityId: this.selectedFacility._id },
                   {
@@ -516,8 +447,7 @@ export class TreatementTemplateComponent implements OnInit {
               }
             })
           )
-        )
-        .subscribe(
+        ).subscribe(
           (results: any) => {
             this.forms = results.data;
           },
@@ -555,31 +485,31 @@ export class TreatementTemplateComponent implements OnInit {
   }
 
   onClickRadioBtn(value: string) {
-    if (value === "medication") {
+    if (value === 'medication') {
       this.showMedService = true;
       this.showLabService = false;
       this.showNursingCareService = false;
       this.showPhysicianOrderService = false;
       this.showProcedureService = false;
-    } else if (value === "laboratory") {
+    } else if (value === 'laboratory') {
       this.showMedService = false;
       this.showLabService = true;
       this.showNursingCareService = false;
       this.showPhysicianOrderService = false;
       this.showProcedureService = false;
-    } else if (value === "nursingCare") {
+    } else if (value === 'nursingCare') {
       this.showMedService = false;
       this.showLabService = false;
       this.showNursingCareService = true;
       this.showPhysicianOrderService = false;
       this.showProcedureService = false;
-    } else if (value === "procedure") {
+    } else if (value === 'procedure') {
       this.showMedService = false;
       this.showLabService = false;
       this.showNursingCareService = false;
       this.showPhysicianOrderService = false;
       this.showProcedureService = true;
-    } else if (value === "physicianOrder") {
+    } else if (value === 'physicianOrder') {
       this.showMedService = false;
       this.showLabService = false;
       this.showNursingCareService = false;
@@ -592,7 +522,7 @@ export class TreatementTemplateComponent implements OnInit {
     const fileBrowser = this.fileInput.nativeElement;
     if (fileBrowser.files && fileBrowser.files[0]) {
       const formData = new FormData();
-      formData.append("excelfile", fileBrowser.files[0]);
+      formData.append('excelfile', fileBrowser.files[0]);
     }
   }
 
@@ -609,16 +539,16 @@ export class TreatementTemplateComponent implements OnInit {
 
   getIsEditable(isEditable) {
     if (isEditable) {
-      return "Yes";
+      return 'Yes';
     } else {
-      return "No";
+      return 'No';
     }
   }
   editTemplate(template) {
     this.newTemplate_show();
     this.selectedTemplate = template;
     this.isDocumentation = true;
-    this.frmnewTemplate.controls.type.setValue("Documentation");
+    this.frmnewTemplate.controls.type.setValue('Documentation');
     this.frmnewTemplate.controls.name.setValue(template.name);
     this.frmnewTemplate.controls.visibility.setValue(template.visibility);
     this.frmnewTemplate.controls.isEditable.setValue(template.isEditable);

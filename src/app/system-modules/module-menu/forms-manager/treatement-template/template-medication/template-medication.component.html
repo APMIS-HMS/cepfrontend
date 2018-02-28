@@ -2,7 +2,7 @@
     <div class="frmArrWrap">
         <div class="row padding-top-20px">
             <div class="col-sm-6 col-md-6">
-                <apmis-lookup formControlName="drug" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Drug" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                <apmis-lookup formControlName="drug" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="true" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Drug" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
             </div>
             <div class="col-sm-3 col-md-3">
                 <mat-form-field>

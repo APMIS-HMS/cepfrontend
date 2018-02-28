@@ -109,4 +109,4 @@
     </div>
 </div>
 
-<app-order-set (showDoc)="showDoc_onClick($event)" *ngIf="showOrderSet"></app-order-set>
+<app-order-set [selectedPatient]="patient" (showDoc)="showDoc_onClick($event)" *ngIf="showOrderSet"></app-order-set>

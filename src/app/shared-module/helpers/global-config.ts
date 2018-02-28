@@ -32,7 +32,7 @@ export const ALPHABET_REGEX = '[a-zA-Z][a-zA-Z ]+'
 export const GEO_LOCATIONS = ['ng'];
 export const HTML_SAVE_PATIENT = `  <i class="fa fa-info-circle" aria-hidden="true"></i>
 SUCCESS!!! An auto-generated password has been sent to your phone number`;
-export const DONT_USE_AUTH_GUARD = false;
+export const DONT_USE_AUTH_GUARD = true;
 export const VISIBILITY_FACILITY = '5901fe0b86a46a00dc7cca77';
 export const VISIBILITY_UNIT = '5901fe1686a46a00dc7cca79';
 export const VISIBILITY_GLOBAL = '5901fdfd86a46a00dc7cca76';
