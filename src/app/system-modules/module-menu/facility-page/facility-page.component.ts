@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { FacilitiesService } from '../../../services/facility-manager/setup/index'; 
+import { FacilitiesService } from '../../../services/facility-manager/setup/index';
 import { Facility } from '../../../models/index';
 import { UserService } from '../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -64,7 +64,7 @@ export class FacilityPageComponent implements OnInit {
     this.locationsContentArea = true;
     this.optionsContentArea = false;
   }
-  navFpOptions (){
+  navFpOptions () {
     this.homeContentArea = false;
     this.modulesContentArea = false;
     this.departmentsContentArea = false;
@@ -74,7 +74,7 @@ export class FacilityPageComponent implements OnInit {
   pageInViewLoader(title) {
     this.pageInView = title;
   }
-  contentSecMenuToggle(){
+  contentSecMenuToggle() {
     this.contentSecMenuShow = !this.contentSecMenuShow;
   }
   close_onClick(e) {

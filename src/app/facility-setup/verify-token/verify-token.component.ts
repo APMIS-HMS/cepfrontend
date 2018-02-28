@@ -15,7 +15,7 @@ export class VerifyTokenComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() inputFacility: Facility = <Facility>{};
   @Input() backBtnVisible: boolean;
-  @Input() tokenValue = "";
+  @Input() tokenValue = '';
   frm_numberVerifier: FormGroup;
   facility: Facility = <Facility>{};
   InputedToken: string;
@@ -36,7 +36,8 @@ export class VerifyTokenComponent implements OnInit {
 
   ngOnInit() {
     this.frm_numberVerifier = this.formBuilder.group({
-      txt_numberVerifier: ['', [<any>Validators.required, <any>Validators.minLength(6), <any>Validators.maxLength(6), <any>Validators.pattern('^[0-9]+$')]]
+      txt_numberVerifier: ['', [<any>Validators.required,
+        <any>Validators.minLength(6), <any>Validators.maxLength(6), <any>Validators.pattern('^[0-9]+$')]]
     });
     this.InputedToken = this.tokenValue;
   }
@@ -73,7 +74,7 @@ export class VerifyTokenComponent implements OnInit {
     }
   }
   resendToken() {
-    let selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    const selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this._facilityService.resendToken(selectedFacility).then(payload => {
     }).catch(error => {
     })

@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, Input } from "@angular/core";
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 
 @Component({
   selector: 'app-hmo-bill-history-detail',
@@ -13,7 +13,7 @@ export class HmoBillHistoryDetailComponent implements OnInit {
 
   ngOnInit() {
   }
-  
+
   close_onClick() {
     this.closeModal.emit(true);
   }
