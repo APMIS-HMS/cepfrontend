@@ -199,7 +199,6 @@ export class WalletComponent implements OnInit {
     const amount = parseFloat(
       this.paymentFormGroup.controls['fundAmount'].value
     );
-    console.log(amount);
     const walletTransaction: WalletTransaction = {
       ref: ePaymentMethod === 'Flutterwave' ? flutterwaveRes : paymentRes,
       payment: {
@@ -222,10 +221,8 @@ export class WalletComponent implements OnInit {
       // paidBy: this.user.data.person._id
     };
 
-    console.log(walletTransaction);
     this._personService.fundWallet(walletTransaction).subscribe((res: any) => {
       this.loading = false;
-      console.log(res);
       if (res.status === 'success') {
         this.generatePaymentKey();
         this.paymentFormGroup.reset();
