@@ -111,7 +111,6 @@ export class TemplateMedicationComponent implements OnInit {
     this.apmisLookupText = item.details;
     // this._drugDetailsApi.find({ query: { productId: item.productId } }).then(res => {
     this._drugListApi.find({ query: { method: 'drug-details', 'productId': item.productId } }).then(res => {
-      console.log(res);
         let sRes = res.data;
         if (res.status === 'success') {
           if (!!sRes.ingredients && sRes.ingredients.length > 0) {
