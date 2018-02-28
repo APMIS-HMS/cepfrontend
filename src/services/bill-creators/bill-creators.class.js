@@ -73,7 +73,6 @@ class Service {
     }
 
     //Collection of Family BillItems
-    let filteredFamily = [];
     len = family.length;
     for (let index = 0; index < len; index++) {
       const indx = filteredFamily.filter(x => x.covered.familyId.toString() === family[index].covered.familyId.toString() && x.isPicked === undefined);
