@@ -20,9 +20,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 @Component({
-  selector: 'app-empmanager-homepage',
-  templateUrl: './empmanager-homepage.component.html',
-  styleUrls: ['./empmanager-homepage.component.scss']
+  selector: "app-empmanager-homepage",
+  templateUrl: "./empmanager-homepage.component.html",
+  styleUrls: ["./empmanager-homepage.component.scss"]
 })
 export class EmpmanagerHomepageComponent
   implements OnInit, OnDestroy, OnChanges {
