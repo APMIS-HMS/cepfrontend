@@ -26,6 +26,9 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   addAllergy_view = false;
   addHistory_view = false;
   addVitals_view = false;
+  addendumPop = false;
+  editClick = false;
+  isDocumentEdit = false;
 
   showDoc = true;
   showOrderSet = false;
@@ -104,7 +107,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         });
       }
     });
-    
+
 
     this.sharedService.newFormAnnounced$.subscribe((payload: any) => {
       this.selectedForm = payload.form;
@@ -497,10 +500,12 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     const init = value.replace('"', '');
     return init.replace('"}', '');
   }
-  docDetail_show(document) {
+  docDetail_show(document, isDocumentEdit) {
     this.selectedDocument = document;
     this.docDetail_view = true;
+    this.isDocumentEdit = isDocumentEdit;
   }
+
   clinicalNote_show() {
     this.clinicalNote_view = !this.clinicalNote_view;
   }
@@ -544,5 +549,9 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       type: type,
       text: text
     });
+  }
+
+  onClickeditClick() {
+    this.editClick = !this.editClick;
   }
 }

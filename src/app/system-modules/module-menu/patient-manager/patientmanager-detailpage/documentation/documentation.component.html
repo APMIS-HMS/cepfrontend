@@ -37,14 +37,15 @@
                         </div>
                     </div>
                     <ul class="topmenuwrap">
-                        <li (click)="docDetail_show(document)">
+                        <li (click)="docDetail_show(document, false)">
                             <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                             <span>View</span>
                         </li>
                     </ul>
                     <div class="docCard-ctaWrap">
-                        <i class="edit-ico-color fa fa-pencil-square" aria-hidden="true"></i>
-                        <i class="del-ico-color fa fa-trash" aria-hidden="true"></i>
+                        <i class="edit-ico-color fa fa-clipboard" aria-hidden="true" data-toggle="tooltip" title="addendum" data-placement="left" (click)="docDetail_show(document, true)"></i>
+                        <!--<i class="edit-ico-color fa fa-pencil-square" aria-hidden="true" data-toggle="tooltip" title="addendum" data-placement="left" (click)="docDetail_show(document)"></i>
+                        <i class="del-ico-color fa fa-trash" aria-hidden="true"></i>-->
                     </div>
                 </div>
                 <div class="docCard-body">
@@ -89,7 +90,7 @@
     </div>
 
     <div *ngIf="docDetail_view" class="modal-overlay">
-        <app-documentation-detail [document]="selectedDocument" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-documentation-detail>
+        <app-documentation-detail [document]="selectedDocument" [isDocumentEdit]="isDocumentEdit" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-documentation-detail>
     </div>
 
     <div *ngIf="addProblem_view" class="modal-overlay">
@@ -107,6 +108,10 @@
     <div *ngIf="addVitals_view" class="modal-overlay">
         <app-add-vitals (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>
     </div>
+    <!-- Modal for Edit
+    <div *ngIf="addendumPop" class="modal-overlay">
+        <app-documentation-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-documentation-detail>
+    </div>-->
 </div>
 
 <app-order-set (showDoc)="showDoc_onClick($event)" *ngIf="showOrderSet"></app-order-set>
