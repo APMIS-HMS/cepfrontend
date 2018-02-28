@@ -6,11 +6,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Person } from '../../../models/index';
-<<<<<<< HEAD
-import { Http, Headers, RequestOptions } from '@angular/http'
-=======
 import { RequestOptions, Http, Headers } from '@angular/http';
->>>>>>> 6aab991cbc2c1065395104cba67efbd501d6fe86
 const request = require('superagent');
 
 @Injectable()
@@ -24,7 +20,7 @@ export class PersonService {
   public createListener;
   public updateListener;
   private _rest;
-  public http;
+  //public http;
 
   private personAnnouncedSource = new Subject<Person>();
   personAnnounced$ = this.personAnnouncedSource.asObservable();
