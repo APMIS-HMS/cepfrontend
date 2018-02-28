@@ -4,7 +4,7 @@ const extractbill = require('../../hooks/extractbill');
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt') ],
+    all: [],// authenticate('jwt') ],
     find: [extractbill()],
     get: [],
     create: [],

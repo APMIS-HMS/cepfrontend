@@ -31,67 +31,71 @@ class Service {
     //Collection of insurance billitems
     let filteredInsurance = [];
     let len = insurance.length;
-    console.log(insurance);
     for (let index = 0; index < len; index++) {
-      if(filteredInsurance.length > 0){
-        
+      const indx = insurance.filter(x => x.covered.hmoId.toString() === insurance[index].covered.hmoId.toString() && x.isPicked === undefined);
+      if (indx.length > 0) {
+        indx.forEach(x => {
+          x.isPicked = true;
+        });
+        const patient = await patientsService.get(params.query.patientId);
+        const patientPaymentType = patient.paymentPlan.filter(x => x.planDetails.hmoId.toString() === insurance[index].covered.hmoId.toString());
+        const billModel = {
+          "facilityId": params.query.facilityId,
+          "grandTotal": sumCost(indx),
+          "patientId": patientPaymentType[0].planDetails.principalId,
+          "subTotal": sumCost(indx),
+          "discount": 0,
+          "billItems": indx
+        }
+        billGroup.push(billModel);
       }
-      const indx = filteredInsurance.filter(x => x.covered.hmoId.toString() === insurance[index].covered.hmoId.toString());
-      const patient = await patientsService.get(params.query.patientId);
-      const patientPaymentType = patient.paymentPlan.filter(x => x.planDetails.hmoId.toString() === insurance[index].covered.hmoId.toString());
-      const billModel = {
-        "facilityId": params.query.facilityId,
-        "grandTotal": sumCost(indx),
-        "patientId": patientPaymentType[0].planDetails.principalId,
-        "subTotal": sumCost(indx),
-        "billItems": indx
-      }
-      billGroup.push(billModel);
     }
     //Collection of Company Billitems
-    let filteredCompany = [];
     len = company.length;
     for (let index = 0; index < len; index++) {
-      const indx = filteredCompany.filter(x => x.covered.companyId.toString() === company[index].covered.companyId.toString());
-      const patient = await patientsService.get(params.query.patientId);
-      const patientPaymentType = patient.paymentPlan.filter(x => x.planDetails.companyId.toString() === company[index].covered.companyId.toString());
-      const billModel = {
-        "facilityId": params.query.facilityId,
-        "grandTotal": sumCost(indx),
-        "patientId": patientPaymentType[0].planDetails.principalId,
-        "subTotal": sumCost(indx),
-        "billItems": indx
+      const indx = company.filter(x => x.covered.companyId.toString() === company[index].covered.companyId.toString() && x.isPicked === undefined);
+      if (indx.length > 0) {
+        indx.forEach(x => {
+          x.isPicked = true;
+        });
+        const patient = await patientsService.get(params.query.patientId);
+        const patientPaymentType = patient.paymentPlan.filter(x => x.planDetails.companyId.toString() === company[index].covered.companyId.toString());
+        const billModel = {
+          "facilityId": params.query.facilityId,
+          "grandTotal": sumCost(indx),
+          "patientId": patientPaymentType[0].planDetails.principalId,
+          "subTotal": sumCost(indx),
+          "discount": 0,
+          "billItems": indx
+        }
+        billGroup.push(billModel);
       }
-      billGroup.push(billModel);
     }
 
     //Collection of Family BillItems
-    let filteredFamily = [];
     len = family.length;
     for (let index = 0; index < len; index++) {
-      const indx = filteredFamily.filter(x => x.covered.familyId.toString() === family[index].covered.familyId.toString());
-      const patient = await patientsService.get(params.query.patientId);
-      const patientPaymentType = patient.paymentPlan.filter(x => x.planDetails.familyId.toString() === family[index].covered.familyId.toString());
-      const billModel = {
-        "facilityId": params.query.facilityId,
-        "grandTotal": sumCost(indx),
-        "patientId": patientPaymentType[0].planDetails.principalId,
-        "subTotal": sumCost(indx),
-        "billItems": indx
+      const indx = filteredFamily.filter(x => x.covered.familyId.toString() === family[index].covered.familyId.toString() && x.isPicked === undefined);
+      if (indx.length > 0) {
+        indx.forEach(x => {
+          x.isPicked = true;
+        });
+        const patient = await patientsService.get(params.query.patientId);
+        const patientPaymentType = patient.paymentPlan.filter(x => x.planDetails.familyId.toString() === family[index].covered.familyId.toString());
+        const billModel = {
+          "facilityId": params.query.facilityId,
+          "grandTotal": sumCost(indx),
+          "patientId": patientPaymentType[0].planDetails.principalId,
+          "subTotal": sumCost(indx),
+          "discount": 0,
+          "billItems": indx
+        }
+        billGroup.push(billModel);
       }
-      billGroup.push(billModel);
     }
-
-    //Collection of Wallet Billitems
-    const billModel = {
-      "facilityId": params.query.facilityId,
-      "grandTotal": sumCost(wallet),
-      "patientId": params.query.patientId,
-      "subTotal": sumCost(wallet),
-      "billItems": wallet
-    }
-    billGroup.push(billModel);
-    const bills = await billings.create(billGroup);
+       
+    const bills = await billingsService.create(billGroup);
+    console.log(bills);
     return bills;
   }
 

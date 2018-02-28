@@ -17,7 +17,7 @@ module.exports = function (app) {
     billItems: [billingItemScheme],
     subTotal: { type: Number, required: true },
     grandTotal: { type: Number, required: true },
-    discount: { type: Number, required: true }
+    discount: { type: Number, required: false }
   }, {
     timestamps: true
   });
