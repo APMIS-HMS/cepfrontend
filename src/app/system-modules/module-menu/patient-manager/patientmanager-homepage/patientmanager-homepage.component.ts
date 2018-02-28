@@ -36,6 +36,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   tabInsurance = false;
   tabCompany = false;
   tabFamily = false;
+  button;
 
   editPatient = false;
   payPlan = false;
@@ -503,8 +504,10 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.patientEditForm.controls['gender'].setValue(value.gender);
   }
 
-  isEditFn(patient?, cover?) {
+  isEditFn(patient?, cover?, button?) {
     this.isEdit = !this.isEdit;
+    this.button = button;
+    console.log(this.button);
     if (cover === 'wallet') {
       this.tabWallet_click();
     } else if (cover === 'company') {
@@ -513,9 +516,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.tabInsurance_click();
     } else if (cover === 'family') {
       this.tabFamily_click();
-    } else {
-
     }
+
   }
 
   backBtn() {
@@ -527,8 +529,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     console.log(this.patient);
     console.log(this.isDefault);
     const data = JSON.parse(JSON.stringify(this.patient.paymentPlan));
-    const check = data.filter(x => x.planType === cover);
-    console.log(this.isDefault.value);
     if (this.isDefault.value === true) {
       const index = data.findIndex(c => c.isDefault === true);
       console.log(index);
@@ -536,14 +536,13 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         data[index].isDefault = false;
       }
     }
-
-    if (check.length < 1) {
-      if (cover === 'wallet') {
+    if (this.button === 'create') {
+      if (this.tabWallet === true) {
         data.push({
           planType: cover,
           isDefault: Boolean(this.isDefault.value)
         });
-      } else if (cover === 'insurance') {
+      } else if (this.tabInsurance === true) {
         data.push({
           planType: cover,
           isDefault: Boolean(this.isDefault.value),
@@ -552,7 +551,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
             principalId: this.insuranceId.value
           }
         });
-      } else if (cover === 'company') {
+      } else if (this.tabCompany === true) {
         data.push({
           planType: cover,
           isDefault: Boolean(this.isDefault.value),
@@ -561,7 +560,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
             principalId: this.insuranceId.value
           }
         });
-      } else if (cover === 'family') {
+      } else if (this.tabFamily === true) {
         data.push({
           planType: cover,
           isDefault: Boolean(this.isDefault.value),
@@ -570,8 +569,49 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
           }
         });
       }
+
+      console.log(data);
+
+    } else {
+      const check = data.filter(x => x.planType === cover);
+
+      if (check.length < 1) {
+        if (cover === 'wallet') {
+          data.push({
+            planType: cover,
+            isDefault: Boolean(this.isDefault.value)
+          });
+        } else if (cover === 'insurance') {
+          data.push({
+            planType: cover,
+            isDefault: Boolean(this.isDefault.value),
+            planDetails: {
+              hmoId: this.hmoPlanId.value.hmoId,
+              principalId: this.insuranceId.value
+            }
+          });
+        } else if (cover === 'company') {
+          data.push({
+            planType: cover,
+            isDefault: Boolean(this.isDefault.value),
+            planDetails: {
+              companyId: this.ccPlanId.value.hmoId,
+              principalId: this.insuranceId.value
+            }
+          });
+        } else if (cover === 'family') {
+          data.push({
+            planType: cover,
+            isDefault: Boolean(this.isDefault.value),
+            planDetails: {
+              principalId: this.familyPlanId.value
+            }
+          });
+        }
+      }
+      console.log(data, this.patient.paymentPlan);
     }
-    console.log(data, this.patient.paymentPlan);
+
     this.patientService.patch(this.patient._id, {
       paymentPlan: data
     }, {}).then(payload => {
@@ -581,6 +621,9 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.systemService.announceSweetProxy('Payment Methods successfully updated', 'success');
       this.backBtn();
     });
+
+
+
   }
 
   private _populateNextOfKin(nextOfKin) {

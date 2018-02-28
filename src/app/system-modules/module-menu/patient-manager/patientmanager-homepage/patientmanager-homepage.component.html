@@ -260,7 +260,8 @@
                                                                 <div class="row">
                                                                     <div class="col-xs-8 left">
                                                                         <i class="big-label"> {{(pat.isDefault === true) ? 'Current Plan |' : ''}}
-                                                                            {{pat.planType}}</i>
+                                                                            {{pat.planType}}
+                                                                        </i>
                                                                     </div>
                                                                     <div (click)="isEditFn(patient, pat.planType)" class="col-xs-2 right">
                                                                         <i class="fa fa-pencil-square-o big-label" aria-hidden="true"></i>
@@ -268,6 +269,9 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        <a class="float" (click)="isEditFn(patient, '', 'create')">
+                                                            <i class="my-float">+</i>
+                                                        </a>
                                                     </div>
 
                                                     <div *ngIf="isEdit">
@@ -386,13 +390,12 @@
                                                                         <span *ngIf="!loading">Next</span>
                                                                         <span *ngIf="loading">Loading...</span>
                                                                     </button>
-                                                                    <button class="small-btn" (click)="next('insurance')" [disabled]="!hmoPlanId.valid && !hmoPlan.valid || loading"
-                                                                        *ngIf="tabInsurance" mat-raised-button>
+                                                                    <button class="small-btn" (click)="next('insurance')" [disabled]="!hmoPlanId.valid && !hmoPlan.valid || loading" *ngIf="tabInsurance"
+                                                                        mat-raised-button>
                                                                         <span *ngIf="!loading">Next</span>
                                                                         <span *ngIf="loading">Loading...</span>
                                                                     </button>
-                                                                    <button class="small-btn" (click)="next('company')" *ngIf="tabCompany" [disabled]="!ccPlan.valid || loading"
-                                                                        mat-raised-button>
+                                                                    <button class="small-btn" (click)="next('company')" *ngIf="tabCompany" [disabled]="!ccPlan.valid || loading" mat-raised-button>
                                                                         <span *ngIf="!loading">Next</span>
                                                                         <span *ngIf="loading">Loading...</span>
                                                                     </button>
