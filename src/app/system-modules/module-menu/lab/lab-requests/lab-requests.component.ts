@@ -71,6 +71,8 @@ export class LabRequestsComponent implements OnInit {
   public frmNewRequest: FormGroup;
   searchInvestigation: FormControl;
 
+  investigationRadio = false;
+
   selectedLab: any = {};
 
   investigations: InvestigationModel[] = [];
@@ -557,6 +559,12 @@ export class LabRequestsComponent implements OnInit {
 
   locationChanged($event, investigation: InvestigationModel, location, LaboratoryWorkbenches) {
     const ids: any[] = [];
+    console.log($event.value);
+    if($event.value){
+      this.investigationRadio = true;
+    }else{
+      this.investigationRadio = false;
+    }
     if (investigation.investigation.isPanel) {
       const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
       if (isInBind > -1) {
@@ -717,15 +725,13 @@ export class LabRequestsComponent implements OnInit {
 
     const request: any = {
       facilityId: this.selectedFacility._id,
-      patientId: this.selectedPatient._id,
+      patientId: (this.isLaboratory) ? this.selectedPatient.patientId : this.selectedPatient._id,
       labNumber: (!this.isLaboratory) ? this.frmNewRequest.controls['labNo'].value : '',
       clinicalInformation: this.frmNewRequest.controls['clinicalInfo'].value,
       diagnosis: this.frmNewRequest.controls['diagnosis'].value,
       investigations: readyCollection,
       createdBy: this.loginEmployee._id
     };
-
-    console.log(request);
 
     this.requestService.customCreate(request).then(res => {
       console.log(res);
@@ -908,11 +914,14 @@ export class LabRequestsComponent implements OnInit {
 
   private _getAllPendingRequests() {
     this.pendingRequests = [];
+    console.log(this.patientId, this.isExternal);
     if (this.patientId !== undefined && this.patientId._id !== undefined && this.patientId._id.length > 0 && !this.isExternal) {
       this.request_view = true;
-      this.requestService.find({
-        query: { 'patientId': this.patientId._id }
+      console.log(this.patientId);
+      this.requestService.customFind({
+        query: { 'patientId': this.patientId._id, 'facilityId': this.selectedFacility._id }
       }).then(res => {
+        console.log(res);
         this.loading = false;
         let labId = '';
         if ((this.selectedLab !== undefined && this.selectedLab !== null) && this.selectedLab.typeObject !== undefined) {
@@ -939,7 +948,7 @@ export class LabRequestsComponent implements OnInit {
               pendingLabReq.diagnosis = labRequest.diagnosis;
               pendingLabReq.labNumber = labRequest.labNumber;
               pendingLabReq.patientId = labRequest.patientId;
-              pendingLabReq.patient = labRequest.patientId;
+              pendingLabReq.patient = labRequest.personDetails;
               pendingLabReq.isExternal = investigation.isExternal;
               pendingLabReq.isUrgent = investigation.isUrgent;
               if (investigation.location !== undefined) {
@@ -957,7 +966,7 @@ export class LabRequestsComponent implements OnInit {
               pendingLabReq.createdAt = labRequest.createdAt;
               pendingLabReq.updatedAt = labRequest.updatedAt;
               pendingLabReq.createdById = labRequest.createdBy;
-              pendingLabReq.createdBy = labRequest.createdBy;
+              pendingLabReq.createdBy = labRequest.employeeDetails;
 
               if (investigation.specimenReceived !== undefined) {
                 pendingLabReq.specimenReceived = investigation.specimenReceived;
@@ -972,7 +981,9 @@ export class LabRequestsComponent implements OnInit {
         });
       }).catch(err => console.error(err));
     } else {
+      console.log('Query hitting this part of the code');
       this.requestService.customFind({ query: { 'facilityId': this.selectedFacility._id } }).then(res => {
+        console.log(res);
         this.loading = false;
         let labId = '';
         if (this.selectedLab !== null && this.selectedLab.typeObject !== undefined) {
@@ -999,7 +1010,7 @@ export class LabRequestsComponent implements OnInit {
               pendingLabReq.clinicalInformation = labRequest.clinicalInformation;
               pendingLabReq.diagnosis = labRequest.diagnosis;
               pendingLabReq.labNumber = labRequest.labNumber;
-              pendingLabReq.personId = labRequest.patientId;
+              pendingLabReq.patientId = labRequest.patientId;
               pendingLabReq.patient = labRequest.personDetails;
               pendingLabReq.isExternal = investigation.isExternal;
               pendingLabReq.isUrgent = investigation.isUrgent;
@@ -1017,7 +1028,7 @@ export class LabRequestsComponent implements OnInit {
               pendingLabReq.investigationId = investigation.investigation._id;
               pendingLabReq.createdAt = labRequest.createdAt;
               pendingLabReq.updatedAt = labRequest.updatedAt;
-              pendingLabReq.createdBy = labRequest.createdBy;
+              pendingLabReq.createdById = labRequest.createdBy;
               pendingLabReq.createdBy = labRequest.employeeDetails;
               if (investigation.specimenReceived !== undefined) {
                 pendingLabReq.specimenReceived = investigation.specimenReceived;
@@ -1037,6 +1048,7 @@ export class LabRequestsComponent implements OnInit {
             }
           });
         });
+        console.log(this.pendingRequests);
       }).catch(err => console.error(err));
     }
   }
