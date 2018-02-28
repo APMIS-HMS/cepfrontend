@@ -64,6 +64,12 @@ module.exports = function(app) {
     app.service('patients').publish('created', (data) => {
         return app.channel(data.facilityId);
     });
+    app.service('patients').publish('patched', (data) => {
+        return app.channel(data.facilityId);
+    });
+    app.service('patients').publish('updated', (data) => {
+        return app.channel(data.facilityId);
+    });
     app.service('employees').publish('created', (data) => {
         return app.channel(data.facilityId);
     });

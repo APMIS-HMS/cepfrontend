@@ -161,6 +161,7 @@ const dispensePrescriptions = require('./dispense-prescriptions/dispense-prescri
 const patientfluids = require('./patientfluids/patientfluids.service.js');
 const searchProcedure = require('./search-procedure/search-procedure.service.js');
 const treatmentSheets = require('./treatment-sheets/treatment-sheets.service.js');
+const billCreators = require('./bill-creators/bill-creators.service.js');
 module.exports = function(app) {
     app.configure(users);
     app.configure(facilityOwnerships);
@@ -325,4 +326,5 @@ module.exports = function(app) {
     app.configure(patientfluids);
     app.configure(searchProcedure);
     app.configure(treatmentSheets);
+    app.configure(billCreators);
 };

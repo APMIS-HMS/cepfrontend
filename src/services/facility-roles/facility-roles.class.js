@@ -21,7 +21,8 @@ class Service {
         let features = await facilityAccessControlService.find({
             query: {
                 facilityId: facilityId,
-                _id: { $in: userRoles }
+                _id: { $in: userRoles },
+                $limit: 200
             }
         });
         let outArray = [];
