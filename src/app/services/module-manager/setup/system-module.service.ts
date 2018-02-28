@@ -1,5 +1,7 @@
 import { Subject } from 'rxjs/Subject';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+
 
 @Injectable()
 export class SystemModuleService {
@@ -15,6 +17,9 @@ export class SystemModuleService {
 
   private loggedInUserAnnouncedSource = new Subject<Object>();
   loggedInUserAnnounced = this.loggedInUserAnnouncedSource.asObservable();
+
+  private messageSource = new BehaviorSubject<Object>(false);
+  currentMessage = this.messageSource.asObservable();
 
   constructor() {
   }
@@ -51,6 +56,10 @@ export class SystemModuleService {
       showConfirmButton: showConfirmButton,
       timer: timer
     });
+  }
+
+  changeMessage(message: Object) {
+    this.messageSource.next(message);
   }
 
 }

@@ -639,6 +639,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.coverType = 'insurance';
         this.hmo = this.hmoPlanId.value;
         const insuranceId = this.insuranceId.value;
+        this.hmoInsuranceId = insuranceId;
         this.planPrice = this.hmoPlanPrice.value;
         this.planId = this.hmoPlan.value._id;
         this.facilityServiceId = this.hmoPlan.value.facilityServiceId;
@@ -931,6 +932,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     savePerson() {
+        this.loading = true;
         const patient: any = {
             personId: this.selectedPerson._id,
             facilityId: this.facility._id,
@@ -976,7 +978,9 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.systemModuleService.off();
                 const text =  this.selectedPerson.lastName + ' ' + this.selectedPerson.firstName
                 + ' added successfully but bill not generated because price not yet set for this service';
+                this.systemModuleService.changeMessage(payl);
                 this.systemModuleService.announceSweetProxy(text, 'success');
+                this.loading = false;
                 this.close_onClick();
             }).catch(errr => {
                 this.systemModuleService.off();
@@ -994,6 +998,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     saveInsurancePerson() {
+        this.loading = true;
         const patient: any = {
             personId: this.selectedPerson._id,
             facilityId: this.facility._id,
@@ -1004,7 +1009,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 },
                 {
                     planType: this.coverType,
-                    isDefault: true
+                    isDefault: true,
+                    planDetails: {
+                        hmoId: this.hmo.hmoId,
+                        principalId: this.hmoInsuranceId
+                    }
                 }
             ]
         }
@@ -1030,8 +1039,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         totalDiscoutedAmount: 0,
                         modifierId: [],
                         covered: {
-                            name: this.hmo.hmoName,
-                            _id: this.hmo.hmoId,
+                            hmoId: this.hmo.hmoId,
                             coverType: this.coverType
                         },
                         isServiceEnjoyed: false,
@@ -1047,6 +1055,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 const text = this.selectedPerson.lastName + ' '
                 + this.selectedPerson.firstName + ' added successfully but bill not generated because price not yet set for this service';
                 this.systemModuleService.announceSweetProxy(text, 'success');
+                this.systemModuleService.changeMessage(payl);
+                this.loading = false;
                 this.close_onClick();
             }).catch(errr => {
                 this.systemModuleService.off();
@@ -1138,8 +1148,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                             planType: 'company',
                             isDefault: false,
                             planDetails: {
-                                name: facName,
-                                _id: facId
+
                             }
                         }
                     ]
@@ -1183,6 +1192,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         }
                         this.billingService.create(billing).then(billingPayload => {
                             this.close_onClick();
+                            this.systemModuleService.changeMessage(payl);
                             this.paymentPlan = false;
                             this.frmNewPerson1_show = false;
                             this.frmNewPerson2_show = false;
@@ -1304,6 +1314,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     saveFamilyPerson() {
+        this.loading = true;
         const patient: any = {
             personId: this.selectedPerson._id,
             facilityId: this.facility._id,
@@ -1314,6 +1325,9 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 },
                 {
                     planType: this.coverType,
+                    planDetails: {
+                        principalId: this.faId
+                    },
                     isDefault: true
                 }
             ]
@@ -1339,8 +1353,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         totalDiscoutedAmount: 0,
                         modifierId: [],
                         covered: {
-                            name: this.family.othernames + ' ' + this.family.surname,
-                            _id: this.family._id,
+                            familyId: this.family._id,
                             coverType: this.coverType
                         },
                         isServiceEnjoyed: false,
@@ -1353,9 +1366,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             }
             this.billingService.create(billing).then(billingPayload => {
                 this.systemModuleService.off();
+                this.systemModuleService.changeMessage(payl);
                 const text = this.selectedPerson.lastName + ' '
                 + this.selectedPerson.firstName + ' added successfully but bill not generated because price not yet set for this service';
                 this.systemModuleService.announceSweetProxy(text, 'success');
+                this.loading = false;
                 this.close_onClick();
             }).catch(errr => {
                 this.systemModuleService.off();
@@ -1395,7 +1410,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             this.saveFamilyPerson();
         }
     }
-
 
 
     newPerson3(valid, val) {
@@ -1509,18 +1523,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             this.errMsg = 'An error has occured, please check and try again!';
             this.systemModuleService.off();
         }
-
-
-
-
-
-
-
-
-
-
-
-
 
     }
     saveEmployee() {
