@@ -213,7 +213,7 @@
                                             <mat-tab label="Next Of Kin">
                                                 <div class="next-of-kin-body-wrapper">
                                                     <div formArrayName="nextOfKin">
-                                                        <div *ngFor="let nextOfKin of patientEditForm.controls.nextOfKin.controls; let i=index" class="next-of-kin panel panel-default">
+                                                        <div *ngFor="let nextOfKin of patientEditForm.controls['nextOfKin'].controls; let i=index" class="next-of-kin panel panel-default">
                                                             <div class="panel-heading">
                                                                 <span>Next Of Kin {{i + 1}}</span>
                                                                 <span (click)="removeNextOfKin(i)" style="float: right;">

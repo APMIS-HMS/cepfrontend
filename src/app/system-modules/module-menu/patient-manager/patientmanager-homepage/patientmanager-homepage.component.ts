@@ -467,14 +467,17 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     }
 
     this.selectedPatient['nextOfKin'] = nextOfKinArray;
+    console.log(this.selectedPatient);
 
     const patientIndex = this.patients.findIndex(p => p.personDetails._id === this.selectedPatient._id);
     this.personService.patch(this.selectedPatient._id, this.selectedPatient, {}).then(res => {
+      console.log(res);
       this.updatePatientBtnText = 'Update';
       this.patients[patientIndex].personDetails = res;
       this.close_onClick();
       this.systemService.announceSweetProxy('Patient details has been updated successfully.', 'Success');
     }).catch(err => {
+      console.log(err);
       this.updatePatientBtnText = 'Update';
       this.systemService.announceSweetProxy('There was an error updating user record, Please try again later.', 'Error');
     });
