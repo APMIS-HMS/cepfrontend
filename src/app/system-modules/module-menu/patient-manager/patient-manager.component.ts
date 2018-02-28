@@ -1,7 +1,17 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { PatientmanagerHomepageComponent } from './patientmanager-homepage/patientmanager-homepage.component'
+import { PatientmanagerHomepageComponent } from './patientmanager-homepage/patientmanager-homepage.component';
+import {
+  PatientService, PersonService, FacilitiesService, FacilitiesServiceCategoryService,
+  HmoService, GenderService, RelationshipService, CountriesService, TitleService
+} from '../../../services/facility-manager/setup/index';
+import {
+  Facility, MinorLocation, Investigation, InvestigationModel, Employee,
+  BillIGroup, BillItem, BillModel, PendingLaboratoryRequest, User
+} from '../../../models/index';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+
 
 @Component({
   selector: 'app-patient-manager',
@@ -15,9 +25,13 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
   employeeDetailArea = false;
   newEmp = false;
   patient: any;
-  resetData:Boolean = false;
+  resetData = false;
+
+  selectedFacility;
 
   searchControl = new FormControl();
+
+  searchedPatients;
 
   pageInView = 'Patient Manager';
 
@@ -25,16 +39,34 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
     'logo': 'assets/images/logos/red.jpg'
   };
 
-  constructor(private router: Router, private route: ActivatedRoute) { }
+  constructor(private router: Router,
+    private route: ActivatedRoute,
+    private patientService: PatientService,
+    private locker: CoolLocalStorage) { }
 
   ngAfterViewInit() {
-    this.searchControl.valueChanges.subscribe(searchText => {
+    /* this.searchControl.valueChanges.subscribe(searchText => {
       this.patientManagerComponent.searchPatients(searchText);
-    });
+    }); */
   }
   ngOnInit() {
-    this.searchControl.valueChanges.subscribe(value => {
-      // do something with value here
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+
+    this.searchControl.valueChanges
+    .debounceTime(200)
+    .distinctUntilChanged()
+    .subscribe(value => {
+      console.log(value);
+      this.patientService.findPatient({
+        query: {
+          'facilityId': this.selectedFacility._id,
+          'searchText': value,
+          'patientTable': true
+        }
+      }).then(payload => {
+        this.searchedPatients = payload.data;
+        console.log(this.searchedPatients);
+      });
     });
     this.route.params.subscribe(params => {
     })
@@ -47,10 +79,10 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
   newEmpShow() {
     this.newEmp = true;
   }
-  reset(){
+  reset() {
     this.resetData = true;
   }
-  resetDataLoader(data){
+  resetDataLoader(data) {
     this.resetData = data;
   }
   close_onClick(e) {
