@@ -15,5 +15,10 @@ export class LabComponent implements OnInit {
 
   ngOnInit() {
   }
+	chartClicked(e){
 
+	}
+	chartHovered(e){
+	  
+	}
 }

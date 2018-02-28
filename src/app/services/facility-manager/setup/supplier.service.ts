@@ -39,6 +39,9 @@ export class SupplierService {
   update(serviceprice: any) {
     return this._socket.update(serviceprice._id, serviceprice);
   }
+  patch(id: any, supplier) {
+    return this._socket.update(id, supplier);
+  }
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }

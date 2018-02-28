@@ -117,7 +117,7 @@ export class TemplateComponent implements OnInit {
                             this._getAllTemplates();
                             this.templateFormGroup.reset();
                             this.templateBtnText = 'Create Template';
-                          this._systemModuleService.announceSweetProxy('Template has been updated successfully!', 'success');
+                          this._systemModuleService.announceSweetProxy('Template has been updated successfully!', 'success', null, null, null, null, null, null, null);
                         }).catch(err => this._notification('Error', 'There was an error getting Template. Please try again later!'));
                     } else {
                         this.templateBtnText = 'Creating Template...';
@@ -126,7 +126,7 @@ export class TemplateComponent implements OnInit {
                             this.templateFormGroup.reset();
                             this.templateBtnText = 'Create Template';
                             // this._notification('Success', 'Template has been created successfully!');
-                          this._systemModuleService.announceSweetProxy('Template has been created successfully!', 'success');
+                          this._systemModuleService.announceSweetProxy('Template has been created successfully!', 'success', null, null, null, null, null, null, null);
                         }).catch(err => this._notification('Error', 'There was an error creating Template. Please try again later!'));
                     }
                 }).catch(err => this._notification('Error', 'There was an error creating Template. Please try again later!'));

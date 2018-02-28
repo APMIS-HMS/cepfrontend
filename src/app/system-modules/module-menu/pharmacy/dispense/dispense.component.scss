@@ -1,154 +1,156 @@
-@import '../prescription-list/prescription-list.component.scss';
-#prescription {
-    padding: 2px;
-}
+// @import '../prescription-list/prescription-list.component.scss';
+@import '../pharmacy-manager.component.scss';
 
-.table-head-inner-content {
-    padding: 0;
-    border-right: 1px solid #cacaca;
-    width: 15%;
-}
+// #prescription {
+//     padding: 2px;
+// }
 
-.sec-border {
-    border: 1px solid #cacaca;
-}
+// .table-head-inner-content {
+//     padding: 0;
+//     border-right: 1px solid #cacaca;
+//     width: 15%;
+// }
 
-.survery p {
-    margin: 9px 0 0px;
-}
+// .sec-border {
+//     border: 1px solid #cacaca;
+// }
 
-.table-head {
-    background: #eee;
-    margin: 0;
-    height: 35px;
-    border-bottom: 1px solid #cacaca;
-    border-radius: 0;
-    width: 100%;
-}
+// .survery p {
+//     margin: 9px 0 0px;
+// }
 
-.table-inner {
-    display: flex;
-}
+// .table-head {
+//     background: #eee;
+//     margin: 0;
+//     height: 35px;
+//     border-bottom: 1px solid #cacaca;
+//     border-radius: 0;
+//     width: 100%;
+// }
 
-.table-data {
-    margin: 0;
-    border-right: 1px solid #cacaca;
-    width: 15%;
-    padding: 2px;
-}
+// .table-inner {
+//     display: flex;
+// }
 
-#table-data .fa {
-    padding: 11px 11px !important;
-    color: #000000;
-    text-decoration: none;
-}
+// .table-data {
+//     margin: 0;
+//     border-right: 1px solid #cacaca;
+//     width: 15%;
+//     padding: 2px;
+// }
 
-.inner-container {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    border: 1px solid #cacaca;
-    background-color: #efefef;
-    padding: 10px;
-}
+// #table-data .fa {
+//     padding: 11px 11px !important;
+//     color: #000000;
+//     text-decoration: none;
+// }
 
-.cacaca {
-    background: #cacaca;
-}
+// .inner-container {
+//     display: -webkit-box;
+//     display: -ms-flexbox;
+//     display: flex;
+//     border: 1px solid #cacaca;
+//     background-color: #efefef;
+//     padding: 10px;
+// }
 
-.input-bg {
-    background: #eeeeee;
-    padding: 4px;
-}
+// .cacaca {
+//     background: #cacaca;
+// }
 
-.survery .form-control {
-    height: 27px !important;
-}
+// .input-bg {
+//     background: #eeeeee;
+//     padding: 4px;
+// }
 
-.survery .input-group-btn {
-    font-size: 1.3rem;
-}
+// .survery .form-control {
+//     height: 27px !important;
+// }
 
-.save-btn {
-    border-color: #0288d1;
-    color: #0288d1;
-}
+// .survery .input-group-btn {
+//     font-size: 1.3rem;
+// }
 
-.text-amount {
-    margin-top: 20px;
-}
+// .save-btn {
+//     border-color: #0288d1;
+//     color: #0288d1;
+// }
 
-.survery select {
-    width: 85px;
-    border: none;
-}
+// .text-amount {
+//     margin-top: 20px;
+// }
 
-.cacaca {
-    background: #cacaca;
-}
+// .survery select {
+//     width: 85px;
+//     border: none;
+// }
 
-.margin-top-bottom {
-    margin: 10px 0;
-}
+// .cacaca {
+//     background: #cacaca;
+// }
 
-.plus {
-    font-size: 2rem;
-    line-height: 35px;
-    margin: 0 7px;
-}
+// .margin-top-bottom {
+//     margin: 10px 0;
+// }
 
-.survery,
-.survery p {
-    color: #6b6b6b;
-}
+// .plus {
+//     font-size: 2rem;
+//     line-height: 35px;
+//     margin: 0 7px;
+// }
 
-.survery label {
-    font-weight: normal;
-}
+// .survery,
+// .survery p {
+//     color: #6b6b6b;
+// }
 
-.total {
-    color: red !important;
-    font-size: 23px !important;
-    margin-right: 20px !important;
-}
+// .survery label {
+//     font-weight: normal;
+// }
 
-.margin-top-15 {
-    margin-top: 15px;
-}
+// .total {
+//     color: red !important;
+//     font-size: 23px !important;
+//     margin-right: 20px !important;
+// }
 
-.prescription-btn {
-    width: 200px;
-    margin: 10px 0 0 5px;
-    border-radius: 0;
-    background: #eeeeee;
-}
+// .margin-top-15 {
+//     margin-top: 15px;
+// }
 
-.bill {
-    margin: 2px 0;
-}
+// .prescription-btn {
+//     width: 200px;
+//     margin: 10px 0 0 5px;
+//     border-radius: 0;
+//     background: #eeeeee;
+// }
 
-#select {
-    height: auto !important;
-    width: 100% !important;
-    border: 1px solid #ccc !important;
-}
+// .bill {
+//     margin: 2px 0;
+// }
 
-.individual-details {
-    background-color: #efefef;
-    padding: 10px;
-}
+// #select {
+//     height: auto !important;
+//     width: 100% !important;
+//     border: 1px solid #ccc !important;
+// }
 
-.padding-10 {
-    padding: 10px;
-}
+// .individual-details {
+//     background-color: #efefef;
+//     padding: 10px;
+// }
 
-.survery .btn:active,
-.survery .btn.active {
-    box-shadow: none;
-    outline: 0 !important;
-    outline-offset: 0 !important;
-}
+// .padding-10 {
+//     padding: 10px;
+// }
 
-.drugs {
-    width: 40%;
-}
+// .survery .btn:active,
+// .survery .btn.active {
+//     box-shadow: none;
+//     outline: 0 !important;
+//     outline-offset: 0 !important;
+// }
+
+// .drugs {
+//     width: 40%;
+// }

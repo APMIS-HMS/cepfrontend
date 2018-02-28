@@ -14,14 +14,14 @@
         <div class="rightsect">
             <div *ngIf="ward_checkout" class="selectedCheck">
                 <div *ngIf="!admittedWard.isAdmitted && !loading">
-                    <div class="sub-header">Send {{ patientDetails?.personDetails?.personFullName }} to be admitted</div>
+                    <div class="sub-header">Send {{ patientDetails?.personDetails?.firstName }} {{ patientDetails?.personDetails?.lastName }} to be admitted</div>
                     <form [formGroup]="admitFormGroup" novalidate>
                         <div class="frm-item-wrap">
-                            <mat-select placeholder="Ward" formControlName="ward">
-                                <mat-option *ngFor="let ward of wards" [value]="ward">
-                                    {{ ward.name }}
-                                </mat-option>
-                            </mat-select>
+                            <mat-form-field>
+                                <mat-select placeholder="Ward" formControlName="ward">
+                                    <mat-option *ngFor="let ward of wards" [value]="ward"> {{ ward.name }} </mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
                         <div class="frm-item-wrap">
                             <mat-form-field>
@@ -30,7 +30,10 @@
                         </div>
                     </form>
                     <div class="btn-box">
-                        <button mat-raised-button [disabled]="!admitFormGroup.valid" class="btn" (click)="onClickAdmit(admitFormGroup.value, admitFormGroup.valid);" [innerHtml]="admitBtnText"></button>
+                        <button mat-raised-button [disabled]="!admitFormGroup.valid || disableAdmissionBtn" class="btn" (click)="onClickAdmit(admitFormGroup.value, admitFormGroup.valid);">
+                          <span *ngIf="admitBtn"> Send <i class="fa fa-check-circle"></i></span>
+                          <span *ngIf="admittingBtn">Sending... <i class="fa fa-spin fa-spinner"></i></span>
+                        </button>
                     </div>
                 </div>
                 <div *ngIf="admittedWard.isAdmitted && !loading">

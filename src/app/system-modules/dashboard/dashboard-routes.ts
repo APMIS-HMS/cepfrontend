@@ -82,7 +82,7 @@ const appRoutes: Routes = [
                 ]
             },
             {
-                path: 'forms-manager',
+                path: 'clinical-documentation',
                 loadChildren: '../module-menu/forms-manager/forms-manager.module#FormsManagerModule',
                 canActivate: [
                     CanActivateViaAuthGuardAccessService
@@ -91,9 +91,9 @@ const appRoutes: Routes = [
             {
                 path: 'store',
                 loadChildren: '../module-menu/store-manager/store.module#StoreModule',
-                canActivate: [
-                    CanActivateViaAuthGuardAccessService
-                ]
+                // canActivate: [
+                //     CanActivateViaAuthGuardAccessService
+                // ]
             },
             {
                 path: 'product-manager',
@@ -102,16 +102,16 @@ const appRoutes: Routes = [
             {
                 path: 'purchase-manager',
                 loadChildren: '../module-menu/purchase-manager/purchase-manager.module#PurchaseManagerModule',
-                canActivate: [
+                /* canActivate: [
                     CanActivateViaAuthGuardAccessService
-                ]
+                ] */
             },
             {
                 path: 'inventory-manager',
                 loadChildren: '../module-menu/inventory-manager/inventory-manager.module#InventoryManagerModule',
-                canActivate: [
-                    CanActivateViaAuthGuardAccessService
-                ]
+                // canActivate: [
+                //     CanActivateViaAuthGuardAccessService
+                // ]
             },
             {
                 path: 'pharmacy',

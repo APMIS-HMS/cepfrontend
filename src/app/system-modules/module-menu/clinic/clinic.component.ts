@@ -1,3 +1,5 @@
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { UserService } from './../../../services/facility-manager/setup/user.service';
 import { AuthFacadeService } from './../../service-facade/auth-facade.service';
 import { Component, OnInit, AfterContentChecked, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
@@ -42,7 +44,9 @@ export class ClinicComponent implements OnInit, OnDestroy {
 		private route: ActivatedRoute,
 		private employeeService: EmployeeService,
 		public clinicHelperService: ClinicHelperService,
-		private authFacadeService: AuthFacadeService,
+    private authFacadeService: AuthFacadeService,
+    private userService:UserService,
+    private systemModuleService:SystemModuleService,
 		private locationService: LocationService) {
 
 		// this.route.data.subscribe(data => {
@@ -62,8 +66,7 @@ export class ClinicComponent implements OnInit, OnDestroy {
 		this.checkPageUrl(page);
 		this.authFacadeService.getLogingEmployee().then((payload) => {
 			this.loginEmployee = payload;
-
-			if (this.loginEmployee.professionId !== undefined) {
+			if (this.loginEmployee !== undefined && this.loginEmployee.professionId !== undefined) {
 				if (this.loginEmployee.professionId === 'Doctor'
 					&& (this.loginEmployee.consultingRoomCheckIn === undefined
 						|| this.loginEmployee.consultingRoomCheckIn.length === 0)) {
@@ -106,7 +109,9 @@ export class ClinicComponent implements OnInit, OnDestroy {
 				} else {
 					this.isDoctor = false;
 				}
-			}
+			}else{
+        this.systemModuleService.announceSweetProxy('You are not an employee of this facility','error');
+      }
 		});
 
 
@@ -267,7 +272,7 @@ export class ClinicComponent implements OnInit, OnDestroy {
 		this.clinicRoom = true;
 	}
 	ngOnDestroy() {
-		if (this.clinicHelperService.loginEmployee.consultingRoomCheckIn !== undefined) {
+		if (this.clinicHelperService.loginEmployee !== undefined && this.clinicHelperService.loginEmployee.consultingRoomCheckIn !== undefined) {
 			this.clinicHelperService.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
 				if (itemr.isDefault === true && itemr.isOn === true) {
 					itemr.isOn = false;
@@ -276,7 +281,9 @@ export class ClinicComponent implements OnInit, OnDestroy {
 					});
 				}
 			});
-		}
+		}else{
+
+    }
 		this.employeeService.announceCheckIn(undefined);
 	}
 	private checkPageUrl(param: string) {
@@ -306,5 +313,11 @@ export class ClinicComponent implements OnInit, OnDestroy {
 			this.clinicConsulting = true;
 			this.clinicRoom = false;
 		}
+	}
+
+	chartClicked(e){
+
+	}
+	chartHovered(e){
 	}
 }

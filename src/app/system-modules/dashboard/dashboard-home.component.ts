@@ -14,6 +14,7 @@ import { Observable } from 'rxjs/Observable';
 @Component({
   selector: 'app-dashboard-home',
   templateUrl: './dashboard-home.component.html',
+  // tslint:disable-next-line:use-host-property-decorator
   host: { '(document:click)': 'hostClick($event)' },
   styleUrls: ['./dashboard-home.component.scss']
 })
@@ -53,10 +54,14 @@ export class DashboardHomeComponent implements OnInit {
   checkedInObject: any = <any>{};
   constructor(private _elRef: ElementRef, private locker: CoolLocalStorage, private userService: UserService,
     private router: Router, public facilityService: FacilitiesService, private employeeService: EmployeeService,
-    private workSpaceService: WorkSpaceService, private authFacadeService: AuthFacadeService, private featureService: FeatureModuleService) {
+    private workSpaceService: WorkSpaceService,
+    private authFacadeService: AuthFacadeService, private featureService: FeatureModuleService) {
   }
 
   ngOnInit() {
+    this.featureService.listner.subscribe(payload => {
+      this.getUserRoles();
+    })
     this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
     if (this.facilityObj !== undefined && this.facilityObj != null) {
       this.facilityName = this.facilityObj.name;
@@ -71,22 +76,23 @@ export class DashboardHomeComponent implements OnInit {
       this.facilityName = pay.name;
     });
     // this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
-    this.authFacadeService.getLogingEmployee().then((payload:any) =>{
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
       const auth = <any>this.locker.getObject('auth');
-      if(this.loginEmployee !== undefined){
+      if (this.loginEmployee !== undefined) {
         this.locker.setObject('workspaces', this.loginEmployee.workSpaces);
       }
 
       this.locker.setObject('miniFacility', this.loginEmployee);
       this.getUserRoles();
-      if (this.loginEmployee !== undefined && this.loginEmployee._id !== undefined && auth.data.personId === this.loginEmployee.personId) {
+      /* if (this.loginEmployee !== undefined && this.loginEmployee._id
+        !== undefined && auth.data.personId === this.loginEmployee.personId) {
         return;
-      }
+      } */
     });
 
 
-  
+
     this.loadIndicatorVisible = true;
 
     // const emp$ = Observable.fromPromise(this.employeeService.find({
@@ -133,22 +139,24 @@ export class DashboardHomeComponent implements OnInit {
     //   this.loadIndicatorVisible = false;
     // })
 
-    
+
   }
   getUserRoles() {
-    this.authFacadeService.getUserAccessControls().then(payload => {
+    this.authFacadeService.getUserAccessControls(true).then(payload => {
       this.access = payload;
     }, error => {
     })
   }
   accessHas(menu) {
-    let modules: any = this.access.modules;
-    const index = modules.findIndex(x => x.route.substring(1)===(menu.toLowerCase()));
-    return (index > -1 || DONT_USE_AUTH_GUARD);
+    const modules: any = this.access.modules;
+    if (modules !== undefined) {
+      const index = modules.findIndex(x => x.route.substring(1) === (menu.toLowerCase()));
+      return (index > -1 || DONT_USE_AUTH_GUARD);
+    }
   }
   laboratorySubmenuShow() {
     this.innerMenuShow = false;
-    this.router.navigate(['/dashboard/laboratory'])
+    this.router.navigate(['/dashboard/laboratory']);
   }
 
   onSwitchAccount() {

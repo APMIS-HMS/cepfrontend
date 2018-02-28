@@ -164,7 +164,6 @@ export class ReportComponent implements OnInit {
       } else if (action === 'upload') {
         this.saveAndUploadBtnText = 'UPLOADING...';
       }
-      console.log(this.selectedPatient);
       const isUploaded: Boolean = false;
       const isSaved: Boolean = false;
       const report = {
@@ -188,10 +187,10 @@ export class ReportComponent implements OnInit {
           this._getAllPendingRequests();
           if (action === 'save') {
             this.saveToDraftBtnText = 'SAVE AS DRAFT';
-            this._systemModuleService.announceSweetProxy('Report has been saved successfully!', 'success');
+            this._systemModuleService.announceSweetProxy('Report has been saved successfully!', 'success', null, null, null, null, null, null, null);
           } else {
             this.saveAndUploadBtnText = 'SAVE AND UPLOAD';
-            this._systemModuleService.announceSweetProxy('Report has been saved and uploaded successfully!', 'success');
+            this._systemModuleService.announceSweetProxy('Report has been saved and uploaded successfully!', 'success', null, null, null, null, null, null, null);
           }
         } else {
 
@@ -345,7 +344,8 @@ export class ReportComponent implements OnInit {
       if (res.data.length > 0) {
         const pendingRequests = this._modelPendingRequests(res.data);
         if (pendingRequests.length > 0) {
-          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
+          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved)
+          && (x.isUploaded === undefined || (x.isUploaded === false)));
 
           // If pendingRequests contains at least a value, then get payment status
           if (this.pendingRequests.length > 0) {
@@ -400,7 +400,8 @@ export class ReportComponent implements OnInit {
         this.hasRequest = true;
         const pendingRequests = this._modelPendingRequests(res.data);
         if (pendingRequests.length > 0) {
-          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
+          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved)
+          && (x.isUploaded === undefined || (x.isUploaded === false)));
 
           // Highlight the investigation that was selected fro the route parameters
           this.pendingRequests.forEach((invesigation, i) => {
@@ -442,7 +443,8 @@ export class ReportComponent implements OnInit {
       if (res.status === 'success' && res.data.length > 0) {
         const pendingRequests = this._modelPendingRequests(res.data);
         if (pendingRequests.length > 0) {
-          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved) && (x.isUploaded === undefined || (x.isUploaded === false)));
+          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved)
+          && (x.isUploaded === undefined || (x.isUploaded === false)));
 
           // If pendingRequests contains at least a value, then get payment status
           if (this.pendingRequests.length > 0) {

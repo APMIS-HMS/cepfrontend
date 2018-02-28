@@ -1,4 +1,4 @@
-import { TitleCasePipe } from '@angular/common';
+import { TitleCasePipe, UpperCasePipe } from '@angular/common';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { FacilitiesService } from './../../services/facility-manager/setup/facility.service';
 
@@ -41,7 +41,8 @@ export class FacilityInfoComponent implements OnInit {
 		private _facilityService: FacilitiesService,
 		private _facilityServiceFacade: FacilityFacadeService,
 		private _systemModuleService: SystemModuleService,
-		private titleCasePipe:TitleCasePipe
+		private titleCasePipe:TitleCasePipe,
+		private upperCasePipe:UpperCasePipe
 	) { }
 
 	ngOnInit() {
@@ -73,7 +74,7 @@ export class FacilityInfoComponent implements OnInit {
 		this._countryServiceFacade.getOnlyCountries().then((payload: any) => {
 			this.countries = payload;
 		}).catch(error => {
-		
+
 		});
 	}
 	close_onClick() {
@@ -117,7 +118,7 @@ export class FacilityInfoComponent implements OnInit {
 		let facility: any = {
 			name: this.titleCasePipe.transform(form.facilityname),
 			email: this.titleCasePipe.transform(form.facilityemail),
-			cacNo: this.titleCasePipe.transform(form.cac),
+			cacNo: this.upperCasePipe.transform(form.cac),
 			primaryContactPhoneNo: this.titleCasePipe.transform(form.facilityphonNo),
 			address: this.selectedLocation,
 			country: form.facilitycountry,
@@ -136,12 +137,12 @@ export class FacilityInfoComponent implements OnInit {
 			this.userSettings['inputString'] = '';
 			this._systemModuleService.off();
 			this.close_onClick();
-			this._systemModuleService.announceSweetProxy('Facility created successfully', 'success');
+			this._systemModuleService.announceSweetProxy('Facility created successfully', 'success', null, null, null, null, null, null, null);
 		}, error => {
 			this.isSaving = false;
 			this._systemModuleService.off();
 			const errMsg = 'There was an error while creating the facility, try again!';
-			this._systemModuleService.announceSweetProxy(errMsg, 'success');
+			this._systemModuleService.announceSweetProxy(errMsg, 'error');
 		})
 	}
 }

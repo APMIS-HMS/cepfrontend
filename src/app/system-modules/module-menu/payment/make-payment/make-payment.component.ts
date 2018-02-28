@@ -100,47 +100,46 @@ export class MakePaymentComponent implements OnInit {
     this.balanceInsurance = new FormControl(this.cost, []);
     this.balanceCompany = new FormControl(this.cost, []);
     this.balanceFamily = new FormControl(this.cost, []);
-    if (this.isExact == true) {
+    if (this.isExact === true) {
       this.amount.setValue(this.cost);
       this.balance.setValue(0);
     }
     this.amount.valueChanges.subscribe(value => {
-      var bal = this.cost - value;
+      const bal = this.cost - value;
       if (bal >= 0) {
         this.balance.setValue(bal);
-        console.log(this.balance.value);
       } else {
         this.amount.setValue(this.cost);
-        this._notification('Error', "Balance cannot be lesser than zero");
+        this._notification('Error', 'Balance cannot be lesser than zero');
       }
     });
     this.amountInsurance.valueChanges.subscribe(value => {
-      var bal = this.cost - value;
+      const bal = this.cost - value;
       if (bal >= 0) {
         this.balanceInsurance.setValue(bal);
       } else {
         this.amountInsurance.setValue(this.cost);
-        this._notification('Error', "Balance cannot be lesser than zero");
+        this._notification('Error', 'Balance cannot be lesser than zero');
       }
     });
 
     this.amountCompany.valueChanges.subscribe(value => {
-      var bal = this.cost - value;
+      const bal = this.cost - value;
       if (bal >= 0) {
         this.balanceCompany.setValue(bal);
       } else {
         this.amountCompany.setValue(this.cost);
-        this._notification('Error', "Balance cannot be lesser than zero");
+        this._notification('Error', 'Balance cannot be lesser than zero');
       }
     });
 
     this.amountFamily.valueChanges.subscribe(value => {
-      var bal = this.cost - value;
+      const bal = this.cost - value;
       if (bal >= 0) {
         this.balanceFamily.setValue(bal);
       } else {
         this.amountFamily.setValue(this.cost);
-        this._notification('Error', "Balance cannot be lesser than zero");
+        this._notification('Error', 'Balance cannot be lesser than zero');
       }
     });
     // this.channel.valueChanges.subscribe(value => {
@@ -154,14 +153,13 @@ export class MakePaymentComponent implements OnInit {
   }
 
   getPatientCovers() {
-    if (this.selectedPatient.paymentPlan != undefined) {
-      this.patientInsuranceLists = this.selectedPatient.paymentPlan.filter(x => x.planType == PaymentPlan.insurance);
-      this.patientCompanyLists = this.selectedPatient.paymentPlan.filter(x => x.planType == PaymentPlan.company);
-      this.patientFamilyLists = this.selectedPatient.paymentPlan.filter(x => x.planType == PaymentPlan.family);
+    if (this.selectedPatient.paymentPlan !== undefined) {
+      this.patientInsuranceLists = this.selectedPatient.paymentPlan.filter(x => x.planType === PaymentPlan.insurance);
+      this.patientCompanyLists = this.selectedPatient.paymentPlan.filter(x => x.planType === PaymentPlan.company);
+      this.patientFamilyLists = this.selectedPatient.paymentPlan.filter(x => x.planType === PaymentPlan.family);
     } else {
-      this._notification('Error', "No payment plan is attached to patient");
+      this._notification('Error', 'No payment plan is attached to patient');
     }
-    console.log(this.patientInsuranceLists);
   }
 
   getPatientCompanyLists() {
@@ -169,7 +167,7 @@ export class MakePaymentComponent implements OnInit {
   }
 
   getPatientFamilyLists() {
-    //this.patientInsuranceLists = this.selectedPatient.paymentPlan.filter(x => x.planType == PaymentPlan.family);
+    // this.patientInsuranceLists = this.selectedPatient.paymentPlan.filter(x => x.planType == PaymentPlan.family);
   }
 
   onOutOfPocketPartPay() {
@@ -226,7 +224,7 @@ export class MakePaymentComponent implements OnInit {
 
   onWaverCharges(event: any) {
     this.isWaved = event.target.checked;
-    if (this.isWaved == true) {
+    if (this.isWaved === true) {
       this.amount.setValue(0);
       this.balance.setValue(this.cost);
     }
@@ -257,207 +255,201 @@ export class MakePaymentComponent implements OnInit {
   }
 
   onOutOfPocket() {
-    if ((this.amount.value != '' && this.amount.value != 0) || this.isWaved == true) {
-      if (this.selectedPatient.personDetails.wallet != undefined) {
+    if ((this.amount.value !== '' && this.amount.value !== 0) || this.isWaved === true) {
+      if (this.selectedPatient.personDetails.wallet !== undefined) {
         if (this.selectedPatient.personDetails.wallet.balance < this.cost) {
-          this._notification('Info', "You donot have sufficient balance to make this payment");
+          this._notification('Info', 'You donot have sufficient balance to make this payment');
         } else {
-          var paymentValue = {};
-          var plan = this.selectedPatient.paymentPlan.filter(x => x.planType == PaymentPlan.outOfPocket);
+          let paymentValue = {};
+          const plan = this.selectedPatient.paymentPlan.filter(x => x.planType === PaymentPlan.outOfPocket);
           if (this.isExact) {
             paymentValue = {
-              "paymentMethod": plan[0],
-              "amountPaid": this.amount.value
+              'paymentMethod': plan[0],
+              'amountPaid': this.amount.value
             }
           } else if (this.isWaved) {
-            let objPlanType = {
-              "planType": PaymentPlan.waved
+            const objPlanType = {
+              'planType': PaymentPlan.waved
             }
             paymentValue = {
-              "paymentMethod": objPlanType,
-              "amountPaid": this.amount.value
+              'paymentMethod': objPlanType,
+              'amountPaid': this.amount.value
             }
           } else {
             paymentValue = {
-              "paymentMethod": plan[0],
-              "amountPaid": this.amount.value
+              'paymentMethod': plan[0],
+              'amountPaid': this.amount.value
             }
           }
           this.bAmount = this.balance.value;
           this.makePayment(paymentValue);
         }
       } else {
-        this._notification('Info', "You donot have sufficient balance to make this payment");
+        this._notification('Info', 'You donot have sufficient balance to make this payment');
       }
     } else {
-      this._notification('Error', "Please enter a valid amount");
+      this._notification('Error', 'Please enter a valid amount');
     }
   }
 
   onInsuranceCover() {
-    if (this.insurancePlan.value.planDetails != undefined) {
+    if (this.insurancePlan.value.planDetails !== undefined) {
       this.facilityService.get(this.insurancePlan.value.planDetails._id, {}).then((payload: any) => {
-        if (payload.wallet != undefined) {
+        if (payload.wallet !== undefined) {
           if (payload.wallet.balance < this.cost) {
-            this._notification('Info', "No sufficient balance to make this payment");
+            this._notification('Info', 'No sufficient balance to make this payment');
           } else {
-            var paymentValue = {};
+            let paymentValue = {};
             if (this.isExactInsurance) {
               paymentValue = {
-                "paymentMethod": this.insurancePlan.value,
-                "amountPaid": this.amountInsurance.value
+                'paymentMethod': this.insurancePlan.value,
+                'amountPaid': this.amountInsurance.value
               }
             } else {
               paymentValue = {
-                "paymentMethod": this.insurancePlan.value,
-                "amountPaid": this.amountInsurance.value
+                'paymentMethod': this.insurancePlan.value,
+                'amountPaid': this.amountInsurance.value
               }
             }
             this.bAmount = this.balanceInsurance.value;
-            console.log(this.bAmount);
             this.makePayment(paymentValue);
           }
         } else {
-          this._notification('Info', "You donot have sufficient balance to make this payment");
+          this._notification('Info', 'You donot have sufficient balance to make this payment');
         }
       });
     } else {
-      this._notification('Error', "You have not selected an insurance cover");
+      this._notification('Error', 'You have not selected an insurance cover');
     }
 
 
   }
 
   onFamilyCover() {
-    if (this.familyPlan.value.planDetails != undefined) {
+    if (this.familyPlan.value.planDetails !== undefined) {
       this.personService.get(this.familyPlan.value.planDetails._id, {}).then((payload: any) => {
-        if (payload.wallet != undefined) {
+        if (payload.wallet !== undefined) {
           if (payload.wallet.balance < this.cost) {
-            this._notification('Info', "No sufficient balance to make this payment");
+            this._notification('Info', 'No sufficient balance to make this payment');
           } else {
-            var paymentValue = {};
+            let paymentValue = {};
             if (this.isExactFamily) {
               paymentValue = {
-                "paymentMethod": this.familyPlan.value,
-                "amountPaid": this.amountFamily.value
+                'paymentMethod': this.familyPlan.value,
+                'amountPaid': this.amountFamily.value
               }
             } else {
               paymentValue = {
-                "paymentMethod": this.familyPlan.value,
-                "amountPaid": this.amountFamily.value
+                'paymentMethod': this.familyPlan.value,
+                'amountPaid': this.amountFamily.value
               }
             }
             this.bAmount = this.balanceFamily.value;
-            console.log(this.bAmount);
             this.makePayment(paymentValue);
           }
         } else {
-          this._notification('Info', "You donot have sufficient balance to make this payment");
+          this._notification('Info', 'You donot have sufficient balance to make this payment');
         }
       });
     } else {
-      this._notification('Error', "You have not selected a family cover");
+      this._notification('Error', 'You have not selected a family cover');
     }
   }
 
   onCompanyCover() {
-    if (this.companyPlan.value.planDetails != undefined) {
+    if (this.companyPlan.value.planDetails !== undefined) {
       this.facilityService.get(this.companyPlan.value.planDetails._id, {}).then((payload: any) => {
-        if (payload.wallet != undefined) {
+        if (payload.wallet !== undefined) {
           if (payload.wallet.balance < this.cost) {
-            this._notification('Info', "No sufficient balance to make this payment");
+            this._notification('Info', 'No sufficient balance to make this payment');
           } else {
-            var paymentValue = {};
+            let paymentValue = {};
             if (this.isExactCompany) {
               paymentValue = {
-                "paymentMethod": this.companyPlan.value,
-                "amountPaid": this.amountCompany.value
+                'paymentMethod': this.companyPlan.value,
+                'amountPaid': this.amountCompany.value
               }
             } else {
               paymentValue = {
-                "paymentMethod": this.companyPlan.value,
-                "amountPaid": this.amountCompany.value
+                'paymentMethod': this.companyPlan.value,
+                'amountPaid': this.amountCompany.value
               }
             }
             this.bAmount = this.balanceCompany.value;
-            console.log(this.bAmount);
             this.makePayment(paymentValue);
           }
         } else {
-          this._notification('Info', "You donot have sufficient balance to make this payment");
+          this._notification('Info', 'You donot have sufficient balance to make this payment');
         }
       });
     } else {
-      this._notification('Error', "You have not selected a company cover");
+      this._notification('Error', 'You have not selected a company cover');
     }
 
   }
 
 
   makePayment(val) {
-    console.log(val);
     this.isProcessing = true;
-    var paymantObj:any = {};
-    if (this.isInvoicePage == false) {
+    let paymantObj: any = {};
+    if (this.isInvoicePage === false) {
       paymantObj = {
-        "inputedValue": {
-          "paymentMethod": val.paymentMethod,
-          "amountPaid": val.amountPaid,
-          "balance": this.bAmount,
-          "cost": this.cost,
-          "isWaved": this.isWaved,
-          "transactionType": TransactionType[TransactionType.Dr]
+        'inputedValue': {
+          'paymentMethod': val.paymentMethod,
+          'amountPaid': val.amountPaid,
+          'balance': this.bAmount,
+          'cost': this.cost,
+          'isWaved': this.isWaved,
+          'transactionType': TransactionType[TransactionType.Dr]
         },
-        "billGroups": this.billGroups,
-        "selectedPatient": this.selectedPatient,
-        "selectedFacility": this.selectedFacility,
-        "discount": this.discount,
-        "subTotal": this.subTotal,
-        "checkBillitems": this.checkBillitems,
-        "listedBillItems": this.listedBillItems,
-        "isInvoicePage": false
+        'billGroups': this.billGroups,
+        'selectedPatient': this.selectedPatient,
+        'selectedFacility': this.selectedFacility,
+        'discount': this.discount,
+        'subTotal': this.subTotal,
+        'checkBillitems': this.checkBillitems,
+        'listedBillItems': this.listedBillItems,
+        'isInvoicePage': false
       }
       if (this.isWaved) {
         paymantObj.reason =  this.wavedDescription.value;
       }
-      if(this.bAmount == 0){
+      if (this.bAmount === 0) {
         paymantObj.transactionStatus = TransactionStatus.Complete;
       }
     } else {
       paymantObj = {
-        "inputedValue": {
-          "paymentMethod": val.paymentMethod,
-          "amountPaid": val.amountPaid,
-          "balance": this.bAmount,
-          "cost": this.cost,
-          "isWaved": this.isWaved,
-          "transactionType": TransactionType[TransactionType.Dr]
+        'inputedValue': {
+          'paymentMethod': val.paymentMethod,
+          'amountPaid': val.amountPaid,
+          'balance': this.bAmount,
+          'cost': this.cost,
+          'isWaved': this.isWaved,
+          'transactionType': TransactionType[TransactionType.Dr]
         },
-        "invoice": this.invoice,
-        "selectedPatient": this.selectedPatient,
-        "isInvoicePage": true
+        'invoice': this.invoice,
+        'selectedPatient': this.selectedPatient,
+        'isInvoicePage': true
       }
       if (this.isWaved) {
         paymantObj.reason =  this.wavedDescription.value;
       }
-      if(this.bAmount == 0){
+      if (this.bAmount === 0) {
         paymantObj.transactionStatus = TransactionStatus.Complete;
       }
     }
-    console.log(paymantObj);
     this._makePaymentService.create(paymantObj).then(payload => {
       this.personValueChanged.emit(payload);
       this.isProcessing = false;
       this.balance.setValue(0);
       this.close_onClick();
-      if(!payload.isWaved){
+      if (!payload.isWaved) {
         this._notification('Success', 'Payment successfull.');
-      }else{
+      }else {
         this._notification('Success', 'Payment waved successfull.');
       }
-      
+
     }, error => {
-      console.log(error);
       this._notification('Error', 'Fail to make payment pls try again later');
     });
   }

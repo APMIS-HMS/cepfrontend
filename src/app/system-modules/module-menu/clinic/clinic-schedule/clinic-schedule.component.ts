@@ -167,7 +167,7 @@ export class ClinicScheduleComponent implements OnInit {
       if (res.data.length > 0) {
         this.selectedSchedulerType = res.data[0];
       }
-    }).catch(err => console.log(err));
+    }).catch(err => {});
   }
 
   getClinicLocation() {
@@ -281,6 +281,6 @@ export class ClinicScheduleComponent implements OnInit {
   }
 
   onSubmit(){
-    
+
   }
 }

@@ -71,6 +71,8 @@ export class LabRequestsComponent implements OnInit {
   public frmNewRequest: FormGroup;
   searchInvestigation: FormControl;
 
+  investigationRadio = false;
+
   selectedLab: any = {};
 
   investigations: InvestigationModel[] = [];
@@ -83,7 +85,7 @@ export class LabRequestsComponent implements OnInit {
   totalPrice: Number = 0;
   constructor(
     private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolLocalStorage,
-   private route: ActivatedRoute,
+    private route: ActivatedRoute,
     private billingService: BillingService,
     private facilityService: FacilitiesService,
     private _router: Router,
@@ -94,7 +96,6 @@ export class LabRequestsComponent implements OnInit {
   ) {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.loginEmployee = res;
-      console.log(this.loginEmployee);
     }).catch(err => console.log(err));
   }
 
@@ -115,7 +116,6 @@ export class LabRequestsComponent implements OnInit {
               name: { $regex: -1, '$options': 'i' }
             }
           }).then(payload => {
-            console.log(payload);
             this.investigations = [];
             payload.data.forEach(item => {
               const investigation: InvestigationModel = <InvestigationModel>{};
@@ -141,7 +141,6 @@ export class LabRequestsComponent implements OnInit {
               }
             })
           }).catch(err => {
-            console.log(err);
           });
         } else {
           this.investigationService.find({
@@ -175,7 +174,6 @@ export class LabRequestsComponent implements OnInit {
               }
             })
           }).catch(err => {
-            console.log(err);
           });
         }
       })
@@ -278,8 +276,15 @@ export class LabRequestsComponent implements OnInit {
           this.request_view = true;
         })
       } else {
-        this.selectedPatient = this.patientId;
+        if (this.isLaboratory === false) {
+          console.log(this.patientId);
+          this.selectedPatient = this.patientId;
+          console.log(this.selectedPatient);
+          this.frmNewRequest.controls['labNo'].setValue('N/A');
+          this.frmNewRequest.controls['patient'].setValue
+          (this.selectedPatient.personDetails.firstName + ' ' + this.selectedPatient.personDetails.lastName);
 
+        }
       }
 
     });
@@ -335,8 +340,7 @@ export class LabRequestsComponent implements OnInit {
   }
 
   apmisLookupHandleSelectedItem(value) {
-    console.log(value);
-    this.apmisLookupText = `${value.firstName} ${value.lastName}` ;
+    this.apmisLookupText = `${value.firstName} ${value.lastName}`;
     this.selectedPatient = value;
     this.frmNewRequest.controls['labNo'].setValue('');
     if (this.selectedPatient.clientsNo !== undefined) {
@@ -390,10 +394,6 @@ export class LabRequestsComponent implements OnInit {
   }
   childChanged($event, investigation: InvestigationModel,
     childInvestigation?: InvestigationModel, isChild = false) {
-      console.log($event);
-      console.log(investigation);
-      console.log(childInvestigation);
-      console.log(isChild);
     if ($event.checked || childInvestigation !== undefined) {
       if (investigation.investigation.isPanel) {
         // isPanel
@@ -440,10 +440,6 @@ export class LabRequestsComponent implements OnInit {
   }
   investigationChanged($event, investigation: InvestigationModel,
     childInvestigation?: InvestigationModel, isChild = false) {
-    console.log($event);
-    console.log(investigation);
-    console.log(childInvestigation);
-    console.log(isChild);
     if ($event.checked || childInvestigation !== undefined) {
       if (investigation.investigation.isPanel) {
         // isPanel
@@ -564,6 +560,12 @@ export class LabRequestsComponent implements OnInit {
 
   locationChanged($event, investigation: InvestigationModel, location, LaboratoryWorkbenches) {
     const ids: any[] = [];
+    console.log($event.value);
+    if ($event.value) {
+      this.investigationRadio = true;
+    }else {
+      this.investigationRadio = false;
+    }
     if (investigation.investigation.isPanel) {
       const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
       if (isInBind > -1) {
@@ -690,8 +692,8 @@ export class LabRequestsComponent implements OnInit {
     if (this.frmNewRequest.valid) {
       this.isValidateForm = true;
     } else if (this.selectedPatient !== undefined && this.selectedPatient._id !== undefined && this.selectedPatient._id.length > 0) {
-      if (this.frmNewRequest.controls['clinicalInfo'].valid &&
-      this.frmNewRequest.controls['diagnosis'].valid && this.frmNewRequest.controls['investigation'].valid) {
+      if (this.frmNewRequest.controls['clinicalInfo'].valid && this.frmNewRequest.controls['diagnosis']
+        .valid && this.frmNewRequest.controls['investigation'].valid) {
         this.isValidateForm = true;
       }
     } else {
@@ -701,8 +703,61 @@ export class LabRequestsComponent implements OnInit {
 
 
   save(valid, value) {
+    console.log(value);
+    const copyBindInvestigation = JSON.parse(JSON.stringify(this.bindInvestigations));
+    const readyCollection: any[] = [];
+
+    console.log(copyBindInvestigation);
+    copyBindInvestigation.forEach((item: InvestigationModel, i) => {
+      console.log(item);
+      if (item.investigation.isPanel) {
+        delete item.isChecked;
+        delete item.temporaryInvestigationList;
+        item.investigation.panel.forEach((panel, j) => {
+          delete panel.isChecked;
+        });
+      } else {
+        delete item.isChecked;
+        delete item.LaboratoryWorkbenches;
+        delete item.location;
+      }
+      readyCollection.push(item);
+    });
+
+    const request: any = {
+      facilityId: this.selectedFacility._id,
+      patientId: (this.isLaboratory) ? this.selectedPatient.patientId : this.selectedPatient._id,
+      labNumber: (!this.isLaboratory) ? this.frmNewRequest.controls['labNo'].value : '',
+      clinicalInformation: this.frmNewRequest.controls['clinicalInfo'].value,
+      diagnosis: this.frmNewRequest.controls['diagnosis'].value,
+      investigations: readyCollection,
+      createdBy: this.loginEmployee._id
+    };
+
+    this.requestService.customCreate(request).then(res => {
+      console.log(res);
+      if (res.status === 'success') {
+        this.frmNewRequest.reset();
+        this._getAllPendingRequests();
+        this.bindInvestigations = [];
+        this.investigations = [];
+        this.apmisLookupText = '';
+        this.selectedPatient = undefined;
+        this._systemModuleService.announceSweetProxy
+        ('Request has been sent successfully!', 'success', null, null, null, null, null, null, null);
+      } else {
+        this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
+      }
+    }).catch(err => {
+      this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
+    });
+
+  }
+
+  /* save(valid, value) {
+    console.log(value);
     if (valid) {
-      console.log(value);
+
       // delete this.selectedPatient.appointments;
       // delete this.selectedPatient.encounterRecords;
       // delete this.selectedPatient.orders;
@@ -737,10 +792,7 @@ export class LabRequestsComponent implements OnInit {
       // const selectedFacility = <any>this.locker.getObject('miniFacility');
       const copyBindInvestigation = JSON.parse(JSON.stringify(this.bindInvestigations));
       const readyCollection: any[] = [];
-
-      console.log(copyBindInvestigation);
       copyBindInvestigation.forEach((item: InvestigationModel, i) => {
-        console.log(item);
         if (item.investigation.isPanel) {
           delete item.isChecked;
           delete item.temporaryInvestigationList;
@@ -766,7 +818,6 @@ export class LabRequestsComponent implements OnInit {
         createdBy: this.loginEmployee._id
       };
 
-      console.log(request);
       // const billGroup: BillIGroup = <BillIGroup>{};
       // billGroup.discount = 0;
       // billGroup.facilityId = this.selectedFacility._id;
@@ -797,7 +848,6 @@ export class LabRequestsComponent implements OnInit {
       // })
 
       this.requestService.customCreate(request).then(res => {
-        console.log(res);
         if (res.status === 'success') {
           this.frmNewRequest.reset();
           this._getAllPendingRequests();
@@ -805,7 +855,8 @@ export class LabRequestsComponent implements OnInit {
           this.investigations = [];
           this.apmisLookupText = '';
           this.selectedPatient = undefined;
-          this._systemModuleService.announceSweetProxy('Request has been sent successfully!', 'success');
+          this._systemModuleService.announceSweetProxy('Request has been sent successfully!',
+          'success', null, null, null, null, null, null, null);
         } else {
           this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
         }
@@ -854,7 +905,7 @@ export class LabRequestsComponent implements OnInit {
       //   })
       // }
     }
-  }
+  } */
 
   externalChanged($event, investigation) {
     investigation.isExternal = $event.checked;
@@ -866,11 +917,14 @@ export class LabRequestsComponent implements OnInit {
 
   private _getAllPendingRequests() {
     this.pendingRequests = [];
+    console.log(this.patientId, this.isExternal);
     if (this.patientId !== undefined && this.patientId._id !== undefined && this.patientId._id.length > 0 && !this.isExternal) {
       this.request_view = true;
-      this.requestService.find({
-        query: { 'patientId': this.patientId._id }
+      console.log(this.patientId);
+      this.requestService.customFind({
+        query: { 'patientId': this.patientId._id, 'facilityId': this.selectedFacility._id }
       }).then(res => {
+        console.log(res);
         this.loading = false;
         let labId = '';
         if ((this.selectedLab !== undefined && this.selectedLab !== null) && this.selectedLab.typeObject !== undefined) {
@@ -897,7 +951,7 @@ export class LabRequestsComponent implements OnInit {
               pendingLabReq.diagnosis = labRequest.diagnosis;
               pendingLabReq.labNumber = labRequest.labNumber;
               pendingLabReq.patientId = labRequest.patientId;
-              pendingLabReq.patient = labRequest.patientId;
+              pendingLabReq.patient = labRequest.personDetails;
               pendingLabReq.isExternal = investigation.isExternal;
               pendingLabReq.isUrgent = investigation.isUrgent;
               if (investigation.location !== undefined) {
@@ -915,7 +969,7 @@ export class LabRequestsComponent implements OnInit {
               pendingLabReq.createdAt = labRequest.createdAt;
               pendingLabReq.updatedAt = labRequest.updatedAt;
               pendingLabReq.createdById = labRequest.createdBy;
-              pendingLabReq.createdBy = labRequest.createdBy;
+              pendingLabReq.createdBy = labRequest.employeeDetails;
 
               if (investigation.specimenReceived !== undefined) {
                 pendingLabReq.specimenReceived = investigation.specimenReceived;
@@ -930,7 +984,8 @@ export class LabRequestsComponent implements OnInit {
         });
       }).catch(err => console.error(err));
     } else {
-      this.requestService.customFind({ query: { 'facilityId': this.selectedFacility._id }}).then(res => {
+      console.log('Query hitting this part of the code');
+      this.requestService.customFind({ query: { 'facilityId': this.selectedFacility._id } }).then(res => {
         console.log(res);
         this.loading = false;
         let labId = '';
@@ -941,7 +996,7 @@ export class LabRequestsComponent implements OnInit {
         // Filter investigations based on the laboratory Id
         res.data.forEach(labRequest => {
           labRequest.investigations.forEach(investigation => {
-            console.log(investigation.location);
+
             if (
               (investigation.isSaved === undefined || !investigation.isSaved) ||
               (investigation.isUploaded === undefined || !investigation.isUploaded) &&
@@ -993,10 +1048,10 @@ export class LabRequestsComponent implements OnInit {
               }
 
               this.pendingRequests.push(pendingLabReq);
-              console.log(this.pendingRequests);
             }
           });
         });
+        console.log(this.pendingRequests);
       }).catch(err => console.error(err));
     }
   }
@@ -1006,11 +1061,11 @@ export class LabRequestsComponent implements OnInit {
   }
 
   // Notification
-	private _notification(type: string, text: string): void {
-		this.facilityService.announceNotification({
+  private _notification(type: string, text: string): void {
+    this.facilityService.announceNotification({
       users: [this.user._id],
       type: type,
       text: text
     });
-	}
+  }
 }

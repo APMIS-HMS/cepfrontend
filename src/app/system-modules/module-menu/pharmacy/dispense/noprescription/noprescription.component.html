@@ -1,6 +1,6 @@
 <form [formGroup]="noPrescriptionForm" novalidate>
     <div class="row padding-10" style="margin-top: 20px;">
-        <div class="col-sm-5">
+        <div class="col-sm-3">
             <div class="input-group-btn">
                 <i class="fa fa-caret-right pull-right" style="position: absolute;right: 7px;vertical-align: middle;top: 10px;"></i>
                 <mat-form-field>
@@ -14,71 +14,68 @@
     <div class="individual-details">
         <div class="row">
             <!-- begin individual -->
-            <div *ngIf="individualShow">
-                <div class="col-sm-4 col-mat-4 col-xs-12">
+                <div *ngIf="individualShow" class="col-sm-3 col-xs-12">
                     <mat-input-container class="example-full-width">
-                        <input matInput formControlName="phone" placeholder="Phone Number">
+                        <input matInput formControlName="phone" placeholder="Phone Number" width="100%">
                     </mat-input-container>
                 </div>
-                <div class="col-sm-4 col-mat-4 col-xs-12">
+                <div *ngIf="individualShow" class="col-sm-3  col-xs-12">
                     <mat-input-container class="example-full-width">
                         <input matInput formControlName="lastName" placeholder="Last Name">
                     </mat-input-container>
                 </div>
-                <div class="col-sm-4 col-mat-4 col-xs-12">
+                <div *ngIf="individualShow" class="col-sm-3 col-xs-12">
                     <mat-input-container class="example-full-width">
                         <input matInput formControlName="firstName" placeholder="First Name">
                     </mat-input-container>
                 </div>
-            </div>
             <!--end individual-->
             <!-- begin corporate -->
-            <div *ngIf="corporateShow">
-                <div class="col-sm-4 col-mat-4 col-xs-12">
+            
+                <div *ngIf="corporateShow" class="col-sm-3 col-xs-12">
                     <mat-input-container class="example-full-width">
                         <input matInput formControlName="companyPhone" placeholder="Company Phone">
                     </mat-input-container>
                 </div>
-                <div class="col-sm-8 col-mat-8 col-xs-12">
+                <div *ngIf="corporateShow" class="col-sm-3 col-xs-12">
                     <mat-input-container class="example-full-width">
                         <input matInput formControlName="companyName" placeholder="Company Name">
                     </mat-input-container>
                 </div>
-            </div>
+            
             <!--end corporate-->
             <!-- begin Internal -->
-            <div *ngIf="internalShow" class="col-xs-12 no-padding" style="height: 100px;margin-bottom: 15px;">
-                <div class="col-xs-12" style="padding: 10px 0;">
-                    <label class="example-margin">Internal Type:</label>
+                <div *ngIf="internalShow"  class="col-xs-12 col-sm-3" style="padding: 10px 0;">
+                    <label class="example-margin">Internal Type:</label><br><br>
                     <mat-radio-group [(ngModel)]="internalType" [ngModelOptions]="{standalone: true}" (change)="onChangeInternalType($event.value);">
                         <mat-radio-button class="example-margin" value="Department">Department/Unit</mat-radio-button>
                         <mat-radio-button class="example-margin" value="Location">Location</mat-radio-button>
                     </mat-radio-group>
                 </div>
-                <div class="col-sm-4 col-mat-4 col-xs-12" *ngIf="deptLocationShow">
+                <div  class="col-sm-3 col-mat-2 col-xs-12" *ngIf="deptLocationShow && internalShow">
                     <mat-form-field>
                         <mat-select placeholder="Department" formControlName="dept" (change)="onChangeDepartment($event);" class="example-full-width">
                             <mat-option *ngFor="let dept of departments" [value]="dept">{{ dept.name }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div class="col-sm-4 col-mat-4 col-xs-12" *ngIf="deptLocationShow">
+                <div  class="col-sm-3 col-mat-2 col-xs-12" *ngIf="deptLocationShow internalShow">
                     <mat-form-field>
                         <mat-select placeholder="Unit" formControlName="unit" class="example-full-width">
                             <mat-option *ngFor="let unit of units" [value]="unit">{{ unit.name }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
-                <div class="col-sm-4 col-mat-4 col-xs-12" *ngIf="!deptLocationShow">
+                <div class="col-sm-3 col-mat-4 col-xs-12" *ngIf="!deptLocationShow && internalShow">
                     <mat-form-field>
                         <mat-select placeholder="Minor Location" formControlName="minorLocation" class="example-full-width">
                             <mat-option *ngFor="let location of minorLocations" [value]="location">{{ location.name }}</mat-option>
                         </mat-select>
                     </mat-form-field>
                 </div>
-            </div>
+            
             <!--end Internal-->
-            <div class="col-sm-4 col-mat-4 col-xs-12" style="margin-top: 20px;">
+            <div class="col-sm-3 col-mat-4 col-xs-12" style="margin-top: 20px;">
                 <div class="cu-search-box">
                     <mat-input-container>
                         <input matInput formControlName="product" [attr.data-selected-p-id]="selectedProductId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Drug" autocomplete="off">
@@ -109,7 +106,7 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div class="col-sm-2 col-mat-2 col-xs-12">
+            <div class="col-sm-3 col-mat-2 col-xs-12">
                 <mat-input-container class="example-full-width">
                     <input matInput type="number" formControlName="qty" placeholder="Quantity">
                 </mat-input-container>
@@ -117,7 +114,7 @@
             <div class="col-sm-3 col-mat-3 col-xs-12" style="margin-top: 20px;">
                 <input type="hidden" formControlName="cost">
                 <span style="margin-top: 40px;">
-                    <small><b>Unit price: &#x20A6;{{ price }}</b></small><br>
+                    <h6><b>Unit price: &#x20A6;{{ price }}</b></h6>
                 </span>
             </div>
         </div>
@@ -128,57 +125,63 @@
         <button mat-raised-button class="mat-lg-btn" (click)="onClickSaveNoPrescription(noPrescriptionForm.value, noPrescriptionForm.valid);"> Save </button>
     </div>
 </div>
-<div class="sec-border">
-    <table>
-        <thead>
-            <tr>
-                <th class="th-header">
-                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                    <span style="padding-left: 3px;">Drugs</span>
-                </th>
-                <th class="th-header">
-                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                    <span style="padding-left: 3px;">Qty</span>
-                </th>
-                <th class="th-header">
-                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                    <span style="padding-left: 3px;">Batch</span>
-                </th>
-                <th class="th-header">
-                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                    <span style="padding-left: 3px;">Unit Price</span>
-                </th>
-                <th class="th-header">
-                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                    <span style="padding-left: 3px;">Cost</span>
-                </th>
-                <th class="th-header">
-                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                    <span style="padding-left: 3px;">Action</span>
-                </th>
-            </tr>
-        </thead>
 
-        <tbody>
-            <tr *ngFor="let prescription of prescriptions; let i = index;">
-                <td class="table-content">{{ prescription.productName }}</td>
-                <td class="table-content">{{ prescription.qty }}</td>
-                <td class="table-content">{{ prescription.batchNumber }}</td>
-                <td class="table-content">&#x20A6;{{ prescription.unitPrice }}</td>
-                <td class="table-content">&#x20A6;{{ prescription.qty * prescription.unitPrice }}</td>
-                <td class="table-content">
-                    <a style="margin-right: 5px;font-size: 2rem;display: inline-block;"><i class="fa fa-trash" (click)="onClickDeleteItem(i, prescription);"></i></a>
-                </td>
-            </tr>
-            <tr *ngIf="prescriptions.length === 0">
-                <td class="table-content" colspan="6" style="text-align: center"> No data to display in table</td>
-            </tr>
-        </tbody>
-    </table>
+<div class="card">
+        <div class="card-header">
+           <div class="row">
+               <div class="table-head col-xs-2">
+                Drugs
+               </div>
+               <div class="table-head col-xs-2">
+                Qty
+               </div>
+               <div class="table-head col-xs-2">
+                Batch
+               </div>
+               <div class="table-head col-xs-2">
+                Unit Price
+               </div>
+               <div class="table-head col-xs-2">
+                Cost
+               </div>
+               <div class="table-head col-xs-2">
+                Action
+               </div>
+            </div>
+        </div>
+        <div class="card-content">
+            <div class="card-list-item">
+                <div *ngIf="prescriptions.length===0 && !loading"  class="row">
+                    <div class="table-list col-lg-12">
+                        No data available in table
+                    </div>
+                </div>
+                <div *ngIf="prescriptions.length===0 && loading"  class="row">
+                    <div class="table-list col-lg-12">
+                        <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="card-list-item" *ngFor="let prescription of prescriptions">
+                <div class="row">
+                    <div class="table-list col-lg-2">{{prescription?.productName}}</div>
+                    <div class="table-list col-lg-2">{{prescription?.qty}}</div>
+                    <div class="table-list col-lg-2">{{prescription?.batchNumber}}</div>                  
+                    <div class="table-list col-lg-2">{{prescription?.unitPrice}}</div>
+                    <div class="table-list col-lg-2">{{prescription.qty * prescription.unitPrice}}</div>
+                    <div class="table-list col-lg-2">
+                        <i class="fa fa-edit fa-fw"></i>
+                        <i class="fa fa-trash fa-fw"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
 </div>
+
+
 <div class="row" style="padding-right: 20px;">
-    <p class="pull-right" style="width: 100%; text-align: right;padding-right:10px;"> <b>Total Quantity: {{ totalQuantity }}</b></p>
-    <p class="pull-right" style="width: 100%; text-align: right;padding-right:10px;"> <b>Total Cost: &#x20A6;{{ totalPrice }}</b></p>
+    <h6 class="pull-right" style="width: 100%; text-align: right;padding-right:10px;"> <b>Total Quantity: {{ totalQuantity }}</b></h6>
+    <h5 class="pull-right" style="width: 100%; text-align: right;padding-right:10px;"> <b>Total Cost: &#x20A6;{{ totalPrice }}</b></h5>
 </div>
 <div class="row margin-top-15" style="margin-bottom: 20px;">
     <div class="col-sm-12 col-mat-12 text-center">

@@ -11,14 +11,19 @@ export class DocumentationDetailComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() document: any = <any>{};
+  @Input() isDocumentEdit: any = <any>{};
+
+
 
   constructor(private facilityService: FacilitiesService) { }
 
   ngOnInit() {
+    console.log(this.isDocumentEdit);
   }
 
   close_onClick() {
     this.closeModal.emit(true);
   }
+
 
 }

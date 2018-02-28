@@ -23,5 +23,10 @@ export class SummaryComponent implements OnInit {
     {data: [65, 59, 80, 81, 56, 55, 40], label: 'Invoice'},
     {data: [28, 48, 40, 19, 86, 27, 90], label: 'Payment'}
   ];
- 
+  chartHovered(e){
+
+  }
+  chartClicked(e){
+    
+  }
 }

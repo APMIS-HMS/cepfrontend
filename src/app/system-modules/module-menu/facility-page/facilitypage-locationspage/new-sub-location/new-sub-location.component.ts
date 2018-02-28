@@ -4,7 +4,7 @@ import { Component, OnInit, NgZone, EventEmitter, Output, Input } from '@angular
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Http } from '@angular/http';
 import {
-  FacilitiesService, FacilityModuleService, TagService, WardAdmissionService
+  FacilitiesService, FacilityModuleService, TagService, BedOccupancyService
 } from '../../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../../services/module-manager/setup/index';
 import { FacilityModule, Facility, Location, MinorLocation, Tag, User } from '../../../../../models/index';
@@ -40,15 +40,15 @@ export class NewSubLocationComponent implements OnInit {
     private tagService: TagService,
     public facilityService: FacilitiesService,
     private authFacadeService:AuthFacadeService,
-    private _wardDetailsService: WardAdmissionService,
+    private _bedOccupancyService: BedOccupancyService,
     private systemModuleService:SystemModuleService
   ) {
     this.facilityService.listner.subscribe(payload => {
       this.facility = payload;
       this.locker.setObject('selectedFacility', payload);
     });
-  
-   
+
+
   }
 
   ngOnInit() {
@@ -62,11 +62,11 @@ export class NewSubLocationComponent implements OnInit {
       this.ActionButton = 'Update';
       this.frmNewSubLoc.controls['sublocName'].setValue(this.subLocation.name);
     }
-    
+
     this.authFacadeService.getLogingEmployee().then(payload =>{
       this.employeeDetails = payload;
     })
-    
+
     this.getTags();
   }
 
@@ -123,7 +123,7 @@ export class NewSubLocationComponent implements OnInit {
               const text = val.sublocName + ' has been created successfully';
               this._notification('Success', text);
               this.systemModuleService.off();
-              this.systemModuleService.announceSweetProxy(text,'success');
+              this.systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
               this.close_onClick();
               const locations = this.locations.filter(t => t._id === val.sublocParent);
               // If minorLocation is ward, we want to also create minorLocation in wardDetails service.
@@ -176,9 +176,9 @@ export class NewSubLocationComponent implements OnInit {
                   const text = val.sublocName + ' has been created successfully';
                   this._notification('Success', text);
                   this.systemModuleService.off();
-                  this.systemModuleService.announceSweetProxy(text,'success');
+                  this.systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
                   this.close_onClick();
-                }).catch(err => console.log(err));
+                }).catch(err =>{});
               } else {
                 this.addNew();
                 this.disableNewMinorLoc = false;
@@ -186,7 +186,7 @@ export class NewSubLocationComponent implements OnInit {
                 const text = val.sublocName + ' has been created successfully';
                 this._notification('Success', text);
                 this.systemModuleService.off();
-                this.systemModuleService.announceSweetProxy(text,'success');
+                this.systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
                 this.close_onClick();
               }
             });
@@ -216,7 +216,7 @@ export class NewSubLocationComponent implements OnInit {
             const text = this.subLocation.name + ' has been updated to ' + val.sublocName + ' successfully';
             this._notification('Success', text);
             this.systemModuleService.off();
-            this.systemModuleService.announceSweetProxy(text,'success');
+            this.systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
             this.close_onClick();
             // this._wardDetailsService.find({ query: {'facilityId._id': this.facility._id}}).then(wardFindRes => {
             //   const wardDetails = wardFindRes.data[0];
@@ -258,7 +258,7 @@ export class NewSubLocationComponent implements OnInit {
                 const text = this.subLocation.name + ' has been updated to ' + val.sublocName + ' successfully';
                 this._notification('Success', text);
                 this.systemModuleService.off();
-                this.systemModuleService.announceSweetProxy(text,'success');
+                this.systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
                 this.close_onClick();
               });
             });
@@ -277,7 +277,7 @@ export class NewSubLocationComponent implements OnInit {
                 this.ActionButton = 'Create';
                 this.systemModuleService.off();
                 const text = this.subLocation.name + ' has been updated to ' + val.sublocName + ' successfully';
-                this.systemModuleService.announceSweetProxy(text,'success');
+                this.systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
                 this._notification('Success', text);
                 this.close_onClick();
               });
@@ -294,7 +294,7 @@ export class NewSubLocationComponent implements OnInit {
             this.systemModuleService.off();
             const text = this.subLocation.name + ' has been updated to ' + val.sublocName + ' successfully';
             this._notification('Success', text);
-            this.systemModuleService.announceSweetProxy(text,'success');
+            this.systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
             this.close_onClick();
           });
         }

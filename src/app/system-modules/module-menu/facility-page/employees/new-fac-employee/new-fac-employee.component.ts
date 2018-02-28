@@ -331,7 +331,7 @@ export class NewFacEmployeeComponent implements OnInit {
         })).mergeMap((person: any) => {
             if (person.data.length > 0) {
                 this.selectedPerson = person.data[0];
-                return Observable.fromPromise(this.employeeService.find({ query: { personId: this.selectedPerson._id } }));
+                return Observable.fromPromise(this.employeeService.find({ query: { personId: this.selectedPerson._id, facilityId:this.facility._id } }));
             } else {
                 this.errMsg = 'Invalid APMIS ID, correct the value entered and try again!';
                 this.mainErr = false;
@@ -603,7 +603,7 @@ export class NewFacEmployeeComponent implements OnInit {
         model.professionId = this.frmNewEmp4.controls['empJobTitle'].value;
         model.cadre = this.frmNewEmp4.controls['empLevel'].value;
 
-    
+
         this.employeeService.create(model).then(payload => {
 
             this.employeeService.saveEmployee(model).then(pay =>{
@@ -614,12 +614,12 @@ export class NewFacEmployeeComponent implements OnInit {
                 this.apmisId_show = false;
                 this.mainErr = true;
                 this.systemModuleService.off();
-                this.systemModuleService.announceSweetProxy('Employee created successfully!', 'success');
+              this.systemModuleService.announceSweetProxy('Employee created successfully!', 'success', null, null, null, null, null, null, null);
                 this.closeModal.emit(true);
             }, err =>{
                 this.systemModuleService.announceSweetProxy('There was an error saving employee, try again!', error);
             })
-              
+
         }).catch(err => {
         });
     }

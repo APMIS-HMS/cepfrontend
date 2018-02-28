@@ -41,12 +41,12 @@ export class AccessRoleDetailsComponent implements OnInit {
 
 
   private _getAllRoles() {
-    this._accessControlService.find({ query: {facilityId: this.selectedFacility._id } }).then(res => {
+    this._accessControlService.find({ query: {facilityId: this.selectedFacility._id, $limit:100 } }).then(res => {
       this.loading = false;
       if (res.data.length > 0) {
         this.roles = res.data;
       }
-    }).catch(err => console.log(err));
+    }).catch(err => {});
   }
 
   close_onClick(e) {
@@ -66,9 +66,9 @@ export class AccessRoleDetailsComponent implements OnInit {
       this._accessControlService.remove(this.selectedRole._id, {}).then(res => {
         this.roles = [];
         const text = `${roleName} role has been deleted successfully!`;
-        this._systemModuleService.announceSweetProxy(text, 'success');
+        this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
         this._getAllRoles();
-      }).catch(err => console.log(err));
+      }).catch(err => {});
     }
   }
 

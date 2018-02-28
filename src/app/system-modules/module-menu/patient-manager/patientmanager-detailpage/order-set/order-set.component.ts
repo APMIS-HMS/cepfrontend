@@ -8,6 +8,7 @@ import {
 import { OrderSetSharedService } from '../../../../../services/facility-manager/order-set-shared-service';
 import { SharedService } from '../../../../../shared-module/shared.service';
 import { OrderSetTemplate, User, Facility, Prescription } from '../../../../../models/index';
+import { AuthFacadeService } from '../../../../service-facade/auth-facade.service';
 
 @Component({
   selector: 'app-order-set',
@@ -17,7 +18,7 @@ import { OrderSetTemplate, User, Facility, Prescription } from '../../../../../m
 export class OrderSetComponent implements OnInit {
   @Output() showDoc: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-  selectedPatient: any;
+  @Input() selectedPatient: any;
   prescriptionData: Prescription = <Prescription>{};
   investigationData: any = <any>{};
   template: FormControl = new FormControl();
@@ -55,12 +56,15 @@ export class OrderSetComponent implements OnInit {
     private _patientService: PatientService,
     private _treatmentSheetService: TreatmentSheetService,
     private _documentationService: DocumentationService,
-  ) { }
+    private _authFacadeService: AuthFacadeService
+  ) {
+    this._authFacadeService.getLogingEmployee().then((res: any) => {
+      this.employeeDetails = res;
+    });
+  }
 
   ngOnInit() {
     this.facility = <Facility>this._locker.getObject('selectedFacility');
-    this.miniFacility = <Facility>this._locker.getObject('miniFacility');
-    this.employeeDetails = this._locker.getObject('loginEmployee');
     this.user = <User>this._locker.getObject('auth');
 
     this._route.params.subscribe(value => {
@@ -137,15 +141,14 @@ export class OrderSetComponent implements OnInit {
     const treatementSheet = {
       personId: this.selectedPatient.personDetails._id,
       treatmentSheet: this.orderSet,
-      facilityId: this.miniFacility._id,
-      createdBy: this.employeeDetails.employeeDetails._id,
+      facilityId: this.facility._id,
+      createdBy: this.employeeDetails._id,
     };
 
     this._treatmentSheetService.create(treatementSheet).then(treatment => {
       this.sharedService.announceOrderSet(this.orderSet);
       this.close_onClickModal();
-    }).catch(err => {
-    });
+    }).catch(err => {});
     this.showDoc.emit(true);
   }
 

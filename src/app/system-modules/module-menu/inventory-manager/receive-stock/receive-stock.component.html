@@ -27,7 +27,7 @@
                     <td>{{received.storeObject?.name}}</td>
                     <td>{{received.totalCostPrice|number:'1.2-2'}}</td>
                     <td>{{received.createdAt|date:'short'}}</td>
-                    <td>{{received.transferByObject?.employeeFullName}}</td>
+                    <td>{{received.transferByObject?.firstName}} {{received.transferByObject?.lastName}}</td>
                     <td class="accepted">{{getStatus(received)}}</td>
                     <td>
                         <span (click)="slideDetailsShow(received)"><a  class=""><i class="fa fa-eye"></i></a></span>
@@ -44,7 +44,7 @@
                 <div class="col-sm-12 col-md-12 col-xs-12 text-center">
                     <h4 class="apmis-brown">Stock Transfer</h4>
                     <p class="apmis-blue">112250AA</p>
-                    <p class="pull-right pending">Pending</p>
+                    <p class="pull-right pending">{{getStatus(selectedInventoryTransfer)}}</p>
                 </div>
             </div>
             <div class="row">
@@ -82,7 +82,7 @@
                         <span>-</span>
                     </div>
                     <div class="col-sm-5 col-md-5">
-                        <p>{{selectedInventoryTransfer.createdAt|date:'short'}}</p>
+                        <p>{{selectedInventoryTransfer.updatedAt|date:'short'}}</p>
                     </div>
                 </div>
             </div>
@@ -133,9 +133,9 @@
                         <h4> Quantity </h4>
                     </div>
                 </div>
-                <div class="row" *ngFor="let transaction of selectedInventoryTransfer.inventoryTransferTransactions">
+                <div class="row" *ngFor="let transaction of selectedInventoryTransfer?.inventoryTransferTransactions">
                     <div class="col-sm-6 col-md-6">
-                        <mat-checkbox [disabled]="shouldDisabled(transaction)" (change)="onValueChanged($event,transaction)" class="control__indicator" [value]="transaction.checked">{{transaction.productObject.name}}</mat-checkbox>
+                        <mat-checkbox [disabled]="shouldDisabled(transaction)" (change)="onValueChanged($event,transaction)" class="control__indicator" [value]="transaction.checked">{{transaction?.productObject?.name}}</mat-checkbox>
                     </div>
                     <div class="col-sm-3 col-md-3">
                         <p> {{transaction.lineCostPrice|number:'1.2-2'}}</p>

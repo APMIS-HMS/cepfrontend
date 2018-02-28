@@ -14,8 +14,8 @@ export class ProductRequisitionService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('storerequisitions');
-    this._socket = _socketService.getService('storerequisitions');
+    this._rest = _restService.getService('store-requisitions');
+    this._socket = _socketService.getService('store-requisitions');
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
     this.listenerDelete = Observable.fromEvent(this._socket, 'deleted');

@@ -49,6 +49,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   menuForms = false;
   menuDocs = false;
   menuOrder = false;
+  menuTags = false;
 
   // menuImages = false;
   // menuLists = false;
@@ -162,7 +163,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
           if (isOnList.length > 0) {
             const isOnObj = isOnList[0];
             isOnObj.isOn = true;
-            let coo = <any>this.locker.getObject('appointment');
+            const coo = <Appointment>this.locker.getObject('appointment');
             this.checkedIn = !coo.isCheckedOut || false;
             this.employeeService.update(this.loginEmployee).subscribe(payloadu => {
               this.loginEmployee = payloadu;
@@ -174,17 +175,19 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
                 }
               }
             });
+
+            this.clinicInteraction.locationName = coo.clinicId;
+            this.clinicInteraction.employee = this.loginEmployee.personDetails.title + ' '+this.loginEmployee.personDetails.lastName+' '+this.loginEmployee.personDetails.firstName;
+            this.clinicInteraction.startAt = new Date();
+            coo.isEngaged = true;
+            this.appointmentService.update(coo).then(payload =>{
+              this.selectedAppointment = payload;
+            },error =>{
+            })
           }
-  
+
         }
       })
-
-
-
-
-
-     
-
     });
   }
   getForms() {
@@ -293,7 +296,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
-
+    this.menuTags = false;
     this.menuResp = false;
   }
   menuPharmacy_click() {
@@ -316,7 +319,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
-
+    this.menuTags = false;
     this.menuResp = false;
   }
   menuBilling_click() {
@@ -339,7 +342,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
-
+    this.menuTags = false;
     this.menuResp = false;
   }
   menuTreatmentPlan_click() {
@@ -362,7 +365,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
-
+    this.menuTags = false;
     this.menuResp = false;
   }
   menuMedicationHistory_click() {
@@ -385,7 +388,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuFinance = false;
     this.menuMedicationHistory = true;
     this.menuPayment = false;
-
+    this.menuTags = false;
     this.menuResp = false;
   }
   menuImaging_click() {
@@ -408,7 +411,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
-
+    this. menuTags = false;
     this.menuResp = false;
   }
   menuLab_click() {
@@ -431,7 +434,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
-
+    this.menuTags = false;
     this.menuResp = false;
   }
   menuForms_click() {
@@ -454,7 +457,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
-
+    this.menuTags = false;
     this.menuResp = false;
   }
   menuUploads_click() {
@@ -476,7 +479,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
-
+    this.menuTags = false;
     this.menuResp = false;
   }
   menuDocs_click() {
@@ -499,7 +502,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
-
+    this.menuTags = false;
     this.menuResp = false;
   }
   menuFluid_click() {
@@ -522,7 +525,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
-
+    this.menuTags = false;
     this.menuResp = false;
   }
   menuTimeline_click() {
@@ -545,7 +548,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
-
+    this.menuTags = false;
     this.menuResp = false;
   }
   menuPrescriptions_click() {
@@ -568,7 +571,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
-
+    this.menuTags = false;
     this.menuResp = false;
   }
   menuExternalPrescriptions_click() {
@@ -591,7 +594,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
-
+    this.menuTags = false;
     this.menuResp = false;
   }
   menuPayment_click() {
@@ -614,7 +617,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = true;
-
+    this.menuTags = false;
     this.menuResp = false;
   }
   menuOrder_click() {
@@ -637,7 +640,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
-
+    this.menuTags = false;
     this.menuResp = false;
   }
   menuVitals_click() {
@@ -660,7 +663,30 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
-
+    this.menuTags = false;
+    this.menuResp = false;
+  }
+  menuTags_click() {
+    this.menuSummary = false;
+    this.menuPharmacy = false;
+    this.menuBilling = false;
+    this.menuTreatmentPlan = false;
+    this.menuUploads = false;
+    this.menuImaging = false;
+    this.menuLab = false;
+    this.menuForms = false;
+    this.menuUploads = false;
+    this.menuDocs = false;
+    this.menuOrder = false;
+    this.menuFluid = false;
+    this.menuVitals = false;
+    this.menuTimeline = false;
+    this.menuPrescription = false;
+    this.menuExternalPrescription = false;
+    this.menuFinance = false;
+    this.menuMedicationHistory = false;
+    this.menuPayment = false;
+    this.menuTags = true;
     this.menuResp = false;
   }
 
@@ -709,6 +735,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.locker.removeItem('patient');
+
     if (this.clinicInteraction.locationName !== undefined && this.clinicInteraction.locationName.length > 1) {
       if (this.selectedAppointment.clinicInteractions === undefined) {
         this.selectedAppointment.clinicInteractions = [];
@@ -716,6 +743,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       this.clinicInteraction.endAt = new Date();
       this.clinicInteraction.title = 'Doctor\'s Encounter';
       this.selectedAppointment.clinicInteractions.push(this.clinicInteraction);
+      this.selectedAppointment.isEngaged = false;
       this.appointmentService.update(this.selectedAppointment).then(payload => {
 
       });

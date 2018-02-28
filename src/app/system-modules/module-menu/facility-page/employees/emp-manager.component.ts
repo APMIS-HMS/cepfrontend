@@ -1,18 +1,18 @@
-import { Component, OnInit, ViewChild, AfterViewInit } from "@angular/core";
-import { FormControl } from "@angular/forms";
-import { Router, ActivatedRoute } from "@angular/router";
+import { Component, OnInit, ViewChild, AfterViewInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
 import {
   EmployeeService,
   FacilitiesService
-} from "../../../../services/facility-manager/setup/index";
-import { CoolLocalStorage } from "angular2-cool-storage";
-import { EmpmanagerHomepageComponent } from "./empmanager-homepage/empmanager-homepage.component";
-import { Facility } from "../../../../models/index";
-import { SystemModuleService } from "app/services/module-manager/setup/system-module.service";
+} from '../../../../services/facility-manager/setup/index';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { EmpmanagerHomepageComponent } from './empmanager-homepage/empmanager-homepage.component';
+import { Facility } from '../../../../models/index';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 @Component({
-  selector: "app-emp-manager",
-  templateUrl: "./emp-manager.component.html",
-  styleUrls: ["./emp-manager.component.scss"]
+  selector: 'app-emp-manager',
+  templateUrl: './emp-manager.component.html',
+  styleUrls: ['./emp-manager.component.scss']
 })
 export class EmpManagerComponent implements OnInit, AfterViewInit {
   @ViewChild(EmpmanagerHomepageComponent)
@@ -32,7 +32,7 @@ export class EmpManagerComponent implements OnInit, AfterViewInit {
   department = new FormControl();
   unit = new FormControl();
 
-  pageInView = "Home";
+  pageInView = 'Home';
 
   departments: any[] = [];
   units: any[] = [];
@@ -42,7 +42,7 @@ export class EmpManagerComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute,
     private employeeService: EmployeeService,
     private locker: CoolLocalStorage,
-    private facilityService:FacilitiesService,
+    private facilityService: FacilitiesService,
     private systemService: SystemModuleService
   ) {}
   ngAfterViewInit() {
@@ -55,13 +55,13 @@ export class EmpManagerComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.selectedFacility = <Facility>this.locker.getObject("selectedFacility");
-    if (
-      this.selectedFacility.isValidRegistration === undefined ||
-      this.selectedFacility.isValidRegistration === false
-    ) {
-      this.facilityService.announcePopupEditFacility(true);
-    }
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    // if (
+    //   this.selectedFacility.isValidRegistration === undefined ||
+    //   this.selectedFacility.isValidRegistration === false
+    // ) {
+    //   this.facilityService.announcePopupEditFacility(true);
+    // }
     this.departments = this.selectedFacility.departments;
     this.department.valueChanges.subscribe(value => {
       this.selectedDepartment = value;
@@ -108,7 +108,7 @@ export class EmpManagerComponent implements OnInit, AfterViewInit {
   HomeContentArea_show() {
     this.homeContentArea = true;
     this.employeeDetailArea = false;
-    this.pageInView = "Employee Manager";
+    this.pageInView = 'Employee Manager';
   }
   sort_pop() {
     this.mobileSort = !this.mobileSort;
