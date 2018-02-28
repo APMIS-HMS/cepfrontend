@@ -1148,7 +1148,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                             planType: 'company',
                             isDefault: false,
                             planDetails: {
-                                
+
                             }
                         }
                     ]

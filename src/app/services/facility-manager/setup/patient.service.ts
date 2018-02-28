@@ -55,7 +55,7 @@ export class PatientService {
     });
   }
   reload() {
-    //this._restService.reload();
+    // this._restService.reload();
   }
   find(query: any) {
     this.reload();
@@ -66,7 +66,7 @@ export class PatientService {
     this.reload();
     return this._socket.find();
   }
-  findPatient(query:any){
+  findPatient(query: any) {
     return this._patientSearchSocket.find(query);
   }
   get(id: string, query: any) {
@@ -98,7 +98,7 @@ export class PatientService {
   update(patient: any) {
     return this._socket.update(patient._id, patient);
   }
-  patch(id, patient:any, query){
+  patch(id, patient: any, query) {
     return this._socket.patch(id, patient, query);
   }
   searchPatient(facilityId: string, searchText: string) {

@@ -49,7 +49,7 @@ export class BillingService {
     return this._socket.create(gender);
   }
 
-  createBill(billItems: any){
+  createBill(billItems: any) {
     return this._socketBillCreators.create(billItems);
   }
 

@@ -510,9 +510,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.tabInsurance_click();
     } else if (cover === 'family') {
       this.tabFamily_click();
-    } else {
-
-    }
+    } else {  }
   }
 
   backBtn() {
