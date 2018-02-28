@@ -178,7 +178,7 @@ export class NewSubLocationComponent implements OnInit {
                   this.systemModuleService.off();
                   this.systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
                   this.close_onClick();
-                }).catch(err => console.log(err));
+                }).catch(err =>{});
               } else {
                 this.addNew();
                 this.disableNewMinorLoc = false;

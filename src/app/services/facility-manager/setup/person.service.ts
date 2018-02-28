@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
 import { Person } from '../../../models/index';
+import { Http, Headers, RequestOptions } from '@angular/http'
 const request = require('superagent');
 
 @Injectable()
@@ -25,7 +26,8 @@ export class PersonService {
 
   constructor(
     private _socketService: SocketService,
-    private _restService: RestService
+    private _restService: RestService,
+    private http: Http
   ) {
     this._rest = _restService.getService('people');
     this._socket = _socketService.getService('people');
@@ -33,6 +35,7 @@ export class PersonService {
     this._fundWalletSocket = _socketService.getService('fund-wallet');
     this._fundWalletRest = _restService.getService('fund-wallet');
     this._socket.timeout = 30000;
+    this._fundWalletSocket.timeout = 50000;
     this.createListener = Observable.fromEvent(this._socket, 'created');
     this.updateListener = Observable.fromEvent(this._socket, 'updated');
   }
@@ -63,6 +66,9 @@ export class PersonService {
   }
   update(person: any, param?) {
     return this._socket.update(person._id, person, { query: { facilityId: param } });
+  }
+  patch(id, param, query) {
+    return this._socket.patch(id, param, query);
   }
 
   remove(id: string, query?: any) {
@@ -97,8 +103,20 @@ export class PersonService {
   }
 
   fundWallet(payload: any) {
-    // return this._fundWalletSocket.create(payload);
-    return this._fundWalletRest.create(payload);
+    console.log(payload);
+    return this._fundWalletSocket.create(payload);
+    // return this._fundWalletRest.create(payload);
+  }
+
+  httpFundWallet(payload) {
+    const host = this._restService.getHost();
+    const path = host + '/fund-wallet';
+    const token = 'Bearer' + localStorage.getItem('token');
+    const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', token);
+    const options = new RequestOptions({headers: headers});
+   return this.http.post(path, payload);
   }
 
   // fundWallet(walletTransaction: WalletTransaction) {
