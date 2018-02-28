@@ -1,3 +1,7 @@
+import { FacilityHealthCoverComponent } from './facility-health-cover/facility-health-cover.component';
+import { HmoBillHistoryDetailComponent } from './hmo-officer/hmo-bill-history-detail/hmo-bill-history-detail.component';
+import { HmoBillDetailComponent } from './hmo-officer/hmo-bill-detail/hmo-bill-detail.component';
+import { HmoOfficerComponent } from './hmo-officer/hmo-officer.component';
 import { OnlyMaterialModule } from './../../../shared-common-modules/only-material-module';
 import { AccessManagerHomeComponent } from './facility-access-control/access-manager-home.component';
 import { NewFacEmployeeComponent } from './employees/new-fac-employee/new-fac-employee.component';
@@ -57,6 +61,8 @@ import { CreateAccessComponent } from './facility-access-control/create-access/c
 import { ViewAccessComponent } from './facility-access-control/view-access/view-access.component';
 
 import { from } from 'rxjs/observable/from';
+import { FacilityFamilyCoverComponent } from './facility-health-cover/facility-family-cover/facility-family-cover.component';
+import { FacilityCompanyCoverComponent } from './facility-health-cover/facility-company-cover/facility-company-cover.component';
 
 @NgModule({
     declarations: [
@@ -94,9 +100,15 @@ import { from } from 'rxjs/observable/from';
         AddMemberComponent,
         AddOtherComponent,
         NewFacEmployeeComponent,
-        EmployeeAccessRolesComponent, 
+        EmployeeAccessRolesComponent,
         AccessManagerComponent, AccessRoleDetailsComponent, CreateAccessComponent, ViewAccessComponent,
-        AccessManagerHomeComponent
+        AccessManagerHomeComponent,
+        HmoOfficerComponent,
+        FacilityFamilyCoverComponent,
+        FacilityCompanyCoverComponent,
+        HmoBillDetailComponent,
+        HmoBillHistoryDetailComponent,
+        FacilityHealthCoverComponent
     ],
     exports: [
     ],

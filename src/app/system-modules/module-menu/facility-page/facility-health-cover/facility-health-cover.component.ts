@@ -22,19 +22,25 @@ export class FacilityHealthCoverComponent implements OnInit {
     this.hmo = true;
     this.company = false;
     this.family = false;
-    this.router.navigate(['/health-coverage/hmo']);
+    this.router.navigate(['/dashboard/facility/health-coverage/hmo']).then(payload=>{
+    }, error =>{
+    });
   }
   company_tab(){
     this.hmo = false;
     this.company = true;
     this.family = false;
-    this.router.navigate(['/health-coverage/company-cover']);
+    this.router.navigate(['dashboard/facility/health-coverage/company-cover']).then(payload=>{
+    }, error =>{
+    });
   }
   family_tab(){
     this.hmo = false;
     this.company = false;
     this.family = true;
-    this.router.navigate(['/health-coverage/family-cover']); 
+    this.router.navigate(['/dashboard/facility/health-coverage/family-cover']).then(payload=>{
+    }, error =>{
+    });
   }
 
 }
