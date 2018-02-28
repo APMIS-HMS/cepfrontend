@@ -333,6 +333,7 @@ export class FormsComponent implements OnInit {
   }
   getForms() {
     this.formsService.find({ query: { facilityId: this.selectedFacility._id, isSide: false, $limit: 100 } }).then(payload => {
+      console.log(payload);
       this.forms = payload.data;
     });
   }
