@@ -159,6 +159,8 @@ const getBedOccupancy = require('./get-bed-occupancy/get-bed-occupancy.service.j
 const purchaseInvoices = require('./purchase-invoices/purchase-invoices.service.js');
 const dispensePrescriptions = require('./dispense-prescriptions/dispense-prescriptions.service.js');
 const patientfluids = require('./patientfluids/patientfluids.service.js');
+const searchProcedure = require('./search-procedure/search-procedure.service.js');
+const treatmentSheets = require('./treatment-sheets/treatment-sheets.service.js');
 module.exports = function(app) {
     app.configure(users);
     app.configure(facilityOwnerships);
@@ -321,4 +323,6 @@ module.exports = function(app) {
     app.configure(purchaseInvoices);
     app.configure(dispensePrescriptions);
     app.configure(patientfluids);
+    app.configure(searchProcedure);
+    app.configure(treatmentSheets);
 };

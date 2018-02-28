@@ -16,6 +16,7 @@ class Service {
         console.log('*********End params*********');
         const inventoryService = this.app.service('inventories');
         const productService = this.app.service('products');
+        let facilityPriceService = this.app.service('facility-prices');
         const facilityId = params.query.facilityId;
         const ingredients = JSON.parse(params.query.ingredients);
 
@@ -31,10 +32,13 @@ class Service {
                     // Check if the ingredient that was sent is contained in any product details.
                     let i = products.length;
                     const results = [];
+                    let resultItem = {};
 
                     while (i--) {
                         const product = products[i];
-
+                        console.log('*********product*********');
+                        console.log(product);
+                        console.log('*********End product*********');
                         if (product.productDetail.ingredients !== undefined && product.productDetail.ingredients.length > 0) {
                             for (let j = 0; j < ingredients.length; j++) {
                                 const ingredient = ingredients[j];
@@ -48,10 +52,38 @@ class Service {
 
                                 if (compare) {
                                     // Found product that matches the sent ingredient. Then send the product to the client.
-                                    const inventory = await inventoryService.find({ query: { facilityId: facilityId, productId: product._id } });
+                                    let inventory = await inventoryService.find({ query: { facilityId: facilityId, productId: product._id } });
                                     console.log('*********inventory*********');
                                     console.log(inventory);
                                     console.log('*********End inventory*********');
+                                    if (inventory.data.length > 0) {
+                                        // inventory = inventory.data[0];
+                                        resultItem.productId = inventory.productId;
+                                        resultItem.product = product.name;
+                                        resultItem.availability = [];
+                                        resultItem.totalQuantity = 0;
+                                        product.serviceId = inventory.serviceId;
+                                        product.categoryId = inventory.categoryId;
+                                        product.facilityServiceId = inventory.facilityServiceId;
+
+                                        let k = inventory.data.length;
+                                        while (k--) {
+                                            const inventoryItem = inventory.data[k];
+                                            console.log('*********inventoryItem*********');
+                                            console.log(inventoryItem);
+                                            console.log('*********End inventoryItem*********');
+                                            let prices = await facilityPriceService.find({
+                                                query: {
+                                                    facilityId: facilityId,
+                                                    facilityServiceId: inventoryItem.facilityServiceId,
+                                                    categoryId: inventoryItem.categoryId
+                                                }
+                                            });
+                                            console.log('*********prices*********');
+                                            console.log(prices);
+                                            console.log('*********End prices*********');
+                                        }
+                                    }
                                 }
                             }
                         }
