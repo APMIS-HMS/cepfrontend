@@ -73,6 +73,7 @@ class Service {
     }
 
     //Collection of Family BillItems
+    let filteredFamily = [];
     len = family.length;
     for (let index = 0; index < len; index++) {
       const indx = filteredFamily.filter(x => x.covered.familyId.toString() === family[index].covered.familyId.toString() && x.isPicked === undefined);
@@ -93,9 +94,19 @@ class Service {
         billGroup.push(billModel);
       }
     }
-       
+
+    //Collection of Wallet Billitems
+    if (wallet.length > 0) {
+      const billModel = {
+        "facilityId": params.query.facilityId,
+        "grandTotal": sumCost(wallet),
+        "patientId": params.query.patientId,
+        "subTotal": sumCost(wallet),
+        "billItems": wallet
+      }
+      billGroup.push(billModel);
+    }
     const bills = await billingsService.create(billGroup);
-    console.log(bills);
     return bills;
   }
 
