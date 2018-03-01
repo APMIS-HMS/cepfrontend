@@ -16,11 +16,16 @@ export class DocumentationDetailComponent implements OnInit {
 
 
 
-  constructor(private facilityService: FacilitiesService) { }
+  constructor(private facilityService: FacilitiesService, private documentationService:DocumentationService) { }
 
   ngOnInit() {
-    console.log(this.isDocumentEdit);
+    console.log(this.patientDocumentationId);
     console.log(this.document);
+    this.documentationService.get(this.patientDocumentationId,{}).then(payload =>{
+
+    }, error =>{
+
+    });
   }
 
   close_onClick() {
