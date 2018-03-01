@@ -52,7 +52,8 @@ export class NoprescriptionComponent implements OnInit {
 	totalQuantity = 0;
 	selectedBatch = '';
 	disableDispenseBtn = false;
-	dispenseBtnText = 'Dispense';
+	dispenseBtn = true;
+  dispensingBtn = false;
 	inventoryTransactionTypeId = '';
 	selectedInventoryId = '';
 	selectedFsId = '';
@@ -211,7 +212,8 @@ export class NoprescriptionComponent implements OnInit {
 			if (!!this.selectedStore) {
 				const prescription = {};
 				const drugs = [];
-				this.dispenseBtnText = 'Dispensing... <i class="fa fa-spinner fa-spin"></i>';
+        this.dispenseBtn = false;
+        this.dispensingBtn = true;
 				this.disableDispenseBtn = true;
 
 				this.prescriptions.forEach(element => {
@@ -315,9 +317,7 @@ export class NoprescriptionComponent implements OnInit {
 					storeId: this.selectedStore.storeId
 				}
 
-				const collectionDrugs = {
-					drugs: drugs,
-				};
+				const collectionDrugs = { drugs: drugs };
 
 				// Call a service to
 				this._dispenseCollectionDrugs.create(collectionDrugs).then(res => {
@@ -403,7 +403,8 @@ export class NoprescriptionComponent implements OnInit {
 
 				// Call the dispense service.
 				this._dispenseService.create(payload).then(res => {
-					this.dispenseBtnText = 'Dispense';
+          this.dispenseBtn = true;
+          this.dispensingBtn = false;
 					this.disableDispenseBtn = true;
 					this.selectedProducts = [];
 					this.prescriptions = [];

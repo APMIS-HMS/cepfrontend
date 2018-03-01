@@ -175,6 +175,9 @@
 </div>
 <div class="row margin-top-15" style="margin-bottom: 20px;">
     <div class="col-sm-12 col-mat-12 text-center">
-        <button class="mat-lg-btn" [disabled]="disableDispenseBtn" (click)="onClickDispense();" mat-raised-button [innerHtml]="dispenseBtnText"></button>
+        <button class="mat-lg-btn" [disabled]="disableDispenseBtn" (click)="onClickDispense();" mat-raised-button>
+          <span *ngIf="dispenseBtn"><i class="fa fa-check-circle"></i> Dispense</span>
+          <span *ngIf="dispensingBtn">Dispensing... <i class="fa fa-spinner fa-spin"></i></span>
+        </button>
     </div>
 </div>
