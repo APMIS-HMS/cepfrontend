@@ -63,6 +63,10 @@ import { ViewAccessComponent } from './facility-access-control/view-access/view-
 import { from } from 'rxjs/observable/from';
 import { FacilityFamilyCoverComponent } from './facility-health-cover/facility-family-cover/facility-family-cover.component';
 import { FacilityCompanyCoverComponent } from './facility-health-cover/facility-company-cover/facility-company-cover.component';
+import { CompanyBillDetailComponent } from './facility-health-cover/facility-company-cover/company-bill-detail/company-bill-detail.component';
+import { CompanyBillHistoryDetailComponent } from './facility-health-cover/facility-company-cover/company-bill-history-detail/company-bill-history-detail.component';
+import { FamilyBillDetailComponent } from './facility-health-cover/facility-family-cover/family-bill-detail/family-bill-detail.component';
+import { FamilyBillHistoryDetailComponent } from './facility-health-cover/facility-family-cover/family-bill-history-detail/family-bill-history-detail.component';
 
 @NgModule({
     declarations: [
@@ -108,7 +112,11 @@ import { FacilityCompanyCoverComponent } from './facility-health-cover/facility-
         FacilityCompanyCoverComponent,
         HmoBillDetailComponent,
         HmoBillHistoryDetailComponent,
-        FacilityHealthCoverComponent
+        FacilityHealthCoverComponent,
+        CompanyBillDetailComponent,
+        CompanyBillHistoryDetailComponent,
+        FamilyBillDetailComponent,
+        FamilyBillHistoryDetailComponent
     ],
     exports: [
     ],
