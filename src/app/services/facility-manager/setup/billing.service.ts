@@ -49,8 +49,8 @@ export class BillingService {
     return this._socket.create(gender);
   }
 
-  createBill(billItems: any) {
-    return this._socketBillCreators.create(billItems);
+  createBill(billItems: any, params: any) {
+    return this._socketBillCreators.create(billItems, params);
   }
 
   remove(id: string, query: any) {
