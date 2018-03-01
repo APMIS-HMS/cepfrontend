@@ -106,11 +106,11 @@
                 </td>
                 <td>
                     <div class="td-ctaWrap">
-                        <div class="actionWrap vital-taken" (click)="showVital(appointment)">
+                        <div class="actionWrap" [class.vital-taken]="appointment.hasDoneVital" (click)="showVital(appointment)">
                             <i class="fa fa-external-link" aria-hidden="true"></i>
                             <span>Vitals</span>
                         </div>
-                        <div class="actionWrap" (click)="goToPatientPage(appointment,true)">
+                        <div class="actionWrap" [class.patient-is-engaged]="appointment.isEngaged" (click)="goToPatientPage(appointment,true)">
                             <i class="fa fa-medkit" aria-hidden="true"></i>
                             <span>Attend to Patient</span>
                         </div>

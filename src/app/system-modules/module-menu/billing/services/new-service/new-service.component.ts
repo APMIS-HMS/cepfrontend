@@ -159,7 +159,7 @@ export class NewServiceComponent implements OnInit {
   }
   addNew() {
     this.frmNewservice = this.formBuilder.group({
-      serviceName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+      serviceName: ['', [<any>Validators.required]],
       serviceCat: ['', [<any>Validators.required]],
       serviceAutoCode: ['', []],
       serviceCode: ['', []],
@@ -225,7 +225,7 @@ export class NewServiceComponent implements OnInit {
       }
       this.onCreate(value);
     }else {
-      this.systemModuleService.announceSweetProxy('Missing field', 'error');
+      this.systemModuleService.announceSweetProxy('Missing field','error');
     }
   }
 
@@ -264,6 +264,7 @@ export class NewServiceComponent implements OnInit {
           this.serviceItemModel.price.others = this.priceItems.filter(x => x.isBase === false);
         }
       }
+
       this._facilitiesServiceCategoryService.update2(this.facility._id, this.serviceItemModel, {
         query: {
           facilityId: this.facility._id,
