@@ -513,12 +513,10 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     getFamilyBeneficiaryList() {
         this.familyCoverService.find({ query: { 'facilityId': this.facility._id } }).then(payload => {
-            console.log(payload);
             if (payload.data.length > 0) {
                 const facFamilyCover = payload.data[0];
                 this.selectedFamilyCover = facFamilyCover;
                 this.beneficiaries = facFamilyCover.familyCovers;
-                console.log(this.beneficiaries);
             }
         })
     }
@@ -528,8 +526,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     validatingPerson() {
-        console.log(this.validating);
-        console.log(this.duplicate);
         return this.validating || this.duplicate;
     }
     getSecurityQuestions() {
@@ -729,11 +725,9 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     getRole(beneficiary) {
         const filNo = beneficiary;
-        console.log(filNo);
         if (filNo !== undefined) {
             const filNoLength = filNo.length;
             const lastCharacter = filNo[filNoLength - 1];
-            console.log(filNoLength, lastCharacter);
             return isNaN(lastCharacter) ? 'D' : 'P';
         }
     }
@@ -975,7 +969,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     patientId: payl._id
                 }
             }).then(billingPayload => {
-                console.log(billingPayload);
                 this.systemModuleService.off();
                 const text = this.selectedPerson.lastName + ' ' + this.selectedPerson.firstName
                     + ' added successfully but bill not generated because price not yet set for this service';
@@ -987,8 +980,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.systemModuleService.off();
                 this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
                 this.loading = false;
-                console.log(errr);
-            });
+                });
 
         }).catch(err => {
             this.systemModuleService.off();
@@ -1018,7 +1010,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 }
             ]
         }
-        console.log(patient);
         this.patientService.create(patient).then(payl => {
             const data = [
                 {
@@ -1053,10 +1044,10 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     patientId: payl._id
                 }
             }).then(billingPayload => {
-                console.log(billingPayload);
                 this.systemModuleService.off();
                 const text = this.selectedPerson.lastName + ' '
-                    + this.selectedPerson.firstName + ' added successfully but bill not generated because price not yet set for this service';
+                    + this.selectedPerson.firstName
+                    + ' added successfully but bill not generated because price not yet set for this service';
                 this.systemModuleService.announceSweetProxy(text, 'success');
                 this.systemModuleService.changeMessage(payl);
                 this.loading = false;
@@ -1065,15 +1056,13 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.systemModuleService.off();
                 this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
                 this.loading = false;
-                console.log(errr);
             });
 
         }).catch(err => {
             this.systemModuleService.off();
             this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
             this.loading = false;
-            console.log(err);
-        });
+         });
 
     }
 
@@ -1360,18 +1349,18 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
                 }
             ];
-            
+
             this.billingService.createBill(billing, {
                 query: {
                     facilityId: this.facility._id,
                     patientId: payl._id
                 }
             }).then(billingPayload => {
-                console.log(billingPayload);
                 this.systemModuleService.off();
                 this.systemModuleService.changeMessage(payl);
                 const text = this.selectedPerson.lastName + ' '
-                    + this.selectedPerson.firstName + ' added successfully but bill not generated because price not yet set for this service';
+                    + this.selectedPerson.firstName
+                    + ' added successfully but bill not generated because price not yet set for this service';
                 this.systemModuleService.announceSweetProxy(text, 'success');
                 this.loading = false;
                 this.close_onClick();
@@ -1379,14 +1368,12 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.systemModuleService.off();
                 this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
                 this.loading = false;
-                console.log(errr);
-            });
+             });
 
         }).catch(err => {
             this.systemModuleService.off();
             this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
             this.loading = false;
-            console.log(err);
         });
 
     }
@@ -1402,7 +1389,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     saveData() {
-        console.log(this.coverType);
         if (this.coverType === 'insurance') {
             this.saveInsurancePerson();
         } else if (this.coverType === 'company') {
