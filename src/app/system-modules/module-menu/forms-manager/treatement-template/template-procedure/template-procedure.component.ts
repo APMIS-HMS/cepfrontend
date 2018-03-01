@@ -15,8 +15,8 @@ export class TemplateProcedureComponent implements OnInit {
   addProcedureForm: FormGroup;
   facility: Facility = <Facility>{};
   selectedProcedure: any = <any>{};
-  cuDropdownLoading: boolean = false;
-  showCuDropdown: boolean = false;
+  cuDropdownLoading = false;
+  showCuDropdown = false;
   results: any = [];
   procedures: any = <any>[];
   newTemplate = true;

@@ -28,7 +28,7 @@ export class StoreCheckInComponent implements OnInit {
   checkInBtn = true;
   checkingInBtn = false;
   disableBtn = false;
-  checkInBtnText:any;
+  checkInBtnText: any;
 
 	constructor(
     public formBuilder: FormBuilder,
@@ -157,7 +157,7 @@ export class StoreCheckInComponent implements OnInit {
           this.locations = minorLocations.filter(x => x.locationId === pharmId && locationIds.includes(x._id));
         }
       }
-    }).catch(err =>{});
+    }).catch(err => {});
   }
 
 	changeRoom(checkIn: any) {

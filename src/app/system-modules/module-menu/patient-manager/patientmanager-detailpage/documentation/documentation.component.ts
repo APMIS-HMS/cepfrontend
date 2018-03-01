@@ -448,9 +448,9 @@ export class DocumentationComponent implements OnInit, OnDestroy {
           const createdById = this.loginEmployee._id;
           const facilityId = this.selectedMiniFacility._id;
 
-          if(documentation.documentationStatus !== 'Draft'){
+          if (documentation.documentationStatus !== 'Draft') {
             this.documents.push(documentation);
-          }else if(documentation.createdById === createdById && documentation.facilityId === facilityId){
+          }else if (documentation.createdById === createdById && documentation.facilityId === facilityId) {
             this.hasSavedDraft = true;
             this.draftDocument = documentation;
           }

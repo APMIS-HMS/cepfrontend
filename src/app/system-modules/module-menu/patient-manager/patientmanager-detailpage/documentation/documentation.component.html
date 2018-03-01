@@ -88,7 +88,7 @@
     </div>
 
     <div *ngIf="docDetail_view" class="modal-overlay">
-        <app-documentation-detail [document]="selectedDocument" [isDocumentEdit]="isDocumentEdit" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-documentation-detail>
+        <app-documentation-detail [patientDocumentationId]="patientDocumentation._id" [document]="selectedDocument" [isDocumentEdit]="isDocumentEdit" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-documentation-detail>
     </div>
 
     <div *ngIf="addProblem_view" class="modal-overlay">

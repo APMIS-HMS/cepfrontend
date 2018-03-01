@@ -250,6 +250,8 @@ export class OrderSetComponent implements OnInit {
     this.closeModal.emit(true);
   }
 
+  popProcedure_show() {}
+
   // Notification
   private _notification(type: String, text: String): void {
     this.facilityService.announceNotification({

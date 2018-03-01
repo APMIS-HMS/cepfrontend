@@ -15,28 +15,28 @@ import { SystemModuleService } from '../../../../../services/module-manager/setu
 export class BillPrescriptionComponent implements OnInit {
 	@Input() prescriptionData: Prescription = <Prescription>{};
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-	//@Input() employeeDetails: any;
+	// @Input() employeeDetails: any;
 	facility: Facility = <Facility>{};
 	user: any = <any>{};
 
 	addBillForm: FormGroup;
 	drugs: any[] = [];
-	selectedDrug: string = '';
-	itemCost: number = 0;
-	title: string = '';
-	cost: number = 0; // Unit price for each drug.
-	totalCost: number = 0; // Total price for each drug selected.
-	totalQuantity: number = 0;
-	batchNumber: string = '';
-	qtyInStores: number = 0;
-	storeId: string = '';
+	selectedDrug = '';
+	itemCost = 0;
+	title = '';
+	cost = 0; // Unit price for each drug.
+	totalCost = 0; // Total price for each drug selected.
+	totalQuantity = 0;
+	batchNumber = '';
+	qtyInStores = 0;
+	storeId = '';
 	stores: any = [];
-	loading: boolean = true;
-	serviceId: string = '';
-	facilityServiceId: string = '';
-	categoryId: string = '';
+	loading = true;
+	serviceId = '';
+	facilityServiceId = '';
+	categoryId = '';
 
-	mainErr: boolean = true;
+	mainErr = true;
 	errMsg = 'You have unresolved errors';
 
 	constructor(
@@ -130,7 +130,9 @@ export class BillPrescriptionComponent implements OnInit {
 		this.serviceId = drugId._element.nativeElement.getAttribute('data-p-sId');
 		this.facilityServiceId = drugId._element.nativeElement.getAttribute('data-p-fsid');
 		this.categoryId = drugId._element.nativeElement.getAttribute('data-p-cid');
+		// tslint:disable-next-line:radix
 		this.cost = parseInt(drugId._element.nativeElement.getAttribute('data-p-price'));
+		// tslint:disable-next-line:radix
 		this.qtyInStores = parseInt(drugId._element.nativeElement.getAttribute('data-p-tqty'));
 		const pAqty = drugId._element.nativeElement.getAttribute('data-p-aqty');
 	}

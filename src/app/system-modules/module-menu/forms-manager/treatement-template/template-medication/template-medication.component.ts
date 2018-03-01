@@ -11,16 +11,16 @@ import { Appointment, Facility, Employee, Prescription, PrescriptionItem, BillIt
 import { DurationUnits } from '../../../../../shared-module/helpers/global-config';
 
 @Component({
-  selector: "app-template-medication",
-  templateUrl: "./template-medication.component.html",
-  styleUrls: ["./template-medication.component.scss"]
+  selector: 'app-template-medication',
+  templateUrl: './template-medication.component.html',
+  styleUrls: ['./template-medication.component.scss']
 })
 export class TemplateMedicationComponent implements OnInit {
   addPrescriptionForm: FormGroup;
   apmisLookupQuery = {};
-  apmisLookupUrl = "";
-  apmisLookupDisplayKey = "";
-  apmisLookupText = "";
+  apmisLookupUrl = '';
+  apmisLookupDisplayKey = '';
+  apmisLookupText = '';
   currentDate: Date = new Date();
   minDate: Date = new Date();
   newTemplate = true;
@@ -29,7 +29,7 @@ export class TemplateMedicationComponent implements OnInit {
   frequencies: string[] = [];
   durationUnits: any[] = [];
   selectedDuration: any;
-  drugId: string = '';
+  drugId = '';
   refillCount = 0;
   selectedForm = '';
   selectedIngredients: any = [];
@@ -111,7 +111,7 @@ export class TemplateMedicationComponent implements OnInit {
     this.apmisLookupText = item.details;
     // this._drugDetailsApi.find({ query: { productId: item.productId } }).then(res => {
     this._drugListApi.find({ query: { method: 'drug-details', 'productId': item.productId } }).then(res => {
-        let sRes = res.data;
+        const sRes = res.data;
         if (res.status === 'success') {
           if (!!sRes.ingredients && sRes.ingredients.length > 0) {
             this.selectedForm = sRes.form;

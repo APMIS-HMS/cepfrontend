@@ -1,7 +1,7 @@
-import { UserFacadeService } from "./system-modules/service-facade/user-facade.service";
-import { UserService } from "./services/facility-manager/setup/user.service";
-import { SystemModuleService } from "./services/module-manager/setup/system-module.service";
-import { Component, ViewContainerRef, OnInit } from "@angular/core";
+import { UserFacadeService } from './system-modules/service-facade/user-facade.service';
+import { UserService } from './services/facility-manager/setup/user.service';
+import { SystemModuleService } from './services/module-manager/setup/system-module.service';
+import { Component, ViewContainerRef, OnInit } from '@angular/core';
 import {
   Router,
   Event,
@@ -9,8 +9,8 @@ import {
   NavigationEnd,
   NavigationCancel,
   NavigationError
-} from "@angular/router";
-import { ToastsManager } from "ng2-toastr/ng2-toastr";
+} from '@angular/router';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import {
   FacilitiesService,
   AppointmentService,
@@ -18,7 +18,7 @@ import {
   ProfessionService,
   EmployeeService,
   WorkSpaceService
-} from "./services/facility-manager/setup/index";
+} from './services/facility-manager/setup/index';
 import {
   Facility,
   Employee,
@@ -26,18 +26,18 @@ import {
   AppointmentType,
   Appointment,
   Profession
-} from "./models/index";
-import { CoolLocalStorage } from "angular2-cool-storage";
-import { Observable } from "rxjs/Observable";
-import { Subscription } from "rxjs/Subscription";
-import { LoadingBarService } from "@ngx-loading-bar/core";
-import { JoinChannelService } from "app/services/facility-manager/setup/join-channel.service";
-import swal from "sweetalert2";
-import { AuthFacadeService } from "./system-modules/service-facade/auth-facade.service";
+} from './models/index';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+import { LoadingBarService } from '@ngx-loading-bar/core';
+import { JoinChannelService } from 'app/services/facility-manager/setup/join-channel.service';
+import swal from 'sweetalert2';
+import { AuthFacadeService } from './system-modules/service-facade/auth-facade.service';
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.scss"]
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
   auth: any;
@@ -79,7 +79,7 @@ export class AppComponent implements OnInit {
     });
 
     this.systemModuleService.loadingAnnounced$.subscribe((value: any) => {
-      if (value.status === "On") {
+      if (value.status === 'On') {
         this.loadingService.start();
       } else {
         this.loadingService.complete();
@@ -108,23 +108,23 @@ export class AppComponent implements OnInit {
     const userId = this.loginUser._id;
     const isUserIdIncluded = obj.users.filter(x => x === userId).length > 0;
     if (isUserIdIncluded === true) {
-      if (obj.type === "Success") {
+      if (obj.type === 'Success') {
         this.success(obj.text);
-      } else if (obj.type === "Error") {
+      } else if (obj.type === 'Error') {
         this.error(obj.text);
-      } else if (obj.type === "Info") {
+      } else if (obj.type === 'Info') {
         this.info(obj.text);
-      } else if (obj.type === "Warning") {
+      } else if (obj.type === 'Warning') {
         this.warning(obj.text);
       }
     }
   }
 
   _sweetNotification(value) {
-    if (value.type === "success") {
+    if (value.type === 'success') {
       swal({
         title: value.title,
-        type: "success",
+        type: 'success',
         text: value.text,
         html: value.html,
         position: (value.position !== undefined && value.position !== null) ? value.position : 'top-end',
@@ -135,52 +135,52 @@ export class AppComponent implements OnInit {
           value.cp.sweetAlertCallback(result);
         }
       });
-    } else if (value.type === "error") {
+    } else if (value.type === 'error') {
       swal({
         title: value.title,
-        type: "error",
+        type: 'error',
         text: value.text,
         html: value.html
       });
-    } else if (value.type === "info") {
+    } else if (value.type === 'info') {
       swal({
         title: value.title,
-        type: "info",
+        type: 'info',
         text: value.text,
         html: value.html
       });
-    } else if (value.type === "warning") {
+    } else if (value.type === 'warning') {
       swal({
         title: value.title,
-        type: "warning",
+        type: 'warning',
         text: value.text,
         html: value.html
       });
-    } else if (value.type === "question") {
+    } else if (value.type === 'question') {
       swal({
         title: value.title,
         text: value.text,
         type: value.type,
         html: value.html,
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes!"
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes!'
       }).then(result => {
         value.cp.sweetAlertCallback(result, value.from);
       });
     }
   }
   success(text) {
-    this.toastr.success(text, "Success!");
+    this.toastr.success(text, 'Success!');
   }
   error(text) {
-    this.toastr.error(text, "Error!");
+    this.toastr.error(text, 'Error!');
   }
   info(text) {
-    this.toastr.info(text, "Info");
+    this.toastr.info(text, 'Info');
   }
   warning(text) {
-    this.toastr.warning(text, "Warning");
+    this.toastr.warning(text, 'Warning');
   }
 }
