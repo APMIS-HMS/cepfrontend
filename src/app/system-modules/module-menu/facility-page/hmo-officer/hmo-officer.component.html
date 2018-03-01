@@ -1,4 +1,7 @@
 <div class="pp-card shadow-grey">
+
+    <div class="card-title" style="background:#eee;padding:5px 0;">HMO List</div>
+
     <ul class="pg-menuWrap">
         <li (click)="tab1_click()" [class.pg-menuActive]="tab1">
             <i class="fa fa-pause" aria-hidden="true"></i> Pending Bills</li>
@@ -16,6 +19,9 @@
                     </th>
                     <th>
                         <span style="padding-left: 3px;">Principal</span>
+                    </th>
+                    <th>
+                        <span style="padding-left: 3px;">HMO</span>
                     </th>
                     <th>
                         <span style="padding-left: 3px;">Amount</span>
@@ -37,6 +43,14 @@
                             <div>{{bill.principalObject.personDetails.firstName}} {{bill.principalObject.personDetails.lastName}}</div>
                         </div>
                     </td>
+                    <td>
+                        <div class="empWrap">
+                            <div class="list-img">
+                                <img src="assets/images/logos/default.png">
+                            </div>
+                            <div>Asa Mansard</div>
+                        </div>
+                    </td>
                     <td class="td-worspace">&#8358; {{bill.grandTotal|number:'1.2-2'}}</td>
                 </tr>
             </tbody>
@@ -52,7 +66,10 @@
                         <span style="padding-left: 3px;">Date</span>
                     </th>
                     <th>
-                        <span style="padding-left: 3px;">Patient</span>
+                        <span style="padding-left: 3px;">Principal</span>
+                    </th>
+                    <th>
+                        <span style="padding-left: 3px;">HMO</span>
                     </th>
                     <th>
                         <span style="padding-left: 3px;">Amount</span>
@@ -69,6 +86,14 @@
                                 <img src="assets/images/users/default.png">
                             </div>
                             <div>{{bill.principalObject.personDetails.firstName}} {{bill.principalObject.personDetails.lastName}}</div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="empWrap">
+                            <div class="list-img">
+                                <img src="assets/images/logos/default.png">
+                            </div>
+                            <div>Asa Mansard</div>
                         </div>
                     </td>
                     <td class="td-worspace">&#8358; {{bill.grandTotal|number:'1.2-2'}}</td>

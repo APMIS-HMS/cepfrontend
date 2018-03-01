@@ -109,12 +109,11 @@
             <form>
                 <div class="form-group">
                     <!--<label>ADDENDUM:</label>-->
-                    <textarea class="form-cont" rows="5" id="addendum" placeholder="Write a Note"></textarea>
+                    <textarea class="form-cont" [formControl]="addendumCtrl" rows="5" id="addendum" placeholder="Write a Note"></textarea>
                 </div>
                 <div class="but-style">
-                    <button class="btn btn-primary">Save </button>
+                    <button (click)="save()" class="btn btn-primary">Save </button>
                 </div>
             </form>
-
         </div>
     </div>

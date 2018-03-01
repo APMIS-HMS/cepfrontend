@@ -169,6 +169,10 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       }
     }, error => {
     });
+
+    this.documentationService.listenerUpdate.subscribe(payload =>{
+      this.patientDocumentation = payload;
+    })
   }
 
   ngOnInit() {
@@ -523,6 +527,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this.addAllergy_view = false;
     this.addHistory_view = false;
     this.addVitals_view = false;
+    this.getPersonDocumentation();
   }
 
   showOrderset_onClick(e) {

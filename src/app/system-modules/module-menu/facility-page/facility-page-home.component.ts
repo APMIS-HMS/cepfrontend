@@ -4,11 +4,10 @@ import { FacilitiesService } from './../../../services/facility-manager/setup/fa
 import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { Facility } from '../../../models/index';
-import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { EMAIL_REGEX, WEBSITE_REGEX, PHONE_REGEX, GEO_LOCATIONS } from 'app/shared-module/helpers/global-config';
 
-import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
+import { Router, ActivatedRoute, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { EmployeeService } from '../../../services/facility-manager/setup/index';
 @Component({
@@ -235,7 +234,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.networkContentArea = false;
       this.accessContentArea = true;
       this.hmoContentArea = false;
-    } else if (value === 'hmo-officer') {
+    } else if(value == 'health-coverage'){
       this.modulesContentArea = false;
       this.optionsContentArea = false;
       this.departmentsContentArea = false;
@@ -401,7 +400,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.networkContentArea = false;
       this.accessContentArea = true;
       this.hmoContentArea = false;
-    }else if (param.includes('facility/hmo-officer')) {
+    }else if(param.includes('health-coverage')){
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;

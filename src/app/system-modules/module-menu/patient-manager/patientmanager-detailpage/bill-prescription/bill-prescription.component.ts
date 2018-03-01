@@ -112,13 +112,12 @@ export class BillPrescriptionComponent implements OnInit {
 
 		// Get the list of products from a facility, and then search if the generic
     // that was entered by the doctor in contained in the list of products
-    console.log(ingredients);
+
     this._assessmentDispenseService.find({ query: {
       facilityId: this.facility._id,
       ingredients: JSON.stringify(ingredients)
     }}).then(res => {
       this.loading = false;
-      console.log(res);
 			if (res.status === 'success' && res.data.length > 0) {
 				this.stores = res[0].availability;
 				this.drugs = res;

@@ -62,10 +62,9 @@ export class HmoBillDetailComponent implements OnInit {
         this.hmoConfirmBill(false);
       }
     }
-  }
+  } 
 
   hmoConfirmBill(isAccept: boolean) {
-    console.log(isAccept);
     if (this.hmoTypeControl.value === 1 && isAccept === true) {
       if (this.authCodeControl.value !== null) {
         const index = this.selectedBill.billItems.filter(x => x._id.toString() === this.bill._id.toString());
@@ -103,5 +102,9 @@ export class HmoBillDetailComponent implements OnInit {
     this.bill.acceptFunction = false;
     this.systemModuleService.announceSweetProxy('You are about to DECLINE this bill', 'question', this)
   }
+
+  newWorkspace_onClick() {}
+
+  deletion_popup() {}
 
 }
