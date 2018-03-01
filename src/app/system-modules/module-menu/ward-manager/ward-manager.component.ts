@@ -58,7 +58,8 @@ export class WardManagerComponent implements OnInit, OnDestroy {
               // Set page title
               this.isWardAvailable = true;
               this.wardTitle = x.minorLocationId.name;
-              this._employeeService.update(this.loginEmployee).then(res => {
+              // tslint:disable-next-line:no-shadowed-variable
+              this._employeeService.update(this.loginEmployee).then( res => {
                 this.loginEmployee = res;
                 checkingObject = { typeObject: x, type: 'ward' };
                 this.checkedInObject = checkingObject;
@@ -90,12 +91,12 @@ export class WardManagerComponent implements OnInit, OnDestroy {
           }
         }
       } else {
-        const text ='Couldn\'t get Logged in user! Please try again later';
+        const text = 'Couldn\'t get Logged in user! Please try again later';
       this._systemModuleService.announceSweetProxy(text, 'error', null, null, null, null, null, null, null);
       }
     }).catch(err => {
-      //Starday * redirect non employee of this facility to the dashboard
-      const text ='Only an employee of this facility can have access to this module';
+      // Starday * redirect non employee of this facility to the dashboard
+      const text = 'Only an employee of this facility can have access to this module';
       this._systemModuleService.announceSweetProxy(text, 'info', null, null, null, null, null, null, null);
       this._router.navigate(['/dashboard']);
     });
