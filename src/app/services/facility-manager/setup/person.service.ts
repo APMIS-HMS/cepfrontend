@@ -1,15 +1,4 @@
 import {
-<<<<<<< HEAD
-  WalletTransaction, TransactionType, EntityType, TransactionDirection, TransactionMedium
-} from './../../../models/facility-manager/setup/wallet-transaction';
-import { SocketService, RestService } from '../../../feathers/feathers.service';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Person } from '../../../models/index';
-import { RequestOptions, Http, Headers } from '@angular/http';
-const request = require('superagent');
-=======
   WalletTransaction,
   TransactionType,
   EntityType,
@@ -23,7 +12,6 @@ import { Subject } from "rxjs/Subject";
 import { Person } from "../../../models/index";
 import { Http, Headers, RequestOptions } from "@angular/http";
 const request = require("superagent");
->>>>>>> remotes/origin/patient-fund-wallet
 
 @Injectable()
 export class PersonService {
