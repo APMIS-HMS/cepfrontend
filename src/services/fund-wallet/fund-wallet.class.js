@@ -32,11 +32,8 @@ class FundWalletService {
         const peopleService = this.app.service('people');
         const paymentService = this.app.service('payments');
 
-        // console.log(params);
-        // return new Promise(function(resolve, reject) {
         const accessToken = params.accessToken; /* Not required */
         if (accessToken !== undefined) {
-            console.log(data);
             const ref = data.ref; /* Not required. This is for e-payment */
             const payment = data.payment;
             const paymentType = payment.type; /* Required. This is either "Cash*, "Cheque", "e-Payment" */
@@ -87,9 +84,9 @@ class FundWalletService {
                             };
                             person.wallet = transaction(userWallet, cParam);
 
-                            const personUpdate = await peopleService.update(person._id, person, {});
+                            const personUpdate = await peopleService.update(person._id, person, { query: { facilityId: params.query.facilityId } });
 
-                            return personUpdate;
+                            return jsend.success(personUpdate);
                         } else if (entity !== undefined && entity.toLowerCase() === 'facility') {
                             const facility = await facilityService.get(facilityId);
                             const userWallet = facility.wallet;
@@ -114,29 +111,14 @@ class FundWalletService {
                         return new Error('There was an error while verifying this payment');
                     }
                 } else if (paymentRoute !== undefined && paymentRoute.toLowerCase() === 'paystack') {
-                    console.log(paymentPayload);
                     const paymentRes = await paymentService.create(paymentPayload);
-                    console.log('aadkd');
                     if (paymentRes !== undefined) {
-                        console.log('am here now');
-                        console.log(data.ref.trxref);
                         let url = process.env.PAYSTACK_VERIFICATION_URL + data.ref.trxref;
-                        // var client = new Client();
-                        // var args = {
-                        //     headers: {
-                        //         Authorization: 'Bearer' + process.env.PAYSTACK_SECRET_KEY
-                        //     }
-                        // };
-                        console.log('grade 1');
                         let data2 = await this.verifyPayStackPayment(url);
-                        console.log('am now');
-                        console.log(data2);
                         let payload = JSON.parse(data2);
                         if (payload.status && payload.data.status === 'success') {
-                            console.log(2);
                             paymentRes.isActive = true;
                             paymentRes.paymentResponse = data2;
-                            // Update payment record.
                             let updatedPayment = await paymentService.update(paymentRes._id, paymentRes);
 
                             if (updatedPayment !== undefined) {
@@ -156,12 +138,17 @@ class FundWalletService {
                                         transactionStatus: 'Completed',
                                     };
                                     person.wallet = transaction(userWallet, cParam);
+                                    try {
+                                        const personUpdate = await peopleService.update(person._id, person, { query: { facilityId: params.query.facilityId } });
 
-                                    const personUpdate = await peopleService.update(person._id, person, {});
+                                        return jsend.success(personUpdate);
+                                    } catch (error) {
+                                        return jsend.error('There was a problem trying to create prescription');
+                                    }
 
-                                    return personUpdate;
+
+
                                 } else if (entity !== undefined && entity.toLowerCase() === 'facility') {
-                                    console.log(3)
                                     const facility = await facilityService.get(facilityId);
                                     const userWallet = facility.wallet;
                                     const cParam = {
@@ -177,25 +164,13 @@ class FundWalletService {
                                         transactionStatus: 'Completed',
                                     };
                                     facility.wallet = transaction(userWallet, cParam);
-                                    console.log(4)
                                     const facilityUpdate = await facilityService.update(facility._id, facility);
-                                    console.log(5)
                                     return jsend.success(facilityUpdate);
                                 }
+                            
                             }
 
-
-
-
-
-
-
-
-
-
-                        } else {
-                            console.log('false');
-                        }
+                        } else {}
                     }
                 } else {
                     return false;
