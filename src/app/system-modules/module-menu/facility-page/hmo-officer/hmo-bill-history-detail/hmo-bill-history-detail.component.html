@@ -8,36 +8,65 @@
   <div class="modal-baseWrap">
     <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5">
       <thead>
-        <tr>
-          <th>
-            <span style="padding-left: 3px;">Service</span>
-          </th>
-          <th>
-            <span style="padding-left: 3px;">Amount</span>
-          </th>
-          <th>
-            <span style="padding-left: 3px;">Type</span>
-          </th>
-          <th>Status</th>
-        </tr>
+          <tr>
+              <th>
+                  <span style="padding-left: 3px;">Patient</span>
+              </th>
+              <th>
+                  <span style="padding-left: 3px;">Service</span>
+              </th>
+              <th>
+                  <span style="padding-left: 3px;">Amount</span>
+              </th>
+              <th>
+                  <span style="padding-left: 3px;">Type</span>
+              </th>
+              <th>Status</th>
+          </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let bill of filterBills">
-          <td>{{bill.serviceObject?.name}}</td>
-          <td class="td-worspace">&#8358; {{bill.totalPrice|number:'1.2-2'}}</td>
-          <td>
-            <div *ngIf="bill.covered.authorizationCode !== undefined">
-              Fee for service
-            </div>
-            <div *ngIf="bill.covered.authorizationCode === undefined">
-              Capitalization
-            </div>
-          </td>
-          <td>
-            <span class="green-txt" *ngIf="bill.covered.billAccepted">Approved</span>
-            <span class="red-txt" *ngIf="!bill.covered.billAccepted">Declined</span>
-          </td>
-        </tr>
+          <tr>
+              <td>
+                <div class="empWrap">
+                    <div class="list-img">
+                        <img src="assets/images/users/default.png">
+                    </div>
+                    <div>Sam Rolins</div>
+                </div>
+              </td>
+              <td>Patient Registration</td>
+              <td class="td-worspace">&#8358; 12,200</td>
+              <td>Capitation</td> 
+              <td><span class="green-txt">Approved</span></td>
+          </tr>
+          <tr>
+                <td>
+                    <div class="empWrap">
+                        <div class="list-img">
+                            <img src="assets/images/users/default.png">
+                        </div>
+                        <div>Sam Rolins</div>
+                    </div>
+                </td>
+              <td>Patient Registration</td>
+              <td class="td-worspace">&#8358; 12,200</td>
+              <td>Fee for service</td> 
+              <td><span class="red-txt">Declined</span></td>
+          </tr>
+          <tr>
+                <td>
+                    <div class="empWrap">
+                        <div class="list-img">
+                            <img src="assets/images/users/default.png">
+                        </div>
+                        <div>Sam Rolins</div>
+                    </div>
+                </td>
+              <td>Patient Registration</td>
+              <td class="td-worspace">&#8358; 12,200</td>
+              <td>Capitation</td> 
+              <td><span class="green-txt">Approved</span></td>
+          </tr>
       </tbody>
       <tfoot>
         <tr *ngIf="filterBills.length === 0">
