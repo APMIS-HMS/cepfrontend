@@ -186,13 +186,6 @@ class FundWalletService {
 
 
 
-
-
-
-
-
-
-
                         } else {
                             console.log('false');
                         }
