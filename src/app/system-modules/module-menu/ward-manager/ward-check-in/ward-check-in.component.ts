@@ -25,10 +25,10 @@ export class WardCheckInComponent implements OnInit {
 	wards: any[] = [];
   locations: any[] = [];
   switchBtnText: String = 'Switch To Room';
-  addCheckin: boolean = true;
-  addingCheckin: boolean = false;
-  disableSwitch: boolean = false;
-  disableCheckIn: boolean = false;
+  addCheckin = true;
+  addingCheckin = false;
+  disableSwitch = false;
+  disableCheckIn = false;
 
 	constructor(
 		public formBuilder: FormBuilder,
@@ -39,7 +39,7 @@ export class WardCheckInComponent implements OnInit {
     private _wardEventEmitter: WardEmitterService,
     private _locationService: LocationService,
     public locker: CoolLocalStorage,
-    private _router:Router,
+    private _router: Router,
     private _systemModuleService: SystemModuleService
 	) {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
