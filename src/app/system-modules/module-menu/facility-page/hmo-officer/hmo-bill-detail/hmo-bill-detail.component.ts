@@ -15,6 +15,7 @@ export class HmoBillDetailComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() selectedBill;
 
+  workspace:any;
   authCode_show = false;
   hmoPaymentType = [];
   hmoTypeControl: FormControl = new FormControl();
