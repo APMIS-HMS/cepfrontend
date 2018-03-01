@@ -167,24 +167,10 @@ class FundWalletService {
                                     const facilityUpdate = await facilityService.update(facility._id, facility);
                                     return jsend.success(facilityUpdate);
                                 }
+                            
                             }
 
-
-
-<<<<<<< HEAD
-                        } else {
-                            console.log('false');
-                        }
-=======
-
-
-
-
-
-
-
                         } else {}
->>>>>>> bf8edac23b0b797ed60ce671d8bf3d853bb7c0c8
                     }
                 } else {
                     return false;
