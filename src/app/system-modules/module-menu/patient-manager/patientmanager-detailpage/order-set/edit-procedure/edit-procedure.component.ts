@@ -15,8 +15,8 @@ export class EditProcedureComponent implements OnInit {
   addProcedureForm: FormGroup;
   facility: Facility = <Facility>{};
   selectedProcedure: any = <any>{};
-  cuDropdownLoading: boolean = false;
-  showCuDropdown: boolean = false;
+  cuDropdownLoading = false;
+  showCuDropdown = false;
   results: any = [];
   procedures: any = <any>[];
   newTemplate = true;
@@ -37,8 +37,9 @@ export class EditProcedureComponent implements OnInit {
     this.addProcedureForm.controls['procedure'].valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
-      .switchMap(value => this._facilityServiceCategoryService.searchProcedure({'text': value, facilityId: this.facility._id }))
+      .switchMap(value => this._facilityServiceCategoryService.searchProcedure({ query: { 'text': value, facilityId: this.facility._id } }))
       .subscribe((res: any) => {
+        console.log(res);
         this.cuDropdownLoading = false;
         if (res.status === 'success') {
           this.results = res.data;

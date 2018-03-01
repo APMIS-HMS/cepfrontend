@@ -45,7 +45,7 @@
                     </div>
 
                     <div class="btn-group">
-                        <button mat-raised-button [disabled]="!storeCheckin.valid || disableBtn" (click)="checkIn(storeCheckin.valid, storeCheckin.value);" style="color: #fff; margin-right: 5px;" [innerHtml]="checkInBtnText">
+                        <button mat-raised-button [disabled]="!storeCheckin.valid || disableBtn" (click)="checkIn(storeCheckin.valid, storeCheckin.value);" style="color: #fff; margin-right: 5px;">
                           <span *ngIf="checkInBtn"><i class="fa fa-check-circle"></i> Check In</span>
                           <span *ngIf="checkingInBtn"><i class="fa fa-spinner fa-spin"></i> Checking in...</span>
                         </button>

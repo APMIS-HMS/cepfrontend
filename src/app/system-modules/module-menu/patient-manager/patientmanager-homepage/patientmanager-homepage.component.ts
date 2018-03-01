@@ -3,7 +3,8 @@ import { EMAIL_REGEX } from 'app/shared-module/helpers/global-config';
 import { NUMERIC_REGEX, ALPHABET_REGEX } from './../../../../shared-module/helpers/global-config';
 import { CountryServiceFacadeService } from './../../../service-facade/country-service-facade.service';
 import { TitleGenderFacadeService } from 'app/system-modules/service-facade/title-gender-facade.service';
-import { Component, OnInit, EventEmitter, ElementRef, ViewChild, Output, OnChanges, Input, SimpleChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, EventEmitter,
+  ElementRef, ViewChild, Output, OnChanges, Input, SimpleChanges, SimpleChange } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import {
   PatientService, PersonService, FacilitiesService, FacilitiesServiceCategoryService,

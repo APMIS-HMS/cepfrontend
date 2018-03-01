@@ -114,7 +114,7 @@ export class LabRequestsComponent implements OnInit {
             query: {
               'facilityId': this.selectedFacility._id,
               name: { $regex: -1, '$options': 'i' }
-            } 
+            }
           }).then(payload => {
             this.investigations = [];
             payload.data.forEach(item => {
@@ -281,7 +281,8 @@ export class LabRequestsComponent implements OnInit {
           this.selectedPatient = this.patientId;
           console.log(this.selectedPatient);
           this.frmNewRequest.controls['labNo'].setValue('N/A');
-          this.frmNewRequest.controls['patient'].setValue(this.selectedPatient.personDetails.firstName + ' ' + this.selectedPatient.personDetails.lastName);
+          this.frmNewRequest.controls['patient'].setValue
+          (this.selectedPatient.personDetails.firstName + ' ' + this.selectedPatient.personDetails.lastName);
 
         }
       }
@@ -560,9 +561,9 @@ export class LabRequestsComponent implements OnInit {
   locationChanged($event, investigation: InvestigationModel, location, LaboratoryWorkbenches) {
     const ids: any[] = [];
     console.log($event.value);
-    if($event.value){
+    if ($event.value) {
       this.investigationRadio = true;
-    }else{
+    }else {
       this.investigationRadio = false;
     }
     if (investigation.investigation.isPanel) {
@@ -742,7 +743,8 @@ export class LabRequestsComponent implements OnInit {
         this.investigations = [];
         this.apmisLookupText = '';
         this.selectedPatient = undefined;
-        this._systemModuleService.announceSweetProxy('Request has been sent successfully!', 'success', null, null, null, null, null, null, null);
+        this._systemModuleService.announceSweetProxy
+        ('Request has been sent successfully!', 'success', null, null, null, null, null, null, null);
       } else {
         this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
       }
@@ -755,7 +757,7 @@ export class LabRequestsComponent implements OnInit {
   /* save(valid, value) {
     console.log(value);
     if (valid) {
-      
+
       // delete this.selectedPatient.appointments;
       // delete this.selectedPatient.encounterRecords;
       // delete this.selectedPatient.orders;
@@ -853,7 +855,8 @@ export class LabRequestsComponent implements OnInit {
           this.investigations = [];
           this.apmisLookupText = '';
           this.selectedPatient = undefined;
-          this._systemModuleService.announceSweetProxy('Request has been sent successfully!', 'success', null, null, null, null, null, null, null);
+          this._systemModuleService.announceSweetProxy('Request has been sent successfully!',
+          'success', null, null, null, null, null, null, null);
         } else {
           this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
         }
