@@ -1,14 +1,14 @@
-<div class="c-page-header">
-</div>
-<section class="c-page-body">
+<!--<div class="c-page-header">
+</div>-->
+<section class="c-page-">
     <mat-tab-group>
         <mat-tab label="New Admission">
             <div class="card">
                 <div class="card-header">
-                    <div class="table-head col-md-2">
+                    <div class="table-head col-md-1">
                         S/N
                     </div>
-                    <div class="table-head col-md-2">
+                    <div class="table-head col-md-3">
                         Patient
                     </div>
                     <div class="table-head col-md-2">
@@ -42,27 +42,31 @@
                     </div>
                     <div class="card-list-item" *ngFor="let inPatientWaitingItem of listPatientAdmissionWaiting; let i = index;">
                         <div class="row">
-                            <div class="table-list col-lg-2">{{i+1}}</div>
-                            <div class="table-list col-lg-2">
-                                <div class="list-img">
-                                    <div *ngIf="inPatientWaitingItem?.personDetails?.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
-                                    <div *ngIf="inPatientWaitingItem?.personDetails?.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem?.personDetails.profileImageObject?.thumbnail)"></div>
-                                </div>
-                                <div>
-                                    <b>{{inPatientWaitingItem?.personDetails?.firstName}} {{inPatientWaitingItem?.personDetails?.lastName}}</b><br>
-                                    <small>{{inPatientWaitingItem?.personDetails?.gender}}, </small>
-                                    <small>{{inPatientWaitingItem?.personDetails?.age}} old, </small>
-                                    <small>{{inPatientWaitingItem?.personDetails?.phoneNumber}}</small>
+                            <div class="table-list col-lg-1">{{i+1}}</div>
+                            <div class="table-list col-lg-3">
+                                <div class="empWrapp">
+                                    <div class="list-img">
+                                        <div *ngIf="inPatientWaitingItem?.personDetails?.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                        <div *ngIf="inPatientWaitingItem?.personDetails?.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem?.personDetails.profileImageObject?.thumbnail)"></div>
+                                    </div>
+                                    <div>
+                                        <b>{{inPatientWaitingItem?.personDetails?.firstName}} {{inPatientWaitingItem?.personDetails?.lastName}}</b><br>
+                                        <small>{{inPatientWaitingItem?.personDetails?.gender}}, </small>
+                                        <small>{{inPatientWaitingItem?.personDetails?.age}} old, </small>
+                                        <small>{{inPatientWaitingItem?.personDetails?.phoneNumber}}</small>
+                                    </div>
                                 </div>
                             </div>
                             <div class="table-list col-lg-2" (click)="navEpDetail(item)">
-                                <div class="list-img">
-                                    <div *ngIf="inPatientWaitingItem?.employeeDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
-                                    <div *ngIf="inPatientWaitingItem?.employeeDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem?.employeeDetails.profileImageObject?.thumbnail)"></div>
-                                </div>
-                                <div>
-                                    <b>{{inPatientWaitingItem?.employeeDetails?.firstName}} {{inPatientWaitingItem?.employeeDetails?.lastName}}</b><br>
-                                    <small>{{inPatientWaitingItem?.employeeDetails?.phoneNumber}}</small>
+                                <div class="empWrapp">
+                                    <div class="list-img">
+                                        <div *ngIf="inPatientWaitingItem?.employeeDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                        <div *ngIf="inPatientWaitingItem?.employeeDetails.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem?.employeeDetails.profileImageObject?.thumbnail)"></div>
+                                    </div>
+                                    <div>
+                                        <b>{{inPatientWaitingItem?.employeeDetails?.firstName}} {{inPatientWaitingItem?.employeeDetails?.lastName}}</b><br>
+                                        <small>{{inPatientWaitingItem?.employeeDetails?.phoneNumber}}</small>
+                                    </div>
                                 </div>
                             </div>
                             <div class="table-list col-lg-2">{{inPatientWaitingItem?.clinicId?.clinicName}}</div>
