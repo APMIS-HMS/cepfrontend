@@ -67,12 +67,6 @@ class Service {
     }
 
     async create(data, params) {
-        console.log('----------- data ---------');
-        console.log(data);
-        console.log('----------- End data ---------');
-        console.log('----------- params ---------');
-        console.log(params);
-        console.log('----------- End params ---------');
         const requestService = this.app.service('laboratory-requests');
         const billingService = this.app.service('billings');
         const accessToken = params.accessToken;

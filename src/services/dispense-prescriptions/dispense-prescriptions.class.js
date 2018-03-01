@@ -11,9 +11,6 @@ class Service {
     }
 
     async find(params) {
-        console.log('*********params*********');
-        console.log(params);
-        console.log('*********End params*********');
         const inventoryService = this.app.service('inventories');
         const productService = this.app.service('products');
         const storeService = this.app.service('stores');
@@ -29,9 +26,6 @@ class Service {
                 if (ingredients !== undefined && ingredients.length > 0) {
                     // Get all the products for the facility.
                     let products = await productService.find({ query: { facilityId: facilityId } });
-                    console.log('*********products*********');
-                    console.log(products);
-                    console.log('*********End products*********');
                     if (products.data.length > 0) {
                         products = products.data;
                         // Check if the ingredient that was sent is contained in any product details.
@@ -41,28 +35,14 @@ class Service {
                         while (i--) {
                             let product = products[i];
                             if (product.productDetail.ingredients !== undefined && product.productDetail.ingredients.length > 0) {
-                                console.log('*********product*********');
-                                console.log(product);
-                                console.log('*********End product*********');
                                 for (let j = 0; j < ingredients.length; j++) {
                                     let ingredient = ingredients[j];
-                                    console.log('*********ingredient*********');
-                                    console.log(ingredient);
-                                    console.log('*********End ingredient*********');
                                     const compare = this.compareIngredient(product.productDetail.ingredients, ingredient);
-                                    console.log('*********compare*********');
-                                    console.log(compare);
-                                    console.log('*********End compare*********');
 
                                     if (compare) {
                                         // Found product that matches the sent ingredient. Then send the product to the client.
                                         const inventories = await inventoryService.find({ query: { facilityId: facilityId, productId: product._id } });
-                                        console.log('*********inventories*********');
-                                        console.log(inventories);
-                                        console.log('*********End inventories*********');
-                                        console.log('*********product Name*********');
-                                        console.log(product.name);
-                                        console.log('*********End product Name*********');
+
                                         if (inventories.data.length > 0) {
                                             let inventory = inventories.data[0];
                                             let resultItem = {};
@@ -85,9 +65,6 @@ class Service {
                                                 item.storeId = inventoryItem.storeId;
                                                 item.quantity = inventoryItem.totalQuantity;
                                                 resultItem.availability.push(item);
-                                                console.log('*********inventoryItem*********');
-                                                console.log(inventoryItem);
-                                                console.log('*********End inventoryItem*********');
                                                 let prices = await facilityPriceService.find({
                                                     query: {
                                                         facilityId: facilityId,
@@ -96,9 +73,6 @@ class Service {
                                                         categoryId: inventoryItem.categoryId
                                                     }
                                                 });
-                                                console.log('*********prices*********');
-                                                console.log(prices);
-                                                console.log('*********End prices*********');
                                                 if (prices.data.length > 0) {
                                                     let price = prices.data[0];
                                                     resultItem.price = price.price;
@@ -123,9 +97,6 @@ class Service {
             } else if (action === 'productSearch') {
                 let inventories = await inventoryService.find({ query: { facilityId: facilityId, storeId: storeId } });
                 const results = [];
-                console.log('*********inventories*********');
-                console.log(inventories);
-                console.log('*********End inventories*********');
                 if (inventories.data.length > 0) {
                     inventories = inventories.data;
                     let i = inventories.length;
@@ -135,14 +106,8 @@ class Service {
                         let product = await productService.get(productId);
                         if (product.name.toLowerCase().includes(text.toLowerCase())) {
                             const storeId = inventory.storeId;
-                            console.log('*********product*********');
-                            console.log(product);
-                            console.log('*********End product*********');
                             inventory.product = product.name;
                             let store = await storeService.get(storeId);
-                            console.log('*********store*********');
-                            console.log(store);
-                            console.log('*********End store*********');
                             inventory.store = store.name;
                             let prices = await facilityPriceService.find({
                                 query: {
@@ -152,9 +117,6 @@ class Service {
                                     categoryId: inventory.categoryId
                                 }
                             });
-                            console.log('*********prices*********');
-                            console.log(prices);
-                            console.log('*********End prices*********');
                             if (prices.data.length > 0) {
                                 let price = prices.data[0];
                                 inventory.price = price.price;
@@ -210,12 +172,6 @@ class Service {
 
         while (i--) {
             const item = pIngredients[i];
-            console.log('*********item*********');
-            console.log(item);
-            console.log('*********End item*********');
-            console.log('*********ingredient*********');
-            console.log(ingred);
-            console.log('*********End ingredient*********');
             if ((item.strengthUnit === ingred.strengthUnit) && (item.strength === ingred.strength) && (item.name === ingred.name)) {
                 return true;
             }
