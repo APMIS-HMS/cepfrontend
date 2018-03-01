@@ -14,7 +14,7 @@ export interface WalletTransaction {
   destinationType?: EntityType;
   transactionStatus?: string;
   transactionDirection?: TransactionDirection;
-  amount?:any;
+  amount?: any;
 }
 export enum TransactionType {
     Dr,
@@ -35,7 +35,7 @@ export const PaymentPlan = {
     'insurance': 'insurance',
     'company': 'company',
     'family': 'family',
-    'waved':'waved'
+    'waved': 'waved'
 };
 
 export enum EntityType {
