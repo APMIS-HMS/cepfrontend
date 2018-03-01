@@ -17,6 +17,8 @@ class Service {
         const accessToken = params.accessToken;
         const facilityId = params.query.facilityId;
         const searchText = params.query.searchText;
+        const patientTable = (params.query.patientTable === true) ? params.query.patientTable : false;
+        let patientz = [];
 
         if (accessToken !== undefined) {
             const hasFacility = params.user.facilitiesRole.filter(x => x.facilityId.toString() === facilityId);
@@ -49,13 +51,22 @@ class Service {
 
                             const patients = await patientService.find({ query: { facilityId: facilityId, personId: person._id } });
                             if (patients.data.length > 0) {
-                                person.patientId = patients.data[0]._id;
+                                if(patientTable !== true){
+                                    person.patientId = patients.data[0]._id;
+                                }else{
+                                    patients.data[0].personDetails = person;
+                                    patientz.push(patients.data[0]);
+                                }
                             }
                             counter++;
                         }
 
                         if (pLength === counter) {
-                            return jsend.success(people);
+                            if(patientTable !== true){
+                                return jsend.success(people);
+                            }else{
+                                return jsend.success(patientz);
+                            }  
                         }
                     } else {
                         return jsend.success([]);

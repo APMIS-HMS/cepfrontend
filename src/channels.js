@@ -22,7 +22,7 @@ module.exports = function(app) {
             // Add it to the authenticated user channel
             app.channel('authenticated').join(connection);
 
-            // Channels can be named anything and joined on any condition 
+            // Channels can be named anything and joined on any condition
 
             // E.g. to send real-time events only to admins use
             // if(user.isAdmin) { app.channel('admins').join(connection); }
@@ -64,6 +64,12 @@ module.exports = function(app) {
     app.service('patients').publish('created', (data) => {
         return app.channel(data.facilityId);
     });
+    app.service('patients').publish('patched', (data) => {
+        return app.channel(data.facilityId);
+    });
+    app.service('patients').publish('updated', (data) => {
+        return app.channel(data.facilityId);
+    });
     app.service('employees').publish('created', (data) => {
         return app.channel(data.facilityId);
     });
@@ -75,5 +81,8 @@ module.exports = function(app) {
     });
     app.service('facility-roles').publish('created', (data, context) => {
         return app.channel(context.params.query.facilityId);
+    });
+    app.service('appointments').publish('updated', (data) => {
+        return app.channel(data.facilityId);
     });
 };
