@@ -24,11 +24,11 @@ export class WardCheckInComponent implements OnInit {
 	wardCheckin: FormGroup;
 	wards: any[] = [];
   locations: any[] = [];
-  switchBtnText: String = 'Switch To Room';
-  addCheckin: boolean = true;
-  addingCheckin: boolean = false;
-  disableSwitch: boolean = false;
-  disableCheckIn: boolean = false;
+  switchBtnText = 'Switch To Room';
+  addCheckin = true;
+  addingCheckin = false;
+  disableSwitch = false;
+  disableCheckIn = false;
 
 	constructor(
 		public formBuilder: FormBuilder,
@@ -39,7 +39,7 @@ export class WardCheckInComponent implements OnInit {
     private _wardEventEmitter: WardEmitterService,
     private _locationService: LocationService,
     public locker: CoolLocalStorage,
-    private _router:Router,
+    private _router: Router,
     private _systemModuleService: SystemModuleService
 	) {
     this.facility = <Facility>this.locker.getObject('selectedFacility');
@@ -171,10 +171,10 @@ export class WardCheckInComponent implements OnInit {
         'minorLocations.locationId': locationId,
       }
     }).then(res => {
-       //*Starday Check if no ward location has been set
-       if(res.data.length > 0){
+       // *Starday Check if no ward location has been set
+       if (res.data.length > 0) {
         this.wards = res.data[0].minorLocations.filter(x => x.locationId === locationId);
-      }else{
+      }else {
         const text = 'No ward location has been created! Please create one!!';
         this._systemModuleService.announceSweetProxy(text, 'info', null, null, null, null, null, null, null);
         this._router.navigate(['/dashboard/facility']);

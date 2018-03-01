@@ -1,4 +1,4 @@
-import { DocumentationTemplateService } from "./../../../../services/facility-manager/setup/documentation-template.service";
+import { DocumentationTemplateService } from './../../../../services/facility-manager/setup/documentation-template.service';
 import {
   Component,
   OnInit,
@@ -7,31 +7,31 @@ import {
   Renderer,
   ElementRef,
   ViewChild
-} from "@angular/core";
+} from '@angular/core';
 import {
   FormGroup,
   FormBuilder,
   FormControl,
   Validators
-} from "@angular/forms";
+} from '@angular/forms';
 import {
   ScopeLevelService,
   FormTypeService
-} from "app/services/module-manager/setup";
-import { OrderSetSharedService } from "../../../../services/facility-manager/order-set-shared-service";
-import { Observable } from "rxjs/Observable";
+} from 'app/services/module-manager/setup';
+import { OrderSetSharedService } from '../../../../services/facility-manager/order-set-shared-service';
+import { Observable } from 'rxjs/Observable';
 import {
   FormsService,
   FacilitiesService,
   OrderSetTemplateService
-} from "app/services/facility-manager/setup";
-import { OrderSetTemplate } from "../../../../models/index";
-import { Facility, User } from "app/models";
-import { CoolLocalStorage } from "angular2-cool-storage";
-import { SharedService } from "app/shared-module/shared.service";
-import { AuthFacadeService } from "../../../service-facade/auth-facade.service";
-import { SystemModuleService } from "../../../../services/module-manager/setup/system-module.service";
-import { VISIBILITY_GLOBAL } from "../../../../shared-module/helpers/global-config";
+} from 'app/services/facility-manager/setup';
+import { OrderSetTemplate } from '../../../../models/index';
+import { Facility, User } from 'app/models';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { SharedService } from 'app/shared-module/shared.service';
+import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
+import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
+import { VISIBILITY_GLOBAL } from '../../../../shared-module/helpers/global-config';
 
 @Component({
   selector: 'app-treatement-template',
