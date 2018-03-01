@@ -1,6 +1,6 @@
 <div class="pp-card shadow-grey">
 
-    <div class="card-title" style="background:#eee;padding:5px 0;">HMO List</div>
+    <div class="card-title" style="background:#eee;padding:5px 0;">Company Cover List</div>
 
     <ul class="pg-menuWrap">
         <li (click)="tab1_click()" [class.pg-menuActive]="tab1">
@@ -21,7 +21,7 @@
                         <span style="padding-left: 3px;">Principal</span>
                     </th>
                     <th>
-                        <span style="padding-left: 3px;">HMO</span>
+                      <span style="padding-left:3px;">Company</span>
                     </th>
                     <th>
                         <span style="padding-left: 3px;">Amount</span>
@@ -30,17 +30,14 @@
             </thead>
 
             <tbody>
-                <tr (click)="billDetail(bill)" *ngFor="let bill of bills">
-                    <td>{{bill.updatedAt|date:'medium'}}</td>
+                <tr (click)="billDetail()">
+                    <td>11th October 2017</td>
                     <td>
                         <div class="empWrap">
-                            <div class="list-img" *ngIf="bill.principalObject.personDetails.profileImageObject === undefined">
+                            <div class="list-img">
                                 <img src="assets/images/users/default.png">
                             </div>
-                            <div class="list-img" *ngIf="bill.principalObject.personDetails.profileImageObject !== undefined">
-                                <img [src]="facilitiesService.transform(bill.principalObject.personDetails.profileImageObject?.thumbnail)">
-                            </div>
-                            <div>{{bill.principalObject.personDetails.firstName}} {{bill.principalObject.personDetails.lastName}}</div>
+                            <div>Jonathan Nelson</div>
                         </div>
                     </td>
                     <td>
@@ -48,10 +45,10 @@
                             <div class="list-img">
                                 <img src="assets/images/logos/default.png">
                             </div>
-                            <div>Asa Mansard</div>
+                            <div>Divina Welch Incorprated</div>
                         </div>
                     </td>
-                    <td class="td-worspace">&#8358; {{bill.grandTotal|number:'1.2-2'}}</td>
+                    <td class="td-worspace">&#8358; 12,200</td>
                 </tr>
             </tbody>
         </table>
@@ -69,7 +66,7 @@
                         <span style="padding-left: 3px;">Principal</span>
                     </th>
                     <th>
-                        <span style="padding-left: 3px;">HMO</span>
+                      <span style="padding-left: 3px;">Company</span>
                     </th>
                     <th>
                         <span style="padding-left: 3px;">Amount</span>
@@ -78,14 +75,14 @@
             </thead>
 
             <tbody>
-                <tr (click)="billHistoryDetail(bill)" *ngFor="let bill of historyBills">
-                    <td>{{bill.updatedAt|date:'medium'}}</td>
+                <tr (click)="billHistoryDetail()">
+                    <td>11th October 2017</td>
                     <td>
                         <div class="empWrap">
                             <div class="list-img">
                                 <img src="assets/images/users/default.png">
                             </div>
-                            <div>{{bill.principalObject.personDetails.firstName}} {{bill.principalObject.personDetails.lastName}}</div>
+                            <div>Jonathan Nelson</div>
                         </div>
                     </td>
                     <td>
@@ -93,10 +90,10 @@
                             <div class="list-img">
                                 <img src="assets/images/logos/default.png">
                             </div>
-                            <div>Asa Mansard</div>
+                            <div>Sammy Breez Enterprise</div>
                         </div>
                     </td>
-                    <td class="td-worspace">&#8358; {{bill.grandTotal|number:'1.2-2'}}</td>
+                    <td class="td-worspace">&#8358; 12,200</td>
                 </tr>
             </tbody>
         </table>
@@ -104,8 +101,8 @@
 </div>
 
 <div *ngIf="billDetail_show" class="modal-overlay">
-  <app-hmo-bill-detail (closeModal)="close_onClick($event)" [selectedBill]="selectedBill" id="form-modal" class="form-modal center-center"></app-hmo-bill-detail>
+  <app-company-bill-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-company-bill-detail>
 </div>
 <div *ngIf="billHistoryDetail_show" class="modal-overlay">
-    <app-hmo-bill-history-detail (closeModal)="close_onClick($event)" [selectedBill]="selectedBill" id="form-modal" class="form-modal center-center"></app-hmo-bill-history-detail>
+    <app-company-bill-history-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-company-bill-history-detail>
 </div>

@@ -62,7 +62,7 @@ export class HmoBillDetailComponent implements OnInit {
         this.hmoConfirmBill(false);
       }
     }
-  }
+  } 
 
   hmoConfirmBill(isAccept: boolean) {
     console.log(isAccept);
@@ -103,5 +103,9 @@ export class HmoBillDetailComponent implements OnInit {
     this.bill.acceptFunction = false;
     this.systemModuleService.announceSweetProxy('You are about to DECLINE this bill', 'question', this)
   }
+
+  newWorkspace_onClick() {}
+
+  deletion_popup() {}
 
 }

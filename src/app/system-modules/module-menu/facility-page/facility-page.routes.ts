@@ -1,3 +1,7 @@
+import { FacilityHealthCoverComponent } from './facility-health-cover/facility-health-cover.component';
+import { FacilityCompanyCoverComponent } from './facility-health-cover/facility-company-cover/facility-company-cover.component';
+import { FacilityFamilyCoverComponent } from './facility-health-cover/facility-family-cover/facility-family-cover.component';
+import { HmoOfficerComponent } from './hmo-officer/hmo-officer.component';
 import { CanActivateViaAuthGuardCompleteFacilityService } from './../../../services/facility-manager/setup/can-activate-via-auth-guard-complete-facility.service';
 import { GenerateUserComponent } from "./employees/employeemanager-detailpage/generate-user/generate-user.component";
 import { EmpmanagerDetailpageComponent } from "./employees/employeemanager-detailpage/empmanager-detailpage.component";
@@ -21,7 +25,6 @@ import {
 import { FacilitypageHomepageComponent } from "./facilitypage-homepage/facilitypage-homepage.component";
 import { EmpManagerComponent } from "./employees/emp-manager.component";
 import { EditUserComponent } from "./employees/employeemanager-detailpage/edit-user/edit-user.component";
-import { HmoOfficerComponent } from './hmo-officer/hmo-officer.component';
 
 const FACLITYPAGE_ROUTES: Routes = [
   {
@@ -81,7 +84,16 @@ const FACLITYPAGE_ROUTES: Routes = [
         canActivate: [CanActivateViaAuthGuardCompleteFacilityService]
       },
       { path: "options", component: FacilityOptionsComponent },
-      { path: "hmo-officer", component: HmoOfficerComponent },
+      {
+        path: 'health-coverage', component:FacilityHealthCoverComponent,
+        children:[
+          { path: "", redirectTo: 'hmo', pathMatch: 'full' },
+          { path: "hmo", component: HmoOfficerComponent },
+          { path: "family-cover", component: FacilityFamilyCoverComponent },
+          { path: "company-cover", component: FacilityCompanyCoverComponent }
+        ]
+        // loadChildren: './facility-health-cover/facility-health-cover.module#FacilityHealthCoverModule'
+      },
       { path: "profession", component: ProfessionComponent },
       {
         path: "modules",

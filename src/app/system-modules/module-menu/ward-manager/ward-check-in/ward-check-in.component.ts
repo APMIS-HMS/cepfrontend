@@ -24,7 +24,11 @@ export class WardCheckInComponent implements OnInit {
 	wardCheckin: FormGroup;
 	wards: any[] = [];
   locations: any[] = [];
+<<<<<<< HEAD
   switchBtnText = 'Switch To Room';
+=======
+  switchBtnText: String = 'Switch To Room';
+>>>>>>> remotes/origin/responsiveness
   addCheckin = true;
   addingCheckin = false;
   disableSwitch = false;
