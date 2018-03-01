@@ -18,8 +18,8 @@ export class PrescriptionListComponent implements OnInit {
 	prescriptionLists: any[] = [];
 	noPrescriptionLists: any[] = [];
 	tempPrescriptionLists: any[] = [];
-	loading: Boolean = true;
-	noPresLoading: Boolean = true;
+	loading = true;
+	noPresLoading = true;
 	currentDate: Date = new Date();
 	psearchOpen = false;
 	wsearchOpen = false;

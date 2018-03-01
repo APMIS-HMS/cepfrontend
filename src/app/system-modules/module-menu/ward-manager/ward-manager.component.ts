@@ -18,9 +18,9 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 	pageInView: string;
 	loginEmployee: Employee = <Employee>{};
 	selectedFacility: Facility = <Facility>{};
-	wardTitle: String = '';
-	isWardAvailable: Boolean = false;
-	modal_on: Boolean = false;
+	wardTitle = '';
+	isWardAvailable = false;
+	modal_on = false;
 	admissionNavMenu = false;
 	admittedNavMenu = false;
 	wardNavMenu = false;
@@ -38,7 +38,7 @@ export class WardManagerComponent implements OnInit, OnDestroy {
     private _facilityService: FacilitiesService,
     private _employeeService: EmployeeService,
     private _authFacadeService: AuthFacadeService,
-    private _systemModuleService:SystemModuleService
+    private _systemModuleService: SystemModuleService
 	) {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       if (!!res._id) {
@@ -166,10 +166,10 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	// getCheckedInWard(value: any) {
-	// 	const checkedInObject = { typeObject: value, type: 'ward' };
-	// 	this.checkedInObject = checkedInObject;
-	// }
+	getCheckedInWard(value: any) {
+		// const checkedInObject = { typeObject: value, type: 'ward' };
+		// this.checkedInObject = checkedInObject;
+	}
 
 	close_onClick(message: boolean): void {
 		this.modal_on = false;
