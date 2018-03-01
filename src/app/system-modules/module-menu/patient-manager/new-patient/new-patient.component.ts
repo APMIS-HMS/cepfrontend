@@ -528,6 +528,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     validatingPerson() {
+        console.log(this.validating);
+        console.log(this.duplicate);
         return this.validating || this.duplicate;
     }
     getSecurityQuestions() {
@@ -1334,38 +1336,38 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             ]
         }
         this.patientService.create(patient).then(payl => {
-            const billing: any = {
-                discount: 0,
-                facilityId: this.facility._id,
-                grandTotal: this.planPrice,
-                patientId: payl._id,
-                subTotal: this.planPrice,
-                billItems: [
-                    {
-                        unitPrice: this.planPrice,
-                        facilityId: this.facility._id,
-                        description: '',
-                        facilityServiceId: this.facilityServiceId,
-                        serviceId: this.planId,
-                        patientId: payl._id,
-                        quantity: 1,
-                        totalPrice: this.planPrice,
-                        unitDiscountedAmount: 0,
-                        totalDiscoutedAmount: 0,
-                        modifierId: [],
-                        covered: {
-                            familyId: this.family._id,
-                            coverType: this.coverType
-                        },
-                        isServiceEnjoyed: false,
-                        paymentCompleted: false,
-                        paymentStatus: [],
-                        payments: []
+            const billing: any = [
+                {
+                    unitPrice: this.planPrice,
+                    facilityId: this.facility._id,
+                    description: '',
+                    facilityServiceId: this.facilityServiceId,
+                    serviceId: this.planId,
+                    patientId: payl._id,
+                    quantity: 1,
+                    totalPrice: this.planPrice,
+                    unitDiscountedAmount: 0,
+                    totalDiscoutedAmount: 0,
+                    modifierId: [],
+                    covered: {
+                        familyId: this.family._id,
+                        coverType: this.coverType
+                    },
+                    isServiceEnjoyed: false,
+                    paymentCompleted: false,
+                    paymentStatus: [],
+                    payments: []
 
-                    }
-                ]
-            }
-            this.billingService.create(billing).then(billingPayload => {
+                }
+            ];
+            
+            this.billingService.createBill(billing, {
+                query: {
+                    facilityId: this.facility._id,
+                    patientId: payl._id
+                }
+            }).then(billingPayload => {
+                console.log(billingPayload);
                 this.systemModuleService.off();
                 this.systemModuleService.changeMessage(payl);
                 const text = this.selectedPerson.lastName + ' '
