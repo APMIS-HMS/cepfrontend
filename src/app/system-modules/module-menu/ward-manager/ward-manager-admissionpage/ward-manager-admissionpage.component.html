@@ -487,6 +487,77 @@
                 </table>
         </mat-tab>-->
         <mat-tab label="Discharge">
+            <div class="card">
+                <div class="card-header">
+                    <div class="table-head col-md-1">
+                        S/N
+                    </div>
+                    <div class="table-head col-md-3">
+                        Patient
+                    </div>
+                    <div class="table-head col-md-2">
+                        Ward
+                    </div>
+                    <div class="table-head col-md-2">
+                        Admitted Date
+                    </div>
+                    <div class="table-head col-md-2">
+                        Discharge Date
+                    </div>
+                    <div class="table-head col-md-2">
+                        Discharged By
+                    </div>
+                </div>
+                <div class="card-content">
+                    <div class="card-list-item">
+                        <div *ngIf="listPatientDischarge.length === 0 && !dischargeLoading">
+                            <div class="table-list col-lg-12">
+                                No data available in table
+                            </div>
+                        </div>
+                        <div *ngIf="listPatientDischarge.length === 0 && dischargeLoading">
+                            <div class="table-list col-lg-12">
+                                <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-list-item" *ngFor="let inPatientWaitingItem of listPatientDischarge; let i=index;">
+                        <div class="row">
+                            <div class="table-list col-lg-1">{{i+1}}</div>
+                            <div class="table-list col-lg-3">
+                                <div class="empWrapp">
+                                    <div class="list-img">
+                                        <div *ngIf="inPatientWaitingItem?.personDetails?.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                        <div *ngIf="inPatientWaitingItem?.personDetails?.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem.personDetails.profileImageObject?.thumbnail)"></div>
+                                    </div>
+                                    <div>
+                                        <b>{{ inPatientWaitingItem.personDetails?.firstName}} {{inPatientWaitingItem.personDetails?.lastName }}</b><br>
+                                        <small>{{inPatientWaitingItem.personDetails?.gender}}, </small>
+                                        <small>{{inPatientWaitingItem.personDetails?.age}} old, </small>
+                                        <small>{{inPatientWaitingItem.personDetails?.phoneNumber}}</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-list col-lg-2">{{inPatientWaitingItem.currentWardObj.name}}</div>
+                            <div class="table-list col-lg-2">{{inPatientWaitingItem.transfers[inPatientWaitingItem.transfers.length -1].checkInDate | date:'medium'}}</div>
+                            <div class="table-list col-lg-2">{{inPatientWaitingItem.transfers[inPatientWaitingItem.transfers.length -1].checkOutDate | date:'medium' }} </div>
+                            <div class="table-list col-lg-2">
+                                <div class="empWrapp">
+                                    <div class="list-img">
+                                        <div *ngIf="inPatientWaitingItem?.dischargedByObj?.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                        <div *ngIf="inPatientWaitingItem?.dischargedByObj?.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(inPatientWaitingItem?.dischargedByObj?.profileImageObject?.thumbnail)"></div>
+                                    </div>
+                                    <div>
+                                        <b>{{inPatientWaitingItem?.dischargedByObj?.firstName}} {{inPatientWaitingItem?.dischargedByObj?.lastName}}</b><br>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </mat-tab>
+        <!--<mat-tab label="Discharge">
             <table cellpadding="0" cellspacing="0" border="0.5">
                 <thead>
                     <tr>
@@ -559,7 +630,7 @@
                     </tr>
                 </tbody>
             </table>
-        </mat-tab>
+        </mat-tab>-->
     </mat-tab-group>
 </section>
 <div *ngIf="admitPatient" class="modal-overlay">
