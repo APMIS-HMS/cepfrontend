@@ -147,7 +147,6 @@ export class RightTabComponent implements OnInit {
               })
           }
       });
-      console.log(this.vitals)
   }
     getAllergies() {
         this.allergies = [];

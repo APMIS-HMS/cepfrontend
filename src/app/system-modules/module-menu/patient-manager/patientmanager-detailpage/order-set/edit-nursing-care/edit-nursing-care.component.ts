@@ -3,9 +3,9 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { OrderSetSharedService } from '../../../../../../services/facility-manager/order-set-shared-service';
 
 @Component({
-  selector: "app-edit-nursing-care",
-  templateUrl: "./edit-nursing-care.component.html",
-  styleUrls: ["./edit-nursing-care.component.scss"]
+  selector: 'app-edit-nursing-care',
+  templateUrl: './edit-nursing-care.component.html',
+  styleUrls: ['./edit-nursing-care.component.scss']
 })
 export class EditNursingCareComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();

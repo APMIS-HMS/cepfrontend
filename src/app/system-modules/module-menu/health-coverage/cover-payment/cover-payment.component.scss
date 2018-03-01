@@ -1,3 +1,5 @@
+@import '../../../../../globals/variables.scss';
+
 .doc-mainWrap {
     display: flex;
     -webkit-box-pack: justify;
@@ -5,7 +7,7 @@
     width: 100%;
     min-height: 100vh;
     height: auto;
-    background: #f8f8f8;
+    background: $grey-bg;
     padding: 5px;
     box-sizing: border-box;
 }

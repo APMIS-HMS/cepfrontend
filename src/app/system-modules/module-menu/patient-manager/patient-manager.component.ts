@@ -56,7 +56,6 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
     .debounceTime(200)
     .distinctUntilChanged()
     .subscribe(value => {
-      console.log(value);
       this.patientService.findPatient({
         query: {
           'facilityId': this.selectedFacility._id,
@@ -65,7 +64,6 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
         }
       }).then(payload => {
         this.searchedPatients = payload.data;
-        console.log(this.searchedPatients);
       });
     });
     this.route.params.subscribe(params => {
