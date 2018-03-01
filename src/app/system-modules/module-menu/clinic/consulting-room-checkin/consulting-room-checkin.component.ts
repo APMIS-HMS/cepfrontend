@@ -5,6 +5,7 @@ import { ConsultingRoomService, EmployeeService, FacilitiesService } from '../..
 import { ConsultingRoomModel, Employee, User, Facility } from '../../../../models/index';
 import { ClinicHelperService } from '../services/clinic-helper.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { LocationService } from '../../../../services/module-manager/setup';
 
 @Component({
   selector: 'app-consulting-room-checkin',
@@ -12,9 +13,9 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
   styleUrls: ['./consulting-room-checkin.component.scss']
 })
 export class ConsultingRoomCheckinComponent implements OnInit {
-
+  selectedFacility: Facility = <Facility>{};
   mainErr = true;
-  errMsg = 'you have unresolved errors';
+  errMsg = 'You have unresolved errors';
   loginEmployee: Employee = <Employee>{};
   locations: any[] = [];
   user: User = <User>{};
@@ -24,41 +25,25 @@ export class ConsultingRoomCheckinComponent implements OnInit {
   // @Output() selectedEmployee: Employee = <Employee>{};
   selectedConsultingRoom: ConsultingRoomModel = <ConsultingRoomModel>{};
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(
+    private formBuilder: FormBuilder,
     public clinicHelperService: ClinicHelperService,
     public facilityService: FacilitiesService,
     private consultingRoomService: ConsultingRoomService,
     private employeeService: EmployeeService,
     private authFacadeService: AuthFacadeService,
+    private _locationService: LocationService,
     private locker: CoolLocalStorage
-  ) { }
+  ) {
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this._getLabLocation();
+  }
 
   ngOnInit() {
-    let selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.authFacadeService.getLogingEmployee().then((payload: any) => {
-      this.loginEmployee = payload;
-      this.user = <User>this.locker.getObject('auth');
-      // this.loginEmployee.workSpaces.forEach(work => {
-      //   work.locations.forEach(loc => {
-      //     this.locations.push(loc.minorLocationId);
-      //   })
-      // })
-      let minorLocations = selectedFacility.minorLocations;
-      let locations = this.loginEmployee.workSpaces.map(m => m.locations);
-      let locationIds = [];
-      locations.forEach(location =>{
-        (location.map(m =>m.minorLocationId)).forEach(p =>{
-          locationIds.push(p);
-        })
-      })
-      // let locationIds = locations.map(m=>m.minorLocationId);
-      this.locations = minorLocations.filter(x => locationIds.includes(x._id));
-    });
-
     this.roomCheckin = this.formBuilder.group({
       location: ['', [<any>Validators.required]],
       room: ['', [<any>Validators.required]],
-      isDefault: [false, []]
+      isDefault: [true, []]
     });
     this.roomCheckin.controls['location'].valueChanges.subscribe(value => {
       this.consultingRoomService.find({ query: { minorLocationId: value } }).then(payload => {
@@ -73,6 +58,7 @@ export class ConsultingRoomCheckinComponent implements OnInit {
     this.roomCheckin.controls['room'].valueChanges.subscribe(value => {
     });
   }
+
   close_onClick() {
     this.closeModal.emit(true);
   }
@@ -109,6 +95,29 @@ export class ConsultingRoomCheckinComponent implements OnInit {
       });
       this.close_onClick();
     });
+  }
+
+  private _getLabLocation() {
+    this._locationService.find({ query: { name: 'Clinic' } }).then(res => {
+      if (res.data.length > 0) {
+        this._getEmployee(res.data[0]._id);
+      }
+    }).catch(err => {});
+  }
+
+  private _getEmployee(pharmId: string) {
+    this.authFacadeService.getLogingEmployee().then((res: any) => {
+      this.loginEmployee = res;
+      if (!!this.loginEmployee.workSpaces && this.loginEmployee.workSpaces.length > 0) {
+        if (!!this.selectedFacility.minorLocations && this.selectedFacility.minorLocations.length > 0) {
+          const minorLocations = this.selectedFacility.minorLocations;
+          const locations = this.loginEmployee.workSpaces.map(m => m.locations);
+          const locationIds = [];
+          locations.forEach(location => { (location.map(m => m.minorLocationId)).forEach(p => { locationIds.push(p) }); });
+          this.locations = minorLocations.filter(x => x.locationId === pharmId && locationIds.includes(x._id));
+        }
+      }
+    }).catch(err => {});
   }
 
   changeRoom(checkIn: any) {

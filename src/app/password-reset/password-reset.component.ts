@@ -94,7 +94,7 @@ export class PasswordResetComponent implements OnInit {
         this.modal1_show = false;
         this.modal2_show = false;
         this.systemModuleService.off();
-        this.systemModuleService.announceSweetProxy('Your Password Has Been Reset Successfully', 'success', this);
+        this.systemModuleService.announceSweetProxy('Your Password Has Been Reset Successfully', 'success', this, null, null, null, null, null, null);
       }
     }, error => {
       this.systemModuleService.off();

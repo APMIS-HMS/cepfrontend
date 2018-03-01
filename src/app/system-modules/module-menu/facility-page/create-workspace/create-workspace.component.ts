@@ -274,9 +274,8 @@ export class CreateWorkspaceComponent implements OnInit {
         this.isSaving = false;
         this.systemModuleService.off();
         this.getWorkSpace();
-        this.systemModuleService.announceSweetProxy('Workspace successfully set!', 'success');
-        if (this.selectedEmployee !== undefined && this.selectedEmployee._id !== undefined)
-        // tslint:disable-next-line:one-line
+        this.systemModuleService.announceSweetProxy('Workspace successfully set!', 'success', null, null, null, null, null, null, null);
+        if(this.selectedEmployee !== undefined && this.selectedEmployee._id !== undefined)
         {
           this.employeeService.announceEmployee(this.selectedEmployee);
         }

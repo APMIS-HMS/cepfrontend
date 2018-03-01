@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { WardEmitterService } from '../../../../services/facility-manager/ward-emitter.service';
-import { WardAdmissionService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
+import { BedOccupancyService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { Facility } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { LocationService } from 'app/services/module-manager/setup';
@@ -20,7 +20,6 @@ export class WardManagerListpageComponent implements OnInit {
 	constructor(
 		private _route: Router,
 		private _wardEventEmitter: WardEmitterService,
-		private _wardAdmissionService: WardAdmissionService,
 		private _facilitiesService: FacilitiesService,
     private _locker: CoolLocalStorage,
     private _locationService: LocationService
@@ -39,9 +38,8 @@ export class WardManagerListpageComponent implements OnInit {
       if (!!res._id) {
         this.wards = res.minorLocations.filter(x => x.locationId === wardId);
       }
-    }).catch(err => {
-    });
-		// this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
+    }).catch(err => {});
+		// this._BedOccupancyService.find({ query: { 'facilityId._id': this.facility._id } }).then(res => {
     //   this.loading = false;
 		// 	if (res.data.length > 0) {
     //     res.data[0].locations.forEach(ward => {

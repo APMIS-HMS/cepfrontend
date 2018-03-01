@@ -21,7 +21,7 @@ export interface BatchTransaction {
     preQuantity: number, // Before Operation.
     postQuantity: number, // After Operation.
     quantity: number, // Operational qty.
-    availableQuantity: number;
+    availableQuantity?: number;
     comment?: string,
     referenceId?: string, // Dispense id, Transfer id...
     referenceService?: string, // Dispense, Transfer...

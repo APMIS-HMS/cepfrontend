@@ -163,7 +163,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
           if (isOnList.length > 0) {
             const isOnObj = isOnList[0];
             isOnObj.isOn = true;
-            const coo = <any>this.locker.getObject('appointment');
+            const coo = <Appointment>this.locker.getObject('appointment');
             this.checkedIn = !coo.isCheckedOut || false;
             this.employeeService.update(this.loginEmployee).subscribe(payloadu => {
               this.loginEmployee = payloadu;
@@ -175,6 +175,15 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
                 }
               }
             });
+
+            this.clinicInteraction.locationName = coo.clinicId;
+            this.clinicInteraction.employee = this.loginEmployee.personDetails.title + ' '+this.loginEmployee.personDetails.lastName+' '+this.loginEmployee.personDetails.firstName;
+            this.clinicInteraction.startAt = new Date();
+            coo.isEngaged = true;
+            this.appointmentService.update(coo).then(payload =>{
+              this.selectedAppointment = payload;
+            },error =>{
+            })
           }
 
         }
@@ -726,6 +735,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.locker.removeItem('patient');
+
     if (this.clinicInteraction.locationName !== undefined && this.clinicInteraction.locationName.length > 1) {
       if (this.selectedAppointment.clinicInteractions === undefined) {
         this.selectedAppointment.clinicInteractions = [];
@@ -733,6 +743,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       this.clinicInteraction.endAt = new Date();
       this.clinicInteraction.title = 'Doctor\'s Encounter';
       this.selectedAppointment.clinicInteractions.push(this.clinicInteraction);
+      this.selectedAppointment.isEngaged = false;
       this.appointmentService.update(this.selectedAppointment).then(payload => {
 
       });

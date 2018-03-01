@@ -31,6 +31,7 @@ export class TimelineComponent implements OnInit {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.user = <User>this.locker.getObject('auth');
     this.getTimeLines();
+    console.log(this.patient);
   }
 
   getTimeLines() {
@@ -40,8 +41,10 @@ export class TimelineComponent implements OnInit {
         facilityId: this.selectedFacility._id
       }
     }).then((payload: any) => {
+      console.log(payload);
       this.timeLineLists = payload.data;
     }).catch(err => {
+      console.log(err);
     })
   }
 

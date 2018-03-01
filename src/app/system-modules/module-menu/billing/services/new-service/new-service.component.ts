@@ -41,6 +41,9 @@ export class NewServiceComponent implements OnInit {
   errMsg = 'you have unresolved errors';
   btnTitle = 'CREATE SERVICE';
   btnPanel = 'ADD PANEL';
+  searchText = '';
+  showServiceDropdown = false;
+  serviceDropdownLoading = false;
 
   constructor(private formBuilder: FormBuilder, private _locker: CoolLocalStorage,
     private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
@@ -133,17 +136,15 @@ export class NewServiceComponent implements OnInit {
   }
 
   onEditService() {
-    console.log(this.selectedService);
     if (this.selectedService.name !== undefined) {
       this.btnTitle = 'Update Service';
-      console.log(this.selectedService);
       this.frmNewservice.controls['serviceName'].setValue(this.selectedService.name);
       this.frmNewservice.controls['serviceCat'].setValue(this.selectedService.categoryId);
       this.frmNewservice.controls['serviceCode'].setValue(this.selectedService.code);
-      let basedPrice = this.selectedService.price.filter(x => x.isBase === true)[0];
+      const basedPrice = this.selectedService.price.filter(x => x.isBase === true)[0];
       this.frmNewservice.controls['servicePrice'].setValue(basedPrice.price);
       this.priceItems = JSON.parse(JSON.stringify(this.selectedService.price));
-      
+
       this.selectedServiceItems = this.selectedService.panels;
     }
     this.frmNewservice.controls['serviceCat'].setValue(this.selectedService.categoryId);
@@ -158,7 +159,7 @@ export class NewServiceComponent implements OnInit {
   }
   addNew() {
     this.frmNewservice = this.formBuilder.group({
-      serviceName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
+      serviceName: ['', [<any>Validators.required]],
       serviceCat: ['', [<any>Validators.required]],
       serviceAutoCode: ['', []],
       serviceCode: ['', []],
@@ -176,14 +177,12 @@ export class NewServiceComponent implements OnInit {
 
   allServices() {
     this.systemModuleService.on();
-    console.log(this.facility._id);
     this._facilitiesServiceCategoryService.allServices({
       query: {
         facilityId: this.facility._id
       }
     }).then(payload => {
       this.systemModuleService.off();
-      console.log(payload);
       this.panelItemTemplate(payload);
     }, error => {
       this.systemModuleService.off();
@@ -193,10 +192,10 @@ export class NewServiceComponent implements OnInit {
   panelItemTemplate(payload) {
     this.allServiceItems = [];
     if (payload.data[0].categories.length > 0) {
-      let len = payload.data[0].categories.length - 1;
+      const len = payload.data[0].categories.length - 1;
       for (let l = 0; l <= len; l++) {
         if (payload.data[0].categories[l].services.length > 0) {
-          let len2 = payload.data[0].categories[l].services.length - 1;
+          const len2 = payload.data[0].categories[l].services.length - 1;
           for (let i = 0; i <= len2; i++) {
             this.allServiceItems.push({
               category: payload.data[0].categories[l].name,
@@ -216,7 +215,7 @@ export class NewServiceComponent implements OnInit {
 
   newService(model: any, valid: boolean) {
     if (valid) {
-      let value = {
+      const value = {
         name: this.frmNewservice.controls['serviceName'].value,
         code: this.frmNewservice.controls['serviceCode'].value,
         categoryId: this.frmNewservice.controls['serviceCat'].value,
@@ -225,7 +224,7 @@ export class NewServiceComponent implements OnInit {
 
       }
       this.onCreate(value);
-    }else{
+    }else {
       this.systemModuleService.announceSweetProxy('Missing field','error');
     }
   }
@@ -233,7 +232,6 @@ export class NewServiceComponent implements OnInit {
   onCreate(data) {
     this.systemModuleService.on();
     this.isDisableBtn = true;
-    console.log(this.selectedService);
     if (this.selectedService.name === undefined) {
       data.panels = this.selectedServiceItems;
       this._facilitiesServiceCategoryService.create(data, {
@@ -244,18 +242,16 @@ export class NewServiceComponent implements OnInit {
         }
       }).then(payload => {
         this.systemModuleService.off();
-        this.systemModuleService.announceSweetProxy('Service added successful', 'success');
+        this.systemModuleService.announceSweetProxy('Service added successful', 'success', null, null, null, null, null, null, null);
         this.isDisableBtn = false;
         this.frmNewservice.reset();
         this.refreshService.emit(this.selectedService);
       }, error => {
-        console.log(error);
         this.isDisableBtn = false;
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy('Failed to add Service', 'error');
       });
     } else {
-      console.log(data.code);
       this.serviceItemModel.code = data.code;
       this.serviceItemModel._id = this.selectedService._id;
       this.serviceItemModel.name = data.name;
@@ -263,13 +259,12 @@ export class NewServiceComponent implements OnInit {
       this.serviceItemModel.price = {};
       this.serviceItemModel.price.base = this.priceItems.filter(x => x.isBase === true)[0];
       this.serviceItemModel.price.base.price = data.price;
-      console.log(this.priceItems);
-      if (this.selectedService.price != undefined) {
+      if (this.selectedService.price !== undefined) {
         if (this.selectedService.price.length > 0) {
           this.serviceItemModel.price.others = this.priceItems.filter(x => x.isBase === false);
         }
       }
-      console.log(this.serviceItemModel);
+
       this._facilitiesServiceCategoryService.update2(this.facility._id, this.serviceItemModel, {
         query: {
           facilityId: this.facility._id,
@@ -280,13 +275,12 @@ export class NewServiceComponent implements OnInit {
         }
       }).then(payload => {
         this.systemModuleService.off();
-        this.systemModuleService.announceSweetProxy('Service added successful', 'success');
+        this.systemModuleService.announceSweetProxy('Service added successful', 'success', null, null, null, null, null, null, null);
         this.isDisableBtn = false;
         this.refreshService.emit(this.selectedService);
         this.frmNewservice.reset();
         this.close_onClick();
       }, error => {
-        console.log(error);
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy('Failed to add service', 'error');
         this.isDisableBtn = false;
@@ -302,9 +296,9 @@ export class NewServiceComponent implements OnInit {
     if ((arrayA !== undefined && arrayB !== undefined) && (arrayA !== null && arrayB !== null)) {
       if (arrayA.length > 0) {
         if (arrayB.length > 0) {
-          let len1 = arrayA.length - 1;
+          const len1 = arrayA.length - 1;
           for (let index = 0; index <= len1; index++) {
-            let len2 = arrayB.length - 1;
+            const len2 = arrayB.length - 1;
             for (let index2 = 0; index2 <= len2; index2++) {
               if (arrayA[index].serviceId.toString() === arrayB[index2].serviceId.toString()) {
                 arrayA[index].checked = true;
@@ -319,7 +313,7 @@ export class NewServiceComponent implements OnInit {
   onServiceSelected(item) {
     this.allServiceItems = [];
     const index = this.selectedServiceItems.filter(x => x.serviceId.toString() === item.serviceId.toString());
-    if (index.length == 0) {
+    if (index.length === 0) {
       this.selectedServiceItems.push(item);
     } else {
       this.systemModuleService.announceSweetProxy('This service has been selected', 'error');

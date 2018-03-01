@@ -146,7 +146,7 @@ export class AddAllergyComponent implements OnInit {
       this.documentationService.announceDocumentation({ type: 'Allergies' });
       this.isSaving = false;
       this.systemModuleService.off();
-      this.systemModuleService.announceSweetProxy('Allergy added successfully!','success');
+      this.systemModuleService.announceSweetProxy('Allergy added successfully!', 'success', null, null, null, null, null, null, null);
     }, error => {
       this.isSaving = false;
       this.systemModuleService.off();

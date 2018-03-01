@@ -1,6 +1,8 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
-import { SupplierService, ProductService, PurchaseOrderService,
-  StoreService, EmployeeService } from '../../../../services/facility-manager/setup/index';
+import {
+  SupplierService, ProductService, PurchaseOrderService,
+  StoreService, EmployeeService
+} from '../../../../services/facility-manager/setup/index';
 import { Facility } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
@@ -42,8 +44,12 @@ export class PurchaseOrderComponent implements OnInit {
     this.getSuppliers();
     this.frmSupplier.valueChanges.subscribe(value => {
       if (value !== null) {
+        this.systemModuleService.on();
         this.purchaseOrderService.find({ query: { supplierId: value } }).subscribe(payload => {
           this.orders = payload.data;
+          this.systemModuleService.off();
+        },error=>{
+          this.systemModuleService.off();
         });
       } else {
         this.getPurchaseOrders();
@@ -51,15 +57,45 @@ export class PurchaseOrderComponent implements OnInit {
     });
   }
   getSuppliers() {
+    this.systemModuleService.on();
     this.supplierService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
       this.suppliers = payload.data;
+      this.systemModuleService.off();
+    },error=>{
+      this.systemModuleService.off();
     });
   }
   getPurchaseOrders() {
+    this.systemModuleService.on();
     this.purchaseOrderService.findOrder({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
       this.orders = payload.data;
+      this.systemModuleService.off();
+    },error=>{
+      this.systemModuleService.off();
     });
   }
+  selectedOrderToDelete;
+  onRemoveOrder(order) {
+    this.selectedOrderToDelete = order;
+    this.systemModuleService.announceSweetProxy('Are you sure you want remove ' + order.purchaseOrderNumber, 'question', this);
+  }
+
+  sweetAlertCallback(result) {
+    if (result.value) {
+      this.systemModuleService.on();
+      if (this.selectedOrderToDelete._id !== undefined) {
+        this.purchaseOrderService.remove(this.selectedOrderToDelete._id, {}).then(callback_remove => {
+          this.systemModuleService.announceSweetProxy(this.selectedOrderToDelete.purchaseOrderNumber + " is deleted", 'success');
+          this.systemModuleService.off();
+          this.selectedOrderToDelete = {};
+          this.getPurchaseOrders();
+        }, error => {
+          this.systemModuleService.off();
+        });
+      }
+    }
+  }
+
   slidePurchaseDetailsToggle(value, event) {
     this.selectedOrder = value;
     this.slidePurchaseDetails = !this.slidePurchaseDetails;

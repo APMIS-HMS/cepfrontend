@@ -84,11 +84,9 @@ export class PaymentComponent implements OnInit {
                         "name": value
                     }
                 }).then((res: any) => {
-                    console.log(res);
                     this.pendingBills = res.bills;
                     this.loadingPendingBills = false;
                 }).catch(err => {
-                    console.log(err);
                     this._notification('Error', 'There was a problem getting pending bills. Please try again later!');
                 });
             });
@@ -101,16 +99,12 @@ export class PaymentComponent implements OnInit {
                 "isQuery": false
             }
         }).then(payload => {
-            console.log(payload);
             this.systemModuleService.off;
             this.invoiceGroups = payload.invoices;
-            console.log(this.invoiceGroups);
             this.totalAmountReceived = payload.amountReceived;
-            console.log(this.totalAmountReceived);
             this.isLoadingInvoice = false;
             this._getLocAmountAccrued();
         }).catch(err => {
-            console.log(err);
             this.systemModuleService.off;
             this.isLoadingInvoice = false;
             this._notification('Error', 'There was a problem getting invoices, Please try again later!');
@@ -119,20 +113,17 @@ export class PaymentComponent implements OnInit {
 
     private _getBills() {
         // this.loadingPendingBills = true;
-        console.log(this.selectedFacility);
         this.systemModuleService.on;
         this._pendingBillService.get(this.selectedFacility._id, {
             query: {
                 "isQuery": false
             }
         }).then((res: any) => {
-            console.log(res);
             this.systemModuleService.off;
             this.pendingBills = res.bills;
             this.totalAmountBilled = res.amountBilled;
             this.loadingPendingBills = false;
         }).catch(err => {
-            console.log(err);
             this.systemModuleService.off;
             this.loadingPendingBills = false;
             this._notification('Error', err);
@@ -162,7 +153,6 @@ export class PaymentComponent implements OnInit {
                 }
                 this.loadingLocAmountAccrued = false;
             }).catch(err => {
-                console.log(err);
                 this.loadingLocAmountAccrued = false;
                 this._notification('Error', 'There was a problem getting location accrued amount bills. Please try again later!')
             });

@@ -164,10 +164,10 @@ export class CreateAccessComponent implements OnInit {
             this.creatingRole = false;
             this.disableBtn = true;
             const text = `${roleName} role has been created successfully!`;
-            this._systemModuleService.announceSweetProxy(text, 'success');
+          this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
             this.close_onClick();
         }, error => {
-        }).catch(err => console.log(err));
+        }).catch(err => {});
       } else {
         this.updateRole = false;
         this.updatingRole = true;
@@ -177,9 +177,9 @@ export class CreateAccessComponent implements OnInit {
           this.updatingRole = false;
           this.disableBtn = true;
           const text = `${roleName} role has been updated successfully!`;
-          this._systemModuleService.announceSweetProxy(text, 'success');
+          this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
           this.close_onClick();
-        }).catch(err => console.log(err));
+        }).catch(err => {});
       }
     } else {
       this._notification('Error', 'Please fill all required fields!');

@@ -18,7 +18,7 @@
                         <span style="padding-left: 3px;">Date</span>
                     </th>
                     <th>
-                        <span style="padding-left: 3px;">Patient</span>
+                        <span style="padding-left: 3px;">Principal</span>
                     </th>
                     <th>
                         <span style="padding-left: 3px;">HMO</span>
@@ -30,14 +30,17 @@
             </thead>
 
             <tbody>
-                <tr (click)="billDetail()">
-                    <td>11th October 2017</td>
+                <tr (click)="billDetail(bill)" *ngFor="let bill of bills">
+                    <td>{{bill.updatedAt|date:'medium'}}</td>
                     <td>
                         <div class="empWrap">
-                            <div class="list-img">
+                            <div class="list-img" *ngIf="bill.principalObject.personDetails.profileImageObject === undefined">
                                 <img src="assets/images/users/default.png">
                             </div>
-                            <div>Jonathan Nelson</div>
+                            <div class="list-img" *ngIf="bill.principalObject.personDetails.profileImageObject !== undefined">
+                                <img [src]="facilitiesService.transform(bill.principalObject.personDetails.profileImageObject?.thumbnail)">
+                            </div>
+                            <div>{{bill.principalObject.personDetails.firstName}} {{bill.principalObject.personDetails.lastName}}</div>
                         </div>
                     </td>
                     <td>
@@ -48,7 +51,7 @@
                             <div>Asa Mansard</div>
                         </div>
                     </td>
-                    <td class="td-worspace">&#8358; 12,200</td>
+                    <td class="td-worspace">&#8358; {{bill.grandTotal|number:'1.2-2'}}</td>
                 </tr>
             </tbody>
         </table>
@@ -75,14 +78,14 @@
             </thead>
 
             <tbody>
-                <tr (click)="billHistoryDetail()">
-                    <td>11th October 2017</td>
+                <tr (click)="billHistoryDetail(bill)" *ngFor="let bill of historyBills">
+                    <td>{{bill.updatedAt|date:'medium'}}</td>
                     <td>
                         <div class="empWrap">
                             <div class="list-img">
                                 <img src="assets/images/users/default.png">
                             </div>
-                            <div>Jonathan Nelson</div>
+                            <div>{{bill.principalObject.personDetails.firstName}} {{bill.principalObject.personDetails.lastName}}</div>
                         </div>
                     </td>
                     <td>
@@ -93,7 +96,7 @@
                             <div>Asa Mansard</div>
                         </div>
                     </td>
-                    <td class="td-worspace">&#8358; 12,200</td>
+                    <td class="td-worspace">&#8358; {{bill.grandTotal|number:'1.2-2'}}</td>
                 </tr>
             </tbody>
         </table>
@@ -101,8 +104,8 @@
 </div>
 
 <div *ngIf="billDetail_show" class="modal-overlay">
-  <app-hmo-bill-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-hmo-bill-detail>
+  <app-hmo-bill-detail (closeModal)="close_onClick($event)" [selectedBill]="selectedBill" id="form-modal" class="form-modal center-center"></app-hmo-bill-detail>
 </div>
 <div *ngIf="billHistoryDetail_show" class="modal-overlay">
-    <app-hmo-bill-history-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-hmo-bill-history-detail>
+    <app-hmo-bill-history-detail (closeModal)="close_onClick($event)" [selectedBill]="selectedBill" id="form-modal" class="form-modal center-center"></app-hmo-bill-history-detail>
 </div>

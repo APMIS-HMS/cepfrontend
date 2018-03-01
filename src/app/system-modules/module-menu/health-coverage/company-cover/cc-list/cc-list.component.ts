@@ -21,10 +21,10 @@ export class CcListComponent implements OnInit {
 
   public frmAddCompany: FormGroup;
   addCompany = false;
-  apmisLookupUrl = 'corporatefacilities';
-  apmisLookupText = "";
+  apmisLookupUrl = 'corperate-facilities';
+  apmisLookupText = '';
   apmisLookupQuery = {};
-  apmisLookupDisplayKey = "name";
+  apmisLookupDisplayKey = 'name';
   apmisLookupOtherKeys = []
 
   selelctedFacility: Facility = <Facility>{};
@@ -32,9 +32,10 @@ export class CcListComponent implements OnInit {
   selectedFacilityType: FacilityType = <FacilityType>{};
   loginHMOListObject: any = <any>{};
   user: User = <User>{};
+  // tslint:disable-next-line:max-line-length
   constructor(private formBuilder: FormBuilder, private companyCoverService: FacilityCompanyCoverService, private facilityService: FacilitiesService,
-    private facilityTypeService: FacilityTypesService, private locker: CoolLocalStorage, private router: Router) { 
-    
+    private facilityTypeService: FacilityTypesService, private locker: CoolLocalStorage, private router: Router) {
+
   }
 
   ngOnInit() {
@@ -49,7 +50,7 @@ export class CcListComponent implements OnInit {
       if (value !== null && value.length === 0) {
         this.apmisLookupQuery = {
           name: { $regex: -1, '$options': 'i' },
-          $select: ['name', 'email', 'contactPhoneNo', 'contactFullName', 'website','addressObj']
+          $select: ['name', 'email', 'contactPhoneNo', 'contactFullName', 'website', 'addressObj']
         }
       } else {
         this.apmisLookupQuery = {
@@ -62,16 +63,16 @@ export class CcListComponent implements OnInit {
   }
   public upload(e, companyCover) {
 
-    let fileBrowser = this.fileInput.nativeElement;
+    const fileBrowser = this.fileInput.nativeElement;
     if (fileBrowser.files && fileBrowser.files[0]) {
       const formData = new FormData();
-      formData.append("excelfile", fileBrowser.files[0]);
-      formData.append("companyCoverId", companyCover._id);
+      formData.append('excelfile', fileBrowser.files[0]);
+      formData.append('companyCoverId', companyCover._id);
       this.facilityService.upload(formData, this.selectedCompanyCover._id).then(res => {
-        let enrolleeList: any[] = [];
+        const enrolleeList: any[] = [];
         if (res.body !== undefined && res.body.error_code === 0) {
           res.body.data.Sheet1.forEach(row => {
-            let rowObj: any = <any>{};
+            const rowObj: any = <any>{};
             rowObj.serial = row.A;
             rowObj.surname = row.B;
             rowObj.firstName = row.C;
@@ -82,8 +83,8 @@ export class CcListComponent implements OnInit {
             enrolleeList.push(rowObj);
           });
           const index = this.loginHMOListObject.companyCovers.findIndex(x => x._id === companyCover._id);
-          let facHmo = this.loginHMOListObject.companyCovers[index];
-          let enrolleeItem = {
+          const facHmo = this.loginHMOListObject.companyCovers[index];
+          const enrolleeItem = {
             month: new Date().getMonth() + 1,
             year: new Date().getFullYear(),
             enrollees: enrolleeList
@@ -95,7 +96,7 @@ export class CcListComponent implements OnInit {
           })
         }
       }).catch(err => {
-        this._notification('Error', "There was an error uploading the file");
+        this._notification('Error', 'There was an error uploading the file');
       });
     }
   }
@@ -143,7 +144,7 @@ export class CcListComponent implements OnInit {
       this._notification('Warning', 'The selected HMO is already in the list of Company Covers');
       return;
     }
-    let newCompanyCover = {
+    const newCompanyCover = {
       hmo: this.selectedCompanyCover,
       enrolleeList: []
     }
@@ -170,7 +171,7 @@ export class CcListComponent implements OnInit {
     this.router.navigate(['/dashboard/health-coverage/company-beneficiaries/', cover._id]);
   }
 
-  addCompany_show(){
+  addCompany_show() {
     this.addCompany = !this.addCompany;
   }
 
