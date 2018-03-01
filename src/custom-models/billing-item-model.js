@@ -18,6 +18,7 @@ const billingSchema = new Schema({
   paymentCompleted: { type: Schema.Types.Boolean, 'default': false },
   isServiceEnjoyed: { type: Schema.Types.Boolean, 'default': false },
   isInvoiceGenerated: { type: Schema.Types.Boolean, 'default': false },
+  active: { type: Schema.Types.Boolean, 'default': true },
   covered:{ type: Schema.Types.Mixed, required: false },
   modifierId: [{ type: Schema.Types.ObjectId, required: false }],
   createdAt: { type: Date, 'default': Date.now },

@@ -7,6 +7,7 @@ const request = require('request');
 const requestPromise = require('request-promise');
 const logger = require('winston');
 const rxjs = require('rxjs');
+const jsend = require('jsend');
 
 
 class FundWalletService {
@@ -31,14 +32,16 @@ class FundWalletService {
         const peopleService = this.app.service('people');
         const paymentService = this.app.service('payments');
 
+        // console.log(params);
         // return new Promise(function(resolve, reject) {
         const accessToken = params.accessToken; /* Not required */
         if (accessToken !== undefined) {
+            console.log(data);
             const ref = data.ref; /* Not required. This is for e-payment */
             const payment = data.payment;
             const paymentType = payment.type; /* Required. This is either "Cash*, "Cheque", "e-Payment" */
             const paymentRoute = payment.route; /* Not required. This is either "Flutterwave", "Paystack" */
-            const amount = ref.amount; /* Required */
+            const amount = data.amount; /* Required */
             const facilityId = data.facilityId; /* Not required. This is if someone is funding the wallet on behalf of the facility */
             const entity = data.entity; /* Required. This is the entity making the transaction. Could either be "Person" or "Facility" */
             const loggedPersonId = params.user.personId;
@@ -105,49 +108,95 @@ class FundWalletService {
                             facility.wallet = transaction(userWallet, cParam);
 
                             const facilityUpdate = await facilityService.update(facility._id, facility);
-                            return facilityUpdate;
+                            return jsend.success(facilityUpdate);
                         }
                     } else {
                         return new Error('There was an error while verifying this payment');
                     }
                 } else if (paymentRoute !== undefined && paymentRoute.toLowerCase() === 'paystack') {
-                    paymentService.create(paymentPayload).then(payment => {
+                    console.log(paymentPayload);
+                    const paymentRes = await paymentService.create(paymentPayload);
+                    console.log('aadkd');
+                    if (paymentRes !== undefined) {
+                        console.log('am here now');
+                        console.log(data.ref.trxref);
                         let url = process.env.PAYSTACK_VERIFICATION_URL + data.ref.trxref;
-                        var client = new Client();
-                        var args = {
-                            headers: {
-                                Authorization: 'Bearer' + process.env.PAYSTACK_SECRET_KEY
-                            }
-                        };
-                        client.post(url, args, function(data, response) {
-                            if (data.status === 'success') {
-                                payment.isActive = true;
-                                payment.paymentResponse = data;
-                                // Update payment record.
-                                paymentService.update(payment._id, payment).then(updatedPayment => {
+                        // var client = new Client();
+                        // var args = {
+                        //     headers: {
+                        //         Authorization: 'Bearer' + process.env.PAYSTACK_SECRET_KEY
+                        //     }
+                        // };
+                        console.log('grade 1');
+                        let data2 = await this.verifyPayStackPayment(url);
+                        console.log('am now');
+                        console.log(data2);
+                        let payload = JSON.parse(data2);
+                        if (payload.status && payload.data.status === 'success') {
+                            console.log(2);
+                            paymentRes.isActive = true;
+                            paymentRes.paymentResponse = data2;
+                            // Update payment record.
+                            let updatedPayment = await paymentService.update(paymentRes._id, paymentRes);
 
-                                    peopleService.get(data.destinationId, {}).then(person => {
-                                        // Update person wallet.
-                                        let param = {
-                                            transactionType: 'Cr',
-                                            wallet: person.wallet
-                                        };
-                                        person.balance = parseFloat(person.wallet.balance) + parseFloat(data.amount);
-                                        person.ledgerBalance = parseFloat(person.ledgerBalance) + parseFloat(data.amount);
-                                        peopleService.update(person._id, person).then(personUpdate => {
-                                            return personUpdate;
-                                            // resolve(personUpdate);
-                                        }).catch(err => {
-                                            // reject(err);
-                                        });
-                                    });
-                                });
+                            if (updatedPayment !== undefined) {
+                                if (entity !== undefined && entity.toLowerCase() === 'person') {
+                                    const person = await peopleService.get(destinationId);
+                                    const userWallet = person.wallet;
+                                    const cParam = {
+                                        amount: amount,
+                                        paidBy: loggedPersonId,
+                                        sourceId: loggedPersonId,
+                                        sourceType: entity,
+                                        transactionType: 'Cr',
+                                        transactionMedium: paymentType,
+                                        destinationId: destinationId,
+                                        destinationType: entity,
+                                        description: 'Funded wallet via e-payment',
+                                        transactionStatus: 'Completed',
+                                    };
+                                    person.wallet = transaction(userWallet, cParam);
+
+                                    const personUpdate = await peopleService.update(person._id, person, {});
+
+                                    return personUpdate;
+                                } else if (entity !== undefined && entity.toLowerCase() === 'facility') {
+                                    console.log(3)
+                                    const facility = await facilityService.get(facilityId);
+                                    const userWallet = facility.wallet;
+                                    const cParam = {
+                                        amount: amount,
+                                        paidBy: loggedPersonId,
+                                        sourceId: facilityId,
+                                        sourceType: entity,
+                                        transactionType: 'Cr',
+                                        transactionMedium: paymentType,
+                                        destinationId: facilityId,
+                                        destinationType: entity,
+                                        description: 'Funded wallet via e-payment',
+                                        transactionStatus: 'Completed',
+                                    };
+                                    facility.wallet = transaction(userWallet, cParam);
+                                    console.log(4)
+                                    const facilityUpdate = await facilityService.update(facility._id, facility);
+                                    console.log(5)
+                                    return jsend.success(facilityUpdate);
+                                }
                             }
 
-                        });
-                    }).catch(err => {
-                        // reject(err);
-                    });
+
+
+
+
+
+
+
+
+
+                        } else {
+                            console.log('false');
+                        }
+                    }
                 } else {
                     return false;
                 }
@@ -166,6 +215,17 @@ class FundWalletService {
             return data;
         }
         // });
+    }
+
+    verifyPayStackPayment(url) {
+        const options = {
+            method: 'GET',
+            uri: url,
+            headers: {
+                Authorization: 'Bearer ' + process.env.PAYSTACK_SECRET_KEY
+            }
+        };
+        return requestPromise(options);
     }
 
     verifyPayment(url, secKey, ref) {
