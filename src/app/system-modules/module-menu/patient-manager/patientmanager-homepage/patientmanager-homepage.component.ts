@@ -3,7 +3,8 @@ import { EMAIL_REGEX } from 'app/shared-module/helpers/global-config';
 import { NUMERIC_REGEX, ALPHABET_REGEX } from './../../../../shared-module/helpers/global-config';
 import { CountryServiceFacadeService } from './../../../service-facade/country-service-facade.service';
 import { TitleGenderFacadeService } from 'app/system-modules/service-facade/title-gender-facade.service';
-import { Component, OnInit, EventEmitter, ElementRef, ViewChild, Output, OnChanges, Input, SimpleChanges, SimpleChange } from '@angular/core';
+import { Component, OnInit, EventEmitter,
+  ElementRef, ViewChild, Output, OnChanges, Input, SimpleChanges, SimpleChange } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import {
   PatientService, PersonService, FacilitiesService, FacilitiesServiceCategoryService,
@@ -344,7 +345,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       facilityId: this.facility._id,
       patientId: patientId
     }).then(payload => {
-      console.log(payload);
     })
   }
 
@@ -354,18 +354,14 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         facilityId: this.facility._id
       }
     }).then(payload => {
-      console.log(payload);
       const categories = payload.data[0].categories;
-      console.log(categories);
       const cat = categories.filter(x => x.name === 'Medical Records');
-      console.log(cat);
       for (let n = 0; n < cat[0].services.length; n++) {
         cat[0].services[n].facilityServiceId = payload.data[0]._id
       }
       this.services = cat[0].services;
     }, error => {
-      /* this.systemModuleService.off(); */
-      console.log(error);
+
     });
   }
 
@@ -374,7 +370,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
 
   filterHmos(val: any) {
-    console.log(val);
     if (val.hmoName === undefined) {
       return this.hmos.filter(hmo =>
         hmo.hmoName.toLowerCase().indexOf(val.toLowerCase()) === 0);
@@ -427,7 +422,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.patientService.get(patient._id, {}).then(payload => {
       this.selectedPatient = payload.personDetails;
       this.patient = payload;
-      console.log(payload);
       this.editPatient = true;
       if (this.selectedPatient.nextOfKin.length > 0) {
         const nextOfKincontrol = <FormArray>this.patientEditForm.controls['nextOfKin'];
@@ -466,9 +460,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         nextOfKinArray.push(element);
       });
     }
-
     this.selectedPatient['nextOfKin'] = nextOfKinArray;
-    console.log(this.selectedPatient);
 
     const patientIndex = this.patients.findIndex(p => p.personDetails._id === this.selectedPatient._id);
     this.personService.patch(this.selectedPatient._id, this.selectedPatient, {}).then(res => {
@@ -516,8 +508,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.tabInsurance_click();
     } else if (cover === 'family') {
       this.tabFamily_click();
-    }
-
+    } else {  }
   }
 
   backBtn() {
@@ -526,12 +517,9 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
   next(cover) {
     this.systemService.on();
-    console.log(this.patient);
-    console.log(this.isDefault);
     const data = JSON.parse(JSON.stringify(this.patient.paymentPlan));
     if (this.isDefault.value === true) {
       const index = data.findIndex(c => c.isDefault === true);
-      console.log(index);
       if (index > -1) {
         data[index].isDefault = false;
       }
@@ -574,7 +562,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
     } else {
       const check = data.filter(x => x.planType === cover);
-
       if (check.length < 1) {
         if (cover === 'wallet') {
           data.push({
@@ -611,11 +598,9 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       }
       console.log(data, this.patient.paymentPlan);
     }
-
     this.patientService.patch(this.patient._id, {
       paymentPlan: data
     }, {}).then(payload => {
-      console.log(payload);
       this.systemService.off();
       this.patient = payload;
       this.systemService.announceSweetProxy('Payment Methods successfully updated', 'success');

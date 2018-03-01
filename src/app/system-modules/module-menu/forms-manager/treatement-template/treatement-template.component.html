@@ -170,8 +170,8 @@
                             </div>
                         </div>
                     </form>
-                    <div class="frmNoteWrap" *ngIf="newTemplate && isOrderSet" style="padding-top:10px;margin-top:-10px;">
-                        <button (click)="save(frmnewTemplate.valid, frmnewTemplate.value);" class="cta-1 ">
+                    <div class="frmNoteWrap" *ngIf="newTemplate && isOrderSet" style="padding-top:10px;margin-top:-10px;text-align: center;">
+                        <button mat-raised-button [disabled]="!frmnewTemplate.valid || disableSaveBtn" (click)="save(frmnewTemplate.valid, frmnewTemplate.value);">
                         <span *ngIf="saveTemplateText">Save Template</span>
                         <span *ngIf="savingTemplateText">Saving Template... <i class="fa fa-spinner fa-spin"></i></span>
                         <span *ngIf="editTemplateText">Edit Template</span>
@@ -180,7 +180,7 @@
                     </div>
                 </div>
 
-                <div class="tblWrapa actSect ">
+                <div *ngIf="isDocumentation" class="tblWrapa actSect ">
                     <table cellpadding="0 " cellspacing="0 " border="0.5 ">
                         <thead>
                             <tr>
@@ -214,6 +214,41 @@
                                 <td (click)="editTemplate(template) ">{{template.createdAt | date:'shortDate'}}</td>
                                 <td>{{template.name}}</td>
                                 <td>{{template.formDetails}}</td>
+                                <td>{{template.visibility}}</td>
+                                <td>{{getIsEditable(template.isEditable)}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div *ngIf="isOrderSet" class="tblWrapa actSect ">
+                    <table cellpadding="0 " cellspacing="0 " border="0.5 ">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+                                    <span style="padding-left: 3px; ">Date Created</span>
+                                </th>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+                                    <span style="padding-left: 3px; ">Template Title</span>
+                                </th>
+                                <th>
+                                    <i class="fa fa-sort-alpha-asc " aria-hidden="true "></i>
+                                    <span style="padding-left: 3px; ">Visibility</span>
+                                </th>
+                                <th>Editable By Others</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="10 ">
+                                    <div class="tbl-actionRow ">
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr *ngFor="let template of templates">
+                                <td (click)="editTemplate(template) ">{{template.createdAt | date:'shortDate'}}</td>
+                                <td>{{template.name}}</td>
                                 <td>{{template.visibility}}</td>
                                 <td>{{getIsEditable(template.isEditable)}}</td>
                             </tr>

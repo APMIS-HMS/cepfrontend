@@ -25,7 +25,7 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
   employeeDetailArea = false;
   newEmp = false;
   patient: any;
-  resetData:Boolean = false;
+  resetData = false;
 
   selectedFacility;
 
@@ -39,8 +39,8 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
     'logo': 'assets/images/logos/red.jpg'
   };
 
-  constructor(private router: Router, 
-    private route: ActivatedRoute, 
+  constructor(private router: Router,
+    private route: ActivatedRoute,
     private patientService: PatientService,
     private locker: CoolLocalStorage) { }
 
@@ -51,7 +51,7 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
   }
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    
+
     this.searchControl.valueChanges
     .debounceTime(200)
     .distinctUntilChanged()
@@ -79,10 +79,10 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
   newEmpShow() {
     this.newEmp = true;
   }
-  reset(){
+  reset() {
     this.resetData = true;
   }
-  resetDataLoader(data){
+  resetDataLoader(data) {
     this.resetData = data;
   }
   close_onClick(e) {

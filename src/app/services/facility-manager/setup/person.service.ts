@@ -20,7 +20,7 @@ export class PersonService {
   public createListener;
   public updateListener;
   private _rest;
-  //public http;
+  // public http;
 
   private personAnnouncedSource = new Subject<Person>();
   personAnnounced$ = this.personAnnouncedSource.asObservable();

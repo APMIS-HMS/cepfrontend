@@ -30,7 +30,7 @@ export class EditMedicationComponent implements OnInit {
   frequencies: string[] = [];
   durationUnits: any[] = [];
   selectedDuration: any;
-  drugId: string = '';
+  drugId = '';
   refillCount = 0;
   selectedForm = '';
   selectedIngredients: any = [];
@@ -62,8 +62,7 @@ export class EditMedicationComponent implements OnInit {
       startDate: [this.currentDate],
       specialInstruction: ['']
     });
-    this.apmisLookupUrl = 'drug-generic-list-api';
-
+    this.apmisLookupUrl = 'drug-generic-list';
     this.apmisLookupDisplayKey = 'details';
 
     this.addPrescriptionForm.controls['drug'].valueChanges.subscribe(value => {
@@ -111,8 +110,9 @@ export class EditMedicationComponent implements OnInit {
 
   apmisLookupHandleSelectedItem(item) {
     this.apmisLookupText = item.details;
-    this._drugDetailsApi.find({ query: { productId: item.productId } }).then(res => {
-        let sRes = res.data;
+    // this._drugDetailsApi.find({ query: { productId: item.productId } }).then(res => {
+    this._drugListApi.find({ query: { method: 'drug-details', 'productId': item.productId } }).then(res => {
+        const sRes = res.data;
         if (res.status === 'success') {
           if (!!sRes.ingredients && sRes.ingredients.length > 0) {
             this.selectedForm = sRes.form;
