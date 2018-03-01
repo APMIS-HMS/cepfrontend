@@ -20,7 +20,7 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
 		private _route: ActivatedRoute,
 		private _router: Router,
     public _inPatientService: InPatientService,
-    private _systemModuleService : SystemModuleService
+    private _systemModuleService: SystemModuleService
   ) {
 		// this._inPatientService.listenerCreate.subscribe(payload => {
 		// 	this.getAdmittedPatientItems();
@@ -32,8 +32,8 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		// this is for the pageInView header
-		this._wardEventEmitter.setRouteUrl('Admitted Patient Details');
+    // this is for the pageInView header
+    this._wardEventEmitter.setRouteUrl('Admitted Patient Details');
 
 		this._route.params.subscribe(params => {
 			this.admittedPatientId = params.id;
@@ -44,18 +44,34 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
 	getAdmittedPatientItems() {
 		this._inPatientService.get(this.admittedPatientId, {}).then(res => {
       if (!!res._id) {
-				let wardDetails = res.transfers[res.lastIndex];
+				const wardDetails = res.transfers[res.lastIndex];
 				this.selectedPatient = res;
         this.selectedPatient.wardItem = wardDetails;
         // Check if the patient has been discharged.
         if (res.status === myGlobals.discharge) {
-          let patient = `${res.patient.personDetails.firstName} ${res.patient.personDetails.lastName}`;
-          let text = `${patient} has been discharged.`;
+          const patient = `${res.patient.personDetails.firstName} ${res.patient.personDetails.lastName}`;
+          const text = `${patient} has been discharged.`;
           this._systemModuleService.announceSweetProxy(text, 'error');
         }
 			}
     });
-	}
+  }
+
+  onClickPatientDocumentation(patient: any) {
+    const text = 'If you click on yes, you will be redirected to the patient documentation.';
+    this._systemModuleService.announceSweetProxy(text, 'question', this, null, null, patient, null, null, null);
+    // routerLink="/dashboard/patient-manager/patient-manager-detail/{{ selectedPatient?.patient?.personId }}"
+  }
+
+  sweetAlertCallback(result, data) {
+    if (result.value) {
+      this._router.navigate([`/dashboard/patient-manager/patient-manager-detail`, data.patient.personId]).then(res => {
+        console.log(res);
+      }).catch(err => {
+        console.log(err);
+      });
+    }
+  }
 
 	onClickDischargePatient() {
 		this.dischargePatient = true;

@@ -37,14 +37,13 @@
                         </div>
                     </div>
                     <ul class="topmenuwrap">
-                        <li (click)="docDetail_show(document)">
+                        <li (click)="docDetail_show(document, false)">
                             <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                             <span>View</span>
                         </li>
                     </ul>
                     <div class="docCard-ctaWrap">
-                        <i class="edit-ico-color fa fa-pencil-square" aria-hidden="true"></i>
-                        <i class="del-ico-color fa fa-trash" aria-hidden="true"></i>
+                        <i class="edit-ico-color fa fa-clipboard tooltip" aria-hidden="true" data-toggle="Add addendum" (click)="docDetail_show(document, true)"></i>
                     </div>
                 </div>
                 <div class="docCard-body">
@@ -89,7 +88,7 @@
     </div>
 
     <div *ngIf="docDetail_view" class="modal-overlay">
-        <app-documentation-detail [document]="selectedDocument" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-documentation-detail>
+        <app-documentation-detail [patientDocumentationId]="patientDocumentation._id" [document]="selectedDocument" [isDocumentEdit]="isDocumentEdit" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-documentation-detail>
     </div>
 
     <div *ngIf="addProblem_view" class="modal-overlay">
@@ -109,4 +108,4 @@
     </div>
 </div>
 
-<app-order-set (showDoc)="showDoc_onClick($event)" *ngIf="showOrderSet"></app-order-set>
+<app-order-set [selectedPatient]="patient" (showDoc)="showDoc_onClick($event)" *ngIf="showOrderSet"></app-order-set>

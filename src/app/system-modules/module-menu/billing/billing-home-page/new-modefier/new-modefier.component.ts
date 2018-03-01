@@ -52,10 +52,11 @@ export class NewModefierComponent implements OnInit {
         }).then(payload => {
           if (this.frmNewmodefier.controls['tag'].value !== '') {
             if (payload.data !== undefined) {
+              this.tags = payload.data;
               if (payload.data.length > 0) {
                 const index = payload.data.filter(x => x.name.toLowerCase() === this.frmNewmodefier.controls['tag'].value.toLowerCase());
                 if (index.length > 0) {
-                  this.tags = payload.data;
+                  this.showBtn = false;
                 } else {
                   this.showBtn = true;
                 }
@@ -132,16 +133,23 @@ export class NewModefierComponent implements OnInit {
     modifier.tagId = this.selectedTag._id;
     modifier.modifierType = this.frmNewmodefier.controls['valueCheck'].value;
     modifier.modifierValue = this.frmNewmodefier.controls['value'].value;
-
-    this.servicePriceService.createModifier(modifier).then(payload => {
+    if (modifier.priceId !== undefined) {
+      this.servicePriceService.createModifier(modifier).then(payload => {
+        this.systemModuleService.off();
+        this.selectedFacilityServicePrice = payload;
+        this.systemModuleService.announceSweetProxy('Price modifier added successful', 'success', null, null, null, null, null, null, null);
+        this.refreshModifiers.emit(true);
+        this.close_onClick();
+      }, err => {
+        this.systemModuleService.off();
+        this.systemModuleService.announceSweetProxy('Failed to add price modifiers', 'error');
+      })
+    } else {
       this.systemModuleService.off();
-      this.selectedFacilityServicePrice = payload;
-      this.systemModuleService.announceSweetProxy('Price modifier added successful', 'success', null, null, null, null, null, null, null);
-      this.refreshModifiers.emit(true);
-      this.close_onClick();
-    }, err => {
-      this.systemModuleService.announceSweetProxy('Failed to add price modifiers', 'error');
-    })
+      this.systemModuleService.announceSweetProxy
+      ('Empty price cannot be modify, please assign atleast ZERO as the price of this service', 'error');
+    }
+
 
   }
 }

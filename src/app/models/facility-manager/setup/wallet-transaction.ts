@@ -14,6 +14,7 @@ export interface WalletTransaction {
   destinationType?: EntityType;
   transactionStatus?: string;
   transactionDirection?: TransactionDirection;
+  amount?:any;
 }
 export enum TransactionType {
     Dr,
