@@ -76,6 +76,7 @@ export class StoreCheckInComponent implements OnInit {
 		});
 		this.storeCheckin.controls['location'].valueChanges.subscribe(value => {
 			this.storeService.find({ query: { minorLocationId: value } }).then(res => {
+        console.log(res);
 				if (res.data.length > 0) {
 					this.stores = res.data;
 				} else {
@@ -98,7 +99,8 @@ export class StoreCheckInComponent implements OnInit {
     this.disableBtn = true;
 		const checkIn: any = <any>{};
 		checkIn.minorLocationId = value.location;
-		checkIn.storeId = value.room;
+		checkIn.storeId = value.room._id;
+    checkIn.storeObject = { name: value.room.name, _id: value.room._id, minorLocationId: value.room.minorLocationId };
 		checkIn.lastLogin = new Date();
 		checkIn.isOn = true;
     checkIn.isDefault = value.isDefault;
