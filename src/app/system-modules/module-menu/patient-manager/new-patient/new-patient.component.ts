@@ -1005,6 +1005,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     isDefault: true,
                     planDetails: {
                         hmoId: this.hmo.hmoId,
+                        hmoName:this.hmo.hmoName,
                         principalId: this.hmoInsuranceId
                     }
                 }
@@ -1053,12 +1054,14 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.loading = false;
                 this.close_onClick();
             }).catch(errr => {
+                console.log(errr);
                 this.systemModuleService.off();
                 this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
                 this.loading = false;
             });
 
         }).catch(err => {
+            console.log(err);
             this.systemModuleService.off();
             this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
             this.loading = false;

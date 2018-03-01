@@ -53,6 +53,7 @@ export class PaymentComponent implements OnInit {
     }
     ngOnInit() {
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+        console.log(this.selectedFacility);
         this.user = <User>this.locker.getObject('auth');
         this.searchInvestigation = new FormControl('', []);
         this._getBills();
@@ -119,6 +120,7 @@ export class PaymentComponent implements OnInit {
                 "isQuery": false
             }
         }).then((res: any) => {
+            console.log(res);
             this.systemModuleService.off;
             this.pendingBills = res.bills;
             this.totalAmountBilled = res.amountBilled;

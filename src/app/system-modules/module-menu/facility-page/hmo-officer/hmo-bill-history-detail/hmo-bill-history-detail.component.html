@@ -1,7 +1,7 @@
 <div class="animated pulse">
   <div class="modal-header-wrap">
     <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <legend class="modal_title">{{selectedBill.principalObject?.personDetails?.firstName}} {{selectedBill.principalObject?.personDetails?.lastName}}</legend>
+    <legend class="modal_title">{{selectedBill.coverFile.id}}</legend>
     <div class="modal_mini_title">HMO Bills History</div>
     <div class="modal_mini_title">{{selectedBill.updatedAt|date:'medium'}}</div>
   </div>
@@ -25,17 +25,17 @@
           </tr>
       </thead>
       <tbody>
-          <tr>
+          <tr for="let item of filterBills">
               <td>
                 <div class="empWrap">
                     <div class="list-img">
                         <img src="assets/images/users/default.png">
                     </div>
-                    <div>Sam Rolins</div>
+                    <div>{{item.patientObject.personDetails.firstName}} {{item.patientObject.personDetails.lastName}}</div>
                 </div>
               </td>
-              <td>Patient Registration</td>
-              <td class="td-worspace">&#8358; 12,200</td>
+              <td>{{item.serviceObject.name}}</td>
+              <td class="td-worspace">&#8358; {{item.totalPrice|number:'1.2-2'}}</td>
               <td>Capitation</td> 
               <td><span class="green-txt">Approved</span></td>
           </tr>
