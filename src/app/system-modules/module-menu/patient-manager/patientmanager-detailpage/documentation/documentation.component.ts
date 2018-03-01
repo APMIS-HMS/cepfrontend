@@ -171,7 +171,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     });
 
     this.documentationService.listenerUpdate.subscribe(payload =>{
-      console.log(payload);
       this.patientDocumentation = payload;
     })
   }

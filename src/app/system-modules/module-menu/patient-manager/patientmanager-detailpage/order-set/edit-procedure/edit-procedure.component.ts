@@ -39,7 +39,6 @@ export class EditProcedureComponent implements OnInit {
       .distinctUntilChanged()
       .switchMap(value => this._facilityServiceCategoryService.searchProcedure({ query: { 'text': value, facilityId: this.facility._id } }))
       .subscribe((res: any) => {
-        console.log(res);
         this.cuDropdownLoading = false;
         if (res.status === 'success') {
           this.results = res.data;

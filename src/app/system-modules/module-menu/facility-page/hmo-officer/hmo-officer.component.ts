@@ -35,7 +35,6 @@ export class HmoOfficerComponent implements OnInit {
 
       payload.data.forEach(element => {
         const index = element.billItems.filter(x => x.covered.isVerify !== undefined);
-        console.log(index);
         if (index.length === 0) {
           element.isPending = true;
         } else {

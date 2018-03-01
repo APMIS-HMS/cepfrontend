@@ -100,7 +100,6 @@ export class PrescriptionListComponent implements OnInit {
 	getAllPrescriptions() {
 		this._prescriptionService.customGet({ query: { facilityId: this.facility._id } }).then(res => {
 			this.loading = false;
-			console.log(res);
 			res.data.forEach(element => {
 				if (!element.isDispensed) {
 					let isBilledCount = 0;

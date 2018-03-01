@@ -65,7 +65,6 @@ export class HmoBillDetailComponent implements OnInit {
   } 
 
   hmoConfirmBill(isAccept: boolean) {
-    console.log(isAccept);
     if (this.hmoTypeControl.value === 1 && isAccept === true) {
       if (this.authCodeControl.value !== null) {
         const index = this.selectedBill.billItems.filter(x => x._id.toString() === this.bill._id.toString());

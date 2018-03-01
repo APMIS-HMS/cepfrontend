@@ -66,9 +66,7 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
   sweetAlertCallback(result, data) {
     if (result.value) {
       this._router.navigate([`/dashboard/patient-manager/patient-manager-detail`, data.patient.personId]).then(res => {
-        console.log(res);
       }).catch(err => {
-        console.log(err);
       });
     }
   }
