@@ -38,11 +38,16 @@ class Service {
           x.isPicked = true;
         });
         const patient = await patientsService.get(params.query.patientId);
-        const patientPaymentType = patient.paymentPlan.filter(x => x.planDetails.hmoId.toString() === insurance[index].covered.hmoId.toString());
+        console.log(patient.paymentPlan);
+        console.log(insurance[index].covered);
+        const patientPaymentType = patient.paymentPlan.filter(x => x.planDetails.hmoId !== undefined && x.planDetails.hmoId.toString() === insurance[index].covered.hmoId.toString());
         const billModel = {
           "facilityId": params.query.facilityId,
           "grandTotal": sumCost(indx),
-          "patientId": patientPaymentType[0].planDetails.principalId,
+          "coverFile": {
+            "id": patientPaymentType[0].planDetails.principalId,
+            "name": patientPaymentType[0].planDetails.hmoName
+          },
           "subTotal": sumCost(indx),
           "discount": 0,
           "billItems": indx
@@ -63,7 +68,10 @@ class Service {
         const billModel = {
           "facilityId": params.query.facilityId,
           "grandTotal": sumCost(indx),
-          "patientId": patientPaymentType[0].planDetails.principalId,
+          "coverFile": {
+            "id": patientPaymentType[0].planDetails.principalId,
+            "name": patientPaymentType[0].planDetails.hmoName
+          },
           "subTotal": sumCost(indx),
           "discount": 0,
           "billItems": indx
@@ -75,7 +83,7 @@ class Service {
     //Collection of Family BillItems
     len = family.length;
     for (let index = 0; index < len; index++) {
-      const indx = filteredFamily.filter(x => x.covered.familyId.toString() === family[index].covered.familyId.toString() && x.isPicked === undefined);
+      const indx = family.filter(x => x.covered.familyId.toString() === family[index].covered.familyId.toString() && x.isPicked === undefined);
       if (indx.length > 0) {
         indx.forEach(x => {
           x.isPicked = true;
@@ -85,7 +93,10 @@ class Service {
         const billModel = {
           "facilityId": params.query.facilityId,
           "grandTotal": sumCost(indx),
-          "patientId": patientPaymentType[0].planDetails.principalId,
+          "coverFile": {
+            "id": patientPaymentType[0].planDetails.principalId,
+            "name": patientPaymentType[0].planDetails.hmoName
+          },
           "subTotal": sumCost(indx),
           "discount": 0,
           "billItems": indx
@@ -131,7 +142,7 @@ module.exports = function (options) {
 function sumCost(billItems) {
   let totalCost = 0;
   billItems.forEach(element => {
-    if (element.active) {
+    if (element.active == true || element.active === undefined) {
       totalCost += element.totalPrice;
     }
   });
