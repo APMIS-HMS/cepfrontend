@@ -77,7 +77,9 @@ module.exports = function(app) {
         return app.channel(data.facilityId);
     });
     app.service('people').publish('updated', (data, context) => {
-        return app.channel(context.params.query.facilityId);
+        if (context.params.query.facilityId !== undefined) {
+            return app.channel(context.params.query.facilityId);
+        }
     });
     app.service('facility-roles').publish('created', (data, context) => {
         return app.channel(context.params.query.facilityId);
@@ -85,4 +87,10 @@ module.exports = function(app) {
     app.service('appointments').publish('updated', (data) => {
         return app.channel(data.facilityId);
     });
+    app.service('documentations').publish('updated', (data, context) => {
+        if (context.params.query !== undefined && context.params.query.facilityId !== undefined) {
+            return app.channel(context.params.query.facilityId);
+        }
+    });
+
 };

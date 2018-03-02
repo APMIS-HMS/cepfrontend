@@ -75,7 +75,7 @@ class Service {
     //Collection of Family BillItems
     len = family.length;
     for (let index = 0; index < len; index++) {
-      const indx = filteredFamily.filter(x => x.covered.familyId.toString() === family[index].covered.familyId.toString() && x.isPicked === undefined);
+      const indx = family.filter(x => x.covered.familyId.toString() === family[index].covered.familyId.toString() && x.isPicked === undefined);
       if (indx.length > 0) {
         indx.forEach(x => {
           x.isPicked = true;
