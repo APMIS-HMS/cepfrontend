@@ -412,3 +412,41 @@ td .empWrap .list-img {
         box-shadow: 0px 0px 0px 0px transparent;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.tbl-resp-wrap{
+    min-width: 100%;
+    padding-bottom: 100px;
+    overflow-y: auto; 
+}
+.tbl-resp-wrap table{
+    min-width: 500px;
+}
+.doc-contentArea {
+    width: 100%;
+}
+td{
+    border: 0px solid transparent;
+}
+th{
+    font-size: 1.5rem;
+    text-align: left;
+    font-weight: normal;
+    color: #ff2500;
+    border-bottom: 1px solid #ff2500;
+}

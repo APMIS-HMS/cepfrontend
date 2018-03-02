@@ -7,34 +7,31 @@
         <div class="example-full-width">
             <button (click)="newTagPopup_show()" mat-raised-button>New Tag</button>
         </div>
-        <table class="tblBg">
-            <thead>
-                <tr>
-                    <th>Tag</th>
-                    <th>Actions</th>
-                </tr>
-                <tr>
-                    <td colspan="2">
-                        <div class="searchInputWrap">
-                            <!--<input type="search" class="searchInput" [formControl]="searchTag" placeholder="search for a tag">-->
-                            <mat-input-container>
-                                <input matInput [formControl]="searchTag" placeholder="Search for a tag">
-                            </mat-input-container>
-                            <i class="fa fa-search" aria-hidden="true"></i>
+        <div class="row">
+            <div class="col-md-2">
+                <mat-input-container>
+                    <input matInput [formControl]="searchTag" placeholder="Search for a tag">
+                </mat-input-container>
+            </div>
+        </div>
+        <br>
+        <br>
+        <div class="row">
+            <div *ngIf="tags.length === 0" style="text-align: center" class="col-lg-12">
+                <h3>No data available</h3>
+            </div>
+            <div *ngFor="let tag of tags" class="col-md-3 card">
+                        <div class="row">
+                            <div class="col-xs-6" style="font-size: 1.4rem; font-weight:900">
+                                {{tag.name}}
+                            </div>
+                            <div class="col-xs-6" style="text-align: right; font-size: 1.2rem">
+                                <i class="fa fa-pencil-square-o" aria-hidden="true" (click)="onTagEdit(tag)"></i> &nbsp; &nbsp;
+                                <i class="fa fa-trash" aria-hidden="true" (click)="onTagRemove(tag)"></i>
+                            </div>
                         </div>
-                    </td>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let tag of tags">
-                    <td>{{tag.name}}</td>
-                    <td>
-                        <i class="fa fa-pencil-square-o" aria-hidden="true" (click)="onTagEdit(tag)"></i>
-                        <i class="fa fa-trash" aria-hidden="true" (click)="onTagRemove(tag)"></i>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+            </div>
+        </div>
     </div>
 
     <div *ngIf="newTagPopup" class="modal-overlay">

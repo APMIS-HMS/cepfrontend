@@ -30,12 +30,13 @@ export class WardManagerAdmissionpageComponent implements OnInit {
   facility: Facility = <Facility>{};
   user: User = <User>{};
   employeeDetails: any = <any>{};
-  newAdmissionLoading: Boolean = true;
-  transferInLoading: Boolean = true;
-  transferOutLoading: Boolean = true;
-  dischargeLoading: Boolean = true;
-  disableAdmitBtn: Boolean = false;
-  admitBtnText: String = '<i class="fa fa-bed" aria-hidden="true"></i> Admit';
+  newAdmissionLoading = true;
+  transferInLoading = true;
+  transferOutLoading = true;
+  dischargeLoading = true;
+  disableAdmitBtn = false;
+  admitBtnText = '<i class="fa fa-bed" aria-hidden="true"></i> Admit';
+  inPatientWaitingItem: any;
 
   constructor(
     private _inPatientListService: InPatientListService,
@@ -198,7 +199,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
       this.listPatientDischarge = res.data;
     });
   }
-
+  navEpDetail(item) {}
   // Notification
   private _notification(type: String, text: String): void {
     this.facilityService.announceNotification({

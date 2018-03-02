@@ -18,9 +18,9 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 	pageInView: string;
 	loginEmployee: Employee = <Employee>{};
 	selectedFacility: Facility = <Facility>{};
-	wardTitle: String = '';
-	isWardAvailable: Boolean = false;
-	modal_on: Boolean = false;
+	wardTitle = '';
+	isWardAvailable = false;
+	modal_on = false;
 	admissionNavMenu = false;
 	admittedNavMenu = false;
 	wardNavMenu = false;
@@ -38,7 +38,7 @@ export class WardManagerComponent implements OnInit, OnDestroy {
     private _facilityService: FacilitiesService,
     private _employeeService: EmployeeService,
     private _authFacadeService: AuthFacadeService,
-    private _systemModuleService:SystemModuleService
+    private _systemModuleService: SystemModuleService
 	) {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       if (!!res._id) {
@@ -58,7 +58,8 @@ export class WardManagerComponent implements OnInit, OnDestroy {
               // Set page title
               this.isWardAvailable = true;
               this.wardTitle = x.minorLocationId.name;
-              this._employeeService.update(this.loginEmployee).then(res => {
+              // tslint:disable-next-line:no-shadowed-variable
+              this._employeeService.update(this.loginEmployee).then( res => {
                 this.loginEmployee = res;
                 checkingObject = { typeObject: x, type: 'ward' };
                 this.checkedInObject = checkingObject;
@@ -90,12 +91,12 @@ export class WardManagerComponent implements OnInit, OnDestroy {
           }
         }
       } else {
-        const text ='Couldn\'t get Logged in user! Please try again later';
+        const text = 'Couldn\'t get Logged in user! Please try again later';
       this._systemModuleService.announceSweetProxy(text, 'error', null, null, null, null, null, null, null);
       }
     }).catch(err => {
-      //Starday * redirect non employee of this facility to the dashboard
-      const text ='Only an employee of this facility can have access to this module';
+      // Starday * redirect non employee of this facility to the dashboard
+      const text = 'Only an employee of this facility can have access to this module';
       this._systemModuleService.announceSweetProxy(text, 'info', null, null, null, null, null, null, null);
       this._router.navigate(['/dashboard']);
     });
@@ -166,10 +167,10 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 		}
 	}
 
-	// getCheckedInWard(value: any) {
-	// 	const checkedInObject = { typeObject: value, type: 'ward' };
-	// 	this.checkedInObject = checkedInObject;
-	// }
+	getCheckedInWard(value: any) {
+		// const checkedInObject = { typeObject: value, type: 'ward' };
+		// this.checkedInObject = checkedInObject;
+	}
 
 	close_onClick(message: boolean): void {
 		this.modal_on = false;

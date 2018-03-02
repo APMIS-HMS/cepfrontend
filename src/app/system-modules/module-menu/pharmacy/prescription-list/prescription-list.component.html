@@ -25,11 +25,13 @@
                         </div>
                         <div class="col-md-4">
                             <select class="table-header-select" formControlName="category" placeholder="Select Category" (change)="onChangeCategory($event);">
-                                <option value="" selected>Select Category</option>
-                                <option value="individual">Individual</option>
-                                <option value="corporate">Corporate</option>
-                                <option value="internal">Internal</option>
-                            </select>
+
+                                                <option value="" selected>Select Category</option>
+                                                <option value="individual">Individual</option>
+                                                <option value="corporate">Corporate</option>
+                                                <option value="internal">Internal</option>
+                                            </select>
+
                         </div>
                         <div class="col-md-3">
                             <input class="table-header-input" type="date" placeholder="Choose a date">
@@ -54,16 +56,25 @@
                     </div>
                     <div class="card-list-item" *ngFor="let prescription of prescriptionLists; let i = index;" routerLink='/dashboard/pharmacy/prescriptions/{{prescription._id}}'>
                         <div class="row">
-                            <div class="table-list col-md-1">{{ i+1 }}</div>
-                            <div class="table-list col-md-2">{{prescription?.updatedAt | date}}</div>
-                            <div class="table-list col-md-2">{{prescription?.personDetails.firstName }} {{prescription?.personDetails.lastName }}</div>
-                            <div class="table-list col-md-2">{{prescription?.clinicDetails?.clinicName}}</div>
-                            <div class="table-list col-md-1">{{prescription?.priority?.name}}</div>
-                            <div class="table-list col-md-2">{{prescription?.employeeDetails.firstName }} {{prescription?.employeeDetails.lastName }}</div>
-                            <div class="table-list col-md-2">
-                                <span *ngIf="prescription.status == 'completely'" style="color:forestgreen">Completely<br>Assessed</span>
-                                <span *ngIf="prescription.status == 'partly'" style="color:blue">Partly<br>Assessed</span>
-                                <span *ngIf="prescription.status == 'not'" style="color:crimson">Not<br>Assessed</span>
+                            <div class="table-list col-lg-2">{{prescription?.updatedAt | date}}</div>
+                            <div class="table-list col-lg-2">{{prescription?.personDetails.firstName }} {{prescription?.personDetails.lastName }}</div>
+                            <div class="table-list col-lg-2">{{prescription?.clinicDetails?.clinicName}}</div>
+                            <div class="table-list col-lg-2">{{prescription?.priority?.name}}</div>
+                            <div class="table-list col-lg-2">{{prescription?.employeeDetails.firstName }} {{prescription?.employeeDetails.lastName }}</div>
+                            <div class="table-list col-lg-2">
+
+                                <div class="table-list col-md-1">{{ i+1 }}</div>
+                                <div class="table-list col-md-2">{{prescription?.updatedAt | date}}</div>
+                                <div class="table-list col-md-2">{{prescription?.personDetails.firstName }} {{prescription?.personDetails.lastName }}</div>
+                                <div class="table-list col-md-2">{{prescription?.clinicDetails?.clinicName}}</div>
+                                <div class="table-list col-md-1">{{prescription?.priority?.name}}</div>
+                                <div class="table-list col-md-2">{{prescription?.employeeDetails.firstName }} {{prescription?.employeeDetails.lastName }}</div>
+                                <div class="table-list col-md-2">
+
+                                    <span *ngIf="prescription.status == 'completely'" style="color:forestgreen">Completely<br>Assessed</span>
+                                    <span *ngIf="prescription.status == 'partly'" style="color:blue">Partly<br>Assessed</span>
+                                    <span *ngIf="prescription.status == 'not'" style="color:crimson">Not<br>Assessed</span>
+                                </div>
                             </div>
                         </div>
                     </div>
