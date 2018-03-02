@@ -117,8 +117,8 @@ export class BillLookupComponent implements OnInit {
 
     this._route.params.subscribe(params => {
       if (!!params.id && params.id !== undefined) {
-        this.patientService.find({ query: { facilityId: this.selectedFacility._id, personId: params.id } }).then(res => {
-          this.selectedPatient = res.data[0];
+        this.patientService.get(params.id,{}).then(res => {
+          this.selectedPatient = res;
           this.getPatientBills();
         }).catch(err => console.log(err));
       }
@@ -176,6 +176,7 @@ export class BillLookupComponent implements OnInit {
 
   onPersonValueUpdated(item) {
     this.selectedPatient.personDetails = item.person;
+    this.billGroups = [];
     this._getAllPendingBills();
     this._getAllInvoices();
   }
@@ -392,7 +393,7 @@ export class BillLookupComponent implements OnInit {
   onClickPatientPendingBill(pendingBill: any) {
     this.selectedPatient = {};
     this.selectedPatient._id = pendingBill.patientId;
-    this.selectedPatient.personDetails = pendingBill.personDetails;
+    this.selectedPatient.personDetails = pendingBill.principalObject.personDetails;
     this.getPatientBills();
   }
 

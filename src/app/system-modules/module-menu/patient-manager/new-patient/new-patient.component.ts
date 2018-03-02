@@ -190,8 +190,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
         this.filteredHmos = this.hmoPlanId.valueChanges
             .pipe(
-                startWith(''),
-                map((hmo: any) => hmo ? this.filterHmos(hmo) : this.hmos.slice())
+            startWith(''),
+            map((hmo: any) => hmo ? this.filterHmos(hmo) : this.hmos.slice())
             );
     }
     cropped(bounds: Bounds) {
@@ -935,6 +935,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             paymentPlan: [
                 {
                     planType: 'wallet',
+                    bearerPersonId: this.selectedPerson._id,
                     isDefault: true
                 }
             ]
@@ -980,7 +981,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.systemModuleService.off();
                 this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
                 this.loading = false;
-                });
+            });
 
         }).catch(err => {
             this.systemModuleService.off();
@@ -1005,7 +1006,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     isDefault: true,
                     planDetails: {
                         hmoId: this.hmo.hmoId,
-                        hmoName:this.hmo.hmoName,
+                        hmoName: this.hmo.hmoName,
                         principalId: this.hmoInsuranceId
                     }
                 }
@@ -1054,7 +1055,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.loading = false;
                 this.close_onClick();
             }).catch(errr => {
-                console.log(errr);
                 this.systemModuleService.off();
                 this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
                 this.loading = false;
@@ -1065,7 +1065,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             this.systemModuleService.off();
             this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
             this.loading = false;
-         });
+        });
 
     }
 
@@ -1371,7 +1371,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.systemModuleService.off();
                 this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
                 this.loading = false;
-             });
+            });
 
         }).catch(err => {
             this.systemModuleService.off();
