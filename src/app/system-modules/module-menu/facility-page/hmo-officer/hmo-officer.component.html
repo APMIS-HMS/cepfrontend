@@ -58,7 +58,7 @@
                         <span style="padding-left: 3px;">Date</span>
                     </th>
                     <th>
-                        <span style="padding-left: 3px;">Principal</span>
+                        <span style="padding-left: 3px;">File</span>
                     </th>
                     <th>
                         <span style="padding-left: 3px;">HMO</span>
@@ -73,12 +73,7 @@
                 <tr (click)="billHistoryDetail(bill)" *ngFor="let bill of historyBills">
                     <td>{{bill.updatedAt|date:'medium'}}</td>
                     <td>
-                        <div class="empWrap">
-                            <div class="list-img">
-                                <img src="assets/images/users/default.png">
-                            </div>
-                            <div>{{bill.coverFile.id}}</div>
-                        </div>
+                        {{bill.coverFile.id}}
                     </td>
                     <td>
                         <div class="empWrap">
