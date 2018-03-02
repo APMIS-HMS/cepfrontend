@@ -64,7 +64,7 @@ export class HmoBillDetailComponent implements OnInit {
         this.hmoConfirmBill(false);
       }
     }
-  } 
+  }
 
   hmoConfirmBill(isAccept: boolean) {
     if (this.hmoTypeControl.value === 1 && isAccept === true) {
