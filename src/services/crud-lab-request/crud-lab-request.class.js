@@ -74,68 +74,68 @@ class Service {
         const patientId = data.patientId;
         const investigations = data.investigations;
 
-        // if (accessToken !== undefined) {
-        //     const hasFacility = params.user.facilitiesRole.filter(x => x.facilityId.toString() === facilityId);
-        //     if (hasFacility.length > 0) {
-        //         // Billing Model
-        //         const billGroup = {
-        //             discount: 0,
-        //             facilityId: facilityId,
-        //             grandTotal: 0,
-        //             isWalkIn: false,
-        //             patientId: patientId,
-        //             subTotal: 0
-        //         };
-        //         // Billing Items
-        //         billGroup.billItems = [];
-        //         investigations.forEach(investigation => {
-        //             if (!investigation.isExternal) {
-        //                 const billItem = {};
-        //                 billItem.unitPrice = investigation.investigation.LaboratoryWorkbenches[0].workbenches[0].price;
-        //                 billItem.facilityId = facilityId;
-        //                 billItem.description = '';
-        //                 billItem.facilityServiceId = investigation.investigation.facilityServiceId;
-        //                 billItem.serviceId = investigation.investigation.serviceId;
-        //                 billItem.itemName = investigation.investigation.name;
-        //                 billItem.patientId = patientId;
-        //                 billItem.quantity = 1;
-        //                 billItem.totalPrice = billItem.quantity * billItem.unitPrice;
-        //                 billItem.unitDiscountedAmount = 0;
-        //                 billItem.totalDiscoutedAmount = 0;
-        //                 billGroup.subTotal = billGroup.subTotal + billItem.totalPrice;
-        //                 billGroup.grandTotal = billGroup.subTotal;
-        //                 billGroup.billItems.push(billItem);
-        //             }
-        //         });
+        if (accessToken !== undefined) {
+            const hasFacility = params.user.facilitiesRole.filter(x => x.facilityId.toString() === facilityId);
+            if (hasFacility.length > 0) {
+                // Billing Model
+                const billGroup = {
+                    discount: 0,
+                    facilityId: facilityId,
+                    grandTotal: 0,
+                    isWalkIn: false,
+                    patientId: patientId,
+                    subTotal: 0
+                };
+                // Billing Items
+                billGroup.billItems = [];
+                investigations.forEach(investigation => {
+                    if (!investigation.isExternal) {
+                        const billItem = {};
+                        billItem.unitPrice = investigation.investigation.LaboratoryWorkbenches[0].workbenches[0].price;
+                        billItem.facilityId = facilityId;
+                        billItem.description = '';
+                        billItem.facilityServiceId = investigation.investigation.facilityServiceId;
+                        billItem.serviceId = investigation.investigation.serviceId;
+                        billItem.itemName = investigation.investigation.name;
+                        billItem.patientId = patientId;
+                        billItem.quantity = 1;
+                        billItem.totalPrice = billItem.quantity * billItem.unitPrice;
+                        billItem.unitDiscountedAmount = 0;
+                        billItem.totalDiscoutedAmount = 0;
+                        billGroup.subTotal = billGroup.subTotal + billItem.totalPrice;
+                        billGroup.grandTotal = billGroup.subTotal;
+                        billGroup.billItems.push(billItem);
+                    }
+                });
 
-        //         if (billGroup.billItems.length > 0) {
-        //             const saveBilling = await billingService.create(billGroup);
-        //             if (saveBilling._id !== undefined) {
-        //                 // Attach billing items before saving.
-        //                 data.billingId = saveBilling;
-        //                 const saveRequest = await requestService.create(data);
-        //                 if (saveRequest._id !== undefined) {
-        //                     return jsend.success(saveRequest);
-        //                 } else {
-        //                     return jsend.error('There was a problem trying to save to billing.');
-        //                 }
-        //             } else {
-        //                 return jsend.error('There was a problem trying to save to billing.');
-        //             }
-        //         } else {
-        //             const saveRequest = await requestService.create(data);
-        //             if (saveRequest._id !== undefined) {
-        //                 return jsend.success(saveRequest);
-        //             } else {
-        //                 return jsend.error('There was a problem trying to save to billing.');
-        //             }
-        //         }
-        //     } else {
-        //         return jsend.error('Sorry! But you can not perform this transaction.');
-        //     }
-        // } else {
-        //     return jsend.error('Sorry! But you can not perform this transaction.');
-        // }
+                if (billGroup.billItems.length > 0) {
+                    const saveBilling = await billingService.create(billGroup);
+                    if (saveBilling._id !== undefined) {
+                        // Attach billing items before saving.
+                        data.billingId = saveBilling;
+                        const saveRequest = await requestService.create(data);
+                        if (saveRequest._id !== undefined) {
+                            return jsend.success(saveRequest);
+                        } else {
+                            return jsend.error('There was a problem trying to save to billing.');
+                        }
+                    } else {
+                        return jsend.error('There was a problem trying to save to billing.');
+                    }
+                } else {
+                    const saveRequest = await requestService.create(data);
+                    if (saveRequest._id !== undefined) {
+                        return jsend.success(saveRequest);
+                    } else {
+                        return jsend.error('There was a problem trying to save to billing.');
+                    }
+                }
+            } else {
+                return jsend.error('Sorry! But you can not perform this transaction.');
+            }
+        } else {
+            return jsend.error('Sorry! But you can not perform this transaction.');
+        }
     }
 
     update(id, data, params) {
