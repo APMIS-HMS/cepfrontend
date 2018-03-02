@@ -130,7 +130,6 @@ export class RightTabComponent implements OnInit {
         this.patientDocumentation.documentations.forEach(documentation => {
             if (documentation.document.documentType !== undefined && documentation.document.documentType.title === 'Problems') {
                 documentation.document.body.problems.forEach(problem => {
-                    console.log(problem);
                     if (problem.status !== null && problem.status.name === 'Active') {
                         this.problems.push(problem);
                     }

@@ -456,9 +456,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
           const createdById = this.loginEmployee._id;
           const facilityId = this.selectedMiniFacility._id;
-          console.log(documentation);
           if (documentation.documentationStatus !== 'Draft') {
-            this.documents.push(documentation);
+          this.documents.push(documentation);
           }else if (documentation.createdById === createdById && documentation.facilityId === facilityId) {
             this.hasSavedDraft = true;
             this.draftDocument = documentation;
@@ -469,12 +468,10 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         }else if(documentation.document.documentType.isSide === true && documentation.document.documentType.title === 'Vitals'){
           // payload.data[0].documentations[k].document.body.vitals;
           this.tableChartData = documentation.document.body.vitals;
-          console.log(this.tableChartData);
           this.documents.push(documentation);
         }else {
           this.documents.push(documentation);
         }
-        console.log(documentation);
       }
     });
     this.documents.reverse();
