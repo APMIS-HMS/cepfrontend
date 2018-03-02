@@ -72,14 +72,15 @@ class Service {
           }
         });
       });
-      var awaitToken = await getTokenService.get(tokenLabel.tokenType.invoiceNo, {});
+      const awaitToken = await getTokenService.get(tokenLabel.tokenType.invoiceNo, {});
+      console.log(awaitToken);
       if (billGroup.billingIds.length > 0) {
         billGroup.totalDiscount = data.totalDiscount;
         billGroup.subTotal = data.subTotal;
         billGroup.totalPrice = data.totalPrice;
         billGroup.balance = data.totalPrice;
-        billGroup.invoiceNo = tokenPayload.result;
-        var awaitInvoices = await invoicesService.create(billGroup);
+        billGroup.invoiceNo = awaitToken.result;
+        const awaitInvoices = await invoicesService.create(billGroup);
         const len = data.checkBillitems.length - 1;
         const len2 = data.listedBillItems.length - 1;
         const filterCheckedBills = [];
