@@ -4,7 +4,7 @@ class Service {
   constructor(options) {
     this.options = options || {};
   }
-  
+
   setup(app) {
     this.app = app;
   }
@@ -20,192 +20,242 @@ class Service {
     });
   }
 
-  create(data, params) {
+  async create(data, params) {
     const ref = generateOtp();
     const billingsService = this.app.service('billings');
     const invoicesService = this.app.service('invoices');
     const facilitiesService = this.app.service('facilities');
     const getTokenService = this.app.service('get-tokens');
     const peopleService = this.app.service('people');
-    var description = '';
-    return new Promise(function (resolve, reject) {
-      if (data.isInvoicePage == false) {
-        getTokenService.get(tokenLabel.tokenType.invoiceNo, {}).then(tokenPayload => {
-          var billGroup = {
-            billingIds: []
-          };
-          billGroup.facilityId = data.selectedFacility._id;
-          billGroup.patientId = data.selectedPatient._id;
-          data.billGroups.forEach((itemg, g) => {
-            itemg.bills.forEach((itemb, b) => {
-              if (itemb.isChecked) {
-                if (data.inputedValue.balance == 0 || data.inputedValue.isWaved == true) {
-                  itemb.billObject.isServiceEnjoyed = true;
-                }
-                if (data.inputedValue.balance == 0) {
-                  itemb.billObject.paymentCompleted = true;
-                }
-                itemb.billObject.isServiceEnjoyed = true;
-                itemb.billObject.isInvoiceGenerated = true;
-                itemb.billObject.updatedAt = new Date;
-                description += itemb.billObject.facilityServiceObject.category + '-' + itemb.billObject.facilityServiceObject.service;
-                billGroup.billingIds.push({
-                  billingId: itemb._id,
-                  billObject: itemb.billObject,
-                  billModelId: itemb.billModelId
-                });
-              }
-            });
-          });
+    let description = '';
 
-          if (billGroup.billingIds.length > 0) {
-            billGroup.payments = [];
-            billGroup.totalDiscount = data.discount;
-            billGroup.subTotal = data.subTotal;
-            billGroup.totalPrice = data.inputedValue.cost;
-            billGroup.balance = data.inputedValue.balance;
-            billGroup.invoiceNo = tokenPayload.result;
-            data.inputedValue.paymentMethod.reason = data.reason;
-            billGroup.payments.push({
-              'amountPaid': data.inputedValue.amountPaid,
-              'description': description,
-              'paymentMethod': data.inputedValue.paymentMethod,
-              'balance': data.inputedValue.balance,
-              'createdAt': new Date
-            });
+    if (data.isInvoicePage == false) {
+      const tokenPayload = await getTokenService.get(tokenLabel.tokenType.invoiceNo, {});
+      let billGroup = {
+        billingIds: []
+      };
+      console.log(1);
+      billGroup.facilityId = data.selectedFacility._id;
+      console.log(2);
+      billGroup.patientId = data.selectedPatient._id;
+      console.log(3);
+      data.billGroups.forEach((itemg, g) => {
+        console.log("Inside data bill Group");
+        itemg.bills.forEach((itemb, b) => {
+          console.log("Inside data bill Group 2");
+          if (itemb.isChecked) {
+            console.log("Inside data bill Group----check");
+            if (data.inputedValue.balance == 0 || data.inputedValue.isWaved == true) {
+              console.log("Inside data bill Group---Service Enjoyed");
+              itemb.billObject.isServiceEnjoyed = true;
+            }
             if (data.inputedValue.balance == 0) {
-              billGroup.paymentStatus = 'PAID';
-              billGroup.paymentCompleted = true;
+              console.log("Inside data bill Group---payment Completed");
+              itemb.billObject.paymentCompleted = true;
             }
-            if (data.inputedValue.isWaved == true) {
-              data.invoice.paymentStatus = 'WAIVED';
-            }
-            invoicesService.create(billGroup).then(payload => {
-              var len = data.checkBillitems.length - 1;
-              var len2 = data.listedBillItems.length - 1;
-              var filterCheckedBills = [];
-              for (var x = len; x >= 0; x--) {
-                for (var x2 = len2; x2 >= 0; x2--) {
-                  let len3 = data.listedBillItems[x2].billItems.length - 1;
-                  for (var x3 = len3; x3 >= 0; x3--) {
-                    if (data.listedBillItems[x2].billItems[x3]._id == data.checkBillitems[x]) {
-                      data.listedBillItems[x2].billItems[x3].isInvoiceGenerated = true;
-                      if (data.inputedValue.balance == 0 || data.inputedValue.isWaved == true) {
-                        data.listedBillItems[x2].billItems[x3].isServiceEnjoyed = true;
-                      }
-                      if (data.inputedValue.balance == 0) {
-                        data.listedBillItems[x2].billItems[x3].paymentCompleted = true;
-                      }
-                      data.listedBillItems[x2].billItems[x3].isServiceEnjoyed = true;
-                      filterCheckedBills.push(data.listedBillItems[x2]);
-                      if (x == 0) {
-                        let len4 = filterCheckedBills.length - 1;
-                        filterCheckedBills.forEach((bill, x4) => {
-                          billingsService.patch(bill._id, {
-                            billItems: filterCheckedBills[x4].billItems
-                          }).then(pd => {
-                            if (x4 == len4) {
-                              if (data.inputedValue.isWaved != true) {
-                                data.invoice = payload;
-                                onDebitWallet(data, resolve, description, ref, facilitiesService, peopleService,PaymentPlan);
-                              } else {
-                                pd.isPaid = false;
-                                pd.isWaved = true;
-                                var returnObj ={
-                                  bill : pd,
-                                  invoice:payload
-                                };
-                                resolve(returnObj);
-                              }
-                            }
-                          });
-                        });
-                      }
-                    }
-                  }
-                }
-              }
-            }, error => {
+            itemb.billObject.isServiceEnjoyed = true;
+            console.log(4);
+            itemb.billObject.isInvoiceGenerated = true;
+            console.log(5);
+            itemb.billObject.updatedAt = new Date;
+            console.log(6);
+            description += itemb.billObject.facilityServiceObject.category + '-' + itemb.billObject.facilityServiceObject.service;
+            console.log(7);
+            billGroup.billingIds.push({
+              billingId: itemb._id,
+              billObject: itemb.billObject,
+              billModelId: itemb.billModelId
             });
+            console.log(8);
+            console.log("------------------Start Details of Bill group-------------------");
+            console.log(billGroup);
+            console.log("------------------End Details of Bill group-------------------");
           }
         });
-      } else {
-        if (data.inputedValue.balance == 0) {
-          data.invoice.paymentCompleted = true;
-          data.invoice.paymentStatus = 'PAID';
-        }
-        if (data.inputedValue.isWaved == true) {
-          data.invoice.paymentStatus = 'WAIVED';
-        }
-        let invLen = data.invoice.billingIds.length - 1;
-        for (let v = invLen; v >= 0; v--) {
-          data.invoice.billingIds[v].billObject.isServiceEnjoyed = true;
-          if (data.inputedValue.balance == 0 || data.inputedValue.isWaved == true) {
-            data.invoice.billingIds[v].billObject.isServiceEnjoyed = true;
-          }
-          if (data.inputedValue.balance == 0) {
-            data.invoice.billingIds[v].billObject.paymentCompleted = true;
-          }
-          description += data.invoice.billingIds[v].billObject.facilityServiceObject.category + ' - ' + data.invoice.billingIds[v].billObject.facilityServiceObject.service;
-        }
+      });
 
-        data.invoice.balance = data.inputedValue.balance;
+      if (billGroup.billingIds.length > 0) {
+        console.log("Bill group billingIds length is greater Zero");
+        billGroup.payments = [];
+        console.log(9);
+        billGroup.totalDiscount = data.discount;
+        console.log(10);
+        billGroup.subTotal = data.subTotal;
+        console.log(11);
+        billGroup.totalPrice = data.inputedValue.cost;
+        console.log(12);
+        billGroup.balance = data.inputedValue.balance;
+        console.log(13);
+        billGroup.invoiceNo = tokenPayload.result;
+        console.log(14);
         data.inputedValue.paymentMethod.reason = data.reason;
-        data.invoice.payments.push({
+        console.log(15);
+        billGroup.payments.push({
           'amountPaid': data.inputedValue.amountPaid,
-          'paymentMethod': data.inputedValue.paymentMethod,
           'description': description,
+          'paymentMethod': data.inputedValue.paymentMethod,
           'balance': data.inputedValue.balance,
           'createdAt': new Date
         });
-        invoicesService.patch(data.invoice._id, {
-          billingIds: data.invoice.billingIds,
-          balance: data.invoice.balance,
-          payments: data.invoice.payments,
-          paymentStatus: data.invoice.paymentStatus,
-          paymentCompleted:data.invoice.paymentCompleted
-        }).then(payload => {
-          let len5 = payload.billingIds.length - 1;
-          for (let m = len5; m >= 0; m--) {
-            billingsService.get(payload.billingIds[m].billModelId, {}).then(itemBill => {
-              let len6 = itemBill.billItems.length - 1;
-              for (let n = len6; n >= 0; n--) {
-                if (itemBill.billItems[n]._id.toString() == payload.billingIds[m].billingId.toString()) {
-                  if (data.inputedValue.balance == 0 || data.inputedValue.isWaved == true) {
-                    itemBill.billItems[n].isServiceEnjoyed = true;
-                  }
-                  if (data.inputedValue.balance == 0) {
-                    itemBill.billItems[n].paymentCompleted = true;
-                  }
-                  itemBill.billItems[n].isServiceEnjoyed = true;
-                  if (n == 0) {
-                    billingsService.patch(itemBill._id, {
-                      billItems: itemBill.billItems
+        console.log(16);
+        if (data.inputedValue.balance == 0) {
+          billGroup.paymentStatus = 'PAID';
+          billGroup.paymentCompleted = true;
+        }
+        console.log(17);
+        if (data.inputedValue.isWaved == true) {
+          data.invoice.paymentStatus = 'WAIVED';
+        }
+        console.log(18);
+        const awaitBillGroup = await invoicesService.create(billGroup);
+        console.log(19);
+        const len = data.checkBillitems.length - 1;
+        console.log(20);
+        const len2 = data.listedBillItems.length - 1;
+        console.log(21);
+        let filterCheckedBills = [];
+        console.log(22);
+        for (var x = len; x >= 0; x--) {
+          console.log(23);
+          for (var x2 = len2; x2 >= 0; x2--) {
+            console.log(24);
+            let len3 = data.listedBillItems[x2].billItems.length - 1;
+            console.log(25);
+            for (var x3 = len3; x3 >= 0; x3--) {
+              console.log(26);
+              if (data.listedBillItems[x2].billItems[x3]._id == data.checkBillitems[x]) {
+                console.log(27);
+                data.listedBillItems[x2].billItems[x3].isInvoiceGenerated = true;
+                console.log(28);
+                if (data.inputedValue.balance == 0 || data.inputedValue.isWaved == true) {
+                  console.log(29);
+                  data.listedBillItems[x2].billItems[x3].isServiceEnjoyed = true;
+                  console.log(30);
+                }
+                if (data.inputedValue.balance == 0) {
+                  console.log(31);
+                  data.listedBillItems[x2].billItems[x3].paymentCompleted = true;
+                  console.log(32);
+                }
+                data.listedBillItems[x2].billItems[x3].isServiceEnjoyed = true;
+                console.log(33);
+                filterCheckedBills.push(data.listedBillItems[x2]);
+                console.log(34);
+                if (x == 0) {
+                  console.log(35);
+                  let len4 = filterCheckedBills.length;
+                  console.log(36);
+                  let pds = [];
+                  console.log(37);
+                  console.log();
+                  for (let _indx = 0; _indx < len4; _indx++) {
+                    console.log(38);
+                    console.log(bill);
+                    const pd = await billingsService.patch(bill._id, {
+                      billItems: filterCheckedBills[_indx].billItems
                     });
+                    console.log(39);
+                    pds.push(pd);
+                    console.log(40);
                   }
-                  if (m == 0) {
-                    if (data.inputedValue.isWaved != true) {
-                      data.currentInvoice = payload;
-                      onDebitWallet(data, resolve, description, ref, facilitiesService, peopleService,PaymentPlan);
-                    } else {
-                      itemBill.isPaid = false;
-                      itemBill.isWaved = true;
-                      itemBill.paidStatus = 'WAIVED';
-                      var returnObj ={
-                        bill : itemBill,
-                        invoice:payload
-                      };
-                      resolve(returnObj);
-                    }
+                  if (data.inputedValue.isWaved != true) {
+                    console.log(41);
+                    data.invoice = awaitBillGroup;
+                    console.log(42);
+                    return onDebitWallet(data, description, ref, facilitiesService, peopleService, PaymentPlan);
+                    console.log(43);
+                  } else {
+                    console.log(44);
+                    pd.isPaid = false;
+                    console.log(45);
+                    pd.isWaved = true;
+                    console.log(46);
+                    let returnObj = {
+                      bill: pds,
+                      invoice: awaitBillGroup
+                    };
+                    console.log(47);
+                    return returnObj;
                   }
                 }
               }
-            });
+            }
           }
-        }, error => {
-        });
+        }
       }
-    });
+    } else {
+      if (data.inputedValue.balance == 0) {
+        data.invoice.paymentCompleted = true;
+        data.invoice.paymentStatus = 'PAID';
+      }
+      if (data.inputedValue.isWaved == true) {
+        data.invoice.paymentStatus = 'WAIVED';
+      }
+      let invLen = data.invoice.billingIds.length - 1;
+      for (let v = invLen; v >= 0; v--) {
+        data.invoice.billingIds[v].billObject.isServiceEnjoyed = true;
+        if (data.inputedValue.balance == 0 || data.inputedValue.isWaved == true) {
+          data.invoice.billingIds[v].billObject.isServiceEnjoyed = true;
+        }
+        if (data.inputedValue.balance == 0) {
+          data.invoice.billingIds[v].billObject.paymentCompleted = true;
+        }
+        description += data.invoice.billingIds[v].billObject.facilityServiceObject.category + ' - ' + data.invoice.billingIds[v].billObject.facilityServiceObject.service;
+      }
+
+      data.invoice.balance = data.inputedValue.balance;
+      data.inputedValue.paymentMethod.reason = data.reason;
+      data.invoice.payments.push({
+        'amountPaid': data.inputedValue.amountPaid,
+        'paymentMethod': data.inputedValue.paymentMethod,
+        'description': description,
+        'balance': data.inputedValue.balance,
+        'createdAt': new Date
+      });
+      const patechedInvoice = invoicesService.patch(data.invoice._id, {
+        billingIds: data.invoice.billingIds,
+        balance: data.invoice.balance,
+        payments: data.invoice.payments,
+        paymentStatus: data.invoice.paymentStatus,
+        paymentCompleted: data.invoice.paymentCompleted
+      });
+      let len5 = patechedInvoice.billingIds.length - 1;
+      for (let m = len5; m >= 0; m--) {
+        const itemBill = billingsService.get(patechedInvoice.billingIds[m].billModelId, {});
+        let len6 = itemBill.billItems.length - 1;
+          for (let n = len6; n >= 0; n--) {
+            if (itemBill.billItems[n]._id.toString() == patechedInvoice.billingIds[m].billingId.toString()) {
+              if (data.inputedValue.balance == 0 || data.inputedValue.isWaved == true) {
+                itemBill.billItems[n].isServiceEnjoyed = true;
+              }
+              if (data.inputedValue.balance == 0) {
+                itemBill.billItems[n].paymentCompleted = true;
+              }
+              itemBill.billItems[n].isServiceEnjoyed = true;
+              if (n == 0) {
+                await billingsService.patch(itemBill._id, {
+                  billItems: itemBill.billItems
+                });
+              }
+              if (m == 0) {
+                if (data.inputedValue.isWaved != true) {
+                  data.currentInvoice = patechedInvoice;
+                  onDebitWallet(data, description, ref, facilitiesService, peopleService, PaymentPlan);
+                } else {
+                  itemBill.isPaid = false;
+                  itemBill.isWaved = true;
+                  itemBill.paidStatus = 'WAIVED';
+                  let returnObj = {
+                    bill: itemBill,
+                    invoice: patechedInvoice
+                  };
+                  return returnObj;
+                }
+              }
+            }
+          }
+      }
+    }
   }
 
   update(id, data, params) {
@@ -242,75 +292,97 @@ module.exports = function (options) {
   return new Service(options);
 };
 
-function onDebitWallet(data, resolve, description, ref, facilitiesService, peopleService, paymentPlan) {
+async function onDebitWallet(data, description, ref, facilitiesService, peopleService, paymentPlan) {
+  console.log("Inside On Debit Wallet function");
+  console.log(data.inputedValue.paymentMethod.planType);
+  console.log(paymentPlan.outOfPocket);
   if (data.inputedValue.paymentMethod.planType == paymentPlan.company || data.inputedValue.paymentMethod.planType == paymentPlan.insurance) {
-    facilitiesService.get(data.inputedValue.paymentMethod._id, {})
-      .then(facility => {
-        var currentBalance = parseInt(facility.wallet.balance) - parseInt(data.inputedValue.amountPaid);
-        facility.wallet.balance = currentBalance;
-        facility.wallet.ledgerBalance = currentBalance;
-        facility.wallet.transactions.push({
-          'transactionType': data.inputedValue.transactionType,
-          'amount': data.inputedValue.amountPaid,
-          'refCode': ref,
-          'description': description,
-          'transactionMedium': data.inputedValue.paymentMethod.planType,
-          'transactionStatus': data.transactionStatus,
-          'balance': currentBalance,
-          'ledgerBalance': currentBalance
-        });
-        facilitiesService.patch(facility._id, {
-          wallet: facility.wallet
-        }).then(payload2 => {
-          if (data.inputedValue.balance == 0) {
-            payload2.isPaid = true;
-            payload2.isWaved = false;
-            payload2.paidStatus = 'PAID';
-          } else {
-            payload2.paidStatus = 'UNPAID';
-            payload2.isPaid = false;
-          }
-          
-          var returnObj ={
-            facility : payload2,
-            invoice:data.currentInvoice
-          };
-          resolve(returnObj);
-        });
-      });
-  } else if (data.inputedValue.paymentMethod.planType == paymentPlan.outOfPocket || data.inputedValue.paymentMethod.planType == paymentPlan.family) {
-    peopleService.get(data.inputedValue.paymentMethod._id, {}).then(person => {
-      var currentBalance = parseInt(person.wallet.balance) - parseInt(data.inputedValue.amountPaid);
-      person.wallet.balance = currentBalance;
-      person.wallet.ledgerBalance = currentBalance;
-      person.wallet.transactions.push({
-        'transactionType': data.inputedValue.transactionType,
-        'amount': data.inputedValue.amountPaid,
-        'refCode': ref,
-        'transactionMedium': data.inputedValue.paymentMethod.planType,
-        'description': description,
-        'transactionStatus': data.transactionStatus,
-        'balance': currentBalance,
-        'ledgerBalance': currentBalance
-      });
-      peopleService.patch(person._id, {
-        wallet: person.wallet
-      }).then(payload2 => {
-        if (data.inputedValue.balance == 0) {
-          payload2.isPaid = true;
-          payload2.paidStatus = 'PAID';
-          payload2.isWaved = false;
-        } else {
-          payload2.isPaid = false;
-          payload2.paidStatus = 'UNPAID';
-        }
-        var returnObj ={
-          person : payload2,
-          invoice:data.currentInvoice
-        };
-        resolve(returnObj);
-      });
+    console.log('A');
+    const facility = facilitiesService.get(data.inputedValue.paymentMethod._id, {});
+    console.log('B');
+    let currentBalance = parseInt(facility.wallet.balance) - parseInt(data.inputedValue.amountPaid);
+    console.log('C');
+    facility.wallet.balance = currentBalance;
+    console.log('D');
+    facility.wallet.ledgerBalance = currentBalance;
+    console.log('E');
+    facility.wallet.transactions.push({
+      'transactionType': data.inputedValue.transactionType,
+      'amount': data.inputedValue.amountPaid,
+      'refCode': ref,
+      'description': description,
+      'transactionMedium': data.inputedValue.paymentMethod.planType,
+      'transactionStatus': data.transactionStatus,
+      'balance': currentBalance,
+      'ledgerBalance': currentBalance
     });
+    console.log('F');
+    const patchedFacility = facilitiesService.patch(facility._id, {
+      wallet: facility.wallet
+    });
+    console.log('G');
+    if (data.inputedValue.balance == 0) {
+      console.log('H');
+      patchedFacility.isPaid = true;
+      patchedFacility.isWaved = false;
+      patchedFacility.paidStatus = 'PAID';
+      console.log('I');
+    } else {
+      console.log('J');
+      patchedFacility.paidStatus = 'UNPAID';
+      patchedFacility.isPaid = false;
+      console.log('K');
+    }
+
+    let returnObj = {
+      facility: patchedFacility,
+      invoice: data.currentInvoice
+    };
+    console.log('L');
+    return returnObj;
+  } else if (data.inputedValue.paymentMethod.planType == paymentPlan.outOfPocket || data.inputedValue.paymentMethod.planType == paymentPlan.family) {
+    console.log('A');
+    console.log(data.inputedValue);
+    const getPerson = await peopleService.get(data.inputedValue.paymentMethod.bearerPersonId, {});
+    console.log('B');
+    let currentBalance = parseInt(getPerson.wallet.balance) - parseInt(data.inputedValue.amountPaid);
+    console.log('C');
+    getPerson.wallet.balance = currentBalance;
+    console.log('D');
+    getPerson.wallet.ledgerBalance = currentBalance;
+    console.log('E');
+    getPerson.wallet.transactions.push({
+      'transactionType': data.inputedValue.transactionType,
+      'amount': data.inputedValue.amountPaid,
+      'refCode': ref,
+      'transactionMedium': data.inputedValue.paymentMethod.planType,
+      'description': description,
+      'transactionStatus': data.transactionStatus,
+      'balance': currentBalance,
+      'ledgerBalance': currentBalance
+    });
+    console.log('F');
+    const patchedPerson = await peopleService.patch(getPerson._id, {
+      wallet: getPerson.wallet
+    });
+    console.log('G');
+    if (data.inputedValue.balance == 0) {
+      patchedPerson.isPaid = true;
+      patchedPerson.paidStatus = 'PAID';
+      patchedPerson.isWaved = false;
+      console.log('H');
+    } else {
+      patchedPerson.isPaid = false;
+      patchedPerson.paidStatus = 'UNPAID';
+      console.log('I');
+    }
+    let returnObj = {
+      person: patchedPerson,
+      invoice: data.currentInvoice
+    };
+    console.log(returnObj);
+    console.log('J');
+    return returnObj;
   }
 }
 
