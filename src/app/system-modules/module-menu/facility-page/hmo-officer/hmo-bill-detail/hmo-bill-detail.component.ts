@@ -15,6 +15,7 @@ export class HmoBillDetailComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() selectedBill;
 
+  workspace:any;
   authCode_show = false;
   hmoPaymentType = [];
   hmoTypeControl: FormControl = new FormControl();
@@ -65,7 +66,6 @@ export class HmoBillDetailComponent implements OnInit {
   } 
 
   hmoConfirmBill(isAccept: boolean) {
-    console.log(isAccept);
     if (this.hmoTypeControl.value === 1 && isAccept === true) {
       if (this.authCodeControl.value !== null) {
         const index = this.selectedBill.billItems.filter(x => x._id.toString() === this.bill._id.toString());

@@ -277,9 +277,7 @@ export class LabRequestsComponent implements OnInit {
         })
       } else {
         if (this.isLaboratory === false) {
-          console.log(this.patientId);
           this.selectedPatient = this.patientId;
-          console.log(this.selectedPatient);
           this.frmNewRequest.controls['labNo'].setValue('N/A');
           this.frmNewRequest.controls['patient'].setValue
           (this.selectedPatient.personDetails.firstName + ' ' + this.selectedPatient.personDetails.lastName);
@@ -560,7 +558,6 @@ export class LabRequestsComponent implements OnInit {
 
   locationChanged($event, investigation: InvestigationModel, location, LaboratoryWorkbenches) {
     const ids: any[] = [];
-    console.log($event.value);
     if ($event.value) {
       this.investigationRadio = true;
     }else {
@@ -703,13 +700,11 @@ export class LabRequestsComponent implements OnInit {
 
 
   save(valid, value) {
-    console.log(value);
     const copyBindInvestigation = JSON.parse(JSON.stringify(this.bindInvestigations));
     const readyCollection: any[] = [];
 
-    console.log(copyBindInvestigation);
+
     copyBindInvestigation.forEach((item: InvestigationModel, i) => {
-      console.log(item);
       if (item.investigation.isPanel) {
         delete item.isChecked;
         delete item.temporaryInvestigationList;
@@ -735,7 +730,6 @@ export class LabRequestsComponent implements OnInit {
     };
 
     this.requestService.customCreate(request).then(res => {
-      console.log(res);
       if (res.status === 'success') {
         this.frmNewRequest.reset();
         this._getAllPendingRequests();
@@ -917,14 +911,11 @@ export class LabRequestsComponent implements OnInit {
 
   private _getAllPendingRequests() {
     this.pendingRequests = [];
-    console.log(this.patientId, this.isExternal);
     if (this.patientId !== undefined && this.patientId._id !== undefined && this.patientId._id.length > 0 && !this.isExternal) {
       this.request_view = true;
-      console.log(this.patientId);
       this.requestService.customFind({
         query: { 'patientId': this.patientId._id, 'facilityId': this.selectedFacility._id }
       }).then(res => {
-        console.log(res);
         this.loading = false;
         let labId = '';
         if ((this.selectedLab !== undefined && this.selectedLab !== null) && this.selectedLab.typeObject !== undefined) {
@@ -984,9 +975,7 @@ export class LabRequestsComponent implements OnInit {
         });
       }).catch(err => console.error(err));
     } else {
-      console.log('Query hitting this part of the code');
       this.requestService.customFind({ query: { 'facilityId': this.selectedFacility._id } }).then(res => {
-        console.log(res);
         this.loading = false;
         let labId = '';
         if (this.selectedLab !== null && this.selectedLab.typeObject !== undefined) {
@@ -1051,7 +1040,6 @@ export class LabRequestsComponent implements OnInit {
             }
           });
         });
-        console.log(this.pendingRequests);
       }).catch(err => console.error(err));
     }
   }

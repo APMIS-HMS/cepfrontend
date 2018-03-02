@@ -425,7 +425,6 @@ export class NoprescriptionComponent implements OnInit {
 					this.noPrescriptionForm.controls['client'].reset(this.clients[0].name);
 					this._notification('Success', 'Prescription has been sent!');
 				}).catch(err => {
-					console.log(err);
 				});
 			} else {
 				this._notification('Error', 'You need to check into store.');

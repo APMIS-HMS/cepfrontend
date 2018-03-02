@@ -3,6 +3,7 @@ import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Facility, Patient, Employee, Documentation, PatientDocumentation, Document } from '../../../../../../models/index';
 import { FormsService, FacilitiesService, DocumentationService } from '../../../../../../services/facility-manager/setup/index';
 import { FormControl } from '@angular/forms';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-documentation-detail',
@@ -19,14 +20,14 @@ export class DocumentationDetailComponent implements OnInit {
 
   selectedPatientDocumentation:any;
   addendumCtrl:FormControl = new FormControl();
+  selectedFacility:any;
 
 
   constructor(private facilityService: FacilitiesService, private documentationService:DocumentationService,
-  private authFacadeService:AuthFacadeService) { }
+  private authFacadeService:AuthFacadeService,private locker: CoolLocalStorage) { }
 
   ngOnInit() {
-    // console.log(this.patientDocumentationId);
-    // console.log(this.document);
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.authFacadeService.getLogingEmployee().then(loginEmployee =>{
       this.loginEmployee  = loginEmployee;
       this.getPatientDocumentation();
@@ -36,14 +37,10 @@ export class DocumentationDetailComponent implements OnInit {
 
   getPatientDocumentation(){
     this.documentationService.get(this.patientDocumentationId,{}).then(payload =>{
-      console.log(payload);
       this.selectedPatientDocumentation = payload;
-      if(this.document.document.addendium === undefined){
-        this.document.document.addendium={
-          date:new Date()
-        };
+      if(this.document.document.addendum !== undefined && this.document.document.addendum.text !== undefined){
+        this.addendumCtrl.setValue(this.document.document.addendum.text);
       }
-      console.log(this.document.document)
     }, error =>{
 
     });
@@ -56,8 +53,15 @@ export class DocumentationDetailComponent implements OnInit {
     if(this.addendumCtrl.valid){
       let addendum:any = {};
       addendum.employeeId = this.loginEmployee._id;
-      // addendum.
-      // this.documentationService.addAddendum()
+
+      addendum.employeeName = this.loginEmployee.personDetails.title.name + ' '+this.loginEmployee.personDetails.lastName + ' '+this.loginEmployee.personDetails.firstName;
+      addendum.text = this.addendumCtrl.value;
+      this.documentationService.addAddendum(addendum,
+        {query:{patientDocumentationId:this.selectedPatientDocumentation._id, documentationId:this.document._id, facilityId:this.selectedFacility._id}})
+        .then(payload =>{
+          this.close_onClick();
+        }, error =>{
+        });
     }
   }
 

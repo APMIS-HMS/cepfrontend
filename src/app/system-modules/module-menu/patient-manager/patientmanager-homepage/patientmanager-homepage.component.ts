@@ -91,7 +91,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   pageSize = 1;
   index: any = 0;
   limit: any = 5;
-  showLoadMore: Boolean = true;
+  showLoadMore = true;
   total: any = 0;
   updatePatientBtnText = 'Update';
   loadMoreText = '';
@@ -252,15 +252,12 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.showLoadMore = true;
     }
     if (changes.searchedPatients.currentValue) {
-      console.log(changes);
       this.patients = changes.searchedPatients.currentValue;
       this.total = this.patients.length;
-      console.log(this.total);
       if (this.total <= this.patients.length) {
         this.showLoadMore = false;
       }
       this.getShowing();
-      console.log(this.patients);
     }
   }
 
@@ -464,13 +461,13 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
     const patientIndex = this.patients.findIndex(p => p.personDetails._id === this.selectedPatient._id);
     this.personService.patch(this.selectedPatient._id, this.selectedPatient, {}).then(res => {
-      console.log(res);
+
       this.updatePatientBtnText = 'Update';
       this.patients[patientIndex].personDetails = res;
       this.close_onClick();
       this.systemService.announceSweetProxy('Patient details has been updated successfully.', 'Success');
     }).catch(err => {
-      console.log(err);
+
       this.updatePatientBtnText = 'Update';
       this.systemService.announceSweetProxy('There was an error updating user record, Please try again later.', 'Error');
     });
@@ -499,7 +496,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   isEditFn(patient?, cover?, button?) {
     this.isEdit = !this.isEdit;
     this.button = button;
-    console.log(this.button);
     if (cover === 'wallet') {
       this.tabWallet_click();
     } else if (cover === 'company') {
@@ -558,8 +554,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         });
       }
 
-      console.log(data);
-
     } else {
       const check = data.filter(x => x.planType === cover);
       if (check.length < 1) {
@@ -596,7 +590,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
           });
         }
       }
-      console.log(data, this.patient.paymentPlan);
     }
     this.patientService.patch(this.patient._id, {
       paymentPlan: data

@@ -18,8 +18,8 @@ export class PrescriptionListComponent implements OnInit {
 	prescriptionLists: any[] = [];
 	noPrescriptionLists: any[] = [];
 	tempPrescriptionLists: any[] = [];
-	loading: Boolean = true;
-	noPresLoading: Boolean = true;
+	loading = true;
+	noPresLoading = true;
 	currentDate: Date = new Date();
 	psearchOpen = false;
 	wsearchOpen = false;
@@ -100,7 +100,6 @@ export class PrescriptionListComponent implements OnInit {
 	getAllPrescriptions() {
 		this._prescriptionService.customGet({ query: { facilityId: this.facility._id } }).then(res => {
 			this.loading = false;
-			console.log(res);
 			res.data.forEach(element => {
 				if (!element.isDispensed) {
 					let isBilledCount = 0;

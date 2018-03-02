@@ -9,6 +9,7 @@ export class FamilyBillDetailComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
+  workspace:any;
   constructor() { }
 
   ngOnInit() {

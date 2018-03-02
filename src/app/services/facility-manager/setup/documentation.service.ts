@@ -61,6 +61,6 @@ export class DocumentationService {
   }
 
   addAddendum(addendum: any, query) {
-    return this._socket.create(addendum, query);
+    return this._socketService.getService('add-addendum').create(addendum, query);
   }
 }
