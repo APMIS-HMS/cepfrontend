@@ -149,9 +149,17 @@ export class AddPatientProblemComponent implements OnInit {
           status: this.statusFormCtrl.value,
           note: this.noteFormCtrl.value,
         })
+      }else{
+        console.log(documentation);
+        if(documentation.facilityName === undefined){
+          console.log('done');
+          documentation.facilityName = this.selectedFacility.name;
+        }
       }
     });
     if (!isExisting) {
+      console.log('in');
+      console.log(this.selectedFacility);
       const doc: PatientDocumentation = <PatientDocumentation>{};
       doc.createdBy = this.loginEmployee.personDetails.title + ' ' + this.loginEmployee.personDetails.lastName + ' ' + this.loginEmployee.personDetails.firstName;
       doc.facilityId = this.selectedFacility._id;
@@ -169,8 +177,10 @@ export class AddPatientProblemComponent implements OnInit {
         status: this.statusFormCtrl.value,
         note: this.noteFormCtrl.value
       });
+      console.log(doc);
       this.patientDocumentation.documentations.push(doc);
     }
+    console.log(this.patientDocumentation);
     this.documentationService.update(this.patientDocumentation).subscribe(payload => {
       this.isSaving = false;
       this.patientDocumentation = payload;
@@ -181,6 +191,7 @@ export class AddPatientProblemComponent implements OnInit {
       this.systemModuleService.off();
       this.systemModuleService.announceSweetProxy('Problem added successfully!', 'success', null, null, null, null, null, null, null);
     }, error => {
+      console.log(error);
       this.isSaving = false;
       this.systemModuleService.off();
       this.systemModuleService.announceSweetProxy('Problem not added due error while saving!','error');

@@ -43,7 +43,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   auth: any;
   subscription: Subscription;
   priority: any = <any>{};
-
+  public tableChartData = [];
+   vitalsObjArray = [];
   hasSavedDraft = false;
   draftDocument: any;
   constructor(
@@ -443,6 +444,10 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     }).catch(err => console.error(err));
   }
 
+  getvitalCharts(vitals){
+    this.tableChartData = vitals;
+  }
+
   populateDocuments() {
     this.documents = [];
     this.patientDocumentation.documentations.forEach(documentation => {
@@ -451,7 +456,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
           const createdById = this.loginEmployee._id;
           const facilityId = this.selectedMiniFacility._id;
-
+          console.log(documentation);
           if (documentation.documentationStatus !== 'Draft') {
             this.documents.push(documentation);
           }else if (documentation.createdById === createdById && documentation.facilityId === facilityId) {
@@ -461,9 +466,15 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       } else {
         if (documentation.document.documentType.isSide === true && documentation.document.documentType.title === 'Problems') {
           this.documents.push(documentation);
-        } else {
+        }else if(documentation.document.documentType.isSide === true && documentation.document.documentType.title === 'Vitals'){
+          // payload.data[0].documentations[k].document.body.vitals;
+          this.tableChartData = documentation.document.body.vitals;
+          console.log(this.tableChartData);
+          this.documents.push(documentation);
+        }else {
           this.documents.push(documentation);
         }
+        console.log(documentation);
       }
     });
     this.documents.reverse();
