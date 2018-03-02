@@ -23,7 +23,13 @@ class Service {
     const awaitedBills = await billingsService.find({
       query: {
         facilityId: id,
-        'billItems.covered.coverType': 'wallet',
+        $or: [{
+            'billItems.covered.coverType': 'wallet'
+          },
+          {
+            'billItems.covered.coverType': 'insurance'
+          }
+        ],
         $sort: {
           updatedAt: -1
         },
