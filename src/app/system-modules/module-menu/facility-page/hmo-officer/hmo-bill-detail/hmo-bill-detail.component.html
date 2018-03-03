@@ -10,10 +10,10 @@
             <thead>
                 <tr>
                     <th>
-                        <span style="padding-left: 3px;">Patient</span>
+                        <span style="padding-left: 3px;">Service</span>
                     </th>
                     <th>
-                        <span style="padding-left: 3px;">Service</span>
+                        <span style="padding-left: 3px;">Patient</span>
                     </th>
                     <th>
                         <span style="padding-left: 3px;">Amount</span>
@@ -25,41 +25,54 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <tr *ngFor="let bill of selectedBill.billItems">
+                    <td>{{bill.serviceObject?.name}}</td>
                     <td>
                         <div class="empWrap">
-                            <div class="list-img">
+                            <div class="list-img" *ngIf="bill.patientObject.personDetails.profileImageObject === undefined">
                                 <img src="assets/images/users/default.png">
                             </div>
-                            <div>Sam Rolins</div>
+                            <div class="list-img" *ngIf="bill.patientObject.personDetails.profileImageObject !== undefined">
+                                <img [src]="facilitiesService.transform(bill.patientObject.personDetails.profileImageObject?.thumbnail)">
+                            </div>
+                            <div>{{bill?.patientObject?.personDetails?.firstName}} {{bill?.patientObject?.personDetails?.lastName}}</div>
                         </div>
                     </td>
-                    <td>Patient Registration</td>
-                    <td class="td-worspace">&#8358; 12,200</td>
+                    <td class="td-worspace">&#8358; {{bill.totalPrice|number:'1.2-2'}}</td>
                     <td>
                         <div class="input-x2-wrap">
-                            <mat-form-field class="sel-rap">
-                                <mat-select [formControl]="hmoTypeControl" placeholder="Cover Type">
-                                    <mat-option>Capitation</mat-option>
-                                    <mat-option>Fee for service</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                            <mat-form-field class="sel-rap">
-                                <input matInput [formControl]="authCodeControl" placeholder="Code">
-                            </mat-form-field>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="td-ctaWrap">
-                            <i (click)="newWorkspace_onClick()" class="fa fa-check-circle" aria-hidden="true"></i>
-                            <i (click)="deletion_popup()" class="fa fa-times-circle" aria-hidden="true"></i>
+                            <!-- <mat-form-field class="sel-rap">
+                      <mat-select [formControl]="hmoTypeControl" placeholder="Cover Type">
+                        <mat-option>
+                          </mat-option>
+                      </mat-select>
+                    </mat-form-field> -->
+                            <div *ngIf="bill.covered.isVerify===undefined">
+                                <mat-form-field class="sel-rap">
+                                    <mat-select [formControl]="hmoTypeControl" placeholder="Cover Type">
+                                        <mat-option *ngFor="let item of hmoPaymentType" [value]="item.id">
+                                            {{ item.name }}
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field class="sel-rap" *ngIf="authCode_show">
+                                    <input matInput [formControl]="authCodeControl" placeholder="Code">
+                                </mat-form-field>
+                            </div>
+                            <div class="sel-rap" *ngIf="bill.covered.isVerify">
+                                <span>
+                        <div *ngIf="bill.covered.authorizationCode !== undefined">
+                          Fee for service :
                         </div>
                         <div *ngIf="bill.covered.authorizationCode === undefined">
-                            Capitalization
+                          Capitalization
                         </div>
-                        <span>
-                  {{bill.covered.authorizationCode}}
-                </span>
+                      </span>
+                                <span>
+                        {{bill.covered.authorizationCode}}
+                      </span>
+                            </div>
+                        </div>
                     </td>
                     <td>
                         <div class="td-ctaWrap" *ngIf="bill.covered.isVerify===undefined">

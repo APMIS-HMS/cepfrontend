@@ -53,6 +53,7 @@ export class PaymentComponent implements OnInit {
     }
     ngOnInit() {
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+        console.log(this.selectedFacility);
         this.user = <User>this.locker.getObject('auth');
         this.searchInvestigation = new FormControl('', []);
         this._getBills();
@@ -99,6 +100,7 @@ export class PaymentComponent implements OnInit {
                 "isQuery": false
             }
         }).then(payload => {
+            console.log(payload);
             this.systemModuleService.off;
             this.invoiceGroups = payload.invoices;
             this.totalAmountReceived = payload.amountReceived;
@@ -113,12 +115,15 @@ export class PaymentComponent implements OnInit {
 
     private _getBills() {
         // this.loadingPendingBills = true;
+        console.log(1);
         this.systemModuleService.on;
         this._pendingBillService.get(this.selectedFacility._id, {
             query: {
                 "isQuery": false
             }
         }).then((res: any) => {
+            console.log(2);
+            console.log(res);
             this.systemModuleService.off;
             this.pendingBills = res.bills;
             this.totalAmountBilled = res.amountBilled;
