@@ -38,11 +38,16 @@ class Service {
                     x.isPicked = true;
                 });
                 const patient = await patientsService.get(params.query.patientId);
-                const patientPaymentType = patient.paymentPlan.filter(x => x.planDetails.hmoId.toString() === insurance[index].covered.hmoId.toString());
+                console.log(patient.paymentPlan);
+                console.log(insurance[index].covered);
+                const patientPaymentType = patient.paymentPlan.filter(x => x.planDetails.hmoId !== undefined && x.planDetails.hmoId.toString() === insurance[index].covered.hmoId.toString());
                 const billModel = {
                     'facilityId': params.query.facilityId,
                     'grandTotal': sumCost(indx),
-                    'patientId': patientPaymentType[0].planDetails.principalId,
+                    'coverFile': {
+                        'id': patientPaymentType[0].planDetails.principalId,
+                        'name': patientPaymentType[0].planDetails.hmoName
+                    },
                     'subTotal': sumCost(indx),
                     'discount': 0,
                     'billItems': indx
@@ -63,7 +68,10 @@ class Service {
                 const billModel = {
                     'facilityId': params.query.facilityId,
                     'grandTotal': sumCost(indx),
-                    'patientId': patientPaymentType[0].planDetails.principalId,
+                    'coverFile': {
+                        'id': patientPaymentType[0].planDetails.principalId,
+                        'name': patientPaymentType[0].planDetails.hmoName
+                    },
                     'subTotal': sumCost(indx),
                     'discount': 0,
                     'billItems': indx
@@ -85,7 +93,10 @@ class Service {
                 const billModel = {
                     'facilityId': params.query.facilityId,
                     'grandTotal': sumCost(indx),
-                    'patientId': patientPaymentType[0].planDetails.principalId,
+                    'coverFile': {
+                        'id': patientPaymentType[0].planDetails.principalId,
+                        'name': patientPaymentType[0].planDetails.hmoName
+                    },
                     'subTotal': sumCost(indx),
                     'discount': 0,
                     'billItems': indx
@@ -124,14 +135,14 @@ class Service {
     }
 }
 
-module.exports = function (options) {
+module.exports = function(options) {
     return new Service(options);
 };
 
 function sumCost(billItems) {
     let totalCost = 0;
     billItems.forEach(element => {
-        if (element.active) {
+        if (element.active == true || element.active === undefined) {
             totalCost += element.totalPrice;
         }
     });
