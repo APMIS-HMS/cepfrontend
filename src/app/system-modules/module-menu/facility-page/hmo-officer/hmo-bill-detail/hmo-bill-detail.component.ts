@@ -28,7 +28,6 @@ export class HmoBillDetailComponent implements OnInit {
     private facilitiesService: FacilitiesService) { }
 
   ngOnInit() {
-    console.log(this.selectedBill);
     this.hmoPaymentType = [{
       name: 'Capitation',
       id: 0
