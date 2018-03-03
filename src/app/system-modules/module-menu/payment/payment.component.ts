@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FacilitiesService, BillingService, InvoiceService, PendingBillService, TodayInvoiceService, LocSummaryCashService } from '../../../services/facility-manager/setup/index';
+import { FacilitiesService, BillingService, InvoiceService,
+    PendingBillService, TodayInvoiceService, LocSummaryCashService } from '../../../services/facility-manager/setup/index';
 import { Patient, Facility, BillItem, Invoice, BillModel, User } from '../../../models/index';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -35,7 +36,7 @@ export class PaymentComponent implements OnInit {
     public barChartLabels: String[] = [];
     public barChartType: String = 'bar';
     public barChartLegend: Boolean = true;
-    public barChartData: any[] = [{ "data": [0], "label": "" }];
+    public barChartData: any[] = [{ 'data': [0], 'label': '' }];
 
     constructor(
         private formBuilder: FormBuilder,
@@ -53,7 +54,6 @@ export class PaymentComponent implements OnInit {
     }
     ngOnInit() {
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-        console.log(this.selectedFacility);
         this.user = <User>this.locker.getObject('auth');
         this.searchInvestigation = new FormControl('', []);
         this._getBills();
@@ -65,8 +65,8 @@ export class PaymentComponent implements OnInit {
                 this.isLoadingInvoice = true;
                 this._todayInvoiceService.get(this.selectedFacility._id, {
                     query: {
-                        "isQuery": true,
-                        "name": value
+                        'isQuery': true,
+                        'name': value
                     }
                 }).then(payload => {
                     this.invoiceGroups = payload.invoices;
@@ -81,8 +81,8 @@ export class PaymentComponent implements OnInit {
                 this.loadingPendingBills = true;
                 this._pendingBillService.get(this.selectedFacility._id, {
                     query: {
-                        "isQuery": true,
-                        "name": value
+                        'isQuery': true,
+                        'name': value
                     }
                 }).then((res: any) => {
                     this.pendingBills = res.bills;
@@ -97,10 +97,9 @@ export class PaymentComponent implements OnInit {
         this.systemModuleService.on;
         this._todayInvoiceService.get(this.selectedFacility._id, {
             query: {
-                "isQuery": false
+                'isQuery': false
             }
         }).then(payload => {
-            console.log(payload);
             this.systemModuleService.off;
             this.invoiceGroups = payload.invoices;
             this.totalAmountReceived = payload.amountReceived;
@@ -115,15 +114,12 @@ export class PaymentComponent implements OnInit {
 
     private _getBills() {
         // this.loadingPendingBills = true;
-        console.log(1);
         this.systemModuleService.on;
         this._pendingBillService.get(this.selectedFacility._id, {
             query: {
-                "isQuery": false
+                'isQuery': false
             }
         }).then((res: any) => {
-            console.log(2);
-            console.log(res);
             this.systemModuleService.off;
             this.pendingBills = res.bills;
             this.totalAmountBilled = res.amountBilled;
@@ -140,13 +136,13 @@ export class PaymentComponent implements OnInit {
         this._locSummaryCashService.get(this.selectedFacility._id, {})
             .then(payload2 => {
                 if (payload2 != null) {
-                    if (payload2.barChartData != undefined) {
+                    if (payload2.barChartData !== undefined) {
                         this.barChartLabels = payload2.barChartLabels;
                         if (payload2.barChartData.length > 0) {
                             this.barChartData.splice(0, 1);
                         }
                         for (let k = 0; k < payload2.barChartData.length; k++) {
-                            this.barChartData.push({ "data": [0], "label": "" });
+                            this.barChartData.push({ 'data': [0], 'label': '' });
                         }
                         for (let i = 0; i < payload2.barChartData.length; i++) {
                             for (let j = 0; j < payload2.barChartData[i].data.length; j++) {

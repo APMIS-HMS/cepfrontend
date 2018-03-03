@@ -29,7 +29,6 @@ export class HmoBillDetailComponent implements OnInit {
     private facilitiesService: FacilitiesService) { }
 
   ngOnInit() {
-    console.log(this.selectedBill);
     this.hmoPaymentType = [{
       name: 'Capitation',
       id: 0
@@ -65,7 +64,7 @@ export class HmoBillDetailComponent implements OnInit {
         this.hmoConfirmBill(false);
       }
     }
-  } 
+  }
 
   hmoConfirmBill(isAccept: boolean) {
     if (this.hmoTypeControl.value === 1 && isAccept === true) {
