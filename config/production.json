@@ -1,5 +1,5 @@
 {
-    "host": "ending",
+    "host": "https://apmisapitest.azurewebsites.net/",
     "port": "PORT",
     "public": "../public/",
     "paginate": {

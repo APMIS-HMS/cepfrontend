@@ -235,19 +235,11 @@ module.exports = function (options) {
 };
 
 async function onDebitWallet(data, description, ref, facilitiesService, peopleService, paymentPlan) {
-  console.log("Inside On Debit Wallet function");
-  console.log(data.inputedValue.paymentMethod.planType);
-  console.log(paymentPlan.outOfPocket);
   if (data.inputedValue.paymentMethod.planType == paymentPlan.company || data.inputedValue.paymentMethod.planType == paymentPlan.insurance) {
-    console.log('A');
     const facility = facilitiesService.get(data.inputedValue.paymentMethod._id, {});
-    console.log('B');
     let currentBalance = parseInt(facility.wallet.balance) - parseInt(data.inputedValue.amountPaid);
-    console.log('C');
     facility.wallet.balance = currentBalance;
-    console.log('D');
     facility.wallet.ledgerBalance = currentBalance;
-    console.log('E');
     facility.wallet.transactions.push({
       'transactionType': data.inputedValue.transactionType,
       'amount': data.inputedValue.amountPaid,
@@ -258,41 +250,28 @@ async function onDebitWallet(data, description, ref, facilitiesService, peopleSe
       'balance': currentBalance,
       'ledgerBalance': currentBalance
     });
-    console.log('F');
     const patchedFacility = facilitiesService.patch(facility._id, {
       wallet: facility.wallet
     });
-    console.log('G');
     if (data.inputedValue.balance == 0) {
-      console.log('H');
       patchedFacility.isPaid = true;
       patchedFacility.isWaved = false;
       patchedFacility.paidStatus = 'PAID';
-      console.log('I');
     } else {
-      console.log('J');
       patchedFacility.paidStatus = 'UNPAID';
       patchedFacility.isPaid = false;
-      console.log('K');
     }
 
     let returnObj = {
       facility: patchedFacility,
       invoice: data.currentInvoice
     };
-    console.log('L');
     return returnObj;
   } else if (data.inputedValue.paymentMethod.planType == paymentPlan.outOfPocket || data.inputedValue.paymentMethod.planType == paymentPlan.family) {
-    console.log('A');
-    console.log(data.inputedValue);
     const getPerson = await peopleService.get(data.inputedValue.paymentMethod.bearerPersonId, {});
-    console.log('B');
     let currentBalance = parseInt(getPerson.wallet.balance) - parseInt(data.inputedValue.amountPaid);
-    console.log('C');
     getPerson.wallet.balance = currentBalance;
-    console.log('D');
     getPerson.wallet.ledgerBalance = currentBalance;
-    console.log('E');
     getPerson.wallet.transactions.push({
       'transactionType': data.inputedValue.transactionType,
       'amount': data.inputedValue.amountPaid,
@@ -303,27 +282,21 @@ async function onDebitWallet(data, description, ref, facilitiesService, peopleSe
       'balance': currentBalance,
       'ledgerBalance': currentBalance
     });
-    console.log('F');
     const patchedPerson = await peopleService.patch(getPerson._id, {
       wallet: getPerson.wallet
     });
-    console.log('G');
     if (data.inputedValue.balance == 0) {
       patchedPerson.isPaid = true;
       patchedPerson.paidStatus = 'PAID';
       patchedPerson.isWaved = false;
-      console.log('H');
     } else {
       patchedPerson.isPaid = false;
       patchedPerson.paidStatus = 'UNPAID';
-      console.log('I');
     }
     let returnObj = {
       person: patchedPerson,
       invoice: data.currentInvoice
     };
-    console.log(returnObj);
-    console.log('J');
     return returnObj;
   }
 }
