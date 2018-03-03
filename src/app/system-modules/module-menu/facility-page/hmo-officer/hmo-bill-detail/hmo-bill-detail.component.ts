@@ -13,6 +13,7 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
 export class HmoBillDetailComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() refreshBills: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() selectedBill;
 
   workspace:any;
@@ -28,6 +29,7 @@ export class HmoBillDetailComponent implements OnInit {
     private facilitiesService: FacilitiesService) { }
 
   ngOnInit() {
+    console.log(this.selectedBill);
     this.hmoPaymentType = [{
       name: 'Capitation',
       id: 0
@@ -77,6 +79,7 @@ export class HmoBillDetailComponent implements OnInit {
         index[0].covered.verifiedAt = new Date();
         this.billingService.patch(this.selectedBill._id, this.selectedBill, {}).then(payload => {
           this.systemModuleService.announceSweetProxy('Service successfully cleared', 'success');
+          this.refreshBills.emit(true);
         });
       } else {
         this.systemModuleService.announceSweetProxy('This service require an authorization code', 'error');
@@ -92,6 +95,7 @@ export class HmoBillDetailComponent implements OnInit {
       index[0].covered.verifiedAt = new Date();
       this.billingService.patch(this.selectedBill._id, this.selectedBill, {}).then(payload => {
         this.systemModuleService.announceSweetProxy('Service successfully cleared', 'success');
+        this.refreshBills.emit(true);
       });
     }else {
       this.systemModuleService.announceSweetProxy('Please select a cover type', 'error');

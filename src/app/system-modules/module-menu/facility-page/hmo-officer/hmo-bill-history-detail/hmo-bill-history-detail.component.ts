@@ -23,6 +23,7 @@ export class HmoBillHistoryDetailComponent implements OnInit {
 
   ngOnInit() {
     this.filterBills = this.selectedBill.billItems.filter(x => x.covered.isVerify !== undefined);
+    console.log(this.filterBills);
   }
 
   close_onClick() {
