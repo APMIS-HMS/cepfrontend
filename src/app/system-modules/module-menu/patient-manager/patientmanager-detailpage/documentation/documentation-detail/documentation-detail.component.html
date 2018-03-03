@@ -45,6 +45,9 @@
                                     <div class="sect-key">{{key}}:</div>
                                     <div class="sect-value">{{document?.document?.body[key]}}</div>
                                 </div>
+                                <div *ngIf="document?.document?.addendum !== undefined">
+                                    <span class="sect-key">Addendum:</span> <span>{{document?.document?.addendum.text}}</span>
+                                </div>
                             </div>
                             <div *ngIf="document?.document?.documentType?.isSide === true">
                                 <div *ngFor="let key of document?.document?.body | keys">
@@ -56,7 +59,7 @@
                                         </div>
                                     </div>
                                     <div *ngFor="let key2 of document?.document?.body.allergies | keys let k = index">
-                                        <div *ngIf="document?.document?.body !== undefined" class="sect-value">
+                                        <div *ngIf="document?.document?.body !== undefined">
                                             {{k+1}}:
                                             <span class="sect-key">{{document?.document?.body.allergies[key2].allergy}}</span> ({{document?.document?.body.allergies[key2].severity.name}}) {{document?.document?.body.allergies[key2].reaction}} || {{document?.document?.body.allergies[key2].note}}
                                         </div>
@@ -93,6 +96,9 @@
                                                 </tbody>
                                             </table>
                                         </div>
+                                    </div>
+                                    <div *ngIf="document?.document?.addendum !== undefined" class="sect-value">
+                                        <span class="sect-key">Addendum:</span> <span>{{document?.document?.addendum.text}}</span>
                                     </div>
                                 </div>
                             </div>

@@ -787,7 +787,7 @@ export class ScheduleFrmComponent implements OnInit {
       this.appointment.startDate = this.date;
       if (checkIn === true) {
         this.appointment.attendance = {
-          employeeId: this.loginEmployee._id,
+          employeeId: this.loginEmployee.personDetails.title +' '+this.loginEmployee.personDetails.lastName +' '+this.loginEmployee.personDetails.firstName,
           dateCheckIn: new Date()
         };
       }
