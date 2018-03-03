@@ -660,7 +660,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         }
                         const fil = bene.filter(x => x.filNo === insuranceId);
                         console.log(fil);
-                        /* if (fil.length > 0) {
+                        if (fil.length > 0) {
                             if (fil[0].status === false) {
                                 this.systemModuleService.off();
                                 this.systemModuleService
@@ -682,7 +682,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                             this.systemModuleService.off();
                             this.systemModuleService
                                 .announceSweetProxy('Insurance Id does not exist for the selected HMO', 'error');
-                        } */
+                        }
                     }
                 }
             }
