@@ -61,6 +61,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     wallet: boolean;
     insurance: boolean; */
     family: any;
+    familyClientId: any;
     coverType: any;
     hmoInsuranceId: any;
     ccEmployeeId: any;
@@ -93,9 +94,13 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     ccPlanId = new FormControl('', Validators.required);
     ccPlanCheck = new FormControl('');
     familyPlanId = new FormControl('', Validators.required);
+    faFileNo = new FormControl('', Validators.required);
     familyPlanCheck = new FormControl('');
     faPlanPrice = new FormControl('');
     faPlan = new FormControl('');
+    principalName = new FormControl('');
+    principalPersonId = new FormControl('');
+    principalFamilyId = new FormControl('');
 
     loading: Boolean;
 
@@ -654,6 +659,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                             bene.push(...facHmo.hmos[index].enrolleeList[s].enrollees);
                         }
                         const fil = bene.filter(x => x.filNo === insuranceId);
+                        console.log(fil);
                         if (fil.length > 0) {
                             if (fil[0].status === false) {
                                 this.systemModuleService.off();
@@ -691,31 +697,58 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.planPrice = this.faPlanPrice.value;
         this.planId = this.faPlan.value._id;
         this.facilityServiceId = this.faPlan.value.facilityServiceId;
+        this.familyClientId = this.faFileNo.value;
 
         if (this.getRole(this.faId) !== 'P') {
             this.systemModuleService.off();
             this.systemModuleService.announceSweetProxy('Principal Id entered doens\'t belong to a Principal of a family', 'error');
-        } else {
+        }/* else if(){} */ else {
             this.familyCoverService.find({ query: { 'facilityId': this.facility._id } }).then(payload => {
+                console.log(payload);
                 if (payload.data.length > 0) {
                     const facFamilyCover = payload.data[0];
                     this.selectedFamilyCover = facFamilyCover;
                     this.beneficiaries = facFamilyCover.familyCovers;
                     const info = this.beneficiaries.filter(x => x.filNo === this.faId);
-                    this.family = info[0];
+                    console.log(info);
                     if (info.length === 0) {
+                        this.loading = false;
                         this.systemModuleService.off();
                         this.systemModuleService.announceSweetProxy('Principal Id doesn\'t exist', 'error');
                     } else {
-                        if (this.shouldMoveFirst === true) {
-                            this.saveFamilyPerson();
+                        const filEx = this.beneficiaries.filter(x => x.filNo === this.familyClientId);
+                        console.log(filEx);
+                        if (filEx.length > 0) {
+                            if(filEx[0].patientId !== undefined){
+                                this.loading = false;
+                                this.systemModuleService.off();
+                                this.systemModuleService.announceSweetProxy('Client Id has already been assigned to a patient. Please try another Client Id', 'error');
+                            }else{
+                                if (this.shouldMoveFirst === true) {
+                                    this.saveFamilyPerson();
+                                } else {
+                                    this.frmPerson.controls["firstname"].setValue(filEx[0].othernames);
+                                    this.frmPerson.controls["firstname"].disable();
+                                    this.frmPerson.controls["lastname"].setValue(filEx[0].surname);
+                                    this.frmPerson.controls["lastname"].disable();
+                                    this.frmPerson.controls["phone"].setValue(filEx[0].phone);
+                                    this.frmPerson.controls["phone"].disable();
+                                    this.principalName.setValue(info[0].othernames+' '+info[0].surname);
+                                    this.principalPersonId.setValue(info[0].patientObject.personDetails._id);
+                                    this.principalFamilyId.setValue(facFamilyCover._id);
+                                    console.log(this.principalFamilyId.value);
+                                    this.frmNewEmp4_show = false;
+                                    this.frmNewPerson1_show = true;
+                                    this.frmNewPerson2_show = false;
+                                    this.frmNewPerson3_show = false;
+                                    this.paymentPlan = false;
+                                    this.loading = false;
+                                }
+                            }
                         } else {
-                            this.frmNewEmp4_show = false;
-                            this.frmNewPerson1_show = true;
-                            this.frmNewPerson2_show = false;
-                            this.frmNewPerson3_show = false;
-                            this.paymentPlan = false;
                             this.loading = false;
+                            this.systemModuleService.off();
+                            this.systemModuleService.announceSweetProxy('Client Id doesn\'t exist in Principal family', 'error');
                         }
                     }
                 }
@@ -1320,57 +1353,80 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 },
                 {
                     planType: this.coverType,
+                    bearerPersonId: this.principalPersonId.value,
                     planDetails: {
-                        principalId: this.faId
+                        principalId: this.faId,
+                        principalName: this.principalName.value,
+                        familyId: this.principalFamilyId.value
                     },
                     isDefault: true
                 }
             ]
         }
+        
         this.patientService.create(patient).then(payl => {
-            const billing: any = [
-                {
-                    unitPrice: this.planPrice,
-                    facilityId: this.facility._id,
-                    description: '',
-                    facilityServiceId: this.facilityServiceId,
-                    serviceId: this.planId,
-                    patientId: payl._id,
-                    quantity: 1,
-                    totalPrice: this.planPrice,
-                    unitDiscountedAmount: 0,
-                    totalDiscoutedAmount: 0,
-                    modifierId: [],
-                    covered: {
-                        familyId: this.family._id,
-                        coverType: this.coverType
-                    },
-                    isServiceEnjoyed: false,
-                    paymentCompleted: false,
-                    paymentStatus: [],
-                    payments: []
-
+            this.familyCoverService.find({ query: { 'facilityId': this.facility._id } }).then(familyCoverPayload => {
+                if (familyCoverPayload.data.length > 0) {
+                    const facFamilyCover = familyCoverPayload.data[0];
+                    this.selectedFamilyCover = facFamilyCover;
+                    this.beneficiaries = facFamilyCover.familyCovers;
+                    const info = this.beneficiaries.filter(x => x.filNo === this.faId);
+                    const filEx = this.beneficiaries.findIndex(x => x.filNo === this.familyClientId);
+                    if (filEx > -1) {
+                        facFamilyCover.familyCovers[filEx].patientId = payl._id;
+                        console.log(facFamilyCover);
+                        this.familyCoverService.patch(facFamilyCover._id, facFamilyCover, {}).then(patchPayload => {
+                            console.log(patchPayload);
+                            const billing: any = [
+                                {
+                                    unitPrice: this.planPrice,
+                                    facilityId: this.facility._id,
+                                    description: '',
+                                    facilityServiceId: this.facilityServiceId,
+                                    serviceId: this.planId,
+                                    patientId: payl._id,
+                                    quantity: 1,
+                                    totalPrice: this.planPrice,
+                                    unitDiscountedAmount: 0,
+                                    totalDiscoutedAmount: 0,
+                                    modifierId: [],
+                                    covered: {
+                                        familyId: this.principalFamilyId.value,
+                                        coverType: this.coverType
+                                    },
+                                    isServiceEnjoyed: false,
+                                    paymentCompleted: false,
+                                    paymentStatus: [],
+                                    payments: []
+                
+                                }
+                            ];
+                
+                            this.billingService.createBill(billing, {
+                                query: {
+                                    facilityId: this.facility._id,
+                                    patientId: payl._id
+                                }
+                            }).then(billingPayload => {
+                                console.log(billingPayload);
+                                this.systemModuleService.off();
+                                this.systemModuleService.changeMessage(payl);
+                                const text = this.selectedPerson.lastName + ' '
+                                    + this.selectedPerson.firstName + ' added successfully but bill not generated because price not yet set for this service';
+                                this.systemModuleService.announceSweetProxy(text, 'success');
+                                this.loading = false;
+                                this.close_onClick();
+                            }).catch(errr => {
+                                this.systemModuleService.off();
+                                this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
+                                this.loading = false;
+                                console.log(errr);
+                            });
+                        }).catch(err => {
+                            console.log(err);
+                        });
+                    }
                 }
-            ];
-
-            this.billingService.createBill(billing, {
-                query: {
-                    facilityId: this.facility._id,
-                    patientId: payl._id
-                }
-            }).then(billingPayload => {
-                this.systemModuleService.off();
-                this.systemModuleService.changeMessage(payl);
-                const text = this.selectedPerson.lastName + ' '
-                    + this.selectedPerson.firstName
-                    + ' added successfully but bill not generated because price not yet set for this service';
-                this.systemModuleService.announceSweetProxy(text, 'success');
-                this.loading = false;
-                this.close_onClick();
-            }).catch(errr => {
-                this.systemModuleService.off();
-                this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
-                this.loading = false;
             });
 
         }).catch(err => {

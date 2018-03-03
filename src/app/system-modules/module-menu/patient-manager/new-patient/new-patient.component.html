@@ -51,14 +51,11 @@
                         <div class="plan">
                             <div class="plan-title">Insurance</div>
                             <div class="row frm-item-wrap">
-                                <!-- <mat-input-container class="example-full-width">
-                                    <input matInput mat-error placeholder="Insurance ID" [formControl]="hmoPlanId">
-                                </mat-input-container> -->
                                 <mat-form-field class="col-xs-12 col-sm-6 example-full-width">
                                     <input matInput placeholder="Pick HMO" aria-label="HMOs" [matAutocomplete]="auto" [formControl]="hmoPlanId">
                                     <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
                                         <mat-option *ngFor="let hmo of filteredHmos | async" [value]="hmo">
-                                            {{hmo.hmoName}} 
+                                            {{hmo.hmoName}}
                                         </mat-option>
                                     </mat-autocomplete>
                                 </mat-form-field>
@@ -81,7 +78,7 @@
                             <!-- <div class="another">Another Insurance</div> -->
                         </div>
                     </div>
-                    
+
                     <!-- Company Cover yet to be implemented. -->
                     <!-- <div *ngIf="tabCompany">
                         <div class="plan">
@@ -107,9 +104,14 @@
                         <div class="plan">
                             <div class="plan-title">Family Cover</div>
                             <div class="frm-item-wrap">
-                                <mat-input-container class="example-full-width">
-                                    <input matInput mat-error placeholder="Principal" [formControl]="familyPlanId">
-                                </mat-input-container>
+                                <div class="row frm-item-wrap">
+                                    <mat-input-container class="col-xs-12 col-sm-6">
+                                        <input matInput mat-error placeholder="Principal ID" [formControl]="familyPlanId">
+                                    </mat-input-container>
+                                    <mat-form-field class="col-xs-12 col-sm-6">
+                                        <input matInput mat-error placeholder="Client ID" [formControl]="faFileNo">
+                                    </mat-form-field>
+                                </div>
                                 <div class="row frm-item-wrap">
                                     <mat-form-field class="col-xs-12 col-sm-6">
                                         <mat-select placeholder="Select Service" [formControl]="faPlan" (change)="getServicePlans($event.value)">
@@ -131,7 +133,8 @@
                             <span *ngIf="!loading">Next</span>
                             <span *ngIf="loading">Loading...</span>
                         </button>
-                        <button class="small-btn" (click)="nextInsuranceCover(hmoPlanId.value, hmoPlan.value)" [disabled]="(!hmoPlanId.valid && !hmoPlan.valid) || loading" *ngIf="tabInsurance" mat-raised-button>
+                        <button class="small-btn" (click)="nextInsuranceCover(hmoPlanId.value, hmoPlan.value)" [disabled]="(!hmoPlanId.valid && !hmoPlan.valid) || loading"
+                            *ngIf="tabInsurance" mat-raised-button>
                             <span *ngIf="!loading">Next</span>
                             <span *ngIf="loading">Loading...</span>
                         </button>
@@ -140,7 +143,8 @@
                             <span *ngIf="!loading">Next</span>
                             <span *ngIf="loading">Loading...</span>
                         </button>
-                        <button class="small-btn" (click)="nextFamilyCover(familyPlanId.value, faPlan.value)" *ngIf="tabFamily" mat-raised-button [disabled]="!familyPlanId.valid || loading">
+                        <button class="small-btn" (click)="nextFamilyCover(familyPlanId.value, faPlan.value)" *ngIf="tabFamily" mat-raised-button
+                            [disabled]="!familyPlanId.valid || loading">
                             <span *ngIf="!loading">Next</span>
                             <span *ngIf="loading">Loading...</span>
                         </button>
@@ -221,6 +225,13 @@
                     </mat-input-container>
                 </div>
 
+
+                <div class="frm-item-wrap">
+                    <input type="hidden" placeholder="Principal Name" [formControl]="principalName">
+                    <input type="hidden" placeholder="Principal Person Id" [formControl]="principalPersonId">
+                    <input type="hidden" placeholder="Principal Family Id" [formControl]="principalFamilyId">
+                </div>
+
                 <!-- <div class="frm-item-wrap">
                     <mat-form-field class="example-full-width">
                         <mat-select placeholder="Security Questions" formControlName="securityQuestion">
@@ -267,18 +278,6 @@
                         <mat-input-container class="example-full-width">
                             <input matInput mat-error placeholder="Sur Name" formControlName="empLastName">
                         </mat-input-container>
-                    </div>
-                    <div class="frm-item-wrap">
-                        <input type="hidden" formControlName="facId">
-                    </div>
-                    <div class="frm-item-wrap">
-                        <input type="hidden" formControlName="facName">
-                    </div>
-                    <div class="frm-item-wrap">
-                        <input type="hidden" formControlName="empPersonId">
-                    </div>
-                    <div class="frm-item-wrap">
-                        <input type="hidden" formControlName="ffId">
                     </div>
                     <!-- <div class="frm-item-wrap">
                             <input type="hidden" formControlName="empFcltyId">

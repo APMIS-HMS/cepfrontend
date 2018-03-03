@@ -52,6 +52,10 @@ export class FacilityFamilyCoverService {
     return this._socket.update(familyCover._id, familyCover);
   }
 
+  patch(id, data, params){
+    return this._socket.patch(id, data, params);
+  }
+
   familycovers(facilityId, search?) {
     const host = this._restService.getHost();
     const path = host + '/distinct-familycover-plans';
