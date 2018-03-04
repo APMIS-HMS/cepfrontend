@@ -10,6 +10,7 @@ const billingSchema = new Schema({
     quantity: { type: Number, required: true },
     totalPrice: { type: Number, required: true },
     unitPrice: { type: Number, required: true },
+    isBearerConfirmed: { type: Schema.Types.Boolean, 'default': false },
     unitDiscountedAmount: { type: Number, required: false },
     totalDiscoutedAmount: { type: Number, required: false },
     waver: { type: Schema.Types.Mixed, required: false },
@@ -23,6 +24,7 @@ const billingSchema = new Schema({
     modifierId: [{ type: Schema.Types.ObjectId, required: false }],
     createdAt: { type: Date, 'default': Date.now },
     updatedAt: { type: Date, 'default': Date.now }
+
 });
 
 module.exports = billingSchema;
