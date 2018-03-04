@@ -14,7 +14,7 @@
                             </div>
                         </div>
                         <ul class="pending-bills">
-                            <li class="empWrap" *ngFor="let pendingBill of pendingBills; let i = index;" routerLink="/dashboard/payment/bill/{{pendingBill?.principalObject._id }}">
+                            <li class="empWrap" *ngFor="let pendingBill of pendingBills; let i = index;" routerLink="/dashboard/payment/bill/{{pendingBill?.principalObject?._id }}">
                                 <div class="list-img">
                                     <img *ngIf="pendingBill?.principalObject.personDetails.profileImageObject == undefined" src="assets/images/users/default.png">
                                     <img class="shadow" *ngIf="pendingBill?.principalObject.personDetails.profileImageObject != undefined" [src]="facilityService.transform(pendingBill?.principalObject?.personDetails?.profileImageObject.thumbnail)">
