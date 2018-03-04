@@ -77,7 +77,7 @@ export class LabRequestsComponent implements OnInit {
 
   totalPrice: Number = 0;
   constructor(private formBuilder: FormBuilder, private renderer: Renderer, private locker: CoolLocalStorage,
-     private route: ActivatedRoute,
+    private route: ActivatedRoute,
     private billingService: BillingService, private facilityService: FacilitiesService,
     private _router: Router,
     private investigationService: InvestigationService, private requestService: LaboratoryRequestService) {
@@ -660,9 +660,9 @@ export class LabRequestsComponent implements OnInit {
 
   validateForm() {
     if (this.frmNewRequest.valid) {
-      this.isValidateForm =true;
+      this.isValidateForm = true;
     } else if (this.selectedPatient._id != undefined && this.selectedPatient._id.length > 0) {
-      if(this.frmNewRequest.controls['clinicalInfo'].valid && this.frmNewRequest.controls['diagnosis'].valid && this.frmNewRequest.controls['investigation'].valid){
+      if (this.frmNewRequest.controls['clinicalInfo'].valid && this.frmNewRequest.controls['diagnosis'].valid && this.frmNewRequest.controls['investigation'].valid) {
         this.isValidateForm = true;
       }
     }
@@ -750,7 +750,11 @@ export class LabRequestsComponent implements OnInit {
         billItem.serviceId = item.investigation.serviceId;
         billItem.itemName = item.investigation.name;
         billItem.patientId = this.selectedPatient._id;
-        billItem.quantity = 1;
+        billItem.isBearerConfirmed = true,
+          billItem.covered = {
+            coverType: "wallet"
+          },
+          billItem.quantity = 1;
         billItem.totalPrice = billItem.quantity * billItem.unitPrice;
         billItem.unitDiscountedAmount = 0;
         billItem.totalDiscoutedAmount = 0;
@@ -778,12 +782,12 @@ export class LabRequestsComponent implements OnInit {
         results[0].billingId = billing;
         this.requestService.update(results[0]).then(payload => {
           this.frmNewRequest.reset();
-         this._getAllPendingRequests();
+          this._getAllPendingRequests();
           this.bindInvestigations = [];
           this.investigations = [];
           this.apmisLookupText = '';
           this.selectedPatient = undefined;
-        }).catch(ex =>{
+        }).catch(ex => {
         })
 
       })
@@ -794,7 +798,7 @@ export class LabRequestsComponent implements OnInit {
         this.investigations = [];
         this.apmisLookupText = '';
         this.selectedPatient = undefined;
-      },err=>{
+      }, err => {
       })
     }
   }

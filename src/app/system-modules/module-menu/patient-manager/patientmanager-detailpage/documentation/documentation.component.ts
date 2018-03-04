@@ -44,7 +44,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   subscription: Subscription;
   priority: any = <any>{};
   public tableChartData = [];
-   vitalsObjArray = [];
+  vitalsObjArray = [];
   hasSavedDraft = false;
   draftDocument: any;
   constructor(
@@ -74,12 +74,12 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         };
 
         doc.createdBy = this.loginEmployee.personDetails.title
-        + ' ' + this.loginEmployee.personDetails.lastName + ' ' + this.loginEmployee.personDetails.firstName;
+          + ' ' + this.loginEmployee.personDetails.lastName + ' ' + this.loginEmployee.personDetails.firstName;
         doc.facilityId = this.selectedMiniFacility._id;
         doc.facilityName = this.selectedMiniFacility.name;
         doc.patientId = this.patient._id,
-        doc.patientName = this.patient.personDetails.title
-        + ' ' + this.patient.personDetails.lastName + ' ' + this.patient.personDetails.firstName;
+          doc.patientName = this.patient.personDetails.title
+          + ' ' + this.patient.personDetails.lastName + ' ' + this.patient.personDetails.firstName;
         this.patientDocumentation.documentations.push(doc);
         // Get the raw orderset data and send to different destination.
         this._listenAndSaveRawOrderSetData();
@@ -88,7 +88,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
           this.getPersonDocumentation();
           this._notification('Success', 'Documentation successfully saved!');
         });
-      }else {
+      } else {
         const doc = this.draftDocument;
         doc.documentationStatus = 'Completed';
         const draftIndex = this.patientDocumentation.documentations.findIndex(x => x.apmisGuid === this.draftDocument.apmisGuid);
@@ -132,13 +132,13 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         };
 
         doc.createdBy = this.loginEmployee.personDetails.title
-        + ' ' + this.loginEmployee.personDetails.lastName + ' ' + this.loginEmployee.personDetails.firstName;
+          + ' ' + this.loginEmployee.personDetails.lastName + ' ' + this.loginEmployee.personDetails.firstName;
         doc.createdById = this.loginEmployee._id;
         doc.facilityId = this.selectedFacility._id;
         doc.facilityName = this.selectedFacility.name;
         doc.patientId = this.patient._id,
-        doc.patientName = this.patient.personDetails.title
-        + ' ' + this.patient.personDetails.lastName + ' ' + this.patient.personDetails.firstName;
+          doc.patientName = this.patient.personDetails.title
+          + ' ' + this.patient.personDetails.lastName + ' ' + this.patient.personDetails.firstName;
         doc.documentationStatus = 'Draft';
         doc.apmisGuid = apmisGuid;
 
@@ -155,7 +155,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
           // this._notification('Success', 'Documentation successfully saved!');
         }, error => {
         });
-      }else {
+      } else {
         this.sharedService.announceFinishedSavingDraft(true);
         this.draftDocument.document.body = payload;
 
@@ -171,7 +171,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     }, error => {
     });
 
-    this.documentationService.listenerUpdate.subscribe(payload =>{
+    this.documentationService.listenerUpdate.subscribe(payload => {
       this.patientDocumentation = payload;
     })
   }
@@ -182,9 +182,13 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this._getAllPriorities();
   }
   getPersonDocumentation() {
-    this.documentationService.find({ query: { 'personId': this.patient.personId, $sort: {
-      'documentations.updatedAt': -1
-    } } }).then((payload: any) => {
+    this.documentationService.find({
+      query: {
+        'personId': this.patient.personId, $sort: {
+          'documentations.updatedAt': -1
+        }
+      }
+    }).then((payload: any) => {
       if (payload.data.length === 0) {
         this.patientDocumentation.personId = this.patient.personDetails;
         this.patientDocumentation.documentations = [];
@@ -264,6 +268,10 @@ export class DocumentationComponent implements OnInit, OnDestroy {
           serviceId: element.serviceId,
           facilityId: this.selectedMiniFacility._id,
           patientId: this.patient._id,
+          isBearerConfirmed: true,
+          covered: {
+            coverType: "wallet"
+          },
           patientObject: this.patient,
           description: element.productName,
           quantity: element.quantity,
@@ -444,7 +452,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     }).catch(err => console.error(err));
   }
 
-  getvitalCharts(vitals){
+  getvitalCharts(vitals) {
     this.tableChartData = vitals;
   }
 
@@ -454,22 +462,22 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       if ((documentation.document.documentType && documentation.document.documentType.isSide === false)
         || (documentation.document.documentType && documentation.document.documentType.isSide === undefined)) {
 
-          const createdById = this.loginEmployee._id;
-          const facilityId = this.selectedMiniFacility._id;
-          if (documentation.documentationStatus !== 'Draft') {
+        const createdById = this.loginEmployee._id;
+        const facilityId = this.selectedMiniFacility._id;
+        if (documentation.documentationStatus !== 'Draft') {
           this.documents.push(documentation);
-          }else if (documentation.createdById === createdById && documentation.facilityId === facilityId) {
-            this.hasSavedDraft = true;
-            this.draftDocument = documentation;
-          }
+        } else if (documentation.createdById === createdById && documentation.facilityId === facilityId) {
+          this.hasSavedDraft = true;
+          this.draftDocument = documentation;
+        }
       } else {
         if (documentation.document.documentType.isSide === true && documentation.document.documentType.title === 'Problems') {
           this.documents.push(documentation);
-        }else if(documentation.document.documentType.isSide === true && documentation.document.documentType.title === 'Vitals'){
+        } else if (documentation.document.documentType.isSide === true && documentation.document.documentType.title === 'Vitals') {
           // payload.data[0].documentations[k].document.body.vitals;
           this.tableChartData = documentation.document.body.vitals;
           this.documents.push(documentation);
-        }else {
+        } else {
           this.documents.push(documentation);
         }
       }
