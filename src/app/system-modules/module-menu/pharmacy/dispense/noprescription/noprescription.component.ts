@@ -296,12 +296,12 @@ export class NoprescriptionComponent implements OnInit {
 					product['inventoryId'] = element.inventoryId;
 					product['referenceId'] = '';
 					product['employeeId'] = this.employeeDetails._id;
-          product['employeeName'] = `${this.employeeDetails.firstName} ${this.employeeDetails.firstName}`;
+          			product['employeeName'] = `${this.employeeDetails.firstName} ${this.employeeDetails.firstName}`;
 					product['referenceService'] = 'NoPrescriptionService';
 					product['inventorytransactionTypeId'] = this.inventoryTransactionTypeId;
 					prescription['employee'] = {
 						id: this.employeeDetails._id,
-            name: `${this.employeeDetails.firstName} ${this.employeeDetails.firstName}`
+            			name: `${this.employeeDetails.firstName} ${this.employeeDetails.firstName}`
 					};
 					prescription['totalQuantity'] = this.totalQuantity;
 					prescription['totalCost'] = this.totalPrice;
@@ -316,10 +316,10 @@ export class NoprescriptionComponent implements OnInit {
 					storeId: this.selectedStore.storeId
 				}
 
-        const collectionDrugs = { drugs: drugs };
+				const collectionDrugs = { drugs: drugs };
 
-        console.log(payload);
-        console.log(collectionDrugs);
+				console.log(payload);
+				console.log(collectionDrugs);
 
 				// Call a service to
 				// this._dispenseCollectionDrugs.create(collectionDrugs).then(res => {
