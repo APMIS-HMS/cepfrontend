@@ -33,8 +33,6 @@ class Service {
           x.isPicked = true;
         });
         const patient = await patientsService.get(params.query.patientId);
-        console.log(patient.paymentPlan);
-        console.log(insurance[index].covered);
         const patientPaymentType = patient.paymentPlan.filter(x => x.planDetails.hmoId !== undefined && x.planDetails.hmoId.toString() === insurance[index].covered.hmoId.toString());
         const billModel = {
           "facilityId": params.query.facilityId,
@@ -86,6 +84,7 @@ class Service {
         const patientPaymentType = patient.paymentPlan.filter(x => x.planDetails.familyId !== undefined && x.planDetails.familyId.toString() === family[index].covered.familyId.toString());
         const billModel = {
           "facilityId": params.query.facilityId,
+          "patientId": params.query.patientId,
           "grandTotal": sumCost(indx),
           "coverFile": {
             "id": patientPaymentType[0].planDetails.principalId,
@@ -100,6 +99,9 @@ class Service {
     }
     //Collection of Wallet Billitems
     if (wallet.length > 0) {
+      wallet.forEach(x=>{
+        x.isBearerConfirmed = true;
+      })
       const billModel = {
         "facilityId": params.query.facilityId,
         "grandTotal": sumCost(wallet),
