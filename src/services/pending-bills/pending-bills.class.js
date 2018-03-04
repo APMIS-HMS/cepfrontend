@@ -18,22 +18,33 @@ class Service {
     const billingsService = this.app.service('billings');
     const patientService = this.app.service('patients');
     const peopleService = this.app.service('people');
-    var awaitedBills = await billingsService.find({
+    console.log(id);
+    // console.log(params);
+    const awaitedBills = await billingsService.find({
       query: {
         facilityId: id,
+        $or: [{
+            'billItems.covered.coverType': 'wallet'
+          },
+          {
+            'billItems.covered.coverType': 'insurance'
+          }
+        ],
         $sort: {
           updatedAt: -1
         },
         $limit: false
       }
     });
-    var bill = {};
-    var billings = [];
+    console.log(awaitedBills);
+
+    let bill = {};
+    let billings = [];
     if (params.query.isQuery == true) {
-      let len = awaitedBills.data.length - 1;
+      const len = awaitedBills.data.length - 1;
       for (let i = len; i >= 0; i--) {
-        var awaitedPatient = await patientService.get(awaitedBills.data[i].patientId, {});
-        var awaitPerson = await peopleService.get(awaitedPatient.personId, {});
+        let awaitedPatient = await patientService.get(awaitedBills.data[i].patientId, {});
+        let awaitPerson = await peopleService.get(awaitedPatient.personId, {});
         if (awaitPerson.firstName.toLowerCase().includes(params.query.name.toLowerCase()) ||
           awaitPerson.lastName.toLowerCase().includes(params.query.name.toLowerCase())) {
           billings.push(awaitedBills.data[i]);
@@ -42,22 +53,21 @@ class Service {
     } else {
       billings = awaitedBills.data;
     }
-    var result = [];
-    var totalAmountBilled = 0;
+    console.log(billings);
+    let result = [];
+    let totalAmountBilled = 0;
     if (billings.length > 0) {
       for (let i = billings.length - 1; i >= 0; i--) {
         const val = billings[i];
-        awaitedPatient = await patientService.get(val.patientId, {});
-        awaitPerson = await peopleService.get(awaitedPatient.personId, {});
-        val.personDetails = awaitPerson;
+        console.log(val);
         result.push(val);
-        if (i == 0) {
-          return GetBillData(result, totalAmountBilled, bill);
-        }
+        console.log(result);
       }
-    } else {
-      return GetBillData(result, totalAmountBilled, bill);
+      console.log(result);
+      // return GetBillData(result, totalAmountBilled, bill);
     }
+    console.log(result);
+    return GetBillData(result, totalAmountBilled, bill);
   }
 
   create(data, params) {
@@ -83,7 +93,12 @@ class Service {
   }
 }
 
+module.exports = function (options) {
+  return new Service(options);
+};
+
 function GetBillData(result, totalAmountBilled, bill) {
+  console.log(result);
   if (result.length > 0) {
     var counter = 0;
     var today = new Date();
@@ -122,9 +137,4 @@ function GetBillData(result, totalAmountBilled, bill) {
   }
 
 }
-
-module.exports = function (options) {
-  return new Service(options);
-};
-
 module.exports.Service = Service;

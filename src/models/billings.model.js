@@ -10,6 +10,7 @@ module.exports = function(app) {
     const { Schema } = mongooseClient;
     const billings = new Schema({
         facilityId: { type: Schema.Types.ObjectId, required: true },
+        coverFile: { type: Schema.Types.Mixed, required: false },
         patientId: { type: Schema.Types.ObjectId, required: false },
         walkInClientDetails: { type: Schema.Types.Mixed, required: false }, // { "name": "", "phone": ""}
         isWalkIn: { type: Boolean, 'default': false },
