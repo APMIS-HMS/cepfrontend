@@ -311,12 +311,10 @@
                 </div>
             </div>
         </div>
-    </div>
-</div>
 
-<div *ngIf="reqDetail_view" class="modal-overlay">
-    <app-request-detail [investigation]="selectedInvestigation" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-request-detail>
-</div>
-<div *ngIf="personAcc_view" class="modal-overlay">
-    <app-person-account (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-person-account>
-</div>
+        <div *ngIf="reqDetail_view" class="modal-overlay">
+            <app-request-detail [investigation]="selectedInvestigation" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-request-detail>
+        </div>
+        <div *ngIf="personAcc_view" class="modal-overlay">
+            <app-person-account (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-person-account>
+        </div>

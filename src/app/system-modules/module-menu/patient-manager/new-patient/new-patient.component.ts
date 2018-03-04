@@ -67,6 +67,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     ccEmployeeId: any;
     faId: any;
     planId: any;
+    noPatientId: any = false;
 
     shouldMoveFirst = false;
     nextOfKinReadOnly = false;
@@ -195,8 +196,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
         this.filteredHmos = this.hmoPlanId.valueChanges
             .pipe(
-            startWith(''),
-            map((hmo: any) => hmo ? this.filterHmos(hmo) : this.hmos.slice())
+                startWith(''),
+                map((hmo: any) => hmo ? this.filterHmos(hmo) : this.hmos.slice())
             );
     }
     cropped(bounds: Bounds) {
@@ -719,12 +720,33 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         const filEx = this.beneficiaries.filter(x => x.filNo === this.familyClientId);
                         console.log(filEx);
                         if (filEx.length > 0) {
-                            if(filEx[0].patientId !== undefined){
+                            if (filEx[0].patientId !== undefined) {
                                 this.loading = false;
                                 this.systemModuleService.off();
                                 this.systemModuleService.announceSweetProxy('Client Id has already been assigned to a patient. Please try another Client Id', 'error');
-                            }else{
+                            } else {
+                                if (info[0].patientId === undefined) {
+                                    if (this.getRole(this.familyClientId) !== 'P') {
+                                        console.log('Principal doesn\'t exist as a patient. Please register principal.');
+                                        this.loading = false;
+                                        this.systemModuleService.off();
+                                        this.systemModuleService.announceSweetProxy('Principal doesn\'t exist as a patient. Please register principal.', 'error');
+                                        return;
+                                    } else {
+                                        this.noPatientId = true;
+                                    }
+                                }
                                 if (this.shouldMoveFirst === true) {
+                                    this.frmPerson.controls["firstname"].setValue(filEx[0].othernames);
+                                    this.frmPerson.controls["firstname"].disable();
+                                    this.frmPerson.controls["lastname"].setValue(filEx[0].surname);
+                                    this.frmPerson.controls["lastname"].disable();
+                                    this.frmPerson.controls["phone"].setValue(filEx[0].phone);
+                                    this.frmPerson.controls["phone"].disable();
+                                    this.principalName.setValue(info[0].othernames + ' ' + info[0].surname);
+                                    this.principalPersonId.setValue((this.noPatientId !== true) ? info[0].patientObject.personDetails._id : '');
+                                    this.principalFamilyId.setValue(facFamilyCover._id);
+
                                     this.saveFamilyPerson();
                                 } else {
                                     this.frmPerson.controls["firstname"].setValue(filEx[0].othernames);
@@ -733,10 +755,9 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                                     this.frmPerson.controls["lastname"].disable();
                                     this.frmPerson.controls["phone"].setValue(filEx[0].phone);
                                     this.frmPerson.controls["phone"].disable();
-                                    this.principalName.setValue(info[0].othernames+' '+info[0].surname);
-                                    this.principalPersonId.setValue(info[0].patientObject.personDetails._id);
+                                    this.principalName.setValue(info[0].othernames + ' ' + info[0].surname);
+                                    this.principalPersonId.setValue((this.noPatientId !== true) ? info[0].patientObject.personDetails._id : '');
                                     this.principalFamilyId.setValue(facFamilyCover._id);
-                                    console.log(this.principalFamilyId.value);
                                     this.frmNewEmp4_show = false;
                                     this.frmNewPerson1_show = true;
                                     this.frmNewPerson2_show = false;
@@ -1353,7 +1374,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 },
                 {
                     planType: this.coverType,
-                    bearerPersonId: this.principalPersonId.value,
+                    bearerPersonId: (this.noPatientId !== true) ? this.principalPersonId.value : this.selectedPerson._id,
                     planDetails: {
                         principalId: this.faId,
                         principalName: this.principalName.value,
@@ -1363,7 +1384,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 }
             ]
         }
-        
+
         this.patientService.create(patient).then(payl => {
             this.familyCoverService.find({ query: { 'facilityId': this.facility._id } }).then(familyCoverPayload => {
                 if (familyCoverPayload.data.length > 0) {
@@ -1398,10 +1419,10 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                                     paymentCompleted: false,
                                     paymentStatus: [],
                                     payments: []
-                
+
                                 }
                             ];
-                
+
                             this.billingService.createBill(billing, {
                                 query: {
                                     facilityId: this.facility._id,
@@ -1430,6 +1451,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             });
 
         }).catch(err => {
+            console.log(err);
             this.systemModuleService.off();
             this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
             this.loading = false;

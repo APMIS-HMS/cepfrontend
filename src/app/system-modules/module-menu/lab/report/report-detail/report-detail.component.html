@@ -38,103 +38,103 @@
                 <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
             </div>
         </div>
-    </div>
-</div>
 
-<div class="frmNoteWrap">
-    <div class="frm-wrap">
-        <div class="frm-l">
-            <div class="selected-patient-wrap">
-                <div class="sel-patient-img">
-                    <img *ngIf="selectedInvestigationData?.patient?.profileImageObject == undefined" src="assets/images/users/default.png">
-                    <img class="shadow" *ngIf="selectedInvestigationData?.patient?.profileImageObject != undefined" [src]="facilityService.transform(selectedInvestigationData?.patient?.profileImageObject?.thumbnail)">
-                </div>
-                <div class="sel-patient-name">{{ selectedInvestigationData?.patient?.firstName }} {{ selectedInvestigationData?.patient?.lastName }}
-                </div>
-                <div class="sel-patient-detaills">
-                    <div>{{ selectedInvestigationData?.patient?.apmisId }}</div>
-                    <div>{{ selectedInvestigationData?.patient?.dateOfBirth | date: 'shortDate' }}</div>
-                    <div>{{ selectedInvestigationData?.patient?.gender }}</div>
-                    <div>{{ selectedInvestigationData?.patient?.phoneNumber }}</div>
-                    <div>{{ selectedInvestigationData?.patient?.email }}</div>
-                </div>
-            </div>
-            <div class="act-right-actions">
-                <div (click)="showImageBrowseDlg()" class="action-item" style="color:#FF9800;">
-                    <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                    <span>Upload</span>
-                </div>
-                <div (click)="showImageBrowseDlg()" class="action-item" style="color:#0288D1;">
-                    <i class="fa fa-edit" aria-hidden="true"></i>
-                    <span>Edit</span>
-                </div>
-                <div class="act-right-actions">
-                    <div (click)="showImageBrowseDlg()" class="action-item" style="color:#FF9800;">
-                        <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                        <span>Upload</span>
+        <div class="frmNoteWrap">
+            <div class="frm-wrap">
+                <div class="frm-l">
+                    <div class="selected-patient-wrap">
+                        <div class="sel-patient-img">
+                            <img *ngIf="selectedInvestigationData?.patient?.profileImageObject == undefined" src="assets/images/users/default.png">
+                            <img class="shadow" *ngIf="selectedInvestigationData?.patient?.profileImageObject != undefined" [src]="facilityService.transform(selectedInvestigationData?.patient?.profileImageObject?.thumbnail)">
+                        </div>
+                        <div class="sel-patient-name">{{ selectedInvestigationData?.patient?.firstName }} {{ selectedInvestigationData?.patient?.lastName }}
+                        </div>
+                        <div class="sel-patient-detaills">
+                            <div>{{ selectedInvestigationData?.patient?.apmisId }}</div>
+                            <div>{{ selectedInvestigationData?.patient?.dateOfBirth | date: 'shortDate' }}</div>
+                            <div>{{ selectedInvestigationData?.patient?.gender }}</div>
+                            <div>{{ selectedInvestigationData?.patient?.phoneNumber }}</div>
+                            <div>{{ selectedInvestigationData?.patient?.email }}</div>
+                        </div>
                     </div>
-                    <div (click)="showImageBrowseDlg()" class="action-item" style="color:#0288D1;">
-                        <i class="fa fa-edit" aria-hidden="true"></i>
-                        <span>Edit</span>
-                    </div>
-                </div>
-                <div class="tab-title">Uploaded Files</div>
-                <div class="upload-wrap">
-                    <div class="uploadeds">
-                        <span>No File uploaded yet.</span>
-                    </div>
-                </div>
-            </div>
-            <div class="frm-r">
-                <div>
-                    <div>
-                        <div>
-                            <div class="initial-contenet invstn-val">
-                                <div class="report-title">Clinical Information</div>
-                                <div class="initial-val">
-                                    {{ selectedInvestigationData?.clinicalInformation }}
-                                </div>
+                    <div class="act-right-actions">
+                        <div (click)="showImageBrowseDlg()" class="action-item" style="color:#FF9800;">
+                            <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                            <span>Upload</span>
+                        </div>
+                        <div (click)="showImageBrowseDlg()" class="action-item" style="color:#0288D1;">
+                            <i class="fa fa-edit" aria-hidden="true"></i>
+                            <span>Edit</span>
+                        </div>
+                        <div class="act-right-actions">
+                            <div (click)="showImageBrowseDlg()" class="action-item" style="color:#FF9800;">
+                                <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                                <span>Upload</span>
                             </div>
-                            <div class="initial-contenet invstn-val">
-                                <div class="report-title">Diagnosis</div>
-                                <div class="initial-val">
-                                    {{ selectedInvestigationData?.diagnosis }}
-                                </div>
+                            <div (click)="showImageBrowseDlg()" class="action-item" style="color:#0288D1;">
+                                <i class="fa fa-edit" aria-hidden="true"></i>
+                                <span>Edit</span>
                             </div>
                         </div>
-                        <div class="resultSect-title">Investigation Result</div>
-                        <div class="invstn-wrap">
-                            <div class="lettering-wrap">
-                                <div class="report-title">{{ selectedInvestigationData?.name }}</div>
-                                <div class="invstn-vals">
-                                    <div class="invstn-val">
-                                        <div class="val-label">Reference:</div>
-                                        <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Text'">{{ selectedInvestigationData?.reportType.ref }}</div>
-                                        <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Numeric'">{{ selectedInvestigationData?.reportType.ref.min }} - {{ selectedInvestigationData?.reportType.ref.min }}({{ selectedInvestigationData?.unit }})</div>
+                        <div class="tab-title">Uploaded Files</div>
+                        <div class="upload-wrap">
+                            <div class="uploadeds">
+                                <span>No File uploaded yet.</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="frm-r">
+                        <div>
+                            <div>
+                                <div>
+                                    <div class="initial-contenet invstn-val">
+                                        <div class="report-title">Clinical Information</div>
+                                        <div class="initial-val">
+                                            {{ selectedInvestigationData?.clinicalInformation }}
+                                        </div>
                                     </div>
-                                    <div class="invstn-val">
-                                        <div class="val-label">Sample NO:</div>
-                                        <div class="val-val">1220</div>
-                                    </div>
-                                    <div class="invstn-val">
-                                        <div class="val-label">Test Result:</div>
-                                        <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Text'">{{ selectedInvestigationData?.report.result }}</div>
-                                        <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Numeric'">{{ selectedInvestigationData?.report.result }}({{ selectedInvestigationData?.unit }})
+                                    <div class="initial-contenet invstn-val">
+                                        <div class="report-title">Diagnosis</div>
+                                        <div class="initial-val">
+                                            {{ selectedInvestigationData?.diagnosis }}
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="initial-contenet invstn-val">
-                            <div class="report-title">Conclusion</div>
-                            <div class="initial-val">
-                                {{ selectedInvestigationData?.report?.conclusion }}
-                            </div>
-                        </div>
-                        <div class="initial-contenet invstn-val">
-                            <div class="report-title">Recommendation</div>
-                            <div class="initial-val">
-                                {{ selectedInvestigationData?.report?.recommendation }}
+                                <div class="resultSect-title">Investigation Result</div>
+                                <div class="invstn-wrap">
+                                    <div class="lettering-wrap">
+                                        <div class="report-title">{{ selectedInvestigationData?.name }}</div>
+                                        <div class="invstn-vals">
+                                            <div class="invstn-val">
+                                                <div class="val-label">Reference:</div>
+                                                <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Text'">{{ selectedInvestigationData?.reportType.ref }}</div>
+                                                <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Numeric'">{{ selectedInvestigationData?.reportType.ref.min }} - {{ selectedInvestigationData?.reportType.ref.min }}({{ selectedInvestigationData?.unit }})</div>
+                                            </div>
+                                            <div class="invstn-val">
+                                                <div class="val-label">Sample NO:</div>
+                                                <div class="val-val">1220</div>
+                                            </div>
+                                            <div class="invstn-val">
+                                                <div class="val-label">Test Result:</div>
+                                                <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Text'">{{ selectedInvestigationData?.report.result }}</div>
+                                                <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Numeric'">{{ selectedInvestigationData?.report.result }}({{ selectedInvestigationData?.unit }})
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="initial-contenet invstn-val">
+                                    <div class="report-title">Conclusion</div>
+                                    <div class="initial-val">
+                                        {{ selectedInvestigationData?.report?.conclusion }}
+                                    </div>
+                                </div>
+                                <div class="initial-contenet invstn-val">
+                                    <div class="report-title">Recommendation</div>
+                                    <div class="initial-val">
+                                        {{ selectedInvestigationData?.report?.recommendation }}
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>

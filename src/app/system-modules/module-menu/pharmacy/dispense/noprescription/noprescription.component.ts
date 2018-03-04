@@ -6,7 +6,7 @@ import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
 import {
 	FacilitiesService, PrescriptionService, InventoryService, EmployeeService, PurchaseEntryService,
-	InventoryTransactionTypeService, DispenseCollectionDrugService, BillingService, InvoiceService,
+	InventoryTransactionTypeService, BillingService, InvoiceService,
 	DispenseService, ProductService, FacilityPriceService, AssessmentDispenseService
 }
 	from '../../../../../services/facility-manager/setup/index';
@@ -29,6 +29,7 @@ export class NoprescriptionComponent implements OnInit {
 	minorLocations: string[] = [];
 	products: any[] = [];
 	selectedProducts: any[] = [];
+	selectedProduct: any;
 	departments: Department[] = [];
 	clients: any[] = [];
 	selectedDept = '';
@@ -40,7 +41,7 @@ export class NoprescriptionComponent implements OnInit {
 	transactions: any = {};
 	batches: any[] = [];
 	prescription = {};
-	storeId: any = <any>{};
+	selectedStore: any;
 	// search variables
 	searchText = '';
 	cuDropdownLoading = false;
@@ -51,9 +52,10 @@ export class NoprescriptionComponent implements OnInit {
 	totalQuantity = 0;
 	selectedBatch = '';
 	disableDispenseBtn = false;
-	dispenseBtnText = 'Dispense';
+	dispenseBtn = true;
+  dispensingBtn = false;
 	inventoryTransactionTypeId = '';
-	selectedIventoryId = '';
+	selectedInventoryId = '';
 	selectedFsId = '';
 	selectedSId = '';
 	selectedCId = '';
@@ -76,22 +78,22 @@ export class NoprescriptionComponent implements OnInit {
 		private _purchaseEntryService: PurchaseEntryService,
 		private _assessmentDispenseService: AssessmentDispenseService,
 		private _inventoryTransactionTypeService: InventoryTransactionTypeService,
-		private _dispenseCollectionDrugs: DispenseCollectionDrugService,
 		private _billingService: BillingService,
 		private _invoiceService: InvoiceService,
 		private _authFacadeService: AuthFacadeService
 	) {
-
+    this._authFacadeService.getLogingEmployee().then(res => {
+      this.employeeDetails = res;
+      if (!!this.employeeDetails.storeCheckIn && this.employeeDetails.storeCheckIn.length > 0) {
+        this.selectedStore = this.employeeDetails.storeCheckIn.filter(x => x.isOn)[0];
+      }
+    }).catch(err => console.log(err));
 	}
 
 	ngOnInit() {
 		this._pharmacyEventEmitter.setRouteUrl('Dispense');
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
-		this.storeId = this._locker.getObject('checkingObject');
 		this.user = this._locker.getObject('auth');
-		this._authFacadeService.getLogingEmployee().then(res => {
-			this.employeeDetails = res;
-		}).catch(err => console.log(err));
 
 		this.clients = Clients;
 		this.selectedClient = Clients[0].name;
@@ -135,13 +137,9 @@ export class NoprescriptionComponent implements OnInit {
 	onClickSaveNoPrescription(value: any, valid: boolean) {
 		const prescription = {};
 		if (valid) {
-			if (this.storeId.typeObject.storeId !== '') {
+			if (!!this.selectedStore) {
 				if (value.drug === '' || value.qty === '' || value.qty === 0 || value.batchNumber === '') {
-					this._facilityService.announceNotification({
-						users: [this.user._id],
-						type: 'Error',
-						text: 'Some fields are empty or Quantity is less than 1!'
-					});
+          this._notification('Error', 'Some fields are empty or Quantity is less than 1!');
 				} else {
 					switch (value.client) {
 						case 'Individual':
@@ -184,7 +182,7 @@ export class NoprescriptionComponent implements OnInit {
 					prescription['batchNumberId'] = value.batchNumber;
 					prescription['totalQuantity'] = this.totalQuantity;
 					prescription['totalCost'] = this.totalPrice;
-					prescription['inventoryId'] = this.selectedIventoryId;
+					prescription['inventoryId'] = this.selectedInventoryId;
 					prescription['facilityServiceId'] = this.selectedFsId;
 					prescription['serviceId'] = this.selectedSId;
 					prescription['isBilled'] = false;
@@ -200,27 +198,21 @@ export class NoprescriptionComponent implements OnInit {
 					this.noPrescriptionForm.controls['qty'].setValue(1);
 				}
 			} else {
-				this._facilityService.announceNotification({
-					type: 'Error',
-					text: 'You need to check into store.'
-				});
+        this._notification('Error', 'You need to check into store.');
 			}
 		} else {
-			this._facilityService.announceNotification({
-				users: [this.user._id],
-				type: 'Error',
-				text: 'Some fields are empty or Quantity is less than 1!'
-			});
+      this._notification('Error', 'Some fields are empty or Quantity is less than 1!');
 		}
 	}
 
 	// Save Nonpresciption form data in to the database.
 	onClickDispense() {
 		if (this.prescriptions.length > 0) {
-			if (this.storeId !== '') {
+			if (!!this.selectedStore) {
 				const prescription = {};
 				const drugs = [];
-				this.dispenseBtnText = 'Dispensing... <i class="fa fa-spinner fa-spin"></i>';
+        this.dispenseBtn = false;
+        this.dispensingBtn = true;
 				this.disableDispenseBtn = true;
 
 				this.prescriptions.forEach(element => {
@@ -304,12 +296,12 @@ export class NoprescriptionComponent implements OnInit {
 					product['inventoryId'] = element.inventoryId;
 					product['referenceId'] = '';
 					product['employeeId'] = this.employeeDetails._id;
-					product['employeeName'] = this.employeeDetails.employeeDetails.personFullName;
+          			product['employeeName'] = `${this.employeeDetails.firstName} ${this.employeeDetails.firstName}`;
 					product['referenceService'] = 'NoPrescriptionService';
 					product['inventorytransactionTypeId'] = this.inventoryTransactionTypeId;
 					prescription['employee'] = {
 						id: this.employeeDetails._id,
-						name: this.employeeDetails.employeeDetails.personFullName
+            			name: `${this.employeeDetails.firstName} ${this.employeeDetails.firstName}`
 					};
 					prescription['totalQuantity'] = this.totalQuantity;
 					prescription['totalCost'] = this.totalPrice;
@@ -321,111 +313,114 @@ export class NoprescriptionComponent implements OnInit {
 					facilityId: this.facility._id,
 					nonPrescription: prescription,
 					isPrescription: false,
-					storeId: this.storeId
+					storeId: this.selectedStore.storeId
 				}
 
-				const collectionDrugs = {
-					drugs: drugs,
-				};
+				const collectionDrugs = { drugs: drugs };
+
+				console.log(payload);
+				console.log(collectionDrugs);
 
 				// Call a service to
-				this._dispenseCollectionDrugs.create(collectionDrugs).then(res => {
-					// bill model
-					const billItemArray = [];
-					let totalCost = 0;
-					const clientDetails: any = <any>{};
-					this.prescriptions.forEach((element, i) => {
-						if (i === 0) {
-							switch (element.client.toLowerCase()) {
-								case 'individual':
-									clientDetails.name = element.firstName + ' ' + element.lastName;
-									clientDetails.phone = element.phoneNumber;
-									break;
-								case 'corporate':
-									clientDetails.name = element.companyName;
-									clientDetails.phone = element.companyPhone;
-									break;
-								case 'internal':
-									clientDetails.dept = element.dept;
-									clientDetails.unit = element.unit;
-									clientDetails.location = element.minorLocation;
-									break;
-							}
-						}
+				// this._dispenseCollectionDrugs.create(collectionDrugs).then(res => {
+				// 	// bill model
+				// 	const billItemArray = [];
+				// 	let totalCost = 0;
+				// 	const clientDetails: any = <any>{};
+				// 	this.prescriptions.forEach((element, i) => {
+				// 		if (i === 0) {
+				// 			switch (element.client.toLowerCase()) {
+				// 				case 'individual':
+				// 					clientDetails.name = element.firstName + ' ' + element.lastName;
+				// 					clientDetails.phone = element.phoneNumber;
+				// 					break;
+				// 				case 'corporate':
+				// 					clientDetails.name = element.companyName;
+				// 					clientDetails.phone = element.companyPhone;
+				// 					break;
+				// 				case 'internal':
+				// 					clientDetails.dept = element.dept;
+				// 					clientDetails.unit = element.unit;
+				// 					clientDetails.location = element.minorLocation;
+				// 					break;
+				// 			}
+				// 		}
 
-						const billItem = <BillItem>{
-							facilityServiceId: element.facilityServiceId,
-							serviceId: element.serviceId,
-							facilityId: this.facility._id,
-							description: element.productName,
-							quantity: element.qty,
-							totalPrice: element.cost * element.qty,
-							unitPrice: element.cost,
-							unitDiscountedAmount: 0,
-							totalDiscoutedAmount: 0,
-						};
+				// 		const billItem = <BillItem>{
+				// 			facilityServiceId: element.facilityServiceId,
+				// 			serviceId: element.serviceId,
+				// 			facilityId: this.facility._id,
+				// 			description: element.productName,
+				// 			quantity: element.qty,
+				// 			totalPrice: element.cost * element.qty,
+				// 			unitPrice: element.cost,
+				// 			unitDiscountedAmount: 0,
+				// 			totalDiscoutedAmount: 0,
+				// 		};
 
-						totalCost += element.totalCost;
-						billItemArray.push(billItem);
-					});
+				// 		totalCost += element.totalCost;
+				// 		billItemArray.push(billItem);
+				// 	});
 
-					const bill = <BillIGroup>{
-						facilityId: this.facility._id,
-						walkInClientDetails: clientDetails,
-						isWalkIn: true,
-						billItems: billItemArray,
-						discount: 0,
-						subTotal: totalCost,
-						grandTotal: totalCost,
-					}
-					// Create a bill.
-					this._billingService.create(bill).then(res => {
-						const billingIds = [];
-						// Get all the billing items
-						// res.drugs.forEach(element => {
-						// 	const ids = {
-						// 		productId: element._id,
-						// 		productName: element.productName
-						// 	}
-						// 	billingIds.push(ids);
-						// });
+				// 	const bill = <BillIGroup>{
+				// 		facilityId: this.facility._id,
+				// 		walkInClientDetails: clientDetails,
+				// 		isWalkIn: true,
+				// 		billItems: billItemArray,
+				// 		discount: 0,
+				// 		subTotal: totalCost,
+				// 		grandTotal: totalCost,
+				// 	}
+				// 	// Create a bill.
+				// 	this._billingService.create(bill).then(res => {
+				// 		const billingIds = [];
+				// 		// Get all the billing items
+				// 		// res.drugs.forEach(element => {
+				// 		// 	const ids = {
+				// 		// 		productId: element._id,
+				// 		// 		productName: element.productName
+				// 		// 	}
+				// 		// 	billingIds.push(ids);
+				// 		// });
 
-						// const invoice = {
-						// 	facilityId: this.facility._id,
-						// 	walkInClientDetails: clientDetails,
-						// 	isWalkIn: true,
-						// 	billingIds: billingIds,
-						// 	payments: billingIds, // Don't know what to insert in this.
-						// 	paymentStatus: [{ type: Schema.Types.Mixed, required: true }], // waved, insurance, partpayment, paid
-						// 	paymentCompleted: true,
-						// 	invoiceNo: { type: String, require: false },
-						// 	totalDiscount: { type: Number, require: false },
-						// 	totalPrice: { type: Number, require: false },
-						// };
-						// // call the invoice service.
-						// this._invoiceService.create(invoice)
-						// 	.then(res => {
-						// 	})
-						// 	.catch(err => { console.log(err); });
-					}).catch(err => { console.log(err); });
-				}).catch(err => { console.log(err); });
+				// 		// const invoice = {
+				// 		// 	facilityId: this.facility._id,
+				// 		// 	walkInClientDetails: clientDetails,
+				// 		// 	isWalkIn: true,
+				// 		// 	billingIds: billingIds,
+				// 		// 	payments: billingIds, // Don't know what to insert in this.
+				// 		// 	paymentStatus: [{ type: Schema.Types.Mixed, required: true }], // waved, insurance, partpayment, paid
+				// 		// 	paymentCompleted: true,
+				// 		// 	invoiceNo: { type: String, require: false },
+				// 		// 	totalDiscount: { type: Number, require: false },
+				// 		// 	totalPrice: { type: Number, require: false },
+				// 		// };
+				// 		// // call the invoice service.
+				// 		// this._invoiceService.create(invoice)
+				// 		// 	.then(res => {
+				// 		// 	})
+				// 		// 	.catch(err => { console.log(err); });
+				// 	}).catch(err => { console.log(err); });
+				// }).catch(err => { console.log(err); });
 
-				// Call the dispense service.
-				this._dispenseService.create(payload).then(res => {
-					this.dispenseBtnText = 'Dispense';
-					this.disableDispenseBtn = true;
-					this.selectedProducts = [];
-					this.prescriptions = [];
-					this.prescription = {};
-					this.totalPrice = 0;
-					this.totalQuantity = 0;
-					this.price = 0;
-					this.noPrescriptionForm.reset();
-					this.noPrescriptionForm.controls['qty'].reset(0);
-					this.noPrescriptionForm.controls['client'].reset(this.clients[0].name);
-					this._notification('Success', 'Prescription has been sent!');
-				}).catch(err => {
-				});
+				// // Call the dispense service.
+				// this._dispenseService.create(payload).then(res => {
+        //   this.dispenseBtn = true;
+        //   this.dispensingBtn = false;
+				// 	this.disableDispenseBtn = true;
+				// 	this.selectedProducts = [];
+				// 	this.prescriptions = [];
+				// 	this.prescription = {};
+				// 	this.totalPrice = 0;
+				// 	this.totalQuantity = 0;
+				// 	this.price = 0;
+				// 	this.noPrescriptionForm.reset();
+				// 	this.noPrescriptionForm.controls['qty'].reset(0);
+				// 	this.noPrescriptionForm.controls['client'].reset(this.clients[0].name);
+				// 	this._notification('Success', 'Prescription has been sent!');
+				// }).catch(err => {
+				// 	console.log(err);
+				// });
 			} else {
 				this._notification('Error', 'You need to check into store.');
 			}
@@ -438,34 +433,37 @@ export class NoprescriptionComponent implements OnInit {
 	keyupSearch() {
 		this.searchText = this.noPrescriptionForm.controls['product'].value;
 
+    console.log(this.selectedStore);
 		if (this.searchText.length > 2) {
 			this.products = [];
 			this.cuDropdownLoading = true;
-			if (this.storeId !== '') {
-				this.noPrescriptionForm.controls['product'].valueChanges
-					.debounceTime(1000)
-					.switchMap((term) => Observable.fromPromise(
-						this._inventoryService.find(
-							{
-								query: {
-									facilityId: this.facility._id,
-									storeId: this.storeId.typeObject.storeId
-								}
-							}))).subscribe((res: any) => {
-								// Get all products in the facility, then search for the item you are looing for.
-								const contains = res.data.filter(x => (x.totalQuantity > 0)
-								&& x.productObject.name.toLowerCase().includes(this.searchText.toLowerCase()));
+			if (!!this.selectedStore) {
+        // this._inventoryService.find({ query: { facilityId: this.facility._id, storeId: this.selectedStore.storeId } }).then(res => {
+        //   console.log(res);
+        // });
+				this.noPrescriptionForm.controls['product'].valueChanges.debounceTime(1000).switchMap((term) => Observable.fromPromise(
+          this._assessmentDispenseService.find({
+            query: { action: 'productSearch', facilityId: this.facility._id, storeId: this.selectedStore.storeId, text: this.searchText }
+          })
+          // this._inventoryService.find({ query: { facilityId: this.facility._id, storeId: this.selectedStore.storeId } })
+        )).subscribe((res: any) => {
+          console.log(res);
+          // Get all products in the facility, then search for the item you are looing for.
+          // const contains = res.data.filter(x => (x.totalQuantity > 0)
+          // && x.product.toLowerCase().includes(this.searchText.toLowerCase()));
 
-								if (contains.length !== 0) {
-									this.products = contains;
-									this.batches = contains[0].transactions;
-									this.cuDropdownLoading = false;
-								} else {
-									this.products = [];
-									this.batches = [];
-									this.cuDropdownLoading = false;
-								}
-							});
+          if (res.status === 'success' && res.data.length > 0) {
+            // this.products = contains;
+            // this.batches = contains[0].transactions;
+            this.products = res.data;
+            // this.batches = res.data[0].transactions;
+            this.cuDropdownLoading = false;
+          } else {
+            this.products = [];
+            this.batches = [];
+            this.cuDropdownLoading = false;
+          }
+        });
 			} else {
 				this._notification('Error', 'You need to check into store.');
 			}
@@ -474,17 +472,19 @@ export class NoprescriptionComponent implements OnInit {
 
 	onClickCustomSearchItem(event, drugId) {
 		this.noPrescriptionForm.controls['batchNumber'].reset();
-		this.batches = [];
 		this.noPrescriptionForm.controls['product'].setValue(event.srcElement.innerText);
 		this.selectedProductId = drugId.getAttribute('data-p-id');
-		this.selectedIventoryId = drugId.getAttribute('data-p-iid');
+		this.selectedInventoryId = drugId.getAttribute('data-p-iid');
 		this.selectedFsId = drugId.getAttribute('data-p-fsid');
 		this.selectedSId = drugId.getAttribute('data-p-sid');
-		this.selectedCId = drugId.getAttribute('data-p-cid');
+    this.selectedCId = drugId.getAttribute('data-p-cid');
+    this.selectedProduct = this.products.filter(x => x._id === this.selectedInventoryId)[0];
+    this.batches = this.products.filter(x => x._id === this.selectedInventoryId)[0].transactions;
 	}
 
 	onClickBatchSelect(event, batchId) {
-		this.price = batchId._element.nativeElement.getAttribute('data-p-price');
+		// this.price = batchId._element.nativeElement.getAttribute('data-p-price');
+		this.price = this.selectedProduct.price;
 		this.selectedBatch = batchId._element.nativeElement.getAttribute('data-p-batch');
 	}
 

@@ -33,7 +33,7 @@
                     <div class="frm-item-wrap">
                         <mat-form-field>
                             <mat-select placeholder="Store" formControlName="room">
-                                <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
+                                <mat-option *ngFor="let store of stores" [value]="store">{{store.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -59,7 +59,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>Location</th>
+                            <th>No</th>
                             <th>Store</th>
                             <th>Last Check-In</th>
                             <th></th>
@@ -67,9 +67,9 @@
                     </thead>
 
                     <tbody *ngIf="loginEmployee?.storeCheckIn?.length > 0">
-                        <tr *ngFor="let checkIn of loginEmployee.storeCheckIn">
-                            <td>{{checkIn?.minorLocation}}</td>
-                            <td>{{checkIn?.store}}</td>
+                        <tr *ngFor="let checkIn of loginEmployee.storeCheckIn; let i=index;">
+                            <td>{{i+1}}</td>
+                            <td>{{checkIn?.storeObject?.name}}</td>
                             <td>{{checkIn?.lastLogin | date:'medium'}}</td>
                             <td class="tblMenu">
                                 <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
