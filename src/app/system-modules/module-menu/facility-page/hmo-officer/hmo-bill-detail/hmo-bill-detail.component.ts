@@ -27,7 +27,7 @@ export class HmoBillDetailComponent implements OnInit {
     private authFacadeService: AuthFacadeService,
     private systemModuleService: SystemModuleService,
     private facilitiesService: FacilitiesService,
-  private patientService:PatientService) { }
+    private patientService: PatientService) { }
 
   ngOnInit() {
     this.hmoPaymentType = [{
@@ -95,22 +95,25 @@ export class HmoBillDetailComponent implements OnInit {
       }
       index[0].covered.verifiedAt = new Date();
       this.billingService.patch(this.selectedBill._id, this.selectedBill, {}).then(payload => {
+        this.selectedBill = payload;
         if (!isAccept) {
           const _selectedBill = JSON.parse(JSON.stringify(this.selectedBill));
           delete _selectedBill._id;
-          // delete this.selectedBill.billItems[0].covered.isVerify;
           delete _selectedBill.coverFile;
-          _selectedBill.patientId = this.selectedBill.billItems[0].patientId;
+          _selectedBill.patientId = index[0].patientId;
+          _selectedBill.billItems[0] = index[0];
+          _selectedBill.billItems[0].active = true;
+          _selectedBill.billItems[0].isBearerConfirmed = true;
           _selectedBill.billItems[0].covered = {};
           _selectedBill.billItems[0].covered.coverType = "wallet";
           this.billingService.create(_selectedBill).then(payload2 => {
             console.log(payload2);
             const indx = payload2.principalObject.paymentPlan.filter(x => x.planType === 'wallet');
-            if(indx.length > 0){
-              indx[0].bearerPersonId = payload2.principalObject.personDetails._id;
+            if (indx.length > 0) {
+              indx[0].bearerPersonId = indx[0].patientObject.personDetails._id;;
             }
-            
-            this.patientService.patch(payload2.principalObject._id,payload2.principalObject,{}).then(payld=>{},error=>{})
+
+            this.patientService.patch(payload2.principalObject._id, payload2.principalObject, {}).then(payld => { }, error => { })
           }, error => { });
         }
         this.systemModuleService.announceSweetProxy('Service successfully cleared', 'success');
