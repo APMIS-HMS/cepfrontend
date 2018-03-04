@@ -329,6 +329,7 @@ export class ReportComponent implements OnInit {
       //   }
       // }).catch(err => this._notification('Error', 'There was an error saving report. Please try again later!'));
     } else {
+      this._systemModuleService.announceSweetProxy('Some fields are empty. Please fill in the required fields!', 'error');
       this._notification('Error', 'Some fields are empty. Please fill in the required fields!');
     }
   }
@@ -515,7 +516,9 @@ export class ReportComponent implements OnInit {
       }
     } else {
       const text = 'You can not attend to this request as payment has not been made. ';
-      this._notification('Info', text.concat(' Please use the refresh button above to check for payment status.'));
+      const fullText = text.concat(' Please use the refresh button above to check for payment status.');
+      this._systemModuleService.announceSweetProxy(fullText, 'error');
+      this._notification('Info', fullText);
     }
   }
 

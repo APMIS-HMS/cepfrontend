@@ -3,6 +3,14 @@
     text-align: center;
 }
 
+.frm-l {
+    float: left;
+}
+
+.frm-r {
+    float: right;
+}
+
 .frm-l table,
 .frm-r table {
     border-collapse: collapse;
@@ -179,9 +187,7 @@
     border-radius: 50%;
 }
 
-
 .sel-patient-details {
-
     line-height: 1.5;
     width: 64%;
     float: left;
