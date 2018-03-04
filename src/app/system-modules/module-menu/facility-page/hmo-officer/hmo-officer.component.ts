@@ -49,7 +49,7 @@ export class HmoOfficerComponent implements OnInit {
           element.isPending = false;
         }
       });
-      this.bills = payload.data.filter(x => x.isPending === true);
+      this.bills = payload.data.filter(x => x.isPending === true );
       console.log(this.bills);
       this.historyBills = payload.data.filter(x => x.isPending === false);
     });

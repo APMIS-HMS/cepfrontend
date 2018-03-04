@@ -275,6 +275,9 @@ export class BillLookupComponent implements OnInit {
         'serviceId': bill.facilityServiceObject.serviceId,
         'facilityId': this.selectedFacility._id,
         'patientId': this.selectedPatient._id,
+        "covered": {
+          "coverType": "wallet"
+        },
         'description': bill.itemName,
         'quantity': bill.qty,
         'totalPrice': bill.amount,
