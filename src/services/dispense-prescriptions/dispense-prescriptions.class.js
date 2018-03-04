@@ -160,7 +160,7 @@ class Service {
                         const transactions = inventory.transactions;
                         let j = transactions.length;
                         while (j--) {
-
+                            fsd
                         }
                     }
                 }
