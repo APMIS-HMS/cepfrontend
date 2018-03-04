@@ -138,7 +138,7 @@
     </div>
 
     <div class="btn-box">
-        <button mat-raised-button [disabled]="disableBtn || !dateCtrl.valid || !patient.valid || !type.valid || !category.valid || !clinic.valid" (click)="scheduleAppointment()" class="btn">
+        <button [disabled]="disableBtn || !dateCtrl.valid || !patient.valid || !type.valid || !category.valid || !clinic.valid" (click)="scheduleAppointment()" [ngClass]="{'cta-1':!disableBtn && dateCtrl.valid && patient.valid && type.valid && category.valid && clinic.valid, 'cta-1-disable':disableBtn || !dateCtrl.valid || !patient.valid || !type.valid || !category.valid || !clinic.valid}">
           <span *ngIf="updateAppointment">Update Appointment</span> 
           <span *ngIf="saveAppointment">Schedule Appointment</span>
           <span *ngIf="savingAppointment">Scheduling Appointment...<i class="fa fa-spinner fa-spin"></i></span>

@@ -115,7 +115,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     SetupService.DrugDetailsService, CustomPreloading, SetupService.InventoryService, SetupService.DispenseService,
     SetupService.FacilityPriceService, SetupService.ProductService, SetupService.AssessmentDispenseService,
     SetupService.MedicationListService, SetupService.InventoryTransactionTypeService, SetupService.LaboratoryService,
-    SetupService.ExternalPrescriptionService, SetupService.DispenseCollectionDrugService, SetupService.InvestigationService,
+    SetupService.ExternalPrescriptionService, SetupService.InvestigationService,
     SetupService.InvestigationSpecimenService, SetupService.InvestigationReportTypeService, SetupService.WorkbenchService,
     SetupService.ServerDateService, SetupService.LaboratoryReportService, SetupService.FormsService, SetupService.VitalService,
     SetupService.TemplateService, PolicyService, PayStackService,

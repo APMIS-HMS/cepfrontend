@@ -30,9 +30,17 @@ export class HmoOfficerComponent implements OnInit {
 
   ngOnInit() {
     this.selectedFacility = this.locker.getObject('selectedFacility');
-    this.billingService.find({ query: { facilityId: this.selectedFacility._id,
-      'billItems.covered.coverType': 'insurance' } }).then(payload => {
+    this.getBills();
+  }
 
+  getBills() {
+    this.billingService.find({
+      query: {
+        facilityId: this.selectedFacility._id,
+        'billItems.covered.coverType': 'insurance'
+      }
+    }).then(payload => {
+      console.log(payload);
       payload.data.forEach(element => {
         const index = element.billItems.filter(x => x.covered.isVerify !== undefined);
         if (index.length === 0) {
@@ -41,9 +49,14 @@ export class HmoOfficerComponent implements OnInit {
           element.isPending = false;
         }
       });
-      this.bills = payload.data.filter(x => x.isPending === true);
+      this.bills = payload.data.filter(x => x.isPending === true );
+      console.log(this.bills);
       this.historyBills = payload.data.filter(x => x.isPending === false);
     });
+  }
+
+  onRefreshBills(value) {
+    this.getBills();
   }
 
   billDetail(bill) {

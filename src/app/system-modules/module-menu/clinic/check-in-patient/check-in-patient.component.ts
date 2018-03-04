@@ -239,6 +239,7 @@ getSchedules(){
   // }
   close_onClick(e) {
     this.addVital = false;
+    this.getClinics();
   }
 
   sortPatientsByName() {
@@ -340,7 +341,7 @@ getSchedules(){
       const timeline: Timeline = <Timeline>{};
       timeline.startTime = this.selectedCheckedInAppointment.attendance.dateCheckIn;
       timeline.endTime = this.selectedCheckedInAppointment.attendance.dateCheckIn;
-      timeline.person = this.selectedCheckedInAppointment.attendance.employeeId.employeeDetails;
+      timeline.person = this.selectedCheckedInAppointment.attendance.employeeId;
       timeline.label = 'Check In';
       this.timelines.push(timeline);
       this.getOtherTimeLines();
@@ -363,7 +364,6 @@ getSchedules(){
             });
           }
         });
-
     }
   }
 

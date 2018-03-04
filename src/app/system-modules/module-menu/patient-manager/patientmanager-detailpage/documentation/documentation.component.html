@@ -55,6 +55,9 @@
                                         <div *ngIf="document?.document?.body !== undefined" class="sect-key">{{key}}:</div>
                                         <div *ngIf="document?.document?.body !== undefined" class="sect-value">{{document?.document?.body[key]}}</div>
                                     </div>
+                                    <div *ngIf="document?.document?.addendum !== undefined">
+                                        <span class="sect-key">Addendum:</span> <span>{{document?.document?.addendum.text}}</span>
+                                    </div>
                                 </div>
                                 <div *ngIf="document?.document?.documentType?.isSide === true">
                                     <div *ngFor="let key of document?.document?.body | keys">
@@ -105,8 +108,8 @@
                                             </div>
                                         </div>
 
-                                        <div *ngIf="document?.document?.addendum !== undefined" class="sect-value">
-                                            Addendum: <span class="sect-key">{{document?.document?.addendum.text}}</span>
+                                        <div *ngIf="document?.document?.addendum !== undefined">
+                                            <span class="sect-key">Addendum:</span> <span>{{document?.document?.addendum.text}}</span>
                                         </div>
                                     </div>
                                 </div>

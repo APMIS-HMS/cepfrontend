@@ -21,4 +21,5 @@ export interface BillItem {
     unitDiscountedAmount?: number,
     totalDiscoutedAmount?: number,
     covered:any;
+    isBearerConfirmed:boolean;
 }
