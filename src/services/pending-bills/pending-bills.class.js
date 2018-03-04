@@ -27,7 +27,7 @@ class Service {
             'billItems.covered.coverType': 'wallet'
           },
           {
-            'billItems.covered.coverType': 'insurance'
+            'billItems.covered.coverType': 'family'
           }
         ],
         $sort: {
