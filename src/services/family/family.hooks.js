@@ -6,12 +6,10 @@ const resolvers = {
   joins: {
     patientObject: () => async (item, context) => {
       try {
-        console.log(item);
         if (item.familyCovers !== undefined) {
           const len = item.familyCovers.length;
           for (let i = 0; i < len; i++) {
             if(item.familyCovers[i].patientId !== undefined){
-              console.log('Try If');
               const patient = await context.app.service('patients').get(item.familyCovers[i].patientId, {});
               item.familyCovers[i].patientObject = patient;
             }

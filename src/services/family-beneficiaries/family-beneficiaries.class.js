@@ -96,15 +96,15 @@ class Service {
               if (dependant.operation === 'update') {
                 let model = {
                   category: 'DEPENDANT',
-                  filNo: operation.model.filNo,
-                  othernames: operation.model.othernames,
-                  gender: operation.model.gender,
-                  serial: operation.model.serial,
-                  surname: operation.model.surname,
+                  filNo: dependant.filNo,
+                  othernames: dependant.othernames,
+                  gender: dependant.gender,
+                  serial: dependant.serial,
+                  surname: dependant.surname,
                   address: operation.model.address,
-                  email: operation.model.email,
-                  phone: operation.model.phone,
-                  status: operation.model.status
+                  email: dependant.email,
+                  phone: dependant.phone,
+                  status: dependant.status
                 };
                 const indexEnrollee = facFamilyCover.familyCovers.findIndex(x => x.serial === model.serial);
                 facFamilyCover.familyCovers[indexEnrollee] = model;
@@ -112,14 +112,15 @@ class Service {
                 let model = {
                   category: 'DEPENDANT',
                   filNo: operation.model.filNo + String.fromCharCode(65 + i),
-                  othernames: operation.model.othernames,
-                  gender: operation.model.gender,
+                  othernames: dependant.othernames,
+                  gender: dependant.gender,
                   serial: facFamilyCover.familyCovers.length + 1,
-                  surname: operation.model.surname,
+                  surname: dependant.surname,
                   address: operation.model.address,
-                  email: operation.model.email,
-                  phone: operation.model.phone,
-                  status: operation.model.status
+                  email: dependant.email,
+                  phone: dependant.phone,
+                  status: dependant.status
+
                 };
                 facFamilyCover.familyCovers.push(model);
               }
