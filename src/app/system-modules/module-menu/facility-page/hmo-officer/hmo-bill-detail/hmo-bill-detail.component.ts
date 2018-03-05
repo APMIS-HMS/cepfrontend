@@ -110,7 +110,7 @@ export class HmoBillDetailComponent implements OnInit {
             console.log(payload2);
             const indx = payload2.principalObject.paymentPlan.filter(x => x.planType === 'wallet');
             if (indx.length > 0) {
-              indx[0].bearerPersonId = indx[0].patientObject.personDetails._id;;
+              indx[0].bearerPersonId = index[0].patientObject.personDetails._id;;
             }
 
             this.patientService.patch(payload2.principalObject._id, payload2.principalObject, {}).then(payld => { }, error => { })
