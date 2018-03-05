@@ -64,7 +64,7 @@ export class FamilyBillDetailComponent implements OnInit {
         delete _selectedBill._id;
         delete _selectedBill.coverFile;
         _selectedBill.patientId =  index[0].patientId;
-        _selectedBill.billItems = index[0];
+        _selectedBill.billItems = index;
         _selectedBill.billItems[0].active = true;
         _selectedBill.billItems[0].covered = {};
         _selectedBill.billItems[0].covered.coverType = "wallet";
@@ -73,7 +73,7 @@ export class FamilyBillDetailComponent implements OnInit {
           console.log(payload2);
           const indx = payload2.principalObject.paymentPlan.filter(x => x.planType === 'wallet');
           if (indx.length > 0) {
-            indx[0].bearerPersonId =  index[0].patientObject.personDetails._id;// .billItems["0"].patientObject.personDetails._id
+            indx[0].bearerPersonId =  index[0].patientObject.personDetails._id;
           }
 
           this.patientService.patch(payload2.principalObject._id, payload2.principalObject, {}).then(payld => { }, error => { })
