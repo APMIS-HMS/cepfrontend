@@ -64,7 +64,7 @@ export class FamilyBillDetailComponent implements OnInit {
         delete _selectedBill._id;
         delete _selectedBill.coverFile;
         _selectedBill.patientId =  index[0].patientId;
-        _selectedBill.billItems = index[0];
+        _selectedBill.billItems = index;
         _selectedBill.billItems[0].active = true;
         _selectedBill.billItems[0].covered = {};
         _selectedBill.billItems[0].covered.coverType = "wallet";
