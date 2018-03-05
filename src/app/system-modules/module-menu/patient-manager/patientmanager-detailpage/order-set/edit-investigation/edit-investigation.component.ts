@@ -8,7 +8,6 @@ import { OrderSetSharedService } from '../../../../../../services/facility-manag
   styleUrls: ['./edit-investigation.component.scss']
 })
 export class EditInvestigationComponent implements OnInit {
-
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   addInvestigationForm: FormGroup;

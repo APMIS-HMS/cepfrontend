@@ -34,10 +34,10 @@
                     <textarea matInput placeholder="Note" [formControl]="noteFormCtrl"></textarea>
                 </mat-input-container>
             </div>
-
-        <button [disabled]="!allergyFormCtrl.valid || !reactionFormCtrl.valid || !noteFormCtrl.valid" (click)="save()" [ngClass]="{'cta-1':allergyFormCtrl.valid, 'cta-1-disable':!allergyFormCtrl.valid}">
+            <!-- <button [disabled]="(problemFormCtrl.value === null || !noteFormCtrl.value === null || problemFormCtrl.value.length === 0)" (click)="save()" [ngClass]="{'cta-1':(problemFormCtrl.value !== null && statusFormCtrl.value !== null && problemFormCtrl.value.length !== 0), 'cta-1-disable':(problemFormCtrl.value === null || noteFormCtrl.value === null || problemFormCtrl.value.length === 0)}"> -->
+            <button [disabled]="allergyFormCtrl.value === null || reactionFormCtrl.value === null || severityFormCtrl.value === null || allergyFormCtrl.value.length === 0 || reactionFormCtrl.value.length === 0" (click)="save()" [ngClass]="{'cta-1':allergyFormCtrl.value !== null && reactionFormCtrl.value !== null && severityFormCtrl.value !== null && allergyFormCtrl.value.length !== 0 && reactionFormCtrl.value.length !== 0, 'cta-1-disable':allergyFormCtrl.value === null || reactionFormCtrl.value === null || severityFormCtrl.value === null|| allergyFormCtrl.value.length === 0 || reactionFormCtrl.value.length === 0}">
             SAVE
             <span *ngIf="isSaving" class="fa fa-spinner fa-spin"></span>
         </button>
+        </div>
     </div>
-</div>

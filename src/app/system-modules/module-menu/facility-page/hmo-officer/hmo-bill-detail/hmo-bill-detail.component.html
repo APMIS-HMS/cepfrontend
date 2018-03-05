@@ -35,18 +35,18 @@
               <div class="list-img" *ngIf="bill.patientObject.personDetails.profileImageObject !== undefined">
                 <img [src]="facilitiesService.transform(bill.patientObject.personDetails.profileImageObject?.thumbnail)">
               </div>
-              <div>{{bill.patientObject.personDetails.firstName}} {{bill.patientObject.personDetails.lastName}}</div>
+              <div>{{bill?.patientObject?.personDetails?.firstName}} {{bill?.patientObject?.personDetails?.lastName}}</div>
             </div>
           </td>
           <td class="td-worspace">&#8358; {{bill.totalPrice|number:'1.2-2'}}</td>
           <td>
             <div class="input-x2-wrap">
               <!-- <mat-form-field class="sel-rap">
-                <mat-select [formControl]="hmoTypeControl" placeholder="Cover Type">
-                  <mat-option>
-                    </mat-option>
-                </mat-select>
-              </mat-form-field> -->
+                      <mat-select [formControl]="hmoTypeControl" placeholder="Cover Type">
+                        <mat-option>
+                          </mat-option>
+                      </mat-select>
+                    </mat-form-field> -->
               <div *ngIf="bill.covered.isVerify===undefined">
                 <mat-form-field class="sel-rap">
                   <mat-select [formControl]="hmoTypeControl" placeholder="Cover Type">

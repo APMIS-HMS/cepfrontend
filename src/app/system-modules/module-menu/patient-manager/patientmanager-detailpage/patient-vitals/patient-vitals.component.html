@@ -4,7 +4,7 @@
   <div class="doc-contentArea">
     <div class="doc-cardWrap">
       <div class="doc-card2">
-        <div class="modal_title">Vital Signs <i (click)="addVitals_show($event)" class="fa fa-plus-circle" aria-hidden="true"></i></div>
+        <div class="modal_title">Vital Signs <!-- <i (click)="addVitals_show($event)" class="fa fa-plus-circle" aria-hidden="true"></i> --></div>
         <div style="display: block;">
           <canvas baseChart [hidden]="addVitals_view" style="width:100%;" height="300" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions" [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
               (chartClick)="chartClicked($event)"></canvas>
@@ -51,6 +51,15 @@
     </div>
   </div>
 </div>
+<!-- Float Button -->
+<div class="">
+  <div (click)="addVitals_show($event)" class="col-md-12">
+      <a id="floating-button">
+          <p class="plus">+</p>
+      </a>
+  </div>
+</div>
+<!-- float button -->
 <div *ngIf="addVitals_view" class="modal-overlay">
     <app-add-vitals (closeModal)="close_onClick($event)" id="form-modal" [patient]="patient" (refreshVitalsChanged)="refreshVitalsChanged($event)" class="form-modal center-center"></app-add-vitals>
 </div>
