@@ -38,7 +38,10 @@ export class AddItemComponent implements OnInit {
       .distinctUntilChanged()
       .switchMap((term: FacilityService[]) => this._facilitiesServiceCategoryService.find({
         query:
-        { search: this.frmAddItem.controls['itemName'].value, facilityId: this.facility._id }
+        { 'categories.services.name': {
+          $regex:this.frmAddItem.controls['itemName'].value,
+          '$options': 'i'
+      }, facilityId: this.facility._id }
       }).
         then(payload => {
           const innerValue = this.frmAddItem.controls['itemName'].value;
@@ -111,6 +114,7 @@ export class AddItemComponent implements OnInit {
             customCategory.isGlobal = false;
           }
           this.services.push(customCategory);
+          console.log(this.services);
         });
       });
     });

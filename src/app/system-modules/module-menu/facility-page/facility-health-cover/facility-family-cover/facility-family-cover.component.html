@@ -18,6 +18,9 @@
                         <span style="padding-left: 3px;">Date</span>
                     </th>
                     <th>
+                        <span style="padding-left: 3px;">File No</span>
+                    </th>
+                    <th>
                         <span style="padding-left: 3px;">Principal</span>
                     </th>
                     <th>
@@ -27,17 +30,18 @@
             </thead>
 
             <tbody>
-                <tr (click)="billDetail()">
-                    <td>11th October 2017</td>
+                <tr *ngFor="let bill of bills" (click)="billDetail(bill)">
+                    <td>{{bill.updatedAt|date:'medium'}}</td>
+                    <td>{{bill.coverFile.id}}</td>
                     <td>
                         <div class="empWrap">
                             <div class="list-img">
                                 <img src="assets/images/users/default.png">
                             </div>
-                            <div>Jonathan Nelson</div>
+                            <div>{{bill.coverFile.name}}</div>
                         </div>
                     </td>
-                    <td class="td-worspace">&#8358; 12,200</td>
+                    <td class="td-worspace">&#8358; {{bill.grandTotal}}</td>
                 </tr>
             </tbody>
         </table>
@@ -47,9 +51,12 @@
 
         <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5">
             <thead>
-                <tr> 
+                <tr>
                     <th>
                         <span style="padding-left: 3px;">Date</span>
+                    </th>
+                    <th>
+                        <span style="padding-left: 3px;">File No</span>
                     </th>
                     <th>
                         <span style="padding-left: 3px;">Principal</span>
@@ -59,19 +66,20 @@
                     </th>
                 </tr>
             </thead>
-
+            
             <tbody>
-                <tr (click)="billHistoryDetail()">
-                    <td>11th October 2017</td>
+                <tr *ngFor="let bill of historyBills" (click)="billHistoryDetail(bill)">
+                    <td>{{bill.updatedAt|date:'medium'}}</td>
+                    <td>{{bill.coverFile.id}}</td>
                     <td>
                         <div class="empWrap">
                             <div class="list-img">
                                 <img src="assets/images/users/default.png">
                             </div>
-                            <div>Jonathan Nelson</div>
+                            <div>{{bill.coverFile.name}}</div>
                         </div>
                     </td>
-                    <td class="td-worspace">&#8358; 12,200</td>
+                    <td class="td-worspace">&#8358; {{bill.grandTotal}}</td>
                 </tr>
             </tbody>
         </table>
@@ -79,8 +87,8 @@
 </div>
 
 <div *ngIf="billDetail_show" class="modal-overlay">
-  <app-family-bill-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-family-bill-detail>
+  <app-family-bill-detail (closeModal)="close_onClick($event)" (refreshBills)="onRefreshBills($event)" [selectedBill]="selectedBill" id="form-modal" class="form-modal center-center"></app-family-bill-detail>
 </div>
 <div *ngIf="billHistoryDetail_show" class="modal-overlay">
-  <app-family-bill-history-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-family-bill-history-detail>
+  <app-family-bill-history-detail (closeModal)="close_onClick($event)" [selectedBill]="selectedBill" id="form-modal" class="form-modal center-center"></app-family-bill-history-detail>
 </div>

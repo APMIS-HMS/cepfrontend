@@ -176,9 +176,9 @@ export class BillLookupComponent implements OnInit {
 
   onPersonValueUpdated(item) {
     this.selectedPatient.personDetails = item.person;
-    this.billGroups = [];
     this._getAllPendingBills();
     this._getAllInvoices();
+    this.router.navigate(['/dashboard/payment/bill']);
   }
 
 
@@ -275,6 +275,9 @@ export class BillLookupComponent implements OnInit {
         'serviceId': bill.facilityServiceObject.serviceId,
         'facilityId': this.selectedFacility._id,
         'patientId': this.selectedPatient._id,
+        "covered": {
+          "coverType": "wallet"
+        },
         'description': bill.itemName,
         'quantity': bill.qty,
         'totalPrice': bill.amount,
@@ -385,8 +388,10 @@ export class BillLookupComponent implements OnInit {
       this.billingService
       .findBillService({ query: { facilityId: this.selectedFacility._id, patientId: this.selectedPatient._id, isinvoice: false } })
       .then(payload => {
-        this.billGroups = payload.billGroups
-        this.listedBillItems = payload.originalCallback;
+        if(payload !== null){
+          this.billGroups = payload.billGroups
+          this.listedBillItems = payload.originalCallback;
+        }
       });
     }
   }
@@ -599,16 +604,8 @@ export class BillLookupComponent implements OnInit {
     this.priceItemDetailPopup = true;
   }
   makePayment_onclick() {
-    if (this.total !== 0 && this.total !== undefined) {
-      if (this.selectedPatient.personDetails.wallet !== undefined) {
-        if (this.selectedPatient.personDetails.wallet.balance < this.total) {
-          this._notification('Info', 'You donot have sufficient balance to make this payment')
-        } else {
-          this.makePayment = true;
-        }
-      } else {
-        this._notification('Error', 'Please fund your wallet');
-      }
+    if (this.total !== undefined) {
+      this.makePayment = true;
     } else {
       this._notification('Info', 'You cannot make payment for a Zero cost service, please select bill');
     }

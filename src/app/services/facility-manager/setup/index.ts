@@ -70,7 +70,6 @@ export * from './facility-price.service';
 export * from './assessment-dispense.service';
 export * from './medication-list.service';
 export * from './external-prescription.service';
-export * from './dispense-collection-drugs.service';
 export * from './laboratory.service';
 export * from './investigation.service';
 export * from './investigation-report-type.service';

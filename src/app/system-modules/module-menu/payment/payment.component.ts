@@ -122,6 +122,7 @@ export class PaymentComponent implements OnInit {
         }).then((res: any) => {
             this.systemModuleService.off;
             this.pendingBills = res.bills;
+            console.log(this.pendingBills);
             this.totalAmountBilled = res.amountBilled;
             this.loadingPendingBills = false;
         }).catch(err => {

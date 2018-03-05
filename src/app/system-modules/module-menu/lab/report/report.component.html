@@ -2,8 +2,8 @@
 <div>
     <div class="doc-mainWrap">
         <div class="doc-contentArea">
-            <div class="clinicalNoteWrap">
-                <div class="actSect">
+            <div class="row clinicalNoteWrap">
+                <div class="col-xs-12 actSect">
                     <div class="act-actions-wrap">
                         <div (click)="report_show()" class="act-wrap">
                             <i *ngIf="report_view" class="fa fa-minus" aria-hidden="true"></i>
@@ -12,8 +12,8 @@
                         </div>
                     </div>
                     <div *ngIf="report_view">
-                        <div>
-                            <div class="row" [class.frm-container-l]="!patientSelected">
+                        <div class="col-xs-12">
+                            <div class="frm-l" [class.frm-container-l]="!patientSelected">
                                 <div class="col-xs-3">
                                     <form [formGroup]="patientFormGroup" novalidate>
                                         <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Search for patient" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
@@ -152,12 +152,10 @@
                                                             <i *ngIf="!pendingRequest.sampleTaken" class="fa fa-minus notSample" aria-hidden="true"></i>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-
                                 </div>
                             </div>
 
@@ -324,9 +322,8 @@
                         </div>
                     </div>
                 </div>
-                <h2 class="col-xs-12" style="text-align: center">Requests Attended</h2>
-                <div class="tblWrapa" class="actSect">
-
+                <div class="col-xs-12 tblWrapa actSect">
+                    <h2 class="col-xs-12" style="text-align: center">Requests Attended</h2>
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
@@ -379,7 +376,7 @@
                                             <div>{{ report?.createdBy?.firstName }} {{ report?.createdBy?.lastName}}</div>
                                         </div>
                                     </div>
-                                    <div class="table-list col-xs-2">
+                                    <!-- <div class="table-list col-xs-2">
                                         <div class="empWrap">
                                             <div class="list-img">
                                                 <img *ngIf="report?.patient?.profileImageObject == undefined" src="assets/images/users/default.png">
@@ -387,12 +384,12 @@
                                             </div>
                                             <div>{{ report?.createdBy?.firstName }} {{ report?.createdBy?.lastName}}</div>
                                         </div>
-                                    </div>
+                                    </div> -->
                                     <div class="table-list col-xs-1">
                                         <div *ngIf="report.isUploaded" style="color: green">Uploaded</div>
                                         <div *ngIf="!report.isUploaded" style="color:blue">Not Uploaded</div>
                                     </div>
-                                    <div class="table-list col-xs-1">
+                                    <div class="table-list action-placeholder col-xs-1">
                                         <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                                         <div class="action-container shadow-RB">
                                             <div (click)="repDetail(report)" class="action-item">
