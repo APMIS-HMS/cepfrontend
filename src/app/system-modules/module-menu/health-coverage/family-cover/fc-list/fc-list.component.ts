@@ -30,6 +30,9 @@ export class FcListComponent implements OnInit {
   operateBeneficiaries: any[] = [];
   selectedFamilyCover: any = <any>{};
 
+  loading: any = false;
+  updatePatientBtnText: any = 'Add Family'
+
   pageSize = 10;
   pageSizeOptions = [5, 10, 25, 100];
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -225,8 +228,12 @@ export class FcListComponent implements OnInit {
   change(value) {
   }
   save(valid, value, dependantValid, dependantValue) {
+    this.loading = true;
+    this.updatePatientBtnText = 'Adding Family... <i class="fa fa-spinner fa-spin"></i>';
     const unsavedFiltered = dependantValue.controls.dependantArray.controls.filter(x => x.value.readOnly === false && x.valid);
     if (unsavedFiltered.length > 0) {
+      this.loading = false;
+      this.updatePatientBtnText = 'Add Family';
       this.systemModuleService.
       announceSweetProxy('There seems to unsaved but valid dependant yet to be saved, please save and try again!', 'warning' );
       return;
@@ -244,12 +251,16 @@ export class FcListComponent implements OnInit {
         param.dependants.push(item.value);
       });
       this.familyCoverService.updateBeneficiaryList(param).then(payload => {
+        this.loading = false;
+        this.updatePatientBtnText = 'Add Family';
         this.getBeneficiaryList(this.selectedFacility._id);
         this.cancel();
         this.systemModuleService.announceSweetProxy('Family Cover Records Updated Successfully',
         'success', null, null, null, null, null, null, null);
-      })
+      });
     } else {
+      this.loading = false;
+      this.updatePatientBtnText = 'Add Family';
       this.systemModuleService.announceSweetProxy('A value is missing, please fill all required field and try again!', 'warning');
     }
 
