@@ -18,28 +18,28 @@ export class FacilityHealthCoverComponent implements OnInit {
   ngOnInit() {
   }
 
-  hmo_tab(){
+  hmo_tab() {
     this.hmo = true;
     this.company = false;
     this.family = false;
-    this.router.navigate(['/dashboard/facility/health-coverage/hmo']).then(payload=>{
-    }, error =>{
+    this.router.navigate(['/dashboard/facility/health-coverage/hmo']).then(payload => {
+    }, error => {
     });
   }
-  company_tab(){
+  company_tab() {
     this.hmo = false;
     this.company = true;
     this.family = false;
-    this.router.navigate(['dashboard/facility/health-coverage/company-cover']).then(payload=>{
-    }, error =>{
+    this.router.navigate(['dashboard/facility/health-coverage/company-cover']).then(payload => {
+    }, error => {
     });
   }
-  family_tab(){
+  family_tab() {
     this.hmo = false;
     this.company = false;
     this.family = true;
-    this.router.navigate(['/dashboard/facility/health-coverage/family-cover']).then(payload=>{
-    }, error =>{
+    this.router.navigate(['/dashboard/facility/health-coverage/family-cover']).then(payload => {
+    }, error => {
     });
   }
 

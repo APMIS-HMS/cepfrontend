@@ -17,21 +17,21 @@ export class FacilityFamilyCoverComponent implements OnInit {
   ngOnInit() {
   }
 
-  billDetail(){
+  billDetail() {
     this.billDetail_show = true;
   }
-  billHistoryDetail(){
+  billHistoryDetail() {
     this.billHistoryDetail_show = true;
   }
-  close_onClick(){
+  close_onClick() {
     this.billDetail_show = false;
     this.billHistoryDetail_show = false;
   }
-  tab1_click(){
+  tab1_click() {
     this.tab1 = true;
     this.tab2 = false;
   }
-  tab2_click(){
+  tab2_click() {
     this.tab1 = false;
     this.tab2 = true;
   }
