@@ -1019,6 +1019,7 @@ export class ScheduleFrmComponent implements OnInit {
     }
   }
   dateChange(event) {
+    console.log(this.startDate);
     const dayNum = getDay(event);
     const day = this.days[dayNum];
     const scheduleFiltered = this.schedules.filter((x: any) => x.day === day);
@@ -1043,6 +1044,7 @@ export class ScheduleFrmComponent implements OnInit {
         this.startDate,
         getMinutes(schedule.startTime)
       );
+      console.log(this.startDate);
       // this.endDate = setHours(this.endDate, getHours(schedule.endTime));
       // this.endDate = setMinutes(this.endDate, getMinutes(schedule.endTime));
       // this.dateCtrl.setValue(this.date);

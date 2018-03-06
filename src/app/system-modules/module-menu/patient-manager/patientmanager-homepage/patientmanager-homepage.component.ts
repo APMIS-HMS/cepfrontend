@@ -464,6 +464,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
       this.updatePatientBtnText = 'Update';
       this.patients[patientIndex].personDetails = res;
+      this.getPatients();
       this.close_onClick();
       this.systemService.announceSweetProxy('Patient details has been updated successfully.', 'Success');
     }).catch(err => {
