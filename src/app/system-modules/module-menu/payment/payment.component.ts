@@ -100,13 +100,13 @@ export class PaymentComponent implements OnInit {
                 'isQuery': false
             }
         }).then(payload => {
-            this.systemModuleService.off;
+            this.systemModuleService.off();
             this.invoiceGroups = payload.invoices;
             this.totalAmountReceived = payload.amountReceived;
             this.isLoadingInvoice = false;
             this._getLocAmountAccrued();
         }).catch(err => {
-            this.systemModuleService.off;
+            this.systemModuleService.off();
             this.isLoadingInvoice = false;
             this._notification('Error', 'There was a problem getting invoices, Please try again later!');
         });
@@ -119,7 +119,7 @@ export class PaymentComponent implements OnInit {
                 'isQuery': false
             }
         }).then((res: any) => {
-            this.systemModuleService.off;
+            this.systemModuleService.off();
             this.pendingBills = res.bills;
             console.log(this.pendingBills);
             this.totalAmountBilled = res.amountBilled;

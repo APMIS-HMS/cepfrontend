@@ -259,7 +259,7 @@ export class MakePaymentComponent implements OnInit {
   onOutOfPocket() {
     if ((this.amount.value !== '' && this.amount.value !== 0) || this.isWaved === true) {
       if (this.selectedPatient.personDetails.wallet !== undefined) {
-        if (this.selectedPatient.personDetails.wallet.balance < this.cost) {
+        if (this.selectedPatient.personDetails.wallet.balance < this.cost && !this.isWaved) {
           this.systemModuleService.announceSweetProxy('No sufficient balance to make this payment','info');
         } else {
           let paymentValue = {};
@@ -457,6 +457,7 @@ export class MakePaymentComponent implements OnInit {
       }
 
     }, error => {
+      console.log(error);
       this.systemModuleService.announceSweetProxy('Fail to make payment pls try again later','error');
     });
   }
