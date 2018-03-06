@@ -19,8 +19,8 @@ export class PaymentComponent implements OnInit {
     searchPendingInvoices = new FormControl('', []);
     searchPendingBill = new FormControl('', []);
     selectedFacility: Facility = <Facility>{};
-    loadingPendingBills: Boolean = true;
-    loadingLocAmountAccrued: Boolean = true;
+    loadingPendingBills = true;
+    loadingLocAmountAccrued = true;
     isLoadingInvoice = false;
     totalAmountReceived = 0;
     totalAmountBilled = 0;
