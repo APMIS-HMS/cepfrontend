@@ -45,6 +45,13 @@ export class InvestigationServiceComponent implements OnInit {
   categories: any[] = [];
   loading: Boolean = true;
 
+  pageSize = 1;
+  index: any = 0;
+  limit: any = 20;
+  showLoadMore = true;
+  total: any = 0;
+  loadMoreText = '';
+
   public frmNewInvestigationh: FormGroup;
   public frmNewPanel: FormGroup;
 
@@ -64,11 +71,11 @@ export class InvestigationServiceComponent implements OnInit {
       this.onDrop(value.slice(1));
     });
 
-    investigationService.listner.subscribe(payload =>{
+    investigationService.listner.subscribe(payload => {
       this.getInvestigations();
     });
 
-    investigationService.createListener.subscribe(payload =>{
+    investigationService.createListener.subscribe(payload => {
       this.getInvestigations();
     });
   }
@@ -93,7 +100,7 @@ export class InvestigationServiceComponent implements OnInit {
   }
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.user = <User> this.locker.getObject('auth');
+    this.user = <User>this.locker.getObject('auth');
 
     this.frmNewInvestigationh = this.formBuilder.group({
       investigationName: ['', [Validators.required]],
@@ -123,17 +130,34 @@ export class InvestigationServiceComponent implements OnInit {
   }
 
   getInvestigations() {
-    this.investigationService.find({ query: { 'facilityId': this.selectedFacility._id, $limit:200 } }).then(res => {
+    this.investigationService.find({
+      query: {
+        'facilityId': this.selectedFacility._id, $limit: this.limit,
+        $skip: this.index * this.limit,
+      }
+    }).then(res => {
       this.loading = false;
       if (res.data.length > 0) {
         this.investigations = res.data;
+        if (this.total <= this.investigations.length) {
+          this.showLoadMore = false;
+        }
         this.bindInvestigations = JSON.parse(JSON.stringify(res.data));
       }
     }).catch(err => this._notification('Error', 'There was a problem getting investigations. Please try again later!'));
+    this.index++;
+  }
+  getShowing() {
+    const ret = this.index * this.limit
+    if (ret >= this.total && this.index > 0) {
+      this.loadMoreText = 'Showing ' + this.total + ' of ' + this.total + ' records';
+      return;
+    }
+    this.loadMoreText = 'Showing ' + ret + ' of ' + this.total + ' records';
   }
   getServiceCategories() {
     this.facilityServiceCategoryService.find({ query: { facilityId: this.selectedFacility._id } }).then(res => {
-     if (res.data.length > 0) {
+      if (res.data.length > 0) {
         this.selectedFacilityService = res.data[0];
         this.categories = res.data[0].categories;
         const index = this.categories.findIndex(x => x.name === 'Laboratory');
@@ -417,17 +441,17 @@ export class InvestigationServiceComponent implements OnInit {
                       const index = this.investigations.findIndex((obj => obj._id === payload._id));
                       this.investigations.splice(index, 1, payload);
                       this._systemModuleService.announceSweetProxy('Investigation has been created successfully.', 'success', null, null, null, null, null, null, null);
-                    }, error =>{
+                    }, error => {
                       this.addingPInvestBtn = false;
                     })
                   }
                 });
               }
             });
-          },error =>{
+          }, error => {
             this.addingPInvestBtn = false;
           });
-        },error =>{
+        }, error => {
           this.addingPInvestBtn = false;
         });
       } else {
@@ -473,14 +497,14 @@ export class InvestigationServiceComponent implements OnInit {
                         const index = this.investigations.findIndex((obj => obj._id === payload._id));
                         this.investigations.splice(index, 1, payload);
                         this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success', null, null, null, null, null, null, null);
-                      }, error =>{
+                      }, error => {
                         this.addingPInvestBtn = false;
                       })
                     }
                   });
                 }
               });
-            }, error =>{
+            }, error => {
               this.addingPInvestBtn = false;
             });
           }
@@ -496,9 +520,9 @@ export class InvestigationServiceComponent implements OnInit {
 
   private _notification(type: string, text: string): void {
     this._facilityService.announceNotification({
-        users: [this.user._id],
-        type: type,
-        text: text
+      users: [this.user._id],
+      type: type,
+      text: text
     });
   }
 
