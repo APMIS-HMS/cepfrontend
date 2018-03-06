@@ -704,7 +704,7 @@ export class LabRequestsComponent implements OnInit {
     const readyCollection: any[] = [];
 
 
-    copyBindInvestigation.forEach((item: InvestigationModel, i) => {
+    copyBindInvestigation.forEach((item: any, i) => {
       if (item.investigation.isPanel) {
         delete item.isChecked;
         delete item.temporaryInvestigationList;
@@ -715,12 +715,21 @@ export class LabRequestsComponent implements OnInit {
         delete item.isChecked;
         delete item.LaboratoryWorkbenches;
         delete item.location;
+        console.log('deleted')
       }
       console.log(item);
-      if(!this.isLaboratory){
+      if(this.isLaboratory){
+        if(item.investigation.LaboratoryWorkbenches.length > 0){
+          const workBenches = item.investigation.LaboratoryWorkbenches[0];
+          console.log('in');
+          console.log(workBenches)
+          // if(workBenches.len)
+          item.source.laboratoryId = workBenches.laboratoryId._id;
+        }
         item.source = {
           facilityId: this.selectedFacility
         }
+        console.log(item);
       }
       readyCollection.push(item);
     });
