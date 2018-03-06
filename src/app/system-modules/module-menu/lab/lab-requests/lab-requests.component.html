@@ -230,8 +230,8 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-xs-2 table-head">Date</div>
-                                <div class="col-xs-2 table-head">Patient</div>
-                                <div class="table-head col-xs-2">Description</div>
+                                <div class="{{ (isLaboratory) ? 'col-xs-2' : 'col-xs-3' }} table-head">Patient</div>
+                                <div class="table-head {{ (isLaboratory) ? 'col-xs-2' : 'col-xs-3' }}">Description</div>
                                 <div class="table-head col-xs-2">Source</div>
                                 <div class="table-head col-xs-2">Status</div>
                                 <div class="table-head col-xs-2" *ngIf="isLaboratory">
@@ -255,7 +255,7 @@
                                     <div class="table-list col-xs-2">
                                         {{request?.createdAt | date:'short'}}
                                     </div>
-                                    <div class="table-list col-xs-2">
+                                    <div class="table-list col-xs-2 {{ (isLaboratory) ? 'col-xs-2' : 'col-xs-3' }}">
                                         <div class="empWrap">
                                             <div class="list-img">
                                                 <img *ngIf="request?.patient?.profileImageObject == undefined" src="assets/images/users/default.png">
@@ -264,7 +264,7 @@
                                             <div>{{ request?.patient?.firstName }} {{ request?.patient?.lastName }}</div>
                                         </div>
                                     </div>
-                                    <div class="table-list col-xs-2">
+                                    <div class="table-list col-xs-2 {{ (isLaboratory) ? 'col-xs-2' : 'col-xs-3' }}">
                                         {{request?.name}}
                                     </div>
                                     <div class="table-list col-xs-2">
