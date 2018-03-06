@@ -38,7 +38,7 @@
                                 <h2 class="col-xs-12" style="text-align: center">Pending Requests</h2>
                                 <div *ngIf="pendingRequests.length > 0">
                                     <div class="col-sm-12 col-md-12" style="float: right;padding: 5px;">
-                                        <button class="refresh-payment btn btn-default" (click)="onClickRefreshPaymentStatus();" [disabled]="disablePaymentBtn" [innerHtml]="paymentStatusText"></button>
+                                        <button class="refresh-payment btn btn-primary" (click)="onClickRefreshPaymentStatus();" [disabled]="disablePaymentBtn" [innerHtml]="paymentStatusText"></button>
                                     </div>
                                 </div>
                                 <div class="pending-req-wrap">
