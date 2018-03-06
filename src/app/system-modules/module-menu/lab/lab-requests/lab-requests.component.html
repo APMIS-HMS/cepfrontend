@@ -28,13 +28,15 @@
 
                     <form class="frmNoteWrap" *ngIf="request_view" [formGroup]="frmNewRequest" novalidate>
                         <div *ngIf="isLaboratory" class="labBtn-wrap">
-                            <div (click)="newPerson()" class="lab-btn"><i class="fa fa-plus" aria-hidden="true"></i>Register Patient</div>
+                            <div (click)="newPerson()" class="lab-btn">
+                                <i class="fa fa-plus" aria-hidden="true"></i>Register Patient</div>
                         </div>
                         <div class="clear-r"></div>
                         <div class="frm-wrap">
                             <div class="frm-l">
                                 <div *ngIf="isLaboratory" class="frm-item-wrap">
-                                    <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Search for patient" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
+                                    <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Search for patient"
+                                        [isSocket]="true" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
                                         [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                 </div>
 
@@ -84,10 +86,12 @@
                                                 <div class="inner-radio">
                                                     <mat-checkbox (change)="markExternal($event, investigation)" [checked]="investigation.isExternal">External</mat-checkbox>
                                                     <mat-radio-group [value]="location" *ngIf="!investigation.isExternal">
-                                                        <mat-radio-button class="opt" *ngFor="let location of investigation.LaboratoryWorkbenches" (change)="locationChanged($event, investigation, location, investigation.LaboratoryWorkbenches)" [value]="location" [checked]="false">
+                                                        <mat-radio-button class="opt" *ngFor="let location of investigation.LaboratoryWorkbenches" (change)="locationChanged($event, investigation, location, investigation.LaboratoryWorkbenches)"
+                                                            [value]="location" [checked]="false">
                                                             <div class="opt-inner">
                                                                 <div>{{location.laboratoryId.name}}</div>
-                                                                <div class="opt-price"><span>&#x20a6;</span>{{getPrice(location.workbenches)}}</div>
+                                                                <div class="opt-price">
+                                                                    <span>&#x20a6;</span>{{getPrice(location.workbenches)}}</div>
                                                             </div>
                                                         </mat-radio-button>
                                                     </mat-radio-group>
@@ -104,7 +108,8 @@
                                                     <div class="inner-radio">
                                                         <div class="opt-inner">
                                                             <div>{{getParentLocation(investigation, panel)}}</div>
-                                                            <div *ngIf="getParentLocation(investigation, panel).length > 0" class="opt-price"><span>&#x20a6;</span>{{getChildPrice(investigation, panel)}}</div>
+                                                            <div *ngIf="getParentLocation(investigation, panel).length > 0" class="opt-price">
+                                                                <span>&#x20a6;</span>{{getChildPrice(investigation, panel)}}</div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -121,10 +126,12 @@
                                             <div class="inner-radio" *ngIf="investigation.isChecked">
                                                 <mat-checkbox (change)="markExternal($event, investigation)" [checked]="investigation.isExternal">External</mat-checkbox>
                                                 <mat-radio-group [value]="location" *ngIf="!investigation.isExternal">
-                                                    <mat-radio-button class="opt" *ngFor="let location of investigation.LaboratoryWorkbenches" (change)="locationChanged($event, investigation, location, investigation.LaboratoryWorkbenches)" [value]="location" [checked]="false">
+                                                    <mat-radio-button class="opt" *ngFor="let location of investigation.LaboratoryWorkbenches" (change)="locationChanged($event, investigation, location, investigation.LaboratoryWorkbenches)"
+                                                        [value]="location" [checked]="false">
                                                         <div class="opt-inner">
                                                             <div>{{location.laboratoryId.name}}</div>
-                                                            <div class="opt-price"><span>&#x20a6;</span>{{getPrice(location.workbenches)}}</div>
+                                                            <div class="opt-price">
+                                                                <span>&#x20a6;</span>{{getPrice(location.workbenches)}}</div>
                                                         </div>
                                                     </mat-radio-button>
                                                 </mat-radio-group>
@@ -136,7 +143,8 @@
 
                             <div class="selected-list">
                                 <div class="sel-list-title">SELECTED INVESTIGATIONS</div>
-                                <div *ngIf="bindInvestigations.length > 0" class="sel-total"><span>&#x20a6;</span>{{getTotalPrice()}}</div>
+                                <div *ngIf="bindInvestigations.length > 0" class="sel-total">
+                                    <span>&#x20a6;</span>{{getTotalPrice()}}</div>
                                 <div *ngFor="let investigation of bindInvestigations">
                                     <div *ngIf="investigation.investigation.isPanel" class="panel-wrap">
                                         <div class="panel-inner">
@@ -186,7 +194,8 @@
                                         <div class="item-bi-sect">
                                             <div class="list-label">{{investigation.investigation.name}}</div>
                                             <div *ngIf="!investigation.isExternal" class="txt-label list-label">{{investigation.location.laboratoryId.name}}</div>
-                                            <div *ngIf="!investigation.isExternal" class="opt-price"><span>&#x20a6;</span>{{getPrice(investigation.location.workbenches)}}</div>
+                                            <div *ngIf="!investigation.isExternal" class="opt-price">
+                                                <span>&#x20a6;</span>{{getPrice(investigation.location.workbenches)}}</div>
                                         </div>
 
                                         <div class="txt-wrap actions-wrapa item-bi-sect">
@@ -210,7 +219,8 @@
                             </div>
                         </div>
                         <div class="btn-box">
-                            <button mat-raised-button [disabled]="!isValidateForm || !investigationRadio" (click)="save(frmNewRequest.valid, frmNewRequest.value)" class="btn">Make Request</button>
+                            <button mat-raised-button [disabled]="!isValidateForm || !investigationRadio" (click)="save(frmNewRequest.valid, frmNewRequest.value)"
+                                class="btn">Make Request</button>
                         </div>
                     </form>
                 </div>
@@ -224,7 +234,9 @@
                                 <div class="table-head col-xs-2">Description</div>
                                 <div class="table-head col-xs-2">Source</div>
                                 <div class="table-head col-xs-2">Status</div>
-                                <div class="table-head col-xs-2"><i class="fa fa-search fa-fw pointer"></i></div>
+                                <div class="table-head col-xs-2" *ngIf="isLaboratory">
+                                    <i class="fa fa-search fa-fw pointer"></i>
+                                </div>
                             </div>
                         </div>
                         <div class="card-content">
@@ -284,7 +296,7 @@
                                             <i *ngIf="!request?.isUploaded" class="fa fa-minus notSample" aria-hidden="true"></i>
                                         </div>
                                     </div>
-                                    <div class="table-list col-xs-2 action-placeholder">
+                                    <div class="table-list col-xs-2 action-placeholder" *ngIf="isLaboratory">
                                         <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                                         <div class="action-container shadow-RB">
                                             <div (click)="reqDetail(request)" class="action-item">

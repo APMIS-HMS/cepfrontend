@@ -116,10 +116,11 @@ export class InvestigationServiceComponent implements OnInit {
   }
 
   getInvestigations() {
-    this.investigationService.find({ query: { 'facilityId': this.selectedFacility._id } }).then(res => {
+    this.investigationService.find({ query: { 'facilityId': this.selectedFacility._id, $limit: 200 } }).then(res => {
       this.loading = false;
       if (res.data.length > 0) {
         this.investigations = res.data;
+        console.log(res);
         this.bindInvestigations = JSON.parse(JSON.stringify(res.data));
       }
     }).catch(err => this._notification('Error', 'There was a problem getting investigations. Please try again later!'));
