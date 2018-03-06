@@ -20,7 +20,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
-
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() employeeDetails: any;
   patientDetails: any;

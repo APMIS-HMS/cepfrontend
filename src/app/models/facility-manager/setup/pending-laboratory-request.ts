@@ -36,5 +36,6 @@ export interface PendingLaboratoryRequest {
     specimenNumber: string;
     sampleTaken: boolean;
     sampleTakenBy: any;
+    source?:any;
 }
 
