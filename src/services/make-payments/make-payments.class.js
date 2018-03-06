@@ -78,6 +78,9 @@ class Service {
           billGroup.paymentCompleted = true;
         }
         if (data.inputedValue.isWaved == true) {
+          if (data.invoice === undefined) {
+            data.invoice = {};
+          }
           data.invoice.paymentStatus = 'WAIVED';
         }
         const awaitBillGroup = await invoicesService.create(billGroup);
@@ -133,9 +136,6 @@ class Service {
         data.invoice.paymentStatus = 'PAID';
       }
       if (data.inputedValue.isWaved == true) {
-        if (data.invoice === undefined) {
-          data.invoice = {};
-        }
         data.invoice.paymentStatus = 'WAIVED';
       }
       let invLen = data.invoice.billingIds.length - 1;
