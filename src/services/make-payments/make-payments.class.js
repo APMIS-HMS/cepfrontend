@@ -236,7 +236,12 @@ module.exports = function (options) {
 
 async function onDebitWallet(data, description, ref, facilitiesService, peopleService, paymentPlan) {
   if (data.inputedValue.paymentMethod.planType == paymentPlan.company || data.inputedValue.paymentMethod.planType == paymentPlan.insurance) {
-    const facility = facilitiesService.get(data.inputedValue.paymentMethod._id, {});
+    let facility = {};
+    if(data.inputedValue.paymentMethod.facilityId !== undefined){
+      facility = await facilitiesService.get(data.inputedValue.paymentMethod.facilityId, {});
+    }else{
+      facility = await peopleService.get(data.selectedPatient.personDetails._id, {});
+    }
     let currentBalance = parseInt(facility.wallet.balance) - parseInt(data.inputedValue.amountPaid);
     facility.wallet.balance = currentBalance;
     facility.wallet.ledgerBalance = currentBalance;
@@ -268,7 +273,12 @@ async function onDebitWallet(data, description, ref, facilitiesService, peopleSe
     };
     return returnObj;
   } else if (data.inputedValue.paymentMethod.planType == paymentPlan.outOfPocket || data.inputedValue.paymentMethod.planType == paymentPlan.family) {
-    const getPerson = await peopleService.get(data.inputedValue.paymentMethod.bearerPersonId, {});
+    let getPerson = {};
+    if(data.inputedValue.paymentMethod.bearerPersonId !== undefined){
+      getPerson = await peopleService.get(data.inputedValue.paymentMethod.bearerPersonId, {});
+    }else{
+      getPerson = await peopleService.get(data.selectedPatient.personDetails._id, {});
+    }
     let currentBalance = parseInt(getPerson.wallet.balance) - parseInt(data.inputedValue.amountPaid);
     getPerson.wallet.balance = currentBalance;
     getPerson.wallet.ledgerBalance = currentBalance;
@@ -282,6 +292,7 @@ async function onDebitWallet(data, description, ref, facilitiesService, peopleSe
       'balance': currentBalance,
       'ledgerBalance': currentBalance
     });
+    console.log(7);
     const patchedPerson = await peopleService.patch(getPerson._id, {
       wallet: getPerson.wallet
     });
