@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FacilitiesService, BillingService, PatientService, InvoiceService, SearchInvoicesService, PendingBillService, TodayInvoiceService } from '../../../../services/facility-manager/setup/index';
+import { FacilitiesService, BillingService, PatientService, InvoiceService,
+    SearchInvoicesService, PendingBillService, TodayInvoiceService } from '../../../../services/facility-manager/setup/index';
 import { Patient, Facility, BillItem, BillIGroup, Invoice, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Subscription } from 'rxjs/Subscription';
@@ -24,7 +25,7 @@ export class InvoiceComponent implements OnInit {
     isPaidClass = false;
     isWaved = false;
     addItem = false;
-    //paidStatus = "UNPAID";
+    // paidStatus = "UNPAID";
     itemEditShow = false;
     itemEditShow2 = false;
     itemEditShow3 = false;
@@ -74,19 +75,20 @@ export class InvoiceComponent implements OnInit {
     }
     getPatientInvoices() {
         this.isLoadingInvoice = true;
-        this.invoiceService.find({ query: { patientId: this.selectedPatient._id, facilityId: this.selectedFacility._id, $sort: { paymentCompleted: 1 }, $limit: 5 } })
+        this.invoiceService.find({ query: { patientId: this.selectedPatient._id,
+            facilityId: this.selectedFacility._id, $sort: { paymentCompleted: 1 }, $limit: 5 } })
             .then(payload => {
                 this.invoiceGroups = payload.data;
                 this.isLoadingInvoice = false;
             }).catch(err => this._notification('Error', 'There was a problem getting invoices. Please try again later!'));
 
         this.isLoadingOtherInvoice = true;
-        this._todayInvoiceService.get(this.selectedFacility._id,{
-            query:{
-                "isQuery": false
+        this._todayInvoiceService.get(this.selectedFacility._id, {
+            query: {
+                'isQuery': false
             }
         }).then(payload => {
-            this.otherInvoiceGroups = payload.invoices.filter(x => x.patientId != this.selectedPatient._id);
+            this.otherInvoiceGroups = payload.invoices.filter(x => x.patientId !== this.selectedPatient._id);
             this.isLoadingOtherInvoice = false;
         }).catch(err => this._notification('Error', 'There was a problem getting other invoices. Please try again later!'));
 
@@ -113,11 +115,11 @@ export class InvoiceComponent implements OnInit {
                 this.isLoadingOtherInvoice = true;
                 this._todayInvoiceService.get(this.selectedFacility._id, {
                     query: {
-                        "isQuery": true,
-                        "name": value
+                        'isQuery': true,
+                        'name': value
                     }
                 }).then(payload => {
-                    this.otherInvoiceGroups = payload.invoices.filter(x => x.patientId != this.selectedPatient._id);
+                    this.otherInvoiceGroups = payload.invoices.filter(x => x.patientId !== this.selectedPatient._id);
                     this.isLoadingOtherInvoice = false;
                 }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
             });
@@ -127,11 +129,12 @@ export class InvoiceComponent implements OnInit {
             .distinctUntilChanged()
             .subscribe(value => {
                 this.isLoadingInvoice = true;
-                this.invoiceService.find({ query: { patientId: this.selectedPatient._id, facilityId: this.selectedFacility._id, $sort: { paymentCompleted: 1 }, invoiceNo: { $regex: '.*' + value + '.*' } } })
+                this.invoiceService.find({ query: { patientId: this.selectedPatient._id,
+                    facilityId: this.selectedFacility._id, $sort: { paymentCompleted: 1 }, invoiceNo: { $regex: '.*' + value + '.*' } } })
                     .then(payload => {
                         this.invoiceGroups = payload.data;
                         this.isLoadingInvoice = false;
-                        if (this.isPaymentMade == false) {
+                        if (this.isPaymentMade === false) {
                             this.selectedInvoiceGroup = <Invoice>{};
                         }
                     }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
@@ -143,7 +146,7 @@ export class InvoiceComponent implements OnInit {
     }
 
     onPersonValueUpdated(item) {
-        if(item.person != undefined){
+        if (item.person !== undefined) {
             this.selectedPatient.personDetails = item.person;
         }
         this.isLoadingInvoice = false;
@@ -169,8 +172,8 @@ export class InvoiceComponent implements OnInit {
         this.addItem = true;
     }
     makePayment_show() {
-        if (this.selectedInvoiceGroup.totalPrice != 0 && this.selectedInvoiceGroup.totalPrice != undefined) {
-            if (this.selectedInvoiceGroup.paymentCompleted == false) {
+        if (this.selectedInvoiceGroup.totalPrice !== 0 && this.selectedInvoiceGroup.totalPrice !== undefined) {
+            if (this.selectedInvoiceGroup.paymentCompleted === false) {
                 // if (this.selectedPatient.personDetails.wallet.balance < this.selectedInvoiceGroup.totalPrice) {
                 //     this._notification('Info', "You donot have sufficient balance to make this payment");
                 // } else {
@@ -178,10 +181,10 @@ export class InvoiceComponent implements OnInit {
                 // }
                 this.makePaymentPopup = true;
             } else {
-                this._notification('Info', "Selected invoice is paid");
+                this._notification('Info', 'Selected invoice is paid');
             }
         } else {
-            this._notification('Info', "You cannot make payment for a Zero cost service, please select an invoice");
+            this._notification('Info', 'You cannot make payment for a Zero cost service, please select an invoice');
         }
 
     }
@@ -499,11 +502,6 @@ export class InvoiceComponent implements OnInit {
                 .BillfooterTxt{
                     font-size: 1rem;
                     color: #757575;
-                }
-                .modal-overlay{
-                    position: fixed;
-                    left: 0;
-                    top: 0;
                 }
                 .col5 .cta-1{
                     margin: 0;
