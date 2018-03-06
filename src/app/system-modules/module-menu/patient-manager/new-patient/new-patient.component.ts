@@ -370,8 +370,10 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 });
             });
 
+        
         this.gethmos();
         this.getCategories();
+        this.getMaritalStatus();
 
         this.frmNewEmp1 = this.formBuilder.group({
 
@@ -803,6 +805,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     getMaritalStatus() {
         this.maritalStatusService.findAll().then(payload => {
             this.maritalStatuses = payload.data;
+            console.log(this.maritalStatuses);
         }).catch(err => {
 
         });
@@ -1053,6 +1056,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             paymentPlan: [
                 {
                     planType: 'wallet',
+                    bearerPersonId: this.selectedPerson._id,
                     isDefault: false
                 },
                 {
@@ -1370,6 +1374,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             paymentPlan: [
                 {
                     planType: 'wallet',
+                    bearerPersonId: this.selectedPerson._id,
                     isDefault: false
                 },
                 {

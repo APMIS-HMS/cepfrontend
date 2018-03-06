@@ -74,11 +74,18 @@
                         </div>
 
                         <div class="btn-box">
-                            <button mat-raised-button [disabled]="!frmNewInvestigationh.valid" (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)" class="btn">
-                                <span *ngIf="addInvestBtn"><i class="fa fa-plus"></i> Create Investigation</span>
-                                <span *ngIf="addingInvestBtn">Creating Investigation <i class="fa fa-spin fa-spinner"></i></span>
-                                <span *ngIf="editInvestBtn"><i class="fa fa-plus"></i> Edit Investigation</span>
-                                <span *ngIf="editingInvestBtn">Editing Investigation <i class="fa fa-spin fa-spinner"></i></span>
+                            <button mat-raised-button [disabled]="!frmNewInvestigationh.valid" (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)"
+                                class="btn">
+                                <span *ngIf="addInvestBtn">
+                                    <i class="fa fa-plus"></i> Create Investigation</span>
+                                <span *ngIf="addingInvestBtn">Creating Investigation
+                                    <i class="fa fa-spin fa-spinner"></i>
+                                </span>
+                                <span *ngIf="editInvestBtn">
+                                    <i class="fa fa-plus"></i> Edit Investigation</span>
+                                <span *ngIf="editingInvestBtn">Editing Investigation
+                                    <i class="fa fa-spin fa-spinner"></i>
+                                </span>
                             </button>
                         </div>
                     </form>
@@ -136,11 +143,18 @@
                         </div>
 
                         <div class="btn-box">
-                            <button mat-raised-button [disabled]="!frmNewPanel.valid || addingPInvestBtn" (click)="createPanel(frmNewPanel.valid, frmNewPanel.value)" class="btn">
-                                <span *ngIf="addPInvestBtn"><i class="fa fa-plus"></i> Create Panel</span>
-                                <span *ngIf="addingPInvestBtn">Creating Panel <i class="fa fa-spin fa-spinner"></i></span>
-                                <span *ngIf="editPInvestBtn"><i class="fa fa-plus"></i> Edit Panel</span>
-                                <span *ngIf="editingPInvestBtn">Editing Panel <i class="fa fa-spin fa-spinner"></i></span>
+                            <button mat-raised-button [disabled]="!frmNewPanel.valid || addingPInvestBtn" (click)="createPanel(frmNewPanel.valid, frmNewPanel.value)"
+                                class="btn">
+                                <span *ngIf="addPInvestBtn">
+                                    <i class="fa fa-plus"></i> Create Panel</span>
+                                <span *ngIf="addingPInvestBtn">Creating Panel
+                                    <i class="fa fa-spin fa-spinner"></i>
+                                </span>
+                                <span *ngIf="editPInvestBtn">
+                                    <i class="fa fa-plus"></i> Edit Panel</span>
+                                <span *ngIf="editingPInvestBtn">Editing Panel
+                                    <i class="fa fa-spin fa-spinner"></i>
+                                </span>
                             </button>
                         </div>
                     </form>
@@ -155,7 +169,9 @@
                                 <div class="table-head col-xs-2">Reference Value</div>
                                 <div class="table-head col-xs-2">Unit</div>
                                 <div class="table-head col-xs-2">Report Type</div>
-                                <div class="table-head col-xs-1"><i class="fa fa-search fa-fw pointer"></i></div>
+                                <div class="table-head col-xs-1">
+                                    <i class="fa fa-search fa-fw pointer"></i>
+                                </div>
                             </div>
                         </div>
                         <div class="card-content">
@@ -204,6 +220,11 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="btn-center">
+                        <button (click)="loadMore()" class="apmis-blue" mat-raised-button *ngIf="showLoadMore">Load More</button>
+                    </div>
+                    <div style="text-align:center; margin-top:20px;" *ngIf="total > 0">{{loadMoreText}} </div>
 
                 </div>
             </div>
