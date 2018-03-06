@@ -83,7 +83,10 @@
 
                     <div class="txt-wrap">
                         <div class="txt-label">Source</div>
-                        <div class="txt-val">{{investigation?.facility?.name}} - (EMT Clinic-Get Location)</div>
+                        <div class="txt-val">{{investigation?.facility?.name}}
+                            <span *ngIf="investigation.source !== undefined">{{investigation.source?.name}}</span>
+                            <span *ngIf="investigation.source === undefined">In-House Request</span>
+                        </div>
                     </div>
 
                     <div class="txt-wrap">
