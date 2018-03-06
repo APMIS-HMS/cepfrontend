@@ -9,7 +9,6 @@ import { DragulaService } from 'ng2-dragula/ng2-dragula';
 import { Observable } from 'rxjs/Observable';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
-
 @Component({
   selector: 'app-investigation-service',
   templateUrl: './investigation-service.component.html',
@@ -64,6 +63,14 @@ export class InvestigationServiceComponent implements OnInit {
     dragulaService.drop.subscribe((value) => {
       this.onDrop(value.slice(1));
     });
+
+    investigationService.listner.subscribe(payload =>{
+      this.getInvestigations();
+    });
+
+    investigationService.createListener.subscribe(payload =>{
+      this.getInvestigations();
+    });
   }
   private onDrag(args) {
     const [e, el] = args;
@@ -116,7 +123,7 @@ export class InvestigationServiceComponent implements OnInit {
   }
 
   getInvestigations() {
-    this.investigationService.find({ query: { 'facilityId': this.selectedFacility._id } }).then(res => {
+    this.investigationService.find({ query: { 'facilityId': this.selectedFacility._id, $limit:200 } }).then(res => {
       this.loading = false;
       if (res.data.length > 0) {
         this.investigations = res.data;
@@ -359,6 +366,7 @@ export class InvestigationServiceComponent implements OnInit {
 
   createPanel(valid, value) {
     if (valid) {
+      this.addingPInvestBtn = true;
       if (this.selectedInvestigation._id === undefined) {
         const investigation: any = {
           facilityId: this.selectedFacility._id,
@@ -395,16 +403,32 @@ export class InvestigationServiceComponent implements OnInit {
                     const facilityService$ = Observable.fromPromise(this.servicePriceService.create(price));
                     const investigation$ = Observable.fromPromise(this.investigationService.update(payload));
                     Observable.forkJoin([facilityService$, investigation$]).subscribe(results => {
+                      // this.frmNewPanel.reset();
+                      // this.frmNewPanel.controls['isPanel'].setValue(true);
+                      // this.investigations.push(payload);
+                      // this.addingPInvestBtn = true;
+                      this.pannel_view = false;
+                      this.addPInvestBtn = true;
+                      this.addingPInvestBtn = false;
+                      this.selectedInvestigation = <any>{};
+                      this.movedInvestigations = [];
                       this.frmNewPanel.reset();
-                      this.frmNewPanel.controls['isPanel'].setValue(true);
-                      this.investigations.push(payload);
+                      this.frmNewPanel.controls['isPanel'].setValue(false);
+                      const index = this.investigations.findIndex((obj => obj._id === payload._id));
+                      this.investigations.splice(index, 1, payload);
                       this._systemModuleService.announceSweetProxy('Investigation has been created successfully.', 'success', null, null, null, null, null, null, null);
+                    }, error =>{
+                      this.addingPInvestBtn = false;
                     })
                   }
                 });
               }
             });
+          },error =>{
+            this.addingPInvestBtn = false;
           });
+        },error =>{
+          this.addingPInvestBtn = false;
         });
       } else {
         this.selectedInvestigation.name = this.frmNewPanel.controls['panelName'].value;
@@ -443,16 +467,21 @@ export class InvestigationServiceComponent implements OnInit {
                         this.addPInvestBtn = true;
                         this.addingPInvestBtn = false;
                         this.selectedInvestigation = <any>{};
+                        this.movedInvestigations = [];
                         this.frmNewPanel.reset();
                         this.frmNewPanel.controls['isPanel'].setValue(false);
                         const index = this.investigations.findIndex((obj => obj._id === payload._id));
                         this.investigations.splice(index, 1, payload);
                         this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success', null, null, null, null, null, null, null);
+                      }, error =>{
+                        this.addingPInvestBtn = false;
                       })
                     }
                   });
                 }
               });
+            }, error =>{
+              this.addingPInvestBtn = false;
             });
           }
         }, error => {
