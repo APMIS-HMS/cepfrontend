@@ -143,8 +143,56 @@ class Service {
                 if (data.inputedValue.balance == 0) {
                     data.invoice.billingIds[v].billObject.paymentCompleted = true;
                 }
-                description += data.invoice.billingIds[v].billObject.facilityServiceObject.category + ' - ' + data.invoice.billingIds[v].billObject.facilityServiceObject.service;
+                data.listedBillItems[x2].billItems[x3].isServiceEnjoyed = true;
+                filterCheckedBills.push(data.listedBillItems[x2]);
+                if (x == 0) {
+                  let len4 = filterCheckedBills.length;
+                  let pds = [];
+                  for (let _indx = 0; _indx < len4; _indx++) {
+                    const pd = await billingsService.patch(filterCheckedBills[_indx]._id, {
+                      billItems: filterCheckedBills[_indx].billItems
+                    });
+                    pds.push(pd);
+                  }
+                  if (data.inputedValue.isWaved != true) {
+                    data.invoice = awaitBillGroup;
+                    return onDebitWallet(data, description, ref, facilitiesService, peopleService, PaymentPlan);
+                  } else {
+                    let pd = {};
+                    pd.isPaid = false;
+                    pd.isWaved = true;
+                    pds.push(pd);
+                    let returnObj = {
+                      bill: pds,
+                      invoice: awaitBillGroup
+                    };
+                    return returnObj;
+                  }
+                }
+              }
             }
+          }
+        }
+      }
+    } else {
+      if (data.inputedValue.balance == 0) {
+        data.invoice.paymentCompleted = true;
+        data.invoice.paymentStatus = 'PAID';
+      }
+      if (data.inputedValue.isWaved == true) {
+        // data.invoice.paymentStatus = 'WAIVED';
+      }
+      let invLen = data.invoice.billingIds.length - 1;
+      for (let v = invLen; v >= 0; v--) {
+        data.invoice.billingIds[v].billObject.isServiceEnjoyed = true;
+        if (data.inputedValue.balance == 0 || data.inputedValue.isWaved == true) {
+          data.invoice.billingIds[v].billObject.isServiceEnjoyed = true;
+        }
+        if (data.inputedValue.balance == 0) {
+          data.invoice.billingIds[v].billObject.paymentCompleted = true;
+        }
+        description += data.invoice.billingIds[v].billObject.facilityServiceObject.category + ' - ' + data.invoice.billingIds[v].billObject.facilityServiceObject.service;
+      }
 
             data.invoice.balance = data.inputedValue.balance;
             data.inputedValue.paymentMethod.reason = data.reason;
