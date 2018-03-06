@@ -92,5 +92,11 @@ module.exports = function(app) {
             return app.channel(context.params.query.facilityId);
         }
     });
+    app.service('investigations').publish('updated', (data) => {
+        return app.channel(data.facilityId);
+    });
+    app.service('investigations').publish('created', (data) => {
+        return app.channel(data.facilityId);
+    });
 
 };

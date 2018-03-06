@@ -13,7 +13,8 @@ module.exports = function(app) {
         clinicalInformation: { type: String, required: false },
         diagnosis: { type: String, required: false },
         investigations: [{ type: Schema.Types.Mixed, required: true }],
-        billingId: { type: Schema.Types.Mixed, required: false }
+        billingId: { type: Schema.Types.Mixed, required: false },
+        source: { type: Schema.Types.Mixed, required: false },
     }, {
         timestamps: true
     });
