@@ -457,7 +457,6 @@ export class MakePaymentComponent implements OnInit {
       }
 
     }, error => {
-      console.log(error);
       this.systemModuleService.announceSweetProxy('Fail to make payment pls try again later','error');
     });
   }
