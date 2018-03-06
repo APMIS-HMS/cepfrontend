@@ -113,8 +113,7 @@ export class PaymentComponent implements OnInit {
     }
 
     private _getBills() {
-        // this.loadingPendingBills = true;
-        this.systemModuleService.on;
+        this.systemModuleService.on();
         this._pendingBillService.get(this.selectedFacility._id, {
             query: {
                 'isQuery': false
@@ -126,16 +125,16 @@ export class PaymentComponent implements OnInit {
             this.totalAmountBilled = res.amountBilled;
             this.loadingPendingBills = false;
         }).catch(err => {
-            this.systemModuleService.off;
+            this.systemModuleService.off();
             this.loadingPendingBills = false;
             this._notification('Error', err);
         });
     }
 
     private _getLocAmountAccrued() {
-        this.loadingLocAmountAccrued = true;
         this._locSummaryCashService.get(this.selectedFacility._id, {})
             .then(payload2 => {
+                this.systemModuleService.off();
                 if (payload2 != null) {
                     if (payload2.barChartData !== undefined) {
                         this.barChartLabels = payload2.barChartLabels;
@@ -153,9 +152,7 @@ export class PaymentComponent implements OnInit {
                         }
                     }
                 }
-                this.loadingLocAmountAccrued = false;
             }).catch(err => {
-                this.loadingLocAmountAccrued = false;
                 this._notification('Error', 'There was a problem getting location accrued amount bills. Please try again later!')
             });
     }
