@@ -78,7 +78,7 @@ class Service {
           billGroup.paymentCompleted = true;
         }
         if (data.inputedValue.isWaved == true) {
-          if(data.invoice === undefined){
+          if (data.invoice === undefined) {
             data.invoice = {};
           }
           data.invoice.paymentStatus = 'WAIVED';
