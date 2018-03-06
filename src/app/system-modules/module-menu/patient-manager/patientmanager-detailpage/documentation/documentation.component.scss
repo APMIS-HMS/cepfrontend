@@ -341,8 +341,8 @@ td {
     font-size: 1.6rem;
     color: #333;
     text-align: center;
-    border-bottom: 0.5px solid #eee;
-    margin-bottom: 2px;
+    //border-bottom: 0.5px solid #eee;
+    margin-bottom: 14px;
 }
 
 .sect-key {
@@ -413,37 +413,25 @@ td .empWrap .list-img {
     }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.tbl-resp-wrap{
+.tbl-resp-wrap {
     min-width: 100%;
     padding-bottom: 100px;
-    overflow-y: auto; 
+    overflow-y: auto;
 }
-.tbl-resp-wrap table{
+
+.tbl-resp-wrap table {
     min-width: 500px;
 }
+
 .doc-contentArea {
     width: 100%;
 }
-td{
+
+td {
     border: 0px solid transparent;
 }
-th{
+
+th {
     font-size: 1.5rem;
     text-align: left;
     font-weight: normal;
