@@ -716,6 +716,12 @@ export class LabRequestsComponent implements OnInit {
         delete item.LaboratoryWorkbenches;
         delete item.location;
       }
+      console.log(item);
+      if(!this.isLaboratory){
+        item.source = {
+          facilityId: this.selectedFacility
+        }
+      }
       readyCollection.push(item);
     });
 
@@ -729,22 +735,23 @@ export class LabRequestsComponent implements OnInit {
       createdBy: this.loginEmployee._id
     };
 
-    this.requestService.customCreate(request).then(res => {
-      if (res.status === 'success') {
-        this.frmNewRequest.reset();
-        this._getAllPendingRequests();
-        this.bindInvestigations = [];
-        this.investigations = [];
-        this.apmisLookupText = '';
-        this.selectedPatient = undefined;
-        this._systemModuleService.announceSweetProxy
-        ('Request has been sent successfully!', 'success', null, null, null, null, null, null, null);
-      } else {
-        this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
-      }
-    }).catch(err => {
-      this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
-    });
+
+    // this.requestService.customCreate(request).then(res => {
+    //   if (res.status === 'success') {
+    //     this.frmNewRequest.reset();
+    //     this._getAllPendingRequests();
+    //     this.bindInvestigations = [];
+    //     this.investigations = [];
+    //     this.apmisLookupText = '';
+    //     this.selectedPatient = undefined;
+    //     this._systemModuleService.announceSweetProxy
+    //     ('Request has been sent successfully!', 'success', null, null, null, null, null, null, null);
+    //   } else {
+    //     this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
+    //   }
+    // }).catch(err => {
+    //   this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
+    // });
 
   }
 

@@ -27,4 +27,5 @@ export interface InvestigationModel {
     isExternal: boolean;
     isUrgent: boolean;
     isChecked: boolean;
+    source:any;
 }
