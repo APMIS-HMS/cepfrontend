@@ -19,8 +19,8 @@ export class AssessmentDispenseService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('assessmentdispense');
-    this._socket = _socketService.getService('assessmentdispense');
+    this._rest = _restService.getService('dispense-prescriptions');
+    this._socket = _socketService.getService('dispense-prescriptions');
     this._socket.timeout = 50000;
     this.createlistner = Observable.fromEvent(this._socket, 'created');
     this.updatelistner = Observable.fromEvent(this._socket, 'updated');
@@ -35,14 +35,14 @@ export class AssessmentDispenseService {
     return this.timelineAnnouncedSource.asObservable();
   }
   find(query: any) {
-    return this._rest.find(query);
+    return this._socket.find(query);
   }
 
   findAll() {
     return this._socket.find();
   }
-  get(id: string, query: any) {
-    return this._socket.get(id, query);
+  get(data: any, query: any) {
+    return this._socket.get(data, query);
   }
 
   create(assessmentdispense: any) {

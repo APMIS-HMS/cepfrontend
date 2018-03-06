@@ -27,8 +27,8 @@ export class StoreCheckInComponent implements OnInit {
 	locations: any[] = [];
   checkInBtn = true;
   checkingInBtn = false;
-  disableBtn = true;
-  checkInBtnText:any;
+  disableBtn = false;
+  checkInBtnText: any;
 
 	constructor(
     public formBuilder: FormBuilder,
@@ -42,22 +42,30 @@ export class StoreCheckInComponent implements OnInit {
 		public locker: CoolLocalStorage,
 		private _authFacadeService: AuthFacadeService
 	) {
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this._getLabLocation();
 		// this.workSpaces = this.locker.getObject('workspaces');
-		this._authFacadeService.getLogingEmployee().then((res: any) => {
-			this.loginEmployee = res;
-			this.workSpaces = res.workSpaces;
-			if (this.workSpaces !== undefined) {
-				this.workSpaces.forEach(workspace => {
-					if (workspace.isActive && workspace.locations.length > 0) {
-						workspace.locations.forEach(x => {
-							if (x.isActive) {
-								this.locations.push(x.minorLocationObject);
-							}
-						});
-					}
-				});
-			}
-		}).catch(err => {});
+		// this._authFacadeService.getLogingEmployee().then((res: any) => {
+		// 	this.loginEmployee = res;
+		// 	this.workSpaces = res.workSpaces;
+		// 	if (this.workSpaces !== undefined) {
+		// 		this.workSpaces.forEach(workspace => {
+		// 			if (workspace.isActive && workspace.locations.length > 0) {
+		// 				workspace.locations.forEach(x => {
+    //           console.log(x);
+		// 					if (x.isActive) {
+		// 						this.locations.push(x.minorLocationObject);
+		// 					}
+    //         });
+    //         // workspace.locations.forEach(x => {
+    //         //   if (x.isActive && x.majorLocationId.name === 'Ward') {
+    //         //     this.locations.push(x.majorLocationId);
+    //         //   }
+    //         // });
+		// 			}
+		// 		});
+		// 	}
+		// }).catch(err => {});
 	}
 
 	ngOnInit() {
@@ -68,13 +76,14 @@ export class StoreCheckInComponent implements OnInit {
 		});
 		this.storeCheckin.controls['location'].valueChanges.subscribe(value => {
 			this.storeService.find({ query: { minorLocationId: value } }).then(res => {
+        console.log(res);
 				if (res.data.length > 0) {
 					this.stores = res.data;
 				} else {
 					this.stores = [];
 				}
 			});
-		});
+    });
 
 		this.storeCheckin.controls['room'].valueChanges.subscribe(value => {
 		});
@@ -90,10 +99,12 @@ export class StoreCheckInComponent implements OnInit {
     this.disableBtn = true;
 		const checkIn: any = <any>{};
 		checkIn.minorLocationId = value.location;
-		checkIn.storeId = value.room;
+		checkIn.storeId = value.room._id;
+    checkIn.storeObject = { name: value.room.name, _id: value.room._id, minorLocationId: value.room.minorLocationId };
 		checkIn.lastLogin = new Date();
 		checkIn.isOn = true;
-		checkIn.isDefault = value.isDefault;
+    checkIn.isDefault = value.isDefault;
+
 		if (this.loginEmployee.storeCheckIn === undefined) {
 			this.loginEmployee.storeCheckIn = [];
 		}
@@ -146,7 +157,7 @@ export class StoreCheckInComponent implements OnInit {
           this.locations = minorLocations.filter(x => x.locationId === pharmId && locationIds.includes(x._id));
         }
       }
-    }).catch(err =>{});
+    }).catch(err => {});
   }
 
 	changeRoom(checkIn: any) {

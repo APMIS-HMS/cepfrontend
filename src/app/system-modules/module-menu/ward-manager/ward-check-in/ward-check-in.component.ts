@@ -42,6 +42,8 @@ export class WardCheckInComponent implements OnInit {
     private _router: Router,
     private _systemModuleService: SystemModuleService
 	) {
+    this.facility = <Facility>this.locker.getObject('selectedFacility');
+    this.user = <User>this.locker.getObject('auth');
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       if (!!res._id) {
         this.loginEmployee = res;
@@ -64,9 +66,6 @@ export class WardCheckInComponent implements OnInit {
 	}
 
 	ngOnInit() {
-    this.facility = <Facility>this.locker.getObject('selectedFacility');
-    this.user = <User>this.locker.getObject('auth');
-
     this._getMajorLocation();
 
 		this.wardCheckin = this.formBuilder.group({
@@ -172,10 +171,10 @@ export class WardCheckInComponent implements OnInit {
         'minorLocations.locationId': locationId,
       }
     }).then(res => {
-       //*Starday Check if no ward location has been set
-       if(res.data.length > 0){
+       // *Starday Check if no ward location has been set
+       if (res.data.length > 0) {
         this.wards = res.data[0].minorLocations.filter(x => x.locationId === locationId);
-      }else{
+      }else {
         const text = 'No ward location has been created! Please create one!!';
         this._systemModuleService.announceSweetProxy(text, 'info', null, null, null, null, null, null, null);
         this._router.navigate(['/dashboard/facility']);

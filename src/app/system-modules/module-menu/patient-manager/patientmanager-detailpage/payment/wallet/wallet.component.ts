@@ -297,6 +297,9 @@ export class WalletComponent implements OnInit, AfterViewInit {
       };
     }
 
+    const amount = parseFloat(
+      this.paymentFormGroup.controls['fundAmount'].value
+    );
     const walletTransaction: WalletTransaction = {
       ref: (ePaymentMethod === 'Flutterwave') ? flutterwaveRes : paymentRes,
       payment: {
@@ -304,7 +307,8 @@ export class WalletComponent implements OnInit, AfterViewInit {
         route: (ePaymentMethod === 'Flutterwave') ? 'Flutterwave' : 'Paystack',
       },
       entity: 'Person',
-      destinationId: this.person._id
+      destinationId: this.person._id,
+      amount:amount
       // ePaymentMethod: ePaymentMethod,
       // transactionType: TransactionType.Cr,
       // transactionMedium: (ePaymentMethod === 'Flutterwave') ? TransactionMedium.Flutterwave : TransactionMedium.PayStack,
@@ -318,16 +322,16 @@ export class WalletComponent implements OnInit, AfterViewInit {
       // paidBy: this.user.data.person._id
     };
 
-    this.personService.fundWallet(walletTransaction).then((res: any) => {
+    this.personService.fundWallet(walletTransaction, this.selectedFacility._id).then((res: any) => {
       this.loading = false;
-      if (res.body.status === 'success') {
+      if (res.status === 'success') {
         this.paymentFormGroup.reset();
         this.paymentFormGroup.controls['fundAmount'].setValue(0);
         this.disableBtn = false;
         this.cashPayment = false;
         this.flutterwavePayment = false;
         this.paystackPayment = false;
-        this.person = res.body.data;
+        this.person = res.data;
         this.transactions = this.person.wallet.transactions.reverse().slice(0, 10);
         this._notification('Success', 'Your wallet has been credited successfully.');
       } else {

@@ -109,7 +109,6 @@ export class ClinicalNoteComponent implements OnInit {
     // });
 
     this.sharedService.announceFinishedSavingDraft$.subscribe((payload:any) => {
-      console.log(payload);
       this.isSavingDraft = payload;
     });
 

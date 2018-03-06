@@ -18,8 +18,8 @@ export class PrescriptionListComponent implements OnInit {
 	prescriptionLists: any[] = [];
 	noPrescriptionLists: any[] = [];
 	tempPrescriptionLists: any[] = [];
-	loading: Boolean = true;
-	noPresLoading: Boolean = true;
+	loading = true;
+	noPresLoading = true;
 	currentDate: Date = new Date();
 	psearchOpen = false;
 	wsearchOpen = false;
@@ -36,7 +36,7 @@ export class PrescriptionListComponent implements OnInit {
 
 	ngOnInit() {
 		this._pharmacyEventEmitter.setRouteUrl('Prescription List');
-		this.facility = <Facility> this._locker.getObject('selectedFacility');
+		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		this.getAllPrescriptions();
 		this.getDispenses();
 
@@ -57,13 +57,13 @@ export class PrescriptionListComponent implements OnInit {
 		});
 
 		this.prescriptionFormGroup.controls['search'].valueChanges.subscribe(val => {
-			let searchText = val;
+			const searchText = val;
 			const tempArray = [];
 
-			if(val.length > 2) {
+			if (val.length > 2) {
 				this.loading = true;
 				this.prescriptionLists.forEach(element => {
-					if(element.patientName.toLowerCase().includes(searchText.toLowerCase())) {
+					if (element.patientName.toLowerCase().includes(searchText.toLowerCase())) {
 						tempArray.push(element);
 					}
 				});
@@ -83,51 +83,50 @@ export class PrescriptionListComponent implements OnInit {
 	onChangeCategory(value: any) {
 	}
 
-	popenSearch(){
+	popenSearch() {
 		this.psearchOpen = true;
 	}
-	pcloseSearch(){
+	pcloseSearch() {
 		this.psearchOpen = false;
 	}
-	openSearch(){
+	openSearch() {
 		this.wsearchOpen = true;
 	}
-	closeSearch(){
+	closeSearch() {
 		this.wsearchOpen = false;
 	}
 
 	// Get all drugs from generic
 	getAllPrescriptions() {
-    this._prescriptionService.customGet({ query: { facilityId : this.facility._id }}).then(res => {
-				this.loading = false;
-				res.data.forEach(element => {
-					if (!element.isDispensed) {
-						let isBilledCount = 0;
-						const preItemCount = element.prescriptionItems.length;
-						element.prescriptionItems.forEach(preItem => {
-							if (preItem.isBilled) {
-								++isBilledCount;
-							}
-						});
-
-						if (isBilledCount === preItemCount) {
-							element.status = 'Completely';
-						} else if (isBilledCount === 0) {
-							element.status = 'Not';
-						} else {
-							element.status = 'Partly';
+		this._prescriptionService.customGet({ query: { facilityId: this.facility._id } }).then(res => {
+			this.loading = false;
+			res.data.forEach(element => {
+				if (!element.isDispensed) {
+					let isBilledCount = 0;
+					const preItemCount = element.prescriptionItems.length;
+					element.prescriptionItems.forEach(preItem => {
+						if (preItem.isBilled) {
+							++isBilledCount;
 						}
+					});
 
-						this.tempPrescriptionLists.push(element); // temporary variable to search from.
-						this.prescriptionLists.push(element);
+					if (isBilledCount === preItemCount) {
+						element.status = 'Completely';
+					} else if (isBilledCount === 0) {
+						element.status = 'Not';
+					} else {
+						element.status = 'Partly';
 					}
-				});
-			}).catch(err => {
+
+					this.tempPrescriptionLists.push(element); // temporary variable to search from.
+					this.prescriptionLists.push(element);
+				}
 			});
+		}).catch(err => { });
 	}
 
 	getDispenses() {
-		this._dispenseService.find({ query: {facilityId: this.facility._id, isPrescription: false }}).then(res => {
+		this._dispenseService.find({ query: { facilityId: this.facility._id, isPrescription: false } }).then(res => {
 			this.noPresLoading = false;
 			if (res.data.length > 0) {
 				this.noPrescriptionLists = res.data;

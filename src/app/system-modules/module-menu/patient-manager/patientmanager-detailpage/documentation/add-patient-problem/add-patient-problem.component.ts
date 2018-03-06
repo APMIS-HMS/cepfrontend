@@ -149,6 +149,10 @@ export class AddPatientProblemComponent implements OnInit {
           status: this.statusFormCtrl.value,
           note: this.noteFormCtrl.value,
         })
+      }else{
+        if(documentation.facilityName === undefined){
+          documentation.facilityName = this.selectedFacility.name;
+        }
       }
     });
     if (!isExisting) {

@@ -9,6 +9,7 @@ import { Facility, Documentation, Employee, Patient, PatientDocumentation, Docum
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 import { error } from 'util';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 
 @Component({
@@ -59,6 +60,7 @@ export class AddVitalsComponent implements OnInit {
     private _employeeService: EmployeeService,
     private _FormsService: FormsService,
     private _PatientService: PatientService,
+    private _systemModuleService: SystemModuleService,
     private _facilityService: FacilitiesService,
     private _authFacadeServic:AuthFacadeService,
     private _vitalService: VitalService) {
@@ -245,11 +247,14 @@ export class AddVitalsComponent implements OnInit {
         this.frmAddVitals.reset();
         this.disableSaveBtn = false;
         this.saveBtnText = "Add Vitals";
-        this._notification('Success', 'Vitals saved successfully');
+        this.close_onClick();
+        //this._notification('Success', 'Vitals saved successfully');
+        this._systemModuleService.announceSweetProxy('Vitals saved successfully', 'success');
         this.refreshVitalsChanged.emit(payload);
        
       },error=>{
-        this._notification('Error', 'There was an error while saving the vitals');
+        //this._notification('Error', 'There was an error while saving the vitals');
+        this._systemModuleService.announceSweetProxy('There was an error while saving the vitals', 'error');
         this.disableSaveBtn = false;
       })
 

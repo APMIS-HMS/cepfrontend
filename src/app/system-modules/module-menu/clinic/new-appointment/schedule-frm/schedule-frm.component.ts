@@ -787,7 +787,7 @@ export class ScheduleFrmComponent implements OnInit {
       this.appointment.startDate = this.date;
       if (checkIn === true) {
         this.appointment.attendance = {
-          employeeId: this.loginEmployee._id,
+          employeeId: this.loginEmployee.personDetails.title +' '+this.loginEmployee.personDetails.lastName +' '+this.loginEmployee.personDetails.firstName,
           dateCheckIn: new Date()
         };
       }
@@ -1019,6 +1019,7 @@ export class ScheduleFrmComponent implements OnInit {
     }
   }
   dateChange(event) {
+    console.log(this.startDate);
     const dayNum = getDay(event);
     const day = this.days[dayNum];
     const scheduleFiltered = this.schedules.filter((x: any) => x.day === day);
@@ -1043,6 +1044,7 @@ export class ScheduleFrmComponent implements OnInit {
         this.startDate,
         getMinutes(schedule.startTime)
       );
+      console.log(this.startDate);
       // this.endDate = setHours(this.endDate, getHours(schedule.endTime));
       // this.endDate = setMinutes(this.endDate, getMinutes(schedule.endTime));
       // this.dateCtrl.setValue(this.date);

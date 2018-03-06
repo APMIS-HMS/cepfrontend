@@ -10,7 +10,7 @@
             <img *ngIf="selectedPatient?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
             <div class="action-box">
                 <div *ngIf="!selectedPatient?.isDischarged" class="btn-1 btn-blue" (click)="onClickDischargePatient();"><i class="fa fa-user-times" aria-hidden="true"></i> Discharge</div>
-                <div class="btn-1 btn-gray"><i class="fa fa-eye" aria-hidden="true"></i> Patient Documentation</div>
+                <div (click)="onClickPatientDocumentation(selectedPatient);" class="btn-1 btn-gray"><i class="fa fa-eye" aria-hidden="true"></i> Patient Documentation</div>
                 <!--<div class="btn-1 btn-green" routerLink="/dashboard/ward-manager/admitted/{{admittedPatientId}}/bill-details"><i class="fa fa-money" aria-hidden="true"></i> Bill Patient</div>-->
                 <div *ngIf="!selectedPatient?.isDischarged" class="btn-1 btn-red" (click)="onClickTransferPatient()"><i class="fa fa-share" aria-hidden="true"></i> Transfer</div>
             </div>

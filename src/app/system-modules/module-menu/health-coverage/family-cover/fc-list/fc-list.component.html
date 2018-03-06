@@ -131,7 +131,7 @@
 
                     </form>
                     <div class="flex-button">
-                        <button [disabled]="!frmNewBeneficiary.valid" *ngIf="newFamily" (click)="save(frmNewBeneficiary.valid, frmNewBeneficiary.value, frmDependant.valid, frmDependant)" class="cta-1">Add Family</button>
+                        <button [disabled]="!frmNewBeneficiary.valid || loading" *ngIf="newFamily" (click)="save(frmNewBeneficiary.valid, frmNewBeneficiary.value, frmDependant.valid, frmDependant)" class="cta-1" [innerHTML]="updatePatientBtnText"></button>
                         <button *ngIf="newFamily" (click)="cancel()" class="cta-1">Cancel</button>
                     </div>
                 </div>
