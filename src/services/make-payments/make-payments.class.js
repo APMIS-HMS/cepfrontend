@@ -111,8 +111,10 @@ class Service {
                     data.invoice = awaitBillGroup;
                     return onDebitWallet(data, description, ref, facilitiesService, peopleService, PaymentPlan);
                   } else {
+                    let pd = {};
                     pd.isPaid = false;
                     pd.isWaved = true;
+                    pds.push(pd);
                     let returnObj = {
                       bill: pds,
                       invoice: awaitBillGroup
@@ -131,7 +133,7 @@ class Service {
         data.invoice.paymentStatus = 'PAID';
       }
       if (data.inputedValue.isWaved == true) {
-        data.invoice.paymentStatus = 'WAIVED';
+        // data.invoice.paymentStatus = 'WAIVED';
       }
       let invLen = data.invoice.billingIds.length - 1;
       for (let v = invLen; v >= 0; v--) {
