@@ -35,8 +35,7 @@
                         <div class="frm-wrap">
                             <div class="frm-l">
                                 <div *ngIf="isLaboratory" class="frm-item-wrap">
-                                    <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Search for patient"
-                                        [isSocket]="true" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
+                                    <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Search for patient" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
                                         [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                 </div>
 
@@ -86,8 +85,7 @@
                                                 <div class="inner-radio">
                                                     <mat-checkbox (change)="markExternal($event, investigation)" [checked]="investigation.isExternal">External</mat-checkbox>
                                                     <mat-radio-group [value]="location" *ngIf="!investigation.isExternal">
-                                                        <mat-radio-button class="opt" *ngFor="let location of investigation.LaboratoryWorkbenches" (change)="locationChanged($event, investigation, location, investigation.LaboratoryWorkbenches)"
-                                                            [value]="location" [checked]="false">
+                                                        <mat-radio-button class="opt" *ngFor="let location of investigation.LaboratoryWorkbenches" (change)="locationChanged($event, investigation, location, investigation.LaboratoryWorkbenches)" [value]="location" [checked]="false">
                                                             <div class="opt-inner">
                                                                 <div>{{location.laboratoryId.name}}</div>
                                                                 <div class="opt-price">
@@ -126,8 +124,7 @@
                                             <div class="inner-radio" *ngIf="investigation.isChecked">
                                                 <mat-checkbox (change)="markExternal($event, investigation)" [checked]="investigation.isExternal">External</mat-checkbox>
                                                 <mat-radio-group [value]="location" *ngIf="!investigation.isExternal">
-                                                    <mat-radio-button class="opt" *ngFor="let location of investigation.LaboratoryWorkbenches" (change)="locationChanged($event, investigation, location, investigation.LaboratoryWorkbenches)"
-                                                        [value]="location" [checked]="false">
+                                                    <mat-radio-button class="opt" *ngFor="let location of investigation.LaboratoryWorkbenches" (change)="locationChanged($event, investigation, location, investigation.LaboratoryWorkbenches)" [value]="location" [checked]="false">
                                                         <div class="opt-inner">
                                                             <div>{{location.laboratoryId.name}}</div>
                                                             <div class="opt-price">
@@ -219,8 +216,7 @@
                             </div>
                         </div>
                         <div class="btn-box">
-                            <button mat-raised-button [disabled]="!isValidateForm || !investigationRadio" (click)="save(frmNewRequest.valid, frmNewRequest.value)"
-                                class="btn">Make Request</button>
+                            <button mat-raised-button [disabled]="!isValidateForm || !investigationRadio" (click)="save(frmNewRequest.valid, frmNewRequest.value)" class="btn">Make Request</button>
                         </div>
                     </form>
                 </div>
