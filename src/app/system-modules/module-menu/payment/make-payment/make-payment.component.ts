@@ -208,6 +208,12 @@ export class MakePaymentComponent implements OnInit {
     this.tabCompany = false;
     this.tabFamily = true;
     this.tabInsurance = false;
+    const plan = this.selectedPatient.paymentPlan.filter(x => x.planType === PaymentPlan.family);
+    if(plan.length === 0){
+      this.tabFamily = false;
+      this.tabWallet = true;
+      this.systemModuleService.announceSweetProxy('This patient has not subscribe to any Family cover. Contact your Health Insurance officer for more info','error');
+    }
   }
   tabInsurance_click() {
     this.tabWallet = false;
