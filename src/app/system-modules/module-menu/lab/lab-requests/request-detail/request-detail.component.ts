@@ -42,12 +42,15 @@ export class RequestDetailComponent implements OnInit {
   ) {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.loginEmployee = res;
-    }).catch(err => {});
-    }
+    }).catch(err => console.log(err));
+  }
 
   ngOnInit() {
     this.user = <User>this._locker.getObject('auth');
-this.getIncomingPatient();
+    this.selectedLab = <any>this._locker.getObject('workbenchCheckingObject');
+    //this.getIncomingRequest(this.investigation.labRequestId);
+    this.getIncomingRequestAndPatient(this.investigation.labRequestId);
+    //this.getIncomingPatient();
   }
   getIncomingPatient() {
     this.patientService.get(this.investigation.patientId, {}).then(patient => {
@@ -77,9 +80,9 @@ this.getIncomingPatient();
       } else {
         this.hasSpecimen = false;
       }
-      if (this.localInvestigation.sampleTaken !== undefined && this.localInvestigation.sampleTaken === true){
+      if (this.localInvestigation.sampleTaken !== undefined && this.localInvestigation.sampleTaken === true) {
         this.hasSample = true;
-      }else{
+      } else {
         this.hasSample = false;
       }
 
@@ -108,11 +111,12 @@ this.getIncomingPatient();
         this.localInvestigation = _investigation;
         console.log(this.localInvestigation);
         this.localRequest = payload;
-        if ((this.localInvestigation.specimenReceived !== undefined && this.localInvestigation.specimenReceived === true) || (this.localInvestigation.sampleTaken !== undefined && this.localInvestigation.sampleTaken === true) ) {
+        if (this.localInvestigation.specimenReceived !== undefined && this.localInvestigation.specimenReceived === true || this.localInvestigation.sampleTaken !== undefined && this.localInvestigation.sampleTaken === true) {
           this.hasSpecimen = true;
         } else {
           this.hasSpecimen = false;
         }
+        console.log('Has Specimen : ', this.hasSpecimen);
         /* if (this.localInvestigation.sampleTaken !== undefined && this.localInvestigation.sampleTaken === true) {
           this.hasSample = true;
         } else {
@@ -162,6 +166,7 @@ this.getIncomingPatient();
       this.localRequest = pay;
       this.hasSpecimen = true;
     }).catch(err => {
+      console.log(err);
     });
   }
   assignLabNo() {
