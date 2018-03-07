@@ -3,13 +3,16 @@ import { EMAIL_REGEX } from 'app/shared-module/helpers/global-config';
 import { NUMERIC_REGEX, ALPHABET_REGEX } from './../../../../shared-module/helpers/global-config';
 import { CountryServiceFacadeService } from './../../../service-facade/country-service-facade.service';
 import { TitleGenderFacadeService } from 'app/system-modules/service-facade/title-gender-facade.service';
-import { Component, OnInit, EventEmitter,
-  ElementRef, ViewChild, Output, OnChanges, Input, SimpleChanges, SimpleChange } from '@angular/core';
+import {
+  Component, OnInit, EventEmitter,
+  ElementRef, ViewChild, Output, OnChanges, Input, SimpleChanges, SimpleChange
+} from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import {
   PatientService, PersonService, FacilitiesService, FacilitiesServiceCategoryService,
   HmoService, GenderService, RelationshipService, CountriesService, TitleService
 } from '../../../../services/facility-manager/setup/index';
+import { FacilityFamilyCoverService } from './../../../../services/facility-manager/setup/facility-family-cover.service';
 import { Facility, Patient, Gender, Relationship, Employee, Person, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl, FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
@@ -79,8 +82,16 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   familyPlanCheck = new FormControl('');
   faPlanPrice = new FormControl('');
   faPlan = new FormControl('');
+  faFileNo = new FormControl('');
   isDefault = new FormControl('');
   patient: any;
+  family: any;
+  familyClientId: any;
+
+  principalName;
+  principalPersonId;
+  principalFamilyId;
+  noPatientId;
 
   filteredHmos: Observable<any[]>;
   hmos;
@@ -103,7 +114,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     private _countryService: CountriesService, private systemService: SystemModuleService,
     private authFacadeService: AuthFacadeService, private hmoService: HmoService,
     private _titleService: TitleService, private countryFacadeService: CountryServiceFacadeService,
-    private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService
+    private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService, private familyCoverService: FacilityFamilyCoverService
   ) {
     this.systemService.on();
     this.patientService.listner.subscribe(payload => {
@@ -505,7 +516,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.tabInsurance_click();
     } else if (cover === 'family') {
       this.tabFamily_click();
-    } else {  }
+    } else { }
   }
 
   backBtn() {
@@ -515,6 +526,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   next(cover) {
     this.systemService.on();
     const data = JSON.parse(JSON.stringify(this.patient.paymentPlan));
+    console.log(data);
     if (this.isDefault.value === true) {
       const index = data.findIndex(c => c.isDefault === true);
       if (index > -1) {
@@ -525,6 +537,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       if (this.tabWallet === true) {
         data.push({
           planType: cover,
+          bearerPersonId: this.patient.personDetails._id,
           isDefault: Boolean(this.isDefault.value)
         });
       } else if (this.tabInsurance === true) {
@@ -546,13 +559,62 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
           }
         });
       } else if (this.tabFamily === true) {
-        data.push({
-          planType: cover,
-          isDefault: Boolean(this.isDefault.value),
-          planDetails: {
-            principalId: this.familyPlanId.value
+        this.familyClientId = this.faFileNo.value;
+        this.familyCoverService.find({ query: { 'facilityId': this.facility._id } }).then(payload => {
+          if (payload.data.length > 0) {
+            const facFamilyCover = payload.data[0];
+            const selectedFamilyCover = facFamilyCover;
+            const beneficiaries = facFamilyCover.familyCovers;
+            const info = beneficiaries.filter(x => x.filNo === this.familyPlanId.value);
+            if (info.length === 0) {
+              this.loading = false;
+              this.systemService.off();
+              this.systemService.announceSweetProxy('Principal Id doesn\'t exist', 'error');
+            } else {
+              const filEx = beneficiaries.filter(x => x.filNo === this.familyClientId);
+              console.log(filEx);
+              if (filEx.length > 0) {
+                if (filEx[0].patientId !== undefined) {
+                  this.loading = false;
+                  this.systemService.off();
+                  this.systemService.announceSweetProxy('Client Id has already been assigned to a patient. Please try another Client Id', 'error');
+                } else {
+                  if (info[0].patientId === undefined) {
+                    if (this.getRole(this.familyClientId) !== 'P') {
+                      this.loading = false;
+                      this.systemService.off();
+                      this.systemService.announceSweetProxy('Principal doesn\'t exist as a patient. Please register principal.', 'error');
+                      return;
+                    } else {
+                      this.noPatientId = true;
+                    }
+                  }
+                  this.principalName = info[0].othernames + ' ' + info[0].surname;
+                  this.principalPersonId = (this.noPatientId !== true) ? info[0].patientObject.personDetails._id : '';
+                  this.principalFamilyId = facFamilyCover._id;
+                  this.loading = false;
+                  data.push({
+                    planType: cover,
+                    bearerPersonId: this.patient.personDetails._id,
+                    isDefault: Boolean(this.isDefault.value),
+                    planDetails: {
+                      principalId: this.familyPlanId.value,
+                      principalName: this.principalName.value,
+                      familyId: this.principalFamilyId.value
+                    }
+                  });
+                }
+              } else {
+                this.loading = false;
+                this.systemService.off();
+                this.systemService.announceSweetProxy('Client Id doesn\'t exist in Principal family', 'error');
+              }
+            }
           }
+        }).catch(err => {
+          console.log(err);
         });
+        
       }
 
     } else {
@@ -603,6 +665,15 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
 
 
+  }
+
+  getRole(beneficiary) {
+    const filNo = beneficiary;
+    if (filNo !== undefined) {
+      const filNoLength = filNo.length;
+      const lastCharacter = filNo[filNoLength - 1];
+      return isNaN(lastCharacter) ? 'D' : 'P';
+    }
   }
 
   private _populateNextOfKin(nextOfKin) {

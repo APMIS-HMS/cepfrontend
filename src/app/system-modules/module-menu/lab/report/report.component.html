@@ -376,18 +376,10 @@
                                             <div>{{ report?.createdBy?.firstName }} {{ report?.createdBy?.lastName}}</div>
                                         </div>
                                     </div>
-                                    <!-- <div class="table-list col-xs-2">
-                                        <div class="empWrap">
-                                            <div class="list-img">
-                                                <img *ngIf="report?.patient?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                                <img class="shadow" *ngIf="report?.createdBy?.profileImageObject != undefined" [src]="facilityService.transform(report?.createdBy?.profileImageObject?.thumbnail)">
-                                            </div>
-                                            <div>{{ report?.createdBy?.firstName }} {{ report?.createdBy?.lastName}}</div>
-                                        </div>
-                                    </div> -->
+                                
                                     <div class="table-list col-xs-1">
-                                        <div *ngIf="report.isUploaded" style="color: green">Uploaded</div>
-                                        <div *ngIf="!report.isUploaded" style="color:blue">Not Uploaded</div>
+                                        <div *ngIf="report.isUploaded" style="color: green">Published</div>
+                                        <div *ngIf="!report.isUploaded" style="color:blue">Saved, Not Published</div>
                                     </div>
                                     <div class="table-list action-placeholder col-xs-1">
                                         <i class="fa fa-ellipsis-h" aria-hidden="true"></i>

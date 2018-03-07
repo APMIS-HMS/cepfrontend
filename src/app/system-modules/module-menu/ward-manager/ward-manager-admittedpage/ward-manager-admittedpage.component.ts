@@ -32,6 +32,7 @@ export class WardManagerAdmittedpageComponent implements OnInit {
 	searchControl = new FormControl();
 	loading: Boolean = false;
 	selectedWard: any;
+	wsearchOpen = false;
 
 	constructor(private fb: FormBuilder,
 		private _locker: CoolLocalStorage,
@@ -156,6 +157,13 @@ export class WardManagerAdmittedpageComponent implements OnInit {
 	// 		}
 	// 	});
 	// }
+
+	openSearch() {
+		this.wsearchOpen = true;
+	}
+	closeSearch() {
+		this.wsearchOpen = false;
+	}
 
 	onClickDischargePatient() {
 		this.dischargePatient = true;

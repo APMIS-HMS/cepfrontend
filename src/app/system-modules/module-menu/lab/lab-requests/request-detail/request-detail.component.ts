@@ -43,13 +43,14 @@ export class RequestDetailComponent implements OnInit {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.loginEmployee = res;
     }).catch(err => console.log(err));
-    }
+  }
 
   ngOnInit() {
     this.user = <User>this._locker.getObject('auth');
     this.selectedLab = <any>this._locker.getObject('workbenchCheckingObject');
-    this.getIncomingRequest(this.investigation.labRequestId);
-    this.getIncomingPatient();
+    //this.getIncomingRequest(this.investigation.labRequestId);
+    this.getIncomingRequestAndPatient(this.investigation.labRequestId);
+    //this.getIncomingPatient();
   }
   getIncomingPatient() {
     this.patientService.get(this.investigation.patientId, {}).then(patient => {
@@ -72,20 +73,62 @@ export class RequestDetailComponent implements OnInit {
       let index = payload.investigations.findIndex(x => x.investigation._id === this.investigation.investigationId);
       let _investigation = payload.investigations[index];
       this.localInvestigation = _investigation;
+      console.log(this.localInvestigation);
       this.localRequest = payload;
       if (this.localInvestigation.specimenReceived !== undefined && this.localInvestigation.specimenReceived === true) {
         this.hasSpecimen = true;
       } else {
         this.hasSpecimen = false;
       }
-      if (this.localInvestigation.sampleTaken !== undefined && this.localInvestigation.sampleTaken === true){
+      if (this.localInvestigation.sampleTaken !== undefined && this.localInvestigation.sampleTaken === true) {
         this.hasSample = true;
-      }else{
+      } else {
         this.hasSample = false;
       }
 
-    })
+    });
   }
+
+
+  getIncomingRequestAndPatient(id) {
+    this._laboratoryRequestService.get(id, {}).then(payload => {
+      this.patientService.get(this.investigation.patientId, {}).then(patient => {
+        console.log(payload, patient);
+        if (patient !== undefined) {
+          this.selectedPatient = patient;
+          if (this.selectedPatient.clientsNo === undefined) {
+            this.selectedPatient.clientsNo = [];
+          } else {
+            let index = this.selectedPatient.clientsNo.findIndex(x => x.minorLocationId._id === this.selectedLab.typeObject.minorLocationObject._id);
+            if (index > -1) {
+              this.client = this.selectedPatient.clientsNo[index];
+              this.hasLabNo = true;
+            }
+          }
+        }
+        let requestIndex = payload.investigations.findIndex(x => x.investigation._id === this.investigation.investigationId);
+        let _investigation = payload.investigations[requestIndex];
+        this.localInvestigation = _investigation;
+        console.log(this.localInvestigation);
+        this.localRequest = payload;
+        if (this.localInvestigation.specimenReceived !== undefined && this.localInvestigation.specimenReceived === true || this.localInvestigation.sampleTaken !== undefined && this.localInvestigation.sampleTaken === true) {
+          this.hasSpecimen = true;
+        } else {
+          this.hasSpecimen = false;
+        }
+        console.log('Has Specimen : ', this.hasSpecimen);
+        /* if (this.localInvestigation.sampleTaken !== undefined && this.localInvestigation.sampleTaken === true) {
+          this.hasSample = true;
+        } else {
+          this.hasSample = false;
+        } */
+      })
+
+    });
+  }
+
+
+
   showImageBrowseDlg() {
     this.fileInput.nativeElement.click()
   }
