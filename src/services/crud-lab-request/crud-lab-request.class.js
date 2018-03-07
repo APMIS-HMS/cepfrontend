@@ -61,9 +61,6 @@ class Service {
                         counter++;
                     }
 
-
-                    console.log(requests);
-
                     if (rLength === counter) {
                         return jsend.success(requests);
                     }
