@@ -297,7 +297,6 @@ async function onDebitWallet(data, description, ref, facilitiesService, peopleSe
       'balance': currentBalance,
       'ledgerBalance': currentBalance
     });
-    console.log(7);
     const patchedPerson = await peopleService.patch(getPerson._id, {
       wallet: getPerson.wallet
     });

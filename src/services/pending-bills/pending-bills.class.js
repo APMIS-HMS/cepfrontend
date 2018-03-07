@@ -18,8 +18,6 @@ class Service {
     const billingsService = this.app.service('billings');
     const patientService = this.app.service('patients');
     const peopleService = this.app.service('people');
-    console.log(id);
-    // console.log(params);
     const awaitedBills = await billingsService.find({
       query: {
         facilityId: id,
@@ -37,7 +35,6 @@ class Service {
         $limit: false
       }
     });
-    console.log(awaitedBills);
 
     let bill = {};
     let billings = [];
@@ -54,20 +51,15 @@ class Service {
     } else {
       billings = awaitedBills.data;
     }
-    console.log(billings);
     let result = [];
     let totalAmountBilled = 0;
     if (billings.length > 0) {
       for (let i = billings.length - 1; i >= 0; i--) {
         const val = billings[i];
-        console.log(val);
         result.push(val);
-        console.log(result);
       }
-      console.log(result);
       // return GetBillData(result, totalAmountBilled, bill);
     }
-    console.log(result);
     return GetBillData(result, totalAmountBilled, bill);
   }
 
@@ -99,7 +91,6 @@ module.exports = function (options) {
 };
 
 function GetBillData(result, totalAmountBilled, bill) {
-  console.log(result);
   if (result.length > 0) {
     var counter = 0;
     var today = new Date();
