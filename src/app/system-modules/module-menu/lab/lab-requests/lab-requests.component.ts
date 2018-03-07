@@ -997,6 +997,7 @@ export class LabRequestsComponent implements OnInit {
                 this.pendingRequests.push(pendingLabReq);
               }
             });
+            console.log(this.pendingRequests);
           });
         })
         .catch(err => {});
@@ -1077,6 +1078,7 @@ export class LabRequestsComponent implements OnInit {
               }
             });
           });
+          console.log(this.pendingRequests);
         })
         .catch(err => {});
     }
