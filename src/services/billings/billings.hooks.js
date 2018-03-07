@@ -42,7 +42,7 @@ const resolvers = {
             if (serviceItem.categories !== undefined) {
               if (serviceItem.categories.length > 0) {
                 const len2 = serviceItem.categories.length - 1;
-                for (let index2 = 0; index2 < len2; index2++) {
+                for (let index2 = 0; index2 <= len2; index2++) {
                   const val = serviceItem.categories[index2].services.filter(x => x._id.toString() === bill.billItems[index].serviceId.toString());
                   if (val.length > 0) {
                     bill.billItems[index].serviceObject = val[0];
@@ -63,7 +63,7 @@ const resolvers = {
 
 module.exports = {
   before: {
-    all: [authenticate('jwt')],
+    all: [],//authenticate('jwt')],
     find: [extractbill()],
     get: [],
     create: [],
