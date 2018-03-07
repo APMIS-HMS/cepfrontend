@@ -96,6 +96,7 @@ export class LabRequestsComponent implements OnInit {
   ) {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.loginEmployee = res;
+      console.log(this.loginEmployee);
     }).catch(err => console.log(err));
   }
 
@@ -341,6 +342,7 @@ export class LabRequestsComponent implements OnInit {
     this.apmisLookupText = `${value.firstName} ${value.lastName}`;
     this.selectedPatient = value;
     this.frmNewRequest.controls['labNo'].setValue('');
+    console.log(this.selectedPatient);
     if (this.selectedPatient.clientsNo !== undefined) {
       this.selectedPatient.clientsNo.forEach(item => {
         if (item.minorLocationId._id === this.selectedLab.typeObject.minorLocationObject._id) {
@@ -348,8 +350,8 @@ export class LabRequestsComponent implements OnInit {
         }
       })
     }
-
   }
+
   apmisInvestigationLookupHandleSelectedItem(value) {
     if (value.action !== undefined) {
       if (value.action === 'cancel' && value.clear === true) {
@@ -724,6 +726,7 @@ export class LabRequestsComponent implements OnInit {
       patientId: (this.isLaboratory) ? this.selectedPatient.patientId : this.selectedPatient._id,
       labNumber: (!this.isLaboratory) ? this.frmNewRequest.controls['labNo'].value : '',
       clinicalInformation: this.frmNewRequest.controls['clinicalInfo'].value,
+      minorLocationId: (this.selectedLab.typeObject !== undefined) ? this.selectedLab.typeObject.minorLocationObject._id : undefined,
       diagnosis: this.frmNewRequest.controls['diagnosis'].value,
       investigations: readyCollection,
       createdBy: this.loginEmployee._id
@@ -737,8 +740,7 @@ export class LabRequestsComponent implements OnInit {
         this.investigations = [];
         this.apmisLookupText = '';
         this.selectedPatient = undefined;
-        this._systemModuleService.announceSweetProxy
-        ('Request has been sent successfully!', 'success', null, null, null, null, null, null, null);
+        this._systemModuleService.announceSweetProxy('Request has been sent successfully!', 'success');
       } else {
         this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
       }
