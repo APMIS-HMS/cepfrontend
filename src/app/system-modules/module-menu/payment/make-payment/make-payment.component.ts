@@ -91,7 +91,7 @@ export class MakePaymentComponent implements OnInit {
     private _makePaymentService: MakePaymentService,
     private facilityService: FacilitiesService,
     private personService: PersonService,
-  private systemModuleService:SystemModuleService) {
+    private systemModuleService: SystemModuleService) {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
   }
 
@@ -112,7 +112,7 @@ export class MakePaymentComponent implements OnInit {
         this.balance.setValue(bal);
       } else {
         this.amount.setValue(this.cost);
-        this.systemModuleService.announceSweetProxy('Balance cannot be lesser than zero','error');
+        this.systemModuleService.announceSweetProxy('Balance cannot be lesser than zero', 'error');
       }
     });
     this.amountInsurance.valueChanges.subscribe(value => {
@@ -121,7 +121,7 @@ export class MakePaymentComponent implements OnInit {
         this.balanceInsurance.setValue(bal);
       } else {
         this.amountInsurance.setValue(this.cost);
-        this.systemModuleService.announceSweetProxy('Balance cannot be lesser than zero','error');
+        this.systemModuleService.announceSweetProxy('Balance cannot be lesser than zero', 'error');
       }
     });
 
@@ -131,7 +131,7 @@ export class MakePaymentComponent implements OnInit {
         this.balanceCompany.setValue(bal);
       } else {
         this.amountCompany.setValue(this.cost);
-        this.systemModuleService.announceSweetProxy('Balance cannot be lesser than zero','error');
+        this.systemModuleService.announceSweetProxy('Balance cannot be lesser than zero', 'error');
       }
     });
 
@@ -141,7 +141,7 @@ export class MakePaymentComponent implements OnInit {
         this.balanceFamily.setValue(bal);
       } else {
         this.amountFamily.setValue(this.cost);
-        this.systemModuleService.announceSweetProxy('Balance cannot be lesser than zero','error');
+        this.systemModuleService.announceSweetProxy('Balance cannot be lesser than zero', 'error');
       }
     });
     // this.channel.valueChanges.subscribe(value => {
@@ -160,7 +160,7 @@ export class MakePaymentComponent implements OnInit {
       this.patientCompanyLists = this.selectedPatient.paymentPlan.filter(x => x.planType === PaymentPlan.company);
       this.patientFamilyLists = this.selectedPatient.paymentPlan.filter(x => x.planType === PaymentPlan.family);
     } else {
-      this.systemModuleService.announceSweetProxy('No payment plan is attached to patient','error');
+      this.systemModuleService.announceSweetProxy('No payment plan is attached to patient', 'error');
     }
   }
 
@@ -209,10 +209,10 @@ export class MakePaymentComponent implements OnInit {
     this.tabFamily = true;
     this.tabInsurance = false;
     const plan = this.selectedPatient.paymentPlan.filter(x => x.planType === PaymentPlan.family);
-    if(plan.length === 0){
+    if (plan.length === 0) {
       this.tabFamily = false;
       this.tabWallet = true;
-      this.systemModuleService.announceSweetProxy('This patient has not subscribe to any Family cover. Contact your Health Insurance officer for more info','error');
+      this.systemModuleService.announceSweetProxy('This patient has not subscribe to any Family cover. Contact your Health Insurance officer for more info', 'error');
     }
   }
   tabInsurance_click() {
@@ -266,7 +266,7 @@ export class MakePaymentComponent implements OnInit {
     if ((this.amount.value !== '' && this.amount.value !== 0) || this.isWaved === true) {
       if (this.selectedPatient.personDetails.wallet !== undefined) {
         if (this.selectedPatient.personDetails.wallet.balance < this.cost && !this.isWaved) {
-          this.systemModuleService.announceSweetProxy('No sufficient balance to make this payment','info');
+          this.systemModuleService.announceSweetProxy('No sufficient balance to make this payment', 'info');
         } else {
           let paymentValue = {};
           const plan = this.selectedPatient.paymentPlan.filter(x => x.planType === PaymentPlan.outOfPocket);
@@ -293,10 +293,10 @@ export class MakePaymentComponent implements OnInit {
           this.makePayment(paymentValue);
         }
       } else {
-        this.systemModuleService.announceSweetProxy('You donot have sufficient balance to make this payment','info');
+        this.systemModuleService.announceSweetProxy('You donot have sufficient balance to make this payment', 'info');
       }
     } else {
-      this.systemModuleService.announceSweetProxy('Please enter a valid amount','Error');
+      this.systemModuleService.announceSweetProxy('Please enter a valid amount', 'Error');
     }
   }
 
@@ -305,7 +305,7 @@ export class MakePaymentComponent implements OnInit {
       this.facilityService.get(this.insurancePlan.value.planDetails._id, {}).then((payload: any) => {
         if (payload.wallet !== undefined) {
           if (payload.wallet.balance < this.cost) {
-            this.systemModuleService.announceSweetProxy('No sufficient balance to make this payment','info');
+            this.systemModuleService.announceSweetProxy('No sufficient balance to make this payment', 'info');
           } else {
             let paymentValue = {};
             if (this.isExactInsurance) {
@@ -323,24 +323,24 @@ export class MakePaymentComponent implements OnInit {
             this.makePayment(paymentValue);
           }
         } else {
-          this.systemModuleService.announceSweetProxy('You donot have sufficient balance to make this payment','info');
+          this.systemModuleService.announceSweetProxy('You donot have sufficient balance to make this payment', 'info');
         }
       });
     } else {
-      this.systemModuleService.announceSweetProxy('You have not selected an insurance cover','error');
+      this.systemModuleService.announceSweetProxy('You have not selected an insurance cover', 'error');
     }
 
 
   }
 
   onFamilyCover() {
-    if ((this.amountFamily.value !== '' && this.amountFamily.value !== 0) ) {
+    if ((this.amountFamily.value !== '' && this.amountFamily.value !== 0)) {
       const plan = this.selectedPatient.paymentPlan.filter(x => x.planType === PaymentPlan.family);
-      if(plan[0] !== undefined){
+      if (plan[0] !== undefined) {
         this.personService.get(plan[0].bearerPersonId, {}).then((payload: any) => {
           if (payload.wallet !== undefined) {
             if (payload.wallet.balance < this.cost) {
-              this.systemModuleService.announceSweetProxy('No sufficient balance to make this payment','info');
+              this.systemModuleService.announceSweetProxy('No sufficient balance to make this payment', 'info');
             } else {
               let paymentValue = {};
               if (this.isExactFamily) {
@@ -358,14 +358,14 @@ export class MakePaymentComponent implements OnInit {
               this.makePayment(paymentValue);
             }
           } else {
-            this.systemModuleService.announceSweetProxy('No sufficient balance to make this payment','info');
+            this.systemModuleService.announceSweetProxy('No sufficient balance to make this payment', 'info');
           }
         });
-      }else{
-        this.systemModuleService.announceSweetProxy('This patient has not subscribe to any Family cover. Contact your Health Insurance officer for more info','error');
+      } else {
+        this.systemModuleService.announceSweetProxy('This patient has not subscribe to any Family cover. Contact your Health Insurance officer for more info', 'error');
       }
     } else {
-      this.systemModuleService.announceSweetProxy('Please enter a valid amount','error');
+      this.systemModuleService.announceSweetProxy('Please enter a valid amount', 'error');
     }
   }
 
@@ -374,7 +374,7 @@ export class MakePaymentComponent implements OnInit {
       this.facilityService.get(this.companyPlan.value.planDetails._id, {}).then((payload: any) => {
         if (payload.wallet !== undefined) {
           if (payload.wallet.balance < this.cost) {
-            this.systemModuleService.announceSweetProxy('No sufficient balance to make this payment','info');
+            this.systemModuleService.announceSweetProxy('No sufficient balance to make this payment', 'info');
           } else {
             let paymentValue = {};
             if (this.isExactCompany) {
@@ -392,11 +392,11 @@ export class MakePaymentComponent implements OnInit {
             this.makePayment(paymentValue);
           }
         } else {
-          this.systemModuleService.announceSweetProxy('No sufficient balance to make this payment','info');
+          this.systemModuleService.announceSweetProxy('No sufficient balance to make this payment', 'info');
         }
       });
     } else {
-      this.systemModuleService.announceSweetProxy('You have not selected a company cover','error');
+      this.systemModuleService.announceSweetProxy('You have not selected a company cover', 'error');
     }
 
   }
@@ -425,7 +425,7 @@ export class MakePaymentComponent implements OnInit {
         'isInvoicePage': false
       }
       if (this.isWaved) {
-        paymantObj.reason =  this.wavedDescription.value;
+        paymantObj.reason = this.wavedDescription.value;
       }
       if (this.bAmount === 0) {
         paymantObj.transactionStatus = TransactionStatus.Complete;
@@ -445,26 +445,49 @@ export class MakePaymentComponent implements OnInit {
         'isInvoicePage': true
       }
       if (this.isWaved) {
-        paymantObj.reason =  this.wavedDescription.value;
+        paymantObj.reason = this.wavedDescription.value;
       }
       if (this.bAmount === 0) {
         paymantObj.transactionStatus = TransactionStatus.Complete;
       }
     }
-    this._makePaymentService.create(paymantObj).then(payload => {
-      this.personValueChanged.emit(payload);
-      this.isProcessing = false;
-      this.balance.setValue(0);
-      this.close_onClick();
-      if (!payload.isWaved) {
-        this.systemModuleService.announceSweetProxy('Payment successfull.','success');
-      }else {
-        this.systemModuleService.announceSweetProxy('Payment successfull.','success');
-      }
+    if (this.isWaved === true && this.wavedDescription.value.length > 0) {
+      this._makePaymentService.create(paymantObj).then(payload => {
+        this.personValueChanged.emit(payload);
+        this.isProcessing = false;
+        this.balance.setValue(0);
+        this.close_onClick();
+        if (!payload.isWaved) {
+          this.systemModuleService.announceSweetProxy('Payment successfull.', 'success');
+        } else {
+          this.systemModuleService.announceSweetProxy('Payment successfull.', 'success');
+        }
 
-    }, error => {
-      this.systemModuleService.announceSweetProxy('Fail to make payment pls try again later','error');
-    });
+      }, error => {
+        this.systemModuleService.announceSweetProxy('Fail to make payment pls try again later', 'error');
+      });
+    } else if (this.isWaved === false && this.wavedDescription.value.length === 0) {
+      this._makePaymentService.create(paymantObj).then(payload => {
+        this.personValueChanged.emit(payload);
+        this.isProcessing = false;
+        this.balance.setValue(0);
+        this.close_onClick();
+        if (!payload.isWaved) {
+          this.systemModuleService.announceSweetProxy('Payment successfull.', 'success');
+        } else {
+          this.systemModuleService.announceSweetProxy('Payment successfull.', 'success');
+        }
+
+      }, error => {
+        console.log(error);
+        this.isProcessing = false;
+        this.systemModuleService.announceSweetProxy('Fail to make payment pls try again later', 'error');
+      });
+    } else {
+      this.isProcessing = false;
+      this.systemModuleService.announceSweetProxy('Kindly give reason to waive this payment', 'error');
+    }
+
   }
 
   private _notification(type: String, text: String): void {

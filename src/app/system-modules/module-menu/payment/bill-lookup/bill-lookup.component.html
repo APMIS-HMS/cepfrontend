@@ -90,7 +90,7 @@
                             <div class="clientName">{{selectedPatient?.personDetails?.lastName}} {{selectedPatient?.personDetails?.firstName}}</div>
                             <div class="clientName">
                                 <span class="{{ selectedPatient?.personDetails?.wallet?.balance > 0 ? 'text-blue' : 'accBal-val'}}">
-                                    &#8358; {{selectedPatient?.personDetails?.wallet?.balance|numberThr}}
+                                    &#8358; {{selectedPatient?.personDetails?.wallet?.balance|number:'1.2-2'}}
                                 </span>
                             </div>
                             <div class="clientAddress">

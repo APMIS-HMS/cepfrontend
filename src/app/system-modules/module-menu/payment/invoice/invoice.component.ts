@@ -81,8 +81,8 @@ export class InvoiceComponent implements OnInit {
             }).catch(err => this._notification('Error', 'There was a problem getting invoices. Please try again later!'));
 
         this.isLoadingOtherInvoice = true;
-        this._todayInvoiceService.get(this.selectedFacility._id,{
-            query:{
+        this._todayInvoiceService.get(this.selectedFacility._id, {
+            query: {
                 "isQuery": false
             }
         }).then(payload => {
@@ -138,12 +138,13 @@ export class InvoiceComponent implements OnInit {
             });
     }
 
-    onSelectedInvoice(group: Invoice) {
+    onSelectedInvoice(group) {
+        console.log(group);
         this.selectedInvoiceGroup = group;
     }
 
     onPersonValueUpdated(item) {
-        if(item.person != undefined){
+        if (item.person != undefined) {
             this.selectedPatient.personDetails = item.person;
         }
         this.isLoadingInvoice = false;
@@ -153,7 +154,8 @@ export class InvoiceComponent implements OnInit {
     }
 
     onSelectedOtherPatientInvoice(invoice) {
-        this.router.navigate(['/dashboard/payment/invoice', invoice.personDetails._id]).then(routePayload => {
+        console.log(invoice);
+        this.router.navigate(['/dashboard/payment/invoice', invoice.patientId]).then(routePayload => {
             this.isLoadingInvoice = true;
             this.isLoadingOtherInvoice = true;
         });
