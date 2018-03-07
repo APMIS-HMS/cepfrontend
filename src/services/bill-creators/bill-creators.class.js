@@ -33,8 +33,6 @@ class Service {
           x.isPicked = true;
         });
         const patient = await patientsService.get(params.query.patientId);
-        console.log(patient.paymentPlan);
-        console.log(insurance[index].covered);
         const patientPaymentType = patient.paymentPlan.filter(x => x.planDetails.hmoId !== undefined && x.planDetails.hmoId.toString() === insurance[index].covered.hmoId.toString());
         const billModel = {
           "facilityId": params.query.facilityId,

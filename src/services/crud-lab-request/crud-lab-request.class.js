@@ -16,6 +16,7 @@ class Service {
         const patientService = this.app.service('patients');
         const peopleService = this.app.service('people');
         const employeeService = this.app.service('employees');
+        const billingService = this.app.service('billings');
         const accessToken = params.accessToken;
         const facilityId = params.query.facilityId;
         const cQuery = params;
@@ -31,6 +32,8 @@ class Service {
                     let i = requests.length;
                     let counter = 0;
 
+                    console.log(requests);
+
                     while (i--) {
                         const request = requests[i];
                         const patientId = request.patientId;
@@ -42,8 +45,24 @@ class Service {
                         delete employee.personDetails.wallet;
                         request.employeeDetails = employee.personDetails;
 
+                        const billing = await billingService.find({
+                            query: {
+                                facilityId: facilityId,
+                                '_id': request.billingId._id,
+                                patientId: request.patientId
+                            }
+                        });
+                        const billingItem = billing.data[0];
+                        billingItem.billItems.forEach(billItem => {
+                            request.isPaid = billItem.paymentCompleted;
+                            request.isWaved = (billItem.isServiceEnjoyed === true && billItem.paymentCompleted === false) ? true : false;
+                        });
+
                         counter++;
                     }
+
+
+                    console.log(requests);
 
                     if (rLength === counter) {
                         return jsend.success(requests);
@@ -151,7 +170,7 @@ class Service {
     }
 }
 
-module.exports = function(options) {
+module.exports = function (options) {
     return new Service(options);
 };
 
