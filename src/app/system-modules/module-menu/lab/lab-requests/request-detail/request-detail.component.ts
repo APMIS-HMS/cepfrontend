@@ -42,7 +42,7 @@ export class RequestDetailComponent implements OnInit {
   ) {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.loginEmployee = res;
-    }).catch(err => console.log(err));
+    }).catch(err => {});
     }
 
   ngOnInit() {
@@ -162,7 +162,6 @@ this.getIncomingPatient();
       this.localRequest = pay;
       this.hasSpecimen = true;
     }).catch(err => {
-      console.log(err);
     });
   }
   assignLabNo() {

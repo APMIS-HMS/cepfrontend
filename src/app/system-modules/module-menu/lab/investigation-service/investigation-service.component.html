@@ -74,8 +74,7 @@
                         </div>
 
                         <div class="btn-box">
-                            <button mat-raised-button [disabled]="!frmNewInvestigationh.valid" (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)"
-                                class="btn">
+                            <button mat-raised-button [disabled]="!frmNewInvestigationh.valid" (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)" class="btn">
                                 <span *ngIf="addInvestBtn">
                                     <i class="fa fa-plus"></i> Create Investigation</span>
                                 <span *ngIf="addingInvestBtn">Creating Investigation
@@ -143,8 +142,7 @@
                         </div>
 
                         <div class="btn-box">
-                            <button mat-raised-button [disabled]="!frmNewPanel.valid || addingPInvestBtn" (click)="createPanel(frmNewPanel.valid, frmNewPanel.value)"
-                                class="btn">
+                            <button mat-raised-button [disabled]="!frmNewPanel.valid || addingPInvestBtn" (click)="createPanel(frmNewPanel.valid, frmNewPanel.value)" class="btn">
                                 <span *ngIf="addPInvestBtn">
                                     <i class="fa fa-plus"></i> Create Panel</span>
                                 <span *ngIf="addingPInvestBtn">Creating Panel
@@ -165,7 +163,7 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="table-head col-xs-3">Investigation Name</div>
-                                <div class="table-head col-xs-2">Specimens</div>
+                                <div class="table-head col-xs-2">Specimen</div>
                                 <div class="table-head col-xs-2">Reference Value</div>
                                 <div class="table-head col-xs-2">Unit</div>
                                 <div class="table-head col-xs-2">Report Type</div>
@@ -191,7 +189,7 @@
                                         {{investigation.name}}
                                     </div>
                                     <div class="table-list col-xs-2">
-                                        {{investigation.specimen?.name}}
+                                        {{investigation.specimen}}
                                     </div>
                                     <div class="table-list col-xs-2">
                                         {{getRefrenceValues(investigation?.reportType)}}

@@ -20,7 +20,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 })
 export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
-
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() employeeDetails: any;
   patientDetails: any;
@@ -119,7 +118,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
     });
-
     this.appointmentService.appointmentAnnounced$.subscribe((appointment: any) => {
       this.selectedAppointment = appointment;
       this.patient = appointment.patientDetails;
