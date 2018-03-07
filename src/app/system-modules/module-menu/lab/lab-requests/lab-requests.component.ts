@@ -457,7 +457,7 @@ export class LabRequestsComponent implements OnInit {
   close_onClick(message: boolean): void {
     this.reqDetail_view = false;
     this.personAcc_view = false;
-    this._getAllPendingRequests();
+    //this._getAllPendingRequests();
   }
   childChanged(
     $event,
