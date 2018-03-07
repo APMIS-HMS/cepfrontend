@@ -137,34 +137,39 @@ class Service {
         }
     }
 
-    async get(data, params) {
-        // console.log('*********data*********');
-        // console.log(data);
-        // console.log('*********End data*********');
-        // console.log('*********params*********');
-        // console.log(params);
-        // console.log('*********End params*********');
-        // const inventoryService = this.app.service('inventories');
-        // const productService = this.app.service('products');
-        // const facilityId = params.query.facilityId;
-
-        // if (facilityId !== undefined) {
-        //     const products = await productService.find({ query: { facilityId: facilityId } });
-        //     console.log('*********products*********');
-        //     console.log(products);
-        //     console.log('*********End products*********');
-
-        // } else {
-        //     return jsend.error('You are not allowed to perform this transaction.');
-        // }
+    get(data, params) {
+        return Promise.resolve(data);
     }
 
-    create(data, params) {
-        if (Array.isArray(data)) {
-            return Promise.all(data.map(current => this.create(current)));
-        }
+    async create(data, params) {
+        const inventoryService = this.app.service('inventories');
+        const productService = this.app.service('products');
+        const storeService = this.app.service('stores');
+        const facilityPriceService = this.app.service('facility-prices');
+        const facilityId = data.facilityId;
+        const accessToken = params.accessToken;
+        const drugs = data.drugs;
 
-        return Promise.resolve(data);
+        if (accessToken !== undefined && facilityId !== undefined) {
+            if (drugs !== undefined && drugs.length > 0) {
+                let i = drugs.length;
+                while (i--) {
+                    const drug = drugs[i];
+                    let inventory = await inventoryService.get(drug.invetoryId);
+                    if (inventory._id !== undefined) {
+                        const transactions = inventory.transactions;
+                        let j = transactions.length;
+                        while (j--) {
+                            fsd
+                        }
+                    }
+                }
+            } else {
+                return jsend.error('You have not selected any drugs.');
+            }
+        } else {
+            return jsend.error('You are not allowed to perform this transaction.');
+        }
     }
 
     compareIngredient(pIngredients, ingred) {
