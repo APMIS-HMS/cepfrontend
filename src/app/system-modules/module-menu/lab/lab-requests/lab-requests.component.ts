@@ -1032,6 +1032,8 @@ export class LabRequestsComponent implements OnInit {
                 }
                 pendingLabReq.labRequestId = labRequest._id;
                 pendingLabReq.facility = labRequest.facilityId;
+                pendingLabReq.isPaid = labRequest.isPaid;
+                pendingLabReq.isWaved = labRequest.isWaved;
                 pendingLabReq.clinicalInformation =
                   labRequest.clinicalInformation;
                 pendingLabReq.diagnosis = labRequest.diagnosis;
@@ -1078,7 +1080,6 @@ export class LabRequestsComponent implements OnInit {
               }
             });
           });
-          console.log(this.pendingRequests);
         })
         .catch(err => {});
     }
