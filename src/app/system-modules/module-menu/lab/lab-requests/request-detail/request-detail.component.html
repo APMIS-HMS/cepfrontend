@@ -45,13 +45,13 @@
 
                     <div class="txt-wrap">
                         <div class="txt-label">Specimen</div>
-                        <div *ngIf="hasSpecimen" class="txt-val">{{localInvestigation?.investigation?.specimen?.name}} - {{localInvestigation?.specimenNumber}}</div>
+                        <div *ngIf="hasSpecimen" class="txt-val">{{localInvestigation?.investigation?.name}} - {{localInvestigation?.specimenNumber}}</div>
                         <div [hidden]="hasSpecimen" class="txt-val hasBg">
                             <mat-input-container style="position:relative;">
                                 <input [formControl]="specimenNumber" matInput>
-                                <span class="input-tag">{{localInvestigation?.investigation?.specimen?.name}}</span>
+                                <span class="input-tag">{{localInvestigation?.investigation?.name}}</span>
                             </mat-input-container>
-                            <div (click)="receiveSpecimen()" class="lab-btn"><i class="fa fa-plus" aria-hidden="true"></i>Receive Specimen</div>
+                            <div (click)="(specimenNumber.valid) ? receiveSpecimen() : ''" class="lab-btn"><i class="fa fa-plus" aria-hidden="true"></i>Receive Specimen</div>
                         </div>
                     </div>
 
