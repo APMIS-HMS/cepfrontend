@@ -73,7 +73,6 @@ class Service {
         });
       });
       const awaitToken = await getTokenService.get(tokenLabel.tokenType.invoiceNo, {});
-      console.log(awaitToken);
       if (billGroup.billingIds.length > 0) {
         billGroup.totalDiscount = data.totalDiscount;
         billGroup.subTotal = data.subTotal;
