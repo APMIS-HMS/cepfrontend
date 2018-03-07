@@ -19,6 +19,7 @@ export class ReportDetailComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this.selectedInvestigationData);
   }
 
   close_onClick() {

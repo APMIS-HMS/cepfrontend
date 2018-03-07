@@ -8,6 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 @Injectable()
 export class InPatientListService {
   public _socket;
+  public _customSocket;
   private _rest;
   public listenerCreate;
   public listenerUpdate;
@@ -24,6 +25,7 @@ export class InPatientListService {
   ) {
     this._rest = _restService.getService('inpatient-waiting-lists');
     this._socket = _socketService.getService('inpatient-waiting-lists');
+    this._customSocket = _socketService.getService('admit-patients');
     this._socket.timeout = 50000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
@@ -44,6 +46,9 @@ export class InPatientListService {
   }
   get(id: string, query: any) {
     return this._socket.get(id, query);
+  }
+  customGet(data: any, query: any) {
+    return this._customSocket.get(data, query);
   }
 
   create(inpatientwaitinglist: any) {

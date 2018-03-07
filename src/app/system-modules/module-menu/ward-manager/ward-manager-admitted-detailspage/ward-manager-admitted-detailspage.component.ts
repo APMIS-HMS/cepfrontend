@@ -2,6 +2,8 @@ import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { WardEmitterService } from '../../../../services/facility-manager/ward-emitter.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { InPatientService } from '../../../../services/facility-manager/setup/index';
+import * as myGlobals from '../../../../shared-module/helpers/global-config';
+import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
 
 @Component({
 	selector: 'app-ward-manager-admitted-detailspage',
@@ -17,19 +19,21 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
 	constructor(private _wardEventEmitter: WardEmitterService,
 		private _route: ActivatedRoute,
 		private _router: Router,
-		public _inPatientService: InPatientService) {
-		this._inPatientService.listenerCreate.subscribe(payload => {
-			this.getAdmittedPatientItems();
-		});
+    public _inPatientService: InPatientService,
+    private _systemModuleService: SystemModuleService
+  ) {
+		// this._inPatientService.listenerCreate.subscribe(payload => {
+		// 	this.getAdmittedPatientItems();
+		// });
 
-		this._inPatientService.listenerUpdate.subscribe(payload => {
-			this.getAdmittedPatientItems();
-		});
+		// this._inPatientService.listenerUpdate.subscribe(payload => {
+		// 	this.getAdmittedPatientItems();
+		// });
 	}
 
 	ngOnInit() {
-		// this is for the pageInView header
-		this._wardEventEmitter.setRouteUrl('Admitted Patient Details');
+    // this is for the pageInView header
+    this._wardEventEmitter.setRouteUrl('Admitted Patient Details');
 
 		this._route.params.subscribe(params => {
 			this.admittedPatientId = params.id;
@@ -39,13 +43,33 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
 
 	getAdmittedPatientItems() {
 		this._inPatientService.get(this.admittedPatientId, {}).then(res => {
-			if (!!res._id) {
-				let wardDetails = res.transfers[res.lastIndex];
+      if (!!res._id) {
+				const wardDetails = res.transfers[res.lastIndex];
 				this.selectedPatient = res;
-				this.selectedPatient.wardItem = wardDetails;
+        this.selectedPatient.wardItem = wardDetails;
+        // Check if the patient has been discharged.
+        if (res.status === myGlobals.discharge) {
+          const patient = `${res.patient.personDetails.firstName} ${res.patient.personDetails.lastName}`;
+          const text = `${patient} has been discharged.`;
+          this._systemModuleService.announceSweetProxy(text, 'error');
+        }
 			}
-		});
-	}
+    });
+  }
+
+  onClickPatientDocumentation(patient: any) {
+    const text = 'If you click on yes, you will be redirected to the patient documentation.';
+    this._systemModuleService.announceSweetProxy(text, 'question', this, null, null, patient, null, null, null);
+    // routerLink="/dashboard/patient-manager/patient-manager-detail/{{ selectedPatient?.patient?.personId }}"
+  }
+
+  sweetAlertCallback(result, data) {
+    if (result.value) {
+      this._router.navigate([`/dashboard/patient-manager/patient-manager-detail`, data.patient.personId]).then(res => {
+      }).catch(err => {
+      });
+    }
+  }
 
 	onClickDischargePatient() {
 		this.dischargePatient = true;

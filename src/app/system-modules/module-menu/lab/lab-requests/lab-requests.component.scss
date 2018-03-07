@@ -1,5 +1,7 @@
 @import "../../patient-manager/patientmanager-detailpage/documentation/documentation.component.scss";
 // @import "../investigation-service/investigation-service.component.scss";
+@import "../lab.component.scss";
+
 .table-content {
     padding: 10px;
 }
@@ -187,6 +189,7 @@ td .empWrap .list-img {
 
 .doc-mainWrap {
     margin-top: 0px;
+    background: #f5f5f5;
 }
 
 .frmNoteWrap {

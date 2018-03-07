@@ -1,12 +1,17 @@
 import {
-  WalletTransaction, TransactionType, EntityType, TransactionDirection, TransactionMedium
-} from './../../../models/facility-manager/setup/wallet-transaction';
-import { SocketService, RestService } from '../../../feathers/feathers.service';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-import { Person } from '../../../models/index';
-const request = require('superagent');
+  WalletTransaction,
+  TransactionType,
+  EntityType,
+  TransactionDirection,
+  TransactionMedium
+} from "./../../../models/facility-manager/setup/wallet-transaction";
+import { SocketService, RestService } from "../../../feathers/feathers.service";
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs/Observable";
+import { Subject } from "rxjs/Subject";
+import { Person } from "../../../models/index";
+import { Http, Headers, RequestOptions } from "@angular/http";
+const request = require("superagent");
 
 @Injectable()
 export class PersonService {
@@ -19,22 +24,25 @@ export class PersonService {
   public createListener;
   public updateListener;
   private _rest;
+  // public http;
 
   private personAnnouncedSource = new Subject<Person>();
   personAnnounced$ = this.personAnnouncedSource.asObservable();
 
   constructor(
     private _socketService: SocketService,
-    private _restService: RestService
+    private _restService: RestService,
+    private http: Http
   ) {
-    this._rest = _restService.getService('people');
-    this._socket = _socketService.getService('people');
-    this._personSocket = _socketService.getService('save-person');
-    this._fundWalletSocket = _socketService.getService('fund-wallet');
-    this._fundWalletRest = _restService.getService('fund-wallet');
+    this._rest = _restService.getService("people");
+    this._socket = _socketService.getService("people");
+    this._personSocket = _socketService.getService("save-person");
+    this._fundWalletSocket = _socketService.getService("fund-wallet");
+    this._fundWalletRest = _restService.getService("fund-wallet");
     this._socket.timeout = 30000;
-    this.createListener = Observable.fromEvent(this._socket, 'created');
-    this.updateListener = Observable.fromEvent(this._socket, 'updated');
+    this._fundWalletSocket.timeout = 50000;
+    this.createListener = Observable.fromEvent(this._socket, "created");
+    this.updateListener = Observable.fromEvent(this._socket, "updated");
   }
 
   announcePerson(person: Person) {
@@ -62,7 +70,12 @@ export class PersonService {
     return this._personSocket.create(body);
   }
   update(person: any, param?) {
-    return this._socket.update(person._id, person, { query: { facilityId: param } });
+    return this._socket.update(person._id, person, {
+      query: { facilityId: param }
+    });
+  }
+  patch(id, param, query) {
+    return this._socket.patch(id, param, query);
   }
 
   remove(id: string, query?: any) {
@@ -76,12 +89,12 @@ export class PersonService {
       email: person.email,
       firstName: person.firstName,
       lastName: person.lastName
-    }
+    };
   }
 
   walletTransaction(walletTransaction) {
     const host = this._restService.getHost();
-    const path = host + '/wallet-transaction';
+    const path = host + "/wallet-transaction";
     return request.get(path).query({
       destinationId: walletTransaction.destinationId,
       sourceId: walletTransaction.sourceId,
@@ -96,9 +109,22 @@ export class PersonService {
     }); // query string
   }
 
-  fundWallet(payload: any) {
-    // return this._fundWalletSocket.create(payload);
-    return this._fundWalletRest.create(payload);
+  fundWallet(payload: any, facilityId?: any) {
+    return this._fundWalletSocket.create(payload, {
+      query: { facilityId: facilityId }
+    });
+    // return this._fundWalletRest.create(payload);
+  }
+
+  httpFundWallet(payload) {
+    const host = this._restService.getHost();
+    const path = host + "/fund-wallet";
+    const token = "Bearer" + localStorage.getItem("token");
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    headers.append("Authorization", token);
+    const options = new RequestOptions({ headers: headers });
+    return this.http.post(path, payload);
   }
 
   // fundWallet(walletTransaction: WalletTransaction) {
@@ -137,6 +163,20 @@ export class PersonService {
   //   //   }); // query string
   // }
   searchPerson(body: any) {
-    return this._socketService.getService('search-people').find(body);
+    return this._socketService.getService("search-people").find(body);
+  }
+
+  altFundWallet(payload) {
+    const host = this._restService.getHost();
+    const path = host + '/fund-wallet';
+    const token = 'Bearer' + localStorage.getItem('token');
+    // const bearer = '';
+    const headers = new Headers();
+        headers.append('Content-Type', 'application/json');
+        headers.append('Authorization', token);
+    const options = new RequestOptions({headers: headers});
+    this.http.post(path, payload, options).subscribe(subPayload => {
+      console.log(subPayload);
+    });
   }
 }

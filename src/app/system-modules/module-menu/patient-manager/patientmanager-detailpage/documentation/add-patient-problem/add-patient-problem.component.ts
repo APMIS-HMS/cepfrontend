@@ -57,7 +57,7 @@ export class AddPatientProblemComponent implements OnInit {
       this.getPersonDocumentation();
       this.getForm();
     });
-   
+
   }
   getForm() {
     this.systemModuleService.on();
@@ -149,6 +149,10 @@ export class AddPatientProblemComponent implements OnInit {
           status: this.statusFormCtrl.value,
           note: this.noteFormCtrl.value,
         })
+      }else{
+        if(documentation.facilityName === undefined){
+          documentation.facilityName = this.selectedFacility.name;
+        }
       }
     });
     if (!isExisting) {
@@ -179,7 +183,7 @@ export class AddPatientProblemComponent implements OnInit {
       this.noteFormCtrl.reset();
       this.documentationService.announceDocumentation({ type: 'Problem' });
       this.systemModuleService.off();
-      this.systemModuleService.announceSweetProxy('Problem added successfully!','success');
+      this.systemModuleService.announceSweetProxy('Problem added successfully!', 'success', null, null, null, null, null, null, null);
     }, error => {
       this.isSaving = false;
       this.systemModuleService.off();

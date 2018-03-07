@@ -1,3 +1,4 @@
+import { VISIBILITY_GLOBAL } from './../../../../../../shared-module/helpers/global-config';
 import { ScopeLevelService } from "app/services/module-manager/setup";
 import { AuthFacadeService } from "app/system-modules/service-facade/auth-facade.service";
 import {
@@ -66,7 +67,7 @@ export class ClinicalNoteComponent implements OnInit {
   showOrderSet = false;
   viewOrderManagement: boolean = false;
   viewDiagnosis: boolean = false;
-
+  public isSavingDraft = false;
   constructor(
     private formService: FormsService,
     private locker: CoolLocalStorage,
@@ -98,6 +99,17 @@ export class ClinicalNoteComponent implements OnInit {
       this.diagnoses = [];
       this.showDocument = false;
       this.orderSet = {};
+    });
+
+    // this.sharedService.announceSaveDraft$.subscribe(payload => {
+    //   console.log('saving');
+    //   console.log(this.isSavingDraft);
+    //   this.isSavingDraft = !this.isSavingDraft;
+    //   console.log(this.isSavingDraft)
+    // });
+
+    this.sharedService.announceFinishedSavingDraft$.subscribe((payload:any) => {
+      this.isSavingDraft = payload;
     });
 
     this.templateFormCtrl = new FormControl();
@@ -161,32 +173,76 @@ export class ClinicalNoteComponent implements OnInit {
     };
   }
 
+  // getForms() {
+  //   const formType$ = Observable.fromPromise(
+  //     this.formTypeService.find({ query: { name: "Documentation" } })
+  //   );
+  //   formType$
+  //     .mergeMap((formTypes: any) =>
+  //       Observable.fromPromise(
+  //         this.formService.find({
+  //           query: {
+  //             facilityId: this.selectedFacility._id,
+  //             typeOfDocumentId: formTypes.data[0]._id
+  //           }
+  //         })
+  //       )
+  //     )
+  //     .subscribe(
+  //       (results: any) => {
+  //         this.forms = results.data;
+  //       },
+  //       error => {
+  //         this.getForms();
+  //       }
+  //     );
+  // }
+
   getForms() {
-    const formType$ = Observable.fromPromise(
-      this.formTypeService.find({ query: { name: "Documentation" } })
-    );
-    formType$
-      .mergeMap((formTypes: any) =>
-        Observable.fromPromise(
-          this.formService.find({
-            query: {
-              facilityId: this.selectedFacility._id,
-              typeOfDocumentId: formTypes.data[0]._id
-            }
-          })
-        )
-      )
-      .subscribe(
-        (results: any) => {
-          this.forms = results.data;
-        },
-        error => {
-          this.getForms();
-        }
+    try {
+      const formType$ = Observable.fromPromise(
+        this.formTypeService.find({ query: { name: "Documentation" } })
       );
+      formType$
+        .mergeMap((formTypes: any) =>
+          Observable.fromPromise(
+            this.formService.find({
+              query: {
+                // $limit: 200,
+                // facilityId: this.selectedFacility._id,
+                // typeOfDocumentId: formTypes.data[0]._id,
+                // isSide: false
+
+                $or: [
+                  { selectedFacilityId: this.selectedFacility._id },
+                  {
+                    $and: [
+                      { departmenId: this.loginEmployee.departmentId },
+                      { selectedFacilityId: this.selectedFacility._id }
+                    ]
+                  },
+                  { personId: this.loginEmployee.personId },
+                  { scopeLevelId: VISIBILITY_GLOBAL }
+                ],
+                isSide: false,
+                typeOfDocumentId: formTypes.data[0]._id
+              }
+            })
+          )
+        )
+        .subscribe(
+          (results: any) => {
+            this.forms = results.data;
+          },
+          error => {
+            this.getForms();
+          }
+        );
+    } catch (error) {
+      this.getForms();
+    }
   }
   setSelectedForm(form) {
-    console.log(form);
     if (typeof form === "object" && form !== null) {
       this.selectedForm = form;
       this.showDocument = false;
@@ -202,8 +258,8 @@ export class ClinicalNoteComponent implements OnInit {
       this.documentationTemplateService.find({
         query: {}
       });
-    }else{
-      this.systemModuleService.announceSweetProxy('wow', 'success');
+    } else {
+      this.systemModuleService.announceSweetProxy("wow", 'success', null, null, null, null, null, null, null);
     }
   }
 

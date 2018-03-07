@@ -19,7 +19,6 @@ export class ProductManagerLandingpageComponent implements OnInit {
   manufacturer = false;
   presentation = false;
 
-
   deactivateButton = 'Deactivate';
   selectedFacility: Facility = <Facility>{};
   slideProductDetails = false;
@@ -55,11 +54,16 @@ export class ProductManagerLandingpageComponent implements OnInit {
 
     // subscribeForPerson.subscribe((payload: any) => {
     // });
-    this.selProductType.valueChanges.subscribe(value => {
-      this.productService.findList({ query: { facilityId: this.selectedFacility._id, productTypeId: value } }).then(payload => {
-        this.products = payload.data;
+    this.selProductType.valueChanges
+      .debounceTime(200)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        if (value.name !== undefined) {
+          this.productService.findList({ query: { facilityId: this.selectedFacility._id, productTypeId: value } }).then(payload => {
+            this.products = payload.data;
+          });
+        }
       });
-    });
   }
 
   private _notification(type: string, text: string): void {
@@ -73,6 +77,8 @@ export class ProductManagerLandingpageComponent implements OnInit {
   getProducts() {
     this.productService.findList({ query: { facilityId: this.selectedFacility._id, name: '' } }).then(payload => {
       this.products = payload.data;
+    }, error => {
+
     });
   }
   getProductTypes() {
@@ -93,7 +99,6 @@ export class ProductManagerLandingpageComponent implements OnInit {
   }
 
   onRefreshProductList(value) {
-    console.log(value);
     this.getProducts();
   }
 

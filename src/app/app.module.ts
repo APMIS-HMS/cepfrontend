@@ -94,7 +94,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     })
   ],
   providers: [
-    { provide: ErrorHandler, useClass: ApmisErrorHandler },
+    // { provide: ErrorHandler, useClass: ApmisErrorHandler },
     SocketService, RestService, SetupService.CountriesService, SetupService.FacilityTypesService,
     SetupService.FacilitiesService, SetupService.FacilityModuleService, SetupService.ConsultingRoomService,
     SetupService.FacilitiesService, SetupService.FacilityModuleService, SetupService.UserService, SetupService.GenderService,
@@ -107,7 +107,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     SetupService.TagDictionaryService, SetupService.ServiceDictionaryService, SetupService.CompanyCoverCategoryService,
     ModuleManagerService.FeatureModuleService, SetupService.AccessControlService, SetupService.ServicePriceService,
     SetupService.CanActivateViaAuthGuardService, SetupService.FacilitiesServiceCategoryService, SetupService.TagService,
-    SetupService.InPatientListService, SetupService.RoomGroupService, SetupService.WardAdmissionService,
+    SetupService.InPatientListService, SetupService.RoomGroupService, SetupService.BedOccupancyService,
     SetupService.WorkSpaceService, SetupService.InPatientService, SetupService.WardDischargeTypesService, SetupService.DocumentationService,
     SetupService.InPatientTransferStatusService, ClinicHelperService, SwitchUserResolverService, SetupService.DictionariesService,
     SetupService.VitaLocationService, SetupService.VitalPositionService, SetupService.VitalRythmService, SetupService.PrescriptionService,
@@ -115,7 +115,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     SetupService.DrugDetailsService, CustomPreloading, SetupService.InventoryService, SetupService.DispenseService,
     SetupService.FacilityPriceService, SetupService.ProductService, SetupService.AssessmentDispenseService,
     SetupService.MedicationListService, SetupService.InventoryTransactionTypeService, SetupService.LaboratoryService,
-    SetupService.ExternalPrescriptionService, SetupService.DispenseCollectionDrugService, SetupService.InvestigationService,
+    SetupService.ExternalPrescriptionService, SetupService.InvestigationService,
     SetupService.InvestigationSpecimenService, SetupService.InvestigationReportTypeService, SetupService.WorkbenchService,
     SetupService.ServerDateService, SetupService.LaboratoryReportService, SetupService.FormsService, SetupService.VitalService,
     SetupService.TemplateService, PolicyService, PayStackService,
@@ -127,7 +127,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     SetupService.TimeLineService, FacilityTypeFacilityClassFacadeService, JoinChannelService, SetupService.DocumentUploadService, RadiologyInvestigationService,
     SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService,
     SetupService.LocSummaryCashService, SetupService.TimeLineService, SetupService.DocumentUploadService, RadiologyInvestigationService,
-    SetupService.FluidService, SecurityQuestionsService, TitleCasePipe, AuthFacadeService, SetupService.DepartmentService, CanActivateViaAuthGuardAccessService,
+    SetupService.FluidService, SecurityQuestionsService, TitleCasePipe, UpperCasePipe, AuthFacadeService, SetupService.DepartmentService, CanActivateViaAuthGuardAccessService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

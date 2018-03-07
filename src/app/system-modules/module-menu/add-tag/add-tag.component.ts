@@ -19,7 +19,7 @@ export class AddTagComponent implements OnInit {
   newServicePopup = false;
   newCategoryPopup = false;
   newTagPopup = false;
-  editedTag =<any>{};
+  editedTag = <any>{};
   constructor(private _locker: CoolLocalStorage,
     private systemModuleService: SystemModuleService,
     private _tagService: TagService) {
@@ -65,7 +65,7 @@ export class AddTagComponent implements OnInit {
   }
 
   onTagEdit(tag) {
-    let text = "You are about to edit " + tag.name.toUpperCase() + " tag";
+    const text = 'You are about to edit ' + tag.name.toUpperCase() + ' tag';
     this.systemModuleService.announceSweetProxy(text, 'info', this);
     this.editedTag = tag;
     this.newTagPopup = true;
@@ -76,16 +76,17 @@ export class AddTagComponent implements OnInit {
     this.systemModuleService.announceSweetProxy('You are about to delete this tag', 'question', this);
     this.editedTag = tag;
   }
-  
+
   sweetAlertCallback(result) {
-    if(result.value){
+    if (result.value) {
       this._tagService.remove(this.editedTag._id, {}).then(callback_remove => {
-        this.systemModuleService.announceSweetProxy(this.editedTag.name + " is deleted", 'success');
+        this.systemModuleService.
+        announceSweetProxy(this.editedTag.name + ' is deleted', 'success', null, null, null, null, null, null, null);
         this.systemModuleService.off;
         this.getTags();
         this.editedTag = {};
       }, error => {
-        this.systemModuleService.off;
+        this.systemModuleService.off();
       });
     }
   }

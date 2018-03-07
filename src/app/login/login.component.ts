@@ -2,11 +2,12 @@ import { UserFacadeService } from 'app/system-modules/service-facade/user-facade
 import { SystemModuleService } from './../services/module-manager/setup/system-module.service';
 import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CoolLocalStorage } from 'angular2-cool-storage'; 
+import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router } from '@angular/router';
 import { FacilitiesService } from '../services/facility-manager/setup/index';
 import { Facility } from '../models/index';
 import { UserService } from '../services/facility-manager/setup/index';
+import { UpperCasePipe } from '@angular/common';
 
 @Component({
   selector: 'app-login',
@@ -36,6 +37,7 @@ export class LoginComponent implements OnInit {
     private userServiceFacade:UserFacadeService,
     public facilityService: FacilitiesService,
     private systemModule: SystemModuleService,
+    private upperCasePipe:UpperCasePipe,
     private locker: CoolLocalStorage, private router: Router) {
     this.facilityService.listner.subscribe(payload => {
       this.facilityObj = payload;
@@ -58,7 +60,7 @@ export class LoginComponent implements OnInit {
     if (valid) {
       this.systemModule.on();
       const query = {
-        email: this.frm_login.controls['username'].value,
+        email: this.upperCasePipe.transform(this.frm_login.controls['username'].value),
         password: this.frm_login.controls['password'].value
       };
       this.userService.login(query).then(result => {

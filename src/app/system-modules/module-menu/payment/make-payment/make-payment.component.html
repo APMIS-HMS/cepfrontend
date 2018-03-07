@@ -44,8 +44,8 @@
         <div class="doc-mainWrap">
             <div class="tab-wrap">
                 <div (click)="tabWallet_click()" [class.tab-item-active]="tabWallet" class="tab-item">Out of Pocket</div>
-                <div (click)="tabInsurance_click()" [class.tab-item-active]="tabInsurance" class="tab-item">Insurance</div>
-                <div (click)="tabCompany_click()" [class.tab-item-active]="tabCompany" class="tab-item">Company Cover</div>
+                <!-- <div (click)="tabInsurance_click()" [class.tab-item-active]="tabInsurance" class="tab-item">Insurance</div> -->
+                <!-- <div (click)="tabCompany_click()" [class.tab-item-active]="tabCompany" class="tab-item">Company Cover</div> -->
                 <div (click)="tabFamily_click()" [class.tab-item-active]="tabFamily" class="tab-item">Family Cover</div>
             </div>
 
@@ -147,13 +147,13 @@
                             <div class="frm-item-wrap">
                                 <input type="checkbox" (change)="onFamilyExactCharges($event)" [checked]="isExactFamily"> Exact Charges
                             </div>
-                            <div class="frm-item-wrap">
+                            <!-- <div class="frm-item-wrap">
                                 <mat-form-field>
                                     <mat-select placeholder="Select Plan" [formControl]="familyPlan">
                                         <mat-option *ngFor="let plan of patientFamilyLists" [value]="plan">{{plan.planDetails.name}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
-                            </div>
+                            </div> -->
                             <div *ngIf="!isExactFamily">
                                 <div class="frm-item-wrap">
                                     <mat-input-container>

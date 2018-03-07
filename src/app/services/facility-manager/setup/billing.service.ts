@@ -8,6 +8,7 @@ export class BillingService {
   public _socket;
   public _socketBillFacilityServices;
   private _rest;
+  private _socketBillCreators;
   public updatelistner;
 
   private billingAnnouncedSource = new Subject<Object>();
@@ -20,6 +21,7 @@ export class BillingService {
     this._rest = _restService.getService('billings');
     this._socket = _socketService.getService('billings');
     this._socketBillFacilityServices = _socketService.getService('bill-facility-services');
+    this._socketBillCreators = _socketService.getService('bill-creators');
     this.updatelistner = Observable.fromEvent(this._socket, 'updated');
     this._socket.timeout = 90000;
     this._socket.on('created', function (gender) {
@@ -45,6 +47,10 @@ export class BillingService {
 
   create(gender: any) {
     return this._socket.create(gender);
+  }
+
+  createBill(billItems: any, params: any) {
+    return this._socketBillCreators.create(billItems, params);
   }
 
   remove(id: string, query: any) {

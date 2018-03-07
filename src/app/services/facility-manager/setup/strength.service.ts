@@ -9,8 +9,8 @@ export class StrengthService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('drugstrengths');
-    this._socket = _socketService.getService('drugstrengths');
+    this._rest = _restService.getService('drug-strengths');
+    this._socket = _socketService.getService('drug-strengths');
     this._socket.on('created', function (gender) {
     });
   }

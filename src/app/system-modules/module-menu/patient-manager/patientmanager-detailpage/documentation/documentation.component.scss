@@ -1,32 +1,39 @@
-
 @import "../patientmanager-detailpage.component.scss";
-
-.doc-mainWrap{
+.doc-mainWrap {
     display: flex;
     justify-content: space-between;
     width: 100%;
     min-height: 100vh;
     height: auto;
-    background: #f8f8f8;
+    background: $grey-bg;
     margin-top: 4px;
     padding: 5px;
     box-sizing: border-box;
 }
-.doc-contentArea, .doc-rArea{
+
+//.edit-ico-color:hover {
+//background-color: #0288D1;
+//color: #f1f1f1;
+.doc-contentArea,
+.doc-rArea {
     position: relative;
     padding: 3px;
 }
+
 .doc-contentArea {
     width: 75%;
 }
+
 .doc-rArea {
     width: 23%;
 }
-.doc-cardWrap{
+
+.doc-cardWrap {
     width: 100%;
     margin-top: 10px;
 }
-.doc-card{
+
+.doc-card {
     position: relative;
     background: #fff;
     width: 90%;
@@ -37,7 +44,8 @@
     padding: 5px;
     overflow: hidden;
 }
-.doc-card2{
+
+.doc-card2 {
     position: relative;
     background: #fff;
     width: 90%;
@@ -47,47 +55,80 @@
     padding: 5px;
     overflow: hidden;
 }
-.docCard-header, .docCard-body{
+
+.docCard-header,
+.docCard-body {
     position: relative;
     width: 99%;
     margin: 0 auto;
 }
-.docCard-header{
+
+.docCard-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
     height: 35px;
-    background: #f8f8f8;
-    border-bottom: 1px solid #eee;
+    background: $grey-bg;
+    border-bottom: 1px solid $grey-bg;
     padding: 5px;
     box-sizing: border-box;
 }
-.actSect{
+
+.actSect {
     width: 90%;
     margin: 0 auto;
 }
-.act-wrap{
+
+.tooltip {
+    &:after {
+        font-family: Arial, Helvetica, sans-serif;
+        opacity: 0;
+        transition: all 0.4s;
+        font-size: 1.2rem !important;
+        position: absolute;
+        margin-left: -120px;
+        display: block;
+        padding: 10px;
+        content: attr(data-toggle);
+        background: rgba(0, 0, 0, 0.74);
+        border-radius: 5px;
+        color: #fff;
+        min-width: 80px;
+        text-align: center;
+    }
+    &:hover {
+        &:after {
+            opacity: 1;
+            margin-left: -100px;
+        }
+    }
+}
+
+.act-wrap {
     width: 150px;
     position: relative;
     padding: 8px;
     font-size: 1.2rem;
     text-align: center;
-    color: #bebebe;
+    color: #000;
     display: flex;
     justify-content: space-around;
     background: #fff;
     cursor: pointer;
     border: 1px solid transparent;
 }
-.act-wrap:hover{
+
+.act-wrap:hover {
     border: 1px solid #bebebe;
 }
-ul.topmenuwrap{
+
+ul.topmenuwrap {
     position: relative;
     top: auto;
     right: auto;
 }
+
 .empWrap {
     display: flex;
     justify-content: space-between;
@@ -95,59 +136,72 @@ ul.topmenuwrap{
     cursor: pointer;
     // margin: 5px;
 }
-.empWrap:hover{
-    .list-label{
+
+.empWrap:hover {
+    .list-label {
         text-decoration: underline;
     }
 }
-.list-img{
+
+.list-img {
     width: 30px;
     height: 30px;
     border-radius: 100%;
     margin-right: 10px;
 }
-.list-img img{
+
+.list-img img {
     width: 100%;
 }
+
 .val-tag {
     font-size: 0.9rem;
     color: #0288D1;
 }
-.list-label{
+
+.list-label {
     font-size: 1.2rem;
-    color: #bebebe;
+    color: #000;
 }
-.time{
+
+.time {
     color: #ff2500;
 }
-.docCard-ctaWrap{
+
+.docCard-ctaWrap {
     position: absolute;
     bottom: -22px;
     right: 0;
-    font-size: 1.2rem;
+    font-size: 2rem;
 }
-.docCard-ctaWrap i{
+
+.docCard-ctaWrap i {
     cursor: pointer;
     margin-left: 5px;
 }
-.cardSect-wrap{
+
+.cardSect-wrap {
     margin-bottom: 20px;
 }
-.card-sect{
+
+.card-sect {
     margin-top: 20px;
 }
+
 .docCard-sectTitle {
     margin-bottom: 3px;
     font-size: 1.2rem;
     color: #000;
     font-weight: bold;
 }
+
 .docCard-sectContent {
     font-size: 1.2rem;
     line-height: 1.5;
     color: #474747;
     letter-spacing: 0.3px;
 }
+
 .docCard-foot {
     position: absolute;
     bottom: 0;
@@ -159,28 +213,33 @@ ul.topmenuwrap{
     background: #03A9F4;
     border-top: 5px solid #fff;
 }
-.docCard-foot i:hover{
+
+.docCard-foot i:hover {
     cursor: pointer;
     color: #fff;
 }
+
 .rArea-card {
     background: #fff;
     margin-bottom: 15px;
     padding: 5px;
     height: auto;
 }
+
 .rAreaCard-header {
     width: 97%;
     margin: 0 auto;
     padding: 3px;
-    background: #f8f8f8;
+    background: $grey-bg;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
+
 .header-label {
     font-size: 1.2rem;
 }
+
 .header-cta {
     cursor: pointer;
     border: 1px solid #bebebe;
@@ -188,16 +247,20 @@ ul.topmenuwrap{
     padding: 3px;
     font-size: 1rem;
 }
-.header-cta:hover{
+
+.header-cta:hover {
     background: #bebebe;
     color: #fff;
 }
+
 .rAreaCard-body {
-    margin:  0;
+    margin: 0;
 }
+
 .rAreaCard-item:last-child {
     margin-bottom: 0;
 }
+
 .rAreaCard-item {
     position: relative;
     display: flex;
@@ -208,12 +271,14 @@ ul.topmenuwrap{
     border-radius: 0 0 10px 0;
     margin: 15px 0;
 }
-.rAreaCard-content{
+
+.rAreaCard-content {
     width: 90%;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
 .rAreaCard-status {
     position: absolute;
     top: -13px;
@@ -221,13 +286,16 @@ ul.topmenuwrap{
     width: 100%;
     text-align: center;
 }
-.rAreaCard-active{
+
+.rAreaCard-active {
     color: #0288D1;
 }
-.rAreaCard-inactive{
+
+.rAreaCard-inactive {
     color: #ff2500;
 }
-.rAreaCard-detailWrap{
+
+.rAreaCard-detailWrap {
     position: absolute;
     bottom: 0px;
     right: 40%;
@@ -237,32 +305,44 @@ ul.topmenuwrap{
     width: auto;
     border-radius: 10px;
 }
-.rAreaCard-item:hover{
-    .rAreaCard-detailWrap{
+
+.rAreaCard-item:hover {
+    .rAreaCard-detailWrap {
         display: block;
     }
 }
-.rAreaCard-detailWrap table, td { 
+
+.rAreaCard-detailWrap table,
+td {
     border: 0.5px solid #bebebe;
 }
-.rAreaCard-detailWrap tr:hover {background-color: #f3f3f3}
-.rAreaCard-detailWrap tr:nth-child(even) {background-color: #f9f9f9}
+
+.rAreaCard-detailWrap tr:hover {
+    background-color: #f3f3f3
+}
+
+.rAreaCard-detailWrap tr:nth-child(even) {
+    background-color: #f9f9f9
+}
+
 .rAreaCard-detailWrap th {
     height: 30px;
     background: #f1f1f1;
     border: 0.5px solid #bebebe;
 }
+
 .rAreaCard-detailWrap td {
     vertical-align: center;
     text-align: left;
     padding: 5px;
 }
-.modal_title{
+
+.modal_title {
     font-size: 1.6rem;
     color: #333;
     text-align: center;
-    border-bottom: 0.5px solid #eee;
-    margin-bottom: 2px;
+    //border-bottom: 0.5px solid #eee;
+    margin-bottom: 14px;
 }
 
 .sect-key {
@@ -271,43 +351,48 @@ ul.topmenuwrap{
     margin-top: 20px;
     text-decoration: underline;
 }
+
 .sect-value {
     line-height: 1.7;
     margin-left: 10px;
 }
+
 .doc-subtitle {
     font-size: 1.2rem;
     color: #0288D1;
     margin-bottom: 5px;
 }
-td .empWrap .list-img{
+
+td .empWrap .list-img {
     margin: 0;
 }
+
 @media only screen and (max-width: 1160px) {
-    .doc-mainWrap{
+    .doc-mainWrap {
         display: block;
     }
-    .doc-rArea{
+    .doc-rArea {
         width: 100%;
         width: 90%;
         margin: 20px auto;
     }
-    .doc-contentArea{
+    .doc-contentArea {
         width: 100%;
     }
-    .rAreaCard-header{
+    .rAreaCard-header {
         width: 100%;
         padding: 5px;
     }
-    .rArea-card{
+    .rArea-card {
         padding: 0px;
         border: 2px solid #fff;
         overflow-y: auto;
     }
-    .rAreaCard-status, .rAreaCard-content{
+    .rAreaCard-status,
+    .rAreaCard-content {
         display: none;
     }
-    .rAreaCard-detailWrap{
+    .rAreaCard-detailWrap {
         display: block;
         position: relative;
         top: auto;
@@ -315,15 +400,41 @@ td .empWrap .list-img{
         right: auto;
         width: 100%;
         min-width: 520px;
-        overflow-y: auto; 
+        overflow-y: auto;
     }
-    .rAreaCard-item{
+    .rAreaCard-item {
         border-bottom: 0;
         border-radius: 0;
     }
-    .rAreaCard-item .shadow-RB{
+    .rAreaCard-item .shadow-RB {
         -moz-box-shadow: 0px 0px 0px 0px transparent;
         -webkit-box-shadow: 0px 0px 0px 0px transparent;
         box-shadow: 0px 0px 0px 0px transparent;
     }
+}
+
+.tbl-resp-wrap {
+    min-width: 100%;
+    padding-bottom: 100px;
+    overflow-y: auto;
+}
+
+.tbl-resp-wrap table {
+    min-width: 500px;
+}
+
+.doc-contentArea {
+    width: 100%;
+}
+
+td {
+    border: 0px solid transparent;
+}
+
+th {
+    font-size: 1.5rem;
+    text-align: left;
+    font-weight: normal;
+    color: #ff2500;
+    border-bottom: 1px solid #ff2500;
 }

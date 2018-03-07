@@ -164,7 +164,6 @@ export class ReportComponent implements OnInit {
       } else if (action === 'upload') {
         this.saveAndUploadBtnText = 'UPLOADING...';
       }
-      console.log(this.selectedPatient);
       const isUploaded: Boolean = false;
       const isSaved: Boolean = false;
       const report = {
@@ -188,10 +187,10 @@ export class ReportComponent implements OnInit {
           this._getAllPendingRequests();
           if (action === 'save') {
             this.saveToDraftBtnText = 'SAVE AS DRAFT';
-            this._systemModuleService.announceSweetProxy('Report has been saved successfully!', 'success');
+            this._systemModuleService.announceSweetProxy('Report has been saved successfully!', 'success', null, null, null, null, null, null, null);
           } else {
             this.saveAndUploadBtnText = 'SAVE AND UPLOAD';
-            this._systemModuleService.announceSweetProxy('Report has been saved and uploaded successfully!', 'success');
+            this._systemModuleService.announceSweetProxy('Report has been saved and uploaded successfully!', 'success', null, null, null, null, null, null, null);
           }
         } else {
 
@@ -330,6 +329,7 @@ export class ReportComponent implements OnInit {
       //   }
       // }).catch(err => this._notification('Error', 'There was an error saving report. Please try again later!'));
     } else {
+      this._systemModuleService.announceSweetProxy('Some fields are empty. Please fill in the required fields!', 'error');
       this._notification('Error', 'Some fields are empty. Please fill in the required fields!');
     }
   }
@@ -516,7 +516,9 @@ export class ReportComponent implements OnInit {
       }
     } else {
       const text = 'You can not attend to this request as payment has not been made. ';
-      this._notification('Info', text.concat(' Please use the refresh button above to check for payment status.'));
+      const fullText = text.concat(' Please use the refresh button above to check for payment status.');
+      this._systemModuleService.announceSweetProxy(fullText, 'error');
+      this._notification('Info', fullText);
     }
   }
 

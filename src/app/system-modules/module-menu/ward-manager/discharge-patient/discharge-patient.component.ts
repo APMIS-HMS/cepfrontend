@@ -3,12 +3,14 @@ import { Router } from '@angular/router';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 // tslint:disable-next-line:max-line-length
 import {
-  WardDischargeTypesService, InPatientService, WardAdmissionService, BillingService, FacilitiesService
+  WardDischargeTypesService, InPatientService, BedOccupancyService, BillingService, FacilitiesService
 } from '../../../../services/facility-manager/setup/index';
 import { ActivatedRoute } from '@angular/router';
 import { WardDischarge, Facility, BillModel, BillItem, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import * as myGlobals from '../../../../shared-module/helpers/global-config';
+import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
+import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-discharge-patient',
@@ -30,8 +32,8 @@ export class DischargePatientComponent implements OnInit {
   employeeDetails: any = <any>{};
   bill: BillModel = <BillModel>{};
   disableBtn = false;
-  dischargeText = true;
-  dischargingText = false;
+  dischargeBtn = true;
+  dischargingBtn = false;
 
   constructor(
     private fb: FormBuilder,
@@ -40,15 +42,21 @@ export class DischargePatientComponent implements OnInit {
     private _router: Router,
     private _locker: CoolLocalStorage,
     private _inPatientService: InPatientService,
-    private _wardAdmissionService: WardAdmissionService,
+    private _bedOccupancyService: BedOccupancyService,
     private _billingService: BillingService,
-    private _facilityService: FacilitiesService
-  ) {}
+    private _facilityService: FacilitiesService,
+    private _authFacadeService: AuthFacadeService,
+    private _systemModuleService: SystemModuleService
+  ) {
+    this.facility = <Facility>this._locker.getObject('selectedFacility');
+    this._authFacadeService.getLogingEmployee().then((res: any) => {
+      if (!!res._id) {
+        this.employeeDetails = res;
+      }
+    }).catch(err => { });
+  }
 
   ngOnInit() {
-    this.facility = <Facility>this._locker.getObject('selectedFacility');
-    this.miniFacility = <Facility>this._locker.getObject('miniFacility');
-    this.employeeDetails = this._locker.getObject('loginEmployee');
     this.user = <User>this._locker.getObject('auth');
 
     this.dischargeFormGroup = this.fb.group({
@@ -60,68 +68,42 @@ export class DischargePatientComponent implements OnInit {
       this.inPatientId = params.id;
     });
 
-    this._wardDischargeTypesService.findAll().then(payload => {
-      this.dischargeTypeItems = payload.data;
+    this._wardDischargeTypesService.findAll().then(res => {
+      if (res.data.length > 0) {
+        this.dischargeTypeItems = res.data;
+      }
     });
   }
 
   onDischarge(value: any, valid: boolean) {
     if (valid) {
       this.disableBtn = true;
-      this.dischargeText = false;
-      this.dischargingText = true;
+      this.dischargeBtn = false;
+      this.dischargingBtn = true;
 
       let payload = {
+        action: 'dischargePatient',
+        facilityId: this.facility._id,
+        employeeId: this.employeeDetails._id,
         discharge: value,
+        patientId: this.selectedPatient.patientId,
         inPatientId: this.selectedPatient._id,
         status: myGlobals.discharge
       };
 
-      this._inPatientService.discharge(payload).then(res => {
+      this._inPatientService.customCreate(payload).then(res => {
         if (res.status === 'success') {
-          this._notification('Success', 'Patient has been discharged successfully.');
+          let patient = `${this.selectedPatient.patient.personDetails.firstName} ${this.selectedPatient.patient.personDetails.lastName}`;
+          let text = `${patient} has been discharged successfully.`;
+          this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
+          this.close_onClick();
           setTimeout(e => {
             this._router.navigate(['/dashboard/ward-manager/admitted']);
           }, 2000);
         } else {
-          this._notification('Error', 'There was a problem discharging patient. Please try again later.');
+          this._systemModuleService.announceSweetProxy(res.message, 'error');
         }
-      }).catch(err => {
-      });
-
-      // this._inPatientService.get(this.inPatientId, {}).then(payload => {
-      // 	const inPatientVal = payload;
-      // 	this.discharge.dischargeTypeId = this.dischargeFormGroup.controls['dischargeType'].value;
-      // 	this.discharge.Reason = this.dischargeFormGroup.controls['comment'].value;
-      // 	payload.discharge = this.discharge;
-      // 	payload.statusId = myGlobals.discharge;
-      // 	payload.transfers[payload.lastIndex].checkOutDate = new Date();
-      // 	this._inPatientService.update(payload).then(payload2 => {
-      // 		this.close_onClick();
-      // 		const currentWard = payload.transfers[payload.lastIndex];
-      // 		this._wardAdmissionService.find({ query: { 'facilityId._id': this.facility._id }}).then(payload3 => {
-      // 				payload3.data[0].locations.forEach(location => {
-      // 					if (location.minorLocationId._id === currentWard.minorLocationId) {
-      // 						location.rooms.forEach(room => {
-      // 							if (room.roomId._id === currentWard.roomId) {
-      // 								room.beds.forEach(bed => {
-      // 									if (bed.bedId._id === currentWard.bedId) {
-      // 										bed.isAvailable = true;
-      // 										bed.state = 'Available';
-      // 										delete bed.occupant;
-      // 										this._wardAdmissionService.update(payload3.data[0]).then(payload4 => {
-      // 											this._router.navigate(['/dashboard/ward-manager/admitted']);
-      // 										});
-      // 									}
-      // 								});
-      // 							}
-      // 						});
-      // 					}
-      // 				});
-      // 			})
-      // 	}, error => {
-      // 	});
-      // });
+      }).catch(err => { });
     }
   }
 

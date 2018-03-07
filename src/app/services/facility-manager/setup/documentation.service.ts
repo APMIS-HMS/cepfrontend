@@ -59,4 +59,8 @@ export class DocumentationService {
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }
+
+  addAddendum(addendum: any, query) {
+    return this._socketService.getService('add-addendum').create(addendum, query);
+  }
 }

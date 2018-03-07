@@ -210,8 +210,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy(
           "Facility updated successfully",
-          "success"
-        );
+          'success', null, null, null, null, null, null, null);
         this.close_onClick();
       },
       error => {

@@ -9,13 +9,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 @Component({
   selector: 'app-verify-token',
   templateUrl: './verify-token.component.html',
-  styleUrls: ['../facility-setup.component.scss']
+  styleUrls: ['./verify-token.component.scss', '../facility-setup.component.scss']
 })
 export class VerifyTokenComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() inputFacility: Facility = <Facility>{};
   @Input() backBtnVisible: boolean;
-  @Input() tokenValue = "";
+  @Input() tokenValue = '';
   frm_numberVerifier: FormGroup;
   facility: Facility = <Facility>{};
   InputedToken: string;
@@ -36,7 +36,8 @@ export class VerifyTokenComponent implements OnInit {
 
   ngOnInit() {
     this.frm_numberVerifier = this.formBuilder.group({
-      txt_numberVerifier: ['', [<any>Validators.required, <any>Validators.minLength(6), <any>Validators.maxLength(6), <any>Validators.pattern('^[0-9]+$')]]
+      txt_numberVerifier: ['', [<any>Validators.required,
+        <any>Validators.minLength(6), <any>Validators.maxLength(6), <any>Validators.pattern('^[0-9]+$')]]
     });
     this.InputedToken = this.tokenValue;
   }
@@ -56,7 +57,7 @@ export class VerifyTokenComponent implements OnInit {
             this.inputFacility.isTokenVerified = true;
             this._facilityService.update(this.inputFacility).then(payload2 => {
               this.locker.setObject('selectedFacility', payload2);
-              this.systemModuleService.announceSweetProxy('Facility has been verified successfully', 'success');
+              this.systemModuleService.announceSweetProxy('Facility has been verified successfully', 'success', null, null, null, null, null, null, null);
               this._router.navigate(['/accounts']);
               this.close_onClick();
             });
@@ -73,7 +74,7 @@ export class VerifyTokenComponent implements OnInit {
     }
   }
   resendToken() {
-    let selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    const selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this._facilityService.resendToken(selectedFacility).then(payload => {
     }).catch(error => {
     })

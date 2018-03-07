@@ -1,4 +1,4 @@
-import { AuthFacadeService } from "app/system-modules/service-facade/auth-facade.service";
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import {
   Component,
   OnInit,
@@ -7,18 +7,18 @@ import {
   OnChanges,
   OnDestroy,
   Input
-} from "@angular/core";
-import { FormControl } from "@angular/forms";
+} from '@angular/core';
+import { FormControl } from '@angular/forms';
 import {
   FacilitiesService,
   EmployeeService,
   PersonService
-} from "../../../../../services/facility-manager/setup/index";
-import { Facility, Employee } from "../../../../../models/index";
-import { CoolLocalStorage } from "angular2-cool-storage";
-import { Router, ActivatedRoute } from "@angular/router";
-import { ToastsManager } from "ng2-toastr/ng2-toastr";
-import { SystemModuleService } from "app/services/module-manager/setup/system-module.service";
+} from '../../../../../services/facility-manager/setup/index';
+import { Facility, Employee } from '../../../../../models/index';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 @Component({
   selector: "app-empmanager-homepage",
   templateUrl: "./empmanager-homepage.component.html",
@@ -88,16 +88,10 @@ export class EmpmanagerHomepageComponent
   }
 
   ngOnInit() {
-    this.facility = <any>this.locker.getObject("selectedFacility");
-    if (
-      this.facility.isValidRegistration === undefined ||
-      this.facility.isValidRegistration === false
-    ) {
-      this.facilityService.announcePopupEditFacility(true);
-    }
-    this.authFacadeService.getLogingEmployee().then((payload: any) => {});
-    this.route.data.subscribe(data => {
-      data["employees"].subscribe(payload => {
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+    });
+    /* this.route.data.subscribe(data => {
+      data['employees'].subscribe((payload) => {
         if (payload !== null) {
           this.total = payload.total;
           this.employees = payload.data;
@@ -110,11 +104,11 @@ export class EmpmanagerHomepageComponent
           }
         }
       });
-      // this.index = this.inde[0];
-    });
-    this.pageInView.emit("Employee Manager");
-   
-    // this.getEmployees(this.limit);
+      this.index = this.inde[0];
+    }); */
+    this.pageInView.emit('Employee Manager');
+    this.facility = <Facility>this.locker.getObject('selectedFacility');
+    this.getEmployees();
   }
   searchEmployees(searchText: string) {
     this.searchControl.setValue(searchText);
@@ -124,10 +118,10 @@ export class EmpmanagerHomepageComponent
   }
   navEpDetail(val) {
     this.router
-      .navigate(["/dashboard/facility/employees", val._id])
+      .navigate(['/dashboard/facility/employees', val._id])
       .then(result => {
         // this.employeeService.announceEmployee(val);
-        this.locker.setObject("selectedEmployee", val);
+        this.locker.setObject('selectedEmployee', val);
       });
   }
   getByDepartment(departmentId: string) {

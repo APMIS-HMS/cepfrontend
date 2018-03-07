@@ -9,7 +9,6 @@ import { DragulaService } from 'ng2-dragula/ng2-dragula';
 import { Observable } from 'rxjs/Observable';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
-
 @Component({
   selector: 'app-investigation-service',
   templateUrl: './investigation-service.component.html',
@@ -46,6 +45,13 @@ export class InvestigationServiceComponent implements OnInit {
   categories: any[] = [];
   loading: Boolean = true;
 
+  pageSize = 1;
+  index: any = 0;
+  limit: any = 20;
+  showLoadMore = true;
+  total: any = 0;
+  loadMoreText = '';
+
   public frmNewInvestigationh: FormGroup;
   public frmNewPanel: FormGroup;
 
@@ -63,6 +69,14 @@ export class InvestigationServiceComponent implements OnInit {
     });
     dragulaService.drop.subscribe((value) => {
       this.onDrop(value.slice(1));
+    });
+
+    investigationService.listner.subscribe(payload => {
+      this.getInvestigations();
+    });
+
+    investigationService.createListener.subscribe(payload => {
+      this.getInvestigations();
     });
   }
   private onDrag(args) {
@@ -86,7 +100,7 @@ export class InvestigationServiceComponent implements OnInit {
   }
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.user = <User> this.locker.getObject('auth');
+    this.user = <User>this.locker.getObject('auth');
 
     this.frmNewInvestigationh = this.formBuilder.group({
       investigationName: ['', [Validators.required]],
@@ -116,17 +130,34 @@ export class InvestigationServiceComponent implements OnInit {
   }
 
   getInvestigations() {
-    this.investigationService.find({ query: { 'facilityId': this.selectedFacility._id } }).then(res => {
+    this.investigationService.find({
+      query: {
+        'facilityId': this.selectedFacility._id, $limit: this.limit,
+        $skip: this.index * this.limit,
+      }
+    }).then(res => {
       this.loading = false;
       if (res.data.length > 0) {
         this.investigations = res.data;
+        if (this.total <= this.investigations.length) {
+          this.showLoadMore = false;
+        }
         this.bindInvestigations = JSON.parse(JSON.stringify(res.data));
       }
     }).catch(err => this._notification('Error', 'There was a problem getting investigations. Please try again later!'));
+    this.index++;
+  }
+  getShowing() {
+    const ret = this.index * this.limit
+    if (ret >= this.total && this.index > 0) {
+      this.loadMoreText = 'Showing ' + this.total + ' of ' + this.total + ' records';
+      return;
+    }
+    this.loadMoreText = 'Showing ' + ret + ' of ' + this.total + ' records';
   }
   getServiceCategories() {
     this.facilityServiceCategoryService.find({ query: { facilityId: this.selectedFacility._id } }).then(res => {
-     if (res.data.length > 0) {
+      if (res.data.length > 0) {
         this.selectedFacilityService = res.data[0];
         this.categories = res.data[0].categories;
         const index = this.categories.findIndex(x => x.name === 'Laboratory');
@@ -262,7 +293,7 @@ export class InvestigationServiceComponent implements OnInit {
                       this.frmNewInvestigationh.reset();
                       this.frmNewInvestigationh.controls['isPanel'].setValue(false);
                       this.investigations.push(payload);
-                      this._systemModuleService.announceSweetProxy('Investigation has been created successfully.', 'success');
+                      this._systemModuleService.announceSweetProxy('Investigation has been created successfully.', 'success', null, null, null, null, null, null, null);
                       this.getInvestigations();
                     });
                   }
@@ -325,7 +356,7 @@ export class InvestigationServiceComponent implements OnInit {
                         this.frmNewInvestigationh.controls['isPanel'].setValue(false);
                         const index = this.investigations.findIndex((obj => obj._id === payload._id));
                         this.investigations.splice(index, 1, payload);
-                        this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success');
+                        this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success', null, null, null, null, null, null, null);
                         this.getInvestigations();
                       })
                     }
@@ -343,7 +374,7 @@ export class InvestigationServiceComponent implements OnInit {
             this.frmNewInvestigationh.controls['isPanel'].setValue(false);
             const index = this.investigations.findIndex((obj => obj._id === payload._id));
             this.investigations.splice(index, 1, payload);
-            this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success');
+            this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success', null, null, null, null, null, null, null);
             this.getInvestigations();
           }
 
@@ -359,6 +390,7 @@ export class InvestigationServiceComponent implements OnInit {
 
   createPanel(valid, value) {
     if (valid) {
+      this.addingPInvestBtn = true;
       if (this.selectedInvestigation._id === undefined) {
         const investigation: any = {
           facilityId: this.selectedFacility._id,
@@ -395,16 +427,32 @@ export class InvestigationServiceComponent implements OnInit {
                     const facilityService$ = Observable.fromPromise(this.servicePriceService.create(price));
                     const investigation$ = Observable.fromPromise(this.investigationService.update(payload));
                     Observable.forkJoin([facilityService$, investigation$]).subscribe(results => {
+                      // this.frmNewPanel.reset();
+                      // this.frmNewPanel.controls['isPanel'].setValue(true);
+                      // this.investigations.push(payload);
+                      // this.addingPInvestBtn = true;
+                      this.pannel_view = false;
+                      this.addPInvestBtn = true;
+                      this.addingPInvestBtn = false;
+                      this.selectedInvestigation = <any>{};
+                      this.movedInvestigations = [];
                       this.frmNewPanel.reset();
-                      this.frmNewPanel.controls['isPanel'].setValue(true);
-                      this.investigations.push(payload);
-                      this._systemModuleService.announceSweetProxy('Investigation has been created successfully.', 'success');
+                      this.frmNewPanel.controls['isPanel'].setValue(false);
+                      const index = this.investigations.findIndex((obj => obj._id === payload._id));
+                      this.investigations.splice(index, 1, payload);
+                      this._systemModuleService.announceSweetProxy('Investigation has been created successfully.', 'success', null, null, null, null, null, null, null);
+                    }, error => {
+                      this.addingPInvestBtn = false;
                     })
                   }
                 });
               }
             });
+          }, error => {
+            this.addingPInvestBtn = false;
           });
+        }, error => {
+          this.addingPInvestBtn = false;
         });
       } else {
         this.selectedInvestigation.name = this.frmNewPanel.controls['panelName'].value;
@@ -443,16 +491,21 @@ export class InvestigationServiceComponent implements OnInit {
                         this.addPInvestBtn = true;
                         this.addingPInvestBtn = false;
                         this.selectedInvestigation = <any>{};
+                        this.movedInvestigations = [];
                         this.frmNewPanel.reset();
                         this.frmNewPanel.controls['isPanel'].setValue(false);
                         const index = this.investigations.findIndex((obj => obj._id === payload._id));
                         this.investigations.splice(index, 1, payload);
-                        this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success');
+                        this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success', null, null, null, null, null, null, null);
+                      }, error => {
+                        this.addingPInvestBtn = false;
                       })
                     }
                   });
                 }
               });
+            }, error => {
+              this.addingPInvestBtn = false;
             });
           }
         }, error => {
@@ -467,9 +520,9 @@ export class InvestigationServiceComponent implements OnInit {
 
   private _notification(type: string, text: string): void {
     this._facilityService.announceNotification({
-        users: [this.user._id],
-        type: type,
-        text: text
+      users: [this.user._id],
+      type: type,
+      text: text
     });
   }
 

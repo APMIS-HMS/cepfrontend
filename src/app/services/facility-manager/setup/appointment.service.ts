@@ -103,6 +103,6 @@ export class AppointmentService {
     const path = host + '/zoom-meeting';
     return request
       .post(path)
-      .send({ topic: topic, startTime: startTime, appointmentId: appointmentId, timezone: timezone }); // query string 
+      .send({ topic: topic, startTime: startTime, appointmentId: appointmentId, timezone: timezone }); // query string
   }
 }
