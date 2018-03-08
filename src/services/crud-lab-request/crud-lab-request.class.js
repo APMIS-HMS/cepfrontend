@@ -16,6 +16,7 @@ class Service {
         const patientService = this.app.service('patients');
         const peopleService = this.app.service('people');
         const employeeService = this.app.service('employees');
+        const billingService = this.app.service('billings');
         const accessToken = params.accessToken;
         const facilityId = params.query.facilityId;
         const cQuery = params;
@@ -41,6 +42,19 @@ class Service {
                         const employee = await employeeService.get(employeeId);
                         delete employee.personDetails.wallet;
                         request.employeeDetails = employee.personDetails;
+
+                        const billing = await billingService.find({
+                            query: {
+                                facilityId: facilityId,
+                                '_id': request.billingId._id,
+                                patientId: request.patientId
+                            }
+                        });
+                        const billingItem = billing.data[0];
+                        billingItem.billItems.forEach(billItem => {
+                            request.isPaid = billItem.paymentCompleted;
+                            request.isWaved = (billItem.isServiceEnjoyed === true && billItem.paymentCompleted === false) ? true : false;
+                        });
 
                         counter++;
                     }
