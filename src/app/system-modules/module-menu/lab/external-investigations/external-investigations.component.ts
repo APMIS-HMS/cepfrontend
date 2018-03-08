@@ -23,6 +23,7 @@ export class ExternalInvestigationsComponent implements OnInit {
 
   ngOnInit() {
     this.facility = <Facility>this._locker.getObject('selectedFacility');
+    this._getAllRequests();
 
     this.extRequestFormGroup = this._fb.group({
       search: [''],
@@ -78,25 +79,36 @@ export class ExternalInvestigationsComponent implements OnInit {
 
   // Get all drugs from generic
   private _getAllRequests() {
-    this._laboratoryRequestService.findAll().then(res => {
+    // this._laboratoryRequestService.findAll().then(res => {
+    this._laboratoryRequestService.customFind({
+        query: {
+          facilityId: this.facility._id
+        }
+      }).then(res => {
+      console.log(res);
       this.loading = false;
-      res.data.forEach(element => {
-        element.investigations.forEach(item => {
-          let pending: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
-          pending.clinicalInformation = element.clinicalInformation;
-          pending.updatedAt = element.updatedAt;
-          pending.diagnosis = element.diagnosis;
-          pending.name = element.patientId.personDetails.personFullName;
-          pending.createdBy = element.createdBy.employeeDetails.personFullName;
-          pending.service = item.investigation.serviceId.name;
-          pending.isExternal = item.investigation.isExternal;
-          pending.isUrgent = item.investigation.isUrgent;
-          pending.specimen = item.investigation.specimen.name;
-          pending.personId = item.patientId.personDetails._id;
-          this.extRequests.push(element);
-        })
-
-      });
+      if (res.status === 'success') {
+        res.data.forEach(element => {
+          element.investigations.forEach(item => {
+            console.log(item);
+            if (item.isExternal) {
+              let pending: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
+              pending.clinicalInformation = element.clinicalInformation;
+              pending.updatedAt = element.updatedAt;
+              pending.diagnosis = element.diagnosis;
+              pending.name = `${element.personDetails.firstName} ${element.personDetails.LastName}`;
+              pending.createdBy = `${element.employeeDetails.firstName} ${element.employeeDetails.LastName}`;
+              pending.service = item.investigation.serviceId.name;
+              pending.isExternal = item.investigation.isExternal;
+              pending.isUrgent = item.investigation.isUrgent;
+              pending.specimen = item.investigation.specimen.name;
+              pending.personId = element.personDetails._id;
+              this.extRequests.push(element);
+              console.log(this.extRequests);
+            }
+          });
+        });
+      }
     }).catch(err => console.error(err));
   }
 
