@@ -116,16 +116,13 @@ export class InvestigationServiceComponent implements OnInit {
       specimen: ['', [Validators.required]],
       isPanel: [false, [Validators.required]]
     });
-    
 
     this.frmNewInvestigationh.valueChanges.subscribe(value => {
-      console.log(this.frmNewInvestigationh.valid)
-      if(this.frmNewInvestigationh.valid){
+      if (this.frmNewInvestigationh.valid) {
         this.isBtnDisable = false;
-      }else{
+      }else {
         this.isBtnDisable = true;
       }
-      console.log(this.isBtnDisable);
     })
 
     this.frmNewInvestigationh.controls['reportType'].valueChanges.subscribe(value => {
@@ -199,7 +196,6 @@ export class InvestigationServiceComponent implements OnInit {
       }
     })
   }
-  
   onSearchInvestigation() {
     this.investigation_list_search = !this.investigation_list_search;
   }
