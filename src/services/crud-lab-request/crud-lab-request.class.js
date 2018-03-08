@@ -32,8 +32,6 @@ class Service {
                     let i = requests.length;
                     let counter = 0;
 
-                    console.log(requests);
-
                     while (i--) {
                         const request = requests[i];
                         const patientId = request.patientId;
@@ -116,10 +114,10 @@ class Service {
                         billItem.patientId = patientId;
                         billItem.quantity = 1;
                         billItem.isBearerConfirmed = true,
-                        billItem.covered = {
-                            coverType: 'wallet'
-                        },
-                        billItem.totalPrice = billItem.quantity * billItem.unitPrice;
+                            billItem.covered = {
+                                coverType: 'wallet'
+                            },
+                            billItem.totalPrice = billItem.quantity * billItem.unitPrice;
                         billItem.unitDiscountedAmount = 0;
                         billItem.totalDiscoutedAmount = 0;
                         billGroup.subTotal = billGroup.subTotal + billItem.totalPrice;
@@ -173,7 +171,7 @@ class Service {
     }
 }
 
-module.exports = function (options) {
+module.exports = function(options) {
     return new Service(options);
 };
 
