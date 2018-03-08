@@ -85,6 +85,7 @@ export class ScheduleFrmComponent implements OnInit {
   appointments: any[] = [];
   orderStatuses: any[] = [];
   selectedClinic: any = <any>{};
+  selectedClinicSchedule:any;
   isDoctor = false;
   loadIndicatorVisible = false;
   loadingPatients = false;
@@ -788,6 +789,8 @@ export class ScheduleFrmComponent implements OnInit {
       if (checkIn === true) {
         this.appointment.attendance = {
           employeeId: this.loginEmployee.personDetails.title +' '+this.loginEmployee.personDetails.lastName +' '+this.loginEmployee.personDetails.firstName,
+          majorLocationId: this.selectedClinicSchedule.location.locationId,
+          minorLocationId: this.selectedClinicSchedule.location._id,
           dateCheckIn: new Date()
         };
       }
@@ -1009,6 +1012,7 @@ export class ScheduleFrmComponent implements OnInit {
         this.checkIn.enable();
         this.dateCtrl.setErrors(null); // ({ noValue: false });
         this.dateCtrl.markAsUntouched();
+        this.selectedClinicSchedule = schedule;
       }
       if (this.selectedClinic._id !== undefined) {
         this.appointmentService.clinicAnnounced({
@@ -1019,7 +1023,6 @@ export class ScheduleFrmComponent implements OnInit {
     }
   }
   dateChange(event) {
-    console.log(this.startDate);
     const dayNum = getDay(event);
     const day = this.days[dayNum];
     const scheduleFiltered = this.schedules.filter((x: any) => x.day === day);
@@ -1044,7 +1047,6 @@ export class ScheduleFrmComponent implements OnInit {
         this.startDate,
         getMinutes(schedule.startTime)
       );
-      console.log(this.startDate);
       // this.endDate = setHours(this.endDate, getHours(schedule.endTime));
       // this.endDate = setMinutes(this.endDate, getMinutes(schedule.endTime));
       // this.dateCtrl.setValue(this.date);

@@ -503,11 +503,6 @@ export class InvoiceComponent implements OnInit {
                     font-size: 1rem;
                     color: #757575;
                 }
-                .modal-overlay{
-                    position: fixed;
-                    left: 0;
-                    top: 0;
-                }
                 .col5 .cta-1{
                     margin: 0;
                     background: transparent;
