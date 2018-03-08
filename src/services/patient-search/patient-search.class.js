@@ -51,9 +51,10 @@ class Service {
 
                             const patients = await patientService.find({ query: { facilityId: facilityId, personId: person._id } });
                             if (patients.data.length > 0) {
-                                if(patientTable !== true){
+                                if (patientTable !== true) {
                                     person.patientId = patients.data[0]._id;
-                                }else{
+                                    person.clientsNo = patients.data[0].clientsNo;
+                                } else {
                                     patients.data[0].personDetails = person;
                                     patientz.push(patients.data[0]);
                                 }
@@ -62,11 +63,11 @@ class Service {
                         }
 
                         if (pLength === counter) {
-                            if(patientTable !== true){
+                            if (patientTable !== true) {
                                 return jsend.success(people);
-                            }else{
+                            } else {
                                 return jsend.success(patientz);
-                            }  
+                            }
                         }
                     } else {
                         return jsend.success([]);
