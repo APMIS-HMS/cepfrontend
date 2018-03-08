@@ -212,7 +212,8 @@ export class MakePaymentComponent implements OnInit {
     if (plan.length === 0) {
       this.tabFamily = false;
       this.tabWallet = true;
-      this.systemModuleService.announceSweetProxy('This patient has not subscribe to any Family cover. Contact your Health Insurance officer for more info', 'error');
+      this.systemModuleService.announceSweetProxy
+      ('This patient has not subscribe to any Family cover. Contact your Health Insurance officer for more info', 'error');
     }
   }
   tabInsurance_click() {
@@ -362,7 +363,8 @@ export class MakePaymentComponent implements OnInit {
           }
         });
       } else {
-        this.systemModuleService.announceSweetProxy('This patient has not subscribe to any Family cover. Contact your Health Insurance officer for more info', 'error');
+        this.systemModuleService.announceSweetProxy
+          ('This patient has not subscribe to any Family cover. Contact your Health Insurance officer for more info', 'error');
       }
     } else {
       this.systemModuleService.announceSweetProxy('Please enter a valid amount', 'error');
@@ -460,7 +462,7 @@ export class MakePaymentComponent implements OnInit {
         if (!payload.isWaved) {
           this.systemModuleService.announceSweetProxy('Payment successfull.', 'success');
         } else {
-          this.systemModuleService.announceSweetProxy('Payment successfull.', 'success');
+          this.systemModuleService.announceSweetProxy('Payment successfully made.', 'success');
         }
 
       }, error => {
@@ -475,11 +477,10 @@ export class MakePaymentComponent implements OnInit {
         if (!payload.isWaved) {
           this.systemModuleService.announceSweetProxy('Payment successfull.', 'success');
         } else {
-          this.systemModuleService.announceSweetProxy('Payment successfull.', 'success');
+          this.systemModuleService.announceSweetProxy('Payment successfully made.', 'success');
         }
 
       }, error => {
-        console.log(error);
         this.isProcessing = false;
         this.systemModuleService.announceSweetProxy('Fail to make payment pls try again later', 'error');
       });
