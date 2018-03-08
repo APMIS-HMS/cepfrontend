@@ -13,43 +13,43 @@
                     </div>
                     <div *ngIf="report_view">
                         <div class="col-xs-12">
-                            <div class="frm-l" [class.frm-container-l]="!patientSelected">
-                                <div class="col-xs-3">
+                            <div class="frm-l" style="background : white; border: none; border-radius: 0px;" [class.frm-container-l]="!patientSelected">
+                                <div class="col-xs-6">
                                     <form [formGroup]="patientFormGroup" novalidate>
                                         <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Search for patient" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
                                             [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                     </form>
                                 </div>
                                 <div class="selected-patient-wrap" *ngIf="patientSelected">
-                                    <div class="sel-patient-img">
-                                        <img *ngIf="selectedPatient?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                        <img class="shadow" *ngIf="selectedPatient?.profileImageObject != undefined" [src]="facilityService.transform(selectedPatient?.profileImageObject?.thumbnail)">
-                                    </div>
-                                    <div class="sel-patient-details">
-                                        <div style="font-size: 1.4rem;"><b>{{ selectedPatient?.firstName }} {{ selectedPatient?.lastName }}</b></div>
-                                        <div class="patient-details-left">{{ selectedPatient?.apmisId }}</div>
-                                        <div class="patient-details-right">{{ selectedPatient?.dateOfBirth | date: 'shortDate' }}</div>
-                                        <div class="patient-details-left">{{ selectedPatient?.phoneNumber }}</div>
-                                        <div class="patient-details-right">{{ selectedPatient?.gender }}</div>
-                                        <div>{{ selectedPatient?.email }}</div>
-                                    </div>
+                                 
+                                        <div>
+                                            <img style="height: 40px; width: 40px;" *ngIf="selectedPatient?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                            <img style="height: 40px; width: 40px;" class="shadow" *ngIf="selectedPatient?.profileImageObject != undefined" [src]="facilityService.transform(selectedPatient?.profileImageObject?.thumbnail)">
+                                        </div>
+                                        <h2 class="sel-patient-name">{{ selectedPatient?.firstName }} {{ selectedPatient?.lastName }}
+                                        </h2>
+                                        <h3 class="sel-patient-detaills">
+                                                {{ selectedPatient?.apmisId }} <span style="color:#0288D1; font-size: 1.4rem">|</span> 
+                                                {{ selectedPatient?.dateOfBirth | date: 'shortDate' }}  <span style="color:#0288D1; font-size: 1.4rem">|</span>
+                                                {{ selectedPatient?.gender }}
+                                        </h3>
+                            
                                 </div>
 
+
                                 <h2 class="col-xs-12" style="text-align: center">Pending Requests</h2>
-                                <div *ngIf="pendingRequests.length > 0">
-                                    <div class="col-sm-12 col-md-12" style="float: right;padding: 5px;">
-                                        <button class="refresh-payment btn btn-primary" (click)="onClickRefreshPaymentStatus();" [disabled]="disablePaymentBtn" [innerHtml]="paymentStatusText"></button>
+                                <div class="row" *ngIf="pendingRequests.length > 0">
+                                    <div class="col-sm-12 col-md-12">
+                                        <button  style="float: right;" class="refresh-payment btn btn-primary" (click)="onClickRefreshPaymentStatus();" [disabled]="disablePaymentBtn" [innerHtml]="paymentStatusText"></button>
                                     </div>
                                 </div>
                                 <div class="pending-req-wrap">
                                     <div class="card" *ngIf="patientSelected">
                                         <div class="card-header">
                                             <div class="row">
-                                                <div class="col-xs-3 table-head">Patient</div>
-                                                <div class="table-head col-xs-2">Investigation</div>
-                                                <div class="col-xs-2 table-head">Date</div>
-                                                <div class="table-head col-xs-2">Status</div>
-                                                <div class="table-head col-xs-1"><i class="fa fa-search fa-fw pointer"></i></div>
+                                                <div class="table-head col-xs-4">Investigation</div>
+                                                <div class="col-xs-4 table-head">Date</div>
+                                                <div class="table-head col-xs-4">Status</div>
                                             </div>
                                         </div>
                                         <div class="card-content">
@@ -63,24 +63,15 @@
                                                     <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                                                 </div>
                                             </div>
-                                            <div class="card-list-item" *ngFor="let pendingRequest of pendingRequests; let i = index;" (click)="onClickInvestigation(pendingRequest, i);">
+                                            <div class="card-list-item" [class.active]="activeInvestigationNo == i" *ngFor="let pendingRequest of pendingRequests; let i = index;"  [class.active]="activeInvestigationNo == i" (click)="onClickInvestigation(pendingRequest, i);">
                                                 <div class="row">
-                                                    <div class="table-list col-xs-3">
-                                                        <div class="empWrap">
-                                                            <div class="list-img">
-                                                                <img *ngIf="pendingRequest?.patient?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                                                <img class="shadow" *ngIf="pendingRequest?.patient?.profileImageObject != undefined" [src]="facilityService.transform(pendingRequest?.patient?.profileImageObject?.thumbnail)">
-                                                            </div>
-                                                            <div>{{ pendingRequest?.patient?.firstName }} {{ pendingRequest?.patient?.lastName }}</div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="table-list col-xs-2">
+                                                    <div class="table-list col-xs-4">
                                                         {{pendingRequest?.name}}
                                                     </div>
-                                                    <div class="table-list col-xs-2">
+                                                    <div class="table-list col-xs-4">
                                                         {{pendingRequest?.createdAt | date}}
                                                     </div>
-                                                    <div class="table-list col-xs-2">
+                                                    <div class="table-list col-xs-4">
                                                         <div class="status-item">
                                                             <div class="status-label">Payment Made</div>
                                                             <i *ngIf="pendingRequest.isPaid" class="fa fa-check isSample" aria-hidden="true"></i>
@@ -159,7 +150,7 @@
                                 </div>
                             </div>
 
-                            <div class="frm-r" [class.frm-container-r]="!patientSelected">
+                            <div class="frm-r" style="background : white;" [class.frm-container-r]="!patientSelected">
                                 <div *ngIf="!hasRequest" class="text-center" style="min-height: 300px;margin-top: 200px;">
                                     <div *ngIf="requests.length === 0 && !loading">
                                         <span class="table-content" colspan="5" style="text-align: center"> No pending request is associated to {{ selectedPatient?.firstName }} {{ selectedPatient?.personDetails?.lastName }}</span>
@@ -303,12 +294,16 @@
                                                 </mat-input-container>
                                             </div>
                                             <div class="frm-item-wrap">
-                                                <span style="color:rgba(0,0,0,.38);">Optionally attach a file</span>
-                                                <div (click)="showImageBrowseDlg()" class="action-item" style="color:#FF9800;">
-                                                    <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                                                    <span>Upload File</span>
-                                                    <input type="file" (change)="selectImage($event)" />
-                                                </div>
+                                                    <div class="act-right-actions">
+                                                            <div (click)="showImageBrowseDlg()" class="action-item" style="color:#FF9800;">
+                                                                <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                                                                <span>Upload</span>
+                                                            </div>
+                                                            <div (click)="showImageBrowseDlg()" class="action-item" style="color:#0288D1;">
+                                                                <i class="fa fa-edit" aria-hidden="true"></i>
+                                                                <span>Edit</span>
+                                                            </div>
+                                                        </div>
                                             </div>
                                         </form>
                                     </div>
