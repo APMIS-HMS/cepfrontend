@@ -293,7 +293,7 @@ export class InvestigationServiceComponent implements OnInit {
                       this.frmNewInvestigationh.reset();
                       this.frmNewInvestigationh.controls['isPanel'].setValue(false);
                       this.investigations.push(payload);
-                      this._systemModuleService.announceSweetProxy('Investigation has been created successfully.', 'success', null, null, null, null, null, null, null);
+                      this._systemModuleService.announceSweetProxy('Investigation has been created successfully.', 'success');
                       this.getInvestigations();
                     });
                   }
