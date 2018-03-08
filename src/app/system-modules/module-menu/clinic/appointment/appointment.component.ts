@@ -127,16 +127,19 @@ export class AppointmentComponent implements OnInit {
                             wrk.locations.forEach((lct, li) => {
                                 this.schedules.forEach((sch: any, ji) => {
                                     sch.schedules.forEach((sch2, jji) => {
-                                        if (sch2.location._id === lct.minorLocationId._id && sch.clinicObject.clinic._id === itemk._id) {
+                                        if (sch2.location._id === lct.minorLocationId && sch.clinic === itemk.clinicName) {
                                             if (clinicIds.filter(x => x === itemk._id).length === 0) {
-                                                const clinicModel: ClinicModel = <ClinicModel>{};
-                                                clinicModel.clinic = sch.clinicObject.clinic;
-                                                clinicModel.department = itemi;
-                                                clinicModel.unit = itemj;
-                                                clinicModel._id = itemk._id;
-                                                clinicModel.clinicName = itemk.clinicName;
-                                                this.clinics.push(clinicModel);
-                                                clinicIds.push(clinicModel._id);
+                                                if(this.clinics.findIndex(x =>x._id===itemk._id) === -1){
+                                                    const clinicModel: ClinicModel = <ClinicModel>{};
+                                                    clinicModel.clinic = sch.clinic;
+                                                    clinicModel.department = itemi;
+                                                    clinicModel.unit = itemj;
+                                                    clinicModel._id = itemk._id;
+                                                    clinicModel.clinicName = itemk.clinicName;
+                                                    this.clinics.push(clinicModel);
+                                                    clinicIds.push(clinicModel.clinicName);
+                                                }
+                                                
                                             }
                                         }
                                     })
@@ -181,7 +184,7 @@ export class AppointmentComponent implements OnInit {
         try {
             if (this.loginEmployee._id !== undefined) {
                 this.loadIndicatorVisible = true;
-                this.getClinics();
+                // this.getClinics();
                 this.subscription = Observable.forkJoin(
                     [
                         // Observable.fromPromise(this.workSpaceService.find({ query: { 'employeeId._id': this.loginEmployee._id } })),
@@ -198,14 +201,15 @@ export class AppointmentComponent implements OnInit {
                         if (filteredProfessions.length > 0) {
                             this.selectedProfession = filteredProfessions[0];
                         }
-                        if (this.loginEmployee !== undefined && this.loginEmployee.professionObject !== undefined) {
+                        if (this.loginEmployee !== undefined) {
                             // this.selectedProfession = this.loginEmployee.professionObject;
-                            if (this.loginEmployee.professionObject.name === 'Doctor') {
+                            if (this.loginEmployee.professionId === 'Doctor') {
                                 this.isDoctor = true;
                             }
-                            // this.getClinics();
+                           
                             this.getEmployees();
                         }
+                        this.getClinics();
                     }, error => {
                         this.loadIndicatorVisible = false;
                         this.prime();
@@ -238,7 +242,7 @@ export class AppointmentComponent implements OnInit {
             this.employeeService.find({
                 query: {
                     facilityId: this.selectedFacility._id,
-                    professionId: this.selectedProfession._id
+                    professionId: this.selectedProfession.name
                 }
             }).then(payload => {
                 payload.data.forEach((itemi, i) => {
@@ -272,13 +276,21 @@ export class AppointmentComponent implements OnInit {
     }
     filterClinics(val: any) {
         this.filteredAppointments = val ? this.appointments
-            .filter(s => s.clinicId.clinicName.toLowerCase().indexOf(val.clinicName.toLowerCase()) === 0) : this.appointments;
+            .filter(s => s.clinicId.toLowerCase().indexOf(val.clinicName.toLowerCase()) === 0) : this.appointments;
     }
     filterProviders(val: any) {
-        this.filteredAppointments = val ? this.appointments
-            .filter(s => s.doctorId !== undefined ? s.doctorId : s.doctorId.personDetails.lastName.toLowerCase()
-                .indexOf(val.toLowerCase()) === 0
-                || s.doctorId.personDetails.firstName.toLowerCase().indexOf(val.toLowerCase()) === 0) : this.appointments;
+        console.log(this.appointments);
+        this.filteredAppointments = this.appointments;
+        const smallApp = this.appointments.filter(m =>m.doctorId !== undefined);
+        if(val.length !== 0){
+            this.filteredAppointments = val ? smallApp
+            .filter(s => s.providerDetails.personDetails.lastName.toLowerCase()
+                .includes(val.toLowerCase())
+                || s.providerDetails.personDetails.firstName.toLowerCase().includes(val.toLowerCase())) : smallApp;
+        }else{
+            this.filteredAppointments = this.appointments;
+        }
+       
         return val ? this.providers.filter(s => s.personDetails.lastName.toLowerCase().indexOf(val.toLowerCase()) === 0
             || s.personDetails.firstName.toLowerCase().indexOf(val.toLowerCase()) === 0)
             : this.providers;
