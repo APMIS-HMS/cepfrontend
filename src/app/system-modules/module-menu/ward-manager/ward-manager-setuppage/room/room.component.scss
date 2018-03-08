@@ -259,6 +259,7 @@ ul.topmenuwrap {
     }
 }
 
+<<<<<<< HEAD
 //.inPatients {
 //   border: none;
 //  .filter-box {
@@ -289,4 +290,32 @@ ul.topmenuwrap {
     position: fixed;
     top: 0;
     left: 0;
+=======
+.inPatients {
+    border: none;
+    .filter-box {
+        padding: 10px 0;
+        .filter {
+            width: 130px;
+        }
+    }
+    .table-content {
+        padding: 10px;
+    }
+    .table-content-action {
+        padding: 5px;
+        .fa {
+            font-size: 1.6rem;
+            padding: 5px;
+            margin: 2px;
+            cursor: pointer;
+        }
+    }
+    .details-link {
+        &:hover {
+            background-color: #ccc;
+            cursor: pointer;
+        }
+    }
+>>>>>>> 45d00eb8fef406a78d6cf0535975bfac2dea12a5
 }

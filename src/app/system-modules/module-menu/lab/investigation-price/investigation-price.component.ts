@@ -67,7 +67,7 @@ export class InvestigationPriceComponent implements OnInit {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.loginEmployee = res;
       this.getLaboratoryMajorLocation(this.loginEmployee);
-    }).catch(err => console.log(err));
+    }).catch(err => {});
   }
 
   ngOnInit() {

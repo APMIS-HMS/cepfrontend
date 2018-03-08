@@ -28,6 +28,7 @@ export interface PendingLaboratoryRequest {
     isUrgent: boolean;
     isPanel: boolean;
     isPaid: boolean;
+    isWaved: boolean;
     updatedAt: Date;
     createdAt: Date;
     createdBy: any;
@@ -36,5 +37,6 @@ export interface PendingLaboratoryRequest {
     specimenNumber: string;
     sampleTaken: boolean;
     sampleTakenBy: any;
+    source?:any;
 }
 

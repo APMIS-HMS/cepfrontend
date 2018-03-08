@@ -362,9 +362,14 @@
                                                                     <div class="plan">
                                                                         <div class="plan-title">Family Cover</div>
                                                                         <div class="frm-item-wrap">
-                                                                            <mat-input-container class="example-full-width">
-                                                                                <input matInput mat-error placeholder="Principal" [formControl]="familyPlanId">
-                                                                            </mat-input-container>
+                                                                            <div class="row frm-item-wrap">
+                                                                                <mat-input-container class="col-xs-12 col-sm-6">
+                                                                                    <input matInput mat-error placeholder="Principal ID" [formControl]="familyPlanId">
+                                                                                </mat-input-container>
+                                                                                <mat-form-field class="col-xs-12 col-sm-6">
+                                                                                    <input matInput mat-error placeholder="Client ID" [formControl]="faFileNo">
+                                                                                </mat-form-field>
+                                                                            </div>
                                                                             <div class="row frm-item-wrap">
                                                                                 <mat-form-field class="col-xs-12 col-sm-6">
                                                                                     <mat-select placeholder="Select Service" [formControl]="faPlan" (change)="getServicePlans($event.value)">
@@ -372,7 +377,7 @@
                                                                                     </mat-select>
                                                                                 </mat-form-field>
                                                                                 <mat-form-field class="col-xs-12 col-sm-6">
-                                                                                    <mat-select placeholder="Select Plan" [formControl]="faPlanPrice">
+                                                                                    <mat-select placeholder="Select Price" [formControl]="faPlanPrice">
                                                                                         <mat-option *ngFor="let pricePlan of servicePricePlans" [value]="pricePlan.price">{{pricePlan.name}}</mat-option>
                                                                                     </mat-select>
                                                                                 </mat-form-field>
