@@ -397,8 +397,6 @@ export class LabRequestsComponent implements OnInit {
     this.apmisLookupText = `${value.firstName} ${value.lastName}`;
     this.selectedPatient = value;
     this.frmNewRequest.controls['labNo'].setValue('');
-    console.log(this.selectedPatient);
-    console.log(this.selectedLab);
     if (this.selectedPatient.clientsNo !== undefined) {
       this.selectedPatient.clientsNo.forEach(item => {
         if (item.minorLocationId === this.selectedLab.typeObject.minorLocationObject._id) {
@@ -858,8 +856,6 @@ export class LabRequestsComponent implements OnInit {
       readyCollection.push(item);
     });
 
-    console.log(value);
-
     const request: any = {
       facilityId: this.selectedFacility._id,
       patientId: (this.isLaboratory) ? this.selectedPatient.patientId : this.selectedPatient._id,
@@ -883,7 +879,6 @@ export class LabRequestsComponent implements OnInit {
       }
     }
 
-    console.log(request);
     // Make request.
     this.requestService.customCreate(request).then(res => {
       if (res.status === 'success') {

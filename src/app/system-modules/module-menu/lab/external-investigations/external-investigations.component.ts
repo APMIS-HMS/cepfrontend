@@ -85,12 +85,10 @@ export class ExternalInvestigationsComponent implements OnInit {
           facilityId: this.facility._id
         }
       }).then(res => {
-      console.log(res);
       this.loading = false;
       if (res.status === 'success') {
         res.data.forEach(element => {
           element.investigations.forEach(item => {
-            console.log(item);
             if (item.isExternal) {
               let pending: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
               pending.clinicalInformation = element.clinicalInformation;
@@ -104,7 +102,6 @@ export class ExternalInvestigationsComponent implements OnInit {
               pending.specimen = item.investigation.specimen.name;
               pending.personId = element.personDetails._id;
               this.extRequests.push(element);
-              console.log(this.extRequests);
             }
           });
         });
