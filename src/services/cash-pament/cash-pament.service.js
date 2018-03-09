@@ -4,18 +4,19 @@ const hooks = require('./cash-pament.hooks');
 
 module.exports = function (app) {
   
-  const paginate = app.get('paginate');
+    const paginate = app.get('paginate');
 
-  const options = {
-    name: 'cash-pament',
-    paginate
-  };
+    const options = {
+        name: 'cash-pament',
+        paginate,
+        app:app
+    };
 
-  // Initialize our service with any options it requires
-  app.use('/cash-pament', createService(options));
+    // Initialize our service with any options it requires
+    app.use('/cash-pament', createService(options));
 
-  // Get our initialized service so that we can register hooks and filters
-  const service = app.service('cash-pament');
+    // Get our initialized service so that we can register hooks and filters
+    const service = app.service('cash-pament');
 
-  service.hooks(hooks);
+    service.hooks(hooks);
 };
