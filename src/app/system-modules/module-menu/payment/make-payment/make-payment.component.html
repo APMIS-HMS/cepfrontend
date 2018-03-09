@@ -42,11 +42,17 @@
   </div> -->
     <div>
         <div class="doc-mainWrap">
-            <div class="tab-wrap">
+            <!-- <div class="tab-wrap">
                 <div (click)="tabWallet_click()" [class.tab-item-active]="tabWallet" class="tab-item">Out of Pocket</div>
-                <!-- <div (click)="tabInsurance_click()" [class.tab-item-active]="tabInsurance" class="tab-item">Insurance</div> -->
-                <!-- <div (click)="tabCompany_click()" [class.tab-item-active]="tabCompany" class="tab-item">Company Cover</div> -->
+                <div (click)="tabInsurance_click()" [class.tab-item-active]="tabInsurance" class="tab-item">Insurance</div> -->
+                <!-- <div (click)="tabCompany_click()" [class.tab-item-active]="tabCompany" class="tab-item">Company Cover</div>
                 <div (click)="tabFamily_click()" [class.tab-item-active]="tabFamily" class="tab-item">Family Cover</div>
+            </div> -->
+            <div class="tabs">
+                <div (click)="tabWallet_click()" class="pg-tab" [class.pg-tab-active]="tabWallet">Out of Pocket</div>
+                <div (click)="tabInsurance_click()" class="pg-tab" [class.pg-tab-active]="tabInsurance">Insurance</div>
+                <div (click)="tabCompany_click()" class="pg-tab" [class.pg-tab-active]="tabCompany">Company Cover</div>
+                <div (click)="tabFamily_click()" class="pg-tab" [class.pg-tab-active]="tabFamily">Family Cover</div>
             </div>
 
             <div class="tab-content">
@@ -54,12 +60,14 @@
                     <div class="plan">
                         <div class="plan-title">Out of Pocket</div>
                         <div class="frm-item-wrap">
-                            <div class="frm-item-wrap">
-                                <input type="checkbox" (change)="onExactCharges($event)" [checked]="isExact" [formControl]="selectOutOfPocket"> Exact Charges
-                            </div>
-                            <div class="frm-item-wrap" [hidden]="isExact">
-                                <input type="checkbox" (change)="onWaverCharges($event)" [formControl]="selectWaved">Wave
-                            </div>
+                            <label class="control control--checkbox">Exact Charges
+                                <input type="checkbox" (change)="onExactCharges($event)" [checked]="isExact" [formControl]="selectOutOfPocket"/>
+                                <div class="control__indicator"></div>
+                            </label>
+                            <label class="control control--checkbox" [hidden]="isExact">Wave
+                                <input type="checkbox" (change)="onWaverCharges($event)" [formControl]="selectWaved"/>
+                                <div class="control__indicator"></div>
+                            </label>
                             <div class="frm-item-wrap" [hidden]="!isWaved">
                                 <!--  <input type="text" [formControl]="wavedDescription" placeholder="Description"> -->
                                 <!-- <div class="wavedDescription" [hidden]="isExact">
