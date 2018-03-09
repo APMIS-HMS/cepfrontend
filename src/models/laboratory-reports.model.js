@@ -12,6 +12,7 @@ module.exports = function(app) {
         request: { type: Schema.Types.Mixed, required: true },
         patientId: { type: Schema.Types.ObjectId, required: true },
         investigation: { type: Schema.Types.Mixed, required: true },
+        publishedById: { type: Schema.Types.ObjectId, required: false },
         result: { type: Schema.Types.Mixed, required: true },
         sampleNumber: { type: String, required: true },
         clinicalDocumentation: { type: String, required: false },

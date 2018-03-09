@@ -23,7 +23,7 @@ class Service {
         const facilityService = this.app.service('facilities');
         const accessToken = params.accessToken;
         const facilityId = data.facilityId;
-        const cQuery = params.query;
+        const cQuery = params;
 
         if (accessToken !== undefined) {
             const hasFacility = params.user.facilitiesRole.filter(x => x.facilityId.toString() === facilityId);
