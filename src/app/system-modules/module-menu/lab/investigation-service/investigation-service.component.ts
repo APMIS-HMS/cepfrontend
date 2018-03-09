@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {
   FacilitiesService, InvestigationSpecimenService, InvestigationService, FacilitiesServiceCategoryService, ServicePriceService
@@ -8,6 +8,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 import { Observable } from 'rxjs/Observable';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+
 
 @Component({
   selector: 'app-investigation-service',
@@ -30,6 +31,8 @@ export class InvestigationServiceComponent implements OnInit {
   editingPInvestBtn = false;
   investigation_view = false;
   pannel_view = false;
+  investigation_list_search = false;
+  searchInvestigationName = new FormControl();
   mainErr = true;
   errMsg = 'You have unresolved errors';
   isNumeric = false;
@@ -44,6 +47,8 @@ export class InvestigationServiceComponent implements OnInit {
   movedInvestigations: any[] = [];
   categories: any[] = [];
   loading: Boolean = true;
+  timeOut;
+  isBtnDisable = true;
 
   pageSize = 1;
   index: any = 0;
@@ -112,30 +117,98 @@ export class InvestigationServiceComponent implements OnInit {
       isPanel: [false, [Validators.required]]
     });
 
+    this.frmNewInvestigationh.valueChanges.subscribe(value => {
+      if (this.frmNewInvestigationh.valid) {
+        this.isBtnDisable = false;
+      }else {
+        this.isBtnDisable = true;
+      }
+    })
+
     this.frmNewInvestigationh.controls['reportType'].valueChanges.subscribe(value => {
       if (value === 'Numeric') {
         this.isNumeric = true;
       } else {
         this.isNumeric = false;
       }
-    })
+    });
 
     this.frmNewPanel = this.formBuilder.group({
       panelName: ['', [Validators.required]],
-      isPanel: [true, [Validators.required]]
+      isPanel: [true, [Validators.required]],
+      searchPanelName: ['']
     });
+
+    const panelObs = this.frmNewPanel.controls['searchPanelName'].valueChanges
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .switchMap((term: any[]) =>
+        this.searchInvestigationPanel(this.frmNewPanel.controls['searchPanelName'].value)
+      );
+
+    panelObs.subscribe((payload: any) => {
+      this._systemModuleService.off();
+      this.bindInvestigations = JSON.parse(JSON.stringify(payload.data));
+    });
+
+    const investigationsObs = this.searchInvestigationName.valueChanges
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .switchMap((term: any[]) => this.searchInvestigation(this.searchInvestigationName.value, this.searchInvestigationName.value)
+      );
+    investigationsObs.subscribe((payload: any) => {
+      this._systemModuleService.off();
+      if (payload.data.length > 0) {
+        this.investigations = payload.data;
+        if (this.total <= this.investigations.length) {
+          this.showLoadMore = false;
+        }
+        this.bindInvestigations = JSON.parse(JSON.stringify(payload.data));
+      }
+    });
+
     this.getSpecimens();
     this.getInvestigations();
     this.getServiceCategories();
   }
 
+  searchInvestigation(value, value2) {
+    this._systemModuleService.on();
+    return this.investigationService.find({
+      query: {
+        facilityId: this.selectedFacility._id,
+        $or: [
+          { name: { $regex: value, '$options': 'i' } },
+          { specimen: { $regex: value2, '$options': 'i' } }
+        ],
+        $limit: 20
+      }
+    })
+  }
+
+  searchInvestigationPanel(value) {
+    this._systemModuleService.on();
+    return this.investigationService.find({
+      query: {
+        facilityId: this.selectedFacility._id,
+        name: { $regex: value, '$options': 'i' },
+        $limit: 20
+      }
+    })
+  }
+  onSearchInvestigation() {
+    this.investigation_list_search = !this.investigation_list_search;
+  }
+
   getInvestigations() {
+    this._systemModuleService.on();
     this.investigationService.find({
       query: {
         'facilityId': this.selectedFacility._id, $limit: this.limit,
         $skip: this.index * this.limit,
       }
     }).then(res => {
+      this._systemModuleService.off();
       this.loading = false;
       if (res.data.length > 0) {
         this.investigations = res.data;
@@ -156,7 +229,9 @@ export class InvestigationServiceComponent implements OnInit {
     this.loadMoreText = 'Showing ' + ret + ' of ' + this.total + ' records';
   }
   getServiceCategories() {
+    this._systemModuleService.on();
     this.facilityServiceCategoryService.find({ query: { facilityId: this.selectedFacility._id } }).then(res => {
+      this._systemModuleService.off();
       if (res.data.length > 0) {
         this.selectedFacilityService = res.data[0];
         this.categories = res.data[0].categories;
@@ -169,6 +244,7 @@ export class InvestigationServiceComponent implements OnInit {
   }
 
   editInvestigation(investigation) {
+    window.scrollTo(100, 0);
     if (!investigation.isPanel) {
       this.selectedInvestigation = investigation;
       this.frmNewInvestigationh.controls['investigationName'].setValue(this.selectedInvestigation.name);
@@ -209,8 +285,10 @@ export class InvestigationServiceComponent implements OnInit {
     }
   }
   getSpecimens() {
+    this._systemModuleService.on();
     this.specimenService.findAll().then(res => {
       if (res.data.length > 0) {
+        this._systemModuleService.off();
         this.specimens = res.data;
       }
     });
@@ -243,6 +321,7 @@ export class InvestigationServiceComponent implements OnInit {
 
   createInvestigation(valid, value) {
     if (valid) {
+      this.isBtnDisable = true;
       if (this.selectedInvestigation._id === undefined) {
         const investigation: any = {
           facilityId: this.selectedFacility._id,
@@ -272,6 +351,7 @@ export class InvestigationServiceComponent implements OnInit {
             }
           });
           this.facilityServiceCategoryService.update(this.selectedFacilityService).then((payResult: FacilityService) => {
+            this.isBtnDisable = false;
             payResult.categories.forEach((itemi, i) => {
               if (itemi.name === 'Laboratory') {
                 itemi.services.forEach((items, s) => {
@@ -293,8 +373,7 @@ export class InvestigationServiceComponent implements OnInit {
                       this.frmNewInvestigationh.reset();
                       this.frmNewInvestigationh.controls['isPanel'].setValue(false);
                       this.investigations.push(payload);
-                      this._systemModuleService.announceSweetProxy('Investigation has been created successfully.', 'success', null, null, null, null, null, null, null);
-                      this.getInvestigations();
+                      this._systemModuleService.announceSweetProxy('Investigation has been created successfully.', 'success', this);
                     });
                   }
                 });
@@ -330,6 +409,7 @@ export class InvestigationServiceComponent implements OnInit {
               }
             });
             this.facilityServiceCategoryService.update(this.selectedFacilityService).then((payResult: FacilityService) => {
+              this.isBtnDisable = true;
               payResult.categories.forEach((itemi, i) => {
                 if (itemi.name === 'Laboratory') {
                   itemi.services.forEach((items, s) => {
@@ -356,8 +436,7 @@ export class InvestigationServiceComponent implements OnInit {
                         this.frmNewInvestigationh.controls['isPanel'].setValue(false);
                         const index = this.investigations.findIndex((obj => obj._id === payload._id));
                         this.investigations.splice(index, 1, payload);
-                        this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success', null, null, null, null, null, null, null);
-                        this.getInvestigations();
+                        this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success', this);
                       })
                     }
                   });
@@ -365,6 +444,7 @@ export class InvestigationServiceComponent implements OnInit {
               });
             });
           } else {
+            this.isBtnDisable = true;
             this.investigation_view = false;
             this.addInvestBtn = true;
             this.editInvestBtn = false;
@@ -374,11 +454,11 @@ export class InvestigationServiceComponent implements OnInit {
             this.frmNewInvestigationh.controls['isPanel'].setValue(false);
             const index = this.investigations.findIndex((obj => obj._id === payload._id));
             this.investigations.splice(index, 1, payload);
-            this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success', null, null, null, null, null, null, null);
-            this.getInvestigations();
+            this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success', this);
           }
 
         }, error => {
+          this.isBtnDisable = false;
           this.addInvestBtn = true;
           this.addingInvestBtn = false;
           this.frmNewInvestigationh.reset();
@@ -386,6 +466,10 @@ export class InvestigationServiceComponent implements OnInit {
         })
       }
     }
+  }
+
+  sweetAlertCallback(result) {
+    this.getInvestigations();
   }
 
   createPanel(valid, value) {
@@ -400,7 +484,6 @@ export class InvestigationServiceComponent implements OnInit {
         };
 
         this.investigationService.create(investigation).then(payload => {
-          //
           const service: any = <any>{};
           service.name = value.panelName;
 
@@ -440,7 +523,7 @@ export class InvestigationServiceComponent implements OnInit {
                       this.frmNewPanel.controls['isPanel'].setValue(false);
                       const index = this.investigations.findIndex((obj => obj._id === payload._id));
                       this.investigations.splice(index, 1, payload);
-                      this._systemModuleService.announceSweetProxy('Investigation has been created successfully.', 'success', null, null, null, null, null, null, null);
+                      this._systemModuleService.announceSweetProxy('Investigation has been created successfully.', 'success', this);
                     }, error => {
                       this.addingPInvestBtn = false;
                     })
@@ -496,7 +579,7 @@ export class InvestigationServiceComponent implements OnInit {
                         this.frmNewPanel.controls['isPanel'].setValue(false);
                         const index = this.investigations.findIndex((obj => obj._id === payload._id));
                         this.investigations.splice(index, 1, payload);
-                        this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success', null, null, null, null, null, null, null);
+                        this._systemModuleService.announceSweetProxy('Investigation has been updated successfully.', 'success', this);
                       }, error => {
                         this.addingPInvestBtn = false;
                       })

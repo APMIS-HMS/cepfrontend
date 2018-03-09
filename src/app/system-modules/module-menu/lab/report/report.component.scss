@@ -5,6 +5,7 @@
 
 .frm-l {
     float: left;
+    overflow: hidden;
 }
 
 .frm-r {
@@ -170,9 +171,9 @@
 .selected-patient-wrap {
     width: 100%;
     height: auto;
-    padding: 5px 0;
+    padding: 5px;
     min-height: 50px;
-    background-color: #FFE0B2;
+    background-color: #ffffff;
     display: table;
 }
 
@@ -205,12 +206,14 @@
 }
 
 .pending-req-wrap {
-    max-height: 350px;
-    overflow-y: auto;
     margin: 0 auto;
     margin-top: 0px;
     padding: 0 0 20px 0;
     width: 98%;
+}
+
+.active{
+    background: #bebebe !important;
 }
 
 .tab-title {
