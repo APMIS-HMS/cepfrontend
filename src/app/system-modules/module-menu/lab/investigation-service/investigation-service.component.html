@@ -189,7 +189,8 @@
                                         {{investigation.name}}
                                     </div>
                                     <div class="table-list col-xs-2">
-                                        {{investigation.specimen}}
+                                        <span *ngIf="investigation.specimen?.name !== undefined">{{investigation.specimen?.name}}</span>
+                                        <span *ngIf="investigation.specimen?.name === undefined">{{investigation.specimen}}</span>
                                     </div>
                                     <div class="table-list col-xs-2">
                                         {{getRefrenceValues(investigation?.reportType)}}

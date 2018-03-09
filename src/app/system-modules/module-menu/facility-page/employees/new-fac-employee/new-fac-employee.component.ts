@@ -135,6 +135,7 @@ export class NewFacEmployeeComponent implements OnInit {
             this.errMsg = '';
         });
 
+
         this.frmPerson = this.formBuilder.group({
             persontitle: [new Date(), [<any>Validators.required]],
             firstname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
@@ -313,7 +314,7 @@ export class NewFacEmployeeComponent implements OnInit {
         });
     }
     validatingPerson() {
-        return this.validating || this.duplicate;
+        return this.validating && this.duplicate;
     }
     getSecurityQuestions() {
         this.securityQuestionService.find({})

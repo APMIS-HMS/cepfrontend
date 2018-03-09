@@ -75,10 +75,13 @@ export class AppointmentComponent implements OnInit {
         this.filteredProviders = this.providerCtrl.valueChanges
             .startWith(null)
             .map((provider: Employee) => provider && typeof provider === 'object' ? provider.personDetails.lastName : provider)
-            .map(val => val ? this.filterProviders(val) : this.providers.slice());
+            .map(val => val ? this.filterProviders(val) : this.filterProviders(''));
 
         this.typeCtrl = new FormControl();
-
+        this.filteredAppointmentTypes = this.typeCtrl.valueChanges
+        .startWith(null)
+        .map((appointmentType: AppointmentType) => appointmentType && typeof appointmentType === 'object' ? appointmentType.name : appointmentType)
+        .map(val => val ? this.filterAppointmentTypes(val) : this.filterAppointmentTypes(''));
 
         this.statusCtrl = new FormControl();
 
@@ -279,7 +282,6 @@ export class AppointmentComponent implements OnInit {
             .filter(s => s.clinicId.toLowerCase().indexOf(val.clinicName.toLowerCase()) === 0) : this.appointments;
     }
     filterProviders(val: any) {
-        console.log(this.appointments);
         this.filteredAppointments = this.appointments;
         const smallApp = this.appointments.filter(m =>m.doctorId !== undefined);
         if(val.length !== 0){
@@ -296,6 +298,8 @@ export class AppointmentComponent implements OnInit {
             : this.providers;
     }
     filterAppointmentTypes(val: any) {
+        this.filteredAppointments = val ? this.appointments
+        .filter(s => s.appointmentTypeId.toLowerCase().indexOf(val.name.toLowerCase()) === 0) : this.appointments;
         return val ? this.appointmentTypes.filter(s => s.name.toLowerCase().indexOf(val.toLowerCase()) === 0)
             : this.appointmentTypes;
     }
