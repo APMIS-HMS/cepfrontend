@@ -111,3 +111,24 @@
 .makepaymentbtn {
     position: justify;
 }
+.tabs{
+    display: flex;
+    justify-content: flex-start;
+    border-bottom: 1px solid #777;
+}
+.pg-tab{
+    background: #eee;
+    height: 38px;
+    color: #777;
+    font-size: 1.4rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 160px;
+    margin-right: 2px;
+    cursor: pointer;
+}
+.pg-tab:hover, .pg-tab-active{
+    background: #777;
+    color: #fff;
+}

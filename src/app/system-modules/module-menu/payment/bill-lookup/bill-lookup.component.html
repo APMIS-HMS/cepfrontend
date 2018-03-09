@@ -16,11 +16,11 @@
                         <ul class="pending-bills">
                             <li class="empWrap" *ngFor="let pendingBill of pendingBills; let i = index;" (click)="onClickPatientPendingBill(pendingBill)">
                                 <div class="list-img">
-                                    <img *ngIf="pendingBill?.principalObject.personDetails.profileImageObject == undefined" src="assets/images/users/default.png">
-                                    <img class="shadow" *ngIf="pendingBill?.principalObject.personDetails.profileImageObject != undefined" [src]="facilityService.transform(pendingBill?.principalObject.personDetails.profileImageObject?.thumbnail)">
+                                    <img *ngIf="pendingBill?.principalObject?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                    <img class="shadow" *ngIf="pendingBill?.principalObject?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(pendingBill?.principalObject?.personDetails?.profileImageObject?.thumbnail)">
                                 </div>
                                 <div class="list-labels">
-                                    <div class="pending-name">{{ pendingBill?.principalObject?.personDetails.firstName }} {{ pendingBill?.principalObject.personDetails.lastName}}</div>
+                                    <div class="pending-name">{{ pendingBill?.principalObject?.personDetails?.firstName }} {{ pendingBill?.principalObject?.personDetails?.lastName}}</div>
                                     <div class="oda">
                                         <div class="pending-date">{{ pendingBill?.updatedAt | date:'medium' }}</div>
                                         <div class="pending-amount">
@@ -90,7 +90,7 @@
                             <div class="clientName">{{selectedPatient?.personDetails?.lastName}} {{selectedPatient?.personDetails?.firstName}}</div>
                             <div class="clientName">
                                 <span class="{{ selectedPatient?.personDetails?.wallet?.balance > 0 ? 'text-blue' : 'accBal-val'}}">
-                                    &#8358; {{selectedPatient?.personDetails?.wallet?.balance|numberThr}}
+                                    &#8358; {{selectedPatient?.personDetails?.wallet?.balance|number:'1.2-2'}}
                                 </span>
                             </div>
                             <div class="clientAddress">
