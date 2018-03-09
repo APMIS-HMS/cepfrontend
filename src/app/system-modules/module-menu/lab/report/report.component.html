@@ -304,17 +304,23 @@
                                             </div>
                                             <div class="frm-item-wrap">
                                                 <span style="color:rgba(0,0,0,.38);">Optionally attach a file</span>
-                                                <div (click)="showImageBrowseDlg()" class="action-item" style="color:#FF9800;">
+                                                <!-- <div (click)="showImageBrowseDlg()" class="action-item" style="color:#FF9800;">
                                                     <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                                                     <span>Upload File</span>
                                                     <input type="file" (change)="selectImage($event)" />
-                                                </div>
+                                                </div> -->
+                                                <div class="upload-btn-wrapper">
+                                                    <button class="upload-btn">Select Document</button>
+                                                    <input type="file" name="fileInput" (change)="onFileChange($event)" #fileInput formControlName="fileUpload" />
+                                                      <span style="font-size: 0.79em; color: #aaa; font-weight: 900;">{{fileName}}</span>
+                                                  </div>
                                             </div>
                                         </form>
                                     </div>
                                 </div>
 
                                 <div class="btns" *ngIf="hasRequest">
+                                        <button (click)="uploadDoc()" class="button btn-blue" [innerHtml]="'Upload'"></button>
                                     <button (click)="createReport(reportFormGroup.valid, reportFormGroup.value, 'save')" class="button btn-orange" [innerHtml]="saveToDraftBtnText"></button>
                                     <button (click)="createReport(reportFormGroup.valid, reportFormGroup.value, 'upload')" class="button btn-blue" [innerHtml]="saveAndUploadBtnText"></button>
                                 </div>

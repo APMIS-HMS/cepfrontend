@@ -3,7 +3,7 @@ import { FormArray, FormGroup, FormBuilder, Validators, FormControl } from '@ang
 import { Router, ActivatedRoute } from '@angular/router';
 import {
   FacilitiesService, LaboratoryRequestService,
-  LaboratoryReportService, DocumentationService, FormsService, BillingService
+  LaboratoryReportService, DocumentationService, FormsService, BillingService, DocumentUploadService
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, User, PendingLaboratoryRequest } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -59,7 +59,11 @@ export class ReportComponent implements OnInit {
   saveToDraftBtnText: String = 'SAVE AS DRAFT';
   disablePaymentBtn: Boolean = false;
   importTemplate: Boolean = false;
-	paymentStatusText: String = '<i class="fa fa-refresh"></i> Refresh Payment Status';
+  paymentStatusText: String = '<i class="fa fa-refresh"></i> Refresh Payment Status';
+
+  fileName;
+  fileType;
+  fileBase64;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -73,11 +77,12 @@ export class ReportComponent implements OnInit {
     private _documentationService: DocumentationService,
     private _billingService: BillingService,
     private _systemModuleService: SystemModuleService,
-    private _authFacadeService: AuthFacadeService
+    private _authFacadeService: AuthFacadeService,
+    private _documentUploadService: DocumentUploadService
   ) {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.employeeDetails = res;
-    }).catch(err => {});
+    }).catch(err => { });
   }
 
   ngOnInit() {
@@ -93,7 +98,8 @@ export class ReportComponent implements OnInit {
       results: this.formBuilder.array([this.initResultBuilder()]),
       outcome: ['', [Validators.required]],
       conclusion: [''],
-      recommendation: ['']
+      recommendation: [''],
+      fileUpload: ['']
     });
 
     this.patientFormGroup.controls['patient'].valueChanges.subscribe(value => {
@@ -195,7 +201,7 @@ export class ReportComponent implements OnInit {
         } else {
 
         }
-      }).catch(err => {});
+      }).catch(err => { });
 
       // Call the request service and update the investigation.
       // this._laboratoryRequestService.find({
@@ -338,7 +344,7 @@ export class ReportComponent implements OnInit {
     this.pendingReLoading = true;
     this.apmisLookupText = `${value.firstName} ${value.lastName}`;
     this.selectedPatient = value;
-    this._laboratoryRequestService.find({
+    this._laboratoryRequestService.customFind({
       query: { 'facilityId': this.facility._id, 'patientId': value.patientId }
     }).then(res => {
       this.pendingReLoading = false;
@@ -346,7 +352,7 @@ export class ReportComponent implements OnInit {
         const pendingRequests = this._modelPendingRequests(res.data);
         if (pendingRequests.length > 0) {
           this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved)
-          && (x.isUploaded === undefined || (x.isUploaded === false)));
+            && (x.isUploaded === undefined || (x.isUploaded === false)));
 
           // If pendingRequests contains at least a value, then get payment status
           if (this.pendingRequests.length > 0) {
@@ -370,25 +376,67 @@ export class ReportComponent implements OnInit {
   selectImage(fileInput: any) {
     const fileList = fileInput.target.files;
     if (fileList.length > 0) {
-        const file: File = fileList[0];
-        const formData: FormData = new FormData();
-        formData.append('uploadFile', file, file.name);
-        const headers = new Headers();
-        /** No need to include Content-Type in Angular 4 */
-        headers.append('Content-Type', 'multipart/form-data');
-        headers.append('Accept', 'application/json');
-        // let options = new RequestOptions({ headers: headers });
+      const file: File = fileList[0];
+      const formData: FormData = new FormData();
+      formData.append('uploadFile', file, file.name);
+      const headers = new Headers();
+      /** No need to include Content-Type in Angular 4 */
+      headers.append('Content-Type', 'multipart/form-data');
+      headers.append('Accept', 'application/json');
+      // let options = new RequestOptions({ headers: headers });
 
-        // this.http.post(`${this.apiEndPoint}`, formData, options)
-        //     .map(res => res.json())
-        //     .catch(error => Observable.throw(error))
-        //     .subscribe(
-        //     )
+      // this.http.post(`${this.apiEndPoint}`, formData, options)
+      //     .map(res => res.json())
+      //     .catch(error => Observable.throw(error))
+      //     .subscribe(
+      //     )
+    }
+  }
+
+  onFileChange(event) {
+    let reader = new FileReader();
+    if (event.target.files && event.target.files.length > 0) {
+      let file = event.target.files[0];
+      this.fileName = file.name;
+      if (file.type == "image/png" || file.type == "image/jpg"
+        || file.type == "image/gif" || file.type == "image/jpeg"
+        || file.type == "application/pdf") {
+        if (file.size < 1250000) {
+          this.fileType = file.type;
+          reader.readAsDataURL(file);
+          reader.onload = () => {
+            let base64 = reader.result;
+            this.fileBase64 = {
+              base64: base64,
+              name: file.name,
+              type: file.type,
+              size: file.size,
+              container: 'laboratorycontainer',
+              investigationId: this.selectedInvestigation.investigationId,
+              labRequestId: this.selectedInvestigation.labRequestId
+            };
+          };
+        } else {
+          this._systemModuleService.announceSweetProxy('Size Of Document Too BIG!', 'info');
+          this.reportFormGroup.controls['fileUpload'].setErrors({ sizeTooBig: true });
+        }
+
+      } else {
+        this._systemModuleService.announceSweetProxy('Type of document not supported.', 'info');
+        this.reportFormGroup.controls['fileUpload'].setErrors({ typeDenied: true });
+      }
     }
   }
 
   onChange(e) {
 
+  }
+
+  uploadDoc() {
+    console.log(this.fileBase64);
+    this._documentUploadService.create(this.fileBase64, {}).then(payload => {
+      console.log(payload);
+    });
   }
 
   private _getSelectedPendingRequests(requestId, investigationId) {
@@ -402,7 +450,7 @@ export class ReportComponent implements OnInit {
         const pendingRequests = this._modelPendingRequests(res.data);
         if (pendingRequests.length > 0) {
           this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved)
-          && (x.isUploaded === undefined || (x.isUploaded === false)));
+            && (x.isUploaded === undefined || (x.isUploaded === false)));
 
           // Highlight the investigation that was selected fro the route parameters
           this.pendingRequests.forEach((invesigation, i) => {
@@ -445,7 +493,7 @@ export class ReportComponent implements OnInit {
         const pendingRequests = this._modelPendingRequests(res.data);
         if (pendingRequests.length > 0) {
           this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved)
-          && (x.isUploaded === undefined || (x.isUploaded === false)));
+            && (x.isUploaded === undefined || (x.isUploaded === false)));
 
           // If pendingRequests contains at least a value, then get payment status
           if (this.pendingRequests.length > 0) {
@@ -626,8 +674,8 @@ export class ReportComponent implements OnInit {
   }
 
   // Get payment status
-	private _getPaymentStatus() {
-		this.disablePaymentBtn = true;
+  private _getPaymentStatus() {
+    this.disablePaymentBtn = true;
     this.paymentStatusText = 'Getting Payment Status... <i class="fa fa-spinner fa-spin"></i>';
 
     this.pendingRequests.forEach((request: PendingLaboratoryRequest) => {
@@ -652,7 +700,7 @@ export class ReportComponent implements OnInit {
             this.disablePaymentBtn = false;
             this.paymentStatusText = '<i class="fa fa-refresh"></i> Refresh Payment Status';
           }
-        }).catch(err => {});
+        }).catch(err => { });
       } else {
         this.disablePaymentBtn = false;
         this.paymentStatusText = '<i class="fa fa-refresh"></i> Refresh Payment Status';
