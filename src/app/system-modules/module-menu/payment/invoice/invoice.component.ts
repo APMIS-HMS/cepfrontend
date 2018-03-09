@@ -141,7 +141,7 @@ export class InvoiceComponent implements OnInit {
             });
     }
 
-    onSelectedInvoice(group: Invoice) {
+    onSelectedInvoice(group) {
         this.selectedInvoiceGroup = group;
     }
 
@@ -156,7 +156,7 @@ export class InvoiceComponent implements OnInit {
     }
 
     onSelectedOtherPatientInvoice(invoice) {
-        this.router.navigate(['/dashboard/payment/invoice', invoice.personDetails._id]).then(routePayload => {
+       this.router.navigate(['/dashboard/payment/invoice', invoice.patientId]).then(routePayload => {
             this.isLoadingInvoice = true;
             this.isLoadingOtherInvoice = true;
         });
