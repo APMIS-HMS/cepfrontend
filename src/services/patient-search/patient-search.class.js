@@ -23,7 +23,7 @@ class Service {
         if (accessToken !== undefined) {
             const hasFacility = params.user.facilitiesRole.filter(x => x.facilityId.toString() === facilityId);
             if (hasFacility.length > 0) {
-                // Get workbenches
+                // Get Patients
                 let patients = await patientService.find({ query: { facilityId: facilityId, $select: ['personId'] } });
                 if (patients.data.length > 0) {
                     patients = patients.data.map(x => x.personId);
