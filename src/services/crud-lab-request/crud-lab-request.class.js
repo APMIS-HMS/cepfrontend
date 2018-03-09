@@ -131,11 +131,13 @@ class Service {
                                     patientId: request.patientId
                                 }
                             });
-                            const billingItem = billing.data[0];
-                            billingItem.billItems.forEach(billItem => {
-                                request.isPaid = billItem.paymentCompleted;
-                                request.isWaved = (billItem.isServiceEnjoyed === true && billItem.paymentCompleted === false) ? true : false;
-                            });
+                            if (billing.data.length > 0) {
+                                const billingItem = billing.data[0];
+                                billingItem.billItems.forEach(billItem => {
+                                    request.isPaid = billItem.paymentCompleted;
+                                    request.isWaved = (billItem.isServiceEnjoyed === true && billItem.paymentCompleted === false) ? true : false;
+                                });
+                            }
 
                             counter++;
                         }
