@@ -140,8 +140,9 @@ export class ReportComponent implements OnInit {
     });
 
     this.patientSearch.valueChanges
-      .distinctUntilChanged()
       .debounceTime(400)
+      .distinctUntilChanged()
+      .do(val => { this.reports = []; this.reportLoading = true; })
       .switchMap((term) => Observable.fromPromise(this._laboratoryRequestService.customFind({
         query: { search: term, facilityId: this.facility._id }
       }))).subscribe((res: any) => {
