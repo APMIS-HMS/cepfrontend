@@ -164,6 +164,7 @@ export class ReportComponent implements OnInit {
   }
 
   createReport(valid: Boolean, value: any, action: String) {
+    console.log(value);
     if (valid) {
       if (action === 'save') {
         this.saveToDraftBtnText = 'SAVING...';
@@ -182,10 +183,12 @@ export class ReportComponent implements OnInit {
         conclusion: value.conclusion,
         outcome: value.outcome,
         recommendation: value.recommendation,
-        result: value.results
+        result: value.results,
+        file: this.fileBase64
       };
 
       this._laboratoryReportService.customCreate(report).then(res => {
+        console.log(res);
         if (res.status === 'success') {
           this.patientSelected = false;
           this.report_show();
@@ -409,7 +412,8 @@ export class ReportComponent implements OnInit {
             this.fileBase64 = {
               base64: base64,
               name: file.name,
-              type: file.type,
+              fileType: file.type,
+              type: 'laboratory report',
               size: file.size,
               container: 'laboratorycontainer',
               investigationId: this.selectedInvestigation.investigationId,
@@ -433,10 +437,8 @@ export class ReportComponent implements OnInit {
   }
 
   uploadDoc() {
-    console.log(this.fileBase64);
-    this._documentUploadService.create(this.fileBase64, {}).then(payload => {
-      console.log(payload);
-    });
+    //console.log(this.fileBase64);
+    return this._documentUploadService.create(this.fileBase64, {})
   }
 
   private _getSelectedPendingRequests(requestId, investigationId) {
