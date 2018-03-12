@@ -66,13 +66,15 @@ import { RadiologyInvestigationService } from 'app/services/facility-manager/set
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 import { CanActivateViaAuthGuardAccessService } from 'app/services/facility-manager/setup/can-activate-via-auth-guard-access.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MessagingComponent } from './messaging/messaging.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     ApmisCheckboxChildComponent,
-    ApmisCheckboxComponent
+    ApmisCheckboxComponent,
+    MessagingComponent
   ],
   exports: [
   ],
