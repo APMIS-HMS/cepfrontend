@@ -53,7 +53,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
             this.employeeService.announceCheckIn(checkingObject);
 
             // tslint:disable-next-line:no-shadowed-variable
-            this.employeeService.update(this.loginEmployee).then(payload => {
+            this.employeeService.patch(this.loginEmployee._id,{storeCheckIn:this.loginEmployee.storeCheckIn}).then(payload => {
               this.loginEmployee = payload;
               checkingObject = { typeObject: itemr, type: 'store' };
               this.employeeService.announceCheckIn(checkingObject);
@@ -67,7 +67,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
               itemr.isOn = true;
               itemr.lastLogin = new Date();
               // tslint:disable-next-line:no-shadowed-variable
-              this.employeeService.update(this.loginEmployee).then(payload => {
+              this.employeeService.patch(this.loginEmployee._id,{storeCheckIn:this.loginEmployee.storeCheckIn}).then(payload => {
                 this.loginEmployee = payload;
                 const checkingObject = { typeObject: itemr, type: 'store' };
                 this.employeeService.announceCheckIn(checkingObject);
