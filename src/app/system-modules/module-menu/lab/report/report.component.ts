@@ -495,15 +495,15 @@ export class ReportComponent implements OnInit {
   }
 
   onClickInvestigation(investigation: PendingLaboratoryRequest, index) {
-    // Highlight the item that was selected
-    this.activeInvestigationNo = index;
-
     if (investigation.isPaid) {
       if (investigation.sampleTaken) {
         investigation.patient.patientId = investigation.patientId;
         this.selectedPatient = investigation.patient;
         this.selectedInvestigation = investigation;
         this.apmisLookupText = `${investigation.patient.firstName} ${investigation.patient.lastName}`;
+
+        // Highlight the item that was selected
+        this.activeInvestigationNo = index;
 
         // if The investigation is a panel, then there is no need for the reportType and specimen
         if (!investigation.isPanel) {
