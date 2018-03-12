@@ -186,6 +186,7 @@ export class ReportComponent implements OnInit {
         result: value.results,
         file: this.fileBase64
       };
+      console.log(report);
 
       this._laboratoryReportService.customCreate(report).then(res => {
         console.log(res);
