@@ -1073,11 +1073,13 @@ export class LabRequestsComponent implements OnInit {
             });
           });
         })
-        .catch(err => {});
+        .catch(err => {console.log(err)});
     } else {
+      console.log(this.selectedFacility);
       this.requestService
         .customFind({ query: { facilityId: this.selectedFacility._id } })
         .then(res => {
+          console.log('back')
           this.loading = false;
           let labId = '';
           if (
@@ -1154,7 +1156,7 @@ export class LabRequestsComponent implements OnInit {
             });
           });
         })
-        .catch(err => {});
+        .catch(err => {console.log(err)});
     }
   }
 
