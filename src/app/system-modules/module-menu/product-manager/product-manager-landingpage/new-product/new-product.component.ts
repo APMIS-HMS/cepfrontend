@@ -303,6 +303,8 @@ export class NewProductComponent implements OnInit {
   }
 
   create(valid, value) {
+    console.log(valid);
+    console.log(this.frm_newProduct.controls);
     if (valid) {
       if (this.selectedProduct === undefined || this.selectedProduct._id === undefined) {
         const service: any = <any>{};
