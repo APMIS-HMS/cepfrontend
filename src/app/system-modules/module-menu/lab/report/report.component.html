@@ -308,16 +308,17 @@
                                                 </mat-input-container>
                                             </div>
                                             <div class="frm-item-wrap">
-                                                    <div>
-                                                            <div (click)="showImageBrowseDlg()" class="action-item" style="color:#FF9800;">
-                                                                <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                                                                <span>Upload</span>
-                                                            </div>
-                                                            <div (click)="showImageBrowseDlg()" class="action-item" style="color:#0288D1;">
-                                                                <i class="fa fa-edit" aria-hidden="true"></i>
-                                                                <span>Edit</span>
-                                                            </div>
-                                                    </div>
+                                                <span style="color:rgba(0,0,0,.38);">Optionally attach a file</span>
+                                                <!-- <div (click)="showImageBrowseDlg()" class="action-item" style="color:#FF9800;">
+                                                    <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                                                    <span>Upload File</span>
+                                                    <input type="file" (change)="selectImage($event)" />
+                                                </div> -->
+                                                <div class="upload-btn-wrapper">
+                                                    <button class="upload-btn">Upload</button>
+                                                    <input type="file" name="fileInput" (change)="onFileChange($event)" #fileInput formControlName="fileUpload" />
+                                                      <span style="font-size: 0.79em; color: #aaa; font-weight: 900;">{{fileName}}</span>
+                                                  </div>
                                             </div>
                                         </form>
                                     </div>
