@@ -80,18 +80,11 @@ export class StoreCheckInComponent implements OnInit {
 	checkIn(valid, value) {
 		this.checkInBtnText = '<i class="fa fa-spinner fa-spin"></i> Checking in...';
 		const checkIn: any = <any>{};
-		console.log(1);
 		checkIn.minorLocationId = value.location;
-		console.log(2);
 		checkIn.storeId = value.room;
-		console.log(3);
 		checkIn.lastLogin = new Date();
-		console.log(4);
 		checkIn.isOn = true;
-		console.log(5);
 		checkIn.isDefault = value.isDefault;
-		console.log(this.loginEmployee.storeCheckIn);
-		console.log(this.loginEmployee);
 		if (this.loginEmployee.storeCheckIn === undefined) {
 			this.loginEmployee.storeCheckIn = [];
 		}
