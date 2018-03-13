@@ -210,6 +210,7 @@ export class InvestigationServiceComponent implements OnInit {
     }).then(res => {
       this._systemModuleService.off();
       this.loading = false;
+      this.total = res.total;
       if (res.data.length > 0) {
         this.investigations = res.data;
         if (this.total <= this.investigations.length) {
