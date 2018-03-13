@@ -22,8 +22,6 @@ class Service {
         const searchText = params.query.search;
         const cQuery = params;
 
-        console.log('Params => ', params);
-
         if (accessToken !== undefined) {
             const hasFacility = params.user.facilitiesRole.filter(x => x.facilityId.toString() === facilityId);
             if (hasFacility.length > 0) {
@@ -31,7 +29,6 @@ class Service {
                 if (searchText !== undefined) {
                     // Get all person ids in a facility from the patients service.
                     let patients = await patientService.find({ query: { facilityId: facilityId, $select: ['personId'] } });
-                    console.log('Patients => ', patients);
                     if (patients.data.length > 0) {
                         // Filter only the personIds from the returned patients array.
                         const personIds = patients.data.map(x => x.personId);
@@ -48,7 +45,6 @@ class Service {
                                 ]
                             }
                         });
-                        console.log('People => ', people);
 
                         if (people.data.length > 0) {
                             // Filter only the personIds from the returned patients array.
@@ -79,7 +75,6 @@ class Service {
                                     delete employee.personDetails.wallet;
                                     request.employeeDetails = employee.personDetails;
 
-                                    console.log('Request => ', request);
                                     if (request.billingId !== undefined) {
                                         const billing = await billingService.find({
                                             query: {
@@ -101,7 +96,6 @@ class Service {
                                 }
 
                                 if (rLength === counter) {
-                                    console.log('Final Requests => ', requests);
                                     return jsend.success(requests);
                                 }
                             } else {
@@ -154,7 +148,6 @@ class Service {
                         }
 
                         if (rLength === counter) {
-                            console.log('Final Requests => ', requests);
                             return jsend.success(requests);
                         }
                     } else {
