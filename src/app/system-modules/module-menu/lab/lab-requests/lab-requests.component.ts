@@ -919,6 +919,7 @@ export class LabRequestsComponent implements OnInit {
   }
 
   save(valid, value) {
+
     const copyBindInvestigation = JSON.parse(
       JSON.stringify(this.bindInvestigations)
     );
@@ -970,7 +971,6 @@ export class LabRequestsComponent implements OnInit {
         this._getAllPendingRequests();
         this.bindInvestigations = [];
         this.investigations = [];
-        this.apmisLookupText = '';
         this.selectedPatient = undefined;
         this._systemModuleService.announceSweetProxy('Request has been sent successfully!', 'success');
       } else {
@@ -1075,11 +1075,13 @@ export class LabRequestsComponent implements OnInit {
             });
           });
         })
-        .catch(err => {});
+        .catch(err => {console.log(err)});
     } else {
+      console.log(this.selectedFacility);
       this.requestService
         .customFind({ query: { facilityId: this.selectedFacility._id } })
         .then(res => {
+          console.log('back')
           this.loading = false;
           let labId = '';
           if (
@@ -1156,7 +1158,7 @@ export class LabRequestsComponent implements OnInit {
             });
           });
         })
-        .catch(err => {});
+        .catch(err => {console.log(err)});
     }
   }
 
