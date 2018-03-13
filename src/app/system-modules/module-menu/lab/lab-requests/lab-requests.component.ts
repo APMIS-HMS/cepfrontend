@@ -45,6 +45,7 @@ import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade
   styleUrls: ['./lab-requests.component.scss']
 })
 export class LabRequestsComponent implements OnInit {
+  patientSearch = new FormControl();
   @ViewChild('fileInput') fileInput: ElementRef;
   @Input() isLaboratory = true;
   @Input() patientId;
@@ -104,8 +105,9 @@ export class LabRequestsComponent implements OnInit {
   selectedInvestigation: any = <any>{};
   user: User = <User>{};
   loginEmployee: Employee;
-
   totalPrice: Number = 0;
+  searchOpen = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private renderer: Renderer,
@@ -135,6 +137,86 @@ export class LabRequestsComponent implements OnInit {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.user = <User>this.locker.getObject('auth');
     this.searchInvestigation = new FormControl('', []);
+
+    this.patientSearch.valueChanges
+      .distinctUntilChanged()
+      .debounceTime(400)
+      .switchMap((term) => Observable.fromPromise(this.requestService.customFind({
+        query: { search: term, facilityId: this.selectedFacility._id }
+      }))).subscribe((res: any) => {
+        this.pendingRequests = [];
+        if (res.status === 'success') {
+          this.loading = false;
+          let labId = '';
+          if (
+            this.selectedLab !== undefined &&
+            this.selectedLab !== null &&
+            this.selectedLab.typeObject !== undefined
+          ) {
+            labId = this.selectedLab.typeObject.minorLocationId;
+          }
+
+          // Filter investigations based on the laboratory Id
+          res.data.forEach(labRequest => {
+            labRequest.investigations.forEach(investigation => {
+              if (
+                investigation.isSaved === undefined ||
+                !investigation.isSaved ||
+                ((investigation.isUploaded === undefined ||
+                  !investigation.isUploaded) &&
+                  labId === investigation.location.laboratoryId._id)
+              ) {
+                const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
+                if (!investigation.isSaved || !investigation.isUploaded) {
+                  pendingLabReq.report = investigation.report;
+                  pendingLabReq.isSaved = investigation.isSaved;
+                  pendingLabReq.isUploaded = investigation.isUploaded;
+                }
+                pendingLabReq.labRequestId = labRequest._id;
+                pendingLabReq.facility = labRequest.facilityId;
+                pendingLabReq.clinicalInformation =
+                  labRequest.clinicalInformation;
+                pendingLabReq.diagnosis = labRequest.diagnosis;
+                pendingLabReq.labNumber = labRequest.labNumber;
+                pendingLabReq.patientId = labRequest.patientId;
+                pendingLabReq.patient = labRequest.personDetails;
+                pendingLabReq.isExternal = investigation.isExternal;
+                pendingLabReq.isUrgent = investigation.isUrgent;
+                if (investigation.location !== undefined) {
+                  pendingLabReq.minorLocation =
+                    investigation.location.laboratoryId;
+                }
+
+                pendingLabReq.facilityServiceId =
+                  investigation.investigation.facilityServiceId;
+                pendingLabReq.isPanel = investigation.investigation.isPanel;
+                pendingLabReq.name = investigation.investigation.name;
+                pendingLabReq.reportType =
+                  investigation.investigation.reportType;
+                pendingLabReq.specimen = investigation.investigation.specimen;
+                pendingLabReq.service = investigation.investigation.serviceId;
+                pendingLabReq.unit = investigation.investigation.unit;
+                pendingLabReq.investigationId = investigation.investigation._id;
+                pendingLabReq.createdAt = labRequest.createdAt;
+                pendingLabReq.updatedAt = labRequest.updatedAt;
+                pendingLabReq.createdById = labRequest.createdBy;
+                pendingLabReq.createdBy = labRequest.employeeDetails;
+
+                if (investigation.specimenReceived !== undefined) {
+                  pendingLabReq.specimenReceived =
+                    investigation.specimenReceived;
+                }
+                if (investigation.specimenNumber !== undefined) {
+                  pendingLabReq.specimenNumber = investigation.specimenNumber;
+                }
+
+                this.pendingRequests.push(pendingLabReq);
+              }
+            });
+          });
+        }
+      });
+
     this.searchInvestigation.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
@@ -451,7 +533,7 @@ export class LabRequestsComponent implements OnInit {
   close_onClick(message: boolean): void {
     this.reqDetail_view = false;
     this.personAcc_view = false;
-    // this._getAllPendingRequests();
+    this._getAllPendingRequests();
   }
   childChanged(
     $event,
@@ -835,6 +917,7 @@ export class LabRequestsComponent implements OnInit {
   }
 
   save(valid, value) {
+
     const copyBindInvestigation = JSON.parse(
       JSON.stringify(this.bindInvestigations)
     );
@@ -886,7 +969,6 @@ export class LabRequestsComponent implements OnInit {
         this._getAllPendingRequests();
         this.bindInvestigations = [];
         this.investigations = [];
-        this.apmisLookupText = '';
         this.selectedPatient = undefined;
         this._systemModuleService.announceSweetProxy('Request has been sent successfully!', 'success');
       } else {
@@ -991,11 +1073,13 @@ export class LabRequestsComponent implements OnInit {
             });
           });
         })
-        .catch(err => {});
+        .catch(err => {console.log(err)});
     } else {
+      console.log(this.selectedFacility);
       this.requestService
         .customFind({ query: { facilityId: this.selectedFacility._id } })
         .then(res => {
+          console.log('back')
           this.loading = false;
           let labId = '';
           if (
@@ -1072,7 +1156,7 @@ export class LabRequestsComponent implements OnInit {
             });
           });
         })
-        .catch(err => {});
+        .catch(err => {console.log(err)});
     }
   }
 
@@ -1083,6 +1167,10 @@ export class LabRequestsComponent implements OnInit {
         '/' +
         request.investigationId
     ]);
+  }
+
+  openSearch() {
+    this.searchOpen = !this.searchOpen;
   }
 
   // Notification
