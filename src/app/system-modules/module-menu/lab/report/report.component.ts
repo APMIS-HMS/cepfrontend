@@ -487,7 +487,6 @@ export class ReportComponent implements OnInit {
           // Highlight the investigation that was selected fro the route parameters
           this.pendingRequests.forEach((invesigation, i) => {
             if (invesigation.investigationId === investigationId) {
-              console.log(invesigation);
               this.onClickInvestigation(invesigation, i);
             }
           });
