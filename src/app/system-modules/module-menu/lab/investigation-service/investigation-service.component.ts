@@ -307,7 +307,7 @@ export class InvestigationServiceComponent implements OnInit {
   }
 
   specimenDisplayFn(specimen: any) {
-    return specimen ? specimen.name : specimen;
+    return typeof(specimen) === 'object' ? specimen.name : specimen;
   }
   getRefrenceValues(reportType) {
     if (reportType !== undefined && reportType.name === 'Numeric') {

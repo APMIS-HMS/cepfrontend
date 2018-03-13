@@ -917,6 +917,7 @@ export class LabRequestsComponent implements OnInit {
   }
 
   save(valid, value) {
+
     const copyBindInvestigation = JSON.parse(
       JSON.stringify(this.bindInvestigations)
     );
@@ -968,7 +969,6 @@ export class LabRequestsComponent implements OnInit {
         this._getAllPendingRequests();
         this.bindInvestigations = [];
         this.investigations = [];
-        this.apmisLookupText = '';
         this.selectedPatient = undefined;
         this._systemModuleService.announceSweetProxy('Request has been sent successfully!', 'success');
       } else {

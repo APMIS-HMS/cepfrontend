@@ -59,7 +59,7 @@
                                         <input matInput placeholder="Specimen" [matAutocomplete]="autoSpecimen" formControlName="specimen">
                                     </mat-input-container>
                                     <mat-autocomplete #autoSpecimen="matAutocomplete" [displayWith]="specimenDisplayFn">
-                                        <mat-option *ngFor="let specimen of specimens" [value]="specimen">
+                                        <mat-option *ngFor="let specimen of specimens" [value]="specimen.name">
                                             {{ specimen.name }}
                                         </mat-option>
                                     </mat-autocomplete>
@@ -73,8 +73,7 @@
                         </div>
 
                         <div class="btn-box">
-                            <button mat-raised-button [disabled]="isBtnDisable" (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)"
-                                class="btn">
+                            <button mat-raised-button [disabled]="isBtnDisable" (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)" class="btn">
                                 <span *ngIf="addInvestBtn">
                                     <i class="fa fa-plus"></i> Create Investigation</span>
                                 <span *ngIf="addingInvestBtn">Creating Investigation
@@ -145,8 +144,7 @@
                         </div>
 
                         <div class="btn-box">
-                            <button mat-raised-button [disabled]="!frmNewPanel.valid || addingPInvestBtn" (click)="createPanel(frmNewPanel.valid, frmNewPanel.value)"
-                                class="btn">
+                            <button mat-raised-button [disabled]="!frmNewPanel.valid || addingPInvestBtn" (click)="createPanel(frmNewPanel.valid, frmNewPanel.value)" class="btn">
                                 <span *ngIf="addPInvestBtn">
                                     <i class="fa fa-plus"></i> Create Panel</span>
                                 <span *ngIf="addingPInvestBtn">Creating Panel
