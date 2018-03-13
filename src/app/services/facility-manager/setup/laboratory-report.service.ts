@@ -16,6 +16,7 @@ export class LaboratoryReportService {
     this._rest = _restService.getService('laboratoryreports');
     this._socket = _socketService.getService('laboratoryreports');
     this._customSocket = _socketService.getService('crud-lab-report');
+    this._customSocket.timeout = 90000;
     // this._socket.timeout = 90000;
     this._socket.on('created', function (laboratoryreports) {
 

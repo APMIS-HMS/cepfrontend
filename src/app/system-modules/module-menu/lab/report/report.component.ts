@@ -191,6 +191,7 @@ export class ReportComponent implements OnInit {
       this._laboratoryReportService.customCreate(report).then(res => {
         console.log(res);
         if (res.status === 'success') {
+          console.log(res);
           this.patientSelected = false;
           this.report_show();
           this._getAllReports();
@@ -205,7 +206,7 @@ export class ReportComponent implements OnInit {
         } else {
 
         }
-      }).catch(err => { });
+      }).catch(err => { console.log(err); });
 
       // Call the request service and update the investigation.
       // this._laboratoryRequestService.find({
@@ -414,7 +415,7 @@ export class ReportComponent implements OnInit {
               base64: base64,
               name: file.name,
               fileType: file.type,
-              type: 'laboratory report',
+              docType: 'laboratory report',
               size: file.size,
               container: 'laboratorycontainer',
               investigationId: this.selectedInvestigation.investigationId,
@@ -458,6 +459,7 @@ export class ReportComponent implements OnInit {
           // Highlight the investigation that was selected fro the route parameters
           this.pendingRequests.forEach((invesigation, i) => {
             if (invesigation.investigationId === investigationId) {
+              console.log(invesigation);
               this.onClickInvestigation(invesigation, i);
             }
           });
@@ -514,6 +516,7 @@ export class ReportComponent implements OnInit {
   }
 
   onClickInvestigation(investigation: PendingLaboratoryRequest, index) {
+    console.log(investigation);
     // Highlight the item that was selected
     this.activeInvestigationNo = index;
 

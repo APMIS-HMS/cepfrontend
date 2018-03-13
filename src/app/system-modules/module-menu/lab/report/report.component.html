@@ -320,7 +320,6 @@
                                 </div>
 
                                 <div class="btns" *ngIf="hasRequest">
-                                        <button (click)="uploadDoc()" class="button btn-blue" [innerHtml]="'Upload'"></button>
                                     <button (click)="createReport(reportFormGroup.valid, reportFormGroup.value, 'save')" class="button btn-orange" [innerHtml]="saveToDraftBtnText"></button>
                                     <button (click)="createReport(reportFormGroup.valid, reportFormGroup.value, 'upload')" class="button btn-blue" [innerHtml]="saveAndUploadBtnText"></button>
                                 </div>
