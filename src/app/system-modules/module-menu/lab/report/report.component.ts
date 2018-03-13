@@ -194,7 +194,6 @@ export class ReportComponent implements OnInit {
   }
 
   createReport(valid: Boolean, value: any, action: String) {
-    console.log(value);
     if (valid) {
       if (action === 'save') {
         this.saveToDraftBtnText = 'SAVING...';
@@ -220,9 +219,7 @@ export class ReportComponent implements OnInit {
       };
 
       this._laboratoryReportService.customCreate(report).then(res => {
-        console.log(res);
         if (res.status === 'success') {
-          console.log(res);
           this.patientSelected = false;
           this.report_show();
           this._getAllReports();
