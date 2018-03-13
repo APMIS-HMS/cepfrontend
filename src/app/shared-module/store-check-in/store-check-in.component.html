@@ -33,7 +33,7 @@
                     <div class="frm-item-wrap">
                         <mat-form-field>
                             <mat-select placeholder="Store" formControlName="room">
-                                <mat-option *ngFor="let store of stores" [value]="store">{{store.name}}</mat-option>
+                                <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
@@ -45,10 +45,7 @@
                     </div>
 
                     <div class="btn-group">
-                        <button mat-raised-button [disabled]="!storeCheckin.valid || disableBtn" (click)="checkIn(storeCheckin.valid, storeCheckin.value);" style="color: #fff; margin-right: 5px;">
-                          <span *ngIf="checkInBtn"><i class="fa fa-check-circle"></i> Check In</span>
-                          <span *ngIf="checkingInBtn"><i class="fa fa-spinner fa-spin"></i> Checking in...</span>
-                        </button>
+                        <button mat-raised-button [disabled]="!storeCheckin.valid" (click)="checkIn(storeCheckin.valid, storeCheckin.value);" style="color: #fff; margin-right: 5px;" [innerHtml]="checkInBtnText"> </button>
                         <button mat-raised-button (click)="close_onClick();" style="color: #fff; background-color: #B71C1C;">Cancel</button>
                     </div>
                 </form>
@@ -59,7 +56,7 @@
                 <table>
                     <thead>
                         <tr>
-                            <th>No</th>
+                            <th>Location</th>
                             <th>Store</th>
                             <th>Last Check-In</th>
                             <th></th>
@@ -67,9 +64,9 @@
                     </thead>
 
                     <tbody *ngIf="loginEmployee?.storeCheckIn?.length > 0">
-                        <tr *ngFor="let checkIn of loginEmployee.storeCheckIn; let i=index;">
-                            <td>{{i+1}}</td>
-                            <td>{{checkIn?.storeObject?.name}}</td>
+                        <tr *ngFor="let checkIn of loginEmployee?.storeCheckIn">
+                            <td>{{checkIn?.minorLocation}}</td>
+                            <td>{{checkIn?.store}}</td>
                             <td>{{checkIn?.lastLogin | date:'medium'}}</td>
                             <td class="tblMenu">
                                 <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
@@ -83,7 +80,7 @@
                     <tbody>
                         <tr>
                             <td colspan="4" *ngIf="isLoading"><span class="fa fa-spinner fa-spin"></span> Please wait while loading recent stores checked into!</td>
-                            <td colspan="4" *ngIf="loginEmployee?.storeCheckIn == undefined || loginEmployee?.storeCheckIn.length === 0">No recent stores checked into!</td>
+                            <td colspan="4" *ngIf="loginEmployee?.storeCheckIn == undefined || loginEmployee?.storeCheckIn?.length === 0">No recent stores checked into!</td>
                         </tr>
                     </tbody>
                 </table>
