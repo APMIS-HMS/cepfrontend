@@ -42,8 +42,7 @@ class Service {
     return new Promise(function (resolve, reject) {
 
       blobSvc.createBlockBlobFromText(container, fileName, buffer, { contentType: contentType }, function (error, result, response) {
-        console.log(result);
-        console.log(error);
+
         if (result !== null) {
           const fileUrl = blobSvc.getUrl(result.container, result.name);
           if (error) {

@@ -42,17 +42,15 @@ class Service {
         if (accessToken !== undefined) {
             const hasFacility = params.user.facilitiesRole.filter(x => x.facilityId.toString() === facilityId);
             if (hasFacility.length > 0) {
-                console.log(data.file);
                 if (data.file !== undefined) {
-                    console.log('true');
+                    
                     try{
                         uploadedDoc = await uploadDocService.create(data.file, {});
                     }
                     catch(e){
-                        console.log(e);
+                        
                     }
                     
-                    console.log(uploadedDoc);
                 }
                 // Get Laboratory request
                 const requests = await requestService.find({ query: { facilityId: facilityId, '_id': labRequestId } });
@@ -62,17 +60,14 @@ class Service {
                         const request = requests.data[0];
                         const isUploaded = false;
                         const isSaved = false;
-                        console.log(request);
 
                         request.investigations.forEach(investigation => {
                             if (investigation.investigation._id === investigationId) {
-                                console.log(investigation);
                                 if (data.file !== undefined) {
                                     investigation.file = {
                                         name: uploadedDoc.fileName,
                                         url: uploadedDoc.fileUrl
                                     };
-                                    console.log(investigation.file);
                                 }
                                 if (investigation.investigation.isPanel) {
                                     investigation.report = data;
@@ -146,10 +141,7 @@ class Service {
                             }
                         });
 
-                        console.log(request);
-
                         const updateRequest = await requestService.patch(request._id, request, {});
-                        console.log(updateRequest);
                         const patient = await patientService.get(patientId);
                         const facility = await facilityService.get(facilityId);
 
