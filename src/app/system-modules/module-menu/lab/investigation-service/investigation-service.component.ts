@@ -210,6 +210,7 @@ export class InvestigationServiceComponent implements OnInit {
     }).then(res => {
       this._systemModuleService.off();
       this.loading = false;
+      this.total = res.total;
       if (res.data.length > 0) {
         this.investigations = res.data;
         if (this.total <= this.investigations.length) {
@@ -307,7 +308,7 @@ export class InvestigationServiceComponent implements OnInit {
   }
 
   specimenDisplayFn(specimen: any) {
-    return specimen ? specimen.name : specimen;
+    return typeof(specimen) === 'object' ? specimen.name : specimen;
   }
   getRefrenceValues(reportType) {
     if (reportType !== undefined && reportType.name === 'Numeric') {
