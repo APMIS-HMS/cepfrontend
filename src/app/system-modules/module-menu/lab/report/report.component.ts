@@ -7,6 +7,7 @@ import {
 } from '../../../../services/facility-manager/setup/index';
 import { Facility, User, PendingLaboratoryRequest } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { Observable } from 'rxjs/Observable';
 import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 
@@ -16,6 +17,7 @@ import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
   styleUrls: ['./report.component.scss']
 })
 export class ReportComponent implements OnInit {
+  patientSearch = new FormControl();
   @Output() selectedInvestigationData: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
   reportFormGroup: FormGroup;
   // panelReportFormGroup: FormGroup;
@@ -55,7 +57,7 @@ export class ReportComponent implements OnInit {
   repDetail_view = false;
   activeInvestigationNo: number = -1;
   referenceValue: String = '';
-  saveAndUploadBtnText: String = 'SAVE AND UPLOAD';
+  saveAndUploadBtnText: String = 'SAVE AND PUBLISH';
   saveToDraftBtnText: String = 'SAVE AS DRAFT';
   disablePaymentBtn: Boolean = false;
   importTemplate: Boolean = false;
@@ -64,6 +66,7 @@ export class ReportComponent implements OnInit {
   fileName;
   fileType;
   fileBase64;
+  searchOpen = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -141,6 +144,33 @@ export class ReportComponent implements OnInit {
         this.hasRequest = true;
       }
     });
+
+    this.patientSearch.valueChanges
+      .distinctUntilChanged()
+      .debounceTime(400)
+      .switchMap((term) => Observable.fromPromise(this._laboratoryRequestService.customFind({
+        query: { search: term, facilityId: this.facility._id }
+      }))).subscribe((res: any) => {
+        this.reports = [];
+        if (res.status === 'success') {
+          if (!!this.selectedLab.typeObject.minorLocationId || this.selectedLab.typeObject.minorLocationId !== undefined) {
+            this.reportLoading = false;
+            if (res.data.length > 0) {
+              const reports = this._modelPendingRequests(res.data);
+
+              if (reports.length > 0) {
+                this.reports = reports.filter(x => x.isUploaded || x.isSaved);
+              } else {
+                this.reports = [];
+              }
+            } else {
+              this.reports = [];
+            }
+          } else {
+            this._notification('Error', 'There was a problem getting pending requests. Please try again later!');
+          }
+        }
+      });
   }
 
   initResultBuilder(investigation?: any) {
@@ -171,6 +201,7 @@ export class ReportComponent implements OnInit {
       } else if (action === 'upload') {
         this.saveAndUploadBtnText = 'UPLOADING...';
       }
+
       const isUploaded: Boolean = false;
       const isSaved: Boolean = false;
       const report = {
@@ -184,9 +215,9 @@ export class ReportComponent implements OnInit {
         outcome: value.outcome,
         recommendation: value.recommendation,
         result: value.results,
-        file: this.fileBase64
+        file: this.fileBase64,
+        publishedById: (action === 'upload') ? this.employeeDetails._id : undefined
       };
-      console.log(report);
 
       this._laboratoryReportService.customCreate(report).then(res => {
         console.log(res);
@@ -198,10 +229,10 @@ export class ReportComponent implements OnInit {
           this._getAllPendingRequests();
           if (action === 'save') {
             this.saveToDraftBtnText = 'SAVE AS DRAFT';
-            this._systemModuleService.announceSweetProxy('Report has been saved successfully!', 'success', null, null, null, null, null, null, null);
+            this._systemModuleService.announceSweetProxy('Report has been saved successfully!', 'success');
           } else {
-            this.saveAndUploadBtnText = 'SAVE AND UPLOAD';
-            this._systemModuleService.announceSweetProxy('Report has been saved and uploaded successfully!', 'success', null, null, null, null, null, null, null);
+            this.saveAndUploadBtnText = 'SAVE AND PUBLISH';
+            this._systemModuleService.announceSweetProxy('Report has been saved and uploaded successfully!', 'success');
           }
         } else {
 
@@ -516,16 +547,15 @@ export class ReportComponent implements OnInit {
   }
 
   onClickInvestigation(investigation: PendingLaboratoryRequest, index) {
-    console.log(investigation);
-    // Highlight the item that was selected
-    this.activeInvestigationNo = index;
-
     if (investigation.isPaid) {
       if (investigation.sampleTaken) {
         investigation.patient.patientId = investigation.patientId;
         this.selectedPatient = investigation.patient;
         this.selectedInvestigation = investigation;
         this.apmisLookupText = `${investigation.patient.firstName} ${investigation.patient.lastName}`;
+
+        // Highlight the item that was selected
+        this.activeInvestigationNo = index;
 
         // if The investigation is a panel, then there is no need for the reportType and specimen
         if (!investigation.isPanel) {
@@ -763,6 +793,9 @@ export class ReportComponent implements OnInit {
 
   report_show() {
     this.report_view = !this.report_view;
+  }
+  openSearch() {
+    this.searchOpen = !this.searchOpen;
   }
 
   repDetail(value: PendingLaboratoryRequest) {
