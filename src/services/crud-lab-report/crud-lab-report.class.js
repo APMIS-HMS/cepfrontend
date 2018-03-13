@@ -42,8 +42,17 @@ class Service {
         if (accessToken !== undefined) {
             const hasFacility = params.user.facilitiesRole.filter(x => x.facilityId.toString() === facilityId);
             if (hasFacility.length > 0) {
-                if (data.file > 0 && data.file !== undefined) {
-                    uploadedDoc = await uploadDocService.create(data.file, {});
+                console.log(data.file);
+                if (data.file !== undefined) {
+                    console.log('true');
+                    try{
+                        uploadedDoc = await uploadDocService.create(data.file, {});
+                    }
+                    catch(e){
+                        console.log(e);
+                    }
+                    
+                    console.log(uploadedDoc);
                 }
                 // Get Laboratory request
                 const requests = await requestService.find({ query: { facilityId: facilityId, '_id': labRequestId } });
@@ -53,9 +62,18 @@ class Service {
                         const request = requests.data[0];
                         const isUploaded = false;
                         const isSaved = false;
+                        console.log(request);
 
                         request.investigations.forEach(investigation => {
                             if (investigation.investigation._id === investigationId) {
+                                console.log(investigation);
+                                if (data.file !== undefined) {
+                                    investigation.file = {
+                                        name: uploadedDoc.fileName,
+                                        url: uploadedDoc.fileUrl
+                                    };
+                                    console.log(investigation.file);
+                                }
                                 if (investigation.investigation.isPanel) {
                                     investigation.report = data;
                                     investigation.isUploaded = isUploaded;
@@ -65,14 +83,15 @@ class Service {
                                     investigation.isUploaded = isUploaded;
                                     investigation.isSaved = !isSaved;
                                 }
-                                if (data.file > 0 && data.file !== undefined) {
-                                    investigation.file = [{
+                                if (data.file !== undefined) {
+                                    investigation.file = {
                                         name: uploadedDoc.fileName,
                                         url: uploadedDoc.fileUrl
-                                    }];
+                                    };
                                 }
                             }
                         });
+
 
                         const updateRequest = await requestService.patch(request._id, request, {});
 
@@ -100,11 +119,11 @@ class Service {
                                 investigation.report = data;
                                 investigation.isUploaded = true;
                                 investigation.isSaved = true;
-                                if (data.file > 0 && data.file !== undefined) {
-                                    investigation.file = [{
+                                if (data.file !== undefined) {
+                                    investigation.file = {
                                         name: uploadedDoc.fileName,
                                         url: uploadedDoc.fileUrl
-                                    }];
+                                    };
                                 }
 
                                 saveDocument.body['conclusion'] = investigation.report.conclusion;
@@ -127,7 +146,10 @@ class Service {
                             }
                         });
 
+                        console.log(request);
+
                         const updateRequest = await requestService.patch(request._id, request, {});
+                        console.log(updateRequest);
                         const patient = await patientService.get(patientId);
                         const facility = await facilityService.get(facilityId);
 

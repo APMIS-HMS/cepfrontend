@@ -28,29 +28,35 @@ class Service {
 
     var rawdata = data.base64;
     var matches = rawdata.match(/^data:([A-Za-z-+\\/]+);base64,(.+)$/);
-    const type = data.type;
-    var type = matches[1];
+    const type = data.docType;
+    var contentType = matches[1];
     var buffer = new Buffer(matches[2], 'base64');
     const container = data.container;
 
     if (type === 'laboratory report') {
       fileName = data.labRequestId + '_' + data.investigationId + '.' + fileExt;
-    }else if(type === 'logo'){
+    } else if (type === 'logo') {
 
     }
 
     return new Promise(function (resolve, reject) {
 
-      blobSvc.createBlockBlobFromText(container, fileName, buffer, { contentType: type }, function (error, result, response) {
-        const fileUrl = blobSvc.getUrl(result.container, result.name);
-        if (error) {
-          reject(error);
-        } else {
-          resolve({
-            fileName: fileName,
-            fileUrl: fileUrl,
-            response: response
-          });
+      blobSvc.createBlockBlobFromText(container, fileName, buffer, { contentType: contentType }, function (error, result, response) {
+        console.log(result);
+        console.log(error);
+        if (result !== null) {
+          const fileUrl = blobSvc.getUrl(result.container, result.name);
+          if (error) {
+            reject(error);
+          } else {
+            resolve({
+              fileName: fileName,
+              fileUrl: fileUrl,
+              response: response
+            });
+          }
+        }else{
+          reject([])
         }
       });
     });
