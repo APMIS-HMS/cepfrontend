@@ -359,7 +359,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     }
                 }).then(payload => {
                     this.validating = false;
-                    console.log(payload);
                     if (payload.status === 'success') {
                         this.duplicate = true;
                         this.errMsg = 'Duplicate record detected, please check and try again!';
@@ -368,7 +367,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         this.duplicate = false;
                     }
                 }, error => {
-                    console.log(error);
                 });
             });
 
