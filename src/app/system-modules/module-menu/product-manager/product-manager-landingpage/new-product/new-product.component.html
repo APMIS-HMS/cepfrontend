@@ -19,6 +19,7 @@
             <div class="mainfrmwrap">
                 <div class="row" Class="col-xs-12 col-lg-12">
                     <div class="sec-1">
+<<<<<<< HEAD
                         <div class="row">
                             <div class="col-xs-6">
                                 <mat-form-field>
@@ -28,6 +29,54 @@
                                 </mat-form-field>
                             </div>
                             <div class="col-xs-6">
+=======
+                        <div class="frm-item-wrap">
+                            <mat-form-field>
+                                <mat-select class="example-full-width" placeholder="Product Type" formControlName="productTypeId" [compareWith]="compareItems">
+                                    <mat-option *ngFor="let productType of productTypes" [value]="productType._id">{{productType.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="frm-item-wrap">
+                            <mat-input-container class="example-full-width">
+                                <input matInput mat-error placeholder="Name(Product)" formControlName="name">
+                            </mat-input-container>
+                            <!-- <div *ngIf="productSugestion" class="sugestion-wrap shadow-B">
+                                <div (click)="onSelectProductSuggestion(dictionary)" *ngFor="let dictionary of dictionaries" class="sugestion-item">{{dictionary.details}}</div>
+                            </div> -->
+
+                        </div>
+                        <div class="sec-2">
+                            <div class="frm-item-wrap">
+                                <mat-form-field>
+                                    <mat-select class="example-full-width" placeholder="Manufacturer" formControlName="manufacturer" [compareWith]="compareItems">
+                                        <mat-option *ngFor="let item of manufacturers" [value]="item.name">{{item.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="frm-item-wrap">
+                                <mat-form-field>
+                                    <mat-select class="example-full-width" placeholder="Generic" formControlName="genericName" [compareWith]="compareItems">
+                                        <mat-option *ngFor="let item of generics" [value]="item.name">{{item.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="frm-item-wrap">
+                                <mat-form-field>
+                                    <mat-select class="example-full-width" placeholder="Presentation" formControlName="presentation" [compareWith]="compareItems">
+                                        <mat-option *ngFor="let item of presentations" [value]="item.name">{{item.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="frm-item-wrap">
+                                <mat-form-field>
+                                    <mat-select class="example-full-width" placeholder="Service Category" formControlName="categoryId" [compareWith]="compareItems">
+                                        <mat-option *ngFor="let category of categories" [value]="category._id">{{category.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <!-- <div class="frm-item-wrap">
+>>>>>>> 5c8802a93292209333257a4e5053da82b90b9cc7
                                 <mat-input-container class="example-full-width">
                                     <input matInput mat-error placeholder="Name(Product)" formControlName="name">
                                 </mat-input-container>
@@ -35,6 +84,7 @@
                                     <div (click)="onSelectProductSuggestion(dictionary)" *ngFor="let dictionary of dictionaries" class="sugestion-item">{{dictionary.details}}</div>
                                 </div>
                             </div>
+<<<<<<< HEAD
                         </div>
                         <div class="sec-2">
                             <div class="row">
@@ -63,6 +113,13 @@
                                     </mat-input-container>
                                 </div>
                             </div>
+=======
+                            <div class="frm-item-wrap">
+                                <mat-input-container class="example-full-width">
+                                    <input type="number" matInput mat-error placeholder="Pack Size" formControlName="packSize">
+                                </mat-input-container>
+                            </div> -->
+>>>>>>> 5c8802a93292209333257a4e5053da82b90b9cc7
 
                         </div>
                     </div>
@@ -71,8 +128,7 @@
                     <div class="clear"></div>
                     <div class="row" class="col-xs-12 col-lg-12">
                         <div>
-                            <div class="sectLabel">Active
-                            </div>
+                            <div class="sectLabel">Active</div>
                             <i class="fa fa-plus faplus" (click)="addIngredient()"></i>
                         </div>
                         <div class="sec-3">
@@ -96,9 +152,11 @@
                                                         </mat-input-container>
                                                     </div>
                                                     <div class="frm-item-wrap" class="col-xs-4">
-                                                        <mat-input-container class="example-full-width">
-                                                            <input matInput mat-error placeholder="Strength Unit" formControlName="strengthUnit">
-                                                        </mat-input-container>
+                                                        <mat-form-field>
+                                                                <mat-select class="example-full-width" placeholder="Strength Unit" formControlName="strengthUnit">
+                                                                    <mat-option *ngFor="let item of strengths" [value]="item.strength">{{item.strength}}</mat-option>
+                                                                </mat-select>
+                                                            </mat-form-field>
                                                     </div>
                                                 </div>
                                             </div>
@@ -139,7 +197,7 @@
                             </div>
 
                             <button class="cta-1" (click)="create(frm_newProduct.valid, frm_newProduct.value)">
-                            <i class="fa fa-plus"></i>&nbsp; Create Product</button>
+                                <i class="fa fa-plus"></i>&nbsp; Create Product</button>
                         </div>
                     </div>
                 </div>

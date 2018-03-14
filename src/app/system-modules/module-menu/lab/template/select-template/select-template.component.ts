@@ -30,7 +30,6 @@ export class SelectTemplateComponent implements OnInit {
 
   ngOnInit() {
     this.facility = <Facility>this._locker.getObject('selectedFacility');
-    this.miniFacility = <Facility>this._locker.getObject('miniFacility');
     this.user = <User>this._locker.getObject('auth');
 
     this.templateFormGroup = this._fb.group({
@@ -49,8 +48,10 @@ export class SelectTemplateComponent implements OnInit {
   }
 
   private _getAllTemplates() {
-    this._templateService.find({query: { 'facility._id': this.facility._id }}).then(res => {
-      this.investigations = res.data;
+    this._templateService.find({query: { 'facilityId': this.facility._id }}).then(res => {
+      if (res.data.length > 0) {
+        this.investigations = res.data;
+      }
     }).catch(err => this._notification('Error', 'There was a problem getting templates. Please try again later!'));
   }
 

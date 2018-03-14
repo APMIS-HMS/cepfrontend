@@ -7,6 +7,7 @@ import {
 import { Facility, FacilityService, User } from '../../../../../models/index';
 import { FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-new-product',
@@ -42,6 +43,7 @@ export class NewProductComponent implements OnInit {
   strengths: any[] = [];
   simpleProducts: any[] = [];
   productDetails: any = <any>{};
+  mostRecentValue = <any>{};
   user: User = <User>{};
   public frm_newProduct: FormGroup;
   public ingredientForm: FormGroup;
@@ -57,6 +59,7 @@ export class NewProductComponent implements OnInit {
     private formBuilder: FormBuilder, private manufacturerService: ManufacturerService, private genericService: GenericService,
     private presentationService: PresentationService, private productTypeService: ProductTypeService,
     private _facilityService: FacilitiesService,
+    private _systemModuleService: SystemModuleService,
     private productService: ProductService, private dictionariesService: DictionariesService, private locker: CoolLocalStorage,
     private facilityServiceCategoryService: FacilitiesServiceCategoryService, private strengthService: StrengthService,
     private drugListApiService: DrugListApiService, private drugDetailsService: DrugDetailsService) { }
@@ -69,15 +72,13 @@ export class NewProductComponent implements OnInit {
       productTypeId: ['', [<any>Validators.required]],
       categoryId: ['', [<any>Validators.required]],
       name: ['', [<any>Validators.required, Validators.minLength(3)]],
-      packLabel: [''],
-      packSize: [''],
       presentation: [''],
       manufacturer: ['', [<any>Validators.required]],
       genericName: [''],
       facilityId: [this.selectedFacility._id, [<any>Validators.required]],
 
     });
-
+    
     // this.ingredientForm = this.formBuilder.group({
     //   ingredients: this.formBuilder.array([
     //     this.initIngredientsForm(),
@@ -86,10 +87,11 @@ export class NewProductComponent implements OnInit {
     this.initVariantForm();
     this.initIngredientsForm();
 
-    this.populateProduct();
+    
     this.frm_newProduct.controls['name'].valueChanges.subscribe(payload => {
       this.ingridentSugestion = false;
       if (payload !== null && payload !== undefined && payload.length > 0) {
+        this.mostRecentValue.product = payload;
         this.productSugestion = true;
         if (this.frm_newProduct.controls['name'].value !== null) {
           this.productName = this.presentationName + ' ' + this.frm_newProduct.controls['name'].value + ' ' + this.strengthName;
@@ -97,20 +99,22 @@ export class NewProductComponent implements OnInit {
       } else {
         this.productSugestion = false;
       }
-      this.subscribeToControls();
+      // this.subscribeToControls();
     });
-    // this.frm_newProduct.controls['genericName'].valueChanges.subscribe(payload => {
-    //   this.productSugestion = false;
-    //   if (payload !== null && payload !== undefined && payload.length > 0) {
-    //     this.ingridentSugestion = true;
-    //   } else {
-    //     this.ingridentSugestion = false;
-    //   }
-    //   this.subscribeToControls();
-    // });
-    this.subscribeToControls();
+    this.frm_newProduct.controls['genericName'].valueChanges.subscribe(payload => {
+      this.productSugestion = false;
+      if (payload !== null && payload !== undefined && payload.length > 0) {
+        this.mostRecentValue.generic = payload;
+        this.ingridentSugestion = true;
+      } else {
+        this.ingridentSugestion = false;
+      }
+      // this.subscribeToControls();
+    });
+    // this.subscribeToControls();
 
     this.frm_newProduct.controls['presentation'].valueChanges.subscribe(value => {
+      this.mostRecentValue.presentation = value;
       const presentation = this.presentations.filter(x => x._id === value);
       if (presentation.length > 0) {
         this.presentationName = presentation[0].name;
@@ -119,6 +123,24 @@ export class NewProductComponent implements OnInit {
         }
       }
     });
+    this.frm_newProduct.controls['categoryId'].valueChanges.subscribe(payload => {
+      if (payload !== null && payload !== undefined && payload.length > 0) {
+        this.mostRecentValue.category = payload;
+      }
+    });
+
+    this.frm_newProduct.controls['manufacturer'].valueChanges.subscribe(payload => {
+      if (payload !== null && payload !== undefined && payload.length > 0) {
+        this.mostRecentValue.manufacturer = payload;
+      }
+    });
+
+    this.frm_newProduct.controls['productTypeId'].valueChanges.subscribe(payload => {
+      if (payload !== null && payload !== undefined && payload.length > 0) {
+        this.mostRecentValue.productType = payload;
+      }
+    });
+
 
     // this.frm_newProduct.controls['strengthId'].valueChanges.subscribe(value => {
     //   let strength = this.strengths.filter(x => x._id === value);
@@ -131,16 +153,41 @@ export class NewProductComponent implements OnInit {
     // });
 
     this.frm_newProduct.valueChanges.subscribe(value => {
+      if (this.mostRecentValue !== null && this.mostRecentValue !== undefined) {
+        this.locker.setObject('recentValues', this.mostRecentValue);
+      }
       this.mainErr = true;
       this.productSugestion = false;
     });
 
-    // this.getManufacturers();
-    // this.getGenerics();
-    // this.getPresentations();
+    this.getManufacturers();
+    this.getGenerics();
+    this.getPresentations();
     this.getProductTypes();
     this.getServiceCategories();
-    // this.getStrengths();
+    this.getStrengths();
+    
+    
+    let recent = <any>this.locker.getObject('recentValues');
+    if (recent !== null && recent !== undefined) {
+      if (recent.presentation !== undefined) {
+        this.frm_newProduct.controls['presentation'].setValue(recent.presentation);
+      }
+      if (recent.manufacturer !== undefined) {
+        this.frm_newProduct.controls['manufacturer'].setValue(recent.manufacturer);
+      }
+      if (recent.generic !== undefined) {
+        this.frm_newProduct.controls['genericName'].setValue(recent.generic);
+      }
+      if (recent.productType !== undefined) {
+        this.frm_newProduct.controls['productTypeId'].setValue(recent.productType);
+      }
+      if (recent.category !== undefined) {
+        this.frm_newProduct.controls['categoryId'].setValue(recent.category);
+      }
+    }
+    this.populateProduct();
+    
   }
 
   // initIngredientsForm() {
@@ -150,6 +197,11 @@ export class NewProductComponent implements OnInit {
   //     strengthUnit: ['']
   //   });
   // }
+
+  compareItems(l1: any, l2: any) {
+    return l1.includes(l2);
+  }
+
 
   initVariantForm() {
     this.variantsForm = this.formBuilder.group({
@@ -177,7 +229,7 @@ export class NewProductComponent implements OnInit {
   }
 
   getStrengths() {
-    this.strengthService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
+    this.strengthService.find({}).subscribe(payload => {
       this.strengths = payload.data;
     });
   }
@@ -189,94 +241,96 @@ export class NewProductComponent implements OnInit {
       }
     });
   }
-  subscribeToControls() {
-    const name = this.frm_newProduct.controls['name'].value;
-    const genericName = this.frm_newProduct.controls['genericName'].value;
-    if (name !== null && name !== undefined && name.length > 0) {
-      const dictionaryObs = this.frm_newProduct.controls['name'].valueChanges.debounceTime(200)
-        .distinctUntilChanged()
-        .switchMap((dictionaries: any[]) => this.drugListApiService.find({
-          query: {
-            searchtext: this.frm_newProduct.controls['name'].value,
-            'po': false,
-            'brandonly': true,
-            'genericonly': false
-          }
-        }));
-      dictionaryObs.subscribe((payload: any) => {
+  // subscribeToControls() {
+  //   const name = this.frm_newProduct.controls['name'].value;
+  //   const genericName = this.frm_newProduct.controls['genericName'].value;
+  //   if (name !== null && name !== undefined && name.length > 0) {
+  //     const dictionaryObs = this.frm_newProduct.controls['name'].valueChanges.debounceTime(200)
+  //       .distinctUntilChanged()
+  //       .switchMap((dictionaries: any[]) => this.drugListApiService.find({
+  //         query: {
+  //           searchtext: this.frm_newProduct.controls['name'].value,
+  //           'po': false,
+  //           'brandonly': true,
+  //           'genericonly': false
+  //         }
+  //       }));
+  //     dictionaryObs.subscribe((payload: any) => {
 
-        this.productSugestion = true;
-        if (payload.data.length > 0 && payload.data[0].details.length !== this.frm_newProduct.controls['name'].value.length) {
-          this.dictionaries = payload.data;
-          payload.data.forEach(element => {
-            const arrElements = element.details.split('(');
-            element.activeIngredient = arrElements[1].replace(')', '');
-            this.dictionaries.push(element);
-          });
-        } else {
-          this.dictionaries = [];
-          this.productSugestion = false;
-        }
-      });
-    } else {
-      this.dictionaries = [];
-      this.productSugestion = false;
-    }
+  //       this.productSugestion = true;
+  //       if (payload.data.length > 0 && payload.data[0].details.length !== this.frm_newProduct.controls['name'].value.length) {
+  //         this.dictionaries = payload.data;
+  //         payload.data.forEach(element => {
+  //           const arrElements = element.details.split('(');
+  //           element.activeIngredient = arrElements[1].replace(')', '');
+  //           this.dictionaries.push(element);
+  //         });
+  //       } else {
+  //         this.dictionaries = [];
+  //         this.productSugestion = false;
+  //       }
+  //     });
+  //   } else {
+  //     this.dictionaries = [];
+  //     this.productSugestion = false;
+  //   }
 
-    // if (genericName !== null && genericName !== undefined && genericName.length > 0) {
-    //   let activetIngredientObs = this.frm_newProduct.controls['genericName'].valueChanges.debounceTime(400)
-    //     .distinctUntilChanged()
-    //     .switchMap((dictionaries: any[]) => this.dictionariesService.find({
-    //       query: {
-    //         genericName: { $regex: this.frm_newProduct.controls['genericName'].value, '$options': 'i' },
-    //         $distinct: 'genericName'
-    //       }
-    //     }));
-    //   activetIngredientObs.subscribe((payload: any) => {
-    //     this.productSugestion = false;
-    //     this.ingridentSugestion = true;
-    //     if (payload.data.length > 0 && payload.data[0].genericName.length
-    //       !== this.frm_newProduct.controls['genericName'].value.length) {
-    //       this.activeIngredients = payload.data;
-    //     } else {
-    //       this.activeIngredients = [];
-    //       this.ingridentSugestion = false;
-    //     }
-    //   });
-    // }
-    // else {
-    //   this.activeIngredients = [];
-    //   this.ingridentSugestion = false;
-    // }
-  }
+  //   // if (genericName !== null && genericName !== undefined && genericName.length > 0) {
+  //   //   let activetIngredientObs = this.frm_newProduct.controls['genericName'].valueChanges.debounceTime(400)
+  //   //     .distinctUntilChanged()
+  //   //     .switchMap((dictionaries: any[]) => this.dictionariesService.find({
+  //   //       query: {
+  //   //         genericName: { $regex: this.frm_newProduct.controls['genericName'].value, '$options': 'i' },
+  //   //         $distinct: 'genericName'
+  //   //       }
+  //   //     }));
+  //   //   activetIngredientObs.subscribe((payload: any) => {
+  //   //     this.productSugestion = false;
+  //   //     this.ingridentSugestion = true;
+  //   //     if (payload.data.length > 0 && payload.data[0].genericName.length
+  //   //       !== this.frm_newProduct.controls['genericName'].value.length) {
+  //   //       this.activeIngredients = payload.data;
+  //   //     } else {
+  //   //       this.activeIngredients = [];
+  //   //       this.ingridentSugestion = false;
+  //   //     }
+  //   //   });
+  //   // }
+  //   // else {
+  //   //   this.activeIngredients = [];
+  //   //   this.ingridentSugestion = false;
+  //   // }
+  // }
   populateProduct() {
     if (this.selectedProduct !== undefined && this.selectedProduct._id !== undefined) {
       this.createText = 'Update Product';
       this.frm_newProduct.controls['name'].setValue(this.selectedProduct.name);
-      this.frm_newProduct.controls['packLabel'].setValue(this.selectedProduct.packLabel);
-      this.frm_newProduct.controls['packSize'].setValue(this.selectedProduct.packSize);
+      // this.frm_newProduct.controls['packLabel'].setValue(this.selectedProduct.packLabel);
+      // this.frm_newProduct.controls['packSize'].setValue(this.selectedProduct.packSize);
       this.frm_newProduct.controls['presentation'].setValue(this.selectedProduct.presentation);
       this.frm_newProduct.controls['manufacturer'].setValue(this.selectedProduct.manufacturer);
       this.frm_newProduct.controls['genericName'].setValue(this.selectedProduct.genericName);
       this.frm_newProduct.controls['facilityId'].setValue(this.selectedProduct.facilityId);
       this.frm_newProduct.controls['productTypeId'].setValue(this.selectedProduct.productTypeId);
       this.frm_newProduct.controls['categoryId'].setValue(this.selectedProduct.categoryId);
-      this.setIngredientItem(this.selectedProduct.productDetail.ingredients);
+      if(this.selectedProduct.productDetail !== undefined){
+        this.setIngredientItem(this.selectedProduct.productDetail.ingredients);
+      }
       this.setVariantItem(this.selectedProduct.variants)
     } else {
       this.createText = 'Create Product';
-      this.frm_newProduct.reset();
+      // this.frm_newProduct.reset();
       this.frm_newProduct.controls['facilityId'].setValue(this.selectedFacility._id);
     }
 
   }
   getManufacturers() {
-    this.manufacturerService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
+    this.manufacturerService.find({}).then(payload => {
       this.manufacturers = payload.data;
     });
   }
   getGenerics() {
-    this.genericService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
+    this.genericService.find({}).then(payload => {
       this.generics = payload.data;
     });
   }
@@ -303,9 +357,8 @@ export class NewProductComponent implements OnInit {
   }
 
   create(valid, value) {
-    console.log(valid);
-    console.log(this.frm_newProduct.controls);
     if (valid) {
+      this._systemModuleService.on();
       if (this.selectedProduct === undefined || this.selectedProduct._id === undefined) {
         const service: any = <any>{};
         service.name = value.name;
@@ -318,7 +371,8 @@ export class NewProductComponent implements OnInit {
         value.productDetail = this.productDetails;
 
         this.productService.create(value).then(payload => {
-          this._notification('Success', 'Product has been created successfully!');
+          this._systemModuleService.off();
+          this._systemModuleService.announceSweetProxy('Product has been created successfully!','success');
           this.selectedFacilityService.categories.forEach((item, i) => {
             if (item._id === value.categoryId) {
               item.services.push(service);
@@ -343,17 +397,21 @@ export class NewProductComponent implements OnInit {
           });
 
         }, error => {
+          this._systemModuleService.off();
         });
       } else {
+        this._systemModuleService.off();
         value._id = this.selectedProduct._id;
         this.productService.update(value).then(payload => {
-          // this._notification('Success', 'Product has been updated successfully!');
+          this._systemModuleService.announceSweetProxy('Product has been updated successfully!','success');
           this.refreshProductList.emit(true);
           this.close_onClick();
         });
       }
       this.mainErr = true;
     } else {
+      this._systemModuleService.announceSweetProxy('One or more field(s) are missing','error');
+      this._systemModuleService.off();
       this.mainErr = false;
     }
   }
@@ -375,7 +433,6 @@ export class NewProductComponent implements OnInit {
       // manufacturerItem._id = "0";
       // this.manufacturers.push(manufacturerItem);
     }, error => {
-      console.log(error);
     })
   }
 

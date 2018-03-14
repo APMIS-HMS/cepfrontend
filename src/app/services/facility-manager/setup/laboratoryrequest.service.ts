@@ -16,6 +16,7 @@ export class LaboratoryRequestService {
     this._rest = _restService.getService('laboratory-requests');
     this._socket = _socketService.getService('laboratory-requests');
     this._crudSocket = _socketService.getService('crud-lab-request');
+    this._crudSocket.timeout = 150000;
     this._socket.timeout = 90000;
     this._socket.on('created', function (laboratoryrequests) {
 
