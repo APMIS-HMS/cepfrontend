@@ -96,7 +96,7 @@ export class StoreCheckInComponent implements OnInit {
 		});
 
 		this.loginEmployee.storeCheckIn.push(checkIn);
-		this.employeeService.update(this.loginEmployee).then(payload => {
+		this.employeeService.patch(this.loginEmployee._id,{'storeCheckIn': this.loginEmployee.storeCheckIn}).then(payload => {
 			this.loginEmployee = payload;
 			let keepCheckIn;
 			this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
@@ -108,6 +108,7 @@ export class StoreCheckInComponent implements OnInit {
 			});
 			this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'store' });
 			this.checkInBtnText = '<i class="fa fa-check-circle"></i> Check In';
+			this.close_onClick();
 		});
 	}
 	changeRoom(checkIn: any) {

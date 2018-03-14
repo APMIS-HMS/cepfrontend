@@ -6,16 +6,17 @@ import { Facility, Generic } from '../../../../models/index';
 import { ProductEmitterService } from '../../../../services/facility-manager/product-emitter.service';
 
 @Component({
-  selector: 'app-generic-manager',
-  templateUrl: './generic-manager.component.html',
-  styleUrls: ['./generic-manager.component.scss']
+	selector: 'app-generic-manager',
+	templateUrl: './generic-manager.component.html',
+	styleUrls: ['./generic-manager.component.scss']
 })
 export class GenericManagerComponent implements OnInit {
-  genericGroup: FormGroup;
+	genericGroup: FormGroup;
 	generics: any[] = [];
 	selectedFacility: Facility = <Facility>{};
 	selectedItem: any = <Generic>{};
 	btnLabel = 'Create';
+	isBtnEnable = true;
 
 	mainErr: Boolean = true;
 	errMsg: String = 'You have unresolved errors';
@@ -31,15 +32,34 @@ export class GenericManagerComponent implements OnInit {
 		this.genericGroup = this._fb.group({
 			name: ['', [<any>Validators.required]],
 		});
-		this.selectedFacility =  <Facility> this._locker.getObject('selectedFacility');
+		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
+		this.genericGroup.controls['name'].valueChanges
+			.debounceTime(400)
+			.distinctUntilChanged()
+			.subscribe(value => {
+				this._genericservice.find({
+					query: {
+						name: { $regex: this.genericGroup.controls['name'].value, '$options': 'i' },
+					}
+				}).then(payload => {
+					const index = payload.data.filter(x => x.name.toLowerCase() === this.genericGroup.controls['name'].value.toLowerCase());
+					if (index.length > 0) {
+						if (this.selectedItem.name === undefined) {
+							this.isBtnEnable = false;
+						}
+					} else {
+						this.isBtnEnable = true;
+					}
+				});
+			});
 		this.getGenerics();
 	}
 
 	onClickAdd(value: any, valid: boolean) {
-		if(valid) {
+		if (valid) {
 			this.mainErr = true;
 			// Check if you are editing an existing or creating a new record
-			if(this.selectedItem._id === undefined) {
+			if (this.selectedItem._id === undefined) {
 				value.facilityId = this.selectedFacility._id;
 				this._genericservice.create(value)
 					.then(payload => {
@@ -56,7 +76,7 @@ export class GenericManagerComponent implements OnInit {
 					.then(payload => {
 						this.genericGroup.reset();
 						this.selectedItem = {};
-            this.btnLabel = 'Create';
+						this.btnLabel = 'Create';
 					})
 					.catch(err => {
 					});
@@ -79,20 +99,20 @@ export class GenericManagerComponent implements OnInit {
 		this.btnLabel = 'Create';
 	}
 
-  onClickIsActive(value) {
+	onClickIsActive(value) {
 		// Updating existing record
 		value.isActive = !value.isActive;
 
 		this._genericservice.update(value)
 			.then(data => {
-          // Do nothing
+				// Do nothing
 			})
 			.catch(err => {
 			});
 	}
 
 	getGenerics() {
-		this._genericservice.find({ query: { facilityId: this.selectedFacility._id }})
+		this._genericservice.find({})
 			.then(data => {
 				this.generics = data.data;
 			});
