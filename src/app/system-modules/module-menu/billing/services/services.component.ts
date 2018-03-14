@@ -162,7 +162,6 @@ export class ServicesComponent implements OnInit {
     }).then(payload => {
       this.systemModuleService.off();
       this.categories = payload.data[0].categories;
-      console.log(payload.data);
       // this.facilityServiceId = payload.data[0]._id;
       // this.selectedServices = payload.data[0].categories[0].services;
       // this.selectedCategory = payload.data[0].categories[0];
