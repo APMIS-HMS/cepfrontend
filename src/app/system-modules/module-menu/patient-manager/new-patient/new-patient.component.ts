@@ -349,15 +349,17 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.errMsg = '';
                 this.mainErr = true;
                 this.validating = true;
+                console.log(value);
                 this.personService.searchPerson({
                     query: {
                         firstName: value.firstname,
-                        lastName: value.lastname,
-                        primaryContactPhoneNo: value.phone,
                         motherMaidenName: value.motherMaidenName,
+                        dateOfBirth: value.dob,
+                        gender: value.gender,
                         isValidating: true
                     }
                 }).then(payload => {
+                    console.log(payload);
                     this.validating = false;
                     if (payload.status === 'success') {
                         this.duplicate = true;
@@ -367,6 +369,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         this.duplicate = false;
                     }
                 }, error => {
+                    console.log(error);
                 });
             });
 
