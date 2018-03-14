@@ -43,15 +43,11 @@ export class ManufacturerManagerComponent implements OnInit {
 					}
 				}).then(payload => {
 					const indx = payload.data.filter(x => x.name.toLowerCase() === this.manufacturerGroup.controls['name'].value.toLowerCase());
-					console.log(indx.length);
-					console.log(this.selectedItem.name);
 					if (indx.length > 0) {
 						if (this.selectedItem.name === undefined) {
-							console.log(false);
 							this.isBtnEnable = false;
 						}
 					} else {
-						console.log(true);
 						this.isBtnEnable = true;
 					}
 				});
