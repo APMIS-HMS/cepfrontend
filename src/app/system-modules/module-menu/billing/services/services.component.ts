@@ -164,10 +164,8 @@ export class ServicesComponent implements OnInit {
         $select: ['_id','categories._id','categories.name']
       }
     }).then(payload => {
-      console.log(payload);
       this.systemModuleService.off();
       this.categories = payload.data[0].categories;
-      console.log(this.categories);
       this.facilityServiceId = payload.data[0]._id;
       this.selectCategory(this.categories[0]);
     }, error => {
