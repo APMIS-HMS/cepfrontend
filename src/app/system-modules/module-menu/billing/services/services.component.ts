@@ -99,15 +99,17 @@ export class ServicesComponent implements OnInit {
   selectCategory(category) {
     this.systemModuleService.on();
     this.selectedCategory = category;
-    this._facilitiesServiceCategoryService.allServices({
-      query: {
-        facilityId: this.facility._id,
-        categoryId: category._id
-      }
-    }).then(payload => {
-      this.systemModuleService.off();
-      this.selectedServices = payload.services;
-    });
+    if (this.selectedCategory._id !== undefined) {
+      this._facilitiesServiceCategoryService.allServices({
+        query: {
+          facilityId: this.facility._id,
+          categoryId: this.selectedCategory._id
+        }
+      }).then(payload => {
+        this.systemModuleService.off();
+        this.selectedServices = payload.services;
+      });
+    }
   }
 
   onDoubleClick(value: any) {
@@ -162,9 +164,8 @@ export class ServicesComponent implements OnInit {
     }).then(payload => {
       this.systemModuleService.off();
       this.categories = payload.data[0].categories;
-      // this.facilityServiceId = payload.data[0]._id;
-      // this.selectedServices = payload.data[0].categories[0].services;
-      // this.selectedCategory = payload.data[0].categories[0];
+      this.facilityServiceId = payload.data[0]._id;
+      this.selectCategory(this.categories[0]._id);
     }, error => {
       this.systemModuleService.off();
     });
