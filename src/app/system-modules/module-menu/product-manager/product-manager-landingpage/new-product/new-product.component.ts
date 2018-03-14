@@ -169,7 +169,6 @@ export class NewProductComponent implements OnInit {
     
     
     let recent = <any>this.locker.getObject('recentValues');
-    console.log(recent);
     if (recent !== null && recent !== undefined) {
       if (recent.presentation !== undefined) {
         this.frm_newProduct.controls['presentation'].setValue(recent.presentation);
@@ -303,7 +302,6 @@ export class NewProductComponent implements OnInit {
   //   // }
   // }
   populateProduct() {
-    console.log(this.selectedProduct);
     if (this.selectedProduct !== undefined && this.selectedProduct._id !== undefined) {
       this.createText = 'Update Product';
       this.frm_newProduct.controls['name'].setValue(this.selectedProduct.name);
@@ -359,8 +357,6 @@ export class NewProductComponent implements OnInit {
   }
 
   create(valid, value) {
-    console.log(value);
-    console.log(this.frm_newProduct.controls);
     if (valid) {
       this._systemModuleService.on();
       if (this.selectedProduct === undefined || this.selectedProduct._id === undefined) {
@@ -437,7 +433,6 @@ export class NewProductComponent implements OnInit {
       // manufacturerItem._id = "0";
       // this.manufacturers.push(manufacturerItem);
     }, error => {
-      console.log(error);
     })
   }
 
