@@ -109,6 +109,8 @@ export class ServicesComponent implements OnInit {
         this.systemModuleService.off();
         this.selectedServices = payload.services;
       });
+    }else{
+      this.systemModuleService.off();
     }
   }
 
@@ -159,13 +161,15 @@ export class ServicesComponent implements OnInit {
     this._facilitiesServiceCategoryService.find({
       query: {
         facilityId: this.facility._id,
-        $select: ['categories']
+        $select: ['_id','categories._id','categories.name']
       }
     }).then(payload => {
+      console.log(payload);
       this.systemModuleService.off();
       this.categories = payload.data[0].categories;
+      console.log(this.categories);
       this.facilityServiceId = payload.data[0]._id;
-      this.selectCategory(this.categories[0]._id);
+      this.selectCategory(this.categories[0]);
     }, error => {
       this.systemModuleService.off();
     });
