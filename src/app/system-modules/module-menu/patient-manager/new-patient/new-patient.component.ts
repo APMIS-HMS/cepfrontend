@@ -352,9 +352,9 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.personService.searchPerson({
                     query: {
                         firstName: value.firstname,
-                        lastName: value.lastname,
-                        primaryContactPhoneNo: value.phone,
                         motherMaidenName: value.motherMaidenName,
+                        dateOfBirth: value.dob,
+                        gender: value.gender,
                         isValidating: true
                     }
                 }).then(payload => {
