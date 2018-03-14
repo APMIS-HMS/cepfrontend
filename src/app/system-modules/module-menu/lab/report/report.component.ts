@@ -774,7 +774,7 @@ export class ReportComponent implements OnInit {
   onClickTemplate(event) {
     this.importTemplate = false;
     if (event.investigation.investigation.reportType.name === this.selectedInvestigation.reportType.name) {
-      this.reportFormGroup.controls['result'].setValue(event.investigation.result);
+      // this.reportFormGroup.controls['result'].setValue(event.investigation.result);
       this.reportFormGroup.controls['recommendation'].setValue(event.investigation.recommendation);
       this.reportFormGroup.controls['conclusion'].setValue(event.investigation.conclusion);
     } else {
