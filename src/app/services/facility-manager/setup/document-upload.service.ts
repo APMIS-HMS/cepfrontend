@@ -18,8 +18,8 @@ export class DocumentUploadService {
     private sanitizer: DomSanitizer,
     private locker: CoolLocalStorage
   ) {
-    this._rest = _restService.getService('doc-upload');
-    this._socket = _socketService.getService('doc-upload');
+    this._rest = _restService.getService('upload-doc');
+    this._socket = _socketService.getService('upload-doc');
     // this._restLogin = _restService.getService('auth/local');
     this.listner = Observable.fromEvent(this._socket, 'created');
   }
@@ -37,8 +37,8 @@ export class DocumentUploadService {
   get(id: string, query: any) {
     return this._rest.get(id, query);
   }
-  create(doc: any) {
-    return this._rest.create(doc);
+  create(doc: any, param) {
+    return this._socket.create(doc, param);
   }
   update(facility: any) {
     return this._socket.update(facility._id, facility);

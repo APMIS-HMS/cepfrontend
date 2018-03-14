@@ -16,6 +16,7 @@ export class PresentationManagerComponent implements OnInit {
 	selectedFacility: Facility = <Facility>{};
 	selectedItem: any = <Presentation>{};
 	btnLabel = 'Create';
+	isBtnEnable = true;
 
 	mainErr: Boolean = true;
 	errMsg: String = 'You have unresolved errors';
@@ -32,6 +33,25 @@ export class PresentationManagerComponent implements OnInit {
 			name: ['', [<any>Validators.required]],
 		});
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
+		this.presentationGroup.controls['name'].valueChanges
+			.debounceTime(400)
+			.distinctUntilChanged()
+			.subscribe(value => {
+				this._presentationService.find({
+					query: {
+						name: { $regex: this.presentationGroup.controls['name'].value, '$options': 'i' },
+					}
+				}).then(payload => {
+					const index = payload.data.filter(x => x.name.toLowerCase() === this.presentationGroup.controls['name'].value.toLowerCase());
+					if (index.length > 0) {
+						if (this.selectedItem.name === undefined) {
+							this.isBtnEnable = false;
+						}
+					} else {
+						this.isBtnEnable = true;
+					}
+				});
+			});
 		this.getPresentations();
 	}
 
@@ -92,7 +112,7 @@ export class PresentationManagerComponent implements OnInit {
 	}
 
 	getPresentations() {
-		this._presentationService.find({ query: { facilityId: this.selectedFacility._id } })
+		this._presentationService.find({})
 			.then(data => {
 				this.presentations = data.data;
 			});
