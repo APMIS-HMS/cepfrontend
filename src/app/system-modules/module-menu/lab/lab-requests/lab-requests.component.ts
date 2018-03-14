@@ -145,7 +145,6 @@ export class LabRequestsComponent implements OnInit {
       .switchMap((term) => Observable.fromPromise(this.requestService.customFind({
         query: { search: term, facilityId: this.selectedFacility._id }
       }))).subscribe((res: any) => {
-        console.log(res);
         this.pendingRequests = [];
         if (res.status === 'success') {
           this.loading = false;
