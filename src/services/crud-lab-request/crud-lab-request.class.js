@@ -19,51 +19,140 @@ class Service {
         const billingService = this.app.service('billings');
         const accessToken = params.accessToken;
         const facilityId = params.query.facilityId;
+        const searchText = params.query.search;
         const cQuery = params;
 
         if (accessToken !== undefined) {
             const hasFacility = params.user.facilitiesRole.filter(x => x.facilityId.toString() === facilityId);
             if (hasFacility.length > 0) {
-                // Get workbenches
-                let requests = await requestService.find(cQuery);
-                if (requests.data.length > 0) {
-                    requests = requests.data;
-                    const rLength = requests.length;
-                    let i = requests.length;
-                    let counter = 0;
-
-                    while (i--) {
-                        const request = requests[i];
-                        const patientId = request.patientId;
-                        const employeeId = request.createdBy;
-                        const patient = await patientService.get(patientId);
-                        delete patient.personDetails.wallet;
-                        request.personDetails = patient.personDetails;
-                        const employee = await employeeService.get(employeeId);
-                        delete employee.personDetails.wallet;
-                        request.employeeDetails = employee.personDetails;
-
-                        const billing = await billingService.find({
+                // Check if this is a search.
+                if (searchText !== undefined) {
+                    // Get all person ids in a facility from the patients service.
+                    let patients = await patientService.find({ query: { facilityId: facilityId, $select: ['personId'] } });
+                    if (patients.data.length > 0) {
+                        // Filter only the personIds from the returned patients array.
+                        const personIds = patients.data.map(x => x.personId);
+                        // Use the filtered personIds and the search text to search the people service.
+                        let people = await peopleService.find({
                             query: {
-                                facilityId: facilityId,
-                                '_id': request.billingId._id,
-                                patientId: request.patientId
+                                '_id': { $in: personIds },
+                                $or: [
+                                    { firstName: { $regex: searchText, '$options': 'i' } },
+                                    { lastName: { $regex: searchText, '$options': 'i' } },
+                                    { apmisId: { $regex: searchText, '$options': 'i' } },
+                                    { email: { $regex: searchText, '$options': 'i' } },
+                                    { otherNames: { $regex: searchText, '$options': 'i' } }
+                                ]
                             }
                         });
-                        const billingItem = billing.data[0];
-                        billingItem.billItems.forEach(billItem => {
-                            request.isPaid = billItem.paymentCompleted;
-                            request.isWaved = (billItem.isServiceEnjoyed === true && billItem.paymentCompleted === false) ? true : false;
-                        });
 
-                        counter++;
-                    }
+                        if (people.data.length > 0) {
+                            // Filter only the personIds from the returned patients array.
+                            const personIds = people.data.map(x => x._id);
+                            // Get all patient ids in a facility from the patients service that has been searched for.
+                            let patients = await patientService.find({ query: { 'personId': { $in: personIds }, facilityId: facilityId } });
+                            // Filter only the personIds from the returned patients array.
+                            const patientIds = patients.data.map(x => x._id);
 
-                    if (rLength === counter) {
-                        return jsend.success(requests);
+                            let requests = await requestService.find({
+                                query: { facilityId: facilityId, patientId: { $in: patientIds } }
+                            });
+
+                            if (requests.data.length > 0) {
+                                requests = requests.data;
+                                const rLength = requests.length;
+                                let i = requests.length;
+                                let counter = 0;
+
+                                while (i--) {
+                                    const request = requests[i];
+                                    const patientId = request.patientId;
+                                    const employeeId = request.createdBy;
+                                    const patient = await patientService.get(patientId);
+                                    delete patient.personDetails.wallet;
+                                    request.personDetails = patient.personDetails;
+                                    const employee = await employeeService.get(employeeId);
+                                    delete employee.personDetails.wallet;
+                                    request.employeeDetails = employee.personDetails;
+
+                                    if (request.billingId !== undefined) {
+                                        const billing = await billingService.find({
+                                            query: {
+                                                facilityId: facilityId,
+                                                '_id': request.billingId._id,
+                                                patientId: request.patientId
+                                            }
+                                        });
+                                        if (billing.data.length > 0) {
+                                            const billingItem = billing.data[0];
+                                            billingItem.billItems.forEach(billItem => {
+                                                request.isPaid = billItem.paymentCompleted;
+                                                request.isWaved = (billItem.isServiceEnjoyed === true && billItem.paymentCompleted === false) ? true : false;
+                                            });
+                                        }
+                                    }
+
+                                    counter++;
+                                }
+
+                                if (rLength === counter) {
+                                    return jsend.success(requests);
+                                }
+                            } else {
+                                return jsend.success([]);
+                            }
+                        } else {
+                            return jsend.success([]);
+                        }
                     }
                 } else {
-                    return jsend.success([]);
+                    // This block of code is to get all requests.
+                    let requests = await requestService.find(cQuery);
+
+                    if (requests.data.length > 0) {
+                        requests = requests.data;
+                        const rLength = requests.length;
+                        let i = requests.length;
+                        let counter = 0;
+
+                        while (i--) {
+                            const request = requests[i];
+                            const patientId = request.patientId;
+                            const employeeId = request.createdBy;
+                            const patient = await patientService.get(patientId);
+                            delete patient.personDetails.wallet;
+                            request.personDetails = patient.personDetails;
+                            const employee = await employeeService.get(employeeId);
+                            delete employee.personDetails.wallet;
+                            request.employeeDetails = employee.personDetails;
+
+                            if (request.billingId !== undefined) {
+                                const billing = await billingService.find({
+                                    query: {
+                                        facilityId: facilityId,
+                                        '_id': request.billingId._id,
+                                        patientId: request.patientId
+                                    }
+                                });
+
+                                if (billing.data.length > 0) {
+                                    const billingItem = billing.data[0];
+                                    billingItem.billItems.forEach(billItem => {
+                                        request.isPaid = billItem.paymentCompleted;
+                                        request.isWaved = (billItem.isServiceEnjoyed === true && billItem.paymentCompleted === false) ? true : false;
+                                    });
+                                }
+                            }
+
+                            counter++;
+                        }
+
+                        if (rLength === counter) {
+                            return jsend.success(requests);
+                        }
+                    } else {
+                        return jsend.success([]);
+                    }
                 }
             } else {
                 return jsend.error('Sorry! But you can not perform this transaction.');
@@ -117,9 +206,7 @@ class Service {
                         billItem.patientId = patientId;
                         billItem.quantity = 1;
                         billItem.isBearerConfirmed = true,
-                            billItem.covered = {
-                                coverType: 'wallet'
-                            },
+                            billItem.covered = { coverType: 'wallet' },
                             billItem.totalPrice = billItem.quantity * billItem.unitPrice;
                         billItem.unitDiscountedAmount = 0;
                         billItem.totalDiscoutedAmount = 0;

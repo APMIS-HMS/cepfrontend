@@ -29,6 +29,7 @@ class Service {
         const patientService = this.app.service('patients');
         const facilityService = this.app.service('facilities');
         const documentationService = this.app.service('documentations');
+        const uploadDocService = this.app.service('upload-doc');
         const accessToken = params.accessToken;
         const facilityId = data.facilityId;
         const labRequestId = data.labRequestId;
@@ -36,10 +37,21 @@ class Service {
         const patientId = data.patientId;
         const investigationId = data.investigationId;
         const action = data.action;
+        let uploadedDoc;
 
         if (accessToken !== undefined) {
             const hasFacility = params.user.facilitiesRole.filter(x => x.facilityId.toString() === facilityId);
             if (hasFacility.length > 0) {
+                if (data.file !== undefined) {
+                    
+                    try{
+                        uploadedDoc = await uploadDocService.create(data.file, {});
+                    }
+                    catch(e){
+                        return jsend.error('Sorry! But an eror occured while uploading. Please try again!');
+                    }
+                    
+                }
                 // Get Laboratory request
                 const requests = await requestService.find({ query: { facilityId: facilityId, '_id': labRequestId } });
 
@@ -51,6 +63,12 @@ class Service {
 
                         request.investigations.forEach(investigation => {
                             if (investigation.investigation._id === investigationId) {
+                                if (data.file !== undefined) {
+                                    investigation.file = {
+                                        name: uploadedDoc.fileName,
+                                        url: uploadedDoc.fileUrl
+                                    };
+                                }
                                 if (investigation.investigation.isPanel) {
                                     investigation.report = data;
                                     investigation.isUploaded = isUploaded;
@@ -60,8 +78,15 @@ class Service {
                                     investigation.isUploaded = isUploaded;
                                     investigation.isSaved = !isSaved;
                                 }
+                                if (data.file !== undefined) {
+                                    investigation.file = {
+                                        name: uploadedDoc.fileName,
+                                        url: uploadedDoc.fileUrl
+                                    };
+                                }
                             }
                         });
+
 
                         const updateRequest = await requestService.patch(request._id, request, {});
 
@@ -89,6 +114,12 @@ class Service {
                                 investigation.report = data;
                                 investigation.isUploaded = true;
                                 investigation.isSaved = true;
+                                if (data.file !== undefined) {
+                                    investigation.file = {
+                                        name: uploadedDoc.fileName,
+                                        url: uploadedDoc.fileUrl
+                                    };
+                                }
 
                                 saveDocument.body['conclusion'] = investigation.report.conclusion;
                                 saveDocument.body['recommendation'] = investigation.report.recommendation;
@@ -175,7 +206,7 @@ class Service {
     }
 }
 
-module.exports = function(options) {
+module.exports = function (options) {
     return new Service(options);
 };
 

@@ -163,6 +163,9 @@ const searchProcedure = require('./search-procedure/search-procedure.service.js'
 const treatmentSheets = require('./treatment-sheets/treatment-sheets.service.js');
 const billCreators = require('./bill-creators/bill-creators.service.js');
 const addAddendum = require('./add-addendum/add-addendum.service.js');
+const uploadDoc = require('./upload-doc/upload-doc.service.js');
+const manufacturers = require('./manufacturers/manufacturers.service.js');
+const genericnames = require('./genericnames/genericnames.service.js');
 module.exports = function(app) {
     app.configure(users);
     app.configure(facilityOwnerships);
@@ -329,4 +332,7 @@ module.exports = function(app) {
     app.configure(treatmentSheets);
     app.configure(billCreators);
     app.configure(addAddendum);
+    app.configure(uploadDoc);
+    app.configure(manufacturers);
+    app.configure(genericnames);
 };
