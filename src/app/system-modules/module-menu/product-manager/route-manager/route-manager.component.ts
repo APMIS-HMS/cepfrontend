@@ -15,6 +15,7 @@ export class RouteManagerComponent implements OnInit {
 	routes: any[] = [];
 	selectedItem: any = <Route>{};
 	btnLabel = 'Create';
+	isBtnEnable = true;
 
 	mainErr: Boolean = true;
 	errMsg: String = 'You have unresolved errors';
@@ -31,6 +32,25 @@ export class RouteManagerComponent implements OnInit {
 			name: ['', [<any>Validators.required]]
 		});
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
+		this.routeGroup.controls['name'].valueChanges
+			.debounceTime(400)
+			.distinctUntilChanged()
+			.subscribe(value => {
+				this._routeService.find({
+					query: {
+						name: { $regex: this.routeGroup.controls['name'].value, '$options': 'i' },
+					}
+				}).then(payload => {
+					const index = payload.data.filter(x => x.name.toLowerCase() === this.routeGroup.controls['name'].value.toLowerCase());
+					if (index.length > 0) {
+						if (this.selectedItem.name === undefined) {
+							this.isBtnEnable = false;
+						}
+					} else {
+						this.isBtnEnable = true;
+					}
+				});
+			});
 		this.getManufacturer();
 	}
 
