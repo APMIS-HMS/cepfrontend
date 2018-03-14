@@ -14,6 +14,7 @@ class Service {
     const employeesService = this.app.service('employees');
     const peopleService = this.app.service('people');
     const productsService = this.app.service('products');
+    const inventoryService = this.app.service('inventories');
     let stocksOnTransfer = {};
     if (params.query.storeId !== undefined) {
       stocksOnTransfer = await transferService.find({
@@ -49,12 +50,14 @@ class Service {
             stocksOnTransfer.data[index].transferByObject = person;
             if (stocksOnTransfer.data[index].inventoryTransferTransactions !== null) {
               if (stocksOnTransfer.data[index].inventoryTransferTransactions.length > 0) {
-                let len = stocksOnTransfer.data[index].inventoryTransferTransactions.length - 1;
-                for (let index = len; index >= 0; index--) {
-                  let product = await productsService.get(stocksOnTransfer.data[index].inventoryTransferTransactions[index].productId);
-                  stocksOnTransfer.data[index].inventoryTransferTransactions[index].productObject = product;
+                let len2 = stocksOnTransfer.data[index].inventoryTransferTransactions.length - 1;
+                for (let index2 = len2; index2 >= 0; index2--) {
+                  let inv = await inventoryService.get(stocksOnTransfer.data[index].inventoryTransferTransactions[index2].inventoryId, {});
+                  let product = await productsService.get(stocksOnTransfer.data[index].inventoryTransferTransactions[index2].productId);
+                  stocksOnTransfer.data[index].inventoryTransferTransactions[index2].productObject = product;
+                  let tran = inv.transactions.filter(m => m._id.toString() == stocksOnTransfer.data[index].inventoryTransferTransactions[index2].transactionId.toString() );
+                  stocksOnTransfer.data[index].inventoryTransferTransactions[index2].transactionObject = tran[0];
                 }
-                return stocksOnTransfer;
               } else {
                 return {};
               }
@@ -62,6 +65,7 @@ class Service {
               return {};
             }
           }
+          return stocksOnTransfer;
         } else {
           return {};
         }
