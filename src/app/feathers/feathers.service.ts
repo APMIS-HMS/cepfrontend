@@ -19,7 +19,6 @@ const RxJS = require('rxjs/Rx');
 // const HOST = 'https://apmisapilive.azurewebsites.net'; // Sunday
   const HOST = 'http://localhost:3031'; // Local Server
 
-
 @Injectable()
 export class SocketService {
   public socket: any;
