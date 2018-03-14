@@ -14,33 +14,29 @@
                     <div *ngIf="report_view">
                         <div class="col-xs-12">
                             <div class="frm-l" style="background : white; border: none; border-radius: 0px;" [class.frm-container-l]="!patientSelected">
-                                <div class="col-xs-6">
+                                <!-- <div class="col-xs-6">
                                     <form [formGroup]="patientFormGroup" novalidate>
                                         <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Search for patient" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
                                             [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                     </form>
-                                </div>
+                                </div> -->
                                 <div class="selected-patient-wrap" *ngIf="patientSelected">
-                                 
-                                        <div>
-                                            <img style="height: 40px; width: 40px;" *ngIf="selectedPatient?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                            <img style="height: 40px; width: 40px;" class="shadow" *ngIf="selectedPatient?.profileImageObject != undefined" [src]="facilityService.transform(selectedPatient?.profileImageObject?.thumbnail)">
-                                        </div>
-                                        <h2 class="sel-patient-name">{{ selectedPatient?.firstName }} {{ selectedPatient?.lastName }}
-                                        </h2>
-                                        <h3 class="sel-patient-detaills">
-                                                {{ selectedPatient?.apmisId }} <span style="color:#0288D1; font-size: 1.4rem">|</span> 
-                                                {{ selectedPatient?.dateOfBirth | date: 'shortDate' }}  <span style="color:#0288D1; font-size: 1.4rem">|</span>
-                                                {{ selectedPatient?.gender }}
-                                        </h3>
-                            
+                                    <div>
+                                        <img style="height: 40px; width: 40px;" *ngIf="selectedPatient?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                        <img style="height: 40px; width: 40px;" class="shadow" *ngIf="selectedPatient?.profileImageObject != undefined" [src]="facilityService.transform(selectedPatient?.profileImageObject?.thumbnail)">
+                                    </div>
+                                    <h2 class="sel-patient-name">{{ selectedPatient?.firstName }} {{ selectedPatient?.lastName }}
+                                    </h2>
+                                    <h3 class="sel-patient-detaills">
+                                        {{ selectedPatient?.apmisId }} <span style="color:#0288D1; font-size: 1.4rem">|</span> {{ selectedPatient?.dateOfBirth | date: 'shortDate' }} <span style="color:#0288D1; font-size: 1.4rem">|</span> {{ selectedPatient?.gender
+                                        }}
+                                    </h3>
                                 </div>
-
 
                                 <h2 class="col-xs-12" style="text-align: center">Pending Requests</h2>
                                 <div class="row" *ngIf="pendingRequests.length > 0">
                                     <div class="col-sm-12 col-md-12">
-                                        <button  style="float: right;" class="refresh-payment btn btn-primary" (click)="onClickRefreshPaymentStatus();" [disabled]="disablePaymentBtn" [innerHtml]="paymentStatusText"></button>
+                                        <button style="float: right;" class="refresh-payment btn btn-primary" (click)="onClickRefreshPaymentStatus();" [disabled]="disablePaymentBtn" [innerHtml]="paymentStatusText"></button>
                                     </div>
                                 </div>
                                 <div class="pending-req-wrap">
@@ -48,8 +44,17 @@
                                         <div class="card-header">
                                             <div class="row">
                                                 <div class="table-head col-xs-4">Investigation</div>
-                                                <div class="col-xs-4 table-head">Date</div>
+                                                <div class="col-xs-3 table-head">Date</div>
                                                 <div class="table-head col-xs-4">Status</div>
+                                                <div class="table-head col-xs-1"><i class="fa fa-search fa-fw pointer" (click)="openSearch()"></i></div>
+                                            </div>
+                                            <div class="row" *ngIf="searchOpen">
+                                                <div class="col-xs-10">
+                                                    <input [formControl]="patientSearch" class="table-header-input" type="text" placeholder="Search for Patient">
+                                                </div>
+                                                <div class="col-xs-2 table-head">
+                                                    <i class="fa fa-close fa-fw" (click)="openSearch()"></i>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="card-content">
@@ -63,7 +68,7 @@
                                                     <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                                                 </div>
                                             </div>
-                                            <div class="card-list-item" [class.active]="activeInvestigationNo == i" *ngFor="let pendingRequest of pendingRequests; let i = index;"  [class.active]="activeInvestigationNo == i" (click)="onClickInvestigation(pendingRequest, i);">
+                                            <div class="card-list-item" [class.active]="activeInvestigationNo == i" *ngFor="let pendingRequest of pendingRequests; let i = index;" [class.active]="activeInvestigationNo == i" (click)="onClickInvestigation(pendingRequest, i);">
                                                 <div class="row">
                                                     <div class="table-list col-xs-4">
                                                         {{pendingRequest?.name}}
@@ -83,7 +88,6 @@
                                                             <i *ngIf="!pendingRequest.sampleTaken" class="fa fa-minus notSample" aria-hidden="true"></i>
                                                         </div>
                                                     </div>
-
                                                 </div>
                                             </div>
                                         </div>
@@ -97,7 +101,26 @@
                                                 <div class="table-head col-xs-2">Lab Number</div>
                                                 <div class="col-xs-2 table-head">Date</div>
                                                 <div class="table-head col-xs-1">Status</div>
-                                                <div class="table-head col-xs-1"><i class="fa fa-search fa-fw pointer"></i></div>
+                                                <div class="table-head col-xs-1"><i class="fa fa-search fa-fw pointer" (click)="openSearch()"></i></div>
+                                            </div>
+                                            <div class="row" *ngIf="searchOpen">
+                                                <div class="col-md-4">
+                                                    <input [formControl]="patientSearch" class="table-header-input" type="text" placeholder="Search for Patient">
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <!-- <select class="table-header-select" formControlName="category" placeholder="Select Category" (change)="onChangeCategory($event);">
+                                        <option value="" selected>Select Category</option>
+                                        <option value="individual">Individual</option>
+                                        <option value="corporate">Corporate</option>
+                                        <option value="internal">Internal</option>
+                                    </select> -->
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <!-- <input class="table-header-input" type="date" placeholder="Choose a date"> -->
+                                                </div>
+                                                <div class="col-md-1 table-head">
+                                                    <i class="fa fa-close fa-fw" (click)="openSearch()"></i>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="card-content">
@@ -184,7 +207,6 @@
                                         <form [formGroup]="reportFormGroup" novalidate>
                                             <div class="resultSect-title">Investigation Result</div>
                                             <div class="template-box" (click)="onClickImportTemplate(selectedInvestigation);"><i class="fa fa-download"></i> Import template</div>
-
                                             <div class="invstn-wrap" *ngIf="!selectedInvestigation.isPanel" formArrayName="results">
                                                 <div *ngFor="let resultForm of reportFormGroup.controls.results.controls; let i=index;">
                                                     <div *ngIf="numericReport" class="lettering-wrap">
@@ -204,14 +226,14 @@
                                                                 <mat-input-container>
                                                                     <input type="number" matInput placeholder="Enter Result" formControlName="result">
                                                                 </mat-input-container>
-                                                                <div style="width: 100%; text-align: right;padding:5px 0;">
+                                                                <!-- <div style="width: 100%; text-align: right;padding:5px 0;">
                                                                     <small style="position: relative; bottom: 8px;">{{ referenceValue }}</small>
-                                                                </div>
+                                                                </div> -->
                                                             </div>
                                                             <div class="col-xs-1">
-                                                                <span style="color:red">High</span>
-                                                                <span style="color:green">Normal</span>
-                                                                <span style="color:yellow">Low</span>
+                                                                <span *ngIf="referenceValue[i]?.result > selectedInvestigation?.reportType?.ref?.max" style="color:red">High</span>
+                                                                <span *ngIf="(referenceValue[i]?.result > selectedInvestigation?.reportType?.ref?.min - 1) && (referenceValue[i].result < selectedInvestigation?.reportType?.ref?.max + 1)" style="color:green">Normal</span>
+                                                                <span *ngIf="referenceValue[i]?.result < selectedInvestigation?.reportType?.ref?.min" style="color:yellow">Low</span>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -219,7 +241,7 @@
                                                     <div *ngIf="textReport" class="lettering-wrap">
                                                         <div class="report-title">{{ selectedInvestigation?.name }}</div>
                                                         <div class="invstn-vals row">
-                                                            
+
                                                             <div class="invstn-val col">
                                                                 <h3 class="val-label">Sample NO:</h3>
                                                                 <div class="val-val">{{ selectedInvestigation?.specimenNumber }}</div>
@@ -233,7 +255,6 @@
                                                                     <textarea formControlName="result" matInput placeholder="Enter Result"></textarea>
                                                                 </mat-input-container>
                                                             </div>
-                                                            
                                                         </div>
                                                     </div>
                                                 </div>
@@ -244,10 +265,10 @@
                                                 <div class="invstn-vals" *ngFor="let panel of selectedInvestigation.panel; let resultForm of reportFormGroup.controls.results.controls; let i=index;">
                                                     <div>{{ panel?.investigation?.name }}</div>
                                                     <div class="row" *ngIf="panel.investigation.reportType.name !== 'Text'">
-                                                        
+
                                                         <div class="invstn-val col">
                                                             <h3 class="val-label">Sample NO:</h3>
-                                                            <div class="val-val">1220</div>
+                                                            <div class="val-val">{{ panel?.investigation?.specimenNumber }}</div>
                                                         </div>
                                                         <div class="invstn-val col">
                                                             <h3 class="val-label">Reference:</h3>
@@ -259,21 +280,20 @@
                                                             <mat-input-container>
                                                                 <input type="number" matInput placeholder="Enter Result" formControlName="result">
                                                             </mat-input-container>
-                                                            <div style="width: 100%; text-align: right;padding:5px 0;">
+                                                            <!-- <div style="width: 100%; text-align: right;padding:5px 0;">
                                                                 <small style="position: relative; bottom: 8px;">{{ referenceValue }}</small>
-                                                            </div>
+                                                            </div> -->
                                                         </div>
                                                         <div class="col-xs-1">
-                                                            <span style="color:red">High</span>
-                                                            <span style="color:green">Normal</span>
-                                                            <span style="color:yellow">Low</span>
+                                                            <span *ngIf="referenceValue[i]?.result > panel?.investigation?.reportType?.ref?.max" style="color:red">High</span>
+                                                            <span *ngIf="(referenceValue[i]?.result > panel?.investigation?.reportType?.ref?.min - 1) && (referenceValue[i].result < panel?.investigation?.reportType?.ref?.max + 1)" style="color:green">Normal</span>
+                                                            <span *ngIf="referenceValue[i]?.result < panel?.investigation?.reportType?.ref?.min" style="color:yellow">Low</span>
                                                         </div>
                                                     </div>
                                                     <div class="row" *ngIf="panel.investigation.reportType.name === 'Text'">
-                                                        
                                                         <div class="col invstn-val">
                                                             <h3 class="val-label">Sample NO:</h3>
-                                                            <div class="val-val">1220</div>
+                                                            <div class="val-val">{{ panel?.investigation?.specimenNumber }}</div>
                                                         </div>
                                                         <div class="col invstn-val">
                                                             <h3 class="val-label">Reference:</h3>
@@ -292,8 +312,7 @@
                                                 <mat-form-field>
                                                     <mat-select formControlName="outcome" placeholder="Investigation Outcome">
                                                         <mat-option [value]="'Normal'">Normal</mat-option>
-                                                        <mat-option [value]="'Low'">Low</mat-option>
-                                                        <mat-option [value]="'High'">High</mat-option>
+                                                        <mat-option [value]="'Abnormal'">Abnormal</mat-option>
                                                     </mat-select>
                                                 </mat-form-field>
                                             </div>
@@ -317,8 +336,8 @@
                                                 <div class="upload-btn-wrapper">
                                                     <button class="upload-btn">Upload</button>
                                                     <input type="file" name="fileInput" (change)="onFileChange($event)" #fileInput formControlName="fileUpload" />
-                                                      <span style="font-size: 0.79em; color: #aaa; font-weight: 900;">{{fileName}}</span>
-                                                  </div>
+                                                    <span style="font-size: 0.79em; color: #aaa; font-weight: 900;">{{fileName}}</span>
+                                                </div>
                                             </div>
                                         </form>
                                     </div>
@@ -343,7 +362,26 @@
                                 <div class="table-head col-xs-2">Source</div>
                                 <div class="col-xs-2 table-head">Requesting Physician</div>
                                 <div class="table-head col-xs-1">Status</div>
-                                <div class="table-head col-xs-1"><i class="fa fa-search fa-fw pointer"></i></div>
+                                <div class="table-head col-xs-1"><i class="fa fa-search fa-fw pointer" (click)="openSearch2()"></i></div>
+                            </div>
+                            <div class="row" *ngIf="searchOpen2">
+                                <div class="col-md-4">
+                                    <input [formControl]="patientSearch2" class="table-header-input" type="text" placeholder="Search for Patient">
+                                </div>
+                                <div class="col-md-4">
+                                    <!-- <select class="table-header-select" formControlName="category" placeholder="Select Category" (change)="onChangeCategory($event);">
+                                        <option value="" selected>Select Category</option>
+                                        <option value="individual">Individual</option>
+                                        <option value="corporate">Corporate</option>
+                                        <option value="internal">Internal</option>
+                                    </select> -->
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- <input class="table-header-input" type="date" placeholder="Choose a date"> -->
+                                </div>
+                                <div class="col-md-1 table-head">
+                                    <i class="fa fa-close fa-fw" (click)="openSearch2()"></i>
+                                </div>
                             </div>
                         </div>
                         <div class="card-content">
@@ -386,7 +424,7 @@
                                             <div>{{ report?.createdBy?.firstName }} {{ report?.createdBy?.lastName}}</div>
                                         </div>
                                     </div>
-                                
+
                                     <div class="table-list col-xs-1">
                                         <div *ngIf="report.isUploaded" style="color: green">Published</div>
                                         <div *ngIf="!report.isUploaded" style="color:blue">Saved, Not Published</div>
