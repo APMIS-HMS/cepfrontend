@@ -75,19 +75,21 @@ class Service {
                                     delete employee.personDetails.wallet;
                                     request.employeeDetails = employee.personDetails;
 
-                                    const billing = await billingService.find({
-                                        query: {
-                                            facilityId: facilityId,
-                                            '_id': request.billingId._id,
-                                            patientId: request.patientId
-                                        }
-                                    });
-                                    if (billing.data.length > 0) {
-                                        const billingItem = billing.data[0];
-                                        billingItem.billItems.forEach(billItem => {
-                                            request.isPaid = billItem.paymentCompleted;
-                                            request.isWaved = (billItem.isServiceEnjoyed === true && billItem.paymentCompleted === false) ? true : false;
+                                    if (request.billingId !== undefined) {
+                                        const billing = await billingService.find({
+                                            query: {
+                                                facilityId: facilityId,
+                                                '_id': request.billingId._id,
+                                                patientId: request.patientId
+                                            }
                                         });
+                                        if (billing.data.length > 0) {
+                                            const billingItem = billing.data[0];
+                                            billingItem.billItems.forEach(billItem => {
+                                                request.isPaid = billItem.paymentCompleted;
+                                                request.isWaved = (billItem.isServiceEnjoyed === true && billItem.paymentCompleted === false) ? true : false;
+                                            });
+                                        }
                                     }
 
                                     counter++;
@@ -124,19 +126,22 @@ class Service {
                             delete employee.personDetails.wallet;
                             request.employeeDetails = employee.personDetails;
 
-                            const billing = await billingService.find({
-                                query: {
-                                    facilityId: facilityId,
-                                    '_id': request.billingId._id,
-                                    patientId: request.patientId
-                                }
-                            });
-                            if (billing.data.length > 0) {
-                                const billingItem = billing.data[0];
-                                billingItem.billItems.forEach(billItem => {
-                                    request.isPaid = billItem.paymentCompleted;
-                                    request.isWaved = (billItem.isServiceEnjoyed === true && billItem.paymentCompleted === false) ? true : false;
+                            if (request.billingId !== undefined) {
+                                const billing = await billingService.find({
+                                    query: {
+                                        facilityId: facilityId,
+                                        '_id': request.billingId._id,
+                                        patientId: request.patientId
+                                    }
                                 });
+
+                                if (billing.data.length > 0) {
+                                    const billingItem = billing.data[0];
+                                    billingItem.billItems.forEach(billItem => {
+                                        request.isPaid = billItem.paymentCompleted;
+                                        request.isWaved = (billItem.isServiceEnjoyed === true && billItem.paymentCompleted === false) ? true : false;
+                                    });
+                                }
                             }
 
                             counter++;

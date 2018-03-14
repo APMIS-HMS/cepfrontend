@@ -75,7 +75,7 @@ class Service {
                                     awaitOrgServices.data[i].categories[j].services[k].price.push({
                                         name: 'Base',
                                         isBase: true,
-                                        price: ''
+                                        price: 0
                                     });
                                 }
                             }
