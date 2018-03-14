@@ -16,13 +16,8 @@ const RxJS = require('rxjs/Rx');
 // const HOST = 'http://172.16.16.51:3031'; // Mr Sunday
 // const HOST = 'http://172.16.16.47:3031'; // Simdi
 // const HOST = 'http://192.168.40.247:3031'; // Mr Sunday
-<<<<<<< HEAD
 const HOST = 'https://apmisapitest.azurewebsites.net'; // Sunday
   //const HOST = 'http://localhost:3031'; // Local Server
-=======
-//const HOST = 'https://apmisapitest.azurewebsites.net'; // Sunday
-  const HOST = 'http://localhost:3031'; // Local Server
->>>>>>> 5c8802a93292209333257a4e5053da82b90b9cc7
 
 
 @Injectable()
