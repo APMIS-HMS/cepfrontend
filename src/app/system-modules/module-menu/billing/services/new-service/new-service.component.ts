@@ -152,7 +152,6 @@ export class NewServiceComponent implements OnInit {
 
   getCategories() {
     this._facilitiesServiceCategoryService.find({ query: { facilityId: this.facility._id,$select: ['categories._id','categories.name' ] } }).then(payload => {
-      console.log(payload);
       if (payload.data.length > 0) {
         this.categories = payload.data[0].categories;
       }
