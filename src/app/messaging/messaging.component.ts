@@ -10,6 +10,10 @@ export class MessagingComponent implements OnInit {
 
   chatActive = false;
   searchAccount = new FormControl();
+  chatBox = new FormControl();
+
+  clinicalTab = true;
+  nonClinicalTab = false;
 
   constructor() { }
 
@@ -21,6 +25,14 @@ export class MessagingComponent implements OnInit {
   }
   chatClose(){
     this.chatActive = false;
+  }
+  clinical_click(){
+    this.clinicalTab = true;
+    this.nonClinicalTab = false;
+  }
+  nonClinical_click(){
+    this.clinicalTab = false;
+    this.nonClinicalTab = true;
   }
 
 }
