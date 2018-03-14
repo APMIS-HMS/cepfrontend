@@ -19,44 +19,49 @@
             <div class="mainfrmwrap">
                 <div class="row" Class="col-xs-12 col-lg-12">
                     <div class="sec-1">
-                        <div class="frm-item-wrap">
-                            <mat-form-field>
-                                <mat-select class="example-full-width" placeholder="Product Type" formControlName="productTypeId">
-                                    <mat-option *ngFor="let productType of productTypes" [value]="productType._id">{{productType.name}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="frm-item-wrap">
-                            <mat-input-container class="example-full-width">
-                                <input matInput mat-error placeholder="Name(Product)" formControlName="name">
-                            </mat-input-container>
-                            <div *ngIf="productSugestion" class="sugestion-wrap shadow-B">
-                                <div (click)="onSelectProductSuggestion(dictionary)" *ngFor="let dictionary of dictionaries" class="sugestion-item">{{dictionary.details}}</div>
-                            </div>
-
-                        </div>
-                        <div class="sec-2">
-                                <div class="frm-item-wrap">
-                                        <mat-input-container class="example-full-width">
-                                                <input matInput mat-error placeholder="Manufacturer" formControlName="manufacturer">
-                                            </mat-input-container>
-                                    </div>
-                            <div class="frm-item-wrap">
+                        <div class="row">
+                            <div class="col-xs-6">
                                 <mat-form-field>
-                                    <mat-select class="example-full-width" placeholder="Service Category" formControlName="categoryId">
-                                        <mat-option *ngFor="let category of categories" [value]="category._id">{{category.name}}</mat-option>
+                                    <mat-select class="example-full-width" placeholder="Product Type" formControlName="productTypeId">
+                                        <mat-option *ngFor="let productType of productTypes" [value]="productType._id">{{productType.name}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
-                            <div class="frm-item-wrap">
+                            <div class="col-xs-6">
                                 <mat-input-container class="example-full-width">
-                                    <input matInput mat-error placeholder="Pack Label" formControlName="packLabel">
+                                    <input matInput mat-error placeholder="Name(Product)" formControlName="name">
                                 </mat-input-container>
+                                <div *ngIf="productSugestion" class="sugestion-wrap shadow-B">
+                                    <div (click)="onSelectProductSuggestion(dictionary)" *ngFor="let dictionary of dictionaries" class="sugestion-item">{{dictionary.details}}</div>
+                                </div>
                             </div>
-                            <div class="frm-item-wrap">
-                                <mat-input-container class="example-full-width">
-                                    <input type="number" matInput mat-error placeholder="Pack Size" formControlName="packSize">
-                                </mat-input-container>
+                        </div>
+                        <div class="sec-2">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <mat-input-container class="example-full-width">
+                                        <input matInput mat-error placeholder="Manufacturer" formControlName="manufacturer">
+                                    </mat-input-container>
+                                </div>
+                                <div class="col-xs-6">
+                                    <mat-form-field>
+                                        <mat-select class="example-full-width" placeholder="Service Category" formControlName="categoryId">
+                                            <mat-option *ngFor="let category of categories" [value]="category._id">{{category.name}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <mat-input-container class="example-full-width">
+                                        <input matInput mat-error placeholder="Pack Label" formControlName="packLabel">
+                                    </mat-input-container>
+                                </div>
+                                <div class="col-xs-6">
+                                    <mat-input-container class="example-full-width">
+                                        <input type="number" matInput mat-error placeholder="Pack Size" formControlName="packSize">
+                                    </mat-input-container>
+                                </div>
                             </div>
 
                         </div>
