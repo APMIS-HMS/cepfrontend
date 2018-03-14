@@ -18,6 +18,7 @@ import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 })
 export class ReportComponent implements OnInit {
   patientSearch = new FormControl();
+  patientSearch2 = new FormControl();
   @Output() selectedInvestigationData: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
   reportFormGroup: FormGroup;
   // panelReportFormGroup: FormGroup;
@@ -56,7 +57,7 @@ export class ReportComponent implements OnInit {
   report_view = false;
   repDetail_view = false;
   activeInvestigationNo: number = -1;
-  referenceValue: String = '';
+  referenceValue: any = [];
   saveAndUploadBtnText: String = 'SAVE AND PUBLISH';
   saveToDraftBtnText: String = 'SAVE AS DRAFT';
   disablePaymentBtn: Boolean = false;
@@ -67,6 +68,7 @@ export class ReportComponent implements OnInit {
   fileType;
   fileBase64;
   searchOpen = false;
+  searchOpen2 = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -117,20 +119,6 @@ export class ReportComponent implements OnInit {
       }
     });
 
-    // this.reportFormGroup.controls['result'].valueChanges.subscribe(val => {
-    //   if (this.numericReport) {
-    //     if (this.selectedInvestigation.reportType.name.toLowerCase() === 'numeric'.toLowerCase()) {
-    //       if (this.selectedInvestigation.reportType.ref.min > val) {
-    //         this.referenceValue = 'Low';
-    //       } else if (this.selectedInvestigation.reportType.ref.min < val && this.selectedInvestigation.reportType.ref.max > val) {
-    //         this.referenceValue = 'Normal';
-    //       } else if (this.selectedInvestigation.reportType.ref.max < val) {
-    //         this.referenceValue = 'High';
-    //       }
-    //     }
-    //   }
-    // });
-
     this._getAllReports();
     this._getDocumentationForm();
 
@@ -146,8 +134,38 @@ export class ReportComponent implements OnInit {
     });
 
     this.patientSearch.valueChanges
-      .distinctUntilChanged()
       .debounceTime(400)
+      .distinctUntilChanged()
+      .do(val => { this.pendingRequests = []; this.pendingReLoading = true; })
+      .switchMap((term) => Observable.fromPromise(this._laboratoryRequestService.customFind({
+        query: { search: term, facilityId: this.facility._id }
+      }))).subscribe((res: any) => {
+        this.pendingReLoading = false;
+        if (res.data.length > 0) {
+          const pendingRequests = this._modelPendingRequests(res.data);
+          if (pendingRequests.length > 0) {
+            this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved)
+              && (x.isUploaded === undefined || (x.isUploaded === false)));
+
+            // If pendingRequests contains at least a value, then get payment status
+            if (this.pendingRequests.length > 0) {
+              setTimeout(e => {
+                this._getPaymentStatus();
+              }, 500);
+            }
+          } else {
+            this.pendingRequests = [];
+          }
+        } else {
+          this.pendingRequests = [];
+        }
+      });
+
+
+    this.patientSearch2.valueChanges
+      .debounceTime(400)
+      .distinctUntilChanged()
+      .do(val => { this.reports = []; this.reportLoading = true; })
       .switchMap((term) => Observable.fromPromise(this._laboratoryRequestService.customFind({
         query: { search: term, facilityId: this.facility._id }
       }))).subscribe((res: any) => {
@@ -191,6 +209,15 @@ export class ReportComponent implements OnInit {
     // add address to the list
     const control = <FormArray>this.reportFormGroup.controls['results'];
     control.push(this.initResultBuilder(investigation));
+    this.onValueChangeResults(control);
+  }
+
+  onValueChangeResults(control) {
+    if (this.numericReport) {
+      control.valueChanges.subscribe(val => {
+        this.referenceValue = val;
+      });
+    }
   }
 
   createReport(valid: Boolean, value: any, action: String) {
@@ -373,34 +400,34 @@ export class ReportComponent implements OnInit {
     }
   }
 
-  apmisLookupHandleSelectedItem(value) {
-    this.pendingReLoading = true;
-    this.apmisLookupText = `${value.firstName} ${value.lastName}`;
-    this.selectedPatient = value;
-    this._laboratoryRequestService.customFind({
-      query: { 'facilityId': this.facility._id, 'patientId': value.patientId }
-    }).then(res => {
-      this.pendingReLoading = false;
-      if (res.data.length > 0) {
-        const pendingRequests = this._modelPendingRequests(res.data);
-        if (pendingRequests.length > 0) {
-          this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved)
-            && (x.isUploaded === undefined || (x.isUploaded === false)));
+  // apmisLookupHandleSelectedItem(value) {
+  //   this.pendingReLoading = true;
+  //   this.apmisLookupText = `${value.firstName} ${value.lastName}`;
+  //   this.selectedPatient = value;
+  //   this._laboratoryRequestService.customFind({
+  //     query: { 'facilityId': this.facility._id, 'patientId': value.patientId }
+  //   }).then(res => {
+  //     this.pendingReLoading = false;
+  //     if (res.data.length > 0) {
+  //       const pendingRequests = this._modelPendingRequests(res.data);
+  //       if (pendingRequests.length > 0) {
+  //         this.pendingRequests = pendingRequests.filter(x => (x.isSaved === undefined || x.isSaved)
+  //           && (x.isUploaded === undefined || (x.isUploaded === false)));
 
-          // If pendingRequests contains at least a value, then get payment status
-          if (this.pendingRequests.length > 0) {
-            setTimeout(e => {
-              this._getPaymentStatus();
-            }, 500);
-          }
-        } else {
-          this.pendingRequests = [];
-        }
-      } else {
-        this.pendingRequests = [];
-      }
-    }).catch(err => this._notification('Error', 'There was a problem getting patient details!'));
-  }
+  //         // If pendingRequests contains at least a value, then get payment status
+  //         if (this.pendingRequests.length > 0) {
+  //           setTimeout(e => {
+  //             this._getPaymentStatus();
+  //           }, 500);
+  //         }
+  //       } else {
+  //         this.pendingRequests = [];
+  //       }
+  //     } else {
+  //       this.pendingRequests = [];
+  //     }
+  //   }).catch(err => this._notification('Error', 'There was a problem getting patient details!'));
+  // }
 
   showImageBrowseDlg() {
     // this.selectImage();
@@ -467,7 +494,6 @@ export class ReportComponent implements OnInit {
   }
 
   uploadDoc() {
-    //console.log(this.fileBase64);
     return this._documentUploadService.create(this.fileBase64, {})
   }
 
@@ -581,6 +607,7 @@ export class ReportComponent implements OnInit {
           // Clear the formArray and then push the result and investigation into the new formArray.
           this.reportFormGroup.controls['results'] = this.formBuilder.array([]);
           const control = <FormArray>this.reportFormGroup.controls['results'];
+          this.onValueChangeResults(control);
           investigation.report.result.forEach(result => {
             control.push(this._populateInvestigation(result.result, result.investigation));
           });
@@ -747,7 +774,7 @@ export class ReportComponent implements OnInit {
   onClickTemplate(event) {
     this.importTemplate = false;
     if (event.investigation.investigation.reportType.name === this.selectedInvestigation.reportType.name) {
-      this.reportFormGroup.controls['result'].setValue(event.investigation.result);
+      // this.reportFormGroup.controls['result'].setValue(event.investigation.result);
       this.reportFormGroup.controls['recommendation'].setValue(event.investigation.recommendation);
       this.reportFormGroup.controls['conclusion'].setValue(event.investigation.conclusion);
     } else {
@@ -792,6 +819,9 @@ export class ReportComponent implements OnInit {
   }
   openSearch() {
     this.searchOpen = !this.searchOpen;
+  }
+  openSearch2() {
+    this.searchOpen2 = !this.searchOpen2;
   }
 
   repDetail(value: PendingLaboratoryRequest) {

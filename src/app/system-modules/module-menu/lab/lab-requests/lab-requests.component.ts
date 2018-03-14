@@ -139,8 +139,9 @@ export class LabRequestsComponent implements OnInit {
     this.searchInvestigation = new FormControl('', []);
 
     this.patientSearch.valueChanges
-      .distinctUntilChanged()
       .debounceTime(400)
+      .distinctUntilChanged()
+      .do(val => { this.pendingRequests = []; this.loading = true; })
       .switchMap((term) => Observable.fromPromise(this.requestService.customFind({
         query: { search: term, facilityId: this.selectedFacility._id }
       }))).subscribe((res: any) => {

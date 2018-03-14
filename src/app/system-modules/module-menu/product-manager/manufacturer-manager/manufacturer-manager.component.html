@@ -19,7 +19,7 @@
                                        <mat-input-container class="example-full-width">
                                             <input matInput mat-error placeholder="Name" formControlName="name">
                                         </mat-input-container>
-                                        <button (click)="onClickAdd(manufacturerGroup.value, manufacturerGroup.valid)" class="btn btn-default btn-create" type="submit">{{ btnLabel }}</button>
+                                        <button *ngIf="isBtnEnable" (click)="onClickAdd(manufacturerGroup.value, manufacturerGroup.valid)" class="btn btn-default btn-create" type="submit">{{ btnLabel }}</button>
                                         <button (click)="onClickCancel()" class="btn btn-default" type="submit">Clear</button>
                                     </div>
                                 </form>
@@ -38,10 +38,10 @@
                                     <h3>MANUFACTURERS</h3>
                                 </div>
                                 <div class="col-xs-3">
-                                    <h3>STATUS</h3>
+                                    <!-- <h3>STATUS</h3> -->
                                 </div>
                                 <div class="col-xs-4">
-                                    <h3>ACTIONS</h3>
+                                    <!-- <h3>ACTIONS</h3> -->
                                 </div>
                             </div>
                         </div>
@@ -54,13 +54,13 @@
                                     <p>{{ manufacturer.name }}</p>
                                 </div>
                                 <div class="col-xs-3">
-                                    <span class="{{ manufacturer.isActive ? 'bg-green' : 'bg-red'}} is-active" (click)="onClickIsActive(manufacturer)">
+                                    <!-- <span class="{{ manufacturer.isActive ? 'bg-green' : 'bg-red'}} is-active" (click)="onClickIsActive(manufacturer)">
                                         {{ manufacturer.isActive ? 'Active' : 'Inactive'}}
-                                    </span>
+                                    </span> -->
                                 </div>
                                 <div class="col-xs-4">
-                                    <a><span (click)="onClickEdit(manufacturer)"><i class="fa fa-pencil"></i></span></a>
-                                    <a><span (click)="onClickIsActive(manufacturer)"><i class="fa fa-trash"></i></span></a>
+                                    <!-- <a><span (click)="onClickEdit(manufacturer)"><i class="fa fa-pencil"></i></span></a>
+                                    <a><span (click)="onClickIsActive(manufacturer)"><i class="fa fa-trash"></i></span></a> -->
                                 </div>
                             </div>
                         </div>
