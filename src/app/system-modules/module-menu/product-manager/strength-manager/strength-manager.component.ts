@@ -15,7 +15,7 @@ export class StrengthManagerComponent implements OnInit {
 	selectedFacility: Facility = <Facility>{};
 	selectedItem: any = <Strength>{};
 	btnLabel = 'Create';
-
+	isBtnEnable = true;
 	mainErr: Boolean = true;
 	errMsg: String = 'You have unresolved errors';
 
@@ -31,12 +31,32 @@ export class StrengthManagerComponent implements OnInit {
 			strength: ['', [<any>Validators.required]],
 		});
 		this.selectedFacility = <Facility> this._locker.getObject('selectedFacility');
+		this.strengthGroup.controls['strength'].valueChanges
+			.debounceTime(400)
+			.distinctUntilChanged()
+			.subscribe(value => {
+				this._strengthService.find({
+					query: {
+						strength: { $regex: this.strengthGroup.controls['strength'].value, '$options': 'i' },
+					}
+				}).then(payload => {
+					const index = payload.data.filter(x => x.strength.toLowerCase() === this.strengthGroup.controls['strength'].value.toLowerCase());
+					if (index.length > 0) {
+						if (this.selectedItem.name === undefined) {
+							this.isBtnEnable = false;
+						}
+					} else {
+						this.isBtnEnable = true;
+					}
+				});
+			});
 		this.getStrengths();
 	}
 
 	onClickAdd(value: any, valid: boolean) {
 		if (valid) {
 			this.mainErr = true;
+			console.log(this.selectedItem);
 			// Check if you are editing an existing or creating a new record
 			if (this.selectedItem._id === undefined) {
 				value.facilityId = this.selectedFacility._id;
@@ -46,6 +66,7 @@ export class StrengthManagerComponent implements OnInit {
 						this.strengths.push(payload);
 					})
 					.catch(err => {
+						console.log(err);
 					});
 			} else {
 				value = this.selectedItem;
@@ -91,8 +112,9 @@ export class StrengthManagerComponent implements OnInit {
 	}
 
 	getStrengths() {
-		this._strengthService.find({ query: { facilityId: this.selectedFacility._id } })
+		this._strengthService.find({})
 			.then(data => {
+				console.log(data.data);
 				this.strengths = data.data;
 			});
 	}

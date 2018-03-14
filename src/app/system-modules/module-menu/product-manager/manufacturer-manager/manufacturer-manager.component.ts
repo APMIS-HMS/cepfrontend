@@ -16,6 +16,7 @@ export class ManufacturerManagerComponent implements OnInit {
 	manufacturers: any[] = [];
 	selectedItem: any = <Manufacturer>{};
 	btnLabel = 'Create';
+	isBtnEnable = true;
 
 	mainErr: Boolean = true;
 	errMsg: String = 'You have unresolved errors';
@@ -32,6 +33,29 @@ export class ManufacturerManagerComponent implements OnInit {
 			name: ['', [<any>Validators.required]]
 		});
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
+		this.manufacturerGroup.controls['name'].valueChanges
+			.debounceTime(400)
+			.distinctUntilChanged()
+			.subscribe(value => {
+				this._manufacturerService.find({
+					query: {
+						name: { $regex: this.manufacturerGroup.controls['name'].value, '$options': 'i' },
+					}
+				}).then(payload => {
+					const indx = payload.data.filter(x => x.name.toLowerCase() === this.manufacturerGroup.controls['name'].value.toLowerCase());
+					console.log(indx.length);
+					console.log(this.selectedItem.name);
+					if (indx.length > 0) {
+						if (this.selectedItem.name === undefined) {
+							console.log(false);
+							this.isBtnEnable = false;
+						}
+					} else {
+						console.log(true);
+						this.isBtnEnable = true;
+					}
+				});
+			});
 		this.getManufacturer();
 	}
 
@@ -94,7 +118,7 @@ export class ManufacturerManagerComponent implements OnInit {
 	}
 
 	getManufacturer() {
-		this._manufacturerService.find({ query: { facilityId: this.selectedFacility._id }})
+		this._manufacturerService.find({})
 			.then(data => {
 				this.manufacturers = data.data;
 			});
