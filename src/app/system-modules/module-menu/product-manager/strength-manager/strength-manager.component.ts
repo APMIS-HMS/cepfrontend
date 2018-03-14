@@ -56,7 +56,6 @@ export class StrengthManagerComponent implements OnInit {
 	onClickAdd(value: any, valid: boolean) {
 		if (valid) {
 			this.mainErr = true;
-			console.log(this.selectedItem);
 			// Check if you are editing an existing or creating a new record
 			if (this.selectedItem._id === undefined) {
 				value.facilityId = this.selectedFacility._id;
@@ -66,7 +65,6 @@ export class StrengthManagerComponent implements OnInit {
 						this.strengths.push(payload);
 					})
 					.catch(err => {
-						console.log(err);
 					});
 			} else {
 				value = this.selectedItem;
@@ -114,7 +112,6 @@ export class StrengthManagerComponent implements OnInit {
 	getStrengths() {
 		this._strengthService.find({})
 			.then(data => {
-				console.log(data.data);
 				this.strengths = data.data;
 			});
 	}
