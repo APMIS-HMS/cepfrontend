@@ -48,7 +48,7 @@ class Service {
                         uploadedDoc = await uploadDocService.create(data.file, {});
                     }
                     catch(e){
-                        
+                        return jsend.error('Sorry! But an eror occured while uploading. Please try again!');
                     }
                     
                 }
