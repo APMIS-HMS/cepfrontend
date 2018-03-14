@@ -15,7 +15,6 @@ class Service {
       }
     });
     const servicesItems = awaitOrgServices.data[0].categories.find(x => x._id.toString() === params.query.categoryId.toString());
-    console.log(servicesItems);
     let len3 = servicesItems.services.length - 1;
     for (let k = len3; k >= 0; k--) {
       servicesItems.services[k].price = [];
