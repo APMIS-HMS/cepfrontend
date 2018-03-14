@@ -35,7 +35,6 @@ class Service {
     if (stocksOnTransfer != null) {
       if (stocksOnTransfer.data != undefined) {
         if (stocksOnTransfer.data.length > 0) {
-          console.log(stocksOnTransfer.data);
           let len = stocksOnTransfer.data.length - 1;
           for (let index = len; index >= 0; index--) {
             let storeD = await storesService.get(stocksOnTransfer.data[index].destinationStoreId);
@@ -55,7 +54,6 @@ class Service {
                   let product = await productsService.get(stocksOnTransfer.data[index].inventoryTransferTransactions[index].productId);
                   stocksOnTransfer.data[index].inventoryTransferTransactions[index].productObject = product;
                 }
-                console.log(stocksOnTransfer);
                 return stocksOnTransfer;
               } else {
                 return {};
