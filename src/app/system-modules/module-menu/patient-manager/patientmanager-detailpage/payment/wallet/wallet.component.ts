@@ -60,7 +60,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    this.selectedFacility = <Facility>this._locker.getObject('miniFacility');
+    this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
     this.user = <User>this._locker.getObject('auth');
 
     this.paymentFormGroup = this._fb.group({
