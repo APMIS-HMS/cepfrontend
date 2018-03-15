@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-'use strict';
+' use strict ';
 const walletModel = require('../../custom-models/wallet-model');
 const walletTransModel = require('../../custom-models/wallet-transaction-model');
 const Client = require('node-rest-client').Client;
@@ -31,9 +31,11 @@ class FundWalletService {
         const employeeService = this.app.service('employees');
         const peopleService = this.app.service('people');
         const paymentService = this.app.service('payments');
+        const cashPaymentService = this.app.service('cash-payment');
 
         const accessToken = params.accessToken; /* Not required */
-        if (accessToken !== undefined) {
+        
+        if (accessToken !== undefined && data.paymentMethod === undefined) {
             const ref = data.ref; /* Not required. This is for e-payment */
             const payment = data.payment;
             const paymentType = payment.type; /* Required. This is either "Cash*, "Cheque", "e-Payment" */
@@ -54,7 +56,6 @@ class FundWalletService {
                     paymentType: paymentType,
                     paymentRoute: paymentRoute,
                 };
-
                 if (paymentRoute !== undefined && paymentRoute.toLowerCase() === 'flutterwave') {
                     //*****Save Payment in database */
                     const paymentRes = await paymentService.create(paymentPayload);
@@ -170,10 +171,8 @@ class FundWalletService {
                             
                             }
 
-                        } else {}
+                        }
                     }
-                } else {
-                    return false;
                 }
             } else {
                 const data = {
@@ -182,6 +181,12 @@ class FundWalletService {
                 };
                 return data;
             }
+        }else if(accessToken !== undefined && (data.paymentMethod !== undefined && data.paymentMethod.toLowerCase() === 'cash')) {
+            console.log('***************inside cash******************');
+            const cashPayment = await cashPaymentService.create(data,params);
+            console.log('********Cash Payment from fundwallet**********');
+            console.log(cashPayment);
+            jsend.success(cashPayment);
         } else {
             const data = {
                 msg: 'Sorry! But you can not perform this transaction.',

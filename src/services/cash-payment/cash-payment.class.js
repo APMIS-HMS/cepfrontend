@@ -1,0 +1,110 @@
+/* eslint-disable no-unused-vars */
+const jsend = require('jsend');
+class Service {
+    constructor(options) {
+        this.options = options || {};
+    }
+
+    find(params) {
+        return Promise.resolve([]);
+    }
+
+    get(id, params) {
+        return Promise.resolve({
+            id, text: `A new message with ID: ${id}!`
+        });
+    }
+
+    async create(data, params) {
+        const facilityService = this.app.service('facilities');
+        const peopleService = this.app.service('people');
+        const paymentService = this.app.service('payment');
+        
+        const facilityId = data.sourceId;
+        const personId = data.destinationId; // required
+        const amount = data.amount; // required
+        const employee = params.user._id;
+
+
+        if (facilityId !== undefined && data.amount >= 500) {
+            let response = {
+                facilityId: facilityId,
+                facilityOldBalance: 0,
+                facilityNewBalance: 0,
+                personOldBalance: 0,
+                personNewBalance: 0,
+                employee: employee
+            };
+            const facility = await facilityService.find({ query: { _id: facilityId } });
+            if (facility.total !== 0) {
+                let name = facility.data[0].name;
+                const facilityBalance = facility.data[0].wallet.balance;
+                if (facilityBalance !== 0 && (facilityBalance > amount || facilityBalance === amount)) {
+                    if (personId !== undefined) {
+                        const person = await peopleService.find({ query: { _id: personId } });
+                        if (person !== undefined) {
+
+                            response.facilityId = facilityId;
+                            response.facilityOldBalance = facility.data[0].wallet.balance;
+                            response.personOldBalance = person.data[0].wallet.balance;
+                            response.personNewBalance = parseInt(person.data[0].wallet.balance) + amount;
+                            response.facilityId = facility.data[0].facilityId;
+                            response.employee = employee;
+
+                            person.data[0].wallet.balance = response.personNewBalance;
+                            facility.data[0].wallet.balance -= amount;
+
+                            response.facilityNewBalance = facility.data[0].wallet.balance;
+
+                            console.log('Person==============');
+                            console.log(person.data[0].wallet.balance);
+                            console.log('Facility=================');
+                            console.log(facility.data[0].wallet.balance);
+                            console.log('Facility verify');
+                            console.log(facilityId);
+                            const facUpdate = await facilityService.patch(facilityId, {  wallet: facility.wallet.balance } );
+                            const personUpdate = await peopleService.patch(personId, { wallet: person.wallet.balance } );
+                            console.log('*********************Res*****************');
+                            console.log(response);
+                            return facUpdate;
+                            //return jsend.success('Successful');
+                        } else {
+                            return jsend.error('Invalid ApmisId');
+                        }
+                    } else {
+                        return jsend.error('Undefined reciever');
+                    }
+                } else {
+                    return jsend.error('Facility Balance is too low for this transaction');
+                }
+
+            } else {
+                return jsend.error('Facility is undefined!');
+            }
+        } else {
+            return jsend.error('An error occured while trying to perform this transaction');
+        }
+    }
+
+    update(id, data, params) {
+        return Promise.resolve(data);
+    }
+
+    patch(id, data, params) {
+        return Promise.resolve(data);
+    }
+
+    remove(id, params) {
+        return Promise.resolve({ id });
+    }
+
+    setup(app) {
+        this.app = app;
+    }
+}
+
+module.exports = function (options) {
+    return new Service(options);
+};
+
+module.exports.Service = Service;
