@@ -372,7 +372,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
         
         this.gethmos();
-        this.getCategories();
+        //this.getCategories();
         this.getMaritalStatus();
 
         this.frmNewEmp1 = this.formBuilder.group({
@@ -488,17 +488,30 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     getCashPlans() {
         this._facilitiesServiceCategoryService.find({
             query:
-                { facilityId: this.facility._id, 'categories.name': 'Medical Records', $select: { 'categories.$': 1 } }
+                { facilityId: this.facility._id, 'categories.name': 'Medical Records', $select: ['_id','categories.name','categories._id'] }
         }).then(payload => {
             // this.filterOutCategory(payload);
             // this.categories = [];
-            const cat: any = [];
+            console.log(payload);
+            const cat =  payload.data[0].categories;
+            const cate = cat.filter(x => x.name === 'Medical Records');
+            console.log(cate, cate[0]._id);
+            this._facilitiesServiceCategoryService.allServices({
+                query: {
+                    facilityId: this.facility._id,
+                    'categoryId': cate[0]._id
+                }
+            }).then(servPayload => {
+                console.log(servPayload);
+            })
+            //this.services = payload.data[0].categories[0].services;
+            /* const cat: any = [];
             payload.data.forEach((itemi, i) => {
                 itemi.categories.forEach((itemj, j) => {
                     cat.push(itemj);
                     this.cashPlans = cat[0].services;
                 });
-            });
+            }); */
         });
     }
 
@@ -530,6 +543,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     getServicePlans(service) {
+        console.log(service);
         this.servicePricePlans = service.price;
     }
 
