@@ -140,6 +140,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     planPrice: any;
     facilityServiceId: any;
 
+    selectedCategory;
+
     hmos;
     hmo;
     filteredHmos: Observable<any[]>;
@@ -372,7 +374,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
         
         this.gethmos();
-        this.getCategories();
+        //this.getCategories();
         this.getMaritalStatus();
 
         this.frmNewEmp1 = this.formBuilder.group({
@@ -480,44 +482,35 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
         this.zone = new NgZone({ enableLongStackTrace: false });
 
-        this.getCashPlans();
-
         this.getSecurityQuestions();
+        this.getCashPlans();
     }
 
     getCashPlans() {
         this._facilitiesServiceCategoryService.find({
             query:
-                { facilityId: this.facility._id, 'categories.name': 'Medical Records', $select: { 'categories.$': 1 } }
+                { facilityId: this.facility._id, 'categories.name': 'Medical Records', $select: ['_id','categories.name','categories._id'] }
         }).then(payload => {
-            // this.filterOutCategory(payload);
-            // this.categories = [];
-            const cat: any = [];
-            payload.data.forEach((itemi, i) => {
-                itemi.categories.forEach((itemj, j) => {
-                    cat.push(itemj);
-                    this.cashPlans = cat[0].services;
-                });
-            });
+            const cat =  payload.data[0].categories;
+            const cate = cat.filter(x => x.name === 'Medical Records');
+            this.selectCategory(cate[0]);
         });
     }
 
-    getCategories() {
-        this._facilitiesServiceCategoryService.allServices({
+      selectCategory(category) {
+        if (category._id !== undefined) {
+          this._facilitiesServiceCategoryService.allServices({
             query: {
-                facilityId: this.facility._id
+              facilityId: this.facility._id,
+              categoryId: category._id
             }
-        }).then(payload => {
-            this.categories = payload.data[0].categories;
-            const cat = this.categories.filter(x => x.name === 'Medical Records');
-            for (let n = 0; n < cat[0].services.length; n++) {
-                cat[0].services[n].facilityServiceId = payload.data[0]._id
-            }
-            this.services = cat[0].services;
-        }, error => {
-            /* this.systemModuleService.off(); */
-        });
-    }
+          }).then(payload => {
+            this.services = payload.services;
+          });
+        }else{
+          this.systemModuleService.off();
+        }
+      }
 
     getFamilyBeneficiaryList() {
         this.familyCoverService.find({ query: { 'facilityId': this.facility._id } }).then(payload => {

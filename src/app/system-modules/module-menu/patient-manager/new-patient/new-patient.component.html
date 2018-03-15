@@ -246,7 +246,7 @@
                 </div> -->
                 <div class="clear"></div>
 
-                <button [disabled]="!frmPerson.valid || isSaving === true || duplicate" (click)="submit(frmPerson.valid, frmPerson.value)"
+                <button [disabled]="!frmPerson.valid || isSaving || duplicate" (click)="submit(frmPerson.valid, frmPerson.value)"
                     [ngClass]="{'cta-1':(frmPerson.valid && !isSaving && !validatingPerson()), 'cta-1-disable':!frmPerson.valid || isSaving === true || duplicate}">
                     Register
                     <i *ngIf="isSaving" class="fa fa-spinner fa-spin fa-2x"></i>

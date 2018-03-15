@@ -18,57 +18,59 @@
         </div>
 
         <div class="row">
-        <div class="col-xs-4">
-            <div class="row">
-                <div class="col-xs-12">
-                    <div>
+            <div class="col-xs-4">
+                <div class="row">
+                    <div class="col-xs-12">
                         <div>
-                            <img style="height: 40px; width: 40px;" *ngIf="selectedInvestigationData?.patient?.profileImageObject == undefined" src="assets/images/users/default.png">
-                            <img style="height: 40px; width: 40px;" class="shadow" *ngIf="selectedInvestigationData?.patient?.profileImageObject != undefined" [src]="facilityService.transform(selectedInvestigationData?.patient?.profileImageObject?.thumbnail)">
+                            <div>
+                                <img style="height: 40px; width: 40px;" *ngIf="selectedInvestigationData?.patient?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                <img style="height: 40px; width: 40px;" class="shadow" *ngIf="selectedInvestigationData?.patient?.profileImageObject != undefined" [src]="facilityService.transform(selectedInvestigationData?.patient?.profileImageObject?.thumbnail)">
+                            </div>
+                            <h2 class="sel-patient-name">{{ selectedInvestigationData?.patient?.firstName }} {{ selectedInvestigationData?.patient?.lastName }}
+                            </h2>
+                            <h3 class="sel-patient-detaills">
+                                {{ selectedInvestigationData?.patient?.apmisId }} <span style="color:#0288D1; font-size: 1.4rem">|</span> {{ selectedInvestigationData?.patient?.dateOfBirth | date: 'shortDate' }} <span style="color:#0288D1; font-size: 1.4rem">|</span>                                {{ selectedInvestigationData?.patient?.gender }}
+                            </h3>
                         </div>
-                        <h2 class="sel-patient-name">{{ selectedInvestigationData?.patient?.firstName }} {{ selectedInvestigationData?.patient?.lastName }}
-                        </h2>
-                        <h3 class="sel-patient-detaills">
-                            {{ selectedInvestigationData?.patient?.apmisId }}  <span style="color:#0288D1; font-size: 1.4rem">|</span> 
-                            {{ selectedInvestigationData?.patient?.dateOfBirth | date: 'shortDate' }}  <span style="color:#0288D1; font-size: 1.4rem">|</span>
-                            {{ selectedInvestigationData?.patient?.gender }}  
-                        </h3>
-                    </div>
-                    <div class="act-right-actions">
-                        <div (click)="showImageBrowseDlg()" class="action-item" style="color:#FF9800;">
-                            <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                            <span>Upload</span>
+                        <div class="act-right-actions">
+                            <div (click)="showImageBrowseDlg()" class="action-item" style="color:#FF9800;">
+                                <i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                                <span>Upload</span>
+                            </div>
+                            <div (click)="showImageBrowseDlg()" class="action-item" style="color:#0288D1;">
+                                <i class="fa fa-edit" aria-hidden="true"></i>
+                                <span>Edit</span>
+                            </div>
                         </div>
-                        <div (click)="showImageBrowseDlg()" class="action-item" style="color:#0288D1;">
-                            <i class="fa fa-edit" aria-hidden="true"></i>
-                            <span>Edit</span>
-                        </div>
-                    </div>
-                    <h3>Uploaded Files</h3>
-                    <div class="upload-wrap">
-                        <div class="uploadeds">
-                            <span>No File uploaded yet.</span>
-                        </div>
-                        <ul class="card hover">
-                            <li class="row">
+                        <h3>Uploaded Files</h3>
+                        <div class="upload-wrap">
+                            <div class="uploadeds">
+                                <span>No File uploaded yet.</span>
+                            </div>
+                            <ul class="card hover">
+                                <li class="row">
                                     <div class="col-xs-2" style="text-align : center">
                                         <h3 class="fa fa-file-pdf-o" style="font-size : 1.2rem"></h3>
                                     </div>
-                                    <div class="col-xs-8"  style="text-align : center">
-                                        <h3 style="line-height : 1.2rem">File Name |                                  
-                                        XX-XX-XXXX</h3>
+                                    <div class="col-xs-8" style="text-align : center">
+                                        <h3 style="line-height : 1.2rem">File Name | XX-XX-XXXX
+                                        </h3>
                                     </div>
-                                    <div class="col-xs-2"  style="text-align : center">
+                                    <div class="col-xs-2" style="text-align : center">
                                         <h3 class="fa fa-ellipsis-v" style="line-height : 1.2rem"></h3>
                                     </div>
-                            </li>
-                        </ul>
-                    </div>            
+                                </li>
+                            </ul>
+                        </div>
+                        <div>
+                            <button class="printt"><i class="fa fa-print">Print</i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="col-xs-1"> &nbsp;</div>
-        <div class="col-xs-7">
+            <div class="col-xs-1"> &nbsp;</div>
+            <div class="col-xs-7">
                 <div>
                     <div class="initial-contenet invstn-val">
                         <div class="report-title">Clinical Information</div>
@@ -100,13 +102,13 @@
                             <div class="invstn-val">
                                 <div class="val-label">Test Result:</div>
                                 <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Text'">
-                                        <ul>
-                                            <li *ngFor = "let result of selectedInvestigationData.report.result">{{result.result}}</li>
-                                        </ul>
-                                </div>
-                                <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Numeric'" >
                                     <ul>
-                                        <li *ngFor = "let result of selectedInvestigationData.report.result">{{result.result}}</li>
+                                        <li *ngFor="let result of selectedInvestigationData.report.result">{{result.result}}</li>
+                                    </ul>
+                                </div>
+                                <div class="val-val" *ngIf="selectedInvestigationData.reportType.name == 'Numeric'">
+                                    <ul>
+                                        <li *ngFor="let result of selectedInvestigationData.report.result">{{result.result}}</li>
                                     </ul>
                                 </div>
                             </div>
@@ -126,5 +128,5 @@
                     </div>
                 </div>
             </div>
+        </div>
     </div>
-</div>
