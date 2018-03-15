@@ -7,7 +7,7 @@
     </div>
     <div class="modal-baseWrap">
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-        <div class="productNameLabel animated fadeIn" *ngIf="productNameLabel">{{productNameLabel_txt}}</div>
+        <!-- <div class="productNameLabel animated fadeIn" *ngIf="productNameLabel">{{productNameLabel_txt}}</div> -->
 
         <!--<div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
             <legend class="modal_title">New Productt</legend>
@@ -19,17 +19,6 @@
             <div class="mainfrmwrap">
                 <div class="row" Class="col-xs-12 col-lg-12">
                     <div class="sec-1">
-<<<<<<< HEAD
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <mat-form-field>
-                                    <mat-select class="example-full-width" placeholder="Product Type" formControlName="productTypeId">
-                                        <mat-option *ngFor="let productType of productTypes" [value]="productType._id">{{productType.name}}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                            <div class="col-xs-6">
-=======
                         <div class="frm-item-wrap">
                             <mat-form-field>
                                 <mat-select class="example-full-width" placeholder="Product Type" formControlName="productTypeId" [compareWith]="compareItems">
@@ -76,50 +65,15 @@
                                 </mat-form-field>
                             </div>
                             <!-- <div class="frm-item-wrap">
->>>>>>> 5c8802a93292209333257a4e5053da82b90b9cc7
                                 <mat-input-container class="example-full-width">
-                                    <input matInput mat-error placeholder="Name(Product)" formControlName="name">
+                                    <input matInput mat-error placeholder="Pack Label" formControlName="packLabel">
                                 </mat-input-container>
-                                <div *ngIf="productSugestion" class="sugestion-wrap shadow-B">
-                                    <div (click)="onSelectProductSuggestion(dictionary)" *ngFor="let dictionary of dictionaries" class="sugestion-item">{{dictionary.details}}</div>
-                                </div>
                             </div>
-<<<<<<< HEAD
-                        </div>
-                        <div class="sec-2">
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <mat-input-container class="example-full-width">
-                                        <input matInput mat-error placeholder="Manufacturer" formControlName="manufacturer">
-                                    </mat-input-container>
-                                </div>
-                                <div class="col-xs-6">
-                                    <mat-form-field>
-                                        <mat-select class="example-full-width" placeholder="Service Category" formControlName="categoryId">
-                                            <mat-option *ngFor="let category of categories" [value]="category._id">{{category.name}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <mat-input-container class="example-full-width">
-                                        <input matInput mat-error placeholder="Pack Label" formControlName="packLabel">
-                                    </mat-input-container>
-                                </div>
-                                <div class="col-xs-6">
-                                    <mat-input-container class="example-full-width">
-                                        <input type="number" matInput mat-error placeholder="Pack Size" formControlName="packSize" autocomplete="off">
-                                    </mat-input-container>
-                                </div>
-                            </div>
-=======
                             <div class="frm-item-wrap">
                                 <mat-input-container class="example-full-width">
                                     <input type="number" matInput mat-error placeholder="Pack Size" formControlName="packSize">
                                 </mat-input-container>
                             </div> -->
->>>>>>> 5c8802a93292209333257a4e5053da82b90b9cc7
 
                         </div>
                     </div>
@@ -153,10 +107,10 @@
                                                     </div>
                                                     <div class="frm-item-wrap" class="col-xs-4">
                                                         <mat-form-field>
-                                                                <mat-select class="example-full-width" placeholder="Strength Unit" formControlName="strengthUnit">
-                                                                    <mat-option *ngFor="let item of strengths" [value]="item.strength">{{item.strength}}</mat-option>
-                                                                </mat-select>
-                                                            </mat-form-field>
+                                                            <mat-select class="example-full-width" placeholder="Strength Unit" formControlName="strengthUnit">
+                                                                <mat-option *ngFor="let item of strengths" [value]="item.strength">{{item.strength}}</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
                                                     </div>
                                                 </div>
                                             </div>
