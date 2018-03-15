@@ -14,86 +14,112 @@ class Service {
         facilityId: params.query.facilityId
       }
     });
-    const servicesItems = awaitOrgServices.data[0].categories.find(x => x._id.toString() === params.query.categoryId.toString());
-    let len3 = servicesItems.services.length - 1;
-    for (let k = len3; k >= 0; k--) {
-      servicesItems.services[k].price = [];
-      var awaitPriceServices = await facilityPricesService.find({
-        query: {
-          facilityId: params.query.facilityId,
-          categoryId: servicesItems._id,
-          serviceId: servicesItems.services[k]._id,
-          facilityServiceId: awaitOrgServices.data[0]._id
+    let servicesItems = [];
+    if (params.query.isQueryService === undefined) {
+      servicesItems = awaitOrgServices.data[0].categories.filter(x => x._id.toString() === params.query.categoryId.toString());
+    } else {
+      awaitOrgServices.data[0].categories.forEach(element => {
+        const qIndex = element.services.filter(x => x.name.toLowerCase().includes(params.query.searchString.toLowerCase()));
+        if (qIndex.length > 0) {
+          element.services = qIndex;
+          servicesItems.push(element);
         }
       });
-      if (awaitPriceServices.data.length > 0) {
-        let len5 = awaitPriceServices.data.length - 1;
-        for (let n = 0; n <= len5; n++) {
-          servicesItems.services[k].price.push({
-            name: 'Base',
-            isBase: true,
-            priceId: awaitPriceServices.data[n]._id,
-            price: awaitPriceServices.data[n].price
+    }
+    if (servicesItems.length > 0) {
+      const sLen = servicesItems.length - 1;
+      for (let b = sLen; b >= 0; b--) {
+        let len3 = servicesItems[b].services.length - 1;
+        for (let k = len3; k >= 0; k--) {
+          servicesItems[b].services[k].price = [];
+          var awaitPriceServices = await facilityPricesService.find({
+            query: {
+              facilityId: params.query.facilityId,
+              categoryId: servicesItems[b]._id,
+              serviceId: servicesItems[b].services[k]._id,
+              facilityServiceId: awaitOrgServices.data[0]._id
+            }
           });
-          if (awaitPriceServices.data[n].modifiers !== undefined) {
-            if (awaitPriceServices.data[n].modifiers.length > 0) {
-              let len6 = awaitPriceServices.data[n].modifiers.length - 1;
-              for (let m = 0; m <= len6; m++) {
-                if (awaitPriceServices.data[n].modifiers[m].tagId !== undefined) {
-                  let tag = await serviceTagsService.get(awaitPriceServices.data[n].modifiers[m].tagId);
-                  if (awaitPriceServices.data[n].modifiers[m].modifierType === 'Percentage') {
-                    let p = awaitPriceServices.data[n].modifiers[m].modifierValue / 100;
-                    let calculatedP = p * awaitPriceServices.data[n].price;
-                    servicesItems.services[k].price.push({
-                      name: tag.name,
-                      isBase: false,
-                      priceId: awaitPriceServices.data[n]._id,
-                      _id: awaitPriceServices.data[n].modifiers[m]._id,
-                      price: calculatedP
-                    });
-                  } else if (awaitPriceServices.data[n].modifiers[m].modifierType === 'Amount') {
-                    servicesItems.services[k].price.push({
-                      name: tag.name,
-                      isBase: false,
-                      priceId: awaitPriceServices.data[n]._id,
-                      _id: awaitPriceServices.data[n].modifiers[m]._id,
-                      price: awaitPriceServices.data[n].modifiers[m].modifierValue
-                    });
+          if (awaitPriceServices.data.length > 0) {
+            let len5 = awaitPriceServices.data.length - 1;
+            for (let n = 0; n <= len5; n++) {
+              servicesItems[b].services[k].price.push({
+                name: 'Base',
+                isBase: true,
+                priceId: awaitPriceServices.data[n]._id,
+                price: awaitPriceServices.data[n].price
+              });
+              if (awaitPriceServices.data[n].modifiers !== undefined) {
+                if (awaitPriceServices.data[n].modifiers.length > 0) {
+                  let len6 = awaitPriceServices.data[n].modifiers.length - 1;
+                  for (let m = 0; m <= len6; m++) {
+                    if (awaitPriceServices.data[n].modifiers[m].tagId !== undefined) {
+                      let tag = await serviceTagsService.get(awaitPriceServices.data[n].modifiers[m].tagId);
+                      if (awaitPriceServices.data[n].modifiers[m].modifierType === 'Percentage') {
+                        let p = awaitPriceServices.data[n].modifiers[m].modifierValue / 100;
+                        let calculatedP = p * awaitPriceServices.data[n].price;
+                        servicesItems[b].services[k].price.push({
+                          name: tag.name,
+                          isBase: false,
+                          priceId: awaitPriceServices.data[n]._id,
+                          _id: awaitPriceServices.data[n].modifiers[m]._id,
+                          price: calculatedP,
+                          modifierType: '%',
+                          modifierValue: awaitPriceServices.data[n].modifiers[m].modifierValue
+                        });
+                      } else if (awaitPriceServices.data[n].modifiers[m].modifierType === 'Amount') {
+                        servicesItems[b].services[k].price.push({
+                          name: tag.name,
+                          isBase: false,
+                          priceId: awaitPriceServices.data[n]._id,
+                          _id: awaitPriceServices.data[n].modifiers[m]._id,
+                          price: awaitPriceServices.data[n].modifiers[m].modifierValue,
+                          modifierType: 'Amt.',
+                          modifierValue: awaitPriceServices.data[n].modifiers[m].modifierValue
+                        });
+                      }
+                    }
                   }
                 }
               }
             }
+          } else {
+            servicesItems[b].services[k].price.push({
+              name: 'Base',
+              isBase: true,
+              price: 0
+            });
           }
         }
-      } else {
-        servicesItems.services[k].price.push({
-          name: 'Base',
-          isBase: true,
-          price: 0
-        });
       }
     }
-    
-    return servicesItems;
+    if (params.query.isQueryService === undefined) {
+      return servicesItems[0];
+    } else {
+      return servicesItems;
+    }
+
   }
   async create(data, params) {
     const orgService = this.app.service('organisation-services');
     const priceService = this.app.service('facility-prices');
     const tagDictioneriesService = this.app.service('tag-dictioneries');
-    let queryDico = await tagDictioneriesService.find({
-      query: {
-        word: {
-          $regex: data.name,
-          '$options': 'i'
+    if (data.name !== null && data.name !== undefined) {
+      const queryDico = await tagDictioneriesService.find({
+        query: {
+          word: {
+            $regex: data.name.toString(),
+            '$options': 'i'
+          }
         }
-      }
-    });
-    if (queryDico.data.length == 0) {
-      let exactWord = queryDico.data.filter(x => x.word.toLowerCase() === data.name.toLowerCase());
-      if (exactWord.length == 0) {
-        await tagDictioneriesService.create({
-          word: data.name
-        });
+      });
+      if (queryDico.data.length == 0) {
+        const exactWord = queryDico.data.filter(x => x.word.toLowerCase() === data.name.toLowerCase());
+        if (exactWord.length == 0) {
+          await tagDictioneriesService.create({
+            word: data.name
+          });
+        }
       }
     }
     let organizationServiceItem = await orgService.find({
@@ -202,16 +228,18 @@ class Service {
                 let index3 = getPrice.modifiers.filter(x => x._id.toString() === data.price.others[t]._id.toString());
                 if (index3.length > 0) {
                   if (index3[0].modifierType === 'Percentage') {
-                    let val = data.price.others[t].price / (100 * data.price.base.price);
-                    index3[0].price = val;
-                  } else if (index3[0].modifierType === 'Amount') {
+                    index3[0].modifierValue = data.price.others[t].price;
+                  } else if (index3[0].modifierValue === 'Amount') {
                     index3[0].modifierValue = data.price.others[t].price;
                   }
                 }
               }
             }
           }
-          await priceService.patch(getPrice._id, getPrice);
+          await priceService.patch(getPrice._id, {
+            price: getPrice.price,
+            modifiers: getPrice.modifiers
+          });
         } else {
           let priceItem = {
             facilityServiceId: updatedOrganizationService._id,
