@@ -485,8 +485,7 @@ export class ReportComponent implements OnInit {
               this._getPaymentStatus();
             }, 500);
           }
-        } else {
-          this.pendingRequests = [];
+        } else {        this.pendingRequests = [];
         }
       } else {
         this.pendingRequests = [];
