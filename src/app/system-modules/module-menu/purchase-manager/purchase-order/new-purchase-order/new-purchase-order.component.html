@@ -97,8 +97,11 @@
                 </div>
             </form>
         </div>
-        <div (click)="save()" class="cta-1">
-            {{saveBtnText}}
+
+        <div style="width: 100%;height: 50px; text-align: center;">
+            <button (click)="save()" mat-raised-button [disabled]="!frm_purchaseOrder.valid || loading" class="mat-raised-button">
+                {{saveBtnText}}
+            </button>
         </div>
 
     </form>
