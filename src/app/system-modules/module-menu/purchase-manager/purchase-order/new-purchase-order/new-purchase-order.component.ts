@@ -52,6 +52,7 @@ export class NewPurchaseOrderComponent implements OnInit {
   loginEmployee: Employee = <Employee>{};
 
   saveBtnText = 'Done';
+  loading;
 
   constructor(private formBuilder: FormBuilder, private supplierService: SupplierService,
     private facilitiesService: FacilitiesService,
@@ -366,6 +367,7 @@ export class NewPurchaseOrderComponent implements OnInit {
   }
   save() {
     this.flyout = false;
+    this.loading = true;
     if (this.saveBtnText === 'Done') {
       const purchaseOrder: PurchaseOrder = <PurchaseOrder>{};
       purchaseOrder.expectedDate = this.frm_purchaseOrder.value.deliveryDate;
@@ -388,8 +390,10 @@ export class NewPurchaseOrderComponent implements OnInit {
         this.systemModuleService.announceSweetProxy('Purchase order ' + payload.purchaseOrderNumber + ' was created', 'success', null, null, null, null, null, null, null);
         this.frm_purchaseOrder.reset();
         this.router.navigate(['/dashboard/purchase-manager/orders']);
+        this.loading = true;
       }, error => {
         this.systemModuleService.announceSweetProxy('Failed to create purchase order', 'error');
+        this.loading = true;
       });
     } else {
       this.selectedPurchaseOrder.expectedDate = this.frm_purchaseOrder.value.deliveryDate;
@@ -415,9 +419,11 @@ export class NewPurchaseOrderComponent implements OnInit {
         this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
         this.unCheckedAllProducts();
         this.router.navigate(['/dashboard/purchase-manager/orders']);
+        this.loading = true;
         // (<FormArray>this.productTableForm.controls['productTableArray']).set = this.formBuilder.array([]);
       }, error => {
         this.systemModuleService.announceSweetProxy('Failed to create purchase order', 'error');
+        this.loading = true;
       });
     }
   }
