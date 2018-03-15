@@ -1,20 +1,35 @@
 @import '../product-manager/product-manager.component.scss';
-
 .content-sec-ico {
     top: 0px;
 }
+
 .c-page-wrapper {
     border: 0;
 }
+
 .inner-page-wrap {
     margin-top: 40px !important;
 }
+
 .navActive {
     border: 1.5px solid #fff;
 }
+
 navActive.active {
-   border: 1.5px solid #fff;  
+    border: 1.5px solid #fff;
 }
+
 .btning-purchase {
     border: 1px solid #0288d1;
+}
+
+.small-btn {
+    color: #fff;
+    border-radius: 5px;
+}
+
+.small-btn:hover {
+    background: royalblue;
+    cursor: pointer;
+    color: black;
 }
