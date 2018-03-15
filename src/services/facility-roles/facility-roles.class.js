@@ -48,7 +48,8 @@ class Service {
         const facilityModuleService = this.app.service('facility-modules');
         const modules = await facilityModuleService.find({
             query: {
-                _id: { $in: [...new Set(result)] }
+                _id: { $in: [...new Set(result)] },
+                $limit: 25
             }
         });
         return modules.data;
