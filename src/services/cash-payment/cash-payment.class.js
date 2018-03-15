@@ -11,15 +11,18 @@ class Service {
 
     get(id, params) {
         return Promise.resolve({
-            id, text: `A new message with ID: ${id}!`
+            id,
+            text: `A new message with ID: ${id}!`
         });
     }
 
     async create(data, params) {
+        console.log(data);
+        console.log(params);
         const facilityService = this.app.service('facilities');
         const peopleService = this.app.service('people');
         const paymentService = this.app.service('payment');
-        
+
         const facilityId = data.sourceId;
         const personId = data.destinationId; // required
         const amount = data.amount; // required
@@ -44,7 +47,7 @@ class Service {
                         const person = await peopleService.find({ query: { _id: personId } });
                         if (person !== undefined) {
 
-                            response.facilityId = facilityId;
+                            response.facilityId = data.sourceId;
                             response.facilityOldBalance = facility.data[0].wallet.balance;
                             response.personOldBalance = person.data[0].wallet.balance;
                             response.personNewBalance = parseInt(person.data[0].wallet.balance) + amount;
@@ -57,16 +60,20 @@ class Service {
                             response.facilityNewBalance = facility.data[0].wallet.balance;
 
                             console.log('Person==============');
-                            console.log(person.data[0].wallet.balance);
+                            console.log(person.data[0].wallet);
                             console.log('Facility=================');
-                            console.log(facility.data[0].wallet.balance);
+                            console.log(facility.data[0].wallet);
                             console.log('Facility verify');
                             console.log(facilityId);
-                            const facUpdate = await facilityService.patch(facilityId, {  wallet: facility.wallet.balance } );
-                            const personUpdate = await peopleService.patch(personId, { wallet: person.wallet.balance } );
+                            //   facilitiesService.patch(networkMember._id, {
+                            //     memberFacilities: networkMember.memberFacilities
+                            // })
+                            // const facUpdate = await facilityService.patch(facilityId, {  wallet: facility.wallet } );
+                            // const personUpdate = await peopleService.patch(personId, { wallet: person.wallet } );
                             console.log('*********************Res*****************');
                             console.log(response);
-                            return facUpdate;
+                            return {};
+                            // return facUpdate;
                             //return jsend.success('Successful');
                         } else {
                             return jsend.error('Invalid ApmisId');
@@ -103,7 +110,7 @@ class Service {
     }
 }
 
-module.exports = function (options) {
+module.exports = function(options) {
     return new Service(options);
 };
 
