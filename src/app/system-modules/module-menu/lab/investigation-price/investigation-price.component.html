@@ -41,11 +41,12 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
+                                <div class="table-head col-xs-1">No</div>
                                 <div class="table-head col-xs-3">Laboratory</div>
                                 <div class="table-head col-xs-2">Workbench</div>
                                 <div class="table-head col-xs-2">Investigation</div>
                                 <div class="table-head col-xs-2">Price</div>
-                                <div class="table-head col-xs-2">Status</div>
+                                <div class="table-head col-xs-1">Status</div>
                                 <div class="table-head col-xs-1"><i class="fa fa-search fa-fw pointer"></i></div>
                             </div>
                         </div>
@@ -62,6 +63,9 @@
                             </div>
                             <div class="card-list-item" *ngFor="let investigation of investigations; let i = index;">
                                 <div class="row">
+                                    <div class="table-list col-xs-1">
+                                        {{ i+1 }}
+                                    </div>
                                     <div class="table-list col-xs-3">
                                         {{getLaboratoryFromInvestigation(investigation.LaboratoryWorkbenches)}}
                                     </div>
@@ -74,7 +78,7 @@
                                     <div class="table-list col-xs-2">
                                         &#x20a6; {{gePriceFromInvestigation(investigation.LaboratoryWorkbenches)}}
                                     </div>
-                                    <div class="table-list col-xs-2 action-placeholder">
+                                    <div class="table-list col-xs-1 action-placeholder">
                                         Active
                                     </div>
                                     <div class="table-list col-xs-1 action-placeholder">
