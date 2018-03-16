@@ -127,11 +127,12 @@ export class InvestigationPriceComponent implements OnInit {
   }
 
   getInvestigations() {
-    if(this.checkingObject !== undefined&& this.checkingObject.type !== undefined && this.checkingObject.type.length  > 0){
+    if (this.checkingObject !== undefined && this.checkingObject.type !== undefined && this.checkingObject.type.length  > 0){
       this.investigationService.find({
         query: {
           'facilityId': this.selelctedFacility._id,
-          'LaboratoryWorkbenches.laboratoryId._id': this.checkingObject.typeObject.minorLocationObject._id
+          'LaboratoryWorkbenches.laboratoryId._id': this.checkingObject.typeObject.minorLocationObject._id,
+          $sort: { createdAt: -1 }
           // "LaboratoryWorkbenches": { $elemMatch: { 'laboratoryId._id': this.checkingObject.typeObject.minorLocationObject._id } }
         }
       }).then(res => {

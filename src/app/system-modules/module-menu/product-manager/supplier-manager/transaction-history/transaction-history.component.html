@@ -1,5 +1,5 @@
 <div class="subtitleWrap">
-    <div class="pg-subTitle">{{selected_supplier.name}}</div>
+    <div class="pg-subTitle">{{selected_supplier?.supplier?.name}}</div>
     <div class="pg-subTitle2">Transaction History</div>
 </div>
 
@@ -9,6 +9,7 @@
             <table class="table-responsive table table-striped text-center">
                 <thead>
                     <tr>
+                        <th><i class="fa fa-sort-alpha-asc"></i>No</th>
                         <th><i class="fa fa-sort-alpha-asc"></i>Date</th>
                         <th> <i class="fa fa-sort-alpha-asc"></i>Order ID</th>
                         <th><i class="fa fa-sort-alpha-asc"></i>Invoice Amount</th>
@@ -19,11 +20,11 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td colspan="6" class="td-col-span-6">
+                        <td colspan="7" class="td-col-span-6">
                             <div class="col-md-8 left">
                                 <select [formControl]="frmFilterSupplier" class="form-control inputFilter">
                                     <option value="" disabled selected>Select by type</option>
-                                    <option value={{supplier._id}} *ngFor="let supplier of suppliers">{{supplier.name}}</option>
+                                    <option value={{supplier._id}} *ngFor="let supplier of suppliers">{{supplier?.supplier?.name}}</option>
                                 </select>
                             </div>
                             <div class="col-md-4 pull-right">
@@ -31,7 +32,16 @@
                             </div>
                         </td>
                     </tr>
-                    <tr *ngFor="let details of invoices.data">
+                    <tr *ngIf="invoices.length === 0 && !loading">
+                        <td class="table-content" colspan="7" style="text-align: center !important; padding: 10px !important;"> No data available in table</td>
+                    </tr>
+                    <tr *ngIf="invoices.length === 0 && loading">
+                        <td class="table-content" colspan="7" style="text-align: center !important; padding: 10px !important;">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
+                        </td>
+                    </tr>
+                    <tr *ngFor="let details of invoices.data; let i=index;">
+                        <td>{{i+1}}</td>
                         <td>{{details.deliveryDate | date:'medium'}}</td>
                         <td>{{details.orderObject?.purchaseOrderNumber}}</td>
                         <td>{{details.invoiceAmount}}</td>
@@ -55,7 +65,7 @@
         </div>
     </div>
     <div *ngIf="newPayment" class="modal-overlay">
-        <app-make-payment (closeModal)="close_onClick($event)" (paymentItem)="onRefreshHistory($event)" [selectedInvoice]="selectedInvoice"  id="form-modal" class="form-modal center-center"></app-make-payment>
+        <app-make-payment (closeModal)="close_onClick($event)" (paymentItem)="onRefreshHistory($event)" [selectedInvoice]="selectedInvoice" id="form-modal" class="form-modal center-center"></app-make-payment>
     </div>
     <div *ngIf="paymentHistory">
         <app-payment-history [selectedInvoice]="selectedInvoice" (closeModal)="closeHistory_onClick($event)"> </app-payment-history>

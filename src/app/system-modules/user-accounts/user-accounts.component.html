@@ -17,7 +17,7 @@
 
     <div *ngIf="listOfFacilities.length > 1" class="userAccs-listing">
         <div class="listing-title">User Accounts</div>
-        <div  class="userAccs-listingWrap">
+        <div class="userAccs-listingWrap">
 
             <div *ngFor="let item of listOfFacilities" (click)="popListing(item)" class="acc-listing">
                 <div class="listing-imgWrap">
@@ -33,14 +33,14 @@
     <app-user-accounts-inner-popup [loginEmployee]="loginEmployee" [selectedFacility]="selectedFacility" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-user-accounts-inner-popup>
 </div>
 <div *ngIf="popup_verifyToken" class="modal-overlay">
-    <div (click)="close_modal_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <div class="outer">
+    <!-- <div (click)="close_modal_onClick()" class="modal-close-ico" aria-hidden="true">X</div> -->
+    <!-- <div class="outer">
         <div class="middle">
-            <div class="inner">
-                <app-verify-token (closeModal)="close_onClick2($event)" class="f_sg2 form-modal center-center" [backBtnVisible]="false" [inputFacility]="selectedFacility"></app-verify-token>
-            </div>
-        </div>
-    </div>
+            <div class="inner"> -->
+    <app-verify-token (closeModal)="close_onClick2($event)" class="f_sg2 form-modal center-center" [backBtnVisible]="false" [inputFacility]="selectedFacility"></app-verify-token>
+    <!-- </div>
+        </div> -->
+    <!-- </div> -->
 </div>
 
 <!--<h1 *ngIf="popup_verifyToken">Testing</h1>-->
