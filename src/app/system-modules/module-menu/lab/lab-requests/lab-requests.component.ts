@@ -999,7 +999,8 @@ export class LabRequestsComponent implements OnInit {
         .customFind({
           query: {
             patientId: this.patientId._id,
-            facilityId: this.selectedFacility._id
+            facilityId: this.selectedFacility._id,
+            $sort: { createdAt: -1 }
           }
         })
         .then(res => {
@@ -1075,7 +1076,7 @@ export class LabRequestsComponent implements OnInit {
         .catch(err => {console.log(err)});
     } else {
       this.requestService
-        .customFind({ query: { facilityId: this.selectedFacility._id } })
+        .customFind({ query: { facilityId: this.selectedFacility._id, $sort: { createdAt: -1 } } })
         .then(res => {
           this.loading = false;
           let labId = '';

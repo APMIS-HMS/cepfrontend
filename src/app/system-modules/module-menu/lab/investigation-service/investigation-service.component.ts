@@ -205,6 +205,7 @@ export class InvestigationServiceComponent implements OnInit {
     this.investigationService.find({
       query: {
         'facilityId': this.selectedFacility._id, $limit: this.limit,
+        $sort: { createdAt: -1 },
         $skip: this.index * this.limit,
       }
     }).then(res => {
