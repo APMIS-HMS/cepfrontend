@@ -74,21 +74,18 @@
                 </div>
             </div>
             <div class="card-content">
-                <div class="card-list-item">
-                    <div *ngIf="wards.length === 0 && !loading" class="row">
-                        <div class="table-list col-lg-12">
-                            No data available in table
-                        </div>
+                <div *ngIf="wards.length === 0 && !loading" class="row">
+                    <div class="table-list col-lg-12">
+                        No data available in table
                     </div>
+                </div>
 
-                    <div class="row" *ngIf="wards.length === 0 && loading">
-                        <div class="table-list col-lg-12">
-                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue"></i>
-                        </div>
+                <div class="row" *ngIf="wards.length === 0 && loading">
+                    <div class="table-list col-lg-12">
+                        <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue"></i>
                     </div>
                 </div>
                 <div class="card-list-item" routerLink="/dashboard/ward-manager/setup/ward/{{ward._id}}" *ngFor="let ward of wards; let i = index">
-
                     <div class="row">
                         <div class="table-list col-lg-1">{{i+1}}</div>
                         <div class="table-list col-lg-4">{{ward?.name}}</div>

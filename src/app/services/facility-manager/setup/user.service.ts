@@ -63,7 +63,7 @@ export class UserService {
     }
     verifyUser(body: any) {
         let socket = this._socketService.getService('password-reset');
-        socket.timeout = 30000;
+        socket.timeout = 60000;
         return socket
             .update(body.apmisId, body);
     }

@@ -7,7 +7,7 @@
     </div>
     <div class="modal-baseWrap">
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-        <div class="productNameLabel animated fadeIn" *ngIf="productNameLabel">{{productNameLabel_txt}}</div>
+        <!-- <div class="productNameLabel animated fadeIn" *ngIf="productNameLabel">{{productNameLabel_txt}}</div> -->
 
         <!--<div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
             <legend class="modal_title">New Productt</legend>
@@ -107,10 +107,10 @@
                                                     </div>
                                                     <div class="frm-item-wrap" class="col-xs-4">
                                                         <mat-form-field>
-                                                                <mat-select class="example-full-width" placeholder="Strength Unit" formControlName="strengthUnit">
-                                                                    <mat-option *ngFor="let item of strengths" [value]="item.strength">{{item.strength}}</mat-option>
-                                                                </mat-select>
-                                                            </mat-form-field>
+                                                            <mat-select class="example-full-width" placeholder="Strength Unit" formControlName="strengthUnit">
+                                                                <mat-option *ngFor="let item of strengths" [value]="item.strength">{{item.strength}}</mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
                                                     </div>
                                                 </div>
                                             </div>
