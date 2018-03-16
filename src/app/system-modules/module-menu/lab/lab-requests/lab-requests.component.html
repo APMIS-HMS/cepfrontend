@@ -224,12 +224,13 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
+                                <div class="{{ (isLaboratory) ? 'col-xs-1' : 'col-xs-2' }} table-head">No</div>
                                 <div class="col-xs-2 table-head">Date</div>
-                                <div class="{{ (isLaboratory) ? 'col-xs-2' : 'col-xs-3' }} table-head">Patient</div>
-                                <div class="table-head {{ (isLaboratory) ? 'col-xs-2' : 'col-xs-3' }}">Description</div>
+                                <div class="col-xs-2 table-head">Patient</div>
+                                <div class="table-head col-xs-2">Description</div>
                                 <div class="table-head col-xs-2">Requesting Physician</div>
                                 <div class="table-head col-xs-2">Status</div>
-                                <div class="table-head col-xs-2" *ngIf="isLaboratory">
+                                <div class="table-head {{ (isLaboratory) ? 'col-xs-1' : 'col-xs-2' }}" *ngIf="isLaboratory">
                                     <i class="fa fa-search fa-fw pointer" (click)="openSearch()"></i>
                                 </div>
                             </div>
@@ -264,12 +265,15 @@
                                     <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                                 </div>
                             </div>
-                            <div class="card-list-item" *ngFor="let request of pendingRequests">
+                            <div class="card-list-item" *ngFor="let request of pendingRequests; let i=index;">
                                 <div class="row">
+                                    <div class="table-list {{ (isLaboratory) ? 'col-xs-1' : 'col-xs-2' }}">
+                                        {{i+1}}
+                                    </div>
                                     <div class="table-list col-xs-2">
                                         {{request?.createdAt | date:'short'}}
                                     </div>
-                                    <div class="table-list col-xs-2 {{ (isLaboratory) ? 'col-xs-2' : 'col-xs-3' }}">
+                                    <div class="table-list col-xs-2">
                                         <div class="empWrap">
                                             <div class="list-img">
                                                 <img *ngIf="request?.patient?.profileImageObject == undefined" src="assets/images/users/default.png">
@@ -278,7 +282,7 @@
                                             <div>{{ request?.patient?.firstName }} {{ request?.patient?.lastName }}</div>
                                         </div>
                                     </div>
-                                    <div class="table-list col-xs-2 {{ (isLaboratory) ? 'col-xs-2' : 'col-xs-3' }}">
+                                    <div class="table-list col-xs-2">
                                         {{request?.name}}
                                     </div>
                                     <div class="table-list col-xs-2">
@@ -297,7 +301,7 @@
                                             <i *ngIf="!request?.isUploaded" class="fa fa-fw fa-2x fa-upload red tooltip" data-tooltip="Not Published" aria-hidden="true"></i>
                                         </span>
                                     </div>
-                                    <div class="table-list col-xs-2 action-placeholder" *ngIf="isLaboratory">
+                                    <div class="table-list {{ (isLaboratory) ? 'col-xs-1' : 'col-xs-2' }} action-placeholder" *ngIf="isLaboratory">
                                         <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                                         <div class="action-container shadow-RB">
                                             <div (click)="reqDetail(request)" class="action-item">
@@ -329,5 +333,6 @@
             <app-request-detail [investigation]="selectedInvestigation" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-request-detail>
         </div>
         <div *ngIf="personAcc_view" class="modal-overlay">
-            <app-person-account (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-person-account>
+            <app-new-patient (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-patient>
+            <!-- <app-person-account (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-person-account> -->
         </div>

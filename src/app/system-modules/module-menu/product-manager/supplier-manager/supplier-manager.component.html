@@ -3,7 +3,7 @@
         <div class="">
             <div class="table-container">
                 <div class="row">
-                     <div class="col-md-4 pull-right">
+                    <div class="col-md-4 pull-right">
                         <!--<input type="text" placeholder="search here" class="searchInput" />-->
                         <mat-input-container>
                             <input matInput [formControl]="searchControl" placeholder="Search here">
@@ -14,10 +14,11 @@
             <table class="table-responsive table table-striped text-center">
                 <thead>
                     <tr>
+                        <th><i class="fa fa-sort-alpha-asc"></i>No</th>
                         <th><i class="fa fa-sort-alpha-asc"></i>Name</th>
-                        <th> <i class="fa fa-sort-alpha-asc"></i>Contact Person</th>
+                        <th> <i class="fa fa-sort-alpha-asc"></i>Phone Number</th>
                         <th><i class="fa fa-sort-alpha-asc"></i>Email</th>
-                        <th><i class="fa fa-sort-alpha-asc"></i>Phone Number</th>
+                        <th><i class="fa fa-sort-alpha-asc"></i>CAC No</th>
                         <th><i class="fa fa-sort-alpha-asc"></i>Address</th>
                         <th style="width:150px"><i class="fa fa-sort-alpha-asc"></i>Actions</th>
                     </tr>
@@ -25,17 +26,31 @@
                 <tbody>
                     <tr>
                         <td colspan="7" class="td-col-span-6">
-                           
+                            <div class="col-md-8 left">
+                                <input type="text" placeholder="Search Supplier">
+                            </div>
+                            <div class="col-md-4 pull-right">
+                                <input type="text" placeholder="search here" class="searchInput" />
+                            </div>
                         </td>
                     </tr>
-                    <tr *ngFor="let supplier of suppliers">
-                        <td>{{supplier.name}}</td>
-                        <td>{{supplier.contact}}</td>
-                        <td>{{supplier.email}}</td>
-                        <td>{{supplier.contact}}</td>
-                        <td>{{supplier.address.street}}</td>
+                    <tr *ngIf="suppliers.length === 0 && !loading">
+                        <td class="table-content" colspan="7" style="text-align: center !important; padding: 10px !important;"> No data available in table</td>
+                    </tr>
+                    <tr *ngIf="suppliers.length === 0 && loading">
+                        <td class="table-content" colspan="7" style="text-align: center !important; padding: 10px !important;">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
+                        </td>
+                    </tr>
+                    <tr *ngFor="let supplier of suppliers; let i=index;">
+                        <td>{{ i+1 }}</td>
+                        <td>{{supplier?.supplier?.name}}</td>
+                        <td>{{supplier?.supplier?.primaryContactPhoneNo}}</td>
+                        <td>{{supplier?.supplier?.email}}</td>
+                        <td>{{supplier?.supplier?.cacNo}}</td>
+                        <td>{{supplier?.supplier?.street}}</td>
                         <td class="last-td-action">
-                            <span><a (click)="onEdit(supplier)" class=""><i class="fa fa-pencil"></i></a></span>
+                            <!-- <span><a (click)="onEdit(supplier)" class=""><i class="fa fa-pencil"></i></a></span> -->
                             <span><a class=""><i class="fa  fa-trash" (click)="onDelete(supplier)"></i></a></span>
                             <span><a (click)="onSelect(supplier)" class=""><i class="fa fa-eye"></i></a></span>
                         </td>
