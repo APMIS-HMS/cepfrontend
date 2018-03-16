@@ -19,6 +19,8 @@ export class SupplierManagerComponent implements OnInit {
   selectedSupplier: any = <any>{};
   searchControl = new FormControl();
   suppliers: any[] = [];
+  loading = true;
+
   constructor(private router: Router,
     private _productEventEmitter: ProductEmitterService,
     private _systemModuleService: SystemModuleService,
@@ -43,14 +45,18 @@ export class SupplierManagerComponent implements OnInit {
               '$options': 'i'
             }
           }
-        }).then(payload => {
-          this.suppliers = payload.data;
-        })
+        }).then(res => {
+          this.loading = false;
+          this.suppliers = res.data;
+        });
       });
   }
   getSuppliers() {
-    this.supplierService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
-      this.suppliers = payload.data;
+    this.supplierService.find({ query: { facilityId: this.selectedFacility._id, isActive: true, $sort: { createdAt: -1 } } }).then(res => {
+      this.loading = false;
+      if (res.data.length > 0) {
+        this.suppliers = res.data;
+      }
     }, error => {
     });
   }
@@ -64,29 +70,28 @@ export class SupplierManagerComponent implements OnInit {
 
   onDelete(supplier) {
     this.selectedSupplier = supplier;
-    this.selectedSupplier.isDelete = true;
-    this._systemModuleService.announceSweetProxy('You are about to delete this supplier', 'question', this);
+    this.selectedSupplier.isActive = false;
+    const text = `Are you sure you want to deactivate ${this.selectedSupplier.supplier.name} as your supplier?`;
+    this._systemModuleService.announceSweetProxy(text, 'question', this);
   }
 
   sweetAlertCallback(result) {
     if (result.value) {
-      if (this.selectedSupplier.isDelete) {
+      this._systemModuleService.on();
+      this.supplierService.patch(this.selectedSupplier._id, this.selectedSupplier).then(callback_remove => {
+        const text = `${this.selectedSupplier.supplier.name} has been deactivated successfully.`;
+        this._systemModuleService.announceSweetProxy(text, 'success');
         this._systemModuleService.off();
-        this.supplierService.remove(this.selectedSupplier._id, {}).then(callback_remove => {
-          this._systemModuleService.announceSweetProxy(this.selectedSupplier.name + ' is deleted', 'success', null, null, null, null, null, null, null);
-          this._systemModuleService.off();
-          this.selectedSupplier = <any>{};
-          this.getSuppliers();
-        }, error => {
-          this._systemModuleService.off();
-        });
-      } else {
-        this.newSupply = true;
-      }
+        this.selectedSupplier = <any>{};
+        this.getSuppliers();
+      }, error => {
+        this._systemModuleService.off();
+      });
     }
   }
 
   close_onClick(message: boolean): void {
+    this.getSuppliers();
     this.selectedSupplier = <any>{};
     this.newSupply = false;
   }

@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class SupplierService {
   public _socket;
+  public _customSocket;
   private _rest;
   public listenerCreate;
   public listenerUpdate;
@@ -15,6 +16,7 @@ export class SupplierService {
   ) {
     this._rest = _restService.getService('suppliers');
     this._socket = _socketService.getService('suppliers');
+    this._customSocket = _socketService.getService('supplier-service');
     this._socket.timeout = 80000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
@@ -36,6 +38,11 @@ export class SupplierService {
   create(serviceprice: any) {
     return this._socket.create(serviceprice);
   }
+
+  customCreate(serviceprice: any) {
+    return this._customSocket.create(serviceprice);
+  }
+
   update(serviceprice: any) {
     return this._socket.update(serviceprice._id, serviceprice);
   }

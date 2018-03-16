@@ -39,7 +39,7 @@
                                     </mat-select>
                                 </mat-form-field>
                                 <mat-form-field class="col-xs-12 col-sm-6">
-                                    <mat-select placeholder="Select Plan" [formControl]="walletPlanPrice">
+                                    <mat-select placeholder="Select Price" [formControl]="walletPlanPrice">
                                         <mat-option *ngFor="let pricePlan of servicePricePlans" [value]="pricePlan.price">{{pricePlan.name}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -70,7 +70,7 @@
                                     </mat-select>
                                 </mat-form-field>
                                 <mat-form-field class="col-xs-12 col-sm-6">
-                                    <mat-select placeholder="Select Plan" [formControl]="hmoPlanPrice">
+                                    <mat-select placeholder="Select Price" [formControl]="hmoPlanPrice">
                                         <mat-option *ngFor="let pricePlan of servicePricePlans" [value]="pricePlan.price">{{pricePlan.name}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -90,7 +90,7 @@
                             </div>
                             <div class="frm-item-wrap">
                                 <mat-form-field>
-                                    <mat-select placeholder="Select Plan" [formControl]="ccPlan">
+                                    <mat-select placeholder="Select Price" [formControl]="ccPlan">
                                         <mat-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -119,7 +119,7 @@
                                         </mat-select>
                                     </mat-form-field>
                                     <mat-form-field class="col-xs-12 col-sm-6">
-                                        <mat-select placeholder="Select Plan" [formControl]="faPlanPrice">
+                                        <mat-select placeholder="Select Price" [formControl]="faPlanPrice">
                                             <mat-option *ngFor="let pricePlan of servicePricePlans" [value]="pricePlan.price">{{pricePlan.name}}</mat-option>
                                         </mat-select>
                                     </mat-form-field>
@@ -245,12 +245,12 @@
                     </mat-input-container>
                 </div> -->
                 <div class="clear"></div>
-
-                <button [disabled]="!frmPerson.valid || isSaving === true || duplicate" (click)="submit(frmPerson.valid, frmPerson.value)"
-                    [ngClass]="{'cta-1':(frmPerson.valid && !isSaving && !validatingPerson()), 'cta-1-disable':!frmPerson.valid || isSaving === true || duplicate}">
-                    Register
-                    <i *ngIf="isSaving" class="fa fa-spinner fa-spin fa-2x"></i>
-                </button>
+                <div style="width: 100%;height: 50px; text-align: center;">
+                    <button (click)="submit(frmPerson.valid, frmPerson.value)" mat-raised-button [disabled]="!frmPerson.valid || isSaving || duplicate" class="mat-raised-button">
+                        Register
+                        <i *ngIf="isSaving" class="fa fa-spinner fa-spin fa-2x"></i>
+                    </button>
+                </div>
             </form>
         </div>
 

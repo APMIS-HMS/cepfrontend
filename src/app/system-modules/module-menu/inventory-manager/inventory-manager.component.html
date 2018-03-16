@@ -1,7 +1,6 @@
 <ul class="pg-menuWrap">
     <li [class.pg-menuActive]="productNavMenu" routerLink="/dashboard/store">Home</li>
     <li [class.pg-menuActive]="inventoryNavMenu" routerLink="/dashboard/inventory-manager/inventory" (click)="changeRoute('/dashboard/inventory-manager/inventory')">My Inventory</li>
-    <li [class.pg-menuActive]="initializeNavMenu" routerLink="/dashboard/inventory-manager/initialize-store" (click)="changeRoute('/dashboard/inventory-manager/initialize-store')">Initialize Store</li>
     <li [class.pg-menuActive]="stockTransferNavMenu" routerLink="/dashboard/inventory-manager/stock-transfer" (click)="changeRoute('/dashboard/inventory-manager/stock-transfer')">Transfer Stock</li>
     <li [class.pg-menuActive]="stockHistoryNavMenu" routerLink="/dashboard/inventory-manager/stock-history" (click)="changeRoute('/dashboard/inventory-manager/stock-history')">Transfer History</li>
     <li [class.pg-menuActive]="receiveStockNavMenu" routerLink="/dashboard/inventory-manager/receive-stock" (click)="changeRoute('/dashboard/inventory-manager/receive-stock')">Receive Stock</li>
@@ -10,8 +9,9 @@
 </ul> 
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>
-   <!--  <small class="facility-title" *ngIf="checkedInStore !== undefined" >You are checked into {{checkedInStore}}</small>
-     --><div class="inner-page-wrap">
+    <!--  <small class="facility-title" *ngIf="checkedInStore !== undefined" >You are checked into {{checkedInStore}}</small>
+     -->
+    <div class="inner-page-wrap">
         <!-- <div class="lhs inner-page-menuTab">
       <ul class="nav-group">
         <li [class.navActive]="initializeNavMenu" (click)="onInitialiseNavMenu()" routerLink="/dashboard/inventory-manager/initialize-store">Initialize Store</li>
@@ -24,7 +24,7 @@
         <li [class.navActive]="purchaseManagerNavMenu" routerLink="/dashboard/purchase-manager/orders">Purchase Manager</li>
       </ul>
     </div> -->
-    <button style="position: absolute;top: 37px;right: 20px" class="small-btn" (click)="onChangeCheckedIn()" mat-raised-button>Check In</button>    
+        <button style="position: absolute;top: 37px;right: 20px" class="small-btn" (click)="onChangeCheckedIn()" mat-raised-button>Change Check-In</button>
         <div class="rhs inner-page-contentArea c-page-wrapper">
             <router-outlet></router-outlet>
         </div>

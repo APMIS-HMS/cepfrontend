@@ -1,11 +1,10 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ConsultingRoomService, EmployeeService, FacilitiesService, StoreService } from '../../services/facility-manager/setup/index';
-import { ConsultingRoomModel, Employee, Facility } from '../../models/index';
+import { ConsultingRoomModel, Employee } from '../../models/index';
 import { ClinicHelperService } from '../../system-modules/module-menu/clinic/services/clinic-helper.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
-import { LocationService } from '../../services/module-manager/setup';
 
 @Component({
 	selector: 'app-store-check-in',
@@ -21,51 +20,37 @@ export class StoreCheckInComponent implements OnInit {
 	isLoading = false;
 	public storeCheckin: FormGroup;
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-  selectedStore: ConsultingRoomModel = <ConsultingRoomModel>{};
-  selectedFacility: Facility = <Facility>{};
+	selectedStore: ConsultingRoomModel = <ConsultingRoomModel>{};
 	stores: any[] = [];
 	locations: any[] = [];
-  checkInBtn = true;
-  checkingInBtn = false;
-  disableBtn = false;
-  checkInBtnText: any;
-
+	// loadIndicatorVisible = false;
+	checkInBtnText: String = '<i class="fa fa-check-circle"></i> Check In';
 	constructor(
-    public formBuilder: FormBuilder,
-    private _locker: CoolLocalStorage,
+		public formBuilder: FormBuilder,
 		public clinicHelperService: ClinicHelperService,
-    public facilityService: FacilitiesService,
-    private _locationService: LocationService,
+		public facilityService: FacilitiesService,
 		public consultingRoomService: ConsultingRoomService,
 		public employeeService: EmployeeService,
 		public storeService: StoreService,
 		public locker: CoolLocalStorage,
 		private _authFacadeService: AuthFacadeService
 	) {
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this._getLabLocation();
 		// this.workSpaces = this.locker.getObject('workspaces');
-		// this._authFacadeService.getLogingEmployee().then((res: any) => {
-		// 	this.loginEmployee = res;
-		// 	this.workSpaces = res.workSpaces;
-		// 	if (this.workSpaces !== undefined) {
-		// 		this.workSpaces.forEach(workspace => {
-		// 			if (workspace.isActive && workspace.locations.length > 0) {
-		// 				workspace.locations.forEach(x => {
-    //           console.log(x);
-		// 					if (x.isActive) {
-		// 						this.locations.push(x.minorLocationObject);
-		// 					}
-    //         });
-    //         // workspace.locations.forEach(x => {
-    //         //   if (x.isActive && x.majorLocationId.name === 'Ward') {
-    //         //     this.locations.push(x.majorLocationId);
-    //         //   }
-    //         // });
-		// 			}
-		// 		});
-		// 	}
-		// }).catch(err => {});
+		this._authFacadeService.getLogingEmployee().then((res: any) => {
+			this.loginEmployee = res;
+			this.workSpaces = res.workSpaces;
+			if (this.workSpaces !== undefined) {
+				this.workSpaces.forEach(workspace => {
+					if (workspace.isActive && workspace.locations.length > 0) {
+						workspace.locations.forEach(x => {
+							if (x.isActive) {
+								this.locations.push(x.minorLocationObject);
+							}
+						});
+					}
+				});
+			}
+		}).catch(err => console.log(err));
 	}
 
 	ngOnInit() {
@@ -76,14 +61,13 @@ export class StoreCheckInComponent implements OnInit {
 		});
 		this.storeCheckin.controls['location'].valueChanges.subscribe(value => {
 			this.storeService.find({ query: { minorLocationId: value } }).then(res => {
-        console.log(res);
 				if (res.data.length > 0) {
 					this.stores = res.data;
 				} else {
 					this.stores = [];
 				}
 			});
-    });
+		});
 
 		this.storeCheckin.controls['room'].valueChanges.subscribe(value => {
 		});
@@ -94,17 +78,13 @@ export class StoreCheckInComponent implements OnInit {
 	}
 
 	checkIn(valid, value) {
-    this.checkInBtn = false;
-    this.checkingInBtn = true;
-    this.disableBtn = true;
+		this.checkInBtnText = '<i class="fa fa-spinner fa-spin"></i> Checking in...';
 		const checkIn: any = <any>{};
 		checkIn.minorLocationId = value.location;
-		checkIn.storeId = value.room._id;
-    checkIn.storeObject = { name: value.room.name, _id: value.room._id, minorLocationId: value.room.minorLocationId };
+		checkIn.storeId = value.room;
 		checkIn.lastLogin = new Date();
 		checkIn.isOn = true;
-    checkIn.isDefault = value.isDefault;
-
+		checkIn.isDefault = value.isDefault;
 		if (this.loginEmployee.storeCheckIn === undefined) {
 			this.loginEmployee.storeCheckIn = [];
 		}
@@ -116,7 +96,7 @@ export class StoreCheckInComponent implements OnInit {
 		});
 
 		this.loginEmployee.storeCheckIn.push(checkIn);
-		this.employeeService.update(this.loginEmployee).then(payload => {
+		this.employeeService.patch(this.loginEmployee._id,{'storeCheckIn': this.loginEmployee.storeCheckIn}).then(payload => {
 			this.loginEmployee = payload;
 			let keepCheckIn;
 			this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
@@ -126,40 +106,11 @@ export class StoreCheckInComponent implements OnInit {
 					keepCheckIn = itemi;
 				}
 			});
-
 			this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'store' });
-      this.checkInBtn = true;
-      this.checkingInBtn = false;
-      this.disableBtn = true;
+			this.checkInBtnText = '<i class="fa fa-check-circle"></i> Check In';
 			this.close_onClick();
 		});
-  }
-
-  private _getLabLocation() {
-    this._locationService.find({ query: { name: 'Pharmacy' } }).then(res => {
-      if (res.data.length > 0) {
-        this._getEmployee(res.data[0]._id);
-      }
-    }).catch(err => {});
-  }
-
-  private _getEmployee(pharmId: string) {
-    this._authFacadeService.getLogingEmployee().then((res: any) => {
-      this.loginEmployee = res;
-      if (!!this.loginEmployee.workSpaces && this.loginEmployee.workSpaces.length > 0) {
-        if (!!this.selectedFacility.minorLocations && this.selectedFacility.minorLocations.length > 0) {
-          const minorLocations = this.selectedFacility.minorLocations;
-          const locations = this.loginEmployee.workSpaces.map(m => m.locations);
-          const locationIds = [];
-          locations.forEach(location => {
-            (location.map(m => m.minorLocationId)).forEach(p => { locationIds.push(p) });
-          });
-          this.locations = minorLocations.filter(x => x.locationId === pharmId && locationIds.includes(x._id));
-        }
-      }
-    }).catch(err => {});
-  }
-
+	}
 	changeRoom(checkIn: any) {
 		let keepCheckIn;
 		this.loginEmployee.storeCheckIn.forEach((itemi, i) => {

@@ -22,7 +22,6 @@
                     <form class="frmNoteWrap" *ngIf="investigation_view" [formGroup]="frmNewInvestigationh" novalidate>
                         <div class="row">
                             <div class="col-sm-6">
-
                                 <div class="frm-item-wrap">
                                     <mat-input-container>
                                         <input matInput placeholder="Investigation Name" formControlName="investigationName">
@@ -60,7 +59,7 @@
                                         <input matInput placeholder="Specimen" [matAutocomplete]="autoSpecimen" formControlName="specimen">
                                     </mat-input-container>
                                     <mat-autocomplete #autoSpecimen="matAutocomplete" [displayWith]="specimenDisplayFn">
-                                        <mat-option *ngFor="let specimen of specimens" [value]="specimen">
+                                        <mat-option *ngFor="let specimen of specimens" [value]="specimen.name">
                                             {{ specimen.name }}
                                         </mat-option>
                                     </mat-autocomplete>
@@ -74,7 +73,7 @@
                         </div>
 
                         <div class="btn-box">
-                            <button mat-raised-button [disabled]="!frmNewInvestigationh.valid" (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)" class="btn">
+                            <button mat-raised-button [disabled]="isBtnDisable" (click)="createInvestigation(frmNewInvestigationh.valid, frmNewInvestigationh.value)" class="btn">
                                 <span *ngIf="addInvestBtn">
                                     <i class="fa fa-plus"></i> Create Investigation</span>
                                 <span *ngIf="addingInvestBtn">Creating Investigation
@@ -99,6 +98,9 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="list-title">PANELS AND INVESTIGATIONS LIST</div>
+                                <mat-input-container class="panel-wrap">
+                                    <input matInput placeholder="Search Panel" formControlName="searchPanelName" autocomplete="off">
+                                </mat-input-container>
                                 <div class="listWrap" [dragula]='"first-bag"' [dragulaModel]='bindInvestigations'>
                                     <div *ngFor="let investigation of bindInvestigations">
                                         <div *ngIf="investigation.isPanel" class="panel-wrap">
@@ -160,15 +162,19 @@
 
                 <div class="tblWrapa" class="actSect">
                     <div class="card">
+                        <mat-input-container class="panel-wrap" *ngIf="investigation_list_search">
+                            <input matInput placeholder="Search Investigation" [formControl]="searchInvestigationName" autocomplete="off">
+                        </mat-input-container>
                         <div class="card-header">
                             <div class="row">
+                                <div class="table-head col-xs-1">No</div>
                                 <div class="table-head col-xs-3">Investigation Name</div>
                                 <div class="table-head col-xs-2">Specimen</div>
                                 <div class="table-head col-xs-2">Reference Value</div>
-                                <div class="table-head col-xs-2">Unit</div>
+                                <div class="table-head col-xs-1">Unit</div>
                                 <div class="table-head col-xs-2">Report Type</div>
                                 <div class="table-head col-xs-1">
-                                    <i class="fa fa-search fa-fw pointer"></i>
+                                    <i class="fa fa-search fa-fw pointer" (click)="onSearchInvestigation()"></i>
                                 </div>
                             </div>
                         </div>
@@ -185,16 +191,20 @@
                             </div>
                             <div class="card-list-item" *ngFor="let investigation of investigations; let i = index;">
                                 <div class="row">
+                                    <div class="table-list col-xs-1">
+                                        {{ i+1 }}
+                                    </div>
                                     <div class="table-list col-xs-3">
                                         {{investigation.name}}
                                     </div>
                                     <div class="table-list col-xs-2">
-                                        {{investigation.specimen}}
+                                        <span *ngIf="investigation.specimen?.name !== undefined">{{investigation.specimen?.name}}</span>
+                                        <span *ngIf="investigation.specimen?.name === undefined">{{investigation.specimen}}</span>
                                     </div>
                                     <div class="table-list col-xs-2">
                                         {{getRefrenceValues(investigation?.reportType)}}
                                     </div>
-                                    <div class="table-list col-xs-2">
+                                    <div class="table-list col-xs-1">
                                         {{investigation.unit}}
                                     </div>
                                     <div class="table-list col-xs-2 action-placeholder">

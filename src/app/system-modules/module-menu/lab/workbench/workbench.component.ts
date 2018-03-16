@@ -62,7 +62,7 @@ export class WorkbenchComponent implements OnInit {
   getWorkBenches() {
     const payload = {
       facilityId: this.selectedFacility._id,
-      query: { 'facilityId._id': this.selectedFacility._id, $limit: 100 }
+      query: { facilityId: this.selectedFacility._id, $limit: 100, $sort: { createdAt: -1 }}
     };
     this.workBenchService.customGet(payload, payload).then(res => {
       this.loading = false;
@@ -122,7 +122,7 @@ export class WorkbenchComponent implements OnInit {
           this.creatingWorkbenchBtn = false;
           this.editWorkbenchBtn = false;
           this.editingWorkbenchBtn = false;
-          this._systemModuleService.announceSweetProxy('Workbench has been created successufully!', 'success', null, null, null, null, null, null, null);
+          this._systemModuleService.announceSweetProxy('Workbench has been created successufully!', 'success');
           this.getWorkBenches();
           this.frmNewWorkbench.reset();
           this.frmNewWorkbench.controls['isActive'].setValue(true);
@@ -143,7 +143,7 @@ export class WorkbenchComponent implements OnInit {
         this.selectedWorkBench.minorLocationId = value.minorLocation._id;
         this.selectedWorkBench.isActive = value.isActive;
         this.workBenchService.patch(this.selectedWorkBench._id, this.selectedWorkBench, {}).then(payload => {
-          this._systemModuleService.announceSweetProxy('Workbench has been updated successufully!', 'success', null, null, null, null, null, null, null);
+          this._systemModuleService.announceSweetProxy('Workbench has been updated successufully!', 'success');
           this.workbench_view = false;
           this.disableBtn = false;
           this.createWorkbenchBtn = true;

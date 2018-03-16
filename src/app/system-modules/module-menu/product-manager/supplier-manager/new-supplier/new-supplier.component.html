@@ -1,11 +1,11 @@
 <div class="animated pulse">
-  <div class="modal-header-wrap">
-    <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <legend class="modal_title">Add Supplier</legend>
-    <div class="modal_mini_title">All Purpose Medical Information System</div>
-  </div>
-  <div class="modal-baseWrap">
-    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+    <div class="modal-header-wrap">
+        <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+        <legend class="modal_title">Add Supplier</legend>
+        <div class="modal_mini_title">All Purpose Medical Information System</div>
+    </div>
+    <div class="modal-baseWrap">
+        <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
     <form [formGroup]="frm_newSupplier" novalidate>
 
@@ -84,20 +84,15 @@
                     </mat-select>
                 </mat-form-field>
             </div>
+        </form>
+        <div class="text-center">
+            <button mat-raised-button [disabled]="!frm_newSupplier.valid || disableAddBtn" (click)="create(frm_newSupplier.valid, frm_newSupplier.value);" style="padding: 10px 15px; color: #fff;">
+              <span *ngIf="addBtn "><i class="fa fa-check-circle "></i> Add Supplier</span>
+              <span *ngIf="addingBtn ">Adding Supplier... <i class="fa fa-spin fa-spinner "></i></span>
+              <span *ngIf="updateBtn "><i class="fa fa-check-circle "></i> Update Supplier</span>
+              <span *ngIf="updatingBtn ">Updating Supplier... <i class="fa fa-spin fa-spinner "></i></span>
+            </button>
+            <!-- <div (click)="create(frm_newSupplier.valid, frm_newSupplier.value) " class="cta-1 "> {{btnLabel}} </div> -->
         </div>
-          <div class="frm-item-wrap">
-            <mat-input-container class="example-full-width">
-              <input matInput mat-error placeholder="Email" formControlName="email">
-            </mat-input-container>
-          </div>
-        </div>
-      </div>
-
-      <div (click)="create(frm_newSupplier)" class="cta-1">
-        {{btnLabel}}
-      </div>
-
-    </form>
-
-  </div>
+    </div>
 </div>

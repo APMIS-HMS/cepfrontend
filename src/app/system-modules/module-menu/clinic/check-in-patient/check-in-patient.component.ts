@@ -158,17 +158,20 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
                         wrk.locations.forEach((lct, li) => {
                             this.schedules.forEach((sch: any, ji) => {
                                 sch.schedules.forEach((sch2, jji) => {
-                                    if (sch2.location._id === lct.minorLocationId._id && sch.clinicObject.clinic._id === itemk._id) {
-                                        if (clinicIds.filter(x => x === itemk._id).length === 0) {
+                                    if (sch2.location._id === lct.minorLocationId && sch.clinic === itemk.clinicName) {
+                                      if (clinicIds.filter(x => x === itemk._id).length === 0) {
+                                        if(this.clinics.findIndex(x =>x._id===itemk._id) === -1){
                                             const clinicModel: ClinicModel = <ClinicModel>{};
-                                            clinicModel.clinic = sch.clinicObject.clinic;
+                                            clinicModel.clinic = sch.clinic;
                                             clinicModel.department = itemi;
                                             clinicModel.unit = itemj;
                                             clinicModel._id = itemk._id;
                                             clinicModel.clinicName = itemk.clinicName;
                                             this.clinics.push(clinicModel);
-                                            clinicIds.push(clinicModel._id);
+                                            clinicIds.push(clinicModel.clinicName);
                                         }
+                                        
+                                    }
                                     }
                                 })
                             })

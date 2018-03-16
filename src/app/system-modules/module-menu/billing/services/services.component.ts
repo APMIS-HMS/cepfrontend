@@ -62,38 +62,24 @@ export class ServicesComponent implements OnInit {
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe(value => {
-        this.systemModuleService.on();
-        this._facilitiesServiceCategoryService.allServices({
-          query:
-            {
-              facilityId: this.facility._id,
-              isQueryCategory: true,
-              searchString: value
-            }
-        }).then(payload => {
-          this.systemModuleService.off();
-          this.filterOutCategory(payload);
-        })
+        if (value !== null && value !== '' && value.length > 0) {
+          this.categories = this.categories.filter(x => x.name.toLowerCase().includes(value.toLowerCase()))
+        } else {
+          this.getCategories();
+        }
       });
 
     this.searchService.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe(value => {
-        this.systemModuleService.on();
-        this._facilitiesServiceCategoryService.allServices({
-          query:
-            {
-              facilityId: this.facility._id,
-              isQueryService: true,
-              searchString: value
-            }
-        }).then(payload => {
-          this.systemModuleService.off();
-          this.categories = payload.data[0].categories.filter(x => x.isHost === true);
-          this.selectedServices = this.categories[0].services;
-          this.selectedCategory = this.categories[0];
-        })
+        if (value !== null && value !== '' && value.length > 0) {
+          this.selectedServices = this.selectedServices.filter(x => x.name.toLowerCase().includes(value.toLowerCase()));
+        } else {
+          if (this.selectedCategory._id !== undefined) {
+            this.selectCategory(this.selectedCategory);
+          }
+        }
       });
 
     const subscribeForTag = this.searchTag.valueChanges
@@ -111,8 +97,22 @@ export class ServicesComponent implements OnInit {
   }
 
   selectCategory(category) {
+    this.systemModuleService.on();
+    this.selectedServices = [];
     this.selectedCategory = category;
-    this.selectedServices = category.services;
+    if (this.selectedCategory._id !== undefined) {
+      this._facilitiesServiceCategoryService.allServices({
+        query: {
+          facilityId: this.facility._id,
+          categoryId: this.selectedCategory._id
+        }
+      }).then(payload => {
+        this.systemModuleService.off();
+        this.selectedServices = payload.services;
+      });
+    } else {
+      this.systemModuleService.off();
+    }
   }
 
   onDoubleClick(value: any) {
@@ -159,38 +159,19 @@ export class ServicesComponent implements OnInit {
   }
   getCategories() {
     this.systemModuleService.on();
-    this._facilitiesServiceCategoryService.allServices({
+    this._facilitiesServiceCategoryService.find({
       query: {
-        facilityId: this.facility._id
+        facilityId: this.facility._id,
+        $select: ['_id', 'categories._id', 'categories.name']
       }
     }).then(payload => {
       this.systemModuleService.off();
       this.categories = payload.data[0].categories;
       this.facilityServiceId = payload.data[0]._id;
-      this.selectedServices = payload.data[0].categories[0].services;
-      this.selectedCategory = payload.data[0].categories[0];
+      this.selectCategory(this.categories[0]);
     }, error => {
       this.systemModuleService.off();
     });
-  }
-
-  getCategory() {
-    this._facilitiesServiceCategoryService.find({
-      query:
-        { searchCategory: 'Medical Records', facilityId: this.facility._id }
-    }).
-      then(payload => {
-        // this.filterOutCategory(payload);
-        // this.categories = [];
-        const cat: any = [];
-        payload.data.forEach((itemi, i) => {
-          itemi.categories.forEach((itemj, j) => {
-            if (itemi.facilityId !== undefined) {
-              cat.push(itemj);
-            }
-          });
-        });
-      });
   }
 
   getTags() {
@@ -198,10 +179,7 @@ export class ServicesComponent implements OnInit {
       this.tags = payload.data;
     });
   }
-
-  onRefreshModifier(event) {
-    this.getCategories();
-  }
+  
 
   newServicePopup_show(val) {
     this.selectedService = val;
@@ -220,21 +198,21 @@ export class ServicesComponent implements OnInit {
     this.serviceDetail = false;
   }
 
-  onRefreshService(event) {
+  onRefreshService(categoryId) {
     this.systemModuleService.on();
-    this._facilitiesServiceCategoryService.allServices({
-      query: {
-        facilityId: this.facility._id
-      }
-    }).then(payload => {
+    if (categoryId !== undefined && categoryId !== null) {
+      this._facilitiesServiceCategoryService.allServices({
+        query: {
+          facilityId: this.facility._id,
+          categoryId: categoryId
+        }
+      }).then(payload => {
+        this.systemModuleService.off();
+        this.selectedServices = payload.services;
+      });
+    } else {
       this.systemModuleService.off();
-      this.categories = payload.data[0].categories;
-      this.selectedCategory = payload.data[0].categories.filter(x => x._id.toString() === event.categoryId.toString())[0];
-      this.selectedServices = this.selectedCategory.services;
-
-    }, error => {
-      this.systemModuleService.off();
-    });
+    }
   }
 
   newCategoryPopup_show(value?: any) {

@@ -42,11 +42,11 @@
                         <div class="prodBatch-item batchItem1">
                             <mat-checkbox [checked]="false">{{transaction?.productObject?.name}}</mat-checkbox>
                         </div>
-                        <div class="prodBatch-item batchItem5">{{transaction.batchNumber}}</div>
+                        <div class="prodBatch-item batchItem5">{{transaction?.transactionObject?.batchNumber}}</div>
                         <div class="prodBatch-item batchItem2">{{transaction.lineCostPrice|number:'1.2-2'}}</div>
                         <div class="prodBatch-item batchItem3">{{transaction.quantity}}</div>
                         <div class="prodBatch-item batchItem4">
-                            <div>{{transaction.inventoryStatus}}</div>
+                            <div>{{transaction?.transferStatusObject?.name}}</div>
                         </div>
                     </div>
                 </div>
