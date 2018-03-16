@@ -74,7 +74,6 @@ export class PasswordResetComponent implements OnInit {
             this.systemModuleService.off();
           }
         },error =>{
-          console.log(error);
           this.systemModuleService.off();
           this.systemModuleService.announceSweetProxy('Invalid APMIS ID or Telephone Number, please try again', 'error');
         });

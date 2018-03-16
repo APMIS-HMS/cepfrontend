@@ -7,7 +7,7 @@
     </div>
     <div class="modal-baseWrap">
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-        <div class="productNameLabel animated fadeIn" *ngIf="productNameLabel">{{productNameLabel_txt}}</div>
+        <!-- <div class="productNameLabel animated fadeIn" *ngIf="productNameLabel">{{productNameLabel_txt}}</div> -->
 
         <!--<div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
             <legend class="modal_title">New Productt</legend>
@@ -66,11 +66,8 @@
                             </div>
                             <!-- <div class="frm-item-wrap">
                                 <mat-input-container class="example-full-width">
-                                    <input matInput mat-error placeholder="Name(Product)" formControlName="name">
+                                    <input matInput mat-error placeholder="Pack Label" formControlName="packLabel">
                                 </mat-input-container>
-                                <div *ngIf="productSugestion" class="sugestion-wrap shadow-B">
-                                    <div (click)="onSelectProductSuggestion(dictionary)" *ngFor="let dictionary of dictionaries" class="sugestion-item">{{dictionary.details}}</div>
-                                </div>
                             </div>
                             <div class="frm-item-wrap">
                                 <mat-input-container class="example-full-width">
