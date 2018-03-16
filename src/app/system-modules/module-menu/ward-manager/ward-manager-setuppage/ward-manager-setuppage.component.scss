@@ -3,6 +3,12 @@
     //.inner-page-contentArea {
     //    padding: 10px;
     // }
+    .card-list-item:hover {
+        //border-left: solid 3px #337ab7;
+        cursor: pointer;
+        background: #eee !important;
+    }
+    
     .topmenuwrap {
         right: 130px;
     }

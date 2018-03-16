@@ -62,7 +62,9 @@ export class UserService {
             .update(body._id, { 'oldpassword': body.oldpassword, 'password': body.password });
     }
     verifyUser(body: any) {
-        return this._socketService.getService('password-reset')
+        let socket = this._socketService.getService('password-reset');
+        socket.timeout = 60000;
+        return socket
             .update(body.apmisId, body);
     }
     resetPassword(body: any) {
