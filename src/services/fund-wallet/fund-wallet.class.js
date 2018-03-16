@@ -34,7 +34,7 @@ class FundWalletService {
         const cashPaymentService = this.app.service('cash-payment');
 
         const accessToken = params.accessToken; /* Not required */
-        
+
         if (accessToken !== undefined && data.paymentMethod === undefined) {
             const ref = data.ref; /* Not required. This is for e-payment */
             const payment = data.payment;
@@ -168,7 +168,7 @@ class FundWalletService {
                                     const facilityUpdate = await facilityService.update(facility._id, facility);
                                     return jsend.success(facilityUpdate);
                                 }
-                            
+
                             }
 
                         }
@@ -181,12 +181,72 @@ class FundWalletService {
                 };
                 return data;
             }
-        }else if(accessToken !== undefined && (data.paymentMethod !== undefined && data.paymentMethod.toLowerCase() === 'cash')) {
+        } else if (accessToken !== undefined && (data.paymentMethod !== undefined && data.paymentMethod.toLowerCase() === 'cash')) {
             console.log('***************inside cash******************');
-            const cashPayment = await cashPaymentService.create(data,params);
-            console.log('********Cash Payment from fundwallet**********');
-            console.log(cashPayment);
-            jsend.success(cashPayment);
+
+            console.log(data);
+
+            const person = await peopleService.get(data.destinationId);
+            const userWallet = person.wallet;
+            const cParam = {
+                amount: data.amount,
+                paidBy: data.paidBy,
+                sourceId: data.sourceId,
+                sourceType: 'Facility',
+                transactionType: 'Cr',
+                transactionMedium: 'cash',
+                destinationId: data.destinationId,
+                destinationType: 'Person',
+                description: 'Funded wallet via cash payment',
+                transactionStatus: 'Completed',
+            };
+            person.wallet = transaction(userWallet, cParam);
+
+
+            const facility = await facilityService.get(data.sourceId);
+            const facilityWallet = facility.wallet;
+            const cParamF = {
+                amount: data.amount,
+                paidBy: data.paidBy,
+                sourceId: data.sourceId,
+                sourceType: 'Facility',
+                transactionType: 'Dr',
+                transactionMedium: 'cash',
+                destinationId: data.destinationId,
+                destinationType: 'Person',
+                description: 'Funded wallet via cash',
+                transactionStatus: 'Completed',
+            };
+            facility.wallet = transaction(facilityWallet, cParamF);
+
+            console.log(facility.wallet);
+            console.log(person.wallet);
+
+
+            // } else if (entity !== undefined && entity.toLowerCase() === 'facility') {
+            //     const facility = await facilityService.get(facilityId);
+            //     const userWallet = facility.wallet;
+            //     const cParam = {
+            //         amount: amount,
+            //         paidBy: loggedPersonId,
+            //         sourceId: facilityId,
+            //         sourceType: entity,
+            //         transactionType: 'Cr',
+            //         transactionMedium: paymentType,
+            //         destinationId: facilityId,
+            //         destinationType: entity,
+            //         description: 'Funded wallet via e-payment',
+            //         transactionStatus: 'Completed',
+            //     };
+            //     facility.wallet = transaction(userWallet, cParam);
+
+            //     const facilityUpdate = await facilityService.update(facility._id, facility);
+            //     return jsend.success(facilityUpdate);
+            // }
+            // const cashPayment = await cashPaymentService.create(data, params);
+            // console.log('********Cash Payment from fundwallet**********');
+            // console.log(cashPayment);
+            jsend.success({});
         } else {
             const data = {
                 msg: 'Sorry! But you can not perform this transaction.',
@@ -244,6 +304,9 @@ class FundWalletService {
 }
 
 function transaction(wallet, param) {
+    if (wallet == null) {
+        wallet = { balance: 0, ledgerBalance: 0, transactions: [] };
+    }
     const prevAmount = wallet.balance;
     const ledgerBalance = wallet.ledgerBalance;
     // Update person wallet.
