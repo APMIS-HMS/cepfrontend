@@ -290,15 +290,15 @@
                                     </div>
                                     <div class="table-list col-xs-2">
                                         <span>
-                                            <i *ngIf="request?.isPaid" class="fa fa-money green tooltip" data-tooltip="Payment Made" aria-hidden="true"></i>
-                                            <i *ngIf="!request?.isPaid" class="fa fa-money red tooltip" data-tooltip="Payment Not Made" aria-hidden="true"></i>
-                                            <i *ngIf="request?.isWaved" class="fa fa-money orange tooltip" data-tooltip="Payment Waved" aria-hidden="true"></i>
-                                            <i *ngIf="request?.sampleTaken===true" class="fa fa-tint green tooltip" data-tooltip="Sample Taken" aria-hidden="true"></i>
-                                            <i *ngIf="!request?.sampleTaken===true" class="fa fa-tint red tooltip" data-tooltip="Sample Not Taken" aria-hidden="true"></i>
-                                            <i *ngIf="request?.specimenReceived" class="fa fa-flask green tooltip" data-tooltip="Specimen Received" aria-hidden="true"></i>
-                                            <i *ngIf="!request?.specimenReceived" class="fa fa-flask red tooltip" data-tooltip="Specimen Not Received" aria-hidden="true"></i>  
-                                            <i *ngIf="request?.isUploaded" class="fa fa-upload green tooltip" data-tooltip="Published" aria-hidden="true"></i>
-                                            <i *ngIf="!request?.isUploaded" class="fa fa-upload red tooltip" data-tooltip="Not Published" aria-hidden="true"></i>
+                                            <i *ngIf="request?.isPaid && !request?.isWaved" class="fa fa-fw fa-2x fa-money green tooltip" data-tooltip="Payment Made" aria-hidden="true"></i>
+                                            <i *ngIf="!request?.isPaid && !request?.isWaved" class="fa fa-fw fa-2x  fa-money red tooltip" data-tooltip="Payment Not Made" aria-hidden="true"></i>
+                                            <i *ngIf="request?.isWaved" class="fa fa-fw fa-2x fa-money orange tooltip" data-tooltip="Payment Waved" aria-hidden="true"></i>
+                                            <i *ngIf="request?.sampleTaken===true" class="fa fa-fw fa-2x fa-tint green tooltip" data-tooltip="Sample Taken" aria-hidden="true"></i>
+                                            <i *ngIf="!request?.sampleTaken===true" class="fa fa-fw fa-2x fa-tint red tooltip" data-tooltip="Sample Not Taken" aria-hidden="true"></i>
+                                            <i *ngIf="request?.specimenReceived" class="fa fa-fw fa-2x fa-flask green tooltip" data-tooltip="Specimen Received" aria-hidden="true"></i>
+                                            <i *ngIf="!request?.specimenReceived" class="fa fa-fw fa-2x fa-flask red tooltip" data-tooltip="Specimen Not Received" aria-hidden="true"></i>  
+                                            <i *ngIf="request?.isUploaded" class="fa fa-fw fa-2x fa-upload green tooltip" data-tooltip="Published" aria-hidden="true"></i>
+                                            <i *ngIf="!request?.isUploaded" class="fa fa-fw fa-2x fa-upload red tooltip" data-tooltip="Not Published" aria-hidden="true"></i>
                                         </span>
                                     </div>
                                     <div class="table-list {{ (isLaboratory) ? 'col-xs-1' : 'col-xs-2' }} action-placeholder" *ngIf="isLaboratory">
