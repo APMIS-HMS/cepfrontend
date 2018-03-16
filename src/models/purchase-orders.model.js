@@ -16,7 +16,8 @@ module.exports = function (app) {
         expectedDate: { type: Date, required: false },
         remark: { type: String, required: false },
         orderedProducts: [itemOrdered],
-        isSupplied: { type: Boolean, 'default': false }
+        isSupplied: { type: Boolean, 'default': false },
+        isActive: { type: Boolean, 'default': true}
     }, {
         timestamps: true
     });

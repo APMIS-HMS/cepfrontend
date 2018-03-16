@@ -19,7 +19,8 @@ class Service {
     });
     let orders = await orderService.find({
       query: {
-        facilityId: params.query.facilityId
+        facilityId: params.query.facilityId,
+        isActive: params.query.isActive
       }
     });
     if (orders != null) {
