@@ -24,6 +24,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   contentSecMenuShow = false;
   stockHistoryNavMenu = false;
   purchaseManagerNavMenu = false;
+  reorderLevelNavMenu = false;
   productNavMenu = false;
   modal_on = false;
 
@@ -124,6 +125,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
       this.receiveStockNavMenu = false;
       this.requisitionNavMenu = false;
       this.initializeNavMenu = false;
+      this.reorderLevelNavMenu = false;
       this._inventoryEventEmitter.announcedUrl.subscribe(url => {
         this.pageInView = url;
       });
@@ -135,6 +137,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
       this.receiveStockNavMenu = false;
       this.requisitionNavMenu = false;
       this.initializeNavMenu = true;
+      this.reorderLevelNavMenu = false;
       this._inventoryEventEmitter.announcedUrl.subscribe(url => {
         this.pageInView = url;
       });
@@ -146,6 +149,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
       this.receiveStockNavMenu = false;
       this.requisitionNavMenu = false;
       this.initializeNavMenu = false;
+      this.reorderLevelNavMenu = false;
       this._inventoryEventEmitter.announcedUrl.subscribe(url => {
         this.pageInView = url;
       });
@@ -157,6 +161,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
       this.receiveStockNavMenu = false;
       this.requisitionNavMenu = false;
       this.initializeNavMenu = false;
+      this.reorderLevelNavMenu = false;
       this._inventoryEventEmitter.announcedUrl.subscribe(url => {
         this.pageInView = url;
       });
@@ -168,6 +173,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
       this.stockTransferNavMenu = false;
       this.requisitionNavMenu = false;
       this.initializeNavMenu = false;
+      this.reorderLevelNavMenu = false;
       this._inventoryEventEmitter.announcedUrl.subscribe(url => {
         this.pageInView = url;
       });
@@ -179,6 +185,19 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
       this.stockTransferNavMenu = false;
       this.receiveStockNavMenu = false;
       this.initializeNavMenu = false;
+      this.reorderLevelNavMenu = false;
+      this._inventoryEventEmitter.announcedUrl.subscribe(url => {
+        this.pageInView = url;
+      });
+    } else if (val === '/dashboard/inventory-manager/reorder-level') {
+      this.requisitionNavMenu = false;
+      this.stockHistoryNavMenu = false;
+      this.inventoryNavMenu = false;
+      this.stockTakingNavMenu = false;
+      this.stockTransferNavMenu = false;
+      this.receiveStockNavMenu = false;
+      this.initializeNavMenu = false;
+      this.reorderLevelNavMenu = true;
       this._inventoryEventEmitter.announcedUrl.subscribe(url => {
         this.pageInView = url;
       });
@@ -194,6 +213,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
       this.receiveStockNavMenu = false;
       this.requisitionNavMenu = false;
       this.initializeNavMenu = false;
+      this.reorderLevelNavMenu = false;
     } else if (param.includes('stock-taking')) {
       this.stockTakingNavMenu = true;
     } else if (param.includes('initialize-store')) {
@@ -204,6 +224,8 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
       this.receiveStockNavMenu = true;
     } else if (param.includes('requisition')) {
       this.requisitionNavMenu = true;
+    } else if (param.includes('reorder-level')) {
+      this.reorderLevelNavMenu = true;
     }
   }
 

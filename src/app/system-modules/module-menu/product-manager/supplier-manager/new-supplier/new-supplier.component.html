@@ -7,60 +7,82 @@
     <div class="modal-baseWrap">
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
-        <form [formGroup]="frm_newSupplier" novalidate>
-            <div class="mainfrmwrap">
-                <div class="sec-full">
-                    <div class="frm-item-wrap">
-                        <mat-input-container class="example-full-width">
-                            <input matInput mat-error placeholder="Name" formControlName="name">
-                        </mat-input-container>
-                    </div>
-                    <!-- <div class="frm-item-wrap">
-                        <mat-input-container>
-                            <input type="tel" matInput mat-error placeholder="Contact Number" formControlName="frmContact">
-                        </mat-input-container>
-                    </div> -->
-                    <ng4geo-autocomplete [userSettings]="userSettings" (componentCallback)="autoCompleteCallback($event)"></ng4geo-autocomplete>
-                    <div class="frm-item-wrap">
-                        <div class="frm-item-x2">
-                            <mat-input-container class="example-full-width">
-                                <input matInput mat-error placeholder="Street Address" formControlName="frmStreet">
-                            </mat-input-container>
-                            <mat-input-container class="example-full-width">
-                                <input matInput mat-error placeholder="City" formControlName="frmCity">
-                            </mat-input-container>
-                        </div>
-                    </div>
-                    <div class="frm-item-wrap">
-                        <div class="frm-item-x2">
-                            <mat-form-field class="example-full-width">
-                                <mat-select placeholder="Country" formControlName="frmCountry" [compareWith]="compareCountry">
-                                    <mat-option [value]="country.name" *ngFor="let country of countries">{{country.name}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                            <mat-form-field class="example-full-width">
-                                <mat-select placeholder="State" formControlName="frmState" [compareWith]="compareState">
-                                    <mat-option [value]="state.name" *ngFor="let state of states">{{state.name}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                    </div>
-                    <div class="frm-item-wrap">
-                        <mat-input-container class="example-full-width">
-                            <input matInput mat-error placeholder="Email" formControlName="email">
-                        </mat-input-container>
-                    </div>
-                    <div class="frm-item-wrap">
-                        <mat-input-container class="example-full-width">
-                            <input matInput mat-error placeholder="CAC Reg No" formControlName="cac">
-                        </mat-input-container>
-                    </div>
-                    <div class="frm-item-wrap">
-                        <mat-input-container>
-                            <input type="tel" matInput mat-error placeholder="Contact Number" formControlName="frmContact">
-                        </mat-input-container>
-                    </div>
+    <form [formGroup]="frm_newSupplier" novalidate>
+
+      <div class="mainfrmwrap">
+        <div class="sec-full">
+          <div class="frm-item-wrap">
+            <mat-input-container class="example-full-width">
+              <input matInput mat-error placeholder="Name" formControlName="name">
+            </mat-input-container>
+
+            <ul class="suggestions nice-scroll">
+              <li class="suggestion">
+                <div class="listing-img">
+                    <img src="assets/images/users/default.png">
                 </div>
+                <div class="listing-label">Dangote Mills and Industries</div>
+              </li>
+              <li class="suggestion">
+                <div class="listing-img">
+                    <img src="assets/images/users/default.png">
+                </div>
+                <div class="listing-label">Dangote Mills and Industries</div>
+              </li>
+              <li class="suggestion">
+                <div class="listing-img">
+                    <img src="assets/images/users/default.png">
+                </div>
+                <div class="listing-label">Dangote Mills and Industries</div>
+              </li>
+              <li class="suggestion">
+                <div class="listing-img">
+                    <img src="assets/images/users/default.png">
+                </div>
+                <div class="listing-label">Dangote Mills and Industries</div>
+              </li>
+              <li class="suggestion">
+                <div class="listing-img">
+                    <img src="assets/images/users/default.png">
+                </div>
+                <div class="listing-label">Dangote Mills and Industries</div>
+              </li>
+              <li class="suggestion">
+                <div class="listing-img">
+                    <img src="assets/images/users/default.png">
+                </div>
+                <div class="listing-label">Dangote Mills and Industries</div>
+              </li>
+            </ul>
+          </div>
+          <div class="frm-item-wrap">
+            <mat-input-container>
+                <input type="tel" matInput mat-error placeholder="Contact Number" formControlName="frmContact">
+            </mat-input-container>
+        </div>
+          <ng4geo-autocomplete [userSettings]="userSettings" (componentCallback)="autoCompleteCallback($event)"></ng4geo-autocomplete>
+        <div class="frm-item-wrap">
+            <div class="frm-item-x2">
+                <mat-input-container class="example-full-width">
+                    <input matInput mat-error placeholder="Street Address" formControlName="frmStreet">
+                </mat-input-container>
+                <mat-input-container class="example-full-width">
+                    <input matInput mat-error placeholder="City" formControlName="frmCity">
+                </mat-input-container>
+            </div>
+        </div>
+        <div class="frm-item-wrap">
+            <div class="frm-item-x2">
+                <mat-form-field class="example-full-width">
+                    <mat-select placeholder="Country" formControlName="frmCountry" [compareWith]="compareCountry">
+                        <mat-option  [value]="country.name" *ngFor="let country of countries">{{country.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="example-full-width">
+                    <mat-select placeholder="State" formControlName="frmState" [compareWith]="compareState">
+                        <mat-option [value]="state.name" *ngFor="let state of states">{{state.name}}</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
         </form>
         <div class="text-center">
