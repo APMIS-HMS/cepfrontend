@@ -98,6 +98,7 @@ export class ServicesComponent implements OnInit {
 
   selectCategory(category) {
     this.systemModuleService.on();
+    this.selectedServices = [];
     this.selectedCategory = category;
     if (this.selectedCategory._id !== undefined) {
       this._facilitiesServiceCategoryService.allServices({
