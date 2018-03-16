@@ -499,7 +499,7 @@ export class ReportComponent implements OnInit {
 
   private _getSelectedPendingRequests(requestId, investigationId) {
     this._laboratoryRequestService.find({
-      query: { 'facilityId': this.facility._id, '_id': requestId }
+      query: { 'facilityId': this.facility._id, '_id': requestId, $sort: { createdAt: -1 }}
     }).then(res => {
       this.pendingReLoading = false;
       if (res.data.length > 0) {
@@ -544,7 +544,7 @@ export class ReportComponent implements OnInit {
 
   private _getAllPendingRequests() {
     this._laboratoryRequestService.customFind({
-      query: { 'facilityId': this.facility._id }
+      query: { 'facilityId': this.facility._id, $sort: { createdAt: -1 }}
     }).then(res => {
       this.pendingReLoading = false;
       if (res.status === 'success' && res.data.length > 0) {
@@ -559,8 +559,7 @@ export class ReportComponent implements OnInit {
               this._getPaymentStatus();
             }, 500);
           }
-        } else {
-          this.pendingRequests = [];
+        } else {        this.pendingRequests = [];
         }
       } else {
         this.pendingRequests = [];
@@ -635,7 +634,7 @@ export class ReportComponent implements OnInit {
 
   private _getAllReports() {
     this._laboratoryRequestService.customFind({
-      query: { 'facilityId': this.facility._id }
+      query: { 'facilityId': this.facility._id, $sort: { createdAt: -1 }}
     }).then(res => {
       if (!!this.selectedLab.typeObject.minorLocationId || this.selectedLab.typeObject.minorLocationId !== undefined) {
         this.reportLoading = false;

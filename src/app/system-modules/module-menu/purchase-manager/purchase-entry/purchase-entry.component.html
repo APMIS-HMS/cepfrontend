@@ -2,68 +2,70 @@
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
     <form [formGroup]="frm_purchaseOrder" novalidate>
 
-        <div class="sec-a">
-            <div class="wrap1">
-                <div class="row">
-                    <div class="frm-item-wrap">
-                        <mat-form-field>
-                            <mat-select style="width: 350px;" class="example-full-width" placeholder="Store" formControlName="store">
+        <div class="sec-aa">
+            <div class="sec-aa-content">
+                <div class="wrapOne">
+
+                    <div class="col-xs-3">
+                        <mat-form-field style="width: 220%;">
+                            <mat-select class="frm-item-wrap" placeholder="Store" formControlName="store">
                                 <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <div class="frm-item-wrap">
-                        <mat-form-field>
-                            <mat-select style="width: 350px;" class="example-full-width" placeholder="Supplier" formControlName="supplier">
+                    <div class="col-xs-3">
+                        <mat-form-field style="width: 220%;">
+                            <mat-select class="frm-item-wrap" placeholder="Supplier" formControlName="supplier">
                                 <mat-option *ngFor="let supplier of suppliers" [value]="supplier._id">{{supplier.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <div class="frm-item-wrap">
-                        <mat-form-field>
-                            <mat-select style="width: 350px;" class="example-full-width" placeholder="Order Id" formControlName="orderId">
+                    <div class="col-xs-3">
+                        <mat-form-field style="width: 220%;">
+                            <mat-select class="frm-item-wrap" placeholder="Order Id" formControlName="orderId">
                                 <mat-option *ngFor="let order of orders" [value]="order._id">{{order.purchaseOrderNumber}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
+                    <div class="col-xs-3" class="dis">
+                        <mat-input-container style="width: 60%;">
+                            <input matInput formControlName="deliveryDate" [matDatepicker]="picker" placeholder="Delivery Date (Choose a date)">
+                        </mat-input-container>
+                        <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
+                        <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </div>
                 </div>
 
-                <div class="frm-item-wrap">
-                    <mat-input-container>
-                        <input matInput formControlName="deliveryDate" [matDatepicker]="picker" placeholder="Delivery Date (Choose a date)">
-                    </mat-input-container>
-                    <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
-                    <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
-                    <mat-datepicker #picker></mat-datepicker>
+                <div class="wrapTwo">
+                    <div class="col-xs-4">
+                        <mat-input-container style="width: 200%;" class="example-full-width">
+                            <input matInput mat-error placeholder="Invoice Number" formControlName="invoiceNo">
+                        </mat-input-container>
+                    </div>
+
+                    <div class="col-xs-4">
+                        <mat-input-container style="width: 200%;" class="example-full-width">
+                            <input type="number" matInput mat-error placeholder="Amount" formControlName="amount">
+                        </mat-input-container>
+                    </div>
+                    <div class="col-xs-4">
+                        <mat-input-container style="width: 200%;" class="example-full-width">
+                            <textarea matInput mat-error placeholder="Remark" formControlName="desc"></textarea>
+                        </mat-input-container>
+                    </div>
                 </div>
+                <!-- <div class="midwrapsect"> -->
             </div>
-            <div class="wrap2">
-                <div class="frm-item-wrap">
-                    <mat-input-container class="example-full-width">
-                        <input matInput mat-error placeholder="Invoice Number" formControlName="invoiceNo">
-                    </mat-input-container>
-                </div>
 
-                <div class="frm-item-wrap">
-                    <mat-input-container class="example-full-width">
-                        <input type="number" matInput mat-error placeholder="Amount" formControlName="amount">
-                    </mat-input-container>
-                </div>
-                <div class="frm-item-wrap">
-                    <mat-input-container class="example-full-width">
-                        <textarea matInput mat-error placeholder="Remark" formControlName="desc"></textarea>
-                    </mat-input-container>
-                </div>
-            </div>
-        </div>
+            <button class="btnn" (click)="flyout_toggle($event)">Add Product</button>
 
-        <div class="midwrapsect">
-            <div (click)="flyout_toggle($event)" class="txt-link">Add Product</div>
             <!--<div class="uploadWrap">
-                <dx-file-uploader selectButtonText="Select photo" labelText="" accept="image/*" uploadMode="useForm">
-                </dx-file-uploader>
-            </div>-->
+                        <dx-file-uploader selectButtonText="Select photo" labelText="" accept="image/*" uploadMode="useForm">
+                        </dx-file-uploader>
+                    </div>-->
         </div>
+
         <div *ngIf="flyout" class="flyout animated slideOut">
             <div class="sec-b">
                 <div (click)="flyout_toggle($event)" class="slideInWrap"><i class="fa fa-arrow-circle-right pull-right" aria-hidden="true"></i></div>

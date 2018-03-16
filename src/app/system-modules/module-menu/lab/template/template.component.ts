@@ -149,7 +149,7 @@ export class TemplateComponent implements OnInit {
     }
 
     private _getAllTemplates() {
-        this._templateService.find({ query: { 'facilityId': this.facility._id }}).then(res => {
+        this._templateService.find({ query: { 'facilityId': this.facility._id, $sort: { createdAt: -1 } }}).then(res => {
             this.loading = false;
             this.templates = res.data;
         }).catch(err => this._notification('Error', 'There was a problem getting templates'));

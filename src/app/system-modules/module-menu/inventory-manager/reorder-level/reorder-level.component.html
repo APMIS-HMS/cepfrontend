@@ -1,0 +1,77 @@
+
+  <table class="table table-striped text-center">
+      <thead>
+          <tr>
+              <th>Product</th>
+              <th>Re Order Level</th>
+              <th>Pack Type</th>
+              <th>Actions</th>
+          </tr>
+      </thead>
+      <tbody>
+          <!-- <tr>
+              <td colspan="8">
+                  <div class="table-container">
+                      <div class="row" style="margin-left: 0; margin-right: 0">
+                          <div class="col-md-4" style="padding-right: 0; padding-left: 0;">
+                              <select [formControl]="selMinorLocation" class="form-control">
+                                  <option value="Select by location" disabled selected>Select by location</option>
+                                  <option *ngFor="let minorLocation of minorLocations" value={{minorLocation._id}}>{{minorLocation.name}}</option>
+                              </select>
+                          </div>
+                          <div class="col-md-4">
+                              <select [formControl]="selProductType" class="form-control">
+                                          <option value="Select by product type" disabled selected>Select by product type</option>
+                                          <option *ngFor="let productType of productTypes" value="{{productType._id}}">{{productType.name}}</option>
+                                      </select>
+                          </div>
+                          <div class="col-md-4" style="padding-right: 0; padding-left: 0;">
+                              <div class="col-xs-10" style="padding-right: 0; padding-left: 0;">
+                                  <input type="text" [formControl]="searchControl" placeholder="search here" class="searchInput" #inputsearch/>
+                              </div>
+                              <div class="col-xs-2" style="padding-right: 0; padding-left: 0;">
+                                  <button mat-raised-button (click)="refresh()" style="background: #FAFAFA;height: 35px;min-width:50px;"><i class="fa fa-refresh"></i></button>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </td>
+          </tr> -->
+          <tr>
+              <td class="wrapa">
+                <span [hidden]="setLevel">Paracetamol</span>
+                <input *ngIf="setLevel" type="text" [formControl]="product">
+                <ul *ngIf="setLevel" class="suggestions nice-scroll">
+                  <li class="suggestion">
+                    <div class="listing-label">Paracetamol</div>
+                  </li>
+                  <li class="suggestion">
+                    <div class="listing-label">Augmentin</div>
+                  </li>
+                  <li class="suggestion">
+                    <div class="listing-label">Astymin</div>
+                  </li>
+                  <li class="suggestion">
+                    <div class="listing-label">Coartem</div>
+                  </li> 
+                </ul>
+              </td>
+              <td>
+                <span [hidden]="setLevel">22</span>
+                <input *ngIf="setLevel" type="number" [formControl]="reorderLevel">
+              </td>
+              <td>
+                <span [hidden]="setLevel">Cartons</span>
+                <select *ngIf="setLevel" [formControl]="packType">
+                  <option>Card</option>
+                  <option>Bottle</option>
+                  <option>Carton</option>
+                </select>
+              </td>
+              <td>
+                  <i [hidden]="setLevel" (click)="setLevel_click()" class="fa fa-pencil td-ico"></i>
+                  <i *ngIf="setLevel" (click)="setLevel_click()" class="fa fa-check td-ico"></i>
+              </td>
+          </tr> 
+      </tbody>
+  </table>

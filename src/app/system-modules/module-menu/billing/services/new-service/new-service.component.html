@@ -66,7 +66,7 @@
                                             <a *ngIf="!item.checked">
                                                 <div class="cat-name">{{item.category}}</div>
                                                 <div class="service-name"><strong> {{item.service}} </strong></div>
-                                                <div class="price" *ngFor="let p of item.price"><em>{{p.price| number:'1.2-2'}}</em></div>
+                                                <div class="price" *ngFor="let p of item.price"><em>{{p.price| number:'1.2-2'}} </em></div>
                                                 <!--<i *ngIf="!item.checked" class="fa fa-plus" (click)="onServiceSelected(item);"></i>-->
                                             </a>
                                         </li>
@@ -141,8 +141,8 @@
                     <h5 style="color:black">Other Prices</h5>
                     <div class="input-wrap col" *ngFor="let p of selectedService.price; let i=index">
                         <div *ngIf="p.isBase===false">
-                            <span style="color:blue">{{p.name}}</span>
-                            <input [formControl]="editPriceControl" (change)="onEditPrice($event,i)" min="0" value="{{p.price}}" type="number">
+                            <span style="color:blue">{{p.name}}({{p.modifierType}}):</span>
+                            <input [formControl]="editPriceControl" (input)="onEditPrice($event,i)" min="0" value="{{p.modifierValue}}" type="number">
                         </div>
                     </div>
                 </div>

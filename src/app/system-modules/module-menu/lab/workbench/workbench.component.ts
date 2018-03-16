@@ -62,7 +62,7 @@ export class WorkbenchComponent implements OnInit {
   getWorkBenches() {
     const payload = {
       facilityId: this.selectedFacility._id,
-      query: { facilityId: this.selectedFacility._id, $limit: 100 }
+      query: { facilityId: this.selectedFacility._id, $limit: 100, $sort: { createdAt: -1 }}
     };
     this.workBenchService.customGet(payload, payload).then(res => {
       this.loading = false;
