@@ -52,7 +52,7 @@ export class NewPurchaseOrderComponent implements OnInit {
   loginEmployee: Employee = <Employee>{};
 
   saveBtnText = 'Done';
-  loading;
+  loading: boolean = false;
 
   constructor(private formBuilder: FormBuilder, private supplierService: SupplierService,
     private facilitiesService: FacilitiesService,
