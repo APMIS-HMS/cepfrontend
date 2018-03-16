@@ -1,5 +1,5 @@
 // facilities-model.js - A mongoose model
-// 
+//
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
 const toLower = require('../helpers/toLower');
@@ -26,6 +26,7 @@ module.exports = function(app) {
         shortName: { type: String, required: false },
         isNetworkFacility: { type: Boolean, 'default': false },
         isHostFacility: { type: Boolean, 'default': false },
+        isHDO: { type: Boolean, 'default': true }, // HDO (Health Delivery Organization).
         memberFacilities: [{ type: Schema.Types.ObjectId, require: false }],
         memberof: [{ type: Schema.Types.ObjectId, require: false }],
         secondaryContactPhoneNo: [{ type: String, required: false }],
