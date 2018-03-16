@@ -5,6 +5,7 @@ import { Facility, PurchaseEntry } from '../../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
 import { invalid } from 'moment';
+import { ProductEmitterService } from '../../../../../services/facility-manager/product-emitter.service';
 
 @Component({
   selector: 'app-transaction-history',
@@ -17,7 +18,7 @@ export class TransactionHistoryComponent implements OnInit {
   paymentHistory = false;
   invoices:any = [];
   selected_supplier:any;
-
+  loading = true;
   frmFilterSupplier: FormControl = new FormControl();
 
   selectedFacility: Facility = <Facility>{};
@@ -26,11 +27,14 @@ export class TransactionHistoryComponent implements OnInit {
     private router: Router,
     private supplierService: SupplierService,
     private invoiceService: PurchaseEntryService,
-    private locker: CoolLocalStorage) {
+    private locker: CoolLocalStorage,
+    private _productEventEmitter: ProductEmitterService
+  ) {
   }
 
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this._productEventEmitter.setRouteUrl('Supplier Details');
     this.getHistory();
     this.getSuppliers();
     this.frmFilterSupplier.valueChanges.subscribe(payload => {
@@ -42,9 +46,11 @@ export class TransactionHistoryComponent implements OnInit {
     this.route.params.subscribe(params => {
       const id = params['id'];
       if (id !== undefined) {
-        this.invoiceService.getInvoice(id, { query: { supplierId: id, facilityId: this.selectedFacility._id } }).subscribe(value => {
-          this.invoices = value;
-          this.selected_supplier = value.supplier;
+        this.invoiceService.getInvoice(id,
+          { query: { supplierId: id, facilityId: this.selectedFacility._id, $sort: { createdAt: -1 }  } }).subscribe(res => {
+          this.loading = false;
+          this.invoices = res.data;
+          this.selected_supplier = res.supplier;
         }, error => {
         });
       }

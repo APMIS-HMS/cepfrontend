@@ -43,7 +43,8 @@
                                     <div class="card" *ngIf="patientSelected">
                                         <div class="card-header">
                                             <div class="row">
-                                                <div class="table-head col-xs-4">Investigation</div>
+                                                <div class="table-head col-xs-1">No</div>
+                                                <div class="table-head col-xs-3">Investigation</div>
                                                 <div class="col-xs-3 table-head">Date</div>
                                                 <div class="table-head col-xs-4">Status</div>
                                                 <div class="table-head col-xs-1"><i class="fa fa-search fa-fw pointer" (click)="openSearch()"></i></div>
@@ -70,7 +71,10 @@
                                             </div>
                                             <div class="card-list-item" [class.active]="activeInvestigationNo == i" *ngFor="let pendingRequest of pendingRequests; let i = index;" [class.active]="activeInvestigationNo == i" (click)="onClickInvestigation(pendingRequest, i);">
                                                 <div class="row">
-                                                    <div class="table-list col-xs-4">
+                                                    <div class="table-list col-xs-1">
+                                                        {{i+1}}
+                                                    </div>
+                                                    <div class="table-list col-xs-3">
                                                         {{pendingRequest?.name}}
                                                     </div>
                                                     <div class="table-list col-xs-4">
@@ -96,8 +100,9 @@
                                     <div class="card" *ngIf="!patientSelected">
                                         <div class="card-header">
                                             <div class="row">
+                                                <div class="col-xs-1 table-head">No</div>
                                                 <div class="col-xs-3 table-head">Patient</div>
-                                                <div class="table-head col-xs-3">Investigation</div>
+                                                <div class="table-head col-xs-2">Investigation</div>
                                                 <div class="table-head col-xs-2">Lab Number</div>
                                                 <div class="col-xs-2 table-head">Date</div>
                                                 <div class="table-head col-xs-1">Status</div>
@@ -136,6 +141,9 @@
                                             </div>
                                             <div class="card-list-item" *ngFor="let pendingRequest of pendingRequests; let i = index;" (click)="onClickInvestigation(pendingRequest, i);">
                                                 <div class="row">
+                                                    <div class="table-list col-xs-1">
+                                                        {{i+1}}
+                                                    </div>
                                                     <div class="table-list col-xs-3">
                                                         <div class="empWrap">
                                                             <div class="list-img">
@@ -145,7 +153,7 @@
                                                             <div>{{ pendingRequest?.patient?.firstName }} {{ pendingRequest?.patient?.lastName }}</div>
                                                         </div>
                                                     </div>
-                                                    <div class="table-list col-xs-3">
+                                                    <div class="table-list col-xs-2">
                                                         {{pendingRequest?.name}}
                                                     </div>
                                                     <div class="table-list col-xs-2">
@@ -356,7 +364,8 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
-                                <div class="col-xs-2 table-head">Date</div>
+                                <div class="col-xs-1 table-head">No</div>
+                                <div class="col-xs-1 table-head">Date</div>
                                 <div class="col-xs-2 table-head">Patient</div>
                                 <div class="table-head col-xs-2">Investigation</div>
                                 <div class="table-head col-xs-2">Source</div>
@@ -397,7 +406,10 @@
                             </div>
                             <div class="card-list-item" *ngFor="let report of reports; let i = index;">
                                 <div class="row">
-                                    <div class="table-list col-xs-2">
+                                    <div class="table-list col-xs-1">
+                                        {{ i+1 }}
+                                    </div>
+                                    <div class="table-list col-xs-1">
                                         {{ report?.updatedAt | date }}
                                     </div>
                                     <div class="table-list col-xs-2">
