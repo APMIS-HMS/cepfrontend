@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter } from '@angular/core';
 import {
   SupplierService, ProductService, PurchaseOrderService,
-  StoreService, EmployeeService
+  StoreService, EmployeeService, PurchaseEntryService
 } from '../../../../services/facility-manager/setup/index';
 import { Facility } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -35,7 +35,8 @@ export class PurchaseOrderComponent implements OnInit {
     private _purchaseEventEmitter: PurchaseEmitterService,
     private systemModuleService: SystemModuleService,
     private authFacadeService: AuthFacadeService,
-    private employeeService: EmployeeService) { }
+    private employeeService: EmployeeService,
+    private purchaseEntryService: PurchaseEntryService) { }
 
   ngOnInit() {
     this._purchaseEventEmitter.setRouteUrl('Purchase Orders');
@@ -48,7 +49,7 @@ export class PurchaseOrderComponent implements OnInit {
         this.purchaseOrderService.find({ query: { supplierId: value } }).subscribe(payload => {
           this.orders = payload.data;
           this.systemModuleService.off();
-        },error=>{
+        }, error => {
           this.systemModuleService.off();
         });
       } else {
@@ -61,37 +62,70 @@ export class PurchaseOrderComponent implements OnInit {
     this.supplierService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
       this.suppliers = payload.data;
       this.systemModuleService.off();
-    },error=>{
+    }, error => {
       this.systemModuleService.off();
     });
   }
   getPurchaseOrders() {
     this.systemModuleService.on();
-    this.purchaseOrderService.findOrder({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
+    this.purchaseOrderService.findOrder({ 
+      query: 
+      { 
+        facilityId: this.selectedFacility._id,
+        isActive: true
+      } 
+    }).subscribe(payload => {
       this.orders = payload.data;
       this.systemModuleService.off();
-    },error=>{
+    }, error => {
       this.systemModuleService.off();
     });
   }
   selectedOrderToDelete;
+  entryDone;
   onRemoveOrder(order) {
     this.selectedOrderToDelete = order;
-    this.systemModuleService.announceSweetProxy('Are you sure you want remove ' + order.purchaseOrderNumber, 'question', this);
+    this.purchaseEntryService.find({
+      query: {
+        orderId: order._id,
+        facilityId: this.selectedFacility._id
+      }
+    }).then(entryPayload => {
+      if (entryPayload.data.length > 0) {
+        this.entryDone = true;
+      } else {
+        this.entryDone = false;
+      }
+      this.systemModuleService.announceSweetProxy('Are you sure you want remove ' + order.purchaseOrderNumber, 'question', this);
+    }).catch(err => {
+    });
+
   }
 
   sweetAlertCallback(result) {
     if (result.value) {
       this.systemModuleService.on();
       if (this.selectedOrderToDelete._id !== undefined) {
-        this.purchaseOrderService.remove(this.selectedOrderToDelete._id, {}).then(callback_remove => {
-          this.systemModuleService.announceSweetProxy(this.selectedOrderToDelete.purchaseOrderNumber + " is deleted", 'success');
-          this.systemModuleService.off();
-          this.selectedOrderToDelete = {};
-          this.getPurchaseOrders();
-        }, error => {
-          this.systemModuleService.off();
-        });
+        if(this.entryDone === true){
+          this.purchaseOrderService.remove(this.selectedOrderToDelete._id, {}).then(callback_remove => {
+            this.systemModuleService.announceSweetProxy(this.selectedOrderToDelete.purchaseOrderNumber + " is deleted", 'success');
+            this.systemModuleService.off();
+            this.selectedOrderToDelete = {};
+            this.getPurchaseOrders();
+          }, error => {
+            this.systemModuleService.off();
+          });
+        }else{
+          this.selectedOrderToDelete.isActive = false
+          this.purchaseOrderService.patch(this.selectedOrderToDelete._id, this.selectedOrderToDelete).then(callback_remove => {
+            this.systemModuleService.announceSweetProxy(this.selectedOrderToDelete.purchaseOrderNumber + " has been deactivated", 'success');
+            this.systemModuleService.off();
+            this.selectedOrderToDelete = {};
+            this.getPurchaseOrders();
+          }, error => {
+            this.systemModuleService.off();
+          });
+        }
       }
     }
   }
