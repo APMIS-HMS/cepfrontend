@@ -17,54 +17,58 @@
             <div class="productNameLabel animated fadeIn" *ngIf="productNameLabel">{{productNameLabel_txt}}</div>-->
         <form novalidate [formGroup]="frm_newProduct">
             <div class="mainfrmwrap">
-                <div class="row" Class="col-xs-12 col-lg-12">
+                <div class="row" Class="col-lg-12">
                     <div class="sec-1">
-                        <div class="frm-item-wrap">
-                            <mat-form-field>
-                                <mat-select class="example-full-width" placeholder="Product Type" formControlName="productTypeId" [compareWith]="compareItems">
-                                    <mat-option *ngFor="let productType of productTypes" [value]="productType._id">{{productType.name}}</mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="frm-item-wrap">
-                            <mat-input-container class="example-full-width">
-                                <input matInput mat-error placeholder="Name(Product)" formControlName="name">
-                            </mat-input-container>
-                            <!-- <div *ngIf="productSugestion" class="sugestion-wrap shadow-B">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <mat-form-field>
+                                    <mat-select class="example-full-width" placeholder="Product Type" formControlName="productTypeId" [compareWith]="compareItems">
+                                        <mat-option *ngFor="let productType of productTypes" [value]="productType._id">{{productType.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xs-6">
+                                <mat-input-container class="example-full-width">
+                                    <input matInput mat-error placeholder="Enter Name Of Product" formControlName="name">
+                                </mat-input-container>
+                                <!-- <div *ngIf="productSugestion" class="sugestion-wrap shadow-B">
                                 <div (click)="onSelectProductSuggestion(dictionary)" *ngFor="let dictionary of dictionaries" class="sugestion-item">{{dictionary.details}}</div>
                             </div> -->
 
+                            </div>
                         </div>
+
                         <div class="sec-2">
-                            <div class="frm-item-wrap">
-                                <mat-form-field>
-                                    <mat-select class="example-full-width" placeholder="Manufacturer" formControlName="manufacturer" [compareWith]="compareItems">
-                                        <mat-option *ngFor="let item of manufacturers" [value]="item.name">{{item.name}}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                            <div class="frm-item-wrap">
-                                <mat-form-field>
-                                    <mat-select class="example-full-width" placeholder="Generic" formControlName="genericName" [compareWith]="compareItems">
-                                        <mat-option *ngFor="let item of generics" [value]="item.name">{{item.name}}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                            <div class="frm-item-wrap">
-                                <mat-form-field>
-                                    <mat-select class="example-full-width" placeholder="Presentation" formControlName="presentation" [compareWith]="compareItems">
-                                        <mat-option *ngFor="let item of presentations" [value]="item.name">{{item.name}}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                            <div class="frm-item-wrap">
-                                <mat-form-field>
-                                    <mat-select class="example-full-width" placeholder="Service Category" formControlName="categoryId" [compareWith]="compareItems">
-                                        <mat-option *ngFor="let category of categories" [value]="category._id">{{category.name}}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                            </div>
-                            <!-- <div class="frm-item-wrap">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <mat-form-field>
+                                        <mat-select class="example-full-width" placeholder="Manufacturer" formControlName="manufacturer" [compareWith]="compareItems">
+                                            <mat-option *ngFor="let item of manufacturers" [value]="item.name">{{item.name}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-xs-6">
+                                    <mat-form-field>
+                                        <mat-select class="example-full-width" placeholder="Generic" formControlName="genericName" [compareWith]="compareItems">
+                                            <mat-option *ngFor="let item of generics" [value]="item.name">{{item.name}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-xs-6">
+                                    <mat-form-field>
+                                        <mat-select class="example-full-width" placeholder="Presentation" formControlName="presentation" [compareWith]="compareItems">
+                                            <mat-option *ngFor="let item of presentations" [value]="item.name">{{item.name}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-xs-6">
+                                    <mat-form-field>
+                                        <mat-select class="example-full-width" placeholder="Service Category" formControlName="categoryId" [compareWith]="compareItems">
+                                            <mat-option *ngFor="let category of categories" [value]="category._id">{{category.name}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <!-- <div class="frm-item-wrap">
                                 <mat-input-container class="example-full-width">
                                     <input matInput mat-error placeholder="Pack Label" formControlName="packLabel">
                                 </mat-input-container>
@@ -74,18 +78,18 @@
                                     <input type="number" matInput mat-error placeholder="Pack Size" formControlName="packSize">
                                 </mat-input-container>
                             </div> -->
-
+                            </div>
                         </div>
                     </div>
 
 
                     <div class="clear"></div>
                     <div class="row" class="col-xs-12 col-lg-12">
-                        <div>
-                            <div class="sectLabel">Active</div>
-                            <i class="fa fa-plus faplus" (click)="addIngredient()"></i>
-                        </div>
                         <div class="sec-3">
+                            <div Class="pull-right">
+                                <div class="sectLabel">Active</div>
+                                <i class="fa fa-plus faplus tooltip" data-placement="right" data-toggle="Add Active Ingredients" (click)="addIngredient()"></i>
+                            </div>
                             <div class="sec3-headWrap">
                                 <form *ngIf="ingredientForm.controls['ingredients'].value.length > 0" [formGroup]="ingredientForm">
                                     <div formArrayName="ingredients">
@@ -121,9 +125,9 @@
 
                             <div class="clear"></div>
 
-                            <div>
+                            <div class="pull-right">
                                 <div class="sectLabel">Variant</div>
-                                <i class="fa fa-plus faplus pull-right" (click)="addVariant()"></i>
+                                <i class="fa fa-plus faplus tooltip" data-placement="right" data-toggle="Add Product Variant" (click)="addVariant()"></i>
                             </div>
                             <div class="sec-3">
                                 <div class="sec3-headWrap"></div>
