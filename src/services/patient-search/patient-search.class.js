@@ -24,7 +24,7 @@ class Service {
             const hasFacility = params.user.facilitiesRole.filter(x => x.facilityId.toString() === facilityId);
             if (hasFacility.length > 0) {
                 // Get Patients
-                let patients = await patientService.find({ query: { facilityId: facilityId, $select: ['personId'] } });
+                let patients = await patientService.find({ query: { facilityId: facilityId, $select: ['personId'], $limit: (params.query.$limit) ? params.query.$limit : 10 } });
                 if (patients.data.length > 0) {
                     patients = patients.data.map(x => x.personId);
 
@@ -37,7 +37,9 @@ class Service {
                                 { apmisId: { $regex: searchText, '$options': 'i' } },
                                 { email: { $regex: searchText, '$options': 'i' } },
                                 { otherNames: { $regex: searchText, '$options': 'i' } }
-                            ]
+                            ],
+                            $limit: (params.query.$limit) ? params.query.$limit : 10,
+                            $sort: { createdAt: -1 }
                         }
                     });
                     if (people.data.length > 0) {
@@ -49,7 +51,7 @@ class Service {
                         while (i--) {
                             const person = people[i];
 
-                            const patients = await patientService.find({ query: { facilityId: facilityId, personId: person._id } });
+                            const patients = await patientService.find({ query: { facilityId: facilityId, personId: person._id, $sort: { createdAt: -1 } } });
                             if (patients.data.length > 0) {
                                 if (patientTable !== true) {
                                     person.patientId = patients.data[0]._id;
