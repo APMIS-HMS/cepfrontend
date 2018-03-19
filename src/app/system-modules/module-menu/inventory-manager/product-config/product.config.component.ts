@@ -7,8 +7,8 @@ import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-product-config',
-  templateUrl: './product-config.component.html',
-  styleUrls: ['./product-config.component.scss']
+  templateUrl: './product.config.component.html',
+  styleUrls: ['./product.config.component.scss']
 })
 export class ProductConfigComponent implements OnInit {
 

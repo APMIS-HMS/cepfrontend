@@ -67,7 +67,6 @@ import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 import { CanActivateViaAuthGuardAccessService } from 'app/services/facility-manager/setup/can-activate-via-auth-guard-access.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MessagingComponent } from './messaging/messaging.component';
-import { ProductConfigComponent } from './product-config/product-config.component';
 
 @NgModule({
   declarations: [
@@ -75,8 +74,7 @@ import { ProductConfigComponent } from './product-config/product-config.componen
     HomeComponent,
     ApmisCheckboxChildComponent,
     ApmisCheckboxComponent,
-    MessagingComponent,
-    ProductConfigComponent
+    MessagingComponent
   ],
   exports: [
   ],
