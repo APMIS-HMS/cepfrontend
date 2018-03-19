@@ -1,5 +1,7 @@
 <div *ngIf="flyout" class="flyout animated slideOut">
-    <div (click)="flyout_toggle($event)" class="slideInWrap"><i class="fa fa-arrow-circle-right pull-right" aria-hidden="true"></i></div>
+    <div (click)="flyout_toggle($event)" class="slideInWrap">
+        <i class="fa fa-arrow-circle-right pull-right" aria-hidden="true"></i>
+    </div>
     <div class="sec-b">
         <div class="col-a">
             <div class="filter-sect">
@@ -13,10 +15,10 @@
             <div class="product-sect">
                 <div class="control-group" *ngFor="let group of superGroups">
                     <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
-                                <div class="control__indicator"> 
-                                    <mat-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></mat-checkbox>
-                                    </div>
-                            </label>
+                        <div class="control__indicator">
+                            <mat-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></mat-checkbox>
+                        </div>
+                    </label>
                 </div>
             </div>
         </div>
@@ -42,7 +44,8 @@
                         <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
-            </div><br>
+            </div>
+            <br>
         </div>
     </div>
     <div class="tblWrap">
@@ -54,38 +57,65 @@
 
                             <div class="inputWrap-productDetail">
                                 <div (click)="removeProduct(i, schedule.value)" class="modal-close-ico" aria-hidden="true">X</div>
-
-                                <div style="width: 45%;" class="frm-item-wrap">
-                                    <mat-input-container class="example-full-width">
-                                        <input matInput mat-error placeholder="Product" [readOnly]="true" formControlName="product">
-                                    </mat-input-container>
+                                <div class="row">
+                                    <div class="col-md-6 row">
+                                        <div class="col-md-4">
+                                            <div class="frm-item-wrap">
+                                                <mat-input-container class="example-full-width">
+                                                    <input matInput mat-error placeholder="Product" [readOnly]="true" formControlName="product">
+                                                </mat-input-container>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="frm-item-wrap">
+                                                <mat-form-field>
+                                                    <mat-select (change)="getProductQuantity($event,schedule.controls.batchNumbers.value, i)" style="width: 100%;" class="example-full-width"
+                                                        placeholder="Batch Numbers">
+                                                        <mat-option *ngFor="let batch of schedule.controls.batchNumbers.value" [value]="batch._id">{{batch.batchNumber}}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="frm-item-wrap">
+                                                <mat-input-container class="example-full-width">
+                                                    <input matInput mat-error placeholder="Batch No" [readOnly]="true" formControlName="batchNo">
+                                                </mat-input-container>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 row">
+                                        <div class="col-md-4">
+                                            <div class="frm-item-wrap">
+                                                <mat-input-container class="example-full-width">
+                                                    <input [step]="0.01" type="number" [readOnly]="true" matInput mat-error placeholder="Unit Cost Price" [readOnly]="true" formControlName="costPrice">
+                                                </mat-input-container>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="frm-item-wrap">
+                                                <mat-input-container class="example-full-width">
+                                                    <input (change)="checkProductQuantity($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)" min="1"
+                                                        max="{{maxQty}}" type="number" matInput mat-error placeholder="Quantity"
+                                                        [readOnly]="false" formControlName="qty">
+                                                </mat-input-container>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="frm-item-wrap">
+                                                <mat-input-container class="example-full-width">
+                                                    <input [step]="0.01" [readOnly]="true" min="0" type="number" [readOnly]="true" matInput mat-error placeholder="Total Cost Price"
+                                                        [readOnly]="true" formControlName="totalCostPrice">
+                                                </mat-input-container>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div style="width: 15%;" class="frm-item-wrap">
-                                    <mat-select (change)="getProductQuantity($event,schedule.controls.batchNumbers.value, i)" style="width: 100%;" class="example-full-width" placeholder="Batch Numbers">
-                                        <mat-option *ngFor="let batch of schedule.controls.batchNumbers.value" [value]="batch._id">{{batch.batchNumber}}</mat-option>
-                                    </mat-select>
-                                </div>
-                                <div style="width: 10%;" class="frm-item-wrap">
-                                    <mat-input-container class="example-full-width">
-                                        <input matInput mat-error placeholder="Batch No" [readOnly]="true" formControlName="batchNo">
-                                    </mat-input-container>
-                                </div>
-
-                                <div style="width: 15%;" class="frm-item-wrap">
-                                    <mat-input-container class="example-full-width">
-                                        <input [step]="0.01" type="number" [readOnly]="true" matInput mat-error placeholder="Unit Cost Price" [readOnly]="true" formControlName="costPrice">
-                                    </mat-input-container>
-                                </div>
-                                <div style="width: 10%;" class="frm-item-wrap">
-                                    <mat-input-container class="example-full-width">
-                                        <input (change)="checkProductQuantity($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)" min="1" max="{{maxQty}}" type="number" matInput mat-error placeholder="Quantity" [readOnly]="false" formControlName="qty">
-                                    </mat-input-container>
-                                    <div class="plus-row" (click)="splitProduct($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)" *ngIf="(showSplitProduct(i, schedule.controls.batchNumbers.value) || showPlusSign)"><span><i class="fa fa-plus plus-color"></i></span></div>
-                                </div>
-                                <div style="width: 15%;" class="frm-item-wrap">
-                                    <mat-input-container class="example-full-width">
-                                        <input [step]="0.01" [readOnly]="true" min="0" type="number" [readOnly]="true" matInput mat-error placeholder="Total Cost Price" [readOnly]="true" formControlName="totalCostPrice">
-                                    </mat-input-container>
+                                <div class="plus-row" (click)="splitProduct($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)"
+                                    *ngIf="(showSplitProduct(i, schedule.controls.batchNumbers.value) || showPlusSign)">
+                                    <span>
+                                        <i class="fa fa-plus plus-color"></i> Add Another One
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -193,9 +223,15 @@
                         <div class="row">
                             <div class="col-sm-12 col-mat-12">
                                 <div class="print pull-right">
-                                    <a><span class="fa fa-paperclip"></span></a>
-                                    <a><span class="fa fa-file-pdf-o"></span></a>
-                                    <a><span class="fa fa-print"></span></a>
+                                    <a>
+                                        <span class="fa fa-paperclip"></span>
+                                    </a>
+                                    <a>
+                                        <span class="fa fa-file-pdf-o"></span>
+                                    </a>
+                                    <a>
+                                        <span class="fa fa-print"></span>
+                                    </a>
                                 </div>
                             </div>
                         </div>

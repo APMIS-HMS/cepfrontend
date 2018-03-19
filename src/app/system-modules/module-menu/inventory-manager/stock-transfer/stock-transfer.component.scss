@@ -145,9 +145,15 @@
 }
 .modal-close-ico{
     top: 6px;
-    color: #000 !important;
+    color: rgb(0, 0, 0) !important;
     font-weight: bolder !important;
     font-size: 16px !important;
+    position: absolute;
+    top: -1.5em;
+    right: 2em;
+}
+.modal-close-ico:hover{
+    color: rgba(0, 0, 0, 0.7);
 }
 
 /*end*/
@@ -175,4 +181,19 @@
 }
 .frm-item-wrap{
     width: 300px;
+}
+
+.frmArray{
+    margin-bottom: 2em;
+}
+
+.plus-row{
+    position: absolute;
+    bottom: 0;
+    right: 3em;
+    font-size: 1em;
+}
+
+.plus-row span{
+    cursor: pointer;
 }
