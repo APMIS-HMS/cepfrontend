@@ -7,6 +7,14 @@ legend.modal-title {
     color: white !important;
 }
 
+.modal_title {
+    text-align: center;
+    border-bottom: 0px;
+    color: #fff;
+    margin-bottom: 15px;
+    padding-top: 11px;
+}
+
 .modal-baseWrap {
     width: 750px;
 }
@@ -22,6 +30,30 @@ legend.modal-title {
 .frm-item-wrap small,
 .frm-singleItem-wrap small {
     bottom: -3px;
+}
+
+.tooltip {
+    &:after {
+        font-family: Arial, Helvetica, sans-serif;
+        opacity: 0;
+        transition: all 0.4s;
+        font-size: 1.2rem !important;
+        margin-left: -120px;
+        display: block;
+        //padding: 10px;
+        content: attr(data-toggle);
+        background: rgba(0, 0, 0, 0.74);
+        border-radius: 5px;
+        color: #fff;
+        min-width: 65px;
+        text-align: center;
+    }
+    &:hover {
+        &:after {
+            opacity: 1;
+            // margin-left: -100px;
+        }
+    }
 }
 
 .cta-1 {
@@ -72,7 +104,7 @@ legend.modal-title {
 
 .sec-3 {
     margin: 10px 0;
-    overflow-y: auto;
+    //overflow-y: auto;
     border: 1px solid #ccc;
     // height: 120px;
     padding: 10px;

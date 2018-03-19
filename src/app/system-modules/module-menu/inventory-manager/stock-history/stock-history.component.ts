@@ -71,6 +71,7 @@ export class StockHistoryComponent implements OnInit {
       this.systemModuleService.off();
       if (payload.data !== undefined) {
         this.transferHistories = payload.data;
+
       }
     }, error => {
       this.systemModuleService.off();

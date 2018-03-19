@@ -161,11 +161,9 @@ export class LabRequestsComponent implements OnInit {
           res.data.forEach(labRequest => {
             labRequest.investigations.forEach(investigation => {
               if (
-                investigation.isSaved === undefined ||
-                !investigation.isSaved ||
-                ((investigation.isUploaded === undefined ||
+                investigation.isSaved === undefined || !investigation.isSaved || ((investigation.isUploaded === undefined ||
                   !investigation.isUploaded) &&
-                  labId === investigation.location.laboratoryId._id)
+                  labId === investigation.investigation.LaboratoryWorkbenches[0].laboratoryId._id)
               ) {
                 const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
                 if (!investigation.isSaved || !investigation.isUploaded) {
@@ -216,7 +214,7 @@ export class LabRequestsComponent implements OnInit {
             });
           });
         }
-      });
+      }, (err) => console.log(err));
 
     this.searchInvestigation.valueChanges
       .debounceTime(400)
@@ -1001,7 +999,8 @@ export class LabRequestsComponent implements OnInit {
         .customFind({
           query: {
             patientId: this.patientId._id,
-            facilityId: this.selectedFacility._id
+            facilityId: this.selectedFacility._id,
+            $sort: { createdAt: -1 }
           }
         })
         .then(res => {
@@ -1023,7 +1022,7 @@ export class LabRequestsComponent implements OnInit {
                 !investigation.isSaved ||
                 ((investigation.isUploaded === undefined ||
                   !investigation.isUploaded) &&
-                  labId === investigation.location.laboratoryId._id)
+                  labId === investigation.investigation.LaboratoryWorkbenches[0].laboratoryId._id)
               ) {
                 const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
                 if (!investigation.isSaved || !investigation.isUploaded) {
@@ -1076,11 +1075,9 @@ export class LabRequestsComponent implements OnInit {
         })
         .catch(err => {console.log(err)});
     } else {
-      console.log(this.selectedFacility);
       this.requestService
-        .customFind({ query: { facilityId: this.selectedFacility._id } })
+        .customFind({ query: { facilityId: this.selectedFacility._id, $sort: { createdAt: -1 } } })
         .then(res => {
-          console.log('back')
           this.loading = false;
           let labId = '';
           if (
@@ -1098,7 +1095,7 @@ export class LabRequestsComponent implements OnInit {
                 !investigation.isSaved ||
                 ((investigation.isUploaded === undefined ||
                   !investigation.isUploaded) &&
-                  labId === investigation.location.laboratoryId._id)
+                  labId === investigation.investigation.LaboratoryWorkbenches[0].laboratoryId._id)
               ) {
                 const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
                 if (!investigation.isSaved || !investigation.isUploaded) {

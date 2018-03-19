@@ -97,8 +97,12 @@
                 </div>
             </form>
         </div>
-        <div (click)="save()" class="cta-1">
-            {{saveBtnText}}
+
+        <div style="width: 100%;height: 50px; text-align: center;">
+            <button (click)="save()" mat-raised-button [disabled]="(!frm_purchaseOrder.valid || loading) || (productTableForm.controls['productTableArray'].value.length === 0)" class="mat-raised-button">
+                <span *ngIf="!loading">{{saveBtnText}}</span>
+                <span *ngIf="loading">Loading... <i class="fa fa-spinner fa-spin fa-2x"></i></span>
+            </button>
         </div>
 
     </form>

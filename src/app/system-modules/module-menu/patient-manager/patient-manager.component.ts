@@ -32,6 +32,7 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
   searchControl = new FormControl();
 
   searchedPatients;
+  searchEmpty = true;
 
   pageInView = 'Patient Manager';
 
@@ -53,19 +54,26 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
 
     this.searchControl.valueChanges
-    .debounceTime(200)
-    .distinctUntilChanged()
-    .subscribe(value => {
-      this.patientService.findPatient({
-        query: {
-          'facilityId': this.selectedFacility._id,
-          'searchText': value,
-          'patientTable': true
-        }
-      }).then(payload => {
-        this.searchedPatients = payload.data;
+      .debounceTime(200)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        this.patientService.findPatient({
+          query: {
+            'facilityId': this.selectedFacility._id,
+            'searchText': value,
+            'patientTable': true,
+            $limit: 300
+          }
+        }).then(payload => {
+          if (value.length > 0) {
+            this.searchEmpty = false;
+            this.searchedPatients = payload.data;
+          }else{
+            this.searchEmpty = true;
+            this.searchedPatients = [];
+          }
+        });
       });
-    });
     this.route.params.subscribe(params => {
     })
   }

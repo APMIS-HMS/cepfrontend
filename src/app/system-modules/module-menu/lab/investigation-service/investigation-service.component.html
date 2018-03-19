@@ -167,10 +167,11 @@
                         </mat-input-container>
                         <div class="card-header">
                             <div class="row">
+                                <div class="table-head col-xs-1">No</div>
                                 <div class="table-head col-xs-3">Investigation Name</div>
                                 <div class="table-head col-xs-2">Specimen</div>
                                 <div class="table-head col-xs-2">Reference Value</div>
-                                <div class="table-head col-xs-2">Unit</div>
+                                <div class="table-head col-xs-1">Unit</div>
                                 <div class="table-head col-xs-2">Report Type</div>
                                 <div class="table-head col-xs-1">
                                     <i class="fa fa-search fa-fw pointer" (click)="onSearchInvestigation()"></i>
@@ -190,6 +191,9 @@
                             </div>
                             <div class="card-list-item" *ngFor="let investigation of investigations; let i = index;">
                                 <div class="row">
+                                    <div class="table-list col-xs-1">
+                                        {{ i+1 }}
+                                    </div>
                                     <div class="table-list col-xs-3">
                                         {{investigation.name}}
                                     </div>
@@ -200,7 +204,7 @@
                                     <div class="table-list col-xs-2">
                                         {{getRefrenceValues(investigation?.reportType)}}
                                     </div>
-                                    <div class="table-list col-xs-2">
+                                    <div class="table-list col-xs-1">
                                         {{investigation.unit}}
                                     </div>
                                     <div class="table-list col-xs-2 action-placeholder">
