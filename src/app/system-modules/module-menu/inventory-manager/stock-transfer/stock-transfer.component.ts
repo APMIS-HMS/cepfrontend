@@ -43,6 +43,8 @@ export class StockTransferComponent implements OnInit {
   selectedInventoryTransactionType: InventoryTransactionType = <InventoryTransactionType>{};
   loginEmployee: Employee = <Employee>{};
 
+  showPlusSign: boolean = true;
+
   previewObject: any = <any>{};
   constructor(private _inventoryEventEmitter: InventoryEmitterService,
     private inventoryService: InventoryService, private inventoryTransferService: InventoryTransferService,
@@ -96,6 +98,8 @@ export class StockTransferComponent implements OnInit {
         //   this.getProductTables(this.products);
         // });
       });
+
+
   }
   getCurrentStoreDetails(id) {
     this.storeService.get(id, {}).then(payload => {
@@ -221,18 +225,18 @@ export class StockTransferComponent implements OnInit {
         if (payload.data.length > 0) {
           (<FormArray>this.productTableForm.controls['productTableArray'])
             .push(
-            this.formBuilder.group({
-              product: [value.name, [<any>Validators.required]],
-              batchNo: [, [<any>Validators.required]],
-              batchNumbers: [payload.data[0].transactions],
-              costPrice: [0.00, [<any>Validators.required]],
-              totalCostPrice: [0.00, [<any>Validators.required]],
-              qty: [0, [<any>Validators.required]],
-              readOnly: [false],
-              productObject: [value.product],
-              id: [value._id],
-              inventoryId: [payload.data[0]._id]
-            })
+              this.formBuilder.group({
+                product: [value.name, [<any>Validators.required]],
+                batchNo: [, [<any>Validators.required]],
+                batchNumbers: [payload.data[0].transactions],
+                costPrice: [0.00, [<any>Validators.required]],
+                totalCostPrice: [0.00, [<any>Validators.required]],
+                qty: [0, [<any>Validators.required]],
+                readOnly: [false],
+                productObject: [value.product],
+                id: [value._id],
+                inventoryId: [payload.data[0]._id]
+              })
             );
         }
       });
@@ -254,7 +258,10 @@ export class StockTransferComponent implements OnInit {
     }
   }
   removeProduct(index, value) {
-    this.superGroups.forEach((parent, i) => {
+
+    (<FormArray>this.productTableForm.controls['productTableArray']).removeAt(index);
+    
+    /* this.superGroups.forEach((parent, i) => {
       parent.forEach((group, j) => {
         if (group._id === value.id) {
           group.checked = false;
@@ -265,7 +272,7 @@ export class StockTransferComponent implements OnInit {
           }
         }
       });
-    });
+    }); */
   }
   getProductQuantity($event, value, index) {
     this.selectedTransactionId = $event.value;
@@ -317,20 +324,29 @@ export class StockTransferComponent implements OnInit {
   }
   splitProduct($event, value, index, productId) {
     const product = (<FormArray>this.productTableForm.controls['productTableArray']).controls[index].value;
-    ((<FormArray>this.productTableForm.controls['productTableArray'])
-      .insert(index,
-      this.formBuilder.group({
-        product: [product.product, [<any>Validators.required]],
-        batchNo: [, [<any>Validators.required]],
-        batchNumbers: [product.batchNumbers],
-        costPrice: [0.00, [<any>Validators.required]],
-        totalCostPrice: [0.00, [<any>Validators.required]],
-        qty: [0, [<any>Validators.required]],
-        readOnly: [false],
-        productObject: [product.productObject],
-        id: [product.id],
-        inventoryId: [product.inventoryId]
-      })));
+    if (this.productTableForm.controls['productTableArray'].value.length >= value.length) {
+      this.showPlusSign = false;
+      return;
+    } else {
+      this.showPlusSign = true;
+      ((<FormArray>this.productTableForm.controls['productTableArray'])
+        .insert(index,
+          this.formBuilder.group({
+            product: [product.product, [<any>Validators.required]],
+            batchNo: [, [<any>Validators.required]],
+            batchNumbers: [product.batchNumbers],
+            costPrice: [0.00, [<any>Validators.required]],
+            totalCostPrice: [0.00, [<any>Validators.required]],
+            qty: [0, [<any>Validators.required]],
+            readOnly: [false],
+            productObject: [product.productObject],
+            id: [product.id],
+            inventoryId: [product.inventoryId]
+          })
+        )
+      );
+    }
+
   }
   flyout_toggle(e) {
     this.flyout = !this.flyout;
@@ -419,6 +435,16 @@ export class StockTransferComponent implements OnInit {
       const errMsg = 'There was an error while initialising product, please try again!';
       this.systemModuleService.announceSweetProxy(errMsg, 'error');
     });
+  }
+
+  showSplitProduct(i, data) {
+    if (this.productTableForm.controls['productTableArray'].value.length >= data.length) {
+      this.showPlusSign = false;
+      return false;
+    } else {
+      this.showPlusSign = true;
+      return true;
+    }
   }
 
   private _notification(type: String, text: String): void {
