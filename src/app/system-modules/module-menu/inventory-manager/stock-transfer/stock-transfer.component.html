@@ -80,7 +80,7 @@
                                     <mat-input-container class="example-full-width">
                                         <input (change)="checkProductQuantity($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)" min="1" max="{{maxQty}}" type="number" matInput mat-error placeholder="Quantity" [readOnly]="false" formControlName="qty">
                                     </mat-input-container>
-                                    <div class="plus-row" (click)="splitProduct($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)"><span><i class="fa fa-plus plus-color"></i></span></div>
+                                    <div class="plus-row" (click)="splitProduct($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)" *ngIf="(showSplitProduct(i, schedule.controls.batchNumbers.value) || showPlusSign)"><span><i class="fa fa-plus plus-color"></i></span></div>
                                 </div>
                                 <div style="width: 15%;" class="frm-item-wrap">
                                     <mat-input-container class="example-full-width">
