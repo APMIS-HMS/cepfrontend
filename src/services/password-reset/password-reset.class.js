@@ -20,27 +20,34 @@ class Service {
     create(data, params) {
         const userService = this.app.service('users');
         return new Promise(function(resolve, reject) {
-            userService.find({
-                query: {
-                    verificationToken: data.token
-                }
-            }).then(users => {
-                if (users.data.length > 0) {
-                    const context = users.data[0];
-                    context.password = data.password;
-                    context.verificationToken = '';
-                    userService.update(context._id, context).then(user => {
-                        resolve({ isPasswordChanged: true });
-                    }, userError => {
-                        reject(userError);
-                    });
-                } else {
-                    reject(new Error('User not found'));
-                }
-            }, error => {
-                reject(error);
-            });
-
+            userService
+                .find({
+                    query: {
+                        verificationToken: data.token
+                    }
+                })
+                .then(
+                    users => {
+                        if (users.data.length > 0) {
+                            const context = users.data[0];
+                            context.password = data.password;
+                            context.verificationToken = '';
+                            userService.patch(context._id, { password: data.password, verificationToken: '', isTokenVerified: true }).then(
+                                user => {
+                                    resolve({ isPasswordChanged: true });
+                                },
+                                userError => {
+                                    reject(userError);
+                                }
+                            );
+                        } else {
+                            reject(new Error('User not found'));
+                        }
+                    },
+                    error => {
+                        reject(error);
+                    }
+                );
         });
     }
 
@@ -50,63 +57,70 @@ class Service {
         const peopleService = this.app.service('people');
 
         return new Promise(function(resolve, reject) {
-            tokenService.get(tokenLabel.tokenType.facilityVerification, {}).then(payload => {
-                peopleService.find({ query: { apmisId: id, primaryContactPhoneNo: data.primaryContactPhoneNo } })
-                    .then(people => {
-                        if (people.data.length > 0) {
-                            const person = people.data[0];
-                            userService.find({
-                                query: { personId: person._id }
-                            }).then(users => {
-                                if (users.data.length > 0) {
-                                    const context = users.data[0];
-                                    context.verificationToken = payload.result;
-                                    userService.update(context._id, context).then(user => {
-                                        sms.sendPasswordResetToken({ primaryContactPhoneNo: data.primaryContactPhoneNo, verificationToken: user.verificationToken });
-                                        resolve({ isToken: true });
-                                    }, userError => {
-                                        reject(userError);
-                                    });
+            tokenService.get(tokenLabel.tokenType.facilityVerification, {}).then(
+                payload => {
+                    peopleService
+                        .find({
+                            query: {
+                                apmisId: id,
+                                primaryContactPhoneNo: data.primaryContactPhoneNo
+                            }
+                        })
+                        .then(
+                            people => {
+                                if (people.data.length > 0) {
+                                    const person = people.data[0];
+                                    userService
+                                        .find({
+                                            query: { personId: person._id }
+                                        })
+                                        .then(
+                                            users => {
+                                                if (users.data.length > 0) {
+                                                    const context = users.data[0];
+                                                    context.verificationToken = payload.result;
+
+                                                    //   var payload = await facilitiesService.patch(networkHost._id, {
+                                                    //     memberFacilities: networkHost.memberFacilities
+                                                    // });
+
+                                                    userService.patch(context._id, { verificationToken: payload.result }).then(
+                                                        user => {
+                                                            sms.sendPasswordResetToken({
+                                                                primaryContactPhoneNo: data.primaryContactPhoneNo,
+                                                                verificationToken: user.verificationToken
+                                                            });
+                                                            resolve({ isToken: true });
+                                                        },
+                                                        userError => {
+                                                            reject(userError);
+                                                        }
+                                                    );
+                                                } else {
+                                                    reject(
+                                                        new Error(
+                                                            'Invalid APMISID or Telephone Number supplied, correct and try again!'
+                                                        )
+                                                    );
+                                                }
+                                            },
+                                            usersError => {
+                                                reject(usersError);
+                                            }
+                                        );
                                 } else {
-                                    reject(new Error('Invalid APMISID or Telephone Number supplied, correct and try again!'));
+                                    reject('Person record not found');
                                 }
-                            }, usersError => {
-                                reject(usersError);
-                            });
-
-
-
-
-
-
-
-
-
-
-                        } else {
-                            reject('Person record not found');
-                        }
-                    }, peopleError => {
-                        reject(peopleError);
-                    });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            }, error => {
-                reject(error);
-            });
-
+                            },
+                            peopleError => {
+                                reject(peopleError);
+                            }
+                        );
+                },
+                error => {
+                    reject(error);
+                }
+            );
         });
     }
 
