@@ -10,11 +10,17 @@
     text-align: center;
 }
 
+.mat-lg-btn {
+    background: #0288D1 !important;
+}
+
 .modal_title {
     text-align: center;
     border-bottom: 0px;
-    color: #0d47a1;
+    color: #fff;
     margin-bottom: 0;
+    padding-bottom: 5px;
+    padding-top: 5px;
 }
 
 input,

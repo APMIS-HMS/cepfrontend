@@ -105,8 +105,8 @@ legend.modal-title {
 .sec-3 {
     margin: 10px 0;
     //overflow-y: auto;
-    border: 1px solid #ccc;
-    // height: 120px;
+    //border: 1px solid #ccc;
+    //height: 120px;
     padding: 10px;
     box-sizing: border-box;
 }
@@ -142,18 +142,24 @@ infrmArr-wrap {
 }
 
 .faplus {
-    border: 1px solid #8e8e8e;
-    color: #8e8e8e;
-    padding: 5px;
-    width: 26px;
-    height: 26px;
-    text-align: center;
-    border-radius: 100%;
-    cursor: pointer;
+    //border: 1px solid #8e8e8e;
+    //color: #8e8e8e;
+    //padding: 5px 5px;
+    //width: 100%; //113px
+    //height: 26px;
+    //background: #0288D1;
+    //border: 0;
+    //border-radius: 13px;
     line-height: 27px;
+    color: #0288D1;
+    font-size: 1.2rem;
+    font-family: "Josefin Sans", sans-serif;
+    //justify-content: space-between;
 }
 
 .faplus:hover {
-    background: #8e8e8e;
-    color: #fff;
+    //color: black;
+    cursor: pointer;
+    //background: #ccc;
+    text-decoration: underline;
 }

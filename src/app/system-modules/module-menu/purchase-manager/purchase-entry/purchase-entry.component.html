@@ -2,7 +2,47 @@
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
     <form [formGroup]="frm_purchaseOrder" novalidate>
 
-        <div class="sec-aa">
+
+        <div class="section-a">
+            <div class="sub-sect-a">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <mat-form-field>
+                            <mat-select placeholder="Store" formControlName="store">
+                                <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xs-12">
+                        <mat-form-field>
+                            <mat-select class="frm-item-wrap" placeholder="Supplier" formControlName="supplier">
+                                <mat-option *ngFor="let supplier of suppliers" [value]="supplier._id">{{supplier.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xs-12">
+                        <mat-form-field>
+                            <mat-select class="frm-item-wrap" placeholder="Order Id" formControlName="orderId">
+                                <mat-option *ngFor="let order of orders" [value]="order._id">{{order.purchaseOrderNumber}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xs-12">
+                        <mat-input-container>
+                            <input matInput formControlName="deliveryDate" [matDatepicker]="picker" placeholder="Delivery Date (Choose a date)">
+                        </mat-input-container>
+                        <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                    </div>
+                </div>
+
+            </div>
+            <div class="sub-sect-b">
+
+            </div>
+        </div>
+
+        <!-- <div class="sec-aa">
             <div class="sec-aa-content">
                 <div class="wrapOne">
 
@@ -31,7 +71,6 @@
                         <mat-input-container style="width: 60%;">
                             <input matInput formControlName="deliveryDate" [matDatepicker]="picker" placeholder="Delivery Date (Choose a date)">
                         </mat-input-container>
-                        <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
                         <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
                         <mat-datepicker #picker></mat-datepicker>
                     </div>
@@ -55,16 +94,10 @@
                         </mat-input-container>
                     </div>
                 </div>
-                <!-- <div class="midwrapsect"> -->
             </div>
 
             <button class="btnn" (click)="flyout_toggle($event)">Add Product</button>
-
-            <!--<div class="uploadWrap">
-                        <dx-file-uploader selectButtonText="Select photo" labelText="" accept="image/*" uploadMode="useForm">
-                        </dx-file-uploader>
-                    </div>-->
-        </div>
+        </div>-->
 
         <div *ngIf="flyout" class="flyout animated slideOut">
             <div class="sec-b">
@@ -100,8 +133,8 @@
                         <div class="control-group" *ngFor="let group of superGroups">
                             <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
                                 <div class="control__indicator"> 
-                                     <mat-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></mat-checkbox>
-                                 </div>
+                                    <mat-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></mat-checkbox>
+                                </div>
                             </label>
                         </div>
                     </div>
