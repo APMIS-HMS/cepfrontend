@@ -49,6 +49,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   @Output() empDetail: EventEmitter<string> = new EventEmitter<string>();
   @Input() resetData: Boolean;
   @Input() searchedPatients: any;
+  @Input() searchEmpty: any;
   @Output() resetDataNew: EventEmitter<Boolean> = new EventEmitter<Boolean>();
   @ViewChild('fileInput') fileInput: ElementRef;
 
@@ -196,7 +197,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this._getAllTitles();
 
     this.gethmos();
-    this.getCategories();
+    this.getCashPlans();
 
     this.systemService.currentMessage.subscribe(message => {
       if (message) {
@@ -257,8 +258,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges) {
+    this.index = 0;
     if (this.resetData === true) {
-      this.index = 0;
       this.getPatients();
       this.showLoadMore = true;
     }
@@ -267,9 +268,20 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.total = this.patients.length;
       if (this.total <= this.patients.length) {
         this.showLoadMore = false;
+      } else {
+        this.showLoadMore = true;
       }
       this.getShowing();
     }
+    if (changes.searchEmpty) {
+      if (changes.searchEmpty.currentValue === true) {
+        this.getPatients();
+        this.showLoadMore = true;
+      } else {
+
+      }
+    }
+
   }
 
   sortPatientsByName() {
@@ -356,21 +368,31 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     })
   }
 
-  getCategories() {
-    this._facilitiesServiceCategoryService.allServices({
-      query: {
-        facilityId: this.facility._id
-      }
+  getCashPlans() {
+    this._facilitiesServiceCategoryService.find({
+      query:
+        { facilityId: this.facility._id, 'categories.name': 'Medical Records', $select: ['_id', 'categories.name', 'categories._id'] }
     }).then(payload => {
-      const categories = payload.data[0].categories;
-      const cat = categories.filter(x => x.name === 'Medical Records');
-      for (let n = 0; n < cat[0].services.length; n++) {
-        cat[0].services[n].facilityServiceId = payload.data[0]._id
-      }
-      this.services = cat[0].services;
-    }, error => {
+      const cat = payload.data[0].categories;
 
+      const cate = cat.filter(x => x.name === 'Medical Records');
+      this.selectCategory(cate[0]);
     });
+  }
+
+  selectCategory(category) {
+    if (category._id !== undefined) {
+      this._facilitiesServiceCategoryService.allServices({
+        query: {
+          facilityId: this.facility._id,
+          categoryId: category._id
+        }
+      }).then(payload => {
+        this.services = payload.services;
+      });
+    } else {
+
+    }
   }
 
   getServicePlans(service) {
@@ -614,7 +636,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         }).catch(err => {
           console.log(err);
         });
-        
+
       }
 
     } else {

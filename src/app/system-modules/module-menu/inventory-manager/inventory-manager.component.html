@@ -6,6 +6,7 @@
     <li [class.pg-menuActive]="receiveStockNavMenu" routerLink="/dashboard/inventory-manager/receive-stock" (click)="changeRoute('/dashboard/inventory-manager/receive-stock')">Receive Stock</li>
     <li [class.pg-menuActive]="requisitionNavMenu" routerLink="/dashboard/inventory-manager/requisition" (click)="changeRoute('/dashboard/inventory-manager/requisition')">Requisition</li>
     <li [class.pg-menuActive]="reorderLevelNavMenu" routerLink="/dashboard/inventory-manager/reorder-level" (click)="changeRoute('/dashboard/inventory-manager/reorder-level')">Re-Order Level</li>
+    <li [class.pg-menuActive]="initializeNavMenu" (click)="changeRoute('/dashboard/inventory-manager/initialize-store')" routerLink="/dashboard/inventory-manager/initialize-store">Initialize Store</li>
 </ul> 
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>

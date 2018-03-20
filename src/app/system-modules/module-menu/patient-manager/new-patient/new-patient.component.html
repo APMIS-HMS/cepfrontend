@@ -302,6 +302,7 @@
                     <div class="frm-item-wrap">
                         <mat-form-field>
                             <mat-select placeholder="State of Origin" formControlName="empState" (change)="onEmpStateChange($event.value)">
+                                <mat-option><em>None</em></mat-option>
                                 <mat-option *ngFor="let item of states" [value]="item">{{item.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
