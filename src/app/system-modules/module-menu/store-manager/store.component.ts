@@ -14,6 +14,7 @@ export class StoreComponent implements OnInit {
   productsContentArea = false;
   ordersContentArea = false;
   inventoryContentArea = false;
+
   constructor(private _storeEventEmitter: StoreEmitterService, private _router: Router) { }
 
   ngOnInit() {
