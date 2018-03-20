@@ -168,11 +168,26 @@
     position: relative;
 }
 .post-ql-open{
+    position: relative;
     background: #03A9F4;
     width: 70px;
     margin-right: -20px;
     border-top-left-radius: 100%;
     border-bottom-left-radius: 100%;
+}
+.post-ql-open:hover{
+    .ql-tip{
+        display: block;
+    }
+}
+.ql-tip{
+    position: absolute;
+    right: 70px;
+    display: none;
+    background: rgba(0,0,0,0.5);
+    color: #fff;
+    padding: 5px;
+    font-size: 1.4rem;
 }
 .ql-open{
     font-size: 2.0rem;

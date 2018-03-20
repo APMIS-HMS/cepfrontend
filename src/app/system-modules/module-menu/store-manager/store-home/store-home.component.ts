@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class StoreHomeComponent implements OnInit {
 
-  Ql_toggle = true;
+  Ql_toggle = false;
 
   constructor() { }
 
