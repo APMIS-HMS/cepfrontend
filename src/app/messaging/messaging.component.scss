@@ -226,10 +226,21 @@
     justify-content: flex-start;
     align-items: center;
     padding-left: 20px;
-}
-.grp-members li{
-    font-size: 1.0rem;
-    color: #fff;
+    li{
+        font-size: 1.0rem;
+        color: #fff;
+        &:last-of-type{
+            &::after{
+                content: " "; 
+            }
+        }
+        &::after{
+            content: ",";
+            display: inline-block;
+            margin-right: 5px;
+        }
+    
+    }
 }
 .tabs{
     display: flex;
