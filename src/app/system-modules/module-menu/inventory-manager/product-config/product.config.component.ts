@@ -119,13 +119,10 @@ export class ProductConfigComponent implements OnInit {
       productConfig.productId = this.selectedProduct._id;
       productConfig.facilityId = this.selectedFacility._id;
       productConfig.packSizes = (<FormArray>this.packageForm.controls['package']).value;
-      // (<FormArray>this.packageForm.controls['package']).controls.forEach((itemi, i) => {
-      //   console.log(itemi.value);
-      //   productConfig.packSizes.push(itemi.value);
-      // });
       this.productService.createProductConfig(productConfig).then(payload => {
         this.systemModuleService.off();
         this.btnShowStatus = true;
+        this.packageForm.controls['package'] = this._fb.array([]);
         this.systemModuleService.announceSweetProxy('Configuration created', 'success');
       },err=>{
         console.log(err);
