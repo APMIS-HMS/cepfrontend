@@ -1,11 +1,36 @@
 <div class="survery">
+
+    <div class="fullwidth-topActions">
+        <div class="row" style="margin-left: 0; margin-right: 0">
+            <div class="col-md-4" style="padding-right: 0; padding-left: 0;">
+                <select placeholder="Select Location" [formControl]="selMinorLocation" class="form-control">
+                            <option value="Select by location" disabled selected>Select by location</option>
+                            <option *ngFor="let minorLocation of minorLocations" value={{minorLocation._id}}>{{minorLocation.name}}</option>
+                        </select>
+            </div>
+            <div class="col-md-4">
+                <select [formControl]="selProductType" class="form-control">
+                                    <option value="Select by product type" disabled selected>Select by product type</option>
+                                    <option *ngFor="let productType of productTypes" value="{{productType._id}}">{{productType.name}}</option>
+                                </select>
+            </div>
+            <div class="col-md-4" style="padding-right: 0; padding-left: 0;">
+                <div class="col-xs-10" style="padding-right: 0; padding-left: 0;">
+                    <input type="text" [formControl]="searchControl" placeholder="search store" class="searchInput" #inputsearch/>
+                </div>
+                <div class="col-xs-2" style="padding-right: 0; padding-left: 0;">
+                    <button mat-raised-button (click)="refresh()" style="background: #FAFAFA;height: 35px;min-width:50px;"><i class="fa fa-refresh"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="">
         <table class="table table-striped text-center">
             <thead>
                 <tr>
-                    <th><i class="fa fa-sort-alpha-asc"></i>No</th>
+                    <th><i class="fa fa-sort-alpha-asc"></i>S/N</th>
                     <th><i class="fa fa-sort-alpha-asc"></i>Name</th>
-                    <th> <i class="fa fa-sort-alpha-asc"></i>Locaation</th>
+                    <th> <i class="fa fa-sort-alpha-asc"></i>Location</th>
                     <th><i class="fa fa-sort-alpha-asc"></i>Description</th>
                     <th><i class="fa fa-sort-alpha-asc"></i>Types</th>
                     <th><i class="fa fa-sort-alpha-asc"></i>Dispense</th>
@@ -14,9 +39,9 @@
                 </tr>
             </thead>
             <tbody>
-                <tr>
+                <!--<tr>
                     <td colspan="8">
-                        <div class="table-container">
+                        <div class="fullwidth-topActions">
                             <div class="row" style="margin-left: 0; margin-right: 0">
                                 <div class="col-md-4" style="padding-right: 0; padding-left: 0;">
                                     <select [formControl]="selMinorLocation" class="form-control">
@@ -41,7 +66,7 @@
                             </div>
                         </div>
                     </td>
-                </tr>
+                </tr>-->
                 <tr *ngFor="let store of stores; let i=index;">
                     <td>{{ i+1 }}</td>
                     <td>{{store.name}}</td>
