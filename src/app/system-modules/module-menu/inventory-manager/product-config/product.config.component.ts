@@ -34,6 +34,8 @@ export class ProductConfigComponent implements OnInit {
     private systemModuleService: SystemModuleService) { }
 
   ngOnInit() {
+    // var x = document.getElementById("searchuctControl").
+    // console.log(x);
     this.selectedFacility = <any>this.locker.getObject('selectedFacility');
     this.packageForm = this._fb.group({
       'package': this._fb.array([
@@ -123,16 +125,23 @@ export class ProductConfigComponent implements OnInit {
         this.systemModuleService.off();
         this.btnShowStatus = true;
         this.packageForm.controls['package'] = this._fb.array([]);
+        this.packages = JSON.parse(JSON.stringify(this.packages));
+        this.selectedProduct = {};
+
         this.systemModuleService.announceSweetProxy('Configuration created', 'success');
-      },err=>{
+      }, err => {
         console.log(err);
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy('Failed to create configuration for product', 'error');
-      });
+      });//.path["0"].value
     } else {
       this.systemModuleService.off();
       this.systemModuleService.announceSweetProxy('One or more field(s) missing', 'error');
     }
+  }
+
+  onChange(event) {
+    console.log(event);
   }
 
 }
