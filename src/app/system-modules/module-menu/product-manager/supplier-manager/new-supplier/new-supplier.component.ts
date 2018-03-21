@@ -124,13 +124,11 @@ export class NewSupplierComponent implements OnInit {
       const res = selectedData;
       this.selectedLocation = res.data;
       if (!!res.data.address_components) {
-        console.log(res.data.address_components);
         if (res.data.address_components[0].types[0] === 'route') {
           const streetAddress = res.data.formatted_address;
           const city = res.data.address_components[1].long_name;
           const country = res.data.address_components[5].long_name;
           const state = res.data.address_components[4].long_name;
-          console.log('if');
 
           this.frm_newSupplier.controls['frmState'].setValue(state);
           this.frm_newSupplier.controls['frmCountry'].setValue(country);
@@ -141,7 +139,6 @@ export class NewSupplierComponent implements OnInit {
           const city = res.data.address_components[0].long_name;
           const country = res.data.address_components[3].long_name;
           const state = res.data.address_components[1].long_name;
-          console.log('else');
 
           this.frm_newSupplier.controls['frmState'].setValue(state);
           this.frm_newSupplier.controls['frmCountry'].setValue(country);
