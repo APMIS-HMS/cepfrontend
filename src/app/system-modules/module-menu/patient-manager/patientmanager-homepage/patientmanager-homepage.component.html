@@ -179,6 +179,9 @@
                                                     <div class="col-sm-6">
                                                         <mat-form-field>
                                                             <mat-select placeholder="Contact State" formControlName="state" [compareWith]="compareState">
+                                                                <mat-option>
+                                                                    <em>None</em>
+                                                                </mat-option>
                                                                 <mat-option *ngFor="let state of states" [value]="state.name">
                                                                     {{state.name}}
                                                                 </mat-option>
@@ -188,6 +191,9 @@
                                                     <div class="col-sm-6">
                                                         <mat-form-field>
                                                             <mat-select placeholder="Contact City" formControlName="city" [compareWith]="compareState">
+                                                                <mat-option>
+                                                                    <em>None</em>
+                                                                </mat-option>
                                                                 <mat-option *ngFor="let city of cities" [value]="city.name">
                                                                     {{city.name}}
                                                                 </mat-option>
@@ -197,6 +203,9 @@
                                                     <div class="col-sm-6">
                                                         <mat-form-field>
                                                             <mat-select placeholder="Contact L.G.A" formControlName="lga" [compareWith]="compareState">
+                                                                <mat-option>
+                                                                    <em>None</em>
+                                                                </mat-option>
                                                                 <mat-option *ngFor="let lga of lgas" [value]="lga.name">
                                                                     {{lga.name}}
                                                                 </mat-option>

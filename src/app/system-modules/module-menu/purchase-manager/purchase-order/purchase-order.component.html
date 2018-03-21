@@ -28,7 +28,7 @@
                 </tr>
                 <tr *ngFor="let order of orders">
                     <td>{{order.createdAt | date:'short'}}</td>
-                    <td>{{order.supplierObject.name}}</td>
+                    <td>{{order.supplierObject.supplier.name}}</td>
                     <td>{{order.expectedDate | date:'short'}}</td>
                     <td>{{order.purchaseOrderNumber}}</td>
                     <td class="last-td-col">

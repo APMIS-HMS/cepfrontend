@@ -15,3 +15,25 @@
     font-size: 1.4rem; 
     padding: 5px;
 }
+.np-mainwrap{
+    display: flex;
+    justify-content: space-between;
+}
+.np-lhs{
+    width: 100%;
+}
+.flyout{
+    position: relative;
+    top: unset;
+    right: unset;
+    z-index: unset;
+    height: auto;
+}
+.no-data {
+    text-align: center;
+    width: 100%;
+    font-size: 2rem;
+    margin-top: 65px;
+    font-style: italic;
+    color: #777;
+}
