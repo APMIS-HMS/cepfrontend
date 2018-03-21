@@ -170,7 +170,7 @@
 .post-ql-open{
     position: relative;
     background: #03A9F4;
-    width: 70px;
+    width: 45px;
     margin-right: -20px;
     border-top-left-radius: 100%;
     border-bottom-left-radius: 100%;
@@ -182,25 +182,24 @@
 }
 .ql-tip{
     position: absolute;
-    right: 70px;
+    right: 48px;
     display: none;
     background: rgba(0,0,0,0.5);
     color: #fff;
     padding: 5px;
-    font-size: 1.4rem;
+    font-size: 1.2rem;
 }
 .ql-open{
-    font-size: 2.0rem;
+    font-size: 1.6rem;
     background: #03A9F4;
     color: #fff;
-    width: 40px;
-    height: 40px;
+    width: 20px;
+    height: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 100%;
     padding: 5px;
-    border: 2px solid #fff;
     cursor: pointer;
 }
 
