@@ -46,9 +46,13 @@ export class PurchaseOrderComponent implements OnInit {
     this.frmSupplier.valueChanges.subscribe(value => {
       if (value !== null) {
         this.systemModuleService.on();
-        this.purchaseOrderService.find({ query: { supplierId: value } }).subscribe(payload => {
-          this.orders = payload.data;
-          this.systemModuleService.off();
+        this.purchaseOrderService.find({ query: { supplierId: value, isActive: true } }).subscribe(payload => {
+          if (payload.data != undefined) {
+            this.orders = payload.data;
+            this.systemModuleService.off();
+          }else{
+            this.orders = [];
+          }
         }, error => {
           this.systemModuleService.off();
         });
@@ -68,15 +72,19 @@ export class PurchaseOrderComponent implements OnInit {
   }
   getPurchaseOrders() {
     this.systemModuleService.on();
-    this.purchaseOrderService.findOrder({ 
-      query: 
-      { 
-        facilityId: this.selectedFacility._id,
-        isActive: true
-      } 
+    this.purchaseOrderService.findOrder({
+      query:
+        {
+          facilityId: this.selectedFacility._id,
+          isActive: true
+        }
     }).subscribe(payload => {
-      this.orders = payload.data;
-      this.systemModuleService.off();
+      if (payload.data != undefined) {
+        this.orders = payload.data;
+        this.systemModuleService.off();
+      }else{
+        this.orders = [];
+      }
     }, error => {
       this.systemModuleService.off();
     });
@@ -85,19 +93,11 @@ export class PurchaseOrderComponent implements OnInit {
   entryDone;
   onRemoveOrder(order) {
     this.selectedOrderToDelete = order;
-    this.purchaseEntryService.find({
-      query: {
-        orderId: order._id,
-        facilityId: this.selectedFacility._id
-      }
-    }).then(entryPayload => {
-      if (entryPayload.data.length > 0) {
-        this.entryDone = true;
-      } else {
-        this.entryDone = false;
-      }
-      this.systemModuleService.announceSweetProxy('Are you sure you want remove ' + order.purchaseOrderNumber, 'question', this);
-    }).catch(err => {
+
+    order.isActive = false;
+
+    this.purchaseOrderService.patch(order._id, order).then(payload => {
+      console.log(payload);
     });
 
   }
@@ -106,7 +106,7 @@ export class PurchaseOrderComponent implements OnInit {
     if (result.value) {
       this.systemModuleService.on();
       if (this.selectedOrderToDelete._id !== undefined) {
-        if(this.entryDone === true){
+        if (this.entryDone === true) {
           this.purchaseOrderService.remove(this.selectedOrderToDelete._id, {}).then(callback_remove => {
             this.systemModuleService.announceSweetProxy(this.selectedOrderToDelete.purchaseOrderNumber + " is deleted", 'success');
             this.systemModuleService.off();
@@ -115,7 +115,7 @@ export class PurchaseOrderComponent implements OnInit {
           }, error => {
             this.systemModuleService.off();
           });
-        }else{
+        } else {
           this.selectedOrderToDelete.isActive = false
           this.purchaseOrderService.patch(this.selectedOrderToDelete._id, this.selectedOrderToDelete).then(callback_remove => {
             this.systemModuleService.announceSweetProxy(this.selectedOrderToDelete.purchaseOrderNumber + " has been deactivated", 'success');
