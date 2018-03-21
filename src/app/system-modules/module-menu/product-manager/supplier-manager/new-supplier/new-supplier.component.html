@@ -16,7 +16,7 @@
                             <input matInput mat-error placeholder="Name" formControlName="name">
                         </mat-input-container>
 
-                        <ul class="suggestions nice-scroll">
+                        <!-- <ul class="suggestions nice-scroll">
                             <li class="suggestion">
                                 <div class="listing-img">
                                     <img src="assets/images/users/default.png">
@@ -53,11 +53,21 @@
                                 </div>
                                 <div class="listing-label">Dangote Mills and Industries</div>
                             </li>
-                        </ul>
+                        </ul> -->
                     </div>
                     <div class="frm-item-wrap">
                         <mat-input-container>
                             <input type="tel" matInput mat-error placeholder="Contact Number" formControlName="frmContact">
+                        </mat-input-container>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <mat-input-container>
+                            <input type="email" matInput mat-error placeholder="Email Address" formControlName="email">
+                        </mat-input-container>
+                    </div>
+                    <div class="frm-item-wrap">
+                        <mat-input-container>
+                            <input type="text" matInput mat-error placeholder="C.A.C" formControlName="cac">
                         </mat-input-container>
                     </div>
                     <ng4geo-autocomplete [userSettings]="userSettings" (componentCallback)="autoCompleteCallback($event)"></ng4geo-autocomplete>
@@ -91,10 +101,16 @@
         </form>
         <div class="text-center">
             <button mat-raised-button [disabled]="!frm_newSupplier.valid || disableAddBtn" (click)="create(frm_newSupplier.valid, frm_newSupplier.value);" style="padding: 10px 15px; color: #fff;">
-              <span *ngIf="addBtn "><i class="fa fa-check-circle "></i> Add Supplier</span>
-              <span *ngIf="addingBtn ">Adding Supplier... <i class="fa fa-spin fa-spinner "></i></span>
-              <span *ngIf="updateBtn "><i class="fa fa-check-circle "></i> Update Supplier</span>
-              <span *ngIf="updatingBtn ">Updating Supplier... <i class="fa fa-spin fa-spinner "></i></span>
+                <span *ngIf="addBtn ">
+                    <i class="fa fa-check-circle "></i> Add Supplier</span>
+                <span *ngIf="addingBtn ">Adding Supplier...
+                    <i class="fa fa-spin fa-spinner "></i>
+                </span>
+                <span *ngIf="updateBtn ">
+                    <i class="fa fa-check-circle "></i> Update Supplier</span>
+                <span *ngIf="updatingBtn ">Updating Supplier...
+                    <i class="fa fa-spin fa-spinner "></i>
+                </span>
             </button>
             <!-- <div (click)="create(frm_newSupplier.valid, frm_newSupplier.value) " class="cta-1 "> {{btnLabel}} </div> -->
         </div>
