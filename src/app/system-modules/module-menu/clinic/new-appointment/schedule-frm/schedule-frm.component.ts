@@ -48,6 +48,7 @@ import * as getYear from "date-fns/get_year";
 import * as setYear from "date-fns/set_year";
 import * as getMonth from "date-fns/get_month";
 import * as setMonth from "date-fns/set_month";
+import * as isToday from "date-fns/is_today";
 import { AuthFacadeService } from "app/system-modules/service-facade/auth-facade.service";
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -175,7 +176,11 @@ export class ScheduleFrmComponent implements OnInit {
       this.category.setValue(payload.category);
       this.status.setValue(payload.orderStatusId);
       if (payload.attendance !== undefined) {
-        this.checkIn.enable();
+        if(this.canCheckIn){
+          this.checkIn.enable();
+        }else{
+          this.checkIn.disable();
+        }
       } else {
         this.checkIn.disable();
       }
@@ -1002,17 +1007,51 @@ export class ScheduleFrmComponent implements OnInit {
         this.checkIn.setValue(false);
       } else {
         const schedule: any = scheduleFiltered[0];
-        this.date = setHours(this.date, getHours(schedule.startTime));
-        this.date = setMinutes(this.date, getMinutes(schedule.startTime));
-        this.startDate = setHours(this.startDate, getHours(schedule.startTime));
-        this.startDate = setMinutes(
-          this.startDate,
-          getMinutes(schedule.startTime)
-        );
-        this.checkIn.enable();
-        this.dateCtrl.setErrors(null); // ({ noValue: false });
-        this.dateCtrl.markAsUntouched();
-        this.selectedClinicSchedule = schedule;
+        const scheduleStartHour = getHours(schedule.startTime);
+        const scheduleEndHour = getHours(schedule.endTime);
+        const currentHour = getHours(new Date());
+        if(this.appointment._id === undefined){
+          this.date = setHours(this.date, getHours(schedule.startTime));
+          this.date = setMinutes(this.date, getMinutes(schedule.startTime));
+          this.startDate = setHours(this.startDate, getHours(schedule.startTime));
+          this.startDate = setMinutes(
+            this.startDate,
+            getMinutes(schedule.startTime)
+          );
+          if(this.canCheckIn){
+            this.checkIn.enable();
+          }else{
+            this.checkIn.disable();
+          }
+          this.dateCtrl.setErrors(null); // ({ noValue: false });
+          this.dateCtrl.markAsUntouched();
+          this.selectedClinicSchedule = schedule;
+        }else{
+          if(((scheduleStartHour > currentHour) || (scheduleEndHour < currentHour))){
+            this.dateCtrl.setErrors({ noValue: true });
+            this.dateCtrl.markAsTouched();
+            this.checkIn.disable();
+            this.checkIn.setValue(false);
+          }else{
+            this.date = setHours(this.date, getHours(schedule.startTime));
+            this.date = setMinutes(this.date, getMinutes(schedule.startTime));
+            this.startDate = setHours(this.startDate, getHours(schedule.startTime));
+            this.startDate = setMinutes(
+              this.startDate,
+              getMinutes(schedule.startTime)
+            );
+            if(this.canCheckIn){
+              this.checkIn.enable();
+            }else{
+              this.checkIn.disable();
+            }
+            this.dateCtrl.setErrors(null); // ({ noValue: false });
+            this.dateCtrl.markAsUntouched();
+            this.selectedClinicSchedule = schedule;
+          }
+        }
+        
+       
       }
       if (this.selectedClinic._id !== undefined) {
         this.appointmentService.clinicAnnounced({
@@ -1032,7 +1071,6 @@ export class ScheduleFrmComponent implements OnInit {
       this.date = event;
       this.startDate = event;
       this.endDate = event;
-      // this.dateCtrl.setValue(this.date);
       this.checkIn.disable();
       this.checkIn.setValue(false);
       this.startDate = setHours(this.startDate, getHours(this.startDate));
@@ -1040,17 +1078,18 @@ export class ScheduleFrmComponent implements OnInit {
     } else {
       this.date = event;
       const schedule: any = scheduleFiltered[0];
-      // this.date = setHours(this.date, getHours(schedule.startTime));
-      // this.date = setMinutes(this.date, getMinutes(schedule.startTime));
       this.startDate = setHours(this.startDate, getHours(schedule.startTime));
       this.startDate = setMinutes(
         this.startDate,
         getMinutes(schedule.startTime)
       );
-      // this.endDate = setHours(this.endDate, getHours(schedule.endTime));
-      // this.endDate = setMinutes(this.endDate, getMinutes(schedule.endTime));
-      // this.dateCtrl.setValue(this.date);
-      this.checkIn.enable();
+      this.canCheckIn =  isToday(this.date)
+
+      if(this.canCheckIn){
+        this.checkIn.enable();
+      }else{
+        this.checkIn.disable();
+      }
       this.dateCtrl.setErrors(null); // ({ noValue: false });
       this.dateCtrl.markAsUntouched();
     }

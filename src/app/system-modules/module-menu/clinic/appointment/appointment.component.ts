@@ -260,17 +260,20 @@ export class AppointmentComponent implements OnInit {
     }
 
     setReturnValue(dateRange: IDateRange): any {
-        this.loading = true;
-        this.dateRange = dateRange;
-        this.appointmentService.find({
-            query: {
-                isWithinRange: true, from: this.dateRange.from, to: this.dateRange.to,
-                'facilityId._id': this.selectedFacility._id
-            }
-        }).subscribe(payload => {
-            this.loading = false;
-            this.filteredAppointments = this.appointments = payload.data;
-        });
+        if(dateRange !== null){
+            this.loading = true;
+            this.dateRange = dateRange;
+            this.appointmentService.findAppointment({
+                query: {
+                    isWithinRange: true, from: this.dateRange.from, to: this.dateRange.to,
+                    'facilityId': this.selectedFacility._id,
+                }
+            }).subscribe(payload => {
+                this.loading = false;
+                this.filteredAppointments = this.appointments = payload.data;
+            });
+        }
+       
     }
     getAppointmentTypes() {
         this.appointmentTypeService.findAll().subscribe(payload => {

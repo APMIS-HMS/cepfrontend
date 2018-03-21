@@ -14,6 +14,7 @@ import { LandingpageComponent } from './landingpage/landingpage.component';
 import { ReceiveStockDetailsComponent } from './receive-stock/receive-stock-details/receive-stock-details.component';
 import { StockHistoryComponent } from './stock-history/stock-history.component';
 import { InitializeStoreComponent } from './initialize-store/initialize-store.component';
+import { ProductConfigComponent } from './product-config/product.config.component';
 import {
     ProductService, InventoryService, InventoryTransferService, InventoryTransferStatusService,
     InventoryTransactionTypeService, StrengthService, ProductRequisitionService,StoreService
@@ -36,6 +37,7 @@ import { ReorderLevelComponent } from './reorder-level/reorder-level.component';
         StockHistoryComponent,
         InitializeStoreComponent,
         ReorderLevelComponent,
+        ProductConfigComponent
     ],
 
     exports: [
