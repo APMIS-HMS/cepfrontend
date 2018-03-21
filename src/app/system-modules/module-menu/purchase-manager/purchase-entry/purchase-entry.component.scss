@@ -37,50 +37,38 @@
 
 .btnn {
     position: relative;
-    //display: flex;
     padding: 6px 12px;
-    //margin: 0 auto;
     font-size: 1.4rem;
     font-weight: normal;
     line-height: 1.42857143;
-    //text-align: center;
-    white-space: nowrap;
-    //vertical-align: middle;
-    //-ms-touch-action: manipulation;
-    //touch-action: manipulation;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    user-select: none;
-    //background-image: none;
-    //border: 1px solid transparent;
-    border-radius: 4px;
-    //float: right;
-    //top: 150px;
-    //txt-link //
-    color: #fff;
-    padding-left: 5px;
-    padding-right: 5px;
-    padding-top: 5px;
-    padding-bottom: 5px;
-    //width: 100px;
     text-align: center;
+    white-space: nowrap;
+    cursor: pointer;
+    border-radius: 4px;
+    color: #fff;
+    padding: 5px 5px 5px 5px;
     align-items: center;
     margin-top: 10px;
-    //background: rgb(35, 17, 102);
-    border-radius: 0px;
-    transition-property: background, color, border-radius;
-    transition-duration: 0.25s;
-    transition-timing-function: linear, ease-in-out;
-    margin-left: 1500px;
-    border-radius: 8px;
 }
 
 .btnn:hover {
     border-radius: 8px;
     background: #0288D1;
     color: #fff;
+}
+
+.baseColor {
+    background: #f8f8f8;
+    width: 100%;
+    padding-top: 18px;
+    margin-top: -14px;
+}
+
+.enput {
+    background: #FFF;
+    width: 99%;
+    margin-left: 10px;
+    padding-top: 10px;
 }
 
 .wrapOne {
