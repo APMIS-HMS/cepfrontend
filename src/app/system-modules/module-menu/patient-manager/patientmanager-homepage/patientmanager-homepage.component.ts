@@ -102,7 +102,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
   pageSize = 1;
   index: any = 0;
-  limit: any = 5;
+  limit: any = 10;
   showLoadMore = true;
   total: any = 0;
   updatePatientBtnText = 'Update';
@@ -192,7 +192,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.getRelationships();
     // this.facility = <Facility>this.locker.getObject('selectedFacility');
     // this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
-    this.getPatients(this.limit);
+    //this.getPatients(this.limit);
     this._getAllCountries();
     this._getAllTitles();
 
@@ -259,26 +259,28 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
   ngOnChanges(changes: SimpleChanges) {
     this.index = 0;
-    if (this.resetData === true) {
-      this.getPatients();
-      this.showLoadMore = true;
-    }
-    if (changes.searchedPatients.currentValue) {
-      this.patients = changes.searchedPatients.currentValue;
-      this.total = this.patients.length;
-      if (this.total <= this.patients.length) {
-        this.showLoadMore = false;
-      } else {
-        this.showLoadMore = true;
-      }
-      this.getShowing();
-    }
-    if (changes.searchEmpty) {
-      if (changes.searchEmpty.currentValue === true) {
+    if (changes) {
+      if (this.resetData === true) {
         this.getPatients();
         this.showLoadMore = true;
-      } else {
+      }
+      if (changes.searchedPatients.currentValue) {
+        this.patients = changes.searchedPatients.currentValue;
+        this.total = this.patients.length;
+        if (this.total <= this.patients.length) {
+          this.showLoadMore = false;
+        } else {
+          this.showLoadMore = true;
+        }
+        this.getShowing();
+      }
+      if (changes.searchEmpty) {
+        if (changes.searchEmpty.currentValue === true) {
+          this.getPatients();
+          this.showLoadMore = true;
+        } else {
 
+        }
       }
     }
 
@@ -433,7 +435,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     }
     this.loadMoreText = 'Showing ' + ret + ' of ' + this.total + ' records';
   }
-  onScroll() {
+  /* onScroll() {
     this.pageSize = this.pageSize + 1;
     const limit = this.limit * this.pageSize;
     this.getPatients(limit);
@@ -444,7 +446,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     }
     const limit = this.limit * this.pageSize;
     this.getPatients(limit);
-  }
+  } */
   loadMore() {
     this.getPatients();
   }

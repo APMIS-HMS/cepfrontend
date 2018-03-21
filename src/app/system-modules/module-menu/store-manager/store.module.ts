@@ -13,6 +13,8 @@ import {
 } from '../../../services/facility-manager/setup/index';
 import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { StoreEmitterService } from '../../../services/facility-manager/store-emitter.service';
+import { StoreHomeComponent } from './store-home/store-home.component';
+import { QuickLinksComponent } from './quick-links/quick-links.component';
 
 
 
@@ -20,7 +22,9 @@ import { StoreEmitterService } from '../../../services/facility-manager/store-em
     declarations: [
         StoreComponent,
         LandingPageComponent,
-        NewStoreComponent
+        NewStoreComponent,
+        StoreHomeComponent,
+        QuickLinksComponent
     ],
 
     exports: [
