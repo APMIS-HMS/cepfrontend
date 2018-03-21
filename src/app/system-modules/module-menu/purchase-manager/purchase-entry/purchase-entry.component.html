@@ -2,32 +2,32 @@
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
     <form [formGroup]="frm_purchaseOrder" novalidate>
 
-
         <div class="section-a">
             <div class="sub-sect-a">
                 <div class="row">
-                    <div class="col-xs-12">
+                    <div class="col-xs-3">
+                        <!--<mat-form-field style="width: 150%;">-->
                         <mat-form-field>
                             <mat-select placeholder="Store" formControlName="store">
                                 <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <div class="col-xs-12">
+                    <div class="col-xs-3">
                         <mat-form-field>
                             <mat-select class="frm-item-wrap" placeholder="Supplier" formControlName="supplier">
                                 <mat-option *ngFor="let supplier of suppliers" [value]="supplier._id">{{supplier.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <div class="col-xs-12">
+                    <div class="col-xs-3">
                         <mat-form-field>
                             <mat-select class="frm-item-wrap" placeholder="Order Id" formControlName="orderId">
                                 <mat-option *ngFor="let order of orders" [value]="order._id">{{order.purchaseOrderNumber}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
-                    <div class="col-xs-12">
+                    <div class="col-xs-3">
                         <mat-input-container>
                             <input matInput formControlName="deliveryDate" [matDatepicker]="picker" placeholder="Delivery Date (Choose a date)">
                         </mat-input-container>
@@ -37,8 +37,19 @@
                 </div>
 
             </div>
-            <div class="sub-sect-b">
 
+            <div class="sub-sect-b">
+                <mat-input-container style="width: 75%;" class="example-full-width">
+                    <input matInput mat-error placeholder="Invoice Number" formControlName="invoiceNo">
+                </mat-input-container>
+
+                <mat-input-container style="width: 75%;" class="example-full-width">
+                    <input type="number" matInput mat-error placeholder="Amount" formControlName="amount">
+                </mat-input-container>
+
+                <mat-input-container style="width: 75%;" class="example-full-width">
+                    <textarea matInput mat-error placeholder="Remark" formControlName="desc"></textarea>
+                </mat-input-container>
             </div>
         </div>
 
