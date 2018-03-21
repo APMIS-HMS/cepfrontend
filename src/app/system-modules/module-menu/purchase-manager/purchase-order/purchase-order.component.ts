@@ -97,7 +97,6 @@ export class PurchaseOrderComponent implements OnInit {
     order.isActive = false;
 
     this.purchaseOrderService.patch(order._id, order).then(payload => {
-      console.log(payload);
     });
 
   }
