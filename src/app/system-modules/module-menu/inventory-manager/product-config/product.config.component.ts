@@ -34,7 +34,7 @@ export class ProductConfigComponent implements OnInit {
     private systemModuleService: SystemModuleService) { }
 
   ngOnInit() {
-    // var x = document.getElementById("searchuctControl").
+    var x = document.getElementById("searchuctControl")
     // console.log(x);
     this.selectedFacility = <any>this.locker.getObject('selectedFacility');
     this.packageForm = this._fb.group({
@@ -62,9 +62,26 @@ export class ProductConfigComponent implements OnInit {
     this.getPackagesizes();
   }
 
+  removePack(i: number, itm: any) {
+    const control = <FormArray>this.packageForm.controls['package'];
+    let _packages = this.packages;
+    console.log(_packages);
+    console.log(itm.value);
+    _packages.forEach(item => {
+      if (item._id.toString() === itm.value.id.toString()) {
+        item.checked = false;
+      }
+    });
+    this.packages = JSON.parse(JSON.stringify(_packages));
+    control.removeAt(i);
+  }
+
   getPackagesizes() {
     this.productService.findPackageSize({}).then(payload => {
       this.packages = payload.data;
+      this.packages.forEach(element => {
+        element.checked = false;
+      });
     });
   }
 
@@ -79,6 +96,7 @@ export class ProductConfigComponent implements OnInit {
 
   addPackage(event, item, i): void {
     console.log(item);
+    item.checked = event.target.checked;
     console.log(event.target.checked);
     if (event.target.checked === true) {
       (<FormArray>this.packageForm.controls['package'])
@@ -90,10 +108,12 @@ export class ProductConfigComponent implements OnInit {
           })
         );
     } else {
+      console.log(1);
       let indexToRemove = 0;
       (<FormArray>this.packageForm.controls['package']).controls.forEach((item: any, i) => {
         const packagelValue: any = (<any>item).controls['id'].value;
-        if (packagelValue === item._id || packagelValue === item.id) {
+        console.log(item.value);
+        if (packagelValue.toString() === item.value.id.toString()) {
           indexToRemove = i;
         }
       });
@@ -101,7 +121,7 @@ export class ProductConfigComponent implements OnInit {
       if (count === 1) {
         this.packageForm.controls['package'] = this._fb.array([]);
       } else {
-        (<FormArray>this.packageForm.controls['package']).controls.splice(indexToRemove, 1);
+        (<FormArray>this.packageForm.controls['package']).removeAt(indexToRemove);
       }
     }
   }
@@ -111,6 +131,26 @@ export class ProductConfigComponent implements OnInit {
       name: [item.name, Validators.required],
       size: [0, Validators.required]
     });
+  }
+
+  onMoveDown(i, item) {
+    if (i + 1 < (<FormArray>this.packageForm.controls['package']).length) {
+      (<FormArray>this.packageForm.controls['package']).value[i] = (<FormArray>this.packageForm.controls['package']).value[i + 1];
+      (<FormArray>this.packageForm.controls['package']).value[i + 1] = item.value;
+      (<FormArray>this.packageForm.controls['package']).setValue(JSON.parse(JSON.stringify((<FormArray>this.packageForm.controls['package']).value)));
+    } else {
+      this.systemModuleService.announceSweetProxy('Cannot move item out of range', 'error');
+    }
+  }
+
+  onMoveUp(i, item) {
+    if (i > 0) {
+      (<FormArray>this.packageForm.controls['package']).value[i] = (<FormArray>this.packageForm.controls['package']).value[i - 1];
+      (<FormArray>this.packageForm.controls['package']).value[i - 1] = item.value;
+      (<FormArray>this.packageForm.controls['package']).setValue(JSON.parse(JSON.stringify((<FormArray>this.packageForm.controls['package']).value)));
+    } else {
+      this.systemModuleService.announceSweetProxy('Cannot move item out of range', 'error');
+    }
   }
 
   save() {
