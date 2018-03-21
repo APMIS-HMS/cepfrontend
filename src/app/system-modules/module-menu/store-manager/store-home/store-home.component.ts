@@ -72,22 +72,12 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
                 this._locker.setObject('checkingObject', checkingObject);
               });
             }
-
           });
         }
-
       }
     });
-    // this.authFacadeService.getLogingEmployee().then((res: any) => {
-    //   this.loginEmployee = res;
-    //   this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
-    //   if (this.checkingStore !== null) {
-    //     this.getInventories();
-    //   }
-    // });
 
     this._employeeService.checkInAnnounced$.subscribe(res => {
-      console.log(res);
       if (!!res) {
         if (!!res.typeObject) {
           this.checkingStore = res.typeObject;
@@ -103,13 +93,10 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
   }
 
   getInventories() {
-    console.log(this.checkingStore);
     if (!!this.checkingStore) {
-      console.log('Tell me where the love lie');
       this._inventoryService.findList({
         query: { facilityId: this.selectedFacility._id, name: '', storeId: this.checkingStore.storeId, $limit: 10 }
       }).then(res => {
-        console.log(res);
         this.inventoryLoading = false;
         this.inventories = res.data.filter(x => x.totalQuantity > 0);
       });
