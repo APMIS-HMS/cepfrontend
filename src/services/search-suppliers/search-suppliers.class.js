@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+const jsend = require('jsend');
 class Service {
   constructor (options) {
     this.options = options || {};
@@ -12,18 +13,12 @@ class Service {
     const facilityId = params.query.facilityId;
     const searchName = params.query.supplierName.toLowerCase();
     const supplierService = this.app.service('suppliers');
-    const suppliers = await supplierService.find({
-      query: {
-        facilityId: facilityId
-      }
-    });
+    const suppliers = await supplierService.find({});
     let searchArray = [];
     let suppliersLength = suppliers.data.length;
     const suppliersObject = suppliers.data;
     while(suppliersLength--){
-      console.log(suppliersObject[suppliersLength]);
       let supName = suppliersObject[suppliersLength].supplier.name.toLowerCase();
-      console.log(supName);
       if(supName.indexOf(searchName) >= 0){
         searchArray.push(suppliersObject[suppliersLength]);
       }
@@ -37,12 +32,26 @@ class Service {
     });
   }
 
-  create (data, params) {
-    if (Array.isArray(data)) {
-      return Promise.all(data.map(current => this.create(current)));
+  async create (data, params) {
+    const supplierService = this.app.service('suppliers');
+    const supplierId = data.supplierId;
+    const facilityId = data.facilityId;
+    const employeeId = data.createdBy;
+
+    const supplier = await supplierService.find({
+      query:{
+        facilityId: facilityId,
+        supplierId: supplierId
+      }
+    });
+
+    if(supplier.data.length > 0){
+      return jsend.error('Supplier already exist for this facility');
+    }else{
+      const createdSupplier = await supplierService.create(data);
+      return jsend.success(createdSupplier);
     }
 
-    return Promise.resolve(data);
   }
 
   update (id, data, params) {
