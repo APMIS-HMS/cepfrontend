@@ -157,7 +157,6 @@ export class NewSupplierComponent implements OnInit {
       const res = selectedData;
       this.selectedLocation = res.data;
       if (!!res.data.address_components) {
-        console.log(res.data.address_components);
         if (res.data.address_components[0].types[0] === 'route') {
           const streetAddress = res.data.formatted_address;
           const city = res.data.address_components[1].long_name;
