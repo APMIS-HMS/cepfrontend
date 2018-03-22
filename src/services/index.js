@@ -167,6 +167,7 @@ const uploadDoc = require('./upload-doc/upload-doc.service.js');
 const manufacturers = require('./manufacturers/manufacturers.service.js');
 const genericnames = require('./genericnames/genericnames.service.js');
 const supplierService = require('./supplier-service/supplier-service.service.js');
+const searchSuppliers = require('./search-suppliers/search-suppliers.service.js');
 module.exports = function(app) {
     app.configure(users);
     app.configure(facilityOwnerships);
@@ -337,4 +338,5 @@ module.exports = function(app) {
     app.configure(manufacturers);
     app.configure(genericnames);
     app.configure(supplierService);
+    app.configure(searchSuppliers);
 };

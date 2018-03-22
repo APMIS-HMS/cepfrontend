@@ -1,0 +1,65 @@
+/* eslint-disable no-unused-vars */
+class Service {
+  constructor (options) {
+    this.options = options || {};
+  }
+
+  setup(app) {
+    this.app = app;
+  }
+
+  async find (params) {
+    const facilityId = params.query.facilityId;
+    const searchName = params.query.supplierName.toLowerCase();
+    const supplierService = this.app.service('suppliers');
+    const suppliers = await supplierService.find({
+      query: {
+        facilityId: facilityId
+      }
+    });
+    let searchArray = [];
+    let suppliersLength = suppliers.data.length;
+    const suppliersObject = suppliers.data;
+    while(suppliersLength--){
+      console.log(suppliersObject[suppliersLength]);
+      let supName = suppliersObject[suppliersLength].supplier.name.toLowerCase();
+      console.log(supName);
+      if(supName.indexOf(searchName) >= 0){
+        searchArray.push(suppliersObject[suppliersLength]);
+      }
+    }
+    return searchArray;
+  }
+
+  get (id, params) {
+    return Promise.resolve({
+      id, text: `A new message with ID: ${id}!`
+    });
+  }
+
+  create (data, params) {
+    if (Array.isArray(data)) {
+      return Promise.all(data.map(current => this.create(current)));
+    }
+
+    return Promise.resolve(data);
+  }
+
+  update (id, data, params) {
+    return Promise.resolve(data);
+  }
+
+  patch (id, data, params) {
+    return Promise.resolve(data);
+  }
+
+  remove (id, params) {
+    return Promise.resolve({ id });
+  }
+}
+
+module.exports = function (options) {
+  return new Service(options);
+};
+
+module.exports.Service = Service;
