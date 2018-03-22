@@ -20,7 +20,6 @@
     border: 0.5px solid #dddddd;
 }
 
-
 tr:nth-child(even) {
     background-color: transparent !important;
 }
@@ -45,6 +44,7 @@ tr {
 
 .inPatient-activityTimeline {
     width: 400px;
+    height: unset;
 }
 
 .text-head h3 {

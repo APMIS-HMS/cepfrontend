@@ -29,6 +29,7 @@ export class ProductManagerComponent implements OnInit {
 	manufacturer: Boolean = false;
 	presentation: Boolean = false;
 	strength: Boolean = false;
+	productCatPop: Boolean = false;
 
 	constructor(private _productEventEmitter: ProductEmitterService, private _router: Router,
 		public facilityService: FacilitiesService) {
@@ -182,7 +183,7 @@ export class ProductManagerComponent implements OnInit {
 		this.pageInView = title;
 	}
 	changeRoute(val) {
-		if (val == 'products') {
+		if (val === 'products') {
 			this.facilityService.announceSlider(false);
 			this.productNavMenu = true;
 			this.categoryNavMenu = false;
@@ -195,7 +196,7 @@ export class ProductManagerComponent implements OnInit {
 			this._productEventEmitter.announcedUrl.subscribe(url => {
 				this.pageInView = url;
 			});
-		} else if (val == 'suppliers') {
+		} else if (val === 'suppliers') {
 			this.productNavMenu = false;
 			this.categoryNavMenu = false;
 			this.supplierNavMenu = true;
@@ -227,7 +228,7 @@ export class ProductManagerComponent implements OnInit {
 			this.presentationNavMenu = true;
 		}
 	}
-	productCatSlide() {
+	productCatPopShow() {
 		this.addProduct = false;
 		this.productCat = true;
 		this.generic = false;
@@ -243,6 +244,7 @@ export class ProductManagerComponent implements OnInit {
 		this.genericNavMenu = false;
 		this.presentationNavMenu = false;
 		this.strengthNavMenu = false;
+		this.productCatPop = false;
 	}
 	genericSlide() {
 		this.addProduct = false;
