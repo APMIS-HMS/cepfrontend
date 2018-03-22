@@ -20,6 +20,7 @@ export class ProductConfigComponent implements OnInit {
   searchProdductControl: FormControl = new FormControl();
   btnSave = new FormControl();
   btnShowStatus = true;
+  existConfigItem = null;
 
   apmisLookupUrl = 'products';
   apmisLookupText = '';
@@ -33,29 +34,34 @@ export class ProductConfigComponent implements OnInit {
     private locker: CoolLocalStorage,
     private systemModuleService: SystemModuleService) { }
 
+initializeForm(){
+  this.packageForm = this._fb.group({
+    'package': this._fb.array([
+      this._fb.group({
+        name: ['', Validators.required],
+        size: [0, Validators.required],
+        packId: ['', Validators.required],
+        id: ['']
+      })
+    ])
+  });
+  this.packageForm.controls['package'] = this._fb.array([]);
+}
+
   ngOnInit() {
     var x = document.getElementById("searchuctControl")
-    // console.log(x);
     this.selectedFacility = <any>this.locker.getObject('selectedFacility');
-    this.packageForm = this._fb.group({
-      'package': this._fb.array([
-        this._fb.group({
-          name: ['', Validators.required],
-          size: [0, Validators.required],
-          id: ['']
-        })
-      ])
-    });
-    this.packageForm.controls['package'] = this._fb.array([]);
-
+    this.initializeForm();
     const control = <FormArray>this.packageForm.controls['package'];
     this.searchProdductControl.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       .subscribe(value => {
-        if (value.length >= 3) {
-          this.apmisInvestigationLookupQuery = {
-            name: { $regex: this.searchProdductControl.value, '$options': 'i' },
+        if (value !== undefined) {
+          if (value.toString().length >= 3) {
+            this.apmisInvestigationLookupQuery = {
+              name: { $regex: this.searchProdductControl.value, '$options': 'i' },
+            }
           }
         }
       });
@@ -65,10 +71,8 @@ export class ProductConfigComponent implements OnInit {
   removePack(i: number, itm: any) {
     const control = <FormArray>this.packageForm.controls['package'];
     let _packages = this.packages;
-    console.log(_packages);
-    console.log(itm.value);
     _packages.forEach(item => {
-      if (item._id.toString() === itm.value.id.toString()) {
+      if (item._id.toString() === itm.value.packId.toString()) {
         item.checked = false;
       }
     });
@@ -78,7 +82,7 @@ export class ProductConfigComponent implements OnInit {
 
   getPackagesizes() {
     this.productService.findPackageSize({}).then(payload => {
-      this.packages = payload.data;
+      this.packages = JSON.parse(JSON.stringify(payload.data));
       this.packages.forEach(element => {
         element.checked = false;
       });
@@ -88,6 +92,39 @@ export class ProductConfigComponent implements OnInit {
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = value.name;
     this.selectedProduct = value;
+    this.initializeForm();
+    this.getPackagesizes();
+    if (value !== '' && value !== null) {
+      this.productService.findProductConfigs({
+        query: {
+          facilityId: this.selectedFacility._id,
+          productId: this.selectedProduct._id
+        }
+      }).then(payload => {
+        if (payload.data.length > 0) {
+          this.existConfigItem = payload.data[0];
+          let _packages = this.packages;
+          payload.data[0].packSizes.forEach(element => {
+            if (payload.data[0].packSizes.length > 0) {
+              (<FormArray>this.packageForm.controls['package'])
+                .push(
+                  this._fb.group({
+                    name: [element.name, [<any>Validators.required]],
+                    size: [element.size, [<any>Validators.required]],
+                    packId: [element.packId]
+                  })
+                );
+              _packages.forEach(item => {
+                if (item._id.toString() === element.packId.toString()) {
+                  item.checked = true;
+                }
+              });
+            }
+          });
+          this.packages = JSON.parse(JSON.stringify(_packages));
+        }
+      });
+    }
   }
 
   onSelectProduct(value) {
@@ -95,25 +132,21 @@ export class ProductConfigComponent implements OnInit {
   }
 
   addPackage(event, item, i): void {
-    console.log(item);
     item.checked = event.target.checked;
-    console.log(event.target.checked);
     if (event.target.checked === true) {
       (<FormArray>this.packageForm.controls['package'])
         .push(
           this._fb.group({
             name: [item.name, [<any>Validators.required]],
             size: [0, [<any>Validators.required]],
-            id: [item._id]
+            packId: [item._id]
           })
         );
     } else {
-      console.log(1);
       let indexToRemove = 0;
       (<FormArray>this.packageForm.controls['package']).controls.forEach((item: any, i) => {
-        const packagelValue: any = (<any>item).controls['id'].value;
-        console.log(item.value);
-        if (packagelValue.toString() === item.value.id.toString()) {
+        const packagelValue: any = (<any>item).controls['packId'].value;
+        if (packagelValue.toString() === item.value.packId.toString()) {
           indexToRemove = i;
         }
       });
@@ -135,6 +168,7 @@ export class ProductConfigComponent implements OnInit {
 
   onMoveDown(i, item) {
     if (i + 1 < (<FormArray>this.packageForm.controls['package']).length) {
+      (<FormArray>this.packageForm.controls['package']).value[0].size = 1;
       (<FormArray>this.packageForm.controls['package']).value[i] = (<FormArray>this.packageForm.controls['package']).value[i + 1];
       (<FormArray>this.packageForm.controls['package']).value[i + 1] = item.value;
       (<FormArray>this.packageForm.controls['package']).setValue(JSON.parse(JSON.stringify((<FormArray>this.packageForm.controls['package']).value)));
@@ -145,6 +179,7 @@ export class ProductConfigComponent implements OnInit {
 
   onMoveUp(i, item) {
     if (i > 0) {
+      (<FormArray>this.packageForm.controls['package']).value[0].size = 1;
       (<FormArray>this.packageForm.controls['package']).value[i] = (<FormArray>this.packageForm.controls['package']).value[i - 1];
       (<FormArray>this.packageForm.controls['package']).value[i - 1] = item.value;
       (<FormArray>this.packageForm.controls['package']).setValue(JSON.parse(JSON.stringify((<FormArray>this.packageForm.controls['package']).value)));
@@ -154,26 +189,45 @@ export class ProductConfigComponent implements OnInit {
   }
 
   save() {
-    if ((<FormArray>this.packageForm.controls['package']).valid) {
-      this.btnShowStatus = false;
-      this.systemModuleService.on();
-      let productConfig: any = {};
-      productConfig.productId = this.selectedProduct._id;
-      productConfig.facilityId = this.selectedFacility._id;
-      productConfig.packSizes = (<FormArray>this.packageForm.controls['package']).value;
-      this.productService.createProductConfig(productConfig).then(payload => {
-        this.systemModuleService.off();
-        this.btnShowStatus = true;
-        this.packageForm.controls['package'] = this._fb.array([]);
-        this.packages = JSON.parse(JSON.stringify(this.packages));
-        this.selectedProduct = {};
-
-        this.systemModuleService.announceSweetProxy('Configuration created', 'success');
-      }, err => {
-        console.log(err);
-        this.systemModuleService.off();
-        this.systemModuleService.announceSweetProxy('Failed to create configuration for product', 'error');
-      });//.path["0"].value
+    if ((<FormArray>this.packageForm.controls['package']).value.length > 0) {
+      if (this.existConfigItem === null) {
+        (<FormArray>this.packageForm.controls['package']).value[0].isBase = true;
+        (<FormArray>this.packageForm.controls['package']).value[0].size = 1;
+        this.btnShowStatus = false;
+        this.systemModuleService.on();
+        let productConfig: any = {};
+        productConfig.productId = this.selectedProduct._id;
+        productConfig.facilityId = this.selectedFacility._id;
+        productConfig.packSizes = (<FormArray>this.packageForm.controls['package']).value;
+        this.productService.createProductConfig(productConfig).then(payload => {
+          this.systemModuleService.off();
+          this.btnShowStatus = true;
+          this.packageForm.controls['package'] = this._fb.array([]);
+          this.packages = JSON.parse(JSON.stringify(this.packages));
+          this.selectedProduct = {};
+          this.apmisLookupHandleSelectedItem('');
+          this.systemModuleService.announceSweetProxy('Configuration created', 'success');
+        }, err => {
+          this.systemModuleService.off();
+          this.systemModuleService.announceSweetProxy('Failed to create configuration for product', 'error');
+        });
+      } else {
+        this.btnShowStatus = false;
+        this.systemModuleService.on();
+        let _packSizes = (<FormArray>this.packageForm.controls['package']).value;
+        this.productService.patchProductConfig(this.existConfigItem._id, { packSizes: _packSizes} ,{}).then(payload => {
+          this.systemModuleService.off();
+          this.btnShowStatus = true;
+          this.packageForm.controls['package'] = this._fb.array([]);
+          this.packages = JSON.parse(JSON.stringify(this.packages));
+          this.selectedProduct = {};
+          this.apmisLookupHandleSelectedItem('');
+          this.systemModuleService.announceSweetProxy('Configuration created', 'success');
+        }, err => {
+          this.systemModuleService.off();
+          this.systemModuleService.announceSweetProxy('Failed to create configuration for product', 'error');
+        });
+      }
     } else {
       this.systemModuleService.off();
       this.systemModuleService.announceSweetProxy('One or more field(s) missing', 'error');
@@ -181,7 +235,6 @@ export class ProductConfigComponent implements OnInit {
   }
 
   onChange(event) {
-    console.log(event);
   }
 
 }
