@@ -21,9 +21,7 @@ export class LandingpageComponent implements OnInit {
   systemQuantity: FormControl = new FormControl();
   physicalQuantity: FormControl = new FormControl();
   comment: FormControl = new FormControl();
-
   inventories: any[] = [];
-
   selectedFacility: Facility = <Facility>{};
   selectedInventory: Inventory = <Inventory>{};
   user: User = <User>{};

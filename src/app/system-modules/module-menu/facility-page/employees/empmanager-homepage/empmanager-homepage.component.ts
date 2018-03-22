@@ -37,7 +37,7 @@ export class EmpmanagerHomepageComponent
 
   index = 0;
   inde: any = [];
-  limit = 10;
+  limit = 100;
   total = 0;
   showLoadMore: Boolean = false;
   loadIndicatorVisible = false;

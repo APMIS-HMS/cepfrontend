@@ -10,7 +10,7 @@
                 <input matInput mat-error type="number" placeholder="Duration" min="1" formControlName="symptomDuration">
             </mat-input-container> -->
             <div class="frm-item-wrap">
-                <apmis-lookup [(ngModel)]="apmisLookupText" formControlName="symptom" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Select Symptom"
+                <apmis-lookup [(ngModel)]="apmisLookupText" formControlName="symptom" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="true" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Select Symptom"
                     (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
             </div> 
         </div>
