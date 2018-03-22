@@ -37,6 +37,15 @@ class Service {
                     $sort: { 'createdAt': -1 }
                 }
             });
+        } else if (hook.isWithinRange !== undefined) {
+            appointmentResult = await appointmentService.find({
+                query: {
+                    $limit: 100,
+                    facilityId: hook.facilityId,
+                    startDate: { $gte: hook.from, $lte: hook.to },
+                    $sort: { 'createdAt': -1 }
+                }
+            });
         }
 
 

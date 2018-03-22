@@ -2,21 +2,21 @@
 const createService = require('./save-employee.class.js');
 const hooks = require('./save-employee.hooks');
 
-module.exports = function (app) {
-  
-  const paginate = app.get('paginate');
+module.exports = function(app) {
 
-  const options = {
-    name: 'save-employee',
-    paginate,
-    app:app
-  };
+    const paginate = app.get('paginate');
 
-  // Initialize our service with any options it requires
-  app.use('/save-employee', createService(options));
+    const options = {
+        name: 'save-employee',
+        paginate: 100,
+        app: app
+    };
 
-  // Get our initialized service so that we can register hooks and filters
-  const service = app.service('save-employee');
+    // Initialize our service with any options it requires
+    app.use('/save-employee', createService(options));
 
-  service.hooks(hooks);
+    // Get our initialized service so that we can register hooks and filters
+    const service = app.service('save-employee');
+
+    service.hooks(hooks);
 };
