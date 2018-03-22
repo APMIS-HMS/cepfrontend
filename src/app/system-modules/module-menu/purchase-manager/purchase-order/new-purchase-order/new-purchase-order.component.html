@@ -14,7 +14,7 @@
                     <div class="frm-item-wrap">
                         <mat-form-field>
                             <mat-select class="example-full-width" placeholder="Supplier" formControlName="supplier">
-                                <mat-option *ngFor="let supplier of suppliers" [value]="supplier._id">{{supplier.name}}</mat-option>
+                                <mat-option *ngFor="let supplier of suppliers" [value]="supplier._id">{{supplier.supplier.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
                     </div>
