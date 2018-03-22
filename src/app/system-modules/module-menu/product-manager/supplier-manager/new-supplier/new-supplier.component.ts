@@ -88,20 +88,30 @@ export class NewSupplierComponent implements OnInit {
     this.frm_newSupplier.controls['name'].valueChanges.debounceTime(200)
       .distinctUntilChanged()
       .subscribe((payload: any) => {
-        if (payload.length > 0) {
-          console.log(payload);
-          this.showSearchResult = true;
-          this.supplierService.searchSuppliers(
-            {
-              query:
-                {
-                  facilityId: this.selectedFacility._id,
-                  supplierName: payload
-                }
-            }).then(supplierpayload => {
-              console.log(supplierpayload);
-              this.suppliers = supplierpayload;
-            });
+        if (payload) {
+          if (payload.length > 0) {
+            console.log(payload);
+            this.showSearchResult = true;
+            this.supplierService.searchSuppliers(
+              {
+                query:
+                  {
+                    facilityId: this.selectedFacility._id,
+                    supplierName: payload
+                  }
+              }).then(supplierpayload => {
+                console.log(supplierpayload);
+                this.suppliers = supplierpayload;
+              });
+          } else {
+            this.showSearchResult = false;
+            this.frm_newSupplier.controls['email'].enable();
+            this.frm_newSupplier.controls['frmContact'].enable();
+            this.frm_newSupplier.controls['frmCountry'].enable();
+            this.frm_newSupplier.controls['frmStreet'].enable();
+            this.frm_newSupplier.controls['frmCity'].enable();
+            this.frm_newSupplier.controls['cac'].enable();
+          }
         } else {
           this.showSearchResult = false;
           this.frm_newSupplier.controls['email'].enable();
@@ -313,10 +323,19 @@ export class NewSupplierComponent implements OnInit {
     this.addBtn = false;
     this.selectedSupplier = supplier.supplier;
     this.pickedSupplier = supplier;
-    const streetAddress = this.selectedSupplier.address.formatted_address;
-    const city = this.selectedSupplier.address.address_components[2].long_name;
-    const country = this.selectedSupplier.address.address_components[6].long_name;
-    const state = this.selectedSupplier.address.address_components[5].long_name;
+    let streetAddress, city, country, state;
+    streetAddress = this.selectedSupplier.address.formatted_address;
+    if (this.selectedSupplier.address.address_components[0].types[0] === 'route') {
+      city = this.selectedSupplier.address.address_components[2].long_name;
+      country = this.selectedSupplier.address.address_components[5].long_name;
+      state = this.selectedSupplier.address.address_components[4].long_name;
+
+    } else {
+      city = this.selectedSupplier.address.address_components[2].long_name;
+      country = this.selectedSupplier.address.address_components[6].long_name;
+      state = this.selectedSupplier.address.address_components[5].long_name;
+
+    }
     console.log(country, state);
     this.frm_newSupplier.controls['name'].setValue(this.selectedSupplier.name);
     this.frm_newSupplier.controls['email'].setValue(this.selectedSupplier.email);
@@ -350,16 +369,26 @@ export class NewSupplierComponent implements OnInit {
   update(valid, value) {
     console.log(this.pickedSupplier, this.selectedFacility);
     this.updatingBtn = true;
-    this.supplierService.patch(this.pickedSupplier._id, {
-      facilityId: this.selectedFacility._id
-    }).then(payload => {
-      this.updatingBtn = false;
-      this.updateBtn = false;
-      console.log(payload);
-      this.frm_newSupplier.reset();
-      this.userSettings['inputString'] = '';
-      this.close_onClick();
-      this._systemModuleService.announceSweetProxy('Facility updated successfully', 'success');
+    const sup = {
+      facilityId: this.selectedFacility._id,
+      supplierId: this.pickedSupplier.supplierId,
+      createdBy: this.loginEmployee._id
+    }
+    this.supplierService.createExistingSupplier(sup).then(payload => {
+      if (payload.status !== 'error') {
+        this.updatingBtn = false;
+        this.updateBtn = false;
+        console.log(payload);
+        this.frm_newSupplier.reset();
+        this.userSettings['inputString'] = '';
+        this.close_onClick();
+        this._systemModuleService.announceSweetProxy('Facility updated successfully', 'success');
+      } else {
+        this.updatingBtn = false;
+        this._systemModuleService.announceSweetProxy(payload.message, 'warning');
+      }
+    }).catch(err => {
+      console.log(err);
     });
   }
 }

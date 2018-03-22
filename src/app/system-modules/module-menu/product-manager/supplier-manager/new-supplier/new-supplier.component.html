@@ -83,8 +83,8 @@
             <button mat-raised-button [disabled]="!frm_newSupplier.valid || disableAddBtn" (click)="update(frm_newSupplier.valid, frm_newSupplier.value);"
                 style="padding: 10px 15px; color: #fff;" *ngIf="updateBtn ">
                 <span *ngIf="!updatingBtn">
-                    <i class="fa fa-check-circle "></i> Update Supplier</span>
-                <span *ngIf="updatingBtn">Updating Supplier...
+                    <i class="fa fa-check-circle "></i> Add Supplier</span>
+                <span *ngIf="updatingBtn">Add Supplier...
                     <i class="fa fa-spin fa-spinner "></i>
                 </span>
             </button>

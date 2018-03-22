@@ -49,6 +49,10 @@ export class SupplierService {
     return this._searchSocket.find(query);
   }
 
+  createExistingSupplier(data){
+    return this._searchSocket.create(data);
+  }
+
   update(serviceprice: any) {
     return this._socket.update(serviceprice._id, serviceprice);
   }
