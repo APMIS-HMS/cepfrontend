@@ -166,6 +166,8 @@ const addAddendum = require('./add-addendum/add-addendum.service.js');
 const uploadDoc = require('./upload-doc/upload-doc.service.js');
 const manufacturers = require('./manufacturers/manufacturers.service.js');
 const genericnames = require('./genericnames/genericnames.service.js');
+const productPackSizes = require('./product-pack-sizes/product-pack-sizes.service.js');
+const productConfigs = require('./product-configs/product-configs.service.js');
 const supplierService = require('./supplier-service/supplier-service.service.js');
 module.exports = function(app) {
     app.configure(users);
@@ -336,5 +338,7 @@ module.exports = function(app) {
     app.configure(uploadDoc);
     app.configure(manufacturers);
     app.configure(genericnames);
+    app.configure(productPackSizes);
+    app.configure(productConfigs);
     app.configure(supplierService);
 };
