@@ -169,6 +169,7 @@ const genericnames = require('./genericnames/genericnames.service.js');
 const productPackSizes = require('./product-pack-sizes/product-pack-sizes.service.js');
 const productConfigs = require('./product-configs/product-configs.service.js');
 const supplierService = require('./supplier-service/supplier-service.service.js');
+const searchSuppliers = require('./search-suppliers/search-suppliers.service.js');
 module.exports = function(app) {
     app.configure(users);
     app.configure(facilityOwnerships);
@@ -341,4 +342,5 @@ module.exports = function(app) {
     app.configure(productPackSizes);
     app.configure(productConfigs);
     app.configure(supplierService);
+    app.configure(searchSuppliers);
 };
