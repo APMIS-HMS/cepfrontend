@@ -152,4 +152,7 @@ export class LandingPageComponent implements OnInit {
     }
 
   }
+  closeActivate(e){
+    
+  }
 }
