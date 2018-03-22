@@ -97,8 +97,9 @@ label {
 
 .sec-b {
     margin-top: 20px;
-    height: 95%;
+    height: 100%;
     overflow-y: scroll;
+    padding: 0;
 }
 
 .sec-c {
@@ -114,11 +115,13 @@ label {
     flex-wrap: wrap;
     justify-content: space-around;
     width: 100%;
-    padding: 5px;
-    border: 1px solid #cacaca;
+    padding: 10px;
+    border-bottom: 1px solid #cacaca;
+    padding-bottom: 20px;
     text-align: center;
     box-sizing: border-box;
-    border-radius: 10px;
+    border-top-right-radius: 10px;
+    border-top-left-radius: 10px;
     margin-top: 20px;
 }
 
@@ -129,6 +132,7 @@ label {
     border-radius: 10px;
     width: 100%;
     box-sizing: border-box;
+    padding: 10px;
 }
 
 .ps-col1 {
