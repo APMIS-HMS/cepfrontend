@@ -219,6 +219,32 @@
                                                     </div>
                                                 </div>
                                             </mat-tab>
+                                            <mat-tab label="Identification" style="padding: 10px;">
+                                                <div class="patient-detail-wrapper">
+                                                    <div>
+                                                        
+                                                    </div>
+                                                    <div class="col-xs-12" *ngFor="let pat of patient.paymentPlan" style="margin-bottom: 10px">
+                                                        <div class="card blue-gradient">
+                                                            <div class="row">
+                                                                <div class="col-xs-8 left">
+                                                                    <i class="big-label">
+                                                                        {{pat.planType}} {{(pat.isDefault === true) ? '(Current Plan)' : ''}}
+                                                                    </i>
+                                                                </div>
+                                                                <div class="col-xs-2 row right">
+                                                                    <div (click)="isEditFn(patient, pat.planType)" class="col-xs-6">
+                                                                        <i class="fa fa-pencil-square-o big-label" aria-hidden="true"></i>
+                                                                    </div>
+                                                                    <div (click)="isEditFn(patient, pat.planType)" class="col-xs-6">
+                                                                        <i class="fa fa-trash-o big-label" aria-hidden="true"></i>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </mat-tab>
                                             <mat-tab label="Next Of Kin">
                                                 <div class="next-of-kin-body-wrapper">
                                                     <div formArrayName="nextOfKin">
@@ -253,8 +279,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
-
                                                 <div class="add-next-of-kin-box">
                                                     <a (click)="addNewNextOfKin();"> Add Next Of Kin
                                                         <i class="fa fa-plus"></i>
@@ -263,8 +287,8 @@
                                             </mat-tab>
                                             <mat-tab label="Plan">
                                                 <div class="next-of-kin-body-wrapper">
-                                                    <div class="row" *ngIf="!isEdit">
-                                                        <div class="col-xs-12" *ngFor="let pat of patient.paymentPlan" style="margin-bottom: 10px">
+                                                    <div class="row">
+                                                        <div class="col-xs-12" *ngFor="let tag of patient.tags" style="margin-bottom: 10px">
                                                             <div class="card blue-gradient">
                                                                 <div class="row">
                                                                     <div class="col-xs-8 left">

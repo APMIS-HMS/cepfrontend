@@ -68,6 +68,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   cities: any = [];
   titles: any = [];
 
+  patientToEdit;
+
   walletPlanPrice = new FormControl('', Validators.required);
   walletPlan = new FormControl('', Validators.required);
   walletPlanCheck = new FormControl('');
@@ -220,6 +222,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       nextOfKin: this.formBuilder.array([])
     });
 
+    this.tagsAttachedToPatient();
+
 
     //   this.frmNewEmp2.controls['empCountry'].valueChanges.subscribe((value) => {
     //     this.countryFacadeService.getOnlyStates(value, true).then((states: any) => {
@@ -362,6 +366,10 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.index++;
   }
 
+  tagsAttachedToPatient(){
+    console.log(this.patientToEdit);
+  }
+
   getPatientCovers(patientId) {
     this.patientService.find({
       facilityId: this.facility._id,
@@ -451,6 +459,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.getPatients();
   }
   slideEdit(patient) {
+    this.patientToEdit = patient;
     this.patientService.get(patient._id, {}).then(payload => {
       this.selectedPatient = payload.personDetails;
       this.patient = payload;
@@ -463,6 +472,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       }
 
       this._populateAndSelectData(this.selectedPatient);
+      this.tagsAttachedToPatient()
     })
   }
   updatePatient(value: any, valid: boolean) {
