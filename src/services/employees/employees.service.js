@@ -10,7 +10,7 @@ module.exports = function(app) {
     const options = {
         name: 'employees',
         Model,
-        paginate: 100
+        paginate
     };
 
     // Initialize our service with any options it requires
