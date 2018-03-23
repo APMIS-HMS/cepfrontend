@@ -61,12 +61,12 @@ export class ProductService {
   createProductConfig(serviceprice: any) {
     return this._socketProductConfig.create(serviceprice);
   }
-  updateProductConfig(serviceprice: any) {
-    return this._socketProductConfig.update(serviceprice._id, serviceprice);
+  patchProductConfig(_id: any, obj: any, params) {
+    return this._socketProductConfig.patch(_id, obj, params);
   }
 
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }
-  
+
 }
