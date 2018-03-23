@@ -42,6 +42,7 @@ export class CategoryManagerComponent implements OnInit {
 					{$regex: this.searchControl.value, '$options': 'i'} } })
 				.then(data => {
 					this.categories = data.data;
+					this.close_onClick();
 				});
 			})
 	}
