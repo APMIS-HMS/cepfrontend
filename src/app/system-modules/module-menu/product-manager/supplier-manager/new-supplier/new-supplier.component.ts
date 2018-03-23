@@ -90,7 +90,6 @@ export class NewSupplierComponent implements OnInit {
       .subscribe((payload: any) => {
         if (payload) {
           if (payload.length > 0) {
-            console.log(payload);
             this.showSearchResult = true;
             this.supplierService.searchSuppliers(
               {
@@ -100,7 +99,6 @@ export class NewSupplierComponent implements OnInit {
                     supplierName: payload
                   }
               }).then(supplierpayload => {
-                console.log(supplierpayload);
                 this.suppliers = supplierpayload;
               });
           } else {
@@ -336,7 +334,6 @@ export class NewSupplierComponent implements OnInit {
       state = this.selectedSupplier.address.address_components[5].long_name;
 
     }
-    console.log(country, state);
     this.frm_newSupplier.controls['name'].setValue(this.selectedSupplier.name);
     this.frm_newSupplier.controls['email'].setValue(this.selectedSupplier.email);
     this.frm_newSupplier.controls['frmContact'].setValue(this.selectedSupplier.primaryContactPhoneNo);
@@ -367,7 +364,6 @@ export class NewSupplierComponent implements OnInit {
   }
 
   update(valid, value) {
-    console.log(this.pickedSupplier, this.selectedFacility);
     this.updatingBtn = true;
     const sup = {
       facilityId: this.selectedFacility._id,
@@ -378,7 +374,6 @@ export class NewSupplierComponent implements OnInit {
       if (payload.status !== 'error') {
         this.updatingBtn = false;
         this.updateBtn = false;
-        console.log(payload);
         this.frm_newSupplier.reset();
         this.userSettings['inputString'] = '';
         this.close_onClick();
@@ -388,7 +383,6 @@ export class NewSupplierComponent implements OnInit {
         this._systemModuleService.announceSweetProxy(payload.message, 'warning');
       }
     }).catch(err => {
-      console.log(err);
     });
   }
 }

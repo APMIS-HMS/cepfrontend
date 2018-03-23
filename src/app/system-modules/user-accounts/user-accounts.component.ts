@@ -53,6 +53,7 @@ export class UserAccountsComponent implements OnInit {
           this.listOfFacilities = payload.listOfFacilities;
         }
       });
+      console.log(this.listOfFacilities);
     });
     // let auth = this.locker.getObject('auth');
     // this.authData = auth.data;
