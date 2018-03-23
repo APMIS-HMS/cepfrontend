@@ -8,7 +8,7 @@ module.exports = function(app) {
 
     const options = {
         name: 'save-employee',
-        paginate: 100,
+        paginate,
         app: app
     };
 

@@ -57,18 +57,6 @@ class Service {
             return jsend.error('Sorry! But you can not perform this transaction.');
         }
     }
-
-    update(id, data, params) {
-        return Promise.resolve(data);
-    }
-
-    patch(id, data, params) {
-        return Promise.resolve(data);
-    }
-
-    remove(id, params) {
-        return Promise.resolve({ id });
-    }
 }
 
 module.exports = function(options) {
