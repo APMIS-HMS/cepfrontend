@@ -10,7 +10,7 @@ import {
 // tslint:disable-next-line:max-line-length
 import {
   PatientService, PersonService, FacilitiesService, FacilitiesServiceCategoryService,
-  HmoService, GenderService, RelationshipService, CountriesService, TitleService
+  HmoService, GenderService, RelationshipService, CountriesService, TitleService, TagService
 } from '../../../../services/facility-manager/setup/index';
 import { FacilityFamilyCoverService } from './../../../../services/facility-manager/setup/facility-family-cover.service';
 import { Facility, Patient, Gender, Relationship, Employee, Person, User } from '../../../../models/index';
@@ -70,6 +70,11 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
   patientToEdit;
 
+  tagName = new FormControl('', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]);
+  tag;
+  tags;
+  changetagButton:boolean = false;
+
   walletPlanPrice = new FormControl('', Validators.required);
   walletPlan = new FormControl('', Validators.required);
   walletPlanCheck = new FormControl('');
@@ -87,6 +92,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   faPlan = new FormControl('');
   faFileNo = new FormControl('');
   isDefault = new FormControl('');
+  identity = new FormControl('');
   patient: any;
   family: any;
   familyClientId: any;
@@ -109,6 +115,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   total: any = 0;
   updatePatientBtnText = 'Update';
   loadMoreText = '';
+  btnLabel = "Create Tag";
+  tagLoader: boolean = false;
 
   constructor(private patientService: PatientService, private personService: PersonService,
     private facilityService: FacilitiesService, private locker: CoolLocalStorage, private router: Router,
@@ -117,8 +125,12 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     private _countryService: CountriesService, private systemService: SystemModuleService,
     private authFacadeService: AuthFacadeService, private hmoService: HmoService,
     private _titleService: TitleService, private countryFacadeService: CountryServiceFacadeService,
-    private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService, private familyCoverService: FacilityFamilyCoverService
+    private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
+    private familyCoverService: FacilityFamilyCoverService,
+    private tagService: TagService
   ) {
+    
+    this.facility = <Facility>this.locker.getObject('selectedFacility');
     this.systemService.on();
     this.patientService.listner.subscribe(payload => {
       this.pageSize = 1;
@@ -158,6 +170,22 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         map((hmo: any) => hmo ? this.filterHmos(hmo) : this.hmos.slice())
       );
 
+    this.tagName.valueChanges
+      .debounceTime(200)
+      .distinctUntilChanged().subscribe(payload => {
+        console.log(payload);
+        if(payload.length >= 3){
+          this.tagService.suggestPatientTags({
+            query: {
+              facilityId: this.facility._id,
+              word: payload
+            }
+          }).then(suggestPayload => {
+            console.log(suggestPayload);
+          });
+        }
+      });
+
 
   }
   /* searchPatients(searchText: string) {
@@ -188,7 +216,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
     })
-    this.facility = <Facility>this.locker.getObject('selectedFacility');
     this.user = <User>this.locker.getObject('auth');
     this.getGender();
     this.getRelationships();
@@ -221,6 +248,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       street: ['', [<any>Validators.required]],
       nextOfKin: this.formBuilder.array([])
     });
+
+
 
     this.tagsAttachedToPatient();
 
@@ -288,6 +317,39 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       }
     }
 
+  }
+
+  newTag(valid: boolean) {
+    this.systemService.off;
+    this.tagLoader = true;
+    if (valid) {
+      const tag: any = <any>{};
+      if(this.identity.value === true){
+        tag.tagType = 'identification';
+      }
+      tag.name = this.tagName.value;
+      tag.facilityId = this.facility._id;
+      this.tagService.create(tag).then(callback => {
+        console.log(callback);
+        this.patientToEdit.tags.push(callback);
+        console.log(this.patientToEdit);
+        this.patientService.patch(this.patientToEdit._id, this.patientToEdit, {}).then(patientPayload => {
+          console.log(patientPayload);
+          this.systemService.off;
+          this.tagLoader = false;
+          this.tagName.setValue('');
+        }).catch(err => {
+          console.log(err);
+        });
+      }, error => {
+        this.tagLoader = false;
+        this.systemService.off;
+      });
+    }
+  }
+
+  changeButton(){
+    this.changetagButton != this.changetagButton;
   }
 
   sortPatientsByName() {
@@ -366,7 +428,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.index++;
   }
 
-  tagsAttachedToPatient(){
+  tagsAttachedToPatient() {
     console.log(this.patientToEdit);
   }
 

@@ -9,6 +9,7 @@ export class TagService {
   public createListener;
   public _socket;
   public _socketSearch;
+  public _suggestPatientTags;
   private _rest;
   private _restLogin;
   constructor(
@@ -20,6 +21,7 @@ export class TagService {
     this._rest = _restService.getService('service-tags');
     this._socket = _socketService.getService('service-tags');
     this._socketSearch = _socketSearchService.getService('search-tags');
+    this._suggestPatientTags = _socketService.getService('suggest-patient-tags');
     this._restLogin = _restService.getService('auth/local');
     this.listner = Observable.fromEvent(this._socket, 'updated');
     this.createListener = Observable.fromEvent(this._socket, 'created');
@@ -43,6 +45,9 @@ export class TagService {
   }
   serach(query) {
     return this._socketSearch.find(query);
+  }
+  suggestPatientTags(query){
+    return this._suggestPatientTags.find(query);
   }
   update(tag: any) {
     return this._socket.update(tag._id, tag);
