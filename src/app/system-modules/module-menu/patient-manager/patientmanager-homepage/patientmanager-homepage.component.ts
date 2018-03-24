@@ -175,7 +175,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.tagName.valueChanges
       .debounceTime(200)
       .distinctUntilChanged().subscribe(payload => {
-        console.log(payload);
         if (payload.length >= 3) {
           this.showSearchResult = true;
           this.tagService.suggestPatientTags({
@@ -185,7 +184,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
             }
           }).then(suggestPayload => {
             this.dictionaries = suggestPayload;
-            console.log(suggestPayload);
           });
         } else {
           this.showSearchResult = false;
@@ -254,10 +252,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       street: ['', [<any>Validators.required]],
       nextOfKin: this.formBuilder.array([])
     });
-
-
-
-    this.tagsAttachedToPatient();
 
 
     //   this.frmNewEmp2.controls['empCountry'].valueChanges.subscribe((value) => {
@@ -337,7 +331,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     tag.facilityId = this.facility._id;
     tag.patientId = this.patientToEdit._id;
     this.tagService.createSuggestedPatientTags(tag).then(payl => {
-      console.log(payl);
       if (payl instanceof Array) {
 
       } else {
@@ -347,33 +340,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.tagLoader = false;
       this.tagName.setValue('');
     });
-    /* if (valid) {
-
-      if (this.identity.value === true) {
-        tag.tagType = 'identification';
-      }
-      if (this.dictionaries > 0) {
-
-      }
-      tag.name = this.tagName.value;
-      tag.facilityId = this.facility._id;
-      this.tagService.create(tag).then(callback => {
-        console.log(callback);
-        this.patientToEdit.tags.push(callback);
-        console.log(this.patientToEdit);
-        this.patientService.patch(this.patientToEdit._id, this.patientToEdit, {}).then(patientPayload => {
-          console.log(patientPayload);
-          this.systemService.off;
-          this.tagLoader = false;
-          this.tagName.setValue('');
-        }).catch(err => {
-          console.log(err);
-        });
-      }, error => {
-        this.tagLoader = false;
-        this.systemService.off;
-      });
-    } */
   }
 
   hideSuggestions() {
@@ -388,7 +354,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     if (toDelete > -1) {
       this.patientToEdit.tags.splice(toDelete, 1);
       this.patientService.patch(this.patientToEdit._id, this.patientToEdit, {}).then(deletePayload => {
-        console.log(deletePayload);
       }).catch(err => {
         console.log(err);
       });
@@ -397,7 +362,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
 
   changeButton() {
-    console.log(this.identity.value);
     if (this.identity.value === true) {
       this.btnLabel = 'Create Tag';
     } else {
@@ -479,10 +443,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.loading = false;
     });
     this.index++;
-  }
-
-  tagsAttachedToPatient() {
-    console.log(this.patientToEdit);
   }
 
   getPatientCovers(patientId) {
@@ -587,7 +547,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       }
 
       this._populateAndSelectData(this.selectedPatient);
-      this.tagsAttachedToPatient()
     })
   }
   updatePatient(value: any, valid: boolean) {
@@ -675,7 +634,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   next(cover) {
     this.systemService.on();
     const data = JSON.parse(JSON.stringify(this.patient.paymentPlan));
-    console.log(data);
     if (this.isDefault.value === true) {
       const index = data.findIndex(c => c.isDefault === true);
       if (index > -1) {
@@ -721,7 +679,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
               this.systemService.announceSweetProxy('Principal Id doesn\'t exist', 'error');
             } else {
               const filEx = beneficiaries.filter(x => x.filNo === this.familyClientId);
-              console.log(filEx);
               if (filEx.length > 0) {
                 if (filEx[0].patientId !== undefined) {
                   this.loading = false;
