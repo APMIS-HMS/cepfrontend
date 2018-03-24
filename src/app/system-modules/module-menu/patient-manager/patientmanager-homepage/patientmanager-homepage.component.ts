@@ -73,7 +73,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   tagName = new FormControl('', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]);
   tag;
   tags;
-  changetagButton:boolean = false;
+  changetagButton: boolean = false;
 
   walletPlanPrice = new FormControl('', Validators.required);
   walletPlan = new FormControl('', Validators.required);
@@ -103,6 +103,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   noPatientId;
 
   filteredHmos: Observable<any[]>;
+  dictionaries;
+  showSearchResult: boolean = false;
   hmos;
 
   services: any;
@@ -115,7 +117,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   total: any = 0;
   updatePatientBtnText = 'Update';
   loadMoreText = '';
-  btnLabel = "Create Tag";
+  btnLabel = "Add Tag";
   tagLoader: boolean = false;
 
   constructor(private patientService: PatientService, private personService: PersonService,
@@ -129,7 +131,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     private familyCoverService: FacilityFamilyCoverService,
     private tagService: TagService
   ) {
-    
+
     this.facility = <Facility>this.locker.getObject('selectedFacility');
     this.systemService.on();
     this.patientService.listner.subscribe(payload => {
@@ -174,15 +176,19 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       .debounceTime(200)
       .distinctUntilChanged().subscribe(payload => {
         console.log(payload);
-        if(payload.length >= 3){
+        if (payload.length >= 3) {
+          this.showSearchResult = true;
           this.tagService.suggestPatientTags({
             query: {
               facilityId: this.facility._id,
               word: payload
             }
           }).then(suggestPayload => {
+            this.dictionaries = suggestPayload;
             console.log(suggestPayload);
           });
+        } else {
+          this.showSearchResult = false;
         }
       });
 
@@ -322,10 +328,32 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   newTag(valid: boolean) {
     this.systemService.off;
     this.tagLoader = true;
-    if (valid) {
-      const tag: any = <any>{};
-      if(this.identity.value === true){
+    const tag: any = <any>{};
+    if (this.identity.value === true) {
+      tag.tagType = 'identification';
+    }
+    tag.identity = this.identity.value;
+    tag.name = this.tagName.value;
+    tag.facilityId = this.facility._id;
+    tag.patientId = this.patientToEdit._id;
+    this.tagService.createSuggestedPatientTags(tag).then(payl => {
+      console.log(payl);
+      if (payl instanceof Array) {
+
+      } else {
+        this.patientToEdit = payl;
+      }
+      this.systemService.off;
+      this.tagLoader = false;
+      this.tagName.setValue('');
+    });
+    /* if (valid) {
+
+      if (this.identity.value === true) {
         tag.tagType = 'identification';
+      }
+      if (this.dictionaries > 0) {
+
       }
       tag.name = this.tagName.value;
       tag.facilityId = this.facility._id;
@@ -345,11 +373,36 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         this.tagLoader = false;
         this.systemService.off;
       });
-    }
+    } */
   }
 
-  changeButton(){
-    this.changetagButton != this.changetagButton;
+  hideSuggestions() {
+    this.showSearchResult = false;
+  }
+  fillingWithSearchInfo(tag) {
+    this.tagName.setValue(tag.name);
+  }
+
+  removeTag(tag) {
+    const toDelete = this.patientToEdit.tags.findIndex(x => x._id === tag._id);
+    if (toDelete > -1) {
+      this.patientToEdit.tags.splice(toDelete, 1);
+      this.patientService.patch(this.patientToEdit._id, this.patientToEdit, {}).then(deletePayload => {
+        console.log(deletePayload);
+      }).catch(err => {
+        console.log(err);
+      });
+    }
+
+  }
+
+  changeButton() {
+    console.log(this.identity.value);
+    if (this.identity.value === true) {
+      this.btnLabel = 'Create Tag';
+    } else {
+      this.btnLabel = 'Add Tag';
+    }
   }
 
   sortPatientsByName() {

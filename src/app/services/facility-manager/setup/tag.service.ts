@@ -49,6 +49,9 @@ export class TagService {
   suggestPatientTags(query){
     return this._suggestPatientTags.find(query);
   }
+  createSuggestedPatientTags(data){
+    return this._suggestPatientTags.create(data);
+  }
   update(tag: any) {
     return this._socket.update(tag._id, tag);
   }
