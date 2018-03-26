@@ -68,3 +68,15 @@
 .modal_title i:hover{
     color: #0288D1;
 }
+
+.badge {
+    padding: 1px 10px;
+    font-size: 12px;
+    font-weight: 400;
+    border-radius: 10px;
+    background-color: #eee;
+    color: #212121;
+    display: inline-block;
+    margin: 2px 5px;
+    cursor: default;
+}
