@@ -1,40 +1,69 @@
 <div class="survery">
     <div class="">
-        <div class="row margin-bottom">
-            <div class="col-sm-4 col-md-4 col-xs-12">
-                <!--<dx-select-box  placeholder="Choose" [showClearButton]="true">
-                </dx-select-box>-->
+        <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-xs-2 table-head">From</div>
+                    <div class="col-xs-2 table-head">Value</div>
+                    <div class="table-head col-xs-2">Date</div>
+                    <div class="table-head col-xs-3">Transfer By</div>
+                    <div class="table-head col-xs-2">Status</div>
+                    <div class="table-head col-xs-1">
+                        <i class="fa fa-search fa-fw pointer" (click)="openSearch()"></i>
+                    </div>
+                </div>
+                <div class="row" *ngIf="searchOpen">
+                    <div class="col-md-4">
+                        <input [formControl]="patientSearch" class="table-header-input" type="text" placeholder="Search...">
+                    </div>
+                    <div class="col-md-4">
+                        <!-- <select class="table-header-select" formControlName="category" placeholder="Select Category" (change)="onChangeCategory($event);">
+                            <option value="" selected>Select Category</option>
+                            <option value="individual">Individual</option>
+                            <option value="corporate">Corporate</option>
+                            <option value="internal">Internal</option>
+                        </select> -->
+                    </div>        
+                    <div class="col-md-3">
+                        <!-- <input class="table-header-input" type="date" placeholder="Choose a date"> -->
+                    </div>
+                    <div class="col-md-1 table-head">
+                        <i class="fa fa-close fa-fw" (click)="openSearch()"></i>
+                    </div>
+                </div>
             </div>
-            <div class="">
-                <mat-input-container class="example-full-width">
-                    <input type="text" matInput mat-error placeholder="Search">
-                </mat-input-container>
+            <div class="card-content">
+                <div class="card-list-item" *ngIf="receivedTransfers.length === 0">
+                    <div class="col-xs-12" style="text-align:center">
+                        No data available in table
+                    </div>
+                </div>
+            
+                <div class="card-list-item" *ngFor="let received of receivedTransfers">
+                    <div class="row">
+                
+                        <div class="table-list col-xs-3">
+                                {{received.storeObject?.name}}
+                        </div>
+                        <div class="table-list col-xs-2">
+                                {{received.totalCostPrice|number:'1.2-2'}}
+                        </div>
+                        <div class="table-list col-xs-2">
+                                {{received.createdAt|date:'short'}}
+                        </div>
+                        <div class="table-list col-xs-2">
+                                {{received.transferByObject?.firstName}} {{received.transferByObject?.lastName}}
+                        </div>
+                        <div class="table-list col-xs-2">
+                                {{getStatus(received)}}
+                        </div>
+                        <div class="table-list col-xs-1 hover" >
+                                <span (click)="slideDetailsShow(received)"><i class="fa fa-eye"></i></span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-        <table class="table table-responsive table-striped text-center">
-            <thead>
-                <tr>
-                    <th><i class="fa fa-sort-alpha-asc"></i>From</th>
-                    <th> <i class="fa fa-sort-alpha-asc"></i>Value</th>
-                    <th><i class="fa fa-sort-alpha-asc"></i>Date</th>
-                    <th><i class="fa fa-sort-alpha-asc"></i>Transfer By</th>
-                    <th><i class="fa fa-sort-alpha-asc"></i>Status</th>
-                    <th style="width:150px"><i class="fa fa-sort-alpha-asc"></i>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let received of receivedTransfers">
-                    <td>{{received.storeObject?.name}}</td>
-                    <td>{{received.totalCostPrice|number:'1.2-2'}}</td>
-                    <td>{{received.createdAt|date:'short'}}</td>
-                    <td>{{received.transferByObject?.firstName}} {{received.transferByObject?.lastName}}</td>
-                    <td class="accepted">{{getStatus(received)}}</td>
-                    <td>
-                        <span (click)="slideDetailsShow(received)"><a  class=""><i class="fa fa-eye"></i></a></span>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
     </div>
     <!-- details -->
     <div id="slideDetails" *ngIf="slideDetails">

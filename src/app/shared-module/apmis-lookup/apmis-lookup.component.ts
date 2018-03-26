@@ -50,6 +50,7 @@ export class ApmisLookupComponent
   @Input() placeholder = "";
   @Input() query = {};
   @Input() imgObj = "";
+  @Input() min = 0;
   @Input() otherKeys = [];
   @Input() isSocket = false;
   @Input() multipleKeys = false;
@@ -94,6 +95,9 @@ export class ApmisLookupComponent
         }
     });
   }
+
+  
+
   getImgUrl(item) {
     const splitArray = this.imgObj.split(".");
     let counter = 0;

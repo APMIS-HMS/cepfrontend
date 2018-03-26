@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 export class SupplierService {
   public _socket;
   public _customSocket;
+  public _searchSocket;
   private _rest;
   public listenerCreate;
   public listenerUpdate;
@@ -17,6 +18,7 @@ export class SupplierService {
     this._rest = _restService.getService('suppliers');
     this._socket = _socketService.getService('suppliers');
     this._customSocket = _socketService.getService('supplier-service');
+    this._searchSocket = _socketService.getService('search-suppliers');
     this._socket.timeout = 80000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
@@ -43,11 +45,19 @@ export class SupplierService {
     return this._customSocket.create(serviceprice);
   }
 
+  searchSuppliers(query){
+    return this._searchSocket.find(query);
+  }
+
+  createExistingSupplier(data){
+    return this._searchSocket.create(data);
+  }
+
   update(serviceprice: any) {
     return this._socket.update(serviceprice._id, serviceprice);
   }
   patch(id: any, supplier) {
-    return this._socket.update(id, supplier);
+    return this._socket.patch(id, supplier);
   }
   remove(id: string, query: any) {
     return this._socket.remove(id, query);

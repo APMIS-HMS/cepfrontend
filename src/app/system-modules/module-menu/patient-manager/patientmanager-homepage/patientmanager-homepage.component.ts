@@ -10,7 +10,7 @@ import {
 // tslint:disable-next-line:max-line-length
 import {
   PatientService, PersonService, FacilitiesService, FacilitiesServiceCategoryService,
-  HmoService, GenderService, RelationshipService, CountriesService, TitleService
+  HmoService, GenderService, RelationshipService, CountriesService, TitleService, TagService
 } from '../../../../services/facility-manager/setup/index';
 import { FacilityFamilyCoverService } from './../../../../services/facility-manager/setup/facility-family-cover.service';
 import { Facility, Patient, Gender, Relationship, Employee, Person, User } from '../../../../models/index';
@@ -68,6 +68,13 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   cities: any = [];
   titles: any = [];
 
+  patientToEdit;
+
+  tagName = new FormControl('', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]);
+  tag;
+  tags;
+  changetagButton: boolean = false;
+
   walletPlanPrice = new FormControl('', Validators.required);
   walletPlan = new FormControl('', Validators.required);
   walletPlanCheck = new FormControl('');
@@ -85,6 +92,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   faPlan = new FormControl('');
   faFileNo = new FormControl('');
   isDefault = new FormControl('');
+  identity = new FormControl('');
   patient: any;
   family: any;
   familyClientId: any;
@@ -95,6 +103,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   noPatientId;
 
   filteredHmos: Observable<any[]>;
+  dictionaries;
+  showSearchResult: boolean = false;
   hmos;
 
   services: any;
@@ -107,6 +117,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   total: any = 0;
   updatePatientBtnText = 'Update';
   loadMoreText = '';
+  btnLabel = "Add Tag";
+  tagLoader: boolean = false;
 
   constructor(private patientService: PatientService, private personService: PersonService,
     private facilityService: FacilitiesService, private locker: CoolLocalStorage, private router: Router,
@@ -115,8 +127,12 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     private _countryService: CountriesService, private systemService: SystemModuleService,
     private authFacadeService: AuthFacadeService, private hmoService: HmoService,
     private _titleService: TitleService, private countryFacadeService: CountryServiceFacadeService,
-    private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService, private familyCoverService: FacilityFamilyCoverService
+    private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
+    private familyCoverService: FacilityFamilyCoverService,
+    private tagService: TagService
   ) {
+
+    this.facility = <Facility>this.locker.getObject('selectedFacility');
     this.systemService.on();
     this.patientService.listner.subscribe(payload => {
       this.pageSize = 1;
@@ -156,6 +172,24 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         map((hmo: any) => hmo ? this.filterHmos(hmo) : this.hmos.slice())
       );
 
+    this.tagName.valueChanges
+      .debounceTime(200)
+      .distinctUntilChanged().subscribe(payload => {
+        if (payload.length >= 3) {
+          this.showSearchResult = true;
+          this.tagService.suggestPatientTags({
+            query: {
+              facilityId: this.facility._id,
+              word: payload
+            }
+          }).then(suggestPayload => {
+            this.dictionaries = suggestPayload;
+          });
+        } else {
+          this.showSearchResult = false;
+        }
+      });
+
 
   }
   /* searchPatients(searchText: string) {
@@ -186,7 +220,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
     })
-    this.facility = <Facility>this.locker.getObject('selectedFacility');
     this.user = <User>this.locker.getObject('auth');
     this.getGender();
     this.getRelationships();
@@ -284,6 +317,56 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       }
     }
 
+  }
+
+  newTag(valid: boolean) {
+    this.systemService.off;
+    this.tagLoader = true;
+    const tag: any = <any>{};
+    if (this.identity.value === true) {
+      tag.tagType = 'identification';
+    }
+    tag.identity = this.identity.value;
+    tag.name = this.tagName.value;
+    tag.facilityId = this.facility._id;
+    tag.patientId = this.patientToEdit._id;
+    this.tagService.createSuggestedPatientTags(tag).then(payl => {
+      if (payl instanceof Array) {
+
+      } else {
+        this.patientToEdit = payl;
+      }
+      this.systemService.off;
+      this.tagLoader = false;
+      this.tagName.setValue('');
+    });
+  }
+
+  hideSuggestions() {
+    this.showSearchResult = false;
+  }
+  fillingWithSearchInfo(tag) {
+    this.tagName.setValue(tag.name);
+  }
+
+  removeTag(tag) {
+    const toDelete = this.patientToEdit.tags.findIndex(x => x._id === tag._id);
+    if (toDelete > -1) {
+      this.patientToEdit.tags.splice(toDelete, 1);
+      this.patientService.patch(this.patientToEdit._id, this.patientToEdit, {}).then(deletePayload => {
+      }).catch(err => {
+        console.log(err); 
+      });
+    }
+
+  }
+
+  changeButton() {
+    if (this.identity.value === true) {
+      this.btnLabel = 'Create Tag';
+    } else {
+      this.btnLabel = 'Add Tag';
+    }
   }
 
   sortPatientsByName() {
@@ -451,6 +534,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.getPatients();
   }
   slideEdit(patient) {
+    this.patientToEdit = patient;
     this.patientService.get(patient._id, {}).then(payload => {
       this.selectedPatient = payload.personDetails;
       this.patient = payload;
@@ -550,7 +634,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   next(cover) {
     this.systemService.on();
     const data = JSON.parse(JSON.stringify(this.patient.paymentPlan));
-    console.log(data);
     if (this.isDefault.value === true) {
       const index = data.findIndex(c => c.isDefault === true);
       if (index > -1) {
@@ -596,7 +679,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
               this.systemService.announceSweetProxy('Principal Id doesn\'t exist', 'error');
             } else {
               const filEx = beneficiaries.filter(x => x.filNo === this.familyClientId);
-              console.log(filEx);
               if (filEx.length > 0) {
                 if (filEx[0].patientId !== undefined) {
                   this.loading = false;
