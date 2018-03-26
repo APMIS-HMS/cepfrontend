@@ -69,7 +69,9 @@ export class RightTabComponent implements OnInit {
                 this.laboratoryLoading = true;
             }
         }
-        Observable.fromPromise(this.documentationService.find({ query: { 'personId': this.patient.personId } }))
+        if(this.patient !== undefined){
+
+            Observable.fromPromise(this.documentationService.find({ query: { 'personId': this.patient.personId } }))
             .subscribe((payload: any) => {
                 if (payload.data.length === 0) {
                     this.patientDocumentation.personId = this.patient.personDetails;
@@ -124,6 +126,7 @@ export class RightTabComponent implements OnInit {
                 this.allergiesLoading = false;
                 this.laboratoryLoading = false;
             })
+        }
     }
     getProblems() {
         this.problems = [];

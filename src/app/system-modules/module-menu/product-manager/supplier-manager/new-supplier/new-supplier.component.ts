@@ -10,6 +10,9 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
 import { Facility, Employee } from '../../../../../models/index';
 import { AuthFacadeService } from '../../../../service-facade/auth-facade.service';
 
+import { Observable } from 'rxjs/Observable'
+import { Subscription } from 'rxjs/Subscription'
+
 @Component({
   selector: 'app-new-supplier',
   templateUrl: './new-supplier.component.html',
@@ -27,8 +30,11 @@ export class NewSupplierComponent implements OnInit {
   updateBtn = false;
   updatingBtn = false;
   disableAddBtn = true;
+  showSearchResult = false;
   countries: any[] = [];
   states: any[] = [];
+  suppliers: any[] = [];
+  pickedSupplier: any;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() refreshSupplier: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() selectedSupplier: any = <any>{};
@@ -79,6 +85,41 @@ export class NewSupplierComponent implements OnInit {
       }).catch(error => { });
     })
     this._getCountries();
+    this.frm_newSupplier.controls['name'].valueChanges.debounceTime(200)
+      .distinctUntilChanged()
+      .subscribe((payload: any) => {
+        if (payload) {
+          if (payload.length > 0) {
+            this.showSearchResult = true;
+            this.supplierService.searchSuppliers(
+              {
+                query:
+                  {
+                    facilityId: this.selectedFacility._id,
+                    supplierName: payload
+                  }
+              }).then(supplierpayload => {
+                this.suppliers = supplierpayload;
+              });
+          } else {
+            this.showSearchResult = false;
+            this.frm_newSupplier.controls['email'].enable();
+            this.frm_newSupplier.controls['frmContact'].enable();
+            this.frm_newSupplier.controls['frmCountry'].enable();
+            this.frm_newSupplier.controls['frmStreet'].enable();
+            this.frm_newSupplier.controls['frmCity'].enable();
+            this.frm_newSupplier.controls['cac'].enable();
+          }
+        } else {
+          this.showSearchResult = false;
+          this.frm_newSupplier.controls['email'].enable();
+          this.frm_newSupplier.controls['frmContact'].enable();
+          this.frm_newSupplier.controls['frmCountry'].enable();
+          this.frm_newSupplier.controls['frmStreet'].enable();
+          this.frm_newSupplier.controls['frmCity'].enable();
+          this.frm_newSupplier.controls['cac'].enable();
+        }
+      })
   }
   populateSupplier() {
     if (this.selectedSupplier._id !== undefined) {
@@ -93,7 +134,7 @@ export class NewSupplierComponent implements OnInit {
       this.frm_newSupplier.controls['frmContact'].setValue(this.selectedSupplier.contact);
       this.frm_newSupplier.controls['frmCountry'].setValue(this.selectedSupplier.address.country);
       this._countryServiceFacade.getOnlyStates(this.selectedSupplier.address.country)
-      .then((payload: any) => { this.states = payload; }).catch(error => { });
+        .then((payload: any) => { this.states = payload; }).catch(error => { });
       this.frm_newSupplier.controls['frmState'].setValue(this.selectedSupplier.address.state);
       this.frm_newSupplier.controls['frmStreet'].setValue(this.selectedSupplier.address.street);
       this.frm_newSupplier.controls['frmCity'].setValue(this.selectedSupplier.address.city);
@@ -116,7 +157,7 @@ export class NewSupplierComponent implements OnInit {
       if (res.length > 0) {
         this.countries = res;
       }
-    }).catch(error => {});
+    }).catch(error => { });
   }
 
   autoCompleteCallback(selectedData: any) {
@@ -217,7 +258,7 @@ export class NewSupplierComponent implements OnInit {
         this.updatingBtn = false;
         this.disableAddBtn = false;
         this._systemModuleService.off();
-      }).catch(err => {});
+      }).catch(err => { });
 
       // this._facilityServiceFacade.saveFacility(payload).then(res => {
       //   this.addBtn = true;
@@ -271,5 +312,77 @@ export class NewSupplierComponent implements OnInit {
   }
   sweetAlertCallback(result) {
     this.refreshSupplier.emit(true);
+  }
+  hideSuggestions() {
+    this.showSearchResult = false;
+  }
+  fillingFormWithSearchInfo(supplier) {
+    this.updateBtn = true;
+    this.addBtn = false;
+    this.selectedSupplier = supplier.supplier;
+    this.pickedSupplier = supplier;
+    let streetAddress, city, country, state;
+    streetAddress = this.selectedSupplier.address.formatted_address;
+    if (this.selectedSupplier.address.address_components[0].types[0] === 'route') {
+      city = this.selectedSupplier.address.address_components[2].long_name;
+      country = this.selectedSupplier.address.address_components[5].long_name;
+      state = this.selectedSupplier.address.address_components[4].long_name;
+
+    } else {
+      city = this.selectedSupplier.address.address_components[2].long_name;
+      country = this.selectedSupplier.address.address_components[6].long_name;
+      state = this.selectedSupplier.address.address_components[5].long_name;
+
+    }
+    this.frm_newSupplier.controls['name'].setValue(this.selectedSupplier.name);
+    this.frm_newSupplier.controls['email'].setValue(this.selectedSupplier.email);
+    this.frm_newSupplier.controls['frmContact'].setValue(this.selectedSupplier.primaryContactPhoneNo);
+    this.frm_newSupplier.controls['frmCountry'].setValue(country);
+    this._countryServiceFacade.getOnlyStates(country)
+      .then((payload: any) => { this.states = payload; }).catch(error => { });
+    this.frm_newSupplier.controls['frmState'].setValue(state);
+    this.frm_newSupplier.controls['frmStreet'].setValue(streetAddress);
+    this.frm_newSupplier.controls['frmCity'].setValue(city);
+    this.frm_newSupplier.controls['cac'].setValue(this.selectedSupplier.cacNo);
+
+    if (this.frm_newSupplier.controls['name'].value.length > 0) {
+      this.frm_newSupplier.controls['email'].disable();
+      this.frm_newSupplier.controls['frmContact'].disable();
+      this.frm_newSupplier.controls['frmCountry'].disable();
+      this.frm_newSupplier.controls['frmStreet'].disable();
+      this.frm_newSupplier.controls['frmCity'].disable();
+      this.frm_newSupplier.controls['cac'].disable();
+    } else {
+      this.frm_newSupplier.controls['email'].enable();
+      this.frm_newSupplier.controls['frmContact'].enable();
+      this.frm_newSupplier.controls['frmCountry'].enable();
+      this.frm_newSupplier.controls['frmStreet'].enable();
+      this.frm_newSupplier.controls['frmCity'].enable();
+      this.frm_newSupplier.controls['cac'].enable();
+    }
+
+  }
+
+  update(valid, value) {
+    this.updatingBtn = true;
+    const sup = {
+      facilityId: this.selectedFacility._id,
+      supplierId: this.pickedSupplier.supplierId,
+      createdBy: this.loginEmployee._id
+    }
+    this.supplierService.createExistingSupplier(sup).then(payload => {
+      if (payload.status !== 'error') {
+        this.updatingBtn = false;
+        this.updateBtn = false;
+        this.frm_newSupplier.reset();
+        this.userSettings['inputString'] = '';
+        this.close_onClick();
+        this._systemModuleService.announceSweetProxy('Facility updated successfully', 'success');
+      } else {
+        this.updatingBtn = false;
+        this._systemModuleService.announceSweetProxy(payload.message, 'warning');
+      }
+    }).catch(err => {
+    });
   }
 }
