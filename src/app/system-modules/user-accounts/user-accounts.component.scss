@@ -1,55 +1,61 @@
 @import "../../../globals/variables.scss";
-
 // .userAcc-mainWrap{
 //     position: fixed;
 //     min-height:100vh;
 //     background: darken($primaryColor, 5%);
 //     width:100%;
 // }
-.userAcc-mainWrap{
+.userAcc-mainWrap {
     position: fixed;
-    min-height:100vh;
+    min-height: 100vh;
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.90), rgba(0, 0, 0, 0.90)), url(../../../assets/images/bg/hospital.jpg) no-repeat center center;
-    background-size:cover;
-    width:100%;
+    background-size: cover;
+    width: 100%;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
     z-index: 10;
 }
-.userAccs-pgHeader{
+
+.userAccs-pgHeader {
     text-align: center;
     margin-top: 30px;
     margin-bottom: 60px;
     font-family: $font-titles;
 }
-.userAccs-pgHeader img{
+
+.userAccs-pgHeader img {
     width: 70px;
     margin-top: 50px;
 }
+
 .userAccs-pgTitle {
     font-size: 2.1rem;
     color: #e8e8e8;
 }
-.userAccs-listingWrap{
+
+.userAccs-listingWrap {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     width: 100%;
 }
-.listing-title{
+
+.listing-title {
     font-size: 1.6rem;
     color: #fff;
     margin-bottom: 30px;
 }
-.userAccs-listing{
-    background: rgba(0,0,0,0.5);
+
+.userAccs-listing {
+    background: rgba(0, 0, 0, 0.5);
     padding: 10px;
-    text-align: center;  
+    text-align: center;
     border-top: 2px solid #fff;
 }
-.acc-listing{
+
+.acc-listing {
     text-align: center;
     width: 200px;
     height: 200px;
@@ -59,11 +65,13 @@
     padding-top: 15px;
     border: 1px solid #4bb8ef;
 }
-.acc-listing:hover{
+
+.acc-listing:hover {
     border: 1px solid #fff;
-    background: rgba(0,0,0,0.3);
+    background: rgba(0, 0, 0, 0.3);
 }
-.listing-imgWrap{
+
+.listing-imgWrap {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -74,15 +82,24 @@
     background: rgba(221, 221, 221, 0.6);
     margin: 0 auto;
 }
-.listing-imgWrap img{
+
+.listing-imgWrap img {
     width: 100%;
 }
-.listing-name{
+
+.listing-name {
     font-size: 1.6rem;
     color: #fff;
     margin-top: 5px;
 }
-.loggedinUserWrap{
+
+.listing-type {
+    font-size: 1.2rem;
+    color: #eee000;
+    margin-top: 5px;
+}
+
+.loggedinUserWrap {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -93,57 +110,67 @@
     color: #fff;
     padding: 10px;
 }
-.loggedinUser_user{
+
+.loggedinUser_user {
     display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
 }
-.loggedinUser_user:hover{
+
+.loggedinUser_user:hover {
     text-decoration: underline;
 }
-.loggedinUserWrap img{
+
+.loggedinUserWrap img {
     width: 30px;
     border-radius: 100%;
     margin-right: 10px;
 }
-.logoutLink{
+
+.logoutLink {
     margin-left: 10px;
     padding: 10px;
     cursor: pointer;
 }
-.logoutLink:hover{
+
+.logoutLink:hover {
     text-decoration: underline;
 }
 
-@media only screen and (max-width: 530px){
-    .acc-listing{
+@media only screen and (max-width: 530px) {
+    .acc-listing {
         width: auto;
         height: auto;
         padding-top: 0;
         border: 0px;
     }
-    .loggedinUserWrap{
+    .loggedinUserWrap {
         top: -2px;
         right: 0px;
         font-size: 1.1rem;
     }
-    .userAccs-pgTitle{
+    .userAccs-pgTitle {
         font-size: 1.6rem;
     }
-    .listing-imgWrap{
+    .listing-imgWrap {
         width: 30px;
         height: 30px;
     }
-    .listing-name{
+    .listing-name {
         font-size: 1.2rem;
         max-width: 70px;
         text-align: center;
         margin: 0 auto;
     }
-    .f_sg3 input{
-    border-bottom: 0px;
-}
+    .listing-type {
+        font-size: 1.2rem;
+        color: #eee000;
+        margin-top: 5px;
+    }
+    .f_sg3 input {
+        border-bottom: 0px;
+    }
 }
 
 .outer {
@@ -160,7 +187,7 @@
 
 .inner {
     margin-left: auto;
-    margin-right: auto; 
+    margin-right: auto;
     width: 500px;
     background-color: #fff;
     padding: 10px;

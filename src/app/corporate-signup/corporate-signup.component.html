@@ -102,6 +102,7 @@
                             <a [hidden]="show" (click)="toggleShow($event)" class="toggle-pass"><i class="fa fa-eye"></i></a>
                         </mat-input-container>
                     </div>
+
                     <div class="frm-item-wrap">
                         <mat-input-container class="example-full-width">
                             <i *ngIf="show" (click)="toggleShow($event)" class="fa fa-lock toggle-pass" aria-hidden="true"></i>
@@ -118,7 +119,7 @@
 
         <div *ngIf="sg2_show" class="f_sg2 animated zoomIn">
             <ngb-alert [dismissible]="false" *ngIf="isSuccessful" type="success">
-            {{closeMsg}}
+                {{closeMsg}}
             </ngb-alert>
             <form *ngIf="!isSuccessful" [formGroup]="frm_numberVerifier" novalidate>
                 <div class="frm-singleItem-wrap">
