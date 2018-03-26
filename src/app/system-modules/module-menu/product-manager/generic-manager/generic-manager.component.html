@@ -1,6 +1,82 @@
-<div class="survery">
+<div class="animated pulse">
+    <div class="modal-header-wrap">
+        <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+        <legend class="modal_title">Generic Product Manager</legend>
+        <div class="modal_mini_title">All Purpose Medical Information System</div>
+        <!--<div class="modal_mini_title">{{productName}}</div>-->
+    </div>
+    <div class="modal-baseWrap">
+        <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+        <div class="purchasedetails">
+            <div class="container container-width">
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-xs-12">
+                        <h4>Generic Name Manager</h4>
+                        <div class="border-box">
+                            <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+                            <form [formGroup]="genericGroup">
+                                <div class="form-group">
+                                    <label for="name">New Generic</label>
+                                    <mat-input-container class="example-full-width">
+                                        <input matInput mat-error placeholder="Name" formControlName="name">
+                                    </mat-input-container>
+                                    <button *ngIf="isBtnEnable === true" (click)="onClickAdd(genericGroup.value, genericGroup.valid)" class="btn btn-default btn-create" type="submit">{{ btnLabel }}</button>
+                                    <button (click)="onClickCancel()" class="btn btn-default" type="submit">Clear</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div><br><br>
+                <div class="row">
+                    <div class="col-sm-12 col-md-12 col-xs-12">
+                        <input type="text" class="form-control" placeholder="search categories"><br>
+                    </div>
+                </div>
+                <div class="row border-row">
+                    <div class="row text-head">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5">
+                                <h3>Generic Name</h3>
+                            </div>
+                            <div class="col-xs-3">
+                                <!-- <h3>STATUS</h3> -->
+                            </div>
+                            <div class="col-xs-4">
+                                <!-- <h3>ACTIONS</h3> -->
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" *ngIf="generics.length === 0">
+                        <div class="col-xs-12 text-center">No data available in table</div>
+                    </div>
+                    <div class="row" *ngFor="let generic of generics">
+                        <div class="col-xs-12">
+                            <div class="col-xs-5">
+                                <p>{{ generic.name }}</p>
+                            </div>
+                            <div class="col-xs-3">
+                                <!-- <span class="{{ generic.isActive ? 'bg-green' : 'bg-red'}} is-active" (click)="onClickIsActive(generic)">
+                                    {{ generic.isActive ? 'Active' : 'Inactive'}}
+                                </span> -->
+                            </div>
+                            <div class="col-xs-4">
+                                <!-- <a><span (click)="onClickEdit(generic)"><i class="fa fa-pencil"></i></span></a>
+                                <a><span (click)="onClickIsActive(generic)"><i class="fa fa-trash"></i></span></a> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <!--<div class="survery">
     <div class="">
-        <!-- purchase order details-->
+        
         <div class="inPatient-activityTimeline shadow-RB animated slideInRight" #closeclick>
             <div (click)="closeclick.hidden = !closeclick.hidden" class="hide-actionWrap">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
@@ -37,12 +113,12 @@
                                 <div class="col-xs-5">
                                     <h3>Generic Name</h3>
                                 </div>
-                                <div class="col-xs-3">
-                                    <!-- <h3>STATUS</h3> -->
-                                </div>
+                                <div class="col-xs-3">-->
+    <!-- <h3>STATUS</h3> -->
+    <!--</div>
                                 <div class="col-xs-4">
                                     <!-- <h3>ACTIONS</h3> -->
-                                </div>
+    <!--</div>
                             </div>
                         </div>
                         <div class="row" *ngIf="generics.length === 0">
@@ -57,11 +133,11 @@
                                     <!-- <span class="{{ generic.isActive ? 'bg-green' : 'bg-red'}} is-active" (click)="onClickIsActive(generic)">
                                         {{ generic.isActive ? 'Active' : 'Inactive'}}
                                     </span> -->
-                                </div>
+    <!-- </div>
                                 <div class="col-xs-4">
                                     <!-- <a><span (click)="onClickEdit(generic)"><i class="fa fa-pencil"></i></span></a>
                                     <a><span (click)="onClickIsActive(generic)"><i class="fa fa-trash"></i></span></a> -->
-                                </div>
+    <!-- </div>
                             </div>
                         </div>
                     </div>
@@ -69,5 +145,5 @@
             </div>
         </div>
         <!-- end purchase order details-->
-    </div>
-</div>
+    <!--</div>
+</div>-->

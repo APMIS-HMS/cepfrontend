@@ -113,9 +113,9 @@ export class ProductManagerComponent implements OnInit {
 		this.isProductCat = !this.isProductCat;
 		this.isGeneric = !this.isGeneric;
 		this.isManufacturer = !this.isManufacturer;
-	this.isPresentation = !this.isPresentation;
-	this.isStrength = !this.isStrength ;
-	this.isProductRoute = !this.isProductRoute;
+		this.isPresentation = !this.isPresentation;
+		this.isStrength = !this.isStrength ;
+		this.isProductRoute = !this.isProductRoute;
 	}
 
 	onClickManufacturerNavMenu() {
@@ -268,7 +268,7 @@ export class ProductManagerComponent implements OnInit {
 		this.supplierNavMenu = false;
 		this.manufacturerNavMenu = false;
 		this.routeNavMenu = false;
-		this.genericNavMenu = true;
+		//this.genericNavMenu = true;
 		this.presentationNavMenu = false;
 		this.strengthNavMenu = false;
 	}
@@ -286,7 +286,7 @@ export class ProductManagerComponent implements OnInit {
 		this.manufacturerNavMenu = false;
 		this.routeNavMenu = false;
 		this.genericNavMenu = false;
-		this.presentationNavMenu = true;
+		//this.presentationNavMenu = true;
 		this.strengthNavMenu = false;
 	}
 	routeSlide() {
@@ -301,7 +301,7 @@ export class ProductManagerComponent implements OnInit {
 		this.categoryNavMenu = false;
 		this.supplierNavMenu = false;
 		this.manufacturerNavMenu = false;
-		this.routeNavMenu = true;
+		//this.routeNavMenu = true;
 		this.genericNavMenu = false;
 		this.presentationNavMenu = false;
 		this.strengthNavMenu = false;
@@ -317,7 +317,7 @@ export class ProductManagerComponent implements OnInit {
 		this.productNavMenu = false;
 		this.categoryNavMenu = false;
 		this.supplierNavMenu = false;
-		this.manufacturerNavMenu = true;
+		//this.manufacturerNavMenu = true;
 		this.routeNavMenu = false;
 		this.genericNavMenu = false;
 		this.presentationNavMenu = false;
@@ -339,7 +339,7 @@ export class ProductManagerComponent implements OnInit {
 		this.routeNavMenu = false;
 		this.genericNavMenu = false;
 		this.presentationNavMenu = false;
-		this.strengthNavMenu = true;
+		//this.strengthNavMenu = true;
 	}
 
 }
