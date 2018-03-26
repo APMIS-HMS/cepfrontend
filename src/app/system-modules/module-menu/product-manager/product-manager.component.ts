@@ -110,12 +110,12 @@ export class ProductManagerComponent implements OnInit {
 	// }
 
 	close_onClick(message: boolean): void {
-		this.isProductCat = !this.isProductCat;
-		this.isGeneric = !this.isGeneric;
-		this.isManufacturer = !this.isManufacturer;
-		this.isPresentation = !this.isPresentation;
-		this.isStrength = !this.isStrength ;
-		this.isProductRoute = !this.isProductRoute;
+		this.isProductCat = false;
+		this.isGeneric = false;
+		this.isManufacturer = false;
+		this.isPresentation = false;
+		this.isStrength = false;
+		this.isProductRoute = false;
 	}
 
 	onClickManufacturerNavMenu() {
