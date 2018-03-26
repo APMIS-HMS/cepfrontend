@@ -54,7 +54,7 @@
                 <div [formGroupName]="i">
                   <div class="col-sm-10">
                     <div class="row">
-                      <div class="col-sm-6">
+                      <div class="col-sm-3">
                         <mat-input-container class="row">
                           <input type="text" matInput placeholder="Enter Batch No" formControlName="batchNumber">
                         </mat-input-container>
@@ -62,13 +62,22 @@
                           Batchno Required
                         </small>
                       </div>
-                      <div class="col-sm-6">
+                      <div class="col-sm-3">
                         <mat-input-container class="row">
                           <input type="number" formControlName="quantity" matInput placeholder="Enter Quantity">
                         </mat-input-container>
                         <small class="row" *ngIf="!myForm.controls.initproduct.controls[i].controls.quantity.valid">
                           Quantity Required
                         </small>
+                      </div>
+                      <div class="col-sm-6">
+                        
+                        <div class="row" *ngFor="let item of myForm.controls.initproduct.controls[i].controls.config.value.packSizes;let j=index">
+                            <span *ngIf="item.isBase">Base</span>  
+                          <mat-input-container>
+                                <input type="number" min="1" (change)="onAddPackage($event,item,i,j)"  matInput placeholder="{{item.name}}">
+                              </mat-input-container>
+                        </div>
                       </div>
                     </div>
                     <div class="row">
