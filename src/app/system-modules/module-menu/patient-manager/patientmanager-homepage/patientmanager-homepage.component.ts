@@ -355,7 +355,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.patientToEdit.tags.splice(toDelete, 1);
       this.patientService.patch(this.patientToEdit._id, this.patientToEdit, {}).then(deletePayload => {
       }).catch(err => {
-        console.log(err);
+        console.log(err); 
       });
     }
 
