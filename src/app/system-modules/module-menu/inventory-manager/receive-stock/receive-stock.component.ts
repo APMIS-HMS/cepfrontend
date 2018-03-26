@@ -20,6 +20,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./receive-stock.component.scss']
 })
 export class ReceiveStockComponent implements OnInit {
+  searchOpen = false;
   slideDetails = false;
   clickslide = false;
   user: any = <any>{};
@@ -70,6 +71,11 @@ export class ReceiveStockComponent implements OnInit {
     });
 
   }
+
+  openSearch(){
+    this.searchOpen = !this.searchOpen;
+  }
+
   getTransfers() {
     if (this.checkingStore !== undefined) {
       this.systemModuleService.on();
