@@ -20,26 +20,26 @@
     </div>
 </div>
 
-<div *ngIf="productCat" class="modal-overlay center-center">
-    <app-category-manager></app-category-manager>
+<div *ngIf="isProductCat" class="modal-overlay center-center">
+    <app-category-manager (closeModal)="close_onClick($event);"></app-category-manager>
 </div>
 
-<div *ngIf="generic">
+<div *ngIf="isGeneric">
     <app-generic-manager></app-generic-manager>
 </div>
 
-<div *ngIf="productRoute">
+<div *ngIf="isProductRoute">
     <app-route-manager></app-route-manager>
 </div>
 
-<div *ngIf="manufacturer">
+<div *ngIf="isManufacturer">
     <app-manufacturer-manager></app-manufacturer-manager>
 </div>
 
-<div *ngIf="presentation">
+<div *ngIf="isPresentation">
     <app-presentation-manager></app-presentation-manager>
 </div>
 
-<div *ngIf="strength">
+<div *ngIf="isStrength">
     <app-strength-manager></app-strength-manager>
 </div>

@@ -18,7 +18,7 @@
     text-align: center;
     border-bottom: 0px;
     color: #fff;
-    margin-bottom: 0;
+    margin-bottom: 10px;
     padding-bottom: 5px;
     padding-top: 5px;
 }
@@ -39,7 +39,7 @@
 
 .checkbox-wrap {
     display: flex;
-    width: 100%;
+    width: 95%;
 }
 
 .check-item {
@@ -68,6 +68,7 @@
     border: 1px solid #ccc;
     padding: 15px;
     border-radius: 10px;
+    padding-right: 0px;
 }
 
 .chk-group-wrap {
@@ -91,3 +92,25 @@
 .container {
     // width: 50%;
 }
+
+.modal-header-wrap {
+    width: 800px;
+    min-width: 440px;
+}
+
+.cta-1 {
+    color: #fff;
+    margin: 10px auto;
+    font-size: 1.6rem;
+    display: flex;
+    justify-content: center;
+    width: 180px;
+    height: 43px;
+    border-radius: 30px;
+}
+
+//.fa-plus:before 
+//{
+// content: "\f067";
+//padding-right: 10px;
+//}
