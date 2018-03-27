@@ -221,6 +221,7 @@
                                             </mat-tab>
                                             <mat-tab label="ID Tags" style="padding: 10px;">
                                                 <div class="patient-detail-wrapper">
+                                                    <div class="mainErr animated shake" *ngIf="mainErr">{{errMsg}}</div>
                                                     <div class="row">
                                                         <div class="col-xs-6">
                                                             <mat-input-container class="example-full-width">
