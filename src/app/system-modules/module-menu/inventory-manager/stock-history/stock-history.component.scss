@@ -3,7 +3,14 @@
 .filter-container {
     padding: 10px;
 }
-
+.filter-wrap{
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+}
+.filter-item{
+    margin-right: 10px;
+}
 .accepted,
 .fa-check {
     color: #28c41c;

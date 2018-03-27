@@ -1,5 +1,5 @@
 <div class="np-mainwrap">
-    <form [formGroup]="frm_purchaseOrder" novalidate>
+    <form class="main-frm" [formGroup]="frm_purchaseOrder" novalidate>
         <div class="sec-a">
             <div class="wrap1">
                 <div class="row">
@@ -20,56 +20,24 @@
                     </div>
                 </div>
             </div>
-            <div class="wrap2">
-                <div class="row">
-                    <div class="frm-item-wrap">
-                        <mat-input-container>
-                            <input matInput formControlName="deliveryDate" [matDatepicker]="picker" placeholder="Expected Delivery Date (Choose a date)">
-                        </mat-input-container>
-                        <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
-                        <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                    </div>
+            <div class="wrap1">
+                <div class="frm-item-wrap" style="display:flex;">
+                    <mat-input-container>
+                        <input matInput formControlName="deliveryDate" [matDatepicker]="picker" placeholder="Expected Delivery Date (Choose a date)">
+                    </mat-input-container>
+                    <!-- <button mdSuffix [mdDatepickerToggle]="picker"></button> -->
+                    <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
                 </div>
-                <div class="row">
-                    <div class="frm-item-wrap">
-                        <mat-input-container class="example-full-width">
-                            <textarea matInput mat-error placeholder="Remark" formControlName="desc"></textarea>
-                        </mat-input-container>
-                    </div>
+                <div class="frm-item-wrap">
+                    <mat-input-container style="margin-top: -16px; width:100%;" class="example-full-width">
+                        <textarea matInput mat-error placeholder="Remark" formControlName="desc"></textarea>
+                    </mat-input-container>
                 </div>
             </div>
         </div>
-        <div (click)="flyout_toggle($event)" class="txt-link">Add Product</div>
-        <div *ngIf="flyout===true" class="flyout animated slideOut">
-            <div class="sec-b">
-                <div (click)="flyout_toggle($event)" class="slideInWrap"><i class="fa fa-arrow-circle-right pull-right" aria-hidden="true"></i></div>
-                <div class="col-a">
-                    <div class="filter-sect">
-                        <div class="frm-item-wrap">
-                            <mat-input-container>
-                                <input matInput [formControl]="searchControl" placeholder="search product here...">
-                            </mat-input-container>
-                        </div>
-
-                        <div class="check-filterWrap">
-                            <div class="frm-item-wrap chkbox-wrap" *ngFor ="let item of checkBoxLabels; let i=index">
-                                <mat-checkbox [checked]="item.checked" (change)="onChecked($event,item,checkBoxLabels,i)">{{item.name}}</mat-checkbox>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="product-sect">
-                        <div class="control-group" *ngFor="let group of superGroups">
-                            <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
-                                <div class="control__indicator"> 
-                                     <mat-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></mat-checkbox>
-                                 </div>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <!-- <div (click)="flyout_toggle($event)" class="txt-link">Add Product</div> -->
+        
         <div class="col-b">
             <form *ngIf="productTableForm.controls['productTableArray'].value.length > 0" [formGroup]="productTableForm">
                 <div formArrayName="productTableArray" class="frmArrayWrap">
@@ -80,12 +48,12 @@
                                 <div class="inputWrap-productDetail">
                                     <div (click)="removeProduct(i, schedule.value)" class="modal-close-ico" aria-hidden="true">X</div>
 
-                                    <div style="width: 59%;" class="frm-item-wrap">
+                                    <div class="frm-item-wrap">
                                         <mat-input-container class="example-full-width">
                                             <input matInput mat-error placeholder="Product" formControlName="product">
                                         </mat-input-container>
                                     </div>
-                                    <div style="width: 20%;" class="frm-item-wrap">
+                                    <div class="frm-item-wrap">
                                         <mat-input-container class="example-full-width">
                                             <input type="number" matInput mat-error placeholder="Qantity" formControlName="qty">
                                         </mat-input-container>
@@ -106,4 +74,35 @@
         </div>
 
     </form>
+
+    <div class="flyout">
+        <div class="sec-b">
+            <div class="notice">Select to add to your purchase order list</div>
+            <!-- <div (click)="flyout_toggle($event)" class="slideInWrap"><i class="fa fa-arrow-circle-right pull-right" aria-hidden="true"></i></div> -->
+            <div class="col-a">
+                <div class="filter-sect">
+                    <div class="frm-item-wrap">
+                        <mat-input-container>
+                            <input matInput [formControl]="searchControl" placeholder="search product here...">
+                        </mat-input-container>
+                    </div>
+
+                    <div class="check-filterWrap">
+                        <div class="chkbox-wrap" *ngFor ="let item of checkBoxLabels; let i=index">
+                            <mat-checkbox [checked]="item.checked" (change)="onChecked($event,item,checkBoxLabels,i)">{{item.name}}</mat-checkbox>
+                        </div>
+                    </div>
+                </div>
+                <div class="product-sect">
+                    <div *ngFor="let group of superGroups">
+                        <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
+                            <div class="control__indicator"> 
+                                    <mat-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></mat-checkbox>
+                                </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
