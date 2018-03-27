@@ -17,6 +17,7 @@ import { StoreHomeComponent } from './store-home/store-home.component';
 import { QuickLinksComponent } from './quick-links/quick-links.component';
 import { PosComponent } from './pos/pos.component';
 import { PosDiscountComponent } from './pos/pos-discount/pos-discount.component';
+import { PosRecieptComponent } from './pos/pos-reciept/pos-reciept.component';
 
 
 
@@ -28,7 +29,8 @@ import { PosDiscountComponent } from './pos/pos-discount/pos-discount.component'
         StoreHomeComponent,
         QuickLinksComponent,
         PosComponent,
-        PosDiscountComponent
+        PosDiscountComponent,
+        PosRecieptComponent
     ],
 
     exports: [
