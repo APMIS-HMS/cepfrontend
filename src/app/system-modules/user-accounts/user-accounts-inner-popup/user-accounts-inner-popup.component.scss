@@ -1,28 +1,31 @@
 // @import "../user-accounts.component.scss";
-
-.modal-baseWrap{
+.modal-baseWrap {
     margin-left: 0;
     width: 420px;
     padding: 20px;
 }
-.userAccs-listingWrap{
+
+.userAccs-listingWrap {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-wrap: wrap;
     width: 100%;
 }
-.listing-title{
+
+.listing-title {
     font-size: 1.6rem;
     color: #fff;
     margin-bottom: 30px;
 }
-.userAccs-listing{
+
+.userAccs-listing {
     //width: 90%;
-    text-align: center;  
+    text-align: center;
     margin: 0 auto;
 }
-.acc-listing{
+
+.acc-listing {
     text-align: center;
     width: 160px;
     height: 160px;
@@ -32,10 +35,12 @@
     box-sizing: border-box;
     padding: 10px;
 }
-.acc-listing:hover{
+
+.acc-listing:hover {
     background: #eee;
 }
-.listing-imgWrap{
+
+.listing-imgWrap {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -46,23 +51,37 @@
     background: rgba(221, 221, 221, 0.6);
     margin: 0 auto;
 }
-.listing-imgWrap img{
+
+.listing-imgWrap img {
     width: 80%;
 }
 
-.listing-imgWrap i{
+.listing-imgWrap i {
     font-size: 3.2rem;
 }
-.listing-name{
+
+.listing-name {
     font-size: 1.2rem;
     padding-top: 20px;
     color: #444;
 }
-@media only screen and (max-width: 530px){
-    .modal-baseWrap{
+
+.listing-type {
+    font-size: 1.2rem;
+    color: #eee000;
+    margin-top: 5px;
+}
+
+@media only screen and (max-width: 530px) {
+    .modal-baseWrap {
         width: 250px;
     }
-    .listing-name{
+    .listing-name {
         max-width: 200px;
+    }
+    .listing-type {
+        font-size: 1.2rem;
+        color: #eee000;
+        margin-top: 5px;
     }
 }
