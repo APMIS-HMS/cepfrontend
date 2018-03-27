@@ -4,7 +4,6 @@
     <li (click)="changeRoute('orders')" [class.pg-menuActive]="ordersContentArea" [routerLink]="['/dashboard/purchase-manager/orders']">Manage Purchase</li>
     <li (click)="changeRoute('inventory')" [class.pg-menuActive]="inventoryContentArea" [routerLink]="['/dashboard/inventory-manager/inventory']">Manage Inventory</li>
 </ul>
-
 <div (click)="closeActivate($event)" class="inner-wrap-b body-wrap">
     <div class="facility-title">{{pageInView}}</div>
     <div class="">
@@ -12,13 +11,13 @@
             <div class="card-header">
                 <div class="row">
                     <div class="table-head col-xs-1">S/N</div>
-                    <div class="table-head col-xs-2">Name</div>
-                    <div class="table-head col-xs-1">Location</div>
-                    <div class="table-head col-xs-2">Description</div>
-                    <div class="table-head col-xs-2">Types</div>
-                    <div class="table-head col-xs-1">Dispense</div>
-                    <div class="table-head col-xs-1">Transfer</div>
-                    <div class="table-head col-xs-1">Actions</div>
+                    <div class="table-head col-xs-2">| Name</div>
+                    <div class="table-head col-xs-1">| Location</div>
+                    <div class="table-head col-xs-2">| Description</div>
+                    <div class="table-head col-xs-2">| Types</div>
+                    <div class="table-head col-xs-1">| Dispense</div>
+                    <div class="table-head col-xs-1">| Transfer</div>
+                    <div class="table-head col-xs-1">| Actions</div>
                     <div class="table-head col-xs-1">
                         <i class="fa fa-search fa-fw pointer" (click)="openSearch()"></i>
                     </div>

@@ -5,68 +5,68 @@
         <div class="modal_mini_title">All Purpose Medical Information System</div>
         <!--<div class="modal_mini_title">{{productName}}</div>-->
     </div>
+
     <div class="modal-baseWrap">
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-        <div class="purchasedetails">
-
+        <form [formGroup]="presentationGroup">
             <div class="row">
-                <div class="col-sm-12 col-md-12 col-xs-12">
-                    <h4>Presentation Manager</h4>
-                    <div class="border-box">
-                        <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-                        <form [formGroup]="presentationGroup">
-                            <div class="form-group">
-                                <label for="name">New Presentation</label>
-                                <mat-input-container class="example-full-width">
-                                    <input matInput mat-error placeholder="Name" formControlName="name">
-                                </mat-input-container>
-                                <button *ngIf="isBtnEnable" (click)="onClickAdd(presentationGroup.value, presentationGroup.valid)" class="btn btn-default btn-create" type="submit">{{ btnLabel }}</button>
-                                <button (click)="onClickCancel()" class="btn btn-default" type="submit">Clear</button>
+                <div class="col-xs-12 enline">
+                    <div class="col-xs-8 form-group">
+                        <mat-input-container class="example-full-width">
+                            <input matInput mat-error placeholder="Name" formControlName="name">
+                        </mat-input-container>
+                    </div>
+                    <div class="col-xs-2">
+                        <button *ngIf="isBtnEnable" (click)="onClickAdd(presentationGroup.value, presentationGroup.valid)" class="btn btn-default btn-create" type="submit">{{ btnLabel }}</button>
+                    </div>
+                    <div class="col-xs-2">
+                        <button (click)="onClickCancel()" class="btn btn-default" type="submit">Clear</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <br><br>
+        <div class="card">
+            <div class="row">
+                <div class="col-xs-12 line">
+                    <div class="card-header">
+                        <div class="row">
+                            <div class="col-xs-1"> S/N </div>
+                            <div class="col-xs-5"> PRESENTATIONS </div>
+                            <div class="col-xs-3"> STATUS </div>
+                            <div class="col-xs-3"> ACTIONS </div>
+                        </div>
+                    </div>
+                    <div class="searchInput">
+                        <input type="text" class="form-control" placeholder="search here......" style="border-radius:5px;
+                            width:80%; padding: 5px 10px;">
+                        <br>
+                    </div>
+                    <div class="card-content scrollable">
+                        <div class="row card-list-item" *ngIf="presentations.length === 0">
+                            <div class="col-xs-12 text-center">No data available in table</div>
+                        </div>
+                        <div class="row card-list-item" *ngFor="let presentation of presentations; let i = index">
+                            <div class="col-xs-1">
+                                <div>{{ i+1 }}</div>
                             </div>
-                        </form>
-                    </div>
-                </div>
-            </div><br><br>
-            <div class="row">
-                <div class="col-sm-12 col-md-12 col-xs-12">
-                    <input type="text" class="form-control" placeholder="search categories"><br>
-                </div>
-            </div>
-            <div class="row border-row">
-                <div class="row text-head">
-                    <div class="col-xs-12">
-                        <div class="col-xs-5">
-                            <h3>PRESENTATION</h3>
-                        </div>
-                        <div class="col-xs-3">
-                            <h3>STATUS</h3>
-                        </div>
-                        <div class="col-xs-4">
-                            <h3>ACTIONS</h3>
-                        </div>
-                    </div>
-                </div>
-                <div class="row" *ngIf="presentations.length === 0">
-                    <div class="col-xs-12 text-center">No data available in table</div>
-                </div>
-                <div class="row" *ngFor="let presentation of presentations">
-                    <div class="col-xs-12">
-                        <div class="col-xs-5">
-                            <p>{{ presentation.name }}</p>
-                        </div>
-                        <div class="col-xs-3">
-                            <span class="{{ presentation.isActive ? 'bg-green' : 'bg-red'}} is-active" (click)="onClickIsActive(presentation)">
-                                    {{ presentation.isActive ? 'Active' : 'Inactive'}}
-                                </span>
-                        </div>
-                        <div class="col-xs-4">
-                            <a><span (click)="onClickEdit(presentation)"><i class="fa fa-pencil"></i></span></a>
-                            <a><span (click)="onClickIsActive(presentation)"><i class="fa fa-trash"></i></span></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                            <div class="col-xs-5">
+                                <div>{{ presentation.name }}</div>
+                            </div>
+                            <div class="col-xs-3">
+                                <span class="{{ presentation.isActive ? 'text-green' : 'text-red'}} is-active" (click)="onClickIsActive(presentation)">
+                                                    {{ presentation.isActive ? 'Active' : 'Inactive'}}
+                                                </span>
+                            </div>
+                            <div class="col-xs-3">
+                                <a><span (click)="onClickEdit(presentation)"><i class="fa fa-pencil"></i></span></a>
+                                <a><span (click)="onClickIsActive(presentation)"><i class="fa fa-trash"></i></span></a>
+                            </div>
 
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

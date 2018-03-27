@@ -1,4 +1,3 @@
-@import '../../store-manager/landing-page/landing-page.component.scss';
 @import '../../clinic/check-in-patient/check-in-patient.component.scss';
 .container-width {
     //width: 100%;
@@ -116,11 +115,14 @@ tr {
 .card-header {
     background: #519dde; // #337ab7;
     color: #fff;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     padding: 10px;
     vertical-align: middle;
     //line-height: 30px;
-    border-bottom: solid 1px #fff;
+    //border-bottom: solid 1px #fff;
+    font-family: "Josefin Sans", sans-serif;
+    font-weight: 600;
+    //height: 15%;
 }
 
 .card-content {
@@ -147,7 +149,7 @@ tr {
 }
 
 .card-list-item {
-    padding: 5px;
+    padding: 10px;
     border-bottom: solid #cccccc 1px;
     //padding-top: 20px;
     //padding-bottom: 20px;
@@ -168,6 +170,10 @@ tr {
     padding-left: 17px;
     text-align: center;
     margin-top: 0;
+}
+
+.searchInput:focus {
+    border-radius: 5px;
 }
 
 .scrollable {
