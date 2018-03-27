@@ -344,11 +344,9 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.systemService.off;
       console.log(payl);
       if(payl.status === "error"){
-        console.log(1);
         this.mainErr = true;
         this.errMsg = payl.message;
         this.systemService.announceSweetProxy('testing', 'question',this);
-        console.log(2);
       }else{
         this.patientToEdit = payl.data;
       }
