@@ -1,3 +1,4 @@
+
 import { Component, OnInit, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
@@ -113,16 +114,17 @@ export class InitializeStoreComponent implements OnInit {
         name:'',
         size:0
       }]});
-      console.log(this.selectedPacks);
+      let prodObj =  this._fb.group({
+        batchNumber: ['', Validators.required],
+        quantity: ['', Validators.required],
+        config: this.initProductConfig(product.productConfigObject),
+        productionDate: [new Date()],
+        expiryDate: [new Date()]
+      });
+     
       control.push(
-        this._fb.group({
-          batchNumber: ['', Validators.required],
-          quantity: ['', Validators.required],
-          config: [product.productConfigObject],
-          productionDate: [new Date()],
-          expiryDate: [new Date()]
-        })
-      );
+        prodObj
+       );
     } else {
       control.push(
         this._fb.group({
@@ -135,7 +137,18 @@ export class InitializeStoreComponent implements OnInit {
       );
     }
   }
-
+  initProductConfig(config) {
+    let frmArray = new FormArray([])
+    config.forEach(item =>{
+      frmArray.push(new FormGroup({
+        size: new FormControl(''),
+      }));
+    })
+   return frmArray;
+  }
+  getProductConfig(form){
+    return form.controls.config.controls;
+  }
   removeBatch(i: number) {
     const control = <FormArray>this.myForm.controls['initproduct'];
     control.removeAt(i);
@@ -144,7 +157,6 @@ export class InitializeStoreComponent implements OnInit {
   getProducts() {
     this._productService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
       this.products = payload.data;
-      console.log(this.products);
     });
     // this._productService.find({ query: { facilityId: this.selectedFacility._id, isInventory: false } }).then(payload => {
     //   this.products = payload.data;
@@ -162,7 +174,6 @@ export class InitializeStoreComponent implements OnInit {
     this.selectedPacks[i].pack.forEach(element => {
       (<FormArray>this.myForm.controls['initproduct']).value[i].quantity += element.size;
     });
-    console.log((<FormArray>this.myForm.controls['initproduct']).value[i].quantity);
   }
 
 
