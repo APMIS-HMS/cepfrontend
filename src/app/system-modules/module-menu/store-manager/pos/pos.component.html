@@ -35,8 +35,16 @@
       <tbody>
           <tr>
               <td>Paracetamol</td>
-              <td class="pointer" (click)="navEpDetail(item)">2</td>
-              <td class="pointer" (click)="navEpDetail(item)">Packs</td>
+              <td>
+                  <input style="width:50px;" type="number" [formControl]="qtyControl">
+              </td>
+              <td>
+                  <select [formControl]="unitControl">
+                    <option>Cartons</option>
+                    <option>Packs</option>
+                    <option>Bottles</option>
+                  </select>
+              </td>
               <td class="pointer" (click)="navEpDetail(item)">&#x20A6;200</td>
               <td><i class="fa fa-times" aria-hidden="true"></i></td>
           </tr>
@@ -73,13 +81,26 @@
 
     <div class="summary-wrap">
       <div class="summary-item">
-        <div class="summary-item-label">Total</div>
+        <div class="summary-item-label">No. of Items</div>
+        <div class="summary-item-val">5</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-item-label">Total Amount</div>
         <div class="summary-item-val">&#x20A6;5000</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-item-label">Discount</div>
+        <div class="summary-item-val">&#x20A6;300</div>
+      </div>
+      <div class="summary-item">
+        <div class="summary-item-label">Amount Payable</div>
+        <div class="summary-item-val-total">&#x20A6;4700</div>
       </div>
     </div>
 
     <div class="btns">
       <button class="cta-1" style="background:#ff2500;">Cancel</button>
+      <button (click)="addModefier()" class="cta-1" style="background:#bcc04a;">Discount</button>
       <button class="cta-1">Payment</button>
     </div>
 
@@ -137,4 +158,8 @@
       </tbody>
     </table>
   </div>
+</div>
+
+<div *ngIf="addModefierPopup" class="modal-overlay">
+    <app-pos-discount (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-pos-discount>
 </div>

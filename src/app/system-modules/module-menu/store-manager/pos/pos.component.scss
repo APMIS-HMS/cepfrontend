@@ -58,9 +58,12 @@
     font-size: 1.4rem; 
 }
 .summary-item-val{
+    font-size: 1.4rem;
+    padding: 5px;
+}
+.summary-item-val-total{
     font-weight: bold;
     font-size: 1.8rem;
-    margin-right: 40px;
     border-top: 2px solid royalblue;
     border-bottom: 2px solid royalblue;
     padding: 5px;

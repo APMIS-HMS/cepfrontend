@@ -9,7 +9,10 @@ import { FormControl } from '@angular/forms';
 export class PosComponent implements OnInit {
 
   searchProduct = new FormControl();
+  qtyControl = new FormControl();
+  unitControl = new FormControl();
   suggest = false;
+  addModefierPopup = false;
 
   constructor() { }
 
@@ -21,6 +24,12 @@ export class PosComponent implements OnInit {
   }
   suggestion_click(){
     this.suggest = false;
+  }
+  addModefier() {
+    this.addModefierPopup = true;
+  }
+  close_onClick(e) {
+    this.addModefierPopup = false;
   }
 
 }

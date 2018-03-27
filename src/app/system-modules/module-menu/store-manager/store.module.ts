@@ -16,6 +16,7 @@ import { StoreEmitterService } from '../../../services/facility-manager/store-em
 import { StoreHomeComponent } from './store-home/store-home.component';
 import { QuickLinksComponent } from './quick-links/quick-links.component';
 import { PosComponent } from './pos/pos.component';
+import { PosDiscountComponent } from './pos/pos-discount/pos-discount.component';
 
 
 
@@ -26,7 +27,8 @@ import { PosComponent } from './pos/pos.component';
         NewStoreComponent,
         StoreHomeComponent,
         QuickLinksComponent,
-        PosComponent
+        PosComponent,
+        PosDiscountComponent
     ],
 
     exports: [
