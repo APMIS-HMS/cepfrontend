@@ -45,7 +45,7 @@ export class StoreCheckInComponent implements OnInit {
 			this.loginEmployee = res;
 			this.workSpaces = res.workSpaces;
 			this._getAllStores(this.workSpaces);
-		}).catch(err => console.log(err));
+		}).catch(err => {});
 	}
 
 	ngOnInit() {
