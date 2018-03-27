@@ -5,9 +5,9 @@ import { StoreHomeComponent } from './store-home/store-home.component';
 
 const STOREMODULES_ROUTES: Routes = [
     { path: '', component: StoreComponent, children: [
-            { path: '', redirectTo: 'store' },
-            { path: 'store', component: StoreHomeComponent },
-            { path: 'view-store', component: LandingPageComponent },
+            { path: '', redirectTo: 'home' },
+            { path: 'home', component: StoreHomeComponent },
+            { path: 'list', component: LandingPageComponent },
         ]
     }
 ];
