@@ -15,6 +15,7 @@ import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { StoreEmitterService } from '../../../services/facility-manager/store-emitter.service';
 import { StoreHomeComponent } from './store-home/store-home.component';
 import { QuickLinksComponent } from './quick-links/quick-links.component';
+import { PosComponent } from './pos/pos.component';
 
 
 
@@ -24,7 +25,8 @@ import { QuickLinksComponent } from './quick-links/quick-links.component';
         LandingPageComponent,
         NewStoreComponent,
         StoreHomeComponent,
-        QuickLinksComponent
+        QuickLinksComponent,
+        PosComponent
     ],
 
     exports: [
