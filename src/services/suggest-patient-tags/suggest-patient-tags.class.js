@@ -61,7 +61,6 @@ class Service {
         facilityId: data.facilityId
       }
     });
-    console.log(tag.data);
     if (tag.data.length > 0) {
       if(tag.data[0].tagType === 'identification'){
         return jsend.error('Identity tag already assigned');
