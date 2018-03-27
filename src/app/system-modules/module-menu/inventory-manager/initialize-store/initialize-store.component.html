@@ -1,110 +1,107 @@
 <div class="survery">
-    <div class="row">
-        <div class="col-sm-3">
-            <div class="panel" data-index="0">
-                <div class="panel-body">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
-                            <thead>
-                                <tr class="info">
-                                    <th>Products</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <div class="col">
-                                            <div class="form-group">
-                                                <input type="text" class="form-control" placeholder="Search Product" [formControl]="searchControl" />
-                                            </div>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr *ngFor="let product of products; let i = index">
-                                    <td (click)="addProduct(product)">
-                                        {{product.name}}
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
+  <div class="row">
+    <div class="col-sm-3">
+      <div class="panel" data-index="0">
+        <div class="panel-body">
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr class="info">
+                  <th>Products</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>
+                    <div class="col">
+                      <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search Product" [formControl]="searchControl" />
+                      </div>
                     </div>
-                </div>
-            </div>
+                  </td>
+                </tr>
+                <tr *ngFor="let product of products; let i = index">
+                  <td (click)="addProduct(product)">
+                    {{product.name}}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div class="col-sm-9">
-            <div class="panel lobidisable panel-bd lobipanel lobipanel-sortable" data-inner-id="P3ax1HGUSa" data-index="0">
-                <div class="panel-heading ui-sortable-handle">
-                    <!--
+      </div>
+    </div>
+    <div class="col-sm-9">
+      <div class="panel lobidisable panel-bd lobipanel lobipanel-sortable" data-inner-id="P3ax1HGUSa" data-index="0">
+        <div class="panel-heading ui-sortable-handle">
+          <!--
                       <div class="panel-title">
                           <h4>Products</h4>
                       </div>-->
-                </div>
-                <div class="alert alert-info" *ngIf="!saveAlert ">
-                    <strong>Select product to initialize</strong>
-                </div>
+        </div>
+        <div class="alert alert-info" *ngIf="!saveAlert ">
+          <strong>Select product to initialize</strong>
+        </div>
 
-                <div class="panel-body">
-                    <form [formGroup]="myForm" novalidate>
-                        <div formArrayName="initproduct">
+        <div class="panel-body">
+          <form [formGroup]="myForm" novalidate>
+            <div formArrayName="initproduct">
 
-                            <div class="form-array" *ngFor="let batch of myForm['controls'].initproduct['controls']; let i=index;">
-                                <div [hidden]="i != 0">
-                                    <span>{{ selectedProduct?.name }}</span>
-                                </div>
-                                <div [formGroupName]="i">
-                                    <div class="col-sm-10">
-                                        <div class="row">
-                                            <div class="col-sm-3">
-                                                <mat-input-container class="row">
-                                                    <input type="text" matInput placeholder="Enter Batch No" formControlName="batchNumber">
-                                                </mat-input-container>
-                                                <small class="row" *ngIf="!myForm.controls.initproduct.controls[i].controls.batchNumber.valid">
+              <div class="form-array" *ngFor="let batch of myForm['controls'].initproduct['controls']; let i=index;">
+                <div [hidden]="i != 0">
+                  <span>{{ selectedProduct?.name }}</span>
+                </div>
+                <div [formGroupName]="i">
+                  <div class="col-sm-10">
+                    <div class="row">
+                      <div class="col-sm-3">
+                        <mat-input-container class="row">
+                          <input type="text" matInput placeholder="Enter Batch No" formControlName="batchNumber">
+                        </mat-input-container>
+                        <small class="row" *ngIf="!myForm.controls.initproduct.controls[i].controls.batchNumber.valid">
                           Batchno Required
                         </small>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <mat-input-container class="row">
-                                                    <input type="number" formControlName="quantity" matInput placeholder="Enter Quantity">
-                                                </mat-input-container>
-                                                <small class="row" *ngIf="!myForm.controls.initproduct.controls[i].controls.quantity.valid">
+                      </div>
+                      <div class="col-sm-3">
+                        <mat-input-container class="row">
+                          <input type="number" formControlName="quantity" matInput placeholder="Enter Quantity" readonly>
+                        </mat-input-container>
+                        <small class="row" *ngIf="!myForm.controls.initproduct.controls[i].controls.quantity.valid">
                           Quantity Required
                         </small>
-                                            </div>
-                                            <div class="col-sm-6">
-                                                <div class="question-container" formArrayName="config">
-                                                    <div [formGroupName]="j" *ngFor="let item of getProductConfig(batch); let j = index">
-                                                        <mat-input-container>
-                                                            <input type="number" formControlName="size" min="1" matInput placeholder="Size">
-                                                        </mat-input-container>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-sm-6">Production Date:
-                                                <input type="date" placeholder="Production Date" formControlName="productionDate">
-                                            </div>
-                                            <div class="col-sm-6">Expiry Date:
-                                                <input type="date" placeholder="Expiry Date" formControlName="expiryDate">
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- <div class="col-sm-2">
+                      </div>
+                      <div class="col-sm-6">
+                        <div class="question-container" formArrayName="config">
+                          <div [formGroupName]="j" *ngFor="let item of getProductConfig(batch); let j = index">
+                            <mat-input-container>
+                              <input type="number" formControlName="size" min="1" (change)="onPackageSize(i)" matInput placeholder="{{item.value.name}}">
+                            </mat-input-container>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-sm-6">Expiry Date:
+                        <input type="date" placeholder="Expiry Date" formControlName="expiryDate">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-sm-2">
                                         <div class="col-sm-6" [hidden]="i < myForm.controls.initproduct.controls.length - 1">
                                             <a (click)="addBatch(i)">add</a>
                                         </div>
                                         <div class="col-sm-6">
                                             <a (click)="removeBatch(i)">X</a>
                                         </div>
-                                    </div> -->
+                                    </div>
 
-                                </div>
-                            </div>
+                </div>
+              </div>
 
-                        </div>
-                        <div class="col-sm-12 text-center">
-                            <a mat-raised-button [hidden]="isItemselected" *ngIf="isEnable" (click)="save(myForm.valid,myForm.value,selectedProduct)">
-                                <span>
+            </div>
+            <div class="col-sm-12 text-center">
+              <a mat-raised-button [hidden]="isItemselected" *ngIf="isEnable" (click)="save(myForm.valid,myForm.value,selectedProduct)">
+                <span>
                   <div [hidden]="isProcessing">
                     Save
                   </div>
@@ -114,9 +111,9 @@
                   </div>
                 </span>
 
-                            </a>
-                        </div>
-                    </form>
-                </div>
+              </a>
             </div>
+          </form>
         </div>
+      </div>
+    </div>

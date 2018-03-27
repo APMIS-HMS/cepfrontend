@@ -35,7 +35,7 @@ export class InitializeStoreComponent implements OnInit {
   productname: any;
   searchProduct: any;
   searchControl = new FormControl();
-  selectedPacks =[];
+  selectedPacks = [];
 
   constructor(
     private _fb: FormBuilder,
@@ -85,8 +85,7 @@ export class InitializeStoreComponent implements OnInit {
       return this._fb.group({
         batchNumber: ['', Validators.required],
         quantity: ['', Validators.required],
-        config: [this.selectedProduct.productConfigObject],
-        productionDate: [new Date()],
+        config: this.initProductConfig(this.selectedProduct.productConfigObject),
         expiryDate: [new Date()]
       });
     } else {
@@ -94,7 +93,6 @@ export class InitializeStoreComponent implements OnInit {
         batchNumber: ['', Validators.required],
         quantity: ['', Validators.required],
         config: [],
-        productionDate: [new Date()],
         expiryDate: [new Date()]
       });
     }
@@ -110,43 +108,41 @@ export class InitializeStoreComponent implements OnInit {
     this.selectedProduct = product;
     const control = <FormArray>this.myForm.controls['initproduct'];
     if (product.productConfigObject !== undefined) {
-      this.selectedPacks.push({pack: [{
-        name:'',
-        size:0
-      }]});
-      let prodObj =  this._fb.group({
+      let prodObj = this._fb.group({
         batchNumber: ['', Validators.required],
         quantity: ['', Validators.required],
         config: this.initProductConfig(product.productConfigObject),
-        productionDate: [new Date()],
         expiryDate: [new Date()]
       });
-     
+
       control.push(
         prodObj
-       );
+      );
     } else {
       control.push(
         this._fb.group({
           batchNumber: ['', Validators.required],
           quantity: ['', Validators.required],
           config: [],
-          productionDate: [new Date()],
           expiryDate: [new Date()]
         })
       );
     }
   }
   initProductConfig(config) {
+    console.log(config);
     let frmArray = new FormArray([])
-    config.forEach(item =>{
+    config.forEach(item => {
       frmArray.push(new FormGroup({
-        size: new FormControl(''),
+        size: new FormControl(0),
+        name: new FormControl(item.name),
+        isBase: new FormControl(item.isBase),
+        packVolume: new FormControl(item.size)
       }));
     })
-   return frmArray;
+    return frmArray;
   }
-  getProductConfig(form){
+  getProductConfig(form) {
     return form.controls.config.controls;
   }
   removeBatch(i: number) {
@@ -158,22 +154,15 @@ export class InitializeStoreComponent implements OnInit {
     this._productService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
       this.products = payload.data;
     });
-    // this._productService.find({ query: { facilityId: this.selectedFacility._id, isInventory: false } }).then(payload => {
-    //   this.products = payload.data;
-    // });
   }
 
-  onAddPackage(event, item, i, j) {
-    this.selectedPacks[i].pack[j].name = item.name;
-    this.selectedPacks[i].pack[j].size = event.target.value;
-    if (j === 0) {
-      if (event.target.value === 0) {
-        this.systemModuleService.announceSweetProxy('Zero can not be assign to a base pack', 'error');
-      }
-    }
-    this.selectedPacks[i].pack.forEach(element => {
-      (<FormArray>this.myForm.controls['initproduct']).value[i].quantity += element.size;
+  onPackageSize(i) {
+    (<FormArray>this.myForm['controls'].initproduct['controls'][i]).value.quantity = 0;
+    console.log(<FormArray>this.myForm['controls'].initproduct['controls'][i]);
+    let itm = <FormArray>this.myForm['controls'].initproduct['controls'][i].value.config.forEach(element => {
+      (<FormArray>this.myForm['controls'].initproduct['controls'][i]).value.quantity += element.size * element.packVolume;
     });
+    (<FormArray>this.myForm.controls['initproduct']).setValue(JSON.parse(JSON.stringify((<FormArray>this.myForm.controls['initproduct']).value)));
   }
 
 
