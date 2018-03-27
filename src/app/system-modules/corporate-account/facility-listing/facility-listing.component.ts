@@ -7,18 +7,13 @@ import { Facility } from '../../../models/index';
   styleUrls: ['./facility-listing.component.scss']
 })
 export class FacilityListingComponent implements OnInit {
-  @Input() selectedFacility = <Facility>{};
+  @Input() selectedFacility = <any>{};
   state = '';
   constructor(public facilityService: FacilitiesService) { }
 
   ngOnInit() {
     if (this.selectedFacility !== undefined) {
-      const stateId = this.selectedFacility.address.state;
-      const states: any[] = this.selectedFacility.countryItem.states;
-      const selectedState = states.filter(x => x._id === stateId);
-      if (selectedState.length > 0) {
-        this.state = selectedState[0].name;
-      }
+      this.state = this.selectedFacility.state;
     }
   }
 
