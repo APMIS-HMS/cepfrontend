@@ -72,12 +72,12 @@
                       </div>
                       <div class="col-sm-6">
                         
-                        <div class="row" *ngFor="let item of myForm.controls.initproduct.controls[i].controls.config.value.packSizes;let j=index">
+                        <!-- <div class="row" *ngFor="let item of myForm['controls'].initproduct['controls'][i].config['controls'];let j=index">
                             <span *ngIf="item.isBase">Base</span>  
                           <mat-input-container>
-                                <input type="number" min="1" (change)="onAddPackage($event,item,i,j)"  matInput placeholder="{{item.name}}">
+                                <input type="number" formControlName="size" min="1" matInput placeholder="{{item.name}}">
                               </mat-input-container>
-                        </div>
+                        </div> -->
                       </div>
                     </div>
                     <div class="row">
