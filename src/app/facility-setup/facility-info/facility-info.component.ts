@@ -58,6 +58,7 @@ export class FacilityInfoComponent implements OnInit {
 			facilitycity: ['', [<any>Validators.required]],
 			facilitystate: ['', [<any>Validators.required]],
 			facilitycountry: ['', [<any>Validators.required]],
+			facilityhdo: [true, [<any>Validators.required]],
 			facilityphonNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
 		});
 		this.facilityForm1.controls.facilitycountry.valueChanges.subscribe(country => {
@@ -124,6 +125,7 @@ export class FacilityInfoComponent implements OnInit {
 			country: form.facilitycountry,
 			state: form.facilitystate,
 			city: form.facilitycity,
+			isHDO: form.facilityhdo,
 			street: this.titleCasePipe.transform(form.facilitystreet)
 		}
 		let payload = {
