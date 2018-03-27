@@ -16,6 +16,7 @@ import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 export class InvoicesComponent implements OnInit {
   slideInvoiceDetails = false;
   frmSupplier: FormControl = new FormControl();
+  searchOpen = false;
 
   invoices: any[] = [];
   suppliers: any[] = [];
@@ -100,4 +101,7 @@ export class InvoicesComponent implements OnInit {
     this.router.navigate(['/dashboard/purchase-manager/purchase-entry-edit', invoice._id]);
   }
 
+  openSearch(){
+    this.searchOpen = !this.searchOpen;
+  }
 }

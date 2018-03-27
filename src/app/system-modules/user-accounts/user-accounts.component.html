@@ -24,6 +24,7 @@
                     <img *ngIf="item.logoObject != undefined" [src]="facilityService.transform(item.logoObject?.thumbnail)">
                 </div>
                 <div class="listing-name">{{item.name}}</div>
+                <div class="listing-type">{{item.facilityTypeId}}</div>
             </div>
         </div>
     </div>

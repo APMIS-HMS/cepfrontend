@@ -18,6 +18,7 @@ export class ProductManagerLandingpageComponent implements OnInit {
   productRoute = false;
   manufacturer = false;
   presentation = false;
+  searchOpen = false;
 
   deactivateButton = 'Deactivate';
   selectedFacility: Facility = <Facility>{};
@@ -64,6 +65,10 @@ export class ProductManagerLandingpageComponent implements OnInit {
           });
         }
       });
+  }
+
+  openSearch(){
+    this.searchOpen = !this.searchOpen;
   }
 
   private _notification(type: string, text: string): void {
