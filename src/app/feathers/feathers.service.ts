@@ -14,7 +14,7 @@ const RxJS = require('rxjs/Rx');
 const HOST = 'https://apmisapilive.azurewebsites.net'; // Online
 
 
-
+ 
 @Injectable()
 export class SocketService {
   public socket: any;

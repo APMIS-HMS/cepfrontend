@@ -25,7 +25,7 @@ export class UserAccountsInnerPopupComponent implements OnInit {
 
   ngOnInit() {
     const auth: any = this.locker.getObject('auth');
-    this.patientService.find({ query: { personId: auth.data.personId } }).then(payload => {
+    this.patientService.find({ query: { personId: auth.data.personId, facilityId: this.selectedFacility._id } }).then(payload => {
       if (payload.data.length > 0) {
         this.selectedPatient = payload.data[0];
         this.isPatient = true;

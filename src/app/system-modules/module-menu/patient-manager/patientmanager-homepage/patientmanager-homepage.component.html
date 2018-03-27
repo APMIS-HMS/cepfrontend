@@ -125,7 +125,7 @@
                                 <div class="panel-body">
                                     <a (click)="close_onClick()" aria-hidden="true" class="modal-close-ico">X</a>
                                     <legend class="modal_title">Edit Patient</legend>
-                                    <form class="form form-signup" role="form" [formGroup]="patientEditForm">
+                                    <form class="form form-signup" role="form" [formGroup]="patientEditForm" (click)="hideSuggestions()">
                                         <mat-tab-group style="padding: 10px;">
                                             <mat-tab label="Patient" style="padding: 10px;">
                                                 <div class="patient-detail-wrapper">
@@ -219,6 +219,44 @@
                                                     </div>
                                                 </div>
                                             </mat-tab>
+                                            <mat-tab label="ID Tags" style="padding: 10px;">
+                                                <div class="patient-detail-wrapper">
+                                                    <div class="mainErr animated shake" *ngIf="mainErr">{{errMsg}}</div>
+                                                    <div class="row">
+                                                        <div class="col-xs-6">
+                                                            <mat-input-container class="example-full-width">
+                                                                <input matInput [formControl]="tagName" placeholder="Tag Name" autocomplete="off">
+                                                            </mat-input-container>
+                                                            <ul class="suggestions nice-scroll" *ngIf="showSearchResult">
+                                                                <li *ngIf="dictionaries?.length === 0">No data available</li>
+                                                                <li class="suggestion" *ngFor="let dic of dictionaries" (click)="fillingWithSearchInfo(dic)">
+                                                                    <div class="listing-label">{{dic.name}}</div>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                        <div class="col-xs-2">
+                                                            <mat-checkbox [formControl]="identity" (click)="changeButton()">Identity!</mat-checkbox>
+                                                        </div>
+                                                        <div claass="col-xs-4">
+                                                            <button (click)="newTag(tagName.valid)" *ngIf="!changetagButton" class="apmis-blue mat-raised-button" [disabled]="!tagName.valid || tagLoader"
+                                                                mat-raised-button>
+                                                                {{btnLabel}}
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <span class="badge blue-gradient" *ngFor="let tag of patientToEdit?.tags" style="padding:10px 20px; margin: 3px; border-radius: 25px; font-size: 12px;">
+                                                                <span class="big-label">
+                                                                    {{tag.name}} 
+                                                                </span>
+                                                                &nbsp;
+                                                                <i *ngIf="tag.tagType === 'identification'" class="fa fa-info"></i>
+                                                                &nbsp;&nbsp;
+                                                                <i (click)="removeTag(tag)" class="fa fa-trash-o big-label" aria-hidden="true"></i>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </mat-tab>
                                             <mat-tab label="Next Of Kin">
                                                 <div class="next-of-kin-body-wrapper">
                                                     <div formArrayName="nextOfKin">
@@ -253,8 +291,6 @@
                                                         </div>
                                                     </div>
                                                 </div>
-
-
                                                 <div class="add-next-of-kin-box">
                                                     <a (click)="addNewNextOfKin();"> Add Next Of Kin
                                                         <i class="fa fa-plus"></i>
@@ -263,7 +299,7 @@
                                             </mat-tab>
                                             <mat-tab label="Plan">
                                                 <div class="next-of-kin-body-wrapper">
-                                                    <div class="row" *ngIf="!isEdit">
+                                                    <div class="row">
                                                         <div class="col-xs-12" *ngFor="let pat of patient.paymentPlan" style="margin-bottom: 10px">
                                                             <div class="card blue-gradient">
                                                                 <div class="row">

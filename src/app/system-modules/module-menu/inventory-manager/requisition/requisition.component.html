@@ -72,7 +72,7 @@
           </div>
 
           <div class="check-filterWrap">
-            <div class="frm-item-wrap chkbox-wrap" *ngFor="let item of checkBoxLabel; let i=index">
+            <div class="chkbox-wrap" *ngFor="let item of checkBoxLabel; let i=index">
               <mat-checkbox [checked]="item.checked" (change)="onChecked($event,item,checkBoxLabel,i)">{{item.name}}</mat-checkbox>
             </div>
           </div>

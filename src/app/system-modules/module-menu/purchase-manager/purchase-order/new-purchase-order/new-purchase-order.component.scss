@@ -1,6 +1,8 @@
 .np-mainwrap {
     width: 100%;
     margin-left: 10px;
+    display: flex;
+    justify-content: space-between;
 }
 
 .summaries {
@@ -34,55 +36,54 @@
 .s-itemVal {
     text-align: left;
 }
-
+.notice{
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: -20px;
+    font-size: 1.6rem;
+    color: royalblue;
+}
 .sec-a {
     display: flex;
     justify-content: space-between;
-    border-radius: 10px;
-    border: solid 1px #cacaca;
     padding: 10px;
     margin-top: 10px;
     width: 100%;
     box-sizing: border-box;
 }
 
-.wrap1 {
-    width: 70%;
-}
-
-.wrap1 .frm-item-wrap {
+.main-frm{
     width: 100%;
 }
-
-.wrap2 {
-    width: 29.5%;
-}
-
 .row {
     // display: flex;
 }
-
+.mat-form-field{
+    width: 100%;
+}
 label {
     font-size: 1.2rem;
     text-align: left;
     color: #515151;
 }
-
+.wrap1{
+    width: 49%;
+    overflow: hidden;
+}
 .frm-item-wrap {
     margin-right: 10px;
     padding-bottom: 5px;
+    width: 99%;
 }
 
-.flyout {
-    position: fixed;
-    top: 0;
-    right: 0;
+.flyout{
+    position: relative;
+    top: unset;
+    right: unset;
+    z-index: unset;
+    height: auto;
     width: 400px;
-    z-index: 1500;
-    background: #fff;
-    padding: 10px;
-    overflow: hidden;
-    height: 100vh;
 }
 
 .sec-b,
