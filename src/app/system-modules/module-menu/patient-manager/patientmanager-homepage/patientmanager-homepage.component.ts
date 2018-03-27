@@ -342,7 +342,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     tag.patientId = this.patientToEdit._id;
     this.tagService.createSuggestedPatientTags(tag).then(payl => {
       this.systemService.off;
-      console.log(payl);
       if(payl.status === "error"){
         this.mainErr = true;
         this.errMsg = payl.message;
@@ -350,14 +349,10 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       }else{
         this.patientToEdit = payl.data;
       }
-      /* if (payl instanceof Array) {
-
-      } else {
-        this.patientToEdit = payl;
-      } */
       this.systemService.off;
       this.tagLoader = false;
       this.tagName.setValue('');
+      this.identity.reset();
     });
   }
 
