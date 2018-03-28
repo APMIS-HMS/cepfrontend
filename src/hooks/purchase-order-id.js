@@ -19,18 +19,15 @@ function OrderId() {
     return retVal;
 }
 
-function generateUniqueOrderNumber(v) {
+async function generateUniqueOrderNumber(v) {
     const purchaseOrder = v.app.service('purchase-orders');
     let orderNo = OrderId();
-    return purchaseOrder.find({
-        query: { facilityId: v.data.facilityId, purchaseOrderNumber: orderNo }
-    }).then(purchaseOrderReturn => {
-        if (purchaseOrderReturn.data.length == 0) {
-            v.data.purchaseOrderNumber = orderNo;
-        } else {
-            return generateUniqueOrderNumber(v);
-        }
-    });
+    const purchaseOrderReturn = await purchaseOrder.find({query: { facilityId: v.data.facilityId, purchaseOrderNumber: orderNo }});
+    if (purchaseOrderReturn.data.length == 0) {
+        v.data.purchaseOrderNumber = orderNo;
+    } else {
+        return generateUniqueOrderNumber(v);
+    }
 
 };
 
