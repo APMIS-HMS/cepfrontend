@@ -20,6 +20,7 @@ const HOST = 'http://172.16.16.43:3031'; // Simdi
 //  const HOST = 'http://localhost:3031'; // Local Server
 
 
+ 
 @Injectable()
 export class SocketService {
   public socket: any;

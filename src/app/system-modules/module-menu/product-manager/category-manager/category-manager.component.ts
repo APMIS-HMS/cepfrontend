@@ -19,6 +19,8 @@ export class CategoryManagerComponent implements OnInit {
 	mainErr: Boolean = true;
 	errMsg: String = 'You have unresolved errors';
 
+	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+
 	constructor(
 		private _locker: CoolLocalStorage,
 		private _fb: FormBuilder,
@@ -89,6 +91,10 @@ export class CategoryManagerComponent implements OnInit {
 		this.categoryGroup.controls['name'].setValue('');
 		this.btnLabel = 'Create';
 	}
+
+	close_onClick() {
+		this.closeModal.emit(true);
+	  }
 
 	onClickIsActive(value) {
 		// Updating existing record

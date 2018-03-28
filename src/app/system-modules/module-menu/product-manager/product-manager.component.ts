@@ -23,23 +23,24 @@ export class ProductManagerComponent implements OnInit {
 
 	// products page
 	addProduct: Boolean = false;
-	productCat: Boolean = false;
-	generic: Boolean = false;
-	productRoute: Boolean = false;
-	manufacturer: Boolean = false;
-	presentation: Boolean = false;
-	strength: Boolean = false;
+	isProductCat: Boolean = false;
+	isGeneric: Boolean = false;
+	isProductRoute: Boolean = false;
+	isManufacturer: Boolean = false;
+	isPresentation: Boolean = false;
+	isStrength: Boolean = false;
+	productCatPop: Boolean = false;
 
 	constructor(private _productEventEmitter: ProductEmitterService, private _router: Router,
 		public facilityService: FacilitiesService) {
 		this.facilityService.sliderAnnounced$.subscribe(value => {
 			if (value === false) {
 				this.addProduct = false;
-				this.productCat = false;
-				this.generic = false;
-				this.productRoute = false;
-				this.manufacturer = false;
-				this.presentation = false;
+				this.isProductCat = false;
+				this.isGeneric = false;
+				this.isProductRoute = false;
+				this.isManufacturer = false;
+				this.isPresentation = false;
 			}
 
 		})
@@ -107,6 +108,15 @@ export class ProductManagerComponent implements OnInit {
 	// 		this.pageInView = url;
 	// 	});
 	// }
+
+	close_onClick(message: boolean): void {
+		this.isProductCat = false;
+		this.isGeneric = false;
+		this.isManufacturer = false;
+		this.isPresentation = false;
+		this.isStrength = false;
+		this.isProductRoute = false;
+	}
 
 	onClickManufacturerNavMenu() {
 		this.productNavMenu = false;
@@ -182,7 +192,7 @@ export class ProductManagerComponent implements OnInit {
 		this.pageInView = title;
 	}
 	changeRoute(val) {
-		if (val == 'products') {
+		if (val === 'products') {
 			this.facilityService.announceSlider(false);
 			this.productNavMenu = true;
 			this.categoryNavMenu = false;
@@ -195,7 +205,7 @@ export class ProductManagerComponent implements OnInit {
 			this._productEventEmitter.announcedUrl.subscribe(url => {
 				this.pageInView = url;
 			});
-		} else if (val == 'suppliers') {
+		} else if (val === 'suppliers') {
 			this.productNavMenu = false;
 			this.categoryNavMenu = false;
 			this.supplierNavMenu = true;
@@ -227,14 +237,14 @@ export class ProductManagerComponent implements OnInit {
 			this.presentationNavMenu = true;
 		}
 	}
-	productCatSlide() {
+	productCatPopShow() {
 		this.addProduct = false;
-		this.productCat = true;
-		this.generic = false;
-		this.productRoute = false;
-		this.manufacturer = false;
-		this.presentation = false;
-		this.strength = false;
+		this.isProductCat = true;
+		this.isGeneric = false;
+		this.isProductRoute = false;
+		this.isManufacturer = false;
+		this.isPresentation = false;
+		this.isStrength = false;
 		this.productNavMenu = false;
 		this.categoryNavMenu = true;
 		this.supplierNavMenu = false;
@@ -243,70 +253,71 @@ export class ProductManagerComponent implements OnInit {
 		this.genericNavMenu = false;
 		this.presentationNavMenu = false;
 		this.strengthNavMenu = false;
+		this.productCatPop = false;
 	}
 	genericSlide() {
 		this.addProduct = false;
-		this.productCat = false;
-		this.generic = true;
-		this.productRoute = false;
-		this.manufacturer = false;
-		this.presentation = false;
-		this.strength = false;
+		this.isProductCat = false;
+		this.isGeneric = true;
+		this.isProductRoute = false;
+		this.isManufacturer = false;
+		this.isPresentation = false;
+		this.isStrength = false;
 		this.productNavMenu = false;
 		this.categoryNavMenu = false;
 		this.supplierNavMenu = false;
 		this.manufacturerNavMenu = false;
 		this.routeNavMenu = false;
-		this.genericNavMenu = true;
+		//this.genericNavMenu = true;
 		this.presentationNavMenu = false;
 		this.strengthNavMenu = false;
 	}
 	presentationSlide() {
 		this.addProduct = false;
-		this.productCat = false;
-		this.generic = false;
-		this.productRoute = false;
-		this.manufacturer = false;
-		this.presentation = true;
-		this.strength = false;
+		this.isProductCat = false;
+		this.isGeneric = false;
+		this.isProductRoute = false;
+		this.isManufacturer = false;
+		this.isPresentation = true;
+		this.isStrength = false;
 		this.productNavMenu = false;
 		this.categoryNavMenu = false;
 		this.supplierNavMenu = false;
 		this.manufacturerNavMenu = false;
 		this.routeNavMenu = false;
 		this.genericNavMenu = false;
-		this.presentationNavMenu = true;
+		//this.presentationNavMenu = true;
 		this.strengthNavMenu = false;
 	}
 	routeSlide() {
 		this.addProduct = false;
-		this.productCat = false;
-		this.generic = false;
-		this.productRoute = true;
-		this.manufacturer = false;
-		this.presentation = false;
-		this.strength = false;
+		this.isProductCat = false;
+		this.isGeneric = false;
+		this.isProductRoute = true;
+		this.isManufacturer = false;
+		this.isPresentation = false;
+		this.isStrength = false;
 		this.productNavMenu = false;
 		this.categoryNavMenu = false;
 		this.supplierNavMenu = false;
 		this.manufacturerNavMenu = false;
-		this.routeNavMenu = true;
+		//this.routeNavMenu = true;
 		this.genericNavMenu = false;
 		this.presentationNavMenu = false;
 		this.strengthNavMenu = false;
 	}
 	manufacturerSlide() {
 		this.addProduct = false;
-		this.productCat = false;
-		this.generic = false;
-		this.productRoute = false;
-		this.manufacturer = true;
-		this.presentation = false;
-		this.strength = false;
+		this.isProductCat = false;
+		this.isGeneric = false;
+		this.isProductRoute = false;
+		this.isManufacturer = true;
+		this.isPresentation = false;
+		this.isStrength = false;
 		this.productNavMenu = false;
 		this.categoryNavMenu = false;
 		this.supplierNavMenu = false;
-		this.manufacturerNavMenu = true;
+		//this.manufacturerNavMenu = true;
 		this.routeNavMenu = false;
 		this.genericNavMenu = false;
 		this.presentationNavMenu = false;
@@ -315,12 +326,12 @@ export class ProductManagerComponent implements OnInit {
 
 	strengthSlide() {
 		this.addProduct = false;
-		this.productCat = false;
-		this.generic = false;
-		this.productRoute = false;
-		this.manufacturer = false;
-		this.presentation = false;
-		this.strength = !this.strength;
+		this.isProductCat = false;
+		this.isGeneric = false;
+		this.isProductRoute = false;
+		this.isManufacturer = false;
+		this.isPresentation = false;
+		this.isStrength = !this.isStrength;
 		this.productNavMenu = false;
 		this.categoryNavMenu = false;
 		this.supplierNavMenu = false;
@@ -328,7 +339,7 @@ export class ProductManagerComponent implements OnInit {
 		this.routeNavMenu = false;
 		this.genericNavMenu = false;
 		this.presentationNavMenu = false;
-		this.strengthNavMenu = true;
+		//this.strengthNavMenu = true;
 	}
 
 }
