@@ -244,23 +244,16 @@
                                                             </button>
                                                         </div>
                                                     </div>
-                                                    <div class="row">
-                                                        <div class="col-xs-6" *ngFor="let tag of patientToEdit?.tags" style="margin-bottom: 10px">
-                                                            <div class="card blue-gradient">
-                                                                <div class="row">
-                                                                    <div class="col-xs-8 left">
-                                                                        <i class="big-label">
-                                                                            {{tag.name}} {{(tag.tagType === 'identification') ? '(Identification)' : ''}}
-                                                                        </i>
-                                                                    </div>
-                                                                    <div class="col-xs-2 row right">
-                                                                        <div (click)="removeTag(tag)" class="col-xs-6">
-                                                                            <i class="fa fa-trash-o big-label" aria-hidden="true"></i>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            </div>
-                                                        </div>
+                                                    <div>
+                                                        <span class="badge blue-gradient" *ngFor="let tag of patientToEdit?.tags" style="padding:10px 20px; margin: 3px; border-radius: 25px; font-size: 12px;">
+                                                                <span class="big-label">
+                                                                    {{tag.name}} 
+                                                                </span>
+                                                                &nbsp;
+                                                                <i *ngIf="tag.tagType === 'identification'" class="fa fa-info"></i>
+                                                                &nbsp;&nbsp;
+                                                                <i (click)="removeTag(tag)" class="fa fa-trash-o big-label" aria-hidden="true"></i>
+                                                        </span>
                                                     </div>
                                                 </div>
                                             </mat-tab>
