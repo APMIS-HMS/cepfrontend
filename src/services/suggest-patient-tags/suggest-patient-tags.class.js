@@ -1,4 +1,5 @@
 /* eslint-disable no-unused-vars */
+const jsend = require('jsend');
 class Service {
   constructor(options) {
     this.options = options || {};
@@ -60,25 +61,25 @@ class Service {
         facilityId: data.facilityId
       }
     });
-    console.log(tag.data);
     if (tag.data.length > 0) {
       if(tag.data[0].tagType === 'identification'){
-        return [];
+        return jsend.error('Identity tag already assigned');
       }
       const patientTags = patientData.tags.filter(x => x.name === data.name);
       if (patientTags.length > 0) {
+        return jsend.error('Tag already assigned to patient');
         return [];
       } else {
         delete data.patientId;
         patientData.tags.push(data);
         const patchedPatient = await patientService.patch(patientData._id, patientData);
-        return patchedPatient;
+        return jsend.success(patchedPatient);
       }
     } else {
       const createdTag = await tagService.create(data);
       patientData.tags.push(createdTag);
       const patchedPatient = await patientService.patch(patientData._id, patientData);
-      return patchedPatient;
+      return jsend.success(patchedPatient);
     }
   }
 
