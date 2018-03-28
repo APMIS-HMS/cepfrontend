@@ -131,19 +131,6 @@
                     font-size: 1.2rem !important;
                     height: 30px;
                 }
-                .table-header-select {
-                    background: rgba(255, 255, 255, 0.233);
-                    color: #dddddd;
-                    border: none;
-                    border-radius: 5px;
-                    width: 100%;
-                    text-align: center;
-                    height: 30px;
-                    font-size: 1.2rem !important;
-                }
-                .table-head:last-of-type {
-                    border: none;
-                }
             }
             .card-content {
                 font-size: 1.2px;
@@ -224,13 +211,6 @@
             color: rgb(255, 235, 51);
         }
         
-        .pie-number {
-            position: absolute;
-            top: 45%;
-            left: 17%;
-            text-align: center;
-        }
-        
         .tabs {
             font-size: 1.2rem;
             line-height: 1.2rem;
@@ -255,8 +235,8 @@
         }
         
         .mat-tab-body-content {
-            height: auto;
-            overflow: unset;
+            height: unset!important;
+            overflow: unset!important;
         }
         
         //.inner-page-contentArea {

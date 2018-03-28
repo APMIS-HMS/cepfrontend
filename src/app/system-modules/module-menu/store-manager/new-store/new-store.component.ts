@@ -75,14 +75,14 @@ export class NewStoreComponent implements OnInit {
   }
   populateStore() {
     if (this.selectedStore._id !== undefined) {
-      this.createText = 'Update';
+      this.createText = 'Update Store';
       this.frm_newStore.controls['name'].setValue(this.selectedStore.name);
       this.frm_newStore.controls['minorLocationId'].setValue(this.selectedStore.minorLocationId);
       this.frm_newStore.controls['description'].setValue(this.selectedStore.description);
       this.frm_newStore.controls['canDespense'].setValue(this.selectedStore.canDespense);
       this.frm_newStore.controls['canReceivePurchaseOrder'].setValue(this.selectedStore.canReceivePurchaseOrder);
     } else {
-      this.createText = 'Create';
+      this.createText = 'Create Store';
       this.frm_newStore.reset();
       this.frm_newStore.controls['canDespense'].setValue(false);
       this.frm_newStore.controls['canReceivePurchaseOrder'].setValue(false);

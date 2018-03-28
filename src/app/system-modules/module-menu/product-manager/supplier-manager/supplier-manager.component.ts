@@ -20,6 +20,7 @@ export class SupplierManagerComponent implements OnInit {
   searchControl = new FormControl();
   suppliers: any[] = [];
   loading = true;
+  searchOpen = false;
 
   constructor(private router: Router,
     private _productEventEmitter: ProductEmitterService,
@@ -66,6 +67,10 @@ export class SupplierManagerComponent implements OnInit {
   onEdit(supplier) {
     this.selectedSupplier = supplier;
     this._systemModuleService.announceSweetProxy('You are about to edit this supplier', 'question', this);
+  }
+
+  openSearch() {
+    this.searchOpen = !this.searchOpen;
   }
 
   onDelete(supplier) {

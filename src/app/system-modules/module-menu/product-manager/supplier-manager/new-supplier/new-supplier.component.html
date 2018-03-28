@@ -72,9 +72,9 @@
             </div>
         </form>
         <div class="text-center">
-            <button mat-raised-button [disabled]="!frm_newSupplier.valid || disableAddBtn" *ngIf="addBtn" (click)="create(frm_newSupplier.valid, frm_newSupplier.value);"
+            <button mat-raised-button [disabled]="!frm_newSupplier.valid || disableAddBtn" *ngIf="addBtn || addingBtn" (click)="create(frm_newSupplier.valid, frm_newSupplier.value);"
                 style="padding: 10px 15px; color: #fff;">
-                <span>
+                <span *ngIf="!addingBtn">
                     <i class="fa fa-check-circle "></i> Add Supplier</span>
                 <span *ngIf="addingBtn ">Adding Supplier...
                     <i class="fa fa-spin fa-spinner "></i>
@@ -84,7 +84,7 @@
                 style="padding: 10px 15px; color: #fff;" *ngIf="updateBtn ">
                 <span *ngIf="!updatingBtn">
                     <i class="fa fa-check-circle "></i> Add Supplier</span>
-                <span *ngIf="updatingBtn">Add Supplier...
+                <span *ngIf="updatingBtn">Adding Supplier...
                     <i class="fa fa-spin fa-spinner "></i>
                 </span>
             </button>
