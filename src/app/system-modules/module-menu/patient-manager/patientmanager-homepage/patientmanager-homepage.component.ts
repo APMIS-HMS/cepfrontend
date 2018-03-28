@@ -120,6 +120,9 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   btnLabel = "Add Tag";
   tagLoader: boolean = false;
 
+  mainErr:boolean;
+  errMsg: string;
+
   constructor(private patientService: PatientService, private personService: PersonService,
     private facilityService: FacilitiesService, private locker: CoolLocalStorage, private router: Router,
     private route: ActivatedRoute, private toast: ToastsManager, private genderService: TitleGenderFacadeService,
@@ -327,7 +330,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
 
   newTag(valid: boolean) {
-    this.systemService.off;
+    this.systemService.on;
     this.tagLoader = true;
     const tag: any = <any>{};
     if (this.identity.value === true) {
@@ -338,15 +341,23 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     tag.facilityId = this.facility._id;
     tag.patientId = this.patientToEdit._id;
     this.tagService.createSuggestedPatientTags(tag).then(payl => {
-      if (payl instanceof Array) {
-
-      } else {
-        this.patientToEdit = payl;
+      this.systemService.off;
+      if(payl.status === "error"){
+        this.mainErr = true;
+        this.errMsg = payl.message;
+        this.systemService.announceSweetProxy('testing', 'question',this);
+      }else{
+        this.patientToEdit = payl.data;
       }
       this.systemService.off;
       this.tagLoader = false;
       this.tagName.setValue('');
+      this.identity.reset();
     });
+  }
+
+  sweetAlertCallback(result){
+    console.log(result);
   }
 
   hideSuggestions() {
