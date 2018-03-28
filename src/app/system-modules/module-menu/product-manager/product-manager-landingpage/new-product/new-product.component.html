@@ -18,7 +18,7 @@
         <form novalidate [formGroup]="frm_newProduct">
             <div class="mainfrmwrap">
                 <div class="row" Class="col-lg-12">
-                    <div class="sec-1">
+                    <div class="sec-2">
                         <div class="row">
                             <div class="col-xs-6">
                                 <mat-form-field>
@@ -36,39 +36,39 @@
                             </div> -->
 
                             </div>
-                        </div>
 
-                        <div class="sec-2">
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    <mat-form-field>
-                                        <mat-select class="example-full-width" placeholder="Manufacturer" formControlName="manufacturer" [compareWith]="compareItems">
-                                            <mat-option *ngFor="let item of manufacturers" [value]="item.name">{{item.name}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-                                <div class="col-xs-6">
-                                    <mat-form-field>
-                                        <mat-select class="example-full-width" placeholder="Generic" formControlName="genericName" [compareWith]="compareItems">
-                                            <mat-option *ngFor="let item of generics" [value]="item.name">{{item.name}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-                                <div class="col-xs-6">
-                                    <mat-form-field>
-                                        <mat-select class="example-full-width" placeholder="Presentation" formControlName="presentation" [compareWith]="compareItems">
-                                            <mat-option *ngFor="let item of presentations" [value]="item.name">{{item.name}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-                                <div class="col-xs-6">
-                                    <mat-form-field>
-                                        <mat-select class="example-full-width" placeholder="Service Category" formControlName="categoryId" [compareWith]="compareItems">
-                                            <mat-option *ngFor="let category of categories" [value]="category._id">{{category.name}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                </div>
-                                <!-- <div class="frm-item-wrap">
+
+                            <!--<div class="sec-2">
+                            <div class="row">-->
+                            <div class="col-xs-6">
+                                <mat-form-field>
+                                    <mat-select class="example-full-width" placeholder="Manufacturer" formControlName="manufacturer" [compareWith]="compareItems">
+                                        <mat-option *ngFor="let item of manufacturers" [value]="item.name">{{item.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xs-6">
+                                <mat-form-field>
+                                    <mat-select class="example-full-width" placeholder="Generic" formControlName="genericName" [compareWith]="compareItems">
+                                        <mat-option *ngFor="let item of generics" [value]="item.name">{{item.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xs-6">
+                                <mat-form-field>
+                                    <mat-select class="example-full-width" placeholder="Presentation" formControlName="presentation" [compareWith]="compareItems">
+                                        <mat-option *ngFor="let item of presentations" [value]="item.name">{{item.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <div class="col-xs-6">
+                                <mat-form-field>
+                                    <mat-select class="example-full-width" placeholder="Service Category" formControlName="categoryId" [compareWith]="compareItems">
+                                        <mat-option *ngFor="let category of categories" [value]="category._id">{{category.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </div>
+                            <!-- <div class="frm-item-wrap">
                                 <mat-input-container class="example-full-width">
                                     <input matInput mat-error placeholder="Pack Label" formControlName="packLabel">
                                 </mat-input-container>
@@ -78,8 +78,59 @@
                                     <input type="number" matInput mat-error placeholder="Pack Size" formControlName="packSize">
                                 </mat-input-container>
                             </div> -->
-                            </div>
+                            <!--</div>-->
                         </div>
+                        <form *ngIf="ingredientForm.controls['ingredients'].value.length > 0" [formGroup]="ingredientForm">
+                            <div formArrayName="ingredients">
+                                <div *ngFor="let ingredient of ingredientForm.controls['ingredients'].controls; let i=index">
+                                    <div class="panel-heading">
+                                        <span class="glyphicon glyphicon-remove pull-right" (click)="removeIngredient(i)"></span>
+                                    </div>
+                                    <div class="row">
+                                        <div class="frmArr-wrap" formGroupName="{{i}}">
+                                            <div class="frm-item-wrap" class="col-xs-4">
+                                                <mat-input-container class="example-full-width">
+                                                    <input matInput mat-error placeholder="Name" formControlName="name">
+                                                </mat-input-container>
+                                            </div>
+                                            <div class="frm-item-wrap" class="col-xs-4">
+                                                <mat-input-container class="example-full-width">
+                                                    <input matInput mat-error placeholder="Strength" formControlName="strength">
+                                                </mat-input-container>
+                                            </div>
+                                            <div class="frm-item-wrap" class="col-xs-4">
+                                                <mat-form-field>
+                                                    <mat-select class="example-full-width" placeholder="Strength Unit" formControlName="strengthUnit">
+                                                        <mat-option *ngFor="let item of strengths" [value]="item.strength">{{item.strength}}</mat-option>
+                                                    </mat-select>
+                                                </mat-form-field>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                        <form *ngIf="variantsForm.controls['variants'].value.length > 0" [formGroup]="variantsForm">
+                            <div formArrayName="variants">
+                                <div *ngFor="let variant of variantsForm.controls['variants'].controls; let i=index">
+                                    <div class="panel-heading">
+                                        <span class="glyphicon glyphicon-remove pull-right" (click)="removeVariant(i)"></span>
+                                    </div>
+                                    <div class="frmArr-wrap" formGroupName="{{i}}">
+                                        <div class="frm-item-wrap" class="col-xs-6">
+                                            <mat-input-container class="example-full-width">
+                                                <input matInput mat-error placeholder="Size" formControlName="size">
+                                            </mat-input-container>
+                                        </div>
+                                        <div class="frm-item-wrap" class="col-xs-6">
+                                            <mat-input-container class="example-full-width">
+                                                <input matInput mat-error placeholder="Max. Unit" formControlName="unit">
+                                            </mat-input-container>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
 
 
@@ -87,11 +138,21 @@
                     <div class="row" class="col-xs-12 col-lg-12">
                         <div class="sec-3">
                             <div Class="pull-right">
-                                <div class="sectLabel">Active</div>
-                                <i class="fa fa-plus faplus tooltip" data-placement="right" data-toggle="Add Active Ingredients" (click)="addIngredient()"></i>
+                                <!--<div class="sectLabel">Active</div>
+                                <i class="fa fa-plus faplus tooltip" data-placement="right" data-toggle="Add Active Ingredients" (click)="addIngredient()"></i>-->
+                                <a class="faplus" (click)="addIngredient()">
+                                    <i class="fa fa-plus"></i>Add Active Ingredients
+                                </a>
+                            </div>
+                            <div class="pull-left">
+                                <!-- <div class="sectLabel">Variant</div>
+                                <i class="fa fa-plus faplus tooltip" data-placement="left" data-toggle="Add Product Variant" (click)="addVariant()"></i>-->
+                                <a class="faplus" (click)="addVariant()">
+                                    <i class="fa fa-plus"></i>Add Variants
+                                </a>
                             </div>
                             <div class="sec3-headWrap">
-                                <form *ngIf="ingredientForm.controls['ingredients'].value.length > 0" [formGroup]="ingredientForm">
+                                <!--<form *ngIf="ingredientForm.controls['ingredients'].value.length > 0" [formGroup]="ingredientForm">
                                     <div formArrayName="ingredients">
                                         <div *ngFor="let ingredient of ingredientForm.controls['ingredients'].controls; let i=index">
                                             <div class="panel-heading">
@@ -120,18 +181,18 @@
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+                                </form>-->
                             </div>
 
                             <div class="clear"></div>
 
-                            <div class="pull-right">
+                            <!--<div class="pull-left">
                                 <div class="sectLabel">Variant</div>
                                 <i class="fa fa-plus faplus tooltip" data-placement="right" data-toggle="Add Product Variant" (click)="addVariant()"></i>
-                            </div>
+                            </div>-->
                             <div class="sec-3">
                                 <div class="sec3-headWrap"></div>
-                                <form *ngIf="variantsForm.controls['variants'].value.length > 0" [formGroup]="variantsForm">
+                                <!--<form *ngIf="variantsForm.controls['variants'].value.length > 0" [formGroup]="variantsForm">
                                     <div formArrayName="variants">
                                         <div *ngFor="let variant of variantsForm.controls['variants'].controls; let i=index">
                                             <div class="panel-heading">
@@ -151,7 +212,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </form>
+                                </form>-->
                             </div>
 
                             <button class="cta-1" (click)="create(frm_newProduct.valid, frm_newProduct.value)">

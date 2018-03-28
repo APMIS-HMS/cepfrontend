@@ -59,9 +59,10 @@
 
                 </div>
             </div>
-            <div class="text-center">
-                <button mat-raised-button class="mat-lg-btn" (click)="create(frm_newStore.valid, frm_newStore.value)">{{createText}}</button>
-            </div>
+
+            <button class="cta-1" (click)="create(frm_newStore.valid, frm_newStore.value)">
+                <i style="padding-right:10px;" class="fa fa-plus"></i>{{createText}}</button>
+
         </form>
 
     </div>
