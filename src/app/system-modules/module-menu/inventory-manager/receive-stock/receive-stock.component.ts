@@ -85,9 +85,11 @@ export class ReceiveStockComponent implements OnInit {
           destinationStoreId: this.checkingStore.storeId,
           limit: 200
         }
-      }).then(payload => {
+      }).then(res => {
         this.systemModuleService.off();
-        this.receivedTransfers = payload.data;
+        if (res.data.length > 0) {
+          this.receivedTransfers = res.data;
+        }
       }, error => {
         this.systemModuleService.off();
       });

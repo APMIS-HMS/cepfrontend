@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
-import { InventoryService, ProductService, EmployeeService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
+import { InventoryService, ProductService, EmployeeService, FacilitiesService, StoreService } from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import { Facility, Inventory, Employee, User } from '../../../../models/index';
@@ -22,6 +22,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
 
   constructor(
     private _inventoryService: InventoryService,
+    private _storeService: StoreService,
     private _facilityService: FacilitiesService,
     private _productService: ProductService,
     private _locker: CoolLocalStorage,
@@ -34,9 +35,9 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
       this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
-      if (this.checkingStore !== null) {
-        this.getInventories();
-      }
+      // if (this.checkingStore !== null) {
+      //   this.getInventories();
+      // }
       if ((this.loginEmployee.storeCheckIn === undefined
         || this.loginEmployee.storeCheckIn.length === 0)) {
         this.modal_on = true;
@@ -94,11 +95,14 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
 
   getInventories() {
     if (!!this.checkingStore) {
-      this._inventoryService.findList({
-        query: { facilityId: this.selectedFacility._id, name: '', storeId: this.checkingStore.storeId, $limit: 10 }
+      this._storeService.getStat({ facilityId: this.selectedFacility._id}, {
+        query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId }
       }).then(res => {
-        this.inventoryLoading = false;
-        this.inventories = res.data.filter(x => x.totalQuantity > 0);
+        console.log(res);
+        // if () {
+        //   this.inventoryLoading = false;
+        //   this.inventories = res.data.filter(x => x.totalQuantity > 0);
+        // }
       });
     }
   }
