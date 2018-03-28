@@ -95,6 +95,7 @@ export class NewPurchaseOrderComponent implements OnInit {
       //product: ['', [<any>Validators.required]],
       store: ['', [<any>Validators.required]],
       supplier: ['', [<any>Validators.required]],
+      config: new FormArray([]),
       deliveryDate: [this.now, [<any>Validators.required]],
       desc: ['', [<any>Validators.required]],
     });
@@ -164,6 +165,7 @@ export class NewPurchaseOrderComponent implements OnInit {
         this.formBuilder.group({
           product: [value.name, [<any>Validators.required]],
           qty: [0, [<any>Validators.required]],
+          config: this.initProductConfig(value.productConfigObject),
           readOnly: [false],
           id: [value._id]
         })
@@ -185,6 +187,24 @@ export class NewPurchaseOrderComponent implements OnInit {
     }
 
   }
+
+  initProductConfig(config) {
+    let frmArray = new FormArray([])
+    config.forEach(item => {
+      frmArray.push(new FormGroup({
+        size: new FormControl(0),
+        name: new FormControl(item.name),
+        isBase: new FormControl(item.isBase),
+        packVolume: new FormControl(item.size)
+      }));
+    })
+    return frmArray;
+  }
+  getProductConfig(form) {
+    return form.controls.config.controls;
+  }
+
+
   removeProduct(index, value) {
     this.superGroups.forEach((parent, i) => {
       parent.forEach((group, j) => {
@@ -236,6 +256,14 @@ export class NewPurchaseOrderComponent implements OnInit {
     });
   }
 
+  onPackageSize(i) {
+    (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.qty = 0;
+    let itm = <FormArray>this.productTableForm['controls'].productTableArray['controls'][i].value.config.forEach(element => {
+      (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.qty += element.size * element.packVolume;
+    });
+    (<FormArray>this.productTableForm.controls['productTableArray']).setValue(JSON.parse(JSON.stringify((<FormArray>this.productTableForm.controls['productTableArray']).value)));
+  }
+
   getProductTables(products: any[]) {
     this.productTables = products;
     this.superGroups = [];
@@ -245,19 +273,19 @@ export class NewPurchaseOrderComponent implements OnInit {
 
       if (this.superGroups.length < 1) {
         group = [];
-        let obj = <any>{ checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id };
+        let obj = <any>{ checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id,productConfigObject: this.productTables[i].productConfigObject};
         obj = this.mergeTable(obj);
         group.push(obj);
         this.superGroups.push(group);
       } else {
         if (counter < 1) {
-          let obj = <any>{ checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id };
+          let obj = <any>{ checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id,productConfigObject: this.productTables[i].productConfigObject };
           obj = this.mergeTable(obj);
           this.superGroups[counter].push(obj);
           counter = counter + 1;
         } else {
           counter = 0;
-          let obj = <any>{ checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id };
+          let obj = <any>{ checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id,productConfigObject: this.productTables[i].productConfigObject };
           obj = this.mergeTable(obj);
           this.superGroups[counter].push(obj);
           counter = counter + 1;
@@ -283,7 +311,7 @@ export class NewPurchaseOrderComponent implements OnInit {
     return obj;
   }
   getSuppliers() {
-    this.supplierService.find({ query: { facilityId: this.selectedFacility._id }, $paginate: false }).then(payload => {
+    this.supplierService.find({ query: { facilityId: this.selectedFacility._id, isActive:true }, $paginate: false }).then(payload => {
       this.suppliers = payload.data;
     });
   }
@@ -298,6 +326,7 @@ export class NewPurchaseOrderComponent implements OnInit {
         this.formBuilder.group({
           product: ['', [<any>Validators.required]],
           qty: [0, [<any>Validators.required]],
+          config: new FormArray([]),
           readOnly: [false],
           id: ['']
         })
@@ -385,7 +414,7 @@ export class NewPurchaseOrderComponent implements OnInit {
         product.quantity = item.qty;
         purchaseOrder.orderedProducts.push(product);
       });
-      this.purchaseOrderService.create(purchaseOrder).subscribe(payload => {
+      this.purchaseOrderService.create(purchaseOrder).then(payload => {
         this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
         this.systemModuleService.announceSweetProxy('Purchase order ' + payload.purchaseOrderNumber + ' was created', 'success', null, null, null, null, null, null, null);
         this.frm_purchaseOrder.reset();
