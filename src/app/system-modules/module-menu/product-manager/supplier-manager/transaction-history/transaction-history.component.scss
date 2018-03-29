@@ -7,6 +7,7 @@
     background: transparent;
     font-size: 1rem;
 }
+
 .subtitleWrap {
     position: absolute;
     top: -34px;
@@ -14,6 +15,7 @@
     left: 5px;
     color: #8e8e8e;
 }
+
 .subtitleWrap .pg-subTitle {
     color: #0288D1;
     text-decoration: underline;
@@ -26,15 +28,22 @@ span {
 .survery .form-control {
     width: 50%;
 }
-.inputFilter{
-    width: 100% !important;
-}
-
-.searchInput {
-    min-width: 200px;
-    max-width: 250px;
-}
 
 .survery {
     margin: 0 5px !important;
+}
+
+.inputFilter {
+    width: 100% !important;
+    margin-top: 10px;
+}
+
+.searchInput {
+    height: 15%;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.table-head {
+    border-right: solid 1px #fff;
 }
