@@ -1,6 +1,6 @@
 <section class="c-page-body">
-    <mat-tab-group class="tab-body">
-        <mat-tab label="InPatients">
+    <div class="tab-body">
+        <div label="InPatients">
             <div class="card">
                 <div class="card-header">
                     <div class="row" *ngIf="!wsearchOpen">
@@ -101,8 +101,8 @@
             <div *ngIf="dischargePatient" class="modal-overlay">
                 <app-discharge-patient (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-discharge-patient>
             </div>
-        </mat-tab>
-    </mat-tab-group>
+        </div>
+    </div>
 </section>
 
 <!-- <div class="c-page-body">

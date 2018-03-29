@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { RouteService } from '../../../../services/facility-manager/setup/index';
@@ -19,6 +19,8 @@ export class RouteManagerComponent implements OnInit {
 
 	mainErr: Boolean = true;
 	errMsg: String = 'You have unresolved errors';
+
+	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 	constructor(
 		private _locker: CoolLocalStorage,
@@ -93,6 +95,10 @@ export class RouteManagerComponent implements OnInit {
 		this.selectedItem = value;
 		this.btnLabel = 'Update';
 	}
+
+	close_onClick() {
+		this.closeModal.emit(true);
+	  }
 
 	onClickCancel() {
 		this.selectedItem = {};
