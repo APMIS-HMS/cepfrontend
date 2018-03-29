@@ -1021,7 +1021,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.systemModuleService.off();
                 const text = this.selectedPerson.lastName + ' ' + this.selectedPerson.firstName
                     + ' added successfully but bill not generated because price not yet set for this service';
-                this.systemModuleService.changeMessage(payl);
+                this.systemModuleService.changeMessage(payl); // This is responsible for showing the edit patient modal box
                 this.systemModuleService.announceSweetProxy(text, 'success');
                 this.loading = false;
                 this.close_onClick();
@@ -1100,7 +1100,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     + this.selectedPerson.firstName
                     + ' added successfully but bill not generated because price not yet set for this service';
                 this.systemModuleService.announceSweetProxy(text, 'success');
-                this.systemModuleService.changeMessage(payl);
+                this.systemModuleService.changeMessage(payl); // This is responsible for showing the edit patient modal box
                 this.loading = false;
                 this.close_onClick();
             }).catch(errr => {
@@ -1234,7 +1234,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                             }
                             this.billingService.create(billing).then(billingPayload => {
                                 this.close_onClick();
-                                this.systemModuleService.changeMessage(payl);
+                                this.systemModuleService.changeMessage(payl); // This is responsible for showing the edit patient modal box
                                 this.paymentPlan = false;
                                 this.frmNewPerson1_show = false;
                                 this.frmNewPerson2_show = false;
@@ -1425,7 +1425,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                             }).then(billingPayload => {
                                 console.log(billingPayload);
                                 this.systemModuleService.off();
-                                this.systemModuleService.changeMessage(payl);
+                                this.systemModuleService.changeMessage(payl); // This is responsible for showing the edit patient modal box
                                 const text = this.selectedPerson.lastName + ' '
                                     + this.selectedPerson.firstName + ' added successfully but bill not generated because price not yet set for this service';
                                 this.systemModuleService.announceSweetProxy(text, 'success');
