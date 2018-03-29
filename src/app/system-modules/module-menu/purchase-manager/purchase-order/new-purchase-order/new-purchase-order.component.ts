@@ -107,7 +107,6 @@ export class NewPurchaseOrderComponent implements OnInit {
       .distinctUntilChanged()
       .switchMap((term: any[]) => this.productService.find({
         query: {
-          facilityId: this.selectedFacility._id,
           name: { $regex: this.searchControl.value, '$options': 'i' },
           $paginate: false
         }
@@ -127,7 +126,9 @@ export class NewPurchaseOrderComponent implements OnInit {
       this.frm_purchaseOrder.controls['supplier'].setValue(payload.supplierId);
       this.frm_purchaseOrder.controls['deliveryDate'].setValue(payload.expectedDate);
       this.frm_purchaseOrder.controls['desc'].setValue(payload.remark);
+      console.log(payload);
       payload.orderedProducts.forEach((item, i) => {
+        console.log(item);
         this.superGroups.forEach((items, s) => {
           items.forEach((itemg, g) => {
             if (itemg._id === item.productId) {
@@ -139,6 +140,7 @@ export class NewPurchaseOrderComponent implements OnInit {
                 this.formBuilder.group({
                   product: [itemg.name, [<any>Validators.required]],
                   qty: [item.quantity, [<any>Validators.required]],
+                  config: this.initProductConfig(item.productObject.productConfigObject),
                   readOnly: [false],
                   id: [item.productId]
                 })
@@ -247,7 +249,8 @@ export class NewPurchaseOrderComponent implements OnInit {
   }
   getAllProducts() {
     this.systemModuleService.on();
-    this.productService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
+    this.productService.find({ query: { loginFacilityId: this.selectedFacility._id } }).then(payload => {
+      console.log(payload);
       this.products = payload.data;
       this.getProductTables(this.products);
       this.systemModuleService.off();

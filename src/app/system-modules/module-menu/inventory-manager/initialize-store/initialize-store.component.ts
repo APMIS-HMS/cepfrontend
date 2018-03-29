@@ -151,7 +151,7 @@ export class InitializeStoreComponent implements OnInit {
   }
 
   getProducts() {
-    this._productService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
+    this._productService.find({ query: { loginFacilityId: this.selectedFacility._id } }).then(payload => {
       this.products = payload.data;
     });
   }

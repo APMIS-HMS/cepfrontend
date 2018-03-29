@@ -117,6 +117,7 @@ export class PurchaseEntryComponent implements OnInit {
       deliveryDate: [this.now, [<any>Validators.required]],
       invoiceNo: ['', [<any>Validators.required]],
       amount: [0.00, [<any>Validators.required]],
+      config: new FormArray([]),
       desc: ['', []],
       discount: [0.00, []],
       vat: [0.00, []]
@@ -378,9 +379,10 @@ export class PurchaseEntryComponent implements OnInit {
   }
   getSuppliers() {
     this.systemModuleService.on();
-    this.supplierService.find({ query: { facilityId: this.selectedFacility._id }, $paginate: false }).then(payload => {
+    this.supplierService.find({ query: { facilityId: this.selectedFacility._id,isActive:true }, $paginate: false }).then(payload => {
       this.systemModuleService.off();
       this.suppliers = payload.data;
+      console.log(this.suppliers);
     });
   }
   getStrengths() {
