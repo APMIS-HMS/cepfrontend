@@ -1023,7 +1023,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     + ' added successfully but bill not generated because price not yet set for this service';
                 this.systemModuleService.changeMessage(payl); // This is responsible for showing the edit patient modal box
                 this.systemModuleService.announceSweetProxy(text, 'success');
-                this.loading = false;
                 this.close_onClick();
             }).catch(errr => {
                 this.systemModuleService.off();
@@ -1101,7 +1100,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     + ' added successfully but bill not generated because price not yet set for this service';
                 this.systemModuleService.announceSweetProxy(text, 'success');
                 this.systemModuleService.changeMessage(payl); // This is responsible for showing the edit patient modal box
-                this.loading = false;
                 this.close_onClick();
             }).catch(errr => {
                 this.systemModuleService.off();
@@ -1429,7 +1427,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                                 const text = this.selectedPerson.lastName + ' '
                                     + this.selectedPerson.firstName + ' added successfully but bill not generated because price not yet set for this service';
                                 this.systemModuleService.announceSweetProxy(text, 'success');
-                                this.loading = false;
                                 this.close_onClick();
                             }).catch(errr => {
                                 this.systemModuleService.off();
