@@ -100,6 +100,8 @@ export class NewSupplierComponent implements OnInit {
                   }
               }).then(supplierpayload => {
                 this.suppliers = supplierpayload;
+              }).catch(err => {
+                console.log(err);
               });
           } else {
             this.showSearchResult = false;
@@ -258,7 +260,10 @@ export class NewSupplierComponent implements OnInit {
         this.updatingBtn = false;
         this.disableAddBtn = false;
         this._systemModuleService.off();
-      }).catch(err => { });
+      }).catch(err => { 
+        this._systemModuleService.announceSweetProxy('An error occured', 'error');
+        console.log(err);
+      });
 
       // this._facilityServiceFacade.saveFacility(payload).then(res => {
       //   this.addBtn = true;
