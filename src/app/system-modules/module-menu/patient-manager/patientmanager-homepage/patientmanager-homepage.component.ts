@@ -344,7 +344,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         this.mainErr = true;
         this.errMsg = payl.message;
       }else{
-        this.patientToEdit = payl.data;
+        this.patientToEdit.tags = payl.data.tags;
       }
       this.systemService.off;
       this.tagLoader = false;
