@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
-import { InventoryService, ProductService, EmployeeService, FacilitiesService, StoreService } from '../../../../services/facility-manager/setup/index';
+import { InventoryService, ProductService, EmployeeService, FacilitiesService, StoreService, PurchaseOrderService, InventoryTransferService } from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import { Facility, Inventory, Employee, User } from '../../../../models/index';
@@ -12,19 +12,26 @@ import { Facility, Inventory, Employee, User } from '../../../../models/index';
 })
 export class StoreHomeComponent implements OnInit, OnDestroy {
   inventories: any[] = [];
+  purchaseOrders: any[] = [];
+  transfers: any[] = [];
   checkingStore: any = <any>{};
   inventoryLoading = true;
+  purchaseOrderLoading = true;
+  transferLoading = true;
   modal_on = false;
+  inventoryCount = 0;
   selectedFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
   workSpace: any;
   Ql_toggle = false;
 
   constructor(
-    private _inventoryService: InventoryService,
+    // private _inventoryService: InventoryService,
+    private _purchaseOrderService: PurchaseOrderService,
     private _storeService: StoreService,
     private _facilityService: FacilitiesService,
-    private _productService: ProductService,
+    // private _productService: ProductService,
+    private _inventoryTransferService: InventoryTransferService,
     private _locker: CoolLocalStorage,
     private _employeeService: EmployeeService,
     private authFacadeService: AuthFacadeService
@@ -84,6 +91,8 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
           this.checkingStore = res.typeObject;
           if (!!this.checkingStore.storeId) {
             this.getInventories();
+            this.getPurchaseOrders();
+            this.getTransfers();
           }
         }
       }
@@ -96,13 +105,43 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
   getInventories() {
     if (!!this.checkingStore) {
       this._storeService.getStat({ facilityId: this.selectedFacility._id}, {
-        query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId }
+        query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId,
+          totalQuantity: { $gt: 1 }}
       }).then(res => {
         console.log(res);
-        // if () {
-        //   this.inventoryLoading = false;
-        //   this.inventories = res.data.filter(x => x.totalQuantity > 0);
-        // }
+        this.inventoryLoading = false;
+        if (res.status === 'success') {
+          this.inventoryCount = res.data.inventoryCount;
+          this.inventories = res.data.inventories;
+        }
+      });
+    }
+  }
+
+  getPurchaseOrders() {
+    if (!!this.checkingStore) {
+      this._purchaseOrderService.findOrder({
+        query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId, isActive: true }
+      }).then(res => {
+        console.log(res);
+        this.purchaseOrderLoading = false;
+        if (res.data.length > 0) {
+          this.purchaseOrders = res.data;
+        }
+      });
+    }
+  }
+
+  getTransfers() {
+    if (!!this.checkingStore) {
+      this._inventoryTransferService.findTransferHistories({
+        query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId, isActive: true }
+      }).then(res => {
+        console.log(res);
+        this.transferLoading = false;
+        if (res.data.length > 0) {
+          this.transfers = res.data;
+        }
       });
     }
   }
