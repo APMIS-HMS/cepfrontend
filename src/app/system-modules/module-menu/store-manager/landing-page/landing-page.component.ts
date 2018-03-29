@@ -26,6 +26,7 @@ export class LandingPageComponent implements OnInit {
   productsContentArea = false;
   ordersContentArea = false;
   inventoryContentArea = false;
+  searchOpen = false;
   selMinorLocation = new FormControl();
   selProductType = new FormControl();
   searchControl = new FormControl();
@@ -91,6 +92,9 @@ export class LandingPageComponent implements OnInit {
     this.getStores();
   }
 
+  openSearch(){
+    this.searchOpen = !this.searchOpen;
+  }
 
   newStoreShow() {
     this.newStore = true;
