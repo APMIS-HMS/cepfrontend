@@ -59,63 +59,111 @@ export class FacilityBasicinfoEditComponent implements OnInit {
     private facilityTypeService: FacilityTypeFacilityClassFacadeService,
     private facilityService: FacilitiesService,
     private facilityOwnershipService: FacilityOwnershipService,
-	private systemModuleService: SystemModuleService,
-	private authFacadeService:AuthFacadeService
+    private systemModuleService: SystemModuleService,
+    private authFacadeService: AuthFacadeService
   ) {
   }
 
   ngOnInit() {
-	  const facility = this.authFacadeService.getSelectedFacility();
-	  if(facility.isValidRegistration===undefined || facility.isValidRegistration===false){
-		  this.showClose = false;
-	  }
+    const facility = this.authFacadeService.getSelectedFacility();
+    if (facility.isValidRegistration === undefined || facility.isValidRegistration === false) {
+      this.showClose = false;
+    }
     this._getCountries();
     this._getFacilityTypes();
-    this.facilityForm1 = this.formBuilder.group({
-      facilityname: [
-        this.selectedFacility.name,
-        [
-          <any>Validators.required,
-          <any>Validators.minLength(3),
-          <any>Validators.maxLength(50)
+    if (this.selectedFacility.isHDO) {
+      this.facilityForm1 = this.formBuilder.group({
+        facilityname: [
+          this.selectedFacility.name,
+          [
+            <any>Validators.required,
+            <any>Validators.minLength(3),
+            <any>Validators.maxLength(50)
+          ]
+        ],
+        facilityemail: [
+          this.selectedFacility.email,
+          [<any>Validators.required, Validators.pattern(EMAIL_REGEX)]
+        ],
+        facilitywebsite: [
+          this.selectedFacility.website,
+          [<any>Validators.pattern(WEBSITE_REGEX)]
+        ],
+        network: ["", []],
+        address: ["", []],
+        cac: [this.selectedFacility.cacNo, [<any>Validators.required]],
+        facilitystreet: [
+          this.selectedFacility.street,
+          [<any>Validators.required]
+        ],
+        facilitycity: [this.selectedFacility.city, [<any>Validators.required]],
+        facilitystate: [this.selectedFacility.state, [<any>Validators.required]],
+        facilitycountry: [
+          this.selectedFacility.country,
+          [<any>Validators.required]
+        ],
+        facilityTypeId: [this.selectedFacility.facilityTypeId, [<any>Validators.required]],
+        facilityClassId: [this.selectedFacility.facilityClassId, [<any>Validators.required]],
+        facilityOwnershipId: [this.selectedFacility.facilityOwnershipId, [<any>Validators.required]],
+        facilityShortName: [this.selectedFacility.shortName, [<any>Validators.required]],
+        _id: [this.selectedFacility._id, []],
+        facilityphonNo: [
+          this.selectedFacility.primaryContactPhoneNo,
+          [
+            <any>Validators.required,
+            <any>Validators.minLength(10),
+            <any>Validators.pattern("^[0-9]+$")
+          ]
         ]
-      ],
-      facilityemail: [
-        this.selectedFacility.email,
-        [<any>Validators.required, Validators.pattern(EMAIL_REGEX)]
-      ],
-      facilitywebsite: [
-        this.selectedFacility.website,
-        [<any>Validators.pattern(WEBSITE_REGEX)]
-      ],
-      network: ["", []],
-      address: ["", []],
-      cac: [this.selectedFacility.cacNo, [<any>Validators.required]],
-      facilitystreet: [
-        this.selectedFacility.street,
-        [<any>Validators.required]
-      ],
-      facilitycity: [this.selectedFacility.city, [<any>Validators.required]],
-      facilitystate: [this.selectedFacility.state, [<any>Validators.required]],
-      facilitycountry: [
-        this.selectedFacility.country,
-        [<any>Validators.required]
-      ],
-      facilityTypeId: [this.selectedFacility.facilityTypeId, [<any>Validators.required]],
-      facilityClassId: [this.selectedFacility.facilityClassId, [<any>Validators.required]],
-      facilityOwnershipId: [this.selectedFacility.facilityOwnershipId, [<any>Validators.required]],
-      facilityShortName: [this.selectedFacility.shortName, [<any>Validators.required]],
-      _id: [this.selectedFacility._id, []],
-      facilityphonNo: [
-        this.selectedFacility.primaryContactPhoneNo,
-        [
-          <any>Validators.required,
-          <any>Validators.minLength(10),
-          <any>Validators.pattern("^[0-9]+$")
+      });
+    } else {
+
+      this.facilityForm1 = this.formBuilder.group({
+        facilityname: [
+          this.selectedFacility.name,
+          [
+            <any>Validators.required,
+            <any>Validators.minLength(3),
+            <any>Validators.maxLength(50)
+          ]
+        ],
+        facilityemail: [
+          this.selectedFacility.email,
+          [<any>Validators.required, Validators.pattern(EMAIL_REGEX)]
+        ],
+        facilitywebsite: [
+          this.selectedFacility.website,
+          [<any>Validators.pattern(WEBSITE_REGEX)]
+        ],
+        network: ["", []],
+        address: ["", []],
+        cac: [this.selectedFacility.cacNo, [<any>Validators.required]],
+        facilitystreet: [
+          this.selectedFacility.street,
+          [<any>Validators.required]
+        ],
+        facilitycity: [this.selectedFacility.city, [<any>Validators.required]],
+        facilitystate: [this.selectedFacility.state, [<any>Validators.required]],
+        facilitycountry: [
+          this.selectedFacility.country,
+          [<any>Validators.required]
+        ],
+        facilityOwnershipId: [this.selectedFacility.facilityOwnershipId, [<any>Validators.required]],
+        facilityShortName: [this.selectedFacility.shortName, [<any>Validators.required]],
+        _id: [this.selectedFacility._id, []],
+        facilityphonNo: [
+          this.selectedFacility.primaryContactPhoneNo,
+          [
+            <any>Validators.required,
+            <any>Validators.minLength(10),
+            <any>Validators.pattern("^[0-9]+$")
+          ]
         ]
-      ]
-    });
+      });
+    }
     this.selectedLocation = this.selectedFacility.address;
+
+    console.log(this.selectedFacility);
 
     this._getStates(this.selectedFacility.country);
     this._getFacilityClasses(this.selectedFacility.facilityTypeId);
@@ -138,7 +186,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
       payload => {
         this.facilityOwnerships = payload.data;
       },
-      error => {}
+      error => { }
     );
   }
   _getFacilityTypes() {
@@ -147,7 +195,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
       .then((payload: any) => {
         this.facilityTypes = payload;
       })
-      .catch(error => {});
+      .catch(error => { });
   }
 
   _getFacilityClasses(facilityType: string) {
@@ -156,7 +204,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
       .then((payload: any) => {
         this.facilityClasses = payload;
       })
-      .catch(error => {});
+      .catch(error => { });
   }
   _getStates(country: string) {
     this.countryService
@@ -164,7 +212,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
       .then((payload: any) => {
         this.states = payload;
       })
-      .catch(error => {});
+      .catch(error => { });
   }
   _getCountries() {
     this.countryService
@@ -172,7 +220,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
       .then((payload: any) => {
         this.countries = payload;
       })
-      .catch(err => {});
+      .catch(err => { });
   }
 
   close_onClick() {
@@ -197,8 +245,8 @@ export class FacilityBasicinfoEditComponent implements OnInit {
       facilityTypeId: form.facilityTypeId,
       facilityClassId: form.facilityClassId,
       facilityOwnershipId: form.facilityOwnershipId,
-	  website: form.facilitywebsite,
-	  isValidRegistration:true,
+      website: form.facilitywebsite,
+      isValidRegistration: true,
       _id: form._id,
       isHostFacility: form.network,
       isNetworkFacility: form.network === true ? true : false
@@ -219,7 +267,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
     );
   }
 
-  public callBack(value) {}
+  public callBack(value) { }
   autoCompleteCallback1(selectedData: any) {
     if (selectedData.response) {
       let res = selectedData;
