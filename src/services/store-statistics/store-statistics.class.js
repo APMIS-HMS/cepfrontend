@@ -31,19 +31,37 @@ class Service {
             if (hasFacility.length > 0) {
                 const result = {
                     inventoryCount: 0,
-                    result: []
+                    inventories: []
                 };
                 // get stores
-                let getInventories = await inventoryService.find({ query: params.query, $limit: 0 });
-                console.log('Get Inventories => ', getInventories);
-                let inventoryCount = await inventoryService.find({ query: params.query, $limit: 3 });
+                let inventories = await inventoryService.find({ query: params.query, $sort: { createdAt: -1 }, $limit: 5 });
+                let inventoryCount = await inventoryService.find({ query: params.query, $limit: 0 });
                 console.log('Get inventoryCount => ', inventoryCount);
-                let getProducts = await productService.find({ query: { facilityId: facilityId } });
-                console.log('Get Products => ', getProducts);
-                if (getInventories.data.length > 0 && getProducts.data.length > 0) {
+                let products = await productService.find({ query: { facilityId: facilityId } });
+                if (inventories.data.length > 0 && products.data.length > 0) {
+                    inventories = inventories.data;
+                    products = products.data;
+                    console.log('Get Products => ', products);
+                    console.log('Get inventories => ', inventories);
+                    // Loop through products and inventories
+                    // let i = products.length;
+                    // let j = inventories.length;
+                    for (let i = 0; i < products.length; i++) {
+                        let product = products[i];
+                        for (let j = 0; j < inventories.length; j++) {
+                            let inventory = inventories[j];
+                            if (product._id.toString() === inventory.productId.toString()) {
+                                product.transaction = inventory.transactions[inventory.transactions.length - 1];
+                                product.totalQuantity = inventory.totalQuantity;
+                                result.inventories.push(product);
+                            }
+                        }
+                    }
 
+                    result.inventoryCount = inventoryCount.total;
+                    return jsend.success(result);
                 } else {
-
+                    return jsend.success(result);
                 }
             } else {
                 return jsend.error('Sorry! But you can not perform this transaction.');
