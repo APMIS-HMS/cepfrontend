@@ -53,12 +53,12 @@
                 </div>
                 <div class="frm-item-wrap">
                     <div class="frm-item-x2">
-                        <mat-form-field class="example-full-width">
+                        <mat-form-field class="example-full-width" *ngIf="selectedFacility.isHDO">
                             <mat-select placeholder="Facility Type" formControlName="facilityTypeId">
                                 <mat-option [value]="facilityType.name" *ngFor="let facilityType of facilityTypes">{{facilityType.name}}</mat-option>
                             </mat-select>
                         </mat-form-field>
-                        <mat-form-field class="example-full-width">
+                        <mat-form-field class="example-full-width" *ngIf="selectedFacility.isHDO">
                             <mat-select placeholder="Facility Class" formControlName="facilityClassId" [compareWith]="compareState">
                                 <mat-option [value]="facilityClass.name" *ngFor="let facilityClass of facilityClasses">{{facilityClass.name}}</mat-option>
                             </mat-select>
