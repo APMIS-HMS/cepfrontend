@@ -137,19 +137,17 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
     this.facility = <Facility>this.locker.getObject('selectedFacility');
     this.systemService.on();
-    /* this.patientService.listner.subscribe(payload => {
+    this.patientService.listner.subscribe(payload => {
       this.pageSize = 1;
       this.index = 0;
-      this.limit = 5;
       this.showLoadMore = true;
       this.total = 0;
       this.patients = [];
       this.getPatients(this.limit);
-    }); */
+    });
     this.patientService.createListener.subscribe(payload => {
       this.pageSize = 1;
       this.index = 0;
-      this.limit = 5;
       this.showLoadMore = true;
       this.total = 0;
       this.patients = [];
@@ -237,12 +235,12 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
     this.systemService.currentMessage.subscribe(message => {
       if (message) {
-        this.pageSize = 1;
+        /* this.pageSize = 1;
         this.index = 0;
         this.showLoadMore = true;
         this.total = 0;
         this.patients = [];
-        this.getPatients();
+        this.getPatients(); */
         this.slideEdit(message);
 
       }
@@ -345,19 +343,14 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       if(payl.status === "error"){
         this.mainErr = true;
         this.errMsg = payl.message;
-        this.systemService.announceSweetProxy('testing', 'question',this);
       }else{
-        this.patientToEdit = payl.data;
+        this.patientToEdit.tags = payl.data.tags;
       }
       this.systemService.off;
       this.tagLoader = false;
       this.tagName.setValue('');
       this.identity.reset();
     });
-  }
-
-  sweetAlertCallback(result){
-    console.log(result);
   }
 
   hideSuggestions() {
