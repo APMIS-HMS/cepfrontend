@@ -7,63 +7,6 @@
     //border-radius: 10px;
 }
 
-
-.tooltip {
-    font-size: 1.3em !important;
-    &:after {
-        font-family: Arial, Helvetica, sans-serif;
-        opacity: 0;
-        transition: all 0.4s;
-        font-size: 1.2rem !important;
-        position: absolute;
-        margin-left: -120px;
-        display: block;
-        padding: 10px;
-        content: attr(data-tooltip);
-        background: rgba(0, 0, 0, 0.74);
-        border-radius: 5px;
-        color: #fff;
-        min-width: 80px;
-        text-align: center;
-    }
-    &:hover {
-        &:after {
-            opacity: 1;
-            margin-left: -100px;
-        }
-    }
-}
-
-.badge{
-    padding: 10px;
-    border-radius: 25px;
-    background: #519dde;
-    box-shadow: 0px 3px 10px #dddddd;
-    display: inline-block;
-}
-
-#no-color th,
-#no-color td {
-    background-color: transparent;
-    border: 0.5px solid #dddddd;
-}
-
-tr:nth-child(even) {
-    background-color: transparent !important;
-}
-
-tr:hover {
-    background-color: transparent;
-}
-
-tr {
-    background: transparent;
-}
-
-.Actn:hover {
-    cursor: pointer;
-}
-
 .btn-create {
     background-color: #519dde;
     color: #fff;
@@ -157,7 +100,7 @@ tr {
     //border-bottom: solid 1px #fff;
     font-family: "Josefin Sans", sans-serif;
     font-weight: 600;
-    //height: 15%;
+    height: 15%;
 }
 
 .card-content {
@@ -218,27 +161,42 @@ tr {
     box-sizing: border-box;
 }
 
+.text-blue {
+    color: #337ab7 !important;
+    text-align: center;
+}
 
-/* On screens that are 992px or less, set the background color to blue */
-
-@media screen and (max-width: 992px) {
-    body {
-        background-color: blue;
+.tooltip {
+    font-size: 1.3em !important;
+    &:after {
+        font-family: Arial, Helvetica, sans-serif;
+        opacity: 0;
+        transition: all 0.4s;
+        font-size: 1.2rem !important;
+        position: absolute;
+        margin-left: -80px;
+        display: block;
+        padding: 10px;
+        content: attr(data-tooltip);
+        background: rgba(0, 0, 0, 0.74);
+        border-radius: 5px;
+        color: #fff;
+        min-width: 80px;
+        text-align: center;
+    }
+    &:hover {
+        cursor: pointer;
+        &:after {
+            opacity: 1;
+            margin-left: -100px;
+        }
     }
 }
 
-@media screen and (max-width: 702px) {
-    .btn {
-        //padding: 6px 2px;
-        padding-right: 0px;
-    }
-    .enline {
-        width: fit-content;
-    }
-    .card-header {
-        background-color: rgb(199, 187, 187);
-    }
-    .fit {
-        justify-content: space-between;
-    }
+.badge {
+    padding: 10px;
+    border-radius: 25px;
+    background: #519dde;
+    box-shadow: 0px 3px 10px #dddddd;
+    display: inline-block;
 }
