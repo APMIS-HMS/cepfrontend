@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 'use strict';
 const jsend = require('jsend');
+const difference_in_calendar_days = require('date-fns/difference_in_calendar_days');
 
 class Service {
     constructor(options) {
@@ -31,21 +32,19 @@ class Service {
             if (hasFacility.length > 0) {
                 const result = {
                     inventoryCount: 0,
+                    expired: 0,
                     inventories: []
                 };
-                // get stores
+
                 let inventories = await inventoryService.find({ query: params.query, $sort: { createdAt: -1 }, $limit: 5 });
+                let inventoryStat = await inventoryService.find({ query: params.query, $sort: { createdAt: -1 } });
                 let inventoryCount = await inventoryService.find({ query: params.query, $limit: 0 });
-                console.log('Get inventoryCount => ', inventoryCount);
                 let products = await productService.find({ query: { facilityId: facilityId } });
+
                 if (inventories.data.length > 0 && products.data.length > 0) {
                     inventories = inventories.data;
                     products = products.data;
-                    console.log('Get Products => ', products);
-                    console.log('Get inventories => ', inventories);
                     // Loop through products and inventories
-                    // let i = products.length;
-                    // let j = inventories.length;
                     for (let i = 0; i < products.length; i++) {
                         let product = products[i];
                         for (let j = 0; j < inventories.length; j++) {
@@ -54,6 +53,23 @@ class Service {
                                 product.transaction = inventory.transactions[inventory.transactions.length - 1];
                                 product.totalQuantity = inventory.totalQuantity;
                                 result.inventories.push(product);
+                            }
+                        }
+                    }
+
+                    // Loop for inventory statistics
+                    inventoryStat = inventoryStat.data;
+                    let i = inventoryStat.length;
+                    console.log('Get inventories Stat => ', inventoryStat);
+                    while (i--) {
+                        let inventory = inventoryStat[i];
+                        console.log('inventory => ', inventory);
+                        // let j = inventory.transactions.length - 1;
+                        for (let j = 0; j < inventory.transactions.length; j++) {
+                            const transaction = inventory.transactions[j];
+                            console.log('Got here');
+                            if (transaction.quantity < 1) {
+                                this.expiration(transaction.expiryDate, new Date());
                             }
                         }
                     }
@@ -89,6 +105,52 @@ class Service {
 
     remove(id, params) {
         return Promise.resolve({ id });
+    }
+
+    expiration(date1, date2) {
+        let days = difference_in_calendar_days(date1, date2);
+        console.log('Difference => ', days);
+        let dateRemains = '';
+        let rem = days % 365;
+        if (rem > 0) {
+            let rationalNo = days - rem;
+            let year = rationalNo / 365;
+            if (year >= 2) {
+                dateRemains = year + ' Years ';
+            } else if (year == 1) {
+                dateRemains = year + ' Year ';
+            }
+            let mRem = rem % 31;
+            if (mRem > 0) {
+                let nRational = rem - mRem;
+                let m = nRational / 31;
+                if (m >= 2) {
+                    dateRemains += m + ' Months ';
+                } else if (m == 1) {
+                    dateRemains += m + ' Month ';
+                }
+                if (mRem >= 2) {
+                    dateRemains += mRem + ' Days ';
+                } else if (mRem == 1) {
+                    dateRemains += mRem + ' Day ';
+                }
+            } else {
+                mRem = rem / 31;
+                if (mRem >= 2) {
+                    dateRemains += mRem + ' Months ';
+                } else if (mRem == 1) {
+                    dateRemains += mRem + ' Month ';
+                }
+            }
+        } else {
+            rem = days / 365;
+            if (rem >= 2) {
+                dateRemains = rem + ' Years ';
+            } else if (rem == 1) {
+                dateRemains = rem + ' Year ';
+            }
+        }
+        return dateRemains;
     }
 }
 
