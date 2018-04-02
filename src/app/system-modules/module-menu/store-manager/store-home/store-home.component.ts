@@ -20,6 +20,8 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
   transferLoading = true;
   modal_on = false;
   inventoryCount = 0;
+  purchaseOrderCount = 0;
+  transferCount = 0;
   selectedFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
   workSpace: any;
@@ -126,6 +128,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
         console.log(res);
         this.purchaseOrderLoading = false;
         if (res.data.length > 0) {
+          this.purchaseOrderCount = res.total;
           this.purchaseOrders = res.data;
         }
       });
@@ -139,7 +142,8 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
       }).then(res => {
         console.log(res);
         this.transferLoading = false;
-        if (res.data.length > 0) {
+        if (!!res.data && res.data.length > 0) {
+          this.transferCount = res.total;
           this.transfers = res.data;
         }
       });

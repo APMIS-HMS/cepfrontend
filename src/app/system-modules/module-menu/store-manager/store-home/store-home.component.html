@@ -81,7 +81,7 @@
             <div class="sect sect-half">
                 <div class="sect-header">
                     <div class="head-inner-lhs">
-                        <div class="counta">12</div>
+                        <div class="counta">{{ transferCount }}</div>
                         <div class="head-inner-label">Transfer</div>
                     </div>
                 </div>
@@ -99,9 +99,9 @@
 
                         <div *ngIf="transfers.length > 0 && !transferLoading">
                             <div class="content-row" *ngFor="let transfer of transfers; let i=index">
-                                <div class="row-item">{{ transfer?.name }}</div>
+                                <div class="row-item">{{ transfer?.inventoryTransferTransactions[transfer?.inventoryTransferTransactions.length -1]?.productObject?.productDetail?.brand }}</div>
                                 <div class="row-item">
-                                    <div class="item-label">From</div>
+                                    <div class="item-label">To</div>
                                     <div class="item-val">{{ transfer?.destinationStoreObject?.name }}</div>
                                 </div>
                                 <div class="row-status">
@@ -119,7 +119,7 @@
             <div class="sect sect-half">
                 <div class="sect-header">
                     <div class="head-inner-lhs">
-                        <div class="counta">10</div>
+                        <div class="counta">{{ purchaseOrderCount }}</div>
                         <div class="head-inner-label">Purchase Order</div>
                     </div>
                 </div>

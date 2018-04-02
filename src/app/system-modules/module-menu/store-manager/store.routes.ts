@@ -7,14 +7,11 @@ import { PosRecieptComponent } from './pos/pos-reciept/pos-reciept.component';
 
 const STOREMODULES_ROUTES: Routes = [
     { path: '', component: StoreComponent, children: [
-            // { path: '', redirectTo: 'home' },
-            // { path: 'home', component: StoreHomeComponent },
-            // { path: 'list', component: LandingPageComponent },
-            { path: '', redirectTo: 'store' },
-            { path: 'store', component: StoreHomeComponent },
+            { path: '', redirectTo: 'home' },
+            { path: 'home', component: StoreHomeComponent },
+            { path: 'list', component: LandingPageComponent },
             { path: 'pos', component: PosComponent },
             { path: 'pos-reciept', component: PosRecieptComponent },
-            { path: 'view-store', component: LandingPageComponent },
         ]
     }
 ];
