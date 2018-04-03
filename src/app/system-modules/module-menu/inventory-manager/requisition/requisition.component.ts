@@ -198,7 +198,6 @@ export class RequisitionComponent implements OnInit {
 
     if (event.checked === true) {
       if (this.productsControl.value !== null && this.productsControl.value !== undefined) {
-        console.log(value);
         (<FormArray>this.productTableForm.controls['productTableArray'])
           .push(
           this.formBuilder.group({

@@ -48,7 +48,6 @@ export class ReorderLevelComponent implements OnInit {
 
   ngOnInit() {
     this.selectedFacility = <any>this.locker.getObject('selectedFacility');
-    console.log(this.selectedFacility);
     this.user = this.locker.getObject('auth');
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
@@ -59,13 +58,9 @@ export class ReorderLevelComponent implements OnInit {
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe(value => {
-        console.log(this.products.filter(x => x.name === this.selectedProduct.value).length);
-        console.log(this.newProduct.value);
-        console.log(this.products);
         if (this.products.filter(x => x.name === this.newProduct.value).length === 1 || this.newProduct.value === ' ') {
           this.collapseProductContainer = false;
         } else {
-          console.log(this.selectedFacility);
           this.systemModuleService.on();
           this.productService.findReorderUnique({
             query:
@@ -98,7 +93,6 @@ export class ReorderLevelComponent implements OnInit {
     this.selectedProduct = product;
     this.newProduct.setValue(product.name);
     const productSizes = await this.productService.get(product._id, { query: { loginFacilityId: this.selectedFacility._id } });
-    console.log(productSizes);
     if (productSizes.productConfigObject !== undefined) {
       this.selectedProduct.productConfigObject = productSizes.productConfigObject;
     } else {
@@ -120,15 +114,12 @@ export class ReorderLevelComponent implements OnInit {
   }
 
   getReOrderProducts() {
-    console.log(this.checkingStore.storeId);
     this.productService.findReorder({ query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId } }).then(payload => {
-      console.log(payload);
       this.reorderProducts = payload.data;
     });
   }
 
   isReorderUniqueProducts(productId) {
-    console.log(productId);
     this.productService.findReorder({ query: { productId: productId } }).then(payload => {
       if (payload.data !== undefined && payload.data.length > 0) {
         return true;
@@ -178,10 +169,8 @@ export class ReorderLevelComponent implements OnInit {
   }
 
   onEdit_click(product) {
-    console.log(product);
     this.productService.get(product.productId, { query: { loginFacilityId: this.selectedFacility._id } }).then(payload => {
       this.editSelectedProduct = payload;
-      console.log(this.editSelectedProduct);
       product.isEdit = true;
     });
   }
@@ -201,7 +190,6 @@ export class ReorderLevelComponent implements OnInit {
         this.systemModuleService.announceSweetProxy('Product Re-order level updated successfully', 'success');
         this.getReOrderProducts();
       }, error => {
-        console.log(error);
         this.editSelectedProduct = {};
         this.editSelectedProduct.productConfigObject = [];
         product.isEdit = false;
