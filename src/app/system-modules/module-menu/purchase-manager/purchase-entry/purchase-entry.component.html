@@ -40,7 +40,7 @@
                 <textarea matInput mat-error placeholder="Remark" formControlName="desc"></textarea>
             </mat-input-container>
         </div>
-        <button class="btnn" (click)="flyout_toggle($event)">Add Product</button>
+        <button (click)="flyout_toggle($event)">Add Product</button>
 
         <div class="bottomwrap">
 
@@ -91,8 +91,17 @@
 
                                     <div style="width: 10%;" class="frm-item-wrap">
                                         <mat-input-container class="example-full-width">
-                                            <input type="number" (change)="getCostSummary(schedule)" matInput mat-error placeholder="Quantity" formControlName="qty">
+                                            <input type="number" (change)="getCostSummary(schedule)" matInput mat-error placeholder="Quantity" formControlName="qty" readonly>
                                         </mat-input-container>
+                                    </div>
+
+
+                                    <div class="frm-item-wrap" formArrayName="config">
+                                        <div [formGroupName]="j" *ngFor="let item of getProductConfig(schedule); let j = index">
+                                            <mat-input-container>
+                                                <input type="number" formControlName="size" min="1" (change)="onPackageSize(i)" matInput placeholder="{{item.value.name}}">
+                                            </mat-input-container>
+                                        </div>
                                     </div>
 
                                     <div style="width: 10%;" class="frm-item-wrap">

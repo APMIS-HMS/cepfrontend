@@ -103,7 +103,7 @@ export class PurchaseEntryComponent implements OnInit {
       } else {
         if (this.myInventory.value === true) {
           this.getMyInventory();
-        }else {
+        } else {
           this.products = [];
           this.getProductTables(this.products);
         }
@@ -146,7 +146,8 @@ export class PurchaseEntryComponent implements OnInit {
 
     this.frm_purchaseOrder.controls['orderId'].valueChanges.subscribe(value => {
       if (value !== undefined && value !== null) {
-        if(this.orderId === undefined){
+        if (this.orderId === undefined) {
+          console.log(1);
           this.getAllProducts();
           this.addNewProductTables();
           this.getOrderDetails(value, true);
@@ -223,18 +224,19 @@ export class PurchaseEntryComponent implements OnInit {
                   const total = item.quantity * item.costPrice;
                   (<FormArray>this.productTableForm.controls['productTableArray'])
                     .push(
-                    this.formBuilder.group({
-                      product: [itemg.name, [<any>Validators.required]],
-                      batchNo: [item.batchNo, [<any>Validators.required]],
-                      costPrice: [item.costPrice, [<any>Validators.required]],
-                      qty: [item.quantity, [<any>Validators.required]],
-                      expiryDate: [item.expiryDate, [<any>Validators.required]],
-                      total: [{ value: total, disabled: true }],
-                      readOnly: [false],
-                      id: [item.productId],
-                      existingInventory: [existingInventory],
-                      productObject: [item.product],
-                    })
+                      this.formBuilder.group({
+                        product: [itemg.name, [<any>Validators.required]],
+                        batchNo: [item.batchNo, [<any>Validators.required]],
+                        costPrice: [item.costPrice, [<any>Validators.required]],
+                        qty: [item.quantity, [<any>Validators.required]],
+                        expiryDate: [item.expiryDate, [<any>Validators.required]],
+                        config: this.initProductConfig(itemg.productConfigObject, item.quantity),
+                        total: [{ value: total, disabled: true }],
+                        readOnly: [false],
+                        id: [item.productId],
+                        existingInventory: [existingInventory],
+                        productObject: [item.product],
+                      })
                     );
                 }
               });
@@ -244,6 +246,68 @@ export class PurchaseEntryComponent implements OnInit {
       this.systemModuleService.off();
     });
   }
+
+  initProductConfig(config, qty) {
+    console.log(qty);
+    let frmArray = new FormArray([])
+    if (qty !== null && qty !== undefined) {
+      let _qty = qty;
+      for (let i = config.length - 1; i >= 0; i--) {
+        let rem = _qty % config[i].size;
+        console.log(rem);
+        let val = _qty - rem;
+        console.log(val);
+        let wholeVal = val / config[i].size;
+        console.log(wholeVal + "---" + config[i].size);
+        if (wholeVal > 0) {
+          frmArray.push(new FormGroup({
+            size: new FormControl(wholeVal),
+            name: new FormControl(config[i].name),
+            isBase: new FormControl(config[i].isBase),
+            packVolume: new FormControl(config[i].size)
+          }));
+        }
+        _qty = rem;
+        console.log(_qty);
+      }
+
+    } else {
+      for (let i = config.length - 1; i >= 0; i--) {
+        frmArray.push(new FormGroup({
+          size: new FormControl(0),
+          name: new FormControl(config[i].name),
+          isBase: new FormControl(config[i].isBase),
+          packVolume: new FormControl(config[i].size)
+        }));
+      }
+    }
+    return frmArray;
+  }
+
+  getProductConfig(form) {
+    return form.controls.config.controls;
+  }
+
+  onPackageSize(i) {
+    let totalCost = 0;
+    (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.qty = 0;
+    (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.total = 0;
+    <FormArray>this.productTableForm['controls'].productTableArray['controls'][i].value.config.forEach(element => {
+      (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.qty += element.size * element.packVolume;
+      let subTotal = ((<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.costPrice * (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.qty);
+      (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.total = '₦ ' + subTotal;
+    });
+
+    (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
+      const productControlValue: any = item.value;
+      console.log(productControlValue);
+      totalCost = totalCost + (+productControlValue.costPrice * +productControlValue.qty);
+    });
+    this.frm_purchaseOrder.controls['amount'].setValue(totalCost);
+
+    (<FormArray>this.productTableForm.controls['productTableArray']).setValue(JSON.parse(JSON.stringify((<FormArray>this.productTableForm.controls['productTableArray']).value)));
+  }
+
   getOrderDetails(id, isHasVal) {
     this.systemModuleService.on();
     this.purchaseOrderService.get(id, {}).then((payload: PurchaseOrder) => {
@@ -263,14 +327,17 @@ export class PurchaseEntryComponent implements OnInit {
             productId: item.productId
           }
         }).then(result => {
+          console.log(result);
           this.systemModuleService.off();
           let existingInventory = {};
           if (result.data.length > 0) {
             existingInventory = result.data[0];
           }
+          console.log(this.superGroups);
           this.superGroups.forEach((items, s) => {
             items.forEach((itemg, g) => {
               if (itemg._id === item.productId) {
+                console.log(itemg);
                 itemg.checked = true;
                 (<FormArray>this.productTableForm.controls['productTableArray']).push(
                   this.formBuilder.group({
@@ -279,6 +346,7 @@ export class PurchaseEntryComponent implements OnInit {
                     costPrice: [0.00, [<any>Validators.required]],
                     qty: [item.quantity, [<any>Validators.required]],
                     expiryDate: [this.now, [<any>Validators.required]],
+                    config: this.initProductConfig(itemg.product.productConfigObject, item.quantity),
                     total: [{ value: '₦ 0', disabled: true }],
                     readOnly: [false],
                     existingInventory: [existingInventory],
@@ -309,9 +377,10 @@ export class PurchaseEntryComponent implements OnInit {
   }
   getAllProducts() {
     this.systemModuleService.on();
-    this.productService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
+    this.productService.find({ query: { loginFacilityId: this.selectedFacility._id } }).then(payload => {
       this.systemModuleService.off();
       this.products = payload.data;
+      console.log(this.products);
       this.getProductTables(this.products);
     });
   }
@@ -320,7 +389,7 @@ export class PurchaseEntryComponent implements OnInit {
     this.productTables = products;
     this.superGroups = [];
     let group: any[] = [];
-
+    console.log(this.productTables);
     let counter = 0;
     for (let i = 0; i < this.productTables.length; i++) {
 
@@ -357,16 +426,24 @@ export class PurchaseEntryComponent implements OnInit {
     this.systemModuleService.off();
   }
   getCostSummary(value) {
+    console.log(value);
     this.totalCost = 0;
+    console.log(1);
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
+      console.log(2);
       const productControlValue: any = item.value;
+      console.log(productControlValue);
       this.totalCost = this.totalCost + (+productControlValue.costPrice * +productControlValue.qty);
     });
+    console.log(3);
     this.frm_purchaseOrder.controls['amount'].setValue(this.totalCost);
-
+    console.log(4);
     // Set totalcost for each item
     const total = '₦ ' + (value.value.qty * value.value.costPrice);
+    console.log(total);
+    console.log(5);
     value.controls['total'].setValue(total);
+    console.log(6);
   }
   mergeTable(obj) {
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
@@ -379,7 +456,7 @@ export class PurchaseEntryComponent implements OnInit {
   }
   getSuppliers() {
     this.systemModuleService.on();
-    this.supplierService.find({ query: { facilityId: this.selectedFacility._id,isActive:true }, $paginate: false }).then(payload => {
+    this.supplierService.find({ query: { facilityId: this.selectedFacility._id, isActive: true }, $paginate: false }).then(payload => {
       this.systemModuleService.off();
       this.suppliers = payload.data;
       console.log(this.suppliers);
@@ -421,20 +498,22 @@ export class PurchaseEntryComponent implements OnInit {
           }
           if (this.frm_purchaseOrder.controls['invoiceNo'].value !== null &&
             this.frm_purchaseOrder.controls['invoiceNo'].value.length > 0) {
+              console.log(value);
             (<FormArray>this.productTableForm.controls['productTableArray'])
               .push(
-              this.formBuilder.group({
-                product: [value.name, [<any>Validators.required]],
-                batchNo: ['', [<any>Validators.required]],
-                costPrice: [0.00, [<any>Validators.required]],
-                qty: [0, [<any>Validators.required]],
-                expiryDate: [this.now, [<any>Validators.required]],
-                total: [{ value: '₦ 0', disabled: true }],
-                readOnly: [false],
-                existingInventory: [existingInventory],
-                productObject: [value.product],
-                id: [value._id]
-              })
+                this.formBuilder.group({
+                  product: [value.name, [<any>Validators.required]],
+                  batchNo: ['', [<any>Validators.required]],
+                  costPrice: [0.00, [<any>Validators.required]],
+                  qty: [0, [<any>Validators.required]],
+                  expiryDate: [this.now, [<any>Validators.required]],
+                  config: this.initProductConfig(value.product.productConfigObject, null),
+                  total: [{ value: '₦ 0', disabled: true }],
+                  readOnly: [false],
+                  existingInventory: [existingInventory],
+                  productObject: [value.product],
+                  id: [value._id]
+                })
               );
           } else {
             value.checked = false;
