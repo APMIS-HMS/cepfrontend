@@ -3,7 +3,6 @@
 
 module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
   return context => {
-    console.log(context.params);
     if (context.params.query !== undefined) {
       if (context.params.query.loginFacilityId !== undefined) {
         context.facilityId = JSON.parse(JSON.stringify(context.params.query.loginFacilityId));
