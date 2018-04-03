@@ -127,7 +127,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
       }).then(res => {
         console.log(res);
         this.purchaseOrderLoading = false;
-        if (res.data.length > 0) {
+        if (!!res.data && res.data.length > 0) {
           this.purchaseOrderCount = res.total;
           this.purchaseOrders = res.data;
         }
