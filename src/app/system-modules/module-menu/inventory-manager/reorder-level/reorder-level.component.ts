@@ -55,13 +55,6 @@ export class ReorderLevelComponent implements OnInit {
       this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
       this.getReOrderProducts();
     });
-    this.productTableForm = this.formBuilder.group({
-      product: ['', [<any>Validators.required]],
-      reOrderLevel: ['', [<any>Validators.required]],
-      config: ['', [<any>Validators.required]],
-    });
-
-
     this.newProduct.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
@@ -84,6 +77,20 @@ export class ReorderLevelComponent implements OnInit {
           })
         }
       });
+  }
+
+  addNewProductTables() {
+    this.productTableForm = this.formBuilder.group({
+      'productTableArray': this.formBuilder.array([
+        this.formBuilder.group({
+          product: ['', [<any>Validators.required]],
+          reOrderLevel: ['', [<any>Validators.required]],
+          config: ['', [<any>Validators.required]],
+          isEdit: [false, [<any>Validators.required]]
+        })
+      ])
+    });
+    this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
   }
 
   async onSelectProduct(product) {
