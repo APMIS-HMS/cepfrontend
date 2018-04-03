@@ -19,6 +19,8 @@ export class ReorderLevelComponent implements OnInit {
   packType = new FormControl();
   product = new FormControl();
 
+  public showNewForm = false;
+
   newReorderLevel = new FormControl('', [<any>Validators.required]);
   newPackType = new FormControl(0, [<any>Validators.required]);
   newProduct = new FormControl('', [<any>Validators.required]);
@@ -201,6 +203,10 @@ export class ReorderLevelComponent implements OnInit {
       this.systemModuleService.off();
       this.systemModuleService.announceSweetProxy('Update failed!!! field(s) is missing', 'error');
     }
+  }
+
+  toggleNewForm(){
+    this.showNewForm = !this.showNewForm;
   }
 
 }
