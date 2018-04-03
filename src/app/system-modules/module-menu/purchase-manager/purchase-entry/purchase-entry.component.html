@@ -11,7 +11,7 @@
 
             <mat-form-field class="col-xs-3">
                 <mat-select class="frm-item-wrap" placeholder="Supplier" formControlName="supplier">
-                    <mat-option *ngFor="let supplier of suppliers" [value]="supplier._id">{{supplier.name}}</mat-option>
+                    <mat-option *ngFor="let supplier of suppliers" [value]="supplier._id">{{supplier.supplier.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
 
@@ -40,7 +40,7 @@
                 <textarea matInput mat-error placeholder="Remark" formControlName="desc"></textarea>
             </mat-input-container>
         </div>
-        <button class="btnn" (click)="flyout_toggle($event)">Add Product</button>
+        <button (click)="flyout_toggle($event)">Add Product</button>
 
         <div class="bottomwrap">
 
@@ -91,8 +91,17 @@
 
                                     <div style="width: 10%;" class="frm-item-wrap">
                                         <mat-input-container class="example-full-width">
-                                            <input type="number" (change)="getCostSummary(schedule)" matInput mat-error placeholder="Quantity" formControlName="qty">
+                                            <input type="number" (change)="getCostSummary(schedule)" matInput mat-error placeholder="Quantity" formControlName="qty" readonly>
                                         </mat-input-container>
+                                    </div>
+
+
+                                    <div class="frm-item-wrap" formArrayName="config">
+                                        <div [formGroupName]="j" *ngFor="let item of getProductConfig(schedule); let j = index">
+                                            <mat-input-container>
+                                                <input type="number" formControlName="size" min="1" (change)="onPackageSize(i)" matInput placeholder="{{item.value.name}}">
+                                            </mat-input-container>
+                                        </div>
                                     </div>
 
                                     <div style="width: 10%;" class="frm-item-wrap">
