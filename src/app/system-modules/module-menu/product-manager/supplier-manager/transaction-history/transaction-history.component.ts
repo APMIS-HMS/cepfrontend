@@ -19,6 +19,7 @@ export class TransactionHistoryComponent implements OnInit {
   invoices:any = [];
   selected_supplier:any;
   loading = true;
+  searchOpen = false;
   frmFilterSupplier: FormControl = new FormControl();
 
   selectedFacility: Facility = <Facility>{};
@@ -75,6 +76,10 @@ export class TransactionHistoryComponent implements OnInit {
   PaymentHistoryShow(invoice) {
     this.selectedInvoice = invoice;
     this.paymentHistory = !this.paymentHistory;
+  }
+
+  openSearch() {
+    this.searchOpen = !this.searchOpen;
   }
 
   checkForOutstanding(value) {
