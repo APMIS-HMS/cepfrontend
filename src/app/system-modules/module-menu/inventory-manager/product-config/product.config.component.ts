@@ -214,6 +214,8 @@ initializeForm(){
       } else {
         this.btnShowStatus = false;
         this.systemModuleService.on();
+        (<FormArray>this.packageForm.controls['package']).value[0].isBase = true;
+        (<FormArray>this.packageForm.controls['package']).value[0].size = 1;
         let _packSizes = (<FormArray>this.packageForm.controls['package']).value;
         this.productService.patchProductConfig(this.existConfigItem._id, { packSizes: _packSizes} ,{}).then(payload => {
           this.systemModuleService.off();

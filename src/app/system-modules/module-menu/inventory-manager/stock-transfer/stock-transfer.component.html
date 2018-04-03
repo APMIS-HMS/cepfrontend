@@ -85,23 +85,32 @@
                                         </div>
                                     </div>
                                     <div class="col-md-6 row">
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="frm-item-wrap">
                                                 <mat-input-container class="example-full-width">
                                                     <input [step]="0.01" type="number" [readOnly]="true" matInput mat-error placeholder="Unit Cost Price" [readOnly]="true" formControlName="costPrice">
                                                 </mat-input-container>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+                                        <div class="col-md-3">
                                             <div class="frm-item-wrap">
                                                 <mat-input-container class="example-full-width">
                                                     <input (change)="checkProductQuantity($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)" min="1"
                                                         max="{{maxQty}}" type="number" matInput mat-error placeholder="Quantity"
-                                                        [readOnly]="false" formControlName="qty">
+                                                        formControlName="qty" readonly>
                                                 </mat-input-container>
                                             </div>
                                         </div>
-                                        <div class="col-md-4">
+
+                                        <div class="col-md-3" formArrayName="config">
+                                            <div [formGroupName]="j" *ngFor="let item of getProductConfig(schedule); let j = index">
+                                                <mat-input-container>
+                                                    <input type="number" formControlName="size" min="1" (change)="onPackageSize(i)" matInput placeholder="{{item.value.name}}">
+                                                </mat-input-container>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
                                             <div class="frm-item-wrap">
                                                 <mat-input-container class="example-full-width">
                                                     <input [step]="0.01" [readOnly]="true" min="0" type="number" [readOnly]="true" matInput mat-error placeholder="Total Cost Price"
