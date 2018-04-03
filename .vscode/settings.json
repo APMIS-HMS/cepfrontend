@@ -1,6 +1,6 @@
 // Place your settings in this file to overwrite the default settings
 {
-    "files.autoSave": true,
+    "files.autoSave": "onFocusChange",
     "workbench.iconTheme": "vscode-icons",
     "git.confirmSync": false,
     "vsicons.projectDetection.disableDetect": true,
@@ -25,6 +25,5 @@
     "editor.insertSpaces": true,
     "editor.tabSize": 4,
     "editor.detectIndentation": true,
-    "gitlens.keymap": "alternate",
-    "editor.fontSize": 14
+    "gitlens.keymap": "alternate"
 }
