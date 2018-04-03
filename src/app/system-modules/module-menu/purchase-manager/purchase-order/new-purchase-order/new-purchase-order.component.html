@@ -37,7 +37,7 @@
             </div>
         </div>
         <!-- <div (click)="flyout_toggle($event)" class="txt-link">Add Product</div> -->
-        
+
         <div class="col-b">
             <form *ngIf="productTableForm.controls['productTableArray'].value.length > 0" [formGroup]="productTableForm">
                 <div formArrayName="productTableArray" class="frmArrayWrap">
@@ -55,8 +55,15 @@
                                     </div>
                                     <div class="frm-item-wrap">
                                         <mat-input-container class="example-full-width">
-                                            <input type="number" matInput mat-error placeholder="Qantity" formControlName="qty">
+                                            <input type="number" matInput mat-error placeholder="Qantity" formControlName="qty" readonly>
                                         </mat-input-container>
+                                    </div>
+                                    <div class="frm-item-wrap" formArrayName="config">
+                                        <div [formGroupName]="j" *ngFor="let item of getProductConfig(schedule); let j = index">
+                                            <mat-input-container>
+                                                <input type="number" formControlName="size" min="1" (change)="onPackageSize(i)" matInput placeholder="{{item.value.name}}">
+                                            </mat-input-container>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -67,9 +74,12 @@
         </div>
 
         <div style="width: 100%;height: 50px; text-align: center;">
-            <button (click)="save()" mat-raised-button [disabled]="(!frm_purchaseOrder.valid || loading) || (productTableForm.controls['productTableArray'].value.length === 0)" class="mat-raised-button">
+            <button (click)="save()" mat-raised-button [disabled]="(!frm_purchaseOrder.valid || loading) || (productTableForm.controls['productTableArray'].value.length === 0)"
+                class="mat-raised-button">
                 <span *ngIf="!loading">{{saveBtnText}}</span>
-                <span *ngIf="loading">Loading... <i class="fa fa-spinner fa-spin fa-2x"></i></span>
+                <span *ngIf="loading">Loading...
+                    <i class="fa fa-spinner fa-spin fa-2x"></i>
+                </span>
             </button>
         </div>
 
@@ -88,7 +98,7 @@
                     </div>
 
                     <div class="check-filterWrap">
-                        <div class="chkbox-wrap" *ngFor ="let item of checkBoxLabels; let i=index">
+                        <div class="chkbox-wrap" *ngFor="let item of checkBoxLabels; let i=index">
                             <mat-checkbox [checked]="item.checked" (change)="onChecked($event,item,checkBoxLabels,i)">{{item.name}}</mat-checkbox>
                         </div>
                     </div>
@@ -96,9 +106,9 @@
                 <div class="product-sect">
                     <div *ngFor="let group of superGroups">
                         <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
-                            <div class="control__indicator"> 
-                                    <mat-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></mat-checkbox>
-                                </div>
+                            <div class="control__indicator">
+                                <mat-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></mat-checkbox>
+                            </div>
                         </label>
                     </div>
                 </div>
