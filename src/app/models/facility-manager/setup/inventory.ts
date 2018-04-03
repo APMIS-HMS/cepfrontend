@@ -15,3 +15,10 @@ export interface Inventory {
     isOpen: boolean;
     availableQuantity:number;
 }
+
+export interface ProductConfig{
+    name: string,
+    size: number,
+    packId: string,
+    isBase: boolean
+}

@@ -1,3 +1,4 @@
+
 import { Component, OnInit, Input } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
@@ -34,6 +35,8 @@ export class InitializeStoreComponent implements OnInit {
   productname: any;
   searchProduct: any;
   searchControl = new FormControl();
+  selectedPacks = [];
+
   constructor(
     private _fb: FormBuilder,
     private _locker: CoolLocalStorage,
@@ -41,7 +44,7 @@ export class InitializeStoreComponent implements OnInit {
     private _productService: ProductService,
     private _inventoryInitialiserService: InventoryInitialiserService,
     private authFacadeService: AuthFacadeService,
-    private systemModuleService: SystemModuleService ) {
+    private systemModuleService: SystemModuleService) {
   }
 
   ngOnInit() {
@@ -58,8 +61,12 @@ export class InitializeStoreComponent implements OnInit {
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe((por: any) => {
-        this._productService.find({ query: { facilityId: this.selectedFacility._id, name:
-          { $regex: por, '$options': 'i' } } }).then(payload => {
+        this._productService.find({
+          query: {
+            facilityId: this.selectedFacility._id, name:
+              { $regex: por, '$options': 'i' }
+          }
+        }).then(payload => {
           this.products = payload.data;
         }, err => {
         });
@@ -74,12 +81,21 @@ export class InitializeStoreComponent implements OnInit {
   }
 
   createbatch(): FormGroup {
-    return this._fb.group({
-      batchNumber: ['', Validators.required],
-      quantity: ['', Validators.required],
-      productionDate: [new Date()],
-      expiryDate: [new Date()]
-    });
+    if (this.selectedProduct.productConfigObject !== undefined) {
+      return this._fb.group({
+        batchNumber: ['', Validators.required],
+        quantity: ['', Validators.required],
+        config: this.initProductConfig(this.selectedProduct.productConfigObject),
+        expiryDate: [new Date()]
+      });
+    } else {
+      return this._fb.group({
+        batchNumber: ['', Validators.required],
+        quantity: ['', Validators.required],
+        config: [],
+        expiryDate: [new Date()]
+      });
+    }
   }
 
   addProduct(product: any) {
@@ -91,28 +107,62 @@ export class InitializeStoreComponent implements OnInit {
     });
     this.selectedProduct = product;
     const control = <FormArray>this.myForm.controls['initproduct'];
-    control.push(
-      this._fb.group({
+    if (product.productConfigObject !== undefined) {
+      let prodObj = this._fb.group({
         batchNumber: ['', Validators.required],
         quantity: ['', Validators.required],
-        productionDate: [new Date()],
+        config: this.initProductConfig(product.productConfigObject),
         expiryDate: [new Date()]
-      })
-    );
-  }
+      });
 
+      control.push(
+        prodObj
+      );
+    } else {
+      control.push(
+        this._fb.group({
+          batchNumber: ['', Validators.required],
+          quantity: ['', Validators.required],
+          config: [],
+          expiryDate: [new Date()]
+        })
+      );
+    }
+  }
+  initProductConfig(config) {
+    console.log(config);
+    let frmArray = new FormArray([])
+    config.forEach(item => {
+      frmArray.push(new FormGroup({
+        size: new FormControl(0),
+        name: new FormControl(item.name),
+        isBase: new FormControl(item.isBase),
+        packVolume: new FormControl(item.size)
+      }));
+    })
+    return frmArray;
+  }
+  getProductConfig(form) {
+    return form.controls.config.controls;
+  }
   removeBatch(i: number) {
     const control = <FormArray>this.myForm.controls['initproduct'];
     control.removeAt(i);
   }
 
   getProducts() {
-    this._productService.find({}).then(payload => {
+    this._productService.find({ query: { loginFacilityId: this.selectedFacility._id } }).then(payload => {
       this.products = payload.data;
     });
-    // this._productService.find({ query: { facilityId: this.selectedFacility._id, isInventory: false } }).then(payload => {
-    //   this.products = payload.data;
-    // });
+  }
+
+  onPackageSize(i) {
+    (<FormArray>this.myForm['controls'].initproduct['controls'][i]).value.quantity = 0;
+    console.log(<FormArray>this.myForm['controls'].initproduct['controls'][i]);
+    let itm = <FormArray>this.myForm['controls'].initproduct['controls'][i].value.config.forEach(element => {
+      (<FormArray>this.myForm['controls'].initproduct['controls'][i]).value.quantity += element.size * element.packVolume;
+    });
+    (<FormArray>this.myForm.controls['initproduct']).setValue(JSON.parse(JSON.stringify((<FormArray>this.myForm.controls['initproduct']).value)));
   }
 
 

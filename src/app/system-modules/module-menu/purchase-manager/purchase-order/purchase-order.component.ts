@@ -72,13 +72,14 @@ export class PurchaseOrderComponent implements OnInit {
   }
   getPurchaseOrders() {
     this.systemModuleService.on();
-    this.purchaseOrderService.findOrder({
+    this.purchaseOrderService.find({
       query:
         {
           facilityId: this.selectedFacility._id,
           isActive: true
         }
     }).subscribe(payload => {
+      console.log(payload);
       if (payload.data != undefined) {
         this.orders = payload.data;
         this.systemModuleService.off();
