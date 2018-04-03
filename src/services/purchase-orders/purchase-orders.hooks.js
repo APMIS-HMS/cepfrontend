@@ -3,9 +3,8 @@ const {
 } = require('@feathersjs/authentication').hooks;
 
 const purchaseOrderId = require('../../hooks/purchase-order-id');
-const {
-  fastJoin
-} = require('feathers-hooks-common');
+const {fastJoin} = require('feathers-hooks-common');
+
 const resolvers = {
   joins: {
     facilityDetails: () => async (data, context) => {
@@ -13,13 +12,23 @@ const resolvers = {
       data.supplierObject = supplier;
     },
     productObject: () => async (data, context) => {
-      if (data.orderedProducts !== null || data.orderedProducts !== undefined) {
+      if (data.orderedProducts !== null && data.orderedProducts !== undefined) {
         if (data.orderedProducts.length > 0) {
           let len2 = data.orderedProducts.length - 1;
           for (let j = 0; j <= len2; j++) {
             if (data.orderedProducts[j] !== undefined) {
               try {
-                let getProduct = await context.app.service('products').get(data.orderedProducts[j].productId);
+                const id = data.orderedProducts[j].productId;
+                const getProduct = await context.app.service('products').get(id);
+                const productConfig = await context.app.service('product-configs').find({
+                  query: {
+                    facilityId: getProduct.facilityId,
+                    productId: getProduct._id
+                  }
+                });
+                if (productConfig.data.length > 0) {
+                  getProduct.productConfigObject = productConfig.data[0].packSizes;
+                }
                 data.orderedProducts[j].productObject = getProduct;
               } catch (e) {
                 // console.log(e);

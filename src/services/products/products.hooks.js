@@ -33,9 +33,9 @@ const getLoginFacilityId = require('../../hooks/get-login-facility-id');
 
 module.exports = {
   before: {
-    all: [authenticate('jwt'), getLoginFacilityId()],
-    find: [],
-    get: [],
+    all: [authenticate('jwt')],
+    find: [getLoginFacilityId()],
+    get: [getLoginFacilityId()],
     create: [],
     update: [],
     patch: [],
@@ -43,8 +43,8 @@ module.exports = {
   },
 
   after: {
-    all: [],
-    find: [fastJoin(resolvers)],
+    all: [fastJoin(resolvers)],
+    find: [],
     get: [],
     create: [],
     update: [],

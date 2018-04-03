@@ -3,10 +3,12 @@
 
 module.exports = function (options = {}) { // eslint-disable-line no-unused-vars
   return context => {
-    
-    if (context.params.query.facilityId !== undefined) {
-      context.facilityId = context.params.query.facilityId;
-      delete context.params.query.facilityId;
+    console.log(context.params);
+    if (context.params.query !== undefined) {
+      if (context.params.query.loginFacilityId !== undefined) {
+        context.facilityId = JSON.parse(JSON.stringify(context.params.query.loginFacilityId));
+        delete context.params.query.loginFacilityId;
+      }
     }
     return Promise.resolve(context);
   };
