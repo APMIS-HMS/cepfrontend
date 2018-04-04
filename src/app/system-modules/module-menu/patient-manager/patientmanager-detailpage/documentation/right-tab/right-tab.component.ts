@@ -212,5 +212,4 @@ export class RightTabComponent implements OnInit {
     addVitals_show() {
         this.addVitals.emit(true);
     }
-
 }

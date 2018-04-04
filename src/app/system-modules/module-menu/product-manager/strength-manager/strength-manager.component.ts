@@ -16,6 +16,8 @@ export class StrengthManagerComponent implements OnInit {
 	selectedItem: any = <Strength>{};
 	btnLabel = 'Create';
 	isBtnEnable = true;
+	loading = true;
+	searchControl = new FormControl();
 	mainErr: Boolean = true;
 	errMsg: String = 'You have unresolved errors';
 

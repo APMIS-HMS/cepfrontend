@@ -15,7 +15,7 @@
         border-bottom: solid 1px #fff;
         font-weight: 600;
         .table-head {
-            //border-right: solid 1px #fff;
+            border-right: solid 1px #fff;
             text-align: center;
             .search-box {
                 margin-top: 10px;
@@ -23,7 +23,7 @@
         }
         .table-header-input {
             background: rgba(255, 255, 255, 0.233);
-            color: #fff;
+            color: #fff !important;
             border: none;
             border-radius: 5px;
             width: 100%;
