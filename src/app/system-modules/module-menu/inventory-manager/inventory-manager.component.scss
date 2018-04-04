@@ -1,9 +1,11 @@
 .inner-page-contentArea {
     padding: 0 !important;
 }
+
 .btning-inventory {
     border: 1px solid #0288d1;
 }
+
 .c-page-wrapper {
     border: 0px solid #fff;
 }
@@ -37,13 +39,21 @@
     justify-content: center;
     align-items: center;
 }
-.switch-store{
-    position: fixed;
+
+.switch-store {
+    position: absolute;
     right: 0;
-    top: 85px;
+    top: 59px;
     z-index: 10;
     border-radius: 0;
+    margin-right: 21px;
+    color: #F5F5F5;
 }
+
+.switch-store:hover {
+    color: #000000;
+}
+
 .content-sec-ico:hover,
 .content-sec-icoActive {
     background: #F5F5F5;
@@ -88,11 +98,13 @@
         }
     }
 }
+
 .navActive {
     border: 1.5px solid #fff;
 }
+
 navActive.active {
-   border: 1.5px solid #fff;  
+    border: 1.5px solid #fff;
 }
 
 .nav-group {
@@ -117,4 +129,3 @@ navActive.active {
         }
     }
 }
-

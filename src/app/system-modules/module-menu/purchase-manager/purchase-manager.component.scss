@@ -10,13 +10,21 @@
 .inner-page-wrap {
     margin-top: 40px !important;
 }
-.switch-store{
-    position: fixed;
+
+.switch-store {
+    position: absolute;
     right: 0;
-    top: 85px;
+    top: 59px;
     z-index: 10;
     border-radius: 0;
+    margin-right: 21px;
+    color: #F5F5F5;
 }
+
+.switch-store:hover {
+    color: #000000;
+}
+
 .navActive {
     border: 1.5px solid #fff;
 }

@@ -33,12 +33,13 @@
         <div class="ql-sect-title">Product</div>
         <ul class="ql-links">
             <li class="ql-link" routerLink="/dashboard/product-manager/products">Product List</li>
-            <li class="ql-link">Product Types</li>
-            <li class="ql-link">Generics</li>
-            <li class="ql-link">Manufacturers</li>
-            <li class="ql-link">Presentation</li>
-            <li class="ql-link">Route</li>
-            <li class="ql-link">Strength</li>
+            <li class="ql-link" routerLink="/dashboard/product-manager/products">Product Configuration</li>
+            <!--<li class="ql-link" (click)="productCatPopShow()">Product Category</li>
+            <li class="ql-link" (click)="genericSlide()">Generics</li>
+            <li class="ql-link" (click)="manufacturerSlide()">Manufacturers</li>
+            <li class="ql-link" (click)="presentationSlide()">Presentation</li>
+            <li class="ql-link" (click)="routeSlide()">Route</li>
+            <li class="ql-link" (click)="strengthSlide()">Strength</li>-->
         </ul>
     </div>
 
@@ -51,3 +52,28 @@
         </ul>
     </div>
 </div>
+
+
+<!-- <div *ngIf="isProductCat" class="modal-overlay center-center">
+    <app-category-manager (closeModal)="close_onClick($event);"></app-category-manager>
+</div>
+
+<div *ngIf="isGeneric" class="modal-overlay center-center">
+    <app-generic-manager (closeModal)="close_onClick($event);"></app-generic-manager>
+</div>
+
+<div *ngIf="isProductRoute" class="modal-overlay center-center">
+    <app-route-manager (closeModal)="close_onClick($event);"></app-route-manager>
+</div>
+
+<div *ngIf="isManufacturer" class="modal-overlay center-center">
+    <app-manufacturer-manager (closeModal)="close_onClick($event);"></app-manufacturer-manager>
+</div>
+
+<div *ngIf="isPresentation" class="modal-overlay center-center">
+    <app-presentation-manager (closeModal)="close_onClick($event);"></app-presentation-manager>
+</div>
+
+<div *ngIf="isStrength" class="modal-overlay center-center">
+    <app-strength-manager (closeModal)="close_onClick($event);"></app-strength-manager>
+</div> -->
