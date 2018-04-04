@@ -1,4 +1,19 @@
 <div [dragula]='"first-bag"'>
+
+    <div class="rArea-card">
+        <div class="rAreaCard-header">
+            <span class="header-label">Tags</span>
+            <!-- <i class="header-cta fa fa-plus" aria-hidden="true"></i> -->
+        </div>
+
+        <ul class="rAreaCard-body">
+            <li class="rAreaCard-item" *ngFor="let tag of patient?.tags">
+                <div class="rAreaCard-content">{{tag.name}}</div>
+                <i *ngIf="tag.tagType === 'identification'" class="fa fa-info tooltip" data-toggle="Identification" data-placement="bottom"></i>
+            </li>
+        </ul>
+    </div>
+
     <div class="rArea-card">
         <div class="rAreaCard-header">
             <span class="header-label">Problems

@@ -2,7 +2,7 @@
     <li [class.pg-menuActive]="" routerLink="/dashboard/store">Home</li>
     <li [class.pg-menuActive]="productNavMenu" routerLink="/dashboard/product-manager/products" (click)="changeRoute('products')">Product</li>
     <li [class.pg-menuActive]="supplierNavMenu" routerLink="/dashboard/product-manager/suppliers" (click)="changeRoute('suppliers')">Supplier</li>
-    <li [class.pg-menuActive]="categoryNavMenu" (click)="productCatPopShow()">Product Type</li>
+    <li [class.pg-menuActive]="categoryNavMenu" (click)="productCatPopShow()">Product Category</li>
     <li [class.pg-menuActive]="genericNavMenu" (click)="genericSlide()">Generic</li>
     <li [class.pg-menuActive]="manufacturerNavMenu" (click)="manufacturerSlide()">Manufacturer</li>
     <li [class.pg-menuActive]="presentationNavMenu" (click)="presentationSlide()">Presentation</li>
