@@ -16,6 +16,7 @@ const resolvers = {
         const configItems = await context.app.service('product-configs').find({query:{facilityId:item.facilityId,productId:item.productId}});
         const packDetails = configItems.data[0].packSizes.find(x=>x._id.toString()===item.reOrderSizeId.toString());
         item.productItemConfigObject = packDetails;
+        item.productConfigObject = configItems.data[0].packSizes;
       }catch(Exception){
 
       }
