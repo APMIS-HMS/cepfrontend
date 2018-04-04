@@ -11,40 +11,32 @@ class Service {
 
   async find(params) {
     const inventoriesService = this.app.service('inventories');
-    const productService = this.app.service('list-of-products');
-    let products = await productService.find({
-      query: {
-        name: params.query.name
-      }
-    });
+    let _inventories = {};
+    _inventories.data = [];
     let inventories = await inventoriesService.find({
       query: {
         facilityId: params.query.facilityId,
         storeId: params.query.storeId
       }
     });
-    if (products.data.length > 0 && inventories.data.length > 0) {
-      let len = products.data.length - 1;
-      for (let index = len; index >= 0; index--) {
-        let len2 = inventories.data.length - 1;
-        for (let index2 = len2; index2 >= 0; index2--) {
-          if (inventories.data[index2].productId.toString() === products.data[index]._id.toString()) {
-            inventories.data[index2].productObject = products.data[index];
-            if (inventories.data[index2].transactions.length > 0) {
-              let len3 = inventories.data[index2].transactions.length - 1;
-              for (let index3 = len3; index3 >= 0; index3--) {
-                if (inventories.data[index2].transactions[index3].expiryDate != undefined) {
-                  inventories.data[index2].transactions[index3].expiration = expiration(inventories.data[index2].transactions[index3].expiryDate, new Date());
-                }
-                if (inventories.data[index2].transactions[index3].availableQuantity <= 0) {
-                  inventories.data[index2].transactions.splice(index3, 1);
-                }
-              }
+    const filter = inventories.data.filter(x => x.productObject.name.includes(params.query.name));
+    _inventories.data = filter;
+    if (_inventories.data.length > 0) {
+      for (let index2 = _inventories.data.length - 1; index2 >= 0; index2--) {
+        if (_inventories.data[index2].transactions.length > 0) {
+          let len3 = _inventories.data[index2].transactions.length - 1;
+          for (let index3 = len3; index3 >= 0; index3--) {
+            if (_inventories.data[index2].transactions[index3].expiryDate != undefined) {
+              
+              _inventories.data[index2].transactions[index3].expiration = expiration(_inventories.data[index2].transactions[index3].expiryDate, new Date());
+            }
+            if (_inventories.data[index2].transactions[index3].availableQuantity <= 0) {
+              _inventories.data[index2].transactions.splice(index3, 1);
             }
           }
         }
       }
-      return inventories;
+      return _inventories;
     } else {
       let result = {
         data: []
