@@ -56,11 +56,9 @@ panel-bd > .panel-heading {
     position: relative;
 }
 .form-array {
-    max-height: 155px;
-    border: 1px solid #c3ced4;
-    border-radius: 5px;
+    border-top: solid 2px#51acda;
     padding: 5px;
-    overflow-y: scroll;
+    overflow-y: auto;
     margin: 5px 0;
 }
 .mat-mini-fab.mat-accent {
@@ -71,6 +69,7 @@ panel-bd > .panel-heading {
     line-height: 1.9;
 }
 a:hover, a.active {
+    cursor: pointer;
     text-decoration: none;
     outline: none;
 }
