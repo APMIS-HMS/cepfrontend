@@ -70,6 +70,9 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
   patientToEdit;
 
+  selectedIndex:any = 0;
+  tabGroup:any;
+
   tagName = new FormControl('', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]);
   tag;
   tags;
@@ -604,6 +607,15 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     });
   }
 
+  tabChanged(ev){
+    console.log(ev);
+  }
+
+  idTags(patient){
+    this.slideEdit(patient);
+    this.selectedIndex = 1;
+  }
+
   private _populateAndSelectData(value: any) {
     if (value.homeAddress) {
       this.patientEditForm.controls['street'].setValue(value.homeAddress.street);
@@ -832,6 +844,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.editPatient = false;
     this.payPlan = false;
     this.newUpload = false;
+    this.selectedIndex = 0;
     // Reset the next of kin form array
     this.patientEditForm.controls['nextOfKin'] = this.formBuilder.array([]);
   }
