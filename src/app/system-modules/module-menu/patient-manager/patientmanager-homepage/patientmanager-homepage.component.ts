@@ -607,14 +607,10 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     });
   }
 
-  tabChanged(ev){
-    console.log(ev);
-  }
-
   idTags(patient){
     this.slideEdit(patient);
     this.selectedIndex = 1;
-  }
+  } 
 
   private _populateAndSelectData(value: any) {
     if (value.homeAddress) {
