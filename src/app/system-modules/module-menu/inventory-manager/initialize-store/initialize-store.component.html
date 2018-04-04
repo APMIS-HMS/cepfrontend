@@ -33,14 +33,9 @@
     </div>
     <div class="col-sm-9">
       <div class="panel lobidisable panel-bd lobipanel lobipanel-sortable" data-inner-id="P3ax1HGUSa" data-index="0">
-        <div class="panel-heading ui-sortable-handle">
-          <!--
-                      <div class="panel-title">
-                          <h4>Products</h4>
-                      </div>-->
-        </div>
-        <div class="alert alert-info" *ngIf="!saveAlert ">
-          <strong>Select product to initialize</strong>
+        
+        <div style="padding-top:100px; text-align:center; color: #42a3d8" *ngIf="myForm['controls'].initproduct['controls'].length == 0">
+          <h5>Select product to initialize</h5>
         </div>
 
         <div class="panel-body">
@@ -49,54 +44,39 @@
 
               <div class="form-array" *ngFor="let batch of myForm['controls'].initproduct['controls']; let i=index;">
                 <div [hidden]="i != 0">
-                  <span>{{ selectedProduct?.name }}</span>
+                  <h5>{{ selectedProduct?.name }} <br></h5>
                 </div>
                 <div [formGroupName]="i">
-                  <div class="col-sm-10">
+                  <div class="col-sm-11">
                     <div class="row">
-                      <div class="col-sm-3">
-                        <mat-input-container class="row">
-                          <input type="text" matInput placeholder="Enter Batch No" formControlName="batchNumber">
+                        <mat-input-container class="col-sm-4">
+                          <input type="text" matInput placeholder="Enter Batch No *" formControlName="batchNumber">
                         </mat-input-container>
-                        <small class="row" *ngIf="!myForm.controls.initproduct.controls[i].controls.batchNumber.valid">
-                          Batchno Required
-                        </small>
-                      </div>
-                      <div class="col-sm-3">
-                        <mat-input-container class="row">
-                          <input type="number" formControlName="quantity" matInput placeholder="Enter Quantity" readonly>
+                        <mat-input-container class="col-sm-4">
+                          <input type="number" formControlName="quantity" matInput placeholder="Enter Quantity *" readonly>
                         </mat-input-container>
-                        <small class="row" *ngIf="!myForm.controls.initproduct.controls[i].controls.quantity.valid">
-                          Quantity Required
-                        </small>
-                      </div>
-                      <div class="col-sm-6">
-                        <div class="question-container" formArrayName="config">
-                          <div [formGroupName]="j" *ngFor="let item of getProductConfig(batch); let j = index">
-                            <mat-input-container>
+                        <mat-input-container class="col-sm-4">
+                          <input type="date" matInput placeholder="Expiry Date *" placeholder="Expiry Date" formControlName="expiryDate">
+                        </mat-input-container>
+                      
+                        <div class="question-container" formArrayName="config"> 
+                            <mat-input-container class="col-sm-2" [formGroupName]="j" *ngFor="let item of getProductConfig(batch); let j = index">
                               <input type="number" formControlName="size" min="1" (change)="onPackageSize(i)" matInput placeholder="{{item.value.name}}">
                             </mat-input-container>
-                          </div>
                         </div>
                       </div>
                     </div>
-                    <div class="row">
-                      <div class="col-sm-6">Expiry Date:
-                        <input type="date" placeholder="Expiry Date" formControlName="expiryDate">
-                      </div>
-                    </div>
+                    
+                      
+                    
                   </div>
-                  <div class="col-sm-2">
-                                        <div class="col-sm-6" [hidden]="i < myForm.controls.initproduct.controls.length - 1">
-                                            <a (click)="addBatch(i)">add</a>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <a (click)="removeBatch(i)">X</a>
-                                        </div>
-                                    </div>
+                  <div class="col-sm-1" style="text-align: left">
+                    <a [hidden]="i < myForm.controls.initproduct.controls.length - 1" (click)="addBatch(i)"><i class="fa fa-plus fa-fw fa-2x"></i></a>
+                    <a (click)="removeBatch(i)"><i style="color:red" class="fa fa-trash fa-fw fa-2x"></i></a>
+                  </div>
 
                 </div>
-              </div>
+              
 
             </div>
             <div class="col-sm-12 text-center">
