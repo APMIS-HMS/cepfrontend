@@ -19,6 +19,7 @@ export class ProductManagerLandingpageComponent implements OnInit {
   manufacturer = false;
   presentation = false;
   searchOpen = false;
+  loading = true;
 
   deactivateButton = 'Deactivate';
   selectedFacility: Facility = <Facility>{};
