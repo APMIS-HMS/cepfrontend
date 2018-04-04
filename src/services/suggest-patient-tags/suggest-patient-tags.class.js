@@ -68,7 +68,6 @@ class Service {
       const patientTags = patientData.tags.filter(x => x.name === data.name);
       if (patientTags.length > 0) {
         return jsend.error('Tag already assigned to patient');
-        return [];
       } else {
         delete data.patientId;
         patientData.tags.push(data);
