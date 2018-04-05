@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-sm-4">
             <h2> Select a Product </h2>
-            <apmis-lookup [formControl]="searchProdductControl" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery"
+            <apmis-lookup [formControl]="searchProdductControl" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisInvestigationLookupQuery"
                 placeholder="Search Product" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
             <br>
             <br>

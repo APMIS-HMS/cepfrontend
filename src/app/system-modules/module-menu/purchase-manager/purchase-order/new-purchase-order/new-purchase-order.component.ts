@@ -113,6 +113,7 @@ export class NewPurchaseOrderComponent implements OnInit {
       }));
 
     productObs.subscribe((payload: any) => {
+      console.log(payload);
       this.checkBoxLabels[0].checked = false;
       this.products = payload;
       this.getProductTables(this.products);
@@ -249,7 +250,7 @@ export class NewPurchaseOrderComponent implements OnInit {
   }
   getAllProducts() {
     this.systemModuleService.on();
-    this.productService.find({ query: { loginFacilityId: this.selectedFacility._id } }).then(payload => {
+    this.productService.find({ query: { loginFacilityId: this.selectedFacility._id,$limit:100 } }).then(payload => {
       console.log(payload);
       this.products = payload.data;
       this.getProductTables(this.products);

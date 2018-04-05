@@ -79,14 +79,8 @@ export class NewProductComponent implements OnInit {
 
     });
     
-    // this.ingredientForm = this.formBuilder.group({
-    //   ingredients: this.formBuilder.array([
-    //     this.initIngredientsForm(),
-    //   ])
-    // })
     this.initVariantForm();
     this.initIngredientsForm();
-
     
     this.frm_newProduct.controls['name'].valueChanges.subscribe(payload => {
       this.ingridentSugestion = false;
@@ -99,7 +93,6 @@ export class NewProductComponent implements OnInit {
       } else {
         this.productSugestion = false;
       }
-      // this.subscribeToControls();
     });
     this.frm_newProduct.controls['genericName'].valueChanges.subscribe(payload => {
       this.productSugestion = false;
@@ -111,7 +104,7 @@ export class NewProductComponent implements OnInit {
       }
       // this.subscribeToControls();
     });
-    // this.subscribeToControls();
+    
 
     this.frm_newProduct.controls['presentation'].valueChanges.subscribe(value => {
       this.mostRecentValue.presentation = value;
@@ -140,18 +133,6 @@ export class NewProductComponent implements OnInit {
         this.mostRecentValue.productType = payload;
       }
     });
-
-
-    // this.frm_newProduct.controls['strengthId'].valueChanges.subscribe(value => {
-    //   let strength = this.strengths.filter(x => x._id === value);
-    //   if (strength.length > 0) {
-    //     this.strengthName = strength[0].strength;
-    //     if (this.frm_newProduct.controls['name'].value !== null) {
-    //       this.productName = this.presentationName + ' ' + this.frm_newProduct.controls['name'].value + ' ' + this.strengthName;
-    //     }
-    //   }
-    // });
-
     this.frm_newProduct.valueChanges.subscribe(value => {
       if (this.mostRecentValue !== null && this.mostRecentValue !== undefined) {
         this.locker.setObject('recentValues', this.mostRecentValue);
@@ -356,7 +337,10 @@ export class NewProductComponent implements OnInit {
     return generic;
   }
 
+  //(<FormArray>this.productTableForm.controls['productTableArray']).controls.splice(index, 1);
+
   create(valid, value) {
+    console.log(this.ingredientForm);
     if (valid) {
       this._systemModuleService.on();
       if (this.selectedProduct === undefined || this.selectedProduct._id === undefined) {
@@ -517,12 +501,12 @@ export class NewProductComponent implements OnInit {
   //       readOnly: [false]
 
   removeIngredient(i: number) {
-    const control = <FormArray>this.frm_newProduct.controls['ingredients'];
+    const control = <FormArray>this.ingredientForm.controls['ingredients'];
     control.removeAt(i);
   }
 
   removeVariant(i: number) {
-    const control = <FormArray>this.frm_newProduct.controls['ingredients'];
+    const control = <FormArray>this.variantsForm.controls['variants'];
     control.removeAt(i);
   }
 
