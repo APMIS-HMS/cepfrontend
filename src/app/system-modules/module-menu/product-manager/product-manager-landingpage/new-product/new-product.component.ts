@@ -170,15 +170,7 @@ export class NewProductComponent implements OnInit {
     this.populateProduct();
     
   }
-
-  // initIngredientsForm() {
-  //   return this.formBuilder.group({
-  //     name: [''],
-  //     strength: [''],
-  //     strengthUnit: ['']
-  //   });
-  // }
-
+  
   compareItems(l1: any, l2: any) {
     return l1.includes(l2);
   }
@@ -222,66 +214,7 @@ export class NewProductComponent implements OnInit {
       }
     });
   }
-  // subscribeToControls() {
-  //   const name = this.frm_newProduct.controls['name'].value;
-  //   const genericName = this.frm_newProduct.controls['genericName'].value;
-  //   if (name !== null && name !== undefined && name.length > 0) {
-  //     const dictionaryObs = this.frm_newProduct.controls['name'].valueChanges.debounceTime(200)
-  //       .distinctUntilChanged()
-  //       .switchMap((dictionaries: any[]) => this.drugListApiService.find({
-  //         query: {
-  //           searchtext: this.frm_newProduct.controls['name'].value,
-  //           'po': false,
-  //           'brandonly': true,
-  //           'genericonly': false
-  //         }
-  //       }));
-  //     dictionaryObs.subscribe((payload: any) => {
-
-  //       this.productSugestion = true;
-  //       if (payload.data.length > 0 && payload.data[0].details.length !== this.frm_newProduct.controls['name'].value.length) {
-  //         this.dictionaries = payload.data;
-  //         payload.data.forEach(element => {
-  //           const arrElements = element.details.split('(');
-  //           element.activeIngredient = arrElements[1].replace(')', '');
-  //           this.dictionaries.push(element);
-  //         });
-  //       } else {
-  //         this.dictionaries = [];
-  //         this.productSugestion = false;
-  //       }
-  //     });
-  //   } else {
-  //     this.dictionaries = [];
-  //     this.productSugestion = false;
-  //   }
-
-  //   // if (genericName !== null && genericName !== undefined && genericName.length > 0) {
-  //   //   let activetIngredientObs = this.frm_newProduct.controls['genericName'].valueChanges.debounceTime(400)
-  //   //     .distinctUntilChanged()
-  //   //     .switchMap((dictionaries: any[]) => this.dictionariesService.find({
-  //   //       query: {
-  //   //         genericName: { $regex: this.frm_newProduct.controls['genericName'].value, '$options': 'i' },
-  //   //         $distinct: 'genericName'
-  //   //       }
-  //   //     }));
-  //   //   activetIngredientObs.subscribe((payload: any) => {
-  //   //     this.productSugestion = false;
-  //   //     this.ingridentSugestion = true;
-  //   //     if (payload.data.length > 0 && payload.data[0].genericName.length
-  //   //       !== this.frm_newProduct.controls['genericName'].value.length) {
-  //   //       this.activeIngredients = payload.data;
-  //   //     } else {
-  //   //       this.activeIngredients = [];
-  //   //       this.ingridentSugestion = false;
-  //   //     }
-  //   //   });
-  //   // }
-  //   // else {
-  //   //   this.activeIngredients = [];
-  //   //   this.ingridentSugestion = false;
-  //   // }
-  // }
+  
   populateProduct() {
     if (this.selectedProduct !== undefined && this.selectedProduct._id !== undefined) {
       this.createText = 'Update Product';
@@ -336,8 +269,6 @@ export class NewProductComponent implements OnInit {
     });
     return generic;
   }
-
-  //(<FormArray>this.productTableForm.controls['productTableArray']).controls.splice(index, 1);
 
   create(valid, value) {
     console.log(this.ingredientForm);
@@ -494,11 +425,6 @@ export class NewProductComponent implements OnInit {
     })
   }
 
-  // day: ['', [<any>Validators.required]],
-  //       startTime: [this.now, [<any>Validators.required]],
-  //       endTime: [this.now, [<any>Validators.required]],
-  //       location: ['', [<any>Validators.required]],
-  //       readOnly: [false]
 
   removeIngredient(i: number) {
     const control = <FormArray>this.ingredientForm.controls['ingredients'];
