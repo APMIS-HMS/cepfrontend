@@ -51,7 +51,9 @@
         .table-list {
             // border-right: solid 1px #aaa;
             text-align: center;
-            overflow-wrap: break-word;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
     .card-header-box {
