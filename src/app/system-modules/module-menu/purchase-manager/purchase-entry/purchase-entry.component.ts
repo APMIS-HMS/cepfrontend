@@ -443,6 +443,7 @@ export class PurchaseEntryComponent implements OnInit {
     console.log(total);
     console.log(5);
     value.controls['total'].setValue(total);
+    value.setValue(JSON.parse(JSON.stringify(value.value)));
     console.log(6);
   }
   mergeTable(obj) {
