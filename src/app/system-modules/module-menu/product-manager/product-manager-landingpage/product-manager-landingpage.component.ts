@@ -21,6 +21,12 @@ export class ProductManagerLandingpageComponent implements OnInit {
   searchOpen = false;
   loading = true;
 
+  pageSize = 1;
+  index: any = 0;
+  limit: any = 10;
+  showLoadMore = true;
+  total: any = 0;
+
   deactivateButton = 'Deactivate';
   selectedFacility: Facility = <Facility>{};
   slideProductDetails = false;
@@ -68,7 +74,7 @@ export class ProductManagerLandingpageComponent implements OnInit {
       });
   }
 
-  openSearch(){
+  openSearch() {
     this.searchOpen = !this.searchOpen;
   }
 
@@ -81,12 +87,37 @@ export class ProductManagerLandingpageComponent implements OnInit {
   }
 
   getProducts() {
-    this.productService.find({ query: {$limit:100} }).then(payload => {
-      this.products = payload.data;
+    this.productService.find({
+      query: {
+        $limit: this.limit,
+        $skip: this.index * this.limit
+      }
+    }).then(payload => {
+      console.log(payload);
+      this.total = payload.total;
+      this.loading = false;
+      console.log(this.products.length);
+      if(this.total > this.products.length){
+        this.products.push(...payload.data);
+        this.showLoadMore = true;
+        if(this.total === this.products.length){
+          this.showLoadMore = false;
+          return;
+        }
+      }else{
+        this.showLoadMore = false;
+      }
     }, error => {
 
     });
+    this.index++
   }
+
+  loadMore(){
+    this.getProducts();
+  }
+
+
   getProductTypes() {
     this.productTypeService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
       this.productTypes = payload.data;
@@ -95,6 +126,7 @@ export class ProductManagerLandingpageComponent implements OnInit {
 
 
   slideProductDetailsToggle(value, event) {
+    console.log(value);
     this.selectedProduct = value;
     this.slideProductDetails = !this.slideProductDetails;
   }
@@ -110,6 +142,7 @@ export class ProductManagerLandingpageComponent implements OnInit {
 
 
   onSelectProduct(product) {
+    console.log('product = ', product);
     this.deactivateButton = product.isActive ? 'Deactivate' : 'Activate';
     this.selectedProduct = product;
     this.addProduct = true;

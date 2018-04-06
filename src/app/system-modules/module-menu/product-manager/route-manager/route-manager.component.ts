@@ -125,6 +125,7 @@ export class RouteManagerComponent implements OnInit {
 		this._routeService.find({ query: { facilityId: this.selectedFacility._id } })
 			.then(data => {
 				this.routes = data.data;
+				this.loading = false;
 			});
 	}
 
