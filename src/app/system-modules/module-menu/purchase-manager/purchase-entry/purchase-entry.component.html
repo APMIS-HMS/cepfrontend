@@ -17,7 +17,7 @@
 
             <mat-form-field class="col-xs-3">
                 <mat-select class="frm-item-wrap" placeholder="Order Id" formControlName="orderId">
-                    <mat-option *ngFor="let order of orders" [value]="order._id">{{order.purchaseOrderNumber}}</mat-option>
+                    <mat-option *ngFor="let order of orders" [value]="order">{{order.purchaseOrderNumber}}</mat-option>
                 </mat-select>
             </mat-form-field>
 
@@ -51,7 +51,8 @@
                                    
                                     <div class="inputWrap-productDetail row">
                                         <div (click)="removeProduct(i, schedule)" class="modal-close-ico" aria-hidden="true"><i class="fa fa-close fa-fw"></i></div>
-    
+
+                                            
                                             <mat-input-container class="col-md-3">
                                                 <input matInput mat-error placeholder="Product" formControlName="product">
                                             </mat-input-container>
@@ -67,19 +68,23 @@
                                             <mat-input-container class="col-md-3">
                                                 <input type="number" (change)="getCostSummary(schedule)" matInput mat-error placeholder="Quantity" formControlName="qty" readonly>
                                             </mat-input-container>
-                                       
-                                            <mat-input-container class="col-md-{{12/getProductConfig(schedule).length}}" [formGroupName]="j" *ngFor="let item of getProductConfig(schedule); let j = index">
-                                                <input type="number" formControlName="size" min="1" (change)="onPackageSize(i)" matInput placeholder="{{item.value.name}}">
-                                            </mat-input-container>
+                                            
+                                            <div class="row example-full-width" formArrayName="config">
+                                                    <div class="col-md-{{12/getProductConfig(schedule).length}}" [formGroupName]="j" *ngFor="let item of getProductConfig(schedule); let j = index">
+                                                        <mat-input-container class="example-full-width">
+                                                            <input type="number" formControlName="size" min="1" (change)="onPackageSize(i)" matInput placeholder="{{item.value.name}}">
+                                                        </mat-input-container>
+                                                    </div>
+                                            </div>
                                             
     
-                                        <div  class="col-sm-6">
+                                        <div class="col-sm-6">
                                             <input matInput formControlName="expiryDate" [matDatepicker]="picker" placeholder="Expiry Date">
                                             <mat-datepicker-toggle mdSuffix [for]="picker"></mat-datepicker-toggle>
                                             <mat-datepicker #picker></mat-datepicker>
                                         </div>
                                         <mat-input-container class="col-sm-6">
-                                            <input formControlName="total" matInput mat-error placeholder="Total Cost">
+                                            <input formControlName="total" matInput mat-error placeholder="Total Cost" readonly>
                                         </mat-input-container>
                                         
                                     </div>
