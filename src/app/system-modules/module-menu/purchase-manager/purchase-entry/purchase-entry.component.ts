@@ -34,6 +34,7 @@ export class PurchaseEntryComponent implements OnInit {
   totalCost = 0;
   orderId: any = undefined;
   invoiceId: any = undefined;
+  additionalProducts = [];
 
   searchControl = new FormControl();
   checkAll = new FormControl();
@@ -101,12 +102,7 @@ export class PurchaseEntryComponent implements OnInit {
         this.myInventory.setValue(false);
         this.getAllProducts();
       } else {
-        if (this.myInventory.value === true) {
-          this.getMyInventory();
-        } else {
-          this.products = [];
-          this.getProductTables(this.products);
-        }
+
       }
     });
 
@@ -147,10 +143,24 @@ export class PurchaseEntryComponent implements OnInit {
     this.frm_purchaseOrder.controls['orderId'].valueChanges.subscribe(value => {
       if (value !== undefined && value !== null) {
         if (this.orderId === undefined) {
-          this.getAllProducts();
-          this.addNewProductTables();
-          this.getOrderDetails(value, true);
+          this.myInventory.setValue(false);
+          this.checkAll.setValue(true);
+          this.systemModuleService.on();
+          this.productService.find({ query: { loginFacilityId: this.selectedFacility._id } }).then(payload => {
+            this.systemModuleService.off();
+            this.products = payload.data;
+            value.orderedProducts.forEach(element => {
+              const index = this.products.filter(x => x._id.toString() === element.productObject._id.toString());
+              if (index.length === 0) {
+                this.products.push(element.productObject);
+                this.additionalProducts.push(element.productObject);
+                this.getProductTables(this.products);
+              }
+            });
+          });
         }
+        this.addNewProductTables();
+        this.getOrderDetails(value, true);
       }
     });
 
@@ -370,6 +380,14 @@ export class PurchaseEntryComponent implements OnInit {
     this.productService.find({ query: { loginFacilityId: this.selectedFacility._id } }).then(payload => {
       this.systemModuleService.off();
       this.products = payload.data;
+      if (this.additionalProducts.length > 0) {
+        this.additionalProducts.forEach(item => {
+          const index = this.products.filter(x => x._id.toString() === item._id.toString());
+          if (index.length === 0) {
+            this.products.push(item);
+          }
+        });
+      }
       this.getProductTables(this.products);
     });
   }

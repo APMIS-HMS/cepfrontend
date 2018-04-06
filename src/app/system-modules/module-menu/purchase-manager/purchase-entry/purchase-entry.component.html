@@ -17,7 +17,7 @@
 
             <mat-form-field class="col-xs-3">
                 <mat-select class="frm-item-wrap" placeholder="Order Id" formControlName="orderId">
-                    <mat-option *ngFor="let order of orders" [value]="order._id">{{order.purchaseOrderNumber}}</mat-option>
+                    <mat-option *ngFor="let order of orders" [value]="order">{{order.purchaseOrderNumber}}</mat-option>
                 </mat-select>
             </mat-form-field>
 
