@@ -93,10 +93,8 @@ export class ProductManagerLandingpageComponent implements OnInit {
         $skip: this.index * this.limit
       }
     }).then(payload => {
-      console.log(payload);
       this.total = payload.total;
       this.loading = false;
-      console.log(this.products.length);
       if(this.total > this.products.length){
         this.products.push(...payload.data);
         this.showLoadMore = true;
@@ -126,7 +124,6 @@ export class ProductManagerLandingpageComponent implements OnInit {
 
 
   slideProductDetailsToggle(value, event) {
-    console.log(value);
     this.selectedProduct = value;
     this.slideProductDetails = !this.slideProductDetails;
   }
@@ -142,7 +139,6 @@ export class ProductManagerLandingpageComponent implements OnInit {
 
 
   onSelectProduct(product) {
-    console.log('product = ', product);
     this.deactivateButton = product.isActive ? 'Deactivate' : 'Activate';
     this.selectedProduct = product;
     this.addProduct = true;
