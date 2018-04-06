@@ -44,6 +44,10 @@ export class FacilityCompanyCoverService {
     return this._socket.create(gender);
   }
 
+  patch(id, data, params){
+    return this._socket.patch(id, data, params);
+  }
+
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }
