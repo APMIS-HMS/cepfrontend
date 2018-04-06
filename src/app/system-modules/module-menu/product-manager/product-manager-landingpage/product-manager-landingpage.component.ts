@@ -55,7 +55,9 @@ export class ProductManagerLandingpageComponent implements OnInit {
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe((por: any) => {
-        this.productService.findList({ query: { facilityId: this.selectedFacility._id, name: por } }).then(payload => {
+        console.log(por);
+        this.productService.find({ query: { name: { $regex: por, '$options': 'i' } } }).then(payload => {
+          console.log(payload);
           this.products = payload.data;
         });
       })
@@ -93,10 +95,8 @@ export class ProductManagerLandingpageComponent implements OnInit {
         $skip: this.index * this.limit
       }
     }).then(payload => {
-      console.log(payload);
       this.total = payload.total;
       this.loading = false;
-      console.log(this.products.length);
       if(this.total > this.products.length){
         this.products.push(...payload.data);
         this.showLoadMore = true;
@@ -126,7 +126,6 @@ export class ProductManagerLandingpageComponent implements OnInit {
 
 
   slideProductDetailsToggle(value, event) {
-    console.log(value);
     this.selectedProduct = value;
     this.slideProductDetails = !this.slideProductDetails;
   }
@@ -142,7 +141,6 @@ export class ProductManagerLandingpageComponent implements OnInit {
 
 
   onSelectProduct(product) {
-    console.log('product = ', product);
     this.deactivateButton = product.isActive ? 'Deactivate' : 'Activate';
     this.selectedProduct = product;
     this.addProduct = true;
