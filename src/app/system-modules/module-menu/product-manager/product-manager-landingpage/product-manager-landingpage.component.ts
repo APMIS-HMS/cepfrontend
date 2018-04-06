@@ -55,7 +55,9 @@ export class ProductManagerLandingpageComponent implements OnInit {
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe((por: any) => {
-        this.productService.findList({ query: { facilityId: this.selectedFacility._id, name: por } }).then(payload => {
+        console.log(por);
+        this.productService.find({ query: { name: { $regex: por, '$options': 'i' } } }).then(payload => {
+          console.log(payload);
           this.products = payload.data;
         });
       })
