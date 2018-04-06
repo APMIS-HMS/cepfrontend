@@ -25,6 +25,10 @@ export class StockTransferComponent implements OnInit {
   preview = false;
   overlay = false;
 
+  samples = [];
+
+  toggleTransferOpen = false;
+
   selectedFacility: Facility = <Facility>{};
   checkingStore: any = <any>{};
   maxQty = 0;
@@ -477,6 +481,10 @@ export class StockTransferComponent implements OnInit {
       this.showPlusSign = true;
       return true;
     }
+  }
+
+  toggleTransfer(){
+    this.toggleTransferOpen = !this.toggleTransferOpen;
   }
 
   private _notification(type: String, text: String): void {
