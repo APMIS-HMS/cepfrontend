@@ -182,11 +182,12 @@ export class PurchaseEntryComponent implements OnInit {
   }
   getMyInventory() {
     this.systemModuleService.on();
+    console.log(this.frm_purchaseOrder.controls['store'].value);
     this.inventoryService.findList({
       query: {
         facilityId: this.selectedFacility._id,
         name: '',
-        storeId: this.frm_purchaseOrder.controls['store'].value
+        storeId: this.checkingObject.storeId
       }
     }).then(payload => {
       this.systemModuleService.off();
@@ -485,7 +486,7 @@ export class PurchaseEntryComponent implements OnInit {
   onProductCheckChange(event, value, index?) {
     value.checked = event.checked;
 
-    const storeId = this.frm_purchaseOrder.controls['store'].value;
+    const storeId = this.checkingObject.storeId;//this.frm_purchaseOrder.controls['store'].value;
 
     if (event.checked === true) {
       this.inventoryService.find({ query: { facilityId: this.selectedFacility._id, storeId: storeId, productId: value._id } })
