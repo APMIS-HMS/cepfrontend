@@ -13,6 +13,7 @@ module.exports = function (app) {
     storeId: { type: Schema.Types.ObjectId, require: true },
     products: [product],
     comment: { type: String, required: false },
+    storeRequisitionNumber: { type: String, required: true }
   }, {
     timestamps: true
   });
