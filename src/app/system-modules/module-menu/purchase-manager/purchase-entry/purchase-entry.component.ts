@@ -182,7 +182,6 @@ export class PurchaseEntryComponent implements OnInit {
   }
   getMyInventory() {
     this.systemModuleService.on();
-    console.log(this.frm_purchaseOrder.controls['store'].value);
     this.inventoryService.findList({
       query: {
         facilityId: this.selectedFacility._id,
@@ -360,7 +359,6 @@ export class PurchaseEntryComponent implements OnInit {
           this.systemModuleService.off();
         });
       });
-
     });
   }
   getStores() {
