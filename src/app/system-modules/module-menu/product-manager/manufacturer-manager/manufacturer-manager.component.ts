@@ -125,7 +125,7 @@ export class ManufacturerManagerComponent implements OnInit {
 		this._manufacturerService.find({})
 			.then(data => {
 				this.manufacturers = data.data;
-				this.loading = true
+				this.loading = false;
 			});
 	}
 }

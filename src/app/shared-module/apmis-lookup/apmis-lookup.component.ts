@@ -191,6 +191,8 @@ export class ApmisLookupComponent
     if (obj) {
       this.data = obj;
       this.valueString = this.data;
+    }else{
+      this.valueString = "";
     }
   }
 

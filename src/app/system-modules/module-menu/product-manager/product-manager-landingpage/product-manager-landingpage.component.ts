@@ -21,6 +21,12 @@ export class ProductManagerLandingpageComponent implements OnInit {
   searchOpen = false;
   loading = true;
 
+  pageSize = 1;
+  index: any = 0;
+  limit: any = 10;
+  showLoadMore = true;
+  total: any = 0;
+
   deactivateButton = 'Deactivate';
   selectedFacility: Facility = <Facility>{};
   slideProductDetails = false;
@@ -49,7 +55,9 @@ export class ProductManagerLandingpageComponent implements OnInit {
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe((por: any) => {
-        this.productService.findList({ query: { facilityId: this.selectedFacility._id, name: por } }).then(payload => {
+        console.log(por);
+        this.productService.find({ query: { name: { $regex: por, '$options': 'i' } } }).then(payload => {
+          console.log(payload);
           this.products = payload.data;
         });
       })
@@ -68,7 +76,7 @@ export class ProductManagerLandingpageComponent implements OnInit {
       });
   }
 
-  openSearch(){
+  openSearch() {
     this.searchOpen = !this.searchOpen;
   }
 
@@ -81,12 +89,35 @@ export class ProductManagerLandingpageComponent implements OnInit {
   }
 
   getProducts() {
-    this.productService.findList({ query: { facilityId: this.selectedFacility._id, name: '' } }).then(payload => {
-      this.products = payload.data;
+    this.productService.find({
+      query: {
+        $limit: this.limit,
+        $skip: this.index * this.limit
+      }
+    }).then(payload => {
+      this.total = payload.total;
+      this.loading = false;
+      if(this.total > this.products.length){
+        this.products.push(...payload.data);
+        this.showLoadMore = true;
+        if(this.total === this.products.length){
+          this.showLoadMore = false;
+          return;
+        }
+      }else{
+        this.showLoadMore = false;
+      }
     }, error => {
 
     });
+    this.index++
   }
+
+  loadMore(){
+    this.getProducts();
+  }
+
+
   getProductTypes() {
     this.productTypeService.find({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
       this.productTypes = payload.data;

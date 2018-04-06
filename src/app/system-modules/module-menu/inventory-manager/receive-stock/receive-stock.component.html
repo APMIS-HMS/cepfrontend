@@ -42,7 +42,7 @@
                 <div class="card-list-item" *ngFor="let received of receivedTransfers">
                     <div class="row">
 
-                        <div class="table-list col-xs-3">
+                        <div class="table-list col-xs-2">
                             {{received.storeObject?.name}}
                         </div>
                         <div class="table-list col-xs-2">
@@ -51,7 +51,7 @@
                         <div class="table-list col-xs-2">
                             {{received.createdAt|date:'short'}}
                         </div>
-                        <div class="table-list col-xs-2">
+                        <div class="table-list col-xs-3">
                             {{received.transferByObject?.firstName}} {{received.transferByObject?.lastName}}
                         </div>
                         <div class="table-list col-xs-2">
