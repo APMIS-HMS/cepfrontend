@@ -126,13 +126,19 @@ export class PurchaseEntryComponent implements OnInit {
       this.errMsg = '';
     });
 
+    this.frm_purchaseOrder.controls['store'].valueChanges.subscribe(value => {
+      this.frm_purchaseOrder.controls['supplier'].reset();
+      this.frm_purchaseOrder.controls['orderId'].reset();
+    })
+
 
     this.frm_purchaseOrder.controls['supplier'].valueChanges.subscribe(value => {
       if (value !== undefined && value !== null) {
         this.purchaseOrderService.find({
           query: {
-            supplierId: value, facilityId:
-              this.selectedFacility._id, isSupplied: false
+            storeId:this.frm_purchaseOrder.controls['store'].value,
+            facilityId:this.selectedFacility._id, 
+            isSupplied: false
           }
         }).subscribe(payload => {
           this.orders = payload.data;
@@ -347,7 +353,7 @@ export class PurchaseEntryComponent implements OnInit {
                     qty: [item.quantity, [<any>Validators.required]],
                     expiryDate: [this.now, [<any>Validators.required]],
                     config: this.initProductConfig(itemg.product.productConfigObject, item.quantity),
-                    total: [{ value: '₦ 0', disabled: true }],
+                    total: [''],
                     readOnly: [false],
                     existingInventory: [existingInventory],
                     productObject: [itemg.product],
@@ -359,7 +365,6 @@ export class PurchaseEntryComponent implements OnInit {
           this.systemModuleService.off();
         });
       });
-
     });
   }
   getStores() {
@@ -368,7 +373,7 @@ export class PurchaseEntryComponent implements OnInit {
       this.systemModuleService.off();
       this.stores = payload.data;
       if (this.orderId === undefined) {
-        this.frm_purchaseOrder.controls['store'].setValue(this.checkingObject.storeId);
+        // this.frm_purchaseOrder.controls['store'].setValue(this.checkingObject.storeId);
         if (this.orderId === undefined && this.invoiceId === undefined) {
           this.myInventory.setValue(true);
         }
@@ -471,7 +476,7 @@ export class PurchaseEntryComponent implements OnInit {
           product: ['', [<any>Validators.required]],
           batchNo: ['', [<any>Validators.required]],
           costPrice: ['', [<any>Validators.required]],
-          total: [{ value: '₦ 0', disabled: true }],
+          total: [''],
           qty: ['', [<any>Validators.required]],
           config: new FormArray([]),
           expiryDate: [new Date(), [<any>Validators.required]],
@@ -505,7 +510,7 @@ export class PurchaseEntryComponent implements OnInit {
                   qty: [0, [<any>Validators.required]],
                   expiryDate: [this.now, [<any>Validators.required]],
                   config: this.initProductConfig(value.product.productConfigObject, null),
-                  total: [{ value: '₦ 0', disabled: true }],
+                  total: [''],
                   readOnly: [false],
                   existingInventory: [existingInventory],
                   productObject: [value.product],
