@@ -22,6 +22,7 @@ export class BillingService {
     this._socket = _socketService.getService('billings');
     this._socketBillFacilityServices = _socketService.getService('bill-facility-services');
     this._socketBillCreators = _socketService.getService('bill-creators');
+    this._socketBillCreators.timeout = 50000;
     this.updatelistner = Observable.fromEvent(this._socket, 'updated');
     this._socket.timeout = 90000;
     this._socket.on('created', function (gender) {

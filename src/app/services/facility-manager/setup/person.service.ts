@@ -41,6 +41,7 @@ export class PersonService {
     this._fundWalletRest = _restService.getService("fund-wallet");
     this._socket.timeout = 30000;
     this._fundWalletSocket.timeout = 50000;
+    this._personSocket.timeout = 500000;
     this.createListener = Observable.fromEvent(this._socket, "created");
     this.updateListener = Observable.fromEvent(this._socket, "updated");
   }

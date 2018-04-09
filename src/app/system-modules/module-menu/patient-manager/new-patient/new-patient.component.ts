@@ -976,7 +976,9 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     savePerson() {
+        console.log(26);
         this.loading = true;
+        console.log(27);
         const patient: any = {
             personId: this.selectedPerson._id,
             facilityId: this.facility._id,
@@ -988,7 +990,9 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 }
             ]
         }
+        console.log(28);
         this.patientService.create(patient).then(payl => {
+            console.log(29);
             const billing: any = [
                 {
                     unitPrice: this.planPrice,
@@ -1018,19 +1022,25 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     patientId: payl._id
                 }
             }).then(billingPayload => {
+                console.log(30);
                 this.systemModuleService.off();
                 const text = this.selectedPerson.lastName + ' ' + this.selectedPerson.firstName
                     + ' added successfully but bill not generated because price not yet set for this service';
                 this.systemModuleService.changeMessage(payl); // This is responsible for showing the edit patient modal box
+                console.log(31);
                 this.systemModuleService.announceSweetProxy(text, 'success');
                 this.close_onClick();
             }).catch(errr => {
+                console.log(32);
+                console.log(errr);
                 this.systemModuleService.off();
                 this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
                 this.loading = false;
             });
 
         }).catch(err => {
+            console.log(33);
+            console.log(err);
             this.systemModuleService.off();
             this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
             this.loading = false;
@@ -1461,13 +1471,19 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     saveData() {
+        console.log(19);
         if (this.coverType === 'insurance') {
+            console.log(20);
             this.saveInsurancePerson();
+            console.log(21);
         } else if (this.coverType === 'company') {
+            console.log(22);
             this.saveCompanyPerson();
         } else if (this.coverType === 'wallet') {
+            console.log(23);
             this.savePerson();
         } else if (this.coverType === 'family') {
+            console.log(24);
             this.saveFamilyPerson();
         }
     }
@@ -1544,11 +1560,13 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 console.log(payload);
                 this.validating = false;
                 if (payload.status === 'success') {
+                    console.log(1);
                     this.duplicate = true;
                     this.errMsg = 'Duplicate record detected, please check and try again!';
                     this.mainErr = false;
                     this.loading = false;
                 } else {
+                    console.log(2);
                     this.duplicate = false;
                     this.submitForm(frm);
                 }
@@ -1561,8 +1579,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         }
     }
     submitForm(frm) {
+        console.log(3);
         this.isSaving = true;
+        console.log(4);
         this.systemModuleService.on();
+        console.log(5);
         const personModel = <any>{
             title: this.titleCasePipe.transform(this.frmPerson.controls['persontitle'].value.toString()),
             firstName: this.titleCasePipe.transform(this.frmPerson.controls['firstname'].value),
@@ -1575,12 +1596,15 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             // securityQuestion: this.frmPerson.controls['securityQuestion'].value,
             // securityAnswer: this.titleCasePipe.transform(this.frmPerson.controls['securityAnswer'].value)
         };
+        console.log(6);
         const body = {
             person: personModel
         }
+        console.log(7);
         const errMsg = 'There was an error while creating person, try again!';
+        console.log(8);
         this.personService.createPerson(body).then((ppayload) => {
-            this.isSaving = false;
+            console.log(9);
             this.isSuccessful = true;
             this.systemModuleService.off();
             this.selectedPerson = ppayload;
@@ -1589,7 +1613,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             //     + this.frmPerson.controls['lastname'].value + ' '
             //     + 'added successful';
             // this.frmPerson.reset();
-            // this.isSaving = false;
             // this.systemModuleService.off();
             // this.systemModuleService.announceSweetProxy(text, 'success', this, HTML_SAVE_PATIENT);
             this.saveData();
@@ -1598,14 +1621,24 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             // this.frmNewPerson3_show = false;
             // this.frmNewEmp4_show = true;
             // this.apmisId_show = false;
-        }, err => {
+        },err => {
+            console.log('9b');
+            console.log(err);
             this.isSaving = false;
+            console.log('10');
             this.systemModuleService.off();
+            console.log('11');
             this.systemModuleService.announceSweetProxy(errMsg, 'error');
+            console.log('12');
         }).catch(err => {
+            console.log(13);
+            console.log(err);
             this.isSaving = false;
+            console.log(14);
             this.systemModuleService.off();
+            console.log(15);
             this.systemModuleService.announceSweetProxy(errMsg, 'error');
+            console.log(16);
         });
 
     }
