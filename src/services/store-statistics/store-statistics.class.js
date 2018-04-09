@@ -17,8 +17,6 @@ class Service {
     }
 
     async get(pData, params) {
-        console.log('pData => ', pData);
-        console.log('params => ', params);
         const facilityService = this.app.service('facilities');
         const inventoryService = this.app.service('inventories');
         const storesService = this.app.service('stores');
@@ -60,14 +58,11 @@ class Service {
                     // Loop for inventory statistics
                     inventoryStat = inventoryStat.data;
                     let i = inventoryStat.length;
-                    console.log('Get inventories Stat => ', inventoryStat);
                     while (i--) {
                         let inventory = inventoryStat[i];
-                        console.log('inventory => ', inventory);
                         // let j = inventory.transactions.length - 1;
                         for (let j = 0; j < inventory.transactions.length; j++) {
                             const transaction = inventory.transactions[j];
-                            console.log('Got here');
                             if (transaction.quantity < 1) {
                                 this.expiration(transaction.expiryDate, new Date());
                             }
@@ -109,7 +104,6 @@ class Service {
 
     expiration(date1, date2) {
         let days = difference_in_calendar_days(date1, date2);
-        console.log('Difference => ', days);
         let dateRemains = '';
         let rem = days % 365;
         if (rem > 0) {

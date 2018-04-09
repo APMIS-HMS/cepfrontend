@@ -22,6 +22,7 @@ class Service {
 
         // Get facilityServices
         const getOrgServices = await facilitiesServiceCategoryService.find({ query: { facilityId: facilityId } });
+
         if (getOrgServices.data.length > 0) {
             const facilityService = getOrgServices.data[0];
             const facilityServiceId = facilityService._id;
@@ -49,11 +50,10 @@ class Service {
                                 let mergeResult = Object.assign(facilityPrice, thisService);
                                 result.push(mergeResult);
                             }
-
-                            // Return when counter == length
-                            if (sLength === counter) {
-                                return jsend.success(result);
-                            }
+                        }
+                        // Return when counter == length
+                        if (sLength === counter) {
+                            return jsend.success(result);
                         }
                     } else {
                         return jsend.success([]);
