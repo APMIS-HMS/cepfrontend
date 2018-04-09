@@ -26,7 +26,7 @@ export class StockTransferComponent implements OnInit {
   overlay = false;
   productConfigOpen = false;
   samples = [];
-
+  searchOpen = false;
   toggleTransferOpen = false;
 
   selectedFacility: Facility = <Facility>{};
@@ -498,4 +498,5 @@ export class StockTransferComponent implements OnInit {
       text: text
     });
   }
+  openSearch(){}
 }
