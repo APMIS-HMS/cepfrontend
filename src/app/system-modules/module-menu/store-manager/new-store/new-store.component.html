@@ -60,13 +60,16 @@
                 </div>
             </div>
 
-            <button class="cta-1" (click)="create(frm_newStore.valid, frm_newStore.value)">
-                <i style="padding-right:10px;" class="fa fa-plus"></i>{{createText}}</button>
-
+            <button class="cta-1" [disabled]="!frm_newStore.valid || disableBtn" (click)="create(frm_newStore.valid, frm_newStore.value)">
+                <span *ngIf="addBtnText"> <i class="fa fa-check-circle "></i> Create Store</span>
+                <span *ngIf="addingBtnText">Creating Store... <i class="fa fa-spin fa-spinner "></i></span>
+                <span *ngIf="updateBtnText"> <i class="fa fa-check-circle "></i> Update Store</span>
+                <span *ngIf="updatingBtnText">Updating Store... <i class="fa fa-spin fa-spinner "></i></span>
+            </button>
         </form>
 
     </div>
 </div>
-<div *ngIf="loadIndicatorVisible" class="div_loading">
+<!-- <div *ngIf="loadIndicatorVisible" class="div_loading">
     <mat-spinner id="large-indicator" height="60" width="60"></mat-spinner>
-</div>
+</div> -->
