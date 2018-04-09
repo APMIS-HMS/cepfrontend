@@ -1537,6 +1537,15 @@ ul.topmenuwrap li:hover {
     align-items: center;
 }
 
+button,
+.cta-1 {
+    &:disabled {
+        cursor: not-allowed;
+        box-shadow: none;
+        opacity: .5;
+    }
+}
+
 .btns .button {
     display: -webkit-box;
     display: -moz-box;
@@ -1842,7 +1851,7 @@ ul.topmenuwrap li:hover {
     background: lighten($primaryColor, 20%);
     position: fixed;
     bottom: 67px;
-    right: 6px; 
+    right: 6px;
     cursor: pointer;
     border: 4px solid lighten($primaryColor, 10%);
     box-shadow: 1px 1px 5px 9px rgba(0, 0, 0, 0.05);
@@ -2196,9 +2205,11 @@ ul.topmenuwrap li:hover {
     background: #fff;
     z-index: 1;
 }
-.ql-main-wrap{
+
+.ql-main-wrap {
     position: relative;
 }
+
 .facility-subTitle {
     width: 100%;
     text-align: center;

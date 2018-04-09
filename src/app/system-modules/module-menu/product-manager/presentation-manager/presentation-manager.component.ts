@@ -17,10 +17,12 @@ export class PresentationManagerComponent implements OnInit {
 	selectedItem: any = <Presentation>{};
 	btnLabel = 'Create';
 	isBtnEnable = true;
+	loading = true;
+	searchControl = new FormControl();
 
 	mainErr: Boolean = true;
 	errMsg: String = 'You have unresolved errors';
-	
+
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 	constructor(
@@ -121,6 +123,7 @@ export class PresentationManagerComponent implements OnInit {
 		this._presentationService.find({})
 			.then(data => {
 				this.presentations = data.data;
+				this.loading = false;
 			});
 	}
 

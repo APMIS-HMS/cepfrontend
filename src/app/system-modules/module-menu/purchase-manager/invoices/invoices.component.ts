@@ -73,18 +73,21 @@ export class InvoicesComponent implements OnInit {
   getInvoices() {
     this.systemModuleService.on();
     if (this.checkingStore !== null) {
+      console.log(this.checkingStore);
       this.invoiceService.findInvoices({
         query: {
           facilityId: this.selectedFacility._id,
           storeId: this.checkingStore.storeId, $limit: 100
         }
       }).then(payload => {
+        console.log(payload);
         this.invoices = payload.data;
         this.systemModuleService.off();
       });
     }
   }
   slideInvoiceDetailsToggle(value, event) {
+    console.log(value);
     this.selectedProduct = value;
     if (this.selectedProduct !== undefined) {
       this.invoiceService.get(this.selectedProduct._id, {}).then(payload => {

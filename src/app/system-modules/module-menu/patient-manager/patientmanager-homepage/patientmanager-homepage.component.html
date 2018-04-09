@@ -80,6 +80,11 @@
                             <span>Edit Patient</span>
                         </div>
 
+                        <div (click)="idTags(patient)" class="action-item">
+                            <i class="fa fa-tags" aria-hidden="true"></i>
+                            <span>ID Tags</span>
+                        </div>
+
                         <div (click)="setAppointment(patient)" class="action-item">
                             <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
                             <span>Set Appointment</span>
@@ -126,7 +131,7 @@
                                     <a (click)="close_onClick()" aria-hidden="true" class="modal-close-ico">X</a>
                                     <legend class="modal_title">Edit Patient</legend>
                                     <form class="form form-signup" role="form" [formGroup]="patientEditForm" (click)="hideSuggestions()">
-                                        <mat-tab-group style="padding: 10px;">
+                                        <mat-tab-group style="padding: 10px;" #tabGroup selectedIndex="{{selectedIndex}}">
                                             <mat-tab label="Patient" style="padding: 10px;">
                                                 <div class="patient-detail-wrapper">
                                                     <div class="col-sm-6">

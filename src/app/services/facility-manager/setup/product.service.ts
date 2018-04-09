@@ -8,6 +8,8 @@ export class ProductService {
   public _socketProductConfig;
   public _socketPackageList;
   public _socketList;
+  public _socketReorderLevel;
+  public _socketProductUniqueReorders;
   private _rest;
   public listenerCreate;
   public listenerUpdate;
@@ -21,6 +23,8 @@ export class ProductService {
     this._socketProductConfig = _socketService.getService('product-configs');
     this._socketPackageList = _socketService.getService('product-pack-sizes');
     this._socketList = _socketService.getService('list-of-products');
+    this._socketReorderLevel = _socketService.getService('product-reorders');
+    this._socketProductUniqueReorders = _socketService.getService('product-unique-reorders');
     this._socket.timeout = 30000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
@@ -67,6 +71,26 @@ export class ProductService {
 
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
+  }
+
+  findReorderUnique(query: any) {
+    return this._socketProductUniqueReorders.find(query);
+  }
+  findReorder(query: any) {//_socketProductUniqueReorders
+    return this._socketReorderLevel.find(query);
+  }
+  getReorder(id: string, query: any) {
+    return this._socketReorderLevel.get(id, query);
+  }
+
+  createReorder(serviceprice: any) {
+    return this._socketReorderLevel.create(serviceprice);
+  }
+  patchReorder(id,serviceprice: any) {
+    return this._socketReorderLevel.patch(id, serviceprice);
+  }
+  removeReorder(id: string, query: any) {
+    return this._socketReorderLevel.remove(id, query);
   }
 
 }

@@ -17,6 +17,8 @@ export class GenericManagerComponent implements OnInit {
 	selectedItem: any = <Generic>{};
 	btnLabel = 'Create';
 	isBtnEnable = true;
+	loading = true;
+	searchControl = new FormControl();
 
 	mainErr: Boolean = true;
 	errMsg: String = 'You have unresolved errors';
@@ -122,6 +124,7 @@ export class GenericManagerComponent implements OnInit {
 		this._genericservice.find({})
 			.then(data => {
 				this.generics = data.data;
+				this.loading = false;
 			});
 	}
 

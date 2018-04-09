@@ -17,6 +17,8 @@ export class ManufacturerManagerComponent implements OnInit {
 	selectedItem: any = <Manufacturer>{};
 	btnLabel = 'Create';
 	isBtnEnable = true;
+	loading = true;
+	searchControl = new FormControl();
 
 	mainErr: Boolean = true;
 	errMsg: String = 'You have unresolved errors';
@@ -123,6 +125,7 @@ export class ManufacturerManagerComponent implements OnInit {
 		this._manufacturerService.find({})
 			.then(data => {
 				this.manufacturers = data.data;
+				this.loading = false;
 			});
 	}
 }
