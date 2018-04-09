@@ -1,5 +1,5 @@
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
-
+import { FacilityCompanyCoverService } from './../../../services/facility-manager/setup/facility-company-cover.service';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 // import { FacilityFamilyCoverService } from './../../../services/facility-manager/setup/facility-family-cover.service';
 import { NgModule } from '@angular/core';
@@ -146,7 +146,8 @@ import { OnlyMaterialModule } from '../../../shared-common-modules/only-material
     LaboratoryRequestService,
     DocumentationTemplateService,
     SystemModuleService,
-    ScopeLevelService
+    ScopeLevelService,
+    FacilityCompanyCoverService
   ]
 })
 export class PatientManagerModule {}

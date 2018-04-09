@@ -2,6 +2,7 @@ import { SecurityQuestionsService } from 'app/services/facility-manager/setup/se
 import { TitleCasePipe } from '@angular/common';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { FacilityFamilyCoverService } from './../../../../services/facility-manager/setup/facility-family-cover.service';
+import { FacilityCompanyCoverService } from './../../../../services/facility-manager/setup/facility-company-cover.service';
 import { Component, OnInit, EventEmitter, Output, NgZone, ViewChild, AfterViewInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ImageCropperComponent, CropperSettings, Bounds } from 'ng2-img-cropper';
@@ -94,6 +95,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     ccPlan = new FormControl('', Validators.required);
     ccPlanId = new FormControl('', Validators.required);
     ccPlanCheck = new FormControl('');
+    employeeId = new FormControl('', Validators.required);
+    ccPlanPrice = new FormControl('', Validators.required);
     familyPlanId = new FormControl('', Validators.required);
     faFileNo = new FormControl('', Validators.required);
     familyPlanCheck = new FormControl('');
@@ -147,6 +150,12 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     hmo;
     filteredHmos: Observable<any[]>;
 
+    companyEnrolleList: any;
+    loginCompanyListObject: any;
+    companyFacilities: any;
+    filteredccs: Observable<any[]>;
+    companyCover: any;
+
     planDetails: any;
 
     // ***
@@ -180,7 +189,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         private securityQuestionService: SecurityQuestionsService,
         private faService: FamilyHealthCoverService,
         private authFacadeService: AuthFacadeService,
-        private familyCoverService: FacilityFamilyCoverService
+        private familyCoverService: FacilityFamilyCoverService,
+        private companyCoverService: FacilityCompanyCoverService
     ) {
         // this.uploadEvents = new EventEmitter();
         this.cropperSettings = new CropperSettings();
@@ -202,6 +212,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 startWith(''),
                 map((hmo: any) => hmo ? this.filterHmos(hmo) : this.hmos.slice())
             );
+
+        this.filteredccs = this.ccPlanId.valueChanges.pipe(
+            startWith(''),
+            map((cc: any) => cc ? this.filterCCs(cc) : this.companyFacilities.slice())
+        )
     }
     cropped(bounds: Bounds) {
         this.croppedHeight = bounds.bottom - bounds.top;
@@ -375,6 +390,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
 
         this.gethmos();
+        this.getLoginCompanyList();
         //this.getCategories();
         this.getMaritalStatus();
 
@@ -619,6 +635,36 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         });
     }
 
+    getLoginCompanyList() {
+        this.companyCoverService.find({
+            query: {
+                'facilityId._id': this.facility._id
+            }
+        }).then(payload => {
+            if (payload.data.length > 0) {
+                this.loginCompanyListObject = payload.data[0];
+                this._getCompanyFacilities(payload.data[0]);
+            } else {
+                this.loginCompanyListObject.facilityId = this.facility;
+                this.loginCompanyListObject.companyCovers = [];
+            }
+        })
+    }
+    _getCompanyFacilities(facilityCompany) {
+        this.companyEnrolleList = facilityCompany.companyCovers.map(obj => {
+            return { company: obj.company, enrolles: obj.enrolleeList };
+        });
+        const flist = this.companyEnrolleList.map(obj => {
+            return obj.company;
+        });
+        this.facilityService.find({
+            query: { _id: { $in: flist } }
+        }).then(payload => {
+            this.companyFacilities = payload.data;
+            console.log(this.companyFacilities);
+        });
+    }
+
     filterHmos(val: any) {
         if (val.hmoName === undefined) {
             return this.hmos.filter(hmo =>
@@ -629,8 +675,22 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         }
     }
 
+    filterCCs(val: any) {
+        if (val.name === undefined) {
+            return this.companyFacilities.filter(cc =>
+                cc.name.toLowerCase().indexOf(val.toLowerCase()) === 0);
+        } else {
+            return this.companyFacilities.filter(cc =>
+                cc.name.toLowerCase().indexOf(val.name.toLowerCase()) === 0);
+        }
+    }
+
     displayFn(hmo: any): string {
         return hmo ? hmo.hmoName : hmo;
+    }
+
+    displayFnc(cc) {
+        return cc ? cc.name : cc;
     }
     nextInsuranceCover(hmoPlanId, hmoPlan) {
         this.systemModuleService.on();
@@ -641,7 +701,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.hmoInsuranceId = insuranceId;
         this.planPrice = this.hmoPlanPrice.value;
         this.planId = this.hmoPlan.value._id;
-        
+
         this.hmoService.find({ query: { 'facilityId': this.facility._id } }).then(payload => {
             if (payload.data.length > 0) {
                 const facHmo = payload.data[0];
@@ -658,8 +718,12 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         if (fil.length > 0) {
                             if (fil[0].status === false) {
                                 this.systemModuleService.off();
+                                this.mainErr = false;
+                                const text = 'Insurance Id does not have an active status for the selected HMO';
+                                this.errMsg = text;
+                                this.mainErr = false;
                                 this.systemModuleService
-                                    .announceSweetProxy('Insurance Id does not have an active status for the selected HMO', 'error');
+                                    .announceSweetProxy(text, 'error');
                             } else {
                                 if (this.shouldMoveFirst === true) {
                                     this.saveInsurancePerson();
@@ -675,8 +739,11 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                             }
                         } else {
                             this.systemModuleService.off();
+                            const text = 'Insurance Id does not exist for the selected HMO';
+                            this.errMsg = text;
+                            this.mainErr = false;
                             this.systemModuleService
-                                .announceSweetProxy('Insurance Id does not exist for the selected HMO', 'error');
+                                .announceSweetProxy(text, 'error');
                         }
                     }
                 }
@@ -768,6 +835,118 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 }
             });
         }
+    }
+
+    nextCompany() {
+        this.systemModuleService.on();
+
+        this.coverType = 'company';
+        this.companyCover = this.ccPlanId.value;
+        const employeeId = this.employeeId.value;
+        this.ccEmployeeId = employeeId;
+        this.planPrice = this.ccPlanPrice.value;
+        this.planId = this.ccPlan.value._id;
+
+        console.log(this.companyCover, this.ccEmployeeId);
+
+        this.companyCoverService.find({
+            query: {
+                'facilityId._id': this.facility._id
+            }
+        }).then(payload => {
+            console.log(payload);
+            const companyCover = payload.data[0];
+            const index = companyCover.companyCovers.findIndex(x => x.company === this.companyCover._id);
+            console.log(index);
+            if (index > -1) {
+                if (companyCover.companyCovers[index].enrolleeList.length > 0) {
+                    const bene = [];
+                    for (let s = 0; s < companyCover.companyCovers[index].enrolleeList.length; s++) {
+                        const company = companyCover.companyCovers[index].company
+                        bene.push(...companyCover.companyCovers[index].enrolleeList[s].enrollees);
+                    }
+                    const fil = bene.filter(x => x.filNo === employeeId);
+                    console.log(fil);
+                    if (fil.length > 0) {
+                        if (fil[0].status === false) {
+                            this.systemModuleService.off();
+                            const text = 'Employee Id does not have an active status for the selected Company';
+                            this.errMsg = text;
+                            this.mainErr = false;
+                            this.systemModuleService
+                                .announceSweetProxy(text, 'error');
+                        } else {
+                            this.frmPerson.controls['firstname'].setValue(fil[0].firstname);
+                            this.frmPerson.controls['lastname'].setValue(fil[0].lastname);
+                            if (fil[0].gender.toLowerCase === 'm' || fil[0].gender.toLowerCase === 'male') {
+                                this.frmPerson.controls['gender'].setValue('Male');
+                            } else {
+                                this.frmPerson.controls['gender'].setValue('Female');
+                            }
+                            if (this.shouldMoveFirst === true) {
+                                this.saveCompanyPerson();
+                            } else {
+                                this.systemModuleService.off();
+                                this.frmNewEmp4_show = false;
+                                this.frmNewPerson1_show = true;
+                                this.frmNewPerson2_show = false;
+                                this.frmNewPerson3_show = false;
+                                this.paymentPlan = false;
+                                this.loading = false;
+                            }
+                        }
+                    } else {
+                        this.systemModuleService.off();
+                        const text = 'Employee Id does not exist for the selected Company';
+                        this.errMsg = text;
+                        this.mainErr = false;
+                        this.systemModuleService
+                            .announceSweetProxy(text, 'error');
+                    }
+                }
+            }
+        })
+
+        /* this.hmoService.find({ query: { 'facilityId': this.facility._id } }).then(payload => {
+            if (payload.data.length > 0) {
+                const facHmo = payload.data[0];
+                const index = facHmo.hmos.findIndex(x => x.companyCover === this.companyCover.hmoId);
+                if (index > -1) {
+                    if (facHmo.hmos[index].enrolleeList.length > 0) {
+                        const bene = [];
+                        for (let s = 0; s < facHmo.hmos[index].enrolleeList.length; s++) {
+                            const hmo = facHmo.hmos[index].hmo;
+                            bene.push(...facHmo.hmos[index].enrolleeList[s].enrollees);
+                        }
+                        const fil = bene.filter(x => x.filNo === insuranceId);
+                        console.log(fil);
+                        if (fil.length > 0) {
+                            if (fil[0].status === false) {
+                                this.systemModuleService.off();
+                                this.systemModuleService
+                                    .announceSweetProxy('Insurance Id does not have an active status for the selected HMO', 'error');
+                            } else {
+                                if (this.shouldMoveFirst === true) {
+                                    this.saveInsurancePerson();
+                                } else {
+                                    this.systemModuleService.off();
+                                    this.frmNewEmp4_show = false;
+                                    this.frmNewPerson1_show = true;
+                                    this.frmNewPerson2_show = false;
+                                    this.frmNewPerson3_show = false;
+                                    this.paymentPlan = false;
+                                    this.loading = false;
+                                }
+                            }
+                        } else {
+                            this.systemModuleService.off();
+                            this.systemModuleService
+                                .announceSweetProxy('Insurance Id does not exist for the selected HMO', 'error');
+                        }
+                    }
+                }
+            }
+        }).catch(err => { console.log(err) }); */
     }
 
     getRole(beneficiary) {
@@ -1115,7 +1294,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     }
 
-    saveCompanyPerson() {
+    /* saveCompanyPerson() {
         const facId = this.frmNewEmp1.controls['facId'].value;
         const facName = this.frmNewEmp1.controls['facName'].value;
         if (this.selectedPerson === undefined && this.selectedPerson._id === undefined) {
@@ -1327,6 +1506,91 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
             });
         }
+
+    } */
+
+    saveCompanyPerson() {
+        this.loading = true;
+        const patient: any = {
+            personId: this.selectedPerson._id,
+            facilityId: this.facility._id,
+            paymentPlan: [
+                {
+                    planType: 'wallet',
+                    bearerPersonId: this.selectedPerson._id,
+                    isDefault: false
+                },
+                {
+                    planType: this.coverType,
+                    isDefault: true,
+                    planDetails: {
+                        companyId: this.companyCover._id,
+                        companyName: this.companyCover.name,
+                        principalId: this.ccEmployeeId
+                    }
+                }
+            ]
+        }
+        this.patientService.create(patient).then(payl => {
+            const data = [
+                {
+                    unitPrice: this.planPrice,
+                    facilityId: this.facility._id,
+                    description: '',
+                    facilityServiceId: this.facilityServiceId.value,
+                    serviceId: this.planId,
+                    patientId: payl._id,
+                    quantity: 1,
+                    totalPrice: this.planPrice,
+                    unitDiscountedAmount: 0,
+                    totalDiscoutedAmount: 0,
+                    modifierId: [],
+                    covered: {
+                        companyId: this.companyCover._id,
+                        coverType: this.coverType
+                    },
+                    isServiceEnjoyed: false,
+                    paymentCompleted: false,
+                    paymentStatus: [],
+                    payments: []
+
+                }
+            ];
+            const params = {
+                query: {}
+            }
+            this.billingService.createBill(data, {
+                query: {
+                    facilityId: this.facility._id,
+                    patientId: payl._id
+                }
+            }).then(billingPayload => {
+                this.systemModuleService.off();
+                const text = this.selectedPerson.lastName + ' '
+                    + this.selectedPerson.firstName
+                    + ' added successfully but bill not generated because price not yet set for this service';
+                this.mainErr = false;
+                this.errMsg = text;
+                this.systemModuleService.announceSweetProxy(text, 'success');
+                this.systemModuleService.changeMessage(payl); // This is responsible for showing the edit patient modal box
+                this.close_onClick();
+            }).catch(errr => {
+                this.systemModuleService.off();
+                const text = 'Some went wrong while creating a patient!';
+                this.mainErr = false;
+                this.errMsg = text;
+                this.systemModuleService.announceSweetProxy(text, 'error');
+                this.loading = false;
+            });
+
+        }).catch(err => {
+            this.systemModuleService.off();
+            const text = 'Some went wrong while creating a patient!';
+                this.mainErr = false;
+                this.errMsg = text;
+            this.systemModuleService.announceSweetProxy(text, 'error');
+            this.loading = false;
+        });
 
     }
 
