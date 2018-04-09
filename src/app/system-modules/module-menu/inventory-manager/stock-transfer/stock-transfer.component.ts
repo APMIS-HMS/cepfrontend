@@ -24,7 +24,7 @@ export class StockTransferComponent implements OnInit {
   flyout = false;
   preview = false;
   overlay = false;
-
+  productConfigOpen = false;
   samples = [];
 
   toggleTransferOpen = false;
@@ -485,6 +485,10 @@ export class StockTransferComponent implements OnInit {
 
   toggleTransfer(){
     this.toggleTransferOpen = !this.toggleTransferOpen;
+  }
+
+  toggleProductConfig(){
+    this.productConfigOpen = !this.productConfigOpen;
   }
 
   private _notification(type: String, text: String): void {
