@@ -139,6 +139,7 @@ export class WalletComponent implements OnInit, AfterViewInit {
       }
     });
 
+    
     this.search = new FormControl('', []);
     this.search.valueChanges.debounceTime(300).distinctUntilChanged().subscribe(value => {
       this.loading = false;
