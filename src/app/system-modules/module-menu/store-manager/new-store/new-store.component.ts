@@ -12,26 +12,25 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
   styleUrls: ['./new-store.component.scss']
 })
 export class NewStoreComponent implements OnInit {
-
-  selectedFacility: Facility = <Facility>{};
-  selectedMinorLocation: MinorLocation = <MinorLocation>{};
-
-  minorLocations: MinorLocation[] = [];
-  productTypes: any[] = [];
-  stores: any[] = [];
-
-  mainErr = true;
-  errMsg = 'you have unresolved errors';
-
-  public frm_newStore: FormGroup;
-  createText = 'Create Store';
-  loadIndicatorVisible = false;
-
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() refreshStore: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() selectedStore: any = <any>{};
-  constructor(private formBuilder: FormBuilder, 
-    private locker: CoolLocalStorage, 
+  selectedFacility: Facility = <Facility>{};
+  selectedMinorLocation: MinorLocation = <MinorLocation>{};
+  minorLocations: MinorLocation[] = [];
+  productTypes: any[] = [];
+  stores: any[] = [];
+  mainErr = true;
+  errMsg = 'You have unresolved errors';
+  frm_newStore: FormGroup;
+  addBtnText = true;
+  addingBtnText = false;
+  updateBtnText = false;
+  updatingBtnText = false;
+  disableBtn = false;
+
+  constructor(private formBuilder: FormBuilder,
+    private locker: CoolLocalStorage,
     private productTypeService: ProductTypeService,
     private systemModuleService: SystemModuleService,
     private storeService: StoreService) { }
@@ -41,7 +40,7 @@ export class NewStoreComponent implements OnInit {
     this.frm_newStore = this.formBuilder.group({
       name: ['', [<any>Validators.required]],
       minorLocationId: ['', [<any>Validators.required]],
-      description: ['', [<any>Validators.required]],
+      description: [''],
       canDespense: [false, [<any>Validators.required]],
       canReceivePurchaseOrder: [false, [<any>Validators.required]],
       facilityId: [this.selectedFacility._id, [<any>Validators.required]],
@@ -73,28 +72,38 @@ export class NewStoreComponent implements OnInit {
 
     });
   }
+
   populateStore() {
     if (this.selectedStore._id !== undefined) {
-      this.createText = 'Update Store';
+      this.addBtnText = false;
+      this.addingBtnText = false;
+      this.updateBtnText = true;
+      this.updatingBtnText = false;
       this.frm_newStore.controls['name'].setValue(this.selectedStore.name);
       this.frm_newStore.controls['minorLocationId'].setValue(this.selectedStore.minorLocationId);
       this.frm_newStore.controls['description'].setValue(this.selectedStore.description);
       this.frm_newStore.controls['canDespense'].setValue(this.selectedStore.canDespense);
       this.frm_newStore.controls['canReceivePurchaseOrder'].setValue(this.selectedStore.canReceivePurchaseOrder);
     } else {
-      this.createText = 'Create Store';
+      this.addBtnText = true;
+      this.addingBtnText = false;
+      this.updateBtnText = false;
+      this.updatingBtnText = false;
       this.frm_newStore.reset();
       this.frm_newStore.controls['canDespense'].setValue(false);
       this.frm_newStore.controls['canReceivePurchaseOrder'].setValue(false);
       this.frm_newStore.controls['facilityId'].setValue(this.selectedFacility._id);
     }
   }
+
   close_onClick() {
     this.closeModal.emit(true);
   }
+
   onValueChanged(e, productType) {
     productType.isChecked = e.checked;
   }
+
   create(valid, value) {
     if (valid) {
       this.systemModuleService.on();
@@ -113,7 +122,7 @@ export class NewStoreComponent implements OnInit {
             item.isChecked = false;
           });
           this.systemModuleService.off();
-          this.systemModuleService.announceSweetProxy('New store added','success');
+          this.systemModuleService.announceSweetProxy('Store has been created successfully.', 'success');
           this.refreshStore.emit(true);
           this.closeModal.emit(true);
         }, error => {
@@ -132,18 +141,18 @@ export class NewStoreComponent implements OnInit {
           }
         });
         this.storeService.patch(this.selectedStore._id,{
-          name:this.selectedStore.name,
-          minorLocationId:this.selectedStore.minorLocationId,
-          description:this.selectedStore.description,
-          canDespense:this.selectedStore.canDespense,
+          name: this.selectedStore.name,
+          minorLocationId: this.selectedStore.minorLocationId,
+          description: this.selectedStore.description,
+          canDespense: this.selectedStore.canDespense,
           canReceivePurchaseOrder: this.selectedStore.canReceivePurchaseOrder,
           productTypeId: this.selectedStore.productTypeId
         }).then(payload => {
           this.systemModuleService.off();
-          this.systemModuleService.announceSweetProxy('Store updated','success');
+          this.systemModuleService.announceSweetProxy('Store has been updated successfully.', 'success');
           this.refreshStore.emit(true);
           this.close_onClick();
-        },error=>{
+        }, error => {
           this.systemModuleService.off();
         });
       }

@@ -12,7 +12,7 @@
         <div class="pg-labels-wrap">
             <div class="main-title">Store Summary</div>
             <div class="labels-right">
-                <div class="label-right"  routerLink="/dashboard/store/pos">Point of Sale</div>
+                <div class="label-right" routerLink="/dashboard/store/pos">Point of Sale</div>
                 <div class="label-right" (click)="onChangeCheckedIn()">Switch Store</div>
             </div>
         </div>
@@ -20,7 +20,7 @@
         <div class="sect sect-full">
             <div class="sect-header">
                 <div class="head-inner-lhs">
-                    <div class="counta">5</div>
+                    <div class="counta">{{inventoryCount}}</div>
                     <div class="head-inner-label">Inventory</div>
                 </div>
 
@@ -60,14 +60,14 @@
 
                     <div *ngIf="inventories.length > 0 && !inventoryLoading">
                         <div class="content-row" *ngFor="let inventory of inventories; let i=index">
-                            <div class="row-item">{{ inventory?.productObject?.productDetail?.productName }} {{ inventory?.productObject?.manufacturer }}</div>
+                            <div class="row-item">{{ inventory?.name }} {{ inventory?.manufacturer }}</div>
                             <div class="row-item">
-                                <div class="item-label">Batch</div>
-                                <div class="item-val">{{ inventory?.transactions[inventory?.transactions.length-1]?.batchNumber }}</div>
+                                <div class="item-label">Recent Batch</div>
+                                <div class="item-val">{{ inventory?.transaction?.batchNumber }}</div>
                             </div>
                             <div class="row-item">
                                 <div class="item-label">Quantity</div>
-                                <div class="item-val">{{ inventory?.transactions[inventory?.transactions.length-1]?.availableQuantity }}</div>
+                                <div class="item-val">{{ inventory?.totalQuantity }}</div>
                             </div>
                         </div>
                     </div>
@@ -81,100 +81,76 @@
             <div class="sect sect-half">
                 <div class="sect-header">
                     <div class="head-inner-lhs">
-                        <div class="counta">12</div>
+                        <div class="counta">{{ transferCount }}</div>
                         <div class="head-inner-label">Transfer</div>
                     </div>
                 </div>
                 <div class="sect-content">
                     <div>
-                        <div class="content-row">
-                            <div class="row-item">Paracetamol</div>
-                            <div class="row-item">
-                                <div class="item-label">From</div>
-                                <div class="item-val">Main Store</div>
-                            </div>
-                            <div class="row-status">
-                                <div class="status status-pending"></div>
-                                <div class="item-label">Pending</div>
+                        <div *ngIf="transfers.length === 0 && !transferLoading">
+                            <div style="width: 100%; text-align:center;">No data available in table.</div>
+                        </div>
+
+                        <div *ngIf="transfers.length === 0 && transferLoading">
+                            <div style="width: 100%; text-align:center;">
+                                <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                             </div>
                         </div>
 
-                        <div class="content-row">
-                            <div class="row-item">Syringe</div>
-                            <div class="row-item">
-                                <div class="item-label">To</div>
-                                <div class="item-val">Central Store</div>
-                            </div>
-                            <div class="row-status">
-                                <div class="status status-completed"></div>
-                                <div class="item-label">Completed</div>
-                            </div>
-                        </div>
-
-                        <div class="content-row">
-                            <div class="row-item">Dextrose</div>
-                            <div class="row-item">
-                                <div class="item-label">From</div>
-                                <div class="item-val">Central Store</div>
-                            </div>
-                            <div class="row-status">
-                                <div class="status status-declined"></div>
-                                <div class="item-label">Declined</div>
+                        <div *ngIf="transfers.length > 0 && !transferLoading">
+                            <div class="content-row" *ngFor="let transfer of transfers; let i=index">
+                                <div class="row-item">{{ transfer?.inventoryTransferTransactions[transfer?.inventoryTransferTransactions.length -1]?.productObject?.productDetail?.brand }}</div>
+                                <div class="row-item">
+                                    <div class="item-label">To</div>
+                                    <div class="item-val">{{ transfer?.destinationStoreObject?.name }}</div>
+                                </div>
+                                <div class="row-status">
+                                    <div class="status status-pending"></div>
+                                    <div class="item-label">Pending</div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card-link">View All</div>
+                    <div class="{{ transfers.length > 0 ? ' card-link ' : ' '}}" *ngIf="transfers.length > 0 && !transferLoading" routerLink="/dashboard/inventory-manager/inventory">View All</div>
                 </div>
             </div>
 
             <div class="sect sect-half">
                 <div class="sect-header">
                     <div class="head-inner-lhs">
-                        <div class="counta">10</div>
+                        <div class="counta">{{ purchaseOrderCount }}</div>
                         <div class="head-inner-label">Purchase Order</div>
                     </div>
                 </div>
                 <div class="sect-content">
                     <div>
-                        <div class="content-row">
-                            <div class="row-item">PO765431CQA</div>
-                            <div class="row-item">
-                                <div class="item-label">Store</div>
-                                <div class="item-val">Main Store</div>
-                            </div>
-                            <div class="row-item">
-                                <div class="item-label">Supplier</div>
-                                <div class="item-val">Tommex</div>
+                        <div *ngIf="purchaseOrders.length === 0 && !purchaseOrderLoading">
+                            <div style="width: 100%; text-align:center;">No data available in table.</div>
+                        </div>
+
+                        <div *ngIf="purchaseOrders.length === 0 && purchaseOrderLoading">
+                            <div style="width: 100%; text-align:center;">
+                                <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                             </div>
                         </div>
 
-                        <div class="content-row">
-                            <div class="row-item">PO765431CQA</div>
-                            <div class="row-item">
-                                <div class="item-label">Store</div>
-                                <div class="item-val">Central Store</div>
-                            </div>
-                            <div class="row-item">
-                                <div class="item-label">Supplier</div>
-                                <div class="item-val">Microbiology</div>
-                            </div>
-                        </div>
-
-                        <div class="content-row">
-                            <div class="row-item">PO765431CQA</div>
-                            <div class="row-item">
-                                <div class="item-label">Store</div>
-                                <div class="item-val">Central Store</div>
-                            </div>
-                            <div class="row-item">
-                                <div class="item-label">Supplier</div>
-                                <div class="item-val">Microbiology</div>
+                        <div *ngIf="purchaseOrders.length > 0 && !purchaseOrderLoading">
+                            <div class="content-row" *ngFor="let purchaseOrder of purchaseOrders; let i=index">
+                                <div class="row-item">{{ purchaseOrder?.purchaseOrderNumber }}</div>
+                                <div class="row-item">
+                                    <div class="item-label">Store</div>
+                                    <div class="item-val">{{ purchaseOrder?.storeObject?.name }}</div>
+                                </div>
+                                <div class="row-item">
+                                    <div class="item-label">Supplier</div>
+                                    <div class="item-val">{{ purchaseOrder?.supplierObject?.supplier?.name }}</div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="card-link">View All</div>
+                    <div class="{{ purchaseOrders.length > 0 ? ' card-link ' : ' '}}" *ngIf="purchaseOrders.length > 0 && !purchaseOrderLoading" routerLink="/dashboard/inventory-manager/inventory">View All</div>
                 </div>
             </div>
         </div>

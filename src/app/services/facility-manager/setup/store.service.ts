@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 export class StoreService {
   public _socket;
   public _socket_list;
+  public _statisticsSocket;
   private _rest;
   public listenerCreate;
   public listenerUpdate;
@@ -17,6 +18,7 @@ export class StoreService {
     this._rest = _restService.getService('stores');
     this._socket = _socketService.getService('stores');
     this._socket_list = _socketService.getService('list-of-stores');
+    this._statisticsSocket = _socketService.getService('store-statistics');
     this._socket.timeout = 30000;
     this._socket_list.timeout = 30000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
@@ -51,5 +53,9 @@ export class StoreService {
 
   getList(id: string, query: any) {
     return this._socket_list.get(id, query);
+  }
+
+  getStat(data: any, query: any) {
+    return this._statisticsSocket.get(data, query);
   }
 }
