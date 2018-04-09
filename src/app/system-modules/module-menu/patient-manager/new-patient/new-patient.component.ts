@@ -869,9 +869,10 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                             this.systemModuleService
                                 .announceSweetProxy(text, 'error');
                         } else {
-                            this.frmPerson.controls['firstname'].setValue(fil[0].firstname);
-                            this.frmPerson.controls['lastname'].setValue(fil[0].lastname);
-                            if (fil[0].gender.toLowerCase === 'm' || fil[0].gender.toLowerCase === 'male') {
+                            console.log(fil[0].gender.toLowerCase());
+                            this.frmPerson.controls['firstname'].setValue(fil[0].firstname.toString());
+                            this.frmPerson.controls['lastname'].setValue(fil[0].surname.toString());
+                            if (fil[0].gender.toLowerCase() === 'm' || fil[0].gender.toLowerCase() === 'male') {
                                 this.frmPerson.controls['gender'].setValue('Male');
                             } else {
                                 this.frmPerson.controls['gender'].setValue('Female');
@@ -1567,6 +1568,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.systemModuleService.changeMessage(payl); // This is responsible for showing the edit patient modal box
                 this.close_onClick();
             }).catch(errr => {
+                console.log(errr);
                 this.systemModuleService.off();
                 const text = 'Some went wrong while creating a patient!';
                 this.isSaving = false;
@@ -1577,6 +1579,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             });
 
         }).catch(err => {
+            console.log('outside ', err);
             this.systemModuleService.off();
             this.isSaving = false;
             const text = 'Some went wrong while creating a patient!';
