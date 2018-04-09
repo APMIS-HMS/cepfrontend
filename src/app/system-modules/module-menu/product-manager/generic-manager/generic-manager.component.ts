@@ -124,6 +124,7 @@ export class GenericManagerComponent implements OnInit {
 		this._genericservice.find({})
 			.then(data => {
 				this.generics = data.data;
+				this.loading = false;
 			});
 	}
 

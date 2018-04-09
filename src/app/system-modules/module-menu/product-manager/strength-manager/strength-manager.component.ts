@@ -121,6 +121,7 @@ export class StrengthManagerComponent implements OnInit {
 		this._strengthService.find({})
 			.then(data => {
 				this.strengths = data.data;
+				this.loading = false;
 			});
 	}
 }

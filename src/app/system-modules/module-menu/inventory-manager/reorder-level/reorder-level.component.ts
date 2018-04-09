@@ -14,16 +14,18 @@ import { Observable } from 'rxjs/Observable';
 })
 export class ReorderLevelComponent implements OnInit {
 
-  public productTableForm: FormGroup;
+  productTableForm: FormGroup;
   reorderLevel = new FormControl();
   packType = new FormControl();
   product = new FormControl();
+
+  public showNewForm = false;
 
   newReorderLevel = new FormControl('', [<any>Validators.required]);
   newPackType = new FormControl(0, [<any>Validators.required]);
   newProduct = new FormControl('', [<any>Validators.required]);
   editLevel = false;
-  selectedPack ={};
+  selectedPack = {};
   selectedFacility: any = <any>{};
   products = <any>[];
   reorderProducts = <any>[];
@@ -49,10 +51,11 @@ export class ReorderLevelComponent implements OnInit {
   ngOnInit() {
     this.selectedFacility = <any>this.locker.getObject('selectedFacility');
     this.user = this.locker.getObject('auth');
+    this.initializeReorderProperties();
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
       this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
-      this.getReOrderProducts();
+      this.setExistingReorderData();
     });
     this.newProduct.valueChanges
       .debounceTime(200)
@@ -74,18 +77,39 @@ export class ReorderLevelComponent implements OnInit {
       });
   }
 
-  addNewProductTables() {
+  initializeReorderProperties() {
     this.productTableForm = this.formBuilder.group({
       'productTableArray': this.formBuilder.array([
         this.formBuilder.group({
-          product: ['', [<any>Validators.required]],
-          reOrderLevel: ['', [<any>Validators.required]],
-          config: ['', [<any>Validators.required]],
-          isEdit: [false, [<any>Validators.required]]
+          product: [{}, [<any>Validators.required]],
+          reOrderLevel: [0, [<any>Validators.required]],
+          packTypeId: ['', [<any>Validators.required]],
+          productItemConfigObject: [{}, [<any>Validators.required]],
+          isEdit: [false, [<any>Validators.required]],
+          id: ['', [<any>Validators.required]]
         })
       ])
     });
     this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
+  }
+
+
+  setExistingReorderData() {
+    this.productService.findReorder({ query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId } }).then(payload => {
+      this.reorderProducts = payload.data.forEach(element => {
+        element.productObject.productConfigObject = element.productConfigObject;
+        (<FormArray>this.productTableForm.controls['productTableArray']).push(
+          this.formBuilder.group({
+            product: [element.productObject, [<any>Validators.required]],
+            reOrderLevel: [element.reOrderLevel, [<any>Validators.required]],
+            packTypeId: [element.productItemConfigObject._id, [<any>Validators.required]],
+            productItemConfigObject: [element.productItemConfigObject, [<any>Validators.required]],
+            isEdit: [false, [<any>Validators.required]],
+            id: [element._id]
+          }));
+      });
+
+    });
   }
 
   async onSelectProduct(product) {
@@ -98,25 +122,6 @@ export class ReorderLevelComponent implements OnInit {
     } else {
       this.systemModuleService.announceSweetProxy('Product brand pack variant is not configured', 'error');
     }
-  }
-
-  initProductConfig(config) {
-    let frmArray = new FormArray([])
-    config.forEach(item => {
-      frmArray.push(new FormGroup({
-        size: new FormControl(0),
-        name: new FormControl(item.name),
-        isBase: new FormControl(item.isBase),
-        packVolume: new FormControl(item.size)
-      }));
-    })
-    return frmArray;
-  }
-
-  getReOrderProducts() {
-    this.productService.findReorder({ query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId } }).then(payload => {
-      this.reorderProducts = payload.data;
-    });
   }
 
   isReorderUniqueProducts(productId) {
@@ -133,14 +138,10 @@ export class ReorderLevelComponent implements OnInit {
     return form.controls.config.controls;
   }
 
-  onPackageSize(i) {
-    (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.reOrderLevel = 0;
-    let itm = <FormArray>this.productTableForm['controls'].productTableArray['controls'][i].value.config.forEach(element => {
-      (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.reOrderLevel += element.size * element.packVolume;
-    });
-    (<FormArray>this.productTableForm.controls['productTableArray']).setValue(JSON.parse(JSON.stringify((<FormArray>this.productTableForm.controls['productTableArray']).value)));
+  comparePack(l1: any, l2: any) {
+    return l1.includes(l2);
   }
-
+  
   setLevel_click() {
     // this.setLevel = !this.setLevel;
     if (this.newPackType.valid && this.newProduct.valid && this.newReorderLevel.valid) {
@@ -154,53 +155,44 @@ export class ReorderLevelComponent implements OnInit {
       this.systemModuleService.on();
       this.productService.createReorder(reOrder).then(payload => {
         this.systemModuleService.off();
-        this.selectedProduct = {};
-        this.selectedProduct.productConfigObject = [];
         this.addBtnDisable = true;
         this.newPackType.reset();
         this.newReorderLevel.reset();
         this.newProduct.setValue(' ');
+        this.initializeReorderProperties();
         this.systemModuleService.announceSweetProxy('Product Re-order level created successfully', 'success');
-        this.getReOrderProducts();
+       this.setExistingReorderData();
       });
     } else {
       this.systemModuleService.announceSweetProxy('Missing field(s)', 'error');
     }
   }
 
-  onEdit_click(product) {
-    this.productService.get(product.productId, { query: { loginFacilityId: this.selectedFacility._id } }).then(payload => {
-      this.editSelectedProduct = payload;
-      product.isEdit = true;
-    });
+  onEdit_click(form) {
+    form.value.isEdit = !form.value.isEdit;
+    form.setValue(JSON.parse(JSON.stringify(form.value)));
   }
 
-  onSaveEdit_click(product) {
-    if (this.reorderLevel.value !== null && this.reorderLevel.value !== '' && this.packType.value !== null && this.packType.value !== '') {
+  onSaveEdit_click(form) {
+    if (form.valid) {
       this.systemModuleService.on();
-      this.productService.patchReorder(product._id, { reOrderLevel: this.reorderLevel.value, reOrderSizeId: this.packType.value }).then(payload => {
+      this.productService.patchReorder(form.value.id, { reOrderLevel: form.value.reOrderLevel, reOrderSizeId: form.value.packTypeId }).then(payload => {
         this.systemModuleService.off();
-        product.isEdit = false;
-        this.editSelectedProduct = {};
-        this.editSelectedProduct.productConfigObject = [];
-        this.addBtnDisable = true;
-        this.newPackType.reset();
-        this.newReorderLevel.reset();
-        this.newProduct.setValue(' ');
+        this.initializeReorderProperties();
         this.systemModuleService.announceSweetProxy('Product Re-order level updated successfully', 'success');
-        this.getReOrderProducts();
+        this.setExistingReorderData();
       }, error => {
-        this.editSelectedProduct = {};
-        this.editSelectedProduct.productConfigObject = [];
-        product.isEdit = false;
         this.systemModuleService.off();
-        this.systemModuleService.announceSweetProxy('Update failed!!! field(s) is missing', 'error');
+        this.systemModuleService.announceSweetProxy('Update failed!!! field(s) is missing--3', 'error');
       });
     } else {
-      product.isEdit = false;
       this.systemModuleService.off();
       this.systemModuleService.announceSweetProxy('Update failed!!! field(s) is missing', 'error');
     }
+  }
+
+  toggleNewForm() {
+    this.showNewForm = !this.showNewForm;
   }
 
 }

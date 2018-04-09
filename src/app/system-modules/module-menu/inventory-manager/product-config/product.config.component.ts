@@ -205,7 +205,7 @@ initializeForm(){
           this.packageForm.controls['package'] = this._fb.array([]);
           this.packages = JSON.parse(JSON.stringify(this.packages));
           this.selectedProduct = {};
-          this.apmisLookupHandleSelectedItem('');
+          this.apmisLookupText = "";
           this.systemModuleService.announceSweetProxy('Configuration created', 'success');
         }, err => {
           this.systemModuleService.off();
@@ -223,7 +223,7 @@ initializeForm(){
           this.packageForm.controls['package'] = this._fb.array([]);
           this.packages = JSON.parse(JSON.stringify(this.packages));
           this.selectedProduct = {};
-          this.apmisLookupHandleSelectedItem('');
+          this.apmisLookupText = "";
           this.systemModuleService.announceSweetProxy('Configuration created', 'success');
         }, err => {
           this.systemModuleService.off();

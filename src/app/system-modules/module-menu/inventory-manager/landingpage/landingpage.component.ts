@@ -90,7 +90,6 @@ export class LandingpageComponent implements OnInit {
           { facilityId: this.selectedFacility._id, name: '', storeId: this.checkingStore.storeId }//, $limit: 200 }
       })
         .then(payload => {
-          console.log(payload);
           this.loading = false;
           this.inventories = payload.data.filter(x => x.totalQuantity > 0);
         });

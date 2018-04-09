@@ -123,6 +123,7 @@ export class PresentationManagerComponent implements OnInit {
 		this._presentationService.find({})
 			.then(data => {
 				this.presentations = data.data;
+				this.loading = false;
 			});
 	}
 

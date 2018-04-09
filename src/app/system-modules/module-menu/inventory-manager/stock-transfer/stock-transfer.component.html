@@ -1,143 +1,174 @@
-<div *ngIf="flyout" class="flyout animated slideOut">
-    <div (click)="flyout_toggle($event)" class="slideInWrap">
-        <i class="fa fa-arrow-circle-right pull-right" aria-hidden="true"></i>
-    </div>
-    <div class="sec-b">
-        <div class="col-a">
-            <div class="filter-sect">
-                <div class="frm-item-wrap">
-                    <mat-input-container class="example-full-width">
-                        <input matInput mat-error placeholder="search product to transfer..." [formControl]="searchControl">
-                    </mat-input-container>
-                </div>
-            </div>
-
-            <div class="product-sect">
-                <div class="control-group" *ngFor="let group of superGroups">
-                    <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
-                        <div class="control__indicator">
-                            <mat-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></mat-checkbox>
-                        </div>
-                    </label>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 
 
-<!--<div class="survery">-->
 <div class="container cotainer-width">
-    <!--<div class="row">
-        <div class="col-mat-12 col-sm-12 col-xs-12">
-            <div class="callout callout-info">
-                <h4>You have no product to transfer</h4>
-                <p>To transfer product <a (click)="flyout_toggle($event)"> click here.</a></p>
-            </div>
-        </div>
-    </div>-->
-    <div class="row">
-        <div class="col-mat-4">
-            <div class="frm-item-wrap">
-                <mat-form-field>
-                    <mat-select (change)="onStoreChanged()" class="example-full-width" placeholder="Choose Destination Store" [formControl]="frmDestinationStore">
-                        <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
-                    </mat-select>
-                </mat-form-field>
-            </div>
-            <br>
-        </div>
-    </div>
-    <div class="tblWrap">
-        <form *ngIf="productTableForm?.controls['productTableArray'].value.length > 0" [formGroup]="productTableForm">
-            <div formArrayName="productTableArray" class="frmArrayWrap">
-                <div class="frmArray" *ngFor="let schedule of productTableForm.controls['productTableArray'].controls; let i = index;">
-                    <div formGroupName="{{i}}">
-                        <div class="prod-wrap">
-
-                            <div class="inputWrap-productDetail">
-                                <div (click)="removeProduct(i, schedule.value)" class="modal-close-ico" aria-hidden="true">X</div>
-                                <div class="row">
-                                    <div class="col-md-6 row">
-                                        <div class="col-md-4">
-                                            <div class="frm-item-wrap">
-                                                <mat-input-container class="example-full-width">
-                                                    <input matInput mat-error placeholder="Product" [readOnly]="true" formControlName="product">
-                                                </mat-input-container>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="frm-item-wrap">
-                                                <mat-form-field>
-                                                    <mat-select (change)="getProductQuantity($event,schedule.controls.batchNumbers.value, i)" style="width: 100%;" class="example-full-width"
-                                                        placeholder="Batch Numbers">
-                                                        <mat-option *ngFor="let batch of schedule.controls.batchNumbers.value" [value]="batch._id">{{batch.batchNumber}}</mat-option>
-                                                    </mat-select>
-                                                </mat-form-field>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-4">
-                                            <div class="frm-item-wrap">
-                                                <mat-input-container class="example-full-width">
-                                                    <input matInput mat-error placeholder="Batch No" [readOnly]="true" formControlName="batchNo">
-                                                </mat-input-container>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 row">
-                                        <div class="col-md-3">
-                                            <div class="frm-item-wrap">
-                                                <mat-input-container class="example-full-width">
-                                                    <input [step]="0.01" type="number" [readOnly]="true" matInput mat-error placeholder="Unit Cost Price" [readOnly]="true" formControlName="costPrice">
-                                                </mat-input-container>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="frm-item-wrap">
-                                                <mat-input-container class="example-full-width">
-                                                    <input (change)="checkProductQuantity($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)" min="1"
-                                                        max="{{maxQty}}" type="number" matInput mat-error placeholder="Quantity"
-                                                        formControlName="qty" readonly>
-                                                </mat-input-container>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3" formArrayName="config">
-                                            <div [formGroupName]="j" *ngFor="let item of getProductConfig(schedule); let j = index">
-                                                <mat-input-container>
-                                                    <input type="number" formControlName="size" min="1" (change)="onPackageSize(i)" matInput placeholder="{{item.value.name}}">
-                                                </mat-input-container>
-                                            </div>
-                                        </div>
-
-                                        <div class="col-md-3">
-                                            <div class="frm-item-wrap">
-                                                <mat-input-container class="example-full-width">
-                                                    <input [step]="0.01" [readOnly]="true" min="0" type="number" [readOnly]="true" matInput mat-error placeholder="Total Cost Price"
-                                                        [readOnly]="true" formControlName="totalCostPrice">
-                                                </mat-input-container>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="plus-row" (click)="splitProduct($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)"
-                                    *ngIf="(showSplitProduct(i, schedule.controls.batchNumbers.value) || showPlusSign)">
-                                    <span>
-                                        <i class="fa fa-plus plus-color"></i> Add Another One
-                                    </span>
-                                </div>
-                            </div>
+    <div *ngIf="toggleTransferOpen">
+            <div  class="row">
+                    <div class="col-sm-4">
+                        <div class="frm-item-wrap">
+                            <mat-form-field>
+                                <mat-select (change)="onStoreChanged()" class="example-full-width" placeholder="Choose Destination Store" [formControl]="frmDestinationStore">
+                                    <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
                         </div>
                     </div>
                 </div>
-            </div>
-        </form>
+                
+                <div class="row">
+                        <div class="col-sm-3">
+                                <div *ngIf="flyout">
+                                                <mat-input-container class="example-full-width">
+                                                    <input matInput mat-error placeholder="search product to transfer..." [formControl]="searchControl">
+                                                </mat-input-container>
+                                                <div *ngFor="let group of superGroups">
+                                                    <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
+                                                        <div class="control__indicator">
+                                                            <mat-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></mat-checkbox>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                </div>
+                            </div>
+                    <div class="col-sm-9">
+                            <form  *ngIf="productTableForm?.controls['productTableArray'].value.length > 0" [formGroup]="productTableForm">
+                                    <div formArrayName="productTableArray" class="frmArrayWrap">
+                                        <div class="frmArray" *ngFor="let schedule of productTableForm.controls['productTableArray'].controls; let i = index;">
+                                            <div formGroupName="{{i}}">
+                                                <div class="prod-wrap">
+                                                    <div class="inputWrap-productDetail">
+                                                        <div (click)="removeProduct(i, schedule.value)" class="modal-close-ico" aria-hidden="true"><i class="fa fa-close"></i></div>
+                                                        <div class="row">
+                                                                <h2 class="col-md-12">{{schedule.value.product}}</h2>
+                                                                        <mat-input-container style="display:none">
+                                                                            <input matInput mat-error placeholder="Product" readOnly formControlName="product">
+                                                                        </mat-input-container>
+                                                                        <mat-input-container style="display:none" class="col-md-4">
+                                                                                <input matInput mat-error placeholder="Batch No" [readOnly]="true" formControlName="batchNo">
+                                                                            </mat-input-container>
+                                                                
+                                                                        <mat-form-field class="col-md-4">
+                                                                            <mat-select (change)="getProductQuantity($event,schedule.controls.batchNumbers.value, i)" style="width: 100%;" class="example-full-width"
+                                                                                placeholder="Batch Numbers">
+                                                                                <mat-option *ngFor="let batch of schedule.controls.batchNumbers.value" [value]="batch._id">{{batch.batchNumber}}</mat-option>
+                                                                            </mat-select>
+                                                                        </mat-form-field>
+                                                                   
+                                                                <div class="col-md-4">
+                                                                    <div class="frm-item-wrap">
+                                                                        <mat-input-container class="example-full-width">
+                                                                            <input [step]="0.01" type="number" [readOnly]="true" matInput mat-error placeholder="Unit Cost Price" [readOnly]="true" formControlName="costPrice">
+                                                                        </mat-input-container>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-4">
+                                                                    <div class="frm-item-wrap">
+                                                                        <mat-input-container class="example-full-width">
+                                                                            <input (change)="checkProductQuantity($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)" min="1"
+                                                                                max="{{maxQty}}" type="number" matInput mat-error placeholder="Quantity"
+                                                                                formControlName="qty" readonly>
+                                                                        </mat-input-container>
+                                                                    </div>
+                                                                </div>
+                        
+                                                                <div class="col-md-12" formArrayName="config">
+                                                                        <div class="row">
+                                                                                <mat-input-container class="col-md-{{12/getProductConfig(schedule).length}}" [formGroupName]="j" *ngFor="let item of getProductConfig(schedule); let j = index">
+                                                                                    <input type="number" formControlName="size" min="1" (change)="onPackageSize(i)" matInput placeholder="{{item.value.name}}">
+                                                                                </mat-input-container>
+                                                                        </div>
+                                                                </div>
+                                                                
+                                                                <div class="col-md-3">
+                                                                    <h1 style="color:#5088d1">₦ {{schedule.value.totalCostPrice}}</h1>
+                                                                        <div class="frm-item-wrap" style="display:none">
+                                                                            <mat-input-container class="example-full-width">
+                                                                                <input [step]="0.01" readonly min="0" type="number" [readOnly]="true" matInput mat-error placeholder="Total Cost Price"
+                                                                                   formControlName="totalCostPrice">
+                                                                            </mat-input-container>
+                                                                        </div>
+                                                                    </div>
+                                                                
+                                                            
+                                                        </div>
+                                                        <div class="plus-row" (click)="splitProduct($event,schedule.controls.batchNumbers.value, i, schedule.controls.id.value)"
+                                                            *ngIf="(showSplitProduct(i, schedule.controls.batchNumbers.value) || showPlusSign)">
+                                                            <span>
+                                                                <i class="fa fa-plus plus-color"></i> Add Another One
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                    </div>
+                    
+                    
+                </div>
+            
+                <div class="CTAs-wrap" *ngIf="productTableForm.controls['productTableArray'].value.length > 0 && frmDestinationStore.value != null">
+                    <button (click)="previewShow()" class="cta-1 cta-no-bg"> Preview </button>
+                    <button class="cta-1" (click)="saveTransfer()"> Send </button>
+                </div>
     </div>
+   
 
-    <div class="CTAs-wrap" *ngIf="productTableForm.controls['productTableArray'].value.length > 0 && frmDestinationStore.value != null">
-        <button (click)="previewShow()" class="cta-1 cta-no-bg"> Preview </button>
-        <button class="cta-1" (click)="saveTransfer()"> Send </button>
-    </div>
+    <button class="btn blue-gradient" *ngIf="!toggleTransferOpen" (click)="toggleTransfer()">
+        Create Transfer
+    </button>
+    <div class="card">
+            <div class="card-header">
+                <div class="row">
+                    <div class="col-xs-4 table-head">Requistion Id</div>
+                    <div class="col-xs-4 table-head">From</div>
+                    <div class="table-head col-xs-3">Cost</div>
+                    <div class="table-head col-xs-1">
+                        <i class="fa fa-search fa-fw pointer" (click)="openSearch()"></i>
+                    </div>
+                </div>
+                <div class="row" *ngIf="searchOpen">
+                        <div class="col-md-4">
+                            <input [formControl]="" class="table-header-input" type="text" placeholder="Search From">
+                        </div>
+                        <div class="col-md-4">
+                            <input [formControl]="" class="table-header-input" type="Date" placeholder="Date">
+                        </div>        
+                        <div class="col-md-3">
+                            
+                        </div>
+                        <div class="col-md-1 table-head">
+                            <i class="fa fa-close fa-fw" (click)="openSearch()"></i>
+                        </div>
+                </div>
+            </div>
+            <div class="card-content">
+                    <div class="card-list-item" *ngIf="samples.length === 0">
+                        <div class="col-xs-12" style="text-align:center">
+                            No data available in table<br/>
+                        </div>
+                    </div>
+                    <div class="card-list-item" *ngFor="let sample of samples; let i=index;">
+                            <div class="row">
+                                <div class="table-list col-md-4">
+                                        {{sample?.id}}
+                                </div>
+                                <div class="table-list col-md-4">
+                                        {{sample?.from}}
+                                </div>
+                                <div class="table-list col-md-3">
+                                        &#8358; {{sample?.cost}}
+                                </div>
+                                <div class="table-list col-md-1">
+                                        <a class="action-btn" (click)="slidesampleDetailsToggle(sample, $event)"><i class="fa fa-eye"></i></a>
+                                        <a (click)="onNavigateToPayment(sample)"><span><i class="fa fa-money"></i></span> </a>
+                                        <a class="action-btn"><i class="fa fa-trash"></i></a>
+                                </div>
+                            </div>
+                    </div>
+            </div>
+
+        </div>
 </div>
 <div *ngIf="preview" class="overlay">
     <div class="survery paper">
@@ -275,6 +306,7 @@
     </div>
     <!-- end preview -->
 
+    
 
 
 

@@ -83,10 +83,6 @@
     border: 1px solid #153d70;
 }
 
-.cta-no-bg:hover {
-    background: -webkit-linear-gradient(right, #153d70, #4bb8ef);
-}
-
 .cta-no-bg:hover, .cta-1:hover {
     color: #fff;
 }
@@ -144,12 +140,11 @@
     backface-visibility:hidden;
 }
 .modal-close-ico{
-    top: 6px;
-    color: rgb(0, 0, 0) !important;
+    color: rgba(0, 0, 0, 0.5) !important;
     font-weight: bolder !important;
     font-size: 16px !important;
     position: absolute;
-    top: -1.5em;
+    top: -2.5em;
     right: 2em;
 }
 .modal-close-ico:hover{
@@ -196,4 +191,9 @@
 
 .plus-row span{
     cursor: pointer;
+}
+
+.blue-gradient{
+    background: #2b6ac8;
+    color: #fff;
 }

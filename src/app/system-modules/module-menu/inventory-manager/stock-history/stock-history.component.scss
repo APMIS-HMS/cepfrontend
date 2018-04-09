@@ -3,14 +3,17 @@
 .filter-container {
     padding: 10px;
 }
-.filter-wrap{
+
+.filter-wrap {
     display: flex;
     justify-content: flex-start;
     width: 100%;
 }
-.filter-item{
+
+.filter-item {
     margin-right: 10px;
 }
+
 .accepted,
 .fa-check {
     color: #28c41c;
@@ -23,7 +26,7 @@
 
 .pending {
     color: #0288d1;
-} 
+}
 
 
 /* details */
@@ -117,4 +120,12 @@ td:hover {
 
 .survery p {
     margin: 10px 0 10px !important;
+}
+
+.fa-close {
+    color: #fff;
+}
+
+.table-header-input {
+    margin-top: 17px;
 }

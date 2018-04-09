@@ -100,62 +100,65 @@
                 </div>
 
 
-                <div class="card-list-item" *ngIf="inventories.length === 0 && loading" <div class="col-xs-12" style="text-align:center">
-                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
+                <div class="card-list-item" *ngIf="inventories.length === 0 && loading">
+                    <div class="col-xs-12" style="text-align:center">
+                        <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
+                    </div>
                 </div>
-            </div>
-            <div class="card-list-item" *ngFor="let inventory of inventories; let i=index;">
-                <div class="row">
-                    <div class="table-list col-xs-3" (click)="onShowBatch(inventory)">
-                        {{inventory.productObject.name}}
-                    </div>
-                    <div class="table-list col-xs-3">
-                        <div (click)="onShowBatch(inventory)" class="prod-rowItem item2">
-                            <div class="workspace-count">{{inventory.transactions.length}}</div>
-                            <ul class="shadow-RB workspace-listWrap animated zoomIn">
-                                <li *ngFor="let store of inventory.transactions" class="workspace-listItem">
-                                    <ng-container>
-                                        <span>
+
+                <div class="card-list-item" *ngFor="let inventory of inventories; let i=index;">
+                    <div class="row">
+                        <div class="table-list col-xs-3" (click)="onShowBatch(inventory)">
+                            {{inventory.productObject.name}}
+                        </div>
+                        <div class="table-list col-xs-3">
+                            <div (click)="onShowBatch(inventory)" class="prod-rowItem item2">
+                                <div class="workspace-count">{{inventory.transactions.length}}</div>
+                                <ul class="shadow-RB workspace-listWrap animated zoomIn">
+                                    <li *ngFor="let store of inventory.transactions" class="workspace-listItem">
+                                        <ng-container>
+                                            <span>
                                                     <span>Batch: {{store.batchNumber}},</span>
-                                        <span>Qty: {{store.availableQuantity}},</span>
-                                        <span *ngIf="store.expiration !== ''"> Ex.: {{store.expiration}}</span>
-                                        <span *ngIf="store.expiration === ''">EXPIRED</span>
-                                        </span>
-                                    </ng-container>
-                                </li>
-                                <div class="pointer-wrap">
-                                    <i class="fa fa-caret-down" aria-hidden="true"></i>
-                                </div>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="table-list col-xs-3" (click)="onShowBatch(inventory)">
-                        {{inventory.totalQuantity}}
-                    </div>
-                    <div class="table-list col-xs-3">
-                        <div (click)="onShowBatch(inventory)" class="prod-rowItem item3">
-                            {{inventory.availableQuantity}}
-                        </div>
-                    </div>
-
-                    <div *ngIf="inventory.isOpen===true && (selectedInventory._id === inventory._id)" class="prodBatch-wrap animated flipInX">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="table-head col-xs-3">Batch No</div>
-                                <div class="table-head col-xs-2">Expiry Date</div>
-                                <div class="table-head col-xs-2">Quantity</div>
-                                <div class="table-head col-xs-3">Available Quantity</div>
-                                <div class="table-head col-xs-2">Actions</div>
-
+                                            <span>Qty: {{store.availableQuantity}},</span>
+                                            <span *ngIf="store.expiration !== ''"> Ex.: {{store.expiration}}</span>
+                                            <span *ngIf="store.expiration === ''">EXPIRED</span>
+                                            </span>
+                                        </ng-container>
+                                    </li>
+                                    <div class="pointer-wrap">
+                                        <i class="fa fa-caret-down" aria-hidden="true"></i>
+                                    </div>
+                                </ul>
                             </div>
                         </div>
-                        <div class="card-list-item" *ngFor="let transaction of inventory.transactions">
-                            <div class="table-list col-xs-3">{{transaction.batchNumber}}</div>
-                            <div class="table-list col-xs-2">{{transaction.expiryDate | date:'shortDate'}}</div>
-                            <div class="table-list col-xs-2">{{transaction.quantity}}</div>
-                            <div class="table-list col-xs-3">{{transaction.availableQuantity}}</div>
-                            <div class="table-list col-xs-2">
-                                <div (click)="onAdjustStock(inventory,transaction)" class="btn-liner">Adjust Stock</div>
+                        <div class="table-list col-xs-3" (click)="onShowBatch(inventory)">
+                            {{inventory.totalQuantity}}
+                        </div>
+                        <div class="table-list col-xs-3">
+                            <div (click)="onShowBatch(inventory)" class="prod-rowItem item3">
+                                {{inventory.availableQuantity}}
+                            </div>
+                        </div>
+
+                        <div *ngIf="inventory.isOpen===true && (selectedInventory._id === inventory._id)" class="prodBatch-wrap animated flipInX">
+                            <div class="card-header">
+                                <div class="row">
+                                    <div class="table-head col-xs-3">Batch No</div>
+                                    <div class="table-head col-xs-2">Expiry Date</div>
+                                    <div class="table-head col-xs-2">Quantity</div>
+                                    <div class="table-head col-xs-3">Available Quantity</div>
+                                    <div class="table-head col-xs-2">Actions</div>
+
+                                </div>
+                            </div>
+                            <div class="card-list-item" *ngFor="let transaction of inventory.transactions">
+                                <div class="table-list col-xs-3">{{transaction.batchNumber}}</div>
+                                <div class="table-list col-xs-2">{{transaction.expiryDate | date:'shortDate'}}</div>
+                                <div class="table-list col-xs-2">{{transaction.quantity}}</div>
+                                <div class="table-list col-xs-3">{{transaction.availableQuantity}}</div>
+                                <div class="table-list col-xs-2">
+                                    <div (click)="onAdjustStock(inventory,transaction)" class="btn-liner">Adjust Stock</div>
+                                </div>
                             </div>
                         </div>
                     </div>
