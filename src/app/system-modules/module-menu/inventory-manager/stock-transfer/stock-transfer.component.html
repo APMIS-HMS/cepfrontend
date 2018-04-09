@@ -68,11 +68,11 @@
                                                                                 max="{{maxQty}}" type="number" matInput mat-error placeholder="Quantity"
                                                                                 formControlName="qty" readonly>
                                                                         </mat-input-container>
-                                                                        <h2>{{schedule.value.qty}} {{getProductConfig(schedule)[0].value.name}}<span *ngIf="schedule.value.qty > 1">s</span> &nbsp;&nbsp; <i (click)="toggleProductConfig()" style="color:#5088d1; cursor: pointer;" class="fa fa-fw fa-pencil"></i></h2>
+                                                                        <h2>{{schedule.value.qty}} {{getProductConfig(schedule)[0].value.name}}<span *ngIf="schedule.value.qty > 1">s</span> &nbsp;&nbsp; <i (click)="toggleProductConfig(i)" style="color:#5088d1; cursor: pointer;" class="fa fa-fw fa-pencil"></i></h2>
                                                                     </div>
                                                                 </div>
                         
-                                                                <div *ngIf="productConfigOpen" class="col-md-12" formArrayName="config">
+                                                                <div id="quan{{i}}" class="col-md-12 no-display" formArrayName="config">
 
                                                                         <div class="row">
                                                                                 <mat-input-container class="col-md-{{12/getProductConfig(schedule).length}}" [formGroupName]="j" *ngFor="let item of getProductConfig(schedule); let j = index">

@@ -487,8 +487,8 @@ export class StockTransferComponent implements OnInit {
     this.toggleTransferOpen = !this.toggleTransferOpen;
   }
 
-  toggleProductConfig(){
-    this.productConfigOpen = !this.productConfigOpen;
+  toggleProductConfig(index){
+    document.querySelector("#quan"+index).classList.toggle('no-display');
   }
 
   private _notification(type: String, text: String): void {
