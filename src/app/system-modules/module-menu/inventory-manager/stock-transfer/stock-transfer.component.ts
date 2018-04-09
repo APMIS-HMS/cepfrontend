@@ -24,9 +24,9 @@ export class StockTransferComponent implements OnInit {
   flyout = false;
   preview = false;
   overlay = false;
-
+  productConfigOpen = false;
   samples = [];
-
+  searchOpen = false;
   toggleTransferOpen = false;
 
   selectedFacility: Facility = <Facility>{};
@@ -487,6 +487,10 @@ export class StockTransferComponent implements OnInit {
     this.toggleTransferOpen = !this.toggleTransferOpen;
   }
 
+  toggleProductConfig(index){
+    document.querySelector("#quan"+index).classList.toggle('no-display');
+  }
+
   private _notification(type: String, text: String): void {
     this.facilityService.announceNotification({
       users: [this.user._id],
@@ -494,4 +498,5 @@ export class StockTransferComponent implements OnInit {
       text: text
     });
   }
+  openSearch(){}
 }
