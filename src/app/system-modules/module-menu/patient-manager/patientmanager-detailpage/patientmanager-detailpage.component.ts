@@ -115,6 +115,10 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       this.patient.personDetails = payload;
     });
 
+    this.personService.patchListener.subscribe(payload => {
+      this.patient.personDetails = payload;
+    });
+
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
     });

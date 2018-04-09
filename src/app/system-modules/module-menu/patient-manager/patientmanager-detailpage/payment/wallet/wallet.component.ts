@@ -244,19 +244,14 @@ export class WalletComponent implements OnInit, AfterViewInit {
         transactionDirection: TransactionDirection.FacilityToPerson,
         paidBy: this.user.data.personId
       };
-      console.log('***********WalletTransaction**********');
-      console.log(walletTransaction);
+
 
       this.personService.fundWallet(walletTransaction, this.selectedFacility._id).then((res: any) => {
-        console.log('Got here! Hurray');
-        if (res.body.status === 'success') {
-
-          console.log('**********Res********************');
-          console.log(res);
+        if (res.status === 'success') {
           this.paymentFormGroup.reset();
           this.paymentFormGroup.controls['fundAmount'].setValue(0);
           this.resetPaymentForm();
-          this.person = res.body.data;
+          this.person = res.data.person;
           this.transactions = this.person.wallet.transactions.reverse().slice(0, 10);
           const text = 'Your facility\'s wallet has been debited and patient\'s wallet has been credited successfully.';
           this._notification('Success', text);

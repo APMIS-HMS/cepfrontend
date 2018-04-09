@@ -23,6 +23,7 @@ export class PersonService {
   public _fundWalletRest;
   public createListener;
   public updateListener;
+  public patchListener;
   private _rest;
   // public http;
 
@@ -43,6 +44,7 @@ export class PersonService {
     this._fundWalletSocket.timeout = 50000;
     this.createListener = Observable.fromEvent(this._socket, 'created');
     this.updateListener = Observable.fromEvent(this._socket, 'updated');
+    this.patchListener = Observable.fromEvent(this._socket, 'patched');
   }
 
   announcePerson(person: Person) {
@@ -176,7 +178,6 @@ export class PersonService {
         headers.append('Authorization', token);
     const options = new RequestOptions({headers: headers});
     this.http.post(path, payload, options).subscribe(subPayload => {
-      console.log(subPayload);
     });
   }
 }
