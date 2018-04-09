@@ -357,4 +357,8 @@ export class RequisitionComponent implements OnInit {
       this.getProductTables(this.products);
     }
   }
+
+  toggleProductConfig(index){
+    document.querySelector("#quan"+index).classList.toggle('no-display');
+  }
 }
