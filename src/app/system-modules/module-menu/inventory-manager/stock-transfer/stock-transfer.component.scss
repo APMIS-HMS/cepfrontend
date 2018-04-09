@@ -119,6 +119,9 @@
   z-index: 99999;
   background-color: rgba(0,0,0,0.5); 
 }
+.no-display{
+    display: none;
+}
 .paper{
     position: relative;
     width:35em;

@@ -50,13 +50,13 @@ export class AddRoomComponent implements OnInit {
     private fb: FormBuilder,
     private _facilityPrice: FacilityPriceService,
     private _systemModuleService: SystemModuleService,
-		private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService) {
-
+		private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService
+	) {
+			this.facility = <Facility> this._locker.getObject('selectedFacility');
+			this.employeeDetails = this._locker.getObject('loginEmployee');
 	}
 
 	ngOnInit() {
-		this.facility = <Facility> this._locker.getObject('selectedFacility');
-		this.employeeDetails = this._locker.getObject('loginEmployee');
 		this.user = <User>this._locker.getObject('auth');
 
 		this.addRoomFormGroup = this.fb.group({
@@ -99,18 +99,21 @@ export class AddRoomComponent implements OnInit {
 
 	getWaitGroupItems() {
 		this._roomGroupService.findAll().then(res => {
-      this.groupLoading = false;
-			this.groups = res.data;
+			this.groupLoading = false;
+			if (res.data.length > 0) {
+				this.groups = res.data;
+			}
 		});
 	}
 
-	async getServicePriceTag() {
-    const payload = { facilityId: this.facility._id };
-    const wardPrice = await this._facilitiesServiceCategoryService.wardRoomPrices(payload);
-    this.serviceLoading = false;
-    if (wardPrice.status === 'success' && wardPrice.data.length > 0) {
-      this.servicePriceTags = wardPrice.data;
-    }
+	getServicePriceTag() {
+		const payload = { facilityId: this.facility._id };
+    this._facilitiesServiceCategoryService.wardRoomPrices(payload).then(res => {
+			this.serviceLoading = false;
+			if (res.status === 'success' && res.data.length > 0) {
+				this.servicePriceTags = res.data;
+			}
+		});
   }
 
 	addroom(value: any, valid: boolean) {
