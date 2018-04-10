@@ -151,7 +151,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     filteredHmos: Observable<any[]>;
 
     companyEnrolleList: any;
-    loginCompanyListObject: any;
+    loginCompanyListObject: any = {};
     companyFacilities: any;
     filteredccs: Observable<any[]>;
     companyCover: any;
