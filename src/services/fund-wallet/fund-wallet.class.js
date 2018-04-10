@@ -182,10 +182,6 @@ class FundWalletService {
                 return data;
             }
         } else if (accessToken !== undefined && (data.paymentMethod !== undefined && data.paymentMethod.toLowerCase() === 'cash')) {
-            console.log('***************inside cash******************');
-
-            console.log(data);
-
             const person = await peopleService.get(data.destinationId);
             const userWallet = person.wallet;
             const cParam = {
@@ -200,7 +196,7 @@ class FundWalletService {
                 description: 'Funded wallet via cash payment',
                 transactionStatus: 'Completed',
             };
-            person.wallet = transaction(userWallet, cParam);
+            person.wallet = transaction(userWallet, cParam, 'person');
 
 
             const facility = await facilityService.get(data.sourceId);
@@ -214,13 +210,12 @@ class FundWalletService {
                 transactionMedium: 'cash',
                 destinationId: data.destinationId,
                 destinationType: 'Person',
-                description: 'Funded wallet via cash',
+                description: 'Debit wallet via patient wallet transfer',
                 transactionStatus: 'Completed',
             };
-            facility.wallet = transaction(facilityWallet, cParamF);
+            facility.wallet = transaction(facilityWallet, cParamF, 'facility');
 
-            console.log(facility.wallet);
-            console.log(person.wallet);
+
 
 
             // } else if (entity !== undefined && entity.toLowerCase() === 'facility') {
@@ -246,7 +241,13 @@ class FundWalletService {
             // const cashPayment = await cashPaymentService.create(data, params);
             // console.log('********Cash Payment from fundwallet**********');
             // console.log(cashPayment);
-            jsend.success({});
+
+            let personUpdate = await peopleService.update(person._id, person, { query: { facilityId: params.query.facilityId } });
+            //const personUpdate = await peopleService.update(person._id, person);
+            const facilityUpdate = await facilityService.patch(facility._id, {
+                wallet: facility.wallet
+            });
+            return jsend.success({ facility: facilityUpdate, person: personUpdate });
         } else {
             const data = {
                 msg: 'Sorry! But you can not perform this transaction.',
@@ -303,7 +304,7 @@ class FundWalletService {
     }
 }
 
-function transaction(wallet, param) {
+function transaction(wallet, param, type) {
     if (wallet == null) {
         wallet = { balance: 0, ledgerBalance: 0, transactions: [] };
     }
@@ -325,8 +326,20 @@ function transaction(wallet, param) {
     };
 
     wallet.transactions.push(transaction);
-    wallet.balance = parseFloat(wallet.balance) + parseFloat(param.amount);
-    wallet.ledgerBalance = parseFloat(wallet.ledgerBalance) + parseFloat(param.amount);
+    if (param.transactionMedium === 'cash') {
+        if (type === 'person') {
+            wallet.balance = parseFloat(wallet.balance) + parseFloat(param.amount);
+            wallet.ledgerBalance = parseFloat(wallet.ledgerBalance) + parseFloat(param.amount);
+        } else {
+            wallet.balance = parseFloat(wallet.balance) - parseFloat(param.amount);
+            wallet.ledgerBalance = parseFloat(wallet.ledgerBalance) - parseFloat(param.amount);
+        }
+
+    } else {
+        wallet.balance = parseFloat(wallet.balance) + parseFloat(param.amount);
+        wallet.ledgerBalance = parseFloat(wallet.ledgerBalance) + parseFloat(param.amount);
+    }
+
 
     const lastTxIndex = wallet.transactions.findIndex(x => x.refCode === transaction.refCode);
     if (lastTxIndex > -1) {
