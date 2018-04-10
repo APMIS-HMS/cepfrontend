@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { PresentationService } from '../../../../services/facility-manager/setup/index';
@@ -17,9 +17,13 @@ export class PresentationManagerComponent implements OnInit {
 	selectedItem: any = <Presentation>{};
 	btnLabel = 'Create';
 	isBtnEnable = true;
+	loading = true;
+	searchControl = new FormControl();
 
 	mainErr: Boolean = true;
 	errMsg: String = 'You have unresolved errors';
+
+	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 	constructor(
 		private _locker: CoolLocalStorage,
@@ -87,6 +91,10 @@ export class PresentationManagerComponent implements OnInit {
 		}
 	}
 
+	close_onClick() {
+		this.closeModal.emit(true);
+	  }
+
 	onClickEdit(value: any) {
 		this.presentationGroup.controls['name'].setValue(value.name);
 		this.selectedItem = value;
@@ -115,6 +123,7 @@ export class PresentationManagerComponent implements OnInit {
 		this._presentationService.find({})
 			.then(data => {
 				this.presentations = data.data;
+				this.loading = false;
 			});
 	}
 

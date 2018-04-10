@@ -33,6 +33,7 @@ export class FacilitiesServiceCategoryService {
     this._socketOrganisationServices = _socketService.getService('bill-managers');
     this._procedureSearchSocket = _socketService.getService('search-procedure');
     this._socket.timeout = 30000;
+    this._wardRoomPriceSocket.timeout = 50000;
     this._socketOrganisationServices.timeout = 900000;
     this.createListener = Observable.fromEvent(this._socket, 'created');
     this.listner = Observable.fromEvent(this._socket, 'updated');

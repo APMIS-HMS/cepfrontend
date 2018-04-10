@@ -7,10 +7,10 @@
                         <i class="fa fa-5x fa-list-alt blue-text"></i>
                     </div>
                     <div class="col-xs-9 small-text">
-                        <span class="thick-text blue-text">345</span> transactions have been made on the in this wallet.
+                        <span class="thick-text blue-text">{{totalTransaction}}</span> transactions have been made on the in this wallet.
                         <p>
-                            <span class="thick-text green-text"><i class="fa fa-level-up fa-fw"></i> 141</span> debit transactions.<br>
-                            <span class="thick-text red-text"><i class="fa fa-level-down fa-fw"></i> 204</span> credit transactions.
+                            <span class="thick-text green-text"><i class="fa fa-level-up fa-fw"></i> {{debitTransaction}}</span> debit transactions.<br>
+                            <span class="thick-text red-text"><i class="fa fa-level-down fa-fw"></i> {{creditTransaction}}</span> credit transactions.
                         </p>
                     </div>
                 </div>
@@ -107,7 +107,7 @@
                         <div class="col-xs-2 center">{{tx.description}}</div>
                         <div class="col-xs-1 center">{{tx.refCode}}</div>
                         <!-- <div class="col-xs-2 center">{{ (tx.transactionType === 'Cr') ? 'Credit' : 'Debit' }}</div> -->
-                        <div class="col-xs-1 center"><i class="green-text fa big-text fa-1x fa-level-up fa-fw"></i></div>
+                        <div class="col-xs-1 center"><i class="{{ (tx.transactionType==='Cr' ) ? 'text-green' : 'text-red' }} fa big-text fa-1x {{ (tx.transactionType==='Cr' ) ? 'fa-level-up' : 'fa-level-down' }} fa-fw"></i></div>
                         <div class="col-xs-2 center {{ (tx.transactionType==='Cr' ) ? 'text-green' : 'text-green' }} ">&#x20a6;<span>{{tx.amount}}</span></div>
                         <div class="col-xs-2 center"><span>&#x20a6;</span>{{tx.ledgerBalance}}</div>
                         <div class="col-xs-2 center"><span>&#x20a6;</span>{{tx.balance}}</div>

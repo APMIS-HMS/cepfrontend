@@ -4,6 +4,7 @@ import { InventoryEmitterService } from '../../../../services/facility-manager/i
 // tslint:disable-next-line:max-line-length
 import { InventoryService, InventoryTransferService, InventoryTransferStatusService, InventoryTransactionTypeService, StoreService, EmployeeService } from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { FormControl } from '@angular/forms';
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import {
   Facility, InventoryTransferStatus, InventoryTransactionType, InventoryTransferTransaction,
@@ -23,17 +24,18 @@ export class StockHistoryComponent implements OnInit {
   ];
 
   showDetails = false;
-
+  loading = true;
   trdropDown = false;
-
   histories: any[] = [];
   historyDetailsToggle = false;
   selectedProduct: any = <any>{};
   resendButton = 'Resend';
+  searchOpen = false;
 
   selectedFacility: Facility = <Facility>{};
   selectedInventoryTransfer: InventoryTransfer = <InventoryTransfer>{};
   checkingStore: any = <any>{};
+  searchControl = new FormControl();
   constructor(
     private _inventoryEventEmitter: InventoryEmitterService,
     private inventoryService: InventoryService, private inventoryTransferService: InventoryTransferService,
@@ -86,6 +88,10 @@ export class StockHistoryComponent implements OnInit {
   onShowBatch(transfer) {
     this.selectedInventoryTransfer = transfer;
     this.selectedInventoryTransfer.isOpen = !this.selectedInventoryTransfer.isOpen;
+  }
+
+  openSearch() {
+    this.searchOpen = !this.searchOpen;
   }
 
 }

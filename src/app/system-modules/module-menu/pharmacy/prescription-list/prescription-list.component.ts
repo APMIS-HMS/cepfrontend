@@ -80,9 +80,6 @@ export class PrescriptionListComponent implements OnInit {
 		});
 	}
 
-	onChangeCategory(value: any) {
-	}
-
 	popenSearch() {
 		this.psearchOpen = true;
 	}

@@ -1,7 +1,7 @@
 <div class="np-mainwrap">
   <div class="np-lhs">
     <div class="topItemsWrap">
-      <div class="frm-item-wrap" style="width: 50%;">
+      <div class="frm-item-wrap" style="width: 20%;">
         <mat-form-field>
           <mat-select class="example-full-width" (change)="flyout_toggle($event)" placeholder="Request From" [formControl]="productsControl">
             <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
@@ -9,7 +9,6 @@
         </mat-form-field>
       </div>
 
-      <!-- <div (click)="flyout_toggle($event)" class="txt-link">Add Product</div> -->
     </div>
     <form [formGroup]="frm_purchaseOrder" novalidate>
 
@@ -21,19 +20,30 @@
             <div class="frmArray" *ngFor="let schedule of productTableForm.controls['productTableArray'].controls; let i = index;">
               <div formGroupName="{{i}}">
                 <div class="prod-wrap">
-
-                  <div class="inputWrap-productDetail">
-                    <div (click)="removeProduct(i, schedule.value)" class="modal-close-ico" aria-hidden="true">X</div>
-
-                    <div style="width: 50%;" class="frm-item-wrap">
-                      <mat-input-container style="width:100%;" class="example-full-width">
-                        <input matInput mat-error placeholder="Product" formControlName="product">
+                  <div class="row">
+                    <div class="col-sm-8">
+                        <h2>{{schedule.value.product}}</h2>
+                    </div>
+                    <div class="col-sm-4">
+                      <h2>
+                          {{schedule.value.qty}} {{getProductConfig(schedule)[0].value.name}}<span *ngIf="schedule.value.qty > 1">s</span> 
+                          &nbsp;&nbsp; 
+                          <i (click)="toggleProductConfig(i)" 
+                          style="color:#5088d1; cursor: pointer;" 
+                          class="fa fa-fw fa-pencil"></i>
+                      </h2>
+                    </div>
+                  </div>
+                  <div id="quan{{i}}" class="inputWrap-productDetail no-display">
+                  <div (click)="removeProduct(i, schedule.value)" class="modal-close-ico fa fa-close fa-fw" aria-hidden="true"></div>
+                    <div class="row" style="display:none">
+                      <mat-input-container class="col-xs-12">
+                        <input type="number" min="0" matInput mat-error placeholder="Quantity" formControlName="qty" readonly>
                       </mat-input-container>
                     </div>
-
-                    <div style="width: 39%;" class="frm-item-wrap">
-                      <mat-input-container style="width:100%;" class="example-full-width">
-                        <input type="number" min="0" matInput mat-error placeholder="Qantity" formControlName="qty">
+                    <div class="row" formArrayName="config">
+                      <mat-input-container class="col-sm-{{12/getProductConfig(schedule).length}}" [formGroupName]="j" *ngFor="let item of getProductConfig(schedule); let j = index">
+                        <input type="number" formControlName="size" min="1" (change)="onPackageSize(i)" matInput placeholder="{{item.value.name}}">
                       </mat-input-container>
                     </div>
                   </div>
@@ -45,7 +55,7 @@
 
       </div>
 
-      <div class="sec-a" *ngIf="productTableForm.controls['productTableArray'].value.length > 0">
+      <div *ngIf="productTableForm.controls['productTableArray'].value.length > 0">
         <div class="wrap2">
           <div class="frm-item-wrap">
             <mat-input-container class="example-full-width">

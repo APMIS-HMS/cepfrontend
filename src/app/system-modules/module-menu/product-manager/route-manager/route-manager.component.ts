@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { RouteService } from '../../../../services/facility-manager/setup/index';
@@ -16,9 +16,14 @@ export class RouteManagerComponent implements OnInit {
 	selectedItem: any = <Route>{};
 	btnLabel = 'Create';
 	isBtnEnable = true;
+	loading = true;
+	searchControl = new FormControl();
+
 
 	mainErr: Boolean = true;
 	errMsg: String = 'You have unresolved errors';
+
+	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 	constructor(
 		private _locker: CoolLocalStorage,
@@ -62,9 +67,9 @@ export class RouteManagerComponent implements OnInit {
 				// Creating new record
 				value.facilityId = this.selectedFacility._id;
 				this._routeService.create(value)
-					.then(data => {
+					.then(payload => {
 						this.routeGroup.reset();
-						this.routes.push(data);
+						this.routes.push(payload);
 					})
 					.catch(err => {
 					});
@@ -74,7 +79,7 @@ export class RouteManagerComponent implements OnInit {
 				value.name = this.routeGroup.get('name').value;
 
 				this._routeService.update(value)
-					.then(data => {
+					.then(payload => {
 						this.routeGroup.reset();
 						this.selectedItem = {};
 						this.btnLabel = 'Create';
@@ -93,6 +98,10 @@ export class RouteManagerComponent implements OnInit {
 		this.selectedItem = value;
 		this.btnLabel = 'Update';
 	}
+
+	close_onClick() {
+		this.closeModal.emit(true);
+	  }
 
 	onClickCancel() {
 		this.selectedItem = {};
@@ -116,6 +125,7 @@ export class RouteManagerComponent implements OnInit {
 		this._routeService.find({ query: { facilityId: this.selectedFacility._id } })
 			.then(data => {
 				this.routes = data.data;
+				this.loading = false;
 			});
 	}
 

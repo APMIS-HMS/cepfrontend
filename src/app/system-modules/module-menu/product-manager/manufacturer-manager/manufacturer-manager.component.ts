@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ManufacturerService } from '../../../../services/facility-manager/setup/index';
@@ -17,9 +17,13 @@ export class ManufacturerManagerComponent implements OnInit {
 	selectedItem: any = <Manufacturer>{};
 	btnLabel = 'Create';
 	isBtnEnable = true;
+	loading = true;
+	searchControl = new FormControl();
 
 	mainErr: Boolean = true;
 	errMsg: String = 'You have unresolved errors';
+
+	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
 	constructor(
 		private _locker: CoolLocalStorage,
@@ -101,6 +105,10 @@ export class ManufacturerManagerComponent implements OnInit {
 		this.btnLabel = 'Create';
 	}
 
+	close_onClick() {
+		this.closeModal.emit(true);
+	  }
+
 	onClickIsActive(value) {
 		// Updating existing record
 		value.isActive = !value.isActive;
@@ -117,6 +125,7 @@ export class ManufacturerManagerComponent implements OnInit {
 		this._manufacturerService.find({})
 			.then(data => {
 				this.manufacturers = data.data;
+				this.loading = false;
 			});
 	}
 }

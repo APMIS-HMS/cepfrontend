@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, EventEmitter, Output } from '@angular/core';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { GenericService } from '../../../../services/facility-manager/setup/index';
@@ -17,9 +17,14 @@ export class GenericManagerComponent implements OnInit {
 	selectedItem: any = <Generic>{};
 	btnLabel = 'Create';
 	isBtnEnable = true;
+	loading = true;
+	searchControl = new FormControl();
 
 	mainErr: Boolean = true;
 	errMsg: String = 'You have unresolved errors';
+
+	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+
 
 	constructor(
 		private _locker: CoolLocalStorage,
@@ -87,6 +92,10 @@ export class GenericManagerComponent implements OnInit {
 		}
 	}
 
+	close_onClick() {
+		this.closeModal.emit(true);
+	  }
+
 	onClickEdit(value: any) {
 		this.genericGroup.controls['name'].setValue(value.name);
 		this.selectedItem = value;
@@ -115,6 +124,7 @@ export class GenericManagerComponent implements OnInit {
 		this._genericservice.find({})
 			.then(data => {
 				this.generics = data.data;
+				this.loading = false;
 			});
 	}
 

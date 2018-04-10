@@ -2,7 +2,7 @@
     <li [class.pg-menuActive]="" routerLink="/dashboard/store">Home</li>
     <li [class.pg-menuActive]="productNavMenu" routerLink="/dashboard/product-manager/products" (click)="changeRoute('products')">Product</li>
     <li [class.pg-menuActive]="supplierNavMenu" routerLink="/dashboard/product-manager/suppliers" (click)="changeRoute('suppliers')">Supplier</li>
-    <li [class.pg-menuActive]="categoryNavMenu" (click)="productCatSlide()">Product Type</li>
+    <li [class.pg-menuActive]="categoryNavMenu" (click)="productCatPopShow()">Product Category</li>
     <li [class.pg-menuActive]="genericNavMenu" (click)="genericSlide()">Generic</li>
     <li [class.pg-menuActive]="manufacturerNavMenu" (click)="manufacturerSlide()">Manufacturer</li>
     <li [class.pg-menuActive]="presentationNavMenu" (click)="presentationSlide()">Presentation</li>
@@ -20,26 +20,26 @@
     </div>
 </div>
 
-<div *ngIf="productCat">
-    <app-category-manager></app-category-manager>
+<div *ngIf="isProductCat" class="modal-overlay center-center">
+    <app-category-manager (closeModal)="close_onClick($event);"></app-category-manager>
 </div>
 
-<div *ngIf="generic">
-    <app-generic-manager></app-generic-manager>
+<div *ngIf="isGeneric" class="modal-overlay center-center">
+    <app-generic-manager (closeModal)="close_onClick($event);"></app-generic-manager>
 </div>
 
-<div *ngIf="productRoute">
-    <app-route-manager></app-route-manager>
+<div *ngIf="isProductRoute" class="modal-overlay center-center">
+    <app-route-manager (closeModal)="close_onClick($event);"></app-route-manager>
 </div>
 
-<div *ngIf="manufacturer">
-    <app-manufacturer-manager></app-manufacturer-manager>
+<div *ngIf="isManufacturer" class="modal-overlay center-center">
+    <app-manufacturer-manager (closeModal)="close_onClick($event);"></app-manufacturer-manager>
 </div>
 
-<div *ngIf="presentation">
-    <app-presentation-manager></app-presentation-manager>
+<div *ngIf="isPresentation" class="modal-overlay center-center">
+    <app-presentation-manager (closeModal)="close_onClick($event);"></app-presentation-manager>
 </div>
 
-<div *ngIf="strength">
-    <app-strength-manager></app-strength-manager>
+<div *ngIf="isStrength" class="modal-overlay center-center">
+    <app-strength-manager (closeModal)="close_onClick($event);"></app-strength-manager>
 </div>

@@ -10,7 +10,7 @@
         <legend *ngIf="selectedRoom !== undefined" class="modal_title">Edit Room</legend>
         <!-- <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div> -->
         <div class="survery">
-            <div class="row" *ngIf="!serviceLoading && !groupLoading">
+            <div class="row" *ngIf="!serviceLoading || !groupLoading">
                 <div class="col-xs-12">
                     <form [formGroup]="addRoomFormGroup" novalidate>
                         <div class="padding-up">
@@ -29,7 +29,12 @@
                             <div class="frm-item-wrap" style="margin-top: 30px;">
                                 <mat-form-field>
                                     <mat-select placeholder="Select Service" formControlName="service" [compareWith]="compareService">
-                                        <mat-option *ngFor="let service of servicePriceTags" [value]="service">{{service.name}} &#x20A6;{{service.price}}</mat-option>
+                                        <mat-option *ngFor="let service of servicePriceTags" [value]="service">
+                                            {{service?.name}}
+                                            <!-- <div *ngFor="let price of service.price">
+                                                <span>{{price?.name}} &#x20A6;{{price?.price}}, </span>
+                                            </div> -->
+                                        </mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>

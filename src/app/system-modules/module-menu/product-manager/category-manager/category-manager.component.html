@@ -1,74 +1,59 @@
-<div class="survery">
-    <div class="">
-        <!-- purchase order details-->
-        <div class="inPatient-activityTimeline shadow-RB animated slideInRight" #closeclick>
-            <div (click)="closeclick.hidden = !closeclick.hidden" class="hide-actionWrap">
-                <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
-            </div>
-
-            <div class="purchasedetails">
-                <div class="container container-width">
-                    <div class="row">
-                        <div class="col-sm-12 col-md-12 col-xs-12">
-                            <h4>Product Category Manager</h4>
-                            <div class="border-box">
-                                <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-                                <form [formGroup]="categoryGroup">
-                                    <div class="form-group">
-                                        <!--<label for="name">New Category</label>-->
-                                        <mat-input-container class="example-full-width">
-                                            <input matInput mat-error placeholder="New Category" formControlName="name">
-                                        </mat-input-container>
-                                        <button (click)="onClickAdd(categoryGroup.value, categoryGroup.valid)" class="btn btn-default btn-create" type="submit">{{ btnLabel }}</button>
-                                        <button (click)="onClickCancel()" class="btn btn-default" type="submit">Clear</button>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div><br><br>
-                    <div class="row">
-                        <div class="col-sm-12 col-mat-12 col-xs-12">
-                            <input type="text" class="form-control" [formControl]="searchControl" placeholder="search categories">
-                            <br>
-                        </div>
+<div class="animated pulse">
+    <div class="modal-header-wrap">
+        <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+        <legend class="modal_title">Product Category Manager</legend>
+        <div class="modal_mini_title">All Purpose Medical Information System</div>
+    </div>
+    <div class="modal-baseWrap">
+        <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+        <form [formGroup]="categoryGroup">
+            <div class="row">
+                <div class="col-xs-12 enline">
+                    <div class="col-xs-8 form-group">
+                        <mat-input-container class="example-full-width">
+                            <input matInput mat-error placeholder="New Category" formControlName="name">
+                        </mat-input-container>
                     </div>
-                    <div class="row border-row">
-                        <div class="row text-head">
-                            <div class="col-xs-12">
-                                <div class="col-xs-5">
-                                    <h3>CATEGORY</h3>
-                                </div>
-                                <div class="col-xs-3">
-                                    <h3>STATUS</h3>
-                                </div>
-                                <div class="col-xs-4">
-                                    <h3>ACTIONS</h3>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row" *ngIf="categories.length === 0">
-                            <div class="col-xs-12 text-center">No data available in table</div>
-                        </div>
-                        <div class="row" *ngFor="let category of categories">
-                            <div class="col-xs-12">
-                                <div class="col-xs-5">
-                                    <p>{{ category.name }}</p>
-                                </div>
-                                <div class="col-xs-3">
-                                    <span class="{{ category.isActive ? 'bg-green' : 'bg-red'}} is-active" (click)="onClickIsActive(category)">
-                                {{ category.isActive ? 'Active' : 'Inactive'}}
-                            </span>
-                                </div>
-                                <div class="col-xs-4">
-                                    <a><span (click)="onClickEdit(category)"><i class="fa fa-pencil"></i></span></a>
-                                    <a><span (click)="onClickIsActive(category)"><i class="fa fa-trash"></i></span></a>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="col-xs-2" style="margin-top:15px;">
+                        <button (click)="onClickAdd(categoryGroup.value, categoryGroup.valid)" class="btn btn-default btn-create" type="submit" aria-disabled="true">
+                            {{ btnLabel }}
+                        </button>
+                    </div>
+                    <div class="col-xs-2" style="margin-top:15px;">
+                        <button (click)="onClickCancel()" class="btn btn-default" type="submit">Clear</button>
                     </div>
                 </div>
             </div>
+        </form>
+        <br><br>
+        <div class="row">
+            <div class="col-xs-12">
+                <input type="text" class="form-control" [formControl]="searchControl" placeholder="search here......" style=" border:none; border-bottom: solid 2px #519dde;
+                width:100%; padding: 5px 0px;">
+            </div>
+            <div style="padding-left: 5px;">
+                <span style="padding: 10px;
+                    border-radius: 25px;
+                    background: #519dde;
+                    color: #fff;
+                    margin: 3px;
+                    font-size: 1.3rem;
+                    box-shadow: 0px 3px 10px #dddddd;
+                    display: inline-block;" [style.background]="category.isActive ? '#519dde' : '#a35d5d'" *ngFor="let category of categories; let i=index" class="">
+                    <i *ngIf="category.isActive" (click)="onClickIsActive(category)"  
+                    class="fa fa-check fa-fw tooltip" data-tooltip="Active"></i>  
+                    <i *ngIf="!category.isActive" (click)="onClickIsActive(category)"  
+                    class="fa fa-fw fa-ban tooltip" data-tooltip="Inactive"></i>  
+                    &nbsp;&nbsp; {{category.name}} &nbsp;&nbsp; 
+                    <i (click)="onClickEdit(category)" class="fa fa-pencil fa-fw tooltip" data-tooltip="Edit"></i>
+                    </span>
+                <div class="col-xs-12" style="text-align:center; padding: 10px" *ngIf="categories.length == 0 && !loading">
+                    No category available
+                </div>
+                <div class="col-xs-12" style="text-align:center; padding: 10px; margin-top:5px;" *ngIf="categories.length == 0 && loading">
+                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
+                </div>
+            </div>
         </div>
-        <!-- end purchase order details-->
     </div>
 </div>

@@ -10,33 +10,17 @@
     text-align: center;
 }
 
+.mat-lg-btn {
+    background: #0288D1 !important;
+}
+
 .modal_title {
     text-align: center;
     border-bottom: 0px;
-    color: #0d47a1;
-    margin-bottom: 0;
-}
-
-input,
-select {
-    //   border-bottom: solid 1px #626262;
-    //   width: 100%;
-    //   background: transparent;
-}
-
-textarea {
-    // border: 1px solid #626262;
-    // width: 100%;
-    // background: transparent;
-    // border-radius: 10px;
-    // margin-top: 10px;
-    // height: 100px;
-}
-
-input:focus,
-select:focus,
-textarea:focus {
-    // border: #0099ed;
+    color: #fff;
+    margin-bottom: 10px;
+    padding-bottom: 5px;
+    padding-top: 5px;
 }
 
 .mainfrmwrap {
@@ -55,7 +39,7 @@ textarea:focus {
 
 .checkbox-wrap {
     display: flex;
-    width: 100%;
+    width: 95%;
 }
 
 .check-item {
@@ -84,6 +68,7 @@ textarea:focus {
     border: 1px solid #ccc;
     padding: 15px;
     border-radius: 10px;
+    padding-right: 0px;
 }
 
 .chk-group-wrap {
@@ -107,3 +92,25 @@ textarea:focus {
 .container {
     // width: 50%;
 }
+
+.modal-header-wrap {
+    width: 800px;
+    min-width: 440px;
+}
+
+.cta-1 {
+    color: #fff;
+    margin: 10px auto;
+    font-size: 1.6rem;
+    display: flex;
+    justify-content: center;
+    width: 180px;
+    height: 43px;
+    border-radius: 30px;
+}
+
+//.fa-plus:before 
+//{
+// content: "\f067";
+//padding-right: 10px;
+//}

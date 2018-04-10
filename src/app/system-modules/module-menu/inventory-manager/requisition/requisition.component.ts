@@ -119,7 +119,7 @@ export class RequisitionComponent implements OnInit {
 
   getAllProducts() {
     this.systemModuleService.on();
-    this.productService.find({ query: { facilityId: this.selectedFacility._id, $limit: false } }).then(payload => {
+    this.productService.find({ query: { loginFacilityId: this.selectedFacility._id, $limit: false } }).then(payload => {
       this.products = payload.data;
       this.getProductTables(this.products);
       this.systemModuleService.off();
@@ -178,6 +178,7 @@ export class RequisitionComponent implements OnInit {
         this.formBuilder.group({
           product: ['', [<any>Validators.required]],
           qty: ['', [<any>Validators.required]],
+          config: new FormArray([]),
           readOnly: [false],
           id: ['']
         })
@@ -202,6 +203,7 @@ export class RequisitionComponent implements OnInit {
           this.formBuilder.group({
             product: [value.name, [<any>Validators.required]],
             qty: [0, [<any>Validators.required]],
+            config: this.initProductConfig(value.product.productConfigObject),
             readOnly: [false],
             productObject: [value.product],
             id: [value._id]
@@ -227,6 +229,31 @@ export class RequisitionComponent implements OnInit {
         (<FormArray>this.productTableForm.controls['productTableArray']).controls.splice(indexToRemove, 1);
       }
     }
+  }
+
+  initProductConfig(config) {
+    let frmArray = new FormArray([])
+    config.forEach(item => {
+      frmArray.push(new FormGroup({
+        size: new FormControl(0),
+        name: new FormControl(item.name),
+        isBase: new FormControl(item.isBase),
+        packVolume: new FormControl(item.size)
+      }));
+    })
+    return frmArray;
+  }
+
+  getProductConfig(form) {
+    return form.controls.config.controls;
+  }
+
+  onPackageSize(i) {
+    (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.qty = 0;
+    let itm = <FormArray>this.productTableForm['controls'].productTableArray['controls'][i].value.config.forEach(element => {
+      (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.qty += element.size * element.packVolume;
+    });
+    (<FormArray>this.productTableForm.controls['productTableArray']).setValue(JSON.parse(JSON.stringify((<FormArray>this.productTableForm.controls['productTableArray']).value)));
   }
 
   removeProduct(index, value) {
@@ -329,5 +356,9 @@ export class RequisitionComponent implements OnInit {
       this.products = [];
       this.getProductTables(this.products);
     }
+  }
+
+  toggleProductConfig(index){
+    document.querySelector("#quan"+index).classList.toggle('no-display');
   }
 }

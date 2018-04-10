@@ -253,21 +253,25 @@ export class CompanyBeneficiaryListComponent implements OnInit {
     this.fileInput.nativeElement.click()
   }
   getBeneficiaryList(id) {
-    this.companyCoverService.find({ query: { 'facilityId._id': this.selectedFacility._id } }).then(payload => {
+    this.companyCoverService.find({ query: { 'facilityId._id': this.selectedFacility.facilityId } }).then(payload => {
       if (payload.data.length > 0) {
-        let facCompanyCover = payload.data[0];
-        const index = facCompanyCover.companyCovers.findIndex(x => x.hmo._id === id);
+        const faceCompany = payload.data[0];
+        const index = faceCompany.companyCovers.findIndex(x => x.company === id);
         if (index > -1) {
-          if (facCompanyCover.companyCovers[index].enrolleeList.length > 0) {
-            this.selectedCompanyCover = facCompanyCover.companyCovers[index].hmo;
-            this.beneficiaries = facCompanyCover.companyCovers[index].enrolleeList[0].enrollees;
+          if (faceCompany.companyCovers[index].enrolleeList.length > 0) {
+            const bene = [];
+            for (let s = 0; s < faceCompany.companyCovers[index].enrolleeList.length; s++) {
+              this.selectedCompanyCover = faceCompany.companyCovers[index].company;
+              bene.push(...faceCompany.companyCovers[index].enrolleeList[s].enrollees);
+            }
+            this.beneficiaries = bene;
             const startIndex = 0 * 10;
             this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
             this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
           }
         }
       }
-    })
+    }).catch(err => { console.log(err) });
   }
   getRole(beneficiary) {
     let filNo = beneficiary.filNo;

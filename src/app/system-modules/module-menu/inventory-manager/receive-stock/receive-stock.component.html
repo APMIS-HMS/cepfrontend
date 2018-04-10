@@ -23,7 +23,7 @@
                             <option value="corporate">Corporate</option>
                             <option value="internal">Internal</option>
                         </select> -->
-                    </div>        
+                    </div>
                     <div class="col-md-3">
                         <!-- <input class="table-header-input" type="date" placeholder="Choose a date"> -->
                     </div>
@@ -33,32 +33,32 @@
                 </div>
             </div>
             <div class="card-content">
-                <div class="card-list-item" *ngIf="receivedTransfers.length === 0">
+                <div class="card-list-item" *ngIf="receivedTransfers?.length === 0">
                     <div class="col-xs-12" style="text-align:center">
                         No data available in table
                     </div>
                 </div>
-            
+
                 <div class="card-list-item" *ngFor="let received of receivedTransfers">
                     <div class="row">
-                
+
+                        <div class="table-list col-xs-2">
+                            {{received.storeObject?.name}}
+                        </div>
+                        <div class="table-list col-xs-2">
+                            {{received.totalCostPrice|number:'1.2-2'}}
+                        </div>
+                        <div class="table-list col-xs-2">
+                            {{received.createdAt|date:'short'}}
+                        </div>
                         <div class="table-list col-xs-3">
-                                {{received.storeObject?.name}}
+                            {{received.transferByObject?.firstName}} {{received.transferByObject?.lastName}}
                         </div>
                         <div class="table-list col-xs-2">
-                                {{received.totalCostPrice|number:'1.2-2'}}
+                            {{getStatus(received)}}
                         </div>
-                        <div class="table-list col-xs-2">
-                                {{received.createdAt|date:'short'}}
-                        </div>
-                        <div class="table-list col-xs-2">
-                                {{received.transferByObject?.firstName}} {{received.transferByObject?.lastName}}
-                        </div>
-                        <div class="table-list col-xs-2">
-                                {{getStatus(received)}}
-                        </div>
-                        <div class="table-list col-xs-1 hover" >
-                                <span (click)="slideDetailsShow(received)"><i class="fa fa-eye"></i></span>
+                        <div class="table-list col-xs-1 hover">
+                            <span (click)="slideDetailsShow(received)"><i class="fa fa-eye"></i></span>
                         </div>
                     </div>
                 </div>

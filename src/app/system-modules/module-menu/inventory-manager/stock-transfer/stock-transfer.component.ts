@@ -24,6 +24,10 @@ export class StockTransferComponent implements OnInit {
   flyout = false;
   preview = false;
   overlay = false;
+  productConfigOpen = false;
+  samples = [];
+  searchOpen = false;
+  toggleTransferOpen = false;
 
   selectedFacility: Facility = <Facility>{};
   checkingStore: any = <any>{};
@@ -133,13 +137,13 @@ export class StockTransferComponent implements OnInit {
     });
   }
   getMyInventory() {
-    this.inventoryService.findList({
+    this.inventoryService.find({
       query: {
         facilityId: this.selectedFacility._id,
-        name: '',
         storeId: this.checkingStore.storeId
       }
-    }).subscribe(payload => {
+    }).then(payload => {
+      console.log(payload);
       this.products = [];
       this.getProductTables(this.products);
       payload.data.forEach((item, i) => {
@@ -204,6 +208,7 @@ export class StockTransferComponent implements OnInit {
           costPrice: [0.00, [<any>Validators.required]],
           totalCostPrice: [0.00, [<any>Validators.required]],
           qty: [0, [<any>Validators.required]],
+          config: new FormArray([]),
           expiryDate: ['', [<any>Validators.required]],
           readOnly: [false],
           id: ['']
@@ -212,6 +217,34 @@ export class StockTransferComponent implements OnInit {
     });
     this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
   }
+
+  initProductConfig(config) {
+    let frmArray = new FormArray([])
+    config.forEach(item => {
+      frmArray.push(new FormGroup({
+        size: new FormControl(0),
+        name: new FormControl(item.name),
+        isBase: new FormControl(item.isBase),
+        packVolume: new FormControl(item.size)
+      }));
+    })
+    return frmArray;
+  }
+
+  getProductConfig(form) {
+    return form.controls.config.controls;
+  }
+
+  onPackageSize(i) {
+    (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.totalCostPrice = 0;
+    (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.qty = 0;
+    <FormArray>this.productTableForm['controls'].productTableArray['controls'][i].value.config.forEach(element => {
+      (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.qty += element.size * element.packVolume;
+    });
+    (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.totalCostPrice =  (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.costPrice * (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.qty;
+    (<FormArray>this.productTableForm.controls['productTableArray']).setValue(JSON.parse(JSON.stringify((<FormArray>this.productTableForm.controls['productTableArray']).value)));
+  }
+
   onStoreChanged() {
     this.unCheckedProducts();
     this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
@@ -223,6 +256,7 @@ export class StockTransferComponent implements OnInit {
     if (event.checked === true) {
       this.inventoryService.find({ query: { productId: value._id, facilityId: this.selectedFacility._id } }).subscribe(payload => {
         if (payload.data.length > 0) {
+          console.log(value);
           (<FormArray>this.productTableForm.controls['productTableArray'])
             .push(
               this.formBuilder.group({
@@ -232,6 +266,7 @@ export class StockTransferComponent implements OnInit {
                 costPrice: [0.00, [<any>Validators.required]],
                 totalCostPrice: [0.00, [<any>Validators.required]],
                 qty: [0, [<any>Validators.required]],
+                config: this.initProductConfig(value.product.productConfigObject),
                 readOnly: [false],
                 productObject: [value.product],
                 id: [value._id],
@@ -338,6 +373,7 @@ export class StockTransferComponent implements OnInit {
             costPrice: [0.00, [<any>Validators.required]],
             totalCostPrice: [0.00, [<any>Validators.required]],
             qty: [0, [<any>Validators.required]],
+            config: this.initProductConfig(product.product.productConfigObject),
             readOnly: [false],
             productObject: [product.productObject],
             id: [product.id],
@@ -447,6 +483,14 @@ export class StockTransferComponent implements OnInit {
     }
   }
 
+  toggleTransfer(){
+    this.toggleTransferOpen = !this.toggleTransferOpen;
+  }
+
+  toggleProductConfig(index){
+    document.querySelector("#quan"+index).classList.toggle('no-display');
+  }
+
   private _notification(type: String, text: String): void {
     this.facilityService.announceNotification({
       users: [this.user._id],
@@ -454,4 +498,5 @@ export class StockTransferComponent implements OnInit {
       text: text
     });
   }
+  openSearch(){}
 }
