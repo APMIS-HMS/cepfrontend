@@ -250,16 +250,16 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.getLoginCompanyList();
     this.getCashPlans();
 
-    this.systemService.currentMessage.subscribe(message => {
+    this.systemService.currentMessage.subscribe((message: any) => {
       if (message) {
         /* this.pageSize = 1;
-        this.index = 0;
-        this.showLoadMore = true;
-        this.total = 0;
-        this.patients = [];
-        this.getPatients(); */
+          this.index = 0;
+          this.showLoadMore = true;
+          this.total = 0;
+          this.patients = [];
+          this.getPatients(); */
+        this.getPatients(this.limit);
         this.slideEdit(message);
-
       }
     });
 
@@ -895,6 +895,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
   close_onClick() {
     this.editPatient = false;
+    this.systemService.changeMessage(null);
     this.payPlan = false;
     this.newUpload = false;
     this.selectedIndex = 0;
