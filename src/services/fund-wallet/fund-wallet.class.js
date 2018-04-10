@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-'use strict';
+' use strict ';
 const walletModel = require('../../custom-models/wallet-model');
 const walletTransModel = require('../../custom-models/wallet-transaction-model');
 const Client = require('node-rest-client').Client;
@@ -31,9 +31,11 @@ class FundWalletService {
         const employeeService = this.app.service('employees');
         const peopleService = this.app.service('people');
         const paymentService = this.app.service('payments');
+        const cashPaymentService = this.app.service('cash-payment');
 
         const accessToken = params.accessToken; /* Not required */
-        if (accessToken !== undefined) {
+
+        if (accessToken !== undefined && data.paymentMethod === undefined) {
             const ref = data.ref; /* Not required. This is for e-payment */
             const payment = data.payment;
             const paymentType = payment.type; /* Required. This is either "Cash*, "Cheque", "e-Payment" */
@@ -54,7 +56,6 @@ class FundWalletService {
                     paymentType: paymentType,
                     paymentRoute: paymentRoute,
                 };
-
                 if (paymentRoute !== undefined && paymentRoute.toLowerCase() === 'flutterwave') {
                     //*****Save Payment in database */
                     const paymentRes = await paymentService.create(paymentPayload);
@@ -167,13 +168,11 @@ class FundWalletService {
                                     const facilityUpdate = await facilityService.update(facility._id, facility);
                                     return jsend.success(facilityUpdate);
                                 }
-                            
+
                             }
 
-                        } else {}
+                        }
                     }
-                } else {
-                    return false;
                 }
             } else {
                 const data = {
@@ -182,6 +181,73 @@ class FundWalletService {
                 };
                 return data;
             }
+        } else if (accessToken !== undefined && (data.paymentMethod !== undefined && data.paymentMethod.toLowerCase() === 'cash')) {
+            const person = await peopleService.get(data.destinationId);
+            const userWallet = person.wallet;
+            const cParam = {
+                amount: data.amount,
+                paidBy: data.paidBy,
+                sourceId: data.sourceId,
+                sourceType: 'Facility',
+                transactionType: 'Cr',
+                transactionMedium: 'cash',
+                destinationId: data.destinationId,
+                destinationType: 'Person',
+                description: 'Funded wallet via cash payment',
+                transactionStatus: 'Completed',
+            };
+            person.wallet = transaction(userWallet, cParam, 'person');
+
+
+            const facility = await facilityService.get(data.sourceId);
+            const facilityWallet = facility.wallet;
+            const cParamF = {
+                amount: data.amount,
+                paidBy: data.paidBy,
+                sourceId: data.sourceId,
+                sourceType: 'Facility',
+                transactionType: 'Dr',
+                transactionMedium: 'cash',
+                destinationId: data.destinationId,
+                destinationType: 'Person',
+                description: 'Debit wallet via patient wallet transfer',
+                transactionStatus: 'Completed',
+            };
+            facility.wallet = transaction(facilityWallet, cParamF, 'facility');
+
+
+
+
+            // } else if (entity !== undefined && entity.toLowerCase() === 'facility') {
+            //     const facility = await facilityService.get(facilityId);
+            //     const userWallet = facility.wallet;
+            //     const cParam = {
+            //         amount: amount,
+            //         paidBy: loggedPersonId,
+            //         sourceId: facilityId,
+            //         sourceType: entity,
+            //         transactionType: 'Cr',
+            //         transactionMedium: paymentType,
+            //         destinationId: facilityId,
+            //         destinationType: entity,
+            //         description: 'Funded wallet via e-payment',
+            //         transactionStatus: 'Completed',
+            //     };
+            //     facility.wallet = transaction(userWallet, cParam);
+
+            //     const facilityUpdate = await facilityService.update(facility._id, facility);
+            //     return jsend.success(facilityUpdate);
+            // }
+            // const cashPayment = await cashPaymentService.create(data, params);
+            // console.log('********Cash Payment from fundwallet**********');
+            // console.log(cashPayment);
+
+            let personUpdate = await peopleService.update(person._id, person, { query: { facilityId: params.query.facilityId } });
+            //const personUpdate = await peopleService.update(person._id, person);
+            const facilityUpdate = await facilityService.patch(facility._id, {
+                wallet: facility.wallet
+            });
+            return jsend.success({ facility: facilityUpdate, person: personUpdate });
         } else {
             const data = {
                 msg: 'Sorry! But you can not perform this transaction.',
@@ -238,7 +304,10 @@ class FundWalletService {
     }
 }
 
-function transaction(wallet, param) {
+function transaction(wallet, param, type) {
+    if (wallet == null) {
+        wallet = { balance: 0, ledgerBalance: 0, transactions: [] };
+    }
     const prevAmount = wallet.balance;
     const ledgerBalance = wallet.ledgerBalance;
     // Update person wallet.
@@ -257,8 +326,20 @@ function transaction(wallet, param) {
     };
 
     wallet.transactions.push(transaction);
-    wallet.balance = parseFloat(wallet.balance) + parseFloat(param.amount);
-    wallet.ledgerBalance = parseFloat(wallet.ledgerBalance) + parseFloat(param.amount);
+    if (param.transactionMedium === 'cash') {
+        if (type === 'person') {
+            wallet.balance = parseFloat(wallet.balance) + parseFloat(param.amount);
+            wallet.ledgerBalance = parseFloat(wallet.ledgerBalance) + parseFloat(param.amount);
+        } else {
+            wallet.balance = parseFloat(wallet.balance) - parseFloat(param.amount);
+            wallet.ledgerBalance = parseFloat(wallet.ledgerBalance) - parseFloat(param.amount);
+        }
+
+    } else {
+        wallet.balance = parseFloat(wallet.balance) + parseFloat(param.amount);
+        wallet.ledgerBalance = parseFloat(wallet.ledgerBalance) + parseFloat(param.amount);
+    }
+
 
     const lastTxIndex = wallet.transactions.findIndex(x => x.refCode === transaction.refCode);
     if (lastTxIndex > -1) {
