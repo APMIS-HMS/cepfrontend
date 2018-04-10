@@ -23,6 +23,7 @@ export class PersonService {
   public _fundWalletRest;
   public createListener;
   public updateListener;
+  public patchListener;
   private _rest;
   // public http;
 
@@ -37,13 +38,13 @@ export class PersonService {
     this._rest = _restService.getService("people");
     this._socket = _socketService.getService("people");
     this._personSocket = _socketService.getService("save-person");
-    this._fundWalletSocket = _socketService.getService("fund-wallet");
-    this._fundWalletRest = _restService.getService("fund-wallet");
+    this._fundWalletSocket = _socketService.getService('fund-wallet');
+    this._fundWalletRest = _restService.getService('fund-wallet');
     this._socket.timeout = 30000;
     this._fundWalletSocket.timeout = 50000;
-    this._personSocket.timeout = 50000;
-    this.createListener = Observable.fromEvent(this._socket, "created");
-    this.updateListener = Observable.fromEvent(this._socket, "updated");
+    this.createListener = Observable.fromEvent(this._socket, 'created');
+    this.updateListener = Observable.fromEvent(this._socket, 'updated');
+    this.patchListener = Observable.fromEvent(this._socket, 'patched');
   }
 
   announcePerson(person: Person) {
@@ -95,7 +96,7 @@ export class PersonService {
 
   walletTransaction(walletTransaction) {
     const host = this._restService.getHost();
-    const path = host + "/wallet-transaction";
+    const path = host + '/wallet-transaction';
     return request.get(path).query({
       destinationId: walletTransaction.destinationId,
       sourceId: walletTransaction.sourceId,
@@ -119,11 +120,11 @@ export class PersonService {
 
   httpFundWallet(payload) {
     const host = this._restService.getHost();
-    const path = host + "/fund-wallet";
-    const token = "Bearer" + localStorage.getItem("token");
+    const path = host + '/fund-wallet';
+    const token = 'Bearer' + localStorage.getItem('token');
     const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    headers.append("Authorization", token);
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', token);
     const options = new RequestOptions({ headers: headers });
     return this.http.post(path, payload);
   }
@@ -164,7 +165,7 @@ export class PersonService {
   //   //   }); // query string
   // }
   searchPerson(body: any) {
-    return this._socketService.getService("search-people").find(body);
+    return this._socketService.getService('search-people').find(body);
   }
 
   altFundWallet(payload) {
@@ -177,7 +178,6 @@ export class PersonService {
         headers.append('Authorization', token);
     const options = new RequestOptions({headers: headers});
     this.http.post(path, payload, options).subscribe(subPayload => {
-      console.log(subPayload);
     });
   }
 }

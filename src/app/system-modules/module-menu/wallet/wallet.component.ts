@@ -43,7 +43,9 @@ export class WalletComponent implements OnInit {
   flutterwavePayment = false;
   paystackPayment = false;
   paymentChannels = [];
-
+  totalTransaction = 0;
+  creditTransaction = 0;
+  debitTransaction = 0;
   // lineChart
   lineChartData: Array<any> = [
     { data: [65, 59, 80, 81, 56, 55, 40], label: 'Balance' },
@@ -157,6 +159,10 @@ export class WalletComponent implements OnInit {
       if (!!res._id) {
         if (!!res.wallet) {
           this.facility = res;
+          this.totalTransaction = res.wallet.transactions.length;
+          this.creditTransaction = res.wallet.transactions.filter(tx =>tx.transactionType==='Cr').length;
+          this.debitTransaction = this.totalTransaction - this.creditTransaction;
+         
           this.transactions = res.wallet.transactions.reverse().slice(0, 10);
         } else {
           res.wallet = {

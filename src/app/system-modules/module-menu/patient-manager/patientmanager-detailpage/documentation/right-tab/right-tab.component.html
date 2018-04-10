@@ -469,7 +469,7 @@
                                 <td>{{appointment.startDate | date:'short'}}</td>
                                 <td>
                                     <div class="empWrap">
-                                        <div class="list-img" *ngIf="appointment?.providerDetails !== null">
+                                        <div class="list-img" *ngIf="appointment?.providerDetails !== null && appointment?.providerDetails !== undefined">
                                             <img *ngIf="appointment?.providerDetails?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
                                             <div *ngIf="appointment?.providerDetails?.personDetails?.profileImageObject !== undefined">
                                                 <img class="shadow" [src]="facilityService.transform(appointment?.providerDetails?.personDetails?.profileImageObject?.thumbnail)">
