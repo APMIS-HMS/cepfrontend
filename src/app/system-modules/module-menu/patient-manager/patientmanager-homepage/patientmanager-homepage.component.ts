@@ -108,7 +108,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   noPatientId;
 
   companyFacilities: any;
-  loginCompanyListObject;
+  loginCompanyListObject:any = {};
   companyEnrolleList;
   filteredccs: Observable<any[]>;
 
