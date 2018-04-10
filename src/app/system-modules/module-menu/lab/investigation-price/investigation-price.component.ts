@@ -53,6 +53,7 @@ export class InvestigationPriceComponent implements OnInit {
   selectedFacilityServicePrice: FacilityServicePrice = <FacilityServicePrice>{};
   selectedModifier: any = <any>{};
   loading: Boolean = true;
+  priceLoading: Boolean = false;
   foundPrice: Boolean = false;
   selectedMajorLocation: any;
 
@@ -251,6 +252,7 @@ export class InvestigationPriceComponent implements OnInit {
 
   }
   setPrice(valid, value) {
+    this.loading = true;
     if (valid) {
       if (this.selectedTag.tagDetails !== undefined) {
         delete this.selectedTag.tagDetails;
@@ -308,6 +310,7 @@ export class InvestigationPriceComponent implements OnInit {
         this.getInvestigations();
         this.pricing_view = false;
         this._systemModuleService.announceSweetProxy('Price has been set/updated successfully!', 'success', null, null, null, null, null, null, null);
+        this.priceLoading = false;
       });
 
       // this.facilityPriceService.update(this.selectedFacilityServicePrice).then(payload => {
@@ -318,6 +321,7 @@ export class InvestigationPriceComponent implements OnInit {
       // });
     } else {
       this._notification('Error', 'Please fill in all required fields!');
+      this.priceLoading = false;
     }
   }
 

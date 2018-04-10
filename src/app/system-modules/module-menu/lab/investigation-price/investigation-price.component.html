@@ -32,7 +32,7 @@
                         </div>
 
                         <div class="btn-box">
-                            <button mat-raised-button [disabled]="!frmNewPrice.valid" (click)="setPrice(frmNewPrice.valid, frmNewPrice.value)" class="btn">Set Price</button>
+                            <button mat-raised-button [disabled]="!frmNewPrice.valid || priceLoading" (click)="setPrice(frmNewPrice.valid, frmNewPrice.value)" class="btn">Set Price</button>
                         </div>
                     </form>
                 </div>

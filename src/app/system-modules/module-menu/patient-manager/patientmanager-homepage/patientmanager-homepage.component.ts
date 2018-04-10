@@ -1,6 +1,7 @@
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { EMAIL_REGEX } from 'app/shared-module/helpers/global-config';
 import { NUMERIC_REGEX, ALPHABET_REGEX } from './../../../../shared-module/helpers/global-config';
+import { FacilityCompanyCoverService } from './../../../../services/facility-manager/setup/facility-company-cover.service';
 import { CountryServiceFacadeService } from './../../../service-facade/country-service-facade.service';
 import { TitleGenderFacadeService } from 'app/system-modules/service-facade/title-gender-facade.service';
 import {
@@ -70,8 +71,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
   patientToEdit;
 
-  selectedIndex:any = 0;
-  tabGroup:any;
+  selectedIndex: any = 0;
+  tabGroup: any;
 
   tagName = new FormControl('', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]);
   tag;
@@ -89,6 +90,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   ccPlan = new FormControl('', Validators.required);
   ccPlanId = new FormControl('', Validators.required);
   ccPlanCheck = new FormControl('');
+  employeeId = new FormControl('', Validators.required);
   familyPlanId = new FormControl('', Validators.required);
   familyPlanCheck = new FormControl('');
   faPlanPrice = new FormControl('');
@@ -104,6 +106,11 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   principalPersonId;
   principalFamilyId;
   noPatientId;
+
+  companyFacilities: any;
+  loginCompanyListObject;
+  companyEnrolleList;
+  filteredccs: Observable<any[]>;
 
   filteredHmos: Observable<any[]>;
   dictionaries;
@@ -123,7 +130,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   btnLabel = "Add Tag";
   tagLoader: boolean = false;
 
-  mainErr:boolean;
+  mainErr: boolean;
   errMsg: string;
 
   constructor(private patientService: PatientService, private personService: PersonService,
@@ -135,7 +142,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     private _titleService: TitleService, private countryFacadeService: CountryServiceFacadeService,
     private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
     private familyCoverService: FacilityFamilyCoverService,
-    private tagService: TagService
+    private tagService: TagService,
+    private companyCoverService: FacilityCompanyCoverService
   ) {
 
     this.facility = <Facility>this.locker.getObject('selectedFacility');
@@ -175,6 +183,11 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         startWith(''),
         map((hmo: any) => hmo ? this.filterHmos(hmo) : this.hmos.slice())
       );
+
+    this.filteredccs = this.ccPlanId.valueChanges.pipe(
+      startWith(''),
+      map((cc: any) => cc ? this.filterCCs(cc) : this.companyFacilities.slice())
+    )
 
     this.tagName.valueChanges
       .debounceTime(200)
@@ -234,6 +247,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this._getAllTitles();
 
     this.gethmos();
+    this.getLoginCompanyList();
     this.getCashPlans();
 
     this.systemService.currentMessage.subscribe(message => {
@@ -343,10 +357,10 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     tag.patientId = this.patientToEdit._id;
     this.tagService.createSuggestedPatientTags(tag).then(payl => {
       this.systemService.off;
-      if(payl.status === "error"){
+      if (payl.status === "error") {
         this.mainErr = true;
         this.errMsg = payl.message;
-      }else{
+      } else {
         this.patientToEdit.tags = payl.data.tags;
       }
       this.systemService.off;
@@ -523,6 +537,49 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     return hmo ? hmo.hmoName : hmo;
   }
 
+  displayFnc(cc) {
+    return cc ? cc.name : cc;
+  }
+
+  filterCCs(val: any) {
+    if (val.name === undefined) {
+      return this.companyFacilities.filter(cc =>
+        cc.name.toLowerCase().indexOf(val.toLowerCase()) === 0);
+    } else {
+      return this.companyFacilities.filter(cc =>
+        cc.name.toLowerCase().indexOf(val.name.toLowerCase()) === 0);
+    }
+  }
+
+  getLoginCompanyList() {
+    this.companyCoverService.find({
+      query: {
+        'facilityId._id': this.facility._id
+      }
+    }).then(payload => {
+      if (payload.data.length > 0) {
+        this.loginCompanyListObject = payload.data[0];
+        this._getCompanyFacilities(payload.data[0]);
+      } else {
+        this.loginCompanyListObject.facilityId = this.facility;
+        this.loginCompanyListObject.companyCovers = [];
+      }
+    })
+  }
+  _getCompanyFacilities(facilityCompany) {
+    this.companyEnrolleList = facilityCompany.companyCovers.map(obj => {
+      return { company: obj.company, enrolles: obj.enrolleeList };
+    });
+    const flist = this.companyEnrolleList.map(obj => {
+      return obj.company;
+    });
+    this.facilityService.find({
+      query: { _id: { $in: flist } }
+    }).then(payload => {
+      this.companyFacilities = payload.data;
+    });
+  }
+
 
   getShowing() {
     const ret = this.index * this.limit
@@ -607,10 +664,10 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     });
   }
 
-  idTags(patient){
+  idTags(patient) {
     this.slideEdit(patient);
     this.selectedIndex = 1;
-  } 
+  }
 
   private _populateAndSelectData(value: any) {
     if (value.homeAddress) {
@@ -680,7 +737,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
           planType: cover,
           isDefault: Boolean(this.isDefault.value),
           planDetails: {
-            companyId: this.ccPlanId.value.hmoId,
+            companyId: this.ccPlanId.value._id,
             principalId: this.insuranceId.value
           }
         });
