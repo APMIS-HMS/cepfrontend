@@ -654,7 +654,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                             bene.push(...facHmo.hmos[index].enrolleeList[s].enrollees);
                         }
                         const fil = bene.filter(x => x.filNo === insuranceId);
-                        console.log(fil);
                         if (fil.length > 0) {
                             if (fil[0].status === false) {
                                 this.systemModuleService.off();
@@ -681,7 +680,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     }
                 }
             }
-        }).catch(err => { console.log(err) });
+        }).catch(err => { });
     }
 
     nextFamilyCover() {
@@ -698,20 +697,17 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             this.systemModuleService.announceSweetProxy('Principal Id entered doens\'t belong to a Principal of a family', 'error');
         }/* else if(){} */ else {
             this.familyCoverService.find({ query: { 'facilityId': this.facility._id } }).then(payload => {
-                console.log(payload);
                 if (payload.data.length > 0) {
                     const facFamilyCover = payload.data[0];
                     this.selectedFamilyCover = facFamilyCover;
                     this.beneficiaries = facFamilyCover.familyCovers;
                     const info = this.beneficiaries.filter(x => x.filNo === this.faId);
-                    console.log(info);
                     if (info.length === 0) {
                         this.loading = false;
                         this.systemModuleService.off();
                         this.systemModuleService.announceSweetProxy('Principal Id doesn\'t exist', 'error');
                     } else {
                         const filEx = this.beneficiaries.filter(x => x.filNo === this.familyClientId);
-                        console.log(filEx);
                         if (filEx.length > 0) {
                             if (filEx[0].patientId !== undefined) {
                                 this.loading = false;
@@ -720,7 +716,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                             } else {
                                 if (info[0].patientId === undefined) {
                                     if (this.getRole(this.familyClientId) !== 'P') {
-                                        console.log('Principal doesn\'t exist as a patient. Please register principal.');
                                         this.loading = false;
                                         this.systemModuleService.off();
                                         this.systemModuleService.announceSweetProxy('Principal doesn\'t exist as a patient. Please register principal.', 'error');
@@ -796,7 +791,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     getMaritalStatus() {
         this.maritalStatusService.findAll().then(payload => {
             this.maritalStatuses = payload.data;
-            console.log(this.maritalStatuses);
         }).catch(err => {
 
         });
@@ -1387,9 +1381,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     const filEx = this.beneficiaries.findIndex(x => x.filNo === this.familyClientId);
                     if (filEx > -1) {
                         facFamilyCover.familyCovers[filEx].patientId = payl._id;
-                        console.log(facFamilyCover);
                         this.familyCoverService.patch(facFamilyCover._id, facFamilyCover, {}).then(patchPayload => {
-                            console.log(patchPayload);
                             const billing: any = [
                                 {
                                     unitPrice: this.planPrice,
@@ -1421,7 +1413,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                                     patientId: payl._id
                                 }
                             }).then(billingPayload => {
-                                console.log(billingPayload);
                                 this.systemModuleService.off();
                                 this.systemModuleService.changeMessage(payl); // This is responsible for showing the edit patient modal box
                                 const text = this.selectedPerson.lastName + ' '
@@ -1432,17 +1423,14 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                                 this.systemModuleService.off();
                                 this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
                                 this.loading = false;
-                                console.log(errr);
                             });
                         }).catch(err => {
-                            console.log(err);
                         });
                     }
                 }
             });
 
         }).catch(err => {
-            console.log(err);
             this.systemModuleService.off();
             this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
             this.loading = false;
@@ -1541,7 +1529,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     isValidating: true
                 }
             }).then(payload => {
-                console.log(payload);
                 this.validating = false;
                 if (payload.status === 'success') {
                     this.duplicate = true;
@@ -1580,7 +1567,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         }
         const errMsg = 'There was an error while creating person, try again!';
         this.personService.createPerson(body).then((ppayload) => {
-            this.isSaving = false;
             this.isSuccessful = true;
             this.systemModuleService.off();
             this.selectedPerson = ppayload;
@@ -1589,7 +1575,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             //     + this.frmPerson.controls['lastname'].value + ' '
             //     + 'added successful';
             // this.frmPerson.reset();
-            // this.isSaving = false;
             // this.systemModuleService.off();
             // this.systemModuleService.announceSweetProxy(text, 'success', this, HTML_SAVE_PATIENT);
             this.saveData();
@@ -1598,7 +1583,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             // this.frmNewPerson3_show = false;
             // this.frmNewEmp4_show = true;
             // this.apmisId_show = false;
-        }, err => {
+        },err => {
             this.isSaving = false;
             this.systemModuleService.off();
             this.systemModuleService.announceSweetProxy(errMsg, 'error');
