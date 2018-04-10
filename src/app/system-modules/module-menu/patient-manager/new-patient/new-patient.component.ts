@@ -693,6 +693,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
     nextInsuranceCover(hmoPlanId, hmoPlan) {
         this.systemModuleService.on();
+        console.log('insurance');
 
         this.coverType = 'insurance';
         this.hmo = this.hmoPlanId.value;
@@ -703,40 +704,51 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
         this.hmoService.find({ query: { 'facilityId': this.facility._id } }).then(payload => {
             if (payload.data.length > 0) {
+                console.log('facility Insurance');
                 const facHmo = payload.data[0];
                 const index = facHmo.hmos.findIndex(x => x.hmo === this.hmo.hmoId);
                 if (index > -1) {
+                    console.log('first if');
                     if (facHmo.hmos[index].enrolleeList.length > 0) {
+                        console.log('second If');
                         const bene = [];
                         for (let s = 0; s < facHmo.hmos[index].enrolleeList.length; s++) {
                             const hmo = facHmo.hmos[index].hmo;
                             bene.push(...facHmo.hmos[index].enrolleeList[s].enrollees);
                         }
                         const fil = bene.filter(x => x.filNo === insuranceId);
-                        this.frmPerson.controls['firstname'].setValue(fil[0].firstname.toString());
-                        this.frmPerson.controls['firstname'].disable();
-                        this.frmPerson.controls['lastname'].setValue(fil[0].surname.toString());
-                        this.frmPerson.controls['lastname'].disable();
-                        if (fil[0].gender.toLowerCase() === 'm' || fil[0].gender.toLowerCase() === 'male') {
-                            this.frmPerson.controls['gender'].setValue('Male');
-                        } else {
-                            this.frmPerson.controls['gender'].setValue('Female');
-                        }
+                        console.log(fil);
+
                         this.frmPerson.controls['gender'].disable();
                         if (fil.length > 0) {
+                            console.log('fil length');
                             if (fil[0].status === false) {
+                                console.log('fil status');
                                 this.systemModuleService.off();
-                                this.mainErr = false;
                                 const text = 'Insurance Id does not have an active status for the selected HMO';
                                 this.errMsg = text;
                                 this.mainErr = false;
+                                console.log(text);
                                 this.systemModuleService
                                     .announceSweetProxy(text, 'error');
                             } else {
+                                console.log('second else');
                                 if (this.shouldMoveFirst === true) {
                                     this.saveInsurancePerson();
                                 } else {
+                                    console.log('third else');
                                     this.systemModuleService.off();
+                                    this.frmPerson.controls['firstname'].setValue(fil[0].firstname.toString());
+                                    this.frmPerson.controls['firstname'].disable();
+                                    this.frmPerson.controls['lastname'].setValue(fil[0].surname.toString());
+                                    this.frmPerson.controls['lastname'].disable();
+                                    if (fil[0].gender.toLowerCase() === 'm' || fil[0].gender.toLowerCase() === 'male') {
+                                        console.log('third If');
+                                        this.frmPerson.controls['gender'].setValue('Male');
+                                    } else {
+                                        console.log('else');
+                                        this.frmPerson.controls['gender'].setValue('Female');
+                                    }
                                     this.frmNewEmp4_show = false;
                                     this.frmNewPerson1_show = true;
                                     this.frmNewPerson2_show = false;
@@ -746,10 +758,12 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                                 }
                             }
                         } else {
+                            console.log('big else');
                             this.systemModuleService.off();
                             const text = 'Insurance Id does not exist for the selected HMO';
                             this.errMsg = text;
                             this.mainErr = false;
+                            console.log(text);
                             this.systemModuleService
                                 .announceSweetProxy(text, 'error');
                         }
@@ -1219,7 +1233,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.systemModuleService.off();
                 const text = this.selectedPerson.lastName + ' ' + this.selectedPerson.firstName
                     + ' added successfully but bill not generated because price not yet set for this service';
-                this.systemModuleService.changeMessage(payl); // This is responsible for showing the edit patient modal box
+                payl.showEdit = true;
+                    this.systemModuleService.changeMessage(payl); // This is responsible for showing the edit patient modal box
                 this.systemModuleService.announceSweetProxy(text, 'success');
                 this.close_onClick();
             }).catch(errr => {
@@ -1297,6 +1312,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     + this.selectedPerson.firstName
                     + ' added successfully but bill not generated because price not yet set for this service';
                 this.systemModuleService.announceSweetProxy(text, 'success');
+                payl.showEdit = true;
                 this.systemModuleService.changeMessage(payl); // This is responsible for showing the edit patient modal box
                 this.close_onClick();
             }).catch(errr => {
@@ -1430,6 +1446,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                             }
                             this.billingService.create(billing).then(billingPayload => {
                                 this.close_onClick();
+                                payl.showEdit = true;
                                 this.systemModuleService.changeMessage(payl); // This is responsible for showing the edit patient modal box
                                 this.paymentPlan = false;
                                 this.frmNewPerson1_show = false;
@@ -1591,6 +1608,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.mainErr = false;
                 this.errMsg = text;
                 this.systemModuleService.announceSweetProxy(text, 'success');
+                payl.showEdit = true;
                 this.systemModuleService.changeMessage(payl); // This is responsible for showing the edit patient modal box
                 this.close_onClick();
             }).catch(errr => {
@@ -1705,6 +1723,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                                 }
                             }).then(billingPayload => {
                                 this.systemModuleService.off();
+                                payl.showEdit = true;
                                 this.systemModuleService.changeMessage(payl); // This is responsible for showing the edit patient modal box
                                 const text = this.selectedPerson.lastName + ' '
                                     + this.selectedPerson.firstName + ' added successfully but bill not generated because price not yet set for this service';
