@@ -713,7 +713,16 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                             bene.push(...facHmo.hmos[index].enrolleeList[s].enrollees);
                         }
                         const fil = bene.filter(x => x.filNo === insuranceId);
-                        
+                        this.frmPerson.controls['firstname'].setValue(fil[0].firstname.toString());
+                        this.frmPerson.controls['firstname'].disable();
+                        this.frmPerson.controls['lastname'].setValue(fil[0].surname.toString());
+                        this.frmPerson.controls['lastname'].disable();
+                        if (fil[0].gender.toLowerCase() === 'm' || fil[0].gender.toLowerCase() === 'male') {
+                            this.frmPerson.controls['gender'].setValue('Male');
+                        } else {
+                            this.frmPerson.controls['gender'].setValue('Female');
+                        }
+                        this.frmPerson.controls['gender'].disable();
                         if (fil.length > 0) {
                             if (fil[0].status === false) {
                                 this.systemModuleService.off();
@@ -761,33 +770,45 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
         if (this.getRole(this.faId) !== 'P') {
             this.systemModuleService.off();
-            this.systemModuleService.announceSweetProxy('Principal Id entered doens\'t belong to a Principal of a family', 'error');
+            const text = 'Principal Id entered doens\'t belong to a Principal of a family';
+            this.errMsg = text;
+            this.mainErr = false;
+            this.systemModuleService.announceSweetProxy(text, 'error');
         }/* else if(){} */ else {
             this.familyCoverService.find({ query: { 'facilityId': this.facility._id } }).then(payload => {
-                
+
                 if (payload.data.length > 0) {
                     const facFamilyCover = payload.data[0];
                     this.selectedFamilyCover = facFamilyCover;
                     this.beneficiaries = facFamilyCover.familyCovers;
                     const info = this.beneficiaries.filter(x => x.filNo === this.faId);
-                    
+
                     if (info.length === 0) {
                         this.loading = false;
                         this.systemModuleService.off();
-                        this.systemModuleService.announceSweetProxy('Principal Id doesn\'t exist', 'error');
+                        const text = 'Principal Id doesn\'t exist';
+                        this.errMsg = text;
+                        this.mainErr = false;
+                        this.systemModuleService.announceSweetProxy(text, 'error');
                     } else {
                         const filEx = this.beneficiaries.filter(x => x.filNo === this.familyClientId);
                         if (filEx.length > 0) {
                             if (filEx[0].patientId !== undefined) {
                                 this.loading = false;
                                 this.systemModuleService.off();
-                                this.systemModuleService.announceSweetProxy('Client Id has already been assigned to a patient. Please try another Client Id', 'error');
+                                const text = 'Client Id has already been assigned to a patient. Please try another Client Id';
+                                this.errMsg = text;
+                                this.mainErr = false;
+                                this.systemModuleService.announceSweetProxy(text, 'error');
                             } else {
                                 if (info[0].patientId === undefined) {
                                     if (this.getRole(this.familyClientId) !== 'P') {
                                         this.loading = false;
                                         this.systemModuleService.off();
-                                        this.systemModuleService.announceSweetProxy('Principal doesn\'t exist as a patient. Please register principal.', 'error');
+                                        const text = 'Principal doesn\'t exist as a patient. Please register principal.';
+                                        this.errMsg = text;
+                                        this.mainErr = false;
+                                        this.systemModuleService.announceSweetProxy(text, 'error');
                                         return;
                                     } else {
                                         this.noPatientId = true;
@@ -826,7 +847,10 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                         } else {
                             this.loading = false;
                             this.systemModuleService.off();
-                            this.systemModuleService.announceSweetProxy('Client Id doesn\'t exist in Principal family', 'error');
+                            const text = 'Client Id doesn\'t exist in Principal family';
+                            this.errMsg = text;
+                            this.mainErr = false;
+                            this.systemModuleService.announceSweetProxy(text, 'error');
                         }
                     }
                 }
@@ -869,14 +893,16 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                             this.systemModuleService
                                 .announceSweetProxy(text, 'error');
                         } else {
-                            console.log(fil[0].gender.toLowerCase());
                             this.frmPerson.controls['firstname'].setValue(fil[0].firstname.toString());
+                            this.frmPerson.controls['firstname'].disable();
                             this.frmPerson.controls['lastname'].setValue(fil[0].surname.toString());
+                            this.frmPerson.controls['lastname'].disable();
                             if (fil[0].gender.toLowerCase() === 'm' || fil[0].gender.toLowerCase() === 'male') {
                                 this.frmPerson.controls['gender'].setValue('Male');
                             } else {
                                 this.frmPerson.controls['gender'].setValue('Female');
                             }
+                            this.frmPerson.controls['gender'].disable();
                             if (this.shouldMoveFirst === true) {
                                 this.saveCompanyPerson();
                             } else {
@@ -1568,7 +1594,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.systemModuleService.changeMessage(payl); // This is responsible for showing the edit patient modal box
                 this.close_onClick();
             }).catch(errr => {
-                console.log(errr);
                 this.systemModuleService.off();
                 const text = 'Some went wrong while creating a patient!';
                 this.isSaving = false;
@@ -1579,7 +1604,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             });
 
         }).catch(err => {
-            console.log('outside ', err);
             this.systemModuleService.off();
             this.isSaving = false;
             const text = 'Some went wrong while creating a patient!';
@@ -1850,7 +1874,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             // this.frmNewPerson3_show = false;
             // this.frmNewEmp4_show = true;
             // this.apmisId_show = false;
-        },err => {
+        }, err => {
             this.isSaving = false;
             this.systemModuleService.off();
             this.systemModuleService.announceSweetProxy(errMsg, 'error');
