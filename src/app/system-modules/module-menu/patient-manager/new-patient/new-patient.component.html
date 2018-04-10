@@ -24,7 +24,7 @@
                 <div class="tab-wrap">
                     <div (click)="tabWallet_click()" [class.tab-item-active]="tabWallet" class="tab-item">Out of Pocket</div>
                     <div (click)="tabInsurance_click()" [class.tab-item-active]="tabInsurance" class="tab-item">Insurance</div>
-                    <!-- <div (click)="tabCompany_click()" [class.tab-item-active]="tabCompany" class="tab-item">Company Cover</div> -->
+                    <div (click)="tabCompany_click()" [class.tab-item-active]="tabCompany" class="tab-item">Company Cover</div>
                     <div (click)="tabFamily_click()" [class.tab-item-active]="tabFamily" class="tab-item">Family Cover</div>
                 </div>
 
@@ -80,25 +80,38 @@
                     </div>
 
                     <!-- Company Cover yet to be implemented. -->
-                    <!-- <div *ngIf="tabCompany">
+                    <div *ngIf="tabCompany">
                         <div class="plan">
                             <div class="plan-title">Company Cover</div>
-                            <div class="frm-item-wrap">
-                                <mat-input-container class="example-full-width">
-                                    <input matInput mat-error placeholder="Employee" [formControl]="ccPlanId">
-                                </mat-input-container>
+                            <div class="frm-item-wrap row">
+                                <mat-form-field class="col-xs-12 col-sm-6 example-full-width">
+                                    <input matInput placeholder="Pick Company" aria-label="Companys" [matAutocomplete]="auto" [formControl]="ccPlanId">
+                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnc">
+                                        <mat-option *ngFor="let cc of filteredccs | async" [value]="cc">
+                                            {{cc?.name}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+                                <mat-form-field class="col-xs-12 col-sm-6">
+                                    <input matInput mat-error placeholder="Employee Id" [formControl]="employeeId">
+                                </mat-form-field>
                             </div>
-                            <div class="frm-item-wrap">
-                                <mat-form-field>
-                                    <mat-select placeholder="Select Price" [formControl]="ccPlan">
-                                        <mat-option *ngFor="let plan of cashPlans" [value]="plan._id">{{plan.name}}</mat-option>
+                            <div class="row frm-item-wrap">
+                                <mat-form-field class="col-xs-12 col-sm-6">
+                                    <mat-select placeholder="Select Service" [formControl]="hmoPlan" (change)="getServicePlans($event.value)">
+                                        <mat-option *ngFor="let service of services" [value]="service">{{service.name}}</mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <mat-form-field class="col-xs-12 col-sm-6">
+                                    <mat-select placeholder="Select Price" [formControl]="hmoPlanPrice">
+                                        <mat-option *ngFor="let pricePlan of servicePricePlans" [value]="pricePlan.price">{{pricePlan.name}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                             </div>
 
-                            <div class="another">Another Company</div>
+                            <!-- <div class="another">Another Company</div> -->
                         </div>
-                    </div> -->
+                    </div>
 
                     <div *ngIf="tabFamily">
                         <div class="plan">
@@ -138,7 +151,7 @@
                             <span *ngIf="!loading">Next</span>
                             <span *ngIf="loading">Loading...</span>
                         </button>
-                        <button class="small-btn" (click)="nextCompanyCover(ccPlanId.value, ccPlan.value)" *ngIf="tabCompany" [disabled]="!ccPlan.valid || loading"
+                        <button class="small-btn" (click)="nextCompany()" *ngIf="tabCompany" [disabled]="loading"
                             mat-raised-button>
                             <span *ngIf="!loading">Next</span>
                             <span *ngIf="loading">Loading...</span>
