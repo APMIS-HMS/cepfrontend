@@ -25,6 +25,7 @@ export class BillingService {
     this._socketBillCreators.timeout = 50000;
     this.updatelistner = Observable.fromEvent(this._socket, 'updated');
     this._socket.timeout = 90000;
+    this._socketBillFacilityServices.timeout = 30000;
     this._socket.on('created', function (gender) {
 
     });
