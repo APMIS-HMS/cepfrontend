@@ -98,6 +98,8 @@
                                 </div>
                                 <div>{{selectedPatient?.personDetails?.email}}</div>
                                 <div>{{selectedPatient?.personDetails?.phoneNumber}}</div>
+                                <button mat-raised-button style="color:#fff" (click)="fundWallet_pop()">Fund Wallet</button>
+                                
                             </div>
                         </div>
                         <div>
@@ -105,7 +107,6 @@
                                 <img *ngIf="selectedPatient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
                                 <img *ngIf="selectedPatient?.personDetails?.profileImageObject != undefined" [src]="facilityService.transform(selectedPatient?.personDetails?.profileImageObject?.thumbnail)">
                             </div>
-                            <button (click)="fundWallet_pop()">Fund Wallet</button>
                         </div>
                     </div>
                 </div>
@@ -231,34 +232,51 @@
             <div class="modal_mini_title">All Purpose Medical Information System</div>
         </div>
         <div class="modal-baseWrap">
-            <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
-
-            <div style="width:100%;">
-                <div class="frm-item-wrap">
+            <div class="row">
+                <div class="col-md-4">
                     <mat-input-container>
-                        <input type="text" matInput placeholder="Amount(&#x20a6;)" [formControl]="fundAmount">
+                        <input matInput placeholder="Amount" >
                     </mat-input-container>
+                    <mat-form-field>
+                        <mat-select placeholder="Payment Type" class="mat-select">
+                            <mat-option>Flutterwave</mat-option>
+                            <mat-option>Paystack</mat-option>
+                            <mat-option>Cash</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <br><br><br>
+                    <button mat-raised-button style="width:100%; padding: 10px; color:#fff; margin-left:10px;">
+                        Pay
+                    </button>
                 </div>
-                <ul class="topmenuwrap">
-                    <li (click)="fundWallet()">
-                        <i class="fa fa-money" aria-hidden="true"></i>
-                        <span>Cash</span>
-                    </li>
-                    <li (click)="onClickEPayment()">
-                        <i class="fa fa-credit-card" aria-hidden="true"></i>
-                        <span>e-Payment</span>
-                    </li>
-                </ul>
-                <div class="epayment-box" *ngIf="ePayment">
-                    <!-- <div>
-                        <angular-4-flutterwave *ngIf="withPaystack" [amount]="fundAmount.value" [customer_email]="patient.personDetails.email" [PBFPubKey]="flutterwaveClientKey" [txref]="refKey" [currency]="'NGN'" [country]="'NG'" [payment_method]="'card'" [custom_title]="'APMIS'"
-                            [btnColor]="'btn-blue'" [custom_description]="" [exclude_banks]="" (close)="paymentCancel();" (callback)="paymentDone($event);"></angular-4-flutterwave>
-                    </div> -->
-                    <!-- <div>
-                        <angular4-paystack *ngIf="withPaystack" [key]="paystackClientKey" [email]="policy?.principalBeneficiary?.personId?.email" [amount]="policy?.premiumPackageId?.amountInKobo" [ref]="refKey" [class]="'btn btn-primary btn-medium btn-blue'" (close)="paymentCancel()"
-                            (callback)="paymentDone($event)">e-Payment</angular4-paystack>
-                    </div> -->
+                <div class="col-md-1">
+
                 </div>
+                <div class="col-md-7">
+                    <div class="row">
+                            <div class="col-xs-8">
+                                    <h4 style="color: grey">Description</h4>
+                                </div>
+                                <div class="col-xs-2">
+                                    <h4 style="color: grey">Status</h4>    
+                                </div>
+                                <div class="col-xs-2">
+                                    <h4 style="color: grey">Amount</h4>
+                                </div>
+                    </div>
+                    <div class="row">
+                            <div class="col-xs-8">
+                                    <h2>Sample Description for payment</h2>
+                                </div>
+                                <div class="col-xs-2">                        
+                                    <h2  style="color: red">Debit</h2>
+                                </div>
+                                <div class="col-xs-2">
+                                    <h2>10,000</h2>
+                                </div>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </div>
