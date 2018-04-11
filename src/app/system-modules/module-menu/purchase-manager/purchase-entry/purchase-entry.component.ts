@@ -37,6 +37,7 @@ export class PurchaseEntryComponent implements OnInit {
   additionalProducts = [];
 
   searchControl = new FormControl();
+  packSizeVariant = new FormControl();
   checkAll = new FormControl();
   zeroQuantity = new FormControl();
   reOrderLevelQuantity = new FormControl();
@@ -113,6 +114,7 @@ export class PurchaseEntryComponent implements OnInit {
       deliveryDate: [this.now, [<any>Validators.required]],
       invoiceNo: ['', [<any>Validators.required]],
       amount: [0.00, [<any>Validators.required]],
+      orders :[[{}]],
       config: new FormArray([]),
       desc: ['', []],
       discount: [0.00, []],
@@ -245,6 +247,7 @@ export class PurchaseEntryComponent implements OnInit {
                         costPrice: [item.costPrice, [<any>Validators.required]],
                         qty: [item.quantity, [<any>Validators.required]],
                         expiryDate: [item.expiryDate, [<any>Validators.required]],
+                        orders :[itemg.productConfigObject],
                         config: this.initProductConfig(itemg.productConfigObject, item.quantity),
                         total: [{ value: total, disabled: true }],
                         readOnly: [false],
@@ -282,6 +285,7 @@ export class PurchaseEntryComponent implements OnInit {
       }
 
     } else {
+      console.log(config);
       for (let i = config.length - 1; i >= 0; i--) {
         frmArray.push(new FormGroup({
           size: new FormControl(0),
@@ -296,6 +300,10 @@ export class PurchaseEntryComponent implements OnInit {
 
   getProductConfig(form) {
     return form.controls.config.controls;
+  }
+
+  compareItems(l1: any, l2: any) {
+    return l1.includes(l2);
   }
 
   onPackageSize(i) {
@@ -352,6 +360,7 @@ export class PurchaseEntryComponent implements OnInit {
                     costPrice: [0.00, [<any>Validators.required]],
                     qty: [item.quantity, [<any>Validators.required]],
                     expiryDate: [this.now, [<any>Validators.required]],
+                    orders :[itemg.product.productConfigObject],
                     config: this.initProductConfig(itemg.product.productConfigObject, item.quantity),
                     total: [''],
                     readOnly: [false],
@@ -478,6 +487,7 @@ export class PurchaseEntryComponent implements OnInit {
           costPrice: ['', [<any>Validators.required]],
           total: [''],
           qty: ['', [<any>Validators.required]],
+          orders :[[{}]],
           config: new FormArray([]),
           expiryDate: [new Date(), [<any>Validators.required]],
           readOnly: [false],
@@ -509,6 +519,7 @@ export class PurchaseEntryComponent implements OnInit {
                   costPrice: [0.00, [<any>Validators.required]],
                   qty: [0, [<any>Validators.required]],
                   expiryDate: [this.now, [<any>Validators.required]],
+                  orders :[[{}]],
                   config: this.initProductConfig(value.product.productConfigObject, null),
                   total: [''],
                   readOnly: [false],
@@ -517,6 +528,7 @@ export class PurchaseEntryComponent implements OnInit {
                   id: [value._id]
                 })
               );
+              console.log((<FormArray>this.productTableForm.controls['productTableArray']).value);
           } else {
             value.checked = false;
             this.errMsg = 'Please enter invoice number for this entry';
@@ -538,6 +550,13 @@ export class PurchaseEntryComponent implements OnInit {
         (<FormArray>this.productTableForm.controls['productTableArray']).controls.splice(index, 1);
       }
     }
+  }
+
+  onAddPackSize(form){
+   form.controls.orders.value.push({});
+  }
+  onRemovePack(form,k){
+    form.controls.orders.value.splice(k, 1);
   }
   removeProduct(index, schedule) {
     const value = schedule.value;

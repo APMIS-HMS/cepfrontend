@@ -395,7 +395,6 @@ export class BillLookupComponent implements OnInit {
       });
     }
   }
-
   onClickPatientPendingBill(pendingBill: any) {
     this.selectedPatient = {};
     this.selectedPatient._id = pendingBill.patientId;
