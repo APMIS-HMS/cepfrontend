@@ -47,7 +47,18 @@
                                 <div class="table-head col-xs-2">Investigation</div>
                                 <div class="table-head col-xs-2">Price</div>
                                 <div class="table-head col-xs-1">Status</div>
-                                <div class="table-head col-xs-1"><i class="fa fa-search fa-fw pointer"></i></div>
+                                <div class="table-head col-xs-1"><i class="fa fa-search fa-fw pointer" (click)="openSearch()"></i></div>
+                            </div>
+                            <div class="row" *ngIf="searchOpen">
+                                <div class="col-md-8">
+                                    <input [formControl]="searchControl" class="table-header-input" type="text" placeholder="Search for Investigation Price">
+                                </div>
+                                <div class="col-md-3">
+                                    <!-- <input class="table-header-input" type="date" placeholder="Choose a date"> -->
+                                </div>
+                                <div class="col-md-1 table-head">
+                                    <i class="fa fa-close fa-fw" (click)="openSearch()"></i>
+                                </div>
                             </div>
                         </div>
                         <div class="card-content">

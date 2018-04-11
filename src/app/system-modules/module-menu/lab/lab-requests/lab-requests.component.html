@@ -215,7 +215,7 @@
                             </div>
                         </div>
                         <div class="btn-box">
-                            <button mat-raised-button [disabled]="!isValidateForm || !investigationRadio" (click)="save(frmNewRequest.valid, frmNewRequest.value)" class="btn">Make Request</button>
+                            <button mat-raised-button [disabled]="(!frmNewRequest.valid && isLaboratory) || !isValidateForm || !investigationRadio || requestLoading" (click)="save(frmNewRequest.valid, frmNewRequest.value)" class="btn">Make Request</button>
                         </div>
                     </form>
                 </div>
