@@ -108,6 +108,8 @@ export class LabRequestsComponent implements OnInit {
   totalPrice: Number = 0;
   searchOpen = false;
 
+  requestLoading = false;
+
   constructor(
     private formBuilder: FormBuilder,
     private renderer: Renderer,
@@ -917,6 +919,8 @@ export class LabRequestsComponent implements OnInit {
 
   save(valid, value) {
 
+    this.requestLoading = true;
+
     const copyBindInvestigation = JSON.parse(
       JSON.stringify(this.bindInvestigations)
     );
@@ -970,11 +974,14 @@ export class LabRequestsComponent implements OnInit {
         this.investigations = [];
         this.selectedPatient = undefined;
         this._systemModuleService.announceSweetProxy('Request has been sent successfully!', 'success');
+        this.requestLoading = false;
       } else {
         this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
+        this.requestLoading = false;
       }
     }).catch(err => {
       this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
+      this.requestLoading = false;
     });
   }
 
