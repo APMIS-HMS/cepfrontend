@@ -380,6 +380,7 @@ export class BillLookupComponent implements OnInit {
       this.billingService
       .findBillService({ query: { facilityId: this.selectedFacility._id, patientId: this.selectedPatient._id, isinvoice: false } })
       .then(payload => {
+        console.log(payload);
         if(payload !== null){
           this.billGroups = payload.billGroups
           this.listedBillItems = payload.originalCallback;
