@@ -4,7 +4,7 @@ import { FacilityService, Facility, CustomCategory, Tag, FacilityServicePrice } 
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
-const { paramsForServer } = require('feathers-hooks-common');
+
 
 @Component({
   selector: 'app-services',
