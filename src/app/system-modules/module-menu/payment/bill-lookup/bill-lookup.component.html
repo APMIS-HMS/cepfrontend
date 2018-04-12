@@ -94,7 +94,8 @@
                                 </span>
                             </div>
                             <div class="clientAddress">
-                                <div>{{selectedPatient?.personDetails.homeAddress?.street}}, {{selectedPatient?.personDetails.homeAddress?.city}}, {{selectedPatient?.personDetails.homeAddress?.lga}}. {{selectedPatient?.personDetails.homeAddress?.state}}, {{selectedPatient?.personDetails.homeAddress?.country}}
+                                <div>{{selectedPatient?.personDetails?.homeAddress?.street}}, {{selectedPatient?.personDetails.homeAddress?.city}}, {{selectedPatient?.personDetails.homeAddress?.lga}}. {{selectedPatient?.personDetails.homeAddress?.state}},
+                                    {{selectedPatient?.personDetails.homeAddress?.country}}
                                 </div>
                                 <div>{{selectedPatient?.personDetails?.email}}</div>
                                 <div>{{selectedPatient?.personDetails?.phoneNumber}}</div>
@@ -231,7 +232,7 @@
             <legend class="modal_title">Fund Wallet</legend>
             <div class="modal_mini_title">All Purpose Medical Information System</div>
         </div>
-        <app-fund-wallet [patient]="selectedPatient"></app-fund-wallet>
+        <app-fund-wallet [patient]="selectedPatient" (closeModal)="close_onClick($event)"></app-fund-wallet>
     </div>
 </div>
 
