@@ -81,7 +81,7 @@ export class AddPatientTagsComponent implements OnInit {
     this.tagService.createSuggestedPatientTags(tag).then(payl => {
       this.systemService.off;
       if (payl.status === "error") {
-        this.mainErr = true;
+        this.mainErr = false;
         this.errMsg = payl.message;
       } else {
         this.patient.tags = payl.data.tags;
