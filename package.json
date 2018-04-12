@@ -46,6 +46,7 @@
     "dotenv": "^4.0.0",
     "enhanced-resolve": "^3.3.0",
     "feathers-hooks": "^2.1.2",
+    "feathers-hooks-common": "^4.10.0",
     "feathers-localstorage": "^2.0.0",
     "feathers-reactive": "0.4.1",
     "jquery": "^3.2.1",
