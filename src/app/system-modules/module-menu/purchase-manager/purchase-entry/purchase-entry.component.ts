@@ -310,6 +310,8 @@ export class PurchaseEntryComponent implements OnInit {
   onPackageSize(i, packs) {
     let totalCost = 0;
     console.log(packs);
+    packs[i].controls.total.setValue(0);
+    packs[i].controls.qty.setValue(0);
     packs[i].controls.config.controls.forEach(element => {
       console.log(element);
       packs[i].controls.qty.setValue(packs[i].controls.qty.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
