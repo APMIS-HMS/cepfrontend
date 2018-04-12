@@ -47,7 +47,6 @@ export class AddPatientTagsComponent implements OnInit {
       .distinctUntilChanged().subscribe(payload => {
         if (payload.length >= 3) {
           this.showSearchResult = true;
-          console.log(payload);
           this.tagService.suggestPatientTags({
             query: {
               facilityId: this.facility._id,
@@ -72,7 +71,6 @@ export class AddPatientTagsComponent implements OnInit {
     this.systemService.on;
     this.tagLoader = true;
     const tag: any = <any>{};
-    console.log('before if');
     if (this.identity.value === true) {
       tag.tagType = 'identification';
     }
