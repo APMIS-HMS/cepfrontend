@@ -4,6 +4,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility, MinorLocation, StoreModel } from '../../../../models/index';
 import { ProductTypeService, StoreService } from '../../../../services/facility-manager/setup/index';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 
 
 @Component({
@@ -33,10 +34,32 @@ export class NewStoreComponent implements OnInit {
     private locker: CoolLocalStorage,
     private productTypeService: ProductTypeService,
     private systemModuleService: SystemModuleService,
-    private storeService: StoreService) { }
+    private storeService: StoreService,
+    private _authFacadeService: AuthFacadeService
+  )
+    {
+      this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+      this._authFacadeService.getLogingEmployee().then((res: any) => {
+        const workSpaces = res.workSpaces;
+        if (this.selectedFacility.minorLocations.length > 0) {
+          if (!!workSpaces && workSpaces.length > 0) {
+            this.selectedFacility.minorLocations.forEach(minorLocation => {
+              workSpaces.forEach(workspace => {
+                if (workspace.isActive && workspace.locations.length > 0) {
+                  workspace.locations.forEach(x => {
+                    if (x.isActive && (x.minorLocationId === minorLocation._id)) {
+                      this.minorLocations.push(x.minorLocationObject);
+                    }
+                  });
+                }
+              });
+            });
+          }
+        }
+      }).catch(err => { });
+    }
 
   ngOnInit() {
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.frm_newStore = this.formBuilder.group({
       name: ['', [<any>Validators.required]],
       minorLocationId: ['', [<any>Validators.required]],
@@ -45,7 +68,7 @@ export class NewStoreComponent implements OnInit {
       canReceivePurchaseOrder: [false, [<any>Validators.required]],
       facilityId: [this.selectedFacility._id, [<any>Validators.required]],
     });
-    this.minorLocations = this.selectedFacility.minorLocations;
+
     this.getProductTypes();
     this.populateStore();
   }
