@@ -314,7 +314,7 @@ export class PurchaseEntryComponent implements OnInit {
       console.log(element);
       packs[i].controls.qty.setValue(packs[i].controls.qty.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
       let subTotal = packs[i].controls.costPrice.value * element.value.size;
-      totalCost =  subTotal;
+      totalCost = subTotal;
       console.log(subTotal);
       if (isNaN(subTotal)) {
         subTotal = 0;
@@ -324,7 +324,7 @@ export class PurchaseEntryComponent implements OnInit {
     });
     packs.forEach((item, i) => {
       const productControlValue: any = item.value;
-      totalCost = this.frm_purchaseOrder.controls['amount'].value + (+productControlValue.costPrice * +productControlValue.qty);
+      totalCost = totalCost + (+productControlValue.costPrice * +productControlValue.qty);
     });
     this.frm_purchaseOrder.controls['amount'].setValue(totalCost);
 
@@ -484,23 +484,15 @@ export class PurchaseEntryComponent implements OnInit {
     this.systemModuleService.off();
   }
   getCostSummary(i,packs) {
+    packs[i].controls.total.setValue(0);;
     this.totalCost = 0;
-    packs[i].controls.config.controls.forEach(element => {
-      packs[i].controls.qty.setValue(packs[i].controls.qty.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
-      let subTotal = packs[i].controls.costPrice.value * element.value.size;
-      this.totalCost =  subTotal;
-      console.log(subTotal);
-      if (isNaN(subTotal)) {
-        subTotal = 0;
-      }
-      let strSubTotal = '₦ ' + subTotal;
-      packs[i].controls.total.setValue(strSubTotal);
-    });
     packs.forEach((item, i) => {
       const productControlValue: any = item.value;
       this.totalCost = this.totalCost + (+productControlValue.costPrice * +productControlValue.qty);
     });
     this.frm_purchaseOrder.controls['amount'].setValue(this.totalCost);
+    const total = '₦ ' + ( packs[i].controls.qty.value * packs[i].controls.costPrice.value);
+    packs[i].controls.total.setValue(total);
   }
   mergeTable(obj) {
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
@@ -613,21 +605,21 @@ export class PurchaseEntryComponent implements OnInit {
     form.controls.config.removeAt(k);
     console.log(2);
   }
-  removeProduct(index, schedule) {
-    const value = schedule.value;
+  removeProduct(index, form) {
+    const value = form[index];
     this.superGroups.forEach((parent, i) => {
       parent.forEach((group, j) => {
         if (group._id === value.id) {
           group.checked = false;
           this.onProductCheckChange({ checked: false }, value, index);
-          const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
+          const count = form.length;
           if (count === 0) {
             this.addNewProductTables();
           }
         }
       });
     });
-    // this.getCostSummary(schedule);
+    this.getCostSummary(index,form);
   }
 
   create(valid, value) {
