@@ -78,7 +78,6 @@ export class FluidComponent implements OnInit {
         'facilityId': this.facility._id,
       }
     }).then(payload => {
-      console.log(type, payload)
       if (type === 'intake') {
         this.intakeFluidList = payload.data;
       } else if (type === 'output') {
@@ -182,12 +181,10 @@ export class FluidComponent implements OnInit {
         const firstTimeDate = this.patientIntakeFluidList[0].createdAt;
         const lastTimeDate = this.patientIntakeFluidList[len-1].createdAt;
         const timeDateDifference = (new Date(firstTimeDate).getTime() - new Date(lastTimeDate).getTime()) / (1000*60*60);
-        console.log(timeDateDifference);
         if(timeDateDifference > 0){
-          console.log(this.patientIntakeFluidList[0], this.patientIntakeFluidList[len-1]);
           this.rateOfIntakeFluid = Math.floor(this.totalPatientIntakeFluid / timeDateDifference);
         }else{
-          this.rateOfIntakeFluid = this.totalPatientIntakeFluid
+          this.rateOfIntakeFluid = this.totalPatientIntakeFluid;
         }
         this.intakeFilterTime = 'All';
       } else if (type === 'output') {
@@ -201,9 +198,7 @@ export class FluidComponent implements OnInit {
         const firstTimeDate = this.patientOutputFluidList[0].createdAt;
         const lastTimeDate = this.patientOutputFluidList[len-1].createdAt;
         const timeDateDifference = (new Date(firstTimeDate).getTime() - new Date(lastTimeDate).getTime()) / (1000*60*60);
-        console.log(timeDateDifference);
         if(timeDateDifference > 0){
-          console.log(this.patientOutputFluidList[0], this.patientOutputFluidList[len-1]);
           this.rateOfOutputFluid = Math.floor(this.totalPatientOutputFluid / timeDateDifference);
         }else{
           this.rateOfOutputFluid = this.totalPatientOutputFluid;
