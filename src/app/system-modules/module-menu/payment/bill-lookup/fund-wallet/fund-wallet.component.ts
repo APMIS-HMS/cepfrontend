@@ -4,7 +4,7 @@ import {
 } from './../../../../../models/facility-manager/setup/wallet-transaction';
 import { PayStackService } from './../../../../../services/facility-manager/setup/paystack.service';
 // import { Subscription } from 'rxjs/Subscription';
-import { Component, OnInit, Input, AfterViewInit } from '@angular/core';
+import { Component, OnInit, Input, Output, AfterViewInit, EventEmitter } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { FLUTTERWAVE_PUBLIC_KEY, PAYSTACK_CLIENT_KEY, PaymentChannels } from '../../../../../shared-module/helpers/global-config';
 import { PersonService, FacilitiesService } from '../../../../../services/facility-manager/setup/index';
@@ -20,6 +20,7 @@ import { Facility, User } from 'app/models';
 })
 export class FundWalletComponent implements OnInit {
   paymentFormGroup: FormGroup;
+  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() patient;
   user: any = <any>{};
   person: any;
@@ -167,6 +168,7 @@ export class FundWalletComponent implements OnInit {
           this.paymentFormGroup.reset();
           this.paymentFormGroup.controls['fundAmount'].setValue(0);
           this.resetPaymentForm();
+          this.close_onClick(true);
           this.person = res.data.person;
           this.transactions = this.person.wallet.transactions.reverse().slice(0, 10);
           const text = 'Your facility\'s wallet has been debited and patient\'s wallet has been credited successfully.';
@@ -246,10 +248,11 @@ export class FundWalletComponent implements OnInit {
         this.paymentFormGroup.controls['fundAmount'].setValue(0);
         this.disableBtn = false;
         this.cashPayment = false;
+        this.close_onClick(true);
         this.flutterwavePayment = false;
         this.paystackPayment = false;
         this.person = res.data;
-        this.transactions = this.person.wallet.transactions.reverse().slice(0, 10);
+        this.transactions = this.person.wallet.transactions.reverse().slice(0, 5);
         this._notification('Success', 'Your wallet has been credited successfully.');
       } else {
         this._notification('Error', res.body.message);
@@ -262,6 +265,10 @@ export class FundWalletComponent implements OnInit {
   }
 
   paymentCancel() {
+  }
+
+  close_onClick(value) {
+    this.closeModal.emit(true);
   }
 
   // Notification

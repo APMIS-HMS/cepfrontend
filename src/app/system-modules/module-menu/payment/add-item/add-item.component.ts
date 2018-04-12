@@ -10,7 +10,6 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
   styleUrls: ['./add-item.component.scss']
 })
 export class AddItemComponent implements OnInit {
-
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   mainErr = true;
   errMsg = 'you have unresolved errors';
