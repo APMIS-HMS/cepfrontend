@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 import {
   ProfessionService, RelationshipService, MaritalStatusService, GenderService,
@@ -77,6 +78,7 @@ export class FluidComponent implements OnInit {
         'facilityId': this.facility._id,
       }
     }).then(payload => {
+      console.log(type, payload)
       if (type === 'intake') {
         this.intakeFluidList = payload.data;
       } else if (type === 'output') {
@@ -90,7 +92,8 @@ export class FluidComponent implements OnInit {
     private locker: CoolLocalStorage, private patientService: PatientService,
     private personService: PersonService,
     private employeeService: EmployeeService,
-    private facilityService: FacilitiesService) { }
+    private facilityService: FacilitiesService,
+  private systemModuleService: SystemModuleService) { }
 
   ngOnInit() {
     this.frmIntake = this.formBuilder.group({
@@ -146,10 +149,12 @@ export class FluidComponent implements OnInit {
     this.fluidService.createPatientFluid(fluidsCont).then(payload => {
       this.loading = false;
       this.frmIntake.reset();
+      this.systemModuleService.announceSweetProxy('Fluid was successfully created', 'success');
       this.getPatientFluids(type);
       this.getFluidSummary();
     }).catch(err => {
       this.loading = false;
+      this.systemModuleService.announceSweetProxy('Something went wrong. Fuild wasn\'t created, please try again! ', 'error');
     });
 
 
@@ -174,7 +179,16 @@ export class FluidComponent implements OnInit {
           lol += Number(this.patientIntakeFluidList[i].volume);
         }
         this.totalPatientIntakeFluid = lol;
-        this.rateOfIntakeFluid = Math.floor(this.totalPatientIntakeFluid / 24);
+        const firstTimeDate = this.patientIntakeFluidList[0].createdAt;
+        const lastTimeDate = this.patientIntakeFluidList[len-1].createdAt;
+        const timeDateDifference = (new Date(firstTimeDate).getTime() - new Date(lastTimeDate).getTime()) / (1000*60*60);
+        console.log(timeDateDifference);
+        if(timeDateDifference > 0){
+          console.log(this.patientIntakeFluidList[0], this.patientIntakeFluidList[len-1]);
+          this.rateOfIntakeFluid = Math.floor(this.totalPatientIntakeFluid / timeDateDifference);
+        }else{
+          this.rateOfIntakeFluid = this.totalPatientIntakeFluid
+        }
         this.intakeFilterTime = 'All';
       } else if (type === 'output') {
         this.patientOutputFluidList = payload.data;
@@ -184,8 +198,18 @@ export class FluidComponent implements OnInit {
           lol += Number(this.patientOutputFluidList[i].volume);
         }
         this.totalPatientOutputFluid = lol;
+        const firstTimeDate = this.patientOutputFluidList[0].createdAt;
+        const lastTimeDate = this.patientOutputFluidList[len-1].createdAt;
+        const timeDateDifference = (new Date(firstTimeDate).getTime() - new Date(lastTimeDate).getTime()) / (1000*60*60);
+        console.log(timeDateDifference);
+        if(timeDateDifference > 0){
+          console.log(this.patientOutputFluidList[0], this.patientOutputFluidList[len-1]);
+          this.rateOfOutputFluid = Math.floor(this.totalPatientOutputFluid / timeDateDifference);
+        }else{
+          this.rateOfOutputFluid = this.totalPatientOutputFluid;
+        }
         this.rateOfOutputFluid = Math.floor(this.totalPatientOutputFluid / 24);
-        this.patientOutputFluidList = payload.data;
+        //this.patientOutputFluidList = payload.data;
         this.outputFilterTime = 'All';
       }
     }).catch(err => {
