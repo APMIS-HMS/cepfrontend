@@ -314,7 +314,6 @@ export class PurchaseEntryComponent implements OnInit {
       console.log(element);
       packs[i].controls.qty.setValue(packs[i].controls.qty.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
       let subTotal = packs[i].controls.costPrice.value * element.value.size;
-      totalCost = subTotal;
       console.log(subTotal);
       if (isNaN(subTotal)) {
         subTotal = 0;
