@@ -68,6 +68,9 @@ import { CanActivateViaAuthGuardAccessService } from 'app/services/facility-mana
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MessagingComponent } from './messaging/messaging.component';
 
+import { APP_DATE_FORMATS, AppDateAdapter } from 'app/date-format';
+import { DateAdapter, MAT_DATE_FORMATS } from "@angular/material";
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -96,6 +99,12 @@ import { MessagingComponent } from './messaging/messaging.component';
     })
   ],
   providers: [
+    {
+      provide: DateAdapter, useClass: AppDateAdapter
+    },
+    {
+      provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
+    },
     // { provide: ErrorHandler, useClass: ApmisErrorHandler },
     SocketService, RestService, SetupService.CountriesService, SetupService.FacilityTypesService,
     SetupService.FacilitiesService, SetupService.FacilityModuleService, SetupService.ConsultingRoomService,

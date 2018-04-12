@@ -25,6 +25,7 @@ import { map } from 'rxjs/operators/map';
 import { EMAIL_REGEX, PHONE_REGEX, ALPHABET_REGEX, HTML_SAVE_PATIENT } from 'app/shared-module/helpers/global-config';
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 
+
 @Component({
     selector: 'app-new-patient',
     templateUrl: './new-patient.component.html',
@@ -76,6 +77,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     tabInsurance = false;
     tabCompany = false;
     tabFamily = false;
+
+    dtob;
 
     newEmpIdControl = new FormControl('', Validators.required);
     public frmNewEmp1: FormGroup;
