@@ -37,8 +37,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
 
   isEdit = false;
-  tabWallet = true;
-  tabInsurance = false;
+  tabWallet = false;
+  tabInsurance = true;
   tabCompany = false;
   tabFamily = false;
   button;
@@ -738,7 +738,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
           isDefault: Boolean(this.isDefault.value),
           planDetails: {
             companyId: this.ccPlanId.value._id,
-            principalId: this.insuranceId.value
+            principalId: this.employeeId.value
           }
         });
       } else if (this.tabFamily === true) {
@@ -822,7 +822,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
             isDefault: Boolean(this.isDefault.value),
             planDetails: {
               companyId: this.ccPlanId.value.hmoId,
-              principalId: this.insuranceId.value
+              principalId: this.employeeId.value
             }
           });
         } else if (cover === 'family') {

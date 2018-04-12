@@ -106,6 +106,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   addTagsPop = false;
   checkoutPatient = false;
 
+  addTag_view = false;
   addProblem_view = false;
   addAllergy_view = false;
   addHistory_view = false;
@@ -323,6 +324,10 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
   contentSecMenuToggle() {
     this.contentSecMenuShow = !this.contentSecMenuShow;
   }
+  addTag_show(e){
+    console.log(e);
+    this.addTag_view = true;
+  }
   addProblem_show(e) {
     this.addProblem_view = true;
   }
@@ -341,6 +346,7 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
     this.addTagsPop = false;
     this.checkoutPatient = false;
     this.addProblem_view = false;
+    this.addTag_view = false;
     this.addAllergy_view = false;
     this.addHistory_view = false;
     this.addVitals_view = false;
