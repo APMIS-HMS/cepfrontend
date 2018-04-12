@@ -119,12 +119,14 @@ export class PaymentComponent implements OnInit {
                 'isQuery': false
             }
         }).then((res: any) => {
+            console.log(res);
             this.systemModuleService.off();
             this.pendingBills = res.bills;
             console.log(this.pendingBills);
             this.totalAmountBilled = res.amountBilled;
             this.loadingPendingBills = false;
         }).catch(err => {
+            console.log(err);
             this.systemModuleService.off();
             this.loadingPendingBills = false;
             this._notification('Error', err);
@@ -134,6 +136,7 @@ export class PaymentComponent implements OnInit {
     private _getLocAmountAccrued() {
         this._locSummaryCashService.get(this.selectedFacility._id, {})
             .then(payload2 => {
+                console.log(payload2);
                 this.systemModuleService.off();
                 if (payload2 != null) {
                     if (payload2.barChartData !== undefined) {

@@ -4,14 +4,14 @@ import {
   EntityType,
   TransactionDirection,
   TransactionMedium
-} from "./../../../models/facility-manager/setup/wallet-transaction";
-import { SocketService, RestService } from "../../../feathers/feathers.service";
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs/Observable";
-import { Subject } from "rxjs/Subject";
-import { Person } from "../../../models/index";
-import { Http, Headers, RequestOptions } from "@angular/http";
-const request = require("superagent");
+} from './../../../models/facility-manager/setup/wallet-transaction';
+import { SocketService, RestService } from '../../../feathers/feathers.service';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { Person } from '../../../models/index';
+import { Http, Headers, RequestOptions } from '@angular/http';
+const request = require('superagent');
 
 @Injectable()
 export class PersonService {
@@ -35,9 +35,9 @@ export class PersonService {
     private _restService: RestService,
     private http: Http
   ) {
-    this._rest = _restService.getService("people");
-    this._socket = _socketService.getService("people");
-    this._personSocket = _socketService.getService("save-person");
+    this._rest = _restService.getService('people');
+    this._socket = _socketService.getService('people');
+    this._personSocket = _socketService.getService('save-person');
     this._fundWalletSocket = _socketService.getService('fund-wallet');
     this._fundWalletRest = _restService.getService('fund-wallet');
     this._socket.timeout = 30000;

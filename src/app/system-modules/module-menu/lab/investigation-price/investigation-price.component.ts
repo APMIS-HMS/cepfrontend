@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {
   FacilitiesService, InvestigationService, WorkbenchService, ServicePriceService, TagService
- } from '../../../../services/facility-manager/setup/index';
+} from '../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
 import { Location } from '../../../../models/index'
-import { Facility, MinorLocation, Employee, Tag, FacilityServicePrice, User} from '../../../../models/index';
+import { Facility, MinorLocation, Employee, Tag, FacilityServicePrice, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
@@ -38,6 +38,7 @@ export class InvestigationPriceComponent implements OnInit {
   Active = false;
   mainErr = true;
   errMsg = 'you have unresolved errors';
+  searchOpen = false;
 
   public frmNewPrice: FormGroup;
   selelctedFacility: Facility = <Facility>{};
@@ -57,6 +58,8 @@ export class InvestigationPriceComponent implements OnInit {
   foundPrice: Boolean = false;
   selectedMajorLocation: any;
 
+  searchControl = new FormControl('');
+
   constructor(private formBuilder: FormBuilder, private locker: CoolLocalStorage,
     private investigationService: InvestigationService, private workbenchService: WorkbenchService,
     private facilityPriceService: ServicePriceService, private tagService: TagService,
@@ -65,16 +68,18 @@ export class InvestigationPriceComponent implements OnInit {
     private _authFacadeService: AuthFacadeService,
     private _systemModuleService: SystemModuleService
   ) {
+    this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.user = <User>this.locker.getObject('auth');
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.loginEmployee = res;
       this.getLaboratoryMajorLocation(this.loginEmployee);
-    }).catch(err => {});
+      this.getWorkBenches();
+      this.getTags();
+      this.getInvestigations();
+    }).catch(err => { });
   }
 
   ngOnInit() {
-    this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.user = <User> this.locker.getObject('auth');
-    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.frmNewPrice = this.formBuilder.group({
       price: ['', [Validators.required]],
       investigation: ['', [Validators.required]],
@@ -110,9 +115,34 @@ export class InvestigationPriceComponent implements OnInit {
       }
     })
 
-    this.getWorkBenches();
-    this.getTags();
-    this.getInvestigations();
+    this.searchControl.valueChanges
+      .debounceTime(400)
+      .distinctUntilChanged()
+      .subscribe(payload => {
+        this.investigations = []
+        this.loading = true;
+        if (!!this.checkingObject.minorLocationObject && !!this.checkingObject.minorLocationObject._id) {
+          this.investigationService.find({
+            query: {
+              'facilityId': this.selelctedFacility._id,
+              'LaboratoryWorkbenches.laboratoryId._id': this.checkingObject.minorLocationObject._id,
+              name: { $regex: payload, '$options': 'i' },
+              $sort: { createdAt: -1 }
+              // "LaboratoryWorkbenches": { $elemMatch: { 'laboratoryId._id': this.checkingObject.minorLocationObject._id } }
+            }
+          }).then(res => {
+            this.loading = false;
+            if (res.data.length > 0) {
+              this.investigations = res.data;
+            }
+          }).catch(err => {
+            console.log(err);
+          });
+        } else {
+          this.loading = false;
+        }
+      });
+
   }
 
   private _getLoginEmployee(loginEmployee, majorLocationId) {
@@ -127,22 +157,31 @@ export class InvestigationPriceComponent implements OnInit {
     }
   }
 
+  openSearch() {
+    this.searchOpen = !this.searchOpen;
+  }
+
   getInvestigations() {
-    if (this.checkingObject !== undefined && this.checkingObject.type !== undefined && this.checkingObject.type.length  > 0){
+    console.log(this.checkingObject);
+    // if (this.checkingObject !== undefined && this.checkingObject.type !== undefined && this.checkingObject.type.length > 0) {
+    if (!!this.checkingObject.minorLocationObject && !!this.checkingObject.minorLocationObject._id) {
       this.investigationService.find({
         query: {
           'facilityId': this.selelctedFacility._id,
-          'LaboratoryWorkbenches.laboratoryId._id': this.checkingObject.typeObject.minorLocationObject._id,
+          'LaboratoryWorkbenches.laboratoryId._id': this.checkingObject.minorLocationObject._id,
           $sort: { createdAt: -1 }
-          // "LaboratoryWorkbenches": { $elemMatch: { 'laboratoryId._id': this.checkingObject.typeObject.minorLocationObject._id } }
+          // "LaboratoryWorkbenches": { $elemMatch: { 'laboratoryId._id': this.checkingObject.minorLocationObject._id } }
         }
       }).then(res => {
         this.loading = false;
+        console.log(res);
         if (res.data.length > 0) {
           this.investigations = res.data;
         }
-      })
-    }else{
+      }).catch(err => {
+        console.log(err);
+      });
+    } else {
       this.loading = false;
     }
   }
@@ -154,22 +193,37 @@ export class InvestigationPriceComponent implements OnInit {
     });
   }
   getTags() {
-    this.checkingObject = this.locker.getObject('workbenchCheckingObject');
+    if (!!this.loginEmployee.workbenchCheckIn && this.loginEmployee.workbenchCheckIn.length > 0) {
+      const checkinObj = this.loginEmployee.workbenchCheckIn.filter(x => x.isOn === true);
+      if (checkinObj.length > 0) {
+        this.checkingObject = checkinObj[0];
+        this.tagService.find({
+          query: {
+            tagType: 'Laboratory Location', name: this.checkingObject.minorLocationObject.name
+          }
+        }).then(res => {
+          if (res.data.length > 0) {
+            this.selectedTag = res.data[0];
+          }
+        });
+      }
+    }
+    /* this.checkingObject = this.locker.getObject('workbenchCheckingObject');
     if (this.checkingObject.typeObject !== undefined) {
       this.tagService.find({ query: {
-        tagType: 'Laboratory Location', name: this.checkingObject.typeObject.minorLocationObject.name }
+        tagType: 'Laboratory Location', name: this.checkingObject.minorLocationObject.name }
       }).then(res => {
         if (res.data.length > 0) {
           this.selectedTag = res.data[0];
         }
       });
-    }
+    } */
   }
 
   getLaboratoryFromInvestigation(labworkBenches) {
     let retVal = '';
     const labIndex = labworkBenches.forEach(item => {
-      if (item.laboratoryId._id === this.checkingObject.typeObject.minorLocationObject._id) {
+      if (item.laboratoryId._id === this.checkingObject.minorLocationObject._id) {
         retVal = item.laboratoryId.name
       }
     });
@@ -230,7 +284,7 @@ export class InvestigationPriceComponent implements OnInit {
 
         if (!!this.selectedTag._id) {
           if (item.tagId === this.selectedTag._id && this.selectedTag.tagType === 'Laboratory Location'
-            && this.selectedTag.name === this.checkingObject.typeObject.minorLocationObject.name) {
+            && this.selectedTag.name === this.checkingObject.minorLocationObject.name) {
             this.foundPrice = true;
             this.selectedModifier = item;
             this.selectedModifierIndex = i;
@@ -252,7 +306,7 @@ export class InvestigationPriceComponent implements OnInit {
 
   }
   setPrice(valid, value) {
-    this.loading = true;
+    this.priceLoading = true;
     if (valid) {
       if (this.selectedTag.tagDetails !== undefined) {
         delete this.selectedTag.tagDetails;
@@ -270,13 +324,13 @@ export class InvestigationPriceComponent implements OnInit {
 
       const isLabExisting = false;
       let labCollectionObject: any;
-      const labIndex = this.selectedInvestigation.LaboratoryWorkbenches.findIndex(x => x.laboratoryId._id === this.checkingObject.typeObject.minorLocationObject._id);
+      const labIndex = this.selectedInvestigation.LaboratoryWorkbenches.findIndex(x => x.laboratoryId._id === this.checkingObject.minorLocationObject._id);
 
       if (labIndex === -1) {
         // is not existing
         // create a new collection object;
         labCollectionObject = {
-          laboratoryId: this.checkingObject.typeObject.minorLocationObject,
+          laboratoryId: this.checkingObject.minorLocationObject,
           workbenches: [{ workBench: this.selectedWorkBench, price: value.price }],
         }
         this.selectedInvestigation.LaboratoryWorkbenches.push(labCollectionObject);
@@ -284,17 +338,17 @@ export class InvestigationPriceComponent implements OnInit {
         // is existing
         labCollectionObject = this.selectedInvestigation.LaboratoryWorkbenches[labIndex];
         const index = labCollectionObject.workbenches.findIndex(x => x.workBench._id === this.selectedWorkBench._id);
-        if(index === -1){
+        if (index === -1) {
           labCollectionObject.workbenches.push({ workBench: this.selectedWorkBench, price: value.price });
           this.selectedInvestigation.LaboratoryWorkbenches[labIndex] = labCollectionObject;
-        }else{
+        } else {
           labCollectionObject.workbenches[index].price = value.price;
           this.selectedInvestigation.LaboratoryWorkbenches[labIndex] = labCollectionObject;
         }
-        
+
         // labCollectionObject.workbenches[index].price = this.frmNewPrice.controls['price'].value;
         // labCollectionObject.price = this.frmNewPrice.controls['price'].value;
-        
+
       }
 
       const updateInvestigation$ = Observable.fromPromise(this.investigationService.update(this.selectedInvestigation));
@@ -310,7 +364,6 @@ export class InvestigationPriceComponent implements OnInit {
         this.getInvestigations();
         this.pricing_view = false;
         this._systemModuleService.announceSweetProxy('Price has been set/updated successfully!', 'success', null, null, null, null, null, null, null);
-        this.priceLoading = false;
       });
 
       // this.facilityPriceService.update(this.selectedFacilityServicePrice).then(payload => {
@@ -336,9 +389,9 @@ export class InvestigationPriceComponent implements OnInit {
 
   private _notification(type: string, text: string): void {
     this._facilityService.announceNotification({
-        users: [this.user._id],
-        type: type,
-        text: text
+      users: [this.user._id],
+      type: type,
+      text: text
     });
   }
 }
