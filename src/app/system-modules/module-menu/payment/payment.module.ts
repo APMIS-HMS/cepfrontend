@@ -16,6 +16,7 @@ import { BillGroupComponent } from './bill-lookup/bill-group/bill-group.componen
 import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { MakePaymentComponent } from './make-payment/make-payment.component';
 import { ChartsModule } from 'ng2-charts';
+import { FundWalletComponent } from './bill-lookup/fund-wallet/fund-wallet.component';
 
 
 @NgModule({
@@ -31,12 +32,13 @@ import { ChartsModule } from 'ng2-charts';
         BillLookupComponent,
         BillGroupComponent,
         MakePaymentComponent,
+        FundWalletComponent,
     ],
 
     exports: [
     ],
     imports: [
-        // SharedModule,
+        SharedModule,
         OnlyMaterialModule,
         MaterialModule,
         // CommonModule,

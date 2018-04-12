@@ -13,12 +13,8 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
   styleUrls: ['./bill-lookup.component.scss']
 })
 export class BillLookupComponent implements OnInit {
-
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
-
-  // fundAmount: FormControl;
-
-  public frmBillLookup: FormGroup;
+  frmBillLookup: FormGroup;
   itemEdit = new FormControl('', [Validators.required, <any>Validators.pattern('/^\d+$/')]);
   itemQtyEdit = new FormControl('', [Validators.required, <any>Validators.pattern('/^\d+$/')]);
   txtSelectAll = new FormControl('', []);
@@ -39,15 +35,11 @@ export class BillLookupComponent implements OnInit {
   itemEditShow3 = false;
   selectAll = false;
   isProcessing = false;
-
   recentBillModelId;
-
   cat1 = false;
   cat2 = false;
   cat3 = false;
-
   makePayment_modal = false;
-
   selectedPatient: any = <any>{};
   selectedFacility: Facility = <Facility>{};
   selectedBillItem: BillModel = <BillModel>{};
