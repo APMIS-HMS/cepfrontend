@@ -99,7 +99,7 @@
                                 <div>{{selectedPatient?.personDetails?.email}}</div>
                                 <div>{{selectedPatient?.personDetails?.phoneNumber}}</div>
                                 <button mat-raised-button style="color:#fff" (click)="fundWallet_pop()">Fund Wallet</button>
-                                
+
                             </div>
                         </div>
                         <div>
@@ -231,54 +231,7 @@
             <legend class="modal_title">Fund Wallet</legend>
             <div class="modal_mini_title">All Purpose Medical Information System</div>
         </div>
-        <div class="modal-baseWrap">
-            <div class="row">
-                <div class="col-md-4">
-                    <mat-input-container>
-                        <input matInput placeholder="Amount" >
-                    </mat-input-container>
-                    <mat-form-field>
-                        <mat-select placeholder="Payment Type" class="mat-select">
-                            <mat-option>Flutterwave</mat-option>
-                            <mat-option>Paystack</mat-option>
-                            <mat-option>Cash</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <br><br><br>
-                    <button mat-raised-button style="width:100%; padding: 10px; color:#fff; margin-left:10px;">
-                        Pay
-                    </button>
-                </div>
-                <div class="col-md-1">
-
-                </div>
-                <div class="col-md-7">
-                    <div class="row">
-                            <div class="col-xs-8">
-                                    <h4 style="color: grey">Description</h4>
-                                </div>
-                                <div class="col-xs-2">
-                                    <h4 style="color: grey">Status</h4>    
-                                </div>
-                                <div class="col-xs-2">
-                                    <h4 style="color: grey">Amount</h4>
-                                </div>
-                    </div>
-                    <div class="row">
-                            <div class="col-xs-8">
-                                    <h2>Sample Description for payment</h2>
-                                </div>
-                                <div class="col-xs-2">                        
-                                    <h2  style="color: red">Debit</h2>
-                                </div>
-                                <div class="col-xs-2">
-                                    <h2>10,000</h2>
-                                </div>
-                    </div>
-                </div>
-                
-            </div>
-        </div>
+        <app-fund-wallet [patient]="selectedPatient"></app-fund-wallet>
     </div>
 </div>
 

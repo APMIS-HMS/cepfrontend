@@ -37,7 +37,7 @@
             <div *ngIf="paystackPayment">
                 <angular4-paystack [key]="paystackClientKey" [email]="patient.personDetails.email" [amount]="paymentFormGroup.controls[ 'fundAmount'].value*100" [ref]="refKey" [class]=" 'btn btn-primary btn-medium btn-blue' " (close)="paymentCancel() " (callback)="paymentDone($event) ">Paystack</angular4-paystack>
             </div>
-            <div>
+            <div *ngIf="cashPayment">
                 <button (click)="fundWalletViaCashPayment(paymentFormGroup.valid, paymentFormGroup.value); " [disabled]="disableBtn " class="btn btn-primary ">
                   <span *ngIf="cashPaymentPay ">Pay</span>
                   <span *ngIf="cashPaymentPaying ">Paying... <i class="fa fa-spinner fa-spin "></i></span>
