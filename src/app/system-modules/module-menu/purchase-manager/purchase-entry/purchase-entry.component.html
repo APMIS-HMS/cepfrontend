@@ -50,7 +50,7 @@
                             <div class="prod-wrap">
 
                                 <div class="inputWrap-productDetail row">
-                                    <div (click)="removeProduct(i, schedule)" class="modal-close-ico" aria-hidden="true">
+                                    <div (click)="removeProduct(i, productTableForm.controls['productTableArray'].controls)" class="modal-close-ico" aria-hidden="true">
                                         <i class="fa fa-close fa-fw"></i>
                                     </div>
 
@@ -64,11 +64,11 @@
                                     </mat-input-container>
 
                                     <mat-input-container class="col-md-3">
-                                        <input [step]="0.01" (change)="getCostSummary(schedule)" matInput mat-error placeholder="Cost Price" formControlName="costPrice">
+                                        <input [step]="0.01" (change)="getCostSummary(i,productTableForm.controls['productTableArray'].controls)" matInput mat-error placeholder="Cost Price" formControlName="costPrice">
                                     </mat-input-container>
 
                                     <mat-input-container class="col-md-3">
-                                        <input type="number" (change)="getCostSummary(schedule)" matInput mat-error placeholder="Quantity" formControlName="qty"
+                                        <input type="number" (change)="getCostSummary(i,productTableForm.controls['productTableArray'].controls)" matInput mat-error placeholder="Quantity" formControlName="qty"
                                             readonly>
                                     </mat-input-container>
 
@@ -78,18 +78,21 @@
                                                             <input type="number" formControlName="size" min="1" (change)="onPackageSize(i)" matInput placeholder="{{item.value.name}}">
                                                         </mat-input-container>
                                                     </div>-->
-                                        <div class="row col-md-3" [formGroupName]="k" *ngFor="let itm of schedule.controls.orders.value;let k = index">
+                                        <div class="row col-md-3" [formGroupName]="k" *ngFor="let itm of schedule.controls.config.controls;let k = index">
                                             <mat-input-container class="col-md-4">
-                                                <input type="number" matInput mat-error>
+                                                <input type="number" min="1" [readonly]="itm.value.packItem === null" matInput mat-error formControlName="size" (change)="onPackageSize(i,productTableForm.controls['productTableArray'].controls)">
                                             </mat-input-container>
                                             <mat-form-field class="col-md-6">
-                                                <mat-select placeholder="Select Packsize">
-                                                    <mat-option>None</mat-option>
-                                                    <mat-option [value]="item" *ngFor="let item of schedule.controls.config.value;let j = index">{{item.name}}</mat-option>
+                                                <mat-select placeholder="Select Packsize" formControlName="packItem" [compareWith]="compareItems">
+                                                    <mat-option disabled="">None</mat-option>
+                                                    <mat-option [value]="item._id" *ngFor="let item of itm.value.packsizes">
+                                                            <span>{{item.name}}</span>
+                                                    </mat-option>
                                                 </mat-select>
                                             </mat-form-field>
-                                            <i *ngIf ="schedule.controls.orders.value.length === k+1 && schedule.controls.config.value.length !=schedule.controls.orders.value.length" class="col-md-2 fa fa-fw fa-plus" (click)="onAddPackSize(schedule)"></i>
-                                            <i class="fa fa-close fa-fw" (click)="onRemovePack(schedule,k)"></i>
+                                            <i *ngIf="itm.value.packsizes.length !== k+1 && schedule.controls.config.controls.length===k+1" class="col-md-2 fa fa-fw fa-plus"
+                                                (click)="onAddPackSize(itm.value.packsizes,schedule)"></i>
+                                            <i class="fa fa-close fa-fw" *ngIf="schedule.controls.config.controls.length > 1" (click)="onRemovePack(schedule,productTableForm.controls['productTableArray'].controls,k,i)"></i>
                                         </div>
                                     </div>
 
@@ -157,9 +160,9 @@
             <mat-checkbox [formControl]="expired">Expired</mat-checkbox>
         </div>
         <div class="control-group" style="width:100%" *ngFor="let group of superGroups">
-            <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
+            <label *ngFor="let item of group;let j=index" class="control control--checkbox">{{item.name}}
                 <div class="control__indicator">
-                    <mat-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></mat-checkbox>
+                    <mat-checkbox (change)="onProductCheckChange($event,item,j)" [checked]="item.checked"></mat-checkbox>
                 </div>
             </label>
         </div>
