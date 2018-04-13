@@ -1048,13 +1048,11 @@ export class ScheduleFrmComponent implements OnInit {
           this.selectedClinicSchedule = schedule;
         }else{
           if(((scheduleStartHour > currentHour) || (scheduleEndHour < currentHour))){
-            console.log('in now');
             this.dateCtrl.setErrors({ noValue: true });
             this.dateCtrl.markAsTouched();
             this.checkIn.disable();
             this.checkIn.setValue(false);
           }else{
-            console.log('not in now');
             this.date = setHours(this.date, getHours(schedule.startTime));
             this.date = setMinutes(this.date, getMinutes(schedule.startTime));
             this.startDate = setHours(this.startDate, getHours(schedule.startTime));

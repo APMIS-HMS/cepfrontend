@@ -144,14 +144,11 @@ export class DashboardHomeComponent implements OnInit {
   getUserRoles() {
     this.authFacadeService.getUserAccessControls(true).then(payload => {
       this.access = payload;
-      console.log(payload);
     }, error => {
-      console.dir(error)
     })
   }
   accessHas(menu) {
     const modules: any = this.access.modules;
-    // console.log(modules);
     if (modules !== undefined) {
       const index = modules.findIndex(x => x.route.substring(1) === (menu.toLowerCase()));
       return (index > -1 || DONT_USE_AUTH_GUARD);

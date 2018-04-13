@@ -162,7 +162,6 @@ export class InvestigationPriceComponent implements OnInit {
   }
 
   getInvestigations() {
-    console.log(this.checkingObject);
     // if (this.checkingObject !== undefined && this.checkingObject.type !== undefined && this.checkingObject.type.length > 0) {
     if (!!this.checkingObject.minorLocationObject && !!this.checkingObject.minorLocationObject._id) {
       this.investigationService.find({
@@ -174,12 +173,10 @@ export class InvestigationPriceComponent implements OnInit {
         }
       }).then(res => {
         this.loading = false;
-        console.log(res);
         if (res.data.length > 0) {
           this.investigations = res.data;
         }
       }).catch(err => {
-        console.log(err);
       });
     } else {
       this.loading = false;

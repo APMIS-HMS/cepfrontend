@@ -88,15 +88,6 @@ export class WorkbenchComponent implements OnInit {
   }
   minorLocationDisplayFn(minor: any) {
     return minor ? minor.name : minor;
-    // if (typeof minor === 'string') {
-    //   console.log('string');
-    //   // console.log(this.minorLocations);
-    //   // const ml = this.minorLocations.filter(x => x._id === minor);
-    //   // console.log(ml);
-    //   return minor;
-    // } else {
-    //   return minor._id;
-    // }
   }
   close_onClick(message: boolean): void {
 
