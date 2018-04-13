@@ -1,3 +1,4 @@
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { Component, OnInit } from '@angular/core';
 import { SchedulerService, SchedulerTypeService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { ClinicModel, Facility, Location, ScheduleRecordModel, User } from '../../../../models/index';
@@ -48,6 +49,7 @@ export class ClinicScheduleComponent implements OnInit {
     private locationService: LocationService,
     private locker: CoolLocalStorage,
     private schedulerTypeService: SchedulerTypeService,
+    private systemModuleService:SystemModuleService,
     private schedulerService: SchedulerService) {
   }
 
@@ -228,6 +230,7 @@ export class ClinicScheduleComponent implements OnInit {
 
       this.schedulerService.update(this.selectedManager).then(payload => {
         this.selectedManager = payload;
+        this.systemModuleService.announceSweetProxy('Clinic Schedule has been updated successfully', 'success', null, null, null, null, null, null, null);
         this._notification('Success', 'Clinic Schedule has been updated successfully.');
         this.loadManagerSchedules(true);
       });
@@ -257,10 +260,12 @@ export class ClinicScheduleComponent implements OnInit {
         this.schedulerService.create(manager).then(payload => {
           this.selectedManager = payload;
           this._notification('Success', 'Clinic Schedule has been created successfully.');
+          this.systemModuleService.announceSweetProxy('Clinic Schedule has been created successfully', 'success', null, null, null, null, null, null, null);
           this.loadManagerSchedules(true);
         });
       } else {
         this._notification('Error', 'There was a problem getting Schedule type service. Please try again later.');
+        this.systemModuleService.announceSweetProxy('There was a problem getting Schedule type service. Please try again later.', 'error', null, null, null, null, null, null, null);
         this.getSchedulerType();
       }
     }

@@ -23,4 +23,7 @@ export interface Appointment {
     zoom: any;
     isEngaged:any;
     isCheckedOut:any;
+    patientDetails:any;
+    providerDetails:any;
+    hasDoneVital:any;
 }

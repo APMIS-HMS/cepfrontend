@@ -396,6 +396,7 @@ export class BillLookupComponent implements OnInit {
     }
   }
   onClickPatientPendingBill(pendingBill: any) {
+    console.log(pendingBill);
     this.router.navigate([`/dashboard/payment/bill/${pendingBill.patientId}`]);
     // this.selectedPatient = {};
     // this.selectedPatient._id = pendingBill.patientId;
