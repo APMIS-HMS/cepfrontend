@@ -34,25 +34,26 @@ class Service {
             modules: distinctModules,
             selectedFacility: selectedFacility
         };
+
     }
 
     async getDistinctModules(list) {
-        // const data = list;
-        // const result = Object.values(data.reduce((r, { moduleName, moduleId, route }) => (r[moduleName + '|' + moduleId + '|' + route] = { moduleName, moduleId, route }, r), {}));
-
         const dat = list.map(x => x.moduleId);
-        // const result = Object.values(dat.reduce((r) => (r), {}));
-        var a = [1, 1, 2];
-
         const result = Array.from(new Set(dat));
         const facilityModuleService = this.app.service('facility-modules');
-        const modules = await facilityModuleService.find({
-            query: {
-                _id: { $in: [...new Set(result)] },
-                $limit: 25
-            }
-        });
-        return modules.data;
+        try {
+            const modules = await facilityModuleService.find({
+                query: {
+                    _id: { $in: [...new Set(result)] },
+                    $limit: 25
+                }
+            });
+            return modules.data;
+        } catch (error) {
+            return error;
+        }
+
+
     }
 
     async get(id, params) {
