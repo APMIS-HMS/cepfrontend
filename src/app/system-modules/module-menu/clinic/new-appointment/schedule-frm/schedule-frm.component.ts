@@ -1011,13 +1011,33 @@ export class ScheduleFrmComponent implements OnInit {
         const scheduleEndHour = getHours(schedule.endTime);
         const currentHour = getHours(new Date());
         if(this.appointment._id === undefined){
-          this.date = setHours(this.date, getHours(schedule.startTime));
-          this.date = setMinutes(this.date, getMinutes(schedule.startTime));
-          this.startDate = setHours(this.startDate, getHours(schedule.startTime));
-          this.startDate = setMinutes(
-            this.startDate,
-            getMinutes(schedule.startTime)
-          );
+          //comment by me starday
+          // this.date = setHours(this.date, getHours(schedule.startTime));
+          // this.date = setMinutes(this.date, getMinutes(schedule.startTime));
+          // this.startDate = setHours(this.startDate, getHours(schedule.startTime));
+          // this.startDate = setMinutes(
+          //   this.startDate,
+          //   getMinutes(schedule.startTime)
+          // );
+          //end comment
+
+          //start new code here
+
+
+
+         
+
+          if(((scheduleStartHour < currentHour) && (scheduleEndHour > currentHour))){
+            this.date = new Date();
+              this.date = setHours(this.date, getHours(new Date()));
+              this.date = setMinutes(this.date, getMinutes(new Date()));
+              this.startDate = setHours(this.startDate, getHours(new Date()));
+              this.startDate = setMinutes(
+                this.startDate,
+                getMinutes(new Date())
+              );
+          }
+          //end new code here
           if(this.canCheckIn){
             this.checkIn.enable();
           }else{
@@ -1061,6 +1081,7 @@ export class ScheduleFrmComponent implements OnInit {
       }
     }
   }
+
   dateChange(event) {
     const dayNum = getDay(event);
     const day = this.days[dayNum];

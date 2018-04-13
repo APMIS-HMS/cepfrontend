@@ -25,6 +25,7 @@ import { map } from 'rxjs/operators/map';
 import { EMAIL_REGEX, PHONE_REGEX, ALPHABET_REGEX, HTML_SAVE_PATIENT } from 'app/shared-module/helpers/global-config';
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 
+
 @Component({
     selector: 'app-new-patient',
     templateUrl: './new-patient.component.html',
@@ -76,6 +77,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     tabInsurance = false;
     tabCompany = false;
     tabFamily = false;
+
+    dtob;
 
     newEmpIdControl = new FormControl('', Validators.required);
     public frmNewEmp1: FormGroup;
@@ -704,49 +707,38 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
         this.hmoService.find({ query: { 'facilityId': this.facility._id } }).then(payload => {
             if (payload.data.length > 0) {
-                console.log('facility Insurance');
                 const facHmo = payload.data[0];
                 const index = facHmo.hmos.findIndex(x => x.hmo === this.hmo.hmoId);
                 if (index > -1) {
-                    console.log('first if');
                     if (facHmo.hmos[index].enrolleeList.length > 0) {
-                        console.log('second If');
                         const bene = [];
                         for (let s = 0; s < facHmo.hmos[index].enrolleeList.length; s++) {
                             const hmo = facHmo.hmos[index].hmo;
                             bene.push(...facHmo.hmos[index].enrolleeList[s].enrollees);
                         }
                         const fil = bene.filter(x => x.filNo === insuranceId);
-                        console.log(fil);
 
                         this.frmPerson.controls['gender'].disable();
                         if (fil.length > 0) {
-                            console.log('fil length');
                             if (fil[0].status === false) {
-                                console.log('fil status');
                                 this.systemModuleService.off();
                                 const text = 'Insurance Id does not have an active status for the selected HMO';
                                 this.errMsg = text;
                                 this.mainErr = false;
-                                console.log(text);
                                 this.systemModuleService
                                     .announceSweetProxy(text, 'error');
                             } else {
-                                console.log('second else');
                                 if (this.shouldMoveFirst === true) {
                                     this.saveInsurancePerson();
                                 } else {
-                                    console.log('third else');
                                     this.systemModuleService.off();
                                     this.frmPerson.controls['firstname'].setValue(fil[0].firstname.toString());
                                     this.frmPerson.controls['firstname'].disable();
                                     this.frmPerson.controls['lastname'].setValue(fil[0].surname.toString());
                                     this.frmPerson.controls['lastname'].disable();
                                     if (fil[0].gender.toLowerCase() === 'm' || fil[0].gender.toLowerCase() === 'male') {
-                                        console.log('third If');
                                         this.frmPerson.controls['gender'].setValue('Male');
                                     } else {
-                                        console.log('else');
                                         this.frmPerson.controls['gender'].setValue('Female');
                                     }
                                     this.frmNewEmp4_show = false;
@@ -758,12 +750,10 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                                 }
                             }
                         } else {
-                            console.log('big else');
                             this.systemModuleService.off();
                             const text = 'Insurance Id does not exist for the selected HMO';
                             this.errMsg = text;
                             this.mainErr = false;
-                            console.log(text);
                             this.systemModuleService
                                 .announceSweetProxy(text, 'error');
                         }

@@ -1,6 +1,6 @@
         @import "../../../../../globals/variables.scss";
-        @import "../../patient-manager/patientmanager-homepage/patientmanager-homepage.component.scss";
-        @import "../../clinic/appointment/appointment.component.scss";
+        // @import "../../patient-manager/patientmanager-homepage/patientmanager-homepage.component.scss";
+        // @import "../../clinic/appointment/appointment.component.scss";
         .empWrapp {
             display: flex;
             justify-content: flex-start;
@@ -196,11 +196,7 @@
                 display: block;
             }
         }
-        
-        .padding {
-            padding: 20px;
-        }
-        
+                
         .title {
             margin-top: 30px;
             font-weight: bold;
@@ -239,116 +235,4 @@
             overflow: unset!important;
         }
         
-        //.inner-page-contentArea {
-        //padding: 0 ! important;
-        //}
-        //.inPatients {
-        //   border: none;
-        // .filter-box {
-        //    padding: 10px 0;
-        //   .filter {
-        // width: 130px;
-        //}
-        // }
-        // .patient-img {
-        //  img {
-        //     height: 50px;
-        //     width: 50px;
-        //     border-radius: 50%;
-        //  }
-        // }
-        // .patient-sex {
-        //     text-align: left;
-        // }
-        // .actionWrap {
-        //    border: 1px solid #ddd;
-        //   padding: 2px 5px;
-        //  cursor: pointer;
-        //  border-radius: 7px;
-        // margin-right: 10px;
-        // }
-        // .actionWrap:hover {
-        //    background: #ddd;
-        // }
-        //.filter-select {
-        //    border: 1px solid #eee;
-        //  border-radius: 10px;
-        //display: block;
-        //padding: 4px;
-        //width: 150px;
-        //margin: 5px;
-        // }
-        // .table-content {
-        //   padding: 10px;
-        // text-align: center;
-        //&:hover {
-        // cursor: pointer;
-        //}
-        //}
-        // .btn-1 {
-        //     padding: 5px;
-        //     margin: 5px auto;
-        // }
-        // table {
-        //     thead {
-        //         background-color: #AED6F1;
-        //     }
-        //     tbody {
-        //         border: 1px solid #ddd !important;
-        //         tr {
-        //             td {
-        //                 padding: 8px;
-        //                 line-height: 1.42857143;
-        //             }
-        //             .tbl-actionRow {
-        //                 justify-content: space-around;
-        //                 padding: 20px 0;
-        //             }
-        //             .tbl-actionRow .tbl-title {
-        //                 position: relative;
-        //                 left: auto;
-        //             }
-        //             .tbl-actionRow .tbl-search {
-        //                 position: relative;
-        //                 right: auto;
-        //             }
-        //         }
-        //         .tr-header-group {
-        //             background-color: #0288D1;
-        //             color: #fff;
-        //             &:hover {
-        //                 cursor: pointer;
-        //             }
-        //         }
-        //         .details-link {
-        //             &:hover {
-        //                 // background-color: #ccc;
-        //                 cursor: pointer;
-        //             }
-        //         }
-        //     }
-        // }
-        //}
-        //.modal-overlay {
-        //   position: fixed;
-        // top: 0;
-        //left: 0;
-        //}
-        //.mat-input-wrapper {
-        //  padding-bottom: 2.19688em;
-        //}
-        //.topFilters {
-        // display: flex;
-        //justify-content: flex-end;
-        //}
-        //.filter-title {
-        // position: absolute;
-        // left: 0;
-        // top: -14px;
-        //color: #8e8e8e;
-        //font-size: 1rem;
-        //}
-        //.tr-act-btn {
-        //  width: auto;
-        // margin: 0;
-        //}
+       

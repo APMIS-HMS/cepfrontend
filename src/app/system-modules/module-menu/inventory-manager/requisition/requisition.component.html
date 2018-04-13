@@ -26,25 +26,40 @@
                     </div>
                     <div class="col-sm-4">
                       <h2>
-                          {{schedule.value.qty}} {{getProductConfig(schedule)[0].value.name}}<span *ngIf="schedule.value.qty > 1">s</span> 
-                          &nbsp;&nbsp; 
-                          <i (click)="toggleProductConfig(i)" 
-                          style="color:#5088d1; cursor: pointer;" 
-                          class="fa fa-fw fa-pencil"></i>
+                          {{schedule.value.qty}} {{getBaseProductConfig(schedule)}}
+                          <span *ngIf="schedule.value.qty > 1">(s)</span>
                       </h2>
                     </div>
                   </div>
-                  <div id="quan{{i}}" class="inputWrap-productDetail no-display">
+                  <div class="inputWrap-productDetail">
                   <div (click)="removeProduct(i, schedule.value)" class="modal-close-ico fa fa-close fa-fw" aria-hidden="true"></div>
                     <div class="row" style="display:none">
                       <mat-input-container class="col-xs-12">
                         <input type="number" min="0" matInput mat-error placeholder="Quantity" formControlName="qty" readonly>
                       </mat-input-container>
                     </div>
-                    <div class="row" formArrayName="config">
+                    <!-- <div class="row" formArrayName="config">
                       <mat-input-container class="col-sm-{{12/getProductConfig(schedule).length}}" [formGroupName]="j" *ngFor="let item of getProductConfig(schedule); let j = index">
                         <input type="number" formControlName="size" min="1" (change)="onPackageSize(i)" matInput placeholder="{{item.value.name}}">
                       </mat-input-container>
+                    </div> -->
+                    <div class="row example-full-width" formArrayName="config">
+                        <div class="row col-md-3" [formGroupName]="k" *ngFor="let itm of schedule.controls.config.controls;let k = index">
+                            <mat-input-container class="col-md-4">
+                                <input type="number" min="1" [readonly]="itm.value.packItem === null" matInput mat-error formControlName="size" (change)="onPackageSize(i,productTableForm.controls['productTableArray'].controls)">
+                            </mat-input-container>
+                            <mat-form-field class="col-md-6">
+                                <mat-select placeholder="Select Packsize" formControlName="packItem" [compareWith]="compareItems">
+                                    <mat-option disabled="">None</mat-option>
+                                    <mat-option [value]="item._id" *ngFor="let item of itm.value.packsizes">
+                                        <span>{{item.name}}</span>
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                            <i *ngIf="itm.value.packsizes.length !== k+1 && schedule.controls.config.controls.length===k+1" class="col-md-2 fa fa-fw fa-plus"
+                                (click)="onAddPackSize(itm.value.packsizes,schedule)"></i>
+                            <i class="fa fa-close fa-fw" *ngIf="schedule.controls.config.controls.length > 1" (click)="onRemovePack(schedule,productTableForm.controls['productTableArray'].controls,k,i)"></i>
+                        </div>
                     </div>
                   </div>
                 </div>

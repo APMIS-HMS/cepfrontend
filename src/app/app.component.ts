@@ -102,6 +102,7 @@ export class AppComponent implements OnInit {
       this.router.navigate(['/']);
       this.locker.clear();
       window.localStorage.clear();
+      this.loadingService.complete();
     });
   }
   processNotification(obj) {

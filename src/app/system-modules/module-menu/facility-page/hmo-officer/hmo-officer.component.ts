@@ -40,7 +40,6 @@ export class HmoOfficerComponent implements OnInit {
         'billItems.covered.coverType': 'insurance'
       }
     }).then(payload => {
-      console.log(payload);
       payload.data.forEach(element => {
         const index = element.billItems.filter(x => x.covered.isVerify !== undefined);
         if (index.length === 0) {
@@ -50,7 +49,6 @@ export class HmoOfficerComponent implements OnInit {
         }
       });
       this.bills = payload.data.filter(x => x.isPending === true );
-      console.log(this.bills);
       this.historyBills = payload.data.filter(x => x.isPending === false);
     });
   }

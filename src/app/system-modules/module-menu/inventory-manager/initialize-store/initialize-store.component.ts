@@ -130,16 +130,12 @@ export class InitializeStoreComponent implements OnInit {
     }
   }
   initProductConfig(config) {
-    console.log(config);
     let frmArray = new FormArray([])
-    config.forEach(item => {
-      frmArray.push(new FormGroup({
-        size: new FormControl(0),
-        name: new FormControl(item.name),
-        isBase: new FormControl(item.isBase),
-        packVolume: new FormControl(item.size)
-      }));
-    })
+    frmArray.push(new FormGroup({
+      size: new FormControl(0),
+      packsizes: new FormControl(config),
+      packItem: new FormControl()
+    }));
     return frmArray;
   }
   getProductConfig(form) {
@@ -148,6 +144,11 @@ export class InitializeStoreComponent implements OnInit {
   removeBatch(i: number) {
     const control = <FormArray>this.myForm.controls['initproduct'];
     control.removeAt(i);
+    let indx = i;
+      if(i > 0){
+        indx = i-1;
+      }
+    this.onPackageSize(indx,(<FormArray>this.myForm.controls['initproduct']).controls)
   }
 
   getProducts() {
@@ -156,13 +157,28 @@ export class InitializeStoreComponent implements OnInit {
     });
   }
 
-  onPackageSize(i) {
-    (<FormArray>this.myForm['controls'].initproduct['controls'][i]).value.quantity = 0;
-    console.log(<FormArray>this.myForm['controls'].initproduct['controls'][i]);
-    let itm = <FormArray>this.myForm['controls'].initproduct['controls'][i].value.config.forEach(element => {
-      (<FormArray>this.myForm['controls'].initproduct['controls'][i]).value.quantity += element.size * element.packVolume;
+  onPackageSize(i,packs) {
+    packs[i].controls.quantity.setValue(0);
+    packs[i].controls.config.controls.forEach(element => {
+      packs[i].controls.quantity.setValue(packs[i].controls.quantity.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
     });
-    (<FormArray>this.myForm.controls['initproduct']).setValue(JSON.parse(JSON.stringify((<FormArray>this.myForm.controls['initproduct']).value)));
+  }
+
+  compareItems(l1: any, l2: any) {
+    return l1.includes(l2);
+  }
+
+  onAddPackSize(pack, form) {
+    form.controls.config.controls.push(new FormGroup({
+      size: new FormControl(0),
+      packsizes: new FormControl(pack),
+      packItem: new FormControl()
+    }));
+  }
+
+  onRemovePack(pack, form, k, index) {
+    pack.controls.config.removeAt(k);
+    this.onPackageSize(index, form);
   }
 
 

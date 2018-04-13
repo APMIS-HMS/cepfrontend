@@ -70,7 +70,6 @@ export class FamilyBillDetailComponent implements OnInit {
         _selectedBill.billItems[0].covered.coverType = "wallet";
         _selectedBill.billItems[0].isBearerConfirmed = true;
         this.billingService.create(_selectedBill).then(payload2 => {
-          console.log(payload2);
           const indx = payload2.principalObject.paymentPlan.filter(x => x.planType === 'wallet');
           if (indx.length > 0) {
             indx[0].bearerPersonId =  index[0].patientObject.personDetails._id;

@@ -22,6 +22,7 @@ export class RightTabComponent implements OnInit {
     allergiesLoading: boolean;
     problemLoading: boolean;
 
+    @Output() addTag: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() addProblem: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() addAllergy: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Output() addHistory: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -199,6 +200,10 @@ export class RightTabComponent implements OnInit {
             .subscribe((payload: any) => {
                 this.futureAppointments = payload.data;
             })
+    }
+    addTags_show(){
+        console.log('tags');
+        this.addTag.emit(true);
     }
     addProblem_show() {
         this.addProblem.emit(true);

@@ -73,7 +73,6 @@ export class RequestDetailComponent implements OnInit {
       let index = payload.investigations.findIndex(x => x.investigation._id === this.investigation.investigationId);
       let _investigation = payload.investigations[index];
       this.localInvestigation = _investigation;
-      console.log(this.localInvestigation);
       this.localRequest = payload;
       if (this.localInvestigation.specimenReceived !== undefined && this.localInvestigation.specimenReceived === true) {
         this.hasSpecimen = true;
@@ -93,7 +92,6 @@ export class RequestDetailComponent implements OnInit {
   getIncomingRequestAndPatient(id) {
     this._laboratoryRequestService.get(id, {}).then(payload => {
       this.patientService.get(this.investigation.patientId, {}).then(patient => {
-        console.log(payload, patient);
         if (patient !== undefined) {
           this.selectedPatient = patient;
           if (this.selectedPatient.clientsNo === undefined) {
@@ -109,14 +107,12 @@ export class RequestDetailComponent implements OnInit {
         let requestIndex = payload.investigations.findIndex(x => x.investigation._id === this.investigation.investigationId);
         let _investigation = payload.investigations[requestIndex];
         this.localInvestigation = _investigation;
-        console.log(this.localInvestigation);
         this.localRequest = payload;
         if (this.localInvestigation.specimenReceived !== undefined && this.localInvestigation.specimenReceived === true || this.localInvestigation.sampleTaken !== undefined && this.localInvestigation.sampleTaken === true) {
           this.hasSpecimen = true;
         } else {
           this.hasSpecimen = false;
         }
-        console.log('Has Specimen : ', this.hasSpecimen);
         /* if (this.localInvestigation.sampleTaken !== undefined && this.localInvestigation.sampleTaken === true) {
           this.hasSample = true;
         } else {
@@ -166,7 +162,6 @@ export class RequestDetailComponent implements OnInit {
       this.localRequest = pay;
       this.hasSpecimen = true;
     }).catch(err => {
-      console.log(err);
     });
   }
   assignLabNo() {
