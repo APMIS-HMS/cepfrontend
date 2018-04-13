@@ -218,16 +218,32 @@ export class StockTransferComponent implements OnInit {
     this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
   }
 
+  getBaseProductConfig(form) {
+    if(form.controls.config.controls[0].value.packsizes !== null){
+      return form.controls.config.controls[0].value.packsizes.find(x => x.isBase === true).name;
+    }
+  }
+
+  onAddPackSize(pack, form) {
+    form.controls.config.controls.push(new FormGroup({
+      size: new FormControl(0),
+      packsizes: new FormControl(pack),
+      packItem: new FormControl()
+    }));
+  }
+
+  onRemovePack(pack, form, k, index) {
+    pack.controls.config.removeAt(k);
+    this.onPackageSize(index, form);
+  }
+
   initProductConfig(config) {
-    let frmArray = new FormArray([])
-    config.forEach(item => {
-      frmArray.push(new FormGroup({
-        size: new FormControl(0),
-        name: new FormControl(item.name),
-        isBase: new FormControl(item.isBase),
-        packVolume: new FormControl(item.size)
-      }));
-    })
+    let frmArray = new FormArray([]);
+    frmArray.push(new FormGroup({
+      size: new FormControl(0),
+      packsizes: new FormControl(config),
+      packItem: new FormControl()
+    }));
     return frmArray;
   }
 
@@ -235,14 +251,16 @@ export class StockTransferComponent implements OnInit {
     return form.controls.config.controls;
   }
 
-  onPackageSize(i) {
-    (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.totalCostPrice = 0;
-    (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.qty = 0;
-    <FormArray>this.productTableForm['controls'].productTableArray['controls'][i].value.config.forEach(element => {
-      (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.qty += element.size * element.packVolume;
+  onPackageSize(i, packs) {
+    packs[i].controls.totalCostPrice.setValue(0);
+    packs[i].controls.qty.setValue(0);
+    packs[i].controls.config.controls.forEach(element => {
+      if (element.value.packItem !== null) {
+        packs[i].controls.qty.setValue(packs[i].controls.qty.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
+      }
     });
-    (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.totalCostPrice =  (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.costPrice * (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.qty;
-    (<FormArray>this.productTableForm.controls['productTableArray']).setValue(JSON.parse(JSON.stringify((<FormArray>this.productTableForm.controls['productTableArray']).value)));
+    const subTotal = packs[i].controls.costPrice.value * packs[i].controls.qty.value;
+    packs[i].controls.totalCostPrice.setValue(subTotal);
   }
 
   onStoreChanged() {
@@ -277,37 +295,52 @@ export class StockTransferComponent implements OnInit {
       });
 
     } else {
-      // let indexToRemove = 0;
-      // (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
-      //   const productControlValue: any = (<any>item).controls['id'].value;
-      //   if (productControlValue === value._id) {
-      //     indexToRemove = i;
-      //   }
-      // });
       const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
       if (count === 1) {
         this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
       } else {
         (<FormArray>this.productTableForm.controls['productTableArray']).controls.splice(index, 1);
       }
+      console.log(index);
+      let indx = index;
+      if (index > 0) {
+        indx = index - 1;
+      }
+      this.onPackageSize(indx, (<FormArray>this.productTableForm.controls['productTableArray']).controls);
     }
   }
-  removeProduct(index, value) {
 
-    (<FormArray>this.productTableForm.controls['productTableArray']).removeAt(index);
-    
-    /* this.superGroups.forEach((parent, i) => {
+  compareItems(l1: any, l2: any) {
+    return l1.includes(l2);
+  }
+
+
+  removeProduct(index, form) {
+    console.log(index);
+    const value = form[index];
+    console.log('A');
+    this.superGroups.forEach((parent, i) => {
+      console.log('B');
       parent.forEach((group, j) => {
-        if (group._id === value.id) {
+        console.log('C');
+        console.log(value.value.productObject._id, group._id);
+        if (group._id === value.value.productObject._id) {
+          console.log('D');
           group.checked = false;
+          console.log('E');
           this.onProductCheckChange({ checked: false }, value, index);
-          const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
-          if (count === 1) {
+          console.log('F');
+          const count = form.length;
+          console.log('G');
+          if (count === 0) {
+            console.log('H');
             this.addNewProductTables();
+            console.log('I');
           }
         }
       });
-    }); */
+    });
+    // this.onPackageSize(index, form);
   }
   getProductQuantity($event, value, index) {
     this.selectedTransactionId = $event.value;
@@ -359,6 +392,7 @@ export class StockTransferComponent implements OnInit {
   }
   splitProduct($event, value, index, productId) {
     const product = (<FormArray>this.productTableForm.controls['productTableArray']).controls[index].value;
+    console.log(value.length,this.productTableForm.controls['productTableArray'].value.length);
     if (this.productTableForm.controls['productTableArray'].value.length >= value.length) {
       this.showPlusSign = false;
       return;
@@ -373,7 +407,7 @@ export class StockTransferComponent implements OnInit {
             costPrice: [0.00, [<any>Validators.required]],
             totalCostPrice: [0.00, [<any>Validators.required]],
             qty: [0, [<any>Validators.required]],
-            config: this.initProductConfig(product.product.productConfigObject),
+            config: this.initProductConfig(product.productObject.productConfigObject),
             readOnly: [false],
             productObject: [product.productObject],
             id: [product.id],
@@ -483,12 +517,12 @@ export class StockTransferComponent implements OnInit {
     }
   }
 
-  toggleTransfer(){
+  toggleTransfer() {
     this.toggleTransferOpen = !this.toggleTransferOpen;
   }
 
-  toggleProductConfig(index){
-    document.querySelector("#quan"+index).classList.toggle('no-display');
+  toggleProductConfig(index) {
+    document.querySelector("#quan" + index).classList.toggle('no-display');
   }
 
   private _notification(type: String, text: String): void {
@@ -498,5 +532,5 @@ export class StockTransferComponent implements OnInit {
       text: text
     });
   }
-  openSearch(){}
+  openSearch() { }
 }

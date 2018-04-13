@@ -114,7 +114,6 @@ export class PurchaseEntryComponent implements OnInit {
       deliveryDate: [this.now, [<any>Validators.required]],
       invoiceNo: ['', [<any>Validators.required]],
       amount: [0.00, [<any>Validators.required]],
-      orders: [[{}]],
       config: new FormArray([]),
       desc: ['', []],
       discount: [0.00, []],
@@ -247,7 +246,6 @@ export class PurchaseEntryComponent implements OnInit {
                         costPrice: [item.costPrice, [<any>Validators.required]],
                         qty: [item.quantity, [<any>Validators.required]],
                         expiryDate: [item.expiryDate, [<any>Validators.required]],
-                        orders: [itemg.productConfigObject],
                         config: this.initProductConfig(itemg.productConfigObject, item.quantity),
                         total: [{ value: total, disabled: true }],
                         readOnly: [false],
@@ -276,16 +274,14 @@ export class PurchaseEntryComponent implements OnInit {
         if (wholeVal > 0) {
           frmArray.push(new FormGroup({
             size: new FormControl(wholeVal),
-            name: new FormControl(config[i].name),
-            isBase: new FormControl(config[i].isBase),
-            packVolume: new FormControl(config[i].size)
+            packsizes: new FormControl(config),
+            packItem: new FormControl(config[i]._id)
           }));
         }
         _qty = rem;
       }
 
     } else {
-      console.log(config);
       frmArray.push(new FormGroup({
         size: new FormControl(0),
         packsizes: new FormControl(config),
@@ -294,10 +290,7 @@ export class PurchaseEntryComponent implements OnInit {
     }
     return frmArray;
   }
-
-  onTest(schedule) {
-    console.log(schedule);
-  }
+  
 
   getProductConfig(form) {
     return form.controls.config.controls;
@@ -309,14 +302,11 @@ export class PurchaseEntryComponent implements OnInit {
 
   onPackageSize(i, packs) {
     let totalCost = 0;
-    console.log(packs);
     packs[i].controls.total.setValue(0);
     packs[i].controls.qty.setValue(0);
     packs[i].controls.config.controls.forEach(element => {
-      console.log(element);
       packs[i].controls.qty.setValue(packs[i].controls.qty.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
-      let subTotal = packs[i].controls.costPrice.value * element.value.size;
-      console.log(subTotal);
+      let subTotal = packs[i].controls.costPrice.value * packs[i].controls.qty.value;
       if (isNaN(subTotal)) {
         subTotal = 0;
       }
@@ -329,37 +319,15 @@ export class PurchaseEntryComponent implements OnInit {
     });
     this.frm_purchaseOrder.controls['amount'].setValue(totalCost);
 
-    // (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.qty = 0;
-    // (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.total = 0;
-    // console.log(<FormArray>this.productTableForm['controls'].productTableArray['controls'][i].value.config);
-    // <FormArray>this.productTableForm['controls'].productTableArray['controls'][i].value.config.forEach(element => {
-    //   console.log(element);
-    //     const packVol = packs.find(x=>x._id.toString()===element.packItem.toString());
-    //     console.log(packVol);
-    //     (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.qty += element.size * packVol.size;
-    //     let subTotal = ((<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.costPrice * (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.qty);
-    //     (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.total = '₦ ' + subTotal;
-    // });
-
-    // (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
-    //   const productControlValue: any = item.value;
-    //   totalCost = totalCost + (+productControlValue.costPrice * +productControlValue.qty);
-    // });
-    // this.frm_purchaseOrder.controls['amount'].setValue(totalCost);
-
-    // (<FormArray>this.productTableForm.controls['productTableArray']).setValue(JSON.parse(JSON.stringify((<FormArray>this.productTableForm.controls['productTableArray']).value)));
   }
 
   getFilterPack(schedule, item) {
     const val = schedule.controls.config;
     let value = false;
     const index = schedule.controls.config.controls.filter(element => element.value.packItem._id !== 0 && element.value.packItem._id.toString() === item.value.packItem._id.toString());
-    console.log('AB');
     if (index.length > 0) {
-      console.log('A');
       value = true;
     } else {
-      console.log('B');
       value = false;
     }
     return value;
@@ -400,7 +368,6 @@ export class PurchaseEntryComponent implements OnInit {
                     costPrice: [0.00, [<any>Validators.required]],
                     qty: [item.quantity, [<any>Validators.required]],
                     expiryDate: [this.now, [<any>Validators.required]],
-                    orders: [itemg.product.productConfigObject],
                     config: this.initProductConfig(itemg.product.productConfigObject, item.quantity),
                     total: [''],
                     readOnly: [false],
@@ -484,15 +451,15 @@ export class PurchaseEntryComponent implements OnInit {
     }
     this.systemModuleService.off();
   }
-  getCostSummary(i,packs) {
-    packs[i].controls.total.setValue(0);;
+  getCostSummary(i, packs) {
+    packs[i].controls.total.setValue(0);
     this.totalCost = 0;
     packs.forEach((item, i) => {
       const productControlValue: any = item.value;
       this.totalCost = this.totalCost + (+productControlValue.costPrice * +productControlValue.qty);
     });
     this.frm_purchaseOrder.controls['amount'].setValue(this.totalCost);
-    const total = '₦ ' + ( packs[i].controls.qty.value * packs[i].controls.costPrice.value);
+    const total = '₦ ' + (packs[i].controls.qty.value * packs[i].controls.costPrice.value);
     packs[i].controls.total.setValue(total);
   }
   mergeTable(obj) {
@@ -525,7 +492,6 @@ export class PurchaseEntryComponent implements OnInit {
           costPrice: ['', [<any>Validators.required]],
           total: [''],
           qty: ['', [<any>Validators.required]],
-          orders: [[{}]],
           config: new FormArray([]),
           expiryDate: [new Date(), [<any>Validators.required]],
           readOnly: [false],
@@ -557,7 +523,6 @@ export class PurchaseEntryComponent implements OnInit {
                   costPrice: [0.00, [<any>Validators.required]],
                   qty: [0, [<any>Validators.required]],
                   expiryDate: [this.now, [<any>Validators.required]],
-                  orders: [[{}]],
                   config: this.initProductConfig(value.product.productConfigObject, null),
                   total: [''],
                   readOnly: [false],
@@ -566,7 +531,6 @@ export class PurchaseEntryComponent implements OnInit {
                   id: [value._id]
                 })
               );
-            console.log((<FormArray>this.productTableForm.controls['productTableArray']).value);
           } else {
             value.checked = false;
             this.errMsg = 'Please enter invoice number for this entry';
@@ -574,25 +538,21 @@ export class PurchaseEntryComponent implements OnInit {
           }
         });
     } else {
-      // let indexToRemove = 0;
-      // (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
-      //   const productControlValue: any = (<any>item).controls['id'].value;
-      //   if (productControlValue === value._id) {
-      //     indexToRemove = i;
-      //   }
-      // });
       const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
       if (count === 1) {
         this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
       } else {
-        (<FormArray>this.productTableForm.controls['productTableArray']).controls.splice(index, 1);
+        (<FormArray>this.productTableForm.controls['productTableArray']).removeAt(index);
       }
+      let indx = index;
+      if(index > 0){
+        indx = index-1;
+      }      
+      this.onPackageSize(indx, (<FormArray>this.productTableForm.controls['productTableArray']).controls);
     }
   }
 
   onAddPackSize(pack, form) {
-    console.log(pack);
-    console.log(form);
     form.controls.config.controls.push(new FormGroup({
       size: new FormControl(0),
       packsizes: new FormControl(pack),
@@ -600,11 +560,9 @@ export class PurchaseEntryComponent implements OnInit {
     }));
   }
 
-  onRemovePack(form, k) {
-    console.log(form);
-    console.log(1);
-    form.controls.config.removeAt(k);
-    console.log(2);
+  onRemovePack(pack, form, k, index) {
+    pack.controls.config.removeAt(k);
+    this.onPackageSize(index, form);
   }
   removeProduct(index, form) {
     const value = form[index];
@@ -620,7 +578,7 @@ export class PurchaseEntryComponent implements OnInit {
         }
       });
     });
-    this.getCostSummary(index,form);
+    this.onPackageSize(index, form);
   }
 
   create(valid, value) {

@@ -73,7 +73,6 @@
                                     </mat-input-container>
 
                                     <div class="row example-full-width" formArrayName="config">
-                                        <button (click)="onTest(schedule)">OK</button>
                                         <!--<div class="col-md-{{12/getProductConfig(schedule).length}}" [formGroupName]="j" *ngFor="let item of getProductConfig(schedule); let j = index">
                                                         <mat-input-container class="example-full-width">
                                                             <input type="number" formControlName="size" min="1" (change)="onPackageSize(i)" matInput placeholder="{{item.value.name}}">
@@ -93,7 +92,7 @@
                                             </mat-form-field>
                                             <i *ngIf="itm.value.packsizes.length !== k+1 && schedule.controls.config.controls.length===k+1" class="col-md-2 fa fa-fw fa-plus"
                                                 (click)="onAddPackSize(itm.value.packsizes,schedule)"></i>
-                                            <i class="fa fa-close fa-fw" *ngIf="schedule.controls.config.controls.length > 1" (click)="onRemovePack(schedule,k)"></i>
+                                            <i class="fa fa-close fa-fw" *ngIf="schedule.controls.config.controls.length > 1" (click)="onRemovePack(schedule,productTableForm.controls['productTableArray'].controls,k,i)"></i>
                                         </div>
                                     </div>
 
@@ -161,9 +160,9 @@
             <mat-checkbox [formControl]="expired">Expired</mat-checkbox>
         </div>
         <div class="control-group" style="width:100%" *ngFor="let group of superGroups">
-            <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
+            <label *ngFor="let item of group;let j=index" class="control control--checkbox">{{item.name}}
                 <div class="control__indicator">
-                    <mat-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></mat-checkbox>
+                    <mat-checkbox (change)="onProductCheckChange($event,item,j)" [checked]="item.checked"></mat-checkbox>
                 </div>
             </label>
         </div>

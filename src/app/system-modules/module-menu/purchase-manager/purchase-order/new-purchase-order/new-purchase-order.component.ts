@@ -187,26 +187,32 @@ export class NewPurchaseOrderComponent implements OnInit {
       } else {
         (<FormArray>this.productTableForm.controls['productTableArray']).controls.splice(indexToRemove, 1);
       }
+      let indx = indexToRemove;
+      if(indexToRemove > 0){
+        indx = indexToRemove-1;
+      }
+      
+      this.onPackageSize(indx,(<FormArray>this.productTableForm.controls['productTableArray']).controls)
     }
 
   }
 
   initProductConfig(config) {
-    let frmArray = new FormArray([])
-    config.forEach(item => {
-      frmArray.push(new FormGroup({
-        size: new FormControl(0),
-        name: new FormControl(item.name),
-        isBase: new FormControl(item.isBase),
-        packVolume: new FormControl(item.size)
-      }));
-    })
+    let frmArray = new FormArray([]);
+    frmArray.push(new FormGroup({
+      size: new FormControl(0),
+      packsizes: new FormControl(config),
+      packItem: new FormControl()
+    }));
     return frmArray;
   }
   getProductConfig(form) {
     return form.controls.config.controls;
   }
 
+  compareItems(l1: any, l2: any) {
+    return l1.includes(l2);
+  }
 
   removeProduct(index, value) {
     this.superGroups.forEach((parent, i) => {
@@ -260,12 +266,24 @@ export class NewPurchaseOrderComponent implements OnInit {
     });
   }
 
-  onPackageSize(i) {
-    (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.qty = 0;
-    let itm = <FormArray>this.productTableForm['controls'].productTableArray['controls'][i].value.config.forEach(element => {
-      (<FormArray>this.productTableForm['controls'].productTableArray['controls'][i]).value.qty += element.size * element.packVolume;
+  onPackageSize(i,packs) {
+    packs[i].controls.qty.setValue(0);
+    packs[i].controls.config.controls.forEach(element => {
+      packs[i].controls.qty.setValue(packs[i].controls.qty.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
     });
-    (<FormArray>this.productTableForm.controls['productTableArray']).setValue(JSON.parse(JSON.stringify((<FormArray>this.productTableForm.controls['productTableArray']).value)));
+  }
+
+  onAddPackSize(pack, form) {
+    form.controls.config.controls.push(new FormGroup({
+      size: new FormControl(0),
+      packsizes: new FormControl(pack),
+      packItem: new FormControl()
+    }));
+  }
+
+  onRemovePack(pack, form, k, index) {
+    pack.controls.config.removeAt(k);
+    this.onPackageSize(index, form);
   }
 
   getProductTables(products: any[]) {

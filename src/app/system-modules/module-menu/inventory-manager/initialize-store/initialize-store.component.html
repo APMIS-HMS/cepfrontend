@@ -59,10 +59,23 @@
                           <input type="date" matInput placeholder="Expiry Date *" placeholder="Expiry Date" formControlName="expiryDate">
                         </mat-input-container>
                       
-                        <div class="question-container" formArrayName="config"> 
-                            <mat-input-container class="col-sm-2" [formGroupName]="j" *ngFor="let item of getProductConfig(batch); let j = index">
-                              <input type="number" formControlName="size" min="1" (change)="onPackageSize(i)" matInput placeholder="{{item.value.name}}">
-                            </mat-input-container>
+                        <div class="row example-full-width" formArrayName="config">
+                            <div class="row col-md-3" [formGroupName]="k" *ngFor="let itm of batch.controls.config.controls;let k = index">
+                                <mat-input-container class="col-md-4">
+                                    <input type="number" min="1" [readonly]="itm.value.packItem === null" matInput mat-error formControlName="size" (change)="onPackageSize(i,myForm.controls['initproduct'].controls)">
+                                </mat-input-container>
+                                <mat-form-field class="col-md-6">
+                                    <mat-select placeholder="Select Packsize" formControlName="packItem" [compareWith]="compareItems">
+                                        <mat-option disabled="">None</mat-option>
+                                        <mat-option [value]="item._id" *ngFor="let item of itm.value.packsizes">
+                                            <span>{{item.name}}</span>
+                                        </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                                <i *ngIf="itm.value.packsizes.length !== k+1 && batch.controls.config.controls.length===k+1" class="col-md-2 fa fa-fw fa-plus"
+                                    (click)="onAddPackSize(itm.value.packsizes,batch)"></i>
+                                <i class="fa fa-close fa-fw" *ngIf="batch.controls.config.controls.length > 1" (click)="onRemovePack(batch,myForm.controls['initproduct'].controls,k,i)"></i>
+                            </div>
                         </div>
                       </div>
                     </div>
