@@ -53,7 +53,7 @@ export class FacilityInfoComponent implements OnInit {
 			// facilitywebsite: ['', [ <any>Validators.pattern(WEBSITE_REGEX)]],
 			// network: ['', [<any>Validators.minLength(2)]],
 			address: ['', []],
-			cac: ['', [<any>Validators.required]],
+			cac: ['', []],
 			facilitystreet: ['', [<any>Validators.required]],
 			facilitycity: ['', [<any>Validators.required]],
 			facilitystate: ['', [<any>Validators.required]],
@@ -142,6 +142,7 @@ export class FacilityInfoComponent implements OnInit {
 			this._systemModuleService.announceSweetProxy('Facility created successfully', 'success', null, null, null, null, null, null, null);
 		}, error => {
 			this.isSaving = false;
+			console.log(error);
 			this._systemModuleService.off();
 			const errMsg = 'There was an error while creating the facility, try again!';
 			this._systemModuleService.announceSweetProxy(errMsg, 'error');
