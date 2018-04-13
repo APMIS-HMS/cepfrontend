@@ -106,8 +106,12 @@ export class ServicesComponent implements OnInit {
         facilityId: this.facility._id,
         categoryId: this.selectedCategory._id
       };
-      this._facilitiesServiceCategoryService.allServices(
-        paramsForServer({ query, populate: true })
+      this._facilitiesServiceCategoryService.allServices({
+        query:{
+          facilityId: this.facility._id,
+          categoryId: this.selectedCategory._id
+        }
+      }
       ).then(payload => {
         this.systemModuleService.off();
         this.selectedServices = payload.services;
