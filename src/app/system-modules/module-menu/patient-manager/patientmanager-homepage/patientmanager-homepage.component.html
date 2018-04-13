@@ -116,7 +116,7 @@
 </div>
 
 <div class="btn-center">
-    <button (click)="loadMore()" class="apmis-blue" mat-raised-button *ngIf="showLoadMore">Load More</button>
+    <button (click)="loadMore()" class="apmis-blue" mat-raised-button *ngIf="showLoadMore || patients.length === 0">Load More</button>
 </div>
 <div style="text-align:center; margin-top:20px;" *ngIf="total > 0">{{loadMoreText}} </div>
 <div *ngIf="editPatient">
@@ -310,7 +310,7 @@
                                                                 <div class="row">
                                                                     <div class="col-xs-8 left">
                                                                         <i class="big-label"> {{(pat.isDefault === true) ? 'Current Plan |' : ''}}
-                                                                            {{pat.planType}}
+                                                                            {{(pat.planType === 'wallet') ? 'Out Of Pocket' : pat.planType}}
                                                                         </i>
                                                                     </div>
                                                                     <div (click)="isEditFn(patient, pat.planType)" class="col-xs-2 right">
@@ -327,14 +327,14 @@
                                                     <div *ngIf="isEdit">
                                                         <div class="doc-mainWrap">
                                                             <div class="tab-wrap">
-                                                                <div (click)="tabWallet_click()" [class.tab-item-active]="tabWallet" class="tab-item">Out of Pocket</div>
+                                                                <!-- <div (click)="tabWallet_click()" [class.tab-item-active]="tabWallet" class="tab-item">Out of Pocket</div> -->
                                                                 <div (click)="tabInsurance_click()" [class.tab-item-active]="tabInsurance" class="tab-item">Insurance</div>
                                                                 <div (click)="tabCompany_click()" [class.tab-item-active]="tabCompany" class="tab-item">Company Cover</div>
                                                                 <div (click)="tabFamily_click()" [class.tab-item-active]="tabFamily" class="tab-item">Family Cover</div>
                                                             </div>
 
                                                             <div class="tab-content">
-                                                                <div *ngIf="tabWallet">
+                                                                <!-- <div *ngIf="tabWallet">
                                                                     <div class="plan">
                                                                         <div class="plan-title">Out of Pocket</div>
                                                                         <div class="row frm-item-wrap">
@@ -350,15 +350,12 @@
                                                                             </mat-form-field>
                                                                         </div>
                                                                     </div>
-                                                                </div>
+                                                                </div> -->
 
                                                                 <div *ngIf="tabInsurance">
                                                                     <div class="plan">
                                                                         <div class="plan-title">Insurance</div>
                                                                         <div class="row frm-item-wrap">
-                                                                            <!-- <mat-input-container class="example-full-width">
-                                                                                <input matInput mat-error placeholder="Insurance ID" [formControl]="hmoPlanId">
-                                                                            </mat-input-container> -->
                                                                             <mat-form-field class="col-xs-12 col-sm-6 example-full-width">
                                                                                 <input matInput placeholder="Pick HMO" aria-label="HMOs" [matAutocomplete]="auto" [formControl]="hmoPlanId">
                                                                                 <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
@@ -369,18 +366,6 @@
                                                                             </mat-form-field>
                                                                             <mat-form-field class="col-xs-12 col-sm-6">
                                                                                 <input matInput mat-error placeholder="Insurance ID" [formControl]="insuranceId">
-                                                                            </mat-form-field>
-                                                                        </div>
-                                                                        <div class="row frm-item-wrap">
-                                                                            <mat-form-field class="col-xs-12 col-sm-6">
-                                                                                <mat-select placeholder="Select Service" [formControl]="hmoPlan" (change)="getServicePlans($event.value)">
-                                                                                    <mat-option *ngFor="let service of services" [value]="service">{{service.name}}</mat-option>
-                                                                                </mat-select>
-                                                                            </mat-form-field>
-                                                                            <mat-form-field class="col-xs-12 col-sm-6">
-                                                                                <mat-select placeholder="Select Plan" [formControl]="hmoPlanPrice">
-                                                                                    <mat-option *ngFor="let pricePlan of servicePricePlans" [value]="pricePlan.price">{{pricePlan.name}}</mat-option>
-                                                                                </mat-select>
                                                                             </mat-form-field>
                                                                         </div>
                                                                         <!-- <div class="another">Another Insurance</div> -->
@@ -403,20 +388,7 @@
                                                                             <mat-form-field class="col-xs-12 col-sm-6">
                                                                                 <input matInput mat-error placeholder="Employee Id" [formControl]="employeeId">
                                                                             </mat-form-field>
-                                                                        </div>
-                                                                        <div class="row frm-item-wrap">
-                                                                            <mat-form-field class="col-xs-12 col-sm-6">
-                                                                                <mat-select placeholder="Select Service" [formControl]="hmoPlan" (change)="getServicePlans($event.value)">
-                                                                                    <mat-option *ngFor="let service of services" [value]="service">{{service.name}}</mat-option>
-                                                                                </mat-select>
-                                                                            </mat-form-field>
-                                                                            <mat-form-field class="col-xs-12 col-sm-6">
-                                                                                <mat-select placeholder="Select Price" [formControl]="hmoPlanPrice">
-                                                                                    <mat-option *ngFor="let pricePlan of servicePricePlans" [value]="pricePlan.price">{{pricePlan.name}}</mat-option>
-                                                                                </mat-select>
-                                                                            </mat-form-field>
-                                                                        </div>
-                                            
+                                                                        </div>                                            
                                                                         <!-- <div class="another">Another Company</div> -->
                                                                     </div>
                                                                 </div>
@@ -431,18 +403,6 @@
                                                                                 </mat-input-container>
                                                                                 <mat-form-field class="col-xs-12 col-sm-6">
                                                                                     <input matInput mat-error placeholder="Client ID" [formControl]="faFileNo">
-                                                                                </mat-form-field>
-                                                                            </div>
-                                                                            <div class="row frm-item-wrap">
-                                                                                <mat-form-field class="col-xs-12 col-sm-6">
-                                                                                    <mat-select placeholder="Select Service" [formControl]="faPlan" (change)="getServicePlans($event.value)">
-                                                                                        <mat-option *ngFor="let service of services" [value]="service">{{service.name}}</mat-option>
-                                                                                    </mat-select>
-                                                                                </mat-form-field>
-                                                                                <mat-form-field class="col-xs-12 col-sm-6">
-                                                                                    <mat-select placeholder="Select Price" [formControl]="faPlanPrice">
-                                                                                        <mat-option *ngFor="let pricePlan of servicePricePlans" [value]="pricePlan.price">{{pricePlan.name}}</mat-option>
-                                                                                    </mat-select>
                                                                                 </mat-form-field>
                                                                             </div>
                                                                         </div>

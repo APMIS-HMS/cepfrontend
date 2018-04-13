@@ -87,7 +87,7 @@ export class CheckoutPatientComponent implements OnInit {
           employeeId: this.employeeDetails._id,
           patientId: this.patientDetails._id,
           facilityId: this.facility._id,
-          clinicId: (!!this.selectedAppointment.clinicId) ? this.selectedAppointment.clinicId : null,
+          clinicId: (!!this.selectedAppointment._id) ? this.selectedAppointment._id : null,
           minorLocationId: value.ward,
           description: value.desc
         };
@@ -201,23 +201,29 @@ export class CheckoutPatientComponent implements OnInit {
       const patientName = `${this.patientDetails.personDetails.firstName} ${this.patientDetails.personDetails.lastName}`;
       this.loading = false;
 			if (res.data.length > 0) {
-				this._inpatientService.find({ query: { facilityId: this.facility._id, patientId:
-					this.patientDetails._id, isDischarged: false }}).then(resp => {
-					if (resp.data.length > 0) {
-						const locationIndex = (resp.data[0].transfers.length > 0) ? resp.data[0].transfers.length - 1 : resp.data[0].transfers.length;
-						const text = patientName + ' has been admitted to ' + resp.data[0].tranfers[locationIndex].name + ' ward';
-						resp.data[0].isAdmitted = true;
-						resp.data[0].msg = text;
-						this.admittedWard = resp.data[0];
-          } else {
-            // Get minorLocation name from facility.
-            const minorLocation = this.facility.minorLocations.filter(x => x._id === res.data[0].minorLocationId);
-            const text = patientName + ' has been sent to ' + minorLocation[0].name + ' ward for admission.';
-						res.data[0].isAdmitted = true;
-						res.data[0].msg = text;
-						this.admittedWard = res.data[0];
-					}
-				}).catch(err => this._notification('Error', 'There was a problem getting admitted patient. Please try again later.'));
+					const minorLocation = this.facility.minorLocations.filter(x => x._id === res.data[0].minorLocationId);
+					const text = patientName + ' has been sent to ' + minorLocation[0].name + ' ward for admission.';
+					res.data[0].isAdmitted = true;
+					res.data[0].msg = text;
+					this.admittedWard = res.data[0];
+				// this._inpatientService.find({ query: { facilityId: this.facility._id, patientId:
+				// 	this.patientDetails._id, isDischarged: false }}).then(resp => {
+				// 		console.log(resp);
+				// 	if (resp.data.length > 0) {
+				// 		const locationIndex = (resp.data[0].transfers.length > 0) ? resp.data[0].transfers.length - 1 : resp.data[0].transfers.length;
+				// 		const text = patientName + ' has been admitted to ' + resp.data[0].tranfers[locationIndex].name + ' ward';
+				// 		resp.data[0].isAdmitted = true;
+				// 		resp.data[0].msg = text;
+				// 		this.admittedWard = resp.data[0];
+        //   } else {
+        //     // Get minorLocation name from facility.
+        //     const minorLocation = this.facility.minorLocations.filter(x => x._id === res.data[0].minorLocationId);
+        //     const text = patientName + ' has been sent to ' + minorLocation[0].name + ' ward for admission.';
+				// 		res.data[0].isAdmitted = true;
+				// 		res.data[0].msg = text;
+				// 		this.admittedWard = res.data[0];
+				// 	}
+				// }).catch(err => this._notification('Error', 'There was a problem getting admitted patient. Please try again later.'));
 			} else {
 				this._inpatientService.find({ query:
 					{facilityId: this.facility._id, patientId: this.patientDetails._id, isDischarged: false }}).then(resp => {
