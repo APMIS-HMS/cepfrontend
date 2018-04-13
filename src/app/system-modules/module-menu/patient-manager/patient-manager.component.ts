@@ -30,6 +30,7 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
   selectedFacility;
 
   searchControl = new FormControl();
+  searchTagsControl = new FormControl();
 
   searchedPatients;
   searchEmpty = true;
@@ -68,13 +69,42 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
           if (value.length > 0) {
             this.searchEmpty = false;
             this.searchedPatients = payload.data;
-          }else{
+          } else {
             this.searchEmpty = true;
             this.searchedPatients = [];
           }
         });
       });
+
+    this.searchTagsControl.valueChanges
+      .debounceTime(200)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        console.log(value);
+        this.patientService.find({
+          query: {
+            'facilityId': this.selectedFacility._id,
+            $or: [
+              { 'tags.name': { $regex: value, '$options': 'i' } },
+              { 'tags.tagType': { $regex: value, '$options': 'i' } }
+            ],
+            $limit: 300
+          }
+        }).then(payload => {
+          console.log(payload);
+          if (value.length > 0) {
+            this.searchEmpty = false;
+            this.searchedPatients = payload.data;
+          } else {
+            this.searchEmpty = true;
+            this.searchedPatients = [];
+          }
+        })
+      });
+
+
     this.route.params.subscribe(params => {
+
     })
   }
 
