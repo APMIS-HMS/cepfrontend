@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
@@ -14,6 +14,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 })
 export class BillLookupComponent implements OnInit {
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
+  @Input() closeModal;
   frmBillLookup: FormGroup;
   itemEdit = new FormControl('', [Validators.required, <any>Validators.pattern('/^\d+$/')]);
   itemQtyEdit = new FormControl('', [Validators.required, <any>Validators.pattern('/^\d+$/')]);
@@ -57,6 +58,7 @@ export class BillLookupComponent implements OnInit {
   pendingBills: any[] = [];
   loadingPendingBills = false;
   isLoadingInvoice = false;
+  routeId: string;
 
   constructor(private locker: CoolLocalStorage,
     private formBuilder: FormBuilder,
@@ -109,10 +111,8 @@ export class BillLookupComponent implements OnInit {
 
     this._route.params.subscribe(params => {
       if (!!params.id && params.id !== undefined) {
-        this.patientService.get(params.id, {}).then(res => {
-          this.selectedPatient = res;
-          this.getPatientBills();
-        }).catch(err => console.log(err));
+        this.routeId = params.id;
+        this._getPatientWallet(params.id);
       }
     });
 
@@ -164,6 +164,13 @@ export class BillLookupComponent implements OnInit {
           this.loadingPendingBills = false;
         }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
       });
+  }
+
+  private _getPatientWallet(id) {
+    this.patientService.get(id, {}).then(res => {
+      this.selectedPatient = res;
+      this.getPatientBills();
+    }).catch(err => console.log(err));
   }
 
   onPersonValueUpdated(item) {
@@ -267,8 +274,8 @@ export class BillLookupComponent implements OnInit {
         'serviceId': bill.facilityServiceObject.serviceId,
         'facilityId': this.selectedFacility._id,
         'patientId': this.selectedPatient._id,
-        "covered": {
-          "coverType": "wallet"
+        'covered': {
+          'coverType': 'wallet'
         },
         'description': bill.itemName,
         'quantity': bill.qty,
@@ -302,7 +309,7 @@ export class BillLookupComponent implements OnInit {
         this.billingService.create(newBills).then(newBills_payload => {
           this.getPatientBills();
           this.isProcessing = false;
-          this._notification('Success', 'Created new billitems');
+          this._notification('Success', 'Created new billitems successfully.');
         }, error => {
           this.isProcessing = false;
           this._notification('Error', 'Failed to create new billitems');
@@ -380,6 +387,7 @@ export class BillLookupComponent implements OnInit {
       this.billingService
       .findBillService({ query: { facilityId: this.selectedFacility._id, patientId: this.selectedPatient._id, isinvoice: false } })
       .then(payload => {
+        console.log(payload);
         if(payload !== null){
           this.billGroups = payload.billGroups
           this.listedBillItems = payload.originalCallback;
@@ -388,10 +396,12 @@ export class BillLookupComponent implements OnInit {
     }
   }
   onClickPatientPendingBill(pendingBill: any) {
-    this.selectedPatient = {};
-    this.selectedPatient._id = pendingBill.patientId;
-    this.selectedPatient.personDetails = pendingBill.principalObject.personDetails;
-    this.getPatientBills();
+    console.log(pendingBill);
+    this.router.navigate([`/dashboard/payment/bill/${pendingBill.patientId}`]);
+    // this.selectedPatient = {};
+    // this.selectedPatient._id = pendingBill.patientId;
+    // this.selectedPatient.personDetails = pendingBill.principalObject.personDetails;
+    // this.getPatientBills();
   }
 
 
@@ -601,7 +611,9 @@ export class BillLookupComponent implements OnInit {
       this._notification('Info', 'You cannot make payment for a Zero cost service, please select bill');
     }
   }
+
   close_onClick(e) {
+    this._getPatientWallet(this.routeId);
     this.addModefierPopup = false;
     this.addLineModefierPopup = false;
     this.addItem = false;

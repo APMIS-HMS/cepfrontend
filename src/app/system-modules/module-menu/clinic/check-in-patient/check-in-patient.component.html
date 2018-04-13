@@ -92,7 +92,13 @@
                         <div class="list-img" *ngIf="appointment?.patientDetails?.personDetails?.profileImageObject !== undefined">
                             <img [src]="facilityService.transform(appointment.patientDetails.personDetails?.profileImageObject?.thumbnail)">
                         </div>
-                        <div>{{appointment?.patientDetails?.personDetails?.lastName}} {{appointment?.patientDetails?.personDetails?.firstName}}</div>
+                        <div>
+                            {{appointment?.patientDetails?.personDetails?.lastName}} {{appointment?.patientDetails?.personDetails?.firstName}}
+                            <h6>
+                                <span class="timeLabel">{{appointment?.patientDetails?.personDetails?.primaryContactPhoneNo}}</span> |
+                                <span class="timeLabel">{{appointment?.patientDetails?.personDetails?.email}}</span>
+                            </h6>
+                        </div>
                     </div>
                 </td>
                 <td>{{appointment.clinicId}}</td>
@@ -100,7 +106,10 @@
                     <div>{{appointment.providerDetails?.personDetails?.lastName}} {{appointment.providerDetails?.personDetails?.firstName}}</div>
                     <div class="caregiver-room">{{getConsultingRoom(appointment)}}</div>
                 </td>
-                <td>{{appointment?.attendance?.dateCheckIn | date:'shortTime'}}</td>
+                <td>
+                    {{appointment?.attendance?.dateCheckIn | date:'shortTime'}}
+                    <h6 class="timeLabel">{{appointment?.appointmentReason}}</h6>
+                </td>
                 <td>
                     <span class="timeLabel">{{appointment?.attendance?.dateCheckIn | amTimeAgo}}</span>
                 </td>
@@ -149,6 +158,14 @@
             </div>
             <div class="patientLabelGroup">
                 <div class="patientName">{{selectedCheckedInAppointment?.patientDetails?.personDetails?.lastName}} {{selectedCheckedInAppointment?.patientDetails?.personDetails?.firstName}}</div>
+                <div class="label">
+                    <span>{{selectedCheckedInAppointment?.patientDetails?.personDetails?.primaryContactPhoneNo}}</span> |
+                    <span>{{selectedCheckedInAppointment?.patientDetails?.personDetails?.email}}</span> |
+                    <span>{{selectedCheckedInAppointment?.appointmentTypeId}}</span>
+                </div>
+                <div class="label">
+                    <span>{{selectedCheckedInAppointment?.appointmentReason}}</span>
+                </div>
                 <div class="label">(Clinical Activity Timeline)</div>
             </div>
         </div>

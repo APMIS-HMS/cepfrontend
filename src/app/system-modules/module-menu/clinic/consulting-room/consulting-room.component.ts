@@ -1,3 +1,4 @@
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { Component, OnInit } from "@angular/core";
 import {
   ConsultingRoomService,
@@ -52,6 +53,7 @@ export class ConsultingRoomComponent implements OnInit {
     private locker: CoolLocalStorage,
     private schedulerTypeService: SchedulerTypeService,
     private consultingRoomService: ConsultingRoomService,
+    private systemModuleService:SystemModuleService,
     private facilityService: FacilitiesService
   ) {}
   ngOnInit() {
@@ -220,6 +222,7 @@ export class ConsultingRoomComponent implements OnInit {
           "Success",
           "Consulting Room has been updated successfully."
         );
+        this.systemModuleService.announceSweetProxy('Consulting Room has been updated successfully', 'success', null, null, null, null, null, null, null);
         this.loadManagerRooms(true);
       });
     } else {
@@ -239,6 +242,7 @@ export class ConsultingRoomComponent implements OnInit {
           "Success",
           "Consulting Room has been created successfully."
         );
+        this.systemModuleService.announceSweetProxy('Consulting Room has been created successfully.', 'success', null, null, null, null, null, null, null);
         this.roomManager = payload.data;
         this.loadManagerRooms(true);
       });
