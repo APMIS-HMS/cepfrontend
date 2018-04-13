@@ -199,7 +199,6 @@ getSchedules(){
       .then(payload => {
         this.loading = false;
         this.checkedInAppointments = payload.data;
-        console.log(this.checkedInAppointments);
       });
   }
 

@@ -163,8 +163,6 @@ export class FacilityBasicinfoEditComponent implements OnInit {
     }
     this.selectedLocation = this.selectedFacility.address;
 
-    console.log(this.selectedFacility);
-
     this._getStates(this.selectedFacility.country);
     this._getFacilityClasses(this.selectedFacility.facilityTypeId);
     this._getFacilityOwnerships();

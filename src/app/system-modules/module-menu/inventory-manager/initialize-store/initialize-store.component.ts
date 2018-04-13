@@ -130,7 +130,6 @@ export class InitializeStoreComponent implements OnInit {
     }
   }
   initProductConfig(config) {
-    console.log(config);
     let frmArray = new FormArray([])
     config.forEach(item => {
       frmArray.push(new FormGroup({
@@ -158,7 +157,6 @@ export class InitializeStoreComponent implements OnInit {
 
   onPackageSize(i) {
     (<FormArray>this.myForm['controls'].initproduct['controls'][i]).value.quantity = 0;
-    console.log(<FormArray>this.myForm['controls'].initproduct['controls'][i]);
     let itm = <FormArray>this.myForm['controls'].initproduct['controls'][i].value.config.forEach(element => {
       (<FormArray>this.myForm['controls'].initproduct['controls'][i]).value.quantity += element.size * element.packVolume;
     });

@@ -147,7 +147,6 @@ export class CcListComponent implements OnInit {
       query: { _id: { $in: flist } }
     }).then(payload => {
       this.companyFacilities = payload.data;
-      console.log(this.companyFacilities);
     });
   }
   submitExcel(e, hmo) {
@@ -190,13 +189,11 @@ export class CcListComponent implements OnInit {
 
   finalExcelFileUpload(data, company?) {
     const enrolleeList = [];
-    console.log(this.selelctedFacility);
     this.companyCoverService.find({
       query: {
         "facilityId._id": this.selelctedFacility._id
       }
     }).then(payload => {
-      console.log(payload.data[0]);
       const companyData = payload.data[0].companyCovers.filter(x => x.company === company._id);
 
       const index = payload.data[0].companyCovers.findIndex(x => x.company === company._id);
@@ -356,7 +353,6 @@ export class CcListComponent implements OnInit {
       });
 
     }).catch(err => {
-      console.log(err);
       this.systemModuleService.announceSweetProxy('Something went wrong while uploading the enrollees. Please try again', 'warning');
     });
   }

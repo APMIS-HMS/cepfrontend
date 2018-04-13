@@ -143,7 +143,6 @@ export class StockTransferComponent implements OnInit {
         storeId: this.checkingStore.storeId
       }
     }).then(payload => {
-      console.log(payload);
       this.products = [];
       this.getProductTables(this.products);
       payload.data.forEach((item, i) => {
@@ -256,7 +255,6 @@ export class StockTransferComponent implements OnInit {
     if (event.checked === true) {
       this.inventoryService.find({ query: { productId: value._id, facilityId: this.selectedFacility._id } }).subscribe(payload => {
         if (payload.data.length > 0) {
-          console.log(value);
           (<FormArray>this.productTableForm.controls['productTableArray'])
             .push(
               this.formBuilder.group({

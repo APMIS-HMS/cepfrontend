@@ -22,9 +22,7 @@ export class FamilyBillHistoryDetailComponent implements OnInit {
     private systemModuleService: SystemModuleService) { }
 
   ngOnInit() {
-    console.log(this.selectedBill);
     this.filterBills = this.selectedBill.billItems.filter(x => x.covered.isVerify !== undefined);
-    console.log(this.filterBills);
   }
 
 
