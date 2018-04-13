@@ -234,11 +234,16 @@ class Service {
                         let updateData = findAppointment.data[0];
                         updateData.isCheckedOut = true;
                         updateData.attendance.dateCheckOut = new Date();
+                        updateData.attendance.majorLocationId = minorLocationId.locationId;
+                        updateData.attendance.minorLocationId = minorLocationId._id;
+                        try {
+                            const updateAppointment = await appointmentService.patch(updateData._id, updateData, {});
 
-                        const updateAppointment = await appointmentService.patch(updateData._id, updateData, {});
-
-                        if (updateAppointment._id !== undefined) {
-                            return jsend.success(updateAppointment);
+                            if (updateAppointment._id !== undefined) {
+                                return jsend.success(updateAppointment);
+                            }
+                        } catch (e) {
+                            return jsend.error(e);
                         }
                     } else {
                         return jsend.error('There is no appointment for the patient.');
