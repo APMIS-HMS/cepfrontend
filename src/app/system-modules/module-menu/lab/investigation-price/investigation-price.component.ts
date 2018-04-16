@@ -227,26 +227,45 @@ export class InvestigationPriceComponent implements OnInit {
     return retVal;
   }
   getWorkbenchFromInvestigation(labworkBenches) {
+    // let retVal = '';
+    // const labIndex = labworkBenches.forEach(item => {
+    //   const workBenchIndex = item.workbenches.findIndex(x => x.workBench._id === this.selectedWorkBench._id);
+    //   retVal = item.workbenches[0].workBench.name
+    // });
+    // return retVal;
     let retVal = '';
     const labIndex = labworkBenches.forEach(item => {
-      const workBenchIndex = item.workbenches.findIndex(x => x.workBench._id === this.selectedWorkBench._id);
-      retVal = item.workbenches[0].workBench.name
+      if(this.selectedWorkBench !== undefined){
+        const workBenchIndex = item.workbenches.findIndex(x => x.workBench !== undefined && x.workBench._id === this.selectedWorkBench._id);
+        if(item.workbenches[0].workBench !== undefined){
+         retVal = item.workbenches[0].workBench.name;
+        }
+      }
     });
     return retVal;
   }
   gePriceFromInvestigation(labworkBenches) {
+    // let retVal = '';
+    // const labIndex = labworkBenches.forEach(item => {
+    //   const workBenchIndex = item.workbenches.findIndex(x => x.workBench._id === this.selectedWorkBench._id);
+    //   retVal = item.workbenches[0].price;
+    // });
+    // return retVal;
     let retVal = '';
     const labIndex = labworkBenches.forEach(item => {
-      const workBenchIndex = item.workbenches.findIndex(x => x.workBench._id === this.selectedWorkBench._id);
-      retVal = item.workbenches[0].price;
+      const workBenchIndex = item.workbenches.findIndex(x => x => x.workBench !== undefined && x.workBench._id === this.selectedWorkBench._id);
+      if(item.workbenches[0] !== undefined){
+        retVal = item.workbenches[0].price;
+      }
     });
     return retVal;
   }
   reqDetail(investigationPrice) {
+    console.log(investigationPrice)
     this.pricing_view = true;
     let retVal;
     const labIndex = investigationPrice.LaboratoryWorkbenches.forEach(item => {
-      const workBenchIndex = item.workbenches.findIndex(x => x.workBench._id === this.selectedWorkBench._id);
+      const workBenchIndex = item.workbenches.findIndex(x => x.workBench !== undefined && x.workBench._id === this.selectedWorkBench._id);
       retVal = item.workbenches[0].workBench;
       this.selectedWorkBench = item.workbenches[0].workBench;
     });
@@ -255,8 +274,10 @@ export class InvestigationPriceComponent implements OnInit {
     // this.frmNewPrice.controls['investigation'].setValue(investigationPrice.name);
     // const price = this.gePriceFromInvestigation(investigationPrice.LaboratoryWorkbenches);
     // this.frmNewPrice.controls['price'].setValue(price);
-    this.apmisLookupText = retVal.name;
-    this.apmisInvestigationLookupHandleSelectedItem(investigationPrice);
+    if(retVal !== undefined){
+      this.apmisLookupText = retVal.name;
+      this.apmisInvestigationLookupHandleSelectedItem(investigationPrice);
+    }
   }
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = value.name;
