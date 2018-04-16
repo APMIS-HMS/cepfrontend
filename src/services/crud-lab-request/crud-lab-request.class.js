@@ -127,6 +127,7 @@ class Service {
     async create(data, params) {
         const requestService = this.app.service('laboratory-requests');
         const billingService = this.app.service('billings');
+        const billingCreatorService = this.app.service('bill-creators');
         const patientService = this.app.service('patients');
         const accessToken = params.accessToken;
         const facilityId = data.facilityId;
@@ -174,7 +175,6 @@ class Service {
                 // Check if Lab number has been generated for this patient,
                 // if not, create a new lab number for the patient in the new minorLocation.
                 const getPatient = await patientService.get(patientId);
-
                 if (getPatient._id !== undefined) {
                     getPatient.clientsNo = (getPatient.clientsNo !== undefined) ? getPatient.clientsNo : [];
                     const clientsNo = getPatient.clientsNo;
@@ -207,7 +207,13 @@ class Service {
 
                     if (updatePatient._id !== undefined) {
                         if (billGroup.billItems.length > 0) {
-                            const saveBilling = await billingService.create(billGroup);
+                            let saveBilling = await billingCreatorService.create(billGroup.billItems, {
+                                query: {
+                                    facilityId: facilityId,
+                                    patientId: patientId
+                                }
+                            });
+                            saveBilling = saveBilling[0];
                             if (saveBilling._id !== undefined) {
                                 // Attach billing items before saving.
                                 data.billingId = saveBilling;
@@ -255,7 +261,7 @@ class Service {
     }
 }
 
-module.exports = function(options) {
+module.exports = function (options) {
     return new Service(options);
 };
 
