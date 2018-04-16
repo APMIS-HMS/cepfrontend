@@ -207,6 +207,12 @@ class Service {
 
                     if (updatePatient._id !== undefined) {
                         if (billGroup.billItems.length > 0) {
+                            
+                            
+                            
+                            
+                            
+                            
                             const saveBilling = await billingService.create(billGroup);
                             if (saveBilling._id !== undefined) {
                                 // Attach billing items before saving.
