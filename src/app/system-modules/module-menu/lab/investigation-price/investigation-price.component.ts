@@ -236,11 +236,13 @@ export class InvestigationPriceComponent implements OnInit {
     let retVal = '';
     const labIndex = labworkBenches.forEach(item => {
       if(this.selectedWorkBench !== undefined){
-        const workBenchIndex = item.workbenches.findIndex(x => x.workBench !== undefined && x.workBench._id === this.selectedWorkBench._id);
-        if(item.workbenches[0].workBench !== undefined){
-         retVal = item.workbenches[0].workBench.name;
-        }
+const workBenchIndex = item.workbenches.findIndex(x => x.workBench !== undefined && x.workBench._id === this.selectedWorkBench._id);
+     if(item.workbenches[0].workBench !== undefined){
+      retVal = item.workbenches[0].workBench.name;
+     }
       }
+      
+      
     });
     return retVal;
   }
@@ -261,7 +263,6 @@ export class InvestigationPriceComponent implements OnInit {
     return retVal;
   }
   reqDetail(investigationPrice) {
-    console.log(investigationPrice)
     this.pricing_view = true;
     let retVal;
     const labIndex = investigationPrice.LaboratoryWorkbenches.forEach(item => {
