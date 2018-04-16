@@ -27,6 +27,8 @@ class Service {
         const accessToken = params.accessToken;
         const facilityId = data.facilityId;
         const prescription = data;
+        console.log('Data => ', data);
+        console.log('Params => ', params);
 
         if (accessToken !== undefined) {
             const userRole = params.user.facilitiesRole.filter(x => x.facilityId === facilityId);
@@ -34,6 +36,7 @@ class Service {
                 /* Create Billing for any item that has been billed */
                 const billingItems = prescription.prescriptionItems.filter(x => x.isBilled);
 
+                console.log('billingItems => ', billingItems);
                 if (billingItems.length > 0) {
                     const totalCost = prescription.prescriptionItems.reduce((acc, obj) => { return acc + obj.cost; }, 0);
                     const bill = {
@@ -57,11 +60,17 @@ class Service {
                         return jsend.error('There was a problem trying to create prescription');
                     }
                 } else {
-                    const createPrescription = await prescriptionService.create(prescription);
+                    try {
+                        const createPrescription = await prescriptionService.create(prescription);
 
-                    if (createPrescription._id !== undefined) {
-                        return jsend.success(createPrescription);
-                    } else {
+                        console.log(createPrescription);
+                        if (createPrescription._id !== undefined) {
+                            return jsend.success(createPrescription);
+                        } else {
+                            return jsend.error('There was a problem trying to create prescription');
+                        }
+                    } catch (e) {
+                        console.log(e);
                         return jsend.error('There was a problem trying to create prescription');
                     }
                 }
