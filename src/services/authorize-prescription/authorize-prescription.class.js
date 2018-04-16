@@ -24,6 +24,7 @@ class Service {
   async create(data, params) {
     const prescriptionService = this.app.service('prescriptions');
     const billingService = this.app.service('billings');
+    const patientService = this.app.service('patients');
     const billCreatorService = this.app.service('bill-creators');
     const accessToken = params.accessToken;
     const facilityId = data.facilityId;
@@ -39,7 +40,6 @@ class Service {
           const totalCost = prescription.prescriptionItems.reduce((acc, obj) => {
             return acc + obj.cost;
           }, 0);
-          console.log(this.prescriptions);
           // const bill = {
           //     facilityId: this.facility._id,
           //     patientId: this.prescriptions.patientId,
@@ -48,41 +48,50 @@ class Service {
           //     subTotal: totalCost,
           //     grandTotal: totalCost
           // };
+          const patientDetails = await patientService.get(prescription.patientId);
+          const patientDefaultPaymentPlan = patientDetails.paymentPlan.find(x => x.isDefault === true);
           const bill = [];
+          const covered = {};
+          if (patientDefaultPaymentPlan.planType === 'wallet') {
+            covered = {
+              coverType: patientDefaultPaymentPlan.planType
+            }
+          } else if (patientDefaultPaymentPlan.planType === 'insurance') {
+            covered = {
+              coverType: patientDefaultPaymentPlan.planType,
+              hmoId: patientDefaultPaymentPlan.planDetails.hmoId
+            }
+          } else if (patientDefaultPaymentPlan.planType === 'company') {
+            covered = {
+              coverType: patientDefaultPaymentPlan.planType,
+              companyId: patientDefaultPaymentPlan.planDetails.companyId
+            }
+          } else if (patientDefaultPaymentPlan.planType === 'family') {
+            covered = {
+              coverType: patientDefaultPaymentPlan.planType,
+              familyId: patientDefaultPaymentPlan.planDetails.familyId
+            }
+          }
           billingItems.forEach(element => {
             bill.push({
-                unitPrice: element.unitPrice,
-                facilityId: this.facility._id,
-                facilityServiceId: element.facilityServiceId,
-                serviceId: element.serviceId,
-                patientId: element.patientId,
-                quantity: element.quantity,
-                active: true,
-                totalPrice: element.totalPrice
-              });
-              if (prescription.defaultPaymentPlan.planType === 'wallet') {
-                bill.covered = {
-                  coverType: prescription.defaultPaymentPlan.planType
-                }
-              } else if (prescription.defaultPaymentPlan.planType === 'insurance') {
-                bill.covered = {
-                  coverType: prescription.defaultPaymentPlan.planType,
-                  hmoId: prescription.defaultPaymentPlan.planDetails.hmoId
-                }
-              } else if (prescription.defaultPaymentPlan.planType === 'company') {
-                bill.covered = {
-                  coverType: prescription.defaultPaymentPlan.planType,
-                  companyId: prescription.defaultPaymentPlan.planDetails.companyId
-                }
-              } else if (prescription.defaultPaymentPlan.planType === 'family') {
-                bill.covered = {
-                  coverType: prescription.defaultPaymentPlan.planType,
-                  familyId: prescription.defaultPaymentPlan.planDetails.familyId
-                }
-              }
+              unitPrice: element.unitPrice,
+              facilityId: this.facility._id,
+              facilityServiceId: element.facilityServiceId,
+              serviceId: element.serviceId,
+              patientId: element.patientId,
+              quantity: element.quantity,
+              active: true,
+              totalPrice: element.totalPrice,
+              covered : covered
+            });
           });
-          
-          const createBill = await billCreatorService.create(bill,{query: {facilityId: this.facility._id,patientId: this.prescriptions.patientId}});
+
+          const createBill = await billCreatorService.create(bill, {
+            query: {
+              facilityId: facilityId,
+              patientId: prescription.patientId
+            }
+          });
           if (createBill._id !== undefined) {
             const createPrescription = await prescriptionService.create(prescription);
             if (createPrescription._id !== undefined) {
