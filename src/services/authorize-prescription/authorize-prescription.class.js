@@ -24,11 +24,11 @@ class Service {
     async create(data, params) {
         const prescriptionService = this.app.service('prescriptions');
         const billingService = this.app.service('billings');
+        const patientService = this.app.service('patients');
+        const billCreatorService = this.app.service('bill-creators');
         const accessToken = params.accessToken;
         const facilityId = data.facilityId;
         const prescription = data;
-        console.log('Data => ', data);
-        console.log('Params => ', params);
 
         if (accessToken !== undefined) {
             const userRole = params.user.facilitiesRole.filter(x => x.facilityId === facilityId);
@@ -36,19 +36,60 @@ class Service {
                 /* Create Billing for any item that has been billed */
                 const billingItems = prescription.prescriptionItems.filter(x => x.isBilled);
 
-                console.log('billingItems => ', billingItems);
                 if (billingItems.length > 0) {
-                    const totalCost = prescription.prescriptionItems.reduce((acc, obj) => { return acc + obj.cost; }, 0);
-                    const bill = {
-                        facilityId: this.facility._id,
-                        patientId: this.prescriptions.patientId,
-                        billItems: billingItems,
-                        discount: 0,
-                        subTotal: totalCost,
-                        grandTotal: totalCost,
-                    };
+                    const totalCost = prescription.prescriptionItems.reduce((acc, obj) => {
+                        return acc + obj.cost;
+                    }, 0);
+                    // const bill = {
+                    //     facilityId: this.facility._id,
+                    //     patientId: this.prescriptions.patientId,
+                    //     billItems: billingItems,
+                    //     discount: 0,
+                    //     subTotal: totalCost,
+                    //     grandTotal: totalCost
+                    // };
+                    const patientDetails = await patientService.get(prescription.patientId);
+                    const patientDefaultPaymentPlan = patientDetails.paymentPlan.find(x => x.isDefault === true);
+                    const bill = [];
+                    let covered = {};
+                    if (patientDefaultPaymentPlan.planType === 'wallet') {
+                        covered = { coverType: patientDefaultPaymentPlan.planType };
+                    } else if (patientDefaultPaymentPlan.planType === 'insurance') {
+                        covered = {
+                            coverType: patientDefaultPaymentPlan.planType,
+                            hmoId: patientDefaultPaymentPlan.planDetails.hmoId
+                        };
+                    } else if (patientDefaultPaymentPlan.planType === 'company') {
+                        covered = {
+                            coverType: patientDefaultPaymentPlan.planType,
+                            companyId: patientDefaultPaymentPlan.planDetails.companyId
+                        };
+                    } else if (patientDefaultPaymentPlan.planType === 'family') {
+                        covered = {
+                            coverType: patientDefaultPaymentPlan.planType,
+                            familyId: patientDefaultPaymentPlan.planDetails.familyId
+                        };
+                    }
+                    billingItems.forEach(element => {
+                        bill.push({
+                            unitPrice: element.unitPrice,
+                            facilityId: this.facility._id,
+                            facilityServiceId: element.facilityServiceId,
+                            serviceId: element.serviceId,
+                            patientId: element.patientId,
+                            quantity: element.quantity,
+                            active: true,
+                            totalPrice: element.totalPrice,
+                            covered: covered
+                        });
+                    });
 
-                    const createBill = await billingService.create(bill);
+                    const createBill = await billCreatorService.create(bill, {
+                        query: {
+                            facilityId: facilityId,
+                            patientId: prescription.patientId
+                        }
+                    });
                     if (createBill._id !== undefined) {
                         const createPrescription = await prescriptionService.create(prescription);
                         if (createPrescription._id !== undefined) {
@@ -60,17 +101,11 @@ class Service {
                         return jsend.error('There was a problem trying to create prescription');
                     }
                 } else {
-                    try {
-                        const createPrescription = await prescriptionService.create(prescription);
+                    const createPrescription = await prescriptionService.create(prescription);
 
-                        console.log(createPrescription);
-                        if (createPrescription._id !== undefined) {
-                            return jsend.success(createPrescription);
-                        } else {
-                            return jsend.error('There was a problem trying to create prescription');
-                        }
-                    } catch (e) {
-                        console.log(e);
+                    if (createPrescription._id !== undefined) {
+                        return jsend.success(createPrescription);
+                    } else {
                         return jsend.error('There was a problem trying to create prescription');
                     }
                 }
@@ -91,7 +126,9 @@ class Service {
     }
 
     remove(id, params) {
-        return Promise.resolve({ id });
+        return Promise.resolve({
+            id
+        });
     }
 }
 

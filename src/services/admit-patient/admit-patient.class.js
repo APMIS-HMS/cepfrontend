@@ -31,7 +31,9 @@ class Service {
             // Get inpatientwaiting list
             if (action === 'getInPatientWaitingList') {
                 let facility = await facilityService.get(facilityId);
-                let waitingLists = await inPatientListService.find({ query: params.query });
+                let waitingLists = await inPatientListService.find({
+                    query: params.query
+                });
 
                 const pLength = waitingLists.data.length;
                 let i = waitingLists.data.length;
@@ -66,7 +68,9 @@ class Service {
                 }
             } else if (action === 'getInPatientTransferList') {
                 let facility = await facilityService.get(facilityId);
-                let inPatients = await inPatientService.find({ query: params.query });
+                let inPatients = await inPatientService.find({
+                    query: params.query
+                });
 
                 const pLength = inPatients.data.length;
                 let i = inPatients.data.length;
@@ -108,7 +112,9 @@ class Service {
                 }
             } else if (action === 'getAdmittedPatients') {
                 let facility = await facilityService.get(facilityId);
-                let inPatients = await inPatientService.find({ query: params.query });
+                let inPatients = await inPatientService.find({
+                    query: params.query
+                });
 
                 const pLength = inPatients.data.length;
                 let i = inPatients.data.length;
@@ -155,7 +161,9 @@ class Service {
                 }
             } else if (action === 'getDischargedPatients') {
                 let facility = await facilityService.get(facilityId);
-                let inPatients = await inPatientService.find({ query: params.query });
+                let inPatients = await inPatientService.find({
+                    query: params.query
+                });
 
                 const pLength = inPatients.data.length;
                 let i = inPatients.data.length;
@@ -199,8 +207,10 @@ class Service {
     }
 
     async create(data, params) {
+        const patientService = this.app.service('patients');
         const bedOccupancyService = this.app.service('bed-occupancy');
         const billingService = this.app.service('billings');
+        const billCreatorService = this.app.service('bill-creators');
         const appointmentService = this.app.service('appointments');
         const inpatientWaitingService = this.app.service('inpatient-waiting-lists');
         const inpatientService = this.app.service('in-patients');
@@ -227,23 +237,24 @@ class Service {
                 const createInpatientWaiting = await inpatientWaitingService.create(data);
 
                 if (createInpatientWaiting._id !== undefined) {
-                    const findAppointment = await appointmentService.find({ query: { 'facilityId': facilityId, 'patientId': patientId, isCheckedOut: false } });
+                    const findAppointment = await appointmentService.find({
+                        query: {
+                            'facilityId': facilityId,
+                            'patientId': patientId,
+                            isCheckedOut: false
+                        }
+                    });
 
                     if (findAppointment.data.length > 0) {
                         // There is an appointment
                         let updateData = findAppointment.data[0];
                         updateData.isCheckedOut = true;
                         updateData.attendance.dateCheckOut = new Date();
-                        updateData.attendance.majorLocationId = minorLocationId.locationId;
-                        updateData.attendance.minorLocationId = minorLocationId._id;
-                        try {
-                            const updateAppointment = await appointmentService.patch(updateData._id, updateData, {});
 
-                            if (updateAppointment._id !== undefined) {
-                                return jsend.success(updateAppointment);
-                            }
-                        } catch (e) {
-                            return jsend.error(e);
+                        const updateAppointment = await appointmentService.patch(updateData._id, updateData, {});
+
+                        if (updateAppointment._id !== undefined) {
+                            return jsend.success(updateAppointment);
                         }
                     } else {
                         return jsend.error('There is no appointment for the patient.');
@@ -431,17 +442,54 @@ class Service {
                                                 totalDiscoutedAmount: 0,
                                             };
                                             billItemArray.push(billItem);
-                                            let bill = {
-                                                facilityId: findFacilityPrice.facilityId,
-                                                patientId: getInPatient.patientId,
-                                                billItems: billItemArray,
-                                                discount: 0,
-                                                subTotal: price * diffDays,
-                                                grandTotal: price * diffDays,
-                                            };
+                                            //   let bill = {
+                                            //     facilityId: findFacilityPrice.facilityId,
+                                            //     patientId: getInPatient.patientId,
+                                            //     billItems: billItemArray,
+                                            //     discount: 0,
+                                            //     subTotal: price * diffDays,
+                                            //     grandTotal: price * diffDays,
+                                            //   };
+                                            const patientDetail = await patientService.get(getInPatient.patientId);
+                                            const patientDefaultPaymentPlan = patientDetail.paymentPlan.find(x => x.isDefault === true);
+                                            const bill = [];
+                                            let covered = {};
+                                            if (patientDefaultPaymentPlan.planType === 'wallet') {
+                                                covered = {
+                                                    coverType: patientDefaultPaymentPlan.planType
+                                                };
+                                            } else if (patientDefaultPaymentPlan.planType === 'insurance') {
+                                                covered = {
+                                                    coverType: patientDefaultPaymentPlan.planType,
+                                                    hmoId: patientDefaultPaymentPlan.planDetails.hmoId
+                                                };
+                                            } else if (patientDefaultPaymentPlan.planType === 'company') {
+                                                covered = {
+                                                    coverType: patientDefaultPaymentPlan.planType,
+                                                    companyId: patientDefaultPaymentPlan.planDetails.companyId
+                                                };
+                                            } else if (patientDefaultPaymentPlan.planType === 'family') {
+                                                covered = {
+                                                    coverType: patientDefaultPaymentPlan.planType,
+                                                    familyId: patientDefaultPaymentPlan.planDetails.familyId
+                                                };
+                                            }
+                                            billItemArray.forEach(element => {
+                                                bill.push({
+                                                    unitPrice: element.unitPrice,
+                                                    facilityId: this.facility._id,
+                                                    facilityServiceId: element.facilityServiceId,
+                                                    serviceId: element.serviceId,
+                                                    patientId: element.patientId,
+                                                    quantity: diffDays,
+                                                    active: true,
+                                                    totalPrice: element.totalPrice,
+                                                    covered: covered
+                                                });
+                                            });
 
                                             // Generate bill for the patient based on the last room he or she was in.
-                                            const billing = await billingService.create(bill);
+                                            const billing = await billCreatorService.create(bill, { query: { facilityId: facilityId, patientId: patientId } });
 
                                             if (billing._id !== undefined) {
                                                 // Change status to onAdmission.
@@ -657,17 +705,57 @@ class Service {
                                             totalDiscoutedAmount: 0,
                                         };
                                         billItemArray.push(billItem);
-                                        let bill = {
-                                            facilityId: findFacilityPrice.facilityId,
-                                            patientId: getInPatient.patientId,
-                                            billItems: billItemArray,
-                                            discount: 0,
-                                            subTotal: price * diffDays,
-                                            grandTotal: price * diffDays,
-                                        };
+                                        // let bill = {
+                                        //   facilityId: findFacilityPrice.facilityId,
+                                        //   patientId: getInPatient.patientId,
+                                        //   billItems: billItemArray,
+                                        //   discount: 0,
+                                        //   subTotal: price * diffDays,
+                                        //   grandTotal: price * diffDays,
+                                        // };
 
                                         // Generate bill for the patient based on the last room he or she was in.
-                                        const billing = await billingService.create(bill);
+                                        const patientDetail = await patientService.get(getInPatient.patientId);
+                                        const patientDefaultPaymentPlan = patientDetail.paymentPlan.find(x => x.isDefault === true);
+                                        const bill = [];
+                                        let covered = {};
+                                        if (patientDefaultPaymentPlan.planType === 'wallet') {
+                                            covered = {
+                                                coverType: patientDefaultPaymentPlan.planType
+                                            };
+                                        } else if (patientDefaultPaymentPlan.planType === 'insurance') {
+                                            covered = {
+                                                coverType: patientDefaultPaymentPlan.planType,
+                                                hmoId: patientDefaultPaymentPlan.planDetails.hmoId
+                                            };
+                                        } else if (patientDefaultPaymentPlan.planType === 'company') {
+                                            covered = {
+                                                coverType: patientDefaultPaymentPlan.planType,
+                                                companyId: patientDefaultPaymentPlan.planDetails.companyId
+                                            };
+                                        } else if (patientDefaultPaymentPlan.planType === 'family') {
+                                            covered = {
+                                                coverType: patientDefaultPaymentPlan.planType,
+                                                familyId: patientDefaultPaymentPlan.planDetails.familyId
+                                            };
+                                        }
+
+                                        billItemArray.forEach(element => {
+                                            bill.push({
+                                                unitPrice: element.unitPrice,
+                                                facilityId: this.facility._id,
+                                                facilityServiceId: element.facilityServiceId,
+                                                serviceId: element.serviceId,
+                                                patientId: element.patientId,
+                                                quantity: diffDays,
+                                                active: true,
+                                                totalPrice: element.totalPrice,
+                                                covered: covered
+                                            });
+                                        });
+
+
+                                        const billing = await billCreatorService.create(bill, { query: { facilityId: facilityId, patientId: patientId } });
 
                                         if (billing._id !== undefined) {
                                             return jsend.success(billing);
@@ -705,9 +793,15 @@ class Service {
                 if (weekResult < 1) {
                     const dayResult = differenceInDays(Date.now(), dateOfBirth);
                     age = dayResult + ' days';
-                } else { age = weekResult + ' weeks'; }
-            } else { age = monthResult + ' months'; }
-        } else { age = age + ' years'; }
+                } else {
+                    age = weekResult + ' weeks';
+                }
+            } else {
+                age = monthResult + ' months';
+            }
+        } else {
+            age = age + ' years';
+        }
         return age;
     }
 
@@ -720,7 +814,9 @@ class Service {
     }
 
     remove(id, params) {
-        return Promise.resolve({ id });
+        return Promise.resolve({
+            id
+        });
     }
 }
 

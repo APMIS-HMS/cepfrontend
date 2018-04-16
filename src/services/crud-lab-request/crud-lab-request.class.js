@@ -127,6 +127,7 @@ class Service {
     async create(data, params) {
         const requestService = this.app.service('laboratory-requests');
         const billingService = this.app.service('billings');
+        const billCreatorService = this.app.service('bill-creators');
         const patientService = this.app.service('patients');
         const accessToken = params.accessToken;
         const facilityId = data.facilityId;
@@ -161,7 +162,9 @@ class Service {
                         billItem.patientId = patientId;
                         billItem.quantity = 1;
                         billItem.isBearerConfirmed = true,
-                            billItem.covered = { coverType: 'wallet' },
+                            billItem.covered = {
+                                coverType: 'wallet'
+                            },
                             billItem.totalPrice = billItem.quantity * billItem.unitPrice;
                         billItem.unitDiscountedAmount = 0;
                         billItem.totalDiscoutedAmount = 0;
@@ -204,10 +207,51 @@ class Service {
 
                     // Update the patient data with the clientNo
                     const updatePatient = await patientService.patch(getPatient._id, getPatient, {});
-
+                    const patientDefaultPaymentPlan = updatePatient.paymentPlan.find(x => x.isDefault === true);
                     if (updatePatient._id !== undefined) {
+
                         if (billGroup.billItems.length > 0) {
-                            const saveBilling = await billingService.create(billGroup);
+                            const bill = [];
+                            let covered = {};
+                            if (patientDefaultPaymentPlan.planType === 'wallet') {
+                                covered = {
+                                    coverType: patientDefaultPaymentPlan.planType
+                                };
+                            } else if (patientDefaultPaymentPlan.planType === 'insurance') {
+                                covered = {
+                                    coverType: patientDefaultPaymentPlan.planType,
+                                    hmoId: patientDefaultPaymentPlan.planDetails.hmoId
+                                };
+                            } else if (patientDefaultPaymentPlan.planType === 'company') {
+                                covered = {
+                                    coverType: patientDefaultPaymentPlan.planType,
+                                    companyId: patientDefaultPaymentPlan.planDetails.companyId
+                                };
+                            } else if (patientDefaultPaymentPlan.planType === 'family') {
+                                covered = {
+                                    coverType: patientDefaultPaymentPlan.planType,
+                                    familyId: patientDefaultPaymentPlan.planDetails.familyId
+                                };
+                            }
+                            billGroup.billItems.forEach(element => {
+                                bill.push({
+                                    unitPrice: element.unitPrice,
+                                    facilityId: this.facility._id,
+                                    facilityServiceId: element.facilityServiceId,
+                                    serviceId: element.serviceId,
+                                    patientId: element.patientId,
+                                    quantity: element.quantity,
+                                    active: true,
+                                    totalPrice: element.totalPrice,
+                                    covered: covered
+                                });
+                            });
+                            const saveBilling = await billCreatorService.create(billGroup, {
+                                query: {
+                                    facilityId: facilityId,
+                                    patientId: patientId
+                                }
+                            });
                             if (saveBilling._id !== undefined) {
                                 // Attach billing items before saving.
                                 data.billingId = saveBilling;

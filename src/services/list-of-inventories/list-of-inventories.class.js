@@ -19,6 +19,7 @@ class Service {
         storeId: params.query.storeId
       }
     });
+    console.log(inventories);
     const filter = inventories.data.filter(x => x.productObject.name.includes(params.query.name));
     _inventories.data = filter;
     if (_inventories.data.length > 0) {
