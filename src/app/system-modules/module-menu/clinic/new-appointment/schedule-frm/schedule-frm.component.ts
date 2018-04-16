@@ -52,7 +52,7 @@ import * as getMonth from "date-fns/get_month";
 import * as setMonth from "date-fns/set_month";
 import * as isToday from "date-fns/is_today";
 import { AuthFacadeService } from "app/system-modules/service-facade/auth-facade.service";
-const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&â€™*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 @Component({
   selector: "app-schedule-frm",
@@ -424,30 +424,25 @@ export class ScheduleFrmComponent implements OnInit {
     let patientDefaultPaymentPlan = this.selectedPatient.paymentPlan.find(x => x.isDefault === true);
     console.log(patientDefaultPaymentPlan);
     let covered = {};
-    console.log(1);
     if (patientDefaultPaymentPlan.planType === 'wallet') {
       covered = {
         coverType: patientDefaultPaymentPlan.planType
       }
-      console.log(2);
     } else if (patientDefaultPaymentPlan.planType === 'insurance') {
       covered = {
         coverType: patientDefaultPaymentPlan.planType,
         hmoId: patientDefaultPaymentPlan.planDetails.hmoId
       }
-      console.log(3);
     } else if (patientDefaultPaymentPlan.planType === 'company') {
       covered = {
         coverType: patientDefaultPaymentPlan.planType,
         companyId: patientDefaultPaymentPlan.planDetails.companyId
       }
-      console.log(4);
     } else if (patientDefaultPaymentPlan.planType === 'family') {
       covered = {
         coverType: patientDefaultPaymentPlan.planType,
         familyId: patientDefaultPaymentPlan.planDetails.familyId
       }
-      console.log(5);
     }
     this.facilityPriceService.find({
       query: {
