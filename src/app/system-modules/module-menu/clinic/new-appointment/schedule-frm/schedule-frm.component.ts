@@ -52,7 +52,7 @@ import * as getMonth from "date-fns/get_month";
 import * as setMonth from "date-fns/set_month";
 import * as isToday from "date-fns/is_today";
 import { AuthFacadeService } from "app/system-modules/service-facade/auth-facade.service";
-const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&ï¿½*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 @Component({
   selector: "app-schedule-frm",
@@ -99,6 +99,7 @@ export class ScheduleFrmComponent implements OnInit {
   currentDate: Date = new Date();
   clinicMajorLocation: any;
   organizationalServiceId: any = {};
+  organizationalServicePrice = 0;
   // filteredStates: any;
   patient: FormControl;
   clinic: FormControl;
@@ -273,6 +274,29 @@ export class ScheduleFrmComponent implements OnInit {
       this.patient.setValue(this.selectedPatient);
     });
 
+    this.category.valueChanges.subscribe(value => {
+      if (value) {
+        this.facilityPriceService.find({
+          query: {
+            facilityId: this.selectedFacility._id,
+            categoryId: this.organizationalServiceId.categoryId,
+            facilityServiceId: this.organizationalServiceId.facilityServiceId,
+            serviceId: value
+          }
+        }).then(payload => {
+          if (payload.data.length > 0) {
+            this.organizationalServicePrice = payload.data[0].price;
+          }else{
+            this.systemModuleService.announceSweetProxy("No price found on selected appointment. Please set a price for this appointment category","error");
+            this.category.reset();
+          }
+        }, err => {
+        });
+      } else {
+        this.showTimeZone = false;
+      }
+    });
+
     this.getPatients();
     this.getTimezones();
 
@@ -350,7 +374,6 @@ export class ScheduleFrmComponent implements OnInit {
 
         const categories = results[3].data[0].categories;
         this.organizationalServiceId.facilityServiceId = results[3].data[0]._id;
-        console.log(results);
         const filterCategories = categories.filter(
           x => x.name === "Appointment"
         );
@@ -422,7 +445,6 @@ export class ScheduleFrmComponent implements OnInit {
   createBill() {
     let bills = [];
     let patientDefaultPaymentPlan = this.selectedPatient.paymentPlan.find(x => x.isDefault === true);
-    console.log(patientDefaultPaymentPlan);
     let covered = {};
     if (patientDefaultPaymentPlan.planType === 'wallet') {
       covered = {
@@ -444,37 +466,22 @@ export class ScheduleFrmComponent implements OnInit {
         familyId: patientDefaultPaymentPlan.planDetails.familyId
       }
     }
-    this.facilityPriceService.find({
-      query: {
-        facilityId: this.selectedFacility._id,
-        categoryId: this.organizationalServiceId.categoryId,
-        facilityServiceId: this.organizationalServiceId.facilityServiceId,
-        serviceId: this.category.value
-      }
-    }).then(payload => {
-      console.log(payload);
-      bills.push({
-        unitPrice: payload.data[0].price,
-        facilityId: this.selectedFacility._id,
-        facilityServiceId: this.organizationalServiceId.facilityServiceId,
-        serviceId: this.category.value,
-        patientId: this.selectedPatient._id,
-        quantity: 1,
-        active: true,
-        totalPrice: payload.data[0].price,
-        covered: covered
-      });
-      console.log(bills);
-      this.billingService.createBill(bills, { query: { facilityId: this.selectedFacility._id, patientId: this.selectedPatient._id } }).then(payld => {
-        console.log(payld);
-      },err=>{
-        console.log(err);
-      });
-    }, err => {
-      console.log(err);
+    bills.push({
+      unitPrice: this.organizationalServicePrice,
+      facilityId: this.selectedFacility._id,
+      facilityServiceId: this.organizationalServiceId.facilityServiceId,
+      serviceId: this.category.value,
+      patientId: this.selectedPatient._id,
+      quantity: 1,
+      active: true,
+      totalPrice: this.organizationalServicePrice,
+      covered: covered
     });
-
-
+    this.billingService.createBill(bills, { query: { facilityId: this.selectedFacility._id, patientId: this.selectedPatient._id } }).then(payld => {
+      
+    }, err => {
+      
+    });
   }
 
 
