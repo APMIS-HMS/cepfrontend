@@ -275,26 +275,25 @@ export class ScheduleFrmComponent implements OnInit {
     });
 
     this.category.valueChanges.subscribe(value => {
-      if (value) {
-        this.facilityPriceService.find({
-          query: {
-            facilityId: this.selectedFacility._id,
-            categoryId: this.organizationalServiceId.categoryId,
-            facilityServiceId: this.organizationalServiceId.facilityServiceId,
-            serviceId: value
-          }
-        }).then(payload => {
-          if (payload.data.length > 0) {
-            this.organizationalServicePrice = payload.data[0].price;
-          }else{
-            this.systemModuleService.announceSweetProxy("No price found on selected appointment. Please set a price for this appointment category","error");
-            this.category.reset();
-          }
-        }, err => {
-        });
-      } else {
-        this.showTimeZone = false;
-      }
+      this.systemModuleService.on();
+      this.facilityPriceService.find({
+        query: {
+          facilityId: this.selectedFacility._id,
+          categoryId: this.organizationalServiceId.categoryId,
+          facilityServiceId: this.organizationalServiceId.facilityServiceId,
+          serviceId: value
+        }
+      }).then(payload => {
+        this.systemModuleService.off();
+        if (payload.data.length > 0) {
+          this.organizationalServicePrice = payload.data[0].price;
+        }else{
+          this.systemModuleService.announceSweetProxy("No price found on selected appointment. Please set a price for this appointment category","error");
+          this.category.reset();
+        }
+      }, err => {
+        this.systemModuleService.off();
+      });
     });
 
     this.getPatients();
