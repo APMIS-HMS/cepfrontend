@@ -11,26 +11,30 @@ class Service {
     async find(params) {
         let url = '';
 
+        console.log('Params => ', params);
         if (params.query.method === 'drug-details') {
             url = process.env.EMDEX_BASEURL + '/products/' + params.query.productId;
         } else {
-            url = process.env.EMDEX_BASEURL + '/list/?query=' + params.query.searchtext +
-                '&po=' + params.query.po + '&brandonly=' + params.query.brandonly + '&genericonly=' + params.query.genericonly;
+            url = process.env.APMIS_FORMULARY + '/prescriptions?search=' + params.query.searchtext;
+
+            // url = process.env.EMDEX_BASEURL + '/list/?query=' + params.query.searchtext +
+            //     '&po=' + params.query.po + '&brandonly=' + params.query.brandonly + '&genericonly=' + params.query.genericonly;
         }
 
         const options = {
             method: 'GET',
             uri: url,
-            headers: { authorisation: process.env.EMDEX_AUTHORISATION_KEY }
+            // headers: { authorisation: process.env.EMDEX_AUTHORISATION_KEY }
         };
+
         const makeRequest = await requestPromise(options);
         const parsed = JSON.parse(makeRequest);
 
         if (params.query.method === 'drug-details') {
             return jsend.success(parsed);
         } else {
-            if (parsed.results !== undefined) {
-                return jsend.success(parsed.results);
+            if (parsed.status === 'success') {
+                return jsend.success(parsed.data.data);
             } else {
                 return jsend.success([]);
             }

@@ -477,7 +477,7 @@ class Service {
                                             billItemArray.forEach(element => {
                                                 bill.push({
                                                     unitPrice: element.unitPrice,
-                                                    facilityId: this.facility._id,
+                                                    facilityId: facilityId,
                                                     facilityServiceId: element.facilityServiceId,
                                                     serviceId: element.serviceId,
                                                     patientId: element.patientId,
@@ -491,7 +491,7 @@ class Service {
                                             // Generate bill for the patient based on the last room he or she was in.
                                             const billing = await billCreatorService.create(bill, { query: { facilityId: facilityId, patientId: patientId } });
 
-                                            if (billing._id !== undefined) {
+                                            if (billing.length > 0) {
                                                 // Change status to onAdmission.
                                                 getInPatient.status = newStatus;
                                                 lastTransfer.checkOutDate = new Date();
@@ -743,7 +743,7 @@ class Service {
                                         billItemArray.forEach(element => {
                                             bill.push({
                                                 unitPrice: element.unitPrice,
-                                                facilityId: this.facility._id,
+                                                facilityId: facilityId,
                                                 facilityServiceId: element.facilityServiceId,
                                                 serviceId: element.serviceId,
                                                 patientId: element.patientId,
@@ -757,7 +757,7 @@ class Service {
 
                                         const billing = await billCreatorService.create(bill, { query: { facilityId: facilityId, patientId: patientId } });
 
-                                        if (billing._id !== undefined) {
+                                        if (billing.length > 0) {
                                             return jsend.success(billing);
                                         } else {
                                             return jsend.error('Could not create billing for the patient.');
