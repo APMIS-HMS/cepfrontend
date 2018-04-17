@@ -201,7 +201,7 @@ export class ScheduleFrmComponent implements OnInit {
       this.dateChange(value);
     });
     this.checkIn = new FormControl({ value: false, disabled: this.canCheckIn });
-    this.teleMed = new FormControl({value: false});
+    this.teleMed = new FormControl();
 
     this.patient = new FormControl("", [Validators.required]);
     this.filteredPatients = this.patient.valueChanges
@@ -275,25 +275,28 @@ export class ScheduleFrmComponent implements OnInit {
     });
 
     this.category.valueChanges.subscribe(value => {
-      this.systemModuleService.on();
-      this.facilityPriceService.find({
-        query: {
-          facilityId: this.selectedFacility._id,
-          categoryId: this.organizationalServiceId.categoryId,
-          facilityServiceId: this.organizationalServiceId.facilityServiceId,
-          serviceId: value
-        }
-      }).then(payload => {
-        this.systemModuleService.off();
-        if (payload.data.length > 0) {
-          this.organizationalServicePrice = payload.data[0].price;
-        }else{
-          this.systemModuleService.announceSweetProxy("No price found on selected appointment. Please set a price for this appointment category","error");
-          this.category.reset();
-        }
-      }, err => {
-        this.systemModuleService.off();
-      });
+      if(value !== null){
+        this.systemModuleService.on();
+        this.facilityPriceService.find({
+          query: {
+            facilityId: this.selectedFacility._id,
+            categoryId: this.organizationalServiceId.categoryId,
+            facilityServiceId: this.organizationalServiceId.facilityServiceId,
+            serviceId: value
+          }
+        }).then(payload => {
+          this.systemModuleService.off();
+          if (payload.data.length > 0) {
+            this.organizationalServicePrice = payload.data[0].price;
+          }else{
+            this.systemModuleService.announceSweetProxy("No price found on selected appointment. Please set a price for this appointment category","error");
+            this.category.reset();
+          }
+        }, err => {
+          this.systemModuleService.off();
+        });
+      }
+
     });
 
     this.getPatients();
@@ -1011,7 +1014,7 @@ export class ScheduleFrmComponent implements OnInit {
                     this.loadIndicatorVisible = false;
                     this.systemModuleService.off();
                     this.systemModuleService.announceSweetProxy(
-                      "Appointment set successfully but there was an error creating Telemedice appointment",
+                      "Appointment set successfully but there was an error creating Telemedicine appointment",
                       "warning"
                     );
                   }
