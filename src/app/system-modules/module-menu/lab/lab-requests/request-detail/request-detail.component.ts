@@ -7,6 +7,7 @@ import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChil
 import { FacilitiesService, PatientService } from '../../../../../services/facility-manager/setup/index';
 import { FormControl } from '@angular/forms';
 import { AuthFacadeService } from '../../../../service-facade/auth-facade.service';
+import { SystemModuleService } from '../../../../../services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-request-detail',
@@ -14,11 +15,9 @@ import { AuthFacadeService } from '../../../../service-facade/auth-facade.servic
   styleUrls: ['./request-detail.component.scss']
 })
 export class RequestDetailComponent implements OnInit {
-
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() investigation: any;
   @ViewChild('fileInput') fileInput: ElementRef;
-
   specimenNumber: FormControl = new FormControl();
   labNumber: FormControl = new FormControl();
   loginEmployee: Employee;
@@ -38,55 +37,59 @@ export class RequestDetailComponent implements OnInit {
   constructor(private renderer: Renderer, private facilityService: FacilitiesService,
     private _locker: CoolLocalStorage, private patientService: PatientService,
     private _laboratoryRequestService: LaboratoryRequestService,
-    private _authFacadeService: AuthFacadeService
+    private _authFacadeService: AuthFacadeService,
+    private _systemModuleService: SystemModuleService
   ) {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
-      this.loginEmployee = res;
+      if (!!res._id) {
+        this.loginEmployee = res;
+        const selectedLab = res.workbenchCheckIn.filter(x => x.isOn);
+        this.selectedLab = selectedLab[0];
+      }
     }).catch(err => console.log(err));
   }
 
   ngOnInit() {
     this.user = <User>this._locker.getObject('auth');
-    this.selectedLab = <any>this._locker.getObject('workbenchCheckingObject');
-    //this.getIncomingRequest(this.investigation.labRequestId);
+    // this.getIncomingRequest(this.investigation.labRequestId);
     this.getIncomingRequestAndPatient(this.investigation.labRequestId);
-    //this.getIncomingPatient();
+    // this.getIncomingPatient();
   }
-  getIncomingPatient() {
-    this.patientService.get(this.investigation.patientId, {}).then(patient => {
-      if (patient !== undefined) {
-        this.selectedPatient = patient;
-        if (this.selectedPatient.clientsNo === undefined) {
-          this.selectedPatient.clientsNo = [];
-        } else {
-          let index = this.selectedPatient.clientsNo.findIndex(x => x.minorLocationId._id === this.selectedLab.typeObject.minorLocationObject._id);
-          if (index > -1) {
-            this.client = this.selectedPatient.clientsNo[index];
-            this.hasLabNo = true;
-          }
-        }
-      }
-    })
-  }
-  getIncomingRequest(id) {
-    this._laboratoryRequestService.get(id, {}).then(payload => {
-      let index = payload.investigations.findIndex(x => x.investigation._id === this.investigation.investigationId);
-      let _investigation = payload.investigations[index];
-      this.localInvestigation = _investigation;
-      this.localRequest = payload;
-      if (this.localInvestigation.specimenReceived !== undefined && this.localInvestigation.specimenReceived === true) {
-        this.hasSpecimen = true;
-      } else {
-        this.hasSpecimen = false;
-      }
-      if (this.localInvestigation.sampleTaken !== undefined && this.localInvestigation.sampleTaken === true) {
-        this.hasSample = true;
-      } else {
-        this.hasSample = false;
-      }
+  // getIncomingPatient() {
+  //   this.patientService.get(this.investigation.patientId, {}).then(patient => {
+  //     if (patient !== undefined) {
+  //       this.selectedPatient = patient;
+  //       if (this.selectedPatient.clientsNo === undefined) {
+  //         this.selectedPatient.clientsNo = [];
+  //       } else {
+  //         let index = this.selectedPatient.clientsNo.findIndex(x => x.minorLocationId._id === this.selectedLab.minorLocationObject._id);
+  //         if (index > -1) {
+  //           this.client = this.selectedPatient.clientsNo[index];
+  //           this.hasLabNo = true;
+  //         }
+  //       }
+  //     }
+  //   })
+  // }
+  // getIncomingRequest(id) {
+  //   this._laboratoryRequestService.get(id, {}).then(payload => {
+  //     let index = payload.investigations.findIndex(x => x.investigation._id === this.investigation.investigationId);
+  //     let _investigation = payload.investigations[index];
+  //     this.localInvestigation = _investigation;
+  //     this.localRequest = payload;
+  //     if (this.localInvestigation.specimenReceived !== undefined && this.localInvestigation.specimenReceived === true) {
+  //       this.hasSpecimen = true;
+  //     } else {
+  //       this.hasSpecimen = false;
+  //     }
+  //     if (this.localInvestigation.sampleTaken !== undefined && this.localInvestigation.sampleTaken === true) {
+  //       this.hasSample = true;
+  //     } else {
+  //       this.hasSample = false;
+  //     }
 
-    });
-  }
+  //   });
+  // }
 
 
   getIncomingRequestAndPatient(id) {
@@ -97,93 +100,99 @@ export class RequestDetailComponent implements OnInit {
           if (this.selectedPatient.clientsNo === undefined) {
             this.selectedPatient.clientsNo = [];
           } else {
-            let index = this.selectedPatient.clientsNo.findIndex(x => x.minorLocationId._id === this.selectedLab.typeObject.minorLocationObject._id);
+            const index = this.selectedPatient.clientsNo.findIndex(x => x.minorLocationId._id === this.selectedLab.minorLocationObject._id);
             if (index > -1) {
               this.client = this.selectedPatient.clientsNo[index];
               this.hasLabNo = true;
             }
           }
         }
-        let requestIndex = payload.investigations.findIndex(x => x.investigation._id === this.investigation.investigationId);
-        let _investigation = payload.investigations[requestIndex];
+        const requestIndex = payload.investigations.findIndex(x => x.investigation._id === this.investigation.investigationId);
+        const _investigation = payload.investigations[requestIndex];
         this.localInvestigation = _investigation;
         this.localRequest = payload;
-        if (this.localInvestigation.specimenReceived !== undefined && this.localInvestigation.specimenReceived === true || this.localInvestigation.sampleTaken !== undefined && this.localInvestigation.sampleTaken === true) {
+        if (!!_investigation.specimenReceived && _investigation.specimenReceived) {
           this.hasSpecimen = true;
-        } else {
-          this.hasSpecimen = false;
         }
-        /* if (this.localInvestigation.sampleTaken !== undefined && this.localInvestigation.sampleTaken === true) {
+
+        if (!!_investigation.labNumber && _investigation.labNumber !== null) {
+          this.hasLabNo = true;
+        }
+
+        if (!!_investigation.sampleTaken && _investigation.sampleTaken) {
           this.hasSample = true;
-        } else {
-          this.hasSample = false;
-        } */
+        }
       })
 
     });
   }
 
-
-
   showImageBrowseDlg() {
     this.fileInput.nativeElement.click()
   }
+
   onChange() {
-    //upload file
+    // upload file
   }
+
   close_onClick(event) {
     this.closeModal.emit(true);
   }
+
   takeSample() {
     this.localInvestigation.sampleTaken = true;
-    const logEmp = this.loginEmployee;
-    delete logEmp.personDetails.wallet;
-    this.localInvestigation.sampleTakenBy = logEmp.personDetails;
+    // const logEmp = this.loginEmployee;
+    // delete logEmp.personDetails.wallet;
+    // this.localInvestigation.sampleTakenBy = logEmp.personDetails;
+    this.localInvestigation.sampleTakenBy = this.loginEmployee._id;
     this.localRequest.investigations[this.localInvestigationIndex] = this.localInvestigation;
-    this._laboratoryRequestService.patch(this.localRequest._id, this.localRequest, {}).then(pay => {
-      this._notification('Success', 'Specimen taken successfully!');
-      let index = pay.investigations.findIndex(x => x.investigation._id === this.investigation.investigationId);
-      let _investigation = pay.investigations[index];
+    this._laboratoryRequestService.patch(this.localRequest._id, this.localRequest, {}).then(res => {
+      this._systemModuleService.announceSweetProxy('Sample has been taken successfully!', 'success');
+      const index = res.investigations.findIndex(x => x.investigation._id === this.investigation.investigationId);
+      const _investigation = res.investigations[index];
       this.localInvestigation = _investigation;
-      this.localRequest = pay;
+      this.localRequest = res;
       this.hasSample = true;
-    }).catch(err => this._notification('Error', 'There was an error taken specimen. Please try again later!'));
+    }).catch(err => console.log(err));
   }
+
   receiveSpecimen() {
     this.localInvestigation.specimenReceived = true;
     this.localInvestigation.specimenNumber = this.specimenNumber.value;
 
     this.localRequest.investigations[this.localInvestigationIndex] = this.localInvestigation;
-    this._laboratoryRequestService.patch(this.localRequest._id, this.localRequest, {}).then(pay => {
-      this._notification('Success', 'Specimen Number has been updated successfully!');
-      let index = pay.investigations.findIndex(x => x.investigation._id === this.investigation.investigationId);
-      let _investigation = pay.investigations[index];
+    this._laboratoryRequestService.patch(this.localRequest._id, this.localRequest, {}).then(res => {
+      this._systemModuleService.announceSweetProxy('Specimen Number has been updated successfully!', 'success');
+      const index = res.investigations.findIndex(x => x.investigation._id === this.investigation.investigationId);
+      const _investigation = res.investigations[index];
       this.localInvestigation = _investigation;
-      this.localRequest = pay;
+      this.localRequest = res;
       this.hasSpecimen = true;
     }).catch(err => {
     });
   }
+
   assignLabNo() {
-    let clientNo = {
+    const clientNo = {
       minorLocationId: this.selectedLab.typeObject.minorLocationObject,
       clientNumber: this.labNumber.value
     }
     this.selectedPatient.clientsNo.push(clientNo);
     this.patientService.update(this.selectedPatient).then(payload => {
       this.selectedPatient = payload;
-      let index = this.selectedPatient.clientsNo.findIndex(x => x.minorLocationId._id === this.selectedLab.typeObject.minorLocationObject._id);
+      const index = this.selectedPatient.clientsNo.findIndex(x => x.minorLocationId._id === this.selectedLab.minorLocationObject._id);
       if (index > -1) {
         this.client = this.selectedPatient.clientsNo[index];
         this.hasLabNo = true;
       }
     });
   }
-  private _notification(type: string, text: string): void {
-    this.facilityService.announceNotification({
-      users: [this.user._id],
-      type: type,
-      text: text
-    });
-  }
+
+  // private _notification(type: string, text: string): void {
+  //   this.facilityService.announceNotification({
+  //     users: [this.user._id],
+  //     type: type,
+  //     text: text
+  //   });
+  // }
 }
