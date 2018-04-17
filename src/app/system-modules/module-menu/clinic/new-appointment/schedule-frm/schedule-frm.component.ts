@@ -17,7 +17,9 @@ import {
   PatientService,
   FacilitiesServiceCategoryService,
   TimezoneService,
-  SmsAlertService
+  SmsAlertService,
+  FacilityPriceService,
+  BillingService
 } from "../../../../../services/facility-manager/setup/index";
 import {
   LocationService,
@@ -50,7 +52,7 @@ import * as getMonth from "date-fns/get_month";
 import * as setMonth from "date-fns/set_month";
 import * as isToday from "date-fns/is_today";
 import { AuthFacadeService } from "app/system-modules/service-facade/auth-facade.service";
-const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
+const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&�*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 @Component({
   selector: "app-schedule-frm",
@@ -86,7 +88,7 @@ export class ScheduleFrmComponent implements OnInit {
   appointments: any[] = [];
   orderStatuses: any[] = [];
   selectedClinic: any = <any>{};
-  selectedClinicSchedule:any;
+  selectedClinicSchedule: any;
   isDoctor = false;
   loadIndicatorVisible = false;
   loadingPatients = false;
@@ -96,12 +98,15 @@ export class ScheduleFrmComponent implements OnInit {
   auth: any;
   currentDate: Date = new Date();
   clinicMajorLocation: any;
+  organizationalServiceId: any = {};
+  organizationalServicePrice = 0;
   // filteredStates: any;
   patient: FormControl;
   clinic: FormControl;
   provider: FormControl;
   type: FormControl;
   status: FormControl;
+  serviceCategory: FormControl;
   category: FormControl;
   checkIn: FormControl;
   teleMed: FormControl;
@@ -149,7 +154,9 @@ export class ScheduleFrmComponent implements OnInit {
     private authFacadeService: AuthFacadeService,
     private locationService: LocationService,
     private facilityServiceCategoryService: FacilitiesServiceCategoryService,
+    private facilityPriceService: FacilityPriceService,
     private _smsAlertService: SmsAlertService,
+    private billingService: BillingService,
     private route: ActivatedRoute
   ) {
     appointmentService.appointmentAnnounced$.subscribe((payload: any) => {
@@ -176,9 +183,9 @@ export class ScheduleFrmComponent implements OnInit {
       this.category.setValue(payload.category);
       this.status.setValue(payload.orderStatusId);
       if (payload.attendance !== undefined) {
-        if(this.canCheckIn){
+        if (this.canCheckIn) {
           this.checkIn.enable();
-        }else{
+        } else {
           this.checkIn.disable();
         }
       } else {
@@ -194,7 +201,7 @@ export class ScheduleFrmComponent implements OnInit {
       this.dateChange(value);
     });
     this.checkIn = new FormControl({ value: false, disabled: this.canCheckIn });
-    this.teleMed = new FormControl();
+    this.teleMed = new FormControl({value: false});
 
     this.patient = new FormControl("", [Validators.required]);
     this.filteredPatients = this.patient.valueChanges
@@ -265,6 +272,28 @@ export class ScheduleFrmComponent implements OnInit {
     this.patientService.patientAnnounced$.subscribe(value => {
       this.selectedPatient = value;
       this.patient.setValue(this.selectedPatient);
+    });
+
+    this.category.valueChanges.subscribe(value => {
+      this.systemModuleService.on();
+      this.facilityPriceService.find({
+        query: {
+          facilityId: this.selectedFacility._id,
+          categoryId: this.organizationalServiceId.categoryId,
+          facilityServiceId: this.organizationalServiceId.facilityServiceId,
+          serviceId: value
+        }
+      }).then(payload => {
+        this.systemModuleService.off();
+        if (payload.data.length > 0) {
+          this.organizationalServicePrice = payload.data[0].price;
+        }else{
+          this.systemModuleService.announceSweetProxy("No price found on selected appointment. Please set a price for this appointment category","error");
+          this.category.reset();
+        }
+      }, err => {
+        this.systemModuleService.off();
+      });
     });
 
     this.getPatients();
@@ -343,11 +372,13 @@ export class ScheduleFrmComponent implements OnInit {
         }
 
         const categories = results[3].data[0].categories;
+        this.organizationalServiceId.facilityServiceId = results[3].data[0]._id;
         const filterCategories = categories.filter(
           x => x.name === "Appointment"
         );
         if (filterCategories.length > 0) {
           this.categoryServices = filterCategories[0].services;
+          this.organizationalServiceId.categoryId = filterCategories[0]._id;
         }
         if (this.appointment._id !== undefined) {
           this.category.setValue(this.appointment.category);
@@ -409,6 +440,50 @@ export class ScheduleFrmComponent implements OnInit {
       }
     }
   }
+
+  createBill() {
+    let bills = [];
+    let patientDefaultPaymentPlan = this.selectedPatient.paymentPlan.find(x => x.isDefault === true);
+    let covered = {};
+    if (patientDefaultPaymentPlan.planType === 'wallet') {
+      covered = {
+        coverType: patientDefaultPaymentPlan.planType
+      }
+    } else if (patientDefaultPaymentPlan.planType === 'insurance') {
+      covered = {
+        coverType: patientDefaultPaymentPlan.planType,
+        hmoId: patientDefaultPaymentPlan.planDetails.hmoId
+      }
+    } else if (patientDefaultPaymentPlan.planType === 'company') {
+      covered = {
+        coverType: patientDefaultPaymentPlan.planType,
+        companyId: patientDefaultPaymentPlan.planDetails.companyId
+      }
+    } else if (patientDefaultPaymentPlan.planType === 'family') {
+      covered = {
+        coverType: patientDefaultPaymentPlan.planType,
+        familyId: patientDefaultPaymentPlan.planDetails.familyId
+      }
+    }
+    bills.push({
+      unitPrice: this.organizationalServicePrice,
+      facilityId: this.selectedFacility._id,
+      facilityServiceId: this.organizationalServiceId.facilityServiceId,
+      serviceId: this.category.value,
+      patientId: this.selectedPatient._id,
+      quantity: 1,
+      active: true,
+      totalPrice: this.organizationalServicePrice,
+      covered: covered
+    });
+    this.billingService.createBill(bills, { query: { facilityId: this.selectedFacility._id, patientId: this.selectedPatient._id } }).then(payld => {
+      
+    }, err => {
+      
+    });
+  }
+
+
   isAppointmentToday() {
     Observable.fromPromise(
       this.appointmentService
@@ -425,7 +500,7 @@ export class ScheduleFrmComponent implements OnInit {
             this.checkIn.disable();
             this.appointmentIsToday = false;
           }
-        },error =>{
+        }, error => {
         })
     );
   }
@@ -565,7 +640,7 @@ export class ScheduleFrmComponent implements OnInit {
   getSchedules() {
     this.scheduleService
       .find({ query: { facilityId: this.selectedFacility._id } })
-      .subscribe(payload => {});
+      .subscribe(payload => { });
   }
 
   getPatients() {
@@ -661,50 +736,50 @@ export class ScheduleFrmComponent implements OnInit {
   filterClinics(val: any) {
     return val
       ? this.clinics.filter(
-          s => s.clinicName.toLowerCase().indexOf(val.toLowerCase()) === 0
-        )
+        s => s.clinicName.toLowerCase().indexOf(val.toLowerCase()) === 0
+      )
       : this.clinics;
   }
 
   filterPatients(val: any) {
     return val
       ? this.patients.filter(
-          s =>
-            s.personDetails.lastName
-              .toLowerCase()
-              .indexOf(val.toLowerCase()) === 0 ||
-            s.personDetails.firstName
-              .toLowerCase()
-              .indexOf(val.toLowerCase()) === 0
-        )
+        s =>
+          s.personDetails.lastName
+            .toLowerCase()
+            .indexOf(val.toLowerCase()) === 0 ||
+          s.personDetails.firstName
+            .toLowerCase()
+            .indexOf(val.toLowerCase()) === 0
+      )
       : this.patients;
   }
 
   filterProviders(val: any) {
     return val
       ? this.providers.filter(
-          s =>
-            s.personDetails.lastName
-              .toLowerCase()
-              .indexOf(val.toLowerCase()) === 0 ||
-            s.personDetails.firstName
-              .toLowerCase()
-              .indexOf(val.toLowerCase()) === 0
-        )
+        s =>
+          s.personDetails.lastName
+            .toLowerCase()
+            .indexOf(val.toLowerCase()) === 0 ||
+          s.personDetails.firstName
+            .toLowerCase()
+            .indexOf(val.toLowerCase()) === 0
+      )
       : this.providers;
   }
   filterAppointmentTypes(val: any) {
     return val
       ? this.appointmentTypes.filter(
-          s => s.name.toLowerCase().indexOf(val.toLowerCase()) === 0
-        )
+        s => s.name.toLowerCase().indexOf(val.toLowerCase()) === 0
+      )
       : this.appointmentTypes;
   }
   filterCategoryServices(val: any) {
     return val
       ? this.categoryServices.filter(
-          s => s.name.toLowerCase().indexOf(val.toLowerCase()) === 0
-        )
+        s => s.name.toLowerCase().indexOf(val.toLowerCase()) === 0
+      )
       : this.categoryServices;
   }
   displayFn(clinic: any): string {
@@ -783,7 +858,7 @@ export class ScheduleFrmComponent implements OnInit {
       this.appointment.appointmentReason = reason;
       this.appointment.appointmentTypeId = type;
       this.appointment.clinicId = clinic;
-      if(this.provider.value !== null && this.provider.value !== undefined){
+      if (this.provider.value !== null && this.provider.value !== undefined) {
         const provider = this.provider.value._id;
         this.appointment.doctorId = provider;
       }
@@ -793,7 +868,7 @@ export class ScheduleFrmComponent implements OnInit {
       this.appointment.startDate = this.date;
       if (checkIn === true) {
         this.appointment.attendance = {
-          employeeId: this.loginEmployee.personDetails.title +' '+this.loginEmployee.personDetails.lastName +' '+this.loginEmployee.personDetails.firstName,
+          employeeId: this.loginEmployee.personDetails.title + ' ' + this.loginEmployee.personDetails.lastName + ' ' + this.loginEmployee.personDetails.firstName,
           majorLocationId: this.selectedClinicSchedule.location.locationId,
           minorLocationId: this.selectedClinicSchedule.location._id,
           dateCheckIn: new Date()
@@ -896,6 +971,7 @@ export class ScheduleFrmComponent implements OnInit {
       } else {
         this.appointmentService.create(this.appointment).then(
           payload => {
+            this.createBill();
             if (this.teleMed.value === true) {
               const topic = "Appointment with " + patient.personDetails.apmisId;
               this.appointmentService
@@ -922,6 +998,7 @@ export class ScheduleFrmComponent implements OnInit {
                       this.selectedClinic.name,
                       this.selectedPatient.personDetails.email
                     );
+
                     this.router.navigate(["/dashboard/clinic/appointment"]);
                     this.systemModuleService.off();
                     this.systemModuleService.announceSweetProxy(
@@ -1010,7 +1087,7 @@ export class ScheduleFrmComponent implements OnInit {
         const scheduleStartHour = getHours(schedule.startTime);
         const scheduleEndHour = getHours(schedule.endTime);
         const currentHour = getHours(new Date());
-        if(this.appointment._id === undefined){
+        if (this.appointment._id === undefined) {
           //comment by me starday
           // this.date = setHours(this.date, getHours(schedule.startTime));
           // this.date = setMinutes(this.date, getMinutes(schedule.startTime));
@@ -1025,34 +1102,34 @@ export class ScheduleFrmComponent implements OnInit {
 
 
 
-         
 
-          if(((scheduleStartHour < currentHour) && (scheduleEndHour > currentHour))){
+
+          if (((scheduleStartHour < currentHour) && (scheduleEndHour > currentHour))) {
             this.date = new Date();
-              this.date = setHours(this.date, getHours(new Date()));
-              this.date = setMinutes(this.date, getMinutes(new Date()));
-              this.startDate = setHours(this.startDate, getHours(new Date()));
-              this.startDate = setMinutes(
-                this.startDate,
-                getMinutes(new Date())
-              );
+            this.date = setHours(this.date, getHours(new Date()));
+            this.date = setMinutes(this.date, getMinutes(new Date()));
+            this.startDate = setHours(this.startDate, getHours(new Date()));
+            this.startDate = setMinutes(
+              this.startDate,
+              getMinutes(new Date())
+            );
           }
           //end new code here
-          if(this.canCheckIn){
+          if (this.canCheckIn) {
             this.checkIn.enable();
-          }else{
+          } else {
             this.checkIn.disable();
           }
           this.dateCtrl.setErrors(null); // ({ noValue: false });
           this.dateCtrl.markAsUntouched();
           this.selectedClinicSchedule = schedule;
-        }else{
-          if(((scheduleStartHour > currentHour) || (scheduleEndHour < currentHour))){
+        } else {
+          if (((scheduleStartHour > currentHour) || (scheduleEndHour < currentHour))) {
             this.dateCtrl.setErrors({ noValue: true });
             this.dateCtrl.markAsTouched();
             this.checkIn.disable();
             this.checkIn.setValue(false);
-          }else{
+          } else {
             this.date = setHours(this.date, getHours(schedule.startTime));
             this.date = setMinutes(this.date, getMinutes(schedule.startTime));
             this.startDate = setHours(this.startDate, getHours(schedule.startTime));
@@ -1060,9 +1137,9 @@ export class ScheduleFrmComponent implements OnInit {
               this.startDate,
               getMinutes(schedule.startTime)
             );
-            if(this.canCheckIn){
+            if (this.canCheckIn) {
               this.checkIn.enable();
-            }else{
+            } else {
               this.checkIn.disable();
             }
             this.dateCtrl.setErrors(null); // ({ noValue: false });
@@ -1070,8 +1147,8 @@ export class ScheduleFrmComponent implements OnInit {
             this.selectedClinicSchedule = schedule;
           }
         }
-        
-       
+
+
       }
       if (this.selectedClinic._id !== undefined) {
         this.appointmentService.clinicAnnounced({
@@ -1104,11 +1181,11 @@ export class ScheduleFrmComponent implements OnInit {
         this.startDate,
         getMinutes(schedule.startTime)
       );
-      this.canCheckIn =  isToday(this.date)
+      this.canCheckIn = isToday(this.date)
 
-      if(this.canCheckIn){
+      if (this.canCheckIn) {
         this.checkIn.enable();
-      }else{
+      } else {
         this.checkIn.disable();
       }
       this.dateCtrl.setErrors(null); // ({ noValue: false });

@@ -96,7 +96,7 @@ export class WalletComponent implements OnInit {
   lineChartLegend = true;
   lineChartType = 'line';
 
-  constructor(
+  constructor(//
     private _fb: FormBuilder,
     private _locker: CoolLocalStorage,
     private _facilityService: FacilitiesService,
