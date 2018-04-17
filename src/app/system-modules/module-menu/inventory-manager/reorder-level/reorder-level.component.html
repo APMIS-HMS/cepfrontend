@@ -63,7 +63,7 @@
 
     <div *ngIf="showNewForm" class="card-list-item row">
       <div class="col-xs-4" style="text-align:center">
-        <input type="text" [formControl]="newProduct" autocomplete="off">
+        <input type="text" [formControl]="newProduct" autocomplete="off" placeholder="select a product">
         <ul class="suggestions nice-scroll" *ngIf="collapseProductContainer && products.length > 0">
           <li class="suggestion" *ngFor="let item of products" (click)="onSelectProduct(item)">
             <div class="listing-label">{{item.name}}</div>
@@ -72,11 +72,12 @@
       </div>
       <div class="col-xs-4" style="text-align:center">
         <select [formControl]="newPackType">
+          <option selected >select pack type</option>
           <option *ngFor="let config of selectedProduct.productConfigObject" [value]="config._id">{{config.name}}</option>
         </select>
       </div>
       <div class="col-xs-3" style="text-align:center">
-        <input type="number" [formControl]="newReorderLevel">
+        <input type="number" placeholder="reorder level" [formControl]="newReorderLevel">
       </div>
       <div class="col-xs-1" *ngIf="addBtnDisable">
         <i (click)="setLevel_click()" class="fa fa-check td-ico"></i>
