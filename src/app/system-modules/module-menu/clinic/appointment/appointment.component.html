@@ -15,134 +15,79 @@
     <app-checkout-patient [patientDetails]="patientDetails" [selectedAppointment]="selectedAppointment" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-checkout-patient>
 </div>
 
-<table cellpadding="0" cellspacing="0" border="0.5">
-    <thead>
-        <tr>
-            <th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                <span style="padding-left: 3px;">Patient</span>
-            </th>
-            <th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                <span style="padding-left: 3px;">Date</span>
-            </th>
-            <th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                <span style="padding-left: 3px;">Time</span>
-            </th>
-            <th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                <span style="padding-left: 3px;">Clinic</span>
-            </th>
-            <th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                <span style="padding-left: 3px;">Provider</span>
-            </th>
-            <th>
-                <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                <span style="padding-left: 3px;">Status</span>
-            </th>
-            <th>Actions</th>
-        </tr>
-    </thead>
+<div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="table-head col-xs-2">
+                    Patient
+                </div>
+                <div class="table-head col-xs-2">
+                    Date
+                </div>
+                <div class="table-head col-xs-1">
+                    Time
+                </div>
+                <div class="table-head col-xs-2">
+                    Clinic
+                </div>
+                <div class="table-head col-xs-2">
+                    Provider
+                </div>
+                <div class="table-head col-xs-1">
+                    Status
+                </div>
+                <div class="table-head col-xs-2">
+                    <i class="fa fa-search fa-fw"></i>
+                </div>
+            </div>
+        </div>
+        <div class="card-content">
+            <div *ngIf="filteredAppointments.length === 0 && !loading" class="row">
+                <div class="card-list-item col-xs-12 table-list">
+                    No data available in table
+                </div>
+            </div>
 
-    <tbody>
-        <tr>
-            <td colspan="7">
-                <div class="tbl-actionRow">
-                    <div class="filter-xxx">
-                        <mat-input-container>
-                            <input matInput placeholder="Clinic" [matAutocomplete]="ClinicAuto" [formControl]="clinicCtrl">
-                        </mat-input-container>
-
-                        <mat-autocomplete #ClinicAuto="matAutocomplete" [displayWith]="displayFn">
-                            <mat-option *ngFor="let clinic of clinics " [value]="clinic">
-                                {{ clinic.clinicName }}
-                            </mat-option>
-                        </mat-autocomplete>
+            <div *ngIf="filteredAppointments.length === 0 && loading" class="row">
+                <div class="card-list-item col-xs-12 table-list">
+                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue"></i>
+                </div>
+            </div>
+            <div class="card-list-item" *ngFor="let appointment of filteredAppointments; let i = index">
+                <div class="row">
+                    <div class="table-list col-xs-2">
+                        {{appointment.patientDetails.personDetails.lastName}} {{appointment.patientDetails.personDetails.firstName}}
                     </div>
-                    <div class="filter-xxx">
-                        <mat-input-container>
-                            <input matInput placeholder="Provider" [matAutocomplete]="providerAuto" [formControl]="providerCtrl">
-                        </mat-input-container>
-                        <span style="margin-left: -15px;" *ngIf="loadingProvider" class="fa fa-spinner fa-spin"></span>
-                        <mat-autocomplete #providerAuto="matAutocomplete" [displayWith]="providerDisplayFn">
-                            <mat-option *ngFor="let provider of filteredProviders | async" [value]="provider">
-                                {{ provider.personDetails?.lastName }} {{ provider.personDetails?.firstName }}
-                            </mat-option>
-                        </mat-autocomplete>
-                    </div>
-                    <div>
-                        <mat-input-container>
-                            <input matInput placeholder="Type" [matAutocomplete]="autoType" [formControl]="typeCtrl">
-                        </mat-input-container>
-
-                        <mat-autocomplete #autoType="matAutocomplete" [displayWith]="appointmentTypeDisplayFn">
-                            <mat-option *ngFor="let type of appointmentTypes" [value]="type">
-                                {{ type.name }}
-                            </mat-option>
-                        </mat-autocomplete>
-                    </div>
-
-                    <div class="tbl-search frm-item-wrap">
-                        <div class="searchInputWrap">
-                            <input [formControl]="searchControl" type="search" autofocus class="searchInput" placeholder="search">
-                            <i class="fa fa-search" aria-hidden="true"></i>
+                    <div class="table-list col-xs-2">
+                        {{appointment.startDate | date:'shortDate'}} 
+                        <div *ngIf="appointment.appointmentReason !== null">
+                            <hr>
+                            <h3>Reason for Visit</h3>
+                            {{appointment.appointmentReason}}
                         </div>
+                        
+                    </div>
+                    <div class="table-list col-xs-1">{{appointment.startDate | date:'shortTime'}}</div>
+                    <div class="table-list col-xs-2">{{appointment.clinicId}}</div>
+                    <div class="table-list col-xs-2">{{appointment.providerDetails?.personDetails.firstName}} {{appointment.providerDetails?.personDetails.lastName}}</div>
+                    <div class="table-list col-xs-1">
+                        <span *ngIf="appointment.orderStatusId !== undefined">{{appointment?.orderStatusId}}</span>
+                        <span *ngIf="appointment.orderStatusId === undefined">{{appointment?.orderStatusId}}</span>
+                    </div>
+                    
+                    <div class="table-list col-xs-2">
+                            <div class="tbl-actions-wrap">
+                                    <div *ngIf="appointment.attendance !== undefined && !appointment.isCheckedOut" (click)="checkOutToWard(appointment)" class="tr-act-btn"><i class="fa fa-sign-out" aria-hidden="true"></i> Check Out</div>
+                                    <div *ngIf="appointment.isCheckedOut" class="tr-act-btn"><i class="" aria-hidden="true"></i> Checked Out</div>
+                                    <div *ngIf="appointment.attendance === undefined" class="tr-act-btn" [routerLink]="['/dashboard/clinic/schedule-appointment', appointment._id]"><i class="fa fa-edit" aria-hidden="true"></i> Edit</div>
+                                    <div *ngIf="appointment.attendance === undefined" class="tr-act-btn" (click)="cancelAppointment(appointment)"><i class="fa fa-times" aria-hidden="true"></i> Cancel</div>
+                                    <div *ngIf="appointment.zoom !== undefined && appointment.attendance === undefined" (click)="onNavigate(appointment, $event)" class="actionWrap">
+                                        <i class="fa fa-stethoscope" aria-hidden="true"></i>
+                                        <span>TeleMedicine</span>
+                                    </div>
+                                </div>
                     </div>
                 </div>
-            </td>
-        </tr>
-        <tr *ngIf="filteredAppointments.length === 0 && !loading">
-            <td class="table-content" colspan="8" style="text-align: center"> No data available in table</td>
-        </tr>
-        <tr *ngIf="filteredAppointments.length === 0 && loading">
-            <td class="table-content" colspan="8" style="text-align: center">
-                <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
-            </td>
-        </tr>
-        <tr *ngFor="let appointment of filteredAppointments">
-            <td>
-                <div class="empWrap">
-                    <div class="list-img">
-                        <!-- <img *ngIf="appointment.patientId?.personDetails?.profileImageObject !== undefined" [src]="facilityService.transform(appointment.patientId.personDetails?.profileImageObject?.thumbnail)">
-                        <img *ngIf="appointment.patientId?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png"> -->
-                    </div>
-                    <div>{{appointment.patientDetails.personDetails.lastName}} {{appointment.patientDetails.personDetails.firstName}}</div>
-                </div>
-            </td>
-            <td>{{appointment.startDate | date:'shortDate'}}</td>
-            <td> {{appointment.startDate | date:'shortTime'}}</td>
-            <td>{{appointment.clinicId}}</td>
-            <td>
-                <div class="empWrap">
-                    <div class="list-img">
-                        <!-- <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject !== undefined && appointment.doctorId !== null" [src]="facilityService.transform(appointment.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
-                        <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png"> -->
-                    </div>
-                    <div>{{appointment.providerDetails?.personDetails.firstName}} {{appointment.providerDetails?.personDetails.lastName}}</div>
-                </div>
-            </td>
-            <td *ngIf="appointment.orderStatusId !== undefined">{{appointment?.orderStatusId}}</td>
-            <td *ngIf="appointment.orderStatusId === undefined">Scheduled</td>
-            <td>
-                <div class="tbl-actions-wrap">
-                    <div *ngIf="appointment.attendance !== undefined && !appointment.isCheckedOut" (click)="checkOutToWard(appointment)" class="tr-act-btn"><i class="fa fa-sign-out" aria-hidden="true"></i> Check Out</div>
-                    <div *ngIf="appointment.isCheckedOut" class="tr-act-btn"><i class="" aria-hidden="true"></i> Checked Out</div>
-                    <div *ngIf="appointment.attendance === undefined" class="tr-act-btn" [routerLink]="['/dashboard/clinic/schedule-appointment', appointment._id]"><i class="fa fa-edit" aria-hidden="true"></i> Edit</div>
-                    <div *ngIf="appointment.attendance === undefined" class="tr-act-btn" (click)="cancelAppointment(appointment)"><i class="fa fa-times" aria-hidden="true"></i> Cancel</div>
-                    <div *ngIf="appointment.zoom !== undefined && appointment.attendance === undefined" (click)="onNavigate(appointment, $event)" class="actionWrap">
-                        <i class="fa fa-stethoscope" aria-hidden="true"></i>
-                        <span>TeleMedicine</span>
-                    </div>
-                </div>
-            </td>
-        </tr>
-    </tbody>
-</table>
+            </div>
+        </div>
+    </div>

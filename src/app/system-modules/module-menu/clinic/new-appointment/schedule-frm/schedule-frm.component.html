@@ -83,7 +83,12 @@
 
             <div class="tr-act-btn3">
                 <mat-checkbox [formControl]="teleMed">Tele Medicine Consultation</mat-checkbox>
+
+                
             </div>
+
+
+                
 
         </div>
 
@@ -124,6 +129,22 @@
                 placeholder="Select timezone">
             </ng2-timezone-picker> -->
             <div *ngIf="showTimeZone">
+                <div>
+                    <mat-input-container>
+                        <input matInput placeholder="Invite Personnel" [matAutocomplete]="personnel" [formControl]="timezone">
+                    </mat-input-container>
+                    
+                    <mat-autocomplete #personnel="matAutocomplete" [displayWith]="timezoneDisplayFn">
+                        <mat-option  value="Dr. Ade">
+                                Dr. Ade
+                        </mat-option>
+                        <mat-option  value="Dr. Bisi">
+                                Dr. Bisi
+                        </mat-option>
+                    </mat-autocomplete>
+                </div>
+                    
+                        
                 <mat-input-container>
                     <input matInput placeholder="Select Timezone" [matAutocomplete]="timezoneAuto" [formControl]="timezone">
                 </mat-input-container>
@@ -133,6 +154,8 @@
                         {{ timezone.name }}
                     </mat-option>
                 </mat-autocomplete>
+
+                
             </div>
         </div>
     </div>
