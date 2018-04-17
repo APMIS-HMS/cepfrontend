@@ -38,7 +38,7 @@
                         <div class="card-list-item" *ngFor="let appointment of checkedInAppointments; let i = index">
                             <div class="row">
                                 <div class="table-list col-xs-2">
-                                        <div title="{{appointment?.patientDetails?.personDetails?.primaryContactPhoneNo}} | {{appointment?.patientDetails?.personDetails?.email}} | {{appointment?.appointmentReason}}" class="tooltip empWrap" (click)="goToPatientPage(appointment,false)">
+                                        <div title="{{appointment?.patientDetails?.personDetails?.primaryContactPhoneNo}} {{appointment?.patientDetails?.personDetails?.email}} Reason for Vist: {{appointment.appointmentReason == NULL ? 'None' : appointment.appointmentReason }}" class="tooltip empWrap" (click)="goToPatientPage(appointment,false)">
                                                 <div class="list-img" *ngIf="appointment?.patientDetails?.personDetails?.profileImageObject == undefined">
                                                     <img src="assets/images/users/default.png">
                                                 </div>
