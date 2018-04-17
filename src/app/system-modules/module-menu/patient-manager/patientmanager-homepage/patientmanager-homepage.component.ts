@@ -750,7 +750,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
                   return false;
                 } else {
                   if (fil[0].firstname !== this.patient.personDetails.firstName || fil[0].surname !== this.patient.personDetails.lastName) {
-                    console.log('Not same');
                     this.systemService.off();
                     this.loading = false;
                     const text = 'Information of policy doesn\'t match patient details. Please check and try again! ';
