@@ -201,7 +201,7 @@ export class ScheduleFrmComponent implements OnInit {
       this.dateChange(value);
     });
     this.checkIn = new FormControl({ value: false, disabled: this.canCheckIn });
-    this.teleMed = new FormControl();
+    this.teleMed = new FormControl({value: false});
 
     this.patient = new FormControl("", [Validators.required]);
     this.filteredPatients = this.patient.valueChanges
