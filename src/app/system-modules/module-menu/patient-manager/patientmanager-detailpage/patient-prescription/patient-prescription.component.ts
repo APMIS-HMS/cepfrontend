@@ -62,8 +62,8 @@ export class PatientPrescriptionComponent implements OnInit {
     currMedLoading = false;
     pastMedLoading = false;
     apmisLookupQuery = {};
-    apmisLookupUrl = '';
-    apmisLookupDisplayKey = '';
+    apmisLookupUrl = 'drug-generic-list';
+    apmisLookupDisplayKey = 'name';
     authorizeRx = true;
     authorizingRx = false;
     disableAuthorizeRx = false;
@@ -110,8 +110,8 @@ export class PatientPrescriptionComponent implements OnInit {
         });
 
         this.addPrescriptionForm = this.fb.group({
-            strength: ['', [<any>Validators.required]],
-            route: ['', [<any>Validators.required]],
+            // strength: ['', [<any>Validators.required]],
+            // route: ['', [<any>Validators.required]],
             drug: ['', [<any>Validators.required]],
             frequency: ['', [<any>Validators.required]],
             duration: [0, [<any>Validators.required]],
@@ -120,8 +120,6 @@ export class PatientPrescriptionComponent implements OnInit {
             startDate: [this.currentDate],
             specialInstruction: ['']
         });
-        this.apmisLookupUrl = 'drug-generic-list';
-        this.apmisLookupDisplayKey = 'details';
 
         this.addPrescriptionForm.controls['drug'].valueChanges.subscribe(value => {
             this.apmisLookupQuery = {
@@ -134,33 +132,35 @@ export class PatientPrescriptionComponent implements OnInit {
     }
 
     apmisLookupHandleSelectedItem(item) {
-        this.apmisLookupText = item.details;
-        this._drugListApi.find({ query: { method: 'drug-details', 'productId': item.productId } }).then(res => {
-            let sRes = res.data;
-            if (res.status === 'success') {
-                if (!!sRes.ingredients && sRes.ingredients.length > 0) {
-                    this.selectedForm = sRes.form;
-                    this.selectedIngredients = sRes.ingredients;
-                    let drugName: string = sRes.form + ' ';
-                    let strength = '';
-                    const ingredientLength: number = sRes.ingredients.length;
-                    let index = 0;
-                    sRes.ingredients.forEach(element => {
-                        index++;
-                        drugName += element.name;
-                        strength += element.strength + element.strengthUnit;
+        this.apmisLookupText = item;
+        console.log(item);
+        this.addPrescriptionForm.controls['drug'].setValue(item.name);
+        // this._drugListApi.find({ query: { method: 'drug-details', 'productId': item.productId } }).then(res => {
+        //     let sRes = res.data;
+        //     if (res.status === 'success') {
+        //         if (!!sRes.ingredients && sRes.ingredients.length > 0) {
+        //             this.selectedForm = sRes.form;
+        //             this.selectedIngredients = sRes.ingredients;
+        //             let drugName: string = sRes.form + ' ';
+        //             let strength = '';
+        //             const ingredientLength: number = sRes.ingredients.length;
+        //             let index = 0;
+        //             sRes.ingredients.forEach(element => {
+        //                 index++;
+        //                 drugName += element.name;
+        //                 strength += element.strength + element.strengthUnit;
 
-                        if (index !== ingredientLength) {
-                            drugName += '/';
-                            strength += '/';
-                        }
-                    });
-                    this.addPrescriptionForm.controls['drug'].setValue(drugName);
-                    this.addPrescriptionForm.controls['strength'].setValue(strength);
-                    this.addPrescriptionForm.controls['route'].setValue(sRes.route);
-                }
-            }
-        }).catch(err => console.error(err));
+        //                 if (index !== ingredientLength) {
+        //                     drugName += '/';
+        //                     strength += '/';
+        //                 }
+        //             });
+        //             this.addPrescriptionForm.controls['drug'].setValue(drugName);
+        //             this.addPrescriptionForm.controls['strength'].setValue(strength);
+        //             this.addPrescriptionForm.controls['route'].setValue(sRes.route);
+        //         }
+        //     }
+        // }).catch(err => console.error(err));
     }
 
     onClickAddPrescription(value: any, valid: boolean) {
@@ -229,6 +229,7 @@ export class PatientPrescriptionComponent implements OnInit {
   }
 
     onClickAuthorizePrescription(value: any, valid: boolean) {
+        console.log(value);
         if (valid && (this.prescriptionArray.length > 0)) {
             this.disableAuthorizeRx = true;
             this.authorizeRx = false;
@@ -237,9 +238,11 @@ export class PatientPrescriptionComponent implements OnInit {
             this.prescriptions.totalCost = value.totalCost;
             this.prescriptions.totalQuantity = value.totalQuantity;
 
+            console.log(this.prescriptions);
             this._prescriptionService.authorizePresciption(this.prescriptions).then(res => {
+                console.log(res);
               if (res.status === 'success') {
-                this._systemModuleService.announceSweetProxy('Prescription has been sent successfully!', 'success', null, null, null, null, null, null, null);
+                this._systemModuleService.announceSweetProxy('Prescription has been sent successfully!', 'success');
                 this.isDispensed.next(true);
                 this.prescriptionItems = <Prescription>{};
                 this.prescriptionItems.prescriptionItems = [];
