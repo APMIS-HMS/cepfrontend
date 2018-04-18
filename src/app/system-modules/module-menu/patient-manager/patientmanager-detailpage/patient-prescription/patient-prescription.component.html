@@ -110,7 +110,7 @@
                         </mat-form-field>
                     </div> -->
                     <div class="col-sm-4 col-md-4">
-                        <mat-form-field class="mat-select">
+                        <mat-form-field class="mat-select" style="margin-top: 0px;">
                             <mat-select formControlName="frequency" placeholder="Frequency" class="example-full-width mat-select">
                                 <mat-option *ngFor="let frequency of frequencies" [value]="frequency.name">
                                     {{ frequency.name }}
@@ -128,7 +128,7 @@
                                         <input matInput type="number" formControlName="duration" placeholder="Duration">
                                     </mat-form-field>
                                     <div class="input-group-btn">
-                                        <mat-form-field class="mat-select">
+                                        <mat-form-field class="mat-select" style="margin-top: 0px;">
                                             <mat-select placeholder="Unit" formControlName="durationUnit" [(ngModel)]="selectedValue">
                                                 <mat-option *ngFor="let unit of durationUnits" [value]="unit.name">
                                                     {{ unit.name }}
@@ -212,7 +212,7 @@
                                 </mat-form-field>
                             </div>
                             <div class="col-sm-6 text-center">
-                                <button mat-raised-button [disabled]="!allPrescriptionsForm.valid || disableAuthorizeRx" (click)="onClickAuthorizePrescription(allPrescriptionsForm.value, allPrescriptionsForm.valid);" type="submit" class="mat-lg-btn">
+                                <button mat-raised-button [disabled]="!allPrescriptionsForm.valid || disableAuthorizeRx || prescriptionArray.length === 0" (click)="onClickAuthorizePrescription(allPrescriptionsForm.value, allPrescriptionsForm.valid);" type="submit" class="mat-lg-btn">
                                   <span *ngIf="authorizeRx"><i class="fa fa-check"></i> Authorize Rx</span>
                                   <span *ngIf="authorizingRx">Authorizing Rx... <i class="fa fa-spin fa-spinner"></i></span>
                                 </button>

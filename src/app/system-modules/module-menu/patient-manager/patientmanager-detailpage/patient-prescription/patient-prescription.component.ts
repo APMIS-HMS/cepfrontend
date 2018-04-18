@@ -96,13 +96,13 @@ export class PatientPrescriptionComponent implements OnInit {
         // this.employeeDetails = this._locker.getObject('loginEmployee');
         this._authFacadeService.getLogingEmployee().then(res => {
           this.employeeDetails = res;
-        }).catch(err => console.log(err));
+        }).catch(err => {});
 
         this.prescriptionItems.prescriptionItems = [];
         this.durationUnits = DurationUnits;
         this.selectedValue = DurationUnits[1].name;
         this._getAllPriorities();
-        this._getAllRoutes();
+        // this._getAllRoutes();
         this._getAllFrequencies();
 
         this.allPrescriptionsForm = this.fb.group({
@@ -133,7 +133,6 @@ export class PatientPrescriptionComponent implements OnInit {
 
     apmisLookupHandleSelectedItem(item) {
         this.apmisLookupText = item;
-        console.log(item);
         this.addPrescriptionForm.controls['drug'].setValue(item.name);
         // this._drugListApi.find({ query: { method: 'drug-details', 'productId': item.productId } }).then(res => {
         //     let sRes = res.data;
@@ -229,7 +228,6 @@ export class PatientPrescriptionComponent implements OnInit {
   }
 
     onClickAuthorizePrescription(value: any, valid: boolean) {
-        console.log(value);
         if (valid && (this.prescriptionArray.length > 0)) {
             this.disableAuthorizeRx = true;
             this.authorizeRx = false;
@@ -238,9 +236,7 @@ export class PatientPrescriptionComponent implements OnInit {
             this.prescriptions.totalCost = value.totalCost;
             this.prescriptions.totalQuantity = value.totalQuantity;
 
-            console.log(this.prescriptions);
             this._prescriptionService.authorizePresciption(this.prescriptions).then(res => {
-                console.log(res);
               if (res.status === 'success') {
                 this._systemModuleService.announceSweetProxy('Prescription has been sent successfully!', 'success');
                 this.isDispensed.next(true);
@@ -252,7 +248,7 @@ export class PatientPrescriptionComponent implements OnInit {
                 this.addPrescriptionForm.controls['duration'].reset(0);
                 this.addPrescriptionForm.controls['startDate'].reset(new Date());
                 this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
-                this.disableAuthorizeRx = true;
+                this.disableAuthorizeRx = false;
                 this.authorizeRx = true;
                 this.authorizingRx = false;
               } else {
@@ -354,11 +350,11 @@ export class PatientPrescriptionComponent implements OnInit {
         }).catch(err =>  console.error(err));
     }
 
-    private _getAllRoutes() {
-        this._routeService.findAll().then(res => {
-            this.routes = res.data;
-        }).catch(err => console.error(err));
-    }
+    // private _getAllRoutes() {
+    //     this._routeService.findAll().then(res => {
+    //         this.routes = res.data;
+    //     }).catch(err => console.error(err));
+    // }
 
     private _getAllFrequencies() {
         this._frequencyService.findAll().then(res => {
@@ -397,23 +393,23 @@ export class PatientPrescriptionComponent implements OnInit {
         }
     }
 
-    private _sendPrescription(data: Prescription): void {
-        this._prescriptionService.create(data).then(res => {
-            this._notification('Success', 'Prescription has been sent!');
-            this.isDispensed.next(true);
-            this.prescriptionItems = <Prescription>{};
-            this.prescriptionItems.prescriptionItems = [];
-            this.prescriptionArray = [];
-            this.addPrescriptionForm.reset();
-            this.addPrescriptionForm.controls['refillCount'].reset(0);
-            this.addPrescriptionForm.controls['duration'].reset(0);
-            this.addPrescriptionForm.controls['startDate'].reset(new Date());
-            this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
-            this.disableAuthorizeRx = true;
-        }).catch(err => {
-            this._notification('Error', 'There was an error creating prescription. Please try again later.');
-        });
-    }
+    // private _sendPrescription(data: Prescription): void {
+    //     this._prescriptionService.create(data).then(res => {
+    //         this._notification('Success', 'Prescription has been sent!');
+    //         this.isDispensed.next(true);
+    //         this.prescriptionItems = <Prescription>{};
+    //         this.prescriptionItems.prescriptionItems = [];
+    //         this.prescriptionArray = [];
+    //         this.addPrescriptionForm.reset();
+    //         this.addPrescriptionForm.controls['refillCount'].reset(0);
+    //         this.addPrescriptionForm.controls['duration'].reset(0);
+    //         this.addPrescriptionForm.controls['startDate'].reset(new Date());
+    //         this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
+    //         this.disableAuthorizeRx = true;
+    //     }).catch(err => {
+    //         this._notification('Error', 'There was an error creating prescription. Please try again later.');
+    //     });
+    // }
 
     private _notification(type: string, text: string): void {
         this._facilityService.announceNotification({
