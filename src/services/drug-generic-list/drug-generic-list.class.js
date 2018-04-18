@@ -11,7 +11,6 @@ class Service {
     async find(params) {
         let url = '';
 
-        console.log('Params => ', params);
         if (params.query.method === 'drug-details') {
             url = process.env.EMDEX_BASEURL + '/products/' + params.query.productId;
         } else {
@@ -27,17 +26,21 @@ class Service {
             // headers: { authorisation: process.env.EMDEX_AUTHORISATION_KEY }
         };
 
-        const makeRequest = await requestPromise(options);
-        const parsed = JSON.parse(makeRequest);
+        try {
+            const makeRequest = await requestPromise(options);
+            const parsed = JSON.parse(makeRequest);
 
-        if (params.query.method === 'drug-details') {
-            return jsend.success(parsed);
-        } else {
-            if (parsed.status === 'success') {
-                return jsend.success(parsed.data.data);
+            if (params.query.method === 'drug-details') {
+                return jsend.success(parsed);
             } else {
-                return jsend.success([]);
+                if (parsed.status === 'success') {
+                    return jsend.success(parsed.data.data);
+                } else {
+                    return jsend.success([]);
+                }
             }
+        } catch (e) {
+            return jsend.success([]);
         }
     }
 
