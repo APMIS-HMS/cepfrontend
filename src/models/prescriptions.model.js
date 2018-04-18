@@ -10,7 +10,7 @@ module.exports = function(app) {
     const prescription = new Schema({
         facilityId: { type: Schema.Types.ObjectId, required: true },
         employeeId: { type: Schema.Types.ObjectId, required: true },
-        clinicId: { type: Schema.Types.ObjectId, required: false },
+        clinicId: { type: Schema.Types.Mixed, required: false },
         patientId: { type: Schema.Types.ObjectId, required: true },
         prescriptionItems: [prescribe],
         priority: { type: Schema.Types.Mixed, required: true }, //{ id, name }
