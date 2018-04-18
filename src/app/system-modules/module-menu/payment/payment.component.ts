@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { FacilitiesService, BillingService, InvoiceService,
-    PendingBillService, TodayInvoiceService, LocSummaryCashService } from '../../../services/facility-manager/setup/index';
+import {
+    FacilitiesService, BillingService, InvoiceService,
+    PendingBillService, TodayInvoiceService, LocSummaryCashService
+} from '../../../services/facility-manager/setup/index';
 import { Patient, Facility, BillItem, Invoice, BillModel, User } from '../../../models/index';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -24,6 +26,8 @@ export class PaymentComponent implements OnInit {
     isLoadingInvoice = false;
     totalAmountReceived = 0;
     totalAmountBilled = 0;
+    holdMostRecentBills = [];
+    holdMostRecentInvoices = [];
     pendingBills: any[] = [];
     locAmountAccrued: any[] = [];
     invoiceGroups: any[] = [];
@@ -62,49 +66,55 @@ export class PaymentComponent implements OnInit {
             .debounceTime(400)
             .distinctUntilChanged()
             .subscribe(value => {
-                this.isLoadingInvoice = true;
-                this._todayInvoiceService.get(this.selectedFacility._id, {
-                    query: {
-                        'isQuery': true,
-                        'name': value
-                    }
-                }).then(payload => {
-                    this.invoiceGroups = payload.invoices;
-                    this.isLoadingInvoice = false;
-                }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
+                console.log(value);
+                if (this.searchPendingInvoices.value !== "" && this.searchPendingInvoices.value.length >= 3) {
+                    this.isLoadingInvoice = true;
+                    this.invoiceService.search({
+                        query: {
+                            facilityId: this.selectedFacility._id,
+                            'name': value
+                        }
+                    }).then(payload => {
+                        console.log(payload);
+                        this.invoiceGroups = payload.data.data;
+                        this.isLoadingInvoice = false;
+                    }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
+                }else{
+                    this.invoiceGroups = this.holdMostRecentInvoices;
+                }
             });
 
         this.searchPendingBill.valueChanges
             .debounceTime(400)
             .distinctUntilChanged()
             .subscribe(value => {
-                this.loadingPendingBills = true;
-                this._pendingBillService.get(this.selectedFacility._id, {
-                    query: {
-                        'isQuery': true,
-                        'name': value
-                    }
-                }).then((res: any) => {
-                    this.pendingBills = res.bills;
-                    this.loadingPendingBills = false;
-                }).catch(err => {
-                    this._notification('Error', 'There was a problem getting pending bills. Please try again later!');
-                });
+                if (this.searchPendingBill.value !== "" && this.searchPendingBill.value.length >= 3) {
+                    this.loadingPendingBills = true;
+                    this._pendingBillService.get(this.selectedFacility._id, {
+                        query: {
+                            'isQuery': true,
+                            'name': value
+                        }
+                    }).then((payload: any) => {
+                        this.pendingBills = payload.data;
+                        this.loadingPendingBills = false;
+                    }).catch(err => {
+                        this._notification('Error', 'There was a problem getting pending bills. Please try again later!');
+                    });
+                } else {
+                    this.pendingBills = this.holdMostRecentBills;
+                }
             });
     }
 
     private _getInvoices() {
         this.systemModuleService.on;
-        this._todayInvoiceService.get(this.selectedFacility._id, {
-            query: {
-                'isQuery': false
-            }
-        }).then(payload => {
+        this.invoiceService.find({ query: { facilityId: this.selectedFacility._id, balance: { $gt: 0 }, paymentCompleted: false } }).then(payload => {
+            console.log(payload);
             this.systemModuleService.off();
-            this.invoiceGroups = payload.invoices;
-            this.totalAmountReceived = payload.amountReceived;
+            this.invoiceGroups = payload.data;
+            this.holdMostRecentInvoices = this.invoiceGroups;
             this.isLoadingInvoice = false;
-            this._getLocAmountAccrued();
         }).catch(err => {
             this.systemModuleService.off();
             this.isLoadingInvoice = false;
@@ -114,19 +124,12 @@ export class PaymentComponent implements OnInit {
 
     private _getBills() {
         this.systemModuleService.on();
-        this._pendingBillService.get(this.selectedFacility._id, {
-            query: {
-                'isQuery': false
-            }
-        }).then((res: any) => {
-            console.log(res);
+        this._pendingBillService.get(this.selectedFacility._id, {}).then((payload: any) => {
             this.systemModuleService.off();
-            this.pendingBills = res.bills;
-            console.log(this.pendingBills);
-            this.totalAmountBilled = res.amountBilled;
+            this.pendingBills = payload.data;
+            this.holdMostRecentBills = payload.data;
             this.loadingPendingBills = false;
         }).catch(err => {
-            console.log(err);
             this.systemModuleService.off();
             this.loadingPendingBills = false;
             this._notification('Error', err);
