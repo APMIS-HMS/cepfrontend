@@ -18,25 +18,60 @@ class Service {
   async get(id, params) {
     let patientIds = [];
     let patientBills = [];
+    let awaitedBills = {};
     const billingsService = this.app.service('billings');
     const patientService = this.app.service('patients');
+    const patientIdsService = this.app.service('db-patientids');
     const peopleService = this.app.service('people');
-    const awaitedBills = await billingsService.find({
-      query: {
-        facilityId: id,
-        'billItems.isBearerConfirmed': true,
-        $or: [{
-            'billItems.covered.coverType': 'wallet'
-          },
-          {
-            'billItems.covered.coverType': 'family'
+    if (params.query.name === undefined) {
+      awaitedBills = await billingsService.find({
+        query: {
+          facilityId: id,
+          'billItems.isBearerConfirmed': true,
+          $or: [{
+              'billItems.covered.coverType': 'wallet'
+            },
+            {
+              'billItems.covered.coverType': 'family'
+            }
+          ],
+          $sort: {
+            updatedAt: -1
           }
-        ],
-        $sort: {
-          updatedAt: -1
         }
+      });
+    } else {
+      const awaitedPatientIdItems = await patientIdsService.find({
+        query: {
+          facilityId: id,
+          searchQuery: params.query.name
+        }
+      });
+      if (Array.isArray(awaitedPatientIdItems.data)) {
+
+        const billsPromiseYetResolved = Promise.all(awaitedPatientIdItems.data.map(current =>  billingsService.find({
+          query: {
+            facilityId: id,
+            patientId: current.patientId,
+            'billItems.isBearerConfirmed': true,
+            $or: [{
+                'billItems.covered.coverType': 'wallet'
+              },
+              {
+                'billItems.covered.coverType': 'family'
+              }
+            ],
+            $sort: {
+              updatedAt: -1
+            }
+          }
+        })));
+        
+        const _awaitedBills = await billsPromiseYetResolved;
+        awaitedBills = _awaitedBills[0];
       }
-    });
+    }
+
     awaitedBills.data.forEach(element => {
       const index = patientIds.filter(x => x.id.toString() === element.patientId.toString());
       if (index.length === 0) {
@@ -77,6 +112,7 @@ class Service {
         uniquePatients.push(item);
       }
     });
+
     return GetBillData(uniquePatients);
   }
 
