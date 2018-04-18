@@ -1,6 +1,7 @@
 /* eslint-disable no-unused-vars */
 const logger = require('winston');
 var isSameDay = require('date-fns/is_same_day');
+const jsend = require('jsend');
 class Service {
   constructor(options) {
     this.options = options || {};
@@ -15,6 +16,8 @@ class Service {
   }
 
   async get(id, params) {
+    let patientIds = [];
+    let patientBills = [];
     const billingsService = this.app.service('billings');
     const patientService = this.app.service('patients');
     const peopleService = this.app.service('people');
@@ -31,36 +34,42 @@ class Service {
         ],
         $sort: {
           updatedAt: -1
-        },
-        $limit: false
-      }
-    });
-
-    let bill = {};
-    let billings = [];
-    if (params.query.isQuery == true) {
-      const len = awaitedBills.data.length - 1;
-      for (let i = len; i >= 0; i--) {
-        let awaitedPatient = await patientService.get(awaitedBills.data[i].patientId, {});
-        let awaitPerson = await peopleService.get(awaitedPatient.personId, {});
-        if (awaitPerson.firstName.toLowerCase().includes(params.query.name.toLowerCase()) ||
-          awaitPerson.lastName.toLowerCase().includes(params.query.name.toLowerCase())) {
-          billings.push(awaitedBills.data[i]);
         }
       }
-    } else {
-      billings = awaitedBills.data;
-    }
-    let result = [];
-    let totalAmountBilled = 0;
-    if (billings.length > 0) {
-      for (let i = billings.length - 1; i >= 0; i--) {
-        const val = billings[i];
-        result.push(val);
+    });
+    awaitedBills.data.forEach(element => {
+      const index = patientIds.filter(x => x.id.toString() === element.patientId.toString());
+      if (index.length === 0) {
+        patientIds.push({
+          id: element.patientId
+        });
       }
-      // return GetBillData(result, totalAmountBilled, bill);
+    });
+    const counter = patientIds.length - 1;
+    for (let i = 0; i <= counter; i++) {
+      const awaitedBillItems = await billingsService.find({
+        query: {
+          patientId: patientIds[i].id,
+          facilityId: id
+        }
+      });
+      awaitedBillItems.data.forEach(item => {
+        patientBills.push(item);
+      });
+
     }
-    return GetBillData(result, totalAmountBilled, bill);
+    let uniquePatients = [];
+    patientBills.forEach(item => {
+      const indx = uniquePatients.filter(x => x.patientId.toString() === item.patientId.toString());
+      if (indx.length > 0) {
+        item.billItems.forEach(itm=>{
+          indx[0].billItems.push(itm);
+        });
+      } else {
+        uniquePatients.push(item);
+      }
+    });
+  return GetBillData(uniquePatients);
   }
 
   create(data, params) {
@@ -90,42 +99,22 @@ module.exports = function (options) {
   return new Service(options);
 };
 
-function GetBillData(result, totalAmountBilled, bill) {
+function GetBillData(result) {
   if (result.length > 0) {
-    var counter = 0;
-    var today = new Date();
     let len = result.length - 1;
-    var dt = new Date();
     for (let j = len; j >= 0; j--) {
       result[j].grandTotalExcludeInvoice = 0;
       let len2 = result[j].billItems.length - 1;
       for (let k = len2; k >= 0; k--) {
-        if (j != 9) {
-          if (isSameDay(result[j].billItems[k].updatedAt, dt)) {
-            totalAmountBilled += parseInt(result[j].billItems[k].totalPrice.toString());
-          }
-          if (result[j].billItems[k].isInvoiceGenerated == false) {
-            result[j].grandTotalExcludeInvoice += parseInt(result[j].billItems[k].totalPrice.toString());
-          }
-        } else {
-          if (isSameDay(result[j].billItems[k].updatedAt, dt)) {
-            totalAmountBilled += parseInt(result[j].billItems[k].totalPrice.toString());
-          }
+        if (result[j].billItems[k].isInvoiceGenerated == false) {
+          result[j].grandTotalExcludeInvoice += parseInt(result[j].billItems[k].totalPrice.toString());
         }
       }
     }
     var patientSumBills = result.filter(x => x.grandTotalExcludeInvoice > 0);
-    bill = {
-      "bills": patientSumBills,
-      "amountBilled": totalAmountBilled
-    };
-    return bill;
+    return jsend.success(patientSumBills);
   } else {
-    bill = {
-      "bills": [],
-      "amountBilled": totalAmountBilled
-    };
-    return bill;
+    return jsend.success([]);
   }
 
 }
