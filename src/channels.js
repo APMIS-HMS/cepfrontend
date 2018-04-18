@@ -82,9 +82,6 @@ module.exports = function(app) {
         }
     });
     app.service('people').publish('patched', (data, context) => {
-        console.log('am in');
-        // console.log(data);
-        console.log(context.params.query);
         if (context.params.query.facilityId !== undefined) {
             return app.channel(context.params.query.facilityId);
         }

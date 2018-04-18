@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const storeCheckInSchema = new Schema({
     minorLocationId: { type: Schema.Types.ObjectId, required: true },
-    minorLocationObject: { type: Schema.Types.Mixed, required: true },
+    minorLocationObject: { type: Schema.Types.Mixed, required: false },
     storeId: { type: Schema.Types.ObjectId, required: true },
     storeObject: { type: Schema.Types.Mixed, required: true },
     isDefault: { type: Schema.Types.Boolean, default: false },
