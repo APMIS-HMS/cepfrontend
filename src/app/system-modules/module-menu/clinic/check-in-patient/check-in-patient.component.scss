@@ -290,7 +290,8 @@ div.timeLabel{
         opacity: 0;
         transition: all 0.4s;
         font-size: 1.2rem !important;
-        margin-left: -120px;
+        // margin-left: -120px;
+        margin-top: 30px;
         display: block;
         padding: 10px;
         content: attr(title);
@@ -299,11 +300,12 @@ div.timeLabel{
         color: #fff;
         min-width: 65px;
         text-align: center;
+        position: absolute;
     }
     &:hover {
         &:after {
             opacity: 1;
-            margin-left: -100px;
+            // margin-left: -100px;
         }
     }
 }

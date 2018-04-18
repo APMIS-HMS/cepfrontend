@@ -72,9 +72,11 @@
                                         </mat-option>
                                     </mat-select>
                                 </mat-form-field>
-                                <i *ngIf="itm.value.packsizes.length !== k+1 && batch.controls.config.controls.length===k+1" class="col-md-2 fa fa-fw fa-plus"
-                                    (click)="onAddPackSize(itm.value.packsizes,batch)"></i>
-                                <i class="fa fa-close fa-fw" *ngIf="batch.controls.config.controls.length > 1" (click)="onRemovePack(batch,myForm.controls['initproduct'].controls,k,i)"></i>
+                                <div class="ico-wrap">
+                                  <i *ngIf="itm.value.packsizes.length !== k+1 && batch.controls.config.controls.length===k+1" class="col-md-2 fa fa-fw fa-plus"
+                                      (click)="onAddPackSize(itm.value.packsizes,batch)"></i>
+                                  <i class="fa fa-close fa-fw" *ngIf="batch.controls.config.controls.length > 1" (click)="onRemovePack(batch,myForm.controls['initproduct'].controls,k,i)"></i>
+                              </div>
                             </div>
                         </div>
                       </div>
