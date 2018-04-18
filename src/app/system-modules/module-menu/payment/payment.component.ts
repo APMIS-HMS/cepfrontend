@@ -66,7 +66,6 @@ export class PaymentComponent implements OnInit {
             .debounceTime(400)
             .distinctUntilChanged()
             .subscribe(value => {
-                console.log(value);
                 if (this.searchPendingInvoices.value !== "" && this.searchPendingInvoices.value.length >= 3) {
                     this.isLoadingInvoice = true;
                     this.invoiceService.search({
@@ -75,12 +74,15 @@ export class PaymentComponent implements OnInit {
                             'name': value
                         }
                     }).then(payload => {
-                        console.log(payload);
-                        this.invoiceGroups = payload.data.data;
+                        this.invoiceGroups = payload.data;
                         this.isLoadingInvoice = false;
-                    }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
+                    }).catch(err => {
+                        this.isLoadingInvoice = false;
+                        this.systemModuleService.announceSweetProxy("There was a problem getting pending bills. Please try again later!","error");
+                    });
                 }else{
                     this.invoiceGroups = this.holdMostRecentInvoices;
+                    this.isLoadingInvoice = false;
                 }
             });
 
@@ -99,10 +101,12 @@ export class PaymentComponent implements OnInit {
                         this.pendingBills = payload.data;
                         this.loadingPendingBills = false;
                     }).catch(err => {
-                        this._notification('Error', 'There was a problem getting pending bills. Please try again later!');
+                        this.loadingPendingBills = false;
+                        this.systemModuleService.announceSweetProxy("There was a problem getting pending bills. Please try again later!","error");
                     });
                 } else {
                     this.pendingBills = this.holdMostRecentBills;
+                    this.loadingPendingBills = false;
                 }
             });
     }
@@ -110,7 +114,6 @@ export class PaymentComponent implements OnInit {
     private _getInvoices() {
         this.systemModuleService.on;
         this.invoiceService.find({ query: { facilityId: this.selectedFacility._id, balance: { $gt: 0 }, paymentCompleted: false } }).then(payload => {
-            console.log(payload);
             this.systemModuleService.off();
             this.invoiceGroups = payload.data;
             this.holdMostRecentInvoices = this.invoiceGroups;
@@ -139,7 +142,6 @@ export class PaymentComponent implements OnInit {
     private _getLocAmountAccrued() {
         this._locSummaryCashService.get(this.selectedFacility._id, {})
             .then(payload2 => {
-                console.log(payload2);
                 this.systemModuleService.off();
                 if (payload2 != null) {
                     if (payload2.barChartData !== undefined) {
