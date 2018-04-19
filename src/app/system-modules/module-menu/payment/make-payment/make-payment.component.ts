@@ -26,7 +26,7 @@ export class MakePaymentComponent implements OnInit {
   @Input() checkBillitems: any = <any>{};
   @Input() listedBillItems: any = <any>{};
   @Input() billGroups: any = <any>{};
-  @Input() cost: any = <any>{};
+  @Input() cost = 0;
   @Input() discount: any = <any>{};
   @Input() subTotal: any = <any>{};
   @Input() invoice: any = <any>{};
@@ -188,6 +188,7 @@ export class MakePaymentComponent implements OnInit {
   // }
 
   close_onClick() {
+    this.cost = 0;
     this.closeModal.emit(true);
   }
 
@@ -455,6 +456,7 @@ export class MakePaymentComponent implements OnInit {
     }
     if (this.isWaved === true && this.wavedDescription.value.length > 0) {
       this._makePaymentService.create(paymantObj).then(payload => {
+        console.log(payload);
         this.personValueChanged.emit(payload);
         this.isProcessing = false;
         this.balance.setValue(0);
@@ -470,6 +472,7 @@ export class MakePaymentComponent implements OnInit {
       });
     } else if (this.isWaved === false && this.wavedDescription.value.length === 0) {
       this._makePaymentService.create(paymantObj).then(payload => {
+        console.log(payload);
         this.personValueChanged.emit(payload);
         this.isProcessing = false;
         this.balance.setValue(0);
