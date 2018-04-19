@@ -96,18 +96,20 @@ class Service {
           ],
         }
       });
-      awaitedBillItems.data.forEach(item => {
-        patientBills.push(item);
-      });
+      patientBills.push.apply(patientBills,awaitedBillItems.data);
+      // awaitedBillItems.data.forEach(item => {
+      //   patientBills.push(item);
+      // });
 
     }
     let uniquePatients = [];
     patientBills.forEach(item => {
       const indx = uniquePatients.filter(x => x.patientId.toString() === item.patientId.toString());
       if (indx.length > 0) {
-        item.billItems.forEach(itm => {
-          indx[0].billItems.push(itm);
-        });
+        indx[0].billItems.push.apply(indx[0].billItems,item.billItems);
+        // item.billItems.forEach(itm => {
+        //   indx[0].billItems.push(itm);
+        // });
       } else {
         uniquePatients.push(item);
       }
