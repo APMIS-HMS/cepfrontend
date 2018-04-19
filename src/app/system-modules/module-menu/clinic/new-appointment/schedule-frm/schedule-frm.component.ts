@@ -117,6 +117,18 @@ export class ScheduleFrmComponent implements OnInit {
   dateCtrl: FormControl = new FormControl(new Date(), [Validators.required]);
   reason: FormControl = new FormControl();
   appointment: any = <any>{};
+  apmisLookupUrl = 'patient-search';
+  apmisLookupText = '';
+  apmisLookupQuery: any = {};
+  apmisLookupDisplayKey = 'firstName';
+  apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
+  apmisLookupOtherKeys = ['lastName', 'firstName', 'apmisId', 'email'];
+  apmisProviderLookupUrl = 'patient-search';
+  apmisProviderLookupText = '';
+  apmisProviderLookupQuery: any = {};
+  apmisProviderLookupDisplayKey = 'firstName';
+  apmisProviderLookupImgKey = 'personDetails.profileImageObject.thumbnail';
+  apmisProviderLookupOtherKeys = ['lastName', 'firstName', 'apmisId', 'email'];
 
   days: any[] = [
     "Sunday",
@@ -204,15 +216,21 @@ export class ScheduleFrmComponent implements OnInit {
     this.teleMed = new FormControl();
 
     this.patient = new FormControl("", [Validators.required]);
-    this.filteredPatients = this.patient.valueChanges
-      .startWith(null)
-      .map(
-        (patient: Patient) =>
-          patient && typeof patient === "object"
-            ? this.announcePatient(patient)
-            : patient
-      )
-      .map(val => (val ? this.filterPatients(val) : this.patients.slice()));
+    this.patient.valueChanges.subscribe(value => {
+      this.apmisLookupQuery = {
+        facilityId: this.selectedFacility._id,
+        searchText: value
+      };
+    });
+    // this.filteredPatients = this.patient.valueChanges
+    //   .startWith(null)
+    //   .map(
+    //     (patient: Patient) =>
+    //       patient && typeof patient === "object"
+    //         ? this.announcePatient(patient)
+    //         : patient
+    //   )
+    //   .map(val => (val ? this.filterPatients(val) : this.patients.slice()));
 
     this.clinic = new FormControl("", [Validators.required]);
     this.status = new FormControl("", [Validators.required]);
@@ -221,17 +239,24 @@ export class ScheduleFrmComponent implements OnInit {
     });
 
     this.provider = new FormControl();
-    this.filteredProviders = this.provider.valueChanges
-      .startWith(null)
-      .map(
-        (provider: Employee) =>
-          provider && typeof provider === "object"
-            ? provider.personDetails.lastName
-            : provider
-      )
-      .map(val => (val ? this.filterProviders(val) : this.providers.slice()));
+    this.provider.valueChanges.subscribe(value => {
+      this.apmisProviderLookupQuery = {
+        facilityId: this.selectedFacility._id,
+        searchText: value
+      };
+    });
+    // this.filteredProviders = this.provider.valueChanges
+    //   .startWith(null)
+    //   .map(
+    //     (provider: Employee) =>
+    //       provider && typeof provider === "object"
+    //         ? provider.personDetails.lastName
+    //         : provider
+    //   )
+    //   .map(val => (val ? this.filterProviders(val) : this.providers.slice()));
 
     this.type = new FormControl("", [Validators.required]);
+
     // this.filteredAppointmentTypes = this.type.valueChanges
     //     .startWith(null)
     //     .map((type: AppointmentType) => type && typeof type === 'object' ? type.name : type)
@@ -310,6 +335,34 @@ export class ScheduleFrmComponent implements OnInit {
         this.category.disable();
       }
     });
+  }
+
+  apmisLookupHandleSelectedItem(value) {
+    console.log(value);
+    this.apmisLookupText = `${value.firstName} ${value.lastName}`;
+    // this.selectedPatient = value;
+    // this.frmNewRequest.controls['labNo'].setValue('');
+    // if (this.selectedPatient.clientsNo !== undefined) {
+    //   this.selectedPatient.clientsNo.forEach(item => {
+    //     if (item.minorLocationId === this.selectedLab.typeObject.minorLocationObject._id) {
+    //       this.frmNewRequest.controls['labNo'].setValue(item.clientNumber);
+    //     }
+    //   });
+    // }
+  }
+
+  apmisProviderLookupHandleSelectedItem(value) {
+    console.log(value);
+    this.apmisProviderLookupText = `${value.firstName} ${value.lastName}`;
+    // this.selectedPatient = value;
+    // this.frmNewRequest.controls['labNo'].setValue('');
+    // if (this.selectedPatient.clientsNo !== undefined) {
+    //   this.selectedPatient.clientsNo.forEach(item => {
+    //     if (item.minorLocationId === this.selectedLab.typeObject.minorLocationObject._id) {
+    //       this.frmNewRequest.controls['labNo'].setValue(item.clientNumber);
+    //     }
+    //   });
+    // }
   }
 
   getTimezones() {
