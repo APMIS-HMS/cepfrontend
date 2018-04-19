@@ -338,7 +338,6 @@ export class ScheduleFrmComponent implements OnInit {
   }
 
   apmisLookupHandleSelectedItem(value) {
-    console.log(value);
     this.apmisLookupText = `${value.firstName} ${value.lastName}`;
     // this.selectedPatient = value;
     // this.frmNewRequest.controls['labNo'].setValue('');
@@ -352,7 +351,6 @@ export class ScheduleFrmComponent implements OnInit {
   }
 
   apmisProviderLookupHandleSelectedItem(value) {
-    console.log(value);
     this.apmisProviderLookupText = `${value.firstName} ${value.lastName}`;
     // this.selectedPatient = value;
     // this.frmNewRequest.controls['labNo'].setValue('');
