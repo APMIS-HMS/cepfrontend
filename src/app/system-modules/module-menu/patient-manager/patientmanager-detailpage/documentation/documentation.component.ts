@@ -64,8 +64,10 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.selectedMiniFacility = <Facility>this.locker.getObject('miniFacility');
+    console.log(this.patient);
 
     this.subscription = this.sharedService.submitForm$.subscribe(payload => {
+      console.log(payload);
       if (!this.hasSavedDraft) {
         const doc: PatientDocumentation = <PatientDocumentation>{};
         doc.document = {
@@ -83,11 +85,12 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         this.patientDocumentation.documentations.push(doc);
         // Get the raw orderset data and send to different destination.
         this._listenAndSaveRawOrderSetData();
+        console.log('Ready to save.');
 
-        this.documentationService.update(this.patientDocumentation).then(pay => {
-          this.getPersonDocumentation();
-          this._notification('Success', 'Documentation successfully saved!');
-        });
+        // this.documentationService.update(this.patientDocumentation).then(pay => {
+        //   this.getPersonDocumentation();
+        //   this._notification('Success', 'Documentation successfully saved!');
+        // });
       } else {
         const doc = this.draftDocument;
         doc.documentationStatus = 'Completed';
@@ -97,15 +100,16 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         }
         // this.patientDocumentation.documentations.push(doc);
         // Get the raw orderset data and send to different destination.
-        // this._listenAndSaveRawOrderSetData();
+        this._listenAndSaveRawOrderSetData();
+        console.log('ready to save 2');
 
-        this.documentationService.update(this.patientDocumentation).then(pay => {
-          this.draftDocument = undefined;
-          this.hasSavedDraft = false;
-          this.sharedService.announceFinishedSavingDraft(false);
-          this.getPersonDocumentation();
-          this._notification('Success', 'Documentation successfully saved!');
-        });
+        // this.documentationService.update(this.patientDocumentation).then(pay => {
+        //   this.draftDocument = undefined;
+        //   this.hasSavedDraft = false;
+        //   this.sharedService.announceFinishedSavingDraft(false);
+        //   this.getPersonDocumentation();
+        //   this._notification('Success', 'Documentation successfully saved!');
+        // });
       }
     });
 
@@ -228,120 +232,127 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
   private _listenAndSaveRawOrderSetData() {
     this.sharedService.announceBilledOrderSet$.subscribe((value: any) => {
+      console.log(value);
       if (!!value) {
         if (!!value.investigations) {
-          this._saveLabRequest(value.investigations);
+          const saveLab = this._saveLabRequest(value.investigations);
         }
 
         if (!!value.medications) {
-          this._saveMedication(value.medications);
+          const saveMedication = this._saveMedication(value.medications);
         }
       }
     });
   }
 
   private _saveMedication(medications) {
-    this.deleteUnncessaryPatientData();
+    // this.deleteUnncessaryPatientData();
     const prescriptions = {
-      priorityId: this.priority._id,
-      priorityObject: this.priority,
-      facilityId: this.selectedMiniFacility._id,
+      // clinicId: (!!this.selectedAppointment.clinicId) ? this.selectedAppointment.clinicId : undefined,
+      priority: { id: this.priority._id, name: this.priority.name },
+      facilityId: this.selectedFacility._id,
       employeeId: this.loginEmployee._id,
-      employeeObject: this.loginEmployee,
       patientId: this.patient._id,
-      patientObject: this.patient,
       personId: this.patient.personId,
       prescriptionItems: medications,
       isAuthorised: true,
-      billId: undefined,
       totalCost: 0,
       totalQuantity: 0
     };
 
-    // bill model
-    const billItemArray = [];
-    let totalCost = 0;
-    prescriptions.prescriptionItems.forEach(element => {
-      if (element.isBilled) {
-        const billItem = <BillItem>{
-          facilityServiceId: element.facilityServiceId,
-          serviceId: element.serviceId,
-          facilityId: this.selectedMiniFacility._id,
-          patientId: this.patient._id,
-          isBearerConfirmed: true,
-          covered: {
-            coverType: "wallet"
-          },
-          patientObject: this.patient,
-          description: element.productName,
-          quantity: element.quantity,
-          totalPrice: element.totalCost,
-          unitPrice: element.cost,
-          unitDiscountedAmount: 0,
-          totalDiscoutedAmount: 0,
-        };
-
-        totalCost += element.totalCost;
-        billItemArray.push(billItem);
+    this._prescriptionService.authorizePresciption(prescriptions).then(res => {
+      console.log(res);
+      if (res.status === 'success') {
+        return true;
+      } else {
+        return false;
       }
-    });
+    }).catch(err => {});
 
-    const bill = <BillIGroup>{
-      facilityId: this.selectedMiniFacility._id,
-      patientId: this.patient._id,
-      billItems: billItemArray,
-      discount: 0,
-      subTotal: totalCost,
-      grandTotal: totalCost,
-    }
+    // // bill model
+    // const billItemArray = [];
+    // let totalCost = 0;
+    // prescriptions.prescriptionItems.forEach(element => {
+    //   if (element.isBilled) {
+    //     const billItem = <BillItem>{
+    //       facilityServiceId: element.facilityServiceId,
+    //       serviceId: element.serviceId,
+    //       facilityId: this.selectedMiniFacility._id,
+    //       patientId: this.patient._id,
+    //       isBearerConfirmed: true,
+    //       covered: {
+    //         coverType: "wallet"
+    //       },
+    //       patientObject: this.patient,
+    //       description: element.productName,
+    //       quantity: element.quantity,
+    //       totalPrice: element.totalCost,
+    //       unitPrice: element.cost,
+    //       unitDiscountedAmount: 0,
+    //       totalDiscoutedAmount: 0,
+    //     };
 
-    // If any item was billed, then call the billing service
-    if (billItemArray.length > 0) {
-      // send the billed items to the billing service
-      this.billingService.create(bill).then(res => {
-        if (res._id !== undefined) {
-          prescriptions.billId = res._id;
-          // if this is true, send the prescribed drugs to the prescription service
-          this._prescriptionService.create(prescriptions).then(pRes => {
-            this._notification('Success', 'Prescription has been sent!');
-          }).catch(err => {
-            this._notification('Error', 'There was an error creating prescription. Please try again later.');
-          });
-        } else {
-          this._notification('Error', 'There was an error generating bill. Please try again later.');
-        }
-      }).catch(err => console.error(err));
-    } else {
-      // Else, if no item was billed, just save to the prescription table.
-      this._prescriptionService.create(prescriptions).then(res => {
-        this._notification('Success', 'Prescription has been sent!');
-      }).catch(err => {
-        this._notification('Error', 'There was an error creating prescription. Please try again later.');
-      });
-    }
+    //     totalCost += element.totalCost;
+    //     billItemArray.push(billItem);
+    //   }
+    // });
+
+    // const bill = <BillIGroup>{
+    //   facilityId: this.selectedMiniFacility._id,
+    //   patientId: this.patient._id,
+    //   billItems: billItemArray,
+    //   discount: 0,
+    //   subTotal: totalCost,
+    //   grandTotal: totalCost,
+    // }
+
+    // // If any item was billed, then call the billing service
+    // if (billItemArray.length > 0) {
+    //   // send the billed items to the billing service
+    //   this.billingService.create(bill).then(res => {
+    //     if (res._id !== undefined) {
+    //       prescriptions.billId = res._id;
+    //       // if this is true, send the prescribed drugs to the prescription service
+    //       this._prescriptionService.create(prescriptions).then(pRes => {
+    //         this._notification('Success', 'Prescription has been sent!');
+    //       }).catch(err => {
+    //         this._notification('Error', 'There was an error creating prescription. Please try again later.');
+    //       });
+    //     } else {
+    //       this._notification('Error', 'There was an error generating bill. Please try again later.');
+    //     }
+    //   }).catch(err => console.error(err));
+    // } else {
+    //   // Else, if no item was billed, just save to the prescription table.
+    //   this._prescriptionService.create(prescriptions).then(res => {
+    //     this._notification('Success', 'Prescription has been sent!');
+    //   }).catch(err => {
+    //     this._notification('Error', 'There was an error creating prescription. Please try again later.');
+    //   });
+    // }
   }
 
   private _saveLabRequest(labRequests) {
-    this.deleteUnncessaryPatientData();
+    // this.deleteUnncessaryPatientData();
 
-    const logEmp = this.loginEmployee;
-    delete logEmp.department;
-    delete logEmp.employeeFacilityDetails;
-    delete logEmp.role;
-    delete logEmp.units;
-    delete logEmp.consultingRoomCheckIn;
-    delete logEmp.storeCheckIn;
-    delete logEmp.unitDetails;
-    delete logEmp.professionObject;
-    delete logEmp.workSpaces;
-    delete logEmp.employeeDetails.countryItem;
-    delete logEmp.employeeDetails.homeAddress;
-    delete logEmp.employeeDetails.gender;
-    delete logEmp.employeeDetails.maritalStatus;
-    delete logEmp.employeeDetails.nationality;
-    delete logEmp.employeeDetails.nationalityObject;
-    delete logEmp.employeeDetails.nextOfKin;
-    delete logEmp.workbenchCheckIn;
+    // const logEmp = this.loginEmployee;
+    // delete logEmp.department;
+    // delete logEmp.employeeFacilityDetails;
+    // delete logEmp.role;
+    // delete logEmp.units;
+    // delete logEmp.consultingRoomCheckIn;
+    // delete logEmp.storeCheckIn;
+    // delete logEmp.unitDetails;
+    // delete logEmp.professionObject;
+    // delete logEmp.workSpaces;
+    // delete logEmp.employeeDetails.countryItem;
+    // delete logEmp.employeeDetails.homeAddress;
+    // delete logEmp.employeeDetails.gender;
+    // delete logEmp.employeeDetails.maritalStatus;
+    // delete logEmp.employeeDetails.nationality;
+    // delete logEmp.employeeDetails.nationalityObject;
+    // delete logEmp.employeeDetails.nextOfKin;
+    // delete logEmp.workbenchCheckIn;
 
     const copyBindInvestigation = labRequests;
     const readyCollection: any[] = [];
@@ -363,83 +374,94 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     });
 
     const request: any = {
-      facilityId: this.selectedMiniFacility,
-      patientId: this.patient,
+      facilityId: this.selectedFacility._id,
+      patientId: this.patient._id,
       investigations: readyCollection,
-      createdBy: logEmp
-    }
-    const billGroup: BillIGroup = <BillIGroup>{};
-    billGroup.discount = 0;
-    billGroup.facilityId = this.selectedMiniFacility._id;
-    billGroup.grandTotal = 0;
-    billGroup.isWalkIn = false;
-    billGroup.patientId = this.patient._id;
-    billGroup.subTotal = 0;
-    // billGroup.userId = '';
-    billGroup.billItems = [];
-    readyCollection.forEach(item => {
-      if (!item.isExternal) {
-        const billItem: BillItem = <BillItem>{};
-        billItem.unitPrice = item.investigation.LaboratoryWorkbenches[0].workbenches[0].price;
-        billItem.facilityId = this.selectedMiniFacility._id;
-        billItem.description = '';
-        billItem.facilityServiceId = item.investigation.facilityServiceId;
-        billItem.serviceId = item.investigation.serviceId;
-        billItem.itemName = item.investigation.name;
-        billItem.patientId = this.patient._id;
-        billItem.quantity = 1;
-        billItem.totalPrice = billItem.quantity * billItem.unitPrice;
-        billItem.unitDiscountedAmount = 0;
-        billItem.totalDiscoutedAmount = 0;
-        billGroup.subTotal = billGroup.subTotal + billItem.totalPrice;
-        billGroup.grandTotal = billGroup.subTotal;
-        billGroup.billItems.push(billItem);
-      }
-    })
+      createdBy: this.loginEmployee._id
+    };
 
-    if (billGroup.billItems.length > 0) {
-      const request$ = Observable.fromPromise(this.requestService.create(request));
-      const billing$ = Observable.fromPromise(this.billingService.create(billGroup));
-      Observable.forkJoin([request$, billing$]).subscribe((results: any) => {
-        // const request = results[0];
-        const billing = results[1];
-        delete billing.facilityItem;
-        delete billing.patientItem;
-        billing.billItems.forEach(item => {
-          delete item.facilityServiceObject;
-          delete item.modifierId;
-          delete item.paymentStatus;
-          delete item.paments;
-          delete item.serviceModifierOject
-        });
-        results[0].billingId = billing;
-        this.requestService.update(results[0]).then(payload => {
-          this._notification('Success', 'Request has been sent successfully!');
-        }).catch(err => {
-        });
-      });
-    } else {
-      this.requestService.create(request).then(payload => {
-        this._notification('Success', 'Request has been sent successfully!');
-      }).catch(err => {
-      });
-    }
+    console.log(request);
+    // this.requestService.customCreate(request).then(res => {
+    //   console.log(res);
+    //   if (res.status === 'success') {
+    //     return true;
+    //   } else {
+    //     return false;
+    //   }
+    // });
+
+    // const billGroup: BillIGroup = <BillIGroup>{};
+    // billGroup.discount = 0;
+    // billGroup.facilityId = this.selectedMiniFacility._id;
+    // billGroup.grandTotal = 0;
+    // billGroup.isWalkIn = false;
+    // billGroup.patientId = this.patient._id;
+    // billGroup.subTotal = 0;
+    // // billGroup.userId = '';
+    // billGroup.billItems = [];
+    // readyCollection.forEach(item => {
+    //   if (!item.isExternal) {
+    //     const billItem: BillItem = <BillItem>{};
+    //     billItem.unitPrice = item.investigation.LaboratoryWorkbenches[0].workbenches[0].price;
+    //     billItem.facilityId = this.selectedMiniFacility._id;
+    //     billItem.description = '';
+    //     billItem.facilityServiceId = item.investigation.facilityServiceId;
+    //     billItem.serviceId = item.investigation.serviceId;
+    //     billItem.itemName = item.investigation.name;
+    //     billItem.patientId = this.patient._id;
+    //     billItem.quantity = 1;
+    //     billItem.totalPrice = billItem.quantity * billItem.unitPrice;
+    //     billItem.unitDiscountedAmount = 0;
+    //     billItem.totalDiscoutedAmount = 0;
+    //     billGroup.subTotal = billGroup.subTotal + billItem.totalPrice;
+    //     billGroup.grandTotal = billGroup.subTotal;
+    //     billGroup.billItems.push(billItem);
+    //   }
+    // })
+
+    // if (billGroup.billItems.length > 0) {
+    //   const request$ = Observable.fromPromise(this.requestService.create(request));
+    //   const billing$ = Observable.fromPromise(this.billingService.create(billGroup));
+    //   Observable.forkJoin([request$, billing$]).subscribe((results: any) => {
+    //     // const request = results[0];
+    //     const billing = results[1];
+    //     delete billing.facilityItem;
+    //     delete billing.patientItem;
+    //     billing.billItems.forEach(item => {
+    //       delete item.facilityServiceObject;
+    //       delete item.modifierId;
+    //       delete item.paymentStatus;
+    //       delete item.paments;
+    //       delete item.serviceModifierOject
+    //     });
+    //     results[0].billingId = billing;
+    //     this.requestService.update(results[0]).then(payload => {
+    //       this._notification('Success', 'Request has been sent successfully!');
+    //     }).catch(err => {
+    //     });
+    //   });
+    // } else {
+    //   this.requestService.create(request).then(payload => {
+    //     this._notification('Success', 'Request has been sent successfully!');
+    //   }).catch(err => {
+    //   });
+    // }
   }
 
-  private deleteUnncessaryPatientData() {
-    delete this.patient.appointments;
-    delete this.patient.encounterRecords;
-    delete this.patient.orders;
-    delete this.patient.tags;
-    delete this.patient.personDetails.addressObj;
-    delete this.patient.personDetails.countryItem;
-    delete this.patient.personDetails.homeAddress;
-    delete this.patient.personDetails.maritalStatus;
-    delete this.patient.personDetails.nationality;
-    delete this.patient.personDetails.nationalityObject;
-    delete this.patient.personDetails.nextOfKin;
-    delete this.patient.personDetails.wallet;
-  }
+  // private deleteUnncessaryPatientData() {
+  //   delete this.patient.appointments;
+  //   delete this.patient.encounterRecords;
+  //   delete this.patient.orders;
+  //   delete this.patient.tags;
+  //   delete this.patient.personDetails.addressObj;
+  //   delete this.patient.personDetails.countryItem;
+  //   delete this.patient.personDetails.homeAddress;
+  //   delete this.patient.personDetails.maritalStatus;
+  //   delete this.patient.personDetails.nationality;
+  //   delete this.patient.personDetails.nationalityObject;
+  //   delete this.patient.personDetails.nextOfKin;
+  //   delete this.patient.personDetails.wallet;
+  // }
 
   private _getAllPriorities() {
     this._priorityService.findAll().then(res => {
