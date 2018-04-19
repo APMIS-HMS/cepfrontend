@@ -45,7 +45,7 @@ export class AddPatientTagsComponent implements OnInit {
     this.tagName.valueChanges
       .debounceTime(200)
       .distinctUntilChanged().subscribe(payload => {
-        if (payload.length >= 3) {
+        if (payload.length >= 1) {
           this.showSearchResult = true;
           this.tagService.suggestPatientTags({
             query: {
@@ -53,6 +53,9 @@ export class AddPatientTagsComponent implements OnInit {
               word: payload
             }
           }).then(suggestPayload => {
+            if(suggestPayload.length === 0){
+              this.showSearchResult = false;
+            }
             this.dictionaries = suggestPayload;
           });
         } else {
@@ -60,6 +63,7 @@ export class AddPatientTagsComponent implements OnInit {
         }
       });
   }
+  
 
   close_onClick() {
     this.closeModal.emit(true);
@@ -93,8 +97,16 @@ export class AddPatientTagsComponent implements OnInit {
     });
   }
 
+  displayFn(tag: any): string {
+    return tag ? tag.name : tag;
+  }
+
   fillingWithSearchInfo(tag) {
     this.tagName.setValue(tag.name);
+  }
+
+  hideSuggestions() {
+    this.showSearchResult = false;
   }
 
 }

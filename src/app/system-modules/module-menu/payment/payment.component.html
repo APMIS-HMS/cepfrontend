@@ -64,16 +64,17 @@
                         <div>
                             <ul class="pending-bills" *ngFor="let invoice of invoiceGroups">
                                 <li class="empWrap" (click)="onSelectedInvoice(invoice)">
-                                    <div class="list-img">
+                                    <!-- <div class="list-img">
                                         <img *ngIf="invoice?.personDetails.profileImageObject != undefined" [src]="facilityService.transform(invoice?.personDetails.profileImageObject.thumbnail)">
                                         <img *ngIf="invoice?.personDetails.profileImageObject == undefined" src="assets/images/users/default.png">
-                                    </div>
+                                    </div> -->
                                     <div class="list-labels">
-                                        <div class="pending-name">{{invoice?.personDetails.firstName}} {{invoice?.personDetails?.lastName}}</div>
+                                        <div class="pending-name">{{invoice?.invoiceNo}}</div>
+                                        <div class="pending-date">{{invoice?.patientObject?.personDetails?.firstName}} {{invoice?.patientObject?.personDetails?.lastName}}</div>
                                         <div class="oda">
-                                            <div class="pending-date">{{invoice.updatedAt|date:'medium'}}</div>
+                                            <div class="pending-date">{{invoice?.updatedAt|date:'medium'}}</div>
                                             <div class="pending-amount">
-                                                <span>&#x20a6;</span>{{invoice.balance|numberThr}}</div>
+                                                <span>&#x20a6;</span>{{invoice?.balance|numberThr}}</div>
                                         </div>
                                     </div>
                                 </li>
@@ -82,35 +83,9 @@
                     </div>
                 </div>
             </div>
+            <!-- Where to insert chart -->
+            <!-- <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas> -->
 
-            <div class="contentCol">
-                <div class="stat-summary">
-                    <div class="stat-item shadow-grey">
-                        <div class="stat-label">Amount Recieved</div>
-                        <div class="stat-val">
-                            <span>&#x20a6;</span>{{totalAmountReceived|numberThr}}</div>
-                    </div>
-
-                    <div class="stat-item shadow-grey">
-                        <div class="stat-label">Amount Paid</div>
-                        <div class="stat-val">
-                            <span>&#x20a6;</span>
-                        </div>
-                    </div>
-
-                    <div class="stat-item shadow-grey">
-                        <div class="stat-label">Pending Bills</div>
-                        <div class="stat-val">
-                            <span>&#x20a6;</span>{{totalAmountBilled|numberThr}}</div>
-                    </div>
-                </div>
-
-                <div class="stat-wrap">
-                    <div style="display: block">
-                        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
