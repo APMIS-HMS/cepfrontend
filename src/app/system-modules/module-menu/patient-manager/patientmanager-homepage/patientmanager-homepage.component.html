@@ -424,7 +424,7 @@
                                                                         <span *ngIf="!loading">Next</span>
                                                                         <span *ngIf="loading">Loading...</span>
                                                                     </button>
-                                                                    <button class="small-btn" (click)="next('company')" *ngIf="tabCompany" [disabled]="!ccPlan.valid || loading" mat-raised-button>
+                                                                    <button class="small-btn" (click)="next('company')" *ngIf="tabCompany" [disabled]="(!ccPlanId.valid && !employeeId.valid) || loading" mat-raised-button>
                                                                         <span *ngIf="!loading">Next</span>
                                                                         <span *ngIf="loading">Loading...</span>
                                                                     </button>

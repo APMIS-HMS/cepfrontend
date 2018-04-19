@@ -50,4 +50,12 @@ tr{
     display: flex;
     width: 375px;
     margin: 0 auto;
-  }
+}
+th {
+    height: 50px !important;
+    background: #337ab7 !important;
+    border: 0.5px solid !important;
+    border-color: #3e51b8 !important;
+    color: white !important;
+    padding-left: .8em !important;
+}
