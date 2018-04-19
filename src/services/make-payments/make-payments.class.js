@@ -278,15 +278,24 @@ async function onDebitWallet(data, description, ref, facilitiesService, peopleSe
         };
         return returnObj;
     } else if (data.inputedValue.paymentMethod.planType == paymentPlan.outOfPocket || data.inputedValue.paymentMethod.planType == paymentPlan.family) {
+        console.log("A");
         let getPerson = {};
         if (data.inputedValue.paymentMethod.bearerPersonId !== undefined) {
+            console.log("B");
             getPerson = await peopleService.get(data.inputedValue.paymentMethod.bearerPersonId, {});
+            console.log("C");
         } else {
+            console.log("D");
             getPerson = await peopleService.get(data.selectedPatient.personDetails._id, {});
+            console.log("E");
         }
+        console.log("F");
         let currentBalance = parseInt(getPerson.wallet.balance) - parseInt(data.inputedValue.amountPaid);
+        console.log("E");
         getPerson.wallet.balance = currentBalance;
+        console.log("G");
         getPerson.wallet.ledgerBalance = currentBalance;
+        console.log("H");
         getPerson.wallet.transactions.push({
             'transactionType': data.inputedValue.transactionType,
             'amount': data.inputedValue.amountPaid,
@@ -297,14 +306,26 @@ async function onDebitWallet(data, description, ref, facilitiesService, peopleSe
             'balance': currentBalance,
             'ledgerBalance': currentBalance
         });
+        console.log("I");
+        console.log(getPerson);
+        peopleService.patch(getPerson._id, {
+            wallet: getPerson.wallet
+        }).then(pay=>{
+            console.log(pay);
+        },err=>{
+            console.log(err);
+        });
         const patchedPerson = await peopleService.patch(getPerson._id, {
             wallet: getPerson.wallet
         });
+        
         if (data.inputedValue.balance == 0) {
+            console.log(2);
             patchedPerson.isPaid = true;
             patchedPerson.paidStatus = 'PAID';
             patchedPerson.isWaved = false;
         } else {
+            console.log(3);
             patchedPerson.isPaid = false;
             patchedPerson.paidStatus = 'UNPAID';
         }
@@ -312,6 +333,7 @@ async function onDebitWallet(data, description, ref, facilitiesService, peopleSe
             person: patchedPerson,
             invoice: data.currentInvoice
         };
+        console.log(returnObj);
         return returnObj;
     }
 }
