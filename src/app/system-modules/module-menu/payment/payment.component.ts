@@ -166,7 +166,7 @@ export class PaymentComponent implements OnInit {
     }
 
     onSelectedInvoice(invoice) {
-        this.router.navigate(['/dashboard/payment/invoice', invoice.patientId]);
+        this.router.navigate(['/dashboard/payment/invoice', invoice._id]);
     }
 
     // Notification

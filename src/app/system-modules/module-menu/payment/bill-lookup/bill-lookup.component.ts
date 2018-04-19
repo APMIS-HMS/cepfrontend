@@ -171,7 +171,7 @@ export class BillLookupComponent implements OnInit {
               'name': value
             }
           }).then((res: any) => {
-            this.pendingBills = res.data;
+            this.pendingBills = res.data.filter(x=>x.patientId !== this.selectedPatient._id);
             this.loadingPendingBills = false;
           }).catch(err => {
             this.loadingPendingBills = false;
@@ -234,7 +234,7 @@ export class BillLookupComponent implements OnInit {
   }
 
   onSelectedInvoice(invoice) {
-    this.router.navigate(['/dashboard/payment/invoice', invoice.patientId]);
+    this.router.navigate(['/dashboard/payment/invoice', invoice._id]);
   }
 
   fixedGroup(bill: BillModel) {
@@ -424,7 +424,7 @@ export class BillLookupComponent implements OnInit {
   private _getAllPendingBills() {
     this.loadingPendingBills = true;
     this._pendingBillService.get(this.selectedFacility._id, {}).then((res: any) => {
-      this.pendingBills = res.data;
+      this.pendingBills = res.data.filter(x=>x.patientId !== this.selectedPatient._id);;
       this.holdMostRecentBills = res.data;
       this.loadingPendingBills = false;
     }, err => {
@@ -626,6 +626,7 @@ export class BillLookupComponent implements OnInit {
   }
 
   close_onClick(e) {
+    this.total = 0;
     this._getPatientWallet(this.routeId);
     this.addModefierPopup = false;
     this.addLineModefierPopup = false;
