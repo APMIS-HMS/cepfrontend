@@ -215,7 +215,10 @@
                             </div>
                         </div>
                         <div class="btn-box">
-                            <button mat-raised-button [disabled]="(!frmNewRequest.valid && isLaboratory) || !isValidateForm || !investigationRadio || requestLoading" (click)="save(frmNewRequest.valid, frmNewRequest.value)" class="btn">Make Request</button>
+                            <button mat-raised-button [disabled]="(!frmNewRequest.valid && isLaboratory) || !isValidateForm || !investigationRadio || requestLoading || disableBtn" (click)="save(frmNewRequest.valid, frmNewRequest.value)" class="btn">
+                                <span *ngIf="makeRequestBtn">Make Request</span>
+                                <span *ngIf="makingRequestBtn">Make Request... <i class="fa fa-spinner fa-spin"></i></span>
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -245,7 +248,7 @@
                                         <option value="corporate">Corporate</option>
                                         <option value="internal">Internal</option>
                                     </select> -->
-                                </div>        
+                                </div>
                                 <div class="col-md-3">
                                     <!-- <input class="table-header-input" type="date" placeholder="Choose a date"> -->
                                 </div>

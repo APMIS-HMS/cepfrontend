@@ -50,12 +50,10 @@ export class LabRequestsComponent implements OnInit {
   @Input() isLaboratory = true;
   @Input() patientId;
   @Input() appointment: Appointment;
-
   paramLabNo = '';
   paramPersonFullName = '';
   paramcLinicalInformation = '';
   paramDiagnosis = '';
-
   selectedFacility: Facility = <Facility>{};
   apmisLookupUrl = 'patient-search';
   isValidateForm = false;
@@ -63,7 +61,6 @@ export class LabRequestsComponent implements OnInit {
   apmisLookupQuery: any = {};
   apmisLookupDisplayKey = 'firstName';
   apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
-
   apmisInvestigationLookupUrl = 'investigations';
   apmisInvestigationLookupText = '';
   apmisInvestigationLookupQuery: any = {};
@@ -71,7 +68,6 @@ export class LabRequestsComponent implements OnInit {
   apmisInvestigationLookupImgKey = '';
   // apmisLookupOtherKeys = ['lastName', 'email'];
   apmisLookupOtherKeys = ['lastName', 'firstName', 'apmisId', 'email'];
-
   request_view = false;
   reqDetail_view = false;
   personAcc_view = false;
@@ -83,14 +79,15 @@ export class LabRequestsComponent implements OnInit {
   loading = true;
   extList = false;
   isExternal = false;
-
   checkedValues: any[] = [];
   requests: any[] = [];
   pendingRequests: any[] = [];
   pendingExternalRequests: any[] = [];
-
   selectedPatient: any = <any>{};
   errMsg = 'You have unresolved errors';
+  makeRequestBtn = true;
+  makingRequestBtn = false;
+  disableBtn = false;
 
   public frmNewRequest: FormGroup;
   searchInvestigation: FormControl;
@@ -918,8 +915,10 @@ export class LabRequestsComponent implements OnInit {
   }
 
   save(valid, value) {
-
     this.requestLoading = true;
+    this.makingRequestBtn = true;
+    this.makeRequestBtn = false;
+    this.disableBtn = true;
 
     const copyBindInvestigation = JSON.parse(
       JSON.stringify(this.bindInvestigations)
@@ -975,9 +974,15 @@ export class LabRequestsComponent implements OnInit {
         this.selectedPatient = undefined;
         this._systemModuleService.announceSweetProxy('Request has been sent successfully!', 'success');
         this.requestLoading = false;
+        this.makingRequestBtn = false;
+        this.makeRequestBtn = true;
+        this.disableBtn = false;
       } else {
         this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
         this.requestLoading = false;
+        this.makingRequestBtn = false;
+        this.makeRequestBtn = true;
+        this.disableBtn = false;
       }
     }).catch(err => {
       this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
