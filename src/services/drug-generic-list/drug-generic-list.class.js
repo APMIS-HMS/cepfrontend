@@ -9,12 +9,15 @@ class Service {
     }
 
     async find(params) {
+        const method = params.query.method;
+        const searchText = params.query.searchtext;
+        const productId = params.query.productId;
         let url = '';
 
-        if (params.query.method === 'drug-details') {
-            url = process.env.EMDEX_BASEURL + '/products/' + params.query.productId;
+        if (method === 'drug-details') {
+            url = process.env.EMDEX_BASEURL + '/products/' + productId;
         } else {
-            url = process.env.APMIS_FORMULARY + '/prescriptions?search=' + params.query.searchtext;
+            url = process.env.APMIS_FORMULARY + '/prescriptions?search=' + searchText;
 
             // url = process.env.EMDEX_BASEURL + '/list/?query=' + params.query.searchtext +
             //     '&po=' + params.query.po + '&brandonly=' + params.query.brandonly + '&genericonly=' + params.query.genericonly;
@@ -30,7 +33,7 @@ class Service {
             const makeRequest = await requestPromise(options);
             const parsed = JSON.parse(makeRequest);
 
-            if (params.query.method === 'drug-details') {
+            if (method === 'drug-details') {
                 return jsend.success(parsed);
             } else {
                 if (parsed.status === 'success') {

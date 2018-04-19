@@ -136,6 +136,7 @@ class Service {
         const labNumber = data.labNumber;
         const minorLocationId = data.minorLocationId;
 
+        console.log('data => ', data);
         if (accessToken !== undefined) {
             const hasFacility = params.user.facilitiesRole.filter(x => x.facilityId.toString() === facilityId);
             if (hasFacility.length > 0) {
