@@ -1,4 +1,4 @@
-<div class="inner-wrap-b body-wrap">
+<!-- <div class="inner-wrap-b body-wrap">
     <div class="facility-title">Payment</div>
     <div class="inner-page-wrap">
         <div class="megaPgWrap pay-pg">
@@ -110,6 +110,94 @@
                         <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+</div> -->
+<div class="container">
+    <h2 style="text-align: center;">Payment Overview</h2>
+    <div class="row">
+        <div class="col-sm-4">
+            <div class="card">
+                <div>
+                    <h2 style="padding-top:10px; text-align: center">
+                        Pending Bills
+                    </h2>
+                </div>
+                <div class="search-box">
+                    <i class="fa fa-2x fa-search"></i>
+                    <input type="text" placeholder="Search first name, Apmis ID">
+                </div>
+                <div class="card-list">
+                    <div class="card-list-item">
+                        <div class="list-img">
+
+                        </div>
+                        <div class="list-text">
+                            <span class="title">David Modupe</span> 
+                            <span class="sub">April 15 2018 Total Amount Due: <b>N9,000</b></span>
+                        </div>
+                        <div class="badge">
+                            1
+                        </div>
+                    </div>
+                    <div class="card-list-item">
+                            <div class="list-img">
+    
+                            </div>
+                            <div class="list-text">
+                                <span class="title">David Modupe</span> 
+                                <span class="sub">April 15 2018 Total Amount Due: <b>N9,000</b></span>
+                            </div>
+                            <div class="badge">
+                                1
+                            </div>
+                        </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-8">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="summary-card">
+                            <span class="summary-label">
+                                Amount Received
+                            </span>
+                            <span class="summary-title">
+                                N42,000
+                                <i style="float: right; color: green" class=" fa-arrow-circle-o-down fa fa-2x"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                        <div class="card">
+                            <div class="summary-card">
+                                <span class="summary-label">
+                                     Amount Paid
+                                </span>
+                                <span class="summary-title">
+                                    N24,532
+                                    <i style="float: right; color: red" class=" fa-arrow-circle-o-up fa fa-2x"></i>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                            <div class="card">
+                                <div class="summary-card">
+                                    <span class="summary-label">
+                                        Wallet Balance
+                                    </span>
+                                    <span class="summary-title">
+                                        N17,468
+                                        <i style="float: right; color: #3B86FF" class=" fa-money fa fa-2x"></i>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
             </div>
         </div>
     </div>
