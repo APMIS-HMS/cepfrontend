@@ -23,12 +23,10 @@ class Service {
                 isinvoice: params.query.isinvoice
             }
         });
-        // console.log(awaitBills);
+
         results = await facilityItemService.create(awaitBills.data, {});
-        console.log(results[0].billItems[0]);
         if (results.length > 0) {
             recentBillModelId = results[results.length - 1]._id;
-            console.log('ID: ', recentBillModelId);
         }
         masterBillGroups = [];
         billGroups = [];
@@ -38,7 +36,6 @@ class Service {
             let len6 = results[i].billItems.length - 1;
             for (let k = len6; k >= 0; k--) {
                 if (results[i].billItems[k].isInvoiceGenerated === false || results[i].billItems[k].isInvoiceGenerated === undefined) {
-                    console.log(results[i].billItems[k]);
                     return fixedGroupExisting(results[i].billItems[k], results[i]._id, billGroups, results);
                 }
             }
@@ -131,9 +128,6 @@ class Service {
 }
 
 function fixedGroupExisting(bill, _id, billGroups, results) {
-    console.log('**** START ****');
-    // console.log(bill);
-    console.log('**** END ****');
     var subTotal = 0;
     var total = 0;
     var discount = 0;
