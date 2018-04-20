@@ -257,7 +257,7 @@ export class LabRequestsComponent implements OnInit {
                 }
               });
             })
-            .catch(err => {});
+            .catch(err => { });
         } else {
           this.investigationService
             .find({
@@ -293,7 +293,7 @@ export class LabRequestsComponent implements OnInit {
                 }
               });
             })
-            .catch(err => {});
+            .catch(err => { });
         }
       });
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
@@ -619,7 +619,7 @@ export class LabRequestsComponent implements OnInit {
                     isInBind
                   ].investigation.panel.findIndex(
                     x => x._id === copyInvestigation.investigation.panel[0]._id
-                  ) >= 0
+                    ) >= 0
                 ) {
                   this.bindInvestigations[isInBind].investigation.panel.push(
                     copyInvestigation.investigation.panel[0]
@@ -639,7 +639,7 @@ export class LabRequestsComponent implements OnInit {
                 ].investigation.panel.findIndex(
                   x =>
                     x.investigation._id === childInvestigation.investigation._id
-                );
+                  );
                 this.bindInvestigations[isInBind].investigation.panel.splice(
                   indexToRemove,
                   1
@@ -955,7 +955,7 @@ export class LabRequestsComponent implements OnInit {
 
     if (!this.isLaboratory) {
       if (request.source === undefined) {
-        if (this.appointment !== undefined && this.appointment.attendance !== undefined){
+        if (this.appointment !== undefined && this.appointment.attendance !== undefined) {
           request.source = {};
           request.source.facilityId = this.appointment.facilityId;
           request.source.majorLocationId = this.appointment.attendance.majorLocationId;
@@ -1024,13 +1024,62 @@ export class LabRequestsComponent implements OnInit {
           // Filter investigations based on the laboratory Id
           res.data.forEach(labRequest => {
             labRequest.investigations.forEach(investigation => {
-              if (
-                investigation.isSaved === undefined ||
-                !investigation.isSaved ||
-                ((investigation.isUploaded === undefined ||
-                  !investigation.isUploaded) &&
-                  labId === investigation.investigation.LaboratoryWorkbenches[0].laboratoryId._id)
-              ) {
+              if (this.isLaboratory === true) {
+                if (
+                  investigation.isSaved === undefined ||
+                  !investigation.isSaved ||
+                  ((investigation.isUploaded === undefined ||
+                    !investigation.isUploaded) &&
+                    labId === investigation.investigation.LaboratoryWorkbenches[0].laboratoryId._id)
+                ) {
+                  const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
+                  if (!investigation.isSaved || !investigation.isUploaded) {
+                    pendingLabReq.report = investigation.report;
+                    pendingLabReq.isSaved = investigation.isSaved;
+                    pendingLabReq.isUploaded = investigation.isUploaded;
+                  }
+                  pendingLabReq.labRequestId = labRequest._id;
+                  pendingLabReq.facility = labRequest.facilityId;
+                  pendingLabReq.clinicalInformation =
+                    labRequest.clinicalInformation;
+                  pendingLabReq.diagnosis = labRequest.diagnosis;
+                  pendingLabReq.labNumber = labRequest.labNumber;
+                  pendingLabReq.patientId = labRequest.patientId;
+                  pendingLabReq.patient = labRequest.personDetails;
+                  pendingLabReq.isExternal = investigation.isExternal;
+                  pendingLabReq.isUrgent = investigation.isUrgent;
+                  if (investigation.location !== undefined) {
+                    pendingLabReq.minorLocation =
+                      investigation.location.laboratoryId;
+                  }
+
+                  pendingLabReq.facilityServiceId =
+                    investigation.investigation.facilityServiceId;
+                  pendingLabReq.isPanel = investigation.investigation.isPanel;
+                  pendingLabReq.name = investigation.investigation.name;
+                  pendingLabReq.reportType =
+                    investigation.investigation.reportType;
+                  pendingLabReq.specimen = investigation.investigation.specimen;
+                  pendingLabReq.service = investigation.investigation.serviceId;
+                  pendingLabReq.unit = investigation.investigation.unit;
+                  pendingLabReq.investigationId = investigation.investigation._id;
+                  pendingLabReq.createdAt = labRequest.createdAt;
+                  pendingLabReq.updatedAt = labRequest.updatedAt;
+                  pendingLabReq.createdById = labRequest.createdBy;
+                  pendingLabReq.createdBy = labRequest.employeeDetails;
+
+                  if (investigation.specimenReceived !== undefined) {
+                    pendingLabReq.specimenReceived =
+                      investigation.specimenReceived;
+                  }
+                  if (investigation.specimenNumber !== undefined) {
+                    pendingLabReq.specimenNumber = investigation.specimenNumber;
+                  }
+
+                  this.pendingRequests.push(pendingLabReq);
+                }
+              } else {
+
                 const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
                 if (!investigation.isSaved || !investigation.isUploaded) {
                   pendingLabReq.report = investigation.report;
@@ -1076,11 +1125,12 @@ export class LabRequestsComponent implements OnInit {
                 }
 
                 this.pendingRequests.push(pendingLabReq);
+
               }
             });
           });
         })
-        .catch(err => {console.log(err)});
+        .catch(err => { console.log(err) });
     } else {
       this.requestService
         .customFind({ query: { facilityId: this.selectedFacility._id, $sort: { createdAt: -1 } } })
@@ -1161,16 +1211,16 @@ export class LabRequestsComponent implements OnInit {
             });
           });
         })
-        .catch(err => {console.log(err)});
+        .catch(err => { console.log(err) });
     }
   }
 
   goToWriteReport(request: any) {
     this._router.navigate([
       '/dashboard/laboratory/report/' +
-        request.labRequestId +
-        '/' +
-        request.investigationId
+      request.labRequestId +
+      '/' +
+      request.investigationId
     ]);
   }
 
