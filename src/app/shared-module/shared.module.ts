@@ -60,6 +60,7 @@ import {
 } from '../system-modules/module-menu/forms-manager/treatement-template/template-physician-order/template-physician-order.component';
 import { OrderSetSharedService } from '../services/facility-manager/order-set-shared-service';
 import { SharedModuleMaterialModule } from '../shared-common-modules/sharedmodule-materialsmodule';
+import { PaymentChartComponent } from './payment-chart/payment-chart.component';
 @NgModule({
   declarations: [
     SurveyComponent,
@@ -70,7 +71,8 @@ import { SharedModuleMaterialModule } from '../shared-common-modules/sharedmodul
     TemplateLabComponent,
     TemplateProcedureComponent,
     TemplateNursingCareComponent,
-    TemplatePhysicianOrderComponent  ],
+    TemplatePhysicianOrderComponent,
+    PaymentChartComponent  ],
   exports: [
     NgUploaderModule,
     NgPipesModule,

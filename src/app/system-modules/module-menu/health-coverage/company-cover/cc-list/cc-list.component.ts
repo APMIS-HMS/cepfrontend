@@ -44,6 +44,8 @@ export class CcListComponent implements OnInit {
   company:any;
   ev:any;
 
+  loading = true;
+
 
 
   // tslint:disable-next-line:max-line-length

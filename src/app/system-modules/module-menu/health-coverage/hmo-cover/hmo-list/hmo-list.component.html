@@ -1,6 +1,6 @@
 <div>
   <div class="doc-mainWrap">
-    <div class="doc-contentArea"> 
+    <div class="doc-contentArea">
       <div class="clinicalNoteWrap">
         <div class="actSect">
           <div class="actSect-header">
@@ -57,12 +57,11 @@
               </tr>
             </thead>
 
-            <tbody>
-
-              <tr>
+            <tbody *ngIf="hmoFacilities.length > 0">
+              <!-- <tr>
                 <td colspan="10">
                   <div class="tbl-actionRow">
-                    <!-- <div class="frm-item-wrap">
+                    <div class="frm-item-wrap">
                           <apmis-lookup [(ngModel)]="apmisLookupText" 
                           url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Patient"
                           isSocket="false" displayKey="apmisLookupDisplayKey" 
@@ -81,11 +80,10 @@
                               url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Location"
                               isSocket="false" displayKey="apmisLookupDisplayKey" 
                               (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                        </div> -->
+                        </div>
                   </div>
                 </td>
-              </tr>
-
+              </tr> -->
               <tr *ngFor="let hmo of hmoFacilities">
                 <td (click)="show_beneficiaries(hmo)">{{hmo.name}}</td>
                 <td>{{hmo.street}}, {{hmo.city}}, {{hmo.state}}.</td>
@@ -109,6 +107,18 @@
                       <span>Update HMO</span>
                     </div>
                   </div>
+                </td>
+              </tr>
+            </tbody>
+            <tbody *ngIf="hmoFacilities.length === 0 && !loading">
+              <tr>
+                <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;"> No data available in table</td>
+              </tr>
+            </tbody>
+            <tbody *ngIf="hmoFacilities.length === 0 && loading">
+              <tr>
+                <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;">
+                  <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                 </td>
               </tr>
             </tbody>

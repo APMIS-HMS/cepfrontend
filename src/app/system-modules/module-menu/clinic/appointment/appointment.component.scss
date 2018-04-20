@@ -111,6 +111,7 @@ ul.topmenuwrap {
         font-weight: 100;
     }
 }
+
 .tooltip {
     &:after {
         font-family: Arial, Helvetica, sans-serif;
@@ -118,7 +119,7 @@ ul.topmenuwrap {
         transition: all 0.4s;
         font-size: 1.2rem !important;
         // margin-left: -120px;
-        margin-top: 30px;
+        margin-top: 20px;
         display: block;
         padding: 10px;
         content: attr(title);
@@ -126,8 +127,9 @@ ul.topmenuwrap {
         border-radius: 5px;
         color: #fff;
         min-width: 65px;
-        text-align: center;
+        text-align: left;
         position: absolute;
+        max-width: 200px;
     }
     &:hover {
         &:after {

@@ -40,6 +40,8 @@ export class HmoListComponent implements OnInit {
   ev: any;
   HMO: any;
 
+  loading: boolean = true;
+
   selelctedFacility: Facility = <Facility>{};
   selectedHMO: Facility = <Facility>{};
   selectedFacilityType: FacilityType = <FacilityType>{};
@@ -103,6 +105,7 @@ export class HmoListComponent implements OnInit {
     this.facilityService.find({
       query: { _id: { $in: flist } }
     }).then(payload => {
+      this.loading = false;
       this.hmoFacilities = payload.data;
     });
   }

@@ -32,10 +32,17 @@
             </div>
 
             <ul class="topmenuwrap">
+                <li  *ngIf="checkedIn">
+                        <a href="#/dashboard/clinic/check-in">
+                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                        <span>CheckIn Patients</span>
+                        </a>
+                    </li>
                 <li (click)="checkoutPatient_show()" *ngIf="checkedIn">
                     <i class="fa fa-sign-out" aria-hidden="true"></i>
                     <span>Checkout</span>
                 </li>
+                
                 <li (click)="setAppointment()">
                     <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
                     <span>Set Appointment</span>
