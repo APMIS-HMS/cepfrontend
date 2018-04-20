@@ -19,7 +19,7 @@ class Service {
         searchQuery: params.query.name
       }
     });
-    if (Array.isArray(awaitedPatientIdItems.data)) {
+    if (Array.isArray(awaitedPatientIdItems.data) && awaitedPatientIdItems.data.length !== 0) {
       const invoicePromiseYetResolved = Promise.all(awaitedPatientIdItems.data.map(current =>  invoicesService.find({
         query: {
           facilityId: params.query.facilityId,
@@ -30,9 +30,21 @@ class Service {
         }
       })));
       const _invoicePromiseYetResolved = await invoicePromiseYetResolved;
-      return jsend.success(_invoicePromiseYetResolved[0]);
+      return jsend.success(_invoicePromiseYetResolved[0].data);
     }else{
-      return jsend.success({});
+      const searchByInvoiceNo = await invoicesService.find({
+        query: {
+          facilityId: params.query.facilityId,
+          invoiceNo:{
+            $regex: params.query.name,
+            '$options': 'i'
+          },
+          $sort: {
+            updatedAt: -1
+          }
+        }
+      });
+      return jsend.success(searchByInvoiceNo.data);
     }
   }
 

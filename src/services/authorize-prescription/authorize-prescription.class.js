@@ -105,11 +105,15 @@ class Service {
                         return jsend.error('There was a problem trying to create prescription');
                     }
                 } else {
-                    const createPrescription = await prescriptionService.create(prescription);
+                    try {
+                        const createPrescription = await prescriptionService.create(prescription);
 
-                    if (createPrescription._id !== undefined) {
-                        return jsend.success(createPrescription);
-                    } else {
+                        if (createPrescription._id !== undefined) {
+                            return jsend.success(createPrescription);
+                        } else {
+                            return jsend.error('There was a problem trying to create prescription');
+                        }
+                    } catch (e) {
                         return jsend.error('There was a problem trying to create prescription');
                     }
                 }

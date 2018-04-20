@@ -23,23 +23,12 @@ class Service {
                 isinvoice: params.query.isinvoice
             }
         });
-
         results = await facilityItemService.create(awaitBills.data, {});
         if (results.length > 0) {
             recentBillModelId = results[results.length - 1]._id;
         }
-        masterBillGroups = [];
         billGroups = [];
-        let len5 = results.length - 1;
-        for (let i = len5; i >= 0; i--) {
-            masterBillGroups.push(results[i]);
-            let len6 = results[i].billItems.length - 1;
-            for (let k = len6; k >= 0; k--) {
-                if (results[i].billItems[k].isInvoiceGenerated === false || results[i].billItems[k].isInvoiceGenerated === undefined) {
-                    return fixedGroupExisting(results[i].billItems[k], results[i]._id, billGroups, results);
-                }
-            }
-        }
+        return fixedGroupExisting(billGroups, results);
     }
 
     get(id, params) {
@@ -127,60 +116,83 @@ class Service {
     }
 }
 
-function fixedGroupExisting(bill, _id, billGroups, results) {
-    var subTotal = 0;
-    var total = 0;
-    var discount = 0;
-    const inBill = {};
-    inBill.amount = bill.totalPrice;
-    inBill.itemDesc = bill.description;
-    inBill.itemName = bill.facilityServiceObject.service;
-    inBill.qty = bill.quantity;
-    inBill.covered = bill.covered;
-    inBill.unitPrice = bill.unitPrice;
-    inBill._id = bill._id;
-    inBill.facilityServiceObject = bill.facilityServiceObject;
-    inBill.billObject = bill;
-    inBill.billModelId = _id;
+function fixedGroupExisting(billGroups, results) {
+    let subTotal = 0;
+    let total = 0;
+    let discount = 0;
+    let len5 = results.length - 1;
+    masterBillGroups = [];
 
-    const existingGroupList = billGroups.filter(x => x.categoryId === bill.facilityServiceObject.categoryId);
-    if (existingGroupList.length > 0) {
-        const existingGroup = existingGroupList[0];
-        if (existingGroup.isChecked) {
-            bill.isChecked = true;
+    for (let i = len5; i >= 0; i--) {
+        masterBillGroups.push(results[i]);
+        let len6 = results[i].billItems.length - 1;
+        for (let k = len6; k >= 0; k--) {
+            if (results[i].billItems[k].isInvoiceGenerated === false || results[i].billItems[k].isInvoiceGenerated === undefined) {
+                let bill = results[i].billItems[k];
+                const _id = results[i]._id;
+                // return fixedGroupExisting(results[i].billItems[k], results[i]._id, billGroups, results);
+                const inBill = {};
+                inBill.amount = bill.totalPrice;
+                inBill.itemDesc = bill.description;
+                inBill.itemName = bill.facilityServiceObject.service;
+                inBill.qty = bill.quantity;
+                inBill.covered = bill.covered;
+                inBill.unitPrice = bill.unitPrice;
+                inBill._id = bill._id;
+                inBill.facilityServiceObject = bill.facilityServiceObject;
+                inBill.billObject = bill;
+                inBill.billModelId = _id;
+
+                const existingGroupList = billGroups.filter(x => x.categoryId === bill.facilityServiceObject.categoryId);
+                if (existingGroupList.length > 0) {
+                    const existingGroup = existingGroupList[0];
+                    if (existingGroup.isChecked) {
+                        bill.isChecked = true;
+                    }
+                    const existingBills = existingGroup.bills.filter(x => x.facilityServiceObject.serviceId === bill.facilityServiceObject.serviceId);
+                    if (existingBills.length > 100000) {
+                        const existingBill = existingBills[0];
+                        existingBill.qty = existingBill.qty + bill.quantity;
+                        existingBill.amount = existingBill.qty * existingBill.unitPrice;
+                        subTotal = subTotal + existingGroup.total;
+                        total = subTotal - discount;
+                    } else {
+                        existingGroup.bills.push(inBill);
+                        subTotal = subTotal + existingGroup.total;
+                        total = subTotal - discount;
+                    }
+                    existingGroup.isOpened = false;
+                } else {
+                    const group = {
+                        isChecked: false,
+                        total: 0,
+                        isOpened: false,
+                        categoryId: bill.facilityServiceObject.categoryId,
+                        category: bill.facilityServiceObject.category,
+                        bills: []
+                    };
+                    inBill.isChecked = false;
+                    group.bills.push(inBill);
+                    billGroups.push(group);
+                    billGroups.sort(p => p.categoryId);
+                    total = subTotal - discount;
+                    group.isOpened = true;
+                }
+            }
         }
-        const existingBills = existingGroup.bills.filter(x => x.facilityServiceObject.serviceId === bill.facilityServiceObject.serviceId);
-        if (existingBills.length > 100000) {
-            const existingBill = existingBills[0];
-            existingBill.qty = existingBill.qty + bill.quantity;
-            existingBill.amount = existingBill.qty * existingBill.unitPrice;
-            subTotal = subTotal + existingGroup.total;
-            total = subTotal - discount;
-        } else {
-            existingGroup.bills.push(inBill);
-            subTotal = subTotal + existingGroup.total;
-            total = subTotal - discount;
-        }
-        existingGroup.isOpened = false;
-    } else {
-        const group = {
-            isChecked: false,
-            total: 0,
-            isOpened: false,
-            categoryId: bill.facilityServiceObject.categoryId,
-            category: bill.facilityServiceObject.category,
-            bills: []
-        };
-        inBill.isChecked = false;
-        group.bills.push(inBill);
-        billGroups.push(group);
-        billGroups.sort(p => p.categoryId);
-        total = subTotal - discount;
-        group.isOpened = true;
     }
-    var _billGroups = {
+    let uniqueGroupedBill = [];
+    billGroups.forEach(item => {
+        const index = uniqueGroupedBill.filter(x => x.categoryId.toString() === item.categoryId.toString());
+        if (index.length > 0) {
+            index[0].bills.push.apply(index[0].bills, item.bills);
+        } else {
+            uniqueGroupedBill.push(item);
+        }
+    });
+    let _billGroups = {
         'originalCallback': results,
-        'billGroups': billGroups,
+        'billGroups': uniqueGroupedBill,
         'total': total,
         'subTotal': subTotal,
         'discount': discount
