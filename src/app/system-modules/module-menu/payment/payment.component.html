@@ -85,7 +85,7 @@
             </div> -->
             <!-- Where to insert chart -->
             <!-- <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas> -->
-
+<!-- 
         </div>
     </div>
 </div> -->
@@ -110,7 +110,7 @@
                         </div>
                         <div class="list-text">
                             <span class="title">David Modupe</span> 
-                            <span class="sub">April 15 2018 Total Amount Due: <b>N9,000</b></span>
+                            <span class="sub">April 15 2018 | Total Amount Due: <b>N9,000</b></span>
                         </div>
                         <div class="badge">
                             1
@@ -122,7 +122,31 @@
                             </div>
                             <div class="list-text">
                                 <span class="title">David Modupe</span> 
-                                <span class="sub">April 15 2018 Total Amount Due: <b>N9,000</b></span>
+                                <span class="sub">April 15 2018 | Total Amount Due: <b>N9,000</b></span>
+                            </div>
+                            <div class="badge">
+                                1
+                            </div>
+                        </div>
+                        <div class="card-list-item">
+                                <div class="list-img">
+        
+                                </div>
+                                <div class="list-text">
+                                    <span class="title">David Modupe</span> 
+                                    <span class="sub">April 15 2018 | Total Amount Due: <b>N9,000</b></span>
+                                </div>
+                                <div class="badge">
+                                    1
+                                </div>
+                            </div>
+                    <div class="card-list-item">
+                            <div class="list-img">
+    
+                            </div>
+                            <div class="list-text">
+                                <span class="title">David Modupe</span> 
+                                <span class="sub">April 15 2018 | Total Amount Due: <b>N9,000</b></span>
                             </div>
                             <div class="badge">
                                 1
@@ -130,6 +154,45 @@
                         </div>
                 </div>
             </div>
+            <div class="card">
+                    <div>
+                        <h2 style="padding-top:10px; text-align: center">
+                            Invoices
+                        </h2>
+                    </div>
+                    <div class="search-box">
+                        <i class="fa fa-2x fa-search"></i>
+                        <input type="text" placeholder="Search Invoices, Apmis ID">
+                    </div>
+                    <div class="card-list">
+                        <div class="card-list-item">
+                            <div class="list-img">
+    
+                            </div>
+                            <div class="list-text">
+                                <span class="title">INV/2018/0349</span> 
+                                <span class="sub">Dolupe Ajoe | April 15 2018 </span>
+                            </div>
+                            <div style="float:right">
+                                    <h2>N9,000</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-list">
+                            <div class="card-list-item">
+                                <div class="list-img">
+        
+                                </div>
+                                <div class="list-text">
+                                    <span class="title">INV/2018/0349</span> 
+                                    <span class="sub">Dolupe Ajoe | April 15 2018 </span>
+                                </div>
+                                <div style="float:right">
+                                        <h2>N9,000</h2>
+                                </div>
+                            </div>
+                        </div>
+                </div>
         </div>
         <div class="col-sm-8">
             <div class="row">
@@ -173,6 +236,14 @@
                             </div>
                         </div>
             </div>
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="card" style="padding:10p;">
+                        <app-payment-chart></app-payment-chart>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 </div>
