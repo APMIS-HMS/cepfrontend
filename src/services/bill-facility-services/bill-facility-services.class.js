@@ -121,7 +121,7 @@ function fixedGroupExisting(billGroups, results) {
     let total = 0;
     let discount = 0;
     let len5 = results.length - 1;
-    masterBillGroups = [];
+    let masterBillGroups = [];
 
     for (let i = len5; i >= 0; i--) {
         masterBillGroups.push(results[i]);
@@ -196,7 +196,7 @@ function fixedGroupExisting(billGroups, results) {
         'total': total,
         'subTotal': subTotal,
         'discount': discount
-    }
+    };
     return _billGroups;
 }
 
