@@ -49,6 +49,7 @@ class Service {
       };
       billGroup.facilityId = data.facilityId;
       billGroup.patientId = data.patientId;
+      billGroup.payments=[];
       data.billGroups.forEach((itemg, g) => {
         itemg.bills.forEach((itemb, b) => {
           if (itemb.isChecked) {
@@ -58,6 +59,19 @@ class Service {
                 billingId: itemb._id,
                 billObject: itemb.billObject,
                 billModelId: itemb.billModelId
+              });
+              billGroup.payments.push({
+                paymentDate: new Date,
+                date: itemb.billObject.updatedAt,
+                qty: itemb.billObject.quantity,
+                facilityServiceObject: itemb.billObject.facilityServiceObject,
+                amountPaid: 0,
+                totalPrice: itemb.billObject.totalPrice,
+                balance: itemb.billObject.totalPrice,
+                isPaymentCompleted: false,
+                isWaiver: false,
+                waiverComment: '',
+                createdBy: ''
               });
           }
         });
@@ -142,15 +156,26 @@ function fixedGroupExisting(billGroups, results) {
         inBill.facilityServiceObject = bill.facilityServiceObject;
         inBill.billObject = bill;
         inBill.billModelId = _id;
+        console.log(1);
+        const existingGroupList = billGroups.filter(x => x.categoryId.toString() === bill.facilityServiceObject.categoryId.toString());
+        console.log(2);
+        console.log(existingGroupList.length + "---Length");
+        console.log("************COMPARISON START***********************");
+        if (existingGroupList[0] !== undefined) {
+          console.log(existingGroupList[0].categoryId.toString());
+        }
 
-        const existingGroupList = billGroups.filter(x => x.categoryId === bill.facilityServiceObject.categoryId);
+        console.log(bill.facilityServiceObject.categoryId.toString());
+        console.log("************COMPARISON STOP***********************");
         if (existingGroupList.length > 0) {
           const existingGroup = existingGroupList[0];
           if (existingGroup.isChecked) {
             bill.isChecked = true;
           }
-          const existingBills = existingGroup.bills.filter(x => x.facilityServiceObject.serviceId === bill.facilityServiceObject.serviceId);
-          if (existingBills.length > 100000) {
+          console.log(3);
+          const existingBills = existingGroup.bills.filter(x => x.facilityServiceObject.serviceId.toString() === bill.facilityServiceObject.serviceId.toString());
+          console.log(existingBills.length);
+          if (existingBills.length > 0) {
             const existingBill = existingBills[0];
             existingBill.qty = existingBill.qty + bill.quantity;
             existingBill.amount = existingBill.qty * existingBill.unitPrice;
@@ -161,7 +186,9 @@ function fixedGroupExisting(billGroups, results) {
             subTotal = subTotal + existingGroup.total;
             total = subTotal - discount;
           }
-          existingGroup.isOpened = false;
+          if(existingGroup.bills.length > 5){
+            existingGroup.isOpened = false;
+          }
         } else {
           const group = {
             isChecked: false,
@@ -185,7 +212,7 @@ function fixedGroupExisting(billGroups, results) {
   billGroups.forEach(item => {
     const index = uniqueGroupedBill.filter(x => x.categoryId.toString() === item.categoryId.toString());
     if (index.length > 0) {
-      index[0].bills.push.apply(index[0].bills,item.bills);
+      index[0].bills.push.apply(index[0].bills, item.bills);
     } else {
       uniqueGroupedBill.push(item);
     }
