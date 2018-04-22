@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';  
+import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { FacilitiesServiceCategoryService, ServicePriceService, InvoiceService } from '../../../../services/facility-manager/setup/index';
 import { FacilityService, Facility, CustomCategory } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -14,6 +14,7 @@ export class AddItemComponent implements OnInit {
   mainErr = true;
   errMsg = 'you have unresolved errors';
   successMsg = 'Operation completed successfully';
+  isCollapse = false;
 
   public frmAddItem: FormGroup;
   // itemName = new FormControl();
@@ -29,32 +30,35 @@ export class AddItemComponent implements OnInit {
 
   ngOnInit() {
     this.addNew();
-    this.frmAddItem.controls['unitPrice'].disable();
-    this.frmAddItem.controls['amount'].disable();
-    this.facility =  <Facility> this._locker.getObject('selectedFacility');
+    // this.frmAddItem.controls['unitPrice'].disable();
+    // this.frmAddItem.controls['amount'].disable();
+    this.facility = <Facility>this._locker.getObject('selectedFacility');
     const subscribeForService = this.frmAddItem.controls['itemName'].valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
-      .switchMap((term: FacilityService[]) => this._facilitiesServiceCategoryService.find({
-        query:
-        { 'categories.services.name': {
-          $regex:this.frmAddItem.controls['itemName'].value,
-          '$options': 'i'
-      }, facilityId: this.facility._id }
-      }).
-        then(payload => {
-          const innerValue = this.frmAddItem.controls['itemName'].value;
-          if (innerValue === null || innerValue.length === 0) {
-            this.services = [];
-          } else {
-            this.success = false;
-            this.filterOutService(payload);
-          }
+      .subscribe(value => {
+        if (value!== null) {
+          this._facilitiesServiceCategoryService.find({
+            query:
+              {
+                'categories.services.name': { $regex: this.frmAddItem.controls['itemName'].value, '$options': 'i' },
+                facilityId: this.facility._id
+              }
+          }).then(payload => {
+            const innerValue = this.frmAddItem.controls['itemName'].value;
+            if (innerValue === null || innerValue.length === 0) {
+              this.services = [];
+            } else {
+              this.success = false;
+              this.filterOutService(payload);
+            }
+  
+          });
+        }
+      });
 
-        }));
-
-    subscribeForService.subscribe((payload: any) => {
-    });
+    // subscribeForService.subscribe((payload: any) => {
+    // });
 
     this.frmAddItem.controls['qty'].valueChanges.subscribe(value => {
       const unitPrice = this.frmAddItem.controls['unitPrice'].value;
@@ -63,9 +67,12 @@ export class AddItemComponent implements OnInit {
     });
   }
   onSelectService(service: any) {
+    console.log(service);
     this.frmAddItem.controls['itemName'].setValue(service.service);
+    console.log(this.frmAddItem.controls['itemName'].value);
     this.selectedService = service;
     this.getPrice(service);
+    this.isCollapse = false;
   }
   getPrice(service: any) {
     this.servicePriceService.find({
@@ -113,10 +120,10 @@ export class AddItemComponent implements OnInit {
             customCategory.isGlobal = false;
           }
           this.services.push(customCategory);
-          console.log(this.services);
         });
       });
     });
+    this.isCollapse = true;
   }
   addNew() {
     this.frmAddItem = this.formBuilder.group({

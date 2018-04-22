@@ -1,12 +1,12 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
-import { InvoiceService, MakePaymentService, FacilitiesService, PersonService } from '../../../../services/facility-manager/setup/index';
+import { InvoiceService, MakePaymentService, FacilitiesService, PersonService, EmployeeService } from '../../../../services/facility-manager/setup/index';
 import {
   WalletTransaction, TransactionType, EntityType, TransactionDirection, TransactionMedium, TransactionStatus, PaymentPlan
 } from './../../../../models/facility-manager/setup/wallet-transaction';
-import { Patient, Facility, BillItem, Invoice, BillModel, User } from '../../../../models/index';
+import { Patient, Facility, BillItem, Invoice, BillModel, User, Employee } from '../../../../models/index';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
@@ -38,12 +38,15 @@ export class MakePaymentComponent implements OnInit {
   isExactInsurance = false;
   isExactCompany = false;
   isExactFamily = false;
-
+  checkAllWaive = new FormControl();
+  loginEmployee: Employee = <Employee>{};
   totalAmountPaid = 0;
+  totalAmountBalance = 0;
   outOfPocketAmountPaid = 0;
   paymentChannels = PaymentChannels;
   selectedFacility: Facility = <Facility>{};
   selectedBillItem: BillModel = <BillModel>{};
+  productTableForm: FormGroup;
   user: any = <any>{};
   disableBtn = true;
   isProcessing = false;
@@ -71,8 +74,8 @@ export class MakePaymentComponent implements OnInit {
   balance;
   wavedDescription = new FormControl('', []);
   amount = new FormControl('', []);
-  selectOutOfPocket = new FormControl('', []);
-  selectWaved = new FormControl('', []);
+  selectOutOfPocket = new FormControl();
+  selectWaved = new FormControl();
   amountInsurance = new FormControl('', []);
   balanceInsurance = new FormControl('', []);
   amountCompany = new FormControl('', []);
@@ -91,12 +94,15 @@ export class MakePaymentComponent implements OnInit {
     private _makePaymentService: MakePaymentService,
     private facilityService: FacilitiesService,
     private personService: PersonService,
+    private employeeService: EmployeeService,
     private systemModuleService: SystemModuleService) {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-  }
 
+  }
   ngOnInit() {
-    this.user = <User>this.locker.getObject('auth');
+    this.user = <any>this.locker.getObject('auth');
+    this.checkAllWaive.setValue(false);
+    console.log(this.user);
     this.getPatientCovers();
     this.balance = new FormControl(this.cost, []);
     this.balanceInsurance = new FormControl(this.cost, []);
@@ -144,6 +150,54 @@ export class MakePaymentComponent implements OnInit {
         this.systemModuleService.announceSweetProxy('Balance cannot be lesser than zero', 'error');
       }
     });
+
+    this.checkAllWaive.valueChanges.subscribe(value => {
+      if (value) {
+        (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
+          item.value.isWaiver = true;
+          item.controls.amountPaid.setValue(0);
+        });
+        if ((<FormArray>this.productTableForm.controls['productTableArray']).controls.length === 1) {
+          (<FormArray>this.productTableForm.controls['productTableArray']).controls[0].value.isWaiver = true;
+          (<FormArray>this.productTableForm.controls['productTableArray']).controls[0].value.amountPaid = 0;
+        }
+      } else {
+        (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
+          item.value.isWaiver = false;
+          item.controls.amountPaid.setValue('');
+        });
+        if ((<FormArray>this.productTableForm.controls['productTableArray']).controls.length === 1) {
+          (<FormArray>this.productTableForm.controls['productTableArray']).controls[0].value.isWaiver = false;
+          (<FormArray>this.productTableForm.controls['productTableArray']).controls[0].value.amountPaid = 0;
+        }
+      }
+      (<FormArray>this.productTableForm.controls['productTableArray']).setValue(JSON.parse(JSON.stringify((<FormArray>this.productTableForm.controls['productTableArray']).value)))
+
+    });
+
+    this.selectOutOfPocket.valueChanges.subscribe(value => {
+      this.totalAmountPaid = 0;
+      this.totalAmountBalance = 0;
+      if (value) {
+        (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
+          item.value.isWaiver = false;
+          item.controls.amountPaid.setValue(item.value.totalPrice);
+          item.controls.balance.setValue(0);
+          item.controls.isPaymentCompleted.setValue(true);
+        });
+      } else {
+        (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
+          item.value.isWaiver = false;
+          item.controls.amountPaid.setValue(0);
+          item.controls.balance.setValue(item.value.totalPrice);
+          item.controls.isPaymentCompleted.setValue(false);
+        });
+      }
+      (<FormArray>this.productTableForm.controls['productTableArray']).setValue(JSON.parse(JSON.stringify((<FormArray>this.productTableForm.controls['productTableArray']).value)))
+
+    });
+
+
     // this.channel.valueChanges.subscribe(value => {
     //   this.disableBtn = false;
     //   if (value == "Cash") {
@@ -152,6 +206,102 @@ export class MakePaymentComponent implements OnInit {
     //     this.isCash = false;
     //   }
     // });
+    this.initializeServiceItemTables();
+    this.setValueForServiceItems();
+  }
+
+  initializeServiceItemTables() {
+    console.log(this.billGroups);
+    this.productTableForm = this.formBuilder.group({
+      'productTableArray': this.formBuilder.array([
+        this.formBuilder.group({
+          date: ['', [<any>Validators.required]],
+          balance: [0, [<any>Validators.required]],
+          totalPrice: [0, [<any>Validators.required]],
+          isPaymentCompleted: [false, [<any>Validators.required]],
+          qty: [0, [<any>Validators.required]],
+          facilityServiceObject: [{}, [<any>Validators.required]],
+          amountPaid: [0, [<any>Validators.required]],
+          isWaiver: [false, [<any>Validators.required]],
+          waiverComment: ['', [<any>Validators.required]],
+          createdBy: ['']
+        })
+      ])
+    });
+    this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
+  }
+
+  setValueForServiceItems() {
+    let ItemGroupByService = [];
+    if (this.isInvoicePage === false) {
+      this.billGroups.forEach(element => {
+        element.bills.forEach(element2 => {
+          if (element2.isChecked === true) {
+            const index = ItemGroupByService.filter(x =>
+              x.facilityServiceObject.serviceId.toString() === element2.facilityServiceObject.serviceId.toString()
+              && x.facilityServiceObject.categoryId.toString() === element2.facilityServiceObject.categoryId.toString());
+            if (index.length === 0) {
+              ItemGroupByService.push({
+                date: element2.billObject.updatedAt,
+                qty: element2.qty,
+                facilityServiceObject: element2.facilityServiceObject,
+                balance: element2.qty * element2.unitPrice,
+                totalPrice: element2.qty * element2.unitPrice,
+                amountPaid: 0,
+                isPaymentCompleted: false,
+                isWaiver: false,
+                waiverComment: ''
+              });
+            } else {
+              index[0].qty += element2.qty;
+              index[0].balance = index[0].qty * element2.unitPrice;
+              index[0].totalPrice = index[0].qty * element2.unitPrice
+            }
+          }
+        });
+      });
+    } else {
+      console.log(this.invoice);
+      
+      this.invoice.payments.forEach(element2 => {
+        let itemBalance = 0;
+        if(!element2.isPaymentCompleted && element2.isItemTxnClosed === undefined){
+          ItemGroupByService.push({
+            date: element2.paymentDate,
+            qty: element2.qty,
+            facilityServiceObject: element2.facilityServiceObject,
+            balance: element2.balance,
+            totalPrice: element2.balance,
+            amountPaid: 0,
+            isPaymentCompleted: false,
+            isWaiver: false,
+            waiverComment: ''
+          });
+        }
+      });
+    }
+    this.employeeService.find({ query: { facilityId: this.selectedFacility._id, personId: this.user.personId } })
+      .then(employee => {
+        ItemGroupByService.forEach(item => {
+          (<FormArray>this.productTableForm.controls['productTableArray'])
+            .push(
+              this.formBuilder.group({
+                paymentDate: new Date,
+                date: item.date,
+                qty: item.qty,
+                facilityServiceObject: item.facilityServiceObject,
+                amountPaid: 0,
+                totalPrice: item.totalPrice,
+                balance: item.balance,
+                isPaymentCompleted: item.isPaymentCompleted,
+                isWaiver: false,
+                waiverComment: '',
+                createdBy: employee.data[0]._id
+              })
+            );
+        });
+      });
+
   }
 
   getPatientCovers() {
@@ -160,32 +310,46 @@ export class MakePaymentComponent implements OnInit {
       this.patientCompanyLists = this.selectedPatient.paymentPlan.filter(x => x.planType === PaymentPlan.company);
       this.patientFamilyLists = this.selectedPatient.paymentPlan.filter(x => x.planType === PaymentPlan.family);
     } else {
-      this.systemModuleService.announceSweetProxy('No payment plan is attached to patient', 'error');
+      this.systemModuleService.announceSweetProxy('No payment plan is attached to patient', 'error', null, null, null, null, null, null, null);
     }
   }
 
-  getPatientCompanyLists() {
-
+  onChangeAmount(item) {
+    console.log(item);
+    console.log(item.value.totalPrice);
+    let val = item.value.totalPrice - item.value.amountPaid;
+    if (val >= 0 && val < item.value.totalPrice) {
+      item.controls.balance.setValue(val);
+      if (val === 0) {
+        item.controls.isPaymentCompleted.setValue(true);
+      } else {
+        item.controls.isPaymentCompleted.setValue(false);
+      }
+    } else if (val === item.value.totalPrice) {
+      item.controls.amountPaid.setValue(0);
+    }
+    else {
+      console.log("Less");
+      this.systemModuleService.announceSweetProxy('Amount cannot be greater than it service price', 'error', null, null, null, null, null, null, null);
+      item.controls.balance.setValue(item.value.totalPrice);
+      item.controls.amountPaid.setValue(0);
+    }
   }
 
-  getPatientFamilyLists() {
-    // this.patientInsuranceLists = this.selectedPatient.paymentPlan.filter(x => x.planType == PaymentPlan.family);
+  onChangeWaiver(item) {
+    if (item.value.isWaiver) {
+      item.controls.amountPaid.setValue(0);
+      if ((<FormArray>this.productTableForm.controls['productTableArray']).controls.length === 1) {
+        this.checkAllWaive.setValue(true);
+      }
+    } else {
+      item.controls.amountPaid.setValue(0);
+      if ((<FormArray>this.productTableForm.controls['productTableArray']).controls.length === 1) {
+        this.checkAllWaive.setValue(false);
+      }
+    }
   }
 
-  onOutOfPocketPartPay() {
-    this.isPartPay = !this.isPartPay;
-  }
-
-  // calculateBalance(ev){
-  //   console.log(ev.target.value);
-  //   var bal = this.cost - ev.target.value;
-  //   if(bal >= 0){
-  //     this.balance = bal;
-  //     console.log(this.balance);
-  //   }else{
-  //     this._notification('Error',"Balance cannot be lesser than zero");
-  //   }
-  // }
 
   close_onClick() {
     this.cost = 0;
@@ -214,7 +378,7 @@ export class MakePaymentComponent implements OnInit {
       this.tabFamily = false;
       this.tabWallet = true;
       this.systemModuleService.announceSweetProxy
-      ('This patient has not subscribed to any family cover. Contact your Health Insurance officer for more info', 'error');
+        ('This patient has not subscribed to any family cover. Contact your Health Insurance officer for more info', 'error');
     }
   }
   tabInsurance_click() {
@@ -224,74 +388,32 @@ export class MakePaymentComponent implements OnInit {
     this.tabInsurance = true;
   }
 
-  onExactCharges(event: any) {
-    this.isExact = event.target.checked;
-    if (this.isExact) {
-      this.amount.setValue(this.cost);
-      this.balance.setValue(0);
-    }
-  }
-
-  onWaverCharges(event: any) {
-    this.isWaved = event.target.checked;
-    if (this.isWaved === true) {
-      this.amount.setValue(0);
-      this.balance.setValue(this.cost);
-    }
-  }
-
-  onInsuranceExactCharges(event: any) {
-    this.isExactInsurance = event.target.checked;
-    if (this.isExactInsurance) {
-      this.amountInsurance.setValue(this.cost);
-      this.balance.setValue(0);
-    }
-  }
-
-  onCompanyExactCharges(event: any) {
-    this.isExactCompany = event.target.checked;
-    if (this.isExactCompany) {
-      this.amountCompany.setValue(this.cost);
-      this.balance.setValue(0);
-    }
-  }
-
-  onFamilyExactCharges(event: any) {
-    this.isExactFamily = event.target.checked;
-    if (this.isExactFamily) {
-      this.amountFamily.setValue(this.cost);
-      this.balanceFamily.setValue(0);
-    }
+  getTotalAmounBAlance() {
+    (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
+      this.totalAmountPaid += item.value.amountPaid;
+      this.totalAmountBalance += item.value.balance;
+    });
   }
 
   onOutOfPocket() {
-    if ((this.amount.value !== '' && this.amount.value !== 0) || this.isWaved === true) {
+    this.getTotalAmounBAlance();
+    console.log(this.productTableForm.controls['productTableArray']);
+    console.log(this.productTableForm.controls['productTableArray'].valid);
+    if (this.productTableForm.controls['productTableArray'].valid) {
       if (this.selectedPatient.personDetails.wallet !== undefined) {
-        if (this.selectedPatient.personDetails.wallet.balance < this.cost && !this.isWaved) {
+        if (this.selectedPatient.personDetails.wallet.balance < this.totalAmountPaid && !this.checkAllWaive.value) {
           this.systemModuleService.announceSweetProxy('No sufficient balance to make this payment', 'info');
         } else {
+          console.log(1);
           let paymentValue = {};
+          console.log(2);
           const plan = this.selectedPatient.paymentPlan.filter(x => x.planType === PaymentPlan.outOfPocket);
-          if (this.isExact) {
-            paymentValue = {
-              'paymentMethod': plan[0],
-              'amountPaid': this.amount.value
-            }
-          } else if (this.isWaved) {
-            const objPlanType = {
-              'planType': PaymentPlan.waved
-            }
-            paymentValue = {
-              'paymentMethod': objPlanType,
-              'amountPaid': this.amount.value
-            }
-          } else {
-            paymentValue = {
-              'paymentMethod': plan[0],
-              'amountPaid': this.amount.value
-            }
+          console.log(3);
+          paymentValue = {
+            'paymentMethod': plan[0],
+            'amountPaid': this.totalAmountPaid
           }
-          this.bAmount = this.balance.value;
+          console.log(4);
           this.makePayment(paymentValue);
         }
       } else {
@@ -302,159 +424,69 @@ export class MakePaymentComponent implements OnInit {
     }
   }
 
-  onInsuranceCover() {
-    if (this.insurancePlan.value.planDetails !== undefined) {
-      this.facilityService.get(this.insurancePlan.value.planDetails._id, {}).then((payload: any) => {
-        if (payload.wallet !== undefined) {
-          if (payload.wallet.balance < this.cost) {
-            this.systemModuleService.announceSweetProxy('No sufficient balance to make this payment', 'info');
-          } else {
-            let paymentValue = {};
-            if (this.isExactInsurance) {
-              paymentValue = {
-                'paymentMethod': this.insurancePlan.value,
-                'amountPaid': this.amountInsurance.value
-              }
-            } else {
-              paymentValue = {
-                'paymentMethod': this.insurancePlan.value,
-                'amountPaid': this.amountInsurance.value
-              }
-            }
-            this.bAmount = this.balanceInsurance.value;
-            this.makePayment(paymentValue);
-          }
-        } else {
-          this.systemModuleService.announceSweetProxy('You do not have sufficient balance to make this payment', 'info');
-        }
-      });
-    } else {
-      this.systemModuleService.announceSweetProxy('You have not selected an insurance cover', 'error');
-    }
-
-
-  }
-
-  onFamilyCover() {
-    if ((this.amountFamily.value !== '' && this.amountFamily.value !== 0)) {
-      const plan = this.selectedPatient.paymentPlan.filter(x => x.planType === PaymentPlan.family);
-      if (plan[0] !== undefined) {
-        this.personService.get(plan[0].bearerPersonId, {}).then((payload: any) => {
-          if (payload.wallet !== undefined) {
-            if (payload.wallet.balance < this.cost) {
-              this.systemModuleService.announceSweetProxy('No sufficient balance to make this payment', 'info');
-            } else {
-              let paymentValue = {};
-              if (this.isExactFamily) {
-                paymentValue = {
-                  'paymentMethod': plan[0],
-                  'amountPaid': this.amountFamily.value
-                }
-              } else {
-                paymentValue = {
-                  'paymentMethod': plan[0],
-                  'amountPaid': this.amountFamily.value
-                }
-              }
-              this.bAmount = this.balanceFamily.value;
-              this.makePayment(paymentValue);
-            }
-          } else {
-            this.systemModuleService.announceSweetProxy('No sufficient balance to make this payment', 'info');
-          }
-        });
-      } else {
-        this.systemModuleService.announceSweetProxy
-          ('This patient has not subscribed to any family cover. Contact your Health Insurance officer for more info', 'error');
-      }
-    } else {
-      this.systemModuleService.announceSweetProxy('Please enter a valid amount', 'error');
-    }
-  }
-
-  onCompanyCover() {
-    if (this.companyPlan.value.planDetails !== undefined) {
-      this.facilityService.get(this.companyPlan.value.planDetails._id, {}).then((payload: any) => {
-        if (payload.wallet !== undefined) {
-          if (payload.wallet.balance < this.cost) {
-            this.systemModuleService.announceSweetProxy('No sufficient balance to make this payment', 'info');
-          } else {
-            let paymentValue = {};
-            if (this.isExactCompany) {
-              paymentValue = {
-                'paymentMethod': this.companyPlan.value,
-                'amountPaid': this.amountCompany.value
-              }
-            } else {
-              paymentValue = {
-                'paymentMethod': this.companyPlan.value,
-                'amountPaid': this.amountCompany.value
-              }
-            }
-            this.bAmount = this.balanceCompany.value;
-            this.makePayment(paymentValue);
-          }
-        } else {
-          this.systemModuleService.announceSweetProxy('No sufficient balance to make this payment', 'info');
-        }
-      });
-    } else {
-      this.systemModuleService.announceSweetProxy('You have not selected any company cover', 'error');
-    }
-
-  }
 
 
   makePayment(val) {
     this.isProcessing = true;
     let paymantObj: any = {};
     if (this.isInvoicePage === false) {
+      console.log(5);
       paymantObj = {
         'inputedValue': {
           'paymentMethod': val.paymentMethod,
           'amountPaid': val.amountPaid,
-          'balance': this.bAmount,
+          'balance': this.totalAmountBalance,
           'cost': this.cost,
-          'isWaved': this.isWaved,
-          'transactionType': TransactionType[TransactionType.Dr]
+          'isWaved': this.checkAllWaive.value,
+          'transactionType': TransactionType[TransactionType.Dr],
+          'paymentTxn': this.productTableForm.controls['productTableArray'].value
         },
         'billGroups': this.billGroups,
-        'selectedPatient': this.selectedPatient,
-        'selectedFacility': this.selectedFacility,
+        'patientId': this.selectedPatient._id,
+        'personId': this.selectedPatient.personDetails._id,
+        'facilityId': this.selectedFacility._id,
         'discount': this.discount,
         'subTotal': this.subTotal,
         'checkBillitems': this.checkBillitems,
         'listedBillItems': this.listedBillItems,
         'isInvoicePage': false
       }
-      if (this.isWaved) {
+      console.log(6);
+      if (this.checkAllWaive.value) {
         paymantObj.reason = this.wavedDescription.value;
       }
-      if (this.bAmount === 0) {
+      console.log(7);
+      if (this.totalAmountBalance === 0) {
         paymantObj.transactionStatus = TransactionStatus.Complete;
       }
+      console.log(8);
     } else {
       paymantObj = {
         'inputedValue': {
           'paymentMethod': val.paymentMethod,
-          'amountPaid': val.amountPaid,
-          'balance': this.bAmount,
+          'amountPaid': this.totalAmountPaid,
+          'balance': this.totalAmountBalance,
           'cost': this.cost,
-          'isWaved': this.isWaved,
-          'transactionType': TransactionType[TransactionType.Dr]
+          'isWaved': this.checkAllWaive.value,
+          'transactionType': TransactionType[TransactionType.Dr],
+          'paymentTxn': this.productTableForm.controls['productTableArray'].value
         },
         'invoice': this.invoice,
-        'selectedPatient': this.selectedPatient,
+        'patientId': this.selectedPatient._id,
+        'personId': this.selectedPatient.personDetails._id,
+        'facilityId': this.selectedFacility._id,
         'isInvoicePage': true
       }
-      if (this.isWaved) {
+      if (this.checkAllWaive.value) {
         paymantObj.reason = this.wavedDescription.value;
       }
-      if (this.bAmount === 0) {
+      if (this.totalAmountBalance === 0) {
         paymantObj.transactionStatus = TransactionStatus.Complete;
       }
     }
-    if (this.isWaved === true && this.wavedDescription.value.length > 0) {
+    console.log(this.checkAllWaive.value);
+    console.log(this.wavedDescription.value.length);
+    if (this.checkAllWaive.value === true && this.wavedDescription.value.length > 0) {
       this._makePaymentService.create(paymantObj).then(payload => {
         console.log(payload);
         this.personValueChanged.emit(payload);
@@ -470,7 +502,8 @@ export class MakePaymentComponent implements OnInit {
       }, error => {
         this.systemModuleService.announceSweetProxy('Failed to make payment. Please try again later', 'error');
       });
-    } else if (this.isWaved === false && this.wavedDescription.value.length === 0) {
+    } else if (this.checkAllWaive.value === false && this.wavedDescription.value.length === 0) {
+      console.log(9);
       this._makePaymentService.create(paymantObj).then(payload => {
         console.log(payload);
         this.personValueChanged.emit(payload);
