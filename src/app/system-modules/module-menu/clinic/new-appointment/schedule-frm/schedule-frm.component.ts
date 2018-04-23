@@ -120,15 +120,15 @@ export class ScheduleFrmComponent implements OnInit {
   apmisLookupUrl = 'patient-search';
   apmisLookupText = '';
   apmisLookupQuery: any = {};
-  apmisLookupDisplayKey = 'firstName';
+  apmisLookupDisplayKey = 'personDetails.firstName';
   apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
-  apmisLookupOtherKeys = ['lastName', 'firstName', 'apmisId', 'email'];
-  apmisProviderLookupUrl = 'patient-search';
+  apmisLookupOtherKeys = ['personDetails.lastName', 'personDetails.firstName', 'personDetails.apmisId', 'personDetails.email'];
+  apmisProviderLookupUrl = 'employee-search';
   apmisProviderLookupText = '';
   apmisProviderLookupQuery: any = {};
-  apmisProviderLookupDisplayKey = 'firstName';
+  apmisProviderLookupDisplayKey = 'personDetails.firstName';
   apmisProviderLookupImgKey = 'personDetails.profileImageObject.thumbnail';
-  apmisProviderLookupOtherKeys = ['lastName', 'firstName', 'apmisId', 'email'];
+  apmisProviderLookupOtherKeys = ['personDetails.lastName', 'personDetails.firstName', 'personDetails.apmisId', 'personDetails.email'];
 
   days: any[] = [
     "Sunday",
@@ -183,10 +183,14 @@ export class ScheduleFrmComponent implements OnInit {
         this.clinic.setValue(filterClinic[0]);
       }
 
-      this.provider.setValue(payload.providerDetails);
+      // this.provider.setValue(payload.providerDetails);
+      if(this.appointment.providerDetails !== undefined) {
+        this.apmisProviderLookupHandleSelectedItem(this.appointment.providerDetails);
+      }
       this.selectedPatient = payload.patientDetails;
 
-      this.patient.setValue(payload.patientDetails);
+      //this.patient.setValue(payload.patientDetails);
+      this.apmisLookupHandleSelectedItem(payload.patientDetails);
       this.date = payload.startDate;
       this.reason.setValue(payload.appointmentReason);
 
@@ -219,7 +223,8 @@ export class ScheduleFrmComponent implements OnInit {
     this.patient.valueChanges.subscribe(value => {
       this.apmisLookupQuery = {
         facilityId: this.selectedFacility._id,
-        searchText: value
+        searchText: value,
+        'patientTable': true,
       };
     });
     // this.filteredPatients = this.patient.valueChanges
@@ -242,7 +247,8 @@ export class ScheduleFrmComponent implements OnInit {
     this.provider.valueChanges.subscribe(value => {
       this.apmisProviderLookupQuery = {
         facilityId: this.selectedFacility._id,
-        searchText: value
+        searchText: value,
+        'employeeTable': true,
       };
     });
     // this.filteredProviders = this.provider.valueChanges
@@ -296,7 +302,8 @@ export class ScheduleFrmComponent implements OnInit {
     });
     this.patientService.patientAnnounced$.subscribe(value => {
       this.selectedPatient = value;
-      this.patient.setValue(this.selectedPatient);
+      //this.patient.setValue(this.selectedPatient);
+      this.apmisLookupHandleSelectedItem(this.selectedPatient);
     });
 
     this.category.valueChanges.subscribe(value => {
@@ -338,8 +345,8 @@ export class ScheduleFrmComponent implements OnInit {
   }
 
   apmisLookupHandleSelectedItem(value) {
-    this.apmisLookupText = `${value.firstName} ${value.lastName}`;
-    // this.selectedPatient = value;
+    this.apmisLookupText = `${value.personDetails.firstName} ${value.personDetails.lastName}`;
+     this.selectedPatient = value;
     // this.frmNewRequest.controls['labNo'].setValue('');
     // if (this.selectedPatient.clientsNo !== undefined) {
     //   this.selectedPatient.clientsNo.forEach(item => {
@@ -351,16 +358,7 @@ export class ScheduleFrmComponent implements OnInit {
   }
 
   apmisProviderLookupHandleSelectedItem(value) {
-    this.apmisProviderLookupText = `${value.firstName} ${value.lastName}`;
-    // this.selectedPatient = value;
-    // this.frmNewRequest.controls['labNo'].setValue('');
-    // if (this.selectedPatient.clientsNo !== undefined) {
-    //   this.selectedPatient.clientsNo.forEach(item => {
-    //     if (item.minorLocationId === this.selectedLab.typeObject.minorLocationObject._id) {
-    //       this.frmNewRequest.controls['labNo'].setValue(item.clientNumber);
-    //     }
-    //   });
-    // }
+    this.apmisProviderLookupText = `${value.personDetails.firstName} ${value.personDetails.lastName}`;
   }
 
   getTimezones() {
@@ -452,7 +450,8 @@ export class ScheduleFrmComponent implements OnInit {
           this.isDoctor = false;
         }
         if (this.appointment._id !== undefined) {
-          this.patient.setValue(this.appointment.patientDetails);
+          // this.patient.setValue(this.appointment.patientDetails);
+          this.apmisLookupHandleSelectedItem(this.selectedPatient);
         }
         this.scheduleManagers = schedules;
         this.getEmployees();
@@ -757,7 +756,10 @@ export class ScheduleFrmComponent implements OnInit {
             this.providers.push(itemi);
           });
           if (this.appointment._id !== undefined) {
-            this.provider.setValue(this.appointment.providerDetails);
+            // this.provider.setValue(this.appointment.providerDetails);
+            if(this.appointment.providerDetails !== undefined) {
+              this.apmisProviderLookupHandleSelectedItem(this.appointment.providerDetails);
+            }
           }
           this.loadingProviders = false;
         });
@@ -774,7 +776,10 @@ export class ScheduleFrmComponent implements OnInit {
             this.providers.push(itemi);
           });
           if (this.appointment._id !== undefined) {
-            this.provider.setValue(this.appointment.providerDetails);
+            // this.provider.setValue(this.appointment.providerDetails);
+            if(this.appointment.providerDetails !== undefined) {
+              this.apmisProviderLookupHandleSelectedItem(this.appointment.providerDetails);
+            }
           }
           this.loadingProviders = false;
         });
@@ -897,7 +902,7 @@ export class ScheduleFrmComponent implements OnInit {
       this.updateAppointment = false;
       this.saveAppointment = false;
       this.savingAppointment = true;
-      const patient = this.patient.value._id;
+      const patient =  this.selectedPatient._id; //this.patient.value._id;
       const clinic = this.clinic.value.clinicName;
 
       const type = this.type.value.name;
@@ -907,7 +912,7 @@ export class ScheduleFrmComponent implements OnInit {
       const date = this.date;
       const reason = this.reason.value;
       const facility = this.selectedFacility._id;
-      this.selectedPatient = this.patient.value;
+      //this.selectedPatient = this.patient.value;
 
       this.appointment.appointmentReason = reason;
       this.appointment.appointmentTypeId = type;
@@ -1023,8 +1028,10 @@ export class ScheduleFrmComponent implements OnInit {
           }
         );
       } else {
+        console.log(this.appointment);
         this.appointmentService.create(this.appointment).then(
           payload => {
+            console.log(payload);
             this.createBill();
             if (this.teleMed.value === true) {
               const topic = "Appointment with " + patient.personDetails.apmisId;
@@ -1102,6 +1109,7 @@ export class ScheduleFrmComponent implements OnInit {
               "There was an error setting the appointment",
               "error"
             );
+            console.dir(error);
           }
         );
       }
