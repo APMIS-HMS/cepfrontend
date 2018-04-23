@@ -67,9 +67,7 @@ export class AddItemComponent implements OnInit {
     });
   }
   onSelectService(service: any) {
-    console.log(service);
     this.frmAddItem.controls['itemName'].setValue(service.service);
-    console.log(this.frmAddItem.controls['itemName'].value);
     this.selectedService = service;
     this.getPrice(service);
     this.isCollapse = false;

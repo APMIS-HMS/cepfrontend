@@ -102,7 +102,6 @@ export class MakePaymentComponent implements OnInit {
   ngOnInit() {
     this.user = <any>this.locker.getObject('auth');
     this.checkAllWaive.setValue(false);
-    console.log(this.user);
     this.getPatientCovers();
     this.balance = new FormControl(this.cost, []);
     this.balanceInsurance = new FormControl(this.cost, []);
@@ -211,7 +210,6 @@ export class MakePaymentComponent implements OnInit {
   }
 
   initializeServiceItemTables() {
-    console.log(this.billGroups);
     this.productTableForm = this.formBuilder.group({
       'productTableArray': this.formBuilder.array([
         this.formBuilder.group({
@@ -261,8 +259,6 @@ export class MakePaymentComponent implements OnInit {
         });
       });
     } else {
-      console.log(this.invoice);
-      
       this.invoice.payments.forEach(element2 => {
         let itemBalance = 0;
         if(!element2.isPaymentCompleted && element2.isItemTxnClosed === undefined){
@@ -315,8 +311,6 @@ export class MakePaymentComponent implements OnInit {
   }
 
   onChangeAmount(item) {
-    console.log(item);
-    console.log(item.value.totalPrice);
     let val = item.value.totalPrice - item.value.amountPaid;
     if (val >= 0 && val < item.value.totalPrice) {
       item.controls.balance.setValue(val);
@@ -329,7 +323,6 @@ export class MakePaymentComponent implements OnInit {
       item.controls.amountPaid.setValue(0);
     }
     else {
-      console.log("Less");
       this.systemModuleService.announceSweetProxy('Amount cannot be greater than it service price', 'error', null, null, null, null, null, null, null);
       item.controls.balance.setValue(item.value.totalPrice);
       item.controls.amountPaid.setValue(0);
@@ -397,23 +390,17 @@ export class MakePaymentComponent implements OnInit {
 
   onOutOfPocket() {
     this.getTotalAmounBAlance();
-    console.log(this.productTableForm.controls['productTableArray']);
-    console.log(this.productTableForm.controls['productTableArray'].valid);
     if (this.productTableForm.controls['productTableArray'].valid) {
       if (this.selectedPatient.personDetails.wallet !== undefined) {
         if (this.selectedPatient.personDetails.wallet.balance < this.totalAmountPaid && !this.checkAllWaive.value) {
           this.systemModuleService.announceSweetProxy('No sufficient balance to make this payment', 'info');
         } else {
-          console.log(1);
           let paymentValue = {};
-          console.log(2);
           const plan = this.selectedPatient.paymentPlan.filter(x => x.planType === PaymentPlan.outOfPocket);
-          console.log(3);
           paymentValue = {
             'paymentMethod': plan[0],
             'amountPaid': this.totalAmountPaid
           }
-          console.log(4);
           this.makePayment(paymentValue);
         }
       } else {
@@ -430,7 +417,6 @@ export class MakePaymentComponent implements OnInit {
     this.isProcessing = true;
     let paymantObj: any = {};
     if (this.isInvoicePage === false) {
-      console.log(5);
       paymantObj = {
         'inputedValue': {
           'paymentMethod': val.paymentMethod,
@@ -451,15 +437,12 @@ export class MakePaymentComponent implements OnInit {
         'listedBillItems': this.listedBillItems,
         'isInvoicePage': false
       }
-      console.log(6);
       if (this.checkAllWaive.value) {
         paymantObj.reason = this.wavedDescription.value;
       }
-      console.log(7);
       if (this.totalAmountBalance === 0) {
         paymantObj.transactionStatus = TransactionStatus.Complete;
       }
-      console.log(8);
     } else {
       paymantObj = {
         'inputedValue': {
@@ -484,11 +467,8 @@ export class MakePaymentComponent implements OnInit {
         paymantObj.transactionStatus = TransactionStatus.Complete;
       }
     }
-    console.log(this.checkAllWaive.value);
-    console.log(this.wavedDescription.value.length);
     if (this.checkAllWaive.value === true && this.wavedDescription.value.length > 0) {
       this._makePaymentService.create(paymantObj).then(payload => {
-        console.log(payload);
         this.personValueChanged.emit(payload);
         this.isProcessing = false;
         this.balance.setValue(0);
@@ -503,9 +483,7 @@ export class MakePaymentComponent implements OnInit {
         this.systemModuleService.announceSweetProxy('Failed to make payment. Please try again later', 'error');
       });
     } else if (this.checkAllWaive.value === false && this.wavedDescription.value.length === 0) {
-      console.log(9);
       this._makePaymentService.create(paymantObj).then(payload => {
-        console.log(payload);
         this.personValueChanged.emit(payload);
         this.isProcessing = false;
         this.balance.setValue(0);
