@@ -148,6 +148,7 @@ class Service {
                         if (updateRequest._id !== undefined) {
                             // Build documentation model
                             const patientDocumentation = {
+                                documentationStatus : 'Completed',
                                 document: saveDocument,
                                 createdBy: employeeId,
                                 facilityId: facilityId,

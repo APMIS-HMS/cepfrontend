@@ -135,7 +135,7 @@ function fixedGroupExisting(billGroups, results) {
   let total = 0;
   let discount = 0;
   let len5 = results.length - 1;
-  masterBillGroups = [];
+  let masterBillGroups = [];
 
   for (let i = len5; i >= 0; i--) {
     masterBillGroups.push(results[i]);
@@ -166,16 +166,16 @@ function fixedGroupExisting(billGroups, results) {
           subTotal = subTotal + existingGroup.total;
           total = subTotal - discount;
           // const existingBills = existingGroup.bills.filter(x => x.facilityServiceObject.serviceId.toString() === bill.facilityServiceObject.serviceId.toString());
-          // if (existingBills.length > 1000) {
-          //   const existingBill = existingBills[0];
-          //   existingBill.qty = existingBill.qty + bill.quantity;
-          //   existingBill.amount = existingBill.qty * existingBill.unitPrice;
-          //   subTotal = subTotal + existingGroup.total;
-          //   total = subTotal - discount;
+          // if (existingBills.length > 0) {
+          //     const existingBill = existingBills[0];
+          //     existingBill.qty = existingBill.qty + bill.quantity;
+          //     existingBill.amount = existingBill.qty * existingBill.unitPrice;
+          //     subTotal = subTotal + existingGroup.total;
+          //     total = subTotal - discount;
           // } else {
-          //   existingGroup.bills.push(inBill);
-          //   subTotal = subTotal + existingGroup.total;
-          //   total = subTotal - discount;
+          //     existingGroup.bills.push(inBill);
+          //     subTotal = subTotal + existingGroup.total;
+          //     total = subTotal - discount;
           // }
           if (existingGroup.bills.length > 5) {
             existingGroup.isOpened = false;
@@ -214,7 +214,7 @@ function fixedGroupExisting(billGroups, results) {
     'total': total,
     'subTotal': subTotal,
     'discount': discount
-  }
+  };
   return _billGroups;
 }
 

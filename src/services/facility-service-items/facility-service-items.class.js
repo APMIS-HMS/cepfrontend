@@ -33,7 +33,6 @@ class Service {
                             data[i].billItems[j].facilityServiceObject.category = category.name;
                             data[i].billItems[j].facilityServiceObject.service = itm.name;
                             data[i].billItems[j].facilityServiceObject.serviceId = itm._id;
-                            // console.log(data[i].billItems[j]);
                         }
                     });
                 });
