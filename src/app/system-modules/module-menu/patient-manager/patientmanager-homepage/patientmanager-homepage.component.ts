@@ -358,7 +358,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.tagService.createSuggestedPatientTags(tag).then(payl => {
       this.systemService.off;
       if (payl.status === "error") {
-        this.mainErr = true;
+        this.mainErr = false;
         this.errMsg = payl.message;
       } else {
         this.patientToEdit.tags = payl.data.tags;
