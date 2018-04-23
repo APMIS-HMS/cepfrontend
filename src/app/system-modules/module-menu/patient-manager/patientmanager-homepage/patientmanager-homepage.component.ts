@@ -108,7 +108,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   noPatientId;
 
   companyFacilities: any;
-  loginCompanyListObject:any = {};
+  loginCompanyListObject: any = {};
   companyEnrolleList;
   filteredccs: Observable<any[]>;
 
@@ -130,7 +130,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   btnLabel = "Add Tag";
   tagLoader: boolean = false;
 
-  mainErr: boolean;
+  mainErr: boolean = true;
   errMsg: string;
 
   constructor(private patientService: PatientService, private personService: PersonService,
@@ -180,8 +180,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
     this.filteredHmos = this.hmoPlanId.valueChanges
       .pipe(
-        startWith(''),
-        map((hmo: any) => hmo ? this.filterHmos(hmo) : this.hmos.slice())
+      startWith(''),
+      map((hmo: any) => hmo ? this.filterHmos(hmo) : this.hmos.slice())
       );
 
     this.filteredccs = this.ccPlanId.valueChanges.pipe(
@@ -358,7 +358,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.tagService.createSuggestedPatientTags(tag).then(payl => {
       this.systemService.off;
       if (payl.status === "error") {
-        this.mainErr = true;
+        this.mainErr = false;
         this.errMsg = payl.message;
       } else {
         this.patientToEdit.tags = payl.data.tags;
@@ -375,6 +375,22 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
   fillingWithSearchInfo(tag) {
     this.tagName.setValue(tag.name);
+  }
+
+  combineTagsToString(tags){
+    let length = tags.length;
+    let tagsString = '';
+    let arr = [];
+    let name;
+    while(length--){
+      if(tags[length].tagType !== undefined){
+        name = tags[length].name+ ' (i)';
+      }else{
+        name = tags[length].name;
+      }
+      arr.push(name);
+    }
+    return arr.join(', ');
   }
 
   removeTag(tag) {
@@ -709,6 +725,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
   next(cover) {
     this.systemService.on();
+    this.loading = true;
     const data = JSON.parse(JSON.stringify(this.patient.paymentPlan));
     if (this.isDefault.value === true) {
       const index = data.findIndex(c => c.isDefault === true);
@@ -716,137 +733,217 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         data[index].isDefault = false;
       }
     }
-    if (this.button === 'create') {
-      if (this.tabWallet === true) {
-        data.push({
-          planType: cover,
-          bearerPersonId: this.patient.personDetails._id,
-          isDefault: Boolean(this.isDefault.value)
-        });
-      } else if (this.tabInsurance === true) {
-        data.push({
-          planType: cover,
-          isDefault: Boolean(this.isDefault.value),
-          planDetails: {
-            hmoId: this.hmoPlanId.value.hmoId,
-            principalId: this.insuranceId.value
-          }
-        });
-      } else if (this.tabCompany === true) {
-        data.push({
-          planType: cover,
-          isDefault: Boolean(this.isDefault.value),
-          planDetails: {
-            companyId: this.ccPlanId.value._id,
-            principalId: this.employeeId.value
-          }
-        });
-      } else if (this.tabFamily === true) {
-        this.familyClientId = this.faFileNo.value;
-        this.familyCoverService.find({ query: { 'facilityId': this.facility._id } }).then(payload => {
-          if (payload.data.length > 0) {
-            const facFamilyCover = payload.data[0];
-            const selectedFamilyCover = facFamilyCover;
-            const beneficiaries = facFamilyCover.familyCovers;
-            const info = beneficiaries.filter(x => x.filNo === this.familyPlanId.value);
-            if (info.length === 0) {
-              this.loading = false;
-              this.systemService.off();
-              this.systemService.announceSweetProxy('Principal Id doesn\'t exist', 'error');
-            } else {
-              const filEx = beneficiaries.filter(x => x.filNo === this.familyClientId);
-              if (filEx.length > 0) {
-                if (filEx[0].patientId !== undefined) {
-                  this.loading = false;
+    if (this.tabWallet === true) {
+      data.push({
+        planType: cover,
+        bearerPersonId: this.patient.personDetails._id,
+        isDefault: Boolean(this.isDefault.value)
+      });
+      this.UpdatePaymentPlan(data);
+    } else if (this.tabInsurance === true) {
+      this.hmoService.find({ query: { 'facilityId': this.facility._id } }).then(payload => {
+        if (payload.data.length > 0) {
+          const facHmo = payload.data[0];
+          const index = facHmo.hmos.findIndex(x => x.hmo === this.hmoPlanId.value.hmoId);
+          if (index > -1) {
+            if (facHmo.hmos[index].enrolleeList.length > 0) {
+              const bene = [];
+              for (let s = 0; s < facHmo.hmos[index].enrolleeList.length; s++) {
+                const hmo = facHmo.hmos[index].hmo;
+                bene.push(...facHmo.hmos[index].enrolleeList[s].enrollees);
+              }
+              const fil = bene.filter(x => x.filNo === this.insuranceId.value);
+
+              if (fil.length > 0) {
+                if (fil[0].status.toLowerCase() !== "active") {
                   this.systemService.off();
-                  this.systemService.announceSweetProxy('Client Id has already been assigned to a patient. Please try another Client Id', 'error');
-                } else {
-                  if (info[0].patientId === undefined) {
-                    if (this.getRole(this.familyClientId) !== 'P') {
-                      this.loading = false;
-                      this.systemService.off();
-                      this.systemService.announceSweetProxy('Principal doesn\'t exist as a patient. Please register principal.', 'error');
-                      return;
-                    } else {
-                      this.noPatientId = true;
-                    }
-                  }
-                  this.principalName = info[0].othernames + ' ' + info[0].surname;
-                  this.principalPersonId = (this.noPatientId !== true) ? info[0].patientObject.personDetails._id : '';
-                  this.principalFamilyId = facFamilyCover._id;
                   this.loading = false;
+                  const text = 'Insurance Id does not have an active status for the selected HMO';
+                  this.errMsg = text;
+                  this.mainErr = false;
+                  // this.systemService
+                  //   .announceSweetProxy(text, 'error');
+                  return false;
+                } else {
+                  if (fil[0].firstname !== this.patient.personDetails.firstName || fil[0].surname !== this.patient.personDetails.lastName) {
+                    this.systemService.off();
+                    this.loading = false;
+                    const text = 'Information of policy doesn\'t match patient details. Please check and try again! ';
+                    this.errMsg = text;
+                    this.mainErr = false;
+                    return false;
+                    // this.systemService
+                    //   .announceSweetProxy(text, 'error');
+                  } else {
+                    this.systemService.off();
+                    data.push({
+                      planType: cover,
+                      bearerPersonId: this.patient.personDetails._id,
+                      isDefault: Boolean(this.isDefault.value),
+                      planDetails: {
+                        hmoId: this.hmoPlanId.value.hmoId,
+                        principalId: this.insuranceId.value
+                      }
+                    });
+                    this.UpdatePaymentPlan(data);
+                  }
+                }
+              } else {
+                this.systemService.off();
+                this.loading = false;
+                const text = 'Insurance Id does not exist for the selected HMO';
+                this.errMsg = text;
+                this.mainErr = false;
+                // this.systemService
+                //   .announceSweetProxy(text, 'error');
+                return false;
+              }
+            }
+          }
+        }
+      }).catch(err => { });
+
+    } else if (this.tabCompany === true) {
+      this.companyCoverService.find({
+        query: {
+          'facilityId._id': this.facility._id
+        }
+      }).then(payload => {
+        const companyCover = payload.data[0];
+        const index = companyCover.companyCovers.findIndex(x => x.company === this.ccPlanId.value._id);
+        if (index > -1) {
+          if (companyCover.companyCovers[index].enrolleeList.length > 0) {
+            const bene = [];
+            for (let s = 0; s < companyCover.companyCovers[index].enrolleeList.length; s++) {
+              const company = companyCover.companyCovers[index].company
+              bene.push(...companyCover.companyCovers[index].enrolleeList[s].enrollees);
+            }
+            const fil = bene.filter(x => x.filNo === this.employeeId.value);
+            if (fil.length > 0) {
+              console.log(fil[0]);
+              if (fil[0].status.toLowerCase() !== "active") {
+                this.systemService.off();
+                const text = 'Employee Id does not have an active status for the selected Company';
+                this.errMsg = text;
+                this.mainErr = false;
+                this.systemService
+                  .announceSweetProxy(text, 'error');
+              } else {
+                if (fil[0].firstname !== this.patient.personDetails.firstName || fil[0].surname !== this.patient.personDetails.lastName) {
+                  this.systemService.off();
+                  const text = 'Employee Id does not have an active status for the selected Company';
+                  this.errMsg = text;
+                  this.mainErr = false;
+                  this.systemService
+                    .announceSweetProxy(text, 'error');
+                }else {
+                  this.systemService.off();
                   data.push({
                     planType: cover,
                     bearerPersonId: this.patient.personDetails._id,
                     isDefault: Boolean(this.isDefault.value),
                     planDetails: {
-                      principalId: this.familyPlanId.value,
-                      principalName: this.principalName.value,
-                      familyId: this.principalFamilyId.value
+                      companyId: this.ccPlanId.value._id,
+                      principalId: this.employeeId.value
                     }
                   });
+                  this.UpdatePaymentPlan(data);
                 }
-              } else {
-                this.loading = false;
-                this.systemService.off();
-                this.systemService.announceSweetProxy('Client Id doesn\'t exist in Principal family', 'error');
               }
+            } else {
+              this.systemService.off();
+              const text = 'Employee Id does not exist for the selected Company';
+              this.errMsg = text;
+              this.mainErr = false;
+              this.systemService
+                .announceSweetProxy(text, 'error');
             }
           }
-        }).catch(err => {
-          console.log(err);
-        });
-
-      }
-
-    } else {
-      const check = data.filter(x => x.planType === cover);
-      if (check.length < 1) {
-        if (cover === 'wallet') {
-          data.push({
-            planType: cover,
-            isDefault: Boolean(this.isDefault.value)
-          });
-        } else if (cover === 'insurance') {
-          data.push({
-            planType: cover,
-            isDefault: Boolean(this.isDefault.value),
-            planDetails: {
-              hmoId: this.hmoPlanId.value.hmoId,
-              principalId: this.insuranceId.value
-            }
-          });
-        } else if (cover === 'company') {
-          data.push({
-            planType: cover,
-            isDefault: Boolean(this.isDefault.value),
-            planDetails: {
-              companyId: this.ccPlanId.value.hmoId,
-              principalId: this.employeeId.value
-            }
-          });
-        } else if (cover === 'family') {
-          data.push({
-            planType: cover,
-            isDefault: Boolean(this.isDefault.value),
-            planDetails: {
-              principalId: this.familyPlanId.value
-            }
-          });
         }
-      }
+      })
+    } else if (this.tabFamily === true) {
+      this.familyClientId = this.faFileNo.value;
+      this.familyCoverService.find({ query: { 'facilityId': this.facility._id } }).then(payload => {
+        if (payload.data.length > 0) {
+          const facFamilyCover = payload.data[0];
+          const selectedFamilyCover = facFamilyCover;
+          const beneficiaries = facFamilyCover.familyCovers;
+          const info = beneficiaries.filter(x => x.filNo === this.familyPlanId.value);
+          if (info.length === 0) {
+            this.systemService.off();
+            this.loading = false;
+            const text = 'Principal Id doesn\'t exist';
+            this.errMsg = text;
+            this.mainErr = false;
+            // this.systemService.announceSweetProxy('Principal Id doesn\'t exist', 'error');
+          } else {
+            const filEx = beneficiaries.filter(x => x.filNo === this.familyClientId);
+            if (filEx.length > 0) {
+              if (filEx[0].patientId !== undefined) {
+                this.loading = false;
+                this.systemService.off();
+                const text = 'Client Id has already been assigned to a patient. Please try another Client Id';
+                this.errMsg = text;
+                this.mainErr = false;
+                // this.systemService.announceSweetProxy('Client Id has already been assigned to a patient. Please try another Client Id', 'error');
+              } else {
+                if (info[0].patientId === undefined) {
+                  if (this.getRole(this.familyClientId) !== 'P') {
+                    this.systemService.off();
+                    this.loading = false;
+                    const text = 'Principal doesn\'t exist as a patient. Please register principal.';
+                    this.errMsg = text;
+                    this.mainErr = false;
+                    //this.systemService.announceSweetProxy('Principal doesn\'t exist as a patient. Please register principal.', 'error');
+                    return false;
+                  } else {
+                    this.noPatientId = true;
+                  }
+                }
+                this.principalName = info[0].othernames + ' ' + info[0].surname;
+                this.principalPersonId = (this.noPatientId !== true) ? info[0].patientObject.personDetails._id : '';
+                this.principalFamilyId = facFamilyCover._id;
+                this.loading = false;
+                data.push({
+                  planType: cover,
+                  bearerPersonId: this.patient.personDetails._id,
+                  isDefault: Boolean(this.isDefault.value),
+                  planDetails: {
+                    principalId: this.familyPlanId.value,
+                    principalName: this.principalName.value,
+                    familyId: this.principalFamilyId.value
+                  }
+                });
+
+                this.UpdatePaymentPlan(data);
+              }
+            } else {
+              this.loading = false;
+              this.systemService.off();
+              const text = 'Client Id doesn\'t exist in Principal family';
+              this.errMsg = text;
+              this.mainErr = false;
+              //this.systemService.announceSweetProxy('Client Id doesn\'t exist in Principal family', 'error');
+            }
+          }
+        }
+      }).catch(err => {
+        console.log(err);
+      });
+
     }
+  }
+
+  UpdatePaymentPlan(data) {
     this.patientService.patch(this.patient._id, {
       paymentPlan: data
     }, {}).then(payload => {
       this.systemService.off();
+      this.loading = false;
       this.patient = payload;
       this.systemService.announceSweetProxy('Payment Methods successfully updated', 'success');
       this.backBtn();
     });
-
-
-
   }
 
   getRole(beneficiary) {

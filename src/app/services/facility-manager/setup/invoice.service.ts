@@ -6,6 +6,7 @@ import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class InvoiceService {
   public _socket;
+  public _socketList;
   private _rest;
 
  private invoiceAnnouncedSource = new Subject<Object>();
@@ -20,6 +21,7 @@ export class InvoiceService {
   ) {
     this._rest = _restService.getService('invoices');
     this._socket = _socketService.getService('invoices');
+    this._socketList = _socketService.getService('list-of-invoices');
     this._socket.timeout = 90000;
     this._socket.on('created', function (gender) {
     });
@@ -39,6 +41,10 @@ export class InvoiceService {
   }
   find(query: any) {
     return this._socket.find(query);
+  }
+
+  search(query: any) {
+    return this._socketList.find(query);
   }
 
   findAll() {

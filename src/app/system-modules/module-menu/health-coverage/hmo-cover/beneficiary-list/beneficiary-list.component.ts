@@ -23,6 +23,7 @@ export class BeneficiaryListComponent implements OnInit {
 
   pageSize = 10;
   pageSizeOptions = [5, 10, 25, 100];
+  loading = true;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   pageEvent: PageEvent;
@@ -57,6 +58,7 @@ export class BeneficiaryListComponent implements OnInit {
               this.selectedHMO = facHmo.hmos[index].hmo;
               bene.push(...facHmo.hmos[index].enrolleeList[s].enrollees);
             }
+            this.loading = false;
             this.beneficiaries = bene;
             const startIndex = 0 * 10;
             this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
