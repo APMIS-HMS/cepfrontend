@@ -31,6 +31,7 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
 
   searchControl = new FormControl();
   searchTagsControl = new FormControl();
+  searchCriteria = new FormControl('Patient');
 
   searchedPatients;
   searchEmpty = true;
@@ -58,50 +59,45 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe(value => {
-        this.patientService.findPatient({
-          query: {
-            'facilityId': this.selectedFacility._id,
-            'searchText': value,
-            'patientTable': true,
-            $limit: 300
-          }
-        }).then(payload => {
-          if (value.length > 0) {
-            this.searchEmpty = false;
-            this.searchedPatients = payload.data;
-          } else {
-            this.searchEmpty = true;
-            this.searchedPatients = [];
-          }
-        });
+        if(this.searchCriteria.value === 'Patient'){
+          this.patientService.findPatient({
+            query: {
+              'facilityId': this.selectedFacility._id,
+              'searchText': value,
+              'patientTable': true,
+              $limit: 300
+            }
+          }).then(payload => {
+            if (value.length > 0) {
+              this.searchEmpty = false;
+              this.searchedPatients = payload.data;
+            } else {
+              this.searchEmpty = true;
+              this.searchedPatients = [];
+            }
+          });
+        } else  {
+          this.patientService.find({
+            query: {
+              'facilityId': this.selectedFacility._id,
+              $or: [
+                { 'tags.name': { $regex: value, '$options': 'i' } },
+                { 'tags.tagType': { $regex: value, '$options': 'i' } }
+              ],
+              $limit: 300
+            }
+          }).then(payload => {
+            console.log(payload);
+            if (value.length > 0) {
+              this.searchEmpty = false;
+              this.searchedPatients = payload.data;
+            } else {
+              this.searchEmpty = true;
+              this.searchedPatients = [];
+            }
+          });
+        }
       });
-
-    this.searchTagsControl.valueChanges
-      .debounceTime(200)
-      .distinctUntilChanged()
-      .subscribe(value => {
-        console.log(value);
-        this.patientService.find({
-          query: {
-            'facilityId': this.selectedFacility._id,
-            $or: [
-              { 'tags.name': { $regex: value, '$options': 'i' } },
-              { 'tags.tagType': { $regex: value, '$options': 'i' } }
-            ],
-            $limit: 300
-          }
-        }).then(payload => {
-          console.log(payload);
-          if (value.length > 0) {
-            this.searchEmpty = false;
-            this.searchedPatients = payload.data;
-          } else {
-            this.searchEmpty = true;
-            this.searchedPatients = [];
-          }
-        })
-      });
-
 
     this.route.params.subscribe(params => {
 

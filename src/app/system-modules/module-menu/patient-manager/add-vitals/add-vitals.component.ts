@@ -37,6 +37,30 @@ export class AddVitalsComponent implements OnInit {
   abdominal: any = <any>{};
   bmi: number = <number>{};
   isWarning = false;
+  warningPulseRate = {
+    status: false,
+    message: ''
+  };
+  warningTemp = {
+    status: false,
+    message: ''
+  };
+  warningResp = {
+    status: false,
+    message: ''
+  };
+  warningSys = {
+    status: false,
+    message: ''
+  };
+  warningDia = {
+    status: false,
+    message: ''
+  };
+  warningSpo = {
+    status: false,
+    message: ''
+  };
   bmiWarningMssg = "";
   disableSaveBtn = false;
   saveBtnText = "Add Vitals";
@@ -62,9 +86,9 @@ export class AddVitalsComponent implements OnInit {
     private _PatientService: PatientService,
     private _systemModuleService: SystemModuleService,
     private _facilityService: FacilitiesService,
-    private _authFacadeServic:AuthFacadeService,
+    private _authFacadeServic: AuthFacadeService,
     private _vitalService: VitalService) {
-    this._authFacadeServic.getLogingEmployee().then((payload:any)=>{
+    this._authFacadeServic.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
     })
   }
@@ -80,9 +104,9 @@ export class AddVitalsComponent implements OnInit {
     this.getForm();
     this._employeeService.find({
       query:
-      {
-        facilityId: this.selectedFacility._id, personId: auth.data.personId
-      }
+        {
+          facilityId: this.selectedFacility._id, personId: auth.data.personId
+        }
     }).then(payload => {
       this.loginedUser = payload.data[0];
     });
@@ -101,8 +125,8 @@ export class AddVitalsComponent implements OnInit {
       temp: ['', []],
       height: ['', []],
       weight: ['', []],
-      spo2:['',[]],
-      girth:['',[]]
+      spo2: ['', []],
+      girth: ['', []]
       //bmi: ['', []]
     });
 
@@ -145,16 +169,93 @@ export class AddVitalsComponent implements OnInit {
         this.isWarning = false;
       }
     });
+
+    this.frmAddVitals.controls['pulseRate'].valueChanges.subscribe(value => {
+      if (value < 60) {
+        this.warningPulseRate.status = true;
+        this.warningPulseRate.message = 'Low';
+      } else if (value > 100) {
+        this.warningPulseRate.status = true;
+        this.warningPulseRate.message = 'High';
+      }else{
+        this.warningPulseRate.status = false;
+        this.warningPulseRate.message = 'Normal';
+      }
+    });
+
+    this.frmAddVitals.controls['temp'].valueChanges.subscribe(value => {
+      if (value < 36.2) {
+        this.warningTemp.status = true;
+        this.warningTemp.message = 'Low';
+      } else if (value > 37.2) {
+        this.warningTemp.status = true;
+        this.warningTemp.message = 'High';
+      }else{
+        this.warningTemp.status = false;
+        this.warningTemp.message = 'Normal';
+      }
+    });
+
+    this.frmAddVitals.controls['respiratoryRate'].valueChanges.subscribe(value => {
+      if (value < 12) {
+        this.warningResp.status = true;
+        this.warningResp.message = 'Low';
+      } else if (value > 20) {
+        this.warningResp.status = true;
+        this.warningResp.message = 'High';
+      }else{
+        this.warningResp.status = false;
+        this.warningResp.message = 'Normal';
+      }
+    });
+
+    this.frmAddVitals.controls['systolicBp1'].valueChanges.subscribe(value => {
+      if (value < 100) {
+        this.warningSys.status = true;
+        this.warningSys.message = 'Low';
+      } else if (value > 130) {
+        this.warningSys.status = true;
+        this.warningSys.message = 'High';
+      }else{
+        this.warningSys.status = false;
+        this.warningSys.message = 'Normal';
+      }
+    });
+
+    this.frmAddVitals.controls['diastolicBp1'].valueChanges.subscribe(value => {
+      if (value < 60) {
+        this.warningDia.status = true;
+        this.warningDia.message = 'Low';
+      } else if (value > 90) {
+        this.warningDia.status = true;
+        this.warningDia.message = 'High';
+      }else{
+        this.warningDia.status = false;
+        this.warningDia.message = 'Normal';
+      }
+    });
+    this.frmAddVitals.controls['spo2'].valueChanges.subscribe(value => {
+      if (value < 94) {
+        this.warningSpo.status = true;
+        this.warningSpo.message = 'Low';
+      } else if (value > 100) {
+        this.warningSpo.status = true;
+        this.warningSpo.message = 'High';
+      }else{
+        this.warningSpo.status = false;
+        this.warningSpo.message = 'Normal';
+      }
+    });
   }
 
 
   getPersonDocumentation() {
     this.documentationService.find({ query: { 'personId': this.patient.personId } }).subscribe((payload: any) => {
-     
+
       if (payload.data.length === 0) {
         this.patientDocumentation.personId = this.patient.personDetails;
         this.patientDocumentation.documentations = [];
-        this.documentationService.create(this.patientDocumentation).subscribe(pload => { 
+        this.documentationService.create(this.patientDocumentation).subscribe(pload => {
           this.patientDocumentation = pload;
         })
       } else {
@@ -163,9 +264,9 @@ export class AddVitalsComponent implements OnInit {
         } else {
           this.documentationService.find({
             query:
-            {
-              'personId': this.patient.personId, 'documentations.patientId': this.patient._id,
-            }
+              {
+                'personId': this.patient.personId, 'documentations.patientId': this.patient._id,
+              }
           }).subscribe((mload: any) => {
             if (mload.data.length > 0) {
               this.patientDocumentation = mload.data[0];
@@ -189,17 +290,17 @@ export class AddVitalsComponent implements OnInit {
   getVitalPosition() {
     this._vitalPositionService.findAll().then(payload => {
       this.vitalPosition = payload.data;
-    },error=>{});
+    }, error => { });
   }
   getVitalRythm() {
     this._vitalRythmService.findAll().then(payload => {
       this.vitalRythm = payload.data;
-    },error=>{});
+    }, error => { });
   }
   getVitalLocation() {
     this._vitaLocationService.findAll().then(payload => {
       this.vitalLocation = payload.data;
-    },error=>{});
+    }, error => { });
   }
 
   close_onClick() {
@@ -251,8 +352,8 @@ export class AddVitalsComponent implements OnInit {
         //this._notification('Success', 'Vitals saved successfully');
         this._systemModuleService.announceSweetProxy('Vitals saved successfully', 'success');
         this.refreshVitalsChanged.emit(payload);
-       
-      },error=>{
+
+      }, error => {
         //this._notification('Error', 'There was an error while saving the vitals');
         this._systemModuleService.announceSweetProxy('There was an error while saving the vitals', 'error');
         this.disableSaveBtn = false;
@@ -351,10 +452,10 @@ export class AddVitalsComponent implements OnInit {
   // }
 
   private _notification(type: string, text: string): void {
-		this._facilityService.announceNotification({
-			users: [this.user._id],
-			type: type,
-			text: text
-		});
-	}
+    this._facilityService.announceNotification({
+      users: [this.user._id],
+      type: type,
+      text: text
+    });
+  }
 }
