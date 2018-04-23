@@ -387,7 +387,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.networkContentArea = false;
       this.accessContentArea = true;
       // this.dashboardContentArea = false;
-    } else if(param.includes('facility/access')){
+    } else if (param.includes('facility/access')) {
       this.modulesContentArea = false;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
