@@ -2,23 +2,14 @@
     <div class="col-sm-8"></div>
     <div class="col-sm-4">
         <mat-form-field>
-            <mat-select placeholder="Select Duration">
-                <mat-option>1 Month</mat-option>
-                <mat-option>2 Month</mat-option>
-                <mat-option>1 Year</mat-option>
-                <mat-option>Life Time</mat-option>
+            <mat-select placeholder="Select Duration" [formControl]="dateOptionControl">
+                <mat-option [value]="item.counter" *ngFor="let item of dateOption">{{item.name}}</mat-option>
             </mat-select>
         </mat-form-field>
     </div>
 </div>
 <div style="padding: 10px; display: block;">
-        <canvas baseChart width="400" height="150"
-        [datasets]="lineChartData"
-        [labels]="lineChartLabels"
-        [options]="lineChartOptions"
-        [colors]="lineChartColors"
-        [legend]="lineChartLegend"
-        [chartType]="lineChartType"
-        (chartHover)="chartHovered($event)"
+    <canvas baseChart width="400" height="150" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+        [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
         (chartClick)="chartClicked($event)"></canvas>
 </div>

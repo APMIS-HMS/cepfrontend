@@ -4,12 +4,24 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class PendingBillService {
   private _socket;
+  private _socketSummary;
+  private _socketChartSummary;
   constructor(private _socketService: SocketService) {
     this._socket = _socketService.getService('pending-bills');
+    this._socketSummary= _socketService.getService('bill-summary-data');
+    this._socketChartSummary = _socketService.getService('payment-chart-data');
   }
 
   get(id: string, query: any) {
     return this._socket.get(id, query);
+  }
+
+  getDataSummary(id: string, query: any) {
+    return this._socketSummary.get(id, query);
+  }
+
+  getChartSummary(id: string, query: any) {
+    return this._socketChartSummary.get(id, query);
   }
 
 }

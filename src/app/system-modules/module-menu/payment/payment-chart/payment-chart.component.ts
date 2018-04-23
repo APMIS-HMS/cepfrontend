@@ -1,5 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-
+import { FormGroup, FormBuilder, Validators, FormControl, FormArray } from '@angular/forms';
+import {
+  FacilitiesService, BillingService, InvoiceService,
+  PendingBillService, TodayInvoiceService, LocSummaryCashService
+} from '../../../../services/facility-manager/setup/index';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import * as differenceInCalendarDays from "date-fns/difference_in_calendar_days";
 @Component({
   selector: 'app-payment-chart',
   templateUrl: './payment-chart.component.html',
@@ -7,67 +14,147 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PaymentChartComponent implements OnInit {
 
-  constructor() { }
+  selectedFacility: any = <any>{};
+  chartData: any = <any>{};
+  dateOptionControl = new FormControl();
+  dateOption = [
+    {
+      name: "30 Days",
+      counter: 30
+    },
+    {
+      name: "3 Months",
+      counter: 90
+    },
+    {
+      name: "6 Months",
+      counter: 180
+    },
+    {
+      name: "1 Year",
+      counter: 365
+    },
+    {
+      name: "2 Years",
+      counter: 730
+    },
+    {
+      name: "Life-time",
+      counter: 30
+    }
+  ]
+
+  constructor(
+    private facilityService: FacilitiesService,
+    private invoiceService: InvoiceService,
+    private _pendingBillService: PendingBillService,
+    private locker: CoolLocalStorage,
+    private systemModuleService: SystemModuleService) { }
 
   ngOnInit() {
+    this.selectedFacility = <any>this.locker.getObject('selectedFacility');
+    console.log(this.selectedFacility);
+    let currentDate = Date.now();
+    let lifeTimeDays = differenceInCalendarDays(this.selectedFacility.createdAt, currentDate);
+    this.dateOption[5].counter = lifeTimeDays;
+    this.dateOptionControl.setValue(30);
+    this._getPaymentSummaryChartData();
+
+    this.dateOptionControl.valueChanges
+      .debounceTime(400)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        this.lineChartData = [
+          { data: [0], label: '' }
+        ];
+        this._pendingBillService.getChartSummary(this.selectedFacility._id, {
+          query: {
+            days: value
+          }
+        }).then((payload: any) => {
+          this.systemModuleService.off();
+          this.loopChartData(payload);
+        }).catch(err => {
+          this.systemModuleService.off();
+        });
+      });
   }
 
-    // lineChart
-    public lineChartData:Array<any> = [
-      {data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A'},
-      {data: [28, 48, 40, 19, 86, 27, 90], label: 'Series B'},
-      {data: [18, 48, 77, 9, 100, 27, 40], label: 'Series C'}
-    ];
-    public lineChartLabels:Array<any> = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
-    public lineChartOptions:any = {
-      responsive: true
-    };
-    public lineChartColors:Array<any> = [
-      { // grey
-        backgroundColor: 'rgba(148,159,177,0.2)',
-        borderColor: 'rgba(148,159,177,1)',
-        pointBackgroundColor: 'rgba(148,159,177,1)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-      },
-      { // dark grey
-        backgroundColor: 'rgba(77,83,96,0.2)',
-        borderColor: 'rgba(77,83,96,1)',
-        pointBackgroundColor: 'rgba(77,83,96,1)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(77,83,96,1)'
-      },
-      { // grey
-        backgroundColor: 'rgba(148,159,177,0.2)',
-        borderColor: 'rgba(148,159,177,1)',
-        pointBackgroundColor: 'rgba(148,159,177,1)',
-        pointBorderColor: '#fff',
-        pointHoverBackgroundColor: '#fff',
-        pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+
+  private _getPaymentSummaryChartData() {
+    this.systemModuleService.on();
+    this._pendingBillService.getChartSummary(this.selectedFacility._id, {
+      query: {
+        days: 30
       }
-    ];
-    public lineChartLegend:boolean = true;
-    public lineChartType:string = 'line';
-   
-    public randomize():void {
-      let _lineChartData:Array<any> = new Array(this.lineChartData.length);
-      for (let i = 0; i < this.lineChartData.length; i++) {
-        _lineChartData[i] = {data: new Array(this.lineChartData[i].data.length), label: this.lineChartData[i].label};
-        for (let j = 0; j < this.lineChartData[i].data.length; j++) {
-          _lineChartData[i].data[j] = Math.floor((Math.random() * 100) + 1);
-        }
+    }).then((payload: any) => {
+      this.systemModuleService.off();
+      this.loopChartData(payload);
+    }).catch(err => {
+      this.systemModuleService.off();
+    });
+  }
+
+  public lineChartData: any[] = [
+    { data: [0], label: '' }
+  ];
+
+  public lineChartLabels: string[] = [];
+
+  public lineChartOptions: any = {
+    responsive: true
+  };
+  public lineChartColors: any[] = [
+    { // grey
+      backgroundColor: 'rgba(148,159,177,0.2)',
+      borderColor: 'rgba(148,159,177,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    },
+    { // dark grey
+      backgroundColor: 'rgba(77,83,96,0.2)',
+      borderColor: 'rgba(77,83,96,1)',
+      pointBackgroundColor: 'rgba(77,83,96,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(77,83,96,1)'
+    },
+    { // grey
+      backgroundColor: 'rgba(148,159,177,0.2)',
+      borderColor: 'rgba(148,159,177,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    }
+  ];
+  public lineChartLegend: boolean = true;
+  public lineChartType: string = 'line';
+
+  private loopChartData(chartData) {
+    if(chartData.lineChartData.length > 0){
+      this.lineChartData.splice(0, 1);
+    }
+    for (let index = 0; index < chartData.lineChartData.length; index++) {
+      this.lineChartData.push( { data: [], label: '' });
+    }
+    for (let i = 0; i < chartData.lineChartData.length; i++) {
+      this.lineChartData[i].label = chartData.lineChartData[i].label;
+      for (let index = 0; index < chartData.lineChartData[i].data.length; index++) {
+        this.lineChartData[i].data.push(chartData.lineChartData[i].data[index]);
       }
-      this.lineChartData = _lineChartData;
     }
-   
-    // events
-    public chartClicked(e:any):void {
-      console.log(e);
-    }
-   
-    public chartHovered(e:any):void {
-      console.log(e);
-    }
+    this.lineChartLabels = chartData.lineChartLabels;
+  }
+
+  // events
+  public chartClicked(e: any): void {
+    console.log(e);
+  }
+
+  public chartHovered(e: any): void {
+    console.log(e);
+  }
 }
