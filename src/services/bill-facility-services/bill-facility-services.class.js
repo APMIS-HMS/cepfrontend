@@ -211,7 +211,7 @@ function fixedGroupExisting(billGroups, results) {
         'total': total,
         'subTotal': subTotal,
         'discount': discount
-    }
+    };
     return _billGroups;
 }
 
