@@ -19,8 +19,8 @@ export class EditMedicationComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   addPrescriptionForm: FormGroup;
   apmisLookupQuery = {};
-  apmisLookupUrl = '';
-  apmisLookupDisplayKey = '';
+  apmisLookupUrl = 'drug-generic-list';
+  apmisLookupDisplayKey = 'name';
   apmisLookupText = '';
   currentDate: Date = new Date();
   minDate: Date = new Date();
@@ -52,8 +52,8 @@ export class EditMedicationComponent implements OnInit {
     this.selectedDuration = DurationUnits[1].name;
 
     this.addPrescriptionForm = this.fb.group({
-      strength: ['', [<any>Validators.required]],
-      route: ['', [<any>Validators.required]],
+      // strength: ['', [<any>Validators.required]],
+      // route: ['', [<any>Validators.required]],
       drug: ['', [<any>Validators.required]],
       frequency: ['', [<any>Validators.required]],
       duration: [0, [<any>Validators.required]],
@@ -62,8 +62,6 @@ export class EditMedicationComponent implements OnInit {
       startDate: [this.currentDate],
       specialInstruction: ['']
     });
-    this.apmisLookupUrl = 'drug-generic-list';
-    this.apmisLookupDisplayKey = 'details';
 
     this.addPrescriptionForm.controls['drug'].valueChanges.subscribe(value => {
       this.apmisLookupQuery = {
@@ -75,19 +73,19 @@ export class EditMedicationComponent implements OnInit {
     });
 
     this._getAllFrequencies();
-    this._getAllRoutes();
+    // this._getAllRoutes();
   }
 
   onClickAddMedication(valid: boolean, value: any) {
     if (valid) {
       const medication = {
         genericName: value.drug,
-        routeName: value.route,
+        // routeName: value.route,
+        // strength: value.strength,
         frequency: value.frequency,
         duration: value.duration,
         durationUnit: value.durationUnit,
         startDate: value.startDate,
-        strength: value.strength,
         patientInstruction: value.specialInstruction,
         refillCount: value.refillCount,
         ingredients: this.selectedIngredients,
@@ -95,6 +93,12 @@ export class EditMedicationComponent implements OnInit {
         comment: '',
         status: 'Not Started',
         completed: false,
+        cost: 0,
+        totalCost: 0,
+        isExternal: false,
+        initiateBill: false,
+        isBilled: false,
+        isDispensed: false,
       };
 
       this.medications.push(medication);
@@ -109,41 +113,42 @@ export class EditMedicationComponent implements OnInit {
   }
 
   apmisLookupHandleSelectedItem(item) {
-    this.apmisLookupText = item.details;
+    this.apmisLookupText = item;
+    this.addPrescriptionForm.controls['drug'].setValue(item.name);
     // this._drugDetailsApi.find({ query: { productId: item.productId } }).then(res => {
-    this._drugListApi.find({ query: { method: 'drug-details', 'productId': item.productId } }).then(res => {
-        const sRes = res.data;
-        if (res.status === 'success') {
-          if (!!sRes.ingredients && sRes.ingredients.length > 0) {
-            this.selectedForm = sRes.form;
-            this.selectedIngredients = sRes.ingredients;
-            let drugName: string = sRes.form + ' ';
-            let strength = '';
-            const ingredientLength: number = sRes.ingredients.length;
-            let index = 0;
-            sRes.ingredients.forEach(element => {
-              index++;
-              drugName += element.name;
-              strength += element.strength + element.strengthUnit;
+    // this._drugListApi.find({ query: { method: 'drug-details', 'productId': item.productId } }).then(res => {
+    //     const sRes = res.data;
+    //     if (res.status === 'success') {
+    //       if (!!sRes.ingredients && sRes.ingredients.length > 0) {
+    //         this.selectedForm = sRes.form;
+    //         this.selectedIngredients = sRes.ingredients;
+    //         let drugName: string = sRes.form + ' ';
+    //         let strength = '';
+    //         const ingredientLength: number = sRes.ingredients.length;
+    //         let index = 0;
+    //         sRes.ingredients.forEach(element => {
+    //           index++;
+    //           drugName += element.name;
+    //           strength += element.strength + element.strengthUnit;
 
-              if (index !== ingredientLength) {
-                drugName += '/';
-                strength += '/';
-              }
-            });
-            this.addPrescriptionForm.controls['drug'].setValue(drugName);
-            this.addPrescriptionForm.controls['strength'].setValue(strength);
-            this.addPrescriptionForm.controls['route'].setValue(sRes.route);
-          }
-        }
-      }).catch(err => console.error(err));
+    //           if (index !== ingredientLength) {
+    //             drugName += '/';
+    //             strength += '/';
+    //           }
+    //         });
+    //         this.addPrescriptionForm.controls['drug'].setValue(drugName);
+    //         this.addPrescriptionForm.controls['strength'].setValue(strength);
+    //         this.addPrescriptionForm.controls['route'].setValue(sRes.route);
+    //       }
+    //     }
+    //   }).catch(err => console.error(err));
   }
 
-  private _getAllRoutes() {
-    this._routeService.findAll().then(res => {
-        this.routes = res.data;
-      }).catch(err => console.error(err));
-  }
+  // private _getAllRoutes() {
+  //   this._routeService.findAll().then(res => {
+  //       this.routes = res.data;
+  //     }).catch(err => console.error(err));
+  // }
 
   private _getAllFrequencies() {
     this._frequencyService.findAll().then(res => {

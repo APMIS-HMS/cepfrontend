@@ -1,29 +1,33 @@
 @import "../../../patient-manager/patientmanager-detailpage/documentation/documentation.component.scss";
+.modal-baseWrap {
+    padding: 10px 10px;
+}
 
-// .modal-baseWrap {
-//     width: 80%;
-// }
-.cont-wrap{
+.cont-wrap {
     width: 100%;
     height: auto;
     max-height: 95%;
     // overflow-y: auto;
 }
-.docCard-header{
+
+.docCard-header {
     margin: 20px 0;
     margin-top: 3px;
 }
+
 .docCard-ctaWrap {
     top: -13px;
     bottom: auto;
 }
+
 .sect-1 {
     width: 100%;
     display: flex;
     justify-content: space-between;
 }
+
 .patientImg-wrap {
-    width: 29%;
+    width: 20%;
     border: 0.5px solid #eee;
     padding: 20px;
     box-sizing: border-box;
@@ -32,49 +36,60 @@
     align-items: center;
     background: #eee;
 }
-.patientImg-wrap img{
+
+.patientImg-wrap img {
     width: 100%;
 }
-.sect1-content{
-    width: 70%;
+
+.sect1-content {
+    width: 80%;
     display: flex;
     justify-content: space-between;
 }
-.sect-inner{
+
+.sect-inner {
     width: 47%;
     margin: 10px auto;
 }
+
 .txt-wrap {
     width: 100%;
     display: flex;
     justify-content: space-between;
-    align-items: center;margin-bottom: 15px;
+    align-items: center;
+    margin-bottom: 15px;
 }
-.txt-innerWrap{
+
+.txt-innerWrap {
     width: 50%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.txt-label{
+
+.txt-label {
     font-size: 1.4rem;
     font-family: "Josefin Sans", sans-serif;
     color: #8e8e8e;
     width: 30%;
 }
-.txt-val, .checka{
+
+.txt-val,
+.checka {
     font-size: 1.2rem;
     line-height: 1.5;
     color: #333;
     width: 69%;
 }
-.txt-val{
-    max-height: 100px;
-    overflow-y: auto;
-}
-.txt-val i{
+
+// .txt-val {
+//     max-height: 100px;
+//     overflow-y: auto;
+// }
+.txt-val i {
     color: #0288D1;
 }
+
 .lab-btn {
     font-size: 1.2rem;
     border: 1px solid #03A9F4;
@@ -84,14 +99,17 @@
     width: 138px;
     margin: 0 auto;
 }
+
 .lab-btn:hover {
     background: #03A9F4;
     color: #000;
 }
-.lab-btn i{
+
+.lab-btn i {
     color: #333;
     padding-right: 10px;
 }
+
 .pre-sects {
     width: 100%;
     display: flex;
@@ -102,53 +120,65 @@
     padding: 10px;
     box-sizing: border-box;
 }
-.status{
+
+.status {
     color: #ff2500;
 }
+
 .date {
     color: #8e8e8e;
 }
-.empWrap{
+
+.empWrap {
     justify-content: flex-start;
 }
-.hasBg{
+
+.hasBg {
     border: 1px solid #eee;
     padding: 2px 20px;
     padding-bottom: 10px;
     box-sizing: border-box;
     border-radius: 10px;
 }
-button, input{
+
+button,
+input {
     font-size: 1.2rem;
 }
-button{
+
+button {
     color: #777;
 }
-.action-item{
+
+.action-item {
     border: 1px solid #777;
     font-size: 1.2rem;
     width: 120px;
     text-align: center;
     // margin: 0 auto;
 }
+
 .input-tag {
     position: absolute;
     top: -10px;
     color: #0288D1;
     font-size: 1.2rem;
 }
+
 .payment {
     color: #0288D1;
     border: 1px solid #fff;
     padding: 2px 10px;
     box-sizing: border-box;
 }
+
 .sampleNotTaken {
     font-size: 1.2rem;
     font-style: italic;
     padding-right: 5px;
     color: #0288D1;
 }
+
 .uploadeds {
     width: 100%;
     display: flex;
@@ -162,6 +192,7 @@ button{
     overflow: hidden;
     overflow-y: auto;
 }
+
 .uploaded {
     font-family: "Josefin Sans", sans-serif;
     text-align: center;
@@ -172,14 +203,17 @@ button{
     cursor: pointer;
     margin: 5px;
 }
-.uploaded:hover{
+
+.uploaded:hover {
     background: #eee;
     color: #333;
 }
-.uploaded i{
+
+.uploaded i {
     font-size: 2.8rem;
 }
-.upload-label{
+
+.upload-label {
     font-size: 1.2rem;
     margin-top: 10px;
 }

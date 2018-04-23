@@ -62,8 +62,8 @@ export class PatientPrescriptionComponent implements OnInit {
     currMedLoading = false;
     pastMedLoading = false;
     apmisLookupQuery = {};
-    apmisLookupUrl = '';
-    apmisLookupDisplayKey = '';
+    apmisLookupUrl = 'drug-generic-list';
+    apmisLookupDisplayKey = 'name';
     authorizeRx = true;
     authorizingRx = false;
     disableAuthorizeRx = false;
@@ -96,13 +96,13 @@ export class PatientPrescriptionComponent implements OnInit {
         // this.employeeDetails = this._locker.getObject('loginEmployee');
         this._authFacadeService.getLogingEmployee().then(res => {
           this.employeeDetails = res;
-        }).catch(err => console.log(err));
+        }).catch(err => {});
 
         this.prescriptionItems.prescriptionItems = [];
         this.durationUnits = DurationUnits;
         this.selectedValue = DurationUnits[1].name;
         this._getAllPriorities();
-        this._getAllRoutes();
+        // this._getAllRoutes();
         this._getAllFrequencies();
 
         this.allPrescriptionsForm = this.fb.group({
@@ -110,8 +110,8 @@ export class PatientPrescriptionComponent implements OnInit {
         });
 
         this.addPrescriptionForm = this.fb.group({
-            strength: ['', [<any>Validators.required]],
-            route: ['', [<any>Validators.required]],
+            // strength: ['', [<any>Validators.required]],
+            // route: ['', [<any>Validators.required]],
             drug: ['', [<any>Validators.required]],
             frequency: ['', [<any>Validators.required]],
             duration: [0, [<any>Validators.required]],
@@ -120,8 +120,6 @@ export class PatientPrescriptionComponent implements OnInit {
             startDate: [this.currentDate],
             specialInstruction: ['']
         });
-        this.apmisLookupUrl = 'drug-generic-list';
-        this.apmisLookupDisplayKey = 'details';
 
         this.addPrescriptionForm.controls['drug'].valueChanges.subscribe(value => {
             this.apmisLookupQuery = {
@@ -134,33 +132,34 @@ export class PatientPrescriptionComponent implements OnInit {
     }
 
     apmisLookupHandleSelectedItem(item) {
-        this.apmisLookupText = item.details;
-        this._drugListApi.find({ query: { method: 'drug-details', 'productId': item.productId } }).then(res => {
-            let sRes = res.data;
-            if (res.status === 'success') {
-                if (!!sRes.ingredients && sRes.ingredients.length > 0) {
-                    this.selectedForm = sRes.form;
-                    this.selectedIngredients = sRes.ingredients;
-                    let drugName: string = sRes.form + ' ';
-                    let strength = '';
-                    const ingredientLength: number = sRes.ingredients.length;
-                    let index = 0;
-                    sRes.ingredients.forEach(element => {
-                        index++;
-                        drugName += element.name;
-                        strength += element.strength + element.strengthUnit;
+        this.apmisLookupText = item;
+        this.addPrescriptionForm.controls['drug'].setValue(item.name);
+        // this._drugListApi.find({ query: { method: 'drug-details', 'productId': item.productId } }).then(res => {
+        //     let sRes = res.data;
+        //     if (res.status === 'success') {
+        //         if (!!sRes.ingredients && sRes.ingredients.length > 0) {
+        //             this.selectedForm = sRes.form;
+        //             this.selectedIngredients = sRes.ingredients;
+        //             let drugName: string = sRes.form + ' ';
+        //             let strength = '';
+        //             const ingredientLength: number = sRes.ingredients.length;
+        //             let index = 0;
+        //             sRes.ingredients.forEach(element => {
+        //                 index++;
+        //                 drugName += element.name;
+        //                 strength += element.strength + element.strengthUnit;
 
-                        if (index !== ingredientLength) {
-                            drugName += '/';
-                            strength += '/';
-                        }
-                    });
-                    this.addPrescriptionForm.controls['drug'].setValue(drugName);
-                    this.addPrescriptionForm.controls['strength'].setValue(strength);
-                    this.addPrescriptionForm.controls['route'].setValue(sRes.route);
-                }
-            }
-        }).catch(err => console.error(err));
+        //                 if (index !== ingredientLength) {
+        //                     drugName += '/';
+        //                     strength += '/';
+        //                 }
+        //             });
+        //             this.addPrescriptionForm.controls['drug'].setValue(drugName);
+        //             this.addPrescriptionForm.controls['strength'].setValue(strength);
+        //             this.addPrescriptionForm.controls['route'].setValue(sRes.route);
+        //         }
+        //     }
+        // }).catch(err => console.error(err));
     }
 
     onClickAddPrescription(value: any, valid: boolean) {
@@ -239,7 +238,7 @@ export class PatientPrescriptionComponent implements OnInit {
 
             this._prescriptionService.authorizePresciption(this.prescriptions).then(res => {
               if (res.status === 'success') {
-                this._systemModuleService.announceSweetProxy('Prescription has been sent successfully!', 'success', null, null, null, null, null, null, null);
+                this._systemModuleService.announceSweetProxy('Prescription has been sent successfully!', 'success');
                 this.isDispensed.next(true);
                 this.prescriptionItems = <Prescription>{};
                 this.prescriptionItems.prescriptionItems = [];
@@ -249,7 +248,7 @@ export class PatientPrescriptionComponent implements OnInit {
                 this.addPrescriptionForm.controls['duration'].reset(0);
                 this.addPrescriptionForm.controls['startDate'].reset(new Date());
                 this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
-                this.disableAuthorizeRx = true;
+                this.disableAuthorizeRx = false;
                 this.authorizeRx = true;
                 this.authorizingRx = false;
               } else {
@@ -351,11 +350,11 @@ export class PatientPrescriptionComponent implements OnInit {
         }).catch(err =>  console.error(err));
     }
 
-    private _getAllRoutes() {
-        this._routeService.findAll().then(res => {
-            this.routes = res.data;
-        }).catch(err => console.error(err));
-    }
+    // private _getAllRoutes() {
+    //     this._routeService.findAll().then(res => {
+    //         this.routes = res.data;
+    //     }).catch(err => console.error(err));
+    // }
 
     private _getAllFrequencies() {
         this._frequencyService.findAll().then(res => {
@@ -394,23 +393,23 @@ export class PatientPrescriptionComponent implements OnInit {
         }
     }
 
-    private _sendPrescription(data: Prescription): void {
-        this._prescriptionService.create(data).then(res => {
-            this._notification('Success', 'Prescription has been sent!');
-            this.isDispensed.next(true);
-            this.prescriptionItems = <Prescription>{};
-            this.prescriptionItems.prescriptionItems = [];
-            this.prescriptionArray = [];
-            this.addPrescriptionForm.reset();
-            this.addPrescriptionForm.controls['refillCount'].reset(0);
-            this.addPrescriptionForm.controls['duration'].reset(0);
-            this.addPrescriptionForm.controls['startDate'].reset(new Date());
-            this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
-            this.disableAuthorizeRx = true;
-        }).catch(err => {
-            this._notification('Error', 'There was an error creating prescription. Please try again later.');
-        });
-    }
+    // private _sendPrescription(data: Prescription): void {
+    //     this._prescriptionService.create(data).then(res => {
+    //         this._notification('Success', 'Prescription has been sent!');
+    //         this.isDispensed.next(true);
+    //         this.prescriptionItems = <Prescription>{};
+    //         this.prescriptionItems.prescriptionItems = [];
+    //         this.prescriptionArray = [];
+    //         this.addPrescriptionForm.reset();
+    //         this.addPrescriptionForm.controls['refillCount'].reset(0);
+    //         this.addPrescriptionForm.controls['duration'].reset(0);
+    //         this.addPrescriptionForm.controls['startDate'].reset(new Date());
+    //         this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
+    //         this.disableAuthorizeRx = true;
+    //     }).catch(err => {
+    //         this._notification('Error', 'There was an error creating prescription. Please try again later.');
+    //     });
+    // }
 
     private _notification(type: string, text: string): void {
         this._facilityService.announceNotification({

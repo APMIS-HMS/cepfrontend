@@ -55,17 +55,11 @@
             </div>
             <div class="card-list-item" *ngFor="let appointment of filteredAppointments; let i = index">
                 <div class="row">
-                    <div class="table-list col-xs-2">
+                    <div  title="Reason for Vist: {{appointment.appointmentReason == NULL ? 'None' : appointment.appointmentReason }}" class="table-list tooltip col-xs-2">
                         {{appointment.patientDetails.personDetails.lastName}} {{appointment.patientDetails.personDetails.firstName}}
                     </div>
                     <div class="table-list col-xs-2">
-                        {{appointment.startDate | date:'shortDate'}} 
-                        <div *ngIf="appointment.appointmentReason !== null">
-                            <hr>
-                            <h3>Reason for Visit</h3>
-                            {{appointment.appointmentReason}}
-                        </div>
-                        
+                        {{appointment.startDate | date:'shortDate'}}                        
                     </div>
                     <div class="table-list col-xs-1">{{appointment.startDate | date:'shortTime'}}</div>
                     <div class="table-list col-xs-2">{{appointment.clinicId}}</div>

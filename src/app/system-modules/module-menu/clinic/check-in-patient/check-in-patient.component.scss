@@ -25,7 +25,8 @@ span.timeLabel {
     padding-right: 5px;
     font-style: italic;
 }
-div.timeLabel{
+
+div.timeLabel {
     border-top: solid 2px #aaa;
     padding-top: 10px;
 }
@@ -171,16 +172,23 @@ div.timeLabel{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 60px;
-    height: 60px;
     overflow: hidden;
     border-radius: 100%;
     border: 10px solid #eee;
     background: #eee;
 }
 
+.list-img {
+    width: 20px;
+    height: 20px;
+    img {
+        width: 100%;
+    }
+}
+
 .timelinePatient-imgWrap img {
-    width: 100%;
+    width: 20px;
+    height: 20px;
 }
 
 .timeline-headwrap {
@@ -290,7 +298,8 @@ div.timeLabel{
         opacity: 0;
         transition: all 0.4s;
         font-size: 1.2rem !important;
-        margin-left: -120px;
+        // margin-left: -120px;
+        margin-top: 40px;
         display: block;
         padding: 10px;
         content: attr(title);
@@ -298,12 +307,14 @@ div.timeLabel{
         border-radius: 5px;
         color: #fff;
         min-width: 65px;
-        text-align: center;
+        text-align: left;
+        position: absolute;
+        max-width: 200px;
     }
     &:hover {
         &:after {
             opacity: 1;
-            margin-left: -100px;
+            // margin-left: -100px;
         }
     }
 }

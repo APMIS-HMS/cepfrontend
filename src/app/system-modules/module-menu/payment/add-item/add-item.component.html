@@ -19,9 +19,9 @@
           <mat-input-container class="example-full-width">
               <input matInput mat-error placeholder="Item" formControlName="itemName">
           </mat-input-container>
-          <div class="suggestionFeeds">
+          <div class="suggestionFeeds" *ngIf = "isCollapse">
             <div class="suggestedItem" *ngFor="let service of services">
-              <div (click)="onSelectService(service)" class="suggetedName">{{service.service}}</div>
+              <button (click)="onSelectService(service)" class="suggetedName">{{service.service}}</button>
             </div>
           </div>
         </div>
@@ -34,7 +34,7 @@
 
         <div class="frm-item-wrap">
           <mat-input-container>
-              <input matInput mat-error currencyMask [options]="{ prefix: '&#8358; '}" formControlName="unitPrice" placeholder="Unit Price">
+              <input type="number" matInput mat-error formControlName="unitPrice" placeholder="Unit Price" min="0">
           </mat-input-container>
         </div>
 
@@ -46,7 +46,7 @@
 
         <div class="frm-item-wrap">
           <mat-input-container>
-              <input matInput mat-error currencyMask [options]="{ prefix: '&#8358; '}" formControlName="amount" placeholder="Amount">
+              <input type="number" matInput mat-error formControlName="amount" placeholder="Amount" min="0">
           </mat-input-container>
         </div>
 

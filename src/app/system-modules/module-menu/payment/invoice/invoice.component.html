@@ -98,7 +98,8 @@
                             <span>INVOICE TO</span>
                             <div class="clientName">{{selectedPatient?.personDetails?.lastName}} {{selectedPatient?.personDetails?.firstName}}</div>
                             <div class="clientAddress">
-                                <div>{{selectedPatient?.personDetails?.homeAddress?.street}}, {{selectedPatient?.personDetails?.homeAddress?.city}} {{selectedPatient?.personDetails?.homeAddress?.state}}, {{selectedPatient?.personDetails?.homeAddress?.country}}</div>
+                                <div>{{selectedPatient?.personDetails?.homeAddress?.street}}, {{selectedPatient?.personDetails?.homeAddress?.city}}
+                                    {{selectedPatient?.personDetails?.homeAddress?.state}}, {{selectedPatient?.personDetails?.homeAddress?.country}}</div>
                                 <div>{{selectedPatient?.personDetails?.email}}</div>
                                 <div>{{selectedPatient?.personDetails?.primaryContactPhoneNo}}</div>
                             </div>
@@ -217,7 +218,7 @@
                             <div class="pending-title">Pending Invoices</div>
                             <div class="search-wrap">
                                 <mat-input-container>
-                                    <input matInput placeholder="search for Invoices" [formControl]="searchOtherPendingInvoice">
+                                    <input matInput placeholder="Search for Invoices" [formControl]="searchOtherPendingInvoice">
                                 </mat-input-container>
                             </div>
                         </div>
@@ -227,16 +228,17 @@
                             </div>
                             <div [hidden]="otherInvoiceGroups.length==0">
                                 <div class="empWrap" *ngFor="let otherInvoice of otherInvoiceGroups" (click)="onSelectedOtherPatientInvoice(otherInvoice)">
-                                    <div class="list-img">
+                                    <!-- <div class="list-img">
                                         <img *ngIf="otherInvoice?.personDetails.profileImageObject != undefined" [src]="facilityService.transform(otherInvoice?.personDetails.profileImageObject.thumbnail)">
                                         <img *ngIf="otherInvoice?.personDetails.profileImageObject == undefined" src="assets/images/logos/default.png">
-                                    </div>
+                                    </div> -->
                                     <div class="list-labels">
-                                        <div class="pending-name">{{otherInvoice.personDetails.firstName}} {{otherInvoice.personDetails.lastName}}</div>
+                                        <div class="pending-name">{{otherInvoice?.invoiceNo}}</div>
+                                        <div class="pending-date">{{otherInvoice?.patientObject?.personDetails?.firstName}} {{otherInvoice?.patientObject?.personDetails?.lastName}}</div>
                                         <div class="oda">
-                                            <div class="pending-date">{{otherInvoice.updatedAt | date :'medium'}}</div>
-                                            <div class="pending-amount" *ngIf="otherInvoice.totalPrice!=0">
-                                                <span>&#x20a6;</span>{{otherInvoice.balance|numberThr}}</div>
+                                            <div class="pending-date">{{otherInvoice?.updatedAt|date:'medium'}}</div>
+                                            <div class="pending-amount">
+                                                <span>&#x20a6;</span>{{otherInvoice?.balance|numberThr}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -267,6 +269,6 @@
     </div>
 
     <div *ngIf="makePaymentPopup" class="modal-overlay">
-        <app-make-payment (closeModal)="close_onClick($event)" (personValueChanged)="onPersonValueUpdated($event)" [cost]="selectedInvoiceGroup.balance" [selectedPatient]="selectedPatient" [invoice]="selectedInvoiceGroup" [isInvoicePage]="true" id="form-modal"
-            class="form-modal center-center"></app-make-payment>
+        <app-make-payment (closeModal)="close_onClick($event)" (personValueChanged)="onPersonValueUpdated($event)" [cost]="selectedInvoiceGroup.balance"
+            [selectedPatient]="selectedPatient" [invoice]="selectedInvoiceGroup" [isInvoicePage]="true" id="form-modal" class="form-modal center-center"></app-make-payment>
     </div>

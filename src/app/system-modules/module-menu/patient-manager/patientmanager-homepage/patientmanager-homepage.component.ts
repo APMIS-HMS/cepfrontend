@@ -180,8 +180,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
     this.filteredHmos = this.hmoPlanId.valueChanges
       .pipe(
-        startWith(''),
-        map((hmo: any) => hmo ? this.filterHmos(hmo) : this.hmos.slice())
+      startWith(''),
+      map((hmo: any) => hmo ? this.filterHmos(hmo) : this.hmos.slice())
       );
 
     this.filteredccs = this.ccPlanId.valueChanges.pipe(
@@ -739,7 +739,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
               const fil = bene.filter(x => x.filNo === this.insuranceId.value);
 
               if (fil.length > 0) {
-                if (fil[0].status === false) {
+                if (fil[0].status.toLowerCase() !== "active") {
                   this.systemService.off();
                   this.loading = false;
                   const text = 'Insurance Id does not have an active status for the selected HMO';
@@ -788,15 +788,63 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       }).catch(err => { });
 
     } else if (this.tabCompany === true) {
-      data.push({
-        planType: cover,
-        isDefault: Boolean(this.isDefault.value),
-        planDetails: {
-          companyId: this.ccPlanId.value._id,
-          principalId: this.employeeId.value
+      this.companyCoverService.find({
+        query: {
+          'facilityId._id': this.facility._id
         }
-      });
-      this.UpdatePaymentPlan(data);
+      }).then(payload => {
+        const companyCover = payload.data[0];
+        const index = companyCover.companyCovers.findIndex(x => x.company === this.ccPlanId.value._id);
+        if (index > -1) {
+          if (companyCover.companyCovers[index].enrolleeList.length > 0) {
+            const bene = [];
+            for (let s = 0; s < companyCover.companyCovers[index].enrolleeList.length; s++) {
+              const company = companyCover.companyCovers[index].company
+              bene.push(...companyCover.companyCovers[index].enrolleeList[s].enrollees);
+            }
+            const fil = bene.filter(x => x.filNo === this.employeeId.value);
+            if (fil.length > 0) {
+              console.log(fil[0]);
+              if (fil[0].status.toLowerCase() !== "active") {
+                this.systemService.off();
+                const text = 'Employee Id does not have an active status for the selected Company';
+                this.errMsg = text;
+                this.mainErr = false;
+                this.systemService
+                  .announceSweetProxy(text, 'error');
+              } else {
+                if (fil[0].firstname !== this.patient.personDetails.firstName || fil[0].surname !== this.patient.personDetails.lastName) {
+                  this.systemService.off();
+                  const text = 'Employee Id does not have an active status for the selected Company';
+                  this.errMsg = text;
+                  this.mainErr = false;
+                  this.systemService
+                    .announceSweetProxy(text, 'error');
+                }else {
+                  this.systemService.off();
+                  data.push({
+                    planType: cover,
+                    bearerPersonId: this.patient.personDetails._id,
+                    isDefault: Boolean(this.isDefault.value),
+                    planDetails: {
+                      companyId: this.ccPlanId.value._id,
+                      principalId: this.employeeId.value
+                    }
+                  });
+                  this.UpdatePaymentPlan(data);
+                }
+              }
+            } else {
+              this.systemService.off();
+              const text = 'Employee Id does not exist for the selected Company';
+              this.errMsg = text;
+              this.mainErr = false;
+              this.systemService
+                .announceSweetProxy(text, 'error');
+            }
+          }
+        }
+      })
     } else if (this.tabFamily === true) {
       this.familyClientId = this.faFileNo.value;
       this.familyCoverService.find({ query: { 'facilityId': this.facility._id } }).then(payload => {
