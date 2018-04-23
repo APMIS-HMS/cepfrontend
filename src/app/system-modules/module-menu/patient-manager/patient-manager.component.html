@@ -6,8 +6,16 @@
             <li [class.navActive]="homeContentArea" (click)="HomeContentArea_show()"><i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</li>
         </ul>
         <div class="searchInputWrap row">
-                <input [formControl]="searchControl" type="search" autofocus class="searchInput col-xs-4 mr-4" placeholder="Search Patients">
-                <input [formControl]="searchTagsControl" type="search" autofocus class="searchInput col-xs-4" placeholder="Search Patients using tags">
+            <mat-form-field class="col-xs-4">
+                <mat-select [formControl]="searchCriteria">
+                    <mat-option value="Patient">By Patient</mat-option>
+                    <mat-option value="Tags">By Tags</mat-option>
+                </mat-select>
+            </mat-form-field>
+            <input [formControl]="searchControl" type="search" autofocus class="searchInput col-xs-8 mr-4" placeholder="Search {{searchCriteria.value}}">
+            <!-- <input [formControl]="searchTagsControl" type="search" autofocus class="searchInput col-xs-4" placeholder="Search Patients using tags"> -->
+
+
             <!-- <md-input-container class="example-full-width">
                 <input matInput placeholder="Search" [formControl]="searchControl" type="search" autofocus>
             </md-input-container> -->
@@ -30,7 +38,8 @@
     </div>
 
     <div class="inner-page-wrap">
-        <app-patientmanager-homepage [searchEmpty]="searchEmpty" [searchedPatients]="searchedPatients" [resetData]="resetData" (resetDataNew)="resetDataLoader($event)" (empDetail)="empDetailShow($event)" (pageInView)="pageInViewLoader($event)" *ngIf="homeContentArea" class="fullwidth"></app-patientmanager-homepage>
+        <app-patientmanager-homepage [searchEmpty]="searchEmpty" [searchedPatients]="searchedPatients" [resetData]="resetData" (resetDataNew)="resetDataLoader($event)" (empDetail)="empDetailShow($event)" (pageInView)="pageInViewLoader($event)" *ngIf="homeContentArea"
+            class="fullwidth"></app-patientmanager-homepage>
         <!-- <app-patientmanager-detailpage [patient]="patient" *ngIf="employeeDetailArea" class="fullwidth"></app-patientmanager-detailpage>  -->
         <div *ngIf="newEmp" class="modal-overlay">
             <app-new-patient (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-patient>
