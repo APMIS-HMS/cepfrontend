@@ -35,7 +35,6 @@ class Service {
       };
       billGroup.facilityId = data.facilityId;
       billGroup.patientId = data.patientId;
-      console.log(data.billGroups);
       data.billGroups.forEach((itemg, g) => {
         itemg.bills.forEach((itemb, b) => {
           if (itemb.isChecked) {
@@ -85,7 +84,6 @@ class Service {
           for (var x2 = len2; x2 >= 0; x2--) {
             let len3 = data.listedBillItems[x2].billItems.length - 1;
             for (var x3 = len3; x3 >= 0; x3--) {
-              console.log(data.listedBillItems[x2].billItems[x3]._id.toString(), data.inputedValue.paymentTxn[x].toString());
               if (data.listedBillItems[x2].billItems[x3].serviceId.toString() === data.inputedValue.paymentTxn[x].facilityServiceObject.serviceId.toString()) {
                 data.listedBillItems[x2].billItems[x3].isInvoiceGenerated = true;
                 if (data.inputedValue.balance == 0 || data.inputedValue.isWaved == true) {
@@ -95,7 +93,6 @@ class Service {
                   data.listedBillItems[x2].billItems[x3].paymentCompleted = true;
                 }
                 data.listedBillItems[x2].billItems[x3].isServiceEnjoyed = true;
-                console.log(data.listedBillItems[x2]);
                 filterCheckedBills.push(data.listedBillItems[x2]);
               }
             }
@@ -104,7 +101,6 @@ class Service {
         let len4 = filterCheckedBills.length;
         let pds = [];
         for (let _indx = 0; _indx < len4; _indx++) {
-          console.log(filterCheckedBills[_indx]._id.toString());
           const pd = await billingsService.patch(filterCheckedBills[_indx]._id, {
             billItems: filterCheckedBills[_indx].billItems
           });
@@ -140,24 +136,16 @@ class Service {
       if (data.inputedValue.isWaved == true) {
         data.invoice.paymentStatus = 'WAIVED';
       }
-      console.log("A");
       let invLen = data.invoice.billingIds.length - 1;
-      console.log("B");
       for (let v = invLen; v >= 0; v--) {
-        console.log("C");
         data.invoice.billingIds[v].billObject.isServiceEnjoyed = true;
         data.invoice.billingIds[v].billObject.balance = data.inputedValue.balance;
-        console.log("D");
         if (data.inputedValue.balance == 0 || data.inputedValue.isWaved == true) {
-          console.log("E");
           data.invoice.billingIds[v].billObject.isServiceEnjoyed = true;
         }
-        console.log("F");
         if (data.inputedValue.balance == 0) {
-          console.log("H");
           data.invoice.billingIds[v].billObject.paymentCompleted = true;
         }
-        console.log("I");
         description += data.invoice.billingIds[v].billObject.facilityServiceObject.category + ' - ' + data.invoice.billingIds[v].billObject.facilityServiceObject.service;
       }
 
@@ -166,7 +154,6 @@ class Service {
       data.invoice.payments.forEach(element=>{
         element.isItemTxnClosed = true;
       });
-      console.log(data.invoice.payments);
       if(data.invoice.payments.length>0){
         data.invoice.payments.push.apply(data.invoice.payments,data.inputedValue.paymentTxn);
       }
@@ -179,38 +166,25 @@ class Service {
       });
       let len5 = patechedInvoice.billingIds.length - 1;
       let itemBill = {};
-      console.log(40);
       for (let m = len5; m >= 0; m--) {
-        console.log(41);
         itemBill = await billingsService.get(patechedInvoice.billingIds[m].billModelId, {});
-        console.log(42);
         let len6 = itemBill.billItems.length - 1;
-        console.log(43);
         for (let n = len6; n >= 0; n--) {
-          console.log(44);
-          console.log(patechedInvoice.billingIds[m].billObject.serviceId.toString());
-          console.log(itemBill.billItems[n].serviceId.toString());
           if (itemBill.billItems[n].serviceId.toString() === patechedInvoice.billingIds[m].billObject.serviceId.toString()) {
-            console.log(45);
             if (data.inputedValue.balance === 0 || data.inputedValue.isWaved === true) {
               itemBill.billItems[n].isServiceEnjoyed = true;
             }
-            console.log(46);
             if (data.inputedValue.balance === 0) {
               itemBill.billItems[n].paymentCompleted = true;
             }
             itemBill.billItems[n].isServiceEnjoyed = true;
-            console.log(47);
           }
         }
-        console.log(48);
         await billingsService.patch(itemBill._id, {
           billItems: itemBill.billItems
         });
-        console.log(49);
       }
       if (data.inputedValue.isWaved !== true) {
-        console.log(48);
         data.currentInvoice = patechedInvoice;
         return onDebitWallet(data, description, ref, facilitiesService, peopleService, PaymentPlan);
       } else {

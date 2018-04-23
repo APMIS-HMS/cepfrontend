@@ -156,25 +156,13 @@ function fixedGroupExisting(billGroups, results) {
         inBill.facilityServiceObject = bill.facilityServiceObject;
         inBill.billObject = bill;
         inBill.billModelId = _id;
-        console.log(1);
         const existingGroupList = billGroups.filter(x => x.categoryId.toString() === bill.facilityServiceObject.categoryId.toString());
-        console.log(2);
-        console.log(existingGroupList.length + "---Length");
-        console.log("************COMPARISON START***********************");
-        if (existingGroupList[0] !== undefined) {
-          console.log(existingGroupList[0].categoryId.toString());
-        }
-
-        console.log(bill.facilityServiceObject.categoryId.toString());
-        console.log("************COMPARISON STOP***********************");
         if (existingGroupList.length > 0) {
           const existingGroup = existingGroupList[0];
           if (existingGroup.isChecked) {
             bill.isChecked = true;
           }
-          console.log(3);
           const existingBills = existingGroup.bills.filter(x => x.facilityServiceObject.serviceId.toString() === bill.facilityServiceObject.serviceId.toString());
-          console.log(existingBills.length);
           if (existingBills.length > 0) {
             const existingBill = existingBills[0];
             existingBill.qty = existingBill.qty + bill.quantity;

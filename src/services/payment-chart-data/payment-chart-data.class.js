@@ -53,7 +53,6 @@ class Service {
     });
     filterDate.data.forEach(element => {
       element.payments.forEach(bill => {
-        console.log(bill);
         if (bill.facilityServiceObject !== undefined && bill.facilityServiceObject !== null) {
           const elements = lineChartData.filter(x => x.label.toString() === bill.facilityServiceObject.category.toString());
           if (elements.length > 0) {
