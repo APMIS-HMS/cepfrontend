@@ -116,9 +116,9 @@ const appRoutes: Routes = [
             {
                 path: 'pharmacy',
                 loadChildren: '../module-menu/pharmacy/pharmacy-manager.module#PharmacyManagerModule',
-                canActivate: [
-                    CanActivateViaAuthGuardAccessService
-                ]
+                // canActivate: [
+                //     CanActivateViaAuthGuardAccessService
+                // ]
             },
             // {
             //     path: 'laboratory',
@@ -127,9 +127,9 @@ const appRoutes: Routes = [
             {
                 path: 'laboratory',
                 loadChildren: '../module-menu/lab/lab.module#LabModule',
-                canActivate: [
-                    CanActivateViaAuthGuardAccessService
-                ]
+                // canActivate: [
+                //     CanActivateViaAuthGuardAccessService
+                // ]
             },
             {
              path: 'radiology',

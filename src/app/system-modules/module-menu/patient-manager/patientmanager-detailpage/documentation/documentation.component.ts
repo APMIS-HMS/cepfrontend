@@ -64,10 +64,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.selectedMiniFacility = <Facility>this.locker.getObject('miniFacility');
-    console.log(this.patient);
 
     this.subscription = this.sharedService.submitForm$.subscribe(payload => {
-      console.log(payload);
       if (!this.hasSavedDraft) {
         const doc: PatientDocumentation = <PatientDocumentation>{};
         doc.document = {
@@ -85,13 +83,13 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         this.patientDocumentation.documentations.push(doc);
         // Get the raw orderset data and send to different destination.
         this._listenAndSaveRawOrderSetData();
-        console.log('Ready to save.');
 
-        // this.documentationService.update(this.patientDocumentation).then(pay => {
-        //   this.getPersonDocumentation();
-        //   this._notification('Success', 'Documentation successfully saved!');
-        // });
+        this.documentationService.update(this.patientDocumentation).then(pay => {
+          this.getPersonDocumentation();
+          this._notification('Success', 'Documentation successfully saved!');
+        });
       } else {
+        Object.assign(this.draftDocument.document.body, payload);
         const doc = this.draftDocument;
         doc.documentationStatus = 'Completed';
         const draftIndex = this.patientDocumentation.documentations.findIndex(x => x.apmisGuid === this.draftDocument.apmisGuid);
@@ -101,15 +99,14 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         // this.patientDocumentation.documentations.push(doc);
         // Get the raw orderset data and send to different destination.
         this._listenAndSaveRawOrderSetData();
-        console.log('ready to save 2');
 
-        // this.documentationService.update(this.patientDocumentation).then(pay => {
-        //   this.draftDocument = undefined;
-        //   this.hasSavedDraft = false;
-        //   this.sharedService.announceFinishedSavingDraft(false);
-        //   this.getPersonDocumentation();
-        //   this._notification('Success', 'Documentation successfully saved!');
-        // });
+        this.documentationService.update(this.patientDocumentation).then(pay => {
+          this.draftDocument = undefined;
+          this.hasSavedDraft = false;
+          this.sharedService.announceFinishedSavingDraft(false);
+          this.getPersonDocumentation();
+          this._notification('Success', 'Documentation successfully saved!');
+        });
       }
     });
 
@@ -230,9 +227,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     })
   }
 
-  private _listenAndSaveRawOrderSetData() {
+  _listenAndSaveRawOrderSetData() {
     this.sharedService.announceBilledOrderSet$.subscribe((value: any) => {
-      console.log(value);
       if (!!value) {
         if (!!value.investigations) {
           const saveLab = this._saveLabRequest(value.investigations);
@@ -261,7 +257,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     };
 
     this._prescriptionService.authorizePresciption(prescriptions).then(res => {
-      console.log(res);
       if (res.status === 'success') {
         return true;
       } else {
@@ -380,15 +375,13 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       createdBy: this.loginEmployee._id
     };
 
-    console.log(request);
-    // this.requestService.customCreate(request).then(res => {
-    //   console.log(res);
-    //   if (res.status === 'success') {
-    //     return true;
-    //   } else {
-    //     return false;
-    //   }
-    // });
+    this.requestService.customCreate(request).then(res => {
+      if (res.status === 'success') {
+        return true;
+      } else {
+        return false;
+      }
+    });
 
     // const billGroup: BillIGroup = <BillIGroup>{};
     // billGroup.discount = 0;
