@@ -19,7 +19,7 @@
                     <mat-option *ngFor="let item of units" [value]="item.name">{{item.name}}</mat-option>
                 </mat-select>
             </mat-form-field>
-            <i (click)="reset()" class="fa fa-refresh clickable-ico" aria-hidden="true"></i>
+            <i (click)="reset()" class="fa fa-fw fa-2x fa-refresh clickable-ico orange tooltip" data-tooltip="Referesh" aria-hidden="true"></i>
             <div *ngIf="mobileSort" class="sort-txt-mobile shadow-RB">
                 <div (click)="sort_pop()" class="x">X</div>
                 <div>
@@ -44,7 +44,7 @@
                 <span>Sort List</span>
             </li> -->
             <li (click)="assignUnit_pop()">
-                <i class="fa fa-plus-circle" aria-hidden="true"></i>
+                <i class="fa fa-fw fa-2x fa-plus-circle orange tooltip" data-tooltip="ggdhshs" aria-hidden="true"></i>
                 <span>Assign Unitt</span>
             </li>
         </ul>
