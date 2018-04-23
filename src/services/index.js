@@ -177,6 +177,8 @@ const productUniqueReorders = require('./product-unique-reorders/product-unique-
 const cashPayment = require('./cash-payment/cash-payment.service.js');
 const dbPatientids = require('./db-patientids/db-patientids.service.js');
 const listOfInvoices = require('./list-of-invoices/list-of-invoices.service.js');
+const billSummaryData = require('./bill-summary-data/bill-summary-data.service.js');
+const paymentChartData = require('./payment-chart-data/payment-chart-data.service.js');
 module.exports = function(app) {
     app.configure(users);
     app.configure(facilityOwnerships);
@@ -357,4 +359,6 @@ module.exports = function(app) {
     app.configure(cashPayment);
     app.configure(dbPatientids);
     app.configure(listOfInvoices);
+    app.configure(billSummaryData);
+    app.configure(paymentChartData);
 };

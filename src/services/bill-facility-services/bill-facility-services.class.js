@@ -49,6 +49,7 @@ class Service {
             };
             billGroup.facilityId = data.facilityId;
             billGroup.patientId = data.patientId;
+            billGroup.payments = [];
             data.billGroups.forEach((itemg, g) => {
                 itemg.bills.forEach((itemb, b) => {
                     if (itemb.isChecked) {
@@ -59,6 +60,19 @@ class Service {
                                 billObject: itemb.billObject,
                                 billModelId: itemb.billModelId
                             });
+                        billGroup.payments.push({
+                            paymentDate: new Date,
+                            date: itemb.billObject.updatedAt,
+                            qty: itemb.billObject.quantity,
+                            facilityServiceObject: itemb.billObject.facilityServiceObject,
+                            amountPaid: 0,
+                            totalPrice: itemb.billObject.totalPrice,
+                            balance: itemb.billObject.totalPrice,
+                            isPaymentCompleted: false,
+                            isWaiver: false,
+                            waiverComment: '',
+                            createdBy: ''
+                        });
                     }
                 });
             });
@@ -142,15 +156,14 @@ function fixedGroupExisting(billGroups, results) {
                 inBill.facilityServiceObject = bill.facilityServiceObject;
                 inBill.billObject = bill;
                 inBill.billModelId = _id;
-
-                const existingGroupList = billGroups.filter(x => x.categoryId === bill.facilityServiceObject.categoryId);
+                const existingGroupList = billGroups.filter(x => x.categoryId.toString() === bill.facilityServiceObject.categoryId.toString());
                 if (existingGroupList.length > 0) {
                     const existingGroup = existingGroupList[0];
                     if (existingGroup.isChecked) {
                         bill.isChecked = true;
                     }
-                    const existingBills = existingGroup.bills.filter(x => x.facilityServiceObject.serviceId === bill.facilityServiceObject.serviceId);
-                    if (existingBills.length > 100000) {
+                    const existingBills = existingGroup.bills.filter(x => x.facilityServiceObject.serviceId.toString() === bill.facilityServiceObject.serviceId.toString());
+                    if (existingBills.length > 0) {
                         const existingBill = existingBills[0];
                         existingBill.qty = existingBill.qty + bill.quantity;
                         existingBill.amount = existingBill.qty * existingBill.unitPrice;
@@ -161,7 +174,9 @@ function fixedGroupExisting(billGroups, results) {
                         subTotal = subTotal + existingGroup.total;
                         total = subTotal - discount;
                     }
-                    existingGroup.isOpened = false;
+                    if (existingGroup.bills.length > 5) {
+                        existingGroup.isOpened = false;
+                    }
                 } else {
                     const group = {
                         isChecked: false,

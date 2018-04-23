@@ -29,7 +29,6 @@ class Service {
                 awaitFacilitiesItemService.categories.forEach(category => {
                     category.services.forEach(itm => {
                         if (itm._id.toString() == data[i].billItems[j].serviceId.toString()) {
-
                             data[i].billItems[j].facilityServiceObject.categoryId = category._id;
                             data[i].billItems[j].facilityServiceObject.category = category.name;
                             data[i].billItems[j].facilityServiceObject.service = itm.name;
