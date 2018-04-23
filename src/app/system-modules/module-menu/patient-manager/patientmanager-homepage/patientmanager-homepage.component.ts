@@ -377,6 +377,22 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.tagName.setValue(tag.name);
   }
 
+  combineTagsToString(tags){
+    let length = tags.length;
+    let tagsString = '';
+    let arr = [];
+    let name;
+    while(length--){
+      if(tags[length].tagType !== undefined){
+        name = tags[length].name+ ' (i)';
+      }else{
+        name = tags[length].name;
+      }
+      arr.push(name);
+    }
+    return arr.join(', ');
+  }
+
   removeTag(tag) {
     const toDelete = this.patientToEdit.tags.findIndex(x => x._id === tag._id);
     if (toDelete > -1) {
