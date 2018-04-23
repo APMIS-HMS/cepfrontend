@@ -34,6 +34,19 @@ import { BillAddItemComponent } from './bill-add-item/bill-add-item.component';
 import { BillAddModefierComponent } from './bill-add-modefier/bill-add-modefier.component';
 import { BillAddLineModefierComponent } from './bill-add-line-modefier/bill-add-line-modefier.component';
 import { RecievePaymentComponent } from './recieve-payment/recieve-payment.component';
+
+import { FacilityFamilyCoverComponent } from './facility-health-cover/facility-family-cover/facility-family-cover.component';
+import { FacilityCompanyCoverComponent } from './facility-health-cover/facility-company-cover/facility-company-cover.component';
+import { CompanyBillDetailComponent } from './facility-health-cover/facility-company-cover/company-bill-detail/company-bill-detail.component';
+import { CompanyBillHistoryDetailComponent } from './facility-health-cover/facility-company-cover/company-bill-history-detail/company-bill-history-detail.component';
+import { FamilyBillDetailComponent } from './facility-health-cover/facility-family-cover/family-bill-detail/family-bill-detail.component';
+import { FamilyBillHistoryDetailComponent } from './facility-health-cover/facility-family-cover/family-bill-history-detail/family-bill-history-detail.component';
+import { FacilityHealthCoverComponent } from './facility-health-cover/facility-health-cover.component';
+import { HmoBillHistoryDetailComponent } from './hmo-officer/hmo-bill-history-detail/hmo-bill-history-detail.component';
+import { HmoBillDetailComponent } from './hmo-officer/hmo-bill-detail/hmo-bill-detail.component';
+import { HmoOfficerComponent } from './hmo-officer/hmo-officer.component';
+
+
 @NgModule({
     declarations: [
         CompanyCoverComponent,
@@ -60,7 +73,17 @@ import { RecievePaymentComponent } from './recieve-payment/recieve-payment.compo
         BillAddItemComponent,
         BillAddModefierComponent,
         BillAddLineModefierComponent,
-        RecievePaymentComponent
+        RecievePaymentComponent,
+        HmoOfficerComponent,
+        FacilityFamilyCoverComponent,
+        FacilityCompanyCoverComponent,
+        HmoBillDetailComponent,
+        HmoBillHistoryDetailComponent,
+        FacilityHealthCoverComponent,
+        CompanyBillDetailComponent,
+        CompanyBillHistoryDetailComponent,
+        FamilyBillDetailComponent,
+        FamilyBillHistoryDetailComponent
     ],
     exports: [
     ],

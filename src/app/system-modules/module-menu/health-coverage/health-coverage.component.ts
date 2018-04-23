@@ -21,10 +21,11 @@ export class HealthCoverageComponent implements OnInit {
   contentSecMenuShow = false;
   recievePayment = false;
   makePayment = false;
+  hmoContentArea = false;
 
   constructor(private router: Router, private route: ActivatedRoute) {
     router.events.subscribe((payload: any) => {
-    this.currentPath = payload.url;
+      this.currentPath = payload.url;
     });
   }
 
@@ -32,7 +33,7 @@ export class HealthCoverageComponent implements OnInit {
     const page: string = this.router.url;
     this.checkPageUrl(page);
   }
-  contentSecMenuToggle(){
+  contentSecMenuToggle() {
 
   }
   pageInViewLoader(title) {
@@ -45,6 +46,7 @@ export class HealthCoverageComponent implements OnInit {
     this.payment = false;
     this.hmoCover = false;
     this.recievePayment = false;
+    this.hmoContentArea = false;
     this.pageInView = "Company Retainership";
     this.router.navigate(['/dashboard/health-coverage/company-list']);
     this.checkPageUrl('company-list');
@@ -55,6 +57,7 @@ export class HealthCoverageComponent implements OnInit {
     this.payment = false;
     this.hmoCover = false;
     this.recievePayment = false;
+    this.hmoContentArea = false;
     this.pageInView = "Family Cover";
     this.router.navigate(['/dashboard/health-coverage/family-list']);
   }
@@ -64,6 +67,7 @@ export class HealthCoverageComponent implements OnInit {
     this.payment = false;
     this.hmoCover = true;
     this.recievePayment = false;
+    this.hmoContentArea = false;
     this.pageInView = "Health Insurance";
     this.router.navigate(['/dashboard/health-coverage/hmo-list']);
   }
@@ -73,6 +77,7 @@ export class HealthCoverageComponent implements OnInit {
     this.payment = true;
     this.hmoCover = false;
     this.recievePayment = false;
+    this.hmoContentArea = false;
     this.pageInView = "Payment";
     this.router.navigate(['/dashboard/health-coverage/payment']);
   }
@@ -82,47 +87,67 @@ export class HealthCoverageComponent implements OnInit {
     this.payment = false;
     this.hmoCover = false;
     this.recievePayment = true;
+    this.hmoContentArea = false;
     this.pageInView = "Recieve Payment";
     this.router.navigate(['/dashboard/health-coverage/recieve-payment']);
   }
 
+  healthCover_show() {
+    this.companyCover = false;
+    this.familyCover = false;
+    this.payment = false;
+    this.hmoCover = false;
+    this.recievePayment = false;
+    this.hmoContentArea = true;
+    this.pageInView = "Health Cover";
+    this.router.navigate(['/dashboard/health-coverage/cover']);
+  }
+
   private checkPageUrl(param: string) {
-		if (param.includes('hmo-list')) {
-			this.companyCover = false;
+    if (param.includes('hmo-list')) {
+      this.companyCover = false;
       this.familyCover = false;
       this.payment = false;
       this.hmoCover = true;
       this.recievePayment = false;
       this.pageInView = "Health Insurance";
-		} else if (param.includes('company-list') || param.includes('company-beneficiaries')) {
-			this.companyCover = true;
+    } else if (param.includes('company-list') || param.includes('company-beneficiaries')) {
+      this.companyCover = true;
       this.familyCover = false;
       this.payment = false;
       this.hmoCover = false;
       this.recievePayment = false;
       this.pageInView = "Company Retainership";
-		} else if (param.includes('family-list') || param.includes('family-beneficiaries')) {
-			this.companyCover = false;
+    } else if (param.includes('family-list') || param.includes('family-beneficiaries')) {
+      this.companyCover = false;
       this.familyCover = true;
       this.payment = false;
       this.hmoCover = false;
       this.recievePayment = false;
       this.pageInView = "Family Cover";
-		} else if (param.includes('recieve-payment')) {
-			this.companyCover = false;
+    } else if (param.includes('recieve-payment')) {
+      this.companyCover = false;
       this.familyCover = false;
       this.payment = false;
       this.hmoCover = false;
       this.recievePayment = true;
       this.pageInView = "Recieve Payment";
-		} else if (param.includes('payment')) {
-			this.companyCover = false;
+    } else if (param.includes('payment')) {
+      this.companyCover = false;
       this.familyCover = false;
       this.payment = true;
       this.hmoCover = false;
       this.recievePayment = false;
       this.pageInView = "Payment";
-		}
-	}
+    } else if (param.includes('health-coverage/cover')) {
+      this.companyCover = false;
+      this.familyCover = false;
+      this.payment = false;
+      this.hmoCover = false;
+      this.recievePayment = false;
+      this.hmoContentArea = true;
+      this.pageInView = "Health Cover";
+    }
+  }
 
 }

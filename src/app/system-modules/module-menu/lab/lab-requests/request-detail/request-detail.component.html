@@ -7,8 +7,14 @@
     <div class="modal-baseWrap">
 
         <div class="pre-sects">
-            <div class="status">Pending</div>
-            <div class="payment">Paid</div>
+            <div class="status">
+                <span *ngIf="investigation.isUploaded !== undefined" class="green-txt">Uploaded</span>
+                <span *ngIf="investigation.isUploaded === undefined" class="red-txt">Pending</span>
+            </div>
+            <div class="payment">
+                <span *ngIf="investigation.isPaid" class="green-txt">Paid</span>
+                <span *ngIf="!investigation.isPaid" class="red-txt">Not Paid</span>
+            </div>
             <div class="date">{{investigation?.createdAt | date:'short'}}</div>
         </div>
 
@@ -46,9 +52,9 @@
                     <div class="txt-wrap">
                         <div class="txt-label">Specimen</div>
                         <div *ngIf="hasSpecimen" class="txt-val">{{localInvestigation?.investigation?.name}} - {{localInvestigation?.specimenNumber}}</div>
-                        <div [hidden]="hasSpecimen" class="txt-val hasBg">
+                        <div *ngIf="!hasSpecimen" class="txt-val hasBg">
                             <mat-input-container style="position:relative;">
-                                <input [formControl]="specimenNumber" matInput>
+                                <input [formControl]="specimenNumber" matInput autocomplete="off">
                                 <span class="input-tag">{{localInvestigation?.investigation?.name}}</span>
                             </mat-input-container>
                             <div (click)="(specimenNumber.valid) ? receiveSpecimen() : ''" class="lab-btn"><i class="fa fa-plus" aria-hidden="true"></i>Receive Specimen</div>
@@ -57,10 +63,10 @@
 
                     <div class="txt-wrap">
                         <div class="txt-label">Lab Number</div>
-                        <div *ngIf="hasLabNo" class="txt-val">{{client.clientNumber}}</div>
-                        <div [hidden]="hasLabNo" class="txt-val hasBg">
+                        <div *ngIf="hasLabNo" class="txt-val">{{investigation.labNumber}}</div>
+                        <div *ngIf="!hasLabNo" class="txt-val hasBg">
                             <mat-input-container>
-                                <input [formControl]="labNumber" matInput>
+                                <input [formControl]="labNumber" matInput autocomplete="off">
                             </mat-input-container>
                             <div (click)="assignLabNo()" class="lab-btn"><i class="fa fa-plus" aria-hidden="true"></i>Assign</div>
                         </div>

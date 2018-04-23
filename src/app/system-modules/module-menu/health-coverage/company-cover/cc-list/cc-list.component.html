@@ -75,12 +75,11 @@
               </tr>
             </thead>
 
-            <tbody>
-
-              <tr>
+            <tbody *ngIf="companyFacilities.length > 0">
+              <!-- <tr>
                 <td colspan="10">
                   <div class="tbl-actionRow">
-                    <!-- <div class="frm-item-wrap">
+                    <div class="frm-item-wrap">
                           <apmis-lookup [(ngModel)]="apmisLookupText" 
                           url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Patient"
                           isSocket="false" displayKey="apmisLookupDisplayKey" 
@@ -99,11 +98,10 @@
                               url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Location"
                               isSocket="false" displayKey="apmisLookupDisplayKey" 
                               (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                        </div> -->
+                        </div>
                   </div>
                 </td>
-              </tr>
-
+              </tr> -->
               <tr *ngFor="let cover of companyFacilities">
                 <td (click)="show_beneficiaries(cover)">{{cover.name}}</td>
                 <!-- <td>12B Alaro Alao Street, Akure, Lagos.</td> -->
@@ -126,6 +124,18 @@
                       <span>Deactivate</span>
                     </div>
                   </div>
+                </td>
+              </tr>
+            </tbody>
+            <tbody *ngIf="companyFacilities.length == 0 && !loading">
+              <tr>
+                <td class="table-content" colspan="6" style="text-align: center"> No data available in table</td>
+              </tr>
+            </tbody>
+            <tbody *ngIf="companyFacilities.length === 0 && loading">
+              <tr>
+                <td class="table-content" colspan="6" style="text-align: center !important; padding: 10px !important;">
+                  <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                 </td>
               </tr>
             </tbody>

@@ -154,18 +154,15 @@ export class AuthFacadeService {
     let self = this;
     return new Promise(function (resolve, reject) {
       if (self.access !== undefined && self.access.modules !== undefined && !force) {
-        console.log('am in existing');
         resolve(self.access);
       } else {
         self.featureService.getUserRoles({ query: { facilityId: facId } }).then(
           payload => {
-            console.log(payload);
             self.access = payload;
             self.setSelectedFacility(payload.selectedFacility);
             resolve(self.access);
           },
           error => {
-            console.dir(error);
           }
         );
       }

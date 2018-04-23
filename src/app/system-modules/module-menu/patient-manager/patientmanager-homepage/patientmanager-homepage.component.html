@@ -27,11 +27,6 @@
                     <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
                     <span style="padding-left: 3px;">Email</span>
                 </th>
-                <!-- <th>
-                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i> -->
-                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                <!-- <span style="padding-left: 3px;">Address</span>
-                </th> -->
                 <th>
                     <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                     <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
@@ -50,26 +45,21 @@
             <tr *ngFor="let patient of patients">
                 <td class="pointer" (click)="navEpDetail(patient)">
                     <div class="empWrap">
-                        <div class="list-img">
-                            <div *ngIf="patient?.personDetails?.profileImageObject == undefined">
-                                <img src="assets/images/users/default.png">
-                            </div>
-                            <div *ngIf="patient?.personDetails?.profileImageObject != undefined">
-                                <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)">
-                            </div>
-                        </div>
-                        <div>{{patient.personDetails?.lastName}} {{patient.personDetails?.firstName}}</div>
+                        <span class="list-img">
+                                                <img *ngIf="patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+                                                <img *ngIf="patient?.personDetails?.profileImageObject != undefined" class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)">
+                                            </span>
+                        <span> {{patient.personDetails?.lastName}} {{patient.personDetails?.firstName}}</span>
                     </div>
-                </td>
-                <td class="pointer" (click)="navEpDetail(patient)">{{patient?.age}}</td>
-                <td class="pointer" (click)="navEpDetail(patient)">
+                </div>
+                <div (click)="navEpDetail(patient)" class="table-list col-xs-1">{{patient?.age}}</div>
+                <div (click)="navEpDetail(patient)" class="table-list col-xs-1">
                     <span *ngIf="patient.personDetails?.gender ==='Male'">M</span>
                     <span *ngIf="patient.personDetails?.gender ==='Female'">F</span>
                     <span *ngIf="patient.personDetails?.gender!='Female' && patient.personDetails?.gender!='Male'">N</span>
                 </td>
                 <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.primaryContactPhoneNo}}</td>
                 <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.email}}</td>
-                <!-- <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.homeAddress.street}} {{patient.personDetails.addressObj.city}} {{patient.personDetails.addressObj.state}} {{patient.personDetails.addressObj.country}}</td> -->
                 <td class="pointer" (click)="navEpDetail(patient)">{{combineTagsToString(patient?.tags)}}</td>
                 <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.apmisId}}</td>
                 <td class="action-placeholder" style="text-align:center;">
@@ -101,18 +91,11 @@
                         </div>
                         <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
                     </div>
-                </td>
-            </tr>
-            <tr *ngIf="patients.length === 0 && !loading">
-                <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;"> No data available in table</td>
-            </tr>
-            <tr *ngIf="patients.length === 0 && loading">
-                <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;">
-                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
 
 <div class="btn-center">
@@ -129,7 +112,10 @@
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <a (click)="close_onClick()" aria-hidden="true" class="modal-close-ico">X</a>
-                                    <legend class="modal_title">Edit Patient</legend>
+                                    <legend class="modal_title">
+                                        Edit Patient<br>
+                                        <h4>{{selectedPatient.firstName}} {{selectedPatient.lastName}}</h4>
+                                    </legend>
                                     <form class="form form-signup" role="form" [formGroup]="patientEditForm" (click)="hideSuggestions()">
                                         <mat-tab-group style="padding: 10px;" #tabGroup selectedIndex="{{selectedIndex}}">
                                             <mat-tab label="Patient" style="padding: 10px;">
@@ -243,21 +229,18 @@
                                                             <mat-checkbox [formControl]="identity" (click)="changeButton()">Identity!</mat-checkbox>
                                                         </div>
                                                         <div claass="col-xs-4">
-                                                            <button (click)="newTag(tagName.valid)" *ngIf="!changetagButton" class="apmis-blue mat-raised-button" [disabled]="!tagName.valid || tagLoader"
-                                                                mat-raised-button>
+                                                            <button (click)="newTag(tagName.valid)" *ngIf="!changetagButton" class="apmis-blue mat-raised-button" [disabled]="!tagName.valid || tagLoader" mat-raised-button>
                                                                 {{btnLabel}}
                                                             </button>
                                                         </div>
                                                     </div>
                                                     <div>
                                                         <span class="badge blue-gradient" *ngFor="let tag of patientToEdit?.tags" style="padding:10px 20px; margin: 3px; border-radius: 25px; font-size: 12px;">
-                                                                <span class="big-label">
-                                                                    {{tag.name}} 
-                                                                </span>
-                                                                &nbsp;
-                                                                <i *ngIf="tag.tagType === 'identification'" class="fa fa-info"></i>
-                                                                &nbsp;&nbsp;
-                                                                <i (click)="removeTag(tag)" class="fa fa-trash-o big-label" aria-hidden="true"></i>
+                                                            <span class="big-label">
+                                                                {{tag.name}}
+                                                            </span> &nbsp;
+                                                        <i *ngIf="tag.tagType === 'identification'" class="fa fa-info"></i> &nbsp;&nbsp;
+                                                        <i (click)="removeTag(tag)" class="fa fa-trash-o big-label" aria-hidden="true"></i>
                                                         </span>
                                                     </div>
                                                 </div>
@@ -295,14 +278,16 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="add-next-of-kin-box">
+                                                        <a class="btn btn-blue" (click)="addNewNextOfKin();"> Add Next Of Kin
+                                                                <i class="fa fa-plus"></i>
+                                                            </a>
+                                                    </div>
                                                 </div>
-                                                <div class="add-next-of-kin-box">
-                                                    <a (click)="addNewNextOfKin();"> Add Next Of Kin
-                                                        <i class="fa fa-plus"></i>
-                                                    </a>
-                                                </div>
+
                                             </mat-tab>
                                             <mat-tab label="Plan">
+                                                <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
                                                 <div class="next-of-kin-body-wrapper">
                                                     <div class="row" *ngIf="!isEdit">
                                                         <div class="col-xs-12" *ngFor="let pat of patient.paymentPlan" style="margin-bottom: 10px">
@@ -334,23 +319,6 @@
                                                             </div>
 
                                                             <div class="tab-content">
-                                                                <!-- <div *ngIf="tabWallet">
-                                                                    <div class="plan">
-                                                                        <div class="plan-title">Out of Pocket</div>
-                                                                        <div class="row frm-item-wrap">
-                                                                            <mat-form-field class="col-xs-12 col-sm-6">
-                                                                                <mat-select placeholder="Select Service" [formControl]="walletPlan" (change)="getServicePlans($event.value)">
-                                                                                    <mat-option *ngFor="let service of services" [value]="service">{{service.name}}</mat-option>
-                                                                                </mat-select>
-                                                                            </mat-form-field>
-                                                                            <mat-form-field class="col-xs-12 col-sm-6">
-                                                                                <mat-select placeholder="Select Plan" [formControl]="walletPlanPrice">
-                                                                                    <mat-option *ngFor="let pricePlan of servicePricePlans" [value]="pricePlan.price">{{pricePlan.name}}</mat-option>
-                                                                                </mat-select>
-                                                                            </mat-form-field>
-                                                                        </div>
-                                                                    </div>
-                                                                </div> -->
 
                                                                 <div *ngIf="tabInsurance">
                                                                     <div class="plan">
@@ -388,7 +356,7 @@
                                                                             <mat-form-field class="col-xs-12 col-sm-6">
                                                                                 <input matInput mat-error placeholder="Employee Id" [formControl]="employeeId">
                                                                             </mat-form-field>
-                                                                        </div>                                            
+                                                                        </div>
                                                                         <!-- <div class="another">Another Company</div> -->
                                                                     </div>
                                                                 </div>
@@ -418,12 +386,11 @@
                                                                         <span *ngIf="!loading">Next</span>
                                                                         <span *ngIf="loading">Loading...</span>
                                                                     </button>
-                                                                    <button class="small-btn" (click)="next('insurance')" [disabled]="!hmoPlanId.valid && !hmoPlan.valid || loading" *ngIf="tabInsurance"
-                                                                        mat-raised-button>
+                                                                    <button class="small-btn" (click)="next('insurance')" [disabled]="!hmoPlanId.valid && !hmoPlan.valid || loading" *ngIf="tabInsurance" mat-raised-button>
                                                                         <span *ngIf="!loading">Next</span>
                                                                         <span *ngIf="loading">Loading...</span>
                                                                     </button>
-                                                                    <button class="small-btn" (click)="next('company')" *ngIf="tabCompany" [disabled]="!ccPlan.valid || loading" mat-raised-button>
+                                                                    <button class="small-btn" (click)="next('company')" *ngIf="tabCompany" [disabled]="(!ccPlanId.valid && !employeeId.valid) || loading" mat-raised-button>
                                                                         <span *ngIf="!loading">Next</span>
                                                                         <span *ngIf="loading">Loading...</span>
                                                                     </button>
@@ -445,8 +412,7 @@
                                     </form>
                                 </div>
                                 <div class="example-full-width" id="example-full-width">
-                                    <button [disabled]="!patientEditForm.valid" (click)="updatePatient(patientEditForm.value, patientEditForm.valid)" class="apmis-blue"
-                                        mat-raised-button [innerHtml]="updatePatientBtnText"></button>
+                                    <button [disabled]="!patientEditForm.valid" (click)="updatePatient(patientEditForm.value, patientEditForm.valid)" class="apmis-blue" mat-raised-button [innerHtml]="updatePatientBtnText"></button>
                                 </div>
                             </div>
                         </div>

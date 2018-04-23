@@ -8,10 +8,19 @@
         <form class="survery" [formGroup]="addPrescriptionForm" novalidate>
             <div class="frmArrWrap">
                 <div class="row padding-top-20px">
-                    <div class="col-sm-6 col-md-6">
+                    <div class="col-sm-8 col-md-8">
                         <apmis-lookup formControlName="drug" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="true" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Drug" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                     </div>
-                    <div class="col-sm-3 col-md-3">
+                    <div class="col-sm-4 col-md-4">
+                        <mat-form-field class="mat-select">
+                            <mat-select formControlName="frequency" placeholder="Frequency" class="example-full-width mat-select">
+                                <mat-option *ngFor="let frequency of frequencies" [value]="frequency.name">
+                                    {{ frequency.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <!-- <div class="col-sm-3 col-md-3">
                         <mat-form-field>
                             <input matInput formControlName="strength" [(value)]="drugId" placeholder="Strength">
                         </mat-form-field>
@@ -24,20 +33,11 @@
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
-                    </div>
+                    </div> -->
                 </div>
                 <div class="row padding-top-20px">
                     <div class="">
-                        <div class="col-sm-3 col-md-3">
-                            <mat-form-field class="mat-select">
-                                <mat-select formControlName="frequency" placeholder="Frequency" class="example-full-width mat-select">
-                                    <mat-option *ngFor="let frequency of frequencies" [value]="frequency.name">
-                                        {{ frequency.name }}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-sm-4 col-md-4">
+                        <div class="col-sm-6 col-md-6">
                             <div class="input-bg cacaca">
                                 <div class="input-group">
                                     <mat-form-field>
@@ -55,7 +55,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-2 col-md-2">
+                        <div class="col-sm-3 col-md-3">
                             <mat-form-field>
                                 <input type="number" matInput formControlName="refillCount" placeholder="Refill Count">
                             </mat-form-field>
@@ -72,7 +72,7 @@
                     </div>
                     <div class="col-sm-12 col-md-12">
                         <mat-input-container>
-                            <textarea matInput formControlName="specialInstruction" class="textarea" placeholder="Special Instruction" cols="30" rows="10"></textarea>
+                            <textarea matInput formControlName="specialInstruction" class="textarea" placeholder="Special Instruction" cols="30" rows="4"></textarea>
                         </mat-input-container>
                     </div>
                 </div>

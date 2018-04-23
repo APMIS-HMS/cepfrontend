@@ -117,6 +117,18 @@ export class ScheduleFrmComponent implements OnInit {
   dateCtrl: FormControl = new FormControl(new Date(), [Validators.required]);
   reason: FormControl = new FormControl();
   appointment: any = <any>{};
+  apmisLookupUrl = 'patient-search';
+  apmisLookupText = '';
+  apmisLookupQuery: any = {};
+  apmisLookupDisplayKey = 'firstName';
+  apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
+  apmisLookupOtherKeys = ['lastName', 'firstName', 'apmisId', 'email'];
+  apmisProviderLookupUrl = 'patient-search';
+  apmisProviderLookupText = '';
+  apmisProviderLookupQuery: any = {};
+  apmisProviderLookupDisplayKey = 'firstName';
+  apmisProviderLookupImgKey = 'personDetails.profileImageObject.thumbnail';
+  apmisProviderLookupOtherKeys = ['lastName', 'firstName', 'apmisId', 'email'];
 
   days: any[] = [
     "Sunday",
@@ -204,15 +216,21 @@ export class ScheduleFrmComponent implements OnInit {
     this.teleMed = new FormControl();
 
     this.patient = new FormControl("", [Validators.required]);
-    this.filteredPatients = this.patient.valueChanges
-      .startWith(null)
-      .map(
-        (patient: Patient) =>
-          patient && typeof patient === "object"
-            ? this.announcePatient(patient)
-            : patient
-      )
-      .map(val => (val ? this.filterPatients(val) : this.patients.slice()));
+    this.patient.valueChanges.subscribe(value => {
+      this.apmisLookupQuery = {
+        facilityId: this.selectedFacility._id,
+        searchText: value
+      };
+    });
+    // this.filteredPatients = this.patient.valueChanges
+    //   .startWith(null)
+    //   .map(
+    //     (patient: Patient) =>
+    //       patient && typeof patient === "object"
+    //         ? this.announcePatient(patient)
+    //         : patient
+    //   )
+    //   .map(val => (val ? this.filterPatients(val) : this.patients.slice()));
 
     this.clinic = new FormControl("", [Validators.required]);
     this.status = new FormControl("", [Validators.required]);
@@ -221,17 +239,24 @@ export class ScheduleFrmComponent implements OnInit {
     });
 
     this.provider = new FormControl();
-    this.filteredProviders = this.provider.valueChanges
-      .startWith(null)
-      .map(
-        (provider: Employee) =>
-          provider && typeof provider === "object"
-            ? provider.personDetails.lastName
-            : provider
-      )
-      .map(val => (val ? this.filterProviders(val) : this.providers.slice()));
+    this.provider.valueChanges.subscribe(value => {
+      this.apmisProviderLookupQuery = {
+        facilityId: this.selectedFacility._id,
+        searchText: value
+      };
+    });
+    // this.filteredProviders = this.provider.valueChanges
+    //   .startWith(null)
+    //   .map(
+    //     (provider: Employee) =>
+    //       provider && typeof provider === "object"
+    //         ? provider.personDetails.lastName
+    //         : provider
+    //   )
+    //   .map(val => (val ? this.filterProviders(val) : this.providers.slice()));
 
     this.type = new FormControl("", [Validators.required]);
+
     // this.filteredAppointmentTypes = this.type.valueChanges
     //     .startWith(null)
     //     .map((type: AppointmentType) => type && typeof type === 'object' ? type.name : type)
@@ -275,25 +300,28 @@ export class ScheduleFrmComponent implements OnInit {
     });
 
     this.category.valueChanges.subscribe(value => {
-      this.systemModuleService.on();
-      this.facilityPriceService.find({
-        query: {
-          facilityId: this.selectedFacility._id,
-          categoryId: this.organizationalServiceId.categoryId,
-          facilityServiceId: this.organizationalServiceId.facilityServiceId,
-          serviceId: value
-        }
-      }).then(payload => {
-        this.systemModuleService.off();
-        if (payload.data.length > 0) {
-          this.organizationalServicePrice = payload.data[0].price;
-        }else{
-          this.systemModuleService.announceSweetProxy("No price found on selected appointment. Please set a price for this appointment category","error");
-          this.category.reset();
-        }
-      }, err => {
-        this.systemModuleService.off();
-      });
+      if(value !== null){
+        this.systemModuleService.on();
+        this.facilityPriceService.find({
+          query: {
+            facilityId: this.selectedFacility._id,
+            categoryId: this.organizationalServiceId.categoryId,
+            facilityServiceId: this.organizationalServiceId.facilityServiceId,
+            serviceId: value
+          }
+        }).then(payload => {
+          this.systemModuleService.off();
+          if (payload.data.length > 0) {
+            this.organizationalServicePrice = payload.data[0].price;
+          }else{
+            this.systemModuleService.announceSweetProxy("No price found on selected appointment. Please set a price for this appointment category","error");
+            this.category.reset();
+          }
+        }, err => {
+          this.systemModuleService.off();
+        });
+      }
+
     });
 
     this.getPatients();
@@ -307,6 +335,32 @@ export class ScheduleFrmComponent implements OnInit {
         this.category.disable();
       }
     });
+  }
+
+  apmisLookupHandleSelectedItem(value) {
+    this.apmisLookupText = `${value.firstName} ${value.lastName}`;
+    // this.selectedPatient = value;
+    // this.frmNewRequest.controls['labNo'].setValue('');
+    // if (this.selectedPatient.clientsNo !== undefined) {
+    //   this.selectedPatient.clientsNo.forEach(item => {
+    //     if (item.minorLocationId === this.selectedLab.typeObject.minorLocationObject._id) {
+    //       this.frmNewRequest.controls['labNo'].setValue(item.clientNumber);
+    //     }
+    //   });
+    // }
+  }
+
+  apmisProviderLookupHandleSelectedItem(value) {
+    this.apmisProviderLookupText = `${value.firstName} ${value.lastName}`;
+    // this.selectedPatient = value;
+    // this.frmNewRequest.controls['labNo'].setValue('');
+    // if (this.selectedPatient.clientsNo !== undefined) {
+    //   this.selectedPatient.clientsNo.forEach(item => {
+    //     if (item.minorLocationId === this.selectedLab.typeObject.minorLocationObject._id) {
+    //       this.frmNewRequest.controls['labNo'].setValue(item.clientNumber);
+    //     }
+    //   });
+    // }
   }
 
   getTimezones() {
@@ -1011,7 +1065,7 @@ export class ScheduleFrmComponent implements OnInit {
                     this.loadIndicatorVisible = false;
                     this.systemModuleService.off();
                     this.systemModuleService.announceSweetProxy(
-                      "Appointment set successfully but there was an error creating Telemedice appointment",
+                      "Appointment set successfully but there was an error creating Telemedicine appointment",
                       "warning"
                     );
                   }
