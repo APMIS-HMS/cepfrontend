@@ -14,9 +14,18 @@ class Service {
   }
 
   async get(id, params) {
+    console.log(23);
     const invoicesService = this.app.service('invoices');
-    let cParamDt = new Date(params.query.cDate);
-    let pParamDt = new Date(params.query.pDate);
+    const cParamDt = Date.now();
+    const cParamDt_ = format(cParamDt);
+    console.log(cParamDt_);
+
+    let now = new Date();
+    const pParamDt = now.setDate(now.getDate() - params.query.days);
+    const pParamDt_ = format(pParamDt);
+
+
+    console.log()
     let lineChartData = [];
     let lineChartLabels = [];
     let lineChartColors = [];
@@ -26,54 +35,76 @@ class Service {
     const lineChartOptions = {
       responsive: true
     };
-
+    console.log(24);
     const filterDate = await invoicesService.find({
       query: {
         facilityId: id,
         paymentCompleted: true,
         $and: [{
             updatedAt: {
-              $gte: pParamDt
+              $gte: pParamDt_
             }
           },
           {
             updatedAt: {
-              $lte: cParamDt
+              $lte: cParamDt_
             }
           }
-        ]
+        ],
+        $limit:false
       }
-    }); //updatedAt
-    filterDate.data.forEach(element => {
-      element.payments.forEach(bill => {
-        const d = new Date((bill.paymentDate));
-        const dt = format(d, 'Do MMM');
-        lineChartLabels.push(dt)
-      });
     });
+
+    //updatedAt
+    // filterDate.data.forEach(element => {
+    //   element.payments.forEach(bill => {
+    //     const d = new Date((bill.paymentDate));
+    //     const dt = format(d, 'Do MMM');
+    //     lineChartLabels.push(dt)
+    //   });
+    // });
     filterDate.data.forEach(element => {
       element.payments.forEach(bill => {
         if (bill.facilityServiceObject !== undefined && bill.facilityServiceObject !== null) {
           const elements = lineChartData.filter(x => x.label.toString() === bill.facilityServiceObject.category.toString());
           if (elements.length > 0) {
-            // lineChartLabels.forEach(itemO=>{
-
-            // });
-            elements[0].data.push(bill.amountPaid)
+            console.log(1);
+            let billDate = new Date((bill.paymentDate));
+            let formatedBillDate = format(billDate, 'Do MMM');
+            const uniqueDates = lineChartLabels.filter(x => x.toString() === formatedBillDate.toString());
+            console.log(2);
+            console.log("Date length " + uniqueDates.length);
+            if (uniqueDates.length > 0) {
+              console.log("am here");
+              console.log(elements[0].data[0]);
+              elements[0].data[0] += bill.amountPaid;
+            } else {
+              console.log(4);
+              elements[0].data.push(bill.amountPaid);
+              let d = new Date((bill.paymentDate));
+              let dt = format(d, 'Do MMM');
+              lineChartLabels.push(dt)
+            }
+            console.log(5);
           } else {
+            let data = [];
+            data.push(bill.amountPaid);
             lineChartData.push({
               label: bill.facilityServiceObject.category,
-              data: []
-            })
+              data: data
+            });
+            let d = new Date((bill.paymentDate));
+            let dt = format(d, 'Do MMM');
+            const uniqueDates = lineChartLabels.filter(x => x.toString() === dt.toString());
+            if (uniqueDates.length === 0) {
+              lineChartLabels.push(dt)
+            }
           }
-          const d = new Date((bill.paymentDate));
-          const dt = format(d, 'Do MMM');
-          lineChartLabels.push(dt)
         }
       });
     });
 
-    
+
 
     lineChartColors = [{ // grey
         backgroundColor: 'rgba(148,159,177,0.2)',
