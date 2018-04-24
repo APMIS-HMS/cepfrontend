@@ -25,43 +25,33 @@ class Service {
         });
         for (let i = bills.data.length - 1; i >= 0; i--) {
             bills.data[i].billItems.filter(x => x.isInvoiceGenerated === false).forEach(element => {
-                totalAmountUnpaidBills += element.totalPrice;
+                if (element.covered.coverType !== 'insurance' && element.covered.coverType !== 'company') {
+                    totalAmountUnpaidBills += element.totalPrice;
+                }
             });
         }
-        const invoices = await invoicesService.find({
+        const invoicesAmountUnpaidInvoice = await invoicesService.find({
             query: {
                 facilityId: id,
                 paymentCompleted: false
             }
         });
-        for (let i = invoices.data.length - 1; i >= 0; i--) {
-            totalAmountUnpaidInvoice += invoices.data[i].balance;
+        for (let i = invoicesAmountUnpaidInvoice.data.length - 1; i >= 0; i--) {
+            totalAmountUnpaidInvoice += invoicesAmountUnpaidInvoice.data[i].balance;
         }
-
-        const invoices2 = await invoicesService.find({
-            query: {
-                facilityId: id,
-                paymentCompleted: false
-            }
-        });
-        for (let i = invoices.data.length - 1; i >= 0; i--) {
-            totalAmountUnpaidInvoice += invoices.data[i].balance;
-        }
-
-        const invoices3 = await invoicesService.find({
+        const invoicesAmountPaidInvoice = await invoicesService.find({
             query: {
                 facilityId: id
             }
         });
-        for (let i = invoices.data.length - 1; i >= 0; i--) {
-            totalAmountPaidInvoice += (invoices.data[i].totalPrice - invoices.data[i].balance);
+        for (let i = invoicesAmountPaidInvoice.data.length - 1; i >= 0; i--) {
+            totalAmountPaidInvoice += (invoicesAmountPaidInvoice.data[i].totalPrice - invoicesAmountPaidInvoice.data[i].balance);
         }
-
         let returnValue = {
             PaidIvoices: totalAmountPaidInvoice,
             UnpaidInvoices: totalAmountUnpaidInvoice,
             UnpaidBills: totalAmountUnpaidBills
-        }
+        };
         return jsend.success(returnValue);
     }
 
