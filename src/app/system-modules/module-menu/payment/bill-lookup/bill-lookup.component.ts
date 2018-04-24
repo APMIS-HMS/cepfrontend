@@ -5,6 +5,7 @@ import {
   FacilitiesService, BillingService, PatientService, InvoiceService, PersonService, PendingBillService, TodayInvoiceService
 } from '../../../../services/facility-manager/setup/index';
 import { Patient, Facility, BillItem, Invoice, BillModel, User } from '../../../../models/index';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
@@ -51,6 +52,8 @@ export class BillLookupComponent implements OnInit {
   invoice: Invoice = <Invoice>{ billingDetails: [], totalPrice: 0, totalDiscount: 0 };
   selectedGroup: any = <any>{};
   selectedServiceBill: any = <any>{};
+  holdMostRecentInvoices = [];
+  holdMostRecentBills = [];
   subTotal = 0;
   total = 0;
   discount = 0;
@@ -70,6 +73,7 @@ export class BillLookupComponent implements OnInit {
     private personService: PersonService,
     private patientService: PatientService,
     private _pendingBillService: PendingBillService,
+    private systemModuleService: SystemModuleService,
     private _todayInvoiceService: TodayInvoiceService) {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.patientService.receivePatient().subscribe((payload: Patient) => {
@@ -135,34 +139,48 @@ export class BillLookupComponent implements OnInit {
       .debounceTime(400)
       .distinctUntilChanged()
       .subscribe(value => {
-        this.isLoadingInvoice = true;
-        this._todayInvoiceService.get(this.selectedFacility._id, {
-          query: {
-            'isQuery': true,
-            'name': value
-          }
-        }).then(payload => {
-          this.invoiceGroups = payload.invoices;
+        if (this.searchPendingInvoices.value !== "" && this.searchPendingInvoices.value.length >= 3) {
+          this.isLoadingInvoice = true;
+          this.invoiceService.search({
+            query: {
+              facilityId: this.selectedFacility._id,
+              'name': value
+            }
+          }).then(payload => {
+            this.invoiceGroups = payload.data;
+            this.isLoadingInvoice = false;
+          }).catch(err => {
+            this.isLoadingInvoice = false;
+            this.systemModuleService.announceSweetProxy("There was a problem getting pending bills. Please try again later!", "error");
+          });
+        } else {
+          this.invoiceGroups = this.holdMostRecentInvoices;
           this.isLoadingInvoice = false;
-        }, err => {
-          this._notification('Error', 'There was a problem getting pending bills. Please try again later!');
-        });
+        }
       });
 
     this.searchPendingBill.valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       .subscribe(value => {
-        this.loadingPendingBills = true;
-        this._pendingBillService.get(this.selectedFacility._id, {
-          query: {
-            'isQuery': true,
-            'name': value
-          }
-        }).then((res: any) => {
-          this.pendingBills = res.bills;
-          this.loadingPendingBills = false;
-        }).catch(err => this._notification('Error', 'There was a problem getting pending bills. Please try again later!'));
+        if (this.searchPendingBill.value !== "" && this.searchPendingBill.value.length >= 3) {
+          this.loadingPendingBills = true;
+          this._pendingBillService.get(this.selectedFacility._id, {
+            query: {
+              'isQuery': true,
+              'name': value
+            }
+          }).then((res: any) => {
+            this.pendingBills = res.data.filter(x => x.patientId !== this.selectedPatient._id);
+            this.loadingPendingBills = false;
+          }).catch(err => {
+            this.loadingPendingBills = false;
+            this.pendingBills = this.holdMostRecentBills;
+            this.systemModuleService.announceSweetProxy("There was a problem getting pending bills. Please try again later!", "error");
+          });
+        } else {
+          this.pendingBills = this.holdMostRecentBills;
+        }
       });
   }
 
@@ -197,7 +215,7 @@ export class BillLookupComponent implements OnInit {
 
   onGenerateInvoice() {
     this.isProcessing = true;
-    const billToInvoice = {
+    const billToInvoice:any = {
       facilityId: this.selectedFacility._id,
       patientId: this.selectedPatient._id,
       billGroups: this.billGroups,
@@ -207,16 +225,18 @@ export class BillLookupComponent implements OnInit {
       subTotal: this.subTotal,
       totalPrice: this.total
     }
+    billToInvoice.payments = [];
+
     this.billingService.generateInvoice(billToInvoice).then(payload => {
       this.isProcessing = false;
-      this.router.navigate(['/dashboard/payment/invoice', payload.patientId]);
+      this.router.navigate(['/dashboard/payment/invoice', payload._id]);
     }, error => {
       this.isProcessing = false;
     });
   }
 
   onSelectedInvoice(invoice) {
-    this.router.navigate(['/dashboard/payment/invoice', invoice.patientId]);
+    this.router.navigate(['/dashboard/payment/invoice', invoice._id]);
   }
 
   fixedGroup(bill: BillModel) {
@@ -319,84 +339,22 @@ export class BillLookupComponent implements OnInit {
     }
   }
 
-
-  fixedGroupExisting(bill: BillItem, _id) {
-    const inBill: BillModel = <BillModel>{};
-    inBill.amount = bill.totalPrice;
-    inBill.itemDesc = bill.description;
-    inBill.itemName = bill.facilityServiceObject.service;
-    inBill.qty = bill.quantity;
-    inBill.covered = bill.covered;
-    inBill.unitPrice = bill.unitPrice;
-    inBill._id = bill._id;
-    inBill.facilityServiceObject = bill.facilityServiceObject;
-    inBill.billObject = bill;
-    inBill.billModelId = _id
-
-    const existingGroupList = this.billGroups.filter(x => x.categoryId === bill.facilityServiceObject.categoryId);
-    if (existingGroupList.length > 0) {
-      const existingGroup = existingGroupList[0];
-      if (existingGroup.isChecked) {
-        bill.isChecked = true;
-      }
-      const existingBills = existingGroup.bills.filter(x => x.facilityServiceObject.serviceId === bill.facilityServiceObject.serviceId);
-      if (existingBills.length > 100000) {
-        const existingBill = existingBills[0];
-        existingBill.qty = existingBill.qty + bill.quantity;
-        existingBill.amount = existingBill.qty * existingBill.unitPrice;
-        this.subTotal = this.subTotal + existingGroup.total;
-        this.total = this.subTotal - this.discount;
-      } else {
-        existingGroup.bills.push(inBill);
-        this.subTotal = this.subTotal + existingGroup.total;
-        this.total = this.subTotal - this.discount;
-      }
-      existingGroup.isOpened = false;
-      this.toggleCurrentCategory(existingGroup);
-    } else {
-      const group = {
-        isChecked: false, total: 0, isOpened: false,
-        categoryId: bill.facilityServiceObject.categoryId, category: bill.facilityServiceObject.category, bills: []
-      };
-      inBill.isChecked = false;
-      group.bills.push(inBill);
-      this.billGroups.push(group);
-      this.billGroups.sort(p => p.categoryId);
-      this.total = this.subTotal - this.discount;
-      group.isOpened = false;
-      this.toggleCurrentCategory(group);
-    }
-  }
-
-  getBill(payload: any) {
-    const bill: BillItem = <BillItem>{};
-    bill.description = payload.itemDesc;
-    bill.facilityServiceId = payload.service.facilityServiceId;
-    bill.quantity = payload.qty;
-    bill.serviceId = payload.service.serviceId;
-    bill.totalPrice = payload.amount;
-    bill.unitPrice = payload.unitPrice;
-    return bill;
-  }
-
   getPatientBills() {
     this.billGroups = [];
     this.masterBillGroups = [];
     this.txtSelectAll.setValue(false);
     if (this.selectedPatient !== undefined) {
       this.billingService
-      .findBillService({ query: { facilityId: this.selectedFacility._id, patientId: this.selectedPatient._id, isinvoice: false } })
-      .then(payload => {
-        console.log(payload);
-        if(payload !== null){
-          this.billGroups = payload.billGroups
-          this.listedBillItems = payload.originalCallback;
-        }
-      });
+        .findBillService({ query: { facilityId: this.selectedFacility._id, patientId: this.selectedPatient._id, isinvoice: false } })
+        .then(payload => {
+          if (payload !== null) {
+            this.billGroups = payload.billGroups;
+            this.listedBillItems = payload.originalCallback;
+          }
+        });
     }
   }
   onClickPatientPendingBill(pendingBill: any) {
-    console.log(pendingBill);
     this.router.navigate([`/dashboard/payment/bill/${pendingBill.patientId}`]);
     // this.selectedPatient = {};
     // this.selectedPatient._id = pendingBill.patientId;
@@ -407,29 +365,26 @@ export class BillLookupComponent implements OnInit {
 
   private _getAllPendingBills() {
     this.loadingPendingBills = true;
-    this._pendingBillService.get(this.selectedFacility._id, {
-      query: {
-        'isQuery': false
-      }
-    }).then((res: any) => {
-      this.pendingBills = res.bills;
+    this._pendingBillService.get(this.selectedFacility._id, {}).then((res: any) => {
+      this.pendingBills = res.data.filter(x => x.patientId !== this.selectedPatient._id);;
+      this.holdMostRecentBills = res.data;
       this.loadingPendingBills = false;
     }, err => {
-      this._notification('Error', 'There was a problem getting pending bills. Please try again later!')
+      this.loadingPendingBills = false;
+      this.systemModuleService.announceSweetProxy("There was a problem getting pending bills. Please try again later!", "error");
     });
   }
 
   private _getAllInvoices() {
     this.isLoadingInvoice = true;
-    this._todayInvoiceService.get(this.selectedFacility._id, {
-      query: {
-        'isQuery': false
-      }
-    }).then(payload => {
-      this.invoiceGroups = payload.invoices;
+    this.invoiceService.find({ query: { facilityId: this.selectedFacility._id, balance: { $gt: 0 }, paymentCompleted: false } }).then((payload: any) => {
+      this.invoiceGroups = payload.data;
+      this.holdMostRecentInvoices = payload.data;
       this.isLoadingInvoice = false;
     }, err => {
-      this._notification('Error', 'There was a problem getting pending invoices. Please try again later!')});
+      this.isLoadingInvoice = false;
+      this.systemModuleService.announceSweetProxy("There was a problem getting pending invoices. Please try again later!", "error");
+    });
   }
 
 
@@ -442,6 +397,7 @@ export class BillLookupComponent implements OnInit {
   reCalculateBillTotal() {
     this.subTotal = 0;
     this.total = 0;
+    this.discount = 0;
     this.billGroups.forEach((itemi, i) => {
       itemi.total = 0;
       itemi.bills.forEach((itemj, j) => {
@@ -567,7 +523,7 @@ export class BillLookupComponent implements OnInit {
             itemy.quantity = bill.qty;
             itemy.totalPrice = bill.amount;
             itemy.unitPrice = bill.unitPrice;
-            this.billingService.update(itemi).then(payload => {
+            this.billingService.patch(itemi._id,itemi,{}).then(payload => {
             });
           }
         });
@@ -613,6 +569,9 @@ export class BillLookupComponent implements OnInit {
   }
 
   close_onClick(e) {
+    this.subTotal = 0;
+    this.total = 0;
+    this.discount = 0;
     this._getPatientWallet(this.routeId);
     this.addModefierPopup = false;
     this.addLineModefierPopup = false;
@@ -625,7 +584,7 @@ export class BillLookupComponent implements OnInit {
     this.makePayment_modal = true;
   }
 
-  fundWallet() {}
+  fundWallet() { }
 
-  onClickEPayment() {}
+  onClickEPayment() { }
 }

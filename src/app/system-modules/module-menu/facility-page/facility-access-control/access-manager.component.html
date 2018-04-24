@@ -58,8 +58,8 @@
         <td>{{patient.personDetails.dateOfBirth | date}}</td>
         <td>{{patient.personDetails.apmisId}}</td>
         <td>
-            <div (click)="edit(item)" class="tr-act-btn"><i class="fa fa-edit"></i>Edit</div>
-            <div (click)="edit(item)" class="tr-act-btn"><i class="fa fa-edit"></i>De-Activate</div>
+            <div (click)="edit(item)" class="tr-act-btn"><i class="fa fa-fw fa-2x fa-edit orange tooltip" data-tooltip="Edit"></i>Edit</div>
+            <div (click)="edit(item)" class="tr-act-btn"><i class="fa fa-fw fa-2x fa-edit orange tooltip" data-tooltip="De-Activate"></i>De-Activate</div>
         </td>
         </tr>
     </tbody>

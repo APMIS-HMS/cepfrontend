@@ -46,14 +46,15 @@
                     </div>
                 </div>
                 <div class="card-content">
-                    <div class="card-list-item">
-                        <div *ngIf="admittedPatient.length === 0 && !loading" class="row">
+                    <div *ngIf="admittedPatient.length === 0 && !loading"  class="card-list-item">
+                        <div class="row">
                             <div class="table-list col-xs-12">
                                 No data available in table
                             </div>
                         </div>
-
-                        <div class="row" *ngIf="admittedPatient.length === 0 && loading">
+                    </div>
+                    <div *ngIf="admittedPatient.length === 0 && loading"  class="card-list-item">
+                        <div class="row">
                             <div class="table-list col-xs-12">
                                 <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
                             </div>
@@ -62,7 +63,7 @@
                     </div>
                     <div class="card-list-item" *ngFor="let admittedPatientItem of admittedPatient; let i = index;">
                         <div class="row">
-                            <div class="table-list col-xs-2" routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}">{{ i+1 }}</div>
+                            <div class="table-list col-xs-1" routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}">{{ i+1 }}</div>
                             <div class="table-list col-xs-3" routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}">
                                 <div class="empWrapp">
                                     <div class="list-img">
@@ -90,8 +91,10 @@
                                 <b>{{admittedPatientItem?.admissionDate | date }}</b><br>
                                 <small>{{admittedPatientItem?.admissionDate | amTimeAgo }}</small>
                             </div>
-                            <div class="table-list col-xs-3">
+                            <div class="table-list col-xs-2">
                                 <div class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Vitals</div>
+                            </div>
+                            <div class="table-list col-xs-2">
                                 <div class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Administer&nbsp;Drugs</div>
                             </div>
                         </div>
