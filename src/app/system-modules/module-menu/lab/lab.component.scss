@@ -242,3 +242,32 @@ ul.topmenuwrap {
     }
 
 }
+.tooltip {
+    font-size: 1.3em !important;
+    &:after {
+        font-family: Arial, Helvetica, sans-serif;
+        opacity: 0;
+        transition: all 0.4s;
+        font-size: 1.2rem !important;
+        position: absolute;
+        margin-left: -100px;
+        display: block;
+        padding: 3px;
+        content: attr(data-tooltip);
+        background: rgba(0, 0, 0, 0.74);
+        border-radius: 6px;
+        color: #fff;
+        min-width: auto;
+        text-align: center;
+    }
+    &:hover {
+        &:after {
+            opacity: 1;
+           margin-left: -20px;
+           //margin-left: -5px;
+           border-width: 5px;
+           border-style: solid;
+           border-color: #555 transparent transparent transparent;
+         }
+    }
+}
