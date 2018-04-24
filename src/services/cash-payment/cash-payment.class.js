@@ -17,8 +17,6 @@ class Service {
     }
 
     async create(data, params) {
-        // console.log(data);
-        // console.log(params);
         const facilityService = this.app.service('facilities');
         const peopleService = this.app.service('people');
         const paymentService = this.app.service('payment');
@@ -46,11 +44,6 @@ class Service {
                     if (personId !== undefined) {
                         const person = await peopleService.find({ query: { _id: personId } });
                         if (person !== undefined) {
-                            // console.log('....source');
-                            // console.log(data.sourceId);
-                            // console.log('....facility');
-                            // console.log(facility.data[0].facilityId);
-                            console.log(person);
                             response.facilityId = data.sourceId;
                             response.facilityOldBalance = facility.data[0].wallet.balance;
                             response.personOldBalance = person.data[0].wallet.balance;
@@ -65,23 +58,9 @@ class Service {
 
                             response.facilityNewBalance = facility.data[0].wallet.balance;
 
-                            // console.log('Person==============');
-                            // console.log(person.data[0].wallet);
-                            // console.log('Facility=================');
-                            // console.log(facility.data[0].wallet);
-                            // console.log('Facility verify');
-                            // console.log(facilityId);
-                            //   facilitiesService.patch(networkMember._id, {
-                            //     memberFacilities: networkMember.memberFacilities
-                            // })
-                            console.log(facility);
-                            console.log(person);
-                            console.log(facilityId);
-                            console.log(personId);
                             const facUpdate = await facilityService.patch(facilityId, { wallet: facility.data[0].wallet });
                             const personUpdate = await peopleService.patch(personId, { wallet: person.data[0].wallet });
-                            console.log('*********************Res*****************');
-                            console.log(response);
+
                             return response;
                             // return facUpdate;
                             //return jsend.success('Successful');
