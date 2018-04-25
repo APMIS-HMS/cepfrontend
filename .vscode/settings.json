@@ -1,6 +1,6 @@
 // Place your settings in this file to overwrite the default settings
 {
-    "files.autoSave": "off",
+    "files.autoSave": "onFocusChange",
     "workbench.iconTheme": "vscode-icons",
     "git.confirmSync": false,
     "vsicons.projectDetection.disableDetect": true,
@@ -14,6 +14,8 @@
         "suppressGitVersionWarning": false,
         "suppressLineUncommittedWarning": false,
         "suppressNoRepositoryWarning": false,
+        "suppressResultsExplorerNotice": false,
+        "suppressShowKeyBindingsNotice": true,
         "suppressUpdateNotice": true,
         "suppressWelcomeNotice": false
     },
@@ -25,5 +27,6 @@
     "editor.insertSpaces": true,
     "editor.tabSize": 4,
     "editor.detectIndentation": true,
-    "gitlens.keymap": "alternate"
+    "gitlens.keymap": "alternate",
+    "gitlens.historyExplorer.enabled": false
 }

@@ -358,7 +358,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.tagService.createSuggestedPatientTags(tag).then(payl => {
       this.systemService.off;
       if (payl.status === "error") {
-        this.mainErr = true;
+        this.mainErr = false;
         this.errMsg = payl.message;
       } else {
         this.patientToEdit.tags = payl.data.tags;
@@ -375,6 +375,22 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
   fillingWithSearchInfo(tag) {
     this.tagName.setValue(tag.name);
+  }
+
+  combineTagsToString(tags){
+    let length = tags.length;
+    let tagsString = '';
+    let arr = [];
+    let name;
+    while(length--){
+      if(tags[length].tagType !== undefined){
+        name = tags[length].name+ ' (i)';
+      }else{
+        name = tags[length].name;
+      }
+      arr.push(name);
+    }
+    return arr.join(', ');
   }
 
   removeTag(tag) {

@@ -51,9 +51,9 @@
     <div class="rhsInnerCArea">
         <ul>
             <li class="listHeader">
-                <div class="li-Item" style="cursor: pointer;">Location<i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i></div>
-                <div class="li-Item" style="cursor: pointer;">Room Name<i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i></div>
-                <div class="li-Item" style="cursor: pointer;">Room Capacity<i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i></div>
+                <div class="li-Item" style="cursor: pointer;">Location<i style="padding-left: 10px;" class="fa fa-fw fa-2x fa-sort orange tooltip" data-tooltip="sort-by loc" aria-hidden="true"></i></div>
+                <div class="li-Item" style="cursor: pointer;">Room Name<i style="padding-left: 10px;" class="fa fa-fw fa-2x fa-sort orange tooltip" data-tooltip="sort-by name" aria-hidden="true"></i></div>
+                <div class="li-Item" style="cursor: pointer;">Room Capacity<i style="padding-left: 10px;" class="fa fa-fw fa-2x fa-sort orange tooltip" data-tooltip="sort-by capacity" aria-hidden="true"></i></div>
                 <div class="li-cta"></div>
             </li>
             <li *ngIf="roomManager?.length === 0 && !loading" class="li-itemWrap">
@@ -73,8 +73,8 @@
                     </div>
                 </div>
                 <div class="li-cta">
-                    <i (click)="onSelectSchedulerManager(manager)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                    <i class="fa fa-trash" aria-hidden="true"></i>
+                    <i (click)="onSelectSchedulerManager(manager)" class="fa fa-fw fa-2x fa-pencil-square-o orange tooltip" data-tooltip="Edit" aria-hidden="true"></i>
+                    <i class="fa fa-fw fa-2x fa-trash orange tooltip" data-tooltip="Delete" aria-hidden="true"></i>
                 </div>
             </li>
         </ul>

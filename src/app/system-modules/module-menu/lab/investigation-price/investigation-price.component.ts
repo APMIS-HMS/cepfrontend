@@ -343,7 +343,8 @@ const workBenchIndex = item.workbenches.findIndex(x => x.workBench !== undefined
 
       const isLabExisting = false;
       let labCollectionObject: any;
-      const labIndex = this.selectedInvestigation.LaboratoryWorkbenches.findIndex(x => x.laboratoryId._id === this.checkingObject.minorLocationObject._id);
+      const labIndex = this.selectedInvestigation.LaboratoryWorkbenches
+      .findIndex(x => x.laboratoryId._id === this.checkingObject.minorLocationObject._id);
 
       if (labIndex === -1) {
         // is not existing
@@ -382,7 +383,8 @@ const workBenchIndex = item.workbenches.findIndex(x => x.workBench !== undefined
         this.frmNewPrice.controls['workbench'].reset();
         this.getInvestigations();
         this.pricing_view = false;
-        this._systemModuleService.announceSweetProxy('Price has been set/updated successfully!', 'success', null, null, null, null, null, null, null);
+        this._systemModuleService
+        .announceSweetProxy('Price has been set/updated successfully!', 'success', null, null, null, null, null, null, null);
       });
 
       // this.facilityPriceService.update(this.selectedFacilityServicePrice).then(payload => {

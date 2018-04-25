@@ -29,6 +29,7 @@ export const WEBSITE_REGEX =
 /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
 export const PHONE_REGEX = /^\+?([0-9]+)\)?[-. ]?([0-9]+)\)?[-. ]?([0-9]+)[-. ]?([0-9]+)$/;
 export const NUMERIC_REGEX = /^[0-9]+$/;
+export const CACNO_REGEX = /^rc[0-9]|bn[0-9]+$/;
 export const ALPHABET_REGEX = '[a-zA-Z][a-zA-Z ]+'
 export const GEO_LOCATIONS = ['ng'];
 export const HTML_SAVE_PATIENT = `  <i class="fa fa-info-circle" aria-hidden="true"></i>
