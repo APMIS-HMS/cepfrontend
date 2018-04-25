@@ -13,6 +13,7 @@ import { SystemModuleService } from '../../../../services/module-manager/setup/s
 export class WardManagerAdmittedDetailspageComponent implements OnInit {
 	dischargePatient = false;
 	transferPatient = false;
+	addVitals = false;
 	admittedPatientId: string;
 	selectedPatient: any;
 
@@ -64,7 +65,11 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
 		this._router.navigate([`/dashboard/patient-manager/patient-manager-detail`, patient.patient.personId]).then(res => {
 		}).catch(err => {
 		});
-  }
+	}
+
+	onClickVitals() {
+		this.addVitals = true;
+	}
 
   // sweetAlertCallback(result, data) {
   //   if (result.value) {
@@ -85,6 +90,7 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
 	close_onClick() {
 		this.dischargePatient = false;
 		this.transferPatient = false;
+		this.addVitals = false;
 	}
 
 }
