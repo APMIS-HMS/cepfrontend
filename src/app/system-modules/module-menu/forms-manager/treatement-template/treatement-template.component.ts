@@ -309,6 +309,7 @@ export class TreatementTemplateComponent implements OnInit {
             this.saveTemplateText = true;
             this.orderSet = <OrderSetTemplate>{};
             this.onClickRadioBtn('medication');
+            this.getOrderSet();
             this.frmnewTemplate.controls['diagnosis'].setValue('');
             this.frmnewTemplate.controls['visibility'].setValue('');
             this.frmnewTemplate.controls['name'].setValue('');
