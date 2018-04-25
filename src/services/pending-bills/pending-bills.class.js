@@ -49,7 +49,7 @@ class Service {
       });
       if (Array.isArray(awaitedPatientIdItems.data)) {
 
-        const billsPromiseYetResolved = Promise.all(awaitedPatientIdItems.data.map(current =>  billingsService.find({
+        const billsPromiseYetResolved = Promise.all(awaitedPatientIdItems.data.map(current => billingsService.find({
           query: {
             facilityId: id,
             patientId: current.patientId,
@@ -66,7 +66,7 @@ class Service {
             }
           }
         })));
-        
+
         const _awaitedBills = await billsPromiseYetResolved;
         awaitedBills = _awaitedBills[0];
       }
@@ -96,7 +96,7 @@ class Service {
           ],
         }
       });
-      patientBills.push.apply(patientBills,awaitedBillItems.data);
+      patientBills.push.apply(patientBills, awaitedBillItems.data);
       // awaitedBillItems.data.forEach(item => {
       //   patientBills.push(item);
       // });
@@ -106,7 +106,7 @@ class Service {
     patientBills.forEach(item => {
       const indx = uniquePatients.filter(x => x.patientId.toString() === item.patientId.toString());
       if (indx.length > 0) {
-        indx[0].billItems.push.apply(indx[0].billItems,item.billItems);
+        indx[0].billItems.push.apply(indx[0].billItems, item.billItems);
         // item.billItems.forEach(itm => {
         //   indx[0].billItems.push(itm);
         // });
@@ -152,12 +152,12 @@ function GetBillData(result) {
       result[j].grandTotalExcludeInvoice = 0;
       let len2 = result[j].billItems.length - 1;
       for (let k = len2; k >= 0; k--) {
-        if (result[j].billItems[k].isInvoiceGenerated == false) {
+        if (result[j].billItems[k].isInvoiceGenerated === false && result[j].billItems[k].isBearerConfirmed === true) {
           result[j].grandTotalExcludeInvoice += parseInt(result[j].billItems[k].totalPrice.toString());
         }
       }
     }
-    var patientSumBills = result.filter(x => x.grandTotalExcludeInvoice > 0);
+    let patientSumBills = result.filter(x => x.grandTotalExcludeInvoice > 0);
     return jsend.success(patientSumBills);
   } else {
     return jsend.success([]);

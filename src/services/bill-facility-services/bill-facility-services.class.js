@@ -143,58 +143,60 @@ function fixedGroupExisting(billGroups, results) {
     for (let k = len6; k >= 0; k--) {
       if (results[i].billItems[k].isInvoiceGenerated === false || results[i].billItems[k].isInvoiceGenerated === undefined) {
         let bill = results[i].billItems[k];
-        const _id = results[i]._id;
-        // return fixedGroupExisting(results[i].billItems[k], results[i]._id, billGroups, results);
-        const inBill = {};
-        inBill.amount = bill.totalPrice;
-        inBill.itemDesc = bill.description;
-        inBill.itemName = bill.facilityServiceObject.service;
-        inBill.qty = bill.quantity;
-        inBill.covered = bill.covered;
-        inBill.unitPrice = bill.unitPrice;
-        inBill._id = bill._id;
-        inBill.facilityServiceObject = bill.facilityServiceObject;
-        inBill.billObject = bill;
-        inBill.billModelId = _id;
-        const existingGroupList = billGroups.filter(x => x.categoryId.toString() === bill.facilityServiceObject.categoryId.toString());
-        if (existingGroupList.length > 0) {
-          const existingGroup = existingGroupList[0];
-          if (existingGroup.isChecked) {
-            bill.isChecked = true;
+        if(bill.facilityServiceObject.serviceId !== undefined){
+          const _id = results[i]._id;
+          // return fixedGroupExisting(results[i].billItems[k], results[i]._id, billGroups, results);
+          const inBill = {};
+          inBill.amount = bill.totalPrice;
+          inBill.itemDesc = bill.description;
+          inBill.itemName = bill.facilityServiceObject.service;
+          inBill.qty = bill.quantity;
+          inBill.covered = bill.covered;
+          inBill.unitPrice = bill.unitPrice;
+          inBill._id = bill._id;
+          inBill.facilityServiceObject = bill.facilityServiceObject;
+          inBill.billObject = bill;
+          inBill.billModelId = _id;
+          const existingGroupList = billGroups.filter(x => x.categoryId !== undefined && x.categoryId.toString() === bill.facilityServiceObject.categoryId.toString());
+          if (existingGroupList.length > 0) {
+            const existingGroup = existingGroupList[0];
+            if (existingGroup.isChecked) {
+              bill.isChecked = true;
+            }
+            existingGroup.bills.push(inBill);
+            subTotal = subTotal + existingGroup.total;
+            total = subTotal - discount;
+            // const existingBills = existingGroup.bills.filter(x => x.facilityServiceObject.serviceId.toString() === bill.facilityServiceObject.serviceId.toString());
+            // if (existingBills.length > 0) {
+            //     const existingBill = existingBills[0];
+            //     existingBill.qty = existingBill.qty + bill.quantity;
+            //     existingBill.amount = existingBill.qty * existingBill.unitPrice;
+            //     subTotal = subTotal + existingGroup.total;
+            //     total = subTotal - discount;
+            // } else {
+            //     existingGroup.bills.push(inBill);
+            //     subTotal = subTotal + existingGroup.total;
+            //     total = subTotal - discount;
+            // }
+            if (existingGroup.bills.length > 5) {
+              existingGroup.isOpened = false;
+            }
+          } else {
+            const group = {
+              isChecked: false,
+              total: 0,
+              isOpened: false,
+              categoryId: bill.facilityServiceObject.categoryId,
+              category: bill.facilityServiceObject.category,
+              bills: []
+            };
+            inBill.isChecked = false;
+            group.bills.push(inBill);
+            billGroups.push(group);
+            billGroups.sort(p => p.categoryId);
+            total = subTotal - discount;
+            group.isOpened = true;
           }
-          existingGroup.bills.push(inBill);
-          subTotal = subTotal + existingGroup.total;
-          total = subTotal - discount;
-          // const existingBills = existingGroup.bills.filter(x => x.facilityServiceObject.serviceId.toString() === bill.facilityServiceObject.serviceId.toString());
-          // if (existingBills.length > 0) {
-          //     const existingBill = existingBills[0];
-          //     existingBill.qty = existingBill.qty + bill.quantity;
-          //     existingBill.amount = existingBill.qty * existingBill.unitPrice;
-          //     subTotal = subTotal + existingGroup.total;
-          //     total = subTotal - discount;
-          // } else {
-          //     existingGroup.bills.push(inBill);
-          //     subTotal = subTotal + existingGroup.total;
-          //     total = subTotal - discount;
-          // }
-          if (existingGroup.bills.length > 5) {
-            existingGroup.isOpened = false;
-          }
-        } else {
-          const group = {
-            isChecked: false,
-            total: 0,
-            isOpened: false,
-            categoryId: bill.facilityServiceObject.categoryId,
-            category: bill.facilityServiceObject.category,
-            bills: []
-          };
-          inBill.isChecked = false;
-          group.bills.push(inBill);
-          billGroups.push(group);
-          billGroups.sort(p => p.categoryId);
-          total = subTotal - discount;
-          group.isOpened = true;
         }
       }
     }
