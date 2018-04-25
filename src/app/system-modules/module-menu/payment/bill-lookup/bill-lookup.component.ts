@@ -366,7 +366,7 @@ export class BillLookupComponent implements OnInit {
   private _getAllPendingBills() {
     this.loadingPendingBills = true;
     this._pendingBillService.get(this.selectedFacility._id, {}).then((res: any) => {
-      this.pendingBills = res.data.filter(x => x.patientId !== this.selectedPatient._id);;
+      this.pendingBills = res.data.filter(x => x.patientId !== this.selectedPatient._id);
       this.holdMostRecentBills = res.data;
       this.loadingPendingBills = false;
     }, err => {
