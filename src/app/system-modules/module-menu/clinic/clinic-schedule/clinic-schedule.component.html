@@ -76,9 +76,9 @@
     <div class="rhsInnerCArea">
         <ul>
             <li class="listHeader">
-                <div class="li-Item" style="cursor: pointer;">Clinic<i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i></div>
-                <div class="li-Item" style="cursor: pointer;">Department<i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i></div>
-                <div class="li-Item" style="cursor: pointer;">Unit<i style="padding-left: 10px;" class="fa fa-sort" aria-hidden="true"></i></div>
+                <div class="li-Item" style="cursor: pointer;">Clinic<i style="padding-left: 10px;" class="fa fa-sort tooltip" data-tooltip="sort-by Clinic" aria-hidden="true"></i></div>
+                <div class="li-Item" style="cursor: pointer;">Department<i style="padding-left: 10px;" class="fa fa-sort tooltip" data-tooltip="sort-by Dept" aria-hidden="true"></i></div>
+                <div class="li-Item" style="cursor: pointer;">Unit<i style="padding-left: 10px;" class="fa fa-sort tooltip" data-tooltip="sort-by unit" aria-hidden="true"></i></div>
                 <div class="li-Item-group">Schedule</div>
                 <div class="li-cta"></div>
             </li>
@@ -103,8 +103,8 @@
                     </div>
                 </div>
                 <div class="li-cta">
-                    <i (click)="onSelectSchedulerManager(manager)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                    <i class="fa fa-trash" aria-hidden="true"></i>
+                    <i (click)="onSelectSchedulerManager(manager)" class="fa fa-fw fa-2x fa-pencil-square-o orange tooltip" data-tooltip="Edit" aria-hidden="true"></i>
+                    <i class="fa fa-fw fa-2x fa-trash orange tooltip" data-tooltip="Delete" aria-hidden="true"></i>
                 </div>
             </li>
         </ul>
