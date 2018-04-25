@@ -58,18 +58,21 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
   }
 
   onClickPatientDocumentation(patient: any) {
-    const text = 'If you click on yes, you will be redirected to the patient documentation.';
-    this._systemModuleService.announceSweetProxy(text, 'question', this, null, null, patient, null, null, null);
-    // routerLink="/dashboard/patient-manager/patient-manager-detail/{{ selectedPatient?.patient?.personId }}"
+		// this._router.navigate(['/dashboard/patient-manager/patient-manager-detail/', '5aa9b8fa9885e167608b3323'])
+    // const text = 'If you click on yes, you will be redirected to the patient documentation.';
+		// this._systemModuleService.announceSweetProxy(text, 'question', this, null, null, patient);
+		this._router.navigate([`/dashboard/patient-manager/patient-manager-detail`, patient.patient.personId]).then(res => {
+		}).catch(err => {
+		});
   }
 
-  sweetAlertCallback(result, data) {
-    if (result.value) {
-      this._router.navigate([`/dashboard/patient-manager/patient-manager-detail`, data.patient.personId]).then(res => {
-      }).catch(err => {
-      });
-    }
-  }
+  // sweetAlertCallback(result, data) {
+  //   if (result.value) {
+  //     this._router.navigate([`/dashboard/patient-manager/patient-manager-detail`, data.patient.personId]).then(res => {
+  //     }).catch(err => {
+  //     });
+  //   }
+  // }
 
 	onClickDischargePatient() {
 		this.dischargePatient = true;
