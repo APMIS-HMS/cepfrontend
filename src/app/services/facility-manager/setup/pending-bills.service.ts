@@ -8,8 +8,11 @@ export class PendingBillService {
   private _socketChartSummary;
   constructor(private _socketService: SocketService) {
     this._socket = _socketService.getService('pending-bills');
+    this._socket.timeout = 30000;
     this._socketSummary= _socketService.getService('bill-summary-data');
+    this._socketSummary.timeout = 30000;
     this._socketChartSummary = _socketService.getService('payment-chart-data');
+    this._socketSummary.timeout = 30000;
   }
 
   get(id: string, query: any) {
