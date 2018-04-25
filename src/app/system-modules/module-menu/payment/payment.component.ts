@@ -29,6 +29,11 @@ export class PaymentComponent implements OnInit {
     holdMostRecentBills = [];
     holdMostRecentInvoices = [];
     pendingBills: any[] = [];
+    billSummaryData: any = {
+        PaidIvoices: 0,
+        UnpaidInvoices: 0,
+        UnpaidBills: 0
+    };
     locAmountAccrued: any[] = [];
     invoiceGroups: any[] = [];
     user: User = <User>{};
@@ -60,8 +65,10 @@ export class PaymentComponent implements OnInit {
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
         this.user = <User>this.locker.getObject('auth');
         this.searchInvestigation = new FormControl('', []);
+
         this._getBills();
         this._getInvoices();
+        this._getBillSummaryData();
         this.searchPendingInvoices.valueChanges
             .debounceTime(400)
             .distinctUntilChanged()
@@ -78,9 +85,9 @@ export class PaymentComponent implements OnInit {
                         this.isLoadingInvoice = false;
                     }).catch(err => {
                         this.isLoadingInvoice = false;
-                        this.systemModuleService.announceSweetProxy("There was a problem getting pending bills. Please try again later!","error");
+                        this.systemModuleService.announceSweetProxy("There was a problem getting pending bills. Please try again later!", "error");
                     });
-                }else{
+                } else {
                     this.invoiceGroups = this.holdMostRecentInvoices;
                     this.isLoadingInvoice = false;
                 }
@@ -102,7 +109,7 @@ export class PaymentComponent implements OnInit {
                         this.loadingPendingBills = false;
                     }).catch(err => {
                         this.loadingPendingBills = false;
-                        this.systemModuleService.announceSweetProxy("There was a problem getting pending bills. Please try again later!","error");
+                        this.systemModuleService.announceSweetProxy("There was a problem getting pending bills. Please try again later!", "error");
                     });
                 } else {
                     this.pendingBills = this.holdMostRecentBills;
@@ -113,9 +120,10 @@ export class PaymentComponent implements OnInit {
 
     private _getInvoices() {
         this.systemModuleService.on;
-        this.invoiceService.find({ query: { facilityId: this.selectedFacility._id, balance: { $gt: 0 }, paymentCompleted: false } }).then(payload => {
+        this.invoiceService.find({ query: { facilityId: this.selectedFacility._id, balance: { $gt: 0 }, paymentCompleted: false, $sort: { updatedAt: -1 } } }).then(payload => {
             this.systemModuleService.off();
             this.invoiceGroups = payload.data;
+            console.log(this.invoiceGroups);
             this.holdMostRecentInvoices = this.invoiceGroups;
             this.isLoadingInvoice = false;
         }).catch(err => {
@@ -135,6 +143,17 @@ export class PaymentComponent implements OnInit {
         }).catch(err => {
             this.systemModuleService.off();
             this.loadingPendingBills = false;
+            this._notification('Error', err);
+        });
+    }
+
+    private _getBillSummaryData() {
+        this.systemModuleService.on();
+        this._pendingBillService.getDataSummary(this.selectedFacility._id, {}).then((payload: any) => {
+            this.systemModuleService.off();
+            this.billSummaryData = payload.data;
+        }).catch(err => {
+            this.systemModuleService.off();
             this._notification('Error', err);
         });
     }
