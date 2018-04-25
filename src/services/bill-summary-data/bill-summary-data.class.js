@@ -18,21 +18,20 @@ class Service {
     let totalAmountUnpaidBills = 0;
     let totalAmountUnpaidInvoice = 0;
     let totalAmountPaidInvoice = 0;
-    console.log(1);
     const bills = await billingsService.find({
       query: {
         facilityId: id
       }
     });
-    console.log(2);
     for (let i = bills.data.length - 1; i >= 0; i--) {
       bills.data[i].billItems.filter(x => x.isInvoiceGenerated === false).forEach(element => {
-        if (element.covered.coverType !== 'insurance' && element.covered.coverType !== 'company') {
-          totalAmountUnpaidBills += element.totalPrice;
+        if (element.covered !== undefined) {
+          if (element.covered.coverType !== 'insurance' && element.covered.coverType !== 'company') {
+            totalAmountUnpaidBills += element.totalPrice;
+          }
         }
       });
     }
-    console.log(3);
     const invoicesAmountUnpaidInvoice = await invoicesService.find({
       query: {
         facilityId: id,
@@ -42,17 +41,14 @@ class Service {
     for (let i = invoicesAmountUnpaidInvoice.data.length - 1; i >= 0; i--) {
       totalAmountUnpaidInvoice += invoicesAmountUnpaidInvoice.data[i].balance;
     }
-    console.log(6);
     const invoicesAmountPaidInvoice = await invoicesService.find({
       query: {
         facilityId: id
       }
     });
-    console.log(7);
     for (let i = invoicesAmountPaidInvoice.data.length - 1; i >= 0; i--) {
       totalAmountPaidInvoice += (invoicesAmountPaidInvoice.data[i].totalPrice - invoicesAmountPaidInvoice.data[i].balance);
     }
-    console.log(8);
     let returnValue = {
       PaidIvoices: totalAmountPaidInvoice,
       UnpaidInvoices: totalAmountUnpaidInvoice,
