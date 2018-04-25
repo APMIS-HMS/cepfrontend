@@ -45,6 +45,40 @@
                     </div>
                 </div>
             </div>
+            <div class="card">
+                    <div>
+                        <h2 style="padding-top:10px; text-align: center">
+                            Invoices
+                        </h2>
+                    </div>
+                    <div class="search-box">
+                        <i class="fa fa-2x fa-search"></i>
+                        <input type="text" placeholder="Search Invoices, Apmis ID" [formControl]="searchPendingInvoices">
+                    </div>
+                    <div class="card-list">
+                        <div class="card-list-item" *ngFor="let invoice of invoiceGroups" (click)="onSelectedInvoice(invoice)">
+                            <div class="list-img">
+    
+                            </div>
+                            <div class="list-text">
+                                <span class="title">{{invoice?.invoiceNo}}</span>
+                                <span class="sub">{{invoice?.patientObject?.personDetails?.firstName}} {{invoice?.patientObject?.personDetails?.lastName}}
+                                    | {{invoice?.updatedAt|date:'medium'}} </span>
+                            </div>
+                            <div style="float:right">
+                                <h2>{{invoice?.balance|numberThr}}</h2>
+                            </div>
+                        </div>
+                        <div *ngIf="isLoadingInvoice" class="card-list-item">
+                            <div class="text-center">
+                                <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
+                            </div>
+                        </div>
+                        <div *ngIf="invoiceGroups.length === 0 && !isLoadingInvoice" class="card-list-item">
+                            <div>No data available in table</div>
+                        </div>
+                    </div>
+                </div>
         </div>
         <div class="col-sm-8">
             <div class="card" *ngIf="selectedPatient._id !== undefined">
