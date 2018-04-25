@@ -141,7 +141,7 @@ function fixedGroupExisting(billGroups, results) {
     masterBillGroups.push(results[i]);
     let len6 = results[i].billItems.length - 1;
     for (let k = len6; k >= 0; k--) {
-      if ((results[i].billItems[k].isInvoiceGenerated === false || results[i].billItems[k].isInvoiceGenerated === undefined)) {
+      if ((results[i].billItems[k].isInvoiceGenerated === false || results[i].billItems[k].isInvoiceGenerated === undefined) && results[i].billItems[k].facilityServiceObject.serviceId !== undefined) {
         let bill = results[i].billItems[k];
         const _id = results[i]._id;
           const inBill = {};
