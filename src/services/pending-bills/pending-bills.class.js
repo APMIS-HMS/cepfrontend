@@ -152,7 +152,7 @@ function GetBillData(result) {
       result[j].grandTotalExcludeInvoice = 0;
       let len2 = result[j].billItems.length - 1;
       for (let k = len2; k >= 0; k--) {
-        if (result[j].billItems[k].isInvoiceGenerated === false && result[j].billItems[k].isBearerConfirmed === true && result[j].billItems[k].facilityServiceObject.categoryId !== undefined) {
+        if (result[j].billItems[k].isInvoiceGenerated === false && result[j].billItems[k].isBearerConfirmed === true) {
           result[j].grandTotalExcludeInvoice += parseInt(result[j].billItems[k].totalPrice.toString());
         }
       }
