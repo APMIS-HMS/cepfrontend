@@ -1,4 +1,5 @@
-import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
+import { Person } from './../../../models/facility-manager/setup/person';
+import { Component, OnInit, EventEmitter, Output, ViewChild, Input } from '@angular/core';
 
 @Component({
   selector: 'app-biodata-popup',
@@ -8,7 +9,7 @@ import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/cor
 export class BiodataPopupComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-
+  @Input() selectedPerson: Person = <Person>{};
   constructor() { }
 
   ngOnInit() {

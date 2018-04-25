@@ -1,5 +1,11 @@
+import { Employee } from './../../models/facility-manager/setup/employee';
+import { EmployeeService } from './../../services/facility-manager/setup/employee.service';
+import { PersonService } from 'app/services/facility-manager/setup';
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
+import { UserFacadeService } from 'app/system-modules/service-facade/user-facade.service';
 import { Component, OnInit } from '@angular/core';
-import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
+import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError, ActivatedRoute } from '@angular/router';
+import { Facility } from '../../models';
 
 @Component({
   selector: 'app-home-page',
@@ -8,17 +14,60 @@ import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, Naviga
 })
 export class HomePageComponent implements OnInit {
 
+  authData: any;
   pgMenuToggle = false;
   basicData_popup = false;
   basicData_update = false;
   tab1 = true;
   tab2 = false;
+  selectedUser;
+  selectedEmployee;
+  selectedPerson;
 
-  constructor(private router: Router) { }
+  listOfFacilities: Facility[] = [];
+  listOfEmployees: Employee[] = [];
+
+  constructor(private router: Router,  private authFacadeService:AuthFacadeService,
+     private personService: PersonService, private employeeService: EmployeeService,
+     private route: ActivatedRoute) { 
+   
+  }
 
   ngOnInit() {
     const page: string = this.router.url;
     this.checkPageUrl(page);
+    this.authFacadeService.getLogingUser().then(payload =>{
+      this.selectedUser = payload;
+      this.getPerson();
+      this.getEmployeeRecords();
+    }).catch(error =>{});
+
+    this.authFacadeService.getLogingEmployee().then(payload =>{
+      this.selectedEmployee = payload;
+    }).catch(error =>{
+
+    });
+
+    this.route.data.subscribe(data => {
+      data['multipleUsers'].subscribe((payload: any) => {
+        this.authData = payload.authData;
+        this.selectedPerson = payload.selectedPerson;
+        this.listOfFacilities = payload.listOfFacilities;
+      });
+    });
+
+  }
+
+  getPerson() {
+    this.personService.get(this.selectedUser.personId,{}).subscribe(payload =>{
+      this.selectedPerson = payload;
+    });
+  }
+  
+  getEmployeeRecords() {
+    this.employeeService.find({query:{personId: this.selectedUser.personId}}).subscribe(payload =>{
+      this.listOfEmployees = payload.data;
+    })
   }
   pgMenu_click() {
     this.pgMenuToggle = !this.pgMenuToggle;
