@@ -50,7 +50,7 @@
     "mongodb": "^3.0.1",
     "mongoose": "^4.13.6",
     "node-rest-client": "^3.1.0",
-    "npm": "^5.7.1",
+    "npm": "^5.8.0",
     "request": "^2.83.0",
     "request-promise": "^4.2.2",
     "rxjs": "^5.5.6",
