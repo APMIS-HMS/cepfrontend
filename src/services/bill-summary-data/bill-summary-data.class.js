@@ -53,7 +53,7 @@ class Service {
       PaidIvoices: totalAmountPaidInvoice,
       UnpaidInvoices: totalAmountUnpaidInvoice,
       UnpaidBills: totalAmountUnpaidBills
-    }
+    };
     return jsend.success(returnValue);
   }
 
