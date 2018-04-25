@@ -92,7 +92,7 @@
 <div class="container">
     <h2 style="text-align: center;">Payment Overview</h2>
     <div class="row">
-        <div class="col-sm-4">
+        <div class="col-md-4">
             <div class="card">
                 <div>
                     <h2 style="padding-top:10px; text-align: center">
@@ -105,28 +105,39 @@
                 </div>
                 <div class="card-list">
                     <div class="card-list-item" *ngFor="let pendingBill of pendingBills; let i = index;" routerLink="/dashboard/payment/bill/{{pendingBill?.principalObject?._id }}">
-                        <div class="list-img">
+                        <div class="row">
+                            <div class="col-xs-2">
+                                <div class="list-img">
 
+                                </div>
+                            </div>
+                            <div class="col-xs-8">
+                                <div class="list-text">
+                                    <span class="title">{{pendingBill?.principalObject?.personDetails?.firstName}} {{pendingBill?.principalObject?.personDetails?.lastName}}</span>
+                                    <span class="sub" *ngIf="pendingBill?.grandTotalExcludeInvoice!==0">{{ pendingBill?.updatedAt |date:'medium'}} <br> 
+                                        Total Amount Due: <b>NGN{{ pendingBill?.grandTotalExcludeInvoice|numberThr }}</b>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="col-xs-2">
+                                <div class="badge">
+                                    {{ pendingBill?.billItems.length }}
+                                </div>
+                            </div>
                         </div>
-                        <div class="list-text">
-                            <span class="title">{{pendingBill?.principalObject?.personDetails?.firstName}} {{pendingBill?.principalObject?.personDetails?.lastName}}</span>
-                            <span class="sub" *ngIf="pendingBill?.grandTotalExcludeInvoice!==0">{{ pendingBill?.updatedAt |date:'medium'}} | Total Amount Due:
-                                <b>{{ pendingBill?.grandTotalExcludeInvoice|numberThr }}</b>
-                            </span>
-                        </div>
-                        <div class="badge">
-                            {{ pendingBill?.billItems.length }}
-                        </div>
+                        
+                        
+                       
                     </div>
-                    <li *ngIf="loadingPendingBills">
+                    <div class="card-list-item" *ngIf="loadingPendingBills">
                         <div class="text-center">
                             <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </div>
-                    </li>
+                    </div>
 
-                    <li *ngIf="pendingBills.length === 0 && !loadingPendingBills" class="empWrap">
+                    <div *ngIf="pendingBills.length === 0 && !loadingPendingBills" class="card-list-item">
                         <div>No data available in table</div>
-                    </li>
+                    </div>
                 </div>
             </div>
             <div class="card">
@@ -153,54 +164,62 @@
                             <h2>{{invoice?.balance|numberThr}}</h2>
                         </div>
                     </div>
-                    <li *ngIf="isLoadingInvoice" class="empWrap">
+                    <div *ngIf="isLoadingInvoice" class="card-list-item">
                         <div class="text-center">
                             <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </div>
-                    </li>
-                    <li *ngIf="invoiceGroups.length === 0 && !isLoadingInvoice" class="empWrap">
+                    </div>
+                    <div *ngIf="invoiceGroups.length === 0 && !isLoadingInvoice" class="card-list-item">
                         <div>No data available in table</div>
-                    </li>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-sm-8">
+        <div class="col-md-8">
             <div class="row">
-                <div class="col-sm-4">
+                <div class="col-md-4">
                     <div class="card">
                         <div class="summary-card">
                             <span class="summary-label">
                                 Amount Received
                             </span>
                             <span class="summary-title">
-                                {{billSummaryData.PaidIvoices | currency:'NGN':true:'1.2-2'}}
-                                <i style="float: right; color: green" class=" fa-arrow-circle-o-down fa fa-2x"></i>
+                                <div class="row">
+                                    <div class="col-md-9">{{billSummaryData.PaidIvoices | currency:'NGN':true:'1.2-2'}}</div>
+                                    <div class="col-md-3"><i style="float: right; color: green" class="hidden-md fa-arrow-circle-o-down fa fa-2x"></i></div>
+                                </div>
                             </span>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-md-4">
                     <div class="card">
                         <div class="summary-card">
                             <span class="summary-label">
                                 Pending Invoice
                             </span>
                             <span class="summary-title">
-                                {{billSummaryData.UnpaidInvoices | currency:'NGN':true:'1.2-2'}}
-                                <i style="float: right; color: red" class=" fa-arrow-circle-o-up fa fa-2x"></i>
+                                <div class="row">
+                                    <div class="col-md-9">{{billSummaryData.UnpaidInvoices | currency:'NGN':true:'1.2-2'}}</div>
+                                    <div class="col-md-3"><i style="float: right; color: red" class="hidden-md fa-arrow-circle-o-up fa fa-2x"></i></div>
+                                </div>
                             </span>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-4">
+                <div class="col-md-4">
                     <div class="card">
                         <div class="summary-card">
                             <span class="summary-label">
                                 Pending Bills
                             </span>
                             <span class="summary-title">
-                                {{billSummaryData.UnpaidBills | currency:'NGN':true:'1.2-2'}}
-                                <i style="float: right; color: #3B86FF" class=" fa-money fa fa-2x"></i>
+                                <div class="row">
+                                    <div class="col-md-9">{{billSummaryData.UnpaidBills | currency:'NGN':true:'1.2-2'}}</div>
+                                    <div class="col-md-3"><i style="float: right; color: #3B86FF" class="fa-money fa fa-2x"></i></div>
+                                </div>
+                                
+                                
                             </span>
                         </div>
                     </div>
