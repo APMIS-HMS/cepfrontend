@@ -141,11 +141,9 @@ function fixedGroupExisting(billGroups, results) {
     masterBillGroups.push(results[i]);
     let len6 = results[i].billItems.length - 1;
     for (let k = len6; k >= 0; k--) {
-      if (results[i].billItems[k].isInvoiceGenerated === false || results[i].billItems[k].isInvoiceGenerated === undefined) {
+      if ((results[i].billItems[k].isInvoiceGenerated === false || results[i].billItems[k].isInvoiceGenerated === undefined) && results[i].billItems[k].facilityServiceObject.serviceId !== undefined) {
         let bill = results[i].billItems[k];
-        if(bill.facilityServiceObject.serviceId !== undefined){
-          const _id = results[i]._id;
-          // return fixedGroupExisting(results[i].billItems[k], results[i]._id, billGroups, results);
+        const _id = results[i]._id;
           const inBill = {};
           inBill.amount = bill.totalPrice;
           inBill.itemDesc = bill.description;
@@ -166,18 +164,6 @@ function fixedGroupExisting(billGroups, results) {
             existingGroup.bills.push(inBill);
             subTotal = subTotal + existingGroup.total;
             total = subTotal - discount;
-            // const existingBills = existingGroup.bills.filter(x => x.facilityServiceObject.serviceId.toString() === bill.facilityServiceObject.serviceId.toString());
-            // if (existingBills.length > 0) {
-            //     const existingBill = existingBills[0];
-            //     existingBill.qty = existingBill.qty + bill.quantity;
-            //     existingBill.amount = existingBill.qty * existingBill.unitPrice;
-            //     subTotal = subTotal + existingGroup.total;
-            //     total = subTotal - discount;
-            // } else {
-            //     existingGroup.bills.push(inBill);
-            //     subTotal = subTotal + existingGroup.total;
-            //     total = subTotal - discount;
-            // }
             if (existingGroup.bills.length > 5) {
               existingGroup.isOpened = false;
             }
@@ -197,7 +183,6 @@ function fixedGroupExisting(billGroups, results) {
             total = subTotal - discount;
             group.isOpened = true;
           }
-        }
       }
     }
   }

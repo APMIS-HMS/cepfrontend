@@ -54,7 +54,6 @@ class Service {
       UnpaidInvoices: totalAmountUnpaidInvoice,
       UnpaidBills: totalAmountUnpaidBills
     };
-    console.log(returnValue);
     return jsend.success(returnValue);
   }
 
