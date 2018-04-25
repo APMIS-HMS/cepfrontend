@@ -13,28 +13,36 @@
                 </div>
                 <div class="card-list">
                     <div class="card-list-item" *ngFor="let pendingBill of pendingBills; let i = index;" (click)="onClickPatientPendingBill(pendingBill)">
-                        <div class="list-img">
+                        <div class="row">
+                            <div class="col-xs-2">
+                                    <div class="list-img">
 
-                        </div>
-                        <div class="list-text">
-                            <span class="title">{{ pendingBill?.principalObject?.personDetails?.firstName }} {{ pendingBill?.principalObject?.personDetails?.lastName}}</span>
-                            <span class="sub">{{ pendingBill?.updatedAt | date:'medium' }} | Total Amount Due:
-                                <b>{{pendingBill?.grandTotalExcludeInvoice|numberThr }}</b>
-                            </span>
-                        </div>
-                        <div class="badge">
-                            {{ pendingBill?.billItems.length }}
-                        </div>
+                                        </div>
+                            </div>
+                            <div class="col-xs-8">
+                                    <div class="list-text">
+                                            <span class="title">{{ pendingBill?.principalObject?.personDetails?.firstName }} {{ pendingBill?.principalObject?.personDetails?.lastName}}</span>
+                                            <span class="sub">{{ pendingBill?.updatedAt | date:'medium' }} | Total Amount Due:
+                                                <b>{{pendingBill?.grandTotalExcludeInvoice|numberThr }}</b>
+                                            </span>
+                                        </div>
+                            </div>
+                            <div class="col-xs-2">
+                                    <div class="badge">
+                                            {{ pendingBill?.billItems.length }}
+                                    </div>
+                            </div>
+                        </div> 
                     </div>
-                    <li *ngIf="loadingPendingBills" class="empWrap">
+                    <div *ngIf="loadingPendingBills" class="card-list-item">
                         <div class="text-center">
                             <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </div>
-                    </li>
+                    </div>
 
-                    <li *ngIf="pendingBills.length === 0 && !loadingPendingBills" class="empWrap">
+                    <div *ngIf="pendingBills.length === 0 && !loadingPendingBills" class="card-list-item">
                         <div>No data available in table</div>
-                    </li>
+                    </div>
                 </div>
             </div>
         </div>
@@ -145,7 +153,6 @@
                                                         <i *ngIf="itemEditShow && (selectedBillItem._id ===bill._id)" (click)="itemEditToggle(bill)" class="fa fa-check" aria-hidden="true"></i>
                                                         <i (click)="onRemoveBill(bill,group)" class="fa fa-trash fa-2x fa-fw" aria-hidden="true"></i>
                                                         <i (click)="lineModifier_show(bill)" class="fa fa-plus fa-2x fa-fw">
-                                                            <!-- Add Modifier -->
                                                         </i>
                                                     </span>
                                                    
@@ -165,15 +172,17 @@
                             <div class="col-sm-6" style="font-size: 12px; text-align: right">
                                 <b>Sub-total</b> {{subTotal | currency:'NGN':true:'1.2-2' }}
                                 <br>
-                                <b>Discount</b> {{discount | currency:'NGN':true:'1.2-2'}} <i (click)="onRemoveDiscount()" class="fa fa-trash" aria-hidden="true"></i> Remove
+                                <b>Discount</b> {{discount | currency:'NGN':true:'1.2-2'}}<br> 
+                                <div class="btn"><i (click)="onRemoveDiscount()" class="fa fa-trash" aria-hidden="true"></i> Remove</div>
                             </div>
+
                             <hr class="col-sm-12">
                             <div style="font-size: 12px" class="col-sm-12">
                                 Grand Total
                                 <b style="float:right">{{total | currency:'NGN':true:'1.2-2'}}</b>
                             </div>
                         </div>
-                        <div class="row" style="text-align:center; margin-top: 10px">
+                        <div *ngIf="total > 0" class="row" style="text-align:center; margin-top: 10px">
                             <button style="margin: 10px" class="btn btn-blue" (click)="makePayment_onclick()">Make Payment</button>
                             <button style="margin: 10px" class="btn" [disabled]="isProcessing" (click)="onGenerateInvoice()">
                                 <span>
@@ -202,7 +211,7 @@
 
     
 
-    <app-global-patient-lookup></app-global-patient-lookup>
+    <!-- <app-global-patient-lookup></app-global-patient-lookup> -->
     <div *ngIf="makePayment_modal" class="modal-overlay">
         <div class="animated pulse">
             <div class="modal-header-wrap">
