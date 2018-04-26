@@ -6,11 +6,11 @@
             <div class="clinicalNoteWrap">
                 <div class="frm-x2">
                     <div class="frm-item-wrap">
-                        <apmis-lookup [formControl]="template" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Select Template" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+                        <apmis-lookup [formControl]="template" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="true" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Select Template" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                     </div>
 
                     <div class="frm-item-wrap">
-                        <apmis-lookup [formControl]="diagnosis" [url]="apmisLookupUrl" [query]="apmisDLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisDLookupDisplayKey" placeholder="Select Diagnosis" (selectedItem)="apmisDLookupHandleSelectedItem($event)"></apmis-lookup>
+                        <apmis-lookup [formControl]="diagnosis" [url]="apmisLookupUrl" [query]="apmisDLookupQuery" [isSocket]="true" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisDLookupDisplayKey" placeholder="Select Diagnosis" (selectedItem)="apmisDLookupHandleSelectedItem($event)"></apmis-lookup>
                     </div>
                 </div>
 

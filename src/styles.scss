@@ -413,6 +413,7 @@ select {
 
 .btn-green {
     background: rgb(46, 125, 50);
+    color: #fff;
     background: -webkit-gradient(linear, left top, right top, from(rgb(46, 125, 50)), to(rgb(102, 187, 106)));
     background: -webkit-linear-gradient(left, rgb(46, 125, 50), rgb(102, 187, 106));
     background: -moz-linear-gradient(left, rgb(46, 125, 50), rgb(102, 187, 106));
@@ -2221,6 +2222,7 @@ button,
     font-size: 1.4rem;
     color: #777;
 }
+
 .tooltip {
     font-size: 1.3em !important;
     &:after {
@@ -2242,11 +2244,11 @@ button,
     &:hover {
         &:after {
             opacity: 1;
-           margin-left: -20px;
-           //margin-left: -5px;
-           border-width: 5px;
-           border-style: solid;
-           border-color: #555 transparent transparent transparent;
-         }
+            margin-left: -20px;
+            //margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
     }
 }
