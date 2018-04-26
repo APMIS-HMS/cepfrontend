@@ -30,19 +30,20 @@ export class WardManagerAdmittedpageComponent implements OnInit {
 	wardVal = new FormControl();
 	roomVal = new FormControl();
 	searchControl = new FormControl();
-	loading: Boolean = false;
+	loading: Boolean = true;
 	selectedWard: any;
 	wsearchOpen = false;
 
-	constructor(private fb: FormBuilder,
+	constructor(
+		private fb: FormBuilder,
 		private _locker: CoolLocalStorage,
 		private _wardEventEmitter: WardEmitterService,
 		private _inPatientService: InPatientService,
 		private _bedOccupancyService: BedOccupancyService,
-    private _facilitiesService: FacilitiesService,
-    private _authFacadeService: AuthFacadeService,
-    private _systemModuleService: SystemModuleService,
-    private _inPatientListService: InPatientListService
+		private _facilitiesService: FacilitiesService,
+		private _authFacadeService: AuthFacadeService,
+		private _systemModuleService: SystemModuleService,
+		private _inPatientListService: InPatientListService
 	) {
     this.facility = <Facility>this._locker.getObject('selectedFacility');
 
@@ -174,31 +175,27 @@ export class WardManagerAdmittedpageComponent implements OnInit {
 	}
 
 	getAdmittedItems(wardCheckedIn: any) {
-    this._inPatientListService.customGet({ action: 'getAdmittedPatients' }, {
-      query: {
-        facilityId: this.facility._id,
-        currentWard: wardCheckedIn.typeObject.minorLocationId._id,
-        status: myGlobals.onAdmission
-      }
-    }).then(res => {
-        this.loading = false;
-				if (res.status === 'success' && res.data.length > 0) {
-          this.admittedPatient = res.data;
-				}
-			});
+		this._inPatientListService.customGet({ action: 'getAdmittedPatients' }, {
+		query: {
+			facilityId: this.facility._id,
+			currentWard: wardCheckedIn.typeObject.minorLocationId._id,
+			status: myGlobals.onAdmission,
+			$sort: { createdAt: -1 }
+		}
+		}).then(res => {
+			console.log(res);
+			this.loading = false;
+			if (res.status === 'success' && res.data.length > 0) {
+				this.admittedPatient = res.data;
+			}
+		});
 	}
 
-	// getwardLocationItems(wardCheckedIn: any) {
-	// 	this._facilitiesService.find({ query: { _id: this.facility._id }}).then(res => {
-	// 		// if (res.data.length !== 0) {
-	// 		// 	this.wardLocationItems = res.data[0].wards;
-	// 		// }
-	// 	});
-	// }
-  onRoomChange(e){
+	onRoomChange(e){
 
-  }
-onWardChange(e){
+	}
 
-}
+	onWardChange(e){
+
+	}
 }
