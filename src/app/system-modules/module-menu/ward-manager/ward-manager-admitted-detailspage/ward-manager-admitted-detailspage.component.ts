@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { InPatientService } from '../../../../services/facility-manager/setup/index';
 import * as myGlobals from '../../../../shared-module/helpers/global-config';
 import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
 	selector: 'app-ward-manager-admitted-detailspage',
@@ -17,7 +18,9 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
 	admittedPatientId: string;
 	selectedPatient: any;
 
-	constructor(private _wardEventEmitter: WardEmitterService,
+	constructor(
+		private _locker: CoolLocalStorage,
+		private _wardEventEmitter: WardEmitterService,
 		private _route: ActivatedRoute,
 		private _router: Router,
     public _inPatientService: InPatientService,
@@ -59,9 +62,9 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
   }
 
   onClickPatientDocumentation(patient: any) {
-		// this._router.navigate(['/dashboard/patient-manager/patient-manager-detail/', '5aa9b8fa9885e167608b3323'])
     // const text = 'If you click on yes, you will be redirected to the patient documentation.';
 		// this._systemModuleService.announceSweetProxy(text, 'question', this, null, null, patient);
+		this._locker.setObject('patient', patient.patient);
 		this._router.navigate([`/dashboard/patient-manager/patient-manager-detail`, patient.patient.personId]).then(res => {
 		}).catch(err => {
 		});
