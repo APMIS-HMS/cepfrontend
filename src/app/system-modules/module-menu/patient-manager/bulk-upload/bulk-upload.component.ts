@@ -2,6 +2,7 @@ import { Component, OnInit, EventEmitter, Output, Input, Renderer, ElementRef, V
 import { MatPaginator, PageEvent } from '@angular/material';
 import * as XLSX from 'xlsx';
 import { FormArray, FormGroup, FormBuilder } from '@angular/forms';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import {
   ProfessionService, RelationshipService, MaritalStatusService, GenderService,
   TitleService, CountriesService, PatientService, PersonService, EmployeeService, FacilitiesService, FacilitiesServiceCategoryService,
@@ -55,7 +56,8 @@ export class BulkUploadComponent implements OnInit {
     private titleService: TitleService,
     private genderService: GenderService, 
     private patientService: PatientService,
-    private _locker: CoolLocalStorage) { }
+    private _locker: CoolLocalStorage,
+  private systemModuleService: SystemModuleService) { }
 
   ngOnInit() {
     this.facility = <Facility>this._locker.getObject('selectedFacility');
@@ -156,7 +158,6 @@ export class BulkUploadComponent implements OnInit {
         arr.push(rowObj);
       }
     }
-    console.log(arr);
     this.uploadingLoading = false;
     this.patients = arr;
   }
@@ -258,9 +259,16 @@ export class BulkUploadComponent implements OnInit {
     this.patientService.bulkUpload(this.patients).then(payload => {
       console.log(payload);
       this.btnLoading = false;
+      if( payload.failedAttempts !== undefined || payload.failedAttempts.length > 0 ){
+        this.patients = [];
+        this.systemModuleService.announceSweetProxy('Patients information successfully uploaded!','success');
+      }else{
+        this.systemModuleService.announceSweetProxy('An error occured. Please try again!','warning');
+      }
     }).catch(err => {
       console.log(err);
       this.btnLoading = false;
+      this.systemModuleService.announceSweetProxy('Patients information successfully uploaded!','error');
     });
   }
 
