@@ -77,9 +77,16 @@
                 <td>{{beneficiary?.date | date:'shortDate'}}</td>
               </tr>
             </tbody>
-            <tbody *ngIf="beneficiaries.length == 0">
+            <tbody *ngIf="beneficiaries.length == 0 && !loading">
               <tr>
                 <td class="table-content" colspan="6" style="text-align: center"> No data available in table</td>
+              </tr>
+            </tbody>
+            <tbody *ngIf="beneficiaries.length === 0 && loading">
+              <tr>
+                <td class="table-content" colspan="6" style="text-align: center !important; padding: 10px !important;">
+                  <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
+                </td>
               </tr>
             </tbody>
           </table>

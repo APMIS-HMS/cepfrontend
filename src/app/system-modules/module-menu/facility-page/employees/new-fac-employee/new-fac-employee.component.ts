@@ -4,7 +4,7 @@ import { TitleCasePipe } from '@angular/common';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { CountryServiceFacadeService } from './../../../../service-facade/country-service-facade.service';
 import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormControl, FormBuilder, Validators} from '@angular/forms';
 import { ImageCropperComponent, CropperSettings } from 'ng2-img-cropper';
 import {
     ProfessionService, RelationshipService, MaritalStatusService, GenderService, TitleService, CountriesService, EmployeeService,
@@ -45,6 +45,9 @@ export class NewFacEmployeeComponent implements OnInit {
     frmNewPerson3_show = false;
     frmNewEmp4_show = false;
     frmPerson_show = false;
+
+    showSecurityQuestions = true;
+    validateField = Validators;
 
     newEmpIdControl = new FormControl();
     public frmNewEmp1: FormGroup;
@@ -135,16 +138,18 @@ export class NewFacEmployeeComponent implements OnInit {
             this.errMsg = '';
         });
 
-
         this.frmPerson = this.formBuilder.group({
             persontitle: [new Date(), [<any>Validators.required]],
-            firstname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
-            lastname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+            firstname: ['', [<any>Validators.required, <any>Validators.minLength(3),
+            <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+            lastname: ['', [<any>Validators.required, <any>Validators.minLength(3),
+            <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
             gender: [[<any>Validators.minLength(2)]],
             dob: [new Date(), [<any>Validators.required]],
-            motherMaidenName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
-            securityQuestion: ['', [<any>Validators.required]],
-            securityAnswer: ['', [<any>Validators.required]],
+            motherMaidenName: ['', [<any>Validators.required, <any>Validators.minLength(3),
+            <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+            securityQuestion: ['', [<any> this.validateField]],
+            securityAnswer: ['', [<any> this.validateField]],
             // email: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
             phone: ['', [<any>Validators.required, <any>Validators.pattern(PHONE_REGEX)]]
         });
@@ -196,7 +201,8 @@ export class NewFacEmployeeComponent implements OnInit {
             empLga: ['', [<any>Validators.required]],
             // tslint:disable-next-line:quotemark
             empEmail: ['', [<any>Validators.pattern("^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$"), <any>Validators.required]],
-            confirmEmpEmail: ['', [<any>Validators.pattern("^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$"), <any>Validators.required]],
+            confirmEmpEmail: ['', [<any>Validators.pattern('^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$'),
+            <any>Validators.required]],
             empPhonNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
 
         });
@@ -209,7 +215,7 @@ export class NewFacEmployeeComponent implements OnInit {
         });
 
         this.frmNewEmp1.controls['empState'].valueChanges.subscribe((value: any) => {
-            let country = this.frmNewEmp1.controls['empNationality'].value;
+            const country = this.frmNewEmp1.controls['empNationality'].value;
             this.countryFacadeService.getOnlyLGAndCities(country, value, true).then((lgsAndCities: any) => {
                 this.lgs = lgsAndCities.lgs;
             }).catch(err => {
@@ -232,7 +238,7 @@ export class NewFacEmployeeComponent implements OnInit {
             }).catch(err => { });
         });
         this.frmNewEmp2.controls['empContactState'].valueChanges.subscribe((value) => {
-            let country = this.frmNewEmp2.controls['empCountry'].value;
+            const country = this.frmNewEmp2.controls['empCountry'].value;
             this.countryFacadeService.getOnlyLGAndCities(country, value, true).then((lgsAndCities: any) => {
                 this.cities = lgsAndCities.cities;
             }).catch(err => {
@@ -332,7 +338,8 @@ export class NewFacEmployeeComponent implements OnInit {
         })).mergeMap((person: any) => {
             if (person.data.length > 0) {
                 this.selectedPerson = person.data[0];
-                return Observable.fromPromise(this.employeeService.find({ query: { personId: this.selectedPerson._id, facilityId:this.facility._id } }));
+                return Observable.fromPromise(this.employeeService.
+                    find({ query: { personId: this.selectedPerson._id, facilityId: this.facility._id } }));
             } else {
                 this.errMsg = 'Invalid APMIS ID, correct the value entered and try again!';
                 this.mainErr = false;
@@ -403,6 +410,7 @@ export class NewFacEmployeeComponent implements OnInit {
 
     newPerson1_show() {
         this.frmPerson_show = true;
+        this.showSecurityQuestions = false;
         this.frmNewPerson1_show = false;
         this.frmNewPerson2_show = false;
         this.frmNewPerson3_show = false;
@@ -438,6 +446,7 @@ export class NewFacEmployeeComponent implements OnInit {
 
     back_newPerson1() {
         this.frmNewPerson1_show = true;
+        this.showSecurityQuestions = false;
         this.frmNewPerson2_show = false;
         this.frmNewPerson3_show = false;
         this.frmNewEmp4_show = false;
@@ -508,7 +517,7 @@ export class NewFacEmployeeComponent implements OnInit {
             person.nationalityId = this.frmNewEmp1.controls['empNationality'].value;
             person.stateOfOriginId = this.frmNewEmp1.controls['empState'].value;
             // person.profileImage = this.empImg.image;
-            let body = {
+            const body = {
                 person: person,
                 facilityId: this.facility._id
             }
@@ -607,7 +616,7 @@ export class NewFacEmployeeComponent implements OnInit {
 
         this.employeeService.create(model).then(payload => {
 
-            this.employeeService.saveEmployee(model).then(pay =>{
+            this.employeeService.saveEmployee(model).then(pay => {
                 this.frmNewPerson1_show = false;
                 this.frmNewPerson2_show = false;
                 this.frmNewPerson3_show = false;
@@ -615,9 +624,10 @@ export class NewFacEmployeeComponent implements OnInit {
                 this.apmisId_show = false;
                 this.mainErr = true;
                 this.systemModuleService.off();
-              this.systemModuleService.announceSweetProxy('Employee created successfully!', 'success', null, null, null, null, null, null, null);
+                this.systemModuleService.announceSweetProxy('Employee created successfully!', 'success',
+                    null, null, null, null, null, null, null);
                 this.closeModal.emit(true);
-            }, err =>{
+            }, err => {
                 this.systemModuleService.announceSweetProxy('There was an error saving employee, try again!', error);
             })
 
@@ -642,7 +652,7 @@ export class NewFacEmployeeComponent implements OnInit {
                 securityQuestion: this.frmPerson.controls['securityQuestion'].value,
                 securityAnswer: this.titleCasePipe.transform(this.frmPerson.controls['securityAnswer'].value)
             };
-            let body = {
+            const body = {
                 person: personModel
             }
             const errMsg = 'There was an error while creating person, try again!';
@@ -735,7 +745,7 @@ export class NewFacEmployeeComponent implements OnInit {
     onEmpDeptChange(val) {
         this.units = [];
         if (val !== undefined) {
-            let deptIndex = this.facility.departments.findIndex(x => x.name === val);
+            const deptIndex = this.facility.departments.findIndex(x => x.name === val);
             if (deptIndex > -1) {
                 this.units = this.facility.departments[deptIndex].units;
             }
@@ -747,7 +757,7 @@ export class NewFacEmployeeComponent implements OnInit {
     onEmpJobTitleChange(val) {
         this.cadres = [];
         if (val !== undefined) {
-            let proIndex = this.professions.findIndex(x => x.name === val);
+            const proIndex = this.professions.findIndex(x => x.name === val);
             if (proIndex > -1) {
                 this.cadres = this.professions[proIndex].caders;
             }

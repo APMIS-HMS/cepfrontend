@@ -33,7 +33,6 @@ export class BillInvestigationComponent implements OnInit {
 	serviceId: string = '';
 	facilityServiceId: string = '';
 	categoryId: string = '';
-
 	mainErr: boolean = true;
 	errMsg = 'You have unresolved errors';
 
@@ -88,7 +87,8 @@ export class BillInvestigationComponent implements OnInit {
     const index = this.investigationData.index;
 		this.title = this.investigationData.investigationItems[index].name;
 
-    this._investigationService.find({ query: { 'facilityId._id': this.facility._id, name: this.title } }).then(res => {
+    this._investigationService.find({ query: { facilityId: this.facility._id, name: this.title } }).then(res => {
+      console.log(res);
       this.loading = false;
       res.data.forEach(item => {
         const investigation: InvestigationModel = <InvestigationModel>{};

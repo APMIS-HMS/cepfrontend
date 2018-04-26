@@ -137,7 +137,8 @@ export class WardManagerAdmissionpageComponent implements OnInit {
     this._inPatientListService.customGet({ action: 'getInPatientWaitingList'}, { query: {
         'facilityId': this.facility._id,
         'minorLocationId': checkedInWard.typeObject.minorLocationId._id,
-        isAdmitted: false
+        isAdmitted: false,
+        $sort: { createdAt: -1 }
       }
     }).then(res => {
       this.newAdmissionLoading = false;
@@ -153,7 +154,8 @@ export class WardManagerAdmissionpageComponent implements OnInit {
         facilityId: this.facility._id,
         proposedWard: checkedInWard.typeObject.minorLocationId._id,
         status: myGlobals.transfer,
-        isDischarged: false
+        isDischarged: false,
+        $sort: { createdAt: -1 }
       }
     }).then(res => {
       this.transferInLoading = false;
@@ -167,7 +169,8 @@ export class WardManagerAdmissionpageComponent implements OnInit {
         facilityId: this.facility._id,
         currentWard: checkedInWard.typeObject.minorLocationId._id,
         status: myGlobals.transfer,
-        isDischarged: false
+        isDischarged: false,
+        $sort: { createdAt: -1 }
       }
     }).then(res => {
       this.transferOutLoading = false;
@@ -192,7 +195,8 @@ export class WardManagerAdmissionpageComponent implements OnInit {
         facilityId: this.facility._id,
         currentWard: checkedInWard.typeObject.minorLocationId._id,
         status: myGlobals.discharge,
-        isDischarged: true
+        isDischarged: true,
+        $sort: { createdAt: -1 }
       }
     }).then(res => {
       this.dischargeLoading = false;

@@ -8,7 +8,7 @@
                     <div class="table-head col-md-1">
                         S/N
                     </div>
-                    <div class="table-head col-md-3">
+                    <div class="table-head col-md-2">
                         Patient
                     </div>
                     <div class="table-head col-md-2">
@@ -23,27 +23,25 @@
                     <div class="table-head col-md-1">
                         Date
                     </div>
-                    <div class="table-head col-md-1">
+                    <div class="table-head col-md-2">
                         Actions
                     </div>
                 </div>
                 <div class="card-content">
-                    <div class="card-list-item">
-                        <div *ngIf="listPatientAdmissionWaiting.length === 0 && !newAdmissionLoading">
-                            <div class="table-list col-lg-12">
-                                No data available in table
-                            </div>
+                    <div class="card-list-item" *ngIf="listPatientAdmissionWaiting.length === 0 && !newAdmissionLoading">
+                        <div class="table-list col-lg-12">
+                            No data available in table
                         </div>
-                        <div *ngIf="listPatientAdmissionWaiting.length === 0 && newAdmissionLoading">
-                            <div class="table-list col-lg-12">
-                                <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
-                            </div>
+                    </div>
+                    <div class="card-list-item" *ngIf="listPatientAdmissionWaiting.length === 0 && newAdmissionLoading">
+                        <div class="table-list col-lg-12">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </div>
                     </div>
                     <div class="card-list-item" *ngFor="let inPatientWaitingItem of listPatientAdmissionWaiting; let i = index;">
                         <div class="row">
-                            <div class="table-list col-lg-1">{{i+1}}</div>
-                            <div class="table-list col-lg-3">
+                            <div class="table-list col-md-1">{{i+1}}</div>
+                            <div class="table-list col-md-2">
                                 <div class="empWrapp">
                                     <div class="list-img">
                                         <div *ngIf="inPatientWaitingItem?.personDetails?.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
@@ -57,7 +55,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="table-list col-lg-2" (click)="navEpDetail(item)">
+                            <div class="table-list col-md-2" (click)="navEpDetail(item)">
                                 <div class="empWrapp">
                                     <div class="list-img">
                                         <div *ngIf="inPatientWaitingItem?.employeeDetails.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
@@ -69,13 +67,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="table-list col-lg-2">{{inPatientWaitingItem?.clinicId?.clinicName}}</div>
-                            <div class="table-list col-lg-2">{{inPatientWaitingItem?.minorLocation?.name}}</div>
-                            <div class="table-list col-lg-1">
+                            <div class="table-list col-md-2">{{inPatientWaitingItem?.clinicId?.clinicName}}</div>
+                            <div class="table-list col-md-2">{{inPatientWaitingItem?.minorLocation?.name}}</div>
+                            <div class="table-list col-md-1">
                                 <b>{{inPatientWaitingItem.createdAt | date }}</b><br>
                                 <small>{{inPatientWaitingItem.createdAt | amTimeAgo }}</small>
                             </div>
-                            <div class="table-list col-lg-1"><button mat-raised-button [disabled]="disableAdmitBtn" (click)="admitPatient_onClick(inPatientWaitingItem, typeChecker)" style="color: #fff;height: 30px;line-height: 1.5;" [innerHtml]="admitBtnText"> </button></div>
+                            <div class="table-list col-md-2"><button mat-raised-button [disabled]="disableAdmitBtn" (click)="admitPatient_onClick(inPatientWaitingItem, typeChecker)" style="color: #fff;height: 30px;line-height: 1.5;" [innerHtml]="admitBtnText"> </button></div>
                         </div>
                     </div>
                 </div>
@@ -191,16 +189,14 @@
                     </div>
                 </div>
                 <div class="card-content">
-                    <div class="card-list-item">
-                        <div *ngIf="listPatientTransferWaiting.length === 0 && !transferInLoading">
-                            <div class="table-list col-lg-12">
-                                No data available in table
-                            </div>
+                    <div class="card-list-item" *ngIf="listPatientTransferWaiting.length === 0 && !transferInLoading">
+                        <div class="table-list col-lg-12">
+                            No data available in table
                         </div>
-                        <div *ngIf="listPatientTransferWaiting.length === 0 && transferInLoading">
-                            <div class="table-list col-lg-12">
-                                <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
-                            </div>
+                    </div>
+                    <div class="card-list-item" *ngIf="listPatientTransferWaiting.length === 0 && transferInLoading">
+                        <div class="table-list col-lg-12">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </div>
                     </div>
                     <div class="card-list-item" *ngFor="let inPatientWaitingItem of listPatientTransferWaiting; let i = index;">
@@ -353,16 +349,14 @@
                     </div>
                 </div>
                 <div class="card-content">
-                    <div class="card-list-item">
-                        <div *ngIf="listPatientTransferOutWaiting.length === 0 && !transferOutLoading">
-                            <div class="table-list col-lg-12">
-                                No data available in table
-                            </div>
+                    <div class="card-list-item" *ngIf="listPatientTransferOutWaiting.length === 0 && !transferOutLoading">
+                        <div class="table-list col-lg-12">
+                            No data available in table
                         </div>
-                        <div *ngIf="listPatientTransferOutWaiting.length === 0 && transferOutLoading">
-                            <div class="table-list col-lg-12">
-                                <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
-                            </div>
+                    </div>
+                    <div class="card-list-item" *ngIf="listPatientTransferOutWaiting.length === 0 && transferOutLoading">
+                        <div class="table-list col-lg-12">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </div>
                     </div>
                     <div class="card-list-item" *ngFor="let inPatientWaitingItem of listPatientTransferOutWaiting; let i = index;">
@@ -509,22 +503,20 @@
                     </div>
                 </div>
                 <div class="card-content">
-                    <div class="card-list-item">
-                        <div *ngIf="listPatientDischarge.length === 0 && !dischargeLoading">
-                            <div class="table-list col-lg-12">
-                                No data available in table
-                            </div>
+                    <div class="card-list-item" *ngIf="listPatientDischarge.length === 0 && !dischargeLoading">
+                        <div class="table-list col-lg-12">
+                            No data available in table
                         </div>
-                        <div *ngIf="listPatientDischarge.length === 0 && dischargeLoading">
-                            <div class="table-list col-lg-12">
-                                <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
-                            </div>
+                    </div>
+                    <div class="card-list-item" *ngIf="listPatientDischarge.length === 0 && dischargeLoading">
+                        <div class="table-list col-lg-12">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </div>
                     </div>
                     <div class="card-list-item" *ngFor="let inPatientWaitingItem of listPatientDischarge; let i=index;">
                         <div class="row">
-                            <div class="table-list col-lg-1">{{i+1}}</div>
-                            <div class="table-list col-lg-3">
+                            <div class="table-list col-md-1">{{i+1}}</div>
+                            <div class="table-list col-md-3">
                                 <div class="empWrapp">
                                     <div class="list-img">
                                         <div *ngIf="inPatientWaitingItem?.personDetails?.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
@@ -538,10 +530,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="table-list col-lg-2">{{inPatientWaitingItem.currentWardObj.name}}</div>
-                            <div class="table-list col-lg-2">{{inPatientWaitingItem.transfers[inPatientWaitingItem.transfers.length -1].checkInDate | date:'medium'}}</div>
-                            <div class="table-list col-lg-2">{{inPatientWaitingItem.transfers[inPatientWaitingItem.transfers.length -1].checkOutDate | date:'medium' }} </div>
-                            <div class="table-list col-lg-2">
+                            <div class="table-list col-md-2">{{inPatientWaitingItem.currentWardObj.name}}</div>
+                            <div class="table-list col-md-2">{{inPatientWaitingItem.transfers[inPatientWaitingItem.transfers.length -1].checkInDate | date:'medium'}}</div>
+                            <div class="table-list col-md-2">{{inPatientWaitingItem.transfers[inPatientWaitingItem.transfers.length -1].checkOutDate | date:'medium' }} </div>
+                            <div class="table-list col-md-2">
                                 <div class="empWrapp">
                                     <div class="list-img">
                                         <div *ngIf="inPatientWaitingItem?.dischargedByObj?.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>

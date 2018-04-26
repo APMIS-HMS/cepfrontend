@@ -1,9 +1,127 @@
 @import "../../../../../globals/variables.scss";
-@import "../../wallet/wallet.component.scss";
+// @import "../../wallet/wallet.component.scss";
 
-@import "../../patient-manager/new-patient/new-patient.component.scss";
+// @import "../../patient-manager/new-patient/new-patient.component.scss";
 
+.card{
+    position: relative;
+    background: #fff;
+    width: 100%;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.16);
+    margin-top: 20px;
+    .card-header{
+        background: #337ab7;
+        color: #fff;
+        font-size: 1.2rem;
+        padding: 10px;
+        vertical-align: middle;
+        line-height: 30px;
+        border-bottom: solid 1px #fff;
+        font-weight: 600;
+        .table-head{
+            border-right: solid 1px #fff;
+            text-align: center;
+            .search-box{
+                margin-top: 10px;
+            }
+        }
+        .table-header-input{
+            background: rgba(255, 255, 255, 0.233);
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            text-align: center;
+            font-size: 1.2rem !important; 
+            height: 30px;       
+        }
+        .table-header-select{
+            background: rgba(255, 255, 255, 0.233);
+            color: #dddddd;
+            border: none;
+            border-radius: 5px;
+            width: 100%;
+            text-align: center;
+            height: 30px;            
+            font-size: 1.2rem !important;                    
+        }
+        .table-head:last-of-type{
+            border: none;
+        }
+    }
+    .card-content{
+        font-size: 1.2rem;
+        .table-list{ 
+            line-height: 30px;            
+            box-sizing: border-box;          
+            text-align: center;
+        }
+        
+    }
+    .card-header-box{
+        background: rgba(255, 255, 255, 0.16);
+        color: #fff;
+        border: none;
+        font-size: 1.2rem !important;
+        padding: 10px !important;
+        width: 100%;
+        height: 30px !important;
+        box-sizing: border-box;
+    }
+    .card-list-item {
+        padding: 10px;  
+        border-bottom: solid rgb(204, 204, 204) 1px;
+        padding-top: 20px;
+        padding-bottom: 20px;
+        font-size: 1.2rem;
+        transition: 0.2s;
+    }
+    .options{
+        font-size: 1.2rem;
+        opacity: 0;
+        cursor: pointer;
+    }
+    .summary-title{
+        display: block;        
+        padding: 10px;
+        padding-top : 20px;        
+        font-size: 3rem;
+        color: #b3b3b3;
+        margin-bottom: 10px;
+        font-weight: 100;
+    }
+    .summary-footer{
+        width: 100%;
+        background: #33A6FF;
+        color: #fff;
+        font-size: 1.2rem;
+        font-weight: bold;
+        padding: 10px;
+        box-sizing: border-box;
+    }
+    .chart-side{
+        padding-top: 110px !important;
+    }
+    .chart-title{
+        font-weight: 100;
+        font-size: 4rem;
+        color: #b3b3b3;
+        display: block;
+    }
+    .chart-subtitle{
+        font-weight: 900;
+        font-size: 1.2rem;
+        color: #b3b3b3;
+        display: block;
+    }
+}
 
+.patient-detail-wrapper{
+    overflow-x: hidden;
+}
+.next-of-kin-body-wrapper{
+    overflow-x: hidden;    
+}
 
 .page-title {
     text-align: center;
@@ -158,7 +276,6 @@ textarea.mat-input-element {
 .tbl-resp-wrap{
     min-width: 100%;
     padding-bottom: 100px;
-    overflow-y: auto; 
 }
 .tbl-resp-wrap table{
     min-width: 850px;
@@ -231,7 +348,7 @@ textarea.mat-input-element {
 .suggestion:hover{
     background: #eee;
 }
-.listing-img{
+.list-img{
     display: flex;
     justify-content: center;
     align-items: center;
@@ -240,7 +357,114 @@ textarea.mat-input-element {
     border-radius: 100%;
     overflow: hidden;
     margin-right: 10px;
+    float: left;
 }
-.listing-img img{
+.list-img img{
     width: 100%;
+}
+
+/*Badges*/
+.badge {
+    display: inline-block;
+    padding: .25em .4em;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25rem;
+}
+.badge-primary {
+    color: #fff;
+    background-color: #007bff;
+}
+.badge-secondary {
+    color: #fff;
+    background-color: #6c757d;
+}
+.badge-success {
+    color: #fff;
+    background-color: #28a745;
+}
+.badge-danger {
+    color: #fff;
+    background-color: #dc3545;
+}
+.badge-light {
+    color: #212529;
+    background-color: #f8f9fa;
+}
+
+/*Cursors*/
+.cursor-pointer{
+    cursor: pointer;
+}
+
+/*Tooltip PopOver for Tags*/
+.tagPopover-listWrap {
+    right: 10rem;
+    position: absolute;
+    max-width: 308px;
+    bottom: 50%;
+    display: none;
+    padding: 2px;
+    background: rgba(0,0,0,.87);
+    z-index: 200;
+    border: 1px solid rgba(0,0,0,.87);
+    border-radius: 7px;
+    font-size: 1.2rem;
+    color: white;
+}
+
+.listWrapper{
+    line-height: 17px;
+    overflow-y: auto;
+    max-height: 150px;
+}
+
+.td-tagPopover:hover {
+    .tagPopover-listWrap { 
+        display: block;
+    }
+}
+
+.tagPopover-listWrap:hover {
+    display: block;
+}
+
+.tagPopover-listItem {
+    padding: 5px 10px;
+}
+
+.tagPopover-listItem:hover {
+    background: rgba(0,0,0,1);
+}
+
+.tagPopover-listItem span {
+    padding-right: 2px;
+}
+
+.tagPopover-listItem i {
+    cursor: pointer;
+}
+
+.tagPopover-listItem i:hover {
+    color: #ff2500;
+}
+.list-img {
+    margin: 0 15px;
+}
+.pointer-wrap {
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+
+.pointer-wrap i {
+    position: absolute;
+    font-size: 3.5rem;
+    color: rgba(0,0,0,.87);
+    top: -10px;
+    right: 70px;
+    z-index: 1;
 }

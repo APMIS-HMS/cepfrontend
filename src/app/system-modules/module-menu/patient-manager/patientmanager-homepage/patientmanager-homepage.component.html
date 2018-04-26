@@ -1,78 +1,81 @@
-<div class="tbl-resp-wrap">
-    <table cellpadding="0" cellspacing="0" border="0.5">
-        <thead>
-            <tr>
-                <th>
-                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                    <span style="padding-left: 3px;">Patient</span>
-                </th>
-                <th>
-                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-
-                    <span style="padding-left: 3px;">Age</span>
-                </th>
-                <th>
-                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                    <span style="padding-left: 3px;">Gender</span>
-                </th>
-                <th>
-                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                    <span style="padding-left: 3px;">Phone</span>
-                </th>
-                <th>
-                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                    <span style="padding-left: 3px;">Email</span>
-                </th>
-                <!-- <th>
-                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i> -->
-                <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                <!-- <span style="padding-left: 3px;">Address</span>
-                </th> -->
-                <th>
-                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                    <span style="padding-left: 3px;">Born</span>
-                </th>
-                <th>
-                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                    <span style="padding-left: 3px;">Apmis ID</span>
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-
-        <tbody>
-            <tr *ngFor="let patient of patients">
-                <td class="pointer" (click)="navEpDetail(patient)">
+<!-- <div class="tbl-resp-wrap">
+    
+</div> -->
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="table-head col-xs-3">
+                Patient
+            </div>
+            <div class="table-head col-xs-1">
+                Age
+            </div>
+            <div class="table-head col-xs-1">
+                Gender
+            </div>
+            <div class="table-head col-xs-2">
+                Phone
+            </div>
+            <div class="table-head col-xs-2">
+                Email
+            </div>
+            <div class="table-head col-xs-1">
+                No. Of Tags
+            </div>
+            <div class="table-head col-xs-2">
+                Apmis ID
+            </div>
+        </div>
+    </div>
+    <div class="card-content">
+        <div *ngIf="patients.length === 0 && !loading" class="row">
+            <div class="card-list-item col-xs-12 table-list">
+                No data available in table
+            </div>
+        </div>
+        <div *ngIf="patients.length === 0 && loading" class="row">
+            <div class="card-list-item col-xs-12 table-list">
+                <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue"></i>
+            </div>
+        </div>
+        <div class="card-list-item pointer" *ngFor="let patient of patients">
+            <div class="row">
+                <div (click)="navEpDetail(patient)" class="table-list col-xs-3">
                     <div class="empWrap">
-                        <div class="list-img">
-                            <div *ngIf="patient?.personDetails?.profileImageObject == undefined">
-                                <img src="assets/images/users/default.png">
-                            </div>
-                            <div *ngIf="patient?.personDetails?.profileImageObject != undefined">
-                                <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)">
-                            </div>
-                        </div>
-                        <div>{{patient.personDetails?.lastName}} {{patient.personDetails?.firstName}}</div>
+                        <span class="list-img">
+                            <img *ngIf="patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+                            <img *ngIf="patient?.personDetails?.profileImageObject != undefined" class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)">
+                        </span>
+                        <span> {{patient.personDetails?.lastName}} {{patient.personDetails?.firstName}}</span>
                     </div>
-                </td>
-                <td class="pointer" (click)="navEpDetail(patient)">{{patient?.age}}</td>
-                <td class="pointer" (click)="navEpDetail(patient)">
+                </div>
+                <div (click)="navEpDetail(patient)" class="table-list col-xs-1">{{patient?.age}}</div>
+                <div (click)="navEpDetail(patient)" class="table-list col-xs-1">
                     <span *ngIf="patient.personDetails?.gender ==='Male'">M</span>
                     <span *ngIf="patient.personDetails?.gender ==='Female'">F</span>
                     <span *ngIf="patient.personDetails?.gender!='Female' && patient.personDetails?.gender!='Male'">N</span>
-                </td>
-                <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.primaryContactPhoneNo}}</td>
-                <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.email}}</td>
-                <!-- <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails.homeAddress.street}} {{patient.personDetails.addressObj.city}} {{patient.personDetails.addressObj.state}} {{patient.personDetails.addressObj.country}}</td> -->
-                <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.dateOfBirth | date}}</td>
-                <td class="pointer" (click)="navEpDetail(patient)">{{patient.personDetails?.apmisId}}</td>
-                <td class="action-placeholder" style="text-align:center;">
+                </div>
+                <div (click)="navEpDetail(patient)" class="table-list col-xs-2">
+                    {{patient.personDetails?.primaryContactPhoneNo}}
+                </div>
+                <div (click)="navEpDetail(patient)" class="table-list col-xs-2">{{patient.personDetails?.email}}</div>
+                <div (click)="navEpDetail(patient)" class="table-list col-xs-1 td-tagPopover">
+                    <span class="badge badge-secondary">{{patient?.tags.length}}</span>
+                    <ul class="tagPopover-listWrap animated zoomIn" *ngIf="patient?.tags.length > 0">
+                        <div class="listWrapper">
+                            <!-- <li class="tagPopover-listItem" *ngFor="let tag of patient?.tags">
+                                <ng-container>
+                                    <span>{{tag.name}}</span>
+                                </ng-container>
+                            </li> -->
+                            <span>{{combineTagsToString(patient?.tags)}}</span>
+                        </div>
+                    </ul>
+                </div>
+                <div (click)="navEpDetail(patient)" class="table-list col-xs-1">
+                    {{patient.personDetails?.apmisId}}
+                </div>
+                <div class="table-list col-xs-1 action-placeholder">
                     <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                     <div class="action-container shadow-RB">
                         <div (click)="slideEdit(patient)" class="action-item">
@@ -101,18 +104,11 @@
                         </div>
                         <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
                     </div>
-                </td>
-            </tr>
-            <tr *ngIf="patients.length === 0 && !loading">
-                <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;"> No data available in table</td>
-            </tr>
-            <tr *ngIf="patients.length === 0 && loading">
-                <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;">
-                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
 </div>
 
 <div class="btn-center">
@@ -129,7 +125,11 @@
                             <div class="panel panel-default">
                                 <div class="panel-body">
                                     <a (click)="close_onClick()" aria-hidden="true" class="modal-close-ico">X</a>
-                                    <legend class="modal_title">Edit Patient</legend>
+                                    <legend class="modal_title">
+                                        Edit Patient
+                                        <br>
+                                        <h4>{{selectedPatient.firstName}} {{selectedPatient.lastName}}</h4>
+                                    </legend>
                                     <form class="form form-signup" role="form" [formGroup]="patientEditForm" (click)="hideSuggestions()">
                                         <mat-tab-group style="padding: 10px;" #tabGroup selectedIndex="{{selectedIndex}}">
                                             <mat-tab label="Patient" style="padding: 10px;">
@@ -226,7 +226,7 @@
                                             </mat-tab>
                                             <mat-tab label="ID Tags" style="padding: 10px;">
                                                 <div class="patient-detail-wrapper">
-                                                    <div class="mainErr animated shake" *ngIf="mainErr">{{errMsg}}</div>
+                                                    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
                                                     <div class="row">
                                                         <div class="col-xs-6">
                                                             <mat-input-container class="example-full-width">
@@ -251,13 +251,11 @@
                                                     </div>
                                                     <div>
                                                         <span class="badge blue-gradient" *ngFor="let tag of patientToEdit?.tags" style="padding:10px 20px; margin: 3px; border-radius: 25px; font-size: 12px;">
-                                                                <span class="big-label">
-                                                                    {{tag.name}} 
-                                                                </span>
-                                                                &nbsp;
-                                                                <i *ngIf="tag.tagType === 'identification'" class="fa fa-info"></i>
-                                                                &nbsp;&nbsp;
-                                                                <i (click)="removeTag(tag)" class="fa fa-trash-o big-label" aria-hidden="true"></i>
+                                                            <span class="big-label">
+                                                                {{tag.name}}
+                                                            </span> &nbsp;
+                                                            <i *ngIf="tag.tagType === 'identification'" class="fa fa-info"></i> &nbsp;&nbsp;
+                                                            <i (click)="removeTag(tag)" class="fa fa-trash-o big-label cursor-pointer" aria-hidden="true"></i>
                                                         </span>
                                                     </div>
                                                 </div>
@@ -295,14 +293,16 @@
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="add-next-of-kin-box">
+                                                        <a class="btn btn-blue" (click)="addNewNextOfKin();"> Add Next Of Kin
+                                                            <i class="fa fa-plus"></i>
+                                                        </a>
+                                                    </div>
                                                 </div>
-                                                <div class="add-next-of-kin-box">
-                                                    <a (click)="addNewNextOfKin();"> Add Next Of Kin
-                                                        <i class="fa fa-plus"></i>
-                                                    </a>
-                                                </div>
+
                                             </mat-tab>
                                             <mat-tab label="Plan">
+                                                <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
                                                 <div class="next-of-kin-body-wrapper">
                                                     <div class="row" *ngIf="!isEdit">
                                                         <div class="col-xs-12" *ngFor="let pat of patient.paymentPlan" style="margin-bottom: 10px">
@@ -310,7 +310,8 @@
                                                                 <div class="row">
                                                                     <div class="col-xs-8 left">
                                                                         <i class="big-label"> {{(pat.isDefault === true) ? 'Current Plan |' : ''}}
-                                                                            {{(pat.planType === 'wallet') ? 'Out Of Pocket' : pat.planType}}
+                                                                            {{(pat.planType === 'wallet') ? 'Out Of Pocket'
+                                                                            : pat.planType}}
                                                                         </i>
                                                                     </div>
                                                                     <div (click)="isEditFn(patient, pat.planType)" class="col-xs-2 right">
@@ -334,23 +335,6 @@
                                                             </div>
 
                                                             <div class="tab-content">
-                                                                <!-- <div *ngIf="tabWallet">
-                                                                    <div class="plan">
-                                                                        <div class="plan-title">Out of Pocket</div>
-                                                                        <div class="row frm-item-wrap">
-                                                                            <mat-form-field class="col-xs-12 col-sm-6">
-                                                                                <mat-select placeholder="Select Service" [formControl]="walletPlan" (change)="getServicePlans($event.value)">
-                                                                                    <mat-option *ngFor="let service of services" [value]="service">{{service.name}}</mat-option>
-                                                                                </mat-select>
-                                                                            </mat-form-field>
-                                                                            <mat-form-field class="col-xs-12 col-sm-6">
-                                                                                <mat-select placeholder="Select Plan" [formControl]="walletPlanPrice">
-                                                                                    <mat-option *ngFor="let pricePlan of servicePricePlans" [value]="pricePlan.price">{{pricePlan.name}}</mat-option>
-                                                                                </mat-select>
-                                                                            </mat-form-field>
-                                                                        </div>
-                                                                    </div>
-                                                                </div> -->
 
                                                                 <div *ngIf="tabInsurance">
                                                                     <div class="plan">
@@ -388,7 +372,7 @@
                                                                             <mat-form-field class="col-xs-12 col-sm-6">
                                                                                 <input matInput mat-error placeholder="Employee Id" [formControl]="employeeId">
                                                                             </mat-form-field>
-                                                                        </div>                                            
+                                                                        </div>
                                                                         <!-- <div class="another">Another Company</div> -->
                                                                     </div>
                                                                 </div>
@@ -423,7 +407,8 @@
                                                                         <span *ngIf="!loading">Next</span>
                                                                         <span *ngIf="loading">Loading...</span>
                                                                     </button>
-                                                                    <button class="small-btn" (click)="next('company')" *ngIf="tabCompany" [disabled]="!ccPlan.valid || loading" mat-raised-button>
+                                                                    <button class="small-btn" (click)="next('company')" *ngIf="tabCompany" [disabled]="(!ccPlanId.valid && !employeeId.valid) || loading"
+                                                                        mat-raised-button>
                                                                         <span *ngIf="!loading">Next</span>
                                                                         <span *ngIf="loading">Loading...</span>
                                                                     </button>

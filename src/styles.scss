@@ -114,6 +114,11 @@ select {
     clear: both;
 }
 
+.text-center {
+    width: 100%;
+    text-align: center;
+}
+
 .base-wrap {
     position: relative;
     width: 1200px;
@@ -408,6 +413,7 @@ select {
 
 .btn-green {
     background: rgb(46, 125, 50);
+    color: #fff;
     background: -webkit-gradient(linear, left top, right top, from(rgb(46, 125, 50)), to(rgb(102, 187, 106)));
     background: -webkit-linear-gradient(left, rgb(46, 125, 50), rgb(102, 187, 106));
     background: -moz-linear-gradient(left, rgb(46, 125, 50), rgb(102, 187, 106));
@@ -2215,4 +2221,34 @@ button,
     text-align: center;
     font-size: 1.4rem;
     color: #777;
+}
+
+.tooltip {
+    font-size: 1.3em !important;
+    &:after {
+        font-family: Arial, Helvetica, sans-serif;
+        opacity: 0;
+        transition: all 0.4s;
+        font-size: 1.2rem !important;
+        position: absolute;
+        margin-left: -100px;
+        display: block;
+        padding: 3px;
+        content: attr(data-tooltip);
+        background: rgba(0, 0, 0, 0.74);
+        border-radius: 6px;
+        color: #fff;
+        min-width: auto;
+        text-align: center;
+    }
+    &:hover {
+        &:after {
+            opacity: 1;
+            margin-left: -20px;
+            //margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: #555 transparent transparent transparent;
+        }
+    }
 }

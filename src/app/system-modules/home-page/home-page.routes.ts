@@ -1,3 +1,4 @@
+import { SwitchUserResolverService } from './../../resolvers/module-menu/swith-user-resolver.service';
 import { RouterModule, Routes } from '@angular/router';
 import { HomePageComponent } from './home-page.component';
 import { HomePageHomeComponent } from './home-page-home.component';
@@ -10,13 +11,14 @@ const HOMEPAGE_ROUTES: Routes = [
     {
         path: '', component: HomePageHomeComponent, children: [
             { path: '', component: HomePageComponent },
-            { path: 'home-page', component: HomePageComponent },
+            { path: 'home-page', component: HomePageComponent, resolve: { multipleUsers: SwitchUserResolverService } },
             {
                 // path: 'patient-manager-detail/:id', component: PatientmanagerDetailpageComponent
                 // resolve: { patient: PatientResolverService, appointment: AppointmentResolverService,
                 // loginEmployee: LoginEmployeeResolverService }
             }
-        ]
+        ],
+        resolve: { multipleUsers: SwitchUserResolverService }
     }
 ];
 

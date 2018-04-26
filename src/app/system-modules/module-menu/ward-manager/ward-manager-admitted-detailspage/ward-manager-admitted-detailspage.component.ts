@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { InPatientService } from '../../../../services/facility-manager/setup/index';
 import * as myGlobals from '../../../../shared-module/helpers/global-config';
 import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
 	selector: 'app-ward-manager-admitted-detailspage',
@@ -13,10 +14,13 @@ import { SystemModuleService } from '../../../../services/module-manager/setup/s
 export class WardManagerAdmittedDetailspageComponent implements OnInit {
 	dischargePatient = false;
 	transferPatient = false;
+	addVitals = false;
 	admittedPatientId: string;
 	selectedPatient: any;
 
-	constructor(private _wardEventEmitter: WardEmitterService,
+	constructor(
+		private _locker: CoolLocalStorage,
+		private _wardEventEmitter: WardEmitterService,
 		private _route: ActivatedRoute,
 		private _router: Router,
     public _inPatientService: InPatientService,
@@ -58,18 +62,25 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
   }
 
   onClickPatientDocumentation(patient: any) {
-    const text = 'If you click on yes, you will be redirected to the patient documentation.';
-    this._systemModuleService.announceSweetProxy(text, 'question', this, null, null, patient, null, null, null);
-    // routerLink="/dashboard/patient-manager/patient-manager-detail/{{ selectedPatient?.patient?.personId }}"
-  }
+    // const text = 'If you click on yes, you will be redirected to the patient documentation.';
+		// this._systemModuleService.announceSweetProxy(text, 'question', this, null, null, patient);
+		this._locker.setObject('patient', patient.patient);
+		this._router.navigate([`/dashboard/patient-manager/patient-manager-detail`, patient.patient.personId]).then(res => {
+		}).catch(err => {
+		});
+	}
 
-  sweetAlertCallback(result, data) {
-    if (result.value) {
-      this._router.navigate([`/dashboard/patient-manager/patient-manager-detail`, data.patient.personId]).then(res => {
-      }).catch(err => {
-      });
-    }
-  }
+	onClickVitals() {
+		this.addVitals = true;
+	}
+
+  // sweetAlertCallback(result, data) {
+  //   if (result.value) {
+  //     this._router.navigate([`/dashboard/patient-manager/patient-manager-detail`, data.patient.personId]).then(res => {
+  //     }).catch(err => {
+  //     });
+  //   }
+  // }
 
 	onClickDischargePatient() {
 		this.dischargePatient = true;
@@ -82,6 +93,7 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
 	close_onClick() {
 		this.dischargePatient = false;
 		this.transferPatient = false;
+		this.addVitals = false;
 	}
 
 }

@@ -1,141 +1,93 @@
 <div class="checkedinPatients">
-    <table cellpadding="0" cellspacing="0" border="0.5">
-        <thead>
-            <tr>
-                <th>
-                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                    <span style="padding-left: 3px;">Name</span>
-                </th>
-                <th>
-                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                    <span style="padding-left: 3px;">Currently In</span>
-                </th>
-                <th>
-                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                    <span style="padding-left: 3px;">Care Giver</span>
-                </th>
-                <th>
-                    <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
-                    <span style="padding-left: 3px;">Checked In</span>
-                </th>
-                <th>
-                    <i class="fa fa-sort-numeric-asc" aria-hidden="true"></i>
-                    <span style="padding-left: 3px;">Time Spent</span>
-                </th>
-                <th>Actions</th>
-            </tr>
-        </thead>
 
-        <tbody>
-            <tr>
-                <td colspan="6">
-                    <div class="survery" style="padding: 10px 5px;">
-                        <div class="row" style="margin-left: 0; margin-right: 0">
-                            <div class="col-sm-3" style="padding-left: 0;">
-                                <select class="form-control">
-                                    <option value="Select by location" disabled selected>Select Doctor</option>
-                                    <option *ngFor="let employee of employees" value="employee.id">{{ employee.personDetails.firstName }} {{ employee.personDetails.lastName }}</option>
-                                </select>
-                                <!-- <mat-select placeholder="Doctor">
-                                    <mat-option *ngFor="let employee of employees" value="employee.id">{{ employee.personDetails.personFullName }}</mat-option>
-                                </mat-select> -->
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="table-head col-xs-2">
+                    Name
+                </div>
+                <div class="table-head col-xs-2">
+                    Currently In
+                </div>
+                <div class="table-head col-xs-2">
+                    Care Giver
+                </div>
+                <div class="table-head col-xs-2">
+                    Checked In
+                </div>
+                <div class="table-head col-xs-1">
+                    Time Spent
+                </div>
+                <div class="table-head col-xs-3">
+                    <i class="fa fa-search fa-fw"></i>
+                </div>
+            </div>
+        </div>
+        <div class="card-content">
+            <div *ngIf="checkedInAppointments.length === 0 && !loading" class="row">
+                <div class="card-list-item col-xs-12 table-list">
+                    No data available in table
+                </div>
+            </div>
+
+            <div *ngIf="checkedInAppointments.length === 0 && loading" class="row">
+                <div class="card-list-item col-xs-12 table-list">
+                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue"></i>
+                </div>
+            </div>
+            <div class="card-list-item" *ngFor="let appointment of checkedInAppointments; let i = index">
+                <div class="row">
+                    <div class="table-list col-xs-2">
+                        <div title="{{appointment?.patientDetails?.personDetails?.primaryContactPhoneNo}} {{appointment?.patientDetails?.personDetails?.email}} Reason for Vist: {{appointment.appointmentReason == NULL ? 'None' : appointment.appointmentReason }}" class="tooltip empWrap"
+                            (click)="goToPatientPage(appointment,false)">
+                            <div class="list-img" *ngIf="appointment?.patientDetails?.personDetails?.profileImageObject == undefined">
+                                <img src="assets/images/users/default.png">
                             </div>
-                            <div class="col-sm-3" style="padding-left: 0;">
-                                <select class="form-control">
-                                    <option value="Select by location" disabled selected>Sort by Location</option>
-                                    <option *ngFor="let location of clinicHelperService.clinicLocations" value="location.id">{{location.name }}</option>
-                                </select>
-                                <!-- <mat-select placeholder="Sort By Location">
-                                    <mat-option *ngFor="let location of clinicHelperService.clinicLocations" value="location.id">{{location.name }}</mat-option>
-                                </mat-select> -->
+                            <div class="list-img" *ngIf="appointment?.patientDetails?.personDetails?.profileImageObject !== undefined">
+                                <img [src]="facilityService.transform(appointment.patientDetails.personDetails?.profileImageObject?.thumbnail)">
                             </div>
-                            <div class="col-sm-3" style="padding-left: 0;">
-                                <select class="form-control">
-                                    <option value="Select by Clinic" disabled selected>Sort by Clinic</option>
-                                    <option *ngFor="let clinic of clinics" value="clinic.id">{{clinic.clinicName }}</option>
-                                </select>
-                                <!-- <mat-select placeholder="Sort By Clinics">
-                                    <mat-option *ngFor="let clinic of clinics" value="clinic.id">{{clinic.clinicName }}</mat-option>
-                                </mat-select> -->
-                            </div>
-                            <div class="col-sm-3" style="padding-right: 0;padding-left: 0;">
-                                <div class="col-xs-10" style="padding-left: 0;">
-                                    <input type="text" placeholder="Search Checked in Patient" class="searchInput" />
-                                    <!-- <mat-input-container class="example-full-width">
-                                        <input matInput placeholder="Search Checked in Patient">
-                                    </mat-input-container> -->
-                                </div>
-                                <div class="col-xs-2" style="padding-right: 0;padding-left: 0;">
-                                    <button mat-raised-button style="background: #FAFAFA;height: 33px;line-height: 1.5;min-width:40px;">
-                                        <i class="fa fa-search"></i>
-                                    </button>
-                                </div>
+                            <div>
+                                {{appointment?.patientDetails?.personDetails?.lastName}} {{appointment?.patientDetails?.personDetails?.firstName}}
+
                             </div>
                         </div>
                     </div>
-                </td>
-            </tr>
-            <tr *ngIf="checkedInAppointments.length === 0 && !loading">
-                <td class="table-content" colspan="6" style="text-align: center"> No data available in table</td>
-            </tr>
-            <tr *ngIf="checkedInAppointments.length === 0 && loading">
-                <td class="table-content" colspan="6" style="text-align: center">
-                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
-                </td>
-            </tr>
-            <tr *ngFor="let appointment of checkedInAppointments">
-                <td>
-                    <div class="empWrap" (click)="goToPatientPage(appointment,false)">
-                        <div class="list-img" *ngIf="appointment?.patientDetails?.personDetails?.profileImageObject == undefined">
-                            <img src="assets/images/users/default.png">
-                        </div>
-                        <div class="list-img" *ngIf="appointment?.patientDetails?.personDetails?.profileImageObject !== undefined">
-                            <img [src]="facilityService.transform(appointment.patientDetails.personDetails?.profileImageObject?.thumbnail)">
-                        </div>
-                        <div>
-                            {{appointment?.patientDetails?.personDetails?.lastName}} {{appointment?.patientDetails?.personDetails?.firstName}}
-                            <h6>
-                                <span class="timeLabel">{{appointment?.patientDetails?.personDetails?.primaryContactPhoneNo}}</span> |
-                                <span class="timeLabel">{{appointment?.patientDetails?.personDetails?.email}}</span>
-                            </h6>
+                    <div class="table-list col-xs-2">
+                        {{appointment.clinicId}}
+                    </div>
+                    <div class="table-list col-xs-2">
+                        <div>{{appointment.providerDetails?.personDetails?.lastName}} {{appointment.providerDetails?.personDetails?.firstName}}</div>
+                        <div class="caregiver-room">{{getConsultingRoom(appointment)}}</div>
+                    </div>
+                    <div class="table-list col-xs-2">
+                        {{appointment?.attendance?.dateCheckIn | date:'shortTime'}}
+                    </div>
+                    <div class="table-list col-xs-1">{{appointment?.attendance?.dateCheckIn | amTimeAgo}}</div>
+
+                    <div class="table-list col-xs-3">
+                        <div class="td-ctaWrap">
+                            <div class="actionWrap" [class.vital-taken]="appointment.hasDoneVital" (click)="showVital(appointment)">
+                                <i class="fa fa-external-link" aria-hidden="true"></i>
+                                <span>Vitals</span>
+                            </div>
+                            <div class="actionWrap" [class.patient-is-engaged]="appointment.isEngaged" (click)="goToPatientPage(appointment,true)">
+                                <i class="fa fa-medkit" aria-hidden="true"></i>
+                                <span>Attend to Patient</span>
+                            </div>
+                            <div (click)="slideTimeline_toggle(appointment, $event)" class="actionWrap">
+                                <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
+                                <span>Timeline</span>
+                            </div>
+                            <div *ngIf="appointment.zoom !== undefined" (click)="onNavigate(appointment, $event)" class="actionWrap">
+                                <i class="fa fa-stethoscope" aria-hidden="true"></i>
+                                <span>TeleMedicine</span>
+                            </div>
                         </div>
                     </div>
-                </td>
-                <td>{{appointment.clinicId}}</td>
-                <td>
-                    <div>{{appointment.providerDetails?.personDetails?.lastName}} {{appointment.providerDetails?.personDetails?.firstName}}</div>
-                    <div class="caregiver-room">{{getConsultingRoom(appointment)}}</div>
-                </td>
-                <td>
-                    {{appointment?.attendance?.dateCheckIn | date:'shortTime'}}
-                    <h6 class="timeLabel">{{appointment?.appointmentReason}}</h6>
-                </td>
-                <td>
-                    <span class="timeLabel">{{appointment?.attendance?.dateCheckIn | amTimeAgo}}</span>
-                </td>
-                <td>
-                    <div class="td-ctaWrap">
-                        <div class="actionWrap" [class.vital-taken]="appointment.hasDoneVital" (click)="showVital(appointment)">
-                            <i class="fa fa-external-link" aria-hidden="true"></i>
-                            <span>Vitals</span>
-                        </div>
-                        <div class="actionWrap" [class.patient-is-engaged]="appointment.isEngaged" (click)="goToPatientPage(appointment,true)">
-                            <i class="fa fa-medkit" aria-hidden="true"></i>
-                            <span>Attend to Patient</span>
-                        </div>
-                        <div (click)="slideTimeline_toggle(appointment, $event)" class="actionWrap">
-                            <i class="fa fa-arrow-circle-left" aria-hidden="true"></i>
-                            <span>Timeline</span>
-                        </div>
-                        <div *ngIf="appointment.zoom !== undefined" (click)="onNavigate(appointment, $event)" class="actionWrap">
-                            <i class="fa fa-stethoscope" aria-hidden="true"></i>
-                            <span>TeleMedicine</span>
-                        </div>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <div *ngIf="addVital" class="modal-overlay">
         <app-add-vitals (closeModal)="close_onClick($event)" [patient]="patient" id="form-modal" class="form-modal center-center"></app-add-vitals>

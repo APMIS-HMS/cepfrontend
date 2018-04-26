@@ -7,7 +7,7 @@
                         <div class="table-head col-xs-1">
                             S/N
                         </div>
-                        <div class="table-head col-xs-3">
+                        <div class="table-head col-xs-4">
                             Patient
                         </div>
                         <div class="table-head col-xs-2">
@@ -16,7 +16,7 @@
                         <div class="table-head col-xs-2">
                             Admitted Date
                         </div>
-                        <div class="table-head col-xs-3">
+                        <div class="table-head col-xs-2">
                             Actions
                         </div>
                         <div class="table-head col-xs-1">
@@ -46,24 +46,25 @@
                     </div>
                 </div>
                 <div class="card-content">
-                    <div class="card-list-item">
-                        <div *ngIf="admittedPatient.length === 0 && !loading" class="row">
+                    <div *ngIf="admittedPatient.length === 0 && !loading" class="card-list-item">
+                        <div class="row">
                             <div class="table-list col-xs-12">
                                 No data available in table
                             </div>
                         </div>
-
-                        <div class="row" *ngIf="admittedPatient.length === 0 && loading">
+                    </div>
+                    <div *ngIf="admittedPatient.length === 0 && loading" class="card-list-item">
+                        <div class="row">
                             <div class="table-list col-xs-12">
-                                <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                                <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                             </div>
                         </div>
 
                     </div>
                     <div class="card-list-item" *ngFor="let admittedPatientItem of admittedPatient; let i = index;">
                         <div class="row">
-                            <div class="table-list col-xs-2" routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}">{{ i+1 }}</div>
-                            <div class="table-list col-xs-3" routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}">
+                            <div class="table-list col-xs-1" routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}">{{ i+1 }}</div>
+                            <div class="table-list col-xs-4" routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}">
                                 <div class="empWrapp">
                                     <div class="list-img">
                                         <div *ngIf="admittedPatientItem?.personDetails.profileImageObject?.thumbnail == undefined">
@@ -90,9 +91,10 @@
                                 <b>{{admittedPatientItem?.admissionDate | date }}</b><br>
                                 <small>{{admittedPatientItem?.admissionDate | amTimeAgo }}</small>
                             </div>
-                            <div class="table-list col-xs-3">
-                                <div class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Vitals</div>
-                                <div class="tr-act-btn"><i class="fa fa-bed" aria-hidden="true"></i>Administer&nbsp;Drugs</div>
+                            <div class="table-list col-xs-3" routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}">
+                                <div class="tr-act-btn" routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}">
+                                    <i class="fa fa-bed" aria-hidden="true"></i>View Details
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -104,4 +106,3 @@
         </div>
     </div>
 </section>
-
