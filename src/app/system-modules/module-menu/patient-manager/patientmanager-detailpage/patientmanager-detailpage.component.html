@@ -11,16 +11,24 @@
                     </div>
                 </div>
                 <div class="headerDetail-wrap">
-                    <div class="modal_title">{{patient?.personDetails?.lastName}} {{patient?.personDetails?.firstName}} {{patient?.personDetails?.title?.name}}</div>
+                    <div class="modal_title">{{patient?.personDetails?.title}} {{patient?.personDetails?.lastName}} {{patient?.personDetails?.firstName}}</div>
                     <div class="headDetail-group">
-                        <div class="patient-gender">{{patient?.personDetails?.gender?.name}}</div>
+                        <div class="patient-gender">{{patient?.personDetails?.gender}}</div>
                         <div class="patient-apmisNo">{{patient?.personDetails?.apmisId}}</div>
                     </div>
                     <div class="headDetail-group">
                         <div class="patient-dob">{{patient?.personDetails?.dateOfBirth | date}}</div>
-                        <div class="patient-phone">{{patient?.personDetails?.phoneNumber}}</div>
+                        <div class="patient-phone">
+                            <i class="fa fa-phone"></i>
+                            <span *ngIf="patient?.personDetails?.primaryContactPhoneNo !== undefined"> {{patient?.personDetails?.primaryContactPhoneNo}}</span>
+                            <span *ngIf="patient?.personDetails?.primaryContactPhoneNo === undefined"> N/A</span>
+                        </div>
                     </div>
-                    <div class="patient-email">{{patient?.personDetails?.email}}</div>
+                    <div class="patient-email">
+                        <i class="fa fa-envelope"></i>
+                        <span *ngIf="patient?.personDetails?.email !== undefined"> {{patient?.personDetails?.email}}</span>
+                        <span *ngIf="patient?.personDetails?.email === undefined"> N/A</span>
+                    </div>
 
                     <section class="accBal-wrap">
                         <span class="accBal-label">Account Balance</span>
@@ -32,17 +40,17 @@
             </div>
 
             <ul class="topmenuwrap">
-                <li  *ngIf="checkedIn">
-                        <a href="#/dashboard/clinic/check-in">
-                            <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                <li *ngIf="checkedIn">
+                    <a href="#/dashboard/clinic/check-in">
+                        <i class="fa fa-arrow-left" aria-hidden="true"></i>
                         <span>CheckIn Patients</span>
-                        </a>
-                    </li>
+                    </a>
+                </li>
                 <li (click)="checkoutPatient_show()" *ngIf="checkedIn">
                     <i class="fa fa-sign-out" aria-hidden="true"></i>
                     <span>Checkout</span>
                 </li>
-                
+
                 <li (click)="setAppointment()">
                     <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
                     <span>Set Appointment</span>
