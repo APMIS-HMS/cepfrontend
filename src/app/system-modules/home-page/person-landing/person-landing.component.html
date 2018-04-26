@@ -105,7 +105,7 @@
         <div class="pp-card card-mid">
             <div class="card-title">My Work Places</div>
             <ul>
-                <li class="feed-li" *ngFor="let employee of listOfEmployees">
+                <li class="feed-li" *ngFor="let employee of listOfEmployees" (click)="loadFacility(employee)">
                     <div class="fac-wrap">
                         <div class="fac-notfc">3</div>
                         <div class="fac-img-wrap">

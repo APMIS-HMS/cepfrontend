@@ -1,6 +1,6 @@
 import { Employee } from './../../models/facility-manager/setup/employee';
 import { EmployeeService } from './../../services/facility-manager/setup/employee.service';
-import { PersonService } from 'app/services/facility-manager/setup';
+import { PersonService, PatientService } from 'app/services/facility-manager/setup';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { UserFacadeService } from 'app/system-modules/service-facade/user-facade.service';
 import { Component, OnInit } from '@angular/core';
@@ -26,9 +26,11 @@ export class HomePageComponent implements OnInit {
 
   listOfFacilities: Facility[] = [];
   listOfEmployees: Employee[] = [];
+  listOfPatients: Facility[] = [];
 
   constructor(private router: Router,  private authFacadeService:AuthFacadeService,
      private personService: PersonService, private employeeService: EmployeeService,
+     private patientService:PatientService,
      private route: ActivatedRoute) { 
    
   }
@@ -40,6 +42,7 @@ export class HomePageComponent implements OnInit {
       this.selectedUser = payload;
       this.getPerson();
       this.getEmployeeRecords();
+      this.getPatients();
     }).catch(error =>{});
 
     this.authFacadeService.getLogingEmployee().then(payload =>{
@@ -67,6 +70,11 @@ export class HomePageComponent implements OnInit {
   getEmployeeRecords() {
     this.employeeService.find({query:{personId: this.selectedUser.personId}}).subscribe(payload =>{
       this.listOfEmployees = payload.data;
+    })
+  }
+  getPatients(){
+    this.patientService.find({query:{personId: this.selectedUser.personId}}).subscribe(payload =>{
+      this.listOfPatients = payload.data;
     })
   }
   pgMenu_click() {

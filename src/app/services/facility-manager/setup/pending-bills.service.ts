@@ -19,6 +19,10 @@ export class PendingBillService {
     return this._socket.get(id, query);
   }
 
+  find(query: any) {
+    return this._socket.find(query);
+  }
+
   getDataSummary(id: string, query: any) {
     return this._socketSummary.get(id, query);
   }

@@ -14,6 +14,9 @@ export interface Person {
     nationalityId: string;
     stateOfOriginId: string;
     lgaOfOriginId: string;
+    nationality: string;
+    stateOfOrigin: string;
+    lgaOfOrigin: string;
     email: string;
     maritalStatus: string;
     nextOfKin: any[];

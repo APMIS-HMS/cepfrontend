@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Person } from 'app/models/index';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'app-med-records',
@@ -7,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MedRecordsComponent implements OnInit {
 
+  @Input() selectedPerson: Person = <Person>{};
+  @Input() listOfPatients: any[] = [];
   homeContentArea = true;
   docsContentArea= false;
   prescriptionContentArea = false;

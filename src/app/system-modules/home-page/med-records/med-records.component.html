@@ -13,7 +13,7 @@
         <i class="fa fa-credit-card" aria-hidden="true"></i> Payment</li>
 </ul>
 
-<app-med-record-home *ngIf="homeContentArea"></app-med-record-home>
+<app-med-record-home [selectedPerson]="selectedPerson" [listOfPatients]="listOfPatients" *ngIf="homeContentArea"></app-med-record-home>
 <app-med-record-documentation *ngIf="docsContentArea"></app-med-record-documentation>
 <app-med-record-prescription *ngIf="prescriptionContentArea"></app-med-record-prescription>
 <app-med-record-diagnostics *ngIf="diagnosticsContentArea"></app-med-record-diagnostics>

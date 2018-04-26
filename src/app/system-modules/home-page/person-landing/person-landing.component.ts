@@ -1,7 +1,13 @@
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { UserService } from './../../../services/facility-manager/setup/user.service';
+import { AuthFacadeService } from './../../service-facade/auth-facade.service';
+import { FacilitiesService } from './../../../services/facility-manager/setup/facility.service';
+import { JoinChannelService } from './../../../services/facility-manager/setup/join-channel.service';
 import { EmployeeService } from './../../../services/facility-manager/setup/employee.service';
 import { Person } from 'app/models/index';
 import { Component, OnInit, Input } from '@angular/core';
 import { AppointmentService } from '../../../services/facility-manager/setup';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-person-landing',
@@ -9,12 +15,17 @@ import { AppointmentService } from '../../../services/facility-manager/setup';
   styleUrls: ['./person-landing.component.scss']
 })
 export class PersonLandingComponent implements OnInit {
-@Input() selectedPerson: Person = <Person>{};
-@Input() listOfFacilities: any[] = [];
-@Input() listOfEmployees: any[] = [];
-schedule_appointment = false;
-myAppointments: any[] = [];
-constructor(private appointmentService:AppointmentService, private employeeService: EmployeeService) { }
+  selectedUser: any;
+  selectedFacility: any;
+  @Input() selectedPerson: Person = <Person>{};
+  @Input() listOfFacilities: any[] = [];
+  @Input() listOfEmployees: any[] = [];
+  schedule_appointment = false;
+  myAppointments: any[] = [];
+  constructor(private appointmentService:AppointmentService, private employeeService: EmployeeService,
+    private joinChannelService:JoinChannelService,private authFacadeService:AuthFacadeService,
+    public facilityService: FacilitiesService, private userService:UserService, private router:Router,
+    private locker: CoolLocalStorage,) { }
 
 ngOnInit() {
   this.getEmployeeRecords();
@@ -44,7 +55,6 @@ getMyAppointments(){
     doctorId: { $in: this.listOfEmployees.map(x => x._id) }
   }}).subscribe(payload =>{
     this.myAppointments = payload.data;
-    console.log(this.myAppointments);
   });
 }
 
@@ -53,6 +63,36 @@ getEmployeeRecords() {
     this.listOfEmployees = payload.data;
     this.getMyAppointments();
   });
+}
+
+loadFacility(employee){
+  this.facilityService.get(employee.facilityId,{}).then(payload =>{
+    this.selectedFacility = payload;
+    if (this.selectedFacility.isTokenVerified === false) {
+      // this.popup_verifyToken = true;
+      // this.popup_listing = false;
+    } else {
+      // this.locker.setObject("fac",employee.facilityId);
+      this.authFacadeService.getLogingUser(employee.facilityId).then(payload =>{
+        this.selectedUser = payload;
+        this.joinChannelService.create({_id:this.selectedFacility._id, userId:this.selectedUser._id}).then(pay =>{
+          // this.popup_listing = true;
+          // this.popup_verifyToken = false;
+          this.locker.setObject('selectedFacility', this.selectedFacility);
+          this.router.navigate(['dashboard']).then(() => {
+            this.userService.announceMission('in');
+          });
+        }, err =>{
+          
+        })
+      }).catch(error =>{});
+     
+      
+    }
+    // this.locker.setObject('selectedFacility', this.selectedFacility);
+    // this.locker.setObject('fac',this.selectedFacility._id);
+    // this.logoutConfirm_on = false;
+  })
 }
 
 }

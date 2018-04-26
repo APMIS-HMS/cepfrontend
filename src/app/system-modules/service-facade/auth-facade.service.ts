@@ -131,8 +131,11 @@ export class AuthFacadeService {
 
     });
   }
-  getLogingUser() {
+  getLogingUser(id?) {
     let facId = this.locker.getObject("fac");
+    if(facId === null && id !== undefined){
+      facId = id;
+    }
     let self = this;
     return new Promise(function (resolve, reject) {
       if (self.loginUser !== undefined) {

@@ -71,7 +71,7 @@ export class LoginComponent implements OnInit {
           this.locker.setObject('auth', auth);
           this.locker.setObject('token', result.accessToken);
 
-          this.router.navigate(['/accounts']).then(pay => {
+          this.router.navigate(['/home-page']).then(pay => {
             this.userService.isLoggedIn = true;
             this.userService.announceMission('in');
             this.systemModule.off();
