@@ -7,9 +7,9 @@
                 <div class="dept-item">
                     <div class="dept-name">{{location.name}}</div>
                     <div class="action-icons">
-                        <i [hidden]="showMinorLocation_selectedLocation(location)" (click)="showLoc_click(location); locationDetailContentArea_show(location)" class="fa fa-expand" aria-hidden="true"></i>
-                        <i *ngIf="showMinorLocation_selectedLocation(location)" (click)="showLoc_hide()" class="fa fa-compress" aria-hidden="true"></i>
-                        <i (click)="newSubLocationModal_show(location)" class="fa fa-plus" aria-hidden="true"></i>
+                        <i [hidden]="showMinorLocation_selectedLocation(location)" (click)="showLoc_click(location); locationDetailContentArea_show(location)" class="fa fa-fw fa-2x fa-expand orange tooltip"  data-tooltip='Expand' aria-hidden="true"></i>
+                        <i *ngIf="showMinorLocation_selectedLocation(location)" (click)="showLoc_hide()" class="fa fa-fw fa-2x fa-compress orange tooltip" data-tooltip="Compress" aria-hidden="true"></i>
+                        <i (click)="newSubLocationModal_show(location)" class="fa fa-fw fa-2x fa-plus orange tooltip " data-tooltip='Add' aria-hidden="true"></i>
                         <!-- <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                     <i class="fa fa-trash-o" aria-hidden="true"></i> -->
                     </div>
@@ -31,9 +31,9 @@
                                 <tr *ngFor="let minor of getActiveMinorLocations(filteredMinorLocations)">
                                     <td>{{minor.name}}</td>
                                     <td class="action-icons">
-                                        <i (click)="newLoc_onClick(minor)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                                        <i (click)="newLoc_onClick(minor)" class="fa fa-fw fa-2x fa-pencil-square-o orange tooltip" data-tooltip='Edit' aria-hidden="true"></i>
                                         <!--<i *ngIf="unitEditNameIcoShow" (click)="unitEditNameSubmit()" class="done-ico fa fa-check" aria-hidden="true"></i>-->
-                                        <i (click)="removeMinorLocationFacade(minor)" class="fa fa-trash" aria-hidden="true"></i>
+                                        <i (click)="removeMinorLocationFacade(minor)" class="fa fa-fw fa-2x fa-trash orange tooltip" data-tooltip='Delete' aria-hidden="true"></i>
                                     </td>
                                 </tr>
                             </tbody>

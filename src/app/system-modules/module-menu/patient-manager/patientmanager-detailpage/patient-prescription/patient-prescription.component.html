@@ -1,4 +1,4 @@
-<div class="pg-subtitle">PRESCRIBE DRUG</div>
+<div class="pg-subtitle">PATIENT PAGE - PRESCRIBE DRUG</div>
 <section id="prescription">
     <div class="survery">
         <div class="row">
@@ -94,15 +94,13 @@
         <div class="add-sect">
             <form [formGroup]="addPrescriptionForm" novalidate>
                 <div class="row padding-top-20px">
-                    <div class="col-sm-6 col-md-6">
+                    <div class="col-sm-8 col-md-8">
                         <apmis-lookup formControlName="drug" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="true" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Drug" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                     </div>
-                    <div class="col-sm-3 col-md-3">
+                    <!-- <div class="col-sm-3 col-md-3">
                         <mat-form-field>
                             <input matInput formControlName="strength" [(value)]="drugId" placeholder="Strength">
                         </mat-form-field>
-                    </div>
-                    <div class="col-sm-3 col-md-3">
                         <mat-form-field class="mat-select">
                             <mat-select formControlName="route" placeholder="Route">
                                 <mat-option *ngFor="let route of routes" [(value)]="route.name">
@@ -110,27 +108,27 @@
                                 </mat-option>
                             </mat-select>
                         </mat-form-field>
+                    </div> -->
+                    <div class="col-sm-4 col-md-4">
+                        <mat-form-field class="mat-select" style="margin-top: 0px;">
+                            <mat-select formControlName="frequency" placeholder="Frequency" class="example-full-width mat-select">
+                                <mat-option *ngFor="let frequency of frequencies" [value]="frequency.name">
+                                    {{ frequency.name }}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
                     </div>
                 </div>
                 <div class="row padding-top-20px">
                     <div class="">
-                        <div class="col-sm-3 col-md-3">
-                            <mat-form-field class="mat-select">
-                                <mat-select formControlName="frequency" placeholder="Frequency" class="example-full-width mat-select">
-                                    <mat-option *ngFor="let frequency of frequencies" [value]="frequency.name">
-                                        {{ frequency.name }}
-                                    </mat-option>
-                                </mat-select>
-                            </mat-form-field>
-                        </div>
-                        <div class="col-sm-4 col-md-4">
+                        <div class="col-sm-5 col-md-5">
                             <div class="input-bg cacaca">
                                 <div class="input-group">
                                     <mat-form-field>
                                         <input matInput type="number" formControlName="duration" placeholder="Duration">
                                     </mat-form-field>
                                     <div class="input-group-btn">
-                                        <mat-form-field class="mat-select">
+                                        <mat-form-field class="mat-select" style="margin-top: 0px;">
                                             <mat-select placeholder="Unit" formControlName="durationUnit" [(ngModel)]="selectedValue">
                                                 <mat-option *ngFor="let unit of durationUnits" [value]="unit.name">
                                                     {{ unit.name }}
@@ -141,12 +139,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-2 col-md-2">
+                        <div class="col-sm-3 col-md-3">
                             <mat-form-field>
                                 <input type="number" matInput formControlName="refillCount" placeholder="Refill Count">
                             </mat-form-field>
                         </div>
-                        <div class="col-sm-3 col-md-3">
+                        <div class="col-sm-4 col-md-4">
                             <mat-form-field>
                                 <input matInput formControlName="startDate" [matDatepicker]="picker" placeholder="Start Date">
                                 <mat-icon matSuffix>
@@ -158,7 +156,7 @@
                     </div>
                     <div class="col-sm-12 col-md-12">
                         <mat-form-field>
-                            <textarea matInput formControlName="specialInstruction" class="textarea" placeholder="Special Instruction" cols="30" rows="10"></textarea>
+                            <textarea matInput formControlName="specialInstruction" class="textarea" placeholder="Special Instruction" cols="30" rows="5"></textarea>
                         </mat-form-field>
                         <div class="after-textarea-btn pull-right">
                             <button mat-raised-button class="mat-lg-btn" [disabled]="!addPrescriptionForm.valid" (click)="onClickAddPrescription(addPrescriptionForm.value, addPrescriptionForm.valid);"> Add </button>
@@ -214,7 +212,7 @@
                                 </mat-form-field>
                             </div>
                             <div class="col-sm-6 text-center">
-                                <button mat-raised-button [disabled]="!allPrescriptionsForm.valid || disableAuthorizeRx" (click)="onClickAuthorizePrescription(allPrescriptionsForm.value, allPrescriptionsForm.valid);" type="submit" class="mat-lg-btn">
+                                <button mat-raised-button [disabled]="!allPrescriptionsForm.valid || disableAuthorizeRx || prescriptionArray.length === 0" (click)="onClickAuthorizePrescription(allPrescriptionsForm.value, allPrescriptionsForm.valid);" type="submit" class="mat-lg-btn">
                                   <span *ngIf="authorizeRx"><i class="fa fa-check"></i> Authorize Rx</span>
                                   <span *ngIf="authorizingRx">Authorizing Rx... <i class="fa fa-spin fa-spinner"></i></span>
                                 </button>

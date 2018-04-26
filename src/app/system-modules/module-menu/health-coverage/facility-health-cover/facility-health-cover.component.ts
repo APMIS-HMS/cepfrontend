@@ -22,7 +22,7 @@ export class FacilityHealthCoverComponent implements OnInit {
     this.hmo = true;
     this.company = false;
     this.family = false;
-    this.router.navigate(['/dashboard/facility/health-coverage/hmo']).then(payload => {
+    this.router.navigate(['/dashboard/health-coverage/cover/hmo']).then(payload => {
     }, error => {
     });
   }
@@ -30,7 +30,7 @@ export class FacilityHealthCoverComponent implements OnInit {
     this.hmo = false;
     this.company = true;
     this.family = false;
-    this.router.navigate(['dashboard/facility/health-coverage/company-cover']).then(payload => {
+    this.router.navigate(['/dashboard/health-coverage/cover/company-cover']).then(payload => {
     }, error => {
     });
   }
@@ -38,7 +38,7 @@ export class FacilityHealthCoverComponent implements OnInit {
     this.hmo = false;
     this.company = false;
     this.family = true;
-    this.router.navigate(['/dashboard/facility/health-coverage/family-cover']).then(payload => {
+    this.router.navigate(['//dashboard/health-coverage/cover/family-cover']).then(payload => {
     }, error => {
     });
   }
