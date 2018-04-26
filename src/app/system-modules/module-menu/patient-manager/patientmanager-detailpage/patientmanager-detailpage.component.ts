@@ -123,7 +123,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       this.loginEmployee = payload;
     });
     this.appointmentService.appointmentAnnounced$.subscribe((appointment: any) => {
-      console.log(appointment);
       this.selectedAppointment = appointment;
       this.patient = appointment.patientDetails;
       this.patientDetails = appointment.patientDetails;
@@ -135,7 +134,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       this.getCurrentUser();
     });
     this.patientService.patientAnnounced$.subscribe(patient => {
-      console.log(patient);
       this.patient = patient;
       this.locker.setObject('patient', patient);
     })
