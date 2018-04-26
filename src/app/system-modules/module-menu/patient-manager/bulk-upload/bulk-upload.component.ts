@@ -259,16 +259,17 @@ export class BulkUploadComponent implements OnInit {
     this.patientService.bulkUpload(this.patients).then(payload => {
       console.log(payload);
       this.btnLoading = false;
-      if( payload.failedAttempts !== undefined || payload.failedAttempts.length > 0 ){
+      if( payload.failed !== undefined || payload.failed.length > 0 ){
         this.patients = [];
         this.systemModuleService.announceSweetProxy('Patients information successfully uploaded!','success');
       }else{
-        this.systemModuleService.announceSweetProxy('An error occured. Please try again!','warning');
+        this.patients = payload.failed;
+        this.systemModuleService.announceSweetProxy('Ooops!!','An error occured. The following list had an issue when uploading','warning');
       }
     }).catch(err => {
       console.log(err);
       this.btnLoading = false;
-      this.systemModuleService.announceSweetProxy('Patients information successfully uploaded!','error');
+      this.systemModuleService.announceSweetProxy('An error occured!','error');
     });
   }
 

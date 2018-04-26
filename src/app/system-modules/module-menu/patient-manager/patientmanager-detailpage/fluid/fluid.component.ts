@@ -56,11 +56,8 @@ export class FluidComponent implements OnInit {
 
   // lineChart
   public lineChartData: Array<any> = [
-    [65, 59, 80, 81, 56, 55, 40],
-    [28, 48, 40, 19, 86, 27, 90],
-    [78, 68, 10, 99, 46, 37, 20],
-    [68, 48, 30, 29, 86, 27, 60],
-    [18, 58, 80, 49, 56, 17, 10]
+    { data: [65, 59, 80, 81, 56], label: 'Intake' }, 
+    { data: [28, 48, 40, 19, 86], label: 'Output' }
   ];
   public lineChartLabels: Array<any> = ['Drip', 'Salinity', 'Alkaline', 'H20', 'Carbonozine'];
   public lineChartType = 'line';
@@ -92,7 +89,7 @@ export class FluidComponent implements OnInit {
     private personService: PersonService,
     private employeeService: EmployeeService,
     private facilityService: FacilitiesService,
-  private systemModuleService: SystemModuleService) { }
+    private systemModuleService: SystemModuleService) { }
 
   ngOnInit() {
     this.frmIntake = this.formBuilder.group({
@@ -130,7 +127,7 @@ export class FluidComponent implements OnInit {
     const fluidItem = (type === 'intake') ? this.frmIntake.controls['infusion'].value : this.frmOutput.controls['fluid'].value;
     const volume = (type === 'intake') ? this.frmIntake.controls['infusion_volume'].value : this.frmOutput.controls['output_volume'].value;
     const quantity = (type === 'intake') ? this.frmIntake.controls['infusion_quantity']
-    .value : this.frmOutput.controls['output_quantity'].value;
+      .value : this.frmOutput.controls['output_quantity'].value;
 
 
     const fluidsCont = {
@@ -179,11 +176,11 @@ export class FluidComponent implements OnInit {
         }
         this.totalPatientIntakeFluid = lol;
         const firstTimeDate = this.patientIntakeFluidList[0].createdAt;
-        const lastTimeDate = this.patientIntakeFluidList[len-1].createdAt;
-        const timeDateDifference = (new Date(firstTimeDate).getTime() - new Date(lastTimeDate).getTime()) / (1000*60*60);
-        if(timeDateDifference > 0){
+        const lastTimeDate = this.patientIntakeFluidList[len - 1].createdAt;
+        const timeDateDifference = (new Date(firstTimeDate).getTime() - new Date(lastTimeDate).getTime()) / (1000 * 60 * 60);
+        if (timeDateDifference > 0) {
           this.rateOfIntakeFluid = Math.floor(this.totalPatientIntakeFluid / timeDateDifference);
-        }else{
+        } else {
           this.rateOfIntakeFluid = this.totalPatientIntakeFluid;
         }
         this.intakeFilterTime = 'All';
@@ -196,11 +193,11 @@ export class FluidComponent implements OnInit {
         }
         this.totalPatientOutputFluid = lol;
         const firstTimeDate = this.patientOutputFluidList[0].createdAt;
-        const lastTimeDate = this.patientOutputFluidList[len-1].createdAt;
-        const timeDateDifference = (new Date(firstTimeDate).getTime() - new Date(lastTimeDate).getTime()) / (1000*60*60);
-        if(timeDateDifference > 0){
+        const lastTimeDate = this.patientOutputFluidList[len - 1].createdAt;
+        const timeDateDifference = (new Date(firstTimeDate).getTime() - new Date(lastTimeDate).getTime()) / (1000 * 60 * 60);
+        if (timeDateDifference > 0) {
           this.rateOfOutputFluid = Math.floor(this.totalPatientOutputFluid / timeDateDifference);
-        }else{
+        } else {
           this.rateOfOutputFluid = this.totalPatientOutputFluid;
         }
         this.rateOfOutputFluid = Math.floor(this.totalPatientOutputFluid / 24);
