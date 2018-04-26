@@ -5,6 +5,20 @@
     width: 100%;
 }
 
+.invoice-table-list {
+    border-bottom: solid 1px #bbb;
+}
+
+.invoice-sub-header{
+    border-bottom: solid 1px #01579B;
+    color: #01579B;
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+
+
 //.......................///
 // table, td { 
 //     border: 0.5px solid $td-border;
