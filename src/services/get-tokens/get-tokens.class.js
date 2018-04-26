@@ -54,7 +54,9 @@ class Service {
       number = String('0000' + number).slice(-4);
     }
     var dt = new Date;
-    var retVal = 'IV' + '/' +dt.getDate()+''+dt.getMonth()+1+'/'+ number;
+    let day = dt.getDate();
+    let m = dt.getMonth() + 1;
+    var retVal = 'IV' + '/' + day + '' + m + '/' + number;
     return retVal;
   }
 
@@ -66,10 +68,9 @@ class Service {
       this.generateId(data);
     } else if (id.toString() === tokenLabel.tokenType.autoPassword.toString()) {
       this.generateAutoPassword(data);
-    }else if (id.toString() === tokenLabel.tokenType.userVerification.toString()) {
+    } else if (id.toString() === tokenLabel.tokenType.userVerification.toString()) {
       data.result = this.generateOtp();
-    }
-    else if (id.toString() === tokenLabel.tokenType.invoiceNo.toString()) {
+    } else if (id.toString() === tokenLabel.tokenType.invoiceNo.toString()) {
       data.result = this.generateInvoiceNo();
     }
     return Promise.resolve(data);

@@ -31,7 +31,6 @@ class Service {
     let amountReceived = 0;
     let invoiceItems = [];
     invoiceItems = awaitInvoices.data;
-    console.log(invoiceItems);
     if (invoiceItems.length > 0) {
       let patientRecentInvoices = [];
       let len2 = invoiceItems.length - 1;
@@ -49,7 +48,6 @@ class Service {
           patientRecentInvoices.push(val);
         }
         let result = patientRecentInvoices.filter(x => x.balance > 0);
-        console.log(result);
         return jsend.success(result);
       }
     } else {

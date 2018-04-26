@@ -178,6 +178,9 @@ const cashPayment = require('./cash-payment/cash-payment.service.js');
 const dbPatientids = require('./db-patientids/db-patientids.service.js');
 const listOfInvoices = require('./list-of-invoices/list-of-invoices.service.js');
 const bulkPatientUpload = require('./bulk-patient-upload/bulk-patient-upload.service.js');
+const billSummaryData = require('./bill-summary-data/bill-summary-data.service.js');
+const paymentChartData = require('./payment-chart-data/payment-chart-data.service.js');
+const employeeSearch = require('./employee-search/employee-search.service.js');
 module.exports = function(app) {
     app.configure(users);
     app.configure(facilityOwnerships);
@@ -359,4 +362,7 @@ module.exports = function(app) {
     app.configure(dbPatientids);
     app.configure(listOfInvoices);
     app.configure(bulkPatientUpload);
+    app.configure(billSummaryData);
+    app.configure(paymentChartData);
+    app.configure(employeeSearch);
 };

@@ -13,6 +13,7 @@ class Service {
     const patientsService = this.app.service('patients');
     const awaitedPeople = await peopleService.find({
       query: {
+        facilityId: params.query.facilityId,
         $or: [{
             apmisId: {
               $regex: params.query.searchQuery,

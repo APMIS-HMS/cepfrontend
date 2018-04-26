@@ -29,13 +29,10 @@ class Service {
                 awaitFacilitiesItemService.categories.forEach(category => {
                     category.services.forEach(itm => {
                         if (itm._id.toString() == data[i].billItems[j].serviceId.toString()) {
-                            console.log('am now in');
-
                             data[i].billItems[j].facilityServiceObject.categoryId = category._id;
                             data[i].billItems[j].facilityServiceObject.category = category.name;
                             data[i].billItems[j].facilityServiceObject.service = itm.name;
                             data[i].billItems[j].facilityServiceObject.serviceId = itm._id;
-                            // console.log(data[i].billItems[j]);
                         }
                     });
                 });
