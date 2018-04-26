@@ -25,24 +25,22 @@ class Service {
     let savedPatient;
     let returnData = [];
     let failedAttempts = [];
+    let length = data.length;
     if (Array.isArray(data)) {
-      data.map(async function (current) {
-        console.log(current);
-        let data = {
-          person: current
+      for(let i=0; i<length; i++){
+        let datas = {
+          person: data[i]
         }
         try {
-          savedPerson = await savePersonService.create(data);
+          savedPerson = await savePersonService.create(datas);
         } catch (e) {
-          failedAttempts.push(current);
+          failedAttempts.push(data[i]);
         }
-
         let patient = {
           personId: savedPerson._id,
-          facilityId: current.facilityId
+          facilityId: data[i].facilityId
         }
-
-        if (current.payPlan.toLowerCase() === 'wallet') {
+        if (data[i].payPlan.toLowerCase() === 'wallet') {
           patient.paymentPlan = [
             {
               planType: 'wallet',
@@ -51,17 +49,15 @@ class Service {
             }
           ]
         }
-
         try {
           savedPatient = await patientService.create(patient);
+          returnData.push(savedPatient);
         } catch (e) {
-          failedAttempts.push(current);
+          failedAttempts.push(data[i]);
         }
-
-        returnData.push(savedPatient);
-
-      });
+      }
     }
+    
 
     return {
       saved: returnData,
