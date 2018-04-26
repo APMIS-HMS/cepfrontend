@@ -65,6 +65,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
             type: 'ward',
             typeObject: wardCheckedIn
           };
+          console.log(wardType);
           this.selectedWard = wardType;
           this.getWaitingList(wardType);
           this.getTransferInList(wardType);
@@ -75,6 +76,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
         this._notification('Error', 'Couldn\'t get Logged in user! Please try again later');
       }
     }).catch(err => {
+      console.log(err);
     });
   }
 
@@ -141,6 +143,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
         $sort: { createdAt: -1 }
       }
     }).then(res => {
+      console.log(res);
       this.newAdmissionLoading = false;
       if (res.status === 'success') {
         this.listPatientAdmissionWaiting = res.data;
@@ -159,7 +162,9 @@ export class WardManagerAdmissionpageComponent implements OnInit {
       }
     }).then(res => {
       this.transferInLoading = false;
-      this.listPatientTransferWaiting = res.data;
+      if (res.status === 'success') {
+        this.listPatientTransferWaiting = res.data;
+      }
     });
   }
 
@@ -174,19 +179,10 @@ export class WardManagerAdmissionpageComponent implements OnInit {
       }
     }).then(res => {
       this.transferOutLoading = false;
-      this.listPatientTransferOutWaiting = res.data;
+      if (res.status === 'success') {
+        this.listPatientTransferOutWaiting = res.data;
+      }
     });
-    // this._inPatientService.find({
-    //     query: {
-    //       'facilityId': this.facility._id,
-    //       'prevWard': checkedInWard.typeObject.minorLocationId._id,
-    //       statusId: myGlobals.transfer,
-    //       discharge: undefined
-    //     }
-    //   }).then(payload => {
-    //     this.transferOutLoading = false;
-    //     this.listPatientTransferOutWaiting = payload.data;
-    //   });
   }
 
   getDischargeList(checkedInWard: any) {
@@ -199,9 +195,12 @@ export class WardManagerAdmissionpageComponent implements OnInit {
         $sort: { createdAt: -1 }
       }
     }).then(res => {
+      console.log(res);
       this.dischargeLoading = false;
-      this.listPatientDischarge = res.data;
-    });
+      if (res.status === 'success') {
+        this.listPatientDischarge = res.data;
+      }
+    }).catch(err => console.log(err));
   }
   navEpDetail(item) {}
   // Notification

@@ -67,11 +67,11 @@
                             <div class="table-list col-xs-4" routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}">
                                 <div class="empWrapp">
                                     <div class="list-img">
-                                        <div *ngIf="admittedPatientItem?.personDetails.profileImageObject?.thumbnail == undefined">
+                                        <div *ngIf="admittedPatientItem?.personDetails?.profileImageObject?.thumbnail == undefined">
                                             <img src="assets/images/users/default.png">
                                         </div>
-                                        <div *ngIf="admittedPatientItem?.personDetails.profileImageObject?.thumbnail != undefined">
-                                            <img [src]="_inPatientService.transform(admittedPatientItem?.personDetails.profileImageObject?.thumbnail)">
+                                        <div *ngIf="admittedPatientItem?.personDetails?.profileImageObject?.thumbnail != undefined">
+                                            <img [src]="_inPatientService.transform(admittedPatientItem?.personDetails?.profileImageObject?.thumbnail)">
                                         </div>
                                     </div>
                                     <div>

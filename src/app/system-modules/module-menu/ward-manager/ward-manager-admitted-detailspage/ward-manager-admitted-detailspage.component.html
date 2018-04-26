@@ -6,10 +6,10 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-4">
-            <img height="100px" *ngIf="selectedPatient?.patient?.personDetails?.profileImageObject !== undefined" [src]="_inPatientService.transform(selectedPatient?.patient?.personDetails?.profileImageObject)">
-            <img height="100px" *ngIf="selectedPatient?.patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
+            <img height="100px" *ngIf="selectedPatient?.personDetails?.profileImageObject !== undefined" [src]="_inPatientService.transform(selectedPatient?.personDetails?.profileImageObject)">
+            <img height="100px" *ngIf="selectedPatient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
             <h1>
-                {{selectedPatient?.patient?.personDetails?.firstName}} {{selectedPatient?.patient?.personDetails?.lastName}}
+                {{selectedPatient?.personDetails?.firstName}} {{selectedPatient?.personDetails?.lastName}}
             </h1>
             <button style="margin-bottom: 10px" (click)="onClickPatientDocumentation(selectedPatient);" class="btn"><i class="fa fa-eye" aria-hidden="true"></i> Patient Documentation</button>
             <button style="margin-bottom: 10px" *ngIf="!selectedPatient?.isDischarged" class="btn btn-red" (click)="onClickTransferPatient()"><i class="fa fa-share" aria-hidden="true"></i> Transfer</button>
@@ -24,31 +24,31 @@
                         <div class="col-xs-4">
                             <div class="card">
                                 <span style="color:grey">Age</span>
-                                <h3>{{selectedPatient?.patient?.age}} old</h3>
+                                <h3>{{selectedPatient?.age}} old</h3>
                             </div>
                         </div>
                         <div class="col-xs-4">
                             <div class="card">
                                 <span style="color:grey">Gender</span>
-                                <h3>{{selectedPatient?.patient?.personDetails?.gender}}</h3>
+                                <h3>{{selectedPatient?.personDetails?.gender}}</h3>
                             </div>
                         </div>
-                        <div *ngIf="selectedPatient?.patient?.personDetails?.fullAddress !== undefined" class="col-xs-12">
+                        <div *ngIf="selectedPatient?.personDetails?.fullAddress !== undefined" class="col-xs-12">
                             <div class="card">
                                 <span style="color:grey"><Address></Address></span>
-                                <h3>{{selectedPatient?.patient?.personDetails?.fullAddress}}</h3>
+                                <h3>{{selectedPatient?.personDetails?.fullAddress}}</h3>
                             </div>
                         </div>
                         <div class="col-xs-4">
                             <div class="card">
                                 <span style="color:grey">Contact</span>
-                                <h3>{{selectedPatient?.patient?.personDetails?.primaryContactPhoneNo}}</h3>
+                                <h3>{{selectedPatient?.personDetails?.primaryContactPhoneNo}}</h3>
                             </div>
                         </div>
-                        <div *ngIf="selectedPatient?.patient?.personDetails?.email !== undefined" class="col-xs-4">
+                        <div *ngIf="selectedPatient?.personDetails?.email !== undefined" class="col-xs-4">
                             <div class="card">
                                 <span style="color:grey">Email</span>
-                                <h3>{{selectedPatient?.patient?.personDetails?.email}}</h3>
+                                <h3>{{selectedPatient?.personDetails?.email}}</h3>
                             </div>
                         </div>
                     </div>

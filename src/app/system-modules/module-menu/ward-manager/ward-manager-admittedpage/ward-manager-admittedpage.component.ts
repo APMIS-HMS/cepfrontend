@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { BedOccupancyService, InPatientService, FacilitiesService, InPatientListService } from '../../../../services/facility-manager/setup/index';
+import { BedOccupancyService, InPatientService, FacilitiesService, InPatientListService
+} from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility, User } from './../../../../models/index';
 import { WardEmitterService } from '../../../../services/facility-manager/ward-emitter.service';
@@ -63,7 +64,6 @@ export class WardManagerAdmittedpageComponent implements OnInit {
 
 	ngOnInit() {
 		this._wardEventEmitter.setRouteUrl('Admitted Patients');
-
 		this._wardEventEmitter.announceWard.subscribe(val => {
 			this.selectedWard = val;
 			this.getAdmittedItems(val);
@@ -183,7 +183,6 @@ export class WardManagerAdmittedpageComponent implements OnInit {
 			$sort: { createdAt: -1 }
 		}
 		}).then(res => {
-			console.log(res);
 			this.loading = false;
 			if (res.status === 'success' && res.data.length > 0) {
 				this.admittedPatient = res.data;
