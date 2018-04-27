@@ -10,7 +10,9 @@ import {
 } from '../../../../../services/facility-manager/setup/index';
 
 const moment = require('moment');
-// var _ = require("lodash");
+const _ = require("lodash");
+import * as format from 'date-fns/format';
+import * as isWithinRange from 'date-fns/is_within_range';
 
 @Component({
   selector: 'app-fluid',
@@ -24,8 +26,6 @@ export class FluidComponent implements OnInit {
   inInterval = new FormControl();
   outInterval = new FormControl();
   fluidType_pop = false;
-
-  lineChartOptions: any;
 
   intakeFluidList;
   outputFluidList;
@@ -52,15 +52,16 @@ export class FluidComponent implements OnInit {
   outputFilterTime;
 
   patientFluidSummary;
-  lineChartSummary: Array<any>;
+  lineChartSummary: Array<any> = [];
 
   // lineChart
-  public lineChartData: Array<any> = [
-    { data: [65, 59, 80, 81, 56], label: 'Intake' }, 
-    { data: [28, 48, 40, 19, 86], label: 'Output' }
-  ];
-  public lineChartLabels: Array<any> = ['Drip', 'Salinity', 'Alkaline', 'H20', 'Carbonozine'];
-  public lineChartType = 'line';
+  
+  public lineChartLabels: Array<any> = [];
+  public lineChartLegend: boolean = true;
+  public lineChartType: string = 'line';
+  public lineChartOptions: any = {
+    responsive: true
+  };
 
   public chartClicked(e: any): void {
   }
@@ -276,15 +277,8 @@ export class FluidComponent implements OnInit {
   }
 
   getFluidSummary() {
-    this.lineChartSummary = [
-      { data: [], label: '' },
-      { data: [], label: '' },
-      { data: [], label: '' },
-      { data: [], label: '' },
-      { data: [], label: '' },
-      { data: [], label: '' }
-
-    ];
+    this.lineChartLabels = [];
+    this.lineChartData = [{ data: [], label: '' }];
     this.fluidService.findPatientFluid({
       query: {
         'facilityId': this.facility._id,
@@ -295,46 +289,80 @@ export class FluidComponent implements OnInit {
         }
       }
     }).then(payload => {
-
-      const result = [];
-      const len1 = this.patientIntakeFluidList.length - 1;
-      let index;
-      for (let i = len1; i >= 0; i--) {
-        const val = this.patientIntakeFluidList[i];
-        index = result.filter(x => x.name.toString() === val.fluid.name.toString());
-        if (index.length > 0) {
-          index[0].sum += val.volume;
-          index[0].volumes.push(val.volume);
-          this.lineChartSummary[0].data.push(val.volume)
-
-        } else {
-          result.push(
-            {
-              _id: this.patientIntakeFluidList[i].fluid._id,
-              name: this.patientIntakeFluidList[i].fluid.name,
-              sum: this.patientIntakeFluidList[i].volume,
-              measurement: this.patientIntakeFluidList[i].measurement,
-              volumes: [this.patientIntakeFluidList[i].volume]
-            }
-          );
-          this.lineChartSummary.push({ data: [this.patientIntakeFluidList[i].volume], label: this.patientIntakeFluidList[i].fluid.name });
-        }
+      console.log(payload);
+      let data = <any[]>payload.data;
+      this.mapTypeOfData(data);
+      let len = data.length;
+      
+      for (let i = 0; i < len; i++) {
+        // this.lineChartData[0].data.push(data[i].volume);
+        // this.lineChartData[0].label = data[i].fluid.name;
+        const d = new Date(data[i].createdAt);
+        let dt = format(d, 'DD/MM/YY HH:mm:ss a');
+        this.lineChartLabels[0] = 0;
+        this.lineChartLabels.push(dt);
       }
-      this.patientFluidSummary = result;
+      console.log(this.lineChartData);
+      console.log(this.lineChartLabels);
+      //this.lineChartData = JSON.parse(JSON.stringify(this.refreshGraph(this.lineChartData)));
     });
   }
 
-  lineChartInfo() {
-    this.fluidService.findPatientFluid({
-      query: {
-        'facilityId': this.facility._id,
-        'patientId': this.patient._id,
-        'type': 'intake'
-      }
-    }).then(lineChartPayload => {
+  public lineChartData: any[] = [
+    { data: [0], label: '' }
+  ];
 
-    })
+  mapTypeOfData(data) {
+    let v = [];
+    let _data =  _.chain(data)
+      .groupBy('fluid.name')
+      .map((x, y) => {
+        //let v = x.filter((b) => {})
+        let finalArray = x.map(function (obj) {
+          return obj.volume;
+        });
+        finalArray.unshift(0);
+        return {
+          data: finalArray, label: y
+        }
+      })
+      .value();      
+      let chartData = {
+        lineChartData: _data
+      }
+      this.loopChartData(_data);
   }
+
+  private loopChartData(chartData) {
+    if(chartData.length > 0){
+      this.lineChartData.splice(0, 1);
+    }
+    for (let index = 0; index < chartData.length; index++) {
+      this.lineChartData.push( { data: [], label: '' });
+    }
+    for (let i = 0; i < chartData.length; i++) {
+      this.lineChartData[i].label = chartData[i].label;
+      for (let index = 0; index < chartData[i].data.length; index++) {
+        this.lineChartData[i].data.push(chartData[i].data[index]);
+      }
+    }
+    this.lineChartData = JSON.parse(JSON.stringify(this.lineChartData));
+  }
+
+
+
+  refreshGraph(lineChartData: any[]) {
+    let _lineChartData: Array<any> = new Array(lineChartData.length);
+    for (let i = 0; i < lineChartData.length; i++) {
+      _lineChartData[i] = { data: new Array(lineChartData[i].data.length), label: lineChartData[i].label };
+      for (let j = 0; j < lineChartData[i].data.length; j++) {
+        _lineChartData[i].data[j] = lineChartData[i].data[j];
+      }
+    }
+    console.log(_lineChartData);
+    return _lineChartData;
+  }
+
 
   fluidType_show() {
     this.fluidType_pop = true;
