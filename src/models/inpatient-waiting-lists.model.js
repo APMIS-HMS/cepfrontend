@@ -9,7 +9,7 @@ module.exports = function(app) {
         facilityId: { type: Schema.Types.ObjectId, required: true },
         employeeId: { type: Schema.Types.ObjectId, required: true },
         patientId: { type: Schema.Types.ObjectId, required: true },
-        clinicId: { type: Schema.Types.ObjectId, required: false },
+        clinicId: { type: Schema.Types.Mixed, required: false },
         minorLocationId: { type: Schema.Types.ObjectId, required: true },
         unitId: { type: Schema.Types.ObjectId, required: false }, // Not important. Planning on removing it.
         isAdmitted: { type: Boolean, 'default': false },
