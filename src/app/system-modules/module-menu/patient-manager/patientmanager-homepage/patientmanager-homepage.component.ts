@@ -133,6 +133,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   mainErr: boolean = true;
   errMsg: string;
 
+  bulkUpload: boolean = false;
+
   constructor(private patientService: PatientService, private personService: PersonService,
     private facilityService: FacilitiesService, private locker: CoolLocalStorage, private router: Router,
     private route: ActivatedRoute, private toast: ToastsManager, private genderService: TitleGenderFacadeService,
@@ -685,6 +687,10 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.selectedIndex = 1;
   }
 
+  openBulkUploadModal(){
+    this.bulkUpload = true;
+  }
+
   private _populateAndSelectData(value: any) {
     if (value.homeAddress) {
       this.patientEditForm.controls['street'].setValue(value.homeAddress.street);
@@ -995,6 +1001,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.systemService.changeMessage(null);
     this.payPlan = false;
     this.newUpload = false;
+    this.bulkUpload = false;
     this.selectedIndex = 0;
     // Reset the next of kin form array
     this.patientEditForm.controls['nextOfKin'] = this.formBuilder.array([]);
