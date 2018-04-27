@@ -621,7 +621,6 @@ class Service {
                     getInPatient.transfers[getInPatient.transfers.length - 1].checkOutDate = new Date();
                     const updateInPatient = await inpatientService.patch(getInPatient._id, getInPatient, {});
 
-                    console.log('updatedInpatient => ', updateInPatient);
                     if (updateInPatient._id !== undefined) {
                         // Get the number of days the patient has stayed in the ward.
                         const lastTransfer = updateInPatient.transfers[updateInPatient.transfers.length - 1];
