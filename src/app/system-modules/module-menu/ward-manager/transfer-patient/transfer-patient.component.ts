@@ -51,6 +51,7 @@ export class TransferPatientComponent implements OnInit {
 	ngOnInit() {
     this.user = <User>this._locker.getObject('auth');
 
+		console.log(this.selectedPatient);
 		this.transferFormGroup = this.fb.group({
 			ward: ['', [<any>Validators.required]]
 		});
@@ -77,6 +78,8 @@ export class TransferPatientComponent implements OnInit {
     this.transferBtn = false;
     this.transferingBtn = true;
 
+		console.log(data);
+		console.log(this.inPatientId);
     const payload = {
       action: 'transferPatient',
       patientId: this.selectedPatient.patientId,
@@ -87,10 +90,11 @@ export class TransferPatientComponent implements OnInit {
       status: myGlobals.transfer
     };
 
+		console.log(payload);
     this._inPatientService.customCreate(payload).then(res => {
       if (res.status === 'success') {
         const name = `${this.selectedPatient.patient.personDetails.firstName} ${this.selectedPatient.patient.personDetails.lastName}`;
-        let text = `You have successfully transfered ${name} to ${data.ward.name}`;
+        const text = `You have successfully transfered ${name} to ${data.ward.name}`;
         // this._notification('Success', fullText);
         this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
         this.close_onClick();

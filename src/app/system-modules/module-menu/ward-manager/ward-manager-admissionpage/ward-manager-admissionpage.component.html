@@ -274,14 +274,14 @@
                             <div class="table-list col-md-3">
                                 <div class="empWrapp">
                                     <div class="list-img">
-                                        <div *ngIf="dischargePatientList?.personDetails?.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
-                                        <div *ngIf="dischargePatientList?.personDetails?.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(dischargePatientList.personDetails.profileImageObject?.thumbnail)"></div>
+                                        <div *ngIf="dischargePatientList?.patient?.personDetails?.profileImageObject?.thumbnail == undefined"><img src="assets/images/users/default.png"></div>
+                                        <div *ngIf="dischargePatientList?.patient?.personDetails?.profileImageObject?.thumbnail != undefined"><img [src]="_inPatientListService.transform(dischargePatientList?.patient?.personDetails.profileImageObject?.thumbnail)"></div>
                                     </div>
                                     <div>
-                                        <b>{{ dischargePatientList.personDetails?.firstName}} {{dischargePatientList.personDetails?.lastName }}</b><br>
-                                        <small>{{dischargePatientList.personDetails?.gender}}, </small>
-                                        <small>{{dischargePatientList.personDetails?.age}} old, </small>
-                                        <small>{{dischargePatientList.personDetails?.phoneNumber}}</small>
+                                        <b>{{ dischargePatientList?.patient?.personDetails?.firstName}} {{dischargePatientList?.patient?.personDetails?.lastName }}</b><br>
+                                        <small>{{dischargePatientList?.patient?.personDetails?.gender}}, </small>
+                                        <small>{{dischargePatientList?.patient?.personDetails?.age}} old, </small>
+                                        <small>{{dischargePatientList?.patient?.personDetails?.phoneNumber}}</small>
                                     </div>
                                 </div>
                             </div>

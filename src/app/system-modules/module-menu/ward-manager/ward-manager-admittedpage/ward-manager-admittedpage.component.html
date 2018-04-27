@@ -67,18 +67,18 @@
                             <div class="table-list col-xs-4" routerLink="/dashboard/ward-manager/admitted/{{admittedPatientItem._id}}">
                                 <div class="empWrapp">
                                     <div class="list-img">
-                                        <div *ngIf="admittedPatientItem?.personDetails?.profileImageObject?.thumbnail == undefined">
+                                        <div *ngIf="admittedPatientItem?.patient?.personDetails?.profileImageObject?.thumbnail == undefined">
                                             <img src="assets/images/users/default.png">
                                         </div>
-                                        <div *ngIf="admittedPatientItem?.personDetails?.profileImageObject?.thumbnail != undefined">
-                                            <img [src]="_inPatientService.transform(admittedPatientItem?.personDetails?.profileImageObject?.thumbnail)">
+                                        <div *ngIf="admittedPatientItem?.patient?.personDetails?.profileImageObject?.thumbnail != undefined">
+                                            <img [src]="_inPatientService.transform(admittedPatientItem?.patient?.personDetails?.profileImageObject?.thumbnail)">
                                         </div>
                                     </div>
                                     <div>
-                                        <b>{{admittedPatientItem?.personDetails?.firstName}} {{admittedPatientItem?.personDetails?.lastName}}</b><br>
-                                        <small>{{admittedPatientItem?.personDetails?.gender}}, </small>
-                                        <small>{{admittedPatientItem?.personDetails?.age}} old, </small>
-                                        <small>{{admittedPatientItem?.personDetails?.phoneNumber}}</small>
+                                        <b>{{admittedPatientItem?.patient?.personDetails?.firstName}} {{admittedPatientItem?.patient?.personDetails?.lastName}}</b><br>
+                                        <small>{{admittedPatientItem?.patient?.personDetails?.gender}}, </small>
+                                        <small>{{admittedPatientItem?.patient?.personDetails?.age}} old, </small>
+                                        <small>{{admittedPatientItem?.patient?.personDetails?.phoneNumber}}</small>
                                     </div>
                                 </div>
                             </div>
