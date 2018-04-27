@@ -160,7 +160,6 @@ export class AdmitPatientComponent implements OnInit {
         payload.patientId = this.inPatientItem.patientId;
 
         this._inPatientService.customCreate(payload).then(res => {
-          console.log(res);
           if (res.status === 'success') {
             const patient = `${this.inPatientItem.personDetails.firstName} ${this.inPatientItem.personDetails.lastName}`;
             const text = `You have successfully admitted ${patient} into ${value.bed.name} bed in ${value.room.name} room`;
@@ -180,7 +179,7 @@ export class AdmitPatientComponent implements OnInit {
 
         this._inPatientService.customCreate(payload).then(res => {
           if (res.status === 'success') {
-            const patient = `${this.inPatientItem.personDetails.firstName} ${this.inPatientItem.personDetails.lastName}`;
+            const patient = `${this.inPatientItem.patient.personDetails.firstName} ${this.inPatientItem.patient.personDetails.lastName}`;
             const text = `You have successfully admitted ${patient} into ${value.bed.name} bed in ${value.room.name} room`;
             // this._notification('Success', fullText);
             this._systemModuleService.announceSweetProxy(text, 'success');

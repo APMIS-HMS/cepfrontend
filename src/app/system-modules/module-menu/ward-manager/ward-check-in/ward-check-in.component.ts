@@ -169,7 +169,8 @@ export class WardCheckInComponent implements OnInit {
             if (workspace.isActive && workspace.locations.length > 0) {
               workspace.locations.forEach(x => {
                 if (x.isActive && x.majorLocationId === locationId) {
-                  this.wards = res.data[0].minorLocations.filter(y => x.minorLocationId === y._id);
+                  const wards = res.data[0].minorLocations.filter(y => x.minorLocationId === y._id);
+                  this.wards.push(wards[0]);
                 }
               });
             }

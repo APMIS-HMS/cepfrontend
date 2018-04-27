@@ -5,6 +5,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { WardEmitterService } from '../../../../services/facility-manager/ward-emitter.service';
 import * as myGlobals from '../../../../shared-module/helpers/global-config';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
+import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-ward-manager-admissionpage',
@@ -44,7 +45,8 @@ export class WardManagerAdmissionpageComponent implements OnInit {
     private _wardEventEmitter: WardEmitterService,
     private _inPatientService: InPatientService,
     private facilityService: FacilitiesService,
-    private _authFacadeService: AuthFacadeService
+    private _authFacadeService: AuthFacadeService,
+    private _systemModuleService: SystemModuleService
   ) {
     // this._inPatientListService.listenerCreate.subscribe(payload => {
     //   // this.getWaitingList(this.selectedWard);
@@ -65,7 +67,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
             type: 'ward',
             typeObject: wardCheckedIn
           };
-          console.log(wardType);
+
           this.selectedWard = wardType;
           this.getWaitingList(wardType);
           this.getTransferInList(wardType);
@@ -75,9 +77,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
       } else {
         this._notification('Error', 'Couldn\'t get Logged in user! Please try again later');
       }
-    }).catch(err => {
-      console.log(err);
-    });
+    }).catch(err => {});
   }
 
   ngOnInit() {
@@ -123,16 +123,31 @@ export class WardManagerAdmissionpageComponent implements OnInit {
     this.getDischargeList(this.selectedWard);
     this.getTransferOutList(this.selectedWard);
   }
+ 
+  onClickDeclineTransfer(inpatientItem: any) {
+    const name = `${inpatientItem.patient.personDetails.firstName} ${inpatientItem.patient.personDetails.lastName}`;
+    const question = `Are you sure you want to decline?`;
+    this._systemModuleService.announceSweetProxy(question, 'question', this, null, null, inpatientItem);
+  }
 
-  onClickDeclineTransfer(inpatientItem) {
-    this._inPatientService.get(inpatientItem._id, {}).then(payload => {
-      payload.statusId = myGlobals.onAdmission;
-      payload.transfers[payload.lastIndex].proposedWard = undefined;
-      // Update the checkOutDate of the last tranfer
-      this._inPatientService.update(payload).then(res => {
+  onClickConfirmDecline(inpatientItem: any) {
+      this._inPatientService.get(inpatientItem._id, {}).then(res => {
+        res.status = myGlobals.onAdmission;
+        res.proposedWard = undefined;
+        // Update the checkOutDate of the last tranfer
+        this._inPatientService.update(res).then(resp => {
           this.getTransferInList(this.selectedWard);
-      }).catch(err => {});
-    });
+          this._systemModuleService.announceSweetProxy('You have declined successfully!', 'success');
+        }).catch(err => { });
+      }).catch(err => { });
+  }
+
+  sweetAlertCallback(result, data) {
+    if (result.value) {
+      this.onClickConfirmDecline(data);
+    } else {
+      this.close_onClick();
+    }
   }
 
   getWaitingList(checkedInWard: any) {
@@ -143,7 +158,6 @@ export class WardManagerAdmissionpageComponent implements OnInit {
         $sort: { createdAt: -1 }
       }
     }).then(res => {
-      console.log(res);
       this.newAdmissionLoading = false;
       if (res.status === 'success') {
         this.listPatientAdmissionWaiting = res.data;
@@ -195,7 +209,6 @@ export class WardManagerAdmissionpageComponent implements OnInit {
         $sort: { createdAt: -1 }
       }
     }).then(res => {
-      console.log(res);
       this.dischargeLoading = false;
       if (res.status === 'success') {
         this.listPatientDischarge = res.data;
