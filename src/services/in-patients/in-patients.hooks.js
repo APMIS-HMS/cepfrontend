@@ -10,7 +10,6 @@ const resolvers = {
             let transferred = {};
             let dischargedByObj = {};
             const patient = await context.app.service('patients').get(inPatient.patientId, {});
-            console.log('First Inpatient => ', inPatient);
             const employee = await context.app.service('employees').get(inPatient.admittedBy, {});
             const facility = await context.app.service('facilities').get(inPatient.facilityId, {});
             if (inPatient.transferredBy !== undefined) {
@@ -19,7 +18,7 @@ const resolvers = {
             if (inPatient.dischargedBy !== undefined) {
                 dischargedByObj = await context.app.service('employees').get(inPatient.dischargedBy, {});
             }
-            console.log('dischargedByObj => ', dischargedByObj);
+
             const minorLocation = facility.minorLocations.filter(x => x._id.toString() === inPatient.currentWard.toString());
             // Attach the details of the room and bed in the last transfer.
             if (inPatient.transfers.length > 0) {
@@ -42,7 +41,6 @@ const resolvers = {
             inPatient.employee = employee;
             inPatient.transferred = transferred.personDetails;
             inPatient.dischargedByObj = dischargedByObj.personDetails;
-            console.log('Last Inpatient => ', inPatient);
         }
     }
 };
