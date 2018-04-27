@@ -1,3 +1,4 @@
+import { AuthFacadeService } from './../system-modules/service-facade/auth-facade.service';
 import { UserFacadeService } from 'app/system-modules/service-facade/user-facade.service';
 import { SystemModuleService } from './../services/module-manager/setup/system-module.service';
 import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
@@ -38,6 +39,7 @@ export class LoginComponent implements OnInit {
     public facilityService: FacilitiesService,
     private systemModule: SystemModuleService,
     private upperCasePipe:UpperCasePipe,
+    private authFacade:AuthFacadeService,
     private locker: CoolLocalStorage, private router: Router) {
     this.facilityService.listner.subscribe(payload => {
       this.facilityObj = payload;
@@ -70,8 +72,8 @@ export class LoginComponent implements OnInit {
           };
           this.locker.setObject('auth', auth);
           this.locker.setObject('token', result.accessToken);
-
-          this.router.navigate(['/home-page']).then(pay => {
+          this.authFacade.setLoginUser(result.user);
+          this.router.navigate(['/home-page']).then(pay => { //accounts
             this.userService.isLoggedIn = true;
             this.userService.announceMission('in');
             this.systemModule.off();

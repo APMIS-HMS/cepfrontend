@@ -99,23 +99,11 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>12th feb 2018</td>
-                        <td>Patient Registration</td>
-                        <td>Continental Hospital</td>
-                        <td><span>&#x20A6;</span>3,000</td>
-                    </tr>
-                    <tr>
-                        <td>12th feb 2018</td>
-                        <td>Patient Registration</td>
-                        <td>Continental Hospital</td>
-                        <td><span>&#x20A6;</span>3,000</td>
-                    </tr>
-                    <tr>
-                        <td>12th feb 2018</td>
-                        <td>Patient Registration</td>
-                        <td>Continental Hospital</td>
-                        <td><span>&#x20A6;</span>3,000</td>
+                    <tr *ngFor="let pendingBill of pendingBills">
+                        <td>{{pendingBill.createdAt | date:'short'}}</td>
+                        <td>{{pendingBill.serviceObj.name}}</td>
+                        <td>{{getFacilityName(pendingBill.facilityId)}}</td>
+                        <td><span>&#x20A6;</span>{{pendingBill.totalPrice | number:'3.2-5'}}</td>
                     </tr>
                 </tbody>
             </table>
