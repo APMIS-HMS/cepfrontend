@@ -133,6 +133,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   mainErr: boolean = true;
   errMsg: string;
 
+  bulkUpload: boolean = false;
+
   constructor(private patientService: PatientService, private personService: PersonService,
     private facilityService: FacilitiesService, private locker: CoolLocalStorage, private router: Router,
     private route: ActivatedRoute, private toast: ToastsManager, private genderService: TitleGenderFacadeService,
@@ -358,7 +360,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.tagService.createSuggestedPatientTags(tag).then(payl => {
       this.systemService.off;
       if (payl.status === "error") {
-        this.mainErr = true;
+        this.mainErr = false;
         this.errMsg = payl.message;
       } else {
         this.patientToEdit.tags = payl.data.tags;
@@ -375,6 +377,22 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
   fillingWithSearchInfo(tag) {
     this.tagName.setValue(tag.name);
+  }
+
+  combineTagsToString(tags){
+    let length = tags.length;
+    let tagsString = '';
+    let arr = [];
+    let name;
+    while(length--){
+      if(tags[length].tagType !== undefined){
+        name = tags[length].name+ ' (i)';
+      }else{
+        name = tags[length].name;
+      }
+      arr.push(name);
+    }
+    return arr.join(', ');
   }
 
   removeTag(tag) {
@@ -667,6 +685,10 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   idTags(patient) {
     this.slideEdit(patient);
     this.selectedIndex = 1;
+  }
+
+  openBulkUploadModal(){
+    this.bulkUpload = true;
   }
 
   private _populateAndSelectData(value: any) {
@@ -979,6 +1001,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.systemService.changeMessage(null);
     this.payPlan = false;
     this.newUpload = false;
+    this.bulkUpload = false;
     this.selectedIndex = 0;
     // Reset the next of kin form array
     this.patientEditForm.controls['nextOfKin'] = this.formBuilder.array([]);

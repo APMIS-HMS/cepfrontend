@@ -7,11 +7,11 @@
                 <div class="dept-item">
                     <div class="dept-name">{{dept.name}}</div>
                     <div class="action-icons">
-                        <i [hidden]="showUnit_selectedDepartmentUnit(dept)" (click)="showUnit_click(dept)" class="fa fa-expand" aria-hidden="true"></i>
-                        <i *ngIf="showUnit_selectedDepartmentUnit(dept)" (click)="showUnit_hide(dept)" class="fa fa-compress" aria-hidden="true"></i>
-                        <i (click)="newUnit_onClick(dept)" class="fa fa-plus" aria-hidden="true"></i>
-                        <i (click)="editDept_onClick(dept)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                        <i (click)="removeDeptDepartmentFacade(dept)" class="fa fa-trash-o" aria-hidden="true"></i>
+                        <i [hidden]="showUnit_selectedDepartmentUnit(dept)" (click)="showUnit_click(dept)" class="fa fa-fw fa-2x fa-expand orange tooltip" data-tooltip="Expand" aria-hidden="true"></i>
+                        <i *ngIf="showUnit_selectedDepartmentUnit(dept)" (click)="showUnit_hide(dept)" class="fa fa-fw fa-2x fa-compress orange tooltip" data-tooltip="Compress" aria-hidden="true"></i>
+                        <i (click)="newUnit_onClick(dept)" class="fa fa-fw fa-2x fa-plus orange tooltip" data-tooltip="Add" aria-hidden="true"></i>
+                        <i (click)="editDept_onClick(dept)" class="fa fa-fw fa-2x fa-pencil-square-o orange tooltip" data-tooltip="Edit" aria-hidden="true"></i>
+                        <i (click)="removeDeptDepartmentFacade(dept)" class="fa fa-fw fa-2x fa-trash-o orange tooltip" data-tooltip="Delete" aria-hidden="true"></i>
                     </div>
                 </div>
 
@@ -35,8 +35,8 @@
                                     <td> {{unit.name}}</td>
                                     <td>{{unit.shortName}}</td>
                                     <td class="action-icons">
-                                        <i (click)="editUnit_onClick(dept, unit)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                                        <i (click)="removeUnitFacade(dept, unit)" class="fa fa-trash" aria-hidden="true"></i>
+                                        <i (click)="editUnit_onClick(dept, unit)" class="fa fa-fw fa-2x fa-pencil-square-o orange tooltip" data-tooltip="Edit" aria-hidden="true"></i>
+                                        <i (click)="removeUnitFacade(dept, unit)" class="fa fa-fw fa-2x fa-trash-o orange tooltip" data-tooltip="Delete" aria-hidden="true"></i>
                                     </td>
                                 </tr>
                             </tbody>

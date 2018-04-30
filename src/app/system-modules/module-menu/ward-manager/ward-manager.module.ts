@@ -42,6 +42,7 @@ import { WardCheckInComponent } from './ward-check-in/ward-check-in.component';
     exports: [
     ],
     imports: [
+        SharedModule,
         OnlyMaterialModule,
         MaterialModule,
         wardManagerRoutes

@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HmoOfficerComponent } from './hmo-officer.component';
+import { BulkUploadComponent } from './bulk-upload.component';
 
-describe('HmoOfficerComponent', () => {
-  let component: HmoOfficerComponent;
-  let fixture: ComponentFixture<HmoOfficerComponent>;
+describe('BulkUploadComponent', () => {
+  let component: BulkUploadComponent;
+  let fixture: ComponentFixture<BulkUploadComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ HmoOfficerComponent ]
+      declarations: [ BulkUploadComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HmoOfficerComponent);
+    fixture = TestBed.createComponent(BulkUploadComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

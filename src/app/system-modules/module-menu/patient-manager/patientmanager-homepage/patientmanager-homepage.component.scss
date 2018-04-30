@@ -362,3 +362,126 @@ textarea.mat-input-element {
 .list-img img{
     width: 100%;
 }
+
+/*Badges*/
+.badge {
+    display: inline-block;
+    padding: .25em .4em;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25rem;
+}
+.badge-primary {
+    color: #fff;
+    background-color: #007bff;
+}
+.badge-secondary {
+    color: #fff;
+    background-color: #6c757d;
+}
+.badge-success {
+    color: #fff;
+    background-color: #28a745;
+}
+.badge-danger {
+    color: #fff;
+    background-color: #dc3545;
+}
+.badge-light {
+    color: #212529;
+    background-color: #f8f9fa;
+}
+
+/*Cursors*/
+.cursor-pointer{
+    cursor: pointer;
+}
+
+/*Tooltip PopOver for Tags*/
+.tagPopover-listWrap {
+    right: 10rem;
+    position: absolute;
+    max-width: 308px;
+    bottom: 50%;
+    display: none;
+    padding: 2px;
+    background: rgba(0,0,0,.87);
+    z-index: 200;
+    border: 1px solid rgba(0,0,0,.87);
+    border-radius: 7px;
+    font-size: 1.2rem;
+    color: white;
+}
+
+.listWrapper{
+    line-height: 17px;
+    overflow-y: auto;
+    max-height: 150px;
+}
+
+.td-tagPopover:hover {
+    .tagPopover-listWrap { 
+        display: block;
+    }
+}
+
+.tagPopover-listWrap:hover {
+    display: block;
+}
+
+.tagPopover-listItem {
+    padding: 5px 10px;
+}
+
+.tagPopover-listItem:hover {
+    background: rgba(0,0,0,1);
+}
+
+.tagPopover-listItem span {
+    padding-right: 2px;
+}
+
+.tagPopover-listItem i {
+    cursor: pointer;
+}
+
+.tagPopover-listItem i:hover {
+    color: #ff2500;
+}
+.list-img {
+    margin: 0 15px;
+}
+.pointer-wrap {
+    width: 100%;
+    text-align: center;
+    position: relative;
+}
+
+.pointer-wrap i {
+    position: absolute;
+    font-size: 3.5rem;
+    color: rgba(0,0,0,.87);
+    top: -10px;
+    right: 70px;
+    z-index: 1;
+}
+
+
+.act-actions-wrap {
+    display: flex;
+    justify-content: space-between;
+}
+.act-wrap {
+    margin-right: 5px;
+    border: 5px solid transparent;
+    padding: 5px;
+}
+
+.actWrap-active,
+.act-wrap:hover {
+    background: #f8f8f8;
+    border: 5px solid #fff;
+}

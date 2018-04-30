@@ -38,7 +38,7 @@
                             <li class="workspace-listItem" *ngFor="let location of workspace.locations">
                                 <ng-container>
                                     <span>{{location.majorLocation.name}}</span>
-                                    <i (click)="deleteLocation_popup(location._id, workspace)" class="fa fa-trash" aria-hidden="true"></i>
+                                    <i (click)="deleteLocation_popup(location._id, workspace)" class="fa fa-fw fa-2x fa-trash orange tooltip" data-tooltip='Delete' aria-hidden="true"></i>
                                 </ng-container>
                             </li>
                             <div class="pointer-wrap">
@@ -48,8 +48,8 @@
                     </td>
                     <td>
                         <div class="td-ctaWrap">
-                            <i (click)="newWorkspace_onClick(workspace.employee)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                            <i (click)="deletion_popup(workspace)" class="fa fa-trash" aria-hidden="true"></i>
+                            <i (click)="newWorkspace_onClick(workspace.employee)" class="fa fa-fw fa-2x fa-pencil-square-o orange tooltip" data-tooltip='Edit' aria-hidden="true"></i>
+                            <i (click)="deletion_popup(workspace)" class="fa fa-fw fa-2x fa-trash orange tooltip" data-tooltip='Delete' aria-hidden="true"></i>
                         </div>
                     </td>
                 </tr>

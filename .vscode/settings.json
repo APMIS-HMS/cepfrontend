@@ -14,6 +14,8 @@
         "suppressGitVersionWarning": false,
         "suppressLineUncommittedWarning": false,
         "suppressNoRepositoryWarning": false,
+        "suppressResultsExplorerNotice": false,
+        "suppressShowKeyBindingsNotice": true,
         "suppressUpdateNotice": true,
         "suppressWelcomeNotice": false
     },
@@ -26,5 +28,9 @@
     "editor.tabSize": 4,
     "editor.detectIndentation": true,
     "gitlens.keymap": "alternate",
+<<<<<<< HEAD
     "editor.snippetSuggestions": "top"
+=======
+    "gitlens.historyExplorer.enabled": false
+>>>>>>> a38a9ea3bd9c0fca75bfb9889fe62e9ba6d7c81d
 }
