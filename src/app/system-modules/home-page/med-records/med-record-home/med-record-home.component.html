@@ -126,76 +126,14 @@
             </tr>
         </thead>
         <tbody>
-            <tr>
-                <td>11/02/2018</td>
-                <td>11:00am</td>
-                <td>Eye Clinic</td>
-                <td>John Noah</td>
-                <td>Active</td>
+            <tr *ngFor="let appointment of myAppointments">
+                <td>{{appointment.startDate | date:'dd/MM/yyyy'}}</td>
+                <td>{{appointment.startDate | date:'shortTime'}}</td>
+                <td>{{appointment.clinicId}}</td>
+                <td>{{getFacilityName(appointment.facilityId)}}</td>
+                <td>{{appointment.orderStatusId}}</td>
             </tr>
-            <tr>
-                <td>11/02/2018</td>
-                <td>11:00am</td>
-                <td>Eye Clinic</td>
-                <td>John Noah</td>
-                <td>Active</td>
-            </tr>
-            <tr>
-                <td>11/02/2018</td>
-                <td>11:00am</td>
-                <td>Eye Clinic</td>
-                <td>John Noah</td>
-                <td>Active</td>
-            </tr>
-            <tr>
-                <td>11/02/2018</td>
-                <td>11:00am</td>
-                <td>Eye Clinic</td>
-                <td>John Noah</td>
-                <td>Active</td>
-            </tr>
-            <tr>
-                <td>11/02/2018</td>
-                <td>11:00am</td>
-                <td>Eye Clinic</td>
-                <td>John Noah</td>
-                <td>Active</td>
-            </tr>
-            <tr>
-                <td>11/02/2018</td>
-                <td>11:00am</td>
-                <td>Eye Clinic</td>
-                <td>John Noah</td>
-                <td>Active</td>
-            </tr>
-            <tr>
-                <td>11/02/2018</td>
-                <td>11:00am</td>
-                <td>Eye Clinic</td>
-                <td>John Noah</td>
-                <td>Active</td>
-            </tr>
-            <tr>
-                <td>11/02/2018</td>
-                <td>11:00am</td>
-                <td>Eye Clinic</td>
-                <td>John Noah</td>
-                <td>Active</td>
-            </tr>
-            <tr>
-                <td>11/02/2018</td>
-                <td>11:00am</td>
-                <td>Eye Clinic</td>
-                <td>John Noah</td>
-                <td>Active</td>
-            </tr>
-            <tr>
-                <td>11/02/2018</td>
-                <td>11:00am</td>
-                <td>Eye Clinic</td>
-                <td>John Noah</td>
-                <td>Active</td>
-            </tr>
+
         </tbody>
     </table>
 </div>

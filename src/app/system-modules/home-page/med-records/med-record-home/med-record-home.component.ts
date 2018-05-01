@@ -1,3 +1,4 @@
+import { AppointmentService } from './../../../../services/facility-manager/setup/appointment.service';
 import { FacilitiesService } from './../../../../services/facility-manager/setup/facility.service';
 import { Person } from 'app/models/index';
 import { Component, OnInit, Input } from '@angular/core';
@@ -15,12 +16,15 @@ export class MedRecordHomeComponent implements OnInit {
 
   pendingBills: any[] = [];
   listOfFacilities: any[] = [];
-  constructor(private pendingBillService:PendingBillService, private facilityService:FacilitiesService) { }
+  myAppointments: any[] = [];
+  constructor(private pendingBillService:PendingBillService, private facilityService:FacilitiesService,
+  private appointmentService:AppointmentService) { }
 
   ngOnInit() {
     console.log(this.listOfPatients);
     this.getPendingBills();
     this.getPatientFacilities();
+    this.getMyAppointments();
   }
 
   close_onClick(message: boolean): void {
@@ -40,6 +44,13 @@ export class MedRecordHomeComponent implements OnInit {
       return facility[0].name;
     }
     return '';
+  }
+  getMyAppointments(){
+    this.appointmentService.find({query:{
+      patientId: { $in: this.listOfPatients.map(x => x._id) }
+    }}).subscribe(payload =>{
+      this.myAppointments = payload.data;
+    });
   }
   getPendingBills(){
     this.pendingBillService.find({query:{patientIds:this.listOfPatients.map(x => x._id)}}).subscribe(payload =>{
