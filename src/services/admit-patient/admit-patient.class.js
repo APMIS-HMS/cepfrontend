@@ -44,17 +44,17 @@ class Service {
                     waitingLists = waitingLists.data;
                     while (i--) {
                         let waitingList = waitingLists[i];
-                        let patientId = waitingList.patientId;
-                        let employeeId = waitingList.employeeId;
+                        // let patientId = waitingList.patientId;
+                        // let employeeId = waitingList.employeeId;
                         let minorLocationId = waitingList.minorLocationId;
 
-                        const patient = await patientService.get(patientId);
-                        delete patient.personDetails.wallet;
-                        patient.personDetails.age = this.checkAge(patient.personDetails.dateOfBirth);
-                        waitingList.personDetails = patient.personDetails;
-                        let employee = await employeeService.get(employeeId);
-                        delete employee.personDetails.wallet;
-                        waitingList.employeeDetails = employee.personDetails;
+                        // const patient = await patientService.get(patientId);
+                        // delete patient.personDetails.wallet;
+                        // patient.personDetails.age = this.checkAge(patient.personDetails.dateOfBirth);
+                        // waitingList.personDetails = patient.personDetails;
+                        // let employee = await employeeService.get(employeeId);
+                        // delete employee.personDetails.wallet;
+                        // waitingList.employeeDetails = employee.personDetails;
                         // Attach minorLocation.
                         const minorLocation = facility.minorLocations.filter(x => x._id.toString() === minorLocationId.toString());
                         waitingList.minorLocation = minorLocation[0];
@@ -81,22 +81,22 @@ class Service {
                     inPatients = inPatients.data;
                     while (i--) {
                         let inPatient = inPatients[i];
-                        const patientId = inPatient.patientId;
-                        const employeeId = inPatient.admittedBy;
-                        const transferredById = inPatient.transferredBy;
+                        // const patientId = inPatient.patientId;
+                        // const employeeId = inPatient.admittedBy;
+                        // const transferredById = inPatient.transferredBy;
                         const proposedWard = inPatient.proposedWard;
                         const currentWard = inPatient.currentWard;
 
-                        const patient = await patientService.get(patientId);
-                        delete patient.personDetails.wallet;
-                        patient.personDetails.age = this.checkAge(patient.personDetails.dateOfBirth);
-                        inPatient.personDetails = patient.personDetails;
-                        let employee = await employeeService.get(employeeId);
-                        delete employee.personDetails.wallet;
-                        inPatient.employeeDetails = employee.personDetails;
-                        let transferred = await employeeService.get(transferredById);
-                        delete transferred.personDetails.wallet;
-                        inPatient.transferred = transferred.personDetails;
+                        // const patient = await patientService.get(patientId);
+                        // delete patient.personDetails.wallet;
+                        // patient.personDetails.age = this.checkAge(patient.personDetails.dateOfBirth);
+                        // inPatient.personDetails = patient.personDetails;
+                        // let employee = await employeeService.get(employeeId);
+                        // delete employee.personDetails.wallet;
+                        // inPatient.employeeDetails = employee.personDetails;
+                        // let transferred = await employeeService.get(transferredById);
+                        // delete transferred.personDetails.wallet;
+                        // inPatient.transferred = transferred.personDetails;
                         // Attach minorLocation.
                         const currentWardObj = facility.minorLocations.filter(x => x._id.toString() === currentWard.toString());
                         inPatient.currentWardObj = currentWardObj[0];
@@ -125,17 +125,17 @@ class Service {
                     inPatients = inPatients.data;
                     while (i--) {
                         let inPatient = inPatients[i];
-                        let patientId = inPatient.patientId;
-                        let employeeId = inPatient.admittedBy;
+                        // let patientId = inPatient.patientId;
+                        // let employeeId = inPatient.admittedBy;
                         let minorLocationId = inPatient.currentWard;
 
-                        const patient = await patientService.get(patientId);
-                        delete patient.personDetails.wallet;
-                        patient.personDetails.age = this.checkAge(patient.personDetails.dateOfBirth);
-                        inPatient.personDetails = patient.personDetails;
-                        let employee = await employeeService.get(employeeId);
-                        delete employee.personDetails.wallet;
-                        inPatient.employeeDetails = employee.personDetails;
+                        // const patient = await patientService.get(patientId);
+                        // delete patient.personDetails.wallet;
+                        // patient.personDetails.age = this.checkAge(patient.personDetails.dateOfBirth);
+                        // inPatient.personDetails = patient.personDetails;
+                        // let employee = await employeeService.get(employeeId);
+                        // delete employee.personDetails.wallet;
+                        // inPatient.employeeDetails = employee.personDetails;
                         // Attach minorLocation.
                         const minorLocation = facility.minorLocations.filter(x => x._id.toString() === minorLocationId.toString());
                         inPatient.minorLocation = minorLocation[0];
@@ -161,9 +161,7 @@ class Service {
                 }
             } else if (action === 'getDischargedPatients') {
                 let facility = await facilityService.get(facilityId);
-                let inPatients = await inPatientService.find({
-                    query: params.query
-                });
+                let inPatients = await inPatientService.find({ query: params.query });
 
                 const pLength = inPatients.data.length;
                 let i = inPatients.data.length;
@@ -174,21 +172,21 @@ class Service {
                     inPatients = inPatients.data;
                     while (i--) {
                         let inPatient = inPatients[i];
-                        const patientId = inPatient.patientId;
-                        const employeeId = inPatient.admittedBy;
+                        // const patientId = inPatient.patientId;
+                        // const employeeId = inPatient.admittedBy;
+                        // const dischargedBy = inPatient.dischargedBy;
                         const currentWard = inPatient.currentWard;
-                        const dischargedBy = inPatient.dischargedBy;
 
-                        const patient = await patientService.get(patientId);
-                        delete patient.personDetails.wallet;
-                        patient.personDetails.age = this.checkAge(patient.personDetails.dateOfBirth);
-                        inPatient.personDetails = patient.personDetails;
-                        let employee = await employeeService.get(employeeId);
-                        delete employee.personDetails.wallet;
-                        inPatient.employeeDetails = employee.personDetails;
-                        let dischargedByObj = await employeeService.get(dischargedBy);
-                        delete dischargedByObj.personDetails.wallet;
-                        inPatient.dischargedByObj = dischargedByObj.personDetails;
+                        // const patient = await patientService.get(patientId);
+                        // delete patient.personDetails.wallet;
+                        // patient.personDetails.age = this.checkAge(patient.personDetails.dateOfBirth);
+                        // inPatient.personDetails = patient.personDetails;
+                        // let employee = await employeeService.get(employeeId);
+                        // delete employee.personDetails.wallet;
+                        // inPatient.employeeDetails = employee.personDetails;
+                        // let dischargedByObj = await employeeService.get(dischargedBy);
+                        // delete dischargedByObj.personDetails.wallet;
+                        // inPatient.dischargedByObj = dischargedByObj.personDetails;
                         // Attach minorLocation.
                         const currentWardObj = facility.minorLocations.filter(x => x._id.toString() === currentWard.toString());
                         inPatient.currentWardObj = currentWardObj[0];
@@ -297,58 +295,61 @@ class Service {
                                     currentWard: minorLocationId
                                 };
 
-                                // Create inpatient
-                                const createInpatient = await inpatientService.create(payload);
+                                try {
+                                    // Create inpatient
+                                    const createInpatient = await inpatientService.create(payload);
+                                    if (createInpatient._id !== undefined) {
+                                        // Find and update bedOccupancy
+                                        let findBedOccupancy = await bedOccupancyService.find({
+                                            query: {
+                                                facilityId: facilityId,
+                                                patientId: patientId,
+                                                minorLocationId: minorLocationId,
+                                                roomId: roomId,
+                                                bedId: bedId,
+                                                isAvailable: false
+                                            }
+                                        });
 
-                                if (createInpatient._id !== undefined) {
-                                    // Find and update bedOccupancy
-                                    let findBedOccupancy = await bedOccupancyService.find({
-                                        query: {
-                                            facilityId: facilityId,
-                                            patientId: patientId,
-                                            minorLocationId: minorLocationId,
-                                            roomId: roomId,
-                                            bedId: bedId,
-                                            isAvailable: false
-                                        }
-                                    });
+                                        if (findBedOccupancy.data.length > 0) {
+                                            findBedOccupancy = findBedOccupancy.data[0];
+                                            findBedOccupancy.patientId = patientId;
+                                            findBedOccupancy.admittedDate = new Date();
+                                            findBedOccupancy.bedState = 'Occupied';
+                                            findBedOccupancy.admittedBy = employeeId;
+                                            findBedOccupancy.isAvailable = false;
 
-                                    if (findBedOccupancy.data.length > 0) {
-                                        findBedOccupancy = findBedOccupancy.data[0];
-                                        findBedOccupancy.patientId = patientId;
-                                        findBedOccupancy.admittedDate = new Date();
-                                        findBedOccupancy.bedState = 'Occupied';
-                                        findBedOccupancy.admittedBy = employeeId;
-                                        findBedOccupancy.isAvailable = false;
-
-                                        const updateBedOccupancy = await bedOccupancyService.patch(findBedOccupancy._id, findBedOccupancy, {});
-                                        if (updateBedOccupancy._id !== undefined) {
-                                            return jsend.success(updateBedOccupancy);
+                                            const updateBedOccupancy = await bedOccupancyService.patch(findBedOccupancy._id, findBedOccupancy, {});
+                                            if (updateBedOccupancy._id !== undefined) {
+                                                return jsend.success(updateBedOccupancy);
+                                            } else {
+                                                return jsend.error('There was a problem admitting patient.');
+                                            }
                                         } else {
-                                            return jsend.error('There was a problem admitting patient.');
-                                        }
-                                    } else {
-                                        // Create bedOccupancy
-                                        const bedOccupancy = {
-                                            facilityId: facilityId,
-                                            minorLocationId: minorLocationId,
-                                            roomId: roomId,
-                                            bedId: bedId,
-                                            patientId: patientId,
-                                            admittedDate: new Date(),
-                                            bedState: 'Occupied',
-                                            isAvailable: false,
-                                            admittedBy: employeeId
-                                        };
-                                        // Create bed occupancy
-                                        const createBedOccupancy = await bedOccupancyService.create(bedOccupancy);
+                                            // Create bedOccupancy
+                                            const bedOccupancy = {
+                                                facilityId: facilityId,
+                                                minorLocationId: minorLocationId,
+                                                roomId: roomId,
+                                                bedId: bedId,
+                                                patientId: patientId,
+                                                admittedDate: new Date(),
+                                                bedState: 'Occupied',
+                                                isAvailable: false,
+                                                admittedBy: employeeId
+                                            };
+                                            // Create bed occupancy
+                                            const createBedOccupancy = await bedOccupancyService.create(bedOccupancy);
 
-                                        if (createBedOccupancy._id !== undefined) {
-                                            return jsend.success(createBedOccupancy);
-                                        } else {
-                                            return jsend.error('There was a problem admitting patient.');
+                                            if (createBedOccupancy._id !== undefined) {
+                                                return jsend.success(createBedOccupancy);
+                                            } else {
+                                                return jsend.error('There was a problem admitting patient.');
+                                            }
                                         }
                                     }
+                                } catch (e) {
+                                    return jsend.error('There was a problem admitting patient.');
                                 }
                             }
                         } else {
