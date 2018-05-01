@@ -696,7 +696,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
     nextInsuranceCover(hmoPlanId, hmoPlan) {
         this.systemModuleService.on();
-        console.log('insurance');
 
         this.coverType = 'insurance';
         this.hmo = this.hmoPlanId.value;

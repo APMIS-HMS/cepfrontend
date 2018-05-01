@@ -83,13 +83,11 @@ export class BulkUploadComponent implements OnInit {
   }
 
   close_onClick() {
-    console.log('close');
     this.closeModal.emit(true);
   }
 
   onPaginateChange(event) {
     const startIndex = event.pageIndex * event.pageSize;
-    console.log(event);
     // this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
     // this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
   }
@@ -116,7 +114,6 @@ export class BulkUploadComponent implements OnInit {
       const data = datas.filter(function (x) { // Removing empty rows from the array.
         return x.length;
       });
-      console.log(data);
       //this.finalExcelFileUpload(data, hmo);
       this.turningDataToArrayOfObjects(data);
     };
@@ -163,16 +160,12 @@ export class BulkUploadComponent implements OnInit {
   }
 
   excelDateToJSDate(date) {
-    console.log(date.toString());
     new Date(date.toString());
-    console.log(new Date(date.toString()));
     let dateIsh = new Date(Math.round((date - 25569) * 86400 * 1000));
-    console.log(dateIsh);
     return dateIsh;
   }
 
   changeInput(ev) {
-    console.log(ev);
     if (ev.value === 'wallet') {
       this.showInsurance = false;
       this.showWallet = true;
@@ -202,7 +195,6 @@ export class BulkUploadComponent implements OnInit {
   }
 
   editBtn(data) {
-    console.log(data);
   }
 
   deleteBtn(i) {
@@ -218,9 +210,7 @@ export class BulkUploadComponent implements OnInit {
 
   saveRow(i) {
     let data: any = this.shownForm.controls.items;
-    console.log(data.controls[i].controls);
     let info = data.controls[i].controls;
-    console.log(this.patients[i]);
     let patientInfo = this.patients[i];
     patientInfo.firstName = info.firstName.value;
     patientInfo.lastName = info.lastName.value;
@@ -231,13 +221,11 @@ export class BulkUploadComponent implements OnInit {
     patientInfo.gender = info.gender.value;
     patientInfo.payPlan = info.payPlan.value;
     this.openBox = '';
-    console.log(this.patients);
   }
 
   getGenders() {
     this.genderService.findAll().then(payload => {
       this.genders = payload.data;
-      console.log(this.genders);
     }).catch(err => {
 
     });
@@ -245,7 +233,6 @@ export class BulkUploadComponent implements OnInit {
   getTitles() {
     this.titleService.findAll().then(payload => {
       this.titles = payload.data;
-      console.log(this.titles);
     }).catch(err => {
 
     });
@@ -257,7 +244,6 @@ export class BulkUploadComponent implements OnInit {
       pa.facilityId = this.facility._id
     })
     this.patientService.bulkUpload(this.patients).then(payload => {
-      console.log(payload);
       this.btnLoading = false;
       if( payload.failed !== undefined || payload.failed.length > 0 ){
         this.patients = [];
@@ -267,7 +253,6 @@ export class BulkUploadComponent implements OnInit {
         this.systemModuleService.announceSweetProxy('Ooops!!','An error occured. The following list had an issue when uploading','warning');
       }
     }).catch(err => {
-      console.log(err);
       this.btnLoading = false;
       this.systemModuleService.announceSweetProxy('An error occured!','error');
     });

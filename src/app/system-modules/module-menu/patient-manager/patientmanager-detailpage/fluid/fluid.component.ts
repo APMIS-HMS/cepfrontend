@@ -289,7 +289,6 @@ export class FluidComponent implements OnInit {
         }
       }
     }).then(payload => {
-      console.log(payload);
       let data = <any[]>payload.data;
       this.mapTypeOfData(data);
       let len = data.length;
@@ -302,8 +301,6 @@ export class FluidComponent implements OnInit {
         this.lineChartLabels[0] = 0;
         this.lineChartLabels.push(dt);
       }
-      console.log(this.lineChartData);
-      console.log(this.lineChartLabels);
       //this.lineChartData = JSON.parse(JSON.stringify(this.refreshGraph(this.lineChartData)));
     });
   }
@@ -359,7 +356,6 @@ export class FluidComponent implements OnInit {
         _lineChartData[i].data[j] = lineChartData[i].data[j];
       }
     }
-    console.log(_lineChartData);
     return _lineChartData;
   }
 

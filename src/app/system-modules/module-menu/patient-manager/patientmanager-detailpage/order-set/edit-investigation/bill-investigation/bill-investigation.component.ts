@@ -87,9 +87,7 @@ export class BillInvestigationComponent implements OnInit {
     const index = this.investigationData.index;
 		this.title = this.investigationData.investigationItems[index].name;
 
-    this._investigationService.find({ query: { facilityId: this.facility._id, name: this.title } }).then(res => {
-      console.log(res);
-      this.loading = false;
+    this._investigationService.find({ query: { facilityId: this.facility._id, name: this.title } }).then(res => {      this.loading = false;
       res.data.forEach(item => {
         const investigation: InvestigationModel = <InvestigationModel>{};
         investigation.investigation = item;
