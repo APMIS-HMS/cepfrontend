@@ -6,19 +6,19 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 @Injectable()
 export class SystemModuleService {
 
-  private loadingAnnouncedSource = new Subject<Object>();
+  private readonly loadingAnnouncedSource = new Subject<Object>();
   loadingAnnounced$ = this.loadingAnnouncedSource.asObservable();
 
-  private sweetAnnouncedSource = new Subject<Object>();
+  private readonly sweetAnnouncedSource = new Subject<Object>();
   sweetAnnounced$ = this.sweetAnnouncedSource.asObservable();
 
-  private broadCastOnlineSource = new Subject<Object>();
+  private readonly broadCastOnlineSource = new Subject<Object>();
   broadCastOnlineSource$ = this.broadCastOnlineSource.asObservable();
 
-  private loggedInUserAnnouncedSource = new Subject<Object>();
+  private readonly loggedInUserAnnouncedSource = new Subject<Object>();
   loggedInUserAnnounced = this.loggedInUserAnnouncedSource.asObservable();
 
-  private messageSource = new BehaviorSubject<Object>(false);
+  private readonly messageSource = new BehaviorSubject<Object>(false);
   currentMessage = this.messageSource.asObservable();
 
   constructor() {
@@ -26,7 +26,7 @@ export class SystemModuleService {
   announceLoading(loading: Object) {
     this.loadingAnnouncedSource.next(loading);
   }
-  private announceSweet(notification: Object) {
+  announceSweet(notification: Object) {
     this.sweetAnnouncedSource.next(notification);
   }
 
@@ -45,17 +45,7 @@ export class SystemModuleService {
     this.announceLoading({ status: 'On' });
   }
   announceSweetProxy(title, type, cp?, html?, text?, from?, position?, showConfirmButton?, timer?) {
-    this.announceSweet({
-      title: title,
-      type: type,
-      cp,
-      html: html,
-      text: text,
-      from: from,
-      position: position,
-      showConfirmButton: showConfirmButton,
-      timer: timer
-    });
+    this.announceSweet({ title, type, cp, html, text, from, position, showConfirmButton, timer });
   }
 
   changeMessage(message: Object) {

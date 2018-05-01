@@ -228,12 +228,13 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.getRelationships();
     })
   }
+
   setAppointment(patient) {
     if (patient !== undefined && this.loginEmployee !== undefined) {
       this.router.navigate(['/dashboard/clinic/schedule-appointment', patient._id, this.loginEmployee._id]);
     }
-
   }
+
   ngOnInit() {
     this.pageInView.emit('Patient Manager');
     this.authFacadeService.getLogingEmployee().then((payload: any) => {

@@ -23,7 +23,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() employeeDetails: any;
   patientDetails: any;
-  @Input() patient: Patient;
+  @Input() patient: any;
 
 
   user: User = <User>{};
@@ -192,6 +192,11 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       })
     });
   }
+
+  backToWard() {
+    this.router.navigate([`/dashboard/ward-manager/admitted/${this.patient.inPatientId}`]);
+  }
+
   getForms() {
     this.formsService.findAll().then(payload => {
       this.json = payload.data[0].body;

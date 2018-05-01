@@ -1,6 +1,7 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
-import { BedOccupancyService, InPatientService, FacilitiesService, InPatientListService } from '../../../../services/facility-manager/setup/index';
+import { BedOccupancyService, InPatientService, FacilitiesService, InPatientListService
+} from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility, User } from './../../../../models/index';
 import { WardEmitterService } from '../../../../services/facility-manager/ward-emitter.service';
@@ -63,7 +64,6 @@ export class WardManagerAdmittedpageComponent implements OnInit {
 
 	ngOnInit() {
 		this._wardEventEmitter.setRouteUrl('Admitted Patients');
-
 		this._wardEventEmitter.announceWard.subscribe(val => {
 			this.selectedWard = val;
 			this.getAdmittedItems(val);
@@ -74,90 +74,6 @@ export class WardManagerAdmittedpageComponent implements OnInit {
 		// 	this.filterInPatientList(searchText);
 		// });
 	}
-
-	// onWardChange(param) {
-	// 	this.filterAdmittedPatient = [];
-	// 	this._bedOccupancyService.find({ query: {'facilityId._id': this.facility._id }}).then(payload => {
-	// 		if (payload.data.length > 0) {
-	// 			this.admittedPatient = [];
-	// 			payload.data[0].locations.forEach(item => {
-	// 				if (item.minorLocationId === param) {
-	// 					this.wardRoomLocationItems = item.rooms;
-	// 					this._inPatientService.find({ query: {'facilityId._id': this.facility._id}}).then(res => {
-	// 						res.data.forEach(inPatientItem => {
-	// 							inPatientItem.transfers.forEach(transferItem => {
-	// 								if (transferItem.minorLocationId === param) {
-	// 									this.filterAdmittedPatient.push(inPatientItem);
-	// 								}
-	// 							})
-	// 							if (this.filterAdmittedPatient.length === 0) {
-	// 								this.getAdmittedItems(this.selectedWard);
-	// 							}else {
-	// 								this.admittedPatient = this.filterAdmittedPatient;
-	// 							}
-	// 						});
-	// 					});
-	// 				}
-	// 			});
-	// 		}
-	// 	});
-	// }
-
-	// onRoomChange(param) {
-	// 	this.filterAdmittedPatient = [];
-	// 	this._bedOccupancyService.find({ query: { 'facilityId._id': this.facility._id } }).then(payload => {
-	// 		if (payload.data !== []) {
-	// 			this.admittedPatient = []
-	// 			payload.data[0].locations.forEach(item => {
-	// 				item.rooms.forEach(itm => {
-	// 					if (itm._id.toString() === param.toString()) {
-	// 						this.wardRoomBedLocationItems = itm.beds;
-	// 						this._inPatientService.find({ query: { facilityId: this.facility._id } }).then(payload2 => {
-	// 							payload2.data.forEach(inPatientItem => {
-	// 								inPatientItem.transfers.forEach(transferItem => {
-	// 									if (transferItem.roomId.toString() === param.toString()) {
-	// 										this.filterAdmittedPatient.push(inPatientItem);
-	// 									}
-	// 								});
-	// 							});
-
-	// 							if (this.filterAdmittedPatient.length === 0) {
-	// 								this.getAdmittedItems(this.selectedWard);
-	// 							} else {
-	// 								this.admittedPatient =
-	// 								this.admittedPatient = this.filterAdmittedPatient;
-	// 							}
-	// 						});
-	// 					}
-	// 				});
-	// 			});
-	// 		}
-	// 	});
-	// }
-
-	// filterInPatientList(param) {
-	// 	this._bedOccupancyService.find({ query: { 'facilityId': this.facility._id } }).then(res => {
-	// 		if (res.data !== []) {
-  //       this.admittedPatient = [];
-	// 			// res.data[0].locations.forEach(item => {
-	// 			// 	item.rooms.forEach(itm => {
-	// 			// 		if (itm._id === this.roomVal.value) {
-	// 			// 			this.wardRoomBedLocationItems = itm.beds;
-	// 			// 			this._inPatientService.find({ query: { 'facilityId._id': this.facility._id } }).then(res2 => {
-	// 			// 				res2.data.forEach(inPatientItem => {
-	// 			// 					if (inPatientItem.patientDetails.personDetails.personFullName.includes(param)
-	// 			// 						|| inPatientItem.patientDetails.personDetails.age.toString() === param
-	// 			// 						|| inPatientItem.patientDetails.personDetails.personFullName.gender.name === param) {
-	// 			// 						this.admittedPatient.push(inPatientItem);
-	// 			// 					}
-	// 			// 				});
-	// 			// 			});
-	// 			// 		}
-	// 			// 	});
-	// 			// });
-	// 		}
-	// 	});
-	// }
 
 	openSearch() {
 		this.wsearchOpen = true;
@@ -183,7 +99,6 @@ export class WardManagerAdmittedpageComponent implements OnInit {
 			$sort: { createdAt: -1 }
 		}
 		}).then(res => {
-			console.log(res);
 			this.loading = false;
 			if (res.status === 'success' && res.data.length > 0) {
 				this.admittedPatient = res.data;

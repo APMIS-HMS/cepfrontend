@@ -161,10 +161,10 @@ export class AdmitPatientComponent implements OnInit {
 
         this._inPatientService.customCreate(payload).then(res => {
           if (res.status === 'success') {
-            let patient = `${this.inPatientItem.personDetails.firstName} ${this.inPatientItem.personDetails.lastName}`;
-            let text = `You have successfully admitted ${patient} into ${value.bed.name} bed in ${value.room.name} room`;
+            const patient = `${this.inPatientItem.personDetails.firstName} ${this.inPatientItem.personDetails.lastName}`;
+            const text = `You have successfully admitted ${patient} into ${value.bed.name} bed in ${value.room.name} room`;
             // this._notification('Success', fullText);
-            this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
+            this._systemModuleService.announceSweetProxy(text, 'success');
             this.close_onClick();
           } else {
             this._systemModuleService.announceSweetProxy(res.message, 'error');
@@ -179,10 +179,10 @@ export class AdmitPatientComponent implements OnInit {
 
         this._inPatientService.customCreate(payload).then(res => {
           if (res.status === 'success') {
-            let patient = `${this.inPatientItem.personDetails.firstName} ${this.inPatientItem.personDetails.lastName}`;
-            let text = `You have successfully admitted ${patient} into ${value.bed.name} bed in ${value.room.name} room`;
+            const patient = `${this.inPatientItem.patient.personDetails.firstName} ${this.inPatientItem.patient.personDetails.lastName}`;
+            const text = `You have successfully admitted ${patient} into ${value.bed.name} bed in ${value.room.name} room`;
             // this._notification('Success', fullText);
-            this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
+            this._systemModuleService.announceSweetProxy(text, 'success');
             this.close_onClick();
           } else {
             this._systemModuleService.announceSweetProxy(res.message, 'error');
@@ -195,7 +195,7 @@ export class AdmitPatientComponent implements OnInit {
   }
 
   getWardsDetails() {
-    this.wards = this.facility.minorLocations.filter(x => x.locationId === this.inPatientItem.loggedInWard.minorLocationId.locationId);
+    this.wards = this.facility.minorLocations.filter(x => x.locationId === this.inPatientItem.loggedInWard.majorLocationId);
     this.loadContent = false;
     // this._bedOccupancyService.find({ query: { facilityId: this.facility._id } }).then(res => {
     //   if (res.data.length > 0) {

@@ -92,12 +92,12 @@ export class WardManagerComponent implements OnInit, OnDestroy {
         }
       } else {
         const text = 'Couldn\'t get Logged in user! Please try again later';
-      this._systemModuleService.announceSweetProxy(text, 'error', null, null, null, null, null, null, null);
+      this._systemModuleService.announceSweetProxy(text, 'error');
       }
     }).catch(err => {
       // Starday * redirect non employee of this facility to the dashboard
       const text = 'Only an employee of this facility can have access to this module';
-      this._systemModuleService.announceSweetProxy(text, 'info', null, null, null, null, null, null, null);
+      this._systemModuleService.announceSweetProxy(text, 'info');
       this._router.navigate(['/dashboard']);
     });
 	}
@@ -116,8 +116,6 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 		this._wardEventEmitter.announceWard.subscribe(val => {
 			this.checkedInObject = val;
     });
-
-
 	}
 
 	checkIntoWard() {

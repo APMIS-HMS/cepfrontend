@@ -42,7 +42,7 @@ import { RequestDetailComponent } from '../system-modules/module-menu/lab/lab-re
 import { Angular4PaystackModule } from 'angular4-paystack';
 import { Angular4FlutterwaveComponent } from './angular-4-flutterwave/angular-4-flutterwave.component';
 import { WindowRef } from '../services/facility-manager/setup/winref.service';
-import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+// import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import {
   TemplateMedicationComponent
 } from '../system-modules/module-menu/forms-manager/treatement-template/template-medication/template-medication.component';
@@ -104,7 +104,7 @@ import { PaymentChartComponent } from './payment-chart/payment-chart.component';
     MaterialModule,
     SharedModuleMaterialModule
   ],
-  providers: [StoreService, WindowRef, OrderSetSharedService, SystemModuleService]
+  providers: [StoreService, WindowRef, OrderSetSharedService]
 })
 export class SharedModule {}
 

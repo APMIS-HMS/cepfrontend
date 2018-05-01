@@ -91,10 +91,12 @@ export class DischargePatientComponent implements OnInit {
         status: myGlobals.discharge
       };
 
+      console.log(payload);
       this._inPatientService.customCreate(payload).then(res => {
+        console.log(res);
         if (res.status === 'success') {
-          let patient = `${this.selectedPatient.patient.personDetails.firstName} ${this.selectedPatient.patient.personDetails.lastName}`;
-          let text = `${patient} has been discharged successfully.`;
+          const patient = `${this.selectedPatient.patient.personDetails.firstName} ${this.selectedPatient.patient.personDetails.lastName}`;
+          const text = `${patient} has been discharged successfully.`;
           this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
           this.close_onClick();
           setTimeout(e => {

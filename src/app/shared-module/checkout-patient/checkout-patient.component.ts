@@ -57,7 +57,7 @@ export class CheckoutPatientComponent implements OnInit {
 
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
-    this.user = <any>this._locker.getObject('auth');
+		this.user = <any>this._locker.getObject('auth');
 
 		this.admittedWard.isAdmitted = false;
 
@@ -87,7 +87,7 @@ export class CheckoutPatientComponent implements OnInit {
           employeeId: this.employeeDetails._id,
           patientId: this.patientDetails._id,
           facilityId: this.facility._id,
-          clinicId: (!!this.selectedAppointment._id) ? this.selectedAppointment._id : null,
+					clinicId: (!!this.selectedAppointment.clinicId) ? this.selectedAppointment.clinicId : null,
           minorLocationId: value.ward,
           description: value.desc
         };
@@ -102,7 +102,7 @@ export class CheckoutPatientComponent implements OnInit {
             res.isAdmitted = true;
             res.msg = text;
             this.admittedWard = res;
-            this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
+            this._systemModuleService.announceSweetProxy(text, 'success');
           }
         }).catch(err => {
         });
@@ -227,8 +227,8 @@ export class CheckoutPatientComponent implements OnInit {
 			} else {
 				this._inpatientService.find({ query:
 					{facilityId: this.facility._id, patientId: this.patientDetails._id, isDischarged: false }}).then(resp => {
-					if (resp.data.length > 0) {
-            const minorLocation = this.facility.minorLocations.filter(x => x._id === resp.data[0].minorLocationId);
+						if (resp.data.length > 0) {
+						const minorLocation = this.facility.minorLocations.filter(x => x._id === resp.data[0].minorLocation._id);
             const text = patientName + ' has been admitted to ' + minorLocation[0].name + ' ward';
 						resp.data[0].isAdmitted = true;
 						resp.data[0].msg = text;
