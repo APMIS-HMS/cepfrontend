@@ -1,3 +1,4 @@
+import { AuthFacadeService } from './../../system-modules/service-facade/auth-facade.service';
 import { Injectable } from '@angular/core';
 import { Resolve, Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
@@ -16,11 +17,12 @@ export class SwitchUserResolverService implements Resolve<Facility> {
     private locker: CoolLocalStorage,
     private corporateFacilityService: CorporateFacilityService,
     private personService: PersonService,
+    private authFacadeService: AuthFacadeService,
     private router: Router) {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
-    const auth: any = this.locker.getObject('auth');
+    const auth: any =  this.authFacadeService.getAuth(); //this.locker.getObject('auth');
     this.authData = auth.data;
     if (auth == null || auth === undefined) {
       this.router.navigate(['/']);

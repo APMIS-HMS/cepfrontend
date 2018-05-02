@@ -70,7 +70,8 @@ export class LoginComponent implements OnInit {
           let auth = {
             data: result.user
           };
-          this.locker.setObject('auth', auth);
+          //this.locker.setObject('auth', auth);
+          this.authFacade.setAuth(auth);
           this.locker.setObject('token', result.accessToken);
           this.authFacade.setLoginUser(result.user);
           this.router.navigate(['/home-page']).then(pay => { //accounts

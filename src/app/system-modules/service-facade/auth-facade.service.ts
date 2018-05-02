@@ -13,6 +13,8 @@ export class AuthFacadeService {
   logingEmployee: any;
   access: any;
   loginUser: any;
+  auth: any;
+
   private selectedFacility: any;
   constructor(
     private _socketService: SocketService,
@@ -36,6 +38,15 @@ export class AuthFacadeService {
   setSelectedFacility(facility) {
     this.selectedFacility = facility;
   }
+
+  setAuth(auth) {
+    this.auth = auth;
+  }
+
+  getAuth(){
+    return this.auth;
+  }
+
   getSelectedFacility() {
     return this.selectedFacility;
   }
@@ -150,6 +161,7 @@ export class AuthFacadeService {
             if (payload !== undefined) {
               self.setLogingEmployee(payload.selectedEmployee);
               self.setLoginUser(payload.selectedUser);
+              self.setAuth({data:payload.selectedUser});
               resolve(self.loginUser);
             } else {
               resolve(undefined);
@@ -161,7 +173,7 @@ export class AuthFacadeService {
       }
     });
   }
-  getUserAccessControls(force?) {
+  getUserAccessControls(force?, id?) {
     let facId = this.locker.getObject("fac"); // TO Do: check if fac is in user's facilityRoles
     let self = this;
     return new Promise(function (resolve, reject) {

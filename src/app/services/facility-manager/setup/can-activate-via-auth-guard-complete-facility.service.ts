@@ -13,6 +13,7 @@ export class CanActivateViaAuthGuardCompleteFacilityService
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Promise<boolean> {
+    console.log('me and you 2');
     let self = this;
     return new Promise(function(resolve, reject) {
       self.authFacadeService.getLogingEmployee;

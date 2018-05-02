@@ -68,7 +68,7 @@ export class SystemModuleComponent implements OnInit {
     this.employeeService.checkInAnnounced$.subscribe(payload => {
       this.checkedInObject = payload;
     });
-    let auth: any = this.locker.getObject("auth");
+    let auth: any = this.authFacadeService.getAuth(); //this.locker.getObject("auth");
     let authData = auth.data;
     this.personService.get(authData.personId, {}).then(ppayload => {
       this.selectedPerson = ppayload;
@@ -84,7 +84,7 @@ export class SystemModuleComponent implements OnInit {
   }
 
   ngOnInit() {
-    const auth: any = this.locker.getObject("auth");
+    const auth: any = this.authFacadeService.getAuth(); //this.locker.getObject("auth");
     this.authData = auth.data;
   }
 

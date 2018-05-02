@@ -43,6 +43,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('uuu')
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     // const loginEmployee = this.locker.getObject('loginEmployee');
     if(this.selectedFacility !== null){
