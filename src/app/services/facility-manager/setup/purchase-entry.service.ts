@@ -8,6 +8,7 @@ export class PurchaseEntryService {
   public _socket2;
   public _socketInvoice;
   private _rest;
+  private _socketPurchaseEntry;
   public listenerCreate;
   public listenerUpdate;
   public listenerDelete;
@@ -19,6 +20,7 @@ export class PurchaseEntryService {
     this._socket = _socketService.getService('purchase-entries');
     this._socketInvoice = _socketService.getService('purchase-invoices');
     this._socket2 = _socketService.getService('make-purchase-entries');
+    this._socketPurchaseEntry = _socketService.getService('add-purchase-entries');
     this._socket.timeout = 30000;
     this._socket2.timeout = 30000;
     this._socketInvoice.timeout = 30000;
@@ -53,6 +55,10 @@ export class PurchaseEntryService {
 
   create2(serviceprice: any) {
     return this._socket2.create(serviceprice);
+  }
+
+  createEntry(serviceprice: any) {
+    return this._socketPurchaseEntry.create(serviceprice);
   }
 
   update(serviceprice: any) {
