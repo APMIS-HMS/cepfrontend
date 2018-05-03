@@ -1,0 +1,198 @@
+<div class="doc-mainWrap">
+  <div class="doc-contentArea">
+    <div class="clinicalNoteWrap">
+      <div class="actSect">
+        <div (click)="showImageBrowseDlg(); upload_view = !upload_view" class="act-wrap">
+          <i *ngIf="upload_view" class="fa fa-minus" aria-hidden="true"></i>
+          <i [hidden]="upload_view" class="fa fa-plus" aria-hidden="true"></i>
+          <span>Upload Data</span>
+          <input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style="display:none;"
+            #fileInput type="file" id="uploadResult" (change)="uploadingData($event)">
+        </div>
+      </div>
+
+      <div class="tblWrapa" class="actSect">
+        <div class="card">
+          <div class="card-header">
+            <div class="row">
+              <div class="col-xs-1 table-head">Title</div>
+              <div class="col-xs-2 table-head">Patient</div>
+              <div class="col-xs-1 table-head">Gender</div>
+              <div class="col-xs-2 table-head">Phone</div>
+              <div class="table-head col-xs-2">Email</div>
+              <div class="table-head col-xs-2">Date Of Birth</div>
+              <div class="table-head col-xs-1">Payment Plan</div>
+              <div class="table-head col-xs-1">
+                <i class="fa fa-search fa-fw pointer" (click)="searchOpen = !searchOpen"></i>
+              </div>
+            </div>
+            <div class="row" *ngIf="searchOpen">
+              <div class="col-md-4">
+                <input [formControl]="patientSearch" class="table-header-input" type="text" placeholder="Search for Patient">
+              </div>
+              <div class="col-md-4">
+
+              </div>
+              <div class="col-md-3">
+
+              </div>
+              <div class="col-md-1 table-head">
+                <i class="fa fa-close fa-fw" (click)="searchOpen = !searchOpen"></i>
+              </div>
+            </div>
+          </div>
+          <div class="card-content">
+            <div class="card-list-item" *ngIf="patients.length === 0 && !loading">
+              <div class="col-xs-12" style="text-align:center">
+                No data available in table
+              </div>
+            </div>
+            <div class="card-list-item" *ngIf="patients.length === 0 && loading">
+              <div class="col-xs-12" style="text-align:center">
+                <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
+              </div>
+            </div>
+            <div class="card-list-item" [formGroup]="shownForm" *ngFor="let patient of patients; let i = index; let item of shownForm.get('items').controls;">
+              <div class="row" *ngIf="openBox !== 'view'+i">
+                <div class="table-list col-xs 1">
+                  {{patient.title}}
+                </div>
+                <div class="table-list col-xs-2">
+                  {{patient.firstName}} {{patient.lastName}}
+                </div>
+                <div class="table-list col-xs-1">
+                  {{patient.gender}}
+                </div>
+                <div class="table-list col-xs-2">
+                  {{patient.primaryContactPhoneNo}}
+                </div>
+                <div class="table-list col-xs-2">
+                  {{patient.email}}
+                </div>
+                <div class="table-list col-xs-2">
+                  {{patient.dateOfBirth | date:'dd/MM/yyyy'}}
+                </div>
+                <div class="table-list col-xs-1 camelCapital">
+                  {{patient.payPlan}}
+                </div>
+                <div class="table-list col-xs-1 action-placeholder" *ngIf="openBox !== 'view'+i">
+                  <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                  <div class="action-container shadow-RB">
+                    <div class="action-item" (click)="openBox = 'view'+i">
+                      <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                      <span>Edit</span>
+                    </div>
+                    <div class="action-item" (click)="deleteBtn(i)">
+                      <i class="fa fa-trash" aria-hidden="true"></i>
+                      <span>Delete</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="row" formArrayName="items">
+                <div class="row" *ngIf="openBox === 'view'+i" [formGroupName]="i">
+                  <div class="table-list col-xs-1">
+                    <div class="row">
+                      <mat-form-field class="col-xs-12">
+                        <mat-select formControlName="title">
+                          <mat-option>None</mat-option>
+                          <mat-option *ngFor="let title of titles" [value]="title.name">{{title.name}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="table-list col-xs-2">
+                    <div class="row">
+                      <mat-input-container class="col-xs-6">
+                        <input matInput mat-error placeholder="First Name" formControlName="firstName">
+                      </mat-input-container>
+                      <mat-input-container class="col-xs-6">
+                        <input matInput mat-error placeholder="Last Name" formControlName="lastName">
+                      </mat-input-container>
+                    </div>
+                  </div>
+                  <div class="table-list col-xs-1">
+                    <div class="row">
+                      <mat-form-field class="col-xs-12">
+                        <mat-select formControlName="gender">
+                          <mat-option>None</mat-option>
+                          <mat-option *ngFor="let gender of genders" [value]="gender.name">{{gender.name}}</mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="table-list col-xs-2">
+                    <div class="row">
+                      <mat-input-container class="col-xs-12">
+                        <input matInput mat-error placeholder="Phone Number" formControlName="phone">
+                      </mat-input-container>
+                    </div>
+                  </div>
+                  <div class="table-list col-xs-2">
+                    <div class="row">
+                      <mat-input-container class="col-xs-12">
+                        <input matInput mat-error placeholder="Email" formControlName="email">
+                      </mat-input-container>
+                    </div>
+                  </div>
+                  <div class="table-list col-xs-2">
+                    <div class="row">
+                      <mat-form-field>
+                        <input matInput [matDatepicker]="picker" placeholder="Date of Birth (DD/MM/YYYY)" formControlName="dateOfBirth">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+                    </div>
+                  </div>
+                  <div class="table-list col-xs-1">
+                    <div class="row">
+                      <mat-form-field class="col-xs-12">
+                        <mat-select placeholder="Plan" (change)="changeInput($event)" formControlName="payPlan">
+                          <mat-option>None</mat-option>
+                          <mat-option value="wallet"> Wallet </mat-option>
+                          <mat-option value="insurance"> Insurance </mat-option>
+                          <mat-option value="company"> Company </mat-option>
+                          <mat-option value="family"> Family </mat-option>
+                        </mat-select>
+                      </mat-form-field>
+                    </div>
+                    <div class="row" *ngIf="openBox === 'view'+i && showWallet">
+                      wallet
+                    </div>
+                    <div class="row" *ngIf="openBox === 'view'+i && showInsurance">
+                      insurance
+                    </div>
+                    <div class="row" *ngIf="openBox === 'view'+i && showCompany">
+                      company
+                    </div>
+                    <div class="row" *ngIf="openBox === 'view'+i && showFamily">
+                      family
+                    </div>
+                  </div>
+                  <div class="table-list col-xs-1 action-placeholder">
+                    <a class="action-btn cursor-pointer" style="padding: 5px" (click)="saveRow(i)">
+                      <i class="fa fa-check"></i>
+                    </a>
+                    <a class="action-btn cursor-pointer" style="padding: 5px">
+                      <i class="fa fa-times"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="btn-box" *ngIf="patients.length > 0">
+            <button mat-raised-button class="mat-sm-btn" (click)="submit()" [disabled]="btnLoading" style="padding: 0px 20px !important;">
+              <span *ngIf="!btnLoading">
+                <i class="fa fa-plus"></i> Submit
+              </span>
+              <span *ngIf="btnLoading">Submiting... <i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

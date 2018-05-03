@@ -202,7 +202,6 @@ export class RightTabComponent implements OnInit {
             })
     }
     addTags_show(){
-        console.log('tags');
         this.addTag.emit(true);
     }
     addProblem_show() {

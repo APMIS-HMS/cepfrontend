@@ -90,9 +90,9 @@ export class AppComponent implements OnInit {
       this._sweetNotification(value);
     });
   }
+
   ngOnInit() {
     this.userServiceFacade.authenticateResource().then((result) => {
-
       this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
       this.auth = <any>this.locker.getObject('auth');
       this.joinService.create({ _id: this.selectedFacility._id, userId: this.auth.data._id }).then(paylo => {

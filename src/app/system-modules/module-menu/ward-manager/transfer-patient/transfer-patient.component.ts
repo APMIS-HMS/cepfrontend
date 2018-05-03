@@ -90,10 +90,11 @@ export class TransferPatientComponent implements OnInit {
     this._inPatientService.customCreate(payload).then(res => {
       if (res.status === 'success') {
         const name = `${this.selectedPatient.patient.personDetails.firstName} ${this.selectedPatient.patient.personDetails.lastName}`;
-        let text = `You have successfully transfered ${name} to ${data.ward.name}`;
+        const text = `You have successfully transfered ${name} to ${data.ward.name}`;
         // this._notification('Success', fullText);
-        this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
-        this.close_onClick();
+				this._systemModuleService.announceSweetProxy(text, 'success');
+				this.close_onClick();
+				this._route.navigate(['/dashboard/ward-manager/admitted']);
       } else {
         this._systemModuleService.announceSweetProxy(res.message, 'error');
       }

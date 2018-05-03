@@ -87,7 +87,6 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
               $limit: 300
             }
           }).then(payload => {
-            console.log(payload);
             if (value.length > 0) {
               this.searchEmpty = false;
               this.searchedPatients = payload.data;

@@ -44,7 +44,6 @@ getMyAppointments(){
     doctorId: { $in: this.listOfEmployees.map(x => x._id) }
   }}).subscribe(payload =>{
     this.myAppointments = payload.data;
-    console.log(this.myAppointments);
   });
 }
 
