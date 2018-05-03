@@ -63,6 +63,7 @@ export class ScheduleFrmComponent implements OnInit {
   appointmentIsToday = false;
   showTimeZone: boolean;
   @Input() selectedPatient: any;
+  selectedProvider:any;
   mainErr = true;
   errMsg = "you have unresolved errors";
   selectedFacility: Facility = <Facility>{};
@@ -188,7 +189,6 @@ export class ScheduleFrmComponent implements OnInit {
         this.apmisProviderLookupHandleSelectedItem(this.appointment.providerDetails);
       }
       this.selectedPatient = payload.patientDetails;
-
       //this.patient.setValue(payload.patientDetails);
       this.apmisLookupHandleSelectedItem(payload.patientDetails);
       this.date = payload.startDate;
@@ -331,7 +331,7 @@ export class ScheduleFrmComponent implements OnInit {
 
     });
 
-    this.getPatients();
+    // this.getPatients();
     this.getTimezones();
 
     this.route.queryParams.subscribe(params => {
@@ -359,6 +359,7 @@ export class ScheduleFrmComponent implements OnInit {
 
   apmisProviderLookupHandleSelectedItem(value) {
     this.apmisProviderLookupText = `${value.personDetails.firstName} ${value.personDetails.lastName}`;
+    this.selectedProvider = value;
   }
 
   getTimezones() {
@@ -918,7 +919,7 @@ export class ScheduleFrmComponent implements OnInit {
       this.appointment.appointmentTypeId = type;
       this.appointment.clinicId = clinic;
       if (this.provider.value !== null && this.provider.value !== undefined) {
-        const provider = this.provider.value._id;
+        const provider = this.selectedProvider._id;
         this.appointment.doctorId = provider;
       }
 
@@ -1028,10 +1029,8 @@ export class ScheduleFrmComponent implements OnInit {
           }
         );
       } else {
-        console.log(this.appointment);
         this.appointmentService.create(this.appointment).then(
           payload => {
-            console.log(payload);
             this.createBill();
             if (this.teleMed.value === true) {
               const topic = "Appointment with " + patient.personDetails.apmisId;
@@ -1109,7 +1108,6 @@ export class ScheduleFrmComponent implements OnInit {
               "There was an error setting the appointment",
               "error"
             );
-            console.dir(error);
           }
         );
       }

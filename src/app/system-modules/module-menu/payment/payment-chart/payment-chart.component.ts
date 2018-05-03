@@ -53,7 +53,6 @@ export class PaymentChartComponent implements OnInit {
 
   ngOnInit() {
     this.selectedFacility = <any>this.locker.getObject('selectedFacility');
-    console.log(this.selectedFacility);
     let currentDate = Date.now();
     let lifeTimeDays = differenceInCalendarDays(this.selectedFacility.createdAt, currentDate);
     this.dateOption[5].counter = lifeTimeDays;
@@ -151,10 +150,8 @@ export class PaymentChartComponent implements OnInit {
 
   // events
   public chartClicked(e: any): void {
-    console.log(e);
   }
 
   public chartHovered(e: any): void {
-    console.log(e);
   }
 }

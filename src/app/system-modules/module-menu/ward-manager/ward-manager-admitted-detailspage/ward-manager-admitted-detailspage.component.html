@@ -13,7 +13,7 @@
             </h1>
             <button style="margin-bottom: 10px" (click)="onClickPatientDocumentation(selectedPatient);" class="btn"><i class="fa fa-eye" aria-hidden="true"></i> Patient Documentation</button>
             <button style="margin-bottom: 10px" *ngIf="!selectedPatient?.isDischarged" class="btn btn-red" (click)="onClickTransferPatient()"><i class="fa fa-share" aria-hidden="true"></i> Transfer</button>
-            <button style="margin-bottom: 10px" *ngIf="!selectedPatient?.isDischarged" class="btn text-white btn-green" (click)="onClickVitals()"><i class="fa fa-share" aria-hidden="true"></i> Vitals</button>
+            <button style="margin-bottom: 10px" *ngIf="!selectedPatient?.isDischarged" class="btn text-white btn-green" (click)="onClickPatientDocumentation(selectedPatient);"><i class="fa fa-share" aria-hidden="true"></i> Vitals</button>
             <button style="margin-bottom: 10px" *ngIf="!selectedPatient?.isDischarged" class="btn btn-blue" (click)="onClickDischargePatient();"><i class="fa fa-user-times" aria-hidden="true"></i> Discharge</button>
         </div>
         <div class="col-sm-8">
