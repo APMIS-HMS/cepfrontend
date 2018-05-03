@@ -1,7 +1,7 @@
 import { Component, OnInit, EventEmitter, Output, Input, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material';
 import * as XLSX from 'xlsx';
-import { FormArray, FormGroup, FormBuilder } from '@angular/forms';
+import { FormArray, FormGroup, FormBuilder, FormControl } from '@angular/forms';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import {
   ProfessionService, RelationshipService, MaritalStatusService, GenderService,
@@ -51,7 +51,10 @@ export class BulkUploadComponent implements OnInit {
 
   facility: Facility = <Facility>{};
 
-
+  upload_view = false;
+  searchOpen = false;
+  loading = false;
+  patientSearch = new FormControl('');
   constructor(private formBuilder: FormBuilder,
     private titleService: TitleService,
     private genderService: GenderService, 

@@ -38,7 +38,7 @@ export class InvoiceComponent implements OnInit {
 
     searchPendingInvoice = new FormControl('', []);
     searchOtherPendingInvoice = new FormControl('', []);
-
+    searchPendingInvoices = new FormControl('');
     selectedPatient: Patient = <Patient>{};
     selectedFacility: Facility = <Facility>{};
     selectedBillItem: BillItem = <BillItem>{};
