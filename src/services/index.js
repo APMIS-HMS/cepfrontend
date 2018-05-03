@@ -180,6 +180,9 @@ const listOfInvoices = require('./list-of-invoices/list-of-invoices.service.js')
 const billSummaryData = require('./bill-summary-data/bill-summary-data.service.js');
 const paymentChartData = require('./payment-chart-data/payment-chart-data.service.js');
 const employeeSearch = require('./employee-search/employee-search.service.js');
+const inventoryProductService = require('./inventory-product-service/inventory-product-service.service.js');
+const addPurchaseEntries = require('./add-purchase-entries/add-purchase-entries.service.js');
+const formularyProducts = require('./formulary-products/formulary-products.service.js');
 module.exports = function(app) {
     app.configure(users);
     app.configure(facilityOwnerships);
@@ -363,4 +366,7 @@ module.exports = function(app) {
     app.configure(billSummaryData);
     app.configure(paymentChartData);
     app.configure(employeeSearch);
+    app.configure(inventoryProductService);
+    app.configure(addPurchaseEntries);
+    app.configure(formularyProducts);
 };

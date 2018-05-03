@@ -73,7 +73,7 @@ class Service {
             }
           }
         }
-        if (data.orderId !== undefined) {
+        if (data.orderId !== undefined && data.orderId !== null) {
           let updatePurchase = await purchaseOrderService.patch(data.orderId, {
             isSupplied: true
           });

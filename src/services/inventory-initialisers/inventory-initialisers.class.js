@@ -22,6 +22,7 @@ class Service {
   async create(data, params) {
     const inventoriesService = this.app.service('inventories');
     const productsService = this.app.service('products');
+    const orgService = this.app.service('organisation-services');
     let inventory = await inventoriesService.find({
       query: {
         facilityId: data.product.facilityId,
@@ -56,14 +57,35 @@ class Service {
       //   return res;
       // }
     } else {
+      let service = {};
+      let orgServiceValue ={};
+      service.name = data.product.name;
+      let awaitOrganService = await orgService.get(data.facilityServiceId);
+      awaitOrganService.categories.forEach((item, i) => {
+        if (item._id === data.categoryId) {
+          item.services.push(service);
+        }
+      });
+      const payResult = await orgService.patch(awaitOrganService._id,awaitOrganService);
+
+      payResult.categories.forEach((itemi, i) => {
+        if (itemi._id === data.categoryId) {
+          itemi.services.forEach((items, s) => {
+            if (items.name === service.name) {
+              orgServiceValue.serviceId = items._id;
+            }
+          });
+        }
+      });
+
       let batches = data;
       let inventoryModel = {};
       inventoryModel.facilityId = batches.product.facilityId;
       inventoryModel.storeId = batches.storeId;
-      inventoryModel.serviceId = batches.product.serviceId;
-      inventoryModel.categoryId = batches.product.categoryId;
-      inventoryModel.facilityServiceId = batches.product.facilityServiceId;
-      inventoryModel.productId = batches.product._id;
+      inventoryModel.serviceId = orgServiceValue.serviceId;
+      inventoryModel.categoryId = data.categoryId;
+      inventoryModel.facilityServiceId = data.facilityServiceId;
+      inventoryModel.productId = batches.product.productObject.id;
       inventoryModel.transactions = [];
       inventoryModel.totalQuantity = 0;
       inventoryModel.availableQuantity = 0;
@@ -77,17 +99,8 @@ class Service {
         }
       }
       let inventory = await inventoriesService.create(inventoryModel);
-      // let product = await productsService.get(batches.product._id);
-      // if (product != null) {
-      //   product.isInventory = true;
-      //   let updatedProduct = await productsService.patch(product._id, {
-      //     isInventory: product.isInventory
-      //   });
-
-      // }
       let res = {
         inventory: inventory
-        //product: updatedProduct
       };
       return res;
     }

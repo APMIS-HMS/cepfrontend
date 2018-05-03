@@ -6,15 +6,24 @@ const resolvers = {
   joins: {
     productObject: () => async (data, context) => {
       try {
-        const getProduct = await context.app.service('products').get(data.productId);
-        const productConfig = await context.app.service('product-configs').find({
-          query: {
-            facilityId: getProduct.facilityId,
-            productId: getProduct._id
-          }
-        });
-        getProduct.productConfigObject = productConfig.data[0].packSizes;
-        data.productObject = getProduct;
+        console.log(data);
+        console.log(data.productId.toString());
+        const getProduct = await context.app.service('formulary-products').get(data.productId,{});
+        console.log(getProduct);
+        if(getProduct.data.id !== undefined){
+          const productConfig = await context.app.service('product-configs').find({
+            query: {
+              facilityId: data.facilityId,
+              productId: getProduct.data.id
+            }
+          });
+          console.log("Am here");
+          console.log(productConfig.data[0].packSizes);
+          console.log(getProduct);
+          getProduct.data.productConfigObject = productConfig.data[0].packSizes;
+          data.productObject = getProduct.data;
+          console.log(data);
+        }
       } catch (e) {
         // console.log(e);
       }
