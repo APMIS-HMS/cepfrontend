@@ -1,7 +1,6 @@
 import { CorporateFacilityService } from './../../services/facility-manager/setup/corporate-facility.service';
 import { FacilitiesService } from './../../services/facility-manager/setup/facility.service';
 import { Router } from '@angular/router';
-import { PersonService } from 'app/services/facility-manager/setup';
 import { FeatureModuleService } from "./../../services/module-manager/setup/feature-module.service";
 import { CoolLocalStorage } from "angular2-cool-storage/src/cool-local-storage";
 import { SocketService, RestService } from "./../../feathers/feathers.service";
@@ -21,9 +20,6 @@ export class AuthFacadeService {
     private _restService: RestService,
     private locker: CoolLocalStorage,
     private featureService: FeatureModuleService,
-    private personService: PersonService,
-    private facilityService: FacilitiesService,
-    private corporateFacilityService: CorporateFacilityService,
     private router: Router
   ) { }
 
