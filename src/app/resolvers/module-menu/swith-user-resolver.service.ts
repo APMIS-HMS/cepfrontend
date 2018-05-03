@@ -22,15 +22,22 @@ export class SwitchUserResolverService implements Resolve<Facility> {
   }
 
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
+    
+    // this.authFacadeService.getLogingUser().then((user:any) =>{
+    //   this.auth = this.authFacadeService.getAuth();
+
+      
     const auth: any =  this.authFacadeService.getAuth(); //this.locker.getObject('auth');
     this.authData = auth.data;
     if (auth == null || auth === undefined) {
+      console.log('life')
       this.router.navigate(['/']);
       return Observable.of(null);
     }
     return this.personService.get(this.authData.personId, {}).then(payloadp => {
       this.selectedPerson = payloadp;
       if (auth == null || auth === undefined) {
+        console.log('life')
         this.router.navigate(['/']);
       } else if (auth.corporateOrganisationId == null || auth.corporateOrganisationId === undefined) {
         const facilities = auth.data.facilitiesRole;

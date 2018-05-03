@@ -435,6 +435,7 @@ export class CorporateSignupComponent implements OnInit {
         this.sg1_1_show = false;
         this.selectModules_show = true;
         this.sg4_show = false;
+        console.log('life')
         this.router.navigate(['/']);
       }
     });

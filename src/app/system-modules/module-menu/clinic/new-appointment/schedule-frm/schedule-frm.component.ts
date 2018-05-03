@@ -1228,6 +1228,10 @@ export class ScheduleFrmComponent implements OnInit {
         day  = ("0" + date.getDate()).slice(-2);
         const hours  = ("0" + date.getHours()).slice(-2);
         const minutes = ("0" + date.getMinutes()).slice(-2);
+        const datepart = [ date.getFullYear(), mnth, day ].join("-");
+        const timepart = [ 'T', hours, minutes ].join(":")
+        console.log(datepart);
+        console.log(timepart);
     return [ date.getFullYear(), mnth, day, hours, minutes ].join("-");
 }
 
@@ -1235,6 +1239,7 @@ export class ScheduleFrmComponent implements OnInit {
     console.log(event);
     this.authFacadeService.getServerTime().then((serverTime:any) =>{
       console.log(serverTime.datetime);
+      console.log(new Date())
       console.log(parse(event));
       if(serverTime.datetime > new Date(event)){
         const dayNum = getDay(event);

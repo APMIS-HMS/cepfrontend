@@ -65,10 +65,13 @@ export class FacilityBasicinfoEditComponent implements OnInit {
   }
 
   ngOnInit() {
-    const facility = this.authFacadeService.getSelectedFacility();
-    if (facility.isValidRegistration === undefined || facility.isValidRegistration === false) {
-      this.showClose = false;
-    }
+   this.authFacadeService.getSelectedFacility().then((facilityObj:any) => {
+      const facility = facilityObj;
+      if (facility.isValidRegistration === undefined || facility.isValidRegistration === false) {
+        this.showClose = false;
+      }
+    });
+  
     this._getCountries();
     this._getFacilityTypes();
     if (this.selectedFacility.isHDO) {

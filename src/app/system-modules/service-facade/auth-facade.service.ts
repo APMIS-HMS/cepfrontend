@@ -64,7 +64,25 @@ export class AuthFacadeService {
   }
 
   getSelectedFacility() {
-    return this.selectedFacility;
+    // return this.selectedFacility;
+    let facId = this.locker.getObject("fac");
+    const self = this;
+    return new Promise(function (resolve, reject) {
+      self._socketService.authenticateService();
+      self._socketService.getService('facilities').get(facId, {}).then(payload => {
+        if (payload !== null) {
+          self.selectedFacility = payload;
+          self.setSelectedFacility(payload);
+          resolve(self.selectedFacility)
+        } else {
+          resolve(undefined)
+        }
+
+      }, error => {
+      });
+
+
+    });
   }
 
   getLogingEmployee() {

@@ -13,6 +13,7 @@ export class CanActivateViaAuthGuardService implements CanActivate {
     if (auth !== undefined && auth != null) {
       return true;
     }
+    console.log(false);
     return false;
   }
 }

@@ -91,18 +91,31 @@ export class AppComponent implements OnInit {
     });
   }
   ngOnInit() {
-    this.userServiceFacade.authenticateResource().then((result) => {
 
-      this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-      this.auth = <any>this.locker.getObject('auth');
-      this.joinService.create({ _id: this.selectedFacility._id, userId: this.auth.data._id }).then(paylo => {
+    this.userServiceFacade.authenticateResource().then((result) => {
+      this.authFacadeService.getLogingUser().then((user:any) =>{
+        this.auth = this.authFacadeService.getAuth();
+        this.authFacadeService.getSelectedFacility().then((facility:any) => {
+          this.selectedFacility = facility;
+          this.auth = this.authFacadeService.getAuth(); //<any>this.locker.getObject('auth');
+          this.joinService.create({ _id: this.selectedFacility._id, userId: this.auth.data._id }).then(paylo => {
+        });
+        }).catch(err2 =>{
+          console.log(err2);
+        }); // <Facility>this.locker.getObject('selectedFacility');
+      }).catch(err1=>{
+        console.log(err1)
       });
+     
+      
     }).catch(err => {
+      console.log(err);
       // this.systemModuleService.announceSweetProxy('Authentication is required, please log-in with your credentials', 'warning');
       this.router.navigate(['/']);
       this.locker.clear();
       window.localStorage.clear();
       this.loadingService.complete();
+      console.log('life')
     });
   }
   processNotification(obj) {
