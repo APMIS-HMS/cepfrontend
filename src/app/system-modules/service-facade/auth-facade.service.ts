@@ -39,6 +39,26 @@ export class AuthFacadeService {
     this.auth = auth;
   }
 
+  getServerTime(){
+    const self = this;
+    return new Promise(function (resolve, reject) {
+      self._socketService.authenticateService();
+      self._socketService
+        .getService("get-server-time")
+        .get(self.selectedFacility._id)
+        .then(
+        payload => {
+          if (payload !== undefined) {
+            resolve(payload);
+          } else {
+            resolve(undefined);
+          }
+        },
+        error => { }
+        );
+    });
+  }
+
   getAuth(){
     return this.auth;
   }

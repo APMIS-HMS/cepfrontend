@@ -1,3 +1,4 @@
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { JoinChannelService } from './../../services/facility-manager/setup/join-channel.service';
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -32,6 +33,7 @@ export class UserAccountsComponent implements OnInit {
     private personService: PersonService,
     private sanitizer: DomSanitizer,
     private corporateFacilityService: CorporateFacilityService,
+    private authFacadeService: AuthFacadeService,
     private employeeService: EmployeeService,
     private joinChannelService:JoinChannelService,
     public facilityService: FacilitiesService) {
@@ -88,7 +90,7 @@ export class UserAccountsComponent implements OnInit {
 
 
   popListing(item: any) {
-    const auth: any = this.locker.getObject('auth');
+    const auth: any =  this.authFacadeService.getAuth(); //this.locker.getObject('auth');
     this.item = item;
     this.facilityService.get(item._id,{}).then(payload =>{
       this.selectedFacility = payload;

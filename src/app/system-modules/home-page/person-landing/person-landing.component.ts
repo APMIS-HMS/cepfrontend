@@ -52,7 +52,7 @@ getUnits(units){
 
 getMyAppointments(){
   this.appointmentService.find({query:{
-    doctorId: { $in: this.listOfEmployees.map(x => x._id) }
+    doctorId: { $in: this.listOfEmployees.map(x => x._id) }, isFuture:true
   }}).subscribe(payload =>{
     this.myAppointments = payload.data;
   });
@@ -69,7 +69,6 @@ loadFacility(employee){
 
   this.facilityService.get(employee.facilityId,{}).then(payload =>{
     this.selectedFacility = payload;
-    console.log(1);
     this.locker.setObject("fac", this.selectedFacility._id);
     if (this.selectedFacility.isTokenVerified === false) {
       console.log(this.selectedFacility)
@@ -77,27 +76,19 @@ loadFacility(employee){
       // this.popup_listing = false;
     } else {
       // this.locker.setObject("fac",employee.facilityId);
-      console.log(2);
       this.authFacadeService.getLogingUser(employee.facilityId).then(payload =>{
         this.selectedUser = payload;
-        console.log(3);
         this.joinChannelService.create({_id:this.selectedFacility._id, userId:this.selectedUser._id}).then(pay =>{
           // this.popup_listing = true;
           // this.popup_verifyToken = false;
-          console.log(4);
           this.locker.setObject('selectedFacility', this.selectedFacility);
-          console.log(5);
           this.router.navigate(['dashboard']).then( p => {
-            console.log(p);
             this.userService.announceMission('in');
           }).catch(er =>{
-            console.log(er);
           });
         }, err =>{
-          console.log(err);
         })
       }).catch(error =>{
-        console.log(error);
       });
      
       

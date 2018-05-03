@@ -43,7 +43,6 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('uuu')
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     // const loginEmployee = this.locker.getObject('loginEmployee');
     if(this.selectedFacility !== null){
@@ -63,7 +62,7 @@ export class DashboardComponent implements OnInit {
       // this.facilityName = pay.name;
     })
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
-    const auth = <any>this.locker.getObject('auth');
+    const auth =  this.authFacadeService.getAuth(); //<any>this.locker.getObject('auth');
     if (this.loginEmployee !== null && this.loginEmployee._id !== undefined && auth.data.personId === this.loginEmployee.personId) {
       return;
     }

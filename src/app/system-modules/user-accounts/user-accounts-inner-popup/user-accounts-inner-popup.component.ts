@@ -1,3 +1,4 @@
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { Router } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -21,10 +22,10 @@ export class UserAccountsInnerPopupComponent implements OnInit {
 
   constructor(private router: Router, private locker: CoolLocalStorage,
     private employeeService: EmployeeService, private patientService: PatientService,
-    private userService: UserService) { }
+    private userService: UserService, private authFacadeService: AuthFacadeService) { }
 
   ngOnInit() {
-    const auth: any = this.locker.getObject('auth');
+    const auth: any = this.authFacadeService.getAuth(); //this.locker.getObject('auth');
     this.patientService.find({ query: { personId: auth.data.personId, facilityId: this.selectedFacility._id } }).then(payload => {
       if (payload.data.length > 0) {
         this.selectedPatient = payload.data[0];
