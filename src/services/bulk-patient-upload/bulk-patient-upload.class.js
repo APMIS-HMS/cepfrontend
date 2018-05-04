@@ -27,7 +27,7 @@ class Service {
     let failedAttempts = [];
     let length = data.length;
     if (Array.isArray(data)) {
-      for(let i=0; i<length; i++){
+      for (let i = 0; i < length; i++) {
         let datas = {
           person: data[i]
         }
@@ -57,15 +57,8 @@ class Service {
         }
       }
     }
-    
-
-    return {
-      saved: returnData,
-      failed: failedAttempts
-    };
-
-    //return Promise.resolve(data);
   }
+
 
   update(id, data, params) {
     return Promise.resolve(data);
