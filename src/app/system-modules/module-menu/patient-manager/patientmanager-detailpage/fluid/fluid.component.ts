@@ -293,7 +293,6 @@ export class FluidComponent implements OnInit, AfterViewInit {
         }
       }
     }).then(payload => {
-      console.log(payload);
       let data = <any[]>payload.data;
       let len = data.length;
       let label = [];
