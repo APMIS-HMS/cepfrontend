@@ -80,6 +80,7 @@ export class BulkUploadComponent implements OnInit {
       gender: '',
       phone: '',
       email: '',
+      hospId: '',
       dateOfBirth: '',
       payPlan: ''
     });
@@ -136,12 +137,13 @@ export class BulkUploadComponent implements OnInit {
         rowObj.gender = data[i][3];
         rowObj.dateOfBirth = new Date(data[i][4]);
         rowObj.email = data[i][5];
-        rowObj.primaryContactPhoneNo = data[i][6];
-        rowObj.motherMaidenName = data[i][7];
-        rowObj.maritalStatus = (data[i][8] !== undefined) ? data[i][8] : '';
-        rowObj.lgaOfOrigin = (data[i][9] !== undefined) ? data[i][9] : '';
-        rowObj.stateOfOrigin = (data[i][10] !== undefined) ? data[i][10] : '';
-        rowObj.nationality = (data[i][11] !== undefined) ? data[i][11] : '';
+        rowObj.hospId = data[i][6];
+        rowObj.primaryContactPhoneNo = data[i][7];
+        rowObj.motherMaidenName = data[i][8];
+        rowObj.maritalStatus = (data[i][9] !== undefined) ? data[i][8] : '';
+        rowObj.lgaOfOrigin = (data[i][10] !== undefined) ? data[i][9] : '';
+        rowObj.stateOfOrigin = (data[i][11] !== undefined) ? data[i][10] : '';
+        rowObj.nationality = (data[i][12] !== undefined) ? data[i][11] : '';
         rowObj.payPlan = 'Wallet';
         this.items.push(this.createForm());
         let datas: any = this.shownForm.controls.items;
@@ -150,6 +152,7 @@ export class BulkUploadComponent implements OnInit {
         datas.controls[i].controls.gender.setValue(rowObj.gender);
         datas.controls[i].controls.phone.setValue(rowObj.primaryContactPhoneNo);
         datas.controls[i].controls.email.setValue(rowObj.email);
+        datas.controls[i].controls.hospId.setValue(rowObj.hospId);
         datas.controls[i].controls.dateOfBirth.setValue(rowObj.dateOfBirth);
         datas.controls[i].controls.title.setValue(rowObj.title);
         datas.controls[i].controls.payPlan.setValue(rowObj.payPlan.toLowerCase());
@@ -218,6 +221,7 @@ export class BulkUploadComponent implements OnInit {
     patientInfo.firstName = info.firstName.value;
     patientInfo.lastName = info.lastName.value;
     patientInfo.email = info.email.value;
+    patientInfo.hospId = info.hospId.value;
     patientInfo.dateOfBirth = info.dateOfBirth.value;
     patientInfo.primaryContactPhoneNo = info.phone.value;
     patientInfo.title = info.title.value;
