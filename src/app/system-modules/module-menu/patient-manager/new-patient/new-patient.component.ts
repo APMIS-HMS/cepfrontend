@@ -24,12 +24,22 @@ import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 import { EMAIL_REGEX, PHONE_REGEX, ALPHABET_REGEX, HTML_SAVE_PATIENT } from 'app/shared-module/helpers/global-config';
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
+import { APP_DATE_FORMATS, AppDateAdapter } from 'app/date-format';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
 
 
 @Component({
     selector: 'app-new-patient',
     templateUrl: './new-patient.component.html',
-    styleUrls: ['./new-patient.component.scss']
+    styleUrls: ['./new-patient.component.scss'],
+    providers: [
+        {
+            provide: DateAdapter, useClass: AppDateAdapter
+        },
+        {
+            provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
+        }
+    ]
 })
 export class NewPatientComponent implements OnInit, AfterViewInit {
     user: any;
@@ -1223,7 +1233,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 const text = this.selectedPerson.lastName + ' ' + this.selectedPerson.firstName
                     + ' added successfully but bill not generated because price not yet set for this service';
                 payl.showEdit = true;
-                    this.systemModuleService.changeMessage(payl); // This is responsible for showing the edit patient modal box
+                this.systemModuleService.changeMessage(payl); // This is responsible for showing the edit patient modal box
                 this.systemModuleService.announceSweetProxy(text, 'success');
                 this.close_onClick();
             }).catch(errr => {
