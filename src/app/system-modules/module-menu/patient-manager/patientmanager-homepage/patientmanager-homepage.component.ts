@@ -228,13 +228,15 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.getRelationships();
     })
   }
+
   setAppointment(patient) {
     if (patient !== undefined && this.loginEmployee !== undefined) {
       this.router.navigate(['/dashboard/clinic/schedule-appointment', patient._id, this.loginEmployee._id]);
     }
-
   }
+
   ngOnInit() {
+    this.systemService.off();
     this.pageInView.emit('Patient Manager');
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
@@ -401,7 +403,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.patientToEdit.tags.splice(toDelete, 1);
       this.patientService.patch(this.patientToEdit._id, this.patientToEdit, {}).then(deletePayload => {
       }).catch(err => {
-        console.log(err);
       });
     }
 
@@ -826,7 +827,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
             }
             const fil = bene.filter(x => x.filNo === this.employeeId.value);
             if (fil.length > 0) {
-              console.log(fil[0]);
               if (fil[0].status.toLowerCase() !== "active") {
                 this.systemService.off();
                 const text = 'Employee Id does not have an active status for the selected Company';
@@ -934,7 +934,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
           }
         }
       }).catch(err => {
-        console.log(err);
       });
 
     }

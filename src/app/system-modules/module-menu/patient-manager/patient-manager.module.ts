@@ -1,4 +1,4 @@
-import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+// import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { FacilityCompanyCoverService } from './../../../services/facility-manager/setup/facility-company-cover.service';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 // import { FacilityFamilyCoverService } from './../../../services/facility-manager/setup/facility-family-cover.service';
@@ -149,7 +149,6 @@ import { BulkUploadComponent } from './bulk-upload/bulk-upload.component';
     WorkbenchService,
     LaboratoryRequestService,
     DocumentationTemplateService,
-    SystemModuleService,
     ScopeLevelService,
     FacilityCompanyCoverService
   ]
