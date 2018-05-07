@@ -18,8 +18,9 @@
               <div class="col-xs-1 table-head">Title</div>
               <div class="col-xs-2 table-head">Patient</div>
               <div class="col-xs-1 table-head">Gender</div>
-              <div class="col-xs-2 table-head">Phone</div>
+              <div class="col-xs-1 table-head">Phone</div>
               <div class="table-head col-xs-2">Email</div>
+              <div class="table-head col-xs-1">Hospital Id</div>
               <div class="table-head col-xs-2">Date Of Birth</div>
               <div class="table-head col-xs-1">Payment Plan</div>
               <div class="table-head col-xs-1">
@@ -63,11 +64,14 @@
                 <div class="table-list col-xs-1">
                   {{patient.gender}}
                 </div>
-                <div class="table-list col-xs-2">
+                <div class="table-list col-xs-1">
                   {{patient.primaryContactPhoneNo}}
                 </div>
                 <div class="table-list col-xs-2">
                   {{patient.email}}
+                </div>
+                <div class="table-list col-xs-1">
+                  {{patient.hospId}}
                 </div>
                 <div class="table-list col-xs-2">
                   {{patient.dateOfBirth | date:'dd/MM/yyyy'}}
@@ -121,7 +125,7 @@
                       </mat-form-field>
                     </div>
                   </div>
-                  <div class="table-list col-xs-2">
+                  <div class="table-list col-xs-1">
                     <div class="row">
                       <mat-input-container class="col-xs-12">
                         <input matInput mat-error placeholder="Phone Number" formControlName="phone">
@@ -132,6 +136,13 @@
                     <div class="row">
                       <mat-input-container class="col-xs-12">
                         <input matInput mat-error placeholder="Email" formControlName="email">
+                      </mat-input-container>
+                    </div>
+                  </div>
+                  <div class="table-list col-xs-1">
+                    <div class="row">
+                      <mat-input-container class="col-xs-12">
+                        <input matInput mat-error placeholder="text" formControlName="hospId">
                       </mat-input-container>
                     </div>
                   </div>
@@ -173,7 +184,7 @@
                     <a class="action-btn cursor-pointer" style="padding: 5px" (click)="saveRow(i)">
                       <i class="fa fa-check"></i>
                     </a>
-                    <a class="action-btn cursor-pointer" style="padding: 5px">
+                    <a class="action-btn cursor-pointer" style="padding: 5px" (click)="closeRow()">
                       <i class="fa fa-times"></i>
                     </a>
                   </div>
