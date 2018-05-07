@@ -65,6 +65,7 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
   showUnit = false;
   newDept = false;
   newUnit = false;
+  clinic = "";
   constructor(
     public facilityService: FacilitiesService,
     private locationService: LocationService,
@@ -348,6 +349,15 @@ export class FacilitypageDepartmentspageComponent implements OnInit {
     return this.facilityObj.departments.filter(x => x.isActive);
   }
   getActiveUnits(units) {
+    this.getClinics(units.filter(x => x.isActive));
     return units.filter(x => x.isActive);
+  }
+
+  getClinics(units){
+    units.forEach(unit => {
+      unit.clinics.forEach(clinics => {
+        this.clinic = clinics.clinicName;
+      });
+    });
   }
 }
