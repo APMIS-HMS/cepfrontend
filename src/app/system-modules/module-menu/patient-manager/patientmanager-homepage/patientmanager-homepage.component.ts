@@ -236,6 +236,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.systemService.off();
     this.pageInView.emit('Patient Manager');
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
