@@ -9,6 +9,14 @@ export const DurationUnits = [
     { 'id': 3, 'name': 'Weeks', 'selected': false },
     { 'id': 4, 'name': 'Months', 'selected': false }
 ];
+export const DosageUnits = [
+    { 'id': 1, 'name': 'mL', 'selected': true },
+    { 'id': 2, 'name': 'mg', 'selected': false },
+    { 'id': 3, 'name': 'g', 'selected': false },
+    { 'id': 4, 'name': 'g/mL', 'selected': false },
+    { 'id': 5, 'name': 'L', 'selected': false },
+    { 'id': 6, 'name': 'cm', 'selected': false }
+];
 export const Clients = [
     { 'id': 1, 'name': 'Individual', 'selected': true },
     { 'id': 2, 'name': 'Corporate', 'selected': false },

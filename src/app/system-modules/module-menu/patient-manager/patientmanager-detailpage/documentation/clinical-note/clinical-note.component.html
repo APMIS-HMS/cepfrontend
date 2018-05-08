@@ -103,7 +103,7 @@
                                             </tr>
                                             <tr *ngFor="let medication of orderSet?.medications; let i = index;">
                                                 <td style="text-align:center;width: 30px;"> {{ i+1 }}</td>
-                                                <td>{{ medication.genericName }} - {{ medication.frequency }} for {{ medication.duration }} {{ medication.durationUnit }}</td>
+                                                <td>{{ medication.genericName }} - {{ medication.dosage }}{{ medication.dosageUnit }}, {{ medication.frequency }} for {{ medication.duration }} {{ medication.durationUnit }}</td>
                                                 <td class="action-placeholder" style="text-align:center;width: 25px;">
                                                     <i class="fa fa-close" aria-hidden="true"></i>
                                                 </td>
