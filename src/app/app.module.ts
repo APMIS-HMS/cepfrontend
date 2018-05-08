@@ -69,7 +69,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MessagingComponent } from './messaging/messaging.component';
 
 import { APP_DATE_FORMATS, AppDateAdapter } from 'app/date-format';
-import { DateAdapter, MAT_DATE_FORMATS } from "@angular/material";
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
 
 @NgModule({
   declarations: [
@@ -105,6 +105,7 @@ import { DateAdapter, MAT_DATE_FORMATS } from "@angular/material";
     {
       provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
     },
+    {provide: MAT_DATE_LOCALE, useValue: 'en-in'},
     // { provide: ErrorHandler, useClass: ApmisErrorHandler },
     SocketService, RestService, SetupService.CountriesService, SetupService.FacilityTypesService,
     SetupService.FacilitiesService, SetupService.FacilityModuleService, SetupService.ConsultingRoomService,
@@ -147,4 +148,8 @@ import { DateAdapter, MAT_DATE_FORMATS } from "@angular/material";
   ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private dateAdapter:DateAdapter<Date>){
+    dateAdapter.setLocale('en-in');
+  }
+}

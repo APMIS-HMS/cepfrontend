@@ -123,7 +123,6 @@ export class PaymentComponent implements OnInit {
         this.invoiceService.find({ query: { facilityId: this.selectedFacility._id, balance: { $gt: 0 }, paymentCompleted: false, $sort: { updatedAt: -1 } } }).then(payload => {
             this.systemModuleService.off();
             this.invoiceGroups = payload.data;
-            console.log(this.invoiceGroups);
             this.holdMostRecentInvoices = this.invoiceGroups;
             this.isLoadingInvoice = false;
         }).catch(err => {

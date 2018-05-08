@@ -133,6 +133,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   mainErr: boolean = true;
   errMsg: string;
 
+  bulkUpload: boolean = false;
+
   constructor(private patientService: PatientService, private personService: PersonService,
     private facilityService: FacilitiesService, private locker: CoolLocalStorage, private router: Router,
     private route: ActivatedRoute, private toast: ToastsManager, private genderService: TitleGenderFacadeService,
@@ -226,13 +228,15 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.getRelationships();
     })
   }
+
   setAppointment(patient) {
     if (patient !== undefined && this.loginEmployee !== undefined) {
       this.router.navigate(['/dashboard/clinic/schedule-appointment', patient._id, this.loginEmployee._id]);
     }
-
   }
+
   ngOnInit() {
+    this.systemService.off();
     this.pageInView.emit('Patient Manager');
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
@@ -399,7 +403,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.patientToEdit.tags.splice(toDelete, 1);
       this.patientService.patch(this.patientToEdit._id, this.patientToEdit, {}).then(deletePayload => {
       }).catch(err => {
-        console.log(err);
       });
     }
 
@@ -685,6 +688,10 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.selectedIndex = 1;
   }
 
+  openBulkUploadModal(){
+    this.bulkUpload = true;
+  }
+
   private _populateAndSelectData(value: any) {
     if (value.homeAddress) {
       this.patientEditForm.controls['street'].setValue(value.homeAddress.street);
@@ -820,7 +827,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
             }
             const fil = bene.filter(x => x.filNo === this.employeeId.value);
             if (fil.length > 0) {
-              console.log(fil[0]);
               if (fil[0].status.toLowerCase() !== "active") {
                 this.systemService.off();
                 const text = 'Employee Id does not have an active status for the selected Company';
@@ -928,7 +934,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
           }
         }
       }).catch(err => {
-        console.log(err);
       });
 
     }
@@ -995,6 +1000,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.systemService.changeMessage(null);
     this.payPlan = false;
     this.newUpload = false;
+    this.bulkUpload = false;
     this.selectedIndex = 0;
     // Reset the next of kin form array
     this.patientEditForm.controls['nextOfKin'] = this.formBuilder.array([]);

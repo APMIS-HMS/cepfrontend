@@ -64,6 +64,8 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
   onClickPatientDocumentation(patient: any) {
     // const text = 'If you click on yes, you will be redirected to the patient documentation.';
 		// this._systemModuleService.announceSweetProxy(text, 'question', this, null, null, patient);
+		patient.patient.isFromWard = true;
+		patient.patient.inPatientId = this.admittedPatientId;
 		this._locker.setObject('patient', patient.patient);
 		this._router.navigate([`/dashboard/patient-manager/patient-manager-detail`, patient.patient.personId]).then(res => {
 		}).catch(err => {

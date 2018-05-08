@@ -1,7 +1,6 @@
 import { CorporateFacilityService } from './../../services/facility-manager/setup/corporate-facility.service';
 import { FacilitiesService } from './../../services/facility-manager/setup/facility.service';
 import { Router } from '@angular/router';
-import { PersonService } from 'app/services/facility-manager/setup';
 import { FeatureModuleService } from "./../../services/module-manager/setup/feature-module.service";
 import { CoolLocalStorage } from "angular2-cool-storage/src/cool-local-storage";
 import { SocketService, RestService } from "./../../feathers/feathers.service";
@@ -13,15 +12,14 @@ export class AuthFacadeService {
   logingEmployee: any;
   access: any;
   loginUser: any;
+  auth: any;
+
   private selectedFacility: any;
   constructor(
     private _socketService: SocketService,
     private _restService: RestService,
     private locker: CoolLocalStorage,
     private featureService: FeatureModuleService,
-    private personService: PersonService,
-    private facilityService: FacilitiesService,
-    private corporateFacilityService: CorporateFacilityService,
     private router: Router
   ) { }
 
@@ -36,6 +34,35 @@ export class AuthFacadeService {
   setSelectedFacility(facility) {
     this.selectedFacility = facility;
   }
+
+  setAuth(auth) {
+    this.auth = auth;
+  }
+
+  getServerTime(){
+    const self = this;
+    return new Promise(function (resolve, reject) {
+      self._socketService.authenticateService();
+      self._socketService
+        .getService("get-server-time")
+        .get(self.selectedFacility._id)
+        .then(
+        payload => {
+          if (payload !== undefined) {
+            resolve(payload);
+          } else {
+            resolve(undefined);
+          }
+        },
+        error => { }
+        );
+    });
+  }
+
+  getAuth(){
+    return this.auth;
+  }
+
   getSelectedFacility() {
     return this.selectedFacility;
   }
@@ -150,6 +177,7 @@ export class AuthFacadeService {
             if (payload !== undefined) {
               self.setLogingEmployee(payload.selectedEmployee);
               self.setLoginUser(payload.selectedUser);
+              self.setAuth({data:payload.selectedUser});
               resolve(self.loginUser);
             } else {
               resolve(undefined);
@@ -161,7 +189,7 @@ export class AuthFacadeService {
       }
     });
   }
-  getUserAccessControls(force?) {
+  getUserAccessControls(force?, id?) {
     let facId = this.locker.getObject("fac"); // TO Do: check if fac is in user's facilityRoles
     let self = this;
     return new Promise(function (resolve, reject) {
