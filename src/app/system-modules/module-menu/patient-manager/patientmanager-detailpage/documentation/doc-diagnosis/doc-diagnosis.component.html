@@ -179,12 +179,12 @@
         <div class="row">
             <div class="col-md-6">
 
-                <div class="pop-tabs">
+                <!-- <div class="pop-tabs">
                     <div (click)="tabAll_click()" [class.popTab-active]="tab_all" class="pop-tab">All</div>
                     <div (click)="tabFavourite_click()" [class.popTab-active]="tab_favourite" class="pop-tab">Favourites</div>
                     <div (click)="tabPatient_click()" [class.popTab-active]="tab_patient" class="pop-tab">Patient</div>
                     <div (click)="tabRecent_click()" [class.popTab-active]="tab_recent" class="pop-tab">Recently Used</div>
-                </div>
+                </div> -->
 
                 <div *ngIf="tab_all" class="popTab-item animated slideInRight">
                     <form [formGroup]="addDiagnosisForm" novalidate style="padding-top: .8em">
