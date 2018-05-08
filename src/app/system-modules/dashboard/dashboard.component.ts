@@ -62,54 +62,58 @@ export class DashboardComponent implements OnInit {
       // this.facilityName = pay.name;
     })
     this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
-    const auth =  this.authFacadeService.getAuth(); //<any>this.locker.getObject('auth');
-    if (this.loginEmployee !== null && this.loginEmployee._id !== undefined && auth.data.personId === this.loginEmployee.personId) {
-      return;
-    }
-    this.loadIndicatorVisible = true;
-    const emp$ = Observable.fromPromise(this.employeeService.find({
-      query: {
-        facilityId: this.facilityObj._id, personId: auth.data.personId, $select: []
+    // const auth =  this.authFacadeService.getAuth(); //<any>this.locker.getObject('auth');
+    this.authFacadeService.getAuth().then((data:any) =>{
+      const auth = data;
+      if (this.loginEmployee !== null && this.loginEmployee._id !== undefined && auth.data.personId === this.loginEmployee.personId) {
+        return;
       }
-    }));
-    this.subscription = emp$.mergeMap((emp: any) => {
-      if (emp.data.length > 0) {
-        return Observable.forkJoin(
-          [
-            Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
-            Observable.fromPromise(this.workSpaceService.find({ query: { 'employeeId._id': emp.data[0]._id } })),
-            Observable.fromPromise(this.facilityService
-              .find({
-                query: {
-                  '_id': this.facilityObj._id,
-                  $select: ['name', 'email', 'contactPhoneNo', 'contactFullName', 'shortName', 'website', 'logoObject']
-                }
-              }))
-          ])
-      } else {
-        this.loadIndicatorVisible = false;
-        return Observable.of({})
-      }
-    }
-    ).subscribe((results: any) => {
-      if (results[0] !== undefined) {
-        this.loginEmployee = results[0];
-        this.loginEmployee.workSpaces = results[1].data;
-        this.locker.setObject('workspaces', this.loginEmployee.workSpaces)
-
-        if (results[2].data.length > 0) {
-          this.locker.setObject('miniFacility', results[2].data[0])
+      this.loadIndicatorVisible = true;
+      const emp$ = Observable.fromPromise(this.employeeService.find({
+        query: {
+          facilityId: this.facilityObj._id, personId: auth.data.personId, $select: []
         }
-
-        // this.locker.setObject('loginEmployee', this.loginEmployee);
-        // this.authFacadeService.setLogingEmployee(this.loginEmployee);
-        this.authFacadeService.getLogingEmployee().then((payload: any) => {
-          this.loginEmployee = payload;
-        });
+      }));
+      this.subscription = emp$.mergeMap((emp: any) => {
+        if (emp.data.length > 0) {
+          return Observable.forkJoin(
+            [
+              Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
+              Observable.fromPromise(this.workSpaceService.find({ query: { 'employeeId._id': emp.data[0]._id } })),
+              Observable.fromPromise(this.facilityService
+                .find({
+                  query: {
+                    '_id': this.facilityObj._id,
+                    $select: ['name', 'email', 'contactPhoneNo', 'contactFullName', 'shortName', 'website', 'logoObject']
+                  }
+                }))
+            ])
+        } else {
+          this.loadIndicatorVisible = false;
+          return Observable.of({})
+        }
       }
-
-      this.loadIndicatorVisible = false;
+      ).subscribe((results: any) => {
+        if (results[0] !== undefined) {
+          this.loginEmployee = results[0];
+          this.loginEmployee.workSpaces = results[1].data;
+          this.locker.setObject('workspaces', this.loginEmployee.workSpaces)
+  
+          if (results[2].data.length > 0) {
+            this.locker.setObject('miniFacility', results[2].data[0])
+          }
+  
+          // this.locker.setObject('loginEmployee', this.loginEmployee);
+          // this.authFacadeService.setLogingEmployee(this.loginEmployee);
+          this.authFacadeService.getLogingEmployee().then((payload: any) => {
+            this.loginEmployee = payload;
+          });
+        }
+  
+        this.loadIndicatorVisible = false;
+      })
     })
+
   }
 
   navigateToClinic() {

@@ -68,16 +68,19 @@ export class SystemModuleComponent implements OnInit {
     this.employeeService.checkInAnnounced$.subscribe(payload => {
       this.checkedInObject = payload;
     });
-    let auth: any = this.authFacadeService.getAuth(); //this.locker.getObject("auth");
-    let authData = auth.data;
-    this.personService.get(authData.personId, {}).then(ppayload => {
-      this.selectedPerson = ppayload;
-    });
+    // let auth: any = this.authFacadeService.getAuth(); //this.locker.getObject("auth");
+    this.authFacadeService.getAuth().then((auth:any) =>{
+      if(auth !== undefined){
+        this.authData = auth.data;
+        this.personService.get(this.authData.personId, {}).then(ppayload => {
+          this.selectedPerson = ppayload;
+        });
+      }
+    })
+   
 
     this.personService.updateListener.subscribe((payload: Person) => {
-      auth = this.locker.getObject("auth");
-      authData = auth.data;
-      if (authData.personId === payload._id) {
+      if (this.authData.personId === payload._id) {
         this.selectedPerson = payload;
       }
     });

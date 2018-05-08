@@ -39,7 +39,6 @@ export class UserAccountsComponent implements OnInit {
     public facilityService: FacilitiesService) {
     this.userService.missionAnnounced$.subscribe(payload => {
       if (payload === 'out') {
-        console.log('life')
         this.router.navigate(['/']);
       }
     });

@@ -14,23 +14,27 @@ export class CanActivateViaAuthGuardAccessService implements CanActivate {
   ): Promise<boolean> {
     let self = this;
     return new Promise(function(resolve, reject) {
-      self.authFacadeService.getLogingEmployee;
+      // self.authFacadeService.getLogingEmployee;
       self.authFacadeService.getUserAccessControls().then(
         (payload: any) => {
           let modules: any = payload.modules;
+          // console.log(modules);
           const index = modules.findIndex(
             x => x.route.substring(1) === route.routeConfig.path
           );
-          const facility = self.authFacadeService.getSelectedFacility();
-          const validate = self.validateFacility(facility);
-          const resulm = (index > -1 || DONT_USE_AUTH_GUARD) &&          
-          (validate || route.routeConfig.path === "facility");
-          resolve(
-            (index > -1 || DONT_USE_AUTH_GUARD) &&
-              (validate || route.routeConfig.path === "facility")
-          );
+          self.authFacadeService.getSelectedFacility().then(facility =>{
+            const validate = self.validateFacility(facility);
+            // const resulm = (index > -1 || DONT_USE_AUTH_GUARD) &&          
+            // (validate || route.routeConfig.path === "facility");
+            resolve(
+              (index > -1 || DONT_USE_AUTH_GUARD) &&
+                (validate || route.routeConfig.path === "facility")
+            );
+          });
+        
         },
         error => {
+          console.log(error);
           reject(error);
         }
       );

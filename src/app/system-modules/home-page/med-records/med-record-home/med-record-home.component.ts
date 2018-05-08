@@ -21,7 +21,6 @@ export class MedRecordHomeComponent implements OnInit {
   private appointmentService:AppointmentService) { }
 
   ngOnInit() {
-    console.log(this.listOfPatients);
     this.getPendingBills();
     this.getPatientFacilities();
     this.getMyAppointments();
@@ -54,7 +53,6 @@ export class MedRecordHomeComponent implements OnInit {
   }
   getPendingBills(){
     this.pendingBillService.find({query:{patientIds:this.listOfPatients.map(x => x._id)}}).subscribe(payload =>{
-      console.log(payload.data);
       this.pendingBills = payload.data;
     })
   }

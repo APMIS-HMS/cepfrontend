@@ -68,9 +68,9 @@ export class AppComponent implements OnInit {
           this.processNotification(obj);
         } else {
           this.authFacadeService
-            .getLogingUser()
-            .then(payload => {
-              this.loginUser = payload;
+            .getServerTime()
+            .then((payload:any) => {
+              this.loginUser = payload.data;
               this.processNotification(obj);
             })
             .catch(err => {});
@@ -101,21 +101,17 @@ export class AppComponent implements OnInit {
           this.joinService.create({ _id: this.selectedFacility._id, userId: this.auth.data._id }).then(paylo => {
         });
         }).catch(err2 =>{
-          console.log(err2);
         }); // <Facility>this.locker.getObject('selectedFacility');
       }).catch(err1=>{
-        console.log(err1)
       });
      
       
     }).catch(err => {
-      console.log(err);
       // this.systemModuleService.announceSweetProxy('Authentication is required, please log-in with your credentials', 'warning');
       this.router.navigate(['/']);
       this.locker.clear();
       window.localStorage.clear();
       this.loadingService.complete();
-      console.log('life')
     });
   }
   processNotification(obj) {

@@ -1236,7 +1236,6 @@ export class ScheduleFrmComponent implements OnInit {
 }
 
   dateChange(event) {
-    console.log(event);
     this.authFacadeService.getServerTime().then((serverTime:any) =>{
       console.log(serverTime.datetime);
       console.log(new Date())

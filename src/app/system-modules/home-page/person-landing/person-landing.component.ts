@@ -59,10 +59,13 @@ getMyAppointments(){
 }
 
 getEmployeeRecords() {
-  this.employeeService.find({query:{personId: this.selectedPerson._id}}).subscribe(payload =>{
-    this.listOfEmployees = payload.data;
-    this.getMyAppointments();
-  });
+  this.authFacadeService.getAuth().then((auth:any) =>{
+    this.employeeService.find({query:{personId: auth.data.personId}}).subscribe(payload =>{
+      this.listOfEmployees = payload.data;
+      this.getMyAppointments();
+    });
+  })
+ 
 }
 
 loadFacility(employee){
@@ -71,7 +74,6 @@ loadFacility(employee){
     this.selectedFacility = payload;
     this.locker.setObject("fac", this.selectedFacility._id);
     if (this.selectedFacility.isTokenVerified === false) {
-      console.log(this.selectedFacility)
       // this.popup_verifyToken = true;
       // this.popup_listing = false;
     } else {

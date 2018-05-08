@@ -63,9 +63,9 @@ const appRoutes: Routes = [
             {
                 path: 'payment',
                 loadChildren: '../module-menu/payment/payment.module#PaymentModule',
-                // canActivate: [
-                //     CanActivateViaAuthGuardAccessService
-                // ]
+                canActivate: [
+                    CanActivateViaAuthGuardAccessService
+                ]
             },
             {
                 path: 'wallet',
@@ -91,45 +91,44 @@ const appRoutes: Routes = [
             {
                 path: 'store',
                 loadChildren: '../module-menu/store-manager/store.module#StoreModule',
-                // canActivate: [
-                //     CanActivateViaAuthGuardAccessService
-                // ]
+                canActivate: [
+                    CanActivateViaAuthGuardAccessService
+                ]
             },
             {
                 path: 'product-manager',
-                loadChildren: '../module-menu/product-manager/product-manager.module#ProductManagerModule'
+                loadChildren: '../module-menu/product-manager/product-manager.module#ProductManagerModule',
+                canActivate: [
+                    CanActivateViaAuthGuardAccessService
+                ] 
             },
             {
                 path: 'purchase-manager',
                 loadChildren: '../module-menu/purchase-manager/purchase-manager.module#PurchaseManagerModule',
-                /* canActivate: [
+                canActivate: [
                     CanActivateViaAuthGuardAccessService
-                ] */
+                ] 
             },
             {
                 path: 'inventory-manager',
                 loadChildren: '../module-menu/inventory-manager/inventory-manager.module#InventoryManagerModule',
-                // canActivate: [
-                //     CanActivateViaAuthGuardAccessService
-                // ]
+                canActivate: [
+                    CanActivateViaAuthGuardAccessService
+                ]
             },
             {
                 path: 'pharmacy',
                 loadChildren: '../module-menu/pharmacy/pharmacy-manager.module#PharmacyManagerModule',
-                // canActivate: [
-                //     CanActivateViaAuthGuardAccessService
-                // ]
+                canActivate: [
+                    CanActivateViaAuthGuardAccessService
+                ]
             },
-            // {
-            //     path: 'laboratory',
-            //     loadChildren: '../module-menu/laboratory/laboratory.module#LaboratoryModule'
-            // },
             {
                 path: 'laboratory',
                 loadChildren: '../module-menu/lab/lab.module#LabModule',
-                // canActivate: [
-                //     CanActivateViaAuthGuardAccessService
-                // ]
+                canActivate: [
+                    CanActivateViaAuthGuardAccessService
+                ]
             },
             {
              path: 'radiology',

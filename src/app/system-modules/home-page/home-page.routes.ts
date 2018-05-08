@@ -11,14 +11,14 @@ const HOMEPAGE_ROUTES: Routes = [
     {
         path: '', component: HomePageHomeComponent, children: [
             { path: '', component: HomePageComponent },
-            { path: 'home-page', component: HomePageComponent, resolve: { multipleUsers: SwitchUserResolverService } },
+            { path: 'home-page', component: HomePageComponent },
             {
                 // path: 'patient-manager-detail/:id', component: PatientmanagerDetailpageComponent
                 // resolve: { patient: PatientResolverService, appointment: AppointmentResolverService,
                 // loginEmployee: LoginEmployeeResolverService }
             }
         ],
-        resolve: { multipleUsers: SwitchUserResolverService }
+        // resolve: { multipleUsers: SwitchUserResolverService }
     }
 ];
 
