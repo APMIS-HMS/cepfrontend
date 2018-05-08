@@ -2,13 +2,14 @@
     <legend class="modal_title">Clinical Note</legend>
     <div *ngIf="isSavingDraft" class="save-blinker">...saving draft</div>
 
-    <ul *ngIf="showDocument" class="links-ul">
-        <li (click)="docSymptom_show()">
-            <i class="fa fa-plus" aria-hidden="true"></i>
-            <span>Symptoms</span>
-        </li>
-    </ul>
-
+    <div>
+        <ul *ngIf="showDocument" class="links-ul">
+            <li (click)="docSymptom_show()">
+                <i class="fa fa-plus" aria-hidden="true"></i>
+                <span>Symptoms</span>
+            </li>
+        </ul>
+    </div>
     <div class="docCard-header">
         <div>
             <mat-form-field>
@@ -37,7 +38,9 @@
         <div class="empWrap">
             <div class="list-img">
                 <img *ngIf="patient?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
-                <div *ngIf="patient?.personDetails?.profileImageObject !== undefined"> <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)"></div>
+                <div *ngIf="patient?.personDetails?.profileImageObject !== undefined">
+                    <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)">
+                </div>
             </div>
             <div>
                 <div class="val-tag">Patient</div>
@@ -49,15 +52,25 @@
     <div class="cont-wrap">
         <div class="docCard-body">
             <div *ngIf="!showDocument" style="width:100%; text-align:center; font-size: 1.2rem; color:#bebebe; margin:20px auto;">No Documentation form loaded</div>
-            <div *ngIf="symptoms.length !== 0">Symptoms <br>
-                <button *ngFor="let symptom of symptoms" class="tags">{{symptom.name}}&nbsp; <i (click)="deleteSymptom(symptom)" class="fa fa-close"></i> </button>
+            <div *ngIf="symptoms.length !== 0">Symptoms
+                <br>
+                <button *ngFor="let symptom of symptoms" class="tags">{{symptom.name}}&nbsp;
+                    <i (click)="deleteSymptom(symptom)" class="fa fa-close"></i>
+                </button>
             </div>
-            <div *ngIf="diagnoses.length > 0 && viewDiagnosis && !showDocument" class="modal-overlay">
+            <div *ngIf="diagnoses.length > 0 && viewDiagnosis && showDocument" class="modal-overlay">
                 <div class="diagnosis-view">
-                    <div class="modal-baseWrap animated pulse" style="width:100%">
-                        <div (click)="docDiagnosisView()" class="modal-close-ico">X</div>
-                        <div class="modal_title">DIAGNOSIS</div>
-                        <button *ngFor="let diagnosis of diagnoses" class="tags">{{diagnosis.name}}&nbsp; <i (click)="deleteDiagnosis(diagnosis)" class="fa fa-close"></i> </button>
+                    <div class="animated pulse">
+                        <div class="modal-header-wrap">
+                            <div (click)="docDiagnosisView()" class="modal-close-ico" aria-hidden="true">X</div>
+                            <legend class="modal_title">DIAGNOSIS</legend>
+                            <div class="modal_mini_title">All Purpose Medical Information System</div>
+                        </div>
+                        <div class="modal-baseWrap">
+                            <button *ngFor="let diagnosis of diagnoses" class="tags">{{diagnosis.name}}&nbsp;
+                                <i (click)="deleteDiagnosis(diagnosis)" class="fa fa-close"></i>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -91,93 +104,98 @@
                 <div *ngIf="viewOrderManagement" class="modal-overlay">
                     <div *ngIf="orderSet?.medications!==undefined || orderSet?.investigations!==undefined || orderSet?.nursingCares!==undefined || orderSet?.procedures!==undefined || orderSet?.physicianOrders!==undefined">
                         <div class="order-set">
-                            <div class="modal-baseWrap animated pulse" style="width:100%">
-                                <div (click)="viewOrderset_onClick()" class="modal-close-ico">X</div>
-                                <div class="modal_title">ORDERS</div>
-                                <div class="tbl-listWrap" *ngIf="orderSet?.medications!==undefined">
-                                    <div class="sect-title">Medications</div>
-                                    <table cellpadding="0" cellspacing="0" border="0.5">
-                                        <tbody>
-                                            <tr *ngIf="orderSet?.medications === undefined || orderSet?.medications.length === 0">
-                                                <td class="text-center" colspan="3"> No data available in table</td>
-                                            </tr>
-                                            <tr *ngFor="let medication of orderSet?.medications; let i = index;">
-                                                <td style="text-align:center;width: 30px;"> {{ i+1 }}</td>
-                                                <td>{{ medication.genericName }} - {{ medication.dosage }}{{ medication.dosageUnit }}, {{ medication.frequency }} for {{ medication.duration }} {{ medication.durationUnit }}</td>
-                                                <td class="action-placeholder" style="text-align:center;width: 25px;">
-                                                    <i class="fa fa-close" aria-hidden="true"></i>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                            <div class="animated pulse">
+                                <div class="modal-header-wrap">
+                                    <div (click)="viewOrderset_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+                                    <legend class="modal_title">ORDERS</legend>
+                                    <div class="modal_mini_title">All Purpose Medical Information System</div>
                                 </div>
-                                <div class="tbl-listWrap" *ngIf="orderSet?.investigations!==undefined">
-                                    <div class="sect-title">Investigations</div>
-                                    <table cellpadding="0" cellspacing="0" border="0.5">
-                                        <tbody>
-                                            <tr *ngIf="orderSet?.investigations === undefined || orderSet?.investigations.length === 0">
-                                                <td class="text-center" colspan="3"> No data available in table</td>
-                                            </tr>
-                                            <tr *ngFor="let investigation of orderSet?.investigations; let i = index;">
-                                                <td style="text-align:center;width: 30px;"> {{ i+1 }}</td>
-                                                <td>{{ investigation.name }}</td>
-                                                <td class="action-placeholder" style="text-align:center;width: 25px;">
-                                                    <i class="fa fa-close" aria-hidden="true"></i>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="tbl-listWrap" *ngIf="orderSet?.nursingCares!==undefined">
-                                    <div class="sect-title">Nursing Care</div>
-                                    <table cellpadding="0" cellspacing="0" border="0.5">
-                                        <tbody>
-                                            <tr *ngIf="orderSet?.nursingCares === undefined || orderSet?.nursingCares.length === 0">
-                                                <td class="text-center" colspan="3"> No data available in table</td>
-                                            </tr>
-                                            <tr *ngFor="let nursingCare of orderSet?.nursingCares;let i = index;">
-                                                <td style="text-align:center;width: 30px;"> {{ i+1 }}</td>
-                                                <td> {{ nursingCare.name }} </td>
-                                                <td class="action-placeholder" style="text-align:center;width: 25px;">
-                                                    <i class="fa fa-close" aria-hidden="true"></i>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="tbl-listWrap" *ngIf="orderSet?.physicianOrders!==undefined">
-                                    <div class="sect-title">Physician Order</div>
-                                    <table cellpadding="0" cellspacing="0" border="0.5">
-                                        <tbody>
-                                            <tr *ngIf="orderSet?.physicianOrders === undefined || orderSet?.physicianOrders.length === 0">
-                                                <td class="text-center" colspan="3"> No data available in table</td>
-                                            </tr>
-                                            <tr *ngFor="let physicianOrder of orderSet?.physicianOrders;let i = index;">
-                                                <td style="text-align:center;width: 30px;"> {{ i+1 }}</td>
-                                                <td> {{ physicianOrder.name }} </td>
-                                                <td class="action-placeholder" style="text-align:center;width: 25px;">
-                                                    <i class="fa fa-close" aria-hidden="true"></i>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="tbl-listWrap" *ngIf="orderSet?.procedures!==undefined">
-                                    <div class="sect-title">Procedure</div>
-                                    <table cellpadding="0" cellspacing="0" border="0.5">
-                                        <tbody>
-                                            <tr *ngIf="orderSet?.procedures === undefined || orderSet?.procedures.length === 0">
-                                                <td class="text-center" colspan="3"> No data available in table</td>
-                                            </tr>
-                                            <tr *ngFor="let procedure of orderSet?.procedures;let i = index;">
-                                                <td style="text-align:center;width: 30px;"> {{ i+1 }}</td>
-                                                <td> {{ procedure.name }} </td>
-                                                <td class="action-placeholder" style="text-align:center;width: 25px;">
-                                                    <i class="fa fa-close" aria-hidden="true"></i>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div class="modal-baseWrap">
+                                    <div class="tbl-listWrap" *ngIf="orderSet?.medications!==undefined">
+                                        <div class="sect-title">Medications</div>
+                                        <table cellpadding="0" cellspacing="0" border="0.5">
+                                            <tbody>
+                                                <tr *ngIf="orderSet?.medications === undefined || orderSet?.medications.length === 0">
+                                                    <td class="text-center" colspan="3"> No data available in table</td>
+                                                </tr>
+                                                <tr *ngFor="let medication of orderSet?.medications; let i = index;">
+                                                    <td style="text-align:center;width: 30px;"> {{ i+1 }}</td>
+                                                    <td>{{ medication.genericName }} - {{ medication.dosage }} {{ medication.dosageUnit }} {{ medication.frequency }} for {{ medication.duration }} {{ medication.durationUnit }}</td>
+                                                    <td class="action-placeholder" style="text-align:center;width: 25px;">
+                                                        <i class="fa fa-close" aria-hidden="true"></i>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tbl-listWrap" *ngIf="orderSet?.investigations!==undefined">
+                                        <div class="sect-title">Investigations</div>
+                                        <table cellpadding="0" cellspacing="0" border="0.5">
+                                            <tbody>
+                                                <tr *ngIf="orderSet?.investigations === undefined || orderSet?.investigations.length === 0">
+                                                    <td class="text-center" colspan="3"> No data available in table</td>
+                                                </tr>
+                                                <tr *ngFor="let investigation of orderSet?.investigations; let i = index;">
+                                                    <td style="text-align:center;width: 30px;"> {{ i+1 }}</td>
+                                                    <td>{{ investigation.name }}</td>
+                                                    <td class="action-placeholder" style="text-align:center;width: 25px;">
+                                                        <i class="fa fa-close" aria-hidden="true"></i>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tbl-listWrap" *ngIf="orderSet?.nursingCares!==undefined">
+                                        <div class="sect-title">Nursing Care</div>
+                                        <table cellpadding="0" cellspacing="0" border="0.5">
+                                            <tbody>
+                                                <tr *ngIf="orderSet?.nursingCares === undefined || orderSet?.nursingCares.length === 0">
+                                                    <td class="text-center" colspan="3"> No data available in table</td>
+                                                </tr>
+                                                <tr *ngFor="let nursingCare of orderSet?.nursingCares;let i = index;">
+                                                    <td style="text-align:center;width: 30px;"> {{ i+1 }}</td>
+                                                    <td> {{ nursingCare.name }} </td>
+                                                    <td class="action-placeholder" style="text-align:center;width: 25px;">
+                                                        <i class="fa fa-close" aria-hidden="true"></i>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tbl-listWrap" *ngIf="orderSet?.physicianOrders!==undefined">
+                                        <div class="sect-title">Physician Order</div>
+                                        <table cellpadding="0" cellspacing="0" border="0.5">
+                                            <tbody>
+                                                <tr *ngIf="orderSet?.physicianOrders === undefined || orderSet?.physicianOrders.length === 0">
+                                                    <td class="text-center" colspan="3"> No data available in table</td>
+                                                </tr>
+                                                <tr *ngFor="let physicianOrder of orderSet?.physicianOrders;let i = index;">
+                                                    <td style="text-align:center;width: 30px;"> {{ i+1 }}</td>
+                                                    <td> {{ physicianOrder.name }} </td>
+                                                    <td class="action-placeholder" style="text-align:center;width: 25px;">
+                                                        <i class="fa fa-close" aria-hidden="true"></i>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="tbl-listWrap" *ngIf="orderSet?.procedures!==undefined">
+                                        <div class="sect-title">Procedure</div>
+                                        <table cellpadding="0" cellspacing="0" border="0.5">
+                                            <tbody>
+                                                <tr *ngIf="orderSet?.procedures === undefined || orderSet?.procedures.length === 0">
+                                                    <td class="text-center" colspan="3"> No data available in table</td>
+                                                </tr>
+                                                <tr *ngFor="let procedure of orderSet?.procedures;let i = index;">
+                                                    <td style="text-align:center;width: 30px;"> {{ i+1 }}</td>
+                                                    <td> {{ procedure.name }} </td>
+                                                    <td class="action-placeholder" style="text-align:center;width: 25px;">
+                                                        <i class="fa fa-close" aria-hidden="true"></i>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
                                 </div>
                             </div>
                         </div>

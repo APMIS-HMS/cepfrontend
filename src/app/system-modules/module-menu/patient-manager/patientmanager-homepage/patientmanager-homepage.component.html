@@ -173,6 +173,13 @@
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <mat-form-field>
+                                                            <input matInput [matDatepicker]="picker" placeholder="Date of Birth (DD/MM/YYYY)" formControlName="dob">
+                                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                            <mat-datepicker #picker></mat-datepicker>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <mat-form-field>
                                                             <mat-select formControlName="gender" placeholder="Gender">
                                                                 <mat-option *ngFor="let gender of genders" [value]="gender.name">
                                                                     {{gender.name}}

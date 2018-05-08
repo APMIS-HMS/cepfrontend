@@ -24,22 +24,12 @@ import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 import { EMAIL_REGEX, PHONE_REGEX, ALPHABET_REGEX, HTML_SAVE_PATIENT } from 'app/shared-module/helpers/global-config';
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
-import { APP_DATE_FORMATS, AppDateAdapter } from 'app/date-format';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
 
 
 @Component({
     selector: 'app-new-patient',
     templateUrl: './new-patient.component.html',
-    styleUrls: ['./new-patient.component.scss'],
-    providers: [
-        {
-            provide: DateAdapter, useClass: AppDateAdapter
-        },
-        {
-            provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
-        }
-    ]
+    styleUrls: ['./new-patient.component.scss']
 })
 export class NewPatientComponent implements OnInit, AfterViewInit {
     user: any;
@@ -159,13 +149,13 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     selectedCategory;
 
-    hmos;
+    hmos:any[] = [];
     hmo;
     filteredHmos: Observable<any[]>;
 
     companyEnrolleList: any;
     loginCompanyListObject: any = {};
-    companyFacilities: any;
+    companyFacilities: any[] = [];
     filteredccs: Observable<any[]>;
     companyCover: any;
 
