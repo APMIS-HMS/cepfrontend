@@ -11,7 +11,7 @@
     <i class="fa fa-info-circle" aria-hidden="true"></i>
     <div class="sect-title">Clinic Running Days <span *ngIf="loadIndicatorVisible" class="fa fa-spinner fa-spin"></span></div>
     <div class="runningDays">
-        <div class="runningDay-wrap" *ngFor="let schedule of schedules"> 
+        <div class="runningDay-wrap" *ngFor="let schedule of schedules">
             <div class="running-day">{{schedule.day}} | {{schedule.location.name}}</div>
             <div class="running-time">{{schedule.startTime | date:'shortTime'}} to {{schedule.endTime | date:'shortTime'}}</div>
         </div>
@@ -134,27 +134,27 @@
 
         <tr *ngFor="let appointment of appointments">
             <td>
-                <div class="empWrap">
+                <div *ngIf="appointment?.doctorId !== undefined" class="empWrap">
                     <div class="list-img">
-                        <img *ngIf="appointment.patientId?.personDetails?.profileImageObject !== undefined" [src]="facilityService.transform(appointment.patientId.personDetails?.profileImageObject?.thumbnail)">
-                        <img *ngIf="appointment.patientId?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
+                        <img *ngIf="appointment.patientDetails?.personDetails?.profileImageObject !== undefined" [src]="facilityService.transform(appointment.patientId.personDetails?.profileImageObject?.thumbnail)">
+                        <img *ngIf="appointment.patientDetails?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
                     </div>
-                    <div>{{appointment.patientId.personDetails.personFullName}}</div>
+                    <div>{{appointment.patientDetails.personDetails.title}} {{appointment.patientDetails.personDetails.lastName}} {{appointment.patientDetails.personDetails.firstName}}</div>
                 </div>
             </td>
             <td>{{appointment.startDate | date:'shortDate'}}</td>
             <td> {{appointment.startDate | date:'shortTime'}}</td>
-            <td>{{appointment.clinicId?.clinicName}}</td>
+            <td>{{appointment.clinicId}}</td>
             <td>
                 <div class="empWrap">
                     <div class="list-img">
-                        <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject !== undefined && appointment.doctorId !== null" [src]="facilityService.transform(appointment.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
-                        <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
+                        <img *ngIf="appointment.providerDetails?.personDetails?.profileImageObject !== undefined && appointment.doctorId !== null" [src]="facilityService.transform(appointment.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
+                        <img *ngIf="appointment.providerDetails?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
                     </div>
-                    <div>{{appointment.doctorId?.employeeDetails.personFullName}}</div>
+                    <div>{{appointment.providerDetails?.personDetails.title}} {{appointment.providerDetails?.personDetails.lastName}} {{appointment.providerDetails?.personDetails.firstName}}</div>
                 </div>
             </td>
-            <td *ngIf="appointment.attendance === undefined">{{appointment?.orderStatusId?.name}}</td>
+            <td *ngIf="appointment.attendance === undefined">{{appointment?.orderStatusId}}</td>
             <td *ngIf="appointment.attendance !== undefined">Checked In</td>
             <td>
                 <div class="tbl-actions-wrap">
@@ -203,19 +203,19 @@
         <tr *ngFor="let appointment of pastAppointments">
 
             <td>{{appointment.startDate | date}}</td>
-            <td>{{appointment.clinicId.clinicName}}</td>
+            <td>{{appointment.clinicId}}</td>
             <td>
-                <div class="empWrap">
+                <div *ngIf="appointment?.doctorId !== undefined" class="empWrap">
                     <div class="list-img">
                         <!-- <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject !== undefined" [src]="facilityService.transform(appointment.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
                         <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png"> -->
-                        <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject !== undefined && appointment.doctorId !== null" [src]="facilityService.transform(appointment.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
-                        <img *ngIf="appointment.doctorId?.employeeDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
+                        <img *ngIf="appointment.providerDetails?.personDetails?.profileImageObject !== undefined && appointment.doctorId !== null" [src]="facilityService.transform(appointment.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
+                        <img *ngIf="appointment.providerDetails?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
                     </div>
-                    <div>{{appointment?.doctorId?.employeeDetails?.personFullName}}</div>
+                    <div>{{appointment?.providerDetails?.personDetails?.title}} {{appointment?.providerDetails?.personDetails?.lastName}} {{appointment?.providerDetails?.personDetails?.firstName}}</div>
                 </div>
             </td>
-            <td *ngIf="appointment.attendance === undefined">{{appointment?.orderStatusId?.name}}</td>
+            <td *ngIf="appointment.attendance === undefined">{{appointment?.orderStatusId}}</td>
             <td *ngIf="appointment.attendance !== undefined">Checked In</td>
         </tr>
     </tbody>

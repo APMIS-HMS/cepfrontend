@@ -146,7 +146,7 @@ export class NewAppointmentComponent implements OnInit {
     }
     getClinicAppointments(value) {
         this.selectedClinic = value.clinicId;
-        this.appointmentService.find({ query: { 'clinicId._id': value.clinicId._id, hasDate: true, startDate: value.startDate } })
+        this.appointmentService.findAppointment({ query: { 'clinicId': value.clinicId.clinicName, 'facilityId': this.selectedFacility._id,  hasDate: true, startDate: value.startDate } })
             .subscribe(payload => {
                 this.appointments = payload.data;
             })
@@ -166,7 +166,7 @@ export class NewAppointmentComponent implements OnInit {
     getPreviousAppointments(value) {
         this.pastAppointments = [];
         if (value._id !== undefined) {
-            this.appointmentService.find({ query: { 'patientId._id': value._id } }).subscribe(payload => {
+            this.appointmentService.findAppointment({ query: { 'patientId': value._id } }).subscribe(payload => {
                 this.pastAppointments = payload.data;
             });
         }
