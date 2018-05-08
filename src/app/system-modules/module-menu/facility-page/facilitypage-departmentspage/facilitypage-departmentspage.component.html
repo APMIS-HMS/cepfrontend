@@ -26,14 +26,20 @@
                                     <th>
                                         <span style="padding-left: 3px;">Short Name</span>
                                     </th>
+                                    <th>
+                                        <span style="padding-left: 3px;">Clinics</span>                                        
+                                    </th>
                                     <th>Actions</th>
                                 </tr>
                             </thead>
 
                             <tbody *ngIf="dept.units.length > 0">
                                 <tr *ngFor="let unit of getActiveUnits(dept.units)">
-                                    <td> {{unit.name}}</td>
+                                    <td class="tooltip"> {{unit.name}}</td>
                                     <td>{{unit.shortName}}</td>
+                                    <td><span *ngFor="let clinics of unit.clinics">
+                                        {{clinics.clinicName}}
+                                    </span></td>
                                     <td class="action-icons">
                                         <i (click)="editUnit_onClick(dept, unit)" class="fa fa-fw fa-2x fa-pencil-square-o orange tooltip" data-tooltip="Edit" aria-hidden="true"></i>
                                         <i (click)="removeUnitFacade(dept, unit)" class="fa fa-fw fa-2x fa-trash-o orange tooltip" data-tooltip="Delete" aria-hidden="true"></i>

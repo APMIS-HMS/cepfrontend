@@ -325,7 +325,6 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
     this.contentSecMenuShow = !this.contentSecMenuShow;
   }
   addTag_show(e){
-    console.log(e);
     this.addTag_view = true;
   }
   addProblem_show(e) {

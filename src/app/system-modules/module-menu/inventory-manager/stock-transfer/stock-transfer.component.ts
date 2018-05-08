@@ -299,7 +299,6 @@ export class StockTransferComponent implements OnInit {
       } else {
         (<FormArray>this.productTableForm.controls['productTableArray']).controls.splice(index, 1);
       }
-      console.log(index);
       let indx = index;
       if (index > 0) {
         indx = index - 1;
@@ -314,26 +313,15 @@ export class StockTransferComponent implements OnInit {
 
 
   removeProduct(index, form) {
-    console.log(index);
     const value = form[index];
-    console.log('A');
     this.superGroups.forEach((parent, i) => {
-      console.log('B');
       parent.forEach((group, j) => {
-        console.log('C');
-        console.log(value.value.productObject._id, group._id);
         if (group._id === value.value.productObject._id) {
-          console.log('D');
           group.checked = false;
-          console.log('E');
           this.onProductCheckChange({ checked: false }, value, index);
-          console.log('F');
           const count = form.length;
-          console.log('G');
           if (count === 0) {
-            console.log('H');
             this.addNewProductTables();
-            console.log('I');
           }
         }
       });
@@ -390,7 +378,6 @@ export class StockTransferComponent implements OnInit {
   }
   splitProduct($event, value, index, productId) {
     const product = (<FormArray>this.productTableForm.controls['productTableArray']).controls[index].value;
-    console.log(value.length,this.productTableForm.controls['productTableArray'].value.length);
     if (this.productTableForm.controls['productTableArray'].value.length >= value.length) {
       this.showPlusSign = false;
       return;

@@ -90,6 +90,7 @@ export class AppComponent implements OnInit {
       this._sweetNotification(value);
     });
   }
+
   ngOnInit() {
 
     this.userServiceFacade.authenticateResource().then((result) => {

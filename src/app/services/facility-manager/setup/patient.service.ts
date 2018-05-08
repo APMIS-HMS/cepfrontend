@@ -13,6 +13,7 @@ export class PatientService {
   public createListener;
   public patchListener;
   public _patientSearchSocket;
+  public _bulkUploadSocket;
 
   private patientAnnouncedSource = new Subject<Patient>();
   patientAnnounced$ = this.patientAnnouncedSource.asObservable();
@@ -25,6 +26,8 @@ export class PatientService {
     this._socket = _socketService.getService('patients');
     this._patientSearchSocket = _socketService.getService('patient-search');
     this._patientSearchSocket.timeout = 30000;
+    this._bulkUploadSocket = _socketService.getService('bulk-patient-upload');
+    this._bulkUploadSocket.timeout = 30000;
     this.createListener = Observable.fromEvent(this._socket, 'created');
     this.listner = Observable.fromEvent(this._socket, 'updated');
     this.patchListener = Observable.fromEvent(this._socket, 'patched');
@@ -110,4 +113,11 @@ export class PatientService {
       .get(path)
       .query({ facilityid: facilityId, searchtext: searchText }); // query string
   }
+
+  bulkUpload(data){
+    return this._bulkUploadSocket.create(data);
+  }
+
+
+
 }
