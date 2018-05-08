@@ -22,27 +22,35 @@ class Service {
                     $sort: { 'createdAt': -1 }
                 }
             });
-        } else if (hook.patientId !== undefined) {
-
+        } else if (hook.patientId !== undefined && hook.hasDate == undefined) {
             appointmentResult = await appointmentService.find({
                 query: {
                     patientId: hook.patientId,
                     $sort: { 'createdAt': -1 }
                 }
             });
-        } else if (hook._id !== undefined) {
+        } else if (hook._id !== undefined && hook.hasDate == undefined) {
             appointmentResult = await appointmentService.find({
                 query: {
                     _id: hook._id,
                     $sort: { 'createdAt': -1 }
                 }
             });
-        } else if (hook.isWithinRange !== undefined) {
+        } else if (hook.isWithinRange !== undefined && hook.hasDate == undefined) {
             appointmentResult = await appointmentService.find({
                 query: {
                     $limit: 100,
                     facilityId: hook.facilityId,
                     startDate: { $gte: hook.from, $lte: hook.to },
+                    $sort: { 'createdAt': -1 }
+                }
+            });
+        } else if (hook.hasDate !== undefined && hook.clinicId !== undefined) {
+            appointmentResult = await appointmentService.find({
+                query: {
+                    $limit: 100,
+                    facilityId: hook.facilityId,
+                    clinicId: hook.clinicId,
                     $sort: { 'createdAt': -1 }
                 }
             });
