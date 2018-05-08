@@ -26,6 +26,7 @@ export class AddVitalsComponent implements OnInit {
   vitalRythm: any[] = [];
   vitalPosition: any[] = [];
   vitalLocation: any[] = [];
+  vitalBpLocation: any[] = [];
   selectedFacility: Facility = <Facility>{};
   loginedUser: Employee = <Employee>{};
   documentation: Documentation = <Documentation>{};
@@ -98,6 +99,7 @@ export class AddVitalsComponent implements OnInit {
     const auth: any = this._locker.getObject('auth');
     this.user = auth;
     this.getVitalLocation();
+    this.getVitalBpLocation();
     this.getVitalPosition();
     this.getVitalRythm();
     //this.getPersonDocumentation();
@@ -281,7 +283,7 @@ export class AddVitalsComponent implements OnInit {
   getForm() {
     Observable.fromPromise(this._FormsService.find({ query: { title: 'Vitals' } }))
       .subscribe((payload: any) => {
-        if (payload.data.length > 0) {
+        if (!!payload.data && payload.data.length > 0) {
           this.selectedForm = payload.data[0];
         }
       });
@@ -289,17 +291,31 @@ export class AddVitalsComponent implements OnInit {
 
   getVitalPosition() {
     this._vitalPositionService.findAll().then(payload => {
-      this.vitalPosition = payload.data;
+      if (!!payload.data && payload.data.length > 0) {
+        this.vitalPosition = payload.data;
+      }
     }, error => { });
   }
   getVitalRythm() {
     this._vitalRythmService.findAll().then(payload => {
-      this.vitalRythm = payload.data;
+      if (!!payload.data && payload.data.length > 0) {
+        this.vitalRythm = payload.data;
+      }
     }, error => { });
   }
   getVitalLocation() {
     this._vitaLocationService.findAll().then(payload => {
-      this.vitalLocation = payload.data;
+      if (!!payload.data && payload.data.length > 0) {
+        this.vitalLocation = payload.data;
+      }
+    }, error => { });
+  }
+
+  getVitalBpLocation() {
+    this._vitaLocationService.findAllBp().then(res => {
+      if (!!res.data && res.data.length > 0) {
+        this.vitalBpLocation = res.data;
+      }
     }, error => { });
   }
 
