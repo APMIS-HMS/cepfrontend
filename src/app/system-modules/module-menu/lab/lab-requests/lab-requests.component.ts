@@ -850,6 +850,7 @@ export class LabRequestsComponent implements OnInit {
     }
     return '';
   }
+
   removeBindingInvestigation(investigation: InvestigationModel) {
     const indexToRemove = this.bindInvestigations.findIndex(
       x => x.investigation._id === investigation.investigation._id
@@ -861,12 +862,19 @@ export class LabRequestsComponent implements OnInit {
     );
     this.investigations[invIndexToUncheck].isChecked = false;
   }
+
   markExternal(event, investigation: InvestigationModel) {
     if (event.checked) {
+      // Check if an item is selected to uncheck the save button.
+      if (event.checked) {
+        this.investigationRadio = true;
+      } else {
+        this.investigationRadio = false;
+      }
+
       delete investigation.location;
-      const indexToRemove = this.bindInvestigations.findIndex(
-        x => x.investigation._id === investigation.investigation._id
-      );
+      const indexToRemove = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+
       if (indexToRemove > -1) {
         this.bindInvestigations.splice(indexToRemove, 1);
       }
@@ -887,9 +895,11 @@ export class LabRequestsComponent implements OnInit {
       this.investigationChanged({ checked: true }, investigation);
     }
   }
+
   getValue(investigation) {
     return false;
   }
+
   getPrice(workbenches) {
     return workbenches[0].price;
   }
