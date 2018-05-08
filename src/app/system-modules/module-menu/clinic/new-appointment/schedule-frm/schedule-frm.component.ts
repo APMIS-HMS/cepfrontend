@@ -1,3 +1,4 @@
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { error } from "selenium-webdriver";
 import { SystemModuleService } from "app/services/module-manager/setup/system-module.service";
 
@@ -52,7 +53,7 @@ import * as getMonth from "date-fns/get_month";
 import * as setMonth from "date-fns/set_month";
 import * as isToday from "date-fns/is_today";
 import * as parse from 'date-fns/parse';
-import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
+
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&�*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 @Component({

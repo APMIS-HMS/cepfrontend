@@ -1,21 +1,21 @@
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
-import { Component, OnInit } from "@angular/core";
-import { FormControl } from "@angular/forms";
+import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import {
   UserService,
   FacilitiesService,
   PersonService,
   EmployeeService
-} from "../services/facility-manager/setup/index";
-import { Person, Facility } from "../models/index";
-import { Router } from "@angular/router";
-import { CoolLocalStorage } from "angular2-cool-storage";
-import { ToastsManager } from "ng2-toastr/ng2-toastr";
+} from '../services/facility-manager/setup/index';
+import { Person, Facility } from '../models/index';
+import { Router } from '@angular/router';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 
 @Component({
-  selector: "app-system-module",
-  templateUrl: "./system-module.component.html",
-  styleUrls: ["./system-module.component.scss"]
+  selector: 'app-system-module',
+  templateUrl: './system-module.component.html',
+  styleUrls: ['./system-module.component.scss']
 })
 export class SystemModuleComponent implements OnInit {
   searchControl = new FormControl();
@@ -43,25 +43,25 @@ export class SystemModuleComponent implements OnInit {
   ) {
     this.facilityService.listner.subscribe(payload => {
       const facility: Facility = <Facility>this.locker.getObject(
-        "selectedFacility"
+        'selectedFacility'
       );
       if (facility._id === payload._id) {
-        this.locker.setObject("selectedFacility", payload);
+        this.locker.setObject('selectedFacility', payload);
       }
     });
     this.facilityService.patchListner.subscribe(payload => {
       const facility: Facility = <Facility>this.locker.getObject(
-        "selectedFacility"
+        'selectedFacility'
       );
       if (facility._id === payload._id) {
-        this.locker.setObject("selectedFacility", payload);
+        this.locker.setObject('selectedFacility', payload);
       }
     });
     this.userService.missionAnnounced$.subscribe(payload => {
-      if (payload === "out") {
+      if (payload === 'out') {
         this.isLoggedOut = true;
-        this.router.navigate(["/"]);
-      } else if (payload === "in") {
+        this.router.navigate(['/']);
+      } else if (payload === 'in') {
       }
     });
 
@@ -93,7 +93,7 @@ export class SystemModuleComponent implements OnInit {
 
   signOut() {
     this.userService.logOut();
-    this.userService.announceMission("out");
+    this.userService.announceMission('out');
     this.userService.isLoggedIn = false;
   }
   logOut() {
@@ -101,13 +101,13 @@ export class SystemModuleComponent implements OnInit {
   }
 
   success(text) {
-    this.toast.success(text, "Success!");
+    this.toast.success(text, 'Success!');
   }
   error(text) {
-    this.toast.error(text, "Error!");
+    this.toast.error(text, 'Error!');
   }
   info(text) {
-    this.toast.info(text, "Info");
+    this.toast.info(text, 'Info');
   }
   facilityManager_onClick() {
     this.facilityManagerActive = true;
@@ -130,7 +130,7 @@ export class SystemModuleComponent implements OnInit {
     this.logoutConfirm_on = false;
   }
   onSwitchAccount() {
-    this.router.navigate(["/accounts"]).then(payload => {
+    this.router.navigate(['/accounts']).then(payload => {
       this.authFacadeService.setLogingEmployee(undefined);
       this.authFacadeService.setLoginUser(undefined);
       this.authFacadeService.setSelectedFacility(undefined);
@@ -139,7 +139,7 @@ export class SystemModuleComponent implements OnInit {
   }
 
   goHome() {
-    this.router.navigate(["/home-page"]).then(payload => {}, error => {
+    this.router.navigate(['/home-page']).then(payload => {}, error => {
     });
   }
 }
