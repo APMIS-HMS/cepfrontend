@@ -350,7 +350,6 @@ export class FluidComponent implements OnInit, AfterViewInit {
     this.lineChartData = JSON.parse(JSON.stringify(this.lineChartData));
     console.log(this.lineChartData);
     this.lineChartLabels = label;
-    console.log(this.lineChartLabels);
   }
 
   refreshGraph(lineChartData: any[]) {
