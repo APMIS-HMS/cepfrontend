@@ -53,6 +53,7 @@ import * as getMonth from "date-fns/get_month";
 import * as setMonth from "date-fns/set_month";
 import * as isToday from "date-fns/is_today";
 import * as parse from 'date-fns/parse';
+import * as isBefore from 'date-fns/is_before'
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&�*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -148,6 +149,8 @@ export class ScheduleFrmComponent implements OnInit {
   savingAppointment = false;
   updateAppointment = false;
   clinicErrorMsg = " Clinic does not hold on the selected date!!!";
+  clinicErrorEalierDateMsg = " Clinic can not be set for earlier date!!!";
+  isEarlierDate = false;
 
   user = {};
   placeholderString = "Select timezone";
@@ -216,6 +219,7 @@ export class ScheduleFrmComponent implements OnInit {
       this.isAppointmentToday();
     });
     this.dateCtrl.valueChanges.subscribe(value => {
+      this.isEarlierDate = false;
       this.dateChange(value);
     });
     this.checkIn = new FormControl({ value: false, disabled: this.canCheckIn });
@@ -223,6 +227,7 @@ export class ScheduleFrmComponent implements OnInit {
 
     this.patient = new FormControl("", [Validators.required]);
     this.patient.valueChanges.subscribe(value => {
+      this.isEarlierDate = false;
       this.apmisLookupQuery = {
         facilityId: this.selectedFacility._id,
         searchText: value,
@@ -242,11 +247,13 @@ export class ScheduleFrmComponent implements OnInit {
     this.clinic = new FormControl("", [Validators.required]);
     this.status = new FormControl("", [Validators.required]);
     this.clinic.valueChanges.subscribe(clinic => {
+      this.isEarlierDate = false;
       this.getOthers(clinic);
     });
 
     this.provider = new FormControl();
     this.provider.valueChanges.subscribe(value => {
+      this.isEarlierDate = false;
       this.apmisProviderLookupQuery = {
         facilityId: this.selectedFacility._id,
         searchText: value,
@@ -287,6 +294,7 @@ export class ScheduleFrmComponent implements OnInit {
       });
     }
     this.teleMed.valueChanges.subscribe(value => {
+      this.isEarlierDate = false;
       if (value) {
         this.showTimeZone = true;
       } else {
@@ -1030,10 +1038,8 @@ export class ScheduleFrmComponent implements OnInit {
           }
         );
       } else {
-        console.log(this.appointment);
         this.appointmentService.create(this.appointment).then(
           payload => {
-            console.log(payload);
             this.createBill();
             if (this.teleMed.value === true) {
               const topic = "Appointment with " + patient.personDetails.apmisId;
@@ -1111,7 +1117,6 @@ export class ScheduleFrmComponent implements OnInit {
               "There was an error setting the appointment",
               "error"
             );
-            console.dir(error);
           }
         );
       }
@@ -1223,25 +1228,12 @@ export class ScheduleFrmComponent implements OnInit {
     }
   }
 
-  convert(str) {
-    var date = new Date(str),
-        mnth = ("0" + (date.getMonth()+1)).slice(-2),
-        day  = ("0" + date.getDate()).slice(-2);
-        const hours  = ("0" + date.getHours()).slice(-2);
-        const minutes = ("0" + date.getMinutes()).slice(-2);
-        const datepart = [ date.getFullYear(), mnth, day ].join("-");
-        const timepart = [ 'T', hours, minutes ].join(":")
-        console.log(datepart);
-        console.log(timepart);
-    return [ date.getFullYear(), mnth, day, hours, minutes ].join("-");
-}
-
   dateChange(event) {
     this.authFacadeService.getServerTime().then((serverTime:any) =>{
-      console.log(serverTime.datetime);
-      console.log(new Date())
-      console.log(parse(event));
-      if(serverTime.datetime > new Date(event)){
+      var myDate = new Date(serverTime.datetime);
+      var myDate2 = new Date(event);
+      if(isBefore(myDate, myDate2)){
+        this.isEarlierDate = false;
         const dayNum = getDay(event);
         const day = this.days[dayNum];
         const scheduleFiltered = this.schedules.filter((x: any) => x.day === day);
@@ -1280,11 +1272,12 @@ export class ScheduleFrmComponent implements OnInit {
           });
         }
       }else{
-        console.log('please dont set');
+        this.dateCtrl.setErrors({ noValue: true });
+        this.isEarlierDate = true;
+        this.dateCtrl.markAsTouched();
       }
      
     }).catch(er =>{
-      console.log(er);
     })
     
   }

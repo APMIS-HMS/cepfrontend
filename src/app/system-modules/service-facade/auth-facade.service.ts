@@ -42,7 +42,6 @@ export class AuthFacadeService {
   getServerTime(){
     const self = this;
     return new Promise(function (resolve, reject) {
-<<<<<<< HEAD
       if(true){
         self._socketService.authenticateService();
         self._socketService
@@ -60,27 +59,10 @@ export class AuthFacadeService {
           );
       }
      
-=======
-      self._socketService.authenticateService();
-      self._socketService
-        .getService("get-server-time")
-        .get(self.selectedFacility._id)
-        .then(
-        payload => {
-          if (payload !== undefined) {
-            resolve(payload);
-          } else {
-            resolve(undefined);
-          }
-        },
-        error => { }
-        );
->>>>>>> a5774219f3b091a2f08ffcdf2ac6553f247261d5
     });
   }
 
   getAuth(){
-<<<<<<< HEAD
     const self = this;
     return new Promise(function (resolve, reject) {
       if(self.auth === undefined || self.auth.data === undefined){
@@ -94,9 +76,6 @@ export class AuthFacadeService {
       }
    
     });
-=======
-    return this.auth;
->>>>>>> a5774219f3b091a2f08ffcdf2ac6553f247261d5
   }
 
   getSelectedFacility() {
