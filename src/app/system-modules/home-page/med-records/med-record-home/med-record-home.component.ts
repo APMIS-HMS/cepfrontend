@@ -46,7 +46,7 @@ export class MedRecordHomeComponent implements OnInit {
   }
   getMyAppointments(){
     this.appointmentService.find({query:{
-      patientId: { $in: this.listOfPatients.map(x => x._id) }
+      patientId: { $in: this.listOfPatients.map(x => x._id) }, isFuture:true
     }}).subscribe(payload =>{
       this.myAppointments = payload.data;
     });
