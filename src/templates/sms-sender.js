@@ -14,12 +14,22 @@ function sender(mesage, data, isScheduler) {
     });
 }
 
+function getPhoneNumber(number) {
+    if (number.length === 11) {
+        var inNumber = number.substring(1);
+        return '+234' + inNumber;
+    }
+    return number;
+}
+
 function africas_sender(message, data, isScheduler) {
     var username = process.env.AFRICASTALKINGUSERNAME;
     var apikey = process.env.AFRICASTALKINGKEY;
+    var to = getPhoneNumber(data.primaryContactPhoneNo);
     var post_data = querystring.stringify({
         'username': username,
-        'to': +2348156643202,
+        'to': to,
+        'from': 34461,
         'message': message
     });
 
@@ -41,23 +51,19 @@ function africas_sender(message, data, isScheduler) {
     };
 
     var post_req = https.request(post_options, function(res) {
-        // console.log(res);
         res.setEncoding('utf8');
         res.on('data', function(chunk) {
-            console.log('going now');
-            console.dir(chunk);
             var jsObject = JSON.parse(chunk);
-            console.log('after');
             var recipients = jsObject.SMSMessageData.Recipients;
             if (recipients.length > 0) {
-                for (var i = 0; i < recipients.length; ++i) {
-                    var logStr = 'number=' + recipients[i].number;
-                    logStr += ';cost=' + recipients[i].cost;
-                    logStr += ';status=' + recipients[i].status; // status is either "Success" or "error message"
-                    console.log(logStr);
-                }
+                // for (var i = 0; i < recipients.length; ++i) {
+                //     var logStr = 'number=' + recipients[i].number;
+                //     logStr += ';cost=' + recipients[i].cost;
+                //     logStr += ';status=' + recipients[i].status; // status is either "Success" or "error message"
+                //     console.log(logStr);
+                // }
             } else {
-                console.log('Error while sending: ' + jsObject.SMSMessageData.Message);
+                // console.log('Error while sending: ' + jsObject.SMSMessageData.Message);
             }
         });
     });
@@ -89,15 +95,15 @@ function sendAutoGeneratorPassword(data, password) {
 }
 
 function sendScheduleAppointment(date, data) {
-    console.log('sending appointment sms');
     var message = '';
     if (data.doctorId != undefined) {
-        message = 'This is to notify you of your appointment with ' + data.doctorId.employeeDetails.firstName + ' ' + data.doctorId.employeeDetails.lastName + ' scheduled for: ' + date + ' at ' + data.facilityId.name + ' ' + data.clinicId.clinicName + ' clinic';
+        message = 'This is to notify you of your appointment with ' + data.providerDetails.personDetails.title + ' ' + data.providerDetails.personDetails.lastName + ' ' + data.providerDetails.personDetails.firstName + ' scheduled for: ' + data.startDate + ' at ' + data.patientDetails.facilityObj.name + ' ' + data.clinicId + ' clinic';
     } else {
-        message = 'This is to notify you of your appointment scheduled for: ' + date + ' at ' + data.facilityId.name + ' ' + data.clinicId.clinicName + ' clinic';
+        message = 'This is to notify you of your appointment scheduled for: ' + data.startDate + ' at ' + data.patientDetails.facilityObj.name + ' in ' + data.clinicId + ' clinic';
     }
     data.primaryContactPhoneNo = data.patientDetails.personDetails.primaryContactPhoneNo;
-    africas_sender(message, data, true); //sender(message, data, true);
+    africas_sender(message, data, true);
+    sender(message, data, true);
 }
 
 

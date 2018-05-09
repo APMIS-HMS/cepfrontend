@@ -54,6 +54,14 @@ class Service {
                     $sort: { 'createdAt': -1 }
                 }
             });
+        } else if (hook.doctorId !== undefined && hook.isFuture) {
+            appointmentResult = await appointmentService.find({
+                query: {
+                    $limit: 100,
+                    doctorId: { $in: hook.doctorId.$in },
+                    $sort: { 'createdAt': -1 }
+                }
+            });
         }
 
 
@@ -68,9 +76,17 @@ class Service {
                 appointmentResult.data = appointments;
             }
 
-            if (hook.isFuture) {
+            if (hook.isFuture && hook.doctorId == undefined) {
                 appointmentResult.data.forEach(function(appointment) {
                     if (isFuture(appointment.startDate) || (isToday(appointment.startDate))) {
+                        appointments.push(appointment);
+                    }
+                });
+                appointmentResult.data = appointments;
+            }
+            if (hook.isFuture && hook.doctorId !== undefined) {
+                appointmentResult.data.forEach(function(appointment) {
+                    if (isFuture(appointment.startDate) || ((isToday(appointment.startDate)) && !appointment.isCheckedOut)) {
                         appointments.push(appointment);
                     }
                 });

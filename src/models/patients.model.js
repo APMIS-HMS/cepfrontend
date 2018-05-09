@@ -14,8 +14,6 @@ module.exports = function(app) {
         paymentPlan: [paymentPlanSchema],
         orders: [{ type: String, required: false }],
         tags: [{ type: Schema.Types.Mixed, required: false }],
-        createdBy: { type: Schema.Types.ObjectId, required: true },
-        updatedBy: { type: Schema.Types.ObjectId, required: true },
         clientsNo: [{ type: Schema.Types.Mixed }],
         timeLines: [{ type: Schema.Types.Mixed, required: false }],
     }, {
