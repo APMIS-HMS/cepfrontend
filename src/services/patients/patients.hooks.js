@@ -32,10 +32,25 @@ const resolvers = {
                     age = (monthResult > 1) ? monthResult + ' months' : monthResult + ' month';
                 }
             } else {
-                age = (age > 1) ? age + ' years' : age + ' year' ;
+                age = (age > 1) ? age + ' years' : age + ' year';
             }
             patient.age = age;
             patient.personDetails = person;
+        }
+    }
+};
+
+const facilityObj = {
+    joins: {
+        facilityDetails: () => async(patient, context) => {
+            if (patient.facilityId !== undefined) {
+                const facility = await context.app
+                    .service('facilities')
+                    .get(patient.facilityId, {});
+
+                patient.facilityObj = { name: facility.name, _id: facility._id, email: facility.email, primaryContactPhoneNo: facility.primaryContactPhoneNo, shortName: facility.shortName };
+            }
+
         }
     }
 };
@@ -53,8 +68,8 @@ module.exports = {
 
     after: {
         all: [fastJoin(resolvers)],
-        find: [],
-        get: [],
+        find: [fastJoin(facilityObj)],
+        get: [fastJoin(facilityObj)],
         create: [alerts()],
         update: [],
         patch: [],
