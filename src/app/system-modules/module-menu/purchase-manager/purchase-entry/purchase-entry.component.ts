@@ -201,11 +201,13 @@ export class PurchaseEntryComponent implements OnInit {
 
   getMyInventory(storeId, name,isZero) {
     this.systemModuleService.on();
+    console.log(this.selectedFacility._id,name,storeId);
     this.inventoryService.findList({
       query: {
         facilityId: this.selectedFacility._id,
         name: name,
-        storeId: storeId
+        storeId: storeId,
+        isZero:false
       }
     }).then(payload => {
       console.log(payload);
