@@ -149,13 +149,13 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     selectedCategory;
 
-    hmos;
+    hmos:any[] = [];
     hmo;
     filteredHmos: Observable<any[]>;
 
     companyEnrolleList: any;
     loginCompanyListObject: any = {};
-    companyFacilities: any;
+    companyFacilities: any[] = [];
     filteredccs: Observable<any[]>;
     companyCover: any;
 
@@ -1223,7 +1223,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 const text = this.selectedPerson.lastName + ' ' + this.selectedPerson.firstName
                     + ' added successfully but bill not generated because price not yet set for this service';
                 payl.showEdit = true;
-                    this.systemModuleService.changeMessage(payl); // This is responsible for showing the edit patient modal box
+                this.systemModuleService.changeMessage(payl); // This is responsible for showing the edit patient modal box
                 this.systemModuleService.announceSweetProxy(text, 'success');
                 this.close_onClick();
             }).catch(errr => {

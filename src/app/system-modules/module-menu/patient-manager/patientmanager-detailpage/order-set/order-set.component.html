@@ -23,8 +23,7 @@
                             </tr>
                             <tr *ngFor="let orderSetMed of orderSet?.medications; let i=index;">
                                 <td style="width:30px;text-align:center">{{ i+1 }}</td>
-                                <td>{{ orderSetMed.genericName }}</td>
-                                <td>{{ orderSetMed.frequency }} for {{ orderSetMed.duration }} {{ orderSetMed.durationUnit }}</td>
+                                <td>{{ orderSetMed.genericName }} - {{ orderSetMed.dosage }}{{ orderSetMed.dosageUnit }}, {{ orderSetMed.frequency }} for {{ orderSetMed.duration }} {{ orderSetMed.durationUnit }}</td>
                                 <td class="action-placeholder" style="text-align:center;width:100px">
                                     <button *ngIf="orderSetMed.isBilled ===undefined || !orderSetMed.isBilled" (click)="onClickBillPrescription(i, orderSetMed);" mat-raised-button class="text-white mat-xs-btn bg-primary ">
                                       <span *ngIf="orderSetMed.isBilled === undefined || !orderSetMed.isBilled">Bill</span>
