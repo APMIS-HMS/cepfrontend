@@ -61,8 +61,8 @@
                         </tr>
                     </thead>
 
-                    <tbody *ngIf="loginEmployee?.wardCheckIn?.length > 0">
-                        <tr *ngFor="let checkIn of loginEmployee.wardCheckIn">
+                    <tbody *ngIf="checkins.length > 0">
+                        <tr *ngFor="let checkIn of checkins">
                             <td>{{checkIn?.minorLocationId?.name}}</td>
                             <td>{{checkIn?.lastLogin | date:'medium'}}</td>
                             <td class="tblMenu">
@@ -77,10 +77,9 @@
                             </td>
                         </tr>
                     </tbody>
-                    <tbody *ngIf="loginEmployee?.wardCheckIn == undefined || loginEmployee?.wardCheckIn.length === 0">
+                    <tbody *ngIf="checkins == undefined || checkins.length === 0">
                         <tr>
-                            <td colspan="3">
-                                <span class="fa fa-spinner fa-spin"></span> Please wait while loading recent wards checked into!</td>
+                            <td colspan="3" class="text-center">No data available in table!</td>
                         </tr>
                     </tbody>
                 </table>

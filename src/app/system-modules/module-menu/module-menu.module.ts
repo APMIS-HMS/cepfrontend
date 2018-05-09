@@ -5,6 +5,7 @@ import { moduleMenuRoutes } from './module-menu.routes';
 import { ModuleMenuComponent } from './module-menu.component';
 import { SharedModule } from '../../shared-module/shared.module';
 import { LogOutConfirmModule } from '../../shared-common-modules/log-out-module';
+// import { ImmunizationComponent } from './immunization/immunization.component';
 
 
 
@@ -12,6 +13,7 @@ import { LogOutConfirmModule } from '../../shared-common-modules/log-out-module'
 @NgModule({
     declarations: [
         ModuleMenuComponent,
+        // ImmunizationComponent,
     ],
 exports: [
     ],

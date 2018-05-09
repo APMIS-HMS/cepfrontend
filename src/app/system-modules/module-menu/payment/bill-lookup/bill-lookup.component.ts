@@ -27,6 +27,7 @@ export class BillLookupComponent implements OnInit {
   searchPendingInvoices = new FormControl('', []);
   searchPendingBill = new FormControl('', []);
   user: User = <User>{};
+  setConstrintOnRefreshBillItems = false;
   addItem = false;
   makePayment = false;
   addModefierPopup = false;
@@ -85,6 +86,7 @@ export class BillLookupComponent implements OnInit {
     });
 
     this.invoiceService.receiveDiscount().subscribe((payload: any) => {
+      this.setConstrintOnRefreshBillItems = true;
       const valueCheck = payload.valueCheck;
       const modifier = payload.modifier;
       if (valueCheck === 'Percentage') {
@@ -188,10 +190,11 @@ export class BillLookupComponent implements OnInit {
     this.patientService.get(id, {}).then(res => {
       this.selectedPatient = res;
       this.getPatientBills();
-    }).catch(err => console.log(err));
+    }).catch(err => {});
   }
 
   onPersonValueUpdated(item) {
+    this.setConstrintOnRefreshBillItems = false;
     this.selectedPatient.personDetails = item.person;
     this._getAllPendingBills();
     this._getAllInvoices();
@@ -215,7 +218,7 @@ export class BillLookupComponent implements OnInit {
 
   onGenerateInvoice() {
     this.isProcessing = true;
-    const billToInvoice:any = {
+    const billToInvoice: any = {
       facilityId: this.selectedFacility._id,
       patientId: this.selectedPatient._id,
       billGroups: this.billGroups,
@@ -350,23 +353,45 @@ export class BillLookupComponent implements OnInit {
           if (payload !== null) {
             this.billGroups = payload.billGroups;
             this.listedBillItems = payload.originalCallback;
+            if (this.checkBillitems.length > 0) {
+              for (let index = 0; index < payload.billGroups.length; index++) {
+                for (let index2 = 0; index2 < payload.billGroups[index].bills.length; index2++) {
+                  for (let index3 = 0; index3 < this.checkBillitems.length; index3++) {
+                    if (payload.billGroups[index].bills[index2]._id !== undefined) {
+                      if (payload.billGroups[index].bills[index2]._id.toString() === this.checkBillitems[index3].toString()) {
+                        payload.billGroups[index].bills[index2].isChecked = true;
+                        const subGrp = payload.billGroups[index].bills.filter(x => x.isChecked === true);
+                        if(subGrp.length === payload.billGroups[index].bills.length){
+                          payload.billGroups[index].isChecked = true;
+                        }
+                        const mainGrp = payload.billGroups.filter(x => x.isChecked === true);
+                        if(mainGrp.length === payload.billGroups.length){
+                          this.txtSelectAll.setValue(true);
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+              this.reCalculateBillTotal();
+            }
           }
         });
     }
   }
   onClickPatientPendingBill(pendingBill: any) {
+    this.checkBillitems = [];
+    this.subTotal = 0;
+    this.total = 0;
+    this.discount = 0;
     this.router.navigate([`/dashboard/payment/bill/${pendingBill.patientId}`]);
-    // this.selectedPatient = {};
-    // this.selectedPatient._id = pendingBill.patientId;
-    // this.selectedPatient.personDetails = pendingBill.principalObject.personDetails;
-    // this.getPatientBills();
   }
 
 
   private _getAllPendingBills() {
     this.loadingPendingBills = true;
     this._pendingBillService.get(this.selectedFacility._id, {}).then((res: any) => {
-      this.pendingBills = res.data.filter(x => x.patientId !== this.selectedPatient._id);
+      this.pendingBills = res.data;//.filter(x => x.patientId !== this.selectedPatient._id);
       this.holdMostRecentBills = res.data;
       this.loadingPendingBills = false;
     }, err => {
@@ -397,7 +422,6 @@ export class BillLookupComponent implements OnInit {
   reCalculateBillTotal() {
     this.subTotal = 0;
     this.total = 0;
-    this.discount = 0;
     this.billGroups.forEach((itemi, i) => {
       itemi.total = 0;
       itemi.bills.forEach((itemj, j) => {
@@ -523,7 +547,7 @@ export class BillLookupComponent implements OnInit {
             itemy.quantity = bill.qty;
             itemy.totalPrice = bill.amount;
             itemy.unitPrice = bill.unitPrice;
-            this.billingService.patch(itemi._id,itemi,{}).then(payload => {
+            this.billingService.patch(itemi._id, itemi, {}).then(payload => {
             });
           }
         });
@@ -569,9 +593,12 @@ export class BillLookupComponent implements OnInit {
   }
 
   close_onClick(e) {
-    this.subTotal = 0;
-    this.total = 0;
-    this.discount = 0;
+    if (!this.setConstrintOnRefreshBillItems) {
+      this.subTotal = 0;
+      this.total = 0;
+      this.discount = 0;
+      this.setConstrintOnRefreshBillItems = false;
+    }
     this._getPatientWallet(this.routeId);
     this.addModefierPopup = false;
     this.addLineModefierPopup = false;

@@ -94,34 +94,40 @@
         <div class="add-sect">
             <form [formGroup]="addPrescriptionForm" novalidate>
                 <div class="row padding-top-20px">
-                    <div class="col-sm-8 col-md-8">
+                    <div class="col-sm-7 col-md-7">
                         <apmis-lookup formControlName="drug" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="true" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Drug" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                     </div>
-                    <!-- <div class="col-sm-3 col-md-3">
-                        <mat-form-field>
-                            <input matInput formControlName="strength" [(value)]="drugId" placeholder="Strength">
-                        </mat-form-field>
-                        <mat-form-field class="mat-select">
-                            <mat-select formControlName="route" placeholder="Route">
-                                <mat-option *ngFor="let route of routes" [(value)]="route.name">
-                                    {{ route.name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                    </div> -->
-                    <div class="col-sm-4 col-md-4">
-                        <mat-form-field class="mat-select" style="margin-top: 0px;">
-                            <mat-select formControlName="frequency" placeholder="Frequency" class="example-full-width mat-select">
-                                <mat-option *ngFor="let frequency of frequencies" [value]="frequency.name">
-                                    {{ frequency.name }}
-                                </mat-option>
-                            </mat-select>
-                        </mat-form-field>
+                    <div class="col-sm-5 col-md-5">
+                        <div class="input-bg cacaca">
+                            <div class="input-group">
+                                <mat-form-field>
+                                    <input matInput formControlName="dosage" placeholder="Dosage">
+                                </mat-form-field>
+                                <div class="input-group-btn">
+                                    <mat-form-field class="mat-select" style="margin-top: 0px;">
+                                        <mat-select formControlName="dosageUnit" placeholder="Dosage Unit" [(ngModel)]="selectedDosage">
+                                            <mat-option *ngFor="let dosage of dosageUnits" [(value)]="dosage.name">
+                                                {{ dosage.name }}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="row padding-top-20px">
                     <div class="">
-                        <div class="col-sm-5 col-md-5">
+                        <div class="col-sm-3 col-md-3">
+                            <mat-form-field class="mat-select" style="margin-top: 0px;">
+                                <mat-select formControlName="frequency" placeholder="Frequency" class="example-full-width mat-select">
+                                    <mat-option *ngFor="let frequency of frequencies" [value]="frequency.name">
+                                        {{ frequency.name }}
+                                    </mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <div class="col-sm-4 col-md-4">
                             <div class="input-bg cacaca">
                                 <div class="input-group">
                                     <mat-form-field>
@@ -139,12 +145,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-3 col-md-3">
+                        <div class="col-sm-2 col-md-2">
                             <mat-form-field>
                                 <input type="number" matInput formControlName="refillCount" placeholder="Refill Count">
                             </mat-form-field>
                         </div>
-                        <div class="col-sm-4 col-md-4">
+                        <div class="col-sm-3 col-md-3">
                             <mat-form-field>
                                 <input matInput formControlName="startDate" [matDatepicker]="picker" placeholder="Start Date">
                                 <mat-icon matSuffix>

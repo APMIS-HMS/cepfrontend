@@ -25,6 +25,8 @@ import { Observable } from 'rxjs/Observable';
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 
+import { differenceInDays, differenceInMonths, differenceInWeeks, differenceInYears  } from 'date-fns';
+
 @Component({
   selector: 'app-patientmanager-homepage',
   templateUrl: './patientmanager-homepage.component.html',
@@ -133,6 +135,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   mainErr: boolean = true;
   errMsg: string;
 
+  bulkUpload: boolean = false;
+
   constructor(private patientService: PatientService, private personService: PersonService,
     private facilityService: FacilitiesService, private locker: CoolLocalStorage, private router: Router,
     private route: ActivatedRoute, private toast: ToastsManager, private genderService: TitleGenderFacadeService,
@@ -226,13 +230,15 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.getRelationships();
     })
   }
+
   setAppointment(patient) {
     if (patient !== undefined && this.loginEmployee !== undefined) {
       this.router.navigate(['/dashboard/clinic/schedule-appointment', patient._id, this.loginEmployee._id]);
     }
-
   }
+
   ngOnInit() {
+    this.systemService.off();
     this.pageInView.emit('Patient Manager');
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
@@ -269,6 +275,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       lastName: ['', [<any>Validators.required]],
       email: [{ value: '', disabled: false }, [<any>Validators.required]],
       phoneNumber: [{ value: '', disabled: true }, [<any>Validators.required]],
+      dob: ['', [<any>Validators.required]],
       gender: ['', [<any>Validators.required]],
       country: ['', [<any>Validators.required]],
       state: ['', [<any>Validators.required]],
@@ -399,7 +406,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.patientToEdit.tags.splice(toDelete, 1);
       this.patientService.patch(this.patientToEdit._id, this.patientToEdit, {}).then(deletePayload => {
       }).catch(err => {
-        console.log(err);
       });
     }
 
@@ -625,6 +631,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.patientService.get(patient._id, {}).then(payload => {
       this.selectedPatient = payload.personDetails;
       this.patient = payload;
+      console.log();
       this.editPatient = true;
       if (this.selectedPatient.nextOfKin.length > 0) {
         const nextOfKincontrol = <FormArray>this.patientEditForm.controls['nextOfKin'];
@@ -644,6 +651,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.selectedPatient['personFullName'] = value.firstName + ' ' + value.lastName;
     this.selectedPatient['gender'] = value.gender;
     this.selectedPatient['genderId'] = value.gender._id;
+    this.selectedPatient['dateOfBirth'] = value.dob;
     this.selectedPatient['nationalityObject'] = {
       country: value.country.name,
       lga: value.lga.name,
@@ -685,7 +693,12 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.selectedIndex = 1;
   }
 
+  openBulkUploadModal(){
+    this.bulkUpload = true;
+  }
+
   private _populateAndSelectData(value: any) {
+    console.log(value);
     if (value.homeAddress) {
       this.patientEditForm.controls['street'].setValue(value.homeAddress.street);
       this.patientEditForm.controls['country'].setValue(value.homeAddress.country);
@@ -700,6 +713,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     }
 
     this.patientEditForm.controls['phoneNumber'].setValue(value.primaryContactPhoneNo);
+    this.patientEditForm.controls['dob'].setValue(value.dateOfBirth);
 
     this.patientEditForm.controls['title'].setValue(value.title);
     this.patientEditForm.controls['gender'].setValue(value.gender);
@@ -820,7 +834,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
             }
             const fil = bene.filter(x => x.filNo === this.employeeId.value);
             if (fil.length > 0) {
-              console.log(fil[0]);
               if (fil[0].status.toLowerCase() !== "active") {
                 this.systemService.off();
                 const text = 'Employee Id does not have an active status for the selected Company';
@@ -928,7 +941,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
           }
         }
       }).catch(err => {
-        console.log(err);
       });
 
     }
@@ -995,6 +1007,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.systemService.changeMessage(null);
     this.payPlan = false;
     this.newUpload = false;
+    this.bulkUpload = false;
     this.selectedIndex = 0;
     // Reset the next of kin form array
     this.patientEditForm.controls['nextOfKin'] = this.formBuilder.array([]);

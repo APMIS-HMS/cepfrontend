@@ -22,7 +22,6 @@ export class SwitchUserResolverService implements Resolve<Facility> {
   resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<any> {
     const auth: any = this.locker.getObject('auth');
     this.authData = auth.data;
-    console.log(this.authData);
     if (auth == null || auth === undefined) {
       this.router.navigate(['/']);
       return Observable.of(null);

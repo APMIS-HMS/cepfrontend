@@ -17,6 +17,85 @@ export class PaymentChartComponent implements OnInit {
   selectedFacility: any = <any>{};
   chartData: any = <any>{};
   dateOptionControl = new FormControl();
+  public lineChartData: any[] = [
+    { data: [0], label: '' }
+  ];
+
+  public lineChartLabels: string[] = [];
+
+  public lineChartOptions: any = {
+    responsive: true
+  };
+  public lineChartColors: any[] = [
+    { // grey
+      backgroundColor: 'rgba(148,159,177,0.2)',
+      borderColor: 'rgba(148,159,177,1)',
+      pointBackgroundColor: 'rgba(148,159,177,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
+    },
+    { // dark grey
+      backgroundColor: 'rgba(77,83,96,0.2)',
+      borderColor: 'rgba(77,83,96,1)',
+      pointBackgroundColor: 'rgba(77,83,96,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(77,83,96,1)'
+    },
+    { // cyan
+      backgroundColor: 'rgba(77,208,225,0.2)',
+      borderColor: 'rgba(77,208,225,1)',
+      pointBackgroundColor: 'rgba(77,208,225,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(77,208,225,0.8)'
+    },
+    { // green
+      backgroundColor: 'rgba(129,199,132,0.2)',
+      borderColor: 'rgba(129,199,132,1)',
+      pointBackgroundColor: 'rgba(129,199,132,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(129,199,132,0.8)'
+    },
+    { // lime
+      backgroundColor: 'rgba(220,231,117,0.2)',
+      borderColor: 'rgba(220,231,117,1)',
+      pointBackgroundColor: 'rgba(220,231,117,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(220,231,117,0.8)'
+    },
+    { // purple
+      backgroundColor: 'rgba(186,104,200,0.2)',
+      borderColor: 'rgba(186,104,200,1)',
+      pointBackgroundColor: 'rgba(186,104,200,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(186,104,200,0.8)'
+    },
+    { // red
+      backgroundColor: 'rgba(229,	115,	115,0.2)',
+      borderColor: 'rgba(229,115,115,1)',
+      pointBackgroundColor: 'rgba(229,115,115,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(229,115,115,0.8)'
+    },
+    { // red
+      backgroundColor: 'rgba(229,	115,	115,0.2)',
+      borderColor: 'rgba(229,115,115,1)',
+      pointBackgroundColor: 'rgba(229,115,115,1)',
+      pointBorderColor: '#fff',
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: 'rgba(229,115,115,0.8)'
+    }
+  ];
+  public lineChartLegend: boolean = true;
+  public lineChartType: string = 'line';
+
+
   dateOption = [
     {
       name: "30 Days",
@@ -53,7 +132,6 @@ export class PaymentChartComponent implements OnInit {
 
   ngOnInit() {
     this.selectedFacility = <any>this.locker.getObject('selectedFacility');
-    console.log(this.selectedFacility);
     let currentDate = Date.now();
     let lifeTimeDays = differenceInCalendarDays(this.selectedFacility.createdAt, currentDate);
     this.dateOption[5].counter = lifeTimeDays;
@@ -64,9 +142,8 @@ export class PaymentChartComponent implements OnInit {
       .debounceTime(400)
       .distinctUntilChanged()
       .subscribe(value => {
-        this.lineChartData = [
-          { data: [0], label: '' }
-        ];
+        this.lineChartData = [{ data: [0], label: '' }];
+        this.systemModuleService.on();
         this._pendingBillService.getChartSummary(this.selectedFacility._id, {
           query: {
             days: value
@@ -95,50 +172,12 @@ export class PaymentChartComponent implements OnInit {
     });
   }
 
-  public lineChartData: any[] = [
-    { data: [0], label: '' }
-  ];
-
-  public lineChartLabels: string[] = [];
-
-  public lineChartOptions: any = {
-    responsive: true
-  };
-  public lineChartColors: any[] = [
-    { // grey
-      backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: 'rgba(148,159,177,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-    },
-    { // dark grey
-      backgroundColor: 'rgba(77,83,96,0.2)',
-      borderColor: 'rgba(77,83,96,1)',
-      pointBackgroundColor: 'rgba(77,83,96,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(77,83,96,1)'
-    },
-    { // grey
-      backgroundColor: 'rgba(148,159,177,0.2)',
-      borderColor: 'rgba(148,159,177,1)',
-      pointBackgroundColor: 'rgba(148,159,177,1)',
-      pointBorderColor: '#fff',
-      pointHoverBackgroundColor: '#fff',
-      pointHoverBorderColor: 'rgba(148,159,177,0.8)'
-    }
-  ];
-  public lineChartLegend: boolean = true;
-  public lineChartType: string = 'line';
-
   private loopChartData(chartData) {
-    if(chartData.lineChartData.length > 0){
+    if (chartData.lineChartData.length > 0) {
       this.lineChartData.splice(0, 1);
     }
     for (let index = 0; index < chartData.lineChartData.length; index++) {
-      this.lineChartData.push( { data: [], label: '' });
+      this.lineChartData.push({ data: [], label: '' });
     }
     for (let i = 0; i < chartData.lineChartData.length; i++) {
       this.lineChartData[i].label = chartData.lineChartData[i].label;
@@ -151,10 +190,8 @@ export class PaymentChartComponent implements OnInit {
 
   // events
   public chartClicked(e: any): void {
-    console.log(e);
   }
 
   public chartHovered(e: any): void {
-    console.log(e);
   }
 }

@@ -318,8 +318,6 @@ export class NoprescriptionComponent implements OnInit {
 
 				const collectionDrugs = { drugs: drugs };
 
-				console.log(payload);
-				console.log(collectionDrugs);
 
 				// Call a service to
 				// this._dispenseCollectionDrugs.create(collectionDrugs).then(res => {
@@ -433,7 +431,6 @@ export class NoprescriptionComponent implements OnInit {
 	keyupSearch() {
 		this.searchText = this.noPrescriptionForm.controls['product'].value;
 
-    console.log(this.selectedStore);
 		if (this.searchText.length > 2) {
 			this.products = [];
 			this.cuDropdownLoading = true;
@@ -447,7 +444,6 @@ export class NoprescriptionComponent implements OnInit {
           })
           // this._inventoryService.find({ query: { facilityId: this.facility._id, storeId: this.selectedStore.storeId } })
         )).subscribe((res: any) => {
-          console.log(res);
           // Get all products in the facility, then search for the item you are looing for.
           // const contains = res.data.filter(x => (x.totalQuantity > 0)
           // && x.product.toLowerCase().includes(this.searchText.toLowerCase()));

@@ -34,10 +34,22 @@ import { LoadingBarService } from '@ngx-loading-bar/core';
 import { JoinChannelService } from 'app/services/facility-manager/setup/join-channel.service';
 import swal from 'sweetalert2';
 import { AuthFacadeService } from './system-modules/service-facade/auth-facade.service';
+
+import { APP_DATE_FORMATS, AppDateAdapter } from 'app/date-format';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  providers: [
+      {
+          provide: DateAdapter, useClass: AppDateAdapter
+      },
+      {
+          provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
+      }
+  ]
 })
 export class AppComponent implements OnInit {
   auth: any;
@@ -90,9 +102,9 @@ export class AppComponent implements OnInit {
       this._sweetNotification(value);
     });
   }
+
   ngOnInit() {
     this.userServiceFacade.authenticateResource().then((result) => {
-
       this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
       this.auth = <any>this.locker.getObject('auth');
       this.joinService.create({ _id: this.selectedFacility._id, userId: this.auth.data._id }).then(paylo => {

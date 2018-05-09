@@ -11,7 +11,7 @@
                         <td class="text-center" colspan="5"> No data available in table</td>
                     </tr>
                     <tr *ngFor="let medication of treatmentSheet?.medications; let m = index">
-                        <td>{{ medication.genericName }} - {{ medication.frequency }} for {{ medication.duration }} {{ medication.durationUnit }}</td>
+                        <td>{{ medication.genericName }} - {{ medication.dosage }}{{ medication.dosageUnit }}, {{ medication.frequency }} for {{ medication.duration }} {{ medication.durationUnit }}</td>
                         <td>{{ medication.status }}</td>
                         <td>2hrs 24mins 36secs to start</td>
                         <td>
@@ -33,7 +33,7 @@
                                     <i class="fa fa-pause text-yellow" aria-hidden="true"></i>
                                     <span>Suspend</span>
                                 </div>
-                                 <div *ngIf="medication.status==='Suspended'" (click)="activateMedication(medication, m)" class="action-item">
+                                <div *ngIf="medication.status==='Suspended'" (click)="activateMedication(medication, m)" class="action-item">
                                     <i class="fa fa-play text-green" aria-hidden="true"></i>
                                     <span>Activate</span>
                                 </div>
@@ -72,8 +72,7 @@
                         </td>
                         <td>
                             <div (click)="save(nursingCare)" class="tbl-actn-btn">
-                                <i class="fa fa-check" aria-hidden="true"></i>
-                                Done <span *ngIf="isSaving" class="fa fa-spinner fa-spin"></span>
+                                <i class="fa fa-check" aria-hidden="true"></i> Done <span *ngIf="isSaving" class="fa fa-spinner fa-spin"></span>
                             </div>
                         </td>
                     </tr>

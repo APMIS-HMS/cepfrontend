@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
@@ -10,22 +10,22 @@ import {
 } from '../../../../../services/facility-manager/setup/index';
 
 const moment = require('moment');
-// var _ = require("lodash");
+const _ = require("lodash");
+import * as format from 'date-fns/format';
+import * as isWithinRange from 'date-fns/is_within_range';
 
 @Component({
   selector: 'app-fluid',
   templateUrl: './fluid.component.html',
   styleUrls: ['./fluid.component.scss']
 })
-export class FluidComponent implements OnInit {
+export class FluidComponent implements OnInit, AfterViewInit {
 
   public frmIntake: FormGroup;
   public frmOutput: FormGroup;
   inInterval = new FormControl();
   outInterval = new FormControl();
   fluidType_pop = false;
-
-  lineChartOptions: any;
 
   intakeFluidList;
   outputFluidList;
@@ -52,23 +52,25 @@ export class FluidComponent implements OnInit {
   outputFilterTime;
 
   patientFluidSummary;
-  lineChartSummary: Array<any>;
+  lineChartSummary: Array<any> = [];
+
+  lineChartColors:any;
 
   // lineChart
-  public lineChartData: Array<any> = [
-    [65, 59, 80, 81, 56, 55, 40],
-    [28, 48, 40, 19, 86, 27, 90],
-    [78, 68, 10, 99, 46, 37, 20],
-    [68, 48, 30, 29, 86, 27, 60],
-    [18, 58, 80, 49, 56, 17, 10]
-  ];
-  public lineChartLabels: Array<any> = ['Drip', 'Salinity', 'Alkaline', 'H20', 'Carbonozine'];
-  public lineChartType = 'line';
+  public lineChartData: any[] = [{ data: [], label: '' }];
+  public lineChartLabels: Array<any> = [];
+  public lineChartLegend: boolean = true;
+  public lineChartType: string = 'line';
+  public lineChartOptions: any = {
+    responsive: true
+  };
 
   public chartClicked(e: any): void {
+    console.log(e);
   }
 
   public chartHovered(e: any): void {
+    console.log(e);
   }
 
   getFluids(type: any) {
@@ -92,7 +94,9 @@ export class FluidComponent implements OnInit {
     private personService: PersonService,
     private employeeService: EmployeeService,
     private facilityService: FacilitiesService,
-  private systemModuleService: SystemModuleService) { }
+    private systemModuleService: SystemModuleService) {
+      
+    }
 
   ngOnInit() {
     this.frmIntake = this.formBuilder.group({
@@ -100,23 +104,20 @@ export class FluidComponent implements OnInit {
       infusion_volume: ['', [<any>Validators.required]],
       infusion_quantity: ['', [<any>Validators.required]]
     });
-
     this.frmOutput = this.formBuilder.group({
       fluid: ['', [<any>Validators.required]],
       output_volume: ['', [<any>Validators.required]],
       output_quantity: ['', [<any>Validators.required]]
     });
-
     this.getFluids('intake');
     this.getFluids('output');
-
     this.getPatientFluids('intake');
     this.getPatientFluids('output');
-
-    this.getFluidSummary();
-
     // this.filterByTime('intake', '2');
+  }
 
+  ngAfterViewInit(){
+    this.getFluidSummary();
   }
 
   addPatientFluid(type: any) {
@@ -130,7 +131,7 @@ export class FluidComponent implements OnInit {
     const fluidItem = (type === 'intake') ? this.frmIntake.controls['infusion'].value : this.frmOutput.controls['fluid'].value;
     const volume = (type === 'intake') ? this.frmIntake.controls['infusion_volume'].value : this.frmOutput.controls['output_volume'].value;
     const quantity = (type === 'intake') ? this.frmIntake.controls['infusion_quantity']
-    .value : this.frmOutput.controls['output_quantity'].value;
+      .value : this.frmOutput.controls['output_quantity'].value;
 
 
     const fluidsCont = {
@@ -147,7 +148,12 @@ export class FluidComponent implements OnInit {
 
     this.fluidService.createPatientFluid(fluidsCont).then(payload => {
       this.loading = false;
-      this.frmIntake.reset();
+      if(type === 'intake'){
+        this.frmIntake.reset();
+      }else if(type === 'output'){
+        this.frmOutput.reset();
+      }
+      
       this.systemModuleService.announceSweetProxy('Fluid was successfully created', 'success');
       this.getPatientFluids(type);
       this.getFluidSummary();
@@ -179,11 +185,11 @@ export class FluidComponent implements OnInit {
         }
         this.totalPatientIntakeFluid = lol;
         const firstTimeDate = this.patientIntakeFluidList[0].createdAt;
-        const lastTimeDate = this.patientIntakeFluidList[len-1].createdAt;
-        const timeDateDifference = (new Date(firstTimeDate).getTime() - new Date(lastTimeDate).getTime()) / (1000*60*60);
-        if(timeDateDifference > 0){
+        const lastTimeDate = this.patientIntakeFluidList[len - 1].createdAt;
+        const timeDateDifference = (new Date(firstTimeDate).getTime() - new Date(lastTimeDate).getTime()) / (1000 * 60 * 60);
+        if (timeDateDifference > 0) {
           this.rateOfIntakeFluid = Math.floor(this.totalPatientIntakeFluid / timeDateDifference);
-        }else{
+        } else {
           this.rateOfIntakeFluid = this.totalPatientIntakeFluid;
         }
         this.intakeFilterTime = 'All';
@@ -196,11 +202,11 @@ export class FluidComponent implements OnInit {
         }
         this.totalPatientOutputFluid = lol;
         const firstTimeDate = this.patientOutputFluidList[0].createdAt;
-        const lastTimeDate = this.patientOutputFluidList[len-1].createdAt;
-        const timeDateDifference = (new Date(firstTimeDate).getTime() - new Date(lastTimeDate).getTime()) / (1000*60*60);
-        if(timeDateDifference > 0){
+        const lastTimeDate = this.patientOutputFluidList[len - 1].createdAt;
+        const timeDateDifference = (new Date(firstTimeDate).getTime() - new Date(lastTimeDate).getTime()) / (1000 * 60 * 60);
+        if (timeDateDifference > 0) {
           this.rateOfOutputFluid = Math.floor(this.totalPatientOutputFluid / timeDateDifference);
-        }else{
+        } else {
           this.rateOfOutputFluid = this.totalPatientOutputFluid;
         }
         this.rateOfOutputFluid = Math.floor(this.totalPatientOutputFluid / 24);
@@ -279,15 +285,6 @@ export class FluidComponent implements OnInit {
   }
 
   getFluidSummary() {
-    this.lineChartSummary = [
-      { data: [], label: '' },
-      { data: [], label: '' },
-      { data: [], label: '' },
-      { data: [], label: '' },
-      { data: [], label: '' },
-      { data: [], label: '' }
-
-    ];
     this.fluidService.findPatientFluid({
       query: {
         'facilityId': this.facility._id,
@@ -298,45 +295,74 @@ export class FluidComponent implements OnInit {
         }
       }
     }).then(payload => {
-
-      const result = [];
-      const len1 = this.patientIntakeFluidList.length - 1;
-      let index;
-      for (let i = len1; i >= 0; i--) {
-        const val = this.patientIntakeFluidList[i];
-        index = result.filter(x => x.name.toString() === val.fluid.name.toString());
-        if (index.length > 0) {
-          index[0].sum += val.volume;
-          index[0].volumes.push(val.volume);
-          this.lineChartSummary[0].data.push(val.volume)
-
-        } else {
-          result.push(
-            {
-              _id: this.patientIntakeFluidList[i].fluid._id,
-              name: this.patientIntakeFluidList[i].fluid.name,
-              sum: this.patientIntakeFluidList[i].volume,
-              measurement: this.patientIntakeFluidList[i].measurement,
-              volumes: [this.patientIntakeFluidList[i].volume]
-            }
-          );
-          this.lineChartSummary.push({ data: [this.patientIntakeFluidList[i].volume], label: this.patientIntakeFluidList[i].fluid.name });
-        }
+      let data = <any[]>payload.data;
+      let len = data.length;
+      let label = [];
+      
+      for (let i = 0; i < len; i++) {
+        // this.lineChartData[0].data.push(data[i].volume);
+        // this.lineChartData[0].label = data[i].fluid.name;
+        const d = new Date(data[i].createdAt);
+        let dt = format(d, 'DD/MM/YY HH:mm:ss a');
+        //this.lineChartLabels[0] = 0;
+        //this.lineChartLabels.push(dt);
+        label.push(dt);
       }
-      this.patientFluidSummary = result;
+      // console.log(this.lineChartData);
+      console.log(this.lineChartLabels);
+      this.mapTypeOfData(data, label);
+      //this.lineChartData = JSON.parse(JSON.stringify(this.refreshGraph(this.lineChartData)));
     });
   }
 
-  lineChartInfo() {
-    this.fluidService.findPatientFluid({
-      query: {
-        'facilityId': this.facility._id,
-        'patientId': this.patient._id,
-        'type': 'intake'
+  mapTypeOfData(data, label) {
+    let v = [];
+    let _data =  _.chain(data)
+      .groupBy('fluid.name')
+      .map((x, y) => {
+        //let v = x.filter((b) => {})
+        let finalArray = x.map(function (obj) {
+          return obj.volume;
+        });
+        //finalArray.unshift(0);
+        return {
+          data: finalArray, label: y
+        }
+      })
+      .value();      
+      let chartData = {
+        lineChartData: _data
       }
-    }).then(lineChartPayload => {
+      this.loopChartData(_data, label);
+  }
 
-    })
+  private loopChartData(chartData, label) {console.log(chartData);
+    if(chartData.length > 0){
+      this.lineChartData.splice(0, 1);
+    }
+    for (let index = 0; index < chartData.length; index++) {
+      this.lineChartData.push( { data: [], label: '' });
+    } console.log(this.lineChartData);
+    for (let i = 0; i < chartData.length; i++) {
+      this.lineChartData[i].label = chartData[i].label;
+      for (let index = 0; index < chartData[i].data.length; index++) {
+        this.lineChartData[i].data.push(chartData[i].data[index]);
+      }
+    }console.log(this.lineChartData);
+    this.lineChartData = JSON.parse(JSON.stringify(this.lineChartData));
+    console.log(this.lineChartData);
+    this.lineChartLabels = label;
+  }
+
+  refreshGraph(lineChartData: any[]) {
+    let _lineChartData: Array<any> = new Array(lineChartData.length);
+    for (let i = 0; i < lineChartData.length; i++) {
+      _lineChartData[i] = { data: new Array(lineChartData[i].data.length), label: lineChartData[i].label };
+      for (let j = 0; j < lineChartData[i].data.length; j++) {
+        _lineChartData[i].data[j] = lineChartData[i].data[j];
+      }
+    }
+    return _lineChartData;
   }
 
   fluidType_show() {
