@@ -25,6 +25,8 @@ import { Observable } from 'rxjs/Observable';
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 
+import { differenceInDays, differenceInMonths, differenceInWeeks, differenceInYears  } from 'date-fns';
+
 @Component({
   selector: 'app-patientmanager-homepage',
   templateUrl: './patientmanager-homepage.component.html',
@@ -649,6 +651,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.selectedPatient['personFullName'] = value.firstName + ' ' + value.lastName;
     this.selectedPatient['gender'] = value.gender;
     this.selectedPatient['genderId'] = value.gender._id;
+    this.selectedPatient['dateOfBirth'] = value.dob;
     this.selectedPatient['nationalityObject'] = {
       country: value.country.name,
       lga: value.lga.name,
