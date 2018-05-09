@@ -25,6 +25,8 @@ import { Observable } from 'rxjs/Observable';
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
 
+import { differenceInDays, differenceInMonths, differenceInWeeks, differenceInYears  } from 'date-fns';
+
 @Component({
   selector: 'app-patientmanager-homepage',
   templateUrl: './patientmanager-homepage.component.html',
@@ -649,6 +651,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.selectedPatient['personFullName'] = value.firstName + ' ' + value.lastName;
     this.selectedPatient['gender'] = value.gender;
     this.selectedPatient['genderId'] = value.gender._id;
+    this.selectedPatient['dateOfBirth'] = value.dob;
     this.selectedPatient['nationalityObject'] = {
       country: value.country.name,
       lga: value.lga.name,
@@ -675,6 +678,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
 
       this.updatePatientBtnText = 'Update';
       this.patients[patientIndex].personDetails = res;
+      this.age(res);
       this.getPatients();
       this.close_onClick();
       this.systemService.announceSweetProxy('Patient details has been updated successfully.', 'Success');
@@ -683,6 +687,39 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       this.updatePatientBtnText = 'Update';
       this.systemService.announceSweetProxy('There was an error updating user record, Please try again later.', 'Error');
     });
+  }
+
+  age(person){
+    var age = differenceInYears(Date.now(), person.dateOfBirth);
+    var ageString;
+            if (age < 5) {
+                const monthResult = differenceInMonths(Date.now(), person.dateOfBirth);
+                if (monthResult < 1) {
+                    const weekResult = differenceInWeeks(
+                        Date.now(),
+                        person.dateOfBirth
+                    );
+                    if (weekResult < 1) {
+                        const dayResult = differenceInDays(
+                            Date.now(),
+                            person.dateOfBirth
+                        );
+                        ageString = (dayResult > 1) ? dayResult + ' days' : dayResult + ' day';
+                    } else {
+                        ageString = (weekResult > 1) ? weekResult + ' weeks' : weekResult + ' week';
+                    }
+                } else {
+                    ageString = (monthResult > 1) ? monthResult + ' months' : monthResult + ' month';
+                }
+            } else {
+                ageString = (age > 1) ? age + ' years' : age + ' year';
+            }
+            console.log(ageString, this.selectedPatient, this.patients);
+            this.selectedPatient.age = ageString;
+            var patInd = this.patients.findIndex(x => x._id === this.selectedPatient._id);
+            console.log(this.patients[patInd], patInd)
+            this.patients[patInd].age = ageString;
+            
   }
 
   idTags(patient) {
