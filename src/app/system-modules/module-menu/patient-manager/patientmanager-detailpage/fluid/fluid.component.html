@@ -90,112 +90,118 @@
 
             <div class="card2-exo">
                 <div class="card-tbl">
-                  <div class="modal_title">Fluid Intake</div>
-                  <div class="intr-wrap">
-                    <mat-form-field>
-                        <mat-select placeholder="Time Interval" [formControl]="inInterval" #intakeInterval (change)="filterByTime('intake', intakeInterval.value)">
-                            <mat-option [value]="0">All</mat-option>
-                            <mat-option [value]="48">Last 48 Hours</mat-option>
-                            <mat-option [value]="24">Last 24 Hours</mat-option>
-                            <mat-option [value]="18">Last 18 Hours</mat-option>
-                            <mat-option [value]="12">Last 12 Hours</mat-option>
-                            <mat-option [value]="6">Last 6 Hours</mat-option>
-                            <mat-option [value]="4">Last 4 Hours</mat-option>
-                            <mat-option [value]="2">Last 2 Hours</mat-option>
-                            <mat-option [value]="1">Last Hour</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <div class="intr-tag">Showing for {{intakeFilterTime}}</div>
-                  </div>
-                  <table cellpadding="0" cellspacing="0" border="0.5">
-                      <thead>
-                          <tr>
-                              <th>Fluid</th>
-                              <th>Volume</th>
-                              <th>Date</th>
-                          </tr>
-                      </thead>
+                    <div class="modal_title">Fluid Intake</div>
+                    <div class="intr-wrap">
+                        <mat-form-field>
+                            <mat-select placeholder="Time Interval" [formControl]="inInterval" #intakeInterval (change)="filterByTime('intake', intakeInterval.value)">
+                                <mat-option [value]="0">All</mat-option>
+                                <mat-option [value]="48">Last 48 Hours</mat-option>
+                                <mat-option [value]="24">Last 24 Hours</mat-option>
+                                <mat-option [value]="18">Last 18 Hours</mat-option>
+                                <mat-option [value]="12">Last 12 Hours</mat-option>
+                                <mat-option [value]="6">Last 6 Hours</mat-option>
+                                <mat-option [value]="4">Last 4 Hours</mat-option>
+                                <mat-option [value]="2">Last 2 Hours</mat-option>
+                                <mat-option [value]="1">Last Hour</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div class="intr-tag">Showing for {{intakeFilterTime}}</div>
+                    </div>
+                    <table cellpadding="0" cellspacing="0" border="0.5">
+                        <thead>
+                            <tr>
+                                <th>Fluid</th>
+                                <th>Volume</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
 
-                      <tbody>
-                          <tr *ngFor="let intakeList of patientIntakeFluidList">
-                              <td>{{intakeList.fluid.name}}</td>
-                              <td>{{intakeList.volume}}{{intakeList.measurement}}</td>
-                              <td>{{intakeList.createdAt | date: 'medium'}}</td>
-                          </tr>
-                      </tbody>
-                  </table>
+                        <tbody>
+                            <tr *ngFor="let intakeList of patientIntakeFluidList">
+                                <td>{{intakeList.fluid.name}}</td>
+                                <td>{{intakeList.volume}}{{intakeList.measurement}}</td>
+                                <td>{{intakeList.createdAt | date: 'medium'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
                 <div class="card-tbl">
-                  <div class="modal_title">Fluid Output</div>
-                  <div class="intr-wrap">
-                    <mat-form-field>
-                        <mat-select placeholder="Time Interval" [formControl]="outInterval" #outputInterval (change)="filterByTime('output', outputInterval.value)">
-                            <mat-option [value]="0">All</mat-option>
-                            <mat-option [value]="48">Last 48 Hours</mat-option>
-                            <mat-option [value]="24">Last 24 Hours</mat-option>
-                            <mat-option [value]="18">Last 18 Hours</mat-option>
-                            <mat-option [value]="12">Last 12 Hours</mat-option>
-                            <mat-option [value]="6">Last 6 Hours</mat-option>
-                            <mat-option [value]="4">Last 4 Hours</mat-option>
-                            <mat-option [value]="2">Last 2 Hours</mat-option>
-                            <mat-option [value]="1">Last Hour</mat-option>
-                        </mat-select>
-                    </mat-form-field>
-                    <div class="intr-tag">Showing for {{outputFilterTime}}</div>
-                  </div>
-                  <table cellpadding="0" cellspacing="0" border="0.5">
-                      <thead>
-                          <tr>
-                              <th>Fluid</th>
-                              <th>Volume</th>
-                              <th>Date</th>
-                          </tr>
-                      </thead>
+                    <div class="modal_title">Fluid Output</div>
+                    <div class="intr-wrap">
+                        <mat-form-field>
+                            <mat-select placeholder="Time Interval" [formControl]="outInterval" #outputInterval (change)="filterByTime('output', outputInterval.value)">
+                                <mat-option [value]="0">All</mat-option>
+                                <mat-option [value]="48">Last 48 Hours</mat-option>
+                                <mat-option [value]="24">Last 24 Hours</mat-option>
+                                <mat-option [value]="18">Last 18 Hours</mat-option>
+                                <mat-option [value]="12">Last 12 Hours</mat-option>
+                                <mat-option [value]="6">Last 6 Hours</mat-option>
+                                <mat-option [value]="4">Last 4 Hours</mat-option>
+                                <mat-option [value]="2">Last 2 Hours</mat-option>
+                                <mat-option [value]="1">Last Hour</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div class="intr-tag">Showing for {{outputFilterTime}}</div>
+                    </div>
+                    <table cellpadding="0" cellspacing="0" border="0.5">
+                        <thead>
+                            <tr>
+                                <th>Fluid</th>
+                                <th>Volume</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
 
-                      <tbody>
-                          <tr *ngFor="let outputList of patientOutputFluidList">
-                              <td>{{outputList.fluid.name}}</td>
-                              <td>{{outputList.volume}}{{outputList.measurement}}</td>
-                              <td>{{outputList.createdAt | date: 'medium'}}</td>
-                          </tr>
-                      </tbody>
-                  </table>
+                        <tbody>
+                            <tr *ngFor="let outputList of patientOutputFluidList">
+                                <td>{{outputList.fluid.name}}</td>
+                                <td>{{outputList.volume}}{{outputList.measurement}}</td>
+                                <td>{{outputList.createdAt | date: 'medium'}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
 
             <div class="summary-figs">
-              <div class="card2-exo">
-                <div class="fig-item">
-                    <div class="fig-label">Total Input Volume</div>
-                    <div class="fig-val">{{totalPatientIntakeFluid}} ml <span>({{rateOfIntakeFluid}} ml/hr)</span></div>
-                </div>
-                <!-- <div class="fig-item">
+                <div class="card2-exo">
+                    <div class="fig-item">
+                        <div class="fig-label">Total Input Volume</div>
+                        <div class="fig-val">{{totalPatientIntakeFluid}} ml
+                            <span>({{rateOfIntakeFluid}} ml/hr)</span>
+                        </div>
+                    </div>
+                    <!-- <div class="fig-item">
                     <div class="fig-label">Balance</div>
                     <div class="fig-val">{{totalPatientIntakeFluid - totalPatientOutputFluid}} ml</div>
                 </div> -->
-                <!-- <div class="fig-item">
+                    <!-- <div class="fig-item">
                     <div class="fig-label">Rate</div>
                     <div class="fig-val">{{rateOfIntakeFluid}} ml/hr</div>
                 </div> -->
-            </div>
-
-            <!--                                                                -->
-
-            <div class="summary-figs">
-                <div class="fig-item">
-                    <div class="fig-label">Total Output Volume</div>
-                    <div class="fig-val">{{totalPatientOutputFluid}} ml <span>({{rateOfOutputFluid}} ml/hr)</span></div>
                 </div>
-                <!-- <div class="fig-item">
+
+                <!--                                                                -->
+
+                <div class="summary-figs">
+                    <div class="fig-item">
+                        <div class="fig-label">Total Output Volume</div>
+                        <div class="fig-val">{{totalPatientOutputFluid}} ml
+                            <span>({{rateOfOutputFluid}} ml/hr)</span>
+                        </div>
+                    </div>
+                    <!-- <div class="fig-item">
                     <div class="fig-label">Rate</div>
                     <div class="fig-val">{{rateOfOutputFluid}} ml/hr</div>
                 </div> -->
-              </div>
-              <div class="fig-item">
-                  <div class="fig-label">Balance</div>
-                  <div class="fig-val">{{totalPatientIntakeFluid - totalPatientOutputFluid}} ml <span>({{rateOfOutputFluid}} ml/hr)</span></div>
-              </div>
+                </div>
+                <div class="fig-item">
+                    <div class="fig-label">Balance</div>
+                    <div class="fig-val">{{totalPatientIntakeFluid - totalPatientOutputFluid}} ml
+                        <span>({{rateOfOutputFluid}} ml/hr)</span>
+                    </div>
+                </div>
             </div>
 
             <div class="card-tbl-full">
@@ -221,9 +227,11 @@
                 </table>
             </div>
 
-             <!-- balance over fluid -->
-             <div class="col-md-6">
-                <canvas baseChart [data]="lineChartData" [options]="lineChartOptions" [chartType]="lineChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+            <!-- balance over fluid -->
+            <div class="col-md-6">
+                <canvas baseChart width="400" height="400" [datasets]="lineChartData" [labels]="lineChartLabels" [options]="lineChartOptions"
+                    [colors]="lineChartColors" [legend]="lineChartLegend" [chartType]="lineChartType" (chartHover)="chartHovered($event)"
+                    (chartClick)="chartClicked($event)"></canvas>
             </div>
         </div>
     </div>

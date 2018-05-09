@@ -110,7 +110,6 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
         query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId,
           totalQuantity: { $gt: 1 }}
       }).then(res => {
-        console.log(res);
         this.inventoryLoading = false;
         if (res.status === 'success') {
           this.inventoryCount = res.data.inventoryCount;
@@ -125,7 +124,6 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
       this._purchaseOrderService.findOrder({
         query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId, isActive: true }
       }).then(res => {
-        console.log(res);
         this.purchaseOrderLoading = false;
         if (!!res.data && res.data.length > 0) {
           this.purchaseOrderCount = res.total;
@@ -140,7 +138,6 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
       this._inventoryTransferService.findTransferHistories({
         query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId, isActive: true }
       }).then(res => {
-        console.log(res);
         this.transferLoading = false;
         if (!!res.data && res.data.length > 0) {
           this.transferCount = res.total;

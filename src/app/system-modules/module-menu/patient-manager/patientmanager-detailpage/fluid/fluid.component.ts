@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
@@ -19,7 +19,7 @@ import * as isWithinRange from 'date-fns/is_within_range';
   templateUrl: './fluid.component.html',
   styleUrls: ['./fluid.component.scss']
 })
-export class FluidComponent implements OnInit {
+export class FluidComponent implements OnInit, AfterViewInit {
 
   public frmIntake: FormGroup;
   public frmOutput: FormGroup;
@@ -55,7 +55,7 @@ export class FluidComponent implements OnInit {
   lineChartSummary: Array<any> = [];
 
   // lineChart
-  
+  public lineChartData: any[] = [{ data: [], label: '' }];
   public lineChartLabels: Array<any> = [];
   public lineChartLegend: boolean = true;
   public lineChartType: string = 'line';
@@ -64,9 +64,11 @@ export class FluidComponent implements OnInit {
   };
 
   public chartClicked(e: any): void {
+    console.log(e);
   }
 
   public chartHovered(e: any): void {
+    console.log(e);
   }
 
   getFluids(type: any) {
@@ -90,7 +92,9 @@ export class FluidComponent implements OnInit {
     private personService: PersonService,
     private employeeService: EmployeeService,
     private facilityService: FacilitiesService,
-    private systemModuleService: SystemModuleService) { }
+    private systemModuleService: SystemModuleService) {
+      
+    }
 
   ngOnInit() {
     this.frmIntake = this.formBuilder.group({
@@ -98,23 +102,20 @@ export class FluidComponent implements OnInit {
       infusion_volume: ['', [<any>Validators.required]],
       infusion_quantity: ['', [<any>Validators.required]]
     });
-
     this.frmOutput = this.formBuilder.group({
       fluid: ['', [<any>Validators.required]],
       output_volume: ['', [<any>Validators.required]],
       output_quantity: ['', [<any>Validators.required]]
     });
-
     this.getFluids('intake');
     this.getFluids('output');
-
     this.getPatientFluids('intake');
     this.getPatientFluids('output');
-
-    this.getFluidSummary();
-
     // this.filterByTime('intake', '2');
+  }
 
+  ngAfterViewInit(){
+    this.getFluidSummary();
   }
 
   addPatientFluid(type: any) {
@@ -145,7 +146,12 @@ export class FluidComponent implements OnInit {
 
     this.fluidService.createPatientFluid(fluidsCont).then(payload => {
       this.loading = false;
-      this.frmIntake.reset();
+      if(type === 'intake'){
+        this.frmIntake.reset();
+      }else if(type === 'output'){
+        this.frmOutput.reset();
+      }
+      
       this.systemModuleService.announceSweetProxy('Fluid was successfully created', 'success');
       this.getPatientFluids(type);
       this.getFluidSummary();
@@ -277,8 +283,6 @@ export class FluidComponent implements OnInit {
   }
 
   getFluidSummary() {
-    this.lineChartLabels = [];
-    this.lineChartData = [{ data: [], label: '' }];
     this.fluidService.findPatientFluid({
       query: {
         'facilityId': this.facility._id,
@@ -290,26 +294,26 @@ export class FluidComponent implements OnInit {
       }
     }).then(payload => {
       let data = <any[]>payload.data;
-      this.mapTypeOfData(data);
       let len = data.length;
+      let label = [];
       
       for (let i = 0; i < len; i++) {
         // this.lineChartData[0].data.push(data[i].volume);
         // this.lineChartData[0].label = data[i].fluid.name;
         const d = new Date(data[i].createdAt);
         let dt = format(d, 'DD/MM/YY HH:mm:ss a');
-        this.lineChartLabels[0] = 0;
-        this.lineChartLabels.push(dt);
+        //this.lineChartLabels[0] = 0;
+        //this.lineChartLabels.push(dt);
+        label.push(dt);
       }
+      // console.log(this.lineChartData);
+      console.log(this.lineChartLabels);
+      this.mapTypeOfData(data, label);
       //this.lineChartData = JSON.parse(JSON.stringify(this.refreshGraph(this.lineChartData)));
     });
   }
 
-  public lineChartData: any[] = [
-    { data: [0], label: '' }
-  ];
-
-  mapTypeOfData(data) {
+  mapTypeOfData(data, label) {
     let v = [];
     let _data =  _.chain(data)
       .groupBy('fluid.name')
@@ -318,7 +322,7 @@ export class FluidComponent implements OnInit {
         let finalArray = x.map(function (obj) {
           return obj.volume;
         });
-        finalArray.unshift(0);
+        //finalArray.unshift(0);
         return {
           data: finalArray, label: y
         }
@@ -327,26 +331,26 @@ export class FluidComponent implements OnInit {
       let chartData = {
         lineChartData: _data
       }
-      this.loopChartData(_data);
+      this.loopChartData(_data, label);
   }
 
-  private loopChartData(chartData) {
+  private loopChartData(chartData, label) {console.log(chartData);
     if(chartData.length > 0){
       this.lineChartData.splice(0, 1);
     }
     for (let index = 0; index < chartData.length; index++) {
       this.lineChartData.push( { data: [], label: '' });
-    }
+    } console.log(this.lineChartData);
     for (let i = 0; i < chartData.length; i++) {
       this.lineChartData[i].label = chartData[i].label;
       for (let index = 0; index < chartData[i].data.length; index++) {
         this.lineChartData[i].data.push(chartData[i].data[index]);
       }
-    }
+    }console.log(this.lineChartData);
     this.lineChartData = JSON.parse(JSON.stringify(this.lineChartData));
+    console.log(this.lineChartData);
+    this.lineChartLabels = label;
   }
-
-
 
   refreshGraph(lineChartData: any[]) {
     let _lineChartData: Array<any> = new Array(lineChartData.length);
@@ -358,7 +362,6 @@ export class FluidComponent implements OnInit {
     }
     return _lineChartData;
   }
-
 
   fluidType_show() {
     this.fluidType_pop = true;

@@ -1,3 +1,4 @@
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { error } from "selenium-webdriver";
 import { SystemModuleService } from "app/services/module-manager/setup/system-module.service";
 
@@ -51,7 +52,7 @@ import * as setYear from "date-fns/set_year";
 import * as getMonth from "date-fns/get_month";
 import * as setMonth from "date-fns/set_month";
 import * as isToday from "date-fns/is_today";
-import { AuthFacadeService } from "app/system-modules/service-facade/auth-facade.service";
+import * as parse from 'date-fns/parse';
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&�*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 @Component({
@@ -63,7 +64,6 @@ export class ScheduleFrmComponent implements OnInit {
   appointmentIsToday = false;
   showTimeZone: boolean;
   @Input() selectedPatient: any;
-  selectedProvider:any;
   mainErr = true;
   errMsg = "you have unresolved errors";
   selectedFacility: Facility = <Facility>{};
@@ -189,6 +189,7 @@ export class ScheduleFrmComponent implements OnInit {
         this.apmisProviderLookupHandleSelectedItem(this.appointment.providerDetails);
       }
       this.selectedPatient = payload.patientDetails;
+
       //this.patient.setValue(payload.patientDetails);
       this.apmisLookupHandleSelectedItem(payload.patientDetails);
       this.date = payload.startDate;
@@ -271,7 +272,7 @@ export class ScheduleFrmComponent implements OnInit {
     this.category = new FormControl("", [Validators.required]);
     this.timezone = new FormControl("", []);
     this.selectedFacility = <Facility>this.locker.getObject("selectedFacility");
-    this.auth = <any>this.locker.getObject("auth");
+    this.auth = this.authFacadeService.getAuth(); // <any>this.locker.getObject("auth");
 
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
@@ -331,7 +332,7 @@ export class ScheduleFrmComponent implements OnInit {
 
     });
 
-    // this.getPatients();
+    this.getPatients();
     this.getTimezones();
 
     this.route.queryParams.subscribe(params => {
@@ -359,7 +360,6 @@ export class ScheduleFrmComponent implements OnInit {
 
   apmisProviderLookupHandleSelectedItem(value) {
     this.apmisProviderLookupText = `${value.personDetails.firstName} ${value.personDetails.lastName}`;
-    this.selectedProvider = value;
   }
 
   getTimezones() {
@@ -919,7 +919,7 @@ export class ScheduleFrmComponent implements OnInit {
       this.appointment.appointmentTypeId = type;
       this.appointment.clinicId = clinic;
       if (this.provider.value !== null && this.provider.value !== undefined) {
-        const provider = this.selectedProvider._id;
+        const provider = this.provider.value._id;
         this.appointment.doctorId = provider;
       }
 
@@ -1029,8 +1029,10 @@ export class ScheduleFrmComponent implements OnInit {
           }
         );
       } else {
+        console.log(this.appointment);
         this.appointmentService.create(this.appointment).then(
           payload => {
+            console.log(payload);
             this.createBill();
             if (this.teleMed.value === true) {
               const topic = "Appointment with " + patient.personDetails.apmisId;
@@ -1108,6 +1110,7 @@ export class ScheduleFrmComponent implements OnInit {
               "There was an error setting the appointment",
               "error"
             );
+            console.dir(error);
           }
         );
       }
@@ -1219,44 +1222,66 @@ export class ScheduleFrmComponent implements OnInit {
     }
   }
 
-  dateChange(event) {
-    const dayNum = getDay(event);
-    const day = this.days[dayNum];
-    const scheduleFiltered = this.schedules.filter((x: any) => x.day === day);
-    if (scheduleFiltered.length === 0) {
-      this.dateCtrl.setErrors({ noValue: true });
-      this.dateCtrl.markAsTouched();
-      this.date = event;
-      this.startDate = event;
-      this.endDate = event;
-      this.checkIn.disable();
-      this.checkIn.setValue(false);
-      this.startDate = setHours(this.startDate, getHours(this.startDate));
-      this.startDate = setMinutes(this.startDate, getMinutes(this.startDate));
-    } else {
-      this.date = event;
-      const schedule: any = scheduleFiltered[0];
-      this.startDate = setHours(this.startDate, getHours(schedule.startTime));
-      this.startDate = setMinutes(
-        this.startDate,
-        getMinutes(schedule.startTime)
-      );
-      this.canCheckIn = isToday(this.date)
+  convert(str) {
+    var date = new Date(str),
+        mnth = ("0" + (date.getMonth()+1)).slice(-2),
+        day  = ("0" + date.getDate()).slice(-2);
+        const hours  = ("0" + date.getHours()).slice(-2);
+        const minutes = ("0" + date.getMinutes()).slice(-2);
+    return [ date.getFullYear(), mnth, day, hours, minutes ].join("-");
+}
 
-      if (this.canCheckIn) {
-        this.checkIn.enable();
-      } else {
-        this.checkIn.disable();
+  dateChange(event) {
+    console.log(event);
+    this.authFacadeService.getServerTime().then((serverTime:any) =>{
+      console.log(serverTime.datetime);
+      console.log(parse(event));
+      if(serverTime.datetime > new Date(event)){
+        const dayNum = getDay(event);
+        const day = this.days[dayNum];
+        const scheduleFiltered = this.schedules.filter((x: any) => x.day === day);
+        if (scheduleFiltered.length === 0) {
+          this.dateCtrl.setErrors({ noValue: true });
+          this.dateCtrl.markAsTouched();
+          this.date = event;
+          this.startDate = event;
+          this.endDate = event;
+          this.checkIn.disable();
+          this.checkIn.setValue(false);
+          this.startDate = setHours(this.startDate, getHours(this.startDate));
+          this.startDate = setMinutes(this.startDate, getMinutes(this.startDate));
+        } else {
+          this.date = event;
+          const schedule: any = scheduleFiltered[0];
+          this.startDate = setHours(this.startDate, getHours(schedule.startTime));
+          this.startDate = setMinutes(
+            this.startDate,
+            getMinutes(schedule.startTime)
+          );
+          this.canCheckIn = isToday(this.date)
+    
+          if (this.canCheckIn) {
+            this.checkIn.enable();
+          } else {
+            this.checkIn.disable();
+          }
+          this.dateCtrl.setErrors(null); // ({ noValue: false });
+          this.dateCtrl.markAsUntouched();
+        }
+        if (this.selectedClinic._id !== undefined) {
+          this.appointmentService.clinicAnnounced({
+            clinicId: this.selectedClinic,
+            startDate: this.date
+          });
+        }
+      }else{
+        console.log('please dont set');
       }
-      this.dateCtrl.setErrors(null); // ({ noValue: false });
-      this.dateCtrl.markAsUntouched();
-    }
-    if (this.selectedClinic._id !== undefined) {
-      this.appointmentService.clinicAnnounced({
-        clinicId: this.selectedClinic,
-        startDate: this.date
-      });
-    }
+     
+    }).catch(er =>{
+      console.log(er);
+    })
+    
   }
   newSchedule() {
     this.patient.reset();

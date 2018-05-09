@@ -132,7 +132,8 @@
                                         </tr>
                                         <tr *ngFor="let medication of orderSet.medications; let i=index;">
                                             <td>Medication</td>
-                                            <td>{{ medication.genericName }} - {{ medication.frequency }} for {{ medication.duration }} {{ medication.durationUnit }}</td>
+                                            <td>{{ medication.genericName }} - {{ medication.dosage }}{{ medication.dosageUnit }}, {{ medication.frequency }} for {{ medication.duration }} {{ medication.durationUnit }}
+                                            </td>
                                             <td (click)="deleteOrderSetItem(i, medication, 'medication');" class=" action-placeholder " style="text-align:center; ">
                                                 <i class="fa fa-times" aria-hidden="true "></i>
                                             </td>
