@@ -69,32 +69,17 @@
         <div class="pp-card" style="margin-bottom:10px;">
             <div class="card-title">Unfinished Documents</div>
             <ul>
-                <li class="feed-li">
+                <li *ngFor="let documentation of documentations" class="feed-li">
                     <div class="fac-wrap">
                         <div class="fac-notfc">3</div>
                         <div class="fac-img-wrap">
                             <img src="../../../../assets/images/users/default.png">
                         </div>
                         <div class="fac-data">
-                            <div class="fac-name">John Dede</div>
+                            <div class="fac-name">{{documentation.patientName}}</div>
                             <div class="fac-others">
-                                <div>Clinical Documentation</div>
-                                <div><span class="date-label">Started</span>3rd Feb,2018.</div>
-                            </div>
-                        </div>
-                    </div>
-                </li>
-                <li class="feed-li">
-                    <div class="fac-wrap">
-                        <div class="fac-notfc">3</div>
-                        <div class="fac-img-wrap">
-                            <img src="../../../../assets/images/users/default.png">
-                        </div>
-                        <div class="fac-data">
-                            <div class="fac-name">John Dede</div>
-                            <div class="fac-others">
-                                <div>Clinical Documentation</div>
-                                <div><span class="date-label">Started</span>3rd Feb,2018.</div>
+                                <div>{{documentation.document.documentType.title}} @ {{documentation.facilityName}}</div>
+                                <div><span class="date-label">Started</span>{{documentation.createdAt | date:'short'}}.</div>
                             </div>
                         </div>
                     </div>

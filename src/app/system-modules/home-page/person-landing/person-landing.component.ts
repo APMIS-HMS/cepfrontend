@@ -1,3 +1,5 @@
+import { Documentation } from './../../../models/facility-manager/setup/documentation';
+import { DocumentationService } from './../../../services/facility-manager/setup/documentation.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { UserService } from './../../../services/facility-manager/setup/user.service';
 import { AuthFacadeService } from './../../service-facade/auth-facade.service';
@@ -22,10 +24,12 @@ export class PersonLandingComponent implements OnInit {
   @Input() listOfEmployees: any[] = [];
   schedule_appointment = false;
   myAppointments: any[] = [];
+  documentations: any[] = [];
+
   constructor(private appointmentService:AppointmentService, private employeeService: EmployeeService,
     private joinChannelService:JoinChannelService,private authFacadeService:AuthFacadeService,
     public facilityService: FacilitiesService, private userService:UserService, private router:Router,
-    private locker: CoolLocalStorage,) { }
+    private locker: CoolLocalStorage,private _documentationService:DocumentationService) { }
 
 ngOnInit() {
   this.getEmployeeRecords();
@@ -36,6 +40,24 @@ close_onClick(message: boolean): void {
 }
 set_appointment() {
   this.schedule_appointment = true;
+}
+
+getIncompleteDocumentation(){
+  // console.log(this.listOfEmployees.map(x => x._id));
+  this._documentationService.find({ query: { 'documentations.createdById': { $in: this.listOfEmployees.map(x => x._id) }, $select: {'documentations.$' : 1 }, $sort:{'documentations.createdAt': -1}}}).then(payloadPatient => {
+    // this.documentations = payloadPatient.data;
+    let docs:any[] = [];
+    // console.log(this.documentations);
+    payloadPatient.data.forEach(documentation =>{
+      documentation.documentations.forEach((sub:any) =>{
+        sub.groupId = documentation._id;
+      })
+      docs.push(documentation.documentations);
+    })
+    this.documentations = [].concat.apply([], docs)
+    // console.log(this.documentations);
+  }, error => {
+  });
 }
 
 getFacilityName(id){
@@ -51,7 +73,7 @@ getUnits(units){
 }
 
 getMyAppointments(){
-  this.appointmentService.find({query:{
+  this.appointmentService.findAppointment({query:{
     doctorId: { $in: this.listOfEmployees.map(x => x._id) }, isFuture:true
   }}).subscribe(payload =>{
     this.myAppointments = payload.data;
@@ -63,6 +85,7 @@ getEmployeeRecords() {
     this.employeeService.find({query:{personId: auth.data.personId}}).subscribe(payload =>{
       this.listOfEmployees = payload.data;
       this.getMyAppointments();
+      this.getIncompleteDocumentation();
     });
   })
  

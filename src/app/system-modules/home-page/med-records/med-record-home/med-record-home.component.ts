@@ -1,3 +1,4 @@
+import { DocumentationService } from './../../../../services/facility-manager/setup/documentation.service';
 import { AppointmentService } from './../../../../services/facility-manager/setup/appointment.service';
 import { FacilitiesService } from './../../../../services/facility-manager/setup/facility.service';
 import { Person } from 'app/models/index';
@@ -17,13 +18,15 @@ export class MedRecordHomeComponent implements OnInit {
   pendingBills: any[] = [];
   listOfFacilities: any[] = [];
   myAppointments: any[] = [];
+  documentations: any[] = [];
   constructor(private pendingBillService:PendingBillService, private facilityService:FacilitiesService,
-  private appointmentService:AppointmentService) { }
+  private appointmentService:AppointmentService, private _documentationService:DocumentationService) { }
 
   ngOnInit() {
     this.getPendingBills();
     this.getPatientFacilities();
     this.getMyAppointments();
+    this.getPatientDocumentations();
   }
 
   close_onClick(message: boolean): void {
@@ -55,5 +58,22 @@ export class MedRecordHomeComponent implements OnInit {
     this.pendingBillService.find({query:{patientIds:this.listOfPatients.map(x => x._id)}}).subscribe(payload =>{
       this.pendingBills = payload.data;
     })
+  }
+
+  getPatientDocumentations(){
+    this._documentationService.find({ query: { 'personId': this.selectedPerson._id}}).then(payloadPatient => {
+      // this.documentations = payloadPatient.data;
+      console.log(payloadPatient.data);
+      let docs:any[] = [];
+      payloadPatient.data.forEach(documentation =>{
+        // documentation.documentations.forEach((sub:any) =>{
+        //   sub.groupId = documentation._id;
+        // })
+        docs.push(documentation.documentations);
+      })
+      this.documentations = [].concat.apply([], docs)
+      console.log(this.documentations);
+    }, error => {
+    });
   }
 }
