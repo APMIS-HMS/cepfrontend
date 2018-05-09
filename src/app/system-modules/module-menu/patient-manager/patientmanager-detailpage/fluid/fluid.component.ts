@@ -54,6 +54,8 @@ export class FluidComponent implements OnInit, AfterViewInit {
   patientFluidSummary;
   lineChartSummary: Array<any> = [];
 
+  lineChartColors:any;
+
   // lineChart
   public lineChartData: any[] = [{ data: [], label: '' }];
   public lineChartLabels: Array<any> = [];
