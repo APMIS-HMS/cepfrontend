@@ -273,6 +273,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       lastName: ['', [<any>Validators.required]],
       email: [{ value: '', disabled: false }, [<any>Validators.required]],
       phoneNumber: [{ value: '', disabled: true }, [<any>Validators.required]],
+      dob: ['', [<any>Validators.required]],
       gender: ['', [<any>Validators.required]],
       country: ['', [<any>Validators.required]],
       state: ['', [<any>Validators.required]],
@@ -628,6 +629,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.patientService.get(patient._id, {}).then(payload => {
       this.selectedPatient = payload.personDetails;
       this.patient = payload;
+      console.log();
       this.editPatient = true;
       if (this.selectedPatient.nextOfKin.length > 0) {
         const nextOfKincontrol = <FormArray>this.patientEditForm.controls['nextOfKin'];
@@ -693,6 +695,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
 
   private _populateAndSelectData(value: any) {
+    console.log(value);
     if (value.homeAddress) {
       this.patientEditForm.controls['street'].setValue(value.homeAddress.street);
       this.patientEditForm.controls['country'].setValue(value.homeAddress.country);
@@ -707,6 +710,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     }
 
     this.patientEditForm.controls['phoneNumber'].setValue(value.primaryContactPhoneNo);
+    this.patientEditForm.controls['dob'].setValue(value.dateOfBirth);
 
     this.patientEditForm.controls['title'].setValue(value.title);
     this.patientEditForm.controls['gender'].setValue(value.gender);
