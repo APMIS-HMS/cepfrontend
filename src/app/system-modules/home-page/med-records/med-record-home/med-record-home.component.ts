@@ -63,7 +63,7 @@ export class MedRecordHomeComponent implements OnInit {
   getPatientDocumentations(){
     this._documentationService.find({ query: { 'personId': this.selectedPerson._id}}).then(payloadPatient => {
       // this.documentations = payloadPatient.data;
-      console.log(payloadPatient.data);
+      // console.log(payloadPatient.data);
       let docs:any[] = [];
       payloadPatient.data.forEach(documentation =>{
         // documentation.documentations.forEach((sub:any) =>{
@@ -72,7 +72,7 @@ export class MedRecordHomeComponent implements OnInit {
         docs.push(documentation.documentations);
       })
       this.documentations = [].concat.apply([], docs)
-      console.log(this.documentations);
+      // console.log(this.documentations);
     }, error => {
     });
   }
