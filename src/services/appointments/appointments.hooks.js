@@ -3,6 +3,7 @@ const { fastJoin } = require('feathers-hooks-common');
 var startOfDay = require('date-fns/start_of_day');
 var endOfDay = require('date-fns/end_of_today');
 var isToday = require('date-fns/is_today');
+const sms = require('../../templates/sms-sender');
 const resolvers = {
     joins: {
         patientDetails: () => async(appointment, context) => {
@@ -10,6 +11,9 @@ const resolvers = {
                 .service('patients')
                 .get(appointment.patientId, {});
             appointment.patientDetails = patient;
+            if (context.method === 'create') {
+                await sms.sendScheduleAppointment(new Date(), appointment);
+            }
         },
         providerDetails: () => async(appointment, context) => {
             if (appointment.doctorId !== undefined) {
