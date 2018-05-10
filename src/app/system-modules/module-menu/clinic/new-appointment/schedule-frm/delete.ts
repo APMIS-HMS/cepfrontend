@@ -53,7 +53,7 @@ import * as getMonth from "date-fns/get_month";
 import * as setMonth from "date-fns/set_month";
 import * as isToday from "date-fns/is_today";
 import * as parse from 'date-fns/parse';
-import * as isBefore from 'date-fns/is_before';
+import * as isBefore from 'date-fns/is_before'
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&�*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -221,6 +221,7 @@ export class ScheduleFrmComponent implements OnInit {
       this.isAppointmentToday();
     });
     this.dateCtrl.valueChanges.subscribe(value => {
+      this.isEarlierDate = false;
       this.dateChange(value);
     });
     this.checkIn = new FormControl({ value: false, disabled: this.canCheckIn });
@@ -228,6 +229,7 @@ export class ScheduleFrmComponent implements OnInit {
 
     this.patient = new FormControl("", [Validators.required]);
     this.patient.valueChanges.subscribe(value => {
+      this.isEarlierDate = false;
       this.apmisLookupQuery = {
         facilityId: this.selectedFacility._id,
         searchText: value,
@@ -247,11 +249,13 @@ export class ScheduleFrmComponent implements OnInit {
     this.clinic = new FormControl("", [Validators.required]);
     this.status = new FormControl("", [Validators.required]);
     this.clinic.valueChanges.subscribe(clinic => {
+      this.isEarlierDate = false;
       this.getOthers(clinic);
     });
 
     this.provider = new FormControl();
     this.provider.valueChanges.subscribe(value => {
+      this.isEarlierDate = false;
       this.apmisProviderLookupQuery = {
         facilityId: this.selectedFacility._id,
         searchText: value,
@@ -292,6 +296,7 @@ export class ScheduleFrmComponent implements OnInit {
       });
     }
     this.teleMed.valueChanges.subscribe(value => {
+      this.isEarlierDate = false;
       if (value) {
         this.showTimeZone = true;
       } else {
@@ -341,7 +346,13 @@ export class ScheduleFrmComponent implements OnInit {
     this.getPatients();
     this.getTimezones();
 
-    this.route.queryParams.subscribe(params => {
+    this.route.params.subscribe(params => {
+      const id = params['id'];
+      if(id !== undefined){
+          this.appointmentService.get(id, {}).subscribe(payload =>{
+            this.appointment = payload;
+          })
+      }
       if (params.checkedOut) {
         this.patient.disable();
         this.type.disable();
@@ -353,8 +364,8 @@ export class ScheduleFrmComponent implements OnInit {
 
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = `${value.personDetails.firstName} ${value.personDetails.lastName}`;
-    this.selectedPatient = value;
-    this.appointmentService.patientAnnounced(this.selectedPatient);
+     this.selectedPatient = value;
+     this.appointmentService.patientAnnounced(this.selectedPatient);
   }
 
   apmisProviderLookupHandleSelectedItem(value) {
@@ -1030,10 +1041,8 @@ export class ScheduleFrmComponent implements OnInit {
           }
         );
       } else {
-        console.log(this.appointment);
         this.appointmentService.create(this.appointment).then(
           payload => {
-            console.log(payload);
             this.createBill();
             if (this.teleMed.value === true) {
               const topic = "Appointment with " + patient.personDetails.apmisId;
@@ -1111,7 +1120,6 @@ export class ScheduleFrmComponent implements OnInit {
               "There was an error setting the appointment",
               "error"
             );
-            console.dir(error);
           }
         );
       }
@@ -1194,12 +1202,12 @@ export class ScheduleFrmComponent implements OnInit {
             this.checkIn.disable();
             this.checkIn.setValue(false);
           } else {
-            this.date = setHours(this.date, getHours(schedule.startTime));
-            this.date = setMinutes(this.date, getMinutes(schedule.startTime));
-            this.startDate = setHours(this.startDate, getHours(schedule.startTime));
+            this.date = setHours(this.date, getHours(this.appointment.startDate));
+            this.date = setMinutes(this.date, getMinutes(this.appointment.startDate));
+            this.startDate = setHours(this.startDate, getHours(this.appointment.startDate));
             this.startDate = setMinutes(
               this.startDate,
-              getMinutes(schedule.startTime)
+              getMinutes(this.appointment.startDate)
             );
             if (this.canCheckIn) {
               this.checkIn.enable();
@@ -1222,15 +1230,6 @@ export class ScheduleFrmComponent implements OnInit {
       }
     }
   }
-
-  convert(str) {
-    var date = new Date(str),
-        mnth = ("0" + (date.getMonth()+1)).slice(-2),
-        day  = ("0" + date.getDate()).slice(-2);
-        const hours  = ("0" + date.getHours()).slice(-2);
-        const minutes = ("0" + date.getMinutes()).slice(-2);
-    return [ date.getFullYear(), mnth, day, hours, minutes ].join("-");
-}
 
   dateChange(event) {
     this.authFacadeService.getServerTime().then((serverTime:any) =>{
