@@ -1,6 +1,6 @@
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { EMAIL_REGEX } from 'app/shared-module/helpers/global-config';
-import { NUMERIC_REGEX, ALPHABET_REGEX } from './../../../../shared-module/helpers/global-config';
+import { NUMERIC_REGEX, ALPHABET_REGEX, BloodGroups, Genotypes } from './../../../../shared-module/helpers/global-config';
 import { FacilityCompanyCoverService } from './../../../../services/facility-manager/setup/facility-company-cover.service';
 import { CountryServiceFacadeService } from './../../../service-facade/country-service-facade.service';
 import { TitleGenderFacadeService } from 'app/system-modules/service-facade/title-gender-facade.service';
@@ -62,7 +62,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   patients: Patient[] = [];
   genders: any[] = [];
   relationships: Relationship[] = [];
-  selectedPatient: Patient = <Patient>{};
+  selectedPatient: any = <any>{};
   searchControl = new FormControl();
   loading = true;
   countries: any = [];
@@ -70,6 +70,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   lgas: any = [];
   cities: any = [];
   titles: any = [];
+  bloodGroups: any[] = [];
+  genotypes: any[] = [];
 
   patientToEdit;
 
@@ -150,6 +152,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     private companyCoverService: FacilityCompanyCoverService
   ) {
 
+    this.bloodGroups = BloodGroups;
+    this.genotypes = Genotypes;
     this.facility = <Facility>this.locker.getObject('selectedFacility');
     this.systemService.on();
     this.patientService.listner.subscribe(payload => {
@@ -280,6 +284,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       country: ['', [<any>Validators.required]],
       state: ['', [<any>Validators.required]],
       city: ['', [<any>Validators.required]],
+      bloodGroup:['N/A', []],
+      genotype:['N/A', []],
       lga: ['', [<any>Validators.required]],
       street: ['', [<any>Validators.required]],
       nextOfKin: this.formBuilder.array([])
@@ -652,6 +658,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.selectedPatient['gender'] = value.gender;
     this.selectedPatient['genderId'] = value.gender._id;
     this.selectedPatient['dateOfBirth'] = value.dob;
+    this.selectedPatient['bloodGroup'] = value.bloodGroup;
+    this.selectedPatient['genotype'] = value.genotype;
     this.selectedPatient['nationalityObject'] = {
       country: value.country.name,
       lga: value.lga.name,
@@ -698,7 +706,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
 
   private _populateAndSelectData(value: any) {
-    console.log(value);
     if (value.homeAddress) {
       this.patientEditForm.controls['street'].setValue(value.homeAddress.street);
       this.patientEditForm.controls['country'].setValue(value.homeAddress.country);
@@ -710,6 +717,17 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     if (value.email !== undefined) {
       this.patientEditForm.controls['email'].disable();
       // this.patientEditForm.get('email').disable();
+    }
+
+    if (value.bloodGroup !== undefined) {
+      this.patientEditForm.controls['bloodGroup'].setValue(value.bloodGroup);
+    }else{
+      this.patientEditForm.controls['bloodGroup'].setValue('N/A');
+    }
+    if (value.genotype !== undefined) {
+      this.patientEditForm.controls['genotype'].setValue(value.genotype);
+    }else{
+      this.patientEditForm.controls['genotype'].setValue('N/A');
     }
 
     this.patientEditForm.controls['phoneNumber'].setValue(value.primaryContactPhoneNo);

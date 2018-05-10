@@ -17,6 +17,29 @@ export const DosageUnits = [
     { 'id': 5, 'name': 'L', 'selected': false },
     { 'id': 6, 'name': 'cm', 'selected': false }
 ];
+
+export const BloodGroups = [
+    { 'id': 1, 'name': 'N/A', 'selected': true, 'recipients': [] },
+    { 'id': 1, 'name': 'A+', 'selected': false, 'recipients': ['A+', 'AB+'] },
+    { 'id': 2, 'name': 'A-', 'selected': false, 'recipients': ['A+','A-', 'AB+', 'AB-'] },
+    { 'id': 3, 'name': 'B+', 'selected': false, 'recipients': ['B+', 'AB+'] },
+    { 'id': 4, 'name': 'B-', 'selected': false, 'recipients': ['B+','B-', 'AB+', 'AB-']  },
+    { 'id': 5, 'name': 'O+', 'selected': false, 'recipients': ['A+','O+', 'B+', 'AB+']  },
+    { 'id': 6, 'name': 'O-', 'selected': false, 'recipients': ['A+','A-', 'O+','O-','B+','B-', 'AB+', 'AB-']  },
+    { 'id': 7, 'name': 'AB+', 'selected': false, 'recipients': ['AB+'] },
+    { 'id': 8, 'name': 'AB-', 'selected': false, 'recipients': ['AB+', 'AB-'] }
+];
+
+export const Genotypes = [
+    { 'id': 1, 'name': 'N/A', 'selected': true },
+    { 'id': 1, 'name': 'AA', 'selected': false },
+    { 'id': 2, 'name': 'AS', 'selected': false },
+    { 'id': 3, 'name': 'AC', 'selected': false },
+    { 'id': 4, 'name': 'SS', 'selected': false  },
+    { 'id': 5, 'name': 'SC', 'selected': false  },
+    { 'id': 6, 'name': 'CC', 'selected': false  },
+];
+
 export const Clients = [
     { 'id': 1, 'name': 'Individual', 'selected': true },
     { 'id': 2, 'name': 'Corporate', 'selected': false },
