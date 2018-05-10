@@ -78,7 +78,6 @@ export class BillLookupComponent implements OnInit {
     private _todayInvoiceService: TodayInvoiceService) {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.patientService.receivePatient().subscribe((payload: Patient) => {
-      console.log("When am called");
       this.selectedPatient = payload;
       this.subTotal = 0;
       this.total = 0;
@@ -87,11 +86,9 @@ export class BillLookupComponent implements OnInit {
     });
 
     this.invoiceService.receiveDiscount().subscribe((payload: any) => {
-      console.log("Check my receive Discount");
       this.setConstrintOnRefreshBillItems = true;
       const valueCheck = payload.valueCheck;
       const modifier = payload.modifier;
-      console.log(payload);
       if (valueCheck === 'Percentage') {
         this.discount = ((modifier / 100) * this.total);
       } else {
@@ -132,7 +129,6 @@ export class BillLookupComponent implements OnInit {
     });
 
     this.billingService.updatelistner.subscribe(payload => {
-      console.log("Am here for biller");
       this.getPatientBills();
       this.selectedPatient = this.listedBillItems[0].patientItem;
     });
@@ -193,13 +189,11 @@ export class BillLookupComponent implements OnInit {
   private _getPatientWallet(id) {
     this.patientService.get(id, {}).then(res => {
       this.selectedPatient = res;
-      console.log("Check my wallet");
       this.getPatientBills();
-    }).catch(err => console.log(err));
+    }).catch(err => {});
   }
 
   onPersonValueUpdated(item) {
-    console.log(item);
     this.setConstrintOnRefreshBillItems = false;
     this.selectedPatient.personDetails = item.person;
     this._getAllPendingBills();
@@ -318,7 +312,6 @@ export class BillLookupComponent implements OnInit {
             recentBill.grandTotal += bill.amount;
             recentBill.billItems.push(newBillItem);
             this.billingService.update(recentBill).then((updatedBill: any) => {
-              console.log("Am here to set extra bill item");
               this.getPatientBills();
               this.isProcessing = false;
               this._notification('Success', 'Updated newly added item(s) to existing billitems');
@@ -337,7 +330,6 @@ export class BillLookupComponent implements OnInit {
           'grandTotal': bill.amount
         }
         this.billingService.create(newBills).then(newBills_payload => {
-          console.log("Am here create new bill");
           this.getPatientBills();
           this.isProcessing = false;
           this._notification('Success', 'Created new billitems successfully.');
@@ -358,8 +350,6 @@ export class BillLookupComponent implements OnInit {
       this.billingService
         .findBillService({ query: { facilityId: this.selectedFacility._id, patientId: this.selectedPatient._id, isinvoice: false } })
         .then(payload => {
-          console.log(payload);
-          console.log(this.checkBillitems);
           if (payload !== null) {
             this.billGroups = payload.billGroups;
             this.listedBillItems = payload.originalCallback;
@@ -402,7 +392,6 @@ export class BillLookupComponent implements OnInit {
     this.loadingPendingBills = true;
     this._pendingBillService.get(this.selectedFacility._id, {}).then((res: any) => {
       this.pendingBills = res.data;//.filter(x => x.patientId !== this.selectedPatient._id);
-      console.log(this.pendingBills);
       this.holdMostRecentBills = res.data;
       this.loadingPendingBills = false;
     }, err => {
@@ -433,20 +422,16 @@ export class BillLookupComponent implements OnInit {
   reCalculateBillTotal() {
     this.subTotal = 0;
     this.total = 0;
-    console.log(this.billGroups);
     this.billGroups.forEach((itemi, i) => {
       itemi.total = 0;
       itemi.bills.forEach((itemj, j) => {
         if (itemj.isChecked) {
           itemi.total = itemi.total + (itemj.qty * itemj.unitPrice);
           this.subTotal = this.subTotal + (itemj.qty * itemj.unitPrice);
-          console.log(this.subTotal);
         }
       });
     });
     this.total = (this.subTotal - this.discount);
-    console.log(this.total);
-    console.log(this.subTotal);
   }
 
   onRemoveBill(bill: BillModel, group: any) {
@@ -608,7 +593,6 @@ export class BillLookupComponent implements OnInit {
   }
 
   close_onClick(e) {
-    console.log("Closing here");
     if (!this.setConstrintOnRefreshBillItems) {
       this.subTotal = 0;
       this.total = 0;

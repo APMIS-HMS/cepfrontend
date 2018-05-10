@@ -150,7 +150,6 @@ export class PaymentChartComponent implements OnInit {
           }
         }).then((payload: any) => {
           this.systemModuleService.off();
-          console.log(payload);
           this.loopChartData(payload);
         }).catch(err => {
           this.systemModuleService.off();
@@ -166,7 +165,6 @@ export class PaymentChartComponent implements OnInit {
         days: 30
       }
     }).then((payload: any) => {
-      console.log(payload);
       this.systemModuleService.off();
       this.loopChartData(payload);
     }).catch(err => {
@@ -175,23 +173,16 @@ export class PaymentChartComponent implements OnInit {
   }
 
   private loopChartData(chartData) {
-    console.log(1);
     if (chartData.lineChartData.length > 0) {
       this.lineChartData.splice(0, 1);
     }
-    console.log(2);
     for (let index = 0; index < chartData.lineChartData.length; index++) {
       this.lineChartData.push({ data: [], label: '' });
     }
-    console.log(3);
     for (let i = 0; i < chartData.lineChartData.length; i++) {
-      console.log(chartData.lineChartData[i].label);
       this.lineChartData[i].label = chartData.lineChartData[i].label;
       for (let index = 0; index < chartData.lineChartData[i].data.length; index++) {
-        console.log(chartData.lineChartData[i].data[index]);
-        console.log(this.lineChartData[i]);
         this.lineChartData[i].data.push(chartData.lineChartData[i].data[index]);
-        console.log("Testing Mic");
       }
     }
     this.lineChartLabels = chartData.lineChartLabels;

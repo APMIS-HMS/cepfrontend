@@ -1,11 +1,8 @@
+<ul class="pg-menuWrap">
+    <li [class.pg-menuActive]="productNavMenu" routerLink="/dashboard/payment">Overview</li>
+    <li [class.pg-menuActive]="productNavMenu" routerLink="/dashboard/payment/history">History</li>
+</ul>
 <div>
-    <!-- <div>
-        <ul class="verticalTextMenu-ul">
-            <li [routerLink]="['/dashboard/payment/home']">Home</li>
-            <li [routerLink]="['/dashboard/payment/bill']">Patient Bill</li>
-            <li [routerLink]="['/dashboard/payment/invoice']">Invoice</li>
-        </ul>
-    </div> -->
     <div>
         <router-outlet></router-outlet>
     </div>
