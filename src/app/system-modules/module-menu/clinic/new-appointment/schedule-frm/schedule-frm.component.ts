@@ -63,6 +63,7 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&�*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
   styleUrls: ["./schedule-frm.component.scss"]
 })
 export class ScheduleFrmComponent implements OnInit {
+  showImmunization: boolean;
   appointmentIsToday = false;
   showTimeZone: boolean;
   @Input() selectedPatient: any;
@@ -104,7 +105,6 @@ export class ScheduleFrmComponent implements OnInit {
   clinicMajorLocation: any;
   organizationalServiceId: any = {};
   organizationalServicePrice = 0;
-  // filteredStates: any;
   patient: FormControl;
   clinic: FormControl;
   provider: FormControl;
@@ -115,6 +115,7 @@ export class ScheduleFrmComponent implements OnInit {
   checkIn: FormControl;
   teleMed: FormControl;
   timezone: FormControl;
+  immun: FormControl;
   date = new Date(); // FormControl = new FormControl();
   endDate = new Date();
   startDate = new Date();
@@ -225,6 +226,7 @@ export class ScheduleFrmComponent implements OnInit {
     });
     this.checkIn = new FormControl({ value: false, disabled: this.canCheckIn });
     this.teleMed = new FormControl();
+    this.immun = new FormControl();
 
     this.patient = new FormControl("", [Validators.required]);
     this.patient.valueChanges.subscribe(value => {
@@ -298,6 +300,15 @@ export class ScheduleFrmComponent implements OnInit {
         this.showTimeZone = false;
       }
     });
+    this.immun.valueChanges.subscribe(value => {
+      if(value){
+        this.showImmunization = true;
+        this.teleMed.setValue(false);
+      } else{
+        this.showImmunization = false;
+
+      }
+    })
   }
 
   ngOnInit() {
