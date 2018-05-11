@@ -17,13 +17,10 @@ class Service {
     }
 
     async get(pData, params) {
-        const facilityService = this.app.service('facilities');
         const inventoryService = this.app.service('inventories');
-        const storesService = this.app.service('stores');
         const productService = this.app.service('products');
         const accessToken = params.accessToken;
         const facilityId = pData.facilityId;
-        const cQuery = { query: params.query };
 
         if (accessToken !== undefined) {
             const hasFacility = params.user.facilitiesRole.filter(x => x.facilityId.toString() === facilityId);
@@ -34,13 +31,11 @@ class Service {
                     inventories: []
                 };
 
-                let inventories = await inventoryService.find({ query: params.query, $sort: { createdAt: -1 }, $limit: 5 });
                 let inventoryStat = await inventoryService.find({ query: params.query, $sort: { createdAt: -1 } });
-                let inventoryCount = await inventoryService.find({ query: params.query, $limit: 0 });
+                let inventories = inventoryStat.data.slice(0, 5);
                 let products = await productService.find({ query: { facilityId: facilityId } });
 
-                if (inventories.data.length > 0 && products.data.length > 0) {
-                    inventories = inventories.data;
+                if (inventories.length > 0 && products.data.length > 0) {
                     products = products.data;
                     // Loop through products and inventories
                     for (let i = 0; i < products.length; i++) {
@@ -56,11 +51,12 @@ class Service {
                     }
 
                     // Loop for inventory statistics
+
+                    result.inventoryCount = inventoryStat.total;
                     inventoryStat = inventoryStat.data;
                     let i = inventoryStat.length;
                     while (i--) {
                         let inventory = inventoryStat[i];
-                        // let j = inventory.transactions.length - 1;
                         for (let j = 0; j < inventory.transactions.length; j++) {
                             const transaction = inventory.transactions[j];
                             if (transaction.quantity < 1) {
@@ -69,7 +65,7 @@ class Service {
                         }
                     }
 
-                    result.inventoryCount = inventoryCount.total;
+
                     return jsend.success(result);
                 } else {
                     return jsend.success(result);
