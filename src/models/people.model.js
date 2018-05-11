@@ -1,5 +1,5 @@
 // people-model.js - A mongoose model
-// 
+//
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
 const walletSchema = require('../custom-models/wallet-model');
@@ -22,6 +22,8 @@ module.exports = function(app) {
         dateOfBirth: { type: Date, require: false },
         email: { type: String, required: false },
         otherNames: { type: String, required: false },
+        bloodGroup: { type: String, required: false },
+        genotype: { type: String, required: false },
         biometric: { type: Buffer, required: false },
         personProfessions: [personProfessionsSchema],
         nationality: { type: String, required: false },
