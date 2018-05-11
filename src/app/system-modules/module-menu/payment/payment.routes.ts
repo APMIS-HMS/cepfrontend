@@ -3,6 +3,7 @@ import { PaymentHomeComponent } from './payment-home/payment-home.component';
 import { PaymentComponent } from './payment.component';
 import { InvoiceComponent } from './invoice/invoice.component';
 import { BillLookupComponent } from './bill-lookup/bill-lookup.component';
+import { PaymentHistoryComponent } from './payment-history/payment-history.component';
 
 const PAYMENTMODULES_ROUTES: Routes = [
     {
@@ -13,6 +14,7 @@ const PAYMENTMODULES_ROUTES: Routes = [
             { path: 'invoice', component: InvoiceComponent },
             { path: 'bill', component: BillLookupComponent },
             { path: 'bill/:id', component: BillLookupComponent },
+            { path: 'history', component: PaymentHistoryComponent },
         ]
     }
 ];
