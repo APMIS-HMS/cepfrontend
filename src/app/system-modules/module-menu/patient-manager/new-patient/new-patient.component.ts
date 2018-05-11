@@ -171,6 +171,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     };
     sizeLimit = 2000000;
 
+    today: Date = new Date();
+
     // **
     OperationType: ImageUploaderEnum = ImageUploaderEnum.PersonProfileImage;
     constructor(private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
