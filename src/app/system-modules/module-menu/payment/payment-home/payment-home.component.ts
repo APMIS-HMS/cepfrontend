@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 export class PaymentHomeComponent implements OnInit {
 
   pageInView = 'Payment';
-
+  productNavMenu = false;
   constructor() { }
 
   ngOnInit() {
