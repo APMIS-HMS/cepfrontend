@@ -1,3 +1,4 @@
+@import "../../../../../../../globals/variables.scss";
 .addDrugBtn{
     display: flex;
     justify-content: space-around;
@@ -54,10 +55,10 @@
 .plus-link i{
     padding-right: 10px;
 }
-.modal-baseWrap{
-    width: 80%;
-    padding: 0;
-}
+// .modal-baseWrap{
+//     width: 80%;
+//     padding: 0;
+// }
 .typeCat li{
     display: block;
     width: 100%;
@@ -68,8 +69,18 @@
     font-size: 1.2rem;
     margin-top: 15px;
 }
-.modal_title, .pop-tab {
+.pop-tab {
     color: #777;
+}
+th{
+    height: 26px;
+    padding: none;
+}
+.docDiagBtn{
+    font-size: 16px !important;
+    padding: .5em 4em;
+    width: 0px !important;
+    height: 20px !important;
 }
 .pop-tab{
     padding: 5px;

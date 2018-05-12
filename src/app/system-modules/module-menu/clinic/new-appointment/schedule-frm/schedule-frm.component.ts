@@ -53,6 +53,8 @@ import * as getMonth from "date-fns/get_month";
 import * as setMonth from "date-fns/set_month";
 import * as isToday from "date-fns/is_today";
 import * as parse from 'date-fns/parse';
+import * as isBefore from 'date-fns/is_before';
+
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&�*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 @Component({
@@ -64,6 +66,7 @@ export class ScheduleFrmComponent implements OnInit {
   appointmentIsToday = false;
   showTimeZone: boolean;
   @Input() selectedPatient: any;
+  selectedProvider:any;
   mainErr = true;
   errMsg = "you have unresolved errors";
   selectedFacility: Facility = <Facility>{};
@@ -147,6 +150,8 @@ export class ScheduleFrmComponent implements OnInit {
   savingAppointment = false;
   updateAppointment = false;
   clinicErrorMsg = " Clinic does not hold on the selected date!!!";
+  clinicErrorEalierDateMsg = " Clinic can not be set for earlier date!!!";
+  isEarlierDate = false;
 
   user = {};
   placeholderString = "Select timezone";
@@ -182,6 +187,7 @@ export class ScheduleFrmComponent implements OnInit {
       );
       if (filterClinic.length > 0) {
         this.clinic.setValue(filterClinic[0]);
+        this.dateChange(this.appointment.startDate);
       }
 
       // this.provider.setValue(payload.providerDetails);
@@ -347,19 +353,13 @@ export class ScheduleFrmComponent implements OnInit {
 
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = `${value.personDetails.firstName} ${value.personDetails.lastName}`;
-     this.selectedPatient = value;
-    // this.frmNewRequest.controls['labNo'].setValue('');
-    // if (this.selectedPatient.clientsNo !== undefined) {
-    //   this.selectedPatient.clientsNo.forEach(item => {
-    //     if (item.minorLocationId === this.selectedLab.typeObject.minorLocationObject._id) {
-    //       this.frmNewRequest.controls['labNo'].setValue(item.clientNumber);
-    //     }
-    //   });
-    // }
+    this.selectedPatient = value;
+    this.appointmentService.patientAnnounced(this.selectedPatient);
   }
 
   apmisProviderLookupHandleSelectedItem(value) {
     this.apmisProviderLookupText = `${value.personDetails.firstName} ${value.personDetails.lastName}`;
+    this.selectedProvider = value;
   }
 
   getTimezones() {
@@ -491,6 +491,7 @@ export class ScheduleFrmComponent implements OnInit {
       );
       if (clinicIndex > -1) {
         this.clinic.setValue(this.clinics[clinicIndex]);
+        this.dateChange(this.appointment.startDate);
       }
     }
   }
@@ -919,7 +920,7 @@ export class ScheduleFrmComponent implements OnInit {
       this.appointment.appointmentTypeId = type;
       this.appointment.clinicId = clinic;
       if (this.provider.value !== null && this.provider.value !== undefined) {
-        const provider = this.provider.value._id;
+        const provider = this.selectedProvider._id;
         this.appointment.doctorId = provider;
       }
 
@@ -1232,11 +1233,15 @@ export class ScheduleFrmComponent implements OnInit {
 }
 
   dateChange(event) {
-    console.log(event);
     this.authFacadeService.getServerTime().then((serverTime:any) =>{
-      console.log(serverTime.datetime);
-      console.log(parse(event));
-      if(serverTime.datetime > new Date(event)){
+      var serverDate = new Date(serverTime.datetime);
+      var localDate = new Date(event);
+      const scheduleStartHour = getHours(this.selectedClinicSchedule.startTime);
+      const scheduleEndHour = getHours(this.selectedClinicSchedule.endTime);
+      const currentHour = getHours(localDate);
+     
+      if(((isBefore(serverDate, localDate)) && ((scheduleStartHour < currentHour) && (scheduleEndHour > currentHour))) || this.appointment._id !== undefined){
+        this.isEarlierDate = false;
         const dayNum = getDay(event);
         const day = this.days[dayNum];
         const scheduleFiltered = this.schedules.filter((x: any) => x.day === day);
@@ -1275,11 +1280,12 @@ export class ScheduleFrmComponent implements OnInit {
           });
         }
       }else{
-        console.log('please dont set');
+        this.dateCtrl.setErrors({ noValue: true });
+        this.isEarlierDate = true;
+        this.dateCtrl.markAsTouched();
       }
      
     }).catch(er =>{
-      console.log(er);
     })
     
   }

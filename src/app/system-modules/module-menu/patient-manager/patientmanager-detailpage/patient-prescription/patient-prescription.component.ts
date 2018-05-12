@@ -11,7 +11,7 @@ import {
 } from '../../../../../services/facility-manager/setup/index';
 import { Appointment, Facility, Employee, Prescription, PrescriptionItem, BillItem, BillIGroup, Dispensed, User }
     from '../../../../../models/index';
-import { DurationUnits } from '../../../../../shared-module/helpers/global-config';
+import { DurationUnits, DosageUnits } from '../../../../../shared-module/helpers/global-config';
 import { Subject } from 'rxjs/Subject';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
@@ -41,6 +41,7 @@ export class PatientPrescriptionComponent implements OnInit {
     facilityId: string;
     employeeId: string;
     priorities: string[] = [];
+    dosageUnits: any[] = [];
     prescriptions: Prescription = <Prescription>{};
     prescriptionArray: PrescriptionItem[] = [];
     drugs: string[] = [];
@@ -48,6 +49,7 @@ export class PatientPrescriptionComponent implements OnInit {
     frequencies: string[] = [];
     durationUnits: any[] = [];
     selectedValue: any;
+    selectedDosage: any;
     drugId = '';
     selectedDrugId = '';
     searchText = '';
@@ -100,7 +102,9 @@ export class PatientPrescriptionComponent implements OnInit {
 
         this.prescriptionItems.prescriptionItems = [];
         this.durationUnits = DurationUnits;
+        this.dosageUnits = DosageUnits;
         this.selectedValue = DurationUnits[1].name;
+        this.selectedDosage = DosageUnits[0].name;
         this._getAllPriorities();
         // this._getAllRoutes();
         this._getAllFrequencies();
@@ -110,8 +114,8 @@ export class PatientPrescriptionComponent implements OnInit {
         });
 
         this.addPrescriptionForm = this.fb.group({
-            // strength: ['', [<any>Validators.required]],
-            // route: ['', [<any>Validators.required]],
+            dosage: ['', [<any>Validators.required]],
+            dosageUnit: ['', [<any>Validators.required]],
             drug: ['', [<any>Validators.required]],
             frequency: ['', [<any>Validators.required]],
             duration: [0, [<any>Validators.required]],
@@ -173,6 +177,7 @@ export class PatientPrescriptionComponent implements OnInit {
                 genericName: value.drug,
                 routeName: value.route,
                 frequency: value.frequency,
+                dosage: value.dosage + ' ' + value.dosageUnit,
                 duration: value.duration + ' ' + value.durationUnit,
                 startDate: value.startDate,
                 strength: value.strength,
@@ -220,6 +225,7 @@ export class PatientPrescriptionComponent implements OnInit {
             this.addPrescriptionForm.controls['duration'].reset(0);
             this.addPrescriptionForm.controls['startDate'].reset(new Date());
             this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[1].name);
+            this.addPrescriptionForm.controls['dosageUnit'].reset(this.dosageUnits[0].name);
         }
     }
 
@@ -248,6 +254,7 @@ export class PatientPrescriptionComponent implements OnInit {
                 this.addPrescriptionForm.controls['duration'].reset(0);
                 this.addPrescriptionForm.controls['startDate'].reset(new Date());
                 this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
+                this.addPrescriptionForm.controls['dosageUnit'].reset(this.dosageUnits[0].name);
                 this.disableAuthorizeRx = false;
                 this.authorizeRx = true;
                 this.authorizingRx = false;
@@ -344,7 +351,7 @@ export class PatientPrescriptionComponent implements OnInit {
         this._priorityService.findAll().then(res => {
             this.priorities = res.data;
             const priority = res.data.filter(x => x.name.toLowerCase().includes('normal'));
-               if (priority.length > 0) {
+            if (priority.length > 0) {
               this.allPrescriptionsForm.controls['priority'].setValue(priority[0]);
             }
         }).catch(err =>  console.error(err));
@@ -358,7 +365,9 @@ export class PatientPrescriptionComponent implements OnInit {
 
     private _getAllFrequencies() {
         this._frequencyService.findAll().then(res => {
-            this.frequencies = res.data;
+            if (res.data.length > 0) {
+                this.frequencies = res.data;
+            }
         }).catch(err => console.error(err));
     }
 

@@ -17,14 +17,7 @@ const appRoutes: Routes = [
                     CanActivateViaAuthGuardAccessService
                 ]
             },
-            // {
-            //     path: 'access-manager',
-            //     loadChildren: '../module-menu/access-manager/access-manager.module#AccessManagerModule'
-            // },
-            // {
-            //     path: 'patient-portal',
-            //     loadChildren: '../module-menu/patient-portal/patient-portal.module#PatientPortalModule',
-            // },
+        
             {
                 path: 'patient-manager',
                 loadChildren: '../module-menu/patient-manager/patient-manager.module#PatientManagerModule',
@@ -141,6 +134,10 @@ const appRoutes: Routes = [
             {
                 path: 'report',
                 loadChildren: '../module-menu/report/report.module#ReportModule'
+            },
+            {
+                path: 'immunization',
+                loadChildren: '../module-menu/immunization/immunization.module#ImmunizationModule'
             },
             {
                 path: 'corporate',

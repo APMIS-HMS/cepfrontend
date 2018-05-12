@@ -54,6 +54,8 @@ export class FluidComponent implements OnInit, AfterViewInit {
   patientFluidSummary;
   lineChartSummary: Array<any> = [];
 
+  lineChartColors:any;
+
   // lineChart
   public lineChartData: any[] = [{ data: [], label: '' }];
   public lineChartLabels: Array<any> = [];
@@ -350,7 +352,6 @@ export class FluidComponent implements OnInit, AfterViewInit {
     this.lineChartData = JSON.parse(JSON.stringify(this.lineChartData));
     console.log(this.lineChartData);
     this.lineChartLabels = label;
-    console.log(this.lineChartLabels);
   }
 
   refreshGraph(lineChartData: any[]) {

@@ -1,30 +1,50 @@
-import { AuthFacadeService } from './../../../service-facade/auth-facade.service';
-import { Component, OnInit, OnDestroy, EventEmitter, Output, Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
 import {
-  CountriesService, EmployeeService, FormsService,
-  FacilitiesService, UserService, PersonService,
-  PatientService, AppointmentService, DocumentationService
-}
-  from '../../../../services/facility-manager/setup/index';
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output
+} from "@angular/core";
+import { FormControl } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+import { CoolLocalStorage } from "angular2-cool-storage";
+
 import {
-  Facility, User, Patient, Employee, MinorLocation, Appointment, Country, ClinicInteraction,
-  Documentation
-} from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Router, ActivatedRoute } from '@angular/router';
+  Appointment,
+  ClinicInteraction,
+  Country,
+  Documentation,
+  Employee,
+  Facility,
+  MinorLocation,
+  Patient,
+  User
+} from "../../../../models/index";
+import {
+  AppointmentService,
+  CountriesService,
+  DocumentationService,
+  EmployeeService,
+  FacilitiesService,
+  FormsService,
+  PatientService,
+  PersonService,
+  UserService
+} from "../../../../services/facility-manager/setup/index";
+
+import { AuthFacadeService } from "./../../../service-facade/auth-facade.service";
+
 @Component({
-  selector: 'app-patientmanager-detailpage',
-  templateUrl: './patientmanager-detailpage.component.html',
-  styleUrls: ['./patientmanager-detailpage.component.scss']
+  selector: "app-patientmanager-detailpage",
+  templateUrl: "./patientmanager-detailpage.component.html",
+  styleUrls: ["./patientmanager-detailpage.component.scss"]
 })
 export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
-
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() employeeDetails: any;
   patientDetails: any;
   @Input() patient: any;
-
 
   user: User = <User>{};
   subsect_biodata = true;
@@ -72,11 +92,11 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   searchControl = new FormControl();
   patients: Patient[] = [];
   documentations: Documentation[] = [];
-  homeAddress = '';
+  homeAddress = "";
   selectedUser: User = <User>{};
   loginEmployee: Employee = <Employee>{};
   clinicInteraction: ClinicInteraction = <ClinicInteraction>{};
-  previousUrl = '/';
+  previousUrl = "/";
   minorLocationList: MinorLocation[] = [];
   selectedAppointment: Appointment = <Appointment>{};
   json: any = {};
@@ -91,7 +111,8 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
   menuResp = false;
 
-  constructor(private countryService: CountriesService,
+  constructor(
+    private countryService: CountriesService,
     private patientService: PatientService,
     private userService: UserService,
     private facilityService: FacilitiesService,
@@ -99,11 +120,12 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     private personService: PersonService,
     private employeeService: EmployeeService,
     private formsService: FormsService,
-    private router: Router, private route: ActivatedRoute,
+    private router: Router,
+    private route: ActivatedRoute,
     private locker: CoolLocalStorage,
     private authFacadeService: AuthFacadeService,
-    private _documentationService: DocumentationService) {
-
+    private _documentationService: DocumentationService
+  ) {
     // this.router.events
     //   .filter(e => e.constructor.name === 'RoutesRecognized')
     //   .pairwise()
@@ -122,79 +144,107 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
     });
-    this.appointmentService.appointmentAnnounced$.subscribe((appointment: any) => {
-      this.selectedAppointment = appointment;
-      this.patient = appointment.patientDetails;
-      this.patientDetails = appointment.patientDetails;
-      this.employeeDetails = this.loginEmployee;
-      this._documentationService.find({ query: { patientId: this.patient._id } }).then(payloadPatient => {
-        this.documentations = payloadPatient.data;
-      }, error => {
-      });
-      this.getCurrentUser();
-    });
+    this.appointmentService.appointmentAnnounced$.subscribe(
+      (appointment: any) => {
+        this.selectedAppointment = appointment;
+        this.patient = appointment.patientDetails;
+        this.patientDetails = appointment.patientDetails;
+        this.employeeDetails = this.loginEmployee;
+        this._documentationService
+          .find({ query: { patientId: this.patient._id } })
+          .then(
+            payloadPatient => {
+              this.documentations = payloadPatient.data;
+            },
+            error => {}
+          );
+        this.getCurrentUser();
+      }
+    );
     this.patientService.patientAnnounced$.subscribe(patient => {
       this.patient = patient;
-      this.locker.setObject('patient', patient);
-    })
+      this.locker.setObject("patient", patient);
+    });
   }
   setAppointment() {
-    if (this.patient !== undefined && this.loginEmployee !== undefined && this.loginEmployee !== null) {
-      this.router.navigate(['/dashboard/clinic/schedule-appointment', this.patient._id, this.loginEmployee._id]);
+    if (
+      this.patient !== undefined &&
+      this.loginEmployee !== undefined &&
+      this.loginEmployee !== null
+    ) {
+      this.router.navigate([
+        "/dashboard/clinic/schedule-appointment",
+        this.patient._id,
+        this.loginEmployee._id
+      ]);
     } else {
-
     }
-
   }
   ngOnInit() {
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.user = <User>this.locker.getObject('auth');
+    this.selectedFacility = <Facility>this.locker.getObject("selectedFacility");
+    this.user = <User>this.locker.getObject("auth");
 
-    if (<any>this.locker.getObject('patient') !== null) {
-      this.patient = <any>this.locker.getObject('patient');
+    if (<any>this.locker.getObject("patient") !== null) {
+      this.patient = <any>this.locker.getObject("patient");
     } else {
-      this.router.navigate(['/dashboard/patient-manager']);
+      this.router.navigate(["/dashboard/patient-manager"]);
     }
     this.getForms();
 
     this.route.params.subscribe(payloadk => {
       this.authFacadeService.getLogingEmployee().then((payload: any) => {
         this.loginEmployee = payload;
-        if (payloadk['checkInId'] !== undefined) {
-          let isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x._id);
+        if (payloadk["checkInId"] !== undefined) {
+          let isOnList = this.loginEmployee.consultingRoomCheckIn.filter(
+            x => x._id
+          );
           if (isOnList.length > 0) {
             const isOnObj = isOnList[0];
             isOnObj.isOn = true;
-            const coo = <Appointment>this.locker.getObject('appointment');
+            const coo = <Appointment>this.locker.getObject("appointment");
             this.checkedIn = !coo.isCheckedOut || false;
-            this.employeeService.update(this.loginEmployee).subscribe(payloadu => {
-              this.loginEmployee = payloadu;
-              if (this.selectedAppointment !== undefined) {
-                isOnList = this.loginEmployee.consultingRoomCheckIn.filter(x => x.isOn === true);
-                if (isOnList.length > 0) {
-                  const isOn = isOnList[0];
-                  const checkingObject = this.locker.getObject('checkingObject');
+            this.employeeService
+              .update(this.loginEmployee)
+              .subscribe(payloadu => {
+                this.loginEmployee = payloadu;
+                if (this.selectedAppointment !== undefined) {
+                  isOnList = this.loginEmployee.consultingRoomCheckIn.filter(
+                    x => x.isOn === true
+                  );
+                  if (isOnList.length > 0) {
+                    const isOn = isOnList[0];
+                    const checkingObject = this.locker.getObject(
+                      "checkingObject"
+                    );
+                  }
                 }
-              }
-            });
+              });
 
             this.clinicInteraction.locationName = coo.clinicId;
-            this.clinicInteraction.employee = this.loginEmployee.personDetails.title + ' '+this.loginEmployee.personDetails.lastName+' '+this.loginEmployee.personDetails.firstName;
+            this.clinicInteraction.employee =
+              this.loginEmployee.personDetails.title +
+              " " +
+              this.loginEmployee.personDetails.lastName +
+              " " +
+              this.loginEmployee.personDetails.firstName;
             this.clinicInteraction.startAt = new Date();
             coo.isEngaged = true;
-            this.appointmentService.update(coo).then(payload =>{
-              this.selectedAppointment = payload;
-            },error =>{
-            })
+            this.appointmentService.update(coo).then(
+              payload => {
+                this.selectedAppointment = payload;
+              },
+              error => {}
+            );
           }
-
         }
-      })
+      });
     });
   }
 
   backToWard() {
-    this.router.navigate([`/dashboard/ward-manager/admitted/${this.patient.inPatientId}`]);
+    this.router.navigate([
+      `/dashboard/ward-manager/admitted/${this.patient.inPatientId}`
+    ]);
   }
 
   getForms() {
@@ -203,16 +253,21 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     });
   }
   getCurrentUser() {
-    this.userService.find({ query: { personId: this.loginEmployee.personId } }).then(payload => {
-      if (payload.data.length > 0) {
-        this.selectedUser = payload.data[0];
-      } else {
-        this.selectedUser = <User>{};
-      }
-    });
+    this.userService
+      .find({ query: { personId: this.loginEmployee.personId } })
+      .then(payload => {
+        if (payload.data.length > 0) {
+          this.selectedUser = payload.data[0];
+        } else {
+          this.selectedUser = <User>{};
+        }
+      });
   }
   navEpDetail(val: Patient) {
-    this.router.navigate(['/dashboard/patient-manager/patient-manager-detail', val.personId]);
+    this.router.navigate([
+      "/dashboard/patient-manager/patient-manager-detail",
+      val.personId
+    ]);
   }
   getSelectedState() {
     this.selectedNationality.states.forEach((item, i) => {
@@ -229,8 +284,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       }
     });
   }
-  getPatientDetail(val: any) {
-  }
+  getPatientDetail(val: any) {}
   contentSecMenuToggle() {
     this.contentSecMenuShow = !this.contentSecMenuShow;
   }
@@ -246,10 +300,11 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   }
   innerMenuHide(e) {
     if (
-      e.srcElement.className === 'inner-menu1-wrap' ||
-      e.srcElement.localName === 'i' ||
-      e.srcElement.id === 'innerMenu-ul'
-    ) { } else {
+      e.srcElement.className === "inner-menu1-wrap" ||
+      e.srcElement.localName === "i" ||
+      e.srcElement.id === "innerMenu-ul"
+    ) {
+    } else {
       this.contentSecMenuShow = false;
     }
   }
@@ -260,17 +315,21 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.contentSecMenuShow = false;
   }
   generateUserShow() {
-    this.router.navigate(['/dashboard/patient-manager/generate-user', this.patient._id]);
+    this.router.navigate([
+      "/dashboard/patient-manager/generate-user",
+      this.patient._id
+    ]);
     this.contentSecMenuShow = false;
   }
   toggleActivate() {
     this.patient.isActive = !this.patient.isActive;
 
-    this.patientService.update(this.patient).then(payload => {
-      this.patient = payload;
-    },
-      error => {
-      });
+    this.patientService.update(this.patient).then(
+      payload => {
+        this.patient = payload;
+      },
+      error => {}
+    );
     this.contentSecMenuShow = false;
   }
   empDetailShow(apmisId) {
@@ -278,7 +337,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.contentSecMenuShow = false;
   }
   closeActivate(e) {
-    if (e.srcElement.id !== 'contentSecMenuToggle') {
+    if (e.srcElement.id !== "contentSecMenuToggle") {
       this.contentSecMenuShow = false;
     }
   }
@@ -418,7 +477,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuFinance = false;
     this.menuMedicationHistory = false;
     this.menuPayment = false;
-    this. menuTags = false;
+    this.menuTags = false;
     this.menuResp = false;
   }
   menuLab_click() {
@@ -716,14 +775,17 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.addVitalsPop = true;
   }
   checkoutPatient_show() {
-    // Check is this patient has an appointment. If not, redirect the user to the appointment page
-    // if (!!this.selectedAppointment && this.selectedAppointment._id !== undefined) {
+    // Check is this patient has an appointment. If not, redirect the user to
+    // the appointment page if (!!this.selectedAppointment &&
+    // this.selectedAppointment._id !== undefined) {
     this.patientDetails = this.patient;
     this.checkoutPatient = true;
     // } else {
-    //   let text = 'Please set appointment for ' + this.patient.personDetails.personFullName + '';
+    //   let text = 'Please set appointment for ' +
+    //   this.patient.personDetails.personFullName + '';
 
-    // 	this._notification('Info', text.concat(' before you can continue this process.'));
+    // 	this._notification('Info', text.concat(' before you can continue this
+    // process.'));
     // }
   }
 
@@ -741,24 +803,26 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.locker.removeItem('patient');
+    this.locker.removeItem("patient");
 
-    if (this.clinicInteraction.locationName !== undefined && this.clinicInteraction.locationName.length > 1) {
+    if (
+      this.clinicInteraction.locationName !== undefined &&
+      this.clinicInteraction.locationName.length > 1
+    ) {
       if (this.selectedAppointment.clinicInteractions === undefined) {
         this.selectedAppointment.clinicInteractions = [];
       }
       this.clinicInteraction.endAt = new Date();
-      this.clinicInteraction.title = 'Doctor\'s Encounter';
+      this.clinicInteraction.title = "Doctor's Encounter";
       this.selectedAppointment.clinicInteractions.push(this.clinicInteraction);
       this.selectedAppointment.isEngaged = false;
-      this.appointmentService.update(this.selectedAppointment).then(payload => {
-
-      });
+      this.appointmentService
+        .update(this.selectedAppointment)
+        .then(payload => {});
     }
   }
 
   patientMenu() {
     this.menuResp = !this.menuResp;
   }
-
 }
