@@ -183,6 +183,8 @@ const paymentChartData = require('./payment-chart-data/payment-chart-data.servic
 const employeeSearch = require('./employee-search/employee-search.service.js');
 const getServerTime = require('./get-server-time/get-server-time.service.js');
 const vitalBpLocations = require('./vital-bp-locations/vital-bp-locations.service.js');
+const immunizationSchedule = require('./immunization-schedule/immunization-schedule.service.js');
+const immunization = require('./immunization/immunization.service.js');
 module.exports = function(app) {
     app.configure(users);
     app.configure(facilityOwnerships);
@@ -369,4 +371,6 @@ module.exports = function(app) {
     app.configure(employeeSearch);
     app.configure(getServerTime);
     app.configure(vitalBpLocations);
+    app.configure(immunizationSchedule);
+    app.configure(immunization);
 };
