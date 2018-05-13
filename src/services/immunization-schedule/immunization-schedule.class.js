@@ -31,8 +31,7 @@ class Service {
 
         //Get all organisation services
         let org = await organisationServices.find({ query: { facilityId: data.facilityId } });
-        console.log('org => ', org);
-
+     
         let respons = {
             message: 'successful',
             services: String,
@@ -104,17 +103,14 @@ class Service {
                 }
             }
 
-            console.log('Org =>', org);
-
+            
             let vacNew = [];
             try {
                 let createNewOrgService = await organisationServices.patch(org._id, org, {});
-                console.log('CreateNewOrgService', createNewOrgService);
 
                 if (createNewOrgService._id !== undefined) {
                     //Create services in facilityPrice table
                     let createdServices = createNewOrgService.categories.filter(x => x.name === 'immunization');
-                    console.log('createdService =>', createdServices);
 
                     let catServices = createdServices[0].services;
                     let vacServices = [];
@@ -137,14 +133,12 @@ class Service {
                                     serviceId: element._id,
                                     nameCode: vac.name
                                 });
-                                console.log('vacccc==============>', vacc);
                                 vacServices.push(vacc);
 
                             }
                         });
                     });
                     try {
-                        console.log('vacServices===>', vacServices);
                         // Create and attach prices to the newly created services
                         createNewFacPrice = await facilityPriceService.create(vacServices);
 
@@ -174,12 +168,17 @@ class Service {
                         respons.services = createNewOrgService;
                         respons.immunizationSchedule = createNewImmunSch;
                     } catch (error) {
-                        console.log('Error found in createNewImmunSch ==>', error);
+                        respons.message = 'Failed to create Facility price';
+
+                        return jsend.error(respons);
+                        
                     }
 
                 }
             } catch (e) {
-                console.log(e);
+                respons.message = 'Failed to add/patch new services to existing ones';
+
+                return jsend.error(respons);
             }
 
             return jsend.success(respons);
