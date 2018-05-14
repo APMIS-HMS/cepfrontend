@@ -88,7 +88,7 @@ export class ImmunizationScheduleComponent implements OnInit {
       name: ['', Validators.required],
       nameCode: ['', Validators.required],
       vaccinationSite: ['', Validators.required],
-      intervals: this._fb.array([this.initIntervalBuilder()])
+      intervals: this._fb.array([this.initIntervalBuilder()]),
       // numberOfDose: ['', Validators.required],
       // price: ['', Validators.required],
     });
