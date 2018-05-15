@@ -157,7 +157,7 @@
                             <span *ngIf="loading">Loading...</span>
                         </button>
                         <button class="small-btn" (click)="nextFamilyCover(familyPlanId.value, faPlan.value)" *ngIf="tabFamily" mat-raised-button
-                            [disabled]="( !familyPlanId.valid || !familyPlanPrice.valid || !faFileNo.valid ||  !faPlan.valid || !faPlanPrice.valid ) || loading">
+                            [disabled]="( !familyPlanId.valid || !faFileNo.valid ||  !faPlan.valid || !faPlanPrice.valid ) || loading">
                             <span *ngIf="!loading">Next</span>
                             <span *ngIf="loading">Loading...</span>
                         </button>
