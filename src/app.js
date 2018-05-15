@@ -30,12 +30,12 @@ app.use(express.urlencoded({ extended: true }));
 app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
 // Host the public folder
 app.use('/', express.static(app.get('public')));
-
+app.configure(mongoose);
 // Set up Plugins and providers
 app.configure(express.rest());
 app.configure(socketio());
 
-app.configure(mongoose);
+
 
 // Configure other middleware (see `middleware/index.js`)
 app.configure(middleware);
