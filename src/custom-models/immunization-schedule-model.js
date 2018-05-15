@@ -10,5 +10,5 @@ const immunizationScheduleSchema = new Schema({
     Date: {type: Date, 'default': Date.now},
     serviceId: {type: Schema.Types.ObjectId, required: true}
 });
-
+ 
 module.exports = immunizationScheduleSchema;
