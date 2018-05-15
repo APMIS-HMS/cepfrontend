@@ -7,6 +7,7 @@ import { SharedModule } from '../../../shared-module/shared.module';
 import { OnlyMaterialModule } from '../../../shared-common-modules/only-material-module';
 import { ImmunizationScheduleComponent } from './immunization-schedule/immunization-schedule.component';
 import { ImmunizationScheduleService } from '../../../services/facility-manager/setup/immunization-schedule.service';
+import { NewImmunizationScheduleComponent } from './new-immunization-schedule/new-immunization-schedule.component';
 
 @NgModule({
   imports: [
@@ -14,7 +15,7 @@ import { ImmunizationScheduleService } from '../../../services/facility-manager/
         OnlyMaterialModule,
         CommonModule,immunizationRoutes
   ],
-  declarations: [ImmunizationComponent, ImmunizationScheduleComponent],
+  declarations: [ImmunizationComponent, ImmunizationScheduleComponent, NewImmunizationScheduleComponent],
   providers: [ImmunizationScheduleService]
 })
 export class ImmunizationModule { }
