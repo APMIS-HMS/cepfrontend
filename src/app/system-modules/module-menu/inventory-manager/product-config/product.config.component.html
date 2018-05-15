@@ -3,8 +3,7 @@
     <div class="row">
         <div class="col-sm-4">
             <h2> Select a Product </h2>
-            <apmis-lookup [formControl]="searchProdductControl" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisInvestigationLookupQuery"
-                placeholder="Search Product" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+            <apmis-lookup [formControl]="searchProdductControl" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisInvestigationLookupQuery" placeholder="Search Product" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
             <br>
             <br>
 
@@ -32,8 +31,7 @@
                     <div class="row card pack-item animated bounceInRight" *ngFor="let item of packageForm['controls'].package['controls']; let i=index;" formGroupName="{{i}}">
                         <div class="col-xs-4">
                             <h2 style="line-height: 60px">
-                                <span *ngIf="i>0">1&nbsp;</span>
-                                {{item._value.name}}
+                                <span *ngIf="i>0">1&nbsp;</span> {{item._value.name}}
                             </h2>
                         </div>
                         <mat-input-container class="col-xs-3" *ngIf="i>0">
@@ -62,7 +60,7 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <button class="button" [formControl]="btnSave" (click)="save()" [disabled]="btnShowStatus"> SAVE </button>
+                            <button class="button" (click)="save()" [disabled]="btnShowStatus"> SAVE </button>
                         </div>
                     </div>
                 </div>
@@ -70,3 +68,4 @@
         </div>
     </div>
 </div>
+<!-- [formControl]="btnSave" -->
