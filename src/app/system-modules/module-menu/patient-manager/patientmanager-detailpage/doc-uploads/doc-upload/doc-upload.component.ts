@@ -28,6 +28,8 @@ export class DocUploadComponent implements OnInit {
   fileType: any;
   fileName: any;
 
+  fileCount: any;
+
 
 
   constructor(private formBuilder: FormBuilder, private docUploadService: DocumentUploadService,
@@ -41,12 +43,13 @@ export class DocUploadComponent implements OnInit {
     private systemModuleService:SystemModuleService,
     private locker: CoolLocalStorage
   ) {
+    this.docUploadCount();
    }
 
   ngOnInit() {
     this.user = <any>this.locker.getObject('auth');
     this.frmNewUpload = this.formBuilder.group({
-      fileUpload: ['', [<any>Validators.required]],
+      fileUpload: [''],
       fileName: ['', [<any>Validators.required]],
       fileType: ['', [<any>Validators.required]],
       desc: ['']
@@ -122,6 +125,7 @@ export class DocUploadComponent implements OnInit {
       this.systemModuleService.announceSweetProxy('Document Successfully Uploaded!', 'success', null, null, null, null, null, null, null);
       // this._notification('Success', 'Document Successfully Uploaded!');
       this.loading = false;
+      this.docUploadCount();
       this.close_onClick(true);
       this.systemModuleService.off();
     }).catch(err => {
@@ -139,6 +143,20 @@ export class DocUploadComponent implements OnInit {
     }).catch(err => {
     });
   }
+
+  docUploadCount(){
+    this.docUploadService.docUploadFind({
+      query: {
+        patientId: this.selectedPatient,
+        facilityId: this.facilityService.getSelectedFacilityId()._id
+      }
+    }).then(payload => {
+      console.log(payload);
+      this.fileCount = payload.data.length;
+    });
+  }
+
+
   private _notification(type: String, text: String): void {
 		this.facilityService.announceNotification({
 			users: [this.user._id],
