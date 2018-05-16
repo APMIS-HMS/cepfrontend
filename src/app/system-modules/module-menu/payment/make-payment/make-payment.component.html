@@ -95,7 +95,7 @@
                                     <td>{{schedule?.value?.date|date:'medium'}}</td>
                                     <td>{{schedule?.value?.qty}}</td>
                                     <td>{{schedule?.value?.facilityServiceObject?.service}}</td>
-                                    <td>{{schedule.value.balance}}</td>
+                                    <td>{{schedule.value.balance| number : '1.2-2'}}</td>
                                     <td class="data"><input type="number" min="0" formControlName="amountPaid" (change)="onChangeAmount(schedule)"/> </td>
                                     <td class="data">
                                         <input type="checkbox" formControlName="isWaiver" (change)="onChangeWaiver(schedule)"/>

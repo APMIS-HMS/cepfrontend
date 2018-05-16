@@ -1,3 +1,4 @@
+import { Subscription } from 'rxjs/Subscription';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
 import { InventoryService, ProductService, EmployeeService, FacilitiesService, StoreService, PurchaseOrderService, InventoryTransferService } from '../../../../services/facility-manager/setup/index';
@@ -26,6 +27,9 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
   loginEmployee: Employee = <Employee>{};
   workSpace: any;
   Ql_toggle = false;
+  isRunningQuery = false;
+
+  subscription: Subscription;
 
   constructor(
     // private _inventoryService: InventoryService,
@@ -38,6 +42,21 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
     private _employeeService: EmployeeService,
     private authFacadeService: AuthFacadeService
   ) {
+    this.subscription = this._employeeService.checkInAnnounced$.subscribe(res => {
+      if (!!res) {
+        if (!!res.typeObject) {
+          this.checkingStore = res.typeObject;
+          if (!!this.checkingStore.storeId) {
+            if(!this.isRunningQuery){
+              this.isRunningQuery = true;
+              this.getInventories();
+              this.getPurchaseOrders();
+              this.getTransfers();
+            }
+          }
+        }
+      }
+    });
     this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
     const auth: any = this._locker.getObject('auth');
     // this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
@@ -58,7 +77,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
             itemr.lastLogin = new Date();
             isOn = true;
             let checkingObject = { typeObject: itemr, type: 'store' };
-            this._employeeService.announceCheckIn(checkingObject);
+            // this._employeeService.announceCheckIn(checkingObject);
 
             // tslint:disable-next-line:no-shadowed-variable
             this._employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
@@ -87,18 +106,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
       }
     });
 
-    this._employeeService.checkInAnnounced$.subscribe(res => {
-      if (!!res) {
-        if (!!res.typeObject) {
-          this.checkingStore = res.typeObject;
-          if (!!this.checkingStore.storeId) {
-            this.getInventories();
-            this.getPurchaseOrders();
-            this.getTransfers();
-          }
-        }
-      }
-    });
+ 
   }
 
   ngOnInit() {
@@ -110,12 +118,12 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
         query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId,
           totalQuantity: { $gt: 1 }}
       }).then(res => {
-        console.log(res);
         this.inventoryLoading = false;
         if (res.status === 'success') {
           this.inventoryCount = res.data.inventoryCount;
           this.inventories = res.data.inventories;
         }
+        this.isRunningQuery = false;
       });
     }
   }
@@ -125,12 +133,12 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
       this._purchaseOrderService.findOrder({
         query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId, isActive: true }
       }).then(res => {
-        console.log(res);
         this.purchaseOrderLoading = false;
         if (!!res.data && res.data.length > 0) {
           this.purchaseOrderCount = res.total;
           this.purchaseOrders = res.data;
         }
+      }).catch(err =>{
       });
     }
   }
@@ -140,7 +148,6 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
       this._inventoryTransferService.findTransferHistories({
         query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId, isActive: true }
       }).then(res => {
-        console.log(res);
         this.transferLoading = false;
         if (!!res.data && res.data.length > 0) {
           this.transferCount = res.total;
@@ -175,6 +182,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
     }
     this._employeeService.announceCheckIn(undefined);
     this._locker.setObject('checkingObject', {});
+    this.subscription.unsubscribe();
   }
 
 }

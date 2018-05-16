@@ -8,6 +8,7 @@ export interface PrescriptionItem {
     form?: string;
     frequency: string;
     duration: string;
+    dosage?: string;
     cost?: number;
     totalCost?: number;
     routeName: String;

@@ -19,6 +19,7 @@ import { TemplateComponent } from './template/template.component';
 import { SelectTemplateComponent } from './template/select-template/select-template.component';
 import { ScopeLevelService } from '../../../services/module-manager/setup/index';
 import { OnlyMaterialModule } from '../../../shared-common-modules/only-material-module';
+import { FacilityCompanyCoverService } from '../../../services/facility-manager/setup/facility-company-cover.service';
 
 @NgModule({
   imports: [
@@ -31,6 +32,8 @@ import { OnlyMaterialModule } from '../../../shared-common-modules/only-material
   declarations: [LabComponent, WorkbenchComponent, InvestigationServiceComponent,
     InvestigationPriceComponent, PanelComponent, ReportComponent, ReportDetailComponent,
     ExternalInvestigationsComponent, TemplateComponent, SelectTemplateComponent],
-  providers: [WorkbenchService, LaboratoryRequestService, ScopeLevelService, HmoService, FacilityFamilyCoverService]
+  providers: [
+    WorkbenchService, LaboratoryRequestService, ScopeLevelService, HmoService, FacilityFamilyCoverService, FacilityCompanyCoverService
+  ]
 })
 export class LabModule { }

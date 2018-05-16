@@ -47,7 +47,7 @@ export class BulkUploadComponent implements OnInit {
   genders: any[] = [];
   titles: any[] = [];
 
-  btnLoading:boolean = false;
+  btnLoading: boolean = false;
 
   facility: Facility = <Facility>{};
 
@@ -57,10 +57,10 @@ export class BulkUploadComponent implements OnInit {
   patientSearch = new FormControl('');
   constructor(private formBuilder: FormBuilder,
     private titleService: TitleService,
-    private genderService: GenderService, 
+    private genderService: GenderService,
     private patientService: PatientService,
     private _locker: CoolLocalStorage,
-  private systemModuleService: SystemModuleService) { }
+    private systemModuleService: SystemModuleService) { }
 
   ngOnInit() {
     this.facility = <Facility>this._locker.getObject('selectedFacility');
@@ -80,6 +80,7 @@ export class BulkUploadComponent implements OnInit {
       gender: '',
       phone: '',
       email: '',
+      hospId: '',
       dateOfBirth: '',
       payPlan: ''
     });
@@ -136,12 +137,13 @@ export class BulkUploadComponent implements OnInit {
         rowObj.gender = data[i][3];
         rowObj.dateOfBirth = new Date(data[i][4]);
         rowObj.email = data[i][5];
-        rowObj.primaryContactPhoneNo = data[i][6];
-        rowObj.motherMaidenName = data[i][7];
-        rowObj.maritalStatus = (data[i][8] !== undefined) ? data[i][8] : '';
-        rowObj.lgaOfOrigin = (data[i][9] !== undefined) ? data[i][9] : '';
-        rowObj.stateOfOrigin = (data[i][10] !== undefined) ? data[i][10] : '';
-        rowObj.nationality = (data[i][11] !== undefined) ? data[i][11] : '';
+        rowObj.hospId = data[i][6];
+        rowObj.primaryContactPhoneNo = data[i][7];
+        rowObj.motherMaidenName = data[i][8];
+        rowObj.maritalStatus = (data[i][9] !== undefined) ? data[i][8] : '';
+        rowObj.lgaOfOrigin = (data[i][10] !== undefined) ? data[i][9] : '';
+        rowObj.stateOfOrigin = (data[i][11] !== undefined) ? data[i][10] : '';
+        rowObj.nationality = (data[i][12] !== undefined) ? data[i][11] : '';
         rowObj.payPlan = 'Wallet';
         this.items.push(this.createForm());
         let datas: any = this.shownForm.controls.items;
@@ -150,6 +152,7 @@ export class BulkUploadComponent implements OnInit {
         datas.controls[i].controls.gender.setValue(rowObj.gender);
         datas.controls[i].controls.phone.setValue(rowObj.primaryContactPhoneNo);
         datas.controls[i].controls.email.setValue(rowObj.email);
+        datas.controls[i].controls.hospId.setValue(rowObj.hospId);
         datas.controls[i].controls.dateOfBirth.setValue(rowObj.dateOfBirth);
         datas.controls[i].controls.title.setValue(rowObj.title);
         datas.controls[i].controls.payPlan.setValue(rowObj.payPlan.toLowerCase());
@@ -174,22 +177,22 @@ export class BulkUploadComponent implements OnInit {
       this.showWallet = true;
       this.showFamily = false;
       this.showCompany = false;
-    }else if(ev.value === 'insurance'){
+    } else if (ev.value === 'insurance') {
       this.showInsurance = true;
       this.showWallet = false;
       this.showFamily = false;
       this.showCompany = false;
-    }else if(ev.value === 'company'){
+    } else if (ev.value === 'company') {
       this.showInsurance = false;
       this.showWallet = false;
       this.showFamily = false;
       this.showCompany = true;
-    }else if(ev.value === 'family'){
+    } else if (ev.value === 'family') {
       this.showInsurance = false;
       this.showWallet = false;
       this.showFamily = true;
       this.showCompany = false;
-    }else{
+    } else {
       this.showInsurance = false;
       this.showWallet = false;
       this.showFamily = false;
@@ -202,7 +205,7 @@ export class BulkUploadComponent implements OnInit {
 
   deleteBtn(i) {
     const ind = this.patients.findIndex(x => x.serialNo === i);
-    if(this.patients[i] !== undefined){
+    if (this.patients[i] !== undefined) {
       this.patients.splice(i, 1);
     }
   }
@@ -218,6 +221,7 @@ export class BulkUploadComponent implements OnInit {
     patientInfo.firstName = info.firstName.value;
     patientInfo.lastName = info.lastName.value;
     patientInfo.email = info.email.value;
+    patientInfo.hospId = info.hospId.value;
     patientInfo.dateOfBirth = info.dateOfBirth.value;
     patientInfo.primaryContactPhoneNo = info.phone.value;
     patientInfo.title = info.title.value;
@@ -241,24 +245,30 @@ export class BulkUploadComponent implements OnInit {
     });
   }
 
-  submit(){
+  submit() {
     this.btnLoading = true;
     this.patients.map(pa => {
       pa.facilityId = this.facility._id
     })
     this.patientService.bulkUpload(this.patients).then(payload => {
       this.btnLoading = false;
-      if( payload.failed !== undefined || payload.failed.length > 0 ){
+      console.log(payload);
+      if (payload.failed.data !== undefined) {
+        this.patients = payload.failed.data;
+        this.systemModuleService.announceSweetProxy('Ooops!!', 'An error occured. The following list had an issue when uploading', 'warning');
+      } else {
         this.patients = [];
-        this.systemModuleService.announceSweetProxy('Patients information successfully uploaded!','success');
-      }else{
-        this.patients = payload.failed;
-        this.systemModuleService.announceSweetProxy('Ooops!!','An error occured. The following list had an issue when uploading','warning');
+        this.systemModuleService.announceSweetProxy('Patients information successfully uploaded!', 'success');
       }
     }).catch(err => {
+      console.log(err);
       this.btnLoading = false;
-      this.systemModuleService.announceSweetProxy('An error occured!','error');
+      this.systemModuleService.announceSweetProxy('An error occured!', 'error');
     });
+  }
+
+  closeRow() {
+    this.openBox = '';
   }
 
 }

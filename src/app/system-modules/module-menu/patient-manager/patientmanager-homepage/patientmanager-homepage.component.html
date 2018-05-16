@@ -167,9 +167,40 @@
                                                         </mat-input-container>
                                                     </div>
                                                     <div class="col-sm-6">
+                                                        <mat-form-field>
+                                                            <mat-select placeholder="Blood Group" formControlName="bloodGroup" [compareWith]="compareState">
+                                                                <mat-option>
+                                                                    <em>None</em>
+                                                                </mat-option>
+                                                                <mat-option *ngFor="let bloodGroup of bloodGroups" [value]="bloodGroup.name">
+                                                                    {{bloodGroup.name}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <mat-form-field>
+                                                            <mat-select placeholder="Genotype" formControlName="genotype" [compareWith]="compareState">
+                                                                <mat-option>
+                                                                    <em>None</em>
+                                                                </mat-option>
+                                                                <mat-option *ngFor="let geno of genotypes" [value]="geno.name">
+                                                                    {{geno.name}}
+                                                                </mat-option>
+                                                            </mat-select>
+                                                        </mat-form-field>
+                                                    </div>
+                                                    <div class="col-sm-6">
                                                         <mat-input-container>
                                                             <input matInput type="number" formControlName="phoneNumber" placeholder="Mobile Number" name="phoneNumber" [(ngModel)]="selectedPatient.primaryContactPhoneNo">
                                                         </mat-input-container>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <mat-form-field>
+                                                            <input matInput [matDatepicker]="picker" placeholder="Date of Birth (DD/MM/YYYY)" formControlName="dob">
+                                                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                                            <mat-datepicker #picker></mat-datepicker>
+                                                        </mat-form-field>
                                                     </div>
                                                     <div class="col-sm-6">
                                                         <mat-form-field>
@@ -225,6 +256,7 @@
                                                             </mat-select>
                                                         </mat-form-field>
                                                     </div>
+
                                                     <div class="col-xs-12">
                                                         <mat-input-container style="width: 100%;">
                                                             <textarea matInput placeholder="Street" formControlName="street"></textarea>
@@ -251,8 +283,7 @@
                                                             <mat-checkbox [formControl]="identity" (click)="changeButton()">Identity!</mat-checkbox>
                                                         </div>
                                                         <div claass="col-xs-4">
-                                                            <button (click)="newTag(tagName.valid)" *ngIf="!changetagButton" class="apmis-blue mat-raised-button" [disabled]="!tagName.valid || tagLoader"
-                                                                mat-raised-button>
+                                                            <button (click)="newTag(tagName.valid)" *ngIf="!changetagButton" class="apmis-blue mat-raised-button" [disabled]="!tagName.valid || tagLoader" mat-raised-button>
                                                                 {{btnLabel}}
                                                             </button>
                                                         </div>
@@ -262,8 +293,8 @@
                                                             <span class="big-label">
                                                                 {{tag.name}}
                                                             </span> &nbsp;
-                                                            <i *ngIf="tag.tagType === 'identification'" class="fa fa-info"></i> &nbsp;&nbsp;
-                                                            <i (click)="removeTag(tag)" class="fa fa-trash-o big-label cursor-pointer" aria-hidden="true"></i>
+                                                        <i *ngIf="tag.tagType === 'identification'" class="fa fa-info"></i> &nbsp;&nbsp;
+                                                        <i (click)="removeTag(tag)" class="fa fa-trash-o big-label cursor-pointer" aria-hidden="true"></i>
                                                         </span>
                                                     </div>
                                                 </div>
@@ -410,13 +441,11 @@
                                                                         <span *ngIf="!loading">Next</span>
                                                                         <span *ngIf="loading">Loading...</span>
                                                                     </button>
-                                                                    <button class="small-btn" (click)="next('insurance')" [disabled]="!hmoPlanId.valid && !hmoPlan.valid || loading" *ngIf="tabInsurance"
-                                                                        mat-raised-button>
+                                                                    <button class="small-btn" (click)="next('insurance')" [disabled]="!hmoPlanId.valid && !hmoPlan.valid || loading" *ngIf="tabInsurance" mat-raised-button>
                                                                         <span *ngIf="!loading">Next</span>
                                                                         <span *ngIf="loading">Loading...</span>
                                                                     </button>
-                                                                    <button class="small-btn" (click)="next('company')" *ngIf="tabCompany" [disabled]="(!ccPlanId.valid && !employeeId.valid) || loading"
-                                                                        mat-raised-button>
+                                                                    <button class="small-btn" (click)="next('company')" *ngIf="tabCompany" [disabled]="(!ccPlanId.valid && !employeeId.valid) || loading" mat-raised-button>
                                                                         <span *ngIf="!loading">Next</span>
                                                                         <span *ngIf="loading">Loading...</span>
                                                                     </button>
@@ -438,8 +467,7 @@
                                     </form>
                                 </div>
                                 <div class="example-full-width" id="example-full-width">
-                                    <button [disabled]="!patientEditForm.valid" (click)="updatePatient(patientEditForm.value, patientEditForm.valid)" class="apmis-blue"
-                                        mat-raised-button [innerHtml]="updatePatientBtnText"></button>
+                                    <button [disabled]="!patientEditForm.valid" (click)="updatePatient(patientEditForm.value, patientEditForm.valid)" class="apmis-blue" mat-raised-button [innerHtml]="updatePatientBtnText"></button>
                                 </div>
                             </div>
                         </div>

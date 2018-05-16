@@ -9,6 +9,10 @@
 
           <form [formGroup]="frmNewUpload" novalidate>
               <div>
+                  <div class="fileUploadCount">
+                    <span>{{fileCount}}</span> files uploaded to this patient.
+                  </div>
+                  <br><br><br>
                   <div class="upload-btn-wrapper">
                       <button class="upload-btn">Select Document</button>
                       <input type="file" name="fileInput" (change)="onFileChange($event)" #fileInput formControlName="fileUpload" />
@@ -34,7 +38,7 @@
               </div>
 
               <div class="btn-box">
-                    <button class="small-btn" [disabled]="loading" (click)="uploadDocument()" mat-raised-button>
+                    <button class="small-btn" [disabled]="loading || !frmNewUpload.valid || !fileName " (click)="uploadDocument()" mat-raised-button>
                         <span *ngIf="!loading">Upload Document</span>
                         <span *ngIf="loading"><span class="fa fa-spinner fa-spin"></span>Uploading Document</span>
                     </button>

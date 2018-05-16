@@ -45,8 +45,8 @@ export class SocketService {
     this._app.logout();
     this.locker.clear();
   }
-  loginIntoApp(query: any) {
-    return this._app.authenticate({
+  async loginIntoApp(query: any) {
+    return await this._app.authenticate({
       'strategy': 'local',
       'email': query.email,
       'password': query.password

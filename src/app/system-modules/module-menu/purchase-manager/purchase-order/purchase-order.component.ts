@@ -79,7 +79,6 @@ export class PurchaseOrderComponent implements OnInit {
           isActive: true
         }
     }).subscribe(payload => {
-      console.log(payload);
       if (payload.data != undefined) {
         this.orders = payload.data;
         this.systemModuleService.off();

@@ -261,7 +261,7 @@ export class MakePaymentComponent implements OnInit {
     } else {
       this.invoice.payments.forEach(element2 => {
         let itemBalance = 0;
-        if(!element2.isPaymentCompleted && element2.isItemTxnClosed === undefined){
+        if (!element2.isPaymentCompleted && element2.isItemTxnClosed === undefined) {
           ItemGroupByService.push({
             date: element2.paymentDate,
             qty: element2.qty,
@@ -276,28 +276,26 @@ export class MakePaymentComponent implements OnInit {
         }
       });
     }
-    this.employeeService.find({ query: { facilityId: this.selectedFacility._id, personId: this.user.personId } })
-      .then(employee => {
-        ItemGroupByService.forEach(item => {
-          (<FormArray>this.productTableForm.controls['productTableArray'])
-            .push(
-              this.formBuilder.group({
-                paymentDate: new Date,
-                date: item.date,
-                qty: item.qty,
-                facilityServiceObject: item.facilityServiceObject,
-                amountPaid: 0,
-                totalPrice: item.totalPrice,
-                balance: item.balance,
-                isPaymentCompleted: item.isPaymentCompleted,
-                isWaiver: false,
-                waiverComment: '',
-                createdBy: employee.data[0]._id
-              })
-            );
-        });
+    this.employeeService.find({ query: { facilityId: this.selectedFacility._id, personId: this.user.personId } }).then(employee => {
+      ItemGroupByService.forEach(item => {
+        (<FormArray>this.productTableForm.controls['productTableArray']).push(
+          this.formBuilder.group({
+            paymentDate: new Date,
+            date: item.date,
+            qty: item.qty,
+            facilityServiceObject: item.facilityServiceObject,
+            amountPaid: item.totalPrice,
+            totalPrice: item.totalPrice,
+            balance: item.balance,
+            isPaymentCompleted: item.isPaymentCompleted,
+            isWaiver: false,
+            waiverComment: '',
+            createdBy: employee.data[0]._id
+          })
+        );
       });
-
+      this.computeDiscountPrice();
+    });
   }
 
   getPatientCovers() {
@@ -387,6 +385,30 @@ export class MakePaymentComponent implements OnInit {
       this.totalAmountBalance += item.value.balance;
     });
   }
+
+  computeDiscountPrice() {
+    console.log(this.discount);
+    if (this.discount > 0) {
+      let acctual = 0;
+      (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
+        acctual += item.value.totalPrice;
+      });
+      console.log(acctual);
+      let percentage = (this.discount * 100) / acctual;
+      console.log(percentage);
+      (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
+        let discountPrice =item.value.totalPrice - (item.value.totalPrice * (percentage / 100));
+        console.log(discountPrice)
+        let roundedNum = discountPrice.toFixed(2);
+        item.controls.amountPaid.setValue(roundedNum);
+        item.controls.balance.setValue(discountPrice);
+        item.controls.totalPrice.setValue(discountPrice);
+      });
+      (<FormArray>this.productTableForm.controls['productTableArray']).setValue(JSON.parse(JSON.stringify((<FormArray>this.productTableForm.controls['productTableArray']).value)))
+    }
+  }
+
+
 
   onOutOfPocket() {
     this.getTotalAmounBAlance();

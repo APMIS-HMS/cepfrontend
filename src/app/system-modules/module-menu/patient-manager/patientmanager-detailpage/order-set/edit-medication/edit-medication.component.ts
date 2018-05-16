@@ -8,7 +8,7 @@ import {
 import { OrderSetSharedService } from '../../../../../../services/facility-manager/order-set-shared-service';
 import { Appointment, Facility, Employee, Prescription, PrescriptionItem, BillItem, BillIGroup, Dispensed, User }
     from '../../../../../../models/index';
-import { DurationUnits } from '../../../../../../shared-module/helpers/global-config';
+import { DurationUnits, DosageUnits } from '../../../../../../shared-module/helpers/global-config';
 
 @Component({
   selector: 'app-edit-medication',
@@ -29,7 +29,9 @@ export class EditMedicationComponent implements OnInit {
   routes: string[] = [];
   frequencies: string[] = [];
   durationUnits: any[] = [];
-  selectedDuration: any;
+  dosageUnits: any[] = [];
+  selectedValue: any;
+  selectedDosage: any;
   drugId = '';
   refillCount = 0;
   selectedForm = '';
@@ -49,11 +51,15 @@ export class EditMedicationComponent implements OnInit {
 
   ngOnInit() {
     this.durationUnits = DurationUnits;
-    this.selectedDuration = DurationUnits[1].name;
+    this.dosageUnits = DosageUnits;
+    this.selectedValue = DurationUnits[1].name;
+    this.selectedDosage = DosageUnits[0].name;
 
     this.addPrescriptionForm = this.fb.group({
       // strength: ['', [<any>Validators.required]],
       // route: ['', [<any>Validators.required]],
+      dosage: ['', [<any>Validators.required]],
+      dosageUnit: ['', [<any>Validators.required]],
       drug: ['', [<any>Validators.required]],
       frequency: ['', [<any>Validators.required]],
       duration: [0, [<any>Validators.required]],
@@ -82,6 +88,8 @@ export class EditMedicationComponent implements OnInit {
         genericName: value.drug,
         // routeName: value.route,
         // strength: value.strength,
+        dosage: value.dosage,
+        dosageUnit: value.dosageUnit,
         frequency: value.frequency,
         duration: value.duration,
         durationUnit: value.durationUnit,
@@ -109,6 +117,7 @@ export class EditMedicationComponent implements OnInit {
       this.addPrescriptionForm.controls['duration'].reset(0);
       this.addPrescriptionForm.controls['startDate'].reset(new Date());
       this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[1].name);
+      this.addPrescriptionForm.controls['dosageUnit'].reset(this.dosageUnits[0].name);
     }
   }
 
@@ -152,7 +161,9 @@ export class EditMedicationComponent implements OnInit {
 
   private _getAllFrequencies() {
     this._frequencyService.findAll().then(res => {
+      if (res.data.length > 0) {
         this.frequencies = res.data;
+      }
       }).catch(err => console.error(err));
   }
 

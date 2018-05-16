@@ -1,6 +1,6 @@
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { EMAIL_REGEX } from 'app/shared-module/helpers/global-config';
-import { NUMERIC_REGEX, ALPHABET_REGEX } from './../../../../shared-module/helpers/global-config';
+import { NUMERIC_REGEX, ALPHABET_REGEX, BloodGroups, Genotypes } from './../../../../shared-module/helpers/global-config';
 import { FacilityCompanyCoverService } from './../../../../services/facility-manager/setup/facility-company-cover.service';
 import { CountryServiceFacadeService } from './../../../service-facade/country-service-facade.service';
 import { TitleGenderFacadeService } from 'app/system-modules/service-facade/title-gender-facade.service';
@@ -24,6 +24,8 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
 import { Observable } from 'rxjs/Observable';
 import { startWith } from 'rxjs/operators/startWith';
 import { map } from 'rxjs/operators/map';
+
+import { differenceInDays, differenceInMonths, differenceInWeeks, differenceInYears  } from 'date-fns';
 
 @Component({
   selector: 'app-patientmanager-homepage',
@@ -60,7 +62,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   patients: Patient[] = [];
   genders: any[] = [];
   relationships: Relationship[] = [];
-  selectedPatient: Patient = <Patient>{};
+  selectedPatient: any = <any>{};
   searchControl = new FormControl();
   loading = true;
   countries: any = [];
@@ -68,6 +70,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   lgas: any = [];
   cities: any = [];
   titles: any = [];
+  bloodGroups: any[] = [];
+  genotypes: any[] = [];
 
   patientToEdit;
 
@@ -148,6 +152,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     private companyCoverService: FacilityCompanyCoverService
   ) {
 
+    this.bloodGroups = BloodGroups;
+    this.genotypes = Genotypes;
     this.facility = <Facility>this.locker.getObject('selectedFacility');
     this.systemService.on();
     this.patientService.listner.subscribe(payload => {
@@ -236,6 +242,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
 
   ngOnInit() {
+    this.systemService.off();
     this.pageInView.emit('Patient Manager');
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
@@ -272,10 +279,13 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       lastName: ['', [<any>Validators.required]],
       email: [{ value: '', disabled: false }, [<any>Validators.required]],
       phoneNumber: [{ value: '', disabled: true }, [<any>Validators.required]],
+      dob: ['', [<any>Validators.required]],
       gender: ['', [<any>Validators.required]],
       country: ['', [<any>Validators.required]],
       state: ['', [<any>Validators.required]],
       city: ['', [<any>Validators.required]],
+      bloodGroup:['N/A', []],
+      genotype:['N/A', []],
       lga: ['', [<any>Validators.required]],
       street: ['', [<any>Validators.required]],
       nextOfKin: this.formBuilder.array([])
@@ -627,6 +637,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.patientService.get(patient._id, {}).then(payload => {
       this.selectedPatient = payload.personDetails;
       this.patient = payload;
+      console.log();
       this.editPatient = true;
       if (this.selectedPatient.nextOfKin.length > 0) {
         const nextOfKincontrol = <FormArray>this.patientEditForm.controls['nextOfKin'];
@@ -646,6 +657,9 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     this.selectedPatient['personFullName'] = value.firstName + ' ' + value.lastName;
     this.selectedPatient['gender'] = value.gender;
     this.selectedPatient['genderId'] = value.gender._id;
+    this.selectedPatient['dateOfBirth'] = value.dob;
+    this.selectedPatient['bloodGroup'] = value.bloodGroup;
+    this.selectedPatient['genotype'] = value.genotype;
     this.selectedPatient['nationalityObject'] = {
       country: value.country.name,
       lga: value.lga.name,
@@ -705,7 +719,19 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       // this.patientEditForm.get('email').disable();
     }
 
+    if (value.bloodGroup !== undefined) {
+      this.patientEditForm.controls['bloodGroup'].setValue(value.bloodGroup);
+    }else{
+      this.patientEditForm.controls['bloodGroup'].setValue('N/A');
+    }
+    if (value.genotype !== undefined) {
+      this.patientEditForm.controls['genotype'].setValue(value.genotype);
+    }else{
+      this.patientEditForm.controls['genotype'].setValue('N/A');
+    }
+
     this.patientEditForm.controls['phoneNumber'].setValue(value.primaryContactPhoneNo);
+    this.patientEditForm.controls['dob'].setValue(value.dateOfBirth);
 
     this.patientEditForm.controls['title'].setValue(value.title);
     this.patientEditForm.controls['gender'].setValue(value.gender);
