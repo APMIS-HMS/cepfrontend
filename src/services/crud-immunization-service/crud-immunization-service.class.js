@@ -1,6 +1,4 @@
 /* eslint-disable no-unused-vars */
-const immunizationDB = require('../../custom-models/immunization-schedule-model');
-
 const jsend = require('jsend');
 
 class Service {
@@ -27,14 +25,26 @@ class Service {
 
         const organisationServices = this.app.service('organisation-services');
         const facilityPriceService = this.app.service('facility-prices');
-        const immunizationService = this.app.service('immunization');
+        const immunizationService = this.app.service('immunization-schedule');
 
         try {
-            const checkImmuneName = await immunizationService.find({ query: { facilityId: facilityId, name: { $regex: immuneName, '$options': 'i' } } });
+            const checkImmuneName = await immunizationService.find({
+                query: {
+                    facilityId: facilityId,
+                    name: {
+                        $regex: immuneName,
+                        '$options': 'i'
+                    }
+                }
+            });
 
             if (checkImmuneName.data.length === 0) {
                 //Get all organisation services
-                let org = await organisationServices.find({ query: { facilityId: facilityId } });
+                let org = await organisationServices.find({
+                    query: {
+                        facilityId: facilityId
+                    }
+                });
 
                 // Verify if the Facility has any service record
                 if (org.data.length > 0) {
@@ -55,9 +65,19 @@ class Service {
                     // Extract the organisation services from the category
                     let orgServices = immuCategory[0].services;
                     // Filter the new vaccines from the entire data sent
-                    let newVaccines = vaccines.map(x => { return { name: `${immuneName} ${x.code}`, code: x.code, price: x.price }; });
+                    let newVaccines = vaccines.map(x => {
+                        return {
+                            name: `${immuneName} ${x.code}`,
+                            code: x.code,
+                            price: x.price
+                        };
+                    });
                     // Add the general sevice to the newVaccine array. ~That is every vaccine is treated as a service
-                    newVaccines.push({ name: immuneName, code: immuneName, price: immunePrice });
+                    newVaccines.push({
+                        name: immuneName,
+                        code: immuneName,
+                        price: immunePrice
+                    });
                     // Merge newVaccines array to organisation list of services
                     let concatService = orgServices.concat(newVaccines);
                     immuCategory[0].services = concatService;
@@ -173,7 +193,9 @@ class Service {
     }
 
     remove(id, params) {
-        return Promise.resolve({ id });
+        return Promise.resolve({
+            id
+        });
     }
 
     setup(app) {
