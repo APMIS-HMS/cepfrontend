@@ -11,15 +11,17 @@ export class DocumentUploadService {
   public listner;
   public _socket;
   private _rest;
+  private duService;
   // private _restLogin;
   constructor(
     private _socketService: SocketService,
-    private _restService: RestService,
+    private _restService: RestService, 
     private sanitizer: DomSanitizer,
     private locker: CoolLocalStorage
   ) {
     this._rest = _restService.getService('upload-doc');
     this._socket = _socketService.getService('upload-doc');
+    this.duService = _socketService.getService('doc-upload');
     // this._restLogin = _restService.getService('auth/local');
     this.listner = Observable.fromEvent(this._socket, 'created');
   }
@@ -45,6 +47,10 @@ export class DocumentUploadService {
   }
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
+  }
+
+  docUploadFind(query: any){
+    return this.duService.find(query);
   }
 
   post(body: any) {
