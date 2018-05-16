@@ -1,15 +1,19 @@
 .modal-overlay {
     float: left;
     overflow-y: auto;
-    padding: 85px 50px;
+    padding: 85px 0px;
     /* height: 100px; */
 }
 
 .container {
-    padding: 10px;
     background-color: #fff;
-    width: 100%;
+    max-width: 900px;
+    width: auto;
+    margin: 0 auto;
     box-sizing: border-box;
+    .modal-content-wrap {
+        padding: 20px;
+    }
 }
 
 .vaccine {

@@ -11,9 +11,11 @@ import { NewImmunizationScheduleComponent } from './new-immunization-schedule/ne
 
 @NgModule({
   imports: [
+    // SharedModule,
     MaterialModule,
-        OnlyMaterialModule,
-        CommonModule,immunizationRoutes
+    OnlyMaterialModule,
+    // CommonModule,
+    immunizationRoutes
   ],
   declarations: [ImmunizationComponent, ImmunizationScheduleComponent, NewImmunizationScheduleComponent],
   providers: [ImmunizationScheduleService]

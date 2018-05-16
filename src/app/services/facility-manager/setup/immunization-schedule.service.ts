@@ -3,6 +3,8 @@ import { Injectable } from '@angular/core';
 
 @Injectable()
 export class ImmunizationScheduleService {
+    public _customSocket;
+    private _customRest;
     public _socket;
     private _rest;
     constructor(
@@ -11,8 +13,15 @@ export class ImmunizationScheduleService {
     ) {
         this._rest = _restService.getService('immunization-schedule');
         this._socket = _socketService.getService('immunization-schedule');
+        this._customRest = _restService.getService('crud-immunization-schedule');
+        this._customSocket = _socketService.getService('crud-immunization-schedule');
         this._socket.timeout = 50000;
-        this._socket.on('created', function (immuneSchedule) {});
+        this._socket.on('created', function (immuneSchedule) {
+            console.log(immuneSchedule);
+        });
+        // this.listenerCreate = Observable.fromEvent(this._socket, 'created');
+        // this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
+        // this.listenerDelete = Observable.fromEvent(this._socket, 'deleted');
     }
 
     find(query: any) {
@@ -24,6 +33,14 @@ export class ImmunizationScheduleService {
     }
     get(id: string, query: any) {
         return this._socket.get(id, query);
+    }
+
+    customCreate(immuneSchedule: any) {
+        return this._customSocket.create(immuneSchedule);
+    }
+
+    update(immuneSchedule: any) {
+        return this._socket.update(immuneSchedule._id, immuneSchedule);
     }
 
     create(immuneSchedule: any) {

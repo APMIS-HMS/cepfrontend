@@ -13,18 +13,20 @@
                 <div class="card">
                     <div class="card-header">
                         <div class="row">
-                            <div class="col-xs-2 table-head">No</div>
-                            <div class="col-xs-2 table-head">Date</div>
-                            <div class="col-xs-2 table-head">Patient</div>
-                            <div class="table-head col-xs-2">Description</div>
-                            <div class="table-head col-xs-2">Status</div>
-                            <div class="table-head col-xs-2">
+                            <div class="col-xs-1 table-head">No</div>
+                            <div class="col-xs-2 table-head">Immunization Name</div>
+                            <div class="col-xs-2 table-head">Vaccine</div>
+                            <div class="col-xs-1 table-head">No. of Dosage</div>
+                            <div class="col-xs-2 table-head">Intervals</div>
+                            <div class="col-xs-1 table-head">Dose</div>
+                            <div class="col-xs-2 table-head">Vaccination Site</div>
+                            <div class="col-xs-1 table-head">
                                 <i class="fa fa-search fa-fw pointer" (click)="onClickOpenSearch()"></i>
                             </div>
                         </div>
                         <div class="row" *ngIf="openSearch">
                             <div class="col-md-4">
-                                <input class="table-header-input" type="text" placeholder="Search for Patient">
+                                <input [formControl]="immunizationScheduleSearch" class="table-header-input" type="text" placeholder="Search for Immunization Schedule">
                             </div>
                             <div class="col-md-4">
                             </div>
@@ -46,19 +48,23 @@
                                 <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                             </div>
                         </div>
-                        <div class="card-list-item">
+                        <div class="card-list-item" *ngFor="let immunizationSchedule of immunizationSchedules; let i = index;">
                             <div class="row">
+                                <div class="table-list col-xs-1"> {{i+1}}</div>
+                                <div class="table-list col-xs-2">{{immunizationSchedule.name}}</div>
                                 <div class="table-list col-xs-2">
+                                    <span>{{immunizationSchedule.code }}</span>
+                                    <br>
+                                    <small>{{ immunizationSchedule.vaccineName }}</small>
                                 </div>
+                                <div class="table-list col-xs-1">{{ immunizationSchedule.numberOfDosage }}</div>
                                 <div class="table-list col-xs-2">
+                                    <span *ngFor="let interval of immunizationSchedule?.intervals">{{ immunizationSchedule.code }}-{{ interval.sequence }} {{ interval.unit }} {{ interval.duration }}, </span>
                                 </div>
-                                <div class="table-list col-xs-2">
-                                </div>
-                                <div class="table-list col-xs-2">
-                                </div>
-                                <div class="table-list col-xs-2">
-                                </div>
-                                <div class="table-list col-xs-2 action-placeholder">
+                                <div class="table-list col-xs-1">{{ immunizationSchedule.dosage }}</div>
+                                <div class="table-list col-xs-2">{{ immunizationSchedule.vaccinationSite }}</div>
+                                <div class="table-list col-xs-1 action-placeholder">
+                                    <i (click)="onClickAddImmunizationSchedule(immunizationSchedule);" class="fa fa-edit" aria-hidden="true"></i>
                                 </div>
                             </div>
                         </div>
