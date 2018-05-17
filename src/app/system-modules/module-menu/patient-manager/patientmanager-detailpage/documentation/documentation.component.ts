@@ -140,9 +140,9 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     });
 
     this.sharedService.newFormAnnounced$.subscribe((payload: any) => {
-      this.selectedForm = payload.form;
-      this.draftDocument = undefined;
-      this.hasSavedDraft = false;
+      // this.selectedForm = payload.form;
+      // this.draftDocument = undefined;
+      // this.hasSavedDraft = false;
     });
 
     this.documentationService.announceDocumentation$.subscribe(payload => {
@@ -605,14 +605,14 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this.documents.reverse();
   }
   edit(document: any) {
-    this.clinicalNote_view = false;
     if (document.documentationStatus === "Draft") {
+      this.clinicalNote_view = false;
       this.clinicalNote_view = true;
       let obj = {
         json: document.document.documentType.body,
-        form: document.document.documentType
+        form: document.document.documentType,
+        isManual: false
       };
-      console.log(document);
       this.sharedService.announceNewForm(obj);
       this.sharedService.announceEditDocumentation({
         document: document.document.body,
@@ -620,7 +620,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         main: obj
       });
     } else {
-      this.clinicalNote_view = false;
+      // this.clinicalNote_view = false;
       this.systemModuleService.announceSweetProxy(
         "Completed documentation can not be edited!",
         "warning",

@@ -102,11 +102,10 @@ export class ClinicalNoteComponent implements OnInit, OnDestroy {
 
     this.selectFormCtrl = new FormControl();
     this.selectFormCtrl.valueChanges.subscribe(form => {
-      this.isManual = false;
-      // this.showDocument = false;
-      // this.surveyjs = undefined;
-      // this.json = undefined;
-      this.setSelectedForm(form);
+      this.isManual = form.isManual;
+      if (!form.isManual) {
+        this.setSelectedForm(form);
+      }
     });
 
     this.sharedService.submitForm$.subscribe(value => {
@@ -117,17 +116,21 @@ export class ClinicalNoteComponent implements OnInit, OnDestroy {
     });
 
     this.sharedService.newFormAnnounced$.subscribe((value: any) => {
-      this.selectFormCtrl.setValue(value.form);
-      this.json = value.json;
-      this.isManual = false;
+      if (value.isManual !== undefined && value.isManual === false) {
+        this.selectFormCtrl.setValue(value.form);
+        this.json = value.json;
+        this.isManual = value.isManual;
+      }
     });
 
     this.sharedService.editDocumentationAnnounced$.subscribe((value: any) => {
-      console.log("editing");
       this.formJsonObject = undefined;
       if (value.leg === 0) {
         this.editingDocumentation = value.document;
         this.formJsonObject = value.main;
+      } else {
+        this.editingDocumentation = undefined;
+        this.formJsonObject = undefined;
       }
     });
 
@@ -144,7 +147,6 @@ export class ClinicalNoteComponent implements OnInit, OnDestroy {
 
     this.subscription = this.sharedService.surveyInitialized$.subscribe(
       (value: any) => {
-        console.log("initialized");
         if (this.formJsonObject !== undefined && this.formJsonObject !== null) {
           this.selectFormCtrl.setValue(this.formJsonObject.form);
         }
@@ -207,31 +209,6 @@ export class ClinicalNoteComponent implements OnInit, OnDestroy {
     };
   }
 
-  // getForms() {
-  //   const formType$ = Observable.fromPromise(
-  //     this.formTypeService.find({ query: { name: "Documentation" } })
-  //   );
-  //   formType$
-  //     .mergeMap((formTypes: any) =>
-  //       Observable.fromPromise(
-  //         this.formService.find({
-  //           query: {
-  //             facilityId: this.selectedFacility._id,
-  //             typeOfDocumentId: formTypes.data[0]._id
-  //           }
-  //         })
-  //       )
-  //     )
-  //     .subscribe(
-  //       (results: any) => {
-  //         this.forms = results.data;
-  //       },
-  //       error => {
-  //         this.getForms();
-  //       }
-  //     );
-  // }
-
   getForms() {
     try {
       const formType$ = Observable.fromPromise(
@@ -242,11 +219,6 @@ export class ClinicalNoteComponent implements OnInit, OnDestroy {
           Observable.fromPromise(
             this.formService.find({
               query: {
-                // $limit: 200,
-                // facilityId: this.selectedFacility._id,
-                // typeOfDocumentId: formTypes.data[0]._id,
-                // isSide: false
-
                 $or: [
                   { selectedFacilityId: this.selectedFacility._id },
                   {
@@ -278,21 +250,18 @@ export class ClinicalNoteComponent implements OnInit, OnDestroy {
   }
   setSelectedForm(form) {
     if (typeof form === "object" && form !== null) {
-      console.log(1);
       this.selectedForm = form;
       this.showDocument = false;
       this.json = form.body;
-      console.log(this.json);
-      if (this.isManual) {
-        console.log(2);
+      if (!this.isManual) {
         this.sharedService.announceNewForm({
           json: this.json,
-          form: this.selectedForm
+          form: this.selectedForm,
+          isManual: this.isManual
         });
       }
       this.showDocument = true;
       if (this.surveyjs !== undefined && this.surveyjs !== null) {
-        console.log(3);
         this.surveyjs.ngOnInit();
         this.sharedService.announceEditDocumentation({
           document: this.editingDocumentation,
@@ -301,7 +270,6 @@ export class ClinicalNoteComponent implements OnInit, OnDestroy {
 
         this.subscription.unsubscribe();
       } else {
-        console.log(4);
         this.subscription.unsubscribe();
       }
       // this.documentationTemplateService.find({ query: {} });

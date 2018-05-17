@@ -21,7 +21,6 @@ export class SurveyComponent implements OnInit, OnDestroy {
     private documentationService: DocumentationService
   ) {
     this.shareService.newFormAnnounced$.subscribe((payload: any) => {
-      console.log(11);
       this.json = payload.json;
       this.surveyModel = new ReactSurveyModel(payload.json);
       Survey.cssType = "bootstrap";
@@ -100,7 +99,6 @@ export class SurveyComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log(12);
     this.surveyModel = new ReactSurveyModel(JSON.parse(this.json));
     Survey.cssType = "bootstrap";
     SurveyNG.render("surveyElement", { model: this.surveyModel });
