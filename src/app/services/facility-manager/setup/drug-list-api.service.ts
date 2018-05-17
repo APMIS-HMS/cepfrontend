@@ -11,6 +11,7 @@ export class DrugListApiService {
   ) {
     this._rest = _restService.getService('drug-generic-list');
     this._socket = _socketService.getService('drug-generic-list');
+    this._socket.timeout = 50000;
     this._socket.on('created', function (drug) {
     });
   }

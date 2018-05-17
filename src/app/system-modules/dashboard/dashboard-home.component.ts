@@ -41,6 +41,7 @@ export class DashboardHomeComponent implements OnInit {
   patientSubmenuActive = false;
   billingSebmenuActive = false;
   formsSubmenuActive = false;
+  immunizationSubmenuActive = false;
 
   newModuleSubmenuActive = false;
   allModulesSubmenuActive = false;
@@ -177,18 +178,19 @@ export class DashboardHomeComponent implements OnInit {
     this.patientSubmenuActive = false;
     this.billingSebmenuActive = false;
     this.formsSubmenuActive = false;
+    this.immunizationSubmenuActive = false;
   }
   moduleMenuShow() {
     this.facilityManagerActive = false;
     this.moduleManagerActive = true;
     this.facilitySubmenuActive = false;
     this.newModuleSubmenuActive = true;
-
     this.newModuleSubmenuActive = true;
     this.allModulesSubmenuActive = false;
     this.moduleAnalyticsSubmenuActive = false;
     this.billingSebmenuActive = false;
     this.formsSubmenuActive = false;
+    this.immunizationSubmenuActive = false;
   }
 
   facilitySubmenuShow() {
@@ -196,116 +198,116 @@ export class DashboardHomeComponent implements OnInit {
     this.employeeSubmenuActive = false;
     this.userSubmenuActive = false;
     this.patientSubmenuActive = false;
-
     this.newModuleSubmenuActive = false;
     this.allModulesSubmenuActive = false;
     this.moduleAnalyticsSubmenuActive = false;
-
     this.innerMenuShow = false;
     this.billingSebmenuActive = false;
     this.formsSubmenuActive = false;
+    this.immunizationSubmenuActive = false;
   }
   employeeSubmenuShow() {
     this.facilitySubmenuActive = false;
     this.employeeSubmenuActive = true;
     this.userSubmenuActive = false;
     this.patientSubmenuActive = false;
-
     this.newModuleSubmenuActive = false;
     this.allModulesSubmenuActive = false;
     this.moduleAnalyticsSubmenuActive = false;
-
     this.innerMenuShow = false;
     this.billingSebmenuActive = false;
     this.formsSubmenuActive = false;
+    this.immunizationSubmenuActive = false;
   }
   userSubmenuShow() {
     this.facilitySubmenuActive = false;
     this.employeeSubmenuActive = false;
     this.userSubmenuActive = true;
     this.patientSubmenuActive = false;
-
     this.newModuleSubmenuActive = false;
     this.allModulesSubmenuActive = false;
     this.moduleAnalyticsSubmenuActive = false;
-
     this.innerMenuShow = false;
     this.billingSebmenuActive = false;
     this.formsSubmenuActive = false;
+    this.immunizationSubmenuActive = false;
   }
   billingSubmenuShow() {
     this.facilitySubmenuActive = false;
     this.employeeSubmenuActive = false;
     this.userSubmenuActive = false;
     this.patientSubmenuActive = false;
-
     this.newModuleSubmenuActive = false;
     this.allModulesSubmenuActive = false;
     this.moduleAnalyticsSubmenuActive = false;
-
     this.innerMenuShow = false;
     this.billingSebmenuActive = true;
     this.formsSubmenuActive = false;
+    this.immunizationSubmenuActive = false;
   }
   patientSubmenuShow() {
     this.facilitySubmenuActive = false;
     this.employeeSubmenuActive = false;
     this.userSubmenuActive = false;
     this.patientSubmenuActive = true;
-
     this.newModuleSubmenuActive = false;
     this.allModulesSubmenuActive = false;
     this.moduleAnalyticsSubmenuActive = false;
     this.formsSubmenuActive = false;
-
     this.innerMenuShow = false;
+    this.immunizationSubmenuActive = false;
   }
 
   newModuleSubmenuShow() {
     this.newModuleSubmenuActive = true;
     this.allModulesSubmenuActive = false;
     this.moduleAnalyticsSubmenuActive = false;
-
     this.facilitySubmenuActive = false;
     this.employeeSubmenuActive = false;
     this.userSubmenuActive = false;
     this.patientSubmenuActive = false;
     this.formsSubmenuActive = false;
+    this.immunizationSubmenuActive = false;
   }
   allModulesSubmenuShow() {
     this.newModuleSubmenuActive = false;
     this.allModulesSubmenuActive = true;
     this.moduleAnalyticsSubmenuActive = false;
-
     this.facilitySubmenuActive = false;
     this.employeeSubmenuActive = false;
     this.userSubmenuActive = false;
     this.patientSubmenuActive = false;
     this.formsSubmenuActive = false;
+    this.immunizationSubmenuActive = false;
   }
   moduleAnalyticsSubmenuShow() {
     this.newModuleSubmenuActive = false;
     this.allModulesSubmenuActive = false;
     this.moduleAnalyticsSubmenuActive = true;
-
     this.facilitySubmenuActive = false;
     this.employeeSubmenuActive = false;
     this.userSubmenuActive = false;
     this.patientSubmenuActive = false;
     this.formsSubmenuActive = false;
+    this.immunizationSubmenuActive = false;
   }
   formsSubmenuShow() {
     this.newModuleSubmenuActive = false;
     this.allModulesSubmenuActive = false;
     this.moduleAnalyticsSubmenuActive = false;
-
     this.facilitySubmenuActive = false;
     this.employeeSubmenuActive = false;
     this.userSubmenuActive = false;
     this.patientSubmenuActive = false;
     this.innerMenuShow = false;
     this.formsSubmenuActive = true;
+    this.immunizationSubmenuActive = false;
   }
+
+  mainMenuRoute(route) {
+
+  }
+
   innerMenuToggle() {
     this.innerMenuShow = !this.innerMenuShow;
   }
