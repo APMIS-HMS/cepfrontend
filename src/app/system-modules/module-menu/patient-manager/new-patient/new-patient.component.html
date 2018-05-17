@@ -98,12 +98,12 @@
                             </div>
                             <div class="row frm-item-wrap">
                                 <mat-form-field class="col-xs-12 col-sm-6">
-                                    <mat-select placeholder="Select Service" [formControl]="hmoPlan" (change)="getServicePlans($event.value)">
+                                    <mat-select placeholder="Select Service" [formControl]="ccPlan" (change)="getServicePlans($event.value)">
                                         <mat-option *ngFor="let service of services" [value]="service">{{service.name}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
                                 <mat-form-field class="col-xs-12 col-sm-6">
-                                    <mat-select placeholder="Select Price" [formControl]="hmoPlanPrice">
+                                    <mat-select placeholder="Select Price" [formControl]="ccPlanPrice">
                                         <mat-option *ngFor="let pricePlan of servicePricePlans" [value]="pricePlan.price">{{pricePlan.name}}</mat-option>
                                     </mat-select>
                                 </mat-form-field>
@@ -142,22 +142,22 @@
                     </div>
 
                     <div class="btn-box">
-                        <button class="small-btn" (click)="next()" *ngIf="tabWallet" [disabled]="!walletPlan.valid || loading" mat-raised-button>
+                        <button class="small-btn" (click)="next()" *ngIf="tabWallet" [disabled]="( !walletPlan.valid || !walletPlanPrice.valid ) || loading" mat-raised-button>
                             <span *ngIf="!loading">Next</span>
                             <span *ngIf="loading">Loading...</span>
                         </button>
-                        <button class="small-btn" (click)="nextInsuranceCover(hmoPlanId.value, hmoPlan.value)" [disabled]="(!hmoPlanId.valid && !hmoPlan.valid) || loading"
+                        <button class="small-btn" (click)="nextInsuranceCover(hmoPlanId.value, hmoPlan.value)" [disabled]="(!hmoPlanId.valid || !hmoPlan.valid || !hmoPlanPrice.valid) || loading"
                             *ngIf="tabInsurance" mat-raised-button>
                             <span *ngIf="!loading">Next</span>
                             <span *ngIf="loading">Loading...</span>
                         </button>
-                        <button class="small-btn" (click)="nextCompany()" *ngIf="tabCompany" [disabled]="loading"
+                        <button class="small-btn" (click)="nextCompany()" *ngIf="tabCompany" [disabled]="(!ccPlanId.valid || !ccPlan.valid || !ccPlanPrice.valid || !employeeId.valid) || loading"
                             mat-raised-button>
                             <span *ngIf="!loading">Next</span>
                             <span *ngIf="loading">Loading...</span>
                         </button>
                         <button class="small-btn" (click)="nextFamilyCover(familyPlanId.value, faPlan.value)" *ngIf="tabFamily" mat-raised-button
-                            [disabled]="!familyPlanId.valid || loading">
+                            [disabled]="( !familyPlanId.valid || !faFileNo.valid ||  !faPlan.valid || !faPlanPrice.valid ) || loading">
                             <span *ngIf="!loading">Next</span>
                             <span *ngIf="loading">Loading...</span>
                         </button>

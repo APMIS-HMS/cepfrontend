@@ -87,3 +87,4 @@ export * from './module-manager/setup/orderstatus';
 export * from './facility-manager/setup/pending-laboratory-request';
 export * from './facility-manager/setup/lab-template';
 export * from './facility-manager/setup/order-set-template';
+export * from './facility-manager/setup/immunization-schedule';
