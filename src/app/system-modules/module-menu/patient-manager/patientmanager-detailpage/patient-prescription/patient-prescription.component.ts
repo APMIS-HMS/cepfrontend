@@ -53,7 +53,6 @@ export class PatientPrescriptionComponent implements OnInit {
     drugId = '';
     selectedDrugId = '';
     searchText = '';
-    apmisLookupText = '';
     refillCount = 0;
     currentDate: Date = new Date();
     minDate: Date = new Date();
@@ -64,6 +63,7 @@ export class PatientPrescriptionComponent implements OnInit {
     currMedLoading = false;
     pastMedLoading = false;
     apmisLookupQuery = {};
+    apmisLookupText = '';
     apmisLookupUrl = 'drug-generic-list';
     apmisLookupDisplayKey = 'name';
     authorizeRx = true;
