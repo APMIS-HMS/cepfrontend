@@ -7,6 +7,7 @@ import { Employee, Facility, User } from '../../../models/index';
 import { WardEmitterService } from '../../../services/facility-manager/ward-emitter.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
+import { ISubscription, Subscription } from 'rxjs/Subscription';
 
 @Component({
 	selector: 'app-ward-manager',
@@ -29,7 +30,8 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 	contentSecMenuShow = false;
 	checkedInObject: any = <any>{};
   user: User = <User>{};
-	searchControl = new FormControl();
+  searchControl = new FormControl();
+  subscription: Subscription;
 
 	constructor(
 		private _locker: CoolLocalStorage,
@@ -108,14 +110,18 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 
 		const page: string = this._router.url;
 		this.checkPageUrl(page);
-		this._wardEventEmitter.announcedUrl.subscribe(url => {
+		const subscription1 = this._wardEventEmitter.announcedUrl.subscribe(url => {
 			this.pageInView = url;
 		});
 
 		// Update the wardCheckedIn object when it changes.
-		this._wardEventEmitter.announceWard.subscribe(val => {
+    const subscription2 = this._wardEventEmitter.announceWard.subscribe(val => {
 			this.checkedInObject = val;
     });
+
+    // Push all subscriptions in to the this.subscription.
+    this.subscription.add(subscription1);
+    this.subscription.add(subscription2);
 	}
 
 	checkIntoWard() {
@@ -172,14 +178,8 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 
 	close_onClick(message: boolean): void {
 		this.modal_on = false;
-	}
-
-	ngOnDestroy() {
-		this._employeeService.announceCheckIn(undefined);
-		this._locker.setObject('wardCheckingObject', {});
-		this.checkedInObject = {};
   }
-
+  
   // Notification
   private _notification(type: String, text: String): void {
     this._facilityService.announceNotification({
@@ -187,5 +187,12 @@ export class WardManagerComponent implements OnInit, OnDestroy {
       type: type,
       text: text
     });
+  }
+
+	ngOnDestroy() {
+		this._employeeService.announceCheckIn(undefined);
+		this._locker.setObject('wardCheckingObject', {});
+    this.checkedInObject = {};
+    this.subscription.unsubscribe();
   }
 }

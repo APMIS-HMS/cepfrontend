@@ -38,15 +38,17 @@ export class ClinicComponent implements OnInit, OnDestroy {
 	isDoctor = false;
 	counter = 0;
 
-	constructor(private router: Router, private appointmentService: AppointmentService,
+	constructor(
+		private router: Router,
+		private appointmentService: AppointmentService,
 		private professionService: ProfessionService,
 		private locker: CoolLocalStorage,
 		private route: ActivatedRoute,
 		private employeeService: EmployeeService,
 		public clinicHelperService: ClinicHelperService,
-    private authFacadeService: AuthFacadeService,
-    private userService:UserService,
-    private systemModuleService:SystemModuleService,
+		private authFacadeService: AuthFacadeService,
+		private userService:UserService,
+		private systemModuleService:SystemModuleService,
 		private locationService: LocationService) {
 
 		// this.route.data.subscribe(data => {
@@ -178,15 +180,17 @@ export class ClinicComponent implements OnInit, OnDestroy {
 		// 			}
 		// 		});
 
-  }
+  	}
 
 	changeRoom() {
 		this.modal_on = true;
 		this.contentSecMenuShow = false;
 	}
+
 	pageInViewLoader(title) {
 		this.pageInView = title;
 	}
+
 	navItemClick(val) {
 		this.contentSecMenuShow = false;
 		if (val == 'appointment') {
@@ -215,9 +219,11 @@ export class ClinicComponent implements OnInit, OnDestroy {
 			this.clinicRoom = false;
 		}
 	}
+
 	contentSecMenuToggle() {
 		this.contentSecMenuShow = !this.contentSecMenuShow;
 	}
+
 	innerMenuHide(e) {
 		if (
 			e.srcElement.className === 'inner-menu1-wrap' ||
@@ -227,15 +233,18 @@ export class ClinicComponent implements OnInit, OnDestroy {
 			this.contentSecMenuShow = false;
 		}
 	}
+
 	closeActivate(e) {
 		if (e.srcElement.id !== 'contentSecMenuToggle') {
 			this.contentSecMenuShow = false;
 		}
 		this.appointmentService.hideTimelineAnnounced(true);
 	}
+
 	close_onClick(message: boolean): void {
 		this.modal_on = false;
 	}
+
 	appointmentStyle() {
 		this.clinicApppointment = true;
 		this.clinicCheckin = false;
@@ -243,6 +252,7 @@ export class ClinicComponent implements OnInit, OnDestroy {
 		this.clinicConsulting = false;
 		this.clinicRoom = false;
 	}
+
 	checkedinStyle() {
 		this.clinicApppointment = false;
 		this.clinicCheckin = true;
@@ -250,6 +260,7 @@ export class ClinicComponent implements OnInit, OnDestroy {
 		this.clinicConsulting = false;
 		this.clinicRoom = false;
 	}
+
 	scheduleStyle() {
 		this.clinicApppointment = false;
 		this.clinicCheckin = false;
@@ -257,6 +268,7 @@ export class ClinicComponent implements OnInit, OnDestroy {
 		this.clinicConsulting = false;
 		this.clinicRoom = false;
 	}
+
 	consultingStyle() {
 		this.clinicApppointment = false;
 		this.clinicCheckin = false;
@@ -264,6 +276,7 @@ export class ClinicComponent implements OnInit, OnDestroy {
 		this.clinicConsulting = true;
 		this.clinicRoom = false;
 	}
+
 	roomStyle() {
 		this.clinicApppointment = false;
 		this.clinicCheckin = false;
@@ -271,6 +284,7 @@ export class ClinicComponent implements OnInit, OnDestroy {
 		this.clinicConsulting = false;
 		this.clinicRoom = true;
 	}
+
 	ngOnDestroy() {
 		if (this.clinicHelperService.loginEmployee !== undefined && this.clinicHelperService.loginEmployee.consultingRoomCheckIn !== undefined) {
 			this.clinicHelperService.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
@@ -281,11 +295,12 @@ export class ClinicComponent implements OnInit, OnDestroy {
 					});
 				}
 			});
-		}else{
+		} else {
 
-    }
+		}
 		this.employeeService.announceCheckIn(undefined);
 	}
+
 	private checkPageUrl(param: string) {
 		if (param.includes('appointment')) {
 			this.clinicApppointment = true;
