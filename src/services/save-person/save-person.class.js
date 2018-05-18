@@ -28,7 +28,7 @@ class Service {
 
         let checkPerson = await searchPeople.find({
             query: {
-                firstName: 'Sunday', //data.person.firstName,
+                firstName: data.person.firstName,
                 dateOfBirth: data.person.dateOfBirth,
                 gender: data.person.gender,
                 motherMaidenName: data.person.motherMaidenName,
