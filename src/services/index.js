@@ -184,7 +184,6 @@ const employeeSearch = require('./employee-search/employee-search.service.js');
 const getServerTime = require('./get-server-time/get-server-time.service.js');
 const vitalBpLocations = require('./vital-bp-locations/vital-bp-locations.service.js');
 const immunizationSchedule = require('./immunization-schedule/immunization-schedule.service.js');
-const immunization = require('./immunization/immunization.service.js');
 const immunizationRecords = require('./immunization-records/immunization-records.service.js');
 const immunizationRecordHistory = require('./immunization-record-history/immunization-record-history.service.js');
 const crudImmunizationService = require('./crud-immunization-service/crud-immunization-service.service.js');
@@ -376,7 +375,6 @@ module.exports = function(app) {
     app.configure(getServerTime);
     app.configure(vitalBpLocations);
     app.configure(immunizationSchedule);
-    app.configure(immunization);
     app.configure(immunizationRecords);
     app.configure(immunizationRecordHistory);
     app.configure(crudImmunizationService);
