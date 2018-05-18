@@ -375,7 +375,6 @@ module.exports = function(app) {
     app.configure(getServerTime);
     app.configure(vitalBpLocations);
     app.configure(immunizationSchedule);
-    app.configure(immunization);
     app.configure(immunizationRecords);
     app.configure(immunizationRecordHistory);
     app.configure(crudImmunizationService);
