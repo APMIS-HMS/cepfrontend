@@ -12,30 +12,12 @@
             </mat-autocomplete>
         </div>
         <div class="col-xs-4">
-            <!-- <mat-input-container>
-                        <input matInput placeholder="Patient" [matAutocomplete]="autoPatient" [formControl]="patient">
-                    </mat-input-container>
-                    <span style="margin-left: -15px;" *ngIf="loadingPatients" class="fa fa-spinner fa-spin"></span> -->
-            <!-- <mat-autocomplete #autoPatient="matAutocomplete" [displayWith]="patientDisplayFn">
-                        <mat-option *ngFor="let patient of filteredPatients | async" [value]="patient">
-                            {{ patient.personDetails.lastName }} {{ patient.personDetails.firstName }}
-                        </mat-option>
-                    </mat-autocomplete> -->
             <apmis-lookup [formControl]="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Search for Patient" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
                 [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
         </div>
         <div class="col-xs-4">
             <apmis-lookup [formControl]="provider" [(ngModel)]="apmisProviderLookupText" [url]="apmisProviderLookupUrl" [query]="apmisProviderLookupQuery" placeholder="Search for Provider" [isSocket]="true" [displayKey]="apmisProviderLookupDisplayKey" [displayImage]="true"
                 [imgObj]="apmisProviderLookupImgKey" [multipleKeys]="true" [otherKeys]="apmisProviderLookupOtherKeys" (selectedItem)="apmisProviderLookupHandleSelectedItem($event)"></apmis-lookup>
-            <!-- <mat-input-container>
-                        <input matInput placeholder="Provider" [matAutocomplete]="providerAuto" [formControl]="provider">
-                    </mat-input-container>
-                    <span style="margin-left: -15px;" *ngIf="loadingProviders" class="fa fa-spinner fa-spin"></span>
-                    <mat-autocomplete #providerAuto="matAutocomplete" [displayWith]="providerDisplayFn">
-                        <mat-option *ngFor="let provider of filteredProviders | async" [value]="provider">
-                            {{ provider.personDetails.lastName }} {{ provider.personDetails.firstName }}
-                        </mat-option>
-                    </mat-autocomplete> -->
         </div>
         <div class="col-xs-4">
             <mat-input-container>
@@ -48,15 +30,6 @@
             </mat-autocomplete>
         </div>
         <div class="col-xs-4">
-            <!-- <mat-input-container>
-                            <input matInput [formControl]="dateCtrl" [value]="date | date: 'short'" [matDatepicker]="picker" placeholder="Choose a date"
-                                readonly>
-                            <mat-error *ngIf="dateCtrl.hasError('noValue')">
-                                {{clinicErrorMsg}}
-                            </mat-error>
-                            <button mdSuffix [matDatepickerToggle]="picker"></button>
-                        </mat-input-container> -->
-            <!-- <mat-datepicker #picker></mat-datepicker> -->
             <mat-input-container>
                 <input [formControl]="dateCtrl" [hourTime]="'12'" matInput [value]="date | date: 'dd/MM/yyyy HH:mm a'" dateTimePicker />
                 <mat-error *ngIf="dateCtrl.hasError('noValue')">
@@ -85,58 +58,108 @@
                 </mat-option>
             </mat-autocomplete>
         </div>
+        <div class="col-xs-4">
+            <mat-input-container class="example-full-width">
+                <input matInput [formControl]="reason" placeholder="Reason">
+            </mat-input-container>
+        </div>
         <div class="col-xs-4" style="padding: 20px 10px;">
             <mat-checkbox [formControl]="checkIn">Check In</mat-checkbox>
         </div>
-        <div class="col-xs-4" style="padding: 20px 10px;">
-            <mat-checkbox [formControl]="teleMed">Tele Medicine Consultation</mat-checkbox>
-        </div>
-        <div class="col-xs-4">
-            <mat-input-container class="example-full-width">
-                <textarea matInput [formControl]="reason" placeholder="Reason"></textarea>
-            </mat-input-container>
-        </div>
-        <div class="col-xs-4" *ngIf="showTimeZone" style="padding: 18px;">
-            <!-- <div class="pill">
-                        <img src="assets/images/users/default.png" class="pill-img">
-                        <span>Hdfdfsdfkj</span>
-                    </div>
-                    <div class="pill">
-                        <img src="assets/images/users/default.png" class="pill-img">
-                        <span>Hdfdfsdfkj</span>
-                    </div>
-                    <div class="pill">
-                        <img src="assets/images/users/default.png" class="pill-img">
-                        <span>Hdfdfsdfkj</span>
-                    </div>
-                    <div class="pill">
-                        <img src="assets/images/users/default.png" class="pill-img">
-                        <span>Hdfdfsdfkj</span>
-                    </div> -->
-            <!-- <div>
-                        <mat-input-container>
-                            <input matInput placeholder="Invite Personnel" [matAutocomplete]="personnel" [formControl]="timezone">
-                        </mat-input-container>
-    
-                        <mat-autocomplete #personnel="matAutocomplete" [displayWith]="timezoneDisplayFn">
-                            <mat-option value="Dr. Ade">
-                                Dr. Ade
-                            </mat-option>
-                            <mat-option value="Dr. Bisi">
-                                Dr. Bisi
-                            </mat-option>
-                        </mat-autocomplete>
-                    </div> -->
-
+        <div class="col-xs-4" *ngIf="showTimeZone">
             <mat-input-container>
                 <input matInput placeholder="Select Timezone" [matAutocomplete]="timezoneAuto" [formControl]="timezone">
             </mat-input-container>
-
             <mat-autocomplete #timezoneAuto="matAutocomplete" [displayWith]="timezoneDisplayFn">
                 <mat-option *ngFor="let timezone of timezones" [value]="timezone">
                     {{ timezone.name }}
                 </mat-option>
             </mat-autocomplete>
+        </div>
+        <div class="col-xs-12 immune-box">
+            <div class="row box">
+                <div class="col-xs-4 immune-search-box">
+                    <div class="col-xs-12 search-box">
+                        <mat-input-container class="example-full-width">
+                            <input matInput placeholder="Immunization Schedule">
+                        </mat-input-container>
+                    </div>
+                    <div class="col-xs-12 immune-search-result">
+                        <div class="immune-group-item active">
+                            <mat-radio-button>Pregnant Women</mat-radio-button>
+                        </div>
+                        <div class="immune-group-item">
+                            <mat-radio-button>Pregnant Women</mat-radio-button>
+                        </div>
+                        <div class="immune-group-item">
+                            <mat-radio-button>Pregnant Women</mat-radio-button>
+                        </div>
+                        <div class="immune-group-item">
+                            <mat-radio-button>Pregnant Women</mat-radio-button>
+                        </div>
+                        <div class="immune-group-item">
+                            <mat-radio-button>Pregnant Women</mat-radio-button>
+                        </div>
+                        <div class="immune-group-item">
+                            <mat-radio-button>Pregnant Women</mat-radio-button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-8 immune-result-right">
+                    <div class="box">
+                        <div class="col-xs-12 header">
+                            <div class="row">
+                                <div class="col-xs-6">
+                                    <h3>Selected Vaccines</h3>
+                                </div>
+                                <div class="col-xs-6 pull right" style="text-align:right;margin-top: 5px;">
+                                    <mat-checkbox style="line-height:18px;font-size:12px;">
+                                        Check All
+                                    </mat-checkbox>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xs-12 content">
+                            <div class="immune-content-group-item">
+                                <mat-checkbox style="line-height:18px;font-size:12px;">
+                                    <b>HBV</b> #300
+                                    <br /> Hepatitis B Vaccine 100mg/ml Oral Solution!
+                                </mat-checkbox>
+                            </div>
+                            <div class="immune-content-group-item">
+                                <mat-checkbox>
+                                    <b>HBV</b> #300
+                                    <br /> Hepatitis B Vaccine 100mg/ml Oral Solution!
+                                </mat-checkbox>
+                            </div>
+                            <div class="immune-content-group-item">
+                                <mat-checkbox>
+                                    <b>HBV</b> #300
+                                    <br /> Hepatitis B Vaccine 100mg/ml Oral Solution!
+                                </mat-checkbox>
+                            </div>
+                            <div class="immune-content-group-item">
+                                <mat-checkbox>
+                                    <b>HBV</b> #300
+                                    <br /> Hepatitis B Vaccine 100mg/ml Oral Solution!
+                                </mat-checkbox>
+                            </div>
+                            <div class="immune-content-group-item">
+                                <mat-checkbox>
+                                    <b>HBV</b> #300
+                                    <br /> Hepatitis B Vaccine 100mg/ml Oral Solution!
+                                </mat-checkbox>
+                            </div>
+                            <div class="immune-content-group-item">
+                                <mat-checkbox>
+                                    <b>HBV</b> #300
+                                    <br /> Hepatitis B Vaccine 100mg/ml Oral Solution!
+                                </mat-checkbox>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <div class="row">
@@ -145,9 +168,9 @@
             <span *ngIf="updateAppointment">Update Appointment</span>
             <span *ngIf="saveAppointment">Schedule Appointment</span>
             <span *ngIf="savingAppointment">Scheduling Appointment...
-                <i class="fa fa-spinner fa-spin"></i>
+              <i class="fa fa-spinner fa-spin"></i>
             </span>
-        </button>
+          </button>
         </div>
     </div>
 </div>

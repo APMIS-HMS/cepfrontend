@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
 // var _ = require('lodash');
@@ -20,6 +20,7 @@ import { ActivatedRoute } from '@angular/router'
     styleUrls: ['./new-appointment.component.scss']
 })
 export class NewAppointmentComponent implements OnInit {
+    appointmentTypeForm: FormGroup;
     selectedFacility: Facility = <Facility>{};
     loginEmployee: Employee = <Employee>{};
     selectedProfession: Profession = <Profession>{};
@@ -42,7 +43,10 @@ export class NewAppointmentComponent implements OnInit {
     subscription: Subscription;
     auth: any;
     currentDate: Date = new Date();
-
+    physicianAppointment = true;
+    immunizationAppointment = false;
+    radiologyAppointment = false;
+    theatreAppointment = true;
     clinicCtrl: FormControl;
     providerCtrl: FormControl;
     typeCtrl: FormControl;
@@ -66,7 +70,10 @@ export class NewAppointmentComponent implements OnInit {
 
     dayCount = ['Today', 'Last 3 Days', 'Last Week', 'Last 2 Weeks', 'Last Month'];
 
-    constructor(private scheduleService: SchedulerService, private locker: CoolLocalStorage,
+    constructor(
+        private _fb: FormBuilder,
+        private scheduleService: SchedulerService,
+        private locker: CoolLocalStorage,
         private appointmentService: AppointmentService, private facilityService: FacilitiesService,
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
         private employeeService: EmployeeService, private workSpaceService: WorkSpaceService, private patientService: PatientService,
@@ -138,11 +145,15 @@ export class NewAppointmentComponent implements OnInit {
     ngOnInit() {
         this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
         this.auth = <any>this.locker.getObject('auth');
-        this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+        // this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
         this.employeeService.loginEmployeeAnnounced$.subscribe(employee => {
             this.loginEmployee = employee;
             this.prime();
-        })
+        });
+
+        this.appointmentTypeForm = this._fb.group({
+            category: ['physicianAppointment']
+        });
     }
     getClinicAppointments(value) {
         this.selectedClinic = value.clinicId;
@@ -332,4 +343,27 @@ export class NewAppointmentComponent implements OnInit {
         return type ? type.name : type;
     }
 
+    onClickRadioBtn(value: string) {
+        if (value === 'physicianAppointment') {
+            this.physicianAppointment = true;
+            this.immunizationAppointment = false;
+            this.radiologyAppointment = false;
+            this.theatreAppointment = false;
+        } else if (value === 'immunizationAppointment') {
+            this.physicianAppointment = false;
+            this.immunizationAppointment = true;
+            this.radiologyAppointment = false;
+            this.theatreAppointment = false;
+        } else if (value === 'radiologyAppointment') {
+            this.physicianAppointment = false;
+            this.immunizationAppointment = false;
+            this.radiologyAppointment = true;
+            this.theatreAppointment = false;
+        } else if (value === 'theatreAppointment') {
+            this.physicianAppointment = false;
+            this.immunizationAppointment = false;
+            this.radiologyAppointment = false;
+            this.theatreAppointment = true;
+        }
+    }
 }

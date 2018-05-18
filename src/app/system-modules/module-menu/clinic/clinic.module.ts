@@ -22,6 +22,7 @@ import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { DateRangePickerModule } from 'ng-pick-daterange';
 import { DateTimePickerModule } from 'ng-pick-datetime';
 import { FormsService, TimezoneService } from '../../../services/facility-manager/setup/index';
+import { ImmunizationAppointmentComponent } from './new-appointment/schedule-frm/immunization-appointment/immunization-appointment.component';
 
 @NgModule({
     declarations: [
@@ -33,7 +34,8 @@ import { FormsService, TimezoneService } from '../../../services/facility-manage
         ConsultingRoomComponent,
         ConsultingRoomCheckinComponent,
         NewAppointmentComponent,
-        ScheduleFrmComponent],
+        ScheduleFrmComponent,
+        ImmunizationAppointmentComponent],
     exports: [
     ],
     imports: [
