@@ -4,6 +4,7 @@ import { FacilitiesService, EmployeeService } from '../../../services/facility-m
 import { Employee, Facility } from '../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
+import { LabEventEmitterService } from '../../../services/facility-manager/lab-event-emitter.service';
 
 @Component({
   selector: 'app-lab',
@@ -34,14 +35,14 @@ export class LabComponent implements OnInit, OnDestroy {
     private _locker: CoolLocalStorage,
     public facilityService: FacilitiesService,
     private _employeeService: EmployeeService,
-    private _authFacadeService: AuthFacadeService
+    private _authFacadeService: AuthFacadeService,
+    private _labEventEmitter: LabEventEmitterService
   ) { }
 
   ngOnInit() {
     const page: string = this._router.url;
     this.checkPageUrl(page);
     this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
-    // this.loginEmployee = <Employee>this._locker.getObject('loginEmployee');
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.loginEmployee = res;
       if ((this.loginEmployee.workbenchCheckIn === undefined
@@ -65,6 +66,7 @@ export class LabComponent implements OnInit, OnDestroy {
               checkingObject = { typeObject: x, type: 'workbench' };
               this.checkedInObject = checkingObject;
               this._employeeService.announceCheckIn(checkingObject);
+              this._labEventEmitter.announceLabChange(checkingObject);
               this._locker.setObject('workbenchCheckingObject', checkingObject);
             });
           }
@@ -83,6 +85,7 @@ export class LabComponent implements OnInit, OnDestroy {
                 const checkingObject = { typeObject: x, type: 'workbench' };
                 this.checkedInObject = checkingObject;
                 this._employeeService.announceCheckIn(checkingObject);
+                this._labEventEmitter.announceLabChange(checkingObject);
                 this._locker.setObject('workbenchCheckingObject', checkingObject);
               });
             }

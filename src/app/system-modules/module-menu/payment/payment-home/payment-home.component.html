@@ -1,9 +1,7 @@
 <ul class="pg-menuWrap">
-    <li [class.pg-menuActive]="productNavMenu" routerLink="/dashboard/payment">Overview</li>
-    <li [class.pg-menuActive]="productNavMenu" routerLink="/dashboard/payment/history">History</li>
+    <li [class.pg-menuActive]="paymentOverview" (click)="onClickMenu('payment');">Overview</li>
+    <li [class.pg-menuActive]="paymentHistory" (click)="onClickMenu('history');">History</li>
 </ul>
-<div>
-    <div>
-        <router-outlet></router-outlet>
-    </div>
+<div class="col-xs-12" style="margin-top: 10px;">
+    <router-outlet></router-outlet>
 </div>
