@@ -134,11 +134,16 @@ class Service {
         const roleCount = selectedUser.data[0].userRoles.length;
         data.roles.forEach((indx, i) => {
             if (index > -1) {
-                selectedUser.data[0].userRoles[index].roles.forEach(ind => {
+                let roleFil = selectedUser.data[0].userRoles[index].roles.filter(m => m === indx);
+                if (roleFil.length === 0) {
+                    selectedUser.data[0].userRoles[index].roles.push(indx);
+                }
+                /* selectedUser.data[0].userRoles[index].roles.forEach(ind => {
+                    console.log(ind)
                     if (ind != indx) {
-                        selectedUser.data[0].userRoles[index].roles.push(indx);
+
                     }
-                });
+                }); */
             } else {
                 if (selectedUser.data[0].userRoles.length === 0) {
                     let userRole = {
@@ -171,7 +176,7 @@ class Service {
                 selectedUser = this.removeRole(selectedUser, role, index);
             }
         }
-
+        console.log(selectedUser.data[0].userRoles);
         let updatedUser = await usersService.patch(selectedUser.data[0]._id, {
             userRoles: selectedUser.data[0].userRoles
         });
@@ -207,7 +212,7 @@ class Service {
     }
 }
 
-module.exports = function(options) {
+module.exports = function (options) {
     return new Service(options);
 };
 

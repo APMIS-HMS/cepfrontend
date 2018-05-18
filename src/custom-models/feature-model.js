@@ -6,7 +6,8 @@ const featureSchema = new Schema({
         type: Schema.Types.ObjectId,
         required: false
     },
-    accessControlId: {
+    accessControlId:
+    {
         type: Schema.Types.ObjectId,
         required: false
     },
