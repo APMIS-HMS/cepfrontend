@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, OnDestroy } from '@angular/core';
 import { InPatientListService, InPatientService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
 import { Facility, InPatient, WardTransfer, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -6,13 +6,14 @@ import { WardEmitterService } from '../../../../services/facility-manager/ward-e
 import * as myGlobals from '../../../../shared-module/helpers/global-config';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
+import { Subscription, ISubscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-ward-manager-admissionpage',
   templateUrl: './ward-manager-admissionpage.component.html',
   styleUrls: ['./ward-manager-admissionpage.component.scss']
 })
-export class WardManagerAdmissionpageComponent implements OnInit {
+export class WardManagerAdmissionpageComponent implements OnInit, OnDestroy {
   @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
   @Input() selectInpatient: any;
   admitPatient = false;
@@ -38,6 +39,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
   disableAdmitBtn = false;
   admitBtnText = '<i class="fa fa-bed" aria-hidden="true"></i> Admit';
   inPatientWaitingItem: any;
+  routeSubscription: ISubscription;
 
   constructor(
     private _inPatientListService: InPatientListService,
@@ -85,7 +87,7 @@ export class WardManagerAdmissionpageComponent implements OnInit {
     this.user = <User>this._locker.getObject('auth');
 
     // Subscribe to the event when ward changes.
-    this._wardEventEmitter.announceWard.subscribe(val => {
+    this.routeSubscription = this._wardEventEmitter.announceWard.subscribe(val => {
       this.selectedWard = val;
       this.getWaitingList(val);
       this.getTransferInList(val);
@@ -223,5 +225,9 @@ export class WardManagerAdmissionpageComponent implements OnInit {
       type: type,
       text: text
     });
+  }
+
+  ngOnDestroy() {
+    this.routeSubscription.unsubscribe();
   }
 }

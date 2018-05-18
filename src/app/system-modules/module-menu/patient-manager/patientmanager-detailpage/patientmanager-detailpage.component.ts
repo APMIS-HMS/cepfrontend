@@ -69,7 +69,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   menuDocs = false;
   menuOrder = false;
   menuTags = false;
-
+  menuImmunization = false;
   // menuImages = false;
   // menuLists = false;
   menuTimeline = false;
@@ -349,6 +349,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuBilling = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
+    this.menuImmunization = false;
     this.menuLab = false;
     this.menuForms = false;
     this.menuUploads = false;
@@ -372,6 +373,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuBilling = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
+    this.menuImmunization = false;
     this.menuLab = false;
     this.menuForms = false;
     this.menuUploads = false;
@@ -395,6 +397,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuBilling = true;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
+    this.menuImmunization = false;
     this.menuLab = false;
     this.menuForms = false;
     this.menuUploads = false;
@@ -418,6 +421,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuBilling = false;
     this.menuTreatmentPlan = true;
     this.menuImaging = false;
+    this.menuImmunization = false;
     this.menuLab = false;
     this.menuForms = false;
     this.menuUploads = false;
@@ -441,6 +445,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuBilling = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
+    this.menuImmunization = false;
     this.menuLab = false;
     this.menuForms = false;
     this.menuUploads = false;
@@ -464,6 +469,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuBilling = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = true;
+    this.menuImmunization = false;
     this.menuLab = false;
     this.menuForms = false;
     this.menuUploads = false;
@@ -487,6 +493,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuBilling = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
+    this.menuImmunization = false;
     this.menuLab = true;
     this.menuForms = false;
     this.menuUploads = false;
@@ -510,6 +517,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuUploads = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
+    this.menuImmunization = false;
     this.menuLab = false;
     this.menuForms = true;
     this.menuUploads = false;
@@ -532,6 +540,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuBilling = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
+    this.menuImmunization = false;
     this.menuLab = false;
     this.menuForms = false;
     this.menuUploads = true;
@@ -555,6 +564,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuBilling = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
+    this.menuImmunization = false;
     this.menuLab = false;
     this.menuForms = false;
     this.menuUploads = false;
@@ -578,6 +588,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuBilling = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
+    this.menuImmunization = false;
     this.menuLab = false;
     this.menuForms = false;
     this.menuUploads = false;
@@ -601,6 +612,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuBilling = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
+    this.menuImmunization = false;
     this.menuLab = false;
     this.menuForms = false;
     this.menuUploads = false;
@@ -624,6 +636,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuBilling = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
+    this.menuImmunization = false;
     this.menuLab = false;
     this.menuForms = false;
     this.menuUploads = false;
@@ -647,6 +660,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuUploads = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
+    this.menuImmunization = false;
     this.menuLab = false;
     this.menuForms = false;
     this.menuUploads = false;
@@ -670,6 +684,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuBilling = false;
     this.menuTreatmentPlan = false;
     this.menuImaging = false;
+    this.menuImmunization = false;
     this.menuLab = false;
     this.menuForms = false;
     this.menuUploads = false;
@@ -693,6 +708,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuTreatmentPlan = false;
     this.menuUploads = false;
     this.menuImaging = false;
+    this.menuImmunization = false;
     this.menuLab = false;
     this.menuForms = false;
     this.menuUploads = false;
@@ -716,6 +732,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuTreatmentPlan = false;
     this.menuUploads = false;
     this.menuImaging = false;
+    this.menuImmunization = false;
     this.menuLab = false;
     this.menuForms = false;
     this.menuUploads = false;
@@ -739,6 +756,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuTreatmentPlan = false;
     this.menuUploads = false;
     this.menuImaging = false;
+    this.menuImmunization = false;
     this.menuLab = false;
     this.menuForms = false;
     this.menuUploads = false;
@@ -753,6 +771,30 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuMedicationHistory = false;
     this.menuPayment = false;
     this.menuTags = true;
+    this.menuResp = false;
+  }
+  menuImmunization_click() {
+    this.menuSummary = false;
+    this.menuPharmacy = false;
+    this.menuBilling = false;
+    this.menuTreatmentPlan = false;
+    this.menuUploads = false;
+    this.menuImaging = false;
+    this.menuImmunization = true;
+    this.menuLab = false;
+    this.menuForms = false;
+    this.menuUploads = false;
+    this.menuDocs = false;
+    this.menuOrder = false;
+    this.menuFluid = false;
+    this.menuVitals = false;
+    this.menuTimeline = false;
+    this.menuPrescription = false;
+    this.menuExternalPrescription = false;
+    this.menuFinance = false;
+    this.menuMedicationHistory = false;
+    this.menuPayment = false;
+    this.menuTags = false;
     this.menuResp = false;
   }
 

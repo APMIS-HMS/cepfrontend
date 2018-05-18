@@ -1,5 +1,4 @@
 @import "../documentation/documentation.component.scss";
-
 .blue-gradient {
     background: #457fca;
     /* fallback for old browsers */
@@ -10,20 +9,25 @@
     color: #fff !important;
 }
 
-.docCard-body{
+.docCard-body {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
 }
-.doc-card2{
+
+.doc-card2 {
+    margin-top: 0;
+    width: 97%;
+}
+
+.doc-cardWrap {
     margin-top: 0;
 }
-.doc-cardWrap{
-    margin-top: 0;
-}
-.body-divide{
+
+.body-divide {
     width: 47%;
 }
+
 .subsect-itemWrap {
     display: flex;
     justify-content: space-between;
@@ -31,28 +35,38 @@
     font-size: 1.2rem;
     margin: 10px 0;
 }
-.subsect-val{
+
+.subsect-val {
     width: 58%;
-    white-space: pre-wrap;      /* CSS3 */   
-    white-space: -moz-pre-wrap; /* Firefox */    
-    white-space: -pre-wrap;     /* Opera <7 */   
-    white-space: -o-pre-wrap;   /* Opera 7 */    
-    word-wrap: break-word;      /* IE */
+    white-space: pre-wrap;
+    /* CSS3 */
+    white-space: -moz-pre-wrap;
+    /* Firefox */
+    white-space: -pre-wrap;
+    /* Opera <7 */
+    white-space: -o-pre-wrap;
+    /* Opera 7 */
+    word-wrap: break-word;
+    /* IE */
 }
-.subsect-label{
+
+.subsect-label {
     margin-right: 10px;
     width: 38%;
     color: #777;
     font-size: 1rem;
     text-decoration: underline;
 }
+
 .list-label[_ngcontent-c9] {
     color: #ff2500;
 }
+
 .val-tag[_ngcontent-c9] {
     color: #000;
 }
-.nok-wrap{
+
+.nok-wrap {
     display: flex;
     justify-content: space-between;
     width: 100%;
@@ -60,6 +74,7 @@
     background: #f8f8f8;
     padding: 10px;
 }
+
 .isNOK {
     font-size: 1.2rem;
     color: #fff;
@@ -67,21 +82,24 @@
     padding: 2px;
     text-align: center;
 }
-.modal_title{
+
+.modal_title {
     position: relative;
 }
-.modal_title i{
+
+.modal_title i {
     position: absolute;
     right: 12px;
     cursor: pointer;
 }
-.modal_title i:hover{
+
+.modal_title i:hover {
     color: #0288D1;
 }
 
 .badge {
     text-align: center;
-    min-width: 60px; 
+    min-width: 60px;
     padding: 10px;
     font-size: 12px;
     font-weight: 400;

@@ -20,6 +20,7 @@ import { TemplateComponent } from './template/template.component';
 import { SelectTemplateComponent } from './template/select-template/select-template.component';
 import { ScopeLevelService } from '../../../services/module-manager/setup/index';
 import { FacilityCompanyCoverService } from '../../../services/facility-manager/setup/facility-company-cover.service';
+import { LabEventEmitterService } from '../../../services/facility-manager/lab-event-emitter.service';
 
 @NgModule({
   imports: [
@@ -32,6 +33,8 @@ import { FacilityCompanyCoverService } from '../../../services/facility-manager/
   declarations: [LabComponent, WorkbenchComponent, InvestigationServiceComponent,
     InvestigationPriceComponent, PanelComponent, ReportComponent, ReportDetailComponent,
     ExternalInvestigationsComponent, TemplateComponent, SelectTemplateComponent],
-  providers: [ LaboratoryRequestService, WorkbenchService, ScopeLevelService, HmoService, FacilityFamilyCoverService, FacilityCompanyCoverService ]
+  providers: [
+    LaboratoryRequestService, WorkbenchService, ScopeLevelService, HmoService,
+    FacilityFamilyCoverService, FacilityCompanyCoverService, LabEventEmitterService ]
 })
 export class LabModule { }

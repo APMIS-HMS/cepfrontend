@@ -77,6 +77,7 @@ import { PatientAddTagComponent } from './patientmanager-detailpage/patient-tags
 import { OnlyMaterialModule } from '../../../shared-common-modules/only-material-module';
 import { AddPatientTagsComponent } from './patientmanager-detailpage/documentation/add-patient-tags/add-patient-tags.component';
 import { BulkUploadComponent } from './bulk-upload/bulk-upload.component';
+import { PatientImmunizationComponent } from './patientmanager-detailpage/patient-immunization/patient-immunization.component';
 
 @NgModule({
   declarations: [
@@ -124,7 +125,8 @@ import { BulkUploadComponent } from './bulk-upload/bulk-upload.component';
     PatientTagsComponent,
     PatientAddTagComponent,
     AddPatientTagsComponent,
-    BulkUploadComponent
+    BulkUploadComponent,
+    PatientImmunizationComponent
   ],
   exports: [],
   imports: [
