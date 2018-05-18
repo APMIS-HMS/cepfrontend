@@ -1,3 +1,5 @@
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Appointment } from './../../../../models/facility-manager/setup/appointment';
 import {
   Component,
@@ -33,8 +35,6 @@ import {
   PendingLaboratoryRequest,
   User
 } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';

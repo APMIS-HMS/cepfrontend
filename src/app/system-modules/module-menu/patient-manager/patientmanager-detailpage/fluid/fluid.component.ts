@@ -370,6 +370,8 @@ export class FluidComponent implements OnInit, AfterViewInit {
   }
   close_onClick(message: boolean): void {
     this.fluidType_pop = false;
+    this.getFluids('intake');
+    this.getFluids('output');
   }
 
 

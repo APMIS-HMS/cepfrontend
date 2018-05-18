@@ -7,7 +7,7 @@ import { Facility } from '../../../../models/index';
 import { DrugListApiService } from '../../../../services/facility-manager/setup';
 import { DurationUnits } from '../../../../shared-module/helpers/global-config';
 import { ImmunizationScheduleService } from '../../../../services/facility-manager/setup/immunization-schedule.service';
-import { IntervalObservable } from 'rxjs/observable/IntervalObservable';
+import { ISubscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-immunization-schedule',
@@ -32,7 +32,7 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
   cuDropdownLoading: boolean = true;
   drugIndex: number;
   durationUnits = DurationUnits;
-  private routeParams: any;
+  private routeParams: ISubscription;
   private routeId: string;
 
   constructor(
@@ -259,6 +259,7 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    // unsubscribe from any subscribed observable.
     this.routeParams.unsubscribe();
   }
 }
