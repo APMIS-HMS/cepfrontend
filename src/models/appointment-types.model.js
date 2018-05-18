@@ -3,13 +3,13 @@
 // See http://mongoosejs.com/docs/models.html
 // for more of what you can do here.
 module.exports = function (app) {
-  const mongooseClient = app.get('mongooseClient');
-  const { Schema } = mongooseClient;
-  const appointmentTypes = new Schema({
-    name: { type: String, required: true }
-  }, {
-    timestamps: true
-  });
+    const mongooseClient = app.get('mongooseClient');
+    const { Schema } = mongooseClient;
+    const appointmentTypes = new Schema({
+        name: { type: String, required: true }
+    }, {
+        timestamps: true
+    });
 
-  return mongooseClient.model('appointmentTypes', appointmentTypes);
+    return mongooseClient.model('appointmentTypes', appointmentTypes);
 };
