@@ -4,6 +4,13 @@
     margin-top: 40px;
 }
 
+.appointment-category {
+    margin-bottom: 20px;
+    .cat-radio-btn {
+        font-size: 14px;
+    }
+}
+
 .empWrap {
     cursor: pointer;
 }
@@ -27,7 +34,6 @@ ul.topmenuwrap {
     padding-bottom: 10px;
     box-sizing: border-box;
     position: relative;
-    margin-bottom: 20px;
 }
 
 .clinic-running-days-wrap i {

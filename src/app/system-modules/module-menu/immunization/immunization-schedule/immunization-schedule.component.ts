@@ -71,7 +71,7 @@ export class ImmunizationScheduleComponent implements OnInit {
     // Check if it's a new record.
     if (!!immuneSchedule) {
       this._systemModuleService.on();
-      this._router.navigate([`/dashboard/immunization/new/${immuneSchedule._id}`]).then(res => {
+      this._router.navigate(['/dashboard/immunization/new/', immuneSchedule._id]).then(res => {
         this._systemModuleService.off();
       });
     } else {

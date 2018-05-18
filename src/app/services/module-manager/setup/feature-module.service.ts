@@ -1,6 +1,6 @@
-import { SocketService, RestService } from "../../../feathers/feathers.service";
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs/Observable";
+import { SocketService, RestService } from '../../../feathers/feathers.service';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class FeatureModuleService {
@@ -14,14 +14,14 @@ export class FeatureModuleService {
     private _restService: RestService
   ) {
     // this._rest = _restService.getService('featuremodules');
-    this._rest = _restService.getService("features");
-    this._socket = _socketService.getService("features");
-    this._roleSocket = _socketService.getService("facility-roles");
+    this._rest = _restService.getService('features');
+    this._socket = _socketService.getService('features');
+    this._roleSocket = _socketService.getService('facility-roles');
     this._socket.timeout = 30000;
     this._roleSocket.timeout = 30000;
-    this._socket.on("created", function(features) {});
-    this._roleSocket.on("created", function(features) {});
-    this.listner = Observable.fromEvent(this._roleSocket, "created");
+    this._socket.on('created', function(features) {});
+    this._roleSocket.on('created', function(features) {});
+    this.listner = Observable.fromEvent(this._roleSocket, 'created');
   }
 
   find(query: any) {
