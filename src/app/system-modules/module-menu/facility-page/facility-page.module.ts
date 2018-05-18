@@ -56,6 +56,8 @@ import { AccessRoleDetailsComponent } from './facility-access-control/access-rol
 import { CreateAccessComponent } from './facility-access-control/create-access/create-access.component';
 import { ViewAccessComponent } from './facility-access-control/view-access/view-access.component';
 
+import { BulkUploadComponent } from './bulk-upload/bulk-upload.component';
+
 import { from } from 'rxjs/observable/from';
 
 @NgModule({
@@ -96,7 +98,8 @@ import { from } from 'rxjs/observable/from';
         NewFacEmployeeComponent,
         EmployeeAccessRolesComponent,
         AccessManagerComponent, AccessRoleDetailsComponent, CreateAccessComponent, ViewAccessComponent,
-        AccessManagerHomeComponent
+        AccessManagerHomeComponent,
+        BulkUploadComponent
     ],
     exports: [
     ],
