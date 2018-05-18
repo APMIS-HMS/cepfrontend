@@ -60,15 +60,15 @@ class Service {
             }
           }
         }
-        if (data.inventories.length > 0) {
-          let createInventory = await inventoriesService.create(data.inventories);
-          _createInventory = createInventory;
-        }
-        if (data.existingInventories.length > 0) {
+        // if (data.inventories.length > 0) {
+        //   let createInventory = await inventoriesService.create(data.inventories);
+        //   _createInventory = createInventory;
+        // }
+        if (data.existingInventories !== undefined) {
           if (data.existingInventories.length > 0) {
-            let len5 = data.existingInventories.length - 1
+            let len5 = data.existingInventories.length - 1;
             for (let index2 = 0; index2 <= len5; index2++) {
-              let createInventory = await inventoriesService.patch(data.existingInventories[index2]._id, data.existingInventories[index2], {});
+              let createInventory = await inventoriesService.patch(data.existingInventories[index2]._id, data.existingInventories[index2]);
               _createInventory = createInventory;
             }
           }

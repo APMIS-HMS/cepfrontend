@@ -50,7 +50,7 @@ class Service {
         product.batchNo = productObj.batchNo;
         product.costPrice = productObj.costPrice;
         product.expiryDate = productObj.expiryDate;
-        product.productId = productObj.id;
+        product.productId = productObj.productObject.id;
         product.quantity = productObj.qty;
         product.availableQuantity = productObj.qty;
         purchaseEntry.products.push(product);
@@ -61,7 +61,7 @@ class Service {
           inventory.serviceId = productObj.productObject.serviceId;
           inventory.categoryId = productObj.productObject.categoryId;
           inventory.facilityServiceId = productObj.productObject.facilityServiceId;
-          inventory.productId = productObj.id;
+          inventory.productId = productObj.productObject.id;
           inventory.totalQuantity = productObj.qty;
           inventory.availableQuantity = productObj.qty;
           inventory.reorderLevel = 0;
@@ -138,7 +138,7 @@ class Service {
       purchaseEntry.createdBy = data.createdBy;
 
       purchaseEntry.products = [];
-
+      
       /* end*/
 
       let inventories = [];
@@ -153,63 +153,75 @@ class Service {
         product.quantity = productObj.qty;
         product.availableQuantity = productObj.qty;
         purchaseEntry.products.push(product);
-        console.log(productObj.existingInventory);
+        // if (productObj.existingInventory !== undefined) {
+        //   console.log("*************************************************************************Am here*************************************************************************");
+        //   const inventory = {};
+        //   inventory.facilityId = data.facilityId;
+        //   inventory.storeId = data.store;
+        //   inventory.serviceId = productObj.existingInventory.serviceId;
+        //   inventory.categoryId = productObj.existingInventory.categoryId;
+        //   inventory.facilityServiceId = productObj.existingInventory.facilityServiceId;
+        //   inventory.productId = productObj.existingInventory.productId;
+        //   inventory.totalQuantity = productObj.qty;
+        //   inventory.availableQuantity = productObj.qty;
+        //   inventory.reorderLevel = 0;
+        //   inventory.reorderQty = 0;
+        //   inventory.transactions = [];
+
+
+        //   const inventoryTransaction = {};
+        //   inventoryTransaction.batchNumber = productObj.batchNo;
+        //   inventoryTransaction.costPrice = productObj.costPrice;
+        //   inventoryTransaction.expiryDate = productObj.expiryDate;
+        //   inventoryTransaction.quantity = productObj.qty;
+        //   inventoryTransaction.availableQuantity = productObj.qty;
+        //   inventory.transactions.push(inventoryTransaction);
+
+        //   inventories.push(inventory);
+        //   console.log(inventories);
+        // } else {
+        //   if (productObj.existingInventory !== undefined) {
+        //     delete productObj.existingInventory.productObject;
+        //   }
+
+        //   const inventory = productObj.existingInventory;
+        //   inventory.totalQuantity = inventory.totalQuantity + productObj.qty;
+        //   inventory.availableQuantity = inventory.availableQuantity + productObj.qty;
+        //   const inventoryTransaction = {};
+        //   inventoryTransaction.batchNumber = productObj.batchNo;
+        //   inventoryTransaction.costPrice = productObj.costPrice;
+        //   inventoryTransaction.expiryDate = productObj.expiryDate;
+        //   inventoryTransaction.quantity = productObj.qty;
+        //   inventoryTransaction.availableQuantity = productObj.qty;
+        //   inventory.transactions.push(inventoryTransaction);
+
+        //   existingInventories.push(inventory);
+        // }
         if (productObj.existingInventory !== undefined) {
-          console.log("*************************************************************************Am here*************************************************************************");
-          const inventory = {};
-          inventory.facilityId = data.facilityId;
-          inventory.storeId = data.store;
-          inventory.serviceId = productObj.productObject.serviceId;
-          inventory.categoryId = productObj.productObject.categoryId;
-          inventory.facilityServiceId = productObj.productObject.facilityServiceId;
-          inventory.productId = productObj.id;
-          inventory.totalQuantity = productObj.qty;
-          inventory.availableQuantity = productObj.qty;
-          inventory.reorderLevel = 0;
-          inventory.reorderQty = 0;
-          inventory.transactions = [];
-
-
-          const inventoryTransaction = {};
-          inventoryTransaction.batchNumber = productObj.batchNo;
-          inventoryTransaction.costPrice = productObj.costPrice;
-          inventoryTransaction.expiryDate = productObj.expiryDate;
-          inventoryTransaction.quantity = productObj.qty;
-          inventoryTransaction.availableQuantity = productObj.qty;
-          inventory.transactions.push(inventoryTransaction);
-
-          inventories.push(inventory);
-          console.log(inventories);
-        } else {
-          if (productObj.existingInventory !== undefined) {
-            delete productObj.existingInventory.productObject;
-          }
-
-          const inventory = productObj.existingInventory;
-          inventory.totalQuantity = inventory.totalQuantity + productObj.qty;
-          inventory.availableQuantity = inventory.availableQuantity + productObj.qty;
-          const inventoryTransaction = {};
-          inventoryTransaction.batchNumber = productObj.batchNo;
-          inventoryTransaction.costPrice = productObj.costPrice;
-          inventoryTransaction.expiryDate = productObj.expiryDate;
-          inventoryTransaction.quantity = productObj.qty;
-          inventoryTransaction.availableQuantity = productObj.qty;
-          inventory.transactions.push(inventoryTransaction);
-
-          existingInventories.push(inventory);
+          delete productObj.existingInventory.productObject;
         }
-      });
 
+        const inventory = productObj.existingInventory;
+        inventory.totalQuantity = inventory.totalQuantity + productObj.qty;
+        inventory.availableQuantity = inventory.availableQuantity + productObj.qty;
+        const inventoryTransaction = {};
+        inventoryTransaction.batchNumber = productObj.batchNo;
+        inventoryTransaction.costPrice = productObj.costPrice;
+        inventoryTransaction.expiryDate = productObj.expiryDate;
+        inventoryTransaction.quantity = productObj.qty;
+        inventoryTransaction.availableQuantity = productObj.qty;
+        inventory.transactions.push(inventoryTransaction);
+
+        existingInventories.push(inventory);
+      });
+      
       const data_ = {
         purchaseEntry: purchaseEntry,
         orderId: data.orderId,
         inventories: inventories,
         existingInventories: existingInventories
       }
-      console.log(data);
-      console.log(data_);
       const _makePurchaseEntriesService = await makePurchaseEntriesService.create(data_);
-      console.log(_makePurchaseEntriesService);
       return jsend.success(_makePurchaseEntriesService);
     }
     // 

@@ -11,29 +11,33 @@ class Service {
 
   async find(params) {
     const inventoriesService = this.app.service('inventories');
+    const fpService = this.app.service('formulary-products');
     let _inventories = {};
     _inventories.data = [];
-    let inventories = {};
-    if (params.query.isZero) {
-      inventories = await inventoriesService.find({
+
+    let productIds = await fpService.find({
+      query: {
+        name: params.query.name
+      }
+    });
+    // console.log(productIds);
+    for (let index = 0; index < productIds.data.length; index++) {
+      const inventories = await inventoriesService.find({
         query: {
           facilityId: params.query.facilityId,
           storeId: params.query.storeId,
-          availableQuantity: 0
+          productId: productIds.data[index].id
         }
       });
-    } else if (!params.query.isZero) {
-      inventories = await inventoriesService.find({
-        query: {
-          facilityId: params.query.facilityId,
-          storeId: params.query.storeId
-        }
-      });
-      console.log(inventories);
+      if(inventories.data[0]!== undefined){
+        _inventories.data.push(inventories.data[0]);
+      }
     }
-    let inventoriesDefined = inventories.data.filter(x => x.productObject !== undefined);
-    const filter = inventoriesDefined.filter(x => x.productObject.name.includes(params.query.name));
-    _inventories.data = filter;
+    // let inventoriesDefined = inventories.data.filter(x => x.productObject !== undefined);
+
+    // const filter = inventoriesDefined.filter(x => x.productObject.name.includes(params.query.name));
+    // console.log(filter)
+    // _inventories.data = inventories.data; //filter;
     if (_inventories.data.length > 0) {
       for (let index2 = _inventories.data.length - 1; index2 >= 0; index2--) {
         if (_inventories.data[index2].transactions.length > 0) {

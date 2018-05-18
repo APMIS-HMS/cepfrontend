@@ -26,7 +26,7 @@ class Service {
     let inventory = await inventoriesService.find({
       query: {
         facilityId: data.product.facilityId,
-        productId: data.product._id
+        productId: data.product.productObject.id
       }
     });
     if (inventory.data.length > 0) {
@@ -58,21 +58,25 @@ class Service {
       // }
     } else {
       let service = {};
-      let orgServiceValue ={};
-      service.name = data.product.name;
+      let index = null;
+      let orgServiceValue = {};
+      service.name = data.product.productObject.name;
       let awaitOrganService = await orgService.get(data.facilityServiceId);
       awaitOrganService.categories.forEach((item, i) => {
-        if (item._id === data.categoryId) {
+        if (item._id.toString() === data.categoryId.toString()) {
           item.services.push(service);
+          index = i;
         }
       });
-      const payResult = await orgService.patch(awaitOrganService._id,awaitOrganService);
+      const payResult = await orgService.patch(awaitOrganService._id, awaitOrganService);
 
       payResult.categories.forEach((itemi, i) => {
-        if (itemi._id === data.categoryId) {
+        if (itemi._id.toString() === data.categoryId.toString()) {
           itemi.services.forEach((items, s) => {
-            if (items.name === service.name) {
-              orgServiceValue.serviceId = items._id;
+            if (index !== null) {
+              if (index.toString() === s.toString()) {
+                orgServiceValue.serviceId = items._id;
+              }
             }
           });
         }
