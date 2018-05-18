@@ -184,6 +184,7 @@ const employeeSearch = require('./employee-search/employee-search.service.js');
 const immunizationSchedule = require('./immunization-schedule/immunization-schedule.service.js');
 const immunization = require('./immunization/immunization.service.js');
 const immunizationRecords = require('./immunization-records/immunization-records.service.js');
+const immunizationRecordHistory = require('./immunization-record-history/immunization-record-history.service.js');
 module.exports = function(app) {
     app.configure(users);
     app.configure(facilityOwnerships);
@@ -371,4 +372,5 @@ module.exports = function(app) {
     app.configure(immunizationSchedule);
     app.configure(immunization);
     app.configure(immunizationRecords);
+    app.configure(immunizationRecordHistory);
 };
