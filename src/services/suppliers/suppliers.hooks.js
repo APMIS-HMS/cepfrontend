@@ -4,7 +4,7 @@ const resolvers = {
     joins: {
         facilityDetails: () => async(supplier, context) => {
             const facility = await context.app.service('facilities').get(supplier.supplierId, {});
-            supplier.supplier = facility;
+            supplier.supplier = { name: facility.name, '_id': facility._id };
         },
         employeeDetails: () => async(supplier, context) => {
             const employee = await context.app.service('employees').get(supplier.createdBy, {});

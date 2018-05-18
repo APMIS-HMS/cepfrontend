@@ -13,14 +13,15 @@ class Service {
 
     get(id, params) {
         return Promise.resolve({
-            id, text: `A new message with ID: ${id}!`
+            id,
+            text: `A new message with ID: ${id}!`
         });
     }
 
     async create(data, params) {
         const userService = this.app.service('users');
         const personService = this.app.service('people');
-        const getTokenService = this.app.service('get-tokens'); 
+        const getTokenService = this.app.service('get-tokens');
 
         let person = data.person;
         person.wallet = {
@@ -63,7 +64,7 @@ class Service {
     }
 }
 
-module.exports = function (options) {
+module.exports = function(options) {
     return new Service(options);
 };
 

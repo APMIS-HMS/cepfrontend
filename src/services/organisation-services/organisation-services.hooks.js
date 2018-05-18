@@ -1,4 +1,4 @@
-//const { authenticate } = require('@feathersjs/authentication').hooks;
+const { authenticate } = require('@feathersjs/authentication').hooks;
 const { paramsFromClient } = require('feathers-hooks-common');
 const {
     fastJoin
@@ -83,10 +83,6 @@ const resolvers = {
                                     });
                                 }
                             }
-
-
-
-
                         }
                     }
                 } catch (error) {
@@ -100,7 +96,7 @@ const resolvers = {
 
 module.exports = {
     before: {
-        all: [],
+        all: [authenticate('jwt')],
         find: [paramsFromClient('populate', 'selectedCategory')],
         get: [],
         create: [],

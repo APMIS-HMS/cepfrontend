@@ -16,6 +16,9 @@ class Service {
 
         if (method === 'drug-details') {
             url = process.env.EMDEX_BASEURL + '/products/' + productId;
+        } else if (method === 'immunization') {
+            url = process.env.APMIS_FORMULARY + '/search-ingredients?search=' + searchText;
+
         } else {
             url = process.env.APMIS_FORMULARY + '/prescriptions?search=' + searchText;
 
@@ -35,6 +38,12 @@ class Service {
 
             if (method === 'drug-details') {
                 return jsend.success(parsed);
+            } else if (method === 'immunization') {
+                if (parsed.status === 'success') {
+                    return jsend.success(parsed.data);
+                } else {
+                    return jsend.success([]);
+                }
             } else {
                 if (parsed.status === 'success') {
                     return jsend.success(parsed.data.data);

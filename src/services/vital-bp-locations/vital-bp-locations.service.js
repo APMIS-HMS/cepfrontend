@@ -1,23 +1,23 @@
-// Initializes the `immunization` service on path `/immunization`
+// Initializes the `vital-bp-locations` service on path `/vital-bp-locations`
 const createService = require('feathers-mongoose');
-const createModel = require('../../models/immunization.model');
-const hooks = require('./immunization.hooks');
+const createModel = require('../../models/vital-bp-locations.model');
+const hooks = require('./vital-bp-locations.hooks');
 
 module.exports = function (app) {
   const Model = createModel(app);
   const paginate = app.get('paginate');
 
   const options = {
-    name: 'immunization',
+    name: 'vital-bp-locations',
     Model,
     paginate
   };
 
   // Initialize our service with any options it requires
-  app.use('/immunization', createService(options));
+  app.use('/vital-bp-locations', createService(options));
 
   // Get our initialized service so that we can register hooks and filters
-  const service = app.service('immunization');
+  const service = app.service('vital-bp-locations');
 
   service.hooks(hooks);
 };

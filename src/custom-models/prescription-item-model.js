@@ -11,6 +11,8 @@ const precribeItemSchema = new Schema({
     ingredients: [productIngredient],
     frequency: { type: String, required: true },
     duration: { type: String, required: true },
+    dosage: { type: String, required: false },
+    dosageUnit: { type: String, required: false },
     strength: { type: String, required: false },
     routeName: { type: String, required: false },
     startDate: { type: Date, required: false },
