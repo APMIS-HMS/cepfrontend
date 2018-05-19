@@ -114,3 +114,10 @@ tr:nth-child(even) {
 .camelCapital{
     text-transform: capitalize;
 }
+
+.failed-list{
+    border: 1px solid crimson;
+}
+.failed-list-text{
+    color: crimson;
+}

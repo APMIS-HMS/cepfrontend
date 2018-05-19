@@ -53,140 +53,288 @@
                 <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
               </div>
             </div>
-            <div class="card-list-item" [formGroup]="shownForm" *ngFor="let patient of patients; let i = index; let item of shownForm.get('items').controls;">
-              <div class="row" *ngIf="openBox !== 'view'+i">
-                <div class="table-list col-xs 1">
-                  {{patient.title}}
-                </div>
-                <div class="table-list col-xs-2">
-                  {{patient.firstName}} {{patient.lastName}}
-                </div>
-                <div class="table-list col-xs-1">
-                  {{patient.gender}}
-                </div>
-                <div class="table-list col-xs-1">
-                  {{patient.primaryContactPhoneNo}}
-                </div>
-                <div class="table-list col-xs-2">
-                  {{patient.email}}
-                </div>
-                <div class="table-list col-xs-1">
-                  {{patient.hospId}}
-                </div>
-                <div class="table-list col-xs-2">
-                  {{patient.dateOfBirth | date:'dd/MM/yyyy'}}
-                </div>
-                <div class="table-list col-xs-1 camelCapital">
-                  {{patient.payPlan}}
-                </div>
-                <div class="table-list col-xs-1 action-placeholder" *ngIf="openBox !== 'view'+i">
-                  <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                  <div class="action-container shadow-RB">
-                    <div class="action-item" (click)="openBox = 'view'+i">
-                      <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                      <span>Edit</span>
+            <div *ngIf="!failed">
+              <div class="card-list-item" [formGroup]="shownForm" *ngFor="let patient of patients; let i = index; let item of shownForm.get('items').controls;">
+                <div class="row" *ngIf="openBox !== 'view'+i">
+                  <div class="table-list col-xs 1">
+                    {{patient.title}}
+                  </div>
+                  <div class="table-list col-xs-2">
+                    {{patient.firstName}} {{patient.lastName}}
+                  </div>
+                  <div class="table-list col-xs-1">
+                    {{patient.gender}}
+                  </div>
+                  <div class="table-list col-xs-1">
+                    {{patient.primaryContactPhoneNo}}
+                  </div>
+                  <div class="table-list col-xs-2">
+                    {{patient.email}}
+                  </div>
+                  <div class="table-list col-xs-1">
+                    {{patient.hospId}}
+                  </div>
+                  <div class="table-list col-xs-2">
+                    {{patient.dateOfBirth | date:'dd/MM/yyyy'}}
+                  </div>
+                  <div class="table-list col-xs-1 camelCapital">
+                    {{patient.payPlan}}
+                  </div>
+                  <div class="table-list col-xs-1 action-placeholder" *ngIf="openBox !== 'view'+i">
+                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                    <div class="action-container shadow-RB">
+                      <div class="action-item" (click)="openBox = 'view'+i">
+                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                        <span>Edit</span>
+                      </div>
+                      <div class="action-item" (click)="deleteBtn(i)">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                        <span>Delete</span>
+                      </div>
                     </div>
-                    <div class="action-item" (click)="deleteBtn(i)">
-                      <i class="fa fa-trash" aria-hidden="true"></i>
-                      <span>Delete</span>
+                  </div>
+                </div>
+                <div class="row" formArrayName="items">
+                  <div class="row" *ngIf="openBox === 'view'+i" [formGroupName]="i">
+                    <div class="table-list col-xs-1">
+                      <div class="row">
+                        <mat-form-field class="col-xs-12">
+                          <mat-select formControlName="title">
+                            <mat-option>None</mat-option>
+                            <mat-option *ngFor="let title of titles" [value]="title.name">{{title.name}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="table-list col-xs-2">
+                      <div class="row">
+                        <mat-input-container class="col-xs-6">
+                          <input matInput mat-error placeholder="First Name" formControlName="firstName">
+                        </mat-input-container>
+                        <mat-input-container class="col-xs-6">
+                          <input matInput mat-error placeholder="Last Name" formControlName="lastName">
+                        </mat-input-container>
+                      </div>
+                    </div>
+                    <div class="table-list col-xs-1">
+                      <div class="row">
+                        <mat-form-field class="col-xs-12">
+                          <mat-select formControlName="gender">
+                            <mat-option>None</mat-option>
+                            <mat-option *ngFor="let gender of genders" [value]="gender.name">{{gender.name}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="table-list col-xs-1">
+                      <div class="row">
+                        <mat-input-container class="col-xs-12">
+                          <input matInput mat-error placeholder="Phone Number" formControlName="phone">
+                        </mat-input-container>
+                      </div>
+                    </div>
+                    <div class="table-list col-xs-2">
+                      <div class="row">
+                        <mat-input-container class="col-xs-12">
+                          <input matInput mat-error placeholder="Email" formControlName="email">
+                        </mat-input-container>
+                      </div>
+                    </div>
+                    <div class="table-list col-xs-1">
+                      <div class="row">
+                        <mat-input-container class="col-xs-12">
+                          <input matInput mat-error placeholder="text" formControlName="hospId">
+                        </mat-input-container>
+                      </div>
+                    </div>
+                    <div class="table-list col-xs-2">
+                      <div class="row">
+                        <mat-form-field>
+                          <input matInput [matDatepicker]="picker" placeholder="Date of Birth (DD/MM/YYYY)" formControlName="dateOfBirth">
+                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="table-list col-xs-1">
+                      <div class="row">
+                        <mat-form-field class="col-xs-12">
+                          <mat-select placeholder="Plan" (change)="changeInput($event)" formControlName="payPlan">
+                            <mat-option>None</mat-option>
+                            <mat-option value="wallet"> Wallet </mat-option>
+                            <mat-option value="insurance"> Insurance </mat-option>
+                            <mat-option value="company"> Company </mat-option>
+                            <mat-option value="family"> Family </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div class="row" *ngIf="openBox === 'view'+i && showWallet">
+                        wallet
+                      </div>
+                      <div class="row" *ngIf="openBox === 'view'+i && showInsurance">
+                        insurance
+                      </div>
+                      <div class="row" *ngIf="openBox === 'view'+i && showCompany">
+                        company
+                      </div>
+                      <div class="row" *ngIf="openBox === 'view'+i && showFamily">
+                        family
+                      </div>
+                    </div>
+                    <div class="table-list col-xs-1 action-placeholder">
+                      <a class="action-btn cursor-pointer" style="padding: 5px" (click)="saveRow(i)">
+                        <i class="fa fa-check"></i>
+                      </a>
+                      <a class="action-btn cursor-pointer" style="padding: 5px" (click)="closeRow()">
+                        <i class="fa fa-times"></i>
+                      </a>
                     </div>
                   </div>
                 </div>
               </div>
-              <div class="row" formArrayName="items">
-                <div class="row" *ngIf="openBox === 'view'+i" [formGroupName]="i">
-                  <div class="table-list col-xs-1">
-                    <div class="row">
-                      <mat-form-field class="col-xs-12">
-                        <mat-select formControlName="title">
-                          <mat-option>None</mat-option>
-                          <mat-option *ngFor="let title of titles" [value]="title.name">{{title.name}}</mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                    </div>
+            </div>
+
+            <div *ngIf="failed">
+              <div class="card-list-item {{failed === true ? 'failed-list' : ''}}" [formGroup]="shownForm" *ngFor="let patient of patients; let i = index; let item of shownForm.get('items').controls;">
+                <div class="row" *ngIf="openBox !== 'view'+i">
+                  <div class="table-list col-xs 1">
+                    {{patient.data.title}}
                   </div>
                   <div class="table-list col-xs-2">
-                    <div class="row">
-                      <mat-input-container class="col-xs-6">
-                        <input matInput mat-error placeholder="First Name" formControlName="firstName">
-                      </mat-input-container>
-                      <mat-input-container class="col-xs-6">
-                        <input matInput mat-error placeholder="Last Name" formControlName="lastName">
-                      </mat-input-container>
-                    </div>
+                    {{patient.data.firstName}} {{patient.data.lastName}}
                   </div>
                   <div class="table-list col-xs-1">
-                    <div class="row">
-                      <mat-form-field class="col-xs-12">
-                        <mat-select formControlName="gender">
-                          <mat-option>None</mat-option>
-                          <mat-option *ngFor="let gender of genders" [value]="gender.name">{{gender.name}}</mat-option>
-                        </mat-select>
-                      </mat-form-field>
-                    </div>
+                    {{patient.data.gender}}
                   </div>
                   <div class="table-list col-xs-1">
-                    <div class="row">
-                      <mat-input-container class="col-xs-12">
-                        <input matInput mat-error placeholder="Phone Number" formControlName="phone">
-                      </mat-input-container>
-                    </div>
+                    {{patient.data.primaryContactPhoneNo}}
                   </div>
                   <div class="table-list col-xs-2">
-                    <div class="row">
-                      <mat-input-container class="col-xs-12">
-                        <input matInput mat-error placeholder="Email" formControlName="email">
-                      </mat-input-container>
-                    </div>
+                    {{patient.data.email}}
                   </div>
                   <div class="table-list col-xs-1">
-                    <div class="row">
-                      <mat-input-container class="col-xs-12">
-                        <input matInput mat-error placeholder="text" formControlName="hospId">
-                      </mat-input-container>
-                    </div>
+                    {{patient.data.hospId}}
                   </div>
                   <div class="table-list col-xs-2">
-                    <div class="row">
-                      <mat-form-field>
-                        <input matInput [matDatepicker]="picker" placeholder="Date of Birth (DD/MM/YYYY)" formControlName="dateOfBirth">
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                      </mat-form-field>
+                    {{patient.data.dateOfBirth | date:'dd/MM/yyyy'}}
+                  </div>
+                  <div class="table-list col-xs-1 camelCapital">
+                    {{patient.data.payPlan}}
+                  </div>
+                  <div class="table-list col-xs-1 action-placeholder" *ngIf="openBox !== 'view'+i">
+                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                    <div class="action-container shadow-RB">
+                      <div class="action-item" (click)="openBox = 'view'+i; edit(patient.data, i)">
+                        <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                        <span>Edit</span>
+                      </div>
+                      <div class="action-item" (click)="deleteBtn(i)">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                        <span>Delete</span>
+                      </div>
                     </div>
                   </div>
-                  <div class="table-list col-xs-1">
-                    <div class="row">
-                      <mat-form-field class="col-xs-12">
-                        <mat-select placeholder="Plan" (change)="changeInput($event)" formControlName="payPlan">
-                          <mat-option>None</mat-option>
-                          <mat-option value="wallet"> Wallet </mat-option>
-                          <mat-option value="insurance"> Insurance </mat-option>
-                          <mat-option value="company"> Company </mat-option>
-                          <mat-option value="family"> Family </mat-option>
-                        </mat-select>
-                      </mat-form-field>
+                </div>
+                <div class="row" formArrayName="items">
+                  <div class="row" *ngIf="openBox === 'view'+i" [formGroupName]="i">
+                    <div class="table-list col-xs-1">
+                      <div class="row">
+                        <mat-form-field class="col-xs-12">
+                          <mat-select formControlName="title">
+                            <mat-option>None</mat-option>
+                            <mat-option *ngFor="let title of titles" [value]="title.name">{{title.name}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
                     </div>
-                    <div class="row" *ngIf="openBox === 'view'+i && showWallet">
-                      wallet
+                    <div class="table-list col-xs-2">
+                      <div class="row">
+                        <mat-input-container class="col-xs-6">
+                          <input matInput mat-error placeholder="First Name" formControlName="firstName">
+                        </mat-input-container>
+                        <mat-input-container class="col-xs-6">
+                          <input matInput mat-error placeholder="Last Name" formControlName="lastName">
+                        </mat-input-container>
+                      </div>
                     </div>
-                    <div class="row" *ngIf="openBox === 'view'+i && showInsurance">
-                      insurance
+                    <div class="table-list col-xs-1">
+                      <div class="row">
+                        <mat-form-field class="col-xs-12">
+                          <mat-select formControlName="gender">
+                            <mat-option>None</mat-option>
+                            <mat-option *ngFor="let gender of genders" [value]="gender.name">{{gender.name}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
                     </div>
-                    <div class="row" *ngIf="openBox === 'view'+i && showCompany">
-                      company
+                    <div class="table-list col-xs-1">
+                      <div class="row">
+                        <mat-input-container class="col-xs-12">
+                          <input matInput mat-error placeholder="Phone Number" formControlName="phone">
+                        </mat-input-container>
+                      </div>
                     </div>
-                    <div class="row" *ngIf="openBox === 'view'+i && showFamily">
-                      family
+                    <div class="table-list col-xs-2">
+                      <div class="row">
+                        <mat-input-container class="col-xs-12">
+                          <input matInput mat-error placeholder="Email" formControlName="email">
+                        </mat-input-container>
+                      </div>
+                    </div>
+                    <div class="table-list col-xs-1">
+                      <div class="row">
+                        <mat-input-container class="col-xs-12">
+                          <input matInput mat-error placeholder="text" formControlName="hospId">
+                        </mat-input-container>
+                      </div>
+                    </div>
+                    <div class="table-list col-xs-2">
+                      <div class="row">
+                        <mat-form-field>
+                          <input matInput [matDatepicker]="picker" [max]="today" placeholder="Date of Birth (DD/MM/YYYY)" formControlName="dateOfBirth">
+                          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                          <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                      </div>
+                    </div>
+                    <div class="table-list col-xs-1">
+                      <div class="row">
+                        <mat-form-field class="col-xs-12">
+                          <mat-select placeholder="Plan" (change)="changeInput($event)" formControlName="payPlan">
+                            <mat-option>None</mat-option>
+                            <mat-option value="wallet"> Wallet </mat-option>
+                            <mat-option value="insurance"> Insurance </mat-option>
+                            <mat-option value="company"> Company </mat-option>
+                            <mat-option value="family"> Family </mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                      </div>
+                      <div class="row" *ngIf="openBox === 'view'+i && showWallet">
+                        wallet
+                      </div>
+                      <div class="row" *ngIf="openBox === 'view'+i && showInsurance">
+                        insurance
+                      </div>
+                      <div class="row" *ngIf="openBox === 'view'+i && showCompany">
+                        company
+                      </div>
+                      <div class="row" *ngIf="openBox === 'view'+i && showFamily">
+                        family
+                      </div>
+                    </div>
+                    <div class="table-list col-xs-1 action-placeholder">
+                      <a class="action-btn cursor-pointer" style="padding: 5px" (click)="saveRow(i)">
+                        <i class="fa fa-check"></i>
+                      </a>
+                      <a class="action-btn cursor-pointer" style="padding: 5px" (click)="closeRow()">
+                        <i class="fa fa-times"></i>
+                      </a>
                     </div>
                   </div>
-                  <div class="table-list col-xs-1 action-placeholder">
-                    <a class="action-btn cursor-pointer" style="padding: 5px" (click)="saveRow(i)">
-                      <i class="fa fa-check"></i>
-                    </a>
-                    <a class="action-btn cursor-pointer" style="padding: 5px" (click)="closeRow()">
-                      <i class="fa fa-times"></i>
-                    </a>
+                </div>
+                <div class="row">
+                  <div class="col-xs-12 failed-list-text" *ngIf="failed">
+                    {{patient.message}}
                   </div>
                 </div>
               </div>
@@ -199,7 +347,9 @@
               <span *ngIf="!btnLoading">
                 <i class="fa fa-plus"></i> Submit
               </span>
-              <span *ngIf="btnLoading">Submiting... <i class="fa fa-spinner fa-spin"></i></span>
+              <span *ngIf="btnLoading">Submiting...
+                <i class="fa fa-spinner fa-spin"></i>
+              </span>
             </button>
           </div>
         </div>
