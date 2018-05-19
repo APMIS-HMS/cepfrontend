@@ -21,6 +21,7 @@ export class StoreService {
     this._statisticsSocket = _socketService.getService('store-statistics');
     this._socket.timeout = 30000;
     this._socket_list.timeout = 30000;
+    this._statisticsSocket.timeout = 30000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
     this.listenerDelete = Observable.fromEvent(this._socket, 'deleted');
