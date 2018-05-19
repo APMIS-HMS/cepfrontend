@@ -4,7 +4,7 @@ class Service {
     this.options = options || {};
   }
 
-  async find(params) {
+  /* async find(params) {
     //return Promise.resolve([]);
     const employeeService = this.app.service('employees');
     const workspaceService = this.app.service('workspaces');
@@ -44,6 +44,69 @@ class Service {
       }
     }
     return workspaces;
+  } */
+
+  async find(params) {
+    const employeeService = this.app.service('employees');
+    const workspaceService = this.app.service('workspaces');
+    const locationService = this.app.service('locations');
+    let workspaces = await workspaceService.find({
+      query: {
+        facilityId: params.query.facilityId
+      }
+    });
+    let length = workspaces.data.length;
+    while (length--) {
+      if (workspaces.data[length].isActive === false) {
+        workspaces.data.splice(length, 1);
+      }
+    }
+    let arr = this.combineArr(workspaces.data);
+    let arrLen = arr.length;
+    while(arrLen--){
+      let emp = await employeeService.find({
+        query: {
+          _id: arr[arrLen].employeeId
+        }
+      });
+      arr[arrLen].employee = emp.data[0];
+      let wsc = arr[arrLen].workspaces;
+      let wscLen = wsc.length;
+      while(wscLen--){
+        let locLen = wsc[wscLen].locations.length;
+        while (locLen--) {
+          if (wsc[wscLen].locations[locLen].isActive === true) {
+            let loc = await locationService.find({
+              query: {
+                _id: wsc[wscLen].locations[locLen].majorLocationId
+              }
+            })
+            wsc[wscLen].locations[locLen].majorLocation = loc.data[0];
+            delete wsc[wscLen].locations[locLen].majorLocationId;
+          } else {
+            wsc[wscLen].locations.splice(locLen, 1);
+          }
+
+        }
+      }
+    }
+    return arr;
+  }
+
+  combineArr(myArray) {
+    var groups = {};
+    for (var i = 0; i < myArray.length; i++) {
+      var groupName = myArray[i].employeeId;
+      if (!groups[groupName]) {
+        groups[groupName] = [];
+      }
+      groups[groupName].push(myArray[i]);
+    }
+    myArray = [];
+    for (var groupName in groups) {
+      myArray.push({ employeeId: groupName, workspaces: groups[groupName] });
+    }
+    return myArray;
   }
 
   get(id, params) {
