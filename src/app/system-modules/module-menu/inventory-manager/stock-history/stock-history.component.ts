@@ -31,23 +31,26 @@ export class StockHistoryComponent implements OnInit {
   selectedProduct: any = <any>{};
   resendButton = 'Resend';
   searchOpen = false;
+  stores: any[] = <any>[];
 
   selectedFacility: Facility = <Facility>{};
   selectedInventoryTransfer: InventoryTransfer = <InventoryTransfer>{};
   checkingStore: any = <any>{};
   searchControl = new FormControl();
+  frmStore = new FormControl();
   constructor(
     private _inventoryEventEmitter: InventoryEmitterService,
     private inventoryService: InventoryService, private inventoryTransferService: InventoryTransferService,
     private inventoryTransactionTypeService: InventoryTransactionTypeService,
     private inventoryTransferStatusService: InventoryTransferStatusService, private employeeService: EmployeeService,
     private locker: CoolLocalStorage, private systemModuleService: SystemModuleService,
+    private storeService: StoreService,
     private authFacadeService: AuthFacadeService
   ) {
     this.employeeService.checkInAnnounced$.subscribe(payload => {
       if (payload !== undefined) {
         this.checkingStore = payload;
-        this.getTransfers();
+        // this.getTransfers();
       }
     });
   }
@@ -58,27 +61,91 @@ export class StockHistoryComponent implements OnInit {
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.checkingStore = payload.storeCheckIn.find(x => x.isOn === true);
       this.getTransfers();
+      this.getStores();
     });
+    
 
+    this.frmStore.valueChanges
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        this.loading = true;
+        this.systemModuleService.on();
+        this.inventoryTransferService.find({
+          query: {
+            facilityId: this.selectedFacility._id,
+            destinationStoreId: value
+          }
+        }).then(payload => {
+          this.loading = false;
+          this.systemModuleService.off();
+          this.transferHistories = payload.data;
+        }, error => {
+          this.loading = false;
+          this.systemModuleService.off();
+        });
+      });
+
+
+    this.searchControl.valueChanges
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        this.systemModuleService.on();
+        this.inventoryTransferService.findTransferHistories({
+          query: {
+            facilityId: this.selectedFacility._id,
+            storeId: this.checkingStore.typeObject.typeObject.storeId,
+            name: value
+          }
+        }).then(payload => {
+          this.systemModuleService.off();
+          this.transferHistories = payload.data;
+        }, error => {
+          this.systemModuleService.off();
+        });
+      });
   }
+
   getTransfers() {
+    this.loading = true;
     this.systemModuleService.on();
-    this.inventoryTransferService.findTransferHistories({
+    this.inventoryTransferService.find({
       query: {
         facilityId: this.selectedFacility._id,
         storeId: this.checkingStore.storeId,
-        limit: 200
+        $sort: { createdAt: -1 }
       }
     }).then(payload => {
+      this.loading = false;
       this.systemModuleService.off();
-      if (payload.data !== undefined) {
-        this.transferHistories = payload.data;
-
-      }
+      this.transferHistories = payload.data;
     }, error => {
+      this.loading = false;
       this.systemModuleService.off();
     });
   }
+
+  getStores() {
+    this.loading = true;
+    this.systemModuleService.on();
+    this.storeService.find({
+      query: {
+        facilityId: this.selectedFacility._id,
+        _id: { $ne: this.checkingStore.storeId }
+      }
+    }).then(payload => {
+      this.loading = false;
+      this.systemModuleService.off();
+      if (payload.data !== undefined) {
+        this.stores = payload.data;
+      }
+    }, error => {
+      this.loading = false;
+      this.systemModuleService.off();
+    });
+  }
+
   onClickViewHistoryDetails(value, event) {
     this.historyDetailsToggle = !this.historyDetailsToggle;
   }

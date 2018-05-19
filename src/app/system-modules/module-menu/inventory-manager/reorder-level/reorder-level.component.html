@@ -26,7 +26,7 @@
         <div class="card-list-item" *ngFor="let schedule of productTableForm.controls['productTableArray'].controls; let i = index;">
           <div class="row" formGroupName="{{i}}">
             <div class="col-xs-4 table-list" style="text-align:center">
-              <span>{{schedule.value.product.name}}</span>
+              <span>{{schedule.value.product?.data?.name}}</span>
             </div>
             <div class="col-xs-4 table-list" style="text-align:center">
               <span [hidden]="schedule.value.isEdit === true">{{schedule.value.productItemConfigObject?.name}}</span>

@@ -17,7 +17,7 @@
 
             <mat-form-field class="col-xs-3">
                 <mat-select class="frm-item-wrap" placeholder="Order Id" formControlName="orderId">
-                    <mat-option *ngFor="let order of orders" [value]="order">{{order.purchaseOrderNumber}}</mat-option>
+                    <mat-option *ngFor="let order of orders" [value]="order._id">{{order.purchaseOrderNumber}}</mat-option>
                 </mat-select>
             </mat-form-field>
 
@@ -156,8 +156,6 @@
             <mat-checkbox [formControl]="zeroQuantity">Out of stock</mat-checkbox>
 
             <mat-checkbox [formControl]="reOrderLevelQuantity">Re-order Level</mat-checkbox>
-
-            <mat-checkbox [formControl]="expired">Expired</mat-checkbox>
         </div>
         <div class="control-group" style="width:100%" *ngFor="let group of superGroups">
             <label *ngFor="let item of group;let j=index" class="control control--checkbox">{{item.name}}

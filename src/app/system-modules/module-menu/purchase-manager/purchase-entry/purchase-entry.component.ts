@@ -73,43 +73,69 @@ export class PurchaseEntryComponent implements OnInit {
     this.authFacadeService.getLogingEmployee().then((res: any) => {
       this.loginEmployee = res;
       this.checkingObject = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
-      console.log(this.checkingObject);
-      this.getMyInventory(this.checkingObject.storeId, '',false);
+      this.getMyInventory(this.checkingObject.storeId, '');
       this.getSuppliers();
       this.getStores();
       this.getStrengths();
-    });
-
-    this.route.params.subscribe(params => {
-      const id = params['id'];
-      this.orderId = id;
-      this.getAllProducts();
-      if (this.orderId !== undefined) {
-        this.getOrderDetails(this.orderId, false);
-      }
-      const invoiceId = params['invoiceId'];
-      if (invoiceId !== undefined) {
-        this.invoiceId = invoiceId;
-        this.checkAll.setValue(true);
-        this.getInvoiceDetails(this.invoiceId);
-      }
+      this.route.params.subscribe(params => {
+        const id = params['id'];
+        this.orderId = id;
+        if (this.orderId !== undefined) {
+          this.getOrderDetails(this.orderId, false);
+        }
+        const invoiceId = params['invoiceId'];
+        if (invoiceId !== undefined) {
+          this.invoiceId = invoiceId;
+          this.checkAll.setValue(true);
+          this.getInvoiceDetails(this.invoiceId);
+        }
+      });
     });
 
     this.myInventory.valueChanges.subscribe(value => {
       if (value === true) {
-        this.checkAll.setValue(false);
-        this.getMyInventory(this.frm_purchaseOrder.controls['store'].value, '',false);
+        this.zeroQuantity.setValue(false);
+        this.reOrderLevelQuantity.setValue(false);
+        let storeId = this.frm_purchaseOrder.controls['store'].value;
+        if (storeId === null) {
+          storeId = this.checkingObject.storeId;
+        }
+        this.getMyInventory(storeId, '');
       }
     });
 
-    this.checkAll.valueChanges.subscribe(value => {
+    this.zeroQuantity.valueChanges.subscribe(value => {
       if (value === true) {
         this.myInventory.setValue(false);
-        this.getAllProducts();
-      } else {
-
+        this.reOrderLevelQuantity.setValue(false);
+        let storeId = this.frm_purchaseOrder.controls['store'].value;
+        if (storeId === null) {
+          storeId = this.checkingObject.storeId;
+        }
+        this.getProductsOutofStockInventory(storeId);
       }
     });
+
+    this.reOrderLevelQuantity.valueChanges.subscribe(value => {
+      if (value === true) {
+        this.myInventory.setValue(false);
+        this.zeroQuantity.setValue(false);
+        let storeId = this.frm_purchaseOrder.controls['store'].value;
+        if (storeId === null) {
+          storeId = this.checkingObject.storeId;
+        }
+        this.getProductsReorderInventory(storeId);
+      }
+    });
+
+    // this.checkAll.valueChanges.subscribe(value => {
+    //   if (value === true) {
+    //     this.myInventory.setValue(false);
+    //     this.getAllProducts();
+    //   } else {
+
+    //   }
+    // });
 
     this.frm_purchaseOrder = this.formBuilder.group({
       orderId: [, []],
@@ -118,7 +144,6 @@ export class PurchaseEntryComponent implements OnInit {
       deliveryDate: [this.now, [<any>Validators.required]],
       invoiceNo: ['', [<any>Validators.required]],
       amount: [0.00, [<any>Validators.required]],
-      productService: ['', [<any>Validators.required]],
       config: new FormArray([]),
       desc: ['', []],
       discount: [0.00, []],
@@ -153,27 +178,17 @@ export class PurchaseEntryComponent implements OnInit {
     });
 
     this.frm_purchaseOrder.controls['orderId'].valueChanges.subscribe(value => {
-      if (value !== undefined && value !== null) {
-        if (this.orderId === undefined) {
-          this.myInventory.setValue(false);
-          this.checkAll.setValue(true);
-          this.systemModuleService.on();
-          this.productService.find({ query: { loginFacilityId: this.selectedFacility._id } }).then(payload => {
-            this.systemModuleService.off();
-            this.products = payload.data;
-            value.orderedProducts.forEach(element => {
-              const index = this.products.filter(x => x._id.toString() === element.productObject._id.toString());
-              if (index.length === 0) {
-                this.products.push(element.productObject);
-                this.additionalProducts.push(element.productObject);
-                this.getProductTables(this.products);
-              }
-            });
-          });
-        }
-        this.addNewProductTables();
-        this.getOrderDetails(value, true);
-      }
+      // console.log(value);
+      // if (this.frm_purchaseOrder.controls['orderId'].value !== undefined && this.frm_purchaseOrder.controls['orderId'].value !== null) {
+      //   if (this.orderId === undefined) {
+      //     this.myInventory.setValue(false);
+      //     this.checkAll.setValue(true);
+      //     this.systemModuleService.on();
+      //     this.getMyInventory(this.checkingObject.storeId, '');
+      //   }
+      //   this.addNewProductTables();
+      //   this.getOrderDetails(value, true);
+      // }
     });
 
     this.searchControl.valueChanges
@@ -184,33 +199,72 @@ export class PurchaseEntryComponent implements OnInit {
         if (storeId === null) {
           storeId = this.checkingObject.storeId;
         }
-        
-        if (this.myInventory.value) {
-          this.getMyInventory(storeId,this.searchControl.value.toString(),false)
-        }else if (this.zeroQuantity.value) {
-          this.getMyInventory(storeId,this.searchControl.value.toString(),true)
-        }
+        this.getMyInventory(storeId, value);
       });
 
-    // productObs.subscribe((payload: any) => {
-    //   this.products = payload;
-    //   this.getProductTables(this.products);
-    // });
+  }
+
+  getProductsReorderInventory(storeId) {
+    this.systemModuleService.on();
+    this.inventoryService.find({
+      query: {
+        facilityId: this.selectedFacility._id,
+        storeId: storeId,
+        $sort: { createdAt: -1 }
+      }
+    }).then(payload => {
+      this.systemModuleService.off();
+      if (payload.data.length > 0) {
+        let reOrderProducts = payload.data.filter(x => x.reorder !== undefined && x.availableQuantity <= x.reorder);
+        this.products = [];
+        this.getProductTables(this.products);
+        reOrderProducts.forEach((item, i) => {
+          if (item.productObject !== undefined) {
+            this.products.push(item.productObject);
+          }
+        });
+        this.getProductTables(this.products);
+      } else {
+        this.superGroups = [];
+      }
+    });
+  }
+
+  getProductsOutofStockInventory(storeId) {
+    this.systemModuleService.on();
+    this.inventoryService.find({
+      query: {
+        facilityId: this.selectedFacility._id,
+        storeId: storeId,
+        availableQuantity: 0
+      }
+    }).then(payload => {
+      this.systemModuleService.off();
+      if (payload.data.length > 0) {
+        this.products = [];
+        this.getProductTables(this.products);
+        payload.data.forEach((item, i) => {
+          if (item.productObject !== undefined) {
+            this.products.push(item.productObject);
+          }
+        });
+        this.getProductTables(this.products);
+      } else {
+        this.superGroups = [];
+      }
+    });
   }
 
 
-  getMyInventory(storeId, name,isZero) {
+  getMyInventory(storeId, name) {
     this.systemModuleService.on();
-    console.log(this.selectedFacility._id,name,storeId);
     this.inventoryService.findList({
       query: {
         facilityId: this.selectedFacility._id,
         name: name,
-        storeId: storeId,
-        isZero:false
+        storeId: storeId
       }
     }).then(payload => {
-      console.log(payload);
       this.systemModuleService.off();
       if (payload.data.length > 0) {
         this.products = [];
@@ -219,11 +273,14 @@ export class PurchaseEntryComponent implements OnInit {
           this.products.push(item.productObject);
         });
         this.getProductTables(this.products);
+
+      } else {
+        this.superGroups = [];
       }
     });
   }
 
- getInvoiceDetails(id) {
+  getInvoiceDetails(id) {
     this.systemModuleService.on();
     this.purchaseEntryService.get(id, {}).then(payload => {
       this.selectedPurchaseEntry = payload;
@@ -261,7 +318,6 @@ export class PurchaseEntryComponent implements OnInit {
                         costPrice: [item.costPrice, [<any>Validators.required]],
                         qty: [item.quantity, [<any>Validators.required]],
                         expiryDate: [item.expiryDate, [<any>Validators.required]],
-                        productService: ['', [<any>Validators.required]],
                         config: this.initProductConfig(itemg.productConfigObject, item.quantity),
                         total: [{ value: total, disabled: true }],
                         readOnly: [false],
@@ -351,15 +407,13 @@ export class PurchaseEntryComponent implements OnInit {
 
   getOrderDetails(id, isHasVal) {
     this.systemModuleService.on();
-    this.purchaseOrderService.get(id, {}).then((payload: PurchaseOrder) => {
+    this.purchaseOrderService.get(id, {}).then((payload: any) => {
       this.selectedOrder = payload;
       this.frm_purchaseOrder.controls['store'].setValue(payload.storeId);
       this.frm_purchaseOrder.controls['supplier'].setValue(payload.supplierId);
       this.frm_purchaseOrder.controls['deliveryDate'].setValue(payload.expectedDate);
       this.frm_purchaseOrder.controls['desc'].setValue(payload.remark);
-      if (!isHasVal) {
-        this.frm_purchaseOrder.controls['orderId'].setValue(payload._id);
-      }
+      this.frm_purchaseOrder.controls['orderId'].setValue(payload._id);
       payload.orderedProducts.forEach((item, i) => {
 
         this.inventoryService.find({
@@ -377,24 +431,24 @@ export class PurchaseEntryComponent implements OnInit {
             items.forEach((itemg, g) => {
               if (itemg._id === item.productId) {
                 itemg.checked = true;
-                (<FormArray>this.productTableForm.controls['productTableArray']).push(
-                  this.formBuilder.group({
-                    product: [itemg.name, [<any>Validators.required]],
-                    batchNo: ['', [<any>Validators.required]],
-                    costPrice: [0.00, [<any>Validators.required]],
-                    qty: [item.quantity, [<any>Validators.required]],
-                    expiryDate: [this.now, [<any>Validators.required]],
-                    productService: ['', [<any>Validators.required]],
-                    config: this.initProductConfig(itemg.product.productConfigObject, item.quantity),
-                    total: [''],
-                    readOnly: [false],
-                    existingInventory: [existingInventory],
-                    productObject: [itemg.product],
-                    id: [item.productId]
-                  }));
+
               }
             });
           });
+          (<FormArray>this.productTableForm.controls['productTableArray']).push(
+            this.formBuilder.group({
+              product: [item.productObject.data.name, [<any>Validators.required]],
+              batchNo: ['', [<any>Validators.required]],
+              costPrice: [0.00, [<any>Validators.required]],
+              qty: [item.quantity, [<any>Validators.required]],
+              expiryDate: [this.now, [<any>Validators.required]],
+              config: this.initProductConfig(item.productObject.productConfigObject, item.quantity),
+              total: [''],
+              readOnly: [false],
+              existingInventory: [existingInventory],
+              productObject: [item.product],
+              id: [item.productId]
+            }));
           this.systemModuleService.off();
         });
       });
@@ -432,20 +486,20 @@ export class PurchaseEntryComponent implements OnInit {
   getProductTables(products: any[]) {
     this.systemModuleService.on();
     this.productTables = products;
-    this.superGroups = [];
+    this.superGroups = JSON.parse(JSON.stringify([]));
     let group: any[] = [];
     let counter = 0;
     for (let i = 0; i < this.productTables.length; i++) {
       if (this.superGroups.length < 1) {
         group = [];
-        let obj = <any>{ checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id, product: this.productTables[i] };
+        let obj = <any>{ checked: false, name: this.productTables[i].name, _id: this.productTables[i].id, product: this.productTables[i] };
         obj = this.mergeTable(obj);
         group.push(obj);
         this.superGroups.push(group);
       } else {
         if (counter < 1) {
           let obj = <any>{
-            checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id,
+            checked: false, name: this.productTables[i].name, _id: this.productTables[i].id,
             product: this.productTables[i]
           };
           obj = this.mergeTable(obj);
@@ -454,7 +508,7 @@ export class PurchaseEntryComponent implements OnInit {
         } else {
           counter = 0;
           let obj = <any>{
-            checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id,
+            checked: false, name: this.productTables[i].name, _id: this.productTables[i].id,
             product: this.productTables[i]
           };
           obj = this.mergeTable(obj);
@@ -507,7 +561,6 @@ export class PurchaseEntryComponent implements OnInit {
           product: ['', [<any>Validators.required]],
           batchNo: ['', [<any>Validators.required]],
           costPrice: ['', [<any>Validators.required]],
-          productService: ['', [<any>Validators.required]],
           total: [''],
           qty: ['', [<any>Validators.required]],
           config: new FormArray([]),
@@ -520,7 +573,6 @@ export class PurchaseEntryComponent implements OnInit {
     this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
   }
   onProductCheckChange(event, value, index?) {
-    console.log(value);
     value.checked = event.checked;
 
     const storeId = this.frm_purchaseOrder.controls['store'].value;
@@ -540,7 +592,6 @@ export class PurchaseEntryComponent implements OnInit {
                   product: [value.name, [<any>Validators.required]],
                   batchNo: ['', [<any>Validators.required]],
                   costPrice: [0.00, [<any>Validators.required]],
-                  productService: ['', [<any>Validators.required]],
                   qty: [0, [<any>Validators.required]],
                   expiryDate: [this.now, [<any>Validators.required]],
                   config: this.initProductConfig(value.product.productConfigObject, null),
@@ -609,13 +660,12 @@ export class PurchaseEntryComponent implements OnInit {
       value.createdBy = this.loginEmployee._id;
       value.facilityId = this.selectedFacility._id;
       value.productForms = (<FormArray>this.productTableForm.controls['productTableArray']).value;
-      console.log(value.productForms);
       this.purchaseEntryService.createEntry(value).then(payload => {
         this.frm_purchaseOrder.controls['invoiceNo'].reset();
-        this.getAllProducts();
         this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
         this.router.navigate(['dashboard/purchase-manager/invoices']);
-      }, error => { });
+      }, error => {
+      });
     } else {
       this.systemModuleService.announceSweetProxy('Required field missing', 'error');
       // this.mainErr = false;

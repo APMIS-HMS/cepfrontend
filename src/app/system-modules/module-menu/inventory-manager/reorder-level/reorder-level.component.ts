@@ -97,18 +97,19 @@ export class ReorderLevelComponent implements OnInit {
   setExistingReorderData() {
     this.productService.findReorder({ query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId } }).then(payload => {
       this.reorderProducts = payload.data.forEach(element => {
-        element.productObject.productConfigObject = element.productConfigObject;
-        (<FormArray>this.productTableForm.controls['productTableArray']).push(
-          this.formBuilder.group({
-            product: [element.productObject, [<any>Validators.required]],
-            reOrderLevel: [element.reOrderLevel, [<any>Validators.required]],
-            packTypeId: [element.productItemConfigObject._id, [<any>Validators.required]],
-            productItemConfigObject: [element.productItemConfigObject, [<any>Validators.required]],
-            isEdit: [false, [<any>Validators.required]],
-            id: [element._id]
-          }));
+        if(element.productConfigObject !== undefined){
+          element.productObject.productConfigObject = element.productConfigObject;
+          (<FormArray>this.productTableForm.controls['productTableArray']).push(
+            this.formBuilder.group({
+              product: [element.productObject, [<any>Validators.required]],
+              reOrderLevel: [element.reOrderLevel, [<any>Validators.required]],
+              packTypeId: [element.productItemConfigObject._id, [<any>Validators.required]],
+              productItemConfigObject: [element.productItemConfigObject, [<any>Validators.required]],
+              isEdit: [false, [<any>Validators.required]],
+              id: [element._id]
+            }));
+        }
       });
-
     });
   }
 
@@ -116,9 +117,9 @@ export class ReorderLevelComponent implements OnInit {
     this.collapseProductContainer = false;
     this.selectedProduct = product;
     this.newProduct.setValue(product.name);
-    const productSizes = await this.productService.get(product._id, { query: { loginFacilityId: this.selectedFacility._id } });
-    if (productSizes.productConfigObject !== undefined) {
-      this.selectedProduct.productConfigObject = productSizes.productConfigObject;
+    const productConfigSizes = await this.productService.findProductConfigs({query:{productId:product.id}});
+    if (productConfigSizes.data[0] !== undefined) {
+      this.selectedProduct.productConfigObject = productConfigSizes.data[0].packSizes;
     } else {
       this.systemModuleService.announceSweetProxy('Product brand pack variant is not configured', 'error');
     }
@@ -147,7 +148,7 @@ export class ReorderLevelComponent implements OnInit {
     if (this.newPackType.valid && this.newProduct.valid && this.newReorderLevel.valid) {
       const packSize = this.selectedProduct.productConfigObject.find(x => x._id.toString() === this.newPackType.value.toString());
       let reOrder: any = {};
-      reOrder.productId = this.selectedProduct._id;
+      reOrder.productId = this.selectedProduct.id;
       reOrder.storeId = this.checkingStore.storeId;
       reOrder.facilityId = this.selectedFacility._id;
       reOrder.reOrderLevel = this.newReorderLevel.value;
