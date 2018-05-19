@@ -31,7 +31,8 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 	checkedInObject: any = <any>{};
   user: User = <User>{};
   searchControl = new FormControl();
-  subscription: Subscription;
+  subscription1: ISubscription;
+  subscription2: ISubscription;
 
 	constructor(
 		private _locker: CoolLocalStorage,
@@ -110,18 +111,14 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 
 		const page: string = this._router.url;
 		this.checkPageUrl(page);
-		const subscription1 = this._wardEventEmitter.announcedUrl.subscribe(url => {
+		this.subscription1 = this._wardEventEmitter.announcedUrl.subscribe(url => {
 			this.pageInView = url;
 		});
 
 		// Update the wardCheckedIn object when it changes.
-    const subscription2 = this._wardEventEmitter.announceWard.subscribe(val => {
+    this.subscription2 = this._wardEventEmitter.announceWard.subscribe(val => {
 			this.checkedInObject = val;
     });
-
-    // Push all subscriptions in to the this.subscription.
-    this.subscription.add(subscription1);
-    this.subscription.add(subscription2);
 	}
 
 	checkIntoWard() {
@@ -193,6 +190,7 @@ export class WardManagerComponent implements OnInit, OnDestroy {
 		this._employeeService.announceCheckIn(undefined);
 		this._locker.setObject('wardCheckingObject', {});
     this.checkedInObject = {};
-    this.subscription.unsubscribe();
+    this.subscription1.unsubscribe();
+    this.subscription2.unsubscribe();
   }
 }

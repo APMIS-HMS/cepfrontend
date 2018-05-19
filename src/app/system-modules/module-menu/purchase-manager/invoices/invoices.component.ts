@@ -73,14 +73,17 @@ export class InvoicesComponent implements OnInit {
   getInvoices() {
     this.systemModuleService.on();
     if (this.checkingStore !== null) {
-      this.invoiceService.findInvoices({
+      this.invoiceService.find({
         query: {
           facilityId: this.selectedFacility._id,
-          storeId: this.checkingStore.storeId, $limit: 100
+          storeId: this.checkingStore.storeId,
+          $sort: { createdAt: -1 }
         }
       }).then(payload => {
         this.invoices = payload.data;
         this.systemModuleService.off();
+      }, error => {
+
       });
     }
   }
@@ -101,7 +104,7 @@ export class InvoicesComponent implements OnInit {
     this.router.navigate(['/dashboard/purchase-manager/purchase-entry-edit', invoice._id]);
   }
 
-  openSearch(){
+  openSearch() {
     this.searchOpen = !this.searchOpen;
   }
 }

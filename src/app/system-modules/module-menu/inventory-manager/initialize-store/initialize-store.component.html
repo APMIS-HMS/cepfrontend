@@ -21,8 +21,8 @@
                   </td>
                 </tr>
                 <tr *ngFor="let product of products; let i = index">
-                  <td (click)="addProduct(product)">
-                    {{product.name}}
+                  <td *ngIf="product.productObject.id !== undefined" (click)="addProduct(product)">
+                    {{product?.productObject?.name}}
                   </td>
                 </tr>
               </tbody>
@@ -49,13 +49,18 @@
                 <div [formGroupName]="i">
                   <div class="col-sm-11">
                     <div class="row">
-                        <mat-input-container class="col-sm-4">
+                        <mat-input-container class="col-sm-3">
                           <input type="text" matInput placeholder="Enter Batch No *" formControlName="batchNumber">
                         </mat-input-container>
-                        <mat-input-container class="col-sm-4">
+                        <mat-form-field class="col-sm-3">
+                            <mat-select placeholder="Select Service" [formControl]="productServiceControl">
+                                <mat-option [value]="item._id"  *ngFor="let item of categories">{{item.name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-input-container class="col-sm-3">
                           <input type="number" formControlName="quantity" matInput placeholder="Enter Quantity *" readonly>
                         </mat-input-container>
-                        <mat-input-container class="col-sm-4">
+                        <mat-input-container class="col-sm-3">
                           <input type="date" matInput placeholder="Expiry Date *" placeholder="Expiry Date" formControlName="expiryDate">
                         </mat-input-container>
                       

@@ -71,8 +71,8 @@
             </div>
             <div class="col-md-4">
                 <mat-form-field>
-                    <mat-select class="example-full-width" placeholder="Choose">
-                        <mat-option></mat-option>
+                    <mat-select class="example-full-width" placeholder="Choose" [formControl]="frmStore">
+                        <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
                     </mat-select>
                 </mat-form-field>
             </div>
@@ -97,17 +97,16 @@
         </div>
         <div class="card-list-item" *ngFor="let producthistory of transferHistories">
             <div class="row">
-                <div class="table-list col-xs-3" (click)="onShowBatch(producthistory)"> {{producthistory.destinationStoreObject?.name}}</div>
-                <div class="table-list col-xs-2" (click)="onShowBatch(producthistory)">{{producthistory.totalCostPrice|number:'1.2-2'}}</div>
-                <div class="table-list col-xs-3" (click)="onShowBatch(producthistory)">{{producthistory.createdAt|date:'short'}} </div>
-                <div class="table-list col-xs-3" (click)="onShowBatch(producthistory)">{{producthistory.transferByObject?.firstName}} {{producthistory.transferByObject?.lastName}}</div>
+                <div class="table-list col-xs-3" (click)="onShowBatch(producthistory)"> {{producthistory?.destinationStoreObject?.name}}</div>
+                <div class="table-list col-xs-2" (click)="onShowBatch(producthistory)">{{producthistory?.totalCostPrice|number:'1.2-2'}}</div>
+                <div class="table-list col-xs-3" (click)="onShowBatch(producthistory)">{{producthistory?.createdAt|date:'short'}} </div>
+                <div class="table-list col-xs-3" (click)="onShowBatch(producthistory)">{{producthistory?.employeeObject?.personDetails?.firstName}} {{producthistory.employeeObject?.personDetails?.lastName}}</div>
             </div>
 
             <div *ngIf="producthistory.isOpen===true && (selectedInventoryTransfer._id === producthistory._id)" class="prodBatch-wrap animated flipInX">
                 <div div class="card-header">
                     <div class="row">
                         <div class="col-xs-3 table-head">Product</div>
-                        <div class="col-xs-3 table-head">Batch No</div>
                         <div class="col-xs-3 table-head">Value</div>
                         <div class="col-xs-1 table-head">Transfer Qty</div>
                         <div class="col-xs-2 table-head">Status</div>
@@ -115,12 +114,9 @@
                 </div>
                 <div class="card-list-item" *ngFor="let transaction of producthistory.inventoryTransferTransactions">
                     <div class="row">
-                        <div class="table-list col-xs-3">
-                            <mat-checkbox [checked]="false">{{transaction?.productObject?.name}}</mat-checkbox>
-                        </div>
-                        <div class="table-list col-xs-3">{{transaction?.transactionObject?.batchNumber}}</div>
-                        <div class="table-list col-xs-3">{{transaction.lineCostPrice|number:'1.2-2'}}</div>
-                        <div class="table-list col-xs-1">{{transaction.quantity}}</div>
+                        <div class="table-list col-xs-3">{{transaction?.productObject.data.name}}</div>
+                        <div class="table-list col-xs-3">{{transaction?.lineCostPrice|number:'1.2-2'}}</div>
+                        <div class="table-list col-xs-1">{{transaction?.quantity}}</div>
                         <div class="table-list col-xs-2">{{transaction?.transferStatusObject?.name}}</div>
                     </div>
                 </div>

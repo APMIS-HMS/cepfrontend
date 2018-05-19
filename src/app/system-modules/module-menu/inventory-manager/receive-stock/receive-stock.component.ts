@@ -1,6 +1,7 @@
 import { SystemModuleService } from './../../../../services/module-manager/setup/system-module.service';
 import { Component, OnInit } from '@angular/core';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 // tslint:disable-next-line:max-line-length
 import {
   InventoryService, InventoryTransferService, InventoryTransferStatusService, InventoryTransactionTypeService,
@@ -24,9 +25,11 @@ export class ReceiveStockComponent implements OnInit {
   slideDetails = false;
   clickslide = false;
   user: any = <any>{};
+  loading = false;
   selectedFacility: Facility = <Facility>{};
   selectedInventoryTransfer: any = <any>{};
   checkingStore: any = <any>{};
+  searchControl = new FormControl();
   loginEmployee: Employee = <Employee>{};
   receivedTransfers: InventoryTransfer[] = [];
   transferStatuses: InventoryTransferStatus[] = [];
@@ -70,27 +73,53 @@ export class ReceiveStockComponent implements OnInit {
       this.getTransferStatus();
     });
 
+    this.searchControl.valueChanges
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        this.loading = true;
+        this.systemModuleService.on();
+        this.inventoryTransferService.findTransferHistories({
+          query: {
+            facilityId: this.selectedFacility._id,
+            storeId: this.checkingStore.storeId,
+            isDestination: true,
+            name: value
+          }
+        }).then(payload => {
+          this.loading = false;
+          this.systemModuleService.off();
+          this.receivedTransfers = payload.data;
+        }, error => {
+          this.loading = false;
+          this.systemModuleService.off();
+        });
+      });
+
   }
 
-  openSearch(){
+
+
+  openSearch() {
     this.searchOpen = !this.searchOpen;
   }
 
   getTransfers() {
     if (this.checkingStore !== undefined) {
+      this.loading = true;
       this.systemModuleService.on();
-      this.inventoryTransferService.findTransferHistories({
+      this.inventoryTransferService.find({
         query: {
           facilityId: this.selectedFacility._id,
           destinationStoreId: this.checkingStore.storeId,
-          limit: 200
+          $sort: { createdAt: -1 }
         }
-      }).then(res => {
+      }).then(payload => {
+        this.loading = false;
         this.systemModuleService.off();
-        if (res.data.length > 0) {
-          this.receivedTransfers = res.data;
-        }
+        this.receivedTransfers = payload.data;
       }, error => {
+        this.loading = false;
         this.systemModuleService.off();
       });
     }
@@ -116,7 +145,7 @@ export class ReceiveStockComponent implements OnInit {
   slideDetailsShow(receive, reload = true) {
     this.systemModuleService.on();
     if (reload === true) {
-      this.inventoryTransferService.getItemDetails(receive._id, {}).subscribe(payload => {
+      this.inventoryTransferService.get(receive._id, {}).then(payload => {
         if (payload.storeId !== undefined) {
           const that = this;
           this.selectedInventoryTransfer = payload;

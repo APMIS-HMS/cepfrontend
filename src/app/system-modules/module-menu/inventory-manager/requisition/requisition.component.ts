@@ -70,6 +70,7 @@ export class RequisitionComponent implements OnInit {
         if (payload.typeObject !== undefined) {
           this.checkingObject = payload.typeObject;
           this.getStores();
+          this.getAllProducts('',this.checkingObject.typeObject.storeId);
         }
       }
     });
@@ -102,10 +103,27 @@ export class RequisitionComponent implements OnInit {
           this.loginEmployee = results[0];
         });
       this.getStores();
-      this.getAllProducts();
+      let storeId = this.checkingObject.storeId;
+      if(storeId === undefined){
+        storeId = this.checkingObject.typeObject.storeId
+      }
+      this.getAllProducts('',storeId);
       this.getStrengths();
     });
+    this.searchControl.valueChanges
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        this.checkBoxLabel[0].checked = false;
+        let storeId = this.checkingObject.storeId;
+        if(storeId === undefined){
+          storeId = this.checkingObject.typeObject.storeId
+        }
+        this.getAllProducts(value,storeId);
+      });
   }
+
+
 
   getStores() {
     this.stores = [];
@@ -117,14 +135,29 @@ export class RequisitionComponent implements OnInit {
       }))
     }
 
-  getAllProducts() {
-    this.systemModuleService.on();
-    this.productService.find({ query: { loginFacilityId: this.selectedFacility._id, $limit: false } }).then(payload => {
-      this.products = payload.data;
-      this.getProductTables(this.products);
-      this.systemModuleService.off();
-    });
-  }
+    getAllProducts(name, storeId) {
+      this.systemModuleService.on();
+      this.inventoryService.findList({
+        query: {
+          facilityId: this.selectedFacility._id,
+          name: name,
+          storeId: storeId
+        }
+      }).then(payload => {
+        this.systemModuleService.off();
+        if (payload.data.length > 0) {
+          this.products = [];
+          this.getProductTables(this.products);
+          payload.data.forEach((item, i) => {
+            this.products.push(item.productObject);
+          });
+          this.getProductTables(this.products);
+        } else {
+          this.superGroups = [];
+        }
+      });
+    }
+
   getProductTables(products: any[]) {
     this.productTables = products;
     this.superGroups = [];
@@ -135,14 +168,14 @@ export class RequisitionComponent implements OnInit {
 
       if (this.superGroups.length < 1) {
         group = [];
-        let obj = <any>{ checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id, product: this.productTables[i] };
+        let obj = <any>{ checked: false, name: this.productTables[i].name, _id: this.productTables[i].id, product: this.productTables[i] };
         obj = this.mergeTable(obj);
         group.push(obj);
         this.superGroups.push(group);
       } else {
         if (counter < 1) {
           let obj = <any>{
-            checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id,
+            checked: false, name: this.productTables[i].name, _id: this.productTables[i].id,
             product: this.productTables[i]
           };
           obj = this.mergeTable(obj);
@@ -151,7 +184,7 @@ export class RequisitionComponent implements OnInit {
         } else {
           counter = 0;
           let obj = <any>{
-            checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id,
+            checked: false, name: this.productTables[i].name, _id: this.productTables[i].id,
             product: this.productTables[i]
           };
           obj = this.mergeTable(obj);
@@ -193,10 +226,8 @@ export class RequisitionComponent implements OnInit {
   }
   onProductCheckChange(event, value) {
     value.checked = event.checked;
-
-    // let storeId = this.frm_purchaseOrder.controls['store'].value;
-
-    if (event.checked === true) {
+// let storeId = this.frm_purchaseOrder.controls['store'].value;
+if (event.checked === true) {
       if (this.productsControl.value !== null && this.productsControl.value !== undefined) {
         (<FormArray>this.productTableForm.controls['productTableArray'])
           .push(
@@ -211,8 +242,10 @@ export class RequisitionComponent implements OnInit {
           );
       } else {
         value.checked = false;
+        value = JSON.parse(JSON.stringify(value));
         this.errMsg = 'Please select the destination store';
         this.mainErr = false;
+        this.systemModuleService.announceSweetProxy(this.errMsg,'error');
       }
     } else {
       let indexToRemove = 0;
@@ -256,10 +289,15 @@ export class RequisitionComponent implements OnInit {
   }
 
   onPackageSize(i,packs) {
-    packs[i].controls.qty.setValue(0);
-    packs[i].controls.config.controls.forEach(element => {
-      packs[i].controls.qty.setValue(packs[i].controls.qty.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
-    });
+    try{
+      packs[i].controls.qty.setValue(0);
+      packs[i].controls.config.controls.forEach(element => {
+        packs[i].controls.qty.setValue(packs[i].controls.qty.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
+      });
+    }catch(err){
+
+    }
+    
   }
 
   compareItems(l1: any, l2: any) {
@@ -353,24 +391,80 @@ export class RequisitionComponent implements OnInit {
 
   }
 
+  getProductsOutofStockInventory(storeId) {
+    this.systemModuleService.on();
+    this.inventoryService.find({
+      query: {
+        facilityId: this.selectedFacility._id,
+        storeId: storeId,
+        availableQuantity: 0
+      }
+    }).then(payload => {
+      this.systemModuleService.off();
+      if (payload.data.length > 0) {
+        this.products = [];
+        this.getProductTables(this.products);
+        payload.data.forEach((item, i) => {
+          if (item.productObject !== undefined) {
+            this.products.push(item.productObject);
+          }
+        });
+        this.getProductTables(this.products);
+      } else {
+        this.superGroups = [];
+      }
+    });
+  }
+
+  getProductsReorderInventory(storeId) {
+    this.systemModuleService.on();
+    this.inventoryService.find({
+      query: {
+        facilityId: this.selectedFacility._id,
+        storeId: storeId,
+        $sort: { createdAt: -1 }
+      }
+    }).then(payload => {
+      this.systemModuleService.off();
+      if (payload.data.length > 0) {
+        let reOrderProducts = payload.data.filter(x => x.reorder !== undefined && x.availableQuantity <= x.reorder);
+        this.products = [];
+        this.getProductTables(this.products);
+        reOrderProducts.forEach((item, i) => {
+          if (item.productObject !== undefined) {
+            this.products.push(item.productObject);
+          }
+        });
+        this.getProductTables(this.products);
+      } else {
+        this.superGroups = [];
+      }
+    });
+  }
+
   onChecked(e, item, checkBoxLabel, i) {
     item.checked = e.checked;
     this.products = [];
+
     this.getProductTables(this.products);
     if (e.checked) {
+      let storeId = this.checkingObject.storeId;
+        if(storeId === undefined){
+          storeId = this.checkingObject.typeObject.storeId
+        }
       if (i === 0) {
         checkBoxLabel[1].checked = false;
         checkBoxLabel[2].checked = false;
-        this.getAllProducts();
+        this.getAllProducts('', storeId);
       } else if (i === 1) {
         checkBoxLabel[0].checked = false;
         checkBoxLabel[2].checked = false;
-        this.getInventories();
+        this.getProductsOutofStockInventory(storeId);
       } else if (i === 2) {
         checkBoxLabel[1].checked = false;
         checkBoxLabel[0].checked = false;
         this.products = [];
-        this.getProductTables(this.products);
+        this.getProductsReorderInventory(storeId);
       }
     } else {
       checkBoxLabel[0].checked = false;
