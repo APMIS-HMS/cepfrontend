@@ -62,16 +62,13 @@ class Service {
       }
     }
     let arr = this.combineArr(workspaces.data);
-    console.log(arr);
     let arrLen = arr.length;
-    console.log(arrLen);
     while(arrLen--){
       let emp = await employeeService.find({
         query: {
           _id: arr[arrLen].employeeId
         }
       });
-      console.log(emp.data[0]);
       arr[arrLen].employee = emp.data[0];
       let wsc = arr[arrLen].workspaces;
       let wscLen = wsc.length;
@@ -92,7 +89,6 @@ class Service {
 
         }
       }
-      console.log(arr[arrLen]);
     }
     return arr;
   }

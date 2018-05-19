@@ -99,7 +99,6 @@ class Service {
               });
             }
           } else {
-            console.log('failed because of time');
             failedAttempts.push({
               data: data[i],
               message: 'Date of birth of patient cannot be beyond today!'
