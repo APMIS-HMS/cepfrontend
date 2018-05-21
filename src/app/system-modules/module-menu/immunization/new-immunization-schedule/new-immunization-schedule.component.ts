@@ -82,8 +82,6 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
       // .switchMap(value => this._drugListAPI.find({ query: { 'text': value[this.drugIndex].name, facilityId: this.facility._id }}))
       .subscribe((res: any) => {
         if (res.length > 0) {
-          console.log(this.drugIndex);
-          console.log(!!this.drugIndex);
           if (this.drugIndex !== undefined) {
             const immuneSch = <FormArray>this.immunizationScheduleForm.controls["vaccines"];
             const vaccine = <FormArray>immuneSch.controls[this.drugIndex];
@@ -124,7 +122,6 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
 
       this._systemModuleService.on();
       this._immunizationScheduleService.customCreate(payload).then(res => {
-        console.log(res);
         this._systemModuleService.off();
         if (res.status === "success") {
           const text = `${
