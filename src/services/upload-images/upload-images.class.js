@@ -27,10 +27,14 @@ class Service {
   }
 
   async create(data, params) {
+    console.log(data);
+    const dataString = data.data;
+    console.log(dataString);
+    data = JSON.parse(dataString);
+    console.log(data);
     const ACCESS_KEY = process.env.AZURE_STORAGE_ACCESS_KEY;
     var blobSvc = azure.createBlobService('apmisstorageaccount', ACCESS_KEY);
-    const fileName = data.fileName;
-
+    const fileName = params.query.fileName;
     var rawdata = data.base64;
     var matches = rawdata.match(/^data:([A-Za-z-+\\/]+);base64,(.+)$/);
     var type = matches[1];

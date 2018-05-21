@@ -16,7 +16,8 @@ class Service {
   }
 
   async create(data, params) {
-    console.log(data);
+    const dataString = data.data;
+    data = JSON.parse(dataString);
     if (data.uploadType === 'documentUpload') {
       var rawdata = data.base64;
       let docType = data.docType;
@@ -34,9 +35,14 @@ class Service {
         fileName = patientId + '_' + docType + '_' + Date.now() + '.' + ext[1];
       }
       const uploadImageService = this.app.service('upload-images');
+      const UploadData = {};
+      let dta = JSON.parse(dataString);
+      dta.container = 'personcontainer';
+
+      UploadData.data = JSON.stringify(dta);
       var result;
       try {
-        result = await uploadImageService.create(data, { fileName: fileName });
+        result = await uploadImageService.create(UploadData, {query : { fileName: fileName }});
       } catch(e) {
         return e;
       }
