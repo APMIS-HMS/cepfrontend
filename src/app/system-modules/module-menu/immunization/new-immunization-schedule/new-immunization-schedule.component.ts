@@ -83,9 +83,7 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
       // .switchMap(value => this._drugListAPI.find({ query: { 'text': value[this.drugIndex].name, facilityId: this.facility._id }}))
       .subscribe((res: any) => {
         if (res.length > 0) {
-          const immuneSch = <FormArray>this.immunizationScheduleForm.controls[
-            "vaccines"
-          ];
+          const immuneSch = <FormArray>this.immunizationScheduleForm.controls["vaccines"];
           const vaccine = <FormArray>immuneSch.controls[this.drugIndex];
           const intervals = <FormArray>vaccine.controls["intervals"];
           const text = res[this.drugIndex].name;
