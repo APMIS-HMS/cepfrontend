@@ -61,7 +61,6 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.facility = <Facility>this._locker.getObject("selectedFacility");
-
     // Depending on if there is a routeId, use form initializer.
     if (!!this.routeId) {
       this.immunizationScheduleForm = this._fb.group({
@@ -77,28 +76,32 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
       });
     }
 
-    (this.immunizationScheduleForm.get("vaccines") as FormArray).valueChanges
+    (this.immunizationScheduleForm.controls["vaccines"] as FormArray).valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       // .switchMap(value => this._drugListAPI.find({ query: { 'text': value[this.drugIndex].name, facilityId: this.facility._id }}))
       .subscribe((res: any) => {
         if (res.length > 0) {
-          const immuneSch = <FormArray>this.immunizationScheduleForm.controls["vaccines"];
-          const vaccine = <FormArray>immuneSch.controls[this.drugIndex];
-          const intervals = <FormArray>vaccine.controls["intervals"];
-          const text = res[this.drugIndex].name;
-          const intervalLength = intervals.controls.length;
-          // Get the length from interval and  assign numberOfDosage.
-          vaccine.controls["numberOfDosage"].setValue(intervalLength);
-
-          this._drugListAPI
-            .find({ query: { searchtext: text, method: "immunization" } })
-            .then(resp => {
-              this.cuDropdownLoading = false;
-              if (resp.status === "success") {
-                this.results = resp.data;
-              }
-            });
+          console.log(this.drugIndex);
+          console.log(!!this.drugIndex);
+          if (this.drugIndex !== undefined) {
+            const immuneSch = <FormArray>this.immunizationScheduleForm.controls["vaccines"];
+            const vaccine = <FormArray>immuneSch.controls[this.drugIndex];
+            const intervals = <FormArray>vaccine.controls["intervals"];
+            const text = res[this.drugIndex].name;
+            const intervalLength = intervals.controls.length;
+            // Get the length from interval and  assign numberOfDosage.
+            vaccine.controls["numberOfDosage"].setValue(intervalLength);
+  
+            this._drugListAPI
+              .find({ query: { searchtext: text, method: "immunization" } })
+              .then(resp => {
+                this.cuDropdownLoading = false;
+                if (resp.status === "success") {
+                  this.results = resp.data;
+                }
+              });
+          }
         }
       });
   }
