@@ -587,6 +587,10 @@ export class ImmunizationAppointmentComponent implements OnInit {
     return order ? order.name : order;
   }
 
+  scheduleAppointment(){
+    
+  }
+
   primeComponent() {
     const majorLocation$ = Observable.fromPromise(
       this.locationService.find({ query: { name: 'Clinic' } })
