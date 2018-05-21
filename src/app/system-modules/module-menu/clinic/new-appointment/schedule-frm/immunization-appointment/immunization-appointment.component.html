@@ -85,23 +85,8 @@
                         </mat-input-container>
                     </div>
                     <div class="col-xs-12 immune-search-result">
-                        <div class="immune-group-item active">
-                            <mat-radio-button>Pregnant Women</mat-radio-button>
-                        </div>
-                        <div class="immune-group-item">
-                            <mat-radio-button>Pregnant Women</mat-radio-button>
-                        </div>
-                        <div class="immune-group-item">
-                            <mat-radio-button>Pregnant Women</mat-radio-button>
-                        </div>
-                        <div class="immune-group-item">
-                            <mat-radio-button>Pregnant Women</mat-radio-button>
-                        </div>
-                        <div class="immune-group-item">
-                            <mat-radio-button>Pregnant Women</mat-radio-button>
-                        </div>
-                        <div class="immune-group-item">
-                            <mat-radio-button>Pregnant Women</mat-radio-button>
+                        <div *ngFor="let schedule of immunizationSchedules" class="immune-group-item" [class.active]="schedule._id== selectedSchedule?._id">
+                            <mat-radio-button (change)="changeSelection(schedule)">{{schedule.name}}</mat-radio-button>
                         </div>
                     </div>
                 </div>
@@ -120,40 +105,10 @@
                             </div>
                         </div>
                         <div class="col-xs-12 content">
-                            <div class="immune-content-group-item">
-                                <mat-checkbox style="line-height:18px;font-size:12px;">
-                                    <b>HBV</b> #300
-                                    <br /> Hepatitis B Vaccine 100mg/ml Oral Solution!
-                                </mat-checkbox>
-                            </div>
-                            <div class="immune-content-group-item">
+                            <div *ngFor="let vaccine of selectedSchedule?.vaccines" class="immune-content-group-item">
                                 <mat-checkbox>
-                                    <b>HBV</b> #300
-                                    <br /> Hepatitis B Vaccine 100mg/ml Oral Solution!
-                                </mat-checkbox>
-                            </div>
-                            <div class="immune-content-group-item">
-                                <mat-checkbox>
-                                    <b>HBV</b> #300
-                                    <br /> Hepatitis B Vaccine 100mg/ml Oral Solution!
-                                </mat-checkbox>
-                            </div>
-                            <div class="immune-content-group-item">
-                                <mat-checkbox>
-                                    <b>HBV</b> #300
-                                    <br /> Hepatitis B Vaccine 100mg/ml Oral Solution!
-                                </mat-checkbox>
-                            </div>
-                            <div class="immune-content-group-item">
-                                <mat-checkbox>
-                                    <b>HBV</b> #300
-                                    <br /> Hepatitis B Vaccine 100mg/ml Oral Solution!
-                                </mat-checkbox>
-                            </div>
-                            <div class="immune-content-group-item">
-                                <mat-checkbox>
-                                    <b>HBV</b> #300
-                                    <br /> Hepatitis B Vaccine 100mg/ml Oral Solution!
+                                    <b>{{vaccine.code}}</b> #300
+                                    <br /> {{vaccine.name}}
                                 </mat-checkbox>
                             </div>
                         </div>
