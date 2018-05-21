@@ -67,23 +67,23 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
     //   this.immunizationScheduleForm = this._fb.group({
     //     name: ["", [<any>Validators.required]],
     //     price: ["", [<any>Validators.required]],
-    //     vaccines: this._fb.array([])
+    //     vaccinesArray: this._fb.array([])
     //   });
     // } else {
     //   this.immunizationScheduleForm = this._fb.group({
     //     name: ["", [<any>Validators.required]],
     //     price: ["", [<any>Validators.required]],
-    //     vaccines: this._fb.array([this.initVaccineBuilder()])
+    //     vaccinesArray: this._fb.array([this.initVaccineBuilder()])
     //   });
     // }
 
     this.immunizationScheduleForm = this._fb.group({
       name: ["", [<any>Validators.required]],
       price: ["", [<any>Validators.required]],
-      vaccines: this._fb.array([this.initVaccineBuilder()])
+      'vaccinesArray': this._fb.array([this.initVaccineBuilder()])
     });
 
-    (this.immunizationScheduleForm.get("vaccines") as FormArray).valueChanges
+    (this.immunizationScheduleForm.get("vaccinesArray") as FormArray).valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       // .switchMap(value => this._drugListAPI.find({ query: { 'text': value[this.drugIndex].name, facilityId: this.facility._id }}))
@@ -91,7 +91,7 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
         if (res.length > 0) {
           if (this.drugIndex !== undefined) {
             const immuneSch = <FormArray>this.immunizationScheduleForm.controls[
-              "vaccines"
+              "vaccinesArray"
             ];
             const vaccine = <FormArray>immuneSch.controls[this.drugIndex];
             const intervals = <FormArray>vaccine.controls["intervals"];
@@ -125,7 +125,7 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
         action: "create",
         facilityId: this.facility._id,
         name: value.name,
-        vaccines: value.vaccines,
+        vaccines: value.vaccinesArray,
         price: value.price
       };
 
@@ -202,13 +202,13 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
     if (!!vaccine) {
       // add vaccine to list
       const control = <FormArray>this.immunizationScheduleForm.controls[
-        "vaccines"
+        "vaccinesArray"
       ];
       control.push(this.initVaccineBuilder(vaccine));
     } else {
       // add vaccine to list
       const control = <FormArray>this.immunizationScheduleForm.controls[
-        "vaccines"
+        "vaccinesArray"
       ];
       control.push(this.initVaccineBuilder());
     }
@@ -265,7 +265,7 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
   removeVaccine(i: number) {
     // remove address from the list
     const control = <FormArray>this.immunizationScheduleForm.controls[
-      "vaccines"
+      "vaccinesArray"
     ];
     control.removeAt(i);
   }
