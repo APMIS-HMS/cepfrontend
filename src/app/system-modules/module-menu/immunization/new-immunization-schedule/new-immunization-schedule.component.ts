@@ -40,7 +40,7 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
   durationUnits = DurationUnits;
   private routeParams: ISubscription;
   private routeId: string;
-
+ 
   constructor(
     private _fb: FormBuilder,
     private _locker: CoolLocalStorage,
@@ -58,7 +58,7 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
       }
     });
   }
-
+  // get formData { return this.immunizationScheduleForm.get('Data'); }
   ngOnInit() {
     this.facility = <Facility>this._locker.getObject("selectedFacility");
 
