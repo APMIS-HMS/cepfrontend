@@ -121,6 +121,7 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
 
       this._systemModuleService.on();
       this._immunizationScheduleService.customCreate(payload).then(res => {
+        console.log(res);
         this._systemModuleService.off();
         if (res.status === "success") {
           const text = `${

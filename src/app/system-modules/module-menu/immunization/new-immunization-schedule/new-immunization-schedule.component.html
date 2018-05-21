@@ -32,10 +32,10 @@
                         </div>
                         <div class="row">
                             <div class="col-sm-12 vaccine" formArrayName="vaccines">
-                                <div class="card" *ngFor="let vaccine of immunizationScheduleForm?.controls['vaccines']?.controls; let i=index;">
+                                <div class="card" *ngFor="let vaccine of immunizationScheduleForm.get['vaccines'].controls; let i=index;">
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <div class="close" *ngIf="immunizationScheduleForm?.controls['vaccines']?.controls.length > 1" (click)="removeVaccine(i)">
+                                            <div class="close" *ngIf="immunizationScheduleForm.get['vaccines'].controls.length > 1" (click)="removeVaccine(i)">
                                                 <i class="fa fa-close fa-2x fa-fw"></i>
                                             </div>
                                         </div>
