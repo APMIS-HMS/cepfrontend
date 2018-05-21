@@ -41,7 +41,7 @@
                     </div>
 
                     <div class="frmGroupWrap">
-                        <div class="frmGroupTitle">Respiratory Rate (12-20)</div>
+                        <div class="frmGroupTitle">Respiratory Rate</div>
                         <div class="frm-item-wrap">
                             <mat-input-container class="example-full-width">
                                 <input matInput type="number" [class.warning-flag]="warningResp.status" formControlName="respiratoryRate">
@@ -91,7 +91,7 @@
                                 <div class="frm-item">
                                     <div class="frm-item-wrap">
                                         <mat-input-container class="example-full-width">
-                                            <input placeholder="Systolic (100 - 130mmhg)" [class.warning-flag]="warningSys.status" matInput type="number" formControlName="systolicBp1">
+                                            <input placeholder="Systolic" [class.warning-flag]="warningSys.status" matInput type="number" formControlName="systolicBp1">
                                         </mat-input-container>
                                         <span class="trailer">{{warningSys.message}}</span>
                                     </div>
@@ -105,7 +105,7 @@
                                     <div class="frm-item-wrap">
                                         <!--<input type="text" formControlName="diastolicBp1" autocomplete="off">-->
                                         <mat-input-container class="example-full-width">
-                                            <input placeholder="Diastolic (60-90mmHg)" matInput type="number" [class.warning-flag]="warningDia.status" formControlName="diastolicBp1">
+                                            <input placeholder="Diastolic" matInput type="number" [class.warning-flag]="warningDia.status" formControlName="diastolicBp1">
                                         </mat-input-container>
                                         <span class="trailer inputUnit">{{warningDia.message}}</span>
                                     </div>

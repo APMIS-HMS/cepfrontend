@@ -13,6 +13,7 @@ import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@ang
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
+import { element } from 'protractor';
 
 
 @Component({
@@ -75,7 +76,7 @@ export class StockTransferComponent implements OnInit {
       this.newTransfer.facilityId = this.selectedFacility._id;
       this.newTransfer.storeId = this.checkingStore.storeId;
       this.newTransfer.inventoryTransferTransactions = [];
-      this.getMyInventory();
+      this.getAllProducts('', this.checkingStore.storeId)
       this.primeComponent();
     });
 
@@ -83,28 +84,36 @@ export class StockTransferComponent implements OnInit {
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe((por: any) => {
-        // console.log(this.checkingStore.typeObject.storeId);
-        // console.log(this.selectedFacility._id);
-        // console.log(this.searchControl.value);
-        // this.inventoryService.findList({
-        //   query: {
-        //     facilityId: this.selectedFacility._id,
-        //     name: this.searchControl.value,
-        //     storeId: this.checkingStore.typeObject.storeId
-        //   }
-        // }).subscribe(payload => {
-        //   console.log(payload.data.length);
-        //   this.products = [];
-        //   this.getProductTables(this.products);
-        //   payload.data.forEach((item, i) => {
-        //     this.products.push(item.productObject);
-        //   });
-        //   this.getProductTables(this.products);
-        // });
+        this.getAllProducts(por, this.checkingStore.storeId)
       });
 
 
   }
+  getAllProducts(name, storeId) {
+    this.systemModuleService.on();
+    this.inventoryService.findList({
+      query: {
+        facilityId: this.selectedFacility._id,
+        name: name,
+        storeId: storeId
+      }
+    }).then(payload => {
+      this.systemModuleService.off();
+      if (payload.data.length > 0) {
+        this.products = [];
+        this.getProductTables(this.products);
+        payload.data.forEach((item, i) => {
+          item.productObject.availableQuantity = item.availableQuantity;
+          this.products.push(item.productObject);
+        });
+        this.getProductTables(this.products);
+      } else {
+        this.superGroups = [];
+      }
+    });
+  }
+
+
   getCurrentStoreDetails(id) {
     this.storeService.get(id, {}).then(payload => {
       this.checkingStore.storeObject = payload;
@@ -155,20 +164,18 @@ export class StockTransferComponent implements OnInit {
     this.productTables = products;
     this.superGroups = [];
     let group: any[] = [];
-
     let counter = 0;
     for (let i = 0; i < this.productTables.length; i++) {
-
       if (this.superGroups.length < 1) {
         group = [];
-        let obj = <any>{ checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id, product: this.productTables[i] };
+        let obj = <any>{ checked: false, name: this.productTables[i].name, _id: this.productTables[i].id, product: this.productTables[i] };
         obj = this.mergeTable(obj);
         group.push(obj);
         this.superGroups.push(group);
       } else {
         if (counter < 1) {
           let obj = <any>{
-            checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id,
+            checked: false, name: this.productTables[i].name, _id: this.productTables[i].id,
             product: this.productTables[i]
           };
           obj = this.mergeTable(obj);
@@ -177,7 +184,7 @@ export class StockTransferComponent implements OnInit {
         } else {
           counter = 0;
           let obj = <any>{
-            checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id,
+            checked: false, name: this.productTables[i].name, _id: this.productTables[i].id,
             product: this.productTables[i]
           };
           obj = this.mergeTable(obj);
@@ -218,8 +225,20 @@ export class StockTransferComponent implements OnInit {
   }
 
   getBaseProductConfig(form) {
-    if(form.controls.config.controls[0].value.packsizes !== null){
-      return form.controls.config.controls[0].value.packsizes.find(x => x.isBase === true).name;
+    if (form.controls.config.controls[0].value.packsizes !== null) {
+      let basePackName = form.controls.config.controls[0].value.packsizes.find(x => x.isBase === true).name;
+      if (form.controls.productObject.value.availableQuantity < form.controls.qty.value) {
+        try {
+          form.controls.qty.setValue(0);
+          form.controls.totalCostPrice.setValue(0);
+          form.controls.config.controls.forEach(element => {
+            element.controls.size.setValue(0);
+          });
+          this.systemModuleService.announceSweetProxy('You donot have sufficient quantity for this transaction', 'error');
+        } catch (error) {
+        }
+      }
+      return basePackName;
     }
   }
 
@@ -251,15 +270,19 @@ export class StockTransferComponent implements OnInit {
   }
 
   onPackageSize(i, packs) {
-    packs[i].controls.totalCostPrice.setValue(0);
-    packs[i].controls.qty.setValue(0);
-    packs[i].controls.config.controls.forEach(element => {
-      if (element.value.packItem !== null) {
-        packs[i].controls.qty.setValue(packs[i].controls.qty.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
-      }
-    });
-    const subTotal = packs[i].controls.costPrice.value * packs[i].controls.qty.value;
-    packs[i].controls.totalCostPrice.setValue(subTotal);
+    try {
+      packs[i].controls.totalCostPrice.setValue(0);
+      packs[i].controls.qty.setValue(0);
+      packs[i].controls.config.controls.forEach(element => {
+        if (element.value.packItem !== null) {
+          packs[i].controls.qty.setValue(packs[i].controls.qty.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
+        }
+      });
+      const subTotal = packs[i].controls.costPrice.value * packs[i].controls.qty.value;
+      packs[i].controls.totalCostPrice.setValue(subTotal);
+    } catch (err) {
+
+    }
   }
 
   onStoreChanged() {
@@ -270,41 +293,60 @@ export class StockTransferComponent implements OnInit {
   onProductCheckChange(event, value, index?) {
     value.checked = event.checked;
     this.maxQty = 0;
-    if (event.checked === true) {
-      this.inventoryService.find({ query: { productId: value._id, facilityId: this.selectedFacility._id } }).subscribe(payload => {
-        if (payload.data.length > 0) {
-          (<FormArray>this.productTableForm.controls['productTableArray'])
-            .push(
-              this.formBuilder.group({
-                product: [value.name, [<any>Validators.required]],
-                batchNo: [, [<any>Validators.required]],
-                batchNumbers: [payload.data[0].transactions],
-                costPrice: [0.00, [<any>Validators.required]],
-                totalCostPrice: [0.00, [<any>Validators.required]],
-                qty: [0, [<any>Validators.required]],
-                config: this.initProductConfig(value.product.productConfigObject),
-                readOnly: [false],
-                productObject: [value.product],
-                id: [value._id],
-                inventoryId: [payload.data[0]._id]
-              })
-            );
-        }
-      });
-
-    } else {
-      const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
-      if (count === 1) {
-        this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
+    let checker = false;
+    if (value.product.availableQuantity !== undefined) {
+      if (value.product.availableQuantity > 0) {
+        checker = true;
       } else {
-        (<FormArray>this.productTableForm.controls['productTableArray']).controls.splice(index, 1);
+        checker = false;
       }
-      let indx = index;
-      if (index > 0) {
-        indx = index - 1;
+    } else {
+      if (value.productObject.availableQuantity > 0) {
+        checker = true;
+      } else {
+        checker = false;
       }
-      this.onPackageSize(indx, (<FormArray>this.productTableForm.controls['productTableArray']).controls);
     }
+    if (checker) {
+      if (event.checked === true) {
+        this.inventoryService.find({ query: { productId: value._id, facilityId: this.selectedFacility._id } }).subscribe(payload => {
+          if (payload.data.length > 0) {
+            (<FormArray>this.productTableForm.controls['productTableArray'])
+              .push(
+                this.formBuilder.group({
+                  product: [value.name, [<any>Validators.required]],
+                  batchNo: [, [<any>Validators.required]],
+                  batchNumbers: [payload.data[0].transactions],
+                  costPrice: [0.00, [<any>Validators.required]],
+                  totalCostPrice: [0.00, [<any>Validators.required]],
+                  qty: [0, [<any>Validators.required]],
+                  config: this.initProductConfig(value.product.productConfigObject),
+                  readOnly: [false],
+                  productObject: [value.product],
+                  id: [value._id],
+                  inventoryId: [payload.data[0]._id]
+                })
+              );
+          }
+        });
+
+      } else {
+        const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
+        if (count === 1) {
+          this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
+        } else {
+          (<FormArray>this.productTableForm.controls['productTableArray']).controls.splice(index, 1);
+        }
+        let indx = index;
+        if (index > 0) {
+          indx = index - 1;
+        }
+        this.onPackageSize(indx, (<FormArray>this.productTableForm.controls['productTableArray']).controls);
+      }
+    } else {
+      this.systemModuleService.announceSweetProxy('This product is out of stock', 'error');
+    }
+
   }
 
   compareItems(l1: any, l2: any) {
@@ -316,9 +358,9 @@ export class StockTransferComponent implements OnInit {
     const value = form[index];
     this.superGroups.forEach((parent, i) => {
       parent.forEach((group, j) => {
-        if (group._id === value.value.productObject._id) {
+        if (group._id.toString() === value.value.productObject.id.toString()) {
           group.checked = false;
-          this.onProductCheckChange({ checked: false }, value, index);
+          this.onProductCheckChange({ checked: false }, value.value, index);
           const count = form.length;
           if (count === 0) {
             this.addNewProductTables();
@@ -480,14 +522,17 @@ export class StockTransferComponent implements OnInit {
     });
   }
   saveTransfer() {
+    this.systemModuleService.on();
     this.populateInventoryTransferTransactions();
     this.inventoryTransferService.create2(this.newTransfer).then(payload => {
       (<FormArray>this.productTableForm.controls['productTableArray']).controls = [];
       this.unCheckedProducts();
+      this.systemModuleService.off();
       this.systemModuleService.announceSweetProxy('Your transfer was successful', 'success', null, null, null, null, null, null, null);
       this.frmDestinationStore.reset();
     }, err => {
-      const errMsg = 'There was an error while initialising product, please try again!';
+      this.systemModuleService.off();
+      const errMsg = 'There was an error while transfering product, please try again!';
       this.systemModuleService.announceSweetProxy(errMsg, 'error');
     });
   }

@@ -1,7 +1,9 @@
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, ISubscription } from 'rxjs/Subscription';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
-import { InventoryService, ProductService, EmployeeService, FacilitiesService, StoreService, PurchaseOrderService, InventoryTransferService } from '../../../../services/facility-manager/setup/index';
+import {
+  InventoryService, ProductService, EmployeeService, FacilitiesService, StoreService, PurchaseOrderService, InventoryTransferService
+} from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import { Facility, Inventory, Employee, User } from '../../../../models/index';
@@ -29,7 +31,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
   Ql_toggle = false;
   isRunningQuery = false;
 
-  subscription: Subscription;
+  subscription: ISubscription;
 
   constructor(
     // private _inventoryService: InventoryService,

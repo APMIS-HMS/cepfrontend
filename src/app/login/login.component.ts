@@ -31,6 +31,7 @@ export class LoginComponent implements OnInit {
   input_password;
   public frm_login: FormGroup;
   facilityObj: Facility = <Facility>{};
+  inProgress = false;
 
   constructor(private formBuilder: FormBuilder,
     private userService: UserService,
@@ -58,6 +59,7 @@ export class LoginComponent implements OnInit {
   }
   login(valid) {
     if (valid) {
+      this.inProgress = true;
       this.systemModule.on();
       const query = {
         email: this.upperCasePipe.transform(this.frm_login.controls['username'].value),
@@ -76,22 +78,28 @@ export class LoginComponent implements OnInit {
             this.userService.announceMission('in');
             this.systemModule.off();
             this.frm_login.controls['password'].reset();
+            this.inProgress = false;
           });
         }, error => {
           this.systemModule.off();
+          this.inProgress = false;
         }).catch(merr => {
           this.systemModule.off();
           this.frm_login.controls['password'].reset();
+          this.inProgress = false;
         });
       },
         error => {
+          this.inProgress = false;
+          this.errMsg = 'Wrong login credentials';
+          this.systemModule.announceSweetProxy(this.errMsg, 'error');
           this.loadIndicatorVisible = false;
           this.mainErr = false;
-          this.errMsg = 'wrong login credentials';
           this.frm_login.controls['password'].reset();
           this.systemModule.off();
         });
     } else {
+      this.inProgress = false;
       this.mainErr = false;
     }
   }

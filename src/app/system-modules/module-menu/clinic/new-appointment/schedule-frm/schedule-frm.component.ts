@@ -1,12 +1,12 @@
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
-import { error } from "selenium-webdriver";
-import { SystemModuleService } from "app/services/module-manager/setup/system-module.service";
+import { error } from 'selenium-webdriver';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
-import { Component, OnInit, EventEmitter, Input } from "@angular/core";
-import { FormControl, Validators } from "@angular/forms";
-import { ActivatedRoute, Router } from "@angular/router";
-import "rxjs/add/operator/startWith";
-import "rxjs/add/operator/map";
+import { Component, OnInit, EventEmitter, Input } from '@angular/core';
+import { FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/map';
 import {
   FacilitiesService,
   SchedulerService,
@@ -21,11 +21,11 @@ import {
   SmsAlertService,
   FacilityPriceService,
   BillingService
-} from "../../../../../services/facility-manager/setup/index";
+} from '../../../../../services/facility-manager/setup/index';
 import {
   LocationService,
   OrderStatusService
-} from "../../../../../services/module-manager/setup/index";
+} from '../../../../../services/module-manager/setup/index';
 import {
   Facility,
   Employee,
@@ -36,31 +36,31 @@ import {
   Patient,
   ScheduleRecordModel,
   MinorLocation
-} from "../../../../../models/index";
-import { CoolLocalStorage } from "angular2-cool-storage";
-import { Observable } from "rxjs/Observable";
-import { Subscription } from "rxjs/Subscription";
-import * as getDay from "date-fns/get_day";
-import * as setDay from "date-fns/set_day";
-import * as getHours from "date-fns/get_hours";
-import * as setHours from "date-fns/set_hours";
+} from '../../../../../models/index';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
+import * as getDay from 'date-fns/get_day';
+import * as setDay from 'date-fns/set_day';
+import * as getHours from 'date-fns/get_hours';
+import * as setHours from 'date-fns/set_hours';
 
-import * as setMinutes from "date-fns/set_minutes";
-import * as getMinutes from "date-fns/get_minutes";
-import * as getYear from "date-fns/get_year";
-import * as setYear from "date-fns/set_year";
-import * as getMonth from "date-fns/get_month";
-import * as setMonth from "date-fns/set_month";
-import * as isToday from "date-fns/is_today";
+import * as setMinutes from 'date-fns/set_minutes';
+import * as getMinutes from 'date-fns/get_minutes';
+import * as getYear from 'date-fns/get_year';
+import * as setYear from 'date-fns/set_year';
+import * as getMonth from 'date-fns/get_month';
+import * as setMonth from 'date-fns/set_month';
+import * as isToday from 'date-fns/is_today';
 import * as parse from 'date-fns/parse';
 import * as isBefore from 'date-fns/is_before';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&�*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 @Component({
-  selector: "app-schedule-frm",
-  templateUrl: "./schedule-frm.component.html",
-  styleUrls: ["./schedule-frm.component.scss"]
+  selector: 'app-schedule-frm',
+  templateUrl: './schedule-frm.component.html',
+  styleUrls: ['./schedule-frm.component.scss']
 })
 export class ScheduleFrmComponent implements OnInit {
   appointmentIsToday = false;
@@ -68,7 +68,7 @@ export class ScheduleFrmComponent implements OnInit {
   @Input() selectedPatient: any;
   selectedProvider:any;
   mainErr = true;
-  errMsg = "you have unresolved errors";
+  errMsg = 'You have unresolved errors';
   selectedFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
   selectedProfession: Profession = <Profession>{};
@@ -135,26 +135,26 @@ export class ScheduleFrmComponent implements OnInit {
   apmisProviderLookupOtherKeys = ['personDetails.lastName', 'personDetails.firstName', 'personDetails.apmisId', 'personDetails.email'];
 
   days: any[] = [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday"
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday'
   ];
   selectedAppointment: Appointment = <Appointment>{};
-  btnText = "Schedule Appointment";
+  btnText = 'Schedule Appointment';
   disableBtn = false;
   saveAppointment = true;
   savingAppointment = false;
   updateAppointment = false;
-  clinicErrorMsg = " Clinic does not hold on the selected date!!!";
-  clinicErrorEalierDateMsg = " Clinic can not be set for earlier date!!!";
+  clinicErrorMsg = ' Clinic does not hold on the selected date!!!';
+  clinicErrorEalierDateMsg = ' Clinic can not be set for earlier date!!!';
   isEarlierDate = false;
 
   user = {};
-  placeholderString = "Select timezone";
+  placeholderString = 'Select timezone';
 
   constructor(
     private scheduleService: SchedulerService,
@@ -226,7 +226,7 @@ export class ScheduleFrmComponent implements OnInit {
     this.checkIn = new FormControl({ value: false, disabled: this.canCheckIn });
     this.teleMed = new FormControl();
 
-    this.patient = new FormControl("", [Validators.required]);
+    this.patient = new FormControl('', [Validators.required]);
     this.patient.valueChanges.subscribe(value => {
       this.apmisLookupQuery = {
         facilityId: this.selectedFacility._id,
@@ -244,8 +244,8 @@ export class ScheduleFrmComponent implements OnInit {
     //   )
     //   .map(val => (val ? this.filterPatients(val) : this.patients.slice()));
 
-    this.clinic = new FormControl("", [Validators.required]);
-    this.status = new FormControl("", [Validators.required]);
+    this.clinic = new FormControl('', [Validators.required]);
+    this.status = new FormControl('', [Validators.required]);
     this.clinic.valueChanges.subscribe(clinic => {
       this.getOthers(clinic);
     });
@@ -268,16 +268,16 @@ export class ScheduleFrmComponent implements OnInit {
     //   )
     //   .map(val => (val ? this.filterProviders(val) : this.providers.slice()));
 
-    this.type = new FormControl("", [Validators.required]);
+    this.type = new FormControl('', [Validators.required]);
 
     // this.filteredAppointmentTypes = this.type.valueChanges
     //     .startWith(null)
     //     .map((type: AppointmentType) => type && typeof type === 'object' ? type.name : type)
     //     .map(val => val ? this.filterAppointmentTypes(val) : this.appointmentTypes.slice());
 
-    this.category = new FormControl("", [Validators.required]);
-    this.timezone = new FormControl("", []);
-    this.selectedFacility = <Facility>this.locker.getObject("selectedFacility");
+    this.category = new FormControl('', [Validators.required]);
+    this.timezone = new FormControl('', []);
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.auth = this.authFacadeService.getAuth(); // <any>this.locker.getObject("auth");
 
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
@@ -301,7 +301,7 @@ export class ScheduleFrmComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.selectedFacility = <Facility>this.locker.getObject("selectedFacility");
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
 
     this.employeeService.loginEmployeeAnnounced$.subscribe(employee => {
       this.loginEmployee = employee;
@@ -328,7 +328,7 @@ export class ScheduleFrmComponent implements OnInit {
           if (payload.data.length > 0) {
             this.organizationalServicePrice = payload.data[0].price;
           }else{
-            this.systemModuleService.announceSweetProxy("No price found on selected appointment. Please set a price for this appointment category","error");
+            this.systemModuleService.announceSweetProxy('No price found on selected appointment. Please set a price for this appointment category','error');
             this.category.reset();
           }
         }, err => {
@@ -376,7 +376,7 @@ export class ScheduleFrmComponent implements OnInit {
 
   primeComponent() {
     const majorLocation$ = Observable.fromPromise(
-      this.locationService.find({ query: { name: "Clinic" } })
+      this.locationService.find({ query: { name: 'Clinic' } })
     );
     const appointmentTypes$ = Observable.fromPromise(
       this.appointmentTypeService.findAll()
@@ -384,7 +384,7 @@ export class ScheduleFrmComponent implements OnInit {
     // const patient$ = Observable.fromPromise(this.patientService.find({ query: { facilityId: this.selectedFacility._id } }));
     const schedule$ = Observable.fromPromise(
       this.scheduleService.find({
-        query: { facilityId: this.selectedFacility._id, scheduleType: "Clinic" }
+        query: { facilityId: this.selectedFacility._id, scheduleType: 'Clinic' }
       })
     );
     const professions$ = Observable.fromPromise(
@@ -414,7 +414,7 @@ export class ScheduleFrmComponent implements OnInit {
     ]).subscribe(
       (results: any) => {
         results[0].data.forEach((itemi, i) => {
-          if (itemi.name === "Clinic") {
+          if (itemi.name === 'Clinic') {
             this.clinicMajorLocation = itemi;
           }
         });
@@ -427,7 +427,7 @@ export class ScheduleFrmComponent implements OnInit {
         const categories = results[3].data[0].categories;
         this.organizationalServiceId.facilityServiceId = results[3].data[0]._id;
         const filterCategories = categories.filter(
-          x => x.name === "Appointment"
+          x => x.name === 'Appointment'
         );
         if (filterCategories.length > 0) {
           this.categoryServices = filterCategories[0].services;
@@ -438,11 +438,11 @@ export class ScheduleFrmComponent implements OnInit {
         }
         this.orderStatuses = results[6].data;
         this.orderStatuses.forEach(item => {
-          if (item.name === "Scheduled") {
+          if (item.name === 'Scheduled') {
             this.status.setValue(item);
           }
         });
-        if (this.loginEmployee.professionId === "Doctor") {
+        if (this.loginEmployee.professionId === 'Doctor') {
           this.selectedProfession = this.professions.filter(
             x => x._id === this.loginEmployee.professionId
           )[0];
@@ -567,7 +567,7 @@ export class ScheduleFrmComponent implements OnInit {
   getClinicMajorLocation() {
     this.locationService.findAll().then(payload => {
       payload.data.forEach((itemi, i) => {
-        if (itemi.name === "Clinic") {
+        if (itemi.name === 'Clinic') {
           this.clinicMajorLocation = itemi;
           // this.getLoginEmployee();
         }
@@ -583,7 +583,7 @@ export class ScheduleFrmComponent implements OnInit {
         itemj.clinics.forEach((itemk, k) => {
           if (
             this.loginEmployee !== undefined &&
-            this.loginEmployee.professionId === "Doctor"
+            this.loginEmployee.professionId === 'Doctor'
           ) {
             this.loginEmployee.units.forEach((itemu, u) => {
               if (itemu === itemj.name) {
@@ -599,7 +599,7 @@ export class ScheduleFrmComponent implements OnInit {
             });
           } else if (
             this.loginEmployee !== undefined &&
-            this.loginEmployee.professionId !== "Doctor"
+            this.loginEmployee.professionId !== 'Doctor'
           ) {
             this.loginEmployee.workSpaces.forEach((wrk, ii) => {
               wrk.locations.forEach((lct, li) => {
@@ -666,7 +666,7 @@ export class ScheduleFrmComponent implements OnInit {
     });
     if (
       this.loginEmployee.professionId !== undefined &&
-      this.loginEmployee.professionId === "Doctor"
+      this.loginEmployee.professionId === 'Doctor'
     ) {
       this.schedules.forEach((items, s) => {
         this.loginEmployee.units.forEach((itemu, u) => {
@@ -848,7 +848,7 @@ export class ScheduleFrmComponent implements OnInit {
   }
   providerDisplayFn(provider: any): string {
     return provider
-      ? provider.personDetails.lastName + " " + provider.personDetails.firstName
+      ? provider.personDetails.lastName + ' ' + provider.personDetails.firstName
       : provider;
   }
 
@@ -857,7 +857,7 @@ export class ScheduleFrmComponent implements OnInit {
   }
   patientDisplayFn(patient: any) {
     return patient
-      ? patient.personDetails.lastName + " " + patient.personDetails.firstName
+      ? patient.personDetails.lastName + ' ' + patient.personDetails.firstName
       : patient;
   }
 
@@ -875,17 +875,17 @@ export class ScheduleFrmComponent implements OnInit {
 
   setValueSmsAlert(personFullName, startDate, facility, clinic, email) {
     let contentValue =
-      "Hello " +
+      'Hello ' +
       personFullName +
-      "an appointment was scheduled for " +
+      'an appointment was scheduled for ' +
       startDate +
-      "at " +
+      'at ' +
       facility +
-      " " +
+      ' ' +
       clinic;
     let params = {
       content: contentValue,
-      sender: "APMIS",
+      sender: 'APMIS',
       receiver: email
     };
     this._smsAlertService.post({}, params);
@@ -939,7 +939,7 @@ export class ScheduleFrmComponent implements OnInit {
       this.appointment.orderStatusId = orderStatus;
       if (this.appointmentIsToday && this.checkIn.value === true) {
         const activeFilter = this.orderStatuses.filter(
-          x => (x.name = "Active")
+          x => (x.name = 'Active')
         );
         if (activeFilter.length > 0) {
           const active = activeFilter[0];
@@ -950,7 +950,7 @@ export class ScheduleFrmComponent implements OnInit {
         this.appointmentService.update(this.appointment).then(
           payload => {
             if (this.teleMed.value === true) {
-              const topic = "Appointment with " + patient.personDetails.apmisId;
+              const topic = 'Appointment with ' + patient.personDetails.apmisId;
               this.appointmentService
                 .setMeeting(
                   topic,
@@ -962,7 +962,7 @@ export class ScheduleFrmComponent implements OnInit {
                   meeting => {
                     let fullName =
                       this.selectedPatient.personDetails.lastName +
-                      " " +
+                      ' ' +
                       this.selectedPatient.personDetails.Name;
                     this.setValueSmsAlert(
                       fullName,
@@ -977,15 +977,15 @@ export class ScheduleFrmComponent implements OnInit {
                     this.saveAppointment = true;
                     this.savingAppointment = false;
                     this.systemModuleService.off();
-                    this.router.navigate(["/dashboard/clinic/appointment"]);
+                    this.router.navigate(['/dashboard/clinic/appointment']);
                     this.systemModuleService.off();
                     this.systemModuleService.announceSweetProxy('Appointment updated successfully', 'success', null, null, null, null, null, null, null);
                   },
                   error => {
                     this.systemModuleService.off();
                     this.systemModuleService.announceSweetProxy(
-                      "Clinic Appointment updated successfully but telemedice appointment not updated or created",
-                      "warning"
+                      'Clinic Appointment updated successfully but telemedice appointment not updated or created',
+                      'warning'
                     );
                   }
                 );
@@ -1002,7 +1002,7 @@ export class ScheduleFrmComponent implements OnInit {
               });
               let fullName =
                 this.selectedPatient.personDetails.lastName +
-                " " +
+                ' ' +
                 this.selectedPatient.personDetails.Name;
               this.setValueSmsAlert(
                 fullName,
@@ -1011,10 +1011,10 @@ export class ScheduleFrmComponent implements OnInit {
                 clinic.name,
                 this.selectedPatient.personDetails.email
               );
-              this.router.navigate(["/dashboard/clinic/appointment"]);
+              this.router.navigate(['/dashboard/clinic/appointment']);
               this.systemModuleService.off();
               this.systemModuleService.announceSweetProxy(
-                "Appointment updated successfully",
+                'Appointment updated successfully',
                 'success', null, null, null, null, null, null, null);
             }
           },
@@ -1024,8 +1024,8 @@ export class ScheduleFrmComponent implements OnInit {
             this.loadIndicatorVisible = false;
             this.systemModuleService.off();
             this.systemModuleService.announceSweetProxy(
-              "There was an error setting the appointment",
-              "error"
+              'There was an error setting the appointment',
+              'error'
             );
           }
         );
@@ -1036,7 +1036,7 @@ export class ScheduleFrmComponent implements OnInit {
             console.log(payload);
             this.createBill();
             if (this.teleMed.value === true) {
-              const topic = "Appointment with " + patient.personDetails.apmisId;
+              const topic = 'Appointment with ' + patient.personDetails.apmisId;
               this.appointmentService
                 .setMeeting(
                   topic,
@@ -1052,7 +1052,7 @@ export class ScheduleFrmComponent implements OnInit {
                     this.savingAppointment = false;
                     let fullName =
                       this.selectedPatient.personDetails.lastName +
-                      " " +
+                      ' ' +
                       this.selectedPatient.personDetails.Name;
                     this.setValueSmsAlert(
                       fullName,
@@ -1062,10 +1062,10 @@ export class ScheduleFrmComponent implements OnInit {
                       this.selectedPatient.personDetails.email
                     );
 
-                    this.router.navigate(["/dashboard/clinic/appointment"]);
+                    this.router.navigate(['/dashboard/clinic/appointment']);
                     this.systemModuleService.off();
                     this.systemModuleService.announceSweetProxy(
-                      "Appointment set successfully",
+                      'Appointment set successfully',
                       'success', null, null, null, null, null, null, null);
                   },
                   error => {
@@ -1074,8 +1074,8 @@ export class ScheduleFrmComponent implements OnInit {
                     this.loadIndicatorVisible = false;
                     this.systemModuleService.off();
                     this.systemModuleService.announceSweetProxy(
-                      "Appointment set successfully but there was an error creating Telemedicine appointment",
-                      "warning"
+                      'Appointment set successfully but there was an error creating Telemedicine appointment',
+                      'warning'
                     );
                   }
                 );
@@ -1086,7 +1086,7 @@ export class ScheduleFrmComponent implements OnInit {
               this.savingAppointment = false;
               let fullName =
                 this.selectedPatient.personDetails.lastName +
-                " " +
+                ' ' +
                 this.selectedPatient.personDetails.Name;
               this.setValueSmsAlert(
                 fullName,
@@ -1095,10 +1095,10 @@ export class ScheduleFrmComponent implements OnInit {
                 clinic.name,
                 this.selectedPatient.personDetails.email
               );
-              this.router.navigate(["/dashboard/clinic/appointment"]);
+              this.router.navigate(['/dashboard/clinic/appointment']);
               this.systemModuleService.off();
               this.systemModuleService.announceSweetProxy(
-                "Appointment set successfully",
+                'Appointment set successfully',
                 'success', null, null, null, null, null, null, null);
             }
           },
@@ -1108,8 +1108,8 @@ export class ScheduleFrmComponent implements OnInit {
             this.loadIndicatorVisible = false;
             this.systemModuleService.off();
             this.systemModuleService.announceSweetProxy(
-              "There was an error setting the appointment",
-              "error"
+              'There was an error setting the appointment',
+              'error'
             );
             console.dir(error);
           }
@@ -1121,8 +1121,8 @@ export class ScheduleFrmComponent implements OnInit {
       this.disableBtn = false;
       this.loadIndicatorVisible = false;
       this.systemModuleService.announceSweetProxy(
-        "Some required field missing, please try again!",
-        "warning"
+        'Some required field missing, please try again!',
+        'warning'
       );
     }
   }
@@ -1225,11 +1225,11 @@ export class ScheduleFrmComponent implements OnInit {
 
   convert(str) {
     var date = new Date(str),
-        mnth = ("0" + (date.getMonth()+1)).slice(-2),
-        day  = ("0" + date.getDate()).slice(-2);
-        const hours  = ("0" + date.getHours()).slice(-2);
-        const minutes = ("0" + date.getMinutes()).slice(-2);
-    return [ date.getFullYear(), mnth, day, hours, minutes ].join("-");
+        mnth = ('0' + (date.getMonth()+1)).slice(-2),
+        day  = ('0' + date.getDate()).slice(-2);
+        const hours  = ('0' + date.getHours()).slice(-2);
+        const minutes = ('0' + date.getMinutes()).slice(-2);
+    return [ date.getFullYear(), mnth, day, hours, minutes ].join('-');
 }
 
   dateChange(event) {
