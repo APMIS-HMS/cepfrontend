@@ -26,7 +26,7 @@
                                 <h1>Schedule</h1>
                             </div>
                             <div class="col-sm-6">
-                                <button class="btn btn-blue pull-right" (click)="onClickAddVaccine();">
+                                <button class="btn btn-blue pull-right" (click)="onClickAddVaccine('');">
                     <i class="fa fa-fw fa-plus"></i> ADD VACCINE</button>
                             </div>
                         </div>
@@ -151,14 +151,14 @@
                                                             </div>
                                                             <div class="col-md-4" style="padding-right:0;padding-left:0;float:left;">
                                                                 <mat-form-field style="width: 100%">
-                                                                    <input matInput type="number" formControlName="unit" placeholder="Unit">
+                                                                    <input matInput type="number" formControlName="duration" placeholder="Duration">
                                                                 </mat-form-field>
                                                             </div>
                                                             <div class="col-md-4" style="padding-right:0;padding-left:0;float:left;">
                                                                 <mat-form-field style="width: 100%">
-                                                                    <mat-select formControlName="duration" placeholder="Duration">
-                                                                        <mat-option *ngFor="let duration of durationUnits" [(value)]="duration.name">
-                                                                            {{ duration.name }}
+                                                                    <mat-select formControlName="unit" placeholder="Unit">
+                                                                        <mat-option *ngFor="let unit of durationUnits" [(value)]="unit.name">
+                                                                            {{ unit.name }}
                                                                         </mat-option>
                                                                     </mat-select>
                                                                 </mat-form-field>

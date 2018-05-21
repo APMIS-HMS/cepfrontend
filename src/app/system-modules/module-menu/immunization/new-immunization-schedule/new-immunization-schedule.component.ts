@@ -1,18 +1,24 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
-import { CoolLocalStorage } from 'angular2-cool-storage';
-import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
-import { Facility } from '../../../../models/index';
-import { DrugListApiService } from '../../../../services/facility-manager/setup';
-import { DurationUnits } from '../../../../shared-module/helpers/global-config';
-import { ImmunizationScheduleService } from '../../../../services/facility-manager/setup/immunization-schedule.service';
-import { ISubscription } from 'rxjs/Subscription';
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
+import {
+  FormGroup,
+  FormControl,
+  FormArray,
+  FormBuilder,
+  Validators
+} from "@angular/forms";
+import { CoolLocalStorage } from "angular2-cool-storage";
+import { SystemModuleService } from "../../../../services/module-manager/setup/system-module.service";
+import { Facility } from "../../../../models/index";
+import { DrugListApiService } from "../../../../services/facility-manager/setup";
+import { DurationUnits } from "../../../../shared-module/helpers/global-config";
+import { ImmunizationScheduleService } from "../../../../services/facility-manager/setup/immunization-schedule.service";
+import { ISubscription } from "rxjs/Subscription";
 
 @Component({
-  selector: 'app-immunization-schedule',
-  templateUrl: './new-immunization-schedule.component.html',
-  styleUrls: ['./new-immunization-schedule.component.scss']
+  selector: "app-immunization-schedule",
+  templateUrl: "./new-immunization-schedule.component.html",
+  styleUrls: ["./new-immunization-schedule.component.scss"]
 })
 export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
   immunizationScheduleForm: FormGroup;
@@ -20,9 +26,9 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
   immunizationSchedule = <any>{};
   results: any = <any>[];
   apmisLookupQuery = {};
-  apmisLookupText = '';
-  apmisLookupUrl = 'drug-generic-list';
-  apmisLookupDisplayKey = 'name';
+  apmisLookupText = "";
+  apmisLookupUrl = "drug-generic-list";
+  apmisLookupDisplayKey = "name";
   disableBtn: boolean = false;
   saveScheduleBtn: boolean = true;
   updateScheduleBtn: boolean = false;
@@ -54,43 +60,45 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.facility = <Facility>this._locker.getObject('selectedFacility');
+    this.facility = <Facility>this._locker.getObject("selectedFacility");
 
     // Depending on if there is a routeId, use form initializer.
     if (!!this.routeId) {
       this.immunizationScheduleForm = this._fb.group({
-        name: ['', [<any>Validators.required]],
-        price: ['', [<any>Validators.required]],
+        name: ["", [<any>Validators.required]],
+        price: ["", [<any>Validators.required]],
         vaccines: this._fb.array([])
       });
     } else {
       this.immunizationScheduleForm = this._fb.group({
-        name: ['', [<any>Validators.required]],
-        price: ['', [<any>Validators.required]],
+        name: ["", [<any>Validators.required]],
+        price: ["", [<any>Validators.required]],
         vaccines: this._fb.array([this.initVaccineBuilder()])
       });
     }
 
-    (this.immunizationScheduleForm.get('vaccines') as FormArray).valueChanges
+    (this.immunizationScheduleForm.get("vaccines") as FormArray).valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       // .switchMap(value => this._drugListAPI.find({ query: { 'text': value[this.drugIndex].name, facilityId: this.facility._id }}))
       .subscribe((res: any) => {
         if (res.length > 0) {
-          const immuneSch = <FormArray>this.immunizationScheduleForm.controls['vaccines'];
+          const immuneSch = <FormArray>this.immunizationScheduleForm.controls["vaccines"];
           const vaccine = <FormArray>immuneSch.controls[this.drugIndex];
-          const intervals = <FormArray>vaccine.controls['intervals'];
+          const intervals = <FormArray>vaccine.controls["intervals"];
           const text = res[this.drugIndex].name;
           const intervalLength = intervals.controls.length;
           // Get the length from interval and  assign numberOfDosage.
-          vaccine.controls['numberOfDosage'].setValue(intervalLength);
+          vaccine.controls["numberOfDosage"].setValue(intervalLength);
 
-          this._drugListAPI.find({ query: { searchtext: text, method: 'immunization' } }).then(resp => {
-            this.cuDropdownLoading = false;
-            if (resp.status === 'success') {
-              this.results = resp.data;
-            }
-          });
+          this._drugListAPI
+            .find({ query: { searchtext: text, method: "immunization" } })
+            .then(resp => {
+              this.cuDropdownLoading = false;
+              if (resp.status === "success") {
+                this.results = resp.data;
+              }
+            });
         }
       });
   }
@@ -104,7 +112,7 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
       this.updatingScheduleBtn = false;
 
       const payload = {
-        action: 'create',
+        action: "create",
         facilityId: this.facility._id,
         name: value.name,
         vaccines: value.vaccines,
@@ -113,10 +121,13 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
 
       this._systemModuleService.on();
       this._immunizationScheduleService.customCreate(payload).then(res => {
+        console.log(res);
         this._systemModuleService.off();
-        if (res.status === 'success') {
-          const text = `${value.name} immunization schedule has been created successfully!`;
-          this._systemModuleService.announceSweetProxy(text, 'success');
+        if (res.status === "success") {
+          const text = `${
+            value.name
+          } immunization schedule has been created successfully!`;
+          this._systemModuleService.announceSweetProxy(text, "success");
           this.immunizationScheduleForm.reset();
           this.disableBtn = false;
           this.saveScheduleBtn = true;
@@ -124,7 +135,7 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
           this.savingScheduleBtn = false;
           this.updatingScheduleBtn = false;
         } else {
-          this._systemModuleService.announceSweetProxy(res.message, 'error');
+          this._systemModuleService.announceSweetProxy(res.message, "error");
           this.disableBtn = false;
           this.saveScheduleBtn = true;
           this.updateScheduleBtn = false;
@@ -144,19 +155,19 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
         vaccinationSite: [vaccine.vaccinationSite, Validators.required],
         numberOfDosage: [vaccine.numberOfDosage, Validators.required],
         dosage: [vaccine.dosage, Validators.required],
-        price: ['', Validators.required],
-        intervals: this._fb.array([this.initIntervalBuilder(vaccine)]),
+        price: ["", Validators.required],
+        intervals: this._fb.array([this.initIntervalBuilder(vaccine)])
       });
     } else {
       return this._fb.group({
-        name: ['', Validators.required],
-        nameCode: ['', Validators.required], // drug code
-        code: ['', Validators.required],
-        vaccinationSite: ['', Validators.required],
-        numberOfDosage: ['', Validators.required],
-        dosage: ['', Validators.required],
-        price: ['', Validators.required],
-        intervals: this._fb.array([this.initIntervalBuilder()]),
+        name: ["", Validators.required],
+        nameCode: ["", Validators.required], // drug code
+        code: ["", Validators.required],
+        vaccinationSite: ["", Validators.required],
+        numberOfDosage: ["", Validators.required],
+        dosage: ["", Validators.required],
+        price: ["", Validators.required],
+        intervals: this._fb.array([this.initIntervalBuilder()])
       });
     }
   }
@@ -166,13 +177,13 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
       return this._fb.group({
         sequence: [interval.sequence, Validators.required],
         unit: [interval.unit, Validators.required],
-        duration: [interval.duration, Validators.required],
+        duration: [interval.duration, Validators.required]
       });
     } else {
       return this._fb.group({
-        sequence: ['', Validators.required],
-        unit: ['', Validators.required],
-        duration: ['', Validators.required],
+        sequence: ["", Validators.required],
+        unit: ["", Validators.required],
+        duration: ["", Validators.required]
       });
     }
   }
@@ -180,18 +191,22 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
   onClickAddVaccine(vaccine?: any) {
     if (!!vaccine) {
       // add vaccine to list
-      const control = <FormArray>this.immunizationScheduleForm.controls['vaccines'];
+      const control = <FormArray>this.immunizationScheduleForm.controls[
+        "vaccines"
+      ];
       control.push(this.initVaccineBuilder(vaccine));
     } else {
       // add vaccine to list
-      const control = <FormArray>this.immunizationScheduleForm.controls['vaccines'];
+      const control = <FormArray>this.immunizationScheduleForm.controls[
+        "vaccines"
+      ];
       control.push(this.initVaccineBuilder());
     }
   }
 
   onClickAddInterval(i, vaccine, action) {
-    const control = <FormArray>vaccine.controls['intervals'];
-    if (action === 'add') {
+    const control = <FormArray>vaccine.controls["intervals"];
+    if (action === "add") {
       // add interval into the list of vaccines.
       control.push(this.initIntervalBuilder());
     } else {
@@ -205,8 +220,8 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
   }
 
   apmisLookupHandleSelectedItem(i, value, vaccine) {
-    vaccine.controls['name'].setValue(value.name);
-    vaccine.controls['nameCode'].setValue(value.code);
+    vaccine.controls["name"].setValue(value.name);
+    vaccine.controls["nameCode"].setValue(value.code);
   }
 
   private _getImmunizationSchedule(id) {
@@ -223,19 +238,25 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
 
   private _populateImmunizationSchedule(immunization) {
     if (!!immunization._id) {
-      this.immunizationScheduleForm.controls['name'].setValue(immunization.name);
+      this.immunizationScheduleForm.controls["name"].setValue(
+        immunization.name
+      );
       if (immunization.vaccines.length > 0) {
         immunization.vaccines.forEach(vaccine => {
           this.onClickAddVaccine(vaccine);
         });
       }
-      this.immunizationScheduleForm.controls['name'].setValue(immunization.name);
+      this.immunizationScheduleForm.controls["name"].setValue(
+        immunization.name
+      );
     }
   }
 
   removeVaccine(i: number) {
     // remove address from the list
-    const control = <FormArray>this.immunizationScheduleForm.controls['vaccines'];
+    const control = <FormArray>this.immunizationScheduleForm.controls[
+      "vaccines"
+    ];
     control.removeAt(i);
   }
 
@@ -251,9 +272,9 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
     }, 300);
   }
 
-  close_onClick(event) {
+  close_onClick() {
     this._systemModuleService.on();
-    this._router.navigate(['/dashboard/immunization/']).then(res => {
+    this._router.navigate(["/dashboard/immunization/"]).then(res => {
       this._systemModuleService.off();
     });
   }
@@ -263,4 +284,3 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
     this.routeParams.unsubscribe();
   }
 }
-
