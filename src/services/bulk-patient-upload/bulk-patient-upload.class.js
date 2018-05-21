@@ -21,6 +21,9 @@ class Service {
   }
 
   async create(data, params) {
+    console.log(data);
+    data = JSON.parse(data.data);
+    console.log(data);
     const patientService = this.app.service('patients');
     const savePersonService = this.app.service('save-person');
     const searchPeopleService = this.app.service('search-people');
@@ -36,6 +39,7 @@ class Service {
         let datas = {
           person: data[i]
         }
+        console.log(data[i]);
         let checkPerson;
         try {
           checkPerson = await searchPeopleService.find({
@@ -47,56 +51,73 @@ class Service {
               isValidating: true
             }
           });
-        } catch(e){
+        } catch (e) {
+          console.log(e);
           return e;
         }
         
+        console.log(checkPerson);
         if (checkPerson.data === false) {
-          if (/* !isFuture(data[i].dateOfBirth) */ new Date() >= new Date(data[i].dateOfBirth)) {
+          if (new Date() >= new Date(data[i].dateOfBirth)) {
             try {
               savedPerson = await savePersonService.create(datas);
             } catch (e) {
-              failedAttempts.push({
-                data: data[i],
-                message: 'Error, creating person information'
-              });
+              const error = String(e.error).toLowerCase();
+              if(error.indexOf('duplicate') !== -1){
+                console.log('duplicate');
+                failedAttempts.push({
+                  data: data[i],
+                  message: 'Error, Person with this information already exist'
+                });
+              }else{
+                failedAttempts.push({
+                  data: data[i],
+                  message: 'Error, creating person information'
+                });
+              }
+              
             }
-            let patient = {
-              personId: savedPerson._id,
-              facilityId: data[i].facilityId
-            }
-            if (data[i].payPlan.toLowerCase() === 'wallet') {
-              patient.paymentPlan = [
-                {
-                  planType: 'wallet',
-                  bearerPersonId: savedPerson._id,
-                  isDefault: true
-                }
-              ]
-            }
-            try {
-              savedPatient = await patientService.create(patient);
-            } catch (e) {
-              failedAttempts.push({
-                data: data[i],
-                message: 'Error, creating Patient'
-              });
-            }
-            let dataForPatientTags = {
-              name: data[i].hospId,
-              facilityId: data[i].facilityId,
-              patientId: savedPatient._id,
-              tagType: 'identification'
-            }
-            delete data[i].hospId;;
-            try {
-              savedPatientTags = await patientTagService.create(dataForPatientTags);
-              returnData.push(savedPatient);
-            } catch (e) {
-              failedAttempts.push({
-                data: data[i],
-                message: 'Error, Assigning Hospital Id to Patient'
-              });
+            if (savedPerson !== undefined) {
+              let patient = {
+                personId: savedPerson._id,
+                facilityId: data[i].facilityId
+              }
+              if (data[i].payPlan.toLowerCase() === 'wallet') {
+                patient.paymentPlan = [
+                  {
+                    planType: 'wallet',
+                    bearerPersonId: savedPerson._id,
+                    isDefault: true
+                  }
+                ]
+              }
+              try {
+                savedPatient = await patientService.create(patient);
+              } catch (e) {
+                console.log(e);
+                failedAttempts.push({
+                  data: data[i],
+                  message: 'Error, creating Patient'
+                });
+              }
+              console.log(savedPatient);
+              let dataForPatientTags = {
+                name: data[i].hospId,
+                facilityId: data[i].facilityId,
+                patientId: savedPatient._id,
+                tagType: 'identification'
+              }
+              //delete data[i].hospId;;
+              try {
+                savedPatientTags = await patientTagService.create(dataForPatientTags);
+                returnData.push(savedPatient);
+              } catch (e) {
+                console.log(e);
+                failedAttempts.push({
+                  data: data[i],
+                  message: 'Error, Assigning Hospital Id to Patient'
+                });
+              }
             }
           } else {
             failedAttempts.push({
