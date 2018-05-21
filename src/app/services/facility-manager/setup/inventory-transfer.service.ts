@@ -20,6 +20,7 @@ export class InventoryTransferService {
     this._socket2 = _socketService.getService('stock-transfers');
     this._socket.timeout = 50000;
     this._socket2.timeout = 50000;
+    this._socket3.timeout = 50000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
     this.listenerDelete = Observable.fromEvent(this._socket, 'deleted');
