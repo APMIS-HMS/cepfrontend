@@ -69,12 +69,12 @@ export class DocDiagnosisComponent implements OnInit {
 
       if (value !== null && value.length === 0) {
         this.apmisLookupQuery = {
-          name: { $regex: -1, '$options': 'i' },
+          name: { $regex: -1, '$options': 'i' }, $sort:{name:1},
           $limit: 100
         }
       } else {
         this.apmisLookupQuery = {
-          name: { $regex: value, '$options': 'i' },
+          name: { $regex: value, '$options': 'i' }, $sort:{name:1},
           $limit: 100
         }
       }
