@@ -181,6 +181,8 @@ const bulkPatientUpload = require('./bulk-patient-upload/bulk-patient-upload.ser
 const billSummaryData = require('./bill-summary-data/bill-summary-data.service.js');
 const paymentChartData = require('./payment-chart-data/payment-chart-data.service.js');
 const employeeSearch = require('./employee-search/employee-search.service.js');
+const addPurchaseEntries = require('./add-purchase-entries/add-purchase-entries.service.js');
+const formularyProducts = require('./formulary-products/formulary-products.service.js');
 const getServerTime = require('./get-server-time/get-server-time.service.js');
 const vitalBpLocations = require('./vital-bp-locations/vital-bp-locations.service.js');
 const immunizationSchedule = require('./immunization-schedule/immunization-schedule.service.js');
@@ -372,6 +374,8 @@ module.exports = function(app) {
     app.configure(billSummaryData);
     app.configure(paymentChartData);
     app.configure(employeeSearch);
+    app.configure(addPurchaseEntries);
+    app.configure(formularyProducts);
     app.configure(getServerTime);
     app.configure(vitalBpLocations);
     app.configure(immunizationSchedule);

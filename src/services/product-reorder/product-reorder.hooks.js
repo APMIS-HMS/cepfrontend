@@ -5,7 +5,7 @@ const resolvers = {
   joins: {
     productObject: () => async (item, context) => {
       try{
-        const product = await context.app.service('products').get(item.productId, {});
+        const product = await context.app.service('formulary-products').get(item.productId, {});
         item.productObject = product;
       }catch(Exception){
 

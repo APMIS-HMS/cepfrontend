@@ -1,20 +1,39 @@
-const { authenticate } = require('@feathersjs/authentication').hooks;
+const {
+  authenticate
+} = require('@feathersjs/authentication').hooks;
 
-const {fastJoin} = require('feathers-hooks-common');
+const {
+  fastJoin
+} = require('feathers-hooks-common');
 
 const resolvers = {
   joins: {
     productObject: () => async (data, context) => {
       try {
-        const getProduct = await context.app.service('products').get(data.productId);
-        const productConfig = await context.app.service('product-configs').find({
+        const getProduct = await context.app.service('formulary-products').get(data.productId, {});
+        if (getProduct.data.id !== undefined) {
+          const productConfig = await context.app.service('product-configs').find({
+            query: {
+              facilityId: data.facilityId,
+              productId: getProduct.data.id
+            }
+          });
+          getProduct.data.productConfigObject = productConfig.data[0].packSizes;
+          data.productObject = getProduct.data;
+        }
+      } catch (e) {
+        // console.log(e);
+      }
+    },
+    productReorder: () => async (data, context) => {
+      try {
+        const getProductReorder = await context.app.service('product-reorders').find({
           query: {
-            facilityId: getProduct.facilityId,
-            productId: getProduct._id
+            facilityId: data.facilityId,
+            productId: data.productId
           }
         });
-        getProduct.productConfigObject = productConfig.data[0].packSizes;
-        data.productObject = getProduct;
+        data.reorder = getProductReorder.data[0].reOrderLevel;
       } catch (e) {
         // console.log(e);
       }
@@ -24,7 +43,7 @@ const resolvers = {
 
 module.exports = {
   before: {
-    all: [ authenticate('jwt') ],
+    all: [authenticate('jwt')],
     find: [],
     get: [],
     create: [],
