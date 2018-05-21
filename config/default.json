@@ -30,5 +30,5 @@
             "passwordField": "password"
         }
     },
-    "mongodb": "mongodb://localhost:27017/apmisapiv2_test"
+    "mongodb": "mongodb://localhost:27018/apmisapiv_2"
 }

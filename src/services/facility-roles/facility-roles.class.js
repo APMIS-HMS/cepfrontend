@@ -176,7 +176,6 @@ class Service {
                 selectedUser = this.removeRole(selectedUser, role, index);
             }
         }
-        console.log(selectedUser.data[0].userRoles);
         let updatedUser = await usersService.patch(selectedUser.data[0]._id, {
             userRoles: selectedUser.data[0].userRoles
         });
@@ -212,7 +211,7 @@ class Service {
     }
 }
 
-module.exports = function (options) {
+module.exports = function(options) {
     return new Service(options);
 };
 
