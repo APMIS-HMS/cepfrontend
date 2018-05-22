@@ -18,7 +18,7 @@ class Service {
 
     async create(data, params) {
 
-        const immuScheduleService = this.app.service('immunization');
+        const immuScheduleService = this.app.service('immunization-schedule');
         const appointmentServices = this.app.service('appointments');
         const immunizationRecordService = this.app.service('immunization-record-history');
 
