@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const intervalSchema = new Schema({
     unit: { type: String, required: true },
-    sequence: { type: Number, required: false },
+    sequence: { type: Number, required: true },
     duration: { type: Number, requred: true }
 });
 
