@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
 import {
   InventoryService, ProductService, EmployeeService, FacilitiesService,
-  StoreService, PurchaseOrderService, InventoryTransferService,InventoryTransferStatusService
+  StoreService, PurchaseOrderService, InventoryTransferService, InventoryTransferStatusService
 } from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
@@ -49,7 +49,6 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
     private authFacadeService: AuthFacadeService,
     private inventoryTransferStatusService: InventoryTransferStatusService
   ) {
-    this.getTransferStatus();
     this.subscription = this._employeeService.checkInAnnounced$.subscribe(res => {
       if (!!res) {
         if (!!res.typeObject) {
@@ -66,6 +65,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
               this.getInventories();
               this.getPurchaseOrders();
               this.getTransfers();
+              this.getTransferStatus();
             }
           }
         }
@@ -124,7 +124,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    
+
   }
 
   getInventories() {
@@ -133,7 +133,8 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
         query: {
           facilityId: this.selectedFacility._id,
           storeId: this.checkingStore.storeId,
-          availableQuantity: { $gt: 0 }
+          availableQuantity: { $gt: 0 },
+          $sort: { updatedAt: -1 }
         }
       }).then(res => {
         console.log(res);
@@ -148,7 +149,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
   getPurchaseOrders() {
     if (!!this.checkingStore) {
       this._purchaseOrderService.find({
-        query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId, isActive: true }
+        query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId, isActive: true, $sort: { updatedAt: -1 } }
       }).then(res => {
         this.purchaseOrderLoading = false;
         if (!!res.data && res.data.length > 0) {
@@ -165,7 +166,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
     console.log(this.selectedFacility._id);
     if (!!this.checkingStore) {
       this._inventoryTransferService.find({
-        query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId,$sort: { createdAt: -1 }  }
+        query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId, $sort: { updatedAt: -1 } }
       }).then(res => {
         console.log(res);
         this.transferLoading = false;
@@ -179,6 +180,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
 
   getTransferStatus() {
     this.inventoryTransferStatusService.findAll().subscribe(payload => {
+      console.log(payload);
       this.transferStatuses = payload.data;
       this.transferStatuses.forEach((item, i) => {
         if (item.name === 'Completed') {
@@ -204,6 +206,14 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
       return this.rejectedInventoryStatus.name;
     }
     return 'Pending';
+  }
+
+  getMostRescentBatchNo(batch) {
+    if (batch.transactions.length > 0) {
+      return batch.transactions[batch.transactions.length - 1].batchNumber;
+    } else {
+      return '';
+    }
   }
 
   onChangeCheckedIn() {

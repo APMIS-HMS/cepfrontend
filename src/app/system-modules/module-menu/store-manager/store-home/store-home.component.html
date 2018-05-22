@@ -63,7 +63,7 @@
                             <div class="row-item">{{ inventory?.productObject?.name }}</div>
                             <div class="row-item">
                                 <div class="item-label">Recent Batch</div>
-                                <div class="item-val">{{ inventory?.transaction?.batchNumber }}</div>
+                                <div class="item-val">{{getMostRescentBatchNo(inventory) }}</div>
                             </div>
                             <div class="row-item">
                                 <div class="item-label">Quantity</div>
@@ -109,8 +109,11 @@
                                     <div class="item-val">{{ transfer?.destinationStoreObject?.name }}</div>
                                 </div>
                                 <div class="row-status">
-                                    <div class="status status-pending"></div>
-                                    <div class="item-label">{{getStatus(transfer)}}</div>
+                                    <div *ngFor="let stat of transfer.inventoryTransferTransactions">
+                                            <div class="status status-pending" *ngIf="stat.transferStatusObject.name === 'Pending'"></div>
+                                            <div class="status status-completed" *ngIf="stat.transferStatusObject.name === 'Completed'"></div>
+                                            <div class="item-label">{{getStatus(transfer)}}</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
