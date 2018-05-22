@@ -1,42 +1,30 @@
-import { Router } from '@angular/router';
-const feathers = require('@feathersjs/feathers');
-const socketio = require('@feathersjs/socketio-client');
-const io = require('socket.io-client');
-const localstorage = require('feathers-localstorage');
-const rest = require('@feathersjs/rest-client');
-const authentication = require('@feathersjs/authentication-client');
-import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Injectable } from '@angular/core';
-const rx = require('feathers-reactive');
-const RxJS = require('rxjs/Rx');
+import { Router } from "@angular/router";
+const feathers = require("@feathersjs/feathers");
+const socketio = require("@feathersjs/socketio-client");
+const io = require("socket.io-client");
+const localstorage = require("feathers-localstorage");
+const rest = require("@feathersjs/rest-client");
+const authentication = require("@feathersjs/authentication-client");
+import { CoolLocalStorage } from "angular2-cool-storage";
+import { Injectable } from "@angular/core";
+const rx = require("feathers-reactive");
+const RxJS = require("rxjs/Rx");
 
-const HOST = 'https://apmisapitest.azurewebsites.net';
+const HOST = "https://apmisapitest.azurewebsites.net";
 
- 
 @Injectable()
 export class SocketService {
   public socket: any;
   public HOST;
   private _app: any;
 
-  errorHandler = error => {
-    this._app.authenticate({
-      strategy: 'local',
-      email: 'admin@feathersjs.com',
-      password: 'admin'
-    }).then(response => {
-      // You are now authenticated again
-    });
-  };
-
   constructor(public locker: CoolLocalStorage, private _router: Router) {
     this.HOST = HOST;
     this.socket = io(this.HOST);
     this._app = feathers()
       .configure(socketio(this.socket))
-      .configure(rx(RxJS, { listStrategy: 'always' }))
+      .configure(rx(RxJS, { listStrategy: "always" }))
       .configure(authentication({ storage: window.localStorage }));
-     this._app.on('reauthentication-error', this.errorHandler)
   }
   logOut() {
     this._app.logout();
@@ -44,9 +32,9 @@ export class SocketService {
   }
   async loginIntoApp(query: any) {
     return await this._app.authenticate({
-      'strategy': 'local',
-      'email': query.email,
-      'password': query.password
+      strategy: "local",
+      email: query.email,
+      password: query.password
     });
   }
   getService(value: any) {
@@ -57,7 +45,7 @@ export class SocketService {
   }
 }
 
-const superagent = require('superagent');
+const superagent = require("superagent");
 @Injectable()
 export class RestService {
   public HOST;
@@ -67,15 +55,18 @@ export class RestService {
   }
   constructor(private locker: CoolLocalStorage, private _router: Router) {
     this.HOST = HOST;
-    if (this.locker.getObject('auth') !== undefined && this.locker.getObject('auth') != null) {
-      const auth: any = this.locker.getObject('token')
+    if (
+      this.locker.getObject("auth") !== undefined &&
+      this.locker.getObject("auth") != null
+    ) {
+      const auth: any = this.locker.getObject("token");
       this._app = feathers()
-        .configure(rest(this.HOST).superagent(superagent,
-          {
-            headers: { 'authorization': 'Bearer ' + auth }
-          }
-        ))
-        .configure(rx(RxJS, { listStrategy: 'always' }))
+        .configure(
+          rest(this.HOST).superagent(superagent, {
+            headers: { authorization: "Bearer " + auth }
+          })
+        )
+        .configure(rx(RxJS, { listStrategy: "always" }))
         .configure(authentication({ storage: window.localStorage }));
     } else {
       this._app = feathers() // Initialize feathers
@@ -85,9 +76,9 @@ export class RestService {
   }
   loginIntoApp(query) {
     return this._app.authenticate({
-      'strategy': 'local',
-      'email': query.email,
-      'password': query.password
+      strategy: "local",
+      email: query.email,
+      password: query.password
     });
   }
   getService(value: any) {
