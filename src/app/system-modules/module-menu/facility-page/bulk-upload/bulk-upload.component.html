@@ -198,7 +198,7 @@
               <div class="card-list-item {{failed === true ? 'failed-list' : ''}}" [formGroup]="shownForm" *ngFor="let patient of patients; let i = index; let item of shownForm.get('items').controls;">
                 <div class="row" *ngIf="openBox !== 'view'+i">
                   <div class="table-list col-xs 1">
-                    {{patient.data.title}}
+                    {{patient.data.title || patient.title}}
                   </div>
                   <div class="table-list col-xs-2">
                     {{patient.data.firstName}} {{patient.data.lastName}}
