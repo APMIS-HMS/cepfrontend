@@ -328,6 +328,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
       .find({ query: { facilityId: this.selectedFacility._id } })
       .then(payload => {
         this.immunizationSchedules = payload.data;
+        console.log(this.immunizationSchedules);
       });
   }
 
