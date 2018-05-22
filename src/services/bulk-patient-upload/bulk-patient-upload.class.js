@@ -28,14 +28,14 @@ class Service {
     const savePersonService = this.app.service('save-person');
     const searchPeopleService = this.app.service('search-people');
     const patientTagService = this.app.service('suggest-patient-tags');
-    let savedPerson;
-    let savedPatient;
-    let savedPatientTags;
     let returnData = [];
     let failedAttempts = [];
     let length = data.length;
     if (Array.isArray(data)) {
       for (let i = 0; i < length; i++) {
+        let savedPerson;
+        let savedPatient;
+        let savedPatientTags;
         let datas = {
           person: data[i]
         }
@@ -55,7 +55,7 @@ class Service {
           console.log(e);
           return e;
         }
-        
+
         console.log(checkPerson);
         if (checkPerson.data === false) {
           if (new Date() >= new Date(data[i].dateOfBirth)) {
@@ -63,19 +63,19 @@ class Service {
               savedPerson = await savePersonService.create(datas);
             } catch (e) {
               const error = String(e.error).toLowerCase();
-              if(error.indexOf('duplicate') !== -1){
+              if (error.indexOf('duplicate') !== -1) {
                 console.log('duplicate');
                 failedAttempts.push({
                   data: data[i],
                   message: 'Error, Person with this information already exist'
                 });
-              }else{
+              } else {
                 failedAttempts.push({
                   data: data[i],
                   message: 'Error, creating person information'
                 });
               }
-              
+
             }
             if (savedPerson !== undefined) {
               let patient = {
