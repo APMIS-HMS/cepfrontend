@@ -235,7 +235,6 @@ export class BulkUploadComponent implements OnInit {
     patientInfo.title = info.title.value;
     patientInfo.gender = info.gender.value;
     patientInfo.payPlan = info.payPlan.value;
-    console.log(patientInfo);
     this.openBox = '';
   }
 
@@ -255,19 +254,28 @@ export class BulkUploadComponent implements OnInit {
   }
 
   submit() {
+    let newArr = [];
     this.btnLoading = true;
     this.patients.map(pa => {
+      if(this.failed === true){
+        delete pa.message;
+        delete pa.facilityId;
+        pa = pa.data;
+        newArr.push(pa);
+        delete pa.data;
+      }
       pa.facilityId = this.facility._id
-    })
-    this.patientService.bulkUpload(this.patients).then(payload => {
-      console.log(payload);
+    });
+    this.patients = (this.failed === true) ? newArr : this.patients;
+    const data = {
+      data: JSON.stringify(this.patients)
+    };
+    this.patientService.bulkUpload(data).then(payload => {
       if (payload.failed.length > 0) {
         this.patients = [];
         this.systemModuleService.announceSweetProxy('An error occured. The following list had an issue when uploading', 'error');
         this.failed = true;
-        console.log(this.failed);
         this.patients = payload.failed;
-        console.log(this.patients);
         this.btnLoading = false;
       } else {
         this.failed = false;
@@ -276,7 +284,6 @@ export class BulkUploadComponent implements OnInit {
         this.systemModuleService.announceSweetProxy('Patients information successfully uploaded!', 'success');
       }
     }).catch(err => {
-      console.log(err);
       this.btnLoading = false;
       this.systemModuleService.announceSweetProxy('An error occured!', 'error');
     });
