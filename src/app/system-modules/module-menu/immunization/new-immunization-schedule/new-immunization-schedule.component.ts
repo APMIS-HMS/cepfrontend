@@ -40,7 +40,7 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
   durationUnits = DurationUnits;
   private routeParams: ISubscription;
   private routeId: string;
-
+ 
   constructor(
     private _fb: FormBuilder,
     private _locker: CoolLocalStorage,
@@ -58,25 +58,31 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
       }
     });
   }
-
+  // get formData { return this.immunizationScheduleForm.get('Data'); }
   ngOnInit() {
     this.facility = <Facility>this._locker.getObject("selectedFacility");
     // Depending on if there is a routeId, use form initializer.
-    if (!!this.routeId) {
-      this.immunizationScheduleForm = this._fb.group({
-        name: ["", [<any>Validators.required]],
-        price: ["", [<any>Validators.required]],
-        vaccines: this._fb.array([])
-      });
-    } else {
-      this.immunizationScheduleForm = this._fb.group({
-        name: ["", [<any>Validators.required]],
-        price: ["", [<any>Validators.required]],
-        vaccines: this._fb.array([this.initVaccineBuilder()])
-      });
-    }
+    // if (!!this.routeId) {
+    //   this.immunizationScheduleForm = this._fb.group({
+    //     name: ["", [<any>Validators.required]],
+    //     price: ["", [<any>Validators.required]],
+    //     vaccinesArray: this._fb.array([])
+    //   });
+    // } else {
+    //   this.immunizationScheduleForm = this._fb.group({
+    //     name: ["", [<any>Validators.required]],
+    //     price: ["", [<any>Validators.required]],
+    //     vaccinesArray: this._fb.array([this.initVaccineBuilder()])
+    //   });
+    // }
 
-    (this.immunizationScheduleForm.controls["vaccines"] as FormArray).valueChanges
+    this.immunizationScheduleForm = this._fb.group({
+      name: ["", [<any>Validators.required]],
+      price: ["", [<any>Validators.required]],
+      'vaccinesArray': this._fb.array([this.initVaccineBuilder()])
+    });
+
+    (this.immunizationScheduleForm.get("vaccinesArray") as FormArray).valueChanges
       .debounceTime(400)
       .distinctUntilChanged()
       // .switchMap(value => this._drugListAPI.find({ query: { 'text': value[this.drugIndex].name, facilityId: this.facility._id }}))
@@ -116,7 +122,7 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
         action: "create",
         facilityId: this.facility._id,
         name: value.name,
-        vaccines: value.vaccines,
+        vaccines: value.vaccinesArray,
         price: value.price
       };
 
@@ -192,13 +198,13 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
     if (!!vaccine) {
       // add vaccine to list
       const control = <FormArray>this.immunizationScheduleForm.controls[
-        "vaccines"
+        "vaccinesArray"
       ];
       control.push(this.initVaccineBuilder(vaccine));
     } else {
       // add vaccine to list
       const control = <FormArray>this.immunizationScheduleForm.controls[
-        "vaccines"
+        "vaccinesArray"
       ];
       control.push(this.initVaccineBuilder());
     }
@@ -255,7 +261,7 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
   removeVaccine(i: number) {
     // remove address from the list
     const control = <FormArray>this.immunizationScheduleForm.controls[
-      "vaccines"
+      "vaccinesArray"
     ];
     control.removeAt(i);
   }
