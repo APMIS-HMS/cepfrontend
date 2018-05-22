@@ -82,41 +82,34 @@
                 <div class="sect-header">
                     <div class="head-inner-lhs">
                         <div class="counta">{{ transferCount }}</div>
-                        <div class="head-inner-label">Transfer</div>
+                        <div class="head-inner-label">Requisition</div>
                     </div>
                 </div>
                 <div class="sect-content">
                     <div>
-                        <div *ngIf="transfers.length === 0 && !transferLoading">
+                        <div *ngIf="requisitions.length === 0 && !transferLoading">
                             <div style="width: 100%; text-align:center;">No data available in table.</div>
                         </div>
 
-                        <div *ngIf="transfers.length === 0 && transferLoading">
+                        <div *ngIf="requisitions.length === 0 && transferLoading">
                             <div style="width: 100%; text-align:center;">
                                 <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                             </div>
                         </div>
-
-                        <div *ngIf="transfers.length > 0 && !transferLoading">
-                            <div class="content-row" *ngFor="let transfer of transfers; let i=index">
-                                <div class="row-item">
-                                    <ul>
-                                        <li *ngFor="let item of transfer?.inventoryTransferTransactions">{{item?.productObject?.data?.name}}</li>
-                                    </ul>
-                                </div>
-                                <div class="row-item">
-                                    <div class="item-label">To</div>
-                                    <div class="item-val">{{ transfer?.destinationStoreObject?.name }}</div>
-                                </div>
-                                <div class="row-status">
-                                    <div *ngFor="let stat of transfer.inventoryTransferTransactions">
-                                            <div class="status status-pending" *ngIf="stat.transferStatusObject.name === 'Pending'"></div>
-                                            <div class="status status-completed" *ngIf="stat.transferStatusObject.name === 'Completed'"></div>
-                                            <div class="item-label">{{getStatus(transfer)}}</div>
+                        
+                        <div *ngIf="requisitions.length > 0 && !transferLoading">
+                                <div class="content-row" *ngFor="let requisition of requisitions; let i=index">
+                                    <div class="row-item">{{ requisition?.storeRequisitionNumber }}</div>
+                                    <div class="row-item">
+                                        <div class="item-label">Store</div>
+                                        <div class="item-val">{{ requisition?.storeObject?.name }}</div>
+                                    </div>
+                                    <div class="row-item">
+                                        <div class="item-label">Employee</div>
+                                        <div class="item-val">{{ requisition?.employeeObject?.personDetails?.firstName }} {{ requisition?.employeeObject?.personDetails?.lastName }}</div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
                     </div>
 
                     <div class="{{ transfers.length > 0 ? ' card-link ' : ' '}}" *ngIf="transfers.length > 0 && !transferLoading" routerLink="/dashboard/inventory-manager/inventory">View All</div>
