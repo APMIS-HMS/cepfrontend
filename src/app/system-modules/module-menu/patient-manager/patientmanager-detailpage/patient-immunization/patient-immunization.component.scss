@@ -27,3 +27,45 @@ button{
     font-size: 1.2rem;
     line-height: 1.4;
 }
+.buttom-actions{
+    display: flex;
+    justify-content: flex-end;
+}
+.cta-1{
+    width: auto;
+    height: 26px;
+    font-size: 1.4rem;
+    padding: 2px 20px;
+}
+.cta-1 i{
+    padding-right: 10px;
+}
+.cta-green{
+    background: rgb(46, 125, 50);
+}
+.cta-red{
+    background: #B71C1C;
+}
+.cta-orange{
+    background: #e59400;
+}
+.vi-status{
+    font-size: 1.2rem;
+    width: 100%;
+    letter-spacing: 2px;
+    text-align: right;
+    font-weight: bold;
+}
+
+.vi-status-1{
+    color: #0288D1;
+}
+.vi-status-2{
+    color: rgb(46, 125, 50);
+}
+.vi-status-3{
+    color: #e59400;
+}
+.vi-status-4{
+    color: #ff2500;
+}
