@@ -169,8 +169,8 @@ class Service {
                     try {
                         var createNewSch = await organisationServices.create(newOrgSev);
                         if (createNewSch.data[0].length > 0) {
-                            respons.services = createNewSch;
-                            return jsend.success(respons);
+                            //respons.services = createNewSch;
+                            return jsend.success(createNewSch);
                         }
                     } catch (error) {
                         return jsend.error('Failed to create service');

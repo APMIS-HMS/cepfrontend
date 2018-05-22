@@ -90,7 +90,6 @@ class Service {
                             break;
                         }
                     }
-
                     try {
                         let createNewOrgService = await organisationServices.patch(org._id, org, {});
 
@@ -103,6 +102,9 @@ class Service {
 
                             catServices.forEach(element => {
                                 newVaccines.forEach(vac => {
+                                    if ((element.name === vac.name && element.code === vac.code) && vac.name === immuneName) {
+                                        immunization.serviceId = element._id;
+                                    }
                                     if (element.name === vac.name && element.code === vac.code) {
                                         let vacc = {
                                             name: vac.name,
@@ -135,7 +137,7 @@ class Service {
                                     });
                                     // Update the immunization object with most resent values
                                     immunization.vaccines = vacNew;
-                                    immunization.serviceId = createNewOrgService._id;
+                                    //immunization.serviceId = createNewOrgService._id;
                                     immunization.price = data.price;
                                 }
 
@@ -169,8 +171,8 @@ class Service {
                     try {
                         var createNewSch = await organisationServices.create(newOrgSev);
                         if (createNewSch.data[0].length > 0) {
-                            respons.services = createNewSch;
-                            return jsend.success(respons);
+                            //respons.services = createNewSch;
+                            return jsend.success(createNewSch);
                         }
                     } catch (error) {
                         return jsend.error('Failed to create service');
@@ -180,7 +182,7 @@ class Service {
                 return jsend.error(`Record with name ${immuneName} already exist!`);
             }
         } catch (e) {
-            console.log(e);
+            return jsend('Immunization create process failed \n', e);
         }
     }
 
@@ -203,7 +205,7 @@ class Service {
     }
 }
 
-module.exports = function(options) {
+module.exports = function (options) {
     return new Service(options);
 };
 
