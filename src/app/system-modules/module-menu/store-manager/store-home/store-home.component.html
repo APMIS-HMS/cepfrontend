@@ -60,14 +60,14 @@
 
                     <div *ngIf="inventories.length > 0 && !inventoryLoading">
                         <div class="content-row" *ngFor="let inventory of inventories; let i=index">
-                            <div class="row-item">{{ inventory?.name }} {{ inventory?.manufacturer }}</div>
+                            <div class="row-item">{{ inventory?.productObject?.name }}</div>
                             <div class="row-item">
                                 <div class="item-label">Recent Batch</div>
-                                <div class="item-val">{{ inventory?.transaction?.batchNumber }}</div>
+                                <div class="item-val">{{getMostRescentBatchNo(inventory) }}</div>
                             </div>
                             <div class="row-item">
                                 <div class="item-label">Quantity</div>
-                                <div class="item-val">{{ inventory?.totalQuantity }}</div>
+                                <div class="item-val">{{ inventory?.availableQuantity }}</div>
                             </div>
                         </div>
                     </div>
@@ -99,14 +99,21 @@
 
                         <div *ngIf="transfers.length > 0 && !transferLoading">
                             <div class="content-row" *ngFor="let transfer of transfers; let i=index">
-                                <div class="row-item">{{ transfer?.inventoryTransferTransactions[transfer?.inventoryTransferTransactions.length -1]?.productObject?.productDetail?.brand }}</div>
+                                <div class="row-item">
+                                    <ul>
+                                        <li *ngFor="let item of transfer?.inventoryTransferTransactions">{{item?.productObject?.data?.name}}</li>
+                                    </ul>
+                                </div>
                                 <div class="row-item">
                                     <div class="item-label">To</div>
                                     <div class="item-val">{{ transfer?.destinationStoreObject?.name }}</div>
                                 </div>
                                 <div class="row-status">
-                                    <div class="status status-pending"></div>
-                                    <div class="item-label">Pending</div>
+                                    <div *ngFor="let stat of transfer.inventoryTransferTransactions">
+                                            <div class="status status-pending" *ngIf="stat.transferStatusObject.name === 'Pending'"></div>
+                                            <div class="status status-completed" *ngIf="stat.transferStatusObject.name === 'Completed'"></div>
+                                            <div class="item-label">{{getStatus(transfer)}}</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -150,7 +157,8 @@
                         </div>
                     </div>
 
-                    <div class="{{ purchaseOrders.length > 0 ? ' card-link ' : ' '}}" *ngIf="purchaseOrders.length > 0 && !purchaseOrderLoading" routerLink="/dashboard/inventory-manager/inventory">View All</div>
+                    <div class="{{ purchaseOrders.length > 0 ? ' card-link ' : ' '}}" *ngIf="purchaseOrders.length > 0 && !purchaseOrderLoading"
+                        routerLink="/dashboard/inventory-manager/inventory">View All</div>
                 </div>
             </div>
         </div>
