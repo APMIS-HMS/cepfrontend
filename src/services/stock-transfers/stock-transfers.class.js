@@ -24,18 +24,18 @@ class Service {
     const inventoryTransfersService = this.app.service('inventory-transfers');
     let inventoryTransfers = await inventoryTransfersService.create(data);
     let inventory = {};
-    if (inventoryTransfers != null) {
-      if (inventoryTransfers.inventoryTransferTransactions != undefined) {
+    if (inventoryTransfers._id !== undefined) {
+      if (inventoryTransfers.inventoryTransferTransactions !== undefined) {
         if (inventoryTransfers.inventoryTransferTransactions.length > 0) {
           let len = inventoryTransfers.inventoryTransferTransactions.length - 1;
           for (let index = len; index >= 0; index--) {
             inventory = await inventoriesService.get(inventoryTransfers.inventoryTransferTransactions[index].inventoryId);
-            if (inventory != null) {
-              if (inventory.transactions != undefined) {
+            if (inventory._id !== undefined) {
+              if (inventory.transactions !== undefined) {
                 if (inventory.transactions.length > 0) {
                   let len2 = inventory.transactions.length - 1;
                   for (let index2 = len2; index2 >= 0; index2--) {
-                    if (inventory.transactions[index2]._id.toString() == inventoryTransfers.inventoryTransferTransactions[index].transactionId.toString()) {
+                    if (inventory.transactions[index2]._id.toString() === inventoryTransfers.inventoryTransferTransactions[index].transactionId.toString()) {
                       inventory.transactions[index2].availableQuantity -= inventoryTransfers.inventoryTransferTransactions[index].quantity;
                       inventory.availableQuantity -= inventoryTransfers.inventoryTransferTransactions[index].quantity;
                     }

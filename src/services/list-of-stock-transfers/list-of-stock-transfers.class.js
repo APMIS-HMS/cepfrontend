@@ -10,72 +10,49 @@ class Service {
 
   async find(params) {
     const transferService = this.app.service('inventory-transfers');
-    const storesService = this.app.service('stores');
-    const employeesService = this.app.service('employees');
-    const peopleService = this.app.service('people');
-    const productsService = this.app.service('products');
-    const inventoryService = this.app.service('inventories');
-    let stocksOnTransfer = {};
-    if (params.query.storeId !== undefined) {
-      stocksOnTransfer = await transferService.find({
-        query: {
-          facilityId: params.query.facilityId,
-          storeId: params.query.storeId,
-          $limit: params.query.limit
-        }
-      });
-    } else if (params.query.destinationStoreId !== undefined) {
-      stocksOnTransfer = await transferService.find({
-        query: {
-          facilityId: params.query.facilityId,
-          destinationStoreId: params.query.destinationStoreId,
-          $limit: params.query.limit
-        }
-      });
-    }
-    if (stocksOnTransfer != null) {
-      if (stocksOnTransfer.data != undefined) {
-        if (stocksOnTransfer.data.length > 0) {
-          let len = stocksOnTransfer.data.length - 1;
-          for (let index = len; index >= 0; index--) {
-            let storeD = await storesService.get(stocksOnTransfer.data[index].destinationStoreId);
-            stocksOnTransfer.data[index].destinationStoreObject = storeD;
-
-            let storeR = await storesService.get(stocksOnTransfer.data[index].storeId);
-            stocksOnTransfer.data[index].storeObject = storeR;
-
-            let employee = await employeesService.get(stocksOnTransfer.data[index].transferBy);
-            let person = await peopleService.get(employee.personId);
-
-            stocksOnTransfer.data[index].transferByObject = person;
-            if (stocksOnTransfer.data[index].inventoryTransferTransactions !== null) {
-              if (stocksOnTransfer.data[index].inventoryTransferTransactions.length > 0) {
-                let len2 = stocksOnTransfer.data[index].inventoryTransferTransactions.length - 1;
-                for (let index2 = len2; index2 >= 0; index2--) {
-                  let inv = await inventoryService.get(stocksOnTransfer.data[index].inventoryTransferTransactions[index2].inventoryId, {});
-                  let product = await productsService.get(stocksOnTransfer.data[index].inventoryTransferTransactions[index2].productId);
-                  stocksOnTransfer.data[index].inventoryTransferTransactions[index2].productObject = product;
-                  let tran = inv.transactions.filter(m => m._id.toString() == stocksOnTransfer.data[index].inventoryTransferTransactions[index2].transactionId.toString() );
-                  stocksOnTransfer.data[index].inventoryTransferTransactions[index2].transactionObject = tran[0];
-                }
-              } else {
-                return {};
-              }
-            } else {
-              return {};
+    const fpService = this.app.service('formulary-products');
+    let products = {};
+    products.data = [];
+    let productIds = await fpService.find({
+      query: {
+        name: params.query.name
+      }
+    });
+    for (let index = 0; index < productIds.data.length; index++) {
+      let transferObject = {};
+      if(params.query.isDestination === undefined){
+        transferObject = await transferService.find({
+          query: {
+            facilityId: params.query.facilityId,
+            storeId: params.query.storeId,
+            'inventoryTransferTransactions.productId': productIds.data[index].id,
+            $sort: {
+              createdAt: -1
             }
           }
-          return stocksOnTransfer;
-        } else {
-          return {};
-        }
-      } else {
-        return {}
+        });
+      }else{
+        transferObject = await transferService.find({
+          query: {
+            facilityId: params.query.facilityId,
+            destinationStoreId: params.query.storeId,
+            'inventoryTransferTransactions.productId': productIds.data[index].id,
+            $sort: {
+              createdAt: -1
+            }
+          }
+        });
+      }
+      
+      if (transferObject.data.length > 0) {
+        transferObject.data.forEach(element => {
+          products.data.push(element);
+        });
+       
       }
 
-    } else {
-      return {};
     }
+    return products;
   }
 
   async get(id, params) {
