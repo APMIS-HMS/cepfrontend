@@ -30,9 +30,5 @@
             "passwordField": "password"
         }
     },
-<<<<<<< HEAD
-    "mongodb": "mongodb://localhost:27018/apmisapiv_2"
-=======
-    "mongodb": "mongodb://localhost:27017/apmisapiv_2"
->>>>>>> 90c03327e1a79dcb93e04e47de92af8045f2a9e2
+    "mongodb": "mongodb://localhost:27017/apmisapiv2_test"
 }

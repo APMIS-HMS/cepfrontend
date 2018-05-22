@@ -9,26 +9,30 @@ class Service {
   }
 
   async find(params) {
-    const productsService = this.app.service('products');
-    const productTypesService = this.app.service('product-types');
-    let findProductsService = {};
-    if (params.query.name !== undefined) {
-      findProductsService = await productsService.find({
+    const productConfigService = this.app.service('product-configs');
+    const fpService = this.app.service('formulary-products');
+    let productConfig = {};
+    productConfig.data = [];
+
+    let productIds = await fpService.find({
+      query: {
+        name: params.query.name
+      }
+    });
+    // console.log(productIds);
+    for (let index = 0; index < productIds.data.length; index++) {
+      const productConfigItems = await productConfigService.find({
         query: {
-          name: {
-            $regex: params.query.name,
-            '$options': 'i'
-          }
+          facilityId: params.query.facilityId,
+          productId: productIds.data[index].id
         }
       });
-    } else if (params.query.productTypeId !== undefined) {
-      findProductsService = await productsService.find({
-        query: {
-          'productTypeId': params.query.productTypeId
-        }
-      });
+      if (productConfigItems.data[0] !== undefined) {
+        productConfig.data.push(productConfigItems.data[0]);
+      }
     }
-    return findProductsService;
+
+    return productConfig;
   }
 
   get(id, params) {
