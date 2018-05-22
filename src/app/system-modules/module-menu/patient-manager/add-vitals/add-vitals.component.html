@@ -16,7 +16,7 @@
                             <mat-input-container class="example-full-width">
                                 <input type="number" [class.warning-flag]="warningPulseRate.status" matInput placeholder="Pulse Rate (60-100)" formControlName="pulseRate">
                             </mat-input-container>
-                            <span class="trailer">{{warningPulseRate.message}}</span>
+                            <span class="trailer" class="{{(warningPulseRate.status) ? 'alert-label' : ''}}">{{warningPulseRate.message}}</span>
                         </div>
 
                         <div class="frm-item-wrap">
@@ -46,14 +46,14 @@
                             <mat-input-container class="example-full-width">
                                 <input matInput type="number" [class.warning-flag]="warningResp.status" formControlName="respiratoryRate">
                             </mat-input-container>
-                            <span class="trailer">{{warningResp.message}}</span>
+                            <span class="trailer" class="{{(warningResp.status) ? 'alert-label' : ''}}">{{warningResp.message}}</span>
                         </div>
                         <div class="frmGroupTitle">Temperature (36.2-37.4°C)</div>
                         <div class="frm-item-wrap">
                             <mat-input-container class="example-full-width">
                                 <input matInput type="number" [class.warning-flag]="warningTemp.status" formControlName="temp">
                             </mat-input-container>
-                            <span class="trailer">{{warningTemp.message}}</span>
+                            <span class="trailer" class="{{(warningTemp.status) ? 'alert-label' : ''}}">{{warningTemp.message}}</span>
                         </div>
                     </div>
 
@@ -93,7 +93,7 @@
                                         <mat-input-container class="example-full-width">
                                             <input placeholder="Systolic" [class.warning-flag]="warningSys.status" matInput type="number" formControlName="systolicBp1">
                                         </mat-input-container>
-                                        <span class="trailer">{{warningSys.message}}</span>
+                                        <span class="trailer" class="{{(warningSys.status) ? 'alert-label' : ''}}">{{warningSys.message}}</span>
                                     </div>
                                 </div>
                                 <div class="frm-slash">
@@ -107,7 +107,7 @@
                                         <mat-input-container class="example-full-width">
                                             <input placeholder="Diastolic" matInput type="number" [class.warning-flag]="warningDia.status" formControlName="diastolicBp1">
                                         </mat-input-container>
-                                        <span class="trailer inputUnit">{{warningDia.message}}</span>
+                                        <span class="trailer inputUnit" class="{{(warningDia.status) ? 'alert-label' : ''}}">{{warningDia.message}}</span>
                                     </div>
                                 </div>
                             </div>
@@ -153,7 +153,7 @@
                                         <mat-input-container class="example-full-width">
                                             <input matInput type="number" [class.warning-flag]="warningSpo.status" formControlName="spo2">
                                         </mat-input-container>
-                                        <span class="trailer inputUnit">{{warningSpo.message}}</span>
+                                        <span class="trailer inputUnit" class="{{(warningSpo.status) ? 'alert-label' : ''}}">{{warningSpo.message}}</span>
                                     </div>
                                 </div>
                             </div>

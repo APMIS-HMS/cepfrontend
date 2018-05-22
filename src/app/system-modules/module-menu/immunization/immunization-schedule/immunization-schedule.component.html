@@ -59,7 +59,9 @@
                                 </div>
                                 <div class="table-list col-xs-1">{{ immunizationSchedule.numberOfDosage }}</div>
                                 <div class="table-list col-xs-2">
-                                    <span *ngFor="let interval of immunizationSchedule?.intervals">{{ immunizationSchedule.code }}-{{ interval.sequence }} {{ interval.unit }} {{ interval.duration }}, </span>
+                                    <span *ngFor="let interval of immunizationSchedule?.intervals">
+                                        <b>{{ immunizationSchedule.code }}-{{ interval.sequence }}</b> {{ interval.duration }} {{ interval.unit }},
+                                    </span>
                                 </div>
                                 <div class="table-list col-xs-1">{{ immunizationSchedule.dosage }}</div>
                                 <div class="table-list col-xs-2">{{ immunizationSchedule.vaccinationSite }}</div>
