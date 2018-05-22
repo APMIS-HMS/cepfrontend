@@ -25,6 +25,8 @@ export class FacilitypageWorkspaceComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
   workSpaces: WorkSpace[] = [];
 
+  employees: any[] = [];
+
   deleteWorkspace;
   deleteLocation;
 
@@ -74,6 +76,7 @@ export class FacilitypageWorkspaceComponent implements OnInit {
         result.forEach((itemi: WorkSpace, i) => {
           itemi.locations = itemi.locations.filter(x => x.isActive === true);
         });
+        console.log(result);
         this.workSpaces = result;
       });
   }
@@ -84,7 +87,9 @@ export class FacilitypageWorkspaceComponent implements OnInit {
         facilityId: this.selectedFacility._id
       }
     }).then(payload => {
-      this.workSpaces = payload.data;
+      // this.workSpaces = payload;
+      this.employees = payload;
+      console.log(payload);
     });
   }
   deleteLocation_popup(locationId, workspace) {
@@ -156,6 +161,11 @@ export class FacilitypageWorkspaceComponent implements OnInit {
   }
   getActiveWorkSpaceCount(workSpace: WorkSpace) {
     return workSpace.locations.filter(x => x.isActive === true).length;
+  }
+  getActiveWorkSpaceLength(workspaces){
+    let wsc = workspaces.filter(x => x.isActive === true);
+    let wscLen = wsc.length;
+    return wscLen;
   }
   delete_onClick($event) {
     if ($event) {

@@ -18,6 +18,7 @@ export class PurchaseOrderService {
     this._socket = _socketService.getService('purchase-orders');
     this._socket2 = _socketService.getService('list-of-purchase-orders');
     this._socket.timeout = 30000;
+    this._socket2.timeout = 30000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
     this.listenerDelete = Observable.fromEvent(this._socket, 'deleted');

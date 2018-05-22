@@ -1,0 +1,117 @@
+<div class="pg-subtitle">PATIENT PAGE - IMMUNIZATION</div>
+<div class="doc-mainWrap">
+    <div class="doc-contentArea">
+        <div class="doc-card2">
+            <div class="top-actions">
+                <div class="pretty p-default p-round">
+                    <input type="radio" name="radio1">
+                    <div class="state p-success-o">
+                        <label>All</label>
+                    </div>
+                </div>
+            
+                <div class="pretty p-default p-round">
+                    <input type="radio" name="radio1">
+                    <div class="state p-warning-o">
+                        <label>Future</label>
+                    </div>
+                </div>
+            
+                <div class="pretty p-default p-round">
+                    <input type="radio" name="radio1">
+                    <div class="state p-primary-o">
+                        <label>Present</label>
+                    </div>
+                </div>
+
+                <div class="pretty p-default p-round">
+                    <input type="radio" name="radio1">
+                    <div class="state p-danger-o">
+                        <label>Past</label>
+                    </div>
+                </div>
+            </div>
+            <ul class="mid-meat">
+                <li class="vaccination-item">
+                    <div class="vi-date">11th May, 2018. 8:00am</div>
+                    <div class="vi-short-name">HBV</div>
+                    <div class="vi-others">Hepatitis B Surface Antigen Vaccine 0.003 MG/ML Injectable Solution</div>
+                    <div class="vi-others">0.5ml</div>
+                    <div class="vi-others">HBV-0 0 Weeks, HBV-1 6 Weeks, HBV-2 14 Weeks</div>
+                    <div class="vi-others">Vaccination Site - Upper Arm</div>
+
+                    <div class="vi-status vi-status-2">Completed</div>
+                </li>
+                <li class="vaccination-item">
+                    <div class="vi-date">11th May, 2018. 8:00am</div>
+                    <div class="vi-short-name">HBV</div>
+                    <div class="vi-others">Hepatitis B Surface Antigen Vaccine 0.003 MG/ML Injectable Solution</div>
+                    <div class="vi-others">0.5ml</div>
+                    <div class="vi-others">HBV-0 0 Weeks, HBV-1 6 Weeks, HBV-2 14 Weeks</div>
+                    <div class="vi-others">Vaccination Site - Upper Arm</div>
+
+                    <div class="vi-status vi-status-1">Administered</div>
+                </li>
+                <li class="vaccination-item">
+                    <div class="vi-date">11th May, 2018. 8:00am</div>
+                    <div class="vi-short-name">HBV</div>
+                    <div class="vi-others">Hepatitis B Surface Antigen Vaccine 0.003 MG/ML Injectable Solution</div>
+                    <div class="vi-others">0.5ml</div>
+                    <div class="vi-others">HBV-0 0 Weeks, HBV-1 6 Weeks, HBV-2 14 Weeks</div>
+                    <div class="vi-others">Vaccination Site - Upper Arm</div>
+
+                    <div class="buttom-actions">
+                        <button class="cta-1"> <i class="fa fa-user-md"></i> Administer</button>
+                        <button class="cta-1 cta-orange"> <i class="fa fa-pause"></i> Suspend</button>
+                        <button class="cta-1 cta-red"> <i class="fa fa-stop"></i> Discontinue</button>
+                        <button class="cta-1 cta-green"> <i class="fa fa-check"></i> Completed</button>
+                    </div>
+                </li>
+                <li class="vaccination-item">
+                    <div class="vi-date">11th May, 2018. 8:00am</div>
+                    <div class="vi-short-name">HBV</div>
+                    <div class="vi-others">Hepatitis B Surface Antigen Vaccine 0.003 MG/ML Injectable Solution</div>
+                    <div class="vi-others">0.5ml</div>
+                    <div class="vi-others">HBV-0 0 Weeks, HBV-1 6 Weeks, HBV-2 14 Weeks</div>
+                    <div class="vi-others">Vaccination Site - Upper Arm</div>
+
+                    <div class="vi-status vi-status-3">Suspended</div>
+                </li>
+                <li class="vaccination-item">
+                    <div class="vi-date">11th May, 2018. 8:00am</div>
+                    <div class="vi-short-name">HBV</div>
+                    <div class="vi-others">Hepatitis B Surface Antigen Vaccine 0.003 MG/ML Injectable Solution</div>
+                    <div class="vi-others">0.5ml</div>
+                    <div class="vi-others">HBV-0 0 Weeks, HBV-1 6 Weeks, HBV-2 14 Weeks</div>
+                    <div class="vi-others">Vaccination Site - Upper Arm</div>
+
+                    <div class="vi-status vi-status-4">Discontinued</div>
+                </li>
+            </ul>
+            
+        </div>
+    </div> 
+    <div class="doc-rArea">
+        <app-right-tab [patient]="patient" (addProblem)="addProblem_show($event)" (addAllergy)="addAllergy_show($event)" (addHistory)="addHistory_show($event)" (addVitals)="addVitals_show($event)"></app-right-tab>
+    </div>
+
+    <div *ngIf="docDetail_view" class="modal-overlay">
+        <app-documentation-detail [document]="selectedDocument" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-documentation-detail>
+    </div>
+
+    <div *ngIf="addProblem_view" class="modal-overlay">
+        <app-add-patient-problem [patient]="patient" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-patient-problem>
+    </div>
+
+    <div *ngIf="addAllergy_view" class="modal-overlay">
+        <app-add-allergy [patient]="patient" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-allergy>
+    </div>
+
+    <div *ngIf="addHistory_view" class="modal-overlay">
+        <app-add-history (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-history>
+    </div>
+
+    <div *ngIf="addVitals_view" class="modal-overlay">
+        <app-add-vitals [patient]="patient" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>
+    </div>
+</div>

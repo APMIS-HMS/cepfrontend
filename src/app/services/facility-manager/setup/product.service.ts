@@ -19,13 +19,15 @@ export class ProductService {
     private _restService: RestService
   ) {
     this._rest = _restService.getService('products');
-    this._socket = _socketService.getService('products');
+    this._socket = _socketService.getService('formulary-products');
     this._socketProductConfig = _socketService.getService('product-configs');
     this._socketPackageList = _socketService.getService('product-pack-sizes');
     this._socketList = _socketService.getService('list-of-products');
     this._socketReorderLevel = _socketService.getService('product-reorders');
     this._socketProductUniqueReorders = _socketService.getService('product-unique-reorders');
     this._socket.timeout = 30000;
+    this._socketProductUniqueReorders.timeout = 30000;
+    this._socketProductConfig.timeout = 30000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
     this.listenerDelete = Observable.fromEvent(this._socket, 'deleted');

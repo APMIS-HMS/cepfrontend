@@ -33,7 +33,8 @@
         "environments": {
             "dev": "environments/environment.dev.ts",
             "prod.apmis": "environments/environment.prod.apmis.ts",
-            "prod.tertiary": "environments/environment.prod.tertiary.ts"
+            "prod.tertiary": "environments/environment.prod.tertiary.ts",
+            "prod.navlagos": "environments/environment.prod.navlagos.ts"
         }
     }],
     "e2e": {

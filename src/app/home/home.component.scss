@@ -1,20 +1,17 @@
 @import "../../globals/normalize.scss";
 @import "../../globals/variables.scss";
 @import '../../globals/button.scss';
-
 // .base-wrap {
 //     min-height:100%;
 //     background: darken($primaryColor, 5%);
 //     width:100%;
-
 // }
-
-.base-wrap{
+.base-wrap {
     background: darken($primaryColor, 5%);
     height: 100vh;
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.60), rgba(0, 0, 0, 0.60)), url(../../assets/images/bg/hospital.jpg) no-repeat center center;
-    background-size:cover;
-    width:100%;
+    background-size: cover;
+    width: 100%;
     -webkit-background-size: cover;
     -moz-background-size: cover;
     -o-background-size: cover;
@@ -22,17 +19,19 @@
     align-items: center;
     flex-direction: row;
     position: relative;
-    overflow: hidden;   
-    z-index: 10;  
+    overflow: hidden;
+    z-index: 10;
 }
-.home-wrap{
+
+.home-wrap {
     display: flex;
     justify-content: center;
     align-items: center;
     margin: 0 auto;
     width: 100%;
 }
-.txt1{
+
+.txt1 {
     font-family: $font-titles;
     font-size: 3.8rem;
     font-weight: bold;
@@ -40,38 +39,45 @@
     text-align: center;
     width: 100%;
 }
-.txt2{
+
+.txt2 {
     font-family: $font-titles;
     color: #eee;
     text-align: center;
     width: 100%;
 }
-.home-logoWrap{
+
+.home-logoWrap {
     width: 144px;
 }
-.logo-wrap{
+
+.logo-wrap {
     position: absolute;
     top: 20px;
     left: 20px;
     width: 50px;
 }
-.logo-wrap img{
+
+.logo-wrap img {
     width: 100%;
 }
+
 .signin-upWrap {
     border-top: 2px solid #fff;
     width: 100%;
     text-align: center;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.5);
     padding: 20px;
 }
-.logos-wrap{
+
+.logos-wrap {
     width: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.CTAs-wrap{
+
+.CTAs-wrap {
     display: block;
     width: 500px;
     border: 0;
@@ -79,10 +85,12 @@
     margin-top: 20px;
     border-radius: 7px;
 }
-.cta-1{
+
+.cta-1 {
     width: 400px;
 }
-.txtLink{
+
+.txtLink {
     color: #fff;
     font-size: 1.6rem;
     cursor: pointer;
@@ -90,23 +98,29 @@
     font-weight: bold;
     padding-left: 10px;
 }
-.txtLink:hover{
+
+.txtLink:hover {
     text-decoration: underline;
 }
-.wrapLabel{
+
+.wrapLabel {
     color: #e8e8e8;
     font-size: 1.2rem;
     font-style: italic;
     text-align: center;
     margin-top: 20px;
 }
-.actionTxt{
+
+.actionTxt {
     float: right;
 }
+
+
 /*.signin-upWrap{
     padding: 25px;
     background: rgba(0,0,0,0.5);
 }*/
+
 .apmis-label {
     width: 100%;
     color: #fff;
@@ -116,33 +130,35 @@
     position: absolute;
     bottom: 20px;
 }
-@media only screen and (max-width: 800px){
-    .base-wrap{
+
+@media only screen and (max-width: 800px) {
+    .base-wrap {
         display: flex;
         align-items: center;
         justify-content: center;
         flex-direction: column;
         height: 100vh;
     }
-    .logo-wrap{
+    .logo-wrap {
         position: relative;
         text-align: center;
         top: 0;
         left: 0;
     }
-    .home-wrap{
+    .home-wrap {
         height: auto;
     }
-    .CTAs-wrap{
+    .CTAs-wrap {
         margin: 0 auto;
         padding: 0;
     }
 }
-@media only screen and (max-width: 520px){
-    .CTAs-wrap{
+
+@media only screen and (max-width: 520px) {
+    .CTAs-wrap {
         width: 100%;
     }
-    .cta-1{
+    .cta-1 {
         width: 100%;
     }
 }

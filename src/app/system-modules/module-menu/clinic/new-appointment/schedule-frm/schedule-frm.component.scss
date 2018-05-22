@@ -1,7 +1,11 @@
 .schedule-wrap {
-    padding: 5px 20px;
+    padding: 10px 0;
     box-sizing: border-box;
     margin-bottom: 10px;
+}
+
+.mat-form-field {
+    width: 100%;
 }
 
 .btn-box {
@@ -13,7 +17,7 @@
     color: #fff;
 }
 
-.pill{
+.pill {
     background-color: #003cff;
     color: #ffffff;
     height: 25px;
@@ -26,17 +30,17 @@
     white-space: nowrap;
     display: inline-block;
     margin: 2px;
-    .pill-img{
+    .pill-img {
         height: 25px;
         width: 25px;
         border-radius: 50%;
         float: left;
     }
-    span{
+    span {
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 25px;        
+        height: 25px;
     }
 }
 

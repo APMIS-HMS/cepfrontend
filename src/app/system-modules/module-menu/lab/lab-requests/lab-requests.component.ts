@@ -1,3 +1,5 @@
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Appointment } from './../../../../models/facility-manager/setup/appointment';
 import {
   Component,
@@ -5,7 +7,8 @@ import {
   Renderer,
   ElementRef,
   ViewChild,
-  Input
+  Input,
+  OnDestroy
 } from '@angular/core';
 import {
   FormGroup,
@@ -33,18 +36,18 @@ import {
   PendingLaboratoryRequest,
   User
 } from '../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
+import { ISubscription } from 'rxjs/Subscription';
+import { LabEventEmitterService } from '../../../../services/facility-manager/lab-event-emitter.service';
 
 @Component({
   selector: 'app-lab-requests',
   templateUrl: './lab-requests.component.html',
   styleUrls: ['./lab-requests.component.scss']
 })
-export class LabRequestsComponent implements OnInit {
+export class LabRequestsComponent implements OnInit, OnDestroy {
   patientSearch = new FormControl();
   @ViewChild('fileInput') fileInput: ElementRef;
   @Input() isLaboratory = true;
@@ -88,14 +91,10 @@ export class LabRequestsComponent implements OnInit {
   makeRequestBtn = true;
   makingRequestBtn = false;
   disableBtn = false;
-
   public frmNewRequest: FormGroup;
   searchInvestigation: FormControl;
-
   investigationRadio = false;
-
   selectedLab: any = {};
-
   investigations: InvestigationModel[] = [];
   bindInvestigations: InvestigationModel[] = [];
   movedInvestigations: any[] = [];
@@ -104,7 +103,7 @@ export class LabRequestsComponent implements OnInit {
   loginEmployee: Employee;
   totalPrice: Number = 0;
   searchOpen = false;
-
+  routeSubscription: ISubscription;
   requestLoading = false;
 
   constructor(
@@ -115,6 +114,7 @@ export class LabRequestsComponent implements OnInit {
     private billingService: BillingService,
     private facilityService: FacilitiesService,
     private _router: Router,
+    private _labEventEmitter: LabEventEmitterService,
     private investigationService: InvestigationService,
     private requestService: LaboratoryRequestService,
     private _systemModuleService: SystemModuleService,
@@ -129,6 +129,12 @@ export class LabRequestsComponent implements OnInit {
         }
       }
     }).catch(err => console.log(err));
+
+    // Subscribe to the event when ward changes.
+    this.routeSubscription = this._labEventEmitter.announceLab.subscribe(val => {
+      this.selectedLab = val;
+      this._getAllPendingRequests();
+    });
   }
 
   ngOnInit() {
@@ -329,7 +335,7 @@ export class LabRequestsComponent implements OnInit {
       this.validateForm();
     });
 
-    this.route.params.subscribe((params: any) => {
+    this.routeSubscription = this.route.params.subscribe((params: any) => {
       if (params.id !== undefined && this.isLaboratory) {
         this.isExternal = true;
         this.requestService
@@ -1250,5 +1256,9 @@ export class LabRequestsComponent implements OnInit {
       type: type,
       text: text
     });
+  }
+
+  ngOnDestroy() {
+    this.routeSubscription.unsubscribe();
   }
 }
