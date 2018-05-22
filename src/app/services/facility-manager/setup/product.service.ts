@@ -26,6 +26,7 @@ export class ProductService {
     this._socketReorderLevel = _socketService.getService('product-reorders');
     this._socketProductUniqueReorders = _socketService.getService('product-unique-reorders');
     this._socket.timeout = 30000;
+    this._socketProductUniqueReorders.timeout = 30000;
     this._socketProductConfig.timeout = 30000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
