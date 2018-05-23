@@ -6,7 +6,6 @@ const resolvers = {
     productObject: () => async (data, context) => {
       try {
         const getProduct = await context.app.service('formulary-products').get(data.productId,{});
-        console.log(getProduct.data);
         data.productObject = getProduct.data;
       } catch (e) {
         // console.log(e);
