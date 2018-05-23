@@ -3,7 +3,6 @@ const feathers = require("@feathersjs/feathers");
 const socketio = require("@feathersjs/socketio-client");
 const io = require("socket.io-client");
 const localstorage = require("feathers-localstorage");
-// const hooks = require('feathers-hooks');
 const rest = require("@feathersjs/rest-client");
 const authentication = require("@feathersjs/authentication-client");
 import { CoolLocalStorage } from "angular2-cool-storage";
@@ -11,7 +10,7 @@ import { Injectable } from "@angular/core";
 const rx = require("feathers-reactive");
 const RxJS = require("rxjs/Rx");
 
-const HOST = "https://apmisapilive.azurewebsites.net"; // Online
+const HOST = "https://apmisapitest.azurewebsites.net";
 
 @Injectable()
 export class SocketService {
@@ -24,9 +23,7 @@ export class SocketService {
     this.socket = io(this.HOST);
     this._app = feathers()
       .configure(socketio(this.socket))
-      // .configure(rx({ idField: "_id", listStrategy: 'always' }))
       .configure(rx(RxJS, { listStrategy: "always" }))
-      // .configure(hooks())
       .configure(authentication({ storage: window.localStorage }));
   }
   logOut() {
@@ -41,7 +38,6 @@ export class SocketService {
     });
   }
   getService(value: any) {
-    // this._app.authenticate();
     return this._app.service(value);
   }
   authenticateService() {
@@ -69,15 +65,12 @@ export class RestService {
           rest(this.HOST).superagent(superagent, {
             headers: { authorization: "Bearer " + auth }
           })
-        ) // Fire up rest
-        // .configure(rx({ idField: '_id', listStrategy: 'always' }))
+        )
         .configure(rx(RxJS, { listStrategy: "always" }))
-        // .configure(hooks())
         .configure(authentication({ storage: window.localStorage }));
     } else {
       this._app = feathers() // Initialize feathers
         .configure(rest(this.HOST).superagent(superagent)) // Fire up rest
-        // .configure(hooks())
         .configure(authentication({ storage: window.localStorage })); // Configure feathers-hooks
     }
   }
@@ -89,7 +82,6 @@ export class RestService {
     });
   }
   getService(value: any) {
-    // this._app.authenticate();
     return this._app.service(value);
   }
   authenticateService() {
