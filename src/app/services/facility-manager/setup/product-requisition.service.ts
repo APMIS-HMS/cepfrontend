@@ -16,6 +16,7 @@ export class ProductRequisitionService {
   ) {
     this._rest = _restService.getService('store-requisitions');
     this._socket = _socketService.getService('store-requisitions');
+    this._socket.timeout = 30000;
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
     this.listenerDelete = Observable.fromEvent(this._socket, 'deleted');

@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
 import {
   InventoryService, ProductService, EmployeeService, FacilitiesService,
-  StoreService, PurchaseOrderService, InventoryTransferService, InventoryTransferStatusService
+  StoreService, PurchaseOrderService, InventoryTransferService, InventoryTransferStatusService,ProductRequisitionService
 } from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
@@ -22,6 +22,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
   completedInventoryStatus: any = <any>{};
   rejectedInventoryStatus: any = <any>{};
   transferStatuses: any[] = [];
+  requisitions: any[] = [];
   inventoryLoading = true;
   purchaseOrderLoading = true;
   transferLoading = true;
@@ -47,7 +48,8 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
     private _locker: CoolLocalStorage,
     private _employeeService: EmployeeService,
     private authFacadeService: AuthFacadeService,
-    private inventoryTransferStatusService: InventoryTransferStatusService
+    private inventoryTransferStatusService: InventoryTransferStatusService,
+    private productRequisitionService:ProductRequisitionService
   ) {
     this.subscription = this._employeeService.checkInAnnounced$.subscribe(res => {
       if (!!res) {
@@ -146,6 +148,23 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
     }
   }
 
+  getRequisitions() {
+    let storeId = this.checkingStore.storeId;
+    console.log(this.checkingStore);
+    if (storeId === undefined) {
+      storeId = this.checkingStore.typeObject.storeId
+    }
+    this.productRequisitionService.find({
+      query: {
+        facilityId: this.selectedFacility._id,
+        destinationStoreId: storeId
+      }
+    }).then(payload => {
+      console.log(payload);
+      this.requisitions = payload.data;
+    });
+  }
+
   getPurchaseOrders() {
     if (!!this.checkingStore) {
       this._purchaseOrderService.find({
@@ -162,17 +181,15 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
   }
 
   getTransfers() {
-    console.log(this.checkingStore.storeId);
-    console.log(this.selectedFacility._id);
     if (!!this.checkingStore) {
-      this._inventoryTransferService.find({
-        query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId, $sort: { updatedAt: -1 } }
+      this.productRequisitionService.find({
+        query: { facilityId: this.selectedFacility._id, destinationStoreId: this.checkingStore.storeId, $sort: { updatedAt: -1 } }
       }).then(res => {
         console.log(res);
         this.transferLoading = false;
         if (!!res.data && res.data.length > 0) {
           this.transferCount = res.total;
-          this.transfers = res.data;
+          this.requisitions = res.data;
         }
       });
     }

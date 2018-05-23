@@ -66,11 +66,15 @@ export class RequisitionComponent implements OnInit {
 
     this.employeeService.checkInAnnounced$.subscribe(payload => {
       if (payload !== undefined) {
-        this.stores = [];
+        this.stores = JSON.parse(JSON.stringify([]));
         if (payload.typeObject !== undefined) {
           this.checkingObject = payload.typeObject;
+          if(this.checkingObject.storeId === undefined){
+            this.checkingObject = payload.typeObject.typeObject;
+          }
+          console.log(payload);
           this.getStores();
-          this.getAllProducts('',this.checkingObject.typeObject.storeId);
+          this.getAllProducts('',this.checkingObject.storeId);
         }
       }
     });
@@ -126,7 +130,7 @@ export class RequisitionComponent implements OnInit {
 
 
   getStores() {
-    this.stores = [];
+    this.stores = JSON.parse(JSON.stringify([]));
     this.storeService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload =>
       payload.data.forEach((item, i) => {
         if (item._id !== this.checkingObject.storeId) {
@@ -338,16 +342,23 @@ if (event.checked === true) {
       });
     });
   }
+
   save() {
-    const requisition: Requisition = <Requisition>{};
+    let storeId = this.checkingObject.storeId;
+      if(storeId === undefined){
+        storeId = this.checkingObject.typeObject.storeId
+      }
+    console.log(storeId,this.productsControl.value);
+    const requisition: any = <any>{};
     requisition.employeeId = this.loginEmployee._id;
     requisition.facilityId = this.selectedFacility._id;
-    requisition.storeId = this.checkingObject.storeId;
+    requisition.storeId = storeId;
+    requisition.destinationStoreId = this.productsControl.value;
     requisition.comment = this.desc.value;
     requisition.products = [];
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
-      const requisitionProduct: RequisitionProduct = <RequisitionProduct>{};
-      requisitionProduct.productId = item.value.productObject._id;
+      let requisitionProduct: any = <any>{};
+      requisitionProduct.productId = item.value.productObject.id;
       requisitionProduct.qty = item.value.qty;
       requisition.products.push(requisitionProduct);
     });
