@@ -188,7 +188,6 @@ const vitalBpLocations = require('./vital-bp-locations/vital-bp-locations.servic
 const immunizationSchedule = require('./immunization-schedule/immunization-schedule.service.js');
 const immunizationRecords = require('./immunization-records/immunization-records.service.js');
 const immunizationRecordHistory = require('./immunization-record-history/immunization-record-history.service.js');
-const crudImmunizationService = require('./crud-immunization-service/crud-immunization-service.service.js');
 const crudImmunizationSchedule = require('./crud-immunization-schedule/crud-immunization-schedule.service.js');
 module.exports = function(app) {
     app.configure(users);
@@ -381,6 +380,5 @@ module.exports = function(app) {
     app.configure(immunizationSchedule);
     app.configure(immunizationRecords);
     app.configure(immunizationRecordHistory);
-    app.configure(crudImmunizationService);
     app.configure(crudImmunizationSchedule);
 };
