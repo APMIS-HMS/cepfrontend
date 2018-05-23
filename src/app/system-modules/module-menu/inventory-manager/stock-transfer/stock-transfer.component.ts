@@ -32,7 +32,7 @@ export class StockTransferComponent implements OnInit {
   samples = [];
   searchOpen = false;
   toggleTransferOpen = false;
-
+  requistionId: any = null;
   selectedFacility: Facility = <Facility>{};
   requisitions: any[] = <any>[];
   checkingStore: any = <any>{};
@@ -47,7 +47,7 @@ export class StockTransferComponent implements OnInit {
   product: FormControl = new FormControl();
   productTableForm: FormGroup;
   selectedTransactionId = '';
-  newTransfer: InventoryTransfer = <InventoryTransfer>{};
+  newTransfer: any = <any>{};
   selectedInventoryTransferStatus: InventoryTransferStatus = <InventoryTransferStatus>{};
   selectedInventoryTransactionType: InventoryTransactionType = <InventoryTransactionType>{};
   loginEmployee: Employee = <Employee>{};
@@ -78,13 +78,11 @@ export class StockTransferComponent implements OnInit {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.loginEmployee = res;
       this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
-      console.log(this.loginEmployee.storeCheckIn);
       this.getCurrentStoreDetails(this.checkingStore.storeId);
       this.newTransfer.transferBy = this.loginEmployee._id;
       this.newTransfer.facilityId = this.selectedFacility._id;
       this.newTransfer.storeId = this.checkingStore.storeId;
       this.newTransfer.inventoryTransferTransactions = [];
-      console.log('Come here');
       this.getAllProducts('', this.checkingStore.storeId)
       this.primeComponent();
       this.getRequisitions();
@@ -107,7 +105,6 @@ export class StockTransferComponent implements OnInit {
         storeId: storeId
       }
     }).then(payload => {
-      console.log(payload);
       this.systemModuleService.off();
       if (payload.data.length > 0) {
         this.products = [];
@@ -125,7 +122,6 @@ export class StockTransferComponent implements OnInit {
 
   getRequisitions() {
     let storeId = this.checkingStore.storeId;
-    console.log(this.checkingStore);
     if (storeId === undefined) {
       storeId = this.checkingStore.typeObject.storeId
     }
@@ -135,7 +131,6 @@ export class StockTransferComponent implements OnInit {
         destinationStoreId: storeId
       }
     }).then(payload => {
-      console.log(payload);
       this.requisitions = payload.data;
     });
   }
@@ -320,17 +315,16 @@ export class StockTransferComponent implements OnInit {
   }
 
   onClickRequi(requistion) {
+    this.requistionId = requistion._id;
     this.toggleTransferOpen = !this.toggleTransferOpen;
     if (this.toggleTransferOpen) {
       this.frmDestinationStore.setValue(requistion.storeId);
-      console.log(requistion);
       // this.primeComponent();
       this.flyout = true;
       requistion.products.forEach(element => {
         this.superGroups.forEach((parent, i) => {
           parent.forEach((group, j) => {
             if (element.productId !== undefined) {
-              console.log(group);
               if (group._id.toString() === element.productId.toString()) {
                 group.checked = true;
                 this.systemModuleService.on();
@@ -598,7 +592,8 @@ export class StockTransferComponent implements OnInit {
   saveTransfer() {
     this.systemModuleService.on();
     this.populateInventoryTransferTransactions();
-    this.inventoryTransferService.create2(this.newTransfer).then(payload => {
+   this.newTransfer.requistionId = this.requistionId;
+   this.inventoryTransferService.create2(this.newTransfer).then(payload => {
       (<FormArray>this.productTableForm.controls['productTableArray']).controls = [];
       this.unCheckedProducts();
       this.systemModuleService.off();

@@ -167,7 +167,7 @@
                     <br/>
                 </div>
             </div>
-            <div class="card-list-item" *ngFor="let requistion of requisitions; let i=index;" (click)="onClickRequi(requistion)">
+            <div class="card-list-item" *ngFor="let requistion of requisitions; let i=index;">
                 <div class="row">
                     <div class="table-list col-md-4">
                         {{requistion?.storeRequisitionNumber}}
@@ -183,8 +183,8 @@
                             <i class="fa fa-eye"></i>
                         </a>
                         <a>
-                            <span>
-                                <i class="fa fa-money"></i>
+                            <span *ngIf="!requistion.isSupplied">
+                                <i class="fa fa-money" (click)="onClickRequi(requistion)"></i>
                             </span>
                         </a>
                     </div>
