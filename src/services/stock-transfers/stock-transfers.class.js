@@ -21,6 +21,7 @@ class Service {
 
   async create(data, params) {
     const inventoriesService = this.app.service('inventories');
+    const reqProductService = this.app.service('store-requisitions');
     const inventoryTransfersService = this.app.service('inventory-transfers');
     let inventoryTransfers = await inventoryTransfersService.create(data);
     let inventory = {};
@@ -48,6 +49,11 @@ class Service {
             availableQuantity: inventory.availableQuantity,
             transactions: inventory.transactions
           });
+          if (data.requistionId !== null) {
+            const requis = await reqProductService.patch(data.requistionId, {
+              isSupplied: true
+            });
+          }
           let result = {
             inventoryTransfers: inventoryTransfers,
             inventory: updatedInv
@@ -71,7 +77,7 @@ class Service {
     const inventoriesService = this.app.service('inventories');
     let inventoryTransfers = await transferService.patch(id, data);
     let inventory = {};
-    
+
     let batchDetail = {};
     if (inventoryTransfers != null) {
       if (inventoryTransfers.inventoryTransferTransactions != undefined) {
