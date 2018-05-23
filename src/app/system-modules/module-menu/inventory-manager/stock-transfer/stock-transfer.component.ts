@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
 // tslint:disable-next-line:max-line-length
-import { InventoryService, InventoryTransferService, InventoryTransferStatusService, InventoryTransactionTypeService, StoreService, FacilitiesService } from '../../../../services/facility-manager/setup/index';
+import {
+  InventoryService, InventoryTransferService, InventoryTransferStatusService,
+  InventoryTransactionTypeService, StoreService, FacilitiesService, ProductRequisitionService, EmployeeService
+} from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
@@ -31,6 +34,7 @@ export class StockTransferComponent implements OnInit {
   toggleTransferOpen = false;
 
   selectedFacility: Facility = <Facility>{};
+  requisitions: any[] = <any>[];
   checkingStore: any = <any>{};
   maxQty = 0;
   superGroups: any[] = [];
@@ -60,8 +64,11 @@ export class StockTransferComponent implements OnInit {
     private facilityService: FacilitiesService,
     private toastr: ToastsManager,
     private _authFacadeService: AuthFacadeService,
-    private systemModuleService: SystemModuleService
-  ) { }
+    private systemModuleService: SystemModuleService,
+    private productRequisitionService: ProductRequisitionService,
+    private employeeService: EmployeeService
+  ) {
+  }
 
   ngOnInit() {
     this.user = this.locker.getObject('auth');
@@ -71,13 +78,16 @@ export class StockTransferComponent implements OnInit {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.loginEmployee = res;
       this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+      console.log(this.loginEmployee.storeCheckIn);
       this.getCurrentStoreDetails(this.checkingStore.storeId);
       this.newTransfer.transferBy = this.loginEmployee._id;
       this.newTransfer.facilityId = this.selectedFacility._id;
       this.newTransfer.storeId = this.checkingStore.storeId;
       this.newTransfer.inventoryTransferTransactions = [];
+      console.log('Come here');
       this.getAllProducts('', this.checkingStore.storeId)
       this.primeComponent();
+      this.getRequisitions();
     });
 
     this.searchControl.valueChanges
@@ -86,7 +96,6 @@ export class StockTransferComponent implements OnInit {
       .subscribe((por: any) => {
         this.getAllProducts(por, this.checkingStore.storeId)
       });
-
 
   }
   getAllProducts(name, storeId) {
@@ -98,6 +107,7 @@ export class StockTransferComponent implements OnInit {
         storeId: storeId
       }
     }).then(payload => {
+      console.log(payload);
       this.systemModuleService.off();
       if (payload.data.length > 0) {
         this.products = [];
@@ -112,6 +122,24 @@ export class StockTransferComponent implements OnInit {
       }
     });
   }
+
+  getRequisitions() {
+    let storeId = this.checkingStore.storeId;
+    console.log(this.checkingStore);
+    if (storeId === undefined) {
+      storeId = this.checkingStore.typeObject.storeId
+    }
+    this.productRequisitionService.find({
+      query: {
+        facilityId: this.selectedFacility._id,
+        destinationStoreId: storeId
+      }
+    }).then(payload => {
+      console.log(payload);
+      this.requisitions = payload.data;
+    });
+  }
+
 
 
   getCurrentStoreDetails(id) {
@@ -290,6 +318,51 @@ export class StockTransferComponent implements OnInit {
     this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
     this.flyout = true;
   }
+
+  onClickRequi(requistion) {
+    this.toggleTransferOpen = !this.toggleTransferOpen;
+    if (this.toggleTransferOpen) {
+      this.frmDestinationStore.setValue(requistion.storeId);
+      console.log(requistion);
+      // this.primeComponent();
+      this.flyout = true;
+      requistion.products.forEach(element => {
+        this.superGroups.forEach((parent, i) => {
+          parent.forEach((group, j) => {
+            if (element.productId !== undefined) {
+              console.log(group);
+              if (group._id.toString() === element.productId.toString()) {
+                group.checked = true;
+                this.systemModuleService.on();
+                this.inventoryService.find({ query: { productId: element.productId, facilityId: this.selectedFacility._id } }).then(payload => {
+                  this.systemModuleService.off();
+                  if (payload.data.length > 0) {
+                    (<FormArray>this.productTableForm.controls['productTableArray']).push(
+                      this.formBuilder.group({
+                        product: [element.productObject.data.name, [<any>Validators.required]],
+                        batchNo: [, [<any>Validators.required]],
+                        batchNumbers: [payload.data[0].transactions],
+                        costPrice: [0.00, [<any>Validators.required]],
+                        totalCostPrice: [0.00, [<any>Validators.required]],
+                        qty: [0, [<any>Validators.required]],
+                        config: this.initProductConfig(group.product.productConfigObject),
+                        readOnly: [false],
+                        productObject: [group.product],
+                        id: [group._id],
+                        inventoryId: [payload.data[0]._id]
+                      })
+                    );
+                  }
+                });
+              }
+            }
+          });
+        });
+      });
+    }
+  }
+
+
   onProductCheckChange(event, value, index?) {
     value.checked = event.checked;
     this.maxQty = 0;
@@ -309,7 +382,9 @@ export class StockTransferComponent implements OnInit {
     }
     if (checker) {
       if (event.checked === true) {
+        this.systemModuleService.on();
         this.inventoryService.find({ query: { productId: value._id, facilityId: this.selectedFacility._id } }).subscribe(payload => {
+          this.systemModuleService.off();
           if (payload.data.length > 0) {
             (<FormArray>this.productTableForm.controls['productTableArray'])
               .push(
@@ -352,7 +427,6 @@ export class StockTransferComponent implements OnInit {
   compareItems(l1: any, l2: any) {
     return l1.includes(l2);
   }
-
 
   removeProduct(index, form) {
     const value = form[index];
