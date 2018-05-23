@@ -24,7 +24,6 @@ export class SurveyComponent implements OnInit, OnDestroy {
       this.json = payload.json;
       this.surveyModel = new ReactSurveyModel(payload.json);
       Survey.cssType = "bootstrap";
-      Survey.cssType = "bootstrap";
       this.surveyModel.onComplete.add(() => {
         this.surveyResult();
       });
@@ -37,9 +36,7 @@ export class SurveyComponent implements OnInit, OnDestroy {
           if (payload.action === "add") {
             this.symptoms.push(payload.data);
           } else {
-            const index = this.symptoms.findIndex(
-              x => x.code === payload.data.code
-            );
+            const index = this.symptoms.findIndex(x => x.code === payload.data.code);
             this.symptoms.slice(index, 1);
           }
         } else if (payload.type === "OrderSet") {

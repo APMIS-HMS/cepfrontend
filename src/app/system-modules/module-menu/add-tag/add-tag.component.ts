@@ -29,7 +29,6 @@ export class AddTagComponent implements OnInit {
   }
 
   ngOnInit() {
-
     this.facility = <Facility>this._locker.getObject('selectedFacility');
     this.getTags();
 
@@ -49,10 +48,12 @@ export class AddTagComponent implements OnInit {
 
   }
   getTags() {
-    this.systemModuleService.on;
+    this.systemModuleService.on();
     this._tagService.find({ query: { facilityId: this.facility._id } }).then(payload => {
-      this.systemModuleService.off;
-      this.tags = payload.data;
+      this.systemModuleService.off();
+      if (payload.length > 0) {
+        this.tags = payload.data;
+      }
     });
   }
   newTagPopup_show() {
@@ -72,17 +73,17 @@ export class AddTagComponent implements OnInit {
   }
 
   onTagRemove(tag) {
-    this.systemModuleService.on;
     this.systemModuleService.announceSweetProxy('You are about to delete this tag', 'question', this);
     this.editedTag = tag;
   }
 
   sweetAlertCallback(result) {
+    this.systemModuleService.on();
     if (result.value) {
       this._tagService.remove(this.editedTag._id, {}).then(callback_remove => {
-        this.systemModuleService.
-        announceSweetProxy(this.editedTag.name + ' is deleted', 'success', null, null, null, null, null, null, null);
-        this.systemModuleService.off;
+        const msg = `${this.editedTag.name} is deleted`;
+        this.systemModuleService.announceSweetProxy(msg, 'success');
+        this.systemModuleService.off();
         this.getTags();
         this.editedTag = {};
       }, error => {

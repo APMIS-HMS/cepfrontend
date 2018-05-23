@@ -498,7 +498,7 @@ export class MakePaymentComponent implements OnInit {
         if (!payload.isWaved) {
           this.systemModuleService.announceSweetProxy('Payment has been made successfully.', 'success');
         } else {
-          this.systemModuleService.announceSweetProxy('Payment has been made successfully.', 'success');
+          this.systemModuleService.announceSweetProxy('Payment has been waived successfully.', 'success');
         }
 
       }, error => {
@@ -513,7 +513,7 @@ export class MakePaymentComponent implements OnInit {
         if (!payload.isWaved) {
           this.systemModuleService.announceSweetProxy('Payment has been made successfully.', 'success');
         } else {
-          this.systemModuleService.announceSweetProxy('Payment has been made successfully.', 'success');
+          this.systemModuleService.announceSweetProxy('Payment has been waived successfully.', 'success');
         }
 
       }, error => {

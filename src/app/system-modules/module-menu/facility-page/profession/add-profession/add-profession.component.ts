@@ -51,7 +51,7 @@ export class AddProfessionComponent implements OnInit {
     if (valid) {
       if (children.name === '' || children.name === ' ') {
         this.mainErrCadre = false;
-        this.errMsgCadre = 'you left out a required field';
+        this.errMsgCadre = 'You left out a required field';
       } else {
 
         if (children != null) {
@@ -72,14 +72,14 @@ export class AddProfessionComponent implements OnInit {
       }
     } else {
       this.mainErrCadre = false;
-      this.errMsgCadre = 'you left out a required field';
+      this.errMsgCadre = 'You left out a required field';
     }
   }
   save(valid, val) {
     if (valid) {
       if (val.profession === '' || val.profession === ' ') {
         this.mainErr = false;
-        this.errMsg = 'you left out a required field';
+        this.errMsg = 'You left out a required field';
       } else {
         const cadres = (<FormArray>this.cadreForm.controls['cadreArray']).controls.filter((x: any) => x.value.readonly);
         const cadreList = [];

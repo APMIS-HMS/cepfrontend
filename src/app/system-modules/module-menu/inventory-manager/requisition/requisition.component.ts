@@ -23,7 +23,7 @@ export class RequisitionComponent implements OnInit {
   public frm_purchaseOrder: FormGroup;
 
   suppliers: any[] = [];
-
+  isProcessing = false;
   productTableForm: FormGroup;
   checkAll: FormControl = new FormControl();
   zeroQuantity: FormControl = new FormControl();
@@ -69,12 +69,12 @@ export class RequisitionComponent implements OnInit {
         this.stores = JSON.parse(JSON.stringify([]));
         if (payload.typeObject !== undefined) {
           this.checkingObject = payload.typeObject;
-          if(this.checkingObject.storeId === undefined){
+          if (this.checkingObject.storeId === undefined) {
             this.checkingObject = payload.typeObject.typeObject;
           }
           console.log(payload);
           this.getStores();
-          this.getAllProducts('',this.checkingObject.storeId);
+          this.getAllProducts('', this.checkingObject.storeId);
         }
       }
     });
@@ -108,10 +108,10 @@ export class RequisitionComponent implements OnInit {
         });
       this.getStores();
       let storeId = this.checkingObject.storeId;
-      if(storeId === undefined){
+      if (storeId === undefined) {
         storeId = this.checkingObject.typeObject.storeId
       }
-      this.getAllProducts('',storeId);
+      this.getAllProducts('', storeId);
       this.getStrengths();
     });
     this.searchControl.valueChanges
@@ -120,10 +120,10 @@ export class RequisitionComponent implements OnInit {
       .subscribe(value => {
         this.checkBoxLabel[0].checked = false;
         let storeId = this.checkingObject.storeId;
-        if(storeId === undefined){
+        if (storeId === undefined) {
           storeId = this.checkingObject.typeObject.storeId
         }
-        this.getAllProducts(value,storeId);
+        this.getAllProducts(value, storeId);
       });
   }
 
@@ -137,30 +137,30 @@ export class RequisitionComponent implements OnInit {
           this.stores.push(item);
         }
       }))
-    }
+  }
 
-    getAllProducts(name, storeId) {
-      this.systemModuleService.on();
-      this.inventoryService.findList({
-        query: {
-          facilityId: this.selectedFacility._id,
-          name: name,
-          storeId: storeId
-        }
-      }).then(payload => {
-        this.systemModuleService.off();
-        if (payload.data.length > 0) {
-          this.products = [];
-          this.getProductTables(this.products);
-          payload.data.forEach((item, i) => {
-            this.products.push(item.productObject);
-          });
-          this.getProductTables(this.products);
-        } else {
-          this.superGroups = [];
-        }
-      });
-    }
+  getAllProducts(name, storeId) {
+    this.systemModuleService.on();
+    this.inventoryService.findList({
+      query: {
+        facilityId: this.selectedFacility._id,
+        name: name,
+        storeId: storeId
+      }
+    }).then(payload => {
+      this.systemModuleService.off();
+      if (payload.data.length > 0) {
+        this.products = [];
+        this.getProductTables(this.products);
+        payload.data.forEach((item, i) => {
+          this.products.push(item.productObject);
+        });
+        this.getProductTables(this.products);
+      } else {
+        this.superGroups = [];
+      }
+    });
+  }
 
   getProductTables(products: any[]) {
     this.productTables = products;
@@ -230,26 +230,26 @@ export class RequisitionComponent implements OnInit {
   }
   onProductCheckChange(event, value) {
     value.checked = event.checked;
-// let storeId = this.frm_purchaseOrder.controls['store'].value;
-if (event.checked === true) {
+    // let storeId = this.frm_purchaseOrder.controls['store'].value;
+    if (event.checked === true) {
       if (this.productsControl.value !== null && this.productsControl.value !== undefined) {
         (<FormArray>this.productTableForm.controls['productTableArray'])
           .push(
-          this.formBuilder.group({
-            product: [value.name, [<any>Validators.required]],
-            qty: [0, [<any>Validators.required]],
-            config: this.initProductConfig(value.product.productConfigObject),
-            readOnly: [false],
-            productObject: [value.product],
-            id: [value._id]
-          })
+            this.formBuilder.group({
+              product: [value.name, [<any>Validators.required]],
+              qty: [0, [<any>Validators.required]],
+              config: this.initProductConfig(value.product.productConfigObject),
+              readOnly: [false],
+              productObject: [value.product],
+              id: [value._id]
+            })
           );
       } else {
         value.checked = false;
         value = JSON.parse(JSON.stringify(value));
         this.errMsg = 'Please select the destination store';
         this.mainErr = false;
-        this.systemModuleService.announceSweetProxy(this.errMsg,'error');
+        this.systemModuleService.announceSweetProxy(this.errMsg, 'error');
       }
     } else {
       let indexToRemove = 0;
@@ -266,11 +266,11 @@ if (event.checked === true) {
         (<FormArray>this.productTableForm.controls['productTableArray']).controls.splice(indexToRemove, 1);
       }
       let indx = indexToRemove;
-      if(indexToRemove > 0){
-        indx = indexToRemove-1;
+      if (indexToRemove > 0) {
+        indx = indexToRemove - 1;
       }
-      
-      this.onPackageSize(indx,(<FormArray>this.productTableForm.controls['productTableArray']).controls)
+
+      this.onPackageSize(indx, (<FormArray>this.productTableForm.controls['productTableArray']).controls)
     }
   }
 
@@ -289,19 +289,19 @@ if (event.checked === true) {
   }
 
   getBaseProductConfig(form) {
-    return form.controls.config.controls[0].value.packsizes.find(x=>x.isBase === true).name;
+    return form.controls.config.controls[0].value.packsizes.find(x => x.isBase === true).name;
   }
 
-  onPackageSize(i,packs) {
-    try{
+  onPackageSize(i, packs) {
+    try {
       packs[i].controls.qty.setValue(0);
       packs[i].controls.config.controls.forEach(element => {
         packs[i].controls.qty.setValue(packs[i].controls.qty.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
       });
-    }catch(err){
+    } catch (err) {
 
     }
-    
+
   }
 
   compareItems(l1: any, l2: any) {
@@ -344,11 +344,12 @@ if (event.checked === true) {
   }
 
   save() {
+    this.systemModuleService.on();
+    this.isProcessing = true;
     let storeId = this.checkingObject.storeId;
-      if(storeId === undefined){
-        storeId = this.checkingObject.typeObject.storeId
-      }
-    console.log(storeId,this.productsControl.value);
+    if (storeId === undefined) {
+      storeId = this.checkingObject.typeObject.storeId
+    }
     const requisition: any = <any>{};
     requisition.employeeId = this.loginEmployee._id;
     requisition.facilityId = this.selectedFacility._id;
@@ -367,8 +368,12 @@ if (event.checked === true) {
       this.addNewProductTables();
       this.desc.reset();
       this.resetGroups();
+      this.isProcessing = false;
+      this.systemModuleService.off();
     }, err => {
       this.systemModuleService.announceSweetProxy('Requisition failed', 'error');
+      this.isProcessing = false;
+      this.systemModuleService.off();
     });
   }
 
@@ -460,9 +465,9 @@ if (event.checked === true) {
     this.getProductTables(this.products);
     if (e.checked) {
       let storeId = this.checkingObject.storeId;
-        if(storeId === undefined){
-          storeId = this.checkingObject.typeObject.storeId
-        }
+      if (storeId === undefined) {
+        storeId = this.checkingObject.typeObject.storeId
+      }
       if (i === 0) {
         checkBoxLabel[1].checked = false;
         checkBoxLabel[2].checked = false;
