@@ -130,9 +130,7 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
       this._immunizationScheduleService.customCreate(payload).then(res => {
         this._systemModuleService.off();
         if (res.status === "success") {
-          const text = `${
-            value.name
-          } immunization schedule has been created successfully!`;
+          const text = `${value.name} immunization schedule has been created successfully!`;
           this._systemModuleService.announceSweetProxy(text, "success");
           this.immunizationScheduleForm.reset();
           this.disableBtn = false;

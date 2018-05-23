@@ -664,8 +664,10 @@ export class PatientPaymentPlanComponent implements OnInit {
 
 
   onSubmit(insurance, i) {
+    // this.selectedHMO = (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])
+    //   .controls[this.insuranceFormArrayIndex]).controls['readOnly'].setValue(true);
     this.selectedHMO = (<FormGroup>(<FormArray>this.insurancePlanForm.controls['insurancePlanArray'])
-      .controls[this.insuranceFormArrayIndex]).controls['readOnly'].setValue(true);
+      .controls[this.insuranceFormArrayIndex]).controls['readOnly'].value;
 
 
     //selected patient has no existing policy
@@ -960,8 +962,10 @@ export class PatientPaymentPlanComponent implements OnInit {
 
 
   onSubmitCompanyCover(company, i) {
+    // this.selectedHMO = (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
+    //   .controls[this.companyFormArrayIndex]).controls['readOnly'].setValue(true);
     this.selectedHMO = (<FormGroup>(<FormArray>this.companyCoverPlanForm.controls['companyCoverPlanArray'])
-      .controls[this.companyFormArrayIndex]).controls['readOnly'].setValue(true);
+      .controls[this.companyFormArrayIndex]).controls['readOnly'].value;
     //selected patient has no existing policy
     if (this.selectedPatientPolicy === undefined) {
       let newPolicy: any = {};
@@ -996,8 +1000,10 @@ export class PatientPaymentPlanComponent implements OnInit {
     }
   }
   onSubmitFamilyCover(family, i) {
+    // this.selectedHMO = (<FormGroup>(<FormArray>this.familyCoverPlanForm.controls['dependantArray'])
+    //   .controls[this.familyFormArrayIndex]).controls['readOnly'].setValue(true);
     this.selectedHMO = (<FormGroup>(<FormArray>this.familyCoverPlanForm.controls['dependantArray'])
-      .controls[this.familyFormArrayIndex]).controls['readOnly'].setValue(true);
+      .controls[this.familyFormArrayIndex]).controls['readOnly'].value;
     if (this.selectedPatientPolicy === undefined) {
       let newPolicy: any = {};
       let copyPatient = JSON.parse(JSON.stringify(this.selectedPatient));
