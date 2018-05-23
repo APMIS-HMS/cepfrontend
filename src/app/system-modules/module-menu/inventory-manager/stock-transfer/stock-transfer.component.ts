@@ -42,6 +42,7 @@ export class StockTransferComponent implements OnInit {
   productTables: any[] = [];
   stores: any[] = [];
   user: any = <any>{};
+  isProcessing = false;
   searchControl = new FormControl();
   frmDestinationStore: FormControl = new FormControl();
   product: FormControl = new FormControl();
@@ -128,9 +129,11 @@ export class StockTransferComponent implements OnInit {
     this.productRequisitionService.find({
       query: {
         facilityId: this.selectedFacility._id,
-        destinationStoreId: storeId
+        destinationStoreId: storeId,
+        $sort: { isSupplied: 1 }
       }
     }).then(payload => {
+      console.log(payload);
       this.requisitions = payload.data;
     });
   }
@@ -358,64 +361,68 @@ export class StockTransferComponent implements OnInit {
 
 
   onProductCheckChange(event, value, index?) {
-    value.checked = event.checked;
-    this.maxQty = 0;
-    let checker = false;
-    if (value.product.availableQuantity !== undefined) {
-      if (value.product.availableQuantity > 0) {
-        checker = true;
-      } else {
-        checker = false;
-      }
-    } else {
-      if (value.productObject.availableQuantity > 0) {
-        checker = true;
-      } else {
-        checker = false;
-      }
-    }
-    if (checker) {
-      if (event.checked === true) {
-        this.systemModuleService.on();
-        this.inventoryService.find({ query: { productId: value._id, facilityId: this.selectedFacility._id } }).subscribe(payload => {
-          this.systemModuleService.off();
-          if (payload.data.length > 0) {
-            (<FormArray>this.productTableForm.controls['productTableArray'])
-              .push(
-                this.formBuilder.group({
-                  product: [value.name, [<any>Validators.required]],
-                  batchNo: [, [<any>Validators.required]],
-                  batchNumbers: [payload.data[0].transactions],
-                  costPrice: [0.00, [<any>Validators.required]],
-                  totalCostPrice: [0.00, [<any>Validators.required]],
-                  qty: [0, [<any>Validators.required]],
-                  config: this.initProductConfig(value.product.productConfigObject),
-                  readOnly: [false],
-                  productObject: [value.product],
-                  id: [value._id],
-                  inventoryId: [payload.data[0]._id]
-                })
-              );
-          }
-        });
-
-      } else {
-        const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
-        if (count === 1) {
-          this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
+    console.log(this.frmDestinationStore.value);
+    if(this.frmDestinationStore.value !== null){
+      value.checked = event.checked;
+      this.maxQty = 0;
+      let checker = false;
+      if (value.product.availableQuantity !== undefined) {
+        if (value.product.availableQuantity > 0) {
+          checker = true;
         } else {
-          (<FormArray>this.productTableForm.controls['productTableArray']).controls.splice(index, 1);
+          checker = false;
         }
-        let indx = index;
-        if (index > 0) {
-          indx = index - 1;
+      } else {
+        if (value.productObject.availableQuantity > 0) {
+          checker = true;
+        } else {
+          checker = false;
         }
-        this.onPackageSize(indx, (<FormArray>this.productTableForm.controls['productTableArray']).controls);
       }
-    } else {
-      this.systemModuleService.announceSweetProxy('This product is out of stock', 'error');
+      if (checker) {
+        if (event.checked === true) {
+          this.systemModuleService.on();
+          this.inventoryService.find({ query: { productId: value._id, facilityId: this.selectedFacility._id } }).subscribe(payload => {
+            this.systemModuleService.off();
+            if (payload.data.length > 0) {
+              (<FormArray>this.productTableForm.controls['productTableArray'])
+                .push(
+                  this.formBuilder.group({
+                    product: [value.name, [<any>Validators.required]],
+                    batchNo: [, [<any>Validators.required]],
+                    batchNumbers: [payload.data[0].transactions],
+                    costPrice: [0.00, [<any>Validators.required]],
+                    totalCostPrice: [0.00, [<any>Validators.required]],
+                    qty: [0, [<any>Validators.required]],
+                    config: this.initProductConfig(value.product.productConfigObject),
+                    readOnly: [false],
+                    productObject: [value.product],
+                    id: [value._id],
+                    inventoryId: [payload.data[0]._id]
+                  })
+                );
+            }
+          });
+  
+        } else {
+          const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
+          if (count === 1) {
+            this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
+          } else {
+            (<FormArray>this.productTableForm.controls['productTableArray']).controls.splice(index, 1);
+          }
+          let indx = index;
+          if (index > 0) {
+            indx = index - 1;
+          }
+          this.onPackageSize(indx, (<FormArray>this.productTableForm.controls['productTableArray']).controls);
+        }
+      } else {
+        this.systemModuleService.announceSweetProxy('This product is out of stock', 'error');
+      }
+    }else{
+      this.systemModuleService.announceSweetProxy('Please select destination store','error');
     }
-
   }
 
   compareItems(l1: any, l2: any) {
@@ -591,18 +598,21 @@ export class StockTransferComponent implements OnInit {
   }
   saveTransfer() {
     this.systemModuleService.on();
+    this.isProcessing = true;
     this.populateInventoryTransferTransactions();
-   this.newTransfer.requistionId = this.requistionId;
-   this.inventoryTransferService.create2(this.newTransfer).then(payload => {
+    this.newTransfer.requistionId = this.requistionId;
+    this.inventoryTransferService.create2(this.newTransfer).then(payload => {
       (<FormArray>this.productTableForm.controls['productTableArray']).controls = [];
       this.unCheckedProducts();
       this.systemModuleService.off();
       this.systemModuleService.announceSweetProxy('Your transfer was successful', 'success', null, null, null, null, null, null, null);
       this.frmDestinationStore.reset();
+      this.isProcessing = false;
     }, err => {
       this.systemModuleService.off();
       const errMsg = 'There was an error while transfering product, please try again!';
       this.systemModuleService.announceSweetProxy(errMsg, 'error');
+      this.isProcessing = false;
     });
   }
 
