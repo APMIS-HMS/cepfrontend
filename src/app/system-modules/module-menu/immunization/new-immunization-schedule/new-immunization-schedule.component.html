@@ -31,11 +31,11 @@
                             </div>
                         </div>
                         <div class="row">
-                            <div class="col-sm-12 vaccine" formArrayName="vaccines">
-                                <div class="card" *ngFor="let vaccine of immunizationScheduleForm.controls['vaccines'].controls; let i=index;">
+                            <div class="col-sm-12 vaccine" formArrayName="vaccinesArray">
+                                <div class="card" *ngFor="let vaccine of immunizationScheduleForm.controls['vaccinesArray']['controls']; let i=index;">
                                     <div class="row">
                                         <div class="col-sm-12">
-                                            <div class="close" *ngIf="immunizationScheduleForm.controls['vaccines'].controls.length > 1" (click)="removeVaccine(i)">
+                                            <div class="close" *ngIf="immunizationScheduleForm.controls['vaccinesArray'].controls.length > 1" (click)="removeVaccine(i)">
                                                 <i class="fa fa-close fa-2x fa-fw"></i>
                                             </div>
                                         </div>
@@ -127,7 +127,7 @@
                                       </button>
                                                                     </div>
                                                                     <div class="col-xs-6" style="float:right">
-                                                                        <button class="btn btn-red" *ngIf="immunizationScheduleForm.controls['vaccines'].controls[i].controls['intervals'].controls.length > 1" (click)="onClickAddInterval(i, vaccine, 'remove');">
+                                                                        <button class="btn btn-red" *ngIf="immunizationScheduleForm.controls['vaccinesArray'].controls[i].controls['intervals'].controls.length > 1" (click)="onClickAddInterval(i, vaccine, 'remove');">
                                         <i class="fa fa-fw fa-minus"></i>
                                       </button>
                                                                     </div>
@@ -136,12 +136,12 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-sm-6" *ngFor="let interval of immunizationScheduleForm.controls['vaccines'].controls[i].controls['intervals'].controls; let j=index;">
+                                                <div class="col-sm-6" *ngFor="let interval of immunizationScheduleForm.controls['vaccinesArray'].controls[i].controls['intervals'].controls; let j=index;">
                                                     <div class="row">
                                                         <div class="col-xs-10" [formGroupName]="j">
                                                             <div class="col-md-4" style="padding-right:0;padding-left:0;float:left;">
                                                                 <div class="col-xs-4" style="padding-right:0;padding-left:0;float:left;margin-top:25px;">
-                                                                    <span>{{ immunizationScheduleForm.controls['vaccines'].controls[i].controls['code'].value }}-</span>
+                                                                    <span>{{ immunizationScheduleForm.controls['vaccinesArray'].controls[i].controls['code'].value }}-</span>
                                                                 </div>
                                                                 <div class="col-xs-8" style="float:left">
                                                                     <mat-form-field style="width: 100%">
@@ -151,20 +151,20 @@
                                                             </div>
                                                             <div class="col-md-4" style="padding-right:0;padding-left:0;float:left;">
                                                                 <mat-form-field style="width: 100%">
-                                                                    <input matInput type="number" formControlName="unit" placeholder="Unit">
+                                                                    <input matInput type="number" formControlName="duration" placeholder="Duration">
                                                                 </mat-form-field>
                                                             </div>
                                                             <div class="col-md-4" style="padding-right:0;padding-left:0;float:left;">
                                                                 <mat-form-field style="width: 100%">
-                                                                    <mat-select formControlName="duration" placeholder="Duration">
-                                                                        <mat-option *ngFor="let duration of durationUnits" [(value)]="duration.name">
-                                                                            {{ duration.name }}
+                                                                    <mat-select formControlName="unit" placeholder="Unit">
+                                                                        <mat-option *ngFor="let unit of durationUnits" [(value)]="unit.name">
+                                                                            {{ unit.name }}
                                                                         </mat-option>
                                                                     </mat-select>
                                                                 </mat-form-field>
                                                             </div>
                                                         </div>
-                                                        <div class="col-xs-2" *ngIf="immunizationScheduleForm.controls['vaccines'].controls[i].controls['intervals'].controls.length > (immunizationScheduleForm.controls['vaccines'].controls[i].controls['intervals'].controls.length - 1)" style="text-align:center;margin-top:19px;">
+                                                        <div class="col-xs-2" *ngIf="immunizationScheduleForm.controls['vaccinesArray'].controls[i].controls['intervals'].controls.length > (immunizationScheduleForm.controls['vaccinesArray'].controls[i].controls['intervals'].controls.length - 1)" style="text-align:center;margin-top:19px;">
                                                             <img style="padding: 10px;" src="../../../../assets/images/timeline.svg">
                                                         </div>
                                                     </div>
