@@ -361,8 +361,7 @@ export class StockTransferComponent implements OnInit {
 
 
   onProductCheckChange(event, value, index?) {
-    console.log(this.frmDestinationStore.value);
-    if(this.frmDestinationStore.value !== null){
+    if (this.frmDestinationStore.value !== null) {
       value.checked = event.checked;
       this.maxQty = 0;
       let checker = false;
@@ -403,7 +402,7 @@ export class StockTransferComponent implements OnInit {
                 );
             }
           });
-  
+
         } else {
           const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
           if (count === 1) {
@@ -420,8 +419,17 @@ export class StockTransferComponent implements OnInit {
       } else {
         this.systemModuleService.announceSweetProxy('This product is out of stock', 'error');
       }
-    }else{
-      this.systemModuleService.announceSweetProxy('Please select destination store','error');
+    } else {
+      this.systemModuleService.announceSweetProxy('Please select destination store', 'error');
+      this.superGroups.forEach((parent, i) => {
+        parent.forEach((group, j) => {
+          console.log(group._id.toString(), value._id.toString())
+          if (group._id.toString() === value._id.toString()) {
+            group.checked = false;
+          }
+        })
+      });
+      this.superGroups= JSON.parse(JSON.stringify(this.superGroups));
     }
   }
 
@@ -608,6 +616,8 @@ export class StockTransferComponent implements OnInit {
       this.systemModuleService.announceSweetProxy('Your transfer was successful', 'success', null, null, null, null, null, null, null);
       this.frmDestinationStore.reset();
       this.isProcessing = false;
+      this.requisitions = [];
+      this.getRequisitions();
     }, err => {
       this.systemModuleService.off();
       const errMsg = 'There was an error while transfering product, please try again!';
