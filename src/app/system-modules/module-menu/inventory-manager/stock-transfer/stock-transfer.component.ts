@@ -562,5 +562,7 @@ export class StockTransferComponent implements OnInit {
       text: text
     });
   }
-  openSearch() { }
+  openSearch() { 
+    this.searchOpen = !this.searchOpen;
+  } 
 }
