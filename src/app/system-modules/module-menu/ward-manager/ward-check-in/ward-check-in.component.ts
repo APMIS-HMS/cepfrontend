@@ -47,7 +47,8 @@ export class WardCheckInComponent implements OnInit {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       if (!!res._id) {
         this.loginEmployee = res;
-        this.checkins = this.loginEmployee.wardCheckIn.reverse().slice(0, 5);
+        const reversedArr = this.loginEmployee.wardCheckIn.reverse();
+        this.checkins = reversedArr.slice(0, 5);
       } else {
         this._notification('Error', 'Couldn\'t get Logged in user! Please try again later');
       }
@@ -88,7 +89,8 @@ export class WardCheckInComponent implements OnInit {
       this.loginEmployee.wardCheckIn.push(checkIn);
       this.employeeService.update(this.loginEmployee).then(payload => {
         this.loginEmployee = payload;
-        this.checkins = this.loginEmployee.wardCheckIn.reverse().slice(0, 5);
+        const reversedArr = this.loginEmployee.wardCheckIn.reverse();
+        this.checkins = reversedArr.slice(0, 5);
         // const workspaces = <any>this.locker.getObject('workspaces');
         // this.loginEmployee.workSpaces = workspaces;
         // this.locker.setObject('loginEmployee', payload);

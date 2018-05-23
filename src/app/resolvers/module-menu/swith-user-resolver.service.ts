@@ -36,20 +36,24 @@ export class SwitchUserResolverService implements Resolve<Facility> {
         facilities.forEach((item, i) => {
           facilityList.push(item.facilityId);
         });
-        return this.facilityService.find({ query: { _id: { $in: facilityList }, $select: ['departments.name', 'name', 'logoObject', 'facilitymoduleId', 'facilityTypeId'] } })
-          .then(payload => {
+        return this.facilityService.find({
+          query: { _id: { $in: facilityList },
+          $select: ['departments.name', 'name', 'logoObject', 'facilitymoduleId', 'facilityTypeId']}
+        }).then(payload => {
             this.listOfFacilities = payload.data;
             if (this.listOfFacilities.length === 1) {
               this.locker.setObject('selectedFacility', this.listOfFacilities[0]);
               if (this.listOfFacilities[0].isTokenVerified === true) {
                 // this.router.navigate(['dashboard']);
                 return Observable.of({ selectedPerson: this.selectedPerson, listOfFacilities: this.listOfFacilities, authData: this.authData });
-              } else {
-                return Observable.of({
-                  selectedPerson: this.selectedPerson, listOfFacilities: this.listOfFacilities,
-                  authData: this.authData
-                });
               }
+              // I (Chisimdi) added this because you were returning same thing as the conditional up
+              //  else {
+              //   return Observable.of({
+              //     selectedPerson: this.selectedPerson, listOfFacilities: this.listOfFacilities,
+              //     authData: this.authData
+              //   });
+              // }
             } else {
               return Observable.of({
                 selectedPerson: this.selectedPerson, listOfFacilities: this.listOfFacilities,

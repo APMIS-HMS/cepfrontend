@@ -546,7 +546,7 @@ export class StockTransferComponent implements OnInit {
       transferTransaction.inventoryId = item.value.inventoryId;
       transferTransaction.productId = item.value.id;
       transferTransaction.quantity = item.value.qty;
-      if (item.value.qty === undefined || item.value.qty === NaN || item.value.qty == null) {
+      if (item.value.qty === undefined || item.value.qty == null || isNaN(item.value.qty)) {
         transferTransaction.quantity = 0;
       }
       transferTransaction.costPrice = item.value.costPrice;
