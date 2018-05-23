@@ -257,11 +257,7 @@ export class FundWalletComponent implements OnInit {
       } else {
         this._notification('Error', res.body.message);
       }
-    }).catch(err => {
-      if (err instanceof Error) {
-      } else {
-      }
-    });
+    }).catch(err => {});
   }
 
   paymentCancel() {

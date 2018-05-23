@@ -141,11 +141,11 @@ export class ApmisLookupComponent
     }
   }
   getOtherKeyValues(item) {
-    var otherValues = [];
+    let otherValues = [];
     let mainCounter = 0;
     let objItem = item;
     this.otherKeys.forEach((key, i) => {
-      var splitArray = key.split(".");
+      let splitArray = key.split(".");
       let counter = 0;
       mainCounter++;
       splitArray.forEach((obj, i) => {
@@ -157,9 +157,9 @@ export class ApmisLookupComponent
         counter++;
       });
       if (counter == splitArray.length) {
-        var checkDate = new Date(objItem);
-        let NaN = "" + checkDate.getDate().toString() + "";
-        if (NaN == "NaN") {
+        const checkDate = new Date(objItem);
+        const notANumber = "" + checkDate.getDate().toString() + "";
+        if (notANumber == "NaN") {
           otherValues.push(objItem);
         } else {
           let d = new Date(objItem);

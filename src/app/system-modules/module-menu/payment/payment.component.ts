@@ -119,7 +119,7 @@ export class PaymentComponent implements OnInit {
     }
 
     private _getInvoices() {
-        this.systemModuleService.on;
+        this.systemModuleService.on();
         this.invoiceService.find({ query: { facilityId: this.selectedFacility._id, balance: { $gt: 0 }, paymentCompleted: false, $sort: { updatedAt: -1 } } }).then(payload => {
             this.systemModuleService.off();
             this.invoiceGroups = payload.data;

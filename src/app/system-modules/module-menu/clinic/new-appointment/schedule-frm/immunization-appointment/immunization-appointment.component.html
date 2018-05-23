@@ -98,17 +98,17 @@
                                     <h3>Selected Vaccines</h3>
                                 </div>
                                 <div class="col-xs-6 pull right" style="text-align:right;margin-top: 5px;">
-                                    <mat-checkbox style="line-height:18px;font-size:12px;">
+                                    <mat-checkbox style="line-height:18px;font-size:12px;" [disabled]="selectedSchedule?.vaccines?.length < 2" (change)="checkAllChanged($event)" [checked]="checkAll">
                                         Check All
                                     </mat-checkbox>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-12 content">
-                            <div *ngFor="let vaccine of selectedSchedule?.vaccines" class="immune-content-group-item">
-                                <mat-checkbox>
-                                    <b>{{vaccine.code}}</b> &#8358;{{vaccine.serviceObject.price | number:'1.2-2'}}
-                                    <br /> {{vaccine.name}}
+                            <div *ngFor="let vaccine of vaccines" class="immune-content-group-item">
+                                <mat-checkbox (change)="checkVaccine($event, vaccine)" [checked]="vaccine.checked">
+                                    <b>{{vaccine.vaccineObject.code}}</b> &#8358;{{vaccine.vaccineObject.serviceObject.price | number:'1.2-2'}}
+                                    <br /> {{vaccine.vaccineObject.name}}
                                 </mat-checkbox>
                             </div>
                         </div>
@@ -119,7 +119,7 @@
     </div>
     <div class="row">
         <div class="col-xs-12 btn-box">
-            <button [disabled]="disableBtn || !dateCtrl.valid || !patient.valid || !type.valid || !category.valid || !clinic.valid" (click)="scheduleAppointment()" [ngClass]="{'cta-1':!disableBtn && dateCtrl.valid && patient.valid && type.valid && category.valid && clinic.valid, 'cta-1-disable':disableBtn || !dateCtrl.valid || !patient.valid || !type.valid || !category.valid || !clinic.valid}">
+            <button [disabled]="disableBtn || !dateCtrl.valid || !patient.valid || !type.valid || !category.valid || !clinic.valid || !isAnyVaccineChecked()" (click)="scheduleAppointment()" [ngClass]="{'cta-1':!disableBtn && dateCtrl.valid && patient.valid && type.valid && category.valid && clinic.valid && isAnyVaccineChecked(), 'cta-1-disable':disableBtn || !dateCtrl.valid || !patient.valid || !type.valid || !category.valid || !clinic.valid || !isAnyVaccineChecked()}">
             <span *ngIf="updateAppointment">Update Appointment</span>
             <span *ngIf="saveAppointment">Schedule Appointment</span>
             <span *ngIf="savingAppointment">Scheduling Appointment...
