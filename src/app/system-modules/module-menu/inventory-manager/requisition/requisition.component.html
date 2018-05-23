@@ -82,7 +82,7 @@
         </div>
       </div>
       <div class="CTAs-wrap" *ngIf="productTableForm.controls['productTableArray'].value.length > 0">
-        <div (click)="save()" class="cta-1">Save Progress</div>
+        <button [disabled]="isProcessing" (click)="save()" class="cta-1">Save Progress</button>
         <!-- <div (click)="save()" class="cta-1">Send Requisition</div> -->
       </div>
     </form>
