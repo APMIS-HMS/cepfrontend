@@ -30,6 +30,8 @@ export class DocUploadComponent implements OnInit {
 
   fileCount: any;
 
+  patientData: any;
+
 
 
   constructor(private formBuilder: FormBuilder, private docUploadService: DocumentUploadService,
@@ -43,7 +45,6 @@ export class DocUploadComponent implements OnInit {
     private systemModuleService:SystemModuleService,
     private locker: CoolLocalStorage
   ) {
-    this.docUploadCount();
    }
 
   ngOnInit() {
@@ -55,6 +56,7 @@ export class DocUploadComponent implements OnInit {
       desc: ['']
     });
     this.documentTypeFn();
+    this.docUploadCount();
   }
   close_onClick(e?) {
     this.closeModal.emit(true);
@@ -147,6 +149,7 @@ export class DocUploadComponent implements OnInit {
   }
 
   docUploadCount(){
+    console.log(this.patientData);
     this.docUploadService.docUploadFind({
       query: {
         patientId: this.selectedPatient,
