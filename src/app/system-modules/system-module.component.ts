@@ -55,7 +55,6 @@ export class SystemModuleComponent implements OnInit {
     this.platformLogo = environment.logo;
     this.secondaryLogo = environment.secondary_logo;
     this.platform = environment.platform;
-    console.log(this.platform);
     this.facilityService.listner.subscribe(payload => {
       const facility: Facility = <Facility>this.locker.getObject(
         "selectedFacility"
