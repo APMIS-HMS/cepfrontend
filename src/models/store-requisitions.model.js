@@ -13,6 +13,7 @@ module.exports = function (app) {
     storeId: { type: Schema.Types.ObjectId, require: true },
     destinationStoreId: { type: Schema.Types.ObjectId, require: true },
     products: [product],
+    isSupplied:{ type: Boolean, 'default': false },
     comment: { type: String, required: false },
     storeRequisitionNumber: { type: String, required: true }
   }, {

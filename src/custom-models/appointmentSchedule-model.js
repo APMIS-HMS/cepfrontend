@@ -8,7 +8,7 @@ const immuneAppointmentSchema = new Schema({
     isPast: { type: Boolean, 'default': false, required: false },
     isFuture: { type: Boolean, 'default': true, required: false },
     completed:{type:Boolean, 'default':false, required:false},
-    appointmentId:{type: Object}
+    appointmentId:{type: Schema.Types.ObjectId, required:true}
 }, {
     timestamps: true
 });
