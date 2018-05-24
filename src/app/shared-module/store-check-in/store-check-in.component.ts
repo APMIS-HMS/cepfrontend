@@ -119,6 +119,7 @@ export class StoreCheckInComponent implements OnInit {
 	changeRoom(checkIn: any) {
 		let keepCheckIn;
 		this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
+			console.log(itemi);
 			itemi.isOn = false;
 			if (itemi._id === checkIn._id) {
 				itemi.isOn = true;

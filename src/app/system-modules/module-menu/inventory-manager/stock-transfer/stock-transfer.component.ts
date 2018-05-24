@@ -55,6 +55,8 @@ export class StockTransferComponent implements OnInit {
 
   showPlusSign: boolean = true;
 
+  loading: boolean = false;
+
   previewObject: any = <any>{};
   constructor(private _inventoryEventEmitter: InventoryEmitterService,
     private inventoryService: InventoryService, private inventoryTransferService: InventoryTransferService,
@@ -611,8 +613,10 @@ export class StockTransferComponent implements OnInit {
     this.newTransfer.requistionId = this.requistionId;
     this.inventoryTransferService.create2(this.newTransfer).then(payload => {
       (<FormArray>this.productTableForm.controls['productTableArray']).controls = [];
+      this.flyout = false;
       this.unCheckedProducts();
       this.systemModuleService.off();
+      this.loading = false;
       this.systemModuleService.announceSweetProxy('Your transfer was successful', 'success', null, null, null, null, null, null, null);
       this.frmDestinationStore.reset();
       this.isProcessing = false;
