@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-const immunizationRecordModel = require('../../custom-models/immunization-record-model');
+const immunizationRecordModel = require('../../custom-models/appointmentSchedule-model');
 const jsend = require('jsend');
 class Service {
     constructor(options) {
@@ -19,26 +19,24 @@ class Service {
     async create(data, params) {
 
         const immuScheduleService = this.app.service('immunization-schedule');
-        const appointmentServices = this.app.service('appointments');
+        const appointmentServices = this.app.service('/immunization-appointment');
         const immunizationRecordService = this.app.service('immunization-record-history');
 
         const facilityId = data.facilityId;
         const patientId = data.patientId;
         const immunizationScheduleId = data.immunizationScheduleId;
         let immunizations = [];
-        let appointments = [];
+
+        const appointments = data.appointments;
 
         if (facilityId !== undefined) {
-            console.log('facilityId found!');
+
             if (immunizationScheduleId !== undefined) {
-                console.log('immunizationScheduleId found!');
+
                 //immunizations.push(patientId);
-                console.log('immunizations found!', immunizations);
                 const immunizationSch = await immuScheduleService.find({ query: { _id: immunizationScheduleId } });
 
                 const getVaccines = immunizationSch.data[0].vaccines;
-                console.log('getVaccines successfull============!', getVaccines);
-
 
                 if (getVaccines.length > 0) {
 
@@ -47,29 +45,61 @@ class Service {
                         vaccine: String,
                         appointments: appointments
                     };
-                    let immune = {
-                        immunizationScheduleId: immunizationSch.data[0]._id,
-                        immunizationName: immunizationSch.data[0].name,
-                        vaccines: vaccine
-                    };
 
-                    let ImmHistory = {
-                        facilityId: String,
-                        patientId: String,
-                        immunizations: immune
-                    };
 
                     let vac = [];
                     if (getVaccines.length > 0) {
                         getVaccines.forEach(element => {
+                            // appointments.forEach(appoint => {
+                            // if(element.serviceId === appoint.serviceId){
                             vaccine.vaccine = element;
-                            vaccine.appointments = element.appointments;
+                            vaccine.appointments = appointments;
+                            //vaccine.appointments = appoint;
                             vac.push(vaccine);
+                            // }
+
+                            // });
+
                         });
-                        console.log('immmmmmmm successfull============!', immunizations);
-                        const history = await immunizationRecordService.create(immunizations);
-                        console.log('History successfull============!', history);
-                        return jsend.success(history);
+
+                        let immune = {
+                            immunizationScheduleId: immunizationScheduleId,
+                            immunizationName: immunizationSch.data[0].name,
+                            vaccines: vac
+                        };
+
+                        let ImmHistory = {
+                            facilityId: data.facilityId,
+                            patientId: data.patientId,
+                            immunizations: immune
+                        };
+
+                        try {
+                            const history = await immunizationRecordService.create(ImmHistory);
+
+
+                            if (history.immunizations.length > 0) {
+                                let appt = {
+                                    date: Date.now,
+                                    status: 'valid',
+                                    isPast: false,
+                                    isFuture: true,
+                                    completed: false,
+                                    appointmentId: data.appointmentId
+                                };
+                                try {
+                                    const appoint = await appointmentServices.create(appt);
+                                } catch (error) {
+                                    return jsend.error('Could not post to Immunization appointments schedul');
+                                }
+
+                            }
+                            //return jsend.success(history);
+
+                        } catch (error) {
+                            return jsend.error('Something went wrong ========>>>>>>>>> ', error);
+                        }
+
                     } else {
                         return jsend.error('No vaccine found');
                     }
