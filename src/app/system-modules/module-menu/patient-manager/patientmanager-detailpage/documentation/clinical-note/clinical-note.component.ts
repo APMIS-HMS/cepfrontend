@@ -227,6 +227,7 @@ export class ClinicalNoteComponent implements OnInit, OnDestroy {
                       { selectedFacilityId: this.selectedFacility._id }
                     ]
                   },
+                  { unitIds: { $in: this.loginEmployee.units } },
                   { personId: this.loginEmployee.personId },
                   { scopeLevelId: VISIBILITY_GLOBAL }
                 ],
