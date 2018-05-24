@@ -9,8 +9,9 @@ class Service {
   }
 
   async find(params) {
+    console.log(params.query);
     const productService = this.app.service('formulary-products');
-    const reorderService = this.app.service('product-reorders');
+    const reorderService = this.app.service('product-configs');
     var value = {};
     value.data = [];
     const products = await productService.find({
@@ -18,15 +19,16 @@ class Service {
         name: params.query.name
       }
     });
+    console.log(products);
     const reorders = await reorderService.find({
       query: {
-        facilityId: params.query.facilityId,
-        storeId: params.query.storeId
+        facilityId: params.query.facilityId
       }
     });
+    console.log(reorders);
     products.data.forEach(element => {
+      console.log(element);
       const filter = reorders.data.filter(x => x.productId.toString() === element.id.toString());
-      
       if (filter.length > 0) {
         console.log(element);
         value.data.push(element);
