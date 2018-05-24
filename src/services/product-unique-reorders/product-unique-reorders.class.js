@@ -26,7 +26,9 @@ class Service {
     });
     products.data.forEach(element => {
       const filter = reorders.data.filter(x => x.productId.toString() === element.id.toString());
+      
       if (filter.length > 0) {
+        console.log(element);
         value.data.push(element);
       }
     });

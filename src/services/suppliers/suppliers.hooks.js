@@ -3,12 +3,16 @@ const { fastJoin } = require('feathers-hooks-common');
 const resolvers = {
     joins: {
         facilityDetails: () => async(supplier, context) => {
-            const facility = await context.app.service('facilities').get(supplier.supplierId, {});
-            supplier.supplier = { name: facility.name, '_id': facility._id };
+            if(supplier.supplierId!== undefined){
+                const facility = await context.app.service('facilities').get(supplier.supplierId, {});
+                supplier.supplier = { name: facility.name, '_id': facility._id };
+            }
         },
         employeeDetails: () => async(supplier, context) => {
+            if(supplier.createdBy!== undefined){
             const employee = await context.app.service('employees').get(supplier.createdBy, {});
             supplier.employeeDetails = employee.personDetails;
+            }
         }
     }
 };
