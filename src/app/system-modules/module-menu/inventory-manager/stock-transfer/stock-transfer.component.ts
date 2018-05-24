@@ -608,11 +608,7 @@ export class StockTransferComponent implements OnInit {
   }
   saveTransfer() {
     this.systemModuleService.on();
-<<<<<<< HEAD
-    this.loading = true;
-=======
     this.isProcessing = true;
->>>>>>> ec5110c19e8754fbbaaaa3f4db401a732280337a
     this.populateInventoryTransferTransactions();
     this.newTransfer.requistionId = this.requistionId;
     this.inventoryTransferService.create2(this.newTransfer).then(payload => {
