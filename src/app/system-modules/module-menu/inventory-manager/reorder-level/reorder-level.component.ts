@@ -69,6 +69,7 @@ export class ReorderLevelComponent implements OnInit {
             query:
               { facilityId: this.selectedFacility._id, name: this.newProduct.value, storeId: this.checkingStore.storeId }
           }).then(payload => {
+            console.log(payload);
             this.collapseProductContainer = true;
             this.systemModuleService.off();
             this.products = payload.data;
@@ -95,9 +96,12 @@ export class ReorderLevelComponent implements OnInit {
 
 
   setExistingReorderData() {
+    console.log(this.checkingStore);
     this.productService.findReorder({ query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId } }).then(payload => {
+      console.log(payload);
       this.reorderProducts = payload.data.forEach(element => {
         if(element.productConfigObject !== undefined){
+          console.log(element);
           element.productObject.productConfigObject = element.productConfigObject;
           (<FormArray>this.productTableForm.controls['productTableArray']).push(
             this.formBuilder.group({
@@ -145,6 +149,7 @@ export class ReorderLevelComponent implements OnInit {
   
   setLevel_click() {
     // this.setLevel = !this.setLevel;
+    console.log(this.checkingStore);
     if (this.newPackType.valid && this.newProduct.valid && this.newReorderLevel.valid) {
       const packSize = this.selectedProduct.productConfigObject.find(x => x._id.toString() === this.newPackType.value.toString());
       let reOrder: any = {};
