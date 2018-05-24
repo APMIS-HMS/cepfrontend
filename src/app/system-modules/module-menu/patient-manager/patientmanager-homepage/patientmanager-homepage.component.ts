@@ -358,7 +358,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
 
   newTag(valid: boolean) {
-    this.systemService.on;
+    this.systemService.on();
     this.tagLoader = true;
     const tag: any = <any>{};
     if (this.identity.value === true) {

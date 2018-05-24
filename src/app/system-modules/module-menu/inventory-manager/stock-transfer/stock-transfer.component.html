@@ -127,7 +127,7 @@
 
         <div class="CTAs-wrap" *ngIf="productTableForm.controls['productTableArray'].value.length > 0 && frmDestinationStore.value != null">
             <button (click)="previewShow()" class="cta-1 cta-no-bg"> Preview </button>
-            <button class="cta-1" (click)="saveTransfer()"> Send </button>
+            <button class="cta-1" (click)="saveTransfer()" [disabled]="loading"> Send </button>
         </div>
     </div>
 
