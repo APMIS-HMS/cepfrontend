@@ -1,10 +1,13 @@
 const {
   authenticate
 } = require('@feathersjs/authentication').hooks;
+const invNotification = require('../../hooks/inventory-notification');
 
 const {
   fastJoin
 } = require('feathers-hooks-common');
+
+const emailer = require('../../templates/emailer');
 
 const resolvers = {
   joins: {
@@ -33,7 +36,24 @@ const resolvers = {
             productId: data.productId
           }
         });
+        if(context.method === 'patch' || context.method === 'update'){
+          if(getProductReorder.data[0].reOrderLevel >= data.availableQuantity){
+            
+            const facility = await context.app.service('facilities').find({
+              query: {
+                _id: data.facilityId
+              }
+            });
+            const emailData = JSON.parse(JSON.stringify(data));
+            const facilityData = facility.data[0];
+            emailData.email = facilityData.email;
+            emailData.facilityName = facilityData.name;
+            emailer.reorder(emailData);
+
+          }
+        }
         data.reorder = getProductReorder.data[0].reOrderLevel;
+
       } catch (e) {
         // console.log(e);
       }
