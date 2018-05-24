@@ -4,7 +4,8 @@
             <div class="col-sm-4">
                 <div class="frm-item-wrap">
                     <mat-form-field>
-                        <mat-select (change)="onStoreChanged()" class="example-full-width" placeholder="Choose Destination Store" [formControl]="frmDestinationStore" [compareWith]="compareItems">
+                        <mat-select (change)="onStoreChanged()" class="example-full-width" placeholder="Choose Destination Store" [formControl]="frmDestinationStore"
+                            [compareWith]="compareItems">
                             <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
                         </mat-select>
                     </mat-form-field>
@@ -127,7 +128,11 @@
 
         <div class="CTAs-wrap" *ngIf="productTableForm.controls['productTableArray'].value.length > 0 && frmDestinationStore.value != null">
             <button (click)="previewShow()" class="cta-1 cta-no-bg"> Preview </button>
+<<<<<<< HEAD
             <button class="cta-1" (click)="saveTransfer()" [disabled]="loading"> Send </button>
+=======
+            <button class="cta-1" (click)="saveTransfer()" [disabled]="isProcessing"> Send </button>
+>>>>>>> ec5110c19e8754fbbaaaa3f4db401a732280337a
         </div>
     </div>
 
@@ -167,7 +172,7 @@
                     <br/>
                 </div>
             </div>
-            <div class="card-list-item" *ngFor="let requistion of requisitions; let i=index;" (click)="onClickRequi(requistion)">
+            <div class="card-list-item" *ngFor="let requistion of requisitions; let i=index;">
                 <div class="row">
                     <div class="table-list col-md-4">
                         {{requistion?.storeRequisitionNumber}}
@@ -182,9 +187,9 @@
                         <a class="action-btn">
                             <i class="fa fa-eye"></i>
                         </a>
-                        <a>
+                        <a *ngIf = "!requistion.isSupplied">
                             <span>
-                                <i class="fa fa-money"></i>
+                                <i class="fa fa-level-up" (click)="onClickRequi(requistion)"></i>
                             </span>
                         </a>
                     </div>

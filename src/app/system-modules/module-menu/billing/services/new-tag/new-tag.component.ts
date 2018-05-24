@@ -17,7 +17,7 @@ export class NewTagComponent implements OnInit {
   @Output() tagValueChanged = new EventEmitter();
   @Input() tag = <any>{};
   mainErr = true;
-  errMsg = 'you have unresolved errors';
+  errMsg = 'You have unresolved errors';
   btnLabel = 'CREATE TAG';
   facility: Facility = <Facility>{};
   dictionaries: any[] = [];
@@ -29,7 +29,7 @@ export class NewTagComponent implements OnInit {
 
   ngOnInit() {
     this.addNew();
-    if(this.tag.name != undefined){
+    if(this.tag.name !== undefined){
       this.btnLabel = 'UPDATE TAG';
       this.frmNewtag.controls['tagName'].setValue(this.tag.name);
     }
@@ -47,7 +47,6 @@ export class NewTagComponent implements OnInit {
           } else {
             this.dictionaries = payload.data;
           }
-
         },
         error => {
         })
@@ -70,9 +69,9 @@ export class NewTagComponent implements OnInit {
     this.frmNewtag.controls['tagName'].setValue(dic.word);
   }
   newTag(model: any, valid: boolean) {
-    this.systemModuleService.off;
+    this.systemModuleService.on();
     if (valid) {
-      if(this.tag.name == undefined){
+      if (this.tag.name == undefined){
         const tag: Tag = <Tag>{};
         tag.name = this.frmNewtag.controls['tagName'].value;
         tag.facilityId = this.facility._id;
@@ -80,25 +79,26 @@ export class NewTagComponent implements OnInit {
         const auth: any = authObj.data;
         tag.createdBy = auth._id;
         this._tagService.create(tag).then(callback => {
-          this.systemModuleService.off;
+          this.systemModuleService.off();
           this.tagValueChanged.emit(true);
           this.frmNewtag.controls['tagName'].setValue('');
         }, error => {
-          this.systemModuleService.off;
+          this.systemModuleService.off();
         });
         if (this.dictionaries.length === 0) {
           this.tagDictionaryService.create({ word: this.frmNewtag.controls['tagName'].value }).then(inPayload => {
           });
         }
-      }else{
+      } else {
         let tag = this.tag;
         tag.name = this.frmNewtag.controls['tagName'].value;
         this._tagService.update(tag).then(callback => {
+          this.systemModuleService.off();
           this.tagValueChanged.emit(true);
           this.frmNewtag.controls['tagName'].setValue('');
           this.btnLabel = 'CREATE TAG';
-        }, error => {
-        });
+        }, error => {});
+
         if (this.dictionaries.length === 0) {
           this.tagDictionaryService.create({ word: this.frmNewtag.controls['tagName'].value }).then(inPayload => {
           });

@@ -61,7 +61,6 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
   // get formData { return this.immunizationScheduleForm.get('Data'); }
   ngOnInit() {
     this.facility = <Facility>this._locker.getObject("selectedFacility");
-
     // Depending on if there is a routeId, use form initializer.
     // if (!!this.routeId) {
     //   this.immunizationScheduleForm = this._fb.group({
@@ -90,9 +89,7 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
       .subscribe((res: any) => {
         if (res.length > 0) {
           if (this.drugIndex !== undefined) {
-            const immuneSch = <FormArray>this.immunizationScheduleForm.controls[
-              "vaccinesArray"
-            ];
+            const immuneSch = <FormArray>this.immunizationScheduleForm.controls["vaccines"];
             const vaccine = <FormArray>immuneSch.controls[this.drugIndex];
             const intervals = <FormArray>vaccine.controls["intervals"];
             const text = res[this.drugIndex].name;
@@ -133,9 +130,7 @@ export class NewImmunizationScheduleComponent implements OnInit, OnDestroy {
       this._immunizationScheduleService.customCreate(payload).then(res => {
         this._systemModuleService.off();
         if (res.status === "success") {
-          const text = `${
-            value.name
-          } immunization schedule has been created successfully!`;
+          const text = `${value.name} immunization schedule has been created successfully!`;
           this._systemModuleService.announceSweetProxy(text, "success");
           this.immunizationScheduleForm.reset();
           this.disableBtn = false;

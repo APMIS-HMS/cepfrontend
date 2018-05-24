@@ -32,7 +32,7 @@ export class StockTransferComponent implements OnInit {
   samples = [];
   searchOpen = false;
   toggleTransferOpen = false;
-
+  requistionId: any = null;
   selectedFacility: Facility = <Facility>{};
   requisitions: any[] = <any>[];
   checkingStore: any = <any>{};
@@ -42,12 +42,13 @@ export class StockTransferComponent implements OnInit {
   productTables: any[] = [];
   stores: any[] = [];
   user: any = <any>{};
+  isProcessing = false;
   searchControl = new FormControl();
   frmDestinationStore: FormControl = new FormControl();
   product: FormControl = new FormControl();
   productTableForm: FormGroup;
   selectedTransactionId = '';
-  newTransfer: InventoryTransfer = <InventoryTransfer>{};
+  newTransfer: any = <any>{};
   selectedInventoryTransferStatus: InventoryTransferStatus = <InventoryTransferStatus>{};
   selectedInventoryTransactionType: InventoryTransactionType = <InventoryTransactionType>{};
   loginEmployee: Employee = <Employee>{};
@@ -80,13 +81,11 @@ export class StockTransferComponent implements OnInit {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.loginEmployee = res;
       this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
-      console.log(this.loginEmployee.storeCheckIn);
       this.getCurrentStoreDetails(this.checkingStore.storeId);
       this.newTransfer.transferBy = this.loginEmployee._id;
       this.newTransfer.facilityId = this.selectedFacility._id;
       this.newTransfer.storeId = this.checkingStore.storeId;
       this.newTransfer.inventoryTransferTransactions = [];
-      console.log('Come here');
       this.getAllProducts('', this.checkingStore.storeId)
       this.primeComponent();
       this.getRequisitions();
@@ -109,7 +108,6 @@ export class StockTransferComponent implements OnInit {
         storeId: storeId
       }
     }).then(payload => {
-      console.log(payload);
       this.systemModuleService.off();
       if (payload.data.length > 0) {
         this.products = [];
@@ -127,14 +125,14 @@ export class StockTransferComponent implements OnInit {
 
   getRequisitions() {
     let storeId = this.checkingStore.storeId;
-    console.log(this.checkingStore);
     if (storeId === undefined) {
       storeId = this.checkingStore.typeObject.storeId
     }
     this.productRequisitionService.find({
       query: {
         facilityId: this.selectedFacility._id,
-        destinationStoreId: storeId
+        destinationStoreId: storeId,
+        $sort: { isSupplied: 1 }
       }
     }).then(payload => {
       console.log(payload);
@@ -322,17 +320,16 @@ export class StockTransferComponent implements OnInit {
   }
 
   onClickRequi(requistion) {
+    this.requistionId = requistion._id;
     this.toggleTransferOpen = !this.toggleTransferOpen;
     if (this.toggleTransferOpen) {
       this.frmDestinationStore.setValue(requistion.storeId);
-      console.log(requistion);
       // this.primeComponent();
       this.flyout = true;
       requistion.products.forEach(element => {
         this.superGroups.forEach((parent, i) => {
           parent.forEach((group, j) => {
             if (element.productId !== undefined) {
-              console.log(group);
               if (group._id.toString() === element.productId.toString()) {
                 group.checked = true;
                 this.systemModuleService.on();
@@ -366,64 +363,76 @@ export class StockTransferComponent implements OnInit {
 
 
   onProductCheckChange(event, value, index?) {
-    value.checked = event.checked;
-    this.maxQty = 0;
-    let checker = false;
-    if (value.product.availableQuantity !== undefined) {
-      if (value.product.availableQuantity > 0) {
-        checker = true;
-      } else {
-        checker = false;
-      }
-    } else {
-      if (value.productObject.availableQuantity > 0) {
-        checker = true;
-      } else {
-        checker = false;
-      }
-    }
-    if (checker) {
-      if (event.checked === true) {
-        this.systemModuleService.on();
-        this.inventoryService.find({ query: { productId: value._id, facilityId: this.selectedFacility._id } }).subscribe(payload => {
-          this.systemModuleService.off();
-          if (payload.data.length > 0) {
-            (<FormArray>this.productTableForm.controls['productTableArray'])
-              .push(
-                this.formBuilder.group({
-                  product: [value.name, [<any>Validators.required]],
-                  batchNo: [, [<any>Validators.required]],
-                  batchNumbers: [payload.data[0].transactions],
-                  costPrice: [0.00, [<any>Validators.required]],
-                  totalCostPrice: [0.00, [<any>Validators.required]],
-                  qty: [0, [<any>Validators.required]],
-                  config: this.initProductConfig(value.product.productConfigObject),
-                  readOnly: [false],
-                  productObject: [value.product],
-                  id: [value._id],
-                  inventoryId: [payload.data[0]._id]
-                })
-              );
-          }
-        });
-
-      } else {
-        const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
-        if (count === 1) {
-          this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
+    if (this.frmDestinationStore.value !== null) {
+      value.checked = event.checked;
+      this.maxQty = 0;
+      let checker = false;
+      if (value.product.availableQuantity !== undefined) {
+        if (value.product.availableQuantity > 0) {
+          checker = true;
         } else {
-          (<FormArray>this.productTableForm.controls['productTableArray']).controls.splice(index, 1);
+          checker = false;
         }
-        let indx = index;
-        if (index > 0) {
-          indx = index - 1;
+      } else {
+        if (value.productObject.availableQuantity > 0) {
+          checker = true;
+        } else {
+          checker = false;
         }
-        this.onPackageSize(indx, (<FormArray>this.productTableForm.controls['productTableArray']).controls);
+      }
+      if (checker) {
+        if (event.checked === true) {
+          this.systemModuleService.on();
+          this.inventoryService.find({ query: { productId: value._id, facilityId: this.selectedFacility._id } }).subscribe(payload => {
+            this.systemModuleService.off();
+            if (payload.data.length > 0) {
+              (<FormArray>this.productTableForm.controls['productTableArray'])
+                .push(
+                  this.formBuilder.group({
+                    product: [value.name, [<any>Validators.required]],
+                    batchNo: [, [<any>Validators.required]],
+                    batchNumbers: [payload.data[0].transactions],
+                    costPrice: [0.00, [<any>Validators.required]],
+                    totalCostPrice: [0.00, [<any>Validators.required]],
+                    qty: [0, [<any>Validators.required]],
+                    config: this.initProductConfig(value.product.productConfigObject),
+                    readOnly: [false],
+                    productObject: [value.product],
+                    id: [value._id],
+                    inventoryId: [payload.data[0]._id]
+                  })
+                );
+            }
+          });
+
+        } else {
+          const count = (<FormArray>this.productTableForm.controls['productTableArray']).controls.length;
+          if (count === 1) {
+            this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
+          } else {
+            (<FormArray>this.productTableForm.controls['productTableArray']).controls.splice(index, 1);
+          }
+          let indx = index;
+          if (index > 0) {
+            indx = index - 1;
+          }
+          this.onPackageSize(indx, (<FormArray>this.productTableForm.controls['productTableArray']).controls);
+        }
+      } else {
+        this.systemModuleService.announceSweetProxy('This product is out of stock', 'error');
       }
     } else {
-      this.systemModuleService.announceSweetProxy('This product is out of stock', 'error');
+      this.systemModuleService.announceSweetProxy('Please select destination store', 'error');
+      this.superGroups.forEach((parent, i) => {
+        parent.forEach((group, j) => {
+          console.log(group._id.toString(), value._id.toString())
+          if (group._id.toString() === value._id.toString()) {
+            group.checked = false;
+          }
+        })
+      });
+      this.superGroups= JSON.parse(JSON.stringify(this.superGroups));
     }
-
   }
 
   compareItems(l1: any, l2: any) {
@@ -539,7 +548,7 @@ export class StockTransferComponent implements OnInit {
       transferTransaction.inventoryId = item.value.inventoryId;
       transferTransaction.productId = item.value.id;
       transferTransaction.quantity = item.value.qty;
-      if (item.value.qty === undefined || item.value.qty === NaN || item.value.qty == null) {
+      if (item.value.qty === undefined || item.value.qty == null || isNaN(item.value.qty)) {
         transferTransaction.quantity = 0;
       }
       transferTransaction.costPrice = item.value.costPrice;
@@ -599,8 +608,13 @@ export class StockTransferComponent implements OnInit {
   }
   saveTransfer() {
     this.systemModuleService.on();
+<<<<<<< HEAD
     this.loading = true;
+=======
+    this.isProcessing = true;
+>>>>>>> ec5110c19e8754fbbaaaa3f4db401a732280337a
     this.populateInventoryTransferTransactions();
+    this.newTransfer.requistionId = this.requistionId;
     this.inventoryTransferService.create2(this.newTransfer).then(payload => {
       (<FormArray>this.productTableForm.controls['productTableArray']).controls = [];
       this.flyout = false;
@@ -609,10 +623,14 @@ export class StockTransferComponent implements OnInit {
       this.loading = false;
       this.systemModuleService.announceSweetProxy('Your transfer was successful', 'success', null, null, null, null, null, null, null);
       this.frmDestinationStore.reset();
+      this.isProcessing = false;
+      this.requisitions = [];
+      this.getRequisitions();
     }, err => {
       this.systemModuleService.off();
       const errMsg = 'There was an error while transfering product, please try again!';
       this.systemModuleService.announceSweetProxy(errMsg, 'error');
+      this.isProcessing = false;
     });
   }
 
@@ -641,5 +659,7 @@ export class StockTransferComponent implements OnInit {
       text: text
     });
   }
-  openSearch() { }
+  openSearch() { 
+    this.searchOpen = !this.searchOpen;
+  } 
 }

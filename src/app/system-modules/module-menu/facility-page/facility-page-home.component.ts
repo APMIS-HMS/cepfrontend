@@ -415,19 +415,6 @@ export class FacilityPageHomeComponent implements OnInit {
       this.locationsContentArea = false;
       this.workspaceContentArea = false;
       this.professionContentArea = false;
-      this.empContentArea = false;
-      this.networkContentArea = false;
-      this.accessContentArea = true;
-      this.patientBulkUploadContentArea = false;
-      // this.dashboardContentArea = false;
-    } else if (param.includes('facility/access')) {
-      this.modulesContentArea = false;
-      // this.contentSecMenuToggle = false;
-      this.optionsContentArea = false;
-      this.departmentsContentArea = false;
-      this.locationsContentArea = false;
-      this.workspaceContentArea = false;
-      this.professionContentArea = false;
       this.accessContentArea = false;
       this.empContentArea = false;
       this.networkContentArea = false;

@@ -1,3 +1,4 @@
+import { Vaccine } from "./../../../models/vaccine";
 import { ImmunizationScheduleService } from "./../../../../../../services/facility-manager/setup/immunization-schedule.service";
 import { SystemModuleService } from "app/services/module-manager/setup/system-module.service";
 import { Component, OnInit, EventEmitter, Input } from "@angular/core";
@@ -167,6 +168,9 @@ export class ImmunizationAppointmentComponent implements OnInit {
   user = {};
   placeholderString = "Select timezone";
 
+  vaccines: Vaccine[] = [];
+  checkAll = false;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -328,13 +332,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
       .find({ query: { facilityId: this.selectedFacility._id } })
       .then(payload => {
         this.immunizationSchedules = payload.data;
-        console.log(this.immunizationSchedules);
       });
-  }
-
-  changeSelection(event) {
-    console.log(event);
-    this.selectedSchedule = event;
   }
 
   announcePatient(value) {
@@ -951,5 +949,46 @@ export class ImmunizationAppointmentComponent implements OnInit {
       value.personDetails.lastName
     }`;
     this.selectedProvider = value;
+  }
+
+  changeSelection(event) {
+    this.vaccines = [];
+    this.checkAll = false;
+    this.selectedSchedule = event;
+    this.selectedSchedule.vaccines.map(vaccine => {
+      this.vaccines.push(<Vaccine>{ checked: false, vaccineObject: vaccine });
+    });
+  }
+
+  checkAllChanged(event) {
+    this.checkAll = event.checked;
+    this.vaccines.forEach(vaccine => {
+      vaccine.checked = event.checked;
+    });
+  }
+
+  checkVaccine(event, vaccine) {
+    let findObj = this.vaccines.find(vac => {
+      return vac.vaccineObject._id == vaccine.vaccineObject._id;
+    });
+    findObj.checked = event.checked;
+    if (event.checked === false) {
+      this.checkAll = false;
+    } else if (this.isAllChecked()) {
+      this.checkAll = true;
+    }
+  }
+
+  isAllChecked() {
+    let filterRecords = this.vaccines.filter(vaccine => {
+      return vaccine.checked === true;
+    });
+    return filterRecords.length == this.vaccines.length;
+  }
+  isAnyVaccineChecked() {
+    let filterRecords = this.vaccines.filter(vaccine => {
+      return vaccine.checked === true;
+    });
+    return filterRecords.length > 0;
   }
 }
