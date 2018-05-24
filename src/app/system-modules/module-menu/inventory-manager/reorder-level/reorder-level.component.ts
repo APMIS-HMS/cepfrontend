@@ -27,6 +27,7 @@ export class ReorderLevelComponent implements OnInit {
   editLevel = false;
   selectedPack = {};
   selectedFacility: any = <any>{};
+  subscription: any = <any>{};
   products = <any>[];
   reorderProducts = <any>[];
 
@@ -45,22 +46,40 @@ export class ReorderLevelComponent implements OnInit {
     private productService: ProductService,
     private locker: CoolLocalStorage,
     private authFacadeService: AuthFacadeService,
+    private _locker: CoolLocalStorage,
     private employeeService: EmployeeService,
-    private systemModuleService: SystemModuleService) { }
+    private systemModuleService: SystemModuleService) { 
+      this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
+        console.log(res);
+        if (!!res) {
+          if (!!res.typeObject) {
+            this.checkingStore = res.typeObject;
+            console.log(this.checkingStore);
+            if (!!this.checkingStore.storeId) {
+              this.setExistingReorderData();
+            }
+          }
+        }
+      });
+      
+    }
 
   ngOnInit() {
     this.selectedFacility = <any>this.locker.getObject('selectedFacility');
     this.user = this.locker.getObject('auth');
     this.initializeReorderProperties();
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      console.log(payload);
       this.loginEmployee = payload;
       this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+      console.log(this.checkingStore);
       this.setExistingReorderData();
     });
     this.newProduct.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe(value => {
+        this.products = JSON.parse(JSON.stringify([]));
         if (this.products.filter(x => x.name === this.newProduct.value).length === 1 || this.newProduct.value === ' ') {
           this.collapseProductContainer = false;
         } else {
@@ -72,7 +91,7 @@ export class ReorderLevelComponent implements OnInit {
             console.log(payload);
             this.collapseProductContainer = true;
             this.systemModuleService.off();
-            this.products = payload.data;
+            this.product = JSON.parse(JSON.stringify(payload.data));
           })
         }
       });
@@ -96,9 +115,9 @@ export class ReorderLevelComponent implements OnInit {
 
 
   setExistingReorderData() {
-    console.log(this.checkingStore);
+    this.systemModuleService.on();
     this.productService.findReorder({ query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId } }).then(payload => {
-      console.log(payload);
+      this.systemModuleService.off();
       this.reorderProducts = payload.data.forEach(element => {
         if(element.productConfigObject !== undefined){
           console.log(element);
@@ -195,6 +214,22 @@ export class ReorderLevelComponent implements OnInit {
       this.systemModuleService.off();
       this.systemModuleService.announceSweetProxy('Update failed!!! field(s) is missing', 'error');
     }
+  }
+
+  ngOnDestroy() {
+    if (this.loginEmployee.consultingRoomCheckIn !== undefined) {
+      this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
+        if (itemr.isDefault === true && itemr.isOn === true) {
+          itemr.isOn = false;
+          this.employeeService.update(this.loginEmployee).then(payload => {
+            this.loginEmployee = payload;
+          });
+        }
+      });
+    }
+    this.employeeService.announceCheckIn(undefined);
+    this._locker.setObject('checkingObject', {});
+    this.subscription.unsubscribe();
   }
 
   toggleNewForm() {
