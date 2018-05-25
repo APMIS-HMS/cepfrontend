@@ -95,6 +95,7 @@ export class PrescriptionListComponent implements OnInit {
 
 	// Get all drugs from generic
 	getAllPrescriptions() {
+		console.log('something');
 		this._prescriptionService.find({ query: { facilityId: this.facility._id, $sort: { createdAt: -1 } } }).then(res => {
 			console.log(res);
 			this.loading = false;
@@ -120,7 +121,7 @@ export class PrescriptionListComponent implements OnInit {
 					this.prescriptionLists.push(element);
 				}
 			});
-		}).catch(err => { });
+		}).catch(err => { console.log(err)});
 	}
 
 	getDispenses() {
