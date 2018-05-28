@@ -34,8 +34,8 @@
                                 <b class="sub">NGN{{invoice?.balance|numberThr}}</b>
                             </div>
                             <div style="float:right">
-                                <span class="badge-green" style="height: 10px; width: 10px; border-radius: 10px" *ngIf="invoice.paymentCompleted"></span>
-                                <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px" *ngIf="!invoice.paymentCompleted"></span>
+                                <span class="badge-green" style="height: 10px; width: 10px; border-radius: 10px" *ngIf="invoice.paymentCompleted">{{invoice?.paymentStatus}}</span>
+                                <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px" *ngIf="!invoice.paymentCompleted">{{invoice?.paymentStatus}}</span>
                             </div>
                         </div>
                         <div *ngIf="isLoadingInvoice" class="card-list-item">
