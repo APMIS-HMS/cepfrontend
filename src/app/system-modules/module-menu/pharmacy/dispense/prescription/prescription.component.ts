@@ -208,6 +208,7 @@ export class PrescriptionComponent implements OnInit {
 	// Get all drugs from generic
 	private _getPrescriptionDetails() {
 		this._prescriptionService.get(this.prescriptionId, {}).then(res => {
+			console.log(res);
 			this.loading = false;
 
 			// Check if the page is for prescription or external prescription
