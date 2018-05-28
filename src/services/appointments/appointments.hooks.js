@@ -11,7 +11,7 @@ const resolvers = {
                 .service('patients')
                 .get(appointment.patientId, {});
             appointment.patientDetails = patient;
-            if (context.method === 'create') {
+            if (context.method === 'create' && process.env.SENDSMS) {
                 await sms.sendScheduleAppointment(new Date(), appointment);
             }
         },
