@@ -24,7 +24,9 @@ class Service {
     let purchaseEntriesService = this.app.service('purchase-entries');
     let purchaseOrderService = this.app.service('purchase-orders');
     let _createInventory = {};
+    console.log(data.purchaseEntry);
     let purchaseEntry = await purchaseEntriesService.create(data.purchaseEntry);
+    console.log(purchaseEntry);
     if (purchaseEntry.products !== undefined) {
       if (purchaseEntry.products.length > 0) {
         let len = purchaseEntry.products.length - 1;
