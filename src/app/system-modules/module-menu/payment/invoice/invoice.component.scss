@@ -797,3 +797,22 @@ div.invoice.unpaid:after
     text-shadow: 0 0 2px #c00;
     box-shadow: 0 0 2px #c00;
 }
+
+/* Printing CSS */
+@media print {
+    body * {
+      display: none;
+    }
+    .divToPrint {
+        background-color: white;
+        height: 100%;
+        width: 100%;
+        position: fixed;
+        top: 4em;
+        left: 0;
+        margin: 0;
+        padding: 15px;
+        font-size: 14px;
+        line-height: 18px;
+    }
+}

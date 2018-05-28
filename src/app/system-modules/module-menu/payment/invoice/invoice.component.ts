@@ -568,4 +568,8 @@ export class InvoiceComponent implements OnInit {
         popupWin.document.close();
     }
 
+    printIt(){
+        window.print();
+    }
+
 }
