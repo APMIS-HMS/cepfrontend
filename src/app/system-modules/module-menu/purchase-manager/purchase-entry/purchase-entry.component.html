@@ -3,11 +3,11 @@
     <form [formGroup]="frm_purchaseOrder" class="col-md-8" novalidate>
 
         <div class="row">
-            <mat-form-field class="col-xs-3">
+            <!-- <mat-form-field class="col-xs-3">
                 <mat-select class="frm-item-wrap" placeholder="Store" formControlName="store">
                     <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
                 </mat-select>
-            </mat-form-field>
+            </mat-form-field> -->
 
             <mat-form-field class="col-xs-3">
                 <mat-select class="frm-item-wrap" placeholder="Supplier" formControlName="supplier">
@@ -91,7 +91,7 @@
                                                 </mat-select>
                                             </mat-form-field>
                                             <div class="ico-wrap">
-                                                <i *ngIf="itm.value.packsizes.length !== k+1 && schedule.controls.config.controls.length===k+1" class="col-md-2 fa fa-fw fa-plus"
+                                                <i *ngIf="itm.value?.packsizes?.length !== k+1 && schedule.controls?.config?.controls?.length===k+1" class="col-md-2 fa fa-fw fa-plus"
                                                     (click)="onAddPackSize(itm.value.packsizes,schedule)"></i>
                                                 <i class="fa fa-close fa-fw" *ngIf="schedule.controls.config.controls.length > 1" (click)="onRemovePack(schedule,productTableForm.controls['productTableArray'].controls,k,i)"></i>
                                             </div>

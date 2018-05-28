@@ -4,11 +4,11 @@
             <div class="wrap1">
                 <div class="row" style="margin-left:10px">
                     <div class="frm-item-wrap">
-                        <mat-form-field>
+                        <!-- <mat-form-field>
                             <mat-select class="example-full-width" placeholder="Store" formControlName="store">
                                 <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
                             </mat-select>
-                        </mat-form-field>
+                        </mat-form-field> -->
                     </div>
 
                     <div class="frm-item-wrap">
@@ -91,7 +91,8 @@
         </div>
 
         <div style="width: 100%;height: 50px; text-align: center;">
-            <button (click)="save()" mat-raised-button [disabled]="(!frm_purchaseOrder.valid || loading) || (productTableForm.controls['productTableArray'].value.length === 0)"
+            <button (click)="save()" mat-raised-button 
+            [disabled]="(!frm_purchaseOrder.valid || loading) || (productTableForm.controls['productTableArray'].value.length === 0)"
                 class="mat-raised-button">
                 <span *ngIf="!loading">{{saveBtnText}}</span>
                 <span *ngIf="loading">Loading...
