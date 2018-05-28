@@ -19,7 +19,6 @@ export class StoreProductTypeComponent implements OnInit {
   mainErr: Boolean = true;
   errMsg: String = 'You have unresolved errors';
   loading = true;
-
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor(

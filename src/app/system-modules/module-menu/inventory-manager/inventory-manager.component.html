@@ -1,4 +1,4 @@
-<ul class="pg-menuWrap">
+<!-- <ul class="pg-menuWrap">
     <li [class.pg-menuActive]="productNavMenu" routerLink="/dashboard/store">Home</li>
     <li [class.pg-menuActive]="inventoryNavMenu" routerLink="/dashboard/inventory-manager/inventory" (click)="changeRoute('/dashboard/inventory-manager/inventory')">My Inventory</li>
     <li [class.pg-menuActive]="stockTransferNavMenu" routerLink="/dashboard/inventory-manager/stock-transfer" (click)="changeRoute('/dashboard/inventory-manager/stock-transfer')">Transfer Stock</li>
@@ -7,29 +7,35 @@
     <li [class.pg-menuActive]="requisitionNavMenu" routerLink="/dashboard/inventory-manager/requisition" (click)="changeRoute('/dashboard/inventory-manager/requisition')">Requisition</li>
     <li [class.pg-menuActive]="reorderLevelNavMenu" routerLink="/dashboard/inventory-manager/reorder-level" (click)="changeRoute('/dashboard/inventory-manager/reorder-level')">Re-Order Level</li>
     <li [class.pg-menuActive]="initializeNavMenu" (click)="changeRoute('/dashboard/inventory-manager/initialize-store')" routerLink="/dashboard/inventory-manager/initialize-store">Initialize Store</li>
-</ul>
-<div class="inner-wrap-b body-wrap">
-    <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>
-    <!--  <small class="facility-title" *ngIf="checkedInStore !== undefined" >You are checked into {{checkedInStore}}</small>
-     -->
-    <div class="inner-page-wrap">
-        <!-- <div class="lhs inner-page-menuTab">
-      <ul class="nav-group">
-        <li [class.navActive]="initializeNavMenu" (click)="onInitialiseNavMenu()" routerLink="/dashboard/inventory-manager/initialize-store">Initialize Store</li>
-        <li [class.navActive]="inventoryNavMenu" (click)="onClickInventoryNavMenu()" routerLink="/dashboard/inventory-manager/inventory">My Inventory</li>
-        <li routerLink="/dashboard/inventory-manager/stock-transfer" [class.navActive]="stockTransferNavMenu" (click)="onClickStockTransferNavMenu()">Transfer Stock</li>
-        <li [class.navActive]="stockHistoryNavMenu" (click)="onClickStockHistoryNavMenu()" routerLink="/dashboard/inventory-manager/stock-history">Transfer History</li>
-        <li [class.navActive]="receiveStockNavMenu" (click)="onClickReceiveStockNavMenu()" routerLink="/dashboard/inventory-manager/receive-stock">Receive Stock</li>
-        <li [class.navActive]="requisitionNavMenu" (click)="onClickRequisitionNavMenu()" routerLink="/dashboard/inventory-manager/requisition">Requisition</li>
-        <li class="list-break-line"></li>
-        <li [class.navActive]="purchaseManagerNavMenu" routerLink="/dashboard/purchase-manager/orders">Purchase Manager</li>
-      </ul>
-    </div> -->
-        <button class="switch-store small-btn" (click)="onChangeCheckedIn()" mat-raised-button>Switch Store</button>
+</ul> -->
+
+<div class="main-wrapper">
+    <div class="content-sect">
+        <div class="bar-1">
+            <div class="active-store"></div>
+            <div class="post-ql-open">
+                <div class="ql-tip">Quick Links</div>
+                <i (click)="toggleQl()" class="fa fa-link ql-open rotating"></i>
+            </div>
+        </div>
+
+        <div class="active-store"> {{ checkingStore?.storeObject?.name }}</div>
+        <div class="pg-labels-wrap">
+            <div class="main-title">{{pageInView}}</div>
+            <div class="labels-right">
+                <div class="label-right" routerLink="/dashboard/store/pos">Point of Sale</div>
+                <div class="label-right" (click)="onChangeCheckedIn()">Switch Store</div>
+            </div>
+        </div>
         <div class="rhs inner-page-contentArea c-page-wrapper">
             <router-outlet></router-outlet>
         </div>
         <div class="clear"></div>
-        <div *ngIf="modal_on" class="modal-overlay">
-            <app-store-check-in [workSpace]="workSpace" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-store-check-in>
-        </div>
+    </div>
+    <div class="store-quick-link-box">
+        <app-store-quick-links *ngIf="Ql_toggle" (toggleQl)="toggleQl()"></app-store-quick-links>
+    </div>
+</div>
+<div *ngIf="modal_on" class="modal-overlay">
+    <app-store-check-in [workSpace]="workSpace" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-store-check-in>
+</div>

@@ -16,6 +16,7 @@
             <li class="ql-link" routerLink="/dashboard/inventory-manager/stock-history">Transfer History</li>
             <li class="ql-link" routerLink="/dashboard/inventory-manager/receive-stock">Recieve Stocky</li>
             <li class="ql-link" routerLink="/dashboard/inventory-manager/requisition">Requisition</li>
+            <li class="ql-link" routerLink="/dashboard/inventory-manager/reorder-level">Re-order Level</li>
             <li class="ql-link" routerLink="/dashboard/inventory-manager/initialize-store">Initialize Store</li>
             <!-- <li class="ql-link">Audit</li> -->
         </ul>
@@ -34,6 +35,7 @@
         <div class="ql-sect-title">Store</div>
         <ul class="ql-links">
             <li class="ql-link" routerLink="/dashboard/store/list">View Stores</li>
+            <li class="ql-link" (click)="onClickShowStoreProductType();">Store Product Category</li>
         </ul>
     </div>
 
@@ -59,4 +61,8 @@
             <li class="ql-link" routerLink="/dashboard/inventory-manager/initialize-store">Initialize Store</li>
         </ul>
     </div> -->
+</div>
+
+<div *ngIf="showStoreProductType" class="modal-overlay">
+    <app-store-product-type (closeModal)="closeOnClick($event)" class="form-modal center-center"></app-store-product-type>
 </div>

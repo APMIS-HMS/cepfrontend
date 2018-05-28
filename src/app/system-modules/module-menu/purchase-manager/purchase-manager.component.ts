@@ -29,6 +29,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
   loginEmployee: Employee = <Employee>{};
   workSpace: any;
   selectedFacility: Facility = <Facility>{};
+
   constructor(
     private _purchaseEventEmitter: PurchaseEmitterService, private route: ActivatedRoute,
     private _router: Router, private employeeService: EmployeeService,
@@ -147,12 +148,12 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
     this._purchaseEventEmitter.announcedUrl.subscribe(url => {
       this.pageInView = url;
     });
-
-
   }
+
   close_onClick(message: boolean): void {
     this.modal_on = false;
   }
+
   contentSecMenuToggle() {
     this.contentSecMenuShow = !this.contentSecMenuShow;
   }

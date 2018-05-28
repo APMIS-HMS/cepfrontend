@@ -14,6 +14,7 @@ export class StoreQuickLinksComponent implements OnInit {
   isPresentation: Boolean = false;
   isStrength: Boolean = false;
   productCatPop: Boolean = false;
+  showStoreProductType: Boolean = false;
 
   constructor() { }
 
@@ -77,6 +78,10 @@ export class StoreQuickLinksComponent implements OnInit {
     this.isStrength = false;
   }
 
+  onClickShowStoreProductType() {
+    this.showStoreProductType = !this.showStoreProductType;
+  }
+
   strengthSlide() {
     this.addProduct = false;
     this.isProductCat = false;
@@ -85,5 +90,9 @@ export class StoreQuickLinksComponent implements OnInit {
     this.isManufacturer = false;
     this.isPresentation = false;
     this.isStrength = !this.isStrength;
+  }
+
+  closeOnClick(message: boolean): void {
+    this.showStoreProductType = !this.showStoreProductType;
   }
 }
