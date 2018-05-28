@@ -193,12 +193,16 @@ getSchedules(){
   getAppointments(clinicIds) {
     this.appointmentService.findAppointment({
       query: {
-        'facilityId': this.selectedFacility._id, isToday: true, isCheckedIn: true, isCheckedOut: false, 'clinicIds': clinicIds
+        'facilityId': this.selectedFacility._id, 
+        isToday: true, 
+        isCheckedIn: true, 
+        isCheckedOut: false, 
+        'clinicIds': clinicIds
       }
     })
       .then(payload => {
         this.loading = false;
-        this.checkedInAppointments = payload.data;
+        this.checkedInAppointments = payload.data.filter(x => x.isCheckedOut === false);
       });
   }
 
