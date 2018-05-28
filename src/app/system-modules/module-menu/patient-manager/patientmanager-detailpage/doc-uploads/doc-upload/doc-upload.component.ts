@@ -79,13 +79,11 @@ export class DocUploadComponent implements OnInit {
           };
         } else {
           this.systemModuleService.announceSweetProxy('Size Of Document Too BIG!', 'info');
-          this._notification('Error','Size Of Document Too BIG!');
           this.frmNewUpload.controls['fileUpload'].setErrors({ sizeTooBig: true });
         }
 
       } else {
         this.systemModuleService.announceSweetProxy('Type of document not supported.', 'info');
-        this._notification('Error','Type of document not supported.');
         this.frmNewUpload.controls['fileUpload'].setErrors({ typeDenied: true });
       }
     }

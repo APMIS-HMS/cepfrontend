@@ -23,6 +23,7 @@ export class InvoicesComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
   selectedProduct: any = <any>{};
   checkingStore: any = <any>{};
+  subscription: any = <any>{};
   loginEmployee: Employee = <Employee>{};
   constructor(
     private _purchaseEventEmitter: PurchaseEmitterService,
@@ -35,13 +36,14 @@ export class InvoicesComponent implements OnInit {
     private route: ActivatedRoute,
     private systemModuleService: SystemModuleService
   ) {
-    this.employeeService.checkInAnnounced$.subscribe(payload => {
-      if (payload !== undefined) {
-        this.checkingStore = payload;
-        if (payload.typeObject !== undefined) {
-          this.checkingStore = payload.typeObject;
+    this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
+      if (!!res) {
+        if (!!res.typeObject) {
+          this.checkingStore = res.typeObject;
+          if (!!this.checkingStore.storeId) {
+            this.getInvoices();
+          }
         }
-        this.getInvoices();
       }
     });
   }
@@ -50,6 +52,7 @@ export class InvoicesComponent implements OnInit {
     this._purchaseEventEmitter.setRouteUrl('Purchase Invoices');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.checkingStore = payload;
       this.checkingStore = payload.storeCheckIn.find(x => x.isOn === true);
       this.getInvoices();
       this.getSuppliers();
@@ -89,6 +92,7 @@ export class InvoicesComponent implements OnInit {
   }
   slideInvoiceDetailsToggle(value, event) {
     this.selectedProduct = value;
+    console.log(this.selectedProduct);
     if (this.selectedProduct !== undefined) {
       this.invoiceService.get(this.selectedProduct._id, {}).then(payload => {
       });
@@ -102,6 +106,22 @@ export class InvoicesComponent implements OnInit {
 
   onEditInvoice(invoice) {
     this.router.navigate(['/dashboard/purchase-manager/purchase-entry-edit', invoice._id]);
+  }
+
+  ngOnDestroy() {
+    if (this.loginEmployee.consultingRoomCheckIn !== undefined) {
+      this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
+        if (itemr.isDefault === true && itemr.isOn === true) {
+          itemr.isOn = false;
+          this.employeeService.update(this.loginEmployee).then(payload => {
+            this.loginEmployee = payload;
+          });
+        }
+      });
+    }
+    this.employeeService.announceCheckIn(undefined);
+    this.locker.setObject('checkingObject', {});
+    this.subscription.unsubscribe();
   }
 
   openSearch() {

@@ -44,9 +44,8 @@ export class ReorderLevelComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,
-    private locker: CoolLocalStorage,
-    private authFacadeService: AuthFacadeService,
     private _locker: CoolLocalStorage,
+    private authFacadeService: AuthFacadeService,
     private employeeService: EmployeeService,
     private systemModuleService: SystemModuleService) { 
       this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
@@ -65,8 +64,8 @@ export class ReorderLevelComponent implements OnInit {
     }
 
   ngOnInit() {
-    this.selectedFacility = <any>this.locker.getObject('selectedFacility');
-    this.user = this.locker.getObject('auth');
+    this.selectedFacility = <any>this._locker.getObject('selectedFacility');
+    this.user = this._locker.getObject('auth');
     this.initializeReorderProperties();
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       console.log(payload);
@@ -115,6 +114,7 @@ export class ReorderLevelComponent implements OnInit {
 
 
   setExistingReorderData() {
+    this.initializeReorderProperties();
     this.systemModuleService.on();
     this.productService.findReorder({ query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId } }).then(payload => {
       this.systemModuleService.off();
