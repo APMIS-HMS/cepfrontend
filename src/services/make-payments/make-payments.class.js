@@ -26,6 +26,7 @@ class Service {
     const invoicesService = this.app.service('invoices');
     const facilitiesService = this.app.service('facilities');
     const getTokenService = this.app.service('get-tokens');
+    const orgServices = this.app.service('organisation-services');
     const peopleService = this.app.service('people');
     let description = '';
     if (data.isInvoicePage == false) {
@@ -65,6 +66,7 @@ class Service {
         billGroup.subTotal = data.subTotal;
         billGroup.totalPrice = data.inputedValue.cost;
         billGroup.balance = data.inputedValue.balance;
+        billGroup.createdBy = data.createdBy;
         billGroup.invoiceNo = tokenPayload.result;
         data.inputedValue.paymentMethod.reason = data.reason;
         billGroup.payments = data.inputedValue.paymentTxn;
@@ -108,7 +110,7 @@ class Service {
         }
 
 
-        
+
         if (data.inputedValue.isWaved !== true) {
           data.invoice = awaitBillGroup;
           return onDebitWallet(data, description, ref, facilitiesService, peopleService, PaymentPlan);
@@ -146,21 +148,37 @@ class Service {
         if (data.inputedValue.balance == 0) {
           data.invoice.billingIds[v].billObject.paymentCompleted = true;
         }
-        description += data.invoice.billingIds[v].billObject.facilityServiceObject.category + ' - ' + data.invoice.billingIds[v].billObject.facilityServiceObject.service;
+        console.log(data.invoice.billingIds[v].billObject);
+        if (data.invoice.billingIds[v].billObject.facilityServiceId !== undefined) {
+          console.log("yufgdyu");
+          const getOrgServiceItem = await orgServices.get(data.invoice.billingIds[v].billObject.facilityServiceId);
+          console.log(getOrgServiceItem);
+          if (getOrgServiceItem._id !== undefined) {
+            let categoryLabel = getOrgServiceItem.categories.forEach(element => {
+              element.services.forEach(ele => {
+                if (ele._id.toString() === data.invoice.billingIds[v].billObject.serviceId) {
+                  description += element.name + ' - ' + ele.name;
+                  return;
+                }
+              });
+            });
+          }
+        }
       }
 
       data.invoice.balance = data.inputedValue.balance;
       data.inputedValue.paymentMethod.reason = data.reason;
-      data.invoice.payments.forEach(element=>{
+      data.invoice.payments.forEach(element => {
         element.isItemTxnClosed = true;
       });
-      if(data.invoice.payments.length>0){
-        data.invoice.payments.push.apply(data.invoice.payments,data.inputedValue.paymentTxn);
+      if (data.invoice.payments.length > 0) {
+        data.invoice.payments.push.apply(data.invoice.payments, data.inputedValue.paymentTxn);
       }
       const patechedInvoice = await invoicesService.patch(data.invoice._id, {
         billingIds: data.invoice.billingIds,
         balance: data.invoice.balance,
         payments: data.invoice.payments,
+        createdBy: data.createdBy,
         paymentStatus: data.invoice.paymentStatus,
         paymentCompleted: data.invoice.paymentCompleted
       });

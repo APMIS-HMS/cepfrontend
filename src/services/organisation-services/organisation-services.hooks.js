@@ -96,7 +96,7 @@ const resolvers = {
 
 module.exports = {
     before: {
-        all: [authenticate('jwt')],
+        all: [],//authenticate('jwt')],
         find: [paramsFromClient('populate', 'selectedCategory')],
         get: [],
         create: [],

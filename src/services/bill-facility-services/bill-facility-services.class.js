@@ -24,6 +24,7 @@ class Service {
       }
     });
     results = await facilityItemService.create(awaitBills.data, {});
+    console.log(results);
     if (results.length > 0) {
       recentBillModelId = results[results.length - 1]._id;
     }
