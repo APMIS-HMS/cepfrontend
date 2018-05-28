@@ -18,12 +18,24 @@ export class PatientImmunizationComponent implements OnInit {
   addVitals_view = false;
   docDetail_view = false;
 
+  administer = true;
+  documentation = false;
+
   constructor(
     private _locker: CoolLocalStorage
   ) { }
 
   ngOnInit() {
     this.facility = <Facility>this._locker.getObject('selectedFacility');
+  }
+
+  administer_click(){
+    this.administer = true;
+    this.documentation = false;
+  }
+  doc_click(){
+    this.administer = false;
+    this.documentation = true;
   }
 
   addProblem_show(e) {
