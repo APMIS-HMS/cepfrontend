@@ -29,10 +29,11 @@ export class NewPurchaseOrderComponent implements OnInit {
   suppliers: any[] = [];
   strengths: any[] = [];
   selectedFacility: Facility = <Facility>{};
-  selectedPurchaseOrder: PurchaseOrder = <PurchaseOrder>{};
+  selectedPurchaseOrder: any = <any>{};
 
   productTableForm: FormGroup;
   checkingObject: any = <any>{};
+  subscription: any = <any>{};
   searchControl = new FormControl();
 
   checkBoxLabels = [];
@@ -64,22 +65,28 @@ export class NewPurchaseOrderComponent implements OnInit {
     private authFacadeService: AuthFacadeService,
     private employeeService: EmployeeService,
     private inventoryService: InventoryService) {
-    this.employeeService.checkInAnnounced$.subscribe(payload => {
-      if (payload !== undefined) {
-        this.stores = [];
-        if (payload.typeObject !== undefined) {
-          this.checkingObject = payload.typeObject;
-          this.getStores();
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
+      if (!!res) {
+        if (!!res.typeObject) {
+          this.checkingObject = res.typeObject;
+          if (!!this.checkingObject.storeId) {
+            this.getStores();
+            this.getAllProducts('', this.checkingObject.storeId);
+            this.getStrengths();
+            this.getSuppliers();
+            this.route.params.subscribe(params => {
+              const id = params['id'];
+              if (id !== undefined) {
+                this.addNewProductTables();
+                // this.getOrderDetails(id);
+                this.saveBtnText = 'Update';
+              }
+            });
+          }
         }
       }
     });
-  }
-
-  ngOnInit() {
-    this.checkBoxLabels = [{ name: 'All', checked: true }, { name: 'Out of stock', checked: false },
-    { name: 'Re-order Level', checked: false }];
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
       this.checkingObject = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
@@ -90,16 +97,20 @@ export class NewPurchaseOrderComponent implements OnInit {
       this.route.params.subscribe(params => {
         const id = params['id'];
         if (id !== undefined) {
+          this.addNewProductTables();
           this.getOrderDetails(id);
           this.saveBtnText = 'Update';
         }
       });
     });
 
-    // this.getStrengths();
+
+  }
+
+  ngOnInit() {
+    this.checkBoxLabels = [{ name: 'All', checked: true }, { name: 'Out of stock', checked: false },
+    { name: 'Re-order Level', checked: false }];
     this.frm_purchaseOrder = this.formBuilder.group({
-      //product: ['', [<any>Validators.required]],
-      store: ['', [<any>Validators.required]],
       supplier: ['', [<any>Validators.required]],
       config: new FormArray([]),
       deliveryDate: [this.now, [<any>Validators.required]],
@@ -112,10 +123,7 @@ export class NewPurchaseOrderComponent implements OnInit {
       .debounceTime(300)
       .distinctUntilChanged()
       .subscribe(value => {
-        let storeId = this.frm_purchaseOrder.controls['store'].value;
-        if (storeId === null) {
-          storeId = this.checkingObject.storeId;
-        }
+        let storeId = this.checkingObject.storeId;
         this.checkBoxLabels[0].checked = false;
         this.getAllProducts(storeId, value);
       });
@@ -124,9 +132,9 @@ export class NewPurchaseOrderComponent implements OnInit {
 
   getOrderDetails(id) {
     try {
+      this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
       this.purchaseOrderService.get(id, {}).then((payload: any) => {
         this.selectedPurchaseOrder = payload;
-        this.frm_purchaseOrder.controls['store'].setValue(payload.storeId);
         this.frm_purchaseOrder.controls['supplier'].setValue(payload.supplierId);
         this.frm_purchaseOrder.controls['deliveryDate'].setValue(payload.expectedDate);
         this.frm_purchaseOrder.controls['desc'].setValue(payload.remark);
@@ -135,7 +143,7 @@ export class NewPurchaseOrderComponent implements OnInit {
             this.formBuilder.group({
               product: [item.productObject.data.name, [<any>Validators.required]],
               qty: [item.quantity, [<any>Validators.required]],
-              config: this.initProductConfig(item.productObject.productConfigObject),
+              config: this.existingProductConfig(item),
               readOnly: [false],
               id: [item.productId]
             })
@@ -209,6 +217,20 @@ export class NewPurchaseOrderComponent implements OnInit {
     }));
     return frmArray;
   }
+
+  existingProductConfig(config) {
+    console.log(config);
+    let frmArray = new FormArray([]);
+    config.qtyDetails.forEach(element => {
+      frmArray.push(new FormGroup({
+        size: new FormControl(element.quantity),
+        packsizes: new FormControl(config.productObject.productConfigObject),
+        packItem: new FormControl(element.packId)
+      }));
+    });
+    return frmArray;
+  }
+
   getProductConfig(form) {
     return form.controls.config.controls;
   }
@@ -281,14 +303,16 @@ export class NewPurchaseOrderComponent implements OnInit {
   }
 
   onPackageSize(i, packs) {
-    packs[i].controls.qty.setValue(0);
-    packs[i].controls.config.controls.forEach(element => {
-      packs[i].controls.qty.setValue(packs[i].controls.qty.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
-    });
+    if(packs[i] !== undefined){
+      packs[i].controls.qty.setValue(0);
+      packs[i].controls.config.controls.forEach(element => {
+        packs[i].controls.qty.setValue(packs[i].controls.qty.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
+      });
+    }
   }
 
   onAddPackSize(pack, form) {
-    form.controls.config.controls.push(new FormGroup({
+    form.controls.config.push(new FormGroup({
       size: new FormControl(0),
       packsizes: new FormControl(pack),
       packItem: new FormControl()
@@ -442,10 +466,7 @@ export class NewPurchaseOrderComponent implements OnInit {
 
     this.getProductTables(this.products);
     if (e.checked) {
-      let storeId = this.frm_purchaseOrder.controls['store'].value;
-      if (storeId === null || storeId === '') {
-        storeId = this.checkingObject.storeId;
-      }
+      let storeId = this.checkingObject.storeId;
       if (i === 0) {
         checkBoxLabel[1].checked = false;
         checkBoxLabel[2].checked = false;
@@ -476,7 +497,7 @@ export class NewPurchaseOrderComponent implements OnInit {
       purchaseOrder.expectedDate = this.frm_purchaseOrder.value.deliveryDate;
       purchaseOrder.supplierId = this.frm_purchaseOrder.value.supplier;
       purchaseOrder.remark = this.frm_purchaseOrder.value.desc;
-      purchaseOrder.storeId = this.frm_purchaseOrder.value.store;
+      purchaseOrder.storeId = this.checkingObject.storeId;
       purchaseOrder.facilityId = this.selectedFacility._id;
       purchaseOrder.createdBy = this.loginEmployee._id;
 
@@ -486,6 +507,13 @@ export class NewPurchaseOrderComponent implements OnInit {
         const product: any = <any>{};
         product.productId = item.id;
         product.quantity = item.qty;
+        product.qtyDetails = [];
+        item.config.forEach(element => {
+          product.qtyDetails.push({
+            packId: element.packItem,
+            quantity: element.size
+          });
+        });
         purchaseOrder.orderedProducts.push(product);
       });
       this.purchaseOrderService.create(purchaseOrder).then(payload => {
@@ -502,21 +530,25 @@ export class NewPurchaseOrderComponent implements OnInit {
       this.selectedPurchaseOrder.expectedDate = this.frm_purchaseOrder.value.deliveryDate;
       this.selectedPurchaseOrder.supplierId = this.frm_purchaseOrder.value.supplier;
       this.selectedPurchaseOrder.remark = this.frm_purchaseOrder.value.desc;
-      this.selectedPurchaseOrder.storeId = this.frm_purchaseOrder.value.store;
+      this.selectedPurchaseOrder.storeId = this.checkingObject.storeId;
       this.selectedPurchaseOrder.facilityId = this.selectedFacility._id;
       this.selectedPurchaseOrder.createdBy = this.loginEmployee._id;
 
       this.selectedPurchaseOrder.orderedProducts = [];
-      // let productRemoved = this.hasBeenRemoved();
-
       (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((itemi, i) => {
         const item = itemi.value;
         const product: any = <any>{};
         product.productId = item.id;
         product.quantity = item.qty;
+        product.qtyDetails = [];
+        item.config.forEach(element => {
+          let val: any = <any>{};
+          val.packId = element.packItem;
+          val.quantity = element.size;
+          product.qtyDetails.push(val);
+        });
         this.selectedPurchaseOrder.orderedProducts.push(product);
       });
-
       this.purchaseOrderService.patch(this.selectedPurchaseOrder._id, this.selectedPurchaseOrder).subscribe(payload => {
         this.systemModuleService.announceSweetProxy('Purchase order ' + payload.purchaseOrderNumber + ' was updated', 'success', null, null, null, null, null, null, null);
         this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
@@ -547,7 +579,6 @@ export class NewPurchaseOrderComponent implements OnInit {
     productRemoved.forEach((itemr, r) => {
       this.selectedPurchaseOrder.orderedProducts.forEach((itemp, p) => {
         if (itemr.id === itemp.productId) {
-
           this.selectedPurchaseOrder.orderedProducts.splice(p, 1);
         }
       });
@@ -562,5 +593,21 @@ export class NewPurchaseOrderComponent implements OnInit {
     if (this.flyout === true) {
       this.flyout = false;
     }
+  }
+
+  ngOnDestroy() {
+    if (this.loginEmployee.consultingRoomCheckIn !== undefined) {
+      this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
+        if (itemr.isDefault === true && itemr.isOn === true) {
+          itemr.isOn = false;
+          this.employeeService.update(this.loginEmployee).then(payload => {
+            this.loginEmployee = payload;
+          });
+        }
+      });
+    }
+    this.employeeService.announceCheckIn(undefined);
+    this.locker.setObject('checkingObject', {});
+    this.subscription.unsubscribe();
   }
 }
