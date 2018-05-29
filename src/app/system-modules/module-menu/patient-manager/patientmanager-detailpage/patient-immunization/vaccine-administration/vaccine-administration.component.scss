@@ -2,6 +2,7 @@
 .tree-ul {
     background: #fff;
     box-sizing: border-box;
+    padding: 3px;
 }
 .tree-li{
     padding: 10px;
@@ -70,4 +71,12 @@
 .cta-orange {
     background: #FB8C00;
     color: #000;
+}
+.pg-title {
+    background: #fff;
+    font-size: 1.6rem;
+    width: 100%;
+    text-align: center;
+    padding: 10px 0;
+    color: #194985;
 }
