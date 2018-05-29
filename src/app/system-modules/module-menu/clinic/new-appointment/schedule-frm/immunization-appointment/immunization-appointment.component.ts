@@ -1252,6 +1252,10 @@ export class ImmunizationAppointmentComponent implements OnInit {
           .setMultipleAppointments(vaccineAppointments)
           .then(payload => {
             console.log(payload);
+            this.savingAppointment = false;
+            this.disableBtn = false;
+            this.loadIndicatorVisible = false;
+            this.systemModuleService.off();
           });
         // this.appointmentService.create(this.appointment).then(
         //   payload => {
