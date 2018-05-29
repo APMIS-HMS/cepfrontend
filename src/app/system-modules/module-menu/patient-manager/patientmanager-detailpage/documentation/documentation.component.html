@@ -19,7 +19,7 @@
                         <i (click)="node_toggle()" *ngIf="!expanded" class="fa fa-plus" aria-hidden="true"></i>
                     </div> 
 
-                    <div class="node-date">{{document.createdAt | date:'shortDate'}}</div>
+                    <div (click)="node_toggle()" class="node-date">{{document.createdAt | date:'shortDate'}}</div>
                 </div>
 
                 <div class="node-content" *ngIf="expanded">

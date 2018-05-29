@@ -1,0 +1,74 @@
+<ul class="tree-ul">
+  <li class="tree-li">
+    <div class="tree-node">
+        <div class="node-ico node-ico-parent">
+            <i (click)="node_toggle()" *ngIf="expanded" class="fa fa-minus" aria-hidden="true"></i>
+            <i (click)="node_toggle()" *ngIf="!expanded" class="fa fa-plus" aria-hidden="true"></i>
+        </div> 
+
+        <div (click)="node_toggle()" class="node-date">11th June, 2018.</div>
+    </div>
+
+    <div class="node-content" *ngIf="expanded">
+      <ul class="vaccine-list">
+        <li class="vaccine-item">
+          <div class="vac-label">HBV 0</div>
+          <div class="vac-cta">
+            <button class="cta-blue"><i class="fa fa-check" aria-hidden="true"> </i>Administer</button>
+            <button class="cta-orange"><i class="fa fa-pause" aria-hidden="true"> </i>Suspend</button>
+          </div>
+        </li>
+        <li class="vaccine-item">
+          <div class="vac-label">DPT 0</div>
+          <div class="vac-cta">
+            <button class="cta-blue"><i class="fa fa-check" aria-hidden="true"> </i>Administer</button>
+            <button class="cta-orange"><i class="fa fa-pause" aria-hidden="true"> </i>Suspend</button>
+          </div>
+        </li>
+        <li class="vaccine-item">
+          <div class="vac-label">OPV 0</div>
+          <div class="vac-cta">
+            <button class="cta-blue"><i class="fa fa-check" aria-hidden="true"> </i>Administer</button>
+            <button class="cta-orange"><i class="fa fa-pause" aria-hidden="true"> </i>Suspend</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </li>
+  <li class="tree-li">
+    <div class="tree-node">
+        <div class="node-ico node-ico-parent">
+            <i (click)="node_toggle()" *ngIf="expanded" class="fa fa-minus" aria-hidden="true"></i>
+            <i (click)="node_toggle()" *ngIf="!expanded" class="fa fa-plus" aria-hidden="true"></i>
+        </div> 
+
+        <div (click)="node_toggle()" class="node-date">15th June, 2018.</div>
+    </div>
+
+    <div class="node-content" *ngIf="expanded">
+      <ul class="vaccine-list">
+        <li class="vaccine-item">
+          <div class="vac-label">HBV 1</div>
+          <div class="vac-cta">
+            <button class="cta-blue"><i class="fa fa-check" aria-hidden="true"> </i>Administer</button>
+            <button class="cta-orange"><i class="fa fa-pause" aria-hidden="true"> </i>Suspend</button>
+          </div>
+        </li>
+        <li class="vaccine-item">
+          <div class="vac-label">DPT 1</div>
+          <div class="vac-cta">
+            <button class="cta-blue"><i class="fa fa-check" aria-hidden="true"> </i>Administer</button>
+            <button class="cta-orange"><i class="fa fa-pause" aria-hidden="true"> </i>Suspend</button>
+          </div>
+        </li>
+        <li class="vaccine-item">
+          <div class="vac-label">OPV 1</div>
+          <div class="vac-cta">
+            <button class="cta-blue"><i class="fa fa-check" aria-hidden="true"> </i>Administer</button>
+            <button class="cta-orange"><i class="fa fa-pause" aria-hidden="true"> </i>Suspend</button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </li>
+</ul>
