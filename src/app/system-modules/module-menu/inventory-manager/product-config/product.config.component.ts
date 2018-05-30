@@ -60,7 +60,7 @@ initializeForm(){
         if (value !== undefined) {
           if (value.toString().length >= 3) {
             this.apmisInvestigationLookupQuery = {
-              name: { $regex: this.searchProdductControl.value, '$options': 'i' },
+              name: this.searchProdductControl.value
             }
           }
         }

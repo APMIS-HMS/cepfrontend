@@ -620,8 +620,86 @@ export class ImmunizationAppointmentComponent implements OnInit {
     return order ? order.name : order;
   }
 
-  scheduleAppointment() {}
+  newSchedule() {
+    this.patient.reset();
+    this.clinic.reset();
+    this.provider.reset();
+    this.type.reset();
+    this.category.reset();
+    this.checkIn.reset();
+    this.teleMed.reset();
+    this.timezone.reset();
+    this.date = new Date();
+    this.reason.reset();
+    this.status.reset();
+    this.savingAppointment = false;
+    this.disableBtn = false;
+  }
 
+  setValueSmsAlert(personFullName, startDate, facility, clinic, email) {
+    let contentValue =
+      "Hello " +
+      personFullName +
+      "an appointment was scheduled for " +
+      startDate +
+      "at " +
+      facility +
+      " " +
+      clinic;
+    let params = {
+      content: contentValue,
+      sender: "APMIS",
+      receiver: email
+    };
+    this._smsAlertService.post({}, params);
+  }
+
+  createBill() {
+    let bills = [];
+    let patientDefaultPaymentPlan = this.selectedPatient.paymentPlan.find(
+      x => x.isDefault === true
+    );
+    let covered = {};
+    if (patientDefaultPaymentPlan.planType === "wallet") {
+      covered = {
+        coverType: patientDefaultPaymentPlan.planType
+      };
+    } else if (patientDefaultPaymentPlan.planType === "insurance") {
+      covered = {
+        coverType: patientDefaultPaymentPlan.planType,
+        hmoId: patientDefaultPaymentPlan.planDetails.hmoId
+      };
+    } else if (patientDefaultPaymentPlan.planType === "company") {
+      covered = {
+        coverType: patientDefaultPaymentPlan.planType,
+        companyId: patientDefaultPaymentPlan.planDetails.companyId
+      };
+    } else if (patientDefaultPaymentPlan.planType === "family") {
+      covered = {
+        coverType: patientDefaultPaymentPlan.planType,
+        familyId: patientDefaultPaymentPlan.planDetails.familyId
+      };
+    }
+    bills.push({
+      unitPrice: this.organizationalServicePrice,
+      facilityId: this.selectedFacility._id,
+      facilityServiceId: this.organizationalServiceId.facilityServiceId,
+      serviceId: this.category.value,
+      patientId: this.selectedPatient._id,
+      quantity: 1,
+      active: true,
+      totalPrice: this.organizationalServicePrice,
+      covered: covered
+    });
+    this.billingService
+      .createBill(bills, {
+        query: {
+          facilityId: this.selectedFacility._id,
+          patientId: this.selectedPatient._id
+        }
+      })
+      .then(payld => {}, err => {});
+  }
   primeComponent() {
     const majorLocation$ = Observable.fromPromise(
       this.locationService.find({ query: { name: "Clinic" } })
@@ -990,5 +1068,304 @@ export class ImmunizationAppointmentComponent implements OnInit {
       return vaccine.checked === true;
     });
     return filterRecords.length > 0;
+  }
+
+  getCheckedVaccines() {
+    return this.vaccines.filter(vaccine => {
+      return vaccine.checked === true;
+    });
+  }
+
+  scheduleAppointment() {
+    if (
+      this.dateCtrl.valid &&
+      this.patient.valid &&
+      this.type.valid &&
+      this.category.valid &&
+      this.clinic.valid
+    ) {
+      this.systemModuleService.on();
+      this.disableBtn = true;
+      this.updateAppointment = false;
+      this.saveAppointment = false;
+      this.savingAppointment = true;
+      const patient = this.selectedPatient._id; //this.patient.value._id;
+      const clinic = this.clinic.value.clinicName;
+
+      const type = this.type.value.name;
+      const category = this.category.value.name;
+      const orderStatus = this.status.value.name;
+      const checkIn = this.checkIn.value;
+      const date = this.date;
+      const reason = this.reason.value;
+      const facility = this.selectedFacility._id;
+      //this.selectedPatient = this.patient.value;
+
+      this.appointment.appointmentReason = reason;
+      this.appointment.appointmentTypeId = type;
+      this.appointment.clinicId = clinic;
+      if (this.provider.value !== null && this.provider.value !== undefined) {
+        const provider = this.selectedProvider._id;
+        this.appointment.doctorId = provider;
+      }
+
+      this.appointment.facilityId = facility;
+      this.appointment.patientId = patient;
+      this.appointment.startDate = this.date;
+      if (checkIn === true) {
+        this.appointment.attendance = {
+          employeeId:
+            this.loginEmployee.personDetails.title +
+            " " +
+            this.loginEmployee.personDetails.lastName +
+            " " +
+            this.loginEmployee.personDetails.firstName,
+          majorLocationId: this.selectedClinicSchedule.location.locationId,
+          minorLocationId: this.selectedClinicSchedule.location._id,
+          dateCheckIn: new Date()
+        };
+      }
+      this.appointment.category = category;
+      this.appointment.orderStatusId = orderStatus;
+      if (this.appointmentIsToday && this.checkIn.value === true) {
+        const activeFilter = this.orderStatuses.filter(
+          x => (x.name = "Active")
+        );
+        if (activeFilter.length > 0) {
+          const active = activeFilter[0];
+          this.appointment.orderStatusId = active.name;
+        }
+      }
+      if (this.appointment._id !== undefined) {
+        // this.appointmentService.update(this.appointment).then(
+        //   payload => {
+        //     if (this.teleMed.value === true) {
+        //       const topic = "Appointment with " + patient.personDetails.apmisId;
+        //       this.appointmentService
+        //         .setMeeting(
+        //           topic,
+        //           this.appointment.startDate,
+        //           this.appointment._id,
+        //           this.timezone.value.value
+        //         )
+        //         .then(
+        //           meeting => {
+        //             let fullName =
+        //               this.selectedPatient.personDetails.lastName +
+        //               " " +
+        //               this.selectedPatient.personDetails.Name;
+        //             this.setValueSmsAlert(
+        //               fullName,
+        //               this.appointment.startDate,
+        //               this.selectedFacility.name,
+        //               clinic.name,
+        //               this.selectedPatient.personDetails.email
+        //             );
+        //             this.disableBtn = true;
+        //             this.updateAppointment = false;
+        //             this.saveAppointment = true;
+        //             this.savingAppointment = false;
+        //             this.systemModuleService.off();
+        //             this.router.navigate(["/dashboard/clinic/appointment"]);
+        //             this.systemModuleService.off();
+        //             this.systemModuleService.announceSweetProxy(
+        //               "Appointment updated successfully",
+        //               "success",
+        //               null,
+        //               null,
+        //               null,
+        //               null,
+        //               null,
+        //               null,
+        //               null
+        //             );
+        //           },
+        //           error => {
+        //             this.systemModuleService.off();
+        //             this.systemModuleService.announceSweetProxy(
+        //               "Clinic Appointment updated successfully but telemedice appointment not updated or created",
+        //               "warning"
+        //             );
+        //           }
+        //         );
+        //     } else {
+        //       this.appointmentService.patientAnnounced(this.patient);
+        //       this.disableBtn = true;
+        //       this.updateAppointment = false;
+        //       this.saveAppointment = true;
+        //       this.savingAppointment = false;
+        //       this.newSchedule();
+        //       this.appointmentService.clinicAnnounced({
+        //         clinicId: this.selectedClinic,
+        //         startDate: this.date
+        //       });
+        //       let fullName =
+        //         this.selectedPatient.personDetails.lastName +
+        //         " " +
+        //         this.selectedPatient.personDetails.Name;
+        //       this.setValueSmsAlert(
+        //         fullName,
+        //         this.appointment.startDate,
+        //         this.selectedFacility.name,
+        //         clinic.name,
+        //         this.selectedPatient.personDetails.email
+        //       );
+        //       this.router.navigate(["/dashboard/clinic/appointment"]);
+        //       this.systemModuleService.off();
+        //       this.systemModuleService.announceSweetProxy(
+        //         "Appointment updated successfully",
+        //         "success",
+        //         null,
+        //         null,
+        //         null,
+        //         null,
+        //         null,
+        //         null,
+        //         null
+        //       );
+        //     }
+        //   },
+        //   error => {
+        //     this.savingAppointment = false;
+        //     this.disableBtn = false;
+        //     this.loadIndicatorVisible = false;
+        //     this.systemModuleService.off();
+        //     this.systemModuleService.announceSweetProxy(
+        //       "There was an error setting the appointment",
+        //       "error"
+        //     );
+        //   }
+        // );
+      } else {
+        // console.log(this.appointment);
+        // console.log(this.selectedSchedule);
+        // console.log(this.getCheckedVaccines().map(vaccine => {return vaccine.vaccineObject._id}));
+        const vaccineAppointments = {
+          appointment: this.appointment,
+          immunizationScheduleId: this.selectedSchedule._id,
+          vaccineIds: this.getCheckedVaccines().map(vaccine => {
+            return vaccine.vaccineObject._id;
+          })
+        };
+        console.log(vaccineAppointments);
+        this.appointmentService
+          .setMultipleAppointments(vaccineAppointments)
+          .then(payload => {
+            console.log(payload);
+            this.savingAppointment = false;
+            this.disableBtn = false;
+            this.loadIndicatorVisible = false;
+            this.systemModuleService.off();
+          });
+        // this.appointmentService.create(this.appointment).then(
+        //   payload => {
+        //     console.log(payload);
+        //     this.createBill();
+        //     if (this.teleMed.value === true) {
+        //       const topic = "Appointment with " + patient.personDetails.apmisId;
+        //       this.appointmentService
+        //         .setMeeting(
+        //           topic,
+        //           this.appointment.startDate,
+        //           payload._id,
+        //           this.timezone.value.value
+        //         )
+        //         .then(
+        //           meeting => {
+        //             this.disableBtn = true;
+        //             this.updateAppointment = false;
+        //             this.saveAppointment = true;
+        //             this.savingAppointment = false;
+        //             let fullName =
+        //               this.selectedPatient.personDetails.lastName +
+        //               " " +
+        //               this.selectedPatient.personDetails.Name;
+        //             this.setValueSmsAlert(
+        //               fullName,
+        //               this.appointment.startDate,
+        //               this.selectedFacility.name,
+        //               this.selectedClinic.name,
+        //               this.selectedPatient.personDetails.email
+        //             );
+
+        //             this.router.navigate(["/dashboard/clinic/appointment"]);
+        //             this.systemModuleService.off();
+        //             this.systemModuleService.announceSweetProxy(
+        //               "Appointment set successfully",
+        //               "success",
+        //               null,
+        //               null,
+        //               null,
+        //               null,
+        //               null,
+        //               null,
+        //               null
+        //             );
+        //           },
+        //           error => {
+        //             this.savingAppointment = false;
+        //             this.disableBtn = false;
+        //             this.loadIndicatorVisible = false;
+        //             this.systemModuleService.off();
+        //             this.systemModuleService.announceSweetProxy(
+        //               "Appointment set successfully but there was an error creating Telemedicine appointment",
+        //               "warning"
+        //             );
+        //           }
+        //         );
+        //     } else {
+        //       this.disableBtn = true;
+        //       this.updateAppointment = false;
+        //       this.saveAppointment = true;
+        //       this.savingAppointment = false;
+        //       let fullName =
+        //         this.selectedPatient.personDetails.lastName +
+        //         " " +
+        //         this.selectedPatient.personDetails.Name;
+        //       this.setValueSmsAlert(
+        //         fullName,
+        //         this.appointment.startDate,
+        //         this.selectedFacility.name,
+        //         clinic.name,
+        //         this.selectedPatient.personDetails.email
+        //       );
+        //       this.router.navigate(["/dashboard/clinic/appointment"]);
+        //       this.systemModuleService.off();
+        //       this.systemModuleService.announceSweetProxy(
+        //         "Appointment set successfully",
+        //         "success",
+        //         null,
+        //         null,
+        //         null,
+        //         null,
+        //         null,
+        //         null,
+        //         null
+        //       );
+        //     }
+        //   },
+        //   error => {
+        //     this.savingAppointment = false;
+        //     this.disableBtn = false;
+        //     this.loadIndicatorVisible = false;
+        //     this.systemModuleService.off();
+        //     this.systemModuleService.announceSweetProxy(
+        //       "There was an error setting the appointment",
+        //       "error"
+        //     );
+        //     console.dir(error);
+        //   }
+        // );
+      }
+    } else {
+      this.systemModuleService.off();
+      this.savingAppointment = false;
+      this.disableBtn = false;
+      this.loadIndicatorVisible = false;
+      this.systemModuleService.announceSweetProxy(
+        "Some required field missing, please try again!",
+        "warning"
+      );
+    }
   }
 }

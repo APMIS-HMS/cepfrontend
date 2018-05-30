@@ -30,6 +30,8 @@ export class LandingPageComponent implements OnInit {
   selMinorLocation = new FormControl();
   selProductType = new FormControl();
   searchControl = new FormControl();
+  Ql_toggle = false;
+  modal_on = false;
 
   constructor(
     private locker: CoolLocalStorage,
@@ -84,7 +86,16 @@ export class LandingPageComponent implements OnInit {
     }
   }
 
+  onChangeCheckedIn() {
+    this.modal_on = true;
+  }
+
+  toggleQl() {
+    this.Ql_toggle = !this.Ql_toggle;
+  }
+
   close_onClick(message: boolean): void {
+    this.modal_on = false;
     this.newStore = false;
   }
 
