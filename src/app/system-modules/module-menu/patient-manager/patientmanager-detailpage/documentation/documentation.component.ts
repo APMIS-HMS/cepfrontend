@@ -48,6 +48,9 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   showDoc = true;
   showOrderSet = false;
 
+  expanded = false;
+  expandedChild = false;
+
   selectedFacility: Facility = <Facility>{};
   selectedMiniFacility: Facility = <Facility>{};
   loginEmployee: any = <any>{};
@@ -720,5 +723,11 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
   onClickeditClick() {
     this.editClick = !this.editClick;
+  }
+  node_toggle(){
+    this.expanded= !this.expanded;
+  }
+  nodeChild_toggle(){
+    this.expandedChild= !this.expandedChild;
   }
 }
