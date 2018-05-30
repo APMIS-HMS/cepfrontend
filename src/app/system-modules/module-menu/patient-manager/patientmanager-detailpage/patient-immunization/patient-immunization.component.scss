@@ -69,3 +69,23 @@ button{
 .vi-status-4{
     color: #ff2500;
 }
+.doc-card2{
+    margin: 0;
+    width: 100%;
+    box-sizing: border-box;
+}
+.page-tabs{
+    display: flex;
+    justify-content: flex-start;
+}
+.page-tab {
+    border: 2px solid #fff;
+    padding: 10px;
+    color: #000;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
+.page-tab-active, .page-tab:hover{
+    background: #fff;
+    border-right: 1px solid #e2e2e2;
+}
