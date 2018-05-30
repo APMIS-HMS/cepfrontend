@@ -711,8 +711,7 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
         if ($event.checked) {
           // this.bindInvestigations.push(investigation);
           investigation.isChecked = true;
-          investigation.LaboratoryWorkbenches =
-            investigation.LaboratoryWorkbenches;
+          investigation.LaboratoryWorkbenches = investigation.LaboratoryWorkbenches;
         } else {
           const indexToRemove = this.bindInvestigations.findIndex(
             x => x.investigation._id === investigation.investigation._id

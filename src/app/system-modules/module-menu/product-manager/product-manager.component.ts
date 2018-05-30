@@ -20,7 +20,8 @@ export class ProductManagerComponent implements OnInit {
 	presentationNavMenu: Boolean = false;
 	strengthNavMenu: Boolean = false;
 	contentSecMenuShow: Boolean = false;
-
+	modal_on = false;
+	Ql_toggle = false;
 	// products page
 	addProduct: Boolean = false;
 	isProductCat: Boolean = false;
@@ -340,6 +341,14 @@ export class ProductManagerComponent implements OnInit {
 		this.genericNavMenu = false;
 		this.presentationNavMenu = false;
 		//this.strengthNavMenu = true;
+	}
+
+	toggleQl() {
+		this.Ql_toggle = !this.Ql_toggle;
+	}
+
+	onChangeCheckedIn() {
+		this.modal_on = true;
 	}
 
 }

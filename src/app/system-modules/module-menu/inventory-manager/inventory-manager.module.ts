@@ -23,8 +23,6 @@ import { LoginEmployeeResolverService } from '../../../resolvers/module-menu/ind
 import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { ReorderLevelComponent } from './reorder-level/reorder-level.component';
 
-
-
 @NgModule({
     declarations: [
         InventoryManagerComponent,
@@ -43,6 +41,7 @@ import { ReorderLevelComponent } from './reorder-level/reorder-level.component';
     exports: [
     ],
     imports: [
+        SharedModule,
         OnlyMaterialModule,
         MaterialModule,
         inventoryManagerRoutes

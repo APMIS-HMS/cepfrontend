@@ -27,12 +27,12 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   reorderLevelNavMenu = false;
   productNavMenu = false;
   modal_on = false;
-
-
+  Ql_toggle = false;
   loginEmployee: any = <any>{};
   workSpace: any;
   selectedFacility: Facility = <Facility>{};
   checkedInStore: any;
+
   constructor(
     private _inventoryEventEmitter: InventoryEmitterService,
     private route: ActivatedRoute, private _router: Router,
@@ -101,12 +101,18 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   close_onClick(message: boolean): void {
     this.modal_on = false;
   }
+
   onChangeCheckedIn() {
     this.modal_on = true;
     this.contentSecMenuShow = false;
   }
+
   contentSecMenuToggle() {
     this.contentSecMenuShow = !this.contentSecMenuShow;
+  }
+
+  toggleQl() {
+    this.Ql_toggle = !this.Ql_toggle;
   }
 
   closeActivate(e) {

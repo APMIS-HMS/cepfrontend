@@ -1,22 +1,21 @@
-import { environment } from './../../environments/environment';
-import { Component, OnInit } from '@angular/core';
-import { Title } from '@angular/platform-browser';
+import { environment } from "./../../environments/environment";
+import { Component, OnInit } from "@angular/core";
+import { Title } from "@angular/platform-browser";
 
 @Component({
-  selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  selector: "app-home",
+  templateUrl: "./home.component.html",
+  styleUrls: ["./home.component.scss"]
 })
 export class HomeComponent implements OnInit {
-
   login_on = false;
   pwdReset_on = false;
-  platformName = '';
-  platformLogo = '';
+  platformName = "";
+  platformLogo = "";
   secondaryLogo;
   title;
 
-  constructor(private titleService:Title) {
+  constructor(private titleService: Title) {
     this.title = environment.title;
     this.titleService.setTitle(this.title);
     this.platformName = environment.platform;
@@ -25,6 +24,7 @@ export class HomeComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.login_show();
   }
   login_show() {
     this.login_on = true;
@@ -35,7 +35,7 @@ export class HomeComponent implements OnInit {
     this.login_on = false;
   }
   overlay_onClick(e) {
-    if (e.srcElement.id === 'form-modal') {
+    if (e.srcElement.id === "form-modal") {
     }
   }
 
@@ -43,5 +43,4 @@ export class HomeComponent implements OnInit {
     this.login_on = false;
     this.pwdReset_on = false;
   }
-
 }

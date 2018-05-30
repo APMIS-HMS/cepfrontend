@@ -174,12 +174,13 @@ export class AppointmentComponent implements OnInit {
         });
     }
     checkOutToWard(appointment) {
-        this.patientDetails = appointment.patientId.personDetails;
+        this.patientDetails = appointment.patientDetails;
         this.selectedAppointment = appointment;
         this.isCheckoutPatient = true;
     }
 
     close_onClick(message: boolean) {
+        this.isCheckoutPatient = false;
         this.closeMenu.emit(true);
     }
 

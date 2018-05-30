@@ -256,8 +256,8 @@ export class BulkUploadComponent implements OnInit {
   submit() {
     let newArr = [];
     this.btnLoading = true;
-    this.patients.map(pa => {
-      if(this.failed === true){
+     const newPatients  = this.patients.map(pa => {
+      if (this.failed){
         delete pa.message;
         delete pa.facilityId;
         pa = pa.data;
@@ -266,10 +266,8 @@ export class BulkUploadComponent implements OnInit {
       }
       pa.facilityId = this.facility._id
     });
-    this.patients = (this.failed === true) ? newArr : this.patients;
-    const data = {
-      data: JSON.stringify(this.patients)
-    };
+    this.patients = (this.failed) ? newArr : newPatients;
+    const data = { data: JSON.stringify(this.patients) };
     this.patientService.bulkUpload(data).then(payload => {
       if (payload.failed.length > 0) {
         this.patients = [];

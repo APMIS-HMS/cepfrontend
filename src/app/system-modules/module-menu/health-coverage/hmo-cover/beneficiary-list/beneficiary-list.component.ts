@@ -63,6 +63,7 @@ export class BeneficiaryListComponent implements OnInit {
             const startIndex = 0 * 10;
             this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
             this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
+            console.log(this.filteredBeneficiaries);
           }
         }
       }

@@ -38,6 +38,10 @@ export class ImmunizationScheduleService {
   customCreate(immuneSchedule: any) {
     return this._customSocket.create(immuneSchedule);
   }
+  
+  customUpdate(immuneSchedule: any) {
+    return this._customSocket.update(immuneSchedule);
+  }
 
   update(immuneSchedule: any) {
     return this._socket.update(immuneSchedule._id, immuneSchedule);

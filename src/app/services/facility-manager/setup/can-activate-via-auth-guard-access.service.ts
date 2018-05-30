@@ -14,7 +14,8 @@ export class CanActivateViaAuthGuardAccessService implements CanActivate {
   ): Promise<boolean> {
     let self = this;
     return new Promise(function(resolve, reject) {
-      self.authFacadeService.getLogingEmployee;
+      // Sunday said I  Chisimdi should commented it.
+      // self.authFacadeService.getLogingEmployee;
       self.authFacadeService.getUserAccessControls().then(
         (payload: any) => {
           let modules: any = payload.modules;

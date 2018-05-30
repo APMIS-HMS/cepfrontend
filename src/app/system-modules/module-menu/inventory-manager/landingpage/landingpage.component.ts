@@ -29,6 +29,7 @@ export class LandingpageComponent implements OnInit {
   loginEmployee: Employee = <Employee>{};
   selectedProduct: any = <any>{};
   checkingStore: any = <any>{};
+  subscription:any=<any>{};
   loading: boolean = true;
 
   constructor(
@@ -42,9 +43,8 @@ export class LandingpageComponent implements OnInit {
     private employeeService: EmployeeService,
     private systemModuleService: SystemModuleService
   ) {
-    this.employeeService.checkInAnnounced$.subscribe(payload => {
+    this.subscription = this.employeeService.checkInAnnounced$.subscribe(payload => {
       if (payload !== undefined) {
-       
         if (payload.typeObject !== undefined) {
           this.checkingStore = payload.typeObject;
           if(this.checkingStore.storeId !== undefined){
@@ -161,6 +161,21 @@ export class LandingpageComponent implements OnInit {
       const message = 'Batch number "' + this.selectedTransaction.batchNumber + '" has been adjusted';
       this.systemModuleService.announceSweetProxy(message, 'success', null, null, null, null, null, null, null);
     });
+  }
+  ngOnDestroy() {
+    if (this.loginEmployee.consultingRoomCheckIn !== undefined) {
+      this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
+        if (itemr.isDefault === true && itemr.isOn === true) {
+          itemr.isOn = false;
+          this.employeeService.update(this.loginEmployee).then(payload => {
+            this.loginEmployee = payload;
+          });
+        }
+      });
+    }
+    this.employeeService.announceCheckIn(undefined);
+    this.locker.setObject('checkingObject', {});
+    this.subscription.unsubscribe();
   }
 
   // Notification

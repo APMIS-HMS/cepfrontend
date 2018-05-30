@@ -61,6 +61,9 @@ import {
 import { OrderSetSharedService } from '../services/facility-manager/order-set-shared-service';
 import { SharedModuleMaterialModule } from '../shared-common-modules/sharedmodule-materialsmodule';
 import { PaymentChartComponent } from './payment-chart/payment-chart.component';
+import { StoreQuickLinksComponent } from './store-quick-links/store-quick-links.component';
+import { RouterModule } from '@angular/router';
+import { StoreProductTypeComponent } from './store-product-type/store-product-type.component';
 @NgModule({
   declarations: [
     SurveyComponent,
@@ -72,7 +75,9 @@ import { PaymentChartComponent } from './payment-chart/payment-chart.component';
     TemplateProcedureComponent,
     TemplateNursingCareComponent,
     TemplatePhysicianOrderComponent,
-    PaymentChartComponent  ],
+    PaymentChartComponent,
+    StoreQuickLinksComponent,
+    StoreProductTypeComponent  ],
   exports: [
     NgUploaderModule,
     NgPipesModule,
@@ -90,9 +95,11 @@ import { PaymentChartComponent } from './payment-chart/payment-chart.component';
     TemplateProcedureComponent,
     TemplateNursingCareComponent,
     TemplatePhysicianOrderComponent,
-    SharedModuleMaterialModule
+    SharedModuleMaterialModule,
+    StoreQuickLinksComponent
   ],
-  imports: [ 
+  imports: [
+    RouterModule,
     CommonModule,
     ReactiveFormsModule,
     FormsModule,

@@ -1,13 +1,14 @@
-import { SocketService, RestService } from '../../../feathers/feathers.service';
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { Subject } from 'rxjs/Subject';
-const request = require('superagent');
+import { SocketService, RestService } from "../../../feathers/feathers.service";
+import { Injectable } from "@angular/core";
+import { Observable } from "rxjs/Observable";
+import { Subject } from "rxjs/Subject";
+const request = require("superagent");
 
 @Injectable()
 export class AppointmentService {
   public _socket;
   private _rest;
+  private _socketMultipleAppointment;
 
   public createlistner;
   public updatelistner;
@@ -32,14 +33,15 @@ export class AppointmentService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
-    this._rest = _restService.getService('appointments');
-    this._socket = _socketService.getService('appointments');
-    this._socket.timeout = 50000;
-    this.createlistner = Observable.fromEvent(this._socket, 'created');
-    this.updatelistner = Observable.fromEvent(this._socket, 'updated');
-    this.deletedlistner = Observable.fromEvent(this._socket, 'deleted');
-    this._socket.on('created', function (gender) {
-    });
+    this._rest = _restService.getService("appointments");
+    this._socket = _socketService.getService("appointments");
+    this._socketMultipleAppointment = _socketService.getService(
+      "set-multiple-appointments"
+    );
+    this.createlistner = Observable.fromEvent(this._socket, "created");
+    this.updatelistner = Observable.fromEvent(this._socket, "updated");
+    this.deletedlistner = Observable.fromEvent(this._socket, "deleted");
+    this._socket.on("created", function(gender) {});
   }
   hideTimelineAnnounced(show: boolean) {
     this.timelineAnnouncedSource.next(show);
@@ -68,11 +70,15 @@ export class AppointmentService {
   }
 
   findAppointment(query: any) {
-    return this._socketService.getService('save-appointment').find(query);
+    return this._socketService.getService("save-appointment").find(query);
   }
 
   getAppointment(id: string, query: any) {
-    return this._socketService.getService('save-appointment').get(id, query);
+    return this._socketService.getService("save-appointment").get(id, query);
+  }
+
+  setMultipleAppointments(query) {
+    return this._socketMultipleAppointment.create(query);
   }
 
   findAll() {
@@ -100,9 +106,12 @@ export class AppointmentService {
 
   setMeeting(topic: string, startTime: Date, appointmentId, timezone) {
     const host = this._restService.getHost();
-    const path = host + '/zoom-meeting';
-    return request
-      .post(path)
-      .send({ topic: topic, startTime: startTime, appointmentId: appointmentId, timezone: timezone }); // query string
+    const path = host + "/zoom-meeting";
+    return request.post(path).send({
+      topic: topic,
+      startTime: startTime,
+      appointmentId: appointmentId,
+      timezone: timezone
+    }); // query string
   }
 }
