@@ -6,13 +6,13 @@
                 <img *ngIf="patient?.personDetails?.profileImageObject !== undefined && patient !== null" class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.detailthumbnail)"> -->
                 <img class="img-responsive" src="http://placeholder.pics/svg/30" />
             </div>
-            <div class="col-xs-8" style="width:93%; float: left;">
-                <small>Patient Name: <b>{{ prescriptionItems?.patientName }}</b></small><br>
+            <div class="col-xs-8" style="width:93%; float: left;font-size: 16px;">
+                <small>Patient Name: <b>{{ prescriptionItems?.personDetails?.firstName }} {{ prescriptionItems?.personDetails?.lastName }}</b></small><br>
                 <small>Age: <b>42years</b></small><br>
                 <div *ngIf="!!prescriptionItems?.clinicDetails">
                     <small>Clinic: <b>{{ prescriptionItems?.clinicDetails?.clinicName}}</b></small><br>
                 </div>
-                <small>Prescription Priotity: <b>{{ prescriptionItems?.priorityObject?.name}}</b></small>
+                <small>Prescription Priotity: <b>{{ prescriptionItems?.priority?.name}}</b></small>
             </div>
         </div>
     </div>
