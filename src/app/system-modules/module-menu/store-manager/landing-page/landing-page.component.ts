@@ -32,6 +32,7 @@ export class LandingPageComponent implements OnInit {
   searchControl = new FormControl();
   Ql_toggle = false;
   modal_on = false;
+  checkingStore:any;
 
   constructor(
     private locker: CoolLocalStorage,
