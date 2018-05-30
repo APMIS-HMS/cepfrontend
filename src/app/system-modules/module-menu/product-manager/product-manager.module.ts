@@ -47,7 +47,7 @@ import { OnlyMaterialModule } from '../../../shared-common-modules/only-material
     exports: [
     ],
     imports: [
-        // SharedModule,
+        SharedModule,
         OnlyMaterialModule,
         MaterialModule,
         // CommonModule,

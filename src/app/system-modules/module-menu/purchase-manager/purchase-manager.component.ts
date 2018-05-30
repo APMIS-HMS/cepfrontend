@@ -25,10 +25,11 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
   modal_on = false;
   closeWhenClick = true;
   productNavMenu = false;
-
+  Ql_toggle = false;
   loginEmployee: Employee = <Employee>{};
   workSpace: any;
   selectedFacility: Facility = <Facility>{};
+
   constructor(
     private _purchaseEventEmitter: PurchaseEmitterService, private route: ActivatedRoute,
     private _router: Router, private employeeService: EmployeeService,
@@ -147,12 +148,12 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
     this._purchaseEventEmitter.announcedUrl.subscribe(url => {
       this.pageInView = url;
     });
-
-
   }
+
   close_onClick(message: boolean): void {
     this.modal_on = false;
   }
+
   contentSecMenuToggle() {
     this.contentSecMenuShow = !this.contentSecMenuShow;
   }
@@ -182,11 +183,17 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
       this.pageInView = url;
     });
   }
+
+  toggleQl() {
+    this.Ql_toggle = !this.Ql_toggle;
+  }
+
   onChangeCheckedIn() {
     this.modal_on = true;
     this.closeWhenClick = false;
     this.contentSecMenuShow = false;
   }
+
   onClickInvoicesNavMenu() {
     this.purchaseHistoryNavMenu = true;
     this.purchaseOrderNavMenu = false;

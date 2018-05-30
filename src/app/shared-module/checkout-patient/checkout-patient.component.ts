@@ -180,8 +180,13 @@ export class CheckoutPatientComponent implements OnInit {
 				const updateData = clinicRes.data[0];
 				updateData.isCheckedOut = true;
 				updateData.checkedOut = checkoutData;
-				this._appointmentService.update(updateData).then((updateRes) => {
-					this._notification('Success', 'Patient Has Successfully Been Checked Out ');
+				this._appointmentService.patch(this.selectedAppointment._id, {
+					isCheckedOut: true,
+					checkedOut: checkoutData
+				}, {}).then((updateRes) => {
+					this.close_onClick();
+					this._systemModuleService.announceSweetProxy('Patient Has Successfully Been Checked Out','success');
+					//this._notification('Success', 'Patient Has Successfully Been Checked Out ');
 					if (checkoutData.type === 'FUWA') {
 						this._router.navigate(['/dashboard/clinic/schedule-appointment', updateRes._id], { queryParams: { checkedOut: true } });
 					} else {
