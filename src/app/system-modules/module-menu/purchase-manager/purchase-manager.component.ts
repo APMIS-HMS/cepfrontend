@@ -29,6 +29,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
   loginEmployee: Employee = <Employee>{};
   workSpace: any;
   selectedFacility: Facility = <Facility>{};
+  checkingObject: any = <any>{};
 
   constructor(
     private _purchaseEventEmitter: PurchaseEmitterService, private route: ActivatedRoute,
@@ -50,15 +51,15 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
             itemr.isOn = true;
             itemr.lastLogin = new Date();
             isOn = true;
-            let checkingObject = { typeObject: itemr, type: 'store' };
-            this.employeeService.announceCheckIn(checkingObject);
+            this.checkingObject = { typeObject: itemr, type: 'store' };
+            this.employeeService.announceCheckIn(this.checkingObject);
 
             // tslint:disable-next-line:no-shadowed-variable
             this.employeeService.patch(this.loginEmployee._id,{storeCheckIn:this.loginEmployee.storeCheckIn}).then(payload => {
               this.loginEmployee = payload;
-              checkingObject = { typeObject: itemr, type: 'store' };
-              this.employeeService.announceCheckIn(checkingObject);
-              this.locker.setObject('checkingObject', checkingObject);
+              this.checkingObject = { typeObject: itemr, type: 'store' };
+              this.employeeService.announceCheckIn(this.checkingObject);
+              this.locker.setObject('checkingObject', this.checkingObject);
             });
           }
         });
@@ -70,9 +71,9 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
               // tslint:disable-next-line:no-shadowed-variable
               this.employeeService.patch(this.loginEmployee._id,{storeCheckIn:this.loginEmployee.storeCheckIn}).then(payload => {
                 this.loginEmployee = payload;
-                const checkingObject = { typeObject: itemr, type: 'store' };
-                this.employeeService.announceCheckIn(checkingObject);
-                this.locker.setObject('checkingObject', checkingObject);
+                this.checkingObject = { typeObject: itemr, type: 'store' };
+                this.employeeService.announceCheckIn(this.checkingObject);
+                this.locker.setObject('checkingObject', this.checkingObject);
               });
             }
 
