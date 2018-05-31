@@ -44,7 +44,6 @@ class Service {
         }
       });
       const payResult = await orgService.patch(awaitOrganService._id, awaitOrganService);
-
       payResult.categories.forEach((itemi, i) => {
         if (itemi._id.toString() === data.categoryId.toString()) {
           itemi.services.forEach((items, s) => {
