@@ -73,10 +73,8 @@ class Service {
       payResult.categories.forEach((itemi, i) => {
         if (itemi._id.toString() === data.categoryId.toString()) {
           itemi.services.forEach((items, s) => {
-            if (index !== null) {
-              if (index.toString() === s.toString()) {
-                orgServiceValue.serviceId = items._id;
-              }
+            if (items.name === service.name) {
+              orgServiceValue.serviceId = items._id;
             }
           });
         }
