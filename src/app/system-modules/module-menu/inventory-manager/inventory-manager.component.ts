@@ -45,7 +45,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
     this.loginEmployee = payload;
     const checkIn = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
-    this.checkedInStore = checkIn.store;
+    // this.checkedInStore = checkIn.store;
     if (Object.keys(checkIn).length > 0) {
     }
     if ((this.loginEmployee.storeCheckIn === undefined
@@ -58,14 +58,14 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
           itemr.isOn = true;
           itemr.lastLogin = new Date();
           isOn = true;
-          let checkingObject = { typeObject: itemr, type: 'store' };
-          this.employeeService.announceCheckIn({ typeObject: checkingObject, type: 'store' });
+          this.checkedInStore = { typeObject: itemr, type: 'store' };
+          this.employeeService.announceCheckIn({ typeObject: this.checkedInStore, type: 'store' });
           this.authFacadeService.getCheckedInEmployee
           // tslint:disable-next-line:no-shadowed-variable
           (this.loginEmployee._id, {storeCheckIn: this.loginEmployee.storeCheckIn}).then( payload => {
             this.loginEmployee = payload;
-            checkingObject = { typeObject: itemr, type: 'store' };
-            this.employeeService.announceCheckIn({ typeObject: checkingObject, type: 'store' });
+            this.checkedInStore = { typeObject: itemr, type: 'store' };
+            this.employeeService.announceCheckIn({ typeObject: this.checkedInStore, type: 'store' });
           });
         }
       });
@@ -78,8 +78,8 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
               // tslint:disable-next-line:no-shadowed-variable
               {storeCheckIn: this.loginEmployee.storeCheckIn}).then( payload => {
               this.loginEmployee = payload;
-              const checkingObject = { typeObject: itemr, type: 'store' };
-              this.employeeService.announceCheckIn(checkingObject);
+              this.checkedInStore = { typeObject: itemr, type: 'store' };
+              this.employeeService.announceCheckIn(this.checkedInStore);
             });
           }
 
