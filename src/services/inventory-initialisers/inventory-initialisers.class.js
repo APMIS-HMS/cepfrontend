@@ -31,31 +31,6 @@ class Service {
     });
     if (inventory.data.length > 0) {
       return {};
-      // let batches = data;
-      // let inventoryModel = inventory.data[0];
-      // let len = batches.batchItems.length - 1;
-      // for (let index = len; index >= 0; index--) {
-      //   inventoryModel.totalQuantity += batches.batchItems[index].quantity;
-      //   inventoryModel.availableQuantity += batches.batchItems[index].quantity;
-      //   inventoryModel.transactions.push(batches.batchItems[index]);
-      // }
-      // let updatedInventories = inventoriesService.patch(inventoryModel._id, {
-      //   totalQuantity: inventoryModel.totalQuantity,
-      //   availableQuantity: inventoryModel.availableQuantity,
-      //   transactions: inventoryModel.transactions
-      // });
-      // let product = productsService.get(payload.productId);
-      // if (product != null) {
-      //   product.isInventory = true;
-      //   let updatedProduct = productsService.update(product._id, {
-      //     isInventory: product.isInventory
-      //   });
-      //   let res = {
-      //     inventory: updatedInventories,
-      //     product: updatedProduct
-      //   }
-      //   return res;
-      // }
     } else {
       let service = {};
       let index = null;
