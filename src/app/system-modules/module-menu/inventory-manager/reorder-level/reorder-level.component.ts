@@ -242,7 +242,7 @@ export class ReorderLevelComponent implements OnInit {
           this.employeeService.update(this.loginEmployee).then(payload => {
             this.loginEmployee = payload;
           },err=>{
-            console.log(err);
+            // console.log(err);
           });
         }
       });
