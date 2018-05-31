@@ -139,7 +139,6 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
           $sort: { updatedAt: -1 }
         }
       }).then(res => {
-        console.log(res);
         this.inventoryLoading = false;
         this.inventoryCount = res.total;
         this.inventories = res.data;
@@ -150,7 +149,6 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
 
   getRequisitions() {
     let storeId = this.checkingStore.storeId;
-    console.log(this.checkingStore);
     if (storeId === undefined) {
       storeId = this.checkingStore.typeObject.storeId
     }
@@ -160,7 +158,6 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
         destinationStoreId: storeId
       }
     }).then(payload => {
-      console.log(payload);
       this.requisitions = payload.data;
     });
   }
@@ -185,7 +182,6 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
       this.productRequisitionService.find({
         query: { facilityId: this.selectedFacility._id, destinationStoreId: this.checkingStore.storeId, $sort: { updatedAt: -1 } }
       }).then(res => {
-        console.log(res);
         this.transferLoading = false;
         if (!!res.data && res.data.length > 0) {
           this.transferCount = res.total;
@@ -197,7 +193,6 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
 
   getTransferStatus() {
     this.inventoryTransferStatusService.findAll().subscribe(payload => {
-      console.log(payload);
       this.transferStatuses = payload.data;
       this.transferStatuses.forEach((item, i) => {
         if (item.name === 'Completed') {
