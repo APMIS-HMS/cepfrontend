@@ -241,8 +241,8 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.loginEmployee.consultingRoomCheckIn !== undefined) {
-      this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
         if (itemr.isDefault === true && itemr.isOn === true) {
           itemr.isOn = false;
           this._employeeService.update(this.loginEmployee).then(payload => {

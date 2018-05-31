@@ -33,6 +33,8 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
   workSpace: any;
   selectedFacility: Facility = <Facility>{};
   checkedInStore: any;
+  checkingStore: any;
+  subscription: any = <any>{};
 
   constructor(
     private _inventoryEventEmitter: InventoryEmitterService,
@@ -42,12 +44,21 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     private locker: CoolLocalStorage, private workSpaceService: WorkSpaceService) {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
+    this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
+      if (!!res) {
+        if (!!res.typeObject) {
+          this.checkingStore = res.typeObject;
+          console.log(this.checkingStore);
+        }
+      }
+    });
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
-      const checkIn = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+      this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+      console.log(this.checkingStore);
       // this.checkedInStore = checkIn.store;
-      if (Object.keys(checkIn).length > 0) {
-      }
+      // if (Object.keys(checkIn).length > 0) {
+      // }
       if ((this.loginEmployee.storeCheckIn === undefined
         || this.loginEmployee.storeCheckIn.length === 0)) {
         this.modal_on = true;
@@ -59,6 +70,7 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
             itemr.lastLogin = new Date();
             isOn = true;
             this.checkedInStore = { typeObject: itemr, type: 'store' };
+            console.log(this.checkedInStore);
             this.employeeService.announceCheckIn({ typeObject: this.checkedInStore, type: 'store' });
             this.authFacadeService.getCheckedInEmployee
               // tslint:disable-next-line:no-shadowed-variable
@@ -235,19 +247,29 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
     }
   }
 
+  
   ngOnDestroy() {
-    if (this.loginEmployee.consultingRoomCheckIn !== undefined) {
-      this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      console.log(this.loginEmployee.storeCheckIn);
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.storeObject === undefined) {
+          const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
+          itemr.storeObject = store_.storeObject;
+          console.log(itemr.storeObject);
+        }
         if (itemr.isDefault === true && itemr.isOn === true) {
           itemr.isOn = false;
-          this.authFacadeService.getCheckedInEmployee
-            (this.loginEmployee._id, { consultingRoomCheckIn: this.loginEmployee.consultingRoomCheckIn }).then(payload => {
-              this.loginEmployee = payload;
-            });
+          this.employeeService.update(this.loginEmployee).then(payload => {
+            this.loginEmployee = payload;
+          },err=>{
+            console.log(err);
+          });
         }
       });
     }
     this.employeeService.announceCheckIn(undefined);
+    this.locker.setObject('checkingObject', {});
+    this.subscription.unsubscribe();
   }
   pageInViewLoader(e) {
 
