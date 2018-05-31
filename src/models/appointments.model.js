@@ -6,7 +6,6 @@ const attendanceModel = require('../custom-models/attendance');
 const encounterModel = require('../custom-models/encounter');
 const clinicInteractionModel = require('../custom-models/clinic-interaction');
 
-
 module.exports = function(app) {
     const mongooseClient = app.get('mongooseClient');
     const { Schema } = mongooseClient;
