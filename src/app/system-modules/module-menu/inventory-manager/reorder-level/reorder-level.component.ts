@@ -248,7 +248,7 @@ export class ReorderLevelComponent implements OnInit {
       });
     }
     this.employeeService.announceCheckIn(undefined);
-    this.locker.setObject('checkingObject', {});
+    this._locker.setObject('checkingObject', {});
     this.subscription.unsubscribe();
   }
 
