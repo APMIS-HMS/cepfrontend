@@ -14,6 +14,7 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./inventory-manager.component.scss']
 })
 export class InventoryManagerComponent implements OnInit, OnDestroy {
+  
   pageInView: String = '';
   initializeNavMenu = false;
   inventoryNavMenu = false;
