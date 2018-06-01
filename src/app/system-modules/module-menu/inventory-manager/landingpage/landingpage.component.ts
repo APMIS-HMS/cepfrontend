@@ -29,7 +29,7 @@ export class LandingpageComponent implements OnInit {
   loginEmployee: Employee = <Employee>{};
   selectedProduct: any = <any>{};
   checkingStore: any = <any>{};
-  subscription:any=<any>{};
+  subscription: any = <any>{};
   loading: boolean = true;
 
   constructor(
@@ -43,11 +43,11 @@ export class LandingpageComponent implements OnInit {
     private employeeService: EmployeeService,
     private systemModuleService: SystemModuleService
   ) {
-    this.subscription = this.employeeService.checkInAnnounced$.subscribe(payload => {
-      if (payload !== undefined) {
-        if (payload.typeObject !== undefined) {
-          this.checkingStore = payload.typeObject;
-          if(this.checkingStore.storeId !== undefined){
+    this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
+      if (!!res) {
+        if (!!res.typeObject) {
+          this.checkingStore = res.typeObject;
+          if (!!this.checkingStore.storeId) {
             this.getInventories();
           }
         }
@@ -84,17 +84,20 @@ export class LandingpageComponent implements OnInit {
   }
 
   getInventories() {
+    console.log(this.checkingStore);
     if (this.checkingStore !== undefined) {
-      this.inventoryService.findList({
-        query:
-          { facilityId: this.selectedFacility._id, name: '', storeId: this.checkingStore.storeId }//, $limit: 200 }
-      })
-        .then(payload => {
-          this.loading = false;
-          this.inventories = payload.data.filter(x => x.totalQuantity > 0);
-        });
+      this.inventoryService.find({
+        query: {
+          facilityId: this.selectedFacility._id,
+          storeId: this.checkingStore.storeId,
+          availableQuantity: { $gt: 0 },
+          $sort: { updatedAt: -1 }
+        }
+      }).then(res => {
+        this.loading = false;
+        this.inventories = res.data;
+      });
     }
-
   }
   onSelectProduct(product) {
 
@@ -163,8 +166,12 @@ export class LandingpageComponent implements OnInit {
     });
   }
   ngOnDestroy() {
-    if (this.loginEmployee.consultingRoomCheckIn !== undefined) {
-      this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.storeObject === undefined) {
+          const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
+          itemr.storeObject = store_.storeObject;
+        }
         if (itemr.isDefault === true && itemr.isOn === true) {
           itemr.isOn = false;
           this.employeeService.update(this.loginEmployee).then(payload => {
