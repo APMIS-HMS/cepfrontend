@@ -77,11 +77,9 @@ export class StockTransferComponent implements OnInit {
     this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
 
     this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
-      console.log(res);
       if (!!res) {
         if (!!res.typeObject) {
           this.checkingStore = res.typeObject;
-          console.log(this.checkingStore);
           if (!!this.checkingStore.storeId) {
             this.getCurrentStoreDetails(this.checkingStore.storeId);
             this.newTransfer.transferBy = this.loginEmployee._id;
@@ -155,7 +153,6 @@ export class StockTransferComponent implements OnInit {
         $sort: { isSupplied: 1 }
       }
     }).then(payload => {
-      console.log(payload);
       this.requisitions = payload.data;
     });
   }
@@ -186,7 +183,14 @@ export class StockTransferComponent implements OnInit {
         this.newTransfer.inventorytransactionTypeId = this.selectedInventoryTransactionType._id;
       }
       storeResult.data.forEach((store) => {
-        if (store._id.toString() !== this.checkingStore.storeId.toString()) {
+        let _checkingStore: any = <any>{};
+        if (!!this.checkingStore.typeObject) {
+          _checkingStore = this.checkingStore.typeObject;
+        } else {
+          _checkingStore = this.checkingStore;
+        }
+        console.log(store._id, _checkingStore);
+        if (store._id.toString() !== _checkingStore.storeId.toString()) {
           this.stores.push(store);
         }
       })
@@ -445,7 +449,6 @@ export class StockTransferComponent implements OnInit {
       this.systemModuleService.announceSweetProxy('Please select destination store', 'error');
       this.superGroups.forEach((parent, i) => {
         parent.forEach((group, j) => {
-          console.log(group._id.toString(), value._id.toString())
           if (group._id.toString() === value._id.toString()) {
             group.checked = false;
           }

@@ -97,8 +97,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
           this.loginEmployee.personDetails.lastName +
           " " +
           this.loginEmployee.personDetails.firstName;
-        doc.facilityId = this.selectedMiniFacility._id;
-        doc.facilityName = this.selectedMiniFacility.name;
+        doc.facilityId = this.selectedFacility._id;
+        doc.facilityName = this.selectedFacility.name;
         (doc.patientId = this.patient._id),
           (doc.patientName =
             this.patient.personDetails.title +
@@ -110,12 +110,13 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         // Get the raw orderset data and send to different destination.
         this._listenAndSaveRawOrderSetData();
 
-        this.documentationService
-          .update(this.patientDocumentation)
-          .then(pay => {
+        this.documentationService.update(this.patientDocumentation).then(
+          pay => {
             this.getPersonDocumentation();
             this._notification("Success", "Documentation successfully saved!");
-          });
+          },
+          error => {}
+        );
       } else {
         Object.assign(this.draftDocument.document.body, payload);
         const doc = this.draftDocument;
@@ -130,20 +131,21 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         // Get the raw orderset data and send to different destination.
         this._listenAndSaveRawOrderSetData();
 
-        this.documentationService
-          .update(this.patientDocumentation)
-          .then(pay => {
+        this.documentationService.update(this.patientDocumentation).then(
+          pay => {
             this.draftDocument = undefined;
             this.hasSavedDraft = false;
             this.sharedService.announceFinishedSavingDraft(false);
             this.getPersonDocumentation();
             this._notification("Success", "Documentation successfully saved!");
-          });
+          },
+          eror => {}
+        );
       }
     });
 
     this.sharedService.newFormAnnounced$.subscribe((payload: any) => {
-      // this.selectedForm = payload.form;
+      this.selectedForm = payload.form;
       // this.draftDocument = undefined;
       // this.hasSavedDraft = false;
     });
