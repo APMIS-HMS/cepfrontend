@@ -45,9 +45,7 @@
 
 .header-secA {
     position: relative;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+    display: block;
 }
 
 .sideTab-header .patient-img .patient-img-wrap {
@@ -60,6 +58,7 @@
     align-items: center;
     border-radius: 100%;
     margin-right: 10px;
+    margin: 0 auto;
 }
 
 .sideTab-header .patient-img .patient-img-wrap img {
@@ -124,12 +123,17 @@
 }
 
 .headerDetail-wrap {
-    width: 230px;
+    width: 100%;
 }
 
 .patient-name {
     color: #2874A6;
     font-size: 1.6rem;
+}
+.head-minis{
+    background: rgba(0, 0, 0, 0.05);
+    border-top: 2px solid #fff;
+    border-bottom: 2px solid #fff;
 }
 
 .headDetail-group {
@@ -140,8 +144,11 @@
     line-height: 2;
     margin-bottom: 5px;
     .patient-apmisNo {
-        text-align: center;
+        text-align: right;
         width: 100%;
+        font-weight: bold;
+        font-size: 1.6rem;
+        color: #194985;
     }
 }
 
@@ -357,7 +364,8 @@ ul.topmenuwrap li i {
 }
 
 .modal_title {
-    color: #000;
+    text-align: center;
+    margin-top: 10px;
 }
 
 @media only screen and (max-width: 900px) {
