@@ -1,35 +1,37 @@
 @import "../../facility-page/facility-access-control/create-access/create-access.component.scss";
-
 .card {
     box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.16);
     width: 100%;
     margin: 10px;
 }
-.pack-item{
-    &:first-of-type{
+
+.pack-item {
+    &:first-of-type {
         border-bottom: solid 2px #0077cc !important;
         &:before {
-        content: "base";
-        padding: 5px;
-        color: white;
-        background: rgba(84, 209, 0, 0.3);
-        display: block;
-        position: absolute;
-        .mat-form-field{
-            visibility: hidden !important;
+            content: "base";
+            padding: 5px;
+            color: white;
+            background: rgba(84, 209, 0, 0.3);
+            display: block;
+            position: absolute;
+            .mat-form-field {
+                visibility: hidden !important;
             }
-        .pack-label{
-            visibility: hidden;
-            } 
+            .pack-label {
+                visibility: hidden;
+            }
         }
     }
 }
-.action-icon{
-    line-height: 60px; 
+
+.action-icon {
+    line-height: 60px;
     text-align: right;
     opacity: 0.7;
 }
-.button{
+
+.button {
     background: #0077cc;
     color: white;
     height: 30px;
@@ -41,10 +43,10 @@
     box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.16);
     margin: 10px;
 }
-.wrap{
+
+.wrap {
     width: 100%;
     box-sizing: border-box;
-    padding-left: 200px;
-    padding-right: 200px;
+    padding-left: 10px;
+    padding-right: 10px;
 }
-
