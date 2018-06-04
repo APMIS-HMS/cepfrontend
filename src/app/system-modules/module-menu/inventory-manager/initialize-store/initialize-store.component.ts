@@ -7,7 +7,7 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
-import { ProductService, InventoryInitialiserService } from '../../../../services/facility-manager/setup/index';
+import { ProductService, InventoryInitialiserService, FacilitiesServiceCategoryService } from '../../../../services/facility-manager/setup/index';
 
 @Component({
   selector: 'app-initialize-store',
@@ -20,8 +20,12 @@ export class InitializeStoreComponent implements OnInit {
   saveAlert: true;
   products: any;
   selectedProduct: any = <any>{};
+  selectedFacilityService: any = <any>{};
+  categories: any = <any>[];
+  selelctedCategoryId: any = <any>{};
   myForm: FormGroup;
   batchForm: FormGroup;
+  productServiceControl = new FormControl();
   ischeck: boolean;
   name: any;
   isProcessing = false;
@@ -44,7 +48,8 @@ export class InitializeStoreComponent implements OnInit {
     private _productService: ProductService,
     private _inventoryInitialiserService: InventoryInitialiserService,
     private authFacadeService: AuthFacadeService,
-    private systemModuleService: SystemModuleService) {
+    private systemModuleService: SystemModuleService,
+    private facilityServiceCategoryService: FacilitiesServiceCategoryService) {
   }
 
   ngOnInit() {
@@ -61,17 +66,29 @@ export class InitializeStoreComponent implements OnInit {
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe((por: any) => {
-        this._productService.find({
+        this.systemModuleService.on();
+        this._productService.findList({
           query: {
-            facilityId: this.selectedFacility._id, name:
-              { $regex: por, '$options': 'i' }
+            facilityId: this.selectedFacility._id,
+            name: por
           }
         }).then(payload => {
+          console.log(payload);
+          this.systemModuleService.off();
           this.products = payload.data;
         }, err => {
+          this.systemModuleService.off();
         });
-      })
+      });
+
+    this.productServiceControl.valueChanges.subscribe(value => {
+      this.selelctedCategoryId = value;
+    });
+
+
     this.getProducts();
+    this.getServiceCategories();
+
   }
 
 
@@ -85,7 +102,7 @@ export class InitializeStoreComponent implements OnInit {
       return this._fb.group({
         batchNumber: ['', Validators.required],
         quantity: ['', Validators.required],
-        config: this.initProductConfig(this.selectedProduct.productConfigObject),
+        config: this.initProductConfig(this.selectedProduct.packSizes),
         expiryDate: [new Date()]
       });
     } else {
@@ -99,6 +116,7 @@ export class InitializeStoreComponent implements OnInit {
   }
 
   addProduct(product: any) {
+    console.log(product);
     this.isEnable = true;
     this.isItemselected = false;
     this.myForm = this._fb.group({
@@ -107,11 +125,11 @@ export class InitializeStoreComponent implements OnInit {
     });
     this.selectedProduct = product;
     const control = <FormArray>this.myForm.controls['initproduct'];
-    if (product.productConfigObject !== undefined) {
+    if (product.packSizes !== undefined) {
       let prodObj = this._fb.group({
         batchNumber: ['', Validators.required],
         quantity: ['', Validators.required],
-        config: this.initProductConfig(product.productConfigObject),
+        config: this.initProductConfig(product.packSizes),
         expiryDate: [new Date()]
       });
 
@@ -130,6 +148,7 @@ export class InitializeStoreComponent implements OnInit {
     }
   }
   initProductConfig(config) {
+    console.log(config);
     let frmArray = new FormArray([])
     frmArray.push(new FormGroup({
       size: new FormControl(0),
@@ -145,19 +164,21 @@ export class InitializeStoreComponent implements OnInit {
     const control = <FormArray>this.myForm.controls['initproduct'];
     control.removeAt(i);
     let indx = i;
-      if(i > 0){
-        indx = i-1;
-      }
-    this.onPackageSize(indx,(<FormArray>this.myForm.controls['initproduct']).controls)
+    if (i > 0) {
+      indx = i - 1;
+    }
+    this.onPackageSize(indx, (<FormArray>this.myForm.controls['initproduct']).controls)
   }
 
   getProducts() {
-    this._productService.find({ query: { loginFacilityId: this.selectedFacility._id } }).then(payload => {
+    this.systemModuleService.on();
+    this._productService.findProductConfigs({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
+      this.systemModuleService.off();
       this.products = payload.data;
     });
   }
 
-  onPackageSize(i,packs) {
+  onPackageSize(i, packs) {
     packs[i].controls.quantity.setValue(0);
     packs[i].controls.config.controls.forEach(element => {
       packs[i].controls.quantity.setValue(packs[i].controls.quantity.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
@@ -181,13 +202,24 @@ export class InitializeStoreComponent implements OnInit {
     this.onPackageSize(index, form);
   }
 
+  getServiceCategories() {
+    this.facilityServiceCategoryService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
+      if (payload.data.length > 0) {
+        this.selectedFacilityService = payload.data[0];
+        this.categories = payload.data[0].categories;
+      }
+    });
+  }
+
 
   save(valid, value, product) {
     if (valid) {
       const batches = {
         'batchItems': [],
         'product': {},
-        'storeId': 0
+        'storeId': 0,
+        'facilityServiceId': this.selectedFacilityService._id,
+        'categoryId': this.selelctedCategoryId
       }
       value.initproduct.forEach(element => {
         element.availableQuantity = element.quantity;
@@ -215,10 +247,11 @@ export class InitializeStoreComponent implements OnInit {
           }
         }
       }, error => {
+        console.log(error);
         const errMsg = 'There was an error while initialising product, please try again!';
         this.systemModuleService.announceSweetProxy(errMsg, 'error');
-        this.isEnable = false;
-        this.isProcessing = false;
+        this.isEnable = true;
+        this.isItemselected = false;
       });
     }
   }

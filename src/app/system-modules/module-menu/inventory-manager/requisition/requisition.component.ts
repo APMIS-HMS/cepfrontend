@@ -23,7 +23,7 @@ export class RequisitionComponent implements OnInit {
   public frm_purchaseOrder: FormGroup;
 
   suppliers: any[] = [];
-
+  isProcessing = false;
   productTableForm: FormGroup;
   checkAll: FormControl = new FormControl();
   zeroQuantity: FormControl = new FormControl();
@@ -49,6 +49,7 @@ export class RequisitionComponent implements OnInit {
 
   selectedFacility: Facility = <Facility>{};
   checkingObject: any = <any>{};
+  subscription: any = <any>{};
   loginEmployee: Employee = <Employee>{};
   constructor(
     private formBuilder: FormBuilder,
@@ -63,31 +64,21 @@ export class RequisitionComponent implements OnInit {
     private systemModuleService: SystemModuleService,
     private inventoryService: InventoryService
   ) {
-
-    this.employeeService.checkInAnnounced$.subscribe(payload => {
-      if (payload !== undefined) {
-        this.stores = [];
-        if (payload.typeObject !== undefined) {
-          this.checkingObject = payload.typeObject;
-          this.getStores();
-        }
-      }
-    });
-  }
-
-  ngOnInit() {
     this._inventoryEventEmitter.setRouteUrl('Requisition');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     const auth: any = this.locker.getObject('auth');
-    this.checkBoxLabel = [{ name: 'All', checked: true }, { name: 'Out of stock', checked: false },
-    { name: 'Re-order Level', checked: false }];
-    this.frm_purchaseOrder = this.formBuilder.group({
-      product: ['', [<any>Validators.required]],
-      supplier: ['', [<any>Validators.required]],
-      deliveryDate: [this.now, [<any>Validators.required]],
-      desc: ['', [<any>Validators.required]],
+
+    this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
+      if (!!res) {
+        if (!!res.typeObject) {
+          this.checkingObject = res.typeObject;
+          if (!!this.checkingObject.storeId) {
+            this.getStores();
+          this.getAllProducts('', this.checkingObject.storeId);
+          }
+        }
+      }
     });
-    this.addNewProductTables();
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
       this.checkingObject = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
@@ -102,29 +93,75 @@ export class RequisitionComponent implements OnInit {
           this.loginEmployee = results[0];
         });
       this.getStores();
-      this.getAllProducts();
+      let storeId = this.checkingObject.storeId;
+      if (storeId === undefined) {
+        storeId = this.checkingObject.typeObject.storeId
+      }
+      this.getAllProducts('', storeId);
       this.getStrengths();
     });
   }
 
+  ngOnInit() {
+    
+    this.checkBoxLabel = [{ name: 'All', checked: true }, { name: 'Out of stock', checked: false },
+    { name: 'Re-order Level', checked: false }];
+    this.frm_purchaseOrder = this.formBuilder.group({
+      product: ['', [<any>Validators.required]],
+      supplier: ['', [<any>Validators.required]],
+      deliveryDate: [this.now, [<any>Validators.required]],
+      desc: ['', [<any>Validators.required]],
+    });
+    this.addNewProductTables();
+    
+    this.searchControl.valueChanges
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        this.checkBoxLabel[0].checked = false;
+        let storeId = this.checkingObject.storeId;
+        if (storeId === undefined) {
+          storeId = this.checkingObject.typeObject.storeId
+        }
+        this.getAllProducts(value, storeId);
+      });
+  }
+
+
+
   getStores() {
-    this.stores = [];
+    this.stores = JSON.parse(JSON.stringify([]));
     this.storeService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload =>
       payload.data.forEach((item, i) => {
         if (item._id !== this.checkingObject.storeId) {
           this.stores.push(item);
         }
       }))
-    }
+  }
 
-  getAllProducts() {
+  getAllProducts(name, storeId) {
     this.systemModuleService.on();
-    this.productService.find({ query: { loginFacilityId: this.selectedFacility._id, $limit: false } }).then(payload => {
-      this.products = payload.data;
-      this.getProductTables(this.products);
+    this.inventoryService.findList({
+      query: {
+        facilityId: this.selectedFacility._id,
+        name: name,
+        storeId: storeId
+      }
+    }).then(payload => {
       this.systemModuleService.off();
+      if (payload.data.length > 0) {
+        this.products = [];
+        this.getProductTables(this.products);
+        payload.data.forEach((item, i) => {
+          this.products.push(item.productObject);
+        });
+        this.getProductTables(this.products);
+      } else {
+        this.superGroups = [];
+      }
     });
   }
+
   getProductTables(products: any[]) {
     this.productTables = products;
     this.superGroups = [];
@@ -135,14 +172,14 @@ export class RequisitionComponent implements OnInit {
 
       if (this.superGroups.length < 1) {
         group = [];
-        let obj = <any>{ checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id, product: this.productTables[i] };
+        let obj = <any>{ checked: false, name: this.productTables[i].name, _id: this.productTables[i].id, product: this.productTables[i] };
         obj = this.mergeTable(obj);
         group.push(obj);
         this.superGroups.push(group);
       } else {
         if (counter < 1) {
           let obj = <any>{
-            checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id,
+            checked: false, name: this.productTables[i].name, _id: this.productTables[i].id,
             product: this.productTables[i]
           };
           obj = this.mergeTable(obj);
@@ -151,7 +188,7 @@ export class RequisitionComponent implements OnInit {
         } else {
           counter = 0;
           let obj = <any>{
-            checked: false, name: this.productTables[i].name, _id: this.productTables[i]._id,
+            checked: false, name: this.productTables[i].name, _id: this.productTables[i].id,
             product: this.productTables[i]
           };
           obj = this.mergeTable(obj);
@@ -193,26 +230,26 @@ export class RequisitionComponent implements OnInit {
   }
   onProductCheckChange(event, value) {
     value.checked = event.checked;
-
     // let storeId = this.frm_purchaseOrder.controls['store'].value;
-
     if (event.checked === true) {
       if (this.productsControl.value !== null && this.productsControl.value !== undefined) {
         (<FormArray>this.productTableForm.controls['productTableArray'])
           .push(
-          this.formBuilder.group({
-            product: [value.name, [<any>Validators.required]],
-            qty: [0, [<any>Validators.required]],
-            config: this.initProductConfig(value.product.productConfigObject),
-            readOnly: [false],
-            productObject: [value.product],
-            id: [value._id]
-          })
+            this.formBuilder.group({
+              product: [value.name, [<any>Validators.required]],
+              qty: [0, [<any>Validators.required]],
+              config: this.initProductConfig(value.product.productConfigObject),
+              readOnly: [false],
+              productObject: [value.product],
+              id: [value._id]
+            })
           );
       } else {
         value.checked = false;
+        value = JSON.parse(JSON.stringify(value));
         this.errMsg = 'Please select the destination store';
         this.mainErr = false;
+        this.systemModuleService.announceSweetProxy(this.errMsg, 'error');
       }
     } else {
       let indexToRemove = 0;
@@ -229,11 +266,11 @@ export class RequisitionComponent implements OnInit {
         (<FormArray>this.productTableForm.controls['productTableArray']).controls.splice(indexToRemove, 1);
       }
       let indx = indexToRemove;
-      if(indexToRemove > 0){
-        indx = indexToRemove-1;
+      if (indexToRemove > 0) {
+        indx = indexToRemove - 1;
       }
-      
-      this.onPackageSize(indx,(<FormArray>this.productTableForm.controls['productTableArray']).controls)
+
+      this.onPackageSize(indx, (<FormArray>this.productTableForm.controls['productTableArray']).controls)
     }
   }
 
@@ -252,14 +289,19 @@ export class RequisitionComponent implements OnInit {
   }
 
   getBaseProductConfig(form) {
-    return form.controls.config.controls[0].value.packsizes.find(x=>x.isBase === true).name;
+    return form.controls.config.controls[0].value.packsizes.find(x => x.isBase === true).name;
   }
 
-  onPackageSize(i,packs) {
-    packs[i].controls.qty.setValue(0);
-    packs[i].controls.config.controls.forEach(element => {
-      packs[i].controls.qty.setValue(packs[i].controls.qty.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
-    });
+  onPackageSize(i, packs) {
+    try {
+      packs[i].controls.qty.setValue(0);
+      packs[i].controls.config.controls.forEach(element => {
+        packs[i].controls.qty.setValue(packs[i].controls.qty.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
+      });
+    } catch (err) {
+
+    }
+
   }
 
   compareItems(l1: any, l2: any) {
@@ -300,16 +342,24 @@ export class RequisitionComponent implements OnInit {
       });
     });
   }
+
   save() {
-    const requisition: Requisition = <Requisition>{};
+    this.systemModuleService.on();
+    this.isProcessing = true;
+    let storeId = this.checkingObject.storeId;
+    if (storeId === undefined) {
+      storeId = this.checkingObject.typeObject.storeId
+    }
+    const requisition: any = <any>{};
     requisition.employeeId = this.loginEmployee._id;
     requisition.facilityId = this.selectedFacility._id;
-    requisition.storeId = this.checkingObject.storeId;
+    requisition.storeId = storeId;
+    requisition.destinationStoreId = this.productsControl.value;
     requisition.comment = this.desc.value;
     requisition.products = [];
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
-      const requisitionProduct: RequisitionProduct = <RequisitionProduct>{};
-      requisitionProduct.productId = item.value.productObject._id;
+      let requisitionProduct: any = <any>{};
+      requisitionProduct.productId = item.value.productObject.id;
       requisitionProduct.qty = item.value.qty;
       requisition.products.push(requisitionProduct);
     });
@@ -318,8 +368,12 @@ export class RequisitionComponent implements OnInit {
       this.addNewProductTables();
       this.desc.reset();
       this.resetGroups();
+      this.isProcessing = false;
+      this.systemModuleService.off();
     }, err => {
       this.systemModuleService.announceSweetProxy('Requisition failed', 'error');
+      this.isProcessing = false;
+      this.systemModuleService.off();
     });
   }
 
@@ -353,24 +407,80 @@ export class RequisitionComponent implements OnInit {
 
   }
 
+  getProductsOutofStockInventory(storeId) {
+    this.systemModuleService.on();
+    this.inventoryService.find({
+      query: {
+        facilityId: this.selectedFacility._id,
+        storeId: storeId,
+        availableQuantity: 0
+      }
+    }).then(payload => {
+      this.systemModuleService.off();
+      if (payload.data.length > 0) {
+        this.products = [];
+        this.getProductTables(this.products);
+        payload.data.forEach((item, i) => {
+          if (item.productObject !== undefined) {
+            this.products.push(item.productObject);
+          }
+        });
+        this.getProductTables(this.products);
+      } else {
+        this.superGroups = [];
+      }
+    });
+  }
+
+  getProductsReorderInventory(storeId) {
+    this.systemModuleService.on();
+    this.inventoryService.find({
+      query: {
+        facilityId: this.selectedFacility._id,
+        storeId: storeId,
+        $sort: { createdAt: -1 }
+      }
+    }).then(payload => {
+      this.systemModuleService.off();
+      if (payload.data.length > 0) {
+        let reOrderProducts = payload.data.filter(x => x.reorder !== undefined && x.availableQuantity <= x.reorder);
+        this.products = [];
+        this.getProductTables(this.products);
+        reOrderProducts.forEach((item, i) => {
+          if (item.productObject !== undefined) {
+            this.products.push(item.productObject);
+          }
+        });
+        this.getProductTables(this.products);
+      } else {
+        this.superGroups = [];
+      }
+    });
+  }
+
   onChecked(e, item, checkBoxLabel, i) {
     item.checked = e.checked;
     this.products = [];
+
     this.getProductTables(this.products);
     if (e.checked) {
+      let storeId = this.checkingObject.storeId;
+      if (storeId === undefined) {
+        storeId = this.checkingObject.typeObject.storeId
+      }
       if (i === 0) {
         checkBoxLabel[1].checked = false;
         checkBoxLabel[2].checked = false;
-        this.getAllProducts();
+        this.getAllProducts('', storeId);
       } else if (i === 1) {
         checkBoxLabel[0].checked = false;
         checkBoxLabel[2].checked = false;
-        this.getInventories();
+        this.getProductsOutofStockInventory(storeId);
       } else if (i === 2) {
         checkBoxLabel[1].checked = false;
         checkBoxLabel[0].checked = false;
         this.products = [];
-        this.getProductTables(this.products);
+        this.getProductsReorderInventory(storeId);
       }
     } else {
       checkBoxLabel[0].checked = false;
@@ -379,6 +489,30 @@ export class RequisitionComponent implements OnInit {
       this.products = [];
       this.getProductTables(this.products);
     }
+  }
+
+  ngOnDestroy() {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      console.log(this.loginEmployee.storeCheckIn);
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.storeObject === undefined) {
+          const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
+          itemr.storeObject = store_.storeObject;
+          console.log(itemr.storeObject);
+        }
+        if (itemr.isDefault === true && itemr.isOn === true) {
+          itemr.isOn = false;
+          this.employeeService.update(this.loginEmployee).then(payload => {
+            this.loginEmployee = payload;
+          },err=>{
+            console.log(err);
+          });
+        }
+      });
+    }
+    this.employeeService.announceCheckIn(undefined);
+    this.locker.setObject('checkingObject', {});
+    this.subscription.unsubscribe();
   }
 
   // toggleProductConfig(index){

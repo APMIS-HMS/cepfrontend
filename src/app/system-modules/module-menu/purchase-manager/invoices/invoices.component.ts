@@ -23,6 +23,7 @@ export class InvoicesComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
   selectedProduct: any = <any>{};
   checkingStore: any = <any>{};
+  subscription: any = <any>{};
   loginEmployee: Employee = <Employee>{};
   constructor(
     private _purchaseEventEmitter: PurchaseEmitterService,
@@ -35,13 +36,14 @@ export class InvoicesComponent implements OnInit {
     private route: ActivatedRoute,
     private systemModuleService: SystemModuleService
   ) {
-    this.employeeService.checkInAnnounced$.subscribe(payload => {
-      if (payload !== undefined) {
-        this.checkingStore = payload;
-        if (payload.typeObject !== undefined) {
-          this.checkingStore = payload.typeObject;
+    this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
+      if (!!res) {
+        if (!!res.typeObject) {
+          this.checkingStore = res.typeObject;
+          if (!!this.checkingStore.storeId) {
+            this.getInvoices();
+          }
         }
-        this.getInvoices();
       }
     });
   }
@@ -50,6 +52,7 @@ export class InvoicesComponent implements OnInit {
     this._purchaseEventEmitter.setRouteUrl('Purchase Invoices');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.checkingStore = payload;
       this.checkingStore = payload.storeCheckIn.find(x => x.isOn === true);
       this.getInvoices();
       this.getSuppliers();
@@ -73,19 +76,23 @@ export class InvoicesComponent implements OnInit {
   getInvoices() {
     this.systemModuleService.on();
     if (this.checkingStore !== null) {
-      this.invoiceService.findInvoices({
+      this.invoiceService.find({
         query: {
           facilityId: this.selectedFacility._id,
-          storeId: this.checkingStore.storeId, $limit: 100
+          storeId: this.checkingStore.storeId,
+          $sort: { createdAt: -1 }
         }
       }).then(payload => {
         this.invoices = payload.data;
         this.systemModuleService.off();
+      }, error => {
+
       });
     }
   }
   slideInvoiceDetailsToggle(value, event) {
     this.selectedProduct = value;
+    console.log(this.selectedProduct);
     if (this.selectedProduct !== undefined) {
       this.invoiceService.get(this.selectedProduct._id, {}).then(payload => {
       });
@@ -101,7 +108,31 @@ export class InvoicesComponent implements OnInit {
     this.router.navigate(['/dashboard/purchase-manager/purchase-entry-edit', invoice._id]);
   }
 
-  openSearch(){
+  ngOnDestroy() {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      console.log(this.loginEmployee.storeCheckIn);
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.storeObject === undefined) {
+          const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
+          itemr.storeObject = store_.storeObject;
+          console.log(itemr.storeObject);
+        }
+        if (itemr.isDefault === true && itemr.isOn === true) {
+          itemr.isOn = false;
+          this.employeeService.update(this.loginEmployee).then(payload => {
+            this.loginEmployee = payload;
+          },err=>{
+            console.log(err);
+          });
+        }
+      });
+    }
+    this.employeeService.announceCheckIn(undefined);
+    this.locker.setObject('checkingObject', {});
+    this.subscription.unsubscribe();
+  }
+
+  openSearch() {
     this.searchOpen = !this.searchOpen;
   }
 }

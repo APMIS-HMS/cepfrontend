@@ -21,6 +21,8 @@ import {
 import { FacilitypageHomepageComponent } from "./facilitypage-homepage/facilitypage-homepage.component";
 import { EmpManagerComponent } from "./employees/emp-manager.component";
 import { EditUserComponent } from "./employees/employeemanager-detailpage/edit-user/edit-user.component";
+import { BulkUploadComponent } from './bulk-upload/bulk-upload.component';
+
 
 const FACLITYPAGE_ROUTES: Routes = [
   {
@@ -94,6 +96,11 @@ const FACLITYPAGE_ROUTES: Routes = [
       {
         path: "access",
         component: AccessRoleDetailsComponent,
+        canActivate: [CanActivateViaAuthGuardCompleteFacilityService]
+      },
+      {
+        path: "patient-bulk-upload",
+        component: BulkUploadComponent,
         canActivate: [CanActivateViaAuthGuardCompleteFacilityService]
       }
     ]

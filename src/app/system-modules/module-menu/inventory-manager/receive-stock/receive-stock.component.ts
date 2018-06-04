@@ -1,6 +1,7 @@
 import { SystemModuleService } from './../../../../services/module-manager/setup/system-module.service';
 import { Component, OnInit } from '@angular/core';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
+import { FormGroup, FormBuilder, Validators, FormArray, FormControl } from '@angular/forms';
 // tslint:disable-next-line:max-line-length
 import {
   InventoryService, InventoryTransferService, InventoryTransferStatusService, InventoryTransactionTypeService,
@@ -24,9 +25,12 @@ export class ReceiveStockComponent implements OnInit {
   slideDetails = false;
   clickslide = false;
   user: any = <any>{};
+  loading = false;
+  subscription: any = <any>{};
   selectedFacility: Facility = <Facility>{};
   selectedInventoryTransfer: any = <any>{};
   checkingStore: any = <any>{};
+  searchControl = new FormControl();
   loginEmployee: Employee = <Employee>{};
   receivedTransfers: InventoryTransfer[] = [];
   transferStatuses: InventoryTransferStatus[] = [];
@@ -39,24 +43,24 @@ export class ReceiveStockComponent implements OnInit {
     private inventoryTransferStatusService: InventoryTransferStatusService, private route: ActivatedRoute,
     private locker: CoolLocalStorage, private facilityService: FacilitiesService, private employeeService: EmployeeService,
     private systemModuleService: SystemModuleService,
+    private _locker: CoolLocalStorage,
     private authFacadeService: AuthFacadeService
   ) {
-    this.employeeService.checkInAnnounced$.subscribe(payload => {
+    this.user = this.locker.getObject('auth');
+    this._inventoryEventEmitter.setRouteUrl('Receive Stock');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    
+    this.subscription = this.employeeService.checkInAnnounced$.subscribe(payload => {
       if (payload !== undefined) {
         if (payload.typeObject !== undefined) {
           this.checkingStore = payload.typeObject;
-          if (this.checkingStore.storeId !== undefined) {
+          if(this.checkingStore.storeId !== undefined){
             this.getTransfers();
           }
         }
       }
     });
-  }
 
-  ngOnInit() {
-    this.user = this.locker.getObject('auth');
-    this._inventoryEventEmitter.setRouteUrl('Receive Stock');
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
       this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
@@ -69,28 +73,56 @@ export class ReceiveStockComponent implements OnInit {
       this.getTransfers();
       this.getTransferStatus();
     });
+  }
+
+  ngOnInit() {
+    this.searchControl.valueChanges
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        this.loading = true;
+        this.systemModuleService.on();
+        this.inventoryTransferService.findTransferHistories({
+          query: {
+            facilityId: this.selectedFacility._id,
+            storeId: this.checkingStore.storeId,
+            isDestination: true,
+            name: value
+          }
+        }).then(payload => {
+          this.loading = false;
+          this.systemModuleService.off();
+          this.receivedTransfers = payload.data;
+        }, error => {
+          this.loading = false;
+          this.systemModuleService.off();
+        });
+      });
 
   }
 
-  openSearch(){
+
+
+  openSearch() {
     this.searchOpen = !this.searchOpen;
   }
 
   getTransfers() {
     if (this.checkingStore !== undefined) {
+      this.loading = true;
       this.systemModuleService.on();
-      this.inventoryTransferService.findTransferHistories({
+      this.inventoryTransferService.find({
         query: {
           facilityId: this.selectedFacility._id,
           destinationStoreId: this.checkingStore.storeId,
-          limit: 200
+          $sort: { createdAt: -1 }
         }
-      }).then(res => {
+      }).then(payload => {
+        this.loading = false;
         this.systemModuleService.off();
-        if (res.data.length > 0) {
-          this.receivedTransfers = res.data;
-        }
+        this.receivedTransfers = payload.data;
       }, error => {
+        this.loading = false;
         this.systemModuleService.off();
       });
     }
@@ -116,7 +148,7 @@ export class ReceiveStockComponent implements OnInit {
   slideDetailsShow(receive, reload = true) {
     this.systemModuleService.on();
     if (reload === true) {
-      this.inventoryTransferService.getItemDetails(receive._id, {}).subscribe(payload => {
+      this.inventoryTransferService.get(receive._id, {}).then(payload => {
         if (payload.storeId !== undefined) {
           const that = this;
           this.selectedInventoryTransfer = payload;
@@ -199,6 +231,30 @@ export class ReceiveStockComponent implements OnInit {
       return this.rejectedInventoryStatus.name;
     }
     return 'Pending';
+  }
+
+  ngOnDestroy() {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      console.log(this.loginEmployee.storeCheckIn);
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.storeObject === undefined) {
+          const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
+          itemr.storeObject = store_.storeObject;
+          console.log(itemr.storeObject);
+        }
+        if (itemr.isDefault === true && itemr.isOn === true) {
+          itemr.isOn = false;
+          this.employeeService.update(this.loginEmployee).then(payload => {
+            this.loginEmployee = payload;
+          },err=>{
+            console.log(err);
+          });
+        }
+      });
+    }
+    this.employeeService.announceCheckIn(undefined);
+    this.locker.setObject('checkingObject', {});
+    this.subscription.unsubscribe();
   }
 
   private _notification(type: String, text: String): void {

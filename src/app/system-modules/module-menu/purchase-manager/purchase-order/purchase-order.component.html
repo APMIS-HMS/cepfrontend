@@ -93,8 +93,12 @@
                                         <th>Qty</th>
                                     </tr>
                                     <tr *ngFor="let product of selectedOrder.orderedProducts">
-                                        <td>{{product.productObject?.name}}</td>
-                                        <td>{{product.quantity}}</td>
+                                        <td>{{product.productObject?.data.name}}</td>
+                                        <td>
+                                            <ul *ngFor="let item of getPackItemNames(product)">
+                                                <li>{{item?.quantity}}-{{item?.packName}}</li>
+                                            </ul>
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>

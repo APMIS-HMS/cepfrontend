@@ -1,22 +1,37 @@
-import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { SystemModuleService } from "app/services/module-manager/setup/system-module.service";
+import { Component, Input, OnDestroy, OnInit } from "@angular/core";
+import { CoolLocalStorage } from "angular2-cool-storage";
+import { UUID } from "angular2-uuid";
+import { AuthFacadeService } from "app/system-modules/service-facade/auth-facade.service";
+import { Observable } from "rxjs/Observable";
+import { Subscription } from "rxjs/Subscription";
+
 import {
-  FormsService, FacilitiesService, DocumentationService, LaboratoryRequestService, BillingService, PrescriptionService,
-  PrescriptionPriorityService
-} from '../../../../../services/facility-manager/setup/index';
-import { FormTypeService } from '../../../../../services/module-manager/setup/index';
+  BillIGroup,
+  BillItem,
+  Documentation,
+  Employee,
+  Facility,
+  InvestigationModel,
+  Patient,
+  PatientDocumentation
+} from "../../../../../models/index";
 import {
-  Facility, Patient, Employee, Documentation, PatientDocumentation, InvestigationModel, BillIGroup, BillItem
-} from '../../../../../models/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Observable } from 'rxjs/Observable';
-import { SharedService } from '../../../../../shared-module/shared.service';
-import { Subscription } from 'rxjs/Subscription';
-import { UUID } from 'angular2-uuid';
+  BillingService,
+  DocumentationService,
+  FacilitiesService,
+  FormsService,
+  LaboratoryRequestService,
+  PrescriptionPriorityService,
+  PrescriptionService
+} from "../../../../../services/facility-manager/setup/index";
+import { FormTypeService } from "../../../../../services/module-manager/setup/index";
+import { SharedService } from "../../../../../shared-module/shared.service";
+
 @Component({
-  selector: 'app-documentation',
-  templateUrl: './documentation.component.html',
-  styleUrls: ['./documentation.component.scss']
+  selector: "app-documentation",
+  templateUrl: "./documentation.component.html",
+  styleUrls: ["./documentation.component.scss"]
 })
 export class DocumentationComponent implements OnInit, OnDestroy {
   @Input() patient;
@@ -33,6 +48,9 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   showDoc = true;
   showOrderSet = false;
 
+  expanded = false;
+  expandedChild = false;
+
   selectedFacility: Facility = <Facility>{};
   selectedMiniFacility: Facility = <Facility>{};
   loginEmployee: any = <any>{};
@@ -48,51 +66,64 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   hasSavedDraft = false;
   draftDocument: any;
   constructor(
-    private formService: FormsService, private locker: CoolLocalStorage,
+    private formService: FormsService,
+    private locker: CoolLocalStorage,
     private documentationService: DocumentationService,
-    private formTypeService: FormTypeService, private sharedService: SharedService,
+    private formTypeService: FormTypeService,
+    private sharedService: SharedService,
     private facilityService: FacilitiesService,
     private requestService: LaboratoryRequestService,
     private billingService: BillingService,
     private _prescriptionService: PrescriptionService,
     private authFacadeService: AuthFacadeService,
     private _priorityService: PrescriptionPriorityService,
+    private systemModuleService: SystemModuleService
   ) {
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
     });
 
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.selectedMiniFacility = <Facility>this.locker.getObject('miniFacility');
+    this.selectedFacility = <Facility>this.locker.getObject("selectedFacility");
+    this.selectedMiniFacility = <Facility>this.locker.getObject("miniFacility");
 
     this.subscription = this.sharedService.submitForm$.subscribe(payload => {
       if (!this.hasSavedDraft) {
         const doc: PatientDocumentation = <PatientDocumentation>{};
-        doc.document = {
-          documentType: this.selectedForm,
-          body: payload,
-        };
+        doc.document = { documentType: this.selectedForm, body: payload };
 
-        doc.createdBy = this.loginEmployee.personDetails.title
-          + ' ' + this.loginEmployee.personDetails.lastName + ' ' + this.loginEmployee.personDetails.firstName;
-        doc.facilityId = this.selectedMiniFacility._id;
-        doc.facilityName = this.selectedMiniFacility.name;
-        doc.patientId = this.patient._id,
-          doc.patientName = this.patient.personDetails.title
-          + ' ' + this.patient.personDetails.lastName + ' ' + this.patient.personDetails.firstName;
+        doc.createdBy =
+          this.loginEmployee.personDetails.title +
+          " " +
+          this.loginEmployee.personDetails.lastName +
+          " " +
+          this.loginEmployee.personDetails.firstName;
+        doc.facilityId = this.selectedFacility._id;
+        doc.facilityName = this.selectedFacility.name;
+        (doc.patientId = this.patient._id),
+          (doc.patientName =
+            this.patient.personDetails.title +
+            " " +
+            this.patient.personDetails.lastName +
+            " " +
+            this.patient.personDetails.firstName);
         this.patientDocumentation.documentations.push(doc);
         // Get the raw orderset data and send to different destination.
         this._listenAndSaveRawOrderSetData();
 
-        this.documentationService.update(this.patientDocumentation).then(pay => {
-          this.getPersonDocumentation();
-          this._notification('Success', 'Documentation successfully saved!');
-        });
+        this.documentationService.update(this.patientDocumentation).then(
+          pay => {
+            this.getPersonDocumentation();
+            this._notification("Success", "Documentation successfully saved!");
+          },
+          error => {}
+        );
       } else {
         Object.assign(this.draftDocument.document.body, payload);
         const doc = this.draftDocument;
-        doc.documentationStatus = 'Completed';
-        const draftIndex = this.patientDocumentation.documentations.findIndex(x => x.apmisGuid === this.draftDocument.apmisGuid);
+        doc.documentationStatus = "Completed";
+        const draftIndex = this.patientDocumentation.documentations.findIndex(
+          x => x.apmisGuid === this.draftDocument.apmisGuid
+        );
         if (draftIndex > -1) {
           this.patientDocumentation.documentations[draftIndex] = doc;
         }
@@ -100,119 +131,136 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         // Get the raw orderset data and send to different destination.
         this._listenAndSaveRawOrderSetData();
 
-        this.documentationService.update(this.patientDocumentation).then(pay => {
-          this.draftDocument = undefined;
-          this.hasSavedDraft = false;
-          this.sharedService.announceFinishedSavingDraft(false);
-          this.getPersonDocumentation();
-          this._notification('Success', 'Documentation successfully saved!');
-        });
+        this.documentationService.update(this.patientDocumentation).then(
+          pay => {
+            this.draftDocument = undefined;
+            this.hasSavedDraft = false;
+            this.sharedService.announceFinishedSavingDraft(false);
+            this.getPersonDocumentation();
+            this._notification("Success", "Documentation successfully saved!");
+          },
+          eror => {}
+        );
       }
     });
 
-
     this.sharedService.newFormAnnounced$.subscribe((payload: any) => {
       this.selectedForm = payload.form;
-      this.draftDocument = undefined;
-      this.hasSavedDraft = false;
+      // this.draftDocument = undefined;
+      // this.hasSavedDraft = false;
     });
 
     this.documentationService.announceDocumentation$.subscribe(payload => {
       this.getPersonDocumentation();
     });
 
-    this.sharedService.announceSaveDraft$.subscribe(payload => {
-      if (!this.hasSavedDraft) {
-        this.sharedService.announceFinishedSavingDraft(true);
+    this.sharedService.announceSaveDraft$.subscribe(
+      payload => {
+        if (!this.hasSavedDraft) {
+          this.sharedService.announceFinishedSavingDraft(true);
 
-        const apmisGuid = UUID.UUID();
-        const doc: PatientDocumentation = <PatientDocumentation>{};
-        doc.document = {
-          documentType: this.selectedForm,
-          body: payload,
-        };
+          const apmisGuid = UUID.UUID();
+          const doc: PatientDocumentation = <PatientDocumentation>{};
+          doc.document = { documentType: this.selectedForm, body: payload };
 
-        doc.createdBy = this.loginEmployee.personDetails.title
-          + ' ' + this.loginEmployee.personDetails.lastName + ' ' + this.loginEmployee.personDetails.firstName;
-        doc.createdById = this.loginEmployee._id;
-        doc.facilityId = this.selectedFacility._id;
-        doc.facilityName = this.selectedFacility.name;
-        doc.patientId = this.patient._id,
-          doc.patientName = this.patient.personDetails.title
-          + ' ' + this.patient.personDetails.lastName + ' ' + this.patient.personDetails.firstName;
-        doc.documentationStatus = 'Draft';
-        doc.apmisGuid = apmisGuid;
+          doc.createdBy =
+            this.loginEmployee.personDetails.title +
+            " " +
+            this.loginEmployee.personDetails.lastName +
+            " " +
+            this.loginEmployee.personDetails.firstName;
+          doc.createdById = this.loginEmployee._id;
+          doc.facilityId = this.selectedFacility._id;
+          doc.facilityName = this.selectedFacility.name;
+          (doc.patientId = this.patient._id),
+            (doc.patientName =
+              this.patient.personDetails.title +
+              " " +
+              this.patient.personDetails.lastName +
+              " " +
+              this.patient.personDetails.firstName);
+          doc.documentationStatus = "Draft";
+          doc.apmisGuid = apmisGuid;
 
+          // this.hasSavedDraft = true;
+          this.draftDocument = doc;
+          this.patientDocumentation.documentations.push(doc);
 
-        // this.hasSavedDraft = true;
-        this.draftDocument = doc;
-        this.patientDocumentation.documentations.push(doc);
+          this.documentationService.update(this.patientDocumentation).then(
+            pay => {
+              this.hasSavedDraft = true;
+              this.getPersonDocumentation();
+              // this.sharedService.announceFinishedSavingDraft(false);
+              // this._notification('Success', 'Documentation successfully
+              // saved!');
+            },
+            error => {}
+          );
+        } else {
+          this.sharedService.announceFinishedSavingDraft(true);
+          this.draftDocument.document.body = payload;
 
-
-        this.documentationService.update(this.patientDocumentation).then(pay => {
-          this.hasSavedDraft = true;
-          this.getPersonDocumentation();
-          // this.sharedService.announceFinishedSavingDraft(false);
-          // this._notification('Success', 'Documentation successfully saved!');
-        }, error => {
-        });
-      } else {
-        this.sharedService.announceFinishedSavingDraft(true);
-        this.draftDocument.document.body = payload;
-
-        const draftIndex = this.patientDocumentation.documentations.findIndex(x => x.apmisGuid === this.draftDocument.apmisGuid);
-        if (draftIndex > -1) {
-          this.patientDocumentation.documentations[draftIndex] = this.draftDocument;
-          this.documentationService.update(this.patientDocumentation).then(pay => {
-            this.hasSavedDraft = true;
-            this.getPersonDocumentation();
-          });
+          const draftIndex = this.patientDocumentation.documentations.findIndex(
+            x => x.apmisGuid === this.draftDocument.apmisGuid
+          );
+          if (draftIndex > -1) {
+            this.patientDocumentation.documentations[
+              draftIndex
+            ] = this.draftDocument;
+            this.documentationService
+              .update(this.patientDocumentation)
+              .then(pay => {
+                this.hasSavedDraft = true;
+                this.getPersonDocumentation();
+              });
+          }
         }
-      }
-    }, error => {
-    });
+      },
+      error => {}
+    );
 
     this.documentationService.listenerUpdate.subscribe(payload => {
       this.patientDocumentation = payload;
-    })
+    });
   }
 
   ngOnInit() {
     this.getPersonDocumentation();
-    this.auth = this.locker.getObject('auth');
+    this.auth = this.locker.getObject("auth");
     this._getAllPriorities();
   }
   getPersonDocumentation() {
-    this.documentationService.find({
-      query: {
-        'personId': this.patient.personId, $sort: {
-          'documentations.updatedAt': -1
+    this.documentationService
+      .find({
+        query: {
+          personId: this.patient.personId,
+          $sort: { "documentations.updatedAt": -1 }
         }
-      }
-    }).then((payload: any) => {
-      if (payload.data.length === 0) {
-        this.patientDocumentation.personId = this.patient.personDetails;
-        this.patientDocumentation.documentations = [];
-        this.documentationService.create(this.patientDocumentation).subscribe(pload => {
-          this.patientDocumentation = pload;
-        })
-      } else {
-        if (payload.data[0].documentations.length === 0) {
-          this.patientDocumentation = payload.data[0];
+      })
+      .then((payload: any) => {
+        if (payload.data.length === 0) {
+          this.patientDocumentation.personId = this.patient.personDetails;
+          this.patientDocumentation.documentations = [];
+          this.documentationService
+            .create(this.patientDocumentation)
+            .subscribe(pload => {
+              this.patientDocumentation = pload;
+            });
         } else {
-          this.documentationService.find({
-            query:
-              {
-                'personId': this.patient.personId, // 'documentations.patientId': this.patient._id,
-                // $select: ['documentations.documents', 'documentations.facilityId']
-              }
-          }).subscribe((mload: any) => {
+          if (payload.data[0].documentations.length === 0) {
+            this.patientDocumentation = payload.data[0];
+          } else {
+            let mload = payload;
             if (mload.data.length > 0) {
               this.patientDocumentation = mload.data[0];
               if (this.hasSavedDraft && this.draftDocument !== undefined) {
-                const draftIndex = this.patientDocumentation.documentations.findIndex(x => x.apmisGuid === this.draftDocument.apmisGuid);
+                const draftIndex = this.patientDocumentation.documentations.findIndex(
+                  x => x.apmisGuid === this.draftDocument.apmisGuid
+                );
                 if (draftIndex > -1) {
-                  this.draftDocument = this.patientDocumentation.documentations[draftIndex];
+                  this.draftDocument = this.patientDocumentation.documentations[
+                    draftIndex
+                  ];
                   this.sharedService.announceFinishedSavingDraft(false);
                 }
               }
@@ -220,11 +268,37 @@ export class DocumentationComponent implements OnInit, OnDestroy {
               this.populateDocuments();
               // mload.data[0].documentations[0].documents.push(doct);
             }
-          })
-        }
-      }
+            // console.log('am')
+            // this.documentationService.find({
+            //   query:
+            //     {
+            //       'personId': this.patient.personId, //
+            //       'documentations.patientId': this.patient._id,
+            //       // $select: ['documentations.documents',
+            //       'documentations.facilityId']
+            //     }
+            // }).subscribe((mload: any) => {
+            //   if (mload.data.length > 0) {
+            //     this.patientDocumentation = mload.data[0];
+            //     if (this.hasSavedDraft && this.draftDocument !== undefined)
+            //     {
+            //       const draftIndex =
+            //       this.patientDocumentation.documentations.findIndex(x =>
+            //       x.apmisGuid === this.draftDocument.apmisGuid); if
+            //       (draftIndex > -1) {
+            //         this.draftDocument =
+            //         this.patientDocumentation.documentations[draftIndex];
+            //         this.sharedService.announceFinishedSavingDraft(false);
+            //       }
+            //     }
 
-    })
+            //     this.populateDocuments();
+            //     // mload.data[0].documentations[0].documents.push(doct);
+            //   }
+            // })
+          }
+        }
+      });
   }
 
   _listenAndSaveRawOrderSetData() {
@@ -244,7 +318,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   private _saveMedication(medications) {
     // this.deleteUnncessaryPatientData();
     const prescriptions = {
-      // clinicId: (!!this.selectedAppointment.clinicId) ? this.selectedAppointment.clinicId : undefined,
+      // clinicId: (!!this.selectedAppointment.clinicId) ?
+      // this.selectedAppointment.clinicId : undefined,
       priority: { id: this.priority._id, name: this.priority.name },
       facilityId: this.selectedFacility._id,
       employeeId: this.loginEmployee._id,
@@ -256,13 +331,16 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       totalQuantity: 0
     };
 
-    this._prescriptionService.authorizePresciption(prescriptions).then(res => {
-      if (res.status === 'success') {
-        return true;
-      } else {
-        return false;
-      }
-    }).catch(err => {});
+    this._prescriptionService
+      .authorizePresciption(prescriptions)
+      .then(res => {
+        if (res.status === "success") {
+          return true;
+        } else {
+          return false;
+        }
+      })
+      .catch(err => {});
 
     // // bill model
     // const billItemArray = [];
@@ -307,14 +385,17 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     //   this.billingService.create(bill).then(res => {
     //     if (res._id !== undefined) {
     //       prescriptions.billId = res._id;
-    //       // if this is true, send the prescribed drugs to the prescription service
-    //       this._prescriptionService.create(prescriptions).then(pRes => {
+    //       // if this is true, send the prescribed drugs to the prescription
+    //       service this._prescriptionService.create(prescriptions).then(pRes
+    //       => {
     //         this._notification('Success', 'Prescription has been sent!');
     //       }).catch(err => {
-    //         this._notification('Error', 'There was an error creating prescription. Please try again later.');
+    //         this._notification('Error', 'There was an error creating
+    //         prescription. Please try again later.');
     //       });
     //     } else {
-    //       this._notification('Error', 'There was an error generating bill. Please try again later.');
+    //       this._notification('Error', 'There was an error generating bill.
+    //       Please try again later.');
     //     }
     //   }).catch(err => console.error(err));
     // } else {
@@ -322,7 +403,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     //   this._prescriptionService.create(prescriptions).then(res => {
     //     this._notification('Success', 'Prescription has been sent!');
     //   }).catch(err => {
-    //     this._notification('Error', 'There was an error creating prescription. Please try again later.');
+    //     this._notification('Error', 'There was an error creating
+    //     prescription. Please try again later.');
     //   });
     // }
   }
@@ -358,7 +440,10 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         item.investigation.investigation.panel.forEach((panel, j) => {
           delete panel.isChecked;
         });
-      } else if (!!item.investigation && !item.investigation.investigation.isPanel) {
+      } else if (
+        !!item.investigation &&
+        !item.investigation.investigation.isPanel
+      ) {
         delete item.investigation.isChecked;
         delete item.investigation.LaboratoryWorkbenches;
         delete item.investigation.location;
@@ -376,7 +461,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     };
 
     this.requestService.customCreate(request).then(res => {
-      if (res.status === 'success') {
+      if (res.status === "success") {
         return true;
       } else {
         return false;
@@ -395,7 +480,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     // readyCollection.forEach(item => {
     //   if (!item.isExternal) {
     //     const billItem: BillItem = <BillItem>{};
-    //     billItem.unitPrice = item.investigation.LaboratoryWorkbenches[0].workbenches[0].price;
+    //     billItem.unitPrice =
+    //     item.investigation.LaboratoryWorkbenches[0].workbenches[0].price;
     //     billItem.facilityId = this.selectedMiniFacility._id;
     //     billItem.description = '';
     //     billItem.facilityServiceId = item.investigation.facilityServiceId;
@@ -413,8 +499,10 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     // })
 
     // if (billGroup.billItems.length > 0) {
-    //   const request$ = Observable.fromPromise(this.requestService.create(request));
-    //   const billing$ = Observable.fromPromise(this.billingService.create(billGroup));
+    //   const request$ =
+    //   Observable.fromPromise(this.requestService.create(request)); const
+    //   billing$ =
+    //   Observable.fromPromise(this.billingService.create(billGroup));
     //   Observable.forkJoin([request$, billing$]).subscribe((results: any) => {
     //     // const request = results[0];
     //     const billing = results[1];
@@ -429,7 +517,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     //     });
     //     results[0].billingId = billing;
     //     this.requestService.update(results[0]).then(payload => {
-    //       this._notification('Success', 'Request has been sent successfully!');
+    //       this._notification('Success', 'Request has been sent
+    //       successfully!');
     //     }).catch(err => {
     //     });
     //   });
@@ -457,14 +546,19 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   // }
 
   private _getAllPriorities() {
-    this._priorityService.findAll().then(res => {
-      const priority = res.data.filter(x => x.name.toLowerCase().includes('normal'));
-      if (priority.length > 0) {
-        this.priority = priority[0];
-      } else {
-        this.priority = res.data[0];
-      }
-    }).catch(err => console.error(err));
+    this._priorityService
+      .findAll()
+      .then(res => {
+        const priority = res.data.filter(x =>
+          x.name.toLowerCase().includes("normal")
+        );
+        if (priority.length > 0) {
+          this.priority = priority[0];
+        } else {
+          this.priority = res.data[0];
+        }
+      })
+      .catch(err => console.error(err));
   }
 
   getvitalCharts(vitals) {
@@ -474,22 +568,38 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   populateDocuments() {
     this.documents = [];
     this.patientDocumentation.documentations.forEach(documentation => {
-      if ((documentation.document.documentType && documentation.document.documentType.isSide === false)
-        || (documentation.document.documentType && documentation.document.documentType.isSide === undefined)) {
-
+      if (
+        (documentation.document.documentType &&
+          documentation.document.documentType.isSide === false) ||
+        (documentation.document.documentType &&
+          documentation.document.documentType.isSide === undefined)
+      ) {
         const createdById = this.loginEmployee._id;
-        const facilityId = this.selectedMiniFacility._id;
-        if (documentation.documentationStatus !== 'Draft') {
+        const facilityId = this.selectedFacility._id;
+        if (documentation.documentationStatus !== "Draft") {
           this.documents.push(documentation);
-        } else if (documentation.createdById === createdById && documentation.facilityId === facilityId) {
+        } else if (
+          documentation.createdById === createdById &&
+          documentation.facilityId === facilityId
+        ) {
           this.hasSavedDraft = true;
           this.draftDocument = documentation;
+          this.documents.push(documentation);
+          // console.log(this.clinicalNote_view);
+          this.clinicalNote_view = true;
+          // this.sharedService.announceNewForm(
+          //     documentation.document.documentType);
         }
       } else {
-        if (documentation.document.documentType.isSide === true && documentation.document.documentType.title === 'Problems') {
+        if (
+          documentation.document.documentType.isSide === true &&
+          documentation.document.documentType.title === "Problems"
+        ) {
           this.documents.push(documentation);
-        } else if (documentation.document.documentType.isSide === true && documentation.document.documentType.title === 'Vitals') {
-          // payload.data[0].documentations[k].document.body.vitals;
+        } else if (
+          documentation.document.documentType.isSide === true &&
+          documentation.document.documentType.title === "Vitals"
+        ) {
           this.tableChartData = documentation.document.body.vitals;
           this.documents.push(documentation);
         } else {
@@ -498,6 +608,36 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       }
     });
     this.documents.reverse();
+  }
+  edit(document: any) {
+    if (document.documentationStatus === "Draft") {
+      this.clinicalNote_view = false;
+      this.clinicalNote_view = true;
+      let obj = {
+        json: document.document.documentType.body,
+        form: document.document.documentType,
+        isManual: false
+      };
+      this.sharedService.announceNewForm(obj);
+      this.sharedService.announceEditDocumentation({
+        document: document.document.body,
+        leg: 0,
+        main: obj
+      });
+    } else {
+      // this.clinicalNote_view = false;
+      this.systemModuleService.announceSweetProxy(
+        "Completed documentation can not be edited!",
+        "warning",
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      );
+    }
   }
   toObject(arr) {
     const rv = {};
@@ -512,22 +652,22 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     props.forEach((prop, i) => {
       const property = prop.toString();
       docs.push({ property: object[prop] });
-    })
-
+    });
 
     // const arr = Object.keys(object).map(function (k) { return object[k] });
     // const arr = Object.keys(object).map(function(_) { return object[_]; })
     // const obj = JSON.parse(object);
-    // const splitObject = JSON.stringify(object).split(':'); //.replace('{"', '')
+    // const splitObject = JSON.stringify(object).split(':'); //.replace('{"',
+    // '')
     return object;
   }
   trimKey(value) {
-    const init = value.replace('{"', '');
-    return init.replace('"', '');
+    const init = value.replace('{"', "");
+    return init.replace('"', "");
   }
   trimValue(value) {
-    const init = value.replace('"', '');
-    return init.replace('"}', '');
+    const init = value.replace('"', "");
+    return init.replace('"}', "");
   }
   docDetail_show(document, isDocumentEdit) {
     this.selectedDocument = document;
@@ -583,5 +723,11 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
   onClickeditClick() {
     this.editClick = !this.editClick;
+  }
+  node_toggle(){
+    this.expanded= !this.expanded;
+  }
+  nodeChild_toggle(){
+    this.expandedChild= !this.expandedChild;
   }
 }

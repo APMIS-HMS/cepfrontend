@@ -25,7 +25,8 @@ export class InventoryService {
     this._rest = _restService.getService('inventories');
     this._socket = _socketService.getService('inventories');
     this._socketList = _socketService.getService('list-of-inventories');
-    this._socket.timeout = 30000;
+    this._socket.timeout = 50000;
+    this._socketList.timeout = 50000;
     this.createlistner = Observable.fromEvent(this._socket, 'created');
     this.updatelistner = Observable.fromEvent(this._socket, 'updated');
     this.deletedlistner = Observable.fromEvent(this._socket, 'deleted');

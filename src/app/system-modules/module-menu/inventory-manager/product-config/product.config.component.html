@@ -1,5 +1,4 @@
 <div class="wrap">
-
     <div class="row">
         <div class="col-sm-4">
             <h2> Select a Product </h2>
@@ -60,7 +59,7 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-12">
-                            <button class="button" (click)="save()" [disabled]="btnShowStatus"> SAVE </button>
+                            <button class="button" (click)="save()" [disabled]="!btnShowStatus"> SAVE </button>
                         </div>
                     </div>
                 </div>

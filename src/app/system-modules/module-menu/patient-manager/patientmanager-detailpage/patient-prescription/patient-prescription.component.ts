@@ -53,7 +53,6 @@ export class PatientPrescriptionComponent implements OnInit {
     drugId = '';
     selectedDrugId = '';
     searchText = '';
-    apmisLookupText = '';
     refillCount = 0;
     currentDate: Date = new Date();
     minDate: Date = new Date();
@@ -64,6 +63,7 @@ export class PatientPrescriptionComponent implements OnInit {
     currMedLoading = false;
     pastMedLoading = false;
     apmisLookupQuery = {};
+    apmisLookupText = '';
     apmisLookupUrl = 'drug-generic-list';
     apmisLookupDisplayKey = 'name';
     authorizeRx = true;
@@ -117,6 +117,8 @@ export class PatientPrescriptionComponent implements OnInit {
             dosage: ['', [<any>Validators.required]],
             dosageUnit: ['', [<any>Validators.required]],
             drug: ['', [<any>Validators.required]],
+            code: ['', [<any>Validators.required]],
+            productId: ['', [<any>Validators.required]],
             frequency: ['', [<any>Validators.required]],
             duration: [0, [<any>Validators.required]],
             durationUnit: ['', [<any>Validators.required]],
@@ -136,8 +138,11 @@ export class PatientPrescriptionComponent implements OnInit {
     }
 
     apmisLookupHandleSelectedItem(item) {
+        console.log(item);
         this.apmisLookupText = item;
         this.addPrescriptionForm.controls['drug'].setValue(item.name);
+        this.addPrescriptionForm.controls['code'].setValue(item.code);
+        this.addPrescriptionForm.controls['productId'].setValue(item.id);
         // this._drugListApi.find({ query: { method: 'drug-details', 'productId': item.productId } }).then(res => {
         //     let sRes = res.data;
         //     if (res.status === 'success') {
@@ -176,6 +181,8 @@ export class PatientPrescriptionComponent implements OnInit {
             const prescriptionItem = <PrescriptionItem>{
                 genericName: value.drug,
                 routeName: value.route,
+                productId: value.productId,
+                code: value.code,
                 frequency: value.frequency,
                 dosage: value.dosage + ' ' + value.dosageUnit,
                 duration: value.duration + ' ' + value.durationUnit,

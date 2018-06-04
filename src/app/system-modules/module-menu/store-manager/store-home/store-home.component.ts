@@ -1,7 +1,10 @@
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, ISubscription } from 'rxjs/Subscription';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
-import { InventoryService, ProductService, EmployeeService, FacilitiesService, StoreService, PurchaseOrderService, InventoryTransferService } from '../../../../services/facility-manager/setup/index';
+import {
+  InventoryService, ProductService, EmployeeService, FacilitiesService,
+  StoreService, PurchaseOrderService, InventoryTransferService, InventoryTransferStatusService,ProductRequisitionService
+} from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import { Facility, Inventory, Employee, User } from '../../../../models/index';
@@ -16,6 +19,10 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
   purchaseOrders: any[] = [];
   transfers: any[] = [];
   checkingStore: any = <any>{};
+  completedInventoryStatus: any = <any>{};
+  rejectedInventoryStatus: any = <any>{};
+  transferStatuses: any[] = [];
+  requisitions: any[] = [];
   inventoryLoading = true;
   purchaseOrderLoading = true;
   transferLoading = true;
@@ -29,10 +36,10 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
   Ql_toggle = false;
   isRunningQuery = false;
 
-  subscription: Subscription;
+  subscription: ISubscription;
 
   constructor(
-    // private _inventoryService: InventoryService,
+    private _inventoryService: InventoryService,
     private _purchaseOrderService: PurchaseOrderService,
     private _storeService: StoreService,
     private _facilityService: FacilitiesService,
@@ -40,18 +47,27 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
     private _inventoryTransferService: InventoryTransferService,
     private _locker: CoolLocalStorage,
     private _employeeService: EmployeeService,
-    private authFacadeService: AuthFacadeService
+    private authFacadeService: AuthFacadeService,
+    private inventoryTransferStatusService: InventoryTransferStatusService,
+    private productRequisitionService:ProductRequisitionService
   ) {
     this.subscription = this._employeeService.checkInAnnounced$.subscribe(res => {
       if (!!res) {
         if (!!res.typeObject) {
           this.checkingStore = res.typeObject;
           if (!!this.checkingStore.storeId) {
-            if(!this.isRunningQuery){
+            if (!this.isRunningQuery) {
+              this.inventoryLoading = true;
+              this.purchaseOrderLoading = true;
+              this.transferLoading = true;
+              this.inventories = [];
+              this.transfers = [];
+              this.purchaseOrders = [];
               this.isRunningQuery = true;
               this.getInventories();
               this.getPurchaseOrders();
               this.getTransfers();
+              this.getTransferStatus();
             }
           }
         }
@@ -106,54 +122,109 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
       }
     });
 
- 
+
   }
 
   ngOnInit() {
+
   }
 
   getInventories() {
     if (!!this.checkingStore) {
-      this._storeService.getStat({ facilityId: this.selectedFacility._id}, {
-        query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId,
-          totalQuantity: { $gt: 1 }}
+      this._inventoryService.find({
+        query: {
+          facilityId: this.selectedFacility._id,
+          storeId: this.checkingStore.storeId,
+          availableQuantity: { $gt: 0 },
+          $sort: { updatedAt: -1 }
+        }
       }).then(res => {
         this.inventoryLoading = false;
-        if (res.status === 'success') {
-          this.inventoryCount = res.data.inventoryCount;
-          this.inventories = res.data.inventories;
-        }
+        this.inventoryCount = res.total;
+        this.inventories = res.data;
         this.isRunningQuery = false;
       });
     }
   }
 
+  getRequisitions() {
+    let storeId = this.checkingStore.storeId;
+    if (storeId === undefined) {
+      storeId = this.checkingStore.typeObject.storeId
+    }
+    this.productRequisitionService.find({
+      query: {
+        facilityId: this.selectedFacility._id,
+        destinationStoreId: storeId
+      }
+    }).then(payload => {
+      this.requisitions = payload.data;
+    });
+  }
+
   getPurchaseOrders() {
     if (!!this.checkingStore) {
-      this._purchaseOrderService.findOrder({
-        query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId, isActive: true }
+      this._purchaseOrderService.find({
+        query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId, isActive: true, $sort: { updatedAt: -1 } }
       }).then(res => {
         this.purchaseOrderLoading = false;
         if (!!res.data && res.data.length > 0) {
           this.purchaseOrderCount = res.total;
           this.purchaseOrders = res.data;
         }
-      }).catch(err =>{
+      }).catch(err => {
       });
     }
   }
 
   getTransfers() {
     if (!!this.checkingStore) {
-      this._inventoryTransferService.findTransferHistories({
-        query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId, isActive: true }
+      this.productRequisitionService.find({
+        query: { facilityId: this.selectedFacility._id, destinationStoreId: this.checkingStore.storeId, $sort: { updatedAt: -1 } }
       }).then(res => {
         this.transferLoading = false;
         if (!!res.data && res.data.length > 0) {
           this.transferCount = res.total;
-          this.transfers = res.data;
+          this.requisitions = res.data;
         }
       });
+    }
+  }
+
+  getTransferStatus() {
+    this.inventoryTransferStatusService.findAll().subscribe(payload => {
+      this.transferStatuses = payload.data;
+      this.transferStatuses.forEach((item, i) => {
+        if (item.name === 'Completed') {
+          this.completedInventoryStatus = item;
+        }
+        if (item.name === 'Rejected') {
+          this.rejectedInventoryStatus = item;
+        }
+      });
+    });
+  }
+
+  getStatus(transaction) {
+    const receivedTransactions = transaction.inventoryTransferTransactions
+      .filter(item => item.transferStatusId === this.completedInventoryStatus._id);
+    if (receivedTransactions.length === transaction.inventoryTransferTransactions.length) {
+      return this.completedInventoryStatus.name;
+    }
+
+    const rejectedTransactions = transaction.inventoryTransferTransactions
+      .filter(item => item.transferStatusId === this.rejectedInventoryStatus._id);
+    if (rejectedTransactions.length === transaction.inventoryTransferTransactions.length) {
+      return this.rejectedInventoryStatus.name;
+    }
+    return 'Pending';
+  }
+
+  getMostRescentBatchNo(batch) {
+    if (batch.transactions.length > 0) {
+      return batch.transactions[batch.transactions.length - 1].batchNumber;
+    } else {
+      return '';
     }
   }
 
@@ -170,8 +241,8 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    if (this.loginEmployee.consultingRoomCheckIn !== undefined) {
-      this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
         if (itemr.isDefault === true && itemr.isOn === true) {
           itemr.isOn = false;
           this._employeeService.update(this.loginEmployee).then(payload => {

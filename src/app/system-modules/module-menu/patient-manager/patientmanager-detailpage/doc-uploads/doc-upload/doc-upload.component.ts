@@ -28,6 +28,10 @@ export class DocUploadComponent implements OnInit {
   fileType: any;
   fileName: any;
 
+  fileCount: any;
+
+  patientData: any;
+
 
 
   constructor(private formBuilder: FormBuilder, private docUploadService: DocumentUploadService,
@@ -46,12 +50,13 @@ export class DocUploadComponent implements OnInit {
   ngOnInit() {
     this.user = <any>this.locker.getObject('auth');
     this.frmNewUpload = this.formBuilder.group({
-      fileUpload: ['', [<any>Validators.required]],
+      fileUpload: [''],
       fileName: ['', [<any>Validators.required]],
       fileType: ['', [<any>Validators.required]],
       desc: ['']
     });
     this.documentTypeFn();
+    this.docUploadCount();
   }
   close_onClick(e?) {
     this.closeModal.emit(true);
@@ -74,13 +79,11 @@ export class DocUploadComponent implements OnInit {
           };
         } else {
           this.systemModuleService.announceSweetProxy('Size Of Document Too BIG!', 'info');
-          this._notification('Error','Size Of Document Too BIG!');
           this.frmNewUpload.controls['fileUpload'].setErrors({ sizeTooBig: true });
         }
 
       } else {
         this.systemModuleService.announceSweetProxy('Type of document not supported.', 'info');
-        this._notification('Error','Type of document not supported.');
         this.frmNewUpload.controls['fileUpload'].setErrors({ typeDenied: true });
       }
     }
@@ -118,16 +121,19 @@ export class DocUploadComponent implements OnInit {
       }
     }
 
-    this.docUploadService.post(uploadDoc).then(payload => {
-      this.systemModuleService.announceSweetProxy('Document Successfully Uploaded!', 'success', null, null, null, null, null, null, null);
-      // this._notification('Success', 'Document Successfully Uploaded!');
+    let uploadDocObj:any = {};
+    uploadDocObj.data = JSON.stringify(uploadDoc);
+
+
+    this.docUploadService.post(uploadDocObj).then(payload => {
+      this.systemModuleService.announceSweetProxy('Document Successfully Uploaded!', 'success');
       this.loading = false;
+      this.docUploadCount();
       this.close_onClick(true);
       this.systemModuleService.off();
     }).catch(err => {
       this.systemModuleService.off();
       this.systemModuleService.announceSweetProxy('There was an uploading the file, try again!', 'error');
-      // this._notification('Eror','There was an uploading the file, try again!');
       this.loading = false;
     })
 
@@ -139,6 +145,21 @@ export class DocUploadComponent implements OnInit {
     }).catch(err => {
     });
   }
+
+  docUploadCount(){
+    console.log(this.patientData);
+    this.docUploadService.docUploadFind({
+      query: {
+        patientId: this.selectedPatient,
+        facilityId: this.facilityService.getSelectedFacilityId()._id
+      }
+    }).then(payload => {
+      console.log(payload);
+      this.fileCount = payload.data.length;
+    });
+  }
+
+
   private _notification(type: String, text: String): void {
 		this.facilityService.announceNotification({
 			users: [this.user._id],

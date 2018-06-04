@@ -1,7 +1,7 @@
 import { UserFacadeService } from './system-modules/service-facade/user-facade.service';
 import { UserService } from './services/facility-manager/setup/user.service';
 import { SystemModuleService } from './services/module-manager/setup/system-module.service';
-import { Component, ViewContainerRef, OnInit } from '@angular/core';
+import { Component, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
 import {
   Router,
   Event,
@@ -29,7 +29,7 @@ import {
 } from './models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription, ISubscription } from 'rxjs/Subscription';
 import { LoadingBarService } from '@ngx-loading-bar/core';
 import { JoinChannelService } from 'app/services/facility-manager/setup/join-channel.service';
 import swal from 'sweetalert2';
@@ -51,13 +51,16 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/materia
       }
   ]
 })
-export class AppComponent implements OnInit {
+export class AppComponent implements OnInit, OnDestroy {
   auth: any;
   loadIndicatorVisible = true;
   selectedFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
-  subscription: Subscription;
+  // subscription: Subscription;
   loginUser: any;
+  private facilitySubscription: ISubscription;
+  private loaderSubscription: ISubscription;
+  private sweetAlertSubscription: ISubscription;
 
   constructor(
     private router: Router,
@@ -74,7 +77,7 @@ export class AppComponent implements OnInit {
     private authFacadeService: AuthFacadeService
   ) {
     this.toastr.setRootViewContainerRef(vcr);
-    this.facilityService.notificationAnnounced$.subscribe((obj: any) => {
+    this.facilitySubscription = this.facilityService.notificationAnnounced$.subscribe((obj: any) => {
       if (obj.users !== undefined && obj.users.length > 0) {
         if (this.loginUser !== undefined) {
           this.processNotification(obj);
@@ -90,7 +93,7 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.systemModuleService.loadingAnnounced$.subscribe((value: any) => {
+    this.loaderSubscription = this.systemModuleService.loadingAnnounced$.subscribe((value: any) => {
       if (value.status === 'On') {
         this.loadingService.start();
       } else {
@@ -98,7 +101,7 @@ export class AppComponent implements OnInit {
       }
     });
 
-    this.systemModuleService.sweetAnnounced$.subscribe((value: any) => {
+    this.sweetAlertSubscription = this.systemModuleService.sweetAnnounced$.subscribe((value: any) => {
       this._sweetNotification(value);
     });
   }
@@ -195,5 +198,12 @@ export class AppComponent implements OnInit {
   }
   warning(text) {
     this.toastr.warning(text, 'Warning');
+  }
+
+  ngOnDestroy() {
+    // unsubscribe from any subscribed observable.
+    this.facilitySubscription.unsubscribe();
+    this.loaderSubscription.unsubscribe();
+    this.sweetAlertSubscription.unsubscribe();
   }
 }

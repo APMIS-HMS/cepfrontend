@@ -90,6 +90,8 @@
     padding: 15px;
     padding-bottom: 30px;
     position: relative;
+    max-height: 260px;
+    overflow-y: scroll;
 }
 
 .head-inner-lhs {

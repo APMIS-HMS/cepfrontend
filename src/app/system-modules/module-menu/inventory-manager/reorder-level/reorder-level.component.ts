@@ -27,12 +27,14 @@ export class ReorderLevelComponent implements OnInit {
   editLevel = false;
   selectedPack = {};
   selectedFacility: any = <any>{};
+  subscription: any = <any>{};
   products = <any>[];
   reorderProducts = <any>[];
 
   user: any = <any>{};
   loginEmployee: any = <any>{};
   checkingStore: any = <any>{};
+  disableCreateBtn = false;
 
   collapseProductContainer = false;
   selectedProduct: any = <any>{};
@@ -43,20 +45,39 @@ export class ReorderLevelComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private productService: ProductService,
-    private locker: CoolLocalStorage,
+    private _locker: CoolLocalStorage,
     private authFacadeService: AuthFacadeService,
     private employeeService: EmployeeService,
-    private systemModuleService: SystemModuleService) { }
+    private systemModuleService: SystemModuleService) {
+    this.selectedFacility = <any>this._locker.getObject('selectedFacility');
+    this.user = this._locker.getObject('auth');
 
-  ngOnInit() {
-    this.selectedFacility = <any>this.locker.getObject('selectedFacility');
-    this.user = this.locker.getObject('auth');
+    this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
+      console.log(res);
+      if (!!res) {
+        if (!!res.typeObject) {
+          this.checkingStore = res.typeObject;
+          console.log(this.checkingStore);
+          if (!!this.checkingStore.storeId) {
+            this.setExistingReorderData();
+          }
+        }
+      }
+    });
+
     this.initializeReorderProperties();
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      console.log(payload);
       this.loginEmployee = payload;
       this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+      console.log(this.checkingStore);
       this.setExistingReorderData();
     });
+
+  }
+
+  ngOnInit() {
+
     this.newProduct.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
@@ -69,9 +90,10 @@ export class ReorderLevelComponent implements OnInit {
             query:
               { facilityId: this.selectedFacility._id, name: this.newProduct.value, storeId: this.checkingStore.storeId }
           }).then(payload => {
+            console.log(payload);
             this.collapseProductContainer = true;
             this.systemModuleService.off();
-            this.products = payload.data;
+            this.products = JSON.parse(JSON.stringify(payload.data));
           })
         }
       });
@@ -95,20 +117,29 @@ export class ReorderLevelComponent implements OnInit {
 
 
   setExistingReorderData() {
+    this.initializeReorderProperties();
+    // this.systemModuleService.on();
+    console.log(this.selectedFacility._id, this.checkingStore.storeId);
     this.productService.findReorder({ query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId } }).then(payload => {
+      this.systemModuleService.off();
+      console.log(payload.data);
       this.reorderProducts = payload.data.forEach(element => {
-        element.productObject.productConfigObject = element.productConfigObject;
-        (<FormArray>this.productTableForm.controls['productTableArray']).push(
-          this.formBuilder.group({
-            product: [element.productObject, [<any>Validators.required]],
-            reOrderLevel: [element.reOrderLevel, [<any>Validators.required]],
-            packTypeId: [element.productItemConfigObject._id, [<any>Validators.required]],
-            productItemConfigObject: [element.productItemConfigObject, [<any>Validators.required]],
-            isEdit: [false, [<any>Validators.required]],
-            id: [element._id]
-          }));
+        if (element.productConfigObject !== undefined) {
+          console.log(element);
+          element.productObject.productConfigObject = element.productConfigObject;
+          (<FormArray>this.productTableForm.controls['productTableArray']).push(
+            this.formBuilder.group({
+              product: [element.productObject, [<any>Validators.required]],
+              reOrderLevel: [element.reOrderLevel, [<any>Validators.required]],// payload.data.length > 0 ? payload.data[0] : undefined
+              packTypeId: [element.productItemConfigObject !== undefined ? element.productItemConfigObject._id:element.productConfigObject.find(x=>x.isBase===true)._id, [<any>Validators.required]],
+              productItemConfigObject: [element.productItemConfigObject !== undefined ? element.productItemConfigObject:element.productConfigObject.find(x=>x.isBase===true), [<any>Validators.required]],
+              isEdit: [false, [<any>Validators.required]],
+              id: [element._id]
+            }));
+        }
       });
-
+    },er=>{
+      this.systemModuleService.off();
     });
   }
 
@@ -116,9 +147,9 @@ export class ReorderLevelComponent implements OnInit {
     this.collapseProductContainer = false;
     this.selectedProduct = product;
     this.newProduct.setValue(product.name);
-    const productSizes = await this.productService.get(product._id, { query: { loginFacilityId: this.selectedFacility._id } });
-    if (productSizes.productConfigObject !== undefined) {
-      this.selectedProduct.productConfigObject = productSizes.productConfigObject;
+    const productConfigSizes = await this.productService.findProductConfigs({ query: { productId: product.id } });
+    if (productConfigSizes.data[0] !== undefined) {
+      this.selectedProduct.productConfigObject = productConfigSizes.data[0].packSizes;
     } else {
       this.systemModuleService.announceSweetProxy('Product brand pack variant is not configured', 'error');
     }
@@ -141,13 +172,18 @@ export class ReorderLevelComponent implements OnInit {
   comparePack(l1: any, l2: any) {
     return l1.includes(l2);
   }
-  
+
   setLevel_click() {
-    // this.setLevel = !this.setLevel;
+
+    if (!!this.checkingStore.typeObject) {
+      this.checkingStore = this.checkingStore.typeObject;
+    }
+    console.log(this.checkingStore);
     if (this.newPackType.valid && this.newProduct.valid && this.newReorderLevel.valid) {
+      this.disableCreateBtn = true;
       const packSize = this.selectedProduct.productConfigObject.find(x => x._id.toString() === this.newPackType.value.toString());
       let reOrder: any = {};
-      reOrder.productId = this.selectedProduct._id;
+      reOrder.productId = this.selectedProduct.id;
       reOrder.storeId = this.checkingStore.storeId;
       reOrder.facilityId = this.selectedFacility._id;
       reOrder.reOrderLevel = this.newReorderLevel.value;
@@ -155,13 +191,14 @@ export class ReorderLevelComponent implements OnInit {
       this.systemModuleService.on();
       this.productService.createReorder(reOrder).then(payload => {
         this.systemModuleService.off();
+        this.disableCreateBtn = false;
         this.addBtnDisable = true;
         this.newPackType.reset();
         this.newReorderLevel.reset();
         this.newProduct.setValue(' ');
         this.initializeReorderProperties();
         this.systemModuleService.announceSweetProxy('Product Re-order level created successfully', 'success');
-       this.setExistingReorderData();
+        this.setExistingReorderData();
       });
     } else {
       this.systemModuleService.announceSweetProxy('Missing field(s)', 'error');
@@ -189,6 +226,30 @@ export class ReorderLevelComponent implements OnInit {
       this.systemModuleService.off();
       this.systemModuleService.announceSweetProxy('Update failed!!! field(s) is missing', 'error');
     }
+  }
+
+  ngOnDestroy() {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      console.log(this.loginEmployee.storeCheckIn);
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.storeObject === undefined) {
+          const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
+          itemr.storeObject = store_.storeObject;
+          console.log(itemr.storeObject);
+        }
+        if (itemr.isDefault === true && itemr.isOn === true) {
+          itemr.isOn = false;
+          this.employeeService.update(this.loginEmployee).then(payload => {
+            this.loginEmployee = payload;
+          },err=>{
+            // console.log(err);
+          });
+        }
+      });
+    }
+    this.employeeService.announceCheckIn(undefined);
+    this._locker.setObject('checkingObject', {});
+    this.subscription.unsubscribe();
   }
 
   toggleNewForm() {

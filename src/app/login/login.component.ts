@@ -1,44 +1,53 @@
-import { UserFacadeService } from 'app/system-modules/service-facade/user-facade.service';
-import { SystemModuleService } from './../services/module-manager/setup/system-module.service';
-import { Component, OnInit, EventEmitter, Output, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Router } from '@angular/router';
-import { FacilitiesService } from '../services/facility-manager/setup/index';
-import { Facility } from '../models/index';
-import { UserService } from '../services/facility-manager/setup/index';
-import { UpperCasePipe } from '@angular/common';
+import { UserFacadeService } from "app/system-modules/service-facade/user-facade.service";
+import { SystemModuleService } from "./../services/module-manager/setup/system-module.service";
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  Output,
+  ViewChild
+} from "@angular/core";
+import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { CoolLocalStorage } from "angular2-cool-storage";
+import { Router } from "@angular/router";
+import { FacilitiesService } from "../services/facility-manager/setup/index";
+import { Facility } from "../models/index";
+import { UserService } from "../services/facility-manager/setup/index";
+import { UpperCasePipe } from "@angular/common";
 
 @Component({
-  selector: 'app-login',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  selector: "app-login",
+  templateUrl: "./login.component.html",
+  styleUrls: ["./login.component.scss"]
 })
 export class LoginComponent implements OnInit {
   loadIndicatorVisible = false;
   mainErr = true;
-  errMsg = 'you have unresolved errors';
+  errMsg = "you have unresolved errors";
 
   show = false;
 
-  @ViewChild('showhideinput') input;
+  @ViewChild("showhideinput") input;
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() pwordReset: EventEmitter<boolean> = new EventEmitter<boolean>();
-
 
   input_username;
   input_password;
   public frm_login: FormGroup;
   facilityObj: Facility = <Facility>{};
+  inProgress = false;
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(
+    private formBuilder: FormBuilder,
     private userService: UserService,
-    private userServiceFacade:UserFacadeService,
+    private userServiceFacade: UserFacadeService,
     public facilityService: FacilitiesService,
     private systemModule: SystemModuleService,
-    private upperCasePipe:UpperCasePipe,
-    private locker: CoolLocalStorage, private router: Router) {
+    private upperCasePipe: UpperCasePipe,
+    private locker: CoolLocalStorage,
+    private router: Router
+  ) {
     this.facilityService.listner.subscribe(payload => {
       this.facilityObj = payload;
     });
@@ -46,8 +55,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.frm_login = this.formBuilder.group({
-      username: ['', [<any>Validators.required]],
-      password: ['', [<any>Validators.required]]
+      username: ["", [<any>Validators.required]],
+      password: ["", [<any>Validators.required]]
     });
 
     this.frm_login.valueChanges.subscribe(payload => {
@@ -55,43 +64,61 @@ export class LoginComponent implements OnInit {
         this.mainErr = true;
       }
     });
+    this.locker.clear();
   }
   login(valid) {
     if (valid) {
+      this.inProgress = true;
       this.systemModule.on();
       const query = {
-        email: this.upperCasePipe.transform(this.frm_login.controls['username'].value),
-        password: this.frm_login.controls['password'].value
+        email: this.upperCasePipe.transform(
+          this.frm_login.controls["username"].value
+        ),
+        password: this.frm_login.controls["password"].value
       };
-      this.userService.login(query).then(result => {
-        this.userServiceFacade.authenticateResource().then(payload => {
-          let auth = {
-            data: result.user
-          };
-          this.locker.setObject('auth', auth);
-          this.locker.setObject('token', result.accessToken);
+      this.userService.login(query).then(
+        result => {
+          this.userServiceFacade
+            .authenticateResource()
+            .then(
+              payload => {
+                let auth = {
+                  data: result.user
+                };
+                this.locker.setObject("auth", auth);
+                this.locker.setObject("token", result.accessToken);
 
-          this.router.navigate(['/accounts']).then(pay => {
-            this.userService.isLoggedIn = true;
-            this.userService.announceMission('in');
-            this.systemModule.off();
-            this.frm_login.controls['password'].reset();
-          });
-        }, error => {
-          this.systemModule.off();
-        }).catch(merr => {
-          this.systemModule.off();
-          this.frm_login.controls['password'].reset();
-        });
-      },
+                this.router.navigate(["/accounts"]).then(pay => {
+                  this.userService.isLoggedIn = true;
+                  this.userService.announceMission("in");
+                  this.systemModule.off();
+                  this.frm_login.controls["password"].reset();
+                  this.inProgress = false;
+                });
+              },
+              error => {
+                this.systemModule.off();
+                this.inProgress = false;
+              }
+            )
+            .catch(merr => {
+              this.systemModule.off();
+              this.frm_login.controls["password"].reset();
+              this.inProgress = false;
+            });
+        },
         error => {
+          this.inProgress = false;
+          this.errMsg = "Wrong login credentials";
+          this.systemModule.announceSweetProxy(this.errMsg, "error");
           this.loadIndicatorVisible = false;
           this.mainErr = false;
-          this.errMsg = 'wrong login credentials';
-          this.frm_login.controls['password'].reset();
+          this.frm_login.controls["password"].reset();
           this.systemModule.off();
-        });
+        }
+      );
     } else {
+      this.inProgress = false;
       this.mainErr = false;
     }
   }
@@ -105,9 +132,9 @@ export class LoginComponent implements OnInit {
   toggleShow(e) {
     this.show = !this.show;
     if (this.show) {
-      this.input.nativeElement.type = 'text';
+      this.input.nativeElement.type = "text";
     } else {
-      this.input.nativeElement.type = 'password';
+      this.input.nativeElement.type = "password";
     }
   }
 }

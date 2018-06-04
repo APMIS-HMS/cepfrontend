@@ -83,6 +83,7 @@ export class InvoiceComponent implements OnInit {
         this.isLoadingInvoice = true;
         this.invoiceService.find({ query: { facilityId: this.selectedFacility._id, $sort: { updatedAt: -1 }, patientId: this.selectedPatient._id } }).then(payload => {
             this.invoiceGroups = payload.data;
+            console.log(this.invoiceGroups);
             this.holdMostRecentInvoices = this.invoiceGroups;
             this.isLoadingInvoice = false;
         }).catch(err => {
@@ -566,6 +567,10 @@ export class InvoiceComponent implements OnInit {
             </html>`
         );
         popupWin.document.close();
+    }
+
+    printIt(){
+        window.print();
     }
 
 }

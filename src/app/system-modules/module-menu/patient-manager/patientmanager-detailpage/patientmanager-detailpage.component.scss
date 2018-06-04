@@ -8,7 +8,8 @@
     padding: 10px;
     box-sizing: border-box;
 }
-.headerDetail-wrap .modal_title{
+
+.headerDetail-wrap .modal_title {
     color: #000 !important;
 }
 
@@ -41,11 +42,10 @@
     padding: 10px;
     box-sizing: border-box;
 }
-.header-secA{
+
+.header-secA {
     position: relative;
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
+    display: block;
 }
 
 .sideTab-header .patient-img .patient-img-wrap {
@@ -58,19 +58,20 @@
     align-items: center;
     border-radius: 100%;
     margin-right: 10px;
+    margin: 0 auto;
 }
 
 .sideTab-header .patient-img .patient-img-wrap img {
     width: 100%;
 }
 
-.patient-img-wrap:hover{
-    .pp-overlay{
+.patient-img-wrap:hover {
+    .pp-overlay {
         display: flex;
     }
 }
 
-.pp-overlay{
+.pp-overlay {
     display: none;
     justify-content: center;
     align-items: center;
@@ -86,41 +87,53 @@
     border-radius: 20px;
     font-size: 1.2rem;
 }
-.emp-nameRow img{
+
+.emp-nameRow img {
     width: 100%;
     border-radius: 100%;
     margin-right: 10px;
     height: 100%;
 }
-.empData-header{
+
+.empData-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
 }
-.empData-header .emp-data{
+
+.empData-header .emp-data {
     text-align: left;
     margin-left: 16px;
     margin-top: 52px;
 }
-.emp-data, .emp-img{
+
+.emp-data,
+.emp-img {
     width: 50%;
 }
-.emp-img{
+
+.emp-img {
     text-align: right;
     padding-top: 20px;
 }
-.emp-img img{
+
+.emp-img img {
     width: 190px;
     border-radius: 20px;
 }
 
 .headerDetail-wrap {
-    width: 230px;
+    width: 100%;
 }
 
 .patient-name {
     color: #2874A6;
     font-size: 1.6rem;
+}
+.head-minis{
+    background: rgba(0, 0, 0, 0.05);
+    border-top: 2px solid #fff;
+    border-bottom: 2px solid #fff;
 }
 
 .headDetail-group {
@@ -130,6 +143,13 @@
     color: #000;
     line-height: 2;
     margin-bottom: 5px;
+    .patient-apmisNo {
+        text-align: right;
+        width: 100%;
+        font-weight: bold;
+        font-size: 1.6rem;
+        color: #194985;
+    }
 }
 
 .patient-email {
@@ -137,13 +157,15 @@
     color: #154360;
 }
 
-.sideTab-nav, .sideTab-nav-resp {
+.sideTab-nav,
+.sideTab-nav-resp {
     background: $grey-bg;
     padding: 10px;
     box-sizing: border-box;
     height: 100%;
 }
-.sideTab-nav-resp{
+
+.sideTab-nav-resp {
     display: none;
 }
 
@@ -165,10 +187,11 @@
 .menu-item:hover,
 .active-menuItem {
     border-left: 5px solid #03A9F4;
-    background: rgba(0,0,0,0.05);
+    background: rgba(0, 0, 0, 0.05);
     font-weight: bold;
 }
-.pg-subtitle{
+
+.pg-subtitle {
     text-align: left;
     color: #194985;
     font-size: 1.4rem;
@@ -183,6 +206,7 @@
     color: #154360;
     top: 0;
 }
+
 .checkoutBtn {
     font-size: 1.2rem;
     color: #0288D1;
@@ -290,10 +314,12 @@ th {
     padding: 3px;
     font-size: 1.2rem;
 }
+
 .cu-search-box .cu-search {
     height: 36px;
     border-radius: 5px;
 }
+
 .cta-wrap {
     display: flex;
     justify-content: flex-end;
@@ -301,12 +327,15 @@ th {
     color: #0288D1;
     margin-top: 15px;
 }
-.pp-cta{
+
+.pp-cta {
     cursor: pointer;
 }
-.pp-cta:hover{
+
+.pp-cta:hover {
     text-decoration: underline;
 }
+
 ul.topmenuwrap {
     position: relative;
     top: auto;
@@ -317,28 +346,33 @@ ul.topmenuwrap {
     display: flex;
     justify-content: space-between;
 }
-ul.topmenuwrap li{
+
+ul.topmenuwrap li {
     margin-bottom: 10px;
     display: flex;
     justify-content: space-around;
     align-items: center;
     padding: 3px 12px;
 }
-ul.topmenuwrap li i{
+
+ul.topmenuwrap li i {
     padding-right: 5px;
 }
-.patientMenuResponsive{
+
+.patientMenuResponsive {
     display: none !important;
 }
-.modal_title{
-    color:#000;
+
+.modal_title {
+    text-align: center;
+    margin-top: 10px;
 }
 
 @media only screen and (max-width: 900px) {
-    .patientPage-mainWrap{
+    .patientPage-mainWrap {
         display: block;
     }
-    .patientPage-sideTab{
+    .patientPage-sideTab {
         width: 100%;
         margin-top: 0;
         position: fixed;
@@ -346,11 +380,11 @@ ul.topmenuwrap li i{
         left: 0;
         top: 87px;
     }
-    .patientPage-contentArea{
+    .patientPage-contentArea {
         width: 100%;
         padding-top: 229px;
     }
-    .pg-subtitle{
+    .pg-subtitle {
         text-align: center;
     }
     .header-secA {
@@ -359,30 +393,30 @@ ul.topmenuwrap li i{
         border-bottom: 4px solid #fff;
         padding-bottom: 20px;
     }
-    ul.topmenuwrap{
+    ul.topmenuwrap {
         display: flex;
         justify-content: center;
     }
-    ul.topmenuwrap li{
+    ul.topmenuwrap li {
         margin: 0 5px;
     }
-    .patientMenuResponsive{
+    .patientMenuResponsive {
         display: flex !important;
     }
-    .sideTab-nav{
+    .sideTab-nav {
         display: none;
     }
-    .sideTab-header{
+    .sideTab-header {
         border-bottom: 2px solid #777;
         -webkit-box-shadow: 0 8px 6px -6px black;
         -moz-box-shadow: 0 8px 6px -6px black;
         box-shadow: 0 8px 6px -6px black;
     }
-    .sideTab-nav-resp{
+    .sideTab-nav-resp {
         display: block;
         margin-top: -28px;
     }
-    .page-title{
+    .page-title {
         display: none;
     }
 }

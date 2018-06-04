@@ -3,11 +3,11 @@
     <form [formGroup]="frm_purchaseOrder" class="col-md-8" novalidate>
 
         <div class="row">
-            <mat-form-field class="col-xs-3">
+            <!-- <mat-form-field class="col-xs-3">
                 <mat-select class="frm-item-wrap" placeholder="Store" formControlName="store">
                     <mat-option *ngFor="let store of stores" [value]="store._id">{{store.name}}</mat-option>
                 </mat-select>
-            </mat-form-field>
+            </mat-form-field> -->
 
             <mat-form-field class="col-xs-3">
                 <mat-select class="frm-item-wrap" placeholder="Supplier" formControlName="supplier">
@@ -17,7 +17,7 @@
 
             <mat-form-field class="col-xs-3">
                 <mat-select class="frm-item-wrap" placeholder="Order Id" formControlName="orderId">
-                    <mat-option *ngFor="let order of orders" [value]="order">{{order.purchaseOrderNumber}}</mat-option>
+                    <mat-option *ngFor="let order of orders" [value]="order._id">{{order.purchaseOrderNumber}}</mat-option>
                 </mat-select>
             </mat-form-field>
 
@@ -91,7 +91,7 @@
                                                 </mat-select>
                                             </mat-form-field>
                                             <div class="ico-wrap">
-                                                <i *ngIf="itm.value.packsizes.length !== k+1 && schedule.controls.config.controls.length===k+1" class="col-md-2 fa fa-fw fa-plus"
+                                                <i *ngIf="itm.value?.packsizes?.length !== k+1 && schedule.controls?.config?.controls?.length===k+1" class="col-md-2 fa fa-fw fa-plus"
                                                     (click)="onAddPackSize(itm.value.packsizes,schedule)"></i>
                                                 <i class="fa fa-close fa-fw" *ngIf="schedule.controls.config.controls.length > 1" (click)="onRemovePack(schedule,productTableForm.controls['productTableArray'].controls,k,i)"></i>
                                             </div>
@@ -151,15 +151,11 @@
             <input matInput mat-error placeholder="search product here..." [formControl]="searchControl">
         </mat-input-container>
         <div class="filter-sect">
-            <mat-checkbox [formControl]="checkAll">All</mat-checkbox>
-
             <mat-checkbox [formControl]="myInventory">My Inventory</mat-checkbox>
 
             <mat-checkbox [formControl]="zeroQuantity">Out of stock</mat-checkbox>
 
             <mat-checkbox [formControl]="reOrderLevelQuantity">Re-order Level</mat-checkbox>
-
-            <mat-checkbox [formControl]="expired">Expired</mat-checkbox>
         </div>
         <div class="control-group" style="width:100%" *ngFor="let group of superGroups">
             <label *ngFor="let item of group;let j=index" class="control control--checkbox">{{item.name}}

@@ -1,12 +1,7 @@
 <!-- <div class="tbl-resp-wrap">
     
 </div> -->
-<div class="row">
-    <div class="col-xs-3 pull-right">
-        <span class="btn btn-primary" (click)="bulkUpload = !bulkUpload">Bulk Upload</span>
-    </div>
-</div>
-<div *ngIf="!bulkUpload">
+<div>
     <div class="card">
         <div class="card-header">
             <div class="row">
@@ -484,8 +479,4 @@
 </div>
 <div *ngIf="newUpload" class="modal-overlay">
     <app-doc-upload [selectedPatient]="selectedPatient" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-upload>
-</div>
-
-<div *ngIf="bulkUpload">
-    <app-bulk-upload (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-bulk-upload>
 </div>

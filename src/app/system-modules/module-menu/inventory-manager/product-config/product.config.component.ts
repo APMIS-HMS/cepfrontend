@@ -4,6 +4,8 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormControl } from '@angular/forms';
+import { PurchaseEmitterService } from '../../../../services/facility-manager/purchase-emitter.service';
+import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
 
 @Component({
   selector: 'app-product-config',
@@ -22,17 +24,20 @@ export class ProductConfigComponent implements OnInit {
   btnShowStatus = true;
   existConfigItem = null;
 
-  apmisLookupUrl = 'products';
+  apmisLookupUrl = 'formulary-products';
   apmisLookupText = '';
   apmisLookupQuery = {};
   apmisLookupDisplayKey = 'name';
   apmisInvestigationLookupQuery: any = {
   };
   control;
-  constructor(private _fb: FormBuilder,
+  constructor(
+    private _fb: FormBuilder,
+    private _inventoryEventEmitter: InventoryEmitterService,
     private productService: ProductService,
     private locker: CoolLocalStorage,
-    private systemModuleService: SystemModuleService) { }
+    private systemModuleService: SystemModuleService
+  ) { }
 
 initializeForm(){
   this.packageForm = this._fb.group({
@@ -50,6 +55,7 @@ initializeForm(){
 
   ngOnInit() {
     var x = document.getElementById("searchuctControl")
+    this._inventoryEventEmitter.setRouteUrl('Product Configuration');
     this.selectedFacility = <any>this.locker.getObject('selectedFacility');
     this.initializeForm();
     const control = <FormArray>this.packageForm.controls['package'];
@@ -60,7 +66,7 @@ initializeForm(){
         if (value !== undefined) {
           if (value.toString().length >= 3) {
             this.apmisInvestigationLookupQuery = {
-              name: { $regex: this.searchProdductControl.value, '$options': 'i' },
+              name: this.searchProdductControl.value
             }
           }
         }
@@ -92,15 +98,18 @@ initializeForm(){
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = value.name;
     this.selectedProduct = value;
+    console.log(value);
     this.initializeForm();
     this.getPackagesizes();
+    console.log(this.selectedProduct.id);
     if (value !== '' && value !== null) {
       this.productService.findProductConfigs({
         query: {
           facilityId: this.selectedFacility._id,
-          productId: this.selectedProduct._id
+          productId: this.selectedProduct.id
         }
       }).then(payload => {
+        console.log(payload);
         if (payload.data.length > 0) {
           this.existConfigItem = payload.data[0];
           let _packages = this.packages;
@@ -196,8 +205,9 @@ initializeForm(){
         this.btnShowStatus = false;
         this.systemModuleService.on();
         let productConfig: any = {};
-        productConfig.productId = this.selectedProduct._id;
+        productConfig.productId = this.selectedProduct.id;
         productConfig.facilityId = this.selectedFacility._id;
+        productConfig.rxCode = this.selectedProduct.code;
         productConfig.packSizes = (<FormArray>this.packageForm.controls['package']).value;
         this.productService.createProductConfig(productConfig).then(payload => {
           this.systemModuleService.off();

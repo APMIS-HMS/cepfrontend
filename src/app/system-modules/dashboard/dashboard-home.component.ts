@@ -1,29 +1,45 @@
-import { DONT_USE_AUTH_GUARD } from './../../shared-module/helpers/global-config';
-import { FeatureModuleService } from './../../services/module-manager/setup/feature-module.service';
-import { AuthFacadeService } from './../service-facade/auth-facade.service';
-import { Component, OnInit, ViewChild, ElementRef, ViewContainerRef } from '@angular/core';
-import { FormControl } from '@angular/forms';
-import { CoolLocalStorage } from 'angular2-cool-storage';
-import { FacilitiesService, UserService, EmployeeService, WorkSpaceService } from '../../services/facility-manager/setup/index';
-import { Facility, Employee } from '../../models/index';
-import { Router, Event, NavigationStart, NavigationEnd, NavigationCancel, NavigationError } from '@angular/router';
-import { ToastsManager } from 'ng2-toastr/ng2-toastr';
-import { Subscription } from 'rxjs/Subscription';
-import { Observable } from 'rxjs/Observable';
+import { DONT_USE_AUTH_GUARD } from "./../../shared-module/helpers/global-config";
+import { FeatureModuleService } from "./../../services/module-manager/setup/feature-module.service";
+import { AuthFacadeService } from "./../service-facade/auth-facade.service";
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  ElementRef,
+  ViewContainerRef
+} from "@angular/core";
+import { FormControl } from "@angular/forms";
+import { CoolLocalStorage } from "angular2-cool-storage";
+import {
+  FacilitiesService,
+  UserService,
+  EmployeeService,
+  WorkSpaceService
+} from "../../services/facility-manager/setup/index";
+import { Facility, Employee } from "../../models/index";
+import {
+  Router,
+  Event,
+  NavigationStart,
+  NavigationEnd,
+  NavigationCancel,
+  NavigationError
+} from "@angular/router";
+import { ToastsManager } from "ng2-toastr/ng2-toastr";
+import { Subscription } from "rxjs/Subscription";
+import { Observable } from "rxjs/Observable";
 
 @Component({
-  selector: 'app-dashboard-home',
-  templateUrl: './dashboard-home.component.html',
+  selector: "app-dashboard-home",
+  templateUrl: "./dashboard-home.component.html",
   // tslint:disable-next-line:use-host-property-decorator
-  host: { '(document:click)': 'hostClick($event)' },
-  styleUrls: ['./dashboard-home.component.scss']
+  host: { "(document:click)": "hostClick($event)" },
+  styleUrls: ["./dashboard-home.component.scss"]
 })
 export class DashboardHomeComponent implements OnInit {
-
   facilityObj: Facility = <Facility>{};
-  facilityName = '';
+  facilityName = "";
   searchControl = new FormControl();
-
 
   modal_on = false;
   logoutConfirm_on = false;
@@ -41,6 +57,7 @@ export class DashboardHomeComponent implements OnInit {
   patientSubmenuActive = false;
   billingSebmenuActive = false;
   formsSubmenuActive = false;
+  immunizationSubmenuActive = false;
 
   newModuleSubmenuActive = false;
   allModulesSubmenuActive = false;
@@ -52,16 +69,22 @@ export class DashboardHomeComponent implements OnInit {
   access: any = [];
 
   checkedInObject: any = <any>{};
-  constructor(private _elRef: ElementRef, private locker: CoolLocalStorage, private userService: UserService,
-    private router: Router, public facilityService: FacilitiesService, private employeeService: EmployeeService,
+  constructor(
+    private _elRef: ElementRef,
+    private locker: CoolLocalStorage,
+    private userService: UserService,
+    private router: Router,
+    public facilityService: FacilitiesService,
+    private employeeService: EmployeeService,
     private workSpaceService: WorkSpaceService,
-    private authFacadeService: AuthFacadeService, private featureService: FeatureModuleService) {
-  }
+    private authFacadeService: AuthFacadeService,
+    private featureService: FeatureModuleService
+  ) {}
 
   ngOnInit() {
     this.featureService.listner.subscribe(payload => {
       this.getUserRoles();
-    })
+    });
     this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
     if (this.facilityObj !== undefined && this.facilityObj != null) {
       this.facilityName = this.facilityObj.name;
@@ -78,20 +101,18 @@ export class DashboardHomeComponent implements OnInit {
     // this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
-      const auth = <any>this.locker.getObject('auth');
+      const auth = <any>this.locker.getObject("auth");
       if (this.loginEmployee !== undefined) {
-        this.locker.setObject('workspaces', this.loginEmployee.workSpaces);
+        this.locker.setObject("workspaces", this.loginEmployee.workSpaces);
       }
 
-      this.locker.setObject('miniFacility', this.loginEmployee);
+      this.locker.setObject("miniFacility", this.loginEmployee);
       this.getUserRoles();
       /* if (this.loginEmployee !== undefined && this.loginEmployee._id
         !== undefined && auth.data.personId === this.loginEmployee.personId) {
         return;
       } */
     });
-
-
 
     this.loadIndicatorVisible = true;
 
@@ -138,33 +159,35 @@ export class DashboardHomeComponent implements OnInit {
 
     //   this.loadIndicatorVisible = false;
     // })
-
-
   }
   getUserRoles() {
-    this.authFacadeService.getUserAccessControls(true).then(payload => {
-      this.access = payload;
-    }, error => {
-    })
+    this.authFacadeService.getUserAccessControls(true).then(
+      payload => {
+        this.access = payload;
+      },
+      error => {}
+    );
   }
   accessHas(menu) {
     const modules: any = this.access.modules;
     if (modules !== undefined) {
-      const index = modules.findIndex(x => x.route.substring(1) === (menu.toLowerCase()));
-      return (index > -1 || DONT_USE_AUTH_GUARD);
+      const index = modules.findIndex(
+        x => x.route.substring(1) === menu.toLowerCase()
+      );
+      return index > -1 || DONT_USE_AUTH_GUARD;
     }
   }
   laboratorySubmenuShow() {
     this.innerMenuShow = false;
-    this.router.navigate(['/dashboard/laboratory']);
+    this.router.navigate(["/dashboard/laboratory"]);
   }
 
   onSwitchAccount() {
-    this.router.navigate(['/accounts']);
+    this.router.navigate(["/accounts"]);
   }
   onHealthCoverage() {
     this.innerMenuShow = false;
-    this.router.navigate(['/dashboard/health-coverage']);
+    this.router.navigate(["/dashboard/health-coverage"]);
   }
   facilityMenuShow() {
     this.facilityManagerActive = true;
@@ -177,18 +200,19 @@ export class DashboardHomeComponent implements OnInit {
     this.patientSubmenuActive = false;
     this.billingSebmenuActive = false;
     this.formsSubmenuActive = false;
+    this.immunizationSubmenuActive = false;
   }
   moduleMenuShow() {
     this.facilityManagerActive = false;
     this.moduleManagerActive = true;
     this.facilitySubmenuActive = false;
     this.newModuleSubmenuActive = true;
-
     this.newModuleSubmenuActive = true;
     this.allModulesSubmenuActive = false;
     this.moduleAnalyticsSubmenuActive = false;
     this.billingSebmenuActive = false;
     this.formsSubmenuActive = false;
+    this.immunizationSubmenuActive = false;
   }
 
   facilitySubmenuShow() {
@@ -196,125 +220,124 @@ export class DashboardHomeComponent implements OnInit {
     this.employeeSubmenuActive = false;
     this.userSubmenuActive = false;
     this.patientSubmenuActive = false;
-
     this.newModuleSubmenuActive = false;
     this.allModulesSubmenuActive = false;
     this.moduleAnalyticsSubmenuActive = false;
-
     this.innerMenuShow = false;
     this.billingSebmenuActive = false;
     this.formsSubmenuActive = false;
+    this.immunizationSubmenuActive = false;
   }
   employeeSubmenuShow() {
     this.facilitySubmenuActive = false;
     this.employeeSubmenuActive = true;
     this.userSubmenuActive = false;
     this.patientSubmenuActive = false;
-
     this.newModuleSubmenuActive = false;
     this.allModulesSubmenuActive = false;
     this.moduleAnalyticsSubmenuActive = false;
-
     this.innerMenuShow = false;
     this.billingSebmenuActive = false;
     this.formsSubmenuActive = false;
+    this.immunizationSubmenuActive = false;
   }
   userSubmenuShow() {
     this.facilitySubmenuActive = false;
     this.employeeSubmenuActive = false;
     this.userSubmenuActive = true;
     this.patientSubmenuActive = false;
-
     this.newModuleSubmenuActive = false;
     this.allModulesSubmenuActive = false;
     this.moduleAnalyticsSubmenuActive = false;
-
     this.innerMenuShow = false;
     this.billingSebmenuActive = false;
     this.formsSubmenuActive = false;
+    this.immunizationSubmenuActive = false;
   }
   billingSubmenuShow() {
     this.facilitySubmenuActive = false;
     this.employeeSubmenuActive = false;
     this.userSubmenuActive = false;
     this.patientSubmenuActive = false;
-
     this.newModuleSubmenuActive = false;
     this.allModulesSubmenuActive = false;
     this.moduleAnalyticsSubmenuActive = false;
-
     this.innerMenuShow = false;
     this.billingSebmenuActive = true;
     this.formsSubmenuActive = false;
+    this.immunizationSubmenuActive = false;
   }
   patientSubmenuShow() {
     this.facilitySubmenuActive = false;
     this.employeeSubmenuActive = false;
     this.userSubmenuActive = false;
     this.patientSubmenuActive = true;
-
     this.newModuleSubmenuActive = false;
     this.allModulesSubmenuActive = false;
     this.moduleAnalyticsSubmenuActive = false;
     this.formsSubmenuActive = false;
-
     this.innerMenuShow = false;
+    this.immunizationSubmenuActive = false;
   }
 
   newModuleSubmenuShow() {
     this.newModuleSubmenuActive = true;
     this.allModulesSubmenuActive = false;
     this.moduleAnalyticsSubmenuActive = false;
-
     this.facilitySubmenuActive = false;
     this.employeeSubmenuActive = false;
     this.userSubmenuActive = false;
     this.patientSubmenuActive = false;
     this.formsSubmenuActive = false;
+    this.immunizationSubmenuActive = false;
   }
   allModulesSubmenuShow() {
     this.newModuleSubmenuActive = false;
     this.allModulesSubmenuActive = true;
     this.moduleAnalyticsSubmenuActive = false;
-
     this.facilitySubmenuActive = false;
     this.employeeSubmenuActive = false;
     this.userSubmenuActive = false;
     this.patientSubmenuActive = false;
     this.formsSubmenuActive = false;
+    this.immunizationSubmenuActive = false;
   }
   moduleAnalyticsSubmenuShow() {
     this.newModuleSubmenuActive = false;
     this.allModulesSubmenuActive = false;
     this.moduleAnalyticsSubmenuActive = true;
-
     this.facilitySubmenuActive = false;
     this.employeeSubmenuActive = false;
     this.userSubmenuActive = false;
     this.patientSubmenuActive = false;
     this.formsSubmenuActive = false;
+    this.immunizationSubmenuActive = false;
   }
   formsSubmenuShow() {
     this.newModuleSubmenuActive = false;
     this.allModulesSubmenuActive = false;
     this.moduleAnalyticsSubmenuActive = false;
-
     this.facilitySubmenuActive = false;
     this.employeeSubmenuActive = false;
     this.userSubmenuActive = false;
     this.patientSubmenuActive = false;
     this.innerMenuShow = false;
     this.formsSubmenuActive = true;
+    this.immunizationSubmenuActive = false;
   }
+
+  mainMenuRoute(route) {}
+
   innerMenuToggle() {
     this.innerMenuShow = !this.innerMenuShow;
   }
   innerMenuHide(e) {
     if (
-      e.srcElement.className === 'inner-menu1-wrap' ||
-      e.srcElement.localName === 'i' ||
-      e.srcElement.id === 'innerMenu-ul'
-    ) { } else {
+      e.srcElement.className === "inner-menu1-wrap" ||
+      e.srcElement.localName === "i" ||
+      e.srcElement.id === "innerMenu-ul"
+    ) {
+    } else {
       this.innerMenuShow = false;
     }
   }
@@ -355,5 +378,4 @@ export class DashboardHomeComponent implements OnInit {
       this.innerMenuShow = false;
     }
   }
-
 }

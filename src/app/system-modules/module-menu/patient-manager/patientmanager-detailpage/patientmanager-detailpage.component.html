@@ -11,29 +11,34 @@
                     </div>
                 </div>
                 <div class="headerDetail-wrap">
-                    <div class="modal_title">{{patient?.personDetails?.title}} {{patient?.personDetails?.lastName}} {{patient?.personDetails?.firstName}} ({{patient?.personDetails?.apmisId}})</div>
+                    <div class="modal_title">{{patient?.personDetails?.title}} {{patient?.personDetails?.lastName}} {{patient?.personDetails?.firstName}}</div>
                     <div class="headDetail-group">
-                        <div class="patient-gender">{{patient?.personDetails?.gender}}</div>
-                        <div class="patient-dob">{{patient?.personDetails?.dateOfBirth | date}}</div>
-                        <!-- <div class="patient-apmisNo">{{patient?.personDetails?.apmisId}}</div> -->
-                    </div>
-                    <div class="headDetail-group">
-                        <div class="patient-dob">{{patient?.personDetails?.bloodGroup}}</div>
-                        <div class="patient-dob">{{patient?.personDetails?.genotype}}</div>
-                    </div>
-                    <div class="headDetail-group">
-                        <div class="patient-phone">
-                            <i class="fa fa-phone"></i>
-                            <span *ngIf="patient?.personDetails?.primaryContactPhoneNo !== undefined"> {{patient?.personDetails?.primaryContactPhoneNo}}</span>
-                            <span *ngIf="patient?.personDetails?.primaryContactPhoneNo === undefined"> N/A</span>
-                        </div>
-                        <div class="patient-email">
-                            <i class="fa fa-envelope"></i>
-                            <span *ngIf="patient?.personDetails?.email !== undefined"> {{patient?.personDetails?.email}}</span>
-                            <span *ngIf="patient?.personDetails?.email === undefined"> N/A</span>
+                        <div class="patient-apmisNo">
+                            <span>({{patient?.personDetails?.apmisId}})</span>
                         </div>
                     </div>
-
+                    <div class="head-minis">
+                        <div class="headDetail-group">
+                            <div class="patient-gender">{{patient?.personDetails?.gender}}</div>
+                            <div class="patient-email">
+                                <i class="fa fa-envelope"></i>
+                                <span *ngIf="patient?.personDetails?.email !== undefined"> {{patient?.personDetails?.email}}</span>
+                                <span *ngIf="patient?.personDetails?.email === undefined"> N/A</span>
+                            </div>
+                        </div>
+                        <div class="headDetail-group">
+                            <div class="patient-dob">{{patient?.personDetails?.dateOfBirth | date}}</div>
+                            <div class="patient-phone">
+                                <i class="fa fa-phone"></i>
+                                <span *ngIf="patient?.personDetails?.primaryContactPhoneNo !== undefined"> {{patient?.personDetails?.primaryContactPhoneNo}}</span>
+                                <span *ngIf="patient?.personDetails?.primaryContactPhoneNo === undefined"> N/A</span>
+                            </div>
+                        </div>
+                        <div class="headDetail-group">
+                            <div class="patient-dob">{{patient?.personDetails?.bloodGroup}}</div>
+                            <div class="patient-dob">{{patient?.personDetails?.genotype}}</div>
+                        </div>
+                    </div>
                     <section class="accBal-wrap">
                         <span class="accBal-label">Account Balances</span>
                         <span class="{{ patient?.personDetails?.wallet?.balance > 0 ? 'text-blue' : 'accBal-val'}}">
@@ -90,6 +95,7 @@
             <div class="menu-sect">
                 <div (click)="menuLab_click()" [class.active-menuItem]="menuLab" class="menu-item">Laboratory</div>
                 <div (click)="menuImaging_click()" [class.active-menuItem]="menuImaging" class="menu-item">Imaging</div>
+                <div (click)="menuImmunization_click()" [class.active-menuItem]="menuImmunization" class="menu-item">Immunization</div>
             </div>
             <div class="menu-sect">
                 <div (click)="menuPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescribe Drug</div>
@@ -117,6 +123,7 @@
             <div class="menu-sect">
                 <div (click)="menuLab_click()" [class.active-menuItem]="menuLab" class="menu-item">Laboratory</div>
                 <div (click)="menuImaging_click()" [class.active-menuItem]="menuImaging" class="menu-item">Imaging</div>
+                <div (click)="menuImmunization_click()" [class.active-menuItem]="menuImmunization" class="menu-item">Immunization</div>
             </div>
             <div class="menu-sect">
                 <div (click)="menuPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescribe Drug</div>
@@ -133,6 +140,7 @@
         <app-doc-uploads [patient]=patient *ngIf="menuUploads"></app-doc-uploads>
         <app-patient-prescription [selectedAppointment]="selectedAppointment" [patientDetails]="patient" *ngIf="menuPrescription"></app-patient-prescription>
         <app-medication-history *ngIf="menuMedicationHistory"></app-medication-history>
+        <app-patient-immunization [patient]="patient" *ngIf="menuImmunization"></app-patient-immunization>
         <app-external-prescription [patientDetails]="patient" *ngIf="menuExternalPrescription"></app-external-prescription>
         <app-lab-requests [appointment]="selectedAppointment" [isLaboratory]="false" [patientId]="patient" *ngIf="menuLab"></app-lab-requests>
         <app-payment [patient]="patient" *ngIf="menuPayment"></app-payment>

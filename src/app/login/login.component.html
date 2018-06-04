@@ -4,7 +4,7 @@
         <legend class="modal_title">System Login</legend>
         <div class="modal_mini_title">All Purpose Medical Information System</div>
     </div>
-    <div class="modal-baseWrap"> 
+    <div class="modal-baseWrap">
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
         <div class="f_sg_1">
@@ -25,7 +25,7 @@
                     <span (click)="reset()" class="forgetPword">forgot password?</span>
                 </div>
                 <div class="example-full-width" id="example-full-width">
-                    <button class="small-btn" [disabled]="!frm_login.valid" (click)="login(frm_login.valid)" mat-raised-button>Login</button>
+                    <button class="small-btn" [disabled]="!frm_login.valid || inProgress" (click)="login(frm_login.valid)" mat-raised-button>Login</button>
                 </div>
             </form>
         </div>

@@ -1,16 +1,21 @@
-import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Subject } from 'rxjs/Subject';
+import { Injectable } from "@angular/core";
+import { CoolLocalStorage } from "angular2-cool-storage";
+import { Observable } from "rxjs/Observable";
+import { Subject } from "rxjs/Subject";
 
 @Injectable()
 export class SharedService {
+  private editDocumentationAnnouncedSource = new Subject<Object>();
+  editDocumentationAnnounced$ = this.editDocumentationAnnouncedSource.asObservable();
+
   private newFormAnnouncedSource = new Subject<Object>();
   newFormAnnounced$ = this.newFormAnnouncedSource.asObservable();
 
+  private surveyInitializedSource = new Subject<Object>();
+  surveyInitialized$ = this.surveyInitializedSource.asObservable();
+
   private submitFormSource = new Subject<Object>();
   submitForm$ = this.submitFormSource.asObservable();
-
 
   private announceTemplateSource = new Subject<Object>();
   announceTemplate$ = this.announceTemplateSource.asObservable();
@@ -30,7 +35,7 @@ export class SharedService {
   private announceFinishedSavingDraftSource = new Subject<Object>();
   announceFinishedSavingDraft$ = this.announceFinishedSavingDraftSource.asObservable();
 
-  constructor() { }
+  constructor() {}
 
   announceSaveDraft(temp: Object) {
     this.announceSaveDraftSource.next(temp);
@@ -57,6 +62,14 @@ export class SharedService {
 
   announceBilledOrderSet(orderSet) {
     this.announceBilledOrderSetSource.next(orderSet);
+  }
+
+  announceEditDocumentation(document) {
+    this.editDocumentationAnnouncedSource.next(document);
+  }
+
+  surveyInitializedSourceAnnounced(survey) {
+    this.surveyInitializedSource.next(survey);
   }
 
   submitForm(form: Object) {

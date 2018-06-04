@@ -41,31 +41,23 @@ export class FacilitypageModulespageComponent implements OnInit {
     return false;
   }
   getModules() {
-    this.systemModuleService.on;
-    this.facilityService.getModule(this.facility._id, {
-      query: {
-        isAll: true
-      }
-    }).then((payload) => {
-      this.systemModuleService.off;
+    this.systemModuleService.on();
+    this.facilityService.getModule(this.facility._id, { query: { isAll: true }}).then((payload) => {
+      this.systemModuleService.off();
       this.systemModules = payload;
     }, err => {
-      this.systemModuleService.off;
+      this.systemModuleService.off();
     });
   }
   getFacility() {
-    this.systemModuleService.on;
-    this.facilityService.getModule(this.facility._id, {
-      query: {
-        isAll: false
-      }
-    }).then((payload) => {
-      this.systemModuleService.off;
+    this.systemModuleService.on();
+    this.facilityService.getModule(this.facility._id, { query: { isAll: false }}).then((payload) => {
+      this.systemModuleService.off();
       if (payload.facilitymoduleId !== undefined && payload.facilitymoduleId.length > 0) {
         this.facilityModules = payload.facilitymoduleId;
       }
     }, error => {
-      this.systemModuleService.off;
+      this.systemModuleService.off();
     })
   }
 
@@ -99,7 +91,7 @@ export class FacilitypageModulespageComponent implements OnInit {
   }
 
   onDeactive(value) {
-    this.systemModuleService.on;
+    this.systemModuleService.on();
     this.idToRemove = value;
     this.systemModuleService.announceSweetProxy('Are you sure you want to deactive this module', 'question', this);
   }
@@ -115,7 +107,7 @@ export class FacilitypageModulespageComponent implements OnInit {
       }).then((payload) => {
         this.getModules();
         this.getFacility();
-        this.idToRemove=<any>{};
+        this.idToRemove = <any>{};
       }, error => {
       })
     }
