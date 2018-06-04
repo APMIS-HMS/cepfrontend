@@ -1,19 +1,20 @@
-import { Component, OnInit, Input, Output } from '@angular/core';
+import { Component, OnInit, Input, Output, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Facility, Prescription, PrescriptionItem, User } from '../../../../../models/index';
 import {
-    FacilitiesService, ProductService
+    FacilitiesService, ProductService, EmployeeService
 } from '../../../../../services/facility-manager/setup/index';
 import { Subject } from 'rxjs/Subject';
+import { ISubscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'app-add-prescription',
   templateUrl: './add-prescription.component.html',
   styleUrls: ['./add-prescription.component.scss']
 })
-export class AddPrescriptionComponent implements OnInit {
+export class AddPrescriptionComponent implements OnInit, OnDestroy {
 	@Input() prescriptionItems: Prescription = <Prescription>{};
 	@Output() prescriptionData: Prescription = <Prescription>{};
 	@Input() isDispensed: Subject<any>;
@@ -27,20 +28,32 @@ export class AddPrescriptionComponent implements OnInit {
 	totalQuantity: number = 0;
 	isDispensePage: boolean = false;
 	isPrescriptionPage: boolean = false;
+	storeId: string;
+	subscription: ISubscription;
 
 	constructor(
 		private _route: ActivatedRoute,
+		private _router: Router,
 		private _locker: CoolLocalStorage,
 		private _productService: ProductService,
+		private _employeeService: EmployeeService,
 		private _facilityService: FacilitiesService
 	) {
-		let url = window.location.href;
-		if(!url.includes('patient-manager-detail')) {
+		const url = this._router.url;
+		// const url = window.location.href;
+		if (!url.includes('patient-manager-detail')) {
 			this.loading = true;
 			this.isDispensePage = true;
 		} else {
 			this.isPrescriptionPage = true;
 		}
+
+		this.subscription = this._employeeService.checkInAnnounced$.subscribe(res => {
+			console.log(res);
+			if (!!res && !!res.typeObject) {
+				this.storeId = res.typeObject.storeId;
+			}
+		});
 	}
 
 	ngOnInit() {
@@ -109,5 +122,9 @@ export class AddPrescriptionComponent implements OnInit {
 			type: type,
 			text: text
 		});
+	}
+
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
 	}
 }

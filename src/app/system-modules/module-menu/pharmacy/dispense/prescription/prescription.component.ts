@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input } from '@angular/core';
+import { Component, OnInit, Output, Input, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -11,15 +11,16 @@ import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
 import {
 	FacilitiesService, PrescriptionService, InventoryTransactionTypeService, ExternalPrescriptionService,
-	DispenseService, MedicationListService, InventoryService, BillingService
+	DispenseService, MedicationListService, InventoryService, BillingService, EmployeeService
 } from '../../../../../services/facility-manager/setup/index';
+import { ISubscription } from 'rxjs/Subscription';
 
 @Component({
 	selector: 'app-prescription',
 	templateUrl: './prescription.component.html',
 	styleUrls: ['./prescription.component.scss']
 })
-export class PrescriptionComponent implements OnInit {
+export class PrescriptionComponent implements OnInit, OnDestroy {
 	@Output() prescriptionItems: Prescription = <Prescription>{};
 	@Output() isExternalPrescription = false;
 	@Input() employeeDetails: any;
@@ -46,6 +47,7 @@ export class PrescriptionComponent implements OnInit {
 	paymentStatusText = '<i class="fa fa-refresh"></i> Refresh Payment Status';
 	dispenseAllBtnText = 'Save';
 	saveBtn = 'Save';
+	subscription: ISubscription;
 
 	constructor(
 		// private _fb: FormBuilder,
@@ -57,6 +59,7 @@ export class PrescriptionComponent implements OnInit {
 		private _prescriptionService: PrescriptionService,
 		private _dispenseService: DispenseService,
 		private _inventoryService: InventoryService,
+		private _employeeService: EmployeeService,
 		// private _medicationListService: MedicationListService,
 		private _billingService: BillingService,
 		private _inventoryTransactionTypeService: InventoryTransactionTypeService,
@@ -69,12 +72,19 @@ export class PrescriptionComponent implements OnInit {
 		} else {
 			this.isExternalPrescription = false;
 		}
+		console.log(this.storeId);
+		this.subscription = this._employeeService.checkInAnnounced$.subscribe(res => {
+			console.log(res);
+			if (!!res && !!res.typeObject) {
+				this.storeId = res.typeObject.storeId;
+			}
+		});
 	}
 
 	ngOnInit() {
 		this._pharmacyEventEmitter.setRouteUrl('Prescription Details');
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
-		this.storeId = this._locker.getObject('checkingObject');
+		// this.storeId = this._locker.getObject('checkingObject');
 		this.user = <User>this._locker.getObject('auth');
 
 		this._route.params.subscribe(params => {
@@ -656,6 +666,10 @@ export class PrescriptionComponent implements OnInit {
 			this.saveBtn = 'Save';
 			this._notification('Info', 'If you do not have any of these drugs, Please check each item as external.');
 		}
+	}
+
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
 	}
 
 }

@@ -14,11 +14,11 @@ import { SystemModuleService } from '../../../../../services/module-manager/setu
 })
 export class BillPrescriptionComponent implements OnInit {
 	@Input() prescriptionData: Prescription = <Prescription>{};
+	@Input() storeId: string;
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 	// @Input() employeeDetails: any;
 	facility: Facility = <Facility>{};
 	user: any = <any>{};
-
 	addBillForm: FormGroup;
 	drugs: any[] = [];
 	selectedDrug = '';
@@ -29,7 +29,6 @@ export class BillPrescriptionComponent implements OnInit {
 	totalQuantity = 0;
 	batchNumber = '';
 	qtyInStores = 0;
-	storeId = '';
 	stores: any = [];
 	loading = true;
 	serviceId = '';
@@ -53,7 +52,6 @@ export class BillPrescriptionComponent implements OnInit {
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
 		this.user = this._locker.getObject('auth');
-
 		this.getProductsForGeneric();
 
 		this.addBillForm = this._fb.group({
@@ -93,12 +91,12 @@ export class BillPrescriptionComponent implements OnInit {
 
 				this.closeModal.emit(true);
 			} else {
-        this.mainErr = false;
-        this.errMsg = 'Unit price or Quantity is less than 0!';
+				this.mainErr = false;
+				this.errMsg = 'Unit price or Quantity is less than 0!';
 			}
 		} else {
-      this.mainErr = false;
-      this.errMsg = 'Unit price or Quantity is less than 0!';
+			this.mainErr = false;
+			this.errMsg = 'Unit price or Quantity is less than 0!';
 		}
 	}
 
@@ -111,13 +109,12 @@ export class BillPrescriptionComponent implements OnInit {
 
 		// Get the list of products from a facility, and then search if the generic
 		// that was entered by the doctor in contained in the list of products
-		this._inventoryService.find({ query: {
-			facilityId: this.facility._id,
-			productId: productId
-		}}).then(res => {
+		this._inventoryService.findList({
+			query: { facilityId: this.facility._id, name: this.title, storeId: this.storeId }
+		}).then(res => {
 			console.log(res);
       		this.loading = false;
-			if (res.status === 'success' && res.data.length > 0) {
+			if (res.data.length > 0) {
 				this.stores = res.data[0].availability;
 				this.drugs = res.data;
 			} else {
