@@ -62,7 +62,7 @@
     </div>
 
     <div *ngIf="showNewForm" class="card-list-item row">
-      <div class="col-xs-4" style="text-align:center">
+      <div class="col-xs-4" style="text-align:center;position:relative;">
         <input type="text" [formControl]="newProduct" autocomplete="off" placeholder="select a product">
         <ul class="suggestions nice-scroll" *ngIf="collapseProductContainer && products.length > 0">
           <li class="suggestion" *ngFor="let item of products" (click)="onSelectProduct(item)">
@@ -80,7 +80,7 @@
         <input type="number" placeholder="reorder level" [formControl]="newReorderLevel">
       </div>
       <div class="col-xs-1" *ngIf="addBtnDisable">
-        <i (click)="setLevel_click()" class="fa fa-check td-ico"></i>
+        <i *ngIf="!disableCreateBtn" (click)="setLevel_click()" class="fa fa-check td-ico"></i>
         <i (click)="toggleNewForm()" class="fa fa-close td-ico"></i>
       </div>
     </div>

@@ -39,17 +39,17 @@ export class DocUploadsComponent implements OnInit {
 
   getDocuments(){
     let patient = <any>this.locker.getObject('patient');
-    this.docUploadService.socketFind({query: {
-      facilityId: this.facilityService.getSelectedFacilityId()._id,
-      patientId: patient._id,
-      $limit: 10,
-      $sort: {
-        createdAt: -1
+    this.docUploadService.docUploadFind({
+      query: {
+        patientId: this.patient,
+        facilityId: this.facilityService.getSelectedFacilityId()._id,
+        $sort: {
+          createdAt: -1
+        }
       }
-    }}).then(payload => {
+    }).then(payload => {
       this.documents = payload.data;
-    }).catch(err => {
-    })
+    });
   }
 
   addProblem_show(e) {

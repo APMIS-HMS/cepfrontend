@@ -45,8 +45,8 @@ export class BillPrescriptionComponent implements OnInit {
 		private _productService: ProductService,
 		private _facilityService: FacilitiesService,
 		private _facilityPriceService: FacilityPriceService,
-    private _inventoryService: InventoryService,
-    private _systemsModuleService: SystemModuleService,
+		private _inventoryService: InventoryService,
+		private _systemsModuleService: SystemModuleService,
 		private _assessmentDispenseService: AssessmentDispenseService
 	) { }
 
@@ -103,17 +103,19 @@ export class BillPrescriptionComponent implements OnInit {
 	}
 
 	getProductsForGeneric() {
+		console.log(this.prescriptionData);
 		const index = this.prescriptionData.index;
 		this.title = this.prescriptionData.prescriptionItems[index].genericName;
-		const ingredients = this.prescriptionData.prescriptionItems[index].ingredients;
+		const productId = this.prescriptionData.prescriptionItems[index].productId;
+		// const ingredients = this.prescriptionData.prescriptionItems[index].ingredients;
 
 		// Get the list of products from a facility, and then search if the generic
 		// that was entered by the doctor in contained in the list of products
-		this._assessmentDispenseService.find({ query: {
-			action: 'genericSearch',
+		this._inventoryService.find({ query: {
 			facilityId: this.facility._id,
-			ingredients: JSON.stringify(ingredients)
+			productId: productId
 		}}).then(res => {
+			console.log(res);
       		this.loading = false;
 			if (res.status === 'success' && res.data.length > 0) {
 				this.stores = res.data[0].availability;

@@ -26,7 +26,7 @@ import { MaterialModule } from '../../../shared-common-modules/material-module';
   ],
   exports: [],
   imports: [
-    // SharedModule,
+    SharedModule,
     MaterialModule,
     OnlyMaterialModule,
     // CommonModule,

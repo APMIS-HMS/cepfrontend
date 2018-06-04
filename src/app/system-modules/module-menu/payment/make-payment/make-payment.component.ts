@@ -7,6 +7,7 @@ import {
   WalletTransaction, TransactionType, EntityType, TransactionDirection, TransactionMedium, TransactionStatus, PaymentPlan
 } from './../../../../models/facility-manager/setup/wallet-transaction';
 import { Patient, Facility, BillItem, Invoice, BillModel, User, Employee } from '../../../../models/index';
+import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
@@ -95,8 +96,14 @@ export class MakePaymentComponent implements OnInit {
     private facilityService: FacilitiesService,
     private personService: PersonService,
     private employeeService: EmployeeService,
+    private authFacadeService: AuthFacadeService,
     private systemModuleService: SystemModuleService) {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+      console.log(this.loginEmployee);
+    });
 
   }
   ngOnInit() {
@@ -449,6 +456,7 @@ export class MakePaymentComponent implements OnInit {
           'transactionType': TransactionType[TransactionType.Dr],
           'paymentTxn': this.productTableForm.controls['productTableArray'].value
         },
+        'createdBy':this.loginEmployee._id,
         'billGroups': this.billGroups,
         'patientId': this.selectedPatient._id,
         'personId': this.selectedPatient.personDetails._id,
@@ -476,6 +484,7 @@ export class MakePaymentComponent implements OnInit {
           'transactionType': TransactionType[TransactionType.Dr],
           'paymentTxn': this.productTableForm.controls['productTableArray'].value
         },
+        'createdBy':this.loginEmployee._id,
         'invoice': this.invoice,
         'patientId': this.selectedPatient._id,
         'personId': this.selectedPatient.personDetails._id,
@@ -498,7 +507,7 @@ export class MakePaymentComponent implements OnInit {
         if (!payload.isWaved) {
           this.systemModuleService.announceSweetProxy('Payment has been made successfully.', 'success');
         } else {
-          this.systemModuleService.announceSweetProxy('Payment has been made successfully.', 'success');
+          this.systemModuleService.announceSweetProxy('Payment has been waived successfully.', 'success');
         }
 
       }, error => {
@@ -513,10 +522,11 @@ export class MakePaymentComponent implements OnInit {
         if (!payload.isWaved) {
           this.systemModuleService.announceSweetProxy('Payment has been made successfully.', 'success');
         } else {
-          this.systemModuleService.announceSweetProxy('Payment has been made successfully.', 'success');
+          this.systemModuleService.announceSweetProxy('Payment has been waived successfully.', 'success');
         }
 
       }, error => {
+        console.log(error);
         this.isProcessing = false;
         this.systemModuleService.announceSweetProxy('Failed to make payment. Please try again later', 'error');
       });

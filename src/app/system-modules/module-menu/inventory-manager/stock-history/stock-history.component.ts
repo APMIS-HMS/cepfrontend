@@ -36,6 +36,8 @@ export class StockHistoryComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
   selectedInventoryTransfer: InventoryTransfer = <InventoryTransfer>{};
   checkingStore: any = <any>{};
+  subscription: any = <any>{};
+  loginEmployee : any = <any>{};
   searchControl = new FormControl();
   frmStore = new FormControl();
   constructor(
@@ -47,24 +49,31 @@ export class StockHistoryComponent implements OnInit {
     private storeService: StoreService,
     private authFacadeService: AuthFacadeService
   ) {
-    this.employeeService.checkInAnnounced$.subscribe(payload => {
-      if (payload !== undefined) {
-        this.checkingStore = payload;
-        // this.getTransfers();
-      }
-    });
-  }
-
-  ngOnInit() {
     this._inventoryEventEmitter.setRouteUrl('Stock History');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
+      if (!!res) {
+        if (!!res.typeObject) {
+          this.checkingStore = res.typeObject;
+          console.log(this.checkingStore);
+          if (!!this.checkingStore.storeId) {
+            this.getTransfers();
+            this.getStores();
+          }
+        }
+      }
+    });
+    
+
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
       this.checkingStore = payload.storeCheckIn.find(x => x.isOn === true);
       this.getTransfers();
       this.getStores();
     });
-    
+  }
 
+  ngOnInit() {
     this.frmStore.valueChanges
       .debounceTime(300)
       .distinctUntilChanged()
@@ -155,6 +164,30 @@ export class StockHistoryComponent implements OnInit {
   onShowBatch(transfer) {
     this.selectedInventoryTransfer = transfer;
     this.selectedInventoryTransfer.isOpen = !this.selectedInventoryTransfer.isOpen;
+  }
+
+  ngOnDestroy() {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      console.log(this.loginEmployee.storeCheckIn);
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.storeObject === undefined) {
+          const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
+          itemr.storeObject = store_.storeObject;
+          console.log(itemr.storeObject);
+        }
+        if (itemr.isDefault === true && itemr.isOn === true) {
+          itemr.isOn = false;
+          this.employeeService.update(this.loginEmployee).then(payload => {
+            this.loginEmployee = payload;
+          },err=>{
+            console.log(err);
+          });
+        }
+      });
+    }
+    this.employeeService.announceCheckIn(undefined);
+    this.locker.setObject('checkingObject', {});
+    this.subscription.unsubscribe();
   }
 
   openSearch() {

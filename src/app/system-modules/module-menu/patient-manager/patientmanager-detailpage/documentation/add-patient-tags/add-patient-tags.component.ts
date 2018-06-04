@@ -72,7 +72,7 @@ export class AddPatientTagsComponent implements OnInit {
   changeButton() { }
 
   newTag(valid: boolean) {
-    this.systemService.on;
+    this.systemService.on();
     this.tagLoader = true;
     const tag: any = <any>{};
     if (this.identity.value === true) {
@@ -83,7 +83,8 @@ export class AddPatientTagsComponent implements OnInit {
     tag.facilityId = this.facility._id;
     tag.patientId = this.patient._id;
     this.tagService.createSuggestedPatientTags(tag).then(payl => {
-      this.systemService.off;
+      this.systemService.off();
+      this.tagLoader = false;
       if (payl.status === "error") {
         this.mainErr = false;
         this.errMsg = payl.message;
@@ -92,8 +93,6 @@ export class AddPatientTagsComponent implements OnInit {
         this.tagName.setValue('');
         this.identity.reset();
       }
-      this.systemService.off;
-      this.tagLoader = false;
     });
   }
 

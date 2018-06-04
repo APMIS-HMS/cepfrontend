@@ -4,6 +4,8 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormControl } from '@angular/forms';
+import { PurchaseEmitterService } from '../../../../services/facility-manager/purchase-emitter.service';
+import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
 
 @Component({
   selector: 'app-product-config',
@@ -29,10 +31,13 @@ export class ProductConfigComponent implements OnInit {
   apmisInvestigationLookupQuery: any = {
   };
   control;
-  constructor(private _fb: FormBuilder,
+  constructor(
+    private _fb: FormBuilder,
+    private _inventoryEventEmitter: InventoryEmitterService,
     private productService: ProductService,
     private locker: CoolLocalStorage,
-    private systemModuleService: SystemModuleService) { }
+    private systemModuleService: SystemModuleService
+  ) { }
 
 initializeForm(){
   this.packageForm = this._fb.group({
@@ -50,6 +55,7 @@ initializeForm(){
 
   ngOnInit() {
     var x = document.getElementById("searchuctControl")
+    this._inventoryEventEmitter.setRouteUrl('Product Configuration');
     this.selectedFacility = <any>this.locker.getObject('selectedFacility');
     this.initializeForm();
     const control = <FormArray>this.packageForm.controls['package'];
@@ -60,7 +66,7 @@ initializeForm(){
         if (value !== undefined) {
           if (value.toString().length >= 3) {
             this.apmisInvestigationLookupQuery = {
-              name: { $regex: this.searchProdductControl.value, '$options': 'i' },
+              name: this.searchProdductControl.value
             }
           }
         }

@@ -358,7 +358,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
   }
 
   newTag(valid: boolean) {
-    this.systemService.on;
+    this.systemService.on();
     this.tagLoader = true;
     const tag: any = <any>{};
     if (this.identity.value === true) {
@@ -369,14 +369,13 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     tag.facilityId = this.facility._id;
     tag.patientId = this.patientToEdit._id;
     this.tagService.createSuggestedPatientTags(tag).then(payl => {
-      this.systemService.off;
+      this.systemService.off();
       if (payl.status === "error") {
         this.mainErr = false;
         this.errMsg = payl.message;
       } else {
         this.patientToEdit.tags = payl.data.tags;
       }
-      this.systemService.off;
       this.tagLoader = false;
       this.tagName.setValue('');
       this.identity.reset();

@@ -66,14 +66,18 @@ export class InitializeStoreComponent implements OnInit {
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe((por: any) => {
-        this._productService.find({
+        this.systemModuleService.on();
+        this._productService.findList({
           query: {
-            loginFacilityId: this.selectedFacility._id,
-            name: { $regex: por, '$options': 'i' }
+            facilityId: this.selectedFacility._id,
+            name: por
           }
         }).then(payload => {
+          console.log(payload);
+          this.systemModuleService.off();
           this.products = payload.data;
         }, err => {
+          this.systemModuleService.off();
         });
       });
 

@@ -85,23 +85,8 @@
                         </mat-input-container>
                     </div>
                     <div class="col-xs-12 immune-search-result">
-                        <div class="immune-group-item active">
-                            <mat-radio-button>Pregnant Women</mat-radio-button>
-                        </div>
-                        <div class="immune-group-item">
-                            <mat-radio-button>Pregnant Women</mat-radio-button>
-                        </div>
-                        <div class="immune-group-item">
-                            <mat-radio-button>Pregnant Women</mat-radio-button>
-                        </div>
-                        <div class="immune-group-item">
-                            <mat-radio-button>Pregnant Women</mat-radio-button>
-                        </div>
-                        <div class="immune-group-item">
-                            <mat-radio-button>Pregnant Women</mat-radio-button>
-                        </div>
-                        <div class="immune-group-item">
-                            <mat-radio-button>Pregnant Women</mat-radio-button>
+                        <div *ngFor="let schedule of immunizationSchedules" class="immune-group-item" [class.active]="schedule._id== selectedSchedule?._id">
+                            <mat-radio-button (change)="changeSelection(schedule)">{{schedule.name}} (&#8358;{{schedule.serviceObject.price | number:'1.2-2'}})</mat-radio-button>
                         </div>
                     </div>
                 </div>
@@ -113,47 +98,17 @@
                                     <h3>Selected Vaccines</h3>
                                 </div>
                                 <div class="col-xs-6 pull right" style="text-align:right;margin-top: 5px;">
-                                    <mat-checkbox style="line-height:18px;font-size:12px;">
+                                    <mat-checkbox style="line-height:18px;font-size:12px;" [disabled]="selectedSchedule?.vaccines?.length < 2" (change)="checkAllChanged($event)" [checked]="checkAll">
                                         Check All
                                     </mat-checkbox>
                                 </div>
                             </div>
                         </div>
                         <div class="col-xs-12 content">
-                            <div class="immune-content-group-item">
-                                <mat-checkbox style="line-height:18px;font-size:12px;">
-                                    <b>HBV</b> #300
-                                    <br /> Hepatitis B Vaccine 100mg/ml Oral Solution!
-                                </mat-checkbox>
-                            </div>
-                            <div class="immune-content-group-item">
-                                <mat-checkbox>
-                                    <b>HBV</b> #300
-                                    <br /> Hepatitis B Vaccine 100mg/ml Oral Solution!
-                                </mat-checkbox>
-                            </div>
-                            <div class="immune-content-group-item">
-                                <mat-checkbox>
-                                    <b>HBV</b> #300
-                                    <br /> Hepatitis B Vaccine 100mg/ml Oral Solution!
-                                </mat-checkbox>
-                            </div>
-                            <div class="immune-content-group-item">
-                                <mat-checkbox>
-                                    <b>HBV</b> #300
-                                    <br /> Hepatitis B Vaccine 100mg/ml Oral Solution!
-                                </mat-checkbox>
-                            </div>
-                            <div class="immune-content-group-item">
-                                <mat-checkbox>
-                                    <b>HBV</b> #300
-                                    <br /> Hepatitis B Vaccine 100mg/ml Oral Solution!
-                                </mat-checkbox>
-                            </div>
-                            <div class="immune-content-group-item">
-                                <mat-checkbox>
-                                    <b>HBV</b> #300
-                                    <br /> Hepatitis B Vaccine 100mg/ml Oral Solution!
+                            <div *ngFor="let vaccine of vaccines" class="immune-content-group-item">
+                                <mat-checkbox (change)="checkVaccine($event, vaccine)" [checked]="vaccine.checked">
+                                    <b>{{vaccine.vaccineObject.code}}</b> &#8358;{{vaccine.vaccineObject.serviceObject.price | number:'1.2-2'}}
+                                    <br /> {{vaccine.vaccineObject.name}}
                                 </mat-checkbox>
                             </div>
                         </div>
@@ -164,7 +119,7 @@
     </div>
     <div class="row">
         <div class="col-xs-12 btn-box">
-            <button [disabled]="disableBtn || !dateCtrl.valid || !patient.valid || !type.valid || !category.valid || !clinic.valid" (click)="scheduleAppointment()" [ngClass]="{'cta-1':!disableBtn && dateCtrl.valid && patient.valid && type.valid && category.valid && clinic.valid, 'cta-1-disable':disableBtn || !dateCtrl.valid || !patient.valid || !type.valid || !category.valid || !clinic.valid}">
+            <button [disabled]="disableBtn || !dateCtrl.valid || !patient.valid || !type.valid || !category.valid || !clinic.valid || !isAnyVaccineChecked()" (click)="scheduleAppointment()" [ngClass]="{'cta-1':!disableBtn && dateCtrl.valid && patient.valid && type.valid && category.valid && clinic.valid && isAnyVaccineChecked(), 'cta-1-disable':disableBtn || !dateCtrl.valid || !patient.valid || !type.valid || !category.valid || !clinic.valid || !isAnyVaccineChecked()}">
             <span *ngIf="updateAppointment">Update Appointment</span>
             <span *ngIf="saveAppointment">Schedule Appointment</span>
             <span *ngIf="savingAppointment">Scheduling Appointment...

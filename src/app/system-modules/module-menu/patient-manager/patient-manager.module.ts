@@ -77,6 +77,9 @@ import { PatientAddTagComponent } from './patientmanager-detailpage/patient-tags
 import { OnlyMaterialModule } from '../../../shared-common-modules/only-material-module';
 import { AddPatientTagsComponent } from './patientmanager-detailpage/documentation/add-patient-tags/add-patient-tags.component';
 import { PatientImmunizationComponent } from './patientmanager-detailpage/patient-immunization/patient-immunization.component';
+import { LabEventEmitterService } from '../../../services/facility-manager/lab-event-emitter.service';
+import { VaccineAdministrationComponent } from './patientmanager-detailpage/patient-immunization/vaccine-administration/vaccine-administration.component';
+import { VaccineDocumentationComponent } from './patientmanager-detailpage/patient-immunization/vaccine-documentation/vaccine-documentation.component';
 
 @NgModule({
   declarations: [
@@ -124,7 +127,9 @@ import { PatientImmunizationComponent } from './patientmanager-detailpage/patien
     PatientTagsComponent,
     PatientAddTagComponent,
     AddPatientTagsComponent,
-    PatientImmunizationComponent
+    PatientImmunizationComponent,
+    VaccineAdministrationComponent,
+    VaccineDocumentationComponent
   ],
   exports: [],
   imports: [
@@ -150,7 +155,8 @@ import { PatientImmunizationComponent } from './patientmanager-detailpage/patien
     LaboratoryRequestService,
     DocumentationTemplateService,
     ScopeLevelService,
-    FacilityCompanyCoverService
+    FacilityCompanyCoverService,
+    LabEventEmitterService
   ]
 })
 export class PatientManagerModule {}

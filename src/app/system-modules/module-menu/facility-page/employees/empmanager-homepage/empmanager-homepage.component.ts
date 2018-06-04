@@ -224,7 +224,7 @@ export class EmpmanagerHomepageComponent
         newEmployees.push(newEmp);
       }
     });
-    this.employees.concat(newEmployees);
+    this.employees = this.employees.concat(newEmployees);
   }
   loadMore() {
     this.getEmployees();

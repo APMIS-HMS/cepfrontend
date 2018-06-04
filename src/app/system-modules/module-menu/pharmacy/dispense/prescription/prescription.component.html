@@ -1,28 +1,38 @@
 <div class="survey">
     <div class="row patient-details">
         <div class="col-xs-12" style="padding: 10px;width: 100%;">
-            <div class="col-xs-4" style="width:7%; float: left;">
-                <!-- <div *ngIf="patient?.personDetails?.profileImageObject === undefined || patient === null"><img src="assets/images/users/default.png"></div>
-                <img *ngIf="patient?.personDetails?.profileImageObject !== undefined && patient !== null" class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.detailthumbnail)"> -->
-                <img class="img-responsive" src="http://placeholder.pics/svg/30" />
+            <div class="col-xs-3" style="width:7%; float: left;">
+                <div *ngIf="prescriptionItems?.personDetails?.profileImageObject === undefined || prescriptionItems === null"><img src="assets/images/users/default.png"></div>
+                <img *ngIf="prescriptionItems?.personDetails?.profileImageObject !== undefined && prescriptionItems !== null" class="shadow" [src]="_facilityService.transform(prescriptionItems?.personDetails?.profileImageObject?.detailthumbnail)">
+                <!-- <img class="img-responsive" src="http://placeholder.pics/svg/30" /> -->
             </div>
-            <div class="col-xs-8" style="width:93%; float: left;">
-                <small>Patient Name: <b>{{ prescriptionItems?.patientName }}</b></small><br>
-                <small>Age: <b>42years</b></small><br>
-                <div *ngIf="!!prescriptionItems?.clinicDetails">
-                    <small>Clinic: <b>{{ prescriptionItems?.clinicDetails?.clinicName}}</b></small><br>
+            <div class="col-xs-9" style="width:93%; float: left;font-size: 16px;">
+                <div class="col-xs-6" style="float: left;">
+                    <small>APMIS ID: <b>{{ prescriptionItems?.personDetails?.apmisId }}</b></small><br>
+                    <small>Patient Name: <b>{{ prescriptionItems?.personDetails?.firstName }} {{ prescriptionItems?.personDetails?.lastName }}</b></small><br>
+                    <div *ngIf="!!prescriptionItems?.personDetails?.age">
+                        <small>Age: <b>{{ prescriptionItems?.personDetails?.age }}</b></small><br>
+                    </div>
                 </div>
-                <small>Prescription Priotity: <b>{{ prescriptionItems?.priorityObject?.name}}</b></small>
+                <div class="col-xs-6" style="float: left;">
+                    <small>Gender: <b>{{ prescriptionItems?.personDetails?.gender }}</b></small><br>
+                    <div *ngIf="!!prescriptionItems?.clinicDetails">
+                        <small>Clinic: <b>{{ prescriptionItems?.clinicDetails?.clinicName}}</b></small><br>
+                    </div>
+                    <small>Prescription Priotity: <b>{{ prescriptionItems?.priority?.name}}</b></small>
+                </div>
             </div>
         </div>
     </div>
 
-    <div class="row" style="margin-top: 20px; margin-bottom: 5px; padding-left: 10px; text-align:center;">
+    <div class="row" style="margin-bottom: 5px; padding-left: 10px; text-align:center;">
         <b>Prescribed by {{ prescriptionItems?.employeeName }}</b>
     </div>
 
     <div class="row">
-        <app-add-prescription [prescriptionItems]="prescriptionItems"></app-add-prescription>
+        <div class="col-xs-12">
+            <app-add-prescription style="width:100%" [prescriptionItems]="prescriptionItems"></app-add-prescription>
+        </div>
     </div>
 
     <div class="row" style="margin-top: 55px; margin-bottom: 20px;">

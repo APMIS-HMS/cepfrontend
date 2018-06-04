@@ -60,14 +60,14 @@
 
                     <div *ngIf="inventories.length > 0 && !inventoryLoading">
                         <div class="content-row" *ngFor="let inventory of inventories; let i=index">
-                            <div class="row-item">{{ inventory?.name }} {{ inventory?.manufacturer }}</div>
+                            <div class="row-item">{{ inventory?.productObject?.name }}</div>
                             <div class="row-item">
                                 <div class="item-label">Recent Batch</div>
-                                <div class="item-val">{{ inventory?.transaction?.batchNumber }}</div>
+                                <div class="item-val">{{getMostRescentBatchNo(inventory) }}</div>
                             </div>
                             <div class="row-item">
                                 <div class="item-label">Quantity</div>
-                                <div class="item-val">{{ inventory?.totalQuantity }}</div>
+                                <div class="item-val">{{ inventory?.availableQuantity }}</div>
                             </div>
                         </div>
                     </div>
@@ -82,31 +82,31 @@
                 <div class="sect-header">
                     <div class="head-inner-lhs">
                         <div class="counta">{{ transferCount }}</div>
-                        <div class="head-inner-label">Transfer</div>
+                        <div class="head-inner-label">Requisition</div>
                     </div>
                 </div>
                 <div class="sect-content">
                     <div>
-                        <div *ngIf="transfers.length === 0 && !transferLoading">
+                        <div *ngIf="requisitions.length === 0 && !transferLoading">
                             <div style="width: 100%; text-align:center;">No data available in table.</div>
                         </div>
 
-                        <div *ngIf="transfers.length === 0 && transferLoading">
+                        <div *ngIf="requisitions.length === 0 && transferLoading">
                             <div style="width: 100%; text-align:center;">
                                 <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                             </div>
                         </div>
 
-                        <div *ngIf="transfers.length > 0 && !transferLoading">
-                            <div class="content-row" *ngFor="let transfer of transfers; let i=index">
-                                <div class="row-item">{{ transfer?.inventoryTransferTransactions[transfer?.inventoryTransferTransactions.length -1]?.productObject?.productDetail?.brand }}</div>
+                        <div *ngIf="requisitions.length > 0 && !transferLoading">
+                            <div class="content-row" *ngFor="let requisition of requisitions; let i=index">
+                                <div class="row-item">{{ requisition?.storeRequisitionNumber }}</div>
                                 <div class="row-item">
-                                    <div class="item-label">To</div>
-                                    <div class="item-val">{{ transfer?.destinationStoreObject?.name }}</div>
+                                    <div class="item-label">Store</div>
+                                    <div class="item-val">{{ requisition?.storeObject?.name }}</div>
                                 </div>
-                                <div class="row-status">
-                                    <div class="status status-pending"></div>
-                                    <div class="item-label">Pending</div>
+                                <div class="row-item">
+                                    <div class="item-label">Employee</div>
+                                    <div class="item-val">{{ requisition?.employeeObject?.personDetails?.firstName }} {{ requisition?.employeeObject?.personDetails?.lastName }}</div>
                                 </div>
                             </div>
                         </div>
@@ -155,7 +155,8 @@
             </div>
         </div>
     </div>
-    <app-quick-links *ngIf="Ql_toggle" (toggleQl)="toggleQl()"></app-quick-links>
+    <!-- <app-quick-links *ngIf="Ql_toggle" (toggleQl)="toggleQl()"></app-quick-links> -->
+    <app-store-quick-links *ngIf="Ql_toggle" (toggleQl)="toggleQl()"></app-store-quick-links>
 </div>
 <div *ngIf="modal_on" class="modal-overlay">
     <app-store-check-in [workSpace]="workSpace" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-store-check-in>

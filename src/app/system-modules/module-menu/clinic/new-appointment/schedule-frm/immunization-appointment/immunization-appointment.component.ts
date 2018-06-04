@@ -1,9 +1,11 @@
-import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
-import { Component, OnInit, EventEmitter, Input } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CoolLocalStorage } from 'angular2-cool-storage';
-import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
+import { Vaccine } from "./../../../models/vaccine";
+import { ImmunizationScheduleService } from "./../../../../../../services/facility-manager/setup/immunization-schedule.service";
+import { SystemModuleService } from "app/services/module-manager/setup/system-module.service";
+import { Component, OnInit, EventEmitter, Input } from "@angular/core";
+import { FormControl, Validators } from "@angular/forms";
+import { ActivatedRoute, Router } from "@angular/router";
+import { CoolLocalStorage } from "angular2-cool-storage";
+import { AuthFacadeService } from "app/system-modules/service-facade/auth-facade.service";
 import {
   Facility,
   Employee,
@@ -14,9 +16,9 @@ import {
   Patient,
   ScheduleRecordModel,
   MinorLocation
-} from '../../../../../../models/index';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/map';
+} from "../../../../../../models/index";
+import "rxjs/add/operator/startWith";
+import "rxjs/add/operator/map";
 import {
   FacilitiesService,
   SchedulerService,
@@ -31,34 +33,34 @@ import {
   SmsAlertService,
   FacilityPriceService,
   BillingService
-} from '../../../../../../services/facility-manager/setup/index';
+} from "../../../../../../services/facility-manager/setup/index";
 import {
   LocationService,
   OrderStatusService
-} from '../../../../../../services/module-manager/setup/index';
-import { Observable } from 'rxjs/Observable';
-import { Subscription } from 'rxjs/Subscription';
-import * as getDay from 'date-fns/get_day';
-import * as setDay from 'date-fns/set_day';
-import * as getHours from 'date-fns/get_hours';
-import * as setHours from 'date-fns/set_hours';
+} from "../../../../../../services/module-manager/setup/index";
+import { Observable } from "rxjs/Observable";
+import { Subscription } from "rxjs/Subscription";
+import * as getDay from "date-fns/get_day";
+import * as setDay from "date-fns/set_day";
+import * as getHours from "date-fns/get_hours";
+import * as setHours from "date-fns/set_hours";
 
-import * as setMinutes from 'date-fns/set_minutes';
-import * as getMinutes from 'date-fns/get_minutes';
-import * as getYear from 'date-fns/get_year';
-import * as setYear from 'date-fns/set_year';
-import * as getMonth from 'date-fns/get_month';
-import * as setMonth from 'date-fns/set_month';
-import * as isToday from 'date-fns/is_today';
-import * as parse from 'date-fns/parse';
-import * as isBefore from 'date-fns/is_before';
+import * as setMinutes from "date-fns/set_minutes";
+import * as getMinutes from "date-fns/get_minutes";
+import * as getYear from "date-fns/get_year";
+import * as setYear from "date-fns/set_year";
+import * as getMonth from "date-fns/get_month";
+import * as setMonth from "date-fns/set_month";
+import * as isToday from "date-fns/is_today";
+import * as parse from "date-fns/parse";
+import * as isBefore from "date-fns/is_before";
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&�*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
 @Component({
-  selector: 'app-immunization-appointment',
-  templateUrl: './immunization-appointment.component.html',
-  styleUrls: ['./immunization-appointment.component.scss']
+  selector: "app-immunization-appointment",
+  templateUrl: "./immunization-appointment.component.html",
+  styleUrls: ["./immunization-appointment.component.scss"]
 })
 export class ImmunizationAppointmentComponent implements OnInit {
   appointmentIsToday = false;
@@ -66,7 +68,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
   @Input() selectedPatient: any;
   selectedProvider: any;
   mainErr = true;
-  errMsg = 'You have unresolved errors';
+  errMsg = "You have unresolved errors";
   selectedFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
   selectedProfession: Profession = <Profession>{};
@@ -89,6 +91,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
   timezones: any[] = [];
   appointments: any[] = [];
   orderStatuses: any[] = [];
+  immunizationSchedules: any[] = [];
   selectedClinic: any = <any>{};
   selectedClinicSchedule: any;
   isDoctor = false;
@@ -102,6 +105,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
   clinicMajorLocation: any;
   organizationalServiceId: any = {};
   organizationalServicePrice = 0;
+  selectedSchedule: any;
   // filteredStates: any;
   patient: FormControl;
   clinic: FormControl;
@@ -119,40 +123,53 @@ export class ImmunizationAppointmentComponent implements OnInit {
   dateCtrl: FormControl = new FormControl(new Date(), [Validators.required]);
   reason: FormControl = new FormControl();
   appointment: any = <any>{};
-  apmisLookupUrl = 'patient-search';
-  apmisLookupText = '';
+  apmisLookupUrl = "patient-search";
+  apmisLookupText = "";
   apmisLookupQuery: any = {};
-  apmisLookupDisplayKey = 'personDetails.firstName';
-  apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
-  apmisLookupOtherKeys = ['personDetails.lastName', 'personDetails.firstName', 'personDetails.apmisId', 'personDetails.email'];
-  apmisProviderLookupUrl = 'employee-search';
-  apmisProviderLookupText = '';
+  apmisLookupDisplayKey = "personDetails.firstName";
+  apmisLookupImgKey = "personDetails.profileImageObject.thumbnail";
+  apmisLookupOtherKeys = [
+    "personDetails.lastName",
+    "personDetails.firstName",
+    "personDetails.apmisId",
+    "personDetails.email"
+  ];
+  apmisProviderLookupUrl = "employee-search";
+  apmisProviderLookupText = "";
   apmisProviderLookupQuery: any = {};
-  apmisProviderLookupDisplayKey = 'personDetails.firstName';
-  apmisProviderLookupImgKey = 'personDetails.profileImageObject.thumbnail';
-  apmisProviderLookupOtherKeys = ['personDetails.lastName', 'personDetails.firstName', 'personDetails.apmisId', 'personDetails.email'];
+  apmisProviderLookupDisplayKey = "personDetails.firstName";
+  apmisProviderLookupImgKey = "personDetails.profileImageObject.thumbnail";
+  apmisProviderLookupOtherKeys = [
+    "personDetails.lastName",
+    "personDetails.firstName",
+    "personDetails.apmisId",
+    "personDetails.email"
+  ];
 
   days: any[] = [
-    'Sunday',
-    'Monday',
-    'Tuesday',
-    'Wednesday',
-    'Thursday',
-    'Friday',
-    'Saturday'
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday"
   ];
   selectedAppointment: Appointment = <Appointment>{};
-  btnText = 'Schedule Appointment';
+  btnText = "Schedule Appointment";
   disableBtn = false;
   saveAppointment = true;
   savingAppointment = false;
   updateAppointment = false;
-  clinicErrorMsg = ' Clinic does not hold on the selected date!!!';
-  clinicErrorEalierDateMsg = ' Clinic can not be set for earlier date!!!';
+  clinicErrorMsg = " Clinic does not hold on the selected date!!!";
+  clinicErrorEalierDateMsg = " Clinic can not be set for earlier date!!!";
   isEarlierDate = false;
 
   user = {};
-  placeholderString = 'Select timezone';
+  placeholderString = "Select timezone";
+
+  vaccines: Vaccine[] = [];
+  checkAll = false;
 
   constructor(
     private router: Router,
@@ -174,6 +191,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
     private facilityPriceService: FacilityPriceService,
     private _smsAlertService: SmsAlertService,
     private billingService: BillingService,
+    private immunizationScheduleService: ImmunizationScheduleService
   ) {
     appointmentService.appointmentAnnounced$.subscribe((payload: any) => {
       this.appointment = payload;
@@ -190,7 +208,9 @@ export class ImmunizationAppointmentComponent implements OnInit {
 
       // this.provider.setValue(payload.providerDetails);
       if (this.appointment.providerDetails !== undefined) {
-        this.apmisProviderLookupHandleSelectedItem(this.appointment.providerDetails);
+        this.apmisProviderLookupHandleSelectedItem(
+          this.appointment.providerDetails
+        );
       }
       this.selectedPatient = payload.patientDetails;
 
@@ -224,12 +244,12 @@ export class ImmunizationAppointmentComponent implements OnInit {
     this.checkIn = new FormControl({ value: false, disabled: this.canCheckIn });
     this.teleMed = new FormControl();
 
-    this.patient = new FormControl('', [Validators.required]);
+    this.patient = new FormControl("", [Validators.required]);
     this.patient.valueChanges.subscribe(value => {
       this.apmisLookupQuery = {
         facilityId: this.selectedFacility._id,
         searchText: value,
-        'patientTable': true,
+        patientTable: true
       };
     });
     // this.filteredPatients = this.patient.valueChanges
@@ -242,8 +262,8 @@ export class ImmunizationAppointmentComponent implements OnInit {
     //   )
     //   .map(val => (val ? this.filterPatients(val) : this.patients.slice()));
 
-    this.clinic = new FormControl('', [Validators.required]);
-    this.status = new FormControl('', [Validators.required]);
+    this.clinic = new FormControl("", [Validators.required]);
+    this.status = new FormControl("", [Validators.required]);
     this.clinic.valueChanges.subscribe(clinic => {
       this.getOthers(clinic);
     });
@@ -253,7 +273,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
       this.apmisProviderLookupQuery = {
         facilityId: this.selectedFacility._id,
         searchText: value,
-        'employeeTable': true,
+        employeeTable: true
       };
     });
     // this.filteredProviders = this.provider.valueChanges
@@ -266,16 +286,16 @@ export class ImmunizationAppointmentComponent implements OnInit {
     //   )
     //   .map(val => (val ? this.filterProviders(val) : this.providers.slice()));
 
-    this.type = new FormControl('', [Validators.required]);
+    this.type = new FormControl("", [Validators.required]);
 
     // this.filteredAppointmentTypes = this.type.valueChanges
     //     .startWith(null)
     //     .map((type: AppointmentType) => type && typeof type === 'object' ? type.name : type)
     //     .map(val => val ? this.filterAppointmentTypes(val) : this.appointmentTypes.slice());
 
-    this.category = new FormControl('', [Validators.required]);
-    this.timezone = new FormControl('', []);
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.category = new FormControl("", [Validators.required]);
+    this.timezone = new FormControl("", []);
+    this.selectedFacility = <Facility>this.locker.getObject("selectedFacility");
     this.auth = this.authFacadeService.getAuth(); // <any>this.locker.getObject("auth");
 
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
@@ -299,11 +319,20 @@ export class ImmunizationAppointmentComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.auth = <any>this.locker.getObject('auth');
+    this.selectedFacility = <Facility>this.locker.getObject("selectedFacility");
+    this.auth = <any>this.locker.getObject("auth");
     this.employeeService.loginEmployeeAnnounced$.subscribe(employee => {
       this.loginEmployee = employee;
     });
+    this.getImmunizationSchedules();
+  }
+
+  getImmunizationSchedules() {
+    this.immunizationScheduleService
+      .find({ query: { facilityId: this.selectedFacility._id } })
+      .then(payload => {
+        this.immunizationSchedules = payload.data;
+      });
   }
 
   announcePatient(value) {
@@ -314,7 +343,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
   getClinicMajorLocation() {
     this.locationService.findAll().then(payload => {
       payload.data.forEach((itemi, i) => {
-        if (itemi.name === 'Clinic') {
+        if (itemi.name === "Clinic") {
           this.clinicMajorLocation = itemi;
           // this.getLoginEmployee();
         }
@@ -330,7 +359,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
         itemj.clinics.forEach((itemk, k) => {
           if (
             this.loginEmployee !== undefined &&
-            this.loginEmployee.professionId === 'Doctor'
+            this.loginEmployee.professionId === "Doctor"
           ) {
             this.loginEmployee.units.forEach((itemu, u) => {
               if (itemu === itemj.name) {
@@ -346,7 +375,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
             });
           } else if (
             this.loginEmployee !== undefined &&
-            this.loginEmployee.professionId !== 'Doctor'
+            this.loginEmployee.professionId !== "Doctor"
           ) {
             this.loginEmployee.workSpaces.forEach((wrk, ii) => {
               wrk.locations.forEach((lct, li) => {
@@ -413,7 +442,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
     });
     if (
       this.loginEmployee.professionId !== undefined &&
-      this.loginEmployee.professionId === 'Doctor'
+      this.loginEmployee.professionId === "Doctor"
     ) {
       this.schedules.forEach((items, s) => {
         this.loginEmployee.units.forEach((itemu, u) => {
@@ -442,7 +471,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
   getSchedules() {
     this.scheduleService
       .find({ query: { facilityId: this.selectedFacility._id } })
-      .subscribe(payload => { });
+      .subscribe(payload => {});
   }
 
   getPatients() {
@@ -474,7 +503,9 @@ export class ImmunizationAppointmentComponent implements OnInit {
           if (this.appointment._id !== undefined) {
             // this.provider.setValue(this.appointment.providerDetails);
             if (this.appointment.providerDetails !== undefined) {
-              this.apmisProviderLookupHandleSelectedItem(this.appointment.providerDetails);
+              this.apmisProviderLookupHandleSelectedItem(
+                this.appointment.providerDetails
+              );
             }
           }
           this.loadingProviders = false;
@@ -494,7 +525,9 @@ export class ImmunizationAppointmentComponent implements OnInit {
           if (this.appointment._id !== undefined) {
             // this.provider.setValue(this.appointment.providerDetails);
             if (this.appointment.providerDetails !== undefined) {
-              this.apmisProviderLookupHandleSelectedItem(this.appointment.providerDetails);
+              this.apmisProviderLookupHandleSelectedItem(
+                this.appointment.providerDetails
+              );
             }
           }
           this.loadingProviders = false;
@@ -511,50 +544,50 @@ export class ImmunizationAppointmentComponent implements OnInit {
   filterClinics(val: any) {
     return val
       ? this.clinics.filter(
-        s => s.clinicName.toLowerCase().indexOf(val.toLowerCase()) === 0
-      )
+          s => s.clinicName.toLowerCase().indexOf(val.toLowerCase()) === 0
+        )
       : this.clinics;
   }
 
   filterPatients(val: any) {
     return val
       ? this.patients.filter(
-        s =>
-          s.personDetails.lastName
-            .toLowerCase()
-            .indexOf(val.toLowerCase()) === 0 ||
-          s.personDetails.firstName
-            .toLowerCase()
-            .indexOf(val.toLowerCase()) === 0
-      )
+          s =>
+            s.personDetails.lastName
+              .toLowerCase()
+              .indexOf(val.toLowerCase()) === 0 ||
+            s.personDetails.firstName
+              .toLowerCase()
+              .indexOf(val.toLowerCase()) === 0
+        )
       : this.patients;
   }
 
   filterProviders(val: any) {
     return val
       ? this.providers.filter(
-        s =>
-          s.personDetails.lastName
-            .toLowerCase()
-            .indexOf(val.toLowerCase()) === 0 ||
-          s.personDetails.firstName
-            .toLowerCase()
-            .indexOf(val.toLowerCase()) === 0
-      )
+          s =>
+            s.personDetails.lastName
+              .toLowerCase()
+              .indexOf(val.toLowerCase()) === 0 ||
+            s.personDetails.firstName
+              .toLowerCase()
+              .indexOf(val.toLowerCase()) === 0
+        )
       : this.providers;
   }
   filterAppointmentTypes(val: any) {
     return val
       ? this.appointmentTypes.filter(
-        s => s.name.toLowerCase().indexOf(val.toLowerCase()) === 0
-      )
+          s => s.name.toLowerCase().indexOf(val.toLowerCase()) === 0
+        )
       : this.appointmentTypes;
   }
   filterCategoryServices(val: any) {
     return val
       ? this.categoryServices.filter(
-        s => s.name.toLowerCase().indexOf(val.toLowerCase()) === 0
-      )
+          s => s.name.toLowerCase().indexOf(val.toLowerCase()) === 0
+        )
       : this.categoryServices;
   }
   displayFn(clinic: any): string {
@@ -562,7 +595,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
   }
   providerDisplayFn(provider: any): string {
     return provider
-      ? provider.personDetails.lastName + ' ' + provider.personDetails.firstName
+      ? provider.personDetails.lastName + " " + provider.personDetails.firstName
       : provider;
   }
 
@@ -571,7 +604,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
   }
   patientDisplayFn(patient: any) {
     return patient
-      ? patient.personDetails.lastName + ' ' + patient.personDetails.firstName
+      ? patient.personDetails.lastName + " " + patient.personDetails.firstName
       : patient;
   }
 
@@ -587,13 +620,89 @@ export class ImmunizationAppointmentComponent implements OnInit {
     return order ? order.name : order;
   }
 
-  scheduleAppointment(){
-    
+  newSchedule() {
+    this.patient.reset();
+    this.clinic.reset();
+    this.provider.reset();
+    this.type.reset();
+    this.category.reset();
+    this.checkIn.reset();
+    this.teleMed.reset();
+    this.timezone.reset();
+    this.date = new Date();
+    this.reason.reset();
+    this.status.reset();
+    this.savingAppointment = false;
+    this.disableBtn = false;
   }
 
+  setValueSmsAlert(personFullName, startDate, facility, clinic, email) {
+    let contentValue =
+      "Hello " +
+      personFullName +
+      "an appointment was scheduled for " +
+      startDate +
+      "at " +
+      facility +
+      " " +
+      clinic;
+    let params = {
+      content: contentValue,
+      sender: "APMIS",
+      receiver: email
+    };
+    this._smsAlertService.post({}, params);
+  }
+
+  createBill() {
+    let bills = [];
+    let patientDefaultPaymentPlan = this.selectedPatient.paymentPlan.find(
+      x => x.isDefault === true
+    );
+    let covered = {};
+    if (patientDefaultPaymentPlan.planType === "wallet") {
+      covered = {
+        coverType: patientDefaultPaymentPlan.planType
+      };
+    } else if (patientDefaultPaymentPlan.planType === "insurance") {
+      covered = {
+        coverType: patientDefaultPaymentPlan.planType,
+        hmoId: patientDefaultPaymentPlan.planDetails.hmoId
+      };
+    } else if (patientDefaultPaymentPlan.planType === "company") {
+      covered = {
+        coverType: patientDefaultPaymentPlan.planType,
+        companyId: patientDefaultPaymentPlan.planDetails.companyId
+      };
+    } else if (patientDefaultPaymentPlan.planType === "family") {
+      covered = {
+        coverType: patientDefaultPaymentPlan.planType,
+        familyId: patientDefaultPaymentPlan.planDetails.familyId
+      };
+    }
+    bills.push({
+      unitPrice: this.organizationalServicePrice,
+      facilityId: this.selectedFacility._id,
+      facilityServiceId: this.organizationalServiceId.facilityServiceId,
+      serviceId: this.category.value,
+      patientId: this.selectedPatient._id,
+      quantity: 1,
+      active: true,
+      totalPrice: this.organizationalServicePrice,
+      covered: covered
+    });
+    this.billingService
+      .createBill(bills, {
+        query: {
+          facilityId: this.selectedFacility._id,
+          patientId: this.selectedPatient._id
+        }
+      })
+      .then(payld => {}, err => {});
+  }
   primeComponent() {
     const majorLocation$ = Observable.fromPromise(
-      this.locationService.find({ query: { name: 'Clinic' } })
+      this.locationService.find({ query: { name: "Clinic" } })
     );
     const appointmentTypes$ = Observable.fromPromise(
       this.appointmentTypeService.findAll()
@@ -601,7 +710,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
     // const patient$ = Observable.fromPromise(this.patientService.find({ query: { facilityId: this.selectedFacility._id } }));
     const schedule$ = Observable.fromPromise(
       this.scheduleService.find({
-        query: { facilityId: this.selectedFacility._id, scheduleType: 'Clinic' }
+        query: { facilityId: this.selectedFacility._id, scheduleType: "Clinic" }
       })
     );
     const professions$ = Observable.fromPromise(
@@ -631,7 +740,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
     ]).subscribe(
       (results: any) => {
         results[0].data.forEach((itemi, i) => {
-          if (itemi.name === 'Clinic') {
+          if (itemi.name === "Clinic") {
             this.clinicMajorLocation = itemi;
           }
         });
@@ -644,7 +753,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
         const categories = results[3].data[0].categories;
         this.organizationalServiceId.facilityServiceId = results[3].data[0]._id;
         const filterCategories = categories.filter(
-          x => x.name === 'Appointment'
+          x => x.name === "Appointment"
         );
         if (filterCategories.length > 0) {
           this.categoryServices = filterCategories[0].services;
@@ -655,11 +764,11 @@ export class ImmunizationAppointmentComponent implements OnInit {
         }
         this.orderStatuses = results[6].data;
         this.orderStatuses.forEach(item => {
-          if (item.name === 'Scheduled') {
+          if (item.name === "Scheduled") {
             this.status.setValue(item);
           }
         });
-        if (this.loginEmployee.professionId === 'Doctor') {
+        if (this.loginEmployee.professionId === "Doctor") {
           this.selectedProfession = this.professions.filter(
             x => x._id === this.loginEmployee.professionId
           )[0];
@@ -676,8 +785,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
         this.getClinics();
         this.validateCurrentAppointment();
       },
-      error => {
-      }
+      error => {}
     );
   }
 
@@ -715,59 +823,76 @@ export class ImmunizationAppointmentComponent implements OnInit {
   }
 
   dateChange(event) {
-    this.authFacadeService.getServerTime().then((serverTime: any) => {
-      var serverDate = new Date(serverTime.datetime);
-      var localDate = new Date(event);
-      const scheduleStartHour = getHours(this.selectedClinicSchedule.startTime);
-      const scheduleEndHour = getHours(this.selectedClinicSchedule.endTime);
-      const currentHour = getHours(localDate);
+    this.authFacadeService
+      .getServerTime()
+      .then((serverTime: any) => {
+        var serverDate = new Date(serverTime.datetime);
+        var localDate = new Date(event);
+        const scheduleStartHour = getHours(
+          this.selectedClinicSchedule.startTime
+        );
+        const scheduleEndHour = getHours(this.selectedClinicSchedule.endTime);
+        const currentHour = getHours(localDate);
 
-      if (((isBefore(serverDate, localDate)) && ((scheduleStartHour < currentHour) && (scheduleEndHour > currentHour))) || this.appointment._id !== undefined) {
-        this.isEarlierDate = false;
-        const dayNum = getDay(event);
-        const day = this.days[dayNum];
-        const scheduleFiltered = this.schedules.filter((x: any) => x.day === day);
-        if (scheduleFiltered.length === 0) {
-          this.dateCtrl.setErrors({ noValue: true });
-          this.dateCtrl.markAsTouched();
-          this.date = event;
-          this.startDate = event;
-          this.endDate = event;
-          this.checkIn.disable();
-          this.checkIn.setValue(false);
-          this.startDate = setHours(this.startDate, getHours(this.startDate));
-          this.startDate = setMinutes(this.startDate, getMinutes(this.startDate));
-        } else {
-          this.date = event;
-          const schedule: any = scheduleFiltered[0];
-          this.startDate = setHours(this.startDate, getHours(schedule.startTime));
-          this.startDate = setMinutes(
-            this.startDate,
-            getMinutes(schedule.startTime)
+        if (
+          (isBefore(serverDate, localDate) &&
+            (scheduleStartHour < currentHour &&
+              scheduleEndHour > currentHour)) ||
+          this.appointment._id !== undefined
+        ) {
+          this.isEarlierDate = false;
+          const dayNum = getDay(event);
+          const day = this.days[dayNum];
+          const scheduleFiltered = this.schedules.filter(
+            (x: any) => x.day === day
           );
-          this.canCheckIn = isToday(this.date)
-
-          if (this.canCheckIn) {
-            this.checkIn.enable();
-          } else {
+          if (scheduleFiltered.length === 0) {
+            this.dateCtrl.setErrors({ noValue: true });
+            this.dateCtrl.markAsTouched();
+            this.date = event;
+            this.startDate = event;
+            this.endDate = event;
             this.checkIn.disable();
+            this.checkIn.setValue(false);
+            this.startDate = setHours(this.startDate, getHours(this.startDate));
+            this.startDate = setMinutes(
+              this.startDate,
+              getMinutes(this.startDate)
+            );
+          } else {
+            this.date = event;
+            const schedule: any = scheduleFiltered[0];
+            this.startDate = setHours(
+              this.startDate,
+              getHours(schedule.startTime)
+            );
+            this.startDate = setMinutes(
+              this.startDate,
+              getMinutes(schedule.startTime)
+            );
+            this.canCheckIn = isToday(this.date);
+
+            if (this.canCheckIn) {
+              this.checkIn.enable();
+            } else {
+              this.checkIn.disable();
+            }
+            this.dateCtrl.setErrors(null); // ({ noValue: false });
+            this.dateCtrl.markAsUntouched();
           }
-          this.dateCtrl.setErrors(null); // ({ noValue: false });
-          this.dateCtrl.markAsUntouched();
+          if (this.selectedClinic._id !== undefined) {
+            this.appointmentService.clinicAnnounced({
+              clinicId: this.selectedClinic,
+              startDate: this.date
+            });
+          }
+        } else {
+          this.dateCtrl.setErrors({ noValue: true });
+          this.isEarlierDate = true;
+          this.dateCtrl.markAsTouched();
         }
-        if (this.selectedClinic._id !== undefined) {
-          this.appointmentService.clinicAnnounced({
-            clinicId: this.selectedClinic,
-            startDate: this.date
-          });
-        }
-      } else {
-        this.dateCtrl.setErrors({ noValue: true });
-        this.isEarlierDate = true;
-        this.dateCtrl.markAsTouched();
-      }
-    }).catch(er => {
-    })
+      })
+      .catch(er => {});
   }
 
   getOthers(clinic: any) {
@@ -807,19 +932,15 @@ export class ImmunizationAppointmentComponent implements OnInit {
 
           //start new code here
 
-
-
-
-
-          if (((scheduleStartHour < currentHour) && (scheduleEndHour > currentHour))) {
+          if (
+            scheduleStartHour < currentHour &&
+            scheduleEndHour > currentHour
+          ) {
             this.date = new Date();
             this.date = setHours(this.date, getHours(new Date()));
             this.date = setMinutes(this.date, getMinutes(new Date()));
             this.startDate = setHours(this.startDate, getHours(new Date()));
-            this.startDate = setMinutes(
-              this.startDate,
-              getMinutes(new Date())
-            );
+            this.startDate = setMinutes(this.startDate, getMinutes(new Date()));
           }
           //end new code here
           if (this.canCheckIn) {
@@ -831,7 +952,10 @@ export class ImmunizationAppointmentComponent implements OnInit {
           this.dateCtrl.markAsUntouched();
           this.selectedClinicSchedule = schedule;
         } else {
-          if (((scheduleStartHour > currentHour) || (scheduleEndHour < currentHour))) {
+          if (
+            scheduleStartHour > currentHour ||
+            scheduleEndHour < currentHour
+          ) {
             this.dateCtrl.setErrors({ noValue: true });
             this.dateCtrl.markAsTouched();
             this.checkIn.disable();
@@ -839,7 +963,10 @@ export class ImmunizationAppointmentComponent implements OnInit {
           } else {
             this.date = setHours(this.date, getHours(schedule.startTime));
             this.date = setMinutes(this.date, getMinutes(schedule.startTime));
-            this.startDate = setHours(this.startDate, getHours(schedule.startTime));
+            this.startDate = setHours(
+              this.startDate,
+              getHours(schedule.startTime)
+            );
             this.startDate = setMinutes(
               this.startDate,
               getMinutes(schedule.startTime)
@@ -854,8 +981,6 @@ export class ImmunizationAppointmentComponent implements OnInit {
             this.selectedClinicSchedule = schedule;
           }
         }
-
-
       }
       if (this.selectedClinic._id !== undefined) {
         this.appointmentService.clinicAnnounced({
@@ -872,30 +997,375 @@ export class ImmunizationAppointmentComponent implements OnInit {
         .findAppointment({
           query: { _id: this.appointment._id, isAppointmentToday: true }
         })
-        .subscribe(payload => {
-          if (payload.data.length > 0) {
-            this.canCheckIn = true;
-            this.checkIn.enable();
-            this.appointmentIsToday = true;
-          } else {
-            this.canCheckIn = false;
-            this.checkIn.disable();
-            this.appointmentIsToday = false;
-          }
-        }, error => {
-        })
+        .subscribe(
+          payload => {
+            if (payload.data.length > 0) {
+              this.canCheckIn = true;
+              this.checkIn.enable();
+              this.appointmentIsToday = true;
+            } else {
+              this.canCheckIn = false;
+              this.checkIn.disable();
+              this.appointmentIsToday = false;
+            }
+          },
+          error => {}
+        )
     );
   }
 
   apmisLookupHandleSelectedItem(value) {
-    this.apmisLookupText = `${value.personDetails.firstName} ${value.personDetails.lastName}`;
+    this.apmisLookupText = `${value.personDetails.firstName} ${
+      value.personDetails.lastName
+    }`;
     this.selectedPatient = value;
     this.appointmentService.patientAnnounced(this.selectedPatient);
   }
 
   apmisProviderLookupHandleSelectedItem(value) {
-    this.apmisProviderLookupText = `${value.personDetails.firstName} ${value.personDetails.lastName}`;
+    this.apmisProviderLookupText = `${value.personDetails.firstName} ${
+      value.personDetails.lastName
+    }`;
     this.selectedProvider = value;
   }
 
+  changeSelection(event) {
+    this.vaccines = [];
+    this.checkAll = false;
+    this.selectedSchedule = event;
+    this.selectedSchedule.vaccines.map(vaccine => {
+      this.vaccines.push(<Vaccine>{ checked: false, vaccineObject: vaccine });
+    });
+  }
+
+  checkAllChanged(event) {
+    this.checkAll = event.checked;
+    this.vaccines.forEach(vaccine => {
+      vaccine.checked = event.checked;
+    });
+  }
+
+  checkVaccine(event, vaccine) {
+    let findObj = this.vaccines.find(vac => {
+      return vac.vaccineObject._id == vaccine.vaccineObject._id;
+    });
+    findObj.checked = event.checked;
+    if (event.checked === false) {
+      this.checkAll = false;
+    } else if (this.isAllChecked()) {
+      this.checkAll = true;
+    }
+  }
+
+  isAllChecked() {
+    let filterRecords = this.vaccines.filter(vaccine => {
+      return vaccine.checked === true;
+    });
+    return filterRecords.length == this.vaccines.length;
+  }
+  isAnyVaccineChecked() {
+    let filterRecords = this.vaccines.filter(vaccine => {
+      return vaccine.checked === true;
+    });
+    return filterRecords.length > 0;
+  }
+
+  getCheckedVaccines() {
+    return this.vaccines.filter(vaccine => {
+      return vaccine.checked === true;
+    });
+  }
+
+  scheduleAppointment() {
+    if (
+      this.dateCtrl.valid &&
+      this.patient.valid &&
+      this.type.valid &&
+      this.category.valid &&
+      this.clinic.valid
+    ) {
+      this.systemModuleService.on();
+      this.disableBtn = true;
+      this.updateAppointment = false;
+      this.saveAppointment = false;
+      this.savingAppointment = true;
+      const patient = this.selectedPatient._id; //this.patient.value._id;
+      const clinic = this.clinic.value.clinicName;
+
+      const type = this.type.value.name;
+      const category = this.category.value.name;
+      const orderStatus = this.status.value.name;
+      const checkIn = this.checkIn.value;
+      const date = this.date;
+      const reason = this.reason.value;
+      const facility = this.selectedFacility._id;
+      //this.selectedPatient = this.patient.value;
+
+      this.appointment.appointmentReason = reason;
+      this.appointment.appointmentTypeId = type;
+      this.appointment.clinicId = clinic;
+      if (this.provider.value !== null && this.provider.value !== undefined) {
+        const provider = this.selectedProvider._id;
+        this.appointment.doctorId = provider;
+      }
+
+      this.appointment.facilityId = facility;
+      this.appointment.patientId = patient;
+      this.appointment.startDate = this.date;
+      if (checkIn === true) {
+        this.appointment.attendance = {
+          employeeId:
+            this.loginEmployee.personDetails.title +
+            " " +
+            this.loginEmployee.personDetails.lastName +
+            " " +
+            this.loginEmployee.personDetails.firstName,
+          majorLocationId: this.selectedClinicSchedule.location.locationId,
+          minorLocationId: this.selectedClinicSchedule.location._id,
+          dateCheckIn: new Date()
+        };
+      }
+      this.appointment.category = category;
+      this.appointment.orderStatusId = orderStatus;
+      if (this.appointmentIsToday && this.checkIn.value === true) {
+        const activeFilter = this.orderStatuses.filter(
+          x => (x.name = "Active")
+        );
+        if (activeFilter.length > 0) {
+          const active = activeFilter[0];
+          this.appointment.orderStatusId = active.name;
+        }
+      }
+      if (this.appointment._id !== undefined) {
+        // this.appointmentService.update(this.appointment).then(
+        //   payload => {
+        //     if (this.teleMed.value === true) {
+        //       const topic = "Appointment with " + patient.personDetails.apmisId;
+        //       this.appointmentService
+        //         .setMeeting(
+        //           topic,
+        //           this.appointment.startDate,
+        //           this.appointment._id,
+        //           this.timezone.value.value
+        //         )
+        //         .then(
+        //           meeting => {
+        //             let fullName =
+        //               this.selectedPatient.personDetails.lastName +
+        //               " " +
+        //               this.selectedPatient.personDetails.Name;
+        //             this.setValueSmsAlert(
+        //               fullName,
+        //               this.appointment.startDate,
+        //               this.selectedFacility.name,
+        //               clinic.name,
+        //               this.selectedPatient.personDetails.email
+        //             );
+        //             this.disableBtn = true;
+        //             this.updateAppointment = false;
+        //             this.saveAppointment = true;
+        //             this.savingAppointment = false;
+        //             this.systemModuleService.off();
+        //             this.router.navigate(["/dashboard/clinic/appointment"]);
+        //             this.systemModuleService.off();
+        //             this.systemModuleService.announceSweetProxy(
+        //               "Appointment updated successfully",
+        //               "success",
+        //               null,
+        //               null,
+        //               null,
+        //               null,
+        //               null,
+        //               null,
+        //               null
+        //             );
+        //           },
+        //           error => {
+        //             this.systemModuleService.off();
+        //             this.systemModuleService.announceSweetProxy(
+        //               "Clinic Appointment updated successfully but telemedice appointment not updated or created",
+        //               "warning"
+        //             );
+        //           }
+        //         );
+        //     } else {
+        //       this.appointmentService.patientAnnounced(this.patient);
+        //       this.disableBtn = true;
+        //       this.updateAppointment = false;
+        //       this.saveAppointment = true;
+        //       this.savingAppointment = false;
+        //       this.newSchedule();
+        //       this.appointmentService.clinicAnnounced({
+        //         clinicId: this.selectedClinic,
+        //         startDate: this.date
+        //       });
+        //       let fullName =
+        //         this.selectedPatient.personDetails.lastName +
+        //         " " +
+        //         this.selectedPatient.personDetails.Name;
+        //       this.setValueSmsAlert(
+        //         fullName,
+        //         this.appointment.startDate,
+        //         this.selectedFacility.name,
+        //         clinic.name,
+        //         this.selectedPatient.personDetails.email
+        //       );
+        //       this.router.navigate(["/dashboard/clinic/appointment"]);
+        //       this.systemModuleService.off();
+        //       this.systemModuleService.announceSweetProxy(
+        //         "Appointment updated successfully",
+        //         "success",
+        //         null,
+        //         null,
+        //         null,
+        //         null,
+        //         null,
+        //         null,
+        //         null
+        //       );
+        //     }
+        //   },
+        //   error => {
+        //     this.savingAppointment = false;
+        //     this.disableBtn = false;
+        //     this.loadIndicatorVisible = false;
+        //     this.systemModuleService.off();
+        //     this.systemModuleService.announceSweetProxy(
+        //       "There was an error setting the appointment",
+        //       "error"
+        //     );
+        //   }
+        // );
+      } else {
+        // console.log(this.appointment);
+        // console.log(this.selectedSchedule);
+        // console.log(this.getCheckedVaccines().map(vaccine => {return vaccine.vaccineObject._id}));
+        const vaccineAppointments = {
+          appointment: this.appointment,
+          immunizationScheduleId: this.selectedSchedule._id,
+          vaccineIds: this.getCheckedVaccines().map(vaccine => {
+            return vaccine.vaccineObject._id;
+          })
+        };
+        console.log(vaccineAppointments);
+        this.appointmentService
+          .setMultipleAppointments(vaccineAppointments)
+          .then(payload => {
+            console.log(payload);
+            this.savingAppointment = false;
+            this.disableBtn = false;
+            this.loadIndicatorVisible = false;
+            this.systemModuleService.off();
+          });
+        // this.appointmentService.create(this.appointment).then(
+        //   payload => {
+        //     console.log(payload);
+        //     this.createBill();
+        //     if (this.teleMed.value === true) {
+        //       const topic = "Appointment with " + patient.personDetails.apmisId;
+        //       this.appointmentService
+        //         .setMeeting(
+        //           topic,
+        //           this.appointment.startDate,
+        //           payload._id,
+        //           this.timezone.value.value
+        //         )
+        //         .then(
+        //           meeting => {
+        //             this.disableBtn = true;
+        //             this.updateAppointment = false;
+        //             this.saveAppointment = true;
+        //             this.savingAppointment = false;
+        //             let fullName =
+        //               this.selectedPatient.personDetails.lastName +
+        //               " " +
+        //               this.selectedPatient.personDetails.Name;
+        //             this.setValueSmsAlert(
+        //               fullName,
+        //               this.appointment.startDate,
+        //               this.selectedFacility.name,
+        //               this.selectedClinic.name,
+        //               this.selectedPatient.personDetails.email
+        //             );
+
+        //             this.router.navigate(["/dashboard/clinic/appointment"]);
+        //             this.systemModuleService.off();
+        //             this.systemModuleService.announceSweetProxy(
+        //               "Appointment set successfully",
+        //               "success",
+        //               null,
+        //               null,
+        //               null,
+        //               null,
+        //               null,
+        //               null,
+        //               null
+        //             );
+        //           },
+        //           error => {
+        //             this.savingAppointment = false;
+        //             this.disableBtn = false;
+        //             this.loadIndicatorVisible = false;
+        //             this.systemModuleService.off();
+        //             this.systemModuleService.announceSweetProxy(
+        //               "Appointment set successfully but there was an error creating Telemedicine appointment",
+        //               "warning"
+        //             );
+        //           }
+        //         );
+        //     } else {
+        //       this.disableBtn = true;
+        //       this.updateAppointment = false;
+        //       this.saveAppointment = true;
+        //       this.savingAppointment = false;
+        //       let fullName =
+        //         this.selectedPatient.personDetails.lastName +
+        //         " " +
+        //         this.selectedPatient.personDetails.Name;
+        //       this.setValueSmsAlert(
+        //         fullName,
+        //         this.appointment.startDate,
+        //         this.selectedFacility.name,
+        //         clinic.name,
+        //         this.selectedPatient.personDetails.email
+        //       );
+        //       this.router.navigate(["/dashboard/clinic/appointment"]);
+        //       this.systemModuleService.off();
+        //       this.systemModuleService.announceSweetProxy(
+        //         "Appointment set successfully",
+        //         "success",
+        //         null,
+        //         null,
+        //         null,
+        //         null,
+        //         null,
+        //         null,
+        //         null
+        //       );
+        //     }
+        //   },
+        //   error => {
+        //     this.savingAppointment = false;
+        //     this.disableBtn = false;
+        //     this.loadIndicatorVisible = false;
+        //     this.systemModuleService.off();
+        //     this.systemModuleService.announceSweetProxy(
+        //       "There was an error setting the appointment",
+        //       "error"
+        //     );
+        //     console.dir(error);
+        //   }
+        // );
+      }
+    } else {
+      this.systemModuleService.off();
+      this.savingAppointment = false;
+      this.disableBtn = false;
+      this.loadIndicatorVisible = false;
+      this.systemModuleService.announceSweetProxy(
+        "Some required field missing, please try again!",
+        "warning"
+      );
+    }
+  }
 }
