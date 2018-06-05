@@ -37,7 +37,7 @@ export class StockHistoryComponent implements OnInit {
   selectedInventoryTransfer: InventoryTransfer = <InventoryTransfer>{};
   checkingStore: any = <any>{};
   subscription: any = <any>{};
-  loginEmployee : any = <any>{};
+  loginEmployee: any = <any>{};
   searchControl = new FormControl();
   frmStore = new FormControl();
   constructor(
@@ -63,13 +63,51 @@ export class StockHistoryComponent implements OnInit {
         }
       }
     });
-    
-
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
-      this.checkingStore = payload.storeCheckIn.find(x => x.isOn === true);
-      this.getTransfers();
-      this.getStores();
+      // this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+      if ((this.loginEmployee.storeCheckIn !== undefined
+        || this.loginEmployee.storeCheckIn.length > 0)) {
+        let isOn = false;
+        this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+          if (itemr.isDefault === true) {
+            itemr.isOn = true;
+            itemr.lastLogin = new Date();
+            isOn = true;
+            this.checkingStore = { typeObject: itemr, type: 'store' };
+            this.employeeService.announceCheckIn(this.checkingStore);
+
+            // tslint:disable-next-line:no-shadowed-variable
+            this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+              this.loginEmployee = payload;
+              this.checkingStore = { typeObject: itemr, type: 'store' };
+              this.employeeService.announceCheckIn(this.checkingStore);
+              this.locker.setObject('checkingObject', this.checkingStore);
+              // this.checkingStore = this.checkingStore.typeObject;
+              this.getTransfers();
+              this.getStores();
+            });
+          }
+        });
+        if (isOn === false) {
+          this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+            if (r === 0) {
+              itemr.isOn = true;
+              itemr.lastLogin = new Date();
+              // tslint:disable-next-line:no-shadowed-variable
+              this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+                this.loginEmployee = payload;
+                this.checkingStore = { typeObject: itemr, type: 'store' };
+                this.employeeService.announceCheckIn(this.checkingStore);
+                this.locker.setObject('checkingObject', this.checkingStore);
+                // this.checkingStore = this.checkingStore.typeObject;
+                this.getTransfers();
+                this.getStores();
+              });
+            }
+          });
+        }
+      }
     });
   }
 
@@ -101,11 +139,17 @@ export class StockHistoryComponent implements OnInit {
       .distinctUntilChanged()
       .subscribe(value => {
         this.systemModuleService.on();
-        this.inventoryTransferService.findTransferHistories({
+        if (this.checkingStore.storeId === undefined) {
+          this.checkingStore = this.checkingStore.typeObject;
+        }
+        this.inventoryTransferService.find({
           query: {
             facilityId: this.selectedFacility._id,
-            storeId: this.checkingStore.typeObject.typeObject.storeId,
-            name: value
+            storeId: this.checkingStore.storeId,
+            'inventoryTransferTransactions.productObject.name': {
+              $regex: value,
+              $options: 'i'
+            },
           }
         }).then(payload => {
           this.systemModuleService.off();
@@ -179,7 +223,7 @@ export class StockHistoryComponent implements OnInit {
           itemr.isOn = false;
           this.employeeService.update(this.loginEmployee).then(payload => {
             this.loginEmployee = payload;
-          },err=>{
+          }, err => {
             console.log(err);
           });
         }

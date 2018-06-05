@@ -49,7 +49,7 @@
                                 <input type="number" min="1" [readonly]="itm.value.packItem === null" matInput mat-error formControlName="size" (change)="onPackageSize(i,productTableForm.controls['productTableArray'].controls)">
                             </mat-input-container>
                             <mat-form-field class="col-md-6">
-                                <mat-select placeholder="Select Packsize" formControlName="packItem" [compareWith]="compareItems">
+                                <mat-select placeholder="Select Packsize" formControlName="packItem" [compareWith]="compareItems" (change)="onPackageSize(i,productTableForm.controls['productTableArray'].controls)">
                                     <mat-option disabled="">None</mat-option>
                                     <mat-option [value]="item._id" *ngFor="let item of itm.value.packsizes">
                                         <span>{{item.name}}</span>
@@ -106,9 +106,9 @@
         </div>
         <div class="product-sect">
           <div *ngFor="let group of superGroups">
-            <label *ngFor="let item of group" class="control control--checkbox">{{item.name}}
+            <label *ngFor="let item of group;let i=index" class="control control--checkbox">{{item.name}}
               <div class="control__indicator">
-                <mat-checkbox (change)="onProductCheckChange($event,item)" [checked]="item.checked"></mat-checkbox>
+                <mat-checkbox (change)="onProductCheckChange($event,item,i)" [checked]="item.checked"></mat-checkbox>
               </div>
             </label>
           </div>
