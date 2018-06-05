@@ -59,7 +59,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   selectedForm: any = <any>{};
   selectedDocument: PatientDocumentation = <PatientDocumentation>{};
   patientDocumentation: Documentation = <Documentation>{};
-  documents: PatientDocumentation[] = [];
+  documents: any[] = [];
   auth: any;
   subscription: Subscription;
   priority: any = <any>{};
@@ -610,15 +610,11 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       }
     });
     const reverseDocuments = this.documents.reverse();
-    console.log(this.documents);
     const grouped = this.groupBy(reverseDocuments, reverseDocument => format(
     reverseDocument.createdAt,
       'DD/MM/YYYY'
     ));
-    console.log(grouped.entries());
-    console.log(grouped.values());
-    console.log(Array.from(grouped));
-    console.log([].concat(Array.from(grouped)));
+    this.documents = Array.from(grouped);
   }
   edit(document: any) {
     if (document.documentationStatus === 'Draft') {
@@ -736,7 +732,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this.editClick = !this.editClick;
   }
   node_toggle(document) {
-    if (this.currentDocument !== undefined && document._id === this.currentDocument._id) {
+    if (this.currentDocument !== undefined && document === this.currentDocument) {
       this.currentDocument = undefined;
     }else {
       this.currentDocument = document;
