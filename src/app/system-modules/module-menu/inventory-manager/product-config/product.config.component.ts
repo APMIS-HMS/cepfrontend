@@ -200,6 +200,7 @@ initializeForm(){
         this.systemModuleService.on();
         let productConfig: any = {};
         productConfig.productId = this.selectedProduct.id;
+        productConfig.productObject = this.selectedProduct;
         productConfig.facilityId = this.selectedFacility._id;
         productConfig.rxCode = this.selectedProduct.code;
         productConfig.packSizes = (<FormArray>this.packageForm.controls['package']).value;

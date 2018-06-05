@@ -7,7 +7,7 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
-import { ProductService, InventoryInitialiserService, FacilitiesServiceCategoryService } from '../../../../services/facility-manager/setup/index';
+import { ProductService, InventoryInitialiserService, FacilitiesServiceCategoryService, EmployeeService } from '../../../../services/facility-manager/setup/index';
 
 @Component({
   selector: 'app-initialize-store',
@@ -25,8 +25,10 @@ export class InitializeStoreComponent implements OnInit {
   selelctedCategoryId: any = <any>{};
   myForm: FormGroup;
   batchForm: FormGroup;
-  productServiceControl = new FormControl();
+  productServiceControl = new FormControl('');
+  editProductnameControl = new FormControl();
   ischeck: boolean;
+  isEditProductName = false;
   name: any;
   isProcessing = false;
   isItemselected = true;
@@ -38,6 +40,8 @@ export class InitializeStoreComponent implements OnInit {
   addinside = false;
   productname: any;
   searchProduct: any;
+  loginEmployee: any;
+  subscription: any;
   searchControl = new FormControl();
   selectedPacks = [];
 
@@ -49,13 +53,60 @@ export class InitializeStoreComponent implements OnInit {
     private _inventoryInitialiserService: InventoryInitialiserService,
     private authFacadeService: AuthFacadeService,
     private systemModuleService: SystemModuleService,
+    private employeeService: EmployeeService,
     private facilityServiceCategoryService: FacilitiesServiceCategoryService) {
+
+    this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
+      if (!!res) {
+        if (!!res.typeObject) {
+          this.checkingObject = res.typeObject;
+        }
+      }
+    });
+
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+      // this.checkingObject = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+      if ((this.loginEmployee.storeCheckIn !== undefined
+        || this.loginEmployee.storeCheckIn.length > 0)) {
+        let isOn = false;
+        this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+          if (itemr.isDefault === true) {
+            itemr.isOn = true;
+            itemr.lastLogin = new Date();
+            isOn = true;
+            this.checkingObject = { typeObject: itemr, type: 'store' };
+            this.employeeService.announceCheckIn(this.checkingObject);
+
+            // tslint:disable-next-line:no-shadowed-variable
+            this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+              this.loginEmployee = payload;
+              this.checkingObject = { typeObject: itemr, type: 'store' };
+              this.employeeService.announceCheckIn(this.checkingObject);
+              this._locker.setObject('checkingObject', this.checkingObject);
+            });
+          }
+        });
+        if (isOn === false) {
+          this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+            if (r === 0) {
+              itemr.isOn = true;
+              itemr.lastLogin = new Date();
+              // tslint:disable-next-line:no-shadowed-variable
+              this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+                this.loginEmployee = payload;
+                this.checkingObject = { typeObject: itemr, type: 'store' };
+                this.employeeService.announceCheckIn(this.checkingObject);
+                this._locker.setObject('checkingObject', this.checkingObject);
+              });
+            }
+          });
+        }
+      }
+    });
   }
 
   ngOnInit() {
-    this.authFacadeService.getLogingEmployee().then((payload: any) => {
-      this.checkingObject = payload.storeCheckIn.find(x => x.isOn === true);
-    });
     this._inventoryEventEmitter.setRouteUrl('Initialize Store');
     this.myForm = this._fb.group({
       initproduct: this._fb.array([
@@ -117,6 +168,7 @@ export class InitializeStoreComponent implements OnInit {
 
   addProduct(product: any) {
     console.log(product);
+    this.isEditProductName = false;
     this.isEnable = true;
     this.isItemselected = false;
     this.myForm = this._fb.group({
@@ -124,6 +176,7 @@ export class InitializeStoreComponent implements OnInit {
       ])
     });
     this.selectedProduct = product;
+    console.log(this.selectedProduct);
     const control = <FormArray>this.myForm.controls['initproduct'];
     if (product.packSizes !== undefined) {
       let prodObj = this._fb.group({
@@ -175,6 +228,9 @@ export class InitializeStoreComponent implements OnInit {
     this._productService.findProductConfigs({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
       this.systemModuleService.off();
       this.products = payload.data;
+      console.log(this.products);
+    }, err => {
+      console.log(err);
     });
   }
 
@@ -211,8 +267,34 @@ export class InitializeStoreComponent implements OnInit {
     });
   }
 
+  getBasePackName(packConfig) {
+    return packConfig.find(x => x.isBase === true).name;
+  }
+
+  onEditProductName() {
+    this.isEditProductName = !this.isEditProductName;
+  }
+
+  onEditSaveProductName() {
+    if (this.isEditProductName) {
+      console.log(this.isEditProductName);
+      if (this.selectedProduct.productObject !== undefined) {
+        this.selectedProduct.productObject.name = this.editProductnameControl.value;
+      } else {
+        this.selectedProduct.productObject = {};
+        this.selectedProduct.productObject.name = this.editProductnameControl.value;
+      }
+    }
+    this.isEditProductName = false;
+  }
+
 
   save(valid, value, product) {
+    if (this.checkingObject.storeId === undefined) {
+      if (!!this.checkingObject.typeObject) {
+        this.checkingObject = this.checkingObject.typeObject;
+      }
+    }
     if (valid) {
       const batches = {
         'batchItems': [],
@@ -254,6 +336,30 @@ export class InitializeStoreComponent implements OnInit {
         this.isItemselected = false;
       });
     }
+  }
+
+  ngOnDestroy() {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      console.log(this.loginEmployee.storeCheckIn);
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.storeObject === undefined) {
+          const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
+          itemr.storeObject = store_.storeObject;
+          console.log(itemr.storeObject);
+        }
+        if (itemr.isDefault === true && itemr.isOn === true) {
+          itemr.isOn = false;
+          this.employeeService.update(this.loginEmployee).then(payload => {
+            this.loginEmployee = payload;
+          }, err => {
+            console.log(err);
+          });
+        }
+      });
+    }
+    this.employeeService.announceCheckIn(undefined);
+    this._locker.setObject('checkingObject', {});
+    this.subscription.unsubscribe();
   }
 
 }

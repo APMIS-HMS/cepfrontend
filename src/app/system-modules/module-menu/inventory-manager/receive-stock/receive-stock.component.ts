@@ -80,14 +80,20 @@ export class ReceiveStockComponent implements OnInit {
       .debounceTime(300)
       .distinctUntilChanged()
       .subscribe(value => {
+        if (this.checkingStore.storeId === undefined) {
+          this.checkingStore = this.checkingStore.typeObject;
+        }
         this.loading = true;
         this.systemModuleService.on();
-        this.inventoryTransferService.findTransferHistories({
+        this.inventoryTransferService.find({
           query: {
             facilityId: this.selectedFacility._id,
             storeId: this.checkingStore.storeId,
             isDestination: true,
-            name: value
+            'inventoryTransferTransactions.productObject.name': {
+              $regex: value,
+              $options: 'i'
+            },
           }
         }).then(payload => {
           this.loading = false;
