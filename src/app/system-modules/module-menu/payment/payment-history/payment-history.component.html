@@ -11,7 +11,6 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <div class="card-header-item col-md-2">Collect By</div>
                         <div class="card-header-item col-md-2">Amount</div>
                         <div class="card-header-item col-md-1">Balance</div>
                         <div class="card-header-item col-md-2">Service</div>
@@ -21,13 +20,12 @@
                     </div>
                 </div>
                 <div class="card-list">
-                    <div class="invoice-table-list row">
-                        <div class="col-md-2">Steven Keshi</div>
-                        <div class="col-md-2">NGN 12000</div>
-                        <div class="col-md-1">NGN 2000</div>
-                        <div class="col-md-2">Blood Test</div>
-                        <div class="col-md-2">Laborary</div>
-                        <div class="col-md-2">March, 2018</div>
+                    <div class="invoice-table-list row" *ngFor="let item of paymentTxn">
+                        <div class="col-md-2">{{item.amountPaid|number : '1.2-2'}}</div>
+                        <div class="col-md-1">{{item.balance|number : '1.2-2'}}</div>
+                        <div class="col-md-2">{{item?.facilityServiceObject?.service}}</div>
+                        <div class="col-md-2">{{item?.facilityServiceObject?.category}}</div>
+                        <div class="col-md-2">{{item?.date|date:'medium'}}</div>
                         <div class="col-md-1"><i class="fa fa-money fa-2x"></i></div>
                     </div>
                 </div>

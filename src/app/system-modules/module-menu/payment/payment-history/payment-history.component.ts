@@ -24,6 +24,7 @@ export class PaymentHistoryComponent implements OnInit {
   selectedInvoiceGroup: Invoice = <Invoice>{};
   invoiceGroups: Invoice[] = [];
   subscription: Subscription;
+  paymentTxn: any = <any>[];
 
   constructor(private formBuilder: FormBuilder,
     private locker: CoolLocalStorage,
@@ -31,7 +32,6 @@ export class PaymentHistoryComponent implements OnInit {
     private _searchInvoicesService: SearchInvoicesService,
     private systemModuleService: SystemModuleService) {
     this.user = <User>this.locker.getObject('auth');
-    console.log(this.user);
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.getPatientInvoices();
 
@@ -42,19 +42,21 @@ export class PaymentHistoryComponent implements OnInit {
   }
 
   getPatientInvoices() {
-    console.log('AM here');
     this.systemModuleService.on();
-    console.log(this.selectedFacility);
-    console.log(this.selectedFacility);
     this.invoiceService.find({ query: { facilityId: this.selectedFacility._id, $sort: { updatedAt: -1 } } }).then(payload => {
-      console.log(payload);
       this.invoiceGroups = payload.data;
-      console.log(this.invoiceGroups);
+      this.invoiceGroups.forEach(item => { 
+        if(item.payments.length >0){
+          item.payments.forEach(ele=>{
+            this.paymentTxn.push(ele);
+          });
+        }
+      });
       this.systemModuleService.off();
     }).catch(err => {
       this.systemModuleService.announceSweetProxy("There was a problem getting invoices. Please try again later!", "error");
     });
-    
+
   }
 
 }
