@@ -1,7 +1,7 @@
-import { SystemModuleService } from "app/services/module-manager/setup/system-module.service";
 import { Component, Input, OnDestroy, OnInit } from "@angular/core";
 import { CoolLocalStorage } from "angular2-cool-storage";
 import { UUID } from "angular2-uuid";
+import { SystemModuleService } from "app/services/module-manager/setup/system-module.service";
 import { AuthFacadeService } from "app/system-modules/service-facade/auth-facade.service";
 import { Observable } from "rxjs/Observable";
 import { Subscription } from "rxjs/Subscription";
@@ -25,15 +25,17 @@ import {
   PrescriptionPriorityService,
   PrescriptionService
 } from "../../../../../services/facility-manager/setup/index";
-import { FormTypeService } from "../../../../../services/module-manager/setup/index";
-import { SharedService } from "../../../../../shared-module/shared.service";
+import { FormTypeService } from '../../../../../services/module-manager/setup/index';
+import { SharedService } from '../../../../../shared-module/shared.service';
+import * as  format from 'date-fns/format';
 
 @Component({
-  selector: "app-documentation",
-  templateUrl: "./documentation.component.html",
-  styleUrls: ["./documentation.component.scss"]
+  selector: 'app-documentation',
+  templateUrl: './documentation.component.html',
+  styleUrls: ['./documentation.component.scss']
 })
 export class DocumentationComponent implements OnInit, OnDestroy {
+  currentDocument: any;
   @Input() patient;
   docDetail_view = false;
   clinicalNote_view = false;
@@ -83,8 +85,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       this.loginEmployee = payload;
     });
 
-    this.selectedFacility = <Facility>this.locker.getObject("selectedFacility");
-    this.selectedMiniFacility = <Facility>this.locker.getObject("miniFacility");
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.selectedMiniFacility = <Facility>this.locker.getObject('miniFacility');
 
     this.subscription = this.sharedService.submitForm$.subscribe(payload => {
       if (!this.hasSavedDraft) {
@@ -93,18 +95,18 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
         doc.createdBy =
           this.loginEmployee.personDetails.title +
-          " " +
+          ' ' +
           this.loginEmployee.personDetails.lastName +
-          " " +
+          ' ' +
           this.loginEmployee.personDetails.firstName;
         doc.facilityId = this.selectedFacility._id;
         doc.facilityName = this.selectedFacility.name;
         (doc.patientId = this.patient._id),
           (doc.patientName =
             this.patient.personDetails.title +
-            " " +
+            ' ' +
             this.patient.personDetails.lastName +
-            " " +
+            ' ' +
             this.patient.personDetails.firstName);
         this.patientDocumentation.documentations.push(doc);
         // Get the raw orderset data and send to different destination.
@@ -113,14 +115,14 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         this.documentationService.update(this.patientDocumentation).then(
           pay => {
             this.getPersonDocumentation();
-            this._notification("Success", "Documentation successfully saved!");
+            this._notification('Success', 'Documentation successfully saved!');
           },
           error => {}
         );
       } else {
         Object.assign(this.draftDocument.document.body, payload);
         const doc = this.draftDocument;
-        doc.documentationStatus = "Completed";
+        doc.documentationStatus = 'Completed';
         const draftIndex = this.patientDocumentation.documentations.findIndex(
           x => x.apmisGuid === this.draftDocument.apmisGuid
         );
@@ -137,7 +139,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
             this.hasSavedDraft = false;
             this.sharedService.announceFinishedSavingDraft(false);
             this.getPersonDocumentation();
-            this._notification("Success", "Documentation successfully saved!");
+            this._notification('Success', 'Documentation successfully saved!');
           },
           eror => {}
         );
@@ -165,9 +167,9 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
           doc.createdBy =
             this.loginEmployee.personDetails.title +
-            " " +
+            ' ' +
             this.loginEmployee.personDetails.lastName +
-            " " +
+            ' ' +
             this.loginEmployee.personDetails.firstName;
           doc.createdById = this.loginEmployee._id;
           doc.facilityId = this.selectedFacility._id;
@@ -175,11 +177,11 @@ export class DocumentationComponent implements OnInit, OnDestroy {
           (doc.patientId = this.patient._id),
             (doc.patientName =
               this.patient.personDetails.title +
-              " " +
+              ' ' +
               this.patient.personDetails.lastName +
-              " " +
+              ' ' +
               this.patient.personDetails.firstName);
-          doc.documentationStatus = "Draft";
+          doc.documentationStatus = 'Draft';
           doc.apmisGuid = apmisGuid;
 
           // this.hasSavedDraft = true;
@@ -226,7 +228,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.getPersonDocumentation();
-    this.auth = this.locker.getObject("auth");
+    this.auth = this.locker.getObject('auth');
     this._getAllPriorities();
   }
   getPersonDocumentation() {
@@ -234,7 +236,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       .find({
         query: {
           personId: this.patient.personId,
-          $sort: { "documentations.updatedAt": -1 }
+          $sort: { 'documentations.updatedAt': -1 }
         }
       })
       .then((payload: any) => {
@@ -250,7 +252,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
           if (payload.data[0].documentations.length === 0) {
             this.patientDocumentation = payload.data[0];
           } else {
-            let mload = payload;
+            const mload = payload;
             if (mload.data.length > 0) {
               this.patientDocumentation = mload.data[0];
               if (this.hasSavedDraft && this.draftDocument !== undefined) {
@@ -334,7 +336,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this._prescriptionService
       .authorizePresciption(prescriptions)
       .then(res => {
-        if (res.status === "success") {
+        if (res.status === 'success') {
           return true;
         } else {
           return false;
@@ -461,7 +463,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     };
 
     this.requestService.customCreate(request).then(res => {
-      if (res.status === "success") {
+      if (res.status === 'success') {
         return true;
       } else {
         return false;
@@ -550,7 +552,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       .findAll()
       .then(res => {
         const priority = res.data.filter(x =>
-          x.name.toLowerCase().includes("normal")
+          x.name.toLowerCase().includes('normal')
         );
         if (priority.length > 0) {
           this.priority = priority[0];
@@ -576,7 +578,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       ) {
         const createdById = this.loginEmployee._id;
         const facilityId = this.selectedFacility._id;
-        if (documentation.documentationStatus !== "Draft") {
+        if (documentation.documentationStatus !== 'Draft') {
           this.documents.push(documentation);
         } else if (
           documentation.createdById === createdById &&
@@ -593,12 +595,12 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       } else {
         if (
           documentation.document.documentType.isSide === true &&
-          documentation.document.documentType.title === "Problems"
+          documentation.document.documentType.title === 'Problems'
         ) {
           this.documents.push(documentation);
         } else if (
           documentation.document.documentType.isSide === true &&
-          documentation.document.documentType.title === "Vitals"
+          documentation.document.documentType.title === 'Vitals'
         ) {
           this.tableChartData = documentation.document.body.vitals;
           this.documents.push(documentation);
@@ -607,13 +609,22 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         }
       }
     });
-    this.documents.reverse();
+    const reverseDocuments = this.documents.reverse();
+    console.log(this.documents);
+    const grouped = this.groupBy(reverseDocuments, reverseDocument => format(
+    reverseDocument.createdAt,
+      'DD/MM/YYYY'
+    ));
+    console.log(grouped.entries());
+    console.log(grouped.values());
+    console.log(Array.from(grouped));
+    console.log([].concat(Array.from(grouped)));
   }
   edit(document: any) {
-    if (document.documentationStatus === "Draft") {
+    if (document.documentationStatus === 'Draft') {
       this.clinicalNote_view = false;
       this.clinicalNote_view = true;
-      let obj = {
+      const obj = {
         json: document.document.documentType.body,
         form: document.document.documentType,
         isManual: false
@@ -627,8 +638,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     } else {
       // this.clinicalNote_view = false;
       this.systemModuleService.announceSweetProxy(
-        "Completed documentation can not be edited!",
-        "warning",
+        'Completed documentation can not be edited!',
+        'warning',
         null,
         null,
         null,
@@ -662,12 +673,12 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     return object;
   }
   trimKey(value) {
-    const init = value.replace('{"', "");
-    return init.replace('"', "");
+    const init = value.replace('{"', '');
+    return init.replace('"', '');
   }
   trimValue(value) {
-    const init = value.replace('"', "");
-    return init.replace('"}', "");
+    const init = value.replace('"', '');
+    return init.replace('"}', '');
   }
   docDetail_show(document, isDocumentEdit) {
     this.selectedDocument = document;
@@ -724,10 +735,33 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   onClickeditClick() {
     this.editClick = !this.editClick;
   }
-  node_toggle(){
-    this.expanded= !this.expanded;
+  node_toggle(document) {
+    if (this.currentDocument !== undefined && document._id === this.currentDocument._id) {
+      this.currentDocument = undefined;
+    }else {
+      this.currentDocument = document;
+    }
   }
-  nodeChild_toggle(){
-    this.expandedChild= !this.expandedChild;
+  should_show(document) {
+    return this.currentDocument === undefined
+      ? false
+      : this.currentDocument._id === document._id;
   }
+  nodeChild_toggle() {
+    this.expandedChild = !this.expandedChild;
+  }
+
+  groupBy(list, keyGetter) {
+    const map = new Map();
+    list.forEach((item) => {
+        const key = keyGetter(item);
+        const collection = map.get(key);
+        if (!collection) {
+            map.set(key, [item]);
+        } else {
+            collection.push(item);
+        }
+    });
+    return map;
+}
 }

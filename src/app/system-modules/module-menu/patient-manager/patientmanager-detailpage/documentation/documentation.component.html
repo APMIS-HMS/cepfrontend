@@ -15,14 +15,14 @@
             <li class="tree-li" *ngFor="let document of documents">
                 <div class="tree-node">
                     <div class="node-ico node-ico-parent">
-                        <i (click)="node_toggle()" *ngIf="expanded" class="fa fa-minus" aria-hidden="true"></i>
-                        <i (click)="node_toggle()" *ngIf="!expanded" class="fa fa-plus" aria-hidden="true"></i>
-                    </div> 
+                        <i (click)="node_toggle(document)" *ngIf="document._id === currentDocument?._id" class="fa fa-minus" aria-hidden="true"></i>
+                        <i (click)="node_toggle(document)" *ngIf="document._id !== currentDocument?._id" class="fa fa-plus" aria-hidden="true"></i>
+                    </div>
 
-                    <div (click)="node_toggle()" class="node-date">{{document.createdAt | date:'shortDate'}}</div>
+                    <div (click)="node_toggle(document)" class="node-date">{{document.createdAt | date:'shortDate'}}</div>
                 </div>
 
-                <div class="node-content" *ngIf="expanded">
+                <div class="node-content" *ngIf="should_show(document) && document._id === currentDocument?._id">
                     <div class="tree-child">
                         <div class="node-child-title">{{document?.document?.documentType?.title}}</div>
                     </div>
@@ -83,7 +83,8 @@
                                                 <div *ngFor="let key2 of document?.document?.body.allergies | keys let k = index">
                                                     <div *ngIf="document?.document?.body !== undefined" class="sect-value">
                                                         {{k+1}}:
-                                                        <span class="sect-key">{{document?.document?.body.allergies[key2].allergy}}</span> ({{document?.document?.body.allergies[key2].severity.name}}) {{document?.document?.body.allergies[key2].reaction}} || {{document?.document?.body.allergies[key2].note}}
+                                                        <span class="sect-key">{{document?.document?.body.allergies[key2].allergy}}</span> ({{document?.document?.body.allergies[key2].severity.name}}) {{document?.document?.body.allergies[key2].reaction}}
+                                                        || {{document?.document?.body.allergies[key2].note}}
                                                     </div>
                                                 </div>
                                                 <div *ngIf="document?.document?.body.vitals !== undefined && document?.document?.body.vitals.length > 0">
@@ -103,7 +104,7 @@
                                                                     <th>BMI</th>
                                                                 </tr>
                                                             </thead>
-        
+
                                                             <tbody>
                                                                 <tr *ngFor="let item of document?.document?.body.vitals">
                                                                     <td>{{item.updatedAt|date:'medium'}}</td>
@@ -119,7 +120,7 @@
                                                         </table>
                                                     </div>
                                                 </div>
-        
+
                                                 <div *ngIf="document?.document?.addendum !== undefined">
                                                     <span class="sect-key">Addendum:</span> <span>{{document?.document?.addendum.text}}</span>
                                                 </div>
