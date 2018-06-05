@@ -37,12 +37,18 @@
 
     <div class="row" style="margin-top: 55px; margin-bottom: 20px;">
         <div class="col-sm-12 col-md-12 text-center">
-            <button mat-raised-button class="mat-lg-btn" (click)="onClickSavePrescription();" [disabled]="disableSaveBtn" [innerHtml]="saveBtn"></button>
+            <button mat-raised-button class="mat-lg-btn" (click)="onClickSavePrescription();" [disabled]="disableSaveBtn">
+                <span *ngIf="saveBtn"><i class="fa fa-check"></i> Save</span>
+                <span *ngIf="savingBtn">Saving... <i class="fa fa-spin fa-spinner"></i></span>
+            </button>
         </div>
     </div>
     <div *ngIf="prescriptions.length > 0" class="row" style="margin-top: 55px; margin-bottom: 20px;">
         <div class="col-sm-12 col-md-12" style="float: right; margin-top: -12px;">
-            <button class="refresh-payment btn btn-default" (click)="onClickRefreshPaymentStatus();" [disabled]="disablePaymentBtn" [innerHtml]="paymentStatusText"></button>
+            <button class="refresh-payment btn btn-default" (click)="onClickRefreshPaymentStatus();" [disabled]="disablePaymentBtn">
+                <span *ngIf="paymentStatusText"><i class="fa fa-refresh"></i> Refresh Payment Status</span>
+                <span *ngIf="paymentStatusTexting">Getting Payment Status... <i class="fa fa-spinner fa-spin"></i></span>
+            </button>
         </div>
     </div>
     <div class="row" style="margin-top: 20px; margin-bottom: 5px; padding-left: 10px; text-align:center;">
@@ -80,13 +86,13 @@
                             {{ prescription.genericName }} - {{ prescription.frequency }} for {{ prescription.duration }}<br>
                         </span>
                         <span *ngIf="prescription.isBilled">
-                            Drug: <b>{{ prescription.productName }}</b>, Cost: <b>{{ prescription.totalCost }}</b>
+                            Drug: <b>{{ prescription?.productName?.name }}</b>, Cost: <b>{{ prescription.totalCost }}</b>
                         </span>
                     </div>
-                    <div class="prod-rowItem item2" style="text-align: right; display: block;">{{ prescription.quantity }}</div>
-                    <div class="prod-rowItem item3" style="text-align: right; display: block;">{{ prescription.quantityDispensed }}</div>
-                    <div class="prod-rowItem item4" style="text-align: right; display: block;">{{ prescription.quantity - prescription.quantityDispensed }}</div>
-                    <div class="prod-rowItem item5" style="text-align: right; display: block;">&#x20A6;{{ prescription.cost }}</div>
+                    <div class="prod-rowItem item2" style="text-align: right; display: block;">{{ prescription?.quantity }}</div>
+                    <div class="prod-rowItem item3" style="text-align: right; display: block;">{{ prescription?.quantityDispensed }}</div>
+                    <div class="prod-rowItem item4" style="text-align: right; display: block;">{{ prescription?.quantity - prescription?.quantityDispensed }}</div>
+                    <div class="prod-rowItem item5" style="text-align: right; display: block;">&#x20A6;{{ prescription?.cost }}</div>
                     <div class="prod-rowItem item6">
                         <div *ngIf="prescription.isExternal">
                             <span style="width:100%;">External</span>
@@ -146,7 +152,10 @@
                                         </mat-input-container>
                                     </td>
                                     <td class="table-content">
-                                        <button mat-raised-button [disabled]="(prescription.quantity === prescription.quantityDispensed) || disableDispenseBtn" style="color:#000!important; background:#ccc!important;" (click)="onClickBillProduct(i, j, transaction, form.value)" [innerHtml]="qtyDispenseBtn"> </button>
+                                        <button mat-raised-button [disabled]="(prescription.quantity === prescription.quantityDispensed) || disableDispenseBtn" style="color:#000!important; background:#ccc!important;" (click)="onClickBillProduct(i, j, transaction, form.value)">
+                                            <span *ngIf="qtyDispenseBtn"><i class="fa fa-check"></i> Dispense</span>
+                                            <span *ngIf="qtyDispensingBtn">Dispensing... <i class="fa fa-spinner fa-spin"></i></span>
+                                        </button>
                                     </td>
                                 </tr>
                                 <tr *ngIf="viewTransactions.length === 0 && !batchLoading">
@@ -173,14 +182,17 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12 col-md-12" style="padding-top: 10px; padding-right:5px;height: 70px;">
-            <p class="pull-right" style="width: 100%; text-align: right;"><strong>Total Quantity:</strong> <span> {{totalQuantity }}</span></p>
-            <p class="pull-right" style="width: 100%; text-align: right;margin-top: -10px;"><strong>Total Bill:</strong> <span>&#x20A6; {{totalCost }}</span></p>
+        <div class="col-sm-12 col-md-12" style="padding-top: 10px; padding-right:30px;">
+            <p class="pull-right" style="width: 100%; text-align: right;font-size: 20px;"><strong>Total Quantity:</strong> <span> {{totalQuantity }}</span></p>
+            <p class="pull-right" style="width: 100%; text-align: right;margin-top: -10px;font-size: 20px;"><strong>Total Bill:</strong> <span>&#x20A6; {{totalCost }}</span></p>
         </div>
     </div>
     <div class="row margin-top-15" style="margin-bottom: 40px;">
         <div class="col-sm-12 col-md-12 text-center">
-            <button mat-raised-button class="mat-lg-btn" (click)="onClickDispense();" [disabled]="disableDispenseAllBtn" style="padding: 20px 50px !important;" [innerHtml]="dispenseAllBtnText"></button>
+            <button mat-raised-button class="mat-lg-btn" (click)="onClickDispense();" [disabled]="disableDispenseAllBtn" style="padding: 20px 50px !important;">
+                <span *ngIf="dispenseAllBtnText"><i class="fa fa-check"></i> Dispense</span>
+                <span *ngIf="dispensingAllBtnText">Dispensing... <i class="fa fa-spinner fa-spin"></i></span>
+            </button>
         </div>
     </div>
 </div>

@@ -21,19 +21,19 @@ export class BillPrescriptionComponent implements OnInit {
 	user: any = <any>{};
 	addBillForm: FormGroup;
 	drugs: any[] = [];
-	selectedDrug = '';
+	selectedDrug: any;
 	itemCost = 0;
-	title = '';
-	cost = 0; // Unit price for each drug.
+	title: string;
+	cost: number; // Unit price for each drug.
 	totalCost = 0; // Total price for each drug selected.
 	totalQuantity = 0;
-	batchNumber = '';
+	batchNumber: string;
 	qtyInStores = 0;
 	stores: any = [];
 	loading = true;
-	serviceId = '';
-	facilityServiceId = '';
-	categoryId = '';
+	serviceId: string;
+	facilityServiceId: string;
+	categoryId: string;
 
 	mainErr = true;
 	errMsg = 'You have unresolved errors';
@@ -46,12 +46,12 @@ export class BillPrescriptionComponent implements OnInit {
 		private _facilityPriceService: FacilityPriceService,
 		private _inventoryService: InventoryService,
 		private _systemsModuleService: SystemModuleService,
-		private _assessmentDispenseService: AssessmentDispenseService
+		// private _assessmentDispenseService: AssessmentDispenseService
 	) { }
 
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
-		this.user = this._locker.getObject('auth');
+		// this.user = this._locker.getObject('auth');
 		this.getProductsForGeneric();
 
 		this.addBillForm = this._fb.group({
@@ -64,8 +64,8 @@ export class BillPrescriptionComponent implements OnInit {
 				this.totalQuantity = val;
 				this.totalCost = this.cost * val;
 			} else {
-        this.mainErr = false;
-        this.errMsg = 'Quantity should be greater than 0!!';
+				this.mainErr = false;
+				this.errMsg = 'Quantity should be greater than 0!!';
 			}
 		})
 	}
@@ -73,13 +73,18 @@ export class BillPrescriptionComponent implements OnInit {
 	//
 	onClickSaveCost(value, valid) {
 		if (valid) {
-			if (this.cost > 0 && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
+			if ((!!this.cost && this.cost > 0) && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
 				let index = this.prescriptionData.index;
+				const product = {
+					id: this.selectedDrug.productObject.id,
+					code: this.selectedDrug.productObject.code,
+					name: this.selectedDrug.productObject.name
+				};
 				this.prescriptionData.prescriptionItems[index].productId = value.drug;
 				this.prescriptionData.prescriptionItems[index].serviceId = this.serviceId;
 				this.prescriptionData.prescriptionItems[index].facilityServiceId = this.facilityServiceId;
 				this.prescriptionData.prescriptionItems[index].categoryId = this.categoryId;
-				this.prescriptionData.prescriptionItems[index].productName = this.selectedDrug;
+				this.prescriptionData.prescriptionItems[index].productName = product;
 				this.prescriptionData.prescriptionItems[index].quantity = value.qty;
 				this.prescriptionData.prescriptionItems[index].quantityDispensed = 0;
 				this.prescriptionData.prescriptionItems[index].cost = this.cost;
@@ -101,10 +106,9 @@ export class BillPrescriptionComponent implements OnInit {
 	}
 
 	getProductsForGeneric() {
-		console.log(this.prescriptionData);
 		const index = this.prescriptionData.index;
 		this.title = this.prescriptionData.prescriptionItems[index].genericName;
-		const productId = this.prescriptionData.prescriptionItems[index].productId;
+		// const productId = this.prescriptionData.prescriptionItems[index].productId;
 		// const ingredients = this.prescriptionData.prescriptionItems[index].ingredients;
 
 		// Get the list of products from a facility, and then search if the generic
@@ -112,10 +116,9 @@ export class BillPrescriptionComponent implements OnInit {
 		this._inventoryService.findList({
 			query: { facilityId: this.facility._id, name: this.title, storeId: this.storeId }
 		}).then(res => {
-			console.log(res);
       		this.loading = false;
 			if (res.data.length > 0) {
-				this.stores = res.data[0].availability;
+				// this.stores = res.data[0].availableQuantity;
 				this.drugs = res.data;
 			} else {
 				this.drugs = [];
@@ -123,29 +126,31 @@ export class BillPrescriptionComponent implements OnInit {
 		}).catch(err => console.error(err));
 	}
 
-	onClickCustomSearchItem(event, drugId) {
-		this.selectedDrug = drugId.viewValue;
-		const pId = drugId._element.nativeElement.getAttribute('data-p-id');
-		this.serviceId = drugId._element.nativeElement.getAttribute('data-p-sId');
-		this.facilityServiceId = drugId._element.nativeElement.getAttribute('data-p-fsid');
-		this.categoryId = drugId._element.nativeElement.getAttribute('data-p-cid');
-		// tslint:disable-next-line:radix
-		this.cost = parseInt(drugId._element.nativeElement.getAttribute('data-p-price'));
-		// tslint:disable-next-line:radix
-		this.qtyInStores = parseInt(drugId._element.nativeElement.getAttribute('data-p-tqty'));
-		const pAqty = drugId._element.nativeElement.getAttribute('data-p-aqty');
+	onClickCustomSearchItem(event, drug) {
+		console.log(drug);
+		this.selectedDrug = drug;
+		this.serviceId = drug.serviceId;
+		this.facilityServiceId = drug.facilityServiceId;
+		this.categoryId = drug.categoryId;
+
+		this._facilityPriceService.find({query: {
+			facilityId: this.facility._id,
+			serviceId: drug.serviceId,
+			facilityServiceId: drug.facilityServiceId,
+			categoryId: drug.categoryId
+		}}).then(res => {
+			if (res.data.length > 0) {
+				this.cost = res.data[0].price;
+			} else {
+				this.cost = 0;
+				this.mainErr = false;
+				this.errMsg = 'Please go to billing manager to set price!';
+			}
+		});
 	}
 
 	onClickClose(e) {
-		 this.closeModal.emit(true);
-  }
-
-  private _notification(type: string, text: string): void {
-    this._facilityService.announceNotification({
-      users: [this.user._id],
-      type: type,
-      text: text
-    });
-  }
+		this.closeModal.emit(true);
+	}
 
 }

@@ -8,6 +8,8 @@ import {
 } from '../../../../../services/facility-manager/setup/index';
 import { Subject } from 'rxjs/Subject';
 import { ISubscription } from 'rxjs/Subscription';
+import { SystemModuleService } from '../../../../../services/module-manager/setup/system-module.service';
+import { AuthFacadeService } from '../../../../service-facade/auth-facade.service';
 
 @Component({
   selector: 'app-add-prescription',
@@ -20,6 +22,7 @@ export class AddPrescriptionComponent implements OnInit, OnDestroy {
 	@Input() isDispensed: Subject<any>;
 	facility: Facility = <Facility>{};
 	user: User = <User>{};
+	employeeDetails: any = {};
 	billShow: boolean = false;
 	billShowId: number = 0;
 	isExternal: boolean = false;
@@ -37,7 +40,9 @@ export class AddPrescriptionComponent implements OnInit, OnDestroy {
 		private _locker: CoolLocalStorage,
 		private _productService: ProductService,
 		private _employeeService: EmployeeService,
-		private _facilityService: FacilitiesService
+		private _facilityService: FacilitiesService,
+		private _authFacadeService: AuthFacadeService,
+		private _systemModuleService: SystemModuleService,
 	) {
 		const url = this._router.url;
 		// const url = window.location.href;
@@ -48,8 +53,15 @@ export class AddPrescriptionComponent implements OnInit, OnDestroy {
 			this.isPrescriptionPage = true;
 		}
 
+		this._authFacadeService.getLogingEmployee().then((res: any) => {
+			this.employeeDetails = res;
+			if (!!res.storeCheckIn && res.storeCheckIn.length > 0) {
+				const store = res.storeCheckIn.filter(x => x.isOn);
+				this.storeId = store[0].storeId;
+			}
+		}).catch(err => { });
+
 		this.subscription = this._employeeService.checkInAnnounced$.subscribe(res => {
-			console.log(res);
 			if (!!res && !!res.typeObject) {
 				this.storeId = res.typeObject.storeId;
 			}
@@ -58,9 +70,9 @@ export class AddPrescriptionComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
-		this.user = <User>this._locker.getObject('auth');
+		// this.user = <User>this._locker.getObject('auth');
 		this.prescriptionItems.prescriptionItems = [];
-		
+
 		if(this.isDispensed !== undefined) {
 			this.isDispensed.subscribe(event => {
 				if(event) {
@@ -94,18 +106,20 @@ export class AddPrescriptionComponent implements OnInit, OnDestroy {
 
 	// Bill toggel button
 	toggleBill(index, item) {
-		if(!item.isBilled) {
+		// I have this here because the doctor might have billed this item from patient prescription.
+		if (!item.isBilled) {
 			this.billShow = !this.billShow;
 			this.billShowId = index;
 			this.prescriptionItems.index = index;
 			this.prescriptionItems.totalCost = this.totalCost;
 			this.prescriptionItems.totalQuantity = this.totalQuantity;
-			if(this.prescriptionItems.prescriptionItems[index].isExternal) {
+			if (this.prescriptionItems.prescriptionItems[index].isExternal) {
 				this.prescriptionItems.prescriptionItems[index].isExternal = false;
 			}
 			this.prescriptionData = this.prescriptionItems;
 		} else {
-			this._notification('Info', 'The item selected has been billed!');
+			this._systemModuleService.announceSweetProxy('The item selected has been billed!', 'error');
+			// this._notification('Info', 'The item selected has been billed!');
 		}
 	}
 
@@ -116,13 +130,13 @@ export class AddPrescriptionComponent implements OnInit, OnDestroy {
 	}
 
 	// Notification
-	private _notification(type: string, text: string): void {
-		this._facilityService.announceNotification({
-			users: [this.user._id],
-			type: type,
-			text: text
-		});
-	}
+	// private _notification(type: string, text: string): void {
+	// 	this._facilityService.announceNotification({
+	// 		users: [this.user._id],
+	// 		type: type,
+	// 		text: text
+	// 	});
+	// }
 
 	ngOnDestroy() {
 		this.subscription.unsubscribe();
