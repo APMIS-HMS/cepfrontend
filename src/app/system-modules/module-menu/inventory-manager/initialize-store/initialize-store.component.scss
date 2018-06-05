@@ -80,10 +80,38 @@ panel-bd>.panel-heading {
 }
 
 .form-array {
+    position: relative;
     border-top: solid 2px#51acda;
     padding: 5px;
     overflow-y: auto;
     margin: 5px 0;
+}
+.headr h5 {
+    font-size: 1.8rem;
+    margin: 20px 0;
+    font-weight: bold;
+}
+.input-qty{
+    position: absolute;
+    right: 0;
+    top: 40px;
+    z-index: 2;
+}
+.input-qty input{
+    background: #4bb8ef !important;
+    border: 0;
+    height: 50px;
+    color: #fff;
+    font-size: 2rem !important;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100px;
+    max-width: 150px;
+}
+.qty-label {
+    font-size: 1.4rem;
 }
 
 .mat-mini-fab.mat-accent {

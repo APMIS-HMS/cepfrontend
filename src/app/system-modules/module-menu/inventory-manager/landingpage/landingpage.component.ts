@@ -43,6 +43,8 @@ export class LandingpageComponent implements OnInit {
     private employeeService: EmployeeService,
     private systemModuleService: SystemModuleService
   ) {
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.user = <User>this.locker.getObject('auth');
     this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
       if (!!res) {
         if (!!res.typeObject) {
@@ -53,19 +55,54 @@ export class LandingpageComponent implements OnInit {
         }
       }
     });
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+      // this.checkingObject = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+      if ((this.loginEmployee.storeCheckIn !== undefined
+        || this.loginEmployee.storeCheckIn.length > 0)) {
+        let isOn = false;
+        this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+          if (itemr.isDefault === true) {
+            itemr.isOn = true;
+            itemr.lastLogin = new Date();
+            isOn = true;
+            this.checkingStore = { typeObject: itemr, type: 'store' };
+            this.employeeService.announceCheckIn(this.checkingStore);
+
+            // tslint:disable-next-line:no-shadowed-variable
+            this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+              this.loginEmployee = payload;
+              this.checkingStore = { typeObject: itemr, type: 'store' };
+              this.employeeService.announceCheckIn(this.checkingStore);
+              this.locker.setObject('checkingObject', this.checkingStore);
+              // this.checkingObject = this.checkingObject.typeObject;
+              this.getInventories();
+            });
+          }
+        });
+        if (isOn === false) {
+          this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+            if (r === 0) {
+              itemr.isOn = true;
+              itemr.lastLogin = new Date();
+              // tslint:disable-next-line:no-shadowed-variable
+              this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+                this.loginEmployee = payload;
+                this.checkingStore = { typeObject: itemr, type: 'store' };
+                this.employeeService.announceCheckIn(this.checkingStore);
+                this.locker.setObject('checkingObject', this.checkingStore);
+                // this.checkingObject = this.checkingObject.typeObject;
+                this.getInventories();
+              });
+            }
+          });
+        }
+      }
+    });
   }
 
   ngOnInit() {
     this._inventoryEventEmitter.setRouteUrl('Inventory Manager');
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.user = <User>this.locker.getObject('auth');
-    this.authFacadeService.getLogingEmployee().then((payload: any) => {
-      this.loginEmployee = payload;
-      this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
-      if (this.checkingStore !== null) {
-        this.getInventories();
-      }
-    });
     const subscribeForCategory = this.searchControl.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
