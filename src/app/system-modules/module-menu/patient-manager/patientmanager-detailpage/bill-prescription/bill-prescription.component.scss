@@ -12,6 +12,12 @@
 
 .border-box {
     padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.mat-form-field {
+    width: 100%;
 }
 
 .no-padding {

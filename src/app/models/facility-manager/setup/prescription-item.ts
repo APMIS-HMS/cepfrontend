@@ -1,7 +1,7 @@
 export interface PrescriptionItem {
     _id?: string;
     facilityId?: string;
-    productName?: string;
+    productName?: any;
     productId?: string;
     genericName: string;
     ingredients?: any[];

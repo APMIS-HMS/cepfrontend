@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input } from '@angular/core';
+import { Component, OnInit, Output, Input, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -11,15 +11,18 @@ import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
 import {
 	FacilitiesService, PrescriptionService, InventoryTransactionTypeService, ExternalPrescriptionService,
-	DispenseService, MedicationListService, InventoryService, BillingService
+	DispenseService, MedicationListService, InventoryService, BillingService, EmployeeService
 } from '../../../../../services/facility-manager/setup/index';
+import { ISubscription } from 'rxjs/Subscription';
+import { SystemModuleService } from '../../../../../services/module-manager/setup/system-module.service';
+import { AuthFacadeService } from '../../../../service-facade/auth-facade.service';
 
 @Component({
 	selector: 'app-prescription',
 	templateUrl: './prescription.component.html',
 	styleUrls: ['./prescription.component.scss']
 })
-export class PrescriptionComponent implements OnInit {
+export class PrescriptionComponent implements OnInit, OnDestroy {
 	@Output() prescriptionItems: Prescription = <Prescription>{};
 	@Output() isExternalPrescription = false;
 	@Input() employeeDetails: any;
@@ -39,13 +42,18 @@ export class PrescriptionComponent implements OnInit {
 	batchLoading = true;
 	disableDispenseBtn = false;
 	disableDispenseAllBtn = true;
-	qtyDispenseBtn = 'Dispense';
+	qtyDispenseBtn = true;
+	qtyDispensingBtn = false;
 	inventoryTransactionTypeId = '';
 	disablePaymentBtn = false;
 	disableSaveBtn = false;
-	paymentStatusText = '<i class="fa fa-refresh"></i> Refresh Payment Status';
-	dispenseAllBtnText = 'Save';
-	saveBtn = 'Save';
+	paymentStatusText = true;
+	paymentStatusTexting = false;
+	dispenseAllBtnText = true;
+	dispensingAllBtnText = false;
+	saveBtn = true;
+	savingBtn = false;
+	subscription: ISubscription;
 
 	constructor(
 		// private _fb: FormBuilder,
@@ -57,7 +65,10 @@ export class PrescriptionComponent implements OnInit {
 		private _prescriptionService: PrescriptionService,
 		private _dispenseService: DispenseService,
 		private _inventoryService: InventoryService,
+		private _employeeService: EmployeeService,
 		// private _medicationListService: MedicationListService,
+		private _authFacadeService: AuthFacadeService,
+		private _systemModuleService: SystemModuleService,
 		private _billingService: BillingService,
 		private _inventoryTransactionTypeService: InventoryTransactionTypeService,
 		private _externalPrescriptionService: ExternalPrescriptionService
@@ -69,13 +80,31 @@ export class PrescriptionComponent implements OnInit {
 		} else {
 			this.isExternalPrescription = false;
 		}
+
+		this._authFacadeService.getLogingEmployee().then((res: any) => {
+			this.employeeDetails = res;
+			if (!!res.storeCheckIn && res.storeCheckIn.length > 0) {
+				const store = res.storeCheckIn.filter(x => x.isOn);
+				const storeObj = {
+					type: 'store',
+					typeObject: store[0]
+				};
+				this.storeId = storeObj;
+			}
+		}).catch(err => { });
+
+		this.subscription = this._employeeService.checkInAnnounced$.subscribe(res => {
+			if (!!res && !!res.typeObject) {
+				this.storeId = res.typeObject.storeId;
+			}
+		});
 	}
 
 	ngOnInit() {
 		this._pharmacyEventEmitter.setRouteUrl('Prescription Details');
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
-		this.storeId = this._locker.getObject('checkingObject');
-		this.user = <User>this._locker.getObject('auth');
+		// this.storeId = this._locker.getObject('checkingObject');
+		// this.user = <User>this._locker.getObject('auth');
 
 		this._route.params.subscribe(params => {
 			this.prescriptionId = params['id'];
@@ -85,6 +114,7 @@ export class PrescriptionComponent implements OnInit {
 		this._getInventoryTransactionTypes();
 
 		if (this.prescriptionItems.prescriptionItems !== undefined) {
+			console.log(this.prescriptionItems);
 			const notBilled = this.prescriptionItems.prescriptionItems
 				.filter(x => ((x.quantity !== x.quantityDispensed || !x.paymentCompleted) && !x.paymentCompleted && !x.isExternal));
 
@@ -109,7 +139,8 @@ export class PrescriptionComponent implements OnInit {
 
 		if (tempArray.length > 0) {
 			this.disableSaveBtn = true;
-			this.saveBtn = 'Saving... <i class="fa fa-spinner fa-spin"></i>';
+			this.saveBtn = false;
+			this.savingBtn = true;
 
 			if (!this.isExternalPrescription) {
 				this._isPrescriptionLogic();
@@ -117,7 +148,7 @@ export class PrescriptionComponent implements OnInit {
 				this._isExternalPrescriptonLogic();
 			}
 		} else {
-			this._notification('Info', 'Please bill the prescribed drugs above.');
+			this._systemModuleService.announceSweetProxy('Please bill the prescribed drugs above.', 'error');
 		}
 	}
 
@@ -125,7 +156,8 @@ export class PrescriptionComponent implements OnInit {
 	onClickDispense() {
 		if (this.prescriptions.length > 0) {
 			this.disableDispenseAllBtn = true;
-			this.dispenseAllBtnText = 'Saving... <i class="fa fa-spinner fa-spin"></i>';
+			this.dispenseAllBtnText = false;
+			this.dispensingAllBtnText = true;
 			const dispenseArray = [];
 			const externalDrug = [];
 
@@ -183,12 +215,10 @@ export class PrescriptionComponent implements OnInit {
 				// tslint:disable-next-line:no-shadowed-variable
 				this._prescriptionService.update(this.prescriptionItems).then(res => {
 					this.disableDispenseAllBtn = true;
-					this.dispenseAllBtnText = 'Saved';
-					this._notification('Success', 'Drugs has been sent.');
+					this.dispenseAllBtnText = true;
+					this.dispensingAllBtnText = false;
+					this._systemModuleService.announceSweetProxy('Drugs has been dispensed successfully', 'success');
 
-					setTimeout(e => {
-						this._notification('Info', 'Redirecting...');
-					}, 1000);
 					setTimeout(e => {
 						this._router.navigate(['/dashboard/pharmacy/prescriptions']);
 					}, 2000);
@@ -201,7 +231,7 @@ export class PrescriptionComponent implements OnInit {
 			// 	}).catch(err => console.error(err));
 			// }
 		} else {
-			this._notification('Info', 'Please Bill the drugs that has been prescribed above.');
+			this._systemModuleService.announceSweetProxy('Please Bill the drugs that has been prescribed above.', 'error');
 		}
 	}
 
@@ -225,7 +255,8 @@ export class PrescriptionComponent implements OnInit {
 
 				if (this.prescriptionItems.isDispensed) {
 					this.disableDispenseAllBtn = true;
-					this.dispenseAllBtnText = 'Saved';
+					this.dispenseAllBtnText = true;
+					this.dispensingAllBtnText = false;
 				}
 
 				// Reset all the prescriptionItem.transactions to an empty array.
@@ -330,13 +361,13 @@ export class PrescriptionComponent implements OnInit {
 							}
 						}).catch(err => console.error(err));
 				} else {
-					this._notification('Info', 'Please check into store!');
+					this._systemModuleService.announceSweetProxy('Please check into store!', 'error');
 				}
 			} else {
-				this._notification('Error', 'Patient has not paid for this item, so you can not dispense it!');
+				this._systemModuleService.announceSweetProxy('Patient has not paid for this item, so you can not dispense it!', 'error');
 			}
 		} else {
-			this._notification('Info', 'This item is marked external, you can not bill the patient!');
+			this._systemModuleService.announceSweetProxy('This item is marked external, you can not bill the patient!', 'error');
 		}
 	}
 
@@ -345,7 +376,7 @@ export class PrescriptionComponent implements OnInit {
 		const itemId = item[0]._id;
 		// Input validation
 		if (inputBatch[index] <= 0 || inputBatch[index] === '' || isNaN(inputBatch[index])) {
-			this._notification('Info', 'Please enter a valid number greater than 0');
+			this._systemModuleService.announceSweetProxy('Please enter a valid number greater than 0.', 'error');
 		} else {
 			// Check if the qty entered is less than or equal to the qty needed.
 			if (inputBatch[index] <= item[0].quantity) {
@@ -356,7 +387,8 @@ export class PrescriptionComponent implements OnInit {
 					if (this.storeId.typeObject.storeId !== undefined) {
 						// disable the dispense button.
 						this.disableDispenseBtn = true;
-						this.qtyDispenseBtn = 'Dispensing... <i class="fa fa-spinner fa-spin"></i>';
+						this.qtyDispenseBtn = false;
+						this.qtyDispensingBtn = true;
 						// Update the quantityDispensed in the selected item.
 						// tslint:disable-next-line:no-shadowed-variable
 						const itemIndex = this.prescriptionItems.prescriptionItems.findIndex(item => item._id === itemId);
@@ -374,21 +406,22 @@ export class PrescriptionComponent implements OnInit {
 									.then(res => {
 										// disable the dispense button.
 										this.disableDispenseBtn = false;
-										this.qtyDispenseBtn = 'Dispense';
-										this._notification('Success', 'Quantity has been deducted.');
+										this.qtyDispenseBtn = true;
+										this.qtyDispensingBtn = false;
+										this._systemModuleService.announceSweetProxy('Quantity has been deducted.', 'success');
 									})
 									.catch(err => {
 									});
 							}
 						}).catch(err => console.error(err));
 					} else {
-						this._notification('Info', 'Please check into store!');
+						this._systemModuleService.announceSweetProxy('Please check into store!', 'error');
 					}
 				} else {
-					this._notification('Info', 'The quantity entered is greater than the quantity requested!');
+					this._systemModuleService.announceSweetProxy('The quantity entered is greater than the quantity requested!', 'error');
 				}
 			} else {
-				this._notification('Info', 'The quantity entered is greater than the quantity requested!');
+				this._systemModuleService.announceSweetProxy('The quantity entered is greater than the quantity requested!', 'error');
 			}
 		}
 	}
@@ -454,14 +487,18 @@ export class PrescriptionComponent implements OnInit {
 	// Get payment status
 	private _getPaymentStatus() {
 		this.disablePaymentBtn = true;
-		this.paymentStatusText = 'Getting Payment Status... <i class="fa fa-spinner fa-spin"></i>';
+		this.paymentStatusText = false;
+		this.paymentStatusTexting = true;
 		if (this.prescriptionItems.billId !== undefined) {
 			this._billingService.get(this.prescriptionItems.billId, {}).then(res => {
+				console.log(res);
 				if (res._id !== undefined) {
 					this.disablePaymentBtn = false;
-					this.paymentStatusText = '<i class="fa fa-refresh"></i> Refresh Payment Status';
+					this.paymentStatusText = true;
+					this.paymentStatusTexting = false;
 					res.billItems.forEach(i => {
 						this.prescriptions.forEach(j => {
+							console.log(j);
 							if (i.serviceId === j.serviceId) {
 								j.paymentCompleted = i.paymentCompleted;
 							}
@@ -482,18 +519,19 @@ export class PrescriptionComponent implements OnInit {
 			}).catch(err => console.error(err));
 		} else {
 			this.disablePaymentBtn = true;
-			this.paymentStatusText = '<i class="fa fa-refresh"></i> Refresh Payment Status';
+			this.paymentStatusText = true;
+			this.paymentStatusTexting = false;
 		}
 	}
 
 	// Notification
-	private _notification(type: string, text: string): void {
-		this._facilityService.announceNotification({
-			users: [this.user._id],
-			type: type,
-			text: text
-		});
-	}
+	// private _notification(type: string, text: string): void {
+	// 	this._facilityService.announceNotification({
+	// 		users: [this.user._id],
+	// 		type: type,
+	// 		text: text
+	// 	});
+	// }
 
 	// Get all the inventory transaction types.
 	private _getInventoryTransactionTypes() {
@@ -508,80 +546,125 @@ export class PrescriptionComponent implements OnInit {
 	// Prescription logic.
 	private _isPrescriptionLogic() {
 		// this has been billed before.
-		if (!!this.prescriptionItems.billId && this.prescriptionItems.hasOwnProperty('billId')) {
+		console.log(this.prescriptionItems);
+		console.log(this.unBilledArray);
+		// if (!!this.prescriptionItems.billId && this.prescriptionItems.hasOwnProperty('billId')) {
+			// check if there is any item that needs to be billed.
+			const containsIsBilled = this.unBilledArray.filter(x => x.isBilled);
+			if (containsIsBilled.length > 0) {
+				this._generateBill();
+				// const payload = {
+				// 	_id: this.prescriptionItems._id,
+				// 	facilityId: this.facility._id,
+				// 	billId: this.prescriptionItems.billId,
+				// 	prescription: this.prescriptionItems,
+				// 	unBilledArray: this.unBilledArray
+				// };
+
+				// this._prescriptionService.billUpdate(payload).then(res => {
+				// 	console.log(res);
+				// 	if (res.status === 'success') {
+				// 		// Update the view
+				// 		// this.unBilledArray.forEach(element => {
+				// 		// 	console.log(element);
+				// 		// 	if (element.isBilled) {
+				// 		// 		this.totalQuantity += element.quantity;
+				// 		// 		this.totalCost += element.totalCost;
+				// 		// 	}
+				// 		// });
+
+				// 		// Update the totalCost and totalQuantity in the prescriptionItems object.
+				// 		// this.prescriptionItems.totalCost = this.totalCost;
+				// 		// this.prescriptionItems.totalQuantity = this.totalQuantity;
+				// 		this.disableSaveBtn = false;
+				// 		this.saveBtn = true;
+				// 		this.savingBtn = false;
+				// 		// clear prescriptions then call the getPrescriptionsDetails again.
+				// 		this.prescriptions = [];
+				// 		this.totalCost = 0;
+				// 		this.totalQuantity = 0;
+				// 		this.unBilledArray = [];
+				// 		this._getPrescriptionDetails();
+				// 	}
+				// }).catch(e => console.log(e));
+			} else {
+				// Reset back the button.
+				this.disableSaveBtn = false;
+				this.saveBtn = true;
+				this.savingBtn = false;
+			}
 			// Call the billing service
-			this._billingService.find({ query: { _id: this.prescriptionItems.billId, facilityId: this.facility._id } })
-				.then(res => {
-					// Check if the initial generated billingId exist with this facility
-					if (res.data.length > 0) {
-						const containsIsBilled = this.unBilledArray.filter(x => x.isBilled);
-						let totalCost = 0;
-						let totalQuantity = 0;
-						if (containsIsBilled.length > 0) {
-							this.unBilledArray.forEach(element => {
-								if (element.isBilled) {
-									const billItem = <BillItem>{
-										facilityServiceId: element.facilityServiceId,
-										serviceId: element.serviceId,
-										facilityId: res.facilityId,
-										patientId: res.patientId,
-										description: element.productName,
-										quantity: element.quantity,
-										totalPrice: element.totalCost,
-										unitPrice: element.cost,
-										unitDiscountedAmount: 0,
-										totalDiscoutedAmount: 0,
-									};
+			// this._billingService.find({ query: { _id: this.prescriptionItems.billId, facilityId: this.facility._id } }).then(res => {
+			// 	console.log(res);
+			// 		// Check if the initial generated billingId exist with this facility
+			// 	if (res.data.length > 0) {
+			// 		const containsIsBilled = this.unBilledArray.filter(x => x.isBilled);
+			// 		let totalCost = 0;
+			// 		let totalQuantity = 0;
+			// 		if (containsIsBilled.length > 0) {
+			// 			this.unBilledArray.forEach(element => {
+			// 				console.log(element);
+			// 				if (element.isBilled) {
+			// 					const billItem = <BillItem>{
+			// 						facilityServiceId: element.facilityServiceId,
+			// 						serviceId: element.serviceId,
+			// 						facilityId: res.data[0].facilityId,
+			// 						patientId: res.data[0].patientId,
+			// 						description: element.genericName,
+			// 						quantity: element.quantity,
+			// 						totalPrice: element.totalCost,
+			// 						unitPrice: element.cost,
+			// 						unitDiscountedAmount: 0,
+			// 						totalDiscoutedAmount: 0,
+			// 					};
 
-									totalCost += element.totalCost;
-									totalQuantity += element.quantity;
-									this.totalQuantity += element.quantity;
-									this.totalCost += element.totalCost;
+			// 					totalCost += element.totalCost;
+			// 					totalQuantity += element.quantity;
+			// 					this.totalQuantity += element.quantity;
+			// 					this.totalCost += element.totalCost;
 
-									res.billItems.push(billItem);
-								}
-							});
+			// 					res.data[0].billItems.push(billItem);
+			// 				}
+			// 			});
 
-							// Update the subTotal and grandTotal in the billing response.
-							res.subTotal += totalCost;
-							res.grandTotal += totalCost;
-							// Update the totalCost and totalQuantity in the prescriptionItems object.
-							this.prescriptionItems.totalCost = this.totalCost;
-							this.prescriptionItems.totalQuantity = this.totalQuantity;
-							// Update the Billing service
-							this._billingService.update(res)
-								// tslint:disable-next-line:no-shadowed-variable
-								.then(res => {
-									if (res._id !== undefined) {
-										// tslint:disable-next-line:no-shadowed-variable
-										this._prescriptionService.update(this.prescriptionItems).then(res => {
-											if (res._id !== undefined) {
-												this.disableSaveBtn = false;
-												this.saveBtn = 'Save';
-												// clear prescriptions then call the getPrescriptionsDetails again.
-												this.prescriptions = [];
-												this.totalCost = 0;
-												this.totalQuantity = 0;
-												this._getPrescriptionDetails();
-											}
-										}).catch(err => console.error(err));
-									}
-								})
-								.catch(err => { console.log(err); });
-						} else {
-							// Reset back the button.
-							this.disableSaveBtn = false;
-							this.saveBtn = 'Save';
-						}
-					} else {
-						// This is a new facility that is trying to bill a drug
-						this._generateBill();
-					}
-				}).catch(err => console.error(err));
-		} else {
-			// There has never been any bill
-			this._generateBill();
-		}
+			// 			// Update the subTotal and grandTotal in the billing response.
+			// 			res.subTotal += totalCost;
+			// 			res.grandTotal += totalCost;
+			// 			// Update the totalCost and totalQuantity in the prescriptionItems object.
+			// 			this.prescriptionItems.totalCost = this.totalCost;
+			// 			this.prescriptionItems.totalQuantity = this.totalQuantity;
+			// 			// Update the Billing service
+			// 			this._billingService.patch(res.data[0]._id, res.data[0], {}).then(res1 => {
+			// 				if (res1._id !== undefined) {
+			// 					this._prescriptionService.update(this.prescriptionItems).then(res2 => {
+			// 						if (res2._id !== undefined) {
+			// 							this.disableSaveBtn = false;
+			// 							this.saveBtn = true;
+			// 							this.savingBtn = false;
+			// 							// clear prescriptions then call the getPrescriptionsDetails again.
+			// 							this.prescriptions = [];
+			// 							this.totalCost = 0;
+			// 							this.totalQuantity = 0;
+			// 							this._getPrescriptionDetails();
+			// 						}
+			// 					}).catch(err => console.error(err));
+			// 				}
+			// 			}).catch(err => { console.log(err); });
+			// 		} else {
+			// 			// Reset back the button.
+			// 			this.disableSaveBtn = false;
+			// 			this.saveBtn = true;
+			// 			this.savingBtn = false;
+			// 		}
+			// 	} else {
+			// 		// This is a new facility that is trying to bill a drug
+			// 		this._generateBill();
+			// 	}
+			// }).catch(err => console.error(err));
+		// } else {
+		// 	// There has never been any bill
+		// 	this._generateBill();
+		// }
 	}
 
 	// External Prescription logic.
@@ -591,8 +674,8 @@ export class PrescriptionComponent implements OnInit {
 
 	private _generateBill() {
 		const billItemArray = [];
-		let totalCost = 0;
-		let totalQuantity = 0;
+		// let totalCost = 0;
+		// let totalQuantity = 0;
 
 		this.unBilledArray.forEach(element => {
 			if (element.isBilled) {
@@ -601,7 +684,7 @@ export class PrescriptionComponent implements OnInit {
 					serviceId: element.serviceId,
 					facilityId: this.prescriptionItems.facilityId,
 					patientId: this.prescriptionItems.patientId,
-					description: element.productName,
+					description: element.genericName,
 					quantity: element.quantity,
 					totalPrice: element.totalCost,
 					unitPrice: element.cost,
@@ -609,8 +692,8 @@ export class PrescriptionComponent implements OnInit {
 					totalDiscoutedAmount: 0,
 				};
 
-				totalCost += element.totalCost;
-				totalQuantity += element.quantity;
+				// totalCost += element.totalCost;
+				// totalQuantity += element.quantity;
 				this.totalQuantity += element.quantity;
 				this.totalCost += element.totalCost;
 
@@ -618,44 +701,67 @@ export class PrescriptionComponent implements OnInit {
 			}
 		});
 		if (billItemArray.length > 0) {
-			const bill = <BillIGroup>{
+			// const bill = <BillIGroup>{
+			// 	facilityId: this.facility._id,
+			// 	patientId: this.prescriptionItems.patientId,
+			// 	billItems: billItemArray,
+			// 	discount: 0,
+			// 	subTotal: totalCost,
+			// 	grandTotal: totalCost,
+			// 	totalQuantity: totalQuantity
+			// }
+
+			const payload = {
 				facilityId: this.facility._id,
-				patientId: this.prescriptionItems.patientId,
 				billItems: billItemArray,
-				discount: 0,
-				subTotal: totalCost,
-				grandTotal: totalCost,
-			}
+				prescription: this.prescriptionItems
+			};
+
+			this._prescriptionService.billCreate(payload).then(res => {
+				if (res.status === 'success') {
+					this.disableSaveBtn = false;
+					this.saveBtn = true;
+					this.savingBtn = false;
+					// clear prescriptions then call the getPrescriptionsDetails again.
+					this.prescriptions = [];
+					this.totalCost = 0;
+					this.totalQuantity = 0;
+					this.unBilledArray = [];
+					this._getPrescriptionDetails();
+				}
+			}).catch(e => console.log(e));
+
 			// send the billed items to the billing service
-			this._billingService.create(bill)
-				.then(res => {
-					if (res._id !== undefined) {
-						// Update the totalCost and totalQuantity in the prescriptionItems object.
-						this.prescriptionItems.totalCost = this.totalCost;
-						this.prescriptionItems.totalQuantity = this.totalQuantity;
-						this.prescriptionItems.billId = res._id
-						this._prescriptionService.update(this.prescriptionItems)
-							// tslint:disable-next-line:no-shadowed-variable
-							.then(res => {
-								if (res._id !== undefined) {
-									this.disableSaveBtn = false;
-									this.saveBtn = 'Save';
-									// clear prescriptions then call the getPrescriptionsDetails again.
-									this.prescriptions = [];
-									this.totalCost = 0;
-									this.totalQuantity = 0;
-									this._getPrescriptionDetails();
-								}
-							})
-							.catch(err => { console.log(err); });
-					}
-				})
-				.catch(err => { console.log(err); });
+			// this._billingService.create(bill).then(res => {
+			// 	if (res._id !== undefined) {
+			// 		// Update the totalCost and totalQuantity in the prescriptionItems object.
+			// 		this.prescriptionItems.totalCost = this.totalCost;
+			// 		this.prescriptionItems.totalQuantity = this.totalQuantity;
+			// 		this.prescriptionItems.billId = res._id
+			// 		this._prescriptionService.update(this.prescriptionItems).then(res1 => {
+			// 			if (res1._id !== undefined) {
+			// 				this.disableSaveBtn = false;
+			// 				this.saveBtn = true;
+			// 				this.savingBtn = false;
+			// 				// clear prescriptions then call the getPrescriptionsDetails again.
+			// 				this.prescriptions = [];
+			// 				this.totalCost = 0;
+			// 				this.totalQuantity = 0;
+			// 				this._getPrescriptionDetails();
+			// 			}
+			// 		}).catch(err => { console.log(err); });
+			// 	}
+			// }).catch(err => { console.log(err); });
 		} else {
 			this.disableSaveBtn = false;
-			this.saveBtn = 'Save';
-			this._notification('Info', 'If you do not have any of these drugs, Please check each item as external.');
+			this.saveBtn = true;
+			this.savingBtn = false;
+			this._systemModuleService.announceSweetProxy('If you do not have any of these drugs, Please check each item as external.', 'error');
 		}
+	}
+
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
 	}
 
 }
