@@ -57,11 +57,6 @@
         .bar-1 {
             display: flex;
             justify-content: space-between;
-            .active-store {
-                font-size: 1.4rem;
-                font-weight: 700;
-                color: #2866b3;
-            }
             .post-ql-open {
                 position: relative;
                 background: #03A9F4;
@@ -85,6 +80,11 @@
                     }
                 }
             }
+        }
+        .active-store {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #2866b3;
         }
         .pg-labels-wrap {
             width: 100%;

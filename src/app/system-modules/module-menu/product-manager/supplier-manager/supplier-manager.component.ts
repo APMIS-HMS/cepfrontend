@@ -55,10 +55,12 @@ export class SupplierManagerComponent implements OnInit {
   getSuppliers() {
     this.supplierService.find({ query: { facilityId: this.selectedFacility._id, isActive: true, $sort: { createdAt: -1 } } }).then(res => {
       this.loading = false;
+      console.log(res);
       if (res.data.length > 0) {
         this.suppliers = res.data;
       }
     }, error => {
+      console.log(error);
     });
   }
   onSelect(supplier) {
