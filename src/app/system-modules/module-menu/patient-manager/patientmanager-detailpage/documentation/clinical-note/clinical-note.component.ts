@@ -1,5 +1,5 @@
-import "rxjs/add/operator/startWith";
-import "rxjs/add/operator/map";
+import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/map';
 
 import {
   Component,
@@ -9,14 +9,14 @@ import {
   OnDestroy,
   Output,
   ViewChild
-} from "@angular/core";
-import { FormControl } from "@angular/forms";
-import { MatAutocomplete } from "@angular/material";
-import { CoolLocalStorage } from "angular2-cool-storage";
-import { DocumentationTemplateService } from "app/services/facility-manager/setup/documentation-template.service";
-import { ScopeLevelService } from "app/services/module-manager/setup";
-import { AuthFacadeService } from "app/system-modules/service-facade/auth-facade.service";
-import { Observable } from "rxjs/Observable";
+} from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { MatAutocomplete } from '@angular/material';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { DocumentationTemplateService } from 'app/services/facility-manager/setup/documentation-template.service';
+import { ScopeLevelService } from 'app/services/module-manager/setup';
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
+import { Observable } from 'rxjs/Observable';
 
 import {
   Document,
@@ -25,29 +25,30 @@ import {
   Facility,
   Patient,
   PatientDocumentation
-} from "../../../../../../models/index";
+} from '../../../../../../models/index';
 import {
   DocumentationService,
   FacilitiesService,
   FormsService
-} from "../../../../../../services/facility-manager/setup/index";
-import { FormTypeService } from "../../../../../../services/module-manager/setup/index";
-import { SystemModuleService } from "../../../../../../services/module-manager/setup/system-module.service";
-import { SharedService } from "../../../../../../shared-module/shared.service";
+} from '../../../../../../services/facility-manager/setup/index';
+import { FormTypeService } from '../../../../../../services/module-manager/setup/index';
+import { SystemModuleService } from '../../../../../../services/module-manager/setup/system-module.service';
+import { SharedService } from '../../../../../../shared-module/shared.service';
 
-import { VISIBILITY_GLOBAL } from "./../../../../../../shared-module/helpers/global-config";
-import { Subscription } from "rxjs";
+import { VISIBILITY_GLOBAL } from './../../../../../../shared-module/helpers/global-config';
+import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
 
 @Component({
-  selector: "app-clinical-note",
-  templateUrl: "./clinical-note.component.html",
-  styleUrls: ["./clinical-note.component.scss"]
+  selector: 'app-clinical-note',
+  templateUrl: './clinical-note.component.html',
+  styleUrls: ['./clinical-note.component.scss']
 })
 export class ClinicalNoteComponent implements OnInit, OnDestroy {
   @Input() patient;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() showOrderset: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @ViewChild("surveyjs") surveyjs: any;
+  @ViewChild('surveyjs') surveyjs: any;
   @ViewChild(MatAutocomplete) matAutocomplete: MatAutocomplete;
   json: any;
   selectFormCtrl: FormControl;
@@ -59,7 +60,7 @@ export class ClinicalNoteComponent implements OnInit, OnDestroy {
   docSymptom_view = false;
   docDiagnosis_view = false;
   mainErr = true;
-  errMsg = "You have unresolved errors";
+  errMsg = 'You have unresolved errors';
   states: any[] = [];
   forms: any[] = [];
   documents: Document[] = [];
@@ -72,13 +73,16 @@ export class ClinicalNoteComponent implements OnInit, OnDestroy {
   selectedForm: any = <any>{};
   orderSet: any = <any>{};
   showOrderSet = false;
-  viewOrderManagement: boolean = false;
-  viewDiagnosis: boolean = false;
+  viewOrderManagement = false;
+  viewDiagnosis: Boolean = false;
   public isSavingDraft = false;
   isManual = true;
   editingDocumentation: any;
   formJsonObject: any;
   subscription: Subscription;
+  isEditingPatient = false;
+  surveySubscription: Subscription;
+  onDestroy$ = new Subject();
   constructor(
     private formService: FormsService,
     private locker: CoolLocalStorage,
@@ -102,10 +106,10 @@ export class ClinicalNoteComponent implements OnInit, OnDestroy {
 
     this.selectFormCtrl = new FormControl();
     this.selectFormCtrl.valueChanges.subscribe(form => {
-      this.isManual = form.isManual;
-      if (!form.isManual) {
-        this.setSelectedForm(form);
+      if(this.isManual == undefined || this.isManual === true){
+        this.isEditingPatient = false;
       }
+      this.setSelectedForm(form);
     });
 
     this.sharedService.submitForm$.subscribe(value => {
@@ -116,21 +120,43 @@ export class ClinicalNoteComponent implements OnInit, OnDestroy {
     });
 
     this.sharedService.newFormAnnounced$.subscribe((value: any) => {
+
       if (value.isManual !== undefined && value.isManual === false) {
+
+        if(value.isEditing){
+          this.isEditingPatient = true;
+
         this.selectFormCtrl.setValue(value.form);
         this.json = value.json;
-        this.isManual = value.isManual;
+        }else{
+          // this.isEditingPatient = false;
+        }
+        if (value.isEditing !== undefined){
+          this.isManual = value.isManual;
+        }
+
+
+      }else{
+        this.isManual = true;
       }
     });
 
     this.sharedService.editDocumentationAnnounced$.subscribe((value: any) => {
+      // this.isEditingPatient = true;
+
       this.formJsonObject = undefined;
+      if(value.main !== undefined && value.main.isEditing){
+        this.isEditingPatient = true;
+      }
       if (value.leg === 0) {
         this.editingDocumentation = value.document;
         this.formJsonObject = value.main;
-      } else {
-        this.editingDocumentation = undefined;
-        this.formJsonObject = undefined;
+        this.isManual = value.main.isManual;
+        this.isEditingPatient = true;
+      } else{
+        // this.isEditingPatient = false;
+        // this.editingDocumentation = undefined; //comment when setSelectedForm not working from observable
+        // this.formJsonObject = undefined;
       }
     });
 
@@ -145,27 +171,32 @@ export class ClinicalNoteComponent implements OnInit, OnDestroy {
       this.sharedService.announceTemplate(temp);
     });
 
-    this.subscription = this.sharedService.surveyInitialized$.subscribe(
+    this.subscription = this.sharedService.surveyInitialized$.takeUntil(this.onDestroy$).subscribe(
       (value: any) => {
         if (this.formJsonObject !== undefined && this.formJsonObject !== null) {
           this.selectFormCtrl.setValue(this.formJsonObject.form);
         }
-        value.surveyModel.data = this.editingDocumentation;
-        this.surveyjs = value;
-        this.sharedService.announceEditDocumentation({
-          document: this.editingDocumentation,
-          leg: 1
-        });
+        if(this.isEditingPatient){
+          value.surveyModel.data = this.editingDocumentation;
+          this.surveyjs = value;
+          this.sharedService.announceEditDocumentation({
+            document: this.editingDocumentation,
+            leg: 1
+          });
+        }else{
+          this.editingDocumentation = undefined;
+        }
+
       }
     );
   }
 
   ngOnInit() {
-    this.selectedFacility = <Facility>this.locker.getObject("selectedFacility");
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
 
     this.sharedService.announceOrderSetSource$.subscribe(value => {
       this.orderSet = value;
-      const payload = { type: "OrderSet", action: "add", data: value };
+      const payload = { type: 'OrderSet', action: 'add', data: value };
       // Send order set data one after another to the shared service
       this.sharedService.announceDiagnosisSystemOrder(payload);
     });
@@ -212,7 +243,7 @@ export class ClinicalNoteComponent implements OnInit, OnDestroy {
   getForms() {
     try {
       const formType$ = Observable.fromPromise(
-        this.formTypeService.find({ query: { name: "Documentation" } })
+        this.formTypeService.find({ query: { name: 'Documentation' } })
       );
       formType$
         .mergeMap((formTypes: any) =>
@@ -249,35 +280,67 @@ export class ClinicalNoteComponent implements OnInit, OnDestroy {
       this.getForms();
     }
   }
+  checkIfSurveyIsAvailable(){
+    this.surveySubscription = Observable.interval(1).takeUntil(this.onDestroy$).subscribe(x => {
+      if(this.selectedForm !== undefined && this.isManual === false){
+        this.setSelectedForm(this.selectedForm);
+      }else{
+        this.surveyjs.ngOnInit();
+        this.surveySubscription.unsubscribe();
+      }
+    });
+  }
   setSelectedForm(form) {
-    if (typeof form === "object" && form !== null) {
+    if (typeof form === 'object' && form !== null) {
       this.selectedForm = form;
       this.showDocument = false;
       this.json = form.body;
-      if (!this.isManual) {
+      if(this.isEditingPatient === true && this.isManual === false){
         this.sharedService.announceNewForm({
           json: this.json,
           form: this.selectedForm,
           isManual: this.isManual
         });
+      }else{
+        this.sharedService.announceNewForm({
+          json: this.json,
+          form: this.selectedForm,
+          isManual: true,
+          isEditing:false
+        });
       }
+
       this.showDocument = true;
       if (this.surveyjs !== undefined && this.surveyjs !== null) {
         this.surveyjs.ngOnInit();
-        this.sharedService.announceEditDocumentation({
-          document: this.editingDocumentation,
-          leg: 1
-        });
+        this.surveySubscription.unsubscribe();
+        if(this.isEditingPatient === true && this.isManual === false){
+          this.sharedService.announceEditDocumentation({
+            document: this.editingDocumentation,
+            leg: 1
+          });
+          this.isEditingPatient = false;
+          this.isManual = true;
+        }else{
+          this.editingDocumentation = undefined;
+          this.surveyjs.ngOnInit();
+          this.surveySubscription.unsubscribe();
+          this.checkIfSurveyIsAvailable();
+        }
+
 
         this.subscription.unsubscribe();
       } else {
         this.subscription.unsubscribe();
       }
+      if (this.surveySubscription === undefined){
+        this.checkIfSurveyIsAvailable();
+      }
       // this.documentationTemplateService.find({ query: {} });
     } else {
       this.systemModuleService.announceSweetProxy(
-        "wow",
-        "success",
+        'wow',
+        'success',
         null,
         null,
         null,
@@ -331,8 +394,8 @@ export class ClinicalNoteComponent implements OnInit, OnDestroy {
       this.symptoms.push(item);
     }
     this.sharedService.announceDiagnosisSystemOrder({
-      type: "Symptoms",
-      action: "add",
+      type: 'Symptoms',
+      action: 'add',
       data: item
     });
   }
@@ -340,16 +403,16 @@ export class ClinicalNoteComponent implements OnInit, OnDestroy {
   deleteSymptom(item) {
     this.symptoms = this.symptoms.filter(e => e !== item);
     this.sharedService.announceDiagnosisSystemOrder({
-      type: "Symptoms",
-      action: "remove",
+      type: 'Symptoms',
+      action: 'remove',
       data: item
     });
   }
   deleteDiagnosis(item) {
     this.diagnoses = this.diagnoses.filter(e => e !== item);
     this.sharedService.announceDiagnosisSystemOrder({
-      type: "Diagnoses",
-      action: "remove",
+      type: 'Diagnoses',
+      action: 'remove',
       data: item
     });
   }
@@ -359,8 +422,8 @@ export class ClinicalNoteComponent implements OnInit, OnDestroy {
       this.diagnoses.push(item);
     }
     this.sharedService.announceDiagnosisSystemOrder({
-      type: "Diagnoses",
-      action: "add",
+      type: 'Diagnoses',
+      action: 'add',
       data: item
     });
   }
@@ -368,12 +431,16 @@ export class ClinicalNoteComponent implements OnInit, OnDestroy {
   removeDiagnosis(item) {
     this.diagnoses = this.diagnoses.filter(e => e !== item);
     this.sharedService.announceDiagnosisSystemOrder({
-      type: "Diagnoses",
-      action: "remove",
+      type: 'Diagnoses',
+      action: 'remove',
       data: item
     });
   }
   ngOnDestroy() {
     this.surveyjs = undefined;
+    if (this.surveySubscription !== undefined){
+      this.onDestroy$.next();
+    }
+    this.subscription.unsubscribe();
   }
 }

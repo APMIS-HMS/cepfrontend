@@ -13,8 +13,8 @@
     <div class="docCard-header">
         <div>
             <mat-form-field>
-                <input matInput placeholder="Select Document" [matAutocomplete]="autoForm" [formControl]="selectFormCtrl">
-                <mat-autocomplete #autoForm="matAutocomplete" [displayWith]="formDisplayFn">
+                <input (opened)="opened($event)" matInput placeholder="Select Document" [matAutocomplete]="autoForm" [formControl]="selectFormCtrl">
+                <mat-autocomplete (onSelectionChange)="selected($event)" (closed)="closed($event)" (opened)="opened($event)" #autoForm="matAutocomplete" [displayWith]="formDisplayFn">
                     <mat-option *ngFor="let form of forms" [value]="form">
                         {{ form.title }}
                     </mat-option>
