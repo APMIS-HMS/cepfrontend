@@ -236,9 +236,9 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
       if (payload.data.length !== 0) {
         const len2 = payload.data[0].documentations.length - 1;
         for (let k = len2; k >= 0; k--) {
-          if (payload.data[0].documentations[k].document !== undefined && payload.data[0]
-            .documentations[k].document.documentType.title === 'Vitals') {
-            vitalsObjArray = payload.data[0].documentations[k].document.body.vitals;
+          const thisDocument = payload.data[0].documentations[k];
+          if (!!thisDocument.document && !!thisDocument.document.documentType && thisDocument.document.documentType.title === 'Vitals') {
+            vitalsObjArray = thisDocument.document.body.vitals;
             if (vitalsObjArray !== undefined) {
               const len3 = vitalsObjArray.length - 1;
               for (let l = 0; l <= len3; l++) {
