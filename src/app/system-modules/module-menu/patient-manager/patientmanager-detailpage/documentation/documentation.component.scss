@@ -360,6 +360,8 @@ td {
 .sect-value {
     line-height: 1.7;
     margin-left: 10px;
+    margin-right: 10px;
+    text-align: justify;
 }
 
 .doc-subtitle {
@@ -501,4 +503,7 @@ th {
 .doc-count {
     font-size: 1.4rem;
     color: #0288D1;
+}
+.doc-list-wrap{
+    padding-bottom: 10px; 
 }
