@@ -135,6 +135,7 @@ export class PaymentComponent implements OnInit {
     private _getBills() {
         this.systemModuleService.on();
         this._pendingBillService.get(this.selectedFacility._id, {}).then((payload: any) => {
+            console.log(payload);
             this.systemModuleService.off();
             this.pendingBills = payload.data;
             this.holdMostRecentBills = payload.data;

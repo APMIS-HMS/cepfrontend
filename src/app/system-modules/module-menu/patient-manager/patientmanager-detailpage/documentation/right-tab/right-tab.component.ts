@@ -132,7 +132,7 @@ export class RightTabComponent implements OnInit {
     getProblems() {
         this.problems = [];
         this.patientDocumentation.documentations.forEach(documentation => {
-            if (documentation.document.documentType !== undefined && documentation.document.documentType.title === 'Problems') {
+            if (!!documentation.document && !!documentation.document.documentType && documentation.document.documentType.title === 'Problems') {
                 documentation.document.body.problems.forEach(problem => {
                     if (problem.status !== null && problem.status.name === 'Active') {
                         this.problems.push(problem);
@@ -145,7 +145,7 @@ export class RightTabComponent implements OnInit {
     getVitals() {
       this.vitals = [];
       this.patientDocumentation.documentations.forEach(documentation => {
-          if (documentation.document.documentType !== undefined && documentation.document.documentType.title === 'Vitals') {
+          if (!!documentation.document && !!documentation.document.documentType && documentation.document.documentType.title === 'Vitals') {
               documentation.document.body.vitals.forEach(vital => {
                   this.vitals.push(vital);
               })
@@ -156,7 +156,7 @@ export class RightTabComponent implements OnInit {
         this.allergies = [];
         try {
             this.patientDocumentation.documentations.forEach(documentation => {
-                if (documentation.document.documentType !== undefined && documentation.document.documentType.title === 'Allergies') {
+                if (!!documentation.document && !!documentation.document.documentType && documentation.document.documentType.title === 'Allergies') {
                     documentation.document.body.allergies.forEach(allergy => {
                         this.allergies.push(allergy);
                     })

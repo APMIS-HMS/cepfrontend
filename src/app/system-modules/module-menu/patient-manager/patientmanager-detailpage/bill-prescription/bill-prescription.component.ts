@@ -72,6 +72,7 @@ export class BillPrescriptionComponent implements OnInit {
 
 	//
 	onClickSaveCost(value, valid) {
+		console.log(value);
 		if (valid) {
 			if ((!!this.cost && this.cost > 0) && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
 				let index = this.prescriptionData.index;
@@ -116,6 +117,7 @@ export class BillPrescriptionComponent implements OnInit {
 		this._inventoryService.findList({
 			query: { facilityId: this.facility._id, name: this.title, storeId: this.storeId }
 		}).then(res => {
+			console.log(res);
       		this.loading = false;
 			if (res.data.length > 0) {
 				// this.stores = res.data[0].availableQuantity;
