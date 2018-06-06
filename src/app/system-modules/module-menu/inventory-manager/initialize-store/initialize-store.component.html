@@ -54,7 +54,7 @@
                     </h5>
                     <div *ngIf="isEditProductName">
                         <mat-input-container>
-                            <input type="text" matInput placeholder="Edit Product Name" [value]="selectedProduct?.productObject?.name" [formControl]="editProductnameControl">
+                            <input type="text" matInput placeholder="Edit Product Name" [formControl]="editProductnameControl">
                           </mat-input-container>
                           <span>
                               <i style="color: green;cursor: pointer" (click)="onEditSaveProductName()">save</i>

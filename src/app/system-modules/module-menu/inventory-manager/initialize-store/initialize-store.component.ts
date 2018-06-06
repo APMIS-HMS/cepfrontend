@@ -273,6 +273,7 @@ export class InitializeStoreComponent implements OnInit {
 
   onEditProductName() {
     this.isEditProductName = !this.isEditProductName;
+    this.editProductnameControl.setValue(this.selectedProduct.productObject.name);
   }
 
   onEditSaveProductName() {
