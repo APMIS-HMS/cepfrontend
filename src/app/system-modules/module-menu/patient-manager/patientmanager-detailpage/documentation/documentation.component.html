@@ -21,7 +21,7 @@
 
                     <div class="node-label-wrap">
                         <div (click)="node_toggle(group[0])" class="node-date">{{group[0]}} </div>
-                        <div class="doc-count">{{group[1].length}} Documentations</div>
+                        <div class="doc-count">{{group[1].length}} Documentation(s)</div>
                     </div>
                 </div>
 
@@ -66,7 +66,7 @@
                                 <div class="cardSect-wrap ">
                                     <div class="card-sect ">
                                         <div class="docCard-sectContent ">
-                                            <div *ngIf="document?.document?.documentType?.isSide===false || document?.document?.documentType?.isSide===undefined ">
+                                            <div class="doc-list-wrap" *ngIf="document?.document?.documentType?.isSide===false || document?.document?.documentType?.isSide===undefined ">
                                                 <div *ngFor="let key of document?.document?.body | keys ">
                                                     <div *ngIf="document?.document?.body !==undefined " class="sect-key ">{{key}}:</div>
                                                     <div *ngIf="document?.document?.body !==undefined " class="sect-value ">{{document?.document?.body[key]}}</div>
