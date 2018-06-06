@@ -18,11 +18,14 @@
                         <i (click)="node_toggle(group[0])" *ngIf="group[0] === currentDocument" class="fa fa-minus" aria-hidden="true"></i>
                         <i (click)="node_toggle(group[0])" *ngIf="group[0] !== currentDocument" class="fa fa-plus" aria-hidden="true"></i>
                     </div>
-
-                    <div (click)="node_toggle(group[0])" class="node-date">{{group[0]}} </div>
+                    
+                    <div class="node-label-wrap">
+                        <div (click)="node_toggle(group[0])" class="node-date">{{group[0]}} </div>
+                        <div class="doc-count">20 Documentations</div>
+                    </div>
                 </div>
 
-                <div class="node-content " *ngIf="should_show(group[0]) && group[0]===currentDocument ">
+                <div class="node-content animated fadeInDown" *ngIf="should_show(group[0]) && group[0]===currentDocument ">
                     <div *ngFor="let document of group[1] ">
                         <div class="tree-child ">
                             <div class="node-child-title ">{{document?.document?.documentType?.title}}</div>
