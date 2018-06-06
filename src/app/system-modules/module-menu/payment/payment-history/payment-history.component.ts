@@ -26,11 +26,15 @@ export class PaymentHistoryComponent implements OnInit {
   subscription: Subscription;
   paymentTxn: any = <any>[];
 
-  constructor(private formBuilder: FormBuilder,
+  constructor(
+    private _route: Router,
+    private _router: ActivatedRoute,
+    private formBuilder: FormBuilder,
     private locker: CoolLocalStorage,
     private invoiceService: InvoiceService,
     private _searchInvoicesService: SearchInvoicesService,
-    private systemModuleService: SystemModuleService) {
+    private systemModuleService: SystemModuleService
+  ) {
     this.user = <User>this.locker.getObject('auth');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.getPatientInvoices();
@@ -41,9 +45,20 @@ export class PaymentHistoryComponent implements OnInit {
     this.getPatientInvoices();
   }
 
+  onClickViewDetails(item) {
+    console.log(item);
+    if (!!item._id) {
+      this.systemModuleService.on();
+      this._route.navigate([`/dashboard/payment/history/${item._id}`]).then(res => {
+        this.systemModuleService.off();
+      });
+    }
+  }
+
   getPatientInvoices() {
     this.systemModuleService.on();
     this.invoiceService.find({ query: { facilityId: this.selectedFacility._id, $sort: { updatedAt: -1 } } }).then(payload => {
+      console.log(payload);
       this.invoiceGroups = payload.data;
       this.invoiceGroups.forEach(item => { 
         if(item.payments.length >0){

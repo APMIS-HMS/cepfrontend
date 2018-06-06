@@ -11,22 +11,27 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                        <div class="card-header-item col-md-2">Amount</div>
-                        <div class="card-header-item col-md-1">Balance</div>
-                        <div class="card-header-item col-md-2">Service</div>
-                        <div class="card-header-item col-md-2">Location</div>
-                        <div class="card-header-item col-md-2">Date</div>
-                        <div class="card-header-item col-md-1">Payment Status</div>
+                        <div class="card-header-item col-xs-1">S/N</div>
+                        <div class="card-header-item col-xs-2">Person</div>
+                        <div class="card-header-item col-xs-2">Invoice No</div>
+                        <div class="card-header-item col-xs-2">Items</div>
+                        <div class="card-header-item col-xs-2">Amount</div>
+                        <div class="card-header-item col-xs-2">Date</div>
+                        <div class="card-header-item col-xs-1">Payment Status</div>
                     </div>
                 </div>
                 <div class="card-list">
-                    <div class="invoice-table-list row" *ngFor="let item of paymentTxn">
-                        <div class="col-md-2">{{item.amountPaid|number : '1.2-2'}}</div>
-                        <div class="col-md-1">{{item.balance|number : '1.2-2'}}</div>
-                        <div class="col-md-2">{{item?.facilityServiceObject?.service}}</div>
-                        <div class="col-md-2">{{item?.facilityServiceObject?.category}}</div>
-                        <div class="col-md-2">{{item?.date|date:'medium'}}</div>
-                        <div class="col-md-1"><i class="fa fa-money fa-2x"></i></div>
+                    <div class="invoice-table-list row" (click)="onClickViewDetails(item);" *ngFor="let item of invoiceGroups; let i = index;">
+                        <div class="col-xs-1">{{i+1}}</div>
+                        <div class="col-xs-2">{{item?.patientObject?.personDetails?.firstName}} {{item?.patientObject?.personDetails?.lastName}}</div>
+                        <div class="col-xs-2">{{item?.invoiceNo}}</div>
+                        <div class="col-xs-2">{{item?.payments.length}}</div>
+                        <div class="col-xs-2">{{item?.totalPrice}}</div>
+                        <div class="col-xs-2">{{item?.createdAt|date:'medium'}}</div>
+                        <div class="col-xs-1">
+                            <span *ngIf="item?.paymentCompleted" class="text-green">Completed</span>
+                            <span *ngIf="!item?.paymentCompleted" class="text-red">Not Completed</span>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -81,7 +81,7 @@ export class BillPrescriptionComponent implements OnInit {
 					code: this.selectedDrug.productObject.code,
 					name: this.selectedDrug.productObject.name
 				};
-				this.prescriptionData.prescriptionItems[index].productId = value.drug;
+				this.prescriptionData.prescriptionItems[index].productId = value.drug.productId;
 				this.prescriptionData.prescriptionItems[index].serviceId = this.serviceId;
 				this.prescriptionData.prescriptionItems[index].facilityServiceId = this.facilityServiceId;
 				this.prescriptionData.prescriptionItems[index].categoryId = this.categoryId;
@@ -129,7 +129,6 @@ export class BillPrescriptionComponent implements OnInit {
 	}
 
 	onClickCustomSearchItem(event, drug) {
-		console.log(drug);
 		this.selectedDrug = drug;
 		this.serviceId = drug.serviceId;
 		this.facilityServiceId = drug.facilityServiceId;

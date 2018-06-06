@@ -339,10 +339,10 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 			});
 				if (this.storeId !== undefined) {
 					// Get the batches for the selected product
-					this._inventoryService.find({
+					this._inventoryService.findList({
 						query: {
 							facilityId: this.facility._id,
-							productId: productId,
+							_id: productId,
 							storeId: this.storeId
 						}
 					}).then(res => {
