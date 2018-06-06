@@ -18,10 +18,10 @@
                         <i (click)="node_toggle(group[0])" *ngIf="group[0] === currentDocument" class="fa fa-minus" aria-hidden="true"></i>
                         <i (click)="node_toggle(group[0])" *ngIf="group[0] !== currentDocument" class="fa fa-plus" aria-hidden="true"></i>
                     </div>
-                    
+
                     <div class="node-label-wrap">
                         <div (click)="node_toggle(group[0])" class="node-date">{{group[0]}} </div>
-                        <div class="doc-count">20 Documentations</div>
+                        <div class="doc-count">{{group[1].length}} Documentations</div>
                     </div>
                 </div>
 
