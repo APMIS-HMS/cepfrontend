@@ -284,6 +284,7 @@ export class InitializeStoreComponent implements OnInit {
 
 
   save(valid, value, product) {
+    this.isEnable = false;
     if (this.checkingObject.storeId === undefined) {
       if (!!this.checkingObject.typeObject) {
         this.checkingObject = this.checkingObject.typeObject;
