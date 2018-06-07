@@ -135,10 +135,20 @@ export class InitializeStoreComponent implements OnInit {
       this.selelctedCategoryId = value;
     });
 
-
     this.getProducts();
     this.getServiceCategories();
 
+  }
+
+  onChangeProductCategory(value) {
+    this.productServiceControl.setValue(value._id);
+  }
+
+  getValid() {
+    if (this.isEnable && !this.isItemselected && this.myForm.valid) {
+      return false;
+    }
+    return true;
   }
 
 
@@ -229,10 +239,12 @@ export class InitializeStoreComponent implements OnInit {
   }
 
   onPackageSize(i, packs) {
-    packs[i].controls.quantity.setValue(0);
-    packs[i].controls.config.controls.forEach(element => {
-      packs[i].controls.quantity.setValue(packs[i].controls.quantity.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
-    });
+    if (!!packs[i]) {
+      packs[i].controls.quantity.setValue(0);
+      packs[i].controls.config.controls.forEach(element => {
+        packs[i].controls.quantity.setValue(packs[i].controls.quantity.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
+      });
+    }
   }
 
   compareItems(l1: any, l2: any) {
@@ -257,6 +269,7 @@ export class InitializeStoreComponent implements OnInit {
       if (payload.data.length > 0) {
         this.selectedFacilityService = payload.data[0];
         this.categories = payload.data[0].categories;
+        this.productServiceControl.setValue(this.categories[0]._id);
       }
     });
   }

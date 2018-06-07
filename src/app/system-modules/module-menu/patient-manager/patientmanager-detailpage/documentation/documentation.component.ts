@@ -164,6 +164,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
                 }, error => {});
           } else {
             this.sharedService.announceFinishedSavingDraft(true);
+            console.log(this.draftDocument);
             if (this.draftDocument !== undefined) {
               this.draftDocument.document.body = payload;
 

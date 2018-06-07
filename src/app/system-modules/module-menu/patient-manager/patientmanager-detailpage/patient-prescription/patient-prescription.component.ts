@@ -11,9 +11,9 @@ import { Subject } from 'rxjs/Subject';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
-    selector: 'app-patient-prescription',
-    templateUrl: './patient-prescription.component.html',
-    styleUrls: ['./patient-prescription.component.scss']
+  selector: 'app-patient-prescription',
+  templateUrl: './patient-prescription.component.html',
+  styleUrls: ['./patient-prescription.component.scss']
 })
 export class PatientPrescriptionComponent implements OnInit {
     @Input() patientDetails: any;
@@ -93,142 +93,150 @@ export class PatientPrescriptionComponent implements OnInit {
         // this.employeeDetails = this._locker.getObject('loginEmployee');
         this._authFacadeService.getLogingEmployee().then(res => {
           this.employeeDetails = res;
-        }).catch(err => {});
+        })
+        .catch(err => {});
 
-        this.prescriptionItems.prescriptionItems = [];
-        this.durationUnits = DurationUnits;
-        this.dosageUnits = DosageUnits;
-        this.selectedValue = DurationUnits[1].name;
-        this.selectedDosage = DosageUnits[0].name;
-        this._getAllPriorities();
-        // this._getAllRoutes();
-        this._getAllFrequencies();
+    this.prescriptionItems.prescriptionItems = [];
+    this.durationUnits = DurationUnits;
+    this.dosageUnits = DosageUnits;
+    this.selectedValue = DurationUnits[1].name;
+    this.selectedDosage = DosageUnits[0].name;
+    this._getAllPriorities();
+    // this._getAllRoutes();
+    this._getAllFrequencies();
 
-        this.allPrescriptionsForm = this.fb.group({
-            priority: ['', [<any>Validators.required]],
-        });
+    this.allPrescriptionsForm = this.fb.group({
+      priority: ['', [<any>Validators.required]],
+    });
 
-        this.addPrescriptionForm = this.fb.group({
-            dosage: ['', [<any>Validators.required]],
-            dosageUnit: ['', [<any>Validators.required]],
-            drug: ['', [<any>Validators.required]],
-            code: ['', [<any>Validators.required]],
-            productId: ['', [<any>Validators.required]],
-            frequency: ['', [<any>Validators.required]],
-            duration: [0, [<any>Validators.required]],
-            durationUnit: ['', [<any>Validators.required]],
-            refillCount: [this.refillCount],
-            startDate: [this.currentDate],
-            specialInstruction: ['']
-        });
+    this.addPrescriptionForm = this.fb.group({
+      dosage: ['', [<any>Validators.required]],
+      dosageUnit: ['', [<any>Validators.required]],
+      drug: ['', [<any>Validators.required]],
+      code: ['', [<any>Validators.required]],
+      productId: ['', [<any>Validators.required]],
+      frequency: ['', [<any>Validators.required]],
+      duration: [0, [<any>Validators.required]],
+      durationUnit: ['', [<any>Validators.required]],
+      refillCount: [this.refillCount],
+      startDate: [this.currentDate],
+      specialInstruction: ['']
+    });
 
-        this.addPrescriptionForm.controls['drug'].valueChanges.subscribe(value => {
-            this.apmisLookupQuery = {
-                'searchtext': value,
-                'po': false,
-                'brandonly': false,
-                'genericonly': true
-            };
-        });
-    }
+    this.addPrescriptionForm.controls['drug'].valueChanges.subscribe(value => {
+      this.apmisLookupQuery = {
+        'searchtext': value,
+        'po': false,
+        'brandonly': false,
+        'genericonly': true
+      };
+    });
+  }
 
-    apmisLookupHandleSelectedItem(item) {
-        console.log(item);
-        this.apmisLookupText = item;
-        this.addPrescriptionForm.controls['drug'].setValue(item.name);
-        this.addPrescriptionForm.controls['code'].setValue(item.code);
-        this.addPrescriptionForm.controls['productId'].setValue(item.id);
-        // this._drugListApi.find({ query: { method: 'drug-details', 'productId': item.productId } }).then(res => {
-        //     let sRes = res.data;
-        //     if (res.status === 'success') {
-        //         if (!!sRes.ingredients && sRes.ingredients.length > 0) {
-        //             this.selectedForm = sRes.form;
-        //             this.selectedIngredients = sRes.ingredients;
-        //             let drugName: string = sRes.form + ' ';
-        //             let strength = '';
-        //             const ingredientLength: number = sRes.ingredients.length;
-        //             let index = 0;
-        //             sRes.ingredients.forEach(element => {
-        //                 index++;
-        //                 drugName += element.name;
-        //                 strength += element.strength + element.strengthUnit;
+  apmisLookupHandleSelectedItem(item) {
+    console.log(item);
+    this.apmisLookupText = item;
+    this.addPrescriptionForm.controls['drug'].setValue(item.name);
+    this.addPrescriptionForm.controls['code'].setValue(item.code);
+    this.addPrescriptionForm.controls['productId'].setValue(item.id);
+    // this._drugListApi.find({ query: { method: 'drug-details', 'productId':
+    // item.productId } }).then(res => {
+    //     let sRes = res.data;
+    //     if (res.status === 'success') {
+    //         if (!!sRes.ingredients && sRes.ingredients.length > 0) {
+    //             this.selectedForm = sRes.form;
+    //             this.selectedIngredients = sRes.ingredients;
+    //             let drugName: string = sRes.form + ' ';
+    //             let strength = '';
+    //             const ingredientLength: number = sRes.ingredients.length;
+    //             let index = 0;
+    //             sRes.ingredients.forEach(element => {
+    //                 index++;
+    //                 drugName += element.name;
+    //                 strength += element.strength + element.strengthUnit;
 
-        //                 if (index !== ingredientLength) {
-        //                     drugName += '/';
-        //                     strength += '/';
-        //                 }
-        //             });
-        //             this.addPrescriptionForm.controls['drug'].setValue(drugName);
-        //             this.addPrescriptionForm.controls['strength'].setValue(strength);
-        //             this.addPrescriptionForm.controls['route'].setValue(sRes.route);
-        //         }
-        //     }
-        // }).catch(err => console.error(err));
-    }
+    //                 if (index !== ingredientLength) {
+    //                     drugName += '/';
+    //                     strength += '/';
+    //                 }
+    //             });
+    //             this.addPrescriptionForm.controls['drug'].setValue(drugName);
+    //             this.addPrescriptionForm.controls['strength'].setValue(strength);
+    //             this.addPrescriptionForm.controls['route'].setValue(sRes.route);
+    //         }
+    //     }
+    // }).catch(err => console.error(err));
+  }
 
-    onClickAddPrescription(value: any, valid: boolean) {
-        if (valid) {
-            const dispensed: Dispensed = {
-                totalQtyDispensed: 0,
-                outstandingBalance: 0,
-                dispensedArray: []
-            };
-            const prescriptionItem = <PrescriptionItem>{
-                genericName: value.drug,
-                routeName: value.route,
-                code: value.code,
-                frequency: value.frequency,
-                dosage: value.dosage + ' ' + value.dosageUnit,
-                duration: value.duration + ' ' + value.durationUnit,
-                startDate: value.startDate,
-                strength: value.strength,
-                patientInstruction: (value.specialInstruction == null) ? '' : value.specialInstruction,
-                refillCount: value.refillCount,
-                ingredients: this.selectedIngredients,
-                form: this.selectedForm,
-                cost: 0,
-                totalCost: 0,
-                isExternal: false,
-                initiateBill: false,
-                isBilled: false,
-                isDispensed: false,
-                dispensed: dispensed
-            };
+  onClickAddPrescription(value: any, valid: boolean) {
+    if (valid) {
+      const dispensed: Dispensed = {
+        totalQtyDispensed: 0,
+        outstandingBalance: 0,
+        dispensedArray: []
+      };
+      const prescriptionItem = <PrescriptionItem>{
+        genericName: value.drug,
+        routeName: value.route,
+        code: value.code,
+        frequency: value.frequency,
+        dosage: value.dosage + ' ' + value.dosageUnit,
+        duration: value.duration + ' ' + value.durationUnit,
+        startDate: value.startDate,
+        strength: value.strength,
+        patientInstruction:
+            (value.specialInstruction == null) ? '' : value.specialInstruction,
+        refillCount: value.refillCount,
+        ingredients: this.selectedIngredients,
+        form: this.selectedForm,
+        cost: 0,
+        totalCost: 0,
+        isExternal: false,
+        initiateBill: false,
+        isBilled: false,
+        isDispensed: false,
+        dispensed: dispensed
+      };
 
-            this.addPrescriptionShow = true;
-            if (this.prescriptions.prescriptionItems !== undefined) {
-                // Check if generic has been added already.
-                const containsGeneric = this.prescriptionArray.filter(x => prescriptionItem.genericName === x.genericName);
-                if (containsGeneric.length < 1) {
-                    this.prescriptionArray.push(prescriptionItem);
-                }
-            } else {
-                this.prescriptionArray.push(prescriptionItem);
-            }
-
-            const prescription = <Prescription>{
-                facilityId: this.facility._id,
-                employeeId: this.employeeDetails._id,
-                clinicId: (!!this.selectedAppointment.clinicId) ? this.selectedAppointment.clinicId : undefined,
-                priority: '',
-                patientId: this.patientDetails._id,
-                personId: this.patientDetails.personId,
-                prescriptionItems: this.prescriptionArray,
-                isAuthorised: true,
-                totalCost: 0,
-                totalQuantity: 0
-            };
-
-            this.prescriptionItems = prescription;
-            this.prescriptions = prescription;
-            this.addPrescriptionForm.reset();
-            this.addPrescriptionForm.controls['refillCount'].reset(0);
-            this.addPrescriptionForm.controls['duration'].reset(0);
-            this.addPrescriptionForm.controls['startDate'].reset(new Date());
-            this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[1].name);
-            this.addPrescriptionForm.controls['dosageUnit'].reset(this.dosageUnits[0].name);
+      this.addPrescriptionShow = true;
+      if (this.prescriptions.prescriptionItems !== undefined) {
+        // Check if generic has been added already.
+        const containsGeneric = this.prescriptionArray.filter(
+            x => prescriptionItem.genericName === x.genericName);
+        if (containsGeneric.length < 1) {
+          this.prescriptionArray.push(prescriptionItem);
         }
+      } else {
+        this.prescriptionArray.push(prescriptionItem);
+      }
+
+      const prescription = <Prescription>{
+        facilityId: this.facility._id,
+        employeeId: this.employeeDetails._id,
+        clinicId: (!!this.selectedAppointment.clinicId) ?
+            this.selectedAppointment.clinicId :
+            undefined,
+        priority: '',
+        patientId: this.patientDetails._id,
+        personId: this.patientDetails.personId,
+        prescriptionItems: this.prescriptionArray,
+        isAuthorised: true,
+        totalCost: 0,
+        totalQuantity: 0
+      };
+
+      this.prescriptionItems = prescription;
+      this.prescriptions = prescription;
+      this.addPrescriptionForm.reset();
+      this.addPrescriptionForm.controls['refillCount'].reset(0);
+      this.addPrescriptionForm.controls['duration'].reset(0);
+      this.addPrescriptionForm.controls['startDate'].reset(new Date());
+      this.addPrescriptionForm.controls['durationUnit'].reset(
+          this.durationUnits[1].name);
+      this.addPrescriptionForm.controls['dosageUnit'].reset(
+          this.dosageUnits[0].name);
     }
+  }
 
   comparePriority(l1: any, l2: any) {
     return l1.name === l2.name;
@@ -358,80 +366,188 @@ export class PatientPrescriptionComponent implements OnInit {
             if (priority.length > 0) {
               this.allPrescriptionsForm.controls['priority'].setValue(priority[0]);
             }
-        }).catch(err =>  console.error(err));
+          })
+          .catch(err => {
+            console.log(err);
+          });
+      // bill model
+      // const billItemArray = [];
+      // let totalCost = 0;
+      // this.prescriptions.prescriptionItems.forEach(element => {
+      //     if (element.isBilled) {
+      //         const billItem = <BillItem>{
+      //             facilityServiceId: element.facilityServiceId,
+      //             serviceId: element.serviceId,
+      //             facilityId: this.facility._id,
+      //             patientId: this.prescriptions.patientId,
+      //             description: element.productName,
+      //             quantity: element.quantity,
+      //             totalPrice: element.totalCost,
+      //             unitPrice: element.cost,
+      //             unitDiscountedAmount: 0,
+      //             totalDiscoutedAmount: 0,
+      //         };
+
+      //         totalCost += element.totalCost;
+      //         billItemArray.push(billItem);
+      //     }
+      // });
+
+      // const bill = <BillIGroup>{
+      //     facilityId: this.facility._id,
+      //     patientId: this.prescriptions.patientId,
+      //     billItems: billItemArray,
+      //     discount: 0,
+      //     subTotal: totalCost,
+      //     grandTotal: totalCost,
+      // }
+      // // If any item was billed, then call the billing service
+      // if (billItemArray.length > 0) {
+      //     // send the billed items to the billing service
+      //     this._billingService.create(bill).then(res => {
+      //         if (res._id !== undefined) {
+      //             this.prescriptions.billId = res._id;
+      //             // if this is true, send the prescribed drugs to the
+      //             prescription service
+      //             this._sendPrescription(this.prescriptions);
+      //         } else {
+      //             this._notification('Error', 'There was an error generating
+      //             bill. Please try again later.');
+      //         }
+      //     }).catch(err => console.error(err));
+      // } else {
+      //     // Else, if no item was billed, just save to the prescription
+      //     table. this._sendPrescription(this.prescriptions);
+      // }
+    } else {
+      this._notification(
+          'Info', 'Please use the "Add" button above to add prescription!');
     }
+  }
 
-    // private _getAllRoutes() {
-    //     this._routeService.findAll().then(res => {
-    //         this.routes = res.data;
-    //     }).catch(err => console.error(err));
-    // }
-
-    private _getAllFrequencies() {
-        this._frequencyService.findAll().then(res => {
-            if (res.data.length > 0) {
-                this.frequencies = res.data;
+  // Get all medications
+  private _getPrescriptionList() {
+    this._prescriptionService
+        .find({
+          query: {
+            facilityId: this.facility._id,
+            patientId: this.patientDetails._id
+          }
+        })
+        .then(res => {
+          this.currMedLoading = false;
+          this.pastMedLoading = false;
+          // Bind to current medication list
+          const currentMedications = res.data.filter(x => {
+            const lastSevenDays =
+                new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
+            if (lastSevenDays < new Date(x.updatedAt)) {
+              return x;
             }
-        }).catch(err => console.error(err));
-    }
+          });
+          this.currentMedications = currentMedications.splice(0, 3);
 
-    focusSearch() {
-        this.showCuDropdown = !this.showCuDropdown;
-    }
-
-    focusOutSearch() {
-        setTimeout(() => {
-            this.showCuDropdown = !this.showCuDropdown;
-        }, 300);
-    }
-
-    onClickMedicationShow(value) {
-        if ((this.currentMedicationShow === false) && (this.pastMedicationShow === false)) {
-            if (value === 'Current') {
-                this.currMedLoading = true;
-            } else {
-                this.pastMedLoading = true;
+          // Bind to past medication list
+          const pastMedications = res.data.filter(x => {
+            const lastSevenDays =
+                new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
+            if (lastSevenDays > new Date(x.updatedAt)) {
+              return x;
             }
-            this._getPrescriptionList();
-        }
+          });
+          this.pastMedications = pastMedications.splice(0, 3);
+        })
+        .catch(err => console.error(err));
+  }
 
-        if (value === 'Current') {
-            this.currentMedicationShow = !this.currentMedicationShow;
-            this.pastMedicationShow = false;
-        }
+  onClickReset() {
+    this.addPrescriptionForm.reset();
+  }
 
-        if (value === 'Past') {
-            this.pastMedicationShow = !this.pastMedicationShow;
-            this.currentMedicationShow = false;
-        }
+  private _getAllPriorities() {
+    this._priorityService.findAll()
+        .then(res => {
+          this.priorities = res.data;
+          const priority =
+              res.data.filter(x => x.name.toLowerCase().includes('normal'));
+          if (priority.length > 0) {
+            this.allPrescriptionsForm.controls['priority'].setValue(
+                priority[0]);
+          }
+        })
+        .catch(err => console.error(err));
+  }
+
+  // private _getAllRoutes() {
+  //     this._routeService.findAll().then(res => {
+  //         this.routes = res.data;
+  //     }).catch(err => console.error(err));
+  // }
+
+  private _getAllFrequencies() {
+    this._frequencyService.findAll()
+        .then(res => {
+          if (res.data.length > 0) {
+            this.frequencies = res.data;
+          }
+        })
+        .catch(err => console.error(err));
+  }
+
+  focusSearch() {
+    this.showCuDropdown = !this.showCuDropdown;
+  }
+
+  focusOutSearch() {
+    setTimeout(() => {
+      this.showCuDropdown = !this.showCuDropdown;
+    }, 300);
+  }
+
+  onClickMedicationShow(value) {
+    if ((this.currentMedicationShow === false) &&
+        (this.pastMedicationShow === false)) {
+      if (value === 'Current') {
+        this.currMedLoading = true;
+      } else {
+        this.pastMedLoading = true;
+      }
+      this._getPrescriptionList();
     }
 
-    // private _sendPrescription(data: Prescription): void {
-    //     this._prescriptionService.create(data).then(res => {
-    //         this._notification('Success', 'Prescription has been sent!');
-    //         this.isDispensed.next(true);
-    //         this.prescriptionItems = <Prescription>{};
-    //         this.prescriptionItems.prescriptionItems = [];
-    //         this.prescriptionArray = [];
-    //         this.addPrescriptionForm.reset();
-    //         this.addPrescriptionForm.controls['refillCount'].reset(0);
-    //         this.addPrescriptionForm.controls['duration'].reset(0);
-    //         this.addPrescriptionForm.controls['startDate'].reset(new Date());
-    //         this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
-    //         this.disableAuthorizeRx = true;
-    //     }).catch(err => {
-    //         this._notification('Error', 'There was an error creating prescription. Please try again later.');
-    //     });
-    // }
-
-    private _notification(type: string, text: string): void {
-        this._facilityService.announceNotification({
-            users: [this.user._id],
-            type: type,
-            text: text
-        });
+    if (value === 'Current') {
+      this.currentMedicationShow = !this.currentMedicationShow;
+      this.pastMedicationShow = false;
     }
-    onClickSavePrescription(value, valid) {
 
+    if (value === 'Past') {
+      this.pastMedicationShow = !this.pastMedicationShow;
+      this.currentMedicationShow = false;
     }
+  }
+
+  // private _sendPrescription(data: Prescription): void {
+  //     this._prescriptionService.create(data).then(res => {
+  //         this._notification('Success', 'Prescription has been sent!');
+  //         this.isDispensed.next(true);
+  //         this.prescriptionItems = <Prescription>{};
+  //         this.prescriptionItems.prescriptionItems = [];
+  //         this.prescriptionArray = [];
+  //         this.addPrescriptionForm.reset();
+  //         this.addPrescriptionForm.controls['refillCount'].reset(0);
+  //         this.addPrescriptionForm.controls['duration'].reset(0);
+  //         this.addPrescriptionForm.controls['startDate'].reset(new Date());
+  //         this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
+  //         this.disableAuthorizeRx = true;
+  //     }).catch(err => {
+  //         this._notification('Error', 'There was an error creating
+  //         prescription. Please try again later.');
+  //     });
+  // }
+
+  private _notification(type: string, text: string): void {
+    this._facilityService.announceNotification(
+        {users: [this.user._id], type: type, text: text});
+  }
+  onClickSavePrescription(value, valid) {}
 }

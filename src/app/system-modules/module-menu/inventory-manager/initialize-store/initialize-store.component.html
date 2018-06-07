@@ -71,9 +71,9 @@
                       <mat-input-container class="col-sm-3">
                         <input type="text" matInput placeholder="Enter Batch No *" formControlName="batchNumber">
                       </mat-input-container>
-                      <mat-form-field class="col-sm-3" [hidden]="myForm.controls.initproduct.controls.length > 1">
-                        <mat-select placeholder="Select Service" [formControl]="productServiceControl">
-                          <mat-option [value]="item._id" *ngFor="let item of categories">{{item.name}}</mat-option>
+                      <mat-form-field class="col-sm-3">
+                        <mat-select placeholder="Select Service" [formControl]="productServiceControl" [compareWith]="compareItems">
+                          <mat-option [value]="item._id" *ngFor="let item of categories" (click)="onChangeProductCategory(item)">{{item.name}}</mat-option>
                         </mat-select>
                       </mat-form-field>
                       <mat-input-container class="col-sm-3">
@@ -120,9 +120,9 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-12 text-center" *ngIf="myForm.valid && productServiceControl.value!==''">
-              <div *ngIf="isEnable">
-                  <a mat-raised-button [hidden]="isItemselected" (click)="save(myForm.valid,myForm.value,selectedProduct)">
+            <div class="col-sm-12 text-center">
+              <div>
+                  <button [disabled]="getValid()" (click)="save(myForm.valid,myForm.value,selectedProduct)">
                       <span>
                         <div [hidden]="isProcessing">
                           Save
@@ -133,7 +133,7 @@
                         </div>
                       </span>
       
-                    </a>
+                    </button>
               </div>
             </div>
           </form>
