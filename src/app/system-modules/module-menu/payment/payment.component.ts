@@ -99,6 +99,7 @@ export class PaymentComponent implements OnInit {
             .subscribe(value => {
                 if (this.searchPendingBill.value !== "" && this.searchPendingBill.value.length >= 3) {
                     this.loadingPendingBills = true;
+                    console.log("entry search for pending");
                     this._pendingBillService.get(this.selectedFacility._id, {
                         query: {
                             'isQuery': true,
