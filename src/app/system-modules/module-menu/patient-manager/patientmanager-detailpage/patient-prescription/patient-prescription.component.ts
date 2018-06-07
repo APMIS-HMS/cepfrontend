@@ -181,7 +181,6 @@ export class PatientPrescriptionComponent implements OnInit {
             const prescriptionItem = <PrescriptionItem>{
                 genericName: value.drug,
                 routeName: value.route,
-                productId: value.productId,
                 code: value.code,
                 frequency: value.frequency,
                 dosage: value.dosage + ' ' + value.dosageUnit,

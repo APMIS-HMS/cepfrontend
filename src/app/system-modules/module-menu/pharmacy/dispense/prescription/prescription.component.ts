@@ -323,22 +323,30 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 	}
 
 	onClickEachPrescription(index, prescription) {
+		console.log(index);
+		console.log(prescription);
+		console.log(this.storeId);
 		if (prescription.isBilled) {
-			if (prescription.paymentCompleted) {
+			// if (prescription.paymentCompleted) {
 				this.selectedPrescription = prescription;
 				this.selectedPrescription.isOpen = !this.selectedPrescription.isOpen;
 				const productId = prescription.productId;
 				// const productId = '592419145fbce732205cf0ba';
-				if (this.storeId.typeObject.storeId !== undefined) {
+			console.log({
+				facilityId: this.facility._id,
+				productId: productId,
+				storeId: this.storeId
+			});
+				if (this.storeId !== undefined) {
 					// Get the batches for the selected product
-					this._inventoryService.find({
+					this._inventoryService.findList({
 						query: {
 							facilityId: this.facility._id,
-							productId: productId,
-							storeId: this.storeId.typeObject.storeId
+							_id: productId,
+							storeId: this.storeId
 						}
-					})
-						.then(res => {
+					}).then(res => {
+						console.log(res);
 							this.batchLoading = false;
 							if (res.data.length > 0) {
 								this.transactions = res.data[0];
@@ -363,9 +371,9 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 				} else {
 					this._systemModuleService.announceSweetProxy('Please check into store!', 'error');
 				}
-			} else {
-				this._systemModuleService.announceSweetProxy('Patient has not paid for this item, so you can not dispense it!', 'error');
-			}
+			// } else {
+			// 	this._systemModuleService.announceSweetProxy('Patient has not paid for this item, so you can not dispense it!', 'error');
+			// }
 		} else {
 			this._systemModuleService.announceSweetProxy('This item is marked external, you can not bill the patient!', 'error');
 		}
@@ -545,7 +553,6 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 
 	// Prescription logic.
 	private _isPrescriptionLogic() {
-		// this has been billed before.
 		console.log(this.prescriptionItems);
 		console.log(this.unBilledArray);
 		// if (!!this.prescriptionItems.billId && this.prescriptionItems.hasOwnProperty('billId')) {
