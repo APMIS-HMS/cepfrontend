@@ -66,7 +66,7 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 		private _facilityService: FacilitiesService,
 		private _pharmacyEventEmitter: PharmacyEmitterService,
 		private _prescriptionService: PrescriptionService,
-		// private _dispenseService: DispenseService,
+		private _dispenseService: DispenseService,
 		private _assessmentDispense: AssessmentDispenseService,
 		private _inventoryService: InventoryService,
 		private _employeeService: EmployeeService,
@@ -110,8 +110,6 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 	ngOnInit() {
 		this._pharmacyEventEmitter.setRouteUrl('Prescription Details');
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
-		// this.storeId = this._locker.getObject('checkingObject');
-		// this.user = <User>this._locker.getObject('auth');
 
 		this._route.params.subscribe(params => {
 			this.prescriptionId = params['id'];
@@ -119,22 +117,23 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 
 		this._getPrescriptionDetails();
 		this._getInventoryTransactionTypes();
-		this.checkToDisableAllBtn();
+		// this.checkToDisableAllBtn();
 	}
 
-	checkToDisableAllBtn() {
-		if (this.prescriptionItems.prescriptionItems !== undefined) {
-			console.log(this.prescriptionItems);
-			const notBilled = this.prescriptionItems.prescriptionItems
-				.filter(x => ((x.quantity !== x.quantityDispensed || !x.paymentCompleted) && !x.paymentCompleted && !x.isExternal));
+	// checkToDisableAllBtn() {
+	// 	console.log(this.prescriptionItems);
+	// 	if (this.prescriptionItems.prescriptionItems !== undefined) {
+	// 		const notBilled = this.prescriptionItems.prescriptionItems
+	// 			.filter(x => ((x.quantity !== x.quantityDispensed || !x.paymentCompleted) && !x.paymentCompleted && !x.isExternal));
 
-			if (notBilled.length > 0) {
-				this.disableDispenseAllBtn = true;
-			} else {
-				this.disableDispenseAllBtn = false;
-			}
-		}
-	}
+	// 			console.log(notBilled);
+	// 		if (notBilled.length > 0) {
+	// 			this.disableDispenseAllBtn = true;
+	// 		} else {
+	// 			this.disableDispenseAllBtn = false;
+	// 		}
+	// 	}
+	// }
 
 	// Save prescription
 	onClickSavePrescription() {
@@ -172,13 +171,15 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 			const externalDrug = [];
 
 			this.prescriptionItems.prescriptionItems.forEach(element => {
+				console.log(element);
 				if (!element.isExternal && element.isBilled) {
 					// Change the value of isDispensed to true;
 					element.isDispensed = true;
 					const dispenseItem = <DispenseItem>{
-						productId: (element.isExternal === false) ? element.productId : '',
+						product: (element.isExternal === false) ? element.productName : '',
 						cost: element.cost,
 						quantity: (element.quantity === undefined) ? 0 : element.quantity,
+						// batchNumber: (element.batchNumber === undefined) ? '' : element.batchNumber,
 						refillCount: (element.refillCount === undefined) ? 0 : element.refillCount,
 						isExternal: element.isExternal,
 						instruction: element.patientInstruction
@@ -207,7 +208,7 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 
 			const prescription = <DispenseByPrescription>{
 				prescriptionId: this.prescriptionItems._id,
-				employeeId: this.prescriptionItems.employeeId,
+				employeeId: this.employeeDetails._id,
 				patientId: this.prescriptionItems.patientId,
 				drugs: dispenseArray,
 				totalQuantity: this.totalQuantity,
@@ -219,6 +220,8 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 				isPrescription: true,
 				storeId: this.storeId,
 			}
+			console.log(prescription);
+			console.log(dispense);
 			// this._dispenseService.create(dispense).then(res => {
 			// 	this.prescriptionItems.isDispensed = true;
 			// 	// Call the prescription service to change the isDispensed to true.
@@ -236,7 +239,7 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 			// if(externalDispense.generics.length > 0) {
 			// 	// Save external Prescriptions.
 			// 	this._externalPrescriptionService.create(externalDispense).then(res => {
-			//
+
 			// 	}).catch(err => console.error(err));
 			// }
 		} else {
@@ -255,7 +258,8 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 				this.prescriptionItems = res;
 
 				const notBilled = this.prescriptionItems.prescriptionItems
-					.filter(x => ((x.quantity !== x.quantityDispensed || !x.paymentCompleted) && !x.paymentCompleted && !x.isExternal));
+					.filter(x => ((x.quantity !== x.quantityDispensed || !x.isDispensed) && !x.isDispensed && !x.isExternal));
+					console.log(notBilled);
 				if (notBilled.length > 0) {
 					this.disableDispenseAllBtn = true;
 				} else {
