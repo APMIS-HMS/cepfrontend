@@ -331,45 +331,44 @@ export class PatientPrescriptionComponent implements OnInit {
     }
 
     // Get all medications
-    private _getPrescriptionList() {
-        this._prescriptionService.find({ query: { facilityId: this.facility._id, patientId: this.patientDetails._id } }).then(res => {
-            this.currMedLoading = false;
-            this.pastMedLoading = false;
-            // Bind to current medication list
-            const currentMedications = res.data.filter(x => {
-                const lastSevenDays = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
-                if (lastSevenDays < new Date(x.updatedAt)) {
-                    return x;
-                }
-            });
-            this.currentMedications = currentMedications.splice(0, 3);
+    // private _getPrescriptionList() {
+    //     this._prescriptionService.find({ query: { facilityId: this.facility._id, patientId: this.patientDetails._id } }).then(res => {
+    //         this.currMedLoading = false;
+    //         this.pastMedLoading = false;
+    //         // Bind to current medication list
+    //         const currentMedications = res.data.filter(x => {
+    //             const lastSevenDays = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
+    //             if (lastSevenDays < new Date(x.updatedAt)) {
+    //                 return x;
+    //             }
+    //         });
+    //         this.currentMedications = currentMedications.splice(0, 3);
 
-            // Bind to past medication list
-            const pastMedications = res.data.filter(x => {
-                const lastSevenDays = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
-                if (lastSevenDays > new Date(x.updatedAt)) {
-                    return x;
-                }
-            });
-            this.pastMedications = pastMedications.splice(0, 3);
-        }).catch(err => console.error(err));
-    }
+    //         // Bind to past medication list
+    //         const pastMedications = res.data.filter(x => {
+    //             const lastSevenDays = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
+    //             if (lastSevenDays > new Date(x.updatedAt)) {
+    //                 return x;
+    //             }
+    //         });
+    //         this.pastMedications = pastMedications.splice(0, 3);
+    //     }).catch(err => console.error(err));
+    // }
 
-    onClickReset() {
-        this.addPrescriptionForm.reset();
-    }
+    // onClickReset() {
+    //     this.addPrescriptionForm.reset();
+    // }
 
-    private _getAllPriorities() {
-        this._priorityService.findAll().then(res => {
-            this.priorities = res.data;
-            const priority = res.data.filter(x => x.name.toLowerCase().includes('normal'));
-            if (priority.length > 0) {
-              this.allPrescriptionsForm.controls['priority'].setValue(priority[0]);
-            }
-          })
-          .catch(err => {
-            console.log(err);
-          });
+    // private _getAllPriorities() {
+    //     this._priorityService.findAll().then(res => {
+    //         this.priorities = res.data;
+    //         const priority = res.data.filter(x => x.name.toLowerCase().includes('normal'));
+    //         if (priority.length > 0) {
+    //           this.allPrescriptionsForm.controls['priority'].setValue(priority[0]);
+    //         }
+    //       }).catch(err => {
+    //         console.log(err);
+    //       });
       // bill model
       // const billItemArray = [];
       // let totalCost = 0;
@@ -419,22 +418,19 @@ export class PatientPrescriptionComponent implements OnInit {
       //     // Else, if no item was billed, just save to the prescription
       //     table. this._sendPrescription(this.prescriptions);
       // }
-    } else {
-      this._notification(
-          'Info', 'Please use the "Add" button above to add prescription!');
-    }
-  }
+    // } else {
+    //   this._notification('Info', 'Please use the "Add" button above to add prescription!');
+    // }
+//   }
 
   // Get all medications
   private _getPrescriptionList() {
-    this._prescriptionService
-        .find({
+    this._prescriptionService.find({
           query: {
             facilityId: this.facility._id,
             patientId: this.patientDetails._id
           }
-        })
-        .then(res => {
+        }).then(res => {
           this.currMedLoading = false;
           this.pastMedLoading = false;
           // Bind to current medication list
@@ -465,17 +461,15 @@ export class PatientPrescriptionComponent implements OnInit {
   }
 
   private _getAllPriorities() {
-    this._priorityService.findAll()
-        .then(res => {
-          this.priorities = res.data;
-          const priority =
-              res.data.filter(x => x.name.toLowerCase().includes('normal'));
-          if (priority.length > 0) {
-            this.allPrescriptionsForm.controls['priority'].setValue(
-                priority[0]);
-          }
-        })
-        .catch(err => console.error(err));
+    this._priorityService.findAll().then(res => {
+        this.priorities = res.data;
+        const priority =
+            res.data.filter(x => x.name.toLowerCase().includes('normal'));
+        if (priority.length > 0) {
+        this.allPrescriptionsForm.controls['priority'].setValue(
+            priority[0]);
+        }
+    }).catch(err => console.error(err));
   }
 
   // private _getAllRoutes() {
@@ -485,13 +479,11 @@ export class PatientPrescriptionComponent implements OnInit {
   // }
 
   private _getAllFrequencies() {
-    this._frequencyService.findAll()
-        .then(res => {
-          if (res.data.length > 0) {
+    this._frequencyService.findAll().then(res => {
+        if (res.data.length > 0) {
             this.frequencies = res.data;
-          }
-        })
-        .catch(err => console.error(err));
+        }
+    }).catch(err => console.error(err));
   }
 
   focusSearch() {
