@@ -42,8 +42,8 @@ export interface DispensedArray {
     dispensedDate: Date; // Date time
     batchNumber: String;
     qty: number;
-    employeeName: string;
-    storeName: string;
+    employee: any;
+    store: any;
     unitBilledPrice: number;
     totalAmount: number;
 }

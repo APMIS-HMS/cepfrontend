@@ -2,6 +2,7 @@ import { PrescriptionItem } from './prescription-item';
 export interface Prescription {
     _id?: string;
     facilityId: string;
+    employeeDetails?: any;
     employeeId: string;
     patientId: string;
     personId: string;
