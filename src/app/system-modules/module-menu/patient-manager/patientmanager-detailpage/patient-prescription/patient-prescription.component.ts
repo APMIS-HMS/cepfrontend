@@ -1,16 +1,11 @@
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
-
-import { Component, OnInit, EventEmitter, Output, Input, ElementRef } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { Component, OnInit, Output, Input } from '@angular/core';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import {
-    FacilitiesService, PrescriptionService,
-    PrescriptionPriorityService, DictionariesService, BillingService,
-    RouteService, FrequencyService, DrugListApiService, DrugDetailsService, MedicationListService, PersonService
+    FacilitiesService, PrescriptionService, PrescriptionPriorityService, FrequencyService
 } from '../../../../../services/facility-manager/setup/index';
-import { Appointment, Facility, Employee, Prescription, PrescriptionItem, BillItem, BillIGroup, Dispensed, User }
-    from '../../../../../models/index';
+import { Appointment, Facility, Prescription, PrescriptionItem, Dispensed, User } from '../../../../../models/index';
 import { DurationUnits, DosageUnits } from '../../../../../shared-module/helpers/global-config';
 import { Subject } from 'rxjs/Subject';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
@@ -73,19 +68,19 @@ export class PatientPrescriptionComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private _locker: CoolLocalStorage,
-        private _el: ElementRef,
-        private _route: ActivatedRoute,
+        // private _el: ElementRef,
+        // private _route: ActivatedRoute,
         private _facilityService: FacilitiesService,
-        private _personService: PersonService,
+        // private _personService: PersonService,
         private _prescriptionService: PrescriptionService,
         private _priorityService: PrescriptionPriorityService,
-        private _dictionaryService: DictionariesService,
+        // private _dictionaryService: DictionariesService,
         private _frequencyService: FrequencyService,
-        private _routeService: RouteService,
-        private _drugListApi: DrugListApiService,
-        private _drugDetailsApi: DrugDetailsService,
-        private _billingService: BillingService,
-        private _medicationListService: MedicationListService,
+        // private _routeService: RouteService,
+        // private _drugListApi: DrugListApiService,
+        // private _drugDetailsApi: DrugDetailsService,
+        // private _billingService: BillingService,
+        // private _medicationListService: MedicationListService,
         private _authFacadeService: AuthFacadeService,
         private _systemModuleService: SystemModuleService
     ) {

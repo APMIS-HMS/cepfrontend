@@ -1,4 +1,6 @@
 export interface PrescriptionItem {
+    billId?: string;
+    billItemId?: string;
     _id?: string;
     facilityId?: string;
     productName?: any;

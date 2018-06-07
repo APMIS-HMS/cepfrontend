@@ -1,17 +1,12 @@
 import { Component, OnInit, Output, Input, OnDestroy } from '@angular/core';
-import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import {
-	Facility, Prescription, PrescriptionItem, Dispense, Inventory, InventoryTransaction, User,
-	Dispensed, DispensedArray, BatchTransaction,
-	DispenseByPrescription, DispenseByNoprescription, DispenseItem, MedicationList, BillIGroup, BillItem
+	Facility, Prescription, PrescriptionItem, Dispense, Inventory, InventoryTransaction, User, DispensedArray, BatchTransaction,
+	DispenseByPrescription, DispenseItem, BillItem
 } from '../../../../../models/index';
-import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
-import {
-	FacilitiesService, PrescriptionService, InventoryTransactionTypeService, ExternalPrescriptionService,
-	DispenseService, MedicationListService, InventoryService, BillingService, EmployeeService, AssessmentDispenseService
+import { PrescriptionService, InventoryTransactionTypeService, InventoryService, BillingService, EmployeeService, AssessmentDispenseService, FacilitiesService
 } from '../../../../../services/facility-manager/setup/index';
 import { ISubscription } from 'rxjs/Subscription';
 import { SystemModuleService } from '../../../../../services/module-manager/setup/system-module.service';
@@ -66,7 +61,7 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 		private _facilityService: FacilitiesService,
 		private _pharmacyEventEmitter: PharmacyEmitterService,
 		private _prescriptionService: PrescriptionService,
-		private _dispenseService: DispenseService,
+		// private _dispenseService: DispenseService,
 		private _assessmentDispense: AssessmentDispenseService,
 		private _inventoryService: InventoryService,
 		private _employeeService: EmployeeService,
@@ -75,7 +70,7 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 		private _systemModuleService: SystemModuleService,
 		private _billingService: BillingService,
 		private _inventoryTransactionTypeService: InventoryTransactionTypeService,
-		private _externalPrescriptionService: ExternalPrescriptionService
+		// private _externalPrescriptionService: ExternalPrescriptionService
 	) {
 		const url: String = this._router.url;
 		// let url = window.location.href;
@@ -543,39 +538,39 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 		this.disablePaymentBtn = true;
 		this.paymentStatusText = false;
 		this.paymentStatusTexting = true;
-		if (this.prescriptionItems.billId !== undefined) {
-			this._billingService.get(this.prescriptionItems.billId, {}).then(res => {
-				console.log(res);
-				if (res._id !== undefined) {
-					this.disablePaymentBtn = false;
-					this.paymentStatusText = true;
-					this.paymentStatusTexting = false;
-					res.billItems.forEach(i => {
-						this.prescriptions.forEach(j => {
-							console.log(j);
-							if (i.serviceId === j.serviceId) {
-								j.paymentCompleted = i.paymentCompleted;
-							}
+		this.prescriptionItems.prescriptionItems.forEach(prescription => {
+			if (!!prescription.billId && !!prescription.billItemId) {
+				this._billingService.get(prescription.billId, {}).then(res => {
+					if (res._id !== undefined) {
+						this.disablePaymentBtn = false;
+						this.paymentStatusText = true;
+						this.paymentStatusTexting = false;
+						res.billItems.forEach(i => {
+							this.prescriptions.forEach(j => {
+								if (i._id === j.billItemId) {
+									j.paymentCompleted = i.paymentCompleted;
+								}
+							});
 						});
-					});
 
-					setTimeout(e => {
-						const condition = this.prescriptionItems.prescriptionItems.length !== this.prescriptions.length;
-						const notBilled = this.prescriptions
-						.filter(x => ((x.quantity !== x.quantityDispensed || !x.paymentCompleted) && !x.paymentCompleted && !x.isExternal));
-						if (notBilled.length > 0 || condition) {
-							this.disableDispenseAllBtn = true;
-						} else {
-							this.disableDispenseAllBtn = false;
-						}
-					}, 5000);
-				}
-			}).catch(err => console.error(err));
-		} else {
-			this.disablePaymentBtn = true;
-			this.paymentStatusText = true;
-			this.paymentStatusTexting = false;
-		}
+						setTimeout(e => {
+							const condition = this.prescriptionItems.prescriptionItems.length !== this.prescriptions.length;
+							const notBilled = this.prescriptions
+							.filter(x => ((x.quantity !== x.quantityDispensed || !x.paymentCompleted) && !x.paymentCompleted && !x.isExternal));
+							if (notBilled.length > 0 || condition) {
+								this.disableDispenseAllBtn = true;
+							} else {
+								this.disableDispenseAllBtn = false;
+							}
+						}, 5000);
+					}
+				}).catch(err => console.error(err));
+			} else {
+				this.disablePaymentBtn = true;
+				this.paymentStatusText = true;
+				this.paymentStatusTexting = false;
+			}
+		});
 	}
 
 	// Notification
