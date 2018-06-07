@@ -84,7 +84,7 @@
                                                         <input type="number" min="1" [readonly]="itm.value.packItem === null" matInput mat-error formControlName="size" (change)="onPackageSize(i,productTableForm.controls['productTableArray'].controls)">
                                                     </mat-input-container>
                                                     <mat-form-field class="col-md-6">
-                                                        <mat-select placeholder="Select Packsize" formControlName="packItem" [compareWith]="compareItems">
+                                                        <mat-select placeholder="Select Packsize" formControlName="packItem" [compareWith]="compareItems" (change)="onPackageSize(i,productTableForm.controls['productTableArray'].controls)">
                                                             <mat-option disabled="">None</mat-option>
                                                             <mat-option [value]="item._id" *ngFor="let item of itm.value.packsizes">
                                                                 <span>{{item.name}}</span>
@@ -126,7 +126,7 @@
 
         </div>
 
-        <div class="CTAs-wrap" *ngIf="productTableForm.controls['productTableArray'].value.length > 0 && frmDestinationStore.value != null">
+        <div class="CTAs-wrap" *ngIf="productTableForm.controls['productTableArray'].valid && frmDestinationStore.value != null">
             <button (click)="previewShow()" class="cta-1 cta-no-bg"> Preview </button>
             <button class="cta-1" (click)="saveTransfer()" [disabled]="isProcessing"> Send </button>
         </div>

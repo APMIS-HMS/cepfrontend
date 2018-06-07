@@ -108,6 +108,7 @@ export class PaymentComponent implements OnInit {
                         this.pendingBills = payload.data;
                         this.loadingPendingBills = false;
                     }).catch(err => {
+                        console.log(err);
                         this.loadingPendingBills = false;
                         this.systemModuleService.announceSweetProxy("There was a problem getting pending bills. Please try again later!", "error");
                     });

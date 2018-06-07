@@ -53,14 +53,14 @@
                       <br>
                     </h5>
                     <div *ngIf="isEditProductName">
-                        <mat-input-container>
-                            <input type="text" matInput placeholder="Edit Product Name" [formControl]="editProductnameControl">
-                          </mat-input-container>
-                          <span>
-                              <i style="color: green;cursor: pointer" (click)="onEditSaveProductName()">save</i>
-                            </span>
+                      <mat-input-container>
+                        <input type="text" matInput placeholder="Edit Product Name" [formControl]="editProductnameControl">
+                      </mat-input-container>
+                      <span>
+                        <i style="color: green;cursor: pointer" (click)="onEditSaveProductName()">save</i>
+                      </span>
                     </div>
-                    
+
                   </div>
                   <div class="input-qty">
                     <div class="qty-label">Total {{getBasePackName(selectedProduct?.packSizes)}}</div>
@@ -71,7 +71,7 @@
                       <mat-input-container class="col-sm-3">
                         <input type="text" matInput placeholder="Enter Batch No *" formControlName="batchNumber">
                       </mat-input-container>
-                      <mat-form-field class="col-sm-3">
+                      <mat-form-field class="col-sm-3" [hidden]="myForm.controls.initproduct.controls.length > 1">
                         <mat-select placeholder="Select Service" [formControl]="productServiceControl">
                           <mat-option [value]="item._id" *ngFor="let item of categories">{{item.name}}</mat-option>
                         </mat-select>
@@ -83,7 +83,7 @@
                       <div style="padding: 0 30px;" class="row example-full-width" formArrayName="config">
                         <div class="row" [formGroupName]="k" *ngFor="let itm of batch.controls.config.controls;let k = index">
                           <mat-form-field class="col-md-3">
-                            <mat-select placeholder="Select Packsize" formControlName="packItem" [compareWith]="compareItems">
+                            <mat-select placeholder="Select Packsize" formControlName="packItem" [compareWith]="compareItems" (change)="onPackageSize(i,myForm.controls['initproduct'].controls)">
                               <mat-option disabled="">None</mat-option>
                               <mat-option [value]="item._id" *ngFor="let item of itm.value.packsizes">
                                 <span>{{item.name}}</span>
@@ -110,28 +110,31 @@
 
 
                 </div>
-                <!-- <div class="col-sm-1" style="text-align: left">
-                    <a [hidden]="i < myForm.controls.initproduct.controls.length - 1" (click)="addBatch(i)"><i class="fa fa-plus fa-fw fa-2x"></i></a>
-                    <a (click)="removeBatch(i)"><i style="color:red" class="fa fa-trash fa-fw fa-2x"></i></a>
-                  </div> -->
-
+                <div class="col-sm-1" style="text-align: left">
+                  <a [hidden]="i < myForm.controls.initproduct.controls.length - 1" (click)="addBatch(i)">
+                    <i class="fa fa-plus fa-fw fa-2x"></i>
+                  </a>
+                  <a (click)="removeBatch(i)">
+                    <i style="color:red" class="fa fa-trash fa-fw fa-2x"></i>
+                  </a>
+                </div>
               </div>
-
-
             </div>
             <div class="col-sm-12 text-center" *ngIf="myForm.valid && productServiceControl.value!==''">
-              <a mat-raised-button [hidden]="isItemselected" *ngIf="isEnable" (click)="save(myForm.valid,myForm.value,selectedProduct)">
-                <span>
-                  <div [hidden]="isProcessing">
-                    Save
-                  </div>
-                  <div [hidden]="!isProcessing">
-                    Processing...
-                    <i class='fa fa-spinner fa-spin'></i>
-                  </div>
-                </span>
-
-              </a>
+              <div *ngIf="isEnable">
+                  <a mat-raised-button [hidden]="isItemselected" (click)="save(myForm.valid,myForm.value,selectedProduct)">
+                      <span>
+                        <div [hidden]="isProcessing">
+                          Save
+                        </div>
+                        <div [hidden]="!isProcessing">
+                          Processing...
+                          <i class='fa fa-spinner fa-spin'></i>
+                        </div>
+                      </span>
+      
+                    </a>
+              </div>
             </div>
           </form>
         </div>
