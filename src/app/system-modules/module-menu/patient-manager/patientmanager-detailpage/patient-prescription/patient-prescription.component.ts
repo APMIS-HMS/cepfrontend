@@ -250,6 +250,7 @@ export class PatientPrescriptionComponent implements OnInit {
 
             console.log(this.prescriptions);
             this._prescriptionService.authorizePresciption(this.prescriptions).then(res => {
+                console.log(res);
               if (res.status === 'success') {
                 this._systemModuleService.announceSweetProxy('Prescription has been sent successfully!', 'success');
                 this.isDispensed.next(true);

@@ -179,7 +179,6 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 						product: (element.isExternal === false) ? element.productName : '',
 						cost: element.cost,
 						quantity: (element.quantity === undefined) ? 0 : element.quantity,
-						// batchNumber: (element.batchNumber === undefined) ? '' : element.batchNumber,
 						refillCount: (element.refillCount === undefined) ? 0 : element.refillCount,
 						isExternal: element.isExternal,
 						instruction: element.patientInstruction
@@ -222,6 +221,14 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 			}
 			console.log(prescription);
 			console.log(dispense);
+
+			this._assessmentDispense.update(dispense).then(res => {
+				console.log(res)
+				if (res.status === 'success') {
+
+				}
+			}).catch(err => {});
+
 			// this._dispenseService.create(dispense).then(res => {
 			// 	this.prescriptionItems.isDispensed = true;
 			// 	// Call the prescription service to change the isDispensed to true.
