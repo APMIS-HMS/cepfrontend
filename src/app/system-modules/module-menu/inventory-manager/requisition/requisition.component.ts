@@ -196,7 +196,6 @@ export class RequisitionComponent implements OnInit {
 
     let counter = 0;
     for (let i = 0; i < this.productTables.length; i++) {
-console.log(this.productTables);
       if (this.superGroups.length < 1) {
         group = [];
         let obj = <any>{ checked: false, name: this.productTables[i].name, _id: this.productTables[i].id, product: this.productTables[i] };
@@ -257,8 +256,6 @@ console.log(this.productTables);
   }
   onProductCheckChange(event, value,index?) {
     value.checked = event.checked;
-    console.log(value.product);
-    // let storeId = this.frm_purchaseOrder.controls['store'].value;
     if (event.checked === true) {
       if (this.productsControl.value !== null && this.productsControl.value !== undefined) {
         (<FormArray>this.productTableForm.controls['productTableArray'])
@@ -388,7 +385,6 @@ console.log(this.productTables);
     requisition.comment = this.desc.value;
     requisition.products = [];
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
-      console.log(item);
       let requisitionProduct: any = <any>{};
       requisitionProduct.productId = item.value.productObject.id;
       requisitionProduct.productObject = item.value.productObject;
@@ -410,7 +406,6 @@ console.log(this.productTables);
       this.isProcessing = false;
       this.systemModuleService.off();
     }, err => {
-      console.log(err);
       this.systemModuleService.announceSweetProxy('Requisition failed', 'error');
       this.isProcessing = false;
       this.systemModuleService.off();
@@ -534,19 +529,16 @@ console.log(this.productTables);
 
   ngOnDestroy() {
     if (this.loginEmployee.storeCheckIn !== undefined) {
-      console.log(this.loginEmployee.storeCheckIn);
       this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
         if (itemr.storeObject === undefined) {
           const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
           itemr.storeObject = store_.storeObject;
-          console.log(itemr.storeObject);
         }
         if (itemr.isDefault === true && itemr.isOn === true) {
           itemr.isOn = false;
           this.employeeService.update(this.loginEmployee).then(payload => {
             this.loginEmployee = payload;
           },err=>{
-            console.log(err);
           });
         }
       });

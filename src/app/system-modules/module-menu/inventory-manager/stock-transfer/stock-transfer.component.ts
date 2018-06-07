@@ -224,7 +224,6 @@ export class StockTransferComponent implements OnInit {
   getStores() {
     this.storeService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
       this.stores = payload.data;
-      console.log(this.stores);
     });
   }
 
@@ -454,7 +453,6 @@ export class StockTransferComponent implements OnInit {
   }
 
   existingProductConfig(config) {
-    console.log(config);
     let frmArray = new FormArray([]);
     config.qtyDetails.forEach(element => {
       frmArray.push(new FormGroup({
@@ -605,7 +603,6 @@ export class StockTransferComponent implements OnInit {
   getProductQuantity($event, value, index) {
     this.selectedTransactionId = $event.value;
     const filterValue = value.filter(x => x._id === $event.value);
-    console.log(filterValue);
     if (filterValue.length > 0) {
       (<FormGroup>(<FormArray>this.productTableForm.controls['productTableArray'])
         .controls[index]).controls['qty'].setValue(filterValue[0].availableQuantity);
@@ -693,7 +690,6 @@ export class StockTransferComponent implements OnInit {
     this.newTransfer.totalCostPrice = 0;
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
       const transferTransaction: any = <any>{};
-      console.log(item.value);
       transferTransaction.inventoryId = item.value.inventoryId;
       transferTransaction.productId = item.value.id;
       transferTransaction.productObject = item.value.productObject;
@@ -809,19 +805,16 @@ export class StockTransferComponent implements OnInit {
 
   ngOnDestroy() {
     if (this.loginEmployee.storeCheckIn !== undefined) {
-      console.log(this.loginEmployee.storeCheckIn);
       this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
         if (itemr.storeObject === undefined) {
           const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
           itemr.storeObject = store_.storeObject;
-          console.log(itemr.storeObject);
         }
         if (itemr.isDefault === true && itemr.isOn === true) {
           itemr.isOn = false;
           this.employeeService.update(this.loginEmployee).then(payload => {
             this.loginEmployee = payload;
           }, err => {
-            console.log(err);
           });
         }
       });

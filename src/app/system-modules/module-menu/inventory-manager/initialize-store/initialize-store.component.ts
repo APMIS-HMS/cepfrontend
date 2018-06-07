@@ -124,7 +124,6 @@ export class InitializeStoreComponent implements OnInit {
             name: por
           }
         }).then(payload => {
-          console.log(payload);
           this.systemModuleService.off();
           this.products = payload.data;
         }, err => {
@@ -149,7 +148,7 @@ export class InitializeStoreComponent implements OnInit {
   }
 
   createbatch(): FormGroup {
-    if (this.selectedProduct.productConfigObject !== undefined) {
+    if (this.selectedProduct.packSizes !== undefined) {
       return this._fb.group({
         batchNumber: ['', Validators.required],
         quantity: ['', Validators.required],
@@ -167,7 +166,6 @@ export class InitializeStoreComponent implements OnInit {
   }
 
   addProduct(product: any) {
-    console.log(product);
     this.isEditProductName = false;
     this.isEnable = true;
     this.isItemselected = false;
@@ -176,7 +174,6 @@ export class InitializeStoreComponent implements OnInit {
       ])
     });
     this.selectedProduct = product;
-    console.log(this.selectedProduct);
     const control = <FormArray>this.myForm.controls['initproduct'];
     if (product.packSizes !== undefined) {
       let prodObj = this._fb.group({
@@ -201,7 +198,6 @@ export class InitializeStoreComponent implements OnInit {
     }
   }
   initProductConfig(config) {
-    console.log(config);
     let frmArray = new FormArray([])
     frmArray.push(new FormGroup({
       size: new FormControl(0),
@@ -228,9 +224,7 @@ export class InitializeStoreComponent implements OnInit {
     this._productService.findProductConfigs({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
       this.systemModuleService.off();
       this.products = payload.data;
-      console.log(this.products);
     }, err => {
-      console.log(err);
     });
   }
 
@@ -278,7 +272,6 @@ export class InitializeStoreComponent implements OnInit {
 
   onEditSaveProductName() {
     if (this.isEditProductName) {
-      console.log(this.isEditProductName);
       if (this.selectedProduct.productObject !== undefined) {
         this.selectedProduct.productObject.name = this.editProductnameControl.value;
       } else {
@@ -291,6 +284,7 @@ export class InitializeStoreComponent implements OnInit {
 
 
   save(valid, value, product) {
+    this.isEnable = false;
     if (this.checkingObject.storeId === undefined) {
       if (!!this.checkingObject.typeObject) {
         this.checkingObject = this.checkingObject.typeObject;
@@ -330,7 +324,6 @@ export class InitializeStoreComponent implements OnInit {
           }
         }
       }, error => {
-        console.log(error);
         const errMsg = 'There was an error while initialising product, please try again!';
         this.systemModuleService.announceSweetProxy(errMsg, 'error');
         this.isEnable = true;
@@ -341,19 +334,16 @@ export class InitializeStoreComponent implements OnInit {
 
   ngOnDestroy() {
     if (this.loginEmployee.storeCheckIn !== undefined) {
-      console.log(this.loginEmployee.storeCheckIn);
       this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
         if (itemr.storeObject === undefined) {
           const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
           itemr.storeObject = store_.storeObject;
-          console.log(itemr.storeObject);
         }
         if (itemr.isDefault === true && itemr.isOn === true) {
           itemr.isOn = false;
           this.employeeService.update(this.loginEmployee).then(payload => {
             this.loginEmployee = payload;
           }, err => {
-            console.log(err);
           });
         }
       });
