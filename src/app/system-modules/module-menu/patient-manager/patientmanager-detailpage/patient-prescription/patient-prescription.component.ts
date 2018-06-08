@@ -134,38 +134,10 @@ export class PatientPrescriptionComponent implements OnInit {
   }
 
   apmisLookupHandleSelectedItem(item) {
-    console.log(item);
     this.apmisLookupText = item;
     this.addPrescriptionForm.controls['drug'].setValue(item.name);
     this.addPrescriptionForm.controls['code'].setValue(item.code);
     this.addPrescriptionForm.controls['productId'].setValue(item.id);
-    // this._drugListApi.find({ query: { method: 'drug-details', 'productId':
-    // item.productId } }).then(res => {
-    //     let sRes = res.data;
-    //     if (res.status === 'success') {
-    //         if (!!sRes.ingredients && sRes.ingredients.length > 0) {
-    //             this.selectedForm = sRes.form;
-    //             this.selectedIngredients = sRes.ingredients;
-    //             let drugName: string = sRes.form + ' ';
-    //             let strength = '';
-    //             const ingredientLength: number = sRes.ingredients.length;
-    //             let index = 0;
-    //             sRes.ingredients.forEach(element => {
-    //                 index++;
-    //                 drugName += element.name;
-    //                 strength += element.strength + element.strengthUnit;
-
-    //                 if (index !== ingredientLength) {
-    //                     drugName += '/';
-    //                     strength += '/';
-    //                 }
-    //             });
-    //             this.addPrescriptionForm.controls['drug'].setValue(drugName);
-    //             this.addPrescriptionForm.controls['strength'].setValue(strength);
-    //             this.addPrescriptionForm.controls['route'].setValue(sRes.route);
-    //         }
-    //     }
-    // }).catch(err => console.error(err));
   }
 
   onClickAddPrescription(value: any, valid: boolean) {
@@ -248,12 +220,8 @@ export class PatientPrescriptionComponent implements OnInit {
             this.authorizeRx = false;
             this.authorizingRx = true;
             this.prescriptions.priority = { id: value.priority._id, name: value.priority.name };
-            this.prescriptions.totalCost = value.totalCost;
-            this.prescriptions.totalQuantity = value.totalQuantity;
 
-            console.log(this.prescriptions);
             this._prescriptionService.authorizePresciption(this.prescriptions).then(res => {
-                console.log(res);
               if (res.status === 'success') {
                 this._systemModuleService.announceSweetProxy('Prescription has been sent successfully!', 'success');
                 this.isDispensed.next(true);
@@ -278,150 +246,10 @@ export class PatientPrescriptionComponent implements OnInit {
             }).catch(err => {
                 console.log(err);
             });
-            // bill model
-            // const billItemArray = [];
-            // let totalCost = 0;
-            // this.prescriptions.prescriptionItems.forEach(element => {
-            //     if (element.isBilled) {
-            //         const billItem = <BillItem>{
-            //             facilityServiceId: element.facilityServiceId,
-            //             serviceId: element.serviceId,
-            //             facilityId: this.facility._id,
-            //             patientId: this.prescriptions.patientId,
-            //             description: element.productName,
-            //             quantity: element.quantity,
-            //             totalPrice: element.totalCost,
-            //             unitPrice: element.cost,
-            //             unitDiscountedAmount: 0,
-            //             totalDiscoutedAmount: 0,
-            //         };
-
-            //         totalCost += element.totalCost;
-            //         billItemArray.push(billItem);
-            //     }
-            // });
-
-            // const bill = <BillIGroup>{
-            //     facilityId: this.facility._id,
-            //     patientId: this.prescriptions.patientId,
-            //     billItems: billItemArray,
-            //     discount: 0,
-            //     subTotal: totalCost,
-            //     grandTotal: totalCost,
-            // }
-            // // If any item was billed, then call the billing service
-            // if (billItemArray.length > 0) {
-            //     // send the billed items to the billing service
-            //     this._billingService.create(bill).then(res => {
-            //         if (res._id !== undefined) {
-            //             this.prescriptions.billId = res._id;
-            //             // if this is true, send the prescribed drugs to the prescription service
-            //             this._sendPrescription(this.prescriptions);
-            //         } else {
-            //             this._notification('Error', 'There was an error generating bill. Please try again later.');
-            //         }
-            //     }).catch(err => console.error(err));
-            // } else {
-            //     // Else, if no item was billed, just save to the prescription table.
-            //     this._sendPrescription(this.prescriptions);
-            // }
         } else {
-            this._notification('Info', 'Please use the "Add" button above to add prescription!');
+          this._systemModuleService.announceSweetProxy('Please use the "Add" button above to add prescription!', 'error');
         }
     }
-
-    // Get all medications
-    // private _getPrescriptionList() {
-    //     this._prescriptionService.find({ query: { facilityId: this.facility._id, patientId: this.patientDetails._id } }).then(res => {
-    //         this.currMedLoading = false;
-    //         this.pastMedLoading = false;
-    //         // Bind to current medication list
-    //         const currentMedications = res.data.filter(x => {
-    //             const lastSevenDays = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
-    //             if (lastSevenDays < new Date(x.updatedAt)) {
-    //                 return x;
-    //             }
-    //         });
-    //         this.currentMedications = currentMedications.splice(0, 3);
-
-    //         // Bind to past medication list
-    //         const pastMedications = res.data.filter(x => {
-    //             const lastSevenDays = new Date(new Date().getTime() - (7 * 24 * 60 * 60 * 1000));
-    //             if (lastSevenDays > new Date(x.updatedAt)) {
-    //                 return x;
-    //             }
-    //         });
-    //         this.pastMedications = pastMedications.splice(0, 3);
-    //     }).catch(err => console.error(err));
-    // }
-
-    // onClickReset() {
-    //     this.addPrescriptionForm.reset();
-    // }
-
-    // private _getAllPriorities() {
-    //     this._priorityService.findAll().then(res => {
-    //         this.priorities = res.data;
-    //         const priority = res.data.filter(x => x.name.toLowerCase().includes('normal'));
-    //         if (priority.length > 0) {
-    //           this.allPrescriptionsForm.controls['priority'].setValue(priority[0]);
-    //         }
-    //       }).catch(err => {
-    //         console.log(err);
-    //       });
-      // bill model
-      // const billItemArray = [];
-      // let totalCost = 0;
-      // this.prescriptions.prescriptionItems.forEach(element => {
-      //     if (element.isBilled) {
-      //         const billItem = <BillItem>{
-      //             facilityServiceId: element.facilityServiceId,
-      //             serviceId: element.serviceId,
-      //             facilityId: this.facility._id,
-      //             patientId: this.prescriptions.patientId,
-      //             description: element.productName,
-      //             quantity: element.quantity,
-      //             totalPrice: element.totalCost,
-      //             unitPrice: element.cost,
-      //             unitDiscountedAmount: 0,
-      //             totalDiscoutedAmount: 0,
-      //         };
-
-      //         totalCost += element.totalCost;
-      //         billItemArray.push(billItem);
-      //     }
-      // });
-
-      // const bill = <BillIGroup>{
-      //     facilityId: this.facility._id,
-      //     patientId: this.prescriptions.patientId,
-      //     billItems: billItemArray,
-      //     discount: 0,
-      //     subTotal: totalCost,
-      //     grandTotal: totalCost,
-      // }
-      // // If any item was billed, then call the billing service
-      // if (billItemArray.length > 0) {
-      //     // send the billed items to the billing service
-      //     this._billingService.create(bill).then(res => {
-      //         if (res._id !== undefined) {
-      //             this.prescriptions.billId = res._id;
-      //             // if this is true, send the prescribed drugs to the
-      //             prescription service
-      //             this._sendPrescription(this.prescriptions);
-      //         } else {
-      //             this._notification('Error', 'There was an error generating
-      //             bill. Please try again later.');
-      //         }
-      //     }).catch(err => console.error(err));
-      // } else {
-      //     // Else, if no item was billed, just save to the prescription
-      //     table. this._sendPrescription(this.prescriptions);
-      // }
-    // } else {
-    //   this._notification('Info', 'Please use the "Add" button above to add prescription!');
-    // }
-//   }
 
   // Get all medications
   private _getPrescriptionList() {
@@ -472,12 +300,6 @@ export class PatientPrescriptionComponent implements OnInit {
     }).catch(err => console.error(err));
   }
 
-  // private _getAllRoutes() {
-  //     this._routeService.findAll().then(res => {
-  //         this.routes = res.data;
-  //     }).catch(err => console.error(err));
-  // }
-
   private _getAllFrequencies() {
     this._frequencyService.findAll().then(res => {
         if (res.data.length > 0) {
@@ -517,29 +339,4 @@ export class PatientPrescriptionComponent implements OnInit {
       this.currentMedicationShow = false;
     }
   }
-
-  // private _sendPrescription(data: Prescription): void {
-  //     this._prescriptionService.create(data).then(res => {
-  //         this._notification('Success', 'Prescription has been sent!');
-  //         this.isDispensed.next(true);
-  //         this.prescriptionItems = <Prescription>{};
-  //         this.prescriptionItems.prescriptionItems = [];
-  //         this.prescriptionArray = [];
-  //         this.addPrescriptionForm.reset();
-  //         this.addPrescriptionForm.controls['refillCount'].reset(0);
-  //         this.addPrescriptionForm.controls['duration'].reset(0);
-  //         this.addPrescriptionForm.controls['startDate'].reset(new Date());
-  //         this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
-  //         this.disableAuthorizeRx = true;
-  //     }).catch(err => {
-  //         this._notification('Error', 'There was an error creating
-  //         prescription. Please try again later.');
-  //     });
-  // }
-
-  private _notification(type: string, text: string): void {
-    this._facilityService.announceNotification(
-        {users: [this.user._id], type: type, text: text});
-  }
-  onClickSavePrescription(value, valid) {}
 }
