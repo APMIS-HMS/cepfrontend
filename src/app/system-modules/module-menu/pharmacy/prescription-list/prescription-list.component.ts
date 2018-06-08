@@ -95,48 +95,45 @@ export class PrescriptionListComponent implements OnInit {
 
 	// Get all drugs from generic
 	getAllPrescriptions() {
-		console.log('something');
 		this._prescriptionService.find({ query: { facilityId: this.facility._id, $sort: { createdAt: -1 } } }).then(res => {
-			console.log(res);
 			this.loading = false;
-			res.data.forEach(element => {
-				if (!element.isDispensed) {
-					let isBilledCount = 0;
-					const preItemCount = element.prescriptionItems.length;
-					element.prescriptionItems.forEach(preItem => {
-						if (preItem.isBilled) {
-							++isBilledCount;
+			if (!!res.data && res.data.length > 0) {
+				res.data.forEach(element => {
+					if (!element.isDispensed) {
+						let isBilledCount = 0;
+						const preItemCount = element.prescriptionItems.length;
+						element.prescriptionItems.forEach(preItem => {
+							if (preItem.isBilled) {
+								++isBilledCount;
+							}
+						});
+
+						if (isBilledCount === preItemCount) {
+							element.status = 'Completely';
+						} else if (isBilledCount === 0) {
+							element.status = 'Not';
+						} else {
+							element.status = 'Partly';
 						}
-					});
 
-					if (isBilledCount === preItemCount) {
-						element.status = 'Completely';
-					} else if (isBilledCount === 0) {
-						element.status = 'Not';
-					} else {
-						element.status = 'Partly';
+						this.tempPrescriptionLists.push(element); // temporary variable to search from.
+						this.prescriptionLists.push(element);
 					}
-
-					this.tempPrescriptionLists.push(element); // temporary variable to search from.
-					this.prescriptionLists.push(element);
-				}
-			});
+				});
+			}
 		}).catch(err => { console.log(err)});
 	}
 
 	getDispenses() {
 		this._dispenseService.find({ query: { facilityId: this.facility._id, isPrescription: false } }).then(res => {
 			this.noPresLoading = false;
-			if (res.data.length > 0) {
-				this.noPrescriptionLists = res.data;
-			} else {
-				this.noPrescriptionLists = [];
+			if (!!res.data && res.data.length > 0) {
+				if (res.data.length > 0) {
+					this.noPrescriptionLists = res.data;
+				} else {
+					this.noPrescriptionLists = [];
+				}
 			}
 		}).catch(err => { console.log(err); });
 	}
-
-	// Call Api to search
-	private searchApi() {
-	}
-
 }

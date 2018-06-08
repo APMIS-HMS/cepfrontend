@@ -16,6 +16,8 @@ import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 export class InvoicesComponent implements OnInit {
   slideInvoiceDetails = false;
   frmSupplier: FormControl = new FormControl();
+  frmSearch: FormControl = new FormControl();
+  // frmSupplier: FormControl = new FormControl();
   searchOpen = false;
 
   invoices: any[] = [];
@@ -36,6 +38,7 @@ export class InvoicesComponent implements OnInit {
     private route: ActivatedRoute,
     private systemModuleService: SystemModuleService
   ) {
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
       if (!!res) {
         if (!!res.typeObject) {
@@ -46,30 +49,102 @@ export class InvoicesComponent implements OnInit {
         }
       }
     });
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+      // this.checkingObject = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+      if ((this.loginEmployee.storeCheckIn !== undefined
+        || this.loginEmployee.storeCheckIn.length > 0)) {
+        let isOn = false;
+        this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+          if (itemr.isDefault === true) {
+            itemr.isOn = true;
+            itemr.lastLogin = new Date();
+            isOn = true;
+            this.checkingStore = { typeObject: itemr, type: 'store' };
+            this.employeeService.announceCheckIn(this.checkingStore);
+
+            // tslint:disable-next-line:no-shadowed-variable
+            this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+              this.loginEmployee = payload;
+              this.checkingStore = { typeObject: itemr, type: 'store' };
+              this.employeeService.announceCheckIn(this.checkingStore);
+              this.locker.setObject('checkingObject', this.checkingStore);
+              // this.checkingObject = this.checkingObject.typeObject;
+              console.log(this.checkingStore);
+              this.getInvoices();
+              this.getSuppliers();
+            });
+          }
+        });
+        if (isOn === false) {
+          this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+            if (r === 0) {
+              itemr.isOn = true;
+              itemr.lastLogin = new Date();
+              // tslint:disable-next-line:no-shadowed-variable
+              this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+                this.loginEmployee = payload;
+                this.checkingStore = { typeObject: itemr, type: 'store' };
+                this.employeeService.announceCheckIn(this.checkingStore);
+                this.locker.setObject('checkingObject', this.checkingStore);
+                // this.checkingObject = this.checkingObject.typeObject;
+                console.log(this.checkingStore);
+                this.getInvoices();
+                this.getSuppliers();
+              });
+            }
+          });
+        }
+      }
+    });
   }
 
   ngOnInit() {
     this._purchaseEventEmitter.setRouteUrl('Purchase Invoices');
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.authFacadeService.getLogingEmployee().then((payload: any) => {
-      this.checkingStore = payload;
-      this.checkingStore = payload.storeCheckIn.find(x => x.isOn === true);
-      this.getInvoices();
-      this.getSuppliers();
+    // this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    // this.authFacadeService.getLogingEmployee().then((payload: any) => {
+    //   this.checkingStore = payload;
+    //   this.checkingStore = payload.storeCheckIn.find(x => x.isOn === true);
+    //   this.getInvoices();
+    //   this.getSuppliers();
+    // });
+
+    this.frmSearch.valueChanges.subscribe(value => {
+      if (value !== null) {
+        this.invoiceService.find({
+          query: {
+            $or: [
+              {
+                'products.productObject.name': {
+                  $regex: value,
+                  $options: 'i'
+                },
+              },
+              { invoiceNumber: value }
+            ],
+            $sort: { createdAt: -1 }
+          }
+        }).subscribe(payload => {
+          this.invoices = payload.data;
+        });
+      }
     });
 
     this.frmSupplier.valueChanges.subscribe(value => {
       if (value !== null) {
-        this.invoiceService.find({ query: { supplierId: value } }).subscribe(payload => {
+        this.invoiceService.find({ query: { supplierId: value, $sort: { createdAt: -1 } } }).subscribe(payload => {
           this.invoices = payload.data;
         });
       }
     });
   }
+
   getSuppliers() {
     this.systemModuleService.on();
     this.supplierService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
       this.suppliers = payload.data;
+      this.systemModuleService.off();
+    }, err => {
       this.systemModuleService.off();
     });
   }
@@ -86,7 +161,7 @@ export class InvoicesComponent implements OnInit {
         this.invoices = payload.data;
         this.systemModuleService.off();
       }, error => {
-
+        this.systemModuleService.off();
       });
     }
   }
@@ -109,12 +184,20 @@ export class InvoicesComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    if (this.loginEmployee.consultingRoomCheckIn !== undefined) {
-      this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      console.log(this.loginEmployee.storeCheckIn);
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.storeObject === undefined) {
+          const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
+          itemr.storeObject = store_.storeObject;
+          console.log(itemr.storeObject);
+        }
         if (itemr.isDefault === true && itemr.isOn === true) {
           itemr.isOn = false;
           this.employeeService.update(this.loginEmployee).then(payload => {
             this.loginEmployee = payload;
+          }, err => {
+            console.log(err);
           });
         }
       });

@@ -80,14 +80,20 @@ export class ReceiveStockComponent implements OnInit {
       .debounceTime(300)
       .distinctUntilChanged()
       .subscribe(value => {
+        if (this.checkingStore.storeId === undefined) {
+          this.checkingStore = this.checkingStore.typeObject;
+        }
         this.loading = true;
         this.systemModuleService.on();
-        this.inventoryTransferService.findTransferHistories({
+        this.inventoryTransferService.find({
           query: {
             facilityId: this.selectedFacility._id,
             storeId: this.checkingStore.storeId,
             isDestination: true,
-            name: value
+            'inventoryTransferTransactions.productObject.name': {
+              $regex: value,
+              $options: 'i'
+            },
           }
         }).then(payload => {
           this.loading = false;
@@ -108,6 +114,11 @@ export class ReceiveStockComponent implements OnInit {
   }
 
   getTransfers() {
+    if (this.checkingStore.storeId === undefined) {
+      if (!!this.checkingStore.typeObject) {
+        this.checkingStore = this.checkingStore.typeObject;
+      }
+    }
     if (this.checkingStore !== undefined) {
       this.loading = true;
       this.systemModuleService.on();
@@ -234,18 +245,23 @@ export class ReceiveStockComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    if (this.loginEmployee.consultingRoomCheckIn !== undefined) {
-      this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.storeObject === undefined) {
+          const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
+          itemr.storeObject = store_.storeObject;
+        }
         if (itemr.isDefault === true && itemr.isOn === true) {
           itemr.isOn = false;
           this.employeeService.update(this.loginEmployee).then(payload => {
             this.loginEmployee = payload;
+          },err=>{
           });
         }
       });
     }
     this.employeeService.announceCheckIn(undefined);
-    this._locker.setObject('checkingObject', {});
+    this.locker.setObject('checkingObject', {});
     this.subscription.unsubscribe();
   }
 

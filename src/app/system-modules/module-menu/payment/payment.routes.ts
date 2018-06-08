@@ -4,6 +4,7 @@ import { PaymentComponent } from './payment.component';
 import { InvoiceComponent } from './invoice/invoice.component';
 import { BillLookupComponent } from './bill-lookup/bill-lookup.component';
 import { PaymentHistoryComponent } from './payment-history/payment-history.component';
+import { PaymentHistoryDetailsComponent } from './payment-history/payment-history-details/payment-history-details.component';
 
 const PAYMENTMODULES_ROUTES: Routes = [
     {
@@ -15,6 +16,7 @@ const PAYMENTMODULES_ROUTES: Routes = [
             { path: 'bill', component: BillLookupComponent },
             { path: 'bill/:id', component: BillLookupComponent },
             { path: 'history', component: PaymentHistoryComponent },
+            { path: 'history/:id', component: PaymentHistoryDetailsComponent },
         ]
     }
 ];

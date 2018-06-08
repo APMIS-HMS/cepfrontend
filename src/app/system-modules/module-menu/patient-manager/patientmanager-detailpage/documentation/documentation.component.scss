@@ -76,9 +76,11 @@
 }
 
 .actSect {
-    width: 90%;
     margin: 0 auto;
     font-weight: bold;
+}
+.frmNoteWrap{
+    width: 100% !important;
 }
 
 .tooltip {
@@ -183,6 +185,8 @@ ul.topmenuwrap {
 
 .cardSect-wrap {
     margin-bottom: 20px;
+    margin-left: 10px;
+    margin-top: -10px;
 }
 
 .card-sect {
@@ -356,6 +360,8 @@ td {
 .sect-value {
     line-height: 1.7;
     margin-left: 10px;
+    margin-right: 10px;
+    text-align: justify;
 }
 
 .doc-subtitle {
@@ -437,4 +443,67 @@ th {
     font-weight: normal;
     color: #ff2500;
     border-bottom: 1px solid #ff2500;
+}
+.tree-ul {
+    margin-top: 20px;
+    background: #fff;
+    box-sizing: border-box;
+}
+.tree-li{
+    background: #eee;
+    border: 2px solid #fff;
+    overflow: hidden;
+}
+.tree-node, .tree-child{
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background: #eee;
+    z-index: 2;
+    position: relative;
+    padding: 10px;
+}
+.node-ico{
+    margin-right: 10px;
+}
+.node-ico i{
+    cursor: pointer;
+    color: #194985;
+}
+.node-ico-parent{
+    font-size: 1.4rem;
+}
+.node-ico-child{
+    font-size: 1rem;
+}
+.node-content{
+    margin-left: 23px;
+}
+.node-child-content {
+    background: #fff;
+    box-sizing: border-box;
+    margin-bottom: 10px;
+}
+.node-date{
+    font-size: 1.6rem;
+    color: #194985;
+    cursor: pointer;
+}
+.node-child-title{
+    font-size: 1.4rem;
+    color: #194985;
+}
+.node-label-wrap {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+    padding: 5px 0;
+}
+.doc-count {
+    font-size: 1.4rem;
+    color: #0288D1;
+}
+.doc-list-wrap{
+    padding-bottom: 10px; 
 }
