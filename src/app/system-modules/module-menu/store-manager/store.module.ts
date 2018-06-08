@@ -14,7 +14,7 @@ import {
 import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { StoreEmitterService } from '../../../services/facility-manager/store-emitter.service';
 import { StoreHomeComponent } from './store-home/store-home.component';
-import { QuickLinksComponent } from './quick-links/quick-links.component';
+// import { QuickLinksComponent } from './quick-links/quick-links.component';
 import { PosComponent } from './pos/pos.component';
 import { PosDiscountComponent } from './pos/pos-discount/pos-discount.component';
 import { PosRecieptComponent } from './pos/pos-reciept/pos-reciept.component';
@@ -27,7 +27,7 @@ import { PosRecieptComponent } from './pos/pos-reciept/pos-reciept.component';
         LandingPageComponent,
         NewStoreComponent,
         StoreHomeComponent,
-        QuickLinksComponent,
+        // QuickLinksComponent,
         PosComponent,
         PosDiscountComponent,
         PosRecieptComponent
@@ -36,6 +36,7 @@ import { PosRecieptComponent } from './pos/pos-reciept/pos-reciept.component';
     exports: [
     ],
     imports: [
+        SharedModule,
         OnlyMaterialModule,
         MaterialModule,
         storeRoutes

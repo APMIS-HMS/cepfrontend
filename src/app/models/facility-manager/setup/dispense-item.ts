@@ -1,5 +1,5 @@
 export interface DispenseItem {
-    productId?: string,
+    product?: any,
     cost: number,
     quantity: number,
     isRefill?: boolean,

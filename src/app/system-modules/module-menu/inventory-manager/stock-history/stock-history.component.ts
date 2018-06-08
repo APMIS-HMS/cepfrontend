@@ -36,6 +36,8 @@ export class StockHistoryComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
   selectedInventoryTransfer: InventoryTransfer = <InventoryTransfer>{};
   checkingStore: any = <any>{};
+  subscription: any = <any>{};
+  loginEmployee: any = <any>{};
   searchControl = new FormControl();
   frmStore = new FormControl();
   constructor(
@@ -47,24 +49,69 @@ export class StockHistoryComponent implements OnInit {
     private storeService: StoreService,
     private authFacadeService: AuthFacadeService
   ) {
-    this.employeeService.checkInAnnounced$.subscribe(payload => {
-      if (payload !== undefined) {
-        this.checkingStore = payload;
-        // this.getTransfers();
+    this._inventoryEventEmitter.setRouteUrl('Stock History');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
+      if (!!res) {
+        if (!!res.typeObject) {
+          this.checkingStore = res.typeObject;
+          console.log(this.checkingStore);
+          if (!!this.checkingStore.storeId) {
+            this.getTransfers();
+            this.getStores();
+          }
+        }
+      }
+    });
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+      // this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+      if ((this.loginEmployee.storeCheckIn !== undefined
+        || this.loginEmployee.storeCheckIn.length > 0)) {
+        let isOn = false;
+        this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+          if (itemr.isDefault === true) {
+            itemr.isOn = true;
+            itemr.lastLogin = new Date();
+            isOn = true;
+            this.checkingStore = { typeObject: itemr, type: 'store' };
+            this.employeeService.announceCheckIn(this.checkingStore);
+
+            // tslint:disable-next-line:no-shadowed-variable
+            this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+              this.loginEmployee = payload;
+              this.checkingStore = { typeObject: itemr, type: 'store' };
+              this.employeeService.announceCheckIn(this.checkingStore);
+              this.locker.setObject('checkingObject', this.checkingStore);
+              // this.checkingStore = this.checkingStore.typeObject;
+              this.getTransfers();
+              this.getStores();
+            });
+          }
+        });
+        if (isOn === false) {
+          this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+            if (r === 0) {
+              itemr.isOn = true;
+              itemr.lastLogin = new Date();
+              // tslint:disable-next-line:no-shadowed-variable
+              this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+                this.loginEmployee = payload;
+                this.checkingStore = { typeObject: itemr, type: 'store' };
+                this.employeeService.announceCheckIn(this.checkingStore);
+                this.locker.setObject('checkingObject', this.checkingStore);
+                // this.checkingStore = this.checkingStore.typeObject;
+                this.getTransfers();
+                this.getStores();
+              });
+            }
+          });
+        }
       }
     });
   }
 
   ngOnInit() {
-    this._inventoryEventEmitter.setRouteUrl('Stock History');
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.authFacadeService.getLogingEmployee().then((payload: any) => {
-      this.checkingStore = payload.storeCheckIn.find(x => x.isOn === true);
-      this.getTransfers();
-      this.getStores();
-    });
-    
-
     this.frmStore.valueChanges
       .debounceTime(300)
       .distinctUntilChanged()
@@ -92,11 +139,17 @@ export class StockHistoryComponent implements OnInit {
       .distinctUntilChanged()
       .subscribe(value => {
         this.systemModuleService.on();
-        this.inventoryTransferService.findTransferHistories({
+        if (this.checkingStore.storeId === undefined) {
+          this.checkingStore = this.checkingStore.typeObject;
+        }
+        this.inventoryTransferService.find({
           query: {
             facilityId: this.selectedFacility._id,
-            storeId: this.checkingStore.typeObject.typeObject.storeId,
-            name: value
+            storeId: this.checkingStore.storeId,
+            'inventoryTransferTransactions.productObject.name': {
+              $regex: value,
+              $options: 'i'
+            },
           }
         }).then(payload => {
           this.systemModuleService.off();
@@ -155,6 +208,30 @@ export class StockHistoryComponent implements OnInit {
   onShowBatch(transfer) {
     this.selectedInventoryTransfer = transfer;
     this.selectedInventoryTransfer.isOpen = !this.selectedInventoryTransfer.isOpen;
+  }
+
+  ngOnDestroy() {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      console.log(this.loginEmployee.storeCheckIn);
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.storeObject === undefined) {
+          const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
+          itemr.storeObject = store_.storeObject;
+          console.log(itemr.storeObject);
+        }
+        if (itemr.isDefault === true && itemr.isOn === true) {
+          itemr.isOn = false;
+          this.employeeService.update(this.loginEmployee).then(payload => {
+            this.loginEmployee = payload;
+          }, err => {
+            console.log(err);
+          });
+        }
+      });
+    }
+    this.employeeService.announceCheckIn(undefined);
+    this.locker.setObject('checkingObject', {});
+    this.subscription.unsubscribe();
   }
 
   openSearch() {

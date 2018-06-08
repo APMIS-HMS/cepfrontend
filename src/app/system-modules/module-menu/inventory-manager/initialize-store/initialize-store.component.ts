@@ -7,7 +7,7 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
-import { ProductService, InventoryInitialiserService, FacilitiesServiceCategoryService } from '../../../../services/facility-manager/setup/index';
+import { ProductService, InventoryInitialiserService, FacilitiesServiceCategoryService, EmployeeService } from '../../../../services/facility-manager/setup/index';
 
 @Component({
   selector: 'app-initialize-store',
@@ -25,8 +25,10 @@ export class InitializeStoreComponent implements OnInit {
   selelctedCategoryId: any = <any>{};
   myForm: FormGroup;
   batchForm: FormGroup;
-  productServiceControl = new FormControl();
+  productServiceControl = new FormControl('');
+  editProductnameControl = new FormControl();
   ischeck: boolean;
+  isEditProductName = false;
   name: any;
   isProcessing = false;
   isItemselected = true;
@@ -38,6 +40,8 @@ export class InitializeStoreComponent implements OnInit {
   addinside = false;
   productname: any;
   searchProduct: any;
+  loginEmployee: any;
+  subscription: any;
   searchControl = new FormControl();
   selectedPacks = [];
 
@@ -49,13 +53,60 @@ export class InitializeStoreComponent implements OnInit {
     private _inventoryInitialiserService: InventoryInitialiserService,
     private authFacadeService: AuthFacadeService,
     private systemModuleService: SystemModuleService,
+    private employeeService: EmployeeService,
     private facilityServiceCategoryService: FacilitiesServiceCategoryService) {
+
+    this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
+      if (!!res) {
+        if (!!res.typeObject) {
+          this.checkingObject = res.typeObject;
+        }
+      }
+    });
+
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+      // this.checkingObject = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+      if ((this.loginEmployee.storeCheckIn !== undefined
+        || this.loginEmployee.storeCheckIn.length > 0)) {
+        let isOn = false;
+        this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+          if (itemr.isDefault === true) {
+            itemr.isOn = true;
+            itemr.lastLogin = new Date();
+            isOn = true;
+            this.checkingObject = { typeObject: itemr, type: 'store' };
+            this.employeeService.announceCheckIn(this.checkingObject);
+
+            // tslint:disable-next-line:no-shadowed-variable
+            this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+              this.loginEmployee = payload;
+              this.checkingObject = { typeObject: itemr, type: 'store' };
+              this.employeeService.announceCheckIn(this.checkingObject);
+              this._locker.setObject('checkingObject', this.checkingObject);
+            });
+          }
+        });
+        if (isOn === false) {
+          this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+            if (r === 0) {
+              itemr.isOn = true;
+              itemr.lastLogin = new Date();
+              // tslint:disable-next-line:no-shadowed-variable
+              this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+                this.loginEmployee = payload;
+                this.checkingObject = { typeObject: itemr, type: 'store' };
+                this.employeeService.announceCheckIn(this.checkingObject);
+                this._locker.setObject('checkingObject', this.checkingObject);
+              });
+            }
+          });
+        }
+      }
+    });
   }
 
   ngOnInit() {
-    this.authFacadeService.getLogingEmployee().then((payload: any) => {
-      this.checkingObject = payload.storeCheckIn.find(x => x.isOn === true);
-    });
     this._inventoryEventEmitter.setRouteUrl('Initialize Store');
     this.myForm = this._fb.group({
       initproduct: this._fb.array([
@@ -66,14 +117,17 @@ export class InitializeStoreComponent implements OnInit {
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe((por: any) => {
+        this.systemModuleService.on();
         this._productService.findList({
           query: {
             facilityId: this.selectedFacility._id,
             name: por
           }
         }).then(payload => {
+          this.systemModuleService.off();
           this.products = payload.data;
         }, err => {
+          this.systemModuleService.off();
         });
       });
 
@@ -81,10 +135,20 @@ export class InitializeStoreComponent implements OnInit {
       this.selelctedCategoryId = value;
     });
 
-
     this.getProducts();
     this.getServiceCategories();
 
+  }
+
+  onChangeProductCategory(value) {
+    this.productServiceControl.setValue(value._id);
+  }
+
+  getValid() {
+    if (this.isEnable && !this.isItemselected && this.myForm.valid) {
+      return false;
+    }
+    return true;
   }
 
 
@@ -94,7 +158,7 @@ export class InitializeStoreComponent implements OnInit {
   }
 
   createbatch(): FormGroup {
-    if (this.selectedProduct.productConfigObject !== undefined) {
+    if (this.selectedProduct.packSizes !== undefined) {
       return this._fb.group({
         batchNumber: ['', Validators.required],
         quantity: ['', Validators.required],
@@ -112,7 +176,7 @@ export class InitializeStoreComponent implements OnInit {
   }
 
   addProduct(product: any) {
-    console.log(product);
+    this.isEditProductName = false;
     this.isEnable = true;
     this.isItemselected = false;
     this.myForm = this._fb.group({
@@ -144,7 +208,6 @@ export class InitializeStoreComponent implements OnInit {
     }
   }
   initProductConfig(config) {
-    console.log(config);
     let frmArray = new FormArray([])
     frmArray.push(new FormGroup({
       size: new FormControl(0),
@@ -171,14 +234,17 @@ export class InitializeStoreComponent implements OnInit {
     this._productService.findProductConfigs({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
       this.systemModuleService.off();
       this.products = payload.data;
+    }, err => {
     });
   }
 
   onPackageSize(i, packs) {
-    packs[i].controls.quantity.setValue(0);
-    packs[i].controls.config.controls.forEach(element => {
-      packs[i].controls.quantity.setValue(packs[i].controls.quantity.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
-    });
+    if (!!packs[i]) {
+      packs[i].controls.quantity.setValue(0);
+      packs[i].controls.config.controls.forEach(element => {
+        packs[i].controls.quantity.setValue(packs[i].controls.quantity.value + element.value.size * (element.value.packsizes.find(x => x._id.toString() === element.value.packItem.toString()).size));
+      });
+    }
   }
 
   compareItems(l1: any, l2: any) {
@@ -203,12 +269,40 @@ export class InitializeStoreComponent implements OnInit {
       if (payload.data.length > 0) {
         this.selectedFacilityService = payload.data[0];
         this.categories = payload.data[0].categories;
+        this.productServiceControl.setValue(this.categories[0]._id);
       }
     });
   }
 
+  getBasePackName(packConfig) {
+    return packConfig.find(x => x.isBase === true).name;
+  }
+
+  onEditProductName() {
+    this.isEditProductName = !this.isEditProductName;
+    this.editProductnameControl.setValue(this.selectedProduct.productObject.name);
+  }
+
+  onEditSaveProductName() {
+    if (this.isEditProductName) {
+      if (this.selectedProduct.productObject !== undefined) {
+        this.selectedProduct.productObject.name = this.editProductnameControl.value;
+      } else {
+        this.selectedProduct.productObject = {};
+        this.selectedProduct.productObject.name = this.editProductnameControl.value;
+      }
+    }
+    this.isEditProductName = false;
+  }
+
 
   save(valid, value, product) {
+    this.isEnable = false;
+    if (this.checkingObject.storeId === undefined) {
+      if (!!this.checkingObject.typeObject) {
+        this.checkingObject = this.checkingObject.typeObject;
+      }
+    }
     if (valid) {
       const batches = {
         'batchItems': [],
@@ -243,13 +337,33 @@ export class InitializeStoreComponent implements OnInit {
           }
         }
       }, error => {
-        console.log(error);
         const errMsg = 'There was an error while initialising product, please try again!';
         this.systemModuleService.announceSweetProxy(errMsg, 'error');
         this.isEnable = true;
         this.isItemselected = false;
       });
     }
+  }
+
+  ngOnDestroy() {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.storeObject === undefined) {
+          const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
+          itemr.storeObject = store_.storeObject;
+        }
+        if (itemr.isDefault === true && itemr.isOn === true) {
+          itemr.isOn = false;
+          this.employeeService.update(this.loginEmployee).then(payload => {
+            this.loginEmployee = payload;
+          }, err => {
+          });
+        }
+      });
+    }
+    this.employeeService.announceCheckIn(undefined);
+    this._locker.setObject('checkingObject', {});
+    this.subscription.unsubscribe();
   }
 
 }

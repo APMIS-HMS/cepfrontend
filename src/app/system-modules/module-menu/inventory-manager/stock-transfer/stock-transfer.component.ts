@@ -17,7 +17,7 @@ import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import { element } from 'protractor';
-
+import * as parse from 'date-fns/parse';
 
 @Component({
   selector: 'app-stock-transfer',
@@ -36,6 +36,7 @@ export class StockTransferComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
   requisitions: any[] = <any>[];
   checkingStore: any = <any>{};
+  subscription: any = <any>{};
   maxQty = 0;
   superGroups: any[] = [];
   products: any[] = [];
@@ -44,6 +45,9 @@ export class StockTransferComponent implements OnInit {
   user: any = <any>{};
   isProcessing = false;
   searchControl = new FormControl();
+  frmFilterStore = new FormControl();
+  frmFilterRequisition = new FormControl();
+  frmFilterDate = new FormControl();
   frmDestinationStore: FormControl = new FormControl();
   product: FormControl = new FormControl();
   productTableForm: FormGroup;
@@ -55,13 +59,15 @@ export class StockTransferComponent implements OnInit {
 
   showPlusSign: boolean = true;
 
+  loading: boolean = false;
+
   previewObject: any = <any>{};
   constructor(private _inventoryEventEmitter: InventoryEmitterService,
     private inventoryService: InventoryService, private inventoryTransferService: InventoryTransferService,
     private inventoryTransactionTypeService: InventoryTransactionTypeService,
     private inventoryTransferStatusService: InventoryTransferStatusService,
     private route: ActivatedRoute, private storeService: StoreService,
-    private locker: CoolLocalStorage, private formBuilder: FormBuilder,
+    private _locker: CoolLocalStorage, private formBuilder: FormBuilder,
     private facilityService: FacilitiesService,
     private toastr: ToastsManager,
     private _authFacadeService: AuthFacadeService,
@@ -69,41 +75,169 @@ export class StockTransferComponent implements OnInit {
     private productRequisitionService: ProductRequisitionService,
     private employeeService: EmployeeService
   ) {
+    this.user = this._locker.getObject('auth');
+    this._inventoryEventEmitter.setRouteUrl('Stock Transfer');
+    this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
+
+    this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
+      if (!!res) {
+        if (!!res.typeObject) {
+          this.checkingStore = res.typeObject;
+          if (!!this.checkingStore.storeId) {
+            this.getCurrentStoreDetails(this.checkingStore.storeId);
+            this.newTransfer.transferBy = this.loginEmployee._id;
+            this.newTransfer.facilityId = this.selectedFacility._id;
+            this.newTransfer.storeId = this.checkingStore.storeId;
+            this.newTransfer.inventoryTransferTransactions = [];
+            this.getAllProducts('', this.checkingStore.storeId);
+            this.primeComponent();
+            this.getRequisitions(this.checkingStore.storeId);
+            this.getStores();
+          }
+        }
+      }
+    });
+    this.addNewProductTables();
+    this._authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+      // this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+      if ((this.loginEmployee.storeCheckIn !== undefined
+        || this.loginEmployee.storeCheckIn.length > 0)) {
+        let isOn = false;
+        this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+          if (itemr.isDefault === true) {
+            itemr.isOn = true;
+            itemr.lastLogin = new Date();
+            isOn = true;
+            this.checkingStore = { typeObject: itemr, type: 'store' };
+            this.employeeService.announceCheckIn(this.checkingStore);
+
+            // tslint:disable-next-line:no-shadowed-variable
+            this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+              this.loginEmployee = payload;
+              this.checkingStore = { typeObject: itemr, type: 'store' };
+              this.employeeService.announceCheckIn(this.checkingStore);
+              this._locker.setObject('checkingObject', this.checkingStore);
+              // this.checkingStore = this.checkingStore.typeObject;
+              this.newTransfer.transferBy = this.loginEmployee._id;
+              this.newTransfer.facilityId = this.selectedFacility._id;
+              this.newTransfer.storeId = this.checkingStore.storeId;
+              this.newTransfer.inventoryTransferTransactions = [];
+              this.getAllProducts('', this.checkingStore.storeId)
+              this.primeComponent();
+              this.getRequisitions(this.checkingStore.storeId);
+              this.getStores();
+            });
+          }
+        });
+        if (isOn === false) {
+          this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+            if (r === 0) {
+              itemr.isOn = true;
+              itemr.lastLogin = new Date();
+              // tslint:disable-next-line:no-shadowed-variable
+              this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+                this.loginEmployee = payload;
+                this.checkingStore = { typeObject: itemr, type: 'store' };
+                this.employeeService.announceCheckIn(this.checkingStore);
+                this._locker.setObject('checkingObject', this.checkingStore);
+                // this.checkingStore = this.checkingStore.typeObject;
+                this.newTransfer.transferBy = this.loginEmployee._id;
+                this.newTransfer.facilityId = this.selectedFacility._id;
+                this.newTransfer.storeId = this.checkingStore.storeId;
+                this.newTransfer.inventoryTransferTransactions = [];
+                this.getAllProducts('', this.checkingStore.storeId);
+                this.primeComponent();
+                this.getRequisitions(this.checkingStore.storeId);
+                this.getStores();
+              });
+            }
+          });
+        }
+      }
+    });
   }
 
   ngOnInit() {
-    this.user = this.locker.getObject('auth');
-    this._inventoryEventEmitter.setRouteUrl('Stock Transfer');
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.addNewProductTables();
-    this._authFacadeService.getLogingEmployee().then((res: any) => {
-      this.loginEmployee = res;
-      this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
-      this.getCurrentStoreDetails(this.checkingStore.storeId);
-      this.newTransfer.transferBy = this.loginEmployee._id;
-      this.newTransfer.facilityId = this.selectedFacility._id;
-      this.newTransfer.storeId = this.checkingStore.storeId;
-      this.newTransfer.inventoryTransferTransactions = [];
-      this.getAllProducts('', this.checkingStore.storeId)
-      this.primeComponent();
-      this.getRequisitions();
-    });
-
     this.searchControl.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe((por: any) => {
         this.getAllProducts(por, this.checkingStore.storeId)
       });
+    this.frmFilterStore.valueChanges
+      .debounceTime(200)
+      .distinctUntilChanged()
+      .subscribe((value: any) => {
+        this.getRequisitions(value)
+      });
 
+    this.frmFilterRequisition.valueChanges
+      .debounceTime(200)
+      .distinctUntilChanged()
+      .subscribe((value: any) => {
+        this.productRequisitionService.find({
+          query: {
+            facilityId: this.selectedFacility._id,
+            destinationStoreId: this.checkingStore.storeId,
+            storeRequisitionNumber: {
+              $regex: value,
+              $options: 'i'
+            },
+            $sort: { isSupplied: 1 }
+          }
+        }).then(payload => {
+          this.requisitions = payload.data;
+        });
+      });
+
+    this.frmFilterDate.valueChanges
+      .debounceTime(200)
+      .distinctUntilChanged()
+      .subscribe((value: any) => {
+        let dt = parse(value);
+        let nowDt = new Date();
+        this.productRequisitionService.find({
+          query: {
+            facilityId: this.selectedFacility._id,
+            destinationStoreId: this.checkingStore.storeId,
+            $and: [{
+              updatedAt: {
+                $gte: dt
+              }
+            },
+            {
+              updatedAt: {
+                $lte: nowDt
+              }
+            }
+            ],
+            $sort: { isSupplied: 1 }
+          }
+        }).then(payload => {
+          this.requisitions = payload.data;
+        });
+      });
+      
   }
+
+  getStores() {
+    this.storeService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
+      this.stores = payload.data;
+    });
+  }
+
   getAllProducts(name, storeId) {
     this.systemModuleService.on();
-    this.inventoryService.findList({
+    this.inventoryService.find({
       query: {
         facilityId: this.selectedFacility._id,
-        name: name,
-        storeId: storeId
+        'productObject.name': {
+          $regex: name,
+          $options: 'i'
+        },
+        storeId: storeId,
+        $sort: { createdAt: -1 }
       }
     }).then(payload => {
       this.systemModuleService.off();
@@ -121,11 +255,7 @@ export class StockTransferComponent implements OnInit {
     });
   }
 
-  getRequisitions() {
-    let storeId = this.checkingStore.storeId;
-    if (storeId === undefined) {
-      storeId = this.checkingStore.typeObject.storeId
-    }
+  getRequisitions(storeId) {
     this.productRequisitionService.find({
       query: {
         facilityId: this.selectedFacility._id,
@@ -133,7 +263,6 @@ export class StockTransferComponent implements OnInit {
         $sort: { isSupplied: 1 }
       }
     }).then(payload => {
-      console.log(payload);
       this.requisitions = payload.data;
     });
   }
@@ -164,7 +293,13 @@ export class StockTransferComponent implements OnInit {
         this.newTransfer.inventorytransactionTypeId = this.selectedInventoryTransactionType._id;
       }
       storeResult.data.forEach((store) => {
-        if (store._id.toString() !== this.checkingStore.storeId.toString()) {
+        let _checkingStore: any = <any>{};
+        if (!!this.checkingStore.typeObject) {
+          _checkingStore = this.checkingStore.typeObject;
+        } else {
+          _checkingStore = this.checkingStore;
+        }
+        if (store._id.toString() !== _checkingStore.storeId.toString()) {
           this.stores.push(store);
         }
       })
@@ -317,6 +452,18 @@ export class StockTransferComponent implements OnInit {
     this.flyout = true;
   }
 
+  existingProductConfig(config) {
+    let frmArray = new FormArray([]);
+    config.qtyDetails.forEach(element => {
+      frmArray.push(new FormGroup({
+        size: new FormControl(element.quantity),
+        packsizes: new FormControl(config.productObject.productConfigObject),
+        packItem: new FormControl(element.packId)
+      }));
+    });
+    return frmArray;
+  }
+
   onClickRequi(requistion) {
     this.requistionId = requistion._id;
     this.toggleTransferOpen = !this.toggleTransferOpen;
@@ -331,18 +478,18 @@ export class StockTransferComponent implements OnInit {
               if (group._id.toString() === element.productId.toString()) {
                 group.checked = true;
                 this.systemModuleService.on();
-                this.inventoryService.find({ query: { productId: element.productId, facilityId: this.selectedFacility._id } }).then(payload => {
+                this.inventoryService.find({ query: { productId: element.productId, facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId } }).then(payload => {
                   this.systemModuleService.off();
                   if (payload.data.length > 0) {
                     (<FormArray>this.productTableForm.controls['productTableArray']).push(
                       this.formBuilder.group({
-                        product: [element.productObject.data.name, [<any>Validators.required]],
+                        product: [element.productObject.name, [<any>Validators.required]],
                         batchNo: [, [<any>Validators.required]],
                         batchNumbers: [payload.data[0].transactions],
                         costPrice: [0.00, [<any>Validators.required]],
                         totalCostPrice: [0.00, [<any>Validators.required]],
                         qty: [0, [<any>Validators.required]],
-                        config: this.initProductConfig(group.product.productConfigObject),
+                        config: this.existingProductConfig(element),
                         readOnly: [false],
                         productObject: [group.product],
                         id: [group._id],
@@ -356,6 +503,7 @@ export class StockTransferComponent implements OnInit {
           });
         });
       });
+
     }
   }
 
@@ -381,7 +529,7 @@ export class StockTransferComponent implements OnInit {
       if (checker) {
         if (event.checked === true) {
           this.systemModuleService.on();
-          this.inventoryService.find({ query: { productId: value._id, facilityId: this.selectedFacility._id } }).subscribe(payload => {
+          this.inventoryService.find({ query: { productId: value._id, facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId } }).subscribe(payload => {
             this.systemModuleService.off();
             if (payload.data.length > 0) {
               (<FormArray>this.productTableForm.controls['productTableArray'])
@@ -423,13 +571,12 @@ export class StockTransferComponent implements OnInit {
       this.systemModuleService.announceSweetProxy('Please select destination store', 'error');
       this.superGroups.forEach((parent, i) => {
         parent.forEach((group, j) => {
-          console.log(group._id.toString(), value._id.toString())
           if (group._id.toString() === value._id.toString()) {
             group.checked = false;
           }
         })
       });
-      this.superGroups= JSON.parse(JSON.stringify(this.superGroups));
+      this.superGroups = JSON.parse(JSON.stringify(this.superGroups));
     }
   }
 
@@ -542,9 +689,19 @@ export class StockTransferComponent implements OnInit {
     this.newTransfer.destinationStoreId = this.frmDestinationStore.value;
     this.newTransfer.totalCostPrice = 0;
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
-      const transferTransaction: InventoryTransferTransaction = <InventoryTransferTransaction>{};
+      const transferTransaction: any = <any>{};
       transferTransaction.inventoryId = item.value.inventoryId;
       transferTransaction.productId = item.value.id;
+      transferTransaction.productObject = item.value.productObject;
+      delete transferTransaction.productObject.productConfigObject;
+      delete transferTransaction.productObject.availableQuantity;
+      transferTransaction.qtyDetails = [];
+      item.value.config.forEach(element => {
+        transferTransaction.qtyDetails.push({
+          packId: element.packItem,
+          quantity: element.size
+        });
+      });
       transferTransaction.quantity = item.value.qty;
       if (item.value.qty === undefined || item.value.qty == null || isNaN(item.value.qty)) {
         transferTransaction.quantity = 0;
@@ -611,13 +768,15 @@ export class StockTransferComponent implements OnInit {
     this.newTransfer.requistionId = this.requistionId;
     this.inventoryTransferService.create2(this.newTransfer).then(payload => {
       (<FormArray>this.productTableForm.controls['productTableArray']).controls = [];
+      this.flyout = false;
       this.unCheckedProducts();
       this.systemModuleService.off();
+      this.loading = false;
       this.systemModuleService.announceSweetProxy('Your transfer was successful', 'success', null, null, null, null, null, null, null);
       this.frmDestinationStore.reset();
       this.isProcessing = false;
       this.requisitions = [];
-      this.getRequisitions();
+      this.getRequisitions(this.checkingStore.storeId);
     }, err => {
       this.systemModuleService.off();
       const errMsg = 'There was an error while transfering product, please try again!';
@@ -644,6 +803,27 @@ export class StockTransferComponent implements OnInit {
     document.querySelector("#quan" + index).classList.toggle('no-display');
   }
 
+  ngOnDestroy() {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.storeObject === undefined) {
+          const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
+          itemr.storeObject = store_.storeObject;
+        }
+        if (itemr.isDefault === true && itemr.isOn === true) {
+          itemr.isOn = false;
+          this.employeeService.update(this.loginEmployee).then(payload => {
+            this.loginEmployee = payload;
+          }, err => {
+          });
+        }
+      });
+    }
+    this.employeeService.announceCheckIn(undefined);
+    this._locker.setObject('checkingObject', {});
+    this.subscription.unsubscribe();
+  }
+
   private _notification(type: String, text: String): void {
     this.facilityService.announceNotification({
       users: [this.user._id],
@@ -651,7 +831,7 @@ export class StockTransferComponent implements OnInit {
       text: text
     });
   }
-  openSearch() { 
+  openSearch() {
     this.searchOpen = !this.searchOpen;
-  } 
+  }
 }

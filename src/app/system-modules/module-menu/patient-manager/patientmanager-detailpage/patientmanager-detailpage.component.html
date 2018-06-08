@@ -17,25 +17,27 @@
                             <span>({{patient?.personDetails?.apmisId}})</span>
                         </div>
                     </div>
-                    <div class="headDetail-group">
-                        <div class="patient-gender">{{patient?.personDetails?.gender}}</div>
-                        <div class="patient-email">
-                            <i class="fa fa-envelope"></i>
-                            <span *ngIf="patient?.personDetails?.email !== undefined"> {{patient?.personDetails?.email}}</span>
-                            <span *ngIf="patient?.personDetails?.email === undefined"> N/A</span>
+                    <div class="head-minis">
+                        <div class="headDetail-group">
+                            <div class="patient-gender">{{patient?.personDetails?.gender}}</div>
+                            <div class="patient-email">
+                                <i class="fa fa-envelope"></i>
+                                <span *ngIf="patient?.personDetails?.email !== undefined"> {{patient?.personDetails?.email}}</span>
+                                <span *ngIf="patient?.personDetails?.email === undefined"> N/A</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="headDetail-group">
-                        <div class="patient-dob">{{patient?.personDetails?.dateOfBirth | date}}</div>
-                        <div class="patient-phone">
-                            <i class="fa fa-phone"></i>
-                            <span *ngIf="patient?.personDetails?.primaryContactPhoneNo !== undefined"> {{patient?.personDetails?.primaryContactPhoneNo}}</span>
-                            <span *ngIf="patient?.personDetails?.primaryContactPhoneNo === undefined"> N/A</span>
+                        <div class="headDetail-group">
+                            <div class="patient-dob">{{patient?.personDetails?.dateOfBirth | date}}</div>
+                            <div class="patient-phone">
+                                <i class="fa fa-phone"></i>
+                                <span *ngIf="patient?.personDetails?.primaryContactPhoneNo !== undefined"> {{patient?.personDetails?.primaryContactPhoneNo}}</span>
+                                <span *ngIf="patient?.personDetails?.primaryContactPhoneNo === undefined"> N/A</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="headDetail-group">
-                        <div class="patient-dob">{{patient?.personDetails?.bloodGroup}}</div>
-                        <div class="patient-dob">{{patient?.personDetails?.genotype}}</div>
+                        <div class="headDetail-group">
+                            <div class="patient-dob">{{patient?.personDetails?.bloodGroup}}</div>
+                            <div class="patient-dob">{{patient?.personDetails?.genotype}}</div>
+                        </div>
                     </div>
                     <section class="accBal-wrap">
                         <span class="accBal-label">Account Balances</span>
@@ -61,7 +63,6 @@
                     <i class="fa fa-sign-out" aria-hidden="true"></i>
                     <span> Checkout</span>
                 </li>
-
                 <li (click)="setAppointment()">
                     <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
                     <span> Set Appointment</span>
