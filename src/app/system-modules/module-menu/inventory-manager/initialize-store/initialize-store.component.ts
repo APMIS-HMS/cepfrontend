@@ -183,7 +183,7 @@ export class InitializeStoreComponent implements OnInit {
       }
     }
     const isVended = await this.inventoryService.find({ query: { productId: product.productId, storeId: this.checkingObject.storeId, facilityId: this.selectedFacility._id } });
-    if (isVended.data.length < 0) {
+    if (isVended.data.length === 0) {
       this.isEditProductName = false;
       this.isEnable = true;
       this.isItemselected = false;
@@ -215,6 +215,7 @@ export class InitializeStoreComponent implements OnInit {
         );
       }
     } else {
+      //This product exist in your inventory
       this.systemModuleService.announceSweetProxy('This product exist in your inventory', 'error');
     }
   }
