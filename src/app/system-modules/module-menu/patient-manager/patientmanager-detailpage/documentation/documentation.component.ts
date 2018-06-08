@@ -164,19 +164,22 @@ export class DocumentationComponent implements OnInit, OnDestroy {
                 }, error => {});
           } else {
             this.sharedService.announceFinishedSavingDraft(true);
-            this.draftDocument.document.body = payload;
+            console.log(this.draftDocument);
+            if (this.draftDocument !== undefined) {
+              this.draftDocument.document.body = payload;
 
-            const draftIndex =
-                this.patientDocumentation.documentations.findIndex(
-                    x => x.apmisGuid === this.draftDocument.apmisGuid);
-            if (draftIndex > -1) {
-              this.patientDocumentation.documentations[draftIndex] =
-                  this.draftDocument;
-              this.documentationService.update(this.patientDocumentation)
-                  .then(pay => {
-                    this.hasSavedDraft = true;
-                    this.getPersonDocumentation();
-                  });
+              const draftIndex =
+                  this.patientDocumentation.documentations.findIndex(
+                      x => x.apmisGuid === this.draftDocument.apmisGuid);
+              if (draftIndex > -1) {
+                this.patientDocumentation.documentations[draftIndex] =
+                    this.draftDocument;
+                this.documentationService.update(this.patientDocumentation)
+                    .then(pay => {
+                      this.hasSavedDraft = true;
+                      this.getPersonDocumentation();
+                    });
+              }
             }
           }
         }, error => {});
@@ -560,10 +563,9 @@ export class DocumentationComponent implements OnInit, OnDestroy {
       }
     });
     const reverseDocuments = this.documents.reverse();
-    const grouped = this.groupBy(reverseDocuments, reverseDocument => format(
-    reverseDocument.createdAt,
-      'DD/MM/YYYY'
-    ));
+    const grouped = this.groupBy(
+        reverseDocuments,
+        reverseDocument => format(reverseDocument.createdAt, 'DD/MM/YYYY'));
     this.documents = Array.from(grouped);
   }
   edit(document: any) {

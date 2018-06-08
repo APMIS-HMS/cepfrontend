@@ -114,6 +114,11 @@ export class ReceiveStockComponent implements OnInit {
   }
 
   getTransfers() {
+    if (this.checkingStore.storeId === undefined) {
+      if (!!this.checkingStore.typeObject) {
+        this.checkingStore = this.checkingStore.typeObject;
+      }
+    }
     if (this.checkingStore !== undefined) {
       this.loading = true;
       this.systemModuleService.on();
@@ -241,19 +246,16 @@ export class ReceiveStockComponent implements OnInit {
 
   ngOnDestroy() {
     if (this.loginEmployee.storeCheckIn !== undefined) {
-      console.log(this.loginEmployee.storeCheckIn);
       this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
         if (itemr.storeObject === undefined) {
           const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
           itemr.storeObject = store_.storeObject;
-          console.log(itemr.storeObject);
         }
         if (itemr.isDefault === true && itemr.isOn === true) {
           itemr.isOn = false;
           this.employeeService.update(this.loginEmployee).then(payload => {
             this.loginEmployee = payload;
           },err=>{
-            console.log(err);
           });
         }
       });

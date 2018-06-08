@@ -1,4 +1,6 @@
 export interface PrescriptionItem {
+    billId?: string;
+    billItemId?: string;
     _id?: string;
     facilityId?: string;
     productName?: any;
@@ -42,8 +44,8 @@ export interface DispensedArray {
     dispensedDate: Date; // Date time
     batchNumber: String;
     qty: number;
-    employeeName: string;
-    storeName: string;
+    employee: any;
+    store: any;
     unitBilledPrice: number;
     totalAmount: number;
 }
