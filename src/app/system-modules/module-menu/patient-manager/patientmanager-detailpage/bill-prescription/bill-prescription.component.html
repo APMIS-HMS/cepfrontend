@@ -2,11 +2,11 @@
     <div class="">
         <!-- purchase order details-->
         <div class="inPatient-activityTimeline shadow-RB animated slideInRight" #closeclick>
-            <div (click)="closeclick.hidden = !closeclick.hidden" class="hide-actionWrap">
+            <div (click)="onClickClose(true)" class="hide-actionWrap">
                 <i class="fa fa-arrow-circle-right" aria-hidden="true"></i>
             </div>
             <div class="purchasedetails">
-                <div class="container container-width">
+                <div class="container-width">
                     <div class="row">
                         <div class="col-sm-12 col-md-12 col-xs-12">
                             <h5>Generate Bill for</h5>
@@ -17,9 +17,12 @@
                                     <div class="row">
                                         <div class="col-sm-12 col-md-12" style="margin-top: 20px">
                                             <mat-form-field>
-                                                <mat-select placeholder="Drug" formControlName="drug" class="example-full-width">
+                                                <!-- <mat-select placeholder="Drug" formControlName="drug" class="example-full-width">
                                                     <mat-option *ngFor="let drug of drugs" [(value)]="drug.productId" #productId [attr.data-p-id]="drug.productId" [attr.data-p-fsid]="drug.facilityServiceId" [attr.data-p-sid]="drug.serviceId" [attr.data-p-cid]="drug.categoryId" [attr.data-p-price]="drug.price"
                                                         [attr.data-p-aqty]="drug.availabilty" [attr.data-p-tqty]="drug.totalQuantity" (click)="onClickCustomSearchItem($event, productId)">{{ drug.product }}</mat-option>
+                                                </mat-select> -->
+                                                <mat-select placeholder="Drug" formControlName="drug" class="example-full-width">
+                                                    <mat-option *ngFor="let drug of drugs" [value]="drug" (click)="onClickCustomSearchItem($event, drug)">{{ drug?.productObject?.name }}</mat-option>
                                                 </mat-select>
                                             </mat-form-field>
                                         </div>
@@ -36,7 +39,7 @@
                                         </div>
                                         <div class="col-sm-12 col-md-12" style="margin-top: 20px; padding: 0;">
                                             <div style="position:relative;" class="col-xs-12 td-worspace">
-                                                <div class="workspace-count"> Qty Available in {{ stores.length }} Store(s) <span class="badge">{{ qtyInStores }}</span></div>
+                                                <!-- <div class="workspace-count"> Qty Available in {{ stores.length }} Store(s) <span class="badge">{{ qtyInStores }}</span></div>
                                                 <ul class="shadow-RB workspace-listWrap animated zoomIn">
                                                     <li *ngFor="let store of stores" class="workspace-listItem">
                                                         <ng-container>
@@ -44,7 +47,7 @@
                                                         </ng-container>
                                                     </li>
                                                     <div class="pointer-wrap"><i class="fa fa-caret-down" aria-hidden="true"></i></div>
-                                                </ul>
+                                                </ul> -->
                                             </div>
                                         </div>
                                     </div>

@@ -17,7 +17,6 @@ export interface InventoryTransaction {
 export interface BatchTransaction {
     batchNumber: string,
     employeeId: string,
-    employeeName: string,
     preQuantity: number, // Before Operation.
     postQuantity: number, // After Operation.
     quantity: number, // Operational qty.

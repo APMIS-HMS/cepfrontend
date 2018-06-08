@@ -26,6 +26,7 @@ export class ReceiveStockComponent implements OnInit {
   clickslide = false;
   user: any = <any>{};
   loading = false;
+  subscription: any = <any>{};
   selectedFacility: Facility = <Facility>{};
   selectedInventoryTransfer: any = <any>{};
   checkingStore: any = <any>{};
@@ -42,24 +43,24 @@ export class ReceiveStockComponent implements OnInit {
     private inventoryTransferStatusService: InventoryTransferStatusService, private route: ActivatedRoute,
     private locker: CoolLocalStorage, private facilityService: FacilitiesService, private employeeService: EmployeeService,
     private systemModuleService: SystemModuleService,
+    private _locker: CoolLocalStorage,
     private authFacadeService: AuthFacadeService
   ) {
-    this.employeeService.checkInAnnounced$.subscribe(payload => {
+    this.user = this.locker.getObject('auth');
+    this._inventoryEventEmitter.setRouteUrl('Receive Stock');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    
+    this.subscription = this.employeeService.checkInAnnounced$.subscribe(payload => {
       if (payload !== undefined) {
         if (payload.typeObject !== undefined) {
           this.checkingStore = payload.typeObject;
-          if (this.checkingStore.storeId !== undefined) {
+          if(this.checkingStore.storeId !== undefined){
             this.getTransfers();
           }
         }
       }
     });
-  }
 
-  ngOnInit() {
-    this.user = this.locker.getObject('auth');
-    this._inventoryEventEmitter.setRouteUrl('Receive Stock');
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
       this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
@@ -72,19 +73,27 @@ export class ReceiveStockComponent implements OnInit {
       this.getTransfers();
       this.getTransferStatus();
     });
+  }
 
+  ngOnInit() {
     this.searchControl.valueChanges
       .debounceTime(300)
       .distinctUntilChanged()
       .subscribe(value => {
+        if (this.checkingStore.storeId === undefined) {
+          this.checkingStore = this.checkingStore.typeObject;
+        }
         this.loading = true;
         this.systemModuleService.on();
-        this.inventoryTransferService.findTransferHistories({
+        this.inventoryTransferService.find({
           query: {
             facilityId: this.selectedFacility._id,
             storeId: this.checkingStore.storeId,
             isDestination: true,
-            name: value
+            'inventoryTransferTransactions.productObject.name': {
+              $regex: value,
+              $options: 'i'
+            },
           }
         }).then(payload => {
           this.loading = false;
@@ -105,6 +114,11 @@ export class ReceiveStockComponent implements OnInit {
   }
 
   getTransfers() {
+    if (this.checkingStore.storeId === undefined) {
+      if (!!this.checkingStore.typeObject) {
+        this.checkingStore = this.checkingStore.typeObject;
+      }
+    }
     if (this.checkingStore !== undefined) {
       this.loading = true;
       this.systemModuleService.on();
@@ -228,6 +242,27 @@ export class ReceiveStockComponent implements OnInit {
       return this.rejectedInventoryStatus.name;
     }
     return 'Pending';
+  }
+
+  ngOnDestroy() {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.storeObject === undefined) {
+          const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
+          itemr.storeObject = store_.storeObject;
+        }
+        if (itemr.isDefault === true && itemr.isOn === true) {
+          itemr.isOn = false;
+          this.employeeService.update(this.loginEmployee).then(payload => {
+            this.loginEmployee = payload;
+          },err=>{
+          });
+        }
+      });
+    }
+    this.employeeService.announceCheckIn(undefined);
+    this.locker.setObject('checkingObject', {});
+    this.subscription.unsubscribe();
   }
 
   private _notification(type: String, text: String): void {

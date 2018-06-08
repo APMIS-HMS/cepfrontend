@@ -19,6 +19,7 @@ import { ChartsModule } from 'ng2-charts';
 import { FundWalletComponent } from './bill-lookup/fund-wallet/fund-wallet.component';
 import { PaymentChartComponent } from './payment-chart/payment-chart.component';
 import { PaymentHistoryComponent } from './payment-history/payment-history.component';
+import { PaymentHistoryDetailsComponent } from './payment-history/payment-history-details/payment-history-details.component';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { PaymentHistoryComponent } from './payment-history/payment-history.compo
         MakePaymentComponent,
         FundWalletComponent,
         PaymentChartComponent,
-        PaymentHistoryComponent
+        PaymentHistoryComponent,
+        PaymentHistoryDetailsComponent
     ],
 
     exports: [

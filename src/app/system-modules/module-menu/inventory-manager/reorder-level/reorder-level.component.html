@@ -26,7 +26,7 @@
         <div class="card-list-item" *ngFor="let schedule of productTableForm.controls['productTableArray'].controls; let i = index;">
           <div class="row" formGroupName="{{i}}">
             <div class="col-xs-4 table-list" style="text-align:center">
-              <span>{{schedule.value.product?.data?.name}}</span>
+              <span>{{schedule.value.product?.name}}</span>
             </div>
             <div class="col-xs-4 table-list" style="text-align:center">
               <span [hidden]="schedule.value.isEdit === true">{{schedule.value.productItemConfigObject?.name}}</span>
@@ -66,7 +66,7 @@
         <input type="text" [formControl]="newProduct" autocomplete="off" placeholder="select a product">
         <ul class="suggestions nice-scroll" *ngIf="collapseProductContainer && products.length > 0">
           <li class="suggestion" *ngFor="let item of products" (click)="onSelectProduct(item)">
-            <div class="listing-label">{{item.name}}</div>
+            <div class="listing-label">{{item.productObject.name}}</div>
           </li>
         </ul>
       </div>
@@ -80,7 +80,7 @@
         <input type="number" placeholder="reorder level" [formControl]="newReorderLevel">
       </div>
       <div class="col-xs-1" *ngIf="addBtnDisable">
-        <i (click)="setLevel_click()" class="fa fa-check td-ico"></i>
+        <i *ngIf="!disableCreateBtn && newPackType.valid && newProduct.valid" (click)="setLevel_click()" class="fa fa-check td-ico"></i>
         <i (click)="toggleNewForm()" class="fa fa-close td-ico"></i>
       </div>
     </div>

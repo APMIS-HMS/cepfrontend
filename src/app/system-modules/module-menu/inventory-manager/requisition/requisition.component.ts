@@ -49,6 +49,7 @@ export class RequisitionComponent implements OnInit {
 
   selectedFacility: Facility = <Facility>{};
   checkingObject: any = <any>{};
+  subscription: any = <any>{};
   loginEmployee: Employee = <Employee>{};
   constructor(
     private formBuilder: FormBuilder,
@@ -63,27 +64,69 @@ export class RequisitionComponent implements OnInit {
     private systemModuleService: SystemModuleService,
     private inventoryService: InventoryService
   ) {
+    this._inventoryEventEmitter.setRouteUrl('Requisition');
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    const auth: any = this.locker.getObject('auth');
 
-    this.employeeService.checkInAnnounced$.subscribe(payload => {
-      if (payload !== undefined) {
-        this.stores = JSON.parse(JSON.stringify([]));
-        if (payload.typeObject !== undefined) {
-          this.checkingObject = payload.typeObject;
-          if (this.checkingObject.storeId === undefined) {
-            this.checkingObject = payload.typeObject.typeObject;
-          }
-          console.log(payload);
-          this.getStores();
+    this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
+      if (!!res) {
+        if (!!res.typeObject) {
+          this.checkingObject = res.typeObject;
+          if (!!this.checkingObject.storeId) {
+            this.getStores();
           this.getAllProducts('', this.checkingObject.storeId);
+          }
+        }
+      }
+    });
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+      // this.checkingObject = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+      if ((this.loginEmployee.storeCheckIn !== undefined
+        || this.loginEmployee.storeCheckIn.length > 0)) {
+        let isOn = false;
+        this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+          if (itemr.isDefault === true) {
+            itemr.isOn = true;
+            itemr.lastLogin = new Date();
+            isOn = true;
+            this.checkingObject = { typeObject: itemr, type: 'store' };
+            this.employeeService.announceCheckIn(this.checkingObject);
+
+            // tslint:disable-next-line:no-shadowed-variable
+            this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+              this.loginEmployee = payload;
+              this.checkingObject = { typeObject: itemr, type: 'store' };
+              this.employeeService.announceCheckIn(this.checkingObject);
+              this.locker.setObject('checkingObject', this.checkingObject);
+              // this.checkingObject = this.checkingObject.typeObject;
+              this.getAllProducts('', this.checkingObject.storeId);
+            });
+          }
+        });
+        if (isOn === false) {
+          this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+            if (r === 0) {
+              itemr.isOn = true;
+              itemr.lastLogin = new Date();
+              // tslint:disable-next-line:no-shadowed-variable
+              this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+                this.loginEmployee = payload;
+                this.checkingObject = { typeObject: itemr, type: 'store' };
+                this.employeeService.announceCheckIn(this.checkingObject);
+                this.locker.setObject('checkingObject', this.checkingObject);
+                // this.checkingObject = this.checkingObject.typeObject;
+                this.getAllProducts('', this.checkingObject.storeId);
+              });
+            }
+          });
         }
       }
     });
   }
 
   ngOnInit() {
-    this._inventoryEventEmitter.setRouteUrl('Requisition');
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    const auth: any = this.locker.getObject('auth');
+    
     this.checkBoxLabel = [{ name: 'All', checked: true }, { name: 'Out of stock', checked: false },
     { name: 'Re-order Level', checked: false }];
     this.frm_purchaseOrder = this.formBuilder.group({
@@ -93,27 +136,7 @@ export class RequisitionComponent implements OnInit {
       desc: ['', [<any>Validators.required]],
     });
     this.addNewProductTables();
-    this.authFacadeService.getLogingEmployee().then((payload: any) => {
-      this.loginEmployee = payload;
-      this.checkingObject = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
-      const emp$ = Observable.fromPromise(this.employeeService.find({
-        query: {
-          facilityId: this.selectedFacility._id, personId: auth.data.personId
-        }
-      }));
-      emp$.mergeMap((emp: any) => Observable.forkJoin([Observable.fromPromise(this.employeeService.get(emp.data[0]._id, {})),
-      ]))
-        .subscribe((results: any) => {
-          this.loginEmployee = results[0];
-        });
-      this.getStores();
-      let storeId = this.checkingObject.storeId;
-      if (storeId === undefined) {
-        storeId = this.checkingObject.typeObject.storeId
-      }
-      this.getAllProducts('', storeId);
-      this.getStrengths();
-    });
+    
     this.searchControl.valueChanges
       .debounceTime(300)
       .distinctUntilChanged()
@@ -141,11 +164,15 @@ export class RequisitionComponent implements OnInit {
 
   getAllProducts(name, storeId) {
     this.systemModuleService.on();
-    this.inventoryService.findList({
+    this.inventoryService.find({
       query: {
         facilityId: this.selectedFacility._id,
-        name: name,
-        storeId: storeId
+        'productObject.name': {
+          $regex: name,
+          $options: 'i'
+        },
+        storeId: storeId,
+        $sort: { createdAt: -1 }
       }
     }).then(payload => {
       this.systemModuleService.off();
@@ -169,7 +196,6 @@ export class RequisitionComponent implements OnInit {
 
     let counter = 0;
     for (let i = 0; i < this.productTables.length; i++) {
-
       if (this.superGroups.length < 1) {
         group = [];
         let obj = <any>{ checked: false, name: this.productTables[i].name, _id: this.productTables[i].id, product: this.productTables[i] };
@@ -228,9 +254,8 @@ export class RequisitionComponent implements OnInit {
       this.strengths = payload.data;
     });
   }
-  onProductCheckChange(event, value) {
+  onProductCheckChange(event, value,index?) {
     value.checked = event.checked;
-    // let storeId = this.frm_purchaseOrder.controls['store'].value;
     if (event.checked === true) {
       if (this.productsControl.value !== null && this.productsControl.value !== undefined) {
         (<FormArray>this.productTableForm.controls['productTableArray'])
@@ -250,6 +275,7 @@ export class RequisitionComponent implements OnInit {
         this.errMsg = 'Please select the destination store';
         this.mainErr = false;
         this.systemModuleService.announceSweetProxy(this.errMsg, 'error');
+        this.removeProduct(index,value)
       }
     } else {
       let indexToRemove = 0;
@@ -309,7 +335,7 @@ export class RequisitionComponent implements OnInit {
   }
 
   onAddPackSize(pack, form) {
-    form.controls.config.controls.push(new FormGroup({
+    form.controls.config.push(new FormGroup({
       size: new FormControl(0),
       packsizes: new FormControl(pack),
       packItem: new FormControl()
@@ -334,6 +360,7 @@ export class RequisitionComponent implements OnInit {
         }
       });
     });
+    this.superGroups = JSON.parse(JSON.stringify(this.superGroups));
   }
   resetGroups() {
     this.superGroups.forEach((parent, i) => {
@@ -360,7 +387,15 @@ export class RequisitionComponent implements OnInit {
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
       let requisitionProduct: any = <any>{};
       requisitionProduct.productId = item.value.productObject.id;
+      requisitionProduct.productObject = item.value.productObject;
       requisitionProduct.qty = item.value.qty;
+      requisitionProduct.qtyDetails = [];
+        item.value.config.forEach(element => {
+          requisitionProduct.qtyDetails.push({
+            packId: element.packItem,
+            quantity: element.size
+          });
+        });
       requisition.products.push(requisitionProduct);
     });
     this.requisitionService.create(requisition).then(payload => {
@@ -413,7 +448,8 @@ export class RequisitionComponent implements OnInit {
       query: {
         facilityId: this.selectedFacility._id,
         storeId: storeId,
-        availableQuantity: 0
+        availableQuantity: 0,
+        $sort: { createdAt: -1 }
       }
     }).then(payload => {
       this.systemModuleService.off();
@@ -489,6 +525,27 @@ export class RequisitionComponent implements OnInit {
       this.products = [];
       this.getProductTables(this.products);
     }
+  }
+
+  ngOnDestroy() {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.storeObject === undefined) {
+          const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
+          itemr.storeObject = store_.storeObject;
+        }
+        if (itemr.isDefault === true && itemr.isOn === true) {
+          itemr.isOn = false;
+          this.employeeService.update(this.loginEmployee).then(payload => {
+            this.loginEmployee = payload;
+          },err=>{
+          });
+        }
+      });
+    }
+    this.employeeService.announceCheckIn(undefined);
+    this.locker.setObject('checkingObject', {});
+    this.subscription.unsubscribe();
   }
 
   // toggleProductConfig(index){

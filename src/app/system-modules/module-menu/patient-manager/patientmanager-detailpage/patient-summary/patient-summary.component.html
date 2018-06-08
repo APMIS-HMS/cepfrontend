@@ -7,7 +7,7 @@
                 <div class="docCard-header">
                     <div>
                         <div class="val-tag">Apmis ID</div>
-                        <div class="list-label">{{patient?.personDetails.apmisId}}</div>
+                        <div class="list-label">{{patient?.personDetails?.apmisId}}</div>
                     </div>
 
                     <div>
@@ -29,22 +29,22 @@
                     <div class="body-divide">
                         <div class="subsect-itemWrap">
                             <div class="subsect-label">First Name</div>
-                            <div class="subsect-val">{{patient?.personDetails.firstName}}</div>
+                            <div class="subsect-val">{{patient?.personDetails?.firstName}}</div>
                         </div>
 
                         <div class="subsect-itemWrap">
                             <div class="subsect-label">Last Name</div>
-                            <div class="subsect-val">{{patient?.personDetails.lastName}}</div>
+                            <div class="subsect-val">{{patient?.personDetails?.lastName}}</div>
                         </div>
 
                         <div class="subsect-itemWrap">
                             <div class="subsect-label">Gender</div>
-                            <div class="subsect-val">{{patient?.personDetails.gender}}</div>
+                            <div class="subsect-val">{{patient?.personDetails?.gender}}</div>
                         </div>
 
                         <div class="subsect-itemWrap">
                             <div class="subsect-label">Date of Birth</div>
-                            <div class="subsect-val">{{patient?.personDetails.dateOfBirth | date}}</div>
+                            <div class="subsect-val">{{patient?.personDetails?.dateOfBirth | date}}</div>
                         </div>
 
                         <!-- <div class="subsect-itemWrap">
@@ -94,17 +94,17 @@
                         <div class="body-divide">
                             <div class="subsect-itemWrap">
                                 <div class="subsect-label">Full Name</div>
-                                <div class="subsect-val">{{kin.fullName}}</div>
+                                <div class="subsect-val">{{kin?.fullName}}</div>
                             </div>
 
                             <div class="subsect-itemWrap">
                                 <div class="subsect-label">Address</div>
-                                <div class="subsect-val">{{kin.address}}.</div>
+                                <div class="subsect-val">{{kin?.address}}.</div>
                             </div>
 
                             <div class="subsect-itemWrap">
                                 <div class="subsect-label">Mobile</div>
-                                <div class="subsect-val">{{kin.phoneNumber}}</div>
+                                <div class="subsect-val">{{kin?.phoneNumber}}</div>
                             </div>
                         </div>
 
@@ -112,7 +112,7 @@
 
                             <div class="subsect-itemWrap">
                                 <div class="subsect-label">Email</div>
-                                <div class="subsect-val">{{kin.email}}</div>
+                                <div class="subsect-val">{{kin?.email}}</div>
                             </div>
 
                             <div class="subsect-itemWrap">

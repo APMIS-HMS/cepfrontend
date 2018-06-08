@@ -25,7 +25,7 @@ export class PurchaseOrderComponent implements OnInit {
   suppliers: any[] = [];
   checkingObject: any = <any>{};
   loginEmployee: any = <any>{};
-
+  subscription: any = <any>{};
   selectedFacility: Facility = <Facility>{};
   selectedOrder: any = <any>{};
   constructor(
@@ -36,13 +36,66 @@ export class PurchaseOrderComponent implements OnInit {
     private systemModuleService: SystemModuleService,
     private authFacadeService: AuthFacadeService,
     private employeeService: EmployeeService,
-    private purchaseEntryService: PurchaseEntryService) { }
-
-  ngOnInit() {
+    private purchaseEntryService: PurchaseEntryService) {
     this._purchaseEventEmitter.setRouteUrl('Purchase Orders');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.getPurchaseOrders();
-    this.getSuppliers();
+    this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
+      if (!!res) {
+        if (!!res.typeObject) {
+          this.checkingObject = res.typeObject;
+          if (!!this.checkingObject.storeId) {
+            this.getPurchaseOrders();
+          }
+        }
+      }
+    });
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+      // this.checkingObject = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+      if ((this.loginEmployee.storeCheckIn !== undefined
+        || this.loginEmployee.storeCheckIn.length > 0)) {
+        let isOn = false;
+        this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+          if (itemr.isDefault === true) {
+            itemr.isOn = true;
+            itemr.lastLogin = new Date();
+            isOn = true;
+            this.checkingObject = { typeObject: itemr, type: 'store' };
+            this.employeeService.announceCheckIn(this.checkingObject);
+
+            // tslint:disable-next-line:no-shadowed-variable
+            this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+              this.loginEmployee = payload;
+              this.checkingObject = { typeObject: itemr, type: 'store' };
+              this.employeeService.announceCheckIn(this.checkingObject);
+              this.locker.setObject('checkingObject', this.checkingObject);
+              // this.checkingObject = this.checkingObject.typeObject;
+              this.getPurchaseOrders();
+            });
+          }
+        });
+        if (isOn === false) {
+          this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+            if (r === 0) {
+              itemr.isOn = true;
+              itemr.lastLogin = new Date();
+              // tslint:disable-next-line:no-shadowed-variable
+              this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+                this.loginEmployee = payload;
+                this.checkingObject = { typeObject: itemr, type: 'store' };
+                this.employeeService.announceCheckIn(this.checkingObject);
+                this.locker.setObject('checkingObject', this.checkingObject);
+                // this.checkingObject = this.checkingObject.typeObject;
+                this.getPurchaseOrders();
+              });
+            }
+          });
+        }
+      }
+    });
+  }
+
+  ngOnInit() {
     this.frmSupplier.valueChanges.subscribe(value => {
       if (value !== null) {
         this.systemModuleService.on();
@@ -50,7 +103,7 @@ export class PurchaseOrderComponent implements OnInit {
           if (payload.data != undefined) {
             this.orders = payload.data;
             this.systemModuleService.off();
-          }else{
+          } else {
             this.orders = [];
           }
         }, error => {
@@ -64,6 +117,7 @@ export class PurchaseOrderComponent implements OnInit {
   getSuppliers() {
     this.systemModuleService.on();
     this.supplierService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
+      console.log(payload);
       this.suppliers = payload.data;
       this.systemModuleService.off();
     }, error => {
@@ -82,7 +136,7 @@ export class PurchaseOrderComponent implements OnInit {
       if (payload.data != undefined) {
         this.orders = payload.data;
         this.systemModuleService.off();
-      }else{
+      } else {
         this.orders = [];
       }
     }, error => {
@@ -129,8 +183,42 @@ export class PurchaseOrderComponent implements OnInit {
     }
   }
 
+  ngOnDestroy() {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.storeObject === undefined) {
+          const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
+          itemr.storeObject = store_.storeObject;
+          console.log(itemr.storeObject);
+        }
+        if (itemr.isDefault === true && itemr.isOn === true) {
+          itemr.isOn = false;
+          this.employeeService.update(this.loginEmployee).then(payload => {
+            this.loginEmployee = payload;
+          },err=>{
+            console.log(err);
+          });
+        }
+      });
+    }
+    this.employeeService.announceCheckIn(undefined);
+    this.locker.setObject('checkingObject', {});
+    this.subscription.unsubscribe();
+  }
+
+  getPackItemNames(product) {
+    product.qtyDetails.forEach(element => {
+      const packName = product.productObject.productConfigObject.filter(x => x._id.toString() === element.packId.toString());
+      if (packName.length > 0) {
+        element.packName = packName[0].name;
+      }
+    });
+    return product.qtyDetails;
+  }
+
   slidePurchaseDetailsToggle(value, event) {
     this.selectedOrder = value;
+    console.log(this.selectedOrder);
     this.slidePurchaseDetails = !this.slidePurchaseDetails;
   }
 

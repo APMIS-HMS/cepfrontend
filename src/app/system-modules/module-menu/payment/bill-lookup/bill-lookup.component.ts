@@ -189,6 +189,7 @@ export class BillLookupComponent implements OnInit {
   private _getPatientWallet(id) {
     this.patientService.get(id, {}).then(res => {
       this.selectedPatient = res;
+      // console.log( this.selectedPatient);
       this.getPatientBills();
     }).catch(err => {});
   }
@@ -346,10 +347,11 @@ export class BillLookupComponent implements OnInit {
     this.billGroups = [];
     this.masterBillGroups = [];
     this.txtSelectAll.setValue(false);
-    if (this.selectedPatient !== undefined) {
+    if (this.selectedPatient._id !== undefined) {
       this.billingService
         .findBillService({ query: { facilityId: this.selectedFacility._id, patientId: this.selectedPatient._id, isinvoice: false } })
         .then(payload => {
+          console.log(payload);
           if (payload !== null) {
             this.billGroups = payload.billGroups;
             this.listedBillItems = payload.originalCallback;
@@ -391,6 +393,7 @@ export class BillLookupComponent implements OnInit {
   private _getAllPendingBills() {
     this.loadingPendingBills = true;
     this._pendingBillService.get(this.selectedFacility._id, {}).then((res: any) => {
+      // console.log(res.data);
       this.pendingBills = res.data;//.filter(x => x.patientId !== this.selectedPatient._id);
       this.holdMostRecentBills = res.data;
       this.loadingPendingBills = false;

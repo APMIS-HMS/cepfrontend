@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { QuickLinksComponent } from './quick-links.component';
+import { StoreProductTypeComponent } from './store-product-type.component';
 
-describe('QuickLinksComponent', () => {
-  let component: QuickLinksComponent;
-  let fixture: ComponentFixture<QuickLinksComponent>;
+describe('StoreProductTypeComponent', () => {
+  let component: StoreProductTypeComponent;
+  let fixture: ComponentFixture<StoreProductTypeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ QuickLinksComponent ]
+      declarations: [ StoreProductTypeComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(QuickLinksComponent);
+    fixture = TestBed.createComponent(StoreProductTypeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -32,13 +32,13 @@
             <tr *ngFor="let prescription of prescriptionItems.prescriptionItems; let i = index;" style="text-align: left">
                 <td class="table-content" style="width: 5%;">{{ i+1 }}</td>
                 <td class="table-content" style="width: 55%;">
-                    {{ prescription.genericName }} - {{ prescription.dosage }}, {{ prescription.frequency }} for {{ prescription.duration }}, {{ prescription.routeName }} ({{ prescription.refillCount }})
+                    {{ prescription?.genericName }} - {{ prescription?.dosage }}, {{ prescription?.frequency }} for {{ prescription?.duration }}, {{ prescription?.routeName }} ({{ prescription.refillCount }})
                     <br>
                     <span *ngIf="prescription.isBilled" style="color:#2e7d32;">
-                        Drug: {{ prescription.productName }}, Quantity: {{ prescription.quantity }}, Unit Price: {{ prescription.cost }}, Cost: {{ prescription.totalCost }}
+                        Drug: {{ prescription?.productName?.productObject?.name }}, Quantity: {{ prescription?.quantity }}, Unit Price: {{ prescription?.cost }}, Cost: {{ prescription?.totalCost }}
                     </span>
                 </td>
-                <td class="table-content" style="width: 15%;">{{ prescription.patientInstruction }}</td>
+                <td class="table-content" style="width: 15%;">{{ prescription?.patientInstruction }}</td>
                 <td class="table-content" style="width: 25%; padding: 5px !important;">
                     <div *ngIf="isPrescriptionPage" class="pres-data action-long">
                         <a class="trash-box" (click)="onClickDeleteItem(i, prescription);"><i class="fa fa-trash"></i></a>
@@ -78,4 +78,4 @@
     </div>
 </div>
 
-<app-bill-prescription *ngIf="billShow" [prescriptionData]="prescriptionData" (closeModal)="close_onClick($event)"></app-bill-prescription>
+<app-bill-prescription *ngIf="billShow" [storeId]="storeId" [prescriptionData]="prescriptionData" (closeModal)="close_onClick($event)"></app-bill-prescription>

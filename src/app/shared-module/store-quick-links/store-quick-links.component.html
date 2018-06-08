@@ -2,11 +2,9 @@
     <div class="ql-title">Quick Links</div>
 
     <div class="ql-sect">
-        <div class="ql-sect-title">Purchase</div>
+        <div class="ql-sect-title">Home</div>
         <ul class="ql-links">
-            <li class="ql-link" routerLink="/dashboard/purchase-manager/orders">Purchase History</li>
-            <li class="ql-link" routerLink="/dashboard/purchase-manager/invoices">Invoices</li>
-            <li class="ql-link" routerLink="/dashboard/product-manager/suppliers">Suppliers</li>
+            <li class="ql-link" routerLink="/dashboard/store">Home</li>
         </ul>
     </div>
 
@@ -18,7 +16,18 @@
             <li class="ql-link" routerLink="/dashboard/inventory-manager/stock-history">Transfer History</li>
             <li class="ql-link" routerLink="/dashboard/inventory-manager/receive-stock">Recieve Stocky</li>
             <li class="ql-link" routerLink="/dashboard/inventory-manager/requisition">Requisition</li>
-            <li class="ql-link">Audit</li>
+            <li class="ql-link" routerLink="/dashboard/inventory-manager/reorder-level">Re-order Level</li>
+            <li class="ql-link" routerLink="/dashboard/inventory-manager/initialize-store">Initialize Store</li>
+            <!-- <li class="ql-link">Audit</li> -->
+        </ul>
+    </div>
+
+    <div class="ql-sect">
+        <div class="ql-sect-title">Purchase</div>
+        <ul class="ql-links">
+            <li class="ql-link" routerLink="/dashboard/purchase-manager/orders">Purchase Order</li>
+            <li class="ql-link" routerLink="/dashboard/purchase-manager/invoices">Invoices</li>
+            <li class="ql-link" routerLink="/dashboard/product-manager/suppliers">Suppliers</li>
         </ul>
     </div>
 
@@ -26,13 +35,14 @@
         <div class="ql-sect-title">Store</div>
         <ul class="ql-links">
             <li class="ql-link" routerLink="/dashboard/store/list">View Stores</li>
+            <li class="ql-link" (click)="onClickShowStoreProductType();">Store Product Category</li>
         </ul>
     </div>
 
     <div class="ql-sect">
         <div class="ql-sect-title">Product</div>
         <ul class="ql-links">
-            <li class="ql-link" routerLink="/dashboard/product-manager/products">Product List</li>
+            <!-- <li class="ql-link" routerLink="/dashboard/product-manager/products">Product List</li> -->
             <li class="ql-link" routerLink="/dashboard/inventory-manager/product-config">Product Configuration</li>
             <!--<li class="ql-link" (click)="productCatPopShow()">Product Category</li>
             <li class="ql-link" (click)="genericSlide()">Generics</li>
@@ -43,37 +53,16 @@
         </ul>
     </div>
 
-    <div class="ql-sect">
+    <!-- <div class="ql-sect">
         <div class="ql-sect-title">Config</div>
         <ul class="ql-links">
             <li class="ql-link" routerLink="/dashboard/store/list">Create Store</li>
             <li class="ql-link" routerLink="/dashboard/product-manager/products">Create Product</li>
             <li class="ql-link" routerLink="/dashboard/inventory-manager/initialize-store">Initialize Store</li>
         </ul>
-    </div>
+    </div> -->
 </div>
 
-
-<!-- <div *ngIf="isProductCat" class="modal-overlay center-center">
-    <app-category-manager (closeModal)="close_onClick($event);"></app-category-manager>
+<div *ngIf="showStoreProductType" class="modal-overlay">
+    <app-store-product-type (closeModal)="closeOnClick($event)" class="form-modal center-center"></app-store-product-type>
 </div>
-
-<div *ngIf="isGeneric" class="modal-overlay center-center">
-    <app-generic-manager (closeModal)="close_onClick($event);"></app-generic-manager>
-</div>
-
-<div *ngIf="isProductRoute" class="modal-overlay center-center">
-    <app-route-manager (closeModal)="close_onClick($event);"></app-route-manager>
-</div>
-
-<div *ngIf="isManufacturer" class="modal-overlay center-center">
-    <app-manufacturer-manager (closeModal)="close_onClick($event);"></app-manufacturer-manager>
-</div>
-
-<div *ngIf="isPresentation" class="modal-overlay center-center">
-    <app-presentation-manager (closeModal)="close_onClick($event);"></app-presentation-manager>
-</div>
-
-<div *ngIf="isStrength" class="modal-overlay center-center">
-    <app-strength-manager (closeModal)="close_onClick($event);"></app-strength-manager>
-</div> -->

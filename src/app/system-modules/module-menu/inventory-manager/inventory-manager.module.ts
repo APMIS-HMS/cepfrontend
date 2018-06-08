@@ -22,8 +22,7 @@ import {
 import { LoginEmployeeResolverService } from '../../../resolvers/module-menu/index';
 import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { ReorderLevelComponent } from './reorder-level/reorder-level.component';
-
-
+import { PurchaseEmitterService } from '../../../services/facility-manager/purchase-emitter.service';
 
 @NgModule({
     declarations: [
@@ -43,11 +42,13 @@ import { ReorderLevelComponent } from './reorder-level/reorder-level.component';
     exports: [
     ],
     imports: [
+        SharedModule,
         OnlyMaterialModule,
         MaterialModule,
         inventoryManagerRoutes
     ],
-    providers: [InventoryEmitterService, ProductService, InventoryService, LoginEmployeeResolverService, ProductRequisitionService,
+    providers: [
+        InventoryEmitterService, ProductService, InventoryService, LoginEmployeeResolverService, ProductRequisitionService,
         InventoryTransferService, InventoryTransferStatusService, InventoryTransactionTypeService, StrengthService, StoreService]
 })
 export class InventoryManagerModule { }

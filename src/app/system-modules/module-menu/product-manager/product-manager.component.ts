@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProductEmitterService } from '../../../services/facility-manager/product-emitter.service';
-import { FacilitiesService } from '../../../services/facility-manager/setup/index';
+import { FacilitiesService,EmployeeService } from '../../../services/facility-manager/setup/index';
+import { AuthFacadeService } from '../../service-facade/auth-facade.service';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
 	selector: 'app-product-manager',
@@ -20,7 +22,8 @@ export class ProductManagerComponent implements OnInit {
 	presentationNavMenu: Boolean = false;
 	strengthNavMenu: Boolean = false;
 	contentSecMenuShow: Boolean = false;
-
+	modal_on = false;
+	Ql_toggle = false;
 	// products page
 	addProduct: Boolean = false;
 	isProductCat: Boolean = false;
@@ -30,8 +33,14 @@ export class ProductManagerComponent implements OnInit {
 	isPresentation: Boolean = false;
 	isStrength: Boolean = false;
 	productCatPop: Boolean = false;
+	checkingStore: any = <any>{};
+	subscription: any = <any>{};
+	loginEmployee: any = <any>{};
 
 	constructor(private _productEventEmitter: ProductEmitterService, private _router: Router,
+		private employeeService: EmployeeService,
+		private authFacadeService: AuthFacadeService,
+		private locker: CoolLocalStorage,
 		public facilityService: FacilitiesService) {
 		this.facilityService.sliderAnnounced$.subscribe(value => {
 			if (value === false) {
@@ -43,7 +52,21 @@ export class ProductManagerComponent implements OnInit {
 				this.isPresentation = false;
 			}
 
-		})
+		});
+
+		this.subscription = this.employeeService.checkInAnnounced$.subscribe(payload => {
+			if (payload !== undefined) {
+				if (payload.typeObject !== undefined) {
+					this.checkingStore = payload.typeObject;
+				}
+			}
+		});
+
+
+		this.authFacadeService.getLogingEmployee().then((payload: any) => {
+			this.loginEmployee = payload;
+			this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+		});
 	}
 
 	ngOnInit() {
@@ -341,5 +364,37 @@ export class ProductManagerComponent implements OnInit {
 		this.presentationNavMenu = false;
 		//this.strengthNavMenu = true;
 	}
+
+	toggleQl() {
+		this.Ql_toggle = !this.Ql_toggle;
+	}
+
+	onChangeCheckedIn() {
+		this.modal_on = true;
+	}
+
+	ngOnDestroy() {
+		if (this.loginEmployee.storeCheckIn !== undefined) {
+		  console.log(this.loginEmployee.storeCheckIn);
+		  this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+			if (itemr.storeObject === undefined) {
+			  const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
+			  itemr.storeObject = store_.storeObject;
+			  console.log(itemr.storeObject);
+			}
+			if (itemr.isDefault === true && itemr.isOn === true) {
+			  itemr.isOn = false;
+			  this.employeeService.update(this.loginEmployee).then(payload => {
+				this.loginEmployee = payload;
+			  },err=>{
+				console.log(err);
+			  });
+			}
+		  });
+		}
+		this.employeeService.announceCheckIn(undefined);
+		this.locker.setObject('checkingObject', {});
+		this.subscription.unsubscribe();
+	  }
 
 }
