@@ -194,7 +194,9 @@ export class ProductManagerComponent implements OnInit {
       this.pageInView = url;
     });
   }
-
+  onChangeCheckedIn() {
+    this.modal_on = true;
+  }
   onClickStrengthNavMenu() {
     this.productNavMenu = false;
     this.categoryNavMenu = false;
