@@ -23,7 +23,6 @@ export class NoprescriptionComponent implements OnInit {
 	@Input() selectedAppointment: Appointment = <Appointment>{};
 	facility: Facility = <Facility>{};
 	user: any = <any>{};
-
 	employeeDetails: any = <any>{};
 	noPrescriptionForm: FormGroup;
 	units: string[] = [];
@@ -33,8 +32,8 @@ export class NoprescriptionComponent implements OnInit {
 	selectedProduct: any;
 	departments: Department[] = [];
 	clients: any[] = [];
-	selectedDept = '';
-	selectedClient = '';
+	selectedDept: string;
+	selectedClient: string;
 	corporateShow = false;
 	individualShow = false;
 	internalShow = false;
@@ -44,22 +43,22 @@ export class NoprescriptionComponent implements OnInit {
 	prescription = {};
 	selectedStore: any;
 	// search variables
-	searchText = '';
+	searchText: string;
 	cuDropdownLoading = false;
-	selectedProductId = '';
+	selectedProductId: string;
 	showCuDropdown = false;
 	price = 0;
 	totalPrice = 0;
 	totalQuantity = 0;
-	selectedBatch = '';
+	selectedBatch: string;
 	disableDispenseBtn = false;
 	dispenseBtn = true;
-  dispensingBtn = false;
-	inventoryTransactionTypeId = '';
-	selectedInventoryId = '';
-	selectedFsId = '';
-	selectedSId = '';
-	selectedCId = '';
+  	dispensingBtn = false;
+	inventoryTransactionTypeId: string;
+	selectedInventoryId: string;
+	selectedFsId: string;
+	selectedSId: string;
+	selectedCId: string;
 	internalType = 'Department';
 	deptLocationShow = true;
 
@@ -211,12 +210,14 @@ export class NoprescriptionComponent implements OnInit {
 
 	// Save Nonpresciption form data in to the database.
 	onClickDispense() {
+		console.log(this.prescriptions);
+		console.log(this.selectedStore);
 		if (this.prescriptions.length > 0) {
 			if (!!this.selectedStore) {
 				const prescription = {};
 				const drugs = [];
-        this.dispenseBtn = false;
-        this.dispensingBtn = true;
+				this.dispenseBtn = false;
+				this.dispensingBtn = true;
 				this.disableDispenseBtn = true;
 
 				this.prescriptions.forEach(element => {
@@ -291,16 +292,14 @@ export class NoprescriptionComponent implements OnInit {
 						id: element.productId,
 						name: element.productName
 					};
-					product['batchNumber'] = element.batchNumber;
-					product['batchNumberId'] = element.batchNumberId;
-					product['productId'] = element.productId;
-					product['productName'] = element.productName;
+					product['batchNumber'] = element.batchNumber.batchNumber;
+					product['batchNumberId'] = element.batchNumber._id;
+					product['product'] = element.productName;
 					product['cost'] = element.unitPrice;
 					product['quantity'] = element.qty;
 					product['inventoryId'] = element.inventoryId;
 					product['referenceId'] = '';
 					product['employeeId'] = this.employeeDetails._id;
-          			product['employeeName'] = `${this.employeeDetails.firstName} ${this.employeeDetails.firstName}`;
 					product['referenceService'] = 'NoPrescriptionService';
 					product['inventorytransactionTypeId'] = this.inventoryTransactionTypeId;
 					prescription['employee'] = {
@@ -322,7 +321,8 @@ export class NoprescriptionComponent implements OnInit {
 
 				const collectionDrugs = { drugs: drugs };
 
-
+				console.log(payload);
+				console.log(collectionDrugs);
 				// Call a service to
 				// this._dispenseCollectionDrugs.create(collectionDrugs).then(res => {
 				// 	// bill model
