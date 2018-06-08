@@ -91,25 +91,25 @@ panel-bd>.panel-heading {
     margin: 20px 0;
     font-weight: bold;
 }
-// .input-qty{
-//     position: absolute;
-//     right: 0;
-//     top: 40px;
-//     z-index: 2;
-// }
-// .input-qty input{
-//     background: #4bb8ef !important;
-//     border: 0;
-//     height: 50px;
-//     color: #fff;
-//     font-size: 2rem !important;
-//     text-align: center;
-//     display: flex;
-//     justify-content: center;
-//     align-items: center;
-//     min-width: 100px;
-//     max-width: 150px;
-// }
+.input-qty{
+    position: absolute;
+    right: 0;
+    top: 5px;
+    z-index: 2;
+}
+.input-qty input{
+    background: #4bb8ef !important;
+    border: 0;
+    height: 50px;
+    color: #fff;
+    font-size: 2rem !important;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-width: 100px;
+    max-width: 150px;
+}
 .qty-label {
     font-size: 1.4rem;
 }
@@ -162,4 +162,11 @@ a.active {
 .faplus:hover {
     background: #8e8e8e;
     color: #fff;
+}
+.arr-icos{
+    text-align: left; 
+    display: flex; 
+    position: absolute;
+    right: 5px;
+    bottom: 20px;
 }

@@ -92,7 +92,8 @@ td {
     border: 1px solid #eee;
     border-radius: 7px;
     padding-left: 5px;
-    padding-right: 5px;
+    padding-right: 15px;
+    box-sizing: border-box;
     color: black;
 }
 
@@ -313,4 +314,13 @@ td {
     .modal-baseWrap {
         padding: 10px 10px;
     }
+}
+.oda-prices {
+    width: 327px;
+    padding-left: 10px;
+    padding-right: 10px;
+    background: #eee;
+}
+.oda-prices input{
+    width: 100%;
 }
