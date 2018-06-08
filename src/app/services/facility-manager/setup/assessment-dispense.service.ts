@@ -53,8 +53,8 @@ export class AssessmentDispenseService {
     return this._socket.remove(id, query);
   }
 
-  update(assessmentdispense: any) {
-    return this._socket.update(assessmentdispense._id, assessmentdispense);
+  update(id, assessmentdispense: any) {
+    return this._socket.update(id, assessmentdispense);
   }
 
   patch(_id: any, data: any, param: any) {
