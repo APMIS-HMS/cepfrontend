@@ -215,6 +215,7 @@ export class InitializeStoreComponent implements OnInit {
         );
       }
     } else {
+      //This product exist in your inventory
       this.systemModuleService.announceSweetProxy('This product exist in your inventory', 'error');
     }
   }
