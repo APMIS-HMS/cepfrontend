@@ -29,7 +29,7 @@ export class LandingpageComponent implements OnInit {
   loginEmployee: Employee = <Employee>{};
   selectedProduct: any = <any>{};
   checkingStore: any = <any>{};
-  subscription:any=<any>{};
+  subscription: any = <any>{};
   loading: boolean = true;
 
   constructor(
@@ -43,13 +43,59 @@ export class LandingpageComponent implements OnInit {
     private employeeService: EmployeeService,
     private systemModuleService: SystemModuleService
   ) {
-    this.subscription = this.employeeService.checkInAnnounced$.subscribe(payload => {
-      if (payload !== undefined) {
-        if (payload.typeObject !== undefined) {
-          this.checkingStore = payload.typeObject;
-          if(this.checkingStore.storeId !== undefined){
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.user = <User>this.locker.getObject('auth');
+    this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
+      if (!!res) {
+        if (!!res.typeObject) {
+          this.checkingStore = res.typeObject;
+          if (!!this.checkingStore.storeId) {
             this.getInventories();
           }
+        }
+      }
+    });
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+      // this.checkingObject = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+      if ((this.loginEmployee.storeCheckIn !== undefined
+        || this.loginEmployee.storeCheckIn.length > 0)) {
+        let isOn = false;
+        this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+          if (itemr.isDefault === true) {
+            itemr.isOn = true;
+            itemr.lastLogin = new Date();
+            isOn = true;
+            this.checkingStore = { typeObject: itemr, type: 'store' };
+            this.employeeService.announceCheckIn(this.checkingStore);
+
+            // tslint:disable-next-line:no-shadowed-variable
+            this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+              this.loginEmployee = payload;
+              this.checkingStore = { typeObject: itemr, type: 'store' };
+              this.employeeService.announceCheckIn(this.checkingStore);
+              this.locker.setObject('checkingObject', this.checkingStore);
+              // this.checkingObject = this.checkingObject.typeObject;
+              this.getInventories();
+            });
+          }
+        });
+        if (isOn === false) {
+          this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+            if (r === 0) {
+              itemr.isOn = true;
+              itemr.lastLogin = new Date();
+              // tslint:disable-next-line:no-shadowed-variable
+              this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+                this.loginEmployee = payload;
+                this.checkingStore = { typeObject: itemr, type: 'store' };
+                this.employeeService.announceCheckIn(this.checkingStore);
+                this.locker.setObject('checkingObject', this.checkingStore);
+                // this.checkingObject = this.checkingObject.typeObject;
+                this.getInventories();
+              });
+            }
+          });
         }
       }
     });
@@ -57,15 +103,6 @@ export class LandingpageComponent implements OnInit {
 
   ngOnInit() {
     this._inventoryEventEmitter.setRouteUrl('Inventory Manager');
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.user = <User>this.locker.getObject('auth');
-    this.authFacadeService.getLogingEmployee().then((payload: any) => {
-      this.loginEmployee = payload;
-      this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
-      if (this.checkingStore !== null) {
-        this.getInventories();
-      }
-    });
     const subscribeForCategory = this.searchControl.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
@@ -84,17 +121,20 @@ export class LandingpageComponent implements OnInit {
   }
 
   getInventories() {
+    console.log(this.checkingStore);
     if (this.checkingStore !== undefined) {
-      this.inventoryService.findList({
-        query:
-          { facilityId: this.selectedFacility._id, name: '', storeId: this.checkingStore.storeId }//, $limit: 200 }
-      })
-        .then(payload => {
-          this.loading = false;
-          this.inventories = payload.data.filter(x => x.totalQuantity > 0);
-        });
+      this.inventoryService.find({
+        query: {
+          facilityId: this.selectedFacility._id,
+          storeId: this.checkingStore.storeId,
+          availableQuantity: { $gt: 0 },
+          $sort: { updatedAt: -1 }
+        }
+      }).then(res => {
+        this.loading = false;
+        this.inventories = res.data;
+      });
     }
-
   }
   onSelectProduct(product) {
 
@@ -163,8 +203,12 @@ export class LandingpageComponent implements OnInit {
     });
   }
   ngOnDestroy() {
-    if (this.loginEmployee.consultingRoomCheckIn !== undefined) {
-      this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.storeObject === undefined) {
+          const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
+          itemr.storeObject = store_.storeObject;
+        }
         if (itemr.isDefault === true && itemr.isOn === true) {
           itemr.isOn = false;
           this.employeeService.update(this.loginEmployee).then(payload => {

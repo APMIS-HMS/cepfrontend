@@ -51,9 +51,47 @@ export class PurchaseOrderComponent implements OnInit {
     });
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
-      this.checkingObject = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
-      this.getPurchaseOrders();
-      // this.getSuppliers();
+      // this.checkingObject = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+      if ((this.loginEmployee.storeCheckIn !== undefined
+        || this.loginEmployee.storeCheckIn.length > 0)) {
+        let isOn = false;
+        this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+          if (itemr.isDefault === true) {
+            itemr.isOn = true;
+            itemr.lastLogin = new Date();
+            isOn = true;
+            this.checkingObject = { typeObject: itemr, type: 'store' };
+            this.employeeService.announceCheckIn(this.checkingObject);
+
+            // tslint:disable-next-line:no-shadowed-variable
+            this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+              this.loginEmployee = payload;
+              this.checkingObject = { typeObject: itemr, type: 'store' };
+              this.employeeService.announceCheckIn(this.checkingObject);
+              this.locker.setObject('checkingObject', this.checkingObject);
+              // this.checkingObject = this.checkingObject.typeObject;
+              this.getPurchaseOrders();
+            });
+          }
+        });
+        if (isOn === false) {
+          this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+            if (r === 0) {
+              itemr.isOn = true;
+              itemr.lastLogin = new Date();
+              // tslint:disable-next-line:no-shadowed-variable
+              this.employeeService.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
+                this.loginEmployee = payload;
+                this.checkingObject = { typeObject: itemr, type: 'store' };
+                this.employeeService.announceCheckIn(this.checkingObject);
+                this.locker.setObject('checkingObject', this.checkingObject);
+                // this.checkingObject = this.checkingObject.typeObject;
+                this.getPurchaseOrders();
+              });
+            }
+          });
+        }
+      }
     });
   }
 
@@ -146,12 +184,19 @@ export class PurchaseOrderComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    if (this.loginEmployee.consultingRoomCheckIn !== undefined) {
-      this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.storeObject === undefined) {
+          const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
+          itemr.storeObject = store_.storeObject;
+          console.log(itemr.storeObject);
+        }
         if (itemr.isDefault === true && itemr.isOn === true) {
           itemr.isOn = false;
           this.employeeService.update(this.loginEmployee).then(payload => {
             this.loginEmployee = payload;
+          },err=>{
+            console.log(err);
           });
         }
       });

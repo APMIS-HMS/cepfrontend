@@ -28,10 +28,15 @@
                 </div>
                 <div class="row" *ngIf="searchOpen">
                         <div class="col-md-4">
-                            <input [formControl]="" class="table-header-input" type="text" placeholder="Search for Invoice">
+                            <input [formControl]="frmSearch" class="table-header-input" type="text" placeholder="Search...">
                         </div>
                         <div class="col-md-4">
-                            
+                                <mat-select placeholder="Search Supplier" [formControl]="frmSupplier">
+                                        <mat-option disabled="">Supplier</mat-option>
+                                        <mat-option [value]="item._id" *ngFor="let item of suppliers">
+                                            <span>{{item.supplier.name}}</span>
+                                        </mat-option>
+                                    </mat-select>
                         </div>        
                         <div class="col-md-3">
                             
@@ -60,8 +65,8 @@
                                 </div>
                                 <div class="table-list col-md-1">
                                         <a class="action-btn" (click)="slideInvoiceDetailsToggle(invoice, $event)"><i class="fa fa-eye"></i></a>
-                                        <a (click)="onNavigateToPayment(invoice)"><span><i class="fa fa-money"></i></span> </a>
-                                        <a class="action-btn"><i class="fa fa-trash"></i></a>
+                                        <!-- <a (click)="onNavigateToPayment(invoice)"><span><i class="fa fa-money"></i></span> </a> -->
+                                        <!-- <a class="action-btn"><i class="fa fa-trash"></i></a> -->
                                 </div>
                             </div>
                     </div>

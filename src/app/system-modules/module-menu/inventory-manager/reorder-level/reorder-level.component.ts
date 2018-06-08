@@ -34,6 +34,7 @@ export class ReorderLevelComponent implements OnInit {
   user: any = <any>{};
   loginEmployee: any = <any>{};
   checkingStore: any = <any>{};
+  disableCreateBtn = false;
 
   collapseProductContainer = false;
   selectedProduct: any = <any>{};
@@ -47,25 +48,23 @@ export class ReorderLevelComponent implements OnInit {
     private _locker: CoolLocalStorage,
     private authFacadeService: AuthFacadeService,
     private employeeService: EmployeeService,
-    private systemModuleService: SystemModuleService) { 
-      this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
-        console.log(res);
-        if (!!res) {
-          if (!!res.typeObject) {
-            this.checkingStore = res.typeObject;
-            console.log(this.checkingStore);
-            if (!!this.checkingStore.storeId) {
-              this.setExistingReorderData();
-            }
-          }
-        }
-      });
-      
-    }
-
-  ngOnInit() {
+    private systemModuleService: SystemModuleService) {
     this.selectedFacility = <any>this._locker.getObject('selectedFacility');
     this.user = this._locker.getObject('auth');
+
+    this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
+      console.log(res);
+      if (!!res) {
+        if (!!res.typeObject) {
+          this.checkingStore = res.typeObject;
+          console.log(this.checkingStore);
+          if (!!this.checkingStore.storeId) {
+            this.setExistingReorderData();
+          }
+        }
+      }
+    });
+
     this.initializeReorderProperties();
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       console.log(payload);
@@ -74,23 +73,32 @@ export class ReorderLevelComponent implements OnInit {
       console.log(this.checkingStore);
       this.setExistingReorderData();
     });
+
+  }
+
+  ngOnInit() {
+
     this.newProduct.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe(value => {
-        this.products = JSON.parse(JSON.stringify([]));
         if (this.products.filter(x => x.name === this.newProduct.value).length === 1 || this.newProduct.value === ' ') {
           this.collapseProductContainer = false;
         } else {
           this.systemModuleService.on();
-          this.productService.findReorderUnique({
+          this.productService.findProductConfigs({
             query:
-              { facilityId: this.selectedFacility._id, name: this.newProduct.value, storeId: this.checkingStore.storeId }
+              {
+                facilityId: this.selectedFacility._id, 'productObject.name': {
+                  $regex: value,
+                  $options: 'i'
+                }, storeId: this.checkingStore.storeId
+              }
           }).then(payload => {
             console.log(payload);
             this.collapseProductContainer = true;
             this.systemModuleService.off();
-            this.product = JSON.parse(JSON.stringify(payload.data));
+            this.products = JSON.parse(JSON.stringify(payload.data));
           })
         }
       });
@@ -115,36 +123,44 @@ export class ReorderLevelComponent implements OnInit {
 
   setExistingReorderData() {
     this.initializeReorderProperties();
-    this.systemModuleService.on();
+    // this.systemModuleService.on();
+    console.log(this.selectedFacility._id, this.checkingStore.storeId);
     this.productService.findReorder({ query: { facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId } }).then(payload => {
       this.systemModuleService.off();
+      console.log(payload.data);
       this.reorderProducts = payload.data.forEach(element => {
-        if(element.productConfigObject !== undefined){
+        if (element.productConfigObject !== undefined) {
           console.log(element);
-          element.productObject.productConfigObject = element.productConfigObject;
-          (<FormArray>this.productTableForm.controls['productTableArray']).push(
-            this.formBuilder.group({
-              product: [element.productObject, [<any>Validators.required]],
-              reOrderLevel: [element.reOrderLevel, [<any>Validators.required]],
-              packTypeId: [element.productItemConfigObject._id, [<any>Validators.required]],
-              productItemConfigObject: [element.productItemConfigObject, [<any>Validators.required]],
-              isEdit: [false, [<any>Validators.required]],
-              id: [element._id]
-            }));
+          if (!!element.productObject) {
+            element.productObject.productConfigObject = element.productConfigObject;
+            (<FormArray>this.productTableForm.controls['productTableArray']).push(
+              this.formBuilder.group({
+                product: [element.productObject, [<any>Validators.required]],
+                reOrderLevel: [element.reOrderLevel, [<any>Validators.required]],// payload.data.length > 0 ? payload.data[0] : undefined
+                packTypeId: [element.productItemConfigObject !== undefined ? element.productItemConfigObject._id : element.productConfigObject.find(x => x.isBase === true)._id, [<any>Validators.required]],
+                productItemConfigObject: [element.productItemConfigObject !== undefined ? element.productItemConfigObject : element.productConfigObject.find(x => x.isBase === true), [<any>Validators.required]],
+                isEdit: [false, [<any>Validators.required]],
+                id: [element._id]
+              }));
+          }
         }
       });
+    }, er => {
+      this.systemModuleService.off();
     });
   }
 
   async onSelectProduct(product) {
-    this.collapseProductContainer = false;
-    this.selectedProduct = product;
-    this.newProduct.setValue(product.name);
-    const productConfigSizes = await this.productService.findProductConfigs({query:{productId:product.id}});
-    if (productConfigSizes.data[0] !== undefined) {
-      this.selectedProduct.productConfigObject = productConfigSizes.data[0].packSizes;
+    const existingReorder = await this.productService.findReorder({ query: { productId: product.productId } });
+    if (existingReorder.data.length > 0) {
+      this.systemModuleService.announceSweetProxy('Reorder level has been set on this product.', 'error');
+      this.newProduct.reset();
+      this.newPackType.reset();
     } else {
-      this.systemModuleService.announceSweetProxy('Product brand pack variant is not configured', 'error');
+      this.collapseProductContainer = false;
+      this.selectedProduct = product;
+      this.newProduct.setValue(product.productObject.name);
+      this.selectedProduct.productConfigObject = this.selectedProduct.packSizes;
     }
   }
 
@@ -165,14 +181,19 @@ export class ReorderLevelComponent implements OnInit {
   comparePack(l1: any, l2: any) {
     return l1.includes(l2);
   }
-  
+
   setLevel_click() {
-    // this.setLevel = !this.setLevel;
+
+    if (!!this.checkingStore.typeObject) {
+      this.checkingStore = this.checkingStore.typeObject;
+    }
     console.log(this.checkingStore);
     if (this.newPackType.valid && this.newProduct.valid && this.newReorderLevel.valid) {
+      this.disableCreateBtn = true;
       const packSize = this.selectedProduct.productConfigObject.find(x => x._id.toString() === this.newPackType.value.toString());
       let reOrder: any = {};
-      reOrder.productId = this.selectedProduct.id;
+      reOrder.productId = this.selectedProduct.productObject.id;
+      reOrder.productObject = this.selectedProduct.productObject;
       reOrder.storeId = this.checkingStore.storeId;
       reOrder.facilityId = this.selectedFacility._id;
       reOrder.reOrderLevel = this.newReorderLevel.value;
@@ -180,13 +201,14 @@ export class ReorderLevelComponent implements OnInit {
       this.systemModuleService.on();
       this.productService.createReorder(reOrder).then(payload => {
         this.systemModuleService.off();
+        this.disableCreateBtn = false;
         this.addBtnDisable = true;
         this.newPackType.reset();
         this.newReorderLevel.reset();
         this.newProduct.setValue(' ');
         this.initializeReorderProperties();
         this.systemModuleService.announceSweetProxy('Product Re-order level created successfully', 'success');
-       this.setExistingReorderData();
+        this.setExistingReorderData();
       });
     } else {
       this.systemModuleService.announceSweetProxy('Missing field(s)', 'error');
@@ -217,12 +239,20 @@ export class ReorderLevelComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    if (this.loginEmployee.consultingRoomCheckIn !== undefined) {
-      this.loginEmployee.consultingRoomCheckIn.forEach((itemr, r) => {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      console.log(this.loginEmployee.storeCheckIn);
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.storeObject === undefined) {
+          const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
+          itemr.storeObject = store_.storeObject;
+          console.log(itemr.storeObject);
+        }
         if (itemr.isDefault === true && itemr.isOn === true) {
           itemr.isOn = false;
           this.employeeService.update(this.loginEmployee).then(payload => {
             this.loginEmployee = payload;
+          }, err => {
+            // console.log(err);
           });
         }
       });

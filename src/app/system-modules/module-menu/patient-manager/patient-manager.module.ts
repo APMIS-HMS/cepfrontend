@@ -78,6 +78,8 @@ import { OnlyMaterialModule } from '../../../shared-common-modules/only-material
 import { AddPatientTagsComponent } from './patientmanager-detailpage/documentation/add-patient-tags/add-patient-tags.component';
 import { PatientImmunizationComponent } from './patientmanager-detailpage/patient-immunization/patient-immunization.component';
 import { LabEventEmitterService } from '../../../services/facility-manager/lab-event-emitter.service';
+import { VaccineAdministrationComponent } from './patientmanager-detailpage/patient-immunization/vaccine-administration/vaccine-administration.component';
+import { VaccineDocumentationComponent } from './patientmanager-detailpage/patient-immunization/vaccine-documentation/vaccine-documentation.component';
 
 @NgModule({
   declarations: [
@@ -125,7 +127,9 @@ import { LabEventEmitterService } from '../../../services/facility-manager/lab-e
     PatientTagsComponent,
     PatientAddTagComponent,
     AddPatientTagsComponent,
-    PatientImmunizationComponent
+    PatientImmunizationComponent,
+    VaccineAdministrationComponent,
+    VaccineDocumentationComponent
   ],
   exports: [],
   imports: [

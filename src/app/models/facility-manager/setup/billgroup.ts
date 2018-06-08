@@ -11,4 +11,5 @@ export interface BillIGroup {
     discount: number;
     subTotal: number;
     grandTotal: number;
+    totalQuantity?: number;
 }

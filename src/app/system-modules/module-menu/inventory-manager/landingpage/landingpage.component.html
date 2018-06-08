@@ -109,18 +109,18 @@
                 <div class="card-list-item" *ngFor="let inventory of inventories; let i=index;">
                     <div class="row">
                         <div class="table-list col-xs-3" (click)="onShowBatch(inventory)">
-                            {{inventory.productObject.name}}
+                            {{inventory?.productObject?.name}}
                         </div>
                         <div class="table-list col-xs-3">
                             <div (click)="onShowBatch(inventory)" class="prod-rowItem item2">
-                                <div class="workspace-count">{{inventory.transactions.length}}</div>
+                                <div class="workspace-count">{{inventory?.transactions?.length}}</div>
                                 <ul class="shadow-RB workspace-listWrap animated zoomIn">
                                     <li *ngFor="let store of inventory.transactions" class="workspace-listItem">
                                         <ng-container>
                                             <span>
-                                                    <span>Batch: {{store.batchNumber}},</span>
+                                                    <span>Batch: {{store?.batchNumber}},</span>
                                             <span>Qty: {{store.availableQuantity}},</span>
-                                            <span *ngIf="store.expiration !== ''"> Ex.: {{store.expiration}}</span>
+                                            <span *ngIf="store.expiration !== ''"> Ex.: {{store?.expiration}}</span>
                                             <span *ngIf="store.expiration === ''">EXPIRED</span>
                                             </span>
                                         </ng-container>
@@ -132,11 +132,11 @@
                             </div>
                         </div>
                         <div class="table-list col-xs-3" (click)="onShowBatch(inventory)">
-                            {{inventory.totalQuantity}}
+                            {{inventory?.totalQuantity}}
                         </div>
                         <div class="table-list col-xs-3">
                             <div (click)="onShowBatch(inventory)" class="prod-rowItem item3">
-                                {{inventory.availableQuantity}}
+                                {{inventory?.availableQuantity}}
                             </div>
                         </div>
 
@@ -152,10 +152,10 @@
                                 </div>
                             </div>
                             <div class="card-list-item" *ngFor="let transaction of inventory.transactions">
-                                <div class="table-list col-xs-3">{{transaction.batchNumber}}</div>
-                                <div class="table-list col-xs-2">{{transaction.expiryDate | date:'shortDate'}}</div>
-                                <div class="table-list col-xs-2">{{transaction.quantity}}</div>
-                                <div class="table-list col-xs-3">{{transaction.availableQuantity}}</div>
+                                <div class="table-list col-xs-3">{{transaction?.batchNumber}}</div>
+                                <div class="table-list col-xs-2">{{transaction?.expiryDate | date:'shortDate'}}</div>
+                                <div class="table-list col-xs-2">{{transaction?.quantity}}</div>
+                                <div class="table-list col-xs-3">{{transaction?.availableQuantity}}</div>
                                 <div class="table-list col-xs-2">
                                     <div (click)="onAdjustStock(inventory,transaction)" class="btn-liner">Adjust Stock</div>
                                 </div>

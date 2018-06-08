@@ -1,16 +1,16 @@
-import { Router } from "@angular/router";
-const feathers = require("@feathersjs/feathers");
-const socketio = require("@feathersjs/socketio-client");
-const io = require("socket.io-client");
-const localstorage = require("feathers-localstorage");
-const rest = require("@feathersjs/rest-client");
-const authentication = require("@feathersjs/authentication-client");
-import { CoolLocalStorage } from "angular2-cool-storage";
-import { Injectable } from "@angular/core";
-const rx = require("feathers-reactive");
-const RxJS = require("rxjs/Rx");
+import {Router} from '@angular/router';
+const feathers = require('@feathersjs/feathers');
+const socketio = require('@feathersjs/socketio-client');
+const io = require('socket.io-client');
+const localstorage = require('feathers-localstorage');
+const rest = require('@feathersjs/rest-client');
+const authentication = require('@feathersjs/authentication-client');
+import {CoolLocalStorage} from 'angular2-cool-storage';
+import {Injectable} from '@angular/core';
+const rx = require('feathers-reactive');
+const RxJS = require('rxjs/Rx');
 
-const HOST = "https://apmisapitest.azurewebsites.net";
+const HOST = 'https://apmisapitest.azurewebsites.net';
 
 @Injectable()
 export class SocketService {
@@ -22,20 +22,17 @@ export class SocketService {
     this.HOST = HOST;
     this.socket = io(this.HOST);
     this._app = feathers()
-      .configure(socketio(this.socket))
-      .configure(rx(RxJS, { listStrategy: "always" }))
-      .configure(authentication({ storage: window.localStorage }));
+                    .configure(socketio(this.socket))
+                    .configure(rx(RxJS, {listStrategy: 'always'}))
+                    .configure(authentication({storage: window.localStorage}));
   }
   logOut() {
     this._app.logout();
     this.locker.clear();
   }
   async loginIntoApp(query: any) {
-    return await this._app.authenticate({
-      strategy: "local",
-      email: query.email,
-      password: query.password
-    });
+    return await this._app.authenticate(
+        {strategy: 'local', email: query.email, password: query.password});
   }
   getService(value: any) {
     return this._app.service(value);
@@ -45,7 +42,7 @@ export class SocketService {
   }
 }
 
-const superagent = require("superagent");
+const superagent = require('superagent');
 @Injectable()
 export class RestService {
   public HOST;
@@ -55,31 +52,27 @@ export class RestService {
   }
   constructor(private locker: CoolLocalStorage, private _router: Router) {
     this.HOST = HOST;
-    if (
-      this.locker.getObject("auth") !== undefined &&
-      this.locker.getObject("auth") != null
-    ) {
-      const auth: any = this.locker.getObject("token");
-      this._app = feathers()
-        .configure(
-          rest(this.HOST).superagent(superagent, {
-            headers: { authorization: "Bearer " + auth }
-          })
-        )
-        .configure(rx(RxJS, { listStrategy: "always" }))
-        .configure(authentication({ storage: window.localStorage }));
+    if (this.locker.getObject('auth') !== undefined &&
+        this.locker.getObject('auth') != null) {
+      const auth: any = this.locker.getObject('token');
+      this._app =
+          feathers()
+              .configure(rest(this.HOST).superagent(
+                  superagent, {headers: {authorization: 'Bearer ' + auth}}))
+              .configure(rx(RxJS, {listStrategy: 'always'}))
+              .configure(authentication({storage: window.localStorage}));
     } else {
-      this._app = feathers() // Initialize feathers
-        .configure(rest(this.HOST).superagent(superagent)) // Fire up rest
-        .configure(authentication({ storage: window.localStorage })); // Configure feathers-hooks
+      this._app =
+          feathers()  // Initialize feathers
+              .configure(
+                  rest(this.HOST).superagent(superagent))  // Fire up rest
+              .configure(authentication(
+                  {storage: window.localStorage}));  // Configure feathers-hooks
     }
   }
   loginIntoApp(query) {
-    return this._app.authenticate({
-      strategy: "local",
-      email: query.email,
-      password: query.password
-    });
+    return this._app.authenticate(
+        {strategy: 'local', email: query.email, password: query.password});
   }
   getService(value: any) {
     return this._app.service(value);

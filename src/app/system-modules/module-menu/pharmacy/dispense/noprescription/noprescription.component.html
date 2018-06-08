@@ -14,17 +14,17 @@
     <div class="individual-details">
         <div class="row">
             <!-- begin individual -->
-            <div *ngIf="individualShow" class="col-sm-3 col-xs-12">
+            <div *ngIf="individualShow" class="col-sm-4 col-xs-12">
                 <mat-input-container class="example-full-width">
                     <input matInput formControlName="phone" placeholder="Phone Number" width="100%">
                 </mat-input-container>
             </div>
-            <div *ngIf="individualShow" class="col-sm-3  col-xs-12">
+            <div *ngIf="individualShow" class="col-sm-4  col-xs-12">
                 <mat-input-container class="example-full-width">
                     <input matInput formControlName="lastName" placeholder="Last Name">
                 </mat-input-container>
             </div>
-            <div *ngIf="individualShow" class="col-sm-3 col-xs-12">
+            <div *ngIf="individualShow" class="col-sm-4 col-xs-12">
                 <mat-input-container class="example-full-width">
                     <input matInput formControlName="firstName" placeholder="First Name">
                 </mat-input-container>
@@ -59,7 +59,7 @@
                     </mat-select>
                 </mat-form-field>
             </div>
-            <div class="col-sm-3 col-mat-2 col-xs-12" *ngIf="deptLocationShow internalShow">
+            <div class="col-sm-3 col-mat-2 col-xs-12" *ngIf="deptLocationShow && internalShow">
                 <mat-form-field>
                     <mat-select placeholder="Unit" formControlName="unit" class="example-full-width">
                         <mat-option *ngFor="let unit of units" [value]="unit">{{ unit.name }}</mat-option>
@@ -75,10 +75,10 @@
             </div>
 
             <!--end Internal-->
-            <div class="col-sm-3 col-mat-4 col-xs-12" style="margin-top: 20px;">
+            <div class="col-sm-4 col-mat-4 col-xs-12" style="margin-top: 20px;">
                 <div class="cu-search-box">
                     <mat-input-container>
-                        <input matInput formControlName="product" [attr.data-selected-p-id]="selectedProductId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Drug" autocomplete="off">
+                        <input matInput formControlName="product" [attr.data-selected-p-id]="selectedProductId" class="cu-search" (keydown)="keyupSearch();" (focus)="focusSearch();" (focusout)="focusOutSearch();" placeholder="Product" autocomplete="off">
                     </mat-input-container>
                     <div class="cu-popup-wrapper" *ngIf="showCuDropdown">
                         <div class="cu-popover-arrow"></div>
@@ -89,8 +89,8 @@
                             <li><a class="header">Select item</a></li>
                             <li *ngIf="products.length === 0 && !cuDropdownLoading" class="text-center"><a>Result is empty</a></li>
                             <li *ngIf="products.length === 0 && cuDropdownLoading" class="text-center"><a><i class="fa fa-spinner fa-spin"></i></a></li>
-                            <li *ngFor="let product of products" #productId [attr.data-p-id]="product.productId" [attr.data-p-iid]="product._id" [attr.data-p-fsid]="product.facilityServiceId" [attr.data-p-sid]="product.serviceId" [attr.data-p-cid]="product.categoryId" [attr.data-p-costPrice]="product.price"
-                                (click)="onClickCustomSearchItem($event, productId)"><a>{{ product.product }}</a></li>
+                            <li *ngFor="let product of products" (click)="onClickCustomSearchItem($event, product)"><a>{{ product?.productObject?.name }}</a></li>
+                            <!-- <li *ngFor="let product of products" #productId [attr.data-p-id]="product.productId" [attr.data-p-iid]="product._id" [attr.data-p-fsid]="product.facilityServiceId" [attr.data-p-sid]="product.serviceId" [attr.data-p-cid]="product.categoryId" (click)="onClickCustomSearchItem($event, product)"><a>{{ product?.productObject?.name }}</a></li> -->
                         </ul>
                         <div class="cu-footer">
                             <button class="btn btn-default">Cancel</button>
@@ -101,8 +101,9 @@
             <div class="col-sm-3 col-mat-3 col-xs-12" style="margin-top:2px;">
                 <mat-form-field>
                     <mat-select placeholder="Batch Number" formControlName="batchNumber" class="example-full-width">
-                        <mat-option *ngFor="let batch of batches" [(value)]="batch._id" #batchId [attr.data-p-price]="batch.costPrice" [attr.data-p-batch]="batch.batchNumber" [attr.data-p-qty]="batch.quantity" (click)="onClickBatchSelect($event, batchId)">{{ batch.batchNumber }} ({{batch.quantity}}) <small>{{batch.expiryDate | date }}</small>
-                        </mat-option>
+                        <mat-option *ngFor="let batch of batches" [value]="batch" (click)="onClickBatchSelect($event, batch)">{{ batch.batchNumber }} ({{batch.quantity}}) <small>{{batch.expiryDate | date }}</small></mat-option>
+                        <!-- <mat-option *ngFor="let batch of batches" [(value)]="batch._id" #batchId [attr.data-p-price]="batch.costPrice" [attr.data-p-batch]="batch.batchNumber" [attr.data-p-qty]="batch.quantity" (click)="onClickBatchSelect($event, batchId)">{{ batch.batchNumber }} ({{batch.quantity}}) <small>{{batch.expiryDate | date }}</small>
+                        </mat-option> -->
                     </mat-select>
                 </mat-form-field>
             </div>
@@ -111,7 +112,7 @@
                     <input matInput type="number" formControlName="qty" placeholder="Quantity">
                 </mat-input-container>
             </div>
-            <div class="col-sm-3 col-mat-3 col-xs-12" style="margin-top: 20px;">
+            <div class="col-sm-2 col-mat-3 col-xs-12" style="margin-top: 20px;">
                 <input type="hidden" formControlName="cost">
                 <span style="margin-top: 40px;">
                     <h6><b>Unit price: &#x20A6;{{ price }}</b></h6>
@@ -139,16 +140,14 @@
         </div>
     </div>
     <div class="card-content">
-        <div class="card-list-item">
-            <div *ngIf="prescriptions.length===0 && !loading" class="row">
-                <div class="table-list col-lg-12">
-                    No data available in table
-                </div>
+        <div class="card-list-item" *ngIf="prescriptions.length===0 && !loading">
+            <div class="table-list col-xs-12">
+                No data available in table
             </div>
-            <div *ngIf="prescriptions.length===0 && loading" class="row">
-                <div class="table-list col-lg-12">
-                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
-                </div>
+        </div>
+        <div class="card-list-item" *ngIf="prescriptions.length===0 && loading">
+            <div class="table-list col-xs-12">
+                <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
             </div>
         </div>
         <div class="card-list-item" *ngFor="let prescription of prescriptions; let i=index;">
@@ -156,9 +155,9 @@
                 <div class="table-list col-xs-1">{{i+1}}</div>
                 <div class="table-list col-xs-2">{{prescription?.productName}}</div>
                 <div class="table-list col-xs-1">{{prescription?.qty}}</div>
-                <div class="table-list col-xs-2">{{prescription?.batchNumber}}</div>
+                <div class="table-list col-xs-2">{{prescription?.batchNumber?.batchNumber}}</div>
                 <div class="table-list col-xs-2">{{prescription?.unitPrice}}</div>
-                <div class="table-list col-xs-2">{{prescription.qty * prescription.unitPrice}}</div>
+                <div class="table-list col-xs-2">{{prescription?.qty * prescription?.unitPrice}}</div>
                 <div class="table-list col-xs-2">
                     <i class="fa fa-edit fa-fw"></i>
                     <i class="fa fa-trash fa-fw"></i>

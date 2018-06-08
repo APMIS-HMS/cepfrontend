@@ -7,6 +7,7 @@
 
 .body-wrap {
     margin-top: 0;
+    z-index: 0;
 }
 
 .c-page-wrapper {
@@ -73,7 +74,7 @@
     width: 80% !important;
 }
 
-.container{
+.container {
     padding-top: 10px;
     padding-left: 10%;
     padding-right: 10%;
@@ -81,17 +82,18 @@
     width: 100%;
     box-sizing: border-box;
 }
-.mat-form-field{
+
+.mat-form-field {
     width: 100% !important;
 }
-.card{
+
+.card {
     position: relative;
     background: #fff;
     width: 100%;
     box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.16);
     margin-top: 20px;
-    
-    .card-header{
+    .card-header {
         background: #337ab7;
         color: #fff;
         font-size: 1.2rem;
@@ -100,46 +102,45 @@
         line-height: 30px;
         border-bottom: solid 1px #fff;
         font-weight: 600;
-        .table-head{
+        .table-head {
             border-right: solid 1px #fff;
             text-align: center;
-            .search-box{
+            .search-box {
                 margin-top: 10px;
             }
         }
-        .table-header-input{
+        .table-header-input {
             background: rgba(255, 255, 255, 0.233);
             color: #fff;
             border: none;
             border-radius: 5px;
             width: 100%;
             text-align: center;
-            font-size: 1.2rem !important; 
-            height: 30px;       
+            font-size: 1.2rem !important;
+            height: 30px;
         }
-        .table-header-select{
+        .table-header-select {
             background: rgba(255, 255, 255, 0.233);
             color: #dddddd;
             border: none;
             border-radius: 5px;
             width: 100%;
             text-align: center;
-            height: 30px;            
-            font-size: 1.2rem !important;                    
+            height: 30px;
+            font-size: 1.2rem !important;
         }
-        .table-head:last-of-type{
+        .table-head:last-of-type {
             border: none;
         }
     }
-    .card-content{
+    .card-content {
         font-size: 1.2px;
-        .table-list{
+        .table-list {
             // border-right: solid 1px #aaa;
             text-align: center;
         }
-        
     }
-    .card-header-box{
+    .card-header-box {
         background: rgba(255, 255, 255, 0.16);
         color: #fff;
         border: none;
@@ -150,28 +151,28 @@
         box-sizing: border-box;
     }
     .card-list-item {
-        padding: 10px;  
+        padding: 10px;
         border-bottom: solid rgb(204, 204, 204) 1px;
         padding-top: 20px;
         padding-bottom: 20px;
         font-size: 1.2rem;
         transition: 0.2s;
     }
-    .options{
+    .options {
         font-size: 1.2rem;
         opacity: 0;
         cursor: pointer;
     }
-    .summary-title{
-        display: block;        
+    .summary-title {
+        display: block;
         padding: 10px;
-        padding-top : 20px;        
+        padding-top: 20px;
         font-size: 3rem;
         color: #b3b3b3;
         margin-bottom: 10px;
         font-weight: 100;
     }
-    .summary-footer{
+    .summary-footer {
         width: 100%;
         background: #33A6FF;
         color: #fff;
@@ -180,61 +181,63 @@
         padding: 10px;
         box-sizing: border-box;
     }
-    .chart-side{
+    .chart-side {
         padding-top: 110px !important;
     }
-    .chart-title{
+    .chart-title {
         font-weight: 100;
         font-size: 4rem;
         color: #b3b3b3;
         display: block;
     }
-    .chart-subtitle{
+    .chart-subtitle {
         font-weight: 900;
         font-size: 1.2rem;
         color: #b3b3b3;
         display: block;
     }
 }
-.padding{
+
+.padding {
     padding: 20px;
 }
-.title{
-    margin-top: 30px;    
+
+.title {
+    margin-top: 30px;
     font-weight: bold;
     margin-bottom: 20px;
 }
 
-.star{
+.star {
     color: rgb(255, 235, 51);
 }
 
-.pie-number{
+.pie-number {
     position: absolute;
     top: 45%;
     left: 17%;
     text-align: center;
 }
-.tabs{
+
+.tabs {
     font-size: 1.2rem;
     line-height: 1.2rem;
     margin-bottom: 10px;
-    .tab{
-        border-bottom: solid 1px #999;        
+    .tab {
+        border-bottom: solid 1px #999;
         padding: 9px;
         text-align: center;
         font-weight: 900;
         cursor: pointer;
         transition: 0.4s;
     }
-    .tab:hover{
-        padding: 8px;        
-        border-bottom: solid 2px #525252;        
+    .tab:hover {
+        padding: 8px;
+        border-bottom: solid 2px #525252;
     }
-    .active{
+    .active {
         color: #337ab7;
-        padding: 8px; 
-        border-bottom: solid 2px #337ab7;        
+        padding: 8px;
+        border-bottom: solid 2px #337ab7;
     }
-
 }

@@ -84,7 +84,7 @@
                                                         <input type="number" min="1" [readonly]="itm.value.packItem === null" matInput mat-error formControlName="size" (change)="onPackageSize(i,productTableForm.controls['productTableArray'].controls)">
                                                     </mat-input-container>
                                                     <mat-form-field class="col-md-6">
-                                                        <mat-select placeholder="Select Packsize" formControlName="packItem" [compareWith]="compareItems">
+                                                        <mat-select placeholder="Select Packsize" formControlName="packItem" [compareWith]="compareItems" (change)="onPackageSize(i,productTableForm.controls['productTableArray'].controls)">
                                                             <mat-option disabled="">None</mat-option>
                                                             <mat-option [value]="item._id" *ngFor="let item of itm.value.packsizes">
                                                                 <span>{{item.name}}</span>
@@ -126,7 +126,7 @@
 
         </div>
 
-        <div class="CTAs-wrap" *ngIf="productTableForm.controls['productTableArray'].value.length > 0 && frmDestinationStore.value != null">
+        <div class="CTAs-wrap" *ngIf="productTableForm.controls['productTableArray'].valid && frmDestinationStore.value != null">
             <button (click)="previewShow()" class="cta-1 cta-no-bg"> Preview </button>
             <button class="cta-1" (click)="saveTransfer()" [disabled]="isProcessing"> Send </button>
         </div>
@@ -148,13 +148,17 @@
             </div>
             <div class="row" *ngIf="searchOpen">
                 <div class="col-md-4">
-                    <input [formControl]="" class="table-header-input" type="text" placeholder="Search From">
+                    <input [formControl]="frmFilterRequisition" class="table-header-input" type="text" placeholder="Search Requisition">
                 </div>
                 <div class="col-md-4">
-                    <input [formControl]="" class="table-header-input" type="Date" placeholder="Date">
+                    <mat-select placeholder="Select Store" [formControl]="frmFilterStore" [compareWith]="compareItems">
+                        <mat-option [value]="item._id" *ngFor="let item of stores">
+                            <span>{{item.name}}</span>
+                        </mat-option>
+                    </mat-select>
                 </div>
                 <div class="col-md-3">
-
+                    <input [formControl]="frmFilterDate" class="table-header-input" type="Date" placeholder="Date">
                 </div>
                 <div class="col-md-1 table-head">
                     <i class="fa fa-close fa-fw" (click)="openSearch()"></i>
@@ -183,7 +187,7 @@
                         <a class="action-btn">
                             <i class="fa fa-eye"></i>
                         </a>
-                        <a *ngIf = "!requistion.isSupplied">
+                        <a *ngIf="!requistion.isSupplied">
                             <span>
                                 <i class="fa fa-level-up" (click)="onClickRequi(requistion)"></i>
                             </span>
