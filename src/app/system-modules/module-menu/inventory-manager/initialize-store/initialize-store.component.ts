@@ -7,7 +7,7 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
-import { ProductService, InventoryInitialiserService, FacilitiesServiceCategoryService, EmployeeService } from '../../../../services/facility-manager/setup/index';
+import { ProductService, InventoryInitialiserService, FacilitiesServiceCategoryService, EmployeeService, InventoryService } from '../../../../services/facility-manager/setup/index';
 
 @Component({
   selector: 'app-initialize-store',
@@ -54,6 +54,7 @@ export class InitializeStoreComponent implements OnInit {
     private authFacadeService: AuthFacadeService,
     private systemModuleService: SystemModuleService,
     private employeeService: EmployeeService,
+    private inventoryService: InventoryService,
     private facilityServiceCategoryService: FacilitiesServiceCategoryService) {
 
     this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
@@ -175,36 +176,47 @@ export class InitializeStoreComponent implements OnInit {
     }
   }
 
-  addProduct(product: any) {
-    this.isEditProductName = false;
-    this.isEnable = true;
-    this.isItemselected = false;
-    this.myForm = this._fb.group({
-      initproduct: this._fb.array([
-      ])
-    });
-    this.selectedProduct = product;
-    const control = <FormArray>this.myForm.controls['initproduct'];
-    if (product.packSizes !== undefined) {
-      let prodObj = this._fb.group({
-        batchNumber: ['', Validators.required],
-        quantity: ['', Validators.required],
-        config: this.initProductConfig(product.packSizes),
-        expiryDate: [new Date()]
+  async addProduct(product: any) {
+    if (this.checkingObject.storeId === undefined) {
+      if (!!this.checkingObject.typeObject) {
+        this.checkingObject = this.checkingObject.typeObject;
+      }
+    }
+    const isVended = await this.inventoryService.find({ query: { productId: product.productId, storeId: this.checkingObject.storeId, facilityId: this.selectedFacility._id } });
+    if (isVended.data.length === 0) {
+      this.isEditProductName = false;
+      this.isEnable = true;
+      this.isItemselected = false;
+      this.myForm = this._fb.group({
+        initproduct: this._fb.array([
+        ])
       });
-
-      control.push(
-        prodObj
-      );
-    } else {
-      control.push(
-        this._fb.group({
+      this.selectedProduct = product;
+      const control = <FormArray>this.myForm.controls['initproduct'];
+      if (product.packSizes !== undefined) {
+        let prodObj = this._fb.group({
           batchNumber: ['', Validators.required],
           quantity: ['', Validators.required],
-          config: [],
+          config: this.initProductConfig(product.packSizes),
           expiryDate: [new Date()]
-        })
-      );
+        });
+
+        control.push(
+          prodObj
+        );
+      } else {
+        control.push(
+          this._fb.group({
+            batchNumber: ['', Validators.required],
+            quantity: ['', Validators.required],
+            config: [],
+            expiryDate: [new Date()]
+          })
+        );
+      }
+    } else {
+      //This product exist in your inventory
+      this.systemModuleService.announceSweetProxy('This product exist in your inventory', 'error');
     }
   }
   initProductConfig(config) {
