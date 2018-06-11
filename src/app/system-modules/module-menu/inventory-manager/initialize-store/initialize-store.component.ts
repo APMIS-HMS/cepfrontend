@@ -56,11 +56,12 @@ export class InitializeStoreComponent implements OnInit {
     private employeeService: EmployeeService,
     private inventoryService: InventoryService,
     private facilityServiceCategoryService: FacilitiesServiceCategoryService) {
-
+      this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
     this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
       if (!!res) {
         if (!!res.typeObject) {
           this.checkingObject = res.typeObject;
+          this.getProducts();
         }
       }
     });
@@ -103,6 +104,7 @@ export class InitializeStoreComponent implements OnInit {
             }
           });
         }
+        this.getProducts();
       }
     });
   }
@@ -113,18 +115,28 @@ export class InitializeStoreComponent implements OnInit {
       initproduct: this._fb.array([
       ])
     });
-    this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
+   
     this.searchControl.valueChanges
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe((por: any) => {
+        if (this.checkingObject.storeId === undefined) {
+          if (!!this.checkingObject.typeObject) {
+            this.checkingObject = this.checkingObject.typeObject;
+          }
+        }
         this.systemModuleService.on();
-        this._productService.findList({
+        this._productService.findProductConfigs({
           query: {
             facilityId: this.selectedFacility._id,
-            name: por
+            storeId: this.checkingObject.storeId,
+            'productObject.name':{
+              $regex: por,
+              $options: 'i'
+            },
           }
         }).then(payload => {
+          console.log(payload);
           this.systemModuleService.off();
           this.products = payload.data;
         }, err => {
@@ -135,8 +147,6 @@ export class InitializeStoreComponent implements OnInit {
     this.productServiceControl.valueChanges.subscribe(value => {
       this.selelctedCategoryId = value;
     });
-
-    this.getProducts();
     this.getServiceCategories();
 
   }
@@ -242,10 +252,16 @@ export class InitializeStoreComponent implements OnInit {
   }
 
   getProducts() {
+    if (this.checkingObject.storeId === undefined) {
+      if (!!this.checkingObject.typeObject) {
+        this.checkingObject = this.checkingObject.typeObject;
+      }
+    }
     this.systemModuleService.on();
-    this._productService.findProductConfigs({ query: { facilityId: this.selectedFacility._id } }).then(payload => {
+    this._productService.findProductConfigs({ query: { facilityId: this.selectedFacility._id, storeId: this.checkingObject.storeId } }).then(payload => {
       this.systemModuleService.off();
       this.products = payload.data;
+      console.log(this.products);
     }, err => {
     });
   }
