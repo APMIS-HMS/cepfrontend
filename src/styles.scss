@@ -2255,3 +2255,16 @@ button,
         }
     }
 }
+.con-pass-wrap{
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 1000;
+    background: #eee;
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
