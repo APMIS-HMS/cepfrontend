@@ -29,7 +29,6 @@ export class SocketService {
 	this.socket = io(this.HOST);
 	this._app = feathers()
   .configure(socketio(this.socket))
-      // .configure(rx({ idField: "_id", listStrategy: 'always' }))
 		.configure(rx(RxJS, { listStrategy: 'always' }))
       // .configure(hooks())
 		.configure(authentication({ storage: window.localStorage }));
