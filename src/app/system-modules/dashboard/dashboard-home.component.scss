@@ -1,4 +1,28 @@
 @import "../../../globals/variables.scss";
+.overlay_mock_text {
+    background: #ab9ba9;
+    opacity: .2;
+    height: 3rem;
+    margin-left: .75rem;
+    width: 50% !important;
+    margin-top: .6rem;
+    // background: linear-gradient(270deg, #EE7752, #E73C7E, #23A6D5, #23D5AB);
+    // -webkit-animation: Gradient 5s ease infinite;
+    // -moz-animation: Gradient 5s ease infinite;
+    // -ms-animation: Gradient 5s ease infinite;
+    // -o-animation: Gradient 5s ease infinite;
+    // animation: Gradient 5s ease infinite;
+    &:nth-child(odd) {
+        width: 75% !important;
+    }
+    &:nth-child(5) {
+        width: 25% !important;
+    }
+    &:nth-child(6) {
+        width: 15% !important;
+    }
+}
+
 .primary-tab {
     position: relative;
     background: #0288D1;
@@ -54,7 +78,8 @@
 .menubar-wrap i:hover {
     color: #0288D1;
 }
-.menu-active{
+
+.menu-active {
     background: #fff !important;
     color: #0288D1 !important;
 }
@@ -478,5 +503,41 @@
     }
     .menuBar-facilityName span {
         padding-right: 30px;
+    }
+}
+
+@-webkit-keyframes Gradient {
+    0% {
+        background-position: 0% 50%
+    }
+    50% {
+        background-position: 100% 50%
+    }
+    100% {
+        background-position: 0% 50%
+    }
+}
+
+@-moz-keyframes Gradient {
+    0% {
+        background-position: 0% 50%
+    }
+    50% {
+        background-position: 100% 50%
+    }
+    100% {
+        background-position: 0% 50%
+    }
+}
+
+@keyframes Gradient {
+    0% {
+        background-position: 0% 50%
+    }
+    50% {
+        background-position: 100% 50%
+    }
+    100% {
+        background-position: 0% 50%
     }
 }

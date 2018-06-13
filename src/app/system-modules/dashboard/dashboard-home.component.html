@@ -25,7 +25,15 @@
 
     <div class="mc-wrap">
         <div *ngIf="innerMenuShow" class="nice-scroll mainmenu-content animated slideInLeft">
-            <ul id="innerMenu-ul" class="innerMenu-ul">
+            <ul *ngIf="!loadedMenu">
+                <li class="overlay_mock_text"></li>
+                <li class="overlay_mock_text"></li>
+                <li class="overlay_mock_text"></li>
+                <li class="overlay_mock_text"></li>
+                <li class="overlay_mock_text"></li>
+                <li class="overlay_mock_text"></li>
+            </ul>
+            <ul *ngIf="loadedMenu" id="innerMenu-ul" class="innerMenu-ul">
                 <li *ngIf="accessHas('Facility')" (click)="facilitySubmenuShow()" [routerLink]="['facility']" routerLinkActive="menu-active"><i class="fa fa-building" aria-hidden="true"></i> <span>Facility</span></li>
                 <li *ngIf="accessHas('Patient-Manager')" (click)="patientSubmenuShow()" [routerLink]="['patient-manager']" routerLinkActive="menu-active"><i class="fa fa-user" aria-hidden="true"></i> <span>Patient Manager</span></li>
                 <li *ngIf="accessHas('Ward-manager')" (click)="patientSubmenuShow()" [routerLink]="['ward-manager']" routerLinkActive="menu-active"><i class="fa fa-bed" aria-hidden="true"></i> <span>Ward Manager</span></li>
@@ -127,4 +135,4 @@
 <div *ngIf="changeFacilityLogo" class="modal-overlay">
     <app-logo-update [selectedFacility]="facilityObj" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-logo-update>
 </div>
-<div class="footer">&copy; 2017 APMIS. All Right Reserved.</div>
+<div class="footer">&copy; 2017 APMIS. All Right Reserved.</div>Z

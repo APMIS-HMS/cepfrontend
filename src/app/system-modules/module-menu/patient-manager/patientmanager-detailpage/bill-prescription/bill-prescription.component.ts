@@ -134,12 +134,14 @@ export class BillPrescriptionComponent implements OnInit {
 		this.facilityServiceId = drug.facilityServiceId;
 		this.categoryId = drug.categoryId;
 
+		console.log(drug);
 		this._facilityPriceService.find({query: {
 			facilityId: this.facility._id,
 			serviceId: drug.serviceId,
 			facilityServiceId: drug.facilityServiceId,
 			categoryId: drug.categoryId
 		}}).then(res => {
+			console.log(res);
 			if (res.data.length > 0) {
 				this.cost = res.data[0].price;
 			} else {
