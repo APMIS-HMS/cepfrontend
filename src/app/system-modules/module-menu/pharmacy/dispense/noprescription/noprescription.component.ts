@@ -488,6 +488,8 @@ export class NoprescriptionComponent implements OnInit {
 				console.log(res);
 				if (res.data.length > 0) {
 					this.price = res.data[0].price;
+				} else {
+					this.price = 0;
 				}
 			});
 		}
@@ -648,7 +650,6 @@ export class NoprescriptionComponent implements OnInit {
 			} else {
 				return null;
 			}
-
 		};
 	}
 }
