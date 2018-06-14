@@ -77,15 +77,32 @@ export class UserService {
     return this._socketService.getService("generate-user").create(data);
   }
 
-  generatePatientAuthorizationToken(patientId, type) {
+  generatePatientAuthorizationToken(query, type) {
     return this._socketService
       .getService("documentation-authorization")
-      .create({ patientId: patientId, type: type });
+      .create({
+        patientId: query.patientId,
+        employeeId: query.employeeId,
+        facilityId: query.facilityId,
+        type: type
+      });
   }
 
-  validatePatientAuthorizationToken(patientId, type, token) {
+  validatePatientAuthorizationToken(
+    patientId,
+    type,
+    token,
+    employeeId,
+    facilityId
+  ) {
     return this._socketService.getService("documentation-authorization").find({
-      query: { patientId: patientId, type: type, token: token }
+      query: {
+        patientId: patientId,
+        type: type,
+        token: token,
+        employeeId: employeeId,
+        facilityId: facilityId
+      }
     });
   }
 }
