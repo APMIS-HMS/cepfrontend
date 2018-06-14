@@ -25,7 +25,6 @@ th.info,
 .lobipanel {
     position: relative;
     margin-bottom: 15px;
-    max-height: 322px;
     min-height: 322px;
     overflow-y: scroll;
 }
@@ -169,4 +168,10 @@ a.active {
     position: absolute;
     right: 5px;
     bottom: 20px;
+}
+.list-bdg{
+    height: 10px; 
+    width: 10px; 
+    border-radius: 8px;
+    font-size: 1.2rem;
 }

@@ -1,19 +1,21 @@
-import { UserFacadeService } from "app/system-modules/service-facade/user-facade.service";
-import { SystemModuleService } from "./../services/module-manager/setup/system-module.service";
+import { UpperCasePipe } from "@angular/common";
 import {
   Component,
-  OnInit,
   EventEmitter,
+  OnInit,
   Output,
   ViewChild
 } from "@angular/core";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
-import { CoolLocalStorage } from "angular2-cool-storage";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-import { FacilitiesService } from "../services/facility-manager/setup/index";
+import { CoolLocalStorage } from "angular2-cool-storage";
+import { UserFacadeService } from "app/system-modules/service-facade/user-facade.service";
+import { AES, enc } from "crypto-ts";
 import { Facility } from "../models/index";
+import { FacilitiesService } from "../services/facility-manager/setup/index";
 import { UserService } from "../services/facility-manager/setup/index";
-import { UpperCasePipe } from "@angular/common";
+
+import { SystemModuleService } from "./../services/module-manager/setup/system-module.service";
 
 @Component({
   selector: "app-login",
@@ -71,10 +73,16 @@ export class LoginComponent implements OnInit {
       this.inProgress = true;
       this.systemModule.on();
       const query = {
-        email: this.upperCasePipe.transform(
-          this.frm_login.controls["username"].value
+        email: AES.encrypt(
+          this.upperCasePipe.transform(
+            this.frm_login.controls["username"].value
+          ),
+          "endurance@pays@alot"
         ),
-        password: this.frm_login.controls["password"].value
+        password: AES.encrypt(
+          this.frm_login.controls["password"].value,
+          "endurance@pays@alot"
+        )
       };
       this.userService.login(query).then(
         result => {
@@ -82,9 +90,7 @@ export class LoginComponent implements OnInit {
             .authenticateResource()
             .then(
               payload => {
-                let auth = {
-                  data: result.user
-                };
+                let auth = { data: result.user };
                 this.locker.setObject("auth", auth);
                 this.locker.setObject("token", result.accessToken);
 
@@ -97,6 +103,7 @@ export class LoginComponent implements OnInit {
                 });
               },
               error => {
+                console.log(error);
                 this.systemModule.off();
                 this.inProgress = false;
               }

@@ -89,7 +89,7 @@ export class PatientPrescriptionComponent implements OnInit {
 
     ngOnInit() {
         this.facility = <Facility>this._locker.getObject('selectedFacility');
-        this.user = <User> this._locker.getObject('auth');
+        // this.user = <User> this._locker.getObject('auth');
         // this.employeeDetails = this._locker.getObject('loginEmployee');
         this._authFacadeService.getLogingEmployee().then(res => {
           this.employeeDetails = res;
@@ -147,6 +147,7 @@ export class PatientPrescriptionComponent implements OnInit {
         outstandingBalance: 0,
         dispensedArray: []
       };
+
       const prescriptionItem = <PrescriptionItem>{
         genericName: value.drug,
         routeName: value.route,
@@ -156,8 +157,7 @@ export class PatientPrescriptionComponent implements OnInit {
         duration: value.duration + ' ' + value.durationUnit,
         startDate: value.startDate,
         strength: value.strength,
-        patientInstruction:
-            (value.specialInstruction == null) ? '' : value.specialInstruction,
+        patientInstruction: (value.specialInstruction == null) ? '' : value.specialInstruction,
         refillCount: value.refillCount,
         ingredients: this.selectedIngredients,
         form: this.selectedForm,
@@ -173,8 +173,7 @@ export class PatientPrescriptionComponent implements OnInit {
       this.addPrescriptionShow = true;
       if (this.prescriptions.prescriptionItems !== undefined) {
         // Check if generic has been added already.
-        const containsGeneric = this.prescriptionArray.filter(
-            x => prescriptionItem.genericName === x.genericName);
+        const containsGeneric = this.prescriptionArray.filter(x => prescriptionItem.genericName === x.genericName);
         if (containsGeneric.length < 1) {
           this.prescriptionArray.push(prescriptionItem);
         }
@@ -185,9 +184,7 @@ export class PatientPrescriptionComponent implements OnInit {
       const prescription = <Prescription>{
         facilityId: this.facility._id,
         employeeId: this.employeeDetails._id,
-        clinicId: (!!this.selectedAppointment.clinicId) ?
-            this.selectedAppointment.clinicId :
-            undefined,
+        clinicId: (!!this.selectedAppointment.clinicId) ? this.selectedAppointment.clinicId : undefined,
         priority: '',
         patientId: this.patientDetails._id,
         personId: this.patientDetails.personId,
@@ -203,10 +200,8 @@ export class PatientPrescriptionComponent implements OnInit {
       this.addPrescriptionForm.controls['refillCount'].reset(0);
       this.addPrescriptionForm.controls['duration'].reset(0);
       this.addPrescriptionForm.controls['startDate'].reset(new Date());
-      this.addPrescriptionForm.controls['durationUnit'].reset(
-          this.durationUnits[1].name);
-      this.addPrescriptionForm.controls['dosageUnit'].reset(
-          this.dosageUnits[0].name);
+      this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[1].name);
+      this.addPrescriptionForm.controls['dosageUnit'].reset(this.dosageUnits[0].name);
     }
   }
 
