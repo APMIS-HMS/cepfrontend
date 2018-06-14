@@ -1,7 +1,8 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CoolLocalStorage} from 'angular2-cool-storage';
-import {AES, enc} from 'crypto-ts';
+var AES = require('crypto-js/aes');
+var CryptoJS = require('crypto-js');
 
 import {AuthorizationType} from './../../models/facility-manager/setup/documentation';
 import {UserService} from './../../services/facility-manager/setup/user.service';
@@ -43,9 +44,9 @@ export class PassContinueComponent implements OnInit {
       if (dataE !== null && dataP !== null) {
         // decrypt docApproval
         const dataPlainE =
-            AES.decrypt(dataE, '@apmis!simpa').toString(enc.Utf8);
+            AES.decrypt(dataE, '@apmis!simpa').toString(CryptoJS.enc.Utf8);
         const dataPlainP =
-            AES.decrypt(dataP, '@apmis!simpa').toString(enc.Utf8);
+            AES.decrypt(dataP, '@apmis!simpa').toString(CryptoJS.enc.Utf8);
         if (!isPast(parse(dataPlainE)) && this.patientId == dataPlainP) {
           this.closeModal.emit(true);
         } else {
@@ -86,7 +87,6 @@ export class PassContinueComponent implements OnInit {
                   } else {
                   }
                 }
-
               } else {
               }
             });
