@@ -17,7 +17,8 @@ export class PrescriptionService {
     this._customSocket = _socketService.getService('get-prescription');
     this._autorizeSocket = _socketService.getService('authorize-prescription');
     this._billSocket = _socketService.getService('bill-prescription');
-    this._socket.timeout = 50000;
+    this._socket.timeout = 150000;
+    this._autorizeSocket.timeout = 150000;
     this._socket.on('created', function (gender) {
     });
   }

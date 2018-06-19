@@ -50,7 +50,7 @@ export class DashboardHomeComponent implements OnInit {
 
   facilityManagerActive = true;
   moduleManagerActive = false;
-
+  loadedMenu = false;
   facilitySubmenuActive = true;
   employeeSubmenuActive = false;
   userSubmenuActive = false;
@@ -189,9 +189,13 @@ export class DashboardHomeComponent implements OnInit {
   }
 
   getUserRoles() {
-    this.authFacadeService.getUserAccessControls(true).then(
-      payload => {
-        this.access = payload;
+    this.authFacadeService.getUserAccessControls(true).then((payload: any) => {
+      if (payload.modules.length > 0) {
+        // setTimeout(e => {
+          this.loadedMenu = true;
+          this.access = payload;
+        // }, 5000);
+      }
       },
       error => { }
     );

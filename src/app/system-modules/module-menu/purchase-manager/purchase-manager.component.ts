@@ -1,20 +1,23 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { AuthFacadeService } from '../../service-facade/auth-facade.service';
-import { Router, ActivatedRoute } from '@angular/router';
-import { PurchaseEmitterService } from '../../../services/facility-manager/purchase-emitter.service';
-import { Employee, Facility } from '../../../models/index';
-import { EmployeeService, WorkSpaceService } from '../../../services/facility-manager/setup/index';
-import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Observable } from 'rxjs/Observable';
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { AuthFacadeService } from "../../service-facade/auth-facade.service";
+import { Router, ActivatedRoute } from "@angular/router";
+import { PurchaseEmitterService } from "../../../services/facility-manager/purchase-emitter.service";
+import { Employee, Facility } from "../../../models/index";
+import {
+  EmployeeService,
+  WorkSpaceService
+} from "../../../services/facility-manager/setup/index";
+import { CoolLocalStorage } from "angular2-cool-storage";
+import { Observable } from "rxjs/Observable";
 
 @Component({
-  selector: 'app-purchase-manager',
-  templateUrl: './purchase-manager.component.html',
-  styleUrls: ['./purchase-manager.component.scss']
+  selector: "app-purchase-manager",
+  templateUrl: "./purchase-manager.component.html",
+  styleUrls: ["./purchase-manager.component.scss"]
 })
 export class PurchaseManagerComponent implements OnInit, OnDestroy {
-  pageInView: String = '';
-  pageInView_subTitle: String = '';
+  pageInView: String = "";
+  pageInView_subTitle: String = "";
   purchaseHistoryNavMenu = false;
   purchaseOrderNavMenu = false;
   invoicesNavMenu = false;
@@ -33,12 +36,16 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
   subscription: any = <any>{};
 
   constructor(
-    private _purchaseEventEmitter: PurchaseEmitterService, private route: ActivatedRoute,
-    private _router: Router, private employeeService: EmployeeService,
+    private _purchaseEventEmitter: PurchaseEmitterService,
+    private route: ActivatedRoute,
+    private _router: Router,
+    private employeeService: EmployeeService,
     private authFacadeService: AuthFacadeService,
-    private locker: CoolLocalStorage, private workSpaceService: WorkSpaceService) {
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    const auth: any = this.locker.getObject('auth');
+    private locker: CoolLocalStorage,
+    private workSpaceService: WorkSpaceService
+  ) {
+    this.selectedFacility = <Facility>this.locker.getObject("selectedFacility");
+    const auth: any = this.locker.getObject("auth");
     // this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.subscription = this.employeeService.checkInAnnounced$.subscribe(res => {
       if (!!res) {
@@ -86,19 +93,13 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
                 this.locker.setObject('checkingObject', this.checkingObject);
               });
             }
-
           });
         }
-
       }
     });
   }
 
   ngOnInit() {
-
-
-
-
     // const emp$ = Observable.fromPromise(this.employeeService.find({
     //   query: {
     //     facilityId: this.selectedFacility._id, personId: auth.data.personId, showbasicinfo: true
@@ -170,7 +171,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
   }
 
   closeActivate(e) {
-    if (e.srcElement.id !== 'contentSecMenuToggle') {
+    if (e.srcElement.id !== "contentSecMenuToggle") {
       this.contentSecMenuShow = false;
     }
   }
@@ -220,8 +221,8 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
     this.purchaseHistoryNavMenu = false;
     this.purchaseOrderNavMenu = false;
     this.invoicesNavMenu = false;
-    this.pageInView = 'Purchase Order'
-    this.pageInView_subTitle = 'Purchase Manager'
+    this.pageInView = "Purchase Order";
+    this.pageInView_subTitle = "Purchase Manager";
   }
 
   onClickPurchaseEntryNavMenu() {
@@ -230,8 +231,8 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
     this.purchaseHistoryNavMenu = false;
     this.purchaseOrderNavMenu = false;
     this.invoicesNavMenu = false;
-    this.pageInView = 'Purchase Entry';
-    this.pageInView_subTitle = 'Purchase Manager';
+    this.pageInView = "Purchase Entry";
+    this.pageInView_subTitle = "Purchase Manager";
   }
 
   pageInViewLoader(title) {
@@ -239,7 +240,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
   }
 
   changeRoute(val) {
-    if (val === '') {
+    if (val === "") {
       this.purchaseHistoryNavMenu = false;
       this.purchaseOrderNavMenu = true;
       this.purchaseEntryNavMenu = false;
@@ -247,7 +248,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
       this._purchaseEventEmitter.announcedUrl.subscribe(url => {
         this.pageInView = url;
       });
-    } else if (val === 'histories') {
+    } else if (val === "histories") {
       this.purchaseHistoryNavMenu = true;
       this.purchaseOrderNavMenu = false;
       this.invoicesNavMenu = false;
@@ -255,7 +256,7 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
       this._purchaseEventEmitter.announcedUrl.subscribe(url => {
         this.pageInView = url;
       });
-    } else if (val === 'invoices') {
+    } else if (val === "invoices") {
       this.purchaseHistoryNavMenu = false;
       this.purchaseOrderNavMenu = false;
       this.invoicesNavMenu = true;
@@ -263,44 +264,44 @@ export class PurchaseManagerComponent implements OnInit, OnDestroy {
       this._purchaseEventEmitter.announcedUrl.subscribe(url => {
         this.pageInView = url;
       });
-    } else if (val === 'purchase-entry') {
+    } else if (val === "purchase-entry") {
       this.purchaseEntryNavMenu = true;
       this.newpurchaseNavMenu = false;
       this.purchaseHistoryNavMenu = false;
       this.purchaseOrderNavMenu = false;
       this.invoicesNavMenu = false;
-      this.pageInView = 'Purchase Entry';
-      this.pageInView_subTitle = 'Purchase Manager';
+      this.pageInView = "Purchase Entry";
+      this.pageInView_subTitle = "Purchase Manager";
     }
   }
 
   private checkPageUrl(param: string) {
-    if (param.includes('histories')) {
+    if (param.includes("histories")) {
       this.purchaseHistoryNavMenu = true;
-    } else if (param.includes('orders')) {
+    } else if (param.includes("orders")) {
       this.purchaseOrderNavMenu = true;
-    } else if (param.includes('invoices')) {
+    } else if (param.includes("invoices")) {
       this.invoicesNavMenu = true;
     }
 
-    if (param.includes('new-order')) {
+    if (param.includes("new-order")) {
       this.newpurchaseNavMenu = true;
       this.purchaseEntryNavMenu = false;
       this.purchaseHistoryNavMenu = false;
       this.purchaseOrderNavMenu = false;
       this.invoicesNavMenu = false;
       this.contentSecMenuShow = false;
-      this.pageInView = 'Purchase Order';
-      this.pageInView_subTitle = 'Purchase Manager';
-    } else if (param.includes('purchase-entry')) {
+      this.pageInView = "Purchase Order";
+      this.pageInView_subTitle = "Purchase Manager";
+    } else if (param.includes("purchase-entry")) {
       this.purchaseEntryNavMenu = true;
       this.purchaseHistoryNavMenu = false;
       this.purchaseOrderNavMenu = false;
       this.invoicesNavMenu = false;
       this.contentSecMenuShow = false;
       this.newpurchaseNavMenu = false;
-      this.pageInView = 'Purchase Entry';
-      this.pageInView_subTitle = 'Purchase Manager';
+      this.pageInView = "Purchase Entry";
+      this.pageInView_subTitle = "Purchase Manager";
     }
   }
   ngOnDestroy() {
