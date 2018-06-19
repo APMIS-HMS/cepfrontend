@@ -26,31 +26,151 @@
     <div class="mc-wrap">
         <div *ngIf="innerMenuShow" class="nice-scroll mainmenu-content animated slideInLeft">
             <ul id="innerMenu-ul" class="innerMenu-ul">
-                <li *ngIf="accessHas('Facility')" (click)="facilitySubmenuShow()" [routerLink]="['facility']" routerLinkActive="menu-active"><i class="fa fa-building" aria-hidden="true"></i> <span>Facility</span></li>
-                <li *ngIf="accessHas('Patient-Manager')" (click)="patientSubmenuShow()" [routerLink]="['patient-manager']" routerLinkActive="menu-active"><i class="fa fa-user" aria-hidden="true"></i> <span>Patient Manager</span></li>
-                <li *ngIf="accessHas('Ward-manager')" (click)="patientSubmenuShow()" [routerLink]="['ward-manager']" routerLinkActive="menu-active"><i class="fa fa-bed" aria-hidden="true"></i> <span>Ward Manager</span></li>
-                <li *ngIf="accessHas('Payment')" (click)="patientSubmenuShow()" [routerLink]="['payment']" routerLinkActive="menu-active"><i class="fa fa-money" aria-hidden="true"></i> <span>Payment</span></li>
-                <li *ngIf="accessHas('Wallet')" (click)="patientSubmenuShow()" [routerLink]="['wallet']" routerLinkActive="menu-active"><i class="fa fa-credit-card-alt" aria-hidden="true"></i> <span>Wallet</span></li>
-                <li *ngIf="accessHas('Order')" (click)="userSubmenuShow()" [routerLink]="['access-manager']" routerLinkActive="menu-active"><i class="fa fa-first-order" aria-hidden="true"></i> <span>Order Management</span></li>
-                <li *ngIf="accessHas('Clinic')" (click)="facilitySubmenuShow()" [routerLink]="['clinic']" routerLinkActive="menu-active"><i class="fa fa-medkit" aria-hidden="true"></i> <span>Clinic Management</span></li>
-                <li *ngIf="accessHas('Clinical-Documentation')" (click)="formsSubmenuShow()" [routerLink]="['clinical-documentation']" routerLinkActive="menu-active"><i class="fa fa-newspaper-o" aria-hidden="true"></i> <span>Clinical Documentation</span></li>
-                <li *ngIf="accessHas('Store')" (click)="patientSubmenuShow()" [routerLink]="['store']" routerLinkActive="menu-active"><i class="fa fa-plus-square" aria-hidden="true"></i> <span>Store</span></li>
-                <li *ngIf="accessHas('Pharmacy')" (click)="patientSubmenuShow()" [routerLink]="['pharmacy']" routerLinkActive="menu-active"><i class="fa fa-plus-square" aria-hidden="true"></i> <span>Pharmacy</span></li>
-                <li *ngIf="accessHas('Laboratory')" (click)="laboratorySubmenuShow()" [routerLink]="['laboratory']" routerLinkActive="menu-active"><i class="fa fa-flask" aria-hidden="true"></i> <span>Laboratory</span></li>
-                <li *ngIf="accessHas('Radiology')" (click)="employeeSubmenuShow()" [routerLink]="['radiology']" routerLinkActive="menu-active"><i class="fa fa-picture-o" aria-hidden="true"></i> <span>Radiology</span></li>
-                <li *ngIf="accessHas('Blood')" (click)="patientSubmenuShow()" [routerLink]="['patient-manager']" routerLinkActive="menu-active"><i class="fa fa-tint" aria-hidden="true"></i> <span>Blood Bank</span></li>
-                <li *ngIf="accessHas('Theatre')" (click)="patientSubmenuShow()" [routerLink]="['patient-manager']" routerLinkActive="menu-active"><i class="fa fa-bed" aria-hidden="true"></i> <span>Theatre</span></li>
-                <li *ngIf="accessHas('Immunization')" (click)="patientSubmenuShow()" [routerLink]="['immunization']" routerLinkActive="menu-active"><i class="fa fa-bed" aria-hidden="true"></i> <span>Immunization</span></li>
-                <li *ngIf="accessHas('Health-Coverage')" (click)="onHealthCoverage()"><i class="fa fa-heartbeat" [routerLink]="['health-coverage']" routerLinkActive="menu-active" aria-hidden="true"></i><span> Health Care Coverage</span></li>
+                <li *ngIf="accessHas('Facility')" (click)="facilitySubmenuShow()" [routerLink]="['facility']" routerLinkActive="menu-active">
+                    <i class="fa fa-building" aria-hidden="true"></i>
+                    <span>Facility</span>
+                    <div style="float:right" *ngIf="!getSubscribedModule('Facility')">
+                        <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px">Unsubscribe</span>
+                    </div>
+                </li>
+                <li *ngIf="accessHas('Patient-Manager')" (click)="patientSubmenuShow()" [routerLink]="['patient-manager']" routerLinkActive="menu-active">
+                    <i class="fa fa-user" aria-hidden="true"></i>
+                    <span>Patient Manager</span>
+                    <div style="float:right" *ngIf="!getSubscribedModule('Patient Manager')">
+                        <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px">Unsubscribe</span>
+                    </div>
+                </li>
+                <li *ngIf="accessHas('Ward-manager')" (click)="patientSubmenuShow()" [routerLink]="['ward-manager']" routerLinkActive="menu-active">
+                    <i class="fa fa-bed" aria-hidden="true"></i>
+                    <span>Ward Manager</span>
+                    <div style="float:right" *ngIf="!getSubscribedModule('Ward Manager')">
+                        <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px">Unsubscribe</span>
+                    </div>
+                </li>
+                <li *ngIf="accessHas('Payment')" (click)="patientSubmenuShow()" [routerLink]="['payment']" routerLinkActive="menu-active">
+                    <i class="fa fa-money" aria-hidden="true"></i>
+                    <span>Payment</span>
+                    <div style="float:right" *ngIf="!getSubscribedModule('Payment')">
+                        <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px">Unsubscribe</span>
+                    </div>
+                </li>
+                <li *ngIf="accessHas('Wallet')" (click)="patientSubmenuShow()" [routerLink]="['wallet']" routerLinkActive="menu-active">
+                    <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
+                    <span>Wallet</span>
+                    <div style="float:right" *ngIf="!getSubscribedModule('Wallet')">
+                        <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px">Unsubscribe</span>
+                    </div>
+                </li>
+                <li *ngIf="accessHas('Order')" (click)="userSubmenuShow()" [routerLink]="['access-manager']" routerLinkActive="menu-active">
+                    <i class="fa fa-first-order" aria-hidden="true"></i>
+                    <span>Order Management</span>
+                    <div style="float:right" *ngIf="!getSubscribedModule('Order Management')">
+                        <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px">Unsubscribe</span>
+                    </div>
+                </li>
+                <li *ngIf="accessHas('Clinic')" (click)="facilitySubmenuShow()" [routerLink]="['clinic']" routerLinkActive="menu-active">
+                    <i class="fa fa-medkit" aria-hidden="true"></i>
+                    <span>Clinic Management</span>
+                    <div style="float:right" *ngIf="!getSubscribedModule('Clinic Management')">
+                        <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px">Unsubscribe</span>
+                    </div>
+                </li>
+                <li *ngIf="accessHas('Clinical-Documentation')" (click)="formsSubmenuShow()" [routerLink]="['clinical-documentation']" routerLinkActive="menu-active">
+                    <i class="fa fa-newspaper-o" aria-hidden="true"></i>
+                    <span>Clinical Documentation</span>
+                    <div style="float:right" *ngIf="!getSubscribedModule('Clinical Documentation')">
+                        <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px">Unsubscribe</span>
+                    </div>
+                </li>
+                <li *ngIf="accessHas('Store')" (click)="patientSubmenuShow()" [routerLink]="['store']" routerLinkActive="menu-active">
+                    <i class="fa fa-plus-square" aria-hidden="true"></i>
+                    <span>Store</span>
+                    <div style="float:right" *ngIf="!getSubscribedModule('Store')">
+                        <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px">Unsubscribe</span>
+                    </div>
+                </li>
+                <li *ngIf="accessHas('Pharmacy')" (click)="patientSubmenuShow()" [routerLink]="['pharmacy']" routerLinkActive="menu-active">
+                    <i class="fa fa-plus-square" aria-hidden="true"></i>
+                    <span>Pharmacy</span>
+                    <div style="float:right" *ngIf="!getSubscribedModule('Pharmacy')">
+                        <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px">Unsubscribe</span>
+                    </div>
+                </li>
+                <li *ngIf="accessHas('Laboratory')" (click)="laboratorySubmenuShow()" [routerLink]="['laboratory']" routerLinkActive="menu-active">
+                    <i class="fa fa-flask" aria-hidden="true"></i>
+                    <span>Laboratory</span>
+                    <div style="float:right" *ngIf="!getSubscribedModule('Laboratory')">
+                        <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px">Unsubscribe</span>
+                    </div>
+                </li>
+                <li *ngIf="accessHas('Radiology')" (click)="employeeSubmenuShow()" [routerLink]="['radiology']" routerLinkActive="menu-active">
+                    <i class="fa fa-picture-o" aria-hidden="true"></i>
+                    <span>Radiology</span>
+                    <div style="float:right" *ngIf="!getSubscribedModule('Radiology')">
+                        <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px">Unsubscribe</span>
+                    </div>
+                </li>
+                <li *ngIf="accessHas('Blood')" (click)="patientSubmenuShow()" [routerLink]="['patient-manager']" routerLinkActive="menu-active">
+                    <i class="fa fa-tint" aria-hidden="true"></i>
+                    <span>Blood Bank</span>
+                    <div style="float:right" *ngIf="!getSubscribedModule('Blood Bank')">
+                        <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px">Unsubscribe</span>
+                    </div>
+                </li>
+                <li *ngIf="accessHas('Theatre')" (click)="patientSubmenuShow()" [routerLink]="['patient-manager']" routerLinkActive="menu-active">
+                    <i class="fa fa-bed" aria-hidden="true"></i>
+                    <span>Theatre</span>
+                    <div style="float:right" *ngIf="!getSubscribedModule('Theatre')">
+                        <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px">Unsubscribe</span>
+                    </div>
+                </li>
+                <li *ngIf="accessHas('Immunization')" (click)="patientSubmenuShow()" [routerLink]="['immunization']" routerLinkActive="menu-active">
+                    <i class="fa fa-bed" aria-hidden="true"></i>
+                    <span>Immunization</span>
+                    <div style="float:right" *ngIf="!getSubscribedModule('Immunization')">
+                        <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px">Unsubscribe</span>
+                    </div>
+                </li>
+                <li *ngIf="accessHas('Health-Coverage')" (click)="onHealthCoverage()">
+                    <i class="fa fa-heartbeat" [routerLink]="['health-coverage']" routerLinkActive="menu-active" aria-hidden="true"></i>
+                    <span> Health Care Coverage</span>
+                    <div style="float:right" *ngIf="!getSubscribedModule('Health Care Coverage')">
+                        <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px">Unsubscribe</span>
+                    </div>
+                </li>
                 <!-- <li (click)="onSwitchAccount()"><i class="fa fa-users" aria-hidden="true"></i> <span>Switch Account</span></li> -->
                 <!-- <li (click)="logoutConfirm_show()"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Log Out</span></li> -->
-                <li *ngIf="accessHas('billing/tags')" (click)="onTags()" [routerLink]="['billing/tags']" routerLinkActive="menu-active"><i class="fa fa-users" aria-hidden="true"></i> <span>Tags</span></li>
-                <li *ngIf="accessHas('Setting')" (click)="facilitySubmenuShow()" [routerLink]="['facility-page']" routerLinkActive="menu-active"><i class="fa fa-cog" aria-hidden="true"></i> <span>Facility Settings</span></li>
+                <li *ngIf="accessHas('billing/tags')" (click)="onTags()" [routerLink]="['billing/tags']" routerLinkActive="menu-active">
+                    <i class="fa fa-users" aria-hidden="true"></i>
+                    <span>Tags</span>
+                    <div style="float:right" *ngIf="!getSubscribedModule('Tags')">
+                        <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px">Unsubscribe</span>
+                    </div>
+                </li>
+                <li *ngIf="accessHas('Setting')" (click)="facilitySubmenuShow()" [routerLink]="['facility-page']" routerLinkActive="menu-active">
+                    <i class="fa fa-cog" aria-hidden="true"></i>
+                    <span>Facility Settings</span>
+                    <div style="float:right" *ngIf="!getSubscribedModule('Facility Settings')">
+                        <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px">Unsubscribe</span>
+                    </div>
+                </li>
                 <!-- <li (click)="employeeSubmenuShow()" [routerLink]="['employee-manager']"><i class="fa fa-user" aria-hidden="true"></i> <span>Profile Settings</span></li> -->
                 <!-- <li (click)="userSubmenuShow()" [routerLink]="['access-manager/access-role-details']"><i class="fa fa-sign-in" aria-hidden="true"></i> <span>Access Control</span></li> -->
                 <!-- <li (click)="changePass()"><i class="fa fa-lock" aria-hidden="true"></i> <span>Change Password</span></li> -->
-                <li *ngIf="accessHas('Billing')" (click)="billingSubmenuShow()" [routerLink]="['billing']" routerLinkActive="menu-active"><i class="fa fa-file-text" aria-hidden="true"></i> <span>Billing Manager</span></li>
-                <li *ngIf="accessHas('Corporate')" (click)="billingSubmenuShow()" [routerLink]="['corporate']" routerLinkActive="menu-active"><i class="fa fa-file-text" aria-hidden="true"></i> <span>Corporate</span></li>
+                <li *ngIf="accessHas('Billing')" (click)="billingSubmenuShow()" [routerLink]="['billing']" routerLinkActive="menu-active">
+                    <i class="fa fa-file-text" aria-hidden="true"></i>
+                    <span>Billing Manager</span>
+                    <div style="float:right" *ngIf="!getSubscribedModule('Billing Manager')">
+                        <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px">Unsubscribe</span>
+                    </div>
+                </li>
+                <li *ngIf="accessHas('Corporate')" (click)="billingSubmenuShow()" [routerLink]="['corporate']" routerLinkActive="menu-active">
+                    <i class="fa fa-file-text" aria-hidden="true"></i>
+                    <span>Corporate</span>
+                    <div style="float:right" *ngIf="!getSubscribedModule('Corporate')">
+                        <span class="badge-red" style="height: 10px; width: 10px; border-radius: 10px">Unsubscribe</span>
+                    </div>
+                </li>
             </ul>
         </div>
 
