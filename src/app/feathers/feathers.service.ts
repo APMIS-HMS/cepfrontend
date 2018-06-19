@@ -38,7 +38,6 @@ export class SocketService {
     this.locker.clear();
   }
   async loginIntoApp(query: any) {
-    console.log(query);
     return await this._app.authenticate({
       strategy: "local",
       email: query.email.toString(),
