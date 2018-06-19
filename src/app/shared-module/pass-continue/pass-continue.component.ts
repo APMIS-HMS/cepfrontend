@@ -1,8 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {CoolLocalStorage} from 'angular2-cool-storage';
-var AES = require('crypto-js/aes');
-var CryptoJS = require('crypto-js');
 
 import {AuthorizationType} from './../../models/facility-manager/setup/documentation';
 import {UserService} from './../../services/facility-manager/setup/user.service';
@@ -42,54 +40,54 @@ export class PassContinueComponent implements OnInit {
       const dataE: any = this.locker.getObject('docApprovalE');
       const dataP: any = this.locker.getObject('docApprovalP');
       if (dataE !== null && dataP !== null) {
-        // decrypt docApproval
-        const dataPlainE =
-            AES.decrypt(dataE, '@apmis!simpa').toString(CryptoJS.enc.Utf8);
-        const dataPlainP =
-            AES.decrypt(dataP, '@apmis!simpa').toString(CryptoJS.enc.Utf8);
-        if (!isPast(parse(dataPlainE)) && this.patientId == dataPlainP) {
-          this.closeModal.emit(true);
-        } else {
-          this.locker.removeItem('docApprovalE');
-          this.locker.removeItem('docApprovalP');
-          this.userService
-              .generatePatientAuthorizationToken(
-                  {
-                    patientId: this.patientId,
-                    employeeId: this.employeeId,
-                    facilityId: this.facilityId
-                  },
-                  'patient')
-              .then(payload => {});
-        }
+        // // decrypt docApproval
+        // const dataPlainE =
+        //     AES.decrypt(dataE, '@apmis!simpa').toString(CryptoJS.enc.Utf8);
+        // const dataPlainP =
+        //     AES.decrypt(dataP, '@apmis!simpa').toString(CryptoJS.enc.Utf8);
+        // if (!isPast(parse(dataPlainE)) && this.patientId == dataPlainP) {
+        //   this.closeModal.emit(true);
+        // } else {
+        //   this.locker.removeItem('docApprovalE');
+        //   this.locker.removeItem('docApprovalP');
+        //   this.userService
+        //       .generatePatientAuthorizationToken(
+        //           {
+        //             patientId: this.patientId,
+        //             employeeId: this.employeeId,
+        //             facilityId: this.facilityId
+        //           },
+        //           'patient')
+        //       .then(payload => {});
+        // }
       } else {
-        this.userService
-            .generatePatientAuthorizationToken(
-                {
-                  patientId: this.patientId,
-                  employeeId: this.employeeId,
-                  facilityId: this.facilityId
-                },
-                'patient')
-            .then(payload => {
-              if (payload.status === 'success') {
-                if (payload.data !== undefined &&
-                    payload.data.stillValid == true) {
-                  const expires = parse(payload.data.expires);
-                  if (!isPast(expires)) {
-                    const encrptDataExpires =
-                        AES.encrypt(payload.data.expires, '@apmis!simpa');
-                    const encrptDataPatientId =
-                        AES.encrypt(payload.data.patientId, '@apmis!simpa');
-                    this.locker.setObject('docApprovalE', encrptDataExpires);
-                    this.locker.setObject('docApprovalP', encrptDataPatientId);
-                    this.closeModal.emit(true);
-                  } else {
-                  }
-                }
-              } else {
-              }
-            });
+        // this.userService
+        //     .generatePatientAuthorizationToken(
+        //         {
+        //           patientId: this.patientId,
+        //           employeeId: this.employeeId,
+        //           facilityId: this.facilityId
+        //         },
+        //         'patient')
+        //     .then(payload => {
+        //       if (payload.status === 'success') {
+        //         if (payload.data !== undefined &&
+        //             payload.data.stillValid == true) {
+        //           const expires = parse(payload.data.expires);
+        //           if (!isPast(expires)) {
+        //             const encrptDataExpires =
+        //                 AES.encrypt(payload.data.expires, '@apmis!simpa');
+        //             const encrptDataPatientId =
+        //                 AES.encrypt(payload.data.patientId, '@apmis!simpa');
+        //             this.locker.setObject('docApprovalE', encrptDataExpires);
+        //             this.locker.setObject('docApprovalP',
+        //             encrptDataPatientId); this.closeModal.emit(true);
+        //           } else {
+        //           }
+        //         }
+        //       } else {
+        //       }
+        //     });
       }
     } else {
       this.btnText = 'Confirm Password';
@@ -99,25 +97,25 @@ export class PassContinueComponent implements OnInit {
 
   send() {
     if (this.authorizationType === AuthorizationType.Patient) {
-      this.userService
-          .validatePatientAuthorizationToken(
-              this.patientId, 'patient', this.frm_conpass.value.pac,
-              this.employeeId, this.facilityId)
-          .then(payload => {
-            if (payload.status === 'success') {
-              const expires = parse(payload.data.expires);
-              if (!isPast(expires)) {
-                const encrptDataExpires =
-                    AES.encrypt(payload.data.expires, '@apmis!simpa');
-                const encrptDataPatientId =
-                    AES.encrypt(payload.data.patientId, '@apmis!simpa');
-                this.locker.setObject('docApprovalE', encrptDataExpires);
-                this.locker.setObject('docApprovalP', encrptDataPatientId);
-                this.closeModal.emit(true);
-              } else {
-              }
-            }
-          });
+      // this.userService
+      //     .validatePatientAuthorizationToken(
+      //         this.patientId, 'patient', this.frm_conpass.value.pac,
+      //         this.employeeId, this.facilityId)
+      //     .then(payload => {
+      //       if (payload.status === 'success') {
+      //         const expires = parse(payload.data.expires);
+      //         if (!isPast(expires)) {
+      //           const encrptDataExpires =
+      //               AES.encrypt(payload.data.expires, '@apmis!simpa');
+      //           const encrptDataPatientId =
+      //               AES.encrypt(payload.data.patientId, '@apmis!simpa');
+      //           this.locker.setObject('docApprovalE', encrptDataExpires);
+      //           this.locker.setObject('docApprovalP', encrptDataPatientId);
+      //           this.closeModal.emit(true);
+      //         } else {
+      //         }
+      //       }
+      //     });
     }
   }
 }
