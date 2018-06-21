@@ -27,15 +27,16 @@
                             <div class="module-label">MODULES</div>
                         </div>
                         <ul *ngIf="!loading && modules.length > 0" class="work-places-list checkwrap">
-                            <li class="work-places-item">
+                            <!-- <li class="work-places-item">
                                 <div class="network-list">
                                     <div class="tip">subscribe for module</div>
                                     <div class="wp-name li-disabled">List Item</div>
                                 </div> 
-                            </li>
+                            </li> -->
                             <li (click)="onClickModule(module);" *ngFor="let module of modules" [ngClass]="{'active' : module.name === selectedModule.name}" class="work-places-item">
                                 <div class="network-list">
-                                    <div class="wp-name">{{ module?.name }}</div>
+                                    <div class="wp-name" class="{{ getSubscribedModule(module?.name) ? ' wp-name': ' wp-name li-disabled'}}">{{ module?.name }}</div>
+                                    <div class="tip" *ngIf="!getSubscribedModule(module?.name)">subscribe for module</div>
                                 </div>
                             </li>
                         </ul>

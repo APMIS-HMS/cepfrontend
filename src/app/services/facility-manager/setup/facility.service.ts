@@ -42,6 +42,7 @@ export class FacilitiesService {
     this._saveFacilitySocket = _socketService.getService('save-facility');
     this._sendFacilityTokenSocket = _socketService.getService('resend-token');
     this._socket.timeout = 30000;
+    this._socketSubscription.timeout = 50000;
     this._restLogin = _restService.getService('auth/local');
     this.listner = Observable.fromEvent(this._socket, 'updated');
     this.patchListner = Observable.fromEvent(this._socket, 'patched');
