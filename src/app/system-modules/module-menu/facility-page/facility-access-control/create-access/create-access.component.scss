@@ -9,6 +9,24 @@
     border: 1px solid #bebebe;
     margin-bottom: 20px;
 }
+.work-places-item{
+    position: relative;
+}
+.work-places-item:hover{
+    .tip {
+        display: block;
+    }
+}
+.tip {
+    display: none;
+    position: absolute;
+    right: 2px;
+    top: -5px;
+    background: #ff2500;
+    padding: 2px 5px;
+    border-radius: 7px;
+    color: #fff;
+}
 
 .modal_mini_title{
     margin: 0px auto;
