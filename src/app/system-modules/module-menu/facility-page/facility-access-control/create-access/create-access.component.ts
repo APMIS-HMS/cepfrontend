@@ -35,6 +35,7 @@ export class CreateAccessComponent implements OnInit {
   updatingRole: boolean = false;
   disableBtn: boolean = true;
   routeId: string;
+  facilitySubscriptions: any = <any>[];
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   // superGroups: any[] = [];
   // btnTitle = 'Create Access';
@@ -62,17 +63,46 @@ export class CreateAccessComponent implements OnInit {
     });
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.user = <User>this.locker.getObject('auth');
-
+    this.getFacilitySubscription();
     this.getModules();
   }
 
+  getFacilitySubscription() {
+    this._facilityService.findValidSubscription({
+      query: {
+        facilityId: this.selectedFacility._id
+      }
+    }).then(payload => {
+      console.log(payload);
+      this.facilitySubscriptions = payload.data;
+      this.facilitySubscriptions.subscriptions_status = payload.data.subscriptions_status;
+    });
+  }
+
+  getSubscribedModule(value) {
+    if (this.facilitySubscriptions.subscriptions_status === true) {
+      if (this.facilitySubscriptions.plans !== undefined) {
+        let _modules = this.facilitySubscriptions.plans.filter(x => x.name === value && x.isConfirmed === true);
+        if (_modules.length > 0) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    } else {
+      return true;
+    }
+  }
+
   private _getRole(role: any) {
-      const roleName = role.name;
-      this.txtAccessName.setValue(roleName);
-      this.populateAccessControl(role.features);
-      this.updateRole = true;
-      this.createRole = false;
-      this.disableBtn = false
+    const roleName = role.name;
+    this.txtAccessName.setValue(roleName);
+    this.populateAccessControl(role.features);
+    this.updateRole = true;
+    this.createRole = false;
+    this.disableBtn = false
   }
 
   populateAccessControl(accessibilities: any) {
@@ -82,14 +112,14 @@ export class CreateAccessComponent implements OnInit {
           if (module.moduleId === item.moduleId) {
             module.actions.forEach(act => {
               if (act._id === item._id) {
-                  act.isChecked = true;
-                  const data = {
-                    moduleName: module.name,
-                    moduleId: module.moduleId,
-                    accessName: act.name,
-                    accessCode: act.code
-                  }
-                  this.selectedItems.push(data);
+                act.isChecked = true;
+                const data = {
+                  moduleName: module.name,
+                  moduleId: module.moduleId,
+                  accessName: act.name,
+                  accessCode: act.code
+                }
+                this.selectedItems.push(data);
               }
             });
           }
@@ -128,7 +158,7 @@ export class CreateAccessComponent implements OnInit {
   }
 
   getModules() {
-    this.featureModuleService.find({query:{$limit:100}}).then(res => {
+    this.featureModuleService.find({ query: { $limit: 100 } }).then(res => {
       this.loading = false;
       if (res.data.length > 0) {
         this.modules = res.data;
@@ -159,15 +189,15 @@ export class CreateAccessComponent implements OnInit {
         this.creatingRole = true;
 
         this.accessControlService.create(accessControl).then(res => {
-            this.txtAccessName.reset();
-            this.createRole = true;
-            this.creatingRole = false;
-            this.disableBtn = true;
-            const text = `${roleName} role has been created successfully!`;
+          this.txtAccessName.reset();
+          this.createRole = true;
+          this.creatingRole = false;
+          this.disableBtn = true;
+          const text = `${roleName} role has been created successfully!`;
           this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
-            this.close_onClick();
+          this.close_onClick();
         }, error => {
-        }).catch(err => {});
+        }).catch(err => { });
       } else {
         this.updateRole = false;
         this.updatingRole = true;
@@ -179,7 +209,7 @@ export class CreateAccessComponent implements OnInit {
           const text = `${roleName} role has been updated successfully!`;
           this._systemModuleService.announceSweetProxy(text, 'success', null, null, null, null, null, null, null);
           this.close_onClick();
-        }).catch(err => {});
+        }).catch(err => { });
       }
     } else {
       this._notification('Error', 'Please fill all required fields!');
@@ -188,8 +218,10 @@ export class CreateAccessComponent implements OnInit {
 
 
   onClickModule(module: FeatureModule, i) {
-    this.selectedModule = module;
-    this.actions = module.actions;
+    if(this.getSubscribedModule(module.name)){
+      this.selectedModule = module;
+      this.actions = module.actions;
+    }
   }
 
   // Notification

@@ -90,6 +90,7 @@ export class DashboardHomeComponent implements OnInit {
     if (this.facilityObj !== undefined && this.facilityObj != null) {
       this.facilityName = this.facilityObj.name;
     }
+    this.getFacilitySubscription();
     this.employeeService.checkInAnnounced$.subscribe(payload => {
       this.checkedInObject = payload;
     });
@@ -160,7 +161,7 @@ export class DashboardHomeComponent implements OnInit {
 
     //   this.loadIndicatorVisible = false;
     // })
-    this.getFacilitySubscription();
+    
   }
   getFacilitySubscription() {
     console.log(this.facilityObj._id);
@@ -169,23 +170,27 @@ export class DashboardHomeComponent implements OnInit {
         facilityId: this.facilityObj._id
       }
     }).then(payload => {
+      console.log(payload);
       this.facilitySubscriptions = payload.data;
-      console.log(this.facilitySubscriptions);
+      this.facilitySubscriptions.subscriptions_status = payload.data.subscriptions_status;
     });
   }
 
   getSubscribedModule(value) {
-    if (this.facilitySubscriptions.plans !== undefined) {
-      let _modules = this.facilitySubscriptions.plans.filter(x => x.name === value && x.isConfirmed === true);
-      if (_modules.length > 0) {
-        return true;
+    if(this.facilitySubscriptions.subscriptions_status===true){
+      if (this.facilitySubscriptions.plans !== undefined) {
+        let _modules = this.facilitySubscriptions.plans.filter(x => x.name === value && x.isConfirmed === true);
+        if (_modules.length > 0) {
+          return true;
+        } else {
+          return false;
+        }
       } else {
         return false;
       }
-    } else {
-      return false;
+    }else{
+      return true;
     }
-
   }
 
   getUserRoles() {
