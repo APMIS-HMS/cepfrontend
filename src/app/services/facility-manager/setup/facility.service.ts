@@ -11,6 +11,7 @@ export class FacilitiesService {
   public listner;
   public patchListner;
   public _socket;
+  public _socketSubscription;
   public _saveFacilitySocket;
   public _sendFacilityTokenSocket;
   private _rest;
@@ -36,7 +37,8 @@ export class FacilitiesService {
     private locker: CoolLocalStorage
   ) {
     this._rest = _restService.getService('facilities');
-    this._socket = _socketService.getService('facilities')
+    this._socket = _socketService.getService('facilities');
+    this._socketSubscription = _socketService.getService('apmis-subscriptions');
     this._saveFacilitySocket = _socketService.getService('save-facility');
     this._sendFacilityTokenSocket = _socketService.getService('resend-token');
     this._socket.timeout = 30000;
@@ -226,5 +228,9 @@ export class FacilitiesService {
 
   searchNetworks(id: string, query: any) {
     return this._socketSearchNetwork.get(id, query);
+  }
+
+  findValidSubscription(query: any) {
+    return this._socketSubscription.find(query);
   }
 }

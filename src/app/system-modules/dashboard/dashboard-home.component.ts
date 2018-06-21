@@ -67,6 +67,7 @@ export class DashboardHomeComponent implements OnInit {
   subscription: Subscription;
   loginEmployee: Employee = <Employee>{};
   access: any = [];
+  facilitySubscriptions: any = [];
 
   checkedInObject: any = <any>{};
   constructor(
@@ -79,7 +80,7 @@ export class DashboardHomeComponent implements OnInit {
     private workSpaceService: WorkSpaceService,
     private authFacadeService: AuthFacadeService,
     private featureService: FeatureModuleService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.featureService.listner.subscribe(payload => {
@@ -159,7 +160,34 @@ export class DashboardHomeComponent implements OnInit {
 
     //   this.loadIndicatorVisible = false;
     // })
+    this.getFacilitySubscription();
   }
+  getFacilitySubscription() {
+    console.log(this.facilityObj._id);
+    this.facilityService.findValidSubscription({
+      query: {
+        facilityId: this.facilityObj._id
+      }
+    }).then(payload => {
+      this.facilitySubscriptions = payload.data;
+      console.log(this.facilitySubscriptions);
+    });
+  }
+
+  getSubscribedModule(value) {
+    if (this.facilitySubscriptions.plans !== undefined) {
+      let _modules = this.facilitySubscriptions.plans.filter(x => x.name === value && x.isConfirmed === true);
+      if (_modules.length > 0) {
+        return true;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+
+  }
+
   getUserRoles() {
     this.authFacadeService.getUserAccessControls(true).then((payload: any) => {
       if (payload.modules.length > 0) {
@@ -169,7 +197,7 @@ export class DashboardHomeComponent implements OnInit {
         // }, 5000);
       }
       },
-      error => {}
+      error => { }
     );
   }
   accessHas(menu) {
@@ -330,7 +358,7 @@ export class DashboardHomeComponent implements OnInit {
     this.immunizationSubmenuActive = false;
   }
 
-  mainMenuRoute(route) {}
+  mainMenuRoute(route) { }
 
   innerMenuToggle() {
     this.innerMenuShow = !this.innerMenuShow;
