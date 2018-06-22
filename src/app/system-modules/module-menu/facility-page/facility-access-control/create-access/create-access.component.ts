@@ -64,7 +64,6 @@ export class CreateAccessComponent implements OnInit {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.user = <User>this.locker.getObject('auth');
     this.getFacilitySubscription();
-    this.getModules();
   }
 
   getFacilitySubscription() {
@@ -76,23 +75,30 @@ export class CreateAccessComponent implements OnInit {
       console.log(payload);
       this.facilitySubscriptions = payload.data;
       this.facilitySubscriptions.subscriptions_status = payload.data.subscriptions_status;
+      this.getModules();
+    },err=>{
+      this.loading = false;
     });
   }
 
   getSubscribedModule(value) {
-    if (this.facilitySubscriptions.subscriptions_status === true) {
-      if (this.facilitySubscriptions.plans !== undefined) {
-        let _modules = this.facilitySubscriptions.plans.filter(x => x.name === value && x.isConfirmed === true);
-        if (_modules.length > 0) {
-          return true;
+    if (this.facilitySubscriptions.subscriptions_status !== undefined) {
+      if (this.facilitySubscriptions.subscriptions_status === true) {
+        if (this.facilitySubscriptions.plans !== undefined) {
+          let _modules = this.facilitySubscriptions.plans.filter(x => x.name === value && x.isConfirmed === true);
+          if (_modules.length > 0) {
+            return true;
+          } else {
+            return false;
+          }
         } else {
           return false;
         }
       } else {
-        return false;
+        return true;
       }
     } else {
-      return true;
+      return false;
     }
   }
 
@@ -161,7 +167,15 @@ export class CreateAccessComponent implements OnInit {
     this.featureModuleService.find({ query: { $limit: 100 } }).then(res => {
       this.loading = false;
       if (res.data.length > 0) {
+        res.data.forEach(element => {
+          if (this.getSubscribedModule(element.name)) {
+            element.isSubscribed = true;
+          } else {
+            element.isSubscribed = false;
+          }
+        });
         this.modules = res.data;
+        console.log(this.modules);
         if (!!this.selectedRole) {
           this._getRole(this.selectedRole);
         }
@@ -218,7 +232,7 @@ export class CreateAccessComponent implements OnInit {
 
 
   onClickModule(module: FeatureModule, i) {
-    if(this.getSubscribedModule(module.name)){
+    if (this.getSubscribedModule(module.name)) {
       this.selectedModule = module;
       this.actions = module.actions;
     }
