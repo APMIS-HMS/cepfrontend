@@ -72,7 +72,6 @@ export class CreateAccessComponent implements OnInit {
         facilityId: this.selectedFacility._id
       }
     }).then(payload => {
-      console.log(payload);
       this.facilitySubscriptions = payload.data;
       this.facilitySubscriptions.subscriptions_status = payload.data.subscriptions_status;
       this.getModules();
@@ -175,7 +174,6 @@ export class CreateAccessComponent implements OnInit {
           }
         });
         this.modules = res.data;
-        console.log(this.modules);
         if (!!this.selectedRole) {
           this._getRole(this.selectedRole);
         }
