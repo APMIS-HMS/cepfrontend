@@ -171,8 +171,9 @@ export class DashboardHomeComponent implements OnInit {
       }
     }).then(payload => {
       console.log(payload);
-      this.facilitySubscriptions = payload.data;
-      this.facilitySubscriptions.subscriptions_status = payload.data.subscriptions_status;
+        // this.loadedMenu = true;
+        // this.facilitySubscriptions = payload.data;
+        // this.facilitySubscriptions.subscriptions_status = payload.data.subscriptions_status;
     });
   }
 
