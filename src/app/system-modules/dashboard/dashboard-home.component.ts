@@ -170,10 +170,9 @@ export class DashboardHomeComponent implements OnInit {
         facilityId: this.facilityObj._id
       }
     }).then(payload => {
-      console.log(payload);
-        // this.loadedMenu = true;
-        // this.facilitySubscriptions = payload.data;
-        // this.facilitySubscriptions.subscriptions_status = payload.data.subscriptions_status;
+        this.loadedMenu = true;
+        this.facilitySubscriptions = payload.data;
+        this.facilitySubscriptions.subscriptions_status = payload.data.subscriptions_status;
     });
   }
 
