@@ -85,7 +85,7 @@ export class PaymentComponent implements OnInit {
                         this.isLoadingInvoice = false;
                     }).catch(err => {
                         this.isLoadingInvoice = false;
-                        this.systemModuleService.announceSweetProxy("There was a problem getting pending bills. Please try again later!", "error");
+                        this.systemModuleService.announceSweetProxy('There was a problem getting pending bills. Please try again later!', 'error');
                     });
                 } else {
                     this.invoiceGroups = this.holdMostRecentInvoices;

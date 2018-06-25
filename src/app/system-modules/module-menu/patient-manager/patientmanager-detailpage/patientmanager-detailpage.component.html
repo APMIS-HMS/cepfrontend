@@ -161,3 +161,6 @@
         <app-image-update [selectedPerson]="patient.personDetails" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-image-update>
     </div>
 </div>
+<div *ngIf="authorizationNotApproved && USE_DOC_AUTHORIZATION" class="con-pass-wrap">
+    <app-pass-continue (closeModal)="close_authoricationClick($event)" [facilityId]="selectedFacility._id" [employeeId]="loginEmployee._id" [headerText]="headerText" [authorizationType]="authorizationType" [patientId]="patient._id"></app-pass-continue>
+</div>
