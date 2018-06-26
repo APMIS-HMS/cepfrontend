@@ -23,6 +23,10 @@
                 <tr *ngFor="let product of products; let i = index">
                   <td *ngIf="product?.productObject?.id !== undefined" (click)="addProduct(product)">
                     {{product?.productObject?.name}}
+                    <div style="float:right">
+                        <span class="list-bdg badge-green" style="height: 10px; width: 10px; border-radius: 10px" *ngIf="!product.isVented">New</span>
+                        <span class="list-bdg badge-red" style="height: 10px; width: 10px; border-radius: 10px" *ngIf="product.isVented">Exist</span>
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -47,19 +51,19 @@
                 <div [formGroupName]="i">
                   <div class="headr" [hidden]="i != 0">
                     <h5 *ngIf="!isEditProductName">{{ selectedProduct?.productObject?.name }}
-                      <span>
+                      <!-- <span>
                         <i style="color: red;cursor: pointer" (click)="onEditProductName()">edit</i>
-                      </span>
+                      </span> -->
                       <br>
                     </h5>
-                    <div *ngIf="isEditProductName">
+                    <!-- <div *ngIf="isEditProductName">
                       <mat-input-container>
                         <input type="text" matInput placeholder="Edit Product Name" [formControl]="editProductnameControl">
                       </mat-input-container>
                       <span>
                         <i style="color: green;cursor: pointer" (click)="onEditSaveProductName()">save</i>
                       </span>
-                    </div>
+                    </div> -->
 
                   </div>
                   <div class="input-qty">
@@ -110,7 +114,7 @@
 
 
                 </div>
-                <div class="col-sm-1" style="text-align: left">
+                <div class="col-sm-1" class="arr-icos">
                   <a [hidden]="i < myForm.controls.initproduct.controls.length - 1" (click)="addBatch(i)">
                     <i class="fa fa-plus fa-fw fa-2x"></i>
                   </a>

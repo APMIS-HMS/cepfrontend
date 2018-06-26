@@ -33,6 +33,8 @@ import {
   UserService
 } from "../../../../services/facility-manager/setup/index";
 
+import { AuthorizationType } from "./../../../../models/facility-manager/setup/documentation";
+import { USE_DOC_AUTHORIZATION } from "./../../../../shared-module/helpers/global-config";
 import { AuthFacadeService } from "./../../../service-facade/auth-facade.service";
 
 @Component({
@@ -110,7 +112,11 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   checkedIn: any;
 
   menuResp = false;
-
+  authorizationNotApproved = false;
+  patientDocumentationAuthorization = false;
+  headerText = "";
+  authorizationType: AuthorizationType;
+  USE_DOC_AUTHORIZATION = USE_DOC_AUTHORIZATION;
   constructor(
     private countryService: CountriesService,
     private patientService: PatientService,
@@ -294,6 +300,15 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.addTagsPop = false;
     this.checkoutPatient = false;
     this.modal_on = false;
+  }
+  close_authoricationClick(event: boolean) {
+    try {
+      setTimeout(() => {
+        this.authorizationNotApproved = false;
+        this.patientDocumentationAuthorization = true;
+        this.menuDocs_click();
+      }, 0);
+    } catch (error) {}
   }
   show_changeUserImg() {
     this.changeUserImg = true;
@@ -558,28 +573,39 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuResp = false;
   }
   menuDocs_click() {
-    this.menuSummary = false;
-    this.menuUploads = false;
-    this.menuPharmacy = false;
-    this.menuBilling = false;
-    this.menuTreatmentPlan = false;
-    this.menuImaging = false;
-    this.menuImmunization = false;
-    this.menuLab = false;
-    this.menuForms = false;
-    this.menuUploads = false;
-    this.menuDocs = true;
-    this.menuOrder = false;
-    this.menuFluid = false;
-    this.menuVitals = false;
-    this.menuTimeline = false;
-    this.menuPrescription = false;
-    this.menuExternalPrescription = false;
-    this.menuFinance = false;
-    this.menuMedicationHistory = false;
-    this.menuPayment = false;
-    this.menuTags = false;
-    this.menuResp = false;
+    if (
+      (this.selectedAppointment !== undefined &&
+        this.selectedAppointment._id !== undefined) ||
+      this.patientDocumentationAuthorization === true ||
+      !USE_DOC_AUTHORIZATION
+    ) {
+      this.menuSummary = false;
+      this.menuUploads = false;
+      this.menuPharmacy = false;
+      this.menuBilling = false;
+      this.menuTreatmentPlan = false;
+      this.menuImaging = false;
+      this.menuImmunization = false;
+      this.menuLab = false;
+      this.menuForms = false;
+      this.menuUploads = false;
+      this.menuDocs = true;
+      this.menuOrder = false;
+      this.menuFluid = false;
+      this.menuVitals = false;
+      this.menuTimeline = false;
+      this.menuPrescription = false;
+      this.menuExternalPrescription = false;
+      this.menuFinance = false;
+      this.menuMedicationHistory = false;
+      this.menuPayment = false;
+      this.menuTags = false;
+      this.menuResp = false;
+    } else {
+      this.headerText = "Enter Patient Authorization code to continue";
+      this.authorizationType = AuthorizationType.Patient;
+      this.authorizationNotApproved = true;
+    }
   }
   menuFluid_click() {
     this.menuSummary = false;

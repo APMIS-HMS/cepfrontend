@@ -75,6 +75,7 @@ export class RestService {
         {strategy: 'local', email: query.email, password: query.password});
   }
   getService(value: any) {
+    // this._app.authenticate();
     return this._app.service(value);
   }
   authenticateService() {

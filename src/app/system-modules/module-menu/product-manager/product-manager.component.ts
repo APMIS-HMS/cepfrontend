@@ -1,9 +1,13 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ProductEmitterService } from '../../../services/facility-manager/product-emitter.service';
-import { FacilitiesService,EmployeeService } from '../../../services/facility-manager/setup/index';
-import { AuthFacadeService } from '../../service-facade/auth-facade.service';
-import { CoolLocalStorage } from 'angular2-cool-storage';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { CoolLocalStorage } from "angular2-cool-storage";
+
+import { ProductEmitterService } from "../../../services/facility-manager/product-emitter.service";
+import {
+  EmployeeService,
+  FacilitiesService
+} from "../../../services/facility-manager/setup/index";
+import { AuthFacadeService } from "../../service-facade/auth-facade.service";
 
 @Component({
   selector: "app-product-manager",
@@ -11,66 +15,67 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
   styleUrls: ["./product-manager.component.scss"]
 })
 export class ProductManagerComponent implements OnInit {
-	pageInView: String = '';
-	productNavMenu: Boolean = false;
-	categoryNavMenu: Boolean = false;
-	supplierNavMenu: Boolean = false;
-	manufacturerNavMenu: Boolean = false;
-	routeNavMenu: Boolean = false;
-	genericNavMenu: Boolean = false;
-	presentationNavMenu: Boolean = false;
-	strengthNavMenu: Boolean = false;
-	contentSecMenuShow: Boolean = false;
-	modal_on = false;
-	Ql_toggle = false;
-	// products page
-	addProduct: Boolean = false;
-	isProductCat: Boolean = false;
-	isGeneric: Boolean = false;
-	isProductRoute: Boolean = false;
-	isManufacturer: Boolean = false;
-	isPresentation: Boolean = false;
-	isStrength: Boolean = false;
-	productCatPop: Boolean = false;
-	checkingStore: any = <any>{};
-	subscription: any = <any>{};
-	loginEmployee: any = <any>{};
+  pageInView: String = "";
+  productNavMenu: Boolean = false;
+  categoryNavMenu: Boolean = false;
+  supplierNavMenu: Boolean = false;
+  manufacturerNavMenu: Boolean = false;
+  routeNavMenu: Boolean = false;
+  genericNavMenu: Boolean = false;
+  presentationNavMenu: Boolean = false;
+  strengthNavMenu: Boolean = false;
+  contentSecMenuShow: Boolean = false;
+  modal_on = false;
+  Ql_toggle = false;
+  // products page
+  addProduct: Boolean = false;
+  isProductCat: Boolean = false;
+  isGeneric: Boolean = false;
+  isProductRoute: Boolean = false;
+  isManufacturer: Boolean = false;
+  isPresentation: Boolean = false;
+  isStrength: Boolean = false;
+  productCatPop: Boolean = false;
+  checkingStore: any = <any>{};
+  subscription: any = <any>{};
+  loginEmployee: any = <any>{};
 
-	constructor(private _productEventEmitter: ProductEmitterService, private _router: Router,
-		private employeeService: EmployeeService,
-		private authFacadeService: AuthFacadeService,
-		private locker: CoolLocalStorage,
-		public facilityService: FacilitiesService) {
-		this.facilityService.sliderAnnounced$.subscribe(value => {
-			if (value === false) {
-				this.addProduct = false;
-				this.isProductCat = false;
-				this.isGeneric = false;
-				this.isProductRoute = false;
-				this.isManufacturer = false;
-				this.isPresentation = false;
-			}
+  constructor(
+    private _productEventEmitter: ProductEmitterService,
+    private _router: Router,
+    private employeeService: EmployeeService,
+    private authFacadeService: AuthFacadeService,
+    private locker: CoolLocalStorage,
+    public facilityService: FacilitiesService
+  ) {
+    this.facilityService.sliderAnnounced$.subscribe(value => {
+      if (value === false) {
+        this.addProduct = false;
+        this.isProductCat = false;
+        this.isGeneric = false;
+        this.isProductRoute = false;
+        this.isManufacturer = false;
+        this.isPresentation = false;
+      }
+    });
 
-		});
+    this.subscription = this.employeeService.checkInAnnounced$.subscribe(
+      payload => {
+        if (payload !== undefined) {
+          if (payload.typeObject !== undefined) {
+            this.checkingStore = payload.typeObject;
+          }
+        }
+      }
+    );
 
-		this.subscription = this.employeeService.checkInAnnounced$.subscribe(payload => {
-			if (payload !== undefined) {
-				if (payload.typeObject !== undefined) {
-					this.checkingStore = payload.typeObject;
-				}
-			}
-		});
-
-
-		this.authFacadeService.getLogingEmployee().then((payload: any) => {
-			this.loginEmployee = payload;
-			this.checkingStore = this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
-		});
-	}
-
-	contentSecMenuToggle() {
-		this.contentSecMenuShow = !this.contentSecMenuShow;
-	}
+    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+      this.loginEmployee = payload;
+      this.checkingStore = this.loginEmployee.storeCheckIn.find(
+        x => x.isOn === true
+      );
+    });
+  }
 
   ngOnInit() {
     const page: string = this._router.url;
@@ -194,9 +199,6 @@ export class ProductManagerComponent implements OnInit {
       this.pageInView = url;
     });
   }
-  onChangeCheckedIn() {
-    this.modal_on = true;
-  }
   onClickStrengthNavMenu() {
     this.productNavMenu = false;
     this.categoryNavMenu = false;
@@ -290,7 +292,7 @@ export class ProductManagerComponent implements OnInit {
     this.supplierNavMenu = false;
     this.manufacturerNavMenu = false;
     this.routeNavMenu = false;
-    //this.genericNavMenu = true;
+    // this.genericNavMenu = true;
     this.presentationNavMenu = false;
     this.strengthNavMenu = false;
   }
@@ -308,7 +310,7 @@ export class ProductManagerComponent implements OnInit {
     this.manufacturerNavMenu = false;
     this.routeNavMenu = false;
     this.genericNavMenu = false;
-    //this.presentationNavMenu = true;
+    // this.presentationNavMenu = true;
     this.strengthNavMenu = false;
   }
   routeSlide() {
@@ -323,7 +325,7 @@ export class ProductManagerComponent implements OnInit {
     this.categoryNavMenu = false;
     this.supplierNavMenu = false;
     this.manufacturerNavMenu = false;
-    //this.routeNavMenu = true;
+    // this.routeNavMenu = true;
     this.genericNavMenu = false;
     this.presentationNavMenu = false;
     this.strengthNavMenu = false;
@@ -339,7 +341,7 @@ export class ProductManagerComponent implements OnInit {
     this.productNavMenu = false;
     this.categoryNavMenu = false;
     this.supplierNavMenu = false;
-    //this.manufacturerNavMenu = true;
+    // this.manufacturerNavMenu = true;
     this.routeNavMenu = false;
     this.genericNavMenu = false;
     this.presentationNavMenu = false;
@@ -361,35 +363,43 @@ export class ProductManagerComponent implements OnInit {
     this.routeNavMenu = false;
     this.genericNavMenu = false;
     this.presentationNavMenu = false;
-    //this.strengthNavMenu = true;
+    // this.strengthNavMenu = true;
   }
 
   toggleQl() {
     this.Ql_toggle = !this.Ql_toggle;
   }
 
-	ngOnDestroy() {
-		if (this.loginEmployee.storeCheckIn !== undefined) {
-		  console.log(this.loginEmployee.storeCheckIn);
-		  this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
-			if (itemr.storeObject === undefined) {
-			  const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
-			  itemr.storeObject = store_.storeObject;
-			  console.log(itemr.storeObject);
-			}
-			if (itemr.isDefault === true && itemr.isOn === true) {
-			  itemr.isOn = false;
-			  this.employeeService.update(this.loginEmployee).then(payload => {
-				this.loginEmployee = payload;
-			  },err=>{
-				console.log(err);
-			  });
-			}
-		  });
-		}
-		this.employeeService.announceCheckIn(undefined);
-		this.locker.setObject('checkingObject', {});
-		this.subscription.unsubscribe();
-	  }
+  onChangeCheckedIn() {
+    this.modal_on = true;
+  }
 
+  ngOnDestroy() {
+    if (this.loginEmployee.storeCheckIn !== undefined) {
+      console.log(this.loginEmployee.storeCheckIn);
+      this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+        if (itemr.storeObject === undefined) {
+          const store_ = this.loginEmployee.storeCheckIn.find(
+            x => x.storeId.toString() === itemr.storeId.toString()
+          );
+          itemr.storeObject = store_.storeObject;
+          console.log(itemr.storeObject);
+        }
+        if (itemr.isDefault === true && itemr.isOn === true) {
+          itemr.isOn = false;
+          this.employeeService.update(this.loginEmployee).then(
+            payload => {
+              this.loginEmployee = payload;
+            },
+            err => {
+              console.log(err);
+            }
+          );
+        }
+      });
+    }
+    this.employeeService.announceCheckIn(undefined);
+    this.locker.setObject("checkingObject", {});
+    this.subscription.unsubscribe();
+  }
 }

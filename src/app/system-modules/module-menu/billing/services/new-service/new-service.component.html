@@ -137,7 +137,7 @@
                     </div>
                 </div>
 
-                <div class="row" *ngIf="selectedService.name !== undefined">
+                <div class="row oda-prices" *ngIf="selectedService.name !== undefined">
                     <h5 style="color:black">Other Prices</h5>
                     <div class="input-wrap col" *ngFor="let p of selectedService.price; let i=index">
                         <div *ngIf="p.isBase===false">

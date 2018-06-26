@@ -404,7 +404,7 @@ export class MakePaymentComponent implements OnInit {
       let percentage = (this.discount * 100) / acctual;
       console.log(percentage);
       (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
-        let discountPrice =item.value.totalPrice - (item.value.totalPrice * (percentage / 100));
+        let discountPrice = item.value.totalPrice - (item.value.totalPrice * (percentage / 100));
         console.log(discountPrice)
         let roundedNum = discountPrice.toFixed(2);
         item.controls.amountPaid.setValue(roundedNum);
@@ -456,7 +456,7 @@ export class MakePaymentComponent implements OnInit {
           'transactionType': TransactionType[TransactionType.Dr],
           'paymentTxn': this.productTableForm.controls['productTableArray'].value
         },
-        'createdBy':this.loginEmployee._id,
+        'createdBy': this.loginEmployee._id,
         'billGroups': this.billGroups,
         'patientId': this.selectedPatient._id,
         'personId': this.selectedPatient.personDetails._id,
@@ -484,7 +484,7 @@ export class MakePaymentComponent implements OnInit {
           'transactionType': TransactionType[TransactionType.Dr],
           'paymentTxn': this.productTableForm.controls['productTableArray'].value
         },
-        'createdBy':this.loginEmployee._id,
+        'createdBy': this.loginEmployee._id,
         'invoice': this.invoice,
         'patientId': this.selectedPatient._id,
         'personId': this.selectedPatient.personDetails._id,
@@ -500,39 +500,55 @@ export class MakePaymentComponent implements OnInit {
     }
     if (this.checkAllWaive.value === true && this.wavedDescription.value.length > 0) {
       this._makePaymentService.create(paymantObj).then(payload => {
-        this.personValueChanged.emit(payload);
-        this.isProcessing = false;
-        this.balance.setValue(0);
-        this.close_onClick();
-        if (!payload.isWaved) {
-          this.systemModuleService.announceSweetProxy('Payment has been made successfully.', 'success');
-        } else {
-          this.systemModuleService.announceSweetProxy('Payment has been waived successfully.', 'success');
-        }
 
+        if (payload.status === undefined) {
+          this.personValueChanged.emit(payload);
+          this.isProcessing = false;
+          this.balance.setValue(0);
+          this.close_onClick();
+          if (!payload.isWaved) {
+            this.systemModuleService.announceSweetProxy('Payment has been made successfully.', 'success');
+          } else {
+            this.systemModuleService.announceSweetProxy('Payment has been waived successfully.', 'success');
+          }
+        } else {
+          this.systemModuleService.announceSweetProxy('You donot have a valid subscription', 'error');
+          this.isProcessing = false;
+          this.systemModuleService.off();
+        }
       }, error => {
         this.systemModuleService.announceSweetProxy('Failed to make payment. Please try again later', 'error');
+        this.systemModuleService.off();
       });
     } else if (this.checkAllWaive.value === false && this.wavedDescription.value.length === 0) {
       this._makePaymentService.create(paymantObj).then(payload => {
-        this.personValueChanged.emit(payload);
-        this.isProcessing = false;
-        this.balance.setValue(0);
-        this.close_onClick();
-        if (!payload.isWaved) {
-          this.systemModuleService.announceSweetProxy('Payment has been made successfully.', 'success');
-        } else {
-          this.systemModuleService.announceSweetProxy('Payment has been waived successfully.', 'success');
-        }
 
+        if(payload.status === undefined){
+          this.personValueChanged.emit(payload);
+          this.isProcessing = false;
+          this.balance.setValue(0);
+          this.close_onClick();
+          if (!payload.isWaved) {
+            this.systemModuleService.announceSweetProxy('Payment has been made successfully.', 'success');
+          } else {
+            this.systemModuleService.announceSweetProxy('Payment has been waived successfully.', 'success');
+          }
+  
+        }else{
+          this.systemModuleService.announceSweetProxy('You donot have a valid subscription', 'error');
+          this.isProcessing = false;
+          this.systemModuleService.off();
+        }
       }, error => {
         console.log(error);
         this.isProcessing = false;
         this.systemModuleService.announceSweetProxy('Failed to make payment. Please try again later', 'error');
+        this.systemModuleService.off();
       });
     } else {
       this.isProcessing = false;
       this.systemModuleService.announceSweetProxy('Kindly give a reason to waive this payment', 'error');
+      this.systemModuleService.off();
     }
 
   }

@@ -64,6 +64,7 @@ import { PaymentChartComponent } from './payment-chart/payment-chart.component';
 import { StoreQuickLinksComponent } from './store-quick-links/store-quick-links.component';
 import { RouterModule } from '@angular/router';
 import { StoreProductTypeComponent } from './store-product-type/store-product-type.component';
+import { PassContinueComponent } from './pass-continue/pass-continue.component';
 @NgModule({
   declarations: [
     SurveyComponent,
@@ -77,7 +78,8 @@ import { StoreProductTypeComponent } from './store-product-type/store-product-ty
     TemplatePhysicianOrderComponent,
     PaymentChartComponent,
     StoreQuickLinksComponent,
-    StoreProductTypeComponent  ],
+    StoreProductTypeComponent,
+    PassContinueComponent  ],
   exports: [
     NgUploaderModule,
     NgPipesModule,
@@ -96,7 +98,8 @@ import { StoreProductTypeComponent } from './store-product-type/store-product-ty
     TemplateNursingCareComponent,
     TemplatePhysicianOrderComponent,
     SharedModuleMaterialModule,
-    StoreQuickLinksComponent
+    StoreQuickLinksComponent,
+    PassContinueComponent
   ],
   imports: [
     RouterModule,

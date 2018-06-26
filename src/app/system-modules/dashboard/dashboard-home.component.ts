@@ -50,7 +50,7 @@ export class DashboardHomeComponent implements OnInit {
 
   facilityManagerActive = true;
   moduleManagerActive = false;
-
+  loadedMenu = false;
   facilitySubmenuActive = true;
   employeeSubmenuActive = false;
   userSubmenuActive = false;
@@ -67,6 +67,7 @@ export class DashboardHomeComponent implements OnInit {
   subscription: Subscription;
   loginEmployee: Employee = <Employee>{};
   access: any = [];
+  facilitySubscriptions: any = [];
 
   checkedInObject: any = <any>{};
   constructor(
@@ -79,7 +80,7 @@ export class DashboardHomeComponent implements OnInit {
     private workSpaceService: WorkSpaceService,
     private authFacadeService: AuthFacadeService,
     private featureService: FeatureModuleService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.featureService.listner.subscribe(payload => {
@@ -89,6 +90,7 @@ export class DashboardHomeComponent implements OnInit {
     if (this.facilityObj !== undefined && this.facilityObj != null) {
       this.facilityName = this.facilityObj.name;
     }
+    this.getFacilitySubscription();
     this.employeeService.checkInAnnounced$.subscribe(payload => {
       this.checkedInObject = payload;
     });
@@ -159,13 +161,48 @@ export class DashboardHomeComponent implements OnInit {
 
     //   this.loadIndicatorVisible = false;
     // })
+    
   }
+  getFacilitySubscription() {
+    console.log(this.facilityObj._id);
+    this.facilityService.findValidSubscription({
+      query: {
+        facilityId: this.facilityObj._id
+      }
+    }).then(payload => {
+      console.log(payload);
+      this.facilitySubscriptions = payload.data;
+      this.facilitySubscriptions.subscriptions_status = payload.data.subscriptions_status;
+    });
+  }
+
+  getSubscribedModule(value) {
+    if(this.facilitySubscriptions.subscriptions_status===true){
+      if (this.facilitySubscriptions.plans !== undefined) {
+        let _modules = this.facilitySubscriptions.plans.filter(x => x.name === value && x.isConfirmed === true);
+        if (_modules.length > 0) {
+          return true;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
+    }else{
+      return true;
+    }
+  }
+
   getUserRoles() {
-    this.authFacadeService.getUserAccessControls(true).then(
-      payload => {
-        this.access = payload;
+    this.authFacadeService.getUserAccessControls(true).then((payload: any) => {
+      if (payload.modules.length > 0) {
+        // setTimeout(e => {
+          this.loadedMenu = true;
+          this.access = payload;
+        // }, 5000);
+      }
       },
-      error => {}
+      error => { }
     );
   }
   accessHas(menu) {
@@ -326,7 +363,7 @@ export class DashboardHomeComponent implements OnInit {
     this.immunizationSubmenuActive = false;
   }
 
-  mainMenuRoute(route) {}
+  mainMenuRoute(route) { }
 
   innerMenuToggle() {
     this.innerMenuShow = !this.innerMenuShow;
