@@ -161,35 +161,38 @@ export class DashboardHomeComponent implements OnInit {
 
     //   this.loadIndicatorVisible = false;
     // })
-    
+
   }
   getFacilitySubscription() {
-    console.log(this.facilityObj._id);
     this.facilityService.findValidSubscription({
       query: {
         facilityId: this.facilityObj._id
       }
     }).then(payload => {
-      console.log(payload);
+      this.loadedMenu = true;
       this.facilitySubscriptions = payload.data;
       this.facilitySubscriptions.subscriptions_status = payload.data.subscriptions_status;
     });
   }
 
   getSubscribedModule(value) {
-    if(this.facilitySubscriptions.subscriptions_status===true){
-      if (this.facilitySubscriptions.plans !== undefined) {
-        let _modules = this.facilitySubscriptions.plans.filter(x => x.name === value && x.isConfirmed === true);
-        if (_modules.length > 0) {
-          return true;
+    if (this.facilitySubscriptions.subscriptions_status!==undefined) {
+      if (this.facilitySubscriptions.subscriptions_status === true) {
+        if (this.facilitySubscriptions.plans !== undefined) {
+          let _modules = this.facilitySubscriptions.plans.filter(x => x.name === value && x.isConfirmed === true);
+          if (_modules.length > 0) {
+            return true;
+          } else {
+            return false;
+          }
         } else {
           return false;
         }
       } else {
-        return false;
+        return true;
       }
-    }else{
-      return true;
+    } else {
+      return false;
     }
   }
 
@@ -197,23 +200,28 @@ export class DashboardHomeComponent implements OnInit {
     this.authFacadeService.getUserAccessControls(true).then((payload: any) => {
       if (payload.modules.length > 0) {
         // setTimeout(e => {
-          this.loadedMenu = true;
-          this.access = payload;
+        this.loadedMenu = true;
+        this.access = payload;
         // }, 5000);
       }
-      },
+    },
       error => { }
     );
   }
-  accessHas(menu) {
-    const modules: any = this.access.modules;
-    if (modules !== undefined) {
-      const index = modules.findIndex(
-        x => x.route.substring(1) === menu.toLowerCase()
-      );
-      return index > -1 || DONT_USE_AUTH_GUARD;
+  accessHas(menu, label) {
+    if (this.getSubscribedModule(label)) {
+      const modules: any = this.access.modules;
+      if (modules !== undefined) {
+        const index = modules.findIndex(
+          x => x.route.substring(1) === menu.toLowerCase()
+        );
+        return index > -1 || DONT_USE_AUTH_GUARD;
+      }
+    } else {
+      return DONT_USE_AUTH_GUARD;
     }
   }
+
   laboratorySubmenuShow() {
     this.innerMenuShow = false;
     this.router.navigate(["/dashboard/laboratory"]);
