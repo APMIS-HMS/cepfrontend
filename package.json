@@ -6,7 +6,7 @@
         "ng": "ng",
         "config": "ts-node ./src/set-env.ts",
         "start": "npm run config -- --environment=prod.navlagos && ng serve --environment=prod.navlagos",
-        "build-prod": "ng build --prod --build-optimizer --vendor-chunk --named-chunks --environment=prod.apmis",
+        "build-prod": "ng build --prod --environment=prod.apmis",
         "test": "ng test",
         "lint": "ng lint",
         "e2e": "ng e2e",
