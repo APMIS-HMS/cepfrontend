@@ -2268,3 +2268,8 @@ button,
     align-items: center;
     overflow: hidden;
 }
+.li-disabled {
+    color: #ddd !important;
+    font-style: italic;
+    cursor: default !important;
+}

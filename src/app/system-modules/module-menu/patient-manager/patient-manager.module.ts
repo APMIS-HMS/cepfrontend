@@ -18,7 +18,7 @@ import {
   LoginEmployeeResolverService
 } from '../../../resolvers/module-menu/index';
 import { AddTagsComponent } from './add-tags/add-tags.component';
-import { FormsService } from '../../../services/facility-manager/setup/index';
+import { FormsService, ImmunizationRecordService } from '../../../services/facility-manager/setup/index';
 import { PatientSummaryComponent } from './patientmanager-detailpage/patient-summary/patient-summary.component';
 import { PatientPrescriptionComponent } from './patientmanager-detailpage/patient-prescription/patient-prescription.component';
 import { MedicationHistoryComponent } from './patientmanager-detailpage/medication-history/medication-history.component';
@@ -156,7 +156,8 @@ import { VaccineDocumentationComponent } from './patientmanager-detailpage/patie
     DocumentationTemplateService,
     ScopeLevelService,
     FacilityCompanyCoverService,
-    LabEventEmitterService
+    LabEventEmitterService,
+    ImmunizationRecordService
   ]
 })
 export class PatientManagerModule {}
