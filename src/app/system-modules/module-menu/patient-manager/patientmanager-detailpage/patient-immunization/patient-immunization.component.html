@@ -6,8 +6,8 @@
             <div (click)="doc_click()" [class.page-tab-active]="documentation" class="page-tab">Documentation</div>
         </div>
 
-        <app-vaccine-administration *ngIf="administer"></app-vaccine-administration>
-        <app-vaccine-documentation *ngIf="documentation"></app-vaccine-documentation>
+        <app-vaccine-administration [patient]="patient" *ngIf="administer"></app-vaccine-administration>
+        <app-vaccine-documentation [patient]="patient" *ngIf="documentation"></app-vaccine-documentation>
         <!-- <div *ngIf="administer" class="doc-card2">
             <div class="top-actions">
                 <div class="pretty p-default p-round">
@@ -99,7 +99,7 @@
         </div>
 
         <div *ngIf="documentation" class="doc-card2">DOCUMENTATION</div> -->
-    </div> 
+    </div>
     <div class="doc-rArea">
         <app-right-tab [patient]="patient" (addProblem)="addProblem_show($event)" (addAllergy)="addAllergy_show($event)" (addHistory)="addHistory_show($event)" (addVitals)="addVitals_show($event)"></app-right-tab>
     </div>
