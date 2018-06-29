@@ -41,6 +41,9 @@ export class ImmunizationRecordService {
     update(record: any) {
         return this._socket.update(record._id, record, {});
     }
+    patch(record: any) {
+        return this._socket.patch(record._id, record, {});
+    }
     remove(id: string, query: any) {
         return this._socket.remove(id, query);
     }

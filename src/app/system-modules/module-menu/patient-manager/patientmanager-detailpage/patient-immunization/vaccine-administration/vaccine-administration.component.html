@@ -15,8 +15,17 @@
                 <li class="vaccine-item" *ngFor="let record of immunizationRecord[1] ">
                     <div class="vac-label">{{ record?.vaccine?.code }} {{ record?.sequence }}</div>
                     <div class="vac-cta">
-                        <button class="cta-blue"><i class="fa fa-check" aria-hidden="true"> </i>Administer</button>
-                        <button class="cta-orange"><i class="fa fa-pause" aria-hidden="true"> </i>Suspend</button>
+                        <button class="cta-blue" *ngIf="!checkIfTodayIsGreater(null, record?.appointmentDate) && !record?.administered" [disabled]="!checkIfRecordIsToday(record?.appointmentDate) || disableAdminister" (click)="onClickAdministerOrSuspendRecord(record);">
+                            <span *ngIf="onAdminister"><i class="fa fa-check" aria-hidden="true"> </i>Administer</span>
+                            <span *ngIf="onAdministering">Administering... <i class="fa fa-spinner fa-spin" aria-hidden="true"> </i></span>
+                        </button>
+                        <!-- <button class="cta-blue" (click)="onClickAdministerOrSuspendRecord(record);">
+                            <span><i class="fa fa-check" aria-hidden="true"> </i>Administer</span>
+                        </button> -->
+                        <button class="btn-green" *ngIf="record?.administered">
+                            <span><i class="fa fa-check" aria-hidden="true"> </i>Administered</span>
+                        </button>
+                        <button class="cta-orange" *ngIf="!record?.administered"><i class="fa fa-repeat" aria-hidden="true"> </i>Reshedule</button>
                     </div>
                 </li>
             </ul>
