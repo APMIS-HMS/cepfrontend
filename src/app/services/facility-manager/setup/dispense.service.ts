@@ -6,6 +6,8 @@ import { Observable } from 'rxjs/Observable';
 export class DispenseService {
   public _socket;
   private _rest;
+  public _walkinSocket;
+  private _walkinRest;
   private listner;
   constructor(
     private _socketService: SocketService,
@@ -13,6 +15,8 @@ export class DispenseService {
   ) {
     this._rest = _restService.getService('dispenses');
     this._socket = _socketService.getService('dispenses');
+    this._walkinRest = _restService.getService('walkin-dispense-prescription');
+    this._walkinSocket = _socketService.getService('walkin-dispense-prescription');
     this._socket.on('created', function (dispenses) {
     });
     this.listner = Observable.fromEvent(this._socket, 'remove');
@@ -31,6 +35,10 @@ export class DispenseService {
 
   create(dispense: any) {
     return this._socket.create(dispense);
+  }
+
+  walkinCreate(dispense: any) {
+    return this._walkinSocket.create(dispense);
   }
 
   remove(id: string, query: any) {
