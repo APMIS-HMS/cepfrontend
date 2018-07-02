@@ -1,15 +1,12 @@
-import { Component, OnInit, Input, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { Component, OnInit, Input } from '@angular/core';
+import { FormGroup,  FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Facility, Appointment, BatchTransaction, Employee, BillItem, BillIGroup, Department } from '../../../../../models/index';
+import { Facility, Department } from '../../../../../models/index';
 import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
 import {
-	FacilitiesService, PrescriptionService, InventoryService, EmployeeService, PurchaseEntryService,
-	InventoryTransactionTypeService, BillingService, InvoiceService,
-	DispenseService, ProductService, FacilityPriceService, AssessmentDispenseService
-}
-	from '../../../../../services/facility-manager/setup/index';
+	InventoryService, InventoryTransactionTypeService, FacilityPriceService, DispenseService
+} from '../../../../../services/facility-manager/setup/index';
 import { Observable } from 'rxjs/Observable';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { SystemModuleService } from '../../../../../services/module-manager/setup/system-module.service';
@@ -20,7 +17,6 @@ import { SystemModuleService } from '../../../../../services/module-manager/setu
 	styleUrls: ['./noprescription.component.scss']
 })
 export class NoprescriptionComponent implements OnInit {
-	@Input() selectedAppointment: Appointment = <Appointment>{};
 	facility: Facility = <Facility>{};
 	user: any = <any>{};
 	employeeDetails: any = <any>{};
@@ -61,25 +57,15 @@ export class NoprescriptionComponent implements OnInit {
 	selectedCId: string;
 	internalType = 'Department';
 	deptLocationShow = true;
-
 	loading = false;
 
 	constructor(
 		private _fb: FormBuilder,
-		private _el: ElementRef,
 		private _locker: CoolLocalStorage,
 		private _pharmacyEventEmitter: PharmacyEmitterService,
-		private _facilityService: FacilitiesService,
-		private _dispenseService: DispenseService,
-		private _productService: ProductService,
-		private _facilityPriceService: FacilityPriceService,
 		private _inventoryService: InventoryService,
-		private _employeeService: EmployeeService,
-		private _purchaseEntryService: PurchaseEntryService,
-		private _assessmentDispenseService: AssessmentDispenseService,
+		private _dispenseService: DispenseService,
 		private _inventoryTransactionTypeService: InventoryTransactionTypeService,
-		private _billingService: BillingService,
-		private _invoiceService: InvoiceService,
 		private _facilityPriceServices: FacilityPriceService,
 		private _authFacadeService: AuthFacadeService,
 		private _systemModuleService: SystemModuleService
@@ -95,13 +81,11 @@ export class NoprescriptionComponent implements OnInit {
 	ngOnInit() {
 		this._pharmacyEventEmitter.setRouteUrl('Dispense');
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
-		this.user = this._locker.getObject('auth');
 
 		this.clients = Clients;
 		this.selectedClient = Clients[0].name;
 		this.individualShow = true;
 
-		this.getFacilityData();
 		this._getInventoryTransactionTypes();
 
 		// Nonprescription form group
@@ -142,7 +126,6 @@ export class NoprescriptionComponent implements OnInit {
 			if (!!this.selectedStore) {
 				if (value.drug === '' || value.qty === '' || value.qty === 0 || value.batchNumber === '') {
 					this._systemModuleService.announceSweetProxy('Some fields are empty or Quantity is less than 1!', 'error');
-          			// this._notification('Error', 'Some fields are empty or Quantity is less than 1!');
 				} else {
 					switch (value.client) {
 						case 'Individual':
@@ -201,17 +184,15 @@ export class NoprescriptionComponent implements OnInit {
 					this.noPrescriptionForm.controls['qty'].setValue(1);
 				}
 			} else {
-        this._notification('Error', 'You need to check into store.');
+				this._systemModuleService.announceSweetProxy('You need to check into store.', 'error');
 			}
 		} else {
-      this._notification('Error', 'Some fields are empty or Quantity is less than 1!');
+			this._systemModuleService.announceSweetProxy('Some fields are empty or Quantity is less than 1!', 'error');
 		}
 	}
 
 	// Save Nonpresciption form data in to the database.
 	onClickDispense() {
-		console.log(this.prescriptions);
-		console.log(this.selectedStore);
 		if (this.prescriptions.length > 0) {
 			if (!!this.selectedStore) {
 				const prescription = {};
@@ -301,7 +282,7 @@ export class NoprescriptionComponent implements OnInit {
 					product['referenceId'] = '';
 					product['employeeId'] = this.employeeDetails._id;
 					product['referenceService'] = 'NoPrescriptionService';
-					product['inventorytransactionTypeId'] = this.inventoryTransactionTypeId;
+					product['inventoryTransactionTypeId'] = this.inventoryTransactionTypeId;
 					prescription['employee'] = {
 						id: this.employeeDetails._id,
             			name: `${this.employeeDetails.firstName} ${this.employeeDetails.firstName}`
@@ -316,14 +297,31 @@ export class NoprescriptionComponent implements OnInit {
 					facilityId: this.facility._id,
 					nonPrescription: prescription,
 					isPrescription: false,
+					inventoryTransactionTypeId: this.inventoryTransactionTypeId,
 					storeId: this.selectedStore.storeId
-				}
+				};
 
-				const collectionDrugs = { drugs: drugs };
-
-				console.log(payload);
-				console.log(collectionDrugs);
 				// Call a service to
+				this._dispenseService.walkinCreate(payload).then(res => {
+					if (res.status === 'success') {
+						const msg = `You have successfully dispensed ${drugs.length} items from your inventory`;
+						this._systemModuleService.announceSweetProxy(msg, 'success');
+						this.dispenseBtn = true;
+						this.dispensingBtn = false;
+						this.disableDispenseBtn = true;
+						this.noPrescriptionForm.reset();
+						this.prescriptions = [];
+						this.selectedClient = this.clients[0].name;
+						this.individualShow = true;
+						this.corporateShow = false;
+						this.internalShow = false;
+					} else {
+						this.dispenseBtn = true;
+						this.dispensingBtn = false;
+						this.disableDispenseBtn = false;
+						this._systemModuleService.announceSweetProxy(res.message, 'error');
+					}
+				});
 				// this._dispenseCollectionDrugs.create(collectionDrugs).then(res => {
 				// 	// bill model
 				// 	const billItemArray = [];
@@ -424,10 +422,10 @@ export class NoprescriptionComponent implements OnInit {
 				// 	console.log(err);
 				// });
 			} else {
-				this._notification('Error', 'You need to check into store.');
+				this._systemModuleService.announceSweetProxy('You need to check into store.', 'error');
 			}
 		} else {
-			this._notification('Error', 'Please use to "Save" button above to add drugs.');
+			this._systemModuleService.announceSweetProxy('Please use to "Save" button above to add drugs.', 'error');
 		}
 	}
 
@@ -456,27 +454,19 @@ export class NoprescriptionComponent implements OnInit {
 					}
 				});
 			} else {
-				this._notification('Error', 'You need to check into store.');
+				this._systemModuleService.announceSweetProxy('You need to check into store.', 'error');
 			}
 		}
 	}
 
 	onClickCustomSearchItem(event, product) {
-		console.log(product);
 		this.noPrescriptionForm.controls['batchNumber'].reset();
 		this.noPrescriptionForm.controls['product'].setValue(product.productObject.name);
-		// this.selectedProductId = product.productId;
-		// // this.selectedProductId = drugId.getAttribute('data-p-id');
-		// this.selectedInventoryId = product._id;
-		// this.selectedFsId = product.facilityServiceId;
-		// this.selectedSId = product.serviceId;
-		// this.selectedCId = product.categoryId;
 		this.selectedProduct = product;
 		this.batches = product.transactions;
 	}
 
 	onClickBatchSelect(event, batch) {
-		console.log(batch);
 		this.selectedBatch = batch;
 		if (!!batch && !!batch._id) {
 			this._facilityPriceServices.find({query: {
@@ -485,7 +475,6 @@ export class NoprescriptionComponent implements OnInit {
 				facilityServiceId: this.selectedProduct.facilityServiceId,
 				categoryId: this.selectedProduct.categoryId
 			}}).then(res => {
-				console.log(res);
 				if (res.data.length > 0) {
 					this.price = res.data[0].price;
 				} else {
@@ -564,14 +553,6 @@ export class NoprescriptionComponent implements OnInit {
 		}, 300);
 	}
 
-	// Get facility data then extract the departments, minorlocations, and units.
-	getFacilityData() {
-		this._facilityService.get(this.facility._id, {}).then(res => {
-			this.departments = res.departments;
-			this.minorLocations = res.minorLocations;
-		}).catch(err => console.error(err));
-	}
-
 	onChangeDepartment(value) {
 		const units = this.departments.find(x => x._id === value.value._id);
 		this.units = units.units;
@@ -633,14 +614,6 @@ export class NoprescriptionComponent implements OnInit {
 		}).catch(err => { console.log(err); });
 	}
 
-	// Notification
-	private _notification(type: string, text: string): void {
-		this._facilityService.announceNotification({
-			users: [this.user._id],
-			type: type,
-			text: text
-		});
-	}
 	private _minValue(min: Number): ValidatorFn {
 		return (control: AbstractControl): { [key: string]: any } => {
 			const input = control.value,
