@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { ImmunizationRecordService } from '../../../../../../services/facility-manager/setup';
 import { Facility } from '../../../../../../models/index';
 import * as format from 'date-fns/format';
@@ -16,6 +17,7 @@ import { AuthFacadeService } from '../../../../../service-facade/auth-facade.ser
 })
 export class VaccineAdministrationComponent implements OnInit {
   @Input() patient;
+  rescheduleForm: FormGroup;
   currentDocument: any;
   facility: Facility = <Facility>{};
   employeeDetails: any;
@@ -25,9 +27,12 @@ export class VaccineAdministrationComponent implements OnInit {
   onAdminister = true;
   onAdministering = false;
   disableAdminister = false;
+  rescheduleRecordId: number;
+  reschedule = false;
 
   constructor(
     private _locker: CoolLocalStorage,
+    private _fb: FormBuilder,
     private _immunizationRecordService: ImmunizationRecordService,
     private _systemModuleService: SystemModuleService,
     private _authFacadeService: AuthFacadeService
@@ -43,6 +48,10 @@ export class VaccineAdministrationComponent implements OnInit {
     if (!!this.patient && !!this.patient._id) {
       this._getImmunizationRecords(this.patient._id);
     }
+
+    this.rescheduleForm = this._fb.group({
+      appointmentDate: ['', Validators.required]
+    });
     console.log(isToday(new Date('2018-06-19T14:25:20.515Z')));
   }
 
@@ -121,6 +130,34 @@ export class VaccineAdministrationComponent implements OnInit {
     return map;
   }
 
+  onShowResheduleBtn(recordId) {
+    if (this.rescheduleRecordId === recordId) {
+      this.reschedule = !this.reschedule;
+    } else {
+      this.rescheduleForm.reset();
+      this.reschedule = true;
+    }
+    this.rescheduleRecordId = recordId;
+  }
+
+  onClickSaveRescheduleBtn(record, valid, value) {
+    console.log(valid);
+    console.log(value);
+    console.log(record);
+    // Call an API that will change the appointment date for all the
+    // appointments that were set for that day and also update
+    // immunization records.
+    record.immunizationRecordId = this.immunizationRecord._id;
+    record.patientId = this.immunizationRecord.patientId;
+    record.facilityId = this.facility._id;
+    record.newAppointmentDate = value.appointmentDate;
+    this._immunizationRecordService.customUpdate(record.immunizationRecordId, record).then(res => {
+      console.log(res);
+    }).catch(e => {
+      console.log(e);
+    });
+  }
+
   checkIfRecordIsToday(recordDate: string): boolean {
     return isToday(new Date(recordDate))
   }
@@ -137,6 +174,11 @@ export class VaccineAdministrationComponent implements OnInit {
       this.currentDocument = document;
     }
   }
+
+  // toggleReschedule(record) {
+  //   console.log(record);
+  //   return this.rescheduleRecordId === undefined ? false : this.rescheduleRecordId === record._id;
+  // }
 
   should_show(document) {
     return this.currentDocument === undefined ? false : this.currentDocument._id === document._id;
