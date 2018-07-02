@@ -38,7 +38,6 @@ export class VaccineAdministrationComponent implements OnInit {
     private _authFacadeService: AuthFacadeService
   ) {
     this._authFacadeService.getLogingEmployee().then(res => {
-      console.log(res);
       this.employeeDetails = res;
     }).catch(err => { });
   }
@@ -52,11 +51,9 @@ export class VaccineAdministrationComponent implements OnInit {
     this.rescheduleForm = this._fb.group({
       appointmentDate: ['', Validators.required]
     });
-    console.log(isToday(new Date('2018-06-19T14:25:20.515Z')));
   }
 
   onClickAdministerOrSuspendRecord(record: any) {
-    console.log(record);
     if (!!record._id) {
       this.onAdminister = false;
       this.disableAdminister = true;
@@ -65,7 +62,6 @@ export class VaccineAdministrationComponent implements OnInit {
       const patientName = `${this.patient.personDetails.firstName} ${this.patient.personDetails.lastName}`;
       // Add a footprint to the record
       for (const immune of immunizationRecord.immunizations) {
-        console.log(immune);
           if (immune._id === record._id) {
             immune.administered = true;
             immune.administeredBy = this.employeeDetails._id;
@@ -101,19 +97,20 @@ export class VaccineAdministrationComponent implements OnInit {
 
   private _getImmunizationRecords(patientId) {
     this._immunizationRecordService.find({ query: { facilityId: this.facility._id, patientId: patientId  }}).then(res => {
-      console.log(res);
       // Check if data has a value and if there exists immunizations as a property and if the length is greater than 0.
       if (!!res.data && res.data.length > 0 && !!res.data[0].immunizations && res.data[0].immunizations.length > 0) {
-        this.immunizationRecord = res.data[0];
-        const reverseDocuments = res.data[0].immunizations.reverse();
-        console.log(reverseDocuments);
-        const grouped = this._groupBy(reverseDocuments, reverseDocument => format(reverseDocument.appointmentDate, 'DD/MM/YYYY'));
-        console.log(grouped);
-        this.immunizationRecords = Array.from(grouped);
+        this._modelImmunizationRecord(res.data[0]);
       }
     }).catch(err => {
       console.log(err);
     });
+  }
+
+  private _modelImmunizationRecord(record) {
+    this.immunizationRecord = record;
+    const reverseDocuments = record.immunizations.reverse();
+    const grouped = this._groupBy(reverseDocuments, reverseDocument => format(reverseDocument.appointmentDate, 'DD/MM/YYYY'));
+    this.immunizationRecords = Array.from(grouped);
   }
 
   private _groupBy(list, keyGetter) {
@@ -141,9 +138,6 @@ export class VaccineAdministrationComponent implements OnInit {
   }
 
   onClickSaveRescheduleBtn(record, valid, value) {
-    console.log(valid);
-    console.log(value);
-    console.log(record);
     // Call an API that will change the appointment date for all the
     // appointments that were set for that day and also update
     // immunization records.
@@ -152,7 +146,12 @@ export class VaccineAdministrationComponent implements OnInit {
     record.facilityId = this.facility._id;
     record.newAppointmentDate = value.appointmentDate;
     this._immunizationRecordService.customUpdate(record.immunizationRecordId, record).then(res => {
-      console.log(res);
+      if (res.status === 'success') {
+        const msg = `You have successfully rescheduled immunizations from ${record.appointmentDate} to ${new Date(value.appointmentDate)}`;
+        this._systemModuleService.announceSweetProxy(msg, 'success');
+        this._modelImmunizationRecord(res.data);
+        this.reschedule = false;
+      }
     }).catch(e => {
       console.log(e);
     });
@@ -167,18 +166,12 @@ export class VaccineAdministrationComponent implements OnInit {
   }
 
   node_toggle(document) {
-    console.log(document);
     if (this.currentDocument !== undefined && document === this.currentDocument) {
       this.currentDocument = undefined;
     } else {
       this.currentDocument = document;
     }
   }
-
-  // toggleReschedule(record) {
-  //   console.log(record);
-  //   return this.rescheduleRecordId === undefined ? false : this.rescheduleRecordId === record._id;
-  // }
 
   should_show(document) {
     return this.currentDocument === undefined ? false : this.currentDocument._id === document._id;
