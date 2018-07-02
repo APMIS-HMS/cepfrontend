@@ -24,6 +24,22 @@
         </thead>
 
         <tbody>
+            <tr *ngIf="!loading && immunizationRecords.length === 0">
+                <td colspan="5">
+                    <div style="text-align: center">
+                        <span>There currently is no vaccine for this patient</span>
+                    </div>
+                </td>
+            </tr>
+            <tr *ngIf="loading && immunizationRecords.length === 0">
+                <td colspan="5">
+                    <div class="row">
+                        <div class="col-xs-12" style="text-align: center">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
+                        </div>
+                    </div>
+                </td>
+            </tr>
             <tr *ngFor="let immuneRecords of immunizationRecords; let i = index;">
                 <td>
                     <ul class="td-list-ul">

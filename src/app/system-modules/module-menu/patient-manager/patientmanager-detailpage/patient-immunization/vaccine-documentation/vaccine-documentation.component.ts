@@ -13,6 +13,7 @@ export class VaccineDocumentationComponent implements OnInit {
   facility: Facility = <Facility>{};
   immunizationRecord: any = <any>{};
   immunizationRecords: any = <any>[];
+  loading = true;
 
   constructor(
     private _locker: CoolLocalStorage,
@@ -28,6 +29,7 @@ export class VaccineDocumentationComponent implements OnInit {
 
   private _getImmunizationRecords(patientId) {
     this._immunizationRecordService.find({ query: { facilityId: this.facility._id, patientId: patientId } }).then(res => {
+      this.loading = false;
       // Check if data has a value and if there exists immunizations as a property and if the length is greater than 0.
       if (!!res.data && res.data.length > 0 && !!res.data[0].immunizations && res.data[0].immunizations.length > 0) {
         this._modelImmunizationRecord(res.data[0]);
