@@ -558,7 +558,7 @@ export class MakePaymentComponent implements OnInit {
     }
     if (this.checkAllWaive.value === true && this.wavedDescription.value.length > 0) {
       this._makePaymentService.create(paymantObj).then(payload => {
-
+console.log(payload.status);
         if (payload.status === undefined) {
           this.personValueChanged.emit(payload);
           this.isProcessing = false;
