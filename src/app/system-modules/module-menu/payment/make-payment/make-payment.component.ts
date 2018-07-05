@@ -254,6 +254,8 @@ export class MakePaymentComponent implements OnInit {
         }
       } else if (this.facilitySubscriptions.name === 'One-of-payment') {
         this.subCharge_cost = this.cost;
+      }else if (this.facilitySubscriptions.name === undefined) {
+        this.subCharge_cost = this.cost;
       }
 
       this.setValueForServiceItems();
@@ -558,13 +560,12 @@ export class MakePaymentComponent implements OnInit {
     }
     if (this.checkAllWaive.value === true && this.wavedDescription.value.length > 0) {
       this._makePaymentService.create(paymantObj).then(payload => {
-console.log(payload.status);
-        if (payload.status === undefined) {
-          this.personValueChanged.emit(payload);
+        if (payload.status === 'success') {
+          this.personValueChanged.emit(payload.data);
           this.isProcessing = false;
           this.balance.setValue(0);
           this.close_onClick();
-          if (!payload.isWaved) {
+          if (!payload.data.isWaved) {
             this.systemModuleService.announceSweetProxy('Payment has been made successfully.', 'success');
           } else {
             this.systemModuleService.announceSweetProxy('Payment has been waived successfully.', 'success');
@@ -580,13 +581,12 @@ console.log(payload.status);
       });
     } else if (this.checkAllWaive.value === false && this.wavedDescription.value.length === 0) {
       this._makePaymentService.create(paymantObj).then(payload => {
-
-        if (payload.status === undefined) {
-          this.personValueChanged.emit(payload);
+        if (payload.status !== undefined) {
+          this.personValueChanged.emit(payload.data);
           this.isProcessing = false;
           this.balance.setValue(0);
           this.close_onClick();
-          if (!payload.isWaved) {
+          if (!payload.data.isWaved) {
             this.systemModuleService.announceSweetProxy('Payment has been made successfully.', 'success');
           } else {
             this.systemModuleService.announceSweetProxy('Payment has been waived successfully.', 'success');
