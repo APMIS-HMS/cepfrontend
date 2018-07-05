@@ -28,6 +28,7 @@ import {AppointmentService, AppointmentTypeService, BillingService, EmployeeServ
 import {LocationService, OrderStatusService} from '../../../../../../services/module-manager/setup/index';
 
 import {ImmunizationScheduleService} from './../../../../../../services/facility-manager/setup/immunization-schedule.service';
+import {immunizationRoutes} from './../../../../immunization/immunization.routes';
 import {Vaccine} from './../../../models/vaccine';
 
 const EMAIL_REGEX =
@@ -42,6 +43,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
   appointmentIsToday = false;
   showTimeZone: boolean;
   @Input() selectedPatient: any;
+  @Input() selectedAppointment: any;
   selectedProvider: any;
   mainErr = true;
   errMsg = 'You have unresolved errors';
@@ -121,7 +123,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
   days: any[] = [
     'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'
   ];
-  selectedAppointment: Appointment = <Appointment>{};
+  // selectedAppointment: Appointment = <Appointment>{};
   btnText = 'Schedule Appointment';
   disableBtn = false;
   saveAppointment = true;
@@ -136,6 +138,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
 
   vaccines: Vaccine[] = [];
   checkAll = false;
+  immunizationScheduleId: any;
 
   constructor(
       private router: Router, private route: ActivatedRoute,
@@ -157,49 +160,47 @@ export class ImmunizationAppointmentComponent implements OnInit {
       private _smsAlertService: SmsAlertService,
       private billingService: BillingService,
       private immunizationScheduleService: ImmunizationScheduleService) {
-    appointmentService.appointmentAnnounced$.subscribe((payload: any) => {
-      this.appointment = payload;
-      this.updateAppointment = true;
-      this.saveAppointment = false;
-      this.savingAppointment = false;
-      const filterClinic =
-          this.clinics.filter(x => x._id === payload.clinicId._id);
-      if (filterClinic.length > 0) {
-        this.clinic.setValue(filterClinic[0]);
-        this.dateChange(this.appointment.startDate);
-      }
+    // appointmentService.appointmentAnnounced$.subscribe((payload: any) => {
+    //   this.appointment = payload;
+    //   this.updateAppointment = true;
+    //   this.saveAppointment = false;
+    //   this.savingAppointment = false;
+    //   const filterClinic =
+    //       this.clinics.filter(x => x._id === payload.clinicId._id);
+    //   if (filterClinic.length > 0) {
+    //     this.clinic.setValue(filterClinic[0]);
+    //     this.dateChange(this.appointment.startDate);
+    //   }
 
-      // this.provider.setValue(payload.providerDetails);
-      if (this.appointment.providerDetails !== undefined) {
-        this.apmisProviderLookupHandleSelectedItem(
-            this.appointment.providerDetails);
-      }
-      this.selectedPatient = payload.patientDetails;
+    //   if (this.appointment.providerDetails !== undefined) {
+    //     this.apmisProviderLookupHandleSelectedItem(
+    //         this.appointment.providerDetails);
+    //   }
+    //   this.selectedPatient = payload.patientDetails;
 
-      // this.patient.setValue(payload.patientDetails);
-      this.apmisLookupHandleSelectedItem(payload.patientDetails);
-      this.date = payload.startDate;
-      this.reason.setValue(payload.appointmentReason);
+    //   this.apmisLookupHandleSelectedItem(payload.patientDetails);
+    //   this.date = payload.startDate;
+    //   this.reason.setValue(payload.appointmentReason);
 
-      this.type.setValue(payload.appointmentTypeId);
+    //   this.type.setValue(payload.appointmentTypeId);
 
-      this.category.setValue(payload.category);
-      this.status.setValue(payload.orderStatusId);
-      if (payload.attendance !== undefined) {
-        if (this.canCheckIn) {
-          this.checkIn.enable();
-        } else {
-          this.checkIn.disable();
-        }
-      } else {
-        this.checkIn.disable();
-      }
-      if (payload.zoom !== undefined) {
-        this.teleMed.setValue(true);
-        this.timezone.setValue(payload.zoom.timezone);
-      }
-      this.isAppointmentToday();
-    });
+    //   this.category.setValue(payload.category);
+    //   this.status.setValue(payload.orderStatusId);
+    //   if (payload.attendance !== undefined) {
+    //     if (this.canCheckIn) {
+    //       this.checkIn.enable();
+    //     } else {
+    //       this.checkIn.disable();
+    //     }
+    //   } else {
+    //     this.checkIn.disable();
+    //   }
+    //   if (payload.zoom !== undefined) {
+    //     this.teleMed.setValue(true);
+    //     this.timezone.setValue(payload.zoom.timezone);
+    //   }
+    //   this.isAppointmentToday();
+    // });
     this.dateCtrl.valueChanges.subscribe(value => {
       this.dateChange(value);
     });
@@ -282,6 +283,57 @@ export class ImmunizationAppointmentComponent implements OnInit {
   }
 
   ngOnInit() {
+    if (this.selectedAppointment !== undefined) {
+      console.log(this.selectedAppointment);
+      let payload = this.selectedAppointment;
+      this.appointment = payload;
+      this.updateAppointment = true;
+      this.saveAppointment = false;
+      this.savingAppointment = false;
+      const filterClinic =
+          this.clinics.filter(x => x._id === payload.clinicId._id);
+      if (filterClinic.length > 0) {
+        this.clinic.setValue(filterClinic[0]);
+        this.dateChange(this.appointment.startDate);
+      }
+
+      if (this.appointment.providerDetails !== undefined) {
+        this.apmisProviderLookupHandleSelectedItem(
+            this.appointment.providerDetails);
+      }
+      this.selectedPatient = payload.patientDetails;
+
+      this.apmisLookupHandleSelectedItem(payload.patientDetails);
+      this.date = payload.startDate;
+      this.reason.setValue(payload.appointmentReason);
+
+      this.type.setValue(payload.appointmentTypeId);
+
+      this.category.setValue(payload.category);
+      this.status.setValue(payload.orderStatusId);
+      if (payload.attendance !== undefined) {
+        if (this.canCheckIn) {
+          this.checkIn.enable();
+        } else {
+          this.checkIn.disable();
+        }
+      } else {
+        this.checkIn.disable();
+      }
+      if (payload.zoom !== undefined) {
+        this.teleMed.setValue(true);
+        this.timezone.setValue(payload.zoom.timezone);
+      }
+      this.isAppointmentToday();
+
+      if (this.selectedAppointment.immunizationRecords.length > 0) {
+        const firstRecord = this.selectedAppointment.immunizationRecords[0];
+        this.immunizationScheduleId = firstRecord.immunizationScheduleId;
+      }
+    }
+
+
+
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.auth = <any>this.locker.getObject('auth');
     this.employeeService.loginEmployeeAnnounced$.subscribe(employee => {
@@ -295,6 +347,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
         .find({query: {facilityId: this.selectedFacility._id}})
         .then(payload => {
           this.immunizationSchedules = payload.data;
+          this.selectSelectedImmunization(this.immunizationScheduleId);
         });
   }
 
@@ -901,6 +954,29 @@ export class ImmunizationAppointmentComponent implements OnInit {
     this.selectedProvider = value;
   }
 
+  selectSelectedImmunization(id) {
+    const filterRecords =
+        this.immunizationSchedules.filter(immu => immu._id === id);
+    if (filterRecords.length > 0) {
+      this.selectedSchedule = filterRecords[0];
+      this.changeSelection(this.selectedSchedule);
+    }
+  }
+
+  isVaccineChecked(id) {
+    const checkedFiltered = this.selectedAppointment.immunizationRecords.filter(
+        rec => rec.vaccine._id === id);
+    return checkedFiltered.length > 0 ? checkedFiltered[0] : undefined;
+  }
+
+  checkSelectedImmunizationScheduleVaccine() {
+    this.vaccines.forEach(vaccine => {
+      if (this.isVaccineChecked(vaccine.vaccineObject._id) !== undefined) {
+        vaccine.checked = true;
+      }
+    });
+  }
+
   changeSelection(event) {
     this.vaccines = [];
     this.checkAll = false;
@@ -908,6 +984,9 @@ export class ImmunizationAppointmentComponent implements OnInit {
     this.selectedSchedule.vaccines.map(vaccine => {
       this.vaccines.push(<Vaccine>{checked: false, vaccineObject: vaccine});
     });
+    if (this.selectedAppointment !== undefined) {
+      this.checkSelectedImmunizationScheduleVaccine();
+    }
   }
 
   checkAllChanged(event) {
@@ -1001,6 +1080,37 @@ export class ImmunizationAppointmentComponent implements OnInit {
         }
       }
       if (this.appointment._id !== undefined) {
+        console.log('edit');
+        const vaccineAppointments = {
+          appointment: this.appointment,
+          immunizationScheduleId: this.selectedSchedule._id,
+          vaccineIds: this.getCheckedVaccines().map(vaccine => {
+            return vaccine.vaccineObject._id;
+          })
+        };
+        this.appointmentService
+            .updateImmunizationAppointment(vaccineAppointments)
+            .then(
+                payload => {
+                  console.log(payload);
+                  this.savingAppointment = false;
+                  this.disableBtn = false;
+                  this.loadIndicatorVisible = false;
+                  this.updateAppointment = true;
+                  this.systemModuleService.off();
+                  this.router.navigate(['/dashboard/clinic/appointment']);
+                  this.systemModuleService.announceSweetProxy(
+                      'Immunization Appointment set successfully', 'success',
+                      null, null, null, null, null, null, null);
+                },
+                error => {
+                  console.dir(error);
+                  this.savingAppointment = false;
+                  this.disableBtn = false;
+                  this.loadIndicatorVisible = false;
+                  this.updateAppointment = true;
+                  this.systemModuleService.off();
+                });
         // this.appointmentService.update(this.appointment).then(
         //   payload => {
         //     if (this.teleMed.value === true) {
@@ -1101,10 +1211,6 @@ export class ImmunizationAppointmentComponent implements OnInit {
         //   }
         // );
       } else {
-        // console.log(this.appointment);
-        // console.log(this.selectedSchedule);
-        // console.log(this.getCheckedVaccines().map(vaccine => {return
-        // vaccine.vaccineObject._id}));
         const vaccineAppointments = {
           appointment: this.appointment,
           immunizationScheduleId: this.selectedSchedule._id,
@@ -1113,114 +1219,26 @@ export class ImmunizationAppointmentComponent implements OnInit {
           })
         };
 
-        console.log(vaccineAppointments);
         this.appointmentService.setMultipleAppointments(vaccineAppointments)
-            .then(payload => {
-              console.log(payload);
-              this.savingAppointment = false;
-              this.disableBtn = false;
-              this.loadIndicatorVisible = false;
-              this.systemModuleService.off();
-            });
-        // this.appointmentService.create(this.appointment).then(
-        //   payload => {
-        //     console.log(payload);
-        //     this.createBill();
-        //     if (this.teleMed.value === true) {
-        //       const topic = "Appointment with " +
-        //       patient.personDetails.apmisId; this.appointmentService
-        //         .setMeeting(
-        //           topic,
-        //           this.appointment.startDate,
-        //           payload._id,
-        //           this.timezone.value.value
-        //         )
-        //         .then(
-        //           meeting => {
-        //             this.disableBtn = true;
-        //             this.updateAppointment = false;
-        //             this.saveAppointment = true;
-        //             this.savingAppointment = false;
-        //             let fullName =
-        //               this.selectedPatient.personDetails.lastName +
-        //               " " +
-        //               this.selectedPatient.personDetails.Name;
-        //             this.setValueSmsAlert(
-        //               fullName,
-        //               this.appointment.startDate,
-        //               this.selectedFacility.name,
-        //               this.selectedClinic.name,
-        //               this.selectedPatient.personDetails.email
-        //             );
-
-        //             this.router.navigate(["/dashboard/clinic/appointment"]);
-        //             this.systemModuleService.off();
-        //             this.systemModuleService.announceSweetProxy(
-        //               "Appointment set successfully",
-        //               "success",
-        //               null,
-        //               null,
-        //               null,
-        //               null,
-        //               null,
-        //               null,
-        //               null
-        //             );
-        //           },
-        //           error => {
-        //             this.savingAppointment = false;
-        //             this.disableBtn = false;
-        //             this.loadIndicatorVisible = false;
-        //             this.systemModuleService.off();
-        //             this.systemModuleService.announceSweetProxy(
-        //               "Appointment set successfully but there was an error
-        //               creating Telemedicine appointment", "warning"
-        //             );
-        //           }
-        //         );
-        //     } else {
-        //       this.disableBtn = true;
-        //       this.updateAppointment = false;
-        //       this.saveAppointment = true;
-        //       this.savingAppointment = false;
-        //       let fullName =
-        //         this.selectedPatient.personDetails.lastName +
-        //         " " +
-        //         this.selectedPatient.personDetails.Name;
-        //       this.setValueSmsAlert(
-        //         fullName,
-        //         this.appointment.startDate,
-        //         this.selectedFacility.name,
-        //         clinic.name,
-        //         this.selectedPatient.personDetails.email
-        //       );
-        //       this.router.navigate(["/dashboard/clinic/appointment"]);
-        //       this.systemModuleService.off();
-        //       this.systemModuleService.announceSweetProxy(
-        //         "Appointment set successfully",
-        //         "success",
-        //         null,
-        //         null,
-        //         null,
-        //         null,
-        //         null,
-        //         null,
-        //         null
-        //       );
-        //     }
-        //   },
-        //   error => {
-        //     this.savingAppointment = false;
-        //     this.disableBtn = false;
-        //     this.loadIndicatorVisible = false;
-        //     this.systemModuleService.off();
-        //     this.systemModuleService.announceSweetProxy(
-        //       "There was an error setting the appointment",
-        //       "error"
-        //     );
-        //     console.dir(error);
-        //   }
-        // );
+            .then(
+                payload => {
+                  this.savingAppointment = false;
+                  this.disableBtn = false;
+                  this.loadIndicatorVisible = false;
+                  this.saveAppointment = true;
+                  this.systemModuleService.off();
+                  this.router.navigate(['/dashboard/clinic/appointment']);
+                  this.systemModuleService.announceSweetProxy(
+                      'Immunization Appointment set successfully', 'success',
+                      null, null, null, null, null, null, null);
+                },
+                error => {
+                  this.savingAppointment = false;
+                  this.disableBtn = false;
+                  this.loadIndicatorVisible = false;
+                  this.saveAppointment = true;
+                  this.systemModuleService.off();
+                });
       }
     } else {
       this.systemModuleService.off();

@@ -59,7 +59,7 @@
             <app-schedule-frm [selectedPatient]="selectedPatient"></app-schedule-frm>
         </div>
         <div class="col-xs-12" *ngIf="immunizationAppointment">
-            <app-immunization-appointment></app-immunization-appointment>
+            <app-immunization-appointment [selectedPatient]="selectedPatient" [selectedAppointment]="selectedAppointment"></app-immunization-appointment>
         </div>
         <!-- <div class="col-xs-12" *ngIf=" radiologyAppointment ">
             Radiology
@@ -177,7 +177,7 @@
                     </tr>
                     <tr *ngFor="let appointment of appointments">
                         <td>
-                            <div *ngIf="appointment?.doctorId !== undefined" class="empWrap">
+                            <div class="empWrap">
                                 <div class="list-img">
                                     <img *ngIf="appointment.patientDetails?.personDetails?.profileImageObject !== undefined" [src]="facilityService.transform(appointment.patientId.personDetails?.profileImageObject?.thumbnail)">
                                     <img *ngIf="appointment.patientDetails?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
@@ -191,7 +191,7 @@
                         <td>
                             <div class="empWrap">
                                 <div class="list-img">
-                                    <img *ngIf="appointment.providerDetails?.personDetails?.profileImageObject !== undefined && appointment.doctorId !== null" [src]="facilityService.transform(appointment.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
+                                    <img *ngIf="appointment.doctorId !== undefined && appointment.providerDetails?.personDetails?.profileImageObject !== undefined" [src]="facilityService.transform(appointment.doctorId?.employeeDetails?.profileImageObject?.thumbnail)">
                                     <img *ngIf="appointment.providerDetails?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
                                 </div>
                                 <div>{{appointment.providerDetails?.personDetails.title}} {{appointment.providerDetails?.personDetails.lastName}} {{appointment.providerDetails?.personDetails.firstName}}</div>
