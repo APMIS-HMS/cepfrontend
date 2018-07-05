@@ -34,12 +34,7 @@ export const BloodGroups = [
     selected: false,
     recipients: ["B+", "B-", "AB+", "AB-"]
   },
-  {
-    id: 5,
-    name: "O+",
-    selected: false,
-    recipients: ["A+", "O+", "B+", "AB+"]
-  },
+  { id: 5, name: "O+", selected: false, recipients: ["A+", "O+", "B+", "AB+"] },
   {
     id: 6,
     name: "O-",
@@ -69,8 +64,7 @@ export const PaymentChannels = [
   { id: 1, name: "Cash" },
   // { 'id': 2, 'name': 'Cheque' },
   { id: 3, name: "Flutterwave" },
-  { id: 4, name: "Paystack" }
-  // { 'id': 5, 'name': 'POS' },
+  { id: 4, name: "Paystack" } // { 'id': 5, 'name': 'POS' },
   // { 'id': 6, 'name': 'Transfer' }
 ];
 export const PAYSTACK_CLIENT_KEY =
@@ -93,4 +87,4 @@ export const VISIBILITY_UNIT = "5901fe1686a46a00dc7cca79";
 export const VISIBILITY_GLOBAL = "5901fdfd86a46a00dc7cca76";
 export const VISIBILITY_INDIVIDUAL = "5901fdea86a46a00dc7cca75";
 export const VISIBILITY_DEPARTMENT = "5901fe1186a46a00dc7cca78";
-export const USE_DOC_AUTHORIZATION = false;
+export const USE_DOC_AUTHORIZATION = true;

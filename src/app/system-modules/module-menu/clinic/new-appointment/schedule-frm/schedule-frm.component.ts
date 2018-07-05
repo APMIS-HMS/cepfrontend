@@ -843,7 +843,8 @@ export class ScheduleFrmComponent implements OnInit {
       this.appointment.appointmentReason = reason;
       this.appointment.appointmentTypeId = type;
       this.appointment.clinicId = clinic;
-      if (this.provider.value !== null && this.provider.value !== undefined) {
+      if (this.provider.value !== null && this.provider.value !== undefined &&
+          this.selectedProvider !== undefined) {
         const provider = this.selectedProvider._id;
         this.appointment.doctorId = provider;
       }
