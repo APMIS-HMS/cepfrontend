@@ -182,5 +182,5 @@
 
     <div *ngIf="makePaymentPopup" class="modal-overlay">
         <app-make-payment (closeModal)="close_onClick($event)" (personValueChanged)="onPersonValueUpdated($event)" [cost]="selectedInvoiceGroup.balance"
-            [selectedPatient]="selectedPatient" [invoice]="selectedInvoiceGroup" [isInvoicePage]="true" id="form-modal" class="form-modal center-center"></app-make-payment>
+            [selectedPatient]="selectedPatient" [invoice]="selectedInvoiceGroup" [subTotal]="selectedInvoiceGroup?.subTotal" [isInvoicePage]="true" id="form-modal" class="form-modal center-center"></app-make-payment>
     </div>

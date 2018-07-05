@@ -43,10 +43,6 @@
 .padding{
     padding: 10px;
 }
-
-
-
-
 .mat-form-field {
     width: 100%;
 }
@@ -104,11 +100,12 @@ hr.white {
 }
 
 .container {
-    width: 100vw;
+    width: 100%;
     box-sizing: border-box;
     padding-top: 50px;
     padding-left: 5%;
     padding-right: 5%;
+    box-sizing: border-box; 
 }
 
 .divider {

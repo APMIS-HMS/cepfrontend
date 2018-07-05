@@ -1,9 +1,9 @@
-import { Injectable } from "@angular/core";
-import { Subject } from "rxjs/Subject";
+import {Injectable} from '@angular/core';
+import {Subject} from 'rxjs/Subject';
 
-import { RestService, SocketService } from "../../../feathers/feathers.service";
+import {RestService, SocketService} from '../../../feathers/feathers.service';
 
-const request = require("superagent");
+const request = require('superagent');
 @Injectable()
 export class UserService {
   public _socket;
@@ -14,14 +14,13 @@ export class UserService {
   private missionAnnouncedSource = new Subject<string>();
   missionAnnounced$ = this.missionAnnouncedSource.asObservable();
   constructor(
-    private _socketService: SocketService,
-    private _restService: RestService
-  ) {
-    this._rest = _restService.getService("users");
-    this._changePasswordRest = _restService.getService("changepassword");
-    this._socket = _socketService.getService("users");
+      private _socketService: SocketService,
+      private _restService: RestService) {
+    this._rest = _restService.getService('users');
+    this._changePasswordRest = _restService.getService('changepassword');
+    this._socket = _socketService.getService('users');
     this._socket.timeout = 30000;
-    this._restLogin = _restService.getService("auth/local");
+    this._restLogin = _restService.getService('auth/local');
   }
   announceMission(mission: string) {
     this.missionAnnouncedSource.next(mission);
@@ -60,48 +59,43 @@ export class UserService {
     return this._socket.remove(id, query);
   }
   changePassword(body: any) {
-    return this._socketService.getService("change-password").update(body._id, {
+    return this._socketService.getService('change-password').update(body._id, {
       oldpassword: body.oldpassword,
       password: body.password
     });
   }
   verifyUser(body: any) {
-    let socket = this._socketService.getService("password-reset");
+    let socket = this._socketService.getService('password-reset');
     socket.timeout = 60000;
     return socket.update(body.apmisId, body);
   }
   resetPassword(body: any) {
-    return this._socketService.getService("password-reset").create(body);
+    return this._socketService.getService('password-reset').create(body);
   }
   generateUser(data) {
-    return this._socketService.getService("generate-user").create(data);
+    return this._socketService.getService('generate-user').create(data);
   }
 
   generatePatientAuthorizationToken(query, type) {
-    return this._socketService
-      .getService("documentation-authorization")
-      .create({
-        patientId: query.patientId,
-        employeeId: query.employeeId,
-        facilityId: query.facilityId,
-        type: type
-      });
+    return this._socketService.getService('documentation-authorization')
+        .create({
+          patientId: query.patientId,
+          employeeId: query.employeeId,
+          facilityId: query.facilityId,
+          type: type
+        });
   }
 
   validatePatientAuthorizationToken(
-    patientId,
-    type,
-    token,
-    employeeId,
-    facilityId
-  ) {
-    return this._socketService.getService("documentation-authorization").find({
+      patientId, type, token, employeeId, facilityId, password) {
+    return this._socketService.getService('documentation-authorization').find({
       query: {
         patientId: patientId,
         type: type,
         token: token,
         employeeId: employeeId,
-        facilityId: facilityId
+        facilityId: facilityId,
+        password: password.toString()
       }
     });
   }

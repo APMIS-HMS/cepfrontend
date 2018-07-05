@@ -1,3 +1,4 @@
+import { appointment } from './../../../../services/facility-manager/setup/devexpress.service';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { Component, ViewChild, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
@@ -13,6 +14,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { IDateRange } from 'ng-pick-daterange';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-appointment',
@@ -64,7 +66,7 @@ export class AppointmentComponent implements OnInit {
     constructor(private locker: CoolLocalStorage, private appointmentService: AppointmentService,
         private appointmentTypeService: AppointmentTypeService, private professionService: ProfessionService,
         private employeeService: EmployeeService, private workSpaceService: WorkSpaceService, private facilityService: FacilitiesService,
-        private scheduleService: SchedulerService, private authFacadeService: AuthFacadeService) {
+        private scheduleService: SchedulerService, private authFacadeService: AuthFacadeService, private router:Router) {
 
         this.clinicCtrl = new FormControl();
         this.clinicCtrl.valueChanges.subscribe(val => {
@@ -327,4 +329,8 @@ export class AppointmentComponent implements OnInit {
         });
     }
 
+    editAppointment(appointment){
+        // [routerLink]="['/dashboard/clinic/schedule-appointment', appointment._id]"
+        this.router.navigate(['/dashboard/clinic/schedule-appointment', appointment._id]) ;
+    }
 }
