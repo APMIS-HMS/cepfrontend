@@ -23,9 +23,12 @@
     padding: 3px;
     text-align: center;
     width: 100px;
-    margin: 0 auto;
-    cursor: pointer;
     background: transparent;
+    float: right;
+    cursor: pointer;
+}
+.tbl-btn-red::after{
+    clear: right
 }
 .tbl-btn-red:hover{
     background: #ff2500;
@@ -37,10 +40,28 @@
     padding: 3px;
     text-align: center;
     width: 100px;
-    margin: 0 auto;
+    float: right;
     cursor: pointer;
+}
+.tbl-btn-green::after{
+    clear: right
 }
 .tbl-btn-green:hover{
     background: #388E3C;
     color: #fff;
+}
+.card-tbl{
+    width: 100%;
+    margin: 10px auto;
+    margin-bottom: 30px;
+}
+.plan-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+.top-wrap {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 10px;
 }

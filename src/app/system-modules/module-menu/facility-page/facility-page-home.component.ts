@@ -205,7 +205,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.accessContentArea = false;
       this.hmoContentArea = false;
       this.patientBulkUploadContentArea = false;
-    } else if (value === 'modules') {
+    } else if (value === 'subsribtion') {
       this.modulesContentArea = true;
       this.optionsContentArea = false;
       this.departmentsContentArea = false;
@@ -299,7 +299,7 @@ export class FacilityPageHomeComponent implements OnInit {
   }
 
   private checkPageUrl(param: string) {
-    if (param.includes('facility/modules')) {
+    if (param.includes('facility/subsribtion')) {
       this.modulesContentArea = true;
       // this.contentSecMenuToggle = false;
       this.optionsContentArea = false;
