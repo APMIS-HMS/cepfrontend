@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { FormGroup, FormControl } from "@angular/forms";
 
 @Component({
   selector: 'app-subscribtion',
@@ -10,21 +10,17 @@ export class SubscribtionComponent implements OnInit {
 
   mainErr = true;
   errMsg = "you have unresolved errors";
-  public frmSubscribe: FormGroup;
+  searchAccount = new FormControl();
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private formBuilder: FormBuilder) { }
+  constructor() { }
 
   ngOnInit() {
   }
 
   subscribe_click() {
-    this.frmSubscribe = this.formBuilder.group({
-      plan: ["", [<any>Validators.required]],
-      deptAlias: ["", [<any>Validators.minLength(2)]],
-      deptDesc: ["", [<any>Validators.minLength(10)]]
-    });
+    
   }
 
   close_onClick() {

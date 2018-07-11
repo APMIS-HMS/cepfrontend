@@ -7,19 +7,15 @@
   <div class="modal-baseWrap">
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
-    <!-- <form [formGroup]="frmSubscribe" novalidate>
+    <div class="search-wrap">
+      <select [formControl]="searchAccount" placeholder="Select Plan">
+        <option>One Off Payment</option>
+        <option>Subscribtion</option>
+      </select>
+    </div>
 
-        <div class="frm-item-wrap">
-          <mat-form-field class="example-full-width">
-              <mat-select placeholder="Select Plan" formControlName="plan">
-                  <mat-option>One Off</mat-option>
-                  <mat-option>Subscribtion</mat-option>
-              </mat-select>
-          </mat-form-field>
-        </div>
-      <button class="cta-1"> 
+    <button class="cta-1"> 
         Subscribe
       </button>
-  </form>   -->
   </div>
 </div>
