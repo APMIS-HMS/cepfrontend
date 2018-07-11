@@ -8,10 +8,26 @@
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
     <div class="search-wrap">
-      <select [formControl]="searchAccount" placeholder="Select Plan">
+      <label class="plan-label" for="plan">Select Plan</label>
+      <select class="plan-input" [formControl]="plan">
         <option>One Off Payment</option>
         <option>Subscribtion</option>
       </select>
+
+      <div class="mod-grp">
+        <div class="pretty p-default">
+          <input type="checkbox" />
+          <div class="state">
+              <label>Check</label>
+          </div>
+        </div>
+        <div class="pretty p-default">
+          <input type="checkbox" />
+          <div class="state">
+              <label>Check</label>
+          </div>
+        </div>
+      </div>
     </div>
 
     <button class="cta-1"> 
