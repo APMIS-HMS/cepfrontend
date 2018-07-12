@@ -53,59 +53,67 @@
 <div style="border-top:2px solid #fff;">
     <div class="card-title">Application Modules</div>
 
-    <div class="card2-exo">
-        <div class="card-tbl shadow-grey tbl-active">
-            <div class="card-title">Active Modules</div>
-            <table cellpadding="0" cellspacing="0" border="0.5">
-                <thead>
-                    <tr>
-                        <th>Module</th>
-                        <th style="text-align:center;">Action</th>
-                    </tr>
-                </thead>
+    <div class="card-tbl shadow-grey tbl-active">
+        <div class="card-title">Active Plan</div>
 
-                <tbody *ngIf="facilityModules > 0">
-                    <tr *ngFor="let module of facilityModules">
-                        <td>{{module?.name}}</td>
-                        <td class="th-act">
-                            <button class="tbl-btn-red" *ngIf="module.canDisable==true" (click)="onDeactive(module)"><i class="fa fa-ban" aria-hidden="true"></i> {{module.status}}</button>
-                        </td>
-                    </tr>
-                </tbody>
-                <tbody *ngIf="facilityModules == 0">
-                    <tr>
-                        <td class="table-content" colspan="6" style="text-align: center "> No data available in table</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+        <div class="top-wrap">
+            <div class="plan-title">One Off Payment</div>
+            <button (click)="subscribe_onClick()" class="btn btn-blue" ><i class="fa fa-edit" aria-hidden="true"></i> Update Subscribtion</button>
+        </div> 
+        
+        <table cellpadding="0" cellspacing="0" border="0.5">
+            <thead>
+                <tr>
+                    <th>Modules</th>
+                    <th style="text-align:center;"></th>
+                </tr>
+            </thead>
 
-        <div class="card-tbl shadow-grey tbl-inactive">
-            <div class="card-title">Inactive Modules</div>
-            <table cellpadding="0" cellspacing="0" border="0.5">
-                <thead>
-                    <tr>
-                        <th>Module</th>
-                        <th style="text-align:center;">Action</th>
-                    </tr>
-                </thead>
-
-                <tbody *ngIf="systemModules.length > 0">
-                    <tr *ngFor="let module of systemModules">
-                        <td>
-                            {{module.name | uppercase}}
-                        </td>
-                        <td>
-                            <div class="tbl-btn-green" (click)="onActive(module)"><i class="fa fa-check" aria-hidden="true"></i> Activate</div>
-                        </td>
-                    </tr>
-                </tbody>
-                <tbody *ngIf="systemModules.length == 0">
-                    <tr>
-                        <td class="table-content" colspan="6" style="text-align: center "> No data available in table</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+            <tbody *ngIf="facilityModules > 0">
+                <tr *ngFor="let module of facilityModules">
+                    <td>{{module?.name}}</td>
+                    <td class="th-act">
+                        <button class="tbl-btn-red" *ngIf="module.canDisable==true" (click)="onDeactive(module)"><i class="fa fa-ban" aria-hidden="true"></i> Disable</button>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="facilityModules == 0">
+                <tr>
+                    <td class="table-content" colspan="6" style="text-align: center "> No data available in table</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
+
+    <div class="card-tbl shadow-grey tbl-inactive">
+        <div class="card-title">Available Modules</div>
+        <table cellpadding="0" cellspacing="0" border="0.5">
+            <thead>
+                <tr>
+                    <th>Modules</th>
+                    <th style="text-align:center;"></th>
+                </tr>
+            </thead>
+
+            <tbody *ngIf="systemModules.length > 0">
+                <tr *ngFor="let module of systemModules">
+                    <td>
+                        {{module.name | uppercase}}
+                    </td>
+                    <td>
+                        <div class="tbl-btn-green" (click)="onActive(module)"><i class="fa fa-check" aria-hidden="true"></i> Subscribe</div>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody *ngIf="systemModules.length == 0">
+                <tr>
+                    <td class="table-content" colspan="6" style="text-align: center "> No data available in table</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div *ngIf="subscribe" class="modal-overlay">
+    <app-subscribtion (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-subscribtion>
 </div>
