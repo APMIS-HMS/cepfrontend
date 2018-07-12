@@ -244,6 +244,7 @@ export class MakePaymentComponent implements OnInit {
         facilityId: this.selectedFacility._id
       }
     }).then(payload => {
+      console.log(payload);
       this.facilitySubscriptions = payload.data;
       if (this.facilitySubscriptions.name === 'Subscription') {
         let subCharge = this.cost * (this.facilitySubscriptions.rate / 100);
