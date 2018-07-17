@@ -7,6 +7,7 @@ import { Subject } from 'rxjs/Subject';
 @Injectable()
 export class ImmunizationRecordService {
     public _socket;
+    public _customSocket;
     private _rest;
     public listenerCreate;
     public listenerUpdate;
@@ -17,6 +18,7 @@ export class ImmunizationRecordService {
     ) {
         this._rest = _restService.getService('immunization-records');
         this._socket = _socketService.getService('immunization-records');
+        this._customSocket = _socketService.getService('crud-immunization-record');
         this._socket.timeout = 50000;
         this._socket.on('created', function (documentation) {
         });
@@ -40,6 +42,12 @@ export class ImmunizationRecordService {
     }
     update(record: any) {
         return this._socket.update(record._id, record, {});
+    }
+    customUpdate(recordId: string, record: any) {
+        return this._customSocket.update(recordId, record, {});
+    }
+    patch(record: any) {
+        return this._socket.patch(record._id, record, {});
     }
     remove(id: string, query: any) {
         return this._socket.remove(id, query);

@@ -82,7 +82,6 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 		}
 
 		this._authFacadeService.getLogingEmployee().then((res: any) => {
-			console.log(res);
 			this.employeeDetails = res;
 			if (!!res.storeCheckIn && res.storeCheckIn.length > 0) {
 				const store = res.storeCheckIn.filter(x => x.isOn);
@@ -149,7 +148,6 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 			const externalDrug = [];
 
 			this.prescriptionItems.prescriptionItems.forEach(element => {
-				console.log(element);
 				if (!element.isExternal && element.isBilled) {
 					// Change the value of isDispensed to true;
 					element.isDispensed = true;
@@ -197,11 +195,8 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 				isPrescription: true,
 				storeId: this.storeId,
 			};
-			console.log(prescription);
-			console.log(dispense);
 
 			this._assessmentDispense.update(this.prescriptionItems._id, dispense).then(res => {
-				console.log(res)
 				if (res.status === 'success') {
 					this.disableDispenseAllBtn = true;
 					this.dispenseAllBtnText = true;
@@ -228,7 +223,6 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 	// Get all drugs from generic
 	private _getPrescriptionDetails() {
 		this._prescriptionService.get(this.prescriptionId, {}).then(res => {
-			console.log(res);
 			this.loading = false;
 			// Check if the page is for prescription or external prescription
 			if (!this.isExternalPrescription) {
@@ -399,7 +393,6 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 						};
 						// Make a call to update the prescription with the qty dispensed
 						this._assessmentDispense.create(payload).then(res => {
-							console.log(res);
 							if (res.status === 'success') {
 								const msg = `${inputBatch[index]} item(s) has been deducted from your inventory successfully.`;
 								this._systemModuleService.announceSweetProxy(msg, 'success');
