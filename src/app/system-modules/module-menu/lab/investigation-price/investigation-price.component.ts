@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import {
   FacilitiesService, InvestigationService, WorkbenchService, ServicePriceService, TagService
 } from '../../../../services/facility-manager/setup/index';
 import { LocationService } from '../../../../services/module-manager/setup/index';
-import { Location } from '../../../../models/index'
-import { Facility, MinorLocation, Employee, Tag, FacilityServicePrice, User } from '../../../../models/index';
+import { Facility, Employee, Tag, FacilityServicePrice, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Observable } from 'rxjs/Observable';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { ISubscription } from '../../../../../../node_modules/rxjs/Subscription';
+import { LabEventEmitterService } from '../../../../services/facility-manager/lab-event-emitter.service';
 
 
 @Component({
@@ -17,29 +17,25 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
   templateUrl: './investigation-price.component.html',
   styleUrls: ['./investigation-price.component.scss']
 })
-export class InvestigationPriceComponent implements OnInit {
+export class InvestigationPriceComponent implements OnInit, OnDestroy {
   user: User = <User>{};
   apmisLookupUrl = 'workbenches';
   apmisLookupText = '';
   apmisLookupQuery = {};
   apmisLookupDisplayKey = 'name';
   apmisLookupOtherKeys = ['name']
-
-
   apmisInvestigationLookupUrl = 'investigations';
   apmisInvestigationLookupText = '';
   apmisInvestigationLookupQuery: any = {
   };
   apmisInvestigationLookupDisplayKey = 'name';
   apmisInvestigationLookupImgKey = '';
-
   pricing_view = false;
   Inactive = false;
   Active = false;
   mainErr = true;
-  errMsg = 'you have unresolved errors';
+  errMsg = 'You have unresolved errors';
   searchOpen = false;
-
   public frmNewPrice: FormGroup;
   selelctedFacility: Facility = <Facility>{};
   workBenches: any[] = [];
@@ -54,11 +50,13 @@ export class InvestigationPriceComponent implements OnInit {
   selectedFacilityServicePrice: FacilityServicePrice = <FacilityServicePrice>{};
   selectedModifier: any = <any>{};
   loading: Boolean = true;
-  priceLoading: Boolean = false;
+  disableBtn: Boolean = false;
   foundPrice: Boolean = false;
   selectedMajorLocation: any;
-
   searchControl = new FormControl('');
+  updatePrice = true;
+  updatingPrice = false;
+  labSubscription: ISubscription;
 
   constructor(private formBuilder: FormBuilder, private locker: CoolLocalStorage,
     private investigationService: InvestigationService, private workbenchService: WorkbenchService,
@@ -66,17 +64,29 @@ export class InvestigationPriceComponent implements OnInit {
     private _facilityService: FacilitiesService,
     private _locationService: LocationService,
     private _authFacadeService: AuthFacadeService,
-    private _systemModuleService: SystemModuleService
+    private _systemModuleService: SystemModuleService,
+    private _labEventEmitter: LabEventEmitterService
   ) {
     this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.user = <User>this.locker.getObject('auth');
+    // this.user = <User>this.locker.getObject('auth');
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.loginEmployee = res;
+      const checkingObject = res.workbenchCheckIn.filter(x => x.isOn);
+      this.checkingObject = (checkingObject.length > 0) ? checkingObject[0] : undefined;
       this.getLaboratoryMajorLocation(this.loginEmployee);
       this.getWorkBenches();
       this.getTags();
-      this.getInvestigations();
+      this.getInvestigations(this.checkingObject);
     }).catch(err => { });
+
+    // Subscribe to the event when ward changes.
+    this.labSubscription = this._labEventEmitter.announceLab.subscribe((val: any) => {
+      this.checkingObject = val.typeObject;
+      this.getLaboratoryMajorLocation(this.loginEmployee);
+      this.getInvestigations(this.checkingObject);
+      this.getTags();
+      this.getWorkBenches();
+    });
   }
 
   ngOnInit() {
@@ -161,13 +171,13 @@ export class InvestigationPriceComponent implements OnInit {
     this.searchOpen = !this.searchOpen;
   }
 
-  getInvestigations() {
+  getInvestigations(checkingObject) {
     // if (this.checkingObject !== undefined && this.checkingObject.type !== undefined && this.checkingObject.type.length > 0) {
-    if (!!this.checkingObject.minorLocationObject && !!this.checkingObject.minorLocationObject._id) {
+    if (!!checkingObject.minorLocationObject && !!checkingObject.minorLocationObject._id) {
       this.investigationService.find({
         query: {
           'facilityId': this.selelctedFacility._id,
-          'LaboratoryWorkbenches.laboratoryId._id': this.checkingObject.minorLocationObject._id,
+          'LaboratoryWorkbenches.laboratoryId._id': checkingObject.minorLocationObject._id,
           $sort: { createdAt: -1 }
           // "LaboratoryWorkbenches": { $elemMatch: { 'laboratoryId._id': this.checkingObject.minorLocationObject._id } }
         }
@@ -182,6 +192,7 @@ export class InvestigationPriceComponent implements OnInit {
       this.loading = false;
     }
   }
+
   getWorkBenches() {
     this.workbenchService.find({ query: { 'laboratoryId': { $in: this.locationIds } } }).then(res => {
       if (res.data.length > 0) {
@@ -189,6 +200,7 @@ export class InvestigationPriceComponent implements OnInit {
       }
     });
   }
+
   getTags() {
     if (!!this.loginEmployee.workbenchCheckIn && this.loginEmployee.workbenchCheckIn.length > 0) {
       const checkinObj = this.loginEmployee.workbenchCheckIn.filter(x => x.isOn === true);
@@ -219,7 +231,7 @@ export class InvestigationPriceComponent implements OnInit {
 
   getLaboratoryFromInvestigation(labworkBenches) {
     let retVal = '';
-    const labIndex = labworkBenches.forEach(item => {
+    labworkBenches.forEach(item => {
       if (item.laboratoryId._id === this.checkingObject.minorLocationObject._id) {
         retVal = item.laboratoryId.name
       }
@@ -236,13 +248,11 @@ export class InvestigationPriceComponent implements OnInit {
     let retVal = '';
     const labIndex = labworkBenches.forEach(item => {
       if(this.selectedWorkBench !== undefined){
-const workBenchIndex = item.workbenches.findIndex(x => x.workBench !== undefined && x.workBench._id === this.selectedWorkBench._id);
-     if(item.workbenches[0].workBench !== undefined){
-      retVal = item.workbenches[0].workBench.name;
-     }
+        const workBenchIndex = item.workbenches.findIndex(x => x.workBench !== undefined && x.workBench._id === this.selectedWorkBench._id);
+        if(item.workbenches[0].workBench !== undefined){
+          retVal = item.workbenches[0].workBench.name;
+        }
       }
-      
-      
     });
     return retVal;
   }
@@ -284,6 +294,7 @@ const workBenchIndex = item.workbenches.findIndex(x => x.workBench !== undefined
     this.apmisLookupText = value.name;
     this.selectedWorkBench = value;
   }
+
   apmisInvestigationLookupHandleSelectedItem(value) {
     this.selectedModifier = undefined;
     this.selectedModifierIndex = -1;
@@ -296,27 +307,32 @@ const workBenchIndex = item.workbenches.findIndex(x => x.workBench !== undefined
     }
     this.facilityPriceService.find({ query: { serviceId: this.selectedInvestigation.serviceId } }).then(payload => {
       this.selectedFacilityServicePrice = payload.data.length > 0 ? payload.data[0] : undefined;
-      this.selectedFacilityServicePrice.modifiers.forEach((item, i) => {
-        if (item.tagDetails !== undefined) {
-          delete item.tagDetails;
-        }
+      this.frmNewPrice.controls['price'].setValue(this.selectedFacilityServicePrice.price);
 
-        if (!!this.selectedTag._id) {
-          if (item.tagId === this.selectedTag._id && this.selectedTag.tagType === 'Laboratory Location'
-            && this.selectedTag.name === this.checkingObject.minorLocationObject.name) {
-            this.foundPrice = true;
-            this.selectedModifier = item;
-            this.selectedModifierIndex = i;
-            this.frmNewPrice.controls['price'].setValue(item.modifierValue);
+      if (!!this.selectedFacilityServicePrice && !!this.selectedFacilityServicePrice.modifiers) {
+        this.selectedFacilityServicePrice.modifiers.forEach((item, i) => {
+          if (item.tagDetails !== undefined) {
+            delete item.tagDetails;
           }
+
+          if (!!this.selectedTag._id) {
+            if (item.tagId === this.selectedTag._id && this.selectedTag.tagType === 'Laboratory Location'
+              && this.selectedTag.name === this.checkingObject.minorLocationObject.name) {
+              this.foundPrice = true;
+              this.selectedModifier = item;
+              this.selectedModifierIndex = i;
+              this.frmNewPrice.controls['price'].setValue(item.modifierValue);
+            }
+          }
+        });
+
+        if (!this.foundPrice) {
+          this.frmNewPrice.controls['price'].setValue(0);
         }
-      })
-      if (!this.foundPrice) {
-        this.frmNewPrice.controls['price'].setValue(0);
       }
     });
-
   }
+
   pricing_show() {
     this.pricing_view = !this.pricing_view;
   }
@@ -324,20 +340,25 @@ const workBenchIndex = item.workbenches.findIndex(x => x.workBench !== undefined
   close_onClick(message: boolean): void {
 
   }
+
   setPrice(valid, value) {
-    this.priceLoading = true;
     if (valid) {
+      this.disableBtn = true;
+      this.updatePrice = false;
+      this.updatingPrice = true;
+
       if (this.selectedTag.tagDetails !== undefined) {
         delete this.selectedTag.tagDetails;
       }
+
       if (this.foundPrice) {
-        this.selectedModifier.modifierValue = this.frmNewPrice.controls['price'].value;
+        this.selectedModifier.modifierValue = value.price;
         this.selectedFacilityServicePrice.modifiers[this.selectedModifierIndex] = this.selectedModifier;
       } else {
         const modifier: any = <any>{};
         modifier.tagId = this.selectedTag;
         modifier.modifierType = 'Amount';
-        modifier.modifierValue = this.frmNewPrice.controls['price'].value;
+        modifier.modifierValue = value.price;
         this.selectedFacilityServicePrice.modifiers.push(modifier);
       }
 
@@ -371,31 +392,46 @@ const workBenchIndex = item.workbenches.findIndex(x => x.workBench !== undefined
 
       }
 
-      const updateInvestigation$ = Observable.fromPromise(this.investigationService.update(this.selectedInvestigation));
-      const updatePrice$ = Observable.fromPromise(this.facilityPriceService.update(this.selectedFacilityServicePrice));
+      const payload = {
+        facilityId: this.selelctedFacility._id,
+        investigation: this.selectedInvestigation,
+        facilityServicePrice: this.selectedFacilityServicePrice
+      };
 
-      Observable.forkJoin([updateInvestigation$, updatePrice$]).subscribe((result: any) => {
-        this.selectedInvestigation = result[0];
-        this.selectedFacilityServicePrice = result[1];
+      this.investigationService.crudCreate(payload).then(res => {
+        if (res.status === 'success') {
+          this.selectedInvestigation = res.data.investigation;
+          this.selectedFacilityServicePrice = res.data.facilityPrice;
+          this.frmNewPrice.reset();
+          this.disableBtn = false;
+          this.updatePrice = true;
+          this.updatingPrice = false;
+          this.getInvestigations(this.checkingObject);
+          this.pricing_view = false;
+          this._systemModuleService.announceSweetProxy('Price has been set/updated successfully!', 'success');
+        } else {
+          this.disableBtn = false;
+          this.updatePrice = true;
+          this.updatingPrice = false;
+          this._systemModuleService.announceSweetProxy(res.message, 'error');
+        }
+      }).catch(err => {});
+      // const updateInvestigation$ = Observable.fromPromise(this.investigationService.update(this.selectedInvestigation));
+      // const updatePrice$ = Observable.fromPromise(this.facilityPriceService.update(this.selectedFacilityServicePrice));
 
-        this.frmNewPrice.reset();
-        this.frmNewPrice.controls['investigation'].reset();
-        this.frmNewPrice.controls['workbench'].reset();
-        this.getInvestigations();
-        this.pricing_view = false;
-        this._systemModuleService
-        .announceSweetProxy('Price has been set/updated successfully!', 'success', null, null, null, null, null, null, null);
-      });
-
-      // this.facilityPriceService.update(this.selectedFacilityServicePrice).then(payload => {
-      //   this.selectedFacilityServicePrice = payload;
+      // Observable.forkJoin([updateInvestigation$, updatePrice$]).subscribe((result: any) => {
+      //   this.selectedInvestigation = result[0];
+      //   this.selectedFacilityServicePrice = result[1];
       //   this.frmNewPrice.reset();
       //   this.frmNewPrice.controls['investigation'].reset();
       //   this.frmNewPrice.controls['workbench'].reset();
+      //   this.getInvestigations();
+      //   this.pricing_view = false;
+      //   this._systemModuleService.announceSweetProxy('Price has been set/updated successfully!', 'success');
       // });
     } else {
-      this._notification('Error', 'Please fill in all required fields!');
-      this.priceLoading = false;
+      this._systemModuleService.announceSweetProxy('Please fill in all required fields!', 'error');
+      this.disableBtn = false;
     }
   }
 
@@ -408,12 +444,9 @@ const workBenchIndex = item.workbenches.findIndex(x => x.workBench !== undefined
     })
   }
 
-  private _notification(type: string, text: string): void {
-    this._facilityService.announceNotification({
-      users: [this.user._id],
-      type: type,
-      text: text
-    });
+  ngOnDestroy() {
+    this.labSubscription.unsubscribe();
   }
+
 }
 
