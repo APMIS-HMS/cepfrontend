@@ -34,7 +34,15 @@ export class DocumentationDetailComponent implements OnInit {
     })
 
   }
-
+  checkType(value) {
+    if (typeof value === ('string')) {
+      return true;
+    } else if (typeof value === ('number')) {
+      return true;
+    } else if (value.length !== undefined) {
+      return true;
+    }
+  }
   getPatientDocumentation(){
     this.documentationService.get(this.patientDocumentationId,{}).then(payload =>{
       this.selectedPatientDocumentation = payload;
