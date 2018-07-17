@@ -153,8 +153,7 @@ export class ScheduleFrmComponent implements OnInit {
       this.updateAppointment = true;
       this.saveAppointment = false;
       this.savingAppointment = false;
-      const filterClinic =
-          this.clinics.filter(x => x._id === payload.clinicId._id);
+      const filterClinic = this.clinics.filter(x => x._id === payload.clinicId._id);
       if (filterClinic.length > 0) {
         this.clinic.setValue(filterClinic[0]);
         this.dateChange(this.appointment.startDate);
@@ -166,14 +165,11 @@ export class ScheduleFrmComponent implements OnInit {
             this.appointment.providerDetails);
       }
       this.selectedPatient = payload.patientDetails;
-
       // this.patient.setValue(payload.patientDetails);
       this.apmisLookupHandleSelectedItem(payload.patientDetails);
       this.date = payload.startDate;
       this.reason.setValue(payload.appointmentReason);
-
       this.type.setValue(payload.appointmentTypeId);
-
       this.category.setValue(payload.category);
       this.status.setValue(payload.orderStatusId);
       if (payload.attendance !== undefined) {
@@ -251,8 +247,7 @@ export class ScheduleFrmComponent implements OnInit {
     this.category = new FormControl('', [Validators.required]);
     this.timezone = new FormControl('', []);
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.auth = this.authFacadeService
-                    .getAuth();  // <any>this.locker.getObject("auth");
+    this.auth = this.authFacadeService.getAuth();  // <any>this.locker.getObject("auth");
 
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
@@ -260,8 +255,7 @@ export class ScheduleFrmComponent implements OnInit {
     });
 
     if (this.selectedClinic._id !== undefined) {
-      this.appointmentService.clinicAnnounced(
-          {clinicId: this.selectedClinic, startDate: this.date});
+      this.appointmentService.clinicAnnounced({clinicId: this.selectedClinic, startDate: this.date});
     }
     this.teleMed.valueChanges.subscribe(value => {
       if (value) {
@@ -274,7 +268,6 @@ export class ScheduleFrmComponent implements OnInit {
 
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-
     this.employeeService.loginEmployeeAnnounced$.subscribe(employee => {
       this.loginEmployee = employee;
       this.primeComponent();
@@ -288,31 +281,26 @@ export class ScheduleFrmComponent implements OnInit {
     this.category.valueChanges.subscribe(value => {
       if (value !== null) {
         this.systemModuleService.on();
-        this.facilityPriceService
-            .find({
-              query: {
-                facilityId: this.selectedFacility._id,
-                categoryId: this.organizationalServiceId.categoryId,
-                facilityServiceId:
-                    this.organizationalServiceId.facilityServiceId,
-                serviceId: value
-              }
-            })
-            .then(
-                payload => {
-                  this.systemModuleService.off();
-                  if (payload.data.length > 0) {
-                    this.organizationalServicePrice = payload.data[0].price;
-                  } else {
-                    this.systemModuleService.announceSweetProxy(
-                        'No price found on selected appointment. Please set a price for this appointment category',
-                        'error');
-                    this.category.reset();
-                  }
-                },
-                err => {
-                  this.systemModuleService.off();
-                });
+        this.facilityPriceService.find({
+          query: {
+            facilityId: this.selectedFacility._id,
+            categoryId: this.organizationalServiceId.categoryId,
+            facilityServiceId: this.organizationalServiceId.facilityServiceId,
+            serviceId: value
+          }
+        }).then(payload => {
+          this.systemModuleService.off();
+          if (payload.data.length > 0) {
+            this.organizationalServicePrice = payload.data[0].price;
+          } else {
+            this.systemModuleService.announceSweetProxy(
+                'No price found on selected appointment. Please set a price for this appointment category',
+                'error');
+            this.category.reset();
+          }
+        }, err => {
+          this.systemModuleService.off();
+        });
       }
     });
 
@@ -330,15 +318,13 @@ export class ScheduleFrmComponent implements OnInit {
   }
 
   apmisLookupHandleSelectedItem(value) {
-    this.apmisLookupText =
-        `${value.personDetails.firstName} ${value.personDetails.lastName}`;
+    this.apmisLookupText = `${value.personDetails.firstName} ${value.personDetails.lastName}`;
     this.selectedPatient = value;
     this.appointmentService.patientAnnounced(this.selectedPatient);
   }
 
   apmisProviderLookupHandleSelectedItem(value) {
-    this.apmisProviderLookupText =
-        `${value.personDetails.firstName} ${value.personDetails.lastName}`;
+    this.apmisProviderLookupText = `${value.personDetails.firstName} ${value.personDetails.lastName}`;
     this.selectedProvider = value;
   }
 
@@ -346,8 +332,7 @@ export class ScheduleFrmComponent implements OnInit {
     this.timeZoneService.findAll().then(payload => {
       this.timezones = payload.data;
       if (this.appointment._id && this.appointment.zoom !== undefined) {
-        const index = this.timezones.findIndex(
-            x => x.value === this.appointment.zoom.timezone);
+        const index = this.timezones.findIndex( x => x.value === this.appointment.zoom.timezone);
         this.timezone.setValue(this.timezones[index]);
       }
     });
@@ -1057,9 +1042,6 @@ export class ScheduleFrmComponent implements OnInit {
           // end comment
 
           // start new code here
-
-
-
           if (((scheduleStartHour < currentHour) &&
                (scheduleEndHour > currentHour))) {
             this.date = new Date();
@@ -1078,8 +1060,7 @@ export class ScheduleFrmComponent implements OnInit {
           this.dateCtrl.markAsUntouched();
           this.selectedClinicSchedule = schedule;
         } else {
-          if (((scheduleStartHour > currentHour) ||
-               (scheduleEndHour < currentHour))) {
+          if (((scheduleStartHour > currentHour) || (scheduleEndHour < currentHour))) {
             this.dateCtrl.setErrors({noValue: true});
             this.dateCtrl.markAsTouched();
             this.checkIn.disable();
@@ -1087,10 +1068,8 @@ export class ScheduleFrmComponent implements OnInit {
           } else {
             this.date = setHours(this.date, getHours(schedule.startTime));
             this.date = setMinutes(this.date, getMinutes(schedule.startTime));
-            this.startDate =
-                setHours(this.startDate, getHours(schedule.startTime));
-            this.startDate =
-                setMinutes(this.startDate, getMinutes(schedule.startTime));
+            this.startDate = setHours(this.startDate, getHours(schedule.startTime));
+            this.startDate = setMinutes(this.startDate, getMinutes(schedule.startTime));
             if (this.canCheckIn) {
               this.checkIn.enable();
             } else {
@@ -1103,8 +1082,7 @@ export class ScheduleFrmComponent implements OnInit {
         }
       }
       if (this.selectedClinic._id !== undefined) {
-        this.appointmentService.clinicAnnounced(
-            {clinicId: clinic, startDate: this.date});
+        this.appointmentService.clinicAnnounced({clinicId: clinic, startDate: this.date});
       }
     }
   }
@@ -1118,65 +1096,63 @@ export class ScheduleFrmComponent implements OnInit {
   }
 
   dateChange(event) {
-    this.authFacadeService.getServerTime()
-        .then((serverTime: any) => {
-          var serverDate = new Date(serverTime.datetime);
-          var localDate = new Date(event);
-          const scheduleStartHour =
-              getHours(this.selectedClinicSchedule.startTime);
-          const scheduleEndHour = getHours(this.selectedClinicSchedule.endTime);
-          const currentHour = getHours(localDate);
+    console.log(event);
+    console.log(this.selectedClinicSchedule);
+    this.authFacadeService.getServerTime().then((serverTime: any) => {
+      const serverDate = new Date(serverTime.datetime);
+      const localDate = new Date(event);
+      const scheduleStartHour = getHours(this.selectedClinicSchedule.startTime);
+      const scheduleEndHour = getHours(this.selectedClinicSchedule.endTime);
+      const currentHour = getHours(localDate);
 
-          if (((isBefore(serverDate, localDate)) &&
-               ((scheduleStartHour < currentHour) &&
-                (scheduleEndHour > currentHour))) ||
-              this.appointment._id !== undefined) {
-            this.isEarlierDate = false;
-            const dayNum = getDay(event);
-            const day = this.days[dayNum];
-            const scheduleFiltered =
-                this.schedules.filter((x: any) => x.day === day);
-            if (scheduleFiltered.length === 0) {
-              this.dateCtrl.setErrors({noValue: true});
-              this.dateCtrl.markAsTouched();
-              this.date = event;
-              this.startDate = event;
-              this.endDate = event;
-              this.checkIn.disable();
-              this.checkIn.setValue(false);
-              this.startDate =
-                  setHours(this.startDate, getHours(this.startDate));
-              this.startDate =
-                  setMinutes(this.startDate, getMinutes(this.startDate));
-            } else {
-              this.date = event;
-              const schedule: any = scheduleFiltered[0];
-              this.startDate =
-                  setHours(this.startDate, getHours(schedule.startTime));
-              this.startDate =
-                  setMinutes(this.startDate, getMinutes(schedule.startTime));
-              this.canCheckIn = isToday(this.date)
+      if (((isBefore(serverDate, localDate)) &&
+            ((scheduleStartHour < currentHour) &&
+            (scheduleEndHour > currentHour))) ||
+          this.appointment._id !== undefined) {
+        this.isEarlierDate = false;
+        const dayNum = getDay(event);
+        const day = this.days[dayNum];
+        const scheduleFiltered = this.schedules.filter((x: any) => x.day === day);
+        if (scheduleFiltered.length === 0) {
+          this.dateCtrl.setErrors({noValue: true});
+          this.dateCtrl.markAsTouched();
+          this.date = event;
+          this.startDate = event;
+          this.endDate = event;
+          this.checkIn.disable();
+          this.checkIn.setValue(false);
+          this.startDate =
+              setHours(this.startDate, getHours(this.startDate));
+          this.startDate =
+              setMinutes(this.startDate, getMinutes(this.startDate));
+        } else {
+          this.date = event;
+          const schedule: any = scheduleFiltered[0];
+          this.startDate =
+              setHours(this.startDate, getHours(schedule.startTime));
+          this.startDate =
+              setMinutes(this.startDate, getMinutes(schedule.startTime));
+          this.canCheckIn = isToday(this.date)
 
-              if (this.canCheckIn) {
-                this.checkIn.enable();
-              }
-              else {
-                this.checkIn.disable();
-              }
-              this.dateCtrl.setErrors(null);  // ({ noValue: false });
-              this.dateCtrl.markAsUntouched();
-            }
-            if (this.selectedClinic._id !== undefined) {
-              this.appointmentService.clinicAnnounced(
-                  {clinicId: this.selectedClinic, startDate: this.date});
-            }
-          } else {
-            this.dateCtrl.setErrors({noValue: true});
-            this.isEarlierDate = true;
-            this.dateCtrl.markAsTouched();
+          if (this.canCheckIn) {
+            this.checkIn.enable();
           }
-        })
-        .catch(er => {})
+          else {
+            this.checkIn.disable();
+          }
+          this.dateCtrl.setErrors(null);  // ({ noValue: false });
+          this.dateCtrl.markAsUntouched();
+        }
+        if (this.selectedClinic._id !== undefined) {
+          this.appointmentService.clinicAnnounced(
+              {clinicId: this.selectedClinic, startDate: this.date});
+        }
+      } else {
+        this.dateCtrl.setErrors({noValue: true});
+        this.isEarlierDate = true;
+        this.dateCtrl.markAsTouched();
+      }
+    }).catch(er => {});
   }
   newSchedule() {
     this.patient.reset();
