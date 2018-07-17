@@ -2,7 +2,6 @@
 <div>
     <div class="doc-mainWrap">
         <div class="doc-contentArea">
-
             <div class="clinicalNoteWrap">
                 <div class="actSect">
                     <div (click)="pricing_show()" class="act-wrap">
@@ -10,11 +9,8 @@
                         <i [hidden]="pricing_view" class="fa fa-plus" aria-hidden="true"></i>
                         <span>Set Price</span>
                     </div>
-
                     <form *ngIf="pricing_view" [formGroup]="frmNewPrice" novalidate>
-
                         <div class="row">
-
                             <div class="frm-item-wrap col-sm-4">
                                 <apmis-lookup formControlName="workbench" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Select Workbench" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"
                                     [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys"></apmis-lookup>
@@ -28,11 +24,12 @@
                                     <input type="number" matInput placeholder="Price" formControlName="price">
                                 </mat-input-container>
                             </div>
-
                         </div>
-
                         <div class="btn-box">
-                            <button mat-raised-button [disabled]="!frmNewPrice.valid || priceLoading" (click)="setPrice(frmNewPrice.valid, frmNewPrice.value)" class="btn">Set Price</button>
+                            <button mat-raised-button [disabled]="!frmNewPrice.valid || disableBtn" (click)="setPrice(frmNewPrice.valid, frmNewPrice.value)" class="btn">
+                                <span *ngIf="updatePrice">Update Price</span>
+                                <span *ngIf="updatingPrice">Updating Price... <i class="fa fa-spin fa-spinner"></i> </span>
+                            </button>
                         </div>
                     </form>
                 </div>

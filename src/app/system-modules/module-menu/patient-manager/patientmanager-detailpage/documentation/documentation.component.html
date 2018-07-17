@@ -69,7 +69,17 @@
                                             <div class="doc-list-wrap" *ngIf="document?.document?.documentType?.isSide===false || document?.document?.documentType?.isSide===undefined ">
                                                 <div *ngFor="let key of document?.document?.body | keys ">
                                                     <div *ngIf="document?.document?.body !==undefined " class="sect-key ">{{key}}:</div>
-                                                    <div *ngIf="document?.document?.body !==undefined " class="sect-value ">{{document?.document?.body[key]}}</div>
+                                                    <div *ngIf="document?.document?.body !==undefined " class="sect-value ">
+                                                        <span *ngIf="checkType(document?.document?.body[key])">{{document?.document?.body[key]}}</span>
+                                                        <span *ngIf="!checkType(document?.document?.body[key])">
+                                                                <div *ngFor="let key2 of document?.document?.body[key] | keys ">
+                                                                        <div class="sect-key ">{{key2}}:</div>
+                                                                        <div class="sect-value ">
+                                                                                {{document?.document?.body[key][key2] | json}}
+                                                                        </div>
+                                                                </div>
+                                                        </span>
+                                                    </div>
                                                 </div>
                                                 <div *ngIf="document?.document?.addendum !==undefined ">
                                                     <span class="sect-key ">Addendum:</span> <span>{{document?.document?.addendum.text}}</span>

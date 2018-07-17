@@ -84,7 +84,7 @@ const FACLITYPAGE_ROUTES: Routes = [
       { path: "options", component: FacilityOptionsComponent },
       { path: "profession", component: ProfessionComponent },
       {
-        path: "modules",
+        path: "subsribtion",
         component: FacilitypageModulespageComponent,
         canActivate: [CanActivateViaAuthGuardCompleteFacilityService]
       },
@@ -105,6 +105,6 @@ const FACLITYPAGE_ROUTES: Routes = [
       }
     ]
   }
-];
+]; 
 
 export const facilityPageRoutes = RouterModule.forChild(FACLITYPAGE_ROUTES);

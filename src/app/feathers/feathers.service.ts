@@ -11,6 +11,9 @@ import {Injectable} from '@angular/core';
 const rx = require('feathers-reactive');
 const RxJS = require('rxjs/Rx');
 
+// const HOST = 'https://apmisapitest.azurewebsites.net';
+const HOST = 'http://localhost:3031';
+
 
  const HOST = 'https://apmisapitest.azurewebsites.net';
 
