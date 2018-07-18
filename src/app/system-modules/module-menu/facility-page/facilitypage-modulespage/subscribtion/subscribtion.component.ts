@@ -11,9 +11,8 @@ export class SubscribtionComponent implements OnInit {
   mainErr = true;
   errMsg = "you have unresolved errors";
   searchAccount = new FormControl();
-
+  plan = new FormControl();
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-
   constructor() { }
 
   ngOnInit() {
