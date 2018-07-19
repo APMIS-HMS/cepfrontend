@@ -3,7 +3,7 @@ import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import {
   FacilitiesService, InvestigationSpecimenService, InvestigationService, FacilitiesServiceCategoryService, ServicePriceService
 } from '../../../../services/facility-manager/setup/index';
-import { Facility, MinorLocation, FacilityService, FacilityServicePrice, User } from '../../../../models/index';
+import { Facility, FacilityService, FacilityServicePrice, User } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { DragulaService } from 'ng2-dragula/ng2-dragula';
 import { Observable } from 'rxjs/Observable';

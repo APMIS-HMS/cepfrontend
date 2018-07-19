@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ProductManagerComponent } from './product-manager.component';
+import { PharmacyManagerComponent } from './pharmacy-manager.component';
 
-describe('ProductManagerComponent', () => {
-  let component: ProductManagerComponent;
-  let fixture: ComponentFixture<ProductManagerComponent>;
+describe('PharmacyManagerComponent', () => {
+  let component: PharmacyManagerComponent;
+  let fixture: ComponentFixture<PharmacyManagerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ProductManagerComponent ]
+      declarations: [ PharmacyManagerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ProductManagerComponent);
+    fixture = TestBed.createComponent(PharmacyManagerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

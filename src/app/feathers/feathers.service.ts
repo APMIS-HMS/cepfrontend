@@ -3,14 +3,12 @@ const feathers = require('@feathersjs/feathers');
 const socketio = require('@feathersjs/socketio-client');
 const io = require('socket.io-client');
 const localstorage = require('feathers-localstorage');
-// const hooks = require('feathers-hooks');
 const rest = require('@feathersjs/rest-client');
 const authentication = require('@feathersjs/authentication-client');
 import {CoolLocalStorage} from 'angular2-cool-storage';
 import {Injectable} from '@angular/core';
 const rx = require('feathers-reactive');
 const RxJS = require('rxjs/Rx');
-
 
  const HOST = 'https://apmisapitest.azurewebsites.net';
 
@@ -24,24 +22,20 @@ export class SocketService {
     this.HOST = HOST;
     this.socket = io(this.HOST);
     this._app = feathers()
-                    .configure(socketio(this.socket))
-                    .configure(rx(RxJS, {listStrategy: 'always'}))
-                    // .configure(hooks())
-                    .configure(authentication({storage: window.localStorage}));
+        .configure(socketio(this.socket))
+        .configure(rx(RxJS, {listStrategy: 'always'}))
+        .configure(authentication({storage: window.localStorage}));
   }
   logOut() {
     this._app.logout();
     this.locker.clear();
   }
+
   async loginIntoApp(query: any) {
-    return await this._app.authenticate({
-      strategy: 'local',
-      email: query.email.toString(),
-      password: query.password.toString()
-    });
+    return await this._app.authenticate({strategy: 'local', email: query.email, password: query.password});
   }
+
   getService(value: any) {
-    // this._app.authenticate();
     return this._app.service(value);
   }
   authenticateService() {
@@ -59,34 +53,20 @@ export class RestService {
   }
   constructor(private locker: CoolLocalStorage, private _router: Router) {
     this.HOST = HOST;
-    if (this.locker.getObject('auth') !== undefined &&
-        this.locker.getObject('auth') != null) {
+    if (this.locker.getObject('auth') !== undefined && this.locker.getObject('auth') != null) {
       const auth: any = this.locker.getObject('token');
-      this._app =
-          feathers()
-              .configure(rest(this.HOST).superagent(superagent, {
-                headers: {authorization: 'Bearer ' + auth}
-              }))  // Fire up rest
-              // .configure(rx({ idField: '_id', listStrategy: 'always' }))
-              .configure(rx(RxJS, {listStrategy: 'always'}))
-              // .configure(hooks())
-              .configure(authentication({storage: window.localStorage}));
+      this._app = feathers()
+          .configure(rest(this.HOST).superagent(superagent, {headers: {authorization: 'Bearer ' + auth}}))
+          .configure(rx(RxJS, {listStrategy: 'always'}))
+          .configure(authentication({storage: window.localStorage}));
     } else {
-      this._app =
-          feathers()  // Initialize feathers
-              .configure(
-                  rest(this.HOST).superagent(superagent))  // Fire up rest
-              // .configure(hooks())
-              .configure(authentication(
-                  {storage: window.localStorage}));  // Configure feathers-hooks
+      this._app = feathers()  // Initialize feathers
+          .configure(rest(this.HOST).superagent(superagent))  // Fire up rest
+          .configure(authentication({storage: window.localStorage}));  // Configure feathers-hooks
     }
   }
   loginIntoApp(query) {
-    return this._app.authenticate({
-      strategy: 'local',
-      email: query.email.toString(),
-      password: query.password.toString()
-    });
+    return this._app.authenticate({strategy: 'local', email: query.email, password: query.password});
   }
   getService(value: any) {
     // this._app.authenticate();

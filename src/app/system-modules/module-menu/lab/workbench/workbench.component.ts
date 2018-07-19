@@ -59,6 +59,7 @@ export class WorkbenchComponent implements OnInit {
     this.getLaboratoryMajorLocation();
     this.getWorkBenches();
   }
+
   getWorkBenches() {
     const payload = {
       facilityId: this.selectedFacility._id,
@@ -72,26 +73,32 @@ export class WorkbenchComponent implements OnInit {
     }).catch(err => {
     });
   }
+
   getLaboratoryMajorLocation() {
     this.locationService.find({ query: { name: 'Laboratory' } }).then(res => {
       if (res.data.length > 0) {
         this.selectedMajorLocation = res.data[0];
         this.minorLocations = this.selectedFacility.minorLocations.filter(x => x.locationId === this.selectedMajorLocation._id);
       }
-    })
+    });
   }
+
   apmisLookupHandleSelectedItem(value) {
 
   }
+
   workbench_show() {
     this.workbench_view = !this.workbench_view;
   }
+
   minorLocationDisplayFn(minor: any) {
     return minor ? minor.name : minor;
   }
+
   close_onClick(message: boolean): void {
 
   }
+
   createWorkbench(valid, value) {
     if (valid) {
       this.disableBtn = true;
@@ -156,7 +163,7 @@ export class WorkbenchComponent implements OnInit {
         });
       }
     } else {
-      this._notification('Error', 'Some fields are required');
+      this._systemModuleService.announceSweetProxy('Some fields are required!', 'error');
     }
   }
 
@@ -169,6 +176,7 @@ export class WorkbenchComponent implements OnInit {
     this.createWorkbenchBtn = false;
     this.workbench_view = true;
   }
+
   toggleActivate(bench) {
     bench.isActive = !bench.isActive;
     this.selectedWorkBench = bench;
@@ -176,13 +184,5 @@ export class WorkbenchComponent implements OnInit {
     this.frmNewWorkbench.controls['minorLocation'].setValue({ _id : bench.minorLocationId });
     this.frmNewWorkbench.controls['isActive'].setValue(bench.isActive);
     this.createWorkbench(this.frmNewWorkbench.valid, this.frmNewWorkbench.value);
-  }
-
-  private _notification(type: string, text: string): void {
-    this._facilityService.announceNotification({
-        users: [this.user._id],
-        type: type,
-        text: text
-    });
   }
 }

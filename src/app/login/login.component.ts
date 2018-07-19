@@ -17,17 +17,13 @@ import {SystemModuleService} from './../services/module-manager/setup/system-mod
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  loadIndicatorVisible = false;
-  mainErr = true;
-  errMsg = 'you have unresolved errors';
-
-  show = false;
-
   @ViewChild('showhideinput') input;
-
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() pwordReset: EventEmitter<boolean> = new EventEmitter<boolean>();
-
+  loadIndicatorVisible = false;
+  mainErr = true;
+  errMsg = 'You have unresolved errors';
+  show = false;
   input_username;
   input_password;
   public frm_login: FormGroup;
@@ -59,54 +55,49 @@ export class LoginComponent implements OnInit {
     });
     this.locker.clear();
   }
+
   login(valid) {
     if (valid) {
       this.inProgress = true;
       this.systemModule.on();
+      // const query = {
+      //   email: this.frm_login.controls['username'].value,
+      //   password: this.frm_login.controls['password'].value
+      // };
       const query = {
-        email: AES.encrypt(
-            this.upperCasePipe.transform(
-                this.frm_login.controls['username'].value),
-            'endurance@pays@alot'),
-        password: AES.encrypt(
-            this.frm_login.controls['password'].value, 'endurance@pays@alot')
+        email: AES.encrypt(this.upperCasePipe.transform(this.frm_login.controls['username'].value), 'endurance@pays@alot'),
+        password: AES.encrypt(this.frm_login.controls['password'].value, 'endurance@pays@alot')
       };
-      this.userService.login(query).then(
-          result => {
-            this.userServiceFacade.authenticateResource()
-                .then(
-                    payload => {
-                      let auth = {data: result.user};
-                      this.locker.setObject('auth', auth);
-                      this.locker.setObject('token', result.accessToken);
+      this.userService.login(query).then(result => {
+        this.userServiceFacade.authenticateResource().then(payload => {
+          let auth = {data: result.user};
+          this.locker.setObject('auth', auth);
+          this.locker.setObject('token', result.accessToken);
 
-                      this.router.navigate(['/accounts']).then(pay => {
-                        this.userService.isLoggedIn = true;
-                        this.userService.announceMission('in');
-                        this.systemModule.off();
-                        this.frm_login.controls['password'].reset();
-                        this.inProgress = false;
-                      });
-                    },
-                    error => {
-                      this.systemModule.off();
-                      this.inProgress = false;
-                    })
-                .catch(merr => {
-                  this.systemModule.off();
-                  this.frm_login.controls['password'].reset();
-                  this.inProgress = false;
-                });
-          },
-          error => {
-            this.inProgress = false;
-            this.errMsg = 'Wrong login credentials';
-            this.systemModule.announceSweetProxy(this.errMsg, 'error');
-            this.loadIndicatorVisible = false;
-            this.mainErr = false;
-            this.frm_login.controls['password'].reset();
+          this.router.navigate(['/accounts']).then(pay => {
+            this.userService.isLoggedIn = true;
+            this.userService.announceMission('in');
             this.systemModule.off();
+            this.frm_login.controls['password'].reset();
+            this.inProgress = false;
           });
+        }, error => {
+          this.systemModule.off();
+          this.inProgress = false;
+        }).catch(merr => {
+          this.systemModule.off();
+          this.frm_login.controls['password'].reset();
+          this.inProgress = false;
+        });
+      }, error => {
+        this.inProgress = false;
+        this.errMsg = 'Wrong login credentials';
+        this.systemModule.announceSweetProxy(this.errMsg, 'error');
+        this.loadIndicatorVisible = false;
+        this.mainErr = false;
+        this.frm_login.controls['password'].reset();
+        this.systemModule.off();
+      });
     } else {
       this.inProgress = false;
       this.mainErr = false;
