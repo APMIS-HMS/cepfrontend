@@ -5,6 +5,8 @@ import { Employee, Facility } from '../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { LocationService } from 'app/services/module-manager/setup';
+import { LabEventEmitterService } from '../../services/facility-manager/lab-event-emitter.service';
+import { SystemModuleService } from '../../services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-lab-check-in',
@@ -20,6 +22,7 @@ export class LabCheckInComponent implements OnInit {
 	errMsg = 'You have unresolved errors';
 	workbenches: any[] = [];
   locations: any[] = [];
+  locationHistory: any[] = [];
   selectedFacility: Facility = <Facility>{};
   checkInBtnText: String = '<i class="fa fa-check-circle"></i> Check In';
 
@@ -30,7 +33,9 @@ export class LabCheckInComponent implements OnInit {
     private _employeeService: EmployeeService,
     private _workbenchService: WorkbenchService,
     private _authFacadeService: AuthFacadeService,
-    private _locationService: LocationService
+    private _locationService: LocationService,
+    private _labEventEmitter: LabEventEmitterService,
+    private _systemModuleService: SystemModuleService
   ) {
     this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
     this._getLabLocation();
@@ -53,52 +58,62 @@ export class LabCheckInComponent implements OnInit {
   }
 
 	checkIn(valid, value) {
-    this.checkInBtnText = '<i class="fa fa-spinner fa-spin"></i> Checking in...';
-		const checkIn: any = <any>{};
-		checkIn.minorLocationId = value.location._id;
-		checkIn.minorLocationObject = value.location;
-		checkIn.workbenchId = value.workbench._id;
-		checkIn.workbenchObject = value.workbench;
-		checkIn.lastLogin = new Date();
-		checkIn.isOn = true;
-		checkIn.isDefault = value.isDefault;
-		if (this.loginEmployee.workbenchCheckIn === undefined) {
-			this.loginEmployee.workbenchCheckIn = [];
-    }
-    // Set to false any existing workbench that is set to true.
-    if (!!this.loginEmployee.workbenchCheckIn && this.loginEmployee.workbenchCheckIn.length > 0) {
-      this.loginEmployee.workbenchCheckIn.forEach((item, i) => {
-        item.isOn = false;
-        if (value.isDefault === true) {
-          item.isDefault = false;
-        }
-      });
-    }
+    if (valid) {
+      this.checkInBtnText = '<i class="fa fa-spinner fa-spin"></i> Checking in...';
+      const checkIn: any = <any>{};
+      checkIn.minorLocationId = value.location._id;
+      checkIn.minorLocationObject = value.location;
+      checkIn.workbenchId = value.workbench._id;
+      checkIn.workbenchObject = value.workbench;
+      checkIn.lastLogin = new Date();
+      checkIn.isOn = true;
+      checkIn.isDefault = value.isDefault;
+      if (this.loginEmployee.workbenchCheckIn === undefined) {
+        this.loginEmployee.workbenchCheckIn = [];
+      }
+      // Set to false any existing workbench that is set to true.
+      if (!!this.loginEmployee.workbenchCheckIn && this.loginEmployee.workbenchCheckIn.length > 0) {
+        this.loginEmployee.workbenchCheckIn.forEach((item, i) => {
+          item.isOn = false;
+          if (value.isDefault === true) {
+            item.isDefault = false;
+          }
+        });
+      }
 
-    this.loginEmployee.workbenchCheckIn.push(checkIn);
-    this._employeeService.update(this.loginEmployee).then(res => {
-      this.loginEmployee = res;
-      const workspaces = <any>this._locker.getObject('workspaces');
-      this.loginEmployee.workSpaces = workspaces;
-      this._locker.setObject('loginEmployee', res);
-      let keepCheckIn;
-      this.loginEmployee.workbenchCheckIn.forEach((item, i) => {
-        item.isOn = false;
-        if (item.workbenchId === checkIn.workbenchId) {
-          item.isOn = true;
-          keepCheckIn = item;
-        }
-      });
+      this.loginEmployee.workbenchCheckIn.push(checkIn);
+      this._employeeService.update(this.loginEmployee).then(res => {
+        this.loginEmployee = res;
+        const locationHistory = (this.loginEmployee.workbenchCheckIn.length > 0) ? this.loginEmployee.workbenchCheckIn : [];
+        this.locationHistory = (locationHistory.length > 0) ? locationHistory.reverse().slice(0, 10) : [];
+        const workspaces = <any>this._locker.getObject('workspaces');
+        this.loginEmployee.workSpaces = workspaces;
+        this._locker.setObject('loginEmployee', res);
+        let keepCheckIn;
+        this.loginEmployee.workbenchCheckIn.forEach((item, i) => {
+          item.isOn = false;
+          if (item.workbenchId === checkIn.workbenchId) {
+            item.isOn = true;
+            keepCheckIn = item;
+          }
+        });
 
-      this._employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'workbench' });
-      this.checkInBtnText = '<i class="fa fa-check-circle"></i> Check In';
-      this.close_onClick();
-    });
+        const checkingObject = { typeObject: keepCheckIn, type: 'workbench' };
+        this._employeeService.announceCheckIn(checkingObject);
+        this._labEventEmitter.announceLabChange(checkingObject);
+        this.checkInBtnText = '<i class="fa fa-check-circle"></i> Check In';
+        this.close_onClick();
+      });
+    } else {
+      this._systemModuleService.announceSweetProxy('Please fill all fields', 'error');
+    }
   }
 
   private _getEmployee(labId: string) {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.loginEmployee = res;
+      const locationHistory = (this.loginEmployee.workbenchCheckIn.length > 0) ? this.loginEmployee.workbenchCheckIn : [];
+      this.locationHistory = (locationHistory.length > 0) ? locationHistory.reverse().slice(0, 10) : [];
       if (!!this.loginEmployee.workSpaces && this.loginEmployee.workSpaces.length > 0) {
         if (!!this.selectedFacility.minorLocations && this.selectedFacility.minorLocations.length > 0) {
           const minorLocations = this.selectedFacility.minorLocations;
@@ -135,8 +150,12 @@ export class LabCheckInComponent implements OnInit {
 			}
 		});
 		this._employeeService.update(this.loginEmployee).then(res => {
-			this.loginEmployee = res;
-			this._employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'workbench' });
+      this.loginEmployee = res;
+      const locationHistory = (this.loginEmployee.workbenchCheckIn.length > 0) ? this.loginEmployee.workbenchCheckIn : [];
+      this.locationHistory = (locationHistory.length > 0) ? locationHistory.reverse().slice(0, 10) : [];
+      const checkingObject = { typeObject: keepCheckIn, type: 'workbench' };
+      this._employeeService.announceCheckIn(checkingObject);
+      this._labEventEmitter.announceLabChange(checkingObject);
 			this.close_onClick();
 		});
 	}

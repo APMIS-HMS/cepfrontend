@@ -1,6 +1,4 @@
-<div class="pg-subtitle">
-    WORKBENCH
-</div>
+<div class="pg-subtitle"> WORKBENCH </div>
 <div>
     <div class="doc-mainWrap">
         <div class="doc-contentArea">
@@ -11,7 +9,6 @@
                         <i [hidden]="workbench_view" class="fa fa-plus" aria-hidden="true"></i>
                         <span>New Workbench</span>
                     </div>
-
                     <form *ngIf="workbench_view" [formGroup]="frmNewWorkbench" novalidate>
                         <div class="row">
                             <div class="col-xs-6">
@@ -46,9 +43,7 @@
                         </div>
                     </form>
                 </div>
-
                 <div class="tblWrapa" class="actSect">
-
                     <div class="card">
                         <div class="card-header">
                             <div class="row">
@@ -111,8 +106,6 @@
             </div>
         </div>
     </div>
-
-
 </div>
 
 <div *ngIf="reqDetail_view" class="modal-overlay">
