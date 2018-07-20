@@ -60,14 +60,14 @@ export class LoginComponent implements OnInit {
     if (valid) {
       this.inProgress = true;
       this.systemModule.on();
-      // const query = {
-      //   email: this.frm_login.controls['username'].value,
-      //   password: this.frm_login.controls['password'].value
-      // };
       const query = {
-        email: AES.encrypt(this.upperCasePipe.transform(this.frm_login.controls['username'].value), 'endurance@pays@alot'),
-        password: AES.encrypt(this.frm_login.controls['password'].value, 'endurance@pays@alot')
+        email: this.frm_login.controls['username'].value,
+        password: this.frm_login.controls['password'].value
       };
+      // const query = {
+      //   email: AES.encrypt(this.upperCasePipe.transform(this.frm_login.controls['username'].value), 'endurance@pays@alot'),
+      //   password: AES.encrypt(this.frm_login.controls['password'].value, 'endurance@pays@alot')
+      // };
       this.userService.login(query).then(result => {
         this.userServiceFacade.authenticateResource().then(payload => {
           let auth = {data: result.user};
