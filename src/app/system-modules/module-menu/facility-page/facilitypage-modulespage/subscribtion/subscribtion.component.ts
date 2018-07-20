@@ -14,7 +14,7 @@ export class SubscribtionComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor() { }
+  constructor(apmisSub) { }
 
   ngOnInit() {
   }
