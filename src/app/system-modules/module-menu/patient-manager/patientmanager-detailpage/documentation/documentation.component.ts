@@ -164,7 +164,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
                 }, error => {});
           } else {
             this.sharedService.announceFinishedSavingDraft(true);
-            console.log(this.draftDocument);
             if (this.draftDocument !== undefined) {
               this.draftDocument.document.body = payload;
 
@@ -518,7 +517,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
             this.priority = res.data[0];
           }
         })
-        .catch(err => console.error(err));
+        .catch(err => {});
   }
 
   getvitalCharts(vitals) {
@@ -567,6 +566,15 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         reverseDocuments,
         reverseDocument => format(reverseDocument.createdAt, 'DD/MM/YYYY'));
     this.documents = Array.from(grouped);
+  }
+  checkType(value) {
+    if (typeof value === ('string')) {
+      return true;
+    } else if (typeof value === ('number')) {
+      return true;
+    } else if (value.length !== undefined) {
+      return true;
+    }
   }
   edit(document: any) {
     if (document.documentationStatus === 'Draft') {

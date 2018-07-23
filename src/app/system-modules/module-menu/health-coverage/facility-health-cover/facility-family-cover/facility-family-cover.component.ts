@@ -36,6 +36,7 @@ export class FacilityFamilyCoverComponent implements OnInit {
   getBills() {
     this.billingService.find({
       query: {
+        isCoveredPage: true,
         facilityId: this.selectedFacility._id,
         'billItems.covered.coverType': 'family'
       }
