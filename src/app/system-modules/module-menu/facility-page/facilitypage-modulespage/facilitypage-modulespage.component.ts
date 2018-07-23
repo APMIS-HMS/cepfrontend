@@ -134,7 +134,7 @@ export class FacilitypageModulespageComponent implements OnInit {
   close_onClick(e){
     this.subscribe = false;
   }
-  subscribe_onClick(e){
+  subscribe_onClick(){
     this.subscribe = true;
   }
 

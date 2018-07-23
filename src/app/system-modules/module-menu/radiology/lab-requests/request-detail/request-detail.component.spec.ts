@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RequestDetailComponent } from './request-detail.component';
+import { RadRequestDetailComponent } from './request-detail.component';
 
-describe('RequestDetailComponent', () => {
-  let component: RequestDetailComponent;
-  let fixture: ComponentFixture<RequestDetailComponent>;
+describe('RadRequestDetailComponent', () => {
+  let component: RadRequestDetailComponent;
+  let fixture: ComponentFixture<RadRequestDetailComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RequestDetailComponent ]
+      declarations: [ RadRequestDetailComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(RequestDetailComponent);
+    fixture = TestBed.createComponent(RadRequestDetailComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
