@@ -21,6 +21,8 @@ export class FacilitypageModulespageComponent implements OnInit {
   systemModules: any = [];
   facilityModules: any = [];
   idToRemove: any = <any>{}
+  subscribe = false;
+
   constructor(private facilityModuleService: FacilityModuleService,
     private locker: CoolLocalStorage,
     private route: ActivatedRoute,
@@ -93,7 +95,7 @@ export class FacilitypageModulespageComponent implements OnInit {
   onDeactive(value) {
     this.systemModuleService.on();
     this.idToRemove = value;
-    this.systemModuleService.announceSweetProxy('Are you sure you want to deactive this module', 'question', this);
+    this.systemModuleService.announceSweetProxy('Are you sure you want to disable this module', 'question', this);
   }
 
   sweetAlertCallback(result) {
@@ -127,6 +129,13 @@ export class FacilitypageModulespageComponent implements OnInit {
     this.allModulesShow = false;
     this.integratedModulesShow = false;
     this.unintegratedModulesShow = true;
+  }
+
+  close_onClick(e){
+    this.subscribe = false;
+  }
+  subscribe_onClick(){
+    this.subscribe = true;
   }
 
 } 
