@@ -13,7 +13,8 @@ export class SubscribtionComponent implements OnInit {
   searchAccount = new FormControl();
   plan = new FormControl();
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-  constructor() { }
+
+  constructor(apmisSub) { }
 
   ngOnInit() {
   }
