@@ -33,6 +33,7 @@ export class FacilityPageHomeComponent implements OnInit {
   accessContentArea = false;
   hmoContentArea = false;
   patientBulkUploadContentArea = false;
+  nhmisContentArea = false;
 
   showUnit = false;
   showLoc = false;
@@ -137,6 +138,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.accessContentArea = false;
       this.hmoContentArea = false;
       this.patientBulkUploadContentArea = false;
+      this.nhmisContentArea = false;
     } else if (value === 'employees') {
       this.empContentArea = true;
       this.optionsContentArea = false;
@@ -148,6 +150,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.accessContentArea = false;
       this.hmoContentArea = false;
       this.patientBulkUploadContentArea = false;
+      this.nhmisContentArea = false;
     } else if (value === 'departments') {
       this.modulesContentArea = false;
       this.optionsContentArea = false;
@@ -159,6 +162,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.accessContentArea = false;
       this.hmoContentArea = false;
       this.patientBulkUploadContentArea = false;
+      this.nhmisContentArea = false;
     } else if (value === 'locations') {
       this.modulesContentArea = false;
       this.optionsContentArea = false;
@@ -171,6 +175,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.accessContentArea = false;
       this.hmoContentArea = false;
       this.patientBulkUploadContentArea = false;
+      this.nhmisContentArea = false;
     } else if (value === 'workspaces') {
       this.modulesContentArea = false;
       this.optionsContentArea = false;
@@ -182,6 +187,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.accessContentArea = false;
       this.hmoContentArea = false;
       this.patientBulkUploadContentArea = false;
+      this.nhmisContentArea = false;
     } else if (value === 'options') {
       this.modulesContentArea = false;
       this.optionsContentArea = true;
@@ -193,6 +199,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.accessContentArea = false;
       this.hmoContentArea = false;
       this.patientBulkUploadContentArea = false;
+      this.nhmisContentArea = false;
     } else if (value === 'profession') {
       this.modulesContentArea = false;
       this.optionsContentArea = false;
@@ -205,6 +212,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.accessContentArea = false;
       this.hmoContentArea = false;
       this.patientBulkUploadContentArea = false;
+      this.nhmisContentArea = false;
     } else if (value === 'subsribtion') {
       this.modulesContentArea = true;
       this.optionsContentArea = false;
@@ -217,6 +225,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.accessContentArea = false;
       this.hmoContentArea = false;
       this.patientBulkUploadContentArea = false;
+      this.nhmisContentArea = false;
     } else if (value === 'network') {
       // this.dashboardContentArea = false;
     } else if (value == 'network') {
@@ -231,6 +240,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.accessContentArea = false;
       this.hmoContentArea = false;
       this.patientBulkUploadContentArea = false;
+      this.nhmisContentArea = false;
     } else if (value === 'access') {
       // this.dashboardContentArea = false;
     } else if (value == 'access') {
@@ -245,6 +255,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.accessContentArea = true;
       this.hmoContentArea = false;
       this.patientBulkUploadContentArea = false;
+      this.nhmisContentArea = false;
     } else if (value == 'health-coverage') {
       this.modulesContentArea = false;
       this.optionsContentArea = false;
@@ -257,6 +268,7 @@ export class FacilityPageHomeComponent implements OnInit {
       this.accessContentArea = false;
       this.hmoContentArea = true;
       this.patientBulkUploadContentArea = false;
+      this.nhmisContentArea = false;
       // this.dashboardContentArea = false;
     } else if (value == 'patient-bulk-upload') {
       this.modulesContentArea = false;
@@ -270,6 +282,20 @@ export class FacilityPageHomeComponent implements OnInit {
       this.accessContentArea = false;
       this.hmoContentArea = false;
       this.patientBulkUploadContentArea = true;
+      this.nhmisContentArea = false;
+    } else if (value == 'nhmis-summary') {
+      this.modulesContentArea = false;
+      this.optionsContentArea = false;
+      this.departmentsContentArea = false;
+      this.locationsContentArea = false;
+      this.workspaceContentArea = false;
+      this.professionContentArea = false;
+      this.empContentArea = false;
+      this.networkContentArea = false;
+      this.accessContentArea = false;
+      this.hmoContentArea = false;
+      this.patientBulkUploadContentArea = false;
+      this.nhmisContentArea = true;
     }
   }
   getModules() {
