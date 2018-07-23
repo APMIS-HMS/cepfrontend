@@ -80,6 +80,7 @@ import { PatientImmunizationComponent } from './patientmanager-detailpage/patien
 import { LabEventEmitterService } from '../../../services/facility-manager/lab-event-emitter.service';
 import { VaccineAdministrationComponent } from './patientmanager-detailpage/patient-immunization/vaccine-administration/vaccine-administration.component';
 import { VaccineDocumentationComponent } from './patientmanager-detailpage/patient-immunization/vaccine-documentation/vaccine-documentation.component';
+import { PregnancyManagerComponent } from './patientmanager-detailpage/pregnancy-manager/pregnancy-manager.component';
 
 @NgModule({
   declarations: [
@@ -129,7 +130,8 @@ import { VaccineDocumentationComponent } from './patientmanager-detailpage/patie
     AddPatientTagsComponent,
     PatientImmunizationComponent,
     VaccineAdministrationComponent,
-    VaccineDocumentationComponent
+    VaccineDocumentationComponent,
+    PregnancyManagerComponent
   ],
   exports: [],
   imports: [

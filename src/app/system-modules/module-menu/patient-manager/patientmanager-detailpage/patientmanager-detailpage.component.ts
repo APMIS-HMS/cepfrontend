@@ -42,6 +42,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   menuLab = false;
   menuForms = false;
   menuDocs = false;
+  menuPregnant = false;
   menuOrder = false;
   menuTags = false;
   menuImmunization = false;
@@ -266,6 +267,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
         this.menuForms = false;
         this.menuUploads = false;
         this.menuDocs = true;
+        this.menuPregnant = false;
         this.menuOrder = false;
         this.menuFluid = false;
         this.menuVitals = false;
@@ -332,6 +334,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuForms = false;
     this.menuUploads = false;
     this.menuDocs = false;
+    this.menuPregnant = false;
     this.menuOrder = false;
     this.menuFluid = false;
     this.menuVitals = false;
@@ -356,6 +359,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuForms = false;
     this.menuUploads = false;
     this.menuDocs = false;
+    this.menuPregnant = false;
     this.menuOrder = false;
     this.menuFluid = false;
     this.menuVitals = false;
@@ -380,6 +384,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuForms = false;
     this.menuUploads = false;
     this.menuDocs = false;
+    this.menuPregnant = false;
     this.menuOrder = false;
     this.menuFluid = false;
     this.menuVitals = false;
@@ -404,6 +409,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuForms = false;
     this.menuUploads = false;
     this.menuDocs = false;
+    this.menuPregnant = false;
     this.menuOrder = false;
     this.menuFluid = false;
     this.menuVitals = false;
@@ -428,6 +434,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuForms = false;
     this.menuUploads = false;
     this.menuDocs = false;
+    this.menuPregnant = false;
     this.menuOrder = false;
     this.menuFluid = false;
     this.menuVitals = false;
@@ -453,6 +460,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuUploads = false;
     this.menuDocs = false;
     this.menuOrder = false;
+    this.menuPregnant = false;
     this.menuFluid = false;
     this.menuVitals = false;
     this.menuTimeline = false;
@@ -476,6 +484,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuForms = false;
     this.menuUploads = false;
     this.menuDocs = false;
+    this.menuPregnant = false;
     this.menuOrder = false;
     this.menuFluid = false;
     this.menuVitals = false;
@@ -500,6 +509,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuForms = true;
     this.menuUploads = false;
     this.menuDocs = false;
+    this.menuPregnant = false;
     this.menuOrder = false;
     this.menuFluid = false;
     this.menuVitals = false;
@@ -523,6 +533,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuForms = false;
     this.menuUploads = true;
     this.menuDocs = false;
+    this.menuPregnant = false;
     this.menuOrder = false;
     this.menuFluid = false;
     this.menuVitals = false;
@@ -564,6 +575,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       this.menuForms = false;
       this.menuUploads = false;
       this.menuDocs = true;
+      this.menuPregnant = false;
       this.menuOrder = false;
       this.menuFluid = false;
       this.menuVitals = false;
@@ -614,6 +626,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuForms = false;
     this.menuUploads = false;
     this.menuDocs = false;
+    this.menuPregnant = false;
     this.menuOrder = false;
     this.menuFluid = true;
     this.menuVitals = false;
@@ -638,6 +651,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuForms = false;
     this.menuUploads = false;
     this.menuDocs = false;
+    this.menuPregnant = false;
     this.menuOrder = false;
     this.menuFluid = false;
     this.menuVitals = false;
@@ -662,6 +676,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuForms = false;
     this.menuUploads = false;
     this.menuDocs = false;
+    this.menuPregnant = false;
     this.menuOrder = false;
     this.menuFluid = false;
     this.menuVitals = false;
@@ -686,6 +701,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuForms = false;
     this.menuUploads = false;
     this.menuDocs = false;
+    this.menuPregnant = false;
     this.menuOrder = false;
     this.menuFluid = false;
     this.menuVitals = false;
@@ -710,6 +726,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuForms = false;
     this.menuUploads = false;
     this.menuDocs = false;
+    this.menuPregnant = false;
     this.menuOrder = false;
     this.menuFluid = false;
     this.menuVitals = false;
@@ -734,6 +751,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuForms = false;
     this.menuUploads = false;
     this.menuDocs = false;
+    this.menuPregnant = false;
     this.menuOrder = true;
     this.menuFluid = false;
     this.menuVitals = false;
@@ -758,6 +776,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuForms = false;
     this.menuUploads = false;
     this.menuDocs = false;
+    this.menuPregnant = false;
     this.menuOrder = false;
     this.menuFluid = false;
     this.menuVitals = true;
@@ -782,6 +801,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuForms = false;
     this.menuUploads = false;
     this.menuDocs = false;
+    this.menuPregnant = false;
     this.menuOrder = false;
     this.menuFluid = false;
     this.menuVitals = false;
@@ -806,6 +826,32 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuForms = false;
     this.menuUploads = false;
     this.menuDocs = false;
+    this.menuPregnant = false;
+    this.menuOrder = false;
+    this.menuFluid = false;
+    this.menuVitals = false;
+    this.menuTimeline = false;
+    this.menuPrescription = false;
+    this.menuExternalPrescription = false;
+    this.menuFinance = false;
+    this.menuMedicationHistory = false;
+    this.menuPayment = false;
+    this.menuTags = false;
+    this.menuResp = false;
+  }
+  menuPregnant_click() { 
+    this.menuSummary = false;
+    this.menuPharmacy = false;
+    this.menuBilling = false;
+    this.menuTreatmentPlan = false;
+    this.menuUploads = false;
+    this.menuImaging = false;
+    this.menuImmunization = false;
+    this.menuLab = false;
+    this.menuForms = false;
+    this.menuUploads = false;
+    this.menuDocs = false;
+    this.menuPregnant = true;
     this.menuOrder = false;
     this.menuFluid = false;
     this.menuVitals = false;
