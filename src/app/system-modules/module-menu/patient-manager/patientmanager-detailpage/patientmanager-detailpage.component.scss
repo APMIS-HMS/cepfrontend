@@ -14,7 +14,7 @@
 }
 
 .patientPage-sideTab {
-    width: 30%;
+    width: 25%;
     min-width: 300px;
     box-sizing: border-box;
     overflow: hidden;
@@ -24,7 +24,7 @@
 
 .patientPage-contentArea {
     position: relative;
-    width: 70%;
+    width: 75%;
     box-sizing: border-box;
     margin: 20px 5px;
     padding: 3px;
@@ -377,14 +377,15 @@ ul.topmenuwrap li i {
     .patientPage-sideTab {
         width: 100%;
         margin-top: 0;
-        position: fixed;
+        position: relative;
         z-index: 1;
         left: 0;
-        top: 87px;
+        top: 0;
     }
     .patientPage-contentArea {
         width: 100%;
-        padding-top: 229px;
+        padding-top: 30px;
+        margin: 20px 0;
     }
     .pg-subtitle {
         text-align: center;
