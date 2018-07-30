@@ -60,6 +60,7 @@ import { BulkUploadComponent } from './bulk-upload/bulk-upload.component';
 
 import { from } from 'rxjs/observable/from';
 import { SubscribtionComponent } from './facilitypage-modulespage/subscribtion/subscribtion.component';
+import { NhmisSummaryComponent } from './nhmis-summary/nhmis-summary.component';
 
 @NgModule({
     declarations: [
@@ -101,7 +102,8 @@ import { SubscribtionComponent } from './facilitypage-modulespage/subscribtion/s
         AccessManagerComponent, AccessRoleDetailsComponent, CreateAccessComponent, ViewAccessComponent,
         AccessManagerHomeComponent,
         BulkUploadComponent,
-        SubscribtionComponent
+        SubscribtionComponent,
+        NhmisSummaryComponent
     ],
     exports: [
     ],
