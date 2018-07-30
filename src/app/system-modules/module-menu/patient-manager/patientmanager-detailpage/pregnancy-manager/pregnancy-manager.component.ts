@@ -12,4 +12,6 @@ export class PregnancyManagerComponent implements OnInit {
   ngOnInit() {
   }
 
+  addProblem_show(){}
+
 }
