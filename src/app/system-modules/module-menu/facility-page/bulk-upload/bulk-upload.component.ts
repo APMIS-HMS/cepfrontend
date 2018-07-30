@@ -31,9 +31,11 @@ export class BulkUploadComponent implements OnInit {
   pageEvent: PageEvent;
 
 
-  patients: any[] = [];
+  patients = [];
 
   uploadingLoading: boolean = false;
+  uploadItemTotal = 0;
+  uploadItemCounter = 0;
 
   showInsurance: boolean = false;
   showWallet: boolean = false;
@@ -131,41 +133,46 @@ export class BulkUploadComponent implements OnInit {
     data.splice(0, 1);
     let len = data.length;
     let arr = [];
+    this.uploadItemTotal = len - 1;
     for (let i = 0; i < len; i++) {
-      if (data[i][0] !== undefined) {
-        const rowObj: any = <any>{};
-        rowObj.title = data[i][0];
-        rowObj.firstName = data[i][1];
-        rowObj.lastName = data[i][2];
-        rowObj.gender = data[i][3];
+      // console.log(data[i][0]);
+      // if (data[i][0] !== undefined) {
+        
+      // }
+      const rowObj: any = <any>{};
+        rowObj.title = (data[i][0] !== undefined) ? data[i][0] : ' ';
+        rowObj.firstName =(data[i][1] !== undefined) ? data[i][1] : ' ';
+        rowObj.lastName = (data[i][2] !== undefined) ? data[i][2] : ' ';
+        rowObj.gender = (data[i][3] !== undefined) ? data[i][3] : ' ';
         rowObj.dateOfBirth = (new Date() >= new Date(data[i][4])) ? new Date(data[i][4]) : new Date();
-        rowObj.email = data[i][5];
-        rowObj.hospId = data[i][6];
-        rowObj.primaryContactPhoneNo = data[i][7];
-        rowObj.motherMaidenName = data[i][8];
-        rowObj.maritalStatus = (data[i][9] !== undefined) ? data[i][8] : '';
-        rowObj.lgaOfOrigin = (data[i][10] !== undefined) ? data[i][9] : '';
-        rowObj.stateOfOrigin = (data[i][11] !== undefined) ? data[i][10] : '';
-        rowObj.nationality = (data[i][12] !== undefined) ? data[i][11] : '';
+        rowObj.email = (data[i][5] !== undefined) ? data[i][5] : ' ';
+        rowObj.hospId = (data[i][6] !== undefined) ? data[i][6] : '';
+        rowObj.primaryContactPhoneNo = (data[i][7] !== undefined) ? data[i][7] : ' ';
+        rowObj.motherMaidenName = (data[i][8] !== undefined) ? data[i][8] : ' ';
+        rowObj.maritalStatus = (data[i][9] !== undefined) ? data[i][8] : ' ';
+        rowObj.lgaOfOrigin = (data[i][10] !== undefined) ? data[i][9] : ' ';
+        rowObj.stateOfOrigin = (data[i][11] !== undefined) ? data[i][10] : ' ';
+        rowObj.nationality = (data[i][12] !== undefined) ? data[i][11] : ' ';
         rowObj.payPlan = 'Wallet';
         this.items.push(this.createForm());
         let datas: any = this.shownForm.controls.items;
-        datas.controls[i].controls.firstName.setValue(rowObj.firstName);
-        datas.controls[i].controls.lastName.setValue(rowObj.lastName);
-        datas.controls[i].controls.gender.setValue(rowObj.gender);
-        datas.controls[i].controls.phone.setValue(rowObj.primaryContactPhoneNo);
-        datas.controls[i].controls.email.setValue(rowObj.email);
-        datas.controls[i].controls.hospId.setValue(rowObj.hospId);
-        datas.controls[i].controls.dateOfBirth.setValue(rowObj.dateOfBirth);
-        datas.controls[i].controls.title.setValue(rowObj.title);
-        datas.controls[i].controls.payPlan.setValue(rowObj.payPlan.toLowerCase());
-        datas.controls[i].controls.payPlan.disable()
-
-        arr.push(rowObj);
-      }
+          datas.controls[i].controls.firstName.setValue(rowObj.firstName);
+          datas.controls[i].controls.lastName.setValue(rowObj.lastName);
+          datas.controls[i].controls.gender.setValue(rowObj.gender);
+          datas.controls[i].controls.phone.setValue(rowObj.primaryContactPhoneNo);
+          datas.controls[i].controls.email.setValue(rowObj.email);
+          datas.controls[i].controls.hospId.setValue(rowObj.hospId);
+          datas.controls[i].controls.dateOfBirth.setValue(rowObj.dateOfBirth);
+          datas.controls[i].controls.title.setValue(rowObj.title);
+          datas.controls[i].controls.payPlan.setValue(rowObj.payPlan.toLowerCase());
+          datas.controls[i].controls.payPlan.disable()
+          
+          arr.push(rowObj);
+          this.uploadItemCounter = i + 1;
     }
     this.uploadingLoading = false;
     this.patients = arr;
+    console.log(this.patients);
   }
 
   excelDateToJSDate(date) {
@@ -254,20 +261,28 @@ export class BulkUploadComponent implements OnInit {
   }
 
   submit() {
+    console.log(this.patients);
     let newArr = [];
     this.btnLoading = true;
-     const newPatients  = this.patients.map(pa => {
-      if (this.failed){
-        delete pa.message;
-        delete pa.facilityId;
-        pa = pa.data;
-        newArr.push(pa);
-        delete pa.data;
-      }
-      pa.facilityId = this.facility._id
-    });
-    this.patients = (this.failed) ? newArr : newPatients;
+     this.patients.forEach(element => {
+      element.facilityId = this.facility._id
+     });
+    //  (pa => {
+      //  console.log(pa);
+      // if (this.failed){
+      //   delete pa.message;
+      //   delete pa.facilityId;
+      //   pa = pa.data;
+      //   newArr.push(pa);
+      //   delete pa.data;
+      // }
+      // pa.facilityId = this.facility._id
+    // });
+    // console.log(newPatients);
+    // this.patients = (this.failed) ? newArr : newPatients;
+    console.log(this.patients);
     const data = { data: JSON.stringify(this.patients) };
+    console.log(data);
     this.patientService.bulkUpload(data).then(payload => {
       if (payload.failed.length > 0) {
         this.patients = [];
@@ -282,6 +297,7 @@ export class BulkUploadComponent implements OnInit {
         this.systemModuleService.announceSweetProxy('Patients information successfully uploaded!', 'success');
       }
     }).catch(err => {
+      console.log(err);
       this.btnLoading = false;
       this.systemModuleService.announceSweetProxy('An error occured!', 'error');
     });
