@@ -60,14 +60,14 @@ export class LoginComponent implements OnInit {
     if (valid) {
       this.inProgress = true;
       this.systemModule.on();
-      const query = {
-        email: this.frm_login.controls['username'].value,
-        password: this.frm_login.controls['password'].value
-      };
       // const query = {
-      //   email: AES.encrypt(this.upperCasePipe.transform(this.frm_login.controls['username'].value), 'endurance@pays@alot'),
-      //   password: AES.encrypt(this.frm_login.controls['password'].value, 'endurance@pays@alot')
+      //   email: this.frm_login.controls['username'].value,
+      //   password: this.frm_login.controls['password'].value
       // };
+      const query = {
+        email: AES.encrypt(this.upperCasePipe.transform(this.frm_login.controls['username'].value.toString()), 'endurance@pays@alot'),
+        password: AES.encrypt(this.frm_login.controls['password'].value.toString(), 'endurance@pays@alot')
+      };
       this.userService.login(query).then(result => {
         this.userServiceFacade.authenticateResource().then(payload => {
           let auth = {data: result.user};
@@ -90,6 +90,7 @@ export class LoginComponent implements OnInit {
           this.inProgress = false;
         });
       }, error => {
+        console.dir(error);
         this.inProgress = false;
         this.errMsg = 'Wrong login credentials';
         this.systemModule.announceSweetProxy(this.errMsg, 'error');

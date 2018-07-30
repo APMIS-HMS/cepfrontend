@@ -9,6 +9,7 @@ import {CoolLocalStorage} from 'angular2-cool-storage';
 import {Injectable} from '@angular/core';
 const rx = require('feathers-reactive');
 const RxJS = require('rxjs/Rx');
+const CircularJSON = require('circular-json');
 
 
   // const HOST = 'http://13.84.217.251:8082'; // thn
@@ -38,6 +39,7 @@ export class SocketService {
   }
 
   async loginIntoApp(query: any) {
+    console.log(query);
     return await this._app.authenticate({strategy: 'local', email: query.email, password: query.password});
   }
 
@@ -72,7 +74,8 @@ export class RestService {
     }
   }
   loginIntoApp(query) {
-    return this._app.authenticate({strategy: 'local', email: query.email, password: query.password});
+    console.log(query);
+    return this._app.authenticate({strategy: 'local', email: CircularJSON.stringify(query.email), password: CircularJSON.stringify(query.password)});
   }
   getService(value: any) {
     // this._app.authenticate();
