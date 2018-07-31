@@ -25,7 +25,7 @@ export class BulkUploadComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   mainErr: boolean = true;
   errMsg;
-
+  isLoading = true;
   pageSize = 10;
   pageSizeOptions = [5, 10, 25, 100];
   pageEvent: PageEvent;
@@ -52,7 +52,7 @@ export class BulkUploadComponent implements OnInit {
   btnLoading: boolean = false;
 
   facility: Facility = <Facility>{};
-  failed:boolean = false;
+  failed: boolean = false;
 
   today = new Date();
 
@@ -102,7 +102,6 @@ export class BulkUploadComponent implements OnInit {
   }
 
   uploadingData(e) {
-    this.uploadingLoading = true;
     const target: DataTransfer = <DataTransfer>(e.target);
     if (target.files.length !== 1) {
       throw new Error('Cannot use multiple files');
@@ -129,19 +128,23 @@ export class BulkUploadComponent implements OnInit {
     reader.readAsBinaryString(target.files[0]);
   }
 
+  loadProgressBar() {
+
+
+  }
+
   turningDataToArrayOfObjects(data) {
     data.splice(0, 1);
     let len = data.length;
     let arr = [];
     this.uploadItemTotal = len - 1;
     for (let i = 0; i < len; i++) {
-      // console.log(data[i][0]);
-      // if (data[i][0] !== undefined) {
-        
-      // }
-      const rowObj: any = <any>{};
+      var timer = setTimeout(() => {
+        this.uploadingLoading = true;
+        this.uploadItemCounter = i;
+        const rowObj: any = <any>{};
         rowObj.title = (data[i][0] !== undefined) ? data[i][0] : ' ';
-        rowObj.firstName =(data[i][1] !== undefined) ? data[i][1] : ' ';
+        rowObj.firstName = (data[i][1] !== undefined) ? data[i][1] : ' ';
         rowObj.lastName = (data[i][2] !== undefined) ? data[i][2] : ' ';
         rowObj.gender = (data[i][3] !== undefined) ? data[i][3] : ' ';
         rowObj.dateOfBirth = (new Date() >= new Date(data[i][4])) ? new Date(data[i][4]) : new Date();
@@ -156,23 +159,24 @@ export class BulkUploadComponent implements OnInit {
         rowObj.payPlan = 'Wallet';
         this.items.push(this.createForm());
         let datas: any = this.shownForm.controls.items;
-          datas.controls[i].controls.firstName.setValue(rowObj.firstName);
-          datas.controls[i].controls.lastName.setValue(rowObj.lastName);
-          datas.controls[i].controls.gender.setValue(rowObj.gender);
-          datas.controls[i].controls.phone.setValue(rowObj.primaryContactPhoneNo);
-          datas.controls[i].controls.email.setValue(rowObj.email);
-          datas.controls[i].controls.hospId.setValue(rowObj.hospId);
-          datas.controls[i].controls.dateOfBirth.setValue(rowObj.dateOfBirth);
-          datas.controls[i].controls.title.setValue(rowObj.title);
-          datas.controls[i].controls.payPlan.setValue(rowObj.payPlan.toLowerCase());
-          datas.controls[i].controls.payPlan.disable()
-          
-          arr.push(rowObj);
-          this.uploadItemCounter = i + 1;
+        datas.controls[i].controls.firstName.setValue(rowObj.firstName);
+        datas.controls[i].controls.lastName.setValue(rowObj.lastName);
+        datas.controls[i].controls.gender.setValue(rowObj.gender);
+        datas.controls[i].controls.phone.setValue(rowObj.primaryContactPhoneNo);
+        datas.controls[i].controls.email.setValue(rowObj.email);
+        datas.controls[i].controls.hospId.setValue(rowObj.hospId);
+        datas.controls[i].controls.dateOfBirth.setValue(rowObj.dateOfBirth);
+        datas.controls[i].controls.title.setValue(rowObj.title);
+        datas.controls[i].controls.payPlan.setValue(rowObj.payPlan.toLowerCase());
+        datas.controls[i].controls.payPlan.disable()
+
+        arr.push(rowObj);
+
+        this.patients = arr;
+      },10000);
+
     }
     this.uploadingLoading = false;
-    this.patients = arr;
-    console.log(this.patients);
   }
 
   excelDateToJSDate(date) {
@@ -228,11 +232,11 @@ export class BulkUploadComponent implements OnInit {
     let data: any = this.shownForm.controls.items;
     let info = data.controls[i].controls;
     let patientInfo;
-    if(this.failed === true){
+    if (this.failed === true) {
       patientInfo = this.patients[i].data;
-    }else{
+    } else {
       patientInfo = this.patients[i];
-    }    
+    }
     patientInfo.firstName = info.firstName.value;
     patientInfo.lastName = info.lastName.value;
     patientInfo.email = info.email.value;
@@ -264,19 +268,19 @@ export class BulkUploadComponent implements OnInit {
     console.log(this.patients);
     let newArr = [];
     this.btnLoading = true;
-     this.patients.forEach(element => {
+    this.patients.forEach(element => {
       element.facilityId = this.facility._id
-     });
+    });
     //  (pa => {
-      //  console.log(pa);
-      // if (this.failed){
-      //   delete pa.message;
-      //   delete pa.facilityId;
-      //   pa = pa.data;
-      //   newArr.push(pa);
-      //   delete pa.data;
-      // }
-      // pa.facilityId = this.facility._id
+    //  console.log(pa);
+    // if (this.failed){
+    //   delete pa.message;
+    //   delete pa.facilityId;
+    //   pa = pa.data;
+    //   newArr.push(pa);
+    //   delete pa.data;
+    // }
+    // pa.facilityId = this.facility._id
     // });
     // console.log(newPatients);
     // this.patients = (this.failed) ? newArr : newPatients;
@@ -303,18 +307,18 @@ export class BulkUploadComponent implements OnInit {
     });
   }
 
-  edit(info, i){
+  edit(info, i) {
     let datas: any = this.shownForm.controls.items;
     datas.controls[i].controls.firstName.setValue(info.firstName);
-        datas.controls[i].controls.lastName.setValue(info.lastName);
-        datas.controls[i].controls.gender.setValue(info.gender);
-        datas.controls[i].controls.phone.setValue(info.primaryContactPhoneNo);
-        datas.controls[i].controls.email.setValue(info.email);
-        datas.controls[i].controls.hospId.setValue(info.hospId);
-        datas.controls[i].controls.dateOfBirth.setValue(info.dateOfBirth);
-        datas.controls[i].controls.title.setValue(info.title);
-        datas.controls[i].controls.payPlan.setValue(info.payPlan.toLowerCase());
-        datas.controls[i].controls.payPlan.disable()
+    datas.controls[i].controls.lastName.setValue(info.lastName);
+    datas.controls[i].controls.gender.setValue(info.gender);
+    datas.controls[i].controls.phone.setValue(info.primaryContactPhoneNo);
+    datas.controls[i].controls.email.setValue(info.email);
+    datas.controls[i].controls.hospId.setValue(info.hospId);
+    datas.controls[i].controls.dateOfBirth.setValue(info.dateOfBirth);
+    datas.controls[i].controls.title.setValue(info.title);
+    datas.controls[i].controls.payPlan.setValue(info.payPlan.toLowerCase());
+    datas.controls[i].controls.payPlan.disable()
   }
 
   closeRow() {
