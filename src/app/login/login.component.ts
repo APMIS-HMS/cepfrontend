@@ -90,6 +90,7 @@ export class LoginComponent implements OnInit {
           this.inProgress = false;
         });
       }, error => {
+        console.dir(error);
         this.inProgress = false;
         this.errMsg = 'Wrong login credentials';
         this.systemModule.announceSweetProxy(this.errMsg, 'error');

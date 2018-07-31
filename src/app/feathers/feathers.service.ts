@@ -10,13 +10,7 @@ import {Injectable} from '@angular/core';
 const rx = require('feathers-reactive');
 const RxJS = require('rxjs/Rx');
 
-
-  // const HOST = 'http://13.84.217.251:8082'; // thn
-// const HOST = 'http://172.16.16.51:3031'; // Mr Sunday
-// const HOST = 'http://172.16.16.58:3031'; // Simdi
-// const HOST = 'http://192.168.40.247:3031'; // Mr Sunday
-// const HOST = 'https://apmisapitest.azurewebsites.net'; // Sunday
-const HOST = 'http://localhost:3031'; // Local Server 
+const HOST = 'http://localhost:3031';
 
 @Injectable()
 export class SocketService {
@@ -38,6 +32,7 @@ export class SocketService {
   }
 
   async loginIntoApp(query: any) {
+    console.log(query);
     return await this._app.authenticate({strategy: 'local', email: query.email, password: query.password});
   }
 
