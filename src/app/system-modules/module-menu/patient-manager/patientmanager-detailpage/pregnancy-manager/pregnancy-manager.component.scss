@@ -4,9 +4,6 @@ td{
     padding: 10px 0;
     position: relative;
 }
-.workspace-tbl td{
-    padding: 0 5px !important;
-}
 th{
     color: #194985;
     border-bottom: 1px solid #000;
@@ -17,4 +14,7 @@ th{
 }
 .doc-card2{
     width: 100%;
+}
+.doc-cardWrap{
+    margin-top: 0;
 }
