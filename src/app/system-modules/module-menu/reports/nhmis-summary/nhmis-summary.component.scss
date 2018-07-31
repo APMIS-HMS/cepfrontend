@@ -1,5 +1,15 @@
-@import "../facility-page-home.component.scss";
+@import "../../facility-page/facility-page-home.component.scss";
 
+table{
+    border: 0 !important;
+}
+tbody{
+    margin-top: 50px;
+    margin-bottom: 20px;
+}
+.content-wrap{
+    display: block;
+}
 .pp-card{
     position: relative;
     padding: 20px;
@@ -74,13 +84,13 @@ td{
 }
 .tbl-wrap {
     width: 100%;
-    margin-top: 30px;
 }
 .tbl-title {
     font-size: 1.6rem;
     color: #194985;
     margin-bottom: 10px;
     font-weight: bold;
+    padding: 30px 0 10px 0;
 }
 .top-btns {
     display: flex;
@@ -92,4 +102,29 @@ td{
     padding: 5px 10px;
     margin-left: 5px;
     cursor: pointer;
+}
+.pagination {
+    width: 300px;
+    margin: 30px auto;
+    display: flex;
+    font-size: 16px;
+    justify-content: space-between;
+}
+.pagination li{
+    padding: 10px;
+    border: 0.5px solid #ddd;
+    background: #f8f8f8;
+    color: #777;
+    cursor: pointer;
+}
+.pg-nav {
+    background: #03A9F4 !important;
+    color: #fff !important;
+    font-weight: bold;
+}
+li.pg-active{
+    font-weight: bold;
+    color: #194985 !important;
+    background: #fff !important;
+    border: 0 !important;
 }
