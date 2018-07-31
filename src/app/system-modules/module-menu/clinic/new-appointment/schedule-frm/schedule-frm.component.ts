@@ -862,8 +862,6 @@ export class ScheduleFrmComponent implements OnInit {
             .then(
                 payload => {
                   if (this.teleMed.value === true) {
-                    console.log(patient);
-                    console.log(this.selectedPatient);
                     const topic =
                         'Appointment with ' + this.selectedPatient.personDetails.apmisId;
                     this.appointmentService
@@ -871,7 +869,7 @@ export class ScheduleFrmComponent implements OnInit {
                             topic, this.appointment.startDate,
                             this.appointment._id, this.timezone.value.value)
                         .then(
-                            meeting => {
+                      meeting => {
                               let fullName =
                                   this.selectedPatient.personDetails.lastName +
                                   ' ' + this.selectedPatient.personDetails.Name;
@@ -893,7 +891,6 @@ export class ScheduleFrmComponent implements OnInit {
                                   null, null, null, null, null, null, null);
                             },
                       error => {
-                        console.log(error);
                               this.systemModuleService.off();
                               this.systemModuleService.announceSweetProxy(
                                   'Clinic Appointment updated successfully but telemedice appointment not updated or created',
@@ -922,7 +919,6 @@ export class ScheduleFrmComponent implements OnInit {
                   }
                 },
           error => {
-            console.log(error);
                   this.savingAppointment = false;
                   this.disableBtn = false;
                   this.loadIndicatorVisible = false;
@@ -936,8 +932,6 @@ export class ScheduleFrmComponent implements OnInit {
                 payload => {
                   this.createBill();
                   if (this.teleMed.value === true) {
-                    console.log(patient);
-                    console.log(this.selectedPatient);
                     const topic =
                         'Appointment with ' + patient.personDetails.apmisId;
                     this.appointmentService
@@ -1102,8 +1096,6 @@ export class ScheduleFrmComponent implements OnInit {
   }
 
   dateChange(event) {
-    console.log(event);
-    console.log(this.selectedClinicSchedule);
     this.authFacadeService.getServerTime().then((serverTime: any) => {
       const serverDate = new Date(serverTime.datetime);
       const localDate = new Date(event);
