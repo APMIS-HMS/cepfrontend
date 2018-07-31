@@ -862,8 +862,10 @@ export class ScheduleFrmComponent implements OnInit {
             .then(
                 payload => {
                   if (this.teleMed.value === true) {
+                    console.log(patient);
+                    console.log(this.selectedPatient);
                     const topic =
-                        'Appointment with ' + patient.personDetails.apmisId;
+                        'Appointment with ' + this.selectedPatient.personDetails.apmisId;
                     this.appointmentService
                         .setMeeting(
                             topic, this.appointment.startDate,
@@ -890,7 +892,8 @@ export class ScheduleFrmComponent implements OnInit {
                                   'Appointment updated successfully', 'success',
                                   null, null, null, null, null, null, null);
                             },
-                            error => {
+                      error => {
+                        console.log(error);
                               this.systemModuleService.off();
                               this.systemModuleService.announceSweetProxy(
                                   'Clinic Appointment updated successfully but telemedice appointment not updated or created',
@@ -918,7 +921,8 @@ export class ScheduleFrmComponent implements OnInit {
                         null, null, null, null, null, null);
                   }
                 },
-                error => {
+          error => {
+            console.log(error);
                   this.savingAppointment = false;
                   this.disableBtn = false;
                   this.loadIndicatorVisible = false;
@@ -932,6 +936,8 @@ export class ScheduleFrmComponent implements OnInit {
                 payload => {
                   this.createBill();
                   if (this.teleMed.value === true) {
+                    console.log(patient);
+                    console.log(this.selectedPatient);
                     const topic =
                         'Appointment with ' + patient.personDetails.apmisId;
                     this.appointmentService
