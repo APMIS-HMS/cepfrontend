@@ -52,6 +52,7 @@ export class MakePaymentComponent implements OnInit {
   disableBtn = true;
   isProcessing = false;
   isCash = false;
+  subCharge_cost = 0;
 
   loading = false;
   tabWallet = true;
@@ -71,7 +72,7 @@ export class MakePaymentComponent implements OnInit {
   patientInsuranceLists = [];
   patientCompanyLists = [];
   patientFamilyLists = [];
-
+  facilitySubscriptions: any = <any>{};
   balance;
   wavedDescription = new FormControl('', []);
   amount = new FormControl('', []);
@@ -102,7 +103,6 @@ export class MakePaymentComponent implements OnInit {
 
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
-      console.log(this.loginEmployee);
     });
 
   }
@@ -213,7 +213,8 @@ export class MakePaymentComponent implements OnInit {
     //   }
     // });
     this.initializeServiceItemTables();
-    this.setValueForServiceItems();
+    this.getFacilitySubscription();
+
   }
 
   initializeServiceItemTables() {
@@ -223,6 +224,7 @@ export class MakePaymentComponent implements OnInit {
           date: ['', [<any>Validators.required]],
           balance: [0, [<any>Validators.required]],
           totalPrice: [0, [<any>Validators.required]],
+          isSubCharge: [false, [<any>Validators.required]],
           isPaymentCompleted: [false, [<any>Validators.required]],
           qty: [0, [<any>Validators.required]],
           facilityServiceObject: [{}, [<any>Validators.required]],
@@ -234,6 +236,32 @@ export class MakePaymentComponent implements OnInit {
       ])
     });
     this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
+  }
+
+  getFacilitySubscription() {
+    this.facilityService.findValidSubscription({
+      query: {
+        facilityId: this.selectedFacility._id
+      }
+    }).then(payload => {
+      this.facilitySubscriptions = payload.data;
+      if (this.facilitySubscriptions.name === 'Subscription') {
+        let subCharge = this.cost * (this.facilitySubscriptions.rate / 100);
+        this.subCharge_cost = this.cost + subCharge;
+        if (this.discount > 0) {
+          subCharge = this.subTotal * (this.facilitySubscriptions.rate / 100);
+          this.subCharge_cost = this.cost + subCharge;
+        }
+      } else if (this.facilitySubscriptions.name === 'One-of-payment') {
+        this.subCharge_cost = this.cost;
+      }else if (this.facilitySubscriptions.name === undefined) {
+        this.subCharge_cost = this.cost;
+      }
+
+      this.setValueForServiceItems();
+    }, err => {
+      this.setValueForServiceItems();
+    });
   }
 
   setValueForServiceItems() {
@@ -249,6 +277,7 @@ export class MakePaymentComponent implements OnInit {
               ItemGroupByService.push({
                 date: element2.billObject.updatedAt,
                 qty: element2.qty,
+                isSubCharge: false,
                 facilityServiceObject: element2.facilityServiceObject,
                 balance: element2.qty * element2.unitPrice,
                 totalPrice: element2.qty * element2.unitPrice,
@@ -257,6 +286,7 @@ export class MakePaymentComponent implements OnInit {
                 isWaiver: false,
                 waiverComment: ''
               });
+
             } else {
               index[0].qty += element2.qty;
               index[0].balance = index[0].qty * element2.unitPrice;
@@ -276,6 +306,7 @@ export class MakePaymentComponent implements OnInit {
             balance: element2.balance,
             totalPrice: element2.balance,
             amountPaid: 0,
+            isSubCharge: false,
             isPaymentCompleted: false,
             isWaiver: false,
             waiverComment: ''
@@ -283,6 +314,33 @@ export class MakePaymentComponent implements OnInit {
         }
       });
     }
+    if (this.facilitySubscriptions.name === 'Subscription') {
+      let _subCharge = this.cost * (this.facilitySubscriptions.rate / 100);
+      if (this.discount > 0) {
+        _subCharge = this.subTotal * (this.facilitySubscriptions.rate / 100);
+      }
+      let apmis_sub_charge_exist = ItemGroupByService.filter(x=> x.facilityServiceObject !== undefined && x.facilityServiceObject.serviceId === undefined 
+        && x.facilityServiceObject.categoryId === undefined 
+        && x.facilityServiceObject.service ==='Apmis Sub-charge' 
+        &&  x.facilityServiceObject.category ==='Apmis Sub-charge');
+        if(apmis_sub_charge_exist.length === 0){
+          ItemGroupByService.push({
+            date: new Date(),
+            qty: 1,
+            facilityServiceObject: {
+              "service": "Apmis Sub-charge",
+              "category": "Apmis Sub-charge"
+            },
+            balance: _subCharge,
+            totalPrice: _subCharge,
+            amountPaid: 0,
+            isPaymentCompleted: false,
+            isSubCharge: true,
+            isWaiver: false,
+            waiverComment: ''
+          });
+        }
+      }
     this.employeeService.find({ query: { facilityId: this.selectedFacility._id, personId: this.user.personId } }).then(employee => {
       ItemGroupByService.forEach(item => {
         (<FormArray>this.productTableForm.controls['productTableArray']).push(
@@ -293,6 +351,7 @@ export class MakePaymentComponent implements OnInit {
             facilityServiceObject: item.facilityServiceObject,
             amountPaid: item.totalPrice,
             totalPrice: item.totalPrice,
+            isSubCharge: item.isSubCharge,
             balance: item.balance,
             isPaymentCompleted: item.isPaymentCompleted,
             isWaiver: false,
@@ -301,7 +360,7 @@ export class MakePaymentComponent implements OnInit {
           })
         );
       });
-      this.computeDiscountPrice();
+      this.computeDiscountPrice(ItemGroupByService);
     });
   }
 
@@ -393,23 +452,23 @@ export class MakePaymentComponent implements OnInit {
     });
   }
 
-  computeDiscountPrice() {
-    console.log(this.discount);
+  computeDiscountPrice(ItemGroupByService) {
     if (this.discount > 0) {
-      let acctual = 0;
-      (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
-        acctual += item.value.totalPrice;
-      });
-      console.log(acctual);
+      let acctual = this.subTotal;
+      // (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
+      //   acctual += item.value.totalPrice;
+      // });
+      // console.log(acctual);
       let percentage = (this.discount * 100) / acctual;
-      console.log(percentage);
+      let checkItems = ItemGroupByService.filter(x => x.isSubCharge === false);
       (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
         let discountPrice = item.value.totalPrice - (item.value.totalPrice * (percentage / 100));
-        console.log(discountPrice)
-        let roundedNum = discountPrice.toFixed(2);
-        item.controls.amountPaid.setValue(roundedNum);
-        item.controls.balance.setValue(discountPrice);
-        item.controls.totalPrice.setValue(discountPrice);
+        if (item.controls.isSubCharge.value === false) {
+          let roundedNum = discountPrice.toFixed(2);
+          item.controls.amountPaid.setValue(roundedNum);
+          item.controls.balance.setValue(discountPrice);
+          item.controls.totalPrice.setValue(discountPrice);
+        }
       });
       (<FormArray>this.productTableForm.controls['productTableArray']).setValue(JSON.parse(JSON.stringify((<FormArray>this.productTableForm.controls['productTableArray']).value)))
     }
@@ -489,6 +548,7 @@ export class MakePaymentComponent implements OnInit {
         'patientId': this.selectedPatient._id,
         'personId': this.selectedPatient.personDetails._id,
         'facilityId': this.selectedFacility._id,
+        'subTotal': this.subTotal,
         'isInvoicePage': true
       }
       if (this.checkAllWaive.value) {
@@ -500,13 +560,12 @@ export class MakePaymentComponent implements OnInit {
     }
     if (this.checkAllWaive.value === true && this.wavedDescription.value.length > 0) {
       this._makePaymentService.create(paymantObj).then(payload => {
-
-        if (payload.status === undefined) {
-          this.personValueChanged.emit(payload);
+        if (payload.status === 'success') {
+          this.personValueChanged.emit(payload.data);
           this.isProcessing = false;
           this.balance.setValue(0);
           this.close_onClick();
-          if (!payload.isWaved) {
+          if (!payload.data.isWaved) {
             this.systemModuleService.announceSweetProxy('Payment has been made successfully.', 'success');
           } else {
             this.systemModuleService.announceSweetProxy('Payment has been waived successfully.', 'success');
@@ -522,25 +581,23 @@ export class MakePaymentComponent implements OnInit {
       });
     } else if (this.checkAllWaive.value === false && this.wavedDescription.value.length === 0) {
       this._makePaymentService.create(paymantObj).then(payload => {
-
-        if(payload.status === undefined){
-          this.personValueChanged.emit(payload);
+        if (payload.status !== undefined) {
+          this.personValueChanged.emit(payload.data);
           this.isProcessing = false;
           this.balance.setValue(0);
           this.close_onClick();
-          if (!payload.isWaved) {
+          if (!payload.data.isWaved) {
             this.systemModuleService.announceSweetProxy('Payment has been made successfully.', 'success');
           } else {
             this.systemModuleService.announceSweetProxy('Payment has been waived successfully.', 'success');
           }
-  
-        }else{
+
+        } else {
           this.systemModuleService.announceSweetProxy('You donot have a valid subscription', 'error');
           this.isProcessing = false;
           this.systemModuleService.off();
         }
       }, error => {
-        console.log(error);
         this.isProcessing = false;
         this.systemModuleService.announceSweetProxy('Failed to make payment. Please try again later', 'error');
         this.systemModuleService.off();

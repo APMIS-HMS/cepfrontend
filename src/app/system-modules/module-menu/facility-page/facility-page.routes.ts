@@ -23,7 +23,6 @@ import { EmpManagerComponent } from "./employees/emp-manager.component";
 import { EditUserComponent } from "./employees/employeemanager-detailpage/edit-user/edit-user.component";
 import { BulkUploadComponent } from './bulk-upload/bulk-upload.component';
 
-
 const FACLITYPAGE_ROUTES: Routes = [
   {
     path: "",
@@ -84,7 +83,7 @@ const FACLITYPAGE_ROUTES: Routes = [
       { path: "options", component: FacilityOptionsComponent },
       { path: "profession", component: ProfessionComponent },
       {
-        path: "modules",
+        path: "subsribtion",
         component: FacilitypageModulespageComponent,
         canActivate: [CanActivateViaAuthGuardCompleteFacilityService]
       },
@@ -105,6 +104,6 @@ const FACLITYPAGE_ROUTES: Routes = [
       }
     ]
   }
-];
+]; 
 
 export const facilityPageRoutes = RouterModule.forChild(FACLITYPAGE_ROUTES);

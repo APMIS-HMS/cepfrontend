@@ -75,7 +75,7 @@ export class BillPrescriptionComponent implements OnInit {
 		console.log(value);
 		if (valid) {
 			if ((!!this.cost && this.cost > 0) && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
-				let index = this.prescriptionData.index;
+				const index = this.prescriptionData.index;
 				const product = {
 					id: this.selectedDrug.productObject.id,
 					code: this.selectedDrug.productObject.code,

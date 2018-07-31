@@ -18,7 +18,7 @@ import {
   LoginEmployeeResolverService
 } from '../../../resolvers/module-menu/index';
 import { AddTagsComponent } from './add-tags/add-tags.component';
-import { FormsService } from '../../../services/facility-manager/setup/index';
+import { FormsService, ImmunizationRecordService } from '../../../services/facility-manager/setup/index';
 import { PatientSummaryComponent } from './patientmanager-detailpage/patient-summary/patient-summary.component';
 import { PatientPrescriptionComponent } from './patientmanager-detailpage/patient-prescription/patient-prescription.component';
 import { MedicationHistoryComponent } from './patientmanager-detailpage/medication-history/medication-history.component';
@@ -80,6 +80,7 @@ import { PatientImmunizationComponent } from './patientmanager-detailpage/patien
 import { LabEventEmitterService } from '../../../services/facility-manager/lab-event-emitter.service';
 import { VaccineAdministrationComponent } from './patientmanager-detailpage/patient-immunization/vaccine-administration/vaccine-administration.component';
 import { VaccineDocumentationComponent } from './patientmanager-detailpage/patient-immunization/vaccine-documentation/vaccine-documentation.component';
+import { PregnancyManagerComponent } from './patientmanager-detailpage/pregnancy-manager/pregnancy-manager.component';
 
 @NgModule({
   declarations: [
@@ -129,7 +130,8 @@ import { VaccineDocumentationComponent } from './patientmanager-detailpage/patie
     AddPatientTagsComponent,
     PatientImmunizationComponent,
     VaccineAdministrationComponent,
-    VaccineDocumentationComponent
+    VaccineDocumentationComponent,
+    PregnancyManagerComponent
   ],
   exports: [],
   imports: [
@@ -156,7 +158,8 @@ import { VaccineDocumentationComponent } from './patientmanager-detailpage/patie
     DocumentationTemplateService,
     ScopeLevelService,
     FacilityCompanyCoverService,
-    LabEventEmitterService
+    LabEventEmitterService,
+    ImmunizationRecordService
   ]
 })
 export class PatientManagerModule {}

@@ -132,8 +132,8 @@ const appRoutes: Routes = [
             ]
             },
             {
-                path: 'report',
-                loadChildren: '../module-menu/report/report.module#ReportModule'
+                path: 'reports',
+                loadChildren: '../module-menu/reports/reports.module#ReportsModule'
             },
             {
                 path: 'immunization',

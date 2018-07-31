@@ -86,7 +86,7 @@
                     </div>
                     <div class="col-xs-12 immune-search-result">
                         <div *ngFor="let schedule of immunizationSchedules" class="immune-group-item" [class.active]="schedule._id== selectedSchedule?._id">
-                            <mat-radio-button (change)="changeSelection(schedule)">{{schedule.name}} (&#8358;{{schedule.serviceObject.price | number:'1.2-2'}})</mat-radio-button>
+                            <mat-radio-button [checked]="schedule._id===immunizationScheduleId" (change)="changeSelection(schedule)">{{schedule.name}} (&#8358;{{schedule.serviceObject.price | number:'1.2-2'}})</mat-radio-button>
                         </div>
                     </div>
                 </div>

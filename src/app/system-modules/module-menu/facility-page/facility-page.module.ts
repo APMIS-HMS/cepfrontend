@@ -59,6 +59,8 @@ import { ViewAccessComponent } from './facility-access-control/view-access/view-
 import { BulkUploadComponent } from './bulk-upload/bulk-upload.component';
 
 import { from } from 'rxjs/observable/from';
+import { SubscribtionComponent } from './facilitypage-modulespage/subscribtion/subscribtion.component';
+
 
 @NgModule({
     declarations: [
@@ -99,7 +101,8 @@ import { from } from 'rxjs/observable/from';
         EmployeeAccessRolesComponent,
         AccessManagerComponent, AccessRoleDetailsComponent, CreateAccessComponent, ViewAccessComponent,
         AccessManagerHomeComponent,
-        BulkUploadComponent
+        BulkUploadComponent,
+        SubscribtionComponent
     ],
     exports: [
     ],

@@ -5,6 +5,7 @@ import { Employee, Facility } from '../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { LabEventEmitterService } from '../../../services/facility-manager/lab-event-emitter.service';
+import { ISubscription } from '../../../../../node_modules/rxjs/Subscription';
 
 @Component({
   selector: 'app-lab',
@@ -29,6 +30,7 @@ export class LabComponent implements OnInit, OnDestroy {
   externalContentArea = false;
   templateContentArea = false;
   checkedInObject: any = <any>{};
+  labSubscription: ISubscription;
 
   constructor(
     private _router: Router,
@@ -37,7 +39,12 @@ export class LabComponent implements OnInit, OnDestroy {
     private _employeeService: EmployeeService,
     private _authFacadeService: AuthFacadeService,
     private _labEventEmitter: LabEventEmitterService
-  ) { }
+  ) {
+    // Subscribe to the event when ward changes.
+    this.labSubscription = this._labEventEmitter.announceLab.subscribe(val => {
+      this.checkedInObject = val;
+    });
+  }
 
   ngOnInit() {
     const page: string = this._router.url;
@@ -73,6 +80,7 @@ export class LabComponent implements OnInit, OnDestroy {
         });
 
         if (!isOn) {
+          console.log('is Not On', isOn);
           this.loginEmployee.workbenchCheckIn.forEach((x, r) => {
             if (r === 0) {
               x.isOn = true;
@@ -259,6 +267,7 @@ export class LabComponent implements OnInit, OnDestroy {
     this._employeeService.announceCheckIn(undefined);
     this._locker.setObject('workbenchCheckingObject', {});
     this.checkedInObject = {};
+    this.labSubscription.unsubscribe();
   }
   chartClicked(e){
 
