@@ -919,6 +919,7 @@ export class ScheduleFrmComponent implements OnInit {
                   }
                 },
           error => {
+            console.log(error);
                   this.savingAppointment = false;
                   this.disableBtn = false;
                   this.loadIndicatorVisible = false;
@@ -933,7 +934,7 @@ export class ScheduleFrmComponent implements OnInit {
                   this.createBill();
                   if (this.teleMed.value === true) {
                     const topic =
-                        'Appointment with ' + patient.personDetails.apmisId;
+                        'Appointment with ' + this.selectedPatient.personDetails.apmisId;
                     this.appointmentService
                         .setMeeting(
                             topic, this.appointment.startDate, payload._id,
@@ -987,7 +988,8 @@ export class ScheduleFrmComponent implements OnInit {
                         null, null, null, null, null);
                   }
                 },
-                error => {
+          error => {
+            console.log(error);
                   this.savingAppointment = false;
                   this.disableBtn = false;
                   this.loadIndicatorVisible = false;
