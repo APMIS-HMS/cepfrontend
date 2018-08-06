@@ -14,7 +14,7 @@ td{
 .other-wrap{
     margin-left: 20px;
     border-left: 1px solid #aaa;
-    padding-left: 10px;
+    padding-left: 20px;
 }
 .etr-other {
     margin-bottom: 5px;
@@ -28,19 +28,30 @@ td{
 }
 .etr-ctas {
     display: flex;
-    margin-top: 2px;
 }
 .etr-cta {
     margin-right: 5px;
-    padding: 3px 10px;
-    border: 1px solid #aaa;
+    padding: 3px 5px;
+    color: #194985;
     cursor: pointer;
+    border: 1px solid #194985;
+}
+.etr-cta:hover{
+    border-bottom: 1px solid #194985;
 }
 .filters {
-    background: #fff !important;
     border-bottom: 1px solid #eee;
     padding-left: 0 !important;
+    background: transparent !important;
 }
 .search{
     padding: 4px;
+}
+.tbody-regs td{
+    cursor: pointer;
+}
+.tbody-regs td:hover{
+    .tbl-title{
+        text-decoration: underline;
+    }
 }

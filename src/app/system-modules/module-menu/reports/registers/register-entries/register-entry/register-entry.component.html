@@ -1,3 +1,84 @@
-<p>
-  register-entry works!
-</p>
+<div class="content-wrap">
+  <div class="empWrap">
+    <div class="list-img">
+        <img src="assets/images/users/default.png">
+    </div>
+    <div>
+      <div>Sam Dede</div>
+      <div class="etr-other-wrap">
+        <div class="etr-other">26 Years</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="tbl-resp-wrap">
+    <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5">
+        <thead>
+          <tr>
+            <th colspan="10">
+              <div class="th1-wrap">
+                <div class="th1-title">TETANUS TOXOID</div>
+                <div class="th1-cta"><i class="fa fa-plus"></i> </div>
+              </div>
+            </th>
+          </tr>
+          <tr>
+            <th colspan="2">TT1</th>
+            <th colspan="2">TT2</th>
+            <th colspan="2">TT3</th>
+            <th colspan="2">TT4</th>
+            <th colspan="2">TT5</th>
+          </tr>
+          <tr>
+            <th>P</th>
+            <th>NP</th>
+            <th>P</th>
+            <th>NP</th>
+            <th>P</th>
+            <th>NP</th>
+            <th>P</th>
+            <th>NP</th>
+            <th>P</th>
+            <th>NP</th>
+          </tr>
+        </thead>
+
+        <!-- <tbody *ngIf="employees.length > 0">
+            <tr *ngFor="let emp of employees">
+                <td>
+                    <div class="empWrap">
+                        <div class="list-img">
+                            <img src="assets/images/users/default.png">
+                        </div>
+                        <div>{{emp.employee?.personDetails?.lastName}} {{emp.employee?.personDetails?.firstName}}</div>
+                    </div>
+                </td>
+                <td>{{emp.employee?.departmentId}}</td>
+                <td class="td-worspace">
+                    <div *ngFor="let workspace of emp.workspaces"></div>
+                    <div class="workspace-count">{{getActiveWorkSpaceLength(emp.workspaces)}} workspace(s)</div>
+                    <ul class="shadow-RB workspace-listWrap animated zoomIn" *ngIf="getActiveWorkSpaceLength(emp.workspaces) > 0">
+                        <li class="workspace-listItem" *ngFor="let workspace of emp.workspaces">
+                            <ng-container *ngFor="let location of workspace.locations">
+                                <span>{{location?.majorLocation?.name}}</span>
+                                <i (click)="deleteLocation_popup(location._id, workspace)" class="fa fa-fw fa-2x fa-trash orange tooltip" data-tooltip='Delete'
+                                    aria-hidden="true"></i>
+                            </ng-container>
+                        </li>
+                        <div class="pointer-wrap">
+                            <i class="fa fa-caret-down" aria-hidden="true"></i>
+                        </div>
+                    </ul>
+                </td>
+                <td>
+                    <div class="td-ctaWrap">
+                        <i (click)="newWorkspace_onClick(workspace.employee)" class="fa fa-fw fa-2x fa-pencil-square-o orange tooltip" data-tooltip='Edit'
+                            aria-hidden="true"></i>
+                        <i (click)="deletion_popup(workspace)" class="fa fa-fw fa-2x fa-trash orange tooltip" data-tooltip='Delete' aria-hidden="true"></i>
+                    </div>
+                </td>
+            </tr>
+        </tbody> -->
+    </table>
+  </div>
+</div>

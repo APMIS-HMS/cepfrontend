@@ -7,6 +7,7 @@ import { NewRegisterComponent } from './new-register/new-register.component';
 import { RegisterEntriesComponent } from './register-entries/register-entries.component';
 import { RegisterEntryComponent } from './register-entries/register-entry/register-entry.component';
 import { NewRegisterEntryComponent } from './register-entries/new-register-entry/new-register-entry.component';
+import { RegEntriesListComponent } from './register-entries/reg-entries-list/reg-entries-list.component';
 
 @NgModule({
   imports: [
@@ -18,7 +19,8 @@ import { NewRegisterEntryComponent } from './register-entries/new-register-entry
     NewRegisterComponent,
     RegisterEntriesComponent,
     RegisterEntryComponent,
-    NewRegisterEntryComponent
+    NewRegisterEntryComponent,
+    RegEntriesListComponent
   ]
 })
 export class RegistersModule { }
