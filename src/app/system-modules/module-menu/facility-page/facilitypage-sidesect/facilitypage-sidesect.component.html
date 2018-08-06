@@ -105,6 +105,6 @@
     </ul>
 </div>
 
-<div *ngIf="editBasicInfo" style="top: 175px" class="modal-overlay">
+<div *ngIf="editBasicInfo" class="modal-overlay">
     <app-facility-basicinfo-edit [selectedFacility]="selectedFacility" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-facility-basicinfo-edit>
 </div>
