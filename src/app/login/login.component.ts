@@ -70,6 +70,8 @@ export class LoginComponent implements OnInit {
       // };
       this.userService.login(query).then(result => {
         this.userServiceFacade.authenticateResource().then(payload => {
+          console.log(payload);
+          
           let auth = {data: result.user};
           this.locker.setObject('auth', auth);
           this.locker.setObject('token', result.accessToken);
