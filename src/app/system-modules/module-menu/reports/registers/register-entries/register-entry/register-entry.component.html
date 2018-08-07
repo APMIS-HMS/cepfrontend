@@ -1,5 +1,5 @@
 <div class="content-wrap">
-  <div class="empWrap">
+  <!-- <div class="empWrap">
     <div class="list-img">
         <img src="assets/images/users/default.png">
     </div>
@@ -9,27 +9,45 @@
         <div class="etr-other">26 Years</div>
       </div>
     </div>
-  </div>
+  </div> -->
 
   <div class="tbl-resp-wrap">
     <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5">
         <thead>
           <tr>
-            <th colspan="10">
+            <th colspan="18">
               <div class="th1-wrap">
-                <div class="th1-title">TETANUS TOXOID</div>
-                <div class="th1-cta"><i class="fa fa-plus"></i> </div>
+                <!-- <div class="th1-title">TETANUS TOXOID</div> -->
+                <div class="filters">
+                  <div class="filter">
+                      <input class="search" placeholder="search for patient...">
+                  </div>
+                </div>
+                <div class="tp-rhs">
+                  <div class="dr-wrap survery">
+                      <app-date-range [dateRange]="dateRange" (dateRangeChange)="setReturnValue($event)"></app-date-range> <span *ngIf="loadIndicatorVisible" class="fa fa-spinner fa-spin"></span>
+                  </div>
+                  <div (click)="newEntry()" class="th1-cta"><i class="fa fa-plus"></i> </div>
+                </div>
               </div>
             </th>
           </tr>
           <tr>
+            <th colspan="6"></th>
             <th colspan="2">TT1</th>
             <th colspan="2">TT2</th>
             <th colspan="2">TT3</th>
             <th colspan="2">TT4</th>
             <th colspan="2">TT5</th>
+            <th colspan="4"></th>
           </tr>
           <tr>
+            <th>Date</th>
+            <th>Patient</th>
+            <th>Age</th>
+            <th>Tag ID</th>
+            <th>Date of Birth</th>
+            <th>Phone No</th>
             <th>P</th>
             <th>NP</th>
             <th>P</th>
@@ -40,45 +58,42 @@
             <th>NP</th>
             <th>P</th>
             <th>NP</th>
+            <th colspan="4">Comment</th>
           </tr>
         </thead>
 
-        <!-- <tbody *ngIf="employees.length > 0">
-            <tr *ngFor="let emp of employees">
-                <td>
-                    <div class="empWrap">
-                        <div class="list-img">
-                            <img src="assets/images/users/default.png">
-                        </div>
-                        <div>{{emp.employee?.personDetails?.lastName}} {{emp.employee?.personDetails?.firstName}}</div>
+        <tbody>
+            <tr>
+              <td>11th Oct 2018</td>
+              <td>
+                <div class="empWrap">
+                    <div class="list-img">
+                        <img src="assets/images/users/default.png">
                     </div>
-                </td>
-                <td>{{emp.employee?.departmentId}}</td>
-                <td class="td-worspace">
-                    <div *ngFor="let workspace of emp.workspaces"></div>
-                    <div class="workspace-count">{{getActiveWorkSpaceLength(emp.workspaces)}} workspace(s)</div>
-                    <ul class="shadow-RB workspace-listWrap animated zoomIn" *ngIf="getActiveWorkSpaceLength(emp.workspaces) > 0">
-                        <li class="workspace-listItem" *ngFor="let workspace of emp.workspaces">
-                            <ng-container *ngFor="let location of workspace.locations">
-                                <span>{{location?.majorLocation?.name}}</span>
-                                <i (click)="deleteLocation_popup(location._id, workspace)" class="fa fa-fw fa-2x fa-trash orange tooltip" data-tooltip='Delete'
-                                    aria-hidden="true"></i>
-                            </ng-container>
-                        </li>
-                        <div class="pointer-wrap">
-                            <i class="fa fa-caret-down" aria-hidden="true"></i>
-                        </div>
-                    </ul>
-                </td>
-                <td>
-                    <div class="td-ctaWrap">
-                        <i (click)="newWorkspace_onClick(workspace.employee)" class="fa fa-fw fa-2x fa-pencil-square-o orange tooltip" data-tooltip='Edit'
-                            aria-hidden="true"></i>
-                        <i (click)="deletion_popup(workspace)" class="fa fa-fw fa-2x fa-trash orange tooltip" data-tooltip='Delete' aria-hidden="true"></i>
-                    </div>
-                </td>
+                    <div>Sam Dede</div>
+                </div>
+              </td>
+              <td>22yrs</td>
+              <td>AZ2100</td>
+              <td>11th Oct 1995</td>
+              <td>08099009978</td>
+              <td><i class="fa fa-check green"></i> </td>
+              <td><i class="fa fa-check green"></i> </td>
+              <td><i class="fa fa-times red"></i> </td>
+              <td><i class="fa fa-check green"></i> </td>
+              <td><i class="fa fa-times red"></i> </td>
+              <td><i class="fa fa-times red"></i> </td>
+              <td><i class="fa fa-check green"></i> </td>
+              <td><i class="fa fa-check green"></i> </td>
+              <td><i class="fa fa-check green"></i> </td>
+              <td><i class="fa fa-times red"></i> </td>
+              <td colspan="4"></td>
             </tr>
-        </tbody> -->
+        </tbody>
     </table>
   </div>
+</div>
+
+<div *ngIf="showNewEntry" class="modal-overlay">
+    <app-new-register-entry (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-register-entry>
 </div>
