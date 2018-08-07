@@ -127,9 +127,9 @@ const appRoutes: Routes = [
             {
              path: 'radiology',
              loadChildren: '../module-menu/radiology/radiology.module#RadiologyModule',
-             canActivate: [
-                CanActivateViaAuthGuardAccessService
-            ]
+            //  canActivate: [
+            //     CanActivateViaAuthGuardAccessService
+            // ]
             },
             {
                 path: 'reports',
