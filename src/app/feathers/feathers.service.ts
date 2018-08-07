@@ -1,4 +1,3 @@
-
 import {Router} from '@angular/router';
 const feathers = require('@feathersjs/feathers');
 const socketio = require('@feathersjs/socketio-client');
@@ -13,7 +12,7 @@ const rx = require('feathers-reactive');
 const RxJS = require('rxjs/Rx');
 const CircularJSON = require('circular-json');
 
-const HOST = API_TEST;
+const HOST = API_LOCALHOST;
 
 @Injectable()
 export class SocketService {
@@ -35,8 +34,7 @@ export class SocketService {
   }
 
   async loginIntoApp(query: any) {
-    console.log(query);
-    return await this._app.authenticate({strategy: 'local', email: query.email, password: query.password});
+    return this._app.authenticate({strategy: 'local', email: CircularJSON.stringify(query.email), password: CircularJSON.stringify(query.password)});
   }
 
   getService(value: any) {
@@ -70,7 +68,6 @@ export class RestService {
     }
   }
   loginIntoApp(query) {
-    console.log(query);
     return this._app.authenticate({strategy: 'local', email: CircularJSON.stringify(query.email), password: CircularJSON.stringify(query.password)});
   }
   getService(value: any) {
