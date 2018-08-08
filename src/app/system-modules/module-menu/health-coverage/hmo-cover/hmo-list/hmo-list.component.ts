@@ -26,6 +26,7 @@ export class HmoListComponent implements OnInit {
 
   public frmNewHmo: FormGroup;
   hmo = new FormControl('', []);
+  searchHmo = new FormControl();
   newHmo = false;
   newHMO = false;
   isSelectedFileUploaded = false;
@@ -78,6 +79,13 @@ export class HmoListComponent implements OnInit {
         }
       }
     });
+
+    this.searchHmo.valueChanges
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .subscribe(value => {
+      });
+
     this.getFacilityTypes();
     this.getLoginHMOList();
   }
@@ -141,13 +149,13 @@ export class HmoListComponent implements OnInit {
   newHmo_show() {
     this.newHmo = !this.newHmo;
   }
-  
+
   showImageBrowseDlg(i) {
     var fileInputs = this.fileInput.toArray();
     fileInputs[i].nativeElement.click();
   }
 
-  triggerFile(fileInput:ElementRef) {
+  triggerFile(fileInput: ElementRef) {
     fileInput.nativeElement.click();
   }
 
