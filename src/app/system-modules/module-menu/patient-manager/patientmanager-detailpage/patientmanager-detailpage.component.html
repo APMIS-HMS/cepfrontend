@@ -140,7 +140,7 @@
         <app-pregnancy-manager *ngIf="menuPregnant"></app-pregnancy-manager>
         <app-timeline [patient]="patient" *ngIf="menuTimeline"></app-timeline>
         <app-fluid *ngIf="menuFluid"></app-fluid>
-        <app-registers *ngIf="menuRegisters"></app-registers>
+        <app-patient-registers *ngIf="menuRegisters"></app-patient-registers>
         <app-patient-vitals [patient]="patient" *ngIf="menuVitals"></app-patient-vitals>
         <app-doc-uploads [patient]=patient *ngIf="menuUploads"></app-doc-uploads>
         <app-patient-prescription [selectedAppointment]="selectedAppointment" [patientDetails]="patient" *ngIf="menuPrescription"></app-patient-prescription>

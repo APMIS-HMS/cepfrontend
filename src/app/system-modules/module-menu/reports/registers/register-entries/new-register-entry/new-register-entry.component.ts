@@ -17,16 +17,10 @@ export class NewRegisterEntryComponent implements OnInit {
 
   ngOnInit() {
     this.frm_UpdateCourse = this.formBuilder.group({
+      register: ['', [<any>Validators.required]],
       patient: ['', [<any>Validators.required]],
       tt: ['', [<any>Validators.required]],
-      code: ['', [<any>Validators.required]],
-      course: ['', [<any>Validators.required]],
-      unit: ['', [<any>Validators.required]],
-      level: ['', [<any>Validators.required]],
-      nature: ['', [<any>Validators.required]],
-      prerequisite: ['', [<any>Validators.required]],
-      lecturer: ['', [<any>Validators.required]],
-      venue: ['', [<any>Validators.required]]
+      comment: ['', [<any>Validators.required]],
     });
   }
 
