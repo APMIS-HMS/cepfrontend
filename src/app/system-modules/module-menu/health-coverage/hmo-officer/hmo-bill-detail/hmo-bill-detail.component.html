@@ -26,14 +26,14 @@
       </thead>
       <tbody>
         <tr *ngFor="let bill of selectedBill.billItems">
-          <td>{{bill.serviceObject?.name}}</td>
+          <td>{{bill?.serviceObject?.name}}</td>
           <td>
             <div class="empWrap">
-              <div class="list-img" *ngIf="bill.patientObject.personDetails.profileImageObject === undefined">
+              <div class="list-img" *ngIf="bill?.patientObject?.personDetails?.profileImageObject === undefined">
                 <img src="assets/images/users/default.png">
               </div>
-              <div class="list-img" *ngIf="bill.patientObject.personDetails.profileImageObject !== undefined">
-                <img [src]="facilitiesService.transform(bill.patientObject.personDetails.profileImageObject?.thumbnail)">
+              <div class="list-img" *ngIf="bill?.patientObject?.personDetails?.profileImageObject !== undefined">
+                <img [src]="facilitiesService.transform(bill?.patientObject?.personDetails?.profileImageObject?.thumbnail)">
               </div>
               <div>{{bill?.patientObject?.personDetails?.firstName}} {{bill?.patientObject?.personDetails?.lastName}}</div>
             </div>

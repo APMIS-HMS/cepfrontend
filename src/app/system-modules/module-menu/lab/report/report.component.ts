@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, Input } from '@angular/core';
+import { Component, OnInit, Output, Input, OnDestroy } from '@angular/core';
 import { FormArray, FormGroup, FormBuilder, Validators, FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
@@ -10,13 +10,15 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Observable } from 'rxjs/Observable';
 import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
+import { ISubscription } from '../../../../../../node_modules/rxjs/Subscription';
+import { LabEventEmitterService } from '../../../../services/facility-manager/lab-event-emitter.service';
 
 @Component({
   selector: 'app-report',
   templateUrl: './report.component.html',
   styleUrls: ['./report.component.scss']
 })
-export class ReportComponent implements OnInit {
+export class ReportComponent implements OnInit, OnDestroy {
   patientSearch = new FormControl();
   patientSearch2 = new FormControl();
   @Output() selectedInvestigationData: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
@@ -63,12 +65,12 @@ export class ReportComponent implements OnInit {
   disablePaymentBtn: Boolean = false;
   importTemplate: Boolean = false;
   paymentStatusText: String = '<i class="fa fa-refresh"></i> Refresh Payment Status';
-
   fileName;
   fileType;
   fileBase64;
   searchOpen = false;
   searchOpen2 = false;
+  labSubscription: ISubscription;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -83,17 +85,31 @@ export class ReportComponent implements OnInit {
     private _billingService: BillingService,
     private _systemModuleService: SystemModuleService,
     private _authFacadeService: AuthFacadeService,
-    private _documentUploadService: DocumentUploadService
+    private _documentUploadService: DocumentUploadService,
+    private _labEventEmitter: LabEventEmitterService
   ) {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.employeeDetails = res;
-    }).catch(err => { });
+      if (res.workbenchCheckIn !== undefined && res.workbenchCheckIn.length > 0) {
+        const workBench = this.employeeDetails.workbenchCheckIn.filter(x => x.isOn);
+        if (workBench.length > 0) {
+          this.selectedLab = { typeObject: workBench[0], type: 'workbench' };
+        }
+      }
+    }).catch(err => console.log(err));
+
+    // Subscribe to the event when ward changes.
+    this.labSubscription = this._labEventEmitter.announceLab.subscribe(val => {
+      this.selectedLab = val;
+      this._getAllReports(this.selectedLab);
+      this._getAllPendingRequests();
+    });
   }
 
   ngOnInit() {
     this.facility = <Facility>this._locker.getObject('selectedFacility');
     this.user = <User>this._locker.getObject('auth');
-    this.selectedLab = <any>this._locker.getObject('workbenchCheckingObject');
+    // this.selectedLab = <any>this._locker.getObject('workbenchCheckingObject');
 
     this.patientFormGroup = this.formBuilder.group({
       patient: ['', [Validators.required]],
@@ -119,7 +135,6 @@ export class ReportComponent implements OnInit {
       }
     });
 
-    this._getAllReports();
     this._getDocumentationForm();
 
     this._router.params.subscribe(url => {
@@ -249,7 +264,7 @@ export class ReportComponent implements OnInit {
         if (res.status === 'success') {
           this.patientSelected = false;
           this.report_show();
-          this._getAllReports();
+          this._getAllReports(this.selectedLab);
           this._getAllPendingRequests();
           if (action === 'save') {
             this.saveToDraftBtnText = 'SAVE AS DRAFT';
@@ -632,11 +647,11 @@ export class ReportComponent implements OnInit {
     this.importTemplate = true;
   }
 
-  private _getAllReports() {
+  private _getAllReports(selectedLab) {
     this._laboratoryRequestService.customFind({
       query: { 'facilityId': this.facility._id, $sort: { createdAt: -1 }}
     }).then(res => {
-      if (!!this.selectedLab.typeObject.minorLocationId || this.selectedLab.typeObject.minorLocationId !== undefined) {
+      if (!!selectedLab.typeObject.minorLocationId || selectedLab.typeObject.minorLocationId !== undefined) {
         this.reportLoading = false;
         if (res.data.length > 0) {
           const reports = this._modelPendingRequests(res.data);
@@ -826,5 +841,9 @@ export class ReportComponent implements OnInit {
   repDetail(value: PendingLaboratoryRequest) {
     this.selectedInvestigationData = value;
     this.repDetail_view = true;
+  }
+
+  ngOnDestroy() {
+    this.labSubscription.unsubscribe();
   }
 }

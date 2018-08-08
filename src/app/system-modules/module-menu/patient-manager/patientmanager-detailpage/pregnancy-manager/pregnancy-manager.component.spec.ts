@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PharmacyManagerComponent } from './pharmacy-manager.component';
+import { PregnancyManagerComponent } from './pregnancy-manager.component';
 
-describe('PharmacyManagerComponent', () => {
-  let component: PharmacyManagerComponent;
-  let fixture: ComponentFixture<PharmacyManagerComponent>;
+describe('PregnancyManagerComponent', () => {
+  let component: PregnancyManagerComponent;
+  let fixture: ComponentFixture<PregnancyManagerComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PharmacyManagerComponent ]
+      declarations: [ PregnancyManagerComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(PharmacyManagerComponent);
+    fixture = TestBed.createComponent(PregnancyManagerComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

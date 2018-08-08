@@ -42,10 +42,13 @@
               </div>
             </div>
           </div>
+          <div class="col-xs-12" style="text-align:center" *ngIf="uploadingLoading">
+              <span>Loading...( {{uploadItemCounter}} / {{uploadItemTotal}} )</span>
+            </div>
           <div class="card-content">
             <div class="card-list-item" *ngIf="patients.length === 0 && !loading">
               <div class="col-xs-12" style="text-align:center">
-                No data available in table
+                <span *ngIf="uploadItemTotal===0">No data available in table</span>
               </div>
             </div>
             <div class="card-list-item" *ngIf="patients.length === 0 && loading">

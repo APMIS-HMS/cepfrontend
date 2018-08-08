@@ -137,8 +137,9 @@ export class ClinicalNoteComponent implements OnInit, OnDestroy {
     });
 
     this.sharedService.announceFinishedSavingDraft$.subscribe(
-        (payload: any) => {
-          this.isSavingDraft = payload;
+      (payload: any) => {
+          this.isSavingDraft = !payload;
+      }, error => {
         });
 
     this.templateFormCtrl = new FormControl();

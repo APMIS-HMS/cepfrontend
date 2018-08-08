@@ -16,24 +16,12 @@
     font-weight: 900;
     text-transform: uppercase;
 }
+.accord{
+    overflow-y: auto;
+    max-height: 500px; 
+}
 
 
-
-//.......................///
-// table, td { 
-//     border: 0.5px solid $td-border;
-// }
-// th {
-//     height: 50px;
-//     background: transparent;
-//     border: 0.5px solid $td-border;
-// }
-// .billSummarySect table, td { 
-//     border: 0;
-// }
-// .billSummarySect tr:hover {background-color: #bebebe}
-// .billSummarySect tr:nth-child(even) {background-color: #bebebe}
-//.................................////
 table,
 td {
     border: 0px solid transparent;

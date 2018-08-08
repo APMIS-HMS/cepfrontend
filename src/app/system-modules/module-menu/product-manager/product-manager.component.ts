@@ -1,19 +1,21 @@
-import {Component, OnInit} from '@angular/core';
-import {Router} from '@angular/router';
-import {CoolLocalStorage} from 'angular2-cool-storage';
+import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { CoolLocalStorage } from "angular2-cool-storage";
 
-import {ProductEmitterService} from '../../../services/facility-manager/product-emitter.service';
-import {EmployeeService, FacilitiesService} from '../../../services/facility-manager/setup/index';
-import {AuthFacadeService} from '../../service-facade/auth-facade.service';
+import { ProductEmitterService } from "../../../services/facility-manager/product-emitter.service";
+import {
+  EmployeeService,
+  FacilitiesService
+} from "../../../services/facility-manager/setup/index";
+import { AuthFacadeService } from "../../service-facade/auth-facade.service";
 
 @Component({
-  selector: 'app-product-manager',
-  templateUrl: './product-manager.component.html',
-  styleUrls: ['./product-manager.component.scss']
+  selector: "app-product-manager",
+  templateUrl: "./product-manager.component.html",
+  styleUrls: ["./product-manager.component.scss"]
 })
-
 export class ProductManagerComponent implements OnInit {
-  pageInView: String = '';
+  pageInView: String = "";
   productNavMenu: Boolean = false;
   categoryNavMenu: Boolean = false;
   supplierNavMenu: Boolean = false;
@@ -39,11 +41,13 @@ export class ProductManagerComponent implements OnInit {
   loginEmployee: any = <any>{};
 
   constructor(
-      private _productEventEmitter: ProductEmitterService,
-      private _router: Router, private employeeService: EmployeeService,
-      private authFacadeService: AuthFacadeService,
-      private locker: CoolLocalStorage,
-      public facilityService: FacilitiesService) {
+    private _productEventEmitter: ProductEmitterService,
+    private _router: Router,
+    private employeeService: EmployeeService,
+    private authFacadeService: AuthFacadeService,
+    private locker: CoolLocalStorage,
+    public facilityService: FacilitiesService
+  ) {
     this.facilityService.sliderAnnounced$.subscribe(value => {
       if (value === false) {
         this.addProduct = false;
@@ -55,20 +59,21 @@ export class ProductManagerComponent implements OnInit {
       }
     });
 
-    this.subscription =
-        this.employeeService.checkInAnnounced$.subscribe(payload => {
-          if (payload !== undefined) {
-            if (payload.typeObject !== undefined) {
-              this.checkingStore = payload.typeObject;
-            }
+    this.subscription = this.employeeService.checkInAnnounced$.subscribe(
+      payload => {
+        if (payload !== undefined) {
+          if (payload.typeObject !== undefined) {
+            this.checkingStore = payload.typeObject;
           }
-        });
-
+        }
+      }
+    );
 
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
-      this.checkingStore =
-          this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
+      this.checkingStore = this.loginEmployee.storeCheckIn.find(
+        x => x.isOn === true
+      );
     });
   }
 
@@ -80,12 +85,8 @@ export class ProductManagerComponent implements OnInit {
     });
   }
 
-  contentSecMenuToggle() {
-    this.contentSecMenuShow = !this.contentSecMenuShow;
-  }
-
   closeActivate(e) {
-    if (e.srcElement.id !== 'contentSecMenuToggle') {
+    if (e.srcElement.id !== "contentSecMenuToggle") {
       this.contentSecMenuShow = false;
     }
   }
@@ -198,7 +199,6 @@ export class ProductManagerComponent implements OnInit {
       this.pageInView = url;
     });
   }
-
   onClickStrengthNavMenu() {
     this.productNavMenu = false;
     this.categoryNavMenu = false;
@@ -217,7 +217,7 @@ export class ProductManagerComponent implements OnInit {
     this.pageInView = title;
   }
   changeRoute(val) {
-    if (val === 'products') {
+    if (val === "products") {
       this.facilityService.announceSlider(false);
       this.productNavMenu = true;
       this.categoryNavMenu = false;
@@ -230,7 +230,7 @@ export class ProductManagerComponent implements OnInit {
       this._productEventEmitter.announcedUrl.subscribe(url => {
         this.pageInView = url;
       });
-    } else if (val === 'suppliers') {
+    } else if (val === "suppliers") {
       this.productNavMenu = false;
       this.categoryNavMenu = false;
       this.supplierNavMenu = true;
@@ -245,19 +245,19 @@ export class ProductManagerComponent implements OnInit {
     }
   }
   private checkPageUrl(param: string) {
-    if (param.includes('products')) {
+    if (param.includes("products")) {
       this.productNavMenu = true;
-    } else if (param.includes('categories')) {
+    } else if (param.includes("categories")) {
       this.categoryNavMenu = true;
-    } else if (param.includes('suppliers')) {
+    } else if (param.includes("suppliers")) {
       this.supplierNavMenu = true;
-    } else if (param.includes('manufacturers')) {
+    } else if (param.includes("manufacturers")) {
       this.manufacturerNavMenu = true;
-    } else if (param.includes('routes')) {
+    } else if (param.includes("routes")) {
       this.routeNavMenu = true;
-    } else if (param.includes('generics')) {
+    } else if (param.includes("generics")) {
       this.genericNavMenu = true;
-    } else if (param.includes('presentations')) {
+    } else if (param.includes("presentations")) {
       this.presentationNavMenu = true;
     }
   }
@@ -380,25 +380,26 @@ export class ProductManagerComponent implements OnInit {
       this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
         if (itemr.storeObject === undefined) {
           const store_ = this.loginEmployee.storeCheckIn.find(
-              x => x.storeId.toString() === itemr.storeId.toString());
+            x => x.storeId.toString() === itemr.storeId.toString()
+          );
           itemr.storeObject = store_.storeObject;
           console.log(itemr.storeObject);
         }
         if (itemr.isDefault === true && itemr.isOn === true) {
           itemr.isOn = false;
-          this.employeeService.update(this.loginEmployee)
-              .then(
-                  payload => {
-                    this.loginEmployee = payload;
-                  },
-                  err => {
-                    console.log(err);
-                  });
+          this.employeeService.update(this.loginEmployee).then(
+            payload => {
+              this.loginEmployee = payload;
+            },
+            err => {
+              console.log(err);
+            }
+          );
         }
       });
     }
     this.employeeService.announceCheckIn(undefined);
-    this.locker.setObject('checkingObject', {});
+    this.locker.setObject("checkingObject", {});
     this.subscription.unsubscribe();
   }
 }

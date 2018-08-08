@@ -61,6 +61,7 @@ import { BulkUploadComponent } from './bulk-upload/bulk-upload.component';
 import { from } from 'rxjs/observable/from';
 import { SubscribtionComponent } from './facilitypage-modulespage/subscribtion/subscribtion.component';
 
+
 @NgModule({
     declarations: [
         FacilityPageHomeComponent,
