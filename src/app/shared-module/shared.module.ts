@@ -65,8 +65,24 @@ import { StoreQuickLinksComponent } from './store-quick-links/store-quick-links.
 import { RouterModule } from '@angular/router';
 import { StoreProductTypeComponent } from './store-product-type/store-product-type.component';
 import { PassContinueComponent } from './pass-continue/pass-continue.component';
+
+import { RegistersComponent } from '../system-modules/module-menu/reports/registers/registers.component';
+import { NewRegisterComponent } from '../system-modules/module-menu/reports/registers/new-register/new-register.component';
+import { RegisterEntriesComponent } from '../system-modules/module-menu/reports/registers/register-entries/register-entries.component';
+import { RegisterEntryComponent } from '../system-modules/module-menu/reports/registers/register-entries/register-entry/register-entry.component';
+import { NewRegisterEntryComponent } from '../system-modules/module-menu/reports/registers/register-entries/new-register-entry/new-register-entry.component';
+import { RegEntriesListComponent } from '../system-modules/module-menu/reports/registers/register-entries/reg-entries-list/reg-entries-list.component';
+
+import { DateRangePickerModule } from "ng-pick-daterange";
+import { DateTimePickerModule } from "ng-pick-datetime";
 @NgModule({
   declarations: [
+    RegistersComponent,
+    NewRegisterComponent,
+    RegisterEntriesComponent,
+    RegisterEntryComponent,
+    RegEntriesListComponent,
+    NewRegisterEntryComponent,
     SurveyComponent,
     SurveyEditorComponent,
     ProductSearchComponent,
@@ -81,6 +97,12 @@ import { PassContinueComponent } from './pass-continue/pass-continue.component';
     StoreProductTypeComponent,
     PassContinueComponent  ],
   exports: [
+    RegistersComponent,
+    NewRegisterComponent,
+    RegisterEntriesComponent,
+    RegisterEntryComponent,
+    RegEntriesListComponent,
+    NewRegisterEntryComponent,
     NgUploaderModule,
     NgPipesModule,
     Ng2PaginationModule,
@@ -99,9 +121,13 @@ import { PassContinueComponent } from './pass-continue/pass-continue.component';
     TemplatePhysicianOrderComponent,
     SharedModuleMaterialModule,
     StoreQuickLinksComponent,
-    PassContinueComponent
+    PassContinueComponent,
+    DateRangePickerModule,
+    DateTimePickerModule
   ],
   imports: [
+    DateRangePickerModule,
+    DateTimePickerModule,
     RouterModule,
     CommonModule,
     ReactiveFormsModule,
