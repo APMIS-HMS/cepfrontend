@@ -16,5 +16,8 @@ export class RegistersComponent implements OnInit {
   call_register(){
     this._router.navigate(['/dashboard/reports/register/register-entries']);
   }
+  call_antenatal(){
+    this._router.navigate(['/dashboard/reports/register/antenatal']);
+  }
 
 }
