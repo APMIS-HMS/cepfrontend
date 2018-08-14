@@ -26,6 +26,7 @@ export class HmoListComponent implements OnInit {
 
   public frmNewHmo: FormGroup;
   hmo = new FormControl('', []);
+  searchHmo = new FormControl();
   newHmo = false;
   newHMO = false;
   isSelectedFileUploaded = false;
@@ -78,6 +79,14 @@ export class HmoListComponent implements OnInit {
         }
       }
     });
+
+    this.searchHmo.valueChanges
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        this._getHMOFacilities(this.loginHMOListObject, value)
+      });
+
     this.getFacilityTypes();
     this.getLoginHMOList();
   }
@@ -96,19 +105,29 @@ export class HmoListComponent implements OnInit {
       }
     })
   }
-  _getHMOFacilities(facilityHMOs) {
+  _getHMOFacilities(facilityHMOs, value?) {
+    console.log(value);
     this.hmoEnrolleList = facilityHMOs.hmos.map(obj => {
       return { hmo: obj.hmo, enrolles: obj.enrolleeList };
     });
     const flist = this.hmoEnrolleList.map(obj => {
       return obj.hmo;
     })
-    this.facilityService.find({
-      query: { _id: { $in: flist } }
-    }).then(payload => {
-      this.loading = false;
-      this.hmoFacilities = payload.data;
-    });
+    if (value === null || value === undefined) {
+      this.facilityService.find({
+        query: { _id: { $in: flist },$sort: { updatedAt: -1 } }
+      }).then(payload => {
+        this.loading = false;
+        this.hmoFacilities = payload.data;
+      });
+    } else {
+      this.facilityService.find({
+        query: { _id: { $in: flist }, name: { $regex: value, '$options': 'i' },$sort: { updatedAt: -1 } }
+      }).then(payload => {
+        this.loading = false;
+        this.hmoFacilities = payload.data;
+      });
+    }
   }
   getFacilityTypes() {
     this.facilityTypeService.findAll().then(payload => {
@@ -141,13 +160,13 @@ export class HmoListComponent implements OnInit {
   newHmo_show() {
     this.newHmo = !this.newHmo;
   }
-  
+
   showImageBrowseDlg(i) {
     var fileInputs = this.fileInput.toArray();
     fileInputs[i].nativeElement.click();
   }
 
-  triggerFile(fileInput:ElementRef) {
+  triggerFile(fileInput: ElementRef) {
     fileInput.nativeElement.click();
   }
 
