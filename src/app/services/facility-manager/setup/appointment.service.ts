@@ -111,13 +111,11 @@ export class AppointmentService {
   }
 
   setMeeting(topic: string, startTime: Date, appointmentId, timezone) {
-    const host = this._restService.getHost();
-    const path = host + '/zoom-meeting';
-    return request.post(path).send({
-      topic: topic,
-      startTime: startTime,
-      appointmentId: appointmentId,
-      timezone: timezone
-    });  // query string
+    return this._socketService.getService('zoom-meeting').create({
+        topic: topic,
+        startTime: startTime,
+        appointmentId: appointmentId,
+        timezone: timezone
+      });
   }
 }

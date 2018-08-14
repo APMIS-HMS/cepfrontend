@@ -14,6 +14,7 @@ tbody{
     position: relative;
     padding: 20px;
     box-sizing: border-box;
+    border: 0 !important;
 }
 .card-title{
     font-size: 2.6rem;
@@ -50,7 +51,7 @@ tbody{
 }
 .date-generated {
     position: absolute;
-    top: 20px;
+    top: 156px;
     right: 20px;
     font-size: 1.4rem;
     font-weight: 600;
