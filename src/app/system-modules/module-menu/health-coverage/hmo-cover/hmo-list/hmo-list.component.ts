@@ -84,6 +84,7 @@ export class HmoListComponent implements OnInit {
       .debounceTime(300)
       .distinctUntilChanged()
       .subscribe(value => {
+        this._getHMOFacilities(this.loginHMOListObject, value)
       });
 
     this.getFacilityTypes();
@@ -104,19 +105,29 @@ export class HmoListComponent implements OnInit {
       }
     })
   }
-  _getHMOFacilities(facilityHMOs) {
+  _getHMOFacilities(facilityHMOs, value?) {
+    console.log(value);
     this.hmoEnrolleList = facilityHMOs.hmos.map(obj => {
       return { hmo: obj.hmo, enrolles: obj.enrolleeList };
     });
     const flist = this.hmoEnrolleList.map(obj => {
       return obj.hmo;
     })
-    this.facilityService.find({
-      query: { _id: { $in: flist } }
-    }).then(payload => {
-      this.loading = false;
-      this.hmoFacilities = payload.data;
-    });
+    if (value === null || value === undefined) {
+      this.facilityService.find({
+        query: { _id: { $in: flist },$sort: { updatedAt: -1 } }
+      }).then(payload => {
+        this.loading = false;
+        this.hmoFacilities = payload.data;
+      });
+    } else {
+      this.facilityService.find({
+        query: { _id: { $in: flist }, name: { $regex: value, '$options': 'i' },$sort: { updatedAt: -1 } }
+      }).then(payload => {
+        this.loading = false;
+        this.hmoFacilities = payload.data;
+      });
+    }
   }
   getFacilityTypes() {
     this.facilityTypeService.findAll().then(payload => {
