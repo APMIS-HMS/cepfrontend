@@ -8,7 +8,8 @@ import { Component, OnInit } from '@angular/core';
 export class PatientRegistersComponent implements OnInit {
 
   showNewEntry = false;
-
+  dateRange;
+  loadIndicatorVisible = true;
   constructor() { }
 
   ngOnInit() {
@@ -20,5 +21,7 @@ export class PatientRegistersComponent implements OnInit {
   close_onClick(e){
     this.showNewEntry = false;
   }
-
+  setReturnValue(e) {
+    
+  }
 }
