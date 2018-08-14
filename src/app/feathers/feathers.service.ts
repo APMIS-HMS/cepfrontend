@@ -7,11 +7,12 @@ const rest = require('@feathersjs/rest-client');
 const authentication = require('@feathersjs/authentication-client');
 import {CoolLocalStorage} from 'angular2-cool-storage';
 import {Injectable} from '@angular/core';
+import { API_LOCALHOST, API_DEV, API_TEST, API_LIVE } from '../shared-module/helpers/global-config';
 const rx = require('feathers-reactive');
 const RxJS = require('rxjs/Rx');
+const CircularJSON = require('circular-json');
 
-
- const HOST = 'https://apmisapitest.azurewebsites.net';
+const HOST = API_TEST;
 
 @Injectable()
 export class SocketService {
@@ -33,7 +34,7 @@ export class SocketService {
   }
 
   async loginIntoApp(query: any) {
-    return await this._app.authenticate({strategy: 'local', email: query.email, password: query.password});
+    return this._app.authenticate({strategy: 'local', email: CircularJSON.stringify(query.email), password: CircularJSON.stringify(query.password)});
   }
 
   getService(value: any) {
@@ -67,7 +68,7 @@ export class RestService {
     }
   }
   loginIntoApp(query) {
-    return this._app.authenticate({strategy: 'local', email: query.email, password: query.password});
+    return this._app.authenticate({strategy: 'local', email: CircularJSON.stringify(query.email), password: CircularJSON.stringify(query.password)});
   }
   getService(value: any) {
     // this._app.authenticate();

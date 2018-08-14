@@ -68,8 +68,6 @@ import { DocUploadsComponent } from './patientmanager-detailpage/doc-uploads/doc
 import { DocUploadComponent } from './patientmanager-detailpage/doc-uploads/doc-upload/doc-upload.component';
 import { DocUploadDetailComponent } from './patientmanager-detailpage/doc-uploads/doc-upload-detail/doc-upload-detail.component';
 import { PatientVitalsComponent } from './patientmanager-detailpage/patient-vitals/patient-vitals.component';
-import { DateRangePickerModule } from 'ng-pick-daterange';
-import { DateTimePickerModule } from 'ng-pick-datetime';
 import { FluidTypeComponent } from './patientmanager-detailpage/fluid/fluid-type/fluid-type.component';
 import { ScopeLevelService } from '../../../services/module-manager/setup/scope-level.service';
 import { PatientTagsComponent } from './patientmanager-detailpage/patient-tags/patient-tags.component';
@@ -80,6 +78,8 @@ import { PatientImmunizationComponent } from './patientmanager-detailpage/patien
 import { LabEventEmitterService } from '../../../services/facility-manager/lab-event-emitter.service';
 import { VaccineAdministrationComponent } from './patientmanager-detailpage/patient-immunization/vaccine-administration/vaccine-administration.component';
 import { VaccineDocumentationComponent } from './patientmanager-detailpage/patient-immunization/vaccine-documentation/vaccine-documentation.component';
+import { PregnancyManagerComponent } from './patientmanager-detailpage/pregnancy-manager/pregnancy-manager.component';
+import { PatientRegistersComponent } from './patientmanager-detailpage/patient-registers/patient-registers.component';
 
 @NgModule({
   declarations: [
@@ -129,7 +129,9 @@ import { VaccineDocumentationComponent } from './patientmanager-detailpage/patie
     AddPatientTagsComponent,
     PatientImmunizationComponent,
     VaccineAdministrationComponent,
-    VaccineDocumentationComponent
+    VaccineDocumentationComponent,
+    PregnancyManagerComponent,
+    PatientRegistersComponent
   ],
   exports: [],
   imports: [
@@ -139,8 +141,6 @@ import { VaccineDocumentationComponent } from './patientmanager-detailpage/patie
     MaterialModule,
     ChartsModule,
     PdfViewerModule,
-    DateRangePickerModule,
-    DateTimePickerModule
   ],
   providers: [
     PatientResolverService,

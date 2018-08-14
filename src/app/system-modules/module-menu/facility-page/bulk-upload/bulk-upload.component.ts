@@ -25,15 +25,17 @@ export class BulkUploadComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   mainErr: boolean = true;
   errMsg;
-
+  isLoading = true;
   pageSize = 10;
   pageSizeOptions = [5, 10, 25, 100];
   pageEvent: PageEvent;
 
 
-  patients: any[] = [];
+  patients = [];
 
   uploadingLoading: boolean = false;
+  uploadItemTotal = 0;
+  uploadItemCounter = 0;
 
   showInsurance: boolean = false;
   showWallet: boolean = false;
@@ -50,7 +52,7 @@ export class BulkUploadComponent implements OnInit {
   btnLoading: boolean = false;
 
   facility: Facility = <Facility>{};
-  failed:boolean = false;
+  failed: boolean = false;
 
   today = new Date();
 
@@ -82,6 +84,15 @@ export class BulkUploadComponent implements OnInit {
       lastName: '',
       gender: '',
       phone: '',
+      street: '',
+      motherMaidenName: '',
+      maritalStatus: '',
+      lgaOfOrigin: '',
+      stateOfOrigin: '',
+      nationality: '',
+      lga: '',
+      state: '',
+      country: '',
       email: '',
       hospId: '',
       dateOfBirth: '',
@@ -100,7 +111,6 @@ export class BulkUploadComponent implements OnInit {
   }
 
   uploadingData(e) {
-    this.uploadingLoading = true;
     const target: DataTransfer = <DataTransfer>(e.target);
     if (target.files.length !== 1) {
       throw new Error('Cannot use multiple files');
@@ -127,26 +137,45 @@ export class BulkUploadComponent implements OnInit {
     reader.readAsBinaryString(target.files[0]);
   }
 
+  loadProgressBar() {
+
+
+  }
+
   turningDataToArrayOfObjects(data) {
     data.splice(0, 1);
     let len = data.length;
     let arr = [];
+    this.uploadItemTotal = len - 1;
     for (let i = 0; i < len; i++) {
-      if (data[i][0] !== undefined) {
+      var timer = setTimeout(() => {
+        this.uploadingLoading = true;
+        this.uploadItemCounter = i;
         const rowObj: any = <any>{};
-        rowObj.title = data[i][0];
-        rowObj.firstName = data[i][1];
-        rowObj.lastName = data[i][2];
-        rowObj.gender = data[i][3];
+        rowObj.homeAddress = <any>{};
+        rowObj.title = (data[i][0] !== undefined) ? data[i][0] : ' ';
+        rowObj.firstName = (data[i][1] !== undefined) ? data[i][1] : ' ';
+        rowObj.lastName = (data[i][2] !== undefined) ? data[i][2] : ' ';
+        rowObj.gender = (data[i][3] !== undefined) ? data[i][3] : ' ';
         rowObj.dateOfBirth = (new Date() >= new Date(data[i][4])) ? new Date(data[i][4]) : new Date();
-        rowObj.email = data[i][5];
-        rowObj.hospId = data[i][6];
-        rowObj.primaryContactPhoneNo = data[i][7];
-        rowObj.motherMaidenName = data[i][8];
-        rowObj.maritalStatus = (data[i][9] !== undefined) ? data[i][8] : '';
-        rowObj.lgaOfOrigin = (data[i][10] !== undefined) ? data[i][9] : '';
-        rowObj.stateOfOrigin = (data[i][11] !== undefined) ? data[i][10] : '';
-        rowObj.nationality = (data[i][12] !== undefined) ? data[i][11] : '';
+        rowObj.street = (data[i][5] !== undefined) ? data[i][5] : ' ';
+        rowObj.lga = (data[i][6] !== undefined) ? data[i][6] : ' ';
+        rowObj.state = (data[i][7] !== undefined) ? data[i][7] : ' ';
+        rowObj.country = (data[i][8] !== undefined) ? data[i][8] : ' ';
+        rowObj.homeAddress = {
+          street: rowObj.street,
+          lga: rowObj.lga,
+          state: rowObj.state,
+          country: rowObj.country
+        }
+        rowObj.email = (data[i][9] !== undefined) ? data[i][9] : ' ';
+        rowObj.hospId = (data[i][10] !== undefined) ? data[i][10] : '';
+        rowObj.primaryContactPhoneNo = (data[i][11] !== undefined) ? data[i][11] : ' ';
+        rowObj.motherMaidenName = (data[i][12] !== undefined) ? data[i][12] : ' ';
+        rowObj.maritalStatus = (data[i][13] !== undefined) ? data[i][13] : ' ';
+        rowObj.lgaOfOrigin = (data[i][14] !== undefined) ? data[i][14] : ' ';
+        rowObj.stateOfOrigin = (data[i][15] !== undefined) ? data[i][15] : ' ';
+        rowObj.nationality = (data[i][16] !== undefined) ? data[i][16] : ' ';
         rowObj.payPlan = 'Wallet';
         this.items.push(this.createForm());
         let datas: any = this.shownForm.controls.items;
@@ -156,16 +185,30 @@ export class BulkUploadComponent implements OnInit {
         datas.controls[i].controls.phone.setValue(rowObj.primaryContactPhoneNo);
         datas.controls[i].controls.email.setValue(rowObj.email);
         datas.controls[i].controls.hospId.setValue(rowObj.hospId);
+        datas.controls[i].controls.street.setValue(rowObj.street);
+        datas.controls[i].controls.lga.setValue(rowObj.lga);
+        datas.controls[i].controls.state.setValue(rowObj.state);
+        datas.controls[i].controls.country.setValue(rowObj.country);
+        datas.controls[i].controls.maritalStatus.setValue(rowObj.maritalStatus);
+        datas.controls[i].controls.motherMaidenName.setValue(rowObj.motherMaidenName);
+
+
+        datas.controls[i].controls.lgaOfOrigin.setValue(rowObj.lgaOfOrigin);
+        datas.controls[i].controls.stateOfOrigin.setValue(rowObj.stateOfOrigin);
+        datas.controls[i].controls.nationality.setValue(rowObj.nationality);
+
         datas.controls[i].controls.dateOfBirth.setValue(rowObj.dateOfBirth);
         datas.controls[i].controls.title.setValue(rowObj.title);
         datas.controls[i].controls.payPlan.setValue(rowObj.payPlan.toLowerCase());
         datas.controls[i].controls.payPlan.disable()
 
         arr.push(rowObj);
-      }
+
+        this.patients = arr;
+      }, 10000);
+
     }
     this.uploadingLoading = false;
-    this.patients = arr;
   }
 
   excelDateToJSDate(date) {
@@ -173,6 +216,28 @@ export class BulkUploadComponent implements OnInit {
     let dateIsh = new Date(Math.round((date - 25569) * 86400 * 1000));
     return dateIsh;
   }
+
+  onEditDataStreet(value, i) {
+    this.patients[i].street = value.srcElement.value;
+    this.patients[i].homeAddress.street = value.srcElement.value;
+  }
+
+  onEditDataLGA(value, i) {
+    this.patients[i].lga = value.srcElement.value;
+    this.patients[i].homeAddress.lga = value.srcElement.value;
+  }
+
+  onEditDataCountry(value, i) {
+    this.patients[i].country = value.srcElement.value;
+    this.patients[i].homeAddress.country = value.srcElement.value;
+  }
+
+  onEditDataState(value, i) {
+    this.patients[i].state = value.srcElement.value;
+    this.patients[i].homeAddress.state = value.srcElement.value;
+  }
+
+
 
   changeInput(ev) {
     if (ev.value === 'wallet') {
@@ -221,11 +286,11 @@ export class BulkUploadComponent implements OnInit {
     let data: any = this.shownForm.controls.items;
     let info = data.controls[i].controls;
     let patientInfo;
-    if(this.failed === true){
+    if (this.failed === true) {
       patientInfo = this.patients[i].data;
-    }else{
+    } else {
       patientInfo = this.patients[i];
-    }    
+    }
     patientInfo.firstName = info.firstName.value;
     patientInfo.lastName = info.lastName.value;
     patientInfo.email = info.email.value;
@@ -254,21 +319,29 @@ export class BulkUploadComponent implements OnInit {
   }
 
   submit() {
+    console.log(this.patients);
     let newArr = [];
     this.btnLoading = true;
-     const newPatients  = this.patients.map(pa => {
-      if (this.failed){
-        delete pa.message;
-        delete pa.facilityId;
-        pa = pa.data;
-        newArr.push(pa);
-        delete pa.data;
-      }
-      pa.facilityId = this.facility._id
+    this.patients.forEach(element => {
+      element.facilityId = this.facility._id
     });
-    this.patients = (this.failed) ? newArr : newPatients;
+    //  (pa => {
+    //  console.log(pa);
+    // if (this.failed){
+    //   delete pa.message;
+    //   delete pa.facilityId;
+    //   pa = pa.data;
+    //   newArr.push(pa);
+    //   delete pa.data;
+    // }
+    // pa.facilityId = this.facility._id
+    // });
+    // console.log(newPatients);
+    // this.patients = (this.failed) ? newArr : newPatients;
     const data = { data: JSON.stringify(this.patients) };
     this.patientService.bulkUpload(data).then(payload => {
+      this.uploadItemCounter = 0;
+      this.uploadItemTotal = 0;
       if (payload.failed.length > 0) {
         this.patients = [];
         this.systemModuleService.announceSweetProxy('An error occured. The following list had an issue when uploading', 'error');
@@ -282,23 +355,26 @@ export class BulkUploadComponent implements OnInit {
         this.systemModuleService.announceSweetProxy('Patients information successfully uploaded!', 'success');
       }
     }).catch(err => {
+      this.uploadItemCounter = 0;
+      this.uploadItemTotal = 0;
+      console.log(err);
       this.btnLoading = false;
       this.systemModuleService.announceSweetProxy('An error occured!', 'error');
     });
   }
 
-  edit(info, i){
+  edit(info, i) {
     let datas: any = this.shownForm.controls.items;
     datas.controls[i].controls.firstName.setValue(info.firstName);
-        datas.controls[i].controls.lastName.setValue(info.lastName);
-        datas.controls[i].controls.gender.setValue(info.gender);
-        datas.controls[i].controls.phone.setValue(info.primaryContactPhoneNo);
-        datas.controls[i].controls.email.setValue(info.email);
-        datas.controls[i].controls.hospId.setValue(info.hospId);
-        datas.controls[i].controls.dateOfBirth.setValue(info.dateOfBirth);
-        datas.controls[i].controls.title.setValue(info.title);
-        datas.controls[i].controls.payPlan.setValue(info.payPlan.toLowerCase());
-        datas.controls[i].controls.payPlan.disable()
+    datas.controls[i].controls.lastName.setValue(info.lastName);
+    datas.controls[i].controls.gender.setValue(info.gender);
+    datas.controls[i].controls.phone.setValue(info.primaryContactPhoneNo);
+    datas.controls[i].controls.email.setValue(info.email);
+    datas.controls[i].controls.hospId.setValue(info.hospId);
+    datas.controls[i].controls.dateOfBirth.setValue(info.dateOfBirth);
+    datas.controls[i].controls.title.setValue(info.title);
+    datas.controls[i].controls.payPlan.setValue(info.payPlan.toLowerCase());
+    datas.controls[i].controls.payPlan.disable()
   }
 
   closeRow() {
