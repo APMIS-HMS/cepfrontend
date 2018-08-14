@@ -84,6 +84,15 @@ export class BulkUploadComponent implements OnInit {
       lastName: '',
       gender: '',
       phone: '',
+      street: '',
+      motherMaidenName: '',
+      maritalStatus: '',
+      lgaOfOrigin: '',
+      stateOfOrigin: '',
+      nationality: '',
+      lga: '',
+      state: '',
+      country: '',
       email: '',
       hospId: '',
       dateOfBirth: '',
@@ -143,19 +152,30 @@ export class BulkUploadComponent implements OnInit {
         this.uploadingLoading = true;
         this.uploadItemCounter = i;
         const rowObj: any = <any>{};
+        rowObj.homeAddress = <any>{};
         rowObj.title = (data[i][0] !== undefined) ? data[i][0] : ' ';
         rowObj.firstName = (data[i][1] !== undefined) ? data[i][1] : ' ';
         rowObj.lastName = (data[i][2] !== undefined) ? data[i][2] : ' ';
         rowObj.gender = (data[i][3] !== undefined) ? data[i][3] : ' ';
         rowObj.dateOfBirth = (new Date() >= new Date(data[i][4])) ? new Date(data[i][4]) : new Date();
-        rowObj.email = (data[i][5] !== undefined) ? data[i][5] : ' ';
-        rowObj.hospId = (data[i][6] !== undefined) ? data[i][6] : '';
-        rowObj.primaryContactPhoneNo = (data[i][7] !== undefined) ? data[i][7] : ' ';
-        rowObj.motherMaidenName = (data[i][8] !== undefined) ? data[i][8] : ' ';
-        rowObj.maritalStatus = (data[i][9] !== undefined) ? data[i][8] : ' ';
-        rowObj.lgaOfOrigin = (data[i][10] !== undefined) ? data[i][9] : ' ';
-        rowObj.stateOfOrigin = (data[i][11] !== undefined) ? data[i][10] : ' ';
-        rowObj.nationality = (data[i][12] !== undefined) ? data[i][11] : ' ';
+        rowObj.street = (data[i][5] !== undefined) ? data[i][5] : ' ';
+        rowObj.lga = (data[i][6] !== undefined) ? data[i][6] : ' ';
+        rowObj.state = (data[i][7] !== undefined) ? data[i][7] : ' ';
+        rowObj.country = (data[i][8] !== undefined) ? data[i][8] : ' ';
+        rowObj.homeAddress = {
+          street: rowObj.street,
+          lga: rowObj.lga,
+          state: rowObj.state,
+          country: rowObj.country
+        }
+        rowObj.email = (data[i][9] !== undefined) ? data[i][9] : ' ';
+        rowObj.hospId = (data[i][10] !== undefined) ? data[i][10] : '';
+        rowObj.primaryContactPhoneNo = (data[i][11] !== undefined) ? data[i][11] : ' ';
+        rowObj.motherMaidenName = (data[i][12] !== undefined) ? data[i][12] : ' ';
+        rowObj.maritalStatus = (data[i][13] !== undefined) ? data[i][13] : ' ';
+        rowObj.lgaOfOrigin = (data[i][14] !== undefined) ? data[i][14] : ' ';
+        rowObj.stateOfOrigin = (data[i][15] !== undefined) ? data[i][15] : ' ';
+        rowObj.nationality = (data[i][16] !== undefined) ? data[i][16] : ' ';
         rowObj.payPlan = 'Wallet';
         this.items.push(this.createForm());
         let datas: any = this.shownForm.controls.items;
@@ -165,6 +185,18 @@ export class BulkUploadComponent implements OnInit {
         datas.controls[i].controls.phone.setValue(rowObj.primaryContactPhoneNo);
         datas.controls[i].controls.email.setValue(rowObj.email);
         datas.controls[i].controls.hospId.setValue(rowObj.hospId);
+        datas.controls[i].controls.street.setValue(rowObj.street);
+        datas.controls[i].controls.lga.setValue(rowObj.lga);
+        datas.controls[i].controls.state.setValue(rowObj.state);
+        datas.controls[i].controls.country.setValue(rowObj.country);
+        datas.controls[i].controls.maritalStatus.setValue(rowObj.maritalStatus);
+        datas.controls[i].controls.motherMaidenName.setValue(rowObj.motherMaidenName);
+
+
+        datas.controls[i].controls.lgaOfOrigin.setValue(rowObj.lgaOfOrigin);
+        datas.controls[i].controls.stateOfOrigin.setValue(rowObj.stateOfOrigin);
+        datas.controls[i].controls.nationality.setValue(rowObj.nationality);
+
         datas.controls[i].controls.dateOfBirth.setValue(rowObj.dateOfBirth);
         datas.controls[i].controls.title.setValue(rowObj.title);
         datas.controls[i].controls.payPlan.setValue(rowObj.payPlan.toLowerCase());
@@ -173,7 +205,7 @@ export class BulkUploadComponent implements OnInit {
         arr.push(rowObj);
 
         this.patients = arr;
-      },10000);
+      }, 10000);
 
     }
     this.uploadingLoading = false;
@@ -184,6 +216,28 @@ export class BulkUploadComponent implements OnInit {
     let dateIsh = new Date(Math.round((date - 25569) * 86400 * 1000));
     return dateIsh;
   }
+
+  onEditDataStreet(value, i) {
+    this.patients[i].street = value.srcElement.value;
+    this.patients[i].homeAddress.street = value.srcElement.value;
+  }
+
+  onEditDataLGA(value, i) {
+    this.patients[i].lga = value.srcElement.value;
+    this.patients[i].homeAddress.lga = value.srcElement.value;
+  }
+
+  onEditDataCountry(value, i) {
+    this.patients[i].country = value.srcElement.value;
+    this.patients[i].homeAddress.country = value.srcElement.value;
+  }
+
+  onEditDataState(value, i) {
+    this.patients[i].state = value.srcElement.value;
+    this.patients[i].homeAddress.state = value.srcElement.value;
+  }
+
+
 
   changeInput(ev) {
     if (ev.value === 'wallet') {
@@ -284,10 +338,10 @@ export class BulkUploadComponent implements OnInit {
     // });
     // console.log(newPatients);
     // this.patients = (this.failed) ? newArr : newPatients;
-    console.log(this.patients);
     const data = { data: JSON.stringify(this.patients) };
-    console.log(data);
     this.patientService.bulkUpload(data).then(payload => {
+      this.uploadItemCounter = 0;
+      this.uploadItemTotal = 0;
       if (payload.failed.length > 0) {
         this.patients = [];
         this.systemModuleService.announceSweetProxy('An error occured. The following list had an issue when uploading', 'error');
@@ -301,6 +355,8 @@ export class BulkUploadComponent implements OnInit {
         this.systemModuleService.announceSweetProxy('Patients information successfully uploaded!', 'success');
       }
     }).catch(err => {
+      this.uploadItemCounter = 0;
+      this.uploadItemTotal = 0;
       console.log(err);
       this.btnLoading = false;
       this.systemModuleService.announceSweetProxy('An error occured!', 'error');
