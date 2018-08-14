@@ -86,8 +86,10 @@
             </div>
             <div class="menu-sect">
                 <div (click)="menuDocs_click()" [class.active-menuItem]="menuDocs" class="menu-item">Documentation</div>
+                <div (click)="menuPregnant_click()" [class.active-menuItem]="menuPregnant" class="menu-item">Pregnancy Manager</div>
                 <div (click)="menuTreatmentPlan_click()" [class.active-menuItem]="menuTreatmentPlan" class="menu-item">Treatment Sheet</div>
                 <div (click)="menuFluid_click()" [class.active-menuItem]="menuFluid" class="menu-item">Fluid</div>
+                <div (click)="menuRegisters_click()" [class.active-menuItem]="menuRegisters" class="menu-item">Registers</div>
                 <div (click)="menuVitals_click()" [class.active-menuItem]="menuVitals" class="menu-item">Vitals</div>
                 <div (click)="menuUploads_click()" [class.active-menuItem]="menuUploads" class="menu-item">Document Uploads</div>
             </div>
@@ -114,8 +116,10 @@
             </div>
             <div class="menu-sect">
                 <div (click)="menuDocs_click()" [class.active-menuItem]="menuDocs" class="menu-item">Documentation</div>
+                <div (click)="menuPregnant_click()" [class.active-menuItem]="menuPregnant" class="menu-item">Pregnancy Manager</div>
                 <div (click)="menuTreatmentPlan_click()" [class.active-menuItem]="menuTreatmentPlan" class="menu-item">Treatment Sheet</div>
                 <div (click)="menuFluid_click()" [class.active-menuItem]="menuFluid" class="menu-item">Fluid</div>
+                <div (click)="menuRegisters_click()" [class.active-menuItem]="menuRegisters" class="menu-item">Registers</div>
                 <div (click)="menuVitals_click()" [class.active-menuItem]="menuVitals" class="menu-item">Vitals</div>
                 <div (click)="menuUploads_click()" [class.active-menuItem]="menuUploads" class="menu-item">Document Uploads</div>
             </div>
@@ -133,8 +137,10 @@
 
         <app-patient-summary [patient]="patient" *ngIf="menuSummary && patient !== undefined"></app-patient-summary>
         <app-documentation [patient]=patient *ngIf="menuDocs"></app-documentation>
+        <app-pregnancy-manager *ngIf="menuPregnant"></app-pregnancy-manager>
         <app-timeline [patient]="patient" *ngIf="menuTimeline"></app-timeline>
         <app-fluid *ngIf="menuFluid"></app-fluid>
+        <app-patient-registers *ngIf="menuRegisters"></app-patient-registers>
         <app-patient-vitals [patient]="patient" *ngIf="menuVitals"></app-patient-vitals>
         <app-doc-uploads [patient]=patient *ngIf="menuUploads"></app-doc-uploads>
         <app-patient-prescription [selectedAppointment]="selectedAppointment" [patientDetails]="patient" *ngIf="menuPrescription"></app-patient-prescription>

@@ -127,13 +127,13 @@ const appRoutes: Routes = [
             {
              path: 'radiology',
              loadChildren: '../module-menu/radiology/radiology.module#RadiologyModule',
-             canActivate: [
-                CanActivateViaAuthGuardAccessService
-            ]
+            //  canActivate: [
+            //     CanActivateViaAuthGuardAccessService
+            // ]
             },
             {
-                path: 'report',
-                loadChildren: '../module-menu/report/report.module#ReportModule'
+                path: 'reports',
+                loadChildren: '../module-menu/reports/reports.module#ReportsModule'
             },
             {
                 path: 'immunization',

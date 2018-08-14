@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { FormGroup, FormControl } from "@angular/forms";
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-subscribtion',
@@ -7,19 +7,19 @@ import { FormGroup, FormControl } from "@angular/forms";
   styleUrls: ['./subscribtion.component.scss']
 })
 export class SubscribtionComponent implements OnInit {
-
   mainErr = true;
-  errMsg = "you have unresolved errors";
+  errMsg = 'You have unresolved errors';
   searchAccount = new FormControl();
   plan = new FormControl();
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   constructor() { }
 
   ngOnInit() {
   }
 
   subscribe_click() {
-    
+
   }
 
   close_onClick() {

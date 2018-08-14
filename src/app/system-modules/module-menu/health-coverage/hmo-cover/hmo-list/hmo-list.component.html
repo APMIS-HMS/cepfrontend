@@ -32,9 +32,12 @@
             <thead>
               <tr>
                 <th>
-                  <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
-                  <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                  <span style="padding-left: 3px;">HMO</span>
+                  <div class=" display:flex; margin-top:5px;">
+                    <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
+                    <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
+                    <span style="padding-left: 3p;">HMO</span>
+                  </div>
+                  <input type="search" [formControl]="searchHmo" class="table-header-input" placeholder="Search for HMO">
                 </th>
                 <th>
                   <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
@@ -84,7 +87,7 @@
                   </div>
                 </td>
               </tr> -->
-              <tr *ngFor="let hmo of hmoFacilities">
+              <tr *ngFor="let hmo of hmoFacilities;let i=index">
                 <td (click)="show_beneficiaries(hmo)">{{hmo.name}}</td>
                 <td>{{hmo.street}}, {{hmo.city}}, {{hmo.state}}.</td>
                 <td>{{hmo.email}}</td>
@@ -95,7 +98,7 @@
                   <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                   <div class="action-container shadow-RB">
                     <form>
-                      <div (click)="showImageBrowseDlg()" class="action-item">
+                      <div (click)="showImageBrowseDlg(i)" class="action-item">
                         <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                         <span>Upload Beneficiary List</span>
                         <input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style="display:none;"
