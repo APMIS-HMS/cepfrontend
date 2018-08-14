@@ -136,6 +136,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
     this.subscription =
       this.sharedService.announceSaveDraft$.subscribe(payload => {
+      if (Object.keys(payload).length > 0 && payload.constructor === Object) {
         this.sharedService.announceFinishedSavingDraft(false);
           if (!this.hasSavedDraft) {
             // this.sharedService.announceFinishedSavingDraft(true);
@@ -187,6 +188,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
               }
             }
           }
+      }
         }, error => {});
 
     this.subscription =
