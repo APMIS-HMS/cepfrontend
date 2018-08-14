@@ -70,6 +70,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this.selectedMiniFacility = <Facility>this.locker.getObject('miniFacility');
 
     this.subscription = this.sharedService.submitForm$.subscribe(payload => {
+      console.log(payload);
       if (!this.hasSavedDraft) {
         const doc: PatientDocumentation = <PatientDocumentation>{};
         doc.document = {documentType: this.selectedForm, body: payload};
