@@ -278,7 +278,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       firstName: ['', [<any>Validators.required]],
       lastName: ['', [<any>Validators.required]],
       email: [{ value: '', disabled: false }, [<any>Validators.required]],
-      phoneNumber: [{ value: '', disabled: true }, [<any>Validators.required]],
+      phoneNumber: [{ value: '', disabled: false }, [<any>Validators.required]],
       dob: ['', [<any>Validators.required]],
       gender: ['', [<any>Validators.required]],
       country: ['', [<any>Validators.required]],

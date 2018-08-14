@@ -99,7 +99,6 @@ export class PaymentComponent implements OnInit {
             .subscribe(value => {
                 if (this.searchPendingBill.value !== "" && this.searchPendingBill.value.length >= 3) {
                     this.loadingPendingBills = true;
-                    console.log("entry search for pending");
                     this._pendingBillService.get(this.selectedFacility._id, {
                         query: {
                             'isQuery': true,
@@ -109,7 +108,6 @@ export class PaymentComponent implements OnInit {
                         this.pendingBills = payload.data;
                         this.loadingPendingBills = false;
                     }).catch(err => {
-                        console.log(err);
                         this.loadingPendingBills = false;
                         this.systemModuleService.announceSweetProxy("There was a problem getting pending bills. Please try again later!", "error");
                     });

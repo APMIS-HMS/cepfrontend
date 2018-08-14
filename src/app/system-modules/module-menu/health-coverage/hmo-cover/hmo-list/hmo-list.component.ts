@@ -4,8 +4,8 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 
 import { FacilityType } from './../../../../../models/facility-manager/setup/facilitytype';
 import { Facility } from './../../../../../models/facility-manager/setup/facility';
-import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
+import { Component, OnInit, EventEmitter, Output, ElementRef, ViewChildren, QueryList } from '@angular/core';
+import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { HmoService, FacilitiesService, FacilityTypesService } from '../../../../../services/facility-manager/setup/index';
 import { Router } from '@angular/router';
 
@@ -21,13 +21,15 @@ type AOA = any[][];
 })
 export class HmoListComponent implements OnInit {
 
-  @ViewChild('fileInput') fileInput: ElementRef;
+  @ViewChildren('fileInput') fileInput: QueryList<any>;
   @Output() showBeneficiaries: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public frmNewHmo: FormGroup;
   hmo = new FormControl('', []);
+  searchHmo = new FormControl();
   newHmo = false;
   newHMO = false;
+  isSelectedFileUploaded = false;
 
   apmisLookupUrl = 'facilities';
   apmisLookupText = '';
@@ -77,6 +79,14 @@ export class HmoListComponent implements OnInit {
         }
       }
     });
+
+    this.searchHmo.valueChanges
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        this._getHMOFacilities(this.loginHMOListObject, value)
+      });
+
     this.getFacilityTypes();
     this.getLoginHMOList();
   }
@@ -95,19 +105,29 @@ export class HmoListComponent implements OnInit {
       }
     })
   }
-  _getHMOFacilities(facilityHMOs) {
+  _getHMOFacilities(facilityHMOs, value?) {
+    console.log(value);
     this.hmoEnrolleList = facilityHMOs.hmos.map(obj => {
       return { hmo: obj.hmo, enrolles: obj.enrolleeList };
     });
     const flist = this.hmoEnrolleList.map(obj => {
       return obj.hmo;
     })
-    this.facilityService.find({
-      query: { _id: { $in: flist } }
-    }).then(payload => {
-      this.loading = false;
-      this.hmoFacilities = payload.data;
-    });
+    if (value === null || value === undefined) {
+      this.facilityService.find({
+        query: { _id: { $in: flist },$sort: { updatedAt: -1 } }
+      }).then(payload => {
+        this.loading = false;
+        this.hmoFacilities = payload.data;
+      });
+    } else {
+      this.facilityService.find({
+        query: { _id: { $in: flist }, name: { $regex: value, '$options': 'i' },$sort: { updatedAt: -1 } }
+      }).then(payload => {
+        this.loading = false;
+        this.hmoFacilities = payload.data;
+      });
+    }
   }
   getFacilityTypes() {
     this.facilityTypeService.findAll().then(payload => {
@@ -141,8 +161,13 @@ export class HmoListComponent implements OnInit {
     this.newHmo = !this.newHmo;
   }
 
-  showImageBrowseDlg() {
-    this.fileInput.nativeElement.click()
+  showImageBrowseDlg(i) {
+    var fileInputs = this.fileInput.toArray();
+    fileInputs[i].nativeElement.click();
+  }
+
+  triggerFile(fileInput: ElementRef) {
+    fileInput.nativeElement.click();
   }
 
   show_beneficiaries(hmo) {
@@ -187,6 +212,7 @@ export class HmoListComponent implements OnInit {
       this.finalExcelFileUpload(data, hmo);
     };
     reader.readAsBinaryString(target.files[0]);
+    // this.isSelectedFileUploaded = false;
   }
 
   finalExcelFileUpload(data, hmo?) {
@@ -336,16 +362,16 @@ export class HmoListComponent implements OnInit {
                   hmos: payload.data[0].hmos
                 }, {}).then(noChangPayload => {
                   this.systemModuleService.announceSweetProxy
-                  (`You have successfully uploaded ${data.length} enrollees to ${hmo.name}`, 'success');
+                    (`You have successfully uploaded ${data.length} enrollees to ${hmo.name}`, 'success');
                   this.systemModuleService.off();
                 }).catch(err => {
-                
+
                 });
               }
             }
           } else {
             this.systemModuleService.announceSweetProxy
-            (`You have successfully uploaded ${data.length} enrollees to ${hmo.name}`, 'success');
+              (`You have successfully uploaded ${data.length} enrollees to ${hmo.name}`, 'success');
             this.systemModuleService.off();
           }
         } else {
@@ -397,7 +423,7 @@ export class HmoListComponent implements OnInit {
               this.getLoginHMOList();
               this.systemModuleService.off();
               this.systemModuleService.announceSweetProxy('Selected HMO added to your HMO list successfully',
-              'success', null, null, null, null, null, null, null);
+                'success', null, null, null, null, null, null, null);
             })
           } else {
             this.hmoService.update(this.loginHMOListObject).then(payload => {
@@ -406,7 +432,7 @@ export class HmoListComponent implements OnInit {
               this.getLoginHMOList();
               this.systemModuleService.off();
               this.systemModuleService.announceSweetProxy('Selected HMO added to your HMO list successfully',
-              'success', null, null, null, null, null, null, null);
+                'success', null, null, null, null, null, null, null);
             })
           }
         }

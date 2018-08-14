@@ -1,0 +1,20 @@
+.pp-card{
+    border: 0 !important;
+}
+.top-links {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: 20px;
+    margin-top: 20px;
+    font-size: 1.4rem;
+    color: #194985;
+    cursor: pointer;
+}
+.top-links li:hover, .top-links-active{
+    border-bottom: 3px solid #194985 !important;
+    font-weight: bold;
+}
+.top-links li{
+    margin-left: 10px;
+    border-bottom: 3px solid transparent;
+}

@@ -2255,7 +2255,8 @@ button,
         }
     }
 }
-.con-pass-wrap{
+
+.con-pass-wrap {
     position: fixed;
     width: 100%;
     top: 0;
@@ -2263,11 +2264,12 @@ button,
     height: 100vh;
     z-index: 1000;
     background: #eee;
-    display: flex; 
+    display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
 }
+
 .li-disabled {
     color: #ddd !important;
     font-style: italic;
