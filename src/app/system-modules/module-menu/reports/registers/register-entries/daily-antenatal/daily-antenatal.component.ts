@@ -9,6 +9,8 @@ import { Router } from '@angular/router';
 export class DailyAntenatalComponent implements OnInit {
 
   showNewEntry = false;
+  pg1 = true;
+  pg2 = false;
 
   constructor(private _router: Router) { }
 
@@ -21,7 +23,14 @@ export class DailyAntenatalComponent implements OnInit {
   close_onClick(e){
     this.showNewEntry = false;
   }
-  back_registers(){
-    this._router.navigate(['/dashboard/reports/register']);
+  switch_pg(pg){
+    if(pg==1){
+      this.pg1 = true;
+      this.pg2 = false;
+    } else if(pg==2){
+      this.pg1 = false;
+      this.pg2 = true;
+    }
   }
+  
 }
