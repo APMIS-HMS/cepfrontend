@@ -20,3 +20,21 @@
 .pretty label{
     font-size: 1.4rem;
 }
+.check-group{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+.check-group .form-group{
+    border: 1px solid #eee;
+    padding: 5px 10px;
+}
+.sel-wrap{
+    margin-top: 10px;
+}
+.check-group-label{
+    color: #b6606e;
+}
+.label-nada{
+    color: transparent;
+}

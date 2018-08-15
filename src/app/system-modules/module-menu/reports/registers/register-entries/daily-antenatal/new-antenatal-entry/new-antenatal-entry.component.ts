@@ -21,6 +21,7 @@ export class NewAntenatalEntryComponent implements OnInit {
       patient: ['', [<any>Validators.required]],
       tt: ['', [<any>Validators.required]],
       comment: ['', [<any>Validators.required]],
+      pregnancyAge: ['', [<any>Validators.required]],
     });
   }
 

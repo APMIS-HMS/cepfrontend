@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-daily-antenatal',
@@ -9,7 +10,7 @@ export class DailyAntenatalComponent implements OnInit {
 
   showNewEntry = false;
 
-  constructor() { }
+  constructor(private _router: Router) { }
 
   ngOnInit() {
   }
@@ -19,5 +20,8 @@ export class DailyAntenatalComponent implements OnInit {
   }
   close_onClick(e){
     this.showNewEntry = false;
+  }
+  back_registers(){
+    this._router.navigate(['/dashboard/reports/register']);
   }
 }
