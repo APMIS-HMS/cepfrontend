@@ -2,19 +2,15 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 @Component({
-  selector: 'app-new-antenatal-entry',
-  templateUrl: './new-antenatal-entry.component.html',
-  styleUrls: ['./new-antenatal-entry.component.scss']
+  selector: 'app-new-antenatal-pg1',
+  templateUrl: './new-antenatal-pg1.component.html',
+  styleUrls: ['./new-antenatal-pg1.component.scss']
 })
-export class NewAntenatalEntryComponent implements OnInit {
+export class NewAntenatalPg1Component implements OnInit {
 
   public frm_UpdateCourse: FormGroup;
-  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-  mainErr = true;
-  errMsg = 'You have unresolved errors';
-  newPg1 = true;
-  newPg2 = false;
- 
+  @Output() newpg1: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
@@ -27,16 +23,8 @@ export class NewAntenatalEntryComponent implements OnInit {
       pregnancyAge: ['', [<any>Validators.required]],
     });
   }
-  pg2(){
-    this.newPg1 = false;
-    this.newPg2 = true;
-  }
-  pg1(){
-    this.newPg1 = true;
-    this.newPg2 = false;
-  }
-  close_onClick() {
-    this.closeModal.emit(true);
+  next_onClick() {
+    this.newpg1.emit(true);
   }
 
 }

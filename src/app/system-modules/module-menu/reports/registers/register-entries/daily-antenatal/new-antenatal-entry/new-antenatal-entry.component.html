@@ -7,6 +7,9 @@
   <div class="modal-baseWrap">
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
+    <!-- <app-new-antenatal-pg1 (newpg1)="pg2()" ngIf="newPg1"></app-new-antenatal-pg1>
+    <app-new-antenatal-pg2 (newpg2)="save()" ngIf="newPg2"></app-new-antenatal-pg2> -->
+
     <form class="frm-down" [formGroup]="frm_UpdateCourse" novalidate>
       <div>
         <div class="form-group">
@@ -19,54 +22,44 @@
           <div class="form-group">
             <label class="check-group-label">Type of Visit</label>
             <div class="sel-wrap">
-              <div class="pretty p-default">
-                <input type="checkbox" />
+              <div class="pretty p-default p-round">
+                <input type="radio" name="radio1">
                 <div class="state">
                     <label>ANC</label>
                 </div>
               </div>
-              <div class="pretty p-default">
-                <input type="checkbox" />
+              <div class="pretty p-default p-round">
+                <input type="radio" name="radio1">
                 <div class="state">
                     <label>PNC</label>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        
-        
-        <!-- <div class="form-group">
-          <label for="pregnancyAge">Age of Pregnancy (in weeks)</label>
-          <input type="number" formControlName="pregnancyAge"> 
-        </div> -->
-      </div>
-      <div>
-        <div class="form-group">
-          <label for="pregnancyAge">Parity</label>
-          <input type="number" formControlName="parity"> 
-        </div>
-        <div class="check-group">
           <div class="form-group">
             <label class="check-group-label">Antenatal Clinic Atendance</label>
             <div class="sel-wrap">
-              <div class="pretty p-default">
-                <input type="checkbox" />
+              <div class="pretty p-default p-round">
+                <input type="radio" name="attendance">
                 <div class="state">
                     <label>N</label>
                 </div>
               </div>
-              <div class="pretty p-default">
-                <input type="checkbox" />
+              <div class="pretty p-default p-round">
+                <input type="radio" name="attendance">
                 <div class="state">
                     <label>R</label>
                 </div>
               </div>
             </div>
           </div>
+          <div class="form-group">
+            <label for="pregnancyAge">Parity</label>
+            <input type="number" formControlName="parity"> 
+          </div>
         </div>
       </div>
-      <div>
+      <div class="frm-x2">
         <div class="form-group">
           <label for="pregnancyAge">Age of Pregnancy (in weeks)</label>
           <input type="number" formControlName="pregnancyAge"> 
@@ -80,72 +73,24 @@
         <div class="form-group">
           <label class="check-group-label">ANC HIV counseling & testing</label>
           <div class="sel-wrap">
-            <div class="pretty p-default">
-              <input type="checkbox" />
+            <div class="pretty p-default p-round">
+              <input type="radio" name="anc-counceling">
               <div class="state">
                   <label>Previously known HIV positive status</label>
               </div>
             </div>
-            <div class="pretty p-default">
-              <input type="checkbox" />
+            <div class="pretty p-default p-round">
+              <input type="radio" name="anc-counceling">
               <div class="state">
                   <label>ANC HIV counseled tested and received result</label>
               </div>
             </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label class="label-nada">.</label>
           <div class="sel-wrap">
-            <div class="pretty p-default">
-              <input type="checkbox" />
-              <div class="state">
-                  <label>HIV test result: positive</label>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="check-group-label">Antenatal Clinic Atendance</label>
-          <div class="sel-wrap">
-            <div class="pretty p-default">
-              <input type="checkbox" />
-              <div class="state">
-                  <label>N</label>
-              </div>
-            </div>
-            <div class="pretty p-default">
-              <input type="checkbox" />
-              <div class="state">
-                  <label>R</label>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="check-group">
-        <div class="form-group">
-          <label class="check-group-label">ANC HIV counseling & testing</label>
-          <div class="sel-wrap">
-            <div class="pretty p-default">
-              <input type="checkbox" />
-              <div class="state">
-                  <label>Previously known HIV positive status</label>
-              </div>
-            </div>
-            <div class="pretty p-default">
-              <input type="checkbox" />
+            <div class="pretty p-default p-round">
+              <input type="radio" name="anc-counceling">
               <div class="state">
                   <label>ANC HIV counseled tested and received result</label>
-              </div>
-            </div>
-          </div>
-          <label class="label-nada">.</label>
-          <div class="sel-wrap">
-            <div class="pretty p-default">
-              <input type="checkbox" />
-              <div class="state">
-                  <label>HIV test result: positive</label>
               </div>
             </div>
           </div>
@@ -155,7 +100,7 @@
         <div class="form-group">
           <label class="check-group-label">
             <div>ANC Partners' Testing</div>
-            <div>Partners of HIV pos. pregnant women</div>
+            <div class="label-b">Partners of HIV pos. pregnant women</div>
           </label>
           <div class="sel-wrap">
             <div class="pretty p-default">
@@ -175,7 +120,7 @@
         <div class="form-group">
             <label class="check-group-label">
               <div>ANC Partners' Testing</div>
-              <div>Partners of HIV neg. pregnant women</div>
+              <div class="label-b">Partners of HIV neg. pregnant women</div>
             </label>
             <div class="sel-wrap">
               <div class="pretty p-default">
@@ -197,8 +142,8 @@
       <div class="check-group">
         <div class="form-group">
           <label class="check-group-label">
-            <div>Syphilis Testing & Treatmen</div>
-            <div>Testing</div>
+            <div>Syphilis Testing & Treatment</div>
+            <div class="label-b">Testing</div>
           </label>
           <div class="sel-wrap">
             <div class="pretty p-default">
@@ -224,7 +169,7 @@
         <div class="form-group">
             <label class="check-group-label">
               <div> Syphilis Testing & Treatment</div>
-              <div>Treated</div>
+              <div class="label-b">Treated</div>
             </label>
             <div class="sel-wrap">
               <div class="pretty p-default">
@@ -244,9 +189,9 @@
       </div>
     
       <div class="btn-wrap-x2">
-        <button type="submit" (click)="view()" class="btn btn-primary">Done <i class="fa fa-check"></i></button>
+        <button type="submit" (click)="next_onClick()" class="btn btn-primary">Next <i class="fa fa-arrow-right"></i></button>
         <button (click)="view()" class="btn btn-danger">Cancel <i class="fa fa-times"></i></button>
       </div>
     </form>
   </div>
-</div>
+</div> 

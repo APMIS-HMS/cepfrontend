@@ -1,5 +1,6 @@
 .form-group {
     margin-bottom: 20px;
+    margin-right: 20px;
 }
 .form-group label{
     display: block;
@@ -7,7 +8,7 @@
 }
 .form-group select, .form-group input{
     padding: 5px;
-    width: 100%;
+    width: 90%;
 }
 .form-group textarea{
     padding: 10px;
@@ -43,6 +44,6 @@
     justify-content: flex-start;
     margin-right: 10px !important;
 }
-.form-group input{
-    width: 100% !important;
+.label-b{
+    color: rgb(0, 190, 127);
 }
