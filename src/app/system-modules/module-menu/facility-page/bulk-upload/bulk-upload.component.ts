@@ -132,7 +132,10 @@ export class BulkUploadComponent implements OnInit {
         return x.length;
       });
       //this.finalExcelFileUpload(data, hmo);
-      this.turningDataToArrayOfObjects(data);
+      // this.turningDataToArrayOfObjects(data);
+      this.patientService._excelUploadSocket(data).then(payload => {
+        console.log(payload);
+      });
     };
     reader.readAsBinaryString(target.files[0]);
   }
