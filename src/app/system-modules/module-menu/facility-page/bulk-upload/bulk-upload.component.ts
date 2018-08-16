@@ -340,8 +340,10 @@ export class BulkUploadComponent implements OnInit {
     // this.patients = (this.failed) ? newArr : newPatients;
     const data = { data: JSON.stringify(this.patients) };
     this.patientService.bulkUpload(data).then(payload => {
+      console.log(payload);
       this.uploadItemCounter = 0;
       this.uploadItemTotal = 0;
+      this.uploadingLoading = false;
       if (payload.failed.length > 0) {
         this.patients = [];
         this.systemModuleService.announceSweetProxy('An error occured. The following list had an issue when uploading', 'error');
@@ -355,6 +357,7 @@ export class BulkUploadComponent implements OnInit {
         this.systemModuleService.announceSweetProxy('Patients information successfully uploaded!', 'success');
       }
     }).catch(err => {
+      console.log(err);
       this.uploadItemCounter = 0;
       this.uploadItemTotal = 0;
       console.log(err);
