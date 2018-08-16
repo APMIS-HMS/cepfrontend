@@ -20,6 +20,7 @@ export class NewAntenatalEntryComponent implements OnInit {
       register: ['', [<any>Validators.required]],
       patient: ['', [<any>Validators.required]],
       tt: ['', [<any>Validators.required]],
+      parity: ['', [<any>Validators.required]],
       comment: ['', [<any>Validators.required]],
       pregnancyAge: ['', [<any>Validators.required]],
     });

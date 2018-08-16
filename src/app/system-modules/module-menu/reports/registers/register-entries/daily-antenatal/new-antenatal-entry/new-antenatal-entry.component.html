@@ -8,60 +8,65 @@
     <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
 
     <form class="frm-down" [formGroup]="frm_UpdateCourse" novalidate>
-      <div class="form-group">
-        <label for="session">Patient</label>
-        <select formControlName="patient">
-          <option>Sam Dede</option>
-        </select>
+      <div>
+        <div class="form-group">
+          <label for="session">Patient</label>
+          <select formControlName="patient">
+            <option>Sam Dede</option>
+          </select>
+        </div>
+        <div class="check-group">
+          <div class="form-group">
+            <label class="check-group-label">Type of Visit</label>
+            <div class="sel-wrap">
+              <div class="pretty p-default">
+                <input type="checkbox" />
+                <div class="state">
+                    <label>ANC</label>
+                </div>
+              </div>
+              <div class="pretty p-default">
+                <input type="checkbox" />
+                <div class="state">
+                    <label>PNC</label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        
+        <!-- <div class="form-group">
+          <label for="pregnancyAge">Age of Pregnancy (in weeks)</label>
+          <input type="number" formControlName="pregnancyAge"> 
+        </div> -->
       </div>
-      <div class="check-group">
+      <div>
         <div class="form-group">
-          <label class="check-group-label">Type of Visit</label>
-          <div class="sel-wrap">
-            <div class="pretty p-default">
-              <input type="checkbox" />
-              <div class="state">
-                  <label>ANC</label>
-              </div>
-            </div>
-            <div class="pretty p-default">
-              <input type="checkbox" />
-              <div class="state">
-                  <label>PNC</label>
-              </div>
-            </div>
-          </div>
+          <label for="pregnancyAge">Parity</label>
+          <input type="number" formControlName="parity"> 
         </div>
-        <div class="form-group">
-          <label class="label-nada">.</label>
-          <div class="sel-wrap">
-            <div class="pretty p-default">
-              <input type="checkbox" />
-              <div class="state">
-                  <label>Parity</label>
+        <div class="check-group">
+          <div class="form-group">
+            <label class="check-group-label">Antenatal Clinic Atendance</label>
+            <div class="sel-wrap">
+              <div class="pretty p-default">
+                <input type="checkbox" />
+                <div class="state">
+                    <label>N</label>
+                </div>
               </div>
-            </div>
-          </div>
-        </div>
-        <div class="form-group">
-          <label class="check-group-label">Antenatal Clinic Atendance</label>
-          <div class="sel-wrap">
-            <div class="pretty p-default">
-              <input type="checkbox" />
-              <div class="state">
-                  <label>N</label>
-              </div>
-            </div>
-            <div class="pretty p-default">
-              <input type="checkbox" />
-              <div class="state">
-                  <label>R</label>
+              <div class="pretty p-default">
+                <input type="checkbox" />
+                <div class="state">
+                    <label>R</label>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="frm-x2">
+      <div>
         <div class="form-group">
           <label for="pregnancyAge">Age of Pregnancy (in weeks)</label>
           <input type="number" formControlName="pregnancyAge"> 
@@ -118,23 +123,125 @@
           </div>
         </div>
       </div>
-      <!-- <div class="pretty p-default">
-        <input type="checkbox" />
-        <div class="state">
-            <label>N</label>
+      <div class="check-group">
+        <div class="form-group">
+          <label class="check-group-label">ANC HIV counseling & testing</label>
+          <div class="sel-wrap">
+            <div class="pretty p-default">
+              <input type="checkbox" />
+              <div class="state">
+                  <label>Previously known HIV positive status</label>
+              </div>
+            </div>
+            <div class="pretty p-default">
+              <input type="checkbox" />
+              <div class="state">
+                  <label>ANC HIV counseled tested and received result</label>
+              </div>
+            </div>
+          </div>
+          <label class="label-nada">.</label>
+          <div class="sel-wrap">
+            <div class="pretty p-default">
+              <input type="checkbox" />
+              <div class="state">
+                  <label>HIV test result: positive</label>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="pretty p-default">
-          <input type="checkbox" />
-          <div class="state">
-              <label>NP</label>
+      <div class="check-group">
+        <div class="form-group">
+          <label class="check-group-label">
+            <div>ANC Partners' Testing</div>
+            <div>Partners of HIV pos. pregnant women</div>
+          </label>
+          <div class="sel-wrap">
+            <div class="pretty p-default">
+              <input type="checkbox" />
+              <div class="state">
+                  <label>Tested Negative</label>
+              </div>
+            </div>
+            <div class="pretty p-default">
+              <input type="checkbox" />
+              <div class="state">
+                  <label>Tested Posetive</label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+            <label class="check-group-label">
+              <div>ANC Partners' Testing</div>
+              <div>Partners of HIV neg. pregnant women</div>
+            </label>
+            <div class="sel-wrap">
+              <div class="pretty p-default">
+                <input type="checkbox" />
+                <div class="state">
+                    <label>Tested Negative</label>
+                </div>
+              </div>
+              <div class="pretty p-default">
+                <input type="checkbox" />
+                <div class="state">
+                    <label>Tested Posetive</label>
+                </div>
+              </div>
+            </div>
           </div>
       </div>
-      <div class="form-group" style="margin-top: 20px;">
-        <label for="session">Comment</label>
-        <textarea rmControlName="comment">
-        </textarea>
-      </div> -->
+      
+      <div class="check-group">
+        <div class="form-group">
+          <label class="check-group-label">
+            <div>Syphilis Testing & Treatmen</div>
+            <div>Testing</div>
+          </label>
+          <div class="sel-wrap">
+            <div class="pretty p-default">
+              <input type="checkbox" />
+              <div class="state">
+                  <label>Not Done </label>
+              </div>
+            </div>
+            <div class="pretty p-default">
+              <input type="checkbox" />
+              <div class="state">
+                  <label>Positive </label>
+              </div>
+            </div>
+            <div class="pretty p-default">
+              <input type="checkbox" />
+              <div class="state">
+                  <label>Negetive </label>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+            <label class="check-group-label">
+              <div> Syphilis Testing & Treatment</div>
+              <div>Treated</div>
+            </label>
+            <div class="sel-wrap">
+              <div class="pretty p-default">
+                <input type="checkbox" />
+                <div class="state">
+                    <label>Tested Negative</label>
+                </div>
+              </div>
+              <div class="pretty p-default">
+                <input type="checkbox" />
+                <div class="state">
+                    <label>Tested Posetive</label>
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
     
       <div class="btn-wrap-x2">
         <button type="submit" (click)="view()" class="btn btn-primary">Done <i class="fa fa-check"></i></button>

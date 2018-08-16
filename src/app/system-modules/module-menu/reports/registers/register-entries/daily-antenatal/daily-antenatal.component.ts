@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 })
 export class DailyAntenatalComponent implements OnInit {
 
-  showNewEntry = false;
   pg1 = true;
   pg2 = false;
 
@@ -17,12 +16,6 @@ export class DailyAntenatalComponent implements OnInit {
   ngOnInit() {
   }
 
-  newEntry(){
-    this.showNewEntry = true;
-  }
-  close_onClick(e){
-    this.showNewEntry = false;
-  }
   switch_pg(pg){
     if(pg==1){
       this.pg1 = true;

@@ -28,6 +28,7 @@
 .check-group .form-group{
     border: 1px solid #eee;
     padding: 5px 10px;
+    background: #fafafa;
 }
 .sel-wrap{
     margin-top: 10px;
@@ -37,4 +38,11 @@
 }
 .label-nada{
     color: transparent;
+}
+.frm-x2{
+    justify-content: flex-start;
+    margin-right: 10px !important;
+}
+.form-group input{
+    width: 100% !important;
 }

@@ -113,3 +113,6 @@
   </div>
 </div>
 
+<div *ngIf="showNewEntry" class="modal-overlay">
+    <app-new-antenatal-entry (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-antenatal-entry>
+</div>

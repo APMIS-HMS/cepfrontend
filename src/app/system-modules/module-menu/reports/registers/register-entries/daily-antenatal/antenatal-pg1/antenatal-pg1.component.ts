@@ -9,6 +9,7 @@ import { Router } from '@angular/router';
 export class AntenatalPg1Component implements OnInit {
 
   @Output() switch: EventEmitter<number> = new EventEmitter<number>();
+  showNewEntry = false;
 
   constructor(private _router: Router) { }
 
@@ -20,6 +21,12 @@ export class AntenatalPg1Component implements OnInit {
   }
   switcher_onClick() {
     this.switch.emit(2);
+  }
+  newEntry(){
+    this.showNewEntry = true;
+  }
+  close_onClick(e){
+    this.showNewEntry = false;
   }
 
 }
