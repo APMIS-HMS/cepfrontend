@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 
 import { ReportsRoutingModule } from './reports-routing.module';
 import { NhmisSummaryComponent } from './nhmis-summary/nhmis-summary.component';
+import { ReportsComponent } from './reports.component';
 
 @NgModule({
   imports: [
@@ -10,7 +11,8 @@ import { NhmisSummaryComponent } from './nhmis-summary/nhmis-summary.component';
     ReportsRoutingModule
   ],
   declarations: [
-    NhmisSummaryComponent
+    NhmisSummaryComponent,
+    ReportsComponent
   ]
 })
 export class ReportsModule { }
