@@ -136,9 +136,7 @@ export class BulkUploadComponent implements OnInit {
         this.patients = payload;
         let control = <FormArray>this.shownForm.controls['items'];
         control.setValue(payload);
-        console.log("Am here");
       }, err => {
-        console.log(err);
       });
     };
     reader.readAsBinaryString(target.files[0]);
@@ -317,7 +315,6 @@ export class BulkUploadComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.patients);
     let newArr = [];
     this.btnLoading = true;
     this.patients.forEach(element => {
@@ -338,7 +335,6 @@ export class BulkUploadComponent implements OnInit {
     // this.patients = (this.failed) ? newArr : newPatients;
     const data = { data: JSON.stringify(this.patients) };
     this.patientService.bulkUpload(data).then(payload => {
-      console.log(payload);
       this.uploadItemCounter = 0;
       this.uploadItemTotal = 0;
       this.uploadingLoading = false;
@@ -355,10 +351,8 @@ export class BulkUploadComponent implements OnInit {
         this.systemModuleService.announceSweetProxy('Patients information successfully uploaded!', 'success');
       }
     }).catch(err => {
-      console.log(err);
       this.uploadItemCounter = 0;
       this.uploadItemTotal = 0;
-      console.log(err);
       this.btnLoading = false;
       this.systemModuleService.announceSweetProxy('Please kindly navigate to Patient Management to check for newly added patients', 'info');
     });
