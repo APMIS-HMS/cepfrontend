@@ -83,13 +83,11 @@ export class BulkUploadComponent implements OnInit {
       firstName: '',
       lastName: '',
       gender: '',
-      phone: '',
+      primaryContactPhoneNo: '',
       street: '',
+      homeAddress: {},
       motherMaidenName: '',
       maritalStatus: '',
-      lgaOfOrigin: '',
-      stateOfOrigin: '',
-      nationality: '',
       lga: '',
       state: '',
       country: '',
@@ -133,8 +131,14 @@ export class BulkUploadComponent implements OnInit {
       });
       //this.finalExcelFileUpload(data, hmo);
       // this.turningDataToArrayOfObjects(data);
-      this.patientService._excelUploadSocket(data).then(payload => {
-        console.log(payload);
+      this.patientService.uploadExcel(data).then(payload => {
+        
+        this.patients = payload;
+        let control = <FormArray>this.shownForm.controls['items'];
+        control.setValue(payload);
+        console.log("Am here");
+      }, err => {
+        console.log(err);
       });
     };
     reader.readAsBinaryString(target.files[0]);
@@ -176,16 +180,13 @@ export class BulkUploadComponent implements OnInit {
         rowObj.primaryContactPhoneNo = (data[i][11] !== undefined) ? data[i][11] : ' ';
         rowObj.motherMaidenName = (data[i][12] !== undefined) ? data[i][12] : ' ';
         rowObj.maritalStatus = (data[i][13] !== undefined) ? data[i][13] : ' ';
-        rowObj.lgaOfOrigin = (data[i][14] !== undefined) ? data[i][14] : ' ';
-        rowObj.stateOfOrigin = (data[i][15] !== undefined) ? data[i][15] : ' ';
-        rowObj.nationality = (data[i][16] !== undefined) ? data[i][16] : ' ';
         rowObj.payPlan = 'Wallet';
         this.items.push(this.createForm());
         let datas: any = this.shownForm.controls.items;
         datas.controls[i].controls.firstName.setValue(rowObj.firstName);
         datas.controls[i].controls.lastName.setValue(rowObj.lastName);
         datas.controls[i].controls.gender.setValue(rowObj.gender);
-        datas.controls[i].controls.phone.setValue(rowObj.primaryContactPhoneNo);
+        datas.controls[i].controls.primaryContactPhoneNo.setValue(rowObj.primaryContactPhoneNo);
         datas.controls[i].controls.email.setValue(rowObj.email);
         datas.controls[i].controls.hospId.setValue(rowObj.hospId);
         datas.controls[i].controls.street.setValue(rowObj.street);
@@ -193,13 +194,7 @@ export class BulkUploadComponent implements OnInit {
         datas.controls[i].controls.state.setValue(rowObj.state);
         datas.controls[i].controls.country.setValue(rowObj.country);
         datas.controls[i].controls.maritalStatus.setValue(rowObj.maritalStatus);
-        datas.controls[i].controls.motherMaidenName.setValue(rowObj.motherMaidenName);
-
-
-        datas.controls[i].controls.lgaOfOrigin.setValue(rowObj.lgaOfOrigin);
-        datas.controls[i].controls.stateOfOrigin.setValue(rowObj.stateOfOrigin);
-        datas.controls[i].controls.nationality.setValue(rowObj.nationality);
-
+        datas.controls[i].controls.motherMaidenName.setValue(rowObj.motherMaidenName); 
         datas.controls[i].controls.dateOfBirth.setValue(rowObj.dateOfBirth);
         datas.controls[i].controls.title.setValue(rowObj.title);
         datas.controls[i].controls.payPlan.setValue(rowObj.payPlan.toLowerCase());
@@ -299,7 +294,7 @@ export class BulkUploadComponent implements OnInit {
     patientInfo.email = info.email.value;
     patientInfo.hospId = info.hospId.value;
     patientInfo.dateOfBirth = info.dateOfBirth.value;
-    patientInfo.primaryContactPhoneNo = info.phone.value;
+    patientInfo.primaryContactPhoneNo = info.primaryContactPhoneNo.value;
     patientInfo.title = info.title.value;
     patientInfo.gender = info.gender.value;
     patientInfo.payPlan = info.payPlan.value;
@@ -365,7 +360,7 @@ export class BulkUploadComponent implements OnInit {
       this.uploadItemTotal = 0;
       console.log(err);
       this.btnLoading = false;
-      this.systemModuleService.announceSweetProxy('An error occured!', 'error');
+      this.systemModuleService.announceSweetProxy('Please kindly navigate to Patient Management to check for newly added patients', 'info');
     });
   }
 
@@ -374,7 +369,7 @@ export class BulkUploadComponent implements OnInit {
     datas.controls[i].controls.firstName.setValue(info.firstName);
     datas.controls[i].controls.lastName.setValue(info.lastName);
     datas.controls[i].controls.gender.setValue(info.gender);
-    datas.controls[i].controls.phone.setValue(info.primaryContactPhoneNo);
+    datas.controls[i].controls.primaryContactPhoneNo.setValue(info.primaryContactPhoneNo);
     datas.controls[i].controls.email.setValue(info.email);
     datas.controls[i].controls.hospId.setValue(info.hospId);
     datas.controls[i].controls.dateOfBirth.setValue(info.dateOfBirth);
