@@ -66,6 +66,9 @@
             <div *ngIf="!failed">
               <div class="card-list-item" [formGroup]="shownForm" *ngFor="let patient of patients; let i = index; let item of shownForm.get('items').controls;">
                 <div class="row" *ngIf="openBox !== 'view'+i">
+                    <div class="table-list col-xs 1">
+                        {{i+1}}
+                      </div>
                   <div class="table-list col-xs 1">
                     {{patient.title}}
                   </div>
@@ -104,15 +107,6 @@
                   </div>
                   <div class="table-list col-xs-1">
                     {{patient.maritalStatus}}
-                  </div>
-                  <div class="table-list col-xs-1">
-                    {{patient.lgaOfOrigin}}
-                  </div>
-                  <div class="table-list col-xs-1">
-                    {{patient.stateOfOrigin}}
-                  </div>
-                  <div class="table-list col-xs-1">
-                    {{patient.nationality}}
                   </div>
                   <div class="table-list col-xs-1 camelCapital">
                     {{patient.payPlan}}
@@ -173,7 +167,7 @@
                     <div class="table-list col-xs-1">
                       <div class="row">
                         <mat-input-container class="col-xs-12">
-                          <input matInput mat-error placeholder="Phone Number" formControlName="phone">
+                          <input matInput mat-error placeholder="Phone Number" formControlName="primaryContactPhoneNo">
                         </mat-input-container>
                       </div>
                     </div>                    
@@ -236,7 +230,7 @@
                         </mat-form-field>
                       </div>
                     </div>
-                    <div class="table-list col-xs-1">
+                    <!-- <div class="table-list col-xs-1">
                       <div class="row">
                         <mat-input-container class="col-xs-12">
                           <input matInput mat-error placeholder="LGA Origin" formControlName="lgaOfOrigin">
@@ -256,7 +250,7 @@
                           <input matInput mat-error placeholder="Nationality" formControlName="nationality">
                         </mat-input-container>
                       </div>
-                    </div>
+                    </div> -->
                     <div class="table-list col-xs-1">
                       <div class="row">
                         <mat-form-field class="col-xs-12">
@@ -298,6 +292,9 @@
             <div *ngIf="failed">
               <div class="card-list-item {{failed === true ? 'failed-list' : ''}}" [formGroup]="shownForm" *ngFor="let patient of patients; let i = index; let item of shownForm.get('items').controls;">
                 <div class="row" *ngIf="openBox !== 'view'+i">
+                    <div class="table-list col-xs 1">
+                        {{i+1}}
+                      </div>
                   <div class="table-list col-xs 1">
                     {{patient.data.title || patient.title}}
                   </div>
@@ -371,7 +368,7 @@
                     <div class="table-list col-xs-1">
                       <div class="row">
                         <mat-input-container class="col-xs-12">
-                          <input matInput mat-error placeholder="Phone Number" formControlName="phone">
+                          <input matInput mat-error placeholder="Phone Number" formControlName="primaryContactPhoneNo">
                         </mat-input-container>
                       </div>
                     </div>
