@@ -24,7 +24,7 @@
 .check-group{
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+    justify-content: flex-start;
 }
 .check-group .form-group{
     border: 1px solid #eee;

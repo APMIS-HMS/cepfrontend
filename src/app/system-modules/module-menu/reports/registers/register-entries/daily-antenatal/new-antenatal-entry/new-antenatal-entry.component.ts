@@ -25,6 +25,12 @@ export class NewAntenatalEntryComponent implements OnInit {
       parity: ['', [<any>Validators.required]],
       comment: ['', [<any>Validators.required]],
       pregnancyAge: ['', [<any>Validators.required]],
+      urinalysisSugar: ['', [<any>Validators.required]],
+      urinalysisProtien: ['', [<any>Validators.required]],
+      sel_tt: ['', [<any>Validators.required]],
+      problem: ['', [<any>Validators.required]],
+      referalReason: ['', [<any>Validators.required]],
+      postnatal1: ['', [<any>Validators.required]],
     });
   }
   pg2(){

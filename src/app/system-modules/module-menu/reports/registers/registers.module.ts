@@ -7,8 +7,6 @@ import { DailyAntenatalComponent } from './register-entries/daily-antenatal/dail
 import { NewAntenatalEntryComponent } from './register-entries/daily-antenatal/new-antenatal-entry/new-antenatal-entry.component';
 import { AntenatalPg1Component } from './register-entries/daily-antenatal/antenatal-pg1/antenatal-pg1.component';
 import { AntenatalPg2Component } from './register-entries/daily-antenatal/antenatal-pg2/antenatal-pg2.component';
-import { NewAntenatalPg1Component } from './register-entries/daily-antenatal/new-antenatal-entry/new-antenatal-pg1/new-antenatal-pg1.component';
-import { NewAntenatalPg2Component } from './register-entries/daily-antenatal/new-antenatal-entry/new-antenatal-pg2/new-antenatal-pg2.component';
 
 @NgModule({
   imports: [
@@ -19,11 +17,10 @@ import { NewAntenatalPg2Component } from './register-entries/daily-antenatal/new
     SharedModule
   ],
   declarations: [
-  DailyAntenatalComponent,
-  NewAntenatalEntryComponent,
-  AntenatalPg1Component,
-  AntenatalPg2Component,
-  NewAntenatalPg1Component,
-  NewAntenatalPg2Component]
+    DailyAntenatalComponent,
+    NewAntenatalEntryComponent,
+    AntenatalPg1Component,
+    AntenatalPg2Component
+  ]
 })
 export class RegistersModule { }
