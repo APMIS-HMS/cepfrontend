@@ -30,6 +30,7 @@ export class PatientService {
     this._bulkUploadSocket = _socketService.getService('bulk-patient-upload');
     this._excelUploadSocket = _socketService.getService('upload-excel-patients');
     this._bulkUploadSocket.timeout = 100000;
+    this._excelUploadSocket.timeout = 100000;
     this.createListener = Observable.fromEvent(this._socket, 'created');
     this.listner = Observable.fromEvent(this._socket, 'updated');
     this.patchListener = Observable.fromEvent(this._socket, 'patched');
