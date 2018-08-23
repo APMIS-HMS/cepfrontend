@@ -19,5 +19,8 @@ export class RegistersComponent implements OnInit {
   call_antenatal(){
     this._router.navigate(['/dashboard/reports/register/antenatal']);
   }
+  call_opd(){
+    this._router.navigate(['/dashboard/reports/register/opd']);
+  }
 
 }
