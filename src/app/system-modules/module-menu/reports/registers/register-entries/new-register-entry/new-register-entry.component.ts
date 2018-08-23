@@ -27,5 +27,7 @@ export class NewRegisterEntryComponent implements OnInit {
   close_onClick() {
     this.closeModal.emit(true);
   }
-
+  view() {
+    
+  }
 }

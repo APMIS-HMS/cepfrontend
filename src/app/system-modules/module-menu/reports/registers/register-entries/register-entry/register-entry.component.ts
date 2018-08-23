@@ -8,7 +8,8 @@ import { Component, OnInit } from '@angular/core';
 export class RegisterEntryComponent implements OnInit {
 
   showNewEntry = false;
-
+  dateRange;
+  loadIndicatorVisible = true;
   constructor() { }
 
   ngOnInit() {
@@ -21,4 +22,7 @@ export class RegisterEntryComponent implements OnInit {
     this.showNewEntry = false;
   }
 
+  setReturnValue(e) {
+    
+  }
 }

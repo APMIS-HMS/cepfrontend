@@ -173,11 +173,14 @@ export class FacilityBasicinfoEditComponent implements OnInit {
       }
     );
 
-    this.facilityForm1.controls.facilityTypeId.valueChanges.subscribe(
-      facilityType => {
-        this._getFacilityClasses(facilityType);
-      }
-    );
+    if (this.facilityForm1.controls.facilityTypeId !== undefined) {
+      this.facilityForm1.controls.facilityTypeId.valueChanges.subscribe(
+        facilityType => {
+          this._getFacilityClasses(facilityType);
+        }
+      );
+    }
+
   }
   _getFacilityOwnerships() {
     this.facilityOwnershipService.find({}).then(
