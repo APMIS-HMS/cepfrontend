@@ -131,8 +131,8 @@ export class BulkUploadComponent implements OnInit {
       });
       //this.finalExcelFileUpload(data, hmo);
       // this.turningDataToArrayOfObjects(data);
+      // this.turningDataToArrayOfObjects(data);
       this.patientService.uploadExcel(data).then(payload => {
-        
         this.patients = payload;
         let control = <FormArray>this.shownForm.controls['items'];
         control.setValue(payload);
@@ -351,6 +351,8 @@ export class BulkUploadComponent implements OnInit {
         this.systemModuleService.announceSweetProxy('Patients information successfully uploaded!', 'success');
       }
     }).catch(err => {
+      console.log(err);
+
       this.uploadItemCounter = 0;
       this.uploadItemTotal = 0;
       this.btnLoading = false;
