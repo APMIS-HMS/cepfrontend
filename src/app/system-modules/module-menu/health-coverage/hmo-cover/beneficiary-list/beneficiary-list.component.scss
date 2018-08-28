@@ -1,1 +1,16 @@
 @import  "../hmo-cover.component.scss";
+
+.tbl-top-actions{
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+}
+.btn-outline {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: 1px solid #333;
+    margin-right: 10px;
+}
+.btn-outline:hover{
+    background-color: #fff;
+}

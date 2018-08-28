@@ -1,0 +1,51 @@
+<div class="animated pulse">
+  <div class="modal-header-wrap">
+      <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+      <legend class="modal_title">New Beneficiary</legend>
+      <div class="modal_mini_title">Continental Hospital</div>
+  </div>
+  <div class="modal-baseWrap">
+    <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
+
+    <form class="frm-down" [formGroup]="frm_UpdateCourse" novalidate>
+      <div class="form-group">
+        <label for="fname">First Name</label>
+        <input formControlName="fname">
+      </div>
+      <div class="form-group">
+        <label for="lname">Last Name</label>
+        <input formControlName="lname">
+      </div>
+      <div class="form-group">
+        <label for="gender">Gender</label>
+        <select formControlName="gender">
+          <option>Male</option>
+          <option>Female</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="id">ID</label>
+        <select formControlName="id">
+          <option>TT00211</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label for="role">Role</label>
+        <select formControlName="role">
+          <option>Principal</option>
+          <option>Dependant</option>
+        </select>
+      </div>
+      <div class="pretty p-default">
+          <input type="status" />
+          <div class="state">
+              <label>Active</label>
+          </div>
+      </div>
+      <div class="btn-wrap-x2">
+        <button type="submit" (click)="view()" class="btn btn-primary">Save <i class="fa fa-check"></i></button>
+        <button (click)="view()" class="btn btn-danger">Cancel <i class="fa fa-times"></i></button>
+      </div>
+    </form>
+  </div>
+</div>
