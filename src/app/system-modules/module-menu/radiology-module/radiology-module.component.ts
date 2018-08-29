@@ -7,9 +7,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RadiologyModuleComponent implements OnInit {
 
+  requestContentArea = true;
+  externalContentArea = false;
+  reportContentArea = false;
+  workbenchContentArea = false;
+  investigationContentArea = false;
+  pricingContentArea = false;
+  templateContentArea = false;
+
   constructor() { }
 
   ngOnInit() {
   }
+  changeRoute(r){}
+  checkIntoWorkbench(){}
 
 }
