@@ -29,7 +29,16 @@ export class RmNewRequestComponent implements OnInit {
   loading = true;
   extList = false;
   isExternal = false;
+  isLaboratory = false;
+  isValidateForm = false;
+  investigationRadio = false;
+  requestLoading = false;
+  disableBtn = false;
+  makeRequestBtn = false;
   errMsg = 'You have unresolved errors';
+
+  investigations: any;
+  bindInvestigations: any;
 
   public frmNewRequest: FormGroup;
   searchInvestigation: FormControl;
@@ -46,4 +55,5 @@ export class RmNewRequestComponent implements OnInit {
     });
   }
 
+  save(isvalid, val){}
 }
