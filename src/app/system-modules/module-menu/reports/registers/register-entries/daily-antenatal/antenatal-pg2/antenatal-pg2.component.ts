@@ -10,6 +10,8 @@ export class AntenatalPg2Component implements OnInit {
 
   @Output() switch: EventEmitter<number> = new EventEmitter<number>();
   showNewEntry = false;
+  dateRange: any;
+  loadIndicatorVisible = false;
 
   constructor(private _router: Router) { }
 
@@ -28,4 +30,5 @@ export class AntenatalPg2Component implements OnInit {
   close_onClick(e){
     this.showNewEntry = false;
   }
+  setReturnValue(e){}
 }
