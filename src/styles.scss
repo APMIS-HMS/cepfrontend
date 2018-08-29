@@ -539,7 +539,6 @@ select {
     width: 100%;
     // width: 100vw;
     height: stretch;
-    overflow-y: auto;
     background: rgba(73, 73, 73, 0.27);
     .center-center {
         display: flex;
@@ -694,16 +693,16 @@ select {
 }
 
 .modal-baseWrap {
-    // @extend .nice-scroll;
     position: relative;
     width: 800px;
-    // width: 590px;
     min-width: 440px;
     height: auto;
-    // max-height: 90vh;
+    max-height: 90vh;
+    overflow-y: auto;
     background: #fff;
-    overflow: unset;
+    /* overflow: unset; */
     padding: 20px 50px;
+    -webkit-box-sizing: border-box;
     box-sizing: border-box;
 }
 
@@ -2274,4 +2273,10 @@ button,
     color: #ddd !important;
     font-style: italic;
     cursor: default !important;
+}
+.vertical-text{
+    writing-mode: vertical-rl;
+}
+.txt-transparent{
+    color: transparent !important;
 }
