@@ -10,6 +10,10 @@ export class RmRequestComponent implements OnInit {
   request_view = false;
   reqDetail_view = false;
   personAcc_view = false;
+  isLaboratory = false;
+  searchOpen = false;
+  pendingRequests = false;
+  loading = false;
 
   constructor() { }
 
