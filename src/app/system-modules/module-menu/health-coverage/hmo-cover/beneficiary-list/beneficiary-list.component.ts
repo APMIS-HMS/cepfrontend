@@ -24,6 +24,7 @@ export class BeneficiaryListComponent implements OnInit {
   pageSize = 10;
   pageSizeOptions = [5, 10, 25, 100];
   loading = true;
+  newBeneficiary = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   pageEvent: PageEvent;
@@ -89,5 +90,11 @@ export class BeneficiaryListComponent implements OnInit {
     const startIndex = event.pageIndex * event.pageSize;
     this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
     this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
+  }
+  newBeneficiary_click(){
+    this.newBeneficiary = true;
+  }
+  close_onClick(e){
+    this.newBeneficiary = false;
   }
 }

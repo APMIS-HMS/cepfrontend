@@ -6,9 +6,12 @@
     <div class="doc-contentArea">
       <div class="clinicalNoteWrap">
         <div class="tblWrapa" class="actSect">
-          <mat-paginator [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
-            [pageSizeOptions]="pageSizeOptions">
-          </mat-paginator>
+          <div class="tbl-top-actions">
+            <div (click)="newBeneficiary_click()" class="btn-outline"><i class="fa fa-plus"></i> New Beneficiary</div> 
+            <mat-paginator [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
+              [pageSizeOptions]="pageSizeOptions">
+            </mat-paginator>
+          </div>
           <table cellpadding="0" cellspacing="0" border="0.5">
             <thead>
               <tr>
@@ -97,4 +100,8 @@
       </div>
     </div>
   </div>
+</div>
+
+<div *ngIf="newBeneficiary" class="modal-overlay">
+    <app-new-beneficiary (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-new-beneficiary>
 </div>

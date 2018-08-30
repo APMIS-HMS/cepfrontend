@@ -77,6 +77,7 @@ export class HmoBillDetailComponent implements OnInit {
           index[0].covered.billAccepted = true;
         }
         index[0].covered.verifiedAt = new Date();
+        index[0].paymentCompleted = true;
         this.billingService.patch(this.selectedBill._id, this.selectedBill, {}).then(payload => {
           this.systemModuleService.announceSweetProxy('Service successfully cleared', 'success');
           this.refreshBills.emit(true);
@@ -94,6 +95,7 @@ export class HmoBillDetailComponent implements OnInit {
         index[0].covered.billAccepted = false;
       }
       index[0].covered.verifiedAt = new Date();
+      index[0].paymentCompleted = true;
       this.billingService.patch(this.selectedBill._id, this.selectedBill, {}).then(payload => {
         this.selectedBill = payload;
         if (!isAccept) {
