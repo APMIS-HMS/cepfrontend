@@ -35,6 +35,7 @@ export class RmNewRequestComponent implements OnInit {
   requestLoading = false;
   disableBtn = false;
   makeRequestBtn = false;
+  makingRequestBtn = false;
   errMsg = 'You have unresolved errors';
 
   investigations: any;
@@ -55,5 +56,8 @@ export class RmNewRequestComponent implements OnInit {
     });
   }
 
-  save(isvalid, val){}
+  save(isvalid, val) { }
+
+  removeBindingInvestigation(e) {
+  }
 }
