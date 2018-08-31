@@ -45,7 +45,6 @@ export class NewBeneficiaryComponent implements OnInit {
       date: ['', [<any>Validators.required]],
       status: [false, [<any>Validators.required]]
     });
-    console.log(this.selectedBeneficiary);
     this.genders = ['M', 'F'];
     this.types = ['CAPITATION', 'FEE-FOR-SERVICE'];
     this.selectedBeneficiary.type = (this.selectedBeneficiary.type !== undefined) ? this.removeWhiteSpace(this.selectedBeneficiary.type) : '';
@@ -57,7 +56,6 @@ export class NewBeneficiaryComponent implements OnInit {
     this.closeModal.emit(true);
   }
   view() {
-    console.log(this.frm_UpdateCourse);
     if (this.frm_UpdateCourse.valid) {
       this.disableButton = true;
       if (this.selectedBeneficiary.index !== '') {
@@ -75,14 +73,12 @@ export class NewBeneficiaryComponent implements OnInit {
   }
 
   updateBeneficiaryList(value) {
-    console.log(value);
     this.hmoService.patchBeneficiary(value.index, value, {
       query: {
         facilityId: this.selectedFacility._id, hmoId: value.id
       }
     }).then(payload => {
       this.disableButton = false;
-      console.log(payload);
       this.systemModuleService.announceSweetProxy('Beneficiary information updated', 'success');
       this.systemModuleService.off();
       this.beneficiaryValueChanged.emit(payload);
@@ -90,9 +86,7 @@ export class NewBeneficiaryComponent implements OnInit {
   }
 
   sweetAlertCallback(result) {
-    console.log(result.value);
     if (result.value) {
-      console.log('TON');
       this.systemModuleService.on();
       this.updateBeneficiaryList(this.frm_UpdateCourse.value);
     } else {
