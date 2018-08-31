@@ -137,11 +137,7 @@ import { FundWalletComponent } from '../payment/bill-lookup/fund-wallet/fund-wal
     VaccineDocumentationComponent,
     PregnancyManagerComponent,
     PatientRegistersComponent,
-    PatientLandingBillingComponent,
-    AddItemComponent,
-    AddLineModifierComponent,
-    ItemDetailComponent,
-    FundWalletComponent
+    PatientLandingBillingComponent
   ],
   exports: [],
   imports: [
