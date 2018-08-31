@@ -150,7 +150,8 @@ import { FundWalletComponent } from '../system-modules/module-menu/payment/bill-
     ImageCropperModule,
     OnlyMaterialModule,
     MaterialModule,
-    SharedModuleMaterialModule
+    SharedModuleMaterialModule,
+    Angular4PaystackModule,
   ],
   providers: [StoreService, WindowRef, OrderSetSharedService, ProductTypeService ]
 })
