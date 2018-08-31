@@ -83,7 +83,14 @@ export class BulkUploadComponent implements OnInit {
       firstName: '',
       lastName: '',
       gender: '',
-      phone: '',
+      primaryContactPhoneNo: '',
+      street: '',
+      homeAddress: {},
+      motherMaidenName: '',
+      maritalStatus: '',
+      lga: '',
+      state: '',
+      country: '',
       email: '',
       hospId: '',
       dateOfBirth: '',
@@ -123,7 +130,14 @@ export class BulkUploadComponent implements OnInit {
         return x.length;
       });
       //this.finalExcelFileUpload(data, hmo);
-      this.turningDataToArrayOfObjects(data);
+      // this.turningDataToArrayOfObjects(data);
+      // this.turningDataToArrayOfObjects(data);
+      this.patientService.uploadExcel(data).then(payload => {
+        this.patients = payload;
+        let control = <FormArray>this.shownForm.controls['items'];
+        control.setValue(payload);
+      }, err => {
+      });
     };
     reader.readAsBinaryString(target.files[0]);
   }
@@ -143,28 +157,42 @@ export class BulkUploadComponent implements OnInit {
         this.uploadingLoading = true;
         this.uploadItemCounter = i;
         const rowObj: any = <any>{};
+        rowObj.homeAddress = <any>{};
         rowObj.title = (data[i][0] !== undefined) ? data[i][0] : ' ';
         rowObj.firstName = (data[i][1] !== undefined) ? data[i][1] : ' ';
         rowObj.lastName = (data[i][2] !== undefined) ? data[i][2] : ' ';
         rowObj.gender = (data[i][3] !== undefined) ? data[i][3] : ' ';
         rowObj.dateOfBirth = (new Date() >= new Date(data[i][4])) ? new Date(data[i][4]) : new Date();
-        rowObj.email = (data[i][5] !== undefined) ? data[i][5] : ' ';
-        rowObj.hospId = (data[i][6] !== undefined) ? data[i][6] : '';
-        rowObj.primaryContactPhoneNo = (data[i][7] !== undefined) ? data[i][7] : ' ';
-        rowObj.motherMaidenName = (data[i][8] !== undefined) ? data[i][8] : ' ';
-        rowObj.maritalStatus = (data[i][9] !== undefined) ? data[i][8] : ' ';
-        rowObj.lgaOfOrigin = (data[i][10] !== undefined) ? data[i][9] : ' ';
-        rowObj.stateOfOrigin = (data[i][11] !== undefined) ? data[i][10] : ' ';
-        rowObj.nationality = (data[i][12] !== undefined) ? data[i][11] : ' ';
+        rowObj.street = (data[i][5] !== undefined) ? data[i][5] : ' ';
+        rowObj.lga = (data[i][6] !== undefined) ? data[i][6] : ' ';
+        rowObj.state = (data[i][7] !== undefined) ? data[i][7] : ' ';
+        rowObj.country = (data[i][8] !== undefined) ? data[i][8] : ' ';
+        rowObj.homeAddress = {
+          street: rowObj.street,
+          lga: rowObj.lga,
+          state: rowObj.state,
+          country: rowObj.country
+        }
+        rowObj.email = (data[i][9] !== undefined) ? data[i][9] : ' ';
+        rowObj.hospId = (data[i][10] !== undefined) ? data[i][10] : '';
+        rowObj.primaryContactPhoneNo = (data[i][11] !== undefined) ? data[i][11] : ' ';
+        rowObj.motherMaidenName = (data[i][12] !== undefined) ? data[i][12] : ' ';
+        rowObj.maritalStatus = (data[i][13] !== undefined) ? data[i][13] : ' ';
         rowObj.payPlan = 'Wallet';
         this.items.push(this.createForm());
         let datas: any = this.shownForm.controls.items;
         datas.controls[i].controls.firstName.setValue(rowObj.firstName);
         datas.controls[i].controls.lastName.setValue(rowObj.lastName);
         datas.controls[i].controls.gender.setValue(rowObj.gender);
-        datas.controls[i].controls.phone.setValue(rowObj.primaryContactPhoneNo);
+        datas.controls[i].controls.primaryContactPhoneNo.setValue(rowObj.primaryContactPhoneNo);
         datas.controls[i].controls.email.setValue(rowObj.email);
         datas.controls[i].controls.hospId.setValue(rowObj.hospId);
+        datas.controls[i].controls.street.setValue(rowObj.street);
+        datas.controls[i].controls.lga.setValue(rowObj.lga);
+        datas.controls[i].controls.state.setValue(rowObj.state);
+        datas.controls[i].controls.country.setValue(rowObj.country);
+        datas.controls[i].controls.maritalStatus.setValue(rowObj.maritalStatus);
+        datas.controls[i].controls.motherMaidenName.setValue(rowObj.motherMaidenName); 
         datas.controls[i].controls.dateOfBirth.setValue(rowObj.dateOfBirth);
         datas.controls[i].controls.title.setValue(rowObj.title);
         datas.controls[i].controls.payPlan.setValue(rowObj.payPlan.toLowerCase());
@@ -173,7 +201,7 @@ export class BulkUploadComponent implements OnInit {
         arr.push(rowObj);
 
         this.patients = arr;
-      },10000);
+      }, 10000);
 
     }
     this.uploadingLoading = false;
@@ -184,6 +212,28 @@ export class BulkUploadComponent implements OnInit {
     let dateIsh = new Date(Math.round((date - 25569) * 86400 * 1000));
     return dateIsh;
   }
+
+  onEditDataStreet(value, i) {
+    this.patients[i].street = value.srcElement.value;
+    this.patients[i].homeAddress.street = value.srcElement.value;
+  }
+
+  onEditDataLGA(value, i) {
+    this.patients[i].lga = value.srcElement.value;
+    this.patients[i].homeAddress.lga = value.srcElement.value;
+  }
+
+  onEditDataCountry(value, i) {
+    this.patients[i].country = value.srcElement.value;
+    this.patients[i].homeAddress.country = value.srcElement.value;
+  }
+
+  onEditDataState(value, i) {
+    this.patients[i].state = value.srcElement.value;
+    this.patients[i].homeAddress.state = value.srcElement.value;
+  }
+
+
 
   changeInput(ev) {
     if (ev.value === 'wallet') {
@@ -242,7 +292,7 @@ export class BulkUploadComponent implements OnInit {
     patientInfo.email = info.email.value;
     patientInfo.hospId = info.hospId.value;
     patientInfo.dateOfBirth = info.dateOfBirth.value;
-    patientInfo.primaryContactPhoneNo = info.phone.value;
+    patientInfo.primaryContactPhoneNo = info.primaryContactPhoneNo.value;
     patientInfo.title = info.title.value;
     patientInfo.gender = info.gender.value;
     patientInfo.payPlan = info.payPlan.value;
@@ -265,7 +315,6 @@ export class BulkUploadComponent implements OnInit {
   }
 
   submit() {
-    console.log(this.patients);
     let newArr = [];
     this.btnLoading = true;
     this.patients.forEach(element => {
@@ -284,10 +333,11 @@ export class BulkUploadComponent implements OnInit {
     // });
     // console.log(newPatients);
     // this.patients = (this.failed) ? newArr : newPatients;
-    console.log(this.patients);
     const data = { data: JSON.stringify(this.patients) };
-    console.log(data);
     this.patientService.bulkUpload(data).then(payload => {
+      this.uploadItemCounter = 0;
+      this.uploadItemTotal = 0;
+      this.uploadingLoading = false;
       if (payload.failed.length > 0) {
         this.patients = [];
         this.systemModuleService.announceSweetProxy('An error occured. The following list had an issue when uploading', 'error');
@@ -302,8 +352,11 @@ export class BulkUploadComponent implements OnInit {
       }
     }).catch(err => {
       console.log(err);
+
+      this.uploadItemCounter = 0;
+      this.uploadItemTotal = 0;
       this.btnLoading = false;
-      this.systemModuleService.announceSweetProxy('An error occured!', 'error');
+      this.systemModuleService.announceSweetProxy('Please kindly navigate to Patient Management to check for newly added patients', 'info');
     });
   }
 
@@ -312,7 +365,7 @@ export class BulkUploadComponent implements OnInit {
     datas.controls[i].controls.firstName.setValue(info.firstName);
     datas.controls[i].controls.lastName.setValue(info.lastName);
     datas.controls[i].controls.gender.setValue(info.gender);
-    datas.controls[i].controls.phone.setValue(info.primaryContactPhoneNo);
+    datas.controls[i].controls.primaryContactPhoneNo.setValue(info.primaryContactPhoneNo);
     datas.controls[i].controls.email.setValue(info.email);
     datas.controls[i].controls.hospId.setValue(info.hospId);
     datas.controls[i].controls.dateOfBirth.setValue(info.dateOfBirth);
