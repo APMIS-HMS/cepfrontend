@@ -80,6 +80,11 @@ import { VaccineAdministrationComponent } from './patientmanager-detailpage/pati
 import { VaccineDocumentationComponent } from './patientmanager-detailpage/patient-immunization/vaccine-documentation/vaccine-documentation.component';
 import { PregnancyManagerComponent } from './patientmanager-detailpage/pregnancy-manager/pregnancy-manager.component';
 import { PatientRegistersComponent } from './patientmanager-detailpage/patient-registers/patient-registers.component';
+import { PatientLandingBillingComponent } from './patientmanager-detailpage/patient-landing-billing/patient-landing-billing.component';
+import { AddItemComponent } from '../payment/add-item/add-item.component';
+import { AddLineModifierComponent } from '../payment/add-line-modifier/add-line-modifier.component';
+import { ItemDetailComponent } from '../payment/item-detail/item-detail.component';
+import { FundWalletComponent } from '../payment/bill-lookup/fund-wallet/fund-wallet.component';
 
 @NgModule({
   declarations: [
@@ -131,7 +136,8 @@ import { PatientRegistersComponent } from './patientmanager-detailpage/patient-r
     VaccineAdministrationComponent,
     VaccineDocumentationComponent,
     PregnancyManagerComponent,
-    PatientRegistersComponent
+    PatientRegistersComponent,
+    PatientLandingBillingComponent
   ],
   exports: [],
   imports: [

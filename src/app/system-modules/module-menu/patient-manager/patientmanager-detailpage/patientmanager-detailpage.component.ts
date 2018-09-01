@@ -52,6 +52,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   menuFinance = false;
   menuPrescriptions = false;
   menuPayment = false;
+  billingPayment = false;
   menuFluid = false;
   menuRegisters = false;
   menuVitals = false;
