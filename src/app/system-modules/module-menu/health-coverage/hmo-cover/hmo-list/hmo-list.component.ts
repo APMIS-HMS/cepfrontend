@@ -171,6 +171,7 @@ export class HmoListComponent implements OnInit {
   }
 
   show_beneficiaries(hmo) {
+    console.log(hmo);
     this.router.navigate(['/dashboard/health-coverage/hmo-cover-beneficiaries/', hmo._id]);
   }
   onChange(e) {
@@ -266,7 +267,7 @@ export class HmoListComponent implements OnInit {
                 rowObj.plan = data[m][7];
                 rowObj.type = data[m][8];
                 rowObj.date = this.excelDateToJSDate(data[m][9]);
-                rowObj.status = 'active';
+                rowObj.status = true;
                 // thisMonth = true;
               }
             }
