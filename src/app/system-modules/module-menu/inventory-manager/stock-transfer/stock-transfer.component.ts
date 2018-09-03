@@ -355,7 +355,6 @@ export class StockTransferComponent implements OnInit {
 
       }
     }
-    console.log(this.superGroups);
   }
   mergeTable(obj) {
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
@@ -535,7 +534,6 @@ export class StockTransferComponent implements OnInit {
           this.inventoryService.find({ query: { productId: value._id, facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId } }).subscribe(payload => {
             this.systemModuleService.off();
             if (payload.data.length > 0) {
-              console.log(payload.data);
               (<FormArray>this.productTableForm.controls['productTableArray'])
                 .push(
                   this.formBuilder.group({
