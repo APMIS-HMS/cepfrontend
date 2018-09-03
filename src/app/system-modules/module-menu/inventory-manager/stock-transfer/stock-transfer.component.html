@@ -32,7 +32,7 @@
                 <form *ngIf="productTableForm?.controls['productTableArray'].value.length > 0" [formGroup]="productTableForm">
                     <div formArrayName="productTableArray" class="frmArrayWrap">
                         <div class="frmArray" *ngFor="let schedule of productTableForm.controls['productTableArray'].controls; let i = index;">
-                            <h2 style="color:aaa;" class="col-md-12">{{schedule.value.product}} |
+                            <h2 style="color:aaa;" class="col-md-12">{{schedule.value.product}} ({{schedule.value.avQty}} <span *ngIf="schedule.value.avQty ===1||schedule.value.avQty < 1">qty</span><span *ngIf="schedule.value.avQty >1">qties</span>) |
                                 <span style="color:#5088d1">₦ {{schedule.value.totalCostPrice}}</span>
                             </h2>
 
