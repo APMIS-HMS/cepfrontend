@@ -218,12 +218,12 @@ export class StockTransferComponent implements OnInit {
           this.requisitions = payload.data;
         });
       });
-      
+
   }
 
   getStores() {
     this.storeService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
-      this.stores = payload.data;
+      this.stores = payload.data.filter(x => x._id !== this.checkingStore.storeId);
     });
   }
 
@@ -355,6 +355,7 @@ export class StockTransferComponent implements OnInit {
 
       }
     }
+    console.log(this.superGroups);
   }
   mergeTable(obj) {
     (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item, i) => {
@@ -370,6 +371,7 @@ export class StockTransferComponent implements OnInit {
       'productTableArray': this.formBuilder.array([
         this.formBuilder.group({
           product: ['', [<any>Validators.required]],
+          avQty: [''],
           batchNo: ['', [<any>Validators.required]],
           batchNumbers: [],
           costPrice: [0.00, [<any>Validators.required]],
@@ -484,6 +486,7 @@ export class StockTransferComponent implements OnInit {
                     (<FormArray>this.productTableForm.controls['productTableArray']).push(
                       this.formBuilder.group({
                         product: [element.productObject.name, [<any>Validators.required]],
+                        avQty: [payload.data[0].availableQuantity],
                         batchNo: [, [<any>Validators.required]],
                         batchNumbers: [payload.data[0].transactions],
                         costPrice: [0.00, [<any>Validators.required]],
@@ -532,10 +535,12 @@ export class StockTransferComponent implements OnInit {
           this.inventoryService.find({ query: { productId: value._id, facilityId: this.selectedFacility._id, storeId: this.checkingStore.storeId } }).subscribe(payload => {
             this.systemModuleService.off();
             if (payload.data.length > 0) {
+              console.log(payload.data);
               (<FormArray>this.productTableForm.controls['productTableArray'])
                 .push(
                   this.formBuilder.group({
                     product: [value.name, [<any>Validators.required]],
+                    avQty: [payload.data[0].availableQuantity],
                     batchNo: [, [<any>Validators.required]],
                     batchNumbers: [payload.data[0].transactions],
                     costPrice: [0.00, [<any>Validators.required]],
@@ -659,6 +664,7 @@ export class StockTransferComponent implements OnInit {
         .insert(index,
           this.formBuilder.group({
             product: [product.product, [<any>Validators.required]],
+            avQty: [product.avQty],
             batchNo: [, [<any>Validators.required]],
             batchNumbers: [product.batchNumbers],
             costPrice: [0.00, [<any>Validators.required]],
