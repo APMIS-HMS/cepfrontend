@@ -6,6 +6,7 @@ import { RadiologyModuleRoutingModule } from './radiology-module-routing.module'
 import { RadiologyModuleComponent } from './radiology-module.component';
 import { RmNewRequestComponent } from './rm-request/rm-new-request/rm-new-request.component';
 import { RmRequestComponent } from './rm-request/rm-request.component';
+import { RmRequestListComponent } from './rm-request/rm-request-list/rm-request-list.component';
 
 @NgModule({
   imports: [
@@ -13,6 +14,6 @@ import { RmRequestComponent } from './rm-request/rm-request.component';
     RadiologyModuleRoutingModule,
     MaterialModule, OnlyMaterialModule
   ],
-  declarations: [RadiologyModuleComponent, RmNewRequestComponent, RmRequestComponent]
+  declarations: [RadiologyModuleComponent, RmNewRequestComponent, RmRequestComponent, RmRequestListComponent]
 })
 export class RadiologyModuleModule { }

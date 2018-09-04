@@ -1,0 +1,117 @@
+<div class="iv-lists">
+  <div class="modality-list">
+    <div class="sec-title">Patient</div>
+    <div class="inner-search-wrap">
+      <input type="text" [formControl]="searchPatient" class="search-person-input" placeholder="search for patient..." />
+    </div>
+    <ul>
+      <li (click)="modality_click(1)" [class.modality-item-active]="mod1" class="modality-item">
+        <div class="selected-patient">
+          <div class="suggested-wrap">
+            <div class="suggested-img-wrap">
+              <img src="../../../../../../assets/images/users/default.png" >
+            </div>
+            <div class="suggested-label">Sydney James</div>
+          </div>
+        </div>
+      </li>
+      <li (click)="modality_click(2)" [class.modality-item-active]="mod2" class="modality-item">
+          <div class="selected-patient">
+            <div class="suggested-wrap">
+              <div class="suggested-img-wrap">
+                <img src="../../../../../../assets/images/users/default.png" >
+              </div>
+              <div class="suggested-label">Sydney James</div>
+            </div>
+          </div>
+      </li>
+      <li (click)="modality_click(3)" [class.modality-item-active]="mod3" class="modality-item">
+        <div class="selected-patient">
+          <div class="suggested-wrap">
+            <div class="suggested-img-wrap">
+              <img src="../../../../../../assets/images/users/default.png" >
+            </div>
+            <div class="suggested-label">Sydney James</div>
+          </div>
+        </div>
+      </li>
+      <li (click)="modality_click(4)" [class.modality-item-active]="mod4" class="modality-item">
+        <div class="selected-patient">
+          <div class="suggested-wrap">
+            <div class="suggested-img-wrap">
+              <img src="../../../../../../assets/images/users/default.png" >
+            </div>
+            <div class="suggested-label">Sydney James</div>
+          </div>
+        </div>
+      </li>
+      <li (click)="modality_click(5)" [class.modality-item-active]="mod5" class="modality-item">
+        <div class="selected-patient">
+          <div class="suggested-wrap">
+            <div class="suggested-img-wrap">
+              <img src="../../../../../../assets/images/users/default.png" >
+            </div>
+            <div class="suggested-label">Sydney James</div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="investigation-list">
+    <div class="x2">
+      <div class="user-wrap">
+        <div class="img-wrap">
+          <img src="../../../../../../assets/images/users/default.png" >
+        </div>
+        <div class="img-label">Sydney James</div>
+      </div>
+      <div class="pre-label-wrap">
+        <button class="btn-1 btn-blue"><i class="fa fa-sign-in"></i> Check In</button>
+        <div class="pre-label-label">Radiology No</div>
+        <div class="pre-label-val">AD-1222CA</div>
+      </div>
+    </div>
+    <div class="pre-label-wrap">
+      <div class="pre-label-label">Diagnosis</div>
+      <div class="pre-label-val">{{clinicalInvestigation}}</div>
+    </div>
+    <div class="pre-label-wrap">
+      <div class="pre-label-label">Clinical Investigation</div>
+      <div class="pre-label-val">{{clinicalInvestigation}}</div>
+    </div>
+
+    <div class="sec-title">Investigations</div>
+    <ul>
+      <li class="investigation-item">
+        <div class="x2">
+          <div>This is investigation item one</div>
+          <div class="list-cta"><i class="fa fa-calendar-plus"></i> Set Appointment</div>
+        </div>
+      </li>
+      <li class="investigation-item">
+        <div class="x2">
+          <div>This is investigation item five</div>
+          <div class="list-cta"><i class="fa fa-calendar-plus"></i> Set Appointment</div>
+        </div>
+      </li>
+      <li class="investigation-item">
+        <div class="x2">
+          <div>This is investigation item two</div>
+          <div class="list-cta"><i class="fa fa-calendar-plus"></i> Set Appointment</div>
+        </div>
+      </li>
+      <li class="investigation-item">
+        <div class="x2">
+          <div>This is investigation item three</div>
+          <div class="list-cta"><i class="fa fa-calendar-plus"></i> Set Appointment</div>
+        </div>
+      </li>
+      <li class="investigation-item">
+        <div class="x2">
+          <div>This is investigation item four</div>
+          <div class="list-cta"><i class="fa fa-calendar-plus"></i> Set Appointment</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
