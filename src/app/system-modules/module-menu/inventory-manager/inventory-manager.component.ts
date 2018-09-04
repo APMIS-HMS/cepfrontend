@@ -49,7 +49,6 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
           if (!!res) {
             if (!!res.typeObject) {
               this.checkingStore = res.typeObject;
-              console.log(this.checkingStore);
             }
           }
         });
@@ -57,7 +56,6 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
       this.loginEmployee = payload;
       this.checkingStore =
           this.loginEmployee.storeCheckIn.find(x => x.isOn === true);
-      console.log(this.checkingStore);
       // this.checkedInStore = checkIn.store;
       // if (Object.keys(checkIn).length > 0) {
       // }
@@ -72,7 +70,6 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
             itemr.lastLogin = new Date();
             isOn = true;
             this.checkedInStore = {typeObject: itemr, type: 'store'};
-            console.log(this.checkedInStore);
             this.employeeService.announceCheckIn(
                 {typeObject: this.checkedInStore, type: 'store'});
             this.authFacadeService
@@ -258,13 +255,11 @@ export class InventoryManagerComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     if (this.loginEmployee.storeCheckIn !== undefined) {
-      console.log(this.loginEmployee.storeCheckIn);
       this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
         if (itemr.storeObject === undefined) {
           const store_ = this.loginEmployee.storeCheckIn.find(
               x => x.storeId.toString() === itemr.storeId.toString());
           itemr.storeObject = store_.storeObject;
-          console.log(itemr.storeObject);
         }
         if (itemr.isDefault === true && itemr.isOn === true) {
           itemr.isOn = false;
