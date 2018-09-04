@@ -12,7 +12,7 @@ export class RmRequestComponent implements OnInit {
   personAcc_view = false;
   isLaboratory = false;
   searchOpen = false;
-  pendingRequests = false;
+  pendingRequests: any;
   loading = false;
 
   constructor() { }
@@ -32,6 +32,9 @@ export class RmRequestComponent implements OnInit {
   close_onClick(message: boolean): void {
     this.reqDetail_view = false;
     this.personAcc_view = false;
+  }
+
+  openSearch() {
   }
 
 }
