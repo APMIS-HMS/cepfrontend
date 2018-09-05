@@ -86,7 +86,7 @@
                 </div>
                 <div (click)="menuTimeline_click()" [class.active-menuItem]="menuTimeline" class="menu-item">Timeline</div>
                 <div (click)="menuPayment_click()" [class.active-menuItem]="menuPayment" class="menu-item">Payment</div>
-                <div (click)="menuBilling_click()" [class.active-menuItem]="billingPayment" class="menu-item">Billing</div>
+                <div (click)="menuBilling_click()" [class.active-menuItem]="menuBilling" class="menu-item">Billing</div>
                 <!-- <div (click)="menuTags_click()" [class.active-menuItem]="menuTags" class="menu-item">Tags</div> -->
             </div>
             <div class="menu-sect">
@@ -124,6 +124,7 @@
                 </div>
                 <div (click)="menuTimeline_click()" [class.active-menuItem]="menuTimeline" class="menu-item">Timeline</div>
                 <div (click)="menuPayment_click()" [class.active-menuItem]="menuPayment" class="menu-item">Payment</div>
+                <div (click)="menuBilling_click()" [class.active-menuItem]="menuBilling" class="menu-item">Billing</div>
                 <!-- <div (click)="menuTags_click()" [class.active-menuItem]="menuTags" class="menu-item">Tagss</div> -->
             </div>
             <div class="menu-sect">
@@ -157,7 +158,7 @@
         <app-documentation [patient]=patient *ngIf="menuDocs"></app-documentation>
         <app-pregnancy-manager *ngIf="menuPregnant"></app-pregnancy-manager>
         <app-timeline [patient]="patient" *ngIf="menuTimeline"></app-timeline>
-        <app-patient-landing-billing [selectedPatient]="patient"> *ngIf="menuBilling"></app-patient-landing-billing>
+        <app-patient-landing-billing [selectedPatient]="patient" *ngIf="menuBilling && patient !== undefined"></app-patient-landing-billing>
         <app-fluid *ngIf="menuFluid"></app-fluid>
         <app-patient-registers *ngIf="menuRegisters"></app-patient-registers>
         <app-patient-vitals [patient]="patient" *ngIf="menuVitals"></app-patient-vitals>

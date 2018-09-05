@@ -45,7 +45,8 @@
                         <div class="empWrap">
                             <span class="list-img">
                                 <img *ngIf="patient?.personDetails?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                <img *ngIf="patient?.personDetails?.profileImageObject != undefined" class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)">
+                                <img *ngIf="patient?.personDetails?.profileImageObject != undefined" class="shadow"
+                                    [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)">
                             </span>
                             <span> {{patient.personDetails?.lastName}} {{patient.personDetails?.firstName}}</span>
                         </div>
@@ -61,8 +62,8 @@
                     </div>
                     <div (click)="navEpDetail(patient)" class="table-list col-xs-2">{{patient.personDetails?.email}}</div>
                     <div (click)="navEpDetail(patient)" class="table-list col-xs-1 td-tagPopover">
-                        <span class="badge badge-secondary">{{patient?.tags.length}}</span>
-                        <ul class="tagPopover-listWrap animated zoomIn" *ngIf="patient?.tags.length > 0">
+                        <span class="badge badge-secondary">{{patient?.tags?.length}}</span>
+                        <ul class="tagPopover-listWrap animated zoomIn" *ngIf="patient?.tags?.length > 0">
                             <div class="listWrapper">
                                 <!-- <li class="tagPopover-listItem" *ngFor="let tag of patient?.tags">
                                             <ng-container>
@@ -113,7 +114,8 @@
     </div>
 
     <div class="btn-center">
-        <button (click)="loadMore()" class="apmis-blue" mat-raised-button *ngIf="showLoadMore || patients.length === 0">Load More</button>
+        <button (click)="loadMore()" class="apmis-blue" mat-raised-button *ngIf="showLoadMore || patients.length === 0">Load
+            More</button>
     </div>
     <div style="text-align:center; margin-top:20px;" *ngIf="total > 0">{{loadMoreText}} </div>
 </div>
@@ -268,7 +270,8 @@
                                                                 <input matInput [formControl]="tagName" placeholder="Tag Name" autocomplete="off">
                                                             </mat-input-container>
                                                             <ul class="suggestions nice-scroll" *ngIf="showSearchResult">
-                                                                <li *ngIf="dictionaries?.length === 0">No data available</li>
+                                                                <li *ngIf="dictionaries?.length === 0">No data available
+                                                                </li>
                                                                 <li class="suggestion" *ngFor="let dic of dictionaries" (click)="fillingWithSearchInfo(dic)">
                                                                     <div class="listing-label">{{dic.name}}</div>
                                                                 </li>
@@ -328,7 +331,8 @@
                                                         </div>
                                                     </div>
                                                     <div class="add-next-of-kin-box">
-                                                        <a class="btn btn-blue" (click)="addNewNextOfKin();"> Add Next Of Kin
+                                                        <a class="btn btn-blue" (click)="addNewNextOfKin();"> Add Next
+                                                            Of Kin
                                                             <i class="fa fa-plus"></i>
                                                         </a>
                                                     </div>
@@ -343,8 +347,10 @@
                                                             <div class="card blue-gradient">
                                                                 <div class="row">
                                                                     <div class="col-xs-8 left">
-                                                                        <i class="big-label"> {{(pat.isDefault === true) ? 'Current Plan |' : ''}}
-                                                                            {{(pat.planType === 'wallet') ? 'Out Of Pocket'
+                                                                        <i class="big-label"> {{(pat.isDefault ===
+                                                                            true) ? 'Current Plan |' : ''}}
+                                                                            {{(pat.planType === 'wallet') ? 'Out Of
+                                                                            Pocket'
                                                                             : pat.planType}}
                                                                         </i>
                                                                     </div>
@@ -364,8 +370,10 @@
                                                             <div class="tab-wrap">
                                                                 <!-- <div (click)="tabWallet_click()" [class.tab-item-active]="tabWallet" class="tab-item">Out of Pocket</div> -->
                                                                 <div (click)="tabInsurance_click()" [class.tab-item-active]="tabInsurance" class="tab-item">Insurance</div>
-                                                                <div (click)="tabCompany_click()" [class.tab-item-active]="tabCompany" class="tab-item">Company Cover</div>
-                                                                <div (click)="tabFamily_click()" [class.tab-item-active]="tabFamily" class="tab-item">Family Cover</div>
+                                                                <div (click)="tabCompany_click()" [class.tab-item-active]="tabCompany" class="tab-item">Company Cover
+                                                                </div>
+                                                                <div (click)="tabFamily_click()" [class.tab-item-active]="tabFamily" class="tab-item">Family Cover
+                                                                </div>
                                                             </div>
 
                                                             <div class="tab-content">
@@ -428,7 +436,8 @@
                                                                 </div>
 
                                                                 <div class="set-default">
-                                                                    <mat-checkbox [formControl]="isDefault">Set as default!</mat-checkbox>
+                                                                    <mat-checkbox [formControl]="isDefault">Set as default!
+                                                                    </mat-checkbox>
                                                                 </div>
 
                                                                 <div class="btn-box">
@@ -451,7 +460,8 @@
                                                                 </div>
                                                                 <div class="back-btn-box">
                                                                     <span (click)="backBtn()" class="backBtn">
-                                                                        <i class="fa fa-arrow-circle-o-left" aria-hidden="true"></i>Go Back</span>
+                                                                        <i class="fa fa-arrow-circle-o-left"
+                                                                            aria-hidden="true"></i>Go Back</span>
                                                                 </div>
                                                             </div>
                                                         </div>
