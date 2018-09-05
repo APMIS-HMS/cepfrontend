@@ -117,6 +117,7 @@ export class PatientLandingBillingComponent implements OnInit {
     this.user = <User>this.locker.getObject('auth');
 
     this._route.params.subscribe(params => {
+      console.log(params);
       if (!!params.id && params.id !== undefined) {
         this.routeId = params.id;
         this._getPatientWallet(params.id);
@@ -134,8 +135,12 @@ export class PatientLandingBillingComponent implements OnInit {
       this.selectedPatient = this.listedBillItems[0].patientItem;
     });
 
-    this._getAllPendingBills();
-    this._getAllInvoices();
+    // this._getAllPendingBills();
+    // this._getAllInvoices();
+
+    if (this.selectedPatient !== undefined) {
+      this.getPatientBills();
+    }
 
 
     this.searchPendingInvoices.valueChanges
@@ -190,7 +195,6 @@ export class PatientLandingBillingComponent implements OnInit {
   private _getPatientWallet(id) {
     this.patientService.get(id, {}).then(res => {
       this.selectedPatient = res;
-      // console.log( this.selectedPatient);
       this.getPatientBills();
     }).catch(err => {});
   }
@@ -352,7 +356,6 @@ export class PatientLandingBillingComponent implements OnInit {
       this.billingService
         .findBillService({ query: { facilityId: this.selectedFacility._id, patientId: this.selectedPatient._id, isinvoice: false } })
         .then(payload => {
-          console.log(payload);
           if (payload !== null) {
             this.billGroups = payload.billGroups;
             this.listedBillItems = payload.originalCallback;
@@ -394,7 +397,6 @@ export class PatientLandingBillingComponent implements OnInit {
   private _getAllPendingBills() {
     this.loadingPendingBills = true;
     this._pendingBillService.get(this.selectedFacility._id, {}).then((res: any) => {
-      // console.log(res.data);
       this.pendingBills = res.data; // .filter(x => x.patientId !== this.selectedPatient._id);
       this.holdMostRecentBills = res.data;
       this.loadingPendingBills = false;

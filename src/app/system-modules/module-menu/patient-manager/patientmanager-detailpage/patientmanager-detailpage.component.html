@@ -158,7 +158,7 @@
         <app-documentation [patient]=patient *ngIf="menuDocs"></app-documentation>
         <app-pregnancy-manager *ngIf="menuPregnant"></app-pregnancy-manager>
         <app-timeline [patient]="patient" *ngIf="menuTimeline"></app-timeline>
-        <app-patient-landing-billing [selectedPatient]="patient" *ngIf="menuBilling"></app-patient-landing-billing>
+        <app-patient-landing-billing [selectedPatient]="patient" *ngIf="menuBilling && patient !== undefined"></app-patient-landing-billing>
         <app-fluid *ngIf="menuFluid"></app-fluid>
         <app-patient-registers *ngIf="menuRegisters"></app-patient-registers>
         <app-patient-vitals [patient]="patient" *ngIf="menuVitals"></app-patient-vitals>

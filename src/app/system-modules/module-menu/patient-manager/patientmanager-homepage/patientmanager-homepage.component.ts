@@ -475,6 +475,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         $sort: { createdAt: -1 }
       }
     }).then(payload => {
+      console.log(payload.data);
       this.systemService.off();
       this.loading = false;
       this.total = payload.total;
