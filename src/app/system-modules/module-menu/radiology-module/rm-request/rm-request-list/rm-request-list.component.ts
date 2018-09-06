@@ -16,23 +16,22 @@ export class RmRequestListComponent implements OnInit {
   mod4 = false;
   mod5 = false; 
 
+  gp1 = true;
+  gp2 = false;
+
   clinicalInvestigation = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, ";
   
   constructor() { }
 
   ngOnInit() {
   }
-  // investigation_click(val){
-  //   if(val == "1"){
-  //     this.item1 = !this.item1;
-  //   } else if(val == "2"){
-  //     this.item2 = !this.item2;
-  //   } else if(val == "3"){
-  //     this.item3 = !this.item3;
-  //   } else if(val == "4"){
-  //     this.item4 = !this.item4;
-  //   }
-  // }
+  gp_click(val){
+    if(val == "1"){
+      this.gp1 = !this.gp1;
+    } else if(val == "2"){
+      this.gp2 = !this.gp2;
+    }
+  }
   modality_click(val){
     if(val == "1"){
       this.mod1 = true;

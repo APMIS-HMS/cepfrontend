@@ -39,6 +39,9 @@ export class RmNewRequestComponent implements OnInit {
   mod4 = false;
   mod5 = false; 
 
+  isMore = true;
+  isWalkin = false;
+
   public frmNewRequest: FormGroup;
   searchInvestigation = new FormControl();
   searchPerson = new FormControl();
@@ -58,6 +61,9 @@ export class RmNewRequestComponent implements OnInit {
     });
   }
 
+  userMore(){
+    this.isMore = !this.isMore;
+  }
   save(isvalid, val){}
   search_call(){
     this.suggestShow = true;

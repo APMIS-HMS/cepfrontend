@@ -39,21 +39,50 @@
         <div class="suggested-img-wrap">
           <img src="../../../../../../assets/images/users/default.png" >
         </div>
-        <div class="suggested-label">Sydney James</div>
+        <div class="user-labels">
+          <div class="suggested-label">Sydney James</div>
+          <div (click)="userMore()" class="user-more">
+            <i [class.fa-arrow-circle-up]="isMore" [class.fa-arrow-circle-down]="!isMore" class="fa"></i> 
+            <span *ngIf="isMore">HIDE</span>
+            <span *ngIf="!isMore">SHOW</span>
+             USER DATA
+          </div>
+        </div>
+      </div>
+      <div class="request-source">
+        <div *ngIf="isWalkin" class="walkin">WALK IN</div>
+        <div *ngIf="!isWalkin" class="reffered">
+          <div class="ref-fac">Continental Hospital</div>
+          <div class="ref-person">Dr. Kosowo Alibaba</div>
+        </div>
       </div>
     </div>
     <div class="grp-wrap">
-      <div class="pre-label-wrap">
-        <div class="pre-label-label">Radiology No:</div>
-        <div class="pre-label-val">AD-1222CA</div>
-      </div>
-      <div class="pre-label-wrap">
-        <div class="pre-label-label">Diagnosis</div>
-        <div class="pre-label-val">{{clinicalInvestigation}}</div>
-      </div>
-      <div class="pre-label-wrap">
-        <div class="pre-label-label">Clinical Investigation</div>
-        <div class="pre-label-val">{{clinicalInvestigation}}</div>
+      <div *ngIf="isMore" class="flex-em">
+        <div class="pre-label-wrap">
+          <div>
+            <div class="pre-label-label">Radiology No:</div>
+            <div class="pre-label-val">AD-1222CA</div>
+          </div>
+          <div>
+            <div class="pre-label-label">Age:</div>
+            <div class="pre-label-val">28yrs</div>
+          </div>
+          <div>
+            <div class="pre-label-label">Gender:</div>
+            <div class="pre-label-val">Male</div>
+          </div>
+        </div>
+        <div>
+          <div class="pre-label-wrap">
+            <div class="pre-label-label">Clinical Information</div>
+            <div class="pre-label-val">{{clinicalInvestigation}}</div>
+          </div>
+          <div class="pre-label-wrap">
+            <div class="pre-label-label">Diagnosis</div>
+            <div class="pre-label-val">{{clinicalInvestigation}}</div>
+          </div>
+        </div>
       </div>
       <div class="iv-lists">
         <div class="modality-list">
