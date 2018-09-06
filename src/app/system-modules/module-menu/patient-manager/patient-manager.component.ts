@@ -59,7 +59,7 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
       .debounceTime(200)
       .distinctUntilChanged()
       .subscribe(value => {
-        if(this.searchCriteria.value === 'Patient'){
+        if (this.searchCriteria.value === 'Patient') {
           this.patientService.findPatient({
             query: {
               'facilityId': this.selectedFacility._id,
@@ -68,9 +68,10 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
               $limit: 300
             }
           }).then(payload => {
+            console.log(payload);
             if (value.length > 0) {
               this.searchEmpty = false;
-              this.searchedPatients = payload.data;
+              this.searchedPatients = payload.data.filter(x => x !== null);
             } else {
               this.searchEmpty = true;
               this.searchedPatients = [];
