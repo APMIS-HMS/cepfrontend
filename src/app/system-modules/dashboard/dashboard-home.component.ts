@@ -189,7 +189,8 @@ export class DashboardHomeComponent implements OnInit {
         // }, 5000);
       }
     },
-      error => { }
+      error => {
+       }
     );
   }
   accessHas(menu, label) {

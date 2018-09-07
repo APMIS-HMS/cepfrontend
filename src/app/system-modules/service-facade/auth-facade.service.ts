@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { FeatureModuleService } from "./../../services/module-manager/setup/feature-module.service";
 import { CoolLocalStorage } from "angular2-cool-storage/src/cool-local-storage";
 import { SocketService, RestService } from "./../../feathers/feathers.service";
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
@@ -44,7 +44,7 @@ export class AuthFacadeService {
     return new Promise(function (resolve, reject) {
       self._socketService.authenticateService();
       self._socketService
-        .getService("get-server-time")
+        .getService('get-server-time')
         .get(self.selectedFacility._id)
         .then(
         payload => {
@@ -68,7 +68,7 @@ export class AuthFacadeService {
   }
 
   getLogingEmployee() {
-    let facId = this.locker.getObject("fac");
+    let facId = this.locker.getObject('fac');
     let self = this;
 
     return new Promise(function (resolve, reject) {
@@ -77,7 +77,7 @@ export class AuthFacadeService {
       } else {
         self._socketService.authenticateService();
         self._socketService
-          .getService("save-employee")
+          .getService('save-employee')
           .get(facId)
           .then(
           payload => {
@@ -159,7 +159,7 @@ export class AuthFacadeService {
     });
   }
   getLogingUser(id?) {
-    let facId = this.locker.getObject("fac");
+    let facId = this.locker.getObject('fac');
     if(facId === null && id !== undefined){
       facId = id;
     }
@@ -170,7 +170,7 @@ export class AuthFacadeService {
       } else {
         self._socketService.authenticateService();
         self._socketService
-          .getService("save-employee")
+          .getService('save-employee')
           .get(facId)
           .then(
           payload => {
@@ -190,8 +190,8 @@ export class AuthFacadeService {
     });
   }
   getUserAccessControls(force?, id?) {
-    let facId = this.locker.getObject("fac"); // TO Do: check if fac is in user's facilityRoles
-    let self = this;
+    const facId = this.locker.getObject('fac'); // TO Do: check if fac is in user's facilityRoles
+    const self = this;
     return new Promise(function (resolve, reject) {
       if (self.access !== undefined && self.access.modules !== undefined && !force) {
         resolve(self.access);

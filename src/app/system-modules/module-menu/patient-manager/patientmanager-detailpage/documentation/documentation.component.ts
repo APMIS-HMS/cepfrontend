@@ -70,7 +70,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this.selectedMiniFacility = <Facility>this.locker.getObject('miniFacility');
 
     this.subscription = this.sharedService.submitForm$.subscribe(payload => {
-      console.log(payload);
       if (!this.hasSavedDraft) {
         const doc: PatientDocumentation = <PatientDocumentation>{};
         doc.document = {documentType: this.selectedForm, body: payload};
@@ -208,10 +207,10 @@ export class DocumentationComponent implements OnInit, OnDestroy {
         .find({
           query: {
             personId: this.patient.personId,
-            $sort: {'documentations.updatedAt': -1}
+            // $sort: {'documentations.updatedAt': -1}
           }
         })
-        .then((payload: any) => {
+      .then((payload: any) => {
           if (payload.data.length === 0) {
             this.patientDocumentation.personId = this.patient.personDetails;
             this.patientDocumentation.documentations = [];
@@ -270,6 +269,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
               // })
             }
           }
+      }, err => {
         });
   }
 
@@ -572,6 +572,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
           this.documents.push(documentation);
         }
       }
+    }, er => {
     });
     const reverseDocuments = this.documents.reverse();
     const grouped = this.groupBy(
