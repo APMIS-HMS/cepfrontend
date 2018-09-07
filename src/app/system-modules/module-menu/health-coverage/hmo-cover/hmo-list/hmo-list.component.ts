@@ -106,7 +106,6 @@ export class HmoListComponent implements OnInit {
     })
   }
   _getHMOFacilities(facilityHMOs, value?) {
-    console.log(value);
     this.hmoEnrolleList = facilityHMOs.hmos.map(obj => {
       return { hmo: obj.hmo, enrolles: obj.enrolleeList };
     });
@@ -171,7 +170,6 @@ export class HmoListComponent implements OnInit {
   }
 
   show_beneficiaries(hmo) {
-    console.log(hmo);
     this.router.navigate(['/dashboard/health-coverage/hmo-cover-beneficiaries/', hmo._id]);
   }
   onChange(e) {
