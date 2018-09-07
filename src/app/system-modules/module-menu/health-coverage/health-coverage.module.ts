@@ -45,6 +45,7 @@ import { FacilityHealthCoverComponent } from './facility-health-cover/facility-h
 import { HmoBillHistoryDetailComponent } from './hmo-officer/hmo-bill-history-detail/hmo-bill-history-detail.component';
 import { HmoBillDetailComponent } from './hmo-officer/hmo-bill-detail/hmo-bill-detail.component';
 import { HmoOfficerComponent } from './hmo-officer/hmo-officer.component';
+import { NewBeneficiaryComponent } from './hmo-cover/beneficiary-list/new-beneficiary/new-beneficiary.component';
 
 
 @NgModule({
@@ -83,7 +84,8 @@ import { HmoOfficerComponent } from './hmo-officer/hmo-officer.component';
         CompanyBillDetailComponent,
         CompanyBillHistoryDetailComponent,
         FamilyBillDetailComponent,
-        FamilyBillHistoryDetailComponent
+        FamilyBillHistoryDetailComponent,
+        NewBeneficiaryComponent
     ],
     exports: [
     ],

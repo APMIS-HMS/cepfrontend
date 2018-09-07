@@ -70,8 +70,7 @@ export class LoginComponent implements OnInit {
       };
       this.userService.login(query).then(result => {
         this.userServiceFacade.authenticateResource().then(payload => {
-          console.log(payload);
-          let auth = {data: result.user};
+          const auth = {data: result.user};
           this.locker.setObject('auth', auth);
           this.locker.setObject('token', result.accessToken);
 
@@ -83,17 +82,14 @@ export class LoginComponent implements OnInit {
             this.inProgress = false;
           });
         }, error => {
-          console.log(error);
           this.systemModule.off();
           this.inProgress = false;
         }).catch(merr => {
-          console.log(merr);
           this.systemModule.off();
           this.frm_login.controls['password'].reset();
           this.inProgress = false;
         });
       }, error => {
-        console.log(error);
         this.inProgress = false;
         this.errMsg = 'Wrong login credentials';
         this.systemModule.announceSweetProxy(this.errMsg, 'error');

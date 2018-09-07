@@ -4,6 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { MatPaginator, PageEvent } from '@angular/material';
+
 @Component({
   selector: 'app-beneficiary-list',
   templateUrl: './beneficiary-list.component.html',
@@ -14,16 +15,19 @@ export class BeneficiaryListComponent implements OnInit {
   @ViewChild('fileInput') fileInput: ElementRef;
   public frmNewHmo: FormGroup;
   hmo = new FormControl('', []);
+  searchBeneficiary = new FormControl();
   newHmo = false;
   selectedFacility: any = <any>{};
   beneficiaries: any[] = [];
   filteredBeneficiaries: any[] = [];
   operateBeneficiaries: any[] = [];
   selectedHMO: any = <any>{};
+  selectedBeneficiary: any = <any>{};
 
   pageSize = 10;
   pageSizeOptions = [5, 10, 25, 100];
   loading = true;
+  newBeneficiary = false;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   pageEvent: PageEvent;
@@ -41,8 +45,16 @@ export class BeneficiaryListComponent implements OnInit {
       plans: ['', [<any>Validators.required]]
     });
 
+    this.searchBeneficiary.valueChanges
+      .debounceTime(300)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        this.findBeneficiaries(value)
+      });
+
 
     this.route.params.subscribe(parameters => {
+      this.selectedBeneficiary.id = parameters.id;
       this.getBeneficiaryList(parameters.id);
     })
   }
@@ -63,7 +75,6 @@ export class BeneficiaryListComponent implements OnInit {
             const startIndex = 0 * 10;
             this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
             this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
-            console.log(this.filteredBeneficiaries);
           }
         }
       }
@@ -81,6 +92,39 @@ export class BeneficiaryListComponent implements OnInit {
     this.newHmo = !this.newHmo;
   }
 
+  onBeneficiaryValueChange(e){
+    const facHmo = e;
+    const index = facHmo.hmos.findIndex(x => x.hmo === this.selectedBeneficiary.id);
+      if (index > -1) {
+        if (facHmo.hmos[index].enrolleeList.length > 0) {
+          const bene = [];
+          for (let s = 0; s < facHmo.hmos[index].enrolleeList.length; s++) {
+            this.selectedHMO = facHmo.hmos[index].hmo;
+            bene.push(...facHmo.hmos[index].enrolleeList[s].enrollees);
+          }
+          this.loading = false;
+          this.beneficiaries = JSON.parse(JSON.stringify(bene));
+          const startIndex = 0 * 10;
+          this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
+          this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
+          this.newBeneficiary = false;
+        }
+      }
+  }
+
+  findBeneficiaries(value) {
+    const startIndex = 0 * 10;
+    this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries.filter(x => (x.surname !== undefined && x.surname.toLowerCase().includes(value)) || (x.firstname !== undefined && x.firstname.toLowerCase().includes(value)))));
+    this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
+  }
+
+  edit_show(value,i) {
+    this.newBeneficiary = !this.newBeneficiary;
+    value.id = this.selectedBeneficiary.id;
+    value.index = i;
+    this.selectedBeneficiary = value;
+  }
+
   showImageBrowseDlg() {
     this.fileInput.nativeElement.click();
   }
@@ -89,5 +133,27 @@ export class BeneficiaryListComponent implements OnInit {
     const startIndex = event.pageIndex * event.pageSize;
     this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
     this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
+  }
+  newBeneficiary_click() {
+    this.newBeneficiary = true;
+    let _value = {
+      id:this.selectedBeneficiary.id,
+      firstname: '',
+      index:'',
+      surname: '',
+      category: '',
+      serial: '',
+      sponsor: '',
+      type: '',
+      plan: '',
+      gender: '',
+      filNo: '',
+      date: new Date(),
+      status: ''
+    }
+    this.selectedBeneficiary = _value;
+  }
+  close_onClick(e) {
+    this.newBeneficiary = false;
   }
 }

@@ -11,7 +11,8 @@
                     </div>
                 </div>
                 <div class="headerDetail-wrap">
-                    <div class="modal_title">{{patient?.personDetails?.title}} {{patient?.personDetails?.lastName}} {{patient?.personDetails?.firstName}}</div>
+                    <div class="modal_title">{{patient?.personDetails?.title}} {{patient?.personDetails?.lastName}} {{patient?.personDetails?.firstName}}
+                    </div>
                     <div class="headDetail-group">
                         <div class="patient-apmisNo">
                             <span>({{patient?.personDetails?.apmisId}})</span>
@@ -22,7 +23,8 @@
                             <div class="patient-gender">{{patient?.personDetails?.gender}}</div>
                             <div class="patient-email">
                                 <i class="fa fa-envelope"></i>
-                                <span *ngIf="patient?.personDetails?.email !== undefined"> {{patient?.personDetails?.email}}</span>
+                                <span *ngIf="patient?.personDetails?.email !== undefined">
+                                    {{patient?.personDetails?.email}}</span>
                                 <span *ngIf="patient?.personDetails?.email === undefined"> N/A</span>
                             </div>
                         </div>
@@ -30,7 +32,8 @@
                             <div class="patient-dob">{{patient?.personDetails?.dateOfBirth | date}}</div>
                             <div class="patient-phone">
                                 <i class="fa fa-phone"></i>
-                                <span *ngIf="patient?.personDetails?.primaryContactPhoneNo !== undefined"> {{patient?.personDetails?.primaryContactPhoneNo}}</span>
+                                <span *ngIf="patient?.personDetails?.primaryContactPhoneNo !== undefined">
+                                    {{patient?.personDetails?.primaryContactPhoneNo}}</span>
                                 <span *ngIf="patient?.personDetails?.primaryContactPhoneNo === undefined"> N/A</span>
                             </div>
                         </div>
@@ -42,7 +45,7 @@
                     <section class="accBal-wrap">
                         <span class="accBal-label">Account Balances</span>
                         <span class="{{ patient?.personDetails?.wallet?.balance > 0 ? 'text-blue' : 'accBal-val'}}">
-                          &#8358; {{patient?.personDetails?.wallet?.balance|numberThr}}
+                            &#8358; {{patient?.personDetails?.wallet?.balance|numberThr}}
                         </span>
                     </section>
                 </div>
@@ -79,19 +82,24 @@
         </div>
         <div class="sideTab-nav">
             <div class="menu-sect">
-                <div (click)="menuSummary_click()" [class.active-menuItem]="menuSummary" class="menu-item">Patient Summary</div>
+                <div (click)="menuSummary_click()" [class.active-menuItem]="menuSummary" class="menu-item">Patient Summary
+                </div>
                 <div (click)="menuTimeline_click()" [class.active-menuItem]="menuTimeline" class="menu-item">Timeline</div>
                 <div (click)="menuPayment_click()" [class.active-menuItem]="menuPayment" class="menu-item">Payment</div>
+                <div (click)="menuBilling_click()" [class.active-menuItem]="menuBilling" class="menu-item">Billing</div>
                 <!-- <div (click)="menuTags_click()" [class.active-menuItem]="menuTags" class="menu-item">Tags</div> -->
             </div>
             <div class="menu-sect">
                 <div (click)="menuDocs_click()" [class.active-menuItem]="menuDocs" class="menu-item">Documentation</div>
-                <div (click)="menuPregnant_click()" [class.active-menuItem]="menuPregnant" class="menu-item">Pregnancy Manager</div>
-                <div (click)="menuTreatmentPlan_click()" [class.active-menuItem]="menuTreatmentPlan" class="menu-item">Treatment Sheet</div>
+                <div (click)="menuPregnant_click()" [class.active-menuItem]="menuPregnant" class="menu-item">Pregnancy Manager
+                </div>
+                <div (click)="menuTreatmentPlan_click()" [class.active-menuItem]="menuTreatmentPlan" class="menu-item">Treatment Sheet
+                </div>
                 <div (click)="menuFluid_click()" [class.active-menuItem]="menuFluid" class="menu-item">Fluid</div>
                 <div (click)="menuRegisters_click()" [class.active-menuItem]="menuRegisters" class="menu-item">Registers</div>
                 <div (click)="menuVitals_click()" [class.active-menuItem]="menuVitals" class="menu-item">Vitals</div>
-                <div (click)="menuUploads_click()" [class.active-menuItem]="menuUploads" class="menu-item">Document Uploads</div>
+                <div (click)="menuUploads_click()" [class.active-menuItem]="menuUploads" class="menu-item">Document Uploads
+                </div>
             </div>
             <div class="menu-sect">
                 <div (click)="menuLab_click()" [class.active-menuItem]="menuLab" class="menu-item">Laboratory</div>
@@ -99,9 +107,12 @@
                 <div (click)="menuImmunization_click()" [class.active-menuItem]="menuImmunization" class="menu-item">Immunization</div>
             </div>
             <div class="menu-sect">
-                <div (click)="menuPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescribe Drug</div>
-                <div (click)="menuExternalPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescription List</div>
-                <div (click)="menuMedicationHistory_click()" [class.active-menuItem]="menuMedicationHistory" class="menu-item">Medication History</div>
+                <div (click)="menuPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescribe Drug
+                </div>
+                <div (click)="menuExternalPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescription List
+                </div>
+                <div (click)="menuMedicationHistory_click()" [class.active-menuItem]="menuMedicationHistory" class="menu-item">Medication History
+                </div>
             </div>
         </div>
     </div>
@@ -109,19 +120,24 @@
     <div class="patientPage-contentArea">
         <div *ngIf="menuResp" class="sideTab-nav-resp">
             <div class="menu-sect">
-                <div (click)="menuSummary_click()" [class.active-menuItem]="menuSummary" class="menu-item">Patient Summary</div>
+                <div (click)="menuSummary_click()" [class.active-menuItem]="menuSummary" class="menu-item">Patient Summary
+                </div>
                 <div (click)="menuTimeline_click()" [class.active-menuItem]="menuTimeline" class="menu-item">Timeline</div>
                 <div (click)="menuPayment_click()" [class.active-menuItem]="menuPayment" class="menu-item">Payment</div>
+                <div (click)="menuBilling_click()" [class.active-menuItem]="menuBilling" class="menu-item">Billing</div>
                 <!-- <div (click)="menuTags_click()" [class.active-menuItem]="menuTags" class="menu-item">Tagss</div> -->
             </div>
             <div class="menu-sect">
                 <div (click)="menuDocs_click()" [class.active-menuItem]="menuDocs" class="menu-item">Documentation</div>
-                <div (click)="menuPregnant_click()" [class.active-menuItem]="menuPregnant" class="menu-item">Pregnancy Manager</div>
-                <div (click)="menuTreatmentPlan_click()" [class.active-menuItem]="menuTreatmentPlan" class="menu-item">Treatment Sheet</div>
+                <div (click)="menuPregnant_click()" [class.active-menuItem]="menuPregnant" class="menu-item">Pregnancy Manager
+                </div>
+                <div (click)="menuTreatmentPlan_click()" [class.active-menuItem]="menuTreatmentPlan" class="menu-item">Treatment Sheet
+                </div>
                 <div (click)="menuFluid_click()" [class.active-menuItem]="menuFluid" class="menu-item">Fluid</div>
                 <div (click)="menuRegisters_click()" [class.active-menuItem]="menuRegisters" class="menu-item">Registers</div>
                 <div (click)="menuVitals_click()" [class.active-menuItem]="menuVitals" class="menu-item">Vitals</div>
-                <div (click)="menuUploads_click()" [class.active-menuItem]="menuUploads" class="menu-item">Document Uploads</div>
+                <div (click)="menuUploads_click()" [class.active-menuItem]="menuUploads" class="menu-item">Document Uploads
+                </div>
             </div>
             <div class="menu-sect">
                 <div (click)="menuLab_click()" [class.active-menuItem]="menuLab" class="menu-item">Laboratory</div>
@@ -129,9 +145,12 @@
                 <div (click)="menuImmunization_click()" [class.active-menuItem]="menuImmunization" class="menu-item">Immunization</div>
             </div>
             <div class="menu-sect">
-                <div (click)="menuPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescribe Drug</div>
-                <div (click)="menuExternalPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescription List</div>
-                <div (click)="menuMedicationHistory_click()" [class.active-menuItem]="menuMedicationHistory" class="menu-item">Medication History</div>
+                <div (click)="menuPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescribe Drug
+                </div>
+                <div (click)="menuExternalPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescription List
+                </div>
+                <div (click)="menuMedicationHistory_click()" [class.active-menuItem]="menuMedicationHistory" class="menu-item">Medication History
+                </div>
             </div>
         </div>
 
@@ -139,6 +158,7 @@
         <app-documentation [patient]=patient *ngIf="menuDocs"></app-documentation>
         <app-pregnancy-manager *ngIf="menuPregnant"></app-pregnancy-manager>
         <app-timeline [patient]="patient" *ngIf="menuTimeline"></app-timeline>
+        <app-patient-landing-billing [selectedPatient]="patient" *ngIf="menuBilling && patient !== undefined"></app-patient-landing-billing>
         <app-fluid *ngIf="menuFluid"></app-fluid>
         <app-patient-registers *ngIf="menuRegisters"></app-patient-registers>
         <app-patient-vitals [patient]="patient" *ngIf="menuVitals"></app-patient-vitals>

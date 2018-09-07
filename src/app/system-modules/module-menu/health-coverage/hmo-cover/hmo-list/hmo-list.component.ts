@@ -106,7 +106,6 @@ export class HmoListComponent implements OnInit {
     })
   }
   _getHMOFacilities(facilityHMOs, value?) {
-    console.log(value);
     this.hmoEnrolleList = facilityHMOs.hmos.map(obj => {
       return { hmo: obj.hmo, enrolles: obj.enrolleeList };
     });
@@ -266,7 +265,7 @@ export class HmoListComponent implements OnInit {
                 rowObj.plan = data[m][7];
                 rowObj.type = data[m][8];
                 rowObj.date = this.excelDateToJSDate(data[m][9]);
-                rowObj.status = 'active';
+                rowObj.status = true;
                 // thisMonth = true;
               }
             }
