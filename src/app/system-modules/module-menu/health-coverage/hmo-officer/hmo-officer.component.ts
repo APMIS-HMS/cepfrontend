@@ -41,7 +41,6 @@ export class HmoOfficerComponent implements OnInit {
         'billItems.covered.coverType': 'insurance'
       }
     }).then(payload => {
-      console.log(payload);
       payload.data.forEach(element => {
         const index = element.billItems.filter(x => x.covered.isVerify !== undefined);
         if (index.length === 0) {
@@ -60,12 +59,10 @@ export class HmoOfficerComponent implements OnInit {
   }
 
   billDetail(bill) {
-    console.log(bill);
     this.selectedBill = bill;
     this.billDetail_show = true;
   }
   billHistoryDetail(bill) {
-    console.log(bill);
     this.selectedBill = bill;
     this.billHistoryDetail_show = true;
   }

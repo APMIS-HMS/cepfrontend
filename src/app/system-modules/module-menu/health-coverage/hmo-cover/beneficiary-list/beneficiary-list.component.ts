@@ -59,19 +59,14 @@ export class BeneficiaryListComponent implements OnInit {
     })
   }
   getBeneficiaryList(id) {
-    console.log(id);
-    console.log(this.selectedFacility._id);
     this.hmoService.find({ query: { 'facilityId': this.selectedFacility._id } }).then(payload => {
       if (payload.data.length > 0) {
         const facHmo = payload.data[0];
-        console.log(facHmo);
         const index = facHmo.hmos.findIndex(x => x.hmo === id);
         if (index > -1) {
-          console.log(facHmo.hmos[index].enrolleeList);
           if (facHmo.hmos[index].enrolleeList.length > 0) {
             const bene = [];
             for (let s = 0; s < facHmo.hmos[index].enrolleeList.length; s++) {
-              console.log(facHmo.hmos[index].hmo);
               this.selectedHMO = facHmo.hmos[index].hmo;
               bene.push(...facHmo.hmos[index].enrolleeList[s].enrollees);
             }
@@ -80,7 +75,6 @@ export class BeneficiaryListComponent implements OnInit {
             const startIndex = 0 * 10;
             this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
             this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
-            console.log(this.filteredBeneficiaries);
           }
         }
       }
@@ -99,7 +93,6 @@ export class BeneficiaryListComponent implements OnInit {
   }
 
   onBeneficiaryValueChange(e){
-    console.log(e);
     const facHmo = e;
     const index = facHmo.hmos.findIndex(x => x.hmo === this.selectedBeneficiary.id);
       if (index > -1) {
@@ -120,7 +113,6 @@ export class BeneficiaryListComponent implements OnInit {
   }
 
   findBeneficiaries(value) {
-    console.log(value);
     const startIndex = 0 * 10;
     this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries.filter(x => (x.surname !== undefined && x.surname.toLowerCase().includes(value)) || (x.firstname !== undefined && x.firstname.toLowerCase().includes(value)))));
     this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
