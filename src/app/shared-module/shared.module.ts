@@ -75,6 +75,10 @@ import { RegEntriesListComponent } from '../system-modules/module-menu/reports/r
 
 import { DateRangePickerModule } from "ng-pick-daterange";
 import { DateTimePickerModule } from "ng-pick-datetime";
+import { AddItemComponent } from '../system-modules/module-menu/payment/add-item/add-item.component';
+import { AddLineModifierComponent } from '../system-modules/module-menu/payment/add-line-modifier/add-line-modifier.component';
+import { ItemDetailComponent } from '../system-modules/module-menu/payment/item-detail/item-detail.component';
+import { FundWalletComponent } from '../system-modules/module-menu/payment/bill-lookup/fund-wallet/fund-wallet.component';
 @NgModule({
   declarations: [
     RegistersComponent,
@@ -95,7 +99,11 @@ import { DateTimePickerModule } from "ng-pick-datetime";
     PaymentChartComponent,
     StoreQuickLinksComponent,
     StoreProductTypeComponent,
-    PassContinueComponent  ],
+    PassContinueComponent,
+    AddItemComponent,
+    AddLineModifierComponent,
+    ItemDetailComponent,
+    FundWalletComponent],
   exports: [
     RegistersComponent,
     NewRegisterComponent,
@@ -123,7 +131,11 @@ import { DateTimePickerModule } from "ng-pick-datetime";
     StoreQuickLinksComponent,
     PassContinueComponent,
     DateRangePickerModule,
-    DateTimePickerModule
+    DateTimePickerModule,
+    AddItemComponent,
+    AddLineModifierComponent,
+    ItemDetailComponent,
+    FundWalletComponent
   ],
   imports: [
     DateRangePickerModule,
@@ -138,7 +150,8 @@ import { DateTimePickerModule } from "ng-pick-datetime";
     ImageCropperModule,
     OnlyMaterialModule,
     MaterialModule,
-    SharedModuleMaterialModule
+    SharedModuleMaterialModule,
+    Angular4PaystackModule,
   ],
   providers: [StoreService, WindowRef, OrderSetSharedService, ProductTypeService ]
 })

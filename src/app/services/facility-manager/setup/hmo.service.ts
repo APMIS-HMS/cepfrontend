@@ -24,6 +24,7 @@ export class HmoService {
 
     });
     this._insuranceSocket = _socketService.getService('insurance-enrollees');
+    this._insuranceSocket.timeout = 50000;
   }
   announceHmo(hmo: Object) {
     this.hmoAnnouncedSource.next(hmo);
@@ -56,6 +57,10 @@ export class HmoService {
 
   patch(id: string, data: any, params: any) {
     return this._socket.patch(id, data, params);
+  }
+
+  patchBeneficiary(id: string, data: any, params: any) {
+    return this._insuranceSocket.patch(id, data, params);
   }
 
   hmos(facilityId, hmoId?, search?) {
