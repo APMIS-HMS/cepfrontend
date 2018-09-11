@@ -55,7 +55,6 @@ export class StockHistoryComponent implements OnInit {
       if (!!res) {
         if (!!res.typeObject) {
           this.checkingStore = res.typeObject;
-          console.log(this.checkingStore);
           if (!!this.checkingStore.storeId) {
             this.getTransfers();
             this.getStores();
@@ -212,12 +211,10 @@ export class StockHistoryComponent implements OnInit {
 
   ngOnDestroy() {
     if (this.loginEmployee.storeCheckIn !== undefined) {
-      console.log(this.loginEmployee.storeCheckIn);
       this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
         if (itemr.storeObject === undefined) {
           const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
           itemr.storeObject = store_.storeObject;
-          console.log(itemr.storeObject);
         }
         if (itemr.isDefault === true && itemr.isOn === true) {
           itemr.isOn = false;
