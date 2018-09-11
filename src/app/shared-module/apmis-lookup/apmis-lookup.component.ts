@@ -89,6 +89,7 @@ export class ApmisLookupComponent
         query: this.query
       }, this.isSocket))
       .subscribe((payload: any) => {
+        console.log(payload.data);
         this.cuDropdownLoading = false;
          if (payload !== undefined && payload.data !== undefined) {
             this.results = payload.data;
@@ -101,7 +102,7 @@ export class ApmisLookupComponent
 
 
   getImgUrl(item) {
-    item = item.personDetails;
+    // item = item.personDetails;
     const splitArray = this.imgObj.split('.');
     let counter = 0;
     splitArray.forEach((obj, i) => {
@@ -133,7 +134,7 @@ export class ApmisLookupComponent
     }
   }
   getName(item, displayKey: String) {
-    item = item.personDetails;
+    // item = item.personDetails;
     const splitArray = displayKey.split('.');
     let counter = 0;
     splitArray.forEach((obj, i) => {
@@ -145,7 +146,7 @@ export class ApmisLookupComponent
     }
   }
   getOtherKeyValues(item) {
-    item = item.personDetails;
+    // item = item.personDetails;
     const otherValues = [];
     let mainCounter = 0;
     let objItem = item;

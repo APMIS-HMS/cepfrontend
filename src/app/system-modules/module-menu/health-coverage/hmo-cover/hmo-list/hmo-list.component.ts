@@ -222,7 +222,6 @@ export class HmoListComponent implements OnInit {
       }
     }).then(payload => {
       const hmoData = payload.data[0].hmos.filter(x => x.hmo === hmo._id);
-
       const index = payload.data[0].hmos.findIndex(x => x.hmo === hmo._id);
       const facHmo = payload.data[0].hmos[index];
 
