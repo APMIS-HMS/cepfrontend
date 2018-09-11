@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RmAppntAppointmentsComponent implements OnInit {
 
+  valGroup = false;
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  valGroup_click(){
+    this.valGroup = !this.valGroup;
   }
 
 }
