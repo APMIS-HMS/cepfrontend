@@ -59,12 +59,12 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
   paramDiagnosis = '';
   selectedFacility: Facility = <Facility>{};
   isValidateForm = false;
-  apmisLookupUrl = 'patient-search';
+  apmisLookupUrl = 'patients';
   apmisLookupText = '';
   apmisLookupQuery: any = {};
-  apmisLookupDisplayKey = 'firstName';
+  apmisLookupDisplayKey = 'personDetails.firstName';
   apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
-  apmisLookupOtherKeys = ['lastName', 'firstName', 'apmisId', 'email'];
+  apmisLookupOtherKeys = ['personDetails.lastName', 'personDetails.firstName', 'personDetails.dateOfBirth', 'personDetails.email'];
   apmisInvestigationLookupUrl = 'investigations';
   apmisInvestigationLookupText = '';
   apmisInvestigationLookupQuery: any = {};
