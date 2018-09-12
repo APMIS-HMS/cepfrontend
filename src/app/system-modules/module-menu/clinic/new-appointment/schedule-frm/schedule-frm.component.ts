@@ -98,11 +98,11 @@ export class ScheduleFrmComponent implements OnInit {
   apmisLookupUrl = 'patient-search';
   apmisLookupText = '';
   apmisLookupQuery: any = {};
-  apmisLookupDisplayKey = 'personDetails.firstName';
+  apmisLookupDisplayKey = 'firstName';
   apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
   apmisLookupOtherKeys = [
-    'personDetails.lastName', 'personDetails.firstName',
-    'personDetails.apmisId', 'personDetails.email'
+    'lastName', 'firstName',
+    'apmisId', 'email'
   ];
   apmisProviderLookupUrl = 'employee-search';
   apmisProviderLookupText = '';
@@ -318,7 +318,7 @@ export class ScheduleFrmComponent implements OnInit {
   }
 
   apmisLookupHandleSelectedItem(value) {
-    this.apmisLookupText = `${value.personDetails.firstName} ${value.personDetails.lastName}`;
+    this.apmisLookupText = `${value.firstName} ${value.lastName}`;
     this.selectedPatient = value;
     this.appointmentService.patientAnnounced(this.selectedPatient);
   }

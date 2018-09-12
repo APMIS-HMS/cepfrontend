@@ -178,7 +178,6 @@ export class ApmisLookupComponent
     }
   }
   onSelectedItem(value) {
-    console.log(value)
     this.selectedItem.emit(value.personDetails);
   }
 
