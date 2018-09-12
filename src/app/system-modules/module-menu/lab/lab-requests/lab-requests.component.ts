@@ -59,12 +59,12 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
   paramDiagnosis = '';
   selectedFacility: Facility = <Facility>{};
   isValidateForm = false;
-  apmisLookupUrl = 'patient-search';
+  apmisLookupUrl = 'patients';
   apmisLookupText = '';
   apmisLookupQuery: any = {};
   apmisLookupDisplayKey = 'firstName';
   apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
-  apmisLookupOtherKeys = ['lastName', 'firstName', 'apmisId', 'email'];
+  apmisLookupOtherKeys = ['lastName', 'firstName', 'dateOfBirth', 'email'];
   apmisInvestigationLookupUrl = 'investigations';
   apmisInvestigationLookupText = '';
   apmisInvestigationLookupQuery: any = {};
@@ -481,6 +481,7 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
   }
 
   apmisLookupHandleSelectedItem(value) {
+    console.log(value);
     this.apmisLookupText = `${value.firstName} ${value.lastName}`;
     this.selectedPatient = value;
     this.frmNewRequest.controls['labNo'].setValue('');
