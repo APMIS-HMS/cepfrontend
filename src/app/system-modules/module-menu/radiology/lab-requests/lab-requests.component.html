@@ -30,11 +30,11 @@
                         <div *ngIf="isLaboratory" class="labBtn-wrap">
                             <div (click)="newPerson()" class="lab-btn"><i class="fa fa-plus" aria-hidden="true"></i>Register Patient</div>
                         </div>
-                        <div class="clear-r"></div>
+                        <div class="clear-r"></div> 
                         <div class="frm-wrap">
                             <div class="frm-l">
                                 <div *ngIf="isLaboratory" class="frm-item-wrap">
-                                    <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="search for patient" [isSocket]="false" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
+                                    <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="search for patient" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
                                         [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                 </div>
 

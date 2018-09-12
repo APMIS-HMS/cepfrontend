@@ -31,19 +31,24 @@ export class LabRequestsComponent implements OnInit {
   paramDiagnosis = "";
 
   selectedFacility: Facility = <Facility>{};
-  apmisLookupUrl = 'patient';
   isValidateForm = false;
+  
+  apmisLookupUrl = 'patient-search';
   apmisLookupText = '';
   apmisLookupQuery: any = {};
-  apmisLookupDisplayKey = 'personDetails.personFullName';
+  apmisLookupDisplayKey = 'personDetails.firstName';
   apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
+  apmisLookupOtherKeys = [
+    'personDetails.lastName', 'personDetails.firstName',
+    'personDetails.email','personDetails.dateOfBirth'
+  ];
+
 
   apmisInvestigationLookupUrl = 'investigations';
   apmisInvestigationLookupText = '';
   apmisInvestigationLookupQuery: any = {};
   apmisInvestigationLookupDisplayKey = 'name';
   apmisInvestigationLookupImgKey = '';
-  apmisLookupOtherKeys = ['personDetails.email', 'personDetails.dateOfBirth'];
 
   request_view = false;
   reqDetail_view = false;
