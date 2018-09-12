@@ -36,11 +36,10 @@ export class LabRequestsComponent implements OnInit {
   apmisLookupUrl = 'patient-search';
   apmisLookupText = '';
   apmisLookupQuery: any = {};
-  apmisLookupDisplayKey = 'personDetails.firstName';
+  apmisLookupDisplayKey = 'personDetails.apmisId';
   apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
   apmisLookupOtherKeys = [
-    'personDetails.lastName', 'personDetails.firstName',
-    'personDetails.email','personDetails.dateOfBirth'
+    'personDetails.lastName', 'personDetails.firstName','personDetails.dateOfBirth'
   ];
 
 
@@ -321,7 +320,8 @@ export class LabRequestsComponent implements OnInit {
   }
 
   apmisLookupHandleSelectedItem(value) {
-    this.apmisLookupText = value.personDetails.personFullName;
+    console.log('Here are ',value);
+    this.apmisLookupText = `${value.firstName} ${value.lastName}`;
     this.selectedPatient = value;
     this.frmNewRequest.controls['labNo'].setValue('');
     if (this.selectedPatient.clientsNo !== undefined) {
