@@ -101,7 +101,6 @@ export class ApmisLookupComponent
 
 
   getImgUrl(item) {
-    item = item.personDetails;
     const splitArray = this.imgObj.split('.');
     let counter = 0;
     splitArray.forEach((obj, i) => {
@@ -133,7 +132,6 @@ export class ApmisLookupComponent
     }
   }
   getName(item, displayKey: String) {
-    item = item.personDetails;
     const splitArray = displayKey.split('.');
     let counter = 0;
     splitArray.forEach((obj, i) => {
@@ -145,7 +143,6 @@ export class ApmisLookupComponent
     }
   }
   getOtherKeyValues(item) {
-    item = item.personDetails;
     const otherValues = [];
     let mainCounter = 0;
     let objItem = item;
@@ -178,7 +175,7 @@ export class ApmisLookupComponent
     }
   }
   onSelectedItem(value) {
-    this.selectedItem.emit(value.personDetails);
+    this.selectedItem.emit(value);
   }
 
   focusSearch() {

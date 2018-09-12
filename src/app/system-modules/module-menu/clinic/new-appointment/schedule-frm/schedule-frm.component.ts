@@ -98,11 +98,11 @@ export class ScheduleFrmComponent implements OnInit {
   apmisLookupUrl = 'patient-search';
   apmisLookupText = '';
   apmisLookupQuery: any = {};
-  apmisLookupDisplayKey = 'firstName';
+  apmisLookupDisplayKey = 'personDetails.firstName';
   apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
   apmisLookupOtherKeys = [
-    'lastName', 'firstName',
-    'apmisId', 'email'
+    'personDetails.lastName', 'personDetails.firstName',
+    'personDetails.apmisId', 'personDetails.email'
   ];
   apmisProviderLookupUrl = 'employee-search';
   apmisProviderLookupText = '';
@@ -164,9 +164,10 @@ export class ScheduleFrmComponent implements OnInit {
         this.apmisProviderLookupHandleSelectedItem(
             this.appointment.providerDetails);
       }
-      this.selectedPatient = payload.patientDetails;
+      // this.selectedPatient = payload.patientDetails;
+      this.selectedPatient = payload;
       // this.patient.setValue(payload.patientDetails);
-      this.apmisLookupHandleSelectedItem(payload.patientDetails);
+      this.apmisLookupHandleSelectedItem(payload);
       this.date = payload.startDate;
       this.reason.setValue(payload.appointmentReason);
       this.type.setValue(payload.appointmentTypeId);
@@ -318,7 +319,8 @@ export class ScheduleFrmComponent implements OnInit {
   }
 
   apmisLookupHandleSelectedItem(value) {
-    this.apmisLookupText = `${value.firstName} ${value.lastName}`;
+    console.log(value);
+    this.apmisLookupText = `${value.personDetails.firstName} ${value.personDetails.lastName}`;
     this.selectedPatient = value;
     this.appointmentService.patientAnnounced(this.selectedPatient);
   }
