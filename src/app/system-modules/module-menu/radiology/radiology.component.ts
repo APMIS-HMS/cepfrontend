@@ -41,51 +41,6 @@ export class RadiologyComponent implements OnInit, OnDestroy {
     this.checkPageUrl(page);
     this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
     this.loginEmployee = <Employee>this._locker.getObject('loginEmployee');
-    if ((this.loginEmployee.workbenchCheckIn === undefined
-      || this.loginEmployee.workbenchCheckIn.length === 0)) {
-      this.modal_on = true;
-    } else {
-      let isOn = false;
-      this.loginEmployee.workbenchCheckIn.forEach((x, r) => {
-        if (x.isDefault) {
-          x.isOn = true;
-          x.lastLogin = new Date();
-          isOn = true;
-          let checkingObject = { typeObject: x, type: 'workbench' };
-          this.checkedInObject = checkingObject;
-          this._employeeService.announceCheckIn(checkingObject);
-          // Set page title
-          this.isWorkbenchAvailable = true;
-          this.workbenchTitle = x.workbenchObject.name;
-          this._employeeService.update(this.loginEmployee).then(res => {
-            this.loginEmployee = res;
-            checkingObject = { typeObject: x, type: 'workbench' };
-            this.checkedInObject = checkingObject;
-            this._employeeService.announceCheckIn(checkingObject);
-            this._locker.setObject('workbenchCheckingObject', checkingObject);
-          });
-        }
-      });
-
-      if (!isOn) {
-        this.loginEmployee.workbenchCheckIn.forEach((x, r) => {
-          if (r === 0) {
-            x.isOn = true;
-            x.lastLogin = new Date();
-            // Set page title
-            this.isWorkbenchAvailable = true;
-            this.workbenchTitle = x.workbenchObject.name;
-            this._employeeService.update(this.loginEmployee).then(payload => {
-              this.loginEmployee = payload;
-              const checkingObject = { typeObject: x, type: 'workbench' };
-              this.checkedInObject = checkingObject;
-              this._employeeService.announceCheckIn(checkingObject);
-              this._locker.setObject('workbenchCheckingObject', checkingObject);
-            });
-          }
-        });
-      }
-    }
   }
 
   contentSecMenuToggle() {

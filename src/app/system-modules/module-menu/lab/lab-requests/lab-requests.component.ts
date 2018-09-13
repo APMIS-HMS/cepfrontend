@@ -307,7 +307,7 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
       clinicalInfo: ['', [Validators.required]],
       diagnosis: ['', [Validators.required]],
       investigation: ['']
-    });
+    }); 
 
     this.frmNewRequest.controls['patient'].valueChanges.subscribe(value => {
       this.apmisLookupQuery = {
