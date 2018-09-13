@@ -96,16 +96,21 @@ export class UserAccountsComponent implements OnInit {
         this.popup_verifyToken = true;
         this.popup_listing = false;
       } else {
-        this.joinChannelService.create({_id:this.selectedFacility._id, userId:auth.data._id}).then(pay =>{
+        this.joinChannelService.create(
+          {_id: this.selectedFacility._id,
+            userId: auth.data._id,
+            dept: this.selectedFacility.departments
+          }
+        ).then(pay => {
           this.popup_listing = true;
           this.popup_verifyToken = false;
-        }, err =>{
-          
+        }, err => {
+          //
         })
-        
+        //
       }
       this.locker.setObject('selectedFacility', this.selectedFacility);
-      this.locker.setObject('fac',this.selectedFacility._id);
+      this.locker.setObject('fac', this.selectedFacility._id);
       this.logoutConfirm_on = false;
     })
 
