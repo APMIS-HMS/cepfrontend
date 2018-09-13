@@ -31,19 +31,23 @@ export class LabRequestsComponent implements OnInit {
   paramDiagnosis = "";
 
   selectedFacility: Facility = <Facility>{};
-  apmisLookupUrl = 'patient';
   isValidateForm = false;
+  
+  apmisLookupUrl = 'patient-search';
   apmisLookupText = '';
   apmisLookupQuery: any = {};
-  apmisLookupDisplayKey = 'personDetails.personFullName';
+  apmisLookupDisplayKey = 'personDetails.apmisId';
   apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
+  apmisLookupOtherKeys = [
+    'personDetails.lastName', 'personDetails.firstName','personDetails.dateOfBirth'
+  ];
+
 
   apmisInvestigationLookupUrl = 'investigations';
   apmisInvestigationLookupText = '';
   apmisInvestigationLookupQuery: any = {};
   apmisInvestigationLookupDisplayKey = 'name';
   apmisInvestigationLookupImgKey = '';
-  apmisLookupOtherKeys = ['personDetails.email', 'personDetails.dateOfBirth'];
 
   request_view = false;
   reqDetail_view = false;
@@ -316,7 +320,8 @@ export class LabRequestsComponent implements OnInit {
   }
 
   apmisLookupHandleSelectedItem(value) {
-    this.apmisLookupText = value.personDetails.personFullName;
+    console.log('Here are ',value);
+    this.apmisLookupText = `${value.firstName} ${value.lastName}`;
     this.selectedPatient = value;
     this.frmNewRequest.controls['labNo'].setValue('');
     if (this.selectedPatient.clientsNo !== undefined) {

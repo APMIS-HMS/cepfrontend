@@ -64,6 +64,7 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
   apmisLookupQuery: any = {};
   apmisLookupDisplayKey = 'personDetails.firstName';
   apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
+
   apmisLookupOtherKeys = ['personDetails.lastName', 'personDetails.firstName', 'personDetails.dateOfBirth', 'personDetails.email'];
   apmisInvestigationLookupUrl = 'investigations';
   apmisInvestigationLookupText = '';
@@ -104,7 +105,6 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
   totalPrice: Number = 0;
   searchOpen = false;
   routeSubscription: ISubscription;
-  labSubscription: ISubscription;
   requestLoading = false;
 
   constructor(
@@ -132,7 +132,7 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
     }).catch(err => console.log(err));
 
     // Subscribe to the event when ward changes.
-    this.labSubscription = this._labEventEmitter.announceLab.subscribe(val => {
+    this.routeSubscription = this._labEventEmitter.announceLab.subscribe(val => {
       this.selectedLab = val;
       this._getAllPendingRequests();
     });
@@ -1250,8 +1250,16 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
     this.searchOpen = !this.searchOpen;
   }
 
+  // Notification
+  private _notification(type: string, text: string): void {
+    this.facilityService.announceNotification({
+      users: [this.user._id],
+      type: type,
+      text: text
+    });
+  }
+
   ngOnDestroy() {
     this.routeSubscription.unsubscribe();
-    this.labSubscription.unsubscribe();
   }
 }
