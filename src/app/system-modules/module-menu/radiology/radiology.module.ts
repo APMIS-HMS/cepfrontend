@@ -14,7 +14,7 @@ import { ExternalInvestigationsComponent } from './external-investigations/exter
 import { TemplateComponent } from './template/template.component';
 import { SelectTemplateComponent } from './template/select-template/select-template.component';
 import { ScopeLevelService } from '../../../services/module-manager/setup/index';
-import { LabRequestsComponent } from './lab-requests/lab-requests.component';
+// import { LabRequestsComponent } from './lab-requests/lab-requests.component';
 import { RadRequestDetailComponent } from './lab-requests/request-detail/request-detail.component';
 import { RadiologyInvestigationService } from 'app/services/facility-manager/setup/radiologyinvestigation.service';
 // tslint:disable-next-line:max-line-length
@@ -29,7 +29,7 @@ import { OnlyMaterialModule } from '../../../shared-common-modules/only-material
     OnlyMaterialModule,
     MaterialModule
   ],
-  declarations: [RadiologyComponent, LabRequestsComponent, RadiologyInvestigationServiceComponent, RadRequestDetailComponent,
+  declarations: [RadiologyComponent, RadiologyInvestigationServiceComponent, RadRequestDetailComponent,
     RadiologyInvestigationPriceComponent, PanelComponent, ReportComponent, ReportDetailComponent,
     ExternalInvestigationsComponent, TemplateComponent, SelectTemplateComponent],
   providers: [LaboratoryRequestService, ScopeLevelService,RadiologyInvestigationService]
