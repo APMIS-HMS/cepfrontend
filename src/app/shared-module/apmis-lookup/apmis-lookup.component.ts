@@ -176,7 +176,7 @@ export class ApmisLookupComponent
     }
   }
   onSelectedItem(value) {
-    this.selectedItem.emit(value.personDetails);
+    this.selectedItem.emit(value);
   }
 
   focusSearch() {
