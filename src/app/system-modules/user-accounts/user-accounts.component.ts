@@ -99,6 +99,7 @@ export class UserAccountsComponent implements OnInit {
         this.joinChannelService.create(
           {_id: this.selectedFacility._id,
             userId: auth.data._id,
+            facilityName: this.selectedFacility.name,
             dept: this.selectedFacility.departments
           }
         ).then(pay => {
