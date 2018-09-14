@@ -60,16 +60,17 @@ export class LoginComponent implements OnInit {
     if (valid) {
       this.inProgress = true;
       this.systemModule.on();
-      const query = {
-        email: this.frm_login.controls['username'].value,
-        password: this.frm_login.controls['password'].value
-      };
       // const query = {
-      //   email: AES.encrypt(this.upperCasePipe.transform(this.frm_login.controls['username'].value), 'endurance@pays@alot'),
-      //   password: AES.encrypt(this.frm_login.controls['password'].value, 'endurance@pays@alot')
+      //   email: this.frm_login.controls['username'].value,
+      //   password: this.frm_login.controls['password'].value
       // };
+      const query = {
+        email: AES.encrypt(this.upperCasePipe.transform(this.frm_login.controls['username'].value.toString()), 'endurance@pays@alot'),
+        password: AES.encrypt(this.frm_login.controls['password'].value.toString(), 'endurance@pays@alot')
+      };
       this.userService.login(query).then(result => {
         this.userServiceFacade.authenticateResource().then(payload => {
+          console.log(payload);
           let auth = {data: result.user};
           this.locker.setObject('auth', auth);
           this.locker.setObject('token', result.accessToken);
@@ -82,14 +83,17 @@ export class LoginComponent implements OnInit {
             this.inProgress = false;
           });
         }, error => {
+          console.log(error);
           this.systemModule.off();
           this.inProgress = false;
         }).catch(merr => {
+          console.log(merr);
           this.systemModule.off();
           this.frm_login.controls['password'].reset();
           this.inProgress = false;
         });
       }, error => {
+        console.log(error);
         this.inProgress = false;
         this.errMsg = 'Wrong login credentials';
         this.systemModule.announceSweetProxy(this.errMsg, 'error');

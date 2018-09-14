@@ -1,6 +1,6 @@
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Appointment } from './../../../../models/facility-manager/setup/appointment';
+import { Appointment } from '../../../../models/facility-manager/setup/appointment';
 import {
   Component,
   OnInit,
@@ -21,9 +21,9 @@ import {
   InvestigationService,
   LaboratoryRequestService,
   BillingService
-} from '../../../../services/facility-manager/setup/index';
-import { LocationService } from '../../../../services/module-manager/setup/index';
-import { Location } from '../../../../models/index';
+} from '../../../../services/facility-manager/setup';
+import { LocationService } from '../../../../services/module-manager/setup';
+import { Location } from '../../../../models';
 import {
   Facility,
   MinorLocation,
@@ -35,7 +35,7 @@ import {
   BillModel,
   PendingLaboratoryRequest,
   User
-} from '../../../../models/index';
+} from '../../../../models';
 import { Observable } from 'rxjs/Observable';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
@@ -44,10 +44,10 @@ import { LabEventEmitterService } from '../../../../services/facility-manager/la
 
 @Component({
   selector: 'app-lab-requests',
-  templateUrl: './lab-requests.component.html',
-  styleUrls: ['./lab-requests.component.scss']
+  templateUrl: './radiology-requests.component.html',
+  styleUrls: ['./radiology-requests.component.scss']
 })
-export class LabRequestsComponent implements OnInit, OnDestroy {
+export class RadiologyRequestsComponent implements OnInit, OnDestroy {
   patientSearch = new FormControl();
   @ViewChild('fileInput') fileInput: ElementRef;
   @Input() isLaboratory = true;
@@ -307,7 +307,7 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
       clinicalInfo: ['', [Validators.required]],
       diagnosis: ['', [Validators.required]],
       investigation: ['']
-    });
+    }); 
 
     this.frmNewRequest.controls['patient'].valueChanges.subscribe(value => {
       this.apmisLookupQuery = {

@@ -22,7 +22,6 @@ import { FacilitypageHomepageComponent } from "./facilitypage-homepage/facilityp
 import { EmpManagerComponent } from "./employees/emp-manager.component";
 import { EditUserComponent } from "./employees/employeemanager-detailpage/edit-user/edit-user.component";
 import { BulkUploadComponent } from './bulk-upload/bulk-upload.component';
-import { NhmisSummaryComponent } from './nhmis-summary/nhmis-summary.component';
 
 const FACLITYPAGE_ROUTES: Routes = [
   {
@@ -101,11 +100,6 @@ const FACLITYPAGE_ROUTES: Routes = [
       {
         path: "patient-bulk-upload",
         component: BulkUploadComponent,
-        canActivate: [CanActivateViaAuthGuardCompleteFacilityService]
-      },
-      {
-        path: "nhmis-summary",
-        component: NhmisSummaryComponent,
         canActivate: [CanActivateViaAuthGuardCompleteFacilityService]
       }
     ]

@@ -63,12 +63,12 @@
     cursor: pointer;
     box-sizing: border-box;
     padding-top: 15px;
-    border: 1px solid #4bb8ef;
+    border: 1px solid #aaa;
 }
 
 .acc-listing:hover {
-    border: 1px solid #fff;
     background: rgba(0, 0, 0, 0.3);
+    border: 1px solid #4bb8ef;
 }
 
 .listing-imgWrap {
@@ -95,7 +95,7 @@
 
 .listing-type {
     font-size: 1.2rem;
-    color: #eee000;
+    color: #4bb8ef;
     margin-top: 5px;
 }
 

@@ -122,18 +122,19 @@ const appRoutes: Routes = [
                 loadChildren: '../module-menu/lab/lab.module#LabModule',
                 // canActivate: [
                 //     CanActivateViaAuthGuardAccessService
-                // ]
+                // ] 
             },
             {
              path: 'radiology',
-             loadChildren: '../module-menu/radiology/radiology.module#RadiologyModule',
-             canActivate: [
-                CanActivateViaAuthGuardAccessService
-            ]
+             loadChildren: '../module-menu/new-radiology/radiology.module#RadiologyModule',
+            //  loadChildren: '../module-menu/radiology-module/radiology-module.module#RadiologyModuleModule',
+            //  canActivate: [
+            //     CanActivateViaAuthGuardAccessService
+            // ]
             },
             {
-                path: 'report',
-                loadChildren: '../module-menu/report/report.module#ReportModule'
+                path: 'reports',
+                loadChildren: '../module-menu/reports/reports.module#ReportsModule'
             },
             {
                 path: 'immunization',
