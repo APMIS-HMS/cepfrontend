@@ -14,7 +14,7 @@ import { ISubscription } from 'rxjs/Subscription';
 })
 export class RadiologyComponent implements OnInit, OnDestroy {
   @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
-  pageInView = 'Laboratory';
+  pageInView = 'Radiology';
   loginEmployee: Employee = <Employee>{};
   selectedFacility: Facility = <Facility>{};
   workbenchTitle: String = '';

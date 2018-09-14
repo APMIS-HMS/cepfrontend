@@ -1,0 +1,17 @@
+.pg-wrap{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    .chart-item{
+        width: 49%; 
+        padding: 10px;
+        border: 1px solid #eee;
+        box-sizing: border-box;
+        .chart-label{
+            margin: 10px 0 30px 0;
+            font-size: 1.4rem;
+            color: #777;
+            font-style: italic;
+        }
+    }
+}

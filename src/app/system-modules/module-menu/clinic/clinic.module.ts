@@ -1,5 +1,6 @@
 import { OnlyMaterialModule } from "./../../../shared-common-modules/only-material-module";
 import { NgModule } from "@angular/core";
+import { ChartsModule } from 'ng2-charts';
 import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SharedModule } from "../../../shared-module/shared.module";
@@ -31,6 +32,7 @@ import {
 } from "../../../services/facility-manager/setup/index";
 import { ImmunizationAppointmentComponent } from "./new-appointment/schedule-frm/immunization-appointment/immunization-appointment.component";
 import { ImmunizationScheduleService } from "../../../services/facility-manager/setup/immunization-schedule.service";
+import { ClinicHomepageComponent } from './clinic-homepage/clinic-homepage.component';
 
 @NgModule({
   declarations: [
@@ -43,11 +45,13 @@ import { ImmunizationScheduleService } from "../../../services/facility-manager/
     ConsultingRoomCheckinComponent,
     NewAppointmentComponent,
     ScheduleFrmComponent,
-    ImmunizationAppointmentComponent
+    ImmunizationAppointmentComponent,
+    ClinicHomepageComponent
   ],
   exports: [],
   imports: [
     clinicRoutes,
+    ChartsModule,
     OnlyMaterialModule,
     MaterialModule,
     DateRangePickerModule,
