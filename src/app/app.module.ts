@@ -70,6 +70,10 @@ import { MessagingComponent } from './messaging/messaging.component';
 
 import { APP_DATE_FORMATS, AppDateAdapter } from 'app/date-format';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
+import {MessagingService} from "./messaging/messaging-service";
+import {ChatHeaderComponent} from "./messaging/sub-components/ChatHeaderComponent";
+import {ChannelListComponent} from "./messaging/sub-components/ChannelListComponent";
+import {ChannelComponent} from "./messaging/sub-components/ChannelComponent";
 
 @NgModule({
   declarations: [
@@ -77,7 +81,11 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/materia
     HomeComponent,
     ApmisCheckboxChildComponent,
     ApmisCheckboxComponent,
-    MessagingComponent
+    MessagingComponent,
+      ChatHeaderComponent,
+      ChannelComponent,
+      ChannelListComponent
+      
   ],
   exports: [
   ],
@@ -144,7 +152,8 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/materia
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true
-    }, CanActivateViaAuthGuardCompleteFacilityService, UpperCasePipe
+    }, CanActivateViaAuthGuardCompleteFacilityService, UpperCasePipe,
+      MessagingService
   ],
   bootstrap: [AppComponent]
 })

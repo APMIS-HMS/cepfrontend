@@ -28,6 +28,7 @@ export interface IMessageChannel
     dateCreated? : Date
     createdBy? : IMessenger;
     lastMessage? : IMessage;
+    totalOfflineMessage? : number;
 }
 
 
@@ -36,7 +37,7 @@ export interface IMessenger
     displayName  :  string;
     id : string;
     onlineStatus? :  "Online" | "Offline" | "Busy";
-    fromUser(user :  User)  : IMessenger ;
+    fromUser?(user :  User) : IMessenger ;
     
 }
 

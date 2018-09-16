@@ -38,7 +38,7 @@
       </div>
 
       <div *ngIf="nonClinicalTab">
-        <ul class="chats-accs">
+       <!-- <ul class="chats-accs">
           <li class="chat-acc">
             <div class="chat-img-wrap">
               <img src="../../assets/images/users/default.png">
@@ -67,10 +67,11 @@
             </div>
             <div class="chat-time">10th March</div>
           </li>
-        </ul>
+        </ul>-->
+        <channel-list [channelList]="nonClinicalChannels" (onChannelSelected)="channelSelected($event)" ></channel-list>
       </div>
       <div *ngIf="clinicalTab">
-        <ul class="chats-accs">
+        <!--<ul class="chats-accs">
           <li class="chat-acc">
             <div class="chat-img-wrap">
               <img src="../../assets/images/users/default.png">
@@ -91,7 +92,8 @@
             </div>
             <div class="chat-time">10th March</div>
           </li>
-        </ul>
+        </ul>-->
+        <channel-list [channelList]="clinicalChannels" (onChannelSelected)="channelSelected($event)" ></channel-list>
       </div>
     </div>
 

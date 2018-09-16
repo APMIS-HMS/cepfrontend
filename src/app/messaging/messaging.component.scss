@@ -129,10 +129,16 @@
     padding: 5px;
     box-sizing: border-box; 
     cursor: pointer;
+    transition: all linear 340ms;
 }
 .chat-acc:hover, .chat-acc-active{
     background: #e2e2e2;
 }
+.chat-channel-active{
+     background: #22c0e2;
+    color:white;
+    background-image:  linear-gradient(#54c3ff, #2874dd) ;
+ }
 .chat-img-wrap{
     width: 40px;
     height: 40px;
