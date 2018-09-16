@@ -1,7 +1,7 @@
 import {Component, OnInit, ViewEncapsulation} from '@angular/core';
 import { FormControl } from '@angular/forms';
 import {MessagingService} from "./messaging-service";
-import {IMessageChannel} from "./messaging-model";
+import {IMessage, IMessageChannel} from "./messaging-model";
 
 @Component({
   selector: 'app-messaging',
@@ -19,6 +19,7 @@ export class MessagingComponent implements OnInit {
   nonClinicalTab = false;
     private clinicalChannels: IMessageChannel[];
     private nonClinicalChannels: IMessageChannel[];
+    private totalOfflineMessageCount  = 0;
     selectedChannel : IMessageChannel   = null;
   constructor(private  msgService : MessagingService) { }
 
@@ -47,12 +48,24 @@ export class MessagingComponent implements OnInit {
  findChannels(criteria : any)
  {
    // loading channel
-    return this.msgService.getChannels(criteria);
+     const res  = this.msgService.getChannels(criteria);
+     res.forEach(obj => {
+        this.totalOfflineMessageCount += this.msgService.getChannelOfflineMessageCount(obj._id); 
+       
+     });
+    return res;
  }
  channelSelected(channel)
  {
     // selected Channel  = channel;
      this.selectedChannel   = channel;
-     console.log(channel);
+     // Load Channel Messages
+     // Check if there are offline messages, mark them as read on the server
+     // UI Should be rendered appropriately
+  
+ }
+ showChannelDetails(channel : IMessageChannel)
+ {
+     alert("Showing Channel details for: " + channel.title + " with " + channel.users.length + " users");
  }
 }

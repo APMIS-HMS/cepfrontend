@@ -1,29 +1,8 @@
-<i [hidden]="chatActive" (click)="chatActiveToggle()" class="fa fa-comments msg-ico"><span class="notify-count">3</span></i>
+<i [hidden]="chatActive" (click)="chatActiveToggle()" class="fa fa-comments msg-ico">
+  <span class="notify-count">{{totalOfflineMessageCount | number}}</span></i>
 
 <div class="chat-container shadow-tb" *ngIf="chatActive">
-  <div class="container-header">
-    <div class="user-wrap">
-      <!-- <div class="user-img">
-        <img src="../../assets/images/users/default.png">
-      </div> -->
-      <i class="fa fa-users group-ico"></i> 
-      <div class="user-label">Team Bella</div>
-    </div>
-
-    <ul class="grp-members">
-      <li>Sam Daniel</li>
-      <li>Jude Jeremy</li>
-      <li>Rita Wales</li>
-      <li>Juanita Davis</li>
-      <li>Pamela Jonathan</li>
-      <li>Solomon Wise</li>
-      <li>Kings Philips</li>
-    </ul>
-
-    <div class="header-icos">
-      <div (click)="chatClose()" class="x">X</div>
-    </div>
-  </div>
+  <chat-header (onClose)="chatClose()" [channel]="selectedChannel" (onClick)="showChannelDetails($event)" ></chat-header>
 
   <div class="chat-content-wrap">
     <div class="groups-sect">
@@ -38,61 +17,11 @@
       </div>
 
       <div *ngIf="nonClinicalTab">
-       <!-- <ul class="chats-accs">
-          <li class="chat-acc">
-            <div class="chat-img-wrap">
-              <img src="../../assets/images/users/default.png">
-            </div>
-            <div class="chat-labels-wrap">
-              <div class="chat-label-name">Solomon Dung</div>
-              <div class="chat-label-other">Eye Clinic</div>
-            </div>
-            <div class="chat-time">8:00am</div>
-          </li>
-          <li class="chat-acc">
-            <i class="fa fa-users group-ico"></i> 
-            <div class="chat-labels-wrap">
-              <div class="chat-label-name">Team Bella</div>
-              <div class="chat-label-other">Eye Clinic</div>
-            </div>
-            <div class="chat-time">Yesterday</div>
-          </li>
-          <li class="chat-acc">
-            <div class="chat-img-wrap">
-              <img src="../../assets/images/users/default.png">
-            </div>
-            <div class="chat-labels-wrap">
-              <div class="chat-label-name">Janet James</div>
-              <div class="chat-label-other">EMT</div>
-            </div>
-            <div class="chat-time">10th March</div>
-          </li>
-        </ul>-->
-        <channel-list [channelList]="nonClinicalChannels" (onChannelSelected)="channelSelected($event)" ></channel-list>
+    
+        <channel-list [channelList]="nonClinicalChannels"  (onChannelSelected)="channelSelected($event)" ></channel-list>
       </div>
       <div *ngIf="clinicalTab">
-        <!--<ul class="chats-accs">
-          <li class="chat-acc">
-            <div class="chat-img-wrap">
-              <img src="../../assets/images/users/default.png">
-            </div>
-            <div class="chat-labels-wrap">
-              <div class="chat-label-name">Solomon Dung</div>
-              <div class="chat-label-other">Gil Care Team</div>
-            </div>
-            <div class="chat-time">8:00am</div>
-          </li>
-          <li class="chat-acc">
-            <div class="chat-img-wrap">
-              <img src="../../assets/images/users/default.png">
-            </div>
-            <div class="chat-labels-wrap">
-              <div class="chat-label-name">Janet James</div>
-              <div class="chat-label-other">Gil Care Team</div>
-            </div>
-            <div class="chat-time">10th March</div>
-          </li>
-        </ul>-->
+     
         <channel-list [channelList]="clinicalChannels" (onChannelSelected)="channelSelected($event)" ></channel-list>
       </div>
     </div>

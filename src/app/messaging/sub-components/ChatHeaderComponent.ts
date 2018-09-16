@@ -9,18 +9,15 @@ import {IMessageChannel} from "../messaging-model";
         <div class="container-header">
             <div class="user-wrap" (click)="emitHeaderClick()">
                <i class="fa fa-users group-ico"></i>
-                <div class="user-label">{{(channel?.title) || 'Channel'}} </div>
+                <div class="user-label">{{(channel?.title) || 'Select A Channel'}} </div>
             </div>
 
-            <ul class="grp-members" >
+            <ul class="grp-members" *ngIf="channel" >
                 <!--Loop-->
-                <li>Sam Daniel</li>
-                <li>Jude Jeremy</li>
-                <li>Rita Wales</li>
-                <li>Juanita Davis</li>
-                <li>Pamela Jonathan</li>
-                <li>Solomon Wise</li>
-                <li>Kings Philips</li>
+                <li *ngFor="let u of channel.users">
+                    <span *ngIf="channel.users.length <= 5">{{u?.displayName || 'No Name'}} </span>
+                    <span *ngIf="channel.users.length>5">...</span>
+                </li>
             </ul>
 
             <div class="header-icos">

@@ -145,11 +145,21 @@ export class MessagingService {
                     id: "johnekeh",
                     onlineStatus: "Busy"
                 }],
-                lastMessage: null,
+                lastMessage: {
+                    message: "The X-ray Equipment are malfunctioning, can anyone call engineers in charge?",
+                    channel : "00011",
+                    facilityId : "facility-d",
+                    messageStatus : "Received",
+                    dateCreated : new Date(),
+                    messageChannel :"00011",
+                    reciever : "group",
+                    sender : "biodu"
+
+                },
                 createdBy: {
-                    displayName: "John Ekeh",
-                    id: "johnekeh",
-                    onlineStatus: "Busy"
+                    displayName: "Mathew Okoye",
+                    id: "mathew",
+                    onlineStatus: "Online"
                 }
             }
             
