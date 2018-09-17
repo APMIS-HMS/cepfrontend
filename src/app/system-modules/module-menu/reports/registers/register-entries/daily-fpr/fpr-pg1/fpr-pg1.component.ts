@@ -2,11 +2,12 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-opd-pg1',
-  templateUrl: './opd-pg1.component.html',
-  styleUrls: ['./opd-pg1.component.scss', '../../../../nhmis-summary/nhmis-summary.component.scss', '../../register-entry/register-entry.component.scss']
+  selector: 'app-fpr-pg1',
+  templateUrl: './fpr-pg1.component.html',
+  styleUrls: ['./fpr-pg1.component.scss', '../../../../nhmis-summary/nhmis-summary.component.scss',
+    '../../register-entry/register-entry.component.scss']
 })
-export class OpdPg1Component implements OnInit {
+export class FprPg1Component implements OnInit {
 
   @Output() switch: EventEmitter<number> = new EventEmitter<number>();
   showNewEntry = false;
@@ -24,12 +25,11 @@ export class OpdPg1Component implements OnInit {
   switcher_onClick() {
     this.switch.emit(2);
   }
-  newEntry(){
+  newEntry() {
     this.showNewEntry = true;
   }
-  close_onClick(e){
+  close_onClick(e) {
     this.showNewEntry = false;
   }
-  setReturnValue(e){}
-
+  setReturnValue(e) { }
 }

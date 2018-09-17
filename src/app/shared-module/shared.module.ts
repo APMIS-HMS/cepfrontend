@@ -67,7 +67,7 @@ import { StoreProductTypeComponent } from './store-product-type/store-product-ty
 import { PassContinueComponent } from './pass-continue/pass-continue.component';
 
 import { RegistersComponent } from '../system-modules/module-menu/reports/registers/registers.component';
-import { NewRegisterComponent } from '../system-modules/module-menu/reports/registers/new-register/new-register.component';
+//import { NewRegisterComponent } from '../system-modules/module-menu/reports/registers/new-register/new-register.component';//
 import { RegisterEntriesComponent } from '../system-modules/module-menu/reports/registers/register-entries/register-entries.component';
 import { RegisterEntryComponent } from '../system-modules/module-menu/reports/registers/register-entries/register-entry/register-entry.component';
 import { NewRegisterEntryComponent } from '../system-modules/module-menu/reports/registers/register-entries/new-register-entry/new-register-entry.component';
@@ -82,7 +82,6 @@ import { FundWalletComponent } from '../system-modules/module-menu/payment/bill-
 @NgModule({
   declarations: [
     RegistersComponent,
-    NewRegisterComponent,
     RegisterEntriesComponent,
     RegisterEntryComponent,
     RegEntriesListComponent,
@@ -106,7 +105,6 @@ import { FundWalletComponent } from '../system-modules/module-menu/payment/bill-
     FundWalletComponent],
   exports: [
     RegistersComponent,
-    NewRegisterComponent,
     RegisterEntriesComponent,
     RegisterEntryComponent,
     RegEntriesListComponent,

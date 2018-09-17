@@ -13,14 +13,20 @@ export class RegistersComponent implements OnInit {
   ngOnInit() {
   }
 
-  call_register(){
+  call_register() {
     this._router.navigate(['/dashboard/reports/register/register-entries']);
   }
-  call_antenatal(){
+  call_antenatal() {
     this._router.navigate(['/dashboard/reports/register/antenatal']);
   }
-  call_opd(){
+  call_opd() {
     this._router.navigate(['/dashboard/reports/register/opd']);
+  }
+  call_fpr() {
+    this._router.navigate(['/dashboard/reports/register/fpr']);
+  }
+  call_IRTS() {
+    this._router.navigate(['/dashboard/reports/register/irts']);
   }
 
 }

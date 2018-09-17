@@ -11,6 +11,14 @@ import { DailyOpdComponent } from './register-entries/daily-opd/daily-opd.compon
 import { OpdPg1Component } from './register-entries/daily-opd/opd-pg1/opd-pg1.component';
 import { OpdPg2Component } from './register-entries/daily-opd/opd-pg2/opd-pg2.component';
 import { NewOpdEntryComponent } from './register-entries/daily-opd/new-opd-entry/new-opd-entry.component';
+import { NewFprEntryComponent } from './register-entries/daily-fpr/new-fpr-entry/new-fpr-entry.component';
+import { FprPg2Component } from './register-entries/daily-fpr/fpr-pg2/fpr-pg2.component';
+import { FprPg1Component } from './register-entries/daily-fpr/fpr-pg1/fpr-pg1.component';
+import { NewIrtsEntryComponent } from './register-entries/daily-irts/new-irts-entry/new-irts-entry.component';
+import { IrtsPg1Component } from './register-entries/daily-irts/irts-pg1/irts-pg1.component';
+import { IrtsPg2Component } from './register-entries/daily-irts/irts-pg2/irts-pg2.component';
+import { DailyFprComponent } from './register-entries/daily-fpr/daily-fpr.component';
+import { DailyIrtsComponent } from './register-entries/daily-irts/daily-irts.component';
 
 @NgModule({
   imports: [
@@ -28,7 +36,15 @@ import { NewOpdEntryComponent } from './register-entries/daily-opd/new-opd-entry
     DailyOpdComponent,
     OpdPg1Component,
     OpdPg2Component,
-    NewOpdEntryComponent
+    NewOpdEntryComponent,
+    NewFprEntryComponent,
+    FprPg2Component,
+    FprPg1Component,
+    NewIrtsEntryComponent,
+    IrtsPg1Component,
+    IrtsPg2Component,
+    DailyFprComponent,
+    DailyIrtsComponent
   ]
 })
 export class RegistersModule { }
