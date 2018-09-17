@@ -24,7 +24,44 @@ export class MessagingService {
     // and also an pagination object, statuses for the call etc
     getMessages(criteria: any) {
         let result = this.http.get(`${this.baseUrl}${MESSAGE_ENDPOINT}`, {params: criteria});
-        return result;
+        let res : IMessage[]  = [];
+        if(criteria.channelId === "0001")
+        {
+            res = [
+                {
+                    message: "The Patient is Sleeping and healthy",
+                    channel : "0001",
+                    facilityId : "facility-a",
+                    messageStatus : "Sent",
+                    dateCreated : new Date(),
+                    messageChannel :"0001",
+                    reciever : "group",
+                    sender : "alfredobialo",
+                    senderInfo: {
+                        displayName: "Alfred Obialo",
+                        id: "alfredobialo",
+                        onlineStatus: "Online"
+                    }
+                },
+                {
+                    message: "When last did the doctor check on them, please review discharge schedule again for proper " +
+                        "documentation",
+                    channel : "0001",
+                    facilityId : "facility-a",
+                    messageStatus : "Sent",
+                    dateCreated : new Date(),
+                    messageChannel :"0001",
+                    reciever : "group",
+                    sender : "olivia",
+                    senderInfo: {
+                        displayName: "Olivia Obialo",
+                        id: "olivia",
+                        onlineStatus: "Online"
+                    }
+                }
+            ]
+        }
+        return res;
     }
 
     sendMessage(message: IMessage) {

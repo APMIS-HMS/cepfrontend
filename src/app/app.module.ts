@@ -66,25 +66,30 @@ import { RadiologyInvestigationService } from 'app/services/facility-manager/set
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 import { CanActivateViaAuthGuardAccessService } from 'app/services/facility-manager/setup/can-activate-via-auth-guard-access.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { MessagingComponent } from './messaging/messaging.component';
+// import { MessagingComponent } from './messaging/messaging.component';
 
 import { APP_DATE_FORMATS, AppDateAdapter } from 'app/date-format';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
-import {MessagingService} from "./messaging/messaging-service";
+/*import {MessagingService} from "./messaging/messaging-service";
 import {ChatHeaderComponent} from "./messaging/sub-components/ChatHeaderComponent";
 import {ChannelListComponent} from "./messaging/sub-components/ChannelListComponent";
 import {ChannelComponent} from "./messaging/sub-components/ChannelComponent";
+import {MessageComponent} from "./messaging/sub-components/MessageComponent";
+import {MessageListComponent} from "./messaging/sub-components/MessageListComponent";*/
+import {MessagingModule} from "./messaging/MessagingModule";
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     ApmisCheckboxChildComponent,
-    ApmisCheckboxComponent,
+    ApmisCheckboxComponent,/*
     MessagingComponent,
       ChatHeaderComponent,
       ChannelComponent,
-      ChannelListComponent
+      ChannelListComponent,
+      MessageComponent,
+      MessageListComponent*/
       
   ],
   exports: [
@@ -104,7 +109,8 @@ import {ChannelComponent} from "./messaging/sub-components/ChannelComponent";
       customClass: 'modal-content',
       confirmButtonClass: 'btn btn-primary',
       cancelButtonClass: 'btn'
-    })
+    }),
+      MessagingModule
   ],
   providers: [
     {
@@ -153,7 +159,7 @@ import {ChannelComponent} from "./messaging/sub-components/ChannelComponent";
       useClass: AuthInterceptor,
       multi: true
     }, CanActivateViaAuthGuardCompleteFacilityService, UpperCasePipe,
-      MessagingService
+    /*  MessagingService*/
   ],
   bootstrap: [AppComponent]
 })

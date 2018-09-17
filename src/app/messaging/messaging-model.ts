@@ -37,6 +37,7 @@ export interface IMessageChannel
     dateCreated? : Date
     createdBy? : IMessenger;
     lastMessage? : IMessage;
+    messages? : IMessage[];
     totalOfflineMessage? : number;
 }
 
@@ -49,6 +50,12 @@ export interface IMessenger
     fromUser?(user :  User) : IMessenger ;
     
 }
+
+
+
+
+
+
 export interface IDataPager
 {
     pageSize: number ;  
