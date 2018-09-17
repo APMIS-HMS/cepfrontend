@@ -96,6 +96,7 @@ initializeForm(){
   }
 
   apmisLookupHandleSelectedItem(value) {
+    console.log(value);
     this.apmisLookupText = value.name;
     this.selectedProduct = JSON.parse(JSON.stringify(value));
     this.initializeForm();

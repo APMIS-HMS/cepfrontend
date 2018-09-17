@@ -3,14 +3,19 @@
 </div>
 <div>
   <div class="doc-mainWrap">
+    <div class="tabs">
+        <div [class.tab-active]="request_new" (click)="requestNew_show()" class="tab">Request Investigation</div>
+        <div [class.tab-active]="request_list" (click)="requestList_show()" class="tab">Appointments</div>
+        <div [class.tab-active]="reporting" (click)="reporting_show()" class="tab">Reporting</div>
+    </div>
     <div class="doc-contentArea">
         <div class="clinicalNoteWrap">
             <div class="actSect">
-                <div (click)="request_show()" class="act-wrap">
+                <!-- <div (click)="request_show()" class="act-wrap">
                     <i *ngIf="request_view" class="fa fa-minus" aria-hidden="true"></i>
                     <i *ngIf="!request_view" class="fa fa-plus" aria-hidden="true"></i>
                     <span>New Request</span>
-                </div>
+                </div> -->
                 <!-- <div *ngIf="isExternal===true" (click)="extList_show()" class="ext-listBtn">External Requests</div>
 
                 <div *ngIf="extList" class="ext-list shadow-RB">
@@ -25,114 +30,8 @@
                     </table>
                 </div> -->
 
-                <app-rm-new-request *ngIf="request_view"></app-rm-new-request>
-            </div>
-
-            <div class="tblWrapa" class="actSect">
-                <div class="card">
-                    <div class="card-header">
-                        <div class="row">
-                            <div class="{{ (isLaboratory) ? 'col-xs-1' : 'col-xs-2' }} table-head">No</div>
-                            <div class="col-xs-2 table-head">Date</div>
-                            <div class="col-xs-2 table-head">Patient</div>
-                            <div class="table-head col-xs-2">Description</div>
-                            <div class="table-head col-xs-2">Requesting Physician</div>
-                            <div class="table-head col-xs-2">Status</div>
-                            <div class="table-head {{ (isLaboratory) ? 'col-xs-1' : 'col-xs-2' }}" *ngIf="isLaboratory">
-                                <i class="fa fa-search fa-fw pointer" (click)="openSearch()"></i>
-                            </div>
-                        </div>
-                        <div class="row" *ngIf="searchOpen">
-                            <div class="col-md-4">
-                                <input [formControl]="patientSearch" class="table-header-input" type="text" placeholder="Search for Patient">
-                            </div>
-                            <div class="col-md-4">
-                                <!-- <select class="table-header-select" formControlName="category" placeholder="Select Category" (change)="onChangeCategory($event);">
-                                    <option value="" selected>Select Category</option>
-                                    <option value="individual">Individual</option>
-                                    <option value="corporate">Corporate</option>
-                                    <option value="internal">Internal</option>
-                                </select> -->
-                            </div>
-                            <div class="col-md-3">
-                                <!-- <input class="table-header-input" type="date" placeholder="Choose a date"> -->
-                            </div>
-                            <div class="col-md-1 table-head">
-                                <i class="fa fa-close fa-fw" (click)="openSearch()"></i>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="card-content">
-                        <div class="card-list-item" *ngIf="pendingRequests.length === 0 && !loading">
-                            <div class="col-xs-12" style="text-align:center">
-                                No data available in table
-                            </div>
-                        </div>
-                        <div class="card-list-item" *ngIf="pendingRequests.length === 0 && loading">
-                            <div class="col-xs-12" style="text-align:center">
-                                <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
-                            </div>
-                        </div>
-                        <div class="card-list-item" *ngFor="let request of pendingRequests; let i=index;">
-                            <div class="row">
-                                <div class="table-list {{ (isLaboratory) ? 'col-xs-1' : 'col-xs-2' }}">
-                                    {{i+1}}
-                                </div>
-                                <div class="table-list col-xs-2">
-                                    {{request?.createdAt | date:'short'}}
-                                </div>
-                                <div class="table-list col-xs-2">
-                                    <div class="empWrap">
-                                        <div class="list-img">
-                                            <img *ngIf="request?.patient?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                            <img class="shadow" *ngIf="request?.patient?.profileImageObject != undefined" [src]="facilityService.transform(pendingRequest?.patient?.profileImageObject?.thumbnail)">
-                                        </div>
-                                        <div>{{ request?.patient?.firstName }} {{ request?.patient?.lastName }}</div>
-                                    </div>
-                                </div>
-                                <div class="table-list col-xs-2">
-                                    {{request?.name}}
-                                </div>
-                                <div class="table-list col-xs-2">
-                                    {{request?.createdBy?.firstName }} {{request?.createdBy?.lastName }}
-                                </div>
-                                <div class="table-list col-xs-2">
-                                    <span>
-                                        <i *ngIf="request?.isPaid && !request?.isWaved" class="fa fa-fw fa-2x fa-money green tooltip" data-tooltip="Payment Made" aria-hidden="true"></i>
-                                        <i *ngIf="!request?.isPaid && !request?.isWaved" class="fa fa-fw fa-2x  fa-money red tooltip" data-tooltip="Payment Not Made" aria-hidden="true"></i>
-                                        <i *ngIf="request?.isWaved" class="fa fa-fw fa-2x fa-money orange tooltip" data-tooltip="Payment Waved" aria-hidden="true"></i>
-                                        <i *ngIf="request?.sampleTaken===true" class="fa fa-fw fa-2x fa-tint green tooltip" data-tooltip="Sample Taken" aria-hidden="true"></i>
-                                        <i *ngIf="!request?.sampleTaken===true" class="fa fa-fw fa-2x fa-tint red tooltip" data-tooltip="Sample Not Taken" aria-hidden="true"></i>
-                                        <i *ngIf="request?.specimenReceived" class="fa fa-fw fa-2x fa-flask green tooltip" data-tooltip="Specimen Received" aria-hidden="true"></i>
-                                        <i *ngIf="!request?.specimenReceived" class="fa fa-fw fa-2x fa-flask red tooltip" data-tooltip="Specimen Not Received" aria-hidden="true"></i>  
-                                        <i *ngIf="request?.isUploaded" class="fa fa-fw fa-2x fa-upload green tooltip" data-tooltip="Published" aria-hidden="true"></i>
-                                        <i *ngIf="!request?.isUploaded" class="fa fa-fw fa-2x fa-upload red tooltip" data-tooltip="Not Published" aria-hidden="true"></i>
-                                    </span>
-                                </div>
-                                <div class="table-list {{ (isLaboratory) ? 'col-xs-1' : 'col-xs-2' }} action-placeholder" *ngIf="isLaboratory">
-                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                    <div class="action-container shadow-RB">
-                                        <div (click)="reqDetail(request)" class="action-item">
-                                            <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                                            <span>View Investigation</span>
-                                        </div>
-
-                                        <div *ngIf="request?.isPaid && request?.sampleTaken" class="action-item" (click)="goToWriteReport(request);">
-                                            <i class="fa fa-file-text" aria-hidden="true"></i>
-                                            <span>Write Report</span>
-                                        </div>
-
-                                        <div (click)="showImageBrowseDlg()" class="action-item">
-                                            <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                                            <span>Upload File</span>
-                                        </div>
-                                        <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <app-rm-new-request *ngIf="request_new"></app-rm-new-request>
+                <app-rm-request-list *ngIf="request_list"></app-rm-request-list>
             </div>
         </div>
     </div>
