@@ -22,5 +22,10 @@ export class RegistersComponent implements OnInit {
   call_opd(){
     this._router.navigate(['/dashboard/reports/register/opd']);
   }
-
+  call_gmp(){
+    this._router.navigate(['/dashboard/reports/register/gmp']);
+  }
+  call_ldr(){
+    this._router.navigate(['/dashboard/reports/register/ldr']);
+  }
 }
