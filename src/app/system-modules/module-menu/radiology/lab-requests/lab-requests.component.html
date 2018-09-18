@@ -18,9 +18,9 @@
                         <table cellpadding="0" cellspacing="0" border="0.5">
                             <tbody>
 
-                                <tr *ngFor="let external of pendingExternalRequests">
-                                    <td>{{external.createdAt | date:'short'}}.</td>
-                                    <td>{{external.name}}</td>
+                                <tr>
+                                    <td>11th Oct 2018</td>
+                                    <td>Clinics Diagnosis</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -30,11 +30,11 @@
                         <div *ngIf="isLaboratory" class="labBtn-wrap">
                             <div (click)="newPerson()" class="lab-btn"><i class="fa fa-plus" aria-hidden="true"></i>Register Patient</div>
                         </div>
-                        <div class="clear-r">Enter</div> 
+                        <div class="clear-r"></div>
                         <div class="frm-wrap">
                             <div class="frm-l">
                                 <div *ngIf="isLaboratory" class="frm-item-wrap">
-                                    <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="search for patient" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
+                                    <apmis-lookup formControlName="patient" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="search for patient" [isSocket]="false" [displayKey]="apmisLookupDisplayKey" [displayImage]="true" [imgObj]="apmisLookupImgKey"
                                         [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
                                 </div>
 
@@ -46,7 +46,7 @@
 
                             </div>
                             <div class="frm-r">
-                                <div *ngIf="isLaboratory" class="frm-item-wrap">
+                                <div class="frm-item-wrap">
                                     <mat-input-container>
                                         <input matInput placeholder="Lab Number" formControlName="labNo">
                                     </mat-input-container>
@@ -54,7 +54,7 @@
 
                                 <div class="frm-item-wrap">
                                     <mat-input-container>
-                                        <textarea style="height: 120px;" matInput formControlName="diagnosis" placeholder="Diagnosis"></textarea>
+                                        <textarea style="height: 120px;" matInput placeholder="Diagnosis"></textarea>
                                     </mat-input-container>
                                 </div>
 
@@ -66,7 +66,7 @@
                             <div class="investigation-list">
                                 <div class="frm-item-wrap">
                                     <mat-input-container>
-                                        <input matInput [formControl]="searchInvestigation" placeholder="search for Investigation" autocomplete="off">
+                                        <input matInput  placeholder="search for Investigation" autocomplete="off">
                                     </mat-input-container>
                                 </div>
 
@@ -75,58 +75,58 @@
                                         <div class="panel-wrap">
                                             <div class="list-item panel">
                                                 <div class="txt-innerWrap">
-                                                    <mat-checkbox (change)="investigationChanged($event, investigation)" [checked]="investigation.isChecked"></mat-checkbox>
-                                                    <div class="txt-label list-label">{{investigation.investigation.name}}</div>
+                                                    <mat-checkbox></mat-checkbox>
+                                                    <div class="txt-label list-label">X-Ray of the right arm</div>
                                                 </div>
                                                 <i class="fa fa-long-arrow-down" aria-hidden="true"></i>
                                             </div>
 
-                                            <div class="panel-loc" *ngIf="investigation.isChecked">
+                                            <div class="panel-loc">
                                                 <div class="inner-radio">
 
-                                                    <mat-checkbox (change)="markExternal($event, investigation)" [checked]="investigation.isExternal">External</mat-checkbox>
-                                                    <mat-radio-group [value]="location" *ngIf="!investigation.isExternal">
-                                                        <mat-radio-button class="opt" *ngFor="let location of investigation.LaboratoryWorkbenches" (change)="locationChanged($event, investigation, location, investigation.LaboratoryWorkbenches)" [value]="location" [checked]="false">
+                                                    <mat-checkbox>External</mat-checkbox>
+                                                    <mat-radio-group>
+                                                        <mat-radio-button class="opt" [checked]="false">
                                                             <div class="opt-inner">
-                                                                <div>{{location.laboratoryId.name}}</div>
-                                                                <div class="opt-price"><span>&#x20a6;</span>{{getPrice(location.workbenches)}}</div>
+                                                                <div>Xray Department</div>
+                                                                <div class="opt-price"><span>&#x20a6;</span>2000</div>
                                                             </div>
                                                         </mat-radio-button>
                                                     </mat-radio-group>
                                                 </div>
                                             </div>
 
-                                            <div *ngFor="let panel of investigation.investigation.panel" class="child-list">
-                                                <div class="txt-innerWrap" *ngIf="IsParentChecked(investigation, panel)">
+                                            <div class="child-list">
+                                                <div class="txt-innerWrap">
                                                     <div class="chkbox-wrap">
-                                                        <mat-checkbox [checked]="panel.investigation.isChecked" (change)="childChanged($event, investigation, panel,true)"></mat-checkbox>
-                                                        <div class="child-item">{{panel.investigation.name}}</div>
+                                                        <mat-checkbox></mat-checkbox>
+                                                        <div class="child-item">Xray of the right arm</div>
                                                     </div>
 
                                                     <div class="inner-radio">
                                                         <div class="opt-inner">
-                                                            <div>{{getParentLocation(investigation, panel)}}</div>
-                                                            <div *ngIf="getParentLocation(investigation, panel).length > 0" class="opt-price"><span>&#x20a6;</span>{{getChildPrice(investigation, panel)}}</div>
+                                                            <div>Name of panel</div>
+                                                            <div class="opt-price"><span>&#x20a6;</span>700</div>
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div *ngIf="!investigation.investigation.isPanel" class="list-item investigation">
+                                    <div class="list-item investigation">
                                         <div class="txt-innerWrap">
                                             <div class="chkbox-wrap">
-                                                <mat-checkbox (change)="investigationChanged($event, investigation)" [checked]="investigation.isChecked"></mat-checkbox>
-                                                <div class="list-label">{{investigation.investigation.name}}</div>
+                                                <mat-checkbox></mat-checkbox>
+                                                <div class="list-label">Xray of the right arm</div>
                                             </div>
 
-                                            <div class="inner-radio" *ngIf="investigation.isChecked">
-                                                <mat-checkbox (change)="markExternal($event, investigation)" [checked]="investigation.isExternal">External</mat-checkbox>
-                                                <mat-radio-group [value]="location" *ngIf="!investigation.isExternal">
-                                                    <mat-radio-button class="opt" *ngFor="let location of investigation.LaboratoryWorkbenches" (change)="locationChanged($event, investigation, location, investigation.LaboratoryWorkbenches)" [value]="location" [checked]="false">
+                                            <div class="inner-radio">
+                                                <mat-checkbox>External</mat-checkbox>
+                                                <mat-radio-group>
+                                                    <mat-radio-button class="opt">
                                                         <div class="opt-inner">
-                                                            <div>{{location.laboratoryId.name}}</div>
-                                                            <div class="opt-price"><span>&#x20a6;</span>{{getPrice(location.workbenches)}}</div>
+                                                            <div>Sama Diagnostics</div>
+                                                            <div class="opt-price"><span>&#x20a6;</span>300</div>
                                                         </div>
                                                     </mat-radio-button>
                                                 </mat-radio-group>
@@ -138,27 +138,27 @@
 
                             <div class="selected-list">
                                 <div class="sel-list-title">SELECTED INVESTIGATIONS</div>
-                                <div *ngIf="bindInvestigations.length > 0" class="sel-total"><span>&#x20a6;</span>{{getTotalPrice()}}</div>
-                                <div *ngFor="let investigation of bindInvestigations">
-                                    <div *ngIf="investigation.investigation.isPanel" class="panel-wrap">
+                                <div class="sel-total"><span>&#x20a6;</span>5000</div>
+                                <div>
+                                    <div class="panel-wrap">
                                         <div class="panel-inner">
                                             <div class="list-item panel">
                                                 <div class="txt-innerWrap item-bi-sect">
-                                                    <div class="txt-label list-label">{{investigation.investigation.name}}</div>
-                                                    <div *ngIf="!investigation.isExternal" class="txt-label list-label">{{investigation.location.laboratoryId.name}}</div>
+                                                    <div class="txt-label list-label">Xray of the arm</div>
+                                                    <div class="txt-label list-label">Clinics Diagnostics</div>
                                                 </div>
                                                 <div class="txt-wrap actions-wrapa item-bi-sect">
-                                                    <div class="txt-innerWrap" *ngIf="investigation.isExternal">
+                                                    <div class="txt-innerWrap">
                                                         <div class="txt-label">External</div>
                                                         <div class="txt-val">
-                                                            <mat-checkbox (change)="externalChanged($event, investigation)" [checked]="investigation.isExternal"></mat-checkbox>
+                                                            <mat-checkbox></mat-checkbox>
                                                         </div>
                                                     </div>
 
                                                     <div class="txt-innerWrap">
                                                         <div class="txt-label">Urgent</div>
                                                         <div class="txt-val">
-                                                            <mat-checkbox (change)="urgentChanged($event, investigation)" [checked]="investigation.isUrgent"></mat-checkbox>
+                                                            <mat-checkbox></mat-checkbox>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -166,10 +166,10 @@
                                             </div>
 
                                         </div>
-                                        <div *ngFor="let panel of investigation.investigation.panel" class="panel-inner child-list">
+                                        <div class="panel-inner child-list">
                                             <div class="list-item">
                                                 <div class="txt-innerWrap  item-bi-sect">
-                                                    <div class="txt-label child-item">{{panel.investigation.name}}</div>
+                                                    <div class="txt-label child-item">this is a panel</div>
                                                 </div>
 
                                                 <div class="txt-wrap actions-wrapa item-bi-sect">
@@ -183,7 +183,7 @@
                                                     <div class="txt-innerWrap">
                                                         <div class="txt-label">Urgent</div>
                                                         <div class="txt-val">
-                                                            <mat-checkbox (change)="urgentChanged($event, panel)" [checked]="investigation.isUrgent"></mat-checkbox>
+                                                            <mat-checkbox></mat-checkbox>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -191,35 +191,35 @@
                                         </div>
                                     </div>
 
-                                    <div *ngIf="!investigation.investigation.isPanel" class="list-item investigation">
+                                    <div class="list-item investigation">
                                         <div class="item-bi-sect">
-                                            <div class="list-label">{{investigation.investigation.name}}</div>
-                                            <div *ngIf="!investigation.isExternal" class="txt-label list-label">{{investigation.location.laboratoryId.name}}</div>
-                                            <div *ngIf="!investigation.isExternal" class="opt-price"><span>&#x20a6;</span>{{getPrice(investigation.location.workbenches)}}</div>
+                                            <div class="list-label">Xray of the right arm</div>
+                                            <div class="txt-label list-label">Sama Diagnostics</div>
+                                            <div class="opt-price"><span>&#x20a6;</span>3000</div>
                                         </div>
 
                                         <div class="txt-wrap actions-wrapa item-bi-sect">
-                                            <div class="txt-innerWrap" *ngIf="investigation.isExternal">
+                                            <div class="txt-innerWrap">
                                                 <div class="txt-label">External</div>
                                                 <div class="txt-val">
-                                                    <mat-checkbox (change)="externalChanged($event, investigation)" [checked]="investigation.isExternal"></mat-checkbox>
+                                                    <mat-checkbox></mat-checkbox>
                                                 </div>
                                             </div>
 
                                             <div class="txt-innerWrap">
                                                 <div class="txt-label">Urgent</div>
                                                 <div class="txt-val">
-                                                    <mat-checkbox (change)="urgentChanged($event, investigation)" [checked]="investigation.isUrgent"></mat-checkbox>
+                                                    <mat-checkbox></mat-checkbox>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div (click)="removeBindingInvestigation(investigation)" class="close">X</div>
+                                        <div class="close">X</div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="btn-box">
-                            <button mat-raised-button [disabled]="!isValidateForm" (click)="save(frmNewRequest.valid, frmNewRequest.value)" class="btn">Make Request</button>
+                            <button mat-raised-button (click)="save(frmNewRequest.valid, frmNewRequest.value)" class="btn">Make Request</button>
                         </div>
                     </form>
                 </div>
@@ -249,7 +249,7 @@
                                     <span style="padding-left: 3px;">Source</span>
                                 </th>
                                 <th>Status</th>
-                                <th *ngIf="isLaboratory"></th>
+                                <th></th>
                             </tr>
                         </thead>
 
@@ -258,75 +258,46 @@
                             <tr>
                                 <td colspan="10">
                                     <div class="tbl-actionRow">
-                                        <!-- <div class="frm-item-wrap">
-                          <apmis-lookup [(ngModel)]="apmisLookupText"
-                          url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Patient"
-                          isSocket="false" displayKey="apmisLookupDisplayKey"
-                          (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                        </div>
-
-                        <div class="frm-item-wrap">
-                          <apmis-lookup [(ngModel)]="apmisLookupText"
-                              url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Practitioner"
-                              isSocket="false" displayKey="apmisLookupDisplayKey"
-                              (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                        </div>
-
-                        <div class="frm-item-wrap">
-                          <apmis-lookup [(ngModel)]="apmisLookupText"
-                              url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Location"
-                              isSocket="false" displayKey="apmisLookupDisplayKey"
-                              (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                        </div> -->
                                     </div>
                                 </td>
                             </tr>
-                            <tr *ngIf="pendingRequests.length === 0 && !loading">
-                                <td class="table-content" colspan="6" style="text-align: center "> No data available in table</td>
-                            </tr>
-                            <tr *ngIf="pendingRequests.length === 0 && loading">
-                                <td class="table-content " colspan="6" style="text-align: center ">
-                                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
-                                </td>
-                            </tr>
-                            <tr *ngFor="let request of pendingRequests">
-                                <td>{{request.createdAt | date:'short'}}</td>
+                            <tr>
+                                <td>Lite Hospital | 11th Oct 2018</td>
                                 <td>
                                     <div class="empWrap">
                                         <div class="list-img">
-                                            <div *ngIf="request?.patient?.personDetails?.profileImageObject === undefined"><img src="assets/images/users/default.png"></div>
-                                            <img *ngIf="request?.patient?.personDetails?.profileImageObject !== undefined" [src]="facilityService.transform(request?.patient?.personDetails?.profileImageObject?.thumbnail)">
+                                            <div ><img src="assets/images/users/default.png"></div>
                                         </div>
-                                        <div>{{request.patient.personDetails.firstName }} {{request.patient.personDetails.lastName }}</div>
+                                        <div>Solomon Kings</div>
                                     </div>
                                 </td>
-                                <td>{{request.name}}</td>
+                                <td>Xray of the right arm</td>
                                 <td></td>
                                 <td>
                                     <div class="status-wrap">
                                         <div class="status-item">
                                             <div class="status-label">Payment Made</div>
                                             <!-- <div [class.isSample]="paymentStatus" [class.notSample]="!paymentStatus" class="status-val"></div> -->
-                                            <i *ngIf="paymentStatus" class="fa fa-check isSample" aria-hidden="true"></i>
-                                            <i *ngIf="!paymentStatus" class="fa fa-minus notSample" aria-hidden="true"></i>
+                                            <i class="fa fa-check isSample" aria-hidden="true"></i>
+                                            <!-- <i *ngIf="!paymentStatus" class="fa fa-minus notSample" aria-hidden="true"></i> -->
                                         </div>
                                         <div class="status-item">
                                             <div class="status-label">Sample Taken</div>
                                             <!-- <div [class.isSample]="sampleStatus" [class.notSample]="!sampleStatus" class="status-val"></div> -->
-                                            <i *ngIf="request?.sampleTaken===true" class="fa fa-check isSample" aria-hidden="true"></i>
-                                            <i *ngIf="!request?.sampleTaken===true" class="fa fa-minus notSample" aria-hidden="true"></i>
+                                            <i class="fa fa-check isSample" aria-hidden="true"></i>
+                                            <!-- <i *ngIf="!request?.sampleTaken===true" class="fa fa-minus notSample" aria-hidden="true"></i> -->
                                         </div>
                                         <div class="status-item">
                                             <div class="status-label">Specimen Recieved</div>
                                             <!-- <div [class.isSample]="recievedStatus" [class.notSample]="!recievedStatus" class="status-val"></div> -->
-                                            <i *ngIf="request?.specimenReceived" class="fa fa-check isSample" aria-hidden="true"></i>
-                                            <i *ngIf="!request?.specimenReceived" class="fa fa-minus notSample" aria-hidden="true"></i>
+                                            <!-- <i *ngIf="request?.specimenReceived" class="fa fa-check isSample" aria-hidden="true"></i> -->
+                                            <i class="fa fa-minus notSample" aria-hidden="true"></i>
                                         </div>
                                         <div class="status-item">
                                             <div class="status-label">Result Available</div>
                                             <!-- <div [class.isSample]="resultStatus" [class.notSample]="!resultStatus" class="status-val"></div> -->
-                                            <i *ngIf="request?.isUploaded" class="fa fa-check isSample" aria-hidden="true"></i>
-                                            <i *ngIf="!request?.isUploaded" class="fa fa-minus notSample" aria-hidden="true"></i>
+                                            <i class="fa fa-check isSample" aria-hidden="true"></i>
+                                            <!-- <i *ngIf="!request?.isUploaded" class="fa fa-minus notSample" aria-hidden="true"></i> -->
                                         </div>
                                     </div>
                                 </td>
@@ -360,7 +331,7 @@
 </div>
 
 <div *ngIf="reqDetail_view" class="modal-overlay">
-    <app-rad-request-detail [investigation]="selectedInvestigation" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-rad-request-detail>
+    <app-rad-request-detail (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-rad-request-detail>
 </div>
 <div *ngIf="personAcc_view" class="modal-overlay">
     <app-person-account (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-person-account>

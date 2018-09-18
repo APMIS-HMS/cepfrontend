@@ -6,6 +6,7 @@ import { Facility, Person, Employee } from '../../models/index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService, PersonService } from '../../services/facility-manager/setup/index';
 import { DomSanitizer } from '@angular/platform-browser';
+import {ChannelService } from '../../services/communication-manager/channel-service';
 
 @Component({
   selector: 'app-user-accounts',
@@ -24,7 +25,7 @@ export class UserAccountsComponent implements OnInit {
   selectedPerson: Person = <Person>{};
   logoutConfirm_on = false;
   loginEmployee: Employee = <Employee>{};
-  authData: any; 
+  authData: any;
   constructor(private locker: CoolLocalStorage,
     private router: Router,
     private route: ActivatedRoute,
@@ -33,8 +34,9 @@ export class UserAccountsComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private corporateFacilityService: CorporateFacilityService,
     private employeeService: EmployeeService,
-    private joinChannelService:JoinChannelService,
-    public facilityService: FacilitiesService) {
+    private joinChannelService: JoinChannelService,
+    public facilityService: FacilitiesService,
+    public channelService: ChannelService) {
     this.userService.missionAnnounced$.subscribe(payload => {
       if (payload === 'out') {
         this.router.navigate(['/']);
@@ -43,6 +45,7 @@ export class UserAccountsComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('in user-account component');
     this.route.data.subscribe(data => {
       data['switchUsers'].subscribe((payload: any) => {
         this.authData = payload.authData;
@@ -99,11 +102,14 @@ export class UserAccountsComponent implements OnInit {
         this.joinChannelService.create(
           {_id: this.selectedFacility._id,
             userId: auth.data._id,
+            facilityName: this.selectedFacility.name,
             dept: this.selectedFacility.departments
           }
         ).then(pay => {
           this.popup_listing = true;
           this.popup_verifyToken = false;
+          this.channelService.setCurrentUserChannel(JSON.stringify(pay.data));
+          console.log('======Join facility channel payload========\n', pay);
         }, err => {
           //
         })

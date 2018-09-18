@@ -12,6 +12,7 @@ import {EmployeeService, FacilitiesService, UserService, WorkSpaceService} from 
 import {FeatureModuleService} from './../../services/module-manager/setup/feature-module.service';
 import {DONT_USE_AUTH_GUARD} from './../../shared-module/helpers/global-config';
 import {AuthFacadeService} from './../service-facade/auth-facade.service';
+import { ChannelService } from '../../services/communication-manager/channel-service';
 
 @Component({
   selector: 'app-dashboard-home',
@@ -52,6 +53,7 @@ export class DashboardHomeComponent implements OnInit {
   loginEmployee: Employee = <Employee>{};
   access: any = [];
   facilitySubscriptions: any = [];
+  channel: any;
 
   checkedInObject: any = <any>{};
   constructor(
@@ -61,9 +63,13 @@ export class DashboardHomeComponent implements OnInit {
       private employeeService: EmployeeService,
       private workSpaceService: WorkSpaceService,
       private authFacadeService: AuthFacadeService,
+      private channelService: ChannelService,
       private featureService: FeatureModuleService) {}
 
   ngOnInit() {
+    console.log('dashboard home');
+    this.channel = this.channelService.getCurrentUserChannel();
+    console.log(this.channel);
     this.featureService.listner.subscribe(payload => {
       this.getUserRoles();
     });

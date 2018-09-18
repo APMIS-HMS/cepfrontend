@@ -54,23 +54,15 @@
                                 </form>
                             </td>
                         </tr>
-                        <tr *ngIf="extRequests.length === 0 && !loading ">
-                            <td class="table-content " colspan="5" style="text-align: center "> No data available in table</td>
-                        </tr>
-                        <tr *ngIf="extRequests.length === 0 && loading ">
-                            <td class="table-content " colspan="4" style="text-align: center ">
-                                <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
-                            </td>
-                        </tr>
-                        <tr *ngFor="let extRequest of extRequests " routerLink='/dashboard/laboratory/request/{{extRequest.personId}}'>
-                            <td class="table-content">{{extRequest?.updatedAt | date:'medium'}}</td>
-                            <td class="table-content">{{extRequest?.name}}</td>
-                            <td class="table-content">{{extRequest?.createdBy}}</td>
-                            <td class="table-content">{{extRequest?.service}}</td>
-                            <td class="table-content">
-                                <span *ngIf="extRequest.status == 'completely'" style="color:forestgreen">Completely<br>Assessed</span>
-                                <span *ngIf="extRequest.status == 'partly'" style="color:blue">Partly<br>Assessed</span>
-                                <span *ngIf="extRequest.status == 'not'" style="color:crimson">Not<br>Assessed</span>
+                        <tr >
+                            <td class="table-content">11th Oct 2018</td>
+                            <td class="table-content">Xray of the right arm</td>
+                            <td class="table-content">John Wade</td>
+                            <td class="table-content">Urgent</td>
+                            <td class="table-content"> 
+                                <!-- <span *ngIf="extRequest.status == 'completely'" style="color:forestgreen">Completely<br>Assessed</span>
+                                <span *ngIf="extRequest.status == 'partly'" style="color:blue">Partly<br>Assessed</span> -->
+                                <span style="color:crimson">Not<br>Assessed</span>
                             </td>
                         </tr>
                     </tbody>
