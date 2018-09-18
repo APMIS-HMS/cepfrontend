@@ -1,33 +1,36 @@
 <i [hidden]="chatActive" (click)="chatActiveToggle()" class="fa fa-comments msg-ico">
-  <span class="notify-count">{{totalOfflineMessageCount | number}}</span></i>
+    <span class="notify-count">{{totalOfflineMessageCount | number}}</span></i>
 
 <div class="chat-container shadow-tb" *ngIf="chatActive">
-  <chat-header (onClose)="chatClose()" [channel]="selectedChannel" (onClick)="showChannelDetails($event)" ></chat-header>
+    <chat-header (onClose)="chatClose()" [channel]="selectedChannel"
+                 (onClick)="showChannelDetails($event)"></chat-header>
 
-  <div class="chat-content-wrap">
-    <div class="groups-sect">
-      <div class="search-wrap">
-        <i class="fa fa-search"></i>
-        <input type="text" #searchUi placeholder="search chat">
-      </div>
+    <div class="chat-content-wrap">
+        <div class="groups-sect">
+            <div class="search-wrap">
+                <i class="fa fa-search"></i>
+                <input type="text" #searchUi placeholder="search chat">
+            </div>
 
-      <div class="tabs">
-        <div (click)="clinical_click()" class="tab" [class.tab-active]="clinicalTab">Clinical</div>
-        <div (click)="nonClinical_click()" class="tab" [class.tab-active]="nonClinicalTab">Non Clinical</div>
-      </div>
+            <div class="tabs">
+                <div (click)="clinical_click()" class="tab" [class.tab-active]="clinicalTab">Clinical</div>
+                <div (click)="nonClinical_click()" class="tab" [class.tab-active]="nonClinicalTab">Non Clinical</div>
+            </div>
 
-      <div *ngIf="nonClinicalTab">
-    
-        <channel-list [channelList]="nonClinicalChannels"  (onChannelSelected)="channelSelected($event)" ></channel-list>
-      </div>
-      <div *ngIf="clinicalTab">
-     
-        <channel-list [channelList]="clinicalChannels" (onChannelSelected)="channelSelected($event)" ></channel-list>
-      </div>
+            <div *ngIf="nonClinicalTab">
+
+                <channel-list [channelList]="nonClinicalChannels"
+                              (onChannelSelected)="channelSelected($event)"></channel-list>
+            </div>
+            <div *ngIf="clinicalTab">
+
+                <channel-list [channelList]="clinicalChannels"
+                              (onChannelSelected)="channelSelected($event)"></channel-list>
+            </div>
+        </div>
+        <message-list  [messages]="selectedChannelMessages" [channel]="selectedChannel" [currentUser]="currentUser">
+
+        </message-list>
+
     </div>
-<message-list [messages]="selectedChannelMessages" [channel]="selectedChannel" [currentUser]="currentUser">
-  
-</message-list>
-    
-  </div>
 </div>

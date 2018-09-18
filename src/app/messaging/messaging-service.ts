@@ -1,17 +1,18 @@
 import {Injectable} from '@angular/core';
-import {Http} from "@angular/http";
-import {API_LOCALHOST, API_DEV, API_LIVE} from "../shared-module/helpers/global-config";
 import {IMessage, IMessageChannel, IMessenger} from "./messaging-model";
+import {RestService, SocketService} from "../feathers/feathers.service";
 
-const HOST = API_LOCALHOST;
+
 const MESSAGE_ENDPOINT = "/messages", CHANNEL_ENDPOINT = "/channels", COMMUNICATION_ENDPOINT = "/communication";
 
 
 @Injectable()
 export class MessagingService {
-    private baseUrl: string = `${HOST}`;
-
-    constructor(private http: Http) {
+   
+    rest : any ; socket : any;
+    constructor(private socketIoService: SocketService, private restfulService : RestService) {
+        this.rest    = restfulService.getService("invoices");
+        console.log(this.rest);
     }
 
     /*
@@ -23,7 +24,7 @@ export class MessagingService {
     //expect to return an observable of ApiResonse object that will include a messages payload in the data property
     // and also an pagination object, statuses for the call etc
     getMessages(criteria: any) {
-        let result = this.http.get(`${this.baseUrl}${MESSAGE_ENDPOINT}`, {params: criteria});
+       // let result = this.http.get(`${this.baseUrl}${MESSAGE_ENDPOINT}`, {params: criteria});
         let res : IMessage[]  = [];
         if(criteria.channelId === "0001")
         {
@@ -65,7 +66,7 @@ export class MessagingService {
     }
 
     sendMessage(message: IMessage) {
-        return this.http.post(`${this.baseUrl}${MESSAGE_ENDPOINT}`, {message: message})
+        //return this.http.post(`${this.baseUrl}${MESSAGE_ENDPOINT}`, {message: message})
     }
 
     /*
@@ -102,6 +103,9 @@ export class MessagingService {
         return 0;
     }
     getChannels(criteria: any) {
+        
+        const  channels   =  this.rest.find();
+        console.log(channels);
         const clinicalChannels: IMessageChannel[] = [
             {
                 _id: "0001",

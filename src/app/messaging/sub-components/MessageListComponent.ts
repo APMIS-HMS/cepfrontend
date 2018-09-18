@@ -35,9 +35,8 @@ import {transition, style, state, animate, trigger} from "@angular/animations";
                 </div>
                 </div>
                
-                
             </ul>
-            <textarea #txt (keyup)="sendMessage($event, txt)" class="chat-box"></textarea>
+            <textarea [disabled]="!(!!channel)" #txt (keyup)="sendMessage($event, txt)" class="chat-box"></textarea>
         </div>
     `
 })

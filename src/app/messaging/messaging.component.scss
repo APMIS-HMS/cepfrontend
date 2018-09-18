@@ -78,15 +78,16 @@
     display: flex;
     justify-content: space-between;
     height: 100%;
+    width:700px;
 }
 .groups-sect{
-    width: 453px;
+    max-width: 260px;
     height: 100%;
     background: #fff;
 }
 .chat-sect{
     position: relative;
-    width: 100%;
+    width: 438px;
     background: rgb(184, 225, 245);
 }
 .group-ico {
@@ -165,7 +166,7 @@
     font-size: 1.0rem;
 }
 .chats{
-    width: 100%;
+    width: 98%;
     padding: 10px;
     border-bottom: 5px solid rgb(184, 225, 245);
     box-sizing: border-box;
