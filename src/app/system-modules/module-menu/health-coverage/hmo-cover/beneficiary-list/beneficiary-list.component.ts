@@ -93,6 +93,7 @@ export class BeneficiaryListComponent implements OnInit {
   }
 
   onBeneficiaryValueChange(e){
+    console.log(e);
     const facHmo = e;
     const index = facHmo.hmos.findIndex(x => x.hmo === this.selectedBeneficiary.id);
       if (index > -1) {
@@ -119,10 +120,20 @@ export class BeneficiaryListComponent implements OnInit {
   }
 
   edit_show(value,i) {
+
     this.newBeneficiary = !this.newBeneficiary;
     value.id = this.selectedBeneficiary.id;
     value.index = i;
     this.selectedBeneficiary = value;
+    this.selectedBeneficiary.type = (this.selectedBeneficiary.type !== undefined) ? this.removeWhiteSpace(this.selectedBeneficiary.type) : '';
+    this.selectedBeneficiary.status = (this.selectedBeneficiary.status === 'active' || this.selectedBeneficiary.status === true) ? true : false;
+    this.selectedBeneficiary.category = (this.selectedBeneficiary.category === undefined || this.selectedBeneficiary.status === null) ? '' : this.selectedBeneficiary.category;
+    this.selectedBeneficiary.gender = (this.selectedBeneficiary.gender === undefined || this.selectedBeneficiary.gender === null) ? 'M' : this.selectedBeneficiary.gender;
+    this.selectedBeneficiary.sponsor = (this.selectedBeneficiary.sponsor === undefined || this.selectedBeneficiary.sponsor === null) ? '' : this.selectedBeneficiary.sponsor;
+  }
+
+  removeWhiteSpace(value) {
+    return value.replace(/\s/g, '');
   }
 
   showImageBrowseDlg() {

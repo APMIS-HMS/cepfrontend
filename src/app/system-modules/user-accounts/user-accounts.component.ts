@@ -102,6 +102,7 @@ export class UserAccountsComponent implements OnInit {
           'dept': this.selectedFacility.departments,
           'facilityName': this.selectedFacility.name
         }
+        console.log(dataChannel);
         this.joinChannelService.create(dataChannel).then(pay => {
           this.popup_listing = true;
           this.popup_verifyToken = false;
