@@ -84,6 +84,7 @@ export class FcListComponent implements OnInit {
   }
 
   addDependant(beneficiary?) {
+
     if (beneficiary) {
       this.showEdit(beneficiary, true);
       this.pushNewDependant(undefined, undefined);
@@ -98,7 +99,7 @@ export class FcListComponent implements OnInit {
             phone: ['', []],
             status: ['', [<any>Validators.required]],
             filNo: [''],
-            readOnly: [false],
+            readOnly: [true],
             operation: ['save'],
             serial: [0]
           })
@@ -121,7 +122,7 @@ export class FcListComponent implements OnInit {
           phone: ['', []],
           status: ['', [<any>Validators.required]],
           filNo: [''],
-          readOnly: [false],
+          readOnly: [true],
           operation: ['save'],
           serial: [0]
         })
@@ -230,7 +231,9 @@ export class FcListComponent implements OnInit {
   save(valid, value, dependantValid, dependantValue) {
     this.loading = true;
     this.updatePatientBtnText = 'Adding Family... <i class="fa fa-spinner fa-spin"></i>';
+    console.log(dependantValue.controls.dependantArray.controls);
     const unsavedFiltered = dependantValue.controls.dependantArray.controls.filter(x => x.value.readOnly === false && x.valid);
+    console.log(unsavedFiltered,valid);
     if (unsavedFiltered.length > 0) {
       this.loading = false;
       this.updatePatientBtnText = 'Add Family';
@@ -246,17 +249,23 @@ export class FcListComponent implements OnInit {
         facilityId: this.selectedFacility._id,
         // facilityObject:this.selectedFacility
       };
+      console.log(param);
       const filtered = dependantValue.controls.dependantArray.controls.filter(x => x.value.readOnly === true);
+      console.log(filtered);
       filtered.forEach((item, i) => {
         param.dependants.push(item.value);
       });
+      console.log(filtered);
       this.familyCoverService.updateBeneficiaryList(param).then(payload => {
+        console.log(payload);
         this.loading = false;
         this.updatePatientBtnText = 'Add Family';
         this.getBeneficiaryList(this.selectedFacility._id);
         this.cancel();
         this.systemModuleService.announceSweetProxy('Family Cover Records Updated Successfully',
         'success', null, null, null, null, null, null, null);
+      },err=>{
+        console.log(err);
       });
     } else {
       this.loading = false;
