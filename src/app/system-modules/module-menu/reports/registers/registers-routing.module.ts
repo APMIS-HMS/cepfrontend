@@ -6,6 +6,8 @@ import { RegisterEntryComponent } from './register-entries/register-entry/regist
 import { RegistersComponent } from './registers.component';
 import { DailyAntenatalComponent } from './register-entries/daily-antenatal/daily-antenatal.component';
 import { DailyOpdComponent } from './register-entries/daily-opd/daily-opd.component';
+import { DailyGmpComponent } from './register-entries/daily-gmp/daily-gmp.component';
+import { DailyLdrComponent } from './register-entries/daily-ldr/daily-ldr.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'list' },
@@ -14,7 +16,9 @@ const routes: Routes = [
   { path: 'entry-detail', component: RegisterEntryComponent },
   // { path: 'new-entry', component: NewRegisterComponent },
   { path: 'antenatal', component: DailyAntenatalComponent },
-  { path: 'opd', component: DailyOpdComponent }
+  { path: 'opd', component: DailyOpdComponent },
+  { path: 'gmp', component: DailyGmpComponent },
+  { path: 'ldr', component: DailyLdrComponent }
 ];
 
 @NgModule({
