@@ -12,7 +12,7 @@
                     <form *ngIf="pricing_view" [formGroup]="frmNewPrice" novalidate>
                         <div class="row">
                             <div class="frm-item-wrap col-sm-4">
-                                <apmis-lookup formControlName="workbench" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Select Workbench" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"
+                                <apmis-lookup formControlName="workbench" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery" placeholder="Select Modality" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"
                                     [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys"></apmis-lookup>
                             </div>
                             <div class="frm-item-wrap col-sm-4">
@@ -39,8 +39,8 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="table-head col-xs-1">No</div>
-                                <div class="table-head col-xs-3">Laboratory</div>
-                                <div class="table-head col-xs-2">Workbench</div>
+                                <div class="table-head col-xs-3">Radiology</div>
+                                <div class="table-head col-xs-2">Modality</div>
                                 <div class="table-head col-xs-2">Investigation</div>
                                 <div class="table-head col-xs-2">Price</div>
                                 <div class="table-head col-xs-1">Status</div>
