@@ -80,6 +80,7 @@ export class ScheduleFrmComponent implements OnInit {
   organizationalServicePrice = 0;
   // filteredStates: any;
   patient: FormControl;
+  timeSlots: FormControl;
   clinic: FormControl;
   provider: FormControl;
   type: FormControl;
