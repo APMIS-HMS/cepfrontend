@@ -22,6 +22,7 @@ import { MaterialModule } from '../../../../shared-common-modules/material-modul
 import { DailyLdrComponent } from './register-entries/daily-ldr/daily-ldr.component';
 import { NewLdrEntryComponent } from './register-entries/daily-ldr/new-ldr-entry/new-ldr-entry.component';
 import { LdrListComponent } from './register-entries/daily-ldr/ldr-list/ldr-list.component';
+import { NewOpdEntry2Component } from './register-entries/daily-opd/new-opd-entry2/new-opd-entry2.component';
 
 @NgModule({
   imports: [
@@ -47,7 +48,8 @@ import { LdrListComponent } from './register-entries/daily-ldr/ldr-list/ldr-list
     GmpListComponent,
     DailyLdrComponent,
     NewLdrEntryComponent,
-    LdrListComponent
+    LdrListComponent,
+    NewOpdEntry2Component
   ]
 })
 export class RegistersModule { }
