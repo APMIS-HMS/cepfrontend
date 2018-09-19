@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {IMessage, IMessageChannel, IMessenger} from "./messaging-model";
 import {RestService, SocketService} from "../feathers/feathers.service";
+import {JoinChannelService} from "../services/facility-manager/setup/join-channel.service";
 
 
 const MESSAGE_ENDPOINT = "/messages", CHANNEL_ENDPOINT = "/channels", COMMUNICATION_ENDPOINT = "/communication";
@@ -10,7 +11,7 @@ const MESSAGE_ENDPOINT = "/messages", CHANNEL_ENDPOINT = "/channels", COMMUNICAT
 export class MessagingService {
    
     rest : any ; socket : any;
-    constructor(private socketIoService: SocketService, private restfulService : RestService) {
+    constructor(private joinFacilityChannel : JoinChannelService  , private socketIoService: SocketService, private restfulService : RestService) {
         this.rest    = restfulService.getService("invoices");
         console.log(this.rest);
     }
@@ -104,7 +105,7 @@ export class MessagingService {
     }
     getChannels(criteria: any) {
         
-        const  channels   =  this.rest.find();
+        const  channels   =  this.joinFacilityChannel.findAll();
         console.log(channels);
         const clinicalChannels: IMessageChannel[] = [
             {
