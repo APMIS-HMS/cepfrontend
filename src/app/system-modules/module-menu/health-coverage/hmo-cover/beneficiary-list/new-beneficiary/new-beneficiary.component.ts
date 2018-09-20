@@ -30,24 +30,25 @@ export class NewBeneficiaryComponent implements OnInit {
 
   ngOnInit() {
     this.selectedFacility = this.locker.getObject('selectedFacility');
+    console.log(this.selectedBeneficiary);
+    this.genders = ['M', 'F'];
+    this.types = ['CAPITATION', 'FEE-FOR-SERVICE'];
     this.frm_UpdateCourse = this.formBuilder.group({
       id: [''],
       index: [''],
-      category: ['',[<any>Validators.required]],
+      category: [''],
       serial: [''],
       sponsor: ['', [<any>Validators.required]],
       type: ['', [<any>Validators.required],],
       plan: ['', [<any>Validators.required]],
       firstname: ['', [<any>Validators.required]],
       surname: ['', [<any>Validators.required]],
-      gender: ['', [<any>Validators.required]],
+      gender: [''],
       filNo: ['', [<any>Validators.required]],
       date: ['', [<any>Validators.required]],
       status: [false, [<any>Validators.required]]
     });
-    this.genders = ['M', 'F'];
-    this.types = ['CAPITATION', 'FEE-FOR-SERVICE'];
-    this.selectedBeneficiary.type = (this.selectedBeneficiary.type !== undefined) ? this.removeWhiteSpace(this.selectedBeneficiary.type) : '';
+
     this.frm_UpdateCourse.setValue(this.selectedBeneficiary);
   }
 
@@ -56,8 +57,10 @@ export class NewBeneficiaryComponent implements OnInit {
     this.closeModal.emit(true);
   }
   view() {
+    console.log(this.frm_UpdateCourse);
     if (this.frm_UpdateCourse.valid) {
       this.disableButton = true;
+      console.log(this.selectedBeneficiary);
       if (this.selectedBeneficiary.index !== '') {
         this.systemModuleService.announceSweetProxy('You are about to edit this beneficiary report', 'question', this, null, null);
       } else {
@@ -68,9 +71,6 @@ export class NewBeneficiaryComponent implements OnInit {
     }
   }
 
-  removeWhiteSpace(value) {
-    return value.replace(/\s/g, '');
-  }
 
   updateBeneficiaryList(value) {
     this.hmoService.patchBeneficiary(value.index, value, {
@@ -82,13 +82,20 @@ export class NewBeneficiaryComponent implements OnInit {
       this.systemModuleService.announceSweetProxy('Beneficiary information updated', 'success');
       this.systemModuleService.off();
       this.beneficiaryValueChanged.emit(payload);
+    }, err => {
+      console.log(err);
+      this.systemModuleService.announceSweetProxy('Beneficiary information failed', 'error');
+      this.systemModuleService.off();
     });
   }
 
   sweetAlertCallback(result) {
     if (result.value) {
       this.systemModuleService.on();
-      this.updateBeneficiaryList(this.frm_UpdateCourse.value);
+      let data_ = [];
+      console.log(this.frm_UpdateCourse.value);
+      data_.push(this.frm_UpdateCourse.value);
+      this.updateBeneficiaryList(this.frm_UpdateCourse.value);;
     } else {
       this.close_onClick();
     }
