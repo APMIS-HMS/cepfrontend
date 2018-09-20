@@ -51,10 +51,12 @@ export class ApmisLookupComponent
   pageEvent: PageEvent;
   pageSize = 10;
   pageSizeOptions = [5, 10, 25, 100];
+  operateResults = [];
+  filteredResults = [];
   @Input() displayKey = '';
   @Input() url = '';
   @Input() placeholder = '';
-  @Input() query = {};
+  @Input() query: any = {};
   @Input() imgObj = '';
   @Input() min = 0;
   @Input() otherKeys = [];
@@ -68,6 +70,7 @@ export class ApmisLookupComponent
   public valueParseError: boolean;
   public data: any;
   searchText = '';
+  isLoadingMore = false;
   showCuDropdown = false;
   cuDropdownLoading = false;
   form: FormGroup;
@@ -95,20 +98,61 @@ export class ApmisLookupComponent
         query: this.query
       }, this.isSocket))
       .subscribe((payload: any) => {
-        console.log(payload.data);
         this.cuDropdownLoading = false;
         if (payload !== undefined && payload.data !== undefined) {
           this.results = payload.data;
+          const startIndex = 0 * 10;
+          this.operateResults = JSON.parse(JSON.stringify(this.results));
+          this.filteredResults = JSON.parse(JSON.stringify(this.operateResults.splice(startIndex, 10)));
         } else {
           this.results = payload;
+          const startIndex = 0 * 10;
+          this.operateResults = JSON.parse(JSON.stringify(this.results));
+          this.filteredResults = JSON.parse(JSON.stringify(this.operateResults.splice(startIndex, 10)));
         }
       });
   }
 
-  onPaginateChange(event) { 
-    this.showCuDropdown = true;
+  onPaginateChange(event) {
+    this.cuDropdownLoading = true;
+    console.log(event);
+    let _pageIndex = 1;
+    _pageIndex += event.pageIndex;
+    let _pageLength = _pageIndex * event.pageSize;
+    if (_pageLength < this.results.length) {
+      const startIndex = event.pageIndex * event.pageSize;
+      this.operateResults = JSON.parse(JSON.stringify(this.results));
+      this.filteredResults = JSON.parse(JSON.stringify(this.operateResults.splice(startIndex, event.length)));
+    } else {
+      let mQuery = JSON.parse(JSON.stringify(this.query));
+      mQuery.$skip = event.length;
+      this.isLoadingMore = true;
+      this.filter({
+        query: mQuery
+      }, this.isSocket)
+        .subscribe((payload: any) => {
+          if (payload !== undefined && payload.data !== undefined) {
+            this.isLoadingMore = false;
+            this.results = JSON.parse(JSON.stringify(this.results.concat(payload.data)));
+            const startIndex = event.pageIndex * event.pageSize;
+            this.operateResults = JSON.parse(JSON.stringify(this.results));
+            this.filteredResults = JSON.parse(JSON.stringify(this.operateResults.splice(startIndex, event.length)));
+            console.log(this.filteredResults);
+            // this.showCuDropdown = true;
+          } else {
+            this.isLoadingMore = false;
+            this.results = JSON.parse(JSON.stringify(this.results.concat(payload)));
+            const startIndex = event.pageIndex * event.pageSize;
+            this.operateResults = JSON.parse(JSON.stringify(this.results));
+            this.filteredResults = JSON.parse(JSON.stringify(this.operateResults.splice(startIndex, this.paginator.pageSize)));
+            console.log(this.filteredResults);
+            // this.showCuDropdown = true;
+          }
+        }, err => {
+          this.isLoadingMore = false;
+        });
+    }
   }
-
 
   getImgUrl(item) {
     const splitArray = this.imgObj.split('.');
@@ -141,6 +185,7 @@ export class ApmisLookupComponent
       return this._rest.find(query);
     }
   }
+
   getName(item, displayKey: String) {
     const splitArray = displayKey.split('.');
     let counter = 0;
@@ -195,7 +240,7 @@ export class ApmisLookupComponent
   focusOutSearch() {
     setTimeout(() => {
       this.showCuDropdown = !this.showCuDropdown;
-    }, 300);
+    }, 1000);
   }
 
   // this is the initial value set to the component

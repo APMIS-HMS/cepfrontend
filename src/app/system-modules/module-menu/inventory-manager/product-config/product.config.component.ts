@@ -89,7 +89,7 @@ export class ProductConfigComponent implements OnInit {
     if (_pageLength < this.packages.length) {
       const startIndex = event.pageIndex * event.pageSize;
       this.operatePackages = JSON.parse(JSON.stringify(this.packages));
-      this.filteredPackages = JSON.parse(JSON.stringify(this.operatePackages.splice(startIndex, this.paginator.pageSize)));
+      this.filteredPackages = JSON.parse(JSON.stringify(this.operatePackages.splice(startIndex, this.paginator.length)));
     } else {
       this.systemModuleService.on();
       this.productService.findPackageSize({
@@ -103,7 +103,7 @@ export class ProductConfigComponent implements OnInit {
         });
         const startIndex = event.pageIndex * 10;
         this.operatePackages = JSON.parse(JSON.stringify(this.packages));
-        this.filteredPackages = JSON.parse(JSON.stringify(this.operatePackages.splice(startIndex, this.paginator.pageSize)));
+        this.filteredPackages = JSON.parse(JSON.stringify(this.operatePackages.splice(startIndex, this.paginator.length)));
         this.systemModuleService.off();
       }, err => {
         this.systemModuleService.off();
@@ -131,7 +131,9 @@ export class ProductConfigComponent implements OnInit {
       });
       const startIndex = 0 * 10;
       this.operatePackages = JSON.parse(JSON.stringify(this.packages));
-      this.filteredPackages = JSON.parse(JSON.stringify(this.operatePackages.splice(startIndex, this.paginator.pageSize)));
+      if (this.paginator !== undefined) {
+        this.filteredPackages = JSON.parse(JSON.stringify(this.operatePackages.splice(startIndex, this.paginator.pageSize)));
+      }
     });
   }
 
