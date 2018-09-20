@@ -115,7 +115,6 @@ export class ApmisLookupComponent
 
   onPaginateChange(event) {
     this.cuDropdownLoading = true;
-    console.log(event);
     let _pageIndex = 1;
     _pageIndex += event.pageIndex;
     let _pageLength = _pageIndex * event.pageSize;
@@ -137,15 +136,12 @@ export class ApmisLookupComponent
             const startIndex = event.pageIndex * event.pageSize;
             this.operateResults = JSON.parse(JSON.stringify(this.results));
             this.filteredResults = JSON.parse(JSON.stringify(this.operateResults.splice(startIndex, event.length)));
-            console.log(this.filteredResults);
-            // this.showCuDropdown = true;
           } else {
             this.isLoadingMore = false;
             this.results = JSON.parse(JSON.stringify(this.results.concat(payload)));
             const startIndex = event.pageIndex * event.pageSize;
             this.operateResults = JSON.parse(JSON.stringify(this.results));
             this.filteredResults = JSON.parse(JSON.stringify(this.operateResults.splice(startIndex, this.paginator.pageSize)));
-            console.log(this.filteredResults);
             // this.showCuDropdown = true;
           }
         }, err => {
