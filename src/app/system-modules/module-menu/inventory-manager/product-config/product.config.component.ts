@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ProductService } from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
@@ -6,6 +6,7 @@ import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormControl } from '@angular/forms';
 import { PurchaseEmitterService } from '../../../../services/facility-manager/purchase-emitter.service';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
+import { MatPaginator, PageEvent } from '@angular/material';
 
 @Component({
   selector: 'app-product-config',
@@ -13,7 +14,8 @@ import { InventoryEmitterService } from '../../../../services/facility-manager/i
   styleUrls: ['./product.config.component.scss']
 })
 export class ProductConfigComponent implements OnInit {
-
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  pageEvent: PageEvent;
   packages = [];
   products = [];
   selectedFacility: any = {};
@@ -23,6 +25,11 @@ export class ProductConfigComponent implements OnInit {
   btnSave = new FormControl();
   btnShowStatus = true;
   existConfigItem = null;
+  operatePackages = [];
+  filteredPackages = [];
+
+  pageSize = 10;
+  pageSizeOptions = [5, 10, 25, 100];
 
   apmisLookupUrl = 'formulary-products';
   apmisLookupText = '';
@@ -39,19 +46,19 @@ export class ProductConfigComponent implements OnInit {
     private systemModuleService: SystemModuleService
   ) { }
 
-initializeForm(){
-  this.packageForm = this._fb.group({
-    'package': this._fb.array([
-      this._fb.group({
-        name: ['', Validators.required],
-        size: [0, Validators.required],
-        packId: ['', Validators.required],
-        id: ['']
-      })
-    ])
-  });
-  this.packageForm.controls['package'] = this._fb.array([]);
-}
+  initializeForm() {
+    this.packageForm = this._fb.group({
+      'package': this._fb.array([
+        this._fb.group({
+          name: ['', Validators.required],
+          size: [0, Validators.required],
+          packId: ['', Validators.required],
+          id: ['']
+        })
+      ])
+    });
+    this.packageForm.controls['package'] = this._fb.array([]);
+  }
 
   ngOnInit() {
     var x = document.getElementById("searchuctControl")
@@ -74,6 +81,36 @@ initializeForm(){
     this.getPackagesizes();
   }
 
+  onPaginateChange(event) {
+    console.log(event);
+    let _pageIndex = 1;
+    _pageIndex += event.pageIndex;
+    let _pageLength = _pageIndex * event.pageSize;
+    if (_pageLength < this.packages.length) {
+      const startIndex = event.pageIndex * event.pageSize;
+      this.operatePackages = JSON.parse(JSON.stringify(this.packages));
+      this.filteredPackages = JSON.parse(JSON.stringify(this.operatePackages.splice(startIndex, this.paginator.pageSize)));
+    } else {
+      this.systemModuleService.on();
+      this.productService.findPackageSize({
+        query: {
+          $skip: event.length
+        }
+      }).then(payload => {
+        this.packages = JSON.parse(JSON.stringify(this.packages.concat(payload.data)));
+        this.packages.forEach(element => {
+          element.checked = false;
+        });
+        const startIndex = event.pageIndex * 10;
+        this.operatePackages = JSON.parse(JSON.stringify(this.packages));
+        this.filteredPackages = JSON.parse(JSON.stringify(this.operatePackages.splice(startIndex, this.paginator.pageSize)));
+        this.systemModuleService.off();
+      }, err => {
+        this.systemModuleService.off();
+      });
+    }
+  }
+
   removePack(i: number, itm: any) {
     const control = <FormArray>this.packageForm.controls['package'];
     let _packages = this.packages;
@@ -92,6 +129,9 @@ initializeForm(){
       this.packages.forEach(element => {
         element.checked = false;
       });
+      const startIndex = 0 * 10;
+      this.operatePackages = JSON.parse(JSON.stringify(this.packages));
+      this.filteredPackages = JSON.parse(JSON.stringify(this.operatePackages.splice(startIndex, this.paginator.pageSize)));
     });
   }
 
@@ -225,7 +265,7 @@ initializeForm(){
         (<FormArray>this.packageForm.controls['package']).value[0].isBase = true;
         (<FormArray>this.packageForm.controls['package']).value[0].size = 1;
         let _packSizes = (<FormArray>this.packageForm.controls['package']).value;
-        this.productService.patchProductConfig(this.existConfigItem._id, { packSizes: _packSizes} ,{}).then(payload => {
+        this.productService.patchProductConfig(this.existConfigItem._id, { packSizes: _packSizes }, {}).then(payload => {
           this.systemModuleService.off();
           this.btnShowStatus = true;
           this.packageForm.controls['package'] = this._fb.array([]);

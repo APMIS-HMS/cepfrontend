@@ -5,7 +5,8 @@ import {
   Output,
   Input,
   ElementRef,
-  forwardRef
+  forwardRef,
+  ViewChild
 } from '@angular/core';
 import {
   FormGroup,
@@ -25,6 +26,7 @@ import { SocketService, RestService } from './../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { MatPaginator, PageEvent } from '@angular/material';
 
 @Component({
   selector: 'apmis-lookup',
@@ -45,6 +47,10 @@ import { Subject } from 'rxjs/Subject';
 })
 export class ApmisLookupComponent
   implements OnInit, ControlValueAccessor, Validator {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  pageEvent: PageEvent;
+  pageSize = 10;
+  pageSizeOptions = [5, 10, 25, 100];
   @Input() displayKey = '';
   @Input() url = '';
   @Input() placeholder = '';
@@ -75,7 +81,7 @@ export class ApmisLookupComponent
     private _restService: RestService,
     private facilitiesService: FacilitiesService,
     private facilityServiceCategory: FacilitiesServiceCategoryService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this._rest = this._restService.getService(this.url);
@@ -83,21 +89,24 @@ export class ApmisLookupComponent
     this.baseUrl = this._restService.HOST;
     this.form = this.fb.group({ searchtext: [''] });
     this.form.controls['searchtext'].valueChanges
-    .debounceTime(200)
-    .distinctUntilChanged()
+      .debounceTime(200)
+      .distinctUntilChanged()
       .switchMap(value => this.filter({
         query: this.query
       }, this.isSocket))
       .subscribe((payload: any) => {
         this.cuDropdownLoading = false;
-         if (payload !== undefined && payload.data !== undefined) {
-            this.results = payload.data;
+        if (payload !== undefined && payload.data !== undefined) {
+          this.results = payload.data;
         } else {
-            this.results = payload;
+          this.results = payload;
         }
       });
   }
 
+  onPaginateChange(event) { 
+    this.showCuDropdown = true;
+  }
 
 
   getImgUrl(item) {
@@ -193,7 +202,7 @@ export class ApmisLookupComponent
     if (obj) {
       this.data = obj;
       this.valueString = this.data;
-    }else{
+    } else {
       this.valueString = '';
     }
   }
@@ -210,14 +219,14 @@ export class ApmisLookupComponent
     return !this.valueParseError
       ? null
       : {
-          valueParseError: {
-            valid: false
-          }
-        };
+        valueParseError: {
+          valid: false
+        }
+      };
   }
 
   // not used, used for touch input
-  public registerOnTouched() {}
+  public registerOnTouched() { }
 
   // change events from the textarea
   public onChange(event) {
@@ -237,5 +246,5 @@ export class ApmisLookupComponent
   }
 
   // the method set in registerOnChange to emit changes back to the form
-  public propagateChange = (_: any) => {};
+  public propagateChange = (_: any) => { };
 }
