@@ -1,4 +1,4 @@
-import {Component, Input, OnInit,OnChanges, SimpleChanges} from '@angular/core';
+import {Component, Input, OnInit, OnChanges, SimpleChanges, Output, EventEmitter} from '@angular/core';
 import {IMessage, IMessageChannel, IMessenger, MessageStatus} from "../messaging-model";
 /*
  *let include angular's Animation
@@ -6,6 +6,7 @@ import {IMessage, IMessageChannel, IMessenger, MessageStatus} from "../messaging
 * 
 * */
 import {transition, style, state, animate, trigger} from "@angular/animations";
+import {MessagingService} from "../messaging-service";
 
 @Component({
    /* animations : [
@@ -31,10 +32,8 @@ import {transition, style, state, animate, trigger} from "@angular/animations";
                     <li class="chat chat-center">
                         <message [message]="m"></message>
                     </li>
-
                 </div>
                 </div>
-               
             </ul>
             <textarea [disabled]="!(!!channel)" #txt (keyup)="sendMessage($event, txt)" class="chat-box"></textarea>
         </div>
@@ -52,14 +51,23 @@ export class MessageListComponent implements OnInit, OnChanges {
     state : string  = "entry";
     @Input() channel  : IMessageChannel;
     @Input() currentUser  : IMessenger
-    
-    
-    constructor() {
+    @Output() onMessageSent : EventEmitter<IMessage>  =  new EventEmitter<IMessage>();
+    @Output() onMessageReceived : EventEmitter<IMessageChannel>  =  new EventEmitter<IMessageChannel>();
+    constructor(private msgService : MessagingService) {
         
     }
+/*
+*   On Message Received event will be called each time a new message enters the message queue
+*   users of this component can now decide on what to do when messages arrives 
+*   -- example could be notifying the current user of new message arrival when they are not in
+*   --  the conversion area etc 
+* */
 
-    sendMessage(evt: KeyboardEvent, ui : HTMLTextAreaElement) {
-       
+
+
+
+///  Manages the sending of new messages
+    async sendMessage(evt: KeyboardEvent, ui : HTMLTextAreaElement) {
         if (evt.keyCode == 13) {
             // Enter key is Press
             // create a new Message from the target element.value property
@@ -81,8 +89,19 @@ export class MessageListComponent implements OnInit, OnChanges {
                }
                
                this.messages.push(m);
+               // Send the message to server and report the status
+                // for a successful server push, raise the onMessageSent event
+                const response  = await this.msgService.sendMessage(m);
+                if (response.success)
+                {
+                    // mark the message as sent 
+                    m.messageStatus  = 'Sent';
+                    // Then emit the onMessageSent Event
+                    this.onMessageSent.emit(m);
+                }
                ui.value = "";
                ui.focus();
+               
                // Scroll to Message
             }
         }

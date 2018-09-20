@@ -66,8 +66,12 @@ export class MessagingService {
         return res;
     }
 
-    sendMessage(message: IMessage) {
+    async sendMessage(message: IMessage) {
         //return this.http.post(`${this.baseUrl}${MESSAGE_ENDPOINT}`, {message: message})
+        return {success : true, 
+                message : "Message Sent",
+                data  : message
+        }
     }
 
     /*

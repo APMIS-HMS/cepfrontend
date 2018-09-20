@@ -12,8 +12,7 @@ import {IMessage, IMessageChannel, IMessenger} from "./messaging-model";
 export class MessagingComponent implements OnInit {
 
   chatActive = false;
-  searchAccount = new FormControl();
-  chatBox = new FormControl();
+  
 
   clinicalTab = true;
   nonClinicalTab = false;
@@ -68,7 +67,7 @@ export class MessagingComponent implements OnInit {
      this.selectedChannel   = channel;
      // Load Channel Messages
      this.selectedChannelMessages = this.msgService.getMessages({channelId : this.selectedChannel._id});
-     // Check if there are offline messages, mark them as read on the server
+     //TODO: Check if there are offline messages, mark them as read on the server
      // UI Should be rendered appropriately
   
  }
