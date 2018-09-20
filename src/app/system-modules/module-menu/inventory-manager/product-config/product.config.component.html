@@ -1,24 +1,32 @@
 <div class="wrap">
-    <div class="row">
+    <div class="row in-wrap">
         <div class="col-sm-4">
             <h2> Select a Product </h2>
-            <apmis-lookup [formControl]="searchProdductControl" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisInvestigationLookupQuery" placeholder="Search Product" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
+            <apmis-lookup [formControl]="searchProdductControl" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl"
+                [query]="apmisInvestigationLookupQuery" placeholder="Search Product" [isSocket]="true" [displayKey]="apmisLookupDisplayKey"
+                (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
             <br>
             <br>
 
             <div *ngIf="selectedProduct.name !== undefined">
                 <h2> Select a Pack Type </h2>
-                <ul *ngFor="let item of packages;let i=index">
-                    <li>
-                        <div class="checkwrap">
-                            <label class="container">
-                                {{item.name}}
-                                <input type="checkbox" [checked]="item.checked" (change)="addPackage($event,item,i)">
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
-                    </li>
-                </ul>
+                <div class="row card">
+                    <mat-paginator [pageIndex]="0" [length]="packages.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
+                        [pageSizeOptions]="pageSizeOptions"></mat-paginator>
+                    <ul style="width:100%;" *ngFor="let item of filteredPackages;let i=index">
+                        <li>
+                            <div class="checkwrap">
+                                <label class="container">
+                                    {{item.name}}
+                                    <input type="checkbox" [checked]="item.checked" (change)="addPackage($event,item,i)">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
+                        </li>
+                    </ul>
+                    <mat-paginator [pageIndex]="0" [length]="packages.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
+                        [pageSizeOptions]="pageSizeOptions"></mat-paginator>
+                </div>
             </div>
         </div>
         <div class="col-sm-8">
@@ -27,14 +35,16 @@
             </h2>
             <form [formGroup]="packageForm" novalidate>
                 <div formArrayName="package">
-                    <div class="row card pack-item animated bounceInRight" *ngFor="let item of packageForm['controls'].package['controls']; let i=index;" formGroupName="{{i}}">
+                    <div class="row card pack-item animated bounceInRight" *ngFor="let item of packageForm['controls'].package['controls']; let i=index;"
+                        formGroupName="{{i}}">
                         <div class="col-xs-4">
                             <h2 style="line-height: 60px">
                                 <span *ngIf="i>0">1&nbsp;</span> {{item._value.name}}
                             </h2>
                         </div>
                         <mat-input-container class="col-xs-3" *ngIf="i>0">
-                            <input matInput type="number" placeholder="No. of {{packageForm.controls.package.controls[0].controls.name.value}}" formControlName="size">
+                            <input matInput type="number" placeholder="No. of {{packageForm.controls.package.controls[0].controls.name.value}}"
+                                formControlName="size">
                         </mat-input-container>
                         <div class="col-xs-3" *ngIf="i==0">
                             &nbsp;

@@ -59,6 +59,7 @@ import { FacilityFacadeService } from 'app/system-modules/service-facade/facilit
 import { UserFacadeService } from 'app/system-modules/service-facade/user-facade.service';
 import { FacilityTypeFacilityClassFacadeService } from 'app/system-modules/service-facade/facility-type-facility-class-facade.service';
 import { JoinChannelService } from 'app/services/facility-manager/setup/join-channel.service';
+import { ChannelService } from './services/communication-manager/channel-service';
 
 //import { IkeComponent } from './ike/ike.component';
 import { RadiologyInvestigationService } from 'app/services/facility-manager/setup/radiologyinvestigation.service';
@@ -66,7 +67,7 @@ import { RadiologyInvestigationService } from 'app/services/facility-manager/set
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 import { CanActivateViaAuthGuardAccessService } from 'app/services/facility-manager/setup/can-activate-via-auth-guard-access.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
-import { MessagingComponent } from './messaging/messaging.component';
+// import { MessagingComponent } from './messaging/messaging.component';
 
 import { APP_DATE_FORMATS, AppDateAdapter } from 'app/date-format';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
@@ -76,8 +77,8 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/materia
     AppComponent,
     HomeComponent,
     ApmisCheckboxChildComponent,
-    ApmisCheckboxComponent,
-    MessagingComponent
+    ApmisCheckboxComponent
+    // MessagingComponent
   ],
   exports: [
   ],
@@ -132,14 +133,18 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/materia
     SetupService.ServerDateService, SetupService.LaboratoryReportService, SetupService.FormsService, SetupService.VitalService,
     SetupService.TemplateService, PolicyService, PayStackService,
     SetupService.InventoryInitialiserService, SetupService.SmsAlertService, SetupService.MakePaymentService, SystemModuleService,
-    SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService, SetupService.LocSummaryCashService,
+    SetupService.SearchInvoicesService, SetupService.PendingBillService,
+    SetupService.TodayInvoiceService, SetupService.LocSummaryCashService,
     CountryServiceFacadeService, TitleGenderFacadeService, FacilityFacadeService, UserFacadeService,
     SetupService.InventoryInitialiserService, SetupService.SmsAlertService, SetupService.MakePaymentService, SystemModuleService,
-    SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService, SetupService.LocSummaryCashService,
-    SetupService.TimeLineService, FacilityTypeFacilityClassFacadeService, JoinChannelService, SetupService.DocumentUploadService, RadiologyInvestigationService,
+    SetupService.SearchInvoicesService, SetupService.PendingBillService,
+    SetupService.TodayInvoiceService, SetupService.LocSummaryCashService,
+    SetupService.TimeLineService, FacilityTypeFacilityClassFacadeService, JoinChannelService,
+    SetupService.DocumentUploadService, RadiologyInvestigationService,
     SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService,
     SetupService.LocSummaryCashService, SetupService.TimeLineService, SetupService.DocumentUploadService, RadiologyInvestigationService,
-    SetupService.FluidService, SecurityQuestionsService, TitleCasePipe, UpperCasePipe, AuthFacadeService, SetupService.DepartmentService, CanActivateViaAuthGuardAccessService,
+    SetupService.FluidService, SecurityQuestionsService, TitleCasePipe, UpperCasePipe, AuthFacadeService,
+    SetupService.DepartmentService, CanActivateViaAuthGuardAccessService, ChannelService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
