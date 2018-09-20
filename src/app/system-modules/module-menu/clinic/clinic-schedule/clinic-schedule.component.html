@@ -18,11 +18,18 @@
                             <div formGroupName="{{i}}">
                                 <div>
                                     <div class="frmitemwrap">
-                                        <mat-form-field>
-                                            <mat-select placeholder="Days" formControlName="day">
-                                                <mat-option *ngFor="let day of days" [value]="day">{{day}}</mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
+                                        <div class="frm-x2-mini">
+                                            <mat-form-field>
+                                                <mat-select placeholder="Days" formControlName="day">
+                                                    <mat-option *ngFor="let day of days" [value]="day">{{day}}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="frm-x2-mini">
+                                            <mat-input-container>
+                                                <input matInput placeholder="Maximum Slots" formControlName="noSlots">
+                                            </mat-input-container>
+                                        </div>
                                     </div>
                                     <div class="frmitemwrap">
                                         <div class="dx-field">
@@ -50,11 +57,30 @@
                                     </div>
 
                                     <div class="frmitemwrap">
-                                        <mat-form-field>
-                                            <mat-select placeholder="Location" formControlName="location">
-                                                <mat-option *ngFor="let location of clinicLocations" [value]="location">{{ location.name }}</mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
+                                        <div class="frm-x2-mini">
+                                            <mat-form-field>
+                                                <mat-select placeholder="Location" formControlName="location">
+                                                    <mat-option *ngFor="let location of clinicLocations" [value]="location">{{ location.name }}</mat-option>
+                                                </mat-select>
+                                            </mat-form-field>
+                                        </div>
+                                        <div class="frm-x2-mini">
+                                            <div class="frmitemwrap">
+                                                <label>Time Slots</label>
+                                                <div class="frm-x2-mini">
+                                                    <mat-input-container>
+                                                        <input matInput placeholder="" formControlName="noSlots">
+                                                    </mat-input-container>
+                                                </div>
+                                                <div class="frm-x2-mini">
+                                                    <mat-form-field>
+                                                        <mat-select placeholder="" formControlName="location">
+                                                            <mat-option>Mins</mat-option>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

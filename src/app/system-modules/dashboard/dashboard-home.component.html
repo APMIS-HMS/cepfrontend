@@ -1,5 +1,6 @@
-<app-system-module></app-system-module>
-
+<app-system-module>
+</app-system-module>
+<app-messaging class="messaging-shell" channel="channel"></app-messaging>
 <div (click)="innerMenuHide($event)" class="secondary-tab">
     <div class="inner-wrap inner-wrap-sec">
 
@@ -195,7 +196,6 @@
         </section>
     </div>
 </div> -->
-
 
 <div *ngIf="logoutConfirm_on" class="modal-overlay">
     <app-logout-confirm (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-logout-confirm>

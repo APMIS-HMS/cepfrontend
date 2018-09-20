@@ -1,4 +1,5 @@
 <ul class="pg-menuWrap">
+    <li (click)="navItemClick('home')" [class.pg-menuActive]="clinicHome" [routerLink]="['/dashboard/clinic/home']">Home</li>
     <li (click)="navItemClick('appointment')" [class.pg-menuActive]="clinicApppointment" [routerLink]="['/dashboard/clinic/appointment']">Appointment</li>
     <li (click)="navItemClick('checkin')" [class.pg-menuActive]="clinicCheckin" [routerLink]="['/dashboard/clinic/check-in']">Checked In Patients</li>
     <li (click)="navItemClick('schedule')" [class.pg-menuActive]="clinicSchedule" [routerLink]="['/dashboard/clinic/clinic-schedule']">Clinic Schedule</li>

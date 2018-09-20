@@ -6,11 +6,12 @@ import { Facility, Person, Employee } from '../../models/index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService, PersonService } from '../../services/facility-manager/setup/index';
 import { DomSanitizer } from '@angular/platform-browser';
+import {ChannelService } from '../../services/communication-manager/channel-service';
 
 @Component({
   selector: 'app-user-accounts',
   templateUrl: './user-accounts.component.html',
-  styleUrls: ['./user-accounts.component.scss',]
+  styleUrls: ['./user-accounts.component.scss']
 })
 export class UserAccountsComponent implements OnInit {
   item: any;
@@ -24,7 +25,7 @@ export class UserAccountsComponent implements OnInit {
   selectedPerson: Person = <Person>{};
   logoutConfirm_on = false;
   loginEmployee: Employee = <Employee>{};
-  authData: any; 
+  authData: any;
   constructor(private locker: CoolLocalStorage,
     private router: Router,
     private route: ActivatedRoute,
@@ -33,7 +34,7 @@ export class UserAccountsComponent implements OnInit {
     private sanitizer: DomSanitizer,
     private corporateFacilityService: CorporateFacilityService,
     private employeeService: EmployeeService,
-    private joinChannelService:JoinChannelService,
+    private joinChannelService: JoinChannelService,
     public facilityService: FacilitiesService) {
     this.userService.missionAnnounced$.subscribe(payload => {
       if (payload === 'out') {
@@ -43,6 +44,7 @@ export class UserAccountsComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('in user-account component');
     this.route.data.subscribe(data => {
       data['switchUsers'].subscribe((payload: any) => {
         this.authData = payload.authData;
@@ -63,7 +65,7 @@ export class UserAccountsComponent implements OnInit {
     //   this.router.navigate(['/']);
     // } else if (auth.data.corporateOrganisationId == null || auth.data.corporateOrganisationId === undefined) {
     //   let facilities = auth.data.facilitiesRole;
-    //   let facilityList = []; 
+    //   let facilityList = [];
     //   facilities.forEach((item, i) => {
     //     facilityList.push(item.facilityId);
     //   });
@@ -90,25 +92,24 @@ export class UserAccountsComponent implements OnInit {
   popListing(item: any) {
     const auth: any = this.locker.getObject('auth');
     this.item = item;
-    this.facilityService.get(item._id,{}).then(payload =>{
+    this.facilityService.get(item._id, {}).then(payload => {
       this.selectedFacility = payload;
       if (this.selectedFacility.isTokenVerified === false) {
         this.popup_verifyToken = true;
         this.popup_listing = false;
       } else {
-        this.joinChannelService.create(
-          {_id: this.selectedFacility._id,
-            userId: auth.data._id,
-            facilityName: this.selectedFacility.name,
-            dept: this.selectedFacility.departments
-          }
-        ).then(pay => {
+        const dataChannel = {
+          '_id': this.selectedFacility._id,
+          'userId': auth.data._id,
+          'dept': this.selectedFacility.departments,
+          'facilityName': this.selectedFacility.name
+        }
+        console.log(dataChannel);
+        this.joinChannelService.create(dataChannel).then(pay => {
           this.popup_listing = true;
           this.popup_verifyToken = false;
         }, err => {
-          //
-        })
-        //
+        });
       }
       this.locker.setObject('selectedFacility', this.selectedFacility);
       this.locker.setObject('fac', this.selectedFacility._id);
@@ -121,10 +122,10 @@ export class UserAccountsComponent implements OnInit {
     this.logoutConfirm_on = false;
     this.popup_verifyToken = false;
   }
-  close_onClick2(){
+  close_onClick2() {
     this.popup_verifyToken = false;
-    if(this.item !== undefined && this.item._id !== undefined){
-      this.popListing(this.item); 
+    if (this.item !== undefined && this.item._id !== undefined) {
+      this.popListing(this.item);
     }
   }
   logoutConfirm_show() {

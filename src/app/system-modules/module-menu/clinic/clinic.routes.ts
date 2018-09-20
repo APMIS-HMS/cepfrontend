@@ -5,6 +5,7 @@ import { ClinicScheduleComponent } from './clinic-schedule/clinic-schedule.compo
 import { ConsultingRoomComponent } from './consulting-room/consulting-room.component';
 import { CheckInPatientComponent } from './check-in-patient/check-in-patient.component';
 import { NewAppointmentComponent } from './new-appointment/new-appointment.component';
+import { ClinicHomepageComponent } from './clinic-homepage/clinic-homepage.component';
 import {
     AppointmentsResolverService, AppointmentTypeResolverService, ProfessionsResolverService,
     LoginEmployeeResolverService, LoginEmployeeWorkspaceResolverService
@@ -13,7 +14,10 @@ import {
 const CLINICMODULES_ROUTES: Routes = [
     {
         path: '', component: ClinicComponent, children: [
-            { path: '', redirectTo: 'appointment' },
+            { path: '', redirectTo: 'home' },
+            {
+                path: 'home', component: ClinicHomepageComponent
+            },
             {
                 path: 'appointment', component: AppointmentComponent
             },
