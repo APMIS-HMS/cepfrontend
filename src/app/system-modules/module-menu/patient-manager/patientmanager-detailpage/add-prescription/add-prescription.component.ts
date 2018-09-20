@@ -70,12 +70,11 @@ export class AddPrescriptionComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
-		// this.user = <User>this._locker.getObject('auth');
 		this.prescriptionItems.prescriptionItems = [];
 
-		if(this.isDispensed !== undefined) {
+		if (this.isDispensed !== undefined) {
 			this.isDispensed.subscribe(event => {
-				if(event) {
+				if (event) {
 					this.totalCost = 0;
 					this.totalQuantity = 0;
 					this.prescriptionData = <Prescription>{};
