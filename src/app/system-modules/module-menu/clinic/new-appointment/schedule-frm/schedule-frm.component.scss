@@ -86,3 +86,11 @@
 .mat-input-infix {
     border-top: 0em solid transparent !important;
 }
+.frm-min-x2{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    .min-x2-child{
+        width: 45% !important;
+    }
+}

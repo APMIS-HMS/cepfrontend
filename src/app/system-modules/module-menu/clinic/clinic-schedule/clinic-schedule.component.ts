@@ -133,6 +133,7 @@ export class ClinicScheduleComponent implements OnInit {
         (<FormArray>this.clinicScheduleForm.controls['clinicScheduleArray']).push(
           this.formBuilder.group({
             day: [itemi.day, [<any>Validators.required]],
+            noSlots: ['', [<any>Validators.required]],
             startTime: [time, [<any>Validators.required]],
             endTime: [etime, [<any>Validators.required]],
             location: [this.clinicLocations.filter(x => x._id === itemi.location._id)[0], [<any>Validators.required]],

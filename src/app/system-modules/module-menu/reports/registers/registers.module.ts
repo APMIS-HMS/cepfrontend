@@ -11,6 +11,17 @@ import { DailyOpdComponent } from './register-entries/daily-opd/daily-opd.compon
 import { OpdPg1Component } from './register-entries/daily-opd/opd-pg1/opd-pg1.component';
 import { OpdPg2Component } from './register-entries/daily-opd/opd-pg2/opd-pg2.component';
 import { NewOpdEntryComponent } from './register-entries/daily-opd/new-opd-entry/new-opd-entry.component';
+import { DailyGmpComponent } from './register-entries/daily-gmp/daily-gmp.component';
+import { NewGmpEntryComponent } from './register-entries/daily-gmp/new-gmp-entry/new-gmp-entry.component';
+import { GmpListComponent } from './register-entries/daily-gmp/gmp-list/gmp-list.component';
+
+
+
+import { OnlyMaterialModule } from '../../../../shared-common-modules/only-material-module';
+import { MaterialModule } from '../../../../shared-common-modules/material-module';
+import { DailyLdrComponent } from './register-entries/daily-ldr/daily-ldr.component';
+import { NewLdrEntryComponent } from './register-entries/daily-ldr/new-ldr-entry/new-ldr-entry.component';
+import { LdrListComponent } from './register-entries/daily-ldr/ldr-list/ldr-list.component';
 
 @NgModule({
   imports: [
@@ -18,6 +29,8 @@ import { NewOpdEntryComponent } from './register-entries/daily-opd/new-opd-entry
     RegistersRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    MaterialModule,
+    OnlyMaterialModule,
     SharedModule
   ],
   declarations: [
@@ -28,7 +41,13 @@ import { NewOpdEntryComponent } from './register-entries/daily-opd/new-opd-entry
     DailyOpdComponent,
     OpdPg1Component,
     OpdPg2Component,
-    NewOpdEntryComponent
+    NewOpdEntryComponent,
+    DailyGmpComponent,
+    NewGmpEntryComponent,
+    GmpListComponent,
+    DailyLdrComponent,
+    NewLdrEntryComponent,
+    LdrListComponent
   ]
 })
 export class RegistersModule { }

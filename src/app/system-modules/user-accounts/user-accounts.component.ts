@@ -6,11 +6,12 @@ import { Facility, Person, Employee } from '../../models/index';
 import { Router, ActivatedRoute } from '@angular/router';
 import { UserService, PersonService } from '../../services/facility-manager/setup/index';
 import { DomSanitizer } from '@angular/platform-browser';
+import {ChannelService } from '../../services/communication-manager/channel-service';
 
 @Component({
   selector: 'app-user-accounts',
   templateUrl: './user-accounts.component.html',
-  styleUrls: ['./user-accounts.component.scss',]
+  styleUrls: ['./user-accounts.component.scss']
 })
 export class UserAccountsComponent implements OnInit {
   item: any;
@@ -43,6 +44,7 @@ export class UserAccountsComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log('in user-account component');
     this.route.data.subscribe(data => {
       data['switchUsers'].subscribe((payload: any) => {
         this.authData = payload.authData;
@@ -63,7 +65,7 @@ export class UserAccountsComponent implements OnInit {
     //   this.router.navigate(['/']);
     // } else if (auth.data.corporateOrganisationId == null || auth.data.corporateOrganisationId === undefined) {
     //   let facilities = auth.data.facilitiesRole;
-    //   let facilityList = []; 
+    //   let facilityList = [];
     //   facilities.forEach((item, i) => {
     //     facilityList.push(item.facilityId);
     //   });
@@ -96,7 +98,7 @@ export class UserAccountsComponent implements OnInit {
         this.popup_verifyToken = true;
         this.popup_listing = false;
       } else {
-        let dataChannel = {
+        const dataChannel = {
           '_id': this.selectedFacility._id,
           'userId': auth.data._id,
           'dept': this.selectedFacility.departments,
