@@ -1,5 +1,5 @@
 <div class="pg-subtitle">
-    LABORATORY REQUESTS
+    RADIOLOGY REQUESTS
 </div>
 <div>
     <div class="doc-mainWrap">
@@ -46,10 +46,19 @@
 
                             </div>
                             <div class="frm-r">
-                                <div *ngIf="isLaboratory" class="frm-item-wrap">
-                                    <mat-input-container>
-                                        <input matInput placeholder="Lab Number" formControlName="labNo">
-                                    </mat-input-container>
+                                <div class="min-frm-group">
+                                    <div *ngIf="isLaboratory" class="frm-item-wrap">
+                                        <mat-input-container class="item1frm">
+                                            <input matInput placeholder="Radiology Number" formControlName="labNo">
+                                        </mat-input-container>
+                                    </div>
+                                    <mat-form-field>
+                                        <mat-select class="p-status" formControlName="pStatus" placeholder="Patient Status">
+                                            <mat-option>
+                                                On Wheel Chair
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
                                 </div>
 
                                 <div class="frm-item-wrap">

@@ -192,7 +192,7 @@ export class RadiologyComponent implements OnInit, OnDestroy {
       this.reportContentArea = false;
       this.externalContentArea = false;
       this.templateContentArea = false;
-      this._router.navigate(['/dashboard/laboratory/' + value]);
+      this._router.navigate(['/dashboard/radiology/' + value]);
     } else if (value === 'external-requests') {
       this.requestContentArea = false;
       this.workbenchContentArea = false;
@@ -202,7 +202,7 @@ export class RadiologyComponent implements OnInit, OnDestroy {
       this.reportContentArea = false;
       this.externalContentArea = true;
       this.templateContentArea = false;
-      this._router.navigate(['/dashboard/laboratory/' + value]);
+      this._router.navigate(['/dashboard/radiology/' + value]);
     } else if (value === 'workbenches') {
       this.requestContentArea = false;
       this.workbenchContentArea = true;
@@ -212,7 +212,7 @@ export class RadiologyComponent implements OnInit, OnDestroy {
       this.reportContentArea = false;
       this.externalContentArea = false;
       this.templateContentArea = false;
-      this._router.navigate(['/dashboard/laboratory/' + value]);
+      this._router.navigate(['/dashboard/radiology/' + value]);
     } else if (value === 'investigation-pricing') {
       this.requestContentArea = false;
       this.workbenchContentArea = false;
@@ -222,7 +222,7 @@ export class RadiologyComponent implements OnInit, OnDestroy {
       this.reportContentArea = false;
       this.externalContentArea = false;
       this.templateContentArea = false;
-      this._router.navigate(['/dashboard/laboratory/' + value]);
+      this._router.navigate(['/dashboard/radiology/' + value]);
     } else if (value === 'investigations') {
       this.requestContentArea = false;
       this.workbenchContentArea = false;
@@ -232,7 +232,7 @@ export class RadiologyComponent implements OnInit, OnDestroy {
       this.reportContentArea = false;
       this.externalContentArea = false;
       this.templateContentArea = false;
-      this._router.navigate(['/dashboard/laboratory/' + value]);
+      this._router.navigate(['/dashboard/radiology/' + value]);
     } else if (value === 'reports') {
       this.requestContentArea = false;
       this.workbenchContentArea = false;
@@ -242,7 +242,7 @@ export class RadiologyComponent implements OnInit, OnDestroy {
       this.reportContentArea = true;
       this.externalContentArea = false;
       this.templateContentArea = false;
-      this._router.navigate(['/dashboard/laboratory/' + value]);
+      this._router.navigate(['/dashboard/radiology/' + value]);
     } else if (value === 'templates') {
       this.requestContentArea = false;
       this.workbenchContentArea = false;
@@ -252,7 +252,7 @@ export class RadiologyComponent implements OnInit, OnDestroy {
       this.reportContentArea = false;
       this.externalContentArea = false;
       this.templateContentArea = true;
-      this._router.navigate(['/dashboard/laboratory/' + value]);
+      this._router.navigate(['/dashboard/radiology/' + value]);
     }
   }
   checkIntoWorkbench() {
