@@ -14,6 +14,9 @@ import { MatPaginator, PageEvent } from '@angular/material';
   styleUrls: ['./product.config.component.scss']
 })
 export class ProductConfigComponent implements OnInit {
+  content1 = true;
+  content2 = false;
+
   @ViewChild(MatPaginator) paginator: MatPaginator;
   pageEvent: PageEvent;
   packages = [];
@@ -288,6 +291,14 @@ export class ProductConfigComponent implements OnInit {
   }
 
   onChange(event) {
+  }
+  tab1(){
+    this.content1 = true;
+    this.content2 = false;
+  }
+  tab2(){
+    this.content1 = false;
+    this.content2 = true;
   }
 
 }
