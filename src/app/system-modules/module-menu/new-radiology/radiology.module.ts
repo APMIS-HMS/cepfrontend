@@ -23,7 +23,7 @@ import { FacilityCompanyCoverService } from '../../../services/facility-manager/
 import { LabEventEmitterService } from '../../../services/facility-manager/lab-event-emitter.service';
 import { RadiologyRequestsComponent } from './radiology-requests/radiology-requests.component';
 // tslint:disable-next-line:max-line-length
-import { RequestDetailComponent } from 'app/system-modules/module-menu/new-radiology/radiology-requests/request-detail/request-detail.component';
+import { NewRadiologyRequestDetailComponent } from 'app/system-modules/module-menu/new-radiology/radiology-requests/request-detail/request-detail.component';
 @NgModule({
   imports: [
     // CommonModule,
@@ -34,7 +34,7 @@ import { RequestDetailComponent } from 'app/system-modules/module-menu/new-radio
   ],
   declarations: [RadiologyComponent, RadiologyRequestsComponent, WorkbenchComponent, InvestigationServiceComponent,
     InvestigationPriceComponent, PanelComponent, ReportComponent, ReportDetailComponent,
-    ExternalInvestigationsComponent, TemplateComponent, SelectTemplateComponent, RequestDetailComponent],
+    ExternalInvestigationsComponent, TemplateComponent, SelectTemplateComponent, NewRadiologyRequestDetailComponent],
   providers: [
     LaboratoryRequestService, WorkbenchService, ScopeLevelService, HmoService,
     FacilityFamilyCoverService, FacilityCompanyCoverService, LabEventEmitterService ]
