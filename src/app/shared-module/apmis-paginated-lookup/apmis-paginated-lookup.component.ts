@@ -5,7 +5,8 @@ import {
   Output,
   Input,
   ElementRef,
-  forwardRef
+  forwardRef,
+  ViewChild
 } from '@angular/core';
 import {
   FormGroup,
@@ -25,30 +26,36 @@ import { SocketService, RestService } from './../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { MatPaginator, PageEvent } from '@angular/material';
 
 @Component({
-  selector: 'apmis-lookup',
-  templateUrl: './apmis-lookup.component.html',
+  selector: 'app-apmis-paginated-lookup',
+  templateUrl: './apmis-paginated-lookup.component.html',
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => ApmisLookupComponent),
+      useExisting: forwardRef(() => ApmisPaginatedLookupComponent),
       multi: true
     },
     {
       provide: NG_VALIDATORS,
-      useExisting: forwardRef(() => ApmisLookupComponent),
+      useExisting: forwardRef(() => ApmisPaginatedLookupComponent),
       multi: true
     }
   ],
-  styleUrls: ['./apmis-lookup.component.scss']
+  styleUrls: ['./apmis-paginated-lookup.component.scss']
 })
-export class ApmisLookupComponent
-  implements OnInit, ControlValueAccessor, Validator {
+export class ApmisPaginatedLookupComponent implements OnInit, ControlValueAccessor, Validator {
+  @ViewChild(MatPaginator) paginator: MatPaginator;
+  pageEvent: PageEvent;
+  pageSize = 10;
+  pageSizeOptions = [5, 10, 25, 100];
+  operateResults = [];
+  filteredResults = [];
   @Input() displayKey = '';
   @Input() url = '';
   @Input() placeholder = '';
-  @Input() query = {};
+  @Input() query: any = {};
   @Input() imgObj = '';
   @Input() min = 0;
   @Input() otherKeys = [];
@@ -62,6 +69,7 @@ export class ApmisLookupComponent
   public valueParseError: boolean;
   public data: any;
   searchText = '';
+  isLoadingMore = false;
   showCuDropdown = false;
   cuDropdownLoading = false;
   form: FormGroup;
@@ -75,7 +83,7 @@ export class ApmisLookupComponent
     private _restService: RestService,
     private facilitiesService: FacilitiesService,
     private facilityServiceCategory: FacilitiesServiceCategoryService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this._rest = this._restService.getService(this.url);
@@ -83,23 +91,63 @@ export class ApmisLookupComponent
     this.baseUrl = this._restService.HOST;
     this.form = this.fb.group({ searchtext: [''] });
     this.form.controls['searchtext'].valueChanges
-    .debounceTime(200)
-    .distinctUntilChanged()
+      .debounceTime(200)
+      .distinctUntilChanged()
       .switchMap(value => this.filter({
         query: this.query
       }, this.isSocket))
       .subscribe((payload: any) => {
-        console.log(payload.data);
         this.cuDropdownLoading = false;
-         if (payload !== undefined && payload.data !== undefined) {
-            this.results = payload.data;
+        if (payload !== undefined && payload.data !== undefined) {
+          this.results = payload.data;
+          const startIndex = 0 * 10;
+          this.operateResults = JSON.parse(JSON.stringify(this.results));
+          this.filteredResults = JSON.parse(JSON.stringify(this.operateResults.splice(startIndex, 10)));
         } else {
-            this.results = payload;
+          this.results = payload;
+          const startIndex = 0 * 10;
+          this.operateResults = JSON.parse(JSON.stringify(this.results));
+          this.filteredResults = JSON.parse(JSON.stringify(this.operateResults.splice(startIndex, 10)));
         }
       });
   }
 
-
+  onPaginateChange(event) {
+    this.cuDropdownLoading = true;
+    let _pageIndex = 1;
+    _pageIndex += event.pageIndex;
+    let _pageLength = _pageIndex * event.pageSize;
+    if (_pageLength < this.results.length) {
+      const startIndex = event.pageIndex * event.pageSize;
+      this.operateResults = JSON.parse(JSON.stringify(this.results));
+      this.filteredResults = JSON.parse(JSON.stringify(this.operateResults.splice(startIndex, event.length)));
+    } else {
+      let mQuery = JSON.parse(JSON.stringify(this.query));
+      mQuery.$skip = event.length;
+      this.isLoadingMore = true;
+      this.filter({
+        query: mQuery
+      }, this.isSocket)
+        .subscribe((payload: any) => {
+          if (payload !== undefined && payload.data !== undefined) {
+            this.isLoadingMore = false;
+            this.results = JSON.parse(JSON.stringify(this.results.concat(payload.data)));
+            const startIndex = event.pageIndex * event.pageSize;
+            this.operateResults = JSON.parse(JSON.stringify(this.results));
+            this.filteredResults = JSON.parse(JSON.stringify(this.operateResults.splice(startIndex, event.length)));
+          } else {
+            this.isLoadingMore = false;
+            this.results = JSON.parse(JSON.stringify(this.results.concat(payload)));
+            const startIndex = event.pageIndex * event.pageSize;
+            this.operateResults = JSON.parse(JSON.stringify(this.results));
+            this.filteredResults = JSON.parse(JSON.stringify(this.operateResults.splice(startIndex, this.paginator.pageSize)));
+            // this.showCuDropdown = true;
+          }
+        }, err => {
+          this.isLoadingMore = false;
+        });
+    }
+  }
 
   getImgUrl(item) {
     const splitArray = this.imgObj.split('.');
@@ -132,6 +180,7 @@ export class ApmisLookupComponent
       return this._rest.find(query);
     }
   }
+
   getName(item, displayKey: String) {
     const splitArray = displayKey.split('.');
     let counter = 0;
@@ -186,7 +235,7 @@ export class ApmisLookupComponent
   focusOutSearch() {
     setTimeout(() => {
       this.showCuDropdown = !this.showCuDropdown;
-    }, 300);
+    }, 1000);
   }
 
   // this is the initial value set to the component
@@ -194,7 +243,7 @@ export class ApmisLookupComponent
     if (obj) {
       this.data = obj;
       this.valueString = this.data;
-    }else{
+    } else {
       this.valueString = '';
     }
   }
@@ -211,14 +260,14 @@ export class ApmisLookupComponent
     return !this.valueParseError
       ? null
       : {
-          valueParseError: {
-            valid: false
-          }
-        };
+        valueParseError: {
+          valid: false
+        }
+      };
   }
 
   // not used, used for touch input
-  public registerOnTouched() {}
+  public registerOnTouched() { }
 
   // change events from the textarea
   public onChange(event) {
@@ -238,5 +287,5 @@ export class ApmisLookupComponent
   }
 
   // the method set in registerOnChange to emit changes back to the form
-  public propagateChange = (_: any) => {};
+  public propagateChange = (_: any) => { };
 }
