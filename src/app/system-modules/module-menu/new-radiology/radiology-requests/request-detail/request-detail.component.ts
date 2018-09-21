@@ -10,7 +10,7 @@ import { AuthFacadeService } from '../../../../service-facade/auth-facade.servic
 import { SystemModuleService } from '../../../../../services/module-manager/setup/system-module.service';
 
 @Component({
-  selector: 'app-request-detail',
+  selector: 'app-new-radiology-request-detail',
   templateUrl: './request-detail.component.html',
   styleUrls: ['./request-detail.component.scss']
 })
