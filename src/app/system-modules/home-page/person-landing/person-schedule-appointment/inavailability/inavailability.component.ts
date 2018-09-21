@@ -10,7 +10,11 @@ export class InavailabilityComponent implements OnInit {
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   facility = new FormControl();
-
+  apmisLookupDisplayKey: any;
+  apmisLookupUrl: any;
+  apmisLookupQuery: any;
+  dateRange: any;
+  loadIndicatorVisible: any;
   constructor() { }
 
   ngOnInit() {
@@ -18,5 +22,5 @@ export class InavailabilityComponent implements OnInit {
   close_onClick() {
     this.closeModal.emit(true);
   }
-
+  setReturnValue(e) {}
 }
