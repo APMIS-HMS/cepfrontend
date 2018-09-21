@@ -121,7 +121,7 @@ export class BeneficiaryListComponent implements OnInit {
   }
 
   edit_show(value, i) {
-
+console.log(value);
     this.newBeneficiary = !this.newBeneficiary;
     value.id = this.selectedBeneficiary.id;
     value.index = i;
@@ -131,6 +131,7 @@ export class BeneficiaryListComponent implements OnInit {
     this.selectedBeneficiary.category = (this.selectedBeneficiary.category === undefined || this.selectedBeneficiary.status === null) ? '' : this.selectedBeneficiary.category;
     this.selectedBeneficiary.gender = (this.selectedBeneficiary.gender === undefined || this.selectedBeneficiary.gender === null) ? 'M' : this.selectedBeneficiary.gender;
     this.selectedBeneficiary.sponsor = (this.selectedBeneficiary.sponsor === undefined || this.selectedBeneficiary.sponsor === null) ? '' : this.selectedBeneficiary.sponsor;
+    this.selectedBeneficiary.date = (this.selectedBeneficiary.date === undefined || this.selectedBeneficiary.date === null) ? new Date() : this.selectedBeneficiary.date;
   }
 
   removeWhiteSpace(value) {
