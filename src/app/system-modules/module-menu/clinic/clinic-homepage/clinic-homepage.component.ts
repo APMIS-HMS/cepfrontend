@@ -62,16 +62,16 @@ export class ClinicHomepageComponent implements OnInit {
   getAppointmentChart() {
     this.appointmentService.getAppointmentChart(this.selectedFacility._id, {}).then(payload => {
       console.log(payload);
-      let data_1 = [];
-      for (let index = 0; index < payload.checkOuts.length; index++) {
-        const element = payload.checkOuts[index];
-        this.barChartLabels.push(element.date);
-        data_1.push(element.count);
-      }
-      this.barChartData.push({
-        data:data_1,
-        label: 'Check Out'
-      })
+      // let data_1 = [];
+      // for (let index = 0; index < payload.checkOuts.length; index++) {
+      //   const element = payload.checkOuts[index];
+      //   this.barChartLabels.push(element.date);
+      //   data_1.push(element.count);
+      // }
+      // this.barChartData.push({
+      //   data:data_1,
+      //   label: 'Check Out'
+      // })
 
       // for (let index = 0; index < payload.nonCheckOuts.length; index++) {
       //   const element = payload.nonCheckOuts[index];
