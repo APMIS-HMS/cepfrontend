@@ -1,4 +1,4 @@
-<div class="pp-card shadow-grey">
+<div class="pp-card shadow-grey" *ngIf="!isEdit">
   <div class="tbl-top-items">
       <div class="card-title">List Of Configured Products</div>
       <div class="searchInputWrap">
@@ -24,21 +24,22 @@
             </thead>
 
             <tbody>
-                <tr>
-                    <td>Paracetamol</td>
+                <tr *ngFor="let item of productConfigList">
+                    <td>{{item?.productObject?.name}}</td>
                     <td>
-                      <ul class="config-ul">
-                        <li>20 Cartons</li>
-                        <li>200 Sachets</li>
-                        <li>5000 Capsules</li>
+                      <ul class="config-ul" *ngFor="let size of item.packSizes">
+                        <li>{{size.size}} {{size.name}}</li>
                       </ul>
                     </td>
-                    <td>11th Sept 2018</td>
+                    <td>{{item.createdAt|date:'short'}}</td>
                     <td>
-                      <i class="fa fa-edit"></i>
+                      <i class="fa fa-edit" (click)="onEditConfig(item)"></i>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
+</div>
+<div *ngIf="isEdit">
+        <app-product-config [isEdit]="true" [productConfigItem]="productConfigItem"></app-product-config>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ProductService } from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
@@ -16,6 +16,8 @@ import { MatPaginator, PageEvent } from '@angular/material';
 export class ProductConfigComponent implements OnInit {
   content1 = true;
   content2 = false;
+  @Input() isEdit: boolean;
+  @Input() productConfigItem: any = <any>{};
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   pageEvent: PageEvent;
@@ -40,6 +42,7 @@ export class ProductConfigComponent implements OnInit {
   apmisLookupDisplayKey = 'name';
   apmisInvestigationLookupQuery: any = {
   };
+  productConfigList = [];
   control;
   constructor(
     private _fb: FormBuilder,
@@ -47,7 +50,9 @@ export class ProductConfigComponent implements OnInit {
     private productService: ProductService,
     private locker: CoolLocalStorage,
     private systemModuleService: SystemModuleService
-  ) { }
+  ) {
+    
+  }
 
   initializeForm() {
     this.packageForm = this._fb.group({
@@ -68,6 +73,12 @@ export class ProductConfigComponent implements OnInit {
     this._inventoryEventEmitter.setRouteUrl('Product Configuration');
     this.selectedFacility = <any>this.locker.getObject('selectedFacility');
     this.initializeForm();
+    console.log(this.isEdit);
+    if (this.isEdit === true) {
+      this.content2 = true;
+      this.content1 = false;
+      this.existConfigItem = this.productConfigItem;
+    }
     const control = <FormArray>this.packageForm.controls['package'];
     this.searchProdductControl.valueChanges
       .debounceTime(400)
@@ -178,6 +189,7 @@ export class ProductConfigComponent implements OnInit {
       });
     }
   }
+
 
   onSelectProduct(value) {
     this.selectedProduct = value;
@@ -292,11 +304,11 @@ export class ProductConfigComponent implements OnInit {
 
   onChange(event) {
   }
-  tab1(){
+  tab1() {
     this.content1 = true;
     this.content2 = false;
   }
-  tab2(){
+  tab2() {
     this.content1 = false;
     this.content2 = true;
   }
