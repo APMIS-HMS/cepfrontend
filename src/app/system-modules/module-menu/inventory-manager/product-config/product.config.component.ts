@@ -97,7 +97,7 @@ export class ProductConfigComponent implements OnInit {
             this.productService.findProductConfigs({
               query: {
                 facilityId: this.selectedFacility._id,
-                'productObject.name':{ $regex: value, '$options': 'i' },
+                'productObject.name': { $regex: value, '$options': 'i' },
                 $sort: { updatedAt: -1 },
                 $limit: false
               }
@@ -108,7 +108,7 @@ export class ProductConfigComponent implements OnInit {
             }, err => {
               this.systemModuleService.off();
             });
-          }else {
+          } else {
             this.getProductConfig();
           }
         }
@@ -172,6 +172,8 @@ export class ProductConfigComponent implements OnInit {
     });
   }
   onEditConfig(item) {
+    this.packageForm.controls['package'].reset();
+    this.initializeForm();
     this.content2 = true;
     this.content1 = false;
     if (item.productObject !== undefined) {
