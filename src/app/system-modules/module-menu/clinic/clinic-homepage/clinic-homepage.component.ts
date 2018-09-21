@@ -56,7 +56,7 @@ export class ClinicHomepageComponent implements OnInit {
 
   ngOnInit() {
     this.selectedFacility = <any>this._locker.getObject('selectedFacility');
-    this.getAppointmentChart();
+    // this.getAppointmentChart();
   }
 
   getAppointmentChart() {
