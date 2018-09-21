@@ -173,6 +173,7 @@ export class ProductConfigComponent implements OnInit {
   }
   onEditConfig(item) {
     this.packageForm.controls['package'].reset();
+    this.initializeForm();
     this.content2 = true;
     this.content1 = false;
     if (item.productObject !== undefined) {
