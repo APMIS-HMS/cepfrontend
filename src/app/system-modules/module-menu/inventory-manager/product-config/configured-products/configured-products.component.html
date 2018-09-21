@@ -1,4 +1,4 @@
-<div class="pp-card shadow-grey" *ngIf="!isEdit">
+<div class="pp-card shadow-grey" >
   <div class="tbl-top-items">
       <div class="card-title">List Of Configured Products</div>
       <div class="searchInputWrap">
@@ -39,7 +39,4 @@
             </tbody>
         </table>
     </div>
-</div>
-<div *ngIf="isEdit">
-        <app-product-config [isEdit]="true" [productConfigItem]="productConfigItem"></app-product-config>
 </div>

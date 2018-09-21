@@ -3,7 +3,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { InventoryEmitterService } from '../../../../services/facility-manager/inventory-emitter.service';
 import {
   InventoryService, ProductService, EmployeeService, FacilitiesService,
-  StoreService, PurchaseOrderService, InventoryTransferService, InventoryTransferStatusService,ProductRequisitionService
+  StoreService, PurchaseOrderService, InventoryTransferService, InventoryTransferStatusService, ProductRequisitionService
 } from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
@@ -35,6 +35,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
   workSpace: any;
   Ql_toggle = false;
   isRunningQuery = false;
+  storeStatusLabel: any = {}
 
   subscription: ISubscription;
 
@@ -49,7 +50,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
     private _employeeService: EmployeeService,
     private authFacadeService: AuthFacadeService,
     private inventoryTransferStatusService: InventoryTransferStatusService,
-    private productRequisitionService:ProductRequisitionService
+    private productRequisitionService: ProductRequisitionService
   ) {
     this.subscription = this._employeeService.checkInAnnounced$.subscribe(res => {
       if (!!res) {
@@ -68,6 +69,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
               this.getPurchaseOrders();
               this.getTransfers();
               this.getTransferStatus();
+              this.getInventoryBriefStatus();
             }
           }
         }
@@ -126,7 +128,15 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    
+  }
 
+  getInventoryBriefStatus() {
+    console.log(this.checkingStore);
+    this._inventoryService.getInventoryBriefStatus(this.checkingStore.storeId, {}).then(payload => {
+      this.storeStatusLabel = payload.data;
+      console.log(this.storeStatusLabel);
+    });
   }
 
   getInventories() {
