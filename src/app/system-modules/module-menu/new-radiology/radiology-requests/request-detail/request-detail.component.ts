@@ -14,7 +14,7 @@ import { SystemModuleService } from '../../../../../services/module-manager/setu
   templateUrl: './request-detail.component.html',
   styleUrls: ['./request-detail.component.scss']
 })
-export class RequestDetailComponent implements OnInit {
+export class NewRadiologyRequestDetailComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() investigation: any;
   @ViewChild('fileInput') fileInput: ElementRef;

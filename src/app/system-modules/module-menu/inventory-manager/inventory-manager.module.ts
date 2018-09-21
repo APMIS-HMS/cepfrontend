@@ -23,7 +23,7 @@ import { LoginEmployeeResolverService } from '../../../resolvers/module-menu/ind
 import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { ReorderLevelComponent } from './reorder-level/reorder-level.component';
 import { PurchaseEmitterService } from '../../../services/facility-manager/purchase-emitter.service';
-// import { ConfiguredProductsComponent } from './product-config/configured-products/configured-products.component';
+import { ConfiguredProductsComponent } from './product-config/configured-products/configured-products.component';
 
 @NgModule({
     declarations: [
@@ -38,7 +38,7 @@ import { PurchaseEmitterService } from '../../../services/facility-manager/purch
         InitializeStoreComponent,
         ReorderLevelComponent,
         ProductConfigComponent,
-        // ConfiguredProductsComponent
+        ConfiguredProductsComponent
     ],
 
     exports: [

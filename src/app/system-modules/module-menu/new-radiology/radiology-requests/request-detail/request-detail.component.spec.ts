@@ -1,25 +1,24 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RequestDetailComponent } from './request-detail.component';
+import { NewRadiologyRequestDetailComponent } from './request-detail.component';
 
-describe('RequestDetailComponent', () => {
-  let component: RequestDetailComponent;
-  let fixture: ComponentFixture<RequestDetailComponent>;
+describe('NewRadiologyRequestDetailComponent', () => {
+	let component: NewRadiologyRequestDetailComponent;
+	let fixture: ComponentFixture<NewRadiologyRequestDetailComponent>;
 
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [ RequestDetailComponent ]
-    })
-    .compileComponents();
-  }));
+	beforeEach(async(() => {
+		TestBed.configureTestingModule({
+			declarations: [NewRadiologyRequestDetailComponent],
+		}).compileComponents();
+	}));
 
-  beforeEach(() => {
-    fixture = TestBed.createComponent(RequestDetailComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
+	beforeEach(() => {
+		fixture = TestBed.createComponent(NewRadiologyRequestDetailComponent);
+		component = fixture.componentInstance;
+		fixture.detectChanges();
+	});
 
-  it('should be created', () => {
-    expect(component).toBeTruthy();
-  });
+	it('should be created', () => {
+		expect(component).toBeTruthy();
+	});
 });
