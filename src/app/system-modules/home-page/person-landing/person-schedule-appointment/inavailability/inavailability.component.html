@@ -1,0 +1,18 @@
+<div class="animated pulse">
+  <div class="modal-header-wrap">
+      <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
+      <legend class="modal_title">Set In-Availability</legend>
+      <div class="modal_mini_title">All Purpose Medical Information System</div>
+  </div>
+  <div class="modal-baseWrap">
+    <div class="main-wrap">
+      <div class="frm-item-wrap">
+          <apmis-lookup [formControl]="facility" [url]="apmisLookupUrl" [query]="apmisLookupQuery" [isSocket]="false" [displayImage]="false" [multipleKeys]="false" [displayKey]="apmisLookupDisplayKey" placeholder="Select Facility"></apmis-lookup>
+      </div>
+
+      <div class="dr-wrap survery">
+        <app-date-range [dateRange]="dateRange" (dateRangeChange)="setReturnValue($event)"></app-date-range> <span *ngIf="loadIndicatorVisible" class="fa fa-spinner fa-spin"></span>
+      </div>
+    </div>
+  </div>
+</div>

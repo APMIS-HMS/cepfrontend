@@ -55,6 +55,10 @@ export class HmoService {
     return this._socket.update(hmo._id, hmo);
   }
 
+  update2(_id, hmo) {
+    return this._socket.update(_id, hmo);
+  }
+
   patch(id: string, data: any, params: any) {
     return this._socket.patch(id, data, params);
   }

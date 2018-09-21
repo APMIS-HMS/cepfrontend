@@ -53,7 +53,11 @@ export class WorkbenchComponent implements OnInit {
     this.user = <User> this.locker.getObject('auth');
     this.frmNewWorkbench = this.formBuilder.group({
       minorLocation: ['', [Validators.required]],
-      benchName: ['', [Validators.required]],
+      mechineName: ['', [Validators.required]],
+      aeTitle: ['', [Validators.required]],
+      modality: ['', [Validators.required]],
+      ipAddress: ['', [Validators.required]],
+      port: ['', [Validators.required]],
       isActive: [true, [Validators.required]]
     });
     this.getLaboratoryMajorLocation();

@@ -26,47 +26,18 @@
                                         <input matInput placeholder="Investigation Name" formControlName="investigationName" autocomplete="off">
                                     </mat-input-container>
                                 </div>
+                            </div>
+                            <div class="col-sm-6">
 
                                 <div class="frm-item-wrap">
                                     <mat-input-container>
-                                        <input matInput placeholder="Report Type" [matAutocomplete]="autoPatient" formControlName="reportType" autocomplete="off">
+                                        <input matInput placeholder="Modality" [matAutocomplete]="autoPatient" formControlName="reportType" autocomplete="off">
                                     </mat-input-container>
                                     <mat-autocomplete #autoPatient="matAutocomplete">
                                         <mat-option *ngFor="let report of reportTypes" [value]="report">
                                             {{ report }}
                                         </mat-option>
                                     </mat-autocomplete>
-                                </div>
-
-                                <div class="frm-item-wrap">
-                                    <mat-input-container>
-                                        <input *ngIf="isNumeric" type="number" matInput placeholder="Minimum Reference Value" formControlName="ref" autocomplete="off">
-                                        <input *ngIf="!isNumeric" type="text" matInput placeholder="Reference Value" formControlName="ref" autocomplete="off">
-                                    </mat-input-container>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-
-                                <div class="frm-item-wrap">
-                                    <mat-input-container>
-                                        <input matInput placeholder="Unit" formControlName="unit" autocomplete="off">
-                                    </mat-input-container>
-                                </div>
-
-                                <div class="frm-item-wrap">
-                                    <mat-input-container>
-                                        <input matInput placeholder="Specimen" [matAutocomplete]="autoSpecimen" formControlName="specimen" autocomplete="off">
-                                    </mat-input-container>
-                                    <mat-autocomplete #autoSpecimen="matAutocomplete" [displayWith]="specimenDisplayFn">
-                                        <mat-option *ngFor="let specimen of specimens" [value]="specimen.name">
-                                            {{ specimen.name }}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </div>
-                                <div class="frm-item-wrap">
-                                    <mat-input-container *ngIf="isNumeric">
-                                        <input *ngIf="isNumeric" type="number" matInput placeholder="Maximum Reference Value" formControlName="maxRef" autocomplete="off">
-                                    </mat-input-container>
                                 </div>
                             </div>
                         </div>

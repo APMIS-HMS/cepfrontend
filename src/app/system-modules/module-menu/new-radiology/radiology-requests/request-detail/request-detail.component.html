@@ -1,7 +1,7 @@
 <div class="animated pulse">
     <div class="modal-header-wrap">
         <div (click)="close_onClick($event)" class="modal-close-ico" aria-hidden="true">X</div>
-        <legend class="modal_title">{{investigation?.name}} Lab Request</legend>
+        <legend class="modal_title">{{investigation?.name}} Radiology Request</legend>
         <div class="modal_mini_title">All Purpose Medical Information System</div>
     </div>
     <div class="modal-baseWrap">
@@ -62,7 +62,7 @@
                     </div>
 
                     <div class="txt-wrap">
-                        <div class="txt-label">Lab Number</div>
+                        <div class="txt-label">Radiology Number</div>
                         <div *ngIf="hasLabNo" class="txt-val">{{investigation.labNumber}}</div>
                         <div *ngIf="!hasLabNo" class="txt-val hasBg">
                             <mat-input-container>
