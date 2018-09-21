@@ -67,9 +67,7 @@ export class DashboardHomeComponent implements OnInit {
       private featureService: FeatureModuleService) {}
 
   ngOnInit() {
-    console.log('dashboard home');
     this.channel = this.channelService.getCurrentUserChannel();
-    console.log(this.channel);
     this.featureService.listner.subscribe(payload => {
       this.getUserRoles();
     });

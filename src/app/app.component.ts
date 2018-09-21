@@ -109,7 +109,6 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    console.log('main app');
     this.userServiceFacade.authenticateResource().then((result) => {
       this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
       this.auth = <any>this.locker.getObject('auth');

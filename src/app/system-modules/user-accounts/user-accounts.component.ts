@@ -44,7 +44,6 @@ export class UserAccountsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log('in user-account component');
     this.route.data.subscribe(data => {
       data['switchUsers'].subscribe((payload: any) => {
         this.authData = payload.authData;
@@ -104,7 +103,6 @@ export class UserAccountsComponent implements OnInit {
           'dept': this.selectedFacility.departments,
           'facilityName': this.selectedFacility.name
         }
-        console.log(dataChannel);
         this.joinChannelService.create(dataChannel).then(pay => {
           this.popup_listing = true;
           this.popup_verifyToken = false;
