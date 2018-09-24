@@ -21,7 +21,8 @@ export class NewLdrEntryComponent implements OnInit {
     });
   }
 
-  close_onClick(){
+  close_onClick() {
     this.closeModal.emit(true);
   }
+  next_onClick() {}
 }

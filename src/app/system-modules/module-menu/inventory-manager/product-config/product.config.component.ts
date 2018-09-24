@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { ProductService } from '../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
@@ -40,14 +40,18 @@ export class ProductConfigComponent implements OnInit {
   apmisLookupDisplayKey = 'name';
   apmisInvestigationLookupQuery: any = {
   };
+  productConfigList = [];
   control;
+  searchControl = new FormControl();
   constructor(
     private _fb: FormBuilder,
     private _inventoryEventEmitter: InventoryEmitterService,
     private productService: ProductService,
     private locker: CoolLocalStorage,
     private systemModuleService: SystemModuleService
-  ) { }
+  ) {
+
+  }
 
   initializeForm() {
     this.packageForm = this._fb.group({
@@ -68,6 +72,7 @@ export class ProductConfigComponent implements OnInit {
     this._inventoryEventEmitter.setRouteUrl('Product Configuration');
     this.selectedFacility = <any>this.locker.getObject('selectedFacility');
     this.initializeForm();
+
     const control = <FormArray>this.packageForm.controls['package'];
     this.searchProdductControl.valueChanges
       .debounceTime(400)
@@ -81,18 +86,45 @@ export class ProductConfigComponent implements OnInit {
           }
         }
       });
+
+    this.searchControl.valueChanges
+      .debounceTime(400)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        if (value !== undefined) {
+          if (value.toString().length >= 3) {
+            this.systemModuleService.on();
+            this.productService.findProductConfigs({
+              query: {
+                facilityId: this.selectedFacility._id,
+                'productObject.name': { $regex: value, '$options': 'i' },
+                $sort: { updatedAt: -1 },
+                $limit: false
+              }
+            }).then(payload => {
+              console.log(payload);
+              this.systemModuleService.off();
+              this.productConfigList = payload.data;
+            }, err => {
+              this.systemModuleService.off();
+            });
+          } else {
+            this.getProductConfig();
+          }
+        }
+      });
     this.getPackagesizes();
+    this.getProductConfig();
   }
 
   onPaginateChange(event) {
-    console.log(event);
     let _pageIndex = 1;
     _pageIndex += event.pageIndex;
     let _pageLength = _pageIndex * event.pageSize;
     if (_pageLength < this.packages.length) {
       const startIndex = event.pageIndex * event.pageSize;
       this.operatePackages = JSON.parse(JSON.stringify(this.packages));
-      this.filteredPackages = JSON.parse(JSON.stringify(this.operatePackages.splice(startIndex, this.paginator.pageSize)));
+      this.filteredPackages = JSON.parse(JSON.stringify(this.operatePackages.splice(startIndex, this.paginator.length)));
     } else {
       this.systemModuleService.on();
       this.productService.findPackageSize({
@@ -106,7 +138,7 @@ export class ProductConfigComponent implements OnInit {
         });
         const startIndex = event.pageIndex * 10;
         this.operatePackages = JSON.parse(JSON.stringify(this.packages));
-        this.filteredPackages = JSON.parse(JSON.stringify(this.operatePackages.splice(startIndex, this.paginator.pageSize)));
+        this.filteredPackages = JSON.parse(JSON.stringify(this.operatePackages.splice(startIndex, this.paginator.length)));
         this.systemModuleService.off();
       }, err => {
         this.systemModuleService.off();
@@ -134,12 +166,66 @@ export class ProductConfigComponent implements OnInit {
       });
       const startIndex = 0 * 10;
       this.operatePackages = JSON.parse(JSON.stringify(this.packages));
+      if (this.paginator !== undefined) {
+        this.filteredPackages = JSON.parse(JSON.stringify(this.operatePackages.splice(startIndex, this.paginator.pageSize)));
+      }
+    });
+  }
+  onEditConfig(item) {
+    this.packageForm.controls['package'].reset();
+    this.initializeForm();
+    this.content2 = true;
+    this.content1 = false;
+    if (item.productObject !== undefined) {
+      this.apmisLookupText = item.productObject.name;
+    }
+
+    this.existConfigItem = item;
+    let _packages = this.packages;
+    item.packSizes.forEach(element => {
+      if (item.packSizes.length > 0) {
+        (<FormArray>this.packageForm.controls['package'])
+          .push(
+            this._fb.group({
+              name: [element.name, [<any>Validators.required]],
+              size: [element.size, [<any>Validators.required]],
+              packId: [element.packId]
+            })
+          );
+        _packages.forEach(item => {
+          if (item._id.toString() === element.packId.toString()) {
+            item.checked = true;
+          }
+        });
+      }
+    });
+    this.packages = JSON.parse(JSON.stringify(_packages));
+    const startIndex = 0 * 10;
+    this.operatePackages = JSON.parse(JSON.stringify(this.packages));
+    if (this.paginator !== undefined) {
       this.filteredPackages = JSON.parse(JSON.stringify(this.operatePackages.splice(startIndex, this.paginator.pageSize)));
+    }
+  }
+
+  getProductConfig() {
+    this.systemModuleService.on();
+    this.productService.findProductConfigs({
+      query: {
+        facilityId: this.selectedFacility._id,
+        $sort: { updatedAt: -1 },
+        $limit: false
+      }
+    }).then(payload => {
+      this.systemModuleService.off();
+      if (payload.data.length > 0) {
+        this.productConfigList = payload.data;
+      }
+    }, err => {
+      this.systemModuleService.off();
     });
   }
 
   apmisLookupHandleSelectedItem(value) {
-    console.log(value);
     this.apmisLookupText = value.name;
     this.selectedProduct = JSON.parse(JSON.stringify(value));
     this.initializeForm();
@@ -172,10 +258,16 @@ export class ProductConfigComponent implements OnInit {
             }
           });
           this.packages = JSON.parse(JSON.stringify(_packages));
+          const startIndex = 0 * 10;
+          this.operatePackages = JSON.parse(JSON.stringify(this.packages));
+          if (this.paginator !== undefined) {
+            this.filteredPackages = JSON.parse(JSON.stringify(this.operatePackages.splice(startIndex, this.paginator.pageSize)));
+          }
         }
       });
     }
   }
+
 
   onSelectProduct(value) {
     this.selectedProduct = value;
@@ -277,6 +369,7 @@ export class ProductConfigComponent implements OnInit {
           this.selectedProduct = {};
           this.apmisLookupText = "";
           this.systemModuleService.announceSweetProxy('Configuration created', 'success');
+          this.getProductConfig();
         }, err => {
           this.systemModuleService.off();
           this.systemModuleService.announceSweetProxy('Failed to create configuration for product', 'error');
@@ -290,11 +383,11 @@ export class ProductConfigComponent implements OnInit {
 
   onChange(event) {
   }
-  tab1(){
+  tab1() {
     this.content1 = true;
     this.content2 = false;
   }
-  tab2(){
+  tab2() {
     this.content1 = false;
     this.content2 = true;
   }

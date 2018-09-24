@@ -10,7 +10,8 @@ export class LdrListComponent implements OnInit {
 
   @Output() switch: EventEmitter<number> = new EventEmitter<number>();
   showNewEntry = false;
-
+  dateRange: any;
+  loadIndicatorVisible = false;
   constructor(private _router: Router) { }
 
   ngOnInit() {
@@ -24,5 +25,9 @@ export class LdrListComponent implements OnInit {
   }
   close_onClick(e){
     this.showNewEntry = false;
+  }
+
+  setReturnValue(e) {
+    
   }
 }
