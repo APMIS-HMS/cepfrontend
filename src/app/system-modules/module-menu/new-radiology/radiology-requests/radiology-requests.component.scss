@@ -621,3 +621,17 @@ input {
     cursor: pointer;
     text-decoration: underline;
 }
+.min-frm-group{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .mat-select{
+        height: auto !important;
+    }
+    .mat-input-container{
+        width: 49%;
+        .item1frm{
+            width: 149% !important; 
+        }
+    }
+}

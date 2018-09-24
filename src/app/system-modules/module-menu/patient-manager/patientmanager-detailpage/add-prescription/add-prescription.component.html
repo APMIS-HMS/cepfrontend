@@ -32,7 +32,11 @@
             <tr *ngFor="let prescription of prescriptionItems.prescriptionItems; let i = index;" style="text-align: left">
                 <td class="table-content" style="width: 5%;">{{ i+1 }}</td>
                 <td class="table-content" style="width: 55%;">
-                    {{ prescription?.genericName }} - {{ prescription?.dosage }}, {{ prescription?.frequency }} for {{ prescription?.duration }}, {{ prescription?.routeName }} ({{ prescription.refillCount }})
+                    {{ prescription?.genericName }} - {{ prescription?.dosage }},
+                    <span *ngFor="let reg of prescription?.regimen">
+                        {{reg?.frequency }} for {{ reg?.duration }} {{ reg?.durationUnit }},
+                    </span>
+                        {{ prescription?.routeName }} ({{prescription.refillCount }})
                     <br>
                     <span *ngIf="prescription.isBilled" style="color:#2e7d32;">
                         Drug: {{ prescription?.productName?.productObject?.name }}, Quantity: {{ prescription?.quantity }}, Unit Price: {{ prescription?.cost }}, Cost: {{ prescription?.totalCost }}

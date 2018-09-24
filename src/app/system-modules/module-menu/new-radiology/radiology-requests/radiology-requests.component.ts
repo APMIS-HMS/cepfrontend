@@ -306,7 +306,8 @@ export class RadiologyRequestsComponent implements OnInit, OnDestroy {
       labNo: ['', [Validators.required]],
       clinicalInfo: ['', [Validators.required]],
       diagnosis: ['', [Validators.required]],
-      investigation: ['']
+      investigation: [''],
+      pStatus: ['']
     }); 
 
     this.frmNewRequest.controls['patient'].valueChanges.subscribe(value => {

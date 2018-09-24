@@ -38,6 +38,7 @@ import { AuthFacadeService } from './system-modules/service-facade/auth-facade.s
 import { APP_DATE_FORMATS, AppDateAdapter } from 'app/date-format';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
 
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -61,6 +62,7 @@ export class AppComponent implements OnInit, OnDestroy {
   private facilitySubscription: ISubscription;
   private loaderSubscription: ISubscription;
   private sweetAlertSubscription: ISubscription;
+  public channel;
 
   constructor(
     private router: Router,

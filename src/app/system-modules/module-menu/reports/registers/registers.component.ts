@@ -29,4 +29,10 @@ export class RegistersComponent implements OnInit {
     this._router.navigate(['/dashboard/reports/register/irts']);
   }
 
+  call_gmp(){
+    this._router.navigate(['/dashboard/reports/register/gmp']);
+  }
+  call_ldr(){
+    this._router.navigate(['/dashboard/reports/register/ldr']);
+  }
 }

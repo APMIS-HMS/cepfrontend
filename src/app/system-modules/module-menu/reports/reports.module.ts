@@ -5,6 +5,8 @@ import { ReportsRoutingModule } from './reports-routing.module';
 import { NhmisSummaryComponent } from './nhmis-summary/nhmis-summary.component';
 import { ReportsComponent } from './reports.component';
 
+
+
 @NgModule({
   imports: [
     CommonModule,

@@ -20,6 +20,7 @@ export class DashboardComponent implements OnInit {
   departments: any[] = [];
   unitCount: any = 0
   clinicCount: any = 0;
+  channel: any;
 
   facilityObj: any;
   checkedInObject: any;
@@ -38,7 +39,8 @@ export class DashboardComponent implements OnInit {
     private maritalStatusService: MaritalStatusService,
     private workSpaceService: WorkSpaceService,
     private authFacadeService: AuthFacadeService,
-    private locker: CoolLocalStorage) {
+    private locker: CoolLocalStorage
+    ) {
 
   }
 

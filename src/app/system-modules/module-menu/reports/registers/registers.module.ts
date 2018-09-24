@@ -19,6 +19,18 @@ import { IrtsPg1Component } from './register-entries/daily-irts/irts-pg1/irts-pg
 import { IrtsPg2Component } from './register-entries/daily-irts/irts-pg2/irts-pg2.component';
 import { DailyFprComponent } from './register-entries/daily-fpr/daily-fpr.component';
 import { DailyIrtsComponent } from './register-entries/daily-irts/daily-irts.component';
+import { DailyGmpComponent } from './register-entries/daily-gmp/daily-gmp.component';
+import { NewGmpEntryComponent } from './register-entries/daily-gmp/new-gmp-entry/new-gmp-entry.component';
+import { GmpListComponent } from './register-entries/daily-gmp/gmp-list/gmp-list.component';
+
+
+
+import { OnlyMaterialModule } from '../../../../shared-common-modules/only-material-module';
+import { MaterialModule } from '../../../../shared-common-modules/material-module';
+import { DailyLdrComponent } from './register-entries/daily-ldr/daily-ldr.component';
+import { NewLdrEntryComponent } from './register-entries/daily-ldr/new-ldr-entry/new-ldr-entry.component';
+import { LdrListComponent } from './register-entries/daily-ldr/ldr-list/ldr-list.component';
+import { NewOpdEntry2Component } from './register-entries/daily-opd/new-opd-entry2/new-opd-entry2.component';
 
 @NgModule({
   imports: [
@@ -26,6 +38,8 @@ import { DailyIrtsComponent } from './register-entries/daily-irts/daily-irts.com
     RegistersRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    MaterialModule,
+    OnlyMaterialModule,
     SharedModule
   ],
   declarations: [
@@ -45,6 +59,13 @@ import { DailyIrtsComponent } from './register-entries/daily-irts/daily-irts.com
     IrtsPg2Component,
     DailyFprComponent,
     DailyIrtsComponent
+    DailyGmpComponent,
+    NewGmpEntryComponent,
+    GmpListComponent,
+    DailyLdrComponent,
+    NewLdrEntryComponent,
+    LdrListComponent,
+    NewOpdEntry2Component
   ]
 })
 export class RegistersModule { }
