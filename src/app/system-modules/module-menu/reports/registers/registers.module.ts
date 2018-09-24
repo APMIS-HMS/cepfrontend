@@ -58,7 +58,7 @@ import { NewOpdEntry2Component } from './register-entries/daily-opd/new-opd-entr
     IrtsPg1Component,
     IrtsPg2Component,
     DailyFprComponent,
-    DailyIrtsComponent
+    DailyIrtsComponent,
     DailyGmpComponent,
     NewGmpEntryComponent,
     GmpListComponent,

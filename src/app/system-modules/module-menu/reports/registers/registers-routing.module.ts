@@ -20,7 +20,7 @@ const routes: Routes = [
   { path: 'antenatal', component: DailyAntenatalComponent },
   { path: 'opd', component: DailyOpdComponent },
   { path: 'irts', component: DailyIrtsComponent },
-  { path: 'fpr', component: DailyFprComponent }
+  { path: 'fpr', component: DailyFprComponent },
 
   { path: 'gmp', component: DailyGmpComponent },
   { path: 'ldr', component: DailyLdrComponent }
