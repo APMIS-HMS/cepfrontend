@@ -11,6 +11,7 @@ const request = require('superagent');
 @Injectable()
 export class AppointmentService {
   public _socket;
+  public _msocket;
   private _rest;
   private _socketMultipleAppointment;
 
@@ -38,6 +39,8 @@ export class AppointmentService {
       private _restService: RestService) {
     this._rest = _restService.getService('appointments');
     this._socket = _socketService.getService('appointments');
+    this._msocket = _socketService.getService('clinic-charts');
+    this._msocket.timeout = 50000;
     this._socketMultipleAppointment =
         _socketService.getService('set-multiple-appointments');
     this.createlistner = Observable.fromEvent(this._socket, 'created');
@@ -85,6 +88,10 @@ export class AppointmentService {
 
   updateImmunizationAppointment(query) {
     return this._socketMultipleAppointment.update(query.appointment._id, query);
+  }
+
+  getAppointmentChart(id: string, query: any) {
+    return this._msocket.get(id, query);
   }
 
   findAll() {

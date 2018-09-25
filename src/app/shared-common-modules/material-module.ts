@@ -17,6 +17,7 @@ import { BillPrescriptionComponent } from '../system-modules/module-menu/patient
 import { PatientPrescriptionComponent } from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/patient-prescription/patient-prescription.component';
 import { GlobalPatientLookupComponent } from '../shared-module/global-patient-lookup/global-patient-lookup.component';
 import { ApmisLookupComponent } from '../shared-module/apmis-lookup/apmis-lookup.component';
+import { ApmisPaginatedLookupComponent } from '../shared-module/apmis-paginated-lookup/apmis-paginated-lookup.component';
 import { ApmisLookupMultiselectComponent } from '../shared-module/apmis-lookup-multiselect/apmis-lookup-multiselect.component';
 import { StoreCheckInComponent } from '../shared-module/store-check-in/store-check-in.component';
 import { LabCheckInComponent } from '../shared-module/lab-check-in/lab-check-in.component';
@@ -54,6 +55,7 @@ import { ImageCropperModule } from 'ng2-img-cropper';
     ImageUpdateComponent,
     ApmisLookupComponent,
     ApmisLookupMultiselectComponent,
+    ApmisPaginatedLookupComponent,
     KeysPipe,
     ThousandDecimalPipe,
     PersonAccountComponent,
@@ -86,6 +88,7 @@ import { ImageCropperModule } from 'ng2-img-cropper';
     CoolStorageModule,
     ApmisLookupComponent,
     ApmisLookupMultiselectComponent,
+    ApmisPaginatedLookupComponent,
     KeysPipe,
     ThousandDecimalPipe,
     PersonAccountComponent,

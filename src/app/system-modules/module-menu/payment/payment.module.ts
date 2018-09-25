@@ -7,7 +7,7 @@ import { PaymentComponent } from './payment.component';
 import { paymentRoutes } from './payment.routes';
 import { PaymentHomeComponent } from './payment-home/payment-home.component';
 import { AddModefierComponent } from './add-modefier/add-modefier.component';
-import { AddItemComponent } from './add-item/add-item.component';
+// import { AddItemComponent } from './add-item/add-item.component';
 import { AddLineModifierComponent } from './add-line-modifier/add-line-modifier.component';
 import { ItemDetailComponent } from './item-detail/item-detail.component';
 import { InvoiceComponent } from './invoice/invoice.component';

@@ -62,9 +62,10 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
   apmisLookupUrl = 'patient-search';
   apmisLookupText = '';
   apmisLookupQuery: any = {};
-  apmisLookupDisplayKey = 'firstName';
+  apmisLookupDisplayKey = 'personDetails.firstName';
   apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
-  apmisLookupOtherKeys = ['lastName', 'firstName', 'apmisId', 'email'];
+
+  apmisLookupOtherKeys = ['personDetails.lastName', 'personDetails.firstName', 'personDetails.dateOfBirth', 'personDetails.email'];
   apmisInvestigationLookupUrl = 'investigations';
   apmisInvestigationLookupText = '';
   apmisInvestigationLookupQuery: any = {};
@@ -104,7 +105,6 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
   totalPrice: Number = 0;
   searchOpen = false;
   routeSubscription: ISubscription;
-  labSubscription: ISubscription;
   requestLoading = false;
 
   constructor(
@@ -132,7 +132,7 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
     }).catch(err => console.log(err));
 
     // Subscribe to the event when ward changes.
-    this.labSubscription = this._labEventEmitter.announceLab.subscribe(val => {
+    this.routeSubscription = this._labEventEmitter.announceLab.subscribe(val => {
       this.selectedLab = val;
       this._getAllPendingRequests();
     });
@@ -481,7 +481,7 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
   }
 
   apmisLookupHandleSelectedItem(value) {
-    this.apmisLookupText = `${value.firstName} ${value.lastName}`;
+    this.apmisLookupText = `${value.personDetails.firstName} ${value.personDetails.lastName}`;
     this.selectedPatient = value;
     this.frmNewRequest.controls['labNo'].setValue('');
     if (this.selectedPatient.clientsNo !== undefined) {
@@ -623,7 +623,7 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
                     isInBind
                   ].investigation.panel.findIndex(
                     x => x._id === copyInvestigation.investigation.panel[0]._id
-                    ) >= 0
+                  ) >= 0
                 ) {
                   this.bindInvestigations[isInBind].investigation.panel.push(
                     copyInvestigation.investigation.panel[0]
@@ -643,7 +643,7 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
                 ].investigation.panel.findIndex(
                   x =>
                     x.investigation._id === childInvestigation.investigation._id
-                  );
+                );
                 this.bindInvestigations[isInBind].investigation.panel.splice(
                   indexToRemove,
                   1
@@ -959,7 +959,7 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
 
     const request: any = {
       facilityId: this.selectedFacility._id,
-      patientId: (this.isLaboratory) ? this.selectedPatient.patientId : this.selectedPatient._id,
+      patientId: (this.isLaboratory) ? this.selectedPatient._id : this.selectedPatient._id,
       labNumber: (!this.isLaboratory) ? this.frmNewRequest.controls['labNo'].value : value.labNo,
       clinicalInformation: this.frmNewRequest.controls['clinicalInfo'].value,
       minorLocationId: (this.selectedLab.typeObject !== undefined) ? this.selectedLab.typeObject.minorLocationObject._id : undefined,
@@ -979,7 +979,6 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
         }
       }
     }
-
     // Make request.
     this.requestService.customCreate(request).then(res => {
       if (res.status === 'success') {
@@ -994,6 +993,7 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
         this.makeRequestBtn = true;
         this.disableBtn = false;
       } else {
+        console.log(res);
         this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
         this.requestLoading = false;
         this.makingRequestBtn = false;
@@ -1001,6 +1001,7 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
         this.disableBtn = false;
       }
     }).catch(err => {
+      console.log(err);
       this._systemModuleService.announceSweetProxy('There was a problem trying to send request!', 'error');
       this.requestLoading = false;
     });
@@ -1249,8 +1250,16 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
     this.searchOpen = !this.searchOpen;
   }
 
+  // Notification
+  private _notification(type: string, text: string): void {
+    this.facilityService.announceNotification({
+      users: [this.user._id],
+      type: type,
+      text: text
+    });
+  }
+
   ngOnDestroy() {
     this.routeSubscription.unsubscribe();
-    this.labSubscription.unsubscribe();
   }
 }

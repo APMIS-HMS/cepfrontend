@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit,Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
+
 
 @Component({
   selector: 'app-messaging',
@@ -11,13 +12,16 @@ export class MessagingComponent implements OnInit {
   chatActive = false;
   searchAccount = new FormControl();
   chatBox = new FormControl();
+  channels: any;
 
   clinicalTab = true;
   nonClinicalTab = false;
+  @Input('channel') userChannels;
 
   constructor() { }
 
   ngOnInit() {
+    console.log('in messaging component');
   }
 
   chatActiveToggle(){

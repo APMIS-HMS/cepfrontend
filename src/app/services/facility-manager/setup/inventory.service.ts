@@ -7,6 +7,7 @@ import { Subject } from 'rxjs/Subject';
 export class InventoryService {
   public _socket;
   public _socketList;
+  public _msocket;
   private _rest;
   public createlistner;
   public updatelistner;
@@ -25,6 +26,8 @@ export class InventoryService {
     this._rest = _restService.getService('inventories');
     this._socket = _socketService.getService('inventories');
     this._socketList = _socketService.getService('list-of-inventories');
+    this._msocket = _socketService.getService('inventory-summary-counts');
+    this._socket.timeout = 50000;
     this._socket.timeout = 50000;
     this._socketList.timeout = 50000;
     this.createlistner = Observable.fromEvent(this._socket, 'created');
@@ -73,5 +76,9 @@ export class InventoryService {
 
   update(inventory: any) {
     return this._socket.update(inventory._id, inventory);
+  }
+
+  getInventoryBriefStatus(id: string, query: any) {
+    return this._msocket.get(id, query);
   }
 }

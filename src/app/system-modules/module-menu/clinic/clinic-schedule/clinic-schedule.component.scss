@@ -15,6 +15,9 @@
     min-height: 340px;
     width: 62%;
 }
+.mat-form-field {
+    width: 100% !important;
+}
 
 li.listHeader {
     font-weight: bold;
@@ -189,4 +192,21 @@ li.li-itemWrap {
     width: 100%;
     padding: 10px;
     text-align: center !important;
+}
+.frmitemwrap{
+    display: flex;
+    justify-content: space-between;
+    .frm-x2-mini{
+        width: 48%;
+        .frmitemwrap{
+            position: relative;
+        }
+        label{
+            position: absolute;
+            top: 0;
+            left: 0;
+            font-size: 0.9rem;
+            color: #333
+        }
+    }
 }
