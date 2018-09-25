@@ -18,6 +18,8 @@ import { StoreHomeComponent } from './store-home/store-home.component';
 import { PosComponent } from './pos/pos.component';
 import { PosDiscountComponent } from './pos/pos-discount/pos-discount.component';
 import { PosRecieptComponent } from './pos/pos-reciept/pos-reciept.component';
+import {StoreSummaryComponent} from './store-home/new-store-manager-components/store-summary-component';
+import {StoreSummaryItemComponent} from './store-home/new-store-manager-components/store-summary-item-component';
 
 
 
@@ -30,7 +32,9 @@ import { PosRecieptComponent } from './pos/pos-reciept/pos-reciept.component';
         // QuickLinksComponent,
         PosComponent,
         PosDiscountComponent,
-        PosRecieptComponent
+        PosRecieptComponent,
+        StoreSummaryComponent,
+        StoreSummaryItemComponent
     ],
 
     exports: [
