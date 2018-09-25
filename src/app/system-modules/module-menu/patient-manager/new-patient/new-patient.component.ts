@@ -716,7 +716,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                             bene.push(...facHmo.hmos[index].enrolleeList[s].enrollees);
                         }
                         const fil = bene.filter(x => x.filNo === insuranceId);
-                        this.frmPerson.controls['gender'].disable();
+                        // this.frmPerson.controls['gender'].disable();
                         if (fil.length > 0) {
                             if (fil[0].status === false || fil[0].status.toString() === 'inactive') {
                                 this.systemModuleService.off();
@@ -726,17 +726,18 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                                 this.systemModuleService
                                     .announceSweetProxy(text, 'error');
                             } else {
-                                
+
                                 if (this.shouldMoveFirst === true) {
                                     this.saveInsurancePerson();
                                 } else {
-                                    
+                                    console.log(fil[0].gender);
                                     this.systemModuleService.off();
                                     this.frmPerson.controls['firstname'].setValue(fil[0].firstname.toString());
                                     this.frmPerson.controls['firstname'].disable();
                                     this.frmPerson.controls['lastname'].setValue(fil[0].surname.toString());
                                     this.frmPerson.controls['lastname'].disable();
                                     if (fil[0].gender !== undefined && fil[0].gender !== null) {
+                                        this.frmPerson.controls['gender'].disable();
                                         if (fil[0].gender.toLowerCase() === 'm' || fil[0].gender.toLowerCase() === 'male') {
                                             this.frmPerson.controls['gender'].setValue('Male');
                                         } else {
@@ -750,7 +751,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                                     this.frmNewPerson3_show = false;
                                     this.paymentPlan = false;
                                     this.loading = false;
-                                    
+
                                 }
                             }
                         } else {
