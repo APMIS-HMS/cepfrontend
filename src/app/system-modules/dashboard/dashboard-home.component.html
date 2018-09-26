@@ -11,9 +11,10 @@
 
         <div class="menuBar-facilityName">
             <div class="menubar_facilityLogo orgLogo-wrap">
-                <img *ngIf="facilityObj.logoObject != undefined" [src]="facilityService.transform(facilityObj.logoObject.thumbnail)">
-                <img *ngIf="facilityObj.logoObject == undefined" src="assets/images/logos/default.png">
-                <div (click)="show_changeFacilityLogo()" class="pp-overlay">Change Logo</div>
+                <app-image-viewer [imageSrc]="facilityObj?.logoObject?.thumbnail"></app-image-viewer>
+                <!-- <img *ngIf="facilityObj.logoObject != undefined" [src]="facilityService.transform(facilityObj.logoObject.thumbnail)">
+                <img *ngIf="facilityObj.logoObject == undefined" src="assets/images/logos/default.png"> -->
+                <!-- <div (click)="show_changeFacilityLogo()" class="pp-overlay">Change Logo</div> -->
             </div>
             <span>{{facilityName}}</span>
         </div>

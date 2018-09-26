@@ -26,6 +26,7 @@ import {
 } from "app/shared-module/helpers/global-config";
 import { SwalComponent } from "@toverux/ngx-sweetalert2";
 import swal from "sweetalert2";
+import { ImageEmitterService } from '../../../../services/facility-manager/image-emitter.service';
 
 @Component({
   selector: "app-facility-basicinfo-edit",
@@ -53,7 +54,14 @@ export class FacilityBasicinfoEditComponent implements OnInit {
     recentStorageName: "componentData3"
   };
   showClose = true;
+  base64Image: String;
+  hasChangedImage: Boolean = false;
+  disableImageBtn: Boolean = false;
+  saveImageBtn: Boolean = true;
+  savingImageBtn: Boolean = false;
+
   constructor(
+    private imageEmitterService: ImageEmitterService,
     private formBuilder: FormBuilder,
     private countryService: CountryServiceFacadeService,
     private facilityTypeService: FacilityTypeFacilityClassFacadeService,
@@ -182,6 +190,40 @@ export class FacilityBasicinfoEditComponent implements OnInit {
     }
 
   }
+
+  onClickChangeImage(fileName, fileList) {
+    console.log(fileName);
+    console.log(fileList);
+    // this.personalInfoModel.profileImage = fileList;
+    const reader = new FileReader();
+    // const imageHolder = document.getElementById('imagePlaceholder');
+    reader.onload = (e: any) => {
+      console.log('Src ', e.target);
+      this.base64Image = e.target.result;
+      this.imageEmitterService.setImageUrl(e.target.result);
+    };
+
+    reader.readAsDataURL(fileList[0]);
+    // This instance variable is to know if a user has selected an image
+    // this will determine if to show upload button or not.
+    this.hasChangedImage = true;
+  }
+
+  onClickUploadLogo() {
+    const payload = {
+      container: 'logo',
+      base64: this.base64Image,
+      facilityId: this.selectedFacility._id
+    };
+
+    console.log('Payload', payload);
+    // Make a request to the server to save image
+    // If image wsa saved successfully, emit an event to change all images
+    this.disableImageBtn = true;
+    this.saveImageBtn = false;
+    this.savingImageBtn = true;
+  }
+
   _getFacilityOwnerships() {
     this.facilityOwnershipService.find({}).then(
       payload => {

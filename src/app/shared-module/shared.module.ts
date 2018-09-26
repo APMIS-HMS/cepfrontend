@@ -79,6 +79,8 @@ import { AddItemComponent } from '../system-modules/module-menu/payment/add-item
 import { AddLineModifierComponent } from '../system-modules/module-menu/payment/add-line-modifier/add-line-modifier.component';
 import { ItemDetailComponent } from '../system-modules/module-menu/payment/item-detail/item-detail.component';
 import { FundWalletComponent } from '../system-modules/module-menu/payment/bill-lookup/fund-wallet/fund-wallet.component';
+import { ImageViewerComponent } from './image-viewer/image-viewer.component';
+import { ImageEmitterService } from '../services/facility-manager/image-emitter.service';
 @NgModule({
   declarations: [
     RegistersComponent,
@@ -103,7 +105,8 @@ import { FundWalletComponent } from '../system-modules/module-menu/payment/bill-
     AddItemComponent,
     AddLineModifierComponent,
     ItemDetailComponent,
-    FundWalletComponent],
+    FundWalletComponent,
+    ImageViewerComponent],
   exports: [
     RegistersComponent,
     NewRegisterComponent,
@@ -153,7 +156,7 @@ import { FundWalletComponent } from '../system-modules/module-menu/payment/bill-
     SharedModuleMaterialModule,
     Angular4PaystackModule,
   ],
-  providers: [StoreService, WindowRef, OrderSetSharedService, ProductTypeService ]
+  providers: [StoreService, WindowRef, OrderSetSharedService, ProductTypeService, ImageEmitterService ]
 })
 export class SharedModule {}
 
