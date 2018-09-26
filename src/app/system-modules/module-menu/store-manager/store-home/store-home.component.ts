@@ -178,6 +178,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
 
             },
         ]; //  payload.data;
+
     }
 
     getInventories() {
@@ -309,5 +310,9 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
 
     logCurrentSelectedItem(item: IStoreSummaryItem) {
         console.log(item);
+    }
+    private getPropFromArray(data: any, prop): any {
+        const result = data.map(a => a[prop]);
+        return result;
     }
 }

@@ -18,8 +18,8 @@
         </div>
 
         <div class="row">
-            <div class="col-sm-3">
-               <h3> Chart Component Goes Here</h3>
+            <div class="col-sm-4">
+               <store-chart [chartObj]= "storeStatusLabel"></store-chart>
             </div>
             <div class="col-sm-8">
                 <store-summary [data]="storeStatusLabel" (onItemDetailsClicked)="logCurrentSelectedItem($event)"></store-summary>

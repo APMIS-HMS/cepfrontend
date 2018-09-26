@@ -20,6 +20,8 @@ import { PosDiscountComponent } from './pos/pos-discount/pos-discount.component'
 import { PosRecieptComponent } from './pos/pos-reciept/pos-reciept.component';
 import {StoreSummaryComponent} from './store-home/new-store-manager-components/store-summary-component';
 import {StoreSummaryItemComponent} from './store-home/new-store-manager-components/store-summary-item-component';
+import { StoreChartComponentComponent } from './store-home/store-chart-component/store-chart-component.component';
+import { ChartsModule } from 'ng2-charts';
 
 
 
@@ -34,7 +36,8 @@ import {StoreSummaryItemComponent} from './store-home/new-store-manager-componen
         PosDiscountComponent,
         PosRecieptComponent,
         StoreSummaryComponent,
-        StoreSummaryItemComponent
+        StoreSummaryItemComponent,
+        StoreChartComponentComponent
     ],
 
     exports: [
@@ -43,6 +46,7 @@ import {StoreSummaryItemComponent} from './store-home/new-store-manager-componen
         SharedModule,
         OnlyMaterialModule,
         MaterialModule,
+        ChartsModule,
         storeRoutes
     ],
     providers: [StoreEmitterService, ProductTypeService, StoreService, ProductService,
