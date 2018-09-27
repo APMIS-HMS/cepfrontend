@@ -468,41 +468,7 @@ export class ReportComponent implements OnInit, OnDestroy {
     }
   }
 
-  onFileChange(event) {
-    let reader = new FileReader();
-    if (event.target.files && event.target.files.length > 0) {
-      let file = event.target.files[0];
-      this.fileName = file.name;
-      if (file.type == "image/png" || file.type == "image/jpg"
-        || file.type == "image/gif" || file.type == "image/jpeg"
-        || file.type == "application/pdf") {
-        if (file.size < 1250000) {
-          this.fileType = file.type;
-          reader.readAsDataURL(file);
-          reader.onload = () => {
-            let base64 = reader.result;
-            this.fileBase64 = {
-              base64: base64,
-              name: file.name,
-              fileType: file.type,
-              docType: 'laboratory report',
-              size: file.size,
-              container: 'laboratorycontainer',
-              investigationId: this.selectedInvestigation.investigationId,
-              labRequestId: this.selectedInvestigation.labRequestId
-            };
-          };
-        } else {
-          this._systemModuleService.announceSweetProxy('Size Of Document Too BIG!', 'info');
-          this.reportFormGroup.controls['fileUpload'].setErrors({ sizeTooBig: true });
-        }
-
-      } else {
-        this._systemModuleService.announceSweetProxy('Type of document not supported.', 'info');
-        this.reportFormGroup.controls['fileUpload'].setErrors({ typeDenied: true });
-      }
-    }
-  }
+  onFileChange(event) {}
 
   onChange(e) {
 
@@ -826,10 +792,11 @@ export class ReportComponent implements OnInit, OnDestroy {
   close_onClick(message: Boolean): void {
     this.repDetail_view = false;
     this.importTemplate = false;
+    this.report_view = false;
   }
 
   report_show() {
-    this.report_view = !this.report_view;
+    this.report_view = true;
   }
   openSearch() {
     this.searchOpen = !this.searchOpen;

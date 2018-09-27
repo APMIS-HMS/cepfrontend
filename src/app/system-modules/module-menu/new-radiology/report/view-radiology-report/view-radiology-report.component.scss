@@ -1,0 +1,39 @@
+.head-sect {
+    width: 100%;
+    height: 42px;
+    background: #4bb8ef;
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 10px;
+    box-sizing: border-box;
+}
+.body-sect{
+    width: 100%;
+    display: flex;
+}
+.l-sec {
+    padding: 10px;
+    width: 421px;
+}
+.r-sec{
+    padding: 10px;
+    width: 100%;
+}
+.person-info{
+    display: flex;
+    align-items: center;
+    span{
+        padding: 5px;
+        padding-right: 15px;
+        margin: 0 10px;
+        border-right: 1px solid #000;
+    }
+    span:last-child{
+        border-right: 0px;
+    }
+}
+.close-ico {
+    color: #000;
+    font-size: 2rem;
+    cursor: pointer;
+}
