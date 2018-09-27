@@ -17,14 +17,21 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-sm-3">
-               <h3> Chart Component Goes Here</h3>
-            </div>
-            <div class="col-sm-8">
+        <!--<div class="row">-->
+            <!--<div class="col-sm-3">-->
+               <!--<h3> Chart Component Goes Here</h3>-->
+            <!--</div>-->
+            <div class="col-sm-8n">
                 <store-summary [data]="storeStatusLabel" (onItemDetailsClicked)="logCurrentSelectedItem($event)"></store-summary>
             </div>
-        </div>
+            <dialog-host [visible]="showDialog">
+                <store-summary-dialog [title]="selectedItem?.key "  (onClose)="showDialog  = !$event">
+
+
+                </store-summary-dialog>
+            </dialog-host>
+
+        <!--</div>-->
         
 
 

@@ -20,6 +20,8 @@ import { PosDiscountComponent } from './pos/pos-discount/pos-discount.component'
 import { PosRecieptComponent } from './pos/pos-reciept/pos-reciept.component';
 import {StoreSummaryComponent} from './store-home/new-store-manager-components/store-summary-component';
 import {StoreSummaryItemComponent} from './store-home/new-store-manager-components/store-summary-item-component';
+import {StoreSummaryDialogComponent} from './store-home/new-store-manager-components/store-summary-dialog-content-component';
+import {DialogHostComponent} from './store-home/new-store-manager-components/dialog-host-component';
 
 
 
@@ -34,7 +36,9 @@ import {StoreSummaryItemComponent} from './store-home/new-store-manager-componen
         PosDiscountComponent,
         PosRecieptComponent,
         StoreSummaryComponent,
-        StoreSummaryItemComponent
+        StoreSummaryItemComponent,
+        StoreSummaryDialogComponent,
+        DialogHostComponent
     ],
 
     exports: [
