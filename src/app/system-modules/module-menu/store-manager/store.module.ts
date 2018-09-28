@@ -23,8 +23,6 @@ import {StoreSummaryItemComponent} from './store-home/new-store-manager-componen
 import { StoreChartComponentComponent } from './store-home/store-chart-component/store-chart-component.component';
 import { ChartsModule } from 'ng2-charts';
 
-
-
 @NgModule({
     declarations: [
         StoreComponent,

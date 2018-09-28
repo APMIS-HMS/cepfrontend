@@ -71,7 +71,9 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { APP_DATE_FORMATS, AppDateAdapter } from 'app/date-format';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
-
+import { FusionChartsModule } from 'angular2-fusioncharts';
+import * as FusionCharts from 'fusioncharts';
+import * as Charts from 'fusioncharts/fusioncharts.charts';
 @NgModule({
   declarations: [
     AppComponent,
