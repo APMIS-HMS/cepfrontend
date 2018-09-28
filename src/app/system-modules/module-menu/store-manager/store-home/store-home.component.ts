@@ -137,11 +137,11 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
 
     getInventoryBriefStatus() {
         console.log(this.checkingStore);
-        this._inventoryService.getInventoryBriefStatus(this.checkingStore.storeId, {})
-            .then(payload => {
-                this.transformStoreSummaryData(payload);
-                console.log("STORE SUMMARY", this.storeStatusLabel);
-            });
+        this._inventoryService.getInventoryBriefStatus(this.checkingStore.storeId, {}).then(res => {
+            console.log(res);
+            // this.transformStoreSummaryData(res);
+            // console.log("STORE SUMMARY", this.storeStatusLabel);
+        });
     }
 
     private transformStoreSummaryData(payload) {

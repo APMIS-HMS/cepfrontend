@@ -59,16 +59,17 @@ import {IStoreSummaryItem} from './store-summary-model';
 
 
 export class StoreSummaryItemComponent implements OnInit {
+    @Input() item: IStoreSummaryItem;
+    @Input() color: String = '';
+    @Output() onDetailClick: EventEmitter<IStoreSummaryItem>  =  new EventEmitter<IStoreSummaryItem>();
+
     constructor() {
     }
-    @Input() item : IStoreSummaryItem;
-    @Input() color : string = '';
-    @Output() onDetailClick : EventEmitter<IStoreSummaryItem>  =  new EventEmitter<IStoreSummaryItem>();
+
     ngOnInit() {
     }
 
-    itemDetailsClick(item)
-    {
+    itemDetailsClick(item) {
         this.onDetailClick.emit(item);
     }
 }
