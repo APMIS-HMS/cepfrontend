@@ -105,8 +105,7 @@ import { ImageEmitterService } from '../services/facility-manager/image-emitter.
     AddItemComponent,
     AddLineModifierComponent,
     ItemDetailComponent,
-    FundWalletComponent,
-    ImageViewerComponent],
+    FundWalletComponent],
   exports: [
     RegistersComponent,
     NewRegisterComponent,
@@ -156,7 +155,7 @@ import { ImageEmitterService } from '../services/facility-manager/image-emitter.
     SharedModuleMaterialModule,
     Angular4PaystackModule,
   ],
-  providers: [StoreService, WindowRef, OrderSetSharedService, ProductTypeService, ImageEmitterService ]
+  providers: [StoreService, WindowRef, OrderSetSharedService, ProductTypeService ]
 })
 export class SharedModule {}
 
