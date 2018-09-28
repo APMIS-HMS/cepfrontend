@@ -40,6 +40,8 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
     storeStatusLabel: IStoreSummaryItem[] = []
 
     subscription: ISubscription;
+    private showDialog: boolean  = false;
+    private selectedItem: IStoreSummaryItem;
 
     constructor(
         private _inventoryService: InventoryService,
@@ -148,7 +150,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
                 key: "Total Items",
                 value: this.inventoryCount,
                 tag : "total-items",
-                tagColor : 'green'
+                tagColor : '#4fdc28'
 
 
             },
@@ -156,25 +158,25 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
                 key: "Expired Items",
                 value: payload.data.expired,
                 tag : "expired-items",
-                tagColor : 'purple'
+                tagColor : '#a362ff'
             },
             {
                 key: "About to Expire",
                 value: payload.data.about_to_expire,
                 tag : "about-to-expire",
-                tagColor : 'pink'
+                tagColor : '#ff58b0'
             },
             {
                 key: "Require Reorder",
                 value: payload.data.near_reorder_level,
                 tag : "require-reorder",
-                tagColor : 'orange'
+                tagColor : '#ffa43f'
             },
             {
                 key: "Out Of Stock",
                 value: payload.data.past_reorder_level,
                 tag : "out-of-stock",
-                tagColor : 'red'
+                tagColor : '#ea2425'
 
             },
         ]; //  payload.data;
@@ -310,6 +312,8 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
 
     logCurrentSelectedItem(item: IStoreSummaryItem) {
         console.log(item);
+        this.selectedItem  = item;
+        this.showDialog =true;
     }
     private getPropFromArray(data: any, prop): any {
         const result = data.map(a => a[prop]);

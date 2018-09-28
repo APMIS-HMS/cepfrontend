@@ -11,10 +11,15 @@ import {IStoreSummaryItem} from './store-summary-model';
             flex-direction: row;
             justify-content: center;
             align-content: center;
+            flex-wrap: wrap;
             min-height: 120px;
             /*background-color: #ececec;*/
             padding: 20px;
            
+        }
+        .flex-2
+        {
+            flex : 2;
         }
     `]
 })
