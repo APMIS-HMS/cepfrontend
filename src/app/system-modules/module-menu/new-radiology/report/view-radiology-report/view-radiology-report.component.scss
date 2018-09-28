@@ -37,3 +37,50 @@
     font-size: 2rem;
     cursor: pointer;
 }
+.top-img-wrap{
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background: #4bb8ef;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    img{
+        width: 100%;
+    }
+}
+.item-label {
+    color: #194985;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+.sect-item {
+    margin-bottom: 15px;
+}
+.item-x2 {
+    display: flex;
+    justify-content: space-between;
+    .sect-item{
+        width: 49%;
+    }
+}
+.item-val {
+    font-size: 1.3rem;
+    button{
+        margin-top: 5px;
+        background: #194985;
+        color: #fff;
+        border: 0;
+        padding: 3px 10px;
+        cursor: pointer;
+    }
+}
+.sect-content{
+    overflow-y: auto;
+    max-height: 102%;
+}
+.item-val-main {
+    font-size: 1.6rem;
+}
