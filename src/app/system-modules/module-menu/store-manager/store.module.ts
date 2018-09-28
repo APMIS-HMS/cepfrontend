@@ -39,7 +39,7 @@ import {DialogHostComponent} from './store-home/new-store-manager-components/dia
         PosRecieptComponent,
         StoreSummaryComponent,
         StoreSummaryItemComponent,
-        StoreChartComponentComponent
+        StoreChartComponentComponent,
         StoreSummaryDialogComponent,
         DialogHostComponent
     ],
@@ -54,8 +54,8 @@ import {DialogHostComponent} from './store-home/new-store-manager-components/dia
         storeRoutes
     ],
     providers: [StoreEmitterService, ProductTypeService, StoreService, ProductService,
-        GenericService, ManufacturerService, RouteService, SupplierService, PurchaseOrderService, 
-        InventoryTransferService,InventoryTransferStatusService,ProductRequisitionService]
+        GenericService, ManufacturerService, RouteService, SupplierService, PurchaseOrderService,
+        InventoryTransferService, InventoryTransferStatusService, ProductRequisitionService]
 })
 export class StoreModule { }
 
