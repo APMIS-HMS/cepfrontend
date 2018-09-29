@@ -59,19 +59,14 @@ export class BeneficiaryListComponent implements OnInit {
     })
   }
   getBeneficiaryList(id) {
-    console.log(id);
-    console.log(this.selectedFacility._id);
     this.hmoService.find({ query: { 'facilityId': this.selectedFacility._id } }).then(payload => {
       if (payload.data.length > 0) {
         const facHmo = payload.data[0];
-        console.log(facHmo);
         const index = facHmo.hmos.findIndex(x => x.hmo === id);
         if (index > -1) {
-          console.log(facHmo.hmos[index].enrolleeList);
           if (facHmo.hmos[index].enrolleeList.length > 0) {
             const bene = [];
             for (let s = 0; s < facHmo.hmos[index].enrolleeList.length; s++) {
-              console.log(facHmo.hmos[index].hmo);
               this.selectedHMO = facHmo.hmos[index].hmo;
               bene.push(...facHmo.hmos[index].enrolleeList[s].enrollees);
             }
@@ -80,7 +75,6 @@ export class BeneficiaryListComponent implements OnInit {
             const startIndex = 0 * 10;
             this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
             this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
-            console.log(this.filteredBeneficiaries);
           }
         }
       }
@@ -91,46 +85,57 @@ export class BeneficiaryListComponent implements OnInit {
     if (filNo !== undefined) {
       const filNoLength = filNo.length;
       const lastCharacter = filNo[filNoLength - 1];
-      return isNaN(lastCharacter) ? 'D' : 'P';
+      const secCharacter = (filNoLength - 2 > 0) ? filNo[filNoLength - 2] : filNo[filNoLength - 1];
+      return (isNaN(lastCharacter) && isNaN(secCharacter)) ? 'D' : 'P';
     }
   }
   newHmo_show() {
     this.newHmo = !this.newHmo;
   }
 
-  onBeneficiaryValueChange(e){
+  onBeneficiaryValueChange(e) {
     console.log(e);
     const facHmo = e;
     const index = facHmo.hmos.findIndex(x => x.hmo === this.selectedBeneficiary.id);
-      if (index > -1) {
-        if (facHmo.hmos[index].enrolleeList.length > 0) {
-          const bene = [];
-          for (let s = 0; s < facHmo.hmos[index].enrolleeList.length; s++) {
-            this.selectedHMO = facHmo.hmos[index].hmo;
-            bene.push(...facHmo.hmos[index].enrolleeList[s].enrollees);
-          }
-          this.loading = false;
-          this.beneficiaries = JSON.parse(JSON.stringify(bene));
-          const startIndex = 0 * 10;
-          this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
-          this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
-          this.newBeneficiary = false;
+    if (index > -1) {
+      if (facHmo.hmos[index].enrolleeList.length > 0) {
+        const bene = [];
+        for (let s = 0; s < facHmo.hmos[index].enrolleeList.length; s++) {
+          this.selectedHMO = facHmo.hmos[index].hmo;
+          bene.push(...facHmo.hmos[index].enrolleeList[s].enrollees);
         }
+        this.loading = false;
+        this.beneficiaries = JSON.parse(JSON.stringify(bene));
+        const startIndex = 0 * 10;
+        this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
+        this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
+        this.newBeneficiary = false;
       }
+    }
   }
 
   findBeneficiaries(value) {
-    console.log(value);
     const startIndex = 0 * 10;
     this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries.filter(x => (x.surname !== undefined && x.surname.toLowerCase().includes(value)) || (x.firstname !== undefined && x.firstname.toLowerCase().includes(value)))));
     this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
   }
 
-  edit_show(value,i) {
+  edit_show(value, i) {
+console.log(value);
     this.newBeneficiary = !this.newBeneficiary;
     value.id = this.selectedBeneficiary.id;
     value.index = i;
     this.selectedBeneficiary = value;
+    this.selectedBeneficiary.type = (this.selectedBeneficiary.type !== undefined) ? this.removeWhiteSpace(this.selectedBeneficiary.type) : '';
+    this.selectedBeneficiary.status = (this.selectedBeneficiary.status === 'active' || this.selectedBeneficiary.status === true) ? true : false;
+    this.selectedBeneficiary.category = (this.selectedBeneficiary.category === undefined || this.selectedBeneficiary.status === null) ? '' : this.selectedBeneficiary.category;
+    this.selectedBeneficiary.gender = (this.selectedBeneficiary.gender === undefined || this.selectedBeneficiary.gender === null) ? 'M' : this.selectedBeneficiary.gender;
+    this.selectedBeneficiary.sponsor = (this.selectedBeneficiary.sponsor === undefined || this.selectedBeneficiary.sponsor === null) ? '' : this.selectedBeneficiary.sponsor;
+    this.selectedBeneficiary.date = (this.selectedBeneficiary.date === undefined || this.selectedBeneficiary.date === null) ? new Date() : this.selectedBeneficiary.date;
+  }
+
+  removeWhiteSpace(value) {
+    return value.replace(/\s/g, '');
   }
 
   showImageBrowseDlg() {
@@ -145,9 +150,9 @@ export class BeneficiaryListComponent implements OnInit {
   newBeneficiary_click() {
     this.newBeneficiary = true;
     let _value = {
-      id:this.selectedBeneficiary.id,
+      id: this.selectedBeneficiary.id,
       firstname: '',
-      index:'',
+      index: '',
       surname: '',
       category: '',
       serial: '',

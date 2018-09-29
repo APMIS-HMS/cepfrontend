@@ -22,11 +22,12 @@ export class ClinicComponent implements OnInit, OnDestroy {
 	pageInView = 'Clinic Manager';
 	contentSecMenuShow = false;
 	modal_on = false;
-	clinicApppointment = true;
+	clinicApppointment = false;
 	clinicCheckin = false;
 	clinicSchedule = false;
 	clinicConsulting = false;
 	clinicRoom = false;
+	clinicHome = true;
 
 	clinicLocations: MinorLocation[] = [];
 	professions: Profession[] = [];
@@ -193,30 +194,41 @@ export class ClinicComponent implements OnInit, OnDestroy {
 
 	navItemClick(val) {
 		this.contentSecMenuShow = false;
-		if (val == 'appointment') {
+		if (val == 'home') {
+			this.clinicApppointment = false;
+			this.clinicCheckin = false;
+			this.clinicSchedule = false;
+			this.clinicConsulting = false;
+			this.clinicRoom = false;
+			this.clinicHome = true;
+		} else if (val == 'appointment') {
 			this.clinicApppointment = true;
 			this.clinicCheckin = false;
 			this.clinicSchedule = false;
 			this.clinicConsulting = false;
 			this.clinicRoom = false;
+			this.clinicHome = false;
 		} else if (val == 'checkin') {
 			this.clinicApppointment = false;
 			this.clinicCheckin = true;
 			this.clinicSchedule = false;
 			this.clinicConsulting = false;
 			this.clinicRoom = false;
+			this.clinicHome = false;
 		} else if (val == 'schedule') {
 			this.clinicApppointment = false;
 			this.clinicCheckin = false;
 			this.clinicSchedule = true;
 			this.clinicConsulting = false;
 			this.clinicRoom = false;
+			this.clinicHome = false;
 		} else if (val == 'room') {
 			this.clinicApppointment = false;
 			this.clinicCheckin = false;
 			this.clinicSchedule = false;
 			this.clinicConsulting = true;
 			this.clinicRoom = false;
+			this.clinicHome = false;
 		}
 	}
 

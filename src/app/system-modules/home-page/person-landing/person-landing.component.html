@@ -155,6 +155,7 @@
 </div>
 
 <div class="pp-card shadow-grey">
+    <button (click)="inavailability_click()" class="btn-thead">Set In-Availability</button>
     <i (click)="set_appointment()" class="fa fa-plus-square card-edit" aria-hidden="true"></i>
     <div class="card-title">My Appointments</div>
 
@@ -182,4 +183,7 @@
 
 <div *ngIf="schedule_appointment" class="modal-overlay">
     <app-person-schedule-appointment (closeModal)="close_onClick($event)" class="form-modal center-center"></app-person-schedule-appointment>
+</div>
+<div *ngIf="set_inavailability" class="modal-overlay">
+    <app-inavailability (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-inavailability>
 </div>
