@@ -1,128 +1,156 @@
-<div class="pg-subtitle">REPORT</div>
-<div>
-    <div class="doc-mainWrap">
-        <div class="doc-contentArea">
-            <div class="row clinicalNoteWrap">
-                <div class="col-xs-12 actSect">
-                    <div class="act-actions-wrap">
-                        <div (click)="report_show()" class="act-wrap">
-                            <i *ngIf="report_view" class="fa fa-minus" aria-hidden="true"></i>
-                            <i [hidden]="report_view" class="fa fa-plus" aria-hidden="true"></i>
-                            <span>New Report</span>
-                        </div>
+<div class="pg-subtitle">INVESTIGATION LIST</div>
+
+<div class="tbl-resp-wrap">
+    <table cellpadding="0" cellspacing="0" border="0.5">
+        <thead>
+            <tr>
+                <th>Patient</th>
+                <th>Investigation</th>
+                <th>Uploaded</th>
+                <th>Report Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td>
+                    <div class="p-name">Johnson Wade</div>
+                    <div>
+                        <span>(M) </span>
+                        <span>DOB: 11th-10-1990</span>
                     </div>
-                </div>
-                <div class="col-xs-12 tblWrapa actSect">
-                    <h2 class="col-xs-12" style="text-align: center">Requests Attended</h2>
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-xs-1 table-head">No</div>
-                                <div class="col-xs-1 table-head">Date</div>
-                                <div class="col-xs-2 table-head">Patient</div>
-                                <div class="table-head col-xs-2">Investigation</div>
-                                <div class="table-head col-xs-2">Source</div>
-                                <div class="col-xs-2 table-head">Requesting Physician</div>
-                                <div class="table-head col-xs-1">Status</div>
-                                <div class="table-head col-xs-1"><i class="fa fa-search fa-fw pointer" (click)="openSearch2()"></i></div>
-                            </div>
-                            <div class="row" *ngIf="searchOpen2">
-                                <div class="col-md-4">
-                                    <input [formControl]="patientSearch2" class="table-header-input" type="text" placeholder="Search for Patient">
-                                </div>
-                                <div class="col-md-4">
-                                    <!-- <select class="table-header-select" formControlName="category" placeholder="Select Category" (change)="onChangeCategory($event);">
-                                        <option value="" selected>Select Category</option>
-                                        <option value="individual">Individual</option>
-                                        <option value="corporate">Corporate</option>
-                                        <option value="internal">Internal</option>
-                                    </select> -->
-                                </div>
-                                <div class="col-md-3">
-                                    <!-- <input class="table-header-input" type="date" placeholder="Choose a date"> -->
-                                </div>
-                                <div class="col-md-1 table-head">
-                                    <i class="fa fa-close fa-fw" (click)="openSearch2()"></i>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="card-content">
-                            <div class="card-list-item" *ngIf="reports.length === 0 && !reportLoading">
-                                <div class="col-xs-12" style="text-align:center">
-                                    No data available in table
-                                </div>
-                            </div>
-                            <div class="card-list-item" *ngIf="reports.length === 0 && reportLoading">
-                                <div class="col-xs-12" style="text-align:center">
-                                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
-                                </div>
-                            </div>
-                            <div class="card-list-item" *ngFor="let report of reports; let i = index;">
-                                <div class="row">
-                                    <div class="table-list col-xs-1">
-                                        {{ i+1 }}
-                                    </div>
-                                    <div class="table-list col-xs-1">
-                                        {{ report?.updatedAt | date }}
-                                    </div>
-                                    <div class="table-list col-xs-2">
-                                        <div class="empWrap">
-                                            <div class="list-img">
-                                                <img *ngIf="report?.patient?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                                <img class="shadow" *ngIf="report?.patient?.profileImageObject != undefined" [src]="facilityService.transform(report?.patient?.profileImageObject?.thumbnail)">
-                                            </div>
-                                            <div>{{ report?.patient?.firstName }} {{ report?.patient?.lastName }}</div>
-                                        </div>
-                                    </div>
-                                    <div class="table-list col-xs-2">
-                                        {{ report.name }}
-                                    </div>
-                                    <div class="table-list col-xs-2">
-                                        {{ selectedLab.typeObject.name }}
-                                    </div>
-                                    <div class="table-list col-xs-2">
-                                        <div class="empWrap">
-                                            <div class="list-img">
-                                                <img *ngIf="report?.patient?.profileImageObject == undefined" src="assets/images/users/default.png">
-                                                <img class="shadow" *ngIf="report?.createdBy?.profileImageObject != undefined" [src]="facilityService.transform(report?.createdBy?.profileImageObject?.thumbnail)">
-                                            </div>
-                                            <div>{{ report?.createdBy?.firstName }} {{ report?.createdBy?.lastName}}</div>
-                                        </div>
-                                    </div>
-
-                                    <div class="table-list col-xs-1">
-                                        <div *ngIf="report.isUploaded" style="color: green">Published</div>
-                                        <div *ngIf="!report.isUploaded" style="color:blue">Saved, Not Published</div>
-                                    </div>
-                                    <div class="table-list action-placeholder col-xs-1">
-                                        <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                        <div class="action-container shadow-RB">
-                                            <div (click)="repDetail(report)" class="action-item">
-                                                <i class="fa fa-file-text-o" aria-hidden="true"></i>
-                                                <span>View Report</span>
-                                            </div>
-
-                                            <div (click)="showImageBrowseDlg()" class="action-item">
-                                                <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                                                <span>Upload File</span>
-                                            </div>
-
-                                            <div (click)="showImageBrowseDlg()" class="action-item">
-                                                <i class="fa fa-cloud-upload" aria-hidden="true"></i>
-                                                <span>Upload Report</span>
-                                            </div>
-                                            <input style="display:none;" #fileInput type="file" id="uploadResult" (click)="onChange($event)">
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                        </div>
+                    <div>ID: AA2100CX</div>
+                </td>
+                <td>
+                    <div class="p-main">CT HEAD BRAIN W/O CONTRAST</div>
+                    <div>
+                        <span>CT </span>
+                        <span>53 Images</span>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
+                    <div>By: Wade Daniels</div>
+                </td>
+                <td>
+                    <div class="p-main">11-10-2018</div>
+                    <div>12:00 PM</div>
+                    <div>1d 5h 6m</div>
+                </td>
+                <td>
+                    <div class="tag n-report">No Report</div>
+                </td>
+                <td>
+                    <div class="td-cta">
+                        <i class="fa fa-plus"></i> Write Report
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="p-name">Johnson Wade</div>
+                    <div>
+                        <span>(M) </span>
+                        <span>DOB: 11th-10-1990</span>
+                    </div>
+                    <div>ID: AA2100CX</div>
+                </td>
+                <td>
+                    <div class="p-main">CT HEAD BRAIN W/O CONTRAST</div>
+                    <div>
+                        <span>CT </span>
+                        <span>53 Images</span>
+                    </div>
+                    <div>By: Wade Daniels</div>
+                </td>
+                <td>
+                    <div class="p-main">11-10-2018</div>
+                    <div>12:00 PM</div>
+                    <div>1d 5h 6m</div>
+                </td>
+                <td>
+                    <div class="tag d-report">Drafted</div>
+                </td>
+                <td>
+                    <div class="td-cta">
+                        <i class="fa fa-share"></i> Publish Report
+                    </div>
+                    <div class="td-cta">
+                        <i class="fa fa-trash"></i> Delete Report
+                    </div>
+                    <div class="td-cta">
+                        <i class="fa fa-pencil"></i> Edit Report
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="p-name">Johnson Wade</div>
+                    <div>
+                        <span>(M) </span>
+                        <span>DOB: 11th-10-1990</span>
+                    </div>
+                    <div>ID: AA2100CX</div>
+                </td>
+                <td>
+                    <div class="p-main">CT HEAD BRAIN W/O CONTRAST</div>
+                    <div>
+                        <span>CT </span>
+                        <span>53 Images</span>
+                    </div>
+                    <div>By: Wade Daniels</div>
+                </td>
+                <td>
+                    <div class="p-main">11-10-2018</div>
+                    <div>12:00 PM</div>
+                    <div>1d 5h 6m</div>
+                </td>
+                <td>
+                    <div class="tag p-report">Published</div>
+                </td>
+                <td>
+                    <div class="td-cta">
+                        <i class="fa fa-ellipsis-h"></i> View Report
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="p-name">Johnson Wade</div>
+                    <div>
+                        <span>(M) </span>
+                        <span>DOB: 11th-10-1990</span>
+                    </div>
+                    <div>ID: AA2100CX</div>
+                </td>
+                <td>
+                    <div class="p-main">CT HEAD BRAIN W/O CONTRAST</div>
+                    <div>
+                        <span>CT </span>
+                        <span>53 Images</span>
+                    </div>
+                    <div>By: Wade Daniels</div>
+                </td>
+                <td>
+                    <div class="p-main">11-10-2018</div>
+                    <div>12:00 PM</div>
+                    <div>1d 5h 6m</div>
+                </td>
+                <td>
+                    <div class="tag d-report">Drafted</div>
+                </td>
+                <td>
+                    <div class="td-cta">
+                        <i class="fa fa-share"></i> Publish Report
+                    </div>
+                    <div class="td-cta">
+                        <i class="fa fa-trash"></i> Delete Report
+                    </div>
+                    <div class="td-cta">
+                        <i class="fa fa-pencil"></i> Edit Report
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
 <div *ngIf="repDetail_view" class="modal-overlay">

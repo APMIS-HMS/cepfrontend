@@ -67,7 +67,6 @@ import { StoreProductTypeComponent } from './store-product-type/store-product-ty
 import { PassContinueComponent } from './pass-continue/pass-continue.component';
 
 import { RegistersComponent } from '../system-modules/module-menu/reports/registers/registers.component';
-import { NewRegisterComponent } from '../system-modules/module-menu/reports/registers/new-register/new-register.component';
 import { RegisterEntriesComponent } from '../system-modules/module-menu/reports/registers/register-entries/register-entries.component';
 import { RegisterEntryComponent } from '../system-modules/module-menu/reports/registers/register-entries/register-entry/register-entry.component';
 import { NewRegisterEntryComponent } from '../system-modules/module-menu/reports/registers/register-entries/new-register-entry/new-register-entry.component';
@@ -79,10 +78,10 @@ import { AddItemComponent } from '../system-modules/module-menu/payment/add-item
 import { AddLineModifierComponent } from '../system-modules/module-menu/payment/add-line-modifier/add-line-modifier.component';
 import { ItemDetailComponent } from '../system-modules/module-menu/payment/item-detail/item-detail.component';
 import { FundWalletComponent } from '../system-modules/module-menu/payment/bill-lookup/fund-wallet/fund-wallet.component';
+import { IrtsModalComponent } from './irts-modal/irts-modal.component';
 @NgModule({
   declarations: [
     RegistersComponent,
-    NewRegisterComponent,
     RegisterEntriesComponent,
     RegisterEntryComponent,
     RegEntriesListComponent,
@@ -103,14 +102,14 @@ import { FundWalletComponent } from '../system-modules/module-menu/payment/bill-
     AddItemComponent,
     AddLineModifierComponent,
     ItemDetailComponent,
-    FundWalletComponent],
+    FundWalletComponent,
+    IrtsModalComponent],
   exports: [
     RegistersComponent,
-    NewRegisterComponent,
     RegisterEntriesComponent,
     RegisterEntryComponent,
     RegEntriesListComponent,
-    NewRegisterEntryComponent,
+    NewRegisterEntryComponent,    
     NgUploaderModule,
     NgPipesModule,
     Ng2PaginationModule,
