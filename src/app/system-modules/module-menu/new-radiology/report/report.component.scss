@@ -2,7 +2,10 @@
 .text-center {
     text-align: center;
 }
-
+th{
+    color: #fff;
+    padding: 0 10px;
+}
 .frm-l {
     float: left;
     overflow: hidden;
@@ -397,4 +400,40 @@ td .mat-select {
             background-color: #4bb8ef;
         }
     }
+}
+.p-name {
+    color: #194985;
+    font-size: 1.6rem !important;
+    font-weight: bold;
+}
+td > div{
+    margin-bottom: 5px;
+    font-size: 1.2rem;
+}
+.p-main {
+    font-size: 1.5rem !important;
+    font-weight: bold;
+}
+.tag{
+    color: #fff;
+    padding: 3px 10px;
+    max-width: fit-content;
+    font-weight: bold;
+    margin: 0 auto;
+}
+.n-report {
+    background: #ff2500;
+}
+.d-report {
+    background: goldenrod;
+}
+.p-report {
+    background: lawngreen;
+}
+.td-cta {
+    margin: 10px;
+    cursor: pointer;
+}
+.td-cta:hover{
+    text-decoration: underline;
 }
