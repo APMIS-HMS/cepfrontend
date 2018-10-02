@@ -6,6 +6,16 @@ import { RegisterEntryComponent } from './register-entries/register-entry/regist
 import { RegistersComponent } from './registers.component';
 import { DailyAntenatalComponent } from './register-entries/daily-antenatal/daily-antenatal.component';
 import { DailyOpdComponent } from './register-entries/daily-opd/daily-opd.component';
+import { DailyIrtsComponent } from './register-entries/daily-IRTS/daily-irts.component';
+import { DailyFprComponent } from './register-entries/daily-fpr/daily-fpr.component';
+import { DailyGmpComponent } from './register-entries/daily-gmp/daily-gmp.component';
+import { DailyLdrComponent } from './register-entries/daily-ldr/daily-ldr.component';
+import { immunizationTallyComponent } from './register-entries/daily-IRTS/ImmunizationTally/immunizationTally.component';
+import { ChildImmunizationComponent } from './register-entries/daily-IRTS/child-immunization/child-immunization.component';
+import { HfmrecordsComponent } from './register-entries/daily-IRTS/hfmrecords/hfmrecords.component';
+import { ImmunizationSummaryComponent } from './register-entries/daily-IRTS/immunization-summary/immunization-summary.component';
+import { InfoSystemRegisterComponent } from './register-entries/daily-IRTS/info-system-register/info-system-register.component';
+
 
 const routes: Routes = [
   { path: '', redirectTo: 'list' },
@@ -14,7 +24,16 @@ const routes: Routes = [
   { path: 'entry-detail', component: RegisterEntryComponent },
   // { path: 'new-entry', component: NewRegisterComponent },
   { path: 'antenatal', component: DailyAntenatalComponent },
-  { path: 'opd', component: DailyOpdComponent }
+  { path: 'opd', component: DailyOpdComponent },
+  { path: 'fpr', component: DailyFprComponent },
+
+  { path: 'gmp', component: DailyGmpComponent },
+  { path: 'ldr', component: DailyLdrComponent },
+  { path: 'immunizationTally', component: immunizationTallyComponent },
+  { path: 'child-immunization', component: ChildImmunizationComponent},
+  { path: 'health-facility-records', component: HfmrecordsComponent},
+  { path: 'immunization-summary', component: ImmunizationSummaryComponent},
+  { path: 'info-system-register', component: InfoSystemRegisterComponent}
 ];
 
 @NgModule({

@@ -136,7 +136,6 @@ export class InitializeStoreComponent implements OnInit {
             },
           }
         }).then(payload => {
-          console.log(payload);
           this.systemModuleService.off();
           this.products = payload.data;
         }, err => {
@@ -261,7 +260,6 @@ export class InitializeStoreComponent implements OnInit {
     this._productService.findProductConfigs({ query: { facilityId: this.selectedFacility._id, storeId: this.checkingObject.storeId } }).then(payload => {
       this.systemModuleService.off();
       this.products = payload.data;
-      console.log(this.products);
     }, err => {
     });
   }

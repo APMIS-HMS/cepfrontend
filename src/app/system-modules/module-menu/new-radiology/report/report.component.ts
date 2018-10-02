@@ -57,6 +57,10 @@ export class ReportComponent implements OnInit, OnDestroy {
   docAction = true;
   diagnosisAction = true;
   report_view = false;
+<<<<<<< HEAD
+=======
+  report_new = false;
+>>>>>>> 88044b56cfd5d19337a6cb5b08ed012780e8e0e1
   repDetail_view = false;
   activeInvestigationNo: number = -1;
   referenceValue: any = [];
@@ -468,6 +472,7 @@ export class ReportComponent implements OnInit, OnDestroy {
     }
   }
 
+<<<<<<< HEAD
   onFileChange(event) {
     let reader = new FileReader();
     if (event.target.files && event.target.files.length > 0) {
@@ -503,6 +508,9 @@ export class ReportComponent implements OnInit, OnDestroy {
       }
     }
   }
+=======
+  onFileChange(event) {}
+>>>>>>> 88044b56cfd5d19337a6cb5b08ed012780e8e0e1
 
   onChange(e) {
 
@@ -826,10 +834,24 @@ export class ReportComponent implements OnInit, OnDestroy {
   close_onClick(message: Boolean): void {
     this.repDetail_view = false;
     this.importTemplate = false;
+<<<<<<< HEAD
   }
 
   report_show() {
     this.report_view = !this.report_view;
+=======
+    this.report_view = false;
+    this.report_new = false;
+  }
+
+  report_show() {
+    this.report_view = true;
+    this.report_new = false;
+  }
+  report_new_click() {
+    this.report_view = false;
+    this.report_new = true;
+>>>>>>> 88044b56cfd5d19337a6cb5b08ed012780e8e0e1
   }
   openSearch() {
     this.searchOpen = !this.searchOpen;

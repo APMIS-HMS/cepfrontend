@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-register-entries',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class RegisterEntriesComponent implements OnInit {
 
-  constructor() { }
+  constructor( private _router: Router) { }
 
   ngOnInit() {
   }
 
+  back_registers() {
+    this._router.navigate(['/dashboard/reports/register']);
+  }
 }
