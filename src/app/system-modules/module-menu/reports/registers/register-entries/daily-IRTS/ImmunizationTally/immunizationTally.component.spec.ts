@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FprPg2Component } from './fpr-pg2.component';
+import { immunizationTallyComponent } from './immunizationTally.component';
 
-describe('FprPg2Component', () => {
-  let component: FprPg2Component;
-  let fixture: ComponentFixture<FprPg2Component>;
+describe('immunizationTallyComponent', () => {
+  let component: immunizationTallyComponent;
+  let fixture: ComponentFixture<immunizationTallyComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ FprPg2Component ]
+      declarations: [ immunizationTallyComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(FprPg2Component);
+    fixture = TestBed.createComponent(immunizationTallyComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

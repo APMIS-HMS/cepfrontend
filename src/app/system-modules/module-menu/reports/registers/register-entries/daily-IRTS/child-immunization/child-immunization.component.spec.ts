@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IrtsPg1Component } from './irts-pg1.component';
+import { ChildImmunizationComponent } from './child-immunization.component';
 
-describe('IrtsPg1Component', () => {
-  let component: IrtsPg1Component;
-  let fixture: ComponentFixture<IrtsPg1Component>;
+describe('ChildImmunizationComponent', () => {
+  let component: ChildImmunizationComponent;
+  let fixture: ComponentFixture<ChildImmunizationComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ IrtsPg1Component ]
+      declarations: [ ChildImmunizationComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IrtsPg1Component);
+    fixture = TestBed.createComponent(ChildImmunizationComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
