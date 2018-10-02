@@ -57,6 +57,7 @@ export class ReportComponent implements OnInit, OnDestroy {
   docAction = true;
   diagnosisAction = true;
   report_view = false;
+  report_new = false;
   repDetail_view = false;
   activeInvestigationNo: number = -1;
   referenceValue: any = [];
@@ -793,10 +794,16 @@ export class ReportComponent implements OnInit, OnDestroy {
     this.repDetail_view = false;
     this.importTemplate = false;
     this.report_view = false;
+    this.report_new = false;
   }
 
   report_show() {
     this.report_view = true;
+    this.report_new = false;
+  }
+  report_new_click() {
+    this.report_view = false;
+    this.report_new = true;
   }
   openSearch() {
     this.searchOpen = !this.searchOpen;

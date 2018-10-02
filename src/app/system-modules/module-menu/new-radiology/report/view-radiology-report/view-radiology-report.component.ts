@@ -7,6 +7,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 })
 export class ViewRadiologyReportComponent implements OnInit {
 
+
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() { }

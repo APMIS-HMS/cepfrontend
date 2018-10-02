@@ -25,6 +25,7 @@ import { RadiologyRequestsComponent } from './radiology-requests/radiology-reque
 // tslint:disable-next-line:max-line-length
 import { NewRadiologyRequestDetailComponent } from 'app/system-modules/module-menu/new-radiology/radiology-requests/request-detail/request-detail.component';
 import { ViewRadiologyReportComponent } from './report/view-radiology-report/view-radiology-report.component';
+import { NewRadiologyReportComponent } from './report/new-radiology-report/new-radiology-report.component';
 @NgModule({
   imports: [
     // CommonModule,
@@ -35,7 +36,7 @@ import { ViewRadiologyReportComponent } from './report/view-radiology-report/vie
   ],
   declarations: [RadiologyComponent, RadiologyRequestsComponent, WorkbenchComponent, InvestigationServiceComponent,
     InvestigationPriceComponent, PanelComponent, ReportComponent, ReportDetailComponent,
-    ExternalInvestigationsComponent, TemplateComponent, SelectTemplateComponent, NewRadiologyRequestDetailComponent, ViewRadiologyReportComponent],
+    ExternalInvestigationsComponent, TemplateComponent, SelectTemplateComponent, NewRadiologyRequestDetailComponent, ViewRadiologyReportComponent, NewRadiologyReportComponent],
   providers: [
     LaboratoryRequestService, WorkbenchService, ScopeLevelService, HmoService,
     FacilityFamilyCoverService, FacilityCompanyCoverService, LabEventEmitterService ]
