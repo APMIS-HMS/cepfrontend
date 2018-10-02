@@ -18,6 +18,8 @@ export class InventoryService {
 
   private discountAnnouncedSource = new Subject<Object>();
   discountAnnounced$ = this.discountAnnouncedSource.asObservable();
+    private _mrest: any;
+
 
   constructor(
     private _socketService: SocketService,
@@ -27,9 +29,12 @@ export class InventoryService {
     this._socket = _socketService.getService('inventories');
     this._socketList = _socketService.getService('list-of-inventories');
     this._msocket = _socketService.getService('inventory-summary-counts');
+
+    this._mrest = _restService.getService('inventory-summary-counts');
     this._socket.timeout = 50000;
     this._socket.timeout = 50000;
     this._socketList.timeout = 50000;
+    this._msocket.timeout  = 60000;
     this.createlistner = Observable.fromEvent(this._socket, 'created');
     this.updatelistner = Observable.fromEvent(this._socket, 'updated');
     this.deletedlistner = Observable.fromEvent(this._socket, 'deleted');

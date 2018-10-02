@@ -40,7 +40,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
     storeStatusLabel: IStoreSummaryItem[] = []
 
     subscription: ISubscription;
-    private showDialog: boolean  = false;
+    private showDialog: boolean = false;
     private selectedItem: IStoreSummaryItem;
 
     constructor(
@@ -137,11 +137,14 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
 
     getInventoryBriefStatus() {
         console.log(this.checkingStore);
-        this._inventoryService.getInventoryBriefStatus(this.checkingStore.storeId, {})
-            .then(payload => {
-                this.transformStoreSummaryData(payload);
-                console.log("STORE SUMMARY", this.storeStatusLabel);
-            });
+        //inventory-summary-counts/numberOfDays?storeId=5b0282ad3d853313d0cb3217
+        this._inventoryService.getInventoryBriefStatus("30", {
+           query : {storeId: this.checkingStore.storeId }
+        }).then(payload => {
+            console.log(payload)
+            // this.transformStoreSummaryData(payload);
+            console.log("STORE SUMMARY", this.storeStatusLabel);
+        });
     }
 
     private transformStoreSummaryData(payload) {
@@ -149,34 +152,34 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
             {
                 key: "Total Items",
                 value: this.inventoryCount,
-                tag : "total-items",
-                tagColor : '#4fdc28'
+                tag: "total-items",
+                tagColor: '#4fdc28'
 
 
             },
             {
                 key: "Expired Items",
                 value: payload.data.expired,
-                tag : "expired-items",
-                tagColor : '#a362ff'
+                tag: "expired-items",
+                tagColor: '#a362ff'
             },
             {
                 key: "About to Expire",
                 value: payload.data.about_to_expire,
-                tag : "about-to-expire",
-                tagColor : '#ff58b0'
+                tag: "about-to-expire",
+                tagColor: '#ff58b0'
             },
             {
                 key: "Require Reorder",
                 value: payload.data.near_reorder_level,
-                tag : "require-reorder",
-                tagColor : '#ffa43f'
+                tag: "require-reorder",
+                tagColor: '#ffa43f'
             },
             {
                 key: "Out Of Stock",
                 value: payload.data.past_reorder_level,
-                tag : "out-of-stock",
-                tagColor : '#ea2425'
+                tag: "out-of-stock",
+                tagColor: '#ea2425'
 
             },
         ]; //  payload.data;
@@ -311,7 +314,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
 
     logCurrentSelectedItem(item: IStoreSummaryItem) {
         console.log(item);
-        this.selectedItem  = item;
-        this.showDialog =true;
+        this.selectedItem = item;
+        this.showDialog = true;
     }
 }
