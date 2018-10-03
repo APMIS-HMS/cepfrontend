@@ -27,4 +27,6 @@ close_onClick() {
   this.closeModal.emit(true);
 }
 
+next_onClick() {}
+
 }

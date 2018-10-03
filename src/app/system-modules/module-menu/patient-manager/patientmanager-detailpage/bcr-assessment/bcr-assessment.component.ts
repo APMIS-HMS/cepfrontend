@@ -1,15 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 @Component({
-  selector: 'app-bcr-assessment',
-  templateUrl: './bcr-assessment.component.html',
-  styleUrls: ['./bcr-assessment.component.scss', '../../../payment/bill-lookup/bill-lookup.component.scss']
+	selector: 'app-bcr-assessment',
+	templateUrl: './bcr-assessment.component.html',
+	styleUrls: [
+		'./bcr-assessment.component.scss',
+		'../../../payment/bill-lookup/bill-lookup.component.scss',
+	],
 })
 export class BcrAssessmentComponent implements OnInit {
   bcrFormGroup: FormGroup;
-  averageRisk: boolean = false;
-  potentialHighRisk: boolean = false;
-  knownHighRisk: boolean = false;
+  averageRisk = false;
+  potentialHighRisk = false;
+  knownHighRisk = false;
+  patient: any;
+  selectedDocument: any;
+  docDetail_view = false;
+  addProblem_view = false;
+  addAllergy_view = false;
+  addHistory_view = false;
+  addVitals_view = false;
 
   constructor(
     private _fb: FormBuilder
@@ -94,4 +104,13 @@ export class BcrAssessmentComponent implements OnInit {
     }
   }
 
+	addProblem_show(event) {}
+
+	addHistory_show(event) {}
+
+	addVitals_show(event) {}
+
+  addAllergy_show(event) {}
+
+	close_onClick(event) {}
 }
