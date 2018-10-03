@@ -27,6 +27,7 @@ import {
 import { SwalComponent } from "@toverux/ngx-sweetalert2";
 import swal from "sweetalert2";
 import { ImageEmitterService } from '../../../../services/facility-manager/image-emitter.service';
+import { ImageUploadService } from '../../../../services/facility-manager/setup';
 
 @Component({
   selector: "app-facility-basicinfo-edit",
@@ -54,6 +55,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
     recentStorageName: "componentData3"
   };
   showClose = true;
+  selectedImageObject: any = <any>{};
   base64Image: String;
   hasChangedImage: Boolean = false;
   disableImageBtn: Boolean = false;
@@ -62,6 +64,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
 
   constructor(
     private imageEmitterService: ImageEmitterService,
+    private _imageUploadService: ImageUploadService,
     private formBuilder: FormBuilder,
     private countryService: CountryServiceFacadeService,
     private facilityTypeService: FacilityTypeFacilityClassFacadeService,
@@ -192,13 +195,10 @@ export class FacilityBasicinfoEditComponent implements OnInit {
   }
 
   onClickChangeImage(fileName, fileList) {
-    console.log(fileName);
-    console.log(fileList);
-    // this.personalInfoModel.profileImage = fileList;
+    console.log({ fileName, fileList });
+    this.selectedImageObject = fileList[0];
     const reader = new FileReader();
-    // const imageHolder = document.getElementById('imagePlaceholder');
     reader.onload = (e: any) => {
-      console.log('Src ', e.target);
       this.base64Image = e.target.result;
       this.imageEmitterService.setImageUrl(e.target.result);
     };
@@ -211,17 +211,25 @@ export class FacilityBasicinfoEditComponent implements OnInit {
 
   onClickUploadLogo() {
     const payload = {
-      container: 'logo',
+      container: 'logocontainer',
       base64: this.base64Image,
-      facilityId: this.selectedFacility._id
+      facilityId: this.selectedFacility._id,
+	    uploadType: 'Logo upload',
+	    docName: 'Facility Image Upload',
+	    id: this.selectedFacility._id, //facilityId or patientId or personId
+	    docType: 'Facility image upload',
+      mimeType: this.selectedImageObject.type
     };
 
     console.log('Payload', payload);
     // Make a request to the server to save image
+    this._imageUploadService.createImageFacade(payload).then(res => {
+      console.log(res);
+    });
     // If image wsa saved successfully, emit an event to change all images
-    this.disableImageBtn = true;
-    this.saveImageBtn = false;
-    this.savingImageBtn = true;
+    // this.disableImageBtn = true;
+    // this.saveImageBtn = false;
+    // this.savingImageBtn = true;
   }
 
   _getFacilityOwnerships() {
