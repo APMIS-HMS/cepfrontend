@@ -12,6 +12,7 @@ import { MaterialModule } from '../../shared-common-modules/material-module';
 import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
 import { OnlyMaterialModule } from '../../shared-common-modules/only-material-module';
 import { MessagingComponent } from '../../messaging/messaging.component';
+
 @NgModule({
     declarations: [
         DashboardComponent,
@@ -27,8 +28,7 @@ import { MessagingComponent } from '../../messaging/messaging.component';
         LoadingBarHttpModule,
         Routing
     ],
-    providers: [
-    ]
+    providers: [ ]
 })
 export class DashboardModule { }
 
