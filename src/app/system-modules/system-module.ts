@@ -15,7 +15,7 @@ import { ChangePasswordComponent } from './module-menu/change-password/change-pa
   exports: [
   ],
   imports: [],
-  providers: []
+  providers: [ ]
 })
 export class SystemModule { }
 
