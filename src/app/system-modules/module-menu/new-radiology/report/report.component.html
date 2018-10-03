@@ -39,7 +39,7 @@
                     <div class="tag n-report">No Report</div>
                 </td>
                 <td>
-                    <div class="td-cta">
+                    <div (click)="report_new_click()" class="td-cta">
                         <i class="fa fa-plus"></i> Write Report
                     </div>
                 </td>
@@ -76,7 +76,7 @@
                     <div class="td-cta">
                         <i class="fa fa-trash"></i> Delete Report
                     </div>
-                    <div class="td-cta">
+                    <div (click)="report_new_click()" class="td-cta">
                         <i class="fa fa-pencil"></i> Edit Report
                     </div>
                 </td>
@@ -107,7 +107,7 @@
                     <div class="tag p-report">Published</div>
                 </td>
                 <td>
-                    <div class="td-cta">
+                    <div (click)="report_show()" class="td-cta">
                         <i class="fa fa-ellipsis-h"></i> View Report
                     </div>
                 </td>
@@ -144,7 +144,7 @@
                     <div class="td-cta">
                         <i class="fa fa-trash"></i> Delete Report
                     </div>
-                    <div class="td-cta">
+                    <div (click)="report_new_click()" class="td-cta">
                         <i class="fa fa-pencil"></i> Edit Report
                     </div>
                 </td>
@@ -153,8 +153,11 @@
     </table>
 </div>
 
-<div *ngIf="repDetail_view" class="modal-overlay">
-    <app-report-detail (closeModal)="close_onClick($event)" [selectedInvestigationData]="selectedInvestigationData" id="form-modal" class="form-modal center-center"></app-report-detail>
+<div *ngIf="report_view" class="view-report-wrap animated slideInRight"> 
+    <app-view-radiology-report (closeModal)="close_onClick($event)" id="form-modal"></app-view-radiology-report>
+</div>
+<div *ngIf="report_new" class="view-report-wrap animated slideInRight"> 
+    <app-new-radiology-report (closeModal)="close_onClick($event)" id="form-modal"></app-new-radiology-report>
 </div>
 <div *ngIf="importTemplate" class="modal-overlay">
     <app-select-template (closeModal)="close_onClick($event)" (template)="onClickTemplate($event);" id="form-modal" class="form-modal center-center"></app-select-template>

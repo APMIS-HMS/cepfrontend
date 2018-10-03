@@ -18,7 +18,7 @@ export class OpdPg1Component implements OnInit {
   ngOnInit() {
   }
 
-  back_registers(){
+  back_registers() {
     this._router.navigate(['/dashboard/reports/register']);
   }
   switcher_onClick() {
