@@ -56,6 +56,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   menuFluid = false;
   menuRegisters = false;
   menuVitals = false;
+  menuBCRAssessment = false;
 
   contentSecMenuShow = false;
   modal_on = false;
@@ -910,6 +911,34 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuPayment = false;
     this.menuTags = false;
     this.menuResp = false;
+  }
+  
+  menuBCRAssessment_click() { 
+    this.menuSummary = false;
+    this.menuPharmacy = false;
+    this.menuBilling = false;
+    this.menuTreatmentPlan = false;
+    this.menuUploads = false;
+    this.menuImaging = false;
+    this.menuImmunization = false;
+    this.menuLab = false;
+    this.menuForms = false;
+    this.menuUploads = false;
+    this.menuDocs = false;
+    this.menuPregnant = false;
+    this.menuOrder = false;
+    this.menuFluid = false;
+    this.menuRegisters = false;
+    this.menuVitals = false;
+    this.menuTimeline = false;
+    this.menuPrescription = false;
+    this.menuExternalPrescription = false;
+    this.menuFinance = false;
+    this.menuMedicationHistory = false;
+    this.menuPayment = false;
+    this.menuTags = false;
+    this.menuResp = false;
+    this.menuBCRAssessment = true;
   }
 
   subsect_biodata_click() {
