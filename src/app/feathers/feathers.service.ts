@@ -14,7 +14,6 @@ const CircularJSON = require('circular-json');
 
 const HOST = API_LOCALHOST;
 
-
 @Injectable()
 export class SocketService {
   public socket: any;
