@@ -4,7 +4,7 @@ import {Router} from '@angular/router';
 @Component({
   selector: 'app-ldr-list',
   templateUrl: './ldr-list.component.html',
-  styleUrls: ['./ldr-list.component.scss', '../../../../nhmis-summary/nhmis-summary.component.scss', '../../register-entry/register-entry.component.scss']
+  styleUrls: ['./ldr-list.component.scss']
 })
 export class LdrListComponent implements OnInit {
 
