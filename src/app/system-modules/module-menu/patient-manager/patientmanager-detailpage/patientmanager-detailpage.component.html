@@ -104,7 +104,8 @@
             <div class="menu-sect">
                 <div (click)="menuLab_click()" [class.active-menuItem]="menuLab" class="menu-item">Laboratory</div>
                 <div (click)="menuImaging_click()" [class.active-menuItem]="menuImaging" class="menu-item">Imaging</div>
-                <div (click)="menuImmunization_click()" [class.active-menuItem]="menuImmunization" class="menu-item">Immunization</div>
+                <div (click)="menuImmunization_click()" [class.active-menuItem]="menuImmunization" class="menu-item">Immunization</div>                
+                <div (click)="menuBCRAssessment_click()" [class.active-menuItem]="menuBCRAssessment" class="menu-item">Breast Cancer Risk Assessment </div>
             </div>
             <div class="menu-sect">
                 <div (click)="menuPrescriptions_click()" [class.active-menuItem]="menuPrescriptions" class="menu-item">Prescribe Drug
@@ -171,6 +172,7 @@
         <app-payment [patient]="patient" *ngIf="menuPayment"></app-payment>
         <app-patient-tags *ngIf="menuTags"></app-patient-tags>
         <app-treatement-plan [patient]="patient" *ngIf="menuTreatmentPlan"></app-treatement-plan>
+        <app-bcr-assessment *ngIf="menuBCRAssessment"></app-bcr-assessment>
     </div>
 
     <div *ngIf="addVitalsPop" class="modal-overlay">
