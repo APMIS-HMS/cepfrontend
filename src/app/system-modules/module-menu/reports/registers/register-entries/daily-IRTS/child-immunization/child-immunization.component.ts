@@ -31,4 +31,6 @@ export class ChildImmunizationComponent implements OnInit {
   back_registers() {
     this._router.navigate(['/dashboard/reports/register']);
   }
+
+  setReturnValue(event) {}
 }
