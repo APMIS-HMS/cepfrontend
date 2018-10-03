@@ -14,7 +14,6 @@ import { immunizationTallyComponent } from './register-entries/daily-IRTS/Immuni
 import { ChildImmunizationComponent } from './register-entries/daily-IRTS/child-immunization/child-immunization.component';
 import { HfmrecordsComponent } from './register-entries/daily-IRTS/hfmrecords/hfmrecords.component';
 import { ImmunizationSummaryComponent } from './register-entries/daily-IRTS/immunization-summary/immunization-summary.component';
-import { InfoSystemRegisterComponent } from './register-entries/daily-IRTS/info-system-register/info-system-register.component';
 
 
 const routes: Routes = [
@@ -32,8 +31,7 @@ const routes: Routes = [
   { path: 'immunizationTally', component: immunizationTallyComponent },
   { path: 'child-immunization', component: ChildImmunizationComponent},
   { path: 'health-facility-records', component: HfmrecordsComponent},
-  { path: 'immunization-summary', component: ImmunizationSummaryComponent},
-  { path: 'info-system-register', component: InfoSystemRegisterComponent}
+  { path: 'immunization-summary', component: ImmunizationSummaryComponent}
 ];
 
 @NgModule({

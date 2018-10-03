@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
+import  {Router} from '@angular/router';
+
 
 @Component({
   selector: 'app-hfmrecords',
@@ -7,9 +9,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HfmrecordsComponent implements OnInit {
 
-  constructor() { }
+  @Output() switch: EventEmitter<number> = new EventEmitter<number>();
+  showNewEntry = false;
+  dateRange: any;
+  constructor(private _router: Router) { }
 
   ngOnInit() {
+  }
+
+  back_registers(){
+    this._router.navigate(['/dashboard/reports/register']);
+  }
+  newEntry(){
+    this.showNewEntry = true;
+  }
+  close_onClick(e){
+    this.showNewEntry = false;
   }
 
 }
