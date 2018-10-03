@@ -7,6 +7,9 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 })
 export class BcrAssessmentComponent implements OnInit {
   bcrFormGroup: FormGroup;
+  averageRisk: boolean = false;
+  potentialHighRisk: boolean = false;
+  knownHighRisk: boolean = false;
 
   constructor(
     private _fb: FormBuilder
@@ -14,8 +17,8 @@ export class BcrAssessmentComponent implements OnInit {
 
   ngOnInit() {
     this.bcrFormGroup = this._fb.group({
-      Asymptomatic: ['', Validators.required],
-      hivCounselling: ['', Validators.required],
+      asymptomatic: ['', Validators.required],
+      hivCounsellingTesting: ['', Validators.required],
       personalHistoryOfBreatCancer: ['', Validators.required],
       mammogram: ['', Validators.required],
       historyOfBreastImplant: ['', Validators.required],
@@ -33,6 +36,62 @@ export class BcrAssessmentComponent implements OnInit {
       previouslyAssessedAsHavingAGreaterLifetimeRiskOfBreastCancer: ['', Validators.required],
       receiveChestXRayBeforeAge30AndAtLeast8YrsPreviously: ['', Validators.required],
     });
+  }
+
+  onClickSubmitForm(valid: boolean, value: any) {
+    console.log({ valid, value });
+    const checkStatusOfPatient = this.checkBreatCancerRiskAssessmentOfPatient(value);
+    console.log('Check status', checkStatusOfPatient);
+    if (checkStatusOfPatient === 'Average Risk') {
+      this.averageRisk = true;
+      this.potentialHighRisk = false;
+      this.knownHighRisk = false;
+    } else if (checkStatusOfPatient === 'Known High Risk') {
+      this.averageRisk = false;
+      this.potentialHighRisk = false;
+      this.knownHighRisk = true;
+    } else if (checkStatusOfPatient === 'Potential High Risk') {
+      this.averageRisk = false;
+      this.potentialHighRisk = true;
+      this.knownHighRisk = false;
+    } else {
+      this.averageRisk = false;
+      this.potentialHighRisk = false;
+      this.knownHighRisk = false;
+    }
+  }
+
+  checkBreatCancerRiskAssessmentOfPatient(data: any) {
+    console.log(data);
+    if (
+      data.asymptomatic === '1' && data.hivCounsellingTesting === '0' &&
+      (
+        data.personalHistoryOfBreatCancer === '0' && data.mammogram === '0' && data.historyOfBreastImplant === '0'
+      )
+    ) {
+      return 'Average Risk';
+    } else if (
+      data.asymptomatic === '1' && data.hivCounsellingTesting === '1' &&
+      (
+        data.firstDegreeeHasGeneMutation === '1' || data.firstDegreeeHasGeneticCounsellingAndTesting === '1' ||
+        data.twoOrMoreCasesOfBreastCancerOrOvarianCancer === '1' || data.bilateralBreastCancer === '1' ||
+        data.bothBreastAndOvarianInTheSameWoman === '1' || data.seriousInvasiveSeriousOvarian === '1' ||
+        data.breastOrOvarianCancerInAshkenaziJewishFamily === '1' || data.indentifiedGeneMutationInAnyBloodRelative === '1' ||
+        data.maleBreastCancer === '1'
+      )
+    ) {
+      return 'Potential High Risk';
+    } else if (
+      data.asymptomatic === '1' && data.hivCounsellingTesting === '1' &&
+      (
+        data.knownCarrierOfAGeneMutation === '1' ||
+        data.firstDegreeHasHadGeneticCounsellingAndHasDeclinedTesting === '1' ||
+        data.previouslyAssessedAsHavingAGreaterLifetimeRiskOfBreastCancer === '1' ||
+        data.receiveChestXRayBeforeAge30AndAtLeast8YrsPreviously === '1'
+      )
+    ) {
+      return 'Known High Risk';
+    }
   }
 
 }
