@@ -1039,7 +1039,8 @@ export class ImmunizationAppointmentComponent implements OnInit {
           this.updateAppointment = true;
           this.systemModuleService.off();
           this.router.navigate(['/dashboard/clinic/appointment']);
-          this.systemModuleService.announceSweetProxy('Immunization Appointment set successfully', 'success');
+          // this.systemModuleService.announceSweetProxy('Immunization Appointment set successfully', 'success');
+          this.systemModuleService.announceSweetProxy('Batch Appointment set successfully', 'success');
         }, error => {
           console.dir(error);
           this.savingAppointment = false;
@@ -1163,7 +1164,8 @@ export class ImmunizationAppointmentComponent implements OnInit {
           this.saveAppointment = true;
           this.systemModuleService.off();
           this.router.navigate(['/dashboard/clinic/appointment']);
-          this.systemModuleService.announceSweetProxy('Immunization Appointment set successfully', 'success');
+          // this.systemModuleService.announceSweetProxy('Immunization Appointment set successfully', 'success');
+          this.systemModuleService.announceSweetProxy('Batch Appointment set successfully', 'success');
         }, error => {
           this.savingAppointment = false;
           this.disableBtn = false;
