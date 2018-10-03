@@ -3,14 +3,14 @@
   <div class="doc-contentArea">
     <div class="container con-cr">
       <div class="row c-body">
-        <div class="col-sm-auto">
-          <mat-form-field class="drop-width">
-            <mat-select placeholder="Asymptomatic">
-              <mat-option>None</mat-option>
-              <mat-option value="option1">Yes</mat-option>
-              <mat-option value="option3">No</mat-option>
-            </mat-select>
-          </mat-form-field>
+        <div class="col-sm-4">
+          <div>
+            <h3>Asymptomatic</h3>
+            <mat-radio-group>
+              <mat-radio-button value="1">Yes</mat-radio-button>
+              <mat-radio-button value="2">No</mat-radio-button>
+            </mat-radio-group>
+          </div>
           <div>
             <h3>HIV Counselling, Testing at L&D</h3>
             <mat-radio-group>
@@ -52,10 +52,11 @@
               <mat-radio-button value="1">Yes</mat-radio-button>
               <mat-radio-button value="2">No</mat-radio-button>
             </mat-radio-group>
-          </div>
-          <mat-form-field>
-            <textarea class="txtarea" matInput placeholder="Family History "></textarea>
-          </mat-form-field>
+          </div>          
+        </div>
+
+        <div class="col-sm-4">
+
           <div>
             <h3>2 or more cases of Breast Cancer and /or Ovarian Cancer</h3>
             <mat-radio-group>
@@ -70,9 +71,6 @@
               <mat-radio-button value="2">No</mat-radio-button>
             </mat-radio-group>
           </div>
-        </div>
-
-        <div class="col-sm-6 col-break">
           <div>
             <h3>Bilateral Breast Cancer</h3>
             <mat-radio-group>
@@ -109,6 +107,9 @@
               <mat-radio-button value="2">No</mat-radio-button>
             </mat-radio-group>
           </div>
+        </div>
+
+        <div class="col-sm-4">
           <div>
             <h3>Male Breast Cancer</h3>
             <mat-radio-group>
@@ -117,44 +118,64 @@
             </mat-radio-group>
           </div>
           <div>
-            <h3>Known Carrier of a Gene Mutuation (e.g BRCA1, BRCA2) </h3>
+            <h3>Known Carrier of a Gene
+              Mutuation (e.g BRCA1, BRCA2) </h3>
             <mat-radio-group>
               <mat-radio-button value="1">Yes</mat-radio-button>
               <mat-radio-button value="2">No</mat-radio-button>
             </mat-radio-group>
           </div>
           <div>
-            <h3>First Degree Relative has had genetic counseling and has declined testing</h3>
+            <h3>First Degree Relative has
+              had genetic counseling and has
+              declined testing</h3>
             <mat-radio-group>
               <mat-radio-button value="1">Yes</mat-radio-button>
               <mat-radio-button value="2">No</mat-radio-button>
             </mat-radio-group>
           </div>
           <div>
-            <h3>Preeviously Assessed as having a ≥ 25% lifetime risk of breast cancer on basis of family history</h3>
+            <h3>Preeviously Assessed as having a ≥
+              25% lifetime risk of breast cancer on
+              basis of family history</h3>
             <mat-radio-group>
               <mat-radio-button value="1">Yes</mat-radio-button>
               <mat-radio-button value="2">No</mat-radio-button>
             </mat-radio-group>
           </div>
           <div>
-            <h3>Recieved chest radiation(not X-ray) before age 30 and at least 8 yrs previously (treatment for
-              hodgkin's
-              lymphoma)</h3>
+            <h3>Recieved chest radiation(not X-ray)
+              before age 30 and at least 8 yrs previously
+              (treatment for hodgkin'slymphoma)</h3>
             <mat-radio-group>
               <mat-radio-button value="1">Yes</mat-radio-button>
               <mat-radio-button value="2">No</mat-radio-button>
             </mat-radio-group>
           </div>
-          <mat-form-field class="drop-width">
-            <mat-select placeholder="Classification of Risk">
-              <mat-option>None</mat-option>
-              <mat-option value="option1">Average Risk</mat-option>
-              <mat-option value="option3">Potential High Risk</mat-option>
-              <mat-option value="option3">Known High Risk</mat-option>
-            </mat-select>
-          </mat-form-field>
         </div>
+      </div>
+      <mat-form-field>
+          <textarea class="txtarea" matInput placeholder="Family History "></textarea>
+        </mat-form-field>
+      <br>
+      <h4>Classification of Risk</h4>
+      <div class="tbl-resp-wrap">
+        <table class="table">
+          <thead class="thead-light">
+            <tr class="th-r1">
+              <th>Average Risk</th>
+              <th>Potential High Risk</th>
+              <th>Known High Risk</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><i class="fa fa-times red"></i> </td>
+              <td><i class="fa fa-times red"></i> </td>
+              <td><i class="fa fa-check green"></i> </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
       <div class="col-xs-12 text-center">
         <div style="padding: 20px 10px;">
