@@ -21,7 +21,7 @@
 
             <div *ngFor="let item of listOfFacilities" (click)="popListing(item)" class="acc-listing">
                 <div class="listing-imgWrap">
-                    <img *ngIf="item.logoObject != undefined" [src]="facilityService.transform(item.logoObject?.thumbnail)">
+                    <img *ngIf="item.logoObject != undefined" [src]="item?.logoObject?.thumbnail">
                 </div>
                 <div class="listing-name">{{item.name}}</div>
                 <div class="listing-type">{{item.facilityTypeId}}</div>

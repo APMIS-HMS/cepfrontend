@@ -80,6 +80,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
     if (facility.isValidRegistration === undefined || facility.isValidRegistration === false) {
       this.showClose = false;
     }
+    console.log('Facility', this.selectedFacility);
     this._getCountries();
     this._getFacilityTypes();
     if (this.selectedFacility.isHDO) {
@@ -199,6 +200,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
     this.selectedImageObject = fileList[0];
     const reader = new FileReader();
     reader.onload = (e: any) => {
+      console.log(e.target);
       this.base64Image = e.target.result;
       this.imageEmitterService.setImageUrl(e.target.result);
     };
@@ -211,13 +213,14 @@ export class FacilityBasicinfoEditComponent implements OnInit {
 
   onClickUploadLogo() {
     const payload = {
-      container: 'logocontainer',
+      container: 'facilityfolders',
       base64: this.base64Image,
       facilityId: this.selectedFacility._id,
 	    uploadType: 'Logo upload',
-	    docName: 'Facility Image Upload',
-	    id: this.selectedFacility._id, //facilityId or patientId or personId
-	    docType: 'Facility image upload',
+      docName: this.selectedImageObject.name,
+      size: this.selectedImageObject.size,
+	    id: this.selectedFacility._id, // facilityId or patientId or personId
+	    docType: 'logo',
       mimeType: this.selectedImageObject.type
     };
 
@@ -225,11 +228,24 @@ export class FacilityBasicinfoEditComponent implements OnInit {
     // Make a request to the server to save image
     this._imageUploadService.createImageFacade(payload).then(res => {
       console.log(res);
+    }, err => {
+      console.log('First Error ', err);
+    }).catch(err => {
+      console.log('Error ', err);
     });
     // If image wsa saved successfully, emit an event to change all images
     // this.disableImageBtn = true;
     // this.saveImageBtn = false;
     // this.savingImageBtn = true;
+  }
+
+  onClickCancel() {
+    this.hasChangedImage = false;
+    if (!!this.selectedFacility.logoObject) {
+      this.imageEmitterService.setImageUrl(this.selectedFacility.logoObject.thumbnail);
+    } else {
+      this.imageEmitterService.setImageUrl('');
+    }
   }
 
   _getFacilityOwnerships() {

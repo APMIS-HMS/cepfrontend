@@ -20,6 +20,7 @@ export class ImageUploadService {
     this._rest = _restService.getService('image');
     this._socket = _socketService.getService('image');
     this._imageSocket = _socketService.getService('file-upload-facade');
+    this._imageSocket.timeout = 60000;
     // this._restLogin = _restService.getService('auth/local');
     // this.listner = Observable.fromEvent(this._socket, 'updated');
   }

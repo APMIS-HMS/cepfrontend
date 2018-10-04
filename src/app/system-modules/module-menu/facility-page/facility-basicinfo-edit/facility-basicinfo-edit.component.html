@@ -22,6 +22,7 @@
                     <input type="file" name="myfile" (change)="onClickChangeImage($event.target.name, $event.target.files);" accept="image/*" />
                 </div>
                 <div *ngIf="hasChangedImage">
+                    <button class="upload-btn" (click)="onClickCancel();">Cancel</button>
                     <button class="upload-btn" [disabled]="disableImageBtn" (click)="onClickUploadLogo();">
                         <span *ngIf="saveImageBtn">Save</span>
                         <span *ngIf="savingImageBtn">Saving... <i class="fa fa-spinner fa-spin"></i></span>
