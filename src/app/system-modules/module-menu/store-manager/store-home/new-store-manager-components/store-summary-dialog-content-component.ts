@@ -29,14 +29,14 @@ export class StoreSummaryDialogComponent implements OnInit {
     }
     watchForEscKeyPress(evt : KeyboardEvent)
     {
-       /* console.log(evt);
+       console.log(evt);
         if(evt.key === "esc")
         {
             alert(evt.keyCode);
         }
         else{
             alert(evt.key);
-        }*/
+        }
     }
     closeDialogClick()
     {

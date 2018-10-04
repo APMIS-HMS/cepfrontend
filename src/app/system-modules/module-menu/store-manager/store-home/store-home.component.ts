@@ -40,8 +40,8 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
     storeStatusLabel: IStoreSummaryItem[] = []
 
     subscription: ISubscription;
-    private showDialog: boolean  = false;
-    private selectedItem: IStoreSummaryItem;
+     showDialog: boolean = false;
+     selectedItem: IStoreSummaryItem;
 
     constructor(
         private _inventoryService: InventoryService,
@@ -136,21 +136,75 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
     }
 
     getInventoryBriefStatus() {
-        console.log(this.checkingStore);
+ 
+        //inventory-summary-counts/numberOfDays?storeId=5b0282ad3d853313d0cb3217
+        this._inventoryService.getInventoryBriefStatus("30", {
+            query: {storeId: this.checkingStore.storeId}
+        }).then(payload => {
+            console.log(payload)
+            this.transformStoreSummaryData(payload);
+            console.log("STORE SUMMARY", this.storeStatusLabel);
+
         this._inventoryService.getInventoryBriefStatus(this.checkingStore.storeId, {}).then(res => {
             console.log(res);
             // this.transformStoreSummaryData(res);
             // console.log("STORE SUMMARY", this.storeStatusLabel);
+
         });
     }
 
     private transformStoreSummaryData(payload) {
-        this.storeStatusLabel = [
-            {
-                key: "Total Items",
-                value: this.inventoryCount,
-                tag : "total-items",
-                tagColor : '#4fdc28'
+        if (payload.status === "success") {
+            // loop
+            payload.data.forEach(obj => {
+
+
+                this.storeStatusLabel.push(
+                    {
+                        key: obj.key,
+                        value: (obj.batches) ? obj.batches : obj.total,
+                        tag: obj.total ? "total-items" : "",
+                        tagColor: obj.hex, // '#4fdc28'
+                        relativeUrl: obj.url,
+                    }
+                )
+            });
+        }
+        // this.storeStatusLabel = [
+        //     {
+        //         key: "Total Items",
+        //         value: this.inventoryCount,
+        //         tag: "total-items",
+        //         tagColor: '#4fdc28'
+        //
+        //
+        //     },
+        //     {
+        //         key: "Expired Items",
+        //         value: payload.data.expired,
+        //         tag: "expired-items",
+        //         tagColor: '#a362ff'
+        //     },
+        //     {
+        //         key: "About to Expire",
+        //         value: payload.data.about_to_expire,
+        //         tag: "about-to-expire",
+        //         tagColor: '#ff58b0'
+        //     },
+        //     {
+        //         key: "Require Reorder",
+        //         value: payload.data.near_reorder_level,
+        //         tag: "require-reorder",
+        //         tagColor: '#ffa43f'
+        //     },
+        //     {
+        //         key: "Out Of Stock",
+        //         value: payload.data.past_reorder_level,
+        //         tag: "out-of-stock",
+        //         tagColor: '#ea2425'
+        //
+        //     },
+        // ]; //  payload.data;
 
 
             },
@@ -180,6 +234,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
 
             },
         ]; //  payload.data;
+
 
     }
 
@@ -312,8 +367,18 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
 
     logCurrentSelectedItem(item: IStoreSummaryItem) {
         console.log(item);
-        this.selectedItem  = item;
-        this.showDialog =true;
+        this.selectedItem = item;
+        this.showDialog = true;
+        if(item.tag === "total-items")
+        {
+            this._inventoryService.getInventoryCountDetails(this.checkingStore.storeId)
+                .then((response) => {
+                    alert("Check the console for response object");
+                   console.log(response);
+                });
+        }
+
+
     }
     private getPropFromArray(data: any, prop): any {
         const result = data.map(a => a[prop]);
