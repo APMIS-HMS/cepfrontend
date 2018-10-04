@@ -138,66 +138,36 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
     getInventoryBriefStatus() {
         console.log(this.checkingStore);
         //inventory-summary-counts/numberOfDays?storeId=5b0282ad3d853313d0cb3217
-        this._inventoryService.getInventoryBriefStatus("30", {
+        this._inventoryService.getInventoryBriefStatus(60, {
             query: {storeId: this.checkingStore.storeId}
         }).then(payload => {
-            console.log(payload)
+
             this.transformStoreSummaryData(payload);
-            console.log("STORE SUMMARY", this.storeStatusLabel);
+
         });
     }
 
     private transformStoreSummaryData(payload) {
+        console.log(payload);
         if (payload.status === "success") {
-            // loop
-            payload.data.forEach(obj => {
 
-                this.storeStatusLabel.push(
-                    {
-                        key: obj.key,
-                        value: (obj.batches) ? obj.batches : obj.total,
-                        tag: obj.total ? "total-items" : "",
-                        tagColor: obj.hex, // '#4fdc28'
-                        relativeUrl: obj.url,
-                    }
-                )
+          this.storeStatusLabel  =  payload.data.map( (x : any) => {
+              console.log(x);
+                return {
+                     key : x.key,
+                    values : x.values,
+                    value : x.values[0].value,
+                    tagColor : x.hex,
+                    query : x.query,
+                    relativeUrl :  x.url,
+                    method : x.method,
+                    getId : x.getId,
+
+                };
             });
+
         }
-        // this.storeStatusLabel = [
-        //     {
-        //         key: "Total Items",
-        //         value: this.inventoryCount,
-        //         tag: "total-items",
-        //         tagColor: '#4fdc28'
-        //
-        //
-        //     },
-        //     {
-        //         key: "Expired Items",
-        //         value: payload.data.expired,
-        //         tag: "expired-items",
-        //         tagColor: '#a362ff'
-        //     },
-        //     {
-        //         key: "About to Expire",
-        //         value: payload.data.about_to_expire,
-        //         tag: "about-to-expire",
-        //         tagColor: '#ff58b0'
-        //     },
-        //     {
-        //         key: "Require Reorder",
-        //         value: payload.data.near_reorder_level,
-        //         tag: "require-reorder",
-        //         tagColor: '#ffa43f'
-        //     },
-        //     {
-        //         key: "Out Of Stock",
-        //         value: payload.data.past_reorder_level,
-        //         tag: "out-of-stock",
-        //         tagColor: '#ea2425'
-        //
-        //     },
-        // ]; //  payload.data;
+
     }
 
     getInventories() {
@@ -328,17 +298,27 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
     }
 
     logCurrentSelectedItem(item: IStoreSummaryItem) {
+
+        if(item.query.accessToken)
+            delete(item.query.accessToken);
         console.log(item);
         this.selectedItem = item;
         this.showDialog = true;
-        if(item.tag === "total-items")
+        try
         {
-            this._inventoryService.getInventoryCountDetails(this.checkingStore.storeId)
-                .then((response) => {
-                    alert("Check the console for response object");
-                   console.log(response);
+            // Dynamically call the endpoint
+            this._inventoryService.createDynamicFeatherServiceEndpoint(
+                item.relativeUrl,item.method,item.query,item.method==="get" ? item.getId :1)
+                .then(response => {
+                    console.log("DYNAMIC ENDPOINT GENERATED" , response);
                 });
+
         }
+        catch( err ) {
+            console.log(err);
+        }
+
+
 
 
     }

@@ -12,7 +12,7 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
             width : 750px !important;
         }
         divi.dialog-container {
-            min-height: 350px;
+            min-height: 450px;
             box-shadow: 2px 4px 10px rgba(58, 58, 58, 0.99) !important;
         }
     `]
