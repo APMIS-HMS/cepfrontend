@@ -214,7 +214,8 @@ export class FacilityBasicinfoEditComponent implements OnInit {
   onClickUploadLogo() {
     const payload = {
       container: 'facilityfolders',
-      base64: this.base64Image,
+      base64: this.selectedImageObject,
+      // base64: this.base64Image,
       facilityId: this.selectedFacility._id,
 	    uploadType: 'Logo upload',
       docName: this.selectedImageObject.name,
