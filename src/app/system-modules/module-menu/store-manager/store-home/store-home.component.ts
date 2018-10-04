@@ -301,7 +301,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
 
         if(item.query.accessToken)
             delete(item.query.accessToken);
-        console.log(item);
+       // console.log(item);
         this.selectedItem = item;
         this.showDialog = true;
         try
