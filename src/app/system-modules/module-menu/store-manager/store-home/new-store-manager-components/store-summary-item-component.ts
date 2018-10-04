@@ -7,10 +7,15 @@ import {IStoreSummaryItem} from './store-summary-model';
         <div class="item-color-bar" [ngStyle]="{'background-color':item?.tagColor || '#dbdbdb'}"></div>
         <div  class="store-item">
             <span class="item-key">{{item?.key || '' }}</span>
-            <p class="item-value"  (click)="itemDetailsClick($event)"
-               [style.color]="item?.tagColor || 'grey'">{{item?.value }}</p>
+            
+                <p class="item-value" *ngIf="item?.key && item?.value > 0 ; else templRef"  (click)="itemDetailsClick($event)"
+                   [style.color]="item?.tagColor || 'grey'">{{item?.value }}</p>
             <span class="details" (click)="itemDetailsClick($event)" *ngIf="item?.key && item?.value >0">See Details...</span>
-        </div>
+        </div> 
+        <ng-template #templRef>
+            <p class="item-value"
+               [style.color]="item?.tagColor || 'grey'">{{item?.value }}</p>
+        </ng-template>
     `,
     styles : [
         `
@@ -21,7 +26,7 @@ import {IStoreSummaryItem} from './store-summary-model';
             }
 
             p.item-value {
-                font-size: 28px;
+                font-size: 26px;
                 margin: 2px;
                 cursor: pointer;
             }
@@ -32,7 +37,7 @@ import {IStoreSummaryItem} from './store-summary-model';
 
             div.item-color-bar {
                 height: 5px;
-                min-width: 200px;
+                min-width: 120px;
             }
 
             div.store-ipatem:focus, div.store-item:hover {
@@ -46,8 +51,8 @@ import {IStoreSummaryItem} from './store-summary-model';
                 display: flex;
                 flex-direction: column;
                 justify-content: center;
-                min-height: 90px;
-                min-width: 50px;
+                min-height: 70px;
+                min-width: 120px;
                 align-items: center;
                 background-color: white;
                 box-shadow: 1px 2px 9px rgba(79, 79, 79, 0.27);
