@@ -22,5 +22,6 @@ export class InavailabilityComponent implements OnInit {
   close_onClick() {
     this.closeModal.emit(true);
   }
+  inavailability_click(){}
   setReturnValue(e) {}
 }

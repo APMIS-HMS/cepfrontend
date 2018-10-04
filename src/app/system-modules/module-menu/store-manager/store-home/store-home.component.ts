@@ -136,7 +136,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
     }
 
     getInventoryBriefStatus() {
-        console.log(this.checkingStore);
+ 
         //inventory-summary-counts/numberOfDays?storeId=5b0282ad3d853313d0cb3217
         this._inventoryService.getInventoryBriefStatus("30", {
             query: {storeId: this.checkingStore.storeId}
@@ -144,6 +144,12 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
             console.log(payload)
             this.transformStoreSummaryData(payload);
             console.log("STORE SUMMARY", this.storeStatusLabel);
+
+        this._inventoryService.getInventoryBriefStatus(this.checkingStore.storeId, {}).then(res => {
+            console.log(res);
+            // this.transformStoreSummaryData(res);
+            // console.log("STORE SUMMARY", this.storeStatusLabel);
+
         });
     }
 
@@ -151,6 +157,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
         if (payload.status === "success") {
             // loop
             payload.data.forEach(obj => {
+
 
                 this.storeStatusLabel.push(
                     {
@@ -198,6 +205,37 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
         //
         //     },
         // ]; //  payload.data;
+
+
+            },
+            {
+                key: "Expired Items",
+                value: payload.data.expired,
+                tag : "expired-items",
+                tagColor : '#a362ff'
+            },
+            {
+                key: "About to Expire",
+                value: payload.data.about_to_expire,
+                tag : "about-to-expire",
+                tagColor : '#ff58b0'
+            },
+            {
+                key: "Require Reorder",
+                value: payload.data.near_reorder_level,
+                tag : "require-reorder",
+                tagColor : '#ffa43f'
+            },
+            {
+                key: "Out Of Stock",
+                value: payload.data.past_reorder_level,
+                tag : "out-of-stock",
+                tagColor : '#ea2425'
+
+            },
+        ]; //  payload.data;
+
+
     }
 
     getInventories() {
@@ -341,5 +379,9 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
         }
 
 
+    }
+    private getPropFromArray(data: any, prop): any {
+        const result = data.map(a => a[prop]);
+        return result;
     }
 }
