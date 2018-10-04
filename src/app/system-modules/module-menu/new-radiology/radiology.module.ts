@@ -26,6 +26,7 @@ import { RadiologyRequestsComponent } from './radiology-requests/radiology-reque
 import { NewRadiologyRequestDetailComponent } from 'app/system-modules/module-menu/new-radiology/radiology-requests/request-detail/request-detail.component';
 import { ViewRadiologyReportComponent } from './report/view-radiology-report/view-radiology-report.component';
 import { NewRadiologyReportComponent } from './report/new-radiology-report/new-radiology-report.component';
+import { ViewRadiologyImagesComponent } from './report/view-radiology-images/view-radiology-images.component';
 @NgModule({
   imports: [
     // CommonModule,
@@ -36,7 +37,7 @@ import { NewRadiologyReportComponent } from './report/new-radiology-report/new-r
   ],
   declarations: [RadiologyComponent, RadiologyRequestsComponent, WorkbenchComponent, InvestigationServiceComponent,
     InvestigationPriceComponent, PanelComponent, ReportComponent, ReportDetailComponent,
-    ExternalInvestigationsComponent, TemplateComponent, SelectTemplateComponent, NewRadiologyRequestDetailComponent, ViewRadiologyReportComponent, NewRadiologyReportComponent],
+    ExternalInvestigationsComponent, TemplateComponent, SelectTemplateComponent, NewRadiologyRequestDetailComponent, ViewRadiologyReportComponent, NewRadiologyReportComponent, ViewRadiologyImagesComponent],
   providers: [
     LaboratoryRequestService, WorkbenchService, ScopeLevelService, HmoService,
     FacilityFamilyCoverService, FacilityCompanyCoverService, LabEventEmitterService ]
