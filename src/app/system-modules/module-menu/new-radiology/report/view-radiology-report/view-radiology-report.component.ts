@@ -9,6 +9,7 @@ export class ViewRadiologyReportComponent implements OnInit {
 
 
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() viewImgs: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() { }
 
@@ -17,6 +18,9 @@ export class ViewRadiologyReportComponent implements OnInit {
 
   close_onClick() {
     this.closeModal.emit(true);
+  }
+  imgs_show(){
+    this.viewImgs.emit(true);
   }
 
 }

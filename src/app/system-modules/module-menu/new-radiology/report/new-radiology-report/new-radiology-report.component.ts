@@ -9,7 +9,8 @@ import { FormControl } from '@angular/forms';
 export class NewRadiologyReportComponent implements OnInit {
 
   selectTemplate = new FormControl();
-  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output() closeModal: EventEmitter<number> = new EventEmitter<number>();
+  @Output() viewImgs: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   constructor() { }
 
@@ -17,7 +18,10 @@ export class NewRadiologyReportComponent implements OnInit {
   }
 
   close_onClick() {
-    this.closeModal.emit(true);
+    this.closeModal.emit(1);
+  }
+  imgs_show(){
+    this.viewImgs.emit(true);
   }
 
 }
