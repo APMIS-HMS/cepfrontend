@@ -78,6 +78,8 @@ import { AddItemComponent } from '../system-modules/module-menu/payment/add-item
 import { AddLineModifierComponent } from '../system-modules/module-menu/payment/add-line-modifier/add-line-modifier.component';
 import { ItemDetailComponent } from '../system-modules/module-menu/payment/item-detail/item-detail.component';
 import { FundWalletComponent } from '../system-modules/module-menu/payment/bill-lookup/fund-wallet/fund-wallet.component';
+import { ImageViewerComponent } from './image-viewer/image-viewer.component';
+import { ImageEmitterService } from '../services/facility-manager/image-emitter.service';
 import { IrtsModalComponent } from './irts-modal/irts-modal.component';
 @NgModule({
   declarations: [

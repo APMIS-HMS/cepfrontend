@@ -13,13 +13,9 @@
     "indent": [true, "tab"],
     "interface-over-type-literal": true,
     "label-position": true,
+    "autoFixOnSave": true,
     "max-line-length": [true, 140],
     "member-access": false,
-    "member-ordering": [
-      true,
-      "static-before-instance",
-      "variables-before-functions"
-    ],
     "no-arg": true,
     "no-bitwise": true,
     "no-console": [true, "debug", "info", "time", "timeEnd", "trace"],
@@ -52,7 +48,7 @@
     "prefer-const": true,
     "quotemark": [true, "single", "avoid-escape", "avoid-template"],
     "radix": true,
-    "semicolon": ["always"],
+    "semicolon": true,
     "triple-equals": [true, "allow-null-check"],
     "typedef-whitespace": [
       true,

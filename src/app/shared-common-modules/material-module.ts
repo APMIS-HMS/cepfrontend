@@ -41,6 +41,8 @@ import { NgPipesModule } from 'ngx-pipes';
 import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/checkout-patient.component';
 import { OnlyMaterialModule } from './only-material-module';
 import { ImageCropperModule } from 'ng2-img-cropper';
+import { ImageViewerComponent } from '../shared-module/image-viewer/image-viewer.component';
+import { ImageEmitterService } from '../services/facility-manager/image-emitter.service';
 @NgModule({
   declarations: [
     CreateWorkspaceComponent,
@@ -63,7 +65,8 @@ import { ImageCropperModule } from 'ng2-img-cropper';
     LabRequestsComponent,
     RequestDetailComponent,
     CheckoutPatientComponent,
-    PasswordResetComponent
+    PasswordResetComponent,
+    ImageViewerComponent
   ],
   exports: [
     NgbModule,
@@ -99,7 +102,8 @@ import { ImageCropperModule } from 'ng2-img-cropper';
     NgPipesModule,
     CheckoutPatientComponent,
     PasswordResetComponent,
-    SharedModuleMaterialModule
+    SharedModuleMaterialModule,
+    ImageViewerComponent
   ],
   imports: [
     OnlyMaterialModule,
@@ -117,6 +121,6 @@ import { ImageCropperModule } from 'ng2-img-cropper';
     LogOutConfirmModule,
     SharedModuleMaterialModule
   ],
-  providers: [OrderStatusService, SeverityService, HmoService, FacilityFamilyCoverService]
+  providers: [OrderStatusService, SeverityService, HmoService, FacilityFamilyCoverService, ImageEmitterService]
 })
 export class MaterialModule {}

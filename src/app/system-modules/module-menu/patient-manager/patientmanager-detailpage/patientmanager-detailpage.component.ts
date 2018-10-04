@@ -625,6 +625,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       this.menuPayment = false;
       this.menuTags = false;
       this.menuResp = false;
+      this.menuBCRAssessment = false;
     }
     // else {
     //   console.log(3);
@@ -677,6 +678,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuPayment = false;
     this.menuTags = false;
     this.menuResp = false;
+    this.menuBCRAssessment = false;
   }
   menuTimeline_click() {
     this.menuUploads = false;
@@ -703,6 +705,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuPayment = false;
     this.menuTags = false;
     this.menuResp = false;
+    this.menuBCRAssessment = false;
   }
   menuPrescriptions_click() {
     this.menuSummary = false;
@@ -729,6 +732,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuPayment = false;
     this.menuTags = false;
     this.menuResp = false;
+    this.menuBCRAssessment = false;
   }
   menuExternalPrescriptions_click() {
     this.menuSummary = false;
@@ -755,6 +759,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuPayment = false;
     this.menuTags = false;
     this.menuResp = false;
+    this.menuBCRAssessment = false;
   }
   menuPayment_click() {
     this.menuSummary = false;
@@ -781,6 +786,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuPayment = true;
     this.menuTags = false;
     this.menuResp = false;
+    this.menuBCRAssessment = false;
   }
   menuOrder_click() {
     this.menuSummary = false;
@@ -807,6 +813,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuPayment = false;
     this.menuTags = false;
     this.menuResp = false;
+    this.menuBCRAssessment = false;
   }
   menuVitals_click() {
     this.menuSummary = false;
@@ -833,6 +840,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuPayment = false;
     this.menuTags = false;
     this.menuResp = false;
+    this.menuBCRAssessment = false;
   }
   menuTags_click() {
     this.menuSummary = false;
@@ -859,6 +867,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuPayment = false;
     this.menuTags = true;
     this.menuResp = false;
+    this.menuBCRAssessment = false;
   }
   menuImmunization_click() {
     this.menuSummary = false;
@@ -885,6 +894,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuPayment = false;
     this.menuTags = false;
     this.menuResp = false;
+    this.menuBCRAssessment = false;
   }
   menuPregnant_click() { 
     this.menuSummary = false;
@@ -911,6 +921,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuPayment = false;
     this.menuTags = false;
     this.menuResp = false;
+    this.menuBCRAssessment = false;
   }
   
   menuBCRAssessment_click() { 
