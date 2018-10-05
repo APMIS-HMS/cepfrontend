@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-new-opd-entry',
@@ -14,12 +14,12 @@ export class NewOpdEntryComponent implements OnInit {
   errMsg = 'You have unresolved errors';
   newPg1 = true;
   newPg2 = false;
- 
+
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this.frm_UpdateCourse = this.formBuilder.group({
-      register: ['', [<any>Validators.required]],
+      /* register: ['', [<any>Validators.required]],
       patient: ['', [<any>Validators.required]],
       tt: ['', [<any>Validators.required]],
       parity: ['', [<any>Validators.required]],
@@ -30,7 +30,7 @@ export class NewOpdEntryComponent implements OnInit {
       sel_tt: ['', [<any>Validators.required]],
       problem: ['', [<any>Validators.required]],
       referalReason: ['', [<any>Validators.required]],
-      postnatal1: ['', [<any>Validators.required]],
+      postnatal1: ['', [<any>Validators.required]], */
     });
   }
   pg2(){

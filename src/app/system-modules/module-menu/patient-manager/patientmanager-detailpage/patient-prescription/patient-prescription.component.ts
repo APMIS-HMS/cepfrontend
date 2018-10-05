@@ -1,6 +1,6 @@
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { Component, OnInit, Output, Input } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import {
     FacilitiesService, PrescriptionService, PrescriptionPriorityService, FrequencyService
@@ -68,19 +68,10 @@ export class PatientPrescriptionComponent implements OnInit {
     constructor(
         private fb: FormBuilder,
         private _locker: CoolLocalStorage,
-        // private _el: ElementRef,
-        // private _route: ActivatedRoute,
         private _facilityService: FacilitiesService,
-        // private _personService: PersonService,
         private _prescriptionService: PrescriptionService,
         private _priorityService: PrescriptionPriorityService,
-        // private _dictionaryService: DictionariesService,
         private _frequencyService: FrequencyService,
-        // private _routeService: RouteService,
-        // private _drugListApi: DrugListApiService,
-        // private _drugDetailsApi: DrugDetailsService,
-        // private _billingService: BillingService,
-        // private _medicationListService: MedicationListService,
         private _authFacadeService: AuthFacadeService,
         private _systemModuleService: SystemModuleService
     ) {
@@ -115,9 +106,7 @@ export class PatientPrescriptionComponent implements OnInit {
       drug: ['', [<any>Validators.required]],
       code: ['', [<any>Validators.required]],
       productId: ['', [<any>Validators.required]],
-      frequency: ['', [<any>Validators.required]],
-      duration: [0, [<any>Validators.required]],
-      durationUnit: ['', [<any>Validators.required]],
+      regimenArray: this.fb.array([this.initRegimen()]),
       refillCount: [this.refillCount],
       startDate: [this.currentDate],
       specialInstruction: ['']
@@ -130,6 +119,14 @@ export class PatientPrescriptionComponent implements OnInit {
         'brandonly': false,
         'genericonly': true
       };
+    });
+  }
+
+  initRegimen() {
+    return this.fb.group({
+      frequency: ['', [<any>Validators.required]],
+      duration: [0, [<any>Validators.required]],
+      durationUnit: [this.durationUnits[1].name, [<any>Validators.required]],
     });
   }
 
@@ -152,9 +149,10 @@ export class PatientPrescriptionComponent implements OnInit {
         genericName: value.drug,
         routeName: value.route,
         code: value.code,
-        frequency: value.frequency,
+        regimen: value.regimenArray,
+        // frequency: value.frequency,
         dosage: value.dosage + ' ' + value.dosageUnit,
-        duration: value.duration + ' ' + value.durationUnit,
+        // duration: value.duration + ' ' + value.durationUnit,
         startDate: value.startDate,
         strength: value.strength,
         patientInstruction: (value.specialInstruction == null) ? '' : value.specialInstruction,
@@ -198,9 +196,9 @@ export class PatientPrescriptionComponent implements OnInit {
       this.prescriptions = prescription;
       this.addPrescriptionForm.reset();
       this.addPrescriptionForm.controls['refillCount'].reset(0);
-      this.addPrescriptionForm.controls['duration'].reset(0);
+      // this.addPrescriptionForm.controls['duration'].reset(0);
       this.addPrescriptionForm.controls['startDate'].reset(new Date());
-      this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[1].name);
+      // this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[1].name);
       this.addPrescriptionForm.controls['dosageUnit'].reset(this.dosageUnits[0].name);
     }
   }
@@ -225,10 +223,10 @@ export class PatientPrescriptionComponent implements OnInit {
                 this.prescriptionArray = [];
                 this.addPrescriptionForm.reset();
                 this.addPrescriptionForm.controls['refillCount'].reset(0);
-                this.addPrescriptionForm.controls['duration'].reset(0);
                 this.addPrescriptionForm.controls['startDate'].reset(new Date());
-                this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
-                this.addPrescriptionForm.controls['dosageUnit'].reset(this.dosageUnits[0].name);
+                // this.addPrescriptionForm.controls['duration'].reset(0);
+                // this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[0].name);
+                // this.addPrescriptionForm.controls['dosageUnit'].reset(this.dosageUnits[0].name);
                 this.disableAuthorizeRx = false;
                 this.authorizeRx = true;
                 this.authorizingRx = false;
@@ -275,12 +273,22 @@ export class PatientPrescriptionComponent implements OnInit {
             }
           });
           this.pastMedications = pastMedications.splice(0, 3);
-        })
-        .catch(err => console.error(err));
+        }).catch(err => console.error(err));
   }
 
   onClickReset() {
     this.addPrescriptionForm.reset();
+  }
+
+  onClickAddRegimen() {
+    const control = <FormArray>this.addPrescriptionForm.controls['regimenArray'];
+    control.push(this.initRegimen());
+  }
+
+  onClickRemoveRegimen(i) {
+    const control = <FormArray>this.addPrescriptionForm.controls['regimenArray'];
+    // Remove interval from the list of vaccines.
+    control.removeAt(i);
   }
 
   private _getAllPriorities() {

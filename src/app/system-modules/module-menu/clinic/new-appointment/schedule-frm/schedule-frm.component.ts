@@ -80,6 +80,7 @@ export class ScheduleFrmComponent implements OnInit {
   organizationalServicePrice = 0;
   // filteredStates: any;
   patient: FormControl;
+  timeSlots: FormControl;
   clinic: FormControl;
   provider: FormControl;
   type: FormControl;
@@ -214,6 +215,7 @@ export class ScheduleFrmComponent implements OnInit {
 
     this.clinic = new FormControl('', [Validators.required]);
     this.status = new FormControl('', [Validators.required]);
+    this.timeSlots = new FormControl('', []);
     this.clinic.valueChanges.subscribe(clinic => {
       this.getOthers(clinic);
     });
@@ -319,7 +321,6 @@ export class ScheduleFrmComponent implements OnInit {
   }
 
   apmisLookupHandleSelectedItem(value) {
-    console.log(value);
     this.apmisLookupText = `${value.personDetails.firstName} ${value.personDetails.lastName}`;
     this.selectedPatient = value;
     this.appointmentService.patientAnnounced(this.selectedPatient);
@@ -921,7 +922,6 @@ export class ScheduleFrmComponent implements OnInit {
                   }
                 },
           error => {
-            console.log(error);
                   this.savingAppointment = false;
                   this.disableBtn = false;
                   this.loadIndicatorVisible = false;
@@ -991,7 +991,6 @@ export class ScheduleFrmComponent implements OnInit {
                   }
                 },
           error => {
-            console.log(error);
                   this.savingAppointment = false;
                   this.disableBtn = false;
                   this.loadIndicatorVisible = false;
