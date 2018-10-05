@@ -49,11 +49,15 @@
         </table>
     </div>
     <div *ngIf="tab2">
-        <div class="card-title">Billing History</div>
+
+        <div class="x2">
+            <div class="card-title">Billing History</div>
+            <button class="btn-norm" (click)="hmo_report()"><i class="fa fa-file"></i> Generate Report</button>
+        </div>
 
         <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5">
             <thead>
-                <tr> 
+                <tr>
                     <th>
                         <span style="padding-left: 3px;">Date</span>
                     </th>
@@ -91,8 +95,13 @@
 </div>
 
 <div *ngIf="billDetail_show" class="modal-overlay">
-  <app-hmo-bill-detail (closeModal)="close_onClick($event)" (refreshBills)="onRefreshBills($event)" [selectedBill]="selectedBill" id="form-modal" class="form-modal center-center"></app-hmo-bill-detail>
+    <app-hmo-bill-detail (closeModal)="close_onClick($event)" (refreshBills)="onRefreshBills($event)" [selectedBill]="selectedBill"
+        id="form-modal" class="form-modal center-center"></app-hmo-bill-detail>
 </div>
 <div *ngIf="billHistoryDetail_show" class="modal-overlay">
-    <app-hmo-bill-history-detail (closeModal)="close_onClick($event)" [selectedBill]="selectedBill" id="form-modal" class="form-modal center-center"></app-hmo-bill-history-detail>
+    <app-hmo-bill-history-detail (closeModal)="close_onClick($event)" [selectedBill]="selectedBill" id="form-modal"
+        class="form-modal center-center"></app-hmo-bill-history-detail>
+</div>
+<div *ngIf="hmoReport_show" class="modal-overlay">
+    <app-hmo-report (closeModal)="close_onClick($event)" [selectedBill]="selectedBill" id="form-modal" class="form-modal center-center"></app-hmo-report>
 </div>
