@@ -17,38 +17,65 @@
             </div>
         </div>
 
-        <div class="col-sm-8n">
-            <store-summary [data]="storeStatusLabel" (onItemDetailsClicked)="logCurrentSelectedItem($event)"></store-summary>
-        </div>
-        <dialog-host [visible]="showDialog">
-            <store-summary-dialog class="center-center" [title]="selectedItem?.key "  (onClose)="showDialog  = !$event">
-                <div *ngIf="selectedItem">
-                    <div class="row">
-                        <div class="col-sm-4">
-                            <p class="lead text-muted">
-                                {{selectedItem?.key}}
+        <div class="sect sect-full">
+            <div class="sect-header">
+                <div class="head-inner-lhs">
+                    <div class="counta">{{inventoryCount}}</div>
+                    <div class="head-inner-label">Inventory</div>
+                </div>
 
-                            </p>
-                            <h2>{{selectedItem?.value}}</h2>
-                        </div>
-                        <div class="col-sm-8">
-                            <p class="text-blue bold">
-                                Details for {{selectedItem?.key}}
-                            </p>
-                            <div>
-                                <h1>Chart Visualization goes here</h1>
-                            </div>
-                            <div>
-                                <p>Details loaded from server</p>
-                            </div>
+                <div class="head-inner-rhs">
+                    <div class="rhs-item">
+                        <div class="rhs-count">{{storeStatusLabel.expired}}</div>
+                        <div class="rhs-label">expired</div>
+                    </div>
 
+                    <div class="rhs-item">
+                        <div class="rhs-count">{{storeStatusLabel.about_to_expire}}</div>
+                        <div class="rhs-label">about to expire</div>
+                    </div>
+
+                    <div class="rhs-item">
+                        <div class="rhs-count">{{storeStatusLabel.near_reorder_level}}</div>
+                        <div class="rhs-label">near reorder level</div>
+                    </div>
+
+                    <div class="rhs-item">
+                        <div class="rhs-count">{{storeStatusLabel.past_reorder_level}}</div>
+                        <div class="rhs-label">past reorder level</div>
+                    </div>
+                </div>
+            </div>
+            <div class="sect-content">
+                <div>
+                    <div *ngIf="inventories.length === 0 && !inventoryLoading">
+                        <div style="width: 100%; text-align:center;">No data available in table or you need to check in to store.</div>
+                    </div>
+
+                    <div *ngIf="inventories.length === 0 && inventoryLoading">
+                        <div style="width: 100%; text-align:center;">
+                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </div>
                     </div>
 
+                    <div *ngIf="inventories.length > 0 && !inventoryLoading">
+                        <div class="content-row" *ngFor="let inventory of inventories; let i=index">
+                            <div class="row-item">{{ inventory?.productObject?.name }}</div>
+                            <div class="row-item">
+                                <div class="item-label">Recent Batch</div>
+                                <div class="item-val">{{getMostRescentBatchNo(inventory) }}</div>
+                            </div>
+                            <div class="row-item">
+                                <div class="item-label">Quantity</div>
+                                <div class="item-val">{{ inventory?.availableQuantity }}</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
-            </store-summary-dialog>
-        </dialog-host>
+                <div class="{{ inventories.length > 0 ? ' card-link ' : ' '}}" *ngIf="inventories.length > 0 && !inventoryLoading" routerLink="/dashboard/inventory-manager/inventory">View All</div>
+            </div>
+        </div>
 
         <div class="half-outer">
             <div class="sect sect-half">
@@ -71,7 +98,7 @@
                         </div>
 
                         <div *ngIf="requisitions.length > 0 && !transferLoading">
-                            <div class="content-row" *ngFor="let requisition of requisitions">
+                            <div class="content-row" *ngFor="let requisition of requisitions; let i=index">
                                 <div class="row-item">{{ requisition?.storeRequisitionNumber }}</div>
                                 <div class="row-item">
                                     <div class="item-label">Store</div>

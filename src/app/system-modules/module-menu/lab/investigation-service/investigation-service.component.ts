@@ -352,7 +352,7 @@ export class InvestigationServiceComponent implements OnInit {
               item.services.push(service);
             }
           });
-          this.facilityServiceCategoryService.patch(this.selectedFacilityService._id,{categories:this.selectedFacilityService.categories},{}).then((payResult: FacilityService) => {
+          this.facilityServiceCategoryService.update(this.selectedFacilityService).then((payResult: FacilityService) => {
             this.isBtnDisable = false;
             payResult.categories.forEach((itemi, i) => {
               if (itemi.name === 'Laboratory') {
@@ -410,7 +410,7 @@ export class InvestigationServiceComponent implements OnInit {
                 item.services.push(service);
               }
             });
-            this.facilityServiceCategoryService.patch(this.selectedFacilityService._id,{categories:this.selectedFacilityService.categories},{}).then((payResult: FacilityService) => {
+            this.facilityServiceCategoryService.update(this.selectedFacilityService).then((payResult: FacilityService) => {
               this.isBtnDisable = true;
               payResult.categories.forEach((itemi, i) => {
                 if (itemi.name === 'Laboratory') {
@@ -494,7 +494,7 @@ export class InvestigationServiceComponent implements OnInit {
               item.services.push(service);
             }
           });
-          this.facilityServiceCategoryService.patch(this.selectedFacilityService._id,{categories:this.selectedFacilityService.categories},{}).then((payResult: FacilityService) => {
+          this.facilityServiceCategoryService.update(this.selectedFacilityService).then((payResult: FacilityService) => {
             payResult.categories.forEach((itemi, i) => {
               if (itemi.name === 'Laboratory') {
                 itemi.services.forEach((items, s) => {
@@ -554,7 +554,7 @@ export class InvestigationServiceComponent implements OnInit {
                 item.services.push(service);
               }
             });
-            this.facilityServiceCategoryService.patch(this.selectedFacilityService._id,{categories:this.selectedFacilityService.categories},{}).then((payResult: FacilityService) => {
+            this.facilityServiceCategoryService.update(this.selectedFacilityService).then((payResult: FacilityService) => {
               payResult.categories.forEach((itemi, i) => {
                 if (itemi.name === 'Laboratory') {
                   itemi.services.forEach((items, s) => {

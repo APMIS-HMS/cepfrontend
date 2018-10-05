@@ -379,10 +379,9 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 						// Update the quantityDispensed in the selected item.
 						const itemIndex = this.prescriptionItems.prescriptionItems.findIndex(x => x._id === itemId);
 						this.prescriptionItems.prescriptionItems[itemIndex].quantityDispensed += inputBatch[index];
-						this.prescriptionItems.prescriptionItems[itemIndex].storeId = this.storeId;
 						// Build the dispense client model
 						this._dispensedBatchTracking(itemIndex, inputBatch[index], batch.batchNumber);
-						this._batchTransactionTracking(index, inputBatch[index], batch, itemIndex);
+						this._batchTransactionTracking(index, inputBatch[index], batch);
 						const payload = {
 							prescriptionId: this.prescriptionItems._id,
 							inventoryTransactionTypeId: this.inventoryTransactionTypeId,
@@ -480,7 +479,7 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 		dispensedKey.dispensed.dispensedArray.push(item);
 	}
 
-	private _batchTransactionTracking(index: number, qty: number, batch: any, item?) {
+	private _batchTransactionTracking(index: number, qty: number, batch: any) {
 		// Deduct from the batches before updating the batches in the inventory.
 		this.selectedIventoryId = this.transactions._id;
 		this.transactions.transactions.forEach(element => {
@@ -489,7 +488,6 @@ export class PrescriptionComponent implements OnInit, OnDestroy {
 				const batchTransaction: BatchTransaction = {
 					batchNumber: <string>batch.batchNumber,
 					employeeId: this.employeeDetails._id,
-					price: item.cost,
 					preQuantity: <number>element.quantity, // Before Operation.
 					postQuantity: <number>batch.quantity - qty, // After Operation.
 					quantity: <number>qty, // Operational qty.

@@ -14,7 +14,7 @@ export class NewOpdEntryComponent implements OnInit {
   errMsg = 'You have unresolved errors';
   newPg1 = true;
   newPg2 = false;
-
+  
   constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit() {

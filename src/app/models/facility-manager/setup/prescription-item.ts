@@ -30,7 +30,6 @@ export interface PrescriptionItem {
     isOpen?: boolean;
     transactions?: any[];
     serviceId?: string;
-    storeId?: String;
     facilityServiceId?: string;
     categoryId?: string;
 }

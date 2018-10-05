@@ -21,10 +21,5 @@ describe('StoreHomeComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
-    component.getInventoryBriefStatus();
   });
-  it("should display array of store dashboard summary", ()=>
-  {
-
-  })
 });

@@ -13,20 +13,11 @@
         <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
         <div class="menuBar-facilityName">
             <div class="menubar_facilityLogo orgLogo-wrap">
-                <app-image-viewer [imageSrc]="selectedFacility?.logoObject?.thumbnail"></app-image-viewer>
-                <!-- <img src="https://apmisstorageaccount.blob.core.windows.net/personfolder/RJ-6019/5a4c57b448eaa74a00040987/5bb4d170ed781023fca6e261.png"> -->
+                <img src="../../../../assets/images/logos/default.png">
             </div>
             <div class="upload-btn-wrapper">
-                <div *ngIf="!hasChangedImage">
-                    <button class="upload-btn">Change Logo</button>
-                    <input type="file" name="myfile" (change)="onClickChangeImage($event.target.name, $event.target.files);" accept="image/*" />
-                </div>
-                <div *ngIf="hasChangedImage">
-                    <button class="upload-btn" [disabled]="disableImageBtn" (click)="onClickUploadLogo();">
-                        <span *ngIf="saveImageBtn">Save</span>
-                        <span *ngIf="savingImageBtn">Saving... <i class="fa fa-spinner fa-spin"></i></span>
-                    </button>
-                </div>
+                <button class="upload-btn">Change Logo</button>
+                <input type="file" name="myfile" />
             </div>
             <form [formGroup]="facilityForm1" novalidate (submit)="save(facilityForm1.value)">
 

@@ -14,6 +14,7 @@ export class HmoOfficerComponent implements OnInit {
 
   billDetail_show = false;
   billHistoryDetail_show = false;
+  hmoReport_show = false;
   tab1 = true;
   tab2 = false;
   selectedFacility: any = <any>{}
@@ -66,9 +67,13 @@ export class HmoOfficerComponent implements OnInit {
     this.selectedBill = bill;
     this.billHistoryDetail_show = true;
   }
+  hmo_report(){
+    this.hmoReport_show = true;
+  }
   close_onClick() {
     this.billDetail_show = false;
     this.billHistoryDetail_show = false;
+    this.hmoReport_show = false;
   }
   tab1_click() {
     this.tab1 = true;

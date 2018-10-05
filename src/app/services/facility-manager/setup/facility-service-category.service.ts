@@ -72,9 +72,6 @@ export class FacilitiesServiceCategoryService {
   update2(id, facilityservice: any, params) {
     return this._socketOrganisationServices.update(id, facilityservice, params);
   }
-  patch(_id: any, data: any, param: any) {
-    return this._socket.patch(_id, data, param);
-  }
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }

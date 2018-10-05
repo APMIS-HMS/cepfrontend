@@ -56,7 +56,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
   menuFluid = false;
   menuRegisters = false;
   menuVitals = false;
-  menuBCRAssessment = false;
 
   contentSecMenuShow = false;
   modal_on = false;
@@ -625,7 +624,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
       this.menuPayment = false;
       this.menuTags = false;
       this.menuResp = false;
-      this.menuBCRAssessment = false;
     }
     // else {
     //   console.log(3);
@@ -678,7 +676,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuPayment = false;
     this.menuTags = false;
     this.menuResp = false;
-    this.menuBCRAssessment = false;
   }
   menuTimeline_click() {
     this.menuUploads = false;
@@ -705,7 +702,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuPayment = false;
     this.menuTags = false;
     this.menuResp = false;
-    this.menuBCRAssessment = false;
   }
   menuPrescriptions_click() {
     this.menuSummary = false;
@@ -732,7 +728,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuPayment = false;
     this.menuTags = false;
     this.menuResp = false;
-    this.menuBCRAssessment = false;
   }
   menuExternalPrescriptions_click() {
     this.menuSummary = false;
@@ -759,7 +754,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuPayment = false;
     this.menuTags = false;
     this.menuResp = false;
-    this.menuBCRAssessment = false;
   }
   menuPayment_click() {
     this.menuSummary = false;
@@ -786,7 +780,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuPayment = true;
     this.menuTags = false;
     this.menuResp = false;
-    this.menuBCRAssessment = false;
   }
   menuOrder_click() {
     this.menuSummary = false;
@@ -813,7 +806,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuPayment = false;
     this.menuTags = false;
     this.menuResp = false;
-    this.menuBCRAssessment = false;
   }
   menuVitals_click() {
     this.menuSummary = false;
@@ -840,7 +832,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuPayment = false;
     this.menuTags = false;
     this.menuResp = false;
-    this.menuBCRAssessment = false;
   }
   menuTags_click() {
     this.menuSummary = false;
@@ -867,7 +858,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuPayment = false;
     this.menuTags = true;
     this.menuResp = false;
-    this.menuBCRAssessment = false;
   }
   menuImmunization_click() {
     this.menuSummary = false;
@@ -894,7 +884,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuPayment = false;
     this.menuTags = false;
     this.menuResp = false;
-    this.menuBCRAssessment = false;
   }
   menuPregnant_click() { 
     this.menuSummary = false;
@@ -921,35 +910,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
     this.menuPayment = false;
     this.menuTags = false;
     this.menuResp = false;
-    this.menuBCRAssessment = false;
-  }
-  
-  menuBCRAssessment_click() { 
-    this.menuSummary = false;
-    this.menuPharmacy = false;
-    this.menuBilling = false;
-    this.menuTreatmentPlan = false;
-    this.menuUploads = false;
-    this.menuImaging = false;
-    this.menuImmunization = false;
-    this.menuLab = false;
-    this.menuForms = false;
-    this.menuUploads = false;
-    this.menuDocs = false;
-    this.menuPregnant = false;
-    this.menuOrder = false;
-    this.menuFluid = false;
-    this.menuRegisters = false;
-    this.menuVitals = false;
-    this.menuTimeline = false;
-    this.menuPrescription = false;
-    this.menuExternalPrescription = false;
-    this.menuFinance = false;
-    this.menuMedicationHistory = false;
-    this.menuPayment = false;
-    this.menuTags = false;
-    this.menuResp = false;
-    this.menuBCRAssessment = true;
   }
 
   subsect_biodata_click() {

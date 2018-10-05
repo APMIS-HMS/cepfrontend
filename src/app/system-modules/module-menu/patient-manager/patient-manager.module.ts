@@ -85,7 +85,6 @@ import { AddItemComponent } from '../payment/add-item/add-item.component';
 import { AddLineModifierComponent } from '../payment/add-line-modifier/add-line-modifier.component';
 import { ItemDetailComponent } from '../payment/item-detail/item-detail.component';
 import { FundWalletComponent } from '../payment/bill-lookup/fund-wallet/fund-wallet.component';
-import { BcrAssessmentComponent } from './patientmanager-detailpage/bcr-assessment/bcr-assessment.component';
 
 @NgModule({
   declarations: [
@@ -138,8 +137,7 @@ import { BcrAssessmentComponent } from './patientmanager-detailpage/bcr-assessme
     VaccineDocumentationComponent,
     PregnancyManagerComponent,
     PatientRegistersComponent,
-    PatientLandingBillingComponent,
-    BcrAssessmentComponent
+    PatientLandingBillingComponent
   ],
   exports: [],
   imports: [

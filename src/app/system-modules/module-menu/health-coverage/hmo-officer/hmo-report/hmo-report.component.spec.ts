@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IrtsModalComponent } from './irts-modal.component';
+import { HmoReportComponent } from './hmo-report.component';
 
-describe('IrtsModalComponent', () => {
-  let component: IrtsModalComponent;
-  let fixture: ComponentFixture<IrtsModalComponent>;
+describe('HmoReportComponent', () => {
+  let component: HmoReportComponent;
+  let fixture: ComponentFixture<HmoReportComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ IrtsModalComponent ]
+      declarations: [ HmoReportComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IrtsModalComponent);
+    fixture = TestBed.createComponent(HmoReportComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
