@@ -78,7 +78,20 @@ export class InventoryService {
     return this._socket.update(inventory._id, inventory);
   }
 
-  getInventoryBriefStatus(id: string, query: any) {
+  getInventoryBriefStatus(id: string | number, query: any) {
     return this._msocket.get(id, query);
   }
+  createDynamicFeatherServiceEndpoint(serviceName : string , method :string, query : any, getId : number | string =0)
+  {
+     const serviceEndPoint  = this._socketService.getService(serviceName);
+     // check the kind of method called
+      if(method === "find")
+      {
+         return serviceEndPoint.find( query);
+      }
+      else if(method === "get"){
+        return serviceEndPoint.get(getId ,  query);
+      }
+  }
+  
 }
