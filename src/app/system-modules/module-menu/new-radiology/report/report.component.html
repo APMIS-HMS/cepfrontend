@@ -154,10 +154,13 @@
 </div>
 
 <div *ngIf="report_view" class="view-report-wrap animated slideInRight"> 
-    <app-view-radiology-report (closeModal)="close_onClick($event)" id="form-modal"></app-view-radiology-report>
+    <app-view-radiology-report (viewImgs)="imgs_show()" (closeModal)="close_onClick($event)" id="form-modal"></app-view-radiology-report>
+</div>
+<div *ngIf="imgs_view" class="view-imgs-wrap animated slideInRight"> 
+    <app-view-radiology-images (closeModal)="close_onClick($event)" id="form-modal"></app-view-radiology-images>
 </div>
 <div *ngIf="report_new" class="view-report-wrap animated slideInRight"> 
-    <app-new-radiology-report (closeModal)="close_onClick($event)" id="form-modal"></app-new-radiology-report>
+    <app-new-radiology-report (viewImgs)="imgs_show()" (closeModal)="close_onClick($event)" id="form-modal"></app-new-radiology-report>
 </div>
 <div *ngIf="importTemplate" class="modal-overlay">
     <app-select-template (closeModal)="close_onClick($event)" (template)="onClickTemplate($event);" id="form-modal" class="form-modal center-center"></app-select-template>

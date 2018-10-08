@@ -74,10 +74,23 @@
               </div>
           </div>
           <div class="sect-item">
-              <div class="item-label">5 Images Attached</div>
-              <div class="item-val">
-                  <button>View Images</button>
-              </div>
+            <div class="item-label">5 Images Attached</div>
+            <table cellpadding="0" cellspacing="0" border="0.5">        
+                <tbody>
+                    <tr>
+                        <td>Order MRI - Knee(1591)</td>
+                        <td class="item-val"><a href="https://access.ambrahealth.com/viewer/#study/856bbb02-ab4e-4f70-ab3f-ea1ca71fbae8/1.2.840.113619.2.55.1.1762903843.1880.1141902658.220/856bbb02-ab4e-4f70-ab3f-ea1ca71fbae8?sid=4575fd96-ae45-4f5c-89fc-f6231c8d5446" target="_blank">View Images</a></td>
+                    </tr>
+                    <tr>
+                        <td>Order MRI - Knee(1591)</td>
+                        <td class="item-val"><a href="https://access.ambrahealth.com/viewer/#study/856bbb02-ab4e-4f70-ab3f-ea1ca71fbae8/1.2.840.113619.2.55.1.1762903843.1880.1141902658.220/856bbb02-ab4e-4f70-ab3f-ea1ca71fbae8?sid=4575fd96-ae45-4f5c-89fc-f6231c8d5446" target="_blank">View Images</a></td>
+                    </tr>
+                </tbody>
+            </table>
+
+              <!-- <div class="item-val">
+                  <button (click)="imgs_show()">View Images</button>
+              </div> -->
           </div>
       </div>
   </div>
@@ -119,9 +132,10 @@
 
           <div class="form-wrap">
             <div>
-              <select class="sel-tem" [formControl]="selectTemplate">
-                <option>select report template</option>
-              </select>
+                <label class="label" for="selectTemplate">Select Template</label>
+                <select class="sel-tem" [formControl]="selectTemplate">
+                    <option>select report template</option>
+                </select>
             </div>
 
             <div class="temp-container">

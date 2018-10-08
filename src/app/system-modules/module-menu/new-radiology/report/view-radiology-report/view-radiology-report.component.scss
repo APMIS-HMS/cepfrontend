@@ -68,18 +68,20 @@
 }
 .item-val {
     font-size: 1.3rem;
-    button{
+    a{
+        display: block;
         margin-top: 5px;
-        background: #194985;
-        color: #fff;
-        border: 0;
+        color: #194985;
         padding: 3px 10px;
         cursor: pointer;
+    }
+    a:hover{
+        text-decoration: underline;
     }
 }
 .sect-content{
     overflow-y: auto;
-    max-height: 102%;
+    max-height: 70%;
 }
 .item-val-main {
     font-size: 1.6rem;
@@ -160,4 +162,9 @@
         font-size: 3rem;
         color: rgb(216, 216, 216);
     }
+}
+.label{
+    display: block;
+    font-size: 1.4rem;
+    font-weight: bold;
 }
