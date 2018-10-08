@@ -42,7 +42,6 @@ import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/che
 import { OnlyMaterialModule } from './only-material-module';
 import { ImageCropperModule } from 'ng2-img-cropper';
 import { ImageViewerComponent } from '../shared-module/image-viewer/image-viewer.component';
-// import { ImageEmitterService } from '../services/facility-manager/image-emitter.service';
 
 @NgModule({
   declarations: [
