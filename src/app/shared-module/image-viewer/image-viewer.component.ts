@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, ChangeDetectionStrategy } from '@angular/core';
 import { ImageEmitterService } from '../../services/facility-manager/image-emitter.service';
 import { ISubscription } from 'rxjs/Subscription';
 
@@ -15,7 +15,6 @@ export class ImageViewerComponent implements OnInit, OnDestroy {
   ) {
     // Assign the subscription to an ISubscription to be able to unsubscribe.
     this.ISubscriber = this.imageEmitterService.subscribeToImageSource.subscribe(value => {
-      console.log('Image source ', value);
       this.imageSrc = value;
     });
   }
