@@ -92,7 +92,6 @@ export class PaymentHistoryComponent implements OnInit {
       };
 
       this.invoiceService.search({ query }).then(res => {
-        console.log(res);
         this.loading = false;
         this.disableSearchBtn = false;
         this.searchBtn = true;
