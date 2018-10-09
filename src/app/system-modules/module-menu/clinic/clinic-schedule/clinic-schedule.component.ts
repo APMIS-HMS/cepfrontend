@@ -10,6 +10,7 @@ import { LocationService } from '../../../../services/module-manager/setup/index
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { DurationUnits } from '../../../../shared-module/helpers/global-config';
+import * as differenceInMinutes from 'date-fns/difference_in_minutes';
 
 @Component({
 	selector: 'app-clinic-schedule',
@@ -60,6 +61,7 @@ export class ClinicScheduleComponent implements OnInit {
 	) {}
 
 	ngOnInit() {
+		this.durationUnits = DurationUnits;
 		this.subscribToFormControls();
 		this.getClinicMajorLocation();
 		this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
@@ -80,7 +82,6 @@ export class ClinicScheduleComponent implements OnInit {
 		this.getSchedulerType();
 		this.addNewClinicSchedule();
 		this.getClinicSchedules();
-		this.durationUnits = DurationUnits;
 	}
 
 	getClinicSchedules() {
@@ -138,9 +139,9 @@ export class ClinicScheduleComponent implements OnInit {
 				(<FormArray>this.clinicScheduleForm.controls['clinicScheduleArray']).push(
 					this.formBuilder.group({
 						day: [ itemi.day, [ <any>Validators.required ] ],
-            noSlots: [ '', [] ],
-            timePerSlot: ['', []],
-            timeUnit: ['', []],
+						noSlots: [ 0, [] ],
+						timePerSlot: [ 0, [] ],
+						timeUnit: [ this.durationUnits[0].name, [] ],
 						startTime: [ time, [ <any>Validators.required ] ],
 						endTime: [ etime, [ <any>Validators.required ] ],
 						location: [
@@ -197,9 +198,9 @@ export class ClinicScheduleComponent implements OnInit {
 					startTime: [ this.now, [ <any>Validators.required ] ],
 					endTime: [ this.now, [ <any>Validators.required ] ],
 					location: [ '', [ <any>Validators.required ] ],
-          noSlots: [ '', [] ],
-          timePerSlot: ['', [] ],
-          timeUnit: ['', []],
+					noSlots: [ 0, [] ],
+					timePerSlot: [ 0, [] ],
+					timeUnit: [ this.durationUnits[0].name, [] ],
 					readOnly: [ false ]
 				})
 			])
@@ -212,13 +213,27 @@ export class ClinicScheduleComponent implements OnInit {
 				startTime: [ this.now, [ <any>Validators.required ] ],
 				endTime: [ this.now, [ <any>Validators.required ] ],
 				location: [ '', [ <any>Validators.required ] ],
-        noSlots: [ '', [] ],
-        timePerSlot: ['', []],
-        timeUnit: ['', []],
+				noSlots: [ 0, [] ],
+				timePerSlot: [ 0, [] ],
+				timeUnit: [ this.durationUnits[0].name, [] ],
 				readOnly: [ false ]
 			})
 		);
 		this.subscribToFormControls();
+	}
+	compareTimeUnit(d1: any, d2: any) {
+		return d1 === d2;
+	}
+	calculateMinutes(count, unit) {
+		if (unit === 'Minutes') {
+			return count;
+		} else if (unit === 'Hours') {
+			return count * 60;
+		} else if (unit === 'Days') {
+			return count * 60 * 60;
+		} else {
+			return 0;
+		}
 	}
 	onCreateSchedule() {
 		this.schedules = [];
@@ -233,7 +248,7 @@ export class ClinicScheduleComponent implements OnInit {
 		if (this.selectedManager !== undefined && this.selectedManager.clinic !== undefined && hasReadOnly) {
 			this.selectedManager.schedules = [];
 			(<FormArray>this.clinicScheduleForm.controls['clinicScheduleArray']).controls.forEach((itemi, i) => {
-        console.log(itemi.value);
+				// console.log(itemi.value);
 				const startTime = new Date();
 				startTime.setHours(itemi.value.startTime.hour);
 				startTime.setMinutes(itemi.value.startTime.minute);
@@ -244,24 +259,33 @@ export class ClinicScheduleComponent implements OnInit {
 				endTime.setMinutes(itemi.value.endTime.minute);
 				itemi.value.endTime = endTime;
 				this.selectedManager.schedules.push(itemi.value);
+
+				if (itemi.value.noSlots > 0 && itemi.value.timePerSlot > 0 && itemi.value.timeUnit.length > 0) {
+					const timeInMinutes = differenceInMinutes(endTime, startTime);
+					const totalMinutes = this.calculateMinutes(itemi.value.timePerSlot, itemi.value.timeUnit);
+					// console.log(timeInMinutes);
+					// console.log(totalMinutes);
+					const aSlot = timeInMinutes / totalMinutes;
+					// console.log(aSlot);
+				}
 			});
 
-			// this.schedulerService.update(this.selectedManager).then((payload) => {
-			// 	this.selectedManager = payload;
-			// 	this.systemModuleService.announceSweetProxy(
-			// 		'Clinic Schedule has been updated successfully',
-			// 		'success',
-			// 		null,
-			// 		null,
-			// 		null,
-			// 		null,
-			// 		null,
-			// 		null,
-			// 		null
-			// 	);
-			// 	this._notification('Success', 'Clinic Schedule has been updated successfully.');
-			// 	this.loadManagerSchedules(true);
-			// });
+			this.schedulerService.update(this.selectedManager).then((payload) => {
+				this.selectedManager = payload;
+				this.systemModuleService.announceSweetProxy(
+					'Clinic Schedule has been updated successfully',
+					'success',
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null
+				);
+				this._notification('Success', 'Clinic Schedule has been updated successfully.');
+				this.loadManagerSchedules(true);
+			});
 		} else {
 			if (!!this.selectedSchedulerType) {
 				const manager: ScheduleRecordModel = <ScheduleRecordModel>{ schedules: [] };
@@ -272,7 +296,7 @@ export class ClinicScheduleComponent implements OnInit {
 				manager.department = this.locationTypeControl.value.department.name;
 				manager.unit = this.locationTypeControl.value.unit.name;
 				(<FormArray>this.clinicScheduleForm.controls['clinicScheduleArray']).controls.forEach((itemi, i) => {
-          console.log(itemi.value);
+					// console.log(itemi.value);
 					const startTime = new Date();
 					startTime.setHours(itemi.value.startTime.hour);
 					startTime.setMinutes(itemi.value.startTime.minute);
@@ -285,22 +309,22 @@ export class ClinicScheduleComponent implements OnInit {
 					manager.schedules.push(itemi.value);
 				});
 
-				// this.schedulerService.create(manager).then((payload) => {
-				// 	this.selectedManager = payload;
-				// 	this._notification('Success', 'Clinic Schedule has been created successfully.');
-				// 	this.systemModuleService.announceSweetProxy(
-				// 		'Clinic Schedule has been created successfully',
-				// 		'success',
-				// 		null,
-				// 		null,
-				// 		null,
-				// 		null,
-				// 		null,
-				// 		null,
-				// 		null
-				// 	);
-				// 	this.loadManagerSchedules(true);
-				// });
+				this.schedulerService.create(manager).then((payload) => {
+					this.selectedManager = payload;
+					this._notification('Success', 'Clinic Schedule has been created successfully.');
+					this.systemModuleService.announceSweetProxy(
+						'Clinic Schedule has been created successfully',
+						'success',
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null
+					);
+					this.loadManagerSchedules(true);
+				});
 			} else {
 				this._notification(
 					'Error',
