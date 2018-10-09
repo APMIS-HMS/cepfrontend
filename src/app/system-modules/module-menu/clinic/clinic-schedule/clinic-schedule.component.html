@@ -106,7 +106,7 @@
                         Schedule</span></div>
                 <button *ngIf="locationTypeControl.value != null" [disabled]="clinicScheduleForm.controls['clinicScheduleArray'].valid == false ||
                 clinicScheduleForm.controls['clinicScheduleArray'].value.length === 0"
-                    class="apmis-blue" (click)="onCreateSchedule()" mat-raised-button>Create</button>
+                    class="apmis-blue" (click)="onCreateSchedule()" mat-raised-button>{{btnCreatText}}</button>
             </form>
 
         </div>
@@ -133,7 +133,8 @@
                 </div>
             </li>
 
-            <li (click)="onSelectSchedulerManager(manager)" *ngFor="let manager of scheduleManagers" class="li-itemWrap">
+            <li (click)="onSelectSchedulerManager(manager)" *ngFor="let manager of scheduleManagers; let i = index;"
+                class="li-itemWrap">
                 <div class="li-Item">{{manager.clinic}}</div>
                 <div class="li-Item">{{manager.department}}</div>
                 <div class="li-Item">{{manager.unit}}</div>
@@ -148,7 +149,8 @@
                 <div class="li-cta">
                     <i (click)="onSelectSchedulerManager(manager)" class="fa fa-fw fa-2x fa-pencil-square-o orange tooltip"
                         data-tooltip="Edit" aria-hidden="true"></i>
-                    <i class="fa fa-fw fa-2x fa-trash orange tooltip" data-tooltip="Delete" aria-hidden="true"></i>
+                    <i (click)="deleteSelectedSchedulerManager(manager, i)" class="fa fa-fw fa-2x fa-trash orange tooltip"
+                        data-tooltip="Delete" aria-hidden="true"></i>
                 </div>
             </li>
         </ul>

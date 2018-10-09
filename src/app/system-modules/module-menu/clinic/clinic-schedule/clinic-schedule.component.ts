@@ -11,7 +11,8 @@ import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@ang
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { DurationUnits } from '../../../../shared-module/helpers/global-config';
 import * as differenceInMinutes from 'date-fns/difference_in_minutes';
-
+import * as addMinutes from 'date-fns/add_minutes';
+const moment = require('moment');
 @Component({
 	selector: 'app-clinic-schedule',
 	templateUrl: './clinic-schedule.component.html',
@@ -49,7 +50,7 @@ export class ClinicScheduleComponent implements OnInit {
 	};
 
 	days: any[] = [ 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday' ];
-
+	btnCreatText = 'Create';
 	constructor(
 		private formBuilder: FormBuilder,
 		private facilityService: FacilitiesService,
@@ -57,7 +58,8 @@ export class ClinicScheduleComponent implements OnInit {
 		private locker: CoolLocalStorage,
 		private schedulerTypeService: SchedulerTypeService,
 		private systemModuleService: SystemModuleService,
-		private schedulerService: SchedulerService
+		private schedulerService: SchedulerService,
+		private _systemModuleService: SystemModuleService
 	) {}
 
 	ngOnInit() {
@@ -121,6 +123,23 @@ export class ClinicScheduleComponent implements OnInit {
 		this.selectedManager = manager;
 		this.locationTypeControl.setValue(this.clinics.filter((x) => x.clinicName === this.selectedManager.clinic)[0]);
 		this.loadManagerSchedules(false);
+		if (this.selectedManager.schedules.length > 0) {
+			this.btnCreatText = 'Update';
+		} else {
+			this.btnCreatText = 'Create';
+		}
+	}
+
+	deleteSelectedSchedulerManager(manager: any, i) {
+		this._systemModuleService.announceSweetProxy('Are you sure you want to delete this item?', 'question', this);
+	}
+
+	sweetAlertCallback(result) {
+		if (result.value) {
+			this.schedulerService.remove(this.selectedManager._id, {}).subscribe((payload) => {
+				this.loadManagerSchedules(true);
+			});
+		}
 	}
 
 	loadManagerSchedules(force: boolean) {
@@ -139,9 +158,10 @@ export class ClinicScheduleComponent implements OnInit {
 				(<FormArray>this.clinicScheduleForm.controls['clinicScheduleArray']).push(
 					this.formBuilder.group({
 						day: [ itemi.day, [ <any>Validators.required ] ],
-						noSlots: [ 0, [] ],
-						timePerSlot: [ 0, [] ],
-						timeUnit: [ this.durationUnits[0].name, [] ],
+						noSlots: [ itemi.noSlots, [] ],
+						timePerSlot: [ itemi.timePerSlot, [] ],
+						timeUnit: [ itemi.timeUnit, [] ],
+						slots: [ itemi.slots, [] ],
 						startTime: [ time, [ <any>Validators.required ] ],
 						endTime: [ etime, [ <any>Validators.required ] ],
 						location: [
@@ -201,6 +221,7 @@ export class ClinicScheduleComponent implements OnInit {
 					noSlots: [ 0, [] ],
 					timePerSlot: [ 0, [] ],
 					timeUnit: [ this.durationUnits[0].name, [] ],
+					slots: [ [], [] ],
 					readOnly: [ false ]
 				})
 			])
@@ -216,6 +237,7 @@ export class ClinicScheduleComponent implements OnInit {
 				noSlots: [ 0, [] ],
 				timePerSlot: [ 0, [] ],
 				timeUnit: [ this.durationUnits[0].name, [] ],
+				slots: [ [], [] ],
 				readOnly: [ false ]
 			})
 		);
@@ -248,7 +270,6 @@ export class ClinicScheduleComponent implements OnInit {
 		if (this.selectedManager !== undefined && this.selectedManager.clinic !== undefined && hasReadOnly) {
 			this.selectedManager.schedules = [];
 			(<FormArray>this.clinicScheduleForm.controls['clinicScheduleArray']).controls.forEach((itemi, i) => {
-				// console.log(itemi.value);
 				const startTime = new Date();
 				startTime.setHours(itemi.value.startTime.hour);
 				startTime.setMinutes(itemi.value.startTime.minute);
@@ -261,12 +282,24 @@ export class ClinicScheduleComponent implements OnInit {
 				this.selectedManager.schedules.push(itemi.value);
 
 				if (itemi.value.noSlots > 0 && itemi.value.timePerSlot > 0 && itemi.value.timeUnit.length > 0) {
-					const timeInMinutes = differenceInMinutes(endTime, startTime);
-					const totalMinutes = this.calculateMinutes(itemi.value.timePerSlot, itemi.value.timeUnit);
-					// console.log(timeInMinutes);
-					// console.log(totalMinutes);
-					const aSlot = timeInMinutes / totalMinutes;
-					// console.log(aSlot);
+					const timeDifference = differenceInMinutes(endTime, startTime);
+					const timeInMinutes = this.calculateMinutes(itemi.value.timePerSlot, itemi.value.timeUnit);
+					const totalSlot = timeDifference / timeInMinutes;
+					let _startTime = Object.assign(startTime);
+					itemi.value.slots = [];
+					for (i = 0; i < totalSlot; i++) {
+						const _endTime = addMinutes(_startTime, timeInMinutes);
+						if (itemi.value.slots !== undefined && itemi.value.slots !== null) {
+							itemi.value.slots.push({
+								start: moment(_startTime).format('HH:mm A'),
+								end: moment(_endTime).format('HH:mm A')
+							});
+						} else {
+							itemi.value.slots = [];
+							itemi.value.slots.push({ start: _startTime.toTimeString(), end: _endTime.toTimeString() });
+						}
+						_startTime = _endTime;
+					}
 				}
 			});
 
@@ -296,7 +329,6 @@ export class ClinicScheduleComponent implements OnInit {
 				manager.department = this.locationTypeControl.value.department.name;
 				manager.unit = this.locationTypeControl.value.unit.name;
 				(<FormArray>this.clinicScheduleForm.controls['clinicScheduleArray']).controls.forEach((itemi, i) => {
-					// console.log(itemi.value);
 					const startTime = new Date();
 					startTime.setHours(itemi.value.startTime.hour);
 					startTime.setMinutes(itemi.value.startTime.minute);
@@ -357,7 +389,12 @@ export class ClinicScheduleComponent implements OnInit {
 
 	closeClinicSchedule(clinic: any, i: any) {
 		(<FormArray>this.clinicScheduleForm.controls['clinicScheduleArray']).controls.splice(i, 1);
-		this.loadManagerSchedules(false);
+		const remainSchedules = (<FormArray>this.clinicScheduleForm.controls['clinicScheduleArray']).controls.map(
+			(v) => v.value
+		);
+		this.selectedManager.schedules = remainSchedules;
+		// this.loadManagerSchedules(false);
+		this.btnCreatText = 'Update';
 	}
 
 	onSubmit() {}
