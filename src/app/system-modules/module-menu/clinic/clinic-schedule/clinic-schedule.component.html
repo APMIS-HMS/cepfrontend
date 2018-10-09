@@ -79,11 +79,14 @@
                                                 </div>
                                                 <div class="frm-x2-mini">
                                                     <mat-form-field>
-                                                        <mat-select placeholder="" formControlName="timeUnit">
-                                                            <mat-option>Select</mat-option>
+                                                        <mat-select placeholder="" formControlName="timeUnit"
+                                                            [compareWith]="compareTimeUnit">
                                                             <mat-option *ngFor="let unit of durationUnits" [value]="unit.name">{{unit.name}}</mat-option>
                                                         </mat-select>
                                                     </mat-form-field>
+                                                    <!-- <mat-select placeholder="State" formControlName="facilitystate" [compareWith]="compareState">
+    <mat-option [value]="state.name" *ngFor="let state of states">{{state.name}}</mat-option>
+</mat-select> -->
                                                 </div>
                                             </div>
                                         </div>
