@@ -28,6 +28,7 @@ import { SwalComponent } from "@toverux/ngx-sweetalert2";
 import swal from "sweetalert2";
 import { ImageEmitterService } from '../../../../services/facility-manager/image-emitter.service';
 import { ImageUploadService } from '../../../../services/facility-manager/setup';
+import {LogoSrcService} from '../../../../shared-common-modules/CustomLogoComponent';
 
 @Component({
   selector: "app-facility-basicinfo-edit",
@@ -200,7 +201,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
     const reader = new FileReader();
     reader.onload = (e: any) => {
       this.base64Image = e.target.result;
-      this.imageEmitterService.setImageUrl(e.target.result);
+      this.imageEmitterService.setSrc(e.target.result);
     };
 
     reader.readAsDataURL(fileList[0]);
