@@ -62,10 +62,6 @@ export class HmoReportComponent implements OnInit {
         };
       }
     });
-
-    // if (!!this.selectedBill.billItems && this.selectedBill.billItems.length > 0) {
-    //   this.filterBills = this.selectedBill.billItems.filter(x => x.covered.isVerify !== undefined);
-    // }
   }
 
   onClickFindBillHistory() {

@@ -14,7 +14,7 @@ import { Observable } from 'rxjs/Observable';
   styleUrls: ['./payment-history.component.scss']
 })
 export class PaymentHistoryComponent implements OnInit {
-  invoiceSearch = new FormControl();
+  // invoiceSearch = new FormControl();
   patientSearch = new FormControl();
   user: any = <any>{};
   searchOpen = false;
@@ -43,13 +43,12 @@ export class PaymentHistoryComponent implements OnInit {
       .debounceTime(400)
       .distinctUntilChanged()
       .do(val => { this.invoiceGroups = []; this.loading = true; })
-      .switchMap((term) => Observable.fromPromise(this.invoiceService.find({
-        query: { search: term, facilityId: this.selectedFacility._id, $sort: { updatedAt: -1 } }
+      .switchMap((term) => Observable.fromPromise(this.invoiceService.search({
+        query: { name: term, facilityId: this.selectedFacility._id, $sort: { updatedAt: -1 } }
       }))).subscribe((res: any) => {
-        console.log(res);
         this.loading = false;
-        this.invoiceGroups = [];
-        if (res.status === 'success') {
+        if (res.status === 'success' && res.data.length > 0) {
+          this.invoiceGroups = res.data.filter(x => x.paymentCompleted);
         }
       }, (err) => console.log(err));
   }
