@@ -9,6 +9,8 @@ export class HmoService {
   public _socket;
   private _rest;
   public _insuranceSocket;
+  public _hmoBillHistorySocket;
+  public _hmoBillHistoryRest;
 
   private hmoAnnouncedSource = new Subject<Object>();
   hmoAnnounced$ = this.hmoAnnouncedSource.asObservable();
@@ -19,6 +21,8 @@ export class HmoService {
   ) {
     this._rest = _restService.getService('hmos');
     this._socket = _socketService.getService('hmos');
+    this._hmoBillHistoryRest = _restService.getService('health-covered-bill-histories');
+    this._hmoBillHistorySocket = _socketService.getService('health-covered-bill-histories');
     this._socket.timeout = 50000;
     this._socket.on('created', function (gender) {
 
@@ -32,8 +36,13 @@ export class HmoService {
   receiveHmo(): Observable<Object> {
     return this.hmoAnnouncedSource.asObservable();
   }
+
   find(query: any) {
     return this._socket.find(query);
+  }
+
+  findBillHistory(query: any) {
+    return this._hmoBillHistoryRest.find(query);
   }
 
   findAll() {

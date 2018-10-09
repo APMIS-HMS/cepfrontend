@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { InvoiceService } from '../../../../services/facility-manager/setup/index';
 import { Facility, Invoice } from '../../../../models/index';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Subscription } from 'rxjs/Subscription';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-payment-history',
@@ -12,15 +14,17 @@ import { Subscription } from 'rxjs/Subscription';
   styleUrls: ['./payment-history.component.scss']
 })
 export class PaymentHistoryComponent implements OnInit {
-
+  invoiceSearch = new FormControl();
+  patientSearch = new FormControl();
   user: any = <any>{};
-
+  searchOpen = false;
   selectedFacility: Facility = <Facility>{};
   invoice: Invoice = <Invoice>{ billingDetails: [], totalPrice: 0, totalDiscount: 0 };
   selectedInvoiceGroup: Invoice = <Invoice>{};
   invoiceGroups: Invoice[] = [];
   subscription: Subscription;
   paymentTxn: any = <any>[];
+  loading: Boolean = true;
 
   constructor(
     private _route: Router,
@@ -34,6 +38,20 @@ export class PaymentHistoryComponent implements OnInit {
   ngOnInit() {
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.getPatientInvoices();
+
+    this.patientSearch.valueChanges
+      .debounceTime(400)
+      .distinctUntilChanged()
+      .do(val => { this.invoiceGroups = []; this.loading = true; })
+      .switchMap((term) => Observable.fromPromise(this.invoiceService.find({
+        query: { search: term, facilityId: this.selectedFacility._id, $sort: { updatedAt: -1 } }
+      }))).subscribe((res: any) => {
+        console.log(res);
+        this.loading = false;
+        this.invoiceGroups = [];
+        if (res.status === 'success') {
+        }
+      }, (err) => console.log(err));
   }
 
   onClickViewDetails(item) {
@@ -56,6 +74,10 @@ export class PaymentHistoryComponent implements OnInit {
       this.systemModuleService.announceSweetProxy('There was a problem getting invoices. Please try again later!', 'error');
     });
 
+  }
+
+  openSearch() {
+    this.searchOpen = !this.searchOpen;
   }
 
 }

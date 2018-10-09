@@ -1,9 +1,12 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { BillingService } from '../../../../../services/facility-manager/setup/index';
+import { FacilityTypesService, HmoService } from '../../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from '../../../../service-facade/auth-facade.service';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Facility } from './../../../../../models/facility-manager/setup/facility';
+import { FacilityType } from './../../../../../models/facility-manager/setup/facilitytype';
+import { IDateRange } from 'ng-pick-daterange';
 
 @Component({
   selector: 'app-hmo-report',
@@ -11,31 +14,139 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./hmo-report.component.scss']
 })
 export class HmoReportComponent implements OnInit {
-
+  hmoFormGroup: FormGroup;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() selectedBill;
-  filterBills = [];
-  selectedFacility: any = <any>{}
-  startTime = new FormControl();
-  endTime = new FormControl();
-  seleectHMO = new FormControl();
   dateRange: any;
+  // dateRange: any = { from: new Date().toString(), to: new Date(new Date().getTime() + (6 * 24 * 60 * 60 * 1000)).toString() };
 
-  constructor(private billingService: BillingService,
+  selectedFacility: Facility = <Facility>{};
+  selectedHMO: Facility = <Facility>{};
+  selectedFacilityType: FacilityType = <FacilityType>{};
+  loading: Boolean = false;
+  apmisLookupUrl = 'facilities';
+  apmisLookupText = '';
+  apmisLookupQuery = {};
+  apmisLookupDisplayKey = 'name';
+  apmisLookupOtherKeys = [];
+  hmoBillHistory = [];
+  disableSearchBtn = false;
+  searchBtn = true;
+  searchingBtn = false;
+
+  constructor(
+    private _fb: FormBuilder,
     private locker: CoolLocalStorage,
+    private hmoService: HmoService,
     private authFacadeService: AuthFacadeService,
-    private systemModuleService: SystemModuleService) { }
+    private facilityTypeService: FacilityTypesService,
+    private systemModuleService: SystemModuleService
+  ) { }
 
   ngOnInit() {
-    this.filterBills = this.selectedBill.billItems.filter(x => x.covered.isVerify !== undefined);
+    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+    this._getFacilityTypes();
+
+    this.hmoFormGroup = this._fb.group({
+      name: ['', Validators.required],
+      startDate: ['', Validators.required],
+      endDate: ['', Validators.required],
+    });
+
+    this.hmoFormGroup.controls['name'].valueChanges.subscribe(value => {
+      if (value !== null && value.length === 0) {
+        this.apmisLookupQuery = {
+          'facilityTypeId': this.selectedFacilityType.name,
+          name: { $regex: value, '$options': 'i' },
+          $select: ['name', 'email', 'primaryContactPhoneNo', 'shortName', 'website']
+        };
+      }
+    });
+
+    // if (!!this.selectedBill.billItems && this.selectedBill.billItems.length > 0) {
+    //   this.filterBills = this.selectedBill.billItems.filter(x => x.covered.isVerify !== undefined);
+    // }
+  }
+
+  onClickFindBillHistory() {
+    if (!!this.selectedHMO._id && !!this.dateRange.from && !!this.dateRange.to) {
+      this.loading = true;
+      this.disableSearchBtn = true;
+      this.searchBtn = false;
+      this.searchingBtn = true;
+      const query = {
+        facilityId: this.selectedFacility._id,
+        hmoId: this.selectedHMO._id,
+        startDate: this.dateRange.from,
+        endDate: this.dateRange.to
+      };
+
+      this.hmoService.findBillHistory({ query }).then(res => {
+        console.log(res);
+        this.loading = false;
+        this.disableSearchBtn = false;
+        this.searchBtn = true;
+        this.searchingBtn = false;
+        if (res.status === 'success' && !!res.data.historyBills && res.data.historyBills.length > 0) {
+          const totalBills = [];
+          res.data.historyBills.map(a => {
+            a.billItems.map(x => {
+              totalBills.push({
+                date: x.covered.verifiedAt,
+                coverType: x.covered.coverType,
+                patient:  {
+                  firstName: x.patientObject.personDetails.firstName,
+                  lastName: x.patientObject.personDetails.lastName,
+                  apmisId: x.patientObject.personDetails.apmisId,
+                  title: x.patientObject.personDetails.title,
+                },
+                service: (x.serviceObject) ? x.serviceObject.name : undefined,
+                hmoName: a.coverFile.name
+              });
+            });
+          });
+
+          this.hmoBillHistory = totalBills;
+        }
+      }).catch(err => {
+        this.loading = false;
+        this.disableSearchBtn = false;
+        this.searchBtn = true;
+        this.searchingBtn = false;
+      });
+    } else {
+      this.systemModuleService.announceSweetProxy('Please select HMO and date range', 'error');
+    }
   }
 
   close_onClick() {
     this.closeModal.emit(true);
   }
-  setReturnValue(e){}
+
+  setReturnValue(dateRange: any) {
+    if (dateRange !== null) {
+      this.dateRange = dateRange;
+    }
+  }
+
+  _getFacilityTypes() {
+    this.facilityTypeService.findAll().then(res => {
+      if (!!res.data && res.data.length > 0) {
+        const selectedFacilityType = res.data.filter(x => x.name === 'HMO');
+        if (selectedFacilityType.length > 0) {
+          this.selectedFacilityType = selectedFacilityType[0];
+        }
+      }
+    });
+  }
+
+  apmisLookupHandleSelectedItem(value) {
+    this.apmisLookupText = value.name;
+    this.selectedHMO = value;
+  }
+
   onClickPrintDocument() {
-    let printContents = document.getElementById('print-section').innerHTML;
+    const printContents = document.getElementById('print-section').innerHTML;
     let popupWin = window.open('', '', 'top=0,left=0,height=100%,width=auto');
     popupWin.document.open();
     popupWin.document.write(`
