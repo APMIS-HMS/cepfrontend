@@ -72,9 +72,14 @@
                                 <input [formControl]="patientSearch" class="table-header-input" type="text" placeholder="Search by patient, invoiceID, APMIS ID">
                             </div>
                             <div class="col-md-4">
+                                <app-date-range [dateRange]="dateRange" (dateRangeChange)="setReturnValue($event)"></app-date-range>
                                 <!-- <input [formControl]="invoiceSearch" class="table-header-input" type="text" placeholder="Search by invoice number"> -->
                             </div>
                             <div class="col-md-3">
+                                <button class="btn btn-primary" [disabled]="disableSearchBtn" (click)="onClickFindBillHistory();" style="height: 34px;">
+                                    <span *ngIf="searchBtn">Search</span>
+                                    <span *ngIf="searchingBtn">Searching <i class="fa fa-spin fa-spinner"></i></span>
+                                </button>
                             </div>
                             <div class="col-md-1 table-head">
                                 <i class="fa fa-close fa-fw" (click)="openSearch()"></i>

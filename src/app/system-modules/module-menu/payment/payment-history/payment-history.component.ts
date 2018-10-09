@@ -17,6 +17,7 @@ export class PaymentHistoryComponent implements OnInit {
   // invoiceSearch = new FormControl();
   patientSearch = new FormControl();
   user: any = <any>{};
+  dateRange: any;
   searchOpen = false;
   selectedFacility: Facility = <Facility>{};
   invoice: Invoice = <Invoice>{ billingDetails: [], totalPrice: 0, totalDiscount: 0 };
@@ -25,6 +26,9 @@ export class PaymentHistoryComponent implements OnInit {
   subscription: Subscription;
   paymentTxn: any = <any>[];
   loading: Boolean = true;
+  disableSearchBtn = false;
+  searchBtn = true;
+  searchingBtn = false;
 
   constructor(
     private _route: Router,
@@ -73,6 +77,44 @@ export class PaymentHistoryComponent implements OnInit {
       this.systemModuleService.announceSweetProxy('There was a problem getting invoices. Please try again later!', 'error');
     });
 
+  }
+
+  onClickFindBillHistory() {
+    if (!!this.dateRange.from && !!this.dateRange.to) {
+      this.loading = true;
+      this.disableSearchBtn = true;
+      this.searchBtn = false;
+      this.searchingBtn = true;
+      const query = {
+        facilityId: this.selectedFacility._id,
+        startDate: this.dateRange.from,
+        endDate: this.dateRange.to
+      };
+
+      this.invoiceService.search({ query }).then(res => {
+        console.log(res);
+        this.loading = false;
+        this.disableSearchBtn = false;
+        this.searchBtn = true;
+        this.searchingBtn = false;
+        if (res.status === 'success' && res.data.length > 0) {
+          this.invoiceGroups = res.data.filter(x => x.paymentCompleted);
+        }
+      }).catch(err => {
+        this.loading = false;
+        this.disableSearchBtn = false;
+        this.searchBtn = true;
+        this.searchingBtn = false;
+      });
+    } else {
+      this.systemModuleService.announceSweetProxy('Please select HMO and date range', 'error');
+    }
+  }
+
+  setReturnValue(dateRange: any) {
+    if (dateRange !== null) {
+      this.dateRange = dateRange;
+    }
   }
 
   openSearch() {
