@@ -27,8 +27,12 @@ export class HmoListComponent implements OnInit {
   public frmNewHmo: FormGroup;
   hmo = new FormControl('', []);
   searchHmo = new FormControl();
+  HmoBaseId = new FormControl();
+  sepHmoBeneficiaryId = new FormControl();
+  HmoPrincipalId = new FormControl();
+  sepHmoPrincipalId = new FormControl();
+  HmoBeneficiaryId = new FormControl();
   newHmo = false;
-  newHMO = false;
   isSelectedFileUploaded = false;
 
   apmisLookupUrl = 'facilities';
@@ -69,13 +73,13 @@ export class HmoListComponent implements OnInit {
         this.apmisLookupQuery = {
           'facilityTypeId': this.selectedFacilityType.name,
           name: { $regex: -1, '$options': 'i' },
-          $select: ['name', 'email', 'primaryContactPhoneNo', 'shortName', 'website']
+          $select: ['name', 'email', 'primaryContactPhoneNo', 'shortName', 'website', 'hmoPolicyIDFormat']
         }
       } else {
         this.apmisLookupQuery = {
           'facilityTypeId': this.selectedFacilityType.name,
           name: { $regex: value, '$options': 'i' },
-          $select: ['name', 'email', 'primaryContactPhoneNo', 'shortName', 'website']
+          $select: ['name', 'email', 'primaryContactPhoneNo', 'shortName', 'website', 'hmoPolicyIDFormat']
         }
       }
     });
@@ -139,6 +143,14 @@ export class HmoListComponent implements OnInit {
   }
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = value.name;
+    console.log(value);
+    if (value.hmoPolicyIDFormat !== undefined) {
+      this.HmoBaseId.setValue(value.hmoPolicyIDFormat.base);
+      this.sepHmoPrincipalId.setValue(value.hmoPolicyIDFormat.principalIDSeparator);
+      this.HmoPrincipalId.setValue(value.hmoPolicyIDFormat.principalID);
+      this.sepHmoBeneficiaryId.setValue(value.hmoPolicyIDFormat.beneficiatyIDSeparator);
+      this.HmoBeneficiaryId.setValue(value.hmoPolicyIDFormat.beneficiatyID);
+    }
     let isExisting = false;
     if (this.loginHMOListObject.hmos !== undefined) {
       this.loginHMOListObject.hmos.forEach(item => {
@@ -156,8 +168,20 @@ export class HmoListComponent implements OnInit {
     }
   }
 
-  newHmo_show() {
+  newHmo_show(hmo?) {
     this.newHmo = !this.newHmo;
+    if (hmo !== undefined && hmo !== null) {
+      console.log(hmo);
+      if (hmo.hmoPolicyIDFormat !== undefined) {
+        this.HmoBaseId.setValue(hmo.hmoPolicyIDFormat.base);
+        this.sepHmoPrincipalId.setValue(hmo.hmoPolicyIDFormat.principalIDSeparator);
+        this.HmoPrincipalId.setValue(hmo.hmoPolicyIDFormat.principalID);
+        this.sepHmoBeneficiaryId.setValue(hmo.hmoPolicyIDFormat.beneficiatyIDSeparator);
+        this.HmoBeneficiaryId.setValue(hmo.hmoPolicyIDFormat.beneficiatyID);
+
+      }
+      this.apmisLookupText = hmo.name;
+    }
   }
 
   showImageBrowseDlg(i) {
@@ -170,6 +194,7 @@ export class HmoListComponent implements OnInit {
   }
 
   show_beneficiaries(hmo) {
+    console.log(hmo);
     this.router.navigate(['/dashboard/health-coverage/hmo-cover-beneficiaries/', hmo._id]);
   }
   onChange(e) {
@@ -401,26 +426,38 @@ export class HmoListComponent implements OnInit {
 
 
   save(valid, value) {
-    this.selectedHMO.base = '';
-    this.selectedHMO.baseSeparator = '/';
-    this.selectedHMO.principalID = '02E'
-    this.selectedHMO.principalIDSeparator = '-'
-    this.selectedHMO.beneficiatyID = 'A';
+    this.systemModuleService.on();
+    this.selectedHMO.base = this.HmoBaseId.value;
+    this.selectedHMO.sepHmoPrincipalId = this.sepHmoPrincipalId.value;
+    this.selectedHMO.principalID = this.HmoPrincipalId.value;
+    this.selectedHMO.sepHmoBeneficiaryId = this.sepHmoBeneficiaryId.value;
+    this.selectedHMO.beneficiatyID = this.HmoBeneficiaryId.value;
     this.selectedHMO.checkHmo = this.checkHmo();
     this.selectedHMO.loginHMOListObject = this.loginHMOListObject;
     console.log(this.selectedHMO);
     this.hmoService.addHmo(this.selectedHMO).then(payload => {
       console.log(payload);
       if (payload.status === 'success') {
+        console.log(3);
+        this.frmNewHmo.controls['name'].reset();
+        console.log(4);
+        this.apmisLookupText = '';
+        console.log(1);
+        this.getLoginHMOList();
+        console.log(2);
+        this.systemModuleService.off();
+        this.systemModuleService.announceSweetProxy(payload.data.message,
+          'success', null, null, null, null, null, null, null);
+      } else if (payload.status === 'fail') {
+        this.systemModuleService.announceSweetProxy('Selected HMO Policy Format updated. '+payload.data.message, 'success');
         this.frmNewHmo.controls['name'].reset();
         this.apmisLookupText = '';
         this.getLoginHMOList();
         this.systemModuleService.off();
-        this.systemModuleService.announceSweetProxy(payload.message,
-          'success', null, null, null, null, null, null, null);
-      } else {
-        this.systemModuleService.announceSweetProxy(payload.message, 'warning');
       }
+    }, err => {
+      this.systemModuleService.announceSweetProxy('Operation failed', 'error');
+      this.systemModuleService.off();
     });
   }
 }

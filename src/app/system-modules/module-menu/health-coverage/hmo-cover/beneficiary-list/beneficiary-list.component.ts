@@ -14,6 +14,7 @@ export class BeneficiaryListComponent implements OnInit {
 
   @ViewChild('fileInput') fileInput: ElementRef;
   public frmNewHmo: FormGroup;
+
   hmo = new FormControl('', []);
   searchBeneficiary = new FormControl();
   newHmo = false;
@@ -22,6 +23,7 @@ export class BeneficiaryListComponent implements OnInit {
   filteredBeneficiaries: any[] = [];
   operateBeneficiaries: any[] = [];
   selectedHMO: any = <any>{};
+  mselectedHMO: any = <any>{};
   selectedBeneficiary: any = <any>{};
 
   pageSize = 10;
@@ -63,6 +65,8 @@ export class BeneficiaryListComponent implements OnInit {
       if (payload.data.length > 0) {
         const facHmo = payload.data[0];
         const index = facHmo.hmos.findIndex(x => x.hmo === id);
+        this.mselectedHMO = facHmo.hmos[index];
+        console.log(facHmo);
         if (index > -1) {
           if (facHmo.hmos[index].enrolleeList.length > 0) {
             const bene = [];
@@ -81,13 +85,36 @@ export class BeneficiaryListComponent implements OnInit {
     }).catch(err => { console.log(err) });
   }
   getRole(beneficiary) {
-    const filNo = beneficiary.filNo;
-    if (filNo !== undefined) {
-      const filNoLength = filNo.length;
-      const lastCharacter = filNo[filNoLength - 1];
-      const secCharacter = (filNoLength - 2 > 0) ? filNo[filNoLength - 2] : filNo[filNoLength - 1];
-      return (isNaN(lastCharacter) && isNaN(secCharacter)) ? 'D' : 'P';
+    // console.log(this.mselectedHMO);
+    if (this.mselectedHMO.policyIdFormat !== undefined) {
+      if (this.mselectedHMO.policyIdFormat.beneficiatyIDSeparator !== undefined
+        && this.mselectedHMO.policyIdFormat.beneficiatyIDSeparator !== null){
+          this.mselectedHMO.policyIdFormat.beneficiatyIDSeparator = this.mselectedHMO.policyIdFormat.beneficiatyIDSeparator.replace(/^\s+/, '').replace(/\s+$/, '');
+        }
+        if (this.mselectedHMO.policyIdFormat.beneficiatyIDSeparator !== "") {
+        const len = beneficiary.filNo.split(this.mselectedHMO.policyIdFormat.beneficiatyIDSeparator);
+        if (len.length === 2) {
+          return 'D';
+        } else {
+          return 'P';
+        }
+      } else {
+        if (isNaN(this.mselectedHMO.policyIdFormat.beneficiatyID)) {
+          if (isNaN(beneficiary.filNo.slice(-1))) {
+            return 'D';
+          } else {
+            return 'P';
+          }
+        }
+      }
     }
+    // const filNo = beneficiary.filNo;
+    // if (filNo !== undefined) {
+    //   const filNoLength = filNo.length;
+    //   const lastCharacter = filNo[filNoLength - 1];
+    //   const secCharacter = (filNoLength - 2 > 0) ? filNo[filNoLength - 2] : filNo[filNoLength - 1];
+    //   return (isNaN(lastCharacter) && isNaN(secCharacter)) ? 'D' : 'P';
+    // }
   }
   newHmo_show() {
     this.newHmo = !this.newHmo;
@@ -121,7 +148,7 @@ export class BeneficiaryListComponent implements OnInit {
   }
 
   edit_show(value, i) {
-console.log(value);
+    console.log(value);
     this.newBeneficiary = !this.newBeneficiary;
     value.id = this.selectedBeneficiary.id;
     value.index = i;

@@ -31,8 +31,16 @@ th {
 .con-width{
     max-width: 20%;
 }
+.con-width, .sm{
+    margin-right: 10px;
+}
 
 .sep{
     max-width: 80px;
     font-style: italic;
+}
+
+.mat-title-hmo{
+    font-size: 11px; 
+    padding-right: 4px;
 }
