@@ -114,14 +114,14 @@ export class HmoListComponent implements OnInit {
     })
     if (value === null || value === undefined) {
       this.facilityService.find({
-        query: { _id: { $in: flist },$sort: { updatedAt: -1 } }
+        query: { _id: { $in: flist }, $sort: { updatedAt: -1 } }
       }).then(payload => {
         this.loading = false;
         this.hmoFacilities = payload.data;
       });
     } else {
       this.facilityService.find({
-        query: { _id: { $in: flist }, name: { $regex: value, '$options': 'i' },$sort: { updatedAt: -1 } }
+        query: { _id: { $in: flist }, name: { $regex: value, '$options': 'i' }, $sort: { updatedAt: -1 } }
       }).then(payload => {
         this.loading = false;
         this.hmoFacilities = payload.data;
@@ -398,8 +398,18 @@ export class HmoListComponent implements OnInit {
   checkHmo() {
     return this.loginHMOListObject.hmos.findIndex(x => x.hmo === this.selectedHMO._id) > -1;
   }
+
+
   save(valid, value) {
     this.systemModuleService.on();
+    let hmoPolicyIDFormat = {
+      base: value.base,
+      baseSeparator: value.baseSeparator,
+      principalID: value.principalID,
+      principalIDSeparator: value.principalIDSeparator,
+      beneficiatyID: value.beneficiatyID
+    };
+    // this.facilityService.patch(this.selectedHMO._id, {hmoPolicyIDFormat:hmoPolicyIDFormat})
     if (this.checkHmo()) {
       this.systemModuleService.announceSweetProxy('The selected HMO is already in the list of HMOs', 'warning');
       this.systemModuleService.off();
@@ -408,6 +418,7 @@ export class HmoListComponent implements OnInit {
         this.systemModuleService.announceSweetProxy('Please select an HMO to continue!', 'warning');
         this.systemModuleService.off();
       } else {
+        console.log(this.loginHMOListObject);
         const newHmo = {
           hmo: this.selectedHMO._id,
           enrolleeList: []
