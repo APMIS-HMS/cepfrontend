@@ -3,13 +3,13 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 
 
 @Component({
-  selector: 'app-new-child-entry',
-  templateUrl: './new-child-entry.component.html',
-  styleUrls: ['./new-child-entry.component.scss']
+  selector: 'app-new-hfmrecords-entry',
+  templateUrl: './new-hfmrecords-entry.component.html',
+  styleUrls: ['./new-hfmrecords-entry.component.scss']
 })
-export class NewChildEntryComponent implements OnInit {
+export class NewHfmrecordsEntryComponent implements OnInit {
 
-  public frm_UpdateCIR: FormGroup;
+  public frm_UpdateHFM: FormGroup;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   mainErr = true;
   errMsg = 'You have unresolved errors';
@@ -18,7 +18,7 @@ export class NewChildEntryComponent implements OnInit {
 
   ngOnInit() {
 
-    this.frm_UpdateCIR = this.formBuilder.group({
+    this.frm_UpdateHFM = this.formBuilder.group({
     
     });
   }
@@ -26,4 +26,5 @@ export class NewChildEntryComponent implements OnInit {
   close_onClick() {
     this.closeModal.emit(true);
   }
+
 }

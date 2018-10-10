@@ -14,13 +14,45 @@
             <div class="frm-title">NEW HMO</div>
 
             <div class="frm-x2">
-              <div class="frm-item-wrap">
-                <apmis-lookup style='width:100%' formControlName="name" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery"
-                  placeholder="Select HMO" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"
-                  [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys"></apmis-lookup>
+              <div class="frm-item-wrap" style='width:40%'>
+                <apmis-lookup style='width:80%' formControlName="name" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl"
+                  [query]="apmisLookupQuery" placeholder="Select HMO" [isSocket]="true" [displayKey]="apmisLookupDisplayKey"
+                  (selectedItem)="apmisLookupHandleSelectedItem($event)" [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys"></apmis-lookup>
               </div>
-            </div>
 
+
+              <mat-card class="frm-item-wrap" style='width:60%'>
+                <div class=" con-width">
+                  <mat-input-container>
+                    <input matInput placeholder="HMO ID">
+                  </mat-input-container>
+                </div>
+
+                <div class="">
+                  <mat-input-container class="sep">
+                    <input matInput placeholder="Seperator">
+                  </mat-input-container>
+                </div>
+
+                <div class=" con-width">
+                  <mat-input-container>
+                    <input matInput placeholder="Principal ID">
+                  </mat-input-container>
+                </div>
+
+                <div class="">
+                  <mat-input-container class="sep" matTooltip="/ , -" 
+                  aria-label="Button that displays a tooltip when focused or hovered over">
+                    <input matInput placeholder="Seperator" >
+                  </mat-input-container>
+                </div>
+                <div class="frm-item-wrap con-width">
+                  <mat-input-container>
+                    <input matInput placeholder="Beneficiary ID">
+                  </mat-input-container>
+                </div>
+              </mat-card>
+            </div>
 
           </form>
           <button *ngIf="newHmo" (click)="save(frmNewHmo.valid, frmNewHmo.value)" class="cta-1">Add HMO</button>
@@ -101,8 +133,8 @@
                       <div (click)="showImageBrowseDlg(i)" class="action-item">
                         <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                         <span>Upload Beneficiary List</span>
-                        <input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style="display:none;"
-                          #fileInput type="file" id="uploadResult" (change)="submitExcel($event, hmo)">
+                        <input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                          style="display:none;" #fileInput type="file" id="uploadResult" (change)="submitExcel($event, hmo)">
                       </div>
                     </form>
                     <div class="action-item">
@@ -115,7 +147,8 @@
             </tbody>
             <tbody *ngIf="hmoFacilities.length === 0 && !loading">
               <tr>
-                <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;"> No data available in table</td>
+                <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;">
+                  No data available in table</td>
               </tr>
             </tbody>
             <tbody *ngIf="hmoFacilities.length === 0 && loading">
