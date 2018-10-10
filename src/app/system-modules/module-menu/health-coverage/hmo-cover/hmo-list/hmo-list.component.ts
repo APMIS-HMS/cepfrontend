@@ -45,7 +45,7 @@ export class HmoListComponent implements OnInit {
   loading: boolean = true;
 
   selelctedFacility: Facility = <Facility>{};
-  selectedHMO: Facility = <Facility>{};
+  selectedHMO: any = <any>{};
   selectedFacilityType: FacilityType = <FacilityType>{};
   loginHMOListObject: any = <any>{};
   user: User = <User>{};
@@ -401,51 +401,26 @@ export class HmoListComponent implements OnInit {
 
 
   save(valid, value) {
-    this.systemModuleService.on();
-    let hmoPolicyIDFormat = {
-      base: value.base,
-      baseSeparator: value.baseSeparator,
-      principalID: value.principalID,
-      principalIDSeparator: value.principalIDSeparator,
-      beneficiatyID: value.beneficiatyID
-    };
-    // this.facilityService.patch(this.selectedHMO._id, {hmoPolicyIDFormat:hmoPolicyIDFormat})
-    if (this.checkHmo()) {
-      this.systemModuleService.announceSweetProxy('The selected HMO is already in the list of HMOs', 'warning');
-      this.systemModuleService.off();
-    } else {
-      if (this.selectedHMO._id === undefined) {
-        this.systemModuleService.announceSweetProxy('Please select an HMO to continue!', 'warning');
+    this.selectedHMO.base = '';
+    this.selectedHMO.baseSeparator = '/';
+    this.selectedHMO.principalID = '02E'
+    this.selectedHMO.principalIDSeparator = '-'
+    this.selectedHMO.beneficiatyID = 'A';
+    this.selectedHMO.checkHmo = this.checkHmo();
+    this.selectedHMO.loginHMOListObject = this.loginHMOListObject;
+    console.log(this.selectedHMO);
+    this.hmoService.addHmo(this.selectedHMO).then(payload => {
+      console.log(payload);
+      if (payload.status === 'success') {
+        this.frmNewHmo.controls['name'].reset();
+        this.apmisLookupText = '';
+        this.getLoginHMOList();
         this.systemModuleService.off();
+        this.systemModuleService.announceSweetProxy(payload.message,
+          'success', null, null, null, null, null, null, null);
       } else {
-        console.log(this.loginHMOListObject);
-        const newHmo = {
-          hmo: this.selectedHMO._id,
-          enrolleeList: []
-        }
-        this.loginHMOListObject.hmos.push(newHmo);
-        if (this.selectedHMO._id !== undefined) {
-          if (this.loginHMOListObject._id === undefined) {
-            this.hmoService.create(this.loginHMOListObject).then(payload => {
-              this.frmNewHmo.controls['name'].reset();
-              this.apmisLookupText = '';
-              this.getLoginHMOList();
-              this.systemModuleService.off();
-              this.systemModuleService.announceSweetProxy('Selected HMO added to your HMO list successfully',
-                'success', null, null, null, null, null, null, null);
-            })
-          } else {
-            this.hmoService.update(this.loginHMOListObject).then(payload => {
-              this.frmNewHmo.controls['name'].reset();
-              this.apmisLookupText = '';
-              this.getLoginHMOList();
-              this.systemModuleService.off();
-              this.systemModuleService.announceSweetProxy('Selected HMO added to your HMO list successfully',
-                'success', null, null, null, null, null, null, null);
-            })
-          }
-        }
+        this.systemModuleService.announceSweetProxy(payload.message, 'warning');
       }
-    }
+    });
   }
 }
