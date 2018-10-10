@@ -11,7 +11,10 @@ import { InvestigationPriceComponent } from './investigation-price/investigation
 import { PanelComponent } from './panel/panel.component';
 import { OnlyMaterialModule } from '../../../shared-common-modules/only-material-module';
 import {
-  LaboratoryRequestService, WorkbenchService, HmoService, FacilityFamilyCoverService
+	LaboratoryRequestService,
+	WorkbenchService,
+	HmoService,
+	FacilityFamilyCoverService
 } from '../../../services/facility-manager/setup';
 import { ReportComponent } from './report/report.component';
 import { ReportDetailComponent } from './report/report-detail/report-detail.component';
@@ -28,18 +31,38 @@ import { ViewRadiologyReportComponent } from './report/view-radiology-report/vie
 import { NewRadiologyReportComponent } from './report/new-radiology-report/new-radiology-report.component';
 import { ViewRadiologyImagesComponent } from './report/view-radiology-images/view-radiology-images.component';
 @NgModule({
-  imports: [
-    // CommonModule,
-    RadiologyRoutes,
-    OnlyMaterialModule,
-    // SharedModule,
-    MaterialModule
-  ],
-  declarations: [RadiologyComponent, RadiologyRequestsComponent, WorkbenchComponent, InvestigationServiceComponent,
-    InvestigationPriceComponent, PanelComponent, ReportComponent, ReportDetailComponent,
-    ExternalInvestigationsComponent, TemplateComponent, SelectTemplateComponent, NewRadiologyRequestDetailComponent, ViewRadiologyReportComponent, NewRadiologyReportComponent, ViewRadiologyImagesComponent],
-  providers: [
-    LaboratoryRequestService, WorkbenchService, ScopeLevelService, HmoService,
-    FacilityFamilyCoverService, FacilityCompanyCoverService, LabEventEmitterService ]
+	imports: [
+		// CommonModule,
+		RadiologyRoutes,
+		OnlyMaterialModule,
+		// SharedModule,
+		MaterialModule
+	],
+	declarations: [
+		RadiologyComponent,
+		RadiologyRequestsComponent,
+		WorkbenchComponent,
+		InvestigationServiceComponent,
+		InvestigationPriceComponent,
+		PanelComponent,
+		ReportComponent,
+		ReportDetailComponent,
+		ExternalInvestigationsComponent,
+		TemplateComponent,
+		SelectTemplateComponent,
+		NewRadiologyRequestDetailComponent,
+		ViewRadiologyReportComponent,
+		NewRadiologyReportComponent,
+		ViewRadiologyImagesComponent
+	],
+	providers: [
+		LaboratoryRequestService,
+		WorkbenchService,
+		ScopeLevelService,
+		HmoService,
+		FacilityFamilyCoverService,
+		FacilityCompanyCoverService,
+		LabEventEmitterService
+	]
 })
-export class RadiologyModule { }
+export class RadiologyModule {}
