@@ -13,7 +13,6 @@ import { DailyLdrComponent } from './register-entries/daily-ldr/daily-ldr.compon
 import { immunizationTallyComponent } from './register-entries/daily-IRTS/ImmunizationTally/immunizationTally.component';
 import { ChildImmunizationComponent } from './register-entries/daily-IRTS/child-immunization/child-immunization.component';
 import { HfmrecordsComponent } from './register-entries/daily-IRTS/hfmrecords/hfmrecords.component';
-import { ImmunizationSummaryComponent } from './register-entries/daily-IRTS/immunization-summary/immunization-summary.component';
 
 
 const routes: Routes = [
@@ -31,7 +30,6 @@ const routes: Routes = [
   { path: 'immunizationTally', component: immunizationTallyComponent },
   { path: 'child-immunization', component: ChildImmunizationComponent},
   { path: 'health-facility-records', component: HfmrecordsComponent},
-  { path: 'immunization-summary', component: ImmunizationSummaryComponent}
 ];
 
 @NgModule({
