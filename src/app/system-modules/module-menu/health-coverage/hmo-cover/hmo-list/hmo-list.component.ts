@@ -142,6 +142,7 @@ export class HmoListComponent implements OnInit {
     })
   }
   apmisLookupHandleSelectedItem(value) {
+    this.policyIDRegexFormat.reset();
     this.apmisLookupText = value.name;
     if (value.policyIDRegexFormat !== undefined) {
       this.policyIDRegexFormat.setValue(value.policyIDRegexFormat);
