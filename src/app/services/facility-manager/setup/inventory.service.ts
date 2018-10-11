@@ -95,7 +95,7 @@ export class InventoryService {
     return this._socket.update(inventory._id, inventory);
   }
 
-  getInventoryBriefStatus(id: string, query: any) {
+  getInventoryBriefStatus(id: string | number, query: any) {
     return this._msocket.get(id, query);
   }
   getReOrderStockDetails(storeId: string)

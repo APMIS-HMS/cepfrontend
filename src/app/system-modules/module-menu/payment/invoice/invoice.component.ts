@@ -1,9 +1,15 @@
+import { OnDestroy } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import {
-    FacilitiesService, BillingService, PatientService, InvoiceService,
-    SearchInvoicesService, PendingBillService, TodayInvoiceService
+	FacilitiesService,
+	BillingService,
+	PatientService,
+	InvoiceService,
+	SearchInvoicesService,
+	PendingBillService,
+	TodayInvoiceService
 } from '../../../../services/facility-manager/setup/index';
 import { Patient, Facility, BillItem, BillIGroup, Invoice, User } from '../../../../models/index';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
@@ -11,256 +17,282 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Subscription } from 'rxjs/Subscription';
 
 @Component({
-    selector: 'app-invoice',
-    templateUrl: './invoice.component.html',
-    styleUrls: ['./invoice.component.scss']
+	selector: 'app-invoice',
+	templateUrl: './invoice.component.html',
+	styleUrls: [ './invoice.component.scss' ]
 })
-export class InvoiceComponent implements OnInit {
+export class InvoiceComponent implements OnInit, OnDestroy {
+	public frmAddItem: FormGroup;
+	itemEdit = new FormControl('', [ Validators.required, <any>Validators.pattern('/^d+$/') ]);
+	itemQtyEdit = new FormControl('', [ Validators.required, <any>Validators.pattern('/^d+$/') ]);
 
-    public frmAddItem: FormGroup;
-    itemEdit = new FormControl('', [Validators.required, <any>Validators.pattern('/^\d+$/')]);
-    itemQtyEdit = new FormControl('', [Validators.required, <any>Validators.pattern('/^\d+$/')]);
+	addModefierPopup = false;
+	addLineModefierPopup = false;
+	priceItemDetailPopup = false;
+	makePaymentPopup = false;
+	isPaidClass = false;
+	isWaved = false;
+	addItem = false;
+	// paidStatus = "UNPAID";
+	itemEditShow = false;
+	itemEditShow2 = false;
+	itemEditShow3 = false;
+	itemAmount = '20,000.00';
+	itemQty = 2;
+	user: any = <any>{};
 
-    addModefierPopup = false;
-    addLineModefierPopup = false;
-    priceItemDetailPopup = false;
-    makePaymentPopup = false;
-    isPaidClass = false;
-    isWaved = false;
-    addItem = false;
-    // paidStatus = "UNPAID";
-    itemEditShow = false;
-    itemEditShow2 = false;
-    itemEditShow3 = false;
-    itemAmount = '20,000.00';
-    itemQty = 2;
-    user: any = <any>{};
+	searchPendingInvoice = new FormControl('', []);
+	searchOtherPendingInvoice = new FormControl('', []);
+	searchPendingInvoices = new FormControl('');
+	selectedPatient: Patient = <Patient>{};
+	selectedFacility: Facility = <Facility>{};
+	selectedBillItem: BillItem = <BillItem>{};
+	invoice: Invoice = <Invoice>{ billingDetails: [], totalPrice: 0, totalDiscount: 0 };
+	selectedInvoiceGroup: Invoice = <Invoice>{};
+	isLoadingInvoice = false;
+	isLoadingOtherInvoice = false;
+	holdMostRecentInvoices: Invoice[] = [];
+	holdMostRecentOtherInvoices: Invoice[] = [];
+	isPaymentMade = false;
+	invoiceGroups: Invoice[] = [];
+	otherInvoiceGroups: any[] = [];
+	otherInvoiceGroups2: any[] = [];
+	subscription: Subscription;
+	constructor(
+		private formBuilder: FormBuilder,
+		private locker: CoolLocalStorage,
+		public facilityService: FacilitiesService,
+		private invoiceService: InvoiceService,
+		private billingService: BillingService,
+		private router: Router,
+		private route: ActivatedRoute,
+		private patientService: PatientService,
+		private _searchInvoicesService: SearchInvoicesService,
+		private _pendingBillService: PendingBillService,
+		private systemModuleService: SystemModuleService,
+		private _todayInvoiceService: TodayInvoiceService
+	) {
+		this.user = <User>this.locker.getObject('auth');
+		this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+		this.patientService.receivePatient().subscribe((payload: Patient) => {
+			this.selectedPatient = payload;
+			this.selectedInvoiceGroup = <Invoice>{ invoiceNo: '', createdAt: undefined };
+			this.getPatientInvoices();
+		});
+		this.subscription = this.invoiceService.receiveInvoice().subscribe((payload: any) => {
+			this.invoice.billingDetails.push(payload);
+			this.invoice.billingDetails.forEach((item: any) => {
+				this.invoice.totalPrice = this.invoice.totalPrice + item.amount;
+			});
+		});
+	}
+	getPatientInvoices() {
+		this.isLoadingInvoice = true;
+		this.invoiceService
+			.find({
+				query: {
+					facilityId: this.selectedFacility._id,
+					$sort: { updatedAt: -1 },
+					patientId: this.selectedPatient._id
+				}
+			})
+			.then((payload) => {
+				this.invoiceGroups = payload.data;
+				console.log(this.invoiceGroups);
+				this.holdMostRecentInvoices = this.invoiceGroups;
+				this.isLoadingInvoice = false;
+			})
+			.catch((err) => {
+				this.systemModuleService.announceSweetProxy(
+					'There was a problem getting invoices. Please try again later!',
+					'error'
+				);
+			});
 
-    searchPendingInvoice = new FormControl('', []);
-    searchOtherPendingInvoice = new FormControl('', []);
-    searchPendingInvoices = new FormControl('');
-    selectedPatient: Patient = <Patient>{};
-    selectedFacility: Facility = <Facility>{};
-    selectedBillItem: BillItem = <BillItem>{};
-    invoice: Invoice = <Invoice>{ billingDetails: [], totalPrice: 0, totalDiscount: 0 };
-    selectedInvoiceGroup: Invoice = <Invoice>{};
-    isLoadingInvoice = false;
-    isLoadingOtherInvoice = false;
-    holdMostRecentInvoices: Invoice[] = [];
-    holdMostRecentOtherInvoices: Invoice[] = [];
-    isPaymentMade = false;
-    invoiceGroups: Invoice[] = [];
-    otherInvoiceGroups: any[] = [];
-    otherInvoiceGroups2: any[] = [];
-    subscription: Subscription;
-    constructor(private formBuilder: FormBuilder,
-        private locker: CoolLocalStorage,
-        public facilityService: FacilitiesService,
-        private invoiceService: InvoiceService,
-        private billingService: BillingService,
-        private router: Router,
-        private route: ActivatedRoute,
-        private patientService: PatientService,
-        private _searchInvoicesService: SearchInvoicesService,
-        private _pendingBillService: PendingBillService,
-        private systemModuleService: SystemModuleService,
-        private _todayInvoiceService: TodayInvoiceService) {
-        this.user = <User>this.locker.getObject('auth');
-        this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-        this.patientService.receivePatient().subscribe((payload: Patient) => {
-            this.selectedPatient = payload;
-            this.selectedInvoiceGroup = <Invoice>{ invoiceNo: '', createdAt: undefined };
-            this.getPatientInvoices();
-        });
-        this.invoiceService.receiveInvoice().subscribe((payload: any) => {
-            this.invoice.billingDetails.push(payload);
-            this.invoice.billingDetails.forEach((item: any) => {
-                this.invoice.totalPrice = this.invoice.totalPrice + item.amount;
-            });
-        });
-    }
-    getPatientInvoices() {
-        this.isLoadingInvoice = true;
-        this.invoiceService.find({ query: { facilityId: this.selectedFacility._id, $sort: { updatedAt: -1 }, patientId: this.selectedPatient._id } }).then(payload => {
-            this.invoiceGroups = payload.data;
-            console.log(this.invoiceGroups);
-            this.holdMostRecentInvoices = this.invoiceGroups;
-            this.isLoadingInvoice = false;
-        }).catch(err => {
-            this.systemModuleService.announceSweetProxy("There was a problem getting invoices. Please try again later!", "error");
-        });
+		this.isLoadingOtherInvoice = true;
+		this.invoiceService
+			.find({
+				query: {
+					patientId: { $ne: this.selectedPatient._id },
+					facilityId: this.selectedFacility._id,
+					paymentCompleted: false,
+					$sort: { updatedAt: -1 }
+				}
+			})
+			.then((payload) => {
+				this.otherInvoiceGroups = payload.data;
+				this.holdMostRecentOtherInvoices = this.otherInvoiceGroups;
+				this.isLoadingOtherInvoice = false;
+			})
+			.catch((err) => {
+				this.systemModuleService.announceSweetProxy(
+					'There was a problem getting other invoices. Please try again later!',
+					'error'
+				);
+			});
+	}
 
-        this.isLoadingOtherInvoice = true;
-        this.invoiceService.find({
-            query: {
-                patientId: { $ne: this.selectedPatient._id },
-                facilityId: this.selectedFacility._id,
-                paymentCompleted: false,
-                $sort: { updatedAt: -1 }
-            }
-        }).then(payload => {
-            this.otherInvoiceGroups = payload.data;
-            this.holdMostRecentOtherInvoices = this.otherInvoiceGroups;
-            this.isLoadingOtherInvoice = false;
-        }).catch(err => {
-            this.systemModuleService.announceSweetProxy("There was a problem getting other invoices. Please try again later!", "error");
-        });
-    }
+	ngOnInit() {
+		this.frmAddItem = this.formBuilder.group({
+			service: [ '', [ <any>Validators.required ] ],
+			qty: [ '', [ <any>Validators.required ] ]
+		});
+		this.subscription = this.route.params.subscribe((params) => {
+			const invoiceId = params['id'];
+			if (invoiceId !== undefined) {
+				this.invoiceService.get(invoiceId, {}).then((payload) => {
+					this.selectedInvoiceGroup = payload;
+					this.selectedPatient = payload.patientObject;
+					this.getPatientInvoices();
+				});
+			}
+		});
 
-    ngOnInit() {
-        this.frmAddItem = this.formBuilder.group({
-            service: ['', [<any>Validators.required]],
-            qty: ['', [<any>Validators.required]]
-        });
-        this.subscription = this.route.params.subscribe(params => {
-            const invoiceId = params['id'];
-            if (invoiceId !== undefined) {
-                this.invoiceService.get(invoiceId, {}).then(payload => {
-                    this.selectedInvoiceGroup = payload;
-                    this.selectedPatient = payload.patientObject;
-                    this.getPatientInvoices();
-                });
-            }
-        });
+		this.searchOtherPendingInvoice.valueChanges.debounceTime(400).distinctUntilChanged().subscribe((value) => {
+			if (this.searchOtherPendingInvoice.value !== '' && this.searchOtherPendingInvoice.value.length >= 3) {
+				this.isLoadingOtherInvoice = true;
+				this.invoiceService
+					.search({
+						query: {
+							facilityId: this.selectedFacility._id,
+							patientId: { $ne: this.selectedPatient._id },
+							name: value
+						}
+					})
+					.then((payload) => {
+						this.otherInvoiceGroups = payload.data;
+						this.isLoadingOtherInvoice = false;
+					})
+					.catch((err) => {
+						this.isLoadingOtherInvoice = false;
+						this.otherInvoiceGroups = this.holdMostRecentOtherInvoices;
+						this.systemModuleService.announceSweetProxy(
+							'There was a problem getting pending bills. Please try again later!',
+							'error'
+						);
+					});
+			} else {
+				this.otherInvoiceGroups = this.holdMostRecentOtherInvoices;
+				this.isLoadingOtherInvoice = false;
+			}
+		});
 
-        this.searchOtherPendingInvoice.valueChanges
-            .debounceTime(400)
-            .distinctUntilChanged()
-            .subscribe(value => {
-                if (this.searchOtherPendingInvoice.value !== "" && this.searchOtherPendingInvoice.value.length >= 3) {
-                    this.isLoadingOtherInvoice = true;
-                    this.invoiceService.search({
-                        query: {
-                            facilityId: this.selectedFacility._id,
-                            patientId: { $ne: this.selectedPatient._id },
-                            'name': value
-                        }
-                    }).then(payload => {
-                        this.otherInvoiceGroups = payload.data;
-                        this.isLoadingOtherInvoice = false;
-                    }).catch(err => {
-                        this.isLoadingOtherInvoice = false;
-                        this.otherInvoiceGroups = this.holdMostRecentOtherInvoices;
-                        this.systemModuleService.announceSweetProxy("There was a problem getting pending bills. Please try again later!", "error");
-                    });
-                } else {
-                    this.otherInvoiceGroups = this.holdMostRecentOtherInvoices;
-                    this.isLoadingOtherInvoice = false;
-                }
-            });
+		this.searchPendingInvoice.valueChanges.debounceTime(400).distinctUntilChanged().subscribe((value) => {
+			if (this.searchPendingInvoice.value !== '' && this.searchPendingInvoice.value.length >= 3) {
+				this.isLoadingInvoice = true;
+				this.invoiceService
+					.find({
+						query: {
+							facilityId: this.selectedFacility._id,
+							patientId: this.selectedPatient._id,
+							invoiceNo: {
+								$regex: this.searchPendingInvoice.value,
+								$options: 'i'
+							}
+						}
+					})
+					.then((payload) => {
+						this.invoiceGroups = payload.data;
+						this.isLoadingInvoice = false;
+					})
+					.catch((err) => {
+						this.isLoadingInvoice = false;
+						this.invoiceGroups = this.holdMostRecentInvoices;
+						this.systemModuleService.announceSweetProxy(
+							'There was a problem getting pending bills. Please try again later!',
+							'error'
+						);
+					});
+			} else {
+				this.invoiceGroups = this.holdMostRecentInvoices;
+				this.isLoadingInvoice = false;
+			}
+		});
+	}
+	ngOnDestroy() {
+		this.subscription.unsubscribe();
+	}
+	onSelectedInvoice(group) {
+		this.selectedInvoiceGroup = group;
+	}
 
-        this.searchPendingInvoice.valueChanges
-            .debounceTime(400)
-            .distinctUntilChanged()
-            .subscribe(value => {
-                if (this.searchPendingInvoice.value !== "" && this.searchPendingInvoice.value.length >= 3) {
-                    this.isLoadingInvoice = true;
-                    this.invoiceService.find({
-                        query: {
-                            facilityId: this.selectedFacility._id,
-                            patientId: this.selectedPatient._id,
-                            invoiceNo: {
-                                $regex: this.searchPendingInvoice.value,
-                                '$options': 'i'
-                              }
-                        }
-                    }).then(payload => {
-                        this.invoiceGroups = payload.data;
-                        this.isLoadingInvoice = false;
-                    }).catch(err => {
-                        this.isLoadingInvoice = false;
-                        this.invoiceGroups = this.holdMostRecentInvoices;
-                        this.systemModuleService.announceSweetProxy("There was a problem getting pending bills. Please try again later!", "error");
-                    });
-                } else {
-                    this.invoiceGroups = this.holdMostRecentInvoices;
-                    this.isLoadingInvoice = false;
-                }
-            });
-    }
+	onPersonValueUpdated(item) {
+		if (item.person !== undefined) {
+			this.selectedPatient.personDetails = item.person;
+		}
+		this.isLoadingInvoice = false;
+		this.isLoadingOtherInvoice = false;
+		this.selectedInvoiceGroup = item.invoice;
+		this.getPatientInvoices();
+	}
 
-    onSelectedInvoice(group) {
-        this.selectedInvoiceGroup = group;
-    }
+	onSelectedOtherPatientInvoice(invoice) {
+		this.router.navigate([ '/dashboard/payment/invoice', invoice._id ]).then((routePayload) => {
+			this.isLoadingInvoice = true;
+			this.isLoadingOtherInvoice = true;
+		});
+	}
 
-    onPersonValueUpdated(item) {
-        if (item.person !== undefined) {
-            this.selectedPatient.personDetails = item.person;
-        }
-        this.isLoadingInvoice = false;
-        this.isLoadingOtherInvoice = false;
-        this.selectedInvoiceGroup = item.invoice;
-        this.getPatientInvoices();
-    }
+	addModefier() {
+		this.addModefierPopup = true;
+	}
+	lineModifier_show() {
+		this.addLineModefierPopup = true;
+	}
+	addItem_show() {
+		this.addItem = true;
+	}
+	makePayment_show() {
+		if (this.selectedInvoiceGroup.totalPrice !== 0 && this.selectedInvoiceGroup.totalPrice !== undefined) {
+			if (this.selectedInvoiceGroup.paymentCompleted === false) {
+				// if (this.selectedPatient.personDetails.wallet.balance < this.selectedInvoiceGroup.totalPrice) {
+				//     this._notification('Info', "You donot have sufficient balance to make this payment");
+				// } else {
 
-    onSelectedOtherPatientInvoice(invoice) {
-        this.router.navigate(['/dashboard/payment/invoice', invoice._id]).then(routePayload => {
-            this.isLoadingInvoice = true;
-            this.isLoadingOtherInvoice = true;
-        });
-    }
+				// }
+				this.makePaymentPopup = true;
+			} else {
+				this._notification('Info', 'Selected invoice is paid');
+			}
+		} else {
+			this._notification('Info', 'You cannot make payment for a Zero cost service, please select an invoice');
+		}
+	}
 
-    addModefier() {
-        this.addModefierPopup = true;
-    }
-    lineModifier_show() {
-        this.addLineModefierPopup = true;
-    }
-    addItem_show() {
-        this.addItem = true;
-    }
-    makePayment_show() {
-        if (this.selectedInvoiceGroup.totalPrice !== 0 && this.selectedInvoiceGroup.totalPrice !== undefined) {
-            if (this.selectedInvoiceGroup.paymentCompleted === false) {
-                // if (this.selectedPatient.personDetails.wallet.balance < this.selectedInvoiceGroup.totalPrice) {
-                //     this._notification('Info', "You donot have sufficient balance to make this payment");
-                // } else {
-
-                // }
-                this.makePaymentPopup = true;
-            } else {
-                this._notification('Info', 'Selected invoice is paid');
-            }
-        } else {
-            this._notification('Info', 'You cannot make payment for a Zero cost service, please select an invoice');
-        }
-
-    }
-
-    close_onClick(e) {
-        this.addModefierPopup = false;
-        this.addLineModefierPopup = false;
-        this.addItem = false;
-        this.priceItemDetailPopup = false;
-        this.makePaymentPopup = false;
-    }
-    private _notification(type: String, text: String): void {
-        this.facilityService.announceNotification({
-            users: [this.user._id],
-            type: type,
-            text: text
-        });
-    }
-    itemEditToggle() {
-        this.itemEditShow = !this.itemEditShow;
-    }
-    itemEditToggle2() {
-        this.itemEditShow2 = !this.itemEditShow2;
-    }
-    itemEditToggle3() {
-        this.itemEditShow3 = !this.itemEditShow3;
-    }
-    itemDetail(billItem: BillItem) {
-        this.priceItemDetailPopup = true;
-        this.selectedBillItem = billItem;
-    }
-    print(): void {
-        let printContents, popupWin;
-        printContents = document.getElementById('print-section').innerHTML;
-        popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
-        popupWin.document.open();
-        popupWin.document.write(
-            `<html>
+	close_onClick(e) {
+		this.addModefierPopup = false;
+		this.addLineModefierPopup = false;
+		this.addItem = false;
+		this.priceItemDetailPopup = false;
+		this.makePaymentPopup = false;
+	}
+	private _notification(type: String, text: String): void {
+		this.facilityService.announceNotification({
+			users: [ this.user._id ],
+			type: type,
+			text: text
+		});
+	}
+	itemEditToggle() {
+		this.itemEditShow = !this.itemEditShow;
+	}
+	itemEditToggle2() {
+		this.itemEditShow2 = !this.itemEditShow2;
+	}
+	itemEditToggle3() {
+		this.itemEditShow3 = !this.itemEditShow3;
+	}
+	itemDetail(billItem: BillItem) {
+		this.priceItemDetailPopup = true;
+		this.selectedBillItem = billItem;
+	}
+	print(): void {
+		let printContents, popupWin;
+		printContents = document.getElementById('print-section').innerHTML;
+		popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
+		popupWin.document.open();
+		popupWin.document.write(
+			`<html>
                 <head>
                 <title>Print tab</title>
                 <style>
@@ -565,12 +597,11 @@ export class InvoiceComponent implements OnInit {
                 </head>
                 <body onload="window.print();window.close()">${printContents}</body>
             </html>`
-        );
-        popupWin.document.close();
-    }
+		);
+		popupWin.document.close();
+	}
 
-    printIt(){
-        window.print();
-    }
-
+	printIt() {
+		window.print();
+	}
 }
