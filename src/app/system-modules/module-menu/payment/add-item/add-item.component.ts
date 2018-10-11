@@ -114,7 +114,6 @@ export class AddItemComponent implements OnInit, OnDestroy {
 		this.items.push(val);
 		this.frmAddItem.reset();
 		// this.success = true;
-		console.log(this.items);
 		const text = `${val.itemName} has been added to patient's bill successfully`;
 		this._systemModuleService.announceSweetProxy(text, 'success');
 	}
@@ -157,7 +156,6 @@ export class AddItemComponent implements OnInit, OnDestroy {
 
 	close_onClick() {
 		this.invoiceService.announceInvoice(this.items);
-		console.log(this.items);
 		this.closeModal.emit(true);
 	}
 

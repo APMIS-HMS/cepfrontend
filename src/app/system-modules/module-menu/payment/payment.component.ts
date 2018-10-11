@@ -107,20 +107,15 @@ export class PaymentComponent implements OnInit {
 						}
 					})
 					.then((payload: any) => {
-						console.log(payload);
 						if (payload.data.reason !== undefined) {
-							// console.log(payload.data);
 							this.pendingBills = payload.data.data;
-							console.log(this.pendingBills);
 							this.loadingPendingBills = false;
 						} else {
 							this.pendingBills = payload.data;
-							console.log(this.pendingBills);
 							this.loadingPendingBills = false;
 						}
 					})
 					.catch((err) => {
-						console.log(err);
 						this.loadingPendingBills = false;
 						this.systemModuleService.announceSweetProxy(
 							'There was a problem getting pending bills. Please try again later!',
@@ -128,7 +123,6 @@ export class PaymentComponent implements OnInit {
 						);
 					});
 			} else {
-				console.log('hold');
 				this.pendingBills = this.holdMostRecentBills;
 				this.loadingPendingBills = false;
 			}
@@ -166,7 +160,6 @@ export class PaymentComponent implements OnInit {
 			.then((payload: any) => {
 				this.systemModuleService.off();
 				this.pendingBills = payload.data;
-				console.log(this.pendingBills);
 				this.holdMostRecentBills = payload.data;
 				this.loadingPendingBills = false;
 			})
