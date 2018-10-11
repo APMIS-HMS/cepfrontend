@@ -27,7 +27,7 @@ export class HmoListComponent implements OnInit {
   public frmNewHmo: FormGroup;
   hmo = new FormControl('', []);
   searchHmo = new FormControl();
-  HmoBaseId = new FormControl();
+  policyIDRegexFormat = new FormControl();
   sepHmoBeneficiaryId = new FormControl();
   HmoPrincipalId = new FormControl();
   sepHmoPrincipalId = new FormControl();
@@ -63,6 +63,17 @@ export class HmoListComponent implements OnInit {
   ngOnInit() {
     this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.user = <User>this.locker.getObject('auth');
+
+    let str = 'SH/ABL/0087';
+    let str_ = 'SH/ABL/0087A'; //SH/ABL/0087	 /^[a-zA-Z]{2}\/[a-zA-Z]{2}\/[0-9]{1,6}$/
+
+    var regexVal_ = '\^[a-zA-Z]{2}\/[a-zA-Z]{3}\/[0-9]{1,6}$';    //  /^[A-Z]\-[0-9]{2}\-[0-9]{1,2}$/; //Beneficiary Format /^[A-Z]\-[0-9]{2}\-[0-9]{1,2}[A-Z]$/
+    var regexVal = new RegExp(regexVal_);
+    console.log(regexVal,'');
+    const valid_ = regexVal.test(str);
+    const valid_2 = regexVal.test(str_);
+    console.log(valid_,valid_2);
+
     this.frmNewHmo = this.formBuilder.group({
       name: ['', [Validators.required]],
     });
@@ -73,13 +84,13 @@ export class HmoListComponent implements OnInit {
         this.apmisLookupQuery = {
           'facilityTypeId': this.selectedFacilityType.name,
           name: { $regex: -1, '$options': 'i' },
-          $select: ['name', 'email', 'primaryContactPhoneNo', 'shortName', 'website', 'hmoPolicyIDFormat']
+          $select: ['name', 'email', 'primaryContactPhoneNo', 'shortName', 'website', 'policyIDRegexFormat']
         }
       } else {
         this.apmisLookupQuery = {
           'facilityTypeId': this.selectedFacilityType.name,
           name: { $regex: value, '$options': 'i' },
-          $select: ['name', 'email', 'primaryContactPhoneNo', 'shortName', 'website', 'hmoPolicyIDFormat']
+          $select: ['name', 'email', 'primaryContactPhoneNo', 'shortName', 'website', 'policyIDRegexFormat']
         }
       }
     });
@@ -144,12 +155,8 @@ export class HmoListComponent implements OnInit {
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = value.name;
     console.log(value);
-    if (value.hmoPolicyIDFormat !== undefined) {
-      this.HmoBaseId.setValue(value.hmoPolicyIDFormat.base);
-      this.sepHmoPrincipalId.setValue(value.hmoPolicyIDFormat.principalIDSeparator);
-      this.HmoPrincipalId.setValue(value.hmoPolicyIDFormat.principalID);
-      this.sepHmoBeneficiaryId.setValue(value.hmoPolicyIDFormat.beneficiatyIDSeparator);
-      this.HmoBeneficiaryId.setValue(value.hmoPolicyIDFormat.beneficiatyID);
+    if (value.policyIDRegexFormat !== undefined) {
+      this.policyIDRegexFormat.setValue(value.policyIDRegexFormat);
     }
     let isExisting = false;
     if (this.loginHMOListObject.hmos !== undefined) {
@@ -172,13 +179,8 @@ export class HmoListComponent implements OnInit {
     this.newHmo = !this.newHmo;
     if (hmo !== undefined && hmo !== null) {
       console.log(hmo);
-      if (hmo.hmoPolicyIDFormat !== undefined) {
-        this.HmoBaseId.setValue(hmo.hmoPolicyIDFormat.base);
-        this.sepHmoPrincipalId.setValue(hmo.hmoPolicyIDFormat.principalIDSeparator);
-        this.HmoPrincipalId.setValue(hmo.hmoPolicyIDFormat.principalID);
-        this.sepHmoBeneficiaryId.setValue(hmo.hmoPolicyIDFormat.beneficiatyIDSeparator);
-        this.HmoBeneficiaryId.setValue(hmo.hmoPolicyIDFormat.beneficiatyID);
-
+      if (hmo.policyIDRegexFormat !== undefined) {
+        this.policyIDRegexFormat.setValue(hmo.policyIDRegexFormat);
       }
       this.apmisLookupText = hmo.name;
     }
@@ -427,11 +429,8 @@ export class HmoListComponent implements OnInit {
 
   save(valid, value) {
     this.systemModuleService.on();
-    this.selectedHMO.base = this.HmoBaseId.value;
-    this.selectedHMO.sepHmoPrincipalId = this.sepHmoPrincipalId.value;
-    this.selectedHMO.principalID = this.HmoPrincipalId.value;
-    this.selectedHMO.sepHmoBeneficiaryId = this.sepHmoBeneficiaryId.value;
-    this.selectedHMO.beneficiatyID = this.HmoBeneficiaryId.value;
+    console.log(this.policyIDRegexFormat.value);
+    this.selectedHMO.policyIDRegexFormat = this.policyIDRegexFormat.value;
     this.selectedHMO.checkHmo = this.checkHmo();
     this.selectedHMO.loginHMOListObject = this.loginHMOListObject;
     console.log(this.selectedHMO);
@@ -455,6 +454,7 @@ export class HmoListComponent implements OnInit {
         this.getLoginHMOList();
         this.systemModuleService.off();
       }
+      this.policyIDRegexFormat.reset();
     }, err => {
       this.systemModuleService.announceSweetProxy('Operation failed', 'error');
       this.systemModuleService.off();

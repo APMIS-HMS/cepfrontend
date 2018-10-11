@@ -66,7 +66,6 @@ export class BeneficiaryListComponent implements OnInit {
         const facHmo = payload.data[0];
         const index = facHmo.hmos.findIndex(x => x.hmo === id);
         this.mselectedHMO = facHmo.hmos[index];
-        console.log(facHmo);
         if (index > -1) {
           if (facHmo.hmos[index].enrolleeList.length > 0) {
             const bene = [];
@@ -85,43 +84,30 @@ export class BeneficiaryListComponent implements OnInit {
     }).catch(err => { console.log(err) });
   }
   getRole(beneficiary) {
-    // console.log(this.mselectedHMO);
-    if (this.mselectedHMO.policyIdFormat !== undefined) {
-      if (this.mselectedHMO.policyIdFormat.beneficiatyIDSeparator !== undefined
-        && this.mselectedHMO.policyIdFormat.beneficiatyIDSeparator !== null){
-          this.mselectedHMO.policyIdFormat.beneficiatyIDSeparator = this.mselectedHMO.policyIdFormat.beneficiatyIDSeparator.replace(/^\s+/, '').replace(/\s+$/, '');
-        }
-        if (this.mselectedHMO.policyIdFormat.beneficiatyIDSeparator !== "") {
-        const len = beneficiary.filNo.split(this.mselectedHMO.policyIdFormat.beneficiatyIDSeparator);
-        if (len.length === 2) {
-          return 'D';
-        } else {
-          return 'P';
-        }
-      } else {
-        if (isNaN(this.mselectedHMO.policyIdFormat.beneficiatyID)) {
-          if (isNaN(beneficiary.filNo.slice(-1))) {
-            return 'D';
-          } else {
+    if (this.mselectedHMO.policyIDRegexFormat !== undefined) {
+      let arrayOfRegexFormat = this.mselectedHMO.policyIDRegexFormat.split(';');
+      return arrayOfRegexFormat.map(x => {
+        const itemRegexFormat = x.split('|');
+        if (itemRegexFormat.length === 2) {
+          var principalRegex = '^' + itemRegexFormat[0] + '$';
+          var principalRegexFormat = RegExp(principalRegex);
+          const beneficiaryRegex = '^' + itemRegexFormat[0] + itemRegexFormat[1] + '$';
+          const beneficiaryRegexFormat = new RegExp(beneficiaryRegex);
+          if (principalRegexFormat.test(beneficiary.filNo)) {
             return 'P';
           }
+          if (beneficiaryRegexFormat.test(beneficiary.filNo)) {
+            return 'D';
+          }
         }
-      }
+      });
     }
-    // const filNo = beneficiary.filNo;
-    // if (filNo !== undefined) {
-    //   const filNoLength = filNo.length;
-    //   const lastCharacter = filNo[filNoLength - 1];
-    //   const secCharacter = (filNoLength - 2 > 0) ? filNo[filNoLength - 2] : filNo[filNoLength - 1];
-    //   return (isNaN(lastCharacter) && isNaN(secCharacter)) ? 'D' : 'P';
-    // }
   }
   newHmo_show() {
     this.newHmo = !this.newHmo;
   }
 
   onBeneficiaryValueChange(e) {
-    console.log(e);
     const facHmo = e;
     const index = facHmo.hmos.findIndex(x => x.hmo === this.selectedBeneficiary.id);
     if (index > -1) {
@@ -148,7 +134,6 @@ export class BeneficiaryListComponent implements OnInit {
   }
 
   edit_show(value, i) {
-    console.log(value);
     this.newBeneficiary = !this.newBeneficiary;
     value.id = this.selectedBeneficiary.id;
     value.index = i;

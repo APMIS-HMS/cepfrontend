@@ -14,48 +14,23 @@
             <div class="frm-title">NEW HMO</div>
 
             <div class="frm-x2">
-              <div class="frm-item-wrap" style='width:40%'>
+              <div class="frm-item-wrap col-4">
                 <apmis-lookup style='width:80%' formControlName="name" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl"
                   [query]="apmisLookupQuery" placeholder="Select HMO" [isSocket]="true" [displayKey]="apmisLookupDisplayKey"
                   (selectedItem)="apmisLookupHandleSelectedItem($event)" [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys"></apmis-lookup>
               </div>
 
 
-              <mat-card class="frm-item-wrap" style='width:60%'>
-                <mat-card-title class="mat-title-hmo">HMO Policy Format:</mat-card-title>
-                <div class="con-width">
-                  <mat-input-container>
-                    <input matInput [formControl]="HmoBaseId" placeholder="Base">
-                  </mat-input-container>
+              <div class="reg-format">
+                <div>
+                  <textarea type="text" [formControl]="policyIDRegexFormat" placeholder="Policy Format|Option"></textarea>
                 </div>
-
-                <div class="sm">
-                  <mat-input-container class="sep">
-                    <input matInput [formControl]="sepHmoPrincipalId" maxlength="1" placeholder="Seperator">
-                  </mat-input-container>
-                </div>
-
-                <div class="con-width">
-                  <mat-input-container>
-                    <input matInput [formControl]="HmoPrincipalId" placeholder="Principal ID">
-                  </mat-input-container>
-                </div>
-
-                <div class="sm">
-                  <mat-input-container>
-                    <input matInput [formControl]="sepHmoBeneficiaryId" placeholder="Seperator">
-                  </mat-input-container>
-                </div>
-                <div class="frm-item-wrap con-width">
-                  <mat-input-container>
-                    <input matInput [formControl]="HmoBeneficiaryId" placeholder="Beneficiary ID">
-                  </mat-input-container>
-                </div>
-              </mat-card>
+              </div>
             </div>
 
           </form>
-          <button *ngIf="newHmo" (click)="save(frmNewHmo.valid, frmNewHmo.value)" class="cta-1">Add HMO</button>
+          <button *ngIf="newHmo" [disabled]="apmisLookupText ===''" (click)="save(frmNewHmo.valid, frmNewHmo.value)"
+            class="cta-1">Add HMO</button>
         </div>
 
         <!-- <div class="pg-subtitle">HMO List</div>  -->
