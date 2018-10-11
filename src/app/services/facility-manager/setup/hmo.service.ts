@@ -8,7 +8,8 @@ const request = require('superagent');
 export class HmoService {
   public _socket;
   private _rest;
-  public _insuranceSocket;
+  public  _insuranceSocket;
+  public _hmoSocket;
   public _hmoBillHistorySocket;
   public _hmoBillHistoryRest;
 
@@ -21,6 +22,7 @@ export class HmoService {
   ) {
     this._rest = _restService.getService('hmos');
     this._socket = _socketService.getService('hmos');
+    this._hmoSocket = _socketService.getService('add-hmo-facilities');
     this._hmoBillHistoryRest = _restService.getService('health-covered-bill-histories');
     this._hmoBillHistorySocket = _socketService.getService('health-covered-bill-histories');
     this._socket.timeout = 50000;
@@ -54,6 +56,10 @@ export class HmoService {
 
   create(gender: any) {
     return this._socket.create(gender);
+  }
+
+  addHmo(obj: any) {
+    return this._hmoSocket.create(obj);
   }
 
   remove(id: string, query: any) {

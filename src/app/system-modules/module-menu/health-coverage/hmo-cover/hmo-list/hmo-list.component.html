@@ -14,48 +14,23 @@
             <div class="frm-title">NEW HMO</div>
 
             <div class="frm-x2">
-              <div class="frm-item-wrap" style='width:40%'>
+              <div class="frm-item-wrap col-4">
                 <apmis-lookup style='width:80%' formControlName="name" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl"
                   [query]="apmisLookupQuery" placeholder="Select HMO" [isSocket]="true" [displayKey]="apmisLookupDisplayKey"
                   (selectedItem)="apmisLookupHandleSelectedItem($event)" [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys"></apmis-lookup>
               </div>
 
 
-              <mat-card class="frm-item-wrap" style='width:60%'>
-                <div class=" con-width">
-                  <mat-input-container>
-                    <input matInput placeholder="HMO ID">
-                  </mat-input-container>
+              <div class="reg-format">
+                <div>
+                  <textarea type="text" [formControl]="policyIDRegexFormat" placeholder="Policy Format|Option"></textarea>
                 </div>
-
-                <div class="">
-                  <mat-input-container class="sep">
-                    <input matInput placeholder="Seperator">
-                  </mat-input-container>
-                </div>
-
-                <div class=" con-width">
-                  <mat-input-container>
-                    <input matInput placeholder="Principal ID">
-                  </mat-input-container>
-                </div>
-
-                <div class="">
-                  <mat-input-container class="sep" matTooltip="/ , -" 
-                  aria-label="Button that displays a tooltip when focused or hovered over">
-                    <input matInput placeholder="Seperator" >
-                  </mat-input-container>
-                </div>
-                <div class="frm-item-wrap con-width">
-                  <mat-input-container>
-                    <input matInput placeholder="Beneficiary ID">
-                  </mat-input-container>
-                </div>
-              </mat-card>
+              </div>
             </div>
 
           </form>
-          <button *ngIf="newHmo" (click)="save(frmNewHmo.valid, frmNewHmo.value)" class="cta-1">Add HMO</button>
+          <button *ngIf="newHmo" [disabled]="apmisLookupText ===''" (click)="save(frmNewHmo.valid, frmNewHmo.value)"
+            class="cta-1">Add HMO</button>
         </div>
 
         <!-- <div class="pg-subtitle">HMO List</div>  -->
@@ -137,7 +112,7 @@
                           style="display:none;" #fileInput type="file" id="uploadResult" (change)="submitExcel($event, hmo)">
                       </div>
                     </form>
-                    <div class="action-item">
+                    <div class="action-item" (click)="newHmo_show(hmo)">
                       <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                       <span>Update HMO</span>
                     </div>
