@@ -26,6 +26,7 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 	frmBillLookup: FormGroup;
 	itemEdit = new FormControl('', [ Validators.required, <any>Validators.pattern('/^d+$/') ]);
 	itemQtyEdit = new FormControl('', [ Validators.required, <any>Validators.pattern('/^d+$/') ]);
+	itemPriceEdit = new FormControl('', [ Validators.required, <any>Validators.pattern('/^d+$/') ]);
 	txtSelectAll = new FormControl('', []);
 	fundAmount = new FormControl('', []);
 	select1 = new FormControl('', []);
@@ -71,6 +72,7 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 	isLoadingInvoice = false;
 	routeId: string;
 	subscription: Subscription;
+	hasPriceChanged = false;
 
 	constructor(
 		private locker: CoolLocalStorage,
@@ -132,6 +134,13 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 		this.itemQtyEdit.valueChanges.subscribe((value) => {
 			this.selectedBillItem.qty = value;
 			this.selectedBillItem.amount = this.selectedBillItem.qty * this.selectedBillItem.unitPrice;
+			this.reCalculateBillTotal();
+		});
+
+		this.itemPriceEdit.valueChanges.subscribe((value) => {
+			this.selectedBillItem.unitPrice = value;
+			this.selectedBillItem.amount = this.selectedBillItem.qty * this.selectedBillItem.unitPrice;
+			this.hasPriceChanged = true;
 			this.reCalculateBillTotal();
 		});
 
@@ -414,6 +423,7 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 				})
 				.then((payload) => {
 					if (payload !== null) {
+						this.masterBillGroups = payload.originalCallback;
 						this.billGroups = payload.billGroups;
 						this.listedBillItems = payload.originalCallback;
 						if (this.checkBillitems.length > 0) {
@@ -459,7 +469,7 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 		this.loadingPendingBills = true;
 		this._pendingBillService.get(this.selectedFacility._id, {}).then(
 			(res: any) => {
-				this.pendingBills = res.data; //.filter(x => x.patientId !== this.selectedPatient._id);
+				this.pendingBills = res.data; // .filter(x => x.patientId !== this.selectedPatient._id);
 				this.holdMostRecentBills = res.data;
 				this.loadingPendingBills = false;
 			},
@@ -619,14 +629,22 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 		if (!this.itemEditShow) {
 			this.masterBillGroups.forEach((itemi, i) => {
 				itemi.billItems.forEach((itemy, y) => {
+					const oldPrice = itemy.unitPrice;
 					if (itemy._id === bill._id) {
 						itemy.quantity = bill.qty;
 						itemy.totalPrice = bill.amount;
 						itemy.unitPrice = bill.unitPrice;
-						this.billingService.patch(itemi._id, itemi, {}).then((payload) => {});
+						this.billingService
+							.patch(itemi._id, itemi, {
+								query: { hasPriceChanged: this.hasPriceChanged, oldPrice: oldPrice, _id: itemy._id }
+							})
+							.then((payload) => {});
+						this._getAllPendingBills();
 					}
 				});
 			});
+		} else {
+			this.hasPriceChanged = false;
 		}
 	}
 
