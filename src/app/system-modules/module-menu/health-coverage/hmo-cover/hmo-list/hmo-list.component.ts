@@ -27,8 +27,12 @@ export class HmoListComponent implements OnInit {
   public frmNewHmo: FormGroup;
   hmo = new FormControl('', []);
   searchHmo = new FormControl();
+  policyIDRegexFormat = new FormControl();
+  sepHmoBeneficiaryId = new FormControl();
+  HmoPrincipalId = new FormControl();
+  sepHmoPrincipalId = new FormControl();
+  HmoBeneficiaryId = new FormControl();
   newHmo = false;
-  newHMO = false;
   isSelectedFileUploaded = false;
 
   apmisLookupUrl = 'facilities';
@@ -45,7 +49,7 @@ export class HmoListComponent implements OnInit {
   loading: boolean = true;
 
   selelctedFacility: Facility = <Facility>{};
-  selectedHMO: Facility = <Facility>{};
+  selectedHMO: any = <any>{};
   selectedFacilityType: FacilityType = <FacilityType>{};
   loginHMOListObject: any = <any>{};
   user: User = <User>{};
@@ -69,13 +73,13 @@ export class HmoListComponent implements OnInit {
         this.apmisLookupQuery = {
           'facilityTypeId': this.selectedFacilityType.name,
           name: { $regex: -1, '$options': 'i' },
-          $select: ['name', 'email', 'primaryContactPhoneNo', 'shortName', 'website']
+          $select: ['name', 'email', 'primaryContactPhoneNo', 'shortName', 'website', 'policyIDRegexFormat']
         }
       } else {
         this.apmisLookupQuery = {
           'facilityTypeId': this.selectedFacilityType.name,
           name: { $regex: value, '$options': 'i' },
-          $select: ['name', 'email', 'primaryContactPhoneNo', 'shortName', 'website']
+          $select: ['name', 'email', 'primaryContactPhoneNo', 'shortName', 'website', 'policyIDRegexFormat']
         }
       }
     });
@@ -114,14 +118,14 @@ export class HmoListComponent implements OnInit {
     })
     if (value === null || value === undefined) {
       this.facilityService.find({
-        query: { _id: { $in: flist },$sort: { updatedAt: -1 } }
+        query: { _id: { $in: flist }, $sort: { updatedAt: -1 } }
       }).then(payload => {
         this.loading = false;
         this.hmoFacilities = payload.data;
       });
     } else {
       this.facilityService.find({
-        query: { _id: { $in: flist }, name: { $regex: value, '$options': 'i' },$sort: { updatedAt: -1 } }
+        query: { _id: { $in: flist }, name: { $regex: value, '$options': 'i' }, $sort: { updatedAt: -1 } }
       }).then(payload => {
         this.loading = false;
         this.hmoFacilities = payload.data;
@@ -138,7 +142,11 @@ export class HmoListComponent implements OnInit {
     })
   }
   apmisLookupHandleSelectedItem(value) {
+    this.policyIDRegexFormat.reset();
     this.apmisLookupText = value.name;
+    if (value.policyIDRegexFormat !== undefined) {
+      this.policyIDRegexFormat.setValue(value.policyIDRegexFormat);
+    }
     let isExisting = false;
     if (this.loginHMOListObject.hmos !== undefined) {
       this.loginHMOListObject.hmos.forEach(item => {
@@ -156,8 +164,14 @@ export class HmoListComponent implements OnInit {
     }
   }
 
-  newHmo_show() {
+  newHmo_show(hmo?) {
     this.newHmo = !this.newHmo;
+    if (hmo !== undefined && hmo !== null) {
+      if (hmo.policyIDRegexFormat !== undefined) {
+        this.policyIDRegexFormat.setValue(hmo.policyIDRegexFormat);
+      }
+      this.apmisLookupText = hmo.name;
+    }
   }
 
   showImageBrowseDlg(i) {
@@ -398,43 +412,32 @@ export class HmoListComponent implements OnInit {
   checkHmo() {
     return this.loginHMOListObject.hmos.findIndex(x => x.hmo === this.selectedHMO._id) > -1;
   }
+
+
   save(valid, value) {
     this.systemModuleService.on();
-    if (this.checkHmo()) {
-      this.systemModuleService.announceSweetProxy('The selected HMO is already in the list of HMOs', 'warning');
-      this.systemModuleService.off();
-    } else {
-      if (this.selectedHMO._id === undefined) {
-        this.systemModuleService.announceSweetProxy('Please select an HMO to continue!', 'warning');
+    this.selectedHMO.policyIDRegexFormat = this.policyIDRegexFormat.value;
+    this.selectedHMO.checkHmo = this.checkHmo();
+    this.selectedHMO.loginHMOListObject = this.loginHMOListObject;
+    this.hmoService.addHmo(this.selectedHMO).then(payload => {
+      if (payload.status === 'success') {
+        this.frmNewHmo.controls['name'].reset();
+        this.apmisLookupText = '';
+        this.getLoginHMOList();
         this.systemModuleService.off();
-      } else {
-        const newHmo = {
-          hmo: this.selectedHMO._id,
-          enrolleeList: []
-        }
-        this.loginHMOListObject.hmos.push(newHmo);
-        if (this.selectedHMO._id !== undefined) {
-          if (this.loginHMOListObject._id === undefined) {
-            this.hmoService.create(this.loginHMOListObject).then(payload => {
-              this.frmNewHmo.controls['name'].reset();
-              this.apmisLookupText = '';
-              this.getLoginHMOList();
-              this.systemModuleService.off();
-              this.systemModuleService.announceSweetProxy('Selected HMO added to your HMO list successfully',
-                'success', null, null, null, null, null, null, null);
-            })
-          } else {
-            this.hmoService.update(this.loginHMOListObject).then(payload => {
-              this.frmNewHmo.controls['name'].reset();
-              this.apmisLookupText = '';
-              this.getLoginHMOList();
-              this.systemModuleService.off();
-              this.systemModuleService.announceSweetProxy('Selected HMO added to your HMO list successfully',
-                'success', null, null, null, null, null, null, null);
-            })
-          }
-        }
+        this.systemModuleService.announceSweetProxy(payload.data.message,
+          'success', null, null, null, null, null, null, null);
+      } else if (payload.status === 'fail') {
+        this.systemModuleService.announceSweetProxy('Selected HMO Policy Format updated. '+payload.data.message, 'success');
+        this.frmNewHmo.controls['name'].reset();
+        this.apmisLookupText = '';
+        this.getLoginHMOList();
+        this.systemModuleService.off();
       }
-    }
+      this.policyIDRegexFormat.reset();
+    }, err => {
+      this.systemModuleService.announceSweetProxy('Operation failed', 'error');
+      this.systemModuleService.off();
+    });
   }
 }
