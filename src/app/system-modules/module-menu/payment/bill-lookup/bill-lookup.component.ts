@@ -112,7 +112,6 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 				if (itemi.isModified !== undefined) {
 					this.fixedModifiedBill(itemi);
 				} else {
-					console.log('common its here');
 					this.fixedGroup(itemi);
 				}
 			});
@@ -182,8 +181,13 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 						}
 					})
 					.then((res: any) => {
-						this.pendingBills = res.data.filter((x) => x.patientId !== this.selectedPatient._id);
-						this.loadingPendingBills = false;
+						if (res.data.reason !== undefined) {
+							this.pendingBills = res.data.data;
+							this.loadingPendingBills = false;
+						} else {
+							this.pendingBills = res.data.filter((x) => x.patientId !== this.selectedPatient._id);
+							this.loadingPendingBills = false;
+						}
 					})
 					.catch((err) => {
 						this.loadingPendingBills = false;
@@ -206,7 +210,6 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 			.get(id, {})
 			.then((res) => {
 				this.selectedPatient = res;
-				// console.log( this.selectedPatient);
 				this.getPatientBills();
 			})
 			.catch((err) => {});
@@ -332,7 +335,6 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 				unitPrice: bill.unitPrice
 			};
 			if (this.recentBillModelId !== undefined) {
-				console.log(1);
 				this.billingService.get(this.recentBillModelId, {}).then((recentBill: any) => {
 					if (recentBill._id !== undefined) {
 						recentBill.subTotal += bill.amount;
@@ -355,7 +357,6 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 					}
 				});
 			} else {
-				console.log(2);
 				const newBills = {
 					facilityId: this.selectedFacility._id,
 					patientId: this.selectedPatient._id,
@@ -363,7 +364,6 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 					subTotal: bill.amount,
 					grandTotal: bill.amount
 				};
-				console.log(3);
 				this.billingService
 					.createBill(Array.of(newBillItem), {
 						query: {
@@ -413,7 +413,6 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 					}
 				})
 				.then((payload) => {
-					console.log(payload);
 					if (payload !== null) {
 						this.billGroups = payload.billGroups;
 						this.listedBillItems = payload.originalCallback;
@@ -460,7 +459,6 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 		this.loadingPendingBills = true;
 		this._pendingBillService.get(this.selectedFacility._id, {}).then(
 			(res: any) => {
-				// console.log(res.data);
 				this.pendingBills = res.data; //.filter(x => x.patientId !== this.selectedPatient._id);
 				this.holdMostRecentBills = res.data;
 				this.loadingPendingBills = false;
