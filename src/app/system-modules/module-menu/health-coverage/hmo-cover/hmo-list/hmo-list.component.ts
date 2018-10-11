@@ -63,17 +63,6 @@ export class HmoListComponent implements OnInit {
   ngOnInit() {
     this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
     this.user = <User>this.locker.getObject('auth');
-
-    let str = 'SH/ABL/0087';
-    let str_ = 'SH/ABL/0087A'; //SH/ABL/0087	 /^[a-zA-Z]{2}\/[a-zA-Z]{2}\/[0-9]{1,6}$/
-
-    var regexVal_ = '\^[a-zA-Z]{2}\/[a-zA-Z]{3}\/[0-9]{1,6}$';    //  /^[A-Z]\-[0-9]{2}\-[0-9]{1,2}$/; //Beneficiary Format /^[A-Z]\-[0-9]{2}\-[0-9]{1,2}[A-Z]$/
-    var regexVal = new RegExp(regexVal_);
-    console.log(regexVal,'');
-    const valid_ = regexVal.test(str);
-    const valid_2 = regexVal.test(str_);
-    console.log(valid_,valid_2);
-
     this.frmNewHmo = this.formBuilder.group({
       name: ['', [Validators.required]],
     });
@@ -154,7 +143,6 @@ export class HmoListComponent implements OnInit {
   }
   apmisLookupHandleSelectedItem(value) {
     this.apmisLookupText = value.name;
-    console.log(value);
     if (value.policyIDRegexFormat !== undefined) {
       this.policyIDRegexFormat.setValue(value.policyIDRegexFormat);
     }
@@ -178,7 +166,6 @@ export class HmoListComponent implements OnInit {
   newHmo_show(hmo?) {
     this.newHmo = !this.newHmo;
     if (hmo !== undefined && hmo !== null) {
-      console.log(hmo);
       if (hmo.policyIDRegexFormat !== undefined) {
         this.policyIDRegexFormat.setValue(hmo.policyIDRegexFormat);
       }
@@ -196,7 +183,6 @@ export class HmoListComponent implements OnInit {
   }
 
   show_beneficiaries(hmo) {
-    console.log(hmo);
     this.router.navigate(['/dashboard/health-coverage/hmo-cover-beneficiaries/', hmo._id]);
   }
   onChange(e) {
@@ -429,21 +415,14 @@ export class HmoListComponent implements OnInit {
 
   save(valid, value) {
     this.systemModuleService.on();
-    console.log(this.policyIDRegexFormat.value);
     this.selectedHMO.policyIDRegexFormat = this.policyIDRegexFormat.value;
     this.selectedHMO.checkHmo = this.checkHmo();
     this.selectedHMO.loginHMOListObject = this.loginHMOListObject;
-    console.log(this.selectedHMO);
     this.hmoService.addHmo(this.selectedHMO).then(payload => {
-      console.log(payload);
       if (payload.status === 'success') {
-        console.log(3);
         this.frmNewHmo.controls['name'].reset();
-        console.log(4);
         this.apmisLookupText = '';
-        console.log(1);
         this.getLoginHMOList();
-        console.log(2);
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy(payload.data.message,
           'success', null, null, null, null, null, null, null);
