@@ -86,8 +86,9 @@ export class BeneficiaryListComponent implements OnInit {
   getRole(beneficiary) {
     if (this.mselectedHMO.policyIDRegexFormat !== undefined) {
       let arrayOfRegexFormat = this.mselectedHMO.policyIDRegexFormat.split(';');
-      return arrayOfRegexFormat.map(x => {
-        const itemRegexFormat = x.split('|');
+      for (let index = 0; index < arrayOfRegexFormat.length; index++) {
+        const element = arrayOfRegexFormat[index];
+        const itemRegexFormat = element.split('|');
         if (itemRegexFormat.length === 2) {
           var principalRegex = '^' + itemRegexFormat[0] + '$';
           var principalRegexFormat = RegExp(principalRegex);
@@ -100,7 +101,7 @@ export class BeneficiaryListComponent implements OnInit {
             return 'D';
           }
         }
-      });
+      }
     }
   }
   newHmo_show() {
