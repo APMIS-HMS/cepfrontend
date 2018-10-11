@@ -277,7 +277,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       title: ['', [<any>Validators.required]],
       firstName: ['', [<any>Validators.required]],
       lastName: ['', [<any>Validators.required]],
-      email: [{ value: '', disabled: false }, [<any>Validators.required]],
+      email: [{ value: '', disabled: false }/*, [<any>Validators.required]*/],
       phoneNumber: [{ value: '', disabled: false }, [<any>Validators.required]],
       dob: ['', [<any>Validators.required]],
       gender: ['', [<any>Validators.required]],
@@ -1042,7 +1042,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
       .then(res => {
         this.titles = res;
       }).catch(err => {
-        this._getAllTitles();
+       // this._getAllTitles();
+        console.log("Could not load all titles", err);
       });
   }
 

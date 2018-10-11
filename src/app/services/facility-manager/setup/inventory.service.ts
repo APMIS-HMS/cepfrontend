@@ -18,6 +18,14 @@ export class InventoryService {
 
   private discountAnnouncedSource = new Subject<Object>();
   discountAnnounced$ = this.discountAnnouncedSource.asObservable();
+    private _mrest: any;
+    private _inventoryCountServiceEndPt: any;
+    private _inventoryExpiredServiceEndPt: any;
+    private _inventoryOutOfStockServiceEndPt: any;
+    private _inventoryAboutToExpireServiceEndPt: any;
+    private _revenueServiceEndPt: any;
+    private _transactionServiceEndPt: any;
+
 
   constructor(
     private _socketService: SocketService,
@@ -27,9 +35,17 @@ export class InventoryService {
     this._socket = _socketService.getService('inventories');
     this._socketList = _socketService.getService('list-of-inventories');
     this._msocket = _socketService.getService('inventory-summary-counts');
+    this._inventoryCountServiceEndPt = _socketService.getService('inventory-count-details');
+    this._inventoryExpiredServiceEndPt = _socketService.getService('inventory-expired-product-details');
+    this._inventoryAboutToExpireServiceEndPt = _socketService.getService('inventory-about-to-expire-product-details');
+    this._inventoryOutOfStockServiceEndPt = _socketService.getService('out-of-stock-count-details');
+    this._revenueServiceEndPt = _socketService.getService('inventory-batch-transaction-details');
+    this._transactionServiceEndPt = _socketService.getService('inventory-batch-transaction-details');
+    this._mrest = _restService.getService('inventory-summary-counts');
     this._socket.timeout = 50000;
     this._socket.timeout = 50000;
     this._socketList.timeout = 50000;
+    this._msocket.timeout  = 60000;
     this.createlistner = Observable.fromEvent(this._socket, 'created');
     this.updatelistner = Observable.fromEvent(this._socket, 'updated');
     this.deletedlistner = Observable.fromEvent(this._socket, 'deleted');
@@ -52,6 +68,7 @@ export class InventoryService {
   }
 
   findList(query: any) {
+    //return this._socketService.getService('inventory-batch-transaction-details').t;
     return this._socketList.find(query);
   }
 
@@ -78,7 +95,23 @@ export class InventoryService {
     return this._socket.update(inventory._id, inventory);
   }
 
-  getInventoryBriefStatus(id: string, query: any) {
+  getInventoryBriefStatus(id: string | number, query: any) {
     return this._msocket.get(id, query);
   }
+  getReOrderStockDetails(storeId: string)
+  {
+    return this._inventoryOutOfStockServiceEndPt.get("1", { query : { storeId : storeId}});
+  }
+  getOutOfStockDetails(storeId: string)
+  {
+      return this._inventoryOutOfStockServiceEndPt.get("0", { query : { storeId : storeId}});
+  }
+  getInventoryCountDetails(storeId : string)
+  {
+      return this._inventoryCountServiceEndPt.get( { query : { storeId : storeId}});
+  }
+  getExpiredInventoryDetails(storeId : string, noOfDays:string)
+    {
+        return this._inventoryExpiredServiceEndPt.get( noOfDays , { query : { storeId : storeId}});
+    }
 }

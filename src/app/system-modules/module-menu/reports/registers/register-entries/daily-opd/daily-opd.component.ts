@@ -4,7 +4,8 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-daily-opd',
   templateUrl: './daily-opd.component.html',
-  styleUrls: ['./daily-opd.component.scss', '../../../nhmis-summary/nhmis-summary.component.scss', '../register-entry/register-entry.component.scss']
+  styleUrls: ['./daily-opd.component.scss', '../../../nhmis-summary/nhmis-summary.component.scss',
+    '../register-entry/register-entry.component.scss']
 })
 export class DailyOpdComponent implements OnInit {
 

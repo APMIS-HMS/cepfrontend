@@ -14,16 +14,23 @@
             <div class="frm-title">NEW HMO</div>
 
             <div class="frm-x2">
-              <div class="frm-item-wrap">
-                <apmis-lookup style='width:100%' formControlName="name" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery"
-                  placeholder="Select HMO" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"
-                  [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys"></apmis-lookup>
+              <div class="frm-item-wrap col-4">
+                <apmis-lookup style='width:80%' formControlName="name" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl"
+                  [query]="apmisLookupQuery" placeholder="Select HMO" [isSocket]="true" [displayKey]="apmisLookupDisplayKey"
+                  (selectedItem)="apmisLookupHandleSelectedItem($event)" [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys"></apmis-lookup>
+              </div>
+
+
+              <div class="reg-format">
+                <div>
+                  <textarea type="text" [formControl]="policyIDRegexFormat" placeholder="Policy Format|Option"></textarea>
+                </div>
               </div>
             </div>
 
-
           </form>
-          <button *ngIf="newHmo" (click)="save(frmNewHmo.valid, frmNewHmo.value)" class="cta-1">Add HMO</button>
+          <button *ngIf="newHmo" [disabled]="apmisLookupText ===''" (click)="save(frmNewHmo.valid, frmNewHmo.value)"
+            class="cta-1">Add HMO</button>
         </div>
 
         <!-- <div class="pg-subtitle">HMO List</div>  -->
@@ -101,11 +108,11 @@
                       <div (click)="showImageBrowseDlg(i)" class="action-item">
                         <i class="fa fa-cloud-upload" aria-hidden="true"></i>
                         <span>Upload Beneficiary List</span>
-                        <input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" style="display:none;"
-                          #fileInput type="file" id="uploadResult" (change)="submitExcel($event, hmo)">
+                        <input accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                          style="display:none;" #fileInput type="file" id="uploadResult" (change)="submitExcel($event, hmo)">
                       </div>
                     </form>
-                    <div class="action-item">
+                    <div class="action-item" (click)="newHmo_show(hmo)">
                       <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                       <span>Update HMO</span>
                     </div>
@@ -115,7 +122,8 @@
             </tbody>
             <tbody *ngIf="hmoFacilities.length === 0 && !loading">
               <tr>
-                <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;"> No data available in table</td>
+                <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;">
+                  No data available in table</td>
               </tr>
             </tbody>
             <tbody *ngIf="hmoFacilities.length === 0 && loading">

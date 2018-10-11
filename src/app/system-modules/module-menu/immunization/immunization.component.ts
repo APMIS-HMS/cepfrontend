@@ -6,7 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./immunization.component.scss']
 })
 export class ImmunizationComponent implements OnInit {
-  pageInView = 'Immunization Schedule';
+  // pageInView = 'Immunization Schedule';
+  pageInView = 'Batch Schedule';
   immunizationSchedule: Boolean = true;
   constructor() { }
 
@@ -25,7 +26,8 @@ export class ImmunizationComponent implements OnInit {
 
   private checkPageUrl(param: string) {
     if (param.includes('immunization-schedule')) {
-      this.pageInView = 'Immunization Schedule';
+      // this.pageInView = 'Immunization Schedule';
+      this.pageInView = 'Batch Schedule';
     }
   }
 
