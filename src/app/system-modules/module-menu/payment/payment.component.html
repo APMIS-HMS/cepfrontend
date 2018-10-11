@@ -113,8 +113,10 @@
                             </div>
                             <div class="col-xs-8">
                                 <div class="list-text">
-                                    <span class="title">{{pendingBill?.principalObject?.personDetails?.firstName}} {{pendingBill?.principalObject?.personDetails?.lastName}}</span>
-                                    <span class="sub" *ngIf="pendingBill?.grandTotalExcludeInvoice!==0">{{ pendingBill?.updatedAt |date:'medium'}} <br> 
+                                    <span class="title">{{pendingBill?.principalObject?.personDetails?.firstName}}
+                                        {{pendingBill?.principalObject?.personDetails?.lastName}}</span>
+                                    <span class="sub" *ngIf="pendingBill?.grandTotalExcludeInvoice!==0">{{
+                                        pendingBill?.updatedAt |date:'medium'}} <br>
                                         Total Amount Due: <b>NGN{{ pendingBill?.grandTotalExcludeInvoice|numberThr }}</b>
                                     </span>
                                 </div>
@@ -157,7 +159,8 @@
                         </div>
                         <div class="list-text">
                             <span class="title">{{invoice?.invoiceNo}}</span>
-                            <span class="sub">{{invoice?.patientObject?.personDetails?.firstName}} {{invoice?.patientObject?.personDetails?.lastName}}
+                            <span class="sub">{{invoice?.patientObject?.personDetails?.firstName}}
+                                {{invoice?.patientObject?.personDetails?.lastName}}
                                 | {{invoice?.updatedAt|date:'medium'}} </span>
                         </div>
                         <div style="float:right">
@@ -200,7 +203,8 @@
                             </span>
                             <span class="summary-title">
                                 <div class="row">
-                                    <div class="col-md-9">{{billSummaryData.UnpaidInvoices | currency:'NGN':true:'1.2-2'}}</div>
+                                    <div class="col-md-9">{{billSummaryData.UnpaidInvoices |
+                                        currency:'NGN':true:'1.2-2'}}</div>
                                     <div class="col-md-3"><i style="float: right; color: red" class="hidden-md fa-arrow-circle-o-up fa fa-2x"></i></div>
                                 </div>
                             </span>
@@ -218,8 +222,8 @@
                                     <div class="col-md-9">{{billSummaryData.UnpaidBills | currency:'NGN':true:'1.2-2'}}</div>
                                     <div class="col-md-3"><i style="float: right; color: #3B86FF" class="fa-money fa fa-2x"></i></div>
                                 </div>
-                                
-                                
+
+
                             </span>
                         </div>
                     </div>
