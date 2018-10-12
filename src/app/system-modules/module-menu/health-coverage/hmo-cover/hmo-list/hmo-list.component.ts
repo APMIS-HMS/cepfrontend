@@ -171,6 +171,7 @@ export class HmoListComponent implements OnInit {
         this.policyIDRegexFormat.setValue(hmo.policyIDRegexFormat);
       }
       this.apmisLookupText = hmo.name;
+      this.selectedHMO = hmo;
     }
   }
 
