@@ -48,7 +48,7 @@ export class SelectTemplateComponent implements OnInit {
   }
 
   private _getAllTemplates() {
-    this._templateService.find({query: { 'facilityId': this.facility._id }}).then(res => {
+    this._templateService.find({query: { 'facilityId': this.facility._id, $limit: 50 }}).then(res => {
       if (res.data.length > 0) {
         this.investigations = res.data;
       }

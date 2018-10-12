@@ -9,7 +9,8 @@
         <ul class="rAreaCard-body">
             <li class="rAreaCard-item" *ngFor="let tag of patient?.tags">
                 <div class="rAreaCard-content">{{tag.name}}</div>
-                <i *ngIf="tag.tagType === 'identification'" class="fa fa-info tooltip" data-toggle="Identification" data-placement="bottom"></i>
+                <i *ngIf="tag.tagType === 'identification'" class="fa fa-info tooltip" data-toggle="Identification"
+                    data-placement="bottom"></i>
             </li>
         </ul>
     </div>
@@ -120,7 +121,7 @@
         </div>
 
         <ul class="rAreaCard-body">
-            <li class="rAreaCard-item">
+            <!-- <li class="rAreaCard-item">
                 <div class="rAreaCard-content">Trinobatin Nicotin TriBact</div>
 
                 <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
@@ -185,7 +186,7 @@
                         </tbody>
                     </table>
                 </div>
-            </li>
+            </li> -->
         </ul>
     </div>
 
@@ -196,7 +197,7 @@
         </div>
 
         <ul class="rAreaCard-body">
-            <li class="rAreaCard-item">
+            <!-- <li class="rAreaCard-item">
                 <div class="rAreaCard-content">Trinobatin Nicotin TriBact</div>
 
                 <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
@@ -221,19 +222,19 @@
                                 <td>Hives</td>
                                 <td>Was allergic since a child</td>
                             </tr>
-                            <!-- <tr *ngIf="patients.length === 0 && !loading">
+                            <tr *ngIf="patients.length === 0 && !loading">
                         <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;"> No data available in table</td>
                     </tr>
                     <tr *ngIf="patients.length === 0 && loading">
                         <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;">
                             <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                         </td>
-                    </tr> -->
+                    </tr>
                         </tbody>
                     </table>
                 </div>
-            </li>
-            <li class="rAreaCard-item">
+            </li> -->
+            <!-- <li class="rAreaCard-item">
                 <div class="rAreaCard-content">Diclofenac</div>
 
                 <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
@@ -258,18 +259,19 @@
                                 <td>Hives</td>
                                 <td>Was allergic since a child</td>
                             </tr>
-                            <!-- <tr *ngIf="patients.length === 0 && !loading">
-                        <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;"> No data available in table</td>
-                    </tr>
-                    <tr *ngIf="patients.length === 0 && loading">
-                        <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;">
-                            <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
-                        </td>
-                    </tr> -->
+                            <tr *ngIf="patients.length === 0 && !loading">
+                                <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;">
+                                    No data available in table</td>
+                            </tr>
+                            <tr *ngIf="patients.length === 0 && loading">
+                                <td class="table-content" colspan="9" style="text-align: center !important; padding: 10px !important;">
+                                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>
-            </li>
+            </li> -->
         </ul>
     </div>
     <!-- 
@@ -405,7 +407,7 @@
         </div>
 
         <ul class="rAreaCard-body">
-            <li class="rAreaCard-item">
+            <!-- <li class="rAreaCard-item">
                 <div class="rAreaCard-content">EMT Clinic - Continental Hospital</div>
 
                 <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
@@ -433,7 +435,7 @@
                         </tbody>
                     </table>
                 </div>
-            </li>
+            </li> -->
         </ul>
     </div>
 
@@ -470,13 +472,15 @@
                                 <td>
                                     <div class="empWrap">
                                         <div class="list-img" *ngIf="appointment?.providerDetails !== null && appointment?.providerDetails !== undefined">
-                                            <img *ngIf="appointment?.providerDetails?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
+                                            <img *ngIf="appointment?.providerDetails?.personDetails?.profileImageObject === undefined"
+                                                src="assets/images/users/default.png">
                                             <div *ngIf="appointment?.providerDetails?.personDetails?.profileImageObject !== undefined">
                                                 <img class="shadow" [src]="facilityService.transform(appointment?.providerDetails?.personDetails?.profileImageObject?.thumbnail)">
                                             </div>
                                         </div>
                                         <div>
-                                            <div class="list-label">{{appointment.providerDetails?.personDetails.lastName}} {{appointment.providerDetails?.personDetails.firstName}}</div>
+                                            <div class="list-label">{{appointment.providerDetails?.personDetails.lastName}}
+                                                {{appointment.providerDetails?.personDetails.firstName}}</div>
                                         </div>
                                     </div>
                                 </td>
@@ -522,7 +526,8 @@
                                 <td>
                                     <div class="empWrap">
                                         <div class="list-img" *ngIf="appointment?.providerDetails !== null">
-                                            <img *ngIf="appointment?.providerDetails?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
+                                            <img *ngIf="appointment?.providerDetails?.personDetails?.profileImageObject === undefined"
+                                                src="assets/images/users/default.png">
                                             <div *ngIf="appointment?.providerDetails?.personDetails?.profileImageObject !== undefined">
                                                 <img class="shadow" [src]="facilityService.transform(appointment?.providerDetails?.personDetails?.profileImageObject?.thumbnail)">
                                             </div>

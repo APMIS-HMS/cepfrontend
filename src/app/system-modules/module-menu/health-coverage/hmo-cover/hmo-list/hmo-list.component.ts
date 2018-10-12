@@ -6,7 +6,11 @@ import { FacilityType } from './../../../../../models/facility-manager/setup/fac
 import { Facility } from './../../../../../models/facility-manager/setup/facility';
 import { Component, OnInit, EventEmitter, Output, ElementRef, ViewChildren, QueryList } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { HmoService, FacilitiesService, FacilityTypesService } from '../../../../../services/facility-manager/setup/index';
+import {
+	HmoService,
+	FacilitiesService,
+	FacilityTypesService
+} from '../../../../../services/facility-manager/setup/index';
 import { Router } from '@angular/router';
 
 import * as XLSX from 'xlsx';
@@ -15,9 +19,9 @@ import { element } from 'protractor';
 type AOA = any[][];
 
 @Component({
-  selector: 'app-hmo-list',
-  templateUrl: './hmo-list.component.html',
-  styleUrls: ['./hmo-list.component.scss']
+	selector: 'app-hmo-list',
+	templateUrl: './hmo-list.component.html',
+	styleUrls: [ './hmo-list.component.scss' ]
 })
 export class HmoListComponent implements OnInit {
 
