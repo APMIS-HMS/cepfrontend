@@ -2,8 +2,8 @@ import { appointment } from './../../../../services/facility-manager/setup/devex
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { Component, ViewChild, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { FormControl } from '@angular/forms';
-import 'rxjs/add/operators/startWith';
-import 'rxjs/add/operators/map';
+import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/map';
 import {
 	FacilitiesService,
 	AppointmentService,

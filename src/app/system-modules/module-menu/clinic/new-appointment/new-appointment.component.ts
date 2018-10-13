@@ -1,5 +1,5 @@
-import 'rxjs/add/operators/startWith';
-import 'rxjs/add/operators/map';
+import 'rxjs/add/operator/startWith';
+import 'rxjs/add/operator/map';
 
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
