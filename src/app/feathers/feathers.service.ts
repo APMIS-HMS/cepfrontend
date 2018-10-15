@@ -34,7 +34,8 @@ export class SocketService {
   }
 
   async loginIntoApp(query: any) {
-    return this._app.authenticate({strategy: 'local', email: CircularJSON.stringify(query.email), password: CircularJSON.stringify(query.password)});
+	return this._app.authenticate({strategy: 'local', email: CircularJSON.stringify(query.email),
+	password: CircularJSON.stringify(query.password)});
   }
 
   getService(value: any) {
@@ -68,7 +69,8 @@ export class RestService {
     }
   }
   loginIntoApp(query) {
-    return this._app.authenticate({strategy: 'local', email: CircularJSON.stringify(query.email), password: CircularJSON.stringify(query.password)});
+	return this._app.authenticate({strategy: 'local', email: CircularJSON.stringify(query.email),
+	 password: CircularJSON.stringify(query.password)});
   }
   getService(value: any) {
     // this._app.authenticate();
