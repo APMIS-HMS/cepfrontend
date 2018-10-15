@@ -19,6 +19,7 @@ export class HmoOfficerComponent implements OnInit {
   tab2 = false;
   selectedFacility: any = <any>{}
   selectedBill: any = <any>{}
+  _selectedBill: any = <any>{}
   bills = []
   historyBills = []
 
@@ -39,7 +40,8 @@ export class HmoOfficerComponent implements OnInit {
       query: {
         isCoveredPage: true,
         facilityId: this.selectedFacility._id,
-        'billItems.covered.coverType': 'insurance'
+        'billItems.covered.coverType': 'insurance',
+        $sort: { updatedAt: -1 }
       }
     }).then(payload => {
       payload.data.forEach(element => {
@@ -50,7 +52,7 @@ export class HmoOfficerComponent implements OnInit {
           element.isPending = false;
         }
       });
-      this.bills = payload.data.filter(x => x.isPending === true );
+      this.bills = payload.data.filter(x => x.isPending === true);
       this.historyBills = payload.data.filter(x => x.isPending === false);
     });
   }
@@ -60,6 +62,7 @@ export class HmoOfficerComponent implements OnInit {
   }
 
   billDetail(bill) {
+    this._selectedBill = bill;
     this.selectedBill = bill;
     this.billDetail_show = true;
   }
@@ -67,7 +70,7 @@ export class HmoOfficerComponent implements OnInit {
     this.selectedBill = bill;
     this.billHistoryDetail_show = true;
   }
-  hmo_report(){
+  hmo_report() {
     this.hmoReport_show = true;
   }
   close_onClick() {
