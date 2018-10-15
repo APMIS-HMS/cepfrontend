@@ -30,7 +30,6 @@ export class NewBeneficiaryComponent implements OnInit {
 
   ngOnInit() {
     this.selectedFacility = this.locker.getObject('selectedFacility');
-    console.log(this.selectedBeneficiary);
     this.genders = ['M', 'F'];
     this.types = ['CAPITATION', 'FEE-FOR-SERVICE'];
     this.frm_UpdateCourse = this.formBuilder.group({
@@ -57,10 +56,8 @@ export class NewBeneficiaryComponent implements OnInit {
     this.closeModal.emit(true);
   }
   view() {
-    console.log(this.frm_UpdateCourse);
     if (this.frm_UpdateCourse.valid) {
       this.disableButton = true;
-      console.log(this.selectedBeneficiary);
       if (this.selectedBeneficiary.index !== '') {
         this.systemModuleService.announceSweetProxy('You are about to edit this beneficiary report', 'question', this, null, null);
       } else {
@@ -93,7 +90,6 @@ export class NewBeneficiaryComponent implements OnInit {
     if (result.value) {
       this.systemModuleService.on();
       let data_ = [];
-      console.log(this.frm_UpdateCourse.value);
       data_.push(this.frm_UpdateCourse.value);
       this.updateBeneficiaryList(this.frm_UpdateCourse.value);;
     } else {

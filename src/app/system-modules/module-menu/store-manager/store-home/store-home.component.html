@@ -17,16 +17,38 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-sm-4">
-               <store-chart [chartObj]= "storeStatusLabel"></store-chart>
-            </div>
-            <div class="col-sm-8">
-                <store-summary [data]="storeStatusLabel" (onItemDetailsClicked)="logCurrentSelectedItem($event)"></store-summary>
-            </div>
+        <div class="col-sm-8n">
+            <store-summary [data]="storeStatusLabel" (onItemDetailsClicked)="logCurrentSelectedItem($event)"></store-summary>
         </div>
-        
+        <dialog-host [visible]="showDialog">
+            <store-summary-dialog class="center-center" [title]="selectedItem?.key "  (onClose)="showDialog  = !$event">
+                <div *ngIf="selectedItem">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <p class="lead text-muted">
+                                {{selectedItem?.key}}
 
+                            </p>
+                            <h2>{{selectedItem?.value}}</h2>
+                        </div>
+                        <div class="col-sm-8">
+                            <p class="text-blue bold">
+                                Details for {{selectedItem?.key}}
+                            </p>
+                            <div>
+                                <h1>Chart Visualization goes here</h1>
+                            </div>
+                            <div>
+                                <p>Details loaded from server</p>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </store-summary-dialog>
+        </dialog-host>
 
         <div class="half-outer">
             <div class="sect sect-half">

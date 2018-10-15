@@ -22,6 +22,8 @@ import {StoreSummaryComponent} from './store-home/new-store-manager-components/s
 import {StoreSummaryItemComponent} from './store-home/new-store-manager-components/store-summary-item-component';
 import { StoreChartComponentComponent } from './store-home/store-chart-component/store-chart-component.component';
 import { ChartsModule } from 'ng2-charts';
+import {StoreSummaryDialogComponent} from './store-home/new-store-manager-components/store-summary-dialog-content-component';
+import {DialogHostComponent} from './store-home/new-store-manager-components/dialog-host-component';
 
 @NgModule({
     declarations: [
@@ -35,7 +37,9 @@ import { ChartsModule } from 'ng2-charts';
         PosRecieptComponent,
         StoreSummaryComponent,
         StoreSummaryItemComponent,
-        StoreChartComponentComponent
+        StoreChartComponentComponent,
+        StoreSummaryDialogComponent,
+        DialogHostComponent
     ],
 
     exports: [
@@ -48,8 +52,8 @@ import { ChartsModule } from 'ng2-charts';
         storeRoutes
     ],
     providers: [StoreEmitterService, ProductTypeService, StoreService, ProductService,
-        GenericService, ManufacturerService, RouteService, SupplierService, PurchaseOrderService, 
-        InventoryTransferService,InventoryTransferStatusService,ProductRequisitionService]
+        GenericService, ManufacturerService, RouteService, SupplierService, PurchaseOrderService,
+        InventoryTransferService, InventoryTransferStatusService, ProductRequisitionService]
 })
 export class StoreModule { }
 

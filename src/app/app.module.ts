@@ -19,7 +19,7 @@ import { Routing } from './app.routes';
 
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { } from './facility-setup/facility-setup.module';
+import {} from './facility-setup/facility-setup.module';
 // import {            } from './facility-setup/facility-setup.module';
 import { LoginComponent } from './login/login.component';
 import { SocketService, RestService } from './feathers/feathers.service';
@@ -70,93 +70,177 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 // import { MessagingComponent } from './messaging/messaging.component';
 
 import { APP_DATE_FORMATS, AppDateAdapter } from 'app/date-format';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
-import { FusionChartsModule } from 'angular2-fusioncharts';
-import * as FusionCharts from 'fusioncharts';
-import * as Charts from 'fusioncharts/fusioncharts.charts';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
+
 @NgModule({
-  declarations: [
-    AppComponent,
-    HomeComponent,
-    ApmisCheckboxChildComponent,
-    ApmisCheckboxComponent
-    // MessagingComponent
-  ],
-  exports: [
-  ],
-  imports: [
-    BrowserModule,
-    HttpModule,
-    Routing,
-    BrowserAnimationsModule,
-    OnlyMaterialModule,
-    MaterialModule,
-    SingUpAccountsSharedModule,
-    LoadingBarHttpModule,
-    LoadingBarRouterModule,
-    SweetAlert2Module.forRoot({
-      buttonsStyling: false,
-      customClass: 'modal-content',
-      confirmButtonClass: 'btn btn-primary',
-      cancelButtonClass: 'btn'
-    })
-  ],
-  providers: [
-    {
-      provide: DateAdapter, useClass: AppDateAdapter
-    },
-    {
-      provide: MAT_DATE_FORMATS, useValue: APP_DATE_FORMATS
-    },
-    {provide: MAT_DATE_LOCALE, useValue: 'en-in'},
-    // { provide: ErrorHandler, useClass: ApmisErrorHandler },
-    SocketService, RestService, SetupService.CountriesService, SetupService.FacilityTypesService,
-    SetupService.FacilitiesService, SetupService.FacilityModuleService, SetupService.ConsultingRoomService,
-    SetupService.FacilitiesService, SetupService.FacilityModuleService, SetupService.UserService, SetupService.GenderService,
-    SetupService.TitleService, SetupService.ProfessionService, SetupService.PersonService,
-    SetupService.CompanyHealthCoverService, SetupService.FamilyHealthCoverService, SetupService.AppointmentTypeService,
-    SetupService.RelationshipService, SetupService.MaritalStatusService, SetupService.EmployeeService,
-    ModuleManagerService.LocationService, ModuleManagerService.FacilityOwnershipService, SetupService.AppointmentService,
-    SetupService.InvoiceService, SetupService.BillingService, SetupService.SchedulerService, SetupService.SchedulerTypeService,
-    SetupService.PatientService, SetupService.CorporateFacilityService, SetupService.ImageUploadService,
-    SetupService.TagDictionaryService, SetupService.ServiceDictionaryService, SetupService.CompanyCoverCategoryService,
-    ModuleManagerService.FeatureModuleService, SetupService.AccessControlService, SetupService.ServicePriceService,
-    SetupService.CanActivateViaAuthGuardService, SetupService.FacilitiesServiceCategoryService, SetupService.TagService,
-    SetupService.InPatientListService, SetupService.RoomGroupService, SetupService.BedOccupancyService,
-    SetupService.WorkSpaceService, SetupService.InPatientService, SetupService.WardDischargeTypesService, SetupService.DocumentationService,
-    SetupService.InPatientTransferStatusService, ClinicHelperService, SwitchUserResolverService, SetupService.DictionariesService,
-    SetupService.VitaLocationService, SetupService.VitalPositionService, SetupService.VitalRythmService, SetupService.PrescriptionService,
-    SetupService.PrescriptionPriorityService, SetupService.RouteService, SetupService.FrequencyService, SetupService.DrugListApiService,
-    SetupService.DrugDetailsService, CustomPreloading, SetupService.InventoryService, SetupService.DispenseService,
-    SetupService.FacilityPriceService, SetupService.ProductService, SetupService.AssessmentDispenseService,
-    SetupService.MedicationListService, SetupService.InventoryTransactionTypeService, SetupService.LaboratoryService,
-    SetupService.ExternalPrescriptionService, SetupService.InvestigationService,
-    SetupService.InvestigationSpecimenService, SetupService.InvestigationReportTypeService, SetupService.WorkbenchService,
-    SetupService.ServerDateService, SetupService.LaboratoryReportService, SetupService.FormsService, SetupService.VitalService,
-    SetupService.TemplateService, PolicyService, PayStackService,
-    SetupService.InventoryInitialiserService, SetupService.SmsAlertService, SetupService.MakePaymentService, SystemModuleService,
-    SetupService.SearchInvoicesService, SetupService.PendingBillService,
-    SetupService.TodayInvoiceService, SetupService.LocSummaryCashService,
-    CountryServiceFacadeService, TitleGenderFacadeService, FacilityFacadeService, UserFacadeService,
-    SetupService.InventoryInitialiserService, SetupService.SmsAlertService, SetupService.MakePaymentService, SystemModuleService,
-    SetupService.SearchInvoicesService, SetupService.PendingBillService,
-    SetupService.TodayInvoiceService, SetupService.LocSummaryCashService,
-    SetupService.TimeLineService, FacilityTypeFacilityClassFacadeService, JoinChannelService,
-    SetupService.DocumentUploadService, RadiologyInvestigationService,
-    SetupService.SearchInvoicesService, SetupService.PendingBillService, SetupService.TodayInvoiceService,
-    SetupService.LocSummaryCashService, SetupService.TimeLineService, SetupService.DocumentUploadService, RadiologyInvestigationService,
-    SetupService.FluidService, SecurityQuestionsService, TitleCasePipe, UpperCasePipe, AuthFacadeService,
-    SetupService.DepartmentService, CanActivateViaAuthGuardAccessService, ChannelService,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-    }, CanActivateViaAuthGuardCompleteFacilityService, UpperCasePipe
-  ],
-  bootstrap: [AppComponent]
+	declarations: [
+		AppComponent,
+		HomeComponent,
+		ApmisCheckboxChildComponent,
+		ApmisCheckboxComponent
+		// MessagingComponent
+	],
+	exports: [],
+	imports: [
+		BrowserModule,
+		HttpModule,
+		Routing,
+		BrowserAnimationsModule,
+		OnlyMaterialModule,
+		MaterialModule,
+		SingUpAccountsSharedModule,
+		LoadingBarHttpModule,
+		LoadingBarRouterModule,
+		SweetAlert2Module.forRoot({
+			buttonsStyling: false,
+			customClass: 'modal-content',
+			confirmButtonClass: 'btn btn-primary',
+			cancelButtonClass: 'btn'
+		})
+	],
+	providers: [
+		{
+			provide: DateAdapter,
+			useClass: AppDateAdapter
+		},
+		{
+			provide: MAT_DATE_FORMATS,
+			useValue: APP_DATE_FORMATS
+		},
+		{ provide: MAT_DATE_LOCALE, useValue: 'en-in' },
+		{ provide: ErrorHandler, useClass: ApmisErrorHandler },
+		SocketService,
+		RestService,
+		SetupService.CountriesService,
+		SetupService.FacilityTypesService,
+		SetupService.FacilitiesService,
+		SetupService.FacilityModuleService,
+		SetupService.ConsultingRoomService,
+		SetupService.FacilitiesService,
+		SetupService.FacilityModuleService,
+		SetupService.UserService,
+		SetupService.GenderService,
+		SetupService.TitleService,
+		SetupService.ProfessionService,
+		SetupService.PersonService,
+		SetupService.CompanyHealthCoverService,
+		SetupService.FamilyHealthCoverService,
+		SetupService.AppointmentTypeService,
+		SetupService.RelationshipService,
+		SetupService.MaritalStatusService,
+		SetupService.EmployeeService,
+		ModuleManagerService.LocationService,
+		ModuleManagerService.FacilityOwnershipService,
+		SetupService.AppointmentService,
+		SetupService.InvoiceService,
+		SetupService.BillingService,
+		SetupService.SchedulerService,
+		SetupService.SchedulerTypeService,
+		SetupService.PatientService,
+		SetupService.CorporateFacilityService,
+		SetupService.ImageUploadService,
+		SetupService.TagDictionaryService,
+		SetupService.ServiceDictionaryService,
+		SetupService.CompanyCoverCategoryService,
+		ModuleManagerService.FeatureModuleService,
+		SetupService.AccessControlService,
+		SetupService.ServicePriceService,
+		SetupService.CanActivateViaAuthGuardService,
+		SetupService.FacilitiesServiceCategoryService,
+		SetupService.TagService,
+		SetupService.InPatientListService,
+		SetupService.RoomGroupService,
+		SetupService.BedOccupancyService,
+		SetupService.WorkSpaceService,
+		SetupService.InPatientService,
+		SetupService.WardDischargeTypesService,
+		SetupService.DocumentationService,
+		SetupService.InPatientTransferStatusService,
+		ClinicHelperService,
+		SwitchUserResolverService,
+		SetupService.DictionariesService,
+		SetupService.VitaLocationService,
+		SetupService.VitalPositionService,
+		SetupService.VitalRythmService,
+		SetupService.PrescriptionService,
+		SetupService.PrescriptionPriorityService,
+		SetupService.RouteService,
+		SetupService.FrequencyService,
+		SetupService.DrugListApiService,
+		SetupService.DrugDetailsService,
+		CustomPreloading,
+		SetupService.InventoryService,
+		SetupService.DispenseService,
+		SetupService.FacilityPriceService,
+		SetupService.ProductService,
+		SetupService.AssessmentDispenseService,
+		SetupService.MedicationListService,
+		SetupService.InventoryTransactionTypeService,
+		SetupService.LaboratoryService,
+		SetupService.ExternalPrescriptionService,
+		SetupService.InvestigationService,
+		SetupService.InvestigationSpecimenService,
+		SetupService.InvestigationReportTypeService,
+		SetupService.WorkbenchService,
+		SetupService.ServerDateService,
+		SetupService.LaboratoryReportService,
+		SetupService.FormsService,
+		SetupService.VitalService,
+		SetupService.TemplateService,
+		PolicyService,
+		PayStackService,
+		SetupService.InventoryInitialiserService,
+		SetupService.SmsAlertService,
+		SetupService.MakePaymentService,
+		SystemModuleService,
+		SetupService.SearchInvoicesService,
+		SetupService.PendingBillService,
+		SetupService.TodayInvoiceService,
+		SetupService.LocSummaryCashService,
+		CountryServiceFacadeService,
+		TitleGenderFacadeService,
+		FacilityFacadeService,
+		UserFacadeService,
+		SetupService.InventoryInitialiserService,
+		SetupService.SmsAlertService,
+		SetupService.MakePaymentService,
+		SystemModuleService,
+		SetupService.SearchInvoicesService,
+		SetupService.PendingBillService,
+		SetupService.TodayInvoiceService,
+		SetupService.LocSummaryCashService,
+		SetupService.TimeLineService,
+		FacilityTypeFacilityClassFacadeService,
+		JoinChannelService,
+		SetupService.DocumentUploadService,
+		RadiologyInvestigationService,
+		SetupService.SearchInvoicesService,
+		SetupService.PendingBillService,
+		SetupService.TodayInvoiceService,
+		SetupService.LocSummaryCashService,
+		SetupService.TimeLineService,
+		SetupService.DocumentUploadService,
+		RadiologyInvestigationService,
+		SetupService.FluidService,
+		SecurityQuestionsService,
+		TitleCasePipe,
+		UpperCasePipe,
+		AuthFacadeService,
+		SetupService.DepartmentService,
+		CanActivateViaAuthGuardAccessService,
+		ChannelService,
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: AuthInterceptor,
+			multi: true
+		},
+		CanActivateViaAuthGuardCompleteFacilityService,
+		UpperCasePipe
+	],
+	bootstrap: [ AppComponent ]
 })
 export class AppModule {
-  constructor(private dateAdapter:DateAdapter<Date>){
-    dateAdapter.setLocale('en-in');
-  }
+	constructor(private dateAdapter: DateAdapter<Date>) {
+		dateAdapter.setLocale('en-in');
+	}
 }

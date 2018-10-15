@@ -14,6 +14,7 @@ export class BeneficiaryListComponent implements OnInit {
 
   @ViewChild('fileInput') fileInput: ElementRef;
   public frmNewHmo: FormGroup;
+
   hmo = new FormControl('', []);
   searchBeneficiary = new FormControl();
   newHmo = false;
@@ -22,6 +23,7 @@ export class BeneficiaryListComponent implements OnInit {
   filteredBeneficiaries: any[] = [];
   operateBeneficiaries: any[] = [];
   selectedHMO: any = <any>{};
+  mselectedHMO: any = <any>{};
   selectedBeneficiary: any = <any>{};
 
   pageSize = 10;
@@ -63,6 +65,7 @@ export class BeneficiaryListComponent implements OnInit {
       if (payload.data.length > 0) {
         const facHmo = payload.data[0];
         const index = facHmo.hmos.findIndex(x => x.hmo === id);
+        this.mselectedHMO = facHmo.hmos[index];
         if (index > -1) {
           if (facHmo.hmos[index].enrolleeList.length > 0) {
             const bene = [];
@@ -81,12 +84,24 @@ export class BeneficiaryListComponent implements OnInit {
     }).catch(err => { console.log(err) });
   }
   getRole(beneficiary) {
-    const filNo = beneficiary.filNo;
-    if (filNo !== undefined) {
-      const filNoLength = filNo.length;
-      const lastCharacter = filNo[filNoLength - 1];
-      const secCharacter = (filNoLength - 2 > 0) ? filNo[filNoLength - 2] : filNo[filNoLength - 1];
-      return (isNaN(lastCharacter) && isNaN(secCharacter)) ? 'D' : 'P';
+    if (this.mselectedHMO.policyIDRegexFormat !== undefined) {
+      let arrayOfRegexFormat = this.mselectedHMO.policyIDRegexFormat.split(';');
+      for (let index = 0; index < arrayOfRegexFormat.length; index++) {
+        const element = arrayOfRegexFormat[index];
+        const itemRegexFormat = element.split('|');
+        if (itemRegexFormat.length === 2) {
+          var principalRegex = '^' + itemRegexFormat[0] + '$';
+          var principalRegexFormat = RegExp(principalRegex);
+          const beneficiaryRegex = '^' + itemRegexFormat[0] + itemRegexFormat[1] + '$';
+          const beneficiaryRegexFormat = new RegExp(beneficiaryRegex);
+          if (principalRegexFormat.test(beneficiary.filNo)) {
+            return 'P';
+          }
+          if (beneficiaryRegexFormat.test(beneficiary.filNo)) {
+            return 'D';
+          }
+        }
+      }
     }
   }
   newHmo_show() {
@@ -94,7 +109,6 @@ export class BeneficiaryListComponent implements OnInit {
   }
 
   onBeneficiaryValueChange(e) {
-    console.log(e);
     const facHmo = e;
     const index = facHmo.hmos.findIndex(x => x.hmo === this.selectedBeneficiary.id);
     if (index > -1) {
@@ -121,7 +135,6 @@ export class BeneficiaryListComponent implements OnInit {
   }
 
   edit_show(value, i) {
-console.log(value);
     this.newBeneficiary = !this.newBeneficiary;
     value.id = this.selectedBeneficiary.id;
     value.index = i;
