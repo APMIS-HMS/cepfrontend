@@ -192,7 +192,7 @@ export class ScheduleFrmComponent implements OnInit {
 			// this.selectedPatient = payload.patientDetails;
 			this.selectedPatient = payload;
 			// this.patient.setValue(payload.patientDetails);
-			this.apmisLookupHandleSelectedItem(payload);
+			this.apmisLookupHandleSelectedItem(payload.patientDetails);
 			this.date = payload.startDate;
 			this.reason.setValue(payload.appointmentReason);
 			this.type.setValue(payload.appointmentTypeId);
@@ -988,7 +988,6 @@ export class ScheduleFrmComponent implements OnInit {
 					(payload) => {
 						this.createBill();
 						if (this.teleMed.value === true) {
-							console.log('is teleme');
 							const topic = 'Appointment with ' + this.selectedPatient.personDetails.apmisId;
 							this.appointmentService
 								.setMeeting(topic, this.appointment.startDate, payload._id, this.timezone.value.value)
@@ -1002,7 +1001,6 @@ export class ScheduleFrmComponent implements OnInit {
 											this.selectedPatient.personDetails.lastName +
 											' ' +
 											this.selectedPatient.personDetails.Name;
-										console.log('is sending sms');
 										this.setValueSmsAlert(
 											fullName,
 											this.appointment.startDate,
