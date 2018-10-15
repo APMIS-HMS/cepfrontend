@@ -21,6 +21,7 @@ export class HmoBillDetailComponent implements OnInit {
   hmoPaymentType = [];
   hmoTypeControl: FormControl = new FormControl();
   authCodeControl: FormControl = new FormControl();
+  priceControl: FormControl = new FormControl();
   bill: any = <any>{};
   constructor(private billingService: BillingService,
     private locker: CoolLocalStorage,
@@ -67,8 +68,21 @@ export class HmoBillDetailComponent implements OnInit {
     }
   }
 
+  onChangePrice(index) {
+    this.selectedBill = JSON.parse(JSON.stringify(this.selectedBill));
+    this.selectedBill.billItems[index].totalPrice = parseFloat(this.priceControl.value);
+    this.selectedBill.billItems[index].unitPrice = parseFloat(this.priceControl.value);
+  }
+
+
   hmoConfirmBill(isAccept: boolean) {
     if (this.hmoTypeControl.value === 1 && isAccept === true) {
+      this.selectedBill.grandTotal = 0;
+      this.selectedBill.subTotal = 0;
+      this.selectedBill.billItems.forEach(x => {
+        this.selectedBill.grandTotal += x.totalPrice;
+        this.selectedBill.subTotal = this.selectedBill.grandTotal;
+      });
       if (this.authCodeControl.value !== null) {
         const index = this.selectedBill.billItems.filter(x => x._id.toString() === this.bill._id.toString());
         index[0].covered.authorizationCode = this.authCodeControl.value;
@@ -78,14 +92,31 @@ export class HmoBillDetailComponent implements OnInit {
         }
         index[0].covered.verifiedAt = new Date();
         index[0].paymentCompleted = true;
-        this.billingService.patch(this.selectedBill._id, this.selectedBill, {}).then(payload => {
-          this.systemModuleService.announceSweetProxy('Service successfully cleared', 'success');
-          this.refreshBills.emit(true);
-        });
+        this.billingService.patch(this.selectedBill._id,
+          {
+            grandTotal: this.selectedBill.grandTotal,
+            subTotal: this.selectedBill.subTotal,
+            billItems: this.selectedBill.billItems
+          },
+          {
+            query: {
+              isCoveredPage: true
+            }
+          }).then(payload => {
+            this.selectedBill = payload;
+            this.systemModuleService.announceSweetProxy('Service successfully cleared', 'success');
+            this.refreshBills.emit(true);
+          });
       } else {
         this.systemModuleService.announceSweetProxy('This service require an authorization code', 'error');
       }
     } else if (this.hmoTypeControl.value === 0 || isAccept === false) {
+      this.selectedBill.grandTotal = 0;
+      this.selectedBill.subTotal = 0;
+      this.selectedBill.billItems.forEach(x => {
+        this.selectedBill.grandTotal += x.totalPrice;
+        this.selectedBill.subTotal = this.selectedBill.grandTotal;
+      });
       const index = this.selectedBill.billItems.filter(x => x._id.toString() === this.bill._id.toString());
       index[0].covered.isVerify = true;
       if (isAccept) {
@@ -96,30 +127,41 @@ export class HmoBillDetailComponent implements OnInit {
       }
       index[0].covered.verifiedAt = new Date();
       index[0].paymentCompleted = true;
-      this.billingService.patch(this.selectedBill._id, this.selectedBill, {}).then(payload => {
-        this.selectedBill = payload;
-        if (!isAccept) {
-          const _selectedBill = JSON.parse(JSON.stringify(this.selectedBill));
-          delete _selectedBill._id;
-          delete _selectedBill.coverFile;
-          _selectedBill.patientId = index[0].patientId;
-          _selectedBill.billItems = index;
-          _selectedBill.billItems[0].active = true;
-          _selectedBill.billItems[0].isBearerConfirmed = true;
-          _selectedBill.billItems[0].covered = {};
-          _selectedBill.billItems[0].covered.coverType = "wallet";
-          this.billingService.create(_selectedBill).then(payload2 => {
-            const indx = payload2.principalObject.paymentPlan.filter(x => x.planType === 'wallet');
-            if (indx.length > 0) {
-              indx[0].bearerPersonId = index[0].patientObject.personDetails._id;;
-            }
+      this.billingService.patch(this.selectedBill._id,
+        {
+          grandTotal: this.selectedBill.grandTotal,
+          subTotal: this.selectedBill.subTotal,
+          billItems: this.selectedBill.billItems
+        }, {
+          query: {
+            isCoveredPage: true
+          }
+        }).then(payload => {
+          this.selectedBill = payload;
+          if (!isAccept) {
+            const _selectedBill = JSON.parse(JSON.stringify(this.selectedBill));
+            delete _selectedBill._id;
+            delete _selectedBill.coverFile;
+            _selectedBill.patientId = index[0].patientId;
+            _selectedBill.billItems = index;
+            _selectedBill.billItems[0].active = true;
+            _selectedBill.billItems[0].isBearerConfirmed = true;
+            _selectedBill.billItems[0].covered = {};
+            _selectedBill.billItems[0].covered.coverType = "wallet";
+            this.billingService.create(_selectedBill).then(payload2 => {
+              const indx = payload2.principalObject.paymentPlan.filter(x => x.planType === 'wallet');
+              if (indx.length > 0) {
+                indx[0].bearerPersonId = index[0].patientObject.personDetails._id;;
+              }
 
-            this.patientService.patch(payload2.principalObject._id, payload2.principalObject, {}).then(payld => { }, error => { })
-          }, error => { });
-        }
-        this.systemModuleService.announceSweetProxy('Service successfully cleared', 'success');
-        this.refreshBills.emit(true);
-      });
+              this.patientService.patch(payload2.principalObject._id, payload2.principalObject, {}).then(payld => { }, error => { })
+            }, error => { });
+          }
+          this.systemModuleService.announceSweetProxy('Service successfully cleared', 'success');
+          this.refreshBills.emit(true);
+        }, err => {
+          // console.log(err);
+        });
     } else {
       this.systemModuleService.announceSweetProxy('Please select a cover type', 'error');
     }
