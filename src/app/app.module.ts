@@ -71,6 +71,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { APP_DATE_FORMATS, AppDateAdapter } from 'app/date-format';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/material";
+import {CoreUiModules} from './core-ui-modules/CoreUiModules';
+
 
 @NgModule({
   declarations: [
@@ -81,6 +83,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/materia
     // MessagingComponent
   ],
   exports: [
+
   ],
   imports: [
     BrowserModule,
@@ -97,7 +100,8 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from "@angular/materia
       customClass: 'modal-content',
       confirmButtonClass: 'btn btn-primary',
       cancelButtonClass: 'btn'
-    })
+    }),
+      CoreUiModules
   ],
   providers: [
     {
