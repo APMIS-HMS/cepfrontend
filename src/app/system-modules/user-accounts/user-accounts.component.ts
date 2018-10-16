@@ -100,7 +100,6 @@ export class UserAccountsComponent implements OnInit {
 	}
 
 	popListing(item: any) {
-		console.log(item);
 		if (!item.isActivated || item.isActivated === false) {
 			this.systemModuleService.announceSweetProxy(
 				'Facility Activation',
