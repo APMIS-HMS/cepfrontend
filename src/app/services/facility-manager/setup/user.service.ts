@@ -29,8 +29,10 @@ export class UserService {
   logOut() {
     this._socketService.logOut();
   }
+
   login(query: any) {
-    return this._socketService.loginIntoApp(query);
+    // return this._socketService.loginIntoApp(query);
+    return this._restService.loginIntoApp(query);
   }
 
   find(query: any) {

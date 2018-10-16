@@ -10,14 +10,14 @@
       <div class="user-label">Team Bella</div>
     </div>
 
-    <ul class="grp-members">
-      <li>Sam Daniel</li>
-      <li>Jude Jeremy</li>
+    <ul class="grp-members" *ngFor="let channel of userChannels">
+      <li>{{channel.name}}</li>
+      <!-- <li>Jude Jeremy</li>
       <li>Rita Wales</li>
       <li>Juanita Davis</li>
       <li>Pamela Jonathan</li>
       <li>Solomon Wise</li>
-      <li>Kings Philips</li>
+      <li>Kings Philips</li> -->
     </ul>
 
     <div class="header-icos">
@@ -28,7 +28,7 @@
   <div class="chat-content-wrap">
     <div class="groups-sect">
       <div class="search-wrap">
-        <i class="fa fa-search"></i>
+        <i class="fa fa-search"></i> 
         <input type="text" [formControl]="searchAccount" placeholder="search chat">
       </div>
 

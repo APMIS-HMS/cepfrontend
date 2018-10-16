@@ -7,9 +7,10 @@ export interface PrescriptionItem {
     productId?: string;
     genericName: string;
     ingredients?: any[];
+    regimen: any[];
     form?: string;
-    frequency: string;
-    duration: string;
+    frequency?: string;
+    duration?: string;
     dosage?: string;
     cost?: number;
     totalCost?: number;
@@ -29,6 +30,7 @@ export interface PrescriptionItem {
     isOpen?: boolean;
     transactions?: any[];
     serviceId?: string;
+    storeId?: String;
     facilityServiceId?: string;
     categoryId?: string;
 }

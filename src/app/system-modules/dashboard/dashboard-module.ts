@@ -11,10 +11,14 @@ import {SharedModule } from '../../shared-module/shared.module';
 import { MaterialModule } from '../../shared-common-modules/material-module';
 import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
 import { OnlyMaterialModule } from '../../shared-common-modules/only-material-module';
+import { MessagingComponent } from '../../messaging/messaging.component';
+import { ImageEmitterService } from '../../services/facility-manager/image-emitter.service';
+
 @NgModule({
     declarations: [
         DashboardComponent,
-        DashboardHomeComponent
+        DashboardHomeComponent,
+        MessagingComponent
     ],
     exports: [
     ],
@@ -25,8 +29,7 @@ import { OnlyMaterialModule } from '../../shared-common-modules/only-material-mo
         LoadingBarHttpModule,
         Routing
     ],
-    providers: [
-    ]
+    providers: [ ImageEmitterService ]
 })
 export class DashboardModule { }
 

@@ -18,7 +18,9 @@ import { MedRecordPrescriptionComponent } from './med-records/med-record-prescri
 import { MedRecordDiagnosticsComponent } from './med-records/med-record-diagnostics/med-record-diagnostics.component';
 import { MedRecordPaymentComponent } from './med-records/med-record-payment/med-record-payment.component';
 import { BiodataUpdateComponent } from './biodata-update/biodata-update.component';
-
+import { DateRangePickerModule } from "ng-pick-daterange";
+import { DateTimePickerModule } from "ng-pick-datetime";
+import { InavailabilityComponent } from './person-landing/person-schedule-appointment/inavailability/inavailability.component';
 @NgModule({
   imports: [
     CommonModule,
@@ -26,7 +28,9 @@ import { BiodataUpdateComponent } from './biodata-update/biodata-update.componen
     MaterialModule,
     SharedModule,
     homePageRoutes,
-    ChartsModule
+    ChartsModule,
+    DateRangePickerModule,
+    DateTimePickerModule
   ],
   declarations: [
     HomePageComponent,
@@ -41,6 +45,7 @@ import { BiodataUpdateComponent } from './biodata-update/biodata-update.componen
     MedRecordDiagnosticsComponent,
     MedRecordPaymentComponent,
     BiodataUpdateComponent,
+    InavailabilityComponent,
   ]
 })
 export class HomePageModule { }

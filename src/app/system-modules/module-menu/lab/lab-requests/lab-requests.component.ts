@@ -62,9 +62,10 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
   apmisLookupUrl = 'patient-search';
   apmisLookupText = '';
   apmisLookupQuery: any = {};
-  apmisLookupDisplayKey = 'firstName';
+  apmisLookupDisplayKey = 'personDetails.firstName';
   apmisLookupImgKey = 'personDetails.profileImageObject.thumbnail';
-  apmisLookupOtherKeys = ['lastName', 'firstName', 'dateOfBirth', 'email'];
+
+  apmisLookupOtherKeys = ['personDetails.lastName', 'personDetails.firstName', 'personDetails.dateOfBirth', 'personDetails.email'];
   apmisInvestigationLookupUrl = 'investigations';
   apmisInvestigationLookupText = '';
   apmisInvestigationLookupQuery: any = {};
@@ -480,8 +481,7 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
   }
 
   apmisLookupHandleSelectedItem(value) {
-    console.log(value);
-    this.apmisLookupText = `${value.firstName} ${value.lastName}`;
+    this.apmisLookupText = `${value.personDetails.firstName} ${value.personDetails.lastName}`;
     this.selectedPatient = value;
     this.frmNewRequest.controls['labNo'].setValue('');
     if (this.selectedPatient.clientsNo !== undefined) {
@@ -623,7 +623,7 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
                     isInBind
                   ].investigation.panel.findIndex(
                     x => x._id === copyInvestigation.investigation.panel[0]._id
-                    ) >= 0
+                  ) >= 0
                 ) {
                   this.bindInvestigations[isInBind].investigation.panel.push(
                     copyInvestigation.investigation.panel[0]
@@ -643,7 +643,7 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
                 ].investigation.panel.findIndex(
                   x =>
                     x.investigation._id === childInvestigation.investigation._id
-                  );
+                );
                 this.bindInvestigations[isInBind].investigation.panel.splice(
                   indexToRemove,
                   1
@@ -959,7 +959,7 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
 
     const request: any = {
       facilityId: this.selectedFacility._id,
-      patientId: (this.isLaboratory) ? this.selectedPatient.patientId : this.selectedPatient._id,
+      patientId: (this.isLaboratory) ? this.selectedPatient._id : this.selectedPatient._id,
       labNumber: (!this.isLaboratory) ? this.frmNewRequest.controls['labNo'].value : value.labNo,
       clinicalInformation: this.frmNewRequest.controls['clinicalInfo'].value,
       minorLocationId: (this.selectedLab.typeObject !== undefined) ? this.selectedLab.typeObject.minorLocationObject._id : undefined,
@@ -979,7 +979,6 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
         }
       }
     }
-
     // Make request.
     this.requestService.customCreate(request).then(res => {
       if (res.status === 'success') {
@@ -1023,15 +1022,13 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
       !this.isExternal
     ) {
       this.request_view = true;
-      this.requestService
-        .customFind({
+      this.requestService.customFind({
           query: {
             patientId: this.patientId._id,
             facilityId: this.selectedFacility._id,
             $sort: { createdAt: -1 }
           }
-        })
-        .then(res => {
+        }).then(res => {
           this.loading = false;
           let labId = '';
           if (
@@ -1047,22 +1044,24 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
             labRequest.investigations.forEach(investigation => {
               if (this.isLaboratory === true) {
                 if (
-                  investigation.isSaved === undefined ||
-                  !investigation.isSaved ||
-                  ((investigation.isUploaded === undefined ||
-                    !investigation.isUploaded) &&
-                    labId === investigation.investigation.LaboratoryWorkbenches[0].laboratoryId._id)
+                  // investigation.isSaved === undefined ||
+                  // !investigation.isSaved ||
+                  // ((investigation.isUploaded === undefined ||
+                  //   !investigation.isUploaded) &&
+                   !!investigation.investigation && !!investigation.investigation.LaboratoryWorkbenches
+                    && investigation.investigation.LaboratoryWorkbenches.length > 0 &&
+                    labId === investigation.investigation.LaboratoryWorkbenches[0].laboratoryId._id
                 ) {
                   const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
-                  if (!investigation.isSaved || !investigation.isUploaded) {
+                  if (!!investigation.isSaved || !!investigation.isUploaded) {
                     pendingLabReq.report = investigation.report;
                     pendingLabReq.isSaved = investigation.isSaved;
                     pendingLabReq.isUploaded = investigation.isUploaded;
                   }
                   pendingLabReq.labRequestId = labRequest._id;
                   pendingLabReq.facility = labRequest.facilityId;
-                  pendingLabReq.clinicalInformation =
-                    labRequest.clinicalInformation;
+                  pendingLabReq.clinicalInformation = labRequest.clinicalInformation;
+                  pendingLabReq.isPaid = labRequest.isPaid;
                   pendingLabReq.diagnosis = labRequest.diagnosis;
                   pendingLabReq.labNumber = labRequest.labNumber;
                   pendingLabReq.patientId = labRequest.patientId;
@@ -1097,20 +1096,27 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
                     pendingLabReq.specimenNumber = investigation.specimenNumber;
                   }
 
+                  if (investigation.sampleTaken !== undefined) {
+                    pendingLabReq.sampleTaken = investigation.sampleTaken;
+                  }
+                  if (investigation.sampleTakenBy !== undefined) {
+                    pendingLabReq.sampleTakenBy = investigation.sampleTakenBy;
+                  }
+
                   this.pendingRequests.push(pendingLabReq);
                 }
               } else {
 
                 const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
-                if (!investigation.isSaved || !investigation.isUploaded) {
+                if (!!investigation.isSaved || !!investigation.isUploaded) {
                   pendingLabReq.report = investigation.report;
                   pendingLabReq.isSaved = investigation.isSaved;
                   pendingLabReq.isUploaded = investigation.isUploaded;
                 }
                 pendingLabReq.labRequestId = labRequest._id;
                 pendingLabReq.facility = labRequest.facilityId;
-                pendingLabReq.clinicalInformation =
-                  labRequest.clinicalInformation;
+                pendingLabReq.clinicalInformation = labRequest.clinicalInformation;
+                pendingLabReq.isPaid = labRequest.isPaid;
                 pendingLabReq.diagnosis = labRequest.diagnosis;
                 pendingLabReq.labNumber = labRequest.labNumber;
                 pendingLabReq.patientId = labRequest.patientId;
@@ -1126,8 +1132,7 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
                   investigation.investigation.facilityServiceId;
                 pendingLabReq.isPanel = investigation.investigation.isPanel;
                 pendingLabReq.name = investigation.investigation.name;
-                pendingLabReq.reportType =
-                  investigation.investigation.reportType;
+                pendingLabReq.reportType = investigation.investigation.reportType;
                 pendingLabReq.specimen = investigation.investigation.specimen;
                 pendingLabReq.service = investigation.investigation.serviceId;
                 pendingLabReq.unit = investigation.investigation.unit;
@@ -1145,13 +1150,19 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
                   pendingLabReq.specimenNumber = investigation.specimenNumber;
                 }
 
-                this.pendingRequests.push(pendingLabReq);
+                if (investigation.sampleTaken !== undefined) {
+                  pendingLabReq.sampleTaken = investigation.sampleTaken;
+                }
+                if (investigation.sampleTakenBy !== undefined) {
+                  pendingLabReq.sampleTakenBy = investigation.sampleTakenBy;
+                }
 
+                this.pendingRequests.push(pendingLabReq);
               }
             });
           });
         })
-        .catch(err => { console.log(err) });
+        .catch(err => { console.log(err); });
     } else {
       this.requestService
         .customFind({ query: { facilityId: this.selectedFacility._id, $sort: { createdAt: -1 } } })
@@ -1169,14 +1180,16 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
           res.data.forEach(labRequest => {
             labRequest.investigations.forEach(investigation => {
               if (
-                investigation.isSaved === undefined ||
-                !investigation.isSaved ||
-                ((investigation.isUploaded === undefined ||
-                  !investigation.isUploaded) &&
-                  labId === investigation.investigation.LaboratoryWorkbenches[0].laboratoryId._id)
+                // investigation.isSaved === undefined ||
+                // !investigation.isSaved ||
+                // ((investigation.isUploaded === undefined ||
+                //   !investigation.isUploaded) &&
+                !!investigation.investigation && !!investigation.investigation.LaboratoryWorkbenches
+                && investigation.investigation.LaboratoryWorkbenches.length > 0 &&
+                  labId === investigation.investigation.LaboratoryWorkbenches[0].laboratoryId._id
               ) {
                 const pendingLabReq: PendingLaboratoryRequest = <PendingLaboratoryRequest>{};
-                if (!investigation.isSaved || !investigation.isUploaded) {
+                if (!!investigation.isSaved || !!investigation.isUploaded) {
                   pendingLabReq.report = investigation.report;
                   pendingLabReq.isSaved = investigation.isSaved;
                   pendingLabReq.isUploaded = investigation.isUploaded;

@@ -1,4 +1,4 @@
-import {UpperCasePipe} from '@angular/common';
+import {UpperCasePipe} from '@angular/common'; 
 import {Component, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from '@angular/router';

@@ -149,7 +149,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
     selectedCategory;
 
-    hmos:any[] = [];
+    hmos: any[] = [];
     hmo;
     filteredHmos: Observable<any[]>;
 
@@ -698,14 +698,12 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
     nextInsuranceCover(hmoPlanId, hmoPlan) {
         this.systemModuleService.on();
-
         this.coverType = 'insurance';
         this.hmo = this.hmoPlanId.value;
         const insuranceId = this.insuranceId.value;
         this.hmoInsuranceId = insuranceId;
         this.planPrice = this.hmoPlanPrice.value;
         this.planId = this.hmoPlan.value._id;
-
         this.hmoService.find({ query: { 'facilityId': this.facility._id } }).then(payload => {
             if (payload.data.length > 0) {
                 const facHmo = payload.data[0];
@@ -718,10 +716,9 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                             bene.push(...facHmo.hmos[index].enrolleeList[s].enrollees);
                         }
                         const fil = bene.filter(x => x.filNo === insuranceId);
-
-                        this.frmPerson.controls['gender'].disable();
+                        // this.frmPerson.controls['gender'].disable();
                         if (fil.length > 0) {
-                            if (fil[0].status === false) {
+                            if (fil[0].status === false || fil[0].status.toString() === 'inactive') {
                                 this.systemModuleService.off();
                                 const text = 'Insurance Id does not have an active status for the selected HMO';
                                 this.errMsg = text;
@@ -729,25 +726,32 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                                 this.systemModuleService
                                     .announceSweetProxy(text, 'error');
                             } else {
+
                                 if (this.shouldMoveFirst === true) {
                                     this.saveInsurancePerson();
                                 } else {
+                                    console.log(fil[0].gender);
                                     this.systemModuleService.off();
                                     this.frmPerson.controls['firstname'].setValue(fil[0].firstname.toString());
                                     this.frmPerson.controls['firstname'].disable();
                                     this.frmPerson.controls['lastname'].setValue(fil[0].surname.toString());
                                     this.frmPerson.controls['lastname'].disable();
-                                    if (fil[0].gender.toLowerCase() === 'm' || fil[0].gender.toLowerCase() === 'male') {
-                                        this.frmPerson.controls['gender'].setValue('Male');
-                                    } else {
-                                        this.frmPerson.controls['gender'].setValue('Female');
+                                    if (fil[0].gender !== undefined && fil[0].gender !== null) {
+                                        this.frmPerson.controls['gender'].disable();
+                                        if (fil[0].gender.toLowerCase() === 'm' || fil[0].gender.toLowerCase() === 'male') {
+                                            this.frmPerson.controls['gender'].setValue('Male');
+                                        } else {
+                                            this.frmPerson.controls['gender'].setValue('Female');
+                                        }
                                     }
+
                                     this.frmNewEmp4_show = false;
                                     this.frmNewPerson1_show = true;
                                     this.frmNewPerson2_show = false;
                                     this.frmNewPerson3_show = false;
                                     this.paymentPlan = false;
                                     this.loading = false;
+
                                 }
                             }
                         } else {
@@ -931,47 +935,6 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 }
             }
         })
-
-        /* this.hmoService.find({ query: { 'facilityId': this.facility._id } }).then(payload => {
-            if (payload.data.length > 0) {
-                const facHmo = payload.data[0];
-                const index = facHmo.hmos.findIndex(x => x.companyCover === this.companyCover.hmoId);
-                if (index > -1) {
-                    if (facHmo.hmos[index].enrolleeList.length > 0) {
-                        const bene = [];
-                        for (let s = 0; s < facHmo.hmos[index].enrolleeList.length; s++) {
-                            const hmo = facHmo.hmos[index].hmo;
-                            bene.push(...facHmo.hmos[index].enrolleeList[s].enrollees);
-                        }
-                        const fil = bene.filter(x => x.filNo === insuranceId);
-                        console.log(fil);
-                        if (fil.length > 0) {
-                            if (fil[0].status === false) {
-                                this.systemModuleService.off();
-                                this.systemModuleService
-                                    .announceSweetProxy('Insurance Id does not have an active status for the selected HMO', 'error');
-                            } else {
-                                if (this.shouldMoveFirst === true) {
-                                    this.saveInsurancePerson();
-                                } else {
-                                    this.systemModuleService.off();
-                                    this.frmNewEmp4_show = false;
-                                    this.frmNewPerson1_show = true;
-                                    this.frmNewPerson2_show = false;
-                                    this.frmNewPerson3_show = false;
-                                    this.paymentPlan = false;
-                                    this.loading = false;
-                                }
-                            }
-                        } else {
-                            this.systemModuleService.off();
-                            this.systemModuleService
-                                .announceSweetProxy('Insurance Id does not exist for the selected HMO', 'error');
-                        }
-                    }
-                }
-            }
-        }).catch(err => { console.log(err) }); */
     }
 
     getRole(beneficiary) {

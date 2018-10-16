@@ -17,6 +17,7 @@ import { BillPrescriptionComponent } from '../system-modules/module-menu/patient
 import { PatientPrescriptionComponent } from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/patient-prescription/patient-prescription.component';
 import { GlobalPatientLookupComponent } from '../shared-module/global-patient-lookup/global-patient-lookup.component';
 import { ApmisLookupComponent } from '../shared-module/apmis-lookup/apmis-lookup.component';
+import { ApmisPaginatedLookupComponent } from '../shared-module/apmis-paginated-lookup/apmis-paginated-lookup.component';
 import { ApmisLookupMultiselectComponent } from '../shared-module/apmis-lookup-multiselect/apmis-lookup-multiselect.component';
 import { StoreCheckInComponent } from '../shared-module/store-check-in/store-check-in.component';
 import { LabCheckInComponent } from '../shared-module/lab-check-in/lab-check-in.component';
@@ -40,6 +41,8 @@ import { NgPipesModule } from 'ngx-pipes';
 import { CheckoutPatientComponent } from 'app/shared-module/checkout-patient/checkout-patient.component';
 import { OnlyMaterialModule } from './only-material-module';
 import { ImageCropperModule } from 'ng2-img-cropper';
+import { ImageViewerComponent } from '../shared-module/image-viewer/image-viewer.component';
+
 @NgModule({
   declarations: [
     CreateWorkspaceComponent,
@@ -54,6 +57,7 @@ import { ImageCropperModule } from 'ng2-img-cropper';
     ImageUpdateComponent,
     ApmisLookupComponent,
     ApmisLookupMultiselectComponent,
+    ApmisPaginatedLookupComponent,
     KeysPipe,
     ThousandDecimalPipe,
     PersonAccountComponent,
@@ -61,7 +65,8 @@ import { ImageCropperModule } from 'ng2-img-cropper';
     LabRequestsComponent,
     RequestDetailComponent,
     CheckoutPatientComponent,
-    PasswordResetComponent
+    PasswordResetComponent,
+    ImageViewerComponent
   ],
   exports: [
     NgbModule,
@@ -86,6 +91,7 @@ import { ImageCropperModule } from 'ng2-img-cropper';
     CoolStorageModule,
     ApmisLookupComponent,
     ApmisLookupMultiselectComponent,
+    ApmisPaginatedLookupComponent,
     KeysPipe,
     ThousandDecimalPipe,
     PersonAccountComponent,
@@ -96,7 +102,8 @@ import { ImageCropperModule } from 'ng2-img-cropper';
     NgPipesModule,
     CheckoutPatientComponent,
     PasswordResetComponent,
-    SharedModuleMaterialModule
+    SharedModuleMaterialModule,
+    ImageViewerComponent
   ],
   imports: [
     OnlyMaterialModule,

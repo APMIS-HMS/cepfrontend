@@ -26,6 +26,9 @@ import {
 } from "app/shared-module/helpers/global-config";
 import { SwalComponent } from "@toverux/ngx-sweetalert2";
 import swal from "sweetalert2";
+import { ImageEmitterService } from '../../../../services/facility-manager/image-emitter.service';
+import { ImageUploadService } from '../../../../services/facility-manager/setup';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: "app-facility-basicinfo-edit",
@@ -53,8 +56,18 @@ export class FacilityBasicinfoEditComponent implements OnInit {
     recentStorageName: "componentData3"
   };
   showClose = true;
+  selectedImageObject: any = <any>{};
+  base64Image: String;
+  hasChangedImage: Boolean = false;
+  disableImageBtn: Boolean = false;
+  saveImageBtn: Boolean = true;
+  savingImageBtn: Boolean = false;
+
   constructor(
+    private imageEmitterService: ImageEmitterService,
+    private _imageUploadService: ImageUploadService,
     private formBuilder: FormBuilder,
+    private _locker: CoolLocalStorage,
     private countryService: CountryServiceFacadeService,
     private facilityTypeService: FacilityTypeFacilityClassFacadeService,
     private facilityService: FacilitiesService,
@@ -69,6 +82,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
     if (facility.isValidRegistration === undefined || facility.isValidRegistration === false) {
       this.showClose = false;
     }
+    console.log('Facility', this.selectedFacility);
     this._getCountries();
     this._getFacilityTypes();
     if (this.selectedFacility.isHDO) {
@@ -182,6 +196,70 @@ export class FacilityBasicinfoEditComponent implements OnInit {
     }
 
   }
+
+  onClickChangeImage(fileName, fileList) {
+    this.selectedImageObject = fileList[0];
+    const reader = new FileReader();
+    reader.onload = (e: any) => {
+      this.base64Image = e.target.result;
+      this.imageEmitterService.setImageUrl(e.target.result);
+    };
+
+    reader.readAsDataURL(fileList[0]);
+    // This instance variable is to know if a user has selected an image
+    // this will determine if to show upload button or not.
+    this.hasChangedImage = true;
+  }
+
+  onClickUploadLogo() {
+    this.disableImageBtn = true;
+    this.saveImageBtn = false;
+    this.savingImageBtn = true;
+    const payload = {
+      container: 'facilityfolder',
+      base64: this.selectedImageObject,
+      facilityId: this.selectedFacility._id,
+	    uploadType: 'Logo upload',
+      docName: this.selectedImageObject.name,
+      size: this.selectedImageObject.size,
+	    id: this.selectedFacility._id, // facilityId or patientId or personId
+	    docType: 'logo',
+      mimeType: this.selectedImageObject.type
+    };
+
+    // Make a request to the server to save image
+    this._imageUploadService.createImageFacade(payload).then(res => {
+      this.disableImageBtn = false;
+      this.saveImageBtn = true;
+      this.savingImageBtn = false;
+      this.hasChangedImage = false;
+      if (res.status && res.status === 'success' && res.data) {
+        this._locker.setObject('selectedFacility', res.data);
+        this.systemModuleService.announceSweetProxy('Image upload was successful.', 'success');
+      } else {
+        if (!!this.selectedFacility.logoObject) {
+          this.imageEmitterService.setImageUrl(this.selectedFacility.logoObject.thumbnail);
+        } else {
+          this.imageEmitterService.setImageUrl('');
+        }
+        this.systemModuleService.announceSweetProxy(res.msg, 'error');
+      }
+    }, err => {
+      console.log('First Error ', err);
+    }).catch(err => {
+      console.log('Error ', err);
+    });
+  }
+
+  onClickCancel() {
+    this.hasChangedImage = false;
+    if (!!this.selectedFacility.logoObject) {
+      this.imageEmitterService.setImageUrl(this.selectedFacility.logoObject.thumbnail);
+    } else {
+      this.imageEmitterService.setImageUrl('');
+    }
+  }
+
   _getFacilityOwnerships() {
     this.facilityOwnershipService.find({}).then(
       payload => {

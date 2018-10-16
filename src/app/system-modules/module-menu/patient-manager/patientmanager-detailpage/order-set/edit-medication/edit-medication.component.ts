@@ -1,5 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input, ElementRef } from '@angular/core';
-import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import {
     FacilitiesService, PrescriptionService,
     PrescriptionPriorityService, DictionariesService, BillingService,
@@ -61,9 +61,7 @@ export class EditMedicationComponent implements OnInit {
       dosage: ['', [<any>Validators.required]],
       dosageUnit: ['', [<any>Validators.required]],
       drug: ['', [<any>Validators.required]],
-      frequency: ['', [<any>Validators.required]],
-      duration: [0, [<any>Validators.required]],
-      durationUnit: ['', [<any>Validators.required]],
+      regimenArray: this.fb.array([this.initRegimen()]),
       refillCount: [this.refillCount],
       startDate: [this.currentDate],
       specialInstruction: ['']
@@ -82,6 +80,14 @@ export class EditMedicationComponent implements OnInit {
     // this._getAllRoutes();
   }
 
+  initRegimen() {
+    return this.fb.group({
+      frequency: ['', [<any>Validators.required]],
+      duration: [0, [<any>Validators.required]],
+      durationUnit: [this.durationUnits[1].name, [<any>Validators.required]],
+    });
+  }
+
   onClickAddMedication(valid: boolean, value: any) {
     if (valid) {
       const medication = {
@@ -90,9 +96,10 @@ export class EditMedicationComponent implements OnInit {
         // strength: value.strength,
         dosage: value.dosage,
         dosageUnit: value.dosageUnit,
-        frequency: value.frequency,
-        duration: value.duration,
-        durationUnit: value.durationUnit,
+        regimen: value.regimenArray,
+        // frequency: value.frequency,
+        // duration: value.duration,
+        // durationUnit: value.durationUnit,
         startDate: value.startDate,
         patientInstruction: value.specialInstruction,
         refillCount: value.refillCount,
@@ -116,9 +123,20 @@ export class EditMedicationComponent implements OnInit {
       this.addPrescriptionForm.controls['refillCount'].reset(0);
       this.addPrescriptionForm.controls['duration'].reset(0);
       this.addPrescriptionForm.controls['startDate'].reset(new Date());
-      this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[1].name);
+      // this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[1].name);
       this.addPrescriptionForm.controls['dosageUnit'].reset(this.dosageUnits[0].name);
     }
+  }
+
+  onClickAddRegimen() {
+    const control = <FormArray>this.addPrescriptionForm.controls['regimenArray'];
+    control.push(this.initRegimen());
+  }
+
+  onClickRemoveRegimen(i) {
+    const control = <FormArray>this.addPrescriptionForm.controls['regimenArray'];
+    // Remove interval from the list of vaccines.
+    control.removeAt(i);
   }
 
   apmisLookupHandleSelectedItem(item) {
