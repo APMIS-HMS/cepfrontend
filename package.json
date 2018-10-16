@@ -6,9 +6,10 @@
 		"ng": "ng",
 		"config": "ts-node ./src/set-env.ts",
 		"start": "npm run config -- --environment=prod.navlagos && ng serve  --environment=prod.navlagos ",
-		"build": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build --prod --build-optimizer --vendor-chunk --named-chunks --environment=prod.apmis",
+		"build": "node --max_old_space_size=8192 node_modules/@angular/cli/bin/ng build && gzipper ./dist --prod --build-optimizer --vendor-chunk --named-chunks --environment=prod.apmis",
 		"test": "ng test",
 		"lint": "ng lint",
+		"gzipper": "gzipper",
 		"e2e": "ng e2e",
 		"bundle-report": "webpack-bundle-analyzer dist/stats.json"
 	},
@@ -107,7 +108,7 @@
 		"type": "git",
 		"url": "git+https://github.com/APMIS-HMS/cepfrontend.git"
 	},
-	"keywords": [ "connected", "health", "platform" ],
+	"keywords": ["connected", "health", "platform"],
 	"author": "APMIS HMS LTD",
 	"bugs": {
 		"url": "https://github.com/APMIS-HMS/cepfrontend/issues"
