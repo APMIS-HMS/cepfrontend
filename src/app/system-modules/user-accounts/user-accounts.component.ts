@@ -106,7 +106,7 @@ export class UserAccountsComponent implements OnInit {
 				'Facility Activation',
 				'info',
 				null,
-				'`item.name` is yet to be activated, please contact APMIS on 0700-GET-APMIS, support@apmis.ng or any APMIS agent',
+				'Facility is yet to be activated, please contact APMIS on 0700-GET-APMIS, support@apmis.ng or any APMIS agent',
 				'Facility is yet to be activated, please contact APMIS on 0700-GET-APMIS, support@apmis.ng or any APMIS agent'
 			);
 		} else {
