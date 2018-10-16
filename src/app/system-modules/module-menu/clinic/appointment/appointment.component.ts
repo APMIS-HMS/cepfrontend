@@ -15,6 +15,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { IDateRange } from 'ng-pick-daterange';
 import { Router } from '@angular/router';
+import {IPagerSource} from "../../../../core-ui-modules/ui-components/PagerComponent";
 
 @Component({
     selector: 'app-appointment',
@@ -22,7 +23,7 @@ import { Router } from '@angular/router';
     styleUrls: ['./appointment.component.scss']
 })
 export class AppointmentComponent implements OnInit {
-
+    paginationObj: IPagerSource = {totalPages: 0, totalRecord: 0, pageSize: 10, currentPage: 0};
     @Output() closeMenu: EventEmitter<boolean> = new EventEmitter<boolean>();
     @Input() closeModal: Boolean;
     selectedFacility: Facility = <Facility>{};
@@ -170,6 +171,7 @@ export class AppointmentComponent implements OnInit {
         }).subscribe(payload => {
             this.loading = false;
             this.filteredAppointments = this.appointments = payload.data;
+            console.log("APPOINTMENT Called" , payload);
         }, error => {
             this.loading = false;
             this._getAppointments(clinicIds);
