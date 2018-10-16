@@ -100,32 +100,43 @@ export class UserAccountsComponent implements OnInit {
 	}
 
 	popListing(item: any) {
-		const auth: any = this.locker.getObject('auth');
-		this.item = item;
-		this.facilityService.get(item._id, {}).then((payload) => {
-			this.selectedFacility = payload;
-			if (this.selectedFacility.isTokenVerified === false) {
-				this.popup_verifyToken = true;
-				this.popup_listing = false;
-			} else {
-				const dataChannel = {
-					_id: this.selectedFacility._id,
-					userId: auth.data._id,
-					dept: this.selectedFacility.departments,
-					facilityName: this.selectedFacility.name
-				};
-				this.joinChannelService.create(dataChannel).then(
-					(pay) => {
-						this.popup_listing = true;
-						this.popup_verifyToken = false;
-					},
-					(err) => {}
-				);
-			}
-			this.locker.setObject('selectedFacility', this.selectedFacility);
-			this.locker.setObject('fac', this.selectedFacility._id);
-			this.logoutConfirm_on = false;
-		});
+		console.log(item);
+		if (!item.isActivated || item.isActivated === false) {
+			this.systemModuleService.announceSweetProxy(
+				'Facility Activation',
+				'info',
+				null,
+				'`item.name` is yet to be activated, please contact APMIS on 0700-GET-APMIS, support@apmis.ng or any APMIS agent',
+				'Facility is yet to be activated, please contact APMIS on 0700-GET-APMIS, support@apmis.ng or any APMIS agent'
+			);
+		} else {
+			const auth: any = this.locker.getObject('auth');
+			this.item = item;
+			this.facilityService.get(item._id, {}).then((payload) => {
+				this.selectedFacility = payload;
+				if (this.selectedFacility.isTokenVerified === false) {
+					this.popup_verifyToken = true;
+					this.popup_listing = false;
+				} else {
+					const dataChannel = {
+						_id: this.selectedFacility._id,
+						userId: auth.data._id,
+						dept: this.selectedFacility.departments,
+						facilityName: this.selectedFacility.name
+					};
+					this.joinChannelService.create(dataChannel).then(
+						(pay) => {
+							this.popup_listing = true;
+							this.popup_verifyToken = false;
+						},
+						(err) => {}
+					);
+				}
+				this.locker.setObject('selectedFacility', this.selectedFacility);
+				this.locker.setObject('fac', this.selectedFacility._id);
+				this.logoutConfirm_on = false;
+			});
+		}
 	}
 	close_onClick(e) {
 		this.popup_listing = false;
