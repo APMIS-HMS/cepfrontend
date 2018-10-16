@@ -56,10 +56,16 @@ export class HmoReportComponent implements OnInit {
     this.hmoFormGroup.controls['name'].valueChanges.subscribe(value => {
       if (value !== null && value.length === 0) {
         this.apmisLookupQuery = {
-          'facilityTypeId': this.selectedFacilityType.name,
+          facilityTypeId: 'HMO',
+          name: { $regex: -1, '$options': 'i' },
+          $select: ['name', 'email', 'primaryContactPhoneNo', 'shortName', 'website', 'policyIDRegexFormat']
+        }
+      } else {
+        this.apmisLookupQuery = {
+          facilityTypeId: 'HMO',
           name: { $regex: value, '$options': 'i' },
-          $select: ['name', 'email', 'primaryContactPhoneNo', 'shortName', 'website']
-        };
+          $select: ['name', 'email', 'primaryContactPhoneNo', 'shortName', 'website', 'policyIDRegexFormat']
+        }
       }
     });
   }
@@ -76,7 +82,7 @@ export class HmoReportComponent implements OnInit {
         startDate: this.dateRange.from,
         endDate: this.dateRange.to
       };
-
+      console.log(query);
       this.hmoService.findBillHistory({ query }).then(res => {
         console.log(res);
         this.loading = false;
@@ -90,7 +96,8 @@ export class HmoReportComponent implements OnInit {
               totalBills.push({
                 date: x.covered.verifiedAt,
                 coverType: x.covered.coverType,
-                patient:  {
+                amount:x.totalPrice,
+                patient: {
                   firstName: x.patientObject.personDetails.firstName,
                   lastName: x.patientObject.personDetails.lastName,
                   apmisId: x.patientObject.personDetails.apmisId,
@@ -105,6 +112,7 @@ export class HmoReportComponent implements OnInit {
           this.hmoBillHistory = totalBills;
         }
       }).catch(err => {
+        console.log(err);
         this.loading = false;
         this.disableSearchBtn = false;
         this.searchBtn = true;

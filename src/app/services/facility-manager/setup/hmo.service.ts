@@ -26,6 +26,7 @@ export class HmoService {
     this._hmoBillHistoryRest = _restService.getService('health-covered-bill-histories');
     this._hmoBillHistorySocket = _socketService.getService('health-covered-bill-histories');
     this._socket.timeout = 50000;
+    this._hmoBillHistorySocket.timeout = 50000;
     this._socket.on('created', function (gender) {
 
     });
@@ -44,7 +45,7 @@ export class HmoService {
   }
 
   findBillHistory(query: any) {
-    return this._hmoBillHistoryRest.find(query);
+    return this._hmoBillHistorySocket.find(query);
   }
 
   findAll() {
