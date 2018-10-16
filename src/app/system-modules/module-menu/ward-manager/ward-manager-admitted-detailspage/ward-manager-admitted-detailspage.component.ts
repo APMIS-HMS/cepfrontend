@@ -5,6 +5,7 @@ import { InPatientService } from '../../../../services/facility-manager/setup/in
 import * as myGlobals from '../../../../shared-module/helpers/global-config';
 import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
 
 @Component({
 	selector: 'app-ward-manager-admitted-detailspage',
@@ -50,6 +51,8 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
       if (!!res._id) {
 				const wardDetails = res.transfers[res.lastIndex];
 				this.selectedPatient = res;
+				//differenceInCalendarDays(dateLeft, dateRight)
+				console.log(this.selectedPatient.admissionDate);
         this.selectedPatient.wardItem = wardDetails;
         // Check if the patient has been discharged.
         if (res.status === myGlobals.discharge) {
