@@ -53,7 +53,8 @@ export class SwitchUserResolverService implements Resolve<Facility> {
 									'logoObject',
 									'facilitymoduleId',
 									'facilityTypeId',
-									'isTokenVerified'
+									'isTokenVerified',
+									'isActivated'
 								]
 							}
 						})
