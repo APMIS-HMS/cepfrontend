@@ -52,7 +52,29 @@ export class BillInvestigationComponent implements OnInit {
     this.user = this._locker.getObject('auth');
 
 		this.getInvestigationPrice();
-	}
+  }
+  
+  onSetBills(){
+    // bills.push({
+		// 	unitPrice: this.organizationalServicePrice,
+		// 	facilityId: this.selectedFacility._id,
+		// 	facilityServiceId: this.organizationalServiceId.facilityServiceId,
+		// 	serviceId: this.category.value,
+		// 	patientId: this.selectedPatient._id,
+		// 	quantity: 1,
+		// 	active: true,
+		// 	totalPrice: this.organizationalServicePrice,
+		// 	covered: covered
+		// });
+		// this.billingService
+		// 	.createBill(bills, {
+		// 		query: {
+		// 			facilityId: this.selectedFacility._id,
+		// 			patientId: this.selectedPatient._id
+		// 		}
+		// 	})
+		// 	.then((payld) => {}, (err) => {});
+  }
 
 	//
 	onClickSaveCost() {
@@ -96,6 +118,7 @@ export class BillInvestigationComponent implements OnInit {
         investigation.isUrgent = false;
         investigation.isChecked = false;
         const listItems: any[] = [];
+        console.log(investigation);
         this.investigations.push(investigation);
         // if (item.isPanel) {
         //   item.panel.forEach(inItem => {
