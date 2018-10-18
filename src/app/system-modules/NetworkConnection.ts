@@ -16,12 +16,10 @@ export class NetworkConnection {
 		NetworkConnection.offline$ = Observable.fromEvent(window, 'offline');
 
 		NetworkConnection.online$.subscribe((e) => {
-			console.log('Online');
 			NetworkConnection.status = ConnectionStatusEnum.Online;
 		});
 
 		NetworkConnection.offline$.subscribe((e) => {
-			console.log('Offline');
 			NetworkConnection.status = ConnectionStatusEnum.Offline;
 		});
 	}

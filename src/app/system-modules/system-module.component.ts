@@ -39,6 +39,7 @@ export class SystemModuleComponent implements OnInit {
 	secondaryLogo;
 	title;
 	platform;
+	isOnline = false;
 
 	constructor(
 		private userService: UserService,
@@ -95,10 +96,9 @@ export class SystemModuleComponent implements OnInit {
 
 	ngOnInit() {
 		if (NetworkConnection.status === ConnectionStatusEnum.Offline) {
-			// do something
-			console.log('am offline');
+			this.isOnline = false;
 		} else {
-			console.log('Am online');
+			this.isOnline = true;
 		}
 		const auth: any = this.locker.getObject('auth');
 		this.authData = auth.data;

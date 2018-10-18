@@ -12,6 +12,7 @@ import { UserService, PersonService } from '../../services/facility-manager/setu
 import { DomSanitizer } from '@angular/platform-browser';
 import { ChannelService } from '../../services/communication-manager/channel-service';
 import { SystemModuleService } from '../../services/module-manager/setup/system-module.service';
+import { USE_FACILITY_ACTIVATION } from 'app/shared-module/helpers/global-config';
 
 @Component({
 	selector: 'app-user-accounts',
@@ -100,13 +101,16 @@ export class UserAccountsComponent implements OnInit {
 	}
 
 	popListing(item: any) {
-		if (!item.isActivated || item.isActivated === false) {
+		if ((!item.isActivated || item.isActivated === false) && USE_FACILITY_ACTIVATION) {
 			this.systemModuleService.announceSweetProxy(
-				'Facility Activation',
+				'<strong>Facility Activation</strong>',
 				'info',
 				null,
-				'Facility is yet to be activated, please contact APMIS on 0700-GET-APMIS, support@apmis.ng or any APMIS agent',
-				'Facility is yet to be activated, please contact APMIS on 0700-GET-APMIS, support@apmis.ng or any APMIS agent'
+				// tslint:disable-next-line:max-line-length
+				'This Facility is yet to be <var>activated</var>, ' +
+					'please contact <b>APMIS</b> on <i>0700-GET-APMIS</i>, <i>support@apmis.ng</i> or any APMIS agent',
+				'This Facility is yet to be <b>activated</b>, ' +
+					'please contact <b>APMIS</b> on <i>0700-GET-APMIS</i>, <i>support@apmis.ng</i> or any APMIS agent'
 			);
 		} else {
 			const auth: any = this.locker.getObject('auth');
