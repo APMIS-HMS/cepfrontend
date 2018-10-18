@@ -11,6 +11,7 @@ import {
   BillIGroup, BillItem, BillModel, PendingLaboratoryRequest, User
 } from '../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import {IPagerSource} from '../../../core-ui-modules/ui-components/PagerComponent';
 
 
 @Component({
@@ -26,7 +27,6 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
   newEmp = false;
   patient: any;
   resetData = false;
-
   selectedFacility;
 
   searchControl = new FormControl();
@@ -41,6 +41,7 @@ export class PatientManagerComponent implements OnInit, AfterViewInit {
   facilityObj = {
     'logo': 'assets/images/logos/red.jpg'
   };
+
 
   constructor(private router: Router,
     private route: ActivatedRoute,

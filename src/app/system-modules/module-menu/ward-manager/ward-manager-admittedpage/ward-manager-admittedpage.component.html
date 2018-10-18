@@ -1,4 +1,10 @@
 <section class="c-page-body">
+    <asom-data-pager [show-next-prev]="true" color="blue"
+                     (onPageClick)="gotoPage($event)"
+                     [in-progress]="loading"
+                     [show-progress]="true"
+                     next-prev-color="orange"
+                     [pager-source]="paginationObj"></asom-data-pager>
     <div class="tab-body">
         <div label="InPatients">
             <div class="card">
