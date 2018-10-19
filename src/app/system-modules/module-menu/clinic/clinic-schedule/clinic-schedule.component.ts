@@ -66,21 +66,26 @@ export class ClinicScheduleComponent implements OnInit {
 		this.durationUnits = DurationUnits;
 		this.subscribToFormControls();
 		this.getClinicMajorLocation();
-		this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-		this.user = <User>this.locker.getObject('auth');
-		this.selectedFacility.departments.forEach((itemi, i) => {
-			itemi.units.forEach((itemj, j) => {
-				itemj.clinics.forEach((itemk, k) => {
-					const clinicModel: ClinicModel = <ClinicModel>{};
-					clinicModel.clinic = itemk;
-					clinicModel.department = itemi;
-					clinicModel.unit = itemj;
-					clinicModel._id = itemk._id;
-					clinicModel.clinicName = itemk.clinicName;
-					this.clinics.push(clinicModel);
+		const facility = <Facility>this.locker.getObject('selectedFacility');
+		//this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+		this.selectedFacility = this.facilityService.get(facility._id,{ }).then(payload => {
+			console.log(payload.departments);
+			payload.departments.forEach((itemi, i) => {
+				itemi.units.forEach((itemj, j) => {
+					itemj.clinics.forEach((itemk, k) => {
+						const clinicModel: ClinicModel = <ClinicModel>{};
+						clinicModel.clinic = itemk;
+						clinicModel.department = itemi;
+						clinicModel.unit = itemj;
+						clinicModel._id = itemk._id;
+						clinicModel.clinicName = itemk.clinicName;
+						this.clinics.push(clinicModel);
+					});
 				});
 			});
 		});
+		this.user = <User>this.locker.getObject('auth');
+
 		this.getSchedulerType();
 		this.addNewClinicSchedule();
 		this.getClinicSchedules();
@@ -208,6 +213,7 @@ export class ClinicScheduleComponent implements OnInit {
 
 	getClinicLocation() {
 		this.clinicLocations = this.selectedFacility.minorLocations.filter((x) => x.locationId === this.clinic._id);
+		console.log(this.clinicLocations);
 	}
 
 	addNewClinicSchedule() {

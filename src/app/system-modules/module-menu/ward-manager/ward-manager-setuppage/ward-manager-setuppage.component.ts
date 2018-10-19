@@ -78,6 +78,7 @@ export class WardManagerSetuppageComponent implements OnInit {
       if (res.data.length > 0) {
         const locationId = res.data[0]._id;
         this.getFacilityWard(locationId);
+
       }
     }).catch(err => {
     });
