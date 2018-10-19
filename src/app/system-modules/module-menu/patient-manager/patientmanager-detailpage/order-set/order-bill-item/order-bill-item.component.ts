@@ -101,9 +101,9 @@ export class OrderBillItemComponent implements OnInit {
 				this.prescriptionData.prescriptionItems[index].totalCost = this.cost * value.qty;
 				this.prescriptionData.prescriptionItems[index].isBilled = true;
 				this.prescriptionData.prescriptionItems[index].facilityId = this.facility._id;
-				this.prescriptionData.totalCost += this.totalCost;
-				this.prescriptionData.totalQuantity += this.totalQuantity;
-
+				this.prescriptionData.totalCost += this.prescriptionData.prescriptionItems[index].totalCost;
+				this.prescriptionData.totalQuantity += this.prescriptionData.prescriptionItems[index].quantity;
+				console.log(this.prescriptionData);
 				this.closeModal.emit(true);
 			} else {
 				this._notification('Error', 'Unit price or Quantity is less than 0!');
