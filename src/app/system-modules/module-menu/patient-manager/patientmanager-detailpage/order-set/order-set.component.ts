@@ -199,9 +199,11 @@ export class OrderSetComponent implements OnInit {
   }
 
   onClickBillPrescription(index: number, value: any) {
+
     this.prescriptionData.index = index;
     this.prescriptionData.prescriptionItems = this.orderSet.medications;
     this.showMedicationBill = true;
+    console.log(this.prescriptionData);
   }
 
   onClickBillInvestigation(index: number, value: any) {
