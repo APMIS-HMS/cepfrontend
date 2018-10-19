@@ -12,6 +12,7 @@ import { UserService, PersonService } from '../../services/facility-manager/setu
 import { DomSanitizer } from '@angular/platform-browser';
 import { ChannelService } from '../../services/communication-manager/channel-service';
 import { SystemModuleService } from '../../services/module-manager/setup/system-module.service';
+import { USE_FACILITY_ACTIVATION } from 'app/shared-module/helpers/global-config';
 
 @Component({
 	selector: 'app-user-accounts',
@@ -100,32 +101,45 @@ export class UserAccountsComponent implements OnInit {
 	}
 
 	popListing(item: any) {
-		const auth: any = this.locker.getObject('auth');
-		this.item = item;
-		this.facilityService.get(item._id, {}).then((payload) => {
-			this.selectedFacility = payload;
-			if (this.selectedFacility.isTokenVerified === false) {
-				this.popup_verifyToken = true;
-				this.popup_listing = false;
-			} else {
-				const dataChannel = {
-					_id: this.selectedFacility._id,
-					userId: auth.data._id,
-					dept: this.selectedFacility.departments,
-					facilityName: this.selectedFacility.name
-				};
-				this.joinChannelService.create(dataChannel).then(
-					(pay) => {
-						this.popup_listing = true;
-						this.popup_verifyToken = false;
-					},
-					(err) => {}
-				);
-			}
-			this.locker.setObject('selectedFacility', this.selectedFacility);
-			this.locker.setObject('fac', this.selectedFacility._id);
-			this.logoutConfirm_on = false;
-		});
+		if ((!item.isActivated || item.isActivated === false) && USE_FACILITY_ACTIVATION) {
+			this.systemModuleService.announceSweetProxy(
+				'<strong>Facility Activation</strong>',
+				'info',
+				null,
+				// tslint:disable-next-line:max-line-length
+				'This Facility is yet to be <var>activated</var>, ' +
+					'please contact <b>APMIS</b> on <i>0700-GET-APMIS</i>, <i>support@apmis.ng</i> or any APMIS agent',
+				'This Facility is yet to be <b>activated</b>, ' +
+					'please contact <b>APMIS</b> on <i>0700-GET-APMIS</i>, <i>support@apmis.ng</i> or any APMIS agent'
+			);
+		} else {
+			const auth: any = this.locker.getObject('auth');
+			this.item = item;
+			this.facilityService.get(item._id, {}).then((payload) => {
+				this.selectedFacility = payload;
+				if (this.selectedFacility.isTokenVerified === false) {
+					this.popup_verifyToken = true;
+					this.popup_listing = false;
+				} else {
+					const dataChannel = {
+						_id: this.selectedFacility._id,
+						userId: auth.data._id,
+						dept: this.selectedFacility.departments,
+						facilityName: this.selectedFacility.name
+					};
+					this.joinChannelService.create(dataChannel).then(
+						(pay) => {
+							this.popup_listing = true;
+							this.popup_verifyToken = false;
+						},
+						(err) => {}
+					);
+				}
+				this.locker.setObject('selectedFacility', this.selectedFacility);
+				this.locker.setObject('fac', this.selectedFacility._id);
+				this.logoutConfirm_on = false;
+			});
+		}
 	}
 	close_onClick(e) {
 		this.popup_listing = false;

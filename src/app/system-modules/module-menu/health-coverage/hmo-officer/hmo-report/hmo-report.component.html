@@ -3,16 +3,17 @@
     <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
     <legend class="modal_title" *ngIf="selectedHMO?._id">{{ selectedHMO?.name }}</legend>
     <div class="modal_mini_title">Generate Report</div>
-    <div class="modal_mini_title" *ngIf="dateRange?.from"> From: {{ dateRange?.from | date }}, To: {{ dateRange?.to | date }}</div>
+    <div class="modal_mini_title" *ngIf="dateRange?.from"> From: {{ dateRange?.from | date }}, To: {{ dateRange?.to |
+      date }}</div>
   </div>
   <div class="modal-baseWrap">
     <div class="top-sect">
       <div class="filters" [formGroup]="hmoFormGroup">
         <div style="width: 249px; padding: 5px;margin-right: 10px;">
-          <apmis-lookup style='width:100%' formControlName="name" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery"
-                    placeholder="Select HMO" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"
-                    [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys">
-          </apmis-lookup>
+          <apmis-lookup style='width:100%' formControlName="name" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl"
+            [query]="apmisLookupQuery" placeholder="Select HMO" [isSocket]="true" [displayKey]="apmisLookupDisplayKey"
+            (selectedItem)="apmisLookupHandleSelectedItem($event)" [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys"></apmis-lookup>
+
         </div>
         <div>
           <div class="dr-wrap survery">
@@ -70,7 +71,7 @@
         <tbody>
           <tr *ngIf="hmoBillHistory.length === 0 && !loading">
             <td colspan="7" style="text-align:center;padding: 20px;">
-                No data available in table
+              No data available in table
             </td>
           </tr>
           <tr *ngIf="hmoBillHistory.length === 0 && loading">
@@ -80,10 +81,10 @@
           </tr>
           <tr *ngFor="let item of hmoBillHistory; let i = index">
             <td>{{ i+1 }}</td>
-            <td>{{ item.date }}</td>
+            <td>{{ item.date|date:'medium' }}</td>
             <td>{{ item?.patient?.title }} {{ item?.patient?.firstName }} {{ item?.patient?.lastName }}</td>
             <td>{{ item?.service }}</td>
-            <td>&#x20a6;{{ item?.amount }}</td>
+            <td>&#x20a6;{{ item?.amount|number:'1.2-2'}}</td>
             <td>{{ item?.coverType }}</td>
             <td>{{ item?.status }}</td>
           </tr>
