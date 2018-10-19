@@ -437,3 +437,19 @@ td > div{
 .td-cta:hover{
     text-decoration: underline;
 }
+.view-report-wrap, .view-imgs-wrap{
+    position: fixed;
+    border: 1px solid #35a7e0;
+    width: 80%;
+    max-width: 1200px;
+    height: 100%;
+    top: 0;
+    right: 0;
+    background: #fff;
+}
+.view-report-wrap{
+    z-index: 12;
+}
+.view-imgs-wrap{
+    z-index: 13;
+}

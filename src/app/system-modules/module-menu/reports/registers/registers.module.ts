@@ -28,10 +28,10 @@ import { DailyLdrComponent } from './register-entries/daily-ldr/daily-ldr.compon
 import { NewLdrEntryComponent } from './register-entries/daily-ldr/new-ldr-entry/new-ldr-entry.component';
 import { LdrListComponent } from './register-entries/daily-ldr/ldr-list/ldr-list.component';
 import { NewOpdEntry2Component } from './register-entries/daily-opd/new-opd-entry2/new-opd-entry2.component';
-import { ImmunizationSummaryComponent } from './register-entries/daily-IRTS/immunization-summary/immunization-summary.component';
 import { ChildImmunizationComponent } from './register-entries/daily-IRTS/child-immunization/child-immunization.component';
 import { HfmrecordsComponent } from './register-entries/daily-IRTS/hfmrecords/hfmrecords.component';
-import { InfoSystemRegisterComponent } from './register-entries/daily-IRTS/info-system-register/info-system-register.component';
+import { NewChildEntryComponent } from './register-entries/daily-IRTS/child-immunization/new-child-entry/new-child-entry.component';
+import { NewHfmrecordsEntryComponent } from './register-entries/daily-IRTS/hfmrecords/new-hfmrecords-entry/new-hfmrecords-entry.component';
 
 @NgModule({
   imports: [
@@ -63,7 +63,7 @@ import { InfoSystemRegisterComponent } from './register-entries/daily-IRTS/info-
     NewLdrEntryComponent,
     LdrListComponent,
     NewOpdEntry2Component, 
-    DailyIrtsComponent, ImmunizationSummaryComponent, ChildImmunizationComponent, HfmrecordsComponent, InfoSystemRegisterComponent
+    DailyIrtsComponent, ChildImmunizationComponent, HfmrecordsComponent, NewChildEntryComponent, NewHfmrecordsEntryComponent
   ]
 })
 export class RegistersModule { }

@@ -32,17 +32,21 @@
                     <div *ngIf="tabWallet">
                         <div class="plan">
                             <div class="plan-title">Out of Pocket</div>
-                            <div class="row frm-item-wrap">
-                                <mat-form-field class="col-xs-12 col-sm-6">
-                                    <mat-select placeholder="Select Service" [formControl]="walletPlan" (change)="getServicePlans($event.value)">
-                                        <mat-option *ngFor="let service of services" [value]="service">{{service.name}}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                                <mat-form-field class="col-xs-12 col-sm-6">
-                                    <mat-select placeholder="Select Price" [formControl]="walletPlanPrice">
-                                        <mat-option *ngFor="let pricePlan of servicePricePlans" [value]="pricePlan.price">{{pricePlan.name}}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
+                            <div class="row" style="width:100%">
+                                <div class="col-xs-12 col-md-6">
+                                    <mat-form-field>
+                                        <mat-select placeholder="Select Service" [formControl]="walletPlan" (change)="getServicePlans($event.value)">
+                                            <mat-option *ngFor="let service of services" [value]="service">{{service.name}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <mat-form-field>
+                                        <mat-select placeholder="Select Price" [formControl]="walletPlanPrice">
+                                            <mat-option *ngFor="let pricePlan of servicePricePlans" [value]="pricePlan.price">{{pricePlan.name}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -50,30 +54,43 @@
                     <div *ngIf="tabInsurance">
                         <div class="plan">
                             <div class="plan-title">Insurance</div>
-                            <div class="row frm-item-wrap">
-                                <mat-form-field class="col-xs-12 col-sm-6 example-full-width">
-                                    <input matInput placeholder="Pick HMO" aria-label="HMOs" [matAutocomplete]="auto" [formControl]="hmoPlanId">
-                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-                                        <mat-option *ngFor="let hmo of filteredHmos | async" [value]="hmo">
-                                            {{hmo.hmoName}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-                                <mat-form-field class="col-xs-12 col-sm-6">
-                                    <input matInput mat-error placeholder="Insurance ID" [formControl]="insuranceId">
-                                </mat-form-field>
+                            <div class="row" style="width: 100%;">
+                                <div class="col-xs-12 col-md-6">
+                                    <mat-form-field>
+                                        <input matInput placeholder="Pick HMO" aria-label="HMOs" [matAutocomplete]="auto" [formControl]="hmoPlanId">
+                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                                            <mat-option *ngFor="let hmo of filteredHmos | async" [value]="hmo">
+                                                {{hmo.hmoName}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <mat-form-field >
+                                        <input matInput mat-error placeholder="Insurance ID" [formControl]="insuranceId">
+                                    </mat-form-field>
+                                </div>
+
+
                             </div>
-                            <div class="row frm-item-wrap">
-                                <mat-form-field class="col-xs-12 col-sm-6">
-                                    <mat-select placeholder="Select Service" [formControl]="hmoPlan" (change)="getServicePlans($event.value)">
-                                        <mat-option *ngFor="let service of services" [value]="service">{{service.name}}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
-                                <mat-form-field class="col-xs-12 col-sm-6">
-                                    <mat-select placeholder="Select Price" [formControl]="hmoPlanPrice">
-                                        <mat-option *ngFor="let pricePlan of servicePricePlans" [value]="pricePlan.price">{{pricePlan.name}}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
+                            <div class="row" style="width: 100%;">
+                                <div class="col-xs-12 col-md-6">
+                                    <mat-form-field class="">
+                                        <mat-select placeholder="Select Service" [formControl]="hmoPlan" (change)="getServicePlans($event.value)">
+                                            <mat-option *ngFor="let service of services" [value]="service">{{service.name}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <mat-form-field class=" ">
+
+                                        <mat-select placeholder="Select Price" [formControl]="hmoPlanPrice">
+                                            <mat-option *ngFor="let pricePlan of servicePricePlans" [value]="pricePlan.price">{{pricePlan.name}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+
                             </div>
                             <!-- <div class="another">Another Insurance</div> -->
                         </div>
@@ -83,30 +100,43 @@
                     <div *ngIf="tabCompany">
                         <div class="plan">
                             <div class="plan-title">Company Cover</div>
-                            <div class="frm-item-wrap row">
-                                <mat-form-field class="col-xs-12 col-sm-6 example-full-width">
-                                    <input matInput placeholder="Pick Company" aria-label="Companys" [matAutocomplete]="auto" [formControl]="ccPlanId">
-                                    <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnc">
-                                        <mat-option *ngFor="let cc of filteredccs | async" [value]="cc">
-                                            {{cc?.name}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
-                                <mat-form-field class="col-xs-12 col-sm-6">
-                                    <input matInput mat-error placeholder="Employee Id" [formControl]="employeeId">
-                                </mat-form-field>
+                            <div class=" row" style="width: 100%;">
+                                <div class="col-xs-12 col-md-6">
+                                    <mat-form-field class="">
+                                        <input matInput placeholder="Pick Company" aria-label="Companys" [matAutocomplete]="auto" [formControl]="ccPlanId">
+                                        <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFnc">
+                                            <mat-option *ngFor="let cc of filteredccs | async" [value]="cc">
+                                                {{cc?.name}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+                                <div class="col-xs-12 col-md-6">
+                                    <mat-form-field class="">
+                                        <input matInput mat-error placeholder="Employee Id" [formControl]="employeeId">
+                                    </mat-form-field>
+                                </div>
+
+
                             </div>
-                            <div class="row frm-item-wrap">
-                                <mat-form-field class="col-xs-12 col-sm-6">
+                            <div class="row " style="width: 100%">
+                                <div class="col-xs-12 col-md-6">
+                                    <mat-form-field class=" ">
+
                                     <mat-select placeholder="Select Service" [formControl]="ccPlan" (change)="getServicePlans($event.value)">
                                         <mat-option *ngFor="let service of services" [value]="service">{{service.name}}</mat-option>
                                     </mat-select>
-                                </mat-form-field>
-                                <mat-form-field class="col-xs-12 col-sm-6">
-                                    <mat-select placeholder="Select Price" [formControl]="ccPlanPrice">
-                                        <mat-option *ngFor="let pricePlan of servicePricePlans" [value]="pricePlan.price">{{pricePlan.name}}</mat-option>
-                                    </mat-select>
-                                </mat-form-field>
+                                </mat-form-field></div>
+                                <div class="col-xs-12 col-md-6">
+                                    <mat-form-field class=" ">
+
+                                        <mat-select placeholder="Select Price" [formControl]="ccPlanPrice">
+                                            <mat-option *ngFor="let pricePlan of servicePricePlans" [value]="pricePlan.price">{{pricePlan.name}}</mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+
                             </div>
 
                             <!-- <div class="another">Another Company</div> -->
@@ -114,7 +144,7 @@
                     </div>
 
                     <div *ngIf="tabFamily">
-                        <div class="plan">
+                        <div class="plan-modified">
                             <div class="plan-title">Family Cover</div>
                             <div class="frm-item-wrap">
                                 <div class="row frm-item-wrap">
@@ -125,17 +155,25 @@
                                         <input matInput mat-error placeholder="Client ID" [formControl]="faFileNo">
                                     </mat-form-field>
                                 </div>
-                                <div class="row frm-item-wrap">
-                                    <mat-form-field class="col-xs-12 col-sm-6">
-                                        <mat-select placeholder="Select Service" [formControl]="faPlan" (change)="getServicePlans($event.value)">
-                                            <mat-option *ngFor="let service of services" [value]="service">{{service.name}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
-                                    <mat-form-field class="col-xs-12 col-sm-6">
-                                        <mat-select placeholder="Select Price" [formControl]="faPlanPrice">
-                                            <mat-option *ngFor="let pricePlan of servicePricePlans" [value]="pricePlan.price">{{pricePlan.name}}</mat-option>
-                                        </mat-select>
-                                    </mat-form-field>
+                                <div class="row " style="width:100%">
+                                    <div class="col-xs-12 col-md-6">
+                                        <mat-form-field class=" ">
+
+                                            <mat-select placeholder="Select Service" [formControl]="faPlan" (change)="getServicePlans($event.value)">
+                                                <mat-option *ngFor="let service of services" [value]="service">{{service.name}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                    <div class="col-xs-12 col-md-6">
+                                        <mat-form-field class=" ">
+
+                                            <mat-select placeholder="Select Price" [formControl]="faPlanPrice">
+                                                <mat-option *ngFor="let pricePlan of servicePricePlans" [value]="pricePlan.price">{{pricePlan.name}}</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+
+
                                 </div>
                             </div>
                         </div>

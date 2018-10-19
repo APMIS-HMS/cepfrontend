@@ -143,6 +143,7 @@ export class ReportComponent implements OnInit, OnDestroy {
         this._getSelectedPendingRequests(url.requestId, url.investigationId);
       } else {
         this.CheckIfSelectedPatient();
+        this._getAllReports(this.selectedLab);
         this._getAllPendingRequests();
         this.hasRequest = true;
       }
@@ -798,7 +799,6 @@ export class ReportComponent implements OnInit, OnDestroy {
 
   private _getDocumentationForm() {
     // this._formService.find({ query: { title: { $regex: 'laboratory', '$options': 'i' } }}).then(res => {
-    //   console.log(res);
     //   // this.selectedForm = res.data.filter(x => new RegExp('laboratory', 'i').test(x.title))[0];
     // }).catch(err => this._notification('Error', 'There was a problem getting documentations!'));
     this._formService.findAll().then(res => {

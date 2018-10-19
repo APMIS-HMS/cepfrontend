@@ -1,7 +1,7 @@
 // Place your settings in this file to overwrite the default settings
 {
     "files.autoSave": "onFocusChange",
-    "workbench.iconTheme": "vscode-icons",
+    "workbench.iconTheme": "material-icon-theme",
     "git.confirmSync": false,
     "vsicons.projectDetection.disableDetect": true,
     "git.enableSmartCommit": true,
@@ -28,9 +28,5 @@
     "editor.tabSize": 4,
     "editor.detectIndentation": true,
     "gitlens.keymap": "alternate",
-<<<<<<< HEAD
     "editor.snippetSuggestions": "top"
-=======
-    "gitlens.historyExplorer.enabled": false
->>>>>>> a38a9ea3bd9c0fca75bfb9889fe62e9ba6d7c81d
 }
