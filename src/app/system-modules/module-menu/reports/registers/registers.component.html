@@ -7,14 +7,24 @@
     </div>
     <div class="filters">
         <div class="filter">
-            <input class="search" placeholder="search registers...">
+            <input style="border-radius: 50px;" class="search" placeholder="search registers...">
         </div>
     </div>
-
     <div class="content-wrap">
         <div class="tbl-wrap">
             <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5">
                 <tbody class="tbody-regs">
+                    <tr (click)="call_opd()">
+                        <td>
+                            <div class="tbl-title">DAILY OPD</div>
+                            <div class="other-wrap">
+                                <div class="etr-tags">
+                                    <div class="etr-other">Last entry - 11th Oct 2018 02:25pm </div>
+                                    <div class="etr-other">26 Entries</div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
                     <tr (click)="call_register()">
                         <td>
                             <div class="tbl-title">TETANUS TOXOID REGISTER FOR WOMEN OF CHILD BEARING AGE</div>
@@ -23,11 +33,6 @@
                                     <div class="etr-other">Last entry - 11th Oct 2018 02:25pm </div>
                                     <div class="etr-other">26 Entries</div>
                                 </div>
-                                <!-- <div class="etr-ctas">
-                    <div class="etr-cta"><i class="fa fa-plus"></i> New Entry</div>
-                    <div class="etr-cta"><i class="fa fa-ellipsis-h"></i> Details</div>
-                    <div class="etr-cta"><i class="fa fa-share-alt"></i> Share</div>
-                  </div> -->
                             </div>
                         </td>
                     </tr>
@@ -39,33 +44,35 @@
                                     <div class="etr-other">Last entry - 11th Oct 2018 02:25pm </div>
                                     <div class="etr-other">26 Entries</div>
                                 </div>
-                                <!-- <div class="etr-ctas">
-                    <div class="etr-cta"><i class="fa fa-plus"></i> New Entry</div>
-                    <div class="etr-cta"><i class="fa fa-ellipsis-h"></i> Details</div>
-                    <div class="etr-cta"><i class="fa fa-share-alt"></i> Share</div>
-                  </div> -->
                             </div>
                         </td>
                     </tr>
-                    <tr (click)="call_opd()">
+
+                    <tr (click)="irts_modal()">
                         <td>
-                            <div class="tbl-title">DAILY OPD</div>
+                            <div class="tbl-title">DAILY IMMUNIZATION REGISTER AND TALLY SHEET</div>
                             <div class="other-wrap">
                                 <div class="etr-tags">
                                     <div class="etr-other">Last entry - 11th Oct 2018 02:25pm </div>
                                     <div class="etr-other">26 Entries</div>
                                 </div>
-                                <!-- <div class="etr-ctas">
-                    <div class="etr-cta"><i class="fa fa-plus"></i> New Entry</div>
-                    <div class="etr-cta"><i class="fa fa-ellipsis-h"></i> Details</div>
-                    <div class="etr-cta"><i class="fa fa-share-alt"></i> Share</div>
-                  </div> -->
                             </div>
                         </td>
                     </tr>
-                    <tr (click)="call_IRTS()">
+                    <tr (click)="call_ldr()">
                         <td>
-                            <div class="tbl-title">DAILY IMMUNIZATION REGISTER AND TALLY SHEET</div>
+                            <div class="tbl-title">LABOUR & DELIVERY DAILY REGISTER</div>
+                            <div class="other-wrap">
+                                <div class="etr-tags">
+                                    <div class="etr-other">Last entry - 11th Oct 2018 02:25pm </div>
+                                    <div class="etr-other">26 Entries</div>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr (click)="call_gmp()">
+                        <td>
+                            <div class="tbl-title">NUTRITION AND GROWTH MONITORING (0-5 YEARS) INFORMATION REGISTER</div>
                             <div class="other-wrap">
                                 <div class="etr-tags">
                                     <div class="etr-other">Last entry - 11th Oct 2018 02:25pm </div>
@@ -89,36 +96,9 @@
             </table>
         </div>
     </div>
+
 </div>
-<tr (click)="call_gmp()">
-    <td>
-        <div class="tbl-title">DAILY GMP</div>
-        <div class="other-wrap">
-            <div class="etr-tags">
-                <div class="etr-other">Last entry - 11th Oct 2018 02:25pm </div>
-                <div class="etr-other">26 Entries</div>
-            </div>
-            <!-- <div class="etr-ctas">
-                    <div class="etr-cta"><i class="fa fa-plus"></i> New Entry</div>
-                    <div class="etr-cta"><i class="fa fa-ellipsis-h"></i> Details</div>
-                    <div class="etr-cta"><i class="fa fa-share-alt"></i> Share</div>
-                  </div> -->
-        </div>
-    </td>
-</tr>
-<tr (click)="call_ldr()">
-    <td>
-        <div class="tbl-title">DAILY LDR</div>
-        <div class="other-wrap">
-            <div class="etr-tags">
-                <div class="etr-other">Last entry - 11th Oct 2018 02:25pm </div>
-                <div class="etr-other">26 Entries</div>
-            </div>
-            <!-- <div class="etr-ctas">
-                    <div class="etr-cta"><i class="fa fa-plus"></i> New Entry</div>
-                    <div class="etr-cta"><i class="fa fa-ellipsis-h"></i> Details</div>
-                    <div class="etr-cta"><i class="fa fa-share-alt"></i> Share</div>
-                  </div> -->
-        </div>
-    </td>
-</tr>
+
+<div *ngIf="showModal" class="modal-overlay">
+    <app-irts-modal (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-irts-modal>
+</div>

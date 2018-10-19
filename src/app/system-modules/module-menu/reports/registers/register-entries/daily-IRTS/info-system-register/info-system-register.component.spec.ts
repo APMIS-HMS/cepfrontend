@@ -1,20 +1,20 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IrtsPg2Component } from './irts-pg2.component';
+import { InfoSystemRegisterComponent } from './info-system-register.component';
 
-describe('IrtsPg2Component', () => {
-  let component: IrtsPg2Component;
-  let fixture: ComponentFixture<IrtsPg2Component>;
+describe('InfoSystemRegisterComponent', () => {
+  let component: InfoSystemRegisterComponent;
+  let fixture: ComponentFixture<InfoSystemRegisterComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ IrtsPg2Component ]
+      declarations: [ InfoSystemRegisterComponent ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(IrtsPg2Component);
+    fixture = TestBed.createComponent(InfoSystemRegisterComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

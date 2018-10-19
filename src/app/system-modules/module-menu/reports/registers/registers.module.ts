@@ -12,18 +12,15 @@ import { OpdPg1Component } from './register-entries/daily-opd/opd-pg1/opd-pg1.co
 import { OpdPg2Component } from './register-entries/daily-opd/opd-pg2/opd-pg2.component';
 import { NewOpdEntryComponent } from './register-entries/daily-opd/new-opd-entry/new-opd-entry.component';
 import { NewFprEntryComponent } from './register-entries/daily-fpr/new-fpr-entry/new-fpr-entry.component';
-import { FprPg2Component } from './register-entries/daily-fpr/fpr-pg2/fpr-pg2.component';
 import { FprPg1Component } from './register-entries/daily-fpr/fpr-pg1/fpr-pg1.component';
-import { NewIrtsEntryComponent } from './register-entries/daily-irts/new-irts-entry/new-irts-entry.component';
-import { IrtsPg1Component } from './register-entries/daily-irts/irts-pg1/irts-pg1.component';
-import { IrtsPg2Component } from './register-entries/daily-irts/irts-pg2/irts-pg2.component';
+import { immunizationTallyComponent } from './register-entries/daily-IRTS/ImmunizationTally/immunizationTally.component';
 import { DailyFprComponent } from './register-entries/daily-fpr/daily-fpr.component';
-import { DailyIrtsComponent } from './register-entries/daily-irts/daily-irts.component';
+
 import { DailyGmpComponent } from './register-entries/daily-gmp/daily-gmp.component';
 import { NewGmpEntryComponent } from './register-entries/daily-gmp/new-gmp-entry/new-gmp-entry.component';
 import { GmpListComponent } from './register-entries/daily-gmp/gmp-list/gmp-list.component';
 
-
+import { DailyIrtsComponent } from './register-entries/daily-IRTS/daily-irts.component';
 
 import { OnlyMaterialModule } from '../../../../shared-common-modules/only-material-module';
 import { MaterialModule } from '../../../../shared-common-modules/material-module';
@@ -31,6 +28,10 @@ import { DailyLdrComponent } from './register-entries/daily-ldr/daily-ldr.compon
 import { NewLdrEntryComponent } from './register-entries/daily-ldr/new-ldr-entry/new-ldr-entry.component';
 import { LdrListComponent } from './register-entries/daily-ldr/ldr-list/ldr-list.component';
 import { NewOpdEntry2Component } from './register-entries/daily-opd/new-opd-entry2/new-opd-entry2.component';
+import { ImmunizationSummaryComponent } from './register-entries/daily-IRTS/immunization-summary/immunization-summary.component';
+import { ChildImmunizationComponent } from './register-entries/daily-IRTS/child-immunization/child-immunization.component';
+import { HfmrecordsComponent } from './register-entries/daily-IRTS/hfmrecords/hfmrecords.component';
+import { InfoSystemRegisterComponent } from './register-entries/daily-IRTS/info-system-register/info-system-register.component';
 
 @NgModule({
   imports: [
@@ -52,20 +53,17 @@ import { NewOpdEntry2Component } from './register-entries/daily-opd/new-opd-entr
     OpdPg2Component,
     NewOpdEntryComponent,
     NewFprEntryComponent,
-    FprPg2Component,
     FprPg1Component,
-    NewIrtsEntryComponent,
-    IrtsPg1Component,
-    IrtsPg2Component,
+    immunizationTallyComponent,
     DailyFprComponent,
-    DailyIrtsComponent,
     DailyGmpComponent,
     NewGmpEntryComponent,
     GmpListComponent,
     DailyLdrComponent,
     NewLdrEntryComponent,
     LdrListComponent,
-    NewOpdEntry2Component
+    NewOpdEntry2Component, 
+    DailyIrtsComponent, ImmunizationSummaryComponent, ChildImmunizationComponent, HfmrecordsComponent, InfoSystemRegisterComponent
   ]
 })
 export class RegistersModule { }
