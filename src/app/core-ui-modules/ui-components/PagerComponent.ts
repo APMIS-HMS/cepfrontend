@@ -28,8 +28,7 @@ export interface IPagerSource {
 }
 
 @Component({
-
-  selector: 'asom-pager-button',
+ selector: 'asom-pager-button',
   template: `
     <p (click)="emitButtonClickEvent($event)" class="button"
        [ngClass]="{'asom-pager-button-disable' : disable, 'asom-pager-button' : !disable}"

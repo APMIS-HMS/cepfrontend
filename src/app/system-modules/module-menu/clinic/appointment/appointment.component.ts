@@ -28,6 +28,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { IDateRange } from 'ng-pick-daterange';
 import { Router } from '@angular/router';
+import {IPagerSource} from '../../../../core-ui-modules/ui-components/PagerComponent';
 
 @Component({
 	selector: 'app-appointment',
@@ -73,6 +74,8 @@ export class AppointmentComponent implements OnInit {
 	loading: Boolean = false;
 
 	dayCount = [ 'Today', 'Last 3 Days', 'Last Week', 'Last 2 Weeks', 'Last Month' ];
+    private paginationObj: IPagerSource  = {totalRecord : 0 , currentPage : 0 , pageSize : 10, totalPages : 0};
+    private lastAccessedClinicIds: any[];
 
 	constructor(
 		private locker: CoolLocalStorage,
@@ -180,6 +183,7 @@ export class AppointmentComponent implements OnInit {
 			});
 		});
 		this.loadIndicatorVisible = false;
+		this.lastAccessedClinicIds  = clinicIds;
 		this._getAppointments(clinicIds);
 	}
 
@@ -190,17 +194,21 @@ export class AppointmentComponent implements OnInit {
 				query: {
 					isFuture: true,
 					facilityId: this.selectedFacility._id,
-					clinicIds: clinicIds
+					clinicIds: clinicIds,
+					$limit  : this.paginationObj.pageSize,
+					$skip : this.paginationObj.currentPage * this.paginationObj.pageSize
 				}
 			})
 			.subscribe(
 				(payload) => {
+					console.log(payload, " FROM GET CLINIC CALL!!");
 					this.loading = false;
 					this.filteredAppointments = this.appointments = payload.data;
+					this.paginationObj.totalRecord  = payload.total;
 				},
 				(error) => {
 					this.loading = false;
-					this._getAppointments(clinicIds);
+				//	this._getAppointments(clinicIds);
 				}
 			);
 	}
@@ -382,4 +390,9 @@ export class AppointmentComponent implements OnInit {
 		// [routerLink]="['/dashboard/clinic/schedule-appointment', appointment._id]"
 		this.router.navigate([ '/dashboard/clinic/schedule-appointment', appointment._id ]);
 	}
+    pageClickedEvent(index: number) {
+        // goto next page using the current index
+        this.paginationObj.currentPage  = index ;
+        this._getAppointments(this.lastAccessedClinicIds);
+    }
 }
