@@ -58,7 +58,7 @@
                         </span>
                     </div>
                 </div>
-                <div class="doc-content" *ngFor="let group of patientDocumentation.documentations">
+                <div class="doc-content" *ngFor="let group of sortDocumentation()">
                     <!-- Vital Sign -->
                     <div class="control-group">
                         <div class="control-group-header">
@@ -96,86 +96,131 @@
                                 </thead>
 
                                 <tbody>
-                                    <tr>
-                                        <td>35.7</td>
-                                        <td>20</td>
-                                        <td>18</td>
-                                        <td>Systolic: 80mps Diastolic: 110mps </td>
-                                        <td>70.3</td>
-                                        <td>1.25</td>
-                                        <td>22.1 (obesse)</td>
+                                    <tr *ngFor="let item of group?.document?.body?.vitals">
+                                        <td>{{item.temperature}}</td>
+                                        <td>{{item.pulseRate.pulseRateValue}}</td>
+                                        <td>{{item.respiratoryRate}}</td>
+                                        <td>S: {{item.bloodPressure.systolic}} D:
+                                            {{item.bloodPressure.diastolic}}</td>
+                                        <td>{{item.bodyMass.weight}}</td>
+                                        <td>{{item.bodyMass.height}}</td>
+                                        <td>{{item.bodyMass.bmi}}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <!-- <div class="doc-con" *ngIf="group?.document?.documentType?.isSide===false || group?.document?.documentType?.isSide===undefined ">
-                            <div>
-                                <span class="doc-span">Presenting Complaints</span>
-                                <p class="doc-p">Lorem ipsum dolor sit amet, consectetuer adipiscing
-                                    elit. Aenean commodo ligula eget dolor. Aenean massa
-                                    Cum sociis natoque penatibus
-                                    et magnis dis parturient montes, nascetur ridiculus
-                                    mus. Donec quam felis, ultricies nec, pellentesque
-                                    eu, pretium quis, sem. Nulla consequat massa quis
-                                    enim. Donec pede justo, fringilla vel, aliquet nec,
-                                    vulputate eget, arcu. In enim justo, rhoncus ut,
-                                    imperdiet a, venenatis vitae, justo. Nullam dictum
-                                    felis eu pede mollis pretium. Integer tincidunt. Cras dapibus.
-                                    Vivamus elementum semper nisi. Aenean vulputate
-                                    eleifend tellus. Aenean leo ligula, porttitor eu,
-                                    consequat vitae, eleifend ac, enim. Aliquam lorem ante,
-                                    dapibus in, viverra quis, feugiat a, tellus. Phasellus
-                                    viverra nulla ut metus varius laoreet. Quisque rutrum.
-                                    Aenean imperdiet. Etiam ultricies nisi vel augue.
-                                    Curabitur ullamcorper ultricies nisi</p>
+                        <div class="doc-con" *ngIf="group?.document?.documentType?.isSide===false || group?.document?.documentType?.isSide===undefined ">
+                            <div *ngFor="let key of group?.document?.body | keys ">
+                                <div *ngIf="group?.document?.body !==undefined " class="doc-span">{{key}}:</div>
+                                <div *ngIf="group?.document?.body !==undefined " class="doc-p">
+                                    <span *ngIf="checkType(group?.document?.body[key])">{{group?.document?.body[key]}}</span>
+                                    <span *ngIf="!checkType(group?.document?.body[key])">
+                                        <div *ngFor="let key2 of group?.document?.body[key] | keys ">
+                                            <div class="doc-span">{{key2}}:</div>
+                                            <div class="doc-p">
+                                                {{group?.document?.body[key][key2] | json}}
+                                            </div>
+                                        </div>
+                                    </span>
+                                </div>
                             </div>
-                            <div>
-                                <span class="doc-span">History of Presenting Complaints</span>
-                                <p class="doc-p">Lorem ipsum dolor sit amet, consectetuer adipiscing
-                                    elit. Aenean commodo ligula eget dolor. Aenean massa
-                                    Cum sociis natoque penatibus
-                                    et magnis dis parturient montes, nascetur ridiculus
-                                    mus. Donec quam felis, ultricies nec, pellentesque
-                                    eu, pretium quis, sem. Nulla consequat massa quis
-                                    enim. Donec pede justo, fringilla vel, aliquet nec,
-                                    vulputate eget, arcu. In enim justo, rhoncus ut,
-                                    imperdiet a, venenatis vitae, justo. Nullam dictum
-                                    felis eu pede mollis pretium. Integer tincidunt. Cras dapibus.
-                                    Vivamus elementum semper nisi. Aenean vulputate
-                                    eleifend tellus. Aenean leo ligula, porttitor eu,
-                                    consequat vitae, eleifend ac, enim. Aliquam lorem ante,
-                                    dapibus in, viverra quis, feugiat a, tellus. Phasellus
-                                    viverra nulla ut metus varius laoreet. Quisque rutrum.
-                                    Aenean imperdiet. Etiam ultricies nisi vel augue.
-                                    Curabitur ullamcorper ultricies nisi</p>
+                        </div>
+
+
+
+
+
+
+
+                        <div class="doc-con" *ngIf="group?.document?.documentType?.isSide===true ">
+                            <div *ngFor="let key of group?.document?.body | keys ">
+                                <div *ngIf="group?.document?.body !==undefined " class="doc-span">{{key}}:</div>
+                                <div *ngFor="let key2 of group?.document?.body.problems | keys let k=index ">
+                                    <div *ngIf="group?.document?.body !==undefined " class="doc-p">
+                                        {{k+1}}:
+                                        <span class="doc-span ">{{group?.document?.body.problems[key2].problem}}</span>
+                                        ({{group?.document?.body.problems[key2]?.status?.name}})
+                                        {{group?.document?.body.problems[key2].note}}
+                                    </div>
+                                </div>
+                                <div *ngFor="let key2 of group?.document?.body.allergies | keys let k=index ">
+                                    <div *ngIf="group?.document?.body !==undefined " class="doc-p">
+                                        {{k+1}}:
+                                        <span class="doc-span">{{group?.document?.body.allergies[key2].allergy}}</span>
+                                        ({{group?.document?.body.allergies[key2].severity.name}})
+                                        {{group?.document?.body.allergies[key2].reaction}}
+                                        || {{group?.document?.body.allergies[key2].note}}
+                                    </div>
+                                </div>
+                                <!-- <div *ngIf="group?.document?.body.vitals !==undefined && group?.document?.body.vitals.length> 0">
+                                    <div *ngIf="group?.document?.body !== undefined" class="doc-p">
+                                      
+                                        <table cellpadding="0" cellspacing="0" border="0.5">
+                                            <thead>
+                                                <tr>
+                                                    <th>T</th>
+                                                    <th>PR</th>
+                                                    <th>RR</th>
+                                                    <th>BP</th>
+                                                    <th>Wt</th>
+                                                    <th>Ht</th>
+                                                    <th>BMI</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                <tr *ngFor="let item of group?.document?.body.vitals">
+                                                    <td>{{item.temperature}}</td>
+                                                    <td>{{item.pulseRate.pulseRateValue}}</td>
+                                                    <td>{{item.respiratoryRate}}</td>
+                                                    <td>S: {{item.bloodPressure.systolic}} D:
+                                                        {{item.bloodPressure.diastolic}}</td>
+                                                    <td>{{item.bodyMass.weight}}</td>
+                                                    <td>{{item.bodyMass.height}}</td>
+                                                    <td>{{item.bodyMass.bmi}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div> -->
+
+                                <div *ngIf="group?.document?.addendum !== undefined">
+                                    <span class="sect-key">Addendum:</span> <span>{{group?.document?.addendum.text}}</span>
+                                </div>
                             </div>
-                            <div>
-                                <span class="doc-span">Family History</span>
-                                <p class="doc-p">Lorem ipsum dolor sit amet, consectetuer adipiscing
-                                    elit. Aenean commodo ligula eget dolor. Aenean massa
-                                    Cum sociis natoque penatibusi</p>
-                            </div>
-                            <div>
-                                <span class="doc-span">General Examination</span>
-                                <p class="doc-p">Lorem ipsum dolor sit amet, consectetuer adipiscing
-                                    elit. Aenean commodo ligula eget dolor. Aenean massa
-                                    Cum sociis natoque penatibus
-                                    et magnis dis parturient montes, nascetur ridiculus
-                                    mus. Donec quam felis, ultricies nec, pellentesque
-                                    eu, pretium quis, sem. Nulla consequat massa quis
-                                    enim. Donec pede justo, fringilla vel, aliquet nec,
-                                    vulputate eget, arcu. In enim justo, rhoncus ut,
-                                    imperdiet a, venenatis vitae, justo. Nullam dictum
-                                    felis eu pede mollis pretium. Integer tincidunt. Cras dapibus.
-                                    Vivamus elementum semper nisi. Aenean vulputate
-                                    eleifend tellus. Aenean leo ligula, porttitor eu,
-                                    consequat vitae, eleifend ac, enim. Aliquam lorem ante,
-                                    dapibus in, viverra quis, feugiat a, tellus. Phasellus
-                                    viverra nulla ut metus varius laoreet. Quisque rutrum.
-                                    Aenean imperdiet. Etiam ultricies nisi vel augue.
-                                    Curabitur ullamcorper ultricies nisi</p>
-                            </div>
-                        </div> -->
+                        </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
                     </div>
 
                 </div>

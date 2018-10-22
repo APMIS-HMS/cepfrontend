@@ -11,9 +11,12 @@ export class PrintDocumentationComponent implements OnInit {
 	@Input() patient: any = <any>{};
 	constructor() {}
 
-	ngOnInit() {
-		console.log(this.patientDocumentation);
-		console.log(this.patient);
+	ngOnInit() {}
+
+	sortDocumentation() {
+		return this.patientDocumentation.documentations.sort(function(a, b) {
+			return a.createdAt < b.createdAt;
+		});
 	}
 
 	onClickPrintDocument() {
@@ -130,5 +133,15 @@ export class PrintDocumentationComponent implements OnInit {
 
 	close_onClick() {
 		this.closeModal.emit(true);
+	}
+
+	checkType(value) {
+		if (typeof value === 'string') {
+			return true;
+		} else if (typeof value === 'number') {
+			return true;
+		} else if (value.length !== undefined) {
+			return true;
+		}
 	}
 }
