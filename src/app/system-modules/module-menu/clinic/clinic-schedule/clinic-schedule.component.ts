@@ -65,10 +65,10 @@ export class ClinicScheduleComponent implements OnInit {
 	ngOnInit() {
 		this.durationUnits = DurationUnits;
 		this.subscribToFormControls();
-		this.getClinicMajorLocation();
 		const facility = <Facility>this.locker.getObject('selectedFacility');
 		//this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-		this.selectedFacility = this.facilityService.get(facility._id,{ }).then(payload => {
+			this.facilityService.get(facility._id, {}).then(payload => {
+			this.selectedFacility = payload;
 			console.log(payload.departments);
 			payload.departments.forEach((itemi, i) => {
 				itemi.units.forEach((itemj, j) => {
@@ -89,6 +89,7 @@ export class ClinicScheduleComponent implements OnInit {
 		this.getSchedulerType();
 		this.addNewClinicSchedule();
 		this.getClinicSchedules();
+		this.getClinicMajorLocation();
 	}
 
 	getClinicSchedules() {
@@ -213,7 +214,6 @@ export class ClinicScheduleComponent implements OnInit {
 
 	getClinicLocation() {
 		this.clinicLocations = this.selectedFacility.minorLocations.filter((x) => x.locationId === this.clinic._id);
-		console.log(this.clinicLocations);
 	}
 
 	addNewClinicSchedule() {
