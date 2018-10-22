@@ -197,6 +197,7 @@ export class AppointmentComponent implements OnInit {
 					clinicIds: clinicIds,
 					$limit  : this.paginationObj.pageSize,
 					$skip : this.paginationObj.currentPage * this.paginationObj.pageSize
+					//TODO  : Data not displayed after pagination, need backend fix urgently
 				}
 			})
 			.subscribe(

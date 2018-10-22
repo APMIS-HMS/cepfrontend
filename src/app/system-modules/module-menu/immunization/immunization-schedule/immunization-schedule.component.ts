@@ -7,6 +7,7 @@ import { DrugListApiService } from '../../../../services/facility-manager/setup'
 import { ImmunizationScheduleService } from '../../../../services/facility-manager/setup/immunization-schedule.service';
 import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
 import { Observable } from 'rxjs/Observable';
+import {IPagerSource} from '../../../../core-ui-modules/ui-components/PagerComponent';
 
 @Component({
   selector: 'app-immunization-schedule',
@@ -19,7 +20,7 @@ export class ImmunizationScheduleComponent implements OnInit {
   immunizationSchedules: ImmunizationSchedule[] = [];
   loading: boolean = true;
   openSearch: boolean = false;
-
+    paginationObj : IPagerSource = {currentPage : 0 , pageSize : 10, totalRecord : 0 , totalPages : 0 };
   constructor(
     private _router: Router,
     private _locker: CoolLocalStorage,
@@ -83,8 +84,16 @@ export class ImmunizationScheduleComponent implements OnInit {
   }
 
 _getAllImmunizationSchedules() {
-  this._immunizationScheduleService.find({ query: { facilityId: this.facility._id, $sort: { createdAt: -1 } }}).then(res => {
+    this.loading = true;
+  this._immunizationScheduleService.find({ query:
+          { facilityId: this.facility._id, $sort: { createdAt: -1 },
+              $limit : this.paginationObj.pageSize,
+              $skip : this.paginationObj.currentPage * this.paginationObj.pageSize
+          }
+
+  }).then(res => {
     this.loading = false;
+    this.paginationObj.totalRecord  = res.total;
     if (res.data.length > 0) {
       const arrayLength = res.data.length;
       for (let i = 0; i < arrayLength; i++) {
@@ -110,7 +119,12 @@ _getAllImmunizationSchedules() {
     }
   });
 }
-
+    gotoPage(index : number)
+    {
+        this.paginationObj.currentPage  = index;
+        // Get the data for the selected page index
+        this._getAllImmunizationSchedules();
+    }
   onClickOpenSearch() {
     this.openSearch = true;
   }

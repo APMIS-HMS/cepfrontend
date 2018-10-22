@@ -18,11 +18,11 @@ const rx = require('feathers-reactive');
 const RxJS = require('rxjs/Rx');
 const CircularJSON = require('circular-json');
 
-const HOST = API_LOCALHOST;
+const HOST = API_TEST;
 
 @Injectable()
 export class SocketService {
-	public socket: any;
+	public socket: any;n
 	public HOST;
 	private _app: any;
 
