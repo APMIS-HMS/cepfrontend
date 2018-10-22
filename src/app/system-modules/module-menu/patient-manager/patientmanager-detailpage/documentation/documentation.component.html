@@ -303,8 +303,9 @@
 
 
 <div *ngIf="showPrintPop" class="modal-overlay">
-        <app-print-documentation (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-print-documentation>
-    </div>
+    <app-print-documentation [patientDocumentation]="patientDocumentation" [patient]="patient" (closeModal)="close_onClick($event)"
+        id="form-modal" class="form-modal center-center"></app-print-documentation>
+</div>
 
 <!-- <div class="con-pass-wrap">
     <app-pass-continue></app-pass-continue>

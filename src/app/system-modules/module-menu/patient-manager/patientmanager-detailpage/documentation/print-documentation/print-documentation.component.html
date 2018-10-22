@@ -21,61 +21,67 @@
                 </mat-card>
             </div> -->
 
-            <div class="docPreview" id="printDoc-Section"> 
+            <div class="docPreview" id="printDoc-Section">
                 <div class="top-bio">
-                    <h1 class="txt-wrap">Ojo Oluwatayo Micheal</h1>
+                    <h1 class="txt-wrap">{{patient.personDetails.lastName}} {{patient.personDetails.otherName}}
+                        {{patient.personDetails.firstName}}</h1>
                     <div class="txt-wrap">
                         <span class="val-tag">Apmis ID : </span>
-                        <span class="list-label">PD-99388</span>
+                        <span class="list-label">{{patient.personDetails.apmisId}}</span>
                     </div>
                     <div class="txt-wrap">
                         <span class="val-tag">Gender : </span>
-                        <span class="list-label">Female</span>
+                        <span class="list-label">{{patient.personDetails.gender}}</span>
                     </div>
                     <div class="txt-wrap">
                         <span class="val-tag">Age : </span>
-                        <span class="list-label">65 Years Old</span>
+                        <span class="list-label">{{patient.age}}</span>
                     </div>
                     <div>
                         <span class="val-tag">Date of Birth : </span>
-                        <span class="list-label">April 22nd, 1975</span>
+                        <span class="list-label">{{patient.personDetails.dateOfBirth}}</span>
                     </div>
 
                     <div>
                         <span class="val-tag">Mobile : </span>
-                        <span class="list-label">08164231844</span>
+                        <span class="list-label">{{patient.personDetails.primaryContactPhoneNo}}</span>
                     </div>
                     <div>
                         <span class="val-tag">Email : </span>
-                        <span class="list-label">patients@hotmail.com</span>
+                        <span class="list-label">{{patient.personDetails.email}}</span>
                     </div>
                     <div>
                         <span class="val-tag">Address : </span>
-                        <span class="list-label">No. 23, Oshitelu Street, Ilupeju Lagos </span>
+                        <span class="list-label">{{patient.personDetails.homeAddress.street}},
+                            {{patient.personDetails.homeAddress.city}},
+                            {{patient.personDetails.homeAddress.state}} {{patient.personDetails.homeAddress.country}}
+                        </span>
                     </div>
                 </div>
-                <div class="doc-content">
+                <div class="doc-content" *ngFor="let group of patientDocumentation.documentations">
                     <!-- Vital Sign -->
                     <div class="control-group">
                         <div class="control-group-header">
                             <div class="secWrap-header">
                                 <div class="val-tag">Hospital</div>
-                                <div class="list-label">APMIS Hospital</div>
+                                <div class="list-label">{{group.facilityName}}</div>
                             </div>
                             <div class="secWrap-header">
                                 <div class="val-tag">Practitioner</div>
-                                <div class="list-label">Nurse Akinloye</div>
+                                <div class="list-label">{{group.createdBy}}</div>
                             </div>
                             <div class="secWrap-header">
                                 <div class="val-tag">Documentation Type</div>
-                                <div class="list-label">Vital Signs</div>
+                                <div class="list-label">{{group.document.documentType.title}}</div>
                             </div>
                             <div class="secWrap-header">
                                 <div class="val-tag">Date/Time</div>
-                                <div class="list-label">13th Oct, 2018<span class="time">11:00am</span></div>
+                                <div class="list-label">{{group.createdAt | date:'shortDate'}}<span class="time">{{group.createdAt
+                                        |
+                                        date:'shortTime'}}</span></div>
                             </div>
                         </div>
-                        <div class="doc-con">
+                        <div class="doc-con" *ngIf="group?.document?.body?.vitals !== undefined">
                             <table cellpadding="0" cellspacing="0" border="0.5" class="workspace-tbl">
                                 <thead>
                                     <tr class="th-r1 col-width">
@@ -102,29 +108,7 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
-
-                    <!-- Doctor's Note -->
-                    <div class="control-group">
-                        <div class="control-group-header">
-                            <div class="secWrap-header">
-                                <div class="val-tag">Hospital</div>
-                                <div class="list-label">APMIS Hospital</div>
-                            </div>
-                            <div class="secWrap-header">
-                                <div class="val-tag">Practitioner</div>
-                                <div class="list-label">Dr. Obong</div>
-                            </div>
-                            <div class="secWrap-header">
-                                <div class="val-tag">Documentation Type</div>
-                                <div class="list-label">Clinic Progress Note</div>
-                            </div>
-                            <div class="secWrap-header">
-                                <div class="val-tag">Date/Time</div>
-                                <div class="list-label">20th Oct, 2018<span class="time">10:00am</span></div>
-                            </div>
-                        </div>
-                        <div class="doc-con">
+                        <!-- <div class="doc-con" *ngIf="group?.document?.documentType?.isSide===false || group?.document?.documentType?.isSide===undefined ">
                             <div>
                                 <span class="doc-span">Presenting Complaints</span>
                                 <p class="doc-p">Lorem ipsum dolor sit amet, consectetuer adipiscing
@@ -191,149 +175,18 @@
                                     Aenean imperdiet. Etiam ultricies nisi vel augue.
                                     Curabitur ullamcorper ultricies nisi</p>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
-                    <!-- Doctor's Note -->
-                    <div class="control-group">
-                        <div class="control-group-header">
-                            <div class="secWrap-header">
-                                <div class="val-tag">Hospital</div>
-                                <div class="list-label">APMIS Hospital</div>
-                            </div>
-                            <div class="secWrap-header">
-                                <div class="val-tag">Practitioner</div>
-                                <div class="list-label">Dr. Emeka</div>
-                            </div>
-                            <div class="secWrap-header">
-                                <div class="val-tag">Documentation Type</div>
-                                <div class="list-label">Clinic Progress Note</div>
-                            </div>
-                            <div class="secWrap-header">
-                                <div class="val-tag">Date/Time</div>
-                                <div class="list-label">28th Oct, 2018<span class="time">1:00pm</span></div>
-                            </div>
-                        </div>
-                        <div class="doc-con">
-                            <div>
-                                <span class="doc-span">History of Presenting Complaints</span>
-                                <p class="doc-p">Lorem ipsum dolor sit amet, consectetuer adipiscing
-                                    elit. Aenean commodo ligula eget dolor. Aenean massa
-                                    Cum sociis natoque penatibus
-                                    et magnis dis parturient montes, nascetur ridiculus
-                                    mus. Donec quam felis, ultricies nec, pellentesque
-                                    eu, pretium quis, sem. Nulla consequat massa quis
-                                    enim. Donec pede justo, fringilla vel, aliquet nec,
-                                    vulputate eget, arcu. In enim justo, rhoncus ut,
-                                    imperdiet a, venenatis vitae, justo. Nullam dictum
-                                    felis eu pede mollis pretium. Integer tincidunt. Cras dapibus.
-                                    Vivamus elementum semper nisi. Aenean vulputate
-                                    eleifend tellus. Aenean leo ligula, porttitor eu,
-                                    consequat vitae, eleifend ac, enim. Aliquam lorem ante,
-                                    dapibus in, viverra quis, feugiat a, tellus. Phasellus
-                                    viverra nulla ut metus varius laoreet. Quisque rutrum.
-                                    Aenean imperdiet. Etiam ultricies nisi vel augue.
-                                    Curabitur ullamcorper ultricies nisi</p>
-                            </div>
-                            <div>
-                                <span class="doc-span">Family History</span>
-                                <p class="doc-p">Lorem ipsum dolor sit amet, consectetuer adipiscing
-                                    elit. Aenean commodo ligula eget dolor. Aenean massa
-                                    Cum sociis natoque penatibusi</p>
-                            </div>
-                            <div>
-                                <span class="doc-span">General Examination</span>
-                                <p class="doc-p">Lorem ipsum dolor sit amet, consectetuer adipiscing
-                                    elit. Aenean commodo ligula eget dolor. Aenean massa
-                                    Cum sociis natoque penatibus
-                                    et magnis dis parturient montes, nascetur ridiculus
-                                    mus. Donec quam felis, ultricies nec, pellentesque
-                                    eu, pretium quis, sem. Nulla consequat massa quis
-                                    enim. Donec pede justo, fringilla vel, aliquet nec,
-                                    vulputate eget, arcu. In enim justo, rhoncus ut,
-                                    imperdiet a, venenatis vitae, justo. Nullam dictum
-                                    felis eu pede mollis pretium. Integer tincidunt. Cras dapibus.
-                                    Vivamus elementum semper nisi. Aenean vulputate
-                                    eleifend tellus. Aenean leo ligula, porttitor eu,
-                                    consequat vitae, eleifend ac, enim. Aliquam lorem ante,
-                                    dapibus in, viverra quis, feugiat a, tellus. Phasellus
-                                    viverra nulla ut metus varius laoreet. Quisque rutrum.
-                                    Aenean imperdiet. Etiam ultricies nisi vel augue.
-                                    Curabitur ullamcorper ultricies nisi</p>
-                            </div>
-                            <div>
-                                <span class="doc-span">Diagnosis</span>
-                                <p class="doc-p">Lorem ipsum dolor sit amet, consectetuer adipiscing
-                                    elit. Aenean commodo ligula eget dolor. Aenean massa
-                                    Cum sociis natoque penatibus
-                                    et magnis dis parturient montes, nascetur ridiculus
-                                    mus. Donec quam felis, ultricies nec, pellentesque
-                                    eu, pretium quis, sem. Nulla consequat massa quis
-                                    enim. Donec pede justo, fringilla vel, aliquet nec
-                                    viverra nulla ut metus varius laoreet. Quisque rutrum.
-                                    Aenean imperdiet. Etiam ultricies nisi vel augue.
-                                    Curabitur ullamcorper ultricies nisi</p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Vital Sign -->
-                    <div class="control-group">
-                        <div class="control-group-header">
-                            <div class="secWrap-header">
-                                <div class="val-tag">Hospital</div>
-                                <div class="list-label">APMIS Hospital</div>
-                            </div>
-                            <div class="secWrap-header">
-                                <div class="val-tag">Practitioner</div>
-                                <div class="list-label">Nurse Akinloye</div>
-                            </div>
-                            <div class="secWrap-header">
-                                <div class="val-tag">Documentation Type</div>
-                                <div class="list-label">Vital Signs</div>
-                            </div>
-                            <div class="secWrap-header">
-                                <div class="val-tag">Date/Time</div>
-                                <div class="list-label">30th Oct, 2018<span class="time">9:00am</span></div>
-                            </div>
-                        </div>
-                        <div class="doc-con">
-                            <table cellpadding="0" cellspacing="0" border="0.5" class="workspace-tbl">
-                                <thead>
-                                    <tr class="th-r1 col-width">
-                                        <th>Temperature</th>
-                                        <th>Pulse Rate</th>
-                                        <th>Respiratory Rate</th>
-                                        <th>Blood Pressure</th>
-                                        <th>Weight</th>
-                                        <th>Height</th>
-                                        <th>BMI</th>
-                                    </tr>
-                                </thead>
-
-                                <tbody>
-                                    <tr>
-                                        <td>35.7</td>
-                                        <td>20</td>
-                                        <td>18</td>
-                                        <td>Systolic: 80mps Diastolic: 110mps </td>
-                                        <td>70.3</td>
-                                        <td>1.25</td>
-                                        <td>22.1 (obesse)</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
                 </div>
 
             </div>
         </div>
         <div class="float">
-                <span (click)="onClickPrintDocument()">
-                    <i class="fa fa-print print-ico fa-3x" style="padding: 10px;"></i>
-                </span>
-            </div>
+            <span (click)="onClickPrintDocument()">
+                <i class="fa fa-print print-ico fa-3x" style="padding: 10px;"></i>
+            </span>
+        </div>
     </div>
-    
+
 </div>

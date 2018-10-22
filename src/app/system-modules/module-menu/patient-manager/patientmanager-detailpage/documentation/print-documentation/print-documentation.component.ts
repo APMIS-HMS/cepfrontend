@@ -1,24 +1,26 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-print-documentation',
-  templateUrl: './print-documentation.component.html',
-  styleUrls: ['./print-documentation.component.scss']
+	selector: 'app-print-documentation',
+	templateUrl: './print-documentation.component.html',
+	styleUrls: [ './print-documentation.component.scss' ]
 })
 export class PrintDocumentationComponent implements OnInit {
+	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+	@Input() patientDocumentation: any = <any>{};
+	@Input() patient: any = <any>{};
+	constructor() {}
 
-  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+	ngOnInit() {
+		console.log(this.patientDocumentation);
+		console.log(this.patient);
+	}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
-  onClickPrintDocument() {
-    const printContents = document.getElementById('printDoc-Section').innerHTML;
-    let popupWin = window.open('', '', 'top=0,left=0,height=100%,width=auto');
-    popupWin.document.open();
-    popupWin.document.write(`
+	onClickPrintDocument() {
+		const printContents = document.getElementById('printDoc-Section').innerHTML;
+		let popupWin = window.open('', '', 'top=0,left=0,height=100%,width=auto');
+		popupWin.document.open();
+		popupWin.document.write(`
       <html>
         <head>
           <title></title>
@@ -122,13 +124,11 @@ export class PrintDocumentationComponent implements OnInit {
           </style>
         </head>
         <body onload="window.print();window.close()">${printContents}</body>
-      </html>`
-    );
-    popupWin.document.close();
-  }
+      </html>`);
+		popupWin.document.close();
+	}
 
-
-  close_onClick() {
-    this.closeModal.emit(true);
-  }
+	close_onClick() {
+		this.closeModal.emit(true);
+	}
 }
