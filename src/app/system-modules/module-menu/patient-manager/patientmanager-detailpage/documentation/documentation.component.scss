@@ -78,7 +78,20 @@
 .actSect {
     margin: 0 auto;
     font-weight: bold;
+    display: grid;
+    grid-auto-columns: 1fr 1fr;
+    grid-gap: 1em;
+    justify-items: start;
+    align-items: end;
 }
+
+.inner-it{
+    position: relative;
+    float: right;
+    align-self: end;
+}
+
+
 .frmNoteWrap{
     width: 100% !important;
 }
@@ -137,6 +150,7 @@ ul.topmenuwrap {
     justify-content: space-between;
     align-items: center;
     cursor: pointer;
+    
     // margin: 5px;
 }
 
@@ -169,6 +183,7 @@ ul.topmenuwrap {
 
 .time {
     color: #ff2500;
+    padding-left: 5px;
 }
 
 .docCard-ctaWrap {
