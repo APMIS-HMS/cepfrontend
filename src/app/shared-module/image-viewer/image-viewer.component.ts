@@ -3,20 +3,16 @@ import { ImageEmitterService } from '../../services/facility-manager/image-emitt
 import { ISubscription } from 'rxjs/Subscription';
 
 @Component({
-  selector: 'app-image-viewer',
-  templateUrl: './image-viewer.component.html',
-  styleUrls: ['./image-viewer.component.scss']
+	selector: 'app-image-viewer',
+	templateUrl: './image-viewer.component.html',
+	styleUrls: [ './image-viewer.component.scss' ]
 })
 export class ImageViewerComponent implements OnInit {
-    @Input() imageSrc: String = <String>'';
+	@Input() imageSrc: String = <String>'';
 
-    constructor(
-        private logoService: ImageEmitterService
-    ) {
-        this.imageSrc = this.logoService.src;
-    }
+	constructor(public logoService: ImageEmitterService) {
+		this.imageSrc = this.logoService.src;
+	}
 
-    ngOnInit() {
-    }
+	ngOnInit() {}
 }
-
