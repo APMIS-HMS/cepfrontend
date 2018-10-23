@@ -1,16 +1,19 @@
 import {
-  AfterViewInit,
-  Component, DoCheck,
-  EventEmitter,
-  Input, KeyValueDiffer, KeyValueDiffers,
-  OnChanges,
-  OnInit,
-  Output,
-  QueryList,
-  SimpleChanges,
-  ViewChild,
-  ViewChildren,
-  ViewEncapsulation
+	AfterViewInit,
+	Component,
+	DoCheck,
+	EventEmitter,
+	Input,
+	KeyValueDiffer,
+	KeyValueDiffers,
+	OnChanges,
+	OnInit,
+	Output,
+	QueryList,
+	SimpleChanges,
+	ViewChild,
+	ViewChildren,
+	ViewEncapsulation
 } from '@angular/core';
 
 export const BUTTON_SIZE_DEFAULT: string = 'default';
@@ -21,15 +24,15 @@ export const PAGER_HORIZONTAL_ALIGNMENT_LEFT: string = 'left';
 export const PAGER_HORIZONTAL_ALIGNMENT_RIGHT: string = 'right';
 
 export interface IPagerSource {
-  totalPages?: number;
-  totalRecord?: number;
-  pageSize: number;  // Total record  per page
-  currentPage: number;  // current Page Index (Zero base index)
+	totalPages?: number;
+	totalRecord?: number;
+	pageSize: number; // Total record  per page
+	currentPage: number; // current Page Index (Zero base index)
 }
 
 @Component({
- selector: 'asom-pager-button',
-  template: `
+	selector: 'asom-pager-button',
+	template: `
     <p (click)="emitButtonClickEvent($event)" class="button"
        [ngClass]="{'asom-pager-button-disable' : disable, 'asom-pager-button' : !disable}"
        [ngStyle]="{'color' : foreColor,'background-color' : !disable? bgColor : 'white',
@@ -39,7 +42,8 @@ export interface IPagerSource {
 
       </ng-content>
     </p>  `,
-  styles: [`
+	styles: [
+		`
     p.asom-pager-button:hover, p.asom-pager-button:focus {
       background-color: rgba(213, 255, 236, 0.8) !important;
       color: #3c3c3c !important;
@@ -74,83 +78,79 @@ export interface IPagerSource {
       cursor: pointer;
 
     }
-  `]
+  `
+	]
 })
 export class PagerButtonComponent implements OnChanges {
-  @Input() size: string = BUTTON_SIZE_DEFAULT;
-  @Input("background-color") bgColor: string = 'white';
-  @Input("fore-color") foreColor: string = '#404040';
-  @Input("is-oval") isOval: boolean = true;
-  @Input("is-disable") disable: boolean = false;
+	@Input() size: string = BUTTON_SIZE_DEFAULT;
+	@Input('background-color') bgColor: string = 'white';
+	@Input('fore-color') foreColor: string = '#404040';
+	@Input('is-oval') isOval: boolean = true;
+	@Input('is-disable') disable: boolean = false;
 
-  @Output() onClick: EventEmitter<void> = new EventEmitter<void>();
-  fontSize: string;
-  padding: string;
+	@Output() onClick: EventEmitter<void> = new EventEmitter<void>();
+	fontSize: string;
+	padding: string;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    // check if the backColor has a different color other than white and change the fore color appropriately
+	ngOnChanges(changes: SimpleChanges): void {
+		// check if the backColor has a different color other than white and change the fore color appropriately
 
-    if (changes['bgColor'] != undefined) {
-      if (changes['bgColor'].currentValue === 'white') {
-        this.foreColor = '#404040';
-      }
-      else {
-        this.foreColor = '#ffffff';
-      }
+		if (changes['bgColor'] != undefined) {
+			if (changes['bgColor'].currentValue === 'white') {
+				this.foreColor = '#404040';
+			} else {
+				this.foreColor = '#ffffff';
+			}
+		}
+		if (changes['size'] != undefined) {
+			this.updateButtonSize();
+		}
+	}
 
-    }
-    if (changes['size'] != undefined) {
-      this.updateButtonSize();
-    }
-  }
+	private updateButtonSize() {
+		switch (this.size) {
+			case BUTTON_SIZE_DEFAULT:
+				this.padding = '0px';
+				this.fontSize = '13px';
+				break;
+			case BUTTON_SIZE_MEDIUM:
+				this.padding = '30px';
+				this.fontSize = '18px';
+				break;
+			case BUTTON_SIZE_LARGE:
+				this.padding = '45px';
+				this.fontSize = '24px';
+				break;
+			default:
+				this.padding = '0px';
+				this.fontSize = '13px';
+				break;
+		}
+	}
 
-  private updateButtonSize() {
-    switch (this.size) {
-      case BUTTON_SIZE_DEFAULT:
-        this.padding = "0px";
-        this.fontSize = "13px";
-        break;
-      case BUTTON_SIZE_MEDIUM:
-        this.padding = "30px";
-        this.fontSize = "18px";
-        break;
-      case BUTTON_SIZE_LARGE:
-        this.padding = "45px";
-        this.fontSize = "24px";
-        break;
-      default :
-        this.padding = "0px";
-        this.fontSize = "13px";
-        break;
+	removeBgColor() {
+		this.bgColor = 'white';
+	}
 
-    }
-  }
+	disableButton() {
+		this.disable = true;
+	}
 
-  removeBgColor() {
-    this.bgColor = 'white';
-  }
+	enableButton() {
+		this.disable = false;
+	}
 
-  disableButton() {
-    this.disable = true;
-  }
-
-  enableButton() {
-    this.disable = false;
-  }
-
-  emitButtonClickEvent($event) {
-    // Just raise the event
-    if (!this.disable) {
-      this.onClick.emit();
-    }
-
-  }
+	emitButtonClickEvent($event) {
+		// Just raise the event
+		if (!this.disable) {
+			this.onClick.emit();
+		}
+	}
 }
 
 @Component({
-
-  selector: 'asom-data-pager',
-  template: `
+	selector: 'asom-data-pager',
+	template: `
     <div class="asom-pager-button-container" *ngIf="pagerSource" [ngStyle]="{'justify-content' : flexJustify }">
       <asom-pager-button [size]="buttonSize" [is-disable]="true" *ngIf="showProgress" [is-oval]="useOvalButton">
                <span class="fa fa-refresh fa-spin" *ngIf="inProgress">
@@ -186,7 +186,8 @@ export class PagerButtonComponent implements OnChanges {
     </div>
 
   `,
-  styles: [`
+	styles: [
+		`
     div.asom-pager-button-container {
       display: flex;
       justify-content: center;
@@ -194,184 +195,166 @@ export class PagerButtonComponent implements OnChanges {
       align-content: center;
     }
 
-  `]
+  `
+	]
 })
-
 export class AsomDataPagerComponent implements OnInit, AfterViewInit, OnChanges, DoCheck {
-  @Output() onPageClick: EventEmitter<number> = new EventEmitter<number>();
-  @ViewChild('prev') prevButton: PagerButtonComponent;
-  @ViewChild('next') nextButton: PagerButtonComponent;
-  @ViewChildren('pg') buttons: QueryList<PagerButtonComponent>;  // this may be redundant
-  @Input("use-oval-button") useOvalButton: boolean = true;
-  @Input("in-progress") inProgress: boolean = false;
-  @Input("show-total-record") showTotalRecord: boolean = true;
-  @Input("show-progress") showProgress: boolean = false;  // if true a progress section template will be rendered and enabled if in progress is true
-  @Input("show-next-prev") showNextPrev: boolean = true;
-  @Input("next-prev-color") nextPrevColor: string = "white";
-  @Input("h-alignment") hAlignment: string = PAGER_HORIZONTAL_ALIGNMENT_CENTER;
-  @Input("next-prev-color-class") nextPrevClass: string = "";
-  @Input("pager-source") pagerSource: IPagerSource;
-  @Input() color: string = 'blue';
-  @Input('color-class') colorClass: string = '';
-  @Input('button-size') buttonSize: string = BUTTON_SIZE_DEFAULT;
-  @Input('auto-calculate-pages') autoCalPages: boolean = false;
-  totalPages: number[] = [];
-  pageIndex: number = 0;
-  flexJustify: string = PAGER_HORIZONTAL_ALIGNMENT_CENTER;
-  //diff : { [any : string] : KeyValueDiffer<string, IPagerSource>};
-  differ: any;
+	@Output() onPageClick: EventEmitter<number> = new EventEmitter<number>();
+	@ViewChild('prev') prevButton: PagerButtonComponent;
+	@ViewChild('next') nextButton: PagerButtonComponent;
+	@ViewChildren('pg') buttons: QueryList<PagerButtonComponent>; // this may be redundant
+	@Input('use-oval-button') useOvalButton: boolean = true;
+	@Input('in-progress') inProgress: boolean = false;
+	@Input('show-total-record') showTotalRecord: boolean = true;
+	@Input('show-progress') showProgress: boolean = false; // if true a progress section template will be rendered and enabled if in progress is true
+	@Input('show-next-prev') showNextPrev: boolean = true;
+	@Input('next-prev-color') nextPrevColor: string = 'white';
+	@Input('h-alignment') hAlignment: string = PAGER_HORIZONTAL_ALIGNMENT_CENTER;
+	@Input('next-prev-color-class') nextPrevClass: string = '';
+	@Input('pager-source') pagerSource: IPagerSource;
+	@Input() color: string = 'blue';
+	@Input('color-class') colorClass: string = '';
+	@Input('button-size') buttonSize: string = BUTTON_SIZE_DEFAULT;
+	@Input('auto-calculate-pages') autoCalPages: boolean = false;
+	totalPages: number[] = [];
+	pageIndex: number = 0;
+	flexJustify: string = PAGER_HORIZONTAL_ALIGNMENT_CENTER;
+	//diff : { [any : string] : KeyValueDiffer<string, IPagerSource>};
+	differ: any;
 
-  constructor(private differs: KeyValueDiffers) {
-    //this.diff  = differs.find({}).create<{ [any : string] : KeyValueDiffer<string, IPagerSource>}>();
+	constructor(private differs: KeyValueDiffers) {
+		//this.diff  = differs.find({}).create<{ [any : string] : KeyValueDiffer<string, IPagerSource>}>();
+	}
 
-  }
+	ngOnInit() {
+		/*Register Observers when pagerSource changes*/
+		if (this.pagerSource != undefined || this.pagerSource != null) {
+			this.differ = this.differs.find(this.pagerSource).create<string, IPagerSource>();
+		}
+	}
 
-  ngOnInit() {
-    /*Register Observers when pagerSource changes*/
-    if (this.pagerSource != undefined || this.pagerSource != null) {
-      this.differ = this.differs.find(this.pagerSource).create<string, IPagerSource>();
-    }
+	pagerButtonClick(pageIndex: number) {
+		this.pageIndex = pageIndex;
+		this.onPageClick.emit(pageIndex);
+	}
 
+	ngAfterViewInit(): void {
+		// check if prev and next button need to be disabled
+		if (this.pagerSource && this.totalPages.length > 0) {
+			// this.prevButton.disableButton();
+		}
+	}
 
-  }
+	ngOnChanges(changes: SimpleChanges): void {
+		/* Check if PagerSouce has been set and render the ui accordingly*/
+		if (changes['pagerSource'] != undefined && changes['pagerSource'].isFirstChange()) {
+			// generate page numbers or assign default values
+			if (!this.autoCalPages) {
+				if (this.pagerSource.totalPages != undefined) {
+					this._generatePageIndexes(this.pagerSource.totalPages);
+				}
+			} else {
+				//calculate the total pages automatically
+				this.calTotalPages();
+			}
+			// console.log("NG-CHANGES called");
+		}
+		if (changes['hAlignment'] != undefined) {
+			this.updateAlignment();
+		}
 
-  pagerButtonClick(pageIndex: number) {
-    this.pageIndex = pageIndex;
-    this.onPageClick.emit(pageIndex);
-  }
+		//else render a message to inform the user of the required pager source
+	}
 
-  ngAfterViewInit(): void {
-    // check if prev and next button need to be disabled
-    if (this.pagerSource && this.totalPages.length > 0) {
-      // this.prevButton.disableButton();
-    }
+	private calTotalPages() {
+		const mod = this.pagerSource.totalRecord % this.pagerSource.pageSize;
+		this.pagerSource.totalPages =
+			(this.pagerSource.totalRecord - mod) / this.pagerSource.pageSize + (mod > 0 ? 1 : 0);
+		this._generatePageIndexes(this.pagerSource.totalPages);
+	}
 
-  }
+	gotoNextPage() {
+		// got to next page only if we are not at the last page
+		if (this.canGoNext()) {
+			this.pageIndex += 1;
+			this.pagerButtonClick(this.pageIndex);
+		}
+	}
 
-  ngOnChanges(changes: SimpleChanges): void {
-    /* Check if PagerSouce has been set and render the ui accordingly*/
-    if (changes["pagerSource"] != undefined && changes["pagerSource"].isFirstChange()) {
-      // generate page numbers or assign default values
-      if (!this.autoCalPages) {
-        if (this.pagerSource.totalPages != undefined) {
-          this._generatePageIndexes(this.pagerSource.totalPages);
-        }
-      }
-      else {
-        //calculate the total pages automatically
-        this.calTotalPages();
-      }
-     // console.log("NG-CHANGES called");
-    }
-    if (changes['hAlignment'] != undefined) {
-      this.updateAlignment();
-    }
+	gotoPrevPage() {
+		// got to next page only if we are not at the last page
+		if (this.canGoPrev()) {
+			this.pageIndex -= 1;
+			this.pagerButtonClick(this.pageIndex);
+		}
+	}
 
-    //else render a message to inform the user of the required pager source
-
-  }
-
-  private calTotalPages() {
-    const mod = this.pagerSource.totalRecord % this.pagerSource.pageSize;
-    this.pagerSource.totalPages = ((this.pagerSource.totalRecord - mod) / this.pagerSource.pageSize) + (mod > 0 ? 1 : 0);
-    this._generatePageIndexes(this.pagerSource.totalPages);
-  }
-
-  gotoNextPage() {
-    // got to next page only if we are not at the last page
-    if (this.canGoNext()) {
-      this.pageIndex += 1;
-      this.pagerButtonClick(this.pageIndex);
-
-    }
-
-  }
-
-  gotoPrevPage() {
-    // got to next page only if we are not at the last page
-    if (this.canGoPrev()) {
-      this.pageIndex -= 1;
-      this.pagerButtonClick(this.pageIndex);
-
-    }
-
-
-  }
-
-  private canGoNext(): boolean {
-    /*
+	private canGoNext(): boolean {
+		/*
     example : pageIndex  = 9
     * if totalPages.length  = 10 , if have index[0,1,2,3,4,5,6,7,8,9]
     * */
-    return this.pageIndex < this.totalPages.length - 1;
-  }
+		return this.pageIndex < this.totalPages.length - 1;
+	}
 
-  private canGoPrev(): boolean {
-    /*
+	private canGoPrev(): boolean {
+		/*
     example : pageIndex  = 1
     * if totalPages.length  = 10 , if have index[0,1,2,3,4,5,6,7,8,9]
     * */
-    return this.pageIndex > 0;
-  }
+		return this.pageIndex > 0;
+	}
 
-  private _generatePageIndexes(totalPages: number) {
-    let pg = [];
-    for (let i: number = 0; i < totalPages; i++) {
-      pg.push(i);
-    }
-    this.totalPages = pg;
-    this.setPageIndex();
+	private _generatePageIndexes(totalPages: number) {
+		let pg = [];
+		for (let i: number = 0; i < totalPages; i++) {
+			pg.push(i);
+		}
+		this.totalPages = pg;
+		this.setPageIndex();
+	}
 
-  }
+	private updateAlignment() {
+		switch (this.hAlignment) {
+			case PAGER_HORIZONTAL_ALIGNMENT_CENTER:
+				this.flexJustify = 'center';
 
-  private updateAlignment() {
-    switch (this.hAlignment) {
-      case PAGER_HORIZONTAL_ALIGNMENT_CENTER:
-        this.flexJustify = "center";
+				break;
+			case PAGER_HORIZONTAL_ALIGNMENT_LEFT:
+				this.flexJustify = 'start';
 
-        break;
-      case PAGER_HORIZONTAL_ALIGNMENT_LEFT:
-        this.flexJustify = "start";
+				break;
+			case PAGER_HORIZONTAL_ALIGNMENT_RIGHT:
+				this.flexJustify = 'end';
 
-        break;
-      case PAGER_HORIZONTAL_ALIGNMENT_RIGHT:
-        this.flexJustify = "end";
+				break;
+			default:
+				this.flexJustify = PAGER_HORIZONTAL_ALIGNMENT_CENTER;
+				break;
+		}
+	}
 
-        break;
-      default :
-        this.flexJustify = PAGER_HORIZONTAL_ALIGNMENT_CENTER;
-        break;
+	private setPageIndex() {
+		this.pageIndex = this.pagerSource.currentPage;
+		//this.pagerButtonClick(this.pageIndex);
+	}
 
-    }
-  }
-
-  private setPageIndex() {
-    this.pageIndex = this.pagerSource.currentPage;
-    //this.pagerButtonClick(this.pageIndex);
-  }
-
-
-  ngDoCheck(): void {
-    //// console.log(this.count++);
-    if (this.pagerSource != undefined || this.pagerSource != null) {
-      const changedData = this.differ.diff(this.pagerSource);
-      if (changedData) {
-
-        if (changedData.isDirty) {
-          if (this.autoCalPages) {
-           // console.log("data changed");
-            this.calTotalPages();
-          }
-          else {
-            // if page Size changes do the required thing
-              this.calTotalPages();
-            //this._generatePageIndexes(this.pagerSource.totalPages);
-            console.log("Generate Pages called with : ", this.pagerSource.totalPages);
-              
-          }
-        }
-      }
-    }
-
-  }
+	ngDoCheck(): void {
+		//// console.log(this.count++);
+		if (this.pagerSource != undefined || this.pagerSource != null) {
+			const changedData = this.differ.diff(this.pagerSource);
+			if (changedData) {
+				if (changedData.isDirty) {
+					if (this.autoCalPages) {
+						// console.log("data changed");
+						this.calTotalPages();
+					} else {
+						// if page Size changes do the required thing
+						this.calTotalPages();
+						//this._generatePageIndexes(this.pagerSource.totalPages);
+					}
+				}
+			}
+		}
+	}
 }

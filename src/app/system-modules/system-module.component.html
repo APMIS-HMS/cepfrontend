@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="user-imgWrap">
-                    <img *ngIf="selectedPerson?.profileImageObject !== undefined" [src]="facilityService.transform(selectedPerson?.profileImageObject?.thumbnail)">
+                    <img *ngIf="selectedPerson?.profileImageObject !== undefined" [src]="selectedPerson?.profileImageObject?.thumbnail">
                     <img *ngIf="selectedPerson?.profileImageObject === undefined" src="assets/images/users/default.png">
                 </div>
 

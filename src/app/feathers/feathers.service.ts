@@ -22,7 +22,8 @@ const HOST = API_TEST;
 
 @Injectable()
 export class SocketService {
-	public socket: any;n
+	public socket: any;
+	n;
 	public HOST;
 	private _app: any;
 
