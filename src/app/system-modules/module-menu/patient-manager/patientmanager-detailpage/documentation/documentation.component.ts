@@ -30,6 +30,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
   editClick = false;
   isDocumentEdit = false;
 
+  showPrintPop = false;
   showDoc = true;
   showOrderSet = false;
 
@@ -670,6 +671,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this.addAllergy_view = false;
     this.addHistory_view = false;
     this.addVitals_view = false;
+    this.showPrintPop = false;
     this.getPersonDocumentation();
   }
 
@@ -681,6 +683,12 @@ export class DocumentationComponent implements OnInit, OnDestroy {
     this.showDoc = true;
     this.showOrderSet = false;
   }
+
+
+  showPrintPopClick(e) {
+    this.showPrintPop = true;
+  }
+
   ngOnDestroy(): void {
     this.subscription.unsubscribe();
   }

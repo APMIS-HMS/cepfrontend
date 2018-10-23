@@ -83,7 +83,6 @@ export const API_LIVE = 'https://apmisapilive.azurewebsites.net';
 export const API_LOCALHOST = 'http://localhost:3031';
 export const USE_LOGIN_ENCRYPTION = false;
 export const USE_FACILITY_ACTIVATION = false;
-
 export const ApointmentScheduleStatus = {
 	ACTIVE: 'Active',
 	SUSPENDED: 'Suspended',
@@ -95,3 +94,4 @@ export const ApointmentScheduleStatus = {
 	EXPIRED: 'Expired',
 	COMPLETED: 'Completed'
 };
+
