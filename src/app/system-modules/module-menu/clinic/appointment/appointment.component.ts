@@ -77,8 +77,8 @@ export class AppointmentComponent implements OnInit {
 	loading: Boolean = false;
 
 	dayCount = [ 'Today', 'Last 3 Days', 'Last Week', 'Last 2 Weeks', 'Last Month' ];
-	private paginationObj: IPagerSource = { totalRecord: 0, currentPage: 0, pageSize: 10, totalPages: 0 };
-	private lastAccessedClinicIds: any[];
+	paginationObj: IPagerSource = { totalRecord: 0, currentPage: 0, pageSize: 10, totalPages: 0 };
+	lastAccessedClinicIds: any[];
 
 	constructor(
 		private locker: CoolLocalStorage,
