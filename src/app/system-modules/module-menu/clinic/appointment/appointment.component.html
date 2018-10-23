@@ -80,7 +80,7 @@
                         <div *ngIf="appointment.attendance !== undefined && !appointment.isCheckedOut" (click)="checkOutToWard(appointment)" class="tr-act-btn"><i class="fa fa-sign-out" aria-hidden="true"></i> Check Out</div>
                         <div *ngIf="appointment.isCheckedOut" class="tr-act-btn"><i class="" aria-hidden="true"></i> Checked Out</div>
                         <div *ngIf="appointment.attendance === undefined" class="tr-act-btn" (click)="editAppointment(appointment)"><i class="fa fa-edit" aria-hidden="true"></i> Edit</div>
-                        <div *ngIf="appointment.attendance === undefined && !isCancelled" class="tr-act-btn" (click)="confirmCancelAppointment(appointment)"><i class="fa fa-times" aria-hidden="true"></i> Cancel</div>
+                        <div *ngIf="appointment.attendance === undefined && appointment.orderStatusId != 'Cancelled'" class="tr-act-btn" (click)="confirmCancelAppointment(appointment)"><i class="fa fa-times" aria-hidden="true"></i> Cancel</div>
                         <div *ngIf="appointment.zoom !== undefined && appointment.attendance === undefined" (click)="onNavigate(appointment, $event)" class="actionWrap">
                             <i class="fa fa-stethoscope" aria-hidden="true"></i>
                             <span>TeleMedicine</span>
