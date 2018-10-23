@@ -202,7 +202,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
     const reader = new FileReader();
     reader.onload = (e: any) => {
       this.base64Image = e.target.result;
-      this.imageEmitterService.setImageUrl(e.target.result);
+      this.imageEmitterService.setSrc(e.target.result);
     };
 
     reader.readAsDataURL(fileList[0]);
@@ -238,9 +238,9 @@ export class FacilityBasicinfoEditComponent implements OnInit {
         this.systemModuleService.announceSweetProxy('Image upload was successful.', 'success');
       } else {
         if (!!this.selectedFacility.logoObject) {
-          this.imageEmitterService.setImageUrl(this.selectedFacility.logoObject.thumbnail);
+          this.imageEmitterService.setSrc(this.selectedFacility.logoObject.thumbnail);
         } else {
-          this.imageEmitterService.setImageUrl('');
+          this.imageEmitterService.setSrc('');
         }
         this.systemModuleService.announceSweetProxy(res.msg, 'error');
       }
@@ -254,9 +254,9 @@ export class FacilityBasicinfoEditComponent implements OnInit {
   onClickCancel() {
     this.hasChangedImage = false;
     if (!!this.selectedFacility.logoObject) {
-      this.imageEmitterService.setImageUrl(this.selectedFacility.logoObject.thumbnail);
+      this.imageEmitterService.setSrc(this.selectedFacility.logoObject.thumbnail);
     } else {
-      this.imageEmitterService.setImageUrl('');
+      this.imageEmitterService.setSrc('');
     }
   }
 

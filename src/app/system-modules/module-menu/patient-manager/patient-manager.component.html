@@ -12,7 +12,19 @@
                     <mat-option value="Tags">By Tags</mat-option>
                 </mat-select>
             </mat-form-field>
-            <input [formControl]="searchControl" type="search" autofocus class="searchInput col-xs-8 mr-4" placeholder="Search {{searchCriteria.value}}">
+            <div class="col-xs-8 mr-4">
+                <div class="row">
+                    <div class="col-xs-7">
+                        <input [formControl]="searchControl" type="search" autofocus class="searchInput " placeholder="Search {{searchCriteria.value}}" />
+                    </div>
+                    <div class="col-xs-5">
+
+                    </div>
+                </div>
+
+
+            </div>
+
             <!-- <input [formControl]="searchTagsControl" type="search" autofocus class="searchInput col-xs-4" placeholder="Search Patients using tags"> -->
 
 
@@ -38,6 +50,7 @@
     </div>
 
     <div class="inner-page-wrap">
+
         <app-patientmanager-homepage [searchEmpty]="searchEmpty" [searchedPatients]="searchedPatients" [resetData]="resetData" (resetDataNew)="resetDataLoader($event)" (empDetail)="empDetailShow($event)" (pageInView)="pageInViewLoader($event)" *ngIf="homeContentArea"
             class="fullwidth"></app-patientmanager-homepage>
         <!-- <app-patientmanager-detailpage [patient]="patient" *ngIf="employeeDetailArea" class="fullwidth"></app-patientmanager-detailpage>  -->

@@ -19,6 +19,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ToastsManager } from 'ng2-toastr/ng2-toastr';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import {IPagerSource} from '../../../../../core-ui-modules/ui-components/PagerComponent';
 @Component({
   selector: "app-empmanager-homepage",
   templateUrl: "./empmanager-homepage.component.html",
@@ -41,6 +42,9 @@ export class EmpmanagerHomepageComponent
   total = 0;
   showLoadMore: Boolean = false;
   loadIndicatorVisible = false;
+  /* Added the new Data pager Component*/
+  paginationObj : IPagerSource = {currentPage : 0 , pageSize : 10, totalRecord : 0 , totalPages : 0 };
+
   constructor(
     private employeeService: EmployeeService,
     private facilityService: FacilitiesService,
@@ -57,9 +61,8 @@ export class EmpmanagerHomepageComponent
       this.getEmployees();
     });
     this.employeeService.createListener.subscribe(payload => {
-      this.employees = [];
-      this.limit = 10;
-      this.index = 0;
+      // this.employees = [];
+      this.paginationObj.currentPage = 0;
       this.getEmployees();
     });
 
@@ -133,12 +136,12 @@ export class EmpmanagerHomepageComponent
           facilityId: this.facility._id,
           departmentId: departmentId,
           showbasicinfo: true,
-          $limit: this.limit
+          $limit: this.paginationObj.pageSize
         }
       })
       .then(
         payload => {
-          this.total = payload.total;
+          this.paginationObj.totalRecord = payload.total;
           this.employees = payload.data;
           this.loadIndicatorVisible = false;
         },
@@ -159,13 +162,13 @@ export class EmpmanagerHomepageComponent
           facilityId: this.facility._id,
           departmentId: departmentId,
           showbasicinfo: true,
-          $limit: this.limit,
+          $limit: this.paginationObj.pageSize,
           units: unitId
         }
       })
       .then(
         payload => {
-          this.total = payload.total;
+          this.paginationObj.totalRecord = payload.total;
           this.employees = payload.data;
           this.loadIndicatorVisible = false;
         },
@@ -181,15 +184,17 @@ export class EmpmanagerHomepageComponent
       .find({
         query: {
           facilityId: this.facility._id,
-          $limit: this.limit,
-          $skip: this.index * this.limit
+          $limit: this.paginationObj.pageSize,
+          $skip: this.paginationObj.currentPage * this.paginationObj.pageSize
         }
       })
       .then(
         payload => {
-          this.total = payload.total;
+
+          this.paginationObj.totalRecord  = payload.total;
+          console.log(payload);
           if (this.resetData !== true) {
-            this.employees.push(...payload.data);
+            this.employees=payload.data;
           } else {
             this.resetData = false;
             this.resetDataNew.emit(this.resetData);
@@ -230,5 +235,10 @@ export class EmpmanagerHomepageComponent
     this.getEmployees();
   }
 
+  gotoPage(index: number)
+  {
+    this.paginationObj.currentPage=index;
+    this.getEmployees();
+  }
   ngOnDestroy() {}
 }

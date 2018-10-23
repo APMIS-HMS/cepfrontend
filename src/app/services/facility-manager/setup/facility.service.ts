@@ -98,7 +98,7 @@ export class FacilitiesService {
   createFacility(facility: any) {
     let that = this;
     return new Promise(function (resolve, reject) {
-      resolve(that._saveFacilitySocket.create(facility))
+      resolve(that._saveFacilitySocket.create(facility));
     });
   }
 
@@ -109,7 +109,10 @@ export class FacilitiesService {
     });
   }
   update(facility: any) {
-    return this._socket.update(facility._id, facility);
+    console.log('facilty to update',facility)
+    return this._socket.update(facility._id, facility).then(d => {
+      console.log(d);
+    });
   }
   patch(_id: any, data: any, param: any) {
     return this._socket.patch(_id, data, param);
