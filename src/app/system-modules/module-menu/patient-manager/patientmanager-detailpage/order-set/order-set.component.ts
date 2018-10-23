@@ -147,13 +147,12 @@ export class OrderSetComponent implements OnInit {
     };
 
     this._treatmentSheetService.setTreatmentSheet(treatementSheet).then(treatment => {
-      console.log(treatment);
       this.sharedService.announceOrderSet(this.orderSet);
       this.close_onClickModal();
     }).catch(err => {
-      console.log(err);
-      // this.sharedService.announceOrderSet(this.orderSet);
-      // this.close_onClickModal();
+      // console.log(err);
+      this.sharedService.announceOrderSet(this.orderSet);
+      this.close_onClickModal();
      });
     this.showDoc.emit(true);
   }
