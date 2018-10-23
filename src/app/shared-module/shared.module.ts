@@ -81,6 +81,7 @@ import { FundWalletComponent } from '../system-modules/module-menu/payment/bill-
 import { ImageViewerComponent } from './image-viewer/image-viewer.component';
 import { ImageEmitterService } from '../services/facility-manager/image-emitter.service';
 import { IrtsModalComponent } from './irts-modal/irts-modal.component';
+import { DaysInDates } from '../shared-module/pipes/days-in-dates';
 @NgModule({
   declarations: [
     RegistersComponent,
@@ -105,13 +106,13 @@ import { IrtsModalComponent } from './irts-modal/irts-modal.component';
     AddLineModifierComponent,
     ItemDetailComponent,
     FundWalletComponent,
-    IrtsModalComponent],
+    IrtsModalComponent, DaysInDates],
   exports: [
     RegistersComponent,
     RegisterEntriesComponent,
     RegisterEntryComponent,
     RegEntriesListComponent,
-    NewRegisterEntryComponent,    
+    NewRegisterEntryComponent,
     NgUploaderModule,
     NgPipesModule,
     Ng2PaginationModule,
@@ -136,7 +137,8 @@ import { IrtsModalComponent } from './irts-modal/irts-modal.component';
     AddItemComponent,
     AddLineModifierComponent,
     ItemDetailComponent,
-    FundWalletComponent
+    FundWalletComponent,
+    DaysInDates
   ],
   imports: [
     DateRangePickerModule,
