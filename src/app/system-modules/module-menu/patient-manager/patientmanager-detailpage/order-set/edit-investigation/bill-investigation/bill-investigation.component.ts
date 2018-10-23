@@ -3,91 +3,99 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Facility, Prescription, PrescriptionItem, InvestigationModel } from '../../../../../../../models/index';
 import {
-    FacilitiesService, ProductService, FacilityPriceService, InventoryService, AssessmentDispenseService, InvestigationService
+  FacilitiesService, ProductService, FacilityPriceService, InventoryService, AssessmentDispenseService, InvestigationService
 } from '../../../../../../../services/facility-manager/setup/index';
 
 @Component({
-	selector: 'app-bill-investigation',
-	templateUrl: './bill-investigation.component.html',
-	styleUrls: ['./bill-investigation.component.scss']
+  selector: 'app-bill-investigation',
+  templateUrl: './bill-investigation.component.html',
+  styleUrls: ['./bill-investigation.component.scss']
 })
 export class BillInvestigationComponent implements OnInit {
-	@Input() investigationData: any = <any>{};
-	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-	facility: Facility = <Facility>{};
-	user: any = <any>{};
-	addBillForm: FormGroup;
-	investigations: InvestigationModel[] = [];
+  @Input() investigationData: any = <any>{};
+  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  facility: Facility = <Facility>{};
+  user: any = <any>{};
+  addBillForm: FormGroup;
+  investigations: any[] = [];
   bindInvestigations: InvestigationModel[] = [];
-	// selectedDrug: string = '';
-	itemCost: number = 0;
-	title: string = '';
-	cost: number = 0; // Unit price for each drug.
-	totalCost: number = 0; // Total price for each drug selected.
-	totalQuantity: number = 0;
-	batchNumber: string = '';
-	qtyInStores: number = 0;
-	storeId: string = '';
-	stores: any = [];
-	loading: boolean = true;
-	serviceId: string = '';
-	facilityServiceId: string = '';
-	categoryId: string = '';
-	mainErr: boolean = true;
-	errMsg = 'You have unresolved errors';
+  // selectedDrug: string = '';
+  itemCost: number = 0;
+  title: string = '';
+  cost: number = 0; // Unit price for each drug.
+  totalCost: number = 0; // Total price for each drug selected.
+  totalQuantity: number = 0;
+  batchNumber: string = '';
+  qtyInStores: number = 0;
+  storeId: string = '';
+  stores: any = [];
+  editPrice = false;
+  loading: boolean = true;
+  serviceId: string = '';
+  facilityServiceId: string = '';
+  categoryId: string = '';
+  mainErr: boolean = true;
+  errMsg = 'You have unresolved errors';
+  costForm = new FormControl();
 
-	constructor(
-		private _fb: FormBuilder,
-		private _locker: CoolLocalStorage,
-		private _productService: ProductService,
-		private _facilityService: FacilitiesService,
-		private _facilityPriceService: FacilityPriceService,
+  constructor(
+    private _fb: FormBuilder,
+    private _locker: CoolLocalStorage,
+    private _productService: ProductService,
+    private _facilityService: FacilitiesService,
+    private _facilityPriceService: FacilityPriceService,
     private _inventoryService: InventoryService,
     private _investigationService: InvestigationService,
-		private _assessmentDispenseService: AssessmentDispenseService
-	) { }
+    private _assessmentDispenseService: AssessmentDispenseService
+  ) { }
 
-	ngOnInit() {
-		this.facility = <Facility>this._locker.getObject('selectedFacility');
+  ngOnInit() {
+    this.facility = <Facility>this._locker.getObject('selectedFacility');
     this.user = this._locker.getObject('auth');
 
-		this.getInvestigationPrice();
-	}
+    this.getInvestigationPrice();
+  }
 
-	//
-	onClickSaveCost() {
+  onChangePrice(index) {
+    console.log(this.costForm.value);
+    this.investigations[index].changedPrice = this.costForm.value;
+  }
+
+  //
+  onClickSaveCost() {
     this.onClickClose(true);
-		// if (valid) {
-		// 	if (this.cost > 0 && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
-		// 		let index = this.investigationData.index;
-		// 		this.investigationData.prescriptionItems[index].productId = value.drug;
-		// 		this.investigationData.prescriptionItems[index].serviceId = this.serviceId;
-		// 		this.investigationData.prescriptionItems[index].facilityServiceId = this.facilityServiceId;
-		// 		this.investigationData.prescriptionItems[index].categoryId = this.categoryId;
-		// 		// this.investigationData.prescriptionItems[index].productName = this.selectedDrug;
-		// 		this.investigationData.prescriptionItems[index].quantity = value.qty;
-		// 		this.investigationData.prescriptionItems[index].quantityDispensed = 0;
-		// 		this.investigationData.prescriptionItems[index].cost = this.cost;
-		// 		this.investigationData.prescriptionItems[index].totalCost = this.cost * value.qty;
-		// 		this.investigationData.prescriptionItems[index].isBilled = true;
-		// 		this.investigationData.prescriptionItems[index].facilityId = this.facility._id;
-		// 		this.investigationData.totalCost += this.totalCost;
-		// 		this.investigationData.totalQuantity += this.totalQuantity;
+    // if (valid) {
+    // 	if (this.cost > 0 && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
+    // 		let index = this.investigationData.index;
+    // 		this.investigationData.prescriptionItems[index].productId = value.drug;
+    // 		this.investigationData.prescriptionItems[index].serviceId = this.serviceId;
+    // 		this.investigationData.prescriptionItems[index].facilityServiceId = this.facilityServiceId;
+    // 		this.investigationData.prescriptionItems[index].categoryId = this.categoryId;
+    // 		// this.investigationData.prescriptionItems[index].productName = this.selectedDrug;
+    // 		this.investigationData.prescriptionItems[index].quantity = value.qty;
+    // 		this.investigationData.prescriptionItems[index].quantityDispensed = 0;
+    // 		this.investigationData.prescriptionItems[index].cost = this.cost;
+    // 		this.investigationData.prescriptionItems[index].totalCost = this.cost * value.qty;
+    // 		this.investigationData.prescriptionItems[index].isBilled = true;
+    // 		this.investigationData.prescriptionItems[index].facilityId = this.facility._id;
+    // 		this.investigationData.totalCost += this.totalCost;
+    // 		this.investigationData.totalQuantity += this.totalQuantity;
 
-		// 		this.closeModal.emit(true);
-		// 	} else {
-		// 		this._notification('Error', 'Unit price or Quantity is less than 0!');
-		// 	}
-		// } else {
-		// 	this.mainErr = false;
-		// }
-	}
+    // 		this.closeModal.emit(true);
+    // 	} else {
+    // 		this._notification('Error', 'Unit price or Quantity is less than 0!');
+    // 	}
+    // } else {
+    // 	this.mainErr = false;
+    // }
+  }
 
   getInvestigationPrice() {
     const index = this.investigationData.index;
-		this.title = this.investigationData.investigationItems[index].name;
+    this.title = this.investigationData.investigationItems[index].name;
 
-    this._investigationService.find({ query: { facilityId: this.facility._id, name: this.title } }).then(res => {      this.loading = false;
+    this._investigationService.find({ query: { facilityId: this.facility._id, name: this.title } }).then(res => {
+      this.loading = false;
       res.data.forEach(item => {
         const investigation: InvestigationModel = <InvestigationModel>{};
         investigation.investigation = item;
@@ -146,7 +154,7 @@ export class BillInvestigationComponent implements OnInit {
                 }
               } else {
                 const indexToRemove = this.bindInvestigations[isInBind].investigation.panel
-                .findIndex(x => x.investigation._id === childInvestigation.investigation._id);
+                  .findIndex(x => x.investigation._id === childInvestigation.investigation._id);
                 this.bindInvestigations[isInBind].investigation.panel.splice(indexToRemove, 1);
                 childInvestigation.isChecked = false;
 
@@ -278,40 +286,44 @@ export class BillInvestigationComponent implements OnInit {
     //   investigation.location = location;
     //   this.bindInvestigations.push(investigation);
     // } else {
-      const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
-      if (isInBind > -1) {
-        this.bindInvestigations.splice(isInBind, 1);
-      }
-      const copyBindInvestigation = JSON.parse(JSON.stringify(investigation));
-      copyBindInvestigation.location = location;
-      copyBindInvestigation.LaboratoryWorkbenches = [];
-      copyBindInvestigation.LaboratoryWorkbenches.push(location);
-      copyBindInvestigation.investigation.LaboratoryWorkbenches = copyBindInvestigation.LaboratoryWorkbenches;
-      copyBindInvestigation.isBilled = true;
-      const index = this.investigationData.index;
-      this.investigationData.investigationItems[index].investigation = copyBindInvestigation;
-      this.investigationData.investigationItems[index].isBilled = true;
-      this.bindInvestigations.push(copyBindInvestigation);
+    const isInBind = this.bindInvestigations.findIndex(x => x.investigation._id === investigation.investigation._id);
+    if (isInBind > -1) {
+      this.bindInvestigations.splice(isInBind, 1);
+    }
+    const copyBindInvestigation = JSON.parse(JSON.stringify(investigation));
+    copyBindInvestigation.location = location;
+    copyBindInvestigation.LaboratoryWorkbenches = [];
+    copyBindInvestigation.LaboratoryWorkbenches.push(location);
+    copyBindInvestigation.investigation.LaboratoryWorkbenches = copyBindInvestigation.LaboratoryWorkbenches;
+    copyBindInvestigation.isBilled = true;
+    const index = this.investigationData.index;
+    this.investigationData.investigationItems[index].investigation = copyBindInvestigation;
+    this.investigationData.investigationItems[index].isBilled = true;
+    this.bindInvestigations.push(copyBindInvestigation);
     // }
+  }
+
+  onEditPrice() {
+    this.editPrice = !this.editPrice;
   }
 
   getPrice(workbenches) {
     return workbenches[0].price;
   }
 
-	onClickCustomSearchItem(event, drugId) {
-		// this.selectedDrug = drugId.viewValue;
-		// const pId = drugId._element.nativeElement.getAttribute('data-p-id');
-		// this.serviceId = drugId._element.nativeElement.getAttribute('data-p-sId');
-		// this.facilityServiceId = drugId._element.nativeElement.getAttribute('data-p-fsid');
-		// this.categoryId = drugId._element.nativeElement.getAttribute('data-p-cid');
-		// this.cost = parseInt(drugId._element.nativeElement.getAttribute('data-p-price'));
-		// this.qtyInStores = parseInt(drugId._element.nativeElement.getAttribute('data-p-tqty'));
-		// const pAqty = drugId._element.nativeElement.getAttribute('data-p-aqty');
-	}
+  onClickCustomSearchItem(event, drugId) {
+    // this.selectedDrug = drugId.viewValue;
+    // const pId = drugId._element.nativeElement.getAttribute('data-p-id');
+    // this.serviceId = drugId._element.nativeElement.getAttribute('data-p-sId');
+    // this.facilityServiceId = drugId._element.nativeElement.getAttribute('data-p-fsid');
+    // this.categoryId = drugId._element.nativeElement.getAttribute('data-p-cid');
+    // this.cost = parseInt(drugId._element.nativeElement.getAttribute('data-p-price'));
+    // this.qtyInStores = parseInt(drugId._element.nativeElement.getAttribute('data-p-tqty'));
+    // const pAqty = drugId._element.nativeElement.getAttribute('data-p-aqty');
+  }
 
-	onClickClose(e) {
-		 this.closeModal.emit(true);
+  onClickClose(e) {
+    this.closeModal.emit(true);
   }
 
   private _notification(type: string, text: string) {

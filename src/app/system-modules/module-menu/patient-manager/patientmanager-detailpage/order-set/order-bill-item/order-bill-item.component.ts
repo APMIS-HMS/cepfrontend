@@ -17,6 +17,7 @@ export class OrderBillItemComponent implements OnInit {
 	facility: Facility = <Facility>{};
 	user: any = <any>{};
 	addBillForm: FormGroup;
+	costForm = new FormControl();
 	drugs: any[] = [];
 	selectedDrug: string = '';
 	itemCost: number = 0;
@@ -33,8 +34,10 @@ export class OrderBillItemComponent implements OnInit {
 	facilityServiceId: string = '';
 	categoryId: string = '';
 
+
 	mainErr: boolean = true;
 	errMsg = 'You have unresolved errors';
+	editPrice = false;
 
 	constructor(
 		private _fb: FormBuilder,
@@ -83,6 +86,20 @@ export class OrderBillItemComponent implements OnInit {
 				this.loading = false;
 			}).catch(err => console.error(err));
 		});
+
+
+		this.costForm.valueChanges.subscribe(val => {
+
+		});
+	}
+
+	//costForm.value * addBillForm.controls['qty'].value
+	getAdjustedTotalPrice() {
+		return this.costForm.value * this.addBillForm.controls['qty'].value;
+	}
+
+	onEditPrice() {
+		this.editPrice = !this.editPrice;
 	}
 
 	//
@@ -98,6 +115,7 @@ export class OrderBillItemComponent implements OnInit {
 				this.prescriptionData.prescriptionItems[index].quantity = value.qty;
 				this.prescriptionData.prescriptionItems[index].quantityDispensed = 0;
 				this.prescriptionData.prescriptionItems[index].cost = this.cost;
+				this.prescriptionData.prescriptionItems[index].changedPrice = this.costForm.value;
 				this.prescriptionData.prescriptionItems[index].totalCost = this.cost * value.qty;
 				this.prescriptionData.prescriptionItems[index].isBilled = true;
 				this.prescriptionData.prescriptionItems[index].facilityId = this.facility._id;

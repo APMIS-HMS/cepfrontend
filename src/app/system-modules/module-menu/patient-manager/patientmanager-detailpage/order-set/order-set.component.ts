@@ -25,6 +25,7 @@ export class OrderSetComponent implements OnInit {
   diagnosis: FormControl = new FormControl();
   facility: Facility = <Facility>{};
   miniFacility: Facility = <Facility>{};
+  editedValue = {};
   employeeDetails: any = <any>{};
   apmisLookupQuery = {};
   apmisLookupUrl = 'order-mgt-templates';
@@ -38,8 +39,8 @@ export class OrderSetComponent implements OnInit {
   popNursingCare = false;
   popPhysicianOrder = false;
   popProcedure = false;
-  showMedicationBill= false;
-  showInvestigationBill= false;
+  showMedicationBill = false;
+  showInvestigationBill = false;
   user: any = <any>{};
   orderSet: any = <any>{};
   selectedForm: any;
@@ -75,11 +76,11 @@ export class OrderSetComponent implements OnInit {
     this._orderSetSharedService.itemSubject.subscribe(value => {
       if (!!value.medications) {
         if (!!this.orderSet.medications) {
-            const findItem = this.orderSet.medications
+          const findItem = this.orderSet.medications
             .filter(x => x.genericName === value.medications[0].genericName && x.strength === value.medications[0].strength);
-            if (findItem.length === 0) {
-              this.orderSet.medications.push(value.medications[0]);
-            }
+          if (findItem.length === 0) {
+            this.orderSet.medications.push(value.medications[0]);
+          }
         } else {
           this.orderSet.medications = value.medications;
         }
@@ -145,10 +146,15 @@ export class OrderSetComponent implements OnInit {
       createdBy: this.employeeDetails._id,
     };
 
-    this._treatmentSheetService.create(treatementSheet).then(treatment => {
+    this._treatmentSheetService.setTreatmentSheet(treatementSheet).then(treatment => {
+      console.log(treatment);
       this.sharedService.announceOrderSet(this.orderSet);
       this.close_onClickModal();
-    }).catch(err => {});
+    }).catch(err => {
+      console.log(err);
+      // this.sharedService.announceOrderSet(this.orderSet);
+      // this.close_onClickModal();
+     });
     this.showDoc.emit(true);
   }
 
@@ -160,7 +166,7 @@ export class OrderSetComponent implements OnInit {
         this.orderSet.medications.splice(index, 1);
       }
     } else if (type === 'investigation') {
-      const findItem = this.orderSet.investigations.filter( x => x._id === value._id );
+      const findItem = this.orderSet.investigations.filter(x => x._id === value._id);
 
       if (findItem.length > 0) {
         this.orderSet.investigations.splice(index, 1);
@@ -187,10 +193,12 @@ export class OrderSetComponent implements OnInit {
   }
 
   private _getPatient(id) {
-    this._patientService.find({query: {
-      facilityId: this.miniFacility._id,
-      personId: id
-    }}).then(res => {
+    this._patientService.find({
+      query: {
+        facilityId: this.miniFacility._id,
+        personId: id
+      }
+    }).then(res => {
       if (res.data.length > 0) {
         this.selectedPatient = res.data[0];
       }
@@ -250,7 +258,10 @@ export class OrderSetComponent implements OnInit {
     this.closeModal.emit(true);
   }
 
-  popProcedure_show() {}
+  popProcedure_show(value) {
+    this.popProcedure = true;
+    this.editedValue = value;
+  }
 
   // Notification
   private _notification(type: String, text: String): void {
