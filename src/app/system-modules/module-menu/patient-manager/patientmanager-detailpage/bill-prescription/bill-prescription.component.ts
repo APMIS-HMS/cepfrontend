@@ -109,6 +109,7 @@ export class BillPrescriptionComponent implements OnInit {
 	getProductsForGeneric() {
 		const index = this.prescriptionData.index;
 		this.title = this.prescriptionData.prescriptionItems[index].genericName;
+		console.log(this.title);
 		// const productId = this.prescriptionData.prescriptionItems[index].productId;
 		// const ingredients = this.prescriptionData.prescriptionItems[index].ingredients;
 

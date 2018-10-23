@@ -7,6 +7,7 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Subscription } from 'rxjs/Subscription';
 import { Observable } from 'rxjs/Observable';
+import {IPagerSource} from '../../../../core-ui-modules/ui-components/PagerComponent';
 
 @Component({
   selector: 'app-payment-history',
@@ -29,6 +30,9 @@ export class PaymentHistoryComponent implements OnInit {
   disableSearchBtn = false;
   searchBtn = true;
   searchingBtn = false;
+    private paginationObj: IPagerSource = {
+      pageSize : 10, totalPages : 0, currentPage :0, totalRecord : 0
+    };
 
   constructor(
     private _route: Router,
@@ -68,9 +72,16 @@ export class PaymentHistoryComponent implements OnInit {
 
   getPatientInvoices() {
     this.systemModuleService.on();
-    this.invoiceService.find({ query: { facilityId: this.selectedFacility._id, $sort: { updatedAt: -1 } } }).then(payload => {
+    this.invoiceService.find({ query: { facilityId: this.selectedFacility._id,
+            $sort: { updatedAt: -1 },
+            $limit  : this.paginationObj.pageSize,
+            $skip : this.paginationObj.currentPage * this.paginationObj.pageSize
+
+    } }).then(payload => {
       if (!!payload.data && payload.data.length > 0) {
         this.invoiceGroups = payload.data;
+        this.paginationObj.totalRecord = payload.total;
+        this.loading  = false;
       }
       this.systemModuleService.off();
     }).catch(err => {
@@ -119,5 +130,11 @@ export class PaymentHistoryComponent implements OnInit {
   openSearch() {
     this.searchOpen = !this.searchOpen;
   }
+    gotoPage(index : number)
+    {
+        this.paginationObj.currentPage  = index;
+        // Get the data for the selected page index
+        this.getPatientInvoices();
 
+    }
 }

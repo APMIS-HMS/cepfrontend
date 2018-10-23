@@ -32,7 +32,7 @@ export class FamilyBillDetailComponent implements OnInit {
   confirmBill_onClick(bill) {
     this.bill = bill;
     this.bill.acceptFunction = true;
-    this.systemModuleService.announceSweetProxy('You are about to confirm this bill', 'question', this)
+    this.systemModuleService.announceSweetProxy('You are about to confirm this bill', 'question', this);
   }
 
   sweetAlertCallback(result) {
@@ -92,6 +92,5 @@ export class FamilyBillDetailComponent implements OnInit {
   close_onClick() {
     this.closeModal.emit(true);
   }
-  
 
 }

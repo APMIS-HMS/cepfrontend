@@ -106,17 +106,17 @@ export class NewSubLocationComponent implements OnInit {
           name: val.sublocName,
           locationId: val.sublocParent,
           description: val.desc,
-          isActive:true
+          isActive: true
         };
 
         // First check if that name already exist in the minorlocation
         this.facilityService.get(this.facility._id, {}).then(res => {
+          console.log(res);
           const minorLocation = res.minorLocations.filter(x => x.name.toLowerCase() === val.sublocName.toLowerCase());
-
           if (minorLocation.length === 0) {
-            this.facility.minorLocations.push(model);
-            // Update minorLocation in the facility.
-            this.facilityService.update(this.facility).then(updateFR => {
+            const facilityMinorLocation = res;
+            facilityMinorLocation.minorLocations.push(model);
+            this.facilityService.update(facilityMinorLocation).then(updateFR => {
               this.addNew();
               this.disableNewMinorLoc = false;
               this.ActionButton = 'Create';
