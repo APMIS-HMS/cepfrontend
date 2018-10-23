@@ -65,8 +65,6 @@ export class AppointmentComponent implements OnInit {
 	currentDate: Date = new Date();
 	appointmentToCancel: any = <any>{};
 	clinicIds = [];
-	isCancelled = false;
-
 	clinicCtrl: FormControl;
 	providerCtrl: FormControl;
 	typeCtrl: FormControl;
@@ -190,6 +188,7 @@ export class AppointmentComponent implements OnInit {
 	}
 
 	_getAppointments(clinicIds: any) {
+		console.log(this.selectedFacility._id);
 		this.loading = true;
 		this.appointmentService
 			.findAppointment({
@@ -201,6 +200,7 @@ export class AppointmentComponent implements OnInit {
 			})
 			.subscribe(
 				(payload) => {
+					console.log(payload.data);
 					this.loading = false;
 					this.filteredAppointments = this.appointments = payload.data;
 				},
@@ -421,7 +421,7 @@ export class AppointmentComponent implements OnInit {
 					null
 				);
 				this._notification('Success', 'Appointment has been cancelled successfully.');
-				this.isCancelled = true;
+				this.appointmentService.appointmentAnnounced(payload);
 				this._getAppointments(this.clinicIds);
 			}, err => {
 				this._notification(

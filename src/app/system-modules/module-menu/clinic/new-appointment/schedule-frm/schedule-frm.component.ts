@@ -1,3 +1,4 @@
+import { appointment } from './../../../../../services/facility-manager/setup/devexpress.service';
 import { Component, EventEmitter, Input, OnInit } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -421,11 +422,20 @@ export class ScheduleFrmComponent implements OnInit {
 					this.category.setValue(this.appointment.category);
 				}
 				this.orderStatuses = results[6].data;
-				this.orderStatuses.forEach((item) => {
-					if (item.name === 'Scheduled') {
-						this.status.setValue(item);
-					}
-				});
+				if (this.appointment._id === null || this.appointment._id === undefined || this.appointment._id === '') {
+					this.orderStatuses.forEach((item) => {
+						if (item.name === 'Scheduled') {
+							this.status.setValue(item);
+						}
+					});
+				} else {
+					this.orderStatuses.forEach((item) => {
+						if (item.name === this.appointment.orderStatusId) {
+							this.status.setValue(item);
+						}
+					});
+				}
+
 				if (this.loginEmployee.professionId === 'Doctor') {
 					this.selectedProfession = this.professions.filter(
 						(x) => x._id === this.loginEmployee.professionId
@@ -896,7 +906,7 @@ export class ScheduleFrmComponent implements OnInit {
 								)
 								.then(
 									(meeting) => {
-										let fullName =
+										const fullName =
 											this.selectedPatient.personDetails.lastName +
 											' ' +
 											this.selectedPatient.personDetails.Name;
@@ -973,7 +983,6 @@ export class ScheduleFrmComponent implements OnInit {
 						}
 					},
 					(error) => {
-						console.log('error1 =>', error);
 						this.savingAppointment = false;
 						this.disableBtn = false;
 						this.loadIndicatorVisible = false;
@@ -988,16 +997,13 @@ export class ScheduleFrmComponent implements OnInit {
 				console.log('this is called');
 				this.appointmentService.create(this.appointment).then(
 					(payload) => {
-						console.log('called create bill');
 						this.createBill();
-						console.log('called after create bill');
 						if (this.teleMed.value === true) {
 							const topic = 'Appointment with ' + this.selectedPatient.personDetails.apmisId;
 							this.appointmentService
 								.setMeeting(topic, this.appointment.startDate, payload._id, this.timezone.value.value)
 								.then(
 									(meeting) => {
-										console.log('meeting set called');
 										this.disableBtn = true;
 										this.updateAppointment = false;
 										this.saveAppointment = true;
