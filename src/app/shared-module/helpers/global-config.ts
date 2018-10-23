@@ -94,4 +94,3 @@ export const ApointmentScheduleStatus = {
 	EXPIRED: 'Expired',
 	COMPLETED: 'Completed'
 };
-

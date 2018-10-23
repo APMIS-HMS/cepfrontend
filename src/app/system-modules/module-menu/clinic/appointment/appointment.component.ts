@@ -30,6 +30,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { IDateRange } from 'ng-pick-daterange';
 import { Router } from '@angular/router';
+import { IPagerSource } from '../../../../core-ui-modules/ui-components/PagerComponent';
 
 @Component({
 	selector: 'app-appointment',
@@ -78,6 +79,8 @@ export class AppointmentComponent implements OnInit {
 	loading: Boolean = false;
 
 	dayCount = [ 'Today', 'Last 3 Days', 'Last Week', 'Last 2 Weeks', 'Last Month' ];
+	private paginationObj: IPagerSource = { totalRecord: 0, currentPage: 0, pageSize: 10, totalPages: 0 };
+	private lastAccessedClinicIds: any[];
 
 	constructor(
 		private locker: CoolLocalStorage,
@@ -187,6 +190,7 @@ export class AppointmentComponent implements OnInit {
 		});
 		this.loadIndicatorVisible = false;
 		this._getAppointments(this.clinicIds);
+		this.lastAccessedClinicIds = this.clinicIds;
 	}
 
 	_getAppointments(clinicIds: any) {
@@ -196,17 +200,21 @@ export class AppointmentComponent implements OnInit {
 				query: {
 					isFuture: true,
 					facilityId: this.selectedFacility._id,
-					clinicIds: clinicIds
+					clinicIds: clinicIds,
+					$limit: this.paginationObj.pageSize,
+					$skip: this.paginationObj.currentPage * this.paginationObj.pageSize
+					// TODO  : Data not displayed after pagination, need backend fix urgently
 				}
 			})
 			.subscribe(
 				(payload) => {
 					this.loading = false;
 					this.filteredAppointments = this.appointments = payload.data;
+					this.paginationObj.totalRecord = payload.total;
 				},
 				(error) => {
 					this.loading = false;
-					this._getAppointments(clinicIds);
+					// 	this._getAppointments(clinicIds);
 				}
 			);
 	}
@@ -397,55 +405,55 @@ export class AppointmentComponent implements OnInit {
 	}
 	sweetAlertCallback(result) {
 		if (result.value) {
-		  if (this.appointmentToCancel.acceptFunction === true) {
-			this.cancelAppointment(true);
-		  } else {
-			this.cancelAppointment(false);
-		  }
+			if (this.appointmentToCancel.acceptFunction === true) {
+				this.cancelAppointment(true);
+			} else {
+				this.cancelAppointment(false);
+			}
 		}
-	  }
-	  // update appointment, set status to Cancelled.
-	  cancelAppointment(isProceed: Boolean) {
+	}
+	// update appointment, set status to Cancelled.
+	cancelAppointment(isProceed: Boolean) {
 		if (isProceed === true && this.appointmentToCancel.orderStatusId === ApointmentScheduleStatus.SCHEDULED) {
 			this.appointmentToCancel.orderStatusId = ApointmentScheduleStatus.CANCELLED;
-			this.appointmentService.update(this.appointmentToCancel).then((payload) => {
-				this.systemModuleService.announceSweetProxy(
-					'Appointment has been cancelled successfully',
-					'success',
-					null,
-					null,
-					null,
-					null,
-					null,
-					null,
-					null
-				);
-				this._notification('Success', 'Appointment has been cancelled successfully.');
-				this.isCancelled = true;
-				this._getAppointments(this.clinicIds);
-			}, err => {
-				this._notification(
-					'Error',
-					'There was an error cancelling patient appointment. Please try again later.'
-				);
-				this.systemModuleService.announceSweetProxy(
-					'There was an error cancelling patient appointment. Please try again later.',
-					'error',
-					null,
-					null,
-					null,
-					null,
-					null,
-					null,
-					null
-				);
-				this._getAppointments(this.clinicIds);
-			});
-		} else {
-			this._notification(
-				'Error',
-				'You can not cancel an appointment that has not been scheduled.'
+			this.appointmentService.update(this.appointmentToCancel).then(
+				(payload) => {
+					this.systemModuleService.announceSweetProxy(
+						'Appointment has been cancelled successfully',
+						'success',
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null
+					);
+					this._notification('Success', 'Appointment has been cancelled successfully.');
+					this.isCancelled = true;
+					this._getAppointments(this.clinicIds);
+				},
+				(err) => {
+					this._notification(
+						'Error',
+						'There was an error cancelling patient appointment. Please try again later.'
+					);
+					this.systemModuleService.announceSweetProxy(
+						'There was an error cancelling patient appointment. Please try again later.',
+						'error',
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null
+					);
+					this._getAppointments(this.clinicIds);
+				}
 			);
+		} else {
+			this._notification('Error', 'You can not cancel an appointment that has not been scheduled.');
 			this.systemModuleService.announceSweetProxy(
 				'You can not cancel an appointment that has not been scheduled.',
 				'error',
@@ -459,5 +467,10 @@ export class AppointmentComponent implements OnInit {
 			);
 			this._getAppointments(this.clinicIds);
 		}
-	  }
+	}
+	pageClickedEvent(index: number) {
+		// goto next page using the current index
+		this.paginationObj.currentPage = index;
+		this._getAppointments(this.lastAccessedClinicIds);
+	}
 }
