@@ -18,17 +18,29 @@ export class StoreChartComponentComponent implements OnInit, OnChanges {
   public barChartLegend = true;
   public barChartType = 'bar';
   public barChartData: {};
+  public dataSource: Object;
   constructor() {
    }
 
   ngOnInit() {
-
   }
   ngOnChanges(simple: SimpleChanges) {
     if (simple['chartObj'].currentValue  != null) {
         // construct label and data object for the store chart
         setTimeout (() => this.barChartLabels = this.getPropFromArray(this.chartObj, 'key'));
-        this.barChartData = [{data: this.getPropFromArray(this.chartObj, 'value'), label: 'Summary'}]
+
+        this.barChartData = [
+          {
+            data: this.getPropFromArray(this.chartObj, 'value'), label: 'Summary',
+            backgroundColor: [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)'
+          ]
+          }
+        ]
     }
   }
 

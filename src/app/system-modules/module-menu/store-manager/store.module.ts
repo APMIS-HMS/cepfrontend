@@ -25,8 +25,6 @@ import { ChartsModule } from 'ng2-charts';
 import {StoreSummaryDialogComponent} from './store-home/new-store-manager-components/store-summary-dialog-content-component';
 import {DialogHostComponent} from './store-home/new-store-manager-components/dialog-host-component';
 
-
-
 @NgModule({
     declarations: [
         StoreComponent,

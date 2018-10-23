@@ -5,6 +5,7 @@ import { InPatientService } from '../../../../services/facility-manager/setup/in
 import * as myGlobals from '../../../../shared-module/helpers/global-config';
 import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import * as differenceInCalendarDays from 'date-fns/difference_in_calendar_days';
 
 @Component({
 	selector: 'app-ward-manager-admitted-detailspage',
@@ -17,6 +18,7 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
 	addVitals = false;
 	admittedPatientId: string;
 	selectedPatient: any;
+	daysAdmitted: number;
 
 	constructor(
 		private _locker: CoolLocalStorage,
@@ -50,6 +52,11 @@ export class WardManagerAdmittedDetailspageComponent implements OnInit {
       if (!!res._id) {
 				const wardDetails = res.transfers[res.lastIndex];
 				this.selectedPatient = res;
+				// this is to calculate the number of days the selected
+				// patient has been admitted in the hospital
+				const admissionStartDate = this.selectedPatient.admissionDate;
+				const currentDate = Date.now();
+				this.daysAdmitted = differenceInCalendarDays(currentDate, admissionStartDate);
         this.selectedPatient.wardItem = wardDetails;
         // Check if the patient has been discharged.
         if (res.status === myGlobals.discharge) {

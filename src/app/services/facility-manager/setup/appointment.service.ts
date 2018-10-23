@@ -102,6 +102,7 @@ export class AppointmentService {
   }
 
   create(gender: any) {
+    console.log('appointment in service', gender);
     return this._socket.create(gender);
   }
 
@@ -110,6 +111,7 @@ export class AppointmentService {
   }
 
   update(billing: any) {
+    console.log('from service =>', billing);
     return this._socket.update(billing._id, billing);
   }
 
