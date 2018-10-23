@@ -65,6 +65,7 @@ export class AppointmentService {
     this.patientAnnouncedSource.next(patient);
   }
   appointmentAnnounced(appointment: any) {
+    console.log('updated appointment announced', appointment);
     this.appointmentAnnouncedSource.next(appointment);
   }
   clinicAnnounced(clinic: any) {
