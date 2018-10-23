@@ -410,14 +410,16 @@ export class ScheduleFrmComponent implements OnInit {
 				this.professions = results[2].data;
 				if (results[4].data.length > 0) {
 				}
-
-				const categories = results[3].data[0].categories;
-				this.organizationalServiceId.facilityServiceId = results[3].data[0]._id;
-				const filterCategories = categories.filter((x) => x.name === 'Appointment');
-				if (filterCategories.length > 0) {
-					this.categoryServices = filterCategories[0].services;
-					this.organizationalServiceId.categoryId = filterCategories[0]._id;
+				if (results[3].data.length > 0) {
+					const categories = results[3].data[0].categories;
+					this.organizationalServiceId.facilityServiceId = results[3].data[0]._id;
+					const filterCategories = categories.filter((x) => x.name === 'Appointment');
+					if (filterCategories.length > 0) {
+						this.categoryServices = filterCategories[0].services;
+						this.organizationalServiceId.categoryId = filterCategories[0]._id;
+					}
 				}
+
 				if (this.appointment._id !== undefined) {
 					this.category.setValue(this.appointment.category);
 				}
