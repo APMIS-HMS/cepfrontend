@@ -61,7 +61,6 @@ export class OrderBillItemComponent implements OnInit {
 		});
 
 		this.addBillForm.controls['qty'].valueChanges.subscribe(val => {
-			console.log(this.addBillForm.controls['drug'].value.price);
 			if (val > 0) {
 				this.totalQuantity = val;
 				this.totalCost = ((this.addBillForm.controls['drug'].value.price !== undefined) ? this.addBillForm.controls['drug'].value.price.price : 0) * val;
@@ -75,14 +74,12 @@ export class OrderBillItemComponent implements OnInit {
 		});
 
 		this.addBillForm.controls['drug'].valueChanges.subscribe(val => {
-			console.log(this.addBillForm.controls['drug'].value);
 			this.cost = val.price.price;
 			this.stores = [];
 			this._inventoryService.find({ query: { facilityId: this.facility._id, 'productObject.name': val.productObject.name } }).then(payload => {
 				payload.data.forEach(x => {
 					this.stores.push({ name: x.store, price: x.price, qty: x.availableQuantity });
 				});
-				console.log(this.stores, this.drugs);
 				this.loading = false;
 			}).catch(err => console.error(err));
 		});
@@ -121,7 +118,6 @@ export class OrderBillItemComponent implements OnInit {
 				this.prescriptionData.prescriptionItems[index].facilityId = this.facility._id;
 				this.prescriptionData.totalCost += this.prescriptionData.prescriptionItems[index].totalCost;
 				this.prescriptionData.totalQuantity += this.prescriptionData.prescriptionItems[index].quantity;
-				console.log(this.prescriptionData);
 				this.closeModal.emit(true);
 			} else {
 				this._notification('Error', 'Unit price or Quantity is less than 0!');
@@ -137,13 +133,11 @@ export class OrderBillItemComponent implements OnInit {
 		const ingredients = this.prescriptionData.prescriptionItems[index].ingredients;
 
 		this._inventoryService.find({ query: { facilityId: this.facility._id, 'productObject.name': { $regex: this.prescriptionData.prescriptionItems[index].genericName.split(' ')[0], '$options': 'i' } } }).then(payload => {
-			console.log(payload);
 			payload.data.forEach(x => {
 				this.stores.push({ name: x.store, price: x.price, qty: x.availableQuantity });
 			});
 			this.drugs = payload.data;
 			this.loading = false;
-			console.log(this.stores, this.drugs);
 		}).catch(err => console.error(err));
 
 		// Get the list of products from a facility, and then search if the generic

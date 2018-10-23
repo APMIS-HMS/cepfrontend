@@ -1,4 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { SystemModuleService } from './../../../../../services/module-manager/setup/system-module.service';
 import { FormControl } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -25,6 +26,7 @@ export class OrderSetComponent implements OnInit {
   diagnosis: FormControl = new FormControl();
   facility: Facility = <Facility>{};
   miniFacility: Facility = <Facility>{};
+  isButtonEnabled = true;
   editedValue = {};
   employeeDetails: any = <any>{};
   apmisLookupQuery = {};
@@ -57,7 +59,8 @@ export class OrderSetComponent implements OnInit {
     private _patientService: PatientService,
     private _treatmentSheetService: TreatmentSheetService,
     private _documentationService: DocumentationService,
-    private _authFacadeService: AuthFacadeService
+    private _authFacadeService: AuthFacadeService,
+    private systemModuleService: SystemModuleService
   ) {
     this._authFacadeService.getLogingEmployee().then((res: any) => {
       this.employeeDetails = res;
@@ -139,22 +142,32 @@ export class OrderSetComponent implements OnInit {
   }
 
   authorizerx() {
+    this.systemModuleService.on();
+    this.isButtonEnabled = false;
     const treatementSheet = {
       personId: this.selectedPatient.personDetails._id,
       treatmentSheet: this.orderSet,
       facilityId: this.facility._id,
       createdBy: this.employeeDetails._id,
     };
-
+    
     this._treatmentSheetService.setTreatmentSheet(treatementSheet).then(treatment => {
+      this.systemModuleService.off();
+    this.isButtonEnabled =true;  
       this.sharedService.announceOrderSet(this.orderSet);
       this.close_onClickModal();
     }).catch(err => {
+      this.systemModuleService.off();
+      this.orderSet = {};
       // console.log(err);
       this.sharedService.announceOrderSet(this.orderSet);
       this.close_onClickModal();
      });
     this.showDoc.emit(true);
+  }
+
+  removeProcedure_show(i){
+    this.orderSet.procedures.splice(i,1);
   }
 
   deleteOrderSetItem(index: number, value: any, type: string) {

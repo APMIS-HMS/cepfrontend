@@ -73,7 +73,6 @@ export class EditProcedureComponent implements OnInit {
       this.costForm.setValue('');
       this.onEditProcedurePrice = false;
       this.selectedProcedure = {};
-      console.log(1);
     }
   }
 
