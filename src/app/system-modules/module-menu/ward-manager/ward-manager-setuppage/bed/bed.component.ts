@@ -54,12 +54,13 @@ export class BedComponent implements OnInit {
     this.facilityService.get(this.facility._id, {}).then(res => {
       this.loading = false;
       if (!!res._id) {
-        const minorLocation = res.minorLocations.filter(x => x._id === this.wardId);
+				const minorLocation = res.minorLocations.filter(x => x._id === this.wardId);
         if (minorLocation.length > 0) {
           const room = minorLocation[0].wardSetup.rooms.filter(x => x._id === this.roomId);
           if (room.length > 0) {
             this.wardRoom = room[0];
-            this.beds = room[0].beds;
+						this.beds = room[0].beds;
+						console.log(this.beds);
           }
         }
       }

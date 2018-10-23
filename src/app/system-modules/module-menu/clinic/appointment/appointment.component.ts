@@ -1,6 +1,8 @@
 import { appointment } from './../../../../services/facility-manager/setup/devexpress.service';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { Component, ViewChild, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { ApointmentScheduleStatus } from '../../../../shared-module/helpers/global-config';
 import { FormControl } from '@angular/forms';
 import 'rxjs/add/operator/startWith';
 import 'rxjs/add/operator/map';
@@ -28,7 +30,7 @@ import { Observable } from 'rxjs/Observable';
 import { Subscription } from 'rxjs/Subscription';
 import { IDateRange } from 'ng-pick-daterange';
 import { Router } from '@angular/router';
-import {IPagerSource} from '../../../../core-ui-modules/ui-components/PagerComponent';
+import { IPagerSource } from '../../../../core-ui-modules/ui-components/PagerComponent';
 
 @Component({
 	selector: 'app-appointment',
@@ -62,6 +64,9 @@ export class AppointmentComponent implements OnInit {
 	subscription: Subscription;
 	auth: any;
 	currentDate: Date = new Date();
+	appointmentToCancel: any = <any>{};
+	clinicIds = [];
+	isCancelled = false;
 
 	clinicCtrl: FormControl;
 	providerCtrl: FormControl;
@@ -74,8 +79,8 @@ export class AppointmentComponent implements OnInit {
 	loading: Boolean = false;
 
 	dayCount = [ 'Today', 'Last 3 Days', 'Last Week', 'Last 2 Weeks', 'Last Month' ];
-    private paginationObj: IPagerSource  = {totalRecord : 0 , currentPage : 0 , pageSize : 10, totalPages : 0};
-    private lastAccessedClinicIds: any[];
+	private paginationObj: IPagerSource = { totalRecord: 0, currentPage: 0, pageSize: 10, totalPages: 0 };
+	private lastAccessedClinicIds: any[];
 
 	constructor(
 		private locker: CoolLocalStorage,
@@ -87,6 +92,7 @@ export class AppointmentComponent implements OnInit {
 		private facilityService: FacilitiesService,
 		private scheduleService: SchedulerService,
 		private authFacadeService: AuthFacadeService,
+		private systemModuleService: SystemModuleService,
 		private router: Router
 	) {
 		this.clinicCtrl = new FormControl();
@@ -134,7 +140,7 @@ export class AppointmentComponent implements OnInit {
 
 	getClinics() {
 		this.clinics = [];
-		const clinicIds = [];
+		this.clinicIds = [];
 
 		this.selectedFacility.departments.forEach((itemi, i) => {
 			itemi.units.forEach((itemj, j) => {
@@ -149,7 +155,7 @@ export class AppointmentComponent implements OnInit {
 								clinicModel._id = itemk._id;
 								clinicModel.clinicName = itemk.clinicName;
 								this.clinics.push(clinicModel);
-								clinicIds.push(clinicModel.clinicName);
+								this.clinicIds.push(clinicModel.clinicName);
 							}
 						});
 					} else if (this.loginEmployee !== undefined && this.loginEmployee.professionId !== 'Doctor') {
@@ -161,7 +167,7 @@ export class AppointmentComponent implements OnInit {
 											sch2.location._id === lct.minorLocationId &&
 											sch.clinic === itemk.clinicName
 										) {
-											if (clinicIds.filter((x) => x === itemk._id).length === 0) {
+											if (this.clinicIds.filter((x) => x === itemk._id).length === 0) {
 												if (this.clinics.findIndex((x) => x._id === itemk._id) === -1) {
 													const clinicModel: ClinicModel = <ClinicModel>{};
 													clinicModel.clinic = sch.clinic;
@@ -170,7 +176,7 @@ export class AppointmentComponent implements OnInit {
 													clinicModel._id = itemk._id;
 													clinicModel.clinicName = itemk.clinicName;
 													this.clinics.push(clinicModel);
-													clinicIds.push(clinicModel.clinicName);
+													this.clinicIds.push(clinicModel.clinicName);
 												}
 											}
 										}
@@ -183,8 +189,8 @@ export class AppointmentComponent implements OnInit {
 			});
 		});
 		this.loadIndicatorVisible = false;
-		this.lastAccessedClinicIds  = clinicIds;
-		this._getAppointments(clinicIds);
+		this._getAppointments(this.clinicIds);
+		this.lastAccessedClinicIds = this.clinicIds;
 	}
 
 	_getAppointments(clinicIds: any) {
@@ -195,21 +201,20 @@ export class AppointmentComponent implements OnInit {
 					isFuture: true,
 					facilityId: this.selectedFacility._id,
 					clinicIds: clinicIds,
-					$limit  : this.paginationObj.pageSize,
-					$skip : this.paginationObj.currentPage * this.paginationObj.pageSize
-					//TODO  : Data not displayed after pagination, need backend fix urgently
+					$limit: this.paginationObj.pageSize,
+					$skip: this.paginationObj.currentPage * this.paginationObj.pageSize
+					// TODO  : Data not displayed after pagination, need backend fix urgently
 				}
 			})
 			.subscribe(
 				(payload) => {
-					console.log(payload, " FROM GET CLINIC CALL!!");
 					this.loading = false;
 					this.filteredAppointments = this.appointments = payload.data;
-					this.paginationObj.totalRecord  = payload.total;
+					this.paginationObj.totalRecord = payload.total;
 				},
 				(error) => {
 					this.loading = false;
-				//	this._getAppointments(clinicIds);
+					// 	this._getAppointments(clinicIds);
 				}
 			);
 	}
@@ -391,9 +396,81 @@ export class AppointmentComponent implements OnInit {
 		// [routerLink]="['/dashboard/clinic/schedule-appointment', appointment._id]"
 		this.router.navigate([ '/dashboard/clinic/schedule-appointment', appointment._id ]);
 	}
-    pageClickedEvent(index: number) {
-        // goto next page using the current index
-        this.paginationObj.currentPage  = index ;
-        this._getAppointments(this.lastAccessedClinicIds);
-    }
+
+	// Confirm if the user wants to perform cancel operation on appointment
+	confirmCancelAppointment(appointment) {
+		this.appointmentToCancel = appointment;
+		this.appointmentToCancel.acceptFunction = true;
+		this.systemModuleService.announceSweetProxy('You are about to cancel this appointment', 'question', this);
+	}
+	sweetAlertCallback(result) {
+		if (result.value) {
+			if (this.appointmentToCancel.acceptFunction === true) {
+				this.cancelAppointment(true);
+			} else {
+				this.cancelAppointment(false);
+			}
+		}
+	}
+	// update appointment, set status to Cancelled.
+	cancelAppointment(isProceed: Boolean) {
+		if (isProceed === true && this.appointmentToCancel.orderStatusId === ApointmentScheduleStatus.SCHEDULED) {
+			this.appointmentToCancel.orderStatusId = ApointmentScheduleStatus.CANCELLED;
+			this.appointmentService.update(this.appointmentToCancel).then(
+				(payload) => {
+					this.systemModuleService.announceSweetProxy(
+						'Appointment has been cancelled successfully',
+						'success',
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null
+					);
+					this._notification('Success', 'Appointment has been cancelled successfully.');
+					this.isCancelled = true;
+					this._getAppointments(this.clinicIds);
+				},
+				(err) => {
+					this._notification(
+						'Error',
+						'There was an error cancelling patient appointment. Please try again later.'
+					);
+					this.systemModuleService.announceSweetProxy(
+						'There was an error cancelling patient appointment. Please try again later.',
+						'error',
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null
+					);
+					this._getAppointments(this.clinicIds);
+				}
+			);
+		} else {
+			this._notification('Error', 'You can not cancel an appointment that has not been scheduled.');
+			this.systemModuleService.announceSweetProxy(
+				'You can not cancel an appointment that has not been scheduled.',
+				'error',
+				null,
+				null,
+				null,
+				null,
+				null,
+				null,
+				null
+			);
+			this._getAppointments(this.clinicIds);
+		}
+	}
+	pageClickedEvent(index: number) {
+		// goto next page using the current index
+		this.paginationObj.currentPage = index;
+		this._getAppointments(this.lastAccessedClinicIds);
+	}
 }

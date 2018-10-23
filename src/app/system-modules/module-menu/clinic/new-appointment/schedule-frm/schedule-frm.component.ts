@@ -409,14 +409,16 @@ export class ScheduleFrmComponent implements OnInit {
 				this.professions = results[2].data;
 				if (results[4].data.length > 0) {
 				}
-
-				const categories = results[3].data[0].categories;
-				this.organizationalServiceId.facilityServiceId = results[3].data[0]._id;
-				const filterCategories = categories.filter((x) => x.name === 'Appointment');
-				if (filterCategories.length > 0) {
-					this.categoryServices = filterCategories[0].services;
-					this.organizationalServiceId.categoryId = filterCategories[0]._id;
+				if (results[3].data.length > 0) {
+					const categories = results[3].data[0].categories;
+					this.organizationalServiceId.facilityServiceId = results[3].data[0]._id;
+					const filterCategories = categories.filter((x) => x.name === 'Appointment');
+					if (filterCategories.length > 0) {
+						this.categoryServices = filterCategories[0].services;
+						this.organizationalServiceId.categoryId = filterCategories[0]._id;
+					}
 				}
+
 				if (this.appointment._id !== undefined) {
 					this.category.setValue(this.appointment.category);
 				}
@@ -813,7 +815,7 @@ export class ScheduleFrmComponent implements OnInit {
 	}
 
 	setValueSmsAlert(personFullName, startDate, facility, clinic, email) {
-		let contentValue =
+		const contentValue =
 			'Hello ' +
 			personFullName +
 			'an appointment was scheduled for ' +
@@ -822,11 +824,11 @@ export class ScheduleFrmComponent implements OnInit {
 			facility +
 			' ' +
 			clinic;
-		let params = { content: contentValue, sender: 'APMIS', receiver: email };
+		const params = { content: contentValue, sender: 'APMIS', receiver: email };
 		this._smsAlertService.post({}, params);
 	}
 
-	scheduleAppointment() {
+	async scheduleAppointment() {
 		if (this.dateCtrl.valid && this.patient.valid && this.type.valid && this.category.valid && this.clinic.valid) {
 			this.systemModuleService.on();
 			this.disableBtn = true;
@@ -946,7 +948,7 @@ export class ScheduleFrmComponent implements OnInit {
 								clinicId: this.selectedClinic,
 								startDate: this.date
 							});
-							let fullName =
+							const fullName =
 								this.selectedPatient.personDetails.lastName +
 								' ' +
 								this.selectedPatient.personDetails.Name;
@@ -973,6 +975,7 @@ export class ScheduleFrmComponent implements OnInit {
 						}
 					},
 					(error) => {
+						console.log('error1 =>', error);
 						this.savingAppointment = false;
 						this.disableBtn = false;
 						this.loadIndicatorVisible = false;
@@ -984,30 +987,34 @@ export class ScheduleFrmComponent implements OnInit {
 					}
 				);
 			} else {
+				console.log('this is called');
 				this.appointmentService.create(this.appointment).then(
 					(payload) => {
+						console.log('called create bill');
 						this.createBill();
+						console.log('called after create bill');
 						if (this.teleMed.value === true) {
 							const topic = 'Appointment with ' + this.selectedPatient.personDetails.apmisId;
 							this.appointmentService
 								.setMeeting(topic, this.appointment.startDate, payload._id, this.timezone.value.value)
 								.then(
 									(meeting) => {
+										console.log('meeting set called');
 										this.disableBtn = true;
 										this.updateAppointment = false;
 										this.saveAppointment = true;
 										this.savingAppointment = false;
-										let fullName =
+										const fullName =
 											this.selectedPatient.personDetails.lastName +
 											' ' +
 											this.selectedPatient.personDetails.Name;
-										this.setValueSmsAlert(
-											fullName,
-											this.appointment.startDate,
-											this.selectedFacility.name,
-											this.selectedClinic.name,
-											this.selectedPatient.personDetails.email
-										);
+										// this.setValueSmsAlert(
+										// 	fullName,
+										// 	this.appointment.startDate,
+										// 	this.selectedFacility.name,
+										// 	this.selectedClinic.name,
+										// 	this.selectedPatient.personDetails.email
+										// );
 
 										this.router.navigate([ '/dashboard/clinic/appointment' ]);
 										this.systemModuleService.off();
@@ -1039,7 +1046,7 @@ export class ScheduleFrmComponent implements OnInit {
 							this.updateAppointment = false;
 							this.saveAppointment = true;
 							this.savingAppointment = false;
-							let fullName =
+							const fullName =
 								this.selectedPatient.personDetails.lastName +
 								' ' +
 								this.selectedPatient.personDetails.Name;
@@ -1066,6 +1073,7 @@ export class ScheduleFrmComponent implements OnInit {
 						}
 					},
 					(error) => {
+						console.log('error2 =>', error);
 						this.savingAppointment = false;
 						this.disableBtn = false;
 						this.loadIndicatorVisible = false;
@@ -1076,6 +1084,7 @@ export class ScheduleFrmComponent implements OnInit {
 						);
 					}
 				);
+
 			}
 		} else {
 			this.systemModuleService.off();
