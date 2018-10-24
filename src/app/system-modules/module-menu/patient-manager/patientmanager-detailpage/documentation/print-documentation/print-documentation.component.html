@@ -109,6 +109,7 @@
                                 </tbody>
                             </table>
                         </div>
+                        
                         <div class="doc-con" *ngIf="group?.document?.documentType?.isSide===false || group?.document?.documentType?.isSide===undefined ">
                             <div *ngFor="let key of group?.document?.body | keys ">
                                 <div *ngIf="group?.document?.body !==undefined " class="doc-span">{{key}}:</div>
