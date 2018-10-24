@@ -96,14 +96,14 @@ export class FacilitiesService {
 		return this._socket.create(facility);
 	}
 	createFacility(facility: any) {
-		let that = this;
+		const that = this;
 		return new Promise(function(resolve, reject) {
 			resolve(that._saveFacilitySocket.create(facility));
 		});
 	}
 
 	resendToken(facilityId: any) {
-		let that = this;
+		const that = this;
 		return new Promise(function(resolve, reject) {
 			resolve(that._sendFacilityTokenSocket.create(facilityId));
 		});
@@ -194,7 +194,7 @@ export class FacilitiesService {
 	}
 
 	addNetwork(facility: any, isDelete) {
-		let that = this;
+		const that = this;
 		return new Promise(function(resolve, reject) {
 			resolve(
 				that._socketAddNetwork.create(facility, {

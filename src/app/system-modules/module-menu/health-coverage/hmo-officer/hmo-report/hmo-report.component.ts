@@ -33,7 +33,7 @@ export class HmoReportComponent implements OnInit {
   disableSearchBtn = false;
   searchBtn = true;
   searchingBtn = false;
-
+  grandTotal  : number = 0.0;
   constructor(
     private _fb: FormBuilder,
     private locker: CoolLocalStorage,
@@ -82,9 +82,9 @@ export class HmoReportComponent implements OnInit {
         startDate: this.dateRange.from,
         endDate: this.dateRange.to
       };
-      console.log(query);
+     /// console.log(query);
       this.hmoService.findBillHistory({ query }).then(res => {
-        console.log(res);
+       // console.log(res);
         this.loading = false;
         this.disableSearchBtn = false;
         this.searchBtn = true;
@@ -93,6 +93,7 @@ export class HmoReportComponent implements OnInit {
           const totalBills = [];
           res.data.historyBills.map(a => {
             a.billItems.map(x => {
+              this.grandTotal += x.totalPrice;
               totalBills.push({
                 date: x.covered.verifiedAt,
                 coverType: x.covered.coverType,
@@ -156,16 +157,17 @@ export class HmoReportComponent implements OnInit {
     popupWin.document.write(`
       <html>
         <head>
-          <title></title>
+          <title>HMO Billing History</title>
           <style>
             table{
               width: 100%;
               position: relative;
               border-collapse: collapse;
-              font-size: 1.2rem;
+              font-size: 1.0rem;
             }
             table, td { 
                 border: 0.5px solid #ddd;
+                
             } 
             th {
                 height: 50px;
@@ -207,7 +209,7 @@ export class HmoReportComponent implements OnInit {
               width:100%;
             }
             .fac{
-              font-size:1.4rem;
+              font-size:1.1rem;
               color:#0288D1;
             }
             .fac-type{
@@ -218,13 +220,13 @@ export class HmoReportComponent implements OnInit {
               font-family: "Josefin Sans", sans-serif;
               font-weight:bold;
               margin: 0px auto;
-              font-size: 2rem;
+              font-size: 1.7rem;
               text-align: center;
           }
           
           .modal_mini_title {
               margin: 0px auto;
-              font-size: 1.2rem;
+              font-size: 1.0rem;
               text-align: center;
               color:#0288D1;
           }
