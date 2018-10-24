@@ -293,13 +293,41 @@ export class InvoiceComponent implements OnInit, OnDestroy {
         popupWin.document.write(`
         <html>
                 <head>
-                <title>Print tab</title>
+                <title></title>
                 <style>
                 //........Customized style.......
                 @import "../../../../globals/variables.scss";
                 @import "../../../../globals/normalize.scss";
                 @import "./invoice.component.scss";
 
+                .image_container {
+                    width: 100px;
+                    height: 100px;
+                    background: #eee;
+                    text-align: center;
+                    line-height: 300px;
+                    border-radius: 80px;
+                    padding-bottom: 2px;
+                  }
+                 
+                 .image_container img {
+                    vertical-align: middle;
+                  }
+
+                  .card-container{
+                    display:grid; padding-right: 30px; padding-left: 30px;
+                }
+
+                .img_wrap{
+                    display: grid;
+                    justify-content: center;
+                    justify-items: center;
+                    justify-self: center;
+                    text-align: center;
+                    align-items: center;
+                    align-content: center;
+                    align-self: center;
+                  }
                 .megaPgWrap{
                     display: flex;
                     justify-content: space-between;

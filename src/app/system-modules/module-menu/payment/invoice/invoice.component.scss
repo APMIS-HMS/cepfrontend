@@ -104,13 +104,23 @@ ul.topmenuwrap {
     grid-template-rows: 100px 100px 100px;
 }
 .image_container {
-    width: 100px;
-    height: 100px;
+    width: 70px;
+    height: 70px;
     background: #eee;
     text-align: center;
-    line-height: 300px;
     border-radius: 80px;
     padding-bottom: 2px;
+  }
+
+  .img_wrap{
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    justify-self: center;
+    text-align: center;
+    align-items: center;
+    align-content: center;
+    align-self: center;
   }
  
  .image_container img {
@@ -811,6 +821,10 @@ div.invoice.unpaid:after
     -webkit-text-shadow: 0 0 2px #c00;
     text-shadow: 0 0 2px #c00;
     box-shadow: 0 0 2px #c00;
+}
+
+.card-container{
+    display:grid; padding-right: 30px; padding-left: 30px;
 }
 
 /* Printing CSS */
