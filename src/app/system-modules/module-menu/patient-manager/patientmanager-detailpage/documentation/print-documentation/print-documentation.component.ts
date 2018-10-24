@@ -1,4 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { DocumentUploadService, FacilitiesService } from 'app/services/facility-manager/setup';
 
 @Component({
 	selector: 'app-print-documentation',
@@ -9,19 +10,58 @@ export class PrintDocumentationComponent implements OnInit {
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 	@Input() patientDocumentation: any = <any>{};
 	@Input() patient: any = <any>{};
-	constructor() {}
+	loading: boolean;
+	constructor(private docUploadService: DocumentUploadService, private facilityService: FacilitiesService) {}
 
-	ngOnInit() {}
+	ngOnInit() {
+		// this.getDocuments();
+	}
 
+	getDocuments() {
+		console.log(this.patient);
+		console.log(this.patientDocumentation);
+		this.docUploadService
+			.docUploadFind({
+				query: {
+					patientId: this.patient._id,
+					facilityId: this.facilityService.getSelectedFacilityId()._id,
+					$sort: {
+						createdAt: -1
+					}
+				}
+			})
+			.then((payload) => {
+				// this.documents = payload.data;
+				this.patientDocumentation.documentations.push(...payload.data);
+				console.log(payload.data);
+			});
+	}
 	sortDocumentation() {
 		return this.patientDocumentation.documentations.sort(function(a, b) {
 			return a.createdAt < b.createdAt;
 		});
 	}
 
+	getCurrentDocument(group) {
+		return {
+			url: group.docUrl
+		};
+	}
+
+	onComplete(event) {
+		this.loading = false;
+	}
+	onError(event) {
+		this.loading = false;
+		// this.loadingError = true;
+	}
+	onProgress(progressData: any) {
+		console.log(progressData);
+	}
+
 	onClickPrintDocument() {
 		const printContents = document.getElementById('printDoc-Section').innerHTML;
-		let popupWin = window.open('', '', 'top=0,left=0,height=100%,width=auto');
+		const popupWin = window.open('', '', 'top=0,left=0,height=100%,width=auto');
 		popupWin.document.open();
 		popupWin.document.write(`
       <html>
@@ -132,6 +172,7 @@ export class PrintDocumentationComponent implements OnInit {
 	}
 
 	close_onClick() {
+		console.log('emitting');
 		this.closeModal.emit(true);
 	}
 

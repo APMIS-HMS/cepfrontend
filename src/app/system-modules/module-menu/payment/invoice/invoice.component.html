@@ -53,10 +53,11 @@
             <div class="col-sm-8 divToPrint" id="invoicePrint">
                 <div class="card row card-container">
                     <div class="col-sm-4 img_wrap">
-                        <div class="image_container">
+                        <!-- <div class="image_container">
                             <img src="">
-                        </div>
-                        <h3 style="text-align:center;">APMIS Hospital</h3>
+                        </div> -->
+                        <app-image-viewer [imageSrc]="selectedFacility?.logoObject?.thumbnail"></app-image-viewer>
+                        <h3 style="text-align:center;">{{selectedFacility.name}}</h3>
                     </div>
                     <div class="row">
                         <div class="col-sm-4 align-self-start" style="padding: 5px;">
