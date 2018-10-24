@@ -119,10 +119,10 @@ export class EditMedicationComponent implements OnInit {
       this.medications.push(medication);
       this._orderSetSharedService.saveItem({ medications: this.medications});
 
-      this.addPrescriptionForm.reset();
+      // this.addPrescriptionForm.reset();
       this.addPrescriptionForm.controls['refillCount'].reset(0);
       this.addPrescriptionForm.controls['duration'].reset(0);
-      this.addPrescriptionForm.controls['startDate'].reset(new Date());
+      this.addPrescriptionForm.controls['startDate'].setValue(new Date());
       // this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[1].name);
       this.addPrescriptionForm.controls['dosageUnit'].reset(this.dosageUnits[0].name);
     }

@@ -89,17 +89,12 @@
                                 <td class="action-placeholder" style="text-align:center;width:30px;">
                                     <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                                     <div class="action-container shadow-RB">
-                                        <div class="action-item" (click)="popProcedure_show()">
+                                        <div class="action-item" (click)="popProcedure_show(orderSetPro)">
                                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                                             <span>Edit Item</span>
                                         </div>
-
-                                        <div class="action-item">
-                                            <i class="fa fa-money" aria-hidden="true"></i>
-                                            <span>Bill Item</span>
-                                        </div>
-
-                                        <div class="action-item">
+                                        
+                                        <div class="action-item" (click)="removeProcedure_show(i)">
                                             <i class="fa fa-times" aria-hidden="true"></i>
                                             <span>Remove Item</span>
                                         </div>
@@ -153,7 +148,7 @@
                     <div (click)="showOrderSetType('physician order');" class="add-link"><i class="fa fa-plus" aria-hidden="true"></i> Add Physician Order</div>
                 </div>
             </div>
-            <div *ngIf="orderSet.medications!==undefined || orderSet.investigations!==undefined || orderSet.physicianOrders!==undefined || orderSet.nursingCares!==undefined" class="text-center btn-box">
+            <div *ngIf="isButtonEnabled && orderSet.medications!==undefined || orderSet.investigations!==undefined || orderSet.physicianOrders!==undefined || orderSet.nursingCares!==undefined" class="text-center btn-box">
                 <button (click)="authorizerx()" mat-raised-button class="mat-lg-btn">Authorize</button>
             </div>
         </div>
@@ -178,5 +173,5 @@
     <app-edit-physician-order (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-edit-physician-order>
 </div>
 <div *ngIf="popProcedure" class="modal-overlay">
-    <app-edit-procedure (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-edit-procedure>
+    <app-edit-procedure (closeModal)="close_onClick($event)" [editedValue]="editedValue" id="form-modal" class="form-modal center-center"></app-edit-procedure>
 </div>
