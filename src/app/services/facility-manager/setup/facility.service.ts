@@ -109,8 +109,13 @@ export class FacilitiesService {
     });
   }
   update(facility: any) {
-    console.log('facilty to update',facility)
+    console.log('facilty to update', facility)
     return this._socket.update(facility._id, facility).then(d => {
+      console.log(d);
+    });
+  }
+  updateWithRest(facility: any) {
+    return this._rest.update(facility._id, facility).then(d => {
       console.log(d);
     });
   }
