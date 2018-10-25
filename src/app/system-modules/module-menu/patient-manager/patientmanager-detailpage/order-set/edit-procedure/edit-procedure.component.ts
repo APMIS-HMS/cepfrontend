@@ -12,14 +12,17 @@ import { OrderSetSharedService } from '../../../../../../services/facility-manag
 })
 export class EditProcedureComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() editedValue;
   addProcedureForm: FormGroup;
   facility: Facility = <Facility>{};
   selectedProcedure: any = <any>{};
   cuDropdownLoading = false;
   showCuDropdown = false;
+  onEditProcedurePrice = false;
   results: any = [];
   procedures: any = <any>[];
   newTemplate = true;
+  costForm = new FormControl();
 
   constructor(
     private _locker: CoolLocalStorage,
@@ -33,6 +36,10 @@ export class EditProcedureComponent implements OnInit {
     this.addProcedureForm = this._fb.group({
       procedure: ['', [<any>Validators.required]]
     });
+    if (this.editedValue !== null) {
+      this.selectedProcedure = this.editedValue;
+      this.addProcedureForm.controls['procedure'].setValue(this.editedValue.name);
+    }
 
     this.addProcedureForm.controls['procedure'].valueChanges
       .debounceTime(200)
@@ -44,6 +51,13 @@ export class EditProcedureComponent implements OnInit {
           this.results = res.data;
         }
       });
+
+    this.costForm.valueChanges
+      .debounceTime(200)
+      .distinctUntilChanged()
+      .subscribe((res) => {
+        this.selectedProcedure.changedPrice = res;
+      });
   }
 
   onClickAddProcedure(valid: boolean, value: any) {
@@ -51,18 +65,24 @@ export class EditProcedureComponent implements OnInit {
       this.selectedProcedure.comment = '';
       this.selectedProcedure.status = 'Not Done';
       this.selectedProcedure.completed = false;
-
       this.procedures.push(this.selectedProcedure);
       this._orderSetSharedService.saveItem({ procedures: this.procedures });
 
       this.addProcedureForm.reset();
       this.addProcedureForm.controls['procedure'].setValue('');
+      this.costForm.setValue('');
+      this.onEditProcedurePrice = false;
+      this.selectedProcedure = {};
     }
   }
 
   apmisLookupHandleSelectedItem(value) {
     this.selectedProcedure = value;
     this.addProcedureForm.controls['procedure'].setValue(value.name);
+  }
+
+  onEditProcedure() {
+    this.onEditProcedurePrice = !this.onEditProcedurePrice;
   }
 
   focusSearch() {

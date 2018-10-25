@@ -13,9 +13,10 @@
                             <div class="border-box" *ngIf="investigations.length > 0 && !loading">
                                 <div class="mainErr animated shake" [hidden]="mainErr">{{errMsg}}</div>
                                 <div class="row">
-                                    <div class="col-sm-12 col-md-12 invest-header">List of Locations that does {{ title }} investigation.</div>
+                                    <div class="col-sm-12 col-md-12 invest-header">List of Locations that does {{ title
+                                        }} investigation.</div>
                                     <div class="col-sm-12 col-md-12">
-                                        <div *ngFor="let investigation of investigations" class="list-item investigation">
+                                        <div *ngFor="let investigation of investigations;let i = index" class="list-item investigation">
                                             <div class="txt-innerWrap">
                                                 <!-- <div class="chkbox-wrap">
                                                     <mat-checkbox (change)="investigationChanged($event, investigation)" [checked]="checked"></mat-checkbox>
@@ -25,10 +26,15 @@
                                                 <div class="inner-radio">
                                                     <!-- <mat-checkbox (change)="markExternal($event, investigation)" [checked]="investigation.isExternal">External</mat-checkbox> -->
                                                     <mat-radio-group [value]="location" *ngIf="!investigation.isExternal">
-                                                        <mat-radio-button class="opt" *ngFor="let location of investigation.LaboratoryWorkbenches" (change)="locationChanged($event, investigation, location, investigation.LaboratoryWorkbenches)" [value]="location" [checked]="false">
+                                                        <mat-radio-button class="opt" *ngFor="let location of investigation.LaboratoryWorkbenches"
+                                                            (change)="locationChanged($event, investigation, location, investigation.LaboratoryWorkbenches)"
+                                                            [value]="location" [checked]="false">
                                                             <div class="opt-inner">
                                                                 <div>{{location.laboratoryId.name}}</div>
-                                                                <div class="opt-price"><span>&#x20a6;</span>{{getPrice(location.workbenches)}}</div>
+                                                                <div class="opt-price" *ngIf="!editPrice"><span>&#x20a6;</span>{{getPrice(location.workbenches)}}</div>
+                                                                <i class="fa fa-pencil-square-o" aria-hidden="true"
+                                                                    (click)="onEditPrice()"></i>
+                                                                <input type="number" [formControl]="costForm" (change)="onChangePrice(i)" *ngIf="editPrice">
                                                             </div>
                                                         </mat-radio-button>
                                                     </mat-radio-group>
@@ -47,7 +53,8 @@
                                 </div>
                             </div>
                             <div class="border-box" *ngIf="investigations.length === 0 && !loading">
-                                <div class="prodBatch-item batchItem1" style="text-align: center; width: 100%;">No investigation to bill from,<br> Please add price to the investigation.</div>
+                                <div class="prodBatch-item batchItem1" style="text-align: center; width: 100%;">No
+                                    investigation to bill from,<br> Please add price to the investigation.</div>
                             </div>
                             <div class="border-box" *ngIf="investigations.length === 0 && loading">
                                 <div class="prodBatch-item batchItem1" style="text-align: center; width: 100%;">

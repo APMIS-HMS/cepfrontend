@@ -204,7 +204,7 @@
                             <div class="tbl-actions-wrap">
                                 <div *ngIf="appointment.attendance !== undefined" class="tr-act-btn"><i class="fa fa-sign-out" aria-hidden="true"></i> Check Out</div>
                                 <div *ngIf="appointment.attendance === undefined" class="tr-act-btn" (click)="editAppointment(appointment)"><i class="fa fa-edit" aria-hidden="true"></i> Edit</div>
-                                <div *ngIf="appointment.attendance === undefined" class="tr-act-btn" (click)="cancelAppointment(appointment)"><i class="fa fa-times" aria-hidden="true"></i> Cancel</div>
+                                <div *ngIf="appointment.attendance === undefined && appointment.orderStatusId != 'Cancelled'" class="tr-act-btn" (click)="cancelAppointment(appointment)"><i class="fa fa-times" aria-hidden="true"></i> Cancel</div>
                             </div>
                         </td>
                     </tr>

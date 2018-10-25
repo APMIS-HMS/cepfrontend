@@ -356,8 +356,9 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
             gender: [[<any>Validators.minLength(2)]],
             dob: [new Date(), [<any>Validators.required]],
-            motherMaidenName: ['', [<any>Validators.required,
-            <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+            motherMaidenName: ['', [ <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+            // motherMaidenName: ['', [<any>Validators.required,
+            //     <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
             // securityQuestion: ['', [<any>Validators.required]],
             // securityAnswer: ['', [<any>Validators.required]],
             // email: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
@@ -1192,6 +1193,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                 this.systemModuleService.announceSweetProxy(text, 'success');
                 this.close_onClick();
             }).catch(errr => {
+                console.log(errr);
                 this.systemModuleService.off();
                 this.systemModuleService.announceSweetProxy('Some went wrong while creating a patient!', 'error');
                 this.loading = false;
@@ -1828,7 +1830,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         };
         const body = {
             person: personModel
-        }
+        };
         const errMsg = 'There was an error while creating person, try again!';
         this.personService.createPerson(body).then((ppayload) => {
             this.isSuccessful = true;
@@ -1848,10 +1850,12 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             // this.frmNewEmp4_show = true;
             // this.apmisId_show = false;
         }, err => {
+            console.log
             this.isSaving = false;
             this.systemModuleService.off();
             this.systemModuleService.announceSweetProxy(errMsg, 'error');
         }).catch(err => {
+            console.log(err);
             this.isSaving = false;
             this.systemModuleService.off();
             this.systemModuleService.announceSweetProxy(errMsg, 'error');
