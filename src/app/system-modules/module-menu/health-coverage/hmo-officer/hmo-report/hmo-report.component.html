@@ -60,10 +60,10 @@
         <thead>
           <tr>
             <th><span style="padding-left: 3px;">S/N</span></th>
-            <th><span style="padding-left: 3px;">Date</span></th>
-            <th><span style="padding-left: 3px;">Patient</span></th>
-            <th><span style="padding-left: 3px;">Service</span></th>
-            <th><span style="padding-left: 3px;">Amount</span></th>
+            <th style="min-width:20%"><span style="padding-left: 3px;">Date</span></th>
+            <th style="min-width:30%;"><span style="padding-left: 3px;">Patient</span></th>
+            <th style="min-width:20%;"><span style="padding-left: 3px;">Service</span></th>
+            <th style="min-width:15%;"><span style="padding-left: 3px;">Amount</span></th>
             <th><span style="padding-left: 3px;">Type</span></th>
             <th>Status</th>
           </tr>
@@ -81,7 +81,7 @@
           </tr>
           <tr *ngFor="let item of hmoBillHistory; let i = index">
             <td>{{ i+1 }}</td>
-            <td>{{ item.date|date:'medium' }}</td>
+            <td>{{ item.date|date:'mm-dd-yyyy' }}</td>
             <td>{{ item?.patient?.title }} {{ item?.patient?.firstName }} {{ item?.patient?.lastName }}</td>
             <td>{{ item?.service }}</td>
             <td>&#x20a6;{{ item?.amount|number:'1.2-2'}}</td>
@@ -89,6 +89,13 @@
             <td>{{ item?.status }}</td>
           </tr>
         </tbody>
+        <tfoot>
+        <tr>
+          <td colspan="4" class="text-right">Grand Total</td>
+          <td colspan="3"  style="font-weight: bold; background-color: #ececf7"> &#8358; {{grandTotal | number:'1.2-2'}}</td>
+        </tr>
+        </tfoot>
       </table>
     </div>
   </div>
+</div>
