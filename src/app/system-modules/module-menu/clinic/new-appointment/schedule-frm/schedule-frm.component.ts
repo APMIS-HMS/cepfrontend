@@ -250,7 +250,10 @@ export class ScheduleFrmComponent implements OnInit {
 			this.apmisProviderLookupQuery = {
 				facilityId: this.selectedFacility._id,
 				searchText: value,
-				employeeTable: true
+				employeeTable: true,
+				$or:[{
+					professionId: { $regex: ['doctor','nurse'], '$options': 'i' } 					
+				}]
 			};
 		});
 		// this.filteredProviders = this.provider.valueChanges
