@@ -1,6 +1,7 @@
 // import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { FacilityCompanyCoverService } from './../../../services/facility-manager/setup/facility-company-cover.service';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { SimplePdfViewerModule } from 'simple-pdf-viewer';
 // import { FacilityFamilyCoverService } from './../../../services/facility-manager/setup/facility-family-cover.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -13,9 +14,9 @@ import { PatientmanagerDetailpageComponent } from './patientmanager-detailpage/p
 // import { NewPatientComponent } from "./new-patient/new-patient.component";
 import { SharedModule } from '../../../shared-module/shared.module';
 import {
-  PatientResolverService,
-  AppointmentResolverService,
-  LoginEmployeeResolverService
+	PatientResolverService,
+	AppointmentResolverService,
+	LoginEmployeeResolverService
 } from '../../../resolvers/module-menu/index';
 import { AddTagsComponent } from './add-tags/add-tags.component';
 import { FormsService, ImmunizationRecordService } from '../../../services/facility-manager/setup/index';
@@ -40,10 +41,10 @@ import { TimelineComponent } from './patientmanager-detailpage/timeline/timeline
 import { RightTabComponent } from './patientmanager-detailpage/documentation/right-tab/right-tab.component';
 import { ChartsModule } from 'ng2-charts';
 import {
-  WorkbenchService,
-  LaboratoryRequestService,
-  OrderSetTemplateService,
-  TreatmentSheetService
+	WorkbenchService,
+	LaboratoryRequestService,
+	OrderSetTemplateService,
+	TreatmentSheetService
 } from '../../../services/facility-manager/setup/index';
 import { PaymentComponent } from './patientmanager-detailpage/payment/payment.component';
 import { WalletComponent } from './patientmanager-detailpage/payment/wallet/wallet.component';
@@ -89,85 +90,86 @@ import { BcrAssessmentComponent } from './patientmanager-detailpage/bcr-assessme
 import { PrintDocumentationComponent } from './patientmanager-detailpage/documentation/print-documentation/print-documentation.component';
 
 @NgModule({
-  declarations: [
-    PatientManagerComponent,
-    PatientManagerHomeComponent,
-    PatientmanagerHomepageComponent,
-    PatientmanagerDetailpageComponent,
-    // NewPatientComponent,
-    AddTagsComponent,
-    PatientSummaryComponent,
-    MedicationHistoryComponent,
-    UpdateImgComponent,
-    ExternalPrescriptionComponent,
-    DocumentationComponent,
-    DocumentationDetailComponent,
-    ClinicalNoteComponent,
-    AddPatientProblemComponent,
-    AddAllergyComponent,
-    AddHistoryComponent,
-    TimelineComponent,
-    RightTabComponent,
-    PaymentComponent,
-    WalletComponent,
-    InsuranceComponent,
-    CompanyComponent,
-    FamilyComponent,
-    PatientPaymentPlanComponent,
-    OrderSetComponent,
-    EditMedicationComponent,
-    EditInvestigationComponent,
-    BillInvestigationComponent,
-    EditProcedureComponent,
-    EditNursingCareComponent,
-    EditPhysicianOrderComponent,
-    DocSymptomComponent,
-    DocDiagnosisComponent,
-    OrderBillItemComponent,
-    TreatementPlanComponent,
-    FluidComponent,
-    DocUploadsComponent,
-    DocUploadComponent,
-    DocUploadDetailComponent,
-    PatientVitalsComponent,
-    FluidTypeComponent,
-    PatientTagsComponent,
-    PatientAddTagComponent,
-    AddPatientTagsComponent,
-    PatientImmunizationComponent,
-    VaccineAdministrationComponent,
-    VaccineDocumentationComponent,
-    PregnancyManagerComponent,
-    PatientRegistersComponent,
-    PatientLandingBillingComponent,
-    BcrAssessmentComponent,
-    PrintDocumentationComponent
-  ],
-  exports: [],
-  imports: [
-    SharedModule,
-    patientManagerRoutes,
-    OnlyMaterialModule,
-    MaterialModule,
-    ChartsModule,
-    PdfViewerModule,
-  ],
-  providers: [
-    PatientResolverService,
-    AppointmentResolverService,
-    LoginEmployeeResolverService,
-    OrderSetTemplateService,
-    TreatmentSheetService,
-    FormsService,
-    FormTypeService,
-    SharedService,
-    WorkbenchService,
-    LaboratoryRequestService,
-    DocumentationTemplateService,
-    ScopeLevelService,
-    FacilityCompanyCoverService,
-    LabEventEmitterService,
-    ImmunizationRecordService
-  ]
+	declarations: [
+		PatientManagerComponent,
+		PatientManagerHomeComponent,
+		PatientmanagerHomepageComponent,
+		PatientmanagerDetailpageComponent,
+		// NewPatientComponent,
+		AddTagsComponent,
+		PatientSummaryComponent,
+		MedicationHistoryComponent,
+		UpdateImgComponent,
+		ExternalPrescriptionComponent,
+		DocumentationComponent,
+		DocumentationDetailComponent,
+		ClinicalNoteComponent,
+		AddPatientProblemComponent,
+		AddAllergyComponent,
+		AddHistoryComponent,
+		TimelineComponent,
+		RightTabComponent,
+		PaymentComponent,
+		WalletComponent,
+		InsuranceComponent,
+		CompanyComponent,
+		FamilyComponent,
+		PatientPaymentPlanComponent,
+		OrderSetComponent,
+		EditMedicationComponent,
+		EditInvestigationComponent,
+		BillInvestigationComponent,
+		EditProcedureComponent,
+		EditNursingCareComponent,
+		EditPhysicianOrderComponent,
+		DocSymptomComponent,
+		DocDiagnosisComponent,
+		OrderBillItemComponent,
+		TreatementPlanComponent,
+		FluidComponent,
+		DocUploadsComponent,
+		DocUploadComponent,
+		DocUploadDetailComponent,
+		PatientVitalsComponent,
+		FluidTypeComponent,
+		PatientTagsComponent,
+		PatientAddTagComponent,
+		AddPatientTagsComponent,
+		PatientImmunizationComponent,
+		VaccineAdministrationComponent,
+		VaccineDocumentationComponent,
+		PregnancyManagerComponent,
+		PatientRegistersComponent,
+		PatientLandingBillingComponent,
+		BcrAssessmentComponent,
+		PrintDocumentationComponent
+	],
+	exports: [],
+	imports: [
+		SharedModule,
+		patientManagerRoutes,
+		OnlyMaterialModule,
+		MaterialModule,
+		ChartsModule,
+		PdfViewerModule,
+		SimplePdfViewerModule
+	],
+	providers: [
+		PatientResolverService,
+		AppointmentResolverService,
+		LoginEmployeeResolverService,
+		OrderSetTemplateService,
+		TreatmentSheetService,
+		FormsService,
+		FormTypeService,
+		SharedService,
+		WorkbenchService,
+		LaboratoryRequestService,
+		DocumentationTemplateService,
+		ScopeLevelService,
+		FacilityCompanyCoverService,
+		LabEventEmitterService,
+		ImmunizationRecordService
+	]
 })
 export class PatientManagerModule {}
