@@ -822,7 +822,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 	}
 
 	getCurrentDocument(group) {
-		console.log(group);
 		return {
 			url: group.docUrl
 		};

@@ -153,7 +153,7 @@
                                                 </div>
                                             </div>
                                             <div class="doc-con" *ngIf="document?.document?.documentType===undefined && document?.document?.docUrl !== undefined">
-                                                <pdf-viewer [src]="John.pdf" (after-load-complete)="onComplete($event)"
+                                                <pdf-viewer [src]="getCurrentDocument(document?.document)" (after-load-complete)="onComplete($event)"
                                                     (error)="onError($event)" (on-progress)="onProgress($event)"></pdf-viewer>
 
                                                 <!-- <section id="viewer" *ngIf="document?.document?.docUrl !== undefined">
