@@ -1,5 +1,6 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from '@angular/core';
 import { DocumentUploadService, FacilitiesService } from 'app/services/facility-manager/setup';
+import { SimplePdfViewerComponent, SimplePDFBookmark } from 'simple-pdf-viewer';
 
 @Component({
 	selector: 'app-print-documentation',
@@ -8,13 +9,34 @@ import { DocumentUploadService, FacilitiesService } from 'app/services/facility-
 })
 export class PrintDocumentationComponent implements OnInit {
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+	@ViewChild(SimplePdfViewerComponent) private pdfViewer: SimplePdfViewerComponent;
 	@Input() patientDocumentation: any = <any>{};
 	@Input() patient: any = <any>{};
 	loading: boolean;
+	bookmarks: SimplePDFBookmark[] = [];
+
 	constructor(private docUploadService: DocumentUploadService, private facilityService: FacilitiesService) {}
 
 	ngOnInit() {
-		// this.getDocuments();
+		this.getDocuments();
+	}
+
+	// how to open PDF document
+	openDocument(document: File) {
+		const fileReader: FileReader = new FileReader();
+		fileReader.onload = () => {
+			this.pdfViewer.openDocument(new Uint8Array(fileReader.result));
+		};
+		fileReader.readAsArrayBuffer(document);
+	}
+
+	// how to create bookmark
+	createBookmark() {
+		this.pdfViewer.createBookmark().then((bookmark) => {
+			if (bookmark) {
+				this.bookmarks.push(bookmark);
+			}
+		});
 	}
 
 	getDocuments() {
@@ -32,8 +54,11 @@ export class PrintDocumentationComponent implements OnInit {
 			})
 			.then((payload) => {
 				// this.documents = payload.data;
-				this.patientDocumentation.documentations.push(...payload.data);
-				console.log(payload.data);
+				payload.data.forEach((document) => {
+					this.patientDocumentation.documentations.push(document);
+				});
+				// this.patientDocumentation.documentations.push(...payload.data);
+				// console.log(payload.data);
 			});
 	}
 	sortDocumentation() {
