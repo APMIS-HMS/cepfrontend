@@ -24,7 +24,7 @@ export class WardManagerSetuppageComponent implements OnInit {
     private _bedOccupancyService: BedOccupancyService,
     private _locationService: LocationService,
     private _wardEventEmitter: WardEmitterService,
-    private _systemModuleService:SystemModuleService,
+    private _systemModuleService: SystemModuleService,
 		private _route: Router,
 		private _router: ActivatedRoute) {
 
@@ -56,9 +56,15 @@ export class WardManagerSetuppageComponent implements OnInit {
     }).then(res => {
       this.loading = false;
       //*Starday Check if no ward location has been set
-      if(res.data.length > 0){
+      if (res.data.length > 0){
         this.wards = res.data[0].minorLocations.filter(x => x.locationId === locationId);
-      }else{
+        console.log('before modification', this.wards);
+        this.wards.map(item => {
+          item.activeRoom = item.wardSetup.rooms.filter(x => !x.isDeleted).length;
+        });
+        console.log('after modification', this.wards);
+
+      }else {
         const text = 'No ward location has been created, please create one!!';
         this._systemModuleService.announceSweetProxy(text, 'info', null, null, null, null, null, null, null);
         this._route.navigate(['/dashboard/facility']);

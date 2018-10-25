@@ -6,6 +6,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router, ActivatedRoute } from '@angular/router';
 import { WardEmitterService } from '../../../../../services/facility-manager/ward-emitter.service';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { ArrayFunctionHelper } from '../../../../../shared-module/helpers/array-function-helper';
 
 @Component({
 	selector: 'app-bed',
@@ -25,7 +26,7 @@ export class BedComponent implements OnInit {
 	bedNameEditShow: any;
 	editBedName = new FormControl();
 	loading = false;
-	bedToCancel: any = <any>{};
+	bedToDelete: any = <any>{};
 
 	constructor(private _route: ActivatedRoute,
 		private router: Router,
@@ -33,7 +34,8 @@ export class BedComponent implements OnInit {
 		private _locker: CoolLocalStorage,
 		private _bedOccupancyService: BedOccupancyService,
 		private _wardEventEmitter: WardEmitterService,
-		private systemModuleService: SystemModuleService
+		private systemModuleService: SystemModuleService,
+		private arrayFunction: ArrayFunctionHelper
   ) {
 	}
 
@@ -55,14 +57,14 @@ export class BedComponent implements OnInit {
 
 	// Confirm if the user wants to delete bed first
 	confirmBedDelete(selectedBed) {
-		this.bedToCancel = selectedBed;
-		this.bedToCancel.acceptFunction = true;
+		this.bedToDelete = selectedBed;
+		this.bedToDelete.acceptFunction = true;
 		this.systemModuleService.announceSweetProxy(`You are about to delete this bed: '${selectedBed.name}'`, 'question', this);
 	}
 
 	sweetAlertCallback(result) {
 		if (result.value) {
-		  if (this.bedToCancel.acceptFunction === true) {
+		  if (this.bedToDelete.acceptFunction === true) {
 				// proceed with the delete action after user has confirmed
 				this.deleteBed(true);
 		  } else {
@@ -71,16 +73,16 @@ export class BedComponent implements OnInit {
 			}
 		}
 	deleteBed(isProceed: Boolean) {
-		if (isProceed === true && this.bedToCancel.isDeleted === false) {
+		if (isProceed && this.bedToDelete.isDeleted === false) {
 				this.facilityService.get(this.facility._id, {}).then(payload => {
 				const facility = payload;
 				const facilityMinorLocation = facility.minorLocations.filter(x => x._id === this.wardId);
-				const minorLocationIndex = this.getIndexofObjectInArray(facility.minorLocations, this.wardId);
+				const minorLocationIndex = this.arrayFunction.getIndexofObjectInArray(facility.minorLocations, this.wardId);
 				const room = facilityMinorLocation[0].wardSetup.rooms.filter(x => x._id === this.roomId);
-				const roomIndex = this.getIndexofObjectInArray(facilityMinorLocation[0].wardSetup.rooms, this.roomId);
+				const roomIndex = this.arrayFunction.getIndexofObjectInArray(facilityMinorLocation[0].wardSetup.rooms, this.roomId);
 				if (room.length > 0) {
-					const bedIndex = this.getIndexofObjectInArray(room[0].beds, this.bedToCancel._id);
-					const bed = room[0].beds.filter(x => x._id === this.bedToCancel._id);
+					const bedIndex = this.arrayFunction.getIndexofObjectInArray(room[0].beds, this.bedToDelete._id);
+					const bed = room[0].beds.filter(x => x._id === this.bedToDelete._id);
 					 const update = {
 						 _id: bed[0]._id,
 						name: bed[0].name,
@@ -109,10 +111,10 @@ export class BedComponent implements OnInit {
 		} else {
 			this._notification(
 				'Error',
-				`You can not delete bed: ${this.bedToCancel.name}`
+				`You can not delete bed: ${this.bedToDelete.name}`
 			);
 			this.systemModuleService.announceSweetProxy(
-				`You can not delete bed: ${this.bedToCancel.name}`,
+				`You can not delete bed: ${this.bedToDelete.name}`,
 				'error',
 				null,
 				null,
@@ -141,15 +143,6 @@ export class BedComponent implements OnInit {
     });
 	}
 
-	removeObjectInArrayById(array, element) {
-    return array.filter(e => e._id !== element);
-	}
-	getIndexofObjectInArray(items, query): number {
-		for (let i = 0; i < items.length; i++) {
-				if (items[i]._id === query) { return i; } else {
-				}
-		}
-	}
 	// Notification
 	private _notification(type: String, text: String): void {
 		this.facilityService.announceNotification({
