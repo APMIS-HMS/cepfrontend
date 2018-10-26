@@ -8,6 +8,7 @@ import { WardEmitterService } from '../../../../services/facility-manager/ward-e
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import { SystemModuleService } from '../../../../services/module-manager/setup/system-module.service';
 import * as myGlobals from '../../../../shared-module/helpers/global-config';
+import {IPagerSource} from '../../../../core-ui-modules/ui-components/PagerComponent';
 
 @Component({
 	selector: 'app-ward-manager-admittedpage',
@@ -34,6 +35,9 @@ export class WardManagerAdmittedpageComponent implements OnInit {
 	loading: Boolean = true;
 	selectedWard: any;
 	wsearchOpen = false;
+	paginationObj : IPagerSource  = { pageSize : 10 ,  currentPage  : 0 , totalPages : 0 , totalRecord : 0};
+    private wardType: { type: string; typeObject: any };
+
 
 	constructor(
 		private fb: FormBuilder,
@@ -52,11 +56,11 @@ export class WardManagerAdmittedpageComponent implements OnInit {
       if (!!res._id) {
         this.employeeDetails = res;
         const wardCheckedIn = this.employeeDetails.wardCheckIn.filter(x => x.isOn)[0];
-        const wardType = {
+        this.wardType = {
           type: 'ward',
           typeObject: wardCheckedIn
         }
-        this.getAdmittedItems(wardType);
+        this.getAdmittedItems(this.wardType);
         // this.getwardLocationItems(wardType);
       }
     }).catch(err => { });
@@ -91,21 +95,31 @@ export class WardManagerAdmittedpageComponent implements OnInit {
 	}
 
 	getAdmittedItems(wardCheckedIn: any) {
+		this.loading  = true;
 		this._inPatientListService.customGet({ action: 'getAdmittedPatients' }, {
 		query: {
 			facilityId: this.facility._id,
 			currentWard: wardCheckedIn.typeObject.minorLocationId._id,
 			status: myGlobals.onAdmission,
-			$sort: { createdAt: -1 }
+			$sort: { createdAt: -1 },
+			$limit : this.paginationObj.pageSize,
+			$skip : this.paginationObj.currentPage * this.paginationObj.pageSize
 		}
 		}).then(res => {
 			this.loading = false;
 			if (res.status === 'success' && res.data.length > 0) {
 				this.admittedPatient = res.data;
+				this.paginationObj.totalPages  = res.total ;
+				console.log(res);
 			}
 		});
 	}
-
+ gotoPage(index : number)
+ {
+ 	this.paginationObj.currentPage  = index;
+ 	// Get the data for the selected page index
+	 this.getAdmittedItems(this.wardType);
+ }
 	onRoomChange(e){
 
 	}

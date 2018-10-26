@@ -4,7 +4,7 @@
         <div class="loggedinUser_user">
             <!--<img *ngIf="selectedPerson.profileImageObject?.thumbnail==undefined" src="assets/images/aiykvatar.jpg">-->
             <div *ngIf="selectedPerson?.profileImageObject === undefined"><img src="assets/images/users/default.png"></div>
-            <img *ngIf="selectedPerson?.profileImageObject !== undefined" class="shadow" [src]="facilityService.transform(selectedPerson?.profileImageObject?.thumbnail)">
+            <img *ngIf="selectedPerson?.profileImageObject !== undefined" class="shadow" [src]="selectedPerson?.profileImageObject?.thumbnail">
             <div class="loggedinUsername">{{authData?.email}}</div>
         </div>
         <div (click)="logoutConfirm_show()" class="logoutLink">Logout</div>

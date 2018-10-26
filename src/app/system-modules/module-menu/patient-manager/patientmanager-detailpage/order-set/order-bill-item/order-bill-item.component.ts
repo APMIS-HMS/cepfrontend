@@ -1,4 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { SystemModuleService } from './../../../../../../services/module-manager/setup/system-module.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Facility, Prescription, PrescriptionItem } from '../../../../../../models/index';
@@ -17,6 +18,7 @@ export class OrderBillItemComponent implements OnInit {
 	facility: Facility = <Facility>{};
 	user: any = <any>{};
 	addBillForm: FormGroup;
+	costForm = new FormControl();
 	drugs: any[] = [];
 	selectedDrug: string = '';
 	itemCost: number = 0;
@@ -33,8 +35,10 @@ export class OrderBillItemComponent implements OnInit {
 	facilityServiceId: string = '';
 	categoryId: string = '';
 
+
 	mainErr: boolean = true;
 	errMsg = 'You have unresolved errors';
+	editPrice = false;
 
 	constructor(
 		private _fb: FormBuilder,
@@ -43,7 +47,8 @@ export class OrderBillItemComponent implements OnInit {
 		private _facilityService: FacilitiesService,
 		private _facilityPriceService: FacilityPriceService,
 		private _inventoryService: InventoryService,
-		private _assessmentDispenseService: AssessmentDispenseService
+		private _assessmentDispenseService: AssessmentDispenseService,
+		private systemModuleService: SystemModuleService
 	) { }
 
 	ngOnInit() {
@@ -58,7 +63,6 @@ export class OrderBillItemComponent implements OnInit {
 		});
 
 		this.addBillForm.controls['qty'].valueChanges.subscribe(val => {
-			console.log(this.addBillForm.controls['drug'].value.price);
 			if (val > 0) {
 				this.totalQuantity = val;
 				this.totalCost = ((this.addBillForm.controls['drug'].value.price !== undefined) ? this.addBillForm.controls['drug'].value.price.price : 0) * val;
@@ -72,23 +76,35 @@ export class OrderBillItemComponent implements OnInit {
 		});
 
 		this.addBillForm.controls['drug'].valueChanges.subscribe(val => {
-			console.log(this.addBillForm.controls['drug'].value);
 			this.cost = val.price.price;
 			this.stores = [];
 			this._inventoryService.find({ query: { facilityId: this.facility._id, 'productObject.name': val.productObject.name } }).then(payload => {
 				payload.data.forEach(x => {
 					this.stores.push({ name: x.store, price: x.price, qty: x.availableQuantity });
 				});
-				console.log(this.stores, this.drugs);
 				this.loading = false;
 			}).catch(err => console.error(err));
 		});
+
+
+		this.costForm.valueChanges.subscribe(val => {
+
+		});
+	}
+
+	//costForm.value * addBillForm.controls['qty'].value
+	getAdjustedTotalPrice() {
+		return this.costForm.value * this.addBillForm.controls['qty'].value;
+	}
+
+	onEditPrice() {
+		this.editPrice = !this.editPrice;
 	}
 
 	//
 	onClickSaveCost(valid: boolean, value: any) {
 		if (valid) {
-			if (this.cost > 0 && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
+			if ((this.costForm.value !== null || this.cost > 0) && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
 				let index = this.prescriptionData.index;
 				this.prescriptionData.prescriptionItems[index].productId = this.addBillForm.controls['drug'].value.productId;
 				this.prescriptionData.prescriptionItems[index].serviceId = this.addBillForm.controls['drug'].value.serviceId;
@@ -98,16 +114,21 @@ export class OrderBillItemComponent implements OnInit {
 				this.prescriptionData.prescriptionItems[index].quantity = value.qty;
 				this.prescriptionData.prescriptionItems[index].quantityDispensed = 0;
 				this.prescriptionData.prescriptionItems[index].cost = this.cost;
+				this.prescriptionData.prescriptionItems[index].changedPrice = this.costForm.value;
 				this.prescriptionData.prescriptionItems[index].totalCost = this.cost * value.qty;
 				this.prescriptionData.prescriptionItems[index].isBilled = true;
 				this.prescriptionData.prescriptionItems[index].facilityId = this.facility._id;
 				this.prescriptionData.totalCost += this.prescriptionData.prescriptionItems[index].totalCost;
 				this.prescriptionData.totalQuantity += this.prescriptionData.prescriptionItems[index].quantity;
-				console.log(this.prescriptionData);
 				this.closeModal.emit(true);
-			} else {
+			}
+			else if (this.costForm.value === null || (this.cost === null && this.cost === 0) ){
+				this.systemModuleService.announceSweetProxy('There was an error while billing on an invalid price, kindly edit price!', 'error');
+			} 
+			else {
 				this._notification('Error', 'Unit price or Quantity is less than 0!');
 			}
+			
 		} else {
 			this.mainErr = false;
 		}
@@ -119,13 +140,11 @@ export class OrderBillItemComponent implements OnInit {
 		const ingredients = this.prescriptionData.prescriptionItems[index].ingredients;
 
 		this._inventoryService.find({ query: { facilityId: this.facility._id, 'productObject.name': { $regex: this.prescriptionData.prescriptionItems[index].genericName.split(' ')[0], '$options': 'i' } } }).then(payload => {
-			console.log(payload);
 			payload.data.forEach(x => {
 				this.stores.push({ name: x.store, price: x.price, qty: x.availableQuantity });
 			});
 			this.drugs = payload.data;
 			this.loading = false;
-			console.log(this.stores, this.drugs);
 		}).catch(err => console.error(err));
 
 		// Get the list of products from a facility, and then search if the generic

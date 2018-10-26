@@ -39,7 +39,7 @@
             <div class="list-img">
                 <img *ngIf="patient?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
                 <div *ngIf="patient?.personDetails?.profileImageObject !== undefined">
-                    <img class="shadow" [src]="facilityService.transform(patient?.personDetails?.profileImageObject?.thumbnail)">
+                    <img class="shadow" [src]="(patient?.personDetails?.profileImageObject?.thumbnail)">
                 </div>
             </div>
             <div>
@@ -51,7 +51,8 @@
 
     <div class="cont-wrap">
         <div class="docCard-body">
-            <div *ngIf="!showDocument" style="width:100%; text-align:center; font-size: 1.2rem; color:#bebebe; margin:20px auto;">No Documentation form loaded</div>
+            <div *ngIf="!showDocument" style="width:100%; text-align:center; font-size: 1.2rem; color:#bebebe; margin:20px auto;">No
+                Documentation form loaded</div>
             <div *ngIf="symptoms.length !== 0">Symptoms
                 <br>
                 <button *ngFor="let symptom of symptoms" class="tags">{{symptom.name}}&nbsp;
@@ -90,12 +91,14 @@
                     </div>
                 </div>
 
-                <div *ngIf="diagnoses.length !== 0 || orderSet?.medications!==undefined || orderSet?.investigations!==undefined || orderSet?.nursingCares!==undefined || orderSet?.procedures!==undefined || orderSet?.physicianOrders!==undefined" class="actWrappers-jsonFrm-view">
+                <div *ngIf="diagnoses.length !== 0 || orderSet?.medications!==undefined || orderSet?.investigations!==undefined || orderSet?.nursingCares!==undefined || orderSet?.procedures!==undefined || orderSet?.physicianOrders!==undefined"
+                    class="actWrappers-jsonFrm-view">
                     <div *ngIf="diagnoses.length !== 0" (click)="docDiagnosisView()" class="atch-orderSet">
                         <i class="fa fa-eye" aria-hidden="true"></i>
                         <span> View Diagnosis</span>
                     </div>
-                    <div (click)="viewOrderset_onClick()" *ngIf="orderSet?.medications!==undefined || orderSet?.investigations!==undefined || orderSet?.nursingCares!==undefined || orderSet?.procedures!==undefined || orderSet?.physicianOrders!==undefined" class="atch-orderSet">
+                    <div (click)="viewOrderset_onClick()" *ngIf="orderSet?.medications!==undefined || orderSet?.investigations!==undefined || orderSet?.nursingCares!==undefined || orderSet?.procedures!==undefined || orderSet?.physicianOrders!==undefined"
+                        class="atch-orderSet">
                         <i class="fa fa-eye" aria-hidden="true"></i>
                         <span>View Orders</span>
                     </div>
@@ -120,7 +123,9 @@
                                                 </tr>
                                                 <tr *ngFor="let medication of orderSet?.medications; let i = index;">
                                                     <td style="text-align:center;width: 30px;"> {{ i+1 }}</td>
-                                                    <td>{{ medication.genericName }} - {{ medication.dosage }} {{ medication.dosageUnit }} {{ medication.frequency }} for {{ medication.duration }} {{ medication.durationUnit }}</td>
+                                                    <td>{{ medication.genericName }} - {{ medication.dosage }} {{
+                                                        medication.dosageUnit }} {{ medication.frequency }} for {{
+                                                        medication.duration }} {{ medication.durationUnit }}</td>
                                                     <td class="action-placeholder" style="text-align:center;width: 25px;">
                                                         <i class="fa fa-close" aria-hidden="true"></i>
                                                     </td>
@@ -213,5 +218,6 @@
     <app-doc-symptom (symptom)="addSymptom($event)" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-symptom>
 </div>
 <div *ngIf="docDiagnosis_view" class="modal-overlay">
-    <app-doc-diagnosis (diagnosis)="addDiagnosis($event)" (removediagnosis)="removeDiagnosis($event)" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-diagnosis>
+    <app-doc-diagnosis (diagnosis)="addDiagnosis($event)" (removediagnosis)="removeDiagnosis($event)" (closeModal)="close_onClick($event)"
+        id="form-modal" class="form-modal center-center"></app-doc-diagnosis>
 </div>

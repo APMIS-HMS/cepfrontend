@@ -9,10 +9,11 @@
         <div class="modal-userStrap">
             <div class="strapImgWrap">
                 <img *ngIf="loginEmployee?.personDetails?.profileImageObject === undefined" src="assets/images/users/default.png">
-                <img *ngIf="loginEmployee?.personDetails?.profileImageObject !== undefined" [src]="facilityService.transform(loginEmployee?.personDetails?.profileImageObject?.thumbnail)">
+                <img *ngIf="loginEmployee?.personDetails?.profileImageObject !== undefined" [src]="loginEmployee?.personDetails?.profileImageObject?.thumbnail">
                 <!-- <img [src]="facilityService.transform(loginEmployee?.personDetails?.profileImageObject?.thumbnail)"> -->
             </div>
-            <div class="strapUser">{{loginEmployee?.personDetails?.lastName}} {{loginEmployee?.personDetails?.firstName}}</div>
+            <div class="strapUser">{{loginEmployee?.personDetails?.lastName}}
+                {{loginEmployee?.personDetails?.firstName}}</div>
         </div>
 
         <div class="postStrap-title">Check Into Ward</div>
@@ -41,9 +42,10 @@
                         </div>
                     </div>
                     <div class="btn-group">
-                        <button mat-raised-button [disabled]="!wardCheckin.valid || disableCheckIn" (click)="checkIn(wardCheckin.valid, wardCheckin.value);" style="color: #fff; margin-right: 5px;">
-                          <span *ngIf="addCheckin"><i class="fa fa-check-circle"></i> Check In</span>
-                          <span *ngIf="addingCheckin">Checking In <i class="fa fa-spin fa-spinner"></i></span>
+                        <button mat-raised-button [disabled]="!wardCheckin.valid || disableCheckIn" (click)="checkIn(wardCheckin.valid, wardCheckin.value);"
+                            style="color: #fff; margin-right: 5px;">
+                            <span *ngIf="addCheckin"><i class="fa fa-check-circle"></i> Check In</span>
+                            <span *ngIf="addingCheckin">Checking In <i class="fa fa-spin fa-spinner"></i></span>
                         </button>
                         <button mat-raised-button style="color: #fff; background-color: #B71C1C;">Cancel</button>
                     </div>
@@ -69,7 +71,8 @@
                                 <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                                 <ul class="popMenu">
                                     <li>
-                                        <button [disabled]="disableSwitch" (click)="changeRoom(checkIn)" mat-raised-button style="height:30px;line-height:1.5;padding:3px; color: #fff; background-color: blue;">{{switchBtnText}}</button>
+                                        <button [disabled]="disableSwitch" (click)="changeRoom(checkIn)"
+                                            mat-raised-button style="height:30px;line-height:1.5;padding:3px; color: #fff; background-color: blue;">{{switchBtnText}}</button>
                                     </li>
                                     <li>
                                         <i class="fa fa-trash tblMenu" aria-hidden="true"></i> Delete History</li>
