@@ -1,13 +1,13 @@
-import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
-import { systemModulesRoutes } from './../../../../system-module.routes';
-import { FacilityFamilyCoverService } from './../../../../../services/facility-manager/setup/facility-family-cover.service';
-import { FacilitiesService } from './../../../../../services/facility-manager/setup/facility.service';
-import { CoolLocalStorage } from 'angular2-cool-storage';
-import { ActivatedRoute } from '@angular/router';
-import { User } from './../../../../../models/facility-manager/setup/user';
-import { MatPaginator } from '@angular/material';
-import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
+import {SystemModuleService} from 'app/services/module-manager/setup/system-module.service';
+import {FacilityFamilyCoverService} from './../../../../../services/facility-manager/setup/facility-family-cover.service';
+import {FacilitiesService} from './../../../../../services/facility-manager/setup/facility.service';
+import {CoolLocalStorage} from 'angular2-cool-storage';
+import {ActivatedRoute} from '@angular/router';
+import {User} from './../../../../../models/facility-manager/setup/user';
+import {MatPaginator} from '@angular/material';
+import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 @Component({
   selector: 'app-fc-list',

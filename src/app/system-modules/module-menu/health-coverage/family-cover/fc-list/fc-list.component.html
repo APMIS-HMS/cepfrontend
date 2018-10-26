@@ -70,9 +70,6 @@
 
                     </form>
 
-
-
-
                     <form *ngIf="frmNewBeneficiary.valid" [formGroup]="frmDependant">
                         <div formArrayName="dependantArray" class="frmArrayWrap">
                             <div class="frmArray" *ngFor="let dependant of frmDependant.controls['dependantArray'].controls; let i = index;">
