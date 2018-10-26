@@ -618,6 +618,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 		);
 		// this.documents = Array.from(grouped);
 		this.documents = [ ...this.documents, ...Array.from(grouped) ];
+		console.log('calling 1');
 	}
 
 	getDocuments() {
@@ -643,6 +644,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 				this.documents = [ ...this.documents, ...Array.from(grouped) ];
 				console.log(this.documents);
 			});
+
+		console.log('calling 2');
 	}
 	checkType(value) {
 		if (typeof value === 'string') {
