@@ -72,7 +72,6 @@
 		"npm": "5.7.1",
 		"progress": "^2.0.0",
 		"rxjs": "5.5.2",
-		"simple-pdf-viewer": "^2.0.2",
 		"socket.io-client": "2.0.4",
 		"style-loader": "0.18.2",
 		"superagent": "3.5.2",

@@ -29,7 +29,6 @@ import {
 } from '../../../../../services/facility-manager/setup/index';
 import { FormTypeService } from '../../../../../services/module-manager/setup/index';
 import { SharedService } from '../../../../../shared-module/shared.service';
-import { SimplePdfViewerComponent, SimplePDFBookmark } from 'simple-pdf-viewer';
 
 @Component({
 	selector: 'app-documentation',
@@ -39,8 +38,6 @@ import { SimplePdfViewerComponent, SimplePDFBookmark } from 'simple-pdf-viewer';
 export class DocumentationComponent implements OnInit, OnDestroy {
 	currentDocument: any;
 	@Input() patient;
-	@ViewChild(SimplePdfViewerComponent) private pdfViewer: SimplePdfViewerComponent;
-	bookmarks: SimplePDFBookmark[] = [];
 	docDetail_view = false;
 	clinicalNote_view = false;
 	addProblem_view = false;
@@ -235,23 +232,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
 		this.subscription = this.documentationService.listenerUpdate.subscribe((payload) => {
 			this.patientDocumentation = payload;
-		});
-	}
-
-	openDocument(document: File) {
-		const fileReader: FileReader = new FileReader();
-		fileReader.onload = () => {
-			this.pdfViewer.openDocument(new Uint8Array(fileReader.result));
-		};
-		fileReader.readAsArrayBuffer(document);
-	}
-
-	// how to create bookmark
-	createBookmark() {
-		this.pdfViewer.createBookmark().then((bookmark) => {
-			if (bookmark) {
-				this.bookmarks.push(bookmark);
-			}
 		});
 	}
 

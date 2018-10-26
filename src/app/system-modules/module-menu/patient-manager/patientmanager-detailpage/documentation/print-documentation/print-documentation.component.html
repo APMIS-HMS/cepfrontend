@@ -130,11 +130,6 @@
                                 (after-load-complete)="onComplete($event)" (error)="onError($event)" (on-progress)="onProgress($event)"></pdf-viewer>
                         </div>
 
-                        <!-- <section id="viewer" *ngIf="group.docUrl !== undefined">
-                            <simple-pdf-viewer [src]="group.docUrl"></simple-pdf-viewer>
-                        </section> -->
-
-
                         <!-- <br> -->
 
                         <div class="doc-con" *ngIf="group?.document?.documentType?.isSide===true ">

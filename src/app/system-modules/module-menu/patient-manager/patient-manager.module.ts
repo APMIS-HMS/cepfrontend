@@ -1,7 +1,6 @@
 // import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { FacilityCompanyCoverService } from './../../../services/facility-manager/setup/facility-company-cover.service';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
-import { SimplePdfViewerModule } from 'simple-pdf-viewer';
 // import { FacilityFamilyCoverService } from './../../../services/facility-manager/setup/facility-family-cover.service';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -145,15 +144,7 @@ import { PrintDocumentationComponent } from './patientmanager-detailpage/documen
 		PrintDocumentationComponent
 	],
 	exports: [],
-	imports: [
-		SharedModule,
-		patientManagerRoutes,
-		OnlyMaterialModule,
-		MaterialModule,
-		ChartsModule,
-		PdfViewerModule,
-		SimplePdfViewerModule
-	],
+	imports: [ SharedModule, patientManagerRoutes, OnlyMaterialModule, MaterialModule, ChartsModule, PdfViewerModule ],
 	providers: [
 		PatientResolverService,
 		AppointmentResolverService,

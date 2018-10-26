@@ -1,6 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from '@angular/core';
 import { DocumentUploadService, FacilitiesService } from 'app/services/facility-manager/setup';
-import { SimplePdfViewerComponent, SimplePDFBookmark } from 'simple-pdf-viewer';
 
 @Component({
 	selector: 'app-print-documentation',
@@ -9,34 +8,14 @@ import { SimplePdfViewerComponent, SimplePDFBookmark } from 'simple-pdf-viewer';
 })
 export class PrintDocumentationComponent implements OnInit {
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-	@ViewChild(SimplePdfViewerComponent) private pdfViewer: SimplePdfViewerComponent;
 	@Input() patientDocumentation: any = <any>{};
 	@Input() patient: any = <any>{};
 	loading: boolean;
-	bookmarks: SimplePDFBookmark[] = [];
 
 	constructor(private docUploadService: DocumentUploadService, private facilityService: FacilitiesService) {}
 
 	ngOnInit() {
 		this.getDocuments();
-	}
-
-	// how to open PDF document
-	openDocument(document: File) {
-		const fileReader: FileReader = new FileReader();
-		fileReader.onload = () => {
-			this.pdfViewer.openDocument(new Uint8Array(fileReader.result));
-		};
-		fileReader.readAsArrayBuffer(document);
-	}
-
-	// how to create bookmark
-	createBookmark() {
-		this.pdfViewer.createBookmark().then((bookmark) => {
-			if (bookmark) {
-				this.bookmarks.push(bookmark);
-			}
-		});
 	}
 
 	getDocuments() {
