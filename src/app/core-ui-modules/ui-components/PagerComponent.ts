@@ -85,9 +85,8 @@ export class PagerButtonComponent implements OnChanges {
 	@Input() size: string = BUTTON_SIZE_DEFAULT;
 	@Input('background-color') bgColor: string = 'white';
 	@Input('fore-color') foreColor: string = '#404040';
-	@Input('is-oval') isOval: boolean = true;
+	@Input('is-oval') isOval: boolean = false;
 	@Input('is-disable') disable: boolean = false;
-
 	@Output() onClick: EventEmitter<void> = new EventEmitter<void>();
 	fontSize: string;
 	padding: string;
@@ -152,39 +151,54 @@ export class PagerButtonComponent implements OnChanges {
 	selector: 'asom-data-pager',
 	template: `
     <div class="asom-pager-button-container" *ngIf="pagerSource" [ngStyle]="{'justify-content' : flexJustify }">
-      <asom-pager-button [size]="buttonSize" [is-disable]="true" *ngIf="showProgress" [is-oval]="useOvalButton">
+      <asom-pager-button title="Busy loading Page Data" [size]="buttonSize" [is-disable]="true" *ngIf="showProgress && inProgress" [is-oval]="useOvalButton">
                <span class="fa fa-refresh fa-spin" *ngIf="inProgress">
                    
                </span>
-        <span class="fa fa-anchor" *ngIf="!inProgress">
+        <span class="fa fa-refresh" *ngIf="!inProgress">
                    
                </span>
       </asom-pager-button>
-      <asom-pager-button [size]="buttonSize" [is-disable]="pageIndex <= 0 || inProgress" (onClick)="gotoPrevPage()"
+        <asom-pager-button title="Goto First Page" [size]="buttonSize" [is-disable]="pageIndex <= 0 || inProgress" (onClick)="gotoFirstPage()"
+                           *ngIf="showFirstLast" #first
+                           [is-oval]="useOvalButton" [background-color]="firstLastColor">
+							<span>&#8676;</span>
+        </asom-pager-button>
+      <asom-pager-button title="Go to Previous Page" 
+			  [size]="buttonSize" [is-disable]="pageIndex <= 0 || inProgress" (onClick)="gotoPrevPage()"
                          *ngIf="showNextPrev" #prev
                          [is-oval]="useOvalButton" [background-color]="nextPrevColor">
-        &lt;
+          &#10094;
       </asom-pager-button>
       <asom-pager-button [size]="buttonSize" #pg [is-oval]="useOvalButton"
                          [background-color]="pageIndex === index ? color:'white'"
                          (onClick)="pagerButtonClick(index)" [is-disable]="inProgress"
                          *ngFor="let p of totalPages; let index = index">{{index + 1}}
       </asom-pager-button>
-      <asom-pager-button [size]="buttonSize" [is-disable]="pageIndex >= totalPages.length-1 || inProgress"
+      <asom-pager-button title="Go to Next Page" [size]="buttonSize" [is-disable]="pageIndex >= totalPages.length-1 || inProgress"
                          (onClick)="gotoNextPage()"
                          *ngIf="showNextPrev" #next [background-color]="nextPrevColor"
-                         [is-oval]="useOvalButton">&gt;
+                         [is-oval]="useOvalButton">&#10095;
       </asom-pager-button>
-      <p *ngIf="showTotalRecord" style="font-weight : bold;height: 42px;display: flex;
-            flex-direction: column;justify-content: center; 
-            align-items: center;min-width: 42px;" [ngStyle]="{'font-size':(buttonSize ==='large' ? '18px' : '14px')}">
-        {{pagerSource.totalRecord}}
-      </p>
+        <asom-pager-button title="Go to Last Page" [size]="buttonSize" [is-disable]="pageIndex >= totalPages.length-1 || inProgress"
+                           (onClick)="gotoLastPage()"
+                           *ngIf="showFirstLast" #next [background-color]="firstLastColor"
+                           [is-oval]="useOvalButton"><span>&#8677;</span>
+        </asom-pager-button>
     </div>
     <div class="asom-pager-button-container" *ngIf="!pagerSource" #pagerSourceNotSet>
       <p class="text-danger" style="background-color: #ffd6da; padding: 10px; color:#ca0100;">Pager Source not Set</p>
     </div>
-
+	<div class="" *ngIf="showTotalRecord" style="font-size:12px; padding:7px; text-align: center;">
+		Page Sizes : <select name="cboPageSize" id="" #pgSizes (change)="assignPageSizeOption(pgSizes)">
+		<option *ngFor="let pz of pageSizeOptions" [value]="pz">{{pz|number}} Record / page</option>
+	</select>
+        <p style="font-weight : bold;height: 42px;display: flex;
+            flex-direction: column;justify-content: center; 
+            align-items: center;min-width: 42px;" [ngStyle]="{'font-size':(buttonSize ==='large' ? '15px' : '13px')}">
+           Page {{pageIndex + 1 | number}} of {{pagerSource.totalPages |number}} / {{pagerSource.totalRecord |number}} <span style="font-size: 12px;">Records </span>
+        </p>
+	</div>	
   `,
 	styles: [
 		`
@@ -205,10 +219,13 @@ export class AsomDataPagerComponent implements OnInit, AfterViewInit, OnChanges,
 	@ViewChildren('pg') buttons: QueryList<PagerButtonComponent>; // this may be redundant
 	@Input('use-oval-button') useOvalButton: boolean = true;
 	@Input('in-progress') inProgress: boolean = false;
-	@Input('show-total-record') showTotalRecord: boolean = true;
+	@Input('show-total-record') showTotalRecord: boolean = true
 	@Input('show-progress') showProgress: boolean = false; // if true a progress section template will be rendered and enabled if in progress is true
 	@Input('show-next-prev') showNextPrev: boolean = true;
+	@Input('show-first-last') showFirstLast: boolean = true;
 	@Input('next-prev-color') nextPrevColor: string = 'white';
+	@Input('first-last-color') firstLastColor: string = 'white';
+	@Input('max-page-number') maxPageNumber : number = 10; // When the total pages exceeds this threshold, the ui automatically adds a more
 	@Input('h-alignment') hAlignment: string = PAGER_HORIZONTAL_ALIGNMENT_CENTER;
 	@Input('next-prev-color-class') nextPrevClass: string = '';
 	@Input('pager-source') pagerSource: IPagerSource;
@@ -221,7 +238,7 @@ export class AsomDataPagerComponent implements OnInit, AfterViewInit, OnChanges,
 	flexJustify: string = PAGER_HORIZONTAL_ALIGNMENT_CENTER;
 	//diff : { [any : string] : KeyValueDiffer<string, IPagerSource>};
 	differ: any;
-
+    pageSizeOptions : number[]  = [10, 20, 30, 50, 100, 150];
 	constructor(private differs: KeyValueDiffers) {
 		//this.diff  = differs.find({}).create<{ [any : string] : KeyValueDiffer<string, IPagerSource>}>();
 	}
@@ -272,7 +289,13 @@ export class AsomDataPagerComponent implements OnInit, AfterViewInit, OnChanges,
 			(this.pagerSource.totalRecord - mod) / this.pagerSource.pageSize + (mod > 0 ? 1 : 0);
 		this._generatePageIndexes(this.pagerSource.totalPages);
 	}
-
+    gotoLastPage() {
+        // got to next page only if we are not at the last page
+        if (this.canGoNext()) {
+            this.pageIndex = this.totalPages.length - 1;
+            this.pagerButtonClick(this.pageIndex);
+        }
+    }
 	gotoNextPage() {
 		// got to next page only if we are not at the last page
 		if (this.canGoNext()) {
@@ -288,6 +311,13 @@ export class AsomDataPagerComponent implements OnInit, AfterViewInit, OnChanges,
 			this.pagerButtonClick(this.pageIndex);
 		}
 	}
+    gotoFirstPage() {
+        // got to next page only if we are not at the last page
+        if (this.canGoPrev()) {
+            this.pageIndex = 0;
+            this.pagerButtonClick(this.pageIndex);
+        }
+    }
 
 	private canGoNext(): boolean {
 		/*
@@ -335,7 +365,8 @@ export class AsomDataPagerComponent implements OnInit, AfterViewInit, OnChanges,
 	}
 
 	private setPageIndex() {
-		this.pageIndex = this.pagerSource.currentPage;
+
+		this.pageIndex = this.pagerSource.currentPage < this.totalPages.length ? this.pagerSource.currentPage : 0;
 		//this.pagerButtonClick(this.pageIndex);
 	}
 
@@ -357,4 +388,16 @@ export class AsomDataPagerComponent implements OnInit, AfterViewInit, OnChanges,
 			}
 		}
 	}
+
+    assignPageSizeOption(pgSizes: HTMLSelectElement) {
+		// Convert to number
+
+		const opt: HTMLOptionElement  = pgSizes.options[pgSizes.selectedIndex];
+		const pageOpt  = parseInt(opt.value);
+		this.pagerSource.pageSize  = pageOpt;
+		this.pagerButtonClick(this.pageIndex);
+		//this.calTotalPages();
+		//alert(pageOpt);
+
+    }
 }
