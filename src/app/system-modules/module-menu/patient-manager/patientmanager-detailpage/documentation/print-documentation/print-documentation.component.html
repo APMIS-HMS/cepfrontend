@@ -59,8 +59,10 @@
                         </span>
                     </div>
                 </div>
+
                 <div class="doc-content" *ngFor="let group of patientDocumentation.documentations">
                     <div class="control-group">
+                        <!-- header -->
                         <div class="control-group-header">
                             <div class="secWrap-header">
                                 <div class="val-tag">Hospital</div>
@@ -81,6 +83,8 @@
                                         date:'shortTime'}}</span></div>
                             </div>
                         </div>
+
+                        <!-- vital signs -->
                         <div class="doc-con" *ngIf="group?.document?.body?.vitals !== undefined && group?.document?.body?.vitals.length > 0">
                             <table cellpadding="0" cellspacing="0" border="0.5" class="workspace-tbl">
                                 <thead>
@@ -109,6 +113,7 @@
                                 </tbody>
                             </table>
                         </div>
+
                         <div class="doc-con" *ngIf="(group?.document?.documentType?.isSide===false || group?.document?.documentType?.isSide===undefined) && group.docUrl === undefined ">
                             <div *ngFor="let key of group?.document?.body | keys ">
                                 <div *ngIf="group?.document?.body !==undefined " class="doc-span">{{key}}:</div>
@@ -125,13 +130,14 @@
                                 </div>
                             </div>
                         </div>
-                        <!-- <div class="doc-con" *ngIf="group.docUrl !== undefined && !loading">
+
+                        <div class="doc-con" *ngIf="group.docUrl !== undefined && !loading">
                             <pdf-viewer *ngIf="group.docUrl !== undefined && !loading" [src]="getCurrentDocument(group)"
                                 (after-load-complete)="onComplete($event)" (error)="onError($event)" (on-progress)="onProgress($event)"></pdf-viewer>
-                        </div> -->
+                        </div>
 
                         <!-- <br> -->
-
+                        <!-- Problem and Allergy -->
                         <div class="doc-con" *ngIf="group?.document?.documentType?.isSide===true ">
                             <div *ngFor="let key of group?.document?.body | keys ">
                                 <div *ngIf="group?.document?.body !==undefined " class="doc-span">{{key}}:</div>
@@ -158,37 +164,6 @@
                                 </div>
                             </div>
                         </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
                     </div>
 

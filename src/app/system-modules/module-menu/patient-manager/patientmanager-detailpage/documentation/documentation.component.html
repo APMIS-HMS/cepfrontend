@@ -152,6 +152,12 @@
                                                     </div>
                                                 </div>
                                             </div>
+                                            <div class="doc-con" *ngIf="document?.document?.documentType===undefined && document?.document?.docUrl !== undefined">
+                                                <pdf-viewer [src]="getCurrentDocument(document?.document)"
+                                                    (after-load-complete)="onComplete($event)" (error)="onError($event)"
+                                                    (on-progress)="onProgress($event)"></pdf-viewer>
+
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

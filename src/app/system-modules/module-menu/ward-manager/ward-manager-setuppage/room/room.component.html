@@ -56,10 +56,11 @@
                         <div class="table-list col-xs-2" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{room.group?.name}} </div>
                         <div class="table-list col-xs-2" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{room?.service?.name}}</div>
                         <div class="table-list col-xs-2" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{room?.description}}</div>
-                        <div class="table-list col-xs-2" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{room.beds?.length}}</div>
+                        <div class="table-list col-xs-2" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{room.activeBed}}</div>
+                        <!-- <div class="table-list col-xs-2" routerLink="/dashboard/ward-manager/setup/ward/{{wardId}}/room/{{room._id}}">{{room.beds.filter(x => x.isDeleted)}}</div> -->
                         <div class="table-list col-xs-1">
                             <i (click)="editRoom(i, room)" class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                            <!-- <i (click)="editRoom(i, room)" class="fa fa-trash" aria-hidden="true"></i> -->
+                            <i (click)="confirmRoomDelete(room)" class="fa fa-trash" aria-hidden="true"></i>
                         </div>
                     </div>
                 </div>
