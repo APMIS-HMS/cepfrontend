@@ -126,8 +126,11 @@
                             </div>
                         </div>
                         <div class="doc-con" *ngIf="group.docUrl !== undefined && !loading">
-                            <pdf-viewer *ngIf="group.docUrl !== undefined && !loading" [src]="getCurrentDocument(group)"
-                                (after-load-complete)="onComplete($event)" (error)="onError($event)" (on-progress)="onProgress($event)"></pdf-viewer>
+                            <!-- <pdf-viewer *ngIf="group.docUrl !== undefined && !loading" [src]="getCurrentDocument(group)"
+                                (after-load-complete)="onComplete($event)" (error)="onError($event)" (on-progress)="onProgress($event)"></pdf-viewer> -->
+
+                            <app-doc-upload-detail [selectedDocument]="group" (closeModal)="close_onClick($event)" id="form-modal"
+                                class="form-modal center-center"></app-doc-upload-detail>
                         </div>
 
                         <!-- <br> -->

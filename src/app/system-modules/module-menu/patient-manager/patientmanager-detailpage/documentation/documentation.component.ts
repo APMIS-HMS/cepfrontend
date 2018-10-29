@@ -571,6 +571,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
 	populateDocuments() {
 		this.mainDocuments = [];
+		this.docDocuments = [];
+		this.documents = [];
 		this.patientDocumentation.documentations.forEach((documentation) => {
 			if (documentation.facilityName === undefined) {
 				documentation.facilityName = this.selectedFacility.name;
