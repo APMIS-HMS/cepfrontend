@@ -80,7 +80,7 @@ export class FcListComponent implements OnInit {
     });
     this.addDependant();
     this.getBeneficiaryList(this.selectedFacility._id);
-
+    this.closeDependant(null, 0);
   }
 
   addDependant(beneficiary?) {
@@ -129,9 +129,12 @@ export class FcListComponent implements OnInit {
       );
   }
   closeDependant(dependant, i) {
-    (<FormArray>this.frmDependant.controls['dependantArray']).controls.splice(i, 1);
-    if ((<FormArray>this.frmDependant.controls['dependantArray']).controls.length === 0) {
-      this.addDependant()
+    const frmControls = (<FormArray>this.frmDependant.controls['dependantArray']).controls;
+    frmControls.splice(i, 1);
+    if (frmControls.length === 0) {
+      //this.addDependant()
+        // let log the current state for the control
+        console.log(frmControls);
     }
   }
 
@@ -175,7 +178,7 @@ export class FcListComponent implements OnInit {
       })
       this.newFamily = true;
       if (!hasRecord && !isAdd) {
-        this.addDependant();
+        //this.addDependant();
       }
     } else {
       this.frmNewBeneficiary.reset();
@@ -204,7 +207,7 @@ export class FcListComponent implements OnInit {
                 readOnly: [true],
               }));
           if (!hasRecord) {
-            this.addDependant();
+            //this.addDependant();
           }
         } else if (this.getRole(filter) === 'P') {
           this.frmNewBeneficiary.controls['surname'].setValue(filter.surname);

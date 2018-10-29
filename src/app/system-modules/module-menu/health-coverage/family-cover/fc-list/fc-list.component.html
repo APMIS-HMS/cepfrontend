@@ -85,7 +85,7 @@
                                          class="closeIcon"><i class="fa fa-times-circle-o" aria-hidden="true"></i></div>
                                     <div formGroupName="{{i}}">
                                         <div class="frmNoteWrap">
-                                            <div class="">Add Dependant</div>
+                                            <div class="">Dependant Record</div>
                                             <div>
                                                 <div class="dv-wrap">
                                                     <div class="frm-x2 frmArray">
@@ -138,6 +138,9 @@
                                                             </mat-form-field>
                                                         </div>
                                                     </div>
+                                                    <!--If this a new entry, simply remove the dependent record from the list
+                                                    otherwise we have to ask for confirmation before removing the depedant from the
+                                                    backend. this show be tracked with a variable-->
                                                     <div (click)="closeDependant(dependant, i)" class="frmArrayBtn"><i
                                                             class="fa fa-minus" aria-hidden="true"></i></div>
                                                 </div>
@@ -148,7 +151,7 @@
                             </div>
 
                         </form>
-                        <div style="padding: 10px;" *ngIf="frmNewBeneficiary.valid">
+                        <div style="padding: 10px;" >
                             <button class="btn btn-primary" (click)="pushNewDependant()" >Add Dependent</button>
                         </div>
                         <div class="flex-button">
