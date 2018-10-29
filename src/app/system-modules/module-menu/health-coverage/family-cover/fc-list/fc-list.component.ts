@@ -1,13 +1,13 @@
-import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
-import { systemModulesRoutes } from './../../../../system-module.routes';
-import { FacilityFamilyCoverService } from './../../../../../services/facility-manager/setup/facility-family-cover.service';
-import { FacilitiesService } from './../../../../../services/facility-manager/setup/facility.service';
-import { CoolLocalStorage } from 'angular2-cool-storage';
-import { ActivatedRoute } from '@angular/router';
-import { User } from './../../../../../models/facility-manager/setup/user';
-import { MatPaginator } from '@angular/material';
-import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
+import {SystemModuleService} from 'app/services/module-manager/setup/system-module.service';
+import {FacilityFamilyCoverService} from './../../../../../services/facility-manager/setup/facility-family-cover.service';
+import {FacilitiesService} from './../../../../../services/facility-manager/setup/facility.service';
+import {CoolLocalStorage} from 'angular2-cool-storage';
+import {ActivatedRoute} from '@angular/router';
+import {User} from './../../../../../models/facility-manager/setup/user';
+import {MatPaginator} from '@angular/material';
+import {Component, ElementRef, EventEmitter, OnInit, Output, ViewChild} from '@angular/core';
+import {FormArray, FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
+
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 @Component({
   selector: 'app-fc-list',
@@ -80,14 +80,14 @@ export class FcListComponent implements OnInit {
     });
     this.addDependant();
     this.getBeneficiaryList(this.selectedFacility._id);
-
+    this.closeDependant(null, 0);
   }
 
   addDependant(beneficiary?) {
 
     if (beneficiary) {
       this.showEdit(beneficiary, true);
-      this.pushNewDependant(undefined, undefined);
+     // this.pushNewDependant(undefined, undefined);
     } else {
       this.frmDependant = this.formBuilder.group({
         'dependantArray': this.formBuilder.array([
@@ -129,9 +129,12 @@ export class FcListComponent implements OnInit {
       );
   }
   closeDependant(dependant, i) {
-    (<FormArray>this.frmDependant.controls['dependantArray']).controls.splice(i, 1);
-    if ((<FormArray>this.frmDependant.controls['dependantArray']).controls.length === 0) {
-      this.addDependant()
+    const frmControls = (<FormArray>this.frmDependant.controls['dependantArray']).controls;
+    frmControls.splice(i, 1);
+    if (frmControls.length === 0) {
+      //this.addDependant()
+        // let log the current state for the control
+        console.log(frmControls);
     }
   }
 
@@ -175,7 +178,7 @@ export class FcListComponent implements OnInit {
       })
       this.newFamily = true;
       if (!hasRecord && !isAdd) {
-        this.addDependant();
+        //this.addDependant();
       }
     } else {
       this.frmNewBeneficiary.reset();
@@ -204,7 +207,7 @@ export class FcListComponent implements OnInit {
                 readOnly: [true],
               }));
           if (!hasRecord) {
-            this.addDependant();
+            //this.addDependant();
           }
         } else if (this.getRole(filter) === 'P') {
           this.frmNewBeneficiary.controls['surname'].setValue(filter.surname);
@@ -278,7 +281,7 @@ export class FcListComponent implements OnInit {
     this.frmNewBeneficiary.reset();
     this.frmDependant.reset();
     this.frmDependant.controls['dependantArray'] = this.formBuilder.array([]);
-    this.pushNewDependant();
+    //this.pushNewDependant();
   }
 
   getBeneficiaryList(id) {
