@@ -138,7 +138,7 @@ export class PrintDocumentationComponent implements OnInit {
     }
     .control-group-header{
       max-height: 30px;
-      background: rgba(211, 211, 211, 0.719);
+      background: gray;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -152,6 +152,11 @@ export class PrintDocumentationComponent implements OnInit {
       cursor: pointer;
       padding: 5px;
   }
+
+  .secWrap-header{
+    text-align: center;
+  
+}
   .doc-span{
     font-weight: bold;
     text-decoration: underline;
