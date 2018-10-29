@@ -87,7 +87,7 @@ export class FcListComponent implements OnInit {
 
     if (beneficiary) {
       this.showEdit(beneficiary, true);
-      this.pushNewDependant(undefined, undefined);
+     // this.pushNewDependant(undefined, undefined);
     } else {
       this.frmDependant = this.formBuilder.group({
         'dependantArray': this.formBuilder.array([
@@ -278,7 +278,7 @@ export class FcListComponent implements OnInit {
     this.frmNewBeneficiary.reset();
     this.frmDependant.reset();
     this.frmDependant.controls['dependantArray'] = this.formBuilder.array([]);
-    this.pushNewDependant();
+    //this.pushNewDependant();
   }
 
   getBeneficiaryList(id) {
