@@ -54,12 +54,7 @@
             <div class="card-title">Billing History</div>
             <button class="btn-norm" (click)="hmo_report()"><i class="fa fa-file"></i> &nbsp; Generate Report</button>
         </div>
-        <div class="well-lg " >
-          <p *ngFor="let v of historyBills" style="padding: 10px;margin:10px; background-color: #eda993;">
-            Group  {{v.group}}
 
-          </p>
-        </div>
         <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5">
             <thead>
                 <tr>
@@ -79,7 +74,7 @@
             </thead>
 
             <tbody>
-                <tr (click)="billHistoryDetail(bill)" *ngFor="let bill of historyBills.value">
+                <tr (click)="billHistoryDetail(bill)" *ngFor="let bill of historyBills">
                     <td>{{bill.updatedAt|date:'medium'}}</td>
                     <td>
                         {{bill.coverFile.id}}
