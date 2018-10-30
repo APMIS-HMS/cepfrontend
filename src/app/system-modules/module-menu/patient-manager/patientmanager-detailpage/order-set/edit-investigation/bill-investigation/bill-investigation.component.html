@@ -33,8 +33,14 @@
                                                                 <div>{{location.laboratoryId.name}}</div>
                                                                 <div class="opt-price" *ngIf="!editPrice"><span>&#x20a6;</span>{{getPrice(location.workbenches)}}</div>
                                                                 <i class="fa fa-pencil-square-o" aria-hidden="true"
-                                                                    (click)="onEditPrice()"></i>
-                                                                <input type="number" [formControl]="costForm" (change)="onChangePrice(i)" *ngIf="editPrice">
+                                                                    (click)="onEditPrice()">edit price</i>
+                                                                <div *ngIf="editPrice">
+                                                                    <mat-form-field >
+                                                                        <input matInput type="number" placeholder="Enter New Price" [formControl]="costForm"
+                                                                            (change)="onChangePrice(i)" >
+                                                                    </mat-form-field>
+                                                                </div>
+
                                                             </div>
                                                         </mat-radio-button>
                                                     </mat-radio-group>

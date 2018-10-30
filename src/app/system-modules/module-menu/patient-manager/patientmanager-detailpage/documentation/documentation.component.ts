@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { UUID } from 'angular2-uuid';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
@@ -24,7 +24,8 @@ import {
 	FormsService,
 	LaboratoryRequestService,
 	PrescriptionPriorityService,
-	PrescriptionService
+	PrescriptionService,
+	DocumentUploadService
 } from '../../../../../services/facility-manager/setup/index';
 import { FormTypeService } from '../../../../../services/module-manager/setup/index';
 import { SharedService } from '../../../../../shared-module/shared.service';
@@ -61,6 +62,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 	selectedDocument: PatientDocumentation = <PatientDocumentation>{};
 	patientDocumentation: Documentation = <Documentation>{};
 	documents: any[] = [];
+	mainDocuments: any[] = [];
+	docDocuments: any[] = [];
 	auth: any;
 	subscription: Subscription;
 	priority: any = <any>{};
@@ -80,7 +83,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 		private _prescriptionService: PrescriptionService,
 		private authFacadeService: AuthFacadeService,
 		private _priorityService: PrescriptionPriorityService,
-		private systemModuleService: SystemModuleService
+		private systemModuleService: SystemModuleService,
+		private docUploadService: DocumentUploadService
 	) {
 		this.authFacadeService.getLogingEmployee().then((payload: any) => {
 			this.loginEmployee = payload;
@@ -90,7 +94,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 		this.selectedMiniFacility = <Facility>this.locker.getObject('miniFacility');
 
 		this.subscription = this.sharedService.submitForm$.subscribe((payload) => {
-			console.log(payload);
 			if (!this.hasSavedDraft) {
 				const doc: PatientDocumentation = <PatientDocumentation>{};
 				doc.document = { documentType: this.selectedForm, body: payload };
@@ -236,6 +239,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 		this.getPersonDocumentation();
 		this.auth = this.locker.getObject('auth');
 		this._getAllPriorities();
+		this.getDocuments();
 	}
 	getPersonDocumentation() {
 		this.documentationService
@@ -566,7 +570,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 	}
 
 	populateDocuments() {
-		this.documents = [];
+		this.mainDocuments = [];
 		this.patientDocumentation.documentations.forEach((documentation) => {
 			if (documentation.facilityName === undefined) {
 				documentation.facilityName = this.selectedFacility.name;
@@ -582,11 +586,11 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 				const createdById = this.loginEmployee._id;
 				const facilityId = this.selectedFacility._id;
 				if (documentation.documentationStatus !== 'Draft') {
-					this.documents.push(documentation);
+					this.mainDocuments.push(documentation);
 				} else if (documentation.createdById === createdById && documentation.facilityId === facilityId) {
 					this.hasSavedDraft = true;
 					this.draftDocument = documentation;
-					this.documents.push(documentation);
+					this.mainDocuments.push(documentation);
 					this.clinicalNote_view = true;
 				}
 			} else {
@@ -595,24 +599,53 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 					documentation.document.documentType.isSide === true &&
 					documentation.document.documentType.title === 'Problems'
 				) {
-					this.documents.push(documentation);
+					this.mainDocuments.push(documentation);
 				} else if (
 					documentation.document !== undefined &&
 					documentation.document.documentType.isSide === true &&
 					documentation.document.documentType.title === 'Vitals'
 				) {
 					this.tableChartData = documentation.document.body.vitals;
-					this.documents.push(documentation);
+					this.mainDocuments.push(documentation);
 				} else {
-					this.documents.push(documentation);
+					this.mainDocuments.push(documentation);
 				}
 			}
 		});
-		const reverseDocuments = this.documents.reverse();
+		const reverseDocuments = this.mainDocuments.reverse();
 		const grouped = this.groupBy(reverseDocuments, (reverseDocument) =>
 			format(reverseDocument.createdAt, 'DD/MM/YYYY')
 		);
-		this.documents = Array.from(grouped);
+		// this.documents = Array.from(grouped);
+		this.documents = [ ...this.documents, ...Array.from(grouped) ];
+		console.log('calling 1');
+	}
+
+	getDocuments() {
+		this.docUploadService
+			.docUploadFind({
+				query: {
+					patientId: this.patient._id,
+					facilityId: this.facilityService.getSelectedFacilityId()._id,
+					$sort: {
+						createdAt: -1
+					}
+				}
+			})
+			.then((payload) => {
+				// this.documents = payload.data;
+				payload.data.forEach((document) => {
+					this.docDocuments.push({ createdAt: document.createdAt, document: document });
+				});
+				const reverseDocuments = this.docDocuments.reverse();
+				const grouped = this.groupBy(reverseDocuments, (reverseDocument) =>
+					format(reverseDocument.createdAt, 'DD/MM/YYYY')
+				);
+				this.documents = [ ...this.documents, ...Array.from(grouped) ];
+				console.log(this.documents);
+			});
+
+		console.log('calling 2');
 	}
 	checkType(value) {
 		if (typeof value === 'string') {
@@ -706,7 +739,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 	}
 
 	close_onClick(message: boolean): void {
-		console.log(1);
 		this.docDetail_view = false;
 		this.clinicalNote_view = false;
 		this.addProblem_view = false;
@@ -714,8 +746,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 		this.addHistory_view = false;
 		this.addVitals_view = false;
 		this.showPrintPop = false;
-		console.log(2);
-		// this.getPersonDocumentation();
+		this.getPersonDocumentation();
 	}
 
 	showOrderset_onClick(e) {
@@ -744,6 +775,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 	}
 
 	node_toggle(document) {
+		console.log(document);
 		if (this.currentDocument !== undefined && document === this.currentDocument) {
 			this.currentDocument = undefined;
 		} else {
@@ -751,6 +783,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 		}
 	}
 	should_show(document) {
+		console.log(document);
 		return this.currentDocument === undefined ? false : this.currentDocument._id === document._id;
 	}
 	nodeChild_toggle() {
@@ -769,5 +802,22 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 			}
 		});
 		return map;
+	}
+
+	getCurrentDocument(group) {
+		return {
+			url: group.docUrl
+		};
+	}
+
+	onComplete(event) {
+		// this.loading = false;
+	}
+	onError(event) {
+		// this.loading = false;
+		// this.loadingError = true;
+	}
+	onProgress(progressData: any) {
+		console.log(progressData);
 	}
 }

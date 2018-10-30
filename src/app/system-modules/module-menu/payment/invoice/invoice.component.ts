@@ -298,23 +298,21 @@ export class InvoiceComponent implements OnInit, OnDestroy {
                 //........Customized style.......
                 @import "../../../../globals/variables.scss";
                 @import "../../../../globals/normalize.scss";
-                @import "./invoice.component.scss";
 
-                .image_container {
-                    width: 100px;
-                    height: 100px;
-                    background: #eee;
-                    text-align: center;
-                    line-height: 300px;
-                    border-radius: 80px;
-                    padding-bottom: 2px;
-                  }
-                 
-                 .image_container img {
+                .image_container{
                     vertical-align: middle;
-                  }
-
-                  .card-container{
+                    width: 80px;
+                    height: 80px;
+                    img{
+                        max-width:100%; 
+                        max-height:100%;
+                        margin:auto;
+                        display:block;
+                        object-fit: cover;
+                    }
+                }
+                
+                .card-container{
                     display:grid; padding-right: 30px; padding-left: 30px;
                 }
 

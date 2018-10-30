@@ -1,4 +1,4 @@
-import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from '@angular/core';
 import { DocumentUploadService, FacilitiesService } from 'app/services/facility-manager/setup';
 
 @Component({
@@ -11,10 +11,11 @@ export class PrintDocumentationComponent implements OnInit {
 	@Input() patientDocumentation: any = <any>{};
 	@Input() patient: any = <any>{};
 	loading: boolean;
+
 	constructor(private docUploadService: DocumentUploadService, private facilityService: FacilitiesService) {}
 
 	ngOnInit() {
-		// this.getDocuments();
+		this.getDocuments();
 	}
 
 	getDocuments() {
@@ -32,8 +33,11 @@ export class PrintDocumentationComponent implements OnInit {
 			})
 			.then((payload) => {
 				// this.documents = payload.data;
-				this.patientDocumentation.documentations.push(...payload.data);
-				console.log(payload.data);
+				payload.data.forEach((document) => {
+					this.patientDocumentation.documentations.push(document);
+				});
+				// this.patientDocumentation.documentations.push(...payload.data);
+				// console.log(payload.data);
 			});
 	}
 	sortDocumentation() {
@@ -134,7 +138,7 @@ export class PrintDocumentationComponent implements OnInit {
     }
     .control-group-header{
       max-height: 30px;
-      background: rgba(211, 211, 211, 0.719);
+      background: gray;
       display: flex;
       justify-content: space-between;
       align-items: center;
@@ -148,6 +152,11 @@ export class PrintDocumentationComponent implements OnInit {
       cursor: pointer;
       padding: 5px;
   }
+
+  .secWrap-header{
+    text-align: center;
+  
+}
   .doc-span{
     font-weight: bold;
     text-decoration: underline;

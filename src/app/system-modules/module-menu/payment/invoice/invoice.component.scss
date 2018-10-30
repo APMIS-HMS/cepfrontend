@@ -103,14 +103,20 @@ ul.topmenuwrap {
     display: grid;
     grid-template-rows: 100px 100px 100px;
 }
-.image_container {
-    width: 70px;
-    height: 70px;
-    background: #eee;
-    text-align: center;
-    border-radius: 80px;
-    padding-bottom: 2px;
-  }
+
+.image_container{
+    vertical-align: middle;
+    width: 80px;
+    height: 80px;
+    img{
+        max-width:100%; 
+        max-height:100%;
+        margin:auto;
+        display:block;
+    }
+}
+
+
 
   .img_wrap{
     display: grid;
@@ -121,10 +127,6 @@ ul.topmenuwrap {
     align-items: center;
     align-content: center;
     align-self: center;
-  }
- 
- .image_container img {
-    vertical-align: middle;
   }
 
 
