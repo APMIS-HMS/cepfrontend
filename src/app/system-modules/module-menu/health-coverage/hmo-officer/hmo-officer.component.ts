@@ -3,7 +3,8 @@ import {BillingService, FacilitiesService} from '../../../../services/facility-m
 import {CoolLocalStorage} from 'angular2-cool-storage';
 import {AuthFacadeService} from '../../../service-facade/auth-facade.service';
 import {SystemModuleService} from 'app/services/module-manager/setup/system-module.service';
-
+import {groupBy}  from  'lodash/groupBy';
+import * as _ from 'lodash';
 
 @Component({
     selector: 'app-hmo-officer',
@@ -54,9 +55,31 @@ export class HmoOfficerComponent implements OnInit {
                     element.isPending = false;
                 }
             });
+            /* Perform grouping of billings based the HMO title
+            * lodash utility library is use for the grouping
+            * */
             this.bills = payload.data.filter(x => x.isPending === true);
             this.historyBills = payload.data.filter(x => x.isPending === false);
             this.calTotalBill();
+            // console.log (_);
+            // add som dummy data to the list and observer the grouping made
+            const dummy  = _.take(this.historyBills,3);
+            const joined  =  [..._.map(dummy, x => { x.coverFile.name  = "Modified HMO Name";
+            return x;
+            }), ...this.historyBills];
+
+            let groupedData  =  _.groupBy(joined, function(obj)
+            {
+                return obj.coverFile.name;
+            });
+            //groupedData  = _.keys(groupedData);
+
+            const newValue  = _.map(groupedData , (v,k) => {
+                return {group: k,value : v};
+            })
+            //this.historyBills  = newValue;
+            console.log("LOGGED",newValue[0].group,"END");
+            console.log("NEW VALUE ",newValue);
         });
     }
 

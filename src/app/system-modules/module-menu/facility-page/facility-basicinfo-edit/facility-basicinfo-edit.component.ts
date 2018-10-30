@@ -1,9 +1,9 @@
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
-import { FacilitiesService } from "./../../../../services/facility-manager/setup/facility.service";
-import { FacilityOwnershipService } from "./../../../../services/module-manager/setup/facility-ownership.service";
-import { FacilityTypeFacilityClassFacadeService } from "./../../../service-facade/facility-type-facility-class-facade.service";
-import { CountryServiceFacadeService } from "./../../../service-facade/country-service-facade.service";
-import { SystemModuleService } from "app/services/module-manager/setup/system-module.service";
+import { FacilitiesService } from './../../../../services/facility-manager/setup/facility.service';
+import { FacilityOwnershipService } from './../../../../services/module-manager/setup/facility-ownership.service';
+import { FacilityTypeFacilityClassFacadeService } from './../../../service-facade/facility-type-facility-class-facade.service';
+import { CountryServiceFacadeService } from './../../../service-facade/country-service-facade.service';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import {
   Component,
   OnInit,
@@ -11,37 +11,37 @@ import {
   Output,
   Input,
   ViewChild
-} from "@angular/core";
+} from '@angular/core';
 import {
   FormGroup,
   FormControl,
   FormBuilder,
   Validators
-} from "@angular/forms";
+} from '@angular/forms';
 import {
   EMAIL_REGEX,
   WEBSITE_REGEX,
   PHONE_REGEX,
   GEO_LOCATIONS
-} from "app/shared-module/helpers/global-config";
-import { SwalComponent } from "@toverux/ngx-sweetalert2";
-import swal from "sweetalert2";
+} from 'app/shared-module/helpers/global-config';
+import { SwalComponent } from '@toverux/ngx-sweetalert2';
+import swal from 'sweetalert2';
 import { ImageEmitterService } from '../../../../services/facility-manager/image-emitter.service';
 import { ImageUploadService } from '../../../../services/facility-manager/setup';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
-  selector: "app-facility-basicinfo-edit",
-  templateUrl: "./facility-basicinfo-edit.component.html",
-  styleUrls: ["./facility-basicinfo-edit.component.scss"]
+  selector: 'app-facility-basicinfo-edit',
+  templateUrl: './facility-basicinfo-edit.component.html',
+  styleUrls: ['./facility-basicinfo-edit.component.scss']
 })
 export class FacilityBasicinfoEditComponent implements OnInit {
   selectedLocation: any;
   @Input() selectedFacility: any = <any>{};
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @ViewChild("successSwal") private deleteSwal: SwalComponent;
+  @ViewChild('successSwal') private deleteSwal: SwalComponent;
   mainErr = true;
-  errMsg = "";
+  errMsg = '';
   countries: any[] = [];
   states: any[] = [];
   facilityTypes: any[] = [];
@@ -53,7 +53,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
     showCurrentLocation: false,
     resOnSearchButtonClickOnly: false,
     // inputPlaceholderText: 'Type anything and you will get a location',
-    recentStorageName: "componentData3"
+    recentStorageName: 'componentData3'
   };
   showClose = true;
   selectedImageObject: any = <any>{};
@@ -103,8 +103,8 @@ export class FacilityBasicinfoEditComponent implements OnInit {
           this.selectedFacility.website,
           [<any>Validators.pattern(WEBSITE_REGEX)]
         ],
-        network: ["", []],
-        address: ["", []],
+        network: ['', []],
+        address: ['', []],
         cac: [this.selectedFacility.cacNo, [<any>Validators.required]],
         facilitystreet: [
           this.selectedFacility.street,
@@ -126,7 +126,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
           [
             <any>Validators.required,
             <any>Validators.minLength(10),
-            <any>Validators.pattern("^[0-9]+$")
+            <any>Validators.pattern('^[0-9]+$')
           ]
         ]
       });
@@ -149,8 +149,8 @@ export class FacilityBasicinfoEditComponent implements OnInit {
           this.selectedFacility.website,
           [<any>Validators.pattern(WEBSITE_REGEX)]
         ],
-        network: ["", []],
-        address: ["", []],
+        network: ['', []],
+        address: ['', []],
         cac: [this.selectedFacility.cacNo, [<any>Validators.required]],
         facilitystreet: [
           this.selectedFacility.street,
@@ -170,7 +170,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
           [
             <any>Validators.required,
             <any>Validators.minLength(10),
-            <any>Validators.pattern("^[0-9]+$")
+            <any>Validators.pattern('^[0-9]+$')
           ]
         ]
       });
@@ -336,7 +336,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
         this.authFacadeService.setSelectedFacility(payload);
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy(
-          "Facility updated successfully",
+          'Facility updated successfully',
           'success', null, null, null, null, null, null, null);
         this.close_onClick();
       },
@@ -351,7 +351,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
     if (selectedData.response) {
       let res = selectedData;
       this.selectedLocation = res.data;
-      if (res.data.address_components[0].types[0] === "route") {
+      if (res.data.address_components[0].types[0] === 'route') {
         let streetAddress = res.data.address_components[0].long_name;
         let city = res.data.address_components[1].long_name;
         let country = res.data.address_components[4].long_name;

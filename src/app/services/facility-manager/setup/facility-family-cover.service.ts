@@ -16,6 +16,7 @@ export class FacilityFamilyCoverService {
     private _socketService: SocketService,
     private _restService: RestService
   ) {
+    
     this._rest = _restService.getService('families');
     this._socket = _socketService.getService('families');
     this._socket.timeout = 20000;
@@ -64,7 +65,10 @@ export class FacilityFamilyCoverService {
       .query({ facilityId: facilityId, search: search });
   }
   updateBeneficiaryList(formData) {
-    return this._socketService.getService('family-beneficiaries').create(formData);
+    const familyBeneficiaries  = this._socketService.getService('family-beneficiaries');
+    familyBeneficiaries.timeout  = 40000;
+    console.log(familyBeneficiaries);
+    return familyBeneficiaries.create(formData);
   }
 
 }

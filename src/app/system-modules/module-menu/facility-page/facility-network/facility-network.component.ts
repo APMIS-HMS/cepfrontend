@@ -33,7 +33,7 @@ export class FacilityNetworkComponent implements OnInit {
      }
 
   ngOnInit() {
-    this.LoggedInFacility = <any>this.locker.getObject("selectedFacility");
+    this.LoggedInFacility = <any>this.locker.getObject('selectedFacility');
 
     this.getNetworks(true);
     this.getNetworks(false);

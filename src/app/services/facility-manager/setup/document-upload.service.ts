@@ -15,7 +15,7 @@ export class DocumentUploadService {
   // private _restLogin;
   constructor(
     private _socketService: SocketService,
-    private _restService: RestService, 
+    private _restService: RestService,
     private sanitizer: DomSanitizer,
     private locker: CoolLocalStorage
   ) {
