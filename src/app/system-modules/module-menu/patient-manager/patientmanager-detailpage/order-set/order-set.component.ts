@@ -150,24 +150,25 @@ export class OrderSetComponent implements OnInit {
       facilityId: this.facility._id,
       createdBy: this.employeeDetails._id,
     };
-    
+    console.log(this.orderSet);
     this._treatmentSheetService.setTreatmentSheet(treatementSheet).then(treatment => {
       this.systemModuleService.off();
-    this.isButtonEnabled =true;  
+      this.isButtonEnabled = true;
       this.sharedService.announceOrderSet(this.orderSet);
       this.close_onClickModal();
     }).catch(err => {
+      console.log(err);
       this.systemModuleService.off();
       this.orderSet = {};
       // console.log(err);
       this.sharedService.announceOrderSet(this.orderSet);
       this.close_onClickModal();
-     });
+    });
     this.showDoc.emit(true);
   }
 
-  removeProcedure_show(i){
-    this.orderSet.procedures.splice(i,1);
+  removeProcedure_show(i) {
+    this.orderSet.procedures.splice(i, 1);
   }
 
   deleteOrderSetItem(index: number, value: any, type: string) {
