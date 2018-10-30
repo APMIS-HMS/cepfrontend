@@ -155,8 +155,8 @@
                                                     (after-load-complete)="onComplete($event)" (error)="onError($event)"
                                                     (on-progress)="onProgress($event)"></pdf-viewer> -->
 
-                                                <app-doc-upload-detail [selectedDocument]="document?.document"
-                                                    (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-upload-detail>
+                                                <app-doc-upload-view [selectedDocument]="document?.document"
+                                                    (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-upload-view>
 
                                             </div>
                                         </div>
