@@ -620,7 +620,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 		);
 		// this.documents = Array.from(grouped);
 		this.documents = [ ...this.documents, ...Array.from(grouped) ];
-		console.log('calling 1');
 	}
 
 	getDocuments() {
@@ -644,10 +643,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 					format(reverseDocument.createdAt, 'DD/MM/YYYY')
 				);
 				this.documents = [ ...this.documents, ...Array.from(grouped) ];
-				console.log(this.documents);
 			});
-
-		console.log('calling 2');
 	}
 	checkType(value) {
 		if (typeof value === 'string') {
@@ -777,7 +773,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 	}
 
 	node_toggle(document) {
-		console.log(document);
 		if (this.currentDocument !== undefined && document === this.currentDocument) {
 			this.currentDocument = undefined;
 		} else {
@@ -785,7 +780,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 		}
 	}
 	should_show(document) {
-		console.log(document);
 		return this.currentDocument === undefined ? false : this.currentDocument._id === document._id;
 	}
 	nodeChild_toggle() {
@@ -819,7 +813,5 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 		// this.loading = false;
 		// this.loadingError = true;
 	}
-	onProgress(progressData: any) {
-		console.log(progressData);
-	}
+	onProgress(progressData: any) {}
 }
