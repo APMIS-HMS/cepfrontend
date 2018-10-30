@@ -61,22 +61,18 @@ export class FacilitypageLocationspageComponent implements OnInit {
 		private route: ActivatedRoute
 	) {
 		this.facilityService.listner.subscribe((payload) => {
-			console.log('facility is updated');
 			this.facility = payload;
-			console.log(this.facility);
 			this.filteredMinorLocations = this.facility.minorLocations.filter(
 				(x) => x.locationId === this.locationObj._id
 			);
 		});
 		this.locationService.listner.subscribe((payload) => {
-			console.log('facility is updating');
 			this.getLocations();
 		});
 	}
 
 	ngOnInit() {
 		const facility = <any>this.locker.getObject('selectedFacility');
-		console.log(facility._id);
 		if (facility.isValidRegistration === undefined || facility.isValidRegistration === false) {
 			this.facilityService.announcePopupEditFacility(true);
 		}
@@ -87,7 +83,6 @@ export class FacilitypageLocationspageComponent implements OnInit {
 
 		this.facilityService.listner.subscribe((payload) => {
 			this.facility = payload;
-			console.log('subscribed event =>', payload);
 			this.filteredMinorLocations = this.facility.minorLocations.filter(
 				(x) => x.locationId === this.locationObj._id
 			);
@@ -145,7 +140,6 @@ export class FacilitypageLocationspageComponent implements OnInit {
 	}
 	getLocations() {
 		this.locationService.findAll().then((payload) => {
-			console.log((this.locationsObj = payload.data));
 		});
 	}
 
@@ -161,7 +155,6 @@ export class FacilitypageLocationspageComponent implements OnInit {
 
 		this.locationObj = model;
 		this.filteredMinorLocations = this.facility.minorLocations.filter((x) => x.locationId === this.locationObj._id);
-		console.log(this.filteredMinorLocations);
 	}
 
 	locationDetailContentArea_remove(model: Location) {

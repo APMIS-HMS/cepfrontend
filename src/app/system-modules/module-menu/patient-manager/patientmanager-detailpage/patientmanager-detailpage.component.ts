@@ -621,18 +621,15 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 				(this.selectedAppointment !== undefined && this.selectedAppointment._id !== undefined) ||
 				this.patientDocumentationAuthorization === true
 			) {
-				console.log(1);
 				this.headerText = 'Enter Doctor Authorization code to continue';
 				this.authorizationType = AuthorizationType.Medical;
 				this.authorizationNotApproved = true;
 			} else if (USE_DOC_AUTHORIZATION) {
-				console.log(2);
 				this.headerText = 'Enter Patient Authorization code to continue';
 				this.authorizationType = AuthorizationType.Patient;
 				this.authorizationNotApproved = true;
 			}
 		} else {
-			console.log(3);
 			this.menuSummary = false;
 			this.menuUploads = false;
 			this.menuPharmacy = false;
