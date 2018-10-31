@@ -210,6 +210,7 @@ export class AppointmentComponent implements OnInit {
 					console.log(payload.data);
 					this.loading = false;
 					this.filteredAppointments = this.appointments = payload.data;
+					console.log(payload);
 					this.paginationObj.totalRecord = payload.total;
 				},
 				(error) => {
@@ -322,12 +323,16 @@ export class AppointmentComponent implements OnInit {
 						isWithinRange: true,
 						from: this.dateRange.from,
 						to: this.dateRange.to,
-						facilityId: this.selectedFacility._id
+						facilityId: this.selectedFacility._id,
+						$limit: this.paginationObj.pageSize,
+						$skip: this.paginationObj.currentPage * this.paginationObj.pageSize
 					}
 				})
 				.subscribe((payload) => {
 					this.loading = false;
+					console.log(payload);
 					this.filteredAppointments = this.appointments = payload.data;
+					this.paginationObj.totalRecord = payload.total;
 				});
 		}
 	}
