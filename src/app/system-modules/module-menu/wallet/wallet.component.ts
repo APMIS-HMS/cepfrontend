@@ -155,22 +155,26 @@ export class WalletComponent implements OnInit {
     });
 
     this._facilityService.get(this.selectedFacility._id, {}).then(res => {
+      console.log('=========Got here 158=======\n');
       this.loading = false;
       if (!!res._id) {
+        console.log('=========Found id 161=======\n');
         if (!!res.wallet) {
+          console.log('=========Found wallet=======\n');
           this.facility = res;
           this.totalTransaction = res.wallet.transactions.length;
-          this.creditTransaction = res.wallet.transactions.filter(tx =>tx.transactionType==='Cr').length;
+          this.creditTransaction = res.wallet.transactions.filter(tx => tx.transactionType === 'Cr').length;
           this.debitTransaction = this.totalTransaction - this.creditTransaction;
-         
           this.transactions = res.wallet.transactions.reverse().slice(0, 10);
         } else {
+          console.log('=========Did not find wallet=======\n');
           res.wallet = {
             balance: 0,
             ledgerBalance: 0,
             transactions: []
           };
           this.facility = res;
+          console.log('=========Facility with wallet added=======\n', this.facility);
           // this.personService.update(payload).then(pay => {
           //   this.person = pay;
           // });
@@ -228,17 +232,26 @@ export class WalletComponent implements OnInit {
     };
 
     this._personService.fundWallet(walletTransaction).subscribe((res: any) => {
+      console.log('*************Response from backend***************\n', res);
       this.loading = false;
       if (res.status === 'success') {
+        console.log('*************Res 1***************\n');
         this.generatePaymentKey();
+        console.log('*************Res 2***************\n');
         this.paymentFormGroup.reset();
+        console.log('*************Res 3***************\n');
         this.paymentFormGroup.controls['fundAmount'].setValue(0);
+        console.log('*************Res 4***************\n');
         this.flutterwavePayment = false;
+        console.log('*************Res 5***************\n');
         this.paystackPayment = false;
+        console.log('*************Res 6 wallet***************\n', res.data);
         this.facility = res.data;
+        console.log('*************Res 7***************\n', this.facility.wallet);
         this.transactions = this.facility.wallet.transactions
           .reverse()
           .slice(0, 10);
+          console.log('*************Res 8***************\n', this.transactions);
         this._notification(
           'Success',
           'Your wallet has been credited successfully.'

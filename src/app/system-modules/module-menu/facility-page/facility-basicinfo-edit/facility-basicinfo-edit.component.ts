@@ -82,7 +82,6 @@ export class FacilityBasicinfoEditComponent implements OnInit {
     if (facility.isValidRegistration === undefined || facility.isValidRegistration === false) {
       this.showClose = false;
     }
-    console.log('Facility', this.selectedFacility);
     this._getCountries();
     this._getFacilityTypes();
     if (this.selectedFacility.isHDO) {
@@ -245,9 +244,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
         this.systemModuleService.announceSweetProxy(res.msg, 'error');
       }
     }, err => {
-      console.log('First Error ', err);
     }).catch(err => {
-      console.log('Error ', err);
     });
   }
 
@@ -310,7 +307,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
   }
 
   save(form) {
-    let facility: any = {
+    const facility: any = {
       name: form.facilityname,
       email: form.facilityemail,
       cacNo: form.cac,
@@ -349,23 +346,23 @@ export class FacilityBasicinfoEditComponent implements OnInit {
   public callBack(value) { }
   autoCompleteCallback1(selectedData: any) {
     if (selectedData.response) {
-      let res = selectedData;
+      const res = selectedData;
       this.selectedLocation = res.data;
       if (res.data.address_components[0].types[0] === 'route') {
-        let streetAddress = res.data.address_components[0].long_name;
-        let city = res.data.address_components[1].long_name;
-        let country = res.data.address_components[4].long_name;
-        let state = res.data.address_components[3].long_name;
+        const streetAddress = res.data.address_components[0].long_name;
+        const city = res.data.address_components[1].long_name;
+        const country = res.data.address_components[4].long_name;
+        const state = res.data.address_components[3].long_name;
 
         this.facilityForm1.controls.facilitystreet.setValue(streetAddress);
         this.facilityForm1.controls.facilitycity.setValue(city);
         this.facilityForm1.controls.facilitycountry.setValue(country);
         this.facilityForm1.controls.facilitystate.setValue(state);
       } else {
-        let streetAddress = res.data.vicinity;
-        let city = res.data.address_components[0].long_name;
-        let country = res.data.address_components[3].long_name;
-        let state = res.data.address_components[2].long_name;
+        const streetAddress = res.data.vicinity;
+        const city = res.data.address_components[0].long_name;
+        const country = res.data.address_components[3].long_name;
+        const state = res.data.address_components[2].long_name;
 
         this.facilityForm1.controls.facilitystreet.setValue(streetAddress);
         this.facilityForm1.controls.facilitycity.setValue(city);

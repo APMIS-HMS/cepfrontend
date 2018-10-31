@@ -256,7 +256,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         this.getRelationships();
         // this.facility = <Facility>this.locker.getObject('selectedFacility');
         // this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
-        //this.getPatients(this.limit);
+        // this.getPatients(this.limit);
         this._getAllCountries();
         this._getAllTitles();
 
@@ -485,7 +485,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
                 $sort: {createdAt: -1}
             }
         }).then(payload => {
-            console.log(payload);
             this.systemService.off();
             this.loading = false;
             this.total = payload.total;
@@ -655,7 +654,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         this.patientService.get(patient._id, {}).then(payload => {
             this.selectedPatient = payload.personDetails;
             this.patient = payload;
-            console.log();
             this.editPatient = true;
             if (this.selectedPatient.nextOfKin.length > 0) {
                 const nextOfKincontrol = <FormArray>this.patientEditForm.controls['nextOfKin'];
@@ -707,11 +705,11 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
             this.patients[patientIndex].personDetails = res;
             this.getPatients();
             this.close_onClick();
-            this.systemService.announceSweetProxy('Patient details has been updated successfully.', 'Success');
+            this.systemService.announceSweetProxy('Patient details has been updated successfully.', 'success');
         }).catch(err => {
 
             this.updatePatientBtnText = 'Update';
-            this.systemService.announceSweetProxy('There was an error updating user record, Please try again later.', 'Error');
+            this.systemService.announceSweetProxy('There was an error updating user record, Please try again later.', 'error');
         });
     }
 
@@ -807,7 +805,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
                             const fil = bene.filter(x => x.filNo === this.insuranceId.value);
 
                             if (fil.length > 0) {
-                                if (fil[0].status.toLowerCase() !== "active") {
+                                if (fil[0].status.toLowerCase() !== 'active') {
                                     this.systemService.off();
                                     this.loading = false;
                                     const text = 'Insurance Id does not have an active status for the selected HMO';
@@ -817,7 +815,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
                                     //   .announceSweetProxy(text, 'error');
                                     return false;
                                 } else {
-                                    if (fil[0].firstname !== this.patient.personDetails.firstName || fil[0].surname !== this.patient.personDetails.lastName) {
+                                    if (fil[0].firstname !== this.patient.personDetails.firstName ||
+                                         fil[0].surname !== this.patient.personDetails.lastName) {
                                         this.systemService.off();
                                         this.loading = false;
                                         const text = 'Information of policy doesn\'t match patient details. Please check and try again! ';
@@ -873,7 +872,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
                         }
                         const fil = bene.filter(x => x.filNo === this.employeeId.value);
                         if (fil.length > 0) {
-                            if (fil[0].status.toLowerCase() !== "active") {
+                            if (fil[0].status.toLowerCase() !== 'active') {
                                 this.systemService.off();
                                 const text = 'Employee Id does not have an active status for the selected Company';
                                 this.errMsg = text;
@@ -881,7 +880,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
                                 this.systemService
                                     .announceSweetProxy(text, 'error');
                             } else {
-                                if (fil[0].firstname !== this.patient.personDetails.firstName || fil[0].surname !== this.patient.personDetails.lastName) {
+                                if (fil[0].firstname !== this.patient.personDetails.firstName ||
+                                     fil[0].surname !== this.patient.personDetails.lastName) {
                                     this.systemService.off();
                                     const text = 'Employee Id does not have an active status for the selected Company';
                                     this.errMsg = text;
@@ -937,7 +937,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
                                 const text = 'Client Id has already been assigned to a patient. Please try another Client Id';
                                 this.errMsg = text;
                                 this.mainErr = false;
-                                // this.systemService.announceSweetProxy('Client Id has already been assigned to a patient. Please try another Client Id', 'error');
+                                // this.systemService.announceSweetProxy
+                                // ('Client Id has already been assigned to a patient. Please try another Client Id', 'error');
                             } else {
                                 if (info[0].patientId === undefined) {
                                     if (this.getRole(this.familyClientId) !== 'P') {
@@ -946,7 +947,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
                                         const text = 'Principal doesn\'t exist as a patient. Please register principal.';
                                         this.errMsg = text;
                                         this.mainErr = false;
-                                        //this.systemService.announceSweetProxy('Principal doesn\'t exist as a patient. Please register principal.', 'error');
+                                        // this.systemService.announceSweetProxy
+                                        // ('Principal doesn\'t exist as a patient. Please register principal.', 'error');
                                         return false;
                                     } else {
                                         this.noPatientId = true;
@@ -975,7 +977,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
                             const text = 'Client Id doesn\'t exist in Principal family';
                             this.errMsg = text;
                             this.mainErr = false;
-                            //this.systemService.announceSweetProxy('Client Id doesn\'t exist in Principal family', 'error');
+                            // this.systemService.announceSweetProxy
+                            // ('Client Id doesn\'t exist in Principal family', 'error');
                         }
                     }
                 }
@@ -1056,7 +1059,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         this._countryService.findAll()
             .then(res => {
                 this.countries = res.data;
-            }).catch(err => console.log(err));
+            }).catch(err => console.log());
     }
 
     private _getAllTitles() {
@@ -1065,7 +1068,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
                 this.titles = res;
             }).catch(err => {
             // this._getAllTitles();
-            console.log("Could not load all titles", err);
         });
     }
 
