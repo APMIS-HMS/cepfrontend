@@ -40,6 +40,10 @@ export class FacilitypageSidesectComponent implements OnInit {
       this.locker.setObject('selectedFacility', payload);
       this.ngOnInit();
     });
+
+this.facilityService.listner.subscribe(payload =>{
+});
+
     this.facilityService.popUpEditFacility$.subscribe(payload => {
       this.editBasicInfo_onClick();
     })

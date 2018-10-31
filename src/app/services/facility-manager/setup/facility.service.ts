@@ -109,9 +109,7 @@ export class FacilitiesService {
 		});
 	}
 	update(facility: any) {
-		console.log('facilty to update', facility);
 		return this._socket.update(facility._id, facility).then((d) => {
-			console.log(d);
 		});
 	}
 	patch(_id: any, data: any, param: any) {
