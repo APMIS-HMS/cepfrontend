@@ -33,7 +33,9 @@ export class RightTabComponent implements OnInit {
   labRequests: any[];
   allergiesLoading: boolean;
   problemLoading: boolean;
+  tooltip_view = false;
 
+  
   @Output() addTag: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() addProblem: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() addAllergy: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -52,6 +54,8 @@ export class RightTabComponent implements OnInit {
   pastAppointments: any[] = [];
   futureAppointments: any[] = [];
   vitals: any[] = [];
+
+ 
 
   constructor(
     private orderStatusService: OrderStatusService,
@@ -250,6 +254,11 @@ export class RightTabComponent implements OnInit {
       this.futureAppointments = payload.data;
     });
   }
+
+  tooltip_show(){
+    this.tooltip_view = !this.tooltip_view;
+  }
+
   addTags_show() {
     this.addTag.emit(true);
   }
