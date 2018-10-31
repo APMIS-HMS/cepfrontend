@@ -3,6 +3,12 @@
 
 <div class="doc-mainWrap">
     <div class="doc-contentArea">
+            <div class="tbl-listWrap">
+                    <div class="sect-title">{treatmentSheet?.problem?.problem}</div>
+                   <div>
+                       <span>{treatmentSheet?.problem?.note}</span>
+                   </div>
+                </div>
         <div class="tbl-listWrap">
             <div class="sect-title">Medication</div>
             <table cellpadding="0" cellspacing="0" border="0.5">
@@ -11,9 +17,8 @@
                         <td class="text-center" colspan="5"> No data available in table</td>
                     </tr>
                     <tr *ngFor="let medication of treatmentSheet?.medications; let m = index">
-                        <td>{{ medication.genericName }} - {{ medication.dosage }}{{ medication.dosageUnit }}, {{ medication.frequency }} for {{ medication.duration }} {{ medication.durationUnit }}</td>
+                        <td>{{ medication.genericName }} - {{ medication.dosage }}{{ medication.dosageUnit }}, {{ medication.regimen?.frequency }} for {{ medication.regimen?.duration }} {{ medication.regimen?.durationUnit }}</td>
                         <td>{{ medication.status }}</td>
-                        <td>2hrs 24mins 36secs to start</td>
                         <td>
                             <div class="frm-item-wrap">
                                 <mat-input-container>

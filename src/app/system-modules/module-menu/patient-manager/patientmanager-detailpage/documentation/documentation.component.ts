@@ -783,7 +783,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 		}
 	}
 	should_show(document) {
-		console.log(document);
 		return this.currentDocument === undefined ? false : this.currentDocument._id === document._id;
 	}
 	nodeChild_toggle() {

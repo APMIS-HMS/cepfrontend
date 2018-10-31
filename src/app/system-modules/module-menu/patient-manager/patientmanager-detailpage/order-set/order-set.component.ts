@@ -10,6 +10,7 @@ import { OrderSetSharedService } from '../../../../../services/facility-manager/
 import { SharedService } from '../../../../../shared-module/shared.service';
 import { OrderSetTemplate, User, Facility, Prescription } from '../../../../../models/index';
 import { AuthFacadeService } from '../../../../service-facade/auth-facade.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-order-set',
@@ -19,11 +20,15 @@ import { AuthFacadeService } from '../../../../service-facade/auth-facade.servic
 export class OrderSetComponent implements OnInit {
   @Output() showDoc: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+  addProblem: boolean = false;
   @Input() selectedPatient: any;
   prescriptionData: Prescription = <Prescription>{};
   investigationData: any = <any>{};
   template: FormControl = new FormControl();
   diagnosis: FormControl = new FormControl();
+  problemFormControl: FormControl = new FormControl();
+  patientDocumentation: any = <any>{};
+  problems: any = <any>[];
   facility: Facility = <Facility>{};
   miniFacility: Facility = <Facility>{};
   isButtonEnabled = true;
@@ -125,6 +130,51 @@ export class OrderSetComponent implements OnInit {
         }
       }
     });
+
+    this._documentationService.announceDocumentation$.subscribe(payload => {
+      this.getPatientsProblems();
+    });
+
+  }
+
+  getPatientsProblems() {
+    console.log("Checking this out", this.selectedPatient);
+    Observable.fromPromise(
+      this._documentationService.find({
+        query: {
+          personId: this.selectedPatient.personId,
+          'documentations.patientId': this.selectedPatient._id
+          // $select: ['documentations.documents', 'documentations.facilityId']
+        }
+      })
+    ).subscribe(
+      (mload: any) => {
+        if (mload.data.length > 0) {
+          this.patientDocumentation = mload.data[0];
+          this.getProblems();
+        }
+      },
+      error => { }
+    );
+  }
+
+  getProblems() {
+    this.problems = [];
+    this.patientDocumentation.documentations.forEach(documentation => {
+      console.log(documentation);
+      if (
+        documentation.document !== undefined &&
+        documentation.document.documentType !== undefined &&
+        documentation.document.documentType.title === 'Problems'
+      ) {
+        documentation.document.body.problems.forEach(problem => {
+          if (problem.status !== null && problem.status.name === 'Active') {
+            this.problems.push(problem);
+            console.log(this.problems);
+          }
+        });
+      }
+    });
   }
 
   showOrderSetType(type: string) {
@@ -142,29 +192,31 @@ export class OrderSetComponent implements OnInit {
   }
 
   authorizerx() {
-    this.systemModuleService.on();
-    this.isButtonEnabled = false;
-    const treatementSheet = {
-      personId: this.selectedPatient.personDetails._id,
-      treatmentSheet: this.orderSet,
-      facilityId: this.facility._id,
-      createdBy: this.employeeDetails._id,
-    };
-    console.log(this.orderSet);
-    this._treatmentSheetService.setTreatmentSheet(treatementSheet).then(treatment => {
-      this.systemModuleService.off();
-      this.isButtonEnabled = true;
-      this.sharedService.announceOrderSet(this.orderSet);
-      this.close_onClickModal();
-    }).catch(err => {
-      console.log(err);
-      this.systemModuleService.off();
-      this.orderSet = {};
-      // console.log(err);
-      this.sharedService.announceOrderSet(this.orderSet);
-      this.close_onClickModal();
-    });
-    this.showDoc.emit(true);
+    if (this.problemFormControl.valid) {
+      this.systemModuleService.on();
+      this.isButtonEnabled = false;
+      const treatementSheet = {
+        problem: this.problemFormControl.value,
+        personId: this.selectedPatient.personDetails._id,
+        treatmentSheet: this.orderSet,
+        facilityId: this.facility._id,
+        createdBy: this.employeeDetails._id,
+      };
+      this._treatmentSheetService.setTreatmentSheet(treatementSheet).then(treatment => {
+        this.systemModuleService.off();
+        this.isButtonEnabled = true;
+        this.sharedService.announceOrderSet(this.orderSet);
+        this.close_onClickModal();
+      }).catch(err => {
+        this.systemModuleService.off();
+        this.orderSet = {};
+        this.sharedService.announceOrderSet(this.orderSet);
+        this.close_onClickModal();
+      });
+      this.showDoc.emit(true);
+    } else {
+      this.systemModuleService.announceSweetProxy('Please select a problem before creating an order set', 'error');
+    }
   }
 
   removeProcedure_show(i) {
@@ -212,11 +264,17 @@ export class OrderSetComponent implements OnInit {
         personId: id
       }
     }).then(res => {
+      console.log(res);
       if (res.data.length > 0) {
         this.selectedPatient = res.data[0];
+        this.getPatientsProblems();
       }
     }).catch(err => {
     });
+  }
+
+  addProblem_show() {
+    this.addProblem = true;
   }
 
   onClickBillPrescription(index: number, value: any) {
@@ -265,6 +323,7 @@ export class OrderSetComponent implements OnInit {
     this.popProcedure = false;
     this.showMedicationBill = false;
     this.showInvestigationBill = false;
+    this.addProblem = false;
   }
 
   close_onClickModal() {

@@ -60,14 +60,16 @@ export class TreatementPlanComponent implements OnInit {
   }
 
   private getTreatmentSheet() {
+    console.log(this.patient,this.miniFacility);
     this._treatmentSheetService.find({
       query: {
         personId: this.patient.personId,
-        facilityId: this.miniFacility._id,
+        facilityId: this.selectedFacility._id,
         completed: false,
         $sort: { createdAt: -1 }
       }
     }).then(res => {
+      // console.log(this.patient,this.miniFacility);
       if (res.data.length > 0) {
         this.treatmentSheetData = res.data[0];
         this.treatmentSheet = res.data[0].treatmentSheet;
@@ -89,9 +91,9 @@ export class TreatementPlanComponent implements OnInit {
         } else {
           this.documentationService.find({
             query:
-              {
-                'personId': this.patient.personId, 'documentations.patientId': this.patient._id,
-              }
+            {
+              'personId': this.patient.personId, 'documentations.patientId': this.patient._id,
+            }
           }).subscribe((mload: any) => {
             if (mload.data.length > 0) {
               this.patientDocumentation = mload.data[0];
@@ -221,7 +223,7 @@ export class TreatementPlanComponent implements OnInit {
       this.isSaving = false;
     })
   }
-  activateMedication(medication, index){
+  activateMedication(medication, index) {
     const medicationObj = this.treatmentSheet.medications[index];
     this.isSaving = true;
     medicationObj.status = 'Started';
