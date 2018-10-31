@@ -29,6 +29,7 @@ export class FacilityPageComponent implements OnInit {
     private _DomSanitizationService: DomSanitizer,
     private locker: CoolLocalStorage) {
     this.facilityService.listner.subscribe(payload => {
+      console.log('wow its hapening here');
       this.facilityObj = payload;
     });
   }

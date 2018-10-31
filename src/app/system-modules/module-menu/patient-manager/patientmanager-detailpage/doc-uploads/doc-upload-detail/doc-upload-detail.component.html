@@ -5,14 +5,13 @@
     <div class="modal_mini_title">All Purpose Medical Information System</div>
   </div>
   <div class="modal-baseWrap">
-      <span *ngIf="loading" colspan="4"><span class="fa fa-spinner fa-spin"></span> Please wait while loading document!</span>
-      <span *ngIf="loadingError" colspan="4" class="loadingError">
-          <i class="fa fa-exclamation-triangle" aria-hidden="true"></i><br>
-        Something happened while loading your document, please retry 
-      </span>
-      <!-- <pdf-viewer [src]="'https://vadimdez.github.io/ng2-pdf-viewer/pdf-test.pdf'" [render-text]="true" [page]="page" [original-size]="true"
-      style="display: block;"></pdf-viewer> -->
-      <pdf-viewer *ngIf="docPdf" [src]="currentPDF" (after-load-complete)="onComplete($event)" (error)="onError($event)" (on-progress)="onProgress($event)"></pdf-viewer>
-        <img [src]="currentImg" alt="" *ngIf="docImg">
-    </div>
+    <span *ngIf="loading" colspan="4"><span class="fa fa-spinner fa-spin"></span> Please wait while loading document!</span>
+    <span *ngIf="loadingError" colspan="4" class="loadingError">
+      <i class="fa fa-exclamation-triangle" aria-hidden="true"></i><br>
+      Something happened while loading your document, please retry
+    </span>
+    <pdf-viewer *ngIf="docPdf" [src]="currentPDF" (after-load-complete)="onComplete($event)" (error)="onError($event)"
+      (on-progress)="onProgress($event)"></pdf-viewer>
+    <img [src]="currentImg" alt="" *ngIf="docImg">
+  </div>
 </div>
