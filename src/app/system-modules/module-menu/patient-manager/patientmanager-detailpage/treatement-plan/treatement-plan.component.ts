@@ -60,7 +60,7 @@ export class TreatementPlanComponent implements OnInit {
   }
 
   private getTreatmentSheet() {
-    console.log(this.patient,this.miniFacility);
+    // console.log(this.patient,this.miniFacility);
     this._treatmentSheetService.find({
       query: {
         personId: this.patient.personId,
@@ -73,6 +73,7 @@ export class TreatementPlanComponent implements OnInit {
       if (res.data.length > 0) {
         this.treatmentSheetData = res.data[0];
         this.treatmentSheet = res.data[0].treatmentSheet;
+        console.log(this.treatmentSheet);
       }
     }).catch(err => { });
   }
