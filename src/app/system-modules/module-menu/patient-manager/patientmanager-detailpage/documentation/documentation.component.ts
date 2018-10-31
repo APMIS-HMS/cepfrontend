@@ -66,6 +66,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 	docDocuments: any[] = [];
 	auth: any;
 	subscription: Subscription;
+	draftSubscription: Subscription;
 	priority: any = <any>{};
 	public tableChartData = [];
 	vitalsObjArray = [];
@@ -120,6 +121,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 				this.documentationService.update(this.patientDocumentation).then(
 					(pay) => {
 						this.getPersonDocumentation();
+						this.getDocuments();
 						this._notification('Success', 'Documentation successfully saved!');
 					},
 					(error) => {}
@@ -144,6 +146,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 						this.hasSavedDraft = false;
 						this.sharedService.announceFinishedSavingDraft(false);
 						this.getPersonDocumentation();
+						this.getDocuments();
 						this._notification('Success', 'Documentation successfully saved!');
 					},
 					(eror) => {}
@@ -163,9 +166,10 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
 		this.subscription = this.documentationService.announceDocumentation$.subscribe((payload) => {
 			this.getPersonDocumentation();
+			this.getDocuments();
 		});
 
-		this.subscription = this.sharedService.announceSaveDraft$.subscribe(
+		this.draftSubscription = this.sharedService.announceSaveDraft$.subscribe(
 			(payload) => {
 				if (Object.keys(payload).length > 0 && payload.constructor === Object) {
 					this.sharedService.announceFinishedSavingDraft(false);
@@ -174,7 +178,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 						const apmisGuid = UUID.UUID();
 						const doc: PatientDocumentation = <PatientDocumentation>{};
 						doc.document = { documentType: this.selectedForm, body: payload };
-
 						doc.createdBy =
 							this.loginEmployee.personDetails.title +
 							' ' +
@@ -197,12 +200,12 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 						this.patientDocumentation.documentations.push(doc);
 
 						let documentationList = this.patientDocumentation.documentations;
-
 						this.documentationService.update(this.patientDocumentation).then(
 							(pay) => {
 								this.hasSavedDraft = true;
 								this.sharedService.announceFinishedSavingDraft(true);
 								this.getPersonDocumentation();
+								this.getDocuments();
 							},
 							(error) => {}
 						);
@@ -221,6 +224,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 									this.sharedService.announceFinishedSavingDraft(true);
 
 									this.getPersonDocumentation();
+									this.getDocuments();
 								});
 							}
 						}
@@ -571,6 +575,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
 	populateDocuments() {
 		this.mainDocuments = [];
+		this.docDocuments = [];
+		this.documents = [];
 		this.patientDocumentation.documentations.forEach((documentation) => {
 			if (documentation.facilityName === undefined) {
 				documentation.facilityName = this.selectedFacility.name;
@@ -618,7 +624,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 		);
 		// this.documents = Array.from(grouped);
 		this.documents = [ ...this.documents, ...Array.from(grouped) ];
-		console.log('calling 1');
 	}
 
 	getDocuments() {
@@ -642,10 +647,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 					format(reverseDocument.createdAt, 'DD/MM/YYYY')
 				);
 				this.documents = [ ...this.documents, ...Array.from(grouped) ];
-				console.log(this.documents);
 			});
-
-		console.log('calling 2');
 	}
 	checkType(value) {
 		if (typeof value === 'string') {
@@ -747,6 +749,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 		this.addVitals_view = false;
 		this.showPrintPop = false;
 		this.getPersonDocumentation();
+		this.getDocuments();
 	}
 
 	showOrderset_onClick(e) {
@@ -764,6 +767,9 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy(): void {
 		this.subscription.unsubscribe();
+		this.draftSubscription.unsubscribe();
+		this.draftDocument = undefined;
+		// this.patient = undefined;
 	}
 
 	private _notification(type: string, text: string): void {
@@ -775,7 +781,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 	}
 
 	node_toggle(document) {
-		console.log(document);
 		if (this.currentDocument !== undefined && document === this.currentDocument) {
 			this.currentDocument = undefined;
 		} else {
@@ -816,7 +821,5 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 		// this.loading = false;
 		// this.loadingError = true;
 	}
-	onProgress(progressData: any) {
-		console.log(progressData);
-	}
+	onProgress(progressData: any) {}
 }

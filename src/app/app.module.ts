@@ -60,6 +60,7 @@ import { UserFacadeService } from 'app/system-modules/service-facade/user-facade
 import { FacilityTypeFacilityClassFacadeService } from 'app/system-modules/service-facade/facility-type-facility-class-facade.service';
 import { JoinChannelService } from 'app/services/facility-manager/setup/join-channel.service';
 import { ChannelService } from './services/communication-manager/channel-service';
+import { NotificationService } from './services/communication-manager/notification.service';
 
 //import { IkeComponent } from './ike/ike.component';
 import { RadiologyInvestigationService } from 'app/services/facility-manager/setup/radiologyinvestigation.service';
@@ -212,6 +213,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 		SetupService.TimeLineService,
 		FacilityTypeFacilityClassFacadeService,
 		JoinChannelService,
+		NotificationService,
 		SetupService.DocumentUploadService,
 		RadiologyInvestigationService,
 		SetupService.SearchInvoicesService,

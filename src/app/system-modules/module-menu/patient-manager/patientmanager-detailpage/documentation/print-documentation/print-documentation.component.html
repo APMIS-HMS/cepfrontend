@@ -131,12 +131,6 @@
                             </div>
                         </div>
 
-                        <div class="doc-con" *ngIf="group.docUrl !== undefined && !loading">
-                            <pdf-viewer *ngIf="group.docUrl !== undefined && !loading" [src]="getCurrentDocument(group)"
-                                (after-load-complete)="onComplete($event)" (error)="onError($event)" (on-progress)="onProgress($event)"></pdf-viewer>
-                        </div>
-
-                        <!-- <br> -->
                         <!-- Problem and Allergy -->
                         <div class="doc-con" *ngIf="group?.document?.documentType?.isSide===true ">
                             <div *ngFor="let key of group?.document?.body | keys ">
@@ -163,6 +157,11 @@
                                     <span class="sect-key">Addendum:</span> <span>{{group?.document?.addendum.text}}</span>
                                 </div>
                             </div>
+                        </div>
+
+                        <!-- Uploaded Documents -->
+                        <div class="doc-con" *ngIf="group.docUrl !== undefined && !loading">
+                            <app-doc-upload-view class="pdf-wrap" [selectedDocument]="group"></app-doc-upload-view>>
                         </div>
 
                     </div>

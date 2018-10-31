@@ -111,7 +111,6 @@ export class NewSubLocationComponent implements OnInit {
 
         // First check if that name already exist in the minorlocation
         this.facilityService.get(this.facility._id, {}).then(res => {
-          console.log(res);
           const minorLocation = res.minorLocations.filter(x => x.name.toLowerCase() === val.sublocName.toLowerCase());
           if (minorLocation.length === 0) {
             const facilityMinorLocation = res;

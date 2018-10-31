@@ -19,15 +19,15 @@ import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 @Component({
 	selector: 'app-bill-lookup',
 	templateUrl: './bill-lookup.component.html',
-	styleUrls: ['./bill-lookup.component.scss']
+	styleUrls: [ './bill-lookup.component.scss' ]
 })
 export class BillLookupComponent implements OnInit, OnDestroy {
 	@Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
 	@Input() closeModal;
 	frmBillLookup: FormGroup;
-	itemEdit = new FormControl('', [Validators.required, <any>Validators.pattern('/^d+$/')]);
-	itemQtyEdit = new FormControl('', [Validators.required, <any>Validators.pattern('/^d+$/')]);
-	itemPriceEdit = new FormControl('', [Validators.required, <any>Validators.pattern('/^d+$/')]);
+	itemEdit = new FormControl('', [ Validators.required, <any>Validators.pattern('/^d+$/') ]);
+	itemQtyEdit = new FormControl('', [ Validators.required, <any>Validators.pattern('/^d+$/') ]);
+	itemPriceEdit = new FormControl('', [ Validators.required, <any>Validators.pattern('/^d+$/') ]);
 	txtSelectAll = new FormControl('', []);
 	fundAmount = new FormControl('', []);
 	select1 = new FormControl('', []);
@@ -74,7 +74,7 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 	routeId: string;
 	subscription: Subscription;
 	hasPriceChanged = false;
-	employeeDetails:any = {};
+	employeeDetails: any = {};
 
 	constructor(
 		private locker: CoolLocalStorage,
@@ -89,12 +89,11 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 		private _pendingBillService: PendingBillService,
 		private systemModuleService: SystemModuleService,
 		private _todayInvoiceService: TodayInvoiceService,
-		private _authFacadeService: AuthFacadeService,
+		private _authFacadeService: AuthFacadeService
 	) {
 		this._authFacadeService.getLogingEmployee().then((res: any) => {
 			this.employeeDetails = res;
 		});
-
 
 		this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
 		this.patientService.receivePatient().subscribe((payload: Patient) => {
@@ -227,9 +226,27 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 			.get(id, {})
 			.then((res) => {
 				this.selectedPatient = res;
+				this.getPersonWallet(this.selectedPatient.personDetails);
 				this.getPatientBills();
 			})
-			.catch((err) => { });
+			.catch((err) => {});
+	}
+
+	getPersonWallet(person) {
+		this.personService.get(person._id, { query: { $select: [ 'wallet' ] } }).then((payload) => {
+			if (payload.wallet === undefined) {
+				payload.wallet = {
+					balance: 0,
+					ledgerBalance: 0,
+					transactions: []
+				};
+				this.personService.update(payload).then((pay) => {
+					this.selectedPatient.personDetails = pay;
+				});
+			} else {
+				this.selectedPatient.personDetails.wallet = payload.wallet;
+			}
+		});
 	}
 
 	onPersonValueUpdated(item) {
@@ -237,7 +254,7 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 		this.selectedPatient.personDetails = item.person;
 		this._getAllPendingBills();
 		this._getAllInvoices();
-		this.router.navigate(['/dashboard/payment/bill']);
+		this.router.navigate([ '/dashboard/payment/bill' ]);
 	}
 
 	fixedModifiedBill(payload) {
@@ -270,7 +287,7 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 		this.billingService.generateInvoice(billToInvoice).then(
 			(payload) => {
 				this.isProcessing = false;
-				this.router.navigate(['/dashboard/payment/invoice', payload._id]);
+				this.router.navigate([ '/dashboard/payment/invoice', payload._id ]);
 			},
 			(error) => {
 				this.isProcessing = false;
@@ -279,7 +296,7 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 	}
 
 	onSelectedInvoice(invoice) {
-		this.router.navigate(['/dashboard/payment/invoice', invoice._id]);
+		this.router.navigate([ '/dashboard/payment/invoice', invoice._id ]);
 	}
 
 	fixedGroup(bill: BillModel) {
@@ -470,7 +487,7 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 		this.subTotal = 0;
 		this.total = 0;
 		this.discount = 0;
-		this.router.navigate([`/dashboard/payment/bill/${pendingBill.patientId}`]);
+		this.router.navigate([ `/dashboard/payment/bill/${pendingBill.patientId}` ]);
 	}
 
 	private _getAllPendingBills() {
@@ -644,9 +661,14 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 						itemy.unitPrice = bill.unitPrice;
 						this.billingService
 							.patch(itemi._id, itemi, {
-								query: { hasPriceChanged: this.hasPriceChanged, oldPrice: oldPrice, _id: itemy._id, createdBy: this.employeeDetails._id }
+								query: {
+									hasPriceChanged: this.hasPriceChanged,
+									oldPrice: oldPrice,
+									_id: itemy._id,
+									createdBy: this.employeeDetails._id
+								}
 							})
-							.then((payload) => { });
+							.then((payload) => {});
 						this._getAllPendingBills();
 					}
 				});
@@ -659,7 +681,7 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 	// Notification
 	private _notification(type: string, text: string): void {
 		this.facilityService.announceNotification({
-			users: [this.user._id],
+			users: [ this.user._id ],
 			type: type,
 			text: text
 		});
@@ -712,7 +734,7 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 		this.makePayment_modal = true;
 	}
 
-	fundWallet() { }
+	fundWallet() {}
 
-	onClickEPayment() { }
+	onClickEPayment() {}
 }
