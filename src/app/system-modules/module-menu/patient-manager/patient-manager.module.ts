@@ -87,6 +87,7 @@ import { ItemDetailComponent } from '../payment/item-detail/item-detail.componen
 import { FundWalletComponent } from '../payment/bill-lookup/fund-wallet/fund-wallet.component';
 import { BcrAssessmentComponent } from './patientmanager-detailpage/bcr-assessment/bcr-assessment.component';
 import { PrintDocumentationComponent } from './patientmanager-detailpage/documentation/print-documentation/print-documentation.component';
+import { DocUploadViewComponent } from './patientmanager-detailpage/documentation/doc-upload-view/doc-upload-view.component';
 
 @NgModule({
 	declarations: [
@@ -141,7 +142,8 @@ import { PrintDocumentationComponent } from './patientmanager-detailpage/documen
 		PatientRegistersComponent,
 		PatientLandingBillingComponent,
 		BcrAssessmentComponent,
-		PrintDocumentationComponent
+		PrintDocumentationComponent,
+		DocUploadViewComponent
 	],
 	exports: [],
 	imports: [ SharedModule, patientManagerRoutes, OnlyMaterialModule, MaterialModule, ChartsModule, PdfViewerModule ],

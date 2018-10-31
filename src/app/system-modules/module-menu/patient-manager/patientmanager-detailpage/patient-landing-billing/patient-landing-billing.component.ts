@@ -91,6 +91,7 @@ export class PatientLandingBillingComponent implements OnInit, OnDestroy {
 			this.subTotal = 0;
 			this.total = 0;
 			this.discount = 0;
+			this.getPersonWallet(this.selectedPatient.personDetails);
 			this.getPatientBills();
 		});
 
@@ -122,7 +123,6 @@ export class PatientLandingBillingComponent implements OnInit, OnDestroy {
 		this.user = <User>this.locker.getObject('auth');
 
 		this._route.params.subscribe((params) => {
-			console.log(params);
 			if (!!params.id && params.id !== undefined) {
 				this.routeId = params.id;
 				this._getPatientWallet(params.id);
@@ -145,6 +145,7 @@ export class PatientLandingBillingComponent implements OnInit, OnDestroy {
 
 		if (this.selectedPatient !== undefined) {
 			this.getPatientBills();
+			this.getPersonWallet(this.selectedPatient.personDetails);
 		}
 
 		this.searchPendingInvoices.valueChanges.debounceTime(400).distinctUntilChanged().subscribe((value) => {
@@ -198,6 +199,23 @@ export class PatientLandingBillingComponent implements OnInit, OnDestroy {
 					});
 			} else {
 				this.pendingBills = this.holdMostRecentBills;
+			}
+		});
+	}
+
+	getPersonWallet(person) {
+		this.personService.get(person._id, { query: { $select: [ 'wallet' ] } }).then((payload) => {
+			if (payload.wallet === undefined) {
+				payload.wallet = {
+					balance: 0,
+					ledgerBalance: 0,
+					transactions: []
+				};
+				this.personService.update(payload).then((pay) => {
+					this.selectedPatient.personDetails = pay;
+				});
+			} else {
+				this.selectedPatient.personDetails.wallet = payload.wallet;
 			}
 		});
 	}
