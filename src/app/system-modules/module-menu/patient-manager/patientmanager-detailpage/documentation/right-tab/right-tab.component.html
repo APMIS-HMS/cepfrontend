@@ -44,6 +44,10 @@
                                 <th>
                                     <span style="padding-left: 3px;">Note</span>
                                 </th>
+                                <th>
+                                    <span style="padding-left: 3px;"></span>
+                                </th>
+
                             </tr>
                         </thead>
 
@@ -53,9 +57,16 @@
                                 <td>July 12, 2017. 12:02pm</td>
                                 <td>{{problem?.status?.name}}</td>
                                 <td>{{problem?.note}}</td>
+                                <td>
+                                     <i class="fa fa-exclamation-circle red btn_span" ngModel="isHidden">Deactivate</i>
+                                </td>
                             </tr>
                         </tbody>
                     </table>
+                    <div ngShow="isHidden">
+                        <app-right-tab-tooltip></app-right-tab-tooltip>
+                    </div>
+
                 </div>
             </li>
         </ul>
