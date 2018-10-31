@@ -53,6 +53,8 @@ export class RightTabComponent implements OnInit {
   futureAppointments: any[] = [];
   vitals: any[] = [];
 
+  tooltip_view = false;
+
   constructor(
     private orderStatusService: OrderStatusService,
     private formService: FormsService,
@@ -250,6 +252,11 @@ export class RightTabComponent implements OnInit {
       this.futureAppointments = payload.data;
     });
   }
+
+  tooltip_show(){
+    this.tooltip_view = true;
+  }
+
   addTags_show() {
     this.addTag.emit(true);
   }
