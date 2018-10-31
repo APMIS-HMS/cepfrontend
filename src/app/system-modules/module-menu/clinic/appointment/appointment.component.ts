@@ -192,7 +192,6 @@ export class AppointmentComponent implements OnInit {
 	}
 
 	_getAppointments(clinicIds: any) {
-		console.log(this.selectedFacility._id);
 		this.loading = true;
 		this.appointmentService
 			.findAppointment({
@@ -207,10 +206,8 @@ export class AppointmentComponent implements OnInit {
 			})
 			.subscribe(
 				(payload) => {
-					console.log(payload.data);
 					this.loading = false;
 					this.filteredAppointments = this.appointments = payload.data;
-					console.log(payload);
 					this.paginationObj.totalRecord = payload.total;
 				},
 				(error) => {
@@ -330,7 +327,6 @@ export class AppointmentComponent implements OnInit {
 				})
 				.subscribe((payload) => {
 					this.loading = false;
-					console.log(payload);
 					this.filteredAppointments = this.appointments = payload.data;
 					this.paginationObj.totalRecord = payload.total;
 				});
