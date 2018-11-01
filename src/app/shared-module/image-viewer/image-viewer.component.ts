@@ -11,8 +11,13 @@ export class ImageViewerComponent implements OnInit {
 	@Input() imageSrc: String = <String>'';
 
 	constructor(public logoService: ImageEmitterService) {
-		this.imageSrc = this.logoService.src;
+		// this.imageSrc = this.logoService.src;
 	}
 
-	ngOnInit() {}
+	ngOnInit() {
+		console.log(this.imageSrc);
+		if (this.imageSrc === null || this.imageSrc === undefined) {
+			this.imageSrc = '../../../../../assets/images/logos/default.png';
+		}
+	}
 }
