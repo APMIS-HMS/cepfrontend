@@ -3,7 +3,8 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild } from '@angular/core';
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { MatPaginator, PageEvent } from '@angular/material';
+import {MatCheckboxChange, MatPaginator, PageEvent,MatCheckbox} from '@angular/material';
+import * as _ from "lodash";
 
 @Component({
   selector: 'app-beneficiary-list',
@@ -25,12 +26,13 @@ export class BeneficiaryListComponent implements OnInit {
   selectedHMO: any = <any>{};
   mselectedHMO: any = <any>{};
   selectedBeneficiary: any = <any>{};
-
+  markForDelList = [];
   pageSize = 10;
   pageSizeOptions = [5, 10, 25, 100];
   loading = true;
   newBeneficiary = false;
-
+  loadingStatusText  = "";
+  @ViewChild("matChkBox") matChkBox : MatCheckbox ;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   pageEvent: PageEvent;
   constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private locker: CoolLocalStorage,
@@ -61,6 +63,7 @@ export class BeneficiaryListComponent implements OnInit {
     })
   }
   getBeneficiaryList(id) {
+      this.loading = true;
     this.hmoService.find({ query: { 'facilityId': this.selectedFacility._id } }).then(payload => {
       if (payload.data.length > 0) {
         const facHmo = payload.data[0];
@@ -73,15 +76,25 @@ export class BeneficiaryListComponent implements OnInit {
               this.selectedHMO = facHmo.hmos[index].hmo;
               bene.push(...facHmo.hmos[index].enrolleeList[s].enrollees);
             }
-            this.loading = false;
+/*
+*
+* get the selected items
+* compare and remove items marked for delete from
+*
+*
+* */
             this.beneficiaries = bene;
             const startIndex = 0 * 10;
             this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
             this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
+            this.loadingStatusText  = "Loading the requested data!";
           }
         }
       }
-    }).catch(err => { console.log(err) });
+        this.loading = false;
+    }).catch(err => {
+        this.loading = false;
+      console.log(err) });
   }
   getRole(beneficiary) {
     if (this.mselectedHMO.policyIDRegexFormat !== undefined) {
@@ -159,6 +172,9 @@ export class BeneficiaryListComponent implements OnInit {
     const startIndex = event.pageIndex * event.pageSize;
     this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
     this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
+    // Remove all Checked Items
+      this.manageCheckBoxesState(false);
+      this.matChkBox.checked  = false;
   }
   newBeneficiary_click() {
     this.newBeneficiary = true;
@@ -182,4 +198,56 @@ export class BeneficiaryListComponent implements OnInit {
   close_onClick(e) {
     this.newBeneficiary = false;
   }
+
+    manageCheckBoxesState(checked: boolean) {
+        _.map(this.filteredBeneficiaries,(x) => {
+          x.markForDelete =checked;
+        });
+          this.processSelectedItems();
+
+    }
+
+    processSelectedItems()
+    {
+      this.markForDelList = _.filter(this.filteredBeneficiaries , (x)=>{
+        return x.markForDelete == true;
+      });
+    }
+    logSelected(evt: MatCheckboxChange, index) {
+        this.filteredBeneficiaries[index].markForDelete  = evt.checked;
+        this.processSelectedItems();
+
+    }
+
+    confirmDeletion() {
+        if (confirm(`You are about to delete ${this.markForDelList.length} record, Please Confirm your Action`))
+        {
+           // Perform Deletion here
+            this.loading  = true;
+            this.loadingStatusText  = `Deleting ${this.markForDelList.length} selected rows!`;
+            //this.hmoService.deleteBeneficiary(this.markForDelList);
+            this.getBeneficiaryList(this.selectedBeneficiary.id);
+            this.manageCheckBoxesState(false);
+            this.loadingStatusText  = "";
+            this.loading = false;
+              /*  .then(x => {
+                  // check if the action was successfull
+                    console.log("Response" , x);
+                    this.loading   = false;
+                    // reload the record again
+                    this.getBeneficiaryList(this.selectedBeneficiary.id);
+                    this.manageCheckBoxesState(false);
+                    this.loadingStatusText  = "";
+
+                    //if(x.success)
+                });
+*/
+
+            // Remove Items from the List
+        }
+        else{
+            //  uncheck all Selected
+            this.manageCheckBoxesState(false);
+        }
+    }
 }
