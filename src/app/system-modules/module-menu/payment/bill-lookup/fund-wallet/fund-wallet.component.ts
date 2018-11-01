@@ -177,11 +177,7 @@ export class FundWalletComponent implements OnInit {
 			};
 
 			// fund wallet endpoint called
-			console.log(
-				'wallet Transaction info before calling endpoint',
-				walletTransaction,
-				this.selectedFacility._id
-			);
+
 			this.personService
 				.fundWallet(walletTransaction, this.selectedFacility._id)
 				.then((res: any) => {
@@ -191,15 +187,7 @@ export class FundWalletComponent implements OnInit {
 						this.resetPaymentForm();
 						this.close_onClick(true);
 						this.person = res.data.person;
-						console.log(
-							'BEFORE Reverse and Slice function is called on this.transaction',
-							this.transactions
-						);
 						this.transactions = this.person.wallet.transactions.reverse().slice(0, 10);
-						console.log(
-							'Reverse and Slice function called on this.transaction with slice(0,10)',
-							this.transactions
-						);
 						const text =
 							"Your facility's wallet has been debited and patient's wallet has been credited successfully.";
 						this._notification('Success', text);
@@ -273,7 +261,6 @@ export class FundWalletComponent implements OnInit {
 			.fundWallet(walletTransaction, this.selectedFacility._id)
 			.then((res: any) => {
 				this.loading = false;
-				console.log('FUND WALLET with third party api called!!', res);
 				if (res.status === 'success') {
 					this.paymentFormGroup.reset();
 					this.paymentFormGroup.controls['fundAmount'].setValue(0);
