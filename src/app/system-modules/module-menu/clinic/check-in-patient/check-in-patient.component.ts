@@ -293,10 +293,18 @@ export class CheckInPatientComponent implements OnInit, OnDestroy {
 		//     isFuture: true, 'facilityId': this.selectedFacility._id, 'clinicIds': clinicIds
 		// }
 		this.appointmentService
-			.findAppointment({ query: { facilityId: this.selectedFacility._id, attendance: { $exists: true } } })
+			.findAppointment({
+				query: {
+					facilityId: this.selectedFacility._id,
+					attendance: { $exists: true },
+					$limit: this.paginationObj.pageSize,
+					$skip: this.paginationObj.currentPage * this.paginationObj.pageSize
+				}
+			})
 			.then((payload) => {
 				this.loading = false;
 				this.checkedInAppointments = payload.data;
+				this.paginationObj.totalRecord = payload.total;
 				if (this.checkedInAppointments.length > 0) {
 					this.selectedCheckedInAppointment = this.checkedInAppointments[0];
 				}

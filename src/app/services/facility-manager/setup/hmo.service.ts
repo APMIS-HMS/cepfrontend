@@ -82,6 +82,19 @@ export class HmoService {
   patchBeneficiary(id: string, data: any, params: any) {
     return this._insuranceSocket.patch(id, data, params);
   }
+    async deleteBeneficiary( data: any[]) {
+    console.log("DELETING Items");
+    for(let i = 0 ; i <  data.length ; i++)
+    {
+        console.log("DELETING " ,data[i]);
+        const done  = await  this._insuranceSocket.delete(data[i]._id );
+        console.log(done);
+    }
+  //we could use delete multiple items at once*
+     /*   console.log("Before DELETING Items");
+       return  /!*await*!/  this._insuranceSocket.delete(null, {params : { id : {$in :  data.map(x => x._id)}} } );*/
+
+    }
 
   hmos(facilityId, hmoId?, search?) {
     const host = this._restService.getHost();
