@@ -15,51 +15,7 @@
         </ul>
     </div>
 
-    <div class="rArea-card">
-        <div class="rAreaCard-header">
-            <span class="header-label">Problems
-                <span *ngIf="problemLoading" class="fa fa-spinner fa-spin"></span>
-            </span>
-            <i (click)="addProblem_show()" class="header-cta fa fa-plus" aria-hidden="true"></i>
-        </div>
 
-        <ul class="rAreaCard-body">
-            <li class="rAreaCard-item" *ngFor="let problem of problems">
-                <div class="rAreaCard-status rAreaCard-active">{{problem?.status?.name}}</div>
-                <div class="rAreaCard-content">{{problem?.problem}}</div>
-
-                <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
-                    <table cellpadding="0" cellspacing="0" border="0.5">
-                        <thead>
-                            <tr>
-                                <th>
-                                    <span style="padding-left: 3px;">Problem</span>
-                                </th>
-                                <th>
-                                    <span style="padding-left: 3px;">Date Diagnosed</span>
-                                </th>
-                                <th>
-                                    <span style="padding-left: 3px;">Status</span>
-                                </th>
-                                <th>
-                                    <span style="padding-left: 3px;">Note</span>
-                                </th>
-                            </tr>
-                        </thead>
-
-                        <tbody>
-                            <tr>
-                                <td>{{problem?.problem}}</td>
-                                <td>July 12, 2017. 12:02pm</td>
-                                <td>{{problem?.status?.name}}</td>
-                                <td>{{problem?.note}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </li>
-        </ul>
-    </div>
 
     <div class="rArea-card">
         <div class="rAreaCard-header">
@@ -109,6 +65,65 @@
                     </tr> -->
                         </tbody>
                     </table>
+                </div>
+            </li>
+        </ul>
+    </div>
+
+    <div class="rArea-card">
+        <div class="rAreaCard-header">
+            <span class="header-label">Problems
+                <span *ngIf="problemLoading" class="fa fa-spinner fa-spin"></span>
+            </span>
+            <i (click)="addProblem_show()" class="header-cta fa fa-plus" aria-hidden="true"></i>
+        </div>
+
+        <ul class="rAreaCard-body">
+            <li class="rAreaCard-item" *ngFor="let problem of problems">
+                <div class="rAreaCard-status rAreaCard-active">{{problem?.status?.name}}</div>
+                <div class="rAreaCard-content">{{problem?.problem}}</div>
+
+                <div class="rAreaCard-detailWrap shadow-RB" style="min-width:500px;">
+                    <table cellpadding="0" cellspacing="0" border="0.5">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <span style="padding-left: 3px;">Problem</span>
+                                </th>
+                                <th>
+                                    <span style="padding-left: 3px;">Date Diagnosed</span>
+                                </th>
+                                <th>
+                                    <span style="padding-left: 3px;">Status</span>
+                                </th>
+                                <th>
+                                    <span style="padding-left: 3px;">Note</span>
+                                </th>
+                                <th>
+                                    <span style="padding-left: 3px;"></span>
+                                </th>
+
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>{{problem?.problem}}</td>
+                                <td>July 12, 2017. 12:02pm</td>
+                                <td>{{problem?.status?.name}}</td>
+                                <td>{{problem?.note}}</td>
+                                <td>
+                                    <div (click)="tooltip_show()">
+                                        <i class="fa fa-exclamation-circle red btn_span">Deactivate</i>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div  *ngIf="tooltip_view">
+                        <app-right-tab-tooltip ></app-right-tab-tooltip>
+                    </div>
+
                 </div>
             </li>
         </ul>

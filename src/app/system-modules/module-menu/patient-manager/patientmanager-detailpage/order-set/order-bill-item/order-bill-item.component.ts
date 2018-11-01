@@ -1,4 +1,5 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
+import { SystemModuleService } from './../../../../../../services/module-manager/setup/system-module.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Facility, Prescription, PrescriptionItem } from '../../../../../../models/index';
@@ -46,7 +47,8 @@ export class OrderBillItemComponent implements OnInit {
 		private _facilityService: FacilitiesService,
 		private _facilityPriceService: FacilityPriceService,
 		private _inventoryService: InventoryService,
-		private _assessmentDispenseService: AssessmentDispenseService
+		private _assessmentDispenseService: AssessmentDispenseService,
+		private systemModuleService: SystemModuleService
 	) { }
 
 	ngOnInit() {
@@ -102,7 +104,7 @@ export class OrderBillItemComponent implements OnInit {
 	//
 	onClickSaveCost(valid: boolean, value: any) {
 		if (valid) {
-			if (this.cost > 0 && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
+			if ((this.costForm.value !== null || this.cost > 0) && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
 				let index = this.prescriptionData.index;
 				this.prescriptionData.prescriptionItems[index].productId = this.addBillForm.controls['drug'].value.productId;
 				this.prescriptionData.prescriptionItems[index].serviceId = this.addBillForm.controls['drug'].value.serviceId;
@@ -119,9 +121,14 @@ export class OrderBillItemComponent implements OnInit {
 				this.prescriptionData.totalCost += this.prescriptionData.prescriptionItems[index].totalCost;
 				this.prescriptionData.totalQuantity += this.prescriptionData.prescriptionItems[index].quantity;
 				this.closeModal.emit(true);
-			} else {
+			}
+			else if (this.costForm.value === null || (this.cost === null && this.cost === 0) ){
+				this.systemModuleService.announceSweetProxy('There was an error while billing on an invalid price, kindly edit price!', 'error');
+			} 
+			else {
 				this._notification('Error', 'Unit price or Quantity is less than 0!');
 			}
+			
 		} else {
 			this.mainErr = false;
 		}

@@ -14,6 +14,7 @@ import { Patient, Facility, BillItem, Invoice, BillModel, User } from '../../../
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Subscription } from 'rxjs/Subscription';
+import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 
 @Component({
 	selector: 'app-bill-lookup',
@@ -58,7 +59,7 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 	masterBillGroups: any[] = [];
 	checkBillitems: any[] = [];
 	listedBillItems: any[] = [];
-	invoice: Invoice = <Invoice>{ billingDetails: [], totalPrice: 0, totalDiscount: 0 };
+	invoice: Invoice = <any>{ billingDetails: [], totalPrice: 0, totalDiscount: 0 };
 	selectedGroup: any = <any>{};
 	selectedServiceBill: any = <any>{};
 	holdMostRecentInvoices = [];
@@ -73,6 +74,7 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 	routeId: string;
 	subscription: Subscription;
 	hasPriceChanged = false;
+	employeeDetails: any = {};
 
 	constructor(
 		private locker: CoolLocalStorage,
@@ -86,8 +88,13 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 		private patientService: PatientService,
 		private _pendingBillService: PendingBillService,
 		private systemModuleService: SystemModuleService,
-		private _todayInvoiceService: TodayInvoiceService
+		private _todayInvoiceService: TodayInvoiceService,
+		private _authFacadeService: AuthFacadeService
 	) {
+		this._authFacadeService.getLogingEmployee().then((res: any) => {
+			this.employeeDetails = res;
+		});
+
 		this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
 		this.patientService.receivePatient().subscribe((payload: Patient) => {
 			this.selectedPatient = payload;
@@ -219,9 +226,27 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 			.get(id, {})
 			.then((res) => {
 				this.selectedPatient = res;
+				this.getPersonWallet(this.selectedPatient.personDetails);
 				this.getPatientBills();
 			})
 			.catch((err) => {});
+	}
+
+	getPersonWallet(person) {
+		this.personService.get(person._id, { query: { $select: [ 'wallet' ] } }).then((payload) => {
+			if (payload.wallet === undefined) {
+				payload.wallet = {
+					balance: 0,
+					ledgerBalance: 0,
+					transactions: []
+				};
+				this.personService.update(payload).then((pay) => {
+					this.selectedPatient.personDetails = pay;
+				});
+			} else {
+				this.selectedPatient.personDetails.wallet = payload.wallet;
+			}
+		});
 	}
 
 	onPersonValueUpdated(item) {
@@ -636,7 +661,12 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 						itemy.unitPrice = bill.unitPrice;
 						this.billingService
 							.patch(itemi._id, itemi, {
-								query: { hasPriceChanged: this.hasPriceChanged, oldPrice: oldPrice, _id: itemy._id }
+								query: {
+									hasPriceChanged: this.hasPriceChanged,
+									oldPrice: oldPrice,
+									_id: itemy._id,
+									createdBy: this.employeeDetails._id
+								}
 							})
 							.then((payload) => {});
 						this._getAllPendingBills();

@@ -21,6 +21,7 @@ import { WardEmitterService } from '../../../services/facility-manager/ward-emit
 import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { BillDetailsComponent } from './ward-manager-admitted-detailspage/bill-details/bill-details.component';
 import { WardCheckInComponent } from './ward-check-in/ward-check-in.component';
+import { ArrayFunctionHelper } from '../../../shared-module/helpers/array-function-helper';
 
 @NgModule({
     declarations: [
@@ -47,7 +48,7 @@ import { WardCheckInComponent } from './ward-check-in/ward-check-in.component';
         MaterialModule,
         wardManagerRoutes
     ],
-    providers: [WardEmitterService]
+    providers: [WardEmitterService, ArrayFunctionHelper]
 })
 export class WardManagerModule { }
 

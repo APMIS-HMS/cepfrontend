@@ -44,11 +44,13 @@ export class DocUploadsComponent implements OnInit {
 	}
 
 	getDocuments() {
-		let patient = <any>this.locker.getObject('patient');
+		// const patient = <any>this.locker.getObject('patient');
+		// console.log(patient);
+		// console.log(this.patient);
 		this.docUploadService
 			.docUploadFind({
 				query: {
-					patientId: this.patient,
+					patientId: this.patient._id,
 					facilityId: this.facilityService.getSelectedFacilityId()._id,
 					$sort: {
 						createdAt: -1
@@ -57,6 +59,7 @@ export class DocUploadsComponent implements OnInit {
 			})
 			.then((payload) => {
 				this.documents = payload.data;
+				console.log(this.documents);
 			});
 	}
 
