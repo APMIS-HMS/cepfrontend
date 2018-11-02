@@ -111,17 +111,19 @@
                                 <td>{{problem?.problem}}</td>
                                 <td>July 12, 2017. 12:02pm</td>
                                 <td>{{problem?.status?.name}}</td>
-                                <td>{{problem?.note}}</td>
                                 <td>
-                                    <div (click)="tooltip_show()">
-                                        <i class="fa fa-exclamation-circle red btn_span">Deactivate</i>
-                                    </div>
+                                    <p>{{problem?.note}}</p>
+                                </td>
+                                <td>
+                                    <button (click)="tooltip_show()" type="button" class="btn btn-danger">Deactivate
+                                        <i class="fa fa-exclamation-circle red"></i> 
+                                    </button>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <div  *ngIf="tooltip_view">
-                        <app-right-tab-tooltip ></app-right-tab-tooltip>
+                    <div *ngIf="tooltip_view">
+                        <app-right-tab-tooltip></app-right-tab-tooltip>
                     </div>
 
                 </div>
