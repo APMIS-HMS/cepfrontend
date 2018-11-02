@@ -43,7 +43,7 @@ export interface IPagerSource {
             </ng-content>
         </p>  `,
     styles: [
-            `
+        `
             p.asom-pager-button:hover, p.asom-pager-button:focus {
                 background-color: rgba(213, 255, 236, 0.8) !important;
                 color: #3c3c3c !important;
@@ -188,15 +188,15 @@ export class PagerButtonComponent implements OnChanges {
                                    *ngIf="showFirstLast" #next [background-color]="firstLastColor"
                                    [is-oval]="useOvalButton"><span>&#8677;</span>
                 </asom-pager-button> 
-                 <p *ngIf="showTotalRecord" style="font-weight : bold; max-height: 42px; margin-left:10px;padding:3px;" [ngStyle]="{'font-size':(buttonSize ==='large' ? '15px' : '13px')}">
-                     {{pagerSource.totalRecord | number}} record<span *ngIf="pagerSource.totalRecord>1">s</span> in {{pagerSource.totalPages | number}} page<span *ngIf="pagerSource.totalPages>1">s</span>  
-                 </p>
+                
             </div>
+            <p *ngIf="showTotalRecord" style="font-weight : bold; text-align: center;" [ngStyle]="{'font-size':(buttonSize ==='large' ? '15px' : '13px')}">
+            {{pagerSource.totalRecord | number}} record<span *ngIf="pagerSource.totalRecord>1">s</span> in {{pagerSource.totalPages | number}} page<span *ngIf="pagerSource.totalPages>1">s</span>  
+            </p>
             <div class="" *ngIf="showPageSizeOption" style="font-size:12px; padding:7px; text-align: center;">
-                Page Sizes : <select name="cboPageSize" id="" #pgSizes (change)="assignPageSizeOption(pgSizes)">
+             <select name="cboPageSize" id="" #pgSizes (change)="assignPageSizeOption(pgSizes)">
                 <option *ngFor="let pz of pageSizeOptions" [selected]="pagerSource.pageSize === pz" [value]="pz">{{pz | number}} / Page</option>
             </select>
-            
             </div>
         </div>
         <div *ngIf="pagerSource && displaySummary" style="padding: 10px;">
@@ -210,13 +210,15 @@ export class PagerButtonComponent implements OnChanges {
 
     `,
     styles: [
-            `
+        `
             div.asom-pager-button-container {
                 display: flex;
                 justify-content: center;
                 flex-direction: row;
                 align-content: center;
             }
+
+            
 
         `
     ]
@@ -230,7 +232,7 @@ export class AsomDataPagerComponent implements OnInit, AfterViewInit, OnChanges,
     @Input('in-progress') inProgress: boolean = false;
     @Input('display-summary') displaySummary: boolean = false;
     @Input('show-total-record') showTotalRecord: boolean = true;
-    @Input('show-page-size-option')  showPageSizeOption: boolean = true;
+    @Input('show-page-size-option') showPageSizeOption: boolean = true;
     @Input('show-progress') showProgress: boolean = false; // if true a progress section template will be rendered and enabled if in progress is true
     @Input('show-next-prev') showNextPrev: boolean = true;
     @Input('show-first-last') showFirstLast: boolean = true;

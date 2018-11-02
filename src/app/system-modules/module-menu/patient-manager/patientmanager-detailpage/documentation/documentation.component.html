@@ -3,9 +3,9 @@
     <div class="doc-contentArea">
         <div class="clinicalNoteWrap">
             <div class="actSect">
-                <div (click)="showPrintPopClick()" class="act-wrap inner-it">
+                <div (click)="showPrintPopClick()" data-placement="bottom" data-toggle="Print all documents in Patient Casenote" class="act-wrap inner-it">
                     <i class="fa fa-print" aria-hidden="true"></i>
-                    <span>Print Documentations</span>
+                    <span>Print Case Note</span>
                 </div>
                 <div (click)="clinicalNote_show()" class="act-wrap">
                     <i *ngIf="clinicalNote_view" class="fa fa-minus" aria-hidden="true"></i>
@@ -23,26 +23,36 @@
                             aria-hidden="true"></i>
                         <i (click)="node_toggle(group[0])" *ngIf="group[0] !== currentDocument" class="fa fa-plus"
                             aria-hidden="true"></i>
-                    </div>
+                    </div>                  
 
                     <div class="node-label-wrap">
                         <div (click)="node_toggle(group[0])" class="node-date">{{group[0]}} </div>
+
                         <div class="doc-count">{{group[1].length}} Documentation(s)</div>
+                    </div> 
+                    <div class="table-list action-placeholder" style="margin-left: 15px;">
+                        <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+                        <div class="action-container shadow-RB">
+                            <div (click)="docDetail_Print()"  class=" action-item">
+                                <i class="edit-ico-color fa fa-print " aria-hidden="true "></i>
+                                <span>Print Document</span>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <div class="node-content animated fadeInDown" *ngIf="should_show(group[0]) && group[0]===currentDocument ">
+                <div class="node-content animated fadeInDown" id="printDoc" *ngIf="should_show(group[0]) && group[0]===currentDocument ">
                     <div *ngFor="let document of group[1] ">
                         <div class="tree-child ">
                             <div class="node-child-title ">{{document?.document?.documentType?.title}}</div>
                         </div>
 
                         <div class="node-child-content ">
-                            <div class="docCard-header " (click)="edit(document) ">
+                            <div class="docCard-header ">
                                 <div class="empWrap ">
                                     <div class="list-img ">
                                     </div>
-                                    <div>
+                                    <div (click)="edit(document)">
                                         <div class="val-tag ">Practitioner</div>
                                         <div class="list-label ">{{document?.createdBy}}</div>
                                     </div>
@@ -56,7 +66,8 @@
                                     <div class="list-label ">{{document.createdAt | date:'shortDate'}}.
                                         <span class="time ">{{document.createdAt | date:'shortTime'}}</span>
                                     </div>
-                                </div>
+                                </div>                              
+
                                 <ul class="topmenuwrap ">
                                     <li (click)="docDetail_show(document, false) ">
                                         <i class="fa fa-ellipsis-h " aria-hidden="true "></i>
@@ -169,6 +180,7 @@
                 </div>
             </li>
         </ul>
+
 
     </div>
     <div class="doc-rArea">
