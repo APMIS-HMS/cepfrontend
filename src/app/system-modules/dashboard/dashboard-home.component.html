@@ -11,7 +11,8 @@
 
         <div class="menuBar-facilityName">
             <div class="menubar_facilityLogo orgLogo-wrap">
-                <app-image-viewer></app-image-viewer>
+                <!-- <app-image-viewer></app-image-viewer> -->
+                <app-image-viewer [imageSrc]="facilityObj?.logoObject?.thumbnail"></app-image-viewer>
 
                 <!-- <img *ngIf="facilityObj.logoObject != undefined" [src]="facilityService.transform(facilityObj.logoObject.thumbnail)">
                 <img *ngIf="facilityObj.logoObject == undefined" src="assets/images/logos/default.png"> -->
@@ -38,89 +39,109 @@
                 <li class="overlay_mock_text"></li>
             </ul>
             <ul *ngIf="loadedMenu" id="innerMenu-ul" class="innerMenu-ul">
-                <li *ngIf="accessHas('Facility','Facility')" (click)="facilitySubmenuShow()" [routerLink]="getSubscribedModule('Facility') ? ['facility'] : []" routerLinkActive="menu-active">
+                <li *ngIf="accessHas('Facility','Facility')" (click)="facilitySubmenuShow()" [routerLink]="getSubscribedModule('Facility') ? ['facility'] : []"
+                    routerLinkActive="menu-active">
                     <i class="fa fa-building" aria-hidden="true"></i>
                     <span>Facility</span>
                 </li>
-                <li *ngIf="accessHas('Patient-Manager','Patient Manager')" (click)="patientSubmenuShow()" [routerLink]="getSubscribedModule('Patient Manager') ? ['patient-manager'] : []" routerLinkActive="menu-active">
+                <li *ngIf="accessHas('Patient-Manager','Patient Manager')" (click)="patientSubmenuShow()" [routerLink]="getSubscribedModule('Patient Manager') ? ['patient-manager'] : []"
+                    routerLinkActive="menu-active">
                     <i class="fa fa-user" aria-hidden="true"></i>
                     <span>Patient Manager</span>
                 </li>
-                <li *ngIf="accessHas('Ward-manager','Ward Manager')" (click)="patientSubmenuShow()" [routerLink]="getSubscribedModule('Ward Manager') ? ['ward-manager'] : []" routerLinkActive="menu-active">
+                <li *ngIf="accessHas('Ward-manager','Ward Manager')" (click)="patientSubmenuShow()" [routerLink]="getSubscribedModule('Ward Manager') ? ['ward-manager'] : []"
+                    routerLinkActive="menu-active">
                     <i class="fa fa-bed" aria-hidden="true"></i>
                     <span>Ward Manager</span>
                 </li>
-                <li *ngIf="accessHas('Payment','Payment')" (click)="patientSubmenuShow()" [routerLink]="getSubscribedModule('Ward Manager') ? ['payment'] : []" routerLinkActive="menu-active">
+                <li *ngIf="accessHas('Payment','Payment')" (click)="patientSubmenuShow()" [routerLink]="getSubscribedModule('Ward Manager') ? ['payment'] : []"
+                    routerLinkActive="menu-active">
                     <i class="fa fa-money" aria-hidden="true"></i>
                     <span>Payment</span>
                 </li>
-                <li *ngIf="accessHas('Wallet','Wallet')" (click)="patientSubmenuShow()" [routerLink]="getSubscribedModule('Wallet') ? ['wallet'] : []" routerLinkActive="menu-active">
+                <li *ngIf="accessHas('Wallet','Wallet')" (click)="patientSubmenuShow()" [routerLink]="getSubscribedModule('Wallet') ? ['wallet'] : []"
+                    routerLinkActive="menu-active">
                     <i class="fa fa-credit-card-alt" aria-hidden="true"></i>
                     <span>Wallet</span>
                 </li>
-                <li *ngIf="accessHas('Order','Order Management')" (click)="userSubmenuShow()" [routerLink]="getSubscribedModule('Order Management') ? ['access-manager'] : []" routerLinkActive="menu-active">
+                <li *ngIf="accessHas('Order','Order Management')" (click)="userSubmenuShow()" [routerLink]="getSubscribedModule('Order Management') ? ['access-manager'] : []"
+                    routerLinkActive="menu-active">
                     <i class="fa fa-first-order" aria-hidden="true"></i>
                     <span>Order Management {{accessHas('Order','Order Management')}}</span>
                 </li>
-                <li *ngIf="accessHas('Clinic','Clinic Management')" (click)="facilitySubmenuShow()" [routerLink]="getSubscribedModule('Clinic Management') ? ['clinic'] : []" routerLinkActive="menu-active">
+                <li *ngIf="accessHas('Clinic','Clinic Management')" (click)="facilitySubmenuShow()" [routerLink]="getSubscribedModule('Clinic Management') ? ['clinic'] : []"
+                    routerLinkActive="menu-active">
                     <i class="fa fa-medkit" aria-hidden="true"></i>
                     <span>Clinic Management</span>
                 </li>
-                <li *ngIf="accessHas('Clinical-Documentation','Clinical Documentation')" (click)="formsSubmenuShow()" [routerLink]="['clinical-documentation']" routerLinkActive="menu-active">
+                <li *ngIf="accessHas('Clinical-Documentation','Clinical Documentation')" (click)="formsSubmenuShow()"
+                    [routerLink]="['clinical-documentation']" routerLinkActive="menu-active">
                     <i class="fa fa-newspaper-o" aria-hidden="true"></i>
                     <span>Clinical Documentation</span>
                 </li>
-                <li *ngIf="accessHas('Store','Store')" (click)="patientSubmenuShow()" [routerLink]="getSubscribedModule('Store') ? ['store'] : []" routerLinkActive="menu-active">
+                <li *ngIf="accessHas('Store','Store')" (click)="patientSubmenuShow()" [routerLink]="getSubscribedModule('Store') ? ['store'] : []"
+                    routerLinkActive="menu-active">
                     <i class="fa fa-plus-square" aria-hidden="true"></i>
                     <span>Store</span>
                 </li>
-                <li *ngIf="accessHas('Pharmacy','Pharmacy')" (click)="patientSubmenuShow()" [routerLink]="getSubscribedModule('Pharmacy') ? ['pharmacy'] : []" routerLinkActive="menu-active">
+                <li *ngIf="accessHas('Pharmacy','Pharmacy')" (click)="patientSubmenuShow()" [routerLink]="getSubscribedModule('Pharmacy') ? ['pharmacy'] : []"
+                    routerLinkActive="menu-active">
                     <i class="fa fa-plus-square" aria-hidden="true"></i>
                     <span>Pharmacy</span>
                 </li>
-                <li *ngIf="accessHas('Laboratory','Laboratory')" (click)="laboratorySubmenuShow()" [routerLink]="getSubscribedModule('Laboratory') ? ['laboratory'] : []" routerLinkActive="menu-active">
+                <li *ngIf="accessHas('Laboratory','Laboratory')" (click)="laboratorySubmenuShow()" [routerLink]="getSubscribedModule('Laboratory') ? ['laboratory'] : []"
+                    routerLinkActive="menu-active">
                     <i class="fa fa-flask" aria-hidden="true"></i>
                     <span>Laboratory</span>
                 </li>
-                <li *ngIf="accessHas('Radiology','Radiology')" (click)="employeeSubmenuShow()" [routerLink]="getSubscribedModule('Radiology') ? ['radiology'] : []" routerLinkActive="menu-active">
+                <li *ngIf="accessHas('Radiology','Radiology')" (click)="employeeSubmenuShow()" [routerLink]="getSubscribedModule('Radiology') ? ['radiology'] : []"
+                    routerLinkActive="menu-active">
                     <i class="fa fa-picture-o" aria-hidden="true"></i>
                     <span>Radiology</span>
                 </li>
-                <li *ngIf="accessHas('Blood','Blood Bank')" (click)="patientSubmenuShow()" [routerLink]="getSubscribedModule('Blood Bank') ? ['patient-manager'] : []" routerLinkActive="menu-active">
+                <li *ngIf="accessHas('Blood','Blood Bank')" (click)="patientSubmenuShow()" [routerLink]="getSubscribedModule('Blood Bank') ? ['patient-manager'] : []"
+                    routerLinkActive="menu-active">
                     <i class="fa fa-tint" aria-hidden="true"></i>
                     <span>Blood Bank</span>
                 </li>
-                <li *ngIf="accessHas('Theatre','Theatre')" (click)="patientSubmenuShow()" [routerLink]="getSubscribedModule('Theatre') ? ['patient-manager'] : []" routerLinkActive="menu-active">
+                <li *ngIf="accessHas('Theatre','Theatre')" (click)="patientSubmenuShow()" [routerLink]="getSubscribedModule('Theatre') ? ['patient-manager'] : []"
+                    routerLinkActive="menu-active">
                     <i class="fa fa-bed" aria-hidden="true"></i>
                     <span>Theatre</span>
                 </li>
-                <li *ngIf="accessHas('Immunization','Immunization')" (click)="patientSubmenuShow()" [routerLink]="getSubscribedModule('Immunization') ? ['immunization'] : []" routerLinkActive="menu-active">
+                <li *ngIf="accessHas('Immunization','Immunization')" (click)="patientSubmenuShow()" [routerLink]="getSubscribedModule('Immunization') ? ['immunization'] : []"
+                    routerLinkActive="menu-active">
                     <i class="fa fa-bed" aria-hidden="true"></i>
                     <span>Immunization</span>
                 </li>
                 <li *ngIf="accessHas('Health-Coverage','Health Care Coverage')" (click)="onHealthCoverage()">
-                    <i class="fa fa-heartbeat" [routerLink]="getSubscribedModule('Health Care Coverage') ? ['health-coverage'] : []" routerLinkActive="menu-active" aria-hidden="true"></i>
+                    <i class="fa fa-heartbeat" [routerLink]="getSubscribedModule('Health Care Coverage') ? ['health-coverage'] : []"
+                        routerLinkActive="menu-active" aria-hidden="true"></i>
                     <span> Health Care Coverage</span>
                 </li>
                 <!-- <li (click)="onSwitchAccount()"><i class="fa fa-users" aria-hidden="true"></i> <span>Switch Account</span></li> -->
                 <!-- <li (click)="logoutConfirm_show()"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Log Out</span></li> -->
-                <li *ngIf="accessHas('billing/tags','Tags')" (click)="onTags()" [routerLink]="getSubscribedModule('Tags') ? ['billing/tags'] : []" routerLinkActive="menu-active">
+                <li *ngIf="accessHas('billing/tags','Tags')" (click)="onTags()" [routerLink]="getSubscribedModule('Tags') ? ['billing/tags'] : []"
+                    routerLinkActive="menu-active">
                     <i class="fa fa-users" aria-hidden="true"></i>
                     <span>Tags</span>
                 </li>
-                <li *ngIf="accessHas('Setting','Facility Settings')" (click)="facilitySubmenuShow()" [routerLink]="getSubscribedModule('Facility Settings') ? ['facility-page'] : []" routerLinkActive="menu-active">
+                <li *ngIf="accessHas('Setting','Facility Settings')" (click)="facilitySubmenuShow()" [routerLink]="getSubscribedModule('Facility Settings') ? ['facility-page'] : []"
+                    routerLinkActive="menu-active">
                     <i class="fa fa-cog" aria-hidden="true"></i>
                     <span>Facility Settings</span>
                 </li>
                 <!-- <li (click)="employeeSubmenuShow()" [routerLink]="['employee-manager']"><i class="fa fa-user" aria-hidden="true"></i> <span>Profile Settings</span></li> -->
                 <!-- <li (click)="userSubmenuShow()" [routerLink]="['access-manager/access-role-details']"><i class="fa fa-sign-in" aria-hidden="true"></i> <span>Access Control</span></li> -->
                 <!-- <li (click)="changePass()"><i class="fa fa-lock" aria-hidden="true"></i> <span>Change Password</span></li> -->
-                <li *ngIf="accessHas('Billing','Billing Manager')" (click)="billingSubmenuShow()" [routerLink]="getSubscribedModule('Billing Manager') ? ['billing'] : []" routerLinkActive="menu-active">
+                <li *ngIf="accessHas('Billing','Billing Manager')" (click)="billingSubmenuShow()" [routerLink]="getSubscribedModule('Billing Manager') ? ['billing'] : []"
+                    routerLinkActive="menu-active">
                     <i class="fa fa-file-text" aria-hidden="true"></i>
                     <span>Billing Manager</span>
                     <!-- {{ getSubscribedModule(module?.name) ? ' wp-name': ' wp-name li-disabled'}} -->
                 </li>
-                <li *ngIf="accessHas('Corporate','Corporate')" (click)="billingSubmenuShow()" [routerLink]="getSubscribedModule('Corporate') ? ['corporate'] : []" routerLinkActive="menu-active">
+                <li *ngIf="accessHas('Corporate','Corporate')" (click)="billingSubmenuShow()" [routerLink]="getSubscribedModule('Corporate') ? ['corporate'] : []"
+                    routerLinkActive="menu-active">
                     <i class="fa fa-file-text" aria-hidden="true"></i>
                     <span>Corporate</span>
                 </li>

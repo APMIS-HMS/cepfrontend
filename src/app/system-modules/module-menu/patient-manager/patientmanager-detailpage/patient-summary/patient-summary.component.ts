@@ -194,9 +194,19 @@ export class PatientSummaryComponent implements OnInit, OnDestroy {
 			this.previousUrl = e[0].urlAfterRedirects;
 		});
 
-		this.personService.updateListener.subscribe((payload) => {
-			this.patient.personDetails = payload;
-		});
+		this.personService.updateListener
+			.filter((person) => person._id === this.patient.personId)
+			.subscribe((payload) => {
+				this.patient.personDetails = payload;
+				this.getPersonWallet(payload);
+			});
+
+		this.personService.patchListener
+			.filter((person) => person._id === this.patient.personId)
+			.subscribe((payload) => {
+				this.patient.personDetails = payload;
+				this.getPersonWallet(payload);
+			});
 
 		this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
 	}
