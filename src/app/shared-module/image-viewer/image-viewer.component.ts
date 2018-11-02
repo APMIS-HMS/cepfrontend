@@ -15,7 +15,6 @@ export class ImageViewerComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		console.log(this.imageSrc);
 		if (this.imageSrc === null || this.imageSrc === undefined) {
 			this.imageSrc = '../../../../../assets/images/logos/default.png';
 		}
