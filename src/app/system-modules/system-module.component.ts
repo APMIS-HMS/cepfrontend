@@ -1,6 +1,7 @@
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { NotificationService, Notification } from '../services/communication-manager/notification.service';
 import {
 	UserService,
 	FacilitiesService,
@@ -16,7 +17,7 @@ import { NetworkConnection, ConnectionStatusEnum } from './NetworkConnection';
 @Component({
 	selector: 'app-system-module',
 	templateUrl: './system-module.component.html',
-	styleUrls: [ './system-module.component.scss' ]
+	styleUrls: ['./system-module.component.scss']
 })
 export class SystemModuleComponent implements OnInit {
 	searchControl = new FormControl();
@@ -31,6 +32,8 @@ export class SystemModuleComponent implements OnInit {
 	logoutConfirm_on = false;
 	userOpt = false;
 	changePassword = false;
+	notifications: Notification[];
+	notification_length: number;
 
 	login_on = false;
 	pwdReset_on = false;
@@ -49,7 +52,8 @@ export class SystemModuleComponent implements OnInit {
 		private toast: ToastsManager,
 		private router: Router,
 		private locker: CoolLocalStorage,
-		private authFacadeService: AuthFacadeService
+		private authFacadeService: AuthFacadeService,
+		private notificationService: NotificationService
 	) {
 		this.title = environment.title;
 		this.platformName = environment.platform;
@@ -71,7 +75,7 @@ export class SystemModuleComponent implements OnInit {
 		this.userService.missionAnnounced$.subscribe((payload) => {
 			if (payload === 'out') {
 				this.isLoggedOut = true;
-				this.router.navigate([ '/' ]);
+				this.router.navigate(['/']);
 			} else if (payload === 'in') {
 			}
 		});
@@ -102,6 +106,19 @@ export class SystemModuleComponent implements OnInit {
 		}
 		const auth: any = this.locker.getObject('auth');
 		this.authData = auth.data;
+		this.getAllNotifications();
+	}
+
+	getAllNotifications() {
+		try {
+			this.notificationService.findAll({}).then(payload => {
+				console.log('*******____*******\n', payload);
+				this.notification_length = payload.total;
+			});
+
+		} catch (error) {
+			return error;
+		}
 	}
 
 	signOut() {
@@ -143,7 +160,7 @@ export class SystemModuleComponent implements OnInit {
 		this.logoutConfirm_on = false;
 	}
 	onSwitchAccount() {
-		this.router.navigate([ '/accounts' ]).then((payload) => {
+		this.router.navigate(['/accounts']).then((payload) => {
 			this.authFacadeService.setLogingEmployee(undefined);
 			this.authFacadeService.setLoginUser(undefined);
 			this.authFacadeService.setSelectedFacility(undefined);
@@ -152,6 +169,6 @@ export class SystemModuleComponent implements OnInit {
 	}
 
 	goHome() {
-		this.router.navigate([ '/home-page' ]).then((payload) => {}, (error) => {});
+		this.router.navigate(['/home-page']).then((payload) => { }, (error) => { });
 	}
 }

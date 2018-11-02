@@ -286,20 +286,46 @@ export class InvoiceComponent implements OnInit, OnDestroy {
 		this.priceItemDetailPopup = true;
 		this.selectedBillItem = billItem;
 	}
-	print(): void {
-		let printContents, popupWin;
-		printContents = document.getElementById('print-section').innerHTML;
-		popupWin = window.open('', '_blank', 'top=0,left=0,height=100%,width=auto');
+	print() {
+        const printContents = document.getElementById('invoicePrint').innerHTML;
+		let popupWin = window.open('', '', 'top=0,left=0,height=100%,width=auto');
 		popupWin.document.open();
-		popupWin.document.write(
-			`<html>
+        popupWin.document.write(`
+        <html>
                 <head>
-                <title>Print tab</title>
+                <title></title>
                 <style>
                 //........Customized style.......
                 @import "../../../../globals/variables.scss";
                 @import "../../../../globals/normalize.scss";
 
+                .image_container{
+                    vertical-align: middle;
+                    width: 80px;
+                    height: 80px;
+                    img{
+                        max-width:100%; 
+                        max-height:100%;
+                        margin:auto;
+                        display:block;
+                        object-fit: cover;
+                    }
+                }
+                
+                .card-container{
+                    display:grid; padding-right: 30px; padding-left: 30px;
+                }
+
+                .img_wrap{
+                    display: grid;
+                    justify-content: center;
+                    justify-items: center;
+                    justify-self: center;
+                    text-align: center;
+                    align-items: center;
+                    align-content: center;
+                    align-self: center;
+                  }
                 .megaPgWrap{
                     display: flex;
                     justify-content: space-between;
@@ -348,6 +374,55 @@ export class InvoiceComponent implements OnInit, OnDestroy {
                     margin-top: 5px;
                     margin-left: 3px;
                     cursor: pointer;
+                }
+                .pay-tag{
+                    position:absolute;
+                    top:40%;
+                    left:40%;
+                    z-index:1;
+                    font-family:Arial,sans-serif;
+                    -webkit-transform: rotate(-45deg); /* Safari */
+                    -moz-transform: rotate(-45deg); /* Firefox */
+                    -ms-transform: rotate(-45deg); /* IE */
+                    -o-transform: rotate(-45deg); /* Opera */
+                    transform: rotate(-45deg);
+                    font-size:40px;
+                    color:#c00;
+                    background:#fff;
+                    border:solid 4px #c00;
+                    padding:5px;
+                    border-radius:5px;
+                    zoom:1;
+                    filter:alpha(opacity=20);
+                    opacity:0.2;
+                    -webkit-text-shadow: 0 0 2px #c00;
+                    text-shadow: 0 0 2px #c00;
+                    box-shadow: 0 0 2px #c00;
+                }
+                div.invoice.paid:after
+                {
+                    position:absolute;
+                    top:40%;
+                    left:40%;
+                    z-index:1;
+                    font-family:Arial,sans-serif;
+                    -webkit-transform: rotate(-45deg); /* Safari */
+                    -moz-transform: rotate(-45deg); /* Firefox */
+                    -ms-transform: rotate(-45deg); /* IE */
+                    -o-transform: rotate(-45deg); /* Opera */
+                    transform: rotate(-45deg);
+                    font-size:40px;
+                    color:#c00;
+                    background:#fff;
+                    border:solid 4px #c00;
+                    padding:5px;
+                    border-radius:5px;
+                    zoom:1;
+                    filter:alpha(opacity=20);
+                    opacity:0.2;
+                    -webkit-text-shadow: 0 0 2px #c00;
+                    text-shadow: 0 0 2px #c00;
+                    box-shadow: 0 0 2px #c00;
                 }
                 .suggestedItem:hover{
                     background: #9E9E9E;

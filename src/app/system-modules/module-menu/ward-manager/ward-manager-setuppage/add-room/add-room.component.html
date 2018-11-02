@@ -44,6 +44,7 @@
                                 </mat-form-field>
                             </div>
                             <div class="btn-box">
+                                
                                 <button mat-raised-button [disabled]="!addRoomFormGroup.valid || disableAddRoomBtn" (click)="addroom(addRoomFormGroup.value, addRoomFormGroup.valid)" class="btn">
                                   <span *ngIf="addRoom"><i class="fa fa-plus"></i> Add Room</span>
                                   <span *ngIf="addingRoom">Adding Room... <i class="fa fa-spin fa-spinner"></i></span>

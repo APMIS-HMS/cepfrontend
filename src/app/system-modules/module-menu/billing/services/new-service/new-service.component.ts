@@ -288,7 +288,9 @@ export class NewServiceComponent implements OnInit {
   }
 
   onEditPrice(event, i) {
+    console.log(event.target.value);
     this.priceItems[i].price = <number>event.target.value;
+    console.log(this.priceItems);
   }
 
   compare(arrayA, arrayB) {

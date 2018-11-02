@@ -9,13 +9,20 @@
     box-sizing: border-box;
 }
 
+
+
 .baseGrid{
     display: grid;
-    grid-template-columns: 15% auto;
+    grid-template-columns: auto;
     grid-gap: 1.5em;
     padding: 1em;
 }
 
+.doc-preview-margin{
+    padding: 2px;
+    overflow: auto;
+    width: auto !important;
+}
 .txt-wrap{
     display:inline-block;
 }
@@ -26,11 +33,11 @@
 }
 .docPreview{
     display: grid;
-    grid-template-rows: 40% 60%;
+    grid-template-rows: auto;
     grid-gap: 1em;
     background: white;
     border-radius: 5px;
-    width: 725px;
+    width: 800px;
     height: 510px;
     padding: 10px;
     overflow: auto;
@@ -52,6 +59,7 @@
 
 .doc-content{
     border-radius: 5px;
+    width: 800px
 }
 
 .doc-con{
@@ -107,7 +115,8 @@ td{
 	width:60px;
 	height:60px;
 	bottom:40px;
-	right:40px;
+    right:40px;
+    cursor: pointer;
 	background-color:rgb(0, 68, 255);
 	color:#FFF;
 	border-radius:50px;
@@ -122,7 +131,7 @@ td{
     text-align: left;
     box-shadow: 0 3px 2px rgba(0, 0, 0, 0.5);
     padding: 20px;
-    width: 93%;
+    width: 92%;
     height: auto;
     margin: 0px 10px 10px 10px;
     border-bottom-left-radius: 10px;
@@ -162,4 +171,9 @@ td{
     border-bottom-right-radius: 5px;
     justify-content: center;
     position: inherit;
+  }
+
+  .pdf-wrap{
+      box-sizing: border-box;
+      width: 100% !important;
   }

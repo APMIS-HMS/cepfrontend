@@ -3,6 +3,24 @@
     text-align: center;
 }
 
+.pri-wrap{
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    margin: 10px 0;
+    align-items: center;
+}
+.control-group{
+    display: inline-block;
+    vertical-align: top;
+    text-align: left;
+    box-shadow: 0 3px 2px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    width: auto;
+    height: auto;
+    margin: 10px;
+  }
+  
 .cu-search-box {
     position: relative;
     min-width: 100px;

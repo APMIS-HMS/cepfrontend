@@ -47,13 +47,20 @@
                     </div>
                 </div>
             </div>
-            <div class="col-xs-6" style="margin-top: -5px;">
-                <div>Price: 
-                    <div *ngIf="!onEditProcedurePrice">
-                        <b>&#x20A6; {{ selectedProcedure?.price?.price }}</b>
-                    </div>
+            <div class="pri-wrap">
+                <div *ngIf="!onEditProcedurePrice">
+                    <h1> &#x20A6; {{ selectedProcedure?.price?.price }}</h1>
+                </div>
+                <div style="padding-left: 10px;">
                     <i class="fa fa-pencil-square-o" aria-hidden="true" (click)="onEditProcedure()"></i>
-                    <input type="number" [formControl]="costForm" *ngIf="onEditProcedurePrice">
+                </div>
+            </div>
+
+            <div class="col-xs-6 control-group" *ngIf="onEditProcedurePrice">
+                <div>
+                    <mat-form-field>
+                        <input matInput [formControl]="costForm" placeholder="Enter New Price" type="number">
+                    </mat-form-field>
                 </div>
             </div>
             <div class="addDrugBtn" (click)="onClickAddProcedure(addProcedureForm.valid, addProcedureForm.value);">
