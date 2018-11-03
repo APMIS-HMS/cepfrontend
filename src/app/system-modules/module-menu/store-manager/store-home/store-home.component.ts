@@ -151,9 +151,7 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
 			.then((payload) => {
 				this.transformStoreSummaryData(payload);
 				this._inventoryService.getInventoryBriefStatus(this.checkingStore.storeId, {}).then((res) => {
-					console.log(res);
 					// this.transformStoreSummaryData(res);
-					// console.log("STORE SUMMARY", this.storeStatusLabel);
 				});
 			});
 	}
@@ -320,14 +318,10 @@ export class StoreHomeComponent implements OnInit, OnDestroy {
 	}
 
 	logCurrentSelectedItem(item: IStoreSummaryItem) {
-		console.log(item);
 		this.selectedItem = item;
 		this.showDialog = true;
 		if (item.tag === 'total-items') {
-			this._inventoryService.getInventoryCountDetails(this.checkingStore.storeId).then((response) => {
-				alert('Check the console for response object');
-				console.log(response);
-			});
+			this._inventoryService.getInventoryCountDetails(this.checkingStore.storeId).then((response) => {});
 		}
 	}
 	getPropFromArray(data: any, prop): any {

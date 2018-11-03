@@ -70,7 +70,7 @@ export class PaymentHistoryComponent implements OnInit {
 						this.invoiceGroups = res.data.filter((x) => x.paymentCompleted);
 					}
 				},
-				(err) => console.log(err)
+				(err) => {}
 			);
 	}
 
