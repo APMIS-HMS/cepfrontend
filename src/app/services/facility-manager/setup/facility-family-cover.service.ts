@@ -67,7 +67,6 @@ export class FacilityFamilyCoverService {
   updateBeneficiaryList(formData) {
     const familyBeneficiaries  = this._socketService.getService('family-beneficiaries');
     familyBeneficiaries.timeout  = 40000;
-    console.log(familyBeneficiaries);
     return familyBeneficiaries.create(formData);
   }
 

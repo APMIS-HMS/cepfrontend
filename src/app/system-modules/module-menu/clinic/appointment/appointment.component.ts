@@ -77,7 +77,7 @@ export class AppointmentComponent implements OnInit {
 	loading: Boolean = false;
 
 	dayCount = [ 'Today', 'Last 3 Days', 'Last Week', 'Last 2 Weeks', 'Last Month' ];
-	paginationObj: IPagerSource = { totalRecord: 0, currentPage: 0, pageSize: 10, totalPages: 0 };
+	paginationObj: IPagerSource = { totalRecord: 0, currentPage: 0, pageSize:10, totalPages: 0 };
 	lastAccessedClinicIds: any[];
 
 	constructor(
@@ -200,17 +200,17 @@ export class AppointmentComponent implements OnInit {
 					isFuture: true,
 					facilityId: this.selectedFacility._id,
 					clinicIds: clinicIds,
-					$limit: this.paginationObj.pageSize,
-					$skip: this.paginationObj.currentPage * this.paginationObj.pageSize
+					/*$limit: this.paginationObj.pageSize,
+					$skip: this.paginationObj.currentPage * this.paginationObj.pageSize*/
 					// TODO  : Data not displayed after pagination, need backend fix urgently
 				}
 			})
 			.subscribe(
 				(payload) => {
-					console.log(payload.data);
+					
 					this.loading = false;
 					this.filteredAppointments = this.appointments = payload.data;
-					this.paginationObj.totalRecord = payload.total;
+					/*this.paginationObj.totalRecord = payload.total;*/
 				},
 				(error) => {
 					this.loading = false;
@@ -322,14 +322,19 @@ export class AppointmentComponent implements OnInit {
 						isWithinRange: true,
 						from: this.dateRange.from,
 						to: this.dateRange.to,
-						facilityId: this.selectedFacility._id
+						facilityId: this.selectedFacility._id,
+                        $limit: this.paginationObj.pageSize,
+                        $skip: this.paginationObj.currentPage * this.paginationObj.pageSize
 					}
 				})
 				.subscribe((payload) => {
+					console.log("Appointment form date range",payload);
 					this.loading = false;
 					this.filteredAppointments = this.appointments = payload.data;
+                    this.paginationObj.totalRecord = payload.total;
 				});
 		}
+		
 	}
 	getAppointmentTypes() {
 		this.appointmentTypeService.findAll().subscribe((payload) => {
@@ -471,6 +476,6 @@ export class AppointmentComponent implements OnInit {
 	pageClickedEvent(index: number) {
 		// goto next page using the current index
 		this.paginationObj.currentPage = index;
-		this._getAppointments(this.lastAccessedClinicIds);
+		this.setReturnValue(this.dateRange);
 	}
 }

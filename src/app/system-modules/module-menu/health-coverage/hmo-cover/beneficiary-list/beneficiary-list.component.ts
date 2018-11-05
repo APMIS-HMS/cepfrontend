@@ -5,6 +5,7 @@ import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChil
 import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
 import {MatCheckboxChange, MatPaginator, PageEvent,MatCheckbox} from '@angular/material';
 import * as _ from "lodash";
+import {AsomModalDialogService} from "../../../../../core-ui-modules/ui-components/BaseDialogComponent";
 
 @Component({
   selector: 'app-beneficiary-list',
@@ -35,7 +36,7 @@ export class BeneficiaryListComponent implements OnInit {
   @ViewChild("matChkBox") matChkBox : MatCheckbox ;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   pageEvent: PageEvent;
-  constructor(private formBuilder: FormBuilder, private route: ActivatedRoute, private locker: CoolLocalStorage,
+  constructor(private dialogService : AsomModalDialogService , private formBuilder: FormBuilder, private route: ActivatedRoute, private locker: CoolLocalStorage,
     private hmoService: HmoService) { }
 
   ngOnInit() {
@@ -69,18 +70,25 @@ export class BeneficiaryListComponent implements OnInit {
         const facHmo = payload.data[0];
         const index = facHmo.hmos.findIndex(x => x.hmo === id);
         this.mselectedHMO = facHmo.hmos[index];
+        
+        console.log("================= NECESSARY DATA =======================");
+        console.log("facHmo_variable ", facHmo);
+        console.log("this.mselecedHmo_variable", this.mselectedHMO);
+        console.log("=================   END OF DATA  ======================")
         if (index > -1) {
           if (facHmo.hmos[index].enrolleeList.length > 0) {
             const bene = [];
+           
             for (let s = 0; s < facHmo.hmos[index].enrolleeList.length; s++) {
               this.selectedHMO = facHmo.hmos[index].hmo;
               bene.push(...facHmo.hmos[index].enrolleeList[s].enrollees);
             }
-/*
+              console.log("bene_variable", bene, "Selected HMO" , this.selectedHMO);
+/* 
 *
 * get the selected items
 * compare and remove items marked for delete from
-*
+* 
 *
 * */
             this.beneficiaries = bene;
@@ -249,5 +257,10 @@ export class BeneficiaryListComponent implements OnInit {
             //  uncheck all Selected
             this.manageCheckBoxesState(false);
         }
+    }
+    
+    openMyDialog()
+    {
+      this.dialogService.openSimpleModal({},"New Dialog");
     }
 }

@@ -61,7 +61,7 @@ export class HmoOfficerComponent implements OnInit {
             this.bills = payload.data.filter(x => x.isPending === true);
             this.historyBills = payload.data.filter(x => x.isPending === false);
             this.calTotalBill();
-            // console.log (_);
+           /* // console.log (_);
             // add som dummy data to the list and observer the grouping made
             const dummy  = _.take(this.historyBills,3);
             const joined  =  [..._.map(dummy, x => { x.coverFile.name  = "Modified HMO Name";
@@ -79,7 +79,7 @@ export class HmoOfficerComponent implements OnInit {
             })
             //this.historyBills  = newValue;
             console.log("LOGGED",newValue[0].group,"END");
-            console.log("NEW VALUE ",newValue);
+            console.log("NEW VALUE ",newValue);*/
         });
     }
 
