@@ -192,7 +192,6 @@ export class AppointmentComponent implements OnInit {
 	}
 
 	_getAppointments(clinicIds: any) {
-		console.log(this.selectedFacility._id);
 		this.loading = true;
 		this.appointmentService
 			.findAppointment({
@@ -328,13 +327,11 @@ export class AppointmentComponent implements OnInit {
 					}
 				})
 				.subscribe((payload) => {
-					console.log("Appointment form date range",payload);
 					this.loading = false;
 					this.filteredAppointments = this.appointments = payload.data;
                     this.paginationObj.totalRecord = payload.total;
 				});
 		}
-		
 	}
 	getAppointmentTypes() {
 		this.appointmentTypeService.findAll().subscribe((payload) => {

@@ -29,6 +29,7 @@ import {
 	SchedulerService,
 	WorkSpaceService
 } from '../../../../services/facility-manager/setup/index';
+import { IPagerSource } from 'app/core-ui-modules/ui-components/PagerComponent';
 
 @Component({
 	selector: 'app-new-appointment',
@@ -85,7 +86,7 @@ export class NewAppointmentComponent implements OnInit {
 	};
 
 	dayCount = [ 'Today', 'Last 3 Days', 'Last Week', 'Last 2 Weeks', 'Last Month' ];
-
+	paginationObj: IPagerSource = { totalRecord: 0, currentPage: 0, pageSize: 10, totalPages: 0 };
 	constructor(
 		private _fb: FormBuilder,
 		private scheduleService: SchedulerService,
@@ -192,11 +193,14 @@ export class NewAppointmentComponent implements OnInit {
 					clinicId: value.clinicId.clinicName,
 					facilityId: this.selectedFacility._id,
 					hasDate: true,
-					startDate: value.startDate
+					startDate: value.startDate,
+					$limit: this.paginationObj.pageSize,
+					$skip: this.paginationObj.currentPage * this.paginationObj.pageSize
 				}
 			})
 			.subscribe((payload) => {
 				this.appointments = payload.data;
+				this.paginationObj.totalRecord = payload.total;
 			});
 	}
 	setReturnValue(dateRange: any): any {
@@ -218,9 +222,18 @@ export class NewAppointmentComponent implements OnInit {
 	getPreviousAppointments(value) {
 		this.pastAppointments = [];
 		if (value._id !== undefined) {
-			this.appointmentService.findAppointment({ query: { patientId: value._id } }).subscribe((payload) => {
-				this.pastAppointments = payload.data;
-			});
+			this.appointmentService
+				.findAppointment({
+					query: {
+						patientId: value._id,
+						$limit: this.paginationObj.pageSize,
+						$skip: this.paginationObj.currentPage * this.paginationObj.pageSize
+					}
+				})
+				.subscribe((payload) => {
+					this.pastAppointments = payload.data;
+					this.paginationObj.totalRecord = payload.total;
+				});
 		}
 	}
 

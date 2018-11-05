@@ -251,9 +251,11 @@ export class ScheduleFrmComponent implements OnInit {
 				facilityId: this.selectedFacility._id,
 				searchText: value,
 				employeeTable: true,
-				$or:[{
-					professionId: { $regex: ['doctor','nurse'], '$options': 'i' } 					
-				}]
+				$or: [
+					{
+						professionId: { $regex: [ 'doctor', 'nurse' ], $options: 'i' }
+					}
+				]
 			};
 		});
 		// this.filteredProviders = this.provider.valueChanges
@@ -427,7 +429,11 @@ export class ScheduleFrmComponent implements OnInit {
 					this.category.setValue(this.appointment.category);
 				}
 				this.orderStatuses = results[6].data;
-				if (this.appointment._id === null || this.appointment._id === undefined || this.appointment._id === '') {
+				if (
+					this.appointment._id === null ||
+					this.appointment._id === undefined ||
+					this.appointment._id === ''
+				) {
 					this.orderStatuses.forEach((item) => {
 						if (item.name === 'Scheduled') {
 							this.status.setValue(item);
@@ -915,13 +921,13 @@ export class ScheduleFrmComponent implements OnInit {
 											this.selectedPatient.personDetails.lastName +
 											' ' +
 											this.selectedPatient.personDetails.Name;
-										this.setValueSmsAlert(
-											fullName,
-											this.appointment.startDate,
-											this.selectedFacility.name,
-											clinic.name,
-											this.selectedPatient.personDetails.email
-										);
+										// this.setValueSmsAlert(
+										// 	fullName,
+										// 	this.appointment.startDate,
+										// 	this.selectedFacility.name,
+										// 	clinic.name,
+										// 	this.selectedPatient.personDetails.email
+										// );
 
 										this.disableBtn = true;
 										this.updateAppointment = false;
@@ -965,13 +971,13 @@ export class ScheduleFrmComponent implements OnInit {
 								this.selectedPatient.personDetails.lastName +
 								' ' +
 								this.selectedPatient.personDetails.Name;
-							this.setValueSmsAlert(
-								fullName,
-								this.appointment.startDate,
-								this.selectedFacility.name,
-								clinic.name,
-								this.selectedPatient.personDetails.email
-							);
+							// this.setValueSmsAlert(
+							// 	fullName,
+							// 	this.appointment.startDate,
+							// 	this.selectedFacility.name,
+							// 	clinic.name,
+							// 	this.selectedPatient.personDetails.email
+							// );
 							this.router.navigate([ '/dashboard/clinic/appointment' ]);
 							this.systemModuleService.off();
 							this.systemModuleService.announceSweetProxy(
@@ -999,7 +1005,6 @@ export class ScheduleFrmComponent implements OnInit {
 					}
 				);
 			} else {
-				console.log('this is called');
 				this.appointmentService.create(this.appointment).then(
 					(payload) => {
 						this.createBill();
@@ -1059,13 +1064,13 @@ export class ScheduleFrmComponent implements OnInit {
 								this.selectedPatient.personDetails.lastName +
 								' ' +
 								this.selectedPatient.personDetails.Name;
-							this.setValueSmsAlert(
-								fullName,
-								this.appointment.startDate,
-								this.selectedFacility.name,
-								clinic.name,
-								this.selectedPatient.personDetails.email
-							);
+							// this.setValueSmsAlert(
+							// 	fullName,
+							// 	this.appointment.startDate,
+							// 	this.selectedFacility.name,
+							// 	clinic.name,
+							// 	this.selectedPatient.personDetails.email
+							// );
 							this.router.navigate([ '/dashboard/clinic/appointment' ]);
 							this.systemModuleService.off();
 							this.systemModuleService.announceSweetProxy(
@@ -1082,7 +1087,6 @@ export class ScheduleFrmComponent implements OnInit {
 						}
 					},
 					(error) => {
-						console.log('error2 =>', error);
 						this.savingAppointment = false;
 						this.disableBtn = false;
 						this.loadIndicatorVisible = false;
@@ -1093,7 +1097,6 @@ export class ScheduleFrmComponent implements OnInit {
 						);
 					}
 				);
-
 			}
 		} else {
 			this.systemModuleService.off();

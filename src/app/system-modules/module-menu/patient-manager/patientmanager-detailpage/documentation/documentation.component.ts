@@ -66,6 +66,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 	docDocuments: any[] = [];
 	auth: any;
 	subscription: Subscription;
+	draftSubscription: Subscription;
 	priority: any = <any>{};
 	public tableChartData = [];
 	vitalsObjArray = [];
@@ -120,6 +121,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 				this.documentationService.update(this.patientDocumentation).then(
 					(pay) => {
 						this.getPersonDocumentation();
+						this.getDocuments();
 						this._notification('Success', 'Documentation successfully saved!');
 					},
 					(error) => {}
@@ -144,6 +146,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 						this.hasSavedDraft = false;
 						this.sharedService.announceFinishedSavingDraft(false);
 						this.getPersonDocumentation();
+						this.getDocuments();
 						this._notification('Success', 'Documentation successfully saved!');
 					},
 					(eror) => {}
@@ -163,9 +166,10 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
 		this.subscription = this.documentationService.announceDocumentation$.subscribe((payload) => {
 			this.getPersonDocumentation();
+			this.getDocuments();
 		});
 
-		this.subscription = this.sharedService.announceSaveDraft$.subscribe(
+		this.draftSubscription = this.sharedService.announceSaveDraft$.subscribe(
 			(payload) => {
 				if (Object.keys(payload).length > 0 && payload.constructor === Object) {
 					this.sharedService.announceFinishedSavingDraft(false);
@@ -174,7 +178,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 						const apmisGuid = UUID.UUID();
 						const doc: PatientDocumentation = <PatientDocumentation>{};
 						doc.document = { documentType: this.selectedForm, body: payload };
-
 						doc.createdBy =
 							this.loginEmployee.personDetails.title +
 							' ' +
@@ -197,12 +200,12 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 						this.patientDocumentation.documentations.push(doc);
 
 						let documentationList = this.patientDocumentation.documentations;
-
 						this.documentationService.update(this.patientDocumentation).then(
 							(pay) => {
 								this.hasSavedDraft = true;
 								this.sharedService.announceFinishedSavingDraft(true);
 								this.getPersonDocumentation();
+								this.getDocuments();
 							},
 							(error) => {}
 						);
@@ -221,6 +224,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 									this.sharedService.announceFinishedSavingDraft(true);
 
 									this.getPersonDocumentation();
+									this.getDocuments();
 								});
 							}
 						}
@@ -571,6 +575,8 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
 	populateDocuments() {
 		this.mainDocuments = [];
+		this.docDocuments = [];
+		this.documents = [];
 		this.patientDocumentation.documentations.forEach((documentation) => {
 			if (documentation.facilityName === undefined) {
 				documentation.facilityName = this.selectedFacility.name;
@@ -618,7 +624,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 		);
 		// this.documents = Array.from(grouped);
 		this.documents = [ ...this.documents, ...Array.from(grouped) ];
-		console.log('calling 1');
 	}
 
 	getDocuments() {
@@ -642,10 +647,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 					format(reverseDocument.createdAt, 'DD/MM/YYYY')
 				);
 				this.documents = [ ...this.documents, ...Array.from(grouped) ];
-				console.log(this.documents);
 			});
-
-		console.log('calling 2');
 	}
 	checkType(value) {
 		if (typeof value === 'string') {
@@ -747,6 +749,7 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 		this.addVitals_view = false;
 		this.showPrintPop = false;
 		this.getPersonDocumentation();
+		this.getDocuments();
 	}
 
 	showOrderset_onClick(e) {
@@ -764,6 +767,9 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 
 	ngOnDestroy(): void {
 		this.subscription.unsubscribe();
+		this.draftSubscription.unsubscribe();
+		this.draftDocument = undefined;
+		// this.patient = undefined;
 	}
 
 	private _notification(type: string, text: string): void {
@@ -775,7 +781,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 	}
 
 	node_toggle(document) {
-		console.log(document);
 		if (this.currentDocument !== undefined && document === this.currentDocument) {
 			this.currentDocument = undefined;
 		} else {
@@ -783,7 +788,6 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 		}
 	}
 	should_show(document) {
-		console.log(document);
 		return this.currentDocument === undefined ? false : this.currentDocument._id === document._id;
 	}
 	nodeChild_toggle() {
@@ -817,7 +821,141 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 		// this.loading = false;
 		// this.loadingError = true;
 	}
-	onProgress(progressData: any) {
-		console.log(progressData);
-	}
+	onProgress(progressData: any) {}
+
+
+	docDetail_Print(){
+		const printContents = document.getElementById('printDoc').innerHTML;
+		const popupWin = window.open('', '', 'top=0,left=0,height=100%,width=auto');
+		popupWin.document.open();
+		popupWin.document.write(`
+		  <html>
+			<head>
+			  <title></title>
+			  <style>
+
+			  .tree-child{
+				display: -webkit-box;
+					display: -ms-flexbox;
+					display: flex;
+					-webkit-box-pack: start;
+					-ms-flex-pack: start;
+					justify-content: flex-start;
+					-webkit-box-align: center;
+					-ms-flex-align: center;
+					align-items: center;
+					z-index: 2;
+					position: relative;
+					padding: 10px;
+				}
+				
+				
+				.node-child-title {
+					font-size: 1.4rem;
+					color: #194985;
+				}
+				
+				
+				.node-child-content {
+					background: #fff;
+					-webkit-box-sizing: border-box;
+					box-sizing: border-box;
+					margin-bottom: 10px;
+				}
+				
+				.docCard-header {
+					display: -webkit-box;
+					display: -ms-flexbox;
+					display: flex;
+					-webkit-box-pack: justify;
+					-ms-flex-pack: justify;
+					justify-content: space-between;
+					-webkit-box-align: center;
+					-ms-flex-align: center;
+					align-items: center;
+					width: 100%;
+					height: 35px;
+					background: #e2e2e2;
+					border-bottom: 1px solid #e2e2e2;
+					padding: 5px;
+					-webkit-box-sizing: border-box;
+					box-sizing: border-box;
+				}
+				
+				.empWrap {
+					display: -webkit-box;
+					display: -ms-flexbox;
+					display: flex;
+					-webkit-box-pack: justify;
+					-ms-flex-pack: justify;
+					justify-content: space-between;
+					-webkit-box-align: center;
+					-ms-flex-align: center;
+					align-items: center;
+					cursor: pointer;
+				}
+				
+				.list-img{
+					width: 30px;
+					height: 30px;
+					border-radius: 100%;
+					margin-right: 10px;
+				}
+				
+				.val-tag {
+					font-size: 0.9rem;
+					color: #0288D1;
+				}
+				
+				.list-label {
+					font-size: 1.2rem;
+					color: #000;
+				}
+				
+				.docCard-header, .docCard-body {
+					position: relative;
+					width: 99%;
+					margin: 0 auto;
+				}
+				
+				.cardSect-wrap {
+					margin-bottom: 20px;
+					margin-left: 10px;
+					margin-top: -10px;
+				}
+				.card-sect {
+					margin-top: 20px;
+				}
+				.docCard-sectContent {
+					font-size: 1.2rem;
+					line-height: 1.5;
+					color: #474747;
+					letter-spacing: 0.3px;
+				}
+				
+				.doc-list-wrap {
+					padding-bottom: 10px;
+				}
+				
+				.sect-key {
+					font-size: 1rem;
+					color: #0288D1;
+					margin-top: 20px;
+					text-decoration: underline;
+				}
+				
+				.sect-value {
+					line-height: 1.7;
+					margin-left: 10px;
+					margin-right: 10px;
+					text-align: justify;
+				}	
+			  </style>
+			</head>
+			<body onload="window.print();window.close()">
+			${printContents}
+			</body>
+		  </html>`);
+		popupWin.document.close();
+	  }
 }

@@ -1,6 +1,7 @@
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { NotificationService, Notification } from '../services/communication-manager/notification.service';
 import {
 	UserService,
 	FacilitiesService,
@@ -31,6 +32,8 @@ export class SystemModuleComponent implements OnInit {
 	logoutConfirm_on = false;
 	userOpt = false;
 	changePassword = false;
+	notifications: Notification[];
+	notification_length: number;
 
 	login_on = false;
 	pwdReset_on = false;
@@ -49,7 +52,8 @@ export class SystemModuleComponent implements OnInit {
 		private toast: ToastsManager,
 		private router: Router,
 		private locker: CoolLocalStorage,
-		private authFacadeService: AuthFacadeService
+		private authFacadeService: AuthFacadeService,
+		private notificationService: NotificationService
 	) {
 		this.title = environment.title;
 		this.platformName = environment.platform;
@@ -102,6 +106,17 @@ export class SystemModuleComponent implements OnInit {
 		}
 		const auth: any = this.locker.getObject('auth');
 		this.authData = auth.data;
+		this.getAllNotifications();
+	}
+
+	getAllNotifications() {
+		try {
+			this.notificationService.findAll({}).then((payload) => {
+				this.notification_length = payload.total;
+			});
+		} catch (error) {
+			return error;
+		}
 	}
 
 	signOut() {

@@ -117,7 +117,6 @@ export class PurchaseOrderComponent implements OnInit {
   getSuppliers() {
     this.systemModuleService.on();
     this.supplierService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(payload => {
-      console.log(payload);
       this.suppliers = payload.data;
       this.systemModuleService.off();
     }, error => {
@@ -189,14 +188,12 @@ export class PurchaseOrderComponent implements OnInit {
         if (itemr.storeObject === undefined) {
           const store_ = this.loginEmployee.storeCheckIn.find(x => x.storeId.toString() === itemr.storeId.toString());
           itemr.storeObject = store_.storeObject;
-          console.log(itemr.storeObject);
         }
         if (itemr.isDefault === true && itemr.isOn === true) {
           itemr.isOn = false;
           this.employeeService.update(this.loginEmployee).then(payload => {
             this.loginEmployee = payload;
           },err=>{
-            console.log(err);
           });
         }
       });
@@ -218,7 +215,6 @@ export class PurchaseOrderComponent implements OnInit {
 
   slidePurchaseDetailsToggle(value, event) {
     this.selectedOrder = value;
-    console.log(this.selectedOrder);
     this.slidePurchaseDetails = !this.slidePurchaseDetails;
   }
 

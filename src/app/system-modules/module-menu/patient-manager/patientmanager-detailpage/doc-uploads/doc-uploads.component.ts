@@ -44,11 +44,11 @@ export class DocUploadsComponent implements OnInit {
 	}
 
 	getDocuments() {
-		let patient = <any>this.locker.getObject('patient');
+		// const patient = <any>this.locker.getObject('patient');
 		this.docUploadService
 			.docUploadFind({
 				query: {
-					patientId: this.patient,
+					patientId: this.patient._id,
 					facilityId: this.facilityService.getSelectedFacilityId()._id,
 					$sort: {
 						createdAt: -1

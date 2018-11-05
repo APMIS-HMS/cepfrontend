@@ -1,6 +1,24 @@
 @import "../documentation.component.scss";
+@import "./right-tab-tooltip/right-tab-tooltip.component.scss";
+
 .rAreaCard-body {
     margin: 0;
+}
+
+th{
+    max-width: 300px;
+}
+
+td{
+    max-width: 300px;
+}
+
+.red{
+    color: red;
+}
+
+.green{
+    color: green;
 }
 
 .tooltip {

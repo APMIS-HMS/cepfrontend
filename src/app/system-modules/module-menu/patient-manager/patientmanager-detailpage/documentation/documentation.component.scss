@@ -242,6 +242,7 @@ ul.topmenuwrap {
 .rArea-card {
     background: #fff;
     margin-bottom: 15px;
+    max-width: 400px;
     padding: 5px;
     height: auto;
 }
@@ -460,6 +461,7 @@ th {
     border-bottom: 1px solid #ff2500;
 }
 .tree-ul {
+    position: sticky;
     margin-top: 20px;
     background: #fff;
     box-sizing: border-box;

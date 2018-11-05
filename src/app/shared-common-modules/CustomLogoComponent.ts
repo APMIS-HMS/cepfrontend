@@ -1,27 +1,20 @@
-import {Component, Injectable,OnInit} from '@angular/core';
+import { Component, Injectable, OnInit } from '@angular/core';
 @Injectable()
-export class LogoSrcService
-{
-    src : string = "default src"
-    setSrc(src : string)
-    {
-        this.src  =  src;
-        console.log(src);
-    }
+export class LogoSrcService {
+	src: string = 'default src';
+	setSrc(src: string) {
+		this.src = src;
+	}
 }
 
 @Component({
-    selector: 'logo-viewer',
-    template: `<span></span>`
+	selector: 'logo-viewer',
+	template: `<span></span>`
 })
 export class CustomLogoComponent implements OnInit {
+	constructor() {}
 
-    constructor() {
-    }
-
-    ngOnInit() {
-       // this.src  = this.logoService.src;
-    }
+	ngOnInit() {
+		// this.src  = this.logoService.src;
+	}
 }
-
-

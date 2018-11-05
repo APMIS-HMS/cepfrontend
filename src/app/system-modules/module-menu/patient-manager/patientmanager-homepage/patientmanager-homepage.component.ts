@@ -1,185 +1,220 @@
-import {AuthFacadeService} from 'app/system-modules/service-facade/auth-facade.service';
-import {EMAIL_REGEX} from 'app/shared-module/helpers/global-config';
-import {NUMERIC_REGEX, ALPHABET_REGEX, BloodGroups, Genotypes} from './../../../../shared-module/helpers/global-config';
-import {FacilityCompanyCoverService} from './../../../../services/facility-manager/setup/facility-company-cover.service';
-import {CountryServiceFacadeService} from './../../../service-facade/country-service-facade.service';
-import {TitleGenderFacadeService} from 'app/system-modules/service-facade/title-gender-facade.service';
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
+import { EMAIL_REGEX } from 'app/shared-module/helpers/global-config';
 import {
-    Component, OnInit, EventEmitter,
-    ElementRef, ViewChild, Output, OnChanges, Input, SimpleChanges, SimpleChange
+	NUMERIC_REGEX,
+	ALPHABET_REGEX,
+	BloodGroups,
+	Genotypes
+} from './../../../../shared-module/helpers/global-config';
+import { FacilityCompanyCoverService } from './../../../../services/facility-manager/setup/facility-company-cover.service';
+import { CountryServiceFacadeService } from './../../../service-facade/country-service-facade.service';
+import { TitleGenderFacadeService } from 'app/system-modules/service-facade/title-gender-facade.service';
+import {
+	Component,
+	OnInit,
+	EventEmitter,
+	ElementRef,
+	ViewChild,
+	Output,
+	OnChanges,
+	Input,
+	SimpleChanges,
+	SimpleChange
 } from '@angular/core';
 // tslint:disable-next-line:max-line-length
 import {
-    PatientService, PersonService, FacilitiesService, FacilitiesServiceCategoryService,
-    HmoService, GenderService, RelationshipService, CountriesService, TitleService, TagService
+	PatientService,
+	PersonService,
+	FacilitiesService,
+	FacilitiesServiceCategoryService,
+	HmoService,
+	GenderService,
+	RelationshipService,
+	CountriesService,
+	TitleService,
+	TagService
 } from '../../../../services/facility-manager/setup/index';
-import {FacilityFamilyCoverService} from './../../../../services/facility-manager/setup/facility-family-cover.service';
-import {Facility, Patient, Gender, Relationship, Employee, Person, User} from '../../../../models/index';
-import {CoolLocalStorage} from 'angular2-cool-storage';
-import {FormControl, FormGroup, FormArray, FormBuilder, Validators} from '@angular/forms';
-import {Router, ActivatedRoute} from '@angular/router';
-import {ToastsManager} from 'ng2-toastr/ng2-toastr';
-import {SystemModuleService} from 'app/services/module-manager/setup/system-module.service';
+import { FacilityFamilyCoverService } from './../../../../services/facility-manager/setup/facility-family-cover.service';
+import { Facility, Patient, Gender, Relationship, Employee, Person, User } from '../../../../models/index';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { FormControl, FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
-import {Observable} from 'rxjs/Observable';
-import {startWith} from 'rxjs/operators/startWith';
-import {map} from 'rxjs/operators/map';
+import { Observable } from 'rxjs/Observable';
+import { startWith } from 'rxjs/operators/startWith';
+import { map } from 'rxjs/operators/map';
 
-import {differenceInDays, differenceInMonths, differenceInWeeks, differenceInYears} from 'date-fns';
-import {IPagerSource} from '../../../../core-ui-modules/ui-components/PagerComponent';
+import { differenceInDays, differenceInMonths, differenceInWeeks, differenceInYears } from 'date-fns';
+import { IPagerSource } from '../../../../core-ui-modules/ui-components/PagerComponent';
 
 @Component({
-    selector: 'app-patientmanager-homepage',
-    templateUrl: './patientmanager-homepage.component.html',
-    styleUrls: ['./patientmanager-homepage.component.scss']
+	selector: 'app-patientmanager-homepage',
+	templateUrl: './patientmanager-homepage.component.html',
+	styleUrls: [ './patientmanager-homepage.component.scss' ]
 })
 export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
-    selectedValue: string;
-    nextOfKinForm: FormGroup;
-    patientEditForm: FormGroup;
-    paginationObj: IPagerSource = {totalPages: 0, totalRecord: 0, pageSize: 10, currentPage: 0};
+	selectedValue: string;
+	nextOfKinForm: FormGroup;
+	patientEditForm: FormGroup;
+	paginationObj: IPagerSource = { totalPages: 0, totalRecord: 0, pageSize: 10, currentPage: 0 };
 
-    isEdit = false;
-    tabWallet = false;
-    tabInsurance = true;
-    tabCompany = false;
-    tabFamily = false;
-    button;
+	isEdit = false;
+	tabWallet = false;
+	tabInsurance = true;
+	tabCompany = false;
+	tabFamily = false;
+	button;
 
-    editPatient = false;
-    payPlan = false;
-    newUpload = false;
-    @Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
-    @Output() empDetail: EventEmitter<string> = new EventEmitter<string>();
-    @Input() resetData: Boolean;
-    @Input() searchedPatients: any;
-    @Input() searchEmpty: any;
-    @Output() resetDataNew: EventEmitter<Boolean> = new EventEmitter<Boolean>();
-    @ViewChild('fileInput') fileInput: ElementRef;
+	editPatient = false;
+	payPlan = false;
+	newUpload = false;
+	@Output() pageInView: EventEmitter<string> = new EventEmitter<string>();
+	@Output() empDetail: EventEmitter<string> = new EventEmitter<string>();
+	@Input() resetData: Boolean;
+	@Input() searchedPatients: any;
+	@Input() searchEmpty: any;
+	@Output() resetDataNew: EventEmitter<Boolean> = new EventEmitter<Boolean>();
+	@ViewChild('fileInput') fileInput: ElementRef;
 
-    facility: Facility = <Facility>{};
-    user: User = <User>{};
-    loginEmployee: Employee = <Employee>{};
-    patients: Patient[] = [];
-    genders: any[] = [];
-    relationships: Relationship[] = [];
-    selectedPatient: any = <any>{};
-    searchControl = new FormControl();
-    loading = false;
-    countries: any = [];
-    states: any = [];
-    lgas: any = [];
-    cities: any = [];
-    titles: any = [];
-    bloodGroups: any[] = [];
-    genotypes: any[] = [];
+	facility: Facility = <Facility>{};
+	user: User = <User>{};
+	loginEmployee: Employee = <Employee>{};
+	patients: Patient[] = [];
+	genders: any[] = [];
+	relationships: Relationship[] = [];
+	selectedPatient: any = <any>{};
+	searchControl = new FormControl();
+	loading = false;
+	countries: any = [];
+	states: any = [];
+	lgas: any = [];
+	cities: any = [];
+	titles: any = [];
+	bloodGroups: any[] = [];
+	genotypes: any[] = [];
 
-    patientToEdit;
+	patientToEdit;
 
-    selectedIndex: any = 0;
-    tabGroup: any;
+	selectedIndex: any = 0;
+	tabGroup: any;
 
-    tagName = new FormControl('', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]);
-    tag;
-    tags;
-    changetagButton: boolean = false;
+	tagName = new FormControl('', [
+		<any>Validators.required,
+		<any>Validators.minLength(3),
+		<any>Validators.maxLength(50)
+	]);
+	tag;
+	tags;
+	changetagButton: boolean = false;
 
-    walletPlanPrice = new FormControl('', Validators.required);
-    walletPlan = new FormControl('', Validators.required);
-    walletPlanCheck = new FormControl('');
-    insuranceId = new FormControl('', Validators.required);
-    hmoPlan = new FormControl('', Validators.required);
-    hmoPlanId = new FormControl('', Validators.required);
-    hmoPlanPrice = new FormControl('', Validators.required);
-    hmoPlanCheck = new FormControl('');
-    ccPlan = new FormControl('', Validators.required);
-    ccPlanId = new FormControl('', Validators.required);
-    ccPlanCheck = new FormControl('');
-    employeeId = new FormControl('', Validators.required);
-    familyPlanId = new FormControl('', Validators.required);
-    familyPlanCheck = new FormControl('');
-    faPlanPrice = new FormControl('');
-    faPlan = new FormControl('');
-    faFileNo = new FormControl('');
-    isDefault = new FormControl('');
-    identity = new FormControl('');
-    patient: any;
-    family: any;
-    familyClientId: any;
+	walletPlanPrice = new FormControl('', Validators.required);
+	walletPlan = new FormControl('', Validators.required);
+	walletPlanCheck = new FormControl('');
+	insuranceId = new FormControl('', Validators.required);
+	hmoPlan = new FormControl('', Validators.required);
+	hmoPlanId = new FormControl('', Validators.required);
+	hmoPlanPrice = new FormControl('', Validators.required);
+	hmoPlanCheck = new FormControl('');
+	ccPlan = new FormControl('', Validators.required);
+	ccPlanId = new FormControl('', Validators.required);
+	ccPlanCheck = new FormControl('');
+	employeeId = new FormControl('', Validators.required);
+	familyPlanId = new FormControl('', Validators.required);
+	familyPlanCheck = new FormControl('');
+	faPlanPrice = new FormControl('');
+	faPlan = new FormControl('');
+	faFileNo = new FormControl('');
+	isDefault = new FormControl('');
+	identity = new FormControl('');
+	patient: any;
+	family: any;
+	familyClientId: any;
 
-    principalName;
-    principalPersonId;
-    principalFamilyId;
-    noPatientId;
+	principalName;
+	principalPersonId;
+	principalFamilyId;
+	noPatientId;
 
-    companyFacilities: any;
-    loginCompanyListObject: any = {};
-    companyEnrolleList;
-    filteredccs: Observable<any[]>;
+	companyFacilities: any;
+	loginCompanyListObject: any = {};
+	companyEnrolleList;
+	filteredccs: Observable<any[]>;
 
-    filteredHmos: Observable<any[]>;
-    dictionaries;
-    showSearchResult: boolean = false;
-    hmos;
+	filteredHmos: Observable<any[]>;
+	dictionaries;
+	showSearchResult: boolean = false;
+	hmos;
 
-    services: any;
-    servicePricePlans: any;
+	services: any;
+	servicePricePlans: any;
 
-    pageSize = 1;
-    index: any = 0;
-    limit: any = 10;
-    showLoadMore = true;
-    total: any = 0;
-    updatePatientBtnText = 'Update';
-    loadMoreText = '';
-    btnLabel = "Add Tag";
-    tagLoader: boolean = false;
+	pageSize = 1;
+	index: any = 0;
+	limit: any = 10;
+	showLoadMore = true;
+	total: any = 0;
+	updatePatientBtnText = 'Update';
+	loadMoreText = '';
+	btnLabel = 'Add Tag';
+	tagLoader: boolean = false;
 
-    mainErr: boolean = true;
-    errMsg: string;
+	mainErr: boolean = true;
+	errMsg: string;
 
-    bulkUpload: boolean = false;
+	bulkUpload: boolean = false;
 
-    constructor(private patientService: PatientService, private personService: PersonService,
-                private facilityService: FacilitiesService, private locker: CoolLocalStorage, private router: Router,
-                private route: ActivatedRoute, private toast: ToastsManager, private genderService: TitleGenderFacadeService,
-                private relationshipService: RelationshipService, private formBuilder: FormBuilder,
-                private _countryService: CountriesService, private systemService: SystemModuleService,
-                private authFacadeService: AuthFacadeService, private hmoService: HmoService,
-                private _titleService: TitleService, private countryFacadeService: CountryServiceFacadeService,
-                private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
-                private familyCoverService: FacilityFamilyCoverService,
-                private tagService: TagService,
-                private companyCoverService: FacilityCompanyCoverService
-    ) {
+	constructor(
+		private patientService: PatientService,
+		private personService: PersonService,
+		private facilityService: FacilitiesService,
+		private locker: CoolLocalStorage,
+		private router: Router,
+		private route: ActivatedRoute,
+		private toast: ToastsManager,
+		private genderService: TitleGenderFacadeService,
+		private relationshipService: RelationshipService,
+		private formBuilder: FormBuilder,
+		private _countryService: CountriesService,
+		private systemService: SystemModuleService,
+		private authFacadeService: AuthFacadeService,
+		private hmoService: HmoService,
+		private _titleService: TitleService,
+		private countryFacadeService: CountryServiceFacadeService,
+		private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
+		private familyCoverService: FacilityFamilyCoverService,
+		private tagService: TagService,
+		private companyCoverService: FacilityCompanyCoverService
+	) {
+		this.bloodGroups = BloodGroups;
+		this.genotypes = Genotypes;
+		this.facility = <Facility>this.locker.getObject('selectedFacility');
+		this.systemService.on();
+		this.patientService.listner.subscribe((payload) => {
+			this.pageSize = 1;
+			this.index = 0;
+			this.showLoadMore = true;
+			this.total = 0;
+			this.patients = [];
+			this.getPatients(this.limit);
+		});
+		this.patientService.createListener.subscribe(
+			(payload) => {
+				this.pageSize = 1;
+				this.index = 0;
+				this.showLoadMore = true;
+				this.total = 0;
+				this.patients = [];
+				this.getPatients(this.limit);
+				const msg =
+					payload.personDetails.lastName + ' ' + payload.personDetails.firstName + ' created successfully!';
+				this._notification('Success', msg);
+			},
+			(error) => {}
+		);
 
-        this.bloodGroups = BloodGroups;
-        this.genotypes = Genotypes;
-        this.facility = <Facility>this.locker.getObject('selectedFacility');
-        this.systemService.on();
-        this.patientService.listner.subscribe(payload => {
-
-            this.pageSize = 1;
-            this.index = 0;
-            this.showLoadMore = true;
-            this.total = 0;
-            this.patients = [];
-            this.getPatients(this.limit);
-        });
-        this.patientService.createListener.subscribe(payload => {
-            this.pageSize = 1;
-            this.index = 0;
-            this.showLoadMore = true;
-            this.total = 0;
-            this.patients = [];
-            this.getPatients(this.limit);
-            const msg = payload.personDetails.lastName + ' ' + payload.personDetails.firstName + ' created successfully!';
-            this._notification('Success', msg);
-        }, error => {
-
-        });
-
-        /* const away = this.searchControl.valueChanges
+		/* const away = this.searchControl.valueChanges
           .debounceTime(400)
           .distinctUntilChanged()
           .switchMap((term: Patient[]) => this.patientService.searchPatient(this.facility._id, this.searchControl.value));
@@ -188,39 +223,36 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
           this.patients = payload.body;
         }); */
 
-        this.filteredHmos = this.hmoPlanId.valueChanges
-            .pipe(
-                startWith(''),
-                map((hmo: any) => hmo ? this.filterHmos(hmo) : this.hmos.slice())
-            );
+		this.filteredHmos = this.hmoPlanId.valueChanges.pipe(
+			startWith(''),
+			map((hmo: any) => (hmo ? this.filterHmos(hmo) : this.hmos.slice()))
+		);
 
-        this.filteredccs = this.ccPlanId.valueChanges.pipe(
-            startWith(''),
-            map((cc: any) => cc ? this.filterCCs(cc) : this.companyFacilities.slice())
-        )
+		this.filteredccs = this.ccPlanId.valueChanges.pipe(
+			startWith(''),
+			map((cc: any) => (cc ? this.filterCCs(cc) : this.companyFacilities.slice()))
+		);
 
-        this.tagName.valueChanges
-            .debounceTime(200)
-            .distinctUntilChanged().subscribe(payload => {
-            if (payload.length >= 3) {
-                this.showSearchResult = true;
-                this.tagService.suggestPatientTags({
-                    query: {
-                        facilityId: this.facility._id,
-                        word: payload
-                    }
-                }).then(suggestPayload => {
-                    this.dictionaries = suggestPayload;
-                });
-            } else {
-                this.showSearchResult = false;
-            }
-        });
+		this.tagName.valueChanges.debounceTime(200).distinctUntilChanged().subscribe((payload) => {
+			if (payload.length >= 3) {
+				this.showSearchResult = true;
+				this.tagService
+					.suggestPatientTags({
+						query: {
+							facilityId: this.facility._id,
+							word: payload
+						}
+					})
+					.then((suggestPayload) => {
+						this.dictionaries = suggestPayload;
+					});
+			} else {
+				this.showSearchResult = false;
+			}
+		});
+	}
 
-
-    }
-
-    /* searchPatients(searchText: string) {
+	/* searchPatients(searchText: string) {
       this.searchControl.setValue(searchText);
     } */
     getGender() {
@@ -256,7 +288,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         this.getRelationships();
         // this.facility = <Facility>this.locker.getObject('selectedFacility');
         // this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
-        //this.getPatients(this.limit);
+        // this.getPatients(this.limit);
         this._getAllCountries();
         this._getAllTitles();
 
@@ -485,7 +517,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
                 $sort: {createdAt: -1}
             }
         }).then(payload => {
-            console.log(payload);
             this.systemService.off();
             this.loading = false;
             this.total = payload.total;
@@ -508,133 +539,142 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
             } else {
                 this.patients = [];
             }*/
-            this.getShowing();
-        }).catch(errr => {
-            this.systemService.off();
-            this.loading = false;
-        });
-        //this.index++;
-    }
+				this.getShowing();
+			})
+			.catch((errr) => {
+				this.systemService.off();
+				this.loading = false;
+			});
+		//this.index++;
+	}
 
-    getPatientCovers(patientId) {
-        this.patientService.find({
-            facilityId: this.facility._id,
-            patientId: patientId
-        }).then(payload => {
-        })
-    }
+	getPatientCovers(patientId) {
+		this.patientService
+			.find({
+				facilityId: this.facility._id,
+				patientId: patientId
+			})
+			.then((payload) => {});
+	}
 
-    getCashPlans() {
-        this._facilitiesServiceCategoryService.find({
-            query:
-                {facilityId: this.facility._id, 'categories.name': 'Medical Records', $select: ['_id', 'categories.name', 'categories._id']}
-        }).then(payload => {
-            const cat = payload.data[0].categories;
+	getCashPlans() {
+		this._facilitiesServiceCategoryService
+			.find({
+				query: {
+					facilityId: this.facility._id,
+					'categories.name': 'Medical Records',
+					$select: [ '_id', 'categories.name', 'categories._id' ]
+				}
+			})
+			.then((payload) => {
+				const cat = payload.data[0].categories;
 
-            const cate = cat.filter(x => x.name === 'Medical Records');
-            this.selectCategory(cate[0]);
-        });
-    }
+				const cate = cat.filter((x) => x.name === 'Medical Records');
+				this.selectCategory(cate[0]);
+			});
+	}
 
-    selectCategory(category) {
-        if (category._id !== undefined) {
-            this._facilitiesServiceCategoryService.allServices({
-                query: {
-                    facilityId: this.facility._id,
-                    categoryId: category._id
-                }
-            }).then(payload => {
-                this.services = payload.services;
-            });
-        } else {
+	selectCategory(category) {
+		if (category._id !== undefined) {
+			this._facilitiesServiceCategoryService
+				.allServices({
+					query: {
+						facilityId: this.facility._id,
+						categoryId: category._id
+					}
+				})
+				.then((payload) => {
+					this.services = payload.services;
+				});
+		} else {
+		}
+	}
 
-        }
-    }
+	getServicePlans(service) {
+		this.servicePricePlans = service.price;
+	}
 
-    getServicePlans(service) {
-        this.servicePricePlans = service.price;
-    }
+	filterHmos(val: any) {
+		if (val.hmoName === undefined) {
+			return this.hmos.filter((hmo) => hmo.hmoName.toLowerCase().indexOf(val.toLowerCase()) === 0);
+		} else {
+			return this.hmos.filter((hmo) => hmo.hmoName.toLowerCase().indexOf(val.hmoName.toLowerCase()) === 0);
+		}
+	}
 
-    filterHmos(val: any) {
-        if (val.hmoName === undefined) {
-            return this.hmos.filter(hmo =>
-                hmo.hmoName.toLowerCase().indexOf(val.toLowerCase()) === 0);
-        } else {
-            return this.hmos.filter(hmo =>
-                hmo.hmoName.toLowerCase().indexOf(val.hmoName.toLowerCase()) === 0);
-        }
-    }
+	gethmos() {
+		this.hmoService
+			.getHmos({
+				query: {
+					facilityId: this.facility._id
+				}
+			})
+			.then((payload) => {
+				this.hmos = payload;
+			})
+			.catch((err) => {});
+	}
 
-    gethmos() {
-        this.hmoService.getHmos({
-            query: {
-                facilityId: this.facility._id
-            }
-        }).then(payload => {
-            this.hmos = payload;
-        }).catch(err => {
-        });
-    }
+	displayFn(hmo: any): string {
+		return hmo ? hmo.hmoName : hmo;
+	}
 
-    displayFn(hmo: any): string {
-        return hmo ? hmo.hmoName : hmo;
-    }
+	displayFnc(cc) {
+		return cc ? cc.name : cc;
+	}
 
-    displayFnc(cc) {
-        return cc ? cc.name : cc;
-    }
+	filterCCs(val: any) {
+		if (val.name === undefined) {
+			return this.companyFacilities.filter((cc) => cc.name.toLowerCase().indexOf(val.toLowerCase()) === 0);
+		} else {
+			return this.companyFacilities.filter((cc) => cc.name.toLowerCase().indexOf(val.name.toLowerCase()) === 0);
+		}
+	}
 
-    filterCCs(val: any) {
-        if (val.name === undefined) {
-            return this.companyFacilities.filter(cc =>
-                cc.name.toLowerCase().indexOf(val.toLowerCase()) === 0);
-        } else {
-            return this.companyFacilities.filter(cc =>
-                cc.name.toLowerCase().indexOf(val.name.toLowerCase()) === 0);
-        }
-    }
+	getLoginCompanyList() {
+		this.companyCoverService
+			.find({
+				query: {
+					'facilityId._id': this.facility._id
+				}
+			})
+			.then((payload) => {
+				if (payload.data.length > 0) {
+					this.loginCompanyListObject = payload.data[0];
+					this._getCompanyFacilities(payload.data[0]);
+				} else {
+					this.loginCompanyListObject.facilityId = this.facility;
+					this.loginCompanyListObject.companyCovers = [];
+				}
+			});
+	}
 
-    getLoginCompanyList() {
-        this.companyCoverService.find({
-            query: {
-                'facilityId._id': this.facility._id
-            }
-        }).then(payload => {
-            if (payload.data.length > 0) {
-                this.loginCompanyListObject = payload.data[0];
-                this._getCompanyFacilities(payload.data[0]);
-            } else {
-                this.loginCompanyListObject.facilityId = this.facility;
-                this.loginCompanyListObject.companyCovers = [];
-            }
-        })
-    }
+	_getCompanyFacilities(facilityCompany) {
+		this.companyEnrolleList = facilityCompany.companyCovers.map((obj) => {
+			return { company: obj.company, enrolles: obj.enrolleeList };
+		});
+		const flist = this.companyEnrolleList.map((obj) => {
+			return obj.company;
+		});
+		this.facilityService
+			.find({
+				query: { _id: { $in: flist } }
+			})
+			.then((payload) => {
+				this.companyFacilities = payload.data;
+			});
+	}
 
-    _getCompanyFacilities(facilityCompany) {
-        this.companyEnrolleList = facilityCompany.companyCovers.map(obj => {
-            return {company: obj.company, enrolles: obj.enrolleeList};
-        });
-        const flist = this.companyEnrolleList.map(obj => {
-            return obj.company;
-        });
-        this.facilityService.find({
-            query: {_id: {$in: flist}}
-        }).then(payload => {
-            this.companyFacilities = payload.data;
-        });
-    }
+	getShowing() {
+		const ret = this.index * this.limit;
+		if (ret >= this.total && this.index > 0) {
+			this.loadMoreText = 'Showing ' + this.total + ' of ' + this.total + ' records';
+			return;
+		}
+		this.loadMoreText = 'Showing ' + ret + ' of ' + this.total + ' records';
+	}
 
-
-    getShowing() {
-        const ret = this.index * this.limit
-        if (ret >= this.total && this.index > 0) {
-            this.loadMoreText = 'Showing ' + this.total + ' of ' + this.total + ' records';
-            return;
-        }
-        this.loadMoreText = 'Showing ' + ret + ' of ' + this.total + ' records';
-    }
-
-    /* onScroll() {
+	/* onScroll() {
       this.pageSize = this.pageSize + 1;
       const limit = this.limit * this.pageSize;
       this.getPatients(limit);
@@ -655,7 +695,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         this.patientService.get(patient._id, {}).then(payload => {
             this.selectedPatient = payload.personDetails;
             this.patient = payload;
-            console.log();
             this.editPatient = true;
             if (this.selectedPatient.nextOfKin.length > 0) {
                 const nextOfKincontrol = <FormArray>this.patientEditForm.controls['nextOfKin'];
@@ -707,11 +746,11 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
             this.patients[patientIndex].personDetails = res;
             this.getPatients();
             this.close_onClick();
-            this.systemService.announceSweetProxy('Patient details has been updated successfully.', 'Success');
+            this.systemService.announceSweetProxy('Patient details has been updated successfully.', 'success');
         }).catch(err => {
 
             this.updatePatientBtnText = 'Update';
-            this.systemService.announceSweetProxy('There was an error updating user record, Please try again later.', 'Error');
+            this.systemService.announceSweetProxy('There was an error updating user record, Please try again later.', 'error');
         });
     }
 
@@ -807,7 +846,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
                             const fil = bene.filter(x => x.filNo === this.insuranceId.value);
 
                             if (fil.length > 0) {
-                                if (fil[0].status.toLowerCase() !== "active") {
+                                if (fil[0].status.toLowerCase() !== 'active') {
                                     this.systemService.off();
                                     this.loading = false;
                                     const text = 'Insurance Id does not have an active status for the selected HMO';
@@ -817,7 +856,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
                                     //   .announceSweetProxy(text, 'error');
                                     return false;
                                 } else {
-                                    if (fil[0].firstname !== this.patient.personDetails.firstName || fil[0].surname !== this.patient.personDetails.lastName) {
+                                    if (fil[0].firstname !== this.patient.personDetails.firstName ||
+                                         fil[0].surname !== this.patient.personDetails.lastName) {
                                         this.systemService.off();
                                         this.loading = false;
                                         const text = 'Information of policy doesn\'t match patient details. Please check and try again! ';
@@ -873,7 +913,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
                         }
                         const fil = bene.filter(x => x.filNo === this.employeeId.value);
                         if (fil.length > 0) {
-                            if (fil[0].status.toLowerCase() !== "active") {
+                            if (fil[0].status.toLowerCase() !== 'active') {
                                 this.systemService.off();
                                 const text = 'Employee Id does not have an active status for the selected Company';
                                 this.errMsg = text;
@@ -881,7 +921,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
                                 this.systemService
                                     .announceSweetProxy(text, 'error');
                             } else {
-                                if (fil[0].firstname !== this.patient.personDetails.firstName || fil[0].surname !== this.patient.personDetails.lastName) {
+                                if (fil[0].firstname !== this.patient.personDetails.firstName ||
+                                     fil[0].surname !== this.patient.personDetails.lastName) {
                                     this.systemService.off();
                                     const text = 'Employee Id does not have an active status for the selected Company';
                                     this.errMsg = text;
@@ -937,7 +978,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
                                 const text = 'Client Id has already been assigned to a patient. Please try another Client Id';
                                 this.errMsg = text;
                                 this.mainErr = false;
-                                // this.systemService.announceSweetProxy('Client Id has already been assigned to a patient. Please try another Client Id', 'error');
+                                // this.systemService.announceSweetProxy
+                                // ('Client Id has already been assigned to a patient. Please try another Client Id', 'error');
                             } else {
                                 if (info[0].patientId === undefined) {
                                     if (this.getRole(this.familyClientId) !== 'P') {
@@ -946,7 +988,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
                                         const text = 'Principal doesn\'t exist as a patient. Please register principal.';
                                         this.errMsg = text;
                                         this.mainErr = false;
-                                        //this.systemService.announceSweetProxy('Principal doesn\'t exist as a patient. Please register principal.', 'error');
+                                        // this.systemService.announceSweetProxy
+                                        // ('Principal doesn\'t exist as a patient. Please register principal.', 'error');
                                         return false;
                                     } else {
                                         this.noPatientId = true;
@@ -975,7 +1018,8 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
                             const text = 'Client Id doesn\'t exist in Principal family';
                             this.errMsg = text;
                             this.mainErr = false;
-                            //this.systemService.announceSweetProxy('Client Id doesn\'t exist in Principal family', 'error');
+                            // this.systemService.announceSweetProxy
+                            // ('Client Id doesn\'t exist in Principal family', 'error');
                         }
                     }
                 }
@@ -1056,7 +1100,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
         this._countryService.findAll()
             .then(res => {
                 this.countries = res.data;
-            }).catch(err => console.log(err));
+            }).catch(err => console.log());
     }
 
     private _getAllTitles() {
@@ -1065,7 +1109,6 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
                 this.titles = res;
             }).catch(err => {
             // this._getAllTitles();
-            console.log("Could not load all titles", err);
         });
     }
 
