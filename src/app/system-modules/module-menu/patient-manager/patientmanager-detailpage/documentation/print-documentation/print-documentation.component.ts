@@ -2,73 +2,67 @@ import { Component, OnInit, EventEmitter, Output, Input, ViewChild } from '@angu
 import { DocumentUploadService, FacilitiesService } from 'app/services/facility-manager/setup';
 
 @Component({
-  selector: 'app-print-documentation',
-  templateUrl: './print-documentation.component.html',
-  styleUrls: ['./print-documentation.component.scss']
+	selector: 'app-print-documentation',
+	templateUrl: './print-documentation.component.html',
+	styleUrls: [ './print-documentation.component.scss' ]
 })
 export class PrintDocumentationComponent implements OnInit {
-  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input() patientDocumentation: any = <any>{};
-  @Input() patient: any = <any>{};
-  loading: boolean;
+	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+	@Input() patientDocumentation: any = <any>{};
+	@Input() patient: any = <any>{};
+	loading: boolean;
 
-  constructor(private docUploadService: DocumentUploadService, private facilityService: FacilitiesService) { }
+	constructor(private docUploadService: DocumentUploadService, private facilityService: FacilitiesService) {}
 
-  ngOnInit() {
-    this.getDocuments();
-  }
+	ngOnInit() {
+		this.getDocuments();
+	}
 
-  getDocuments() {
-    console.log(this.patient);
-    console.log(this.patientDocumentation);
-    this.docUploadService
-      .docUploadFind({
-        query: {
-          patientId: this.patient._id,
-          facilityId: this.facilityService.getSelectedFacilityId()._id,
-          $sort: {
-            createdAt: -1
-          }
-        }
-      })
-      .then((payload) => {
-        // this.documents = payload.data;
-        payload.data.forEach((document) => {
-          this.patientDocumentation.documentations.push(document);
-        });
-        // this.patientDocumentation.documentations.push(...payload.data);
-        // console.log(payload.data);
-      });
-  }
-  sortDocumentation() {
-    return this.patientDocumentation.documentations.sort(function (a, b) {
-      return a.createdAt < b.createdAt;
-    });
-  }
+	getDocuments() {
+		this.docUploadService
+			.docUploadFind({
+				query: {
+					patientId: this.patient._id,
+					facilityId: this.facilityService.getSelectedFacilityId()._id,
+					$sort: {
+						createdAt: -1
+					}
+				}
+			})
+			.then((payload) => {
+				// this.documents = payload.data;
+				payload.data.forEach((document) => {
+					this.patientDocumentation.documentations.push(document);
+				});
+				// this.patientDocumentation.documentations.push(...payload.data);
+			});
+	}
+	sortDocumentation() {
+		return this.patientDocumentation.documentations.sort(function(a, b) {
+			return a.createdAt < b.createdAt;
+		});
+	}
 
-  getCurrentDocument(group) {
-    return {
-      url: group.docUrl
-    };
-  }
+	getCurrentDocument(group) {
+		return {
+			url: group.docUrl
+		};
+	}
 
-  onComplete(event) {
-    this.loading = false;
-  }
-  onError(event) {
-    this.loading = false;
-    // this.loadingError = true;
-  }
-  onProgress(progressData: any) {
-    console.log(progressData);
-  }
+	onComplete(event) {
+		this.loading = false;
+	}
+	onError(event) {
+		this.loading = false;
+		// this.loadingError = true;
+	}
+	onProgress(progressData: any) {}
 
-
-  onClickPrintDocument() {
-    const printContents = document.getElementById('printDoc-Section').innerHTML;
-    const popupWin = window.open('', '', 'top=0,left=0,height=100%,width=auto');
-    popupWin.document.open();
-    popupWin.document.write(`
+	onClickPrintDocument() {
+		const printContents = document.getElementById('printDoc-Section').innerHTML;
+		const popupWin = window.open('', '', 'top=0,left=0,height=100%,width=auto');
+		popupWin.document.open();
+		popupWin.document.write(`
       <html>
         <head>
           <title></title>
@@ -263,21 +257,20 @@ footer{
         ${printContents}
         </body>
       </html>`);
-    popupWin.document.close();
-  }
+		popupWin.document.close();
+	}
 
-  close_onClick() {
-    console.log('emitting');
-    this.closeModal.emit(true);
-  }
+	close_onClick() {
+		this.closeModal.emit(true);
+	}
 
-  checkType(value) {
-    if (typeof value === 'string') {
-      return true;
-    } else if (typeof value === 'number') {
-      return true;
-    } else if (value.length !== undefined) {
-      return true;
-    }
-  }
+	checkType(value) {
+		if (typeof value === 'string') {
+			return true;
+		} else if (typeof value === 'number') {
+			return true;
+		} else if (value.length !== undefined) {
+			return true;
+		}
+	}
 }

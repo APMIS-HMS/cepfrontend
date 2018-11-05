@@ -106,7 +106,7 @@ export class ReportComponent implements OnInit, OnDestroy {
 					}
 				}
 			})
-			.catch((err) => console.log(err));
+			.catch((err) => {});
 
 		// Subscribe to the event when ward changes.
 		this.labSubscription = this._labEventEmitter.announceLab.subscribe((val) => {
@@ -318,9 +318,7 @@ export class ReportComponent implements OnInit, OnDestroy {
 					} else {
 					}
 				})
-				.catch((err) => {
-					console.log(err);
-				});
+				.catch((err) => {});
 
 			// Call the request service and update the investigation.
 			// this._laboratoryRequestService.find({

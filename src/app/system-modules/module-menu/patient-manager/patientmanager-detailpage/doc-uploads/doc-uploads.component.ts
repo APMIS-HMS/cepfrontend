@@ -45,8 +45,6 @@ export class DocUploadsComponent implements OnInit {
 
 	getDocuments() {
 		// const patient = <any>this.locker.getObject('patient');
-		// console.log(patient);
-		// console.log(this.patient);
 		this.docUploadService
 			.docUploadFind({
 				query: {
@@ -59,7 +57,6 @@ export class DocUploadsComponent implements OnInit {
 			})
 			.then((payload) => {
 				this.documents = payload.data;
-				console.log(this.documents);
 			});
 	}
 

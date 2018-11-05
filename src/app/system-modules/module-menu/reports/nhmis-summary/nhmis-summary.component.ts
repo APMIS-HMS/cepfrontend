@@ -15,7 +15,6 @@ export class NhmisSummaryComponent implements OnInit {
 	@ViewChild('contentToConvert') input: ElementRef;
 	constructor() {
 		// pdfMake.vfs = pdfFonts.pdfMake.vfs;
-		console.log(this.input);
 	}
 
 	ngOnInit() {}
@@ -29,7 +28,6 @@ export class NhmisSummaryComponent implements OnInit {
 		// } catch (error) {
 		// 	console.log(error);
 		// }
-
 		// pdfMake.createPdf({content: document.getElementById('contentToConvert')}).open();
 	}
 }

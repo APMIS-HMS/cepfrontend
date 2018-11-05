@@ -1,11 +1,14 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { FormGroup,  FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators, ValidatorFn, AbstractControl } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility, Department } from '../../../../../models/index';
 import { Clients } from '../../../../../shared-module/helpers/global-config';
 import { PharmacyEmitterService } from '../../../../../services/facility-manager/pharmacy-emitter.service';
 import {
-	InventoryService, InventoryTransactionTypeService, FacilityPriceService, DispenseService
+	InventoryService,
+	InventoryTransactionTypeService,
+	FacilityPriceService,
+	DispenseService
 } from '../../../../../services/facility-manager/setup/index';
 import { Observable } from 'rxjs/Observable';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
@@ -14,7 +17,7 @@ import { SystemModuleService } from '../../../../../services/module-manager/setu
 @Component({
 	selector: 'app-noprescription',
 	templateUrl: './noprescription.component.html',
-	styleUrls: ['./noprescription.component.scss']
+	styleUrls: [ './noprescription.component.scss' ]
 })
 export class NoprescriptionComponent implements OnInit {
 	facility: Facility = <Facility>{};
@@ -49,7 +52,7 @@ export class NoprescriptionComponent implements OnInit {
 	selectedBatch: string;
 	disableDispenseBtn = false;
 	dispenseBtn = true;
-  	dispensingBtn = false;
+	dispensingBtn = false;
 	inventoryTransactionTypeId: string;
 	selectedInventoryId: string;
 	selectedFsId: string;
@@ -70,12 +73,15 @@ export class NoprescriptionComponent implements OnInit {
 		private _authFacadeService: AuthFacadeService,
 		private _systemModuleService: SystemModuleService
 	) {
-    this._authFacadeService.getLogingEmployee().then(res => {
-      this.employeeDetails = res;
-      if (!!this.employeeDetails.storeCheckIn && this.employeeDetails.storeCheckIn.length > 0) {
-        this.selectedStore = this.employeeDetails.storeCheckIn.filter(x => x.isOn)[0];
-      }
-    }).catch(err => console.log(err));
+		this._authFacadeService
+			.getLogingEmployee()
+			.then((res) => {
+				this.employeeDetails = res;
+				if (!!this.employeeDetails.storeCheckIn && this.employeeDetails.storeCheckIn.length > 0) {
+					this.selectedStore = this.employeeDetails.storeCheckIn.filter((x) => x.isOn)[0];
+				}
+			})
+			.catch((err) => {});
 	}
 
 	ngOnInit() {
@@ -90,22 +96,22 @@ export class NoprescriptionComponent implements OnInit {
 
 		// Nonprescription form group
 		this.noPrescriptionForm = this._fb.group({
-			client: ['', [<any>Validators.required]],
-			lastName: [''],
-			firstName: [''],
-			phone: [''],
-			companyName: [''],
-			companyPhone: [''],
-			dept: [''],
-			unit: [''],
-			minorLocation: [''],
-			product: ['', [<any>Validators.required]],
-			batchNumber: ['', [<any>Validators.required]],
-			qty: [1, [<any>Validators.required, this._minValue(1)]],
-			cost: ['']
+			client: [ '', [ <any>Validators.required ] ],
+			lastName: [ '' ],
+			firstName: [ '' ],
+			phone: [ '' ],
+			companyName: [ '' ],
+			companyPhone: [ '' ],
+			dept: [ '' ],
+			unit: [ '' ],
+			minorLocation: [ '' ],
+			product: [ '', [ <any>Validators.required ] ],
+			batchNumber: [ '', [ <any>Validators.required ] ],
+			qty: [ 1, [ <any>Validators.required, this._minValue(1) ] ],
+			cost: [ '' ]
 		});
 
-		this.noPrescriptionForm.controls['qty'].valueChanges.subscribe(val => {
+		this.noPrescriptionForm.controls['qty'].valueChanges.subscribe((val) => {
 			if (val > 0) {
 				this.noPrescriptionForm.controls['cost'].setValue(this.price);
 			}
@@ -125,7 +131,10 @@ export class NoprescriptionComponent implements OnInit {
 		if (valid) {
 			if (!!this.selectedStore) {
 				if (value.drug === '' || value.qty === '' || value.qty === 0 || value.batchNumber === '') {
-					this._systemModuleService.announceSweetProxy('Some fields are empty or Quantity is less than 1!', 'error');
+					this._systemModuleService.announceSweetProxy(
+						'Some fields are empty or Quantity is less than 1!',
+						'error'
+					);
 				} else {
 					switch (value.client) {
 						case 'Individual':
@@ -156,7 +165,7 @@ export class NoprescriptionComponent implements OnInit {
 							break;
 					}
 					this.disableDispenseBtn = false;
-					this.totalPrice = Number(this.totalPrice) + (Number(this.price) * Number(value.qty));
+					this.totalPrice = Number(this.totalPrice) + Number(this.price) * Number(value.qty);
 					this.totalQuantity = Number(this.totalQuantity) + Number(value.qty);
 					prescription['productName'] = value.product;
 					prescription['productId'] = this.selectedProduct.productId;
@@ -201,7 +210,7 @@ export class NoprescriptionComponent implements OnInit {
 				this.dispensingBtn = true;
 				this.disableDispenseBtn = true;
 
-				this.prescriptions.forEach(element => {
+				this.prescriptions.forEach((element) => {
 					const product = {};
 					switch (element.client) {
 						case 'Individual':
@@ -285,7 +294,7 @@ export class NoprescriptionComponent implements OnInit {
 					product['inventoryTransactionTypeId'] = this.inventoryTransactionTypeId;
 					prescription['employee'] = {
 						id: this.employeeDetails._id,
-            			name: `${this.employeeDetails.firstName} ${this.employeeDetails.firstName}`
+						name: `${this.employeeDetails.firstName} ${this.employeeDetails.firstName}`
 					};
 					prescription['totalQuantity'] = this.totalQuantity;
 					prescription['totalCost'] = this.totalPrice;
@@ -302,7 +311,7 @@ export class NoprescriptionComponent implements OnInit {
 				};
 
 				// Call a service to
-				this._dispenseService.walkinCreate(payload).then(res => {
+				this._dispenseService.walkinCreate(payload).then((res) => {
 					if (res.status === 'success') {
 						const msg = `You have successfully dispensed ${drugs.length} items from your inventory`;
 						this._systemModuleService.announceSweetProxy(msg, 'success');
@@ -405,8 +414,8 @@ export class NoprescriptionComponent implements OnInit {
 
 				// // Call the dispense service.
 				// this._dispenseService.create(payload).then(res => {
-        //   this.dispenseBtn = true;
-        //   this.dispensingBtn = false;
+				//   this.dispenseBtn = true;
+				//   this.dispensingBtn = false;
 				// 	this.disableDispenseBtn = true;
 				// 	this.selectedProducts = [];
 				// 	this.prescriptions = [];
@@ -438,21 +447,28 @@ export class NoprescriptionComponent implements OnInit {
 			this.cuDropdownLoading = true;
 			if (!!this.selectedStore) {
 				this.noPrescriptionForm.controls['product'].valueChanges
-				.debounceTime(400)
-				.switchMap((term) => Observable.fromPromise(
-					this._inventoryService.findList({
-						query: { facilityId: this.facility._id, storeId: this.selectedStore.storeId, name: this.searchText }
-					})
-				)).subscribe((res: any) => {
-					this.cuDropdownLoading = false;
-					if (!!res.data && res.data.length > 0) {
-						this.products = res.data;
-					} else {
-						this.products = [];
-						this.batches = [];
+					.debounceTime(400)
+					.switchMap((term) =>
+						Observable.fromPromise(
+							this._inventoryService.findList({
+								query: {
+									facilityId: this.facility._id,
+									storeId: this.selectedStore.storeId,
+									name: this.searchText
+								}
+							})
+						)
+					)
+					.subscribe((res: any) => {
 						this.cuDropdownLoading = false;
-					}
-				});
+						if (!!res.data && res.data.length > 0) {
+							this.products = res.data;
+						} else {
+							this.products = [];
+							this.batches = [];
+							this.cuDropdownLoading = false;
+						}
+					});
 			} else {
 				this._systemModuleService.announceSweetProxy('You need to check into store.', 'error');
 			}
@@ -469,18 +485,22 @@ export class NoprescriptionComponent implements OnInit {
 	onClickBatchSelect(event, batch) {
 		this.selectedBatch = batch;
 		if (!!batch && !!batch._id) {
-			this._facilityPriceServices.find({query: {
-				facilityId: this.facility._id,
-				serviceId: this.selectedProduct.serviceId,
-				facilityServiceId: this.selectedProduct.facilityServiceId,
-				categoryId: this.selectedProduct.categoryId
-			}}).then(res => {
-				if (res.data.length > 0) {
-					this.price = res.data[0].price;
-				} else {
-					this.price = 0;
-				}
-			});
+			this._facilityPriceServices
+				.find({
+					query: {
+						facilityId: this.facility._id,
+						serviceId: this.selectedProduct.serviceId,
+						facilityServiceId: this.selectedProduct.facilityServiceId,
+						categoryId: this.selectedProduct.categoryId
+					}
+				})
+				.then((res) => {
+					if (res.data.length > 0) {
+						this.price = res.data[0].price;
+					} else {
+						this.price = 0;
+					}
+				});
 		}
 	}
 
@@ -554,7 +574,7 @@ export class NoprescriptionComponent implements OnInit {
 	}
 
 	onChangeDepartment(value) {
-		const units = this.departments.find(x => x._id === value.value._id);
+		const units = this.departments.find((x) => x._id === value.value._id);
 		this.units = units.units;
 	}
 
@@ -606,12 +626,15 @@ export class NoprescriptionComponent implements OnInit {
 
 	// Get all the inventory transaction types.
 	private _getInventoryTransactionTypes() {
-		this._inventoryTransactionTypeService.findAll().then(res => {
-			if (res.data.length > 0) {
-				const inventoryType = res.data.filter(x => x.name.toLowerCase().includes('dispense'));
-				this.inventoryTransactionTypeId = inventoryType[0]._id;
-			}
-		}).catch(err => { console.log(err); });
+		this._inventoryTransactionTypeService
+			.findAll()
+			.then((res) => {
+				if (res.data.length > 0) {
+					const inventoryType = res.data.filter((x) => x.name.toLowerCase().includes('dispense'));
+					this.inventoryTransactionTypeId = inventoryType[0]._id;
+				}
+			})
+			.catch((err) => {});
 	}
 
 	private _minValue(min: Number): ValidatorFn {
@@ -619,7 +642,7 @@ export class NoprescriptionComponent implements OnInit {
 			const input = control.value,
 				isValid = input < min;
 			if (isValid) {
-				return { 'maxValue': { min } }
+				return { maxValue: { min } };
 			} else {
 				return null;
 			}
