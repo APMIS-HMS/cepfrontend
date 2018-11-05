@@ -99,8 +99,35 @@ ul.topmenuwrap {
     display: block;
 }
 
+.card-grid{
+    display: grid;
+    grid-template-rows: 100px 100px 100px;
+}
+
+.image_container{
+    vertical-align: middle;
+    width: 80px;
+    height: 80px;
+    img{
+        max-width:100%; 
+        max-height:100%;
+        margin:auto;
+        display:block;
+    }
+}
 
 
+
+  .img_wrap{
+    display: grid;
+    justify-content: center;
+    justify-items: center;
+    justify-self: center;
+    text-align: center;
+    align-items: center;
+    align-content: center;
+    align-self: center;
+  }
 
 
 .text-center {
@@ -796,6 +823,10 @@ div.invoice.unpaid:after
     -webkit-text-shadow: 0 0 2px #c00;
     text-shadow: 0 0 2px #c00;
     box-shadow: 0 0 2px #c00;
+}
+
+.card-container{
+    display:grid; padding-right: 30px; padding-left: 30px;
 }
 
 /* Printing CSS */

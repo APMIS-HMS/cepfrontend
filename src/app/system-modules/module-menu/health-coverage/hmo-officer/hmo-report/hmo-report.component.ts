@@ -9,155 +9,167 @@ import { FacilityType } from './../../../../../models/facility-manager/setup/fac
 import { IDateRange } from 'ng-pick-daterange';
 
 @Component({
-  selector: 'app-hmo-report',
-  templateUrl: './hmo-report.component.html',
-  styleUrls: ['./hmo-report.component.scss']
+	selector: 'app-hmo-report',
+	templateUrl: './hmo-report.component.html',
+	styleUrls: [ './hmo-report.component.scss' ]
 })
 export class HmoReportComponent implements OnInit {
-  hmoFormGroup: FormGroup;
-  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input() selectedBill;
-  dateRange: any;
-  // dateRange: any = { from: new Date().toString(), to: new Date(new Date().getTime() + (6 * 24 * 60 * 60 * 1000)).toString() };
+	hmoFormGroup: FormGroup;
+	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+	@Input() selectedBill;
+	dateRange: any;
+	// dateRange: any = { from: new Date().toString(), to: new Date(new Date().getTime() + (6 * 24 * 60 * 60 * 1000)).toString() };
 
-  selectedFacility: Facility = <Facility>{};
-  selectedHMO: Facility = <Facility>{};
-  selectedFacilityType: FacilityType = <FacilityType>{};
-  loading: Boolean = false;
-  apmisLookupUrl = 'facilities';
-  apmisLookupText = '';
-  apmisLookupQuery = {};
-  apmisLookupDisplayKey = 'name';
-  apmisLookupOtherKeys = [];
-  hmoBillHistory = [];
-  disableSearchBtn = false;
-  searchBtn = true;
-  searchingBtn = false;
+	selectedFacility: Facility = <Facility>{};
+	selectedHMO: Facility = <Facility>{};
+	selectedFacilityType: FacilityType = <FacilityType>{};
+	loading: Boolean = false;
+	apmisLookupUrl = 'facilities';
+	apmisLookupText = '';
+	apmisLookupQuery = {};
+	apmisLookupDisplayKey = 'name';
+	apmisLookupOtherKeys = [];
+	hmoBillHistory = [];
+	disableSearchBtn = false;
+	searchBtn = true;
+	searchingBtn = false;
+	grandTotal: number = 0.0;
+	constructor(
+		private _fb: FormBuilder,
+		private locker: CoolLocalStorage,
+		private hmoService: HmoService,
+		private authFacadeService: AuthFacadeService,
+		private facilityTypeService: FacilityTypesService,
+		private systemModuleService: SystemModuleService
+	) {}
 
-  constructor(
-    private _fb: FormBuilder,
-    private locker: CoolLocalStorage,
-    private hmoService: HmoService,
-    private authFacadeService: AuthFacadeService,
-    private facilityTypeService: FacilityTypesService,
-    private systemModuleService: SystemModuleService
-  ) { }
+	ngOnInit() {
+		this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+		this._getFacilityTypes();
 
-  ngOnInit() {
-    this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
-    this._getFacilityTypes();
+		this.hmoFormGroup = this._fb.group({
+			name: [ '', Validators.required ],
+			startDate: [ '', Validators.required ],
+			endDate: [ '', Validators.required ]
+		});
 
-    this.hmoFormGroup = this._fb.group({
-      name: ['', Validators.required],
-      startDate: ['', Validators.required],
-      endDate: ['', Validators.required],
-    });
+		this.hmoFormGroup.controls['name'].valueChanges.subscribe((value) => {
+			if (value !== null && value.length === 0) {
+				this.apmisLookupQuery = {
+					facilityTypeId: 'HMO',
+					name: { $regex: -1, $options: 'i' },
+					$select: [ 'name', 'email', 'primaryContactPhoneNo', 'shortName', 'website', 'policyIDRegexFormat' ]
+				};
+			} else {
+				this.apmisLookupQuery = {
+					facilityTypeId: 'HMO',
+					name: { $regex: value, $options: 'i' },
+					$select: [ 'name', 'email', 'primaryContactPhoneNo', 'shortName', 'website', 'policyIDRegexFormat' ]
+				};
+			}
+		});
+	}
 
-    this.hmoFormGroup.controls['name'].valueChanges.subscribe(value => {
-      if (value !== null && value.length === 0) {
-        this.apmisLookupQuery = {
-          'facilityTypeId': this.selectedFacilityType.name,
-          name: { $regex: value, '$options': 'i' },
-          $select: ['name', 'email', 'primaryContactPhoneNo', 'shortName', 'website']
-        };
-      }
-    });
-  }
+	onClickFindBillHistory() {
+		if (!!this.selectedHMO._id && !!this.dateRange.from && !!this.dateRange.to) {
+			this.loading = true;
+			this.disableSearchBtn = true;
+			this.searchBtn = false;
+			this.searchingBtn = true;
+			const query = {
+				facilityId: this.selectedFacility._id,
+				hmoId: this.selectedHMO._id,
+				startDate: this.dateRange.from,
+				endDate: this.dateRange.to
+			};
+			/// console.log(query);
+			this.hmoService
+				.findBillHistory({ query })
+				.then((res) => {
+					// console.log(res);
+					this.loading = false;
+					this.disableSearchBtn = false;
+					this.searchBtn = true;
+					this.searchingBtn = false;
+					if (res.status === 'success' && !!res.data.historyBills && res.data.historyBills.length > 0) {
+						const totalBills = [];
+						res.data.historyBills.map((a) => {
+							a.billItems.map((x) => {
+								this.grandTotal += x.totalPrice;
+								totalBills.push({
+									date: x.covered.verifiedAt,
+									coverType: x.covered.coverType,
+									amount: x.totalPrice,
+									patient: {
+										firstName: x.patientObject.personDetails.firstName,
+										lastName: x.patientObject.personDetails.lastName,
+										apmisId: x.patientObject.personDetails.apmisId,
+										title: x.patientObject.personDetails.title
+									},
+									service: x.serviceObject ? x.serviceObject.name : undefined,
+									hmoName: a.coverFile.name
+								});
+							});
+						});
 
-  onClickFindBillHistory() {
-    if (!!this.selectedHMO._id && !!this.dateRange.from && !!this.dateRange.to) {
-      this.loading = true;
-      this.disableSearchBtn = true;
-      this.searchBtn = false;
-      this.searchingBtn = true;
-      const query = {
-        facilityId: this.selectedFacility._id,
-        hmoId: this.selectedHMO._id,
-        startDate: this.dateRange.from,
-        endDate: this.dateRange.to
-      };
+						this.hmoBillHistory = totalBills;
+					}
+				})
+				.catch((err) => {
+					this.loading = false;
+					this.disableSearchBtn = false;
+					this.searchBtn = true;
+					this.searchingBtn = false;
+				});
+		} else {
+			this.systemModuleService.announceSweetProxy('Please select HMO and date range', 'error');
+		}
+	}
 
-      this.hmoService.findBillHistory({ query }).then(res => {
-        console.log(res);
-        this.loading = false;
-        this.disableSearchBtn = false;
-        this.searchBtn = true;
-        this.searchingBtn = false;
-        if (res.status === 'success' && !!res.data.historyBills && res.data.historyBills.length > 0) {
-          const totalBills = [];
-          res.data.historyBills.map(a => {
-            a.billItems.map(x => {
-              totalBills.push({
-                date: x.covered.verifiedAt,
-                coverType: x.covered.coverType,
-                patient:  {
-                  firstName: x.patientObject.personDetails.firstName,
-                  lastName: x.patientObject.personDetails.lastName,
-                  apmisId: x.patientObject.personDetails.apmisId,
-                  title: x.patientObject.personDetails.title,
-                },
-                service: (x.serviceObject) ? x.serviceObject.name : undefined,
-                hmoName: a.coverFile.name
-              });
-            });
-          });
+	close_onClick() {
+		this.closeModal.emit(true);
+	}
 
-          this.hmoBillHistory = totalBills;
-        }
-      }).catch(err => {
-        this.loading = false;
-        this.disableSearchBtn = false;
-        this.searchBtn = true;
-        this.searchingBtn = false;
-      });
-    } else {
-      this.systemModuleService.announceSweetProxy('Please select HMO and date range', 'error');
-    }
-  }
+	setReturnValue(dateRange: any) {
+		if (dateRange !== null) {
+			this.dateRange = dateRange;
+		}
+	}
 
-  close_onClick() {
-    this.closeModal.emit(true);
-  }
+	_getFacilityTypes() {
+		this.facilityTypeService.findAll().then((res) => {
+			if (!!res.data && res.data.length > 0) {
+				const selectedFacilityType = res.data.filter((x) => x.name === 'HMO');
+				if (selectedFacilityType.length > 0) {
+					this.selectedFacilityType = selectedFacilityType[0];
+				}
+			}
+		});
+	}
 
-  setReturnValue(dateRange: any) {
-    if (dateRange !== null) {
-      this.dateRange = dateRange;
-    }
-  }
+	apmisLookupHandleSelectedItem(value) {
+		this.apmisLookupText = value.name;
+		this.selectedHMO = value;
+	}
 
-  _getFacilityTypes() {
-    this.facilityTypeService.findAll().then(res => {
-      if (!!res.data && res.data.length > 0) {
-        const selectedFacilityType = res.data.filter(x => x.name === 'HMO');
-        if (selectedFacilityType.length > 0) {
-          this.selectedFacilityType = selectedFacilityType[0];
-        }
-      }
-    });
-  }
-
-  apmisLookupHandleSelectedItem(value) {
-    this.apmisLookupText = value.name;
-    this.selectedHMO = value;
-  }
-
-  onClickPrintDocument() {
-    const printContents = document.getElementById('print-section').innerHTML;
-    let popupWin = window.open('', '', 'top=0,left=0,height=100%,width=auto');
-    popupWin.document.open();
-    popupWin.document.write(`
+	onClickPrintDocument() {
+		const printContents = document.getElementById('print-section').innerHTML;
+		let popupWin = window.open('', '', 'top=0,left=0,height=100%,width=auto');
+		popupWin.document.open();
+		popupWin.document.write(`
       <html>
         <head>
-          <title></title>
+          <title>HMO Billing History</title>
           <style>
             table{
               width: 100%;
               position: relative;
               border-collapse: collapse;
-              font-size: 1.2rem;
+              font-size: 1.0rem;
             }
             table, td { 
                 border: 0.5px solid #ddd;
+                
             } 
             th {
                 height: 50px;
@@ -199,7 +211,7 @@ export class HmoReportComponent implements OnInit {
               width:100%;
             }
             .fac{
-              font-size:1.4rem;
+              font-size:1.1rem;
               color:#0288D1;
             }
             .fac-type{
@@ -210,13 +222,13 @@ export class HmoReportComponent implements OnInit {
               font-family: "Josefin Sans", sans-serif;
               font-weight:bold;
               margin: 0px auto;
-              font-size: 2rem;
+              font-size: 1.7rem;
               text-align: center;
           }
           
           .modal_mini_title {
               margin: 0px auto;
-              font-size: 1.2rem;
+              font-size: 1.0rem;
               text-align: center;
               color:#0288D1;
           }
@@ -228,9 +240,7 @@ export class HmoReportComponent implements OnInit {
           </style>
         </head>
         <body onload="window.print();window.close()">${printContents}</body>
-      </html>`
-    );
-    popupWin.document.close();
-  }
-
+      </html>`);
+		popupWin.document.close();
+	}
 }

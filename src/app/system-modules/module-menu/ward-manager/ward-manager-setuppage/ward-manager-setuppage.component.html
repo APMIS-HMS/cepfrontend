@@ -46,7 +46,7 @@
                         <div class="table-list col-xs-4">{{ward?.description}}</div>
                         <div class="table-list col-xs-3">
                             <span *ngIf="ward?.wardSetup === undefined">0</span>
-                            <span *ngIf="ward?.wardSetup !== undefined">{{ward?.wardSetup?.rooms?.length}}</span>
+                            <span *ngIf="ward?.wardSetup !== undefined">{{ward.activeRoom}}</span>
                         </div>
                     </div>
                 </div>

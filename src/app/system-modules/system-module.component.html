@@ -18,20 +18,28 @@
                 <i class="fa fa-arrow-left" aria-hidden="true"></i>
                 <i (click)="goHome()" class="fa fa-home" aria-hidden="true"></i>
                 <i class="fa fa-cog" aria-hidden="true"></i>
-                <i class="fa fa-bell-o" aria-hidden="true"></i>
+                <i class="fa fa-bell-o" aria-hidden="true">{{notification_length}}</i>
+                
+                
                 <span (click)="logOut()" class="logout">LOGOUT</span>
             </div>
 
             <div (click)="userOpt_toggle()" class="logged-in-as">
                 <div class="user-label">
-                    <div class="user-name">{{selectedPerson?.lastName}} {{selectedPerson?.firstName}}</div>
-                    <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='clinic'" class="user-loc">{{checkedInObject?.typeObject?.minorLocationObject?.name}} - {{checkedInObject?.typeObject?.roomObject?.name}}</div>
-                    <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='store'" class="user-loc">{{checkedInObject?.typeObject?.minorLocationObject?.name}} - {{checkedInObject?.typeObject?.storeObject?.name}}</div>
-                    <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='workbench'" class="user-loc">{{checkedInObject?.typeObject?.minorLocationObject?.name}} - {{checkedInObject?.typeObject?.workbenchObject?.name}}</div>
+                    <div [class.offline]="!isOnline">{{selectedPerson?.lastName}} {{selectedPerson?.firstName}}</div>
+                    <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='clinic'"
+                        class="user-loc">{{checkedInObject?.typeObject?.minorLocationObject?.name}} -
+                        {{checkedInObject?.typeObject?.roomObject?.name}}</div>
+                    <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='store'"
+                        class="user-loc">{{checkedInObject?.typeObject?.minorLocationObject?.name}} -
+                        {{checkedInObject?.typeObject?.storeObject?.name}}</div>
+                    <div *ngIf="checkedInObject?.typeObject?.minorLocationObject !== undefined && checkedInObject?.typeObject !== undefined && checkedInObject?.type==='workbench'"
+                        class="user-loc">{{checkedInObject?.typeObject?.minorLocationObject?.name}} -
+                        {{checkedInObject?.typeObject?.workbenchObject?.name}}</div>
                 </div>
 
                 <div class="user-imgWrap">
-                    <img *ngIf="selectedPerson?.profileImageObject !== undefined" [src]="facilityService.transform(selectedPerson?.profileImageObject?.thumbnail)">
+                    <img *ngIf="selectedPerson?.profileImageObject !== undefined" [src]="selectedPerson?.profileImageObject?.thumbnail">
                     <img *ngIf="selectedPerson?.profileImageObject === undefined" src="assets/images/users/default.png">
                 </div>
 

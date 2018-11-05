@@ -3,27 +3,20 @@ import { ImageEmitterService } from '../../services/facility-manager/image-emitt
 import { ISubscription } from 'rxjs/Subscription';
 
 @Component({
-  selector: 'app-image-viewer',
-  templateUrl: './image-viewer.component.html',
-  styleUrls: ['./image-viewer.component.scss']
+	selector: 'app-image-viewer',
+	templateUrl: './image-viewer.component.html',
+	styleUrls: [ './image-viewer.component.scss' ]
 })
-export class ImageViewerComponent implements OnInit, OnDestroy {
-  @Input() imageSrc: String = <String>'';
-  ISubscriber: ISubscription;
-  constructor(
-    private imageEmitterService: ImageEmitterService
-  ) {
-    // Assign the subscription to an ISubscription to be able to unsubscribe.
-    this.ISubscriber = this.imageEmitterService.subscribeToImageSource.subscribe(value => {
-      this.imageSrc = value;
-    });
-  }
+export class ImageViewerComponent implements OnInit {
+	@Input() imageSrc: String = <String>'';
 
-  ngOnInit() {
-  }
+	constructor(public logoService: ImageEmitterService) {
+		// this.imageSrc = this.logoService.src;
+	}
 
-  ngOnDestroy() {
-    // Unsubscribe from the observable.
-    this.ISubscriber.unsubscribe();
-  }
+	ngOnInit() {
+		if (this.imageSrc === null || this.imageSrc === undefined) {
+			this.imageSrc = '../../../../../assets/images/logos/default.png';
+		}
+	}
 }

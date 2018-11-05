@@ -3,16 +3,17 @@
     <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
     <legend class="modal_title" *ngIf="selectedHMO?._id">{{ selectedHMO?.name }}</legend>
     <div class="modal_mini_title">Generate Report</div>
-    <div class="modal_mini_title" *ngIf="dateRange?.from"> From: {{ dateRange?.from | date }}, To: {{ dateRange?.to | date }}</div>
+    <div class="modal_mini_title" *ngIf="dateRange?.from"> From: {{ dateRange?.from | date }}, To: {{ dateRange?.to |
+      date }}</div>
   </div>
   <div class="modal-baseWrap">
     <div class="top-sect">
       <div class="filters" [formGroup]="hmoFormGroup">
         <div style="width: 249px; padding: 5px;margin-right: 10px;">
-          <apmis-lookup style='width:100%' formControlName="name" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl" [query]="apmisLookupQuery"
-                    placeholder="Select HMO" [isSocket]="true" [displayKey]="apmisLookupDisplayKey" (selectedItem)="apmisLookupHandleSelectedItem($event)"
-                    [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys">
-          </apmis-lookup>
+          <apmis-lookup style='width:100%' formControlName="name" [(ngModel)]="apmisLookupText" [url]="apmisLookupUrl"
+            [query]="apmisLookupQuery" placeholder="Select HMO" [isSocket]="true" [displayKey]="apmisLookupDisplayKey"
+            (selectedItem)="apmisLookupHandleSelectedItem($event)" [multipleKeys]="true" [otherKeys]="apmisLookupOtherKeys"></apmis-lookup>
+
         </div>
         <div>
           <div class="dr-wrap survery">
@@ -59,10 +60,10 @@
         <thead>
           <tr>
             <th><span style="padding-left: 3px;">S/N</span></th>
-            <th><span style="padding-left: 3px;">Date</span></th>
-            <th><span style="padding-left: 3px;">Patient</span></th>
-            <th><span style="padding-left: 3px;">Service</span></th>
-            <th><span style="padding-left: 3px;">Amount</span></th>
+            <th style="min-width:20%"><span style="padding-left: 3px;">Date</span></th>
+            <th style="min-width:30%;"><span style="padding-left: 3px;">Patient</span></th>
+            <th style="min-width:20%;"><span style="padding-left: 3px;">Service</span></th>
+            <th style="min-width:15%;"><span style="padding-left: 3px;">Amount</span></th>
             <th><span style="padding-left: 3px;">Type</span></th>
             <th>Status</th>
           </tr>
@@ -70,7 +71,7 @@
         <tbody>
           <tr *ngIf="hmoBillHistory.length === 0 && !loading">
             <td colspan="7" style="text-align:center;padding: 20px;">
-                No data available in table
+              No data available in table
             </td>
           </tr>
           <tr *ngIf="hmoBillHistory.length === 0 && loading">
@@ -80,14 +81,21 @@
           </tr>
           <tr *ngFor="let item of hmoBillHistory; let i = index">
             <td>{{ i+1 }}</td>
-            <td>{{ item.date }}</td>
+            <td>{{ item.date|date:'mm-dd-yyyy' }}</td>
             <td>{{ item?.patient?.title }} {{ item?.patient?.firstName }} {{ item?.patient?.lastName }}</td>
             <td>{{ item?.service }}</td>
-            <td>&#x20a6;{{ item?.amount }}</td>
+            <td>&#x20a6;{{ item?.amount|number:'1.2-2'}}</td>
             <td>{{ item?.coverType }}</td>
             <td>{{ item?.status }}</td>
           </tr>
         </tbody>
+        <tfoot>
+        <tr>
+          <td colspan="4" class="text-right">Grand Total</td>
+          <td colspan="3"  style="font-weight: bold; background-color: #ececf7"> &#8358; {{grandTotal | number:'1.2-2'}}</td>
+        </tr>
+        </tfoot>
       </table>
     </div>
   </div>
+</div>

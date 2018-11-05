@@ -13,6 +13,7 @@ import {FeatureModuleService} from './../../services/module-manager/setup/featur
 import {DONT_USE_AUTH_GUARD} from './../../shared-module/helpers/global-config';
 import {AuthFacadeService} from './../service-facade/auth-facade.service';
 import { ChannelService } from '../../services/communication-manager/channel-service';
+import {ImageEmitterService} from '../../services/facility-manager/image-emitter.service';
 
 @Component({
   selector: 'app-dashboard-home',
@@ -64,7 +65,8 @@ export class DashboardHomeComponent implements OnInit {
       private workSpaceService: WorkSpaceService,
       private authFacadeService: AuthFacadeService,
       private channelService: ChannelService,
-      private featureService: FeatureModuleService) {}
+      private featureService: FeatureModuleService,
+      private imageEmitter : ImageEmitterService) {}
 
   ngOnInit() {
     this.channel = this.channelService.getCurrentUserChannel();
@@ -74,6 +76,11 @@ export class DashboardHomeComponent implements OnInit {
     this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
     if (this.facilityObj !== undefined && this.facilityObj != null) {
       this.facilityName = this.facilityObj.name;
+      if(this.facilityObj.logoObject)
+      {
+          this.imageEmitter.setSrc(this.facilityObj.logoObject.thumbnail);
+      }
+
     }
     this.getFacilitySubscription();
     this.employeeService.checkInAnnounced$.subscribe(payload => {

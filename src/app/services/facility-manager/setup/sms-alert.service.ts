@@ -15,7 +15,7 @@ export class SmsAlertService {
         this.missionAnnouncedSource.next(mission);
     }
 
-    post(body: any,params:any) {
+    async post(body: any, params:any) {
         const host = this._restService.getHost();
         const path = host + '/send-sms?content=' + params.content +'&sender='+params.sender+'&receiver='+params.receiver;
         return request

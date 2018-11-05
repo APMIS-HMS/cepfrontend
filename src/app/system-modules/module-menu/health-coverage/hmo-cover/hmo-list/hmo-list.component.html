@@ -5,8 +5,8 @@
         <div class="actSect">
           <div class="actSect-header">
             <div (click)="newHmo_show()" class="act-wrap">
-              <i *ngIf="newHMO" class="fa fa-minus" aria-hidden="true"></i>
-              <i [hidden]="newHMO" class="fa fa-plus" aria-hidden="true"></i>
+              <!-- <i *ngIf="newHMO" class="fa fa-minus" aria-hidden="true"></i>
+              <i [hidden]="newHMO" class="fa fa-plus" aria-hidden="true"></i> -->
               <span>Add HMO</span>
             </div>
           </div>
@@ -38,11 +38,12 @@
           <table cellpadding="0" cellspacing="0" border="0.5">
             <thead>
               <tr>
+                <th><span style="padding:5px">S/N</span></th>
                 <th>
                   <div class=" display:flex; margin-top:5px;">
                     <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
                     <!--<i class="fa fa-sort-alpha-desc" aria-hidden="true"></i>-->
-                    <span style="padding-left: 3p;">HMO</span>
+                    <span style="padding-left: 3px;">HMO</span>
                   </div>
                   <input type="search" [formControl]="searchHmo" class="table-header-input" placeholder="Search for HMO">
                 </th>
@@ -62,39 +63,15 @@
                   <span style="padding-left: 3px;">Phone</span>
                 </th>
                 <!-- <th>Plans</th> -->
-                <th>No. of Beneficiaries</th>
+                <th>Beneficiaries</th>
                 <th></th>
               </tr>
             </thead>
 
             <tbody *ngIf="hmoFacilities.length > 0">
-              <!-- <tr>
-                <td colspan="10">
-                  <div class="tbl-actionRow">
-                    <div class="frm-item-wrap">
-                          <apmis-lookup [(ngModel)]="apmisLookupText" 
-                          url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Patient"
-                          isSocket="false" displayKey="apmisLookupDisplayKey" 
-                          (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                        </div>
 
-                        <div class="frm-item-wrap">
-                          <apmis-lookup [(ngModel)]="apmisLookupText" 
-                              url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Practitioner"
-                              isSocket="false" displayKey="apmisLookupDisplayKey" 
-                              (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                        </div>
-
-                        <div class="frm-item-wrap">
-                          <apmis-lookup [(ngModel)]="apmisLookupText" 
-                              url="apmisLookupUrl" query="apmisLookupQuery" placeholder="Location"
-                              isSocket="false" displayKey="apmisLookupDisplayKey" 
-                              (selectedItem)="apmisLookupHandleSelectedItem($event)"></apmis-lookup>
-                        </div>
-                  </div>
-                </td>
-              </tr> -->
               <tr *ngFor="let hmo of hmoFacilities;let i=index">
+                <td>{{i+1}}</td>
                 <td (click)="show_beneficiaries(hmo)">{{hmo.name}}</td>
                 <td>{{hmo.street}}, {{hmo.city}}, {{hmo.state}}.</td>
                 <td>{{hmo.email}}</td>

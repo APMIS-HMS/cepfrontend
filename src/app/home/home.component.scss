@@ -1,6 +1,7 @@
 @import "../../globals/normalize.scss";
 @import "../../globals/variables.scss";
 @import '../../globals/button.scss';
+
 // .base-wrap {
 //     min-height:100%;
 //     background: darken($primaryColor, 5%);
@@ -9,7 +10,7 @@
 .base-wrap {
     background: darken($primaryColor, 5%);
     height: 100vh;
-    background: linear-gradient(0deg, rgba(0, 0, 0, 0.60), rgba(0, 0, 0, 0.60)), url(../../assets/images/bg/hospital.jpg) no-repeat center center;
+    // background: linear-gradient(0deg, rgba(0, 0, 0, 0.60), rgba(0, 0, 0, 0.60)), url(../../assets/images/bg/hospital.jpg) no-repeat center center;
     background-size: cover;
     width: 100%;
     -webkit-background-size: cover;
@@ -139,15 +140,18 @@
         flex-direction: column;
         height: 100vh;
     }
+
     .logo-wrap {
         position: relative;
         text-align: center;
         top: 0;
         left: 0;
     }
+
     .home-wrap {
         height: auto;
     }
+
     .CTAs-wrap {
         margin: 0 auto;
         padding: 0;
@@ -158,6 +162,7 @@
     .CTAs-wrap {
         width: 100%;
     }
+
     .cta-1 {
         width: 100%;
     }
