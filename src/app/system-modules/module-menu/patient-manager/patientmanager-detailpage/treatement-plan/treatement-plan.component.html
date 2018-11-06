@@ -4,6 +4,66 @@
 <div class="doc-mainWrap">
     <div class="doc-contentArea">
         <div class="tbl-listWrap">
+            <div class="sect-title">Problem: {{treatmentSheetData?.problem?.problem}}</div>
+            <div>
+                <span>Note: {{treatmentSheetData?.problem?.note}}</span>
+            </div>
+        </div>
+        <div class="tbl-listWrap">
+            <div class="sect-title">Investigations</div>
+            <button (click)="onAddNewInvestigation()">Add</button>
+            <table cellpadding="0" cellspacing="0" border="0.5" [formGroup]="investigationTableForm">
+                <tbody formArrayName="investigationTableArray">
+                    <tr *ngIf="treatmentSheet?.investigations === undefined">
+                        <td class="text-center" colspan="4"> No data available in table</td>
+                    </tr>
+                    <tr [formGroupName]="i" *ngFor="let investigation of investigationTableForm['controls'].investigationTableArray['controls'];let i = index">
+                        <td> {{ investigation.value?.name }} </td>
+                        <td>
+                            <span>{{investigation.value?.status}}</span>
+                        </td>
+                        <td>
+                            <div class="frm-item-wrap">
+                                <mat-input-container>
+                                    <input matInput placeholder="Valid comment for your action" formControlName="comment">
+                                </mat-input-container>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="tbl-actn-btn" (click)="onDoneInvestigationItem(investigation.value)"><i class="fa fa-check"
+                                    aria-hidden="true"></i>Done</div>
+                            <div class="tbl-actn-btn" (click)="onRemoveInvestigationItem(investigation.value)"><i class="fa fa-check"
+                                    aria-hidden="true"></i>Remove</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="tbl-listWrap">
+            <div class="sect-title">Procedure</div>
+            <table cellpadding="0" cellspacing="0" border="0.5">
+                <tbody>
+                    <tr *ngIf="treatmentSheet?.procedures === undefined">
+                        <td class="text-center" colspan="4"> No data available in table</td>
+                    </tr>
+                    <tr *ngFor="let procedure of treatmentSheet?.procedures;">
+                        <td> {{ procedure.name }} </td>
+                        <td> {{ procedure.status }}</td>
+                        <td>
+                            <div class="frm-item-wrap">
+                                <mat-input-container>
+                                    <input matInput placeholder="Comment">
+                                </mat-input-container>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="tbl-actn-btn"><i class="fa fa-check" aria-hidden="true"></i>Done</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="tbl-listWrap">
             <div class="sect-title">Medication</div>
             <table cellpadding="0" cellspacing="0" border="0.5">
                 <tbody>
@@ -11,9 +71,10 @@
                         <td class="text-center" colspan="5"> No data available in table</td>
                     </tr>
                     <tr *ngFor="let medication of treatmentSheet?.medications; let m = index">
-                        <td>{{ medication.genericName }} - {{ medication.dosage }}{{ medication.dosageUnit }}, {{ medication.frequency }} for {{ medication.duration }} {{ medication.durationUnit }}</td>
+                        <td>{{ medication.genericName }} - {{ medication.dosage }}{{ medication.dosageUnit }}, {{
+                            medication.regimen?.frequency }} for {{ medication.regimen?.duration }} {{
+                            medication.regimen?.durationUnit }}</td>
                         <td>{{ medication.status }}</td>
-                        <td>2hrs 24mins 36secs to start</td>
                         <td>
                             <div class="frm-item-wrap">
                                 <mat-input-container>
@@ -24,26 +85,31 @@
                         <td class="action-placeholder" style="text-align:center;">
                             <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                             <div class="action-container shadow-RB">
-                                <div *ngIf="medication.status!=='Suspended' && medication.status!=='Discontinued' && medication.status!=='Completed'" (click)="administer(medication, m)" class="action-item">
+                                <div *ngIf="medication.status!=='Suspended' && medication.status!=='Discontinued' && medication.status!=='Completed'"
+                                    (click)="administer(medication, m)" class="action-item">
                                     <i class="fa fa-user-md" aria-hidden="true"></i>
                                     <span>Administer</span>
                                 </div>
 
-                                <div *ngIf="medication.status!=='Completed' && medication.status!=='Discontinued' && medication.status !=='Suspended'" (click)="suspendMedication(medication, m)" class="action-item">
+                                <div *ngIf="medication.status!=='Completed' && medication.status!=='Discontinued' && medication.status !=='Suspended'"
+                                    (click)="suspendMedication(medication, m)" class="action-item">
                                     <i class="fa fa-pause text-yellow" aria-hidden="true"></i>
                                     <span>Suspend</span>
                                 </div>
-                                <div *ngIf="medication.status==='Suspended'" (click)="activateMedication(medication, m)" class="action-item">
+                                <div *ngIf="medication.status==='Suspended'" (click)="activateMedication(medication, m)"
+                                    class="action-item">
                                     <i class="fa fa-play text-green" aria-hidden="true"></i>
                                     <span>Activate</span>
                                 </div>
 
-                                <div *ngIf="medication.status !=='Suspended' && medication.status !=='Discontinued' && medication.status!=='Completed'" (click)="discontinueMedication(medication, m)" class="action-item">
+                                <div *ngIf="medication.status !=='Suspended' && medication.status !=='Discontinued' && medication.status!=='Completed'"
+                                    (click)="discontinueMedication(medication, m)" class="action-item">
                                     <i class="fa fa-ban text-red" aria-hidden="true"></i>
                                     <span>Discontinue</span>
                                 </div>
 
-                                <div *ngIf="medication.status !=='Suspended' && medication.status !=='Discontinued' && medication.status!=='Completed'" (click)="completeMedication(medication, m)" class="action-item">
+                                <div *ngIf="medication.status !=='Suspended' && medication.status !=='Discontinued' && medication.status!=='Completed'"
+                                    (click)="completeMedication(medication, m)" class="action-item">
                                     <i class="fa fa-check text-green" aria-hidden="true"></i>
                                     <span>Completed</span>
                                 </div>
@@ -103,37 +169,19 @@
                 </tbody>
             </table>
         </div>
-        <div class="tbl-listWrap">
-            <div class="sect-title">Procedure</div>
-            <table cellpadding="0" cellspacing="0" border="0.5">
-                <tbody>
-                    <tr *ngIf="treatmentSheet?.procedures === undefined">
-                        <td class="text-center" colspan="4"> No data available in table</td>
-                    </tr>
-                    <tr *ngFor="let procedure of treatmentSheet?.procedures;">
-                        <td> {{ procedure.name }} </td>
-                        <td> {{ procedure.status }}</td>
-                        <td>
-                            <div class="frm-item-wrap">
-                                <mat-input-container>
-                                    <input matInput placeholder="Comment">
-                                </mat-input-container>
-                            </div>
-                        </td>
-                        <td>
-                            <div class="tbl-actn-btn"><i class="fa fa-check" aria-hidden="true"></i>Done</div>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
+
 
         <div class="buttom-sect">
             <div class="frm-item-wrap">
-                <textarea style="border:1px solid #777; padding:10px;box-sizing:border-box;background:#fff;" matInput class="textarea" placeholder="Notes"></textarea>
+                <textarea style="border:1px solid #777; padding:10px;box-sizing:border-box;background:#fff;" matInput
+                    class="textarea" placeholder="Notes"></textarea>
             </div>
             <div class="cta-1"><i class="fa fa-floppy-o" aria-hidden="true"></i>Save</div>
         </div>
         <div style="clear:right;"></div>
     </div>
+
+</div>
+<div *ngIf="isEditTreatmentSheet" class="modal-overlay">
+    <app-order-set [selectedPatient]="patient" [treatmentSheetId]="treatmentSheetId" (closeModal)="close_onClick($event)"></app-order-set>
 </div>
