@@ -137,6 +137,11 @@
                                                                 </mat-select>
                                                             </mat-form-field>
                                                         </div>
+                                                        <div class="frm-item-wrap">
+                                                                <mat-input-container>
+                                                                    <input matInput placeholder="Address" formControlName="address">
+                                                                </mat-input-container>
+                                                            </div>
                                                     </div>
                                                     <!--If this a new entry, simply remove the dependent record from the list
                                                     otherwise we have to ask for confirmation before removing the depedant from the
@@ -270,7 +275,7 @@
                     </table>
                     <mat-paginator [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize"
                                    (page)="pageEvent = $event; onPaginateChange($event)"
-                                   [pageSizeOptions]="pageSizeOptions">
+                                   [pageSizeOptions]="pageSizeOptions"> 
                     </mat-paginator>
                 </div>
             </div>

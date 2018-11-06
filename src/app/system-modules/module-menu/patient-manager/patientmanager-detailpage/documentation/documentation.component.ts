@@ -822,4 +822,140 @@ export class DocumentationComponent implements OnInit, OnDestroy {
 		// this.loadingError = true;
 	}
 	onProgress(progressData: any) {}
+
+
+	docDetail_Print(){
+		const printContents = document.getElementById('printDoc').innerHTML;
+		const popupWin = window.open('', '', 'top=0,left=0,height=100%,width=auto');
+		popupWin.document.open();
+		popupWin.document.write(`
+		  <html>
+			<head>
+			  <title></title>
+			  <style>
+
+			  .tree-child{
+				display: -webkit-box;
+					display: -ms-flexbox;
+					display: flex;
+					-webkit-box-pack: start;
+					-ms-flex-pack: start;
+					justify-content: flex-start;
+					-webkit-box-align: center;
+					-ms-flex-align: center;
+					align-items: center;
+					z-index: 2;
+					position: relative;
+					padding: 10px;
+				}
+				
+				
+				.node-child-title {
+					font-size: 1.4rem;
+					color: #194985;
+				}
+				
+				
+				.node-child-content {
+					background: #fff;
+					-webkit-box-sizing: border-box;
+					box-sizing: border-box;
+					margin-bottom: 10px;
+				}
+				
+				.docCard-header {
+					display: -webkit-box;
+					display: -ms-flexbox;
+					display: flex;
+					-webkit-box-pack: justify;
+					-ms-flex-pack: justify;
+					justify-content: space-between;
+					-webkit-box-align: center;
+					-ms-flex-align: center;
+					align-items: center;
+					width: 100%;
+					height: 35px;
+					background: #e2e2e2;
+					border-bottom: 1px solid #e2e2e2;
+					padding: 5px;
+					-webkit-box-sizing: border-box;
+					box-sizing: border-box;
+				}
+				
+				.empWrap {
+					display: -webkit-box;
+					display: -ms-flexbox;
+					display: flex;
+					-webkit-box-pack: justify;
+					-ms-flex-pack: justify;
+					justify-content: space-between;
+					-webkit-box-align: center;
+					-ms-flex-align: center;
+					align-items: center;
+					cursor: pointer;
+				}
+				
+				.list-img{
+					width: 30px;
+					height: 30px;
+					border-radius: 100%;
+					margin-right: 10px;
+				}
+				
+				.val-tag {
+					font-size: 0.9rem;
+					color: #0288D1;
+				}
+				
+				.list-label {
+					font-size: 1.2rem;
+					color: #000;
+				}
+				
+				.docCard-header, .docCard-body {
+					position: relative;
+					width: 99%;
+					margin: 0 auto;
+				}
+				
+				.cardSect-wrap {
+					margin-bottom: 20px;
+					margin-left: 10px;
+					margin-top: -10px;
+				}
+				.card-sect {
+					margin-top: 20px;
+				}
+				.docCard-sectContent {
+					font-size: 1.2rem;
+					line-height: 1.5;
+					color: #474747;
+					letter-spacing: 0.3px;
+				}
+				
+				.doc-list-wrap {
+					padding-bottom: 10px;
+				}
+				
+				.sect-key {
+					font-size: 1rem;
+					color: #0288D1;
+					margin-top: 20px;
+					text-decoration: underline;
+				}
+				
+				.sect-value {
+					line-height: 1.7;
+					margin-left: 10px;
+					margin-right: 10px;
+					text-align: justify;
+				}	
+			  </style>
+			</head>
+			<body onload="window.print();window.close()">
+			${printContents}
+			</body>
+		  </html>`);
+		popupWin.document.close();
+	  }
 }

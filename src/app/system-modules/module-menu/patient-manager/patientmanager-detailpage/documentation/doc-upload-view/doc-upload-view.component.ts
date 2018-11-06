@@ -1,17 +1,15 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { CoolLocalStorage } from 'angular2-cool-storage/src/cool-local-storage';
 
-
 @Component({
-  selector: 'app-doc-upload-view',
-  templateUrl: './doc-upload-view.component.html',
-  styleUrls: ['./doc-upload-view.component.scss']
+	selector: 'app-doc-upload-view',
+	templateUrl: './doc-upload-view.component.html',
+	styleUrls: [ './doc-upload-view.component.scss' ]
 })
 export class DocUploadViewComponent implements OnInit {
 	@Input() selectedDocument: any = {};
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-	
 	page = 1;
 	auth: any;
 	currentPDF = {};
@@ -20,13 +18,12 @@ export class DocUploadViewComponent implements OnInit {
 	loadingError: boolean;
 
 	docPdf: any;
-  docImg: any;
-  
+	docImg: any;
 
-  constructor(private locker: CoolLocalStorage) { }
+	constructor(private locker: CoolLocalStorage) {}
 
-  ngOnInit() {
-    this.auth = this.locker.getObject('auth');
+	ngOnInit() {
+		this.auth = this.locker.getObject('auth');
 		if (this.selectedDocument.fileType === 'application/pdf') {
 			this.docPdf = true;
 			this.docImg = false;
@@ -38,10 +35,8 @@ export class DocUploadViewComponent implements OnInit {
 			this.docImg = true;
 			this.currentImg = this.selectedDocument.docUrl;
 		}
-  }
+	}
 
-
-  
 	onComplete(event) {
 		this.loading = false;
 	}
@@ -53,8 +48,5 @@ export class DocUploadViewComponent implements OnInit {
 		// console.log(event);
 	}
 
-	pageRendered(e: CustomEvent) {
-		console.log('(page-rendered)', e);
-	}
-
+	pageRendered(e: CustomEvent) {}
 }

@@ -6,12 +6,12 @@ import { Facility, Prescription, PrescriptionItem } from '../../../../models/ind
 import { PharmacyEmitterService } from '../../../../services/facility-manager/pharmacy-emitter.service';
 
 @Component({
-  selector: 'app-external-prescription',
-  templateUrl: './external-prescription.component.html',
-  styleUrls: ['./external-prescription.component.scss']
+	selector: 'app-external-prescription',
+	templateUrl: './external-prescription.component.html',
+	styleUrls: [ './external-prescription.component.scss' ]
 })
 export class ExternalPrescriptionComponent implements OnInit {
-  facility: Facility = <Facility>{};
+	facility: Facility = <Facility>{};
 	extPrescriptionFormGroup: FormGroup;
 	extPrescriptions: any[] = [];
 	tempExtPrescriptions: any[] = [];
@@ -19,25 +19,25 @@ export class ExternalPrescriptionComponent implements OnInit {
 	psearchOpen = false;
 	wsearchOpen = false;
 
-  constructor(
-    private _fb: FormBuilder,
+	constructor(
+		private _fb: FormBuilder,
 		private _locker: CoolLocalStorage,
 		private _pharmacyEventEmitter: PharmacyEmitterService,
 		private _prescriptionService: PrescriptionService
-  ) { }
+	) {}
 
-  ngOnInit() {
-    this._pharmacyEventEmitter.setRouteUrl('External Prescription List');
-    this.facility = <Facility> this._locker.getObject('selectedFacility');
+	ngOnInit() {
+		this._pharmacyEventEmitter.setRouteUrl('External Prescription List');
+		this.facility = <Facility>this._locker.getObject('selectedFacility');
 
-    this._getAllPrescriptions();
+		this._getAllPrescriptions();
 
-    this.extPrescriptionFormGroup = this._fb.group({
-			search: [''],
-			category: [''],
-			date: [new Date()]
-    });
-  }
+		this.extPrescriptionFormGroup = this._fb.group({
+			search: [ '' ],
+			category: [ '' ],
+			date: [ new Date() ]
+		});
+	}
 
 	openSearch() {
 		this.psearchOpen = true;
@@ -47,23 +47,25 @@ export class ExternalPrescriptionComponent implements OnInit {
 		this.psearchOpen = false;
 		this.wsearchOpen = false;
 	}
-  // Get all drugs from generic
+	// Get all drugs from generic
 	private _getAllPrescriptions() {
-		this._prescriptionService.findAll().then(res => {
+		this._prescriptionService
+			.findAll()
+			.then((res) => {
 				this.loading = false;
-				res.data.forEach(element => {
+				res.data.forEach((element) => {
 					if (element.isDispensed) {
 						let isBilledCount = 0;
 						let isExternalCount = 0;
 						const preItemCount = element.prescriptionItems.length;
-						element.prescriptionItems.forEach(preItem => {
+						element.prescriptionItems.forEach((preItem) => {
 							if (preItem.isBilled) {
 								++isBilledCount;
-              }
+							}
 
-              if (preItem.isExternal) {
-                ++isExternalCount;
-              }
+							if (preItem.isExternal) {
+								++isExternalCount;
+							}
 						});
 
 						if (isBilledCount === preItemCount) {
@@ -72,18 +74,17 @@ export class ExternalPrescriptionComponent implements OnInit {
 							element.status = 'not';
 						} else {
 							element.status = 'partly';
-            }
+						}
 
-            // Check if there is any external item
-            if (isExternalCount > 0) {
-              this.tempExtPrescriptions.push(element); // temporary variable to search from.
-              this.extPrescriptions.push(element);
-            }
+						// Check if there is any external item
+						if (isExternalCount > 0) {
+							this.tempExtPrescriptions.push(element); // temporary variable to search from.
+							this.extPrescriptions.push(element);
+						}
 					}
 				});
-			}).catch(err => console.error(err));
+			})
+			.catch((err) => {});
 	}
-	onChangeCategory(e) {
-
-	}
+	onChangeCategory(e) {}
 }

@@ -7,14 +7,35 @@ import { Component, OnInit, EventEmitter, Output, NgZone, ViewChild, AfterViewIn
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
 import { ImageCropperComponent, CropperSettings, Bounds } from 'ng2-img-cropper';
 import {
-    ProfessionService, RelationshipService, MaritalStatusService, GenderService,
-    TitleService, CountriesService, PatientService, PersonService, EmployeeService, FacilitiesService, FacilitiesServiceCategoryService,
-    BillingService, ServicePriceService, HmoService, FamilyHealthCoverService
+	ProfessionService,
+	RelationshipService,
+	MaritalStatusService,
+	GenderService,
+	TitleService,
+	CountriesService,
+	PatientService,
+	PersonService,
+	EmployeeService,
+	FacilitiesService,
+	FacilitiesServiceCategoryService,
+	BillingService,
+	ServicePriceService,
+	HmoService,
+	FamilyHealthCoverService
 } from '../../../../services/facility-manager/setup/index';
 import {
-    Facility, FacilityService, Patient, Address, Profession, Relationship, Person,
-    Department,
-    MinorLocation, Gender, Title, Country
+	Facility,
+	FacilityService,
+	Patient,
+	Address,
+	Profession,
+	Relationship,
+	Person,
+	Department,
+	MinorLocation,
+	Gender,
+	Title,
+	Country
 } from '../../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { NgUploaderOptions } from 'ngx-uploader';
@@ -25,271 +46,272 @@ import { map } from 'rxjs/operators/map';
 import { EMAIL_REGEX, PHONE_REGEX, ALPHABET_REGEX, HTML_SAVE_PATIENT } from 'app/shared-module/helpers/global-config';
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 
-
 @Component({
-    selector: 'app-new-patient',
-    templateUrl: './new-patient.component.html',
-    styleUrls: ['./new-patient.component.scss']
+	selector: 'app-new-patient',
+	templateUrl: './new-patient.component.html',
+	styleUrls: [ './new-patient.component.scss' ]
 })
 export class NewPatientComponent implements OnInit, AfterViewInit {
-    user: any;
-    securityQuestions: any[] = [];
+	user: any;
+	securityQuestions: any[] = [];
 
-    isSuccessful = false;
-    isSaving = false;
-    validating = false;
-    duplicate = false;
-    mainErr = true;
-    skipNok = false;
-    errMsg = 'you have unresolved errors';
+	isSuccessful = false;
+	isSaving = false;
+	validating = false;
+	duplicate = false;
+	mainErr = true;
+	skipNok = false;
+	errMsg = 'you have unresolved errors';
 
-    selectedPerson: Person = <Person>{};
-    selectedFamilyCover: any = <any>{};
-    isEmailExist = true;
-    apmisId_show = true;
-    frmNewPerson1_show = false;
-    frmNewPerson2_show = false;
-    frmNewPerson3_show = false;
-    frmNewEmp4_show = false;
-    paymentPlan = false;
+	selectedPerson: Person = <Person>{};
+	selectedFamilyCover: any = <any>{};
+	isEmailExist = true;
+	apmisId_show = true;
+	frmNewPerson1_show = false;
+	frmNewPerson2_show = false;
+	frmNewPerson3_show = false;
+	frmNewEmp4_show = false;
+	paymentPlan = false;
 
-    categories;
-    services;
-    servicePricePlans;
+	categories;
+	services;
+	servicePricePlans;
 
-    beneficiaries;
+	beneficiaries;
 
-    /* employee: any;
+	/* employee: any;
     wallet: boolean;
     insurance: boolean; */
-    family: any;
-    familyClientId: any;
-    coverType: any;
-    hmoInsuranceId: any;
-    ccEmployeeId: any;
-    faId: any;
-    planId: any;
-    noPatientId: any = false;
+	family: any;
+	familyClientId: any;
+	coverType: any;
+	hmoInsuranceId: any;
+	ccEmployeeId: any;
+	faId: any;
+	planId: any;
+	noPatientId: any = false;
 
-    shouldMoveFirst = false;
-    nextOfKinReadOnly = false;
-    tabWallet = true;
-    tabInsurance = false;
-    tabCompany = false;
-    tabFamily = false;
+	shouldMoveFirst = false;
+	nextOfKinReadOnly = false;
+	tabWallet = true;
+	tabInsurance = false;
+	tabCompany = false;
+	tabFamily = false;
 
-    dtob;
+	dtob;
 
-    newEmpIdControl = new FormControl('', Validators.required);
-    public frmNewEmp1: FormGroup;
-    public frmNewEmp2: FormGroup;
-    public frmNewEmp3: FormGroup;
-    public frmNewEmp4: FormGroup;
-    public frmPerson: FormGroup;
+	newEmpIdControl = new FormControl('', Validators.required);
+	public frmNewEmp1: FormGroup;
+	public frmNewEmp2: FormGroup;
+	public frmNewEmp3: FormGroup;
+	public frmNewEmp4: FormGroup;
+	public frmPerson: FormGroup;
 
-    walletPlanPrice = new FormControl('', Validators.required);
-    walletPlan = new FormControl('', Validators.required);
-    walletPlanCheck = new FormControl('');
-    insuranceId = new FormControl('', Validators.required);
-    hmoPlan = new FormControl('', Validators.required);
-    hmoPlanId = new FormControl('', Validators.required);
-    hmoPlanPrice = new FormControl('', Validators.required);
-    hmoPlanCheck = new FormControl('');
-    ccPlan = new FormControl('', Validators.required);
-    ccPlanId = new FormControl('', Validators.required);
-    ccPlanCheck = new FormControl('');
-    employeeId = new FormControl('', Validators.required);
-    ccPlanPrice = new FormControl('', Validators.required);
-    familyPlanId = new FormControl('', Validators.required);
-    faFileNo = new FormControl('', Validators.required);
-    familyPlanCheck = new FormControl('');
-    faPlanPrice = new FormControl('');
-    faPlan = new FormControl('');
-    principalName = new FormControl('');
-    principalPersonId = new FormControl('');
-    principalFamilyId = new FormControl('');
+	walletPlanPrice = new FormControl('', Validators.required);
+	walletPlan = new FormControl('', Validators.required);
+	walletPlanCheck = new FormControl('');
+	insuranceId = new FormControl('', Validators.required);
+	hmoPlan = new FormControl('', Validators.required);
+	hmoPlanId = new FormControl('', Validators.required);
+	hmoPlanPrice = new FormControl('', Validators.required);
+	hmoPlanCheck = new FormControl('');
+	ccPlan = new FormControl('', Validators.required);
+	ccPlanId = new FormControl('', Validators.required);
+	ccPlanCheck = new FormControl('');
+	employeeId = new FormControl('', Validators.required);
+	ccPlanPrice = new FormControl('', Validators.required);
+	familyPlanId = new FormControl('', Validators.required);
+	faFileNo = new FormControl('', Validators.required);
+	familyPlanCheck = new FormControl('');
+	faPlanPrice = new FormControl('');
+	faPlan = new FormControl('');
+	principalName = new FormControl('');
+	principalPersonId = new FormControl('');
+	principalFamilyId = new FormControl('');
 
-    facilityServiceId = new FormControl('');
+	facilityServiceId = new FormControl('');
 
-    loading: Boolean;
+	loading: Boolean;
 
-    @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-    @ViewChild('cropper', undefined)
-    cropper: ImageCropperComponent;
-    uploadEvents: EventEmitter<any> = new EventEmitter();
+	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
+	@ViewChild('cropper', undefined)
+	cropper: ImageCropperComponent;
+	uploadEvents: EventEmitter<any> = new EventEmitter();
 
-    public events: any[] = []; // use later to display form changes
+	public events: any[] = []; // use later to display form changes
 
-    empImg: any;
-    zone: NgZone;
-    cropperSettings: CropperSettings;
-    facility: Facility = <Facility>{};
-    departments: Department[] = [];
-    minorLocations: MinorLocation[] = [];
-    genders: Gender[] = [];
-    titles: Title[] = [];
-    countries: Country[] = [];
-    states: any[] = [];
-    contactStates: any = [];
-    cities: any[];
-    lgs: any[] = [];
-    cadres: any[] = [];
-    maritalStatuses: any[] = [];
-    relationships: Relationship[] = [];
-    professions: Profession[] = [];
-    croppedWidth: number;
-    croppedHeight: number;
+	empImg: any;
+	zone: NgZone;
+	cropperSettings: CropperSettings;
+	facility: Facility = <Facility>{};
+	departments: Department[] = [];
+	minorLocations: MinorLocation[] = [];
+	genders: Gender[] = [];
+	titles: Title[] = [];
+	countries: Country[] = [];
+	states: any[] = [];
+	contactStates: any = [];
+	cities: any[];
+	lgs: any[] = [];
+	cadres: any[] = [];
+	maritalStatuses: any[] = [];
+	relationships: Relationship[] = [];
+	professions: Profession[] = [];
+	croppedWidth: number;
+	croppedHeight: number;
 
-    person_Id: any;
-    planValue: any;
+	person_Id: any;
+	planValue: any;
 
-    cashPlans: FacilityService[] = [];
-    insurancePlans: any = [];
-    planPrice: any;
+	cashPlans: FacilityService[] = [];
+	insurancePlans: any = [];
+	planPrice: any;
 
-    selectedCategory;
+	selectedCategory;
 
-    hmos: any[] = [];
-    hmo;
-    filteredHmos: Observable<any[]>;
+	hmos: any[] = [];
+	hmo;
+	filteredHmos: Observable<any[]>;
 
-    companyEnrolleList: any;
-    loginCompanyListObject: any = {};
-    companyFacilities: any[] = [];
-    filteredccs: Observable<any[]>;
-    companyCover: any;
+	companyEnrolleList: any;
+	loginCompanyListObject: any = {};
+	companyFacilities: any[] = [];
+	filteredccs: Observable<any[]>;
+	companyCover: any;
 
-    planDetails: any;
+	planDetails: any;
 
-    // ***
-    uploadFile: any;
-    hasBaseDropZoneOver: Boolean = false;
-    options: NgUploaderOptions = {
-        url: 'http://localhost:3030/image',
-        autoUpload: false,
-        data: { filename: '' }
-    };
-    sizeLimit = 2000000;
+	// ***
+	uploadFile: any;
+	hasBaseDropZoneOver: Boolean = false;
+	options: NgUploaderOptions = {
+		url: 'http://localhost:3030/image',
+		autoUpload: false,
+		data: { filename: '' }
+	};
+	sizeLimit = 2000000;
 
-    today: Date = new Date();
+	today: Date = new Date();
 
-    // **
-    OperationType: ImageUploaderEnum = ImageUploaderEnum.PersonProfileImage;
-    constructor(private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
-        private formBuilder: FormBuilder,
-        private titleService: TitleService,
-        private countryService: CountriesService,
-        private genderService: GenderService,
-        private maritalStatusService: MaritalStatusService,
-        private relationshipService: RelationshipService,
-        private professionService: ProfessionService,
-        private locker: CoolLocalStorage, private patientService: PatientService,
-        private personService: PersonService,
-        private employeeService: EmployeeService,
-        private facilityService: FacilitiesService,
-        private billingService: BillingService, private servicePriceService: ServicePriceService,
-        private hmoService: HmoService,
-        private systemModuleService: SystemModuleService,
-        private titleCasePipe: TitleCasePipe,
-        private securityQuestionService: SecurityQuestionsService,
-        private faService: FamilyHealthCoverService,
-        private authFacadeService: AuthFacadeService,
-        private familyCoverService: FacilityFamilyCoverService,
-        private companyCoverService: FacilityCompanyCoverService
-    ) {
-        // this.uploadEvents = new EventEmitter();
-        this.cropperSettings = new CropperSettings();
-        this.cropperSettings.width = 400;
-        this.cropperSettings.height = 400;
-        this.cropperSettings.croppedWidth = 400;
-        this.cropperSettings.croppedHeight = 400;
-        this.cropperSettings.canvasWidth = 400;
-        this.cropperSettings.canvasHeight = 300;
-        this.cropperSettings.noFileInput = true;
+	// **
+	OperationType: ImageUploaderEnum = ImageUploaderEnum.PersonProfileImage;
+	constructor(
+		private _facilitiesServiceCategoryService: FacilitiesServiceCategoryService,
+		private formBuilder: FormBuilder,
+		private titleService: TitleService,
+		private countryService: CountriesService,
+		private genderService: GenderService,
+		private maritalStatusService: MaritalStatusService,
+		private relationshipService: RelationshipService,
+		private professionService: ProfessionService,
+		private locker: CoolLocalStorage,
+		private patientService: PatientService,
+		private personService: PersonService,
+		private employeeService: EmployeeService,
+		private facilityService: FacilitiesService,
+		private billingService: BillingService,
+		private servicePriceService: ServicePriceService,
+		private hmoService: HmoService,
+		private systemModuleService: SystemModuleService,
+		private titleCasePipe: TitleCasePipe,
+		private securityQuestionService: SecurityQuestionsService,
+		private faService: FamilyHealthCoverService,
+		private authFacadeService: AuthFacadeService,
+		private familyCoverService: FacilityFamilyCoverService,
+		private companyCoverService: FacilityCompanyCoverService
+	) {
+		// this.uploadEvents = new EventEmitter();
+		this.cropperSettings = new CropperSettings();
+		this.cropperSettings.width = 400;
+		this.cropperSettings.height = 400;
+		this.cropperSettings.croppedWidth = 400;
+		this.cropperSettings.croppedHeight = 400;
+		this.cropperSettings.canvasWidth = 400;
+		this.cropperSettings.canvasHeight = 300;
+		this.cropperSettings.noFileInput = true;
 
-        this.cropperSettings.rounded = false;
-        this.cropperSettings.keepAspect = false;
+		this.cropperSettings.rounded = false;
+		this.cropperSettings.keepAspect = false;
 
-        this.empImg = {};
+		this.empImg = {};
 
-        this.filteredHmos = this.hmoPlanId.valueChanges
-            .pipe(
-                startWith(''),
-                map((hmo: any) => hmo ? this.filterHmos(hmo) : this.hmos.slice())
-            );
+		this.filteredHmos = this.hmoPlanId.valueChanges.pipe(
+			startWith(''),
+			map((hmo: any) => (hmo ? this.filterHmos(hmo) : this.hmos.slice()))
+		);
 
-        this.filteredccs = this.ccPlanId.valueChanges.pipe(
-            startWith(''),
-            map((cc: any) => cc ? this.filterCCs(cc) : this.companyFacilities.slice())
-        )
-    }
-    cropped(bounds: Bounds) {
-        this.croppedHeight = bounds.bottom - bounds.top;
-        this.croppedWidth = bounds.right - bounds.left;
-    }
-    ngAfterViewInit() {
-        // this.uploadEvents = new EventEmitter();
-    }
-    fileChangeListener($event) {
-        const image: any = new Image();
-        const file: File = $event.target.files[0];
-        const myReader: FileReader = new FileReader();
-        const that = this;
-        myReader.onloadend = function (loadEvent: any) {
-            image.src = loadEvent.target.result;
-            that.cropper.setImage(image);
-        };
-        myReader.readAsDataURL(file);
-    }
-    uploadButton() {
-        if (this.OperationType === ImageUploaderEnum.PersonProfileImage) {
-            if (this.selectedPerson.profileImageObject !== undefined) {
-                this.options.data.filename = this.selectedPerson.profileImageObject.filename;
-            } else {
-                this.options.data.filename = 0;
-            }
-        }
-        this.uploadEvents.emit('startUpload');
-    }
-    beforeUpload(uploadingFile): void {
-        if (uploadingFile.size > this.sizeLimit) {
-            uploadingFile.setAbort();
-            alert('File is too large');
-        }
-    }
-    handleUpload(data): void {
-        if (data && data.response) {
-            data = JSON.parse(data.response);
-            const file = data[0].file;
-            if (this.OperationType === ImageUploaderEnum.PersonProfileImage) {
-                this.personService.get(this.selectedPerson._id, {}).then(payload => {
-                    if (payload != null) {
-                        payload.profileImageObject = file;
-                        this.updatePerson(payload);
-                    }
-                });
-            } else if (this.OperationType === ImageUploaderEnum.PatientProfileImage) {
-                this.selectedPerson.profileImageObject = file;
-                this.updatePerson(this.selectedPerson);
-            }
-        }
-    }
-    fileOverBase(e: any): void {
-        this.hasBaseDropZoneOver = e;
-    }
-    updatePerson(person: Person) {
-        this.personService.update(person).then(rpayload => {
-            if (this.OperationType === ImageUploaderEnum.PersonProfileImage) {
-                this.selectedPerson = rpayload;
-            } else if (this.OperationType === ImageUploaderEnum.PatientProfileImage) {
-                this.selectedPerson = rpayload;
-            }
-            this.close_onClick();
-        });
-    }
+		this.filteredccs = this.ccPlanId.valueChanges.pipe(
+			startWith(''),
+			map((cc: any) => (cc ? this.filterCCs(cc) : this.companyFacilities.slice()))
+		);
+	}
+	cropped(bounds: Bounds) {
+		this.croppedHeight = bounds.bottom - bounds.top;
+		this.croppedWidth = bounds.right - bounds.left;
+	}
+	ngAfterViewInit() {
+		// this.uploadEvents = new EventEmitter();
+	}
+	fileChangeListener($event) {
+		const image: any = new Image();
+		const file: File = $event.target.files[0];
+		const myReader: FileReader = new FileReader();
+		const that = this;
+		myReader.onloadend = function(loadEvent: any) {
+			image.src = loadEvent.target.result;
+			that.cropper.setImage(image);
+		};
+		myReader.readAsDataURL(file);
+	}
+	uploadButton() {
+		if (this.OperationType === ImageUploaderEnum.PersonProfileImage) {
+			if (this.selectedPerson.profileImageObject !== undefined) {
+				this.options.data.filename = this.selectedPerson.profileImageObject.filename;
+			} else {
+				this.options.data.filename = 0;
+			}
+		}
+		this.uploadEvents.emit('startUpload');
+	}
+	beforeUpload(uploadingFile): void {
+		if (uploadingFile.size > this.sizeLimit) {
+			uploadingFile.setAbort();
+			alert('File is too large');
+		}
+	}
+	handleUpload(data): void {
+		if (data && data.response) {
+			data = JSON.parse(data.response);
+			const file = data[0].file;
+			if (this.OperationType === ImageUploaderEnum.PersonProfileImage) {
+				this.personService.get(this.selectedPerson._id, {}).then((payload) => {
+					if (payload != null) {
+						payload.profileImageObject = file;
+						this.updatePerson(payload);
+					}
+				});
+			} else if (this.OperationType === ImageUploaderEnum.PatientProfileImage) {
+				this.selectedPerson.profileImageObject = file;
+				this.updatePerson(this.selectedPerson);
+			}
+		}
+	}
+	fileOverBase(e: any): void {
+		this.hasBaseDropZoneOver = e;
+	}
+	updatePerson(person: Person) {
+		this.personService.update(person).then((rpayload) => {
+			if (this.OperationType === ImageUploaderEnum.PersonProfileImage) {
+				this.selectedPerson = rpayload;
+			} else if (this.OperationType === ImageUploaderEnum.PatientProfileImage) {
+				this.selectedPerson = rpayload;
+			}
+			this.close_onClick();
+		});
+	}
 
-    updatePersonInfo(person?: Person, id?) {
-        /* const person: Person = <Person>{ nextOfKin: [] };
+	updatePersonInfo(person?: Person, id?) {
+		/* const person: Person = <Person>{ nextOfKin: [] };
         person.dateOfBirth = this.frmNewEmp2.controls['empDOB'].value;
         person.email = this.frmNewEmp1.controls['empEmail'].value;
         person.firstName = this.frmNewEmp1.controls['empFirstName'].value;
@@ -324,9 +346,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             person.lgaOfOriginId = this.frmNewEmp1.controls['empLga'].value;
             person.nationalityId = this.frmNewEmp1.controls['empNationality'].value;
             person.stateOfOriginId = this.frmNewEmp1.controls['empState'].value; */
-        this.personService.get(id, {}).then(payloads => {
-
-            /* this.personService.update(person).then(rpayload => {
+		this.personService.get(id, {}).then((payloads) => {
+			/* this.personService.update(person).then(rpayload => {
 
             }); */
         });
@@ -356,7 +377,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
             gender: [[<any>Validators.minLength(2)]],
             dob: [new Date(), [<any>Validators.required]],
-            motherMaidenName: ['', [ <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
+            motherMaidenName: ['', [<any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
             // motherMaidenName: ['', [<any>Validators.required,
             //     <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
             // securityQuestion: ['', [<any>Validators.required]],
@@ -778,94 +799,102 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         this.planId = this.faPlan.value._id;
         this.familyClientId = this.faFileNo.value;
 
-        if (this.getRole(this.faId) !== 'P') {
-            this.systemModuleService.off();
-            const text = 'Principal Id entered doens\'t belong to a Principal of a family';
-            this.errMsg = text;
-            this.mainErr = false;
-            this.systemModuleService.announceSweetProxy(text, 'error');
-        }/* else if(){} */ else {
-            this.familyCoverService.find({ query: { 'facilityId': this.facility._id } }).then(payload => {
-
-                if (payload.data.length > 0) {
-                    const facFamilyCover = payload.data[0];
-                    this.selectedFamilyCover = facFamilyCover;
-                    this.beneficiaries = facFamilyCover.familyCovers;
-                    const info = this.beneficiaries.filter(x => x.filNo === this.faId);
-
-                    if (info.length === 0) {
-                        this.loading = false;
-                        this.systemModuleService.off();
-                        const text = 'Principal Id doesn\'t exist';
-                        this.errMsg = text;
-                        this.mainErr = false;
-                        this.systemModuleService.announceSweetProxy(text, 'error');
-                    } else {
-                        const filEx = this.beneficiaries.filter(x => x.filNo === this.familyClientId);
-                        if (filEx.length > 0) {
-                            if (filEx[0].patientId !== undefined) {
-                                this.loading = false;
-                                this.systemModuleService.off();
-                                const text = 'Client Id has already been assigned to a patient. Please try another Client Id';
-                                this.errMsg = text;
-                                this.mainErr = false;
-                                this.systemModuleService.announceSweetProxy(text, 'error');
-                            } else {
-                                if (info[0].patientId === undefined) {
-                                    if (this.getRole(this.familyClientId) !== 'P') {
-                                        this.loading = false;
-                                        this.systemModuleService.off();
-                                        const text = 'Principal doesn\'t exist as a patient. Please register principal.';
-                                        this.errMsg = text;
-                                        this.mainErr = false;
-                                        this.systemModuleService.announceSweetProxy(text, 'error');
-                                        return;
-                                    } else {
-                                        this.noPatientId = true;
-                                    }
-                                }
-                                if (this.shouldMoveFirst === true) {
-                                    this.frmPerson.controls["firstname"].setValue(filEx[0].othernames);
-                                    this.frmPerson.controls["firstname"].disable();
-                                    this.frmPerson.controls["lastname"].setValue(filEx[0].surname);
-                                    this.frmPerson.controls["lastname"].disable();
-                                    this.frmPerson.controls["phone"].setValue(filEx[0].phone);
-                                    this.frmPerson.controls["phone"].disable();
-                                    this.principalName.setValue(info[0].othernames + ' ' + info[0].surname);
-                                    this.principalPersonId.setValue((this.noPatientId !== true) ? info[0].patientObject.personDetails._id : '');
-                                    this.principalFamilyId.setValue(facFamilyCover._id);
-
-                                    this.saveFamilyPerson();
-                                } else {
-                                    this.frmPerson.controls["firstname"].setValue(filEx[0].othernames);
-                                    this.frmPerson.controls["firstname"].disable();
-                                    this.frmPerson.controls["lastname"].setValue(filEx[0].surname);
-                                    this.frmPerson.controls["lastname"].disable();
-                                    this.frmPerson.controls["phone"].setValue(filEx[0].phone);
-                                    this.frmPerson.controls["phone"].disable();
-                                    this.principalName.setValue(info[0].othernames + ' ' + info[0].surname);
-                                    this.principalPersonId.setValue((this.noPatientId !== true) ? info[0].patientObject.personDetails._id : '');
-                                    this.principalFamilyId.setValue(facFamilyCover._id);
-                                    this.frmNewEmp4_show = false;
-                                    this.frmNewPerson1_show = true;
-                                    this.frmNewPerson2_show = false;
-                                    this.frmNewPerson3_show = false;
-                                    this.paymentPlan = false;
-                                    this.loading = false;
-                                }
-                            }
-                        } else {
+        this.familyCoverService.find({
+            query: {
+                'facilityId': this.facility._id,
+                'familyCovers.filNo': this.faId
+            }
+        }).then(payload => {
+            console.log(payload);
+            console.log(this.faId);
+            if (payload.data.length > 0) {
+                const facFamilyCover = payload.data[0];
+                this.selectedFamilyCover = facFamilyCover;
+                this.beneficiaries = facFamilyCover.familyCovers;
+                const info = this.beneficiaries.filter(x => x.filNo === this.faId);
+                console.log(info);
+                if (info.length === 0) {
+                    this.loading = false;
+                    this.systemModuleService.off();
+                    const text = 'Principal Id doesn\'t exist';
+                    console.log(text);
+                    this.errMsg = text;
+                    this.mainErr = false;
+                    this.systemModuleService.announceSweetProxy(text, 'error');
+                } else {
+                    const filEx = this.beneficiaries.filter(x => x.filNo === this.familyClientId);
+                    if (filEx.length > 0) {
+                        if (filEx[0].patientId !== undefined) {
                             this.loading = false;
                             this.systemModuleService.off();
-                            const text = 'Client Id doesn\'t exist in Principal family';
+                            const text = 'Client Id has already been assigned to a patient. Please try another Client Id';
                             this.errMsg = text;
                             this.mainErr = false;
                             this.systemModuleService.announceSweetProxy(text, 'error');
+                        } else {
+                            if (info[0].patientId === undefined) {
+                                if (this.getRole(info[0]) !== 'P') {
+                                    this.loading = false;
+                                    this.systemModuleService.off();
+                                    const text = 'Principal ID does not exist as a patient. Please register principal.';
+                                    console.log(text);
+                                    this.errMsg = text;
+                                    this.mainErr = false;
+                                    this.systemModuleService.announceSweetProxy(text, 'error');
+                                    return;
+                                } else {
+                                    this.noPatientId = true;
+                                }
+                            }
+                            if (this.shouldMoveFirst === true) {
+                                this.frmPerson.controls["firstname"].setValue(filEx[0].othernames);
+                                this.frmPerson.controls["firstname"].disable();
+                                this.frmPerson.controls["lastname"].setValue(filEx[0].surname);
+                                this.frmPerson.controls["lastname"].disable();
+                                this.frmPerson.controls["phone"].setValue(filEx[0].phone);
+                                this.frmPerson.controls["phone"].disable();
+                                this.principalName.setValue(info[0].othernames + ' ' + info[0].surname);
+                                this.principalPersonId.setValue((this.noPatientId !== true) ? info[0].patientObject.personDetails._id : '');
+                                this.principalFamilyId.setValue(facFamilyCover._id);
+
+                                this.saveFamilyPerson();
+                            } else {
+                                this.frmPerson.controls["firstname"].setValue(filEx[0].othernames);
+                                this.frmPerson.controls["firstname"].disable();
+                                this.frmPerson.controls["lastname"].setValue(filEx[0].surname);
+                                this.frmPerson.controls["lastname"].disable();
+                                this.frmPerson.controls["phone"].setValue(filEx[0].phone);
+                                this.frmPerson.controls["phone"].disable();
+                                this.principalName.setValue(info[0].othernames + ' ' + info[0].surname);
+                                this.principalPersonId.setValue((this.noPatientId !== true) ? info[0].patientObject.personDetails._id : '');
+                                this.principalFamilyId.setValue(facFamilyCover._id);
+                                this.frmNewEmp4_show = false;
+                                this.frmNewPerson1_show = true;
+                                this.frmNewPerson2_show = false;
+                                this.frmNewPerson3_show = false;
+                                this.paymentPlan = false;
+                                this.loading = false;
+                            }
                         }
+                    } else {
+                        this.loading = false;
+                        this.systemModuleService.off();
+                        const text = 'Client Id doesn\'t exist in Principal family';
+                        this.errMsg = text;
+                        this.mainErr = false;
+                        this.systemModuleService.announceSweetProxy(text, 'error');
                     }
                 }
-            });
-        }
+            }else{
+                this.loading = false;
+                    this.systemModuleService.off();
+                    const text = 'Principal Id doesn\'t exist';
+                    console.log(text);
+                    this.errMsg = text;
+                    this.mainErr = false;
+                    this.systemModuleService.announceSweetProxy(text, 'error');
+            }
+        });
     }
 
     nextCompany() {
@@ -939,12 +968,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
     }
 
     getRole(beneficiary) {
-        const filNo = beneficiary;
-        if (filNo !== undefined) {
-            const filNoLength = filNo.length;
-            const lastCharacter = filNo[filNoLength - 1];
-            return isNaN(lastCharacter) ? 'D' : 'P';
-        }
+        console.log(beneficiary);
+        return (beneficiary.serial === 0) ? 'P' : 'D';
     }
 
     getProfessions() {
@@ -1637,13 +1662,20 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
         }
 
         this.patientService.create(patient).then(payl => {
-            this.familyCoverService.find({ query: { 'facilityId': this.facility._id } }).then(familyCoverPayload => {
+            console.log(payl);
+            this.familyCoverService.find({ 
+                query: { 
+                    'facilityId': this.facility._id,
+                    'familyCovers.filNo':this.familyClientId 
+                } }).then(familyCoverPayload => {
+                console.log(familyCoverPayload);
                 if (familyCoverPayload.data.length > 0) {
                     const facFamilyCover = familyCoverPayload.data[0];
                     this.selectedFamilyCover = facFamilyCover;
                     this.beneficiaries = facFamilyCover.familyCovers;
                     const info = this.beneficiaries.filter(x => x.filNo === this.faId);
                     const filEx = this.beneficiaries.findIndex(x => x.filNo === this.familyClientId);
+                    console.log(filEx);
                     if (filEx > -1) {
                         facFamilyCover.familyCovers[filEx].patientId = payl._id;
                         this.familyCoverService.patch(facFamilyCover._id, facFamilyCover, {}).then(patchPayload => {
@@ -1795,6 +1827,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
                     isValidating: true
                 }
             }).then(payload => {
+                console.log(payload);
                 this.validating = false;
                 if (payload.status === 'success') {
                     this.duplicate = true;
@@ -1828,6 +1861,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
             // securityQuestion: this.frmPerson.controls['securityQuestion'].value,
             // securityAnswer: this.titleCasePipe.transform(this.frmPerson.controls['securityAnswer'].value)
         };
+        console.log(personModel);
         const body = {
             person: personModel
         };

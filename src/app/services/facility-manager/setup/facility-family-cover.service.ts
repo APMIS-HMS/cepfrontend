@@ -8,9 +8,10 @@ const request = require('superagent');
 export class FacilityFamilyCoverService {
   public _socket;
   private _rest;
+  private familyBeneficiaries;
 
-  private familyCoverAnnouncedSource = new Subject<Object>();
-  familyCoverAnnounced$ = this.familyCoverAnnouncedSource.asObservable();
+	private familyCoverAnnouncedSource = new Subject<Object>();
+	familyCoverAnnounced$ = this.familyCoverAnnouncedSource.asObservable();
 
   constructor(
     private _socketService: SocketService,
@@ -20,36 +21,33 @@ export class FacilityFamilyCoverService {
     this._rest = _restService.getService('families');
     this._socket = _socketService.getService('families');
     this._socket.timeout = 20000;
-    this._socket.on('created', function (gender) {
+    this.familyBeneficiaries  = this._socketService.getService('family-beneficiaries');
+    this.familyBeneficiaries.timeout  = 40000;
+		this._socket.on('created', function (gender){
 
     });
-  }
-  announceCompanyCover(familyCover: Object) {
-    this.familyCoverAnnouncedSource.next(familyCover);
-  }
-  receiveCompanyCover(): Observable<Object> {
-    return this.familyCoverAnnouncedSource.asObservable();
-  }
-  find(query: any) {
-    return this._socket.find(query);
-  }
+	}
 
-  findAll() {
-    return this._socket.find();
-  }
-  get(id: string, query: any) {
-    return this._socket.get(id, query);
-  }
+	find(query: any) {
+		return this._socket.find(query);
+	}
 
-  create(gender: any) {
-    return this._socket.create(gender);
+	findAll() {
+		return this._socket.find();
+	}
+	get(id: string, query: any) {
+		return this._socket.get(id, query);
+	}
+
+  findBeneficiaries(query: any) {
+    return this.familyBeneficiaries.find(query);
   }
 
   remove(id: string, query: any) {
-    return this._socket.remove(id, query);
-  }
+		return this._socket.remove(id, query);
+	}
 
-  update(familyCover: any) {
+	update(familyCover: any) {
     return this._socket.update(familyCover._id, familyCover);
   }
 
@@ -65,10 +63,6 @@ export class FacilityFamilyCoverService {
       .query({ facilityId: facilityId, search: search });
   }
   updateBeneficiaryList(formData) {
-    const familyBeneficiaries  = this._socketService.getService('family-beneficiaries');
-    familyBeneficiaries.timeout  = 40000;
-    console.log(familyBeneficiaries);
-    return familyBeneficiaries.create(formData);
+    return this.familyBeneficiaries.create(formData);
   }
-
 }
