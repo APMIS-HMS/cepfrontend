@@ -4,6 +4,7 @@
     grid-row-gap: 1em;
     grid-template-columns: repeat(4, 1fr);
     padding: 50px;
+    margin-left: 50px;
 }
 
 .title{
@@ -14,6 +15,7 @@
 
 .row{
     width: auto !important;
+    display: contents !important;
 }
 
 .subtitle{
