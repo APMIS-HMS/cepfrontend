@@ -10,8 +10,8 @@ export class FacilityFamilyCoverService {
   private _rest;
   private familyBeneficiaries;
 
-  private familyCoverAnnouncedSource = new Subject<Object>();
-  familyCoverAnnounced$ = this.familyCoverAnnouncedSource.asObservable();
+	private familyCoverAnnouncedSource = new Subject<Object>();
+	familyCoverAnnounced$ = this.familyCoverAnnouncedSource.asObservable();
 
   constructor(
     private _socketService: SocketService,
@@ -23,40 +23,27 @@ export class FacilityFamilyCoverService {
     this._socket.timeout = 20000;
     this.familyBeneficiaries  = this._socketService.getService('family-beneficiaries');
     this.familyBeneficiaries.timeout  = 40000;
-    this._socket.on('created', function (gender) {
+		this._socket.on('created', function (gender){
 
     });
-  }
-  announceCompanyCover(familyCover: Object) {
-    this.familyCoverAnnouncedSource.next(familyCover);
-  }
-  receiveCompanyCover(): Observable<Object> {
-    return this.familyCoverAnnouncedSource.asObservable();
-  }
-  find(query: any) {
-    return this._socket.find(query);
-  }
+	}
+
+	findAll() {
+		return this._socket.find();
+	}
+	get(id: string, query: any) {
+		return this._socket.get(id, query);
+	}
 
   findBeneficiaries(query: any) {
     return this.familyBeneficiaries.find(query);
   }
 
-  findAll() {
-    return this._socket.find();
-  }
-  get(id: string, query: any) {
-    return this._socket.get(id, query);
-  }
-
-  create(gender: any) {
-    return this._socket.create(gender);
-  }
-
   remove(id: string, query: any) {
-    return this._socket.remove(id, query);
-  }
+		return this._socket.remove(id, query);
+	}
 
-  update(familyCover: any) {
+	update(familyCover: any) {
     return this._socket.update(familyCover._id, familyCover);
   }
 
@@ -74,5 +61,4 @@ export class FacilityFamilyCoverService {
   updateBeneficiaryList(formData) {
     return this.familyBeneficiaries.create(formData);
   }
-
 }

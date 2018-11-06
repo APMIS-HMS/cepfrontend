@@ -1,9 +1,10 @@
-import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
-    selector: 'store-summary-dialog',
-    templateUrl: 'store-summary-dialog-content.component.html',
-    styles :[`
+	selector: 'store-summary-dialog',
+	templateUrl: 'store-summary-dialog-content.component.html',
+	styles: [
+		`
         .modal-baseWrap {
             width: 100% !important;
         }
@@ -15,31 +16,24 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
             min-height: 350px;
             box-shadow: 2px 4px 10px rgba(58, 58, 58, 0.99) !important;
         }
-    `]
+    `
+	]
 })
-
 export class StoreSummaryDialogComponent implements OnInit {
-    @Input('title') dialogTitle : string ;
-    @Output() onActionSuccess  : EventEmitter<any>  =  new EventEmitter<any>();
-    @Output() onClose: EventEmitter<boolean> =  new EventEmitter<boolean>();
-    constructor() {
-    }
+	@Input('title') dialogTitle: string;
+	@Output() onActionSuccess: EventEmitter<any> = new EventEmitter<any>();
+	@Output() onClose: EventEmitter<boolean> = new EventEmitter<boolean>();
+	constructor() {}
 
-    ngOnInit() {
-    }
-    watchForEscKeyPress(evt : KeyboardEvent)
-    {
-       console.log(evt);
-        if(evt.key === "esc")
-        {
-            alert(evt.keyCode);
-        }
-        else{
-            alert(evt.key);
-        }
-    }
-    closeDialogClick()
-    {
-        this.onClose.emit(true);
-    }
+	ngOnInit() {}
+	watchForEscKeyPress(evt: KeyboardEvent) {
+		if (evt.key === 'esc') {
+			alert(evt.keyCode);
+		} else {
+			alert(evt.key);
+		}
+	}
+	closeDialogClick() {
+		this.onClose.emit(true);
+	}
 }

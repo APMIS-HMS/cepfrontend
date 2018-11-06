@@ -222,9 +222,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
 		//   }
 		//   this.isAppointmentToday();
 		// });
-		console.log(this.date);
 		this.dateCtrl.valueChanges.subscribe((value) => {
-			console.log(value);
 			this.dateChange(value);
 		});
 		this.checkIn = new FormControl({ value: false, disabled: this.canCheckIn });
@@ -251,7 +249,6 @@ export class ImmunizationAppointmentComponent implements OnInit {
 		this.clinic = new FormControl('', [ Validators.required ]);
 		this.status = new FormControl('', [ Validators.required ]);
 		this.clinic.valueChanges.subscribe((clinic) => {
-			console.log(clinic);
 			this.getOthers(clinic);
 		});
 
@@ -261,9 +258,11 @@ export class ImmunizationAppointmentComponent implements OnInit {
 				facilityId: this.selectedFacility._id,
 				searchText: value,
 				employeeTable: true,
-				$or:[{
-					professionId: { $regex: ['doctor','nurse'], '$options': 'i' } 					
-				}]
+				$or: [
+					{
+						professionId: { $regex: [ 'doctor', 'nurse' ], $options: 'i' }
+					}
+				]
 			};
 		});
 		// this.filteredProviders = this.provider.valueChanges
@@ -309,7 +308,6 @@ export class ImmunizationAppointmentComponent implements OnInit {
 
 	ngOnInit() {
 		if (this.selectedAppointment !== undefined) {
-			console.log(this.selectedAppointment);
 			let payload = this.selectedAppointment;
 			this.appointment = payload;
 			this.updateAppointment = true;
@@ -846,9 +844,7 @@ export class ImmunizationAppointmentComponent implements OnInit {
 					this.dateCtrl.markAsTouched();
 				}
 			})
-			.catch((er) => {
-				console.log(er);
-			});
+			.catch((er) => {});
 	}
 
 	getOthers(clinic: any) {
@@ -1122,7 +1118,6 @@ export class ImmunizationAppointmentComponent implements OnInit {
 						this.systemModuleService.announceSweetProxy('Batch Appointment set successfully', 'success');
 					},
 					(error) => {
-						console.dir(error);
 						this.savingAppointment = false;
 						this.disableBtn = false;
 						this.loadIndicatorVisible = false;

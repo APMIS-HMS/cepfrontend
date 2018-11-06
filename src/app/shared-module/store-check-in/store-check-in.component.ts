@@ -1,6 +1,11 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ConsultingRoomService, EmployeeService, FacilitiesService, StoreService } from '../../services/facility-manager/setup/index';
+import {
+	ConsultingRoomService,
+	EmployeeService,
+	FacilitiesService,
+	StoreService
+} from '../../services/facility-manager/setup/index';
 import { ConsultingRoomModel, Employee, Facility } from '../../models/index';
 import { ClinicHelperService } from '../../system-modules/module-menu/clinic/services/clinic-helper.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -10,7 +15,7 @@ import { LocationService } from '../../services/module-manager/setup';
 @Component({
 	selector: 'app-store-check-in',
 	templateUrl: './store-check-in.component.html',
-	styleUrls: ['./store-check-in.component.scss']
+	styleUrls: [ './store-check-in.component.scss' ]
 })
 export class StoreCheckInComponent implements OnInit {
 	@Input() loginEmployee: any;
@@ -41,21 +46,24 @@ export class StoreCheckInComponent implements OnInit {
 		private _storeService: StoreService
 	) {
 		this.facility = <Facility>this.locker.getObject('selectedFacility');
-		this._authFacadeService.getLogingEmployee().then((res: any) => {
-			this.loginEmployee = res;
-			this.workSpaces = res.workSpaces;
-			this._getAllStores(this.workSpaces);
-		}).catch(err => {});
+		this._authFacadeService
+			.getLogingEmployee()
+			.then((res: any) => {
+				this.loginEmployee = res;
+				this.workSpaces = res.workSpaces;
+				this._getAllStores(this.workSpaces);
+			})
+			.catch((err) => {});
 	}
 
 	ngOnInit() {
 		this.storeCheckin = this.formBuilder.group({
-			location: ['', [<any>Validators.required]],
-			room: ['', [<any>Validators.required]],
-			isDefault: [false, [<any>Validators.required]]
+			location: [ '', [ <any>Validators.required ] ],
+			room: [ '', [ <any>Validators.required ] ],
+			isDefault: [ false, [ <any>Validators.required ] ]
 		});
-		this.storeCheckin.controls['location'].valueChanges.subscribe(value => {
-			this.storeService.find({ query: { minorLocationId: value } }).then(res => {
+		this.storeCheckin.controls['location'].valueChanges.subscribe((value) => {
+			this.storeService.find({ query: { minorLocationId: value } }).then((res) => {
 				if (res.data.length > 0) {
 					this.stores = res.data;
 				}
@@ -81,12 +89,12 @@ export class StoreCheckInComponent implements OnInit {
 			checkIn.isDefault = value.isDefault;
 			checkIn.minorLocationObject = {
 				name: value.location.name,
-				'_id': value.location._id
+				_id: value.location._id
 			};
 			checkIn.storeObject = {
 				name: value.room.name,
-				'_id': value.room._id
-			}
+				_id: value.room._id
+			};
 			if (this.loginEmployee.storeCheckIn === undefined) {
 				this.loginEmployee.storeCheckIn = [];
 			}
@@ -98,59 +106,65 @@ export class StoreCheckInComponent implements OnInit {
 			});
 
 			this.loginEmployee.storeCheckIn.push(checkIn);
-			this.employeeService.patch(this.loginEmployee._id, {'storeCheckIn': this.loginEmployee.storeCheckIn}).then(payload => {
-				this.loginEmployee = payload;
-				let keepCheckIn;
-				this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
-					itemi.isOn = false;
-					if (itemi.storeId === checkIn.storeId) {
-						itemi.isOn = true;
-						keepCheckIn = itemi;
-					}
+			this.employeeService
+				.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn })
+				.then((payload) => {
+					this.loginEmployee = payload;
+					let keepCheckIn;
+					this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
+						itemi.isOn = false;
+						if (itemi.storeId === checkIn.storeId) {
+							itemi.isOn = true;
+							keepCheckIn = itemi;
+						}
+					});
+					this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'store' });
+					this.checkInBtn = true;
+					this.checkInBtn = false;
+					this.disableBtn = true;
+					this.close_onClick();
 				});
-				this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'store' });
-				this.checkInBtn = true;
-				this.checkInBtn = false;
-				this.disableBtn = true;
-				this.close_onClick();
-			});
 		}
 	}
 	changeRoom(checkIn: any) {
 		let keepCheckIn;
 		this.loginEmployee.storeCheckIn.forEach((itemi, i) => {
-			console.log(itemi);
 			itemi.isOn = false;
 			if (itemi._id === checkIn._id) {
 				itemi.isOn = true;
 				keepCheckIn = itemi;
 			}
 		});
-		this._authFacadeService.getCheckedInEmployee(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn }).then(payload => {
-			this.loginEmployee = payload;
-			this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'store' });
-			this.close_onClick();
-		});
+		this._authFacadeService
+			.getCheckedInEmployee(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn })
+			.then((payload) => {
+				this.loginEmployee = payload;
+				this.employeeService.announceCheckIn({ typeObject: keepCheckIn, type: 'store' });
+				this.close_onClick();
+			});
 	}
 
 	private _getAllStores(workSpaces) {
 		// Get all Stores that has been created.
-		this._storeService.find({ query: { facilityId: this.facility._id } }).then(res => {
-			if (res.data.length > 0) {
-				if (!!workSpaces && workSpaces.length > 0) {
-					res.data.forEach(store => {
-						workSpaces.forEach(workspace => {
-							if (workspace.isActive && workspace.locations.length > 0) {
-								workspace.locations.forEach(x => {
-									if (x.isActive && (x.minorLocationId === store.minorLocationId)) {
-										this.locations.push(x.minorLocationObject);
-									}
-								});
-							}
+		this._storeService
+			.find({ query: { facilityId: this.facility._id } })
+			.then((res) => {
+				if (res.data.length > 0) {
+					if (!!workSpaces && workSpaces.length > 0) {
+						res.data.forEach((store) => {
+							workSpaces.forEach((workspace) => {
+								if (workspace.isActive && workspace.locations.length > 0) {
+									workspace.locations.forEach((x) => {
+										if (x.isActive && x.minorLocationId === store.minorLocationId) {
+											this.locations.push(x.minorLocationObject);
+										}
+									});
+								}
+							});
 						});
-					});
+					}
 				}
-			}
-		}).catch(err => {});
+			})
+			.catch((err) => {});
 	}
 }

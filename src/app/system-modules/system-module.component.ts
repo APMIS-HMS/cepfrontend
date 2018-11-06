@@ -17,7 +17,7 @@ import { NetworkConnection, ConnectionStatusEnum } from './NetworkConnection';
 @Component({
 	selector: 'app-system-module',
 	templateUrl: './system-module.component.html',
-	styleUrls: ['./system-module.component.scss']
+	styleUrls: [ './system-module.component.scss' ]
 })
 export class SystemModuleComponent implements OnInit {
 	searchControl = new FormControl();
@@ -75,7 +75,7 @@ export class SystemModuleComponent implements OnInit {
 		this.userService.missionAnnounced$.subscribe((payload) => {
 			if (payload === 'out') {
 				this.isLoggedOut = true;
-				this.router.navigate(['/']);
+				this.router.navigate([ '/' ]);
 			} else if (payload === 'in') {
 			}
 		});
@@ -111,11 +111,9 @@ export class SystemModuleComponent implements OnInit {
 
 	getAllNotifications() {
 		try {
-			this.notificationService.findAll({}).then(payload => {
-				console.log('*******____*******\n', payload);
+			this.notificationService.findAll({}).then((payload) => {
 				this.notification_length = payload.total;
 			});
-
 		} catch (error) {
 			return error;
 		}
@@ -160,7 +158,7 @@ export class SystemModuleComponent implements OnInit {
 		this.logoutConfirm_on = false;
 	}
 	onSwitchAccount() {
-		this.router.navigate(['/accounts']).then((payload) => {
+		this.router.navigate([ '/accounts' ]).then((payload) => {
 			this.authFacadeService.setLogingEmployee(undefined);
 			this.authFacadeService.setLoginUser(undefined);
 			this.authFacadeService.setSelectedFacility(undefined);
@@ -169,6 +167,6 @@ export class SystemModuleComponent implements OnInit {
 	}
 
 	goHome() {
-		this.router.navigate(['/home-page']).then((payload) => { }, (error) => { });
+		this.router.navigate([ '/home-page' ]).then((payload) => {}, (error) => {});
 	}
 }
