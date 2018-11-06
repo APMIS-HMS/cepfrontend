@@ -54,6 +54,7 @@ export class RightTabComponent implements OnInit {
   pastAppointments: any[] = [];
   futureAppointments: any[] = [];
   vitals: any[] = [];
+  selectedProblem: any[] = [];
 
  
 
@@ -160,6 +161,7 @@ export class RightTabComponent implements OnInit {
       );
     }
   }
+
   getProblems() {
     this.problems = [];
     this.patientDocumentation.documentations.forEach(documentation => {
@@ -169,7 +171,15 @@ export class RightTabComponent implements OnInit {
         documentation.document.documentType.title === 'Problems'
       ) {
         documentation.document.body.problems.forEach(problem => {
-          if (problem.status !== null && problem.status.name === 'Active') {
+          // this is used to check the existing record without displayStatus
+          // it sets it to default true if the displayStatus is undefined
+          problem.displayStatus ? undefined : true;
+          console.log(problem.displayStatus);
+          if (problem.status !== null && problem.status.name === 'Active' && problem.displayStatus) {
+            // Adding extra properties to the object property that the right-tab-tooltip component needs
+            problem.documentationId = documentation._id;
+            problem.personId = this.patient.personId,
+            problem.patientId = this.patient._id;
             this.problems.push(problem);
           }
         });
@@ -255,7 +265,8 @@ export class RightTabComponent implements OnInit {
     });
   }
 
-  tooltip_show(){
+  tooltip_show(data) {
+    this.selectedProblem = data;
     this.tooltip_view = !this.tooltip_view;
   }
 
