@@ -36,7 +36,7 @@ export class BillingHomePageComponent implements OnInit {
     this.pageInView.emit('Services/Billing Manager');
     this.facility =  <Facility> this._locker.getObject('selectedFacility');
     this.getPrices();
-    this.getServicePrice();
+    // this.getServicePrice();
   }
   getPrices() {
     this.servicePriceService.find({ query: { facilityId: this.facility._id } })

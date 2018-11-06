@@ -11,26 +11,29 @@
         </div>
         <div class="tbl-listWrap">
             <div class="sect-title">Investigations</div>
-            <table cellpadding="0" cellspacing="0" border="0.5">
-                <tbody>
+            <button (click)="onAddNewInvestigation()">Add</button>
+            <table cellpadding="0" cellspacing="0" border="0.5" [formGroup]="investigationTableForm">
+                <tbody formArrayName="investigationTableArray">
                     <tr *ngIf="treatmentSheet?.investigations === undefined">
                         <td class="text-center" colspan="4"> No data available in table</td>
                     </tr>
-                    <tr *ngFor="let investigation of treatmentSheet?.investigations">
-                        <td> {{ investigation.name }} </td>
-                        <td> 
-                            <span *ngIf="investigation.completed===true">Done</span>
-                            <span *ngIf="investigation.completed===false">Not Done</span>
+                    <tr [formGroupName]="i" *ngFor="let investigation of investigationTableForm['controls'].investigationTableArray['controls'];let i = index">
+                        <td> {{ investigation.value?.name }} </td>
+                        <td>
+                            <span>{{investigation.value?.status}}</span>
                         </td>
                         <td>
                             <div class="frm-item-wrap">
                                 <mat-input-container>
-                                    <input matInput placeholder="Comment">
+                                    <input matInput placeholder="Valid comment for your action" formControlName="comment">
                                 </mat-input-container>
                             </div>
                         </td>
                         <td>
-                            <div class="tbl-actn-btn"><i class="fa fa-check" aria-hidden="true"></i>Done</div>
+                            <div class="tbl-actn-btn" (click)="onDoneInvestigationItem(investigation.value)"><i class="fa fa-check"
+                                    aria-hidden="true"></i>Done</div>
+                            <div class="tbl-actn-btn" (click)="onRemoveInvestigationItem(investigation.value)"><i class="fa fa-check"
+                                    aria-hidden="true"></i>Remove</div>
                         </td>
                     </tr>
                 </tbody>
@@ -177,4 +180,8 @@
         </div>
         <div style="clear:right;"></div>
     </div>
+
+</div>
+<div *ngIf="isEditTreatmentSheet" class="modal-overlay">
+    <app-order-set [selectedPatient]="patient" [treatmentSheetId]="treatmentSheetId" (closeModal)="close_onClick($event)"></app-order-set>
 </div>
