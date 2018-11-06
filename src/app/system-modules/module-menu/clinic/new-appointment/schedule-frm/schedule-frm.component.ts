@@ -921,13 +921,13 @@ export class ScheduleFrmComponent implements OnInit {
 											this.selectedPatient.personDetails.lastName +
 											' ' +
 											this.selectedPatient.personDetails.Name;
-										this.setValueSmsAlert(
-											fullName,
-											this.appointment.startDate,
-											this.selectedFacility.name,
-											clinic.name,
-											this.selectedPatient.personDetails.email
-										);
+										// this.setValueSmsAlert(
+										// 	fullName,
+										// 	this.appointment.startDate,
+										// 	this.selectedFacility.name,
+										// 	clinic.name,
+										// 	this.selectedPatient.personDetails.email
+										// );
 
 										this.disableBtn = true;
 										this.updateAppointment = false;
@@ -971,13 +971,13 @@ export class ScheduleFrmComponent implements OnInit {
 								this.selectedPatient.personDetails.lastName +
 								' ' +
 								this.selectedPatient.personDetails.Name;
-							this.setValueSmsAlert(
-								fullName,
-								this.appointment.startDate,
-								this.selectedFacility.name,
-								clinic.name,
-								this.selectedPatient.personDetails.email
-							);
+							// this.setValueSmsAlert(
+							// 	fullName,
+							// 	this.appointment.startDate,
+							// 	this.selectedFacility.name,
+							// 	clinic.name,
+							// 	this.selectedPatient.personDetails.email
+							// );
 							this.router.navigate([ '/dashboard/clinic/appointment' ]);
 							this.systemModuleService.off();
 							this.systemModuleService.announceSweetProxy(
@@ -1064,13 +1064,13 @@ export class ScheduleFrmComponent implements OnInit {
 								this.selectedPatient.personDetails.lastName +
 								' ' +
 								this.selectedPatient.personDetails.Name;
-							this.setValueSmsAlert(
-								fullName,
-								this.appointment.startDate,
-								this.selectedFacility.name,
-								clinic.name,
-								this.selectedPatient.personDetails.email
-							);
+							// this.setValueSmsAlert(
+							// 	fullName,
+							// 	this.appointment.startDate,
+							// 	this.selectedFacility.name,
+							// 	clinic.name,
+							// 	this.selectedPatient.personDetails.email
+							// );
 							this.router.navigate([ '/dashboard/clinic/appointment' ]);
 							this.systemModuleService.off();
 							this.systemModuleService.announceSweetProxy(
