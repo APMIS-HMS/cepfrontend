@@ -28,6 +28,10 @@ export class FacilityFamilyCoverService {
     });
 	}
 
+	find(query: any) {
+		return this._socket.find(query);
+	}
+
 	findAll() {
 		return this._socket.find();
 	}
