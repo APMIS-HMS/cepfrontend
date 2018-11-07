@@ -148,7 +148,7 @@ export class SampleComponentForDialog implements OnInit {
 }
 
 @Component({
-    selector: "sample-dialog",
+    selector: "app-hmo-beneficiary-dialog",
     template: `
         <div>
             <div class="apmis-mat-dialog-flex-center" >
