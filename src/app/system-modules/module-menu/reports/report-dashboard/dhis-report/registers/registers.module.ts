@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RegistersRoutingModule } from './registers-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SharedModule } from '../../../../shared-module/shared.module';
+import { SharedModule } from '../../../../../../shared-module/shared.module';
 import { DailyAntenatalComponent } from './register-entries/daily-antenatal/daily-antenatal.component';
 import { NewAntenatalEntryComponent } from './register-entries/daily-antenatal/new-antenatal-entry/new-antenatal-entry.component';
 import { AntenatalPg1Component } from './register-entries/daily-antenatal/antenatal-pg1/antenatal-pg1.component';
@@ -22,8 +22,8 @@ import { GmpListComponent } from './register-entries/daily-gmp/gmp-list/gmp-list
 
 import { DailyIrtsComponent } from './register-entries/daily-IRTS/daily-irts.component';
 
-import { OnlyMaterialModule } from '../../../../shared-common-modules/only-material-module';
-import { MaterialModule } from '../../../../shared-common-modules/material-module';
+import { OnlyMaterialModule } from './../../../../../../shared-common-modules/only-material-module';
+import { MaterialModule } from './../../../../../../shared-common-modules/material-module';
 import { DailyLdrComponent } from './register-entries/daily-ldr/daily-ldr.component';
 import { NewLdrEntryComponent } from './register-entries/daily-ldr/new-ldr-entry/new-ldr-entry.component';
 import { LdrListComponent } from './register-entries/daily-ldr/ldr-list/ldr-list.component';

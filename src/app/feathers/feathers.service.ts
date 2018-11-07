@@ -19,7 +19,6 @@ const RxJS = require('rxjs/Rx');
 const CircularJSON = require('circular-json');
 
 const HOST = API_TEST;
-// const HOST = API_LOCALHOST;
 
 @Injectable()
 export class SocketService {
