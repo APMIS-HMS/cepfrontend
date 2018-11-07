@@ -28,7 +28,7 @@ export class FcListComponent implements OnInit {
 	filteredBeneficiaries: any[] = [];
 	operateBeneficiaries: any[] = [];
 	selectedFamilyCover: any = <any>{};
-
+	selectedFamilyCoverId: any;
 	loading: any = false;
 	updatePatientBtnText: any = 'Add Family';
 

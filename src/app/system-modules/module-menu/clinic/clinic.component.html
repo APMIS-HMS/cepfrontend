@@ -6,7 +6,6 @@
     <li (click)="navItemClick('room')" [class.pg-menuActive]="clinicConsulting" [routerLink]="['/dashboard/clinic/consulting-room']">Consulting Room</li>
     <li *ngIf="isDoctor==true" (click)="changeRoom('change')" [class.pg-menuActive]="clinicRoom">Change Consulting Room</li>
 </ul>
-
 <div class="inner-wrap-b">
     <div class="facility-title">{{pageInView}}</div>
     <div class="inner-page-wrap">
