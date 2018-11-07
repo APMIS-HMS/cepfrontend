@@ -251,7 +251,7 @@ export class AsomDataPagerComponent implements OnInit, AfterViewInit, OnChanges,
     flexJustify: string = PAGER_HORIZONTAL_ALIGNMENT_CENTER;
     //diff : { [any : string] : KeyValueDiffer<string, IPagerSource>};
     differ: any;
-    pageSizeOptions: number[] = [5, 10, 20, 30, 50, 100, 150, 200, 300];
+    pageSizeOptions: number[] = [5, 10, 15, 20, 30, 40, 50, 50, 100, 150, 200, 250, 300];
 
 
     constructor(private differs: KeyValueDiffers) {
