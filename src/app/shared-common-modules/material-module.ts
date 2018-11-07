@@ -45,6 +45,7 @@ import {ImageViewerComponent} from '../shared-module/image-viewer/image-viewer.c
 import {CustomLogoComponent} from './CustomLogoComponent';
 import {CoreUiModules} from '../core-ui-modules/CoreUiModules';
 
+
 @NgModule({
     declarations: [
         CreateWorkspaceComponent,
@@ -109,6 +110,7 @@ import {CoreUiModules} from '../core-ui-modules/CoreUiModules';
         ImageViewerComponent,
         CustomLogoComponent,
         CoreUiModules
+       
     ],
     imports: [
         OnlyMaterialModule,
@@ -125,7 +127,8 @@ import {CoreUiModules} from '../core-ui-modules/CoreUiModules';
         NgPipesModule,
         LogOutConfirmModule,
         SharedModuleMaterialModule,
-        CoreUiModules // Import core ui module for global access of all newly created UI components
+        CoreUiModules // Import core ui module for global access of all newly created UI components,
+        
     ],
     providers: [OrderStatusService, SeverityService, HmoService, FacilityFamilyCoverService]
 })
