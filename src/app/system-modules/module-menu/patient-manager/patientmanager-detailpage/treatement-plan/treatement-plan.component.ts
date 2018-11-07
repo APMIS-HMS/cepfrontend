@@ -3,13 +3,17 @@ import { Documentation } from './../../../../../models/facility-manager/setup/do
 import { PatientDocumentation } from './../../../../../models/facility-manager/setup/patient-documentation';
 import { Observable } from 'rxjs/Observable';
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder, FormArray, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import {
   FormsService, FacilitiesService, OrderSetTemplateService, DocumentationService, PersonService, PatientService, TreatmentSheetService
 } from 'app/services/facility-manager/setup';
 import { OrderSetTemplate, User, Facility } from '../../../../../models/index';
 import { ActivatedRoute } from '@angular/router';
+import { TreatmentSheetActions, InvalidTreatmentReport } from '../../../../../shared-module/helpers/global-config';
+import { query } from '@angular/core/src/animation/dsl';
+import { AuthFacadeService } from '../../../../service-facade/auth-facade.service';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-treatement-plan',
@@ -17,6 +21,7 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./treatement-plan.component.scss']
 })
 export class TreatementPlanComponent implements OnInit {
+  @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   treatmentSheetData: any;
   isSaving: boolean;
   @Input() patient: any;
@@ -25,7 +30,9 @@ export class TreatementPlanComponent implements OnInit {
   employeeDetails: any = <any>{};
   treatmentSheet: any = <any>{};
   user: User = <User>{};
-
+  investigationTableForm: FormGroup;
+  isEditTreatmentSheet = false;
+  treatmentSheetId: any ='';
   selectedDocument: PatientDocumentation = <PatientDocumentation>{};
   patientDocumentation: Documentation = <Documentation>{};
 
@@ -41,22 +48,62 @@ export class TreatementPlanComponent implements OnInit {
     private _personService: PersonService,
     private _patientService: PatientService,
     private _treatmentSheetService: TreatmentSheetService,
-    private _documentationService: DocumentationService,
+    private _authFacadeService: AuthFacadeService,
     private documentationService: DocumentationService,
-    private locker: CoolLocalStorage
+    private locker: CoolLocalStorage,
+    private formBuilder: FormBuilder,
+    private systemModuleService: SystemModuleService
   ) {
-    this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+    this._authFacadeService.getLogingEmployee().then((res: any) => {
+      this.loginEmployee = res;
+    });
+    // this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
     this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
   }
 
   ngOnInit() {
     this.facility = <Facility>this._locker.getObject('selectedFacility');
     this.miniFacility = <Facility>this._locker.getObject('miniFacility');
-    this.employeeDetails = this._locker.getObject('loginEmployee');
+    this.initializeServiceItemTables();
+    // this.employeeDetails = this._locker.getObject('loginEmployee');
     this.user = <User>this._locker.getObject('auth');
+    this._authFacadeService.getLogingEmployee().then((res: any) => {
+      this.loginEmployee = res;
+    });
 
     this.getTreatmentSheet();
     this.getPersonDocumentation();
+  }
+
+  initializeServiceItemTables() {
+    this.investigationTableForm = this.formBuilder.group({
+      'investigationTableArray': this.formBuilder.array([
+        this.formBuilder.group({
+          index: [0, [<any>Validators.required]],
+          comment: [''],
+          name: ['', [<any>Validators.required]],
+          status: ['', [<any>Validators.required]]
+        })
+      ])
+    });
+    this.investigationTableForm.controls['investigationTableArray'] = this.formBuilder.array([]);
+  }
+
+  setInvestigationValue() {
+    console.log(22);
+    console.log(this.treatmentSheet);
+    this.treatmentSheet.investigations.forEach((item, index) => {
+      console.log(item, index);
+      (<FormArray>this.investigationTableForm.controls['investigationTableArray']).push(
+        this.formBuilder.group({
+          index: index,
+          comment: '',
+          name: item.name,
+          status: item.status
+        })
+      );
+      console.log(this.investigationTableForm);
+    });
   }
 
   private getTreatmentSheet() {
@@ -69,14 +116,103 @@ export class TreatementPlanComponent implements OnInit {
         $sort: { createdAt: -1 }
       }
     }).then(res => {
-      // console.log(this.patient,this.miniFacility);
+      console.log(res);
       if (res.data.length > 0) {
         this.treatmentSheetData = res.data[0];
+        this.treatmentSheetId = res.data[0]._id;
         this.treatmentSheet = res.data[0].treatmentSheet;
         console.log(this.treatmentSheet);
+        this.setInvestigationValue();
       }
     }).catch(err => { });
   }
+
+  onAddNewInvestigation(){
+    console.log('We are here');
+    this.isEditTreatmentSheet = true;
+    console.log(this.isEditTreatmentSheet);
+  }
+
+  onDoneInvestigationItem(investigation) {
+    if (investigation.comment.toUpperCase() !== InvalidTreatmentReport.NILL
+      && investigation.comment.toUpperCase() !== InvalidTreatmentReport.NOT_AVAILABLE
+      && investigation.comment !== InvalidTreatmentReport.EMPTY
+      && investigation.comment.replace(/\s/g, "").length > 0) {
+      console.log(this.investigationTableForm.controls['investigationTableArray'].value);
+      this.treatmentSheet.investigations[investigation.index].tracks = (this.treatmentSheet.investigations[investigation.index].tracks === undefined) ? [] : this.treatmentSheet.investigations[investigation.index].tracks;
+      console.log(this.treatmentSheet);
+      console.log(TreatmentSheetActions.DONE, this.loginEmployee, new Date());
+      const treatmentSheetTrack = {
+        action: TreatmentSheetActions.DONE,
+        createdBy: this.loginEmployee._id,
+        comment: investigation.comment
+      }
+      console.log(treatmentSheetTrack);
+      this.treatmentSheet.investigations[investigation.index].completed = true;
+      this.treatmentSheet.investigations[investigation.index].status = TreatmentSheetActions.DONE;
+      console.log(1);
+      this.treatmentSheet.investigations[investigation.index].trackItem = treatmentSheetTrack;
+      console.log(2);
+      console.log(this.treatmentSheet);
+      this._treatmentSheetService.patch(this.treatmentSheetData._id, { 'treatmentSheet.investigations': this.treatmentSheet.investigations }, {
+        query: {
+          isInvestigation: true,
+          index: investigation.index
+        }
+      }).then(payload => {
+        console.log(payload);
+      }, err => {
+        console.log(err);
+      });
+    } else {
+      this.systemModuleService.announceSweetProxy('Please provide a valid comment', 'error');
+    }
+
+  }
+
+  onRemoveInvestigationItem(investigation) {
+    console.log(this.investigationTableForm.controls['investigationTableArray'].value);
+    this.treatmentSheet.investigations[investigation.index].tracks = (this.treatmentSheet.investigations[investigation.index].tracks === undefined) ? [] : this.treatmentSheet.investigations[investigation.index].tracks;
+    console.log(this.treatmentSheet);
+    console.log(TreatmentSheetActions.DONE, this.loginEmployee, new Date());
+    const treatmentSheetTrack = {
+      action: TreatmentSheetActions.REMOVED,
+      createdBy: this.loginEmployee._id,
+      comment: investigation.comment
+    }
+    console.log(treatmentSheetTrack);
+    this.treatmentSheet.investigations[investigation.index].status = TreatmentSheetActions.REMOVED;
+    this.treatmentSheet.investigations[investigation.index].isRemoved = true;
+    console.log(1);
+    this.treatmentSheet.investigations[investigation.index].trackItem = treatmentSheetTrack;
+    console.log(2);
+    console.log(this.treatmentSheet);
+    this._treatmentSheetService.patch(this.treatmentSheetData._id, { 'treatmentSheet.investigations': this.treatmentSheet.investigations }, {
+      query: {
+        isInvestigation: true,
+        index: investigation.index
+      }
+    }).then(payload => {
+      console.log(payload);
+    }, err => {
+      console.log(err);
+    });
+  }
+
+  close_onClick() {
+		this.closeModal.emit(true);
+		this.isEditTreatmentSheet = false;
+	}
+
+
+  /**
+   * createdBy
+   * createdAt
+   * Action e.g: 'Edited,Added,Administered,Suspended,Completed
+   * 
+   **/
+
+
 
   getPersonDocumentation() {
     this.documentationService.find({ query: { 'personId': this.patient.personId } }).subscribe((payload: any) => {

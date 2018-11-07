@@ -110,7 +110,7 @@ export class OrderBillItemComponent implements OnInit {
 				this.prescriptionData.prescriptionItems[index].serviceId = this.addBillForm.controls['drug'].value.serviceId;
 				this.prescriptionData.prescriptionItems[index].facilityServiceId = this.addBillForm.controls['drug'].value.facilityServiceId;
 				this.prescriptionData.prescriptionItems[index].categoryId = this.addBillForm.controls['drug'].value.categoryId;
-				this.prescriptionData.prescriptionItems[index].productName = this.addBillForm.controls['drug'].value.productObject.name;
+				this.prescriptionData.prescriptionItems[index].productName = this.addBillForm.controls['drug'].value.productObject;
 				this.prescriptionData.prescriptionItems[index].quantity = value.qty;
 				this.prescriptionData.prescriptionItems[index].quantityDispensed = 0;
 				this.prescriptionData.prescriptionItems[index].cost = this.cost;

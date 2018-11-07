@@ -94,3 +94,25 @@ export const ApointmentScheduleStatus = {
 	EXPIRED: 'Expired',
 	COMPLETED: 'Completed'
 };
+
+export const TreatmentSheetActions = {
+	SUSPENDED: 'Suspended',
+	ADMINISTERED: 'Administered',
+	ACTIVATED: 'Activated',
+	DISCONTINUED: 'Discontinued',
+	COMPLETED: 'Completed',
+	CANCELLED: 'Cancelled',
+	EXPIRED: 'Expired',
+	DONE: 'Done',
+	NOT_DONE: 'NOT Done',
+	EDIT: 'Edit',
+	REMOVED: 'Removed',
+	ADDED: 'Added'
+};
+
+export const InvalidTreatmentReport = {
+	NILL: 'NILL',
+	EMPTY: '',
+	SPACE: ' ',
+	NOT_AVAILABLE: 'N/A'
+};
