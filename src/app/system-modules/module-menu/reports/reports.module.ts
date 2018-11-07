@@ -8,7 +8,10 @@ import { NhmisSummaryComponent } from './report-dashboard/dhis-report/nhmis-summ
 import { RegistersComponent } from "./report-dashboard/dhis-report/registers/registers.component";
 import { ReportsComponent } from './reports.component';
 import { ReportDashboardComponent } from './report-dashboard/report-dashboard.component';
+<<<<<<< HEAD
 import { DhisReportComponent } from './report-dashboard/dhis-report/dhis-report.component';
+=======
+>>>>>>> 1edb8da990294d2a920849fb780b07eb577c6153
 
 
 
@@ -22,9 +25,13 @@ import { DhisReportComponent } from './report-dashboard/dhis-report/dhis-report.
   declarations: [
     NhmisSummaryComponent,
     ReportsComponent,
+<<<<<<< HEAD
     ReportDashboardComponent,
     DhisReportComponent,
     RegistersComponent
+=======
+    ReportDashboardComponent
+>>>>>>> 1edb8da990294d2a920849fb780b07eb577c6153
   ]
 })
 export class ReportsModule { }
