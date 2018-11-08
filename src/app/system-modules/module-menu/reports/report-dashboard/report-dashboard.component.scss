@@ -1,46 +1,42 @@
-.dashboard-grid{
+.dashboard-grid {
     display: grid;
     grid-column-gap: 1em;
     grid-row-gap: 1em;
     grid-template-columns: repeat(4, 1fr);
     padding: 50px;
-<<<<<<< HEAD
     margin-left: 50px;
-=======
->>>>>>> 1edb8da990294d2a920849fb780b07eb577c6153
+    margin-left: 30px;
 }
 
-.title{
+.title {
     font-size: 14px;
     font-weight: bold;
     text-align: center;
 }
 
-.row{
+.row {
     width: auto !important;
-<<<<<<< HEAD
     display: contents !important;
-=======
->>>>>>> 1edb8da990294d2a920849fb780b07eb577c6153
+    display: contents !important;
 }
 
-.subtitle{
+.subtitle {
     text-align: center;
     font-style: italic;
-<<<<<<< HEAD
     font-weight: bold;
-=======
->>>>>>> 1edb8da990294d2a920849fb780b07eb577c6153
+    font-weight: bold;
     vertical-align: sub;
     font-size: smaller;
 }
-.header{
+
+.header {
     height: 40px;
 }
 
-hr{
+hr {
     max-width: 1500px;
 }
+
 p {
     margin: 0em;
-  }
+}

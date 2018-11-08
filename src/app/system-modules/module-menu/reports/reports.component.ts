@@ -7,11 +7,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./reports.component.scss']
 })
 
-export class ReportsComponent implements OnInit {
-
-  constructor() { }
+ constructor(private _router: Router) { }
 
   ngOnInit() {
+    
   }
  
 

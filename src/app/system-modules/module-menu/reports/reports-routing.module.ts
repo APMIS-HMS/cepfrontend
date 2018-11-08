@@ -17,7 +17,7 @@ const routes: Routes = [{
     { path: '', redirectTo: 'report' },
     {
       path: 'report-dashboard',
-      loadChildren: './report-dashboard/report-dashboard.module#RegistersModule'
+      loadChildren: './report-dashboard/report-dashboard.module#ReportDashboardModule'
       // loadChildren: './registers/registers.module#RegistersModule'
     },
     { path: 'report', component: ReportDashboardComponent }

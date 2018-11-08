@@ -8,10 +8,11 @@ import { NhmisSummaryComponent } from './report-dashboard/dhis-report/nhmis-summ
 import { RegistersComponent } from "./report-dashboard/dhis-report/registers/registers.component";
 import { ReportsComponent } from './reports.component';
 import { ReportDashboardComponent } from './report-dashboard/report-dashboard.component';
-<<<<<<< HEAD
 import { DhisReportComponent } from './report-dashboard/dhis-report/dhis-report.component';
-=======
->>>>>>> 1edb8da990294d2a920849fb780b07eb577c6153
+import { DhisReportComponent } from './dhis-report/dhis-report.component';
+import { ClinicManagementReportComponent } from './clinic-management-report/clinic-management-report.component';
+import { ClinicAttendanceComponent } from './clinic-management-report/clinic-attendance/clinic-attendance.component';
+import { ClinicVisitComponent } from './clinic-management-report/clinic-visit/clinic-visit.component';
 
 
 
@@ -25,13 +26,15 @@ import { DhisReportComponent } from './report-dashboard/dhis-report/dhis-report.
   declarations: [
     NhmisSummaryComponent,
     ReportsComponent,
-<<<<<<< HEAD
     ReportDashboardComponent,
     DhisReportComponent,
-    RegistersComponent
-=======
-    ReportDashboardComponent
->>>>>>> 1edb8da990294d2a920849fb780b07eb577c6153
+    RegistersComponent,
+    ReportDashboardComponent,
+    ReportDashboardComponent,
+    DhisReportComponent,
+    ClinicManagementReportComponent,
+    ClinicAttendanceComponent,
+    ClinicVisitComponent
   ]
 })
 export class ReportsModule { }
