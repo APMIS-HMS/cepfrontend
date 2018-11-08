@@ -5,6 +5,10 @@ import { ReportsRoutingModule } from './reports-routing.module';
 import { NhmisSummaryComponent } from './nhmis-summary/nhmis-summary.component';
 import { ReportsComponent } from './reports.component';
 import { ReportDashboardComponent } from './report-dashboard/report-dashboard.component';
+import { DhisReportComponent } from './dhis-report/dhis-report.component';
+import { ClinicManagementReportComponent } from './clinic-management-report/clinic-management-report.component';
+import { ClinicAttendanceComponent } from './clinic-management-report/clinic-attendance/clinic-attendance.component';
+import { ClinicVisitComponent } from './clinic-management-report/clinic-visit/clinic-visit.component';
 
 
 
@@ -16,7 +20,11 @@ import { ReportDashboardComponent } from './report-dashboard/report-dashboard.co
   declarations: [
     NhmisSummaryComponent,
     ReportsComponent,
-    ReportDashboardComponent
+    ReportDashboardComponent,
+    DhisReportComponent,
+    ClinicManagementReportComponent,
+    ClinicAttendanceComponent,
+    ClinicVisitComponent
   ]
 })
 export class ReportsModule { }
