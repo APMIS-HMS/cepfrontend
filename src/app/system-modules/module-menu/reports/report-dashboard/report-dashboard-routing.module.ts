@@ -12,6 +12,8 @@ const routes: Routes = [
     { path: 'dhis-report', component: DhisReportComponent }
 ];
 
+
+
 @NgModule({
     imports: [RouterModule.forChild(routes)],
     exports: [RouterModule]
