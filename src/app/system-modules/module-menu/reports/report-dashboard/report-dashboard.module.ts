@@ -7,8 +7,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../../../../shared-module/shared.module';
 import { OnlyMaterialModule } from '../../../../shared-common-modules/only-material-module';
 import { MaterialModule } from '../../../../shared-common-modules/material-module';
-import { RegistersComponent } from './../registers/registers.component';
 import { DashboardLandingpageComponent } from './dashboard-landingpage/dashboard-landingpage.component';
+import { ClinicManagementReportComponent } from '../clinic-management-report/clinic-management-report.component';
+import { NhmisSummaryComponent } from '../dhis-report/nhmis-summary/nhmis-summary.component';
 
 @NgModule({
 	imports: [
@@ -24,7 +25,9 @@ import { DashboardLandingpageComponent } from './dashboard-landingpage/dashboard
 		// RegistersComponent,
 		ReportDashboardComponent,
 		DashboardLandingpageComponent,
-		DhisReportComponent
+		DhisReportComponent,
+		ClinicManagementReportComponent,
+		NhmisSummaryComponent
 	]
 })
 export class ReportDashboardModule {}

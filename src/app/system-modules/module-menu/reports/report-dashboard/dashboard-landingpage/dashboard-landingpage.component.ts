@@ -13,5 +13,9 @@ export class DashboardLandingpageComponent implements OnInit {
 
 	call_dhisReport() {
 		this._router.navigate([ '/dashboard/reports/report-dashboard/dhis-report' ]);
+  }
+  
+  call_clinicManagementReport() {
+		this._router.navigate([ '/dashboard/reports/report-dashboard/clinic-report' ]);
 	}
 }
