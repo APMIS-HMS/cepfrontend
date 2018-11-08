@@ -66,7 +66,7 @@
                     </th>
                 </tr>
             </thead>
-            
+
             <tbody>
                 <tr *ngFor="let bill of historyBills" (click)="billHistoryDetail(bill)">
                     <td>{{bill.updatedAt|date:'medium'}}</td>
@@ -83,18 +83,20 @@
                 </tr>
             </tbody>
             <tfoot>
-            <tr style="font-weight: bold;background-color: #ededed;">
-                <td colspan="3">Grand Total </td>
-                <td>{{grandTotal | number:'1.2-2'}}</td>
-            </tr>
+                <tr style="font-weight: bold;background-color: #ededed;">
+                    <td colspan="3">Grand Total </td>
+                    <td>{{grandTotal | number:'1.2-2'}}</td>
+                </tr>
             </tfoot>
         </table>
     </div>
 </div>
 
 <div *ngIf="billDetail_show" class="modal-overlay">
-  <app-family-bill-detail (closeModal)="close_onClick($event)" (refreshBills)="onRefreshBills($event)" [selectedBill]="selectedBill" id="form-modal" class="form-modal center-center"></app-family-bill-detail>
+    <app-family-bill-detail (closeModal)="close_onClick($event)" (refreshBills)="onRefreshBills($event)" [selectedBill]="selectedBill"
+        id="form-modal" class="form-modal center-center"></app-family-bill-detail>
 </div>
 <div *ngIf="billHistoryDetail_show" class="modal-overlay">
-  <app-family-bill-history-detail (closeModal)="close_onClick($event)" [selectedBill]="selectedBill" id="form-modal" class="form-modal center-center"></app-family-bill-history-detail>
+    <app-family-bill-history-detail (closeModal)="close_onClick($event)" [selectedBill]="selectedBill" id="form-modal"
+        class="form-modal center-center"></app-family-bill-history-detail>
 </div>
