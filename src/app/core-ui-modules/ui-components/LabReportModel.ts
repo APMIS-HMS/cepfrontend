@@ -10,12 +10,19 @@ export interface ILabReportModel {
     clinic? :string;
     date? : Date;
 }
+export interface IGroupableLabReportModel
+{
+    group : string;
+    data : ILabReportModel[];
+}
 export interface ILabReportOption {
     filterByDate?  :boolean;
     startDate? : Date;
     endDate? : Date;
     filterByClinic? : boolean;
     clinic? : string;
+    isInvestigation? : boolean;
+    paginate? : boolean ;
    
 }
 export interface ICustomReportService {
@@ -34,7 +41,7 @@ export function reportServiceFactory()
 export abstract class CustomReportService implements  ICustomReportService
 {
     abstract getLabReport(options: ILabReportOption): Promise<any[]> ;
-
+    abstract getGroupedLabReport(options: ILabReportOption): Promise<IGroupableLabReportModel[]> ;
     abstract getLabReportInvestigation(options?: ILabReportOption): Promise<any[]>;
     
 }

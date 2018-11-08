@@ -1,6 +1,6 @@
 import {Injectable } from  '@angular/core';
 import {RestService} from "../../feathers/feathers.service";
-import {CustomReportService, ILabReportModel, ILabReportOption} from "./LabReportModel";
+import {CustomReportService, IGroupableLabReportModel, ILabReportModel, ILabReportOption} from "./LabReportModel";
 import {Observable} from "rxjs";
 
 
@@ -14,10 +14,16 @@ export class ReportGeneratorService extends CustomReportService
     }
 
     getLabReport(options: ILabReportOption): Promise<ILabReportModel[]> {
-        return undefined;
+        
+        return this.restEndpoint.getService("lab-report-service")
+            .find( { params: options});
     }
 
     getLabReportInvestigation(options?: ILabReportOption): Promise<ILabReportModel[]>{
+        return undefined;
+    }
+
+    getGroupedLabReport(options: ILabReportOption): Promise<IGroupableLabReportModel[]> {
         return undefined;
     }
 }

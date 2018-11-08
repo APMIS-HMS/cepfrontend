@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CustomReportService, ILabReportModel} from "./LabReportModel";
+import {CustomReportService, ILabReportModel, ILabReportOption} from "./LabReportModel";
 import {DummyReportDataService} from "./DummyReportDataService";
 
 @Component({
@@ -10,13 +10,15 @@ import {DummyReportDataService} from "./DummyReportDataService";
                 <div class="options">
                     <div class="row">
                         <div class="col-sm-4">
-                            <input type="checkbox" #chk/>Filter By Date
-                            <p class="pad20">Date Range Component here</p>
+                            <input type="checkbox" [checked]="reportOptions.filterByDate" #chk/>Filter By Date
+                            <p class="pad20" *ngIf="chk.checked">Date Range Component here</p>
                         </div>
                         <div class="col-sm-8">
-                            <div class="row">
+                            <div class="row" style="min-width:400px;">
                                 <div class="col-sm-5">
                                     Select Clinic
+                                    <select class="form-control">
+                                    </select>
                                     <p class="pad10 divider">
                                         <span>Include Provider</span>
                                         <br>
@@ -24,6 +26,11 @@ import {DummyReportDataService} from "./DummyReportDataService";
                                     </p>
                                 </div>
                                 <div class="col-sm-7">
+                                    <div style="float : right;padding: 10px; ">
+                                        <asom-pager-button [is-oval]="true" (onClick)="printReport()">
+                                            <span class="fa fa-print fa-2x"></span>
+                                        </asom-pager-button>
+                                    </div>
 
                                 </div>
                             </div>
@@ -40,7 +47,7 @@ import {DummyReportDataService} from "./DummyReportDataService";
                     <div class="report-body">
                         <table class="table table-bordered">
                             <tr>
-                                <th style="width : 20%; ">Patient Info</th>
+                                <th style="width : 25%; ">Patient Info</th>
                                 <th>Date</th>
                                 <th>Request</th>
                                 <th>Doctor Assigned</th>
@@ -55,7 +62,7 @@ import {DummyReportDataService} from "./DummyReportDataService";
                                     <small>Apmis ID: <span
                                             style="font-weight: bold; color : #2984ff;">{{r.apmisId}}</span></small>
                                 </td>
-                                <td><span>{{r.date | date:'medium'}}</span></td>
+                                <td><span>{{r.date | date:'MMM dd, yyyy'}}</span></td>
                                 <td><span>{{r.request}}</span></td>
                                 <td><span>{{r.doctor}}</span></td>
                                 <td><span>{{r.clinic}}</span></td>
@@ -151,17 +158,33 @@ import {DummyReportDataService} from "./DummyReportDataService";
 })
 
 export class AsomReportViewerComponent implements OnInit {
-    @Input() title: string = "Report Title"
+    @Input() title: string = "Report Title";
+    clinics: string[] = [];
     reportData: ILabReportModel[] = [];
+    reportOptions: ILabReportOption = {
+        filterByClinic: false,
+        filterByDate: false,
+        startDate: new Date(),
+        endDate: new Date()
+    }
 
     constructor(private  reportSource: DummyReportDataService) {
     }
 
     ngOnInit() {
-        this.reportSource.getLabReport({})
+        this.getReportData();
+    }
+
+    getReportData() {
+        this.reportSource.getLabReport(this.reportOptions)
             .then(x => {
                 console.log(x);
                 this.reportData = x;
             });
+    }
+
+    printReport() {
+        // Hide all Banners
+        window.print();
     }
 }
