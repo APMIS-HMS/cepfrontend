@@ -6,6 +6,8 @@ import { SharedModule } from '../../../../shared-module/shared.module';
 import { OnlyMaterialModule } from '../../../../shared-common-modules/only-material-module';
 import { MaterialModule } from '../../../../shared-common-modules/material-module';
 import { RegistersComponent } from "./../registers/registers.component";
+import { LaboratoryReportComponent } from './laboratory-report/laboratory-report.component';
+import { PatientManagerReportComponent } from './patient-manager-report/patient-manager-report.component';
 
 
 @NgModule({
@@ -19,7 +21,9 @@ import { RegistersComponent } from "./../registers/registers.component";
         SharedModule
     ],
     declarations:[
-        RegistersComponent
+        RegistersComponent,
+        LaboratoryReportComponent,
+        PatientManagerReportComponent
     ]
 })
 export class  ReportDashboardModule { }
