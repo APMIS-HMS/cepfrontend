@@ -1,8 +1,7 @@
 <div class="animated pulse">
     <div class="modal-header-wrap">
         <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-        <legend class="modal_title">{{selectedBill?.principalObject?.personDetails?.firstName}}
-            {{selectedBill?.principalObject?.personDetails?.lastName}}</legend>
+        <legend class="modal_title">Jonathan Nelson</legend>
         <div class="modal_mini_title">Family Cover Bills Generated</div>
         <div class="modal_mini_title">11th October 2017</div>
     </div>
@@ -29,8 +28,7 @@
                             <div class="list-img">
                                 <img src="assets/images/users/default.png">
                             </div>
-                            <div>{{bill.patientObject.personDetails.firstName}}
-                                {{bill.patientObject.personDetails.lastName}}</div>
+                            <div>{{bill.patientObject.personDetails.firstName}} {{bill.patientObject.personDetails.lastName}}</div>
                         </div>
                     </td>
                     <td>{{bill.serviceObject?.name}}</td>
@@ -39,11 +37,11 @@
                         <div class="td-ctaWrap" *ngIf="bill.covered.isVerify===undefined">
                             <i (click)="confirmBill_onClick(bill)" class="fa fa-check-circle" aria-hidden="true"></i>
                             <i (click)="declineBill_onClick(bill)" class="fa fa-times-circle" aria-hidden="true"></i>
-                        </div>
-                        <div class="td-ctaWrap" *ngIf="bill.covered.isVerify!==undefined">
+                          </div>
+                          <div class="td-ctaWrap" *ngIf="bill.covered.isVerify!==undefined">
                             <span style="color:green" *ngIf="bill.covered.billAccepted">Approved</span>
                             <span style="color:red" *ngIf="!bill.covered.billAccepted">Denied</span>
-                        </div>
+                          </div>
 
                     </td>
                 </tr>
