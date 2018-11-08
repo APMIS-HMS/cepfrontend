@@ -318,7 +318,7 @@ export class OrderSetComponent implements OnInit {
         this.close_onClickModal();
       });
       this.showDoc.emit(true);
-    } else if (!this.problemFormControl.valid && this.selectedProblem.problem !== undefined) {
+    } else if (this.problemFormControl.valid && this.selectedProblem.problem !== undefined) {
       console.log('update')
       this.systemModuleService.on();
       this.isButtonEnabled = false;
@@ -345,7 +345,7 @@ export class OrderSetComponent implements OnInit {
       });
       this.showDoc.emit(true);
     }
-    else if (!this.problemFormControl.valid && this.selectedProblem.problem !== undefined) {
+    else if (!this.problemFormControl.valid && this.selectedProblem.problem === undefined) {
       this.disableAuthorizerxButton = false;
       this.systemModuleService.announceSweetProxy('Please select a problem before creating an order set', 'error');
     }

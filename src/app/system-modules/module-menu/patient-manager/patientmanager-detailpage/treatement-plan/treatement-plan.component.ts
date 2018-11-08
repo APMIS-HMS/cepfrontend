@@ -11,7 +11,6 @@ import {
 import { OrderSetTemplate, User, Facility } from '../../../../../models/index';
 import { ActivatedRoute } from '@angular/router';
 import { TreatmentSheetActions, InvalidTreatmentReport } from '../../../../../shared-module/helpers/global-config';
-import { query } from '@angular/core/src/animation/dsl';
 import { AuthFacadeService } from '../../../../service-facade/auth-facade.service';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
@@ -31,8 +30,9 @@ export class TreatementPlanComponent implements OnInit {
   treatmentSheet: any = <any>{};
   user: User = <User>{};
   investigationTableForm: FormGroup;
+  medicationTableForm: FormGroup;
   isEditTreatmentSheet = false;
-  treatmentSheetId: any ='';
+  treatmentSheetId: any = '';
   selectedDocument: PatientDocumentation = <PatientDocumentation>{};
   patientDocumentation: Documentation = <Documentation>{};
 
@@ -64,7 +64,8 @@ export class TreatementPlanComponent implements OnInit {
   ngOnInit() {
     this.facility = <Facility>this._locker.getObject('selectedFacility');
     this.miniFacility = <Facility>this._locker.getObject('miniFacility');
-    this.initializeServiceItemTables();
+    this.initializeServiceItemInvestigationTables();
+    this.initializeServiceItemMedicationTables();
     // this.employeeDetails = this._locker.getObject('loginEmployee');
     this.user = <User>this._locker.getObject('auth');
     this._authFacadeService.getLogingEmployee().then((res: any) => {
@@ -75,7 +76,7 @@ export class TreatementPlanComponent implements OnInit {
     this.getPersonDocumentation();
   }
 
-  initializeServiceItemTables() {
+  initializeServiceItemInvestigationTables() {
     this.investigationTableForm = this.formBuilder.group({
       'investigationTableArray': this.formBuilder.array([
         this.formBuilder.group({
@@ -89,21 +90,53 @@ export class TreatementPlanComponent implements OnInit {
     this.investigationTableForm.controls['investigationTableArray'] = this.formBuilder.array([]);
   }
 
+  initializeServiceItemMedicationTables() {
+    this.medicationTableForm = this.formBuilder.group({
+      'medicationTableArray': this.formBuilder.array([
+        this.formBuilder.group({
+          index: [0, [<any>Validators.required]],
+          comment: [''],
+          name: ['', [<any>Validators.required]],
+          status: ['', [<any>Validators.required]]
+        })
+      ])
+    });
+    this.medicationTableForm.controls['medicationTableArray'] = this.formBuilder.array([]);
+  }
+
   setInvestigationValue() {
     console.log(22);
     console.log(this.treatmentSheet);
-    this.treatmentSheet.investigations.forEach((item, index) => {
-      console.log(item, index);
-      (<FormArray>this.investigationTableForm.controls['investigationTableArray']).push(
-        this.formBuilder.group({
-          index: index,
-          comment: '',
-          name: item.name,
-          status: item.status
-        })
-      );
-      console.log(this.investigationTableForm);
-    });
+    if (this.treatmentSheet.investigations !== undefined) {
+      this.treatmentSheet.investigations.forEach((item, index) => {
+        console.log(item, index);
+        (<FormArray>this.investigationTableForm.controls['investigationTableArray']).push(
+          this.formBuilder.group({
+            index: index,
+            comment: '',
+            name: item.name,
+            status: item.status
+          })
+        );
+        console.log(this.investigationTableForm);
+      });
+    }
+    if (this.treatmentSheet.medications !== undefined) {
+      console.log(this.treatmentSheet.medications);
+      this.treatmentSheet.medications.forEach((item, index) => {
+        (<FormArray>this.medicationTableForm.controls['medicationTableArray']).push(
+          this.formBuilder.group({
+            index: index,
+            comment: '',
+            name: item.genericName + ' - '+ item.dosage + item.dosageUnit +','
+            + item.regimen[0].frequency+ ' for '+ item.regimen[0].duration +
+              item.regimen[0].durationUnit,
+            status: item.status
+          })
+        );
+        console.log(this.medicationTableForm);
+      });
+    }
   }
 
   private getTreatmentSheet() {
@@ -127,7 +160,7 @@ export class TreatementPlanComponent implements OnInit {
     }).catch(err => { });
   }
 
-  onAddNewInvestigation(){
+  onAddNewInvestigation() {
     console.log('We are here');
     this.isEditTreatmentSheet = true;
     console.log(this.isEditTreatmentSheet);
@@ -151,15 +184,10 @@ export class TreatementPlanComponent implements OnInit {
       this.treatmentSheet.investigations[investigation.index].completed = true;
       this.treatmentSheet.investigations[investigation.index].status = TreatmentSheetActions.DONE;
       console.log(1);
-      this.treatmentSheet.investigations[investigation.index].trackItem = treatmentSheetTrack;
+      this.treatmentSheet.investigations[investigation.index].tracks.push(treatmentSheetTrack);
       console.log(2);
       console.log(this.treatmentSheet);
-      this._treatmentSheetService.patch(this.treatmentSheetData._id, { 'treatmentSheet.investigations': this.treatmentSheet.investigations }, {
-        query: {
-          isInvestigation: true,
-          index: investigation.index
-        }
-      }).then(payload => {
+      this._treatmentSheetService.patch(this.treatmentSheetData._id, { 'treatmentSheet': this.treatmentSheet }, {}).then(payload => {
         console.log(payload);
       }, err => {
         console.log(err);
@@ -184,7 +212,36 @@ export class TreatementPlanComponent implements OnInit {
     this.treatmentSheet.investigations[investigation.index].status = TreatmentSheetActions.REMOVED;
     this.treatmentSheet.investigations[investigation.index].isRemoved = true;
     console.log(1);
-    this.treatmentSheet.investigations[investigation.index].trackItem = treatmentSheetTrack;
+    this.treatmentSheet.investigations[investigation.index].tracks.push(treatmentSheetTrack);
+    console.log(2);
+    console.log(this.treatmentSheet);
+    this._treatmentSheetService.patch(this.treatmentSheetData._id, { 'treatmentSheet.investigations': this.treatmentSheet.investigations }, {
+      query: {
+        isInvestigation: true,
+        index: investigation.index
+      }
+    }).then(payload => {
+      console.log(payload);
+    }, err => {
+      console.log(err);
+    });
+  }
+
+  onSuspendInvestigationItem(investigation) {
+    console.log(this.investigationTableForm.controls['investigationTableArray'].value);
+    this.treatmentSheet.investigations[investigation.index].tracks = (this.treatmentSheet.investigations[investigation.index].tracks === undefined) ? [] : this.treatmentSheet.investigations[investigation.index].tracks;
+    console.log(this.treatmentSheet);
+    console.log(TreatmentSheetActions.DONE, this.loginEmployee, new Date());
+    const treatmentSheetTrack = {
+      action: TreatmentSheetActions.SUSPENDED,
+      createdBy: this.loginEmployee._id,
+      comment: investigation.comment
+    }
+    console.log(treatmentSheetTrack);
+    this.treatmentSheet.investigations[investigation.index].status = TreatmentSheetActions.REMOVED;
+    this.treatmentSheet.investigations[investigation.index].isRemoved = true;
+    console.log(1);
+    this.treatmentSheet.investigations[investigation.index].tracks.push(treatmentSheetTrack);
     console.log(2);
     console.log(this.treatmentSheet);
     this._treatmentSheetService.patch(this.treatmentSheetData._id, { 'treatmentSheet.investigations': this.treatmentSheet.investigations }, {
@@ -200,9 +257,9 @@ export class TreatementPlanComponent implements OnInit {
   }
 
   close_onClick() {
-		this.closeModal.emit(true);
-		this.isEditTreatmentSheet = false;
-	}
+    this.closeModal.emit(true);
+    this.isEditTreatmentSheet = false;
+  }
 
 
   /**

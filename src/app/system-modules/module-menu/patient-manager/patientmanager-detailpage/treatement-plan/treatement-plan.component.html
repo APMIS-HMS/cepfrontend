@@ -32,6 +32,8 @@
                         <td>
                             <div class="tbl-actn-btn" (click)="onDoneInvestigationItem(investigation.value)"><i class="fa fa-check"
                                     aria-hidden="true"></i>Done</div>
+                            <div class="tbl-actn-btn" (click)="onSuspendInvestigationItem(investigation.value)"><i class="fa fa-check"
+                                    aria-hidden="true"></i>Suspend</div>
                             <div class="tbl-actn-btn" (click)="onRemoveInvestigationItem(investigation.value)"><i class="fa fa-check"
                                     aria-hidden="true"></i>Remove</div>
                         </td>
@@ -65,20 +67,18 @@
         </div>
         <div class="tbl-listWrap">
             <div class="sect-title">Medication</div>
-            <table cellpadding="0" cellspacing="0" border="0.5">
-                <tbody>
+            <table cellpadding="0" cellspacing="0" border="0.5" [formGroup]="medicationTableForm">
+                <tbody formArrayName="medicationTableArray">
                     <tr *ngIf="treatmentSheet?.medications === undefined">
                         <td class="text-center" colspan="5"> No data available in table</td>
                     </tr>
-                    <tr *ngFor="let medication of treatmentSheet?.medications; let m = index">
-                        <td>{{ medication.genericName }} - {{ medication.dosage }}{{ medication.dosageUnit }}, {{
-                            medication.regimen?.frequency }} for {{ medication.regimen?.duration }} {{
-                            medication.regimen?.durationUnit }}</td>
-                        <td>{{ medication.status }}</td>
+                    <tr  *ngFor="let medication of medicationTableForm['controls'].medicationTableArray['controls'];let i = index">
+                        <td>{{ medication?.value.name }}</td>
+                        <td>{{ medication?.value.status }}</td>
                         <td>
                             <div class="frm-item-wrap">
                                 <mat-input-container>
-                                    <input matInput [(ngModel)]="medication.comment" placeholder="Comment">
+                                    <input matInput placeholder="Comment">
                                 </mat-input-container>
                             </div>
                         </td>
@@ -86,7 +86,7 @@
                             <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                             <div class="action-container shadow-RB">
                                 <div *ngIf="medication.status!=='Suspended' && medication.status!=='Discontinued' && medication.status!=='Completed'"
-                                    (click)="administer(medication, m)" class="action-item">
+                                    (click)="administer(medication,m)" class="action-item">
                                     <i class="fa fa-user-md" aria-hidden="true"></i>
                                     <span>Administer</span>
                                 </div>
