@@ -2,6 +2,8 @@ import { DashboardLandingpageComponent } from './dashboard-landingpage/dashboard
 import { Routes, RouterModule } from '@angular/router';
 import { DhisReportComponent } from '../dhis-report/dhis-report.component';
 import { ReportDashboardComponent } from './report-dashboard.component';
+import { ClinicManagementReportComponent } from '../clinic-management-report/clinic-management-report.component';
+
 
 const REPORTS_DASHBOARD_ROUTE: Routes = [
 	{
@@ -10,7 +12,8 @@ const REPORTS_DASHBOARD_ROUTE: Routes = [
 		children: [
 			{ path: '', redirectTo: 'report-landing-page' },
 			{ path: 'report-landing-page', component: DashboardLandingpageComponent },
-			{ path: 'dhis-report', component: DhisReportComponent }
+			{ path: 'dhis-report', component: DhisReportComponent },
+			{ path: 'clinic-report', component: ClinicManagementReportComponent }
 		]
 	}
 ];
