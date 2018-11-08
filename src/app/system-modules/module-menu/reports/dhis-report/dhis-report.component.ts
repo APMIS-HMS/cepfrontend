@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
-
-
 @Component({
   selector: 'app-dhis-report',
   templateUrl: './dhis-report.component.html',
@@ -10,7 +8,6 @@ import { Router } from '@angular/router';
 })
 export class DhisReportComponent implements OnInit {
 
-  
   nhmis = false;
   register = false;
 
@@ -20,6 +17,8 @@ export class DhisReportComponent implements OnInit {
     const page: string = this._router.url;
     this.checkPageUrl(page);
   }
+
+  
   checkPageUrl(param: string) {
     if (param.includes('nhmis')) {
       this.nhmis = true;
@@ -49,4 +48,5 @@ export class DhisReportComponent implements OnInit {
     }
     this._router.navigate(['/dashboard/reports/' + link]);
   }
+
 }
