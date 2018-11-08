@@ -95,7 +95,6 @@ export class WalletComponent implements OnInit {
 			this.selectedFacility.wallet = payload.wallet;
 			this.wallet = payload.wallet;
 			this.populateWallet(payload.wallet);
-			console.log(this.selectedFacility);
 		});
 
 		this.user = <User>this._locker.getObject('auth');
