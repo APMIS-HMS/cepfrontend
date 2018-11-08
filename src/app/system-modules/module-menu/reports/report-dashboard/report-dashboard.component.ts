@@ -14,6 +14,10 @@ export class ReportDashboardComponent implements OnInit {
   }
 
   call_dhis() {
-    this._router.navigate(['/dashboard/reports/report/dhis-report']);
+    this._router.navigate(['/dhis-report']);
+  }
+
+  call_labReport() {
+    this._router.navigate(['/dashboard/reports/report/laboratory-report']);
   }
 }
