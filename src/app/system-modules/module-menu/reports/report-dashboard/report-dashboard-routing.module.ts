@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+import { DashboardLandingpageComponent } from './dashboard-landingpage/dashboard-landingpage.component';
 import { Routes, RouterModule } from '@angular/router';
 import { ReportDashboardComponent } from "./report-dashboard.component";
 import { RegisterEntriesComponent } from "./../registers/register-entries/register-entries.component";
@@ -13,11 +13,18 @@ const routes: Routes = [
     { path: 'dhis-report', component: DhisReportComponent },
     { path: 'laboratory-report', component: LaboratoryReportComponent },
     { path: 'patient-report', component: PatientManagerReportComponent }
+
+
+const REPORTS_DASHBOARD_ROUTE: Routes = [
+	{
+		path: '',
+		component: ReportDashboardComponent,
+		children: [
+			{ path: '', redirectTo: 'report-landing-page' },
+			{ path: 'report-landing-page', component: DashboardLandingpageComponent },
+			{ path: 'dhis-report', component: DhisReportComponent }
+		]
+	}
 ];
 
-@NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
-})
-
-export class ReportDashboardRoutingModule { }
+export const ReportDashboardRoutingModule = RouterModule.forChild(REPORTS_DASHBOARD_ROUTE);
