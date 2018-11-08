@@ -1,9 +1,10 @@
 <div class="animated pulse">
     <div class="modal-header-wrap">
         <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-        <legend class="modal_title">{{}}</legend>
+        <legend class="modal_title">{{selectedBill?.principalObject?.personDetails?.firstName}}
+            {{selectedBill?.principalObject?.personDetails?.lastName}}</legend>
         <div class="modal_mini_title">Family Cover Bills Generated</div>
-        <div class="modal_mini_title">11th October 2017</div>
+        <div class="modal_mini_title">{{selectedBill?.updatedAt|date:'medium'}}</div>
     </div>
     <div class="modal-baseWrap">
         <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5">
