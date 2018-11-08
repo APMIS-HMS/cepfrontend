@@ -8,13 +8,17 @@ import {
     SampleComponentForDialog
 } from "./ui-components/BaseDialogComponent";
 import { MatDialogModule} from "@angular/material";
+import {AsomReportViewerComponent} from "./ui-components/AsomReportViewerComponent";
+import {CustomReportService, ICustomReportService, reportServiceFactory} from "./ui-components/LabReportModel";
+import {DummyReportDataService} from "./ui-components/DummyReportDataService";
+
 
 @NgModule({
     imports: [CommonModule, MatDialogModule],
-    exports: [AsomDataPagerComponent, AsomModalTrigger, AsomModalDialogComponent],
-    declarations: [AsomDataPagerComponent, PagerButtonComponent,
+    exports: [AsomDataPagerComponent, AsomModalTrigger, AsomModalDialogComponent,AsomReportViewerComponent],
+    declarations: [AsomDataPagerComponent, PagerButtonComponent,AsomReportViewerComponent,
         AsomModalDialogComponent,SampleComponentForDialog, AsomModalTrigger, AsomModalDialogComponent],
-    providers: [AsomModalDialogService],
+    providers: [AsomModalDialogService, DummyReportDataService],
     entryComponents:[SampleComponentForDialog]
 })
 export class CoreUiModules {
