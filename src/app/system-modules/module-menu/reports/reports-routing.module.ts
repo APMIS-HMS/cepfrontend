@@ -8,11 +8,10 @@ const routes: Routes = [{
   path: '', component: ReportsComponent, children: [
     { path: '', redirectTo: 'report' },
     {
-      path: 'report-dashboard',
+      path: 'report',
       loadChildren: './report-dashboard/report-dashboard.module#ReportDashboardModule'
-      // loadChildren: './registers/registers.module#RegistersModule'
     },
-    { path: 'report', component: ReportDashboardComponent }
+    // { path: 'report', component: ReportDashboardComponent }
   ]
 }];
 

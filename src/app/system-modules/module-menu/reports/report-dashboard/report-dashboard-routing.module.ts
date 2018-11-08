@@ -6,8 +6,8 @@ import { DhisReportComponent } from "./../dhis-report/dhis-report.component";
 
 
 const routes: Routes = [
-    { path:'', redirectTo: 'report'},
-    {path: '', component: ReportDashboardComponent },    
+    { path:'', redirectTo: 'reportDashboard'},
+    { path: 'reportDashboard', component: ReportDashboardComponent },    
     { path: 'register-entries', component: RegisterEntriesComponent },
     { path: 'dhis-report', component: DhisReportComponent }
 ];

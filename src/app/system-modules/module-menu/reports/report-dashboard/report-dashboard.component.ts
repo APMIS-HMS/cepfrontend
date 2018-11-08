@@ -13,7 +13,5 @@ export class ReportDashboardComponent implements OnInit {
   ngOnInit() {
   }
 
-  call_dhis() {
-    this._router.navigate(['/dashboard/reports/report/dhis-report']);
-  }
+  
 }
