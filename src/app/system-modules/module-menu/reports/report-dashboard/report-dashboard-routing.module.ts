@@ -1,20 +1,21 @@
-import { NgModule } from '@angular/core';
+import { DashboardLandingpageComponent } from './dashboard-landingpage/dashboard-landingpage.component';
 import { Routes, RouterModule } from '@angular/router';
-import { ReportDashboardComponent } from "./report-dashboard.component";
-import { RegisterEntriesComponent } from "./../registers/register-entries/register-entries.component";
-import { DhisReportComponent } from "./../dhis-report/dhis-report.component";
+import { DhisReportComponent } from '../dhis-report/dhis-report.component';
+import { ReportDashboardComponent } from './report-dashboard.component';
+import { ClinicManagementReportComponent } from '../clinic-management-report/clinic-management-report.component';
 
 
-const routes: Routes = [
-    { path:'', redirectTo: 'report'},
-    {path: '', component: ReportDashboardComponent },    
-    { path: 'register-entries', component: RegisterEntriesComponent },
-    { path: 'dhis-report', component: DhisReportComponent }
+const REPORTS_DASHBOARD_ROUTE: Routes = [
+	{
+		path: '',
+		component: ReportDashboardComponent,
+		children: [
+			{ path: '', redirectTo: 'report-landing-page' },
+			{ path: 'report-landing-page', component: DashboardLandingpageComponent },
+			{ path: 'dhis-report', component: DhisReportComponent },
+			{ path: 'clinic-report', component: ClinicManagementReportComponent }
+		]
+	}
 ];
 
-@NgModule({
-    imports: [RouterModule.forChild(routes)],
-    exports: [RouterModule]
-})
-
-export class ReportDashboardRoutingModule { }
+export const ReportDashboardRoutingModule = RouterModule.forChild(REPORTS_DASHBOARD_ROUTE);
