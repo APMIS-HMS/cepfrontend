@@ -1,42 +1,37 @@
-.dashboard-grid {
+.dashboard-grid{
     display: grid;
     grid-column-gap: 1em;
     grid-row-gap: 1em;
     grid-template-columns: repeat(4, 1fr);
     padding: 50px;
-    margin-left: 50px;
     margin-left: 30px;
 }
 
-.title {
+.title{
     font-size: 14px;
     font-weight: bold;
     text-align: center;
 }
 
-.row {
+.row{
     width: auto !important;
-    display: contents !important;
     display: contents !important;
 }
 
-.subtitle {
+.subtitle{
     text-align: center;
     font-style: italic;
-    font-weight: bold;
     font-weight: bold;
     vertical-align: sub;
     font-size: smaller;
 }
-
-.header {
+.header{
     height: 40px;
 }
 
-hr {
+hr{
     max-width: 1500px;
 }
-
 p {
     margin: 0em;
-}
+  }

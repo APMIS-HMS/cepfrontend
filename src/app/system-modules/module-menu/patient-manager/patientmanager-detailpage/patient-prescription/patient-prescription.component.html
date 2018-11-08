@@ -1,5 +1,5 @@
 <div class="pg-subtitle">PATIENT PAGE - PRESCRIBE DRUG</div>
-<section id="ng ">
+<section id="prescription">
     <div class="survery">
         <div class="row">
             <div class="col-md-12 col-sm-12">
@@ -147,7 +147,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div *ngIf="addPrescriptionForm.controls['regimenArray'].controls.length > 1" class="col-xs-1 no-padding-left no-padding-right" style="margin-top: 20px;">
+                                <div *ngIf="addPrescriptionForm.controls['regimenArray'].controls.length > 1"  class="col-xs-1 no-padding-left no-padding-right" style="margin-top: 20px;">
                                     <i (click)="onClickRemoveRegimen(i);" class="fa fa-minus fa-2x add-regimen-btn"></i>
                                 </div>
                             </div>
