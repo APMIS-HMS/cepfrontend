@@ -5,6 +5,7 @@ import 'rxjs/add/operator/retry';
 @Injectable()
 export class ServerErrorsInterceptor implements HttpInterceptor {
 	intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+		console.log(11);
 		// If the call fails, retry until 5 times before throwing an error
 		return next.handle(request).retry(5);
 	}

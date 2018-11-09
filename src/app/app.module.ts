@@ -1,3 +1,4 @@
+import { ErrorsService } from './feathers/errors.service';
 import { OnlyMaterialModule } from './shared-common-modules/only-material-module';
 import { CanActivateViaAuthGuardCompleteFacilityService } from './services/facility-manager/setup/can-activate-via-auth-guard-complete-facility.service';
 import { AuthInterceptor } from './feathers/auth.interceptor';
@@ -243,7 +244,8 @@ import { ServerErrorsInterceptor } from './feathers/server.errors.interceptor';
 			provide: HTTP_INTERCEPTORS,
 			useClass: ServerErrorsInterceptor,
 			multi: true
-		}
+		},
+		ErrorsService
 	],
 	bootstrap: [ AppComponent ]
 })

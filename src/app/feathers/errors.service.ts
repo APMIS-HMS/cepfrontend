@@ -17,15 +17,17 @@ export class ErrorsService {
 				}
 				// Redirect to the ErrorComponent
 				this.log(event.error).subscribe((errorWithContext) => {
-					this.router.navigate([ '/error' ], { queryParams: errorWithContext });
+					// this.router.navigate([ '/error' ], { queryParams: errorWithContext }); // commented out by starday
 				});
 			}
 		});
 	}
 	log(error) {
+		console.log('error: ', 1);
 		// Log the error to the console
 		console.error(error);
 		// Send error to server
+		console.log('error: ', 1);
 		const errorToSend = this.addContextInfo(error);
 		return Observable.of({ error: error }); // this was done by me starday
 		// return fakeHttpService.post(errorToSend); // commented out by starday, to do when ready by starday

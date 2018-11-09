@@ -6,19 +6,10 @@ import { SharedModule } from 'app/shared-module/shared.module';
 import { ClinicManagementRoutingModule } from './clinic-management-report-routing.module';
 import { ClinicAttendanceComponent } from './clinic-attendance/clinic-attendance.component';
 import { DiagnosisComponent } from './diagnosis/diagnosis.component';
+import { ClinicManagementReportComponent } from './clinic-management-report.component';
 
 @NgModule({
-    imports:[
-        CommonModule,
-        MaterialModule,
-		OnlyMaterialModule,
-        SharedModule,
-        ClinicManagementRoutingModule
-    ],
-    declarations:[
-        ClinicAttendanceComponent,
-        DiagnosisComponent 
-    ]
+	imports: [ CommonModule, MaterialModule, OnlyMaterialModule, SharedModule, ClinicManagementRoutingModule ],
+	declarations: [ ClinicAttendanceComponent, DiagnosisComponent, ClinicManagementReportComponent ]
 })
-
 export class ClinicReportModule {}

@@ -45,7 +45,7 @@ export class ApmisErrorHandler extends ErrorHandler {
 			// router.navigate([ '/error' ], { queryParams: { error: error } });
 
 			errorsService.log(error).subscribe((errorWithContextInfo) => {
-				router.navigate([ '/error' ], { queryParams: errorWithContextInfo });
+				// router.navigate([ '/error' ], { queryParams: errorWithContextInfo });
 			});
 		}
 		// Log the error anyway
