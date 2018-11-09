@@ -7,12 +7,12 @@ const CLINIC_MANAGEMENT_REPORT_ROUTE: Routes = [
 	{
 		path: '',
 		component: ClinicManagementReportComponent,
-		children: [
-			// { path: '', redirectTo: 'clinic-report-page' },
-			// { path: 'clinic-report-page', component: ClinicManagementReportComponent },
-			{ path: 'clinic-attendance', component: ClinicAttendanceComponent },
-			{ path: 'diagnosis', component: DiagnosisComponent}
-		]
+		// children: [
+		// 	// { path: '', redirectTo: 'clinic-report-page' },
+		// 	// { path: 'clinic-report-page', component: ClinicManagementReportComponent },
+		// 	{ path: 'clinic-attendance', component: ClinicAttendanceComponent },
+		// 	{ path: 'diagnosis', component: DiagnosisComponent}
+		// ]
 	}
 ];
 
