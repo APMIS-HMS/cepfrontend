@@ -49,7 +49,57 @@ export class NewBeneficiaryComponent implements OnInit {
 			status: [ false, [ <any>Validators.required ] ]
 		});
 
-		this.frm_UpdateCourse.setValue(this.selectedBeneficiary);
+		// this.frm_UpdateCourse.setValue(this.selectedBeneficiary);
+		// category: ""
+		// date: Tue Nov 06 2018 16: 12: 37 GMT + 0100(West Africa Standard Time) { }
+		// filNo: "PRINCIPAL"
+		// gender: "LCP/GTB00092/07643/A"
+		// id: "5a662bb8d029190b7456f7ea"
+		// index: 0
+		// serial: "IBEWUIKE"
+		// sponsor: "BASIC CORPORATE"
+		// status: true
+		// surname: "JOHN"
+		// type: ""
+		this.frm_UpdateCourse.controls['id'].setValue(
+			this.selectedBeneficiary.id === undefined ? '' : this.selectedBeneficiary.id
+		);
+		this.frm_UpdateCourse.controls['category'].setValue(
+			this.selectedBeneficiary.category === undefined ? '' : this.selectedBeneficiary.category
+		);
+		this.frm_UpdateCourse.controls['serial'].setValue(
+			this.selectedBeneficiary.serial === undefined ? '' : this.selectedBeneficiary.serial
+		);
+		this.frm_UpdateCourse.controls['sponsor'].setValue(
+			this.selectedBeneficiary.sponsor === undefined ? '' : this.selectedBeneficiary.sponsor
+		);
+		this.frm_UpdateCourse.controls['type'].setValue(
+			this.selectedBeneficiary.type === undefined ? '' : this.selectedBeneficiary.type
+		);
+		this.frm_UpdateCourse.controls['plan'].setValue(
+			this.selectedBeneficiary.plan === undefined ? '' : this.selectedBeneficiary.plan
+		);
+		this.frm_UpdateCourse.controls['firstname'].setValue(
+			this.selectedBeneficiary.firstname === undefined ? '' : this.selectedBeneficiary.firstname
+		);
+		this.frm_UpdateCourse.controls['surname'].setValue(
+			this.selectedBeneficiary.surname === undefined ? '' : this.selectedBeneficiary.surname
+		);
+		this.frm_UpdateCourse.controls['filNo'].setValue(
+			this.selectedBeneficiary.filNo === undefined ? '' : this.selectedBeneficiary.filNo
+		);
+		this.frm_UpdateCourse.controls['gender'].setValue(
+			this.selectedBeneficiary.gender === undefined ? '' : this.selectedBeneficiary.gender
+		);
+		this.frm_UpdateCourse.controls['date'].setValue(
+			this.selectedBeneficiary.date === undefined ? '' : this.selectedBeneficiary.date
+		);
+		this.frm_UpdateCourse.controls['status'].setValue(
+			this.selectedBeneficiary.status === undefined ? '' : this.selectedBeneficiary.status
+		);
+		this.frm_UpdateCourse.controls['index'].setValue(
+			this.selectedBeneficiary.index === undefined ? '' : this.selectedBeneficiary.index
+		);
 	}
 
 	close_onClick() {

@@ -9,15 +9,16 @@
           <div class="tbl-top-actions">
             <div (click)="newBeneficiary_click()" class="btn-outline">
               <i class="fa fa-plus"></i> New Beneficiary</div>
-            <mat-paginator  [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
+            <mat-paginator [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
               [pageSizeOptions]="pageSizeOptions">
             </mat-paginator>
           </div>
-          <table cellpadding="0" cellspacing="0" border="0.5">
+         
             <thead>
               <tr>
                 <th>
-                  <mat-checkbox #matChkBox [disabled]="filteredBeneficiaries.length ===0 || loading" [checked]="false" (change)="manageCheckBoxesState($event.checked)"></mat-checkbox>
+                  <mat-checkbox #matChkBox [disabled]="filteredBeneficiaries.length ===0 || loading" [checked]="false"
+                    (change)="manageCheckBoxesState($event.checked)"></mat-checkbox>
                 </th>
                 <th>
                   <i class="fa fa-sort-alpha-asc" aria-hidden="true"></i>
@@ -45,17 +46,16 @@
               </tr>
             </thead>
             <tbody *ngIf="loading">
-            <tr>
-              <td class="table-content" colspan="10" style="text-align: center !important; padding: 10px !important;">
-                <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
-                <br>
-                <span class="text-muted">{{loadingStatusText }}</span>
-              </td>
-            </tr>
+              <tr>
+                <td class="table-content" colspan="10" style="text-align: center !important; padding: 10px !important;">
+                  <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
+                  <br>
+                  <span class="text-muted">{{loadingStatusText }}</span>
+                </td>
+              </tr>
             </tbody>
             <tbody *ngIf="beneficiaries.length > 0">
-           <!-- [colspan]="markForDelList.length==0 ? 10 : 6"-->
-              <tr>
+              <!-- <tr>
                 <td colspan="6" >
                   <div class="tbl-actionRow">
 
@@ -64,13 +64,13 @@
                 </td>
                 <td colspan="4" *ngIf="markForDelList.length>0">
               <span style="color:red; font-weight:bold;"> You've mark {{markForDelList.length}} items.</span>
-                  <button (click)="confirmDeletion()" [disabled]="loading" class="btn btn-primary">Delete Items</button>
+                  <button (click)="confirmDeletion()" [disabled]="loading" class="btn btn-danger">Delete Items</button>
                 </td>
-              </tr>
+              </tr> -->
 
-              <tr *ngFor="let beneficiary of filteredBeneficiaries;let i=index">
+              <tr *ngFor="let beneficiary of filteredBeneficiaries;let i=index" [class]="beneficiary.markForDelete ? 'marked' : ''">
                 <td>
-                  <mat-checkbox  [disabled]="loading"  [checked]="beneficiary.markForDelete" (change)="logSelected($event, i)" ></mat-checkbox>
+                  <mat-checkbox [disabled]="loading" [checked]="beneficiary.markForDelete" (change)="logSelected($event, i)"></mat-checkbox>
                 </td>
                 <td>{{beneficiary?.surname}} {{beneficiary?.firstname}}</td>
                 <td>{{beneficiary?.gender}}</td>
@@ -95,7 +95,7 @@
             </tbody>
 
           </table>
-          <mat-paginator  [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
+          <mat-paginator [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
             [pageSizeOptions]="pageSizeOptions">
           </mat-paginator>
         </div>
@@ -105,5 +105,6 @@
 </div>
 
 <div *ngIf="newBeneficiary" class="modal-overlay">
-  <app-new-beneficiary (closeModal)="close_onClick($event)" (beneficiaryValueChanged)="onBeneficiaryValueChange($event)" [selectedBeneficiary]="selectedBeneficiary" id="form-modal" class="form-modal center-center"></app-new-beneficiary>
+  <app-new-beneficiary (closeModal)="close_onClick($event)" (beneficiaryValueChanged)="onBeneficiaryValueChange($event)"
+    [selectedBeneficiary]="selectedBeneficiary" id="form-modal" class="form-modal center-center"></app-new-beneficiary>
 </div>
