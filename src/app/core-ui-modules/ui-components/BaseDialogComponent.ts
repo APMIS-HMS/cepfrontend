@@ -91,7 +91,7 @@ export class AsomModalTrigger {
                     <div class="pad20 min-h300">
                         Here is the content for the sample Dialog
                         <br>
-                        Data : {{data.content.name}}
+                        Data : {{data?.content?.name}}
                         <br>
                         <asom-pager-button size="large" background-color="orange" [is-oval]="false">
                             <i class="fa fa-plus"></i>
@@ -100,9 +100,9 @@ export class AsomModalTrigger {
 
                 </mat-dialog-content>
                 <div mat-dialog-actions class="">
-                    <button class="btn btn-danger " (click)="closeDialog()" >Close Dialog</button>
+                    <button class="btn btn-danger " (click)="closeDialog()" >{{data?.buttons?.cancel || "Cancel"}}</button>
                     &nbsp;
-                    <button class="btn btn-blue" mat-dialog-close >Close Dialog</button>
+                    <button class="btn btn-blue" mat-dialog-close >{{data?.buttons?.ok || "Ok"}}</button>
                 </div>
             </div>
      
@@ -148,7 +148,7 @@ export class SampleComponentForDialog implements OnInit {
 }
 
 @Component({
-    selector: "sample-dialog",
+    selector: "sample-dialog2",
     template: `
         <div>
             <div class="apmis-mat-dialog-flex-center" >
@@ -162,7 +162,7 @@ export class SampleComponentForDialog implements OnInit {
 
                 </mat-dialog-content>
                 <div mat-dialog-actions class="">
-                    <button class="btn btn-danger " (click)="closeDialog()" >{{data?.buttons?.ok || "Cancel"}}</button>
+                    <button class="btn btn-danger " (click)="closeDialog()" >{{data?.buttons?.cancel || "Cancel"}}</button>
                     &nbsp;
                     <button class="btn btn-blue" mat-dialog-close >{{data?.buttons?.ok || "Ok"}}</button>
                 </div>

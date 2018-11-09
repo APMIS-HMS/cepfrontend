@@ -11,7 +11,7 @@ import {Component, Input, OnInit, ElementRef} from '@angular/core';
 
 export class DocumentPrinterComponent implements OnInit {
     @Input() content: ElementRef;
-    private wnd: Window;
+   
 
     constructor() {
     }
@@ -23,11 +23,16 @@ export class DocumentPrinterComponent implements OnInit {
     printReport() {
         if (this.content) {
 
-            this.wnd = window.open('', 'Lab Report', 'width=860px ; height=680px');
-            const body  = this.wnd.document.createElement('body');
-            this.wnd.document.appendChild(body);
-                body.appendChild(this.content.nativeElement);
-            console.log(this.content);
+            const wnd:Window = window.open('', 'Lab Report', 'width=860px ; height=680px');
+            
+                //wnd.document.write("It works!!");
+                const h1  = wnd.document.createElement('h1');
+                const textNode  = document.createTextNode("This a Sample Text Node in h1 Element");
+                h1.appendChild(textNode);
+               
+                wnd.document.body.appendChild(this.content.nativeElement);
+                console.log(wnd);
+                console.log("Template Reference from Angular",this.content.nativeElement);
         }
         else {
             // print currentPage

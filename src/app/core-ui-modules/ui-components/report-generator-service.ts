@@ -6,7 +6,8 @@ import {
 } from "./LabReportModel";
 import {Observable} from "rxjs";
 import {RestService} from "../../feathers/feathers.service";
-import {CustomReportService, ICustomReportService} from "./ReportGenContracts";
+import { ICustomReportService} from "./ReportGenContracts";
+import {IPatientReportModel, IPatientReportOptions} from "./PatientReportModel";
 
 
 
@@ -34,6 +35,10 @@ export class ReportGeneratorService implements ICustomReportService
     getLabReportInvestigationSummary(options?: ILabReportOption): Promise<ILabReportSummaryModel[]> {
         return this.restEndpoint.getService("lab-summary-report-service")
             .find( { params: options});
+    }
+
+    getPatientReport(options: IPatientReportOptions): Promise<IPatientReportModel[]> {
+        return Promise.resolve([]);
     }
 /*  
 *   Reports for Patients

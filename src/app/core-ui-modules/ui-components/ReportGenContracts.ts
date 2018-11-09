@@ -1,7 +1,8 @@
 import {IGroupableLabReportModel, ILabReportOption, ILabReportSummaryModel} from "./LabReportModel";
 import {DummyReportDataService} from "./DummyReportDataService";
 import {ReportGeneratorService} from "./report-generator-service";
-import {Injectable} from "@angular/core";
+
+import {IPatientReportModel, IPatientReportOptions} from "./PatientReportModel";
 
 export interface ICustomReportService {
     // Lab report
@@ -13,6 +14,7 @@ export interface ICustomReportService {
 
     //getLabReportInvestigation(options? : ILabReportOption) : Promise<any[]>;
     // patient investigation
+    getPatientReport(options? : IPatientReportOptions) : Promise<IPatientReportModel[]>
 
 }
 
@@ -21,12 +23,3 @@ export function reportServiceFactory() {
     return useDummyData ? DummyReportDataService : ReportGeneratorService;
 }
 
-@Injectable()
-export abstract class CustomReportService implements ICustomReportService {
-    abstract getLabReport(options: ILabReportOption): Promise<any[]> ;
-
-    abstract getGroupedLabReport(options: ILabReportOption): Promise<IGroupableLabReportModel[]> ;
-
-    /* abstract getLabReportInvestigation(options?: ILabReportOption): Promise<any[]>;*/
-    abstract getLabReportInvestigationSummary(options?: ILabReportOption): Promise<ILabReportSummaryModel[]>;
-}

@@ -9,7 +9,7 @@ import {
 } from "./ui-components/BaseDialogComponent";
 import { MatDialogModule} from "@angular/material";
 import {AsomReportViewerComponent} from "./ui-components/AsomReportViewerComponent";
-import {CustomReportService} from "./ui-components/ReportGenContracts";
+
 import {DummyReportDataService} from "./ui-components/DummyReportDataService";
 import {RestService} from "../feathers/feathers.service";
 import {ReportGeneratorService} from "./ui-components/report-generator-service";

@@ -6,13 +6,13 @@ import {
 import {Observable} from "rxjs";
 import {Injectable} from "@angular/core";
 import {RestService} from "../../feathers/feathers.service";
-import {CustomReportService, ICustomReportService} from "./ReportGenContracts";
+import {ReportGeneratorService} from "./report-generator-service";
 @Injectable()
-export class DummyReportDataService  implements ICustomReportService
+export class DummyReportDataService extends ReportGeneratorService //  implements ICustomReportService
 {
     constructor(private restEndPoint : RestService)
     {
-        //super();
+        super(restEndPoint);
     }
     getLabReport(options: ILabReportOption): Promise<ILabReportModel[]> {
         
@@ -34,6 +34,15 @@ export class DummyReportDataService  implements ICustomReportService
                 doctor : "Dr. C Madu",
                 date : new Date(),
                 request : "Urinary Analysis",
+                status  : "Completed"
+            },
+            {
+                apmisId  : 'CG-12003',
+                clinic : "Bload-Lab Clinic",
+                patientName : "Mr Bayo Akindele",
+                doctor : "Dr. Dike Okoye",
+                date : new Date(),
+                request : "Blood Sampling Analysis",
                 status  : "Completed"
             },
         ];

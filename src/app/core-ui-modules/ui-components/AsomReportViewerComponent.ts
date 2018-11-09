@@ -2,7 +2,8 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ILabReportModel, ILabReportOption, ILabReportSummaryModel} from "./LabReportModel";
 import {DummyReportDataService} from "./DummyReportDataService";
 import {ReportGeneratorService} from "./report-generator-service";
-import {CustomReportService} from "./ReportGenContracts";
+
+import {AsomModalDialogService} from "./BaseDialogComponent";
 
 @Component({
     selector: 'app-report-viewer',
@@ -32,8 +33,8 @@ import {CustomReportService} from "./ReportGenContracts";
                                 </div>
                                 <div class="col-sm-7">
                                     <div style="float : right;padding: 10px; ">
-                                        <asom-pager-button [is-oval]="true" (onClick)="printReport()">
-                                            <span class="fa fa-print fa-2x"></span>
+                                        <asom-pager-button [is-oval]="true" (onClick)="openReportDialog()" >
+                                            <span class="fa fa-archive fa-2x"></span>
                                         </asom-pager-button>
                                         
                                         <app-document-printer [content]="template"></app-document-printer>
@@ -185,14 +186,14 @@ export class AsomReportViewerComponent implements OnInit {
     clinics: string[] = [];
     reportData: ILabReportModel[] = [];
     reportOptions: ILabReportOption = {
-        filterByClinic: false,
         filterByDate: true,
         startDate: new Date(2018,7,20,0,30,10),
         endDate: new Date()
     }
     reportSummaryData: ILabReportSummaryModel[] =[];
 
-    constructor(private  reportSource: ReportGeneratorService) {
+    constructor(private  reportSource: ReportGeneratorService, private modal : AsomModalDialogService
+    ) {
     }
 
     ngOnInit() {
@@ -228,5 +229,17 @@ export class AsomReportViewerComponent implements OnInit {
         console.log(dateRange);
         this.reportOptions.startDate = dateRange.from;
         this.reportOptions.endDate  = dateRange.to;
+    }
+
+    openReportDialog() {
+        this.modal.openSimpleModal({
+            disableClose : true,
+            content : {
+                name:'Alfred Ikechukwu Obialo'
+            },
+            
+            buttons : {ok : 'I Accept'}
+            
+        },"Lab Report Options");
     }
 }
