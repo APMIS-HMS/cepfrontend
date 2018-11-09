@@ -11,7 +11,9 @@ export class ClinicManagementReportComponent implements OnInit {
   clinicAttendance = false;
   diagnosis = false;
 
-  constructor(private _router: Router) { }
+  constructor(private _router: Router) {
+    console.log("Welcome");
+   }
 
   ngOnInit() {
     const page: string = this._router.url;

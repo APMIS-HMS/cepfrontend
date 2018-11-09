@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ReportDashboardComponent } from './report-dashboard.component';
 import { ClinicManagementReportComponent } from './clinic-management-report/clinic-management-report.component';
 import { DhisReportComponent } from './dhis-report/dhis-report.component';
+import { DiagnosisComponent } from './clinic-management-report/diagnosis/diagnosis.component';
 
 
 const REPORTS_DASHBOARD_ROUTE: Routes = [
@@ -13,11 +14,12 @@ const REPORTS_DASHBOARD_ROUTE: Routes = [
 			{ path: '', redirectTo: 'report-landing-page' },
 			{ path: 'report-landing-page', component: DashboardLandingpageComponent },
 			{
-				path: 'clinic-report',
+				path: 'clinicReport',
 				loadChildren: './clinic-management-report/clinic-management-report.module#ClinicReportModule'
 			},
 			// { path: 'clinic-report', component: ClinicManagementReportComponent },
-			{ path: 'dhisReport', component: DhisReportComponent}
+			{ path: 'dhisReport', component: DhisReportComponent},
+			{ path: 'diagnosis', component: DiagnosisComponent}
 		]
 	}
 ];
