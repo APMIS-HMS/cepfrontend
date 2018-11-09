@@ -1,3 +1,5 @@
+@import "./../../../reports.component.scss";
+
 .baseWrap{
     padding: 50px;
 }
@@ -9,11 +11,16 @@
 }
 
 .dropdown-container {
-    display: flex;
+    display: block;
     flex-direction: column;
     padding-left: 50px;
   }
   
+  
+  .searchInput{
+    padding-left:5px;
+}
+
   .dropdown-container > * {
     width:200px;
   }
@@ -24,19 +31,32 @@
     width: 100%
   }
 
+  mat-tab-group{
+    position: sticky;
+}
 
+td{
+    text-align: center !important;
+    font-weight: bold;
+}
 
-
-
-
-
-  .card {
-    -webkit-box-shadow: 0px 2px 25px -3px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0px 2px 25px -3px rgba(0, 0, 0, 0.5);
-    box-shadow: 0px 2px 25px -3px rgba(0, 0, 0, 0.5);
-    padding: 20px;
+.filter-card{
+    box-shadow: 0px 5px 2px -3px rgba(0, 0, 0, 0.5);
+    margin: 10px;
+    padding: 10px;
     border-radius: 5px;
 }
+.filter-text{
+    position: initial;
+    align-self: flex-start;
+}
+//   .card {
+//     -webkit-box-shadow: 0px 2px 25px -3px rgba(0, 0, 0, 0.5);
+//     -moz-box-shadow: 0px 2px 25px -3px rgba(0, 0, 0, 0.5);
+//     box-shadow: 0px 2px 25px -3px rgba(0, 0, 0, 0.5);
+//     padding: 10px;
+//     border-radius: 5px;
+// }
 
 .card-list-item {
     border-bottom: solid rgb(204, 204, 204) 1px;
@@ -142,6 +162,6 @@ hr.white {
 
 .divider {
     position: relative;
-    height: 50px;
+    height: 20px;
     width: 100%;
 }
