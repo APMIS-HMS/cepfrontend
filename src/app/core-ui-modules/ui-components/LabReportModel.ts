@@ -1,6 +1,3 @@
-import {Observable} from "rxjs";
-import {DummyReportDataService} from "./DummyReportDataService";
-import {ReportGeneratorService} from "./CustomReportService"; 
 export interface ILabReportModel {
     patientName :string;
     apmisId : string;
@@ -9,6 +6,16 @@ export interface ILabReportModel {
     status? : string;
     clinic? :string;
     date? : Date;
+}
+// This a grouped report data
+export interface  ILabReportSummaryModel {
+    location : string;
+    summary : ISummary[]
+    
+}
+export interface ISummary {
+    request :string;
+    total : number;
 }
 export interface IGroupableLabReportModel
 {
@@ -21,27 +28,19 @@ export interface ILabReportOption {
     endDate? : Date;
     filterByClinic? : boolean;
     clinic? : string;
-    isInvestigation? : boolean;
+    isInvestigation? : boolean;  // if it an investigation summary report.
+    /*If Pagination is turned on the backend api should assign pagination
+     * to feathers pagination settings eg: $limit : opt.paginate ? opt.paginationOptions.limit : 0 etc */
     paginate? : boolean ;
-   
+    paginationOptions? : IPaginationOptions;
+    // Groupings
+    groupBy? : 'location' | 'bench';
+    useGrouping? : boolean;
 }
-export interface ICustomReportService {
-    // Lab report
-    getLabReport(options : ILabReportOption) :Promise<any[]>;
-    getLabReportInvestigation(options? : ILabReportOption) : Promise<any[]>;
-    // patient investigation
-    
+export interface IPaginationOptions
+{
+    limit : number;
+    skip : number;
 }
 
-const useDummyData  = true;
-export function reportServiceFactory()
-{
-    return useDummyData ?  DummyReportDataService  :   ReportGeneratorService;
-}
-export abstract class CustomReportService implements  ICustomReportService
-{
-    abstract getLabReport(options: ILabReportOption): Promise<any[]> ;
-    abstract getGroupedLabReport(options: ILabReportOption): Promise<IGroupableLabReportModel[]> ;
-    abstract getLabReportInvestigation(options?: ILabReportOption): Promise<any[]>;
-    
-}
+

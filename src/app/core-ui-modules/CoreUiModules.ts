@@ -9,16 +9,24 @@ import {
 } from "./ui-components/BaseDialogComponent";
 import { MatDialogModule} from "@angular/material";
 import {AsomReportViewerComponent} from "./ui-components/AsomReportViewerComponent";
-import {CustomReportService, ICustomReportService, reportServiceFactory} from "./ui-components/LabReportModel";
+import {CustomReportService} from "./ui-components/ReportGenContracts";
 import {DummyReportDataService} from "./ui-components/DummyReportDataService";
+import {RestService} from "../feathers/feathers.service";
+import {ReportGeneratorService} from "./ui-components/report-generator-service";
+import {DateRangePickerModule} from "ng-pick-daterange";
+import {ICustomReportService, reportServiceFactory} from "./ui-components/ReportGenContracts";
 
 
 @NgModule({
-    imports: [CommonModule, MatDialogModule],
+    imports: [CommonModule, MatDialogModule,DateRangePickerModule],
     exports: [AsomDataPagerComponent, AsomModalTrigger, AsomModalDialogComponent,AsomReportViewerComponent],
     declarations: [AsomDataPagerComponent, PagerButtonComponent,AsomReportViewerComponent,
         AsomModalDialogComponent,SampleComponentForDialog, AsomModalTrigger, AsomModalDialogComponent],
-    providers: [AsomModalDialogService, DummyReportDataService],
+    providers: [AsomModalDialogService,
+        
+        {provide : ReportGeneratorService, useExisting:DummyReportDataService},
+        {provide : DummyReportDataService , useClass: DummyReportDataService}
+    ],
     entryComponents:[SampleComponentForDialog]
 })
 export class CoreUiModules {

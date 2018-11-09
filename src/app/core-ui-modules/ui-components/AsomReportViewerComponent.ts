@@ -1,6 +1,8 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {CustomReportService, ILabReportModel, ILabReportOption} from "./LabReportModel";
+import {ILabReportModel, ILabReportOption} from "./LabReportModel";
 import {DummyReportDataService} from "./DummyReportDataService";
+import {ReportGeneratorService} from "./report-generator-service";
+import {CustomReportService} from "./ReportGenContracts";
 
 @Component({
     selector: 'app-report-viewer',
@@ -9,21 +11,24 @@ import {DummyReportDataService} from "./DummyReportDataService";
             <div class="report-options margin-b-15 flex-container">
                 <div class="options">
                     <div class="row">
-                        <div class="col-sm-4">
+                        <div class="col-sm-4" >
                             <input type="checkbox" [checked]="reportOptions.filterByDate" #chk/>Filter By Date
-                            <p class="pad20" *ngIf="chk.checked">Date Range Component here</p>
+                            <p class="pad20" *ngIf="chk.checked">
+                                <app-date-range (dateRangeChange)="setDateOptions($event)" [dateRange]="{from : reportOptions.startDate, to: reportOptions.endDate}"></app-date-range>
+                            </p>
+                          
                         </div>
                         <div class="col-sm-8">
-                            <div class="row" style="min-width:400px;">
+                            <div class="row" style="min-width:500px;">
                                 <div class="col-sm-5">
                                     Select Clinic
                                     <select class="form-control">
                                     </select>
-                                    <p class="pad10 divider">
+                                   <!-- <p class="pad10 divider">
                                         <span>Include Provider</span>
                                         <br>
                                         <input type="text" class="form-control" placeholder="Provider">
-                                    </p>
+                                    </p>-->
                                 </div>
                                 <div class="col-sm-7">
                                     <div style="float : right;padding: 10px; ">
@@ -76,7 +81,10 @@ import {DummyReportDataService} from "./DummyReportDataService";
         </div>
     `,
     styles: [`
-
+        .font-size-14
+        {
+            font-size: 14px;
+        }
 
         div.report-options {
             background: #fdfdfd;
@@ -163,12 +171,12 @@ export class AsomReportViewerComponent implements OnInit {
     reportData: ILabReportModel[] = [];
     reportOptions: ILabReportOption = {
         filterByClinic: false,
-        filterByDate: false,
-        startDate: new Date(),
+        filterByDate: true,
+        startDate: new Date(2018,7,20,0,30,10),
         endDate: new Date()
     }
 
-    constructor(private  reportSource: DummyReportDataService) {
+    constructor(private  reportSource: ReportGeneratorService) {
     }
 
     ngOnInit() {
@@ -182,9 +190,15 @@ export class AsomReportViewerComponent implements OnInit {
                 this.reportData = x;
             });
     }
-
+    
     printReport() {
         // Hide all Banners
         window.print();
+    }
+
+    setDateOptions(dateRange ) {
+        console.log(dateRange);
+        this.reportOptions.startDate = dateRange.from;
+        this.reportOptions.endDate  = dateRange.to;
     }
 }
