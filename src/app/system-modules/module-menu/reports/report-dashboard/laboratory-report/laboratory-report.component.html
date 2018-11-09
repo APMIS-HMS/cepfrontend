@@ -1,57 +1,83 @@
-<div #contentToConvert class="pp-card shadow-grey" id="contentToConvert">
+<div class="inner-wrap-b body-wrap">
+    <div class="facility-title">{{pageInView}}</div>
+
+    <div class="searchInputWrap row">
+        <mat-form-field class="col-xs-4">
+            <mat-select [formControl]="searchCriteria">
+                <mat-option value="Enter Patient Name">By Patient</mat-option>
+                <mat-option value="Enter Doctor's Name">By Referring Doctor</mat-option>
+                <mat-option value="Enter Location or Workbench">By Location or Workbench</mat-option>
+                <mat-option value="Enter Clinic name">By Clinic Name</mat-option>
+            </mat-select>
+        </mat-form-field>
+        <div class="col-xs-8 mr-4">
+            <div class="row">
+                <div class="col-xs-7">
+                    <input [formControl]="searchControl" type="search" autofocus class="searchInput " placeholder=" {{searchCriteria.value}}" />
+                </div>
+                <div class="col-xs-5">
+
+                </div>
+            </div>
+        </div>
+        <div class="dr-wrap survery">
+            <app-date-range></app-date-range>
+            <span class="fa fa-spinner fa-spin"></span>
+        </div>
+    </div>
     <div class="card">
         <div class="card-header">
             <div class="row">
                 <div class="table-head col-md-3"> Patient Name</div>
-                <div class="table-head col-md-2"> APMIS ID</div>
+                <div class="table-head col-md-1"> APMIS ID</div>
+                <div class="table-head col-md-1"> Location</div>
+                <div class="table-head col-md-1"> Workbench</div>
                 <div class="table-head col-md-2"> Request </div>
-                <div class="table-head col-md-3"> Referring Doctor </div>
-                <div class="table-head col-md-1"> Status </div>
-                <div class="table-head col-md-1">
-                    <i class="fa fa-search fa-fw" (click)="popenSearch()"></i>
-                </div>
+                <div class="table-head col-md-2"> Referring Doctor </div>
+                <div class="table-head col-md-2"> Status </div>
             </div>
-            <div class="row search-box" *ngIf="psearchOpen">
-                <div class="col-md-4">
-                    <input class="table-header-input" type="text" placeholder="Search Patient">
-                </div>
-                <div class="col-md-3">
-                    <input class="table-header-input" type="date" placeholder="Choose a date">
-                </div>
-                <div class="col-md-1 table-head">
-                    <i class="fa fa-close fa-fw" (click)="pcloseSearch()"></i>
+            <!--<div class="row">
+            <div class="col-md-4">
+                <input class="table-header-input" type="text" placeholder="Search Patient">
+            </div>
+            <div class="col-md-3">
+                <input class="table-header-input" type="date" placeholder="Choose a date">
+            </div>
+        </div>-->
+        </div>
+        <div class="card-content">
+            <!-- <div class="card-list-item" *ngIf="Lists.length===0 && !loading">
+            <div class="row">
+                <div class="table-list text-center col-xs-12">
+                    No data available in table
                 </div>
             </div>
         </div>
-        <div class="card-content">
-            <div class="card-list-item" *ngIf="Lists.length===0 && !loading">
-                <div class="row">
-                    <div class="table-list text-center col-xs-12">
-                        No data available in table
-                    </div>
+        <div class="card-list-item" *ngIf="laboratoryReport.length===0 && loading">
+            <div class="row">
+                <div class="table-list text-center col-xs-12">
+                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
                 </div>
             </div>
-            <div class="card-list-item" *ngIf="laboratoryReport.length===0 && loading">
-                <div class="row">
-                    <div class="table-list text-center col-xs-12">
-                        <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
-                    </div>
-                </div>
-            </div>
+        </div>-->
             <div class="card-list-item">
                 <div class="row">
                     <div class="table-list col-md-3"> John Doe </div>
-                    <div class="table-list col-md-2"> SOG-1123</div>
+                    <div class="table-list col-md-2"> SO-6***</div>
                     <div class="table-list col-md-2">Urinalysis</div>
                     <div class="table-list col-md-3">Dr Mofe Ejegi</div>
-                    <div class="table-list col-md-1">test3</div>
-                    <div class="table-list col-md-1">
-                        <span *ngIf="laboratory.status == 'Completely'" style="color:forestgreen">Completely<br>Assessed</span>
-                        <span *ngIf="laboratory.status == 'Partly'" style="color:blue">Partly<br>Sample collected</span>
-                        <span *ngIf="laboratory.status == 'Not'" style="color:crimson">Specimen<br>Assessed</span>
-                    </div>
+                    <div class="table-list col-md-2" style="color: #00ff00;"> Completed</div>
+                </div>
+            </div>
+
+            <div class="card-list-item">
+                <div class="row">
+                    <div class="table-list col-md-3"> John Doe </div>
+                    <div class="table-list col-md-2"> SO-6***</div>
+                    <div class="table-list col-md-2">Urinalysis</div>
+                    <div class="table-list col-md-3">Dr Mofe Ejegi</div>
+                    <div class="table-list col-md-2" style="color: #FF5B47;"> Completed</div>
                 </div>
             </div>
         </div>
     </div>
-</div>

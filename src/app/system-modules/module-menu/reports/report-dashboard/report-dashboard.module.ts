@@ -10,6 +10,7 @@ import { MaterialModule } from '../../../../shared-common-modules/material-modul
 import { DashboardLandingpageComponent } from './dashboard-landingpage/dashboard-landingpage.component';
 import { ClinicManagementReportComponent } from '../clinic-management-report/clinic-management-report.component';
 import { NhmisSummaryComponent } from '../dhis-report/nhmis-summary/nhmis-summary.component';
+import { LaboratoryReportComponent } from './laboratory-report/laboratory-report.component';
 
 @NgModule({
 	imports: [
@@ -27,7 +28,8 @@ import { NhmisSummaryComponent } from '../dhis-report/nhmis-summary/nhmis-summar
 		DashboardLandingpageComponent,
 		DhisReportComponent,
 		ClinicManagementReportComponent,
-		NhmisSummaryComponent
+		NhmisSummaryComponent,
+		LaboratoryReportComponent
 	]
 })
 export class ReportDashboardModule {}
