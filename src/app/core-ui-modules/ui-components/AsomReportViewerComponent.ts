@@ -1,5 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {ILabReportModel, ILabReportOption} from "./LabReportModel";
+import {ILabReportModel, ILabReportOption, ILabReportSummaryModel} from "./LabReportModel";
 import {DummyReportDataService} from "./DummyReportDataService";
 import {ReportGeneratorService} from "./report-generator-service";
 import {CustomReportService} from "./ReportGenContracts";
@@ -35,6 +35,8 @@ import {CustomReportService} from "./ReportGenContracts";
                                         <asom-pager-button [is-oval]="true" (onClick)="printReport()">
                                             <span class="fa fa-print fa-2x"></span>
                                         </asom-pager-button>
+                                        
+                                        <app-document-printer [content]="template"></app-document-printer>
                                     </div>
 
                                 </div>
@@ -45,7 +47,7 @@ import {CustomReportService} from "./ReportGenContracts";
             </div>
             <div class="flex-container margin-b-30">
 
-                <div class="report-viewer-container">
+                <div class="report-viewer-container" #template>
                     <div class="report-header">
                         <h3>{{title || 'Report Title'}}</h3>
                     </div>
@@ -58,6 +60,13 @@ import {CustomReportService} from "./ReportGenContracts";
                                 <th>Doctor Assigned</th>
                                 <th>Clinic Assigned</th>
                                 <th>Status</th>
+                            </tr>
+                            <tr *ngIf="processing">
+                                <td colspan="6">
+                                    <div class="pad20 flex-container">
+                                        <span class="fa fa-3x fa-spin fa-spinner"></span>
+                                    </div>
+                                </td>
                             </tr>
                             <tr *ngFor="let r of reportData">
                                 <td>
@@ -74,6 +83,11 @@ import {CustomReportService} from "./ReportGenContracts";
                                 <td><span class="green highlight">{{r.status}}</span></td>
                             </tr>
                         </table>
+                        
+                        <div>
+                            <app-lab-report-summary [reportOption]="reportOptions" [reportData]="reportSummaryData"></app-lab-report-summary>
+                            
+                        </div>
                     </div>
 
                 </div>
@@ -166,6 +180,7 @@ import {CustomReportService} from "./ReportGenContracts";
 })
 
 export class AsomReportViewerComponent implements OnInit {
+    processing : boolean = false;
     @Input() title: string = "Report Title";
     clinics: string[] = [];
     reportData: ILabReportModel[] = [];
@@ -175,20 +190,33 @@ export class AsomReportViewerComponent implements OnInit {
         startDate: new Date(2018,7,20,0,30,10),
         endDate: new Date()
     }
+    reportSummaryData: ILabReportSummaryModel[] =[];
 
     constructor(private  reportSource: ReportGeneratorService) {
     }
 
     ngOnInit() {
         this.getReportData();
+        this.getReportSummary();
     }
 
     getReportData() {
+        this.processing = true;
         this.reportSource.getLabReport(this.reportOptions)
             .then(x => {
                 console.log(x);
                 this.reportData = x;
+                this.processing  = false;
             });
+    }
+    getReportSummary()
+    {
+        this.reportSource.getLabReportInvestigationSummary(this.reportOptions)
+            .then( x => {
+                console.log(x);
+                this.reportSummaryData = x;
+            });
+        console.log(this.reportOptions);
     }
     
     printReport() {

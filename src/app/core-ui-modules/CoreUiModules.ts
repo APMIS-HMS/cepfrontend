@@ -15,13 +15,15 @@ import {RestService} from "../feathers/feathers.service";
 import {ReportGeneratorService} from "./ui-components/report-generator-service";
 import {DateRangePickerModule} from "ng-pick-daterange";
 import {ICustomReportService, reportServiceFactory} from "./ui-components/ReportGenContracts";
+import {LabReportSummaryComponent} from "./ui-components/LabReportSummaryComponent";
+import {DocumentPrinterComponent} from "./ui-components/DocumentPrinterComponent";
 
 
 @NgModule({
     imports: [CommonModule, MatDialogModule,DateRangePickerModule],
     exports: [AsomDataPagerComponent, AsomModalTrigger, AsomModalDialogComponent,AsomReportViewerComponent],
-    declarations: [AsomDataPagerComponent, PagerButtonComponent,AsomReportViewerComponent,
-        AsomModalDialogComponent,SampleComponentForDialog, AsomModalTrigger, AsomModalDialogComponent],
+    declarations: [AsomDataPagerComponent, PagerButtonComponent,AsomReportViewerComponent,DocumentPrinterComponent,
+        AsomModalDialogComponent,SampleComponentForDialog, AsomModalTrigger, AsomModalDialogComponent, LabReportSummaryComponent],
     providers: [AsomModalDialogService,
         
         {provide : ReportGeneratorService, useExisting:DummyReportDataService},

@@ -27,7 +27,8 @@ export interface ILabReportOption {
     startDate? : Date;
     endDate? : Date;
     filterByClinic? : boolean;
-    clinic? : string;
+    queryString? : string;
+    searchBy? : string | 'all';
     isInvestigation? : boolean;  // if it an investigation summary report.
     /*If Pagination is turned on the backend api should assign pagination
      * to feathers pagination settings eg: $limit : opt.paginate ? opt.paginationOptions.limit : 0 etc */

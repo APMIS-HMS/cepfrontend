@@ -37,7 +37,12 @@ export class DummyReportDataService  implements ICustomReportService
                 status  : "Completed"
             },
         ];
-        return Promise.resolve(labRpt);
+           /* window.setTimeout( ()=>{
+            return Promise.resolve(labRpt);
+            }, 4000);*/
+            
+            return Promise.resolve(labRpt)
+        
     }
     getLabReportInvestigation(options?: ILabReportOption): Promise<ILabReportModel[]> {
         return undefined;
