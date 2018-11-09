@@ -30,12 +30,12 @@
                             </div>
                         </td>
                         <td>
-                            <div class="tbl-actn-btn" (click)="onDoneInvestigationItem(investigation.value)"><i class="fa fa-check"
-                                    aria-hidden="true"></i>Done</div>
-                            <div class="tbl-actn-btn" (click)="onSuspendInvestigationItem(investigation.value)"><i class="fa fa-check"
-                                    aria-hidden="true"></i>Suspend</div>
-                            <div class="tbl-actn-btn" (click)="onRemoveInvestigationItem(investigation.value)"><i class="fa fa-check"
-                                    aria-hidden="true"></i>Remove</div>
+                            <div class="tbl-actn-btn" (click)="onAdministerInvestigationItem(investigation.value)"><i
+                                    class="fa fa-check" aria-hidden="true"></i>Administer</div>
+                            <div class="tbl-actn-btn" (click)="onSuspendInvestigationItem(investigation.value,true)"><i
+                                    class="fa fa-check" aria-hidden="true"></i>Suspend</div>
+                            <div class="tbl-actn-btn" (click)="onSuspendInvestigationItem(investigation.value,false)"><i
+                                    class="fa fa-check" aria-hidden="true"></i>Activate</div>
                         </td>
                     </tr>
                 </tbody>
@@ -43,23 +43,28 @@
         </div>
         <div class="tbl-listWrap">
             <div class="sect-title">Procedure</div>
-            <table cellpadding="0" cellspacing="0" border="0.5">
-                <tbody>
+            <table cellpadding="0" cellspacing="0" border="0.5" [formGroup]="procedureTableForm">
+                <tbody formArrayName="procedureTableArray">
                     <tr *ngIf="treatmentSheet?.procedures === undefined">
                         <td class="text-center" colspan="4"> No data available in table</td>
                     </tr>
-                    <tr *ngFor="let procedure of treatmentSheet?.procedures;">
-                        <td> {{ procedure.name }} </td>
-                        <td> {{ procedure.status }}</td>
+                    <tr [formGroupName]="i" *ngFor="let procedure of procedureTableForm['controls'].procedureTableArray['controls'];let i = index">
+                        <td> {{ procedure.value.name }} </td>
+                        <td> {{ procedure.value.status }}</td>
                         <td>
                             <div class="frm-item-wrap">
                                 <mat-input-container>
-                                    <input matInput placeholder="Comment">
+                                    <input matInput placeholder="Comment" formControlName="comment">
                                 </mat-input-container>
                             </div>
                         </td>
                         <td>
-                            <div class="tbl-actn-btn"><i class="fa fa-check" aria-hidden="true"></i>Done</div>
+                            <div (click)="onDoneProcedure(procedure.value)" class="tbl-actn-btn"><i class="fa fa-check"
+                                    aria-hidden="true"></i>Done</div>
+                            <div (click)="onSuspendProcedure(procedure.value,true)" class="tbl-actn-btn"><i class="fa fa-check"
+                                    aria-hidden="true"></i>Suspend</div>
+                            <div (click)="onSuspendProcedure(procedure.value,false)" class="tbl-actn-btn"><i class="fa fa-check"
+                                    aria-hidden="true"></i>Activate</div>
                         </td>
                     </tr>
                 </tbody>
@@ -72,13 +77,13 @@
                     <tr *ngIf="treatmentSheet?.medications === undefined">
                         <td class="text-center" colspan="5"> No data available in table</td>
                     </tr>
-                    <tr  *ngFor="let medication of medicationTableForm['controls'].medicationTableArray['controls'];let i = index">
+                    <tr [formGroupName]="i" *ngFor="let medication of medicationTableForm['controls'].medicationTableArray['controls'];let i = index">
                         <td>{{ medication?.value.name }}</td>
                         <td>{{ medication?.value.status }}</td>
                         <td>
                             <div class="frm-item-wrap">
                                 <mat-input-container>
-                                    <input matInput placeholder="Comment">
+                                    <input matInput placeholder="Comment" formControlName="comment">
                                 </mat-input-container>
                             </div>
                         </td>
@@ -86,30 +91,30 @@
                             <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                             <div class="action-container shadow-RB">
                                 <div *ngIf="medication.status!=='Suspended' && medication.status!=='Discontinued' && medication.status!=='Completed'"
-                                    (click)="administer(medication,m)" class="action-item">
+                                    (click)="administer(medication.value)" class="action-item">
                                     <i class="fa fa-user-md" aria-hidden="true"></i>
                                     <span>Administer</span>
                                 </div>
 
                                 <div *ngIf="medication.status!=='Completed' && medication.status!=='Discontinued' && medication.status !=='Suspended'"
-                                    (click)="suspendMedication(medication, m)" class="action-item">
+                                    (click)="suspendMedication(medication.value)" class="action-item">
                                     <i class="fa fa-pause text-yellow" aria-hidden="true"></i>
                                     <span>Suspend</span>
                                 </div>
-                                <div *ngIf="medication.status==='Suspended'" (click)="activateMedication(medication, m)"
+                                <div *ngIf="medication.status==='Suspended'" (click)="activateMedication(medication.value)"
                                     class="action-item">
                                     <i class="fa fa-play text-green" aria-hidden="true"></i>
                                     <span>Activate</span>
                                 </div>
 
                                 <div *ngIf="medication.status !=='Suspended' && medication.status !=='Discontinued' && medication.status!=='Completed'"
-                                    (click)="discontinueMedication(medication, m)" class="action-item">
+                                    (click)="discontinueMedication(medication.value)" class="action-item">
                                     <i class="fa fa-ban text-red" aria-hidden="true"></i>
                                     <span>Discontinue</span>
                                 </div>
 
                                 <div *ngIf="medication.status !=='Suspended' && medication.status !=='Discontinued' && medication.status!=='Completed'"
-                                    (click)="completeMedication(medication, m)" class="action-item">
+                                    (click)="completeMedication(medication.value)" class="action-item">
                                     <i class="fa fa-check text-green" aria-hidden="true"></i>
                                     <span>Completed</span>
                                 </div>
@@ -121,24 +126,30 @@
         </div>
         <div class="tbl-listWrap">
             <div class="sect-title">Nursing Care</div>
-            <table cellpadding="0" cellspacing="0" border="0.5">
-                <tbody>
+            <table cellpadding="0" cellspacing="0" border="0.5" [formGroup]="nursingCareTableForm">
+                <tbody formArrayName="nursingCareTableArray">
                     <tr *ngIf="treatmentSheet?.nursingCares === undefined">
                         <td class="text-center" colspan="4"> No data available in table</td>
                     </tr>
-                    <tr *ngFor="let nursingCare of treatmentSheet?.nursingCares;">
-                        <td> {{ nursingCare.name }} </td>
-                        <td> {{ nursingCare.status }}</td>
+                    <tr [formGroupName]="i" *ngFor="let nursingCare of nursingCareTableForm['controls'].nursingCareTableArray['controls'];let i = index">
+                        <td> {{ nursingCare.value.name }} </td>
+                        <td> {{ nursingCare.value.status }}</td>
                         <td>
                             <div class="frm-item-wrap">
                                 <mat-input-container>
-                                    <input matInput [(ngModel)]="nursingCare.comment" placeholder="Comment">
+                                    <input matInput placeholder="Comment" formControlName="comment">
                                 </mat-input-container>
                             </div>
                         </td>
                         <td>
-                            <div (click)="save(nursingCare)" class="tbl-actn-btn">
+                            <div (click)="onDoneNursingCare(nursingCare.value)" class="tbl-actn-btn">
                                 <i class="fa fa-check" aria-hidden="true"></i> Done <span *ngIf="isSaving" class="fa fa-spinner fa-spin"></span>
+                            </div>
+                            <div (click)="onSuspendNursingCare(nursingCare.value,true)" class="tbl-actn-btn">
+                                <i class="fa fa-check" aria-hidden="true"></i> <span> Suspend </span>
+                            </div>
+                            <div (click)="onSuspendNursingCare(nursingCare.value,false)" class="tbl-actn-btn">
+                                <i class="fa fa-check" aria-hidden="true"></i><span> Activate </span>
                             </div>
                         </td>
                     </tr>
@@ -147,23 +158,25 @@
         </div>
         <div class="tbl-listWrap">
             <div class="sect-title">Physician Order</div>
-            <table cellpadding="0" cellspacing="0" border="0.5">
-                <tbody>
+            <table cellpadding="0" cellspacing="0" border="0.5" [formGroup]="physicianOrderTableForm">
+                <tbody formArrayName="physicianOrderTableArray">
                     <tr *ngIf="treatmentSheet?.physicianOrders === undefined">
                         <td class="text-center" colspan="4"> No data available in table</td>
                     </tr>
-                    <tr *ngFor="let physicianOrder of treatmentSheet?.physicianOrders;">
-                        <td> {{ physicianOrder.name }} </td>
-                        <td> {{ physicianOrder.status }}</td>
+                    <tr [formGroupName]="i" *ngFor="let physicianOrder of physicianOrderTableForm['controls'].physicianOrderTableArray['controls'];let i = index">
+                        <td> {{ physicianOrder.value.name }} </td>
+                        <td> {{ physicianOrder.value.status }}</td>
                         <td>
                             <div class="frm-item-wrap">
                                 <mat-input-container>
-                                    <input matInput placeholder="Comment">
+                                    <input matInput placeholder="Comment" formControlName="comment">
                                 </mat-input-container>
                             </div>
                         </td>
                         <td>
-                            <div class="tbl-actn-btn"><i class="fa fa-check" aria-hidden="true"></i>Done</div>
+                            <div (click)="onDonePhysicianOrderItem(physicianOrder.value)" class="tbl-actn-btn"><i class="fa fa-check" aria-hidden="true"></i>Done</div>
+                            <div (click)="onSuspendPhysicianOrderItem(physicianOrder.value,true)" class="tbl-actn-btn"><i class="fa fa-check" aria-hidden="true"></i>Suspend</div>
+                            <div (click)="onSuspendPhysicianOrderItem(physicianOrder.value,false)" class="tbl-actn-btn"><i class="fa fa-check" aria-hidden="true"></i>Activate</div>
                         </td>
                     </tr>
                 </tbody>
@@ -173,10 +186,10 @@
 
         <div class="buttom-sect">
             <div class="frm-item-wrap">
-                <textarea style="border:1px solid #777; padding:10px;box-sizing:border-box;background:#fff;" matInput
+                <textarea [formControl]="completionInfo" style="border:1px solid #777; padding:10px;box-sizing:border-box;background:#fff;" matInput
                     class="textarea" placeholder="Notes"></textarea>
             </div>
-            <div class="cta-1"><i class="fa fa-floppy-o" aria-hidden="true"></i>Save</div>
+            <div (click)="onCompletedTreatmentSheet()" class="cta-1"><i class="fa fa-floppy-o" aria-hidden="true"></i>Save</div>
         </div>
         <div style="clear:right;"></div>
     </div>

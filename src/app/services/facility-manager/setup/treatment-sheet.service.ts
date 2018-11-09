@@ -51,6 +51,10 @@ export class TreatmentSheetService {
     return this._socketTreatment.patch(id, data, {});
   }
 
+  patchTreatmentSheetMedication(id, data: any, params: any) {
+    return this._socketTreatment.update(id, data, {});
+  }
+
   update(treatment: any) {
     return this._socket.update(treatment._id, treatment, {});
   }
