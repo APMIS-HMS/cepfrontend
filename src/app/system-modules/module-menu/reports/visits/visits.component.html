@@ -1,0 +1,35 @@
+
+            <div class="cont-item recent-rooms">
+              <div class="item-title">Clinic Attendance Report</div>
+              <table>
+                  <thead>
+                      <tr>
+                          <th>Date</th>
+                          <th>Clinic</th>
+                          <th>Total Checked-In Patients</th>
+                          <th>Number of New Appointments</th>
+                          <th>Number of Follow-Up Appointments</th>
+                      </tr>
+                  </thead>
+
+                  <tbody *ngIf="visits.length > 0">
+                      <tr *ngFor="let item of visits;">
+                          <td>{{item.date}}</td>
+                          <td>{{item.clinic}}</td>
+                          <td>{{item.totalCheckedInPatients}}</td>
+                          <td class="tblMenu">
+                              <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                              <ul class="popMenu">
+                                  <li (click)="changeRoom(checkIn)">Switch To Room</li>
+                                  <li><i class="fa fa-trash tblMenu" aria-hidden="true"></i> Delete History</li>
+                              </ul>
+                          </td>
+                      </tr>
+                  </tbody>
+                  <!-- <tbody *ngIf="locationHistory == undefined || locationHistory.length === 0">
+                      <tr>
+                          <td colspan="4"><span class="fa fa-spinner fa-spin"></span> Please wait while loading recent stores checked into!</td>
+                      </tr>
+                  </tbody> -->
+              </table>
+          </div>
