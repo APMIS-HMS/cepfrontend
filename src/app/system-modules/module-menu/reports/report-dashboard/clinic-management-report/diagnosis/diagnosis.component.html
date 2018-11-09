@@ -1,3 +1,54 @@
-<p>
-  diagnosis works!
-</p>
+<div class="baseWrap">
+
+  <div class="filterWrap">
+    <div>
+      <h3>Filters</h3>
+    </div>
+    <div class="row">
+      <div class="dr-wrap survery">
+        <app-date-range></app-date-range>
+      </div>
+      <div class="dropdown-container">
+        <mat-form-field>
+          <mat-select placeholder="Filter By Clinic">
+            <mat-option value="option">General Clinic</mat-option>
+            <mat-option value="option1">Cardiology Clinic</mat-option>
+            <mat-option value="option2">Optometric Clinic</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+
+
+  </div>
+
+  <div class="tbl">
+      <div class="row" >
+          <div class="col-xs-12">
+              <div class="card blue-gradient" style="padding: 10px;border-radius: 5px 5px 0 0;">
+                  <div class="row thick-text small-text">
+                      <div class="col-xs-1 center">Hospital No.</div>
+                      <div class="col-xs-1 center">Sex</div>
+                      <div class="col-xs-2 center">Age</div>
+                      <div class="col-xs-1 center">Diagnosis Code No.</div>
+                  </div>
+              </div>
+          </div>
+      </div>
+      <br>
+      <div class="row" style="margin-top: -13px;">
+          <div class="col-xs-12">
+              <div style="padding: 0px 10px;border: 1px solid #ccc;">                  
+                  <div class="card-list-item" >
+                      <div class="row">
+                          <div class="col-xs-1 center">LT/08/2993</div>
+                          <div class="col-xs-1 center">Male</div>
+                          <div class="col-xs-2 center">75 Years</div>
+                          <div class="col-xs-1 center">FEV09/972646</div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+</div>
