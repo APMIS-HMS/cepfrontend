@@ -82,11 +82,13 @@ import { ImageViewerComponent } from './image-viewer/image-viewer.component';
 import { ImageEmitterService } from '../services/facility-manager/image-emitter.service';
 import { IrtsModalComponent } from './irts-modal/irts-modal.component';
 import { DaysInDates } from '../shared-module/pipes/days-in-dates';
-import { RegistersComponent } from 'app/system-modules/module-menu/reports/dhis-report/registers/registers.component';
-import { RegisterEntriesComponent } from 'app/system-modules/module-menu/reports/dhis-report/registers/register-entries/register-entries.component';
-import { RegisterEntryComponent } from 'app/system-modules/module-menu/reports/dhis-report/registers/register-entries/register-entry/register-entry.component';
-import { RegEntriesListComponent } from 'app/system-modules/module-menu/reports/dhis-report/registers/register-entries/reg-entries-list/reg-entries-list.component';
-import { NewRegisterEntryComponent } from 'app/system-modules/module-menu/reports/dhis-report/registers/register-entries/new-register-entry/new-register-entry.component';
+import { RegistersComponent } from 'app/system-modules/module-menu/reports/report-dashboard/dhis-report/registers/registers.component';
+import { RegisterEntriesComponent } from 'app/system-modules/module-menu/reports/report-dashboard/dhis-report/registers/register-entries/register-entries.component';
+import { RegEntriesListComponent } from 'app/system-modules/module-menu/reports/report-dashboard/dhis-report/registers/register-entries/reg-entries-list/reg-entries-list.component';
+import { RegisterEntryComponent } from 'app/system-modules/module-menu/reports/report-dashboard/dhis-report/registers/register-entries/register-entry/register-entry.component';
+import { NewRegisterEntryComponent } from 'app/system-modules/module-menu/reports/report-dashboard/dhis-report/registers/register-entries/new-register-entry/new-register-entry.component';
+
+
 @NgModule({
   declarations: [
     RegistersComponent,
