@@ -72,6 +72,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { APP_DATE_FORMATS, AppDateAdapter } from 'app/date-format';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
+import { ServerErrorsInterceptor } from './feathers/server.errors.interceptor';
 
 @NgModule({
 	declarations: [
@@ -237,7 +238,12 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 			multi: true
 		},
 		CanActivateViaAuthGuardCompleteFacilityService,
-		UpperCasePipe
+		UpperCasePipe,
+		{
+			provide: HTTP_INTERCEPTORS,
+			useClass: ServerErrorsInterceptor,
+			multi: true
+		}
 	],
 	bootstrap: [ AppComponent ]
 })
