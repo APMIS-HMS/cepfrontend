@@ -1,6 +1,6 @@
 import { Component, OnInit, EventEmitter, Output, Input } from '@angular/core';
 import { SystemModuleService } from './../../../../../services/module-manager/setup/system-module.service';
-import { FormControl } from '@angular/forms';
+import { FormControl,Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import {
@@ -28,7 +28,7 @@ export class OrderSetComponent implements OnInit {
   investigationData: any = <any>{};
   template: FormControl = new FormControl();
   diagnosis: FormControl = new FormControl();
-  problemFormControl: FormControl = new FormControl();
+  problemFormControl: FormControl = new FormControl({},[<any>Validators.required]);
   selectedProblem: any = <any>{};
   disableAuthorizerxButton = false;
   selectedTreatmentSheet: any;
@@ -87,7 +87,6 @@ export class OrderSetComponent implements OnInit {
 
     // Listen to the event from children components
     this._orderSetSharedService.itemSubject.subscribe(value => {
-      console.log(value);
       if (!!value.medications) {
         if (!!this.orderSet.medications) {
           const findItem = this.orderSet.medications
@@ -196,34 +195,28 @@ export class OrderSetComponent implements OnInit {
         this.selectedProblem = payload.problem;
         this.orderSet = payload.treatmentSheet;
         if (this.orderSet.investigations !== undefined) {
-          console.log('i ts ');
           this.orderSet.investigations.forEach(element => {
-            console.log(element);
             element.isExisting = true;
           });
         }
         if (this.orderSet.medications !== undefined) {
           this.orderSet.medications.forEach(element => {
-            console.log(element);
             element.isExisting = true;
           });
         }
         if (this.orderSet.procedures !== undefined) {
           this.orderSet.procedures.forEach(element => {
-            console.log(element);
             element.isExisting = true;
           });
         }
         if (this.orderSet.nursingCares !== undefined) {
           this.orderSet.nursingCares.forEach(element => {
-            console.log(element);
             element.isExisting = true;
           });
 
         }
         if (this.orderSet.physicianOrders !== undefined) {
           this.orderSet.physicianOrders.forEach(element => {
-            console.log(element);
             element.isExisting = true;
           });
         }
@@ -233,12 +226,10 @@ export class OrderSetComponent implements OnInit {
 
   compareProblem(l1: any, l2: any) {
     let l = l1.find(x => x === l2);
-    console.log(l);
     return l;
   }
 
   getPatientsProblems() {
-    console.log("Checking this out", this.selectedPatient);
     Observable.fromPromise(
       this._documentationService.find({
         query: {
@@ -261,7 +252,6 @@ export class OrderSetComponent implements OnInit {
   getProblems() {
     this.problems = [];
     this.patientDocumentation.documentations.forEach(documentation => {
-      console.log(documentation);
       if (
         documentation.document !== undefined &&
         documentation.document.documentType !== undefined &&
@@ -270,7 +260,6 @@ export class OrderSetComponent implements OnInit {
         documentation.document.body.problems.forEach(problem => {
           if (problem.status !== null && problem.status.name === 'Active') {
             this.problems.push(problem);
-            console.log(this.problems);
           }
         });
       }
@@ -293,8 +282,7 @@ export class OrderSetComponent implements OnInit {
 
   authorizerx() {
     this.disableAuthorizerxButton = true;
-    console.log(this.problemFormControl , this.selectedProblem)
-    if (this.problemFormControl.valid && this.selectedProblem.problem === undefined) {
+    if (this.problemFormControl.value.problem !== undefined && this.selectedProblem.problem === undefined) {
       this.systemModuleService.on();
       this.isButtonEnabled = false;
       const treatementSheet = {
@@ -318,8 +306,7 @@ export class OrderSetComponent implements OnInit {
         this.close_onClickModal();
       });
       this.showDoc.emit(true);
-    } else if (this.problemFormControl.valid && this.selectedProblem.problem !== undefined) {
-      console.log('update')
+    } else if (this.problemFormControl.value.problem === undefined && this.selectedProblem.problem !== undefined) {
       this.systemModuleService.on();
       this.isButtonEnabled = false;
       const treatementSheet = {
@@ -329,7 +316,6 @@ export class OrderSetComponent implements OnInit {
         facilityId: this.facility._id,
         createdBy: this.employeeDetails._id,
       };
-      console.log(treatementSheet);
       this._treatmentSheetService.updateTreatmentSheet(this.selectedTreatmentSheet._id, treatementSheet, {}).then(treatment => {
         this.disableAuthorizerxButton = false;
         this.systemModuleService.off();
@@ -345,7 +331,7 @@ export class OrderSetComponent implements OnInit {
       });
       this.showDoc.emit(true);
     }
-    else if (!this.problemFormControl.valid && this.selectedProblem.problem === undefined) {
+    else if (this.problemFormControl.value.problem === undefined && this.selectedProblem.problem === undefined) {
       this.disableAuthorizerxButton = false;
       this.systemModuleService.announceSweetProxy('Please select a problem before creating an order set', 'error');
     }
@@ -396,7 +382,6 @@ export class OrderSetComponent implements OnInit {
         personId: id
       }
     }).then(res => {
-      console.log(res);
       if (res.data.length > 0) {
         this.selectedPatient = res.data[0];
         this.getPatientsProblems();
