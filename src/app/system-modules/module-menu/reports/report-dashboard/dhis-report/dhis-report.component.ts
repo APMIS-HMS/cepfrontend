@@ -23,15 +23,15 @@ export class DhisReportComponent implements OnInit {
     if (param.includes('nhmis')) {
       this.nhmis = true;
       this.register = false;
-      this._router.navigate(['/dashboard/reports/nhmis']);
+      this._router.navigate(['/dashboard/reports/report-dashboard/dhis-report/nhmis']);
     } else if (param.includes('registers')) {
       this.nhmis = false;
       this.register = true; 
-      this._router.navigate(['/dashboard/reports/register']);
+      this._router.navigate(['/dashboard/reports/report-dashboard/dhis-report/register']);
     } else {
       this.nhmis = true;
       this.register = false; 
-      this._router.navigate(['/dashboard/reports/nhmis']);
+      this._router.navigate(['/dashboard/reports/report-dashboard/dhis-report/nhmis']);
     }
   }
 
@@ -46,7 +46,7 @@ export class DhisReportComponent implements OnInit {
       this.nhmis = true;
       this.register = false;
     }
-    this._router.navigate(['/dashboard/reports/' + link]);
+    this._router.navigate(['/dashboard/reports/report-dashboard/dhis-report' + link]);
   }
 
 }
