@@ -87,9 +87,9 @@ export class RightTabTooltipComponent implements OnInit, OnChanges {
       this.systemModuleService.announceSweetProxy('Problem updated successfully!', 'success', null, null, null, null, null, null, null);
     },
     err => {
-      // update success callback, show success notification
+      // update error callback, show error notification
       this.systemModuleService.off();
-      this.systemModuleService.announceSweetProxy('Problem not updated due error while saving!','error');
+      this.systemModuleService.announceSweetProxy('Problem not updated due error while saving!', 'error');
     });
 
   }

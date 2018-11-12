@@ -26,7 +26,10 @@
 
 
 
-
+td{
+    text-align: center !important;
+    font-weight: bold;
+}
 
 
 
@@ -142,6 +145,6 @@ hr.white {
 
 .divider {
     position: relative;
-    height: 50px;
+    height: 20px;
     width: 100%;
 }
