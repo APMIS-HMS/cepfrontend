@@ -33,8 +33,9 @@
 }
 
 .back{
-    font-size: 14px;
+    font-size: 12px;
     padding-left: 3px;
+    font-family: sans-serif;
 }
 
 .filter{
@@ -46,4 +47,6 @@
 .secWrap-header{
     text-align: center;
     padding: 5px;
+    display: flex;
+    justify-content: center;
 }

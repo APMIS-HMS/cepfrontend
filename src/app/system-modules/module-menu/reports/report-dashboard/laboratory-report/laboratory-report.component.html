@@ -11,13 +11,13 @@
     </div>
 
     <div class="filter">
-        <div style="padding:15px; display: flex; ">
-            <div class="dr-wrap survery">
+        <div class="row" style="padding:10px; justify-content:center;">
+            <div class="dr-wrap survery col-sm">
                 <app-date-range></app-date-range>
             </div>
-            <div class="searchInputWrap row">
+            <div class="searchInputWrap col-sm row">
                 <mat-form-field>
-                    <mat-select [formControl]="searchCriteria" placeholder="select search criteria">
+                    <mat-select [formControl]="searchCriteria" placeholder="Search ">
                         <mat-option value="Enter Patient Name">By Provider</mat-option>
                         <mat-option value="Enter Clinic name">By Clinic Name</mat-option>
                     </mat-select>
@@ -31,15 +31,23 @@
                     </div>
                 </div>
             </div>
-            <div class="secWrap-header">
-                <div>Group</div>
-                <div>
-                    <mat-radio-group>
-                        <mat-radio-button value="1">By Location</mat-radio-button>
-                        <mat-radio-button value="2">By Workbench</mat-radio-button>
-                    </mat-radio-group>
-                </div>
+            <div class="col-sm">
+                <h3>Group</h3>
+                <mat-form-field>
+                    <mat-select placeholder="Select Location">
+                        <mat-option>PP Lab</mat-option>
+                        <mat-option>Dental Lab</mat-option>
+                        <mat-option>Optometric Lab</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field>
+                    <mat-select placeholder="Select Workbench">
+                        <mat-option>Haematology</mat-option>
+                        <mat-option>Microbiology</mat-option>
+                        <mat-option>Chemical Pathology</mat-option>
+                        <mat-option>Serology</mat-option>
+                    </mat-select>
+                </mat-form-field>
             </div>
         </div>
     </div>
-</div>
