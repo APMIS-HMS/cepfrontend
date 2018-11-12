@@ -47,4 +47,11 @@ export class ClinicManagementReportComponent implements OnInit {
 		}
 		this._router.navigate([ '/dashboard/reports/report-dashboard/clinic-report/' + link ]);
 	}
+<<<<<<< HEAD
+=======
+
+	back_dashboard() {
+		this._router.navigate(['/dashboard/reports/report-dashboard']);
+	  }
+>>>>>>> 647d3bb22dcea8e82457511fef5bedbe8a70948e
 }

@@ -1,3 +1,6 @@
+@import "./../../../reports.component.scss";
+@import "./../../../../payment/invoice/invoice.component.scss";
+
 .baseWrap{
     padding: 50px;
 }
@@ -8,12 +11,24 @@
     display: inline-block;
 }
 
+.th-r1 th {
+    background: #0288d1 !important;
+    color: white;
+}
+
+
+
 .dropdown-container {
-    display: flex;
+    display: block;
     flex-direction: column;
-    padding-left: 50px;
+    padding-left: 20px;
   }
   
+  
+  .searchInput{
+    padding-left:5px;
+}
+
   .dropdown-container > * {
     width:200px;
   }
@@ -24,22 +39,48 @@
     width: 100%
   }
 
+  mat-tab-group{
+    position: sticky;
+}
 
 
+<<<<<<< HEAD
 td{
     text-align: center !important;
     font-weight: bold;
+=======
+.filter-card{
+    box-shadow: 0px 5px 2px -3px rgba(0, 0, 0, 0.5);
+    // margin: 10px;
+    // padding: 10px;
+    // border-radius: 5px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-content: center;
+    flex-wrap: wrap;
+    padding: 20px 0 20px 0;
+}
+.filter-text{
+    position: initial;
+    align-self: flex-start;
+>>>>>>> 647d3bb22dcea8e82457511fef5bedbe8a70948e
 }
 
-
-
-  .card {
-    -webkit-box-shadow: 0px 2px 25px -3px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0px 2px 25px -3px rgba(0, 0, 0, 0.5);
-    box-shadow: 0px 2px 25px -3px rgba(0, 0, 0, 0.5);
-    padding: 20px;
-    border-radius: 5px;
+.status-filter{
+    display: -ms-inline-grid;
+    margin-left: 50px;
+    float: right;
+    position: relative;
 }
+//   .card {
+//     -webkit-box-shadow: 0px 2px 25px -3px rgba(0, 0, 0, 0.5);
+//     -moz-box-shadow: 0px 2px 25px -3px rgba(0, 0, 0, 0.5);
+//     box-shadow: 0px 2px 25px -3px rgba(0, 0, 0, 0.5);
+//     padding: 10px;
+//     border-radius: 5px;
+// }
 
 .card-list-item {
     border-bottom: solid rgb(204, 204, 204) 1px;
