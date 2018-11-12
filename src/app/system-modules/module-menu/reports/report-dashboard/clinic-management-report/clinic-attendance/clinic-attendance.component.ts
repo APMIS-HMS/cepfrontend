@@ -4,6 +4,7 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility } from 'app/models';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { IDateRange } from 'ng-pick-daterange';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-clinic-attendance',
@@ -21,6 +22,8 @@ export class ClinicAttendanceComponent implements OnInit {
   totalFollowUpAppointment: number = 0;
   constructor(private clinicAttendance: ClinicAttendanceReportService,
     private locker: CoolLocalStorage, private systemModuleService: SystemModuleService) { }
+	searchControl = new FormControl();
+	searchCriteria = new FormControl('Search');
 
   ngOnInit() {
     this.currentFacility = <Facility>this.locker.getObject('selectedFacility');

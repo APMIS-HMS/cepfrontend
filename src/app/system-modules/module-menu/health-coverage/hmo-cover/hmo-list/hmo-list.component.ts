@@ -66,6 +66,7 @@ export class HmoListComponent implements OnInit {
 
   ngOnInit() {
     this.selelctedFacility = <Facility>this.locker.getObject('selectedFacility');
+    console.log(this.selelctedFacility);
     this.user = <User>this.locker.getObject('auth');
     this.frmNewHmo = this.formBuilder.group({
       name: ['', [Validators.required]],

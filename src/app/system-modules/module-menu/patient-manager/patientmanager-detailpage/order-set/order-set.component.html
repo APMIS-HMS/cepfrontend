@@ -89,7 +89,7 @@
                             <tr *ngFor="let orderSetInves of orderSet?.investigations; let i=index">
                                 <td style="width:30px;text-align:center">{{ i+1 }}</td>
                                 <td>{{ orderSetInves.name }}</td>
-                                <td class="action-placeholder" style="text-align:center;width:100px">
+                                <td *ngIf="orderSetInves.isExisting!==true" class="action-placeholder" style="text-align:center;width:100px">
                                     <button *ngIf="orderSetInves.isBilled ===undefined || !orderSetInves.isBilled"
                                         (click)="onClickBillInvestigation(i, orderSetInves);" mat-raised-button class="text-white mat-xs-btn bg-primary ">
                                         <span *ngIf="orderSetInves.isBilled === undefined || !orderSetInves.isBilled">Bill</span>
@@ -122,7 +122,7 @@
                             <tr *ngFor="let orderSetPro of orderSet?.procedures; let i=index;">
                                 <td style="width:30px;text-align:center"> {{ i+1 }} </td>
                                 <td> {{ orderSetPro.name }} </td>
-                                <td class="action-placeholder" style="text-align:center;width:30px;">
+                                <td *ngIf="orderSetPro.isExisting!==true" class="action-placeholder" style="text-align:center;width:30px;">
                                     <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
                                     <div class="action-container shadow-RB">
                                         <div class="action-item" (click)="popProcedure_show(orderSetPro)">
@@ -153,7 +153,7 @@
                             <tr *ngFor="let orderSetNur of orderSet?.nursingCares; let i=index">
                                 <td style="width:30px;text-align:center">{{ i+1 }}</td>
                                 <td>{{ orderSetNur.name }}</td>
-                                <td class="action-placeholder" (click)="deleteOrderSetItem(i, orderSetNur, 'nursingCare')"
+                                <td *ngIf="orderSetNur.isExisting!==true" class="action-placeholder" (click)="deleteOrderSetItem(i, orderSetNur, 'nursingCare')"
                                     style="text-align:center;width:30px;">
                                     <div>
                                         <i class="fa fa-close" aria-hidden="true"></i>
@@ -176,7 +176,7 @@
                             <tr *ngFor="let orderSetPhy of orderSet?.physicianOrders; let i=index">
                                 <td style="width:30px;text-align:center">{{ i+1 }}</td>
                                 <td>{{ orderSetPhy.name }}</td>
-                                <td class="action-placeholder" (click)="deleteOrderSetItem(i, orderSetPhy, 'physicianOrder')"
+                                <td *ngIf="orderSetPhy.isExisting!==true" class="action-placeholder" (click)="deleteOrderSetItem(i, orderSetPhy, 'physicianOrder')"
                                     style="text-align:center;width:30px;">
                                     <div>
                                         <i class="fa fa-close" aria-hidden="true"></i>
