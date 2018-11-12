@@ -87,26 +87,37 @@
             </div>
         </mat-tab>
         <mat-tab label="• Appointment Report">
-            <div class="filter-card">
-                <div class="row">
-                    <div class="filter-text">
-                        <h4>Filters</h4>
+            <div class="filter-session">
+                <div class="row middle-xs">
+                    <div class="middle-xs">
+                        <div class="dropdown-container">
+                            <mat-form-field>
+                                <mat-select placeholder="Search By">
+                                    <mat-option value="option">Provider</mat-option>
+                                    <mat-option value="option1">Patient</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
                     </div>
-                    <div class="dropdown-container">
-                        <mat-form-field>
-                            <mat-select placeholder="Search By">
-                                <mat-option value="option">Provider</mat-option>
-                                <mat-option value="option1">Patient</mat-option>
-                            </mat-select>
+                    <div class="filter-space mat-input">
+                        <mat-form-field class="">
+                            <input matInput placeholder="search here">
                         </mat-form-field>
-                        <div class="filters">
-                            <div class="filter">
-                                <input style="border-radius: 50px;" class="search" placeholder="search registers...">
+                    </div>
+
+                    <div class="col-md-4 status-filter">
+                        <div class="middle-xs">
+                            <div>
+                                Status Filter:
+                                <mat-radio-group>
+                                    <mat-radio-button value="auto">Checked In</mat-radio-button>
+                                    <mat-radio-button value="always">Checked Out</mat-radio-button>
+                                    <mat-radio-button value="never">Suspend</mat-radio-button>
+                                    <mat-radio-button value="never">Postponed</mat-radio-button>
+                                </mat-radio-group>
                             </div>
                         </div>
                     </div>
-
-
                 </div>
             </div>
             <div class="tbl-resp-wrap">
