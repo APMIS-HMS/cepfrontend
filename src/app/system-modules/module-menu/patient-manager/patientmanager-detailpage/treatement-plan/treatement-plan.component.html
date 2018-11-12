@@ -22,7 +22,8 @@
             </div>
         </div>
         <div *ngIf="!treatmentSheetData?.completed">
-            <button (click)="onEditTreatmentSheet()">Edit Treatment Sheet</button>
+            <button *ngIf="problemFormControl.valid" (click)="onEditTreatmentSheet()">Edit
+                Treatment Sheet</button>
             <div class="tbl-listWrap">
                 <div class="sect-title">Investigations</div>
                 <table cellpadding="0" cellspacing="0" border="0.5" [formGroup]="investigationTableForm">
@@ -247,7 +248,8 @@
                     <tbody>
                         <tr *ngFor="let activity of track.tracks">
                             <td>{{activity.createdAt|date:'medium'}}</td>
-                            <td (click)="onViewEmployee(activity)"><span *ngIf="activity.createdByName===undefined">View employee</span><span>{{activity?.createdByName}}</span></td>
+                            <td (click)="onViewEmployee(activity)"><span *ngIf="activity.createdByName===undefined">View
+                                    employee</span><span>{{activity?.createdByName}}</span></td>
                             <td>{{activity.action}}</td>
                             <td>{{activity.comment}}</td>
                         </tr>

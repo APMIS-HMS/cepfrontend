@@ -37,7 +37,7 @@ export class TreatementPlanComponent implements OnInit {
   nursingCareTableForm: FormGroup;
   physicianOrderTableForm: FormGroup;
   completionInfo = new FormControl();
-  problemFormControl = new FormControl();
+  problemFormControl = new FormControl('',Validators.required);
   isEditTreatmentSheet = false;
   treatmentSheetId: any = '';
   selectedDocument: PatientDocumentation = <PatientDocumentation>{};
