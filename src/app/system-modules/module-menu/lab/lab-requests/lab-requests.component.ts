@@ -758,7 +758,7 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
 				if (item.laboratoryId._id === parentLocation._id && item.investigationId === panel.investigation._id) {
 					if (item.workbenches.length > 0) {
 						panel.location = investigation.location;
-						panel.location.workbenches = item.workbenches;
+						// panel.location.workbenches = item.workbenches; // commented this out by starday to fix issue with panel price taking the price of a sigle item
 						retVal = item.workbenches[0].price;
 					}
 				}
@@ -1107,8 +1107,7 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
 						});
 					});
 				})
-				.catch((err) => {
-				});
+				.catch((err) => {});
 		} else {
 			this.requestService
 				.customFind({ query: { facilityId: this.selectedFacility._id, $sort: { createdAt: -1 } } })
@@ -1182,10 +1181,9 @@ export class LabRequestsComponent implements OnInit, OnDestroy {
 								this.pendingRequests.push(pendingLabReq);
 							}
 						});
-          });
+					});
 				})
-				.catch((err) => {
-				});
+				.catch((err) => {});
 		}
 	}
 
