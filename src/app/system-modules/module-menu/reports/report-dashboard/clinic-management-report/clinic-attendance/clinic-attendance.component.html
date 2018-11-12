@@ -1,3 +1,177 @@
-<p>
-  clinic-attendance works!
-</p>
+<div class="baseWrap">
+    <h1> Clinic Visits Report </h1>
+    <div class="filterWrap">
+        <div class="row">
+            <div class="dr-wrap survery">
+                <app-date-range></app-date-range>
+            </div>
+        </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <mat-tab-group>
+        <mat-tab label="• Clinic Attendance Report">
+            <div class="tbl-resp-wrap">
+                <table class="card" style="color:black;" cellpadding="0" cellspacing="0" border="0.5">
+                    <thead>
+                        <tr class="th-r1 th-xxx">
+                            <th rowspan="2">S/N</th>
+                            <th rowspan="2">Date</th>
+                            <th rowspan="2">Clinic</th>
+                            <th rowspan="2">Total Checked-In Appointment</th>
+                            <th colspan="2">New Appointments</th>
+                            <th colspan="2">Follow-Up Appointments</th>
+                        </tr>
+                        <tr class="th-r2 th-xxx">
+                            <th>Male</th>
+                            <th>Female</th>
+                            <th>Male</th>
+                            <th>Female</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr class="th-xxx">
+                            <td>1</td>
+                            <td>11th Oct 2018</td>
+                            <td>General Clinic</td>
+                            <td> 50 Patients </td>
+                            <td>10 Patients</td>
+                            <td>5 Patients</td>
+                            <td>20 Patients</td>
+                            <td>15 Patients</td>
+                        </tr>
+                        <tr class="th-xxx">
+                            <td>2</td>
+                            <td>11th Oct 2018</td>
+                            <td>General Clinic</td>
+                            <td> 50 Patients </td>
+                            <td>10 Patients</td>
+                            <td>5 Patients</td>
+                            <td>20 Patients</td>
+                            <td>15 Patients</td>
+                        </tr>
+                        <tr class="th-xxx">
+                            <td>3</td>
+                            <td>11th Oct 2018</td>
+                            <td>General Clinic</td>
+                            <td> 50 Patients </td>
+                            <td>10 Patients</td>
+                            <td>5 Patients</td>
+                            <td>20 Patients</td>
+                            <td>15 Patients</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
+                </mat-paginator>
+            </div>
+            <div class="billSummarySect">
+                <table class="rhs">
+                    <div class="summaryItems">
+                        <tr class="summaryItem">
+                            <td class="label" style="width:auto !important;">New Appointment Sum Total</td>
+                            <td class="data">
+                                <span>350 Pateints</span></td>
+                            <td></td>
+                        </tr>
+                        <tr class="summaryItem">
+                            <td class="label" style="width:auto !important;">Follow-Up Appointment Sum Total</td>
+                            <td class="data">
+                                <span>400 Patients</span></td>
+                            <td></td>
+                        </tr>
+                    </div>
+                </table>
+            </div>
+        </mat-tab>
+        <mat-tab label="• Appointment Report">
+            <div class="filter-session">
+                <div class="row middle-xs">
+                    <div class="middle-xs">
+                        <div class="dropdown-container">
+                            <mat-form-field>
+                                <mat-select placeholder="Search By">
+                                    <mat-option value="option">Provider</mat-option>
+                                    <mat-option value="option1">Patient</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div class="filter-space mat-input">
+                        <mat-form-field class="">
+                            <input matInput placeholder="search here">
+                        </mat-form-field>
+                    </div>
+
+                    <div class="col-md-4 status-filter">
+                        <div class="middle-xs">
+                            <div>
+                                Status Filter:
+                                <mat-radio-group>
+                                    <mat-radio-button value="auto">Checked In</mat-radio-button>
+                                    <mat-radio-button value="always">Checked Out</mat-radio-button>
+                                    <mat-radio-button value="never">Suspend</mat-radio-button>
+                                    <mat-radio-button value="never">Postponed</mat-radio-button>
+                                </mat-radio-group>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tbl-resp-wrap">
+                <table class="card" style="color:black;" cellpadding="0" cellspacing="0" border="0.5">
+                    <thead>
+                        <tr class="th-r1 th-xxx">
+                            <th>S/N</th>
+                            <th>Provider</th>
+                            <th>Date / Time</th>
+                            <th>Patient Name</th>
+                            <th>APMIS ID</th>
+                            <th>Phone</th>
+                            <th>Appointment Type</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr class="th-xxx">
+                            <td>1</td>
+                            <td>Dr Poju Oyemade</td>
+                            <td>8th Jan, 2017 8:10am</td>
+                            <td> Olamide Omoniyi </td>
+                            <td>GX-38882</td>
+                            <td>08142214995</td>
+                            <td>Follow-Up Appointment</td>
+                            <td>Suspend</td>
+                        </tr>
+                        <tr class="th-xxx">
+                            <td>2</td>
+                            <td>Dr Poju Oyemade</td>
+                            <td>12th Jan, 2017 8:10am</td>
+                            <td> Admola Opeyemi </td>
+                            <td>JJ-38882</td>
+                            <td>08142214995</td>
+                            <td>New Appointment</td>
+                            <td>Checked-In</td>
+                        </tr>
+                        <tr class="th-xxx">
+                            <td>3</td>
+                            <td>Dr Poju Oyemade</td>
+                            <td>12th April, 2017 12:00pm</td>
+                            <td> Olwasegun Olayemi </td>
+                            <td>WD-76535</td>
+                            <td>08142214995</td>
+                            <td>New Appointment</td>
+                            <td>Postpone</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
+                </mat-paginator>
+            </div>
+        </mat-tab>
+    </mat-tab-group>
+
+</div>
