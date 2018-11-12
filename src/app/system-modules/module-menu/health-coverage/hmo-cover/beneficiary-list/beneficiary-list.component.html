@@ -7,13 +7,12 @@
       <div class="clinicalNoteWrap">
         <div class="tblWrapa" class="actSect">
           <div class="tbl-top-actions">
-            <div (click)="newBeneficiary_click()" class="btn-outline">
-              <i class="fa fa-plus"></i> New Beneficiary</div>
+            <div (click)="newBeneficiary_click()" class="btn-outline"><i class="fa fa-plus"></i> New Beneficiary</div>
             <mat-paginator [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
               [pageSizeOptions]="pageSizeOptions">
             </mat-paginator>
           </div>
-         
+          <table>
             <thead>
               <tr>
                 <th>
@@ -93,7 +92,6 @@
                 <td class="table-content" colspan="6" style="text-align: center"> No data available in table</td>
               </tr>
             </tbody>
-
           </table>
           <mat-paginator [pageIndex]="0" [length]="beneficiaries.length" [pageSize]="pageSize" (page)="pageEvent = $event; onPaginateChange($event)"
             [pageSizeOptions]="pageSizeOptions">

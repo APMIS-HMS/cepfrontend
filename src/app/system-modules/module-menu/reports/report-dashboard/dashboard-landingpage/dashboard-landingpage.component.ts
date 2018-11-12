@@ -18,4 +18,13 @@ export class DashboardLandingpageComponent implements OnInit {
   call_clinicManagementReport() {
 		this._router.navigate([ '/dashboard/reports/report-dashboard/clinic-report' ]);
 	}
+	call_patientReport() {
+		this._router.navigate([ '/dashboard/reports/report-dashboard/patientReport' ]);
+	}
+	call_laboratoryReport() {
+		this._router.navigate(['/dashboard/reports/report-dashboard/labReport']);
+		// .then(p => {
+		// 	console.log(p);
+		// }).catch(error => {console.log(error) });
+	}
 }

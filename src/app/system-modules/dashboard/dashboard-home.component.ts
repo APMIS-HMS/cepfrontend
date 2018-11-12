@@ -1,25 +1,25 @@
-import {Component, ElementRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
-import {FormControl} from '@angular/forms';
-import {Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router} from '@angular/router';
-import {CoolLocalStorage} from 'angular2-cool-storage';
-import {ToastsManager} from 'ng2-toastr/ng2-toastr';
-import {Observable} from 'rxjs/Observable';
-import {Subscription} from 'rxjs/Subscription';
+import { Component, ElementRef, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
+import { FormControl } from '@angular/forms';
+import { Event, NavigationCancel, NavigationEnd, NavigationError, NavigationStart, Router } from '@angular/router';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { ToastsManager } from 'ng2-toastr/ng2-toastr';
+import { Observable } from 'rxjs/Observable';
+import { Subscription } from 'rxjs/Subscription';
 
-import {Employee, Facility} from '../../models/index';
-import {EmployeeService, FacilitiesService, UserService, WorkSpaceService} from '../../services/facility-manager/setup/index';
+import { Employee, Facility } from '../../models/index';
+import { EmployeeService, FacilitiesService, UserService, WorkSpaceService } from '../../services/facility-manager/setup/index';
 
-import {FeatureModuleService} from './../../services/module-manager/setup/feature-module.service';
-import {DONT_USE_AUTH_GUARD} from './../../shared-module/helpers/global-config';
-import {AuthFacadeService} from './../service-facade/auth-facade.service';
+import { FeatureModuleService } from './../../services/module-manager/setup/feature-module.service';
+import { DONT_USE_AUTH_GUARD } from './../../shared-module/helpers/global-config';
+import { AuthFacadeService } from './../service-facade/auth-facade.service';
 import { ChannelService } from '../../services/communication-manager/channel-service';
-import {ImageEmitterService} from '../../services/facility-manager/image-emitter.service';
+import { ImageEmitterService } from '../../services/facility-manager/image-emitter.service';
 
 @Component({
   selector: 'app-dashboard-home',
   templateUrl: './dashboard-home.component.html',
   // tslint:disable-next-line:use-host-property-decorator
-  host: {'(document:click)': 'hostClick($event)'},
+  host: { '(document:click)': 'hostClick($event)' },
   styleUrls: ['./dashboard-home.component.scss']
 })
 export class DashboardHomeComponent implements OnInit {
@@ -58,15 +58,15 @@ export class DashboardHomeComponent implements OnInit {
 
   checkedInObject: any = <any>{};
   constructor(
-      private _elRef: ElementRef, private locker: CoolLocalStorage,
-      private userService: UserService, private router: Router,
-      public facilityService: FacilitiesService,
-      private employeeService: EmployeeService,
-      private workSpaceService: WorkSpaceService,
-      private authFacadeService: AuthFacadeService,
-      private channelService: ChannelService,
-      private featureService: FeatureModuleService,
-      private imageEmitter : ImageEmitterService) {}
+    private _elRef: ElementRef, private locker: CoolLocalStorage,
+    private userService: UserService, private router: Router,
+    public facilityService: FacilitiesService,
+    private employeeService: EmployeeService,
+    private workSpaceService: WorkSpaceService,
+    private authFacadeService: AuthFacadeService,
+    private channelService: ChannelService,
+    private featureService: FeatureModuleService,
+    private imageEmitter: ImageEmitterService) { }
 
   ngOnInit() {
     this.channel = this.channelService.getCurrentUserChannel();
@@ -76,9 +76,8 @@ export class DashboardHomeComponent implements OnInit {
     this.facilityObj = <Facility>this.facilityService.getSelectedFacilityId();
     if (this.facilityObj !== undefined && this.facilityObj != null) {
       this.facilityName = this.facilityObj.name;
-      if(this.facilityObj.logoObject)
-      {
-          this.imageEmitter.setSrc(this.facilityObj.logoObject.thumbnail);
+      if (this.facilityObj.logoObject) {
+        this.imageEmitter.setSrc(this.facilityObj.logoObject.thumbnail);
       }
 
     }
@@ -171,7 +170,7 @@ export class DashboardHomeComponent implements OnInit {
   }
 
   getSubscribedModule(value) {
-    if (this.facilitySubscriptions.subscriptions_status!==undefined) {
+    if (this.facilitySubscriptions.subscriptions_status !== undefined) {
       if (this.facilitySubscriptions.subscriptions_status === true) {
         if (this.facilitySubscriptions.plans !== undefined) {
           let _modules = this.facilitySubscriptions.plans.filter(x => x.name === value && x.isConfirmed === true);
@@ -366,14 +365,14 @@ export class DashboardHomeComponent implements OnInit {
     this.immunizationSubmenuActive = false;
   }
 
-  mainMenuRoute(route) {}
+  mainMenuRoute(route) { }
 
   innerMenuToggle() {
     this.innerMenuShow = !this.innerMenuShow;
   }
   innerMenuHide(e) {
     if (e.srcElement.className === 'inner-menu1-wrap' ||
-        e.srcElement.localName === 'i' || e.srcElement.id === 'innerMenu-ul') {
+      e.srcElement.localName === 'i' || e.srcElement.id === 'innerMenu-ul') {
     } else {
       this.innerMenuShow = false;
     }
