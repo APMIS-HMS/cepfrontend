@@ -35,12 +35,11 @@
 .back{
     font-size: 12px;
     padding-left: 3px;
-    font-family: sans-serif;
+    text-decoration: underline;
 }
 
 .filter{
-    display: flex;
-    box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+    display: block;
     justify-content: center;
 }
 
@@ -49,4 +48,15 @@
     padding: 5px;
     display: flex;
     justify-content: center;
+}
+
+.select{
+    width: 150px;
+    padding-right: 10px;
+    padding-left:10px;
+}
+
+.inputWrap{
+    display: block;
+    margin: 2px auto;
 }
