@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-clinic-attendance',
@@ -6,6 +7,9 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./clinic-attendance.component.scss']
 })
 export class ClinicAttendanceComponent implements OnInit {
+
+	searchControl = new FormControl();
+	searchCriteria = new FormControl('Search');
 
   constructor() { }
 

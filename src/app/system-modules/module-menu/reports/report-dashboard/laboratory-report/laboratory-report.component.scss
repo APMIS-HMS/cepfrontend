@@ -1,16 +1,24 @@
 @import '../../../pharmacy/prescription-list/prescription-list.component.scss';
+@import './../../reports.component.scss';
+@import './../dhis-report/registers/registers.component.scss';
+@import './../dhis-report/nhmis-summary/nhmis-summary.component.scss';
+@import './../clinic-management-report/diagnosis/diagnosis.component.scss';
+
+
 .card {
     margin-top: 60px;
 }
 
 .searchInputWrap {
     display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
     position: relative;
-    /*width: 300px;*/
-    padding: 5px 2px;
-    margin-top: 99px;
+    /* padding-top: 10px; */
+    margin-left: 30px;
 }
+
 
 .mat-form-field-wrapper {
     position: relative;
@@ -21,4 +29,21 @@
     position: absolute;
     color: #858585;
     margin-left: 10px;
+    padding-left: 10px;
+}
+
+.back{
+    font-size: 14px;
+    padding-left: 3px;
+}
+
+.filter{
+    display: flex;
+    box-shadow: 0 3px 5px -1px rgba(0,0,0,.2), 0 6px 10px 0 rgba(0,0,0,.14), 0 1px 18px 0 rgba(0,0,0,.12);
+    justify-content: center;
+}
+
+.secWrap-header{
+    text-align: center;
+    padding: 5px;
 }
