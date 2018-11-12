@@ -18,7 +18,7 @@ constructor(private socketService: SocketService,
             totalCheckedInPatients: 200,
             new: {
               total: 20,
-              totalFemale: 5,
+              totalFemale: 10,
               totalMale: 15
             },
             followUp: {

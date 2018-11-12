@@ -28,7 +28,6 @@ export class ClinicAttendanceComponent implements OnInit {
   }
 
 	setFacilityAppointmentsByDateRange(dateRange: IDateRange): any {
-    console.log(dateRange);
 		if (dateRange !== null) {
       this.dateRange = dateRange;
       this.clinicAttendance.find({
@@ -39,12 +38,13 @@ export class ClinicAttendanceComponent implements OnInit {
         }
       }).then(payload => {
         this.filteredAttendanceReport = payload;
-        
       });
 		}
 	}
 
   getFacilityAppointments() {
+    const newAppointmentCount = [];
+    const followUpAppointmentCount = [];
     if (this.currentFacility !== undefined || this.currentFacility._id !== '') {
         this.clinicAttendance.find({
           query: {
@@ -53,8 +53,13 @@ export class ClinicAttendanceComponent implements OnInit {
         }).then(payload => {
             this.isClinicAttendanceLoading = false;
             this.attendanceReports = payload;
-            this.totalNewAppointment = this.attendanceReports[0].totalNewAppointment || 0;
-            this.totalFollowUpAppointment = this.attendanceReports[0].totalFollowUpAppointment || 0;
+
+            this.attendanceReports.forEach(item => {
+              newAppointmentCount.push(item.new.totalMale + item.new.totalFemale);
+              followUpAppointmentCount.push(item.followUp.totalMale + item.followUp.totalFemale);
+            });
+            this.totalNewAppointment = newAppointmentCount.reduce((a, b) => a + b, 0);
+            this.totalFollowUpAppointment = followUpAppointmentCount.reduce((a, b) => a + b, 0);
         });
     } else {
       this.systemModuleService.announceSweetProxy(
