@@ -24,9 +24,12 @@ export class FamilyBillDetailComponent implements OnInit {
     private authFacadeService: AuthFacadeService,
     private systemModuleService: SystemModuleService,
     private facilitiesService: FacilitiesService,
-    private patientService: PatientService) { }
+    private patientService: PatientService) {
+      console.log(this.selectedBill);
+     }
 
   ngOnInit() {
+    
   }
 
   confirmBill_onClick(bill) {
@@ -42,6 +45,7 @@ export class FamilyBillDetailComponent implements OnInit {
   }
 
   hmoConfirmBill(isAccept: boolean) {
+    console.log(this.selectedBill);
     if (isAccept) {
       const index = this.selectedBill.billItems.filter(x => x._id.toString() === this.bill._id.toString());
       index[0].covered.isVerify = true;
@@ -59,8 +63,10 @@ export class FamilyBillDetailComponent implements OnInit {
       index[0].covered.billAccepted = false;
       index[0].covered.verifiedAt = new Date();
       this.billingService.patch(this.selectedBill._id, this.selectedBill, {}).then(payload => {
+        console.log(payload);
         this.selectedBill = payload;
         const _selectedBill = JSON.parse(JSON.stringify(this.selectedBill));
+        console.log(_selectedBill);
         delete _selectedBill._id;
         delete _selectedBill.coverFile;
         _selectedBill.patientId =  index[0].patientId;
@@ -69,16 +75,22 @@ export class FamilyBillDetailComponent implements OnInit {
         _selectedBill.billItems[0].covered = {};
         _selectedBill.billItems[0].covered.coverType = "wallet";
         _selectedBill.billItems[0].isBearerConfirmed = true;
+        console.log(_selectedBill);
         this.billingService.create(_selectedBill).then(payload2 => {
+          console.log(payload2);
           const indx = payload2.principalObject.paymentPlan.filter(x => x.planType === 'wallet');
+          console.log(indx);
           if (indx.length > 0) {
             indx[0].bearerPersonId =  index[0].patientObject.personDetails._id;
+            console.log(indx[0]);
           }
 
-          this.patientService.patch(payload2.principalObject._id, payload2.principalObject, {}).then(payld => { }, error => { })
-        }, error => { });
+          this.patientService.patch(payload2.principalObject._id, payload2.principalObject, {}).then(payld => {console.log(payld); }, error => { console.log(error)});
+          
+        }, error => { console.log(error);});
         this.systemModuleService.announceSweetProxy('Service successfully cleared', 'success');
         this.refreshBills.emit(true);
+        this.close_onClick();
       });
     }
   }

@@ -84,11 +84,13 @@
                                                 <div class="inner-radio">
                                                     <mat-checkbox (change)="markExternal($event, investigation)" [checked]="investigation.isExternal">External</mat-checkbox>
                                                     <mat-radio-group [value]="location" *ngIf="!investigation.isExternal">
-                                                        <mat-radio-button class="opt" *ngFor="let location of investigation.LaboratoryWorkbenches" (change)="locationChanged($event, investigation, location, investigation.LaboratoryWorkbenches)" [value]="location" [checked]="false">
+
+                                                    <mat-radio-button class="opt" *ngFor="let LaboratoryWorkbenche of investigation.LaboratoryWorkbenches" (change)="locationChanged($event, investigation, LaboratoryWorkbenche, investigation.LaboratoryWorkbenches)"
+                                                            [value]="LaboratoryWorkbenche" [checked]="false">
                                                             <div class="opt-inner">
-                                                                <div>{{location.laboratoryId.name}}</div>
+                                                                <div>{{LaboratoryWorkbenche.laboratoryId.name}}</div>
                                                                 <div class="opt-price">
-                                                                    <span>&#x20a6;</span>{{getPrice(location.workbenches)}}</div>
+                                                                    <span>&#x20a6;</span>{{getPrice(LaboratoryWorkbenche.workbenches)}}</div>
                                                             </div>
                                                         </mat-radio-button>
                                                     </mat-radio-group>
@@ -164,7 +166,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="close">X</div>
+                                                <div (click)="removeBindingInvestigation(investigation)"  class="close">X</div>
                                             </div>
 
                                         </div>
