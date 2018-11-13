@@ -73,6 +73,10 @@
                     <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
                     <span> Set Appointment</span>
                 </li>
+                <li (click)="addMergePatient_show()">
+                    <i class="fa fa-layer-group" aria-hidden="true"></i>
+                    <span> Merge Patient Data</span>
+                </li>
                 <li *ngIf="!menuResp" class="patientMenuResponsive" (click)="patientMenu()">
                     <i class="fa fa-bars" aria-hidden="true"></i>
                     <span> Show Patient Menu</span>
@@ -195,6 +199,10 @@
         <app-bcr-assessment *ngIf="menuBCRAssessment"></app-bcr-assessment>
     </div>
 
+
+    <div *ngIf="mergePatient" class="modal-overlay">
+            <app-unknown-patient-merge (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-unknown-patient-merge>
+        </div>   
     <div *ngIf="addVitalsPop" class="modal-overlay">
         <app-add-vitals [patient]="patient" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>
     </div>

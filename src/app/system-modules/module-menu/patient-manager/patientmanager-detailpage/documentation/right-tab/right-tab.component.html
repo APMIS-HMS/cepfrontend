@@ -115,7 +115,7 @@
                                     <p>{{problem?.note}}</p>
                                 </td>
                                 <td>
-                                    <button (click)="tooltip_show()" type="button" class="btn btn-danger">Deactivate
+                                    <button (click)="tooltip_show(problem)" type="button" class="btn btn-danger">Deactivate
                                         <i class="fa fa-exclamation-circle red"></i> 
                                     </button>
                                 </td>
@@ -123,7 +123,7 @@
                         </tbody>
                     </table>
                     <div *ngIf="tooltip_view">
-                        <app-right-tab-tooltip></app-right-tab-tooltip>
+                        <app-right-tab-tooltip [selectedProblem]="selectedProblem"></app-right-tab-tooltip>
                     </div>
 
                 </div>

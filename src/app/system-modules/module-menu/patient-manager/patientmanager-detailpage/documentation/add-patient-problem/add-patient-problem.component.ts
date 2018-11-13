@@ -132,6 +132,7 @@ export class AddPatientProblemComponent implements OnInit {
     return status ? status.name : status;
   }
   save() {
+    console.log('saving');
     this.isSaving = true;
     this.systemModuleService.on();
     let isExisting = false;
@@ -139,18 +140,58 @@ export class AddPatientProblemComponent implements OnInit {
       if (documentation.document === undefined) {
         documentation.document = {
           documentType: {}
-        }
+        };
       }
       if (documentation.document.documentType._id !== undefined &&
         documentation.document.documentType._id === this.selectedForm._id) {
         isExisting = true;
-        documentation.document.body.problems.push({
-          problem: this.problemFormCtrl.value,
-          status: this.statusFormCtrl.value,
-          note: this.noteFormCtrl.value,
-        })
-      }else{
-        if(documentation.facilityName === undefined){
+        // check if document already has array of problems
+        // find problem by problem name entered by the user
+        // if problem is found, set the displayStatus property of the problem to true
+        if (documentation.document.body.problems.length > 0 && this.problemFormCtrl.value !== null) {
+          // documentation has exising problems as array
+          const problemByName = documentation.document.body.problems.filter(x => x.problem === this.problemFormCtrl.value);
+          console.log(problemByName);
+          if (problemByName.length > 0) {
+            // user entered problem has already been created before, the new problem is pushed to problem history
+            const problemIndex = documentation.document.body.problems.findIndex(x => x.problem === problemByName[0].problem);
+            const currentDate = new Date();
+            const update = {
+              problem: problemByName[0].problem,
+              note: problemByName[0].note,
+              status: problemByName[0].status,
+              displayStatus: true,
+              history: [{
+                  createdBy: this.loginEmployee.personDetails.title + ' ' + this.loginEmployee.personDetails.lastName + ' '
+                              + this.loginEmployee.personDetails.firstName,
+                  note: this.noteFormCtrl.value,
+                  status: {
+                    _id: 1,
+                    name: 'Active'
+                  },
+                  date: currentDate
+              }]
+            };
+            documentation.document.body.problems[problemIndex] = update;
+          } else {
+            // The problem does not exist in , so this adds a new problem to the problems array
+            documentation.document.body.problems.push({
+              problem: this.problemFormCtrl.value,
+              status: this.statusFormCtrl.value,
+              note: this.noteFormCtrl.value,
+              displayStatus: true
+            });
+          }
+        } else {
+            documentation.document.body.problems.push({
+            problem: this.problemFormCtrl.value,
+            status: this.statusFormCtrl.value,
+            note: this.noteFormCtrl.value,
+            displayStatus: true
+          });
+        }
+      } else {
+        if (documentation.facilityName === undefined) {
           documentation.facilityName = this.selectedFacility.name;
         }
       }
@@ -167,11 +208,12 @@ export class AddPatientProblemComponent implements OnInit {
         body: {
           problems: []
         }
-      }
+      };
       doc.document.body.problems.push({
         problem: this.problemFormCtrl.value,
         status: this.statusFormCtrl.value,
-        note: this.noteFormCtrl.value
+        note: this.noteFormCtrl.value,
+        displayStatus: true
       });
       this.patientDocumentation.documentations.push(doc);
     }
@@ -188,6 +230,6 @@ export class AddPatientProblemComponent implements OnInit {
       this.isSaving = false;
       this.systemModuleService.off();
       this.systemModuleService.announceSweetProxy('Problem not added due error while saving!','error');
-    })
+    });
   }
 }
