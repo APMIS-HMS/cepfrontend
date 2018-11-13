@@ -5,7 +5,7 @@
 <div class="dashboard-grid">
     <div class="control-group">
         <div class="row">
-            <div class="col" style="cursor: pointer;">
+            <div class="col" (click)="call_patientReport()" style="cursor: pointer;">
                 <i class="fa fa-user fa-4x" aria-hidden="true"></i>
                 <div class="header">
                     <p data-toggle="click for details" class="title">Patient Manager</p>
@@ -40,7 +40,7 @@
                     <p class="subtitle">3 Patients Checked-Out</p>
                     <p class="subtitle">5 Appointments Cancled</p>
                     <p class="subtitle">5 Doctors on duty</p>
-                    
+
                 </div>
             </div>
         </div>
@@ -68,7 +68,7 @@
 
     <div class="control-group">
         <div class="row">
-            <div class="col" style="cursor: pointer;">
+            <div class="col" (click)="call_laboratoryReport()" style="cursor: pointer;">
                 <i class="fa fa-flask fa-4x" aria-hidden="true"></i>
                 <div class="header">
                     <p data-toggle="click for details" class="title">Laboratory</p>
@@ -147,7 +147,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="control-group">
         <div class="row">
             <div class="col" (click)="call_dhisReport()" style="cursor: pointer;">

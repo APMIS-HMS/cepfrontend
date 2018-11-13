@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
 
 @Component({
 	selector: 'app-clinic-management-report',
@@ -9,6 +10,8 @@ import { Router } from '@angular/router';
 export class ClinicManagementReportComponent implements OnInit {
 	clinicAttendance = false;
 	diagnosis = false;
+
+	pageInView = 'Clinic Management Report';
 
 	constructor(private _router: Router) {}
 
@@ -46,6 +49,10 @@ export class ClinicManagementReportComponent implements OnInit {
 			this.diagnosis = false;
 		}
 		this._router.navigate([ '/dashboard/reports/report-dashboard/clinic-report/' + link ]);
+	}
+
+	pageInViewLoader(title) {
+		this.pageInView = title;
 	}
 
 	back_dashboard() {
