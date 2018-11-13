@@ -1,4 +1,3 @@
-
 import { ReportDashboardComponent } from './report-dashboard.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
@@ -13,7 +12,7 @@ import { DhisReportComponent } from './dhis-report/dhis-report.component';
 import { ClinicReportModule } from './clinic-management-report/clinic-management-report.module';
 import { PatientManagerReportComponent } from './patient-manager-report/patient-manager-report.component';
 import { LaboratoryReportComponent } from './laboratory-report/laboratory-report.component';
-
+import { NhmisSummaryComponent } from './dhis-report/nhmis-summary/nhmis-summary.component';
 
 @NgModule({
 	imports: [
@@ -30,7 +29,8 @@ import { LaboratoryReportComponent } from './laboratory-report/laboratory-report
 		DashboardLandingpageComponent,
 		DhisReportComponent,
 		PatientManagerReportComponent,
-		LaboratoryReportComponent
+		LaboratoryReportComponent,
+		NhmisSummaryComponent
 	]
 })
 export class ReportDashboardModule {}
