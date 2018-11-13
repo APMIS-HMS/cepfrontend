@@ -64,7 +64,7 @@ export class HmoOfficerComponent implements OnInit {
 				this.calTotalBill();
 				// console.log (_);
 				// add som dummy data to the list and observer the grouping made
-				const dummy = _.take(this.historyBills, 3);
+				/*const dummy = _.take(this.historyBills, 3);
 				const joined = [
 					..._.map(dummy, (x) => {
 						x.coverFile.name = 'Modified HMO Name';
@@ -80,7 +80,7 @@ export class HmoOfficerComponent implements OnInit {
 
 				const newValue = _.map(groupedData, (v, k) => {
 					return { group: k, value: v };
-				});
+				});*/
 				//this.historyBills  = newValue;
 			});
 	}
