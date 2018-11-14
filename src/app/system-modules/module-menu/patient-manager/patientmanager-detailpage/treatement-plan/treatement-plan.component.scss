@@ -1,4 +1,5 @@
 @import "../documentation/documentation.component.scss";
+@import "./../../../payment/invoice/invoice.component.scss";
 
 .doc-contentArea {
     width: 100%;
@@ -29,11 +30,11 @@
 .sect-title {
     font-size: 1.4rem;
     color: #194985;
+    padding: 5px;
+    font-weight: bold;
 }
 .buttom-sect {
-    width: 100%;
-    max-width: 405px;
-    float: right;
+    width: 100%;  
 }
 .cta-1{
     width: 170px;
@@ -41,4 +42,30 @@
 }
 .cta-1 i{
     padding-right: 5px;
+}
+
+.h3-note{
+    padding: 1px;
+}
+
+.sheet-table-list {
+    border-bottom: solid 1px #bbb;
+}
+
+.sheet-sub-header{
+    border-bottom: solid 1px #01579B;
+    color: #01579B;
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.sheet-column{
+    padding: 10px;
+}
+
+th, td{
+    height:25px !important;
+    text-align: center !important;
 }
