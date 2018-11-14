@@ -50,7 +50,7 @@ export class TreatementPlanComponent implements OnInit {
 
   toggleInvestigation = false;
   toggleProcedure = false;
-  toggleMedication = false;
+  toggleMedication = true;
   toggleNurseingCare = false;
   togglePhysicianOrder = false;
   toggleSheetDetails = false;

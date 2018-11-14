@@ -31,6 +31,91 @@
                 Treatment Sheet</button> -->
             <div style="margin: 25px;">
                 <div class="row">
+
+
+                    <!-- MEdication -->
+                    <div class="col-sm-12 sheet-column">
+                        <div class="row sheet-table-list sheet-sub-header">
+                            <div class="col-sm-8" (click)="showMedication()">
+                                Medication
+                            </div>
+                            <!-- <div class="col-sm-3" (click)="showMedication()">
+                                Item Count ()
+                                {{binding goes here}}
+                            </div> -->
+                        </div>
+                        <div *ngIf="toggleMedication">
+                            <div class="row sheet-table-list">
+                                <div style="min-width: 100%;">
+                                    <table class="card" style="color:black;" cellpadding="0" cellspacing="0" border="0.5"
+                                        [formGroup]="medicationTableForm">
+                                        <thead>
+                                            <tr class="th-r1 th-xxx">
+                                                <th>Medication(s)</th>
+                                                <th>Status</th>
+                                                <th>Comment / Remark</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody formArrayName="medicationTableArray">
+                                            <tr *ngIf="treatmentSheet?.medications === undefined">
+                                                <td class="text-center" colspan="5"> No data available in table</td>
+                                            </tr>
+                                            <tr [formGroupName]="i" *ngFor="let medication of medicationTableForm['controls'].medicationTableArray['controls'];let i = index">
+                                                <td>{{ medication?.value.name }}</td>
+                                                <td>{{ medication?.value.status }}</td>
+                                                <td>
+                                                    <div style="padding: 0px 10px 0px 10px;">
+                                                        <mat-input-container>
+                                                            <textarea matInput placeholder="Comment" formControlName="comment"></textarea>
+                                                        </mat-input-container>
+                                                    </div>
+                                                </td>
+                                                <td class="action-placeholder" style="text-align:center;">
+                                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                                                    <div class="action-container shadow-RB">
+                                                        <div *ngIf="medication.value.status!==treatmentItemStatusValue.SUSPENDED && medication.value.status!==treatmentItemStatusValue.COMPLETED && medication.value.status!==treatmentItemStatusValue.DISCONTINUED"
+                                                            (click)="administer(medication.value)" class="action-item">
+                                                            <i class="fa fa-user-md" aria-hidden="true"></i>
+                                                            <span>Administer</span>
+                                                        </div>
+
+                                                        <div *ngIf="medication.value.status!==treatmentItemStatusValue.SUSPENDED && 
+                                                                                medication.value.status!==treatmentItemStatusValue.COMPLETED && medication.value.status!==treatmentItemStatusValue.DISCONTINUED"
+                                                            (click)="suspendMedication(medication.value)" class="action-item">
+                                                            <i class="fa fa-pause text-yellow" aria-hidden="true"></i>
+                                                            <span>Suspend</span>
+                                                        </div>
+                                                        <div *ngIf="medication.value.status===treatmentItemStatusValue.SUSPENDED || medication.value.status===treatmentItemStatusValue.COMPLETED || medication.value.status!==treatmentItemStatusValue.DISCONTINUED"
+                                                            (click)="activateMedication(medication.value)" class="action-item">
+                                                            <i class="fa fa-play text-green" aria-hidden="true"></i>
+                                                            <span>Activate</span>
+                                                        </div>
+
+                                                        <div *ngIf="medication.value.status!==treatmentItemStatusValue.SUSPENDED && medication.value.status!==treatmentItemStatusValue.COMPLETED && medication.value.status!==treatmentItemStatusValue.DISCONTINUED"
+                                                            (click)="discontinueMedication(medication.value)" class="action-item">
+                                                            <i class="fa fa-ban text-red" aria-hidden="true"></i>
+                                                            <span>Discontinue</span>
+                                                        </div>
+
+                                                        <div *ngIf="medication.value.status!==treatmentItemStatusValue.SUSPENDED && 
+                                                                                medication.value.status!==treatmentItemStatusValue.COMPLETED && 
+                                                                                medication.value.status!==treatmentItemStatusValue.DISCONTINUED"
+                                                            (click)="completeMedication(medication.value)" class="action-item">
+                                                            <i class="fa fa-check text-green" aria-hidden="true"></i>
+                                                            <span>Completed</span>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <br>
                     <!-- investigation -->
                     <div class="col-sm-12 sheet-column">
                         <div class="row sheet-table-list sheet-sub-header">
@@ -149,85 +234,7 @@
                     </div>
 
                     <br>
-                    <!-- MEdication -->
-                    <div class="col-sm-12 sheet-column">
-                        <div class="row sheet-table-list sheet-sub-header">
-                            <div class="col-sm-8" (click)="showMedication()">
-                                Medication
-                            </div>
-                        </div>
-                        <div *ngIf="toggleMedication">
-                            <div class="row sheet-table-list">
-                                <div style="min-width: 100%;">
-                                    <table class="card" style="color:black;" cellpadding="0" cellspacing="0" border="0.5"
-                                        [formGroup]="medicationTableForm">
-                                        <thead>
-                                            <tr class="th-r1 th-xxx">
-                                                <th>Medication(s)</th>
-                                                <th>Status</th>
-                                                <th>Comment / Remark</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody formArrayName="medicationTableArray">
-                                            <tr *ngIf="treatmentSheet?.medications === undefined">
-                                                <td class="text-center" colspan="5"> No data available in table</td>
-                                            </tr>
-                                            <tr [formGroupName]="i" *ngFor="let medication of medicationTableForm['controls'].medicationTableArray['controls'];let i = index">
-                                                <td>{{ medication?.value.name }}</td>
-                                                <td>{{ medication?.value.status }}</td>
-                                                <td>
-                                                    <div style="padding: 0px 10px 0px 10px;">
-                                                        <mat-input-container>
-                                                            <textarea matInput placeholder="Comment" formControlName="comment"></textarea>
-                                                        </mat-input-container>
-                                                    </div>
-                                                </td>
-                                                <td class="action-placeholder" style="text-align:center;">
-                                                    <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
-                                                    <div class="action-container shadow-RB">
-                                                        <div *ngIf="medication.value.status!==treatmentItemStatusValue.SUSPENDED && medication.value.status!==treatmentItemStatusValue.COMPLETED && medication.value.status!==treatmentItemStatusValue.DISCONTINUED"
-                                                            (click)="administer(medication.value)" class="action-item">
-                                                            <i class="fa fa-user-md" aria-hidden="true"></i>
-                                                            <span>Administer</span>
-                                                        </div>
 
-                                                        <div *ngIf="medication.value.status!==treatmentItemStatusValue.SUSPENDED && 
-                                                                            medication.value.status!==treatmentItemStatusValue.COMPLETED && medication.value.status!==treatmentItemStatusValue.DISCONTINUED"
-                                                            (click)="suspendMedication(medication.value)" class="action-item">
-                                                            <i class="fa fa-pause text-yellow" aria-hidden="true"></i>
-                                                            <span>Suspend</span>
-                                                        </div>
-                                                        <div *ngIf="medication.value.status===treatmentItemStatusValue.SUSPENDED || medication.value.status===treatmentItemStatusValue.COMPLETED || medication.value.status!==treatmentItemStatusValue.DISCONTINUED"
-                                                            (click)="activateMedication(medication.value)" class="action-item">
-                                                            <i class="fa fa-play text-green" aria-hidden="true"></i>
-                                                            <span>Activate</span>
-                                                        </div>
-
-                                                        <div *ngIf="medication.value.status!==treatmentItemStatusValue.SUSPENDED && medication.value.status!==treatmentItemStatusValue.COMPLETED && medication.value.status!==treatmentItemStatusValue.DISCONTINUED"
-                                                            (click)="discontinueMedication(medication.value)" class="action-item">
-                                                            <i class="fa fa-ban text-red" aria-hidden="true"></i>
-                                                            <span>Discontinue</span>
-                                                        </div>
-
-                                                        <div *ngIf="medication.value.status!==treatmentItemStatusValue.SUSPENDED && 
-                                                                            medication.value.status!==treatmentItemStatusValue.COMPLETED && 
-                                                                            medication.value.status!==treatmentItemStatusValue.DISCONTINUED"
-                                                            (click)="completeMedication(medication.value)" class="action-item">
-                                                            <i class="fa fa-check text-green" aria-hidden="true"></i>
-                                                            <span>Completed</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <br>
                     <!-- Nursing Care -->
                     <div class="col-sm-12 sheet-column">
                         <div class="row sheet-table-list sheet-sub-header">
