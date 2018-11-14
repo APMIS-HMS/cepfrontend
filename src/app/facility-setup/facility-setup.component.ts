@@ -115,7 +115,8 @@ export class FacilitySetupComponent implements OnInit {
 
       contactFName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.pattern('^[a-zA-Z ]+$')]],
       contactLName: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.pattern('^[a-zA-Z ]+$')]],
-      facilityphonNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]],
+      facilityphonNo: ['', [<any>Validators.required, <any>Validators.minLength(14),
+         <any>Validators.pattern('/^[+#*\(\)\[\]]*([0-9][ ext+-pw#*\(\)\[\]]*){6,15}$/')]],
       password: ['', [<any>Validators.required, <any>Validators.minLength(5)]],
       repass: ['', [<any>Validators.required, <any>Validators.minLength(5)]]
     });

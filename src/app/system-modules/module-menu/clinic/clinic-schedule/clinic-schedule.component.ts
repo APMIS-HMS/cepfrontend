@@ -66,7 +66,7 @@ export class ClinicScheduleComponent implements OnInit {
 		this.durationUnits = DurationUnits;
 		this.subscribToFormControls();
 		const facility = <Facility>this.locker.getObject('selectedFacility');
-		//this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
+		// this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
 			this.facilityService.get(facility._id, {}).then(payload => {
 			this.selectedFacility = payload;
 			console.log(payload.departments);

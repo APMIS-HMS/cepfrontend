@@ -8,8 +8,8 @@ import { LocationService } from '../../../services/module-manager/setup/index';
 import { Profession, Employee, Facility, Location, MinorLocation } from '../../../models/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ClinicHelperService } from './services/clinic-helper.service';
-import { Observable } from 'rxjs/Observable'
-import { Subject } from 'rxjs/Subject'
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 
 @Component({
@@ -194,7 +194,7 @@ export class ClinicComponent implements OnInit, OnDestroy {
 
 	navItemClick(val) {
 		this.contentSecMenuShow = false;
-		if (val == 'home') {
+		if (val === 'home') {
 			this.clinicApppointment = false;
 			this.clinicCheckin = false;
 			this.clinicSchedule = false;
