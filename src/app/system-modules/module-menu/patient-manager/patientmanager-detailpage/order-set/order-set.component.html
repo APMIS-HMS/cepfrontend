@@ -1,7 +1,12 @@
-<div>
-    <div (click)="close_onClickModal()" class="modal-close-ico">X</div>
-    <div class="doc-mainWrap">
-        <div class="pg-subtitle">PATIENT PAGE - ORDER SET</div>
+<div class="animated pulse"  style="width: 800px; height: auto;">
+    <div class="modal-header-wrap">
+        <div (click)="close_onClickModal()" class="modal-close-ico">X</div>
+        <legend class="modal_title">PATIENT PAGE - ORDER SET</legend>
+        <div class="modal_mini_title">All Purpose Medical Information System</div>
+    </div>
+
+    <div class="doc-mainWrap modal-baseWrap">
+        <!-- <div class="pg-subtitle">PATIENT PAGE - ORDER SET</div> -->
         <div class="doc-contentArea">
             <div class="clinicalNoteWrap">
                 <div class="frm-x2">
@@ -196,6 +201,8 @@
         </div>
     </div>
 </div>
+
+
 <div *ngIf="showInvestigationBill">
     <app-bill-investigation [investigationData]="investigationData" (closeModal)="close_onClick($event)"></app-bill-investigation>
 </div>
