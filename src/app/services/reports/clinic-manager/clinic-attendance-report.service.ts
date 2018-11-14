@@ -45,13 +45,13 @@ constructor(private socketService: SocketService,
     }
 
     find(query) {
-        const visitPromise = new Promise((resolve, reject) => {
-            setTimeout(() => {
-                resolve(this.visits);
-            }, 1000);
-        });
-        return visitPromise;
-        // return this._socket.find(query);
+        // const visitPromise = new Promise((resolve) => {
+        //     setTimeout(() => {
+        //         resolve(this.visits);
+        //     }, 1000);
+        // });
+        // return visitPromise;
+        return this._socket.find(query);
     }
     get(query) {
         return this._socket.find(query);

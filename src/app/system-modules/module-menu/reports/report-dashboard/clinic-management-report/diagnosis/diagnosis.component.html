@@ -6,7 +6,7 @@
     </div>
     <div class="row">
       <div class="dr-wrap survery">
-        <app-date-range></app-date-range>
+        <app-date-range [dateRange]="dateRange" (dateRangeChange)="setDiagnosisByDateRange($event)"></app-date-range>
       </div>
       <div class="dropdown-container">
         <mat-form-field>
@@ -36,21 +36,13 @@
             </thead>
   
             <tbody>
-                <tr class="th-xxx">
-                    <td>1</td>
-                    <td>LT/777/10B</td>
-                    <td> Male  </td>
-                    <td>65 Year Old</td>
-                    <td>Mal/887</td>
-                    <td>General OPD</td>
-                </tr>
-                <tr class="th-xxx">
-                    <td>2</td>
-                    <td>LT/767/14F</td>
-                    <td> Male  </td>
-                    <td>45 Year Old</td>
-                    <td>HIV/0-047</td>
-                    <td>Cardiology</td>
+                <tr class="th-xxx" *ngFor="let item of filteredDiagnosis;let i = index">
+                    <td>{{i+1}}</td>
+                    <td>{{item.hospitalNumber}}</td>
+                    <td>{{item.sex}}</td>
+                    <td>{{item.Age}}</td>
+                    <td>{{item.diagnosisCode}}</td>
+                    <td>{{item.clinic}}</td>
                 </tr>
             </tbody>
         </table>

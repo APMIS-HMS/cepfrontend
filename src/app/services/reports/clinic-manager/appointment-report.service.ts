@@ -34,8 +34,13 @@ constructor(private socketService: SocketService, private restService: RestServi
     }
 
     find(query) {
-        return this.appointments;
-        //return this._socket.find(query);
+        const appointmentPromise = new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(this.appointments);
+            }, 1000);
+        });
+        return appointmentPromise;
+        // return this._socket.find(query);
     }
     get(query) {
         return this._socket.find(query);

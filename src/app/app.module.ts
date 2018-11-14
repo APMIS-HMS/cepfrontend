@@ -234,6 +234,7 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 		CanActivateViaAuthGuardAccessService,
 		ReportService.ClinicAttendanceReportService,
 		ReportService.AppointmentReportService,
+		ReportService.DiagnosisReportService,
 		ChannelService,
 		{
 			provide: HTTP_INTERCEPTORS,

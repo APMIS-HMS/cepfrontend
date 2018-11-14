@@ -7,3 +7,8 @@ export interface ClinicAttendance {
     new: NumberOfAppointments;
     followUp: NumberOfAppointments;
 }
+
+export enum ClinicTabGroup {
+    ClinicAttendance = 0,
+    AppointmentReport
+}
