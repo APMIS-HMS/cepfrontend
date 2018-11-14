@@ -16,26 +16,26 @@ export class RegistersComponent implements OnInit {
   }
 
   call_register() {
-    this._router.navigate(['/dashboard/reports/register/register-entries']);
+    this._router.navigate(['/dashboard/reports/report-dashboard/dhisReport/registers/register-entries']);
   }
   call_antenatal() {
-    this._router.navigate(['/dashboard/reports/register/antenatal']);
+    this._router.navigate(['/dashboard/reports/report-dashboard/dhisReport/registers/antenatal']);
   }
   call_opd() {
-    this._router.navigate(['/dashboard/reports/register/opd']);
+    this._router.navigate(['/dashboard/reports/report-dashboard/dhisReport/registers/opd']);
   }
   call_fpr() {
-    this._router.navigate(['/dashboard/reports/register/fpr']);
+    this._router.navigate(['/dashboard/reports/report-dashboard/dhisReport/registers/fpr']);
   }
   call_IRTS() {
-    this._router.navigate(['/dashboard/reports/register/irts']);
+    this._router.navigate(['/dashboard/reports/report-dashboard/dhisReport/registers/irts']);
   }
 
   call_gmp(){
-    this._router.navigate(['/dashboard/reports/register/gmp']);
+    this._router.navigate(['/dashboard/reports/report-dashboard/dhisReport/registers/gmp']);
   }
   call_ldr(){
-    this._router.navigate(['/dashboard/reports/register/ldr']);
+    this._router.navigate(['/dashboard/reports/report-dashboard/dhisReport/registers/ldr']);
   }
 
 
