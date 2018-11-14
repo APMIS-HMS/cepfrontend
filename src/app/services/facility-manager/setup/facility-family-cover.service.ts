@@ -8,6 +8,7 @@ const request = require('superagent');
 export class FacilityFamilyCoverService {
   public _socket;
   private _rest;
+  private familyBeneficiaries;
 
   private familyCoverAnnouncedSource = new Subject<Object>();
   familyCoverAnnounced$ = this.familyCoverAnnouncedSource.asObservable();
@@ -20,6 +21,8 @@ export class FacilityFamilyCoverService {
     this._rest = _restService.getService('families');
     this._socket = _socketService.getService('families');
     this._socket.timeout = 20000;
+    this.familyBeneficiaries  = this._socketService.getService('family-beneficiaries');
+    this.familyBeneficiaries.timeout  = 40000;
     this._socket.on('created', function (gender) {
 
     });
@@ -32,6 +35,10 @@ export class FacilityFamilyCoverService {
   }
   find(query: any) {
     return this._socket.find(query);
+  }
+
+  findBeneficiaries(query: any) {
+    return this.familyBeneficiaries.find(query);
   }
 
   findAll() {
@@ -65,10 +72,7 @@ export class FacilityFamilyCoverService {
       .query({ facilityId: facilityId, search: search });
   }
   updateBeneficiaryList(formData) {
-    const familyBeneficiaries  = this._socketService.getService('family-beneficiaries');
-    familyBeneficiaries.timeout  = 40000;
-    console.log(familyBeneficiaries);
-    return familyBeneficiaries.create(formData);
+    return this.familyBeneficiaries.create(formData);
   }
 
 }

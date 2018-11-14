@@ -47,9 +47,22 @@ export class TreatmentSheetService {
     return this._socketTreatment.create(treatment);
   }
 
+  updateTreatmentSheet(id, data: any, params: any) {
+    return this._socketTreatment.patch(id, data, {});
+  }
+
+  patchTreatmentSheetMedication(id, data: any, params: any) {
+    return this._socketTreatment.update(id, data, {});
+  }
+
   update(treatment: any) {
     return this._socket.update(treatment._id, treatment, {});
   }
+
+  patch(id, data, query: any) {
+    return this._socket.patch(id, data, query);
+  }
+
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }

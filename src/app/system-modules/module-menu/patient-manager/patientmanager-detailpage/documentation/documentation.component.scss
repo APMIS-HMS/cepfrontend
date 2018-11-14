@@ -461,6 +461,7 @@ th {
     border-bottom: 1px solid #ff2500;
 }
 .tree-ul {
+    position: sticky;
     margin-top: 20px;
     background: #fff;
     box-sizing: border-box;
@@ -522,4 +523,21 @@ th {
 }
 .doc-list-wrap{
     padding-bottom: 10px;
+}
+
+
+.center-center {
+    display: flex;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    align-items: center;
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    margin: auto;
 }

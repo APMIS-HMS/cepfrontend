@@ -81,7 +81,7 @@
           </tr>
           <tr *ngFor="let item of hmoBillHistory; let i = index">
             <td>{{ i+1 }}</td>
-            <td>{{ item.date|date:'mm-dd-yyyy' }}</td>
+            <td>{{ item.date|date:'MMM d, yyyy' }} </td>
             <td>{{ item?.patient?.title }} {{ item?.patient?.firstName }} {{ item?.patient?.lastName }}</td>
             <td>{{ item?.service }}</td>
             <td>&#x20a6;{{ item?.amount|number:'1.2-2'}}</td>

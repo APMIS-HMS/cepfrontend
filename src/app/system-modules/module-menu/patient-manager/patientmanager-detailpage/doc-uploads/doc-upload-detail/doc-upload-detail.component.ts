@@ -47,7 +47,5 @@ export class DocUploadDetailComponent implements OnInit {
 		this.loading = false;
 		this.loadingError = true;
 	}
-	onProgress(progressData: any) {
-		// console.log(event);
-	}
+	onProgress(progressData: any) {}
 }

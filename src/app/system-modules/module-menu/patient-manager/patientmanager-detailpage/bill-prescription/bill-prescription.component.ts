@@ -3,14 +3,18 @@ import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormGroup, FormControl, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { Facility, Prescription, PrescriptionItem } from '../../../../../models/index';
 import {
-    FacilitiesService, ProductService, FacilityPriceService, InventoryService, AssessmentDispenseService
+	FacilitiesService,
+	ProductService,
+	FacilityPriceService,
+	InventoryService,
+	AssessmentDispenseService
 } from '../../../../../services/facility-manager/setup/index';
 import { SystemModuleService } from '../../../../../services/module-manager/setup/system-module.service';
 
 @Component({
 	selector: 'app-bill-prescription',
 	templateUrl: './bill-prescription.component.html',
-	styleUrls: ['./bill-prescription.component.scss']
+	styleUrls: [ './bill-prescription.component.scss' ]
 })
 export class BillPrescriptionComponent implements OnInit {
 	@Input() prescriptionData: Prescription = <Prescription>{};
@@ -45,9 +49,10 @@ export class BillPrescriptionComponent implements OnInit {
 		private _facilityService: FacilitiesService,
 		private _facilityPriceService: FacilityPriceService,
 		private _inventoryService: InventoryService,
-		private _systemsModuleService: SystemModuleService,
-		// private _assessmentDispenseService: AssessmentDispenseService
-	) { }
+		private _systemsModuleService: SystemModuleService
+	) // private _assessmentDispenseService: AssessmentDispenseService
+	{
+	}
 
 	ngOnInit() {
 		this.facility = <Facility>this._locker.getObject('selectedFacility');
@@ -55,11 +60,11 @@ export class BillPrescriptionComponent implements OnInit {
 		this.getProductsForGeneric();
 
 		this.addBillForm = this._fb.group({
-			drug: ['', [<any>Validators.required]],
-			qty: [0, [<any>Validators.required]]
+			drug: [ '', [ <any>Validators.required ] ],
+			qty: [ 0, [ <any>Validators.required ] ]
 		});
 
-		this.addBillForm.controls['qty'].valueChanges.subscribe(val => {
+		this.addBillForm.controls['qty'].valueChanges.subscribe((val) => {
 			if (val > 0) {
 				this.totalQuantity = val;
 				this.totalCost = this.cost * val;
@@ -67,14 +72,13 @@ export class BillPrescriptionComponent implements OnInit {
 				this.mainErr = false;
 				this.errMsg = 'Quantity should be greater than 0!!';
 			}
-		})
+		});
 	}
 
 	//
 	onClickSaveCost(value, valid) {
-		console.log(value);
 		if (valid) {
-			if ((!!this.cost && this.cost > 0) && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
+			if (!!this.cost && this.cost > 0 && value.qty > 0 && (value.drug !== undefined || value.drug === '')) {
 				const index = this.prescriptionData.index;
 				const product = {
 					id: this.selectedDrug.productObject.id,
@@ -109,24 +113,25 @@ export class BillPrescriptionComponent implements OnInit {
 	getProductsForGeneric() {
 		const index = this.prescriptionData.index;
 		this.title = this.prescriptionData.prescriptionItems[index].genericName;
-		console.log(this.title);
 		// const productId = this.prescriptionData.prescriptionItems[index].productId;
 		// const ingredients = this.prescriptionData.prescriptionItems[index].ingredients;
 
 		// Get the list of products from a facility, and then search if the generic
 		// that was entered by the doctor in contained in the list of products
-		this._inventoryService.findList({
-			query: { facilityId: this.facility._id, name: this.title, storeId: this.storeId }
-		}).then(res => {
-			console.log(res);
-      		this.loading = false;
-			if (res.data.length > 0) {
-				// this.stores = res.data[0].availableQuantity;
-				this.drugs = res.data;
-			} else {
-				this.drugs = [];
-			}
-		}).catch(err => console.error(err));
+		this._inventoryService
+			.findList({
+				query: { facilityId: this.facility._id, name: this.title, storeId: this.storeId }
+			})
+			.then((res) => {
+				this.loading = false;
+				if (res.data.length > 0) {
+					// this.stores = res.data[0].availableQuantity;
+					this.drugs = res.data;
+				} else {
+					this.drugs = [];
+				}
+			})
+			.catch((err) => {});
 	}
 
 	onClickCustomSearchItem(event, drug) {
@@ -135,26 +140,27 @@ export class BillPrescriptionComponent implements OnInit {
 		this.facilityServiceId = drug.facilityServiceId;
 		this.categoryId = drug.categoryId;
 
-		console.log(drug);
-		this._facilityPriceService.find({query: {
-			facilityId: this.facility._id,
-			serviceId: drug.serviceId,
-			facilityServiceId: drug.facilityServiceId,
-			categoryId: drug.categoryId
-		}}).then(res => {
-			console.log(res);
-			if (res.data.length > 0) {
-				this.cost = res.data[0].price;
-			} else {
-				this.cost = 0;
-				this.mainErr = false;
-				this.errMsg = 'Please go to billing manager to set price!';
-			}
-		});
+		this._facilityPriceService
+			.find({
+				query: {
+					facilityId: this.facility._id,
+					serviceId: drug.serviceId,
+					facilityServiceId: drug.facilityServiceId,
+					categoryId: drug.categoryId
+				}
+			})
+			.then((res) => {
+				if (res.data.length > 0) {
+					this.cost = res.data[0].price;
+				} else {
+					this.cost = 0;
+					this.mainErr = false;
+					this.errMsg = 'Please go to billing manager to set price!';
+				}
+			});
 	}
 
 	onClickClose(e) {
 		this.closeModal.emit(true);
 	}
-
 }

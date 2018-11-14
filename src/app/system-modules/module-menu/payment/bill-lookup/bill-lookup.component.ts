@@ -125,6 +125,20 @@ export class BillLookupComponent implements OnInit, OnDestroy {
 				}
 			});
 		});
+
+		this.personService.updateListener
+			.filter((person) => person._id === this.selectedPatient.personId)
+			.subscribe((payload) => {
+				this.selectedPatient.personDetails = payload;
+				this.getPersonWallet(payload);
+			});
+
+		this.personService.patchListener
+			.filter((person) => person._id === this.selectedPatient.personId)
+			.subscribe((payload) => {
+				this.selectedPatient.personDetails = payload;
+				this.getPersonWallet(payload);
+			});
 	}
 
 	ngOnInit() {

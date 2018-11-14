@@ -1,15 +1,14 @@
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
 
-import {PagerButtonComponent, AsomDataPagerComponent} from './ui-components/PagerComponent';
-import {CommonModule} from '@angular/common';
+import { PagerButtonComponent, AsomDataPagerComponent } from './ui-components/PagerComponent';
+import { CommonModule } from '@angular/common';
+import { MatDialogModule } from '@angular/material';
 
 @NgModule({
-    imports: [CommonModule],
-    exports: [AsomDataPagerComponent],
-    declarations: [AsomDataPagerComponent, PagerButtonComponent],
-    providers: [],
+	imports: [ CommonModule, MatDialogModule ],
+	exports: [ AsomDataPagerComponent ],
+	declarations: [ AsomDataPagerComponent, PagerButtonComponent ],
+	providers: [],
+	entryComponents: []
 })
-export class CoreUiModules {
-}
-
-
+export class CoreUiModules {}
