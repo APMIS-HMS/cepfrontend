@@ -48,6 +48,13 @@ export class TreatementPlanComponent implements OnInit {
   selectedFacility: Facility = <Facility>{};
   loginEmployee: Employee = <Employee>{};
 
+  toggleInvestigation = false;
+  toggleProcedure = false;
+  toggleMedication = false;
+  toggleNurseingCare = false;
+  togglePhysicianOrder = false;
+  toggleSheetDetails = false;
+
   constructor(
     private _route: ActivatedRoute,
     private _locker: CoolLocalStorage,
@@ -371,7 +378,46 @@ export class TreatementPlanComponent implements OnInit {
     this.refreshTreatmentSheet();
   }
 
+  showInvestigation() {		
+    this.toggleInvestigation = !this.toggleInvestigation;
+    this.toggleProcedure = false;
+    this.toggleMedication = false;
+    this.toggleNurseingCare = false;
+    this.togglePhysicianOrder = false;
+  }
+  
+  showProcedure() {		
+    this.toggleProcedure = !this.toggleProcedure;
+    this.toggleInvestigation = false;
+    this.toggleMedication = false;
+    this.toggleNurseingCare = false;
+    this.togglePhysicianOrder = false;
+  }
+  showMedication() {		
+    this.toggleMedication = !this.toggleMedication;
+    this.toggleInvestigation = false;
+    this.toggleProcedure = false;
+    this.toggleNurseingCare = false;
+    this.togglePhysicianOrder = false;
+  }
+  showNursingCare() {		
+    this.toggleNurseingCare = !this.toggleNurseingCare;
+    this.toggleInvestigation = false;
+    this.toggleProcedure = false;
+    this.toggleMedication = false;
+    this.togglePhysicianOrder = false;
+  }
+  showPhysicianOrder() {		
+    this.togglePhysicianOrder = !this.togglePhysicianOrder;
+    this.toggleInvestigation = false;
+    this.toggleProcedure = false;
+    this.toggleMedication = false;
+    this.toggleNurseingCare = false;
+  }
 
+  showSheetDetails() {		
+    this.toggleSheetDetails = !this.toggleSheetDetails;
+  }
   /**
    * createdBy
    * createdAt

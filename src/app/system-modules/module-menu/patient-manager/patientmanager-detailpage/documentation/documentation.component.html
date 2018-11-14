@@ -3,7 +3,8 @@
     <div class="doc-contentArea">
         <div class="clinicalNoteWrap">
             <div class="actSect">
-                <div (click)="showPrintPopClick()" data-placement="bottom" data-toggle="Print all documents in Patient Casenote" class="act-wrap inner-it">
+                <div (click)="showPrintPopClick()" data-placement="bottom" data-toggle="Print all documents in Patient Casenote"
+                    class="act-wrap inner-it">
                     <i class="fa fa-print" aria-hidden="true"></i>
                     <span>Print Case Note</span>
                 </div>
@@ -23,17 +24,17 @@
                             aria-hidden="true"></i>
                         <i (click)="node_toggle(group[0])" *ngIf="group[0] !== currentDocument" class="fa fa-plus"
                             aria-hidden="true"></i>
-                    </div>                  
+                    </div>
 
                     <div class="node-label-wrap">
                         <div (click)="node_toggle(group[0])" class="node-date">{{group[0]}} </div>
 
                         <div class="doc-count">{{group[1].length}} Documentation(s)</div>
-                    </div> 
+                    </div>
                     <div class="table-list action-placeholder" style="margin-left: 15px;">
                         <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                         <div class="action-container shadow-RB">
-                            <div (click)="docDetail_Print()"  class=" action-item">
+                            <div (click)="docDetail_Print()" class=" action-item">
                                 <i class="edit-ico-color fa fa-print " aria-hidden="true "></i>
                                 <span>Print Document</span>
                             </div>
@@ -66,7 +67,7 @@
                                     <div class="list-label ">{{document.createdAt | date:'shortDate'}}.
                                         <span class="time ">{{document.createdAt | date:'shortTime'}}</span>
                                     </div>
-                                </div>                              
+                                </div>
 
                                 <ul class="topmenuwrap ">
                                     <li (click)="docDetail_show(document, false) ">
@@ -210,8 +211,9 @@
     </div>
 </div>
 
-<app-order-set [selectedPatient]="patient" (showDoc)="showDoc_onClick($event)" *ngIf="showOrderSet"></app-order-set>
-
+<div *ngIf="showOrderSet" class="modal-overlay">
+    <app-order-set [selectedPatient]="patient" (showDoc)="showDoc_onClick($event)" id="form-modal" class="form-modal center-center"></app-order-set>
+</div>
 
 <div *ngIf="showPrintPop" class="modal-overlay">
     <app-print-documentation [patientDocumentation]="patientDocumentation" [patient]="patient" (closeModal)="close_onClick($event)"
