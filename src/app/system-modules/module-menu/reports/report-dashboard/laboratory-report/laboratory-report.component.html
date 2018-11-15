@@ -1,114 +1,162 @@
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title">{{pageInView}}</div>
-
-
-
-    <div class="searchInputWrap row">
-        <mat-form-field class="col-xs-4">
-            <div class="optionGuide"> Select search options </div>
-            <mat-select [formControl]="searchCriteria">
-                <mat-option value="Enter Patient Name">By Date Range</mat-option>
-                <mat-option value="Enter Patient Name">By Patient</mat-option>
-                <mat-option value="Enter Doctor's Name">By Referring Doctor</mat-option>
-                <mat-option value="Enter Location or Workbench">By Location or Workbench</mat-option>
-                <mat-option value="Enter Clinic name">By Clinic Name</mat-option>
-            </mat-select>
-        </mat-form-field>
-        <div class="col-xs-8 mr-4">
-            <div class="row">
-                <div class="col-xs-7">
-                    <input [formControl]="searchControl" type="search" autofocus class="searchInput " placeholder=" {{searchCriteria.value}}" />
-                </div>
-                <div class="col-xs-5">
-
-                </div>
-            </div>
-        </div>
-        <div class="dr-wrap survery">
-            <app-date-range></app-date-range>
-            <span class="fa fa-spinner fa-spin"></span>
-        </div>
+    <div class="rpt-wrap">
+        <ul class="top-links">
+            <i class="fa fa-home blue-nav" (click)="back_dashboard()" aria-hidden="true"><span class="back">Dashboard</span></i>
+        </ul>
     </div>
 
-    <div class="row">
-        <div class="col-sm-12 col-md-12">
-            <div class="print pull-right">
-                <a><span class="fa fa-print">Print</span></a>
-                <a><span class="reportSummary">View Report Summary</span></a>
-            </div>
-        </div>
+    <div class="divider">
     </div>
 
-
-    <div class="card">
-        <div class="card-header">
-            <div class="row">
-                <div class="table-head col-md-3"> Patient Name</div>
-                <div class="table-head col-md-1"> APMIS ID</div>
-                <div class="table-head col-md-1"> Location</div>
-                <div class="table-head col-md-1"> Workbench</div>
-                <div class="table-head col-md-2"> Request </div>
-                <div class="table-head col-md-2"> Referring Doctor </div>
-                <div class="table-head col-md-2"> Status </div>
+    <div class="filter">
+        <div class="row" style="padding: 10px 40px 10px 40px;">
+            <div class="dr-wrap survery" style="margin-top: 20px;">
+                <app-date-range></app-date-range>
             </div>
-            <!--<div class="row">
-            <div class="col-md-4">
-                <input class="table-header-input" type="text" placeholder="Search Patient">
-            </div>
-            <div class="col-md-3">
-                <input class="table-header-input" type="date" placeholder="Choose a date">
-            </div>
-        </div>-->
-        </div>
-        <div class="card-content">
-            <!-- <div class="card-list-item" *ngIf="Lists.length===0 && !loading">
-            <div class="row">
-                <div class="table-list text-center col-xs-12">
-                    No data available in table
+            <div class="searchInputWrap col-sm row">
+                <mat-form-field>
+                    <mat-select [formControl]="searchCriteria" placeholder="Search ">
+                        <mat-option value="Enter Patient Name">By Provider</mat-option>
+                        <mat-option value="Enter Clinic name">By Clinic Name</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class="inputWrap">
+                    <div class="row">
+                        <div class="col-xs-7">
+                            <input [formControl]="searchControl" type="search" autofocus class="searchInput " placeholder=" {{searchCriteria.value}}" />
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="card-list-item" *ngIf="laboratoryReport.length===0 && loading">
+        <div class="card-list-item">
             <div class="row">
-                <div class="table-list text-center col-xs-12">
-                    <i class="fa fa-circle-o-notch fa-spin fa-3x text-blue" aria-hidden="true"></i>
-                </div>
-            </div>
-        </div>-->
-            <div class="card-list-item">
-                <div class="row">
-                    <div class="table-list col-md-3"> John Doe </div>
-                    <div class="table-list col-md-1"> SO-6***</div>
-                    <div class="table-list col-md-1"> Laboratory</div>
-                    <div class="table-list col-md-1"> Radiology</div>
-                    <div class="table-list col-md-2">Urinalysis</div>
-                    <div class="table-list col-md-2">Dr Mofe Ejegi</div>
-                    <div class="table-list col-md-2" style="color: #00ff00;"> Completed</div>
-                </div>
-            </div>
+                <div class="table-list col-md-3"> John Doe </div>
+                <div class="table-list col-md-1"> SO-6***</div>
+                <div class="table-list col-md-1"> Laboratory</div>
+                <div class="table-list col-md-1"> Radiology</div>
+                <div class="table-list col-md-2">Urinalysis</div>
+                <div class="table-list col-md-2">Dr Mofe Ejegi</div>
+                <div class="table-list col-md-2" style="color: #00ff00;"> Completed</div>
 
-            <div class="card-list-item">
-                <div class="row">
-                    <div class="table-list col-md-3"> John Doe </div>
-                    <div class="table-list col-md-1"> SO-6***</div>
-                    <div class="table-list col-md-1"> Laboratory</div>
-                    <div class="table-list col-md-1"> Radiology</div>
-                    <div class="table-list col-md-2">Urinalysis</div>
-                    <div class="table-list col-md-2">Dr Mofe Ejegi</div>
-                    <div class="table-list col-md-2" style="color: #FF5B47;"> Not Completed</div>
-                </div>
-            </div>
+                <div class="col-sm" style="padding-left: 30px;">
+                    <h3 style="text-align: center;
+                text-decoration: underline;">Group</h3>
+                    <div style="display:flex;">
+                        <mat-form-field class="select">
+                            <mat-select placeholder="Select Location">
+                                <mat-option>PP Lab</mat-option>
+                                <mat-option>Dental Lab</mat-option>
+                                <mat-option>Optometric Lab</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field class="select">
+                            <mat-select placeholder="Select Workbench">
+                                <mat-option>Haematology</mat-option>
+                                <mat-option>Microbiology</mat-option>
+                                <mat-option>Chemical Pathology</mat-option>
+                                <mat-option>Serology</mat-option>
+                            </mat-select>
+                        </mat-form-field>
 
-            <div class="card-list-item">
-                <div class="row">
-                    <div class="table-list col-md-3"> John Doe </div>
-                    <div class="table-list col-md-1"> SO-6***</div>
-                    <div class="table-list col-md-1"> Laboratory</div>
-                    <div class="table-list col-md-1"> Radiology</div>
-                    <div class="table-list col-md-2">Urinalysis</div>
-                    <div class="table-list col-md-2">Dr Mofe Ejegi</div>
-                    <div class="table-list col-md-2" style="color: #FF5B47;"> Not Completed</div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+        <div>
+            <hr>
+        </div>
+
+        <div class="card-list-item">
+            <div class="row">
+                <div class="table-list col-md-3"> John Doe </div>
+                <div class="table-list col-md-1"> SO-6***</div>
+                <div class="table-list col-md-1"> Laboratory</div>
+                <div class="table-list col-md-1"> Radiology</div>
+                <div class="table-list col-md-2">Urinalysis</div>
+                <div class="table-list col-md-2">Dr Mofe Ejegi</div>
+                <div class="table-list col-md-2" style="color: #FF5B47;"> Not Completed</div>
+            </div>
+        </div>
+
+        <div class="card-list-item">
+            <div class="row">
+                <div class="table-list col-md-3"> John Doe </div>
+                <div class="table-list col-md-1"> SO-6***</div>
+                <div class="table-list col-md-1"> Laboratory</div>
+                <div class="table-list col-md-1"> Radiology</div>
+                <div class="table-list col-md-2">Urinalysis</div>
+                <div class="table-list col-md-2">Dr Mofe Ejegi</div>
+                <div class="table-list col-md-2" style="color: #FF5B47;"> Not Completed</div>
+
+                <div class="tbl-resp-wrap">
+                    <table class="card" style="color:black;" cellpadding="0" cellspacing="0" border="0.5">
+                        <thead>
+                            <tr class="th-r1 th-xxx">
+                                <th>S/N</th>
+                                <th>Patient Name</th>
+                                <th>APMIS ID</th>
+                                <th>Requests</th>
+                                <th>Laboratory Location</th>
+                                <th>Reffering Doctor</th>
+                                <th>Clinic</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr class="th-xxx">
+                                <td>1</td>
+                                <td>Olaniyi Adedejo</td>
+                                <td> JK-22449 </td>
+                                <td>
+                                    <div>Widal</div>
+                                    <div>Urinalysis</div>
+                                    <div>Pregnancy Test</div>
+                                    <div>Cretinine Kinase</div>
+                                </td>
+                                <td>PP Lab</td>
+                                <td>Dr Oladele</td>
+                                <td>General OPD</td>
+                                <td>Completed</td>
+                            </tr>
+                            <tr class="th-xxx">
+                                <td>2</td>
+                                <td>Omolayo Susan</td>
+                                <td> GT-888463 </td>
+                                <td>
+                                    <div>Malaria Parasite</div>
+                                    <div>Urinalysis</div>
+                                    <div>Pregnancy Test</div>
+                                    <div>Blood Group</div>
+                                </td>
+                                <td>Gynecology Lab</td>
+                                <td>Dr Oladele</td>
+                                <td>Ante-Natal</td>
+                                <td>Completed</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
+                    </mat-paginator>
+                    <div class="billSummarySect">
+                        <table class="rhs">
+                            <div class="summaryItems">
+                                <tr class="summaryItem">
+                                    <td class="label" style="width:auto !important;">Total Number of Request:</td>
+                                    <td class="data">
+                                        <span>35 Requests</span></td>
+                                    <td></td>
+                                </tr>
+                                <tr class="summaryItem">
+                                    <td class="label" style="width:auto !important;">Total Number of Reports:</td>
+                                    <td class="data">
+                                        <span>40 Investigations Reported</span></td>
+                                    <td></td>
+                                </tr>
+
+                            </div>
+                        </table>
+                    </div>
+                </div>
