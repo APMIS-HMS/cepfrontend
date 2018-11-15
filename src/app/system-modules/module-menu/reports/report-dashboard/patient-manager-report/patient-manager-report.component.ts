@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
+import { FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-patient-manager-report',
   templateUrl: './patient-manager-report.component.html',
@@ -7,9 +8,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PatientManagerReportComponent implements OnInit {
 
-  constructor() { }
+  searchControl = new FormControl();
+  searchCriteria = new FormControl('Search');
+
+  pageInView = 'Patient Registration Report';
+
+  constructor(private _router: Router) { }
 
   ngOnInit() {
   }
+
+  pageInViewLoader(title) {
+		this.pageInView = title;
+  }
+  back_dashboard() {
+		this._router.navigate(['/dashboard/reports/report-dashboard']);
+	  }
 
 }
