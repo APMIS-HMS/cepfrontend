@@ -21,8 +21,13 @@ export class PatientManagerReportComponent implements OnInit {
   pageInViewLoader(title) {
 		this.pageInView = title;
   }
+
   back_dashboard() {
 		this._router.navigate(['/dashboard/reports/report-dashboard']);
+  }
+
+  patientRegistration_analytics() {
+		this._router.navigate(['/dashboard/reports/report-dashboard/patient-manager-report/patient-registration-analytics']);
 	  }
 
 }
