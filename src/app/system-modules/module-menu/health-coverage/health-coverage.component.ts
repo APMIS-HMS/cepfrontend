@@ -26,11 +26,13 @@ export class HealthCoverageComponent implements OnInit {
   constructor(private router: Router, private route: ActivatedRoute) {
     router.events.subscribe((payload: any) => {
       this.currentPath = payload.url;
+      console.log(this.currentPath);
     });
   }
 
   ngOnInit() {
     const page: string = this.router.url;
+    console.log('Landing page', page);
     this.checkPageUrl(page);
   }
   contentSecMenuToggle() {

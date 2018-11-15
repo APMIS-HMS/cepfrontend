@@ -12,7 +12,7 @@ export class DashboardLandingpageComponent implements OnInit {
 	ngOnInit() {}
 
 	call_dhisReport() {
-		this._router.navigate([ '/dashboard/reports/report-dashboard/dhis-report' ]);
+		this._router.navigate([ '/dashboard/reports/report-dashboard/dhisReport' ]);
   }
   
   call_clinicManagementReport() {

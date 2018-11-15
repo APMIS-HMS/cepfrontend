@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RegistersRoutingModule } from './registers-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SharedModule } from '../../../../../shared-module/shared.module';
 import { DailyAntenatalComponent } from './register-entries/daily-antenatal/daily-antenatal.component';
 import { NewAntenatalEntryComponent } from './register-entries/daily-antenatal/new-antenatal-entry/new-antenatal-entry.component';
 import { AntenatalPg1Component } from './register-entries/daily-antenatal/antenatal-pg1/antenatal-pg1.component';
@@ -21,9 +20,6 @@ import { NewGmpEntryComponent } from './register-entries/daily-gmp/new-gmp-entry
 import { GmpListComponent } from './register-entries/daily-gmp/gmp-list/gmp-list.component';
 
 import { DailyIrtsComponent } from './register-entries/daily-IRTS/daily-irts.component';
-
-import { OnlyMaterialModule } from '../../../../../shared-common-modules/only-material-module';
-import { MaterialModule } from '../../../../../shared-common-modules/material-module';
 import { DailyLdrComponent } from './register-entries/daily-ldr/daily-ldr.component';
 import { NewLdrEntryComponent } from './register-entries/daily-ldr/new-ldr-entry/new-ldr-entry.component';
 import { LdrListComponent } from './register-entries/daily-ldr/ldr-list/ldr-list.component';
@@ -32,6 +28,9 @@ import { ChildImmunizationComponent } from './register-entries/daily-IRTS/child-
 import { HfmrecordsComponent } from './register-entries/daily-IRTS/hfmrecords/hfmrecords.component';
 import { NewChildEntryComponent } from './register-entries/daily-IRTS/child-immunization/new-child-entry/new-child-entry.component';
 import { NewHfmrecordsEntryComponent } from './register-entries/daily-IRTS/hfmrecords/new-hfmrecords-entry/new-hfmrecords-entry.component';
+import { MaterialModule } from 'app/shared-common-modules/material-module';
+import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-module';
+import { SharedModule } from 'app/shared-module/shared.module';
 
 @NgModule({
   imports: [
