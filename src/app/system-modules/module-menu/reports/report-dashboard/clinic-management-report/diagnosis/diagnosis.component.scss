@@ -2,7 +2,7 @@
 @import "./../../../../payment/invoice/invoice.component.scss";
 
 .baseWrap{
-    padding: 50px;
+    padding: 0px 25px 0px 25px;
 }
 
 .filterWrap{
@@ -16,7 +16,9 @@
     color: white;
 }
 
-
+th{
+    height:25px !important;
+}
 
 .dropdown-container {
     display: block;

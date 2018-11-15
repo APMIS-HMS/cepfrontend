@@ -9,7 +9,9 @@ import { Router } from '@angular/router';
 export class DhisReportComponent implements OnInit {
 
   nhmis = false;
-  register = false;
+  registers = false;
+
+  pageInView = 'DHIS Report';
 
   constructor(private _router: Router) { }
 
@@ -20,33 +22,58 @@ export class DhisReportComponent implements OnInit {
 
   
   checkPageUrl(param: string) {
+    console.log(param);
     if (param.includes('nhmis')) {
       this.nhmis = true;
-      this.register = false;
-      this._router.navigate(['/dashboard/reports/report-dashboard/dhis-report/nhmis']);
+      this.registers = false;
+      this._router.navigate(['/dashboard/reports/report-dashboard/dhisReport/nhmis']);
     } else if (param.includes('registers')) {
       this.nhmis = false;
-      this.register = true; 
-      this._router.navigate(['/dashboard/reports/report-dashboard/dhis-report/register']);
+      this.registers = true; 
+      console.log('going to resiger');
+      this._router.navigate(['/dashboard/reports/report-dashboard/dhisReport/registers']).then(r =>{
+
+      }, error =>{
+        console.log(error);
+      });
     } else {
       this.nhmis = true;
-      this.register = false; 
-      this._router.navigate(['/dashboard/reports/report-dashboard/dhis-report/nhmis']);
+      this.registers = false; 
+      this._router.navigate(['/dashboard/reports/report-dashboard/dhisReport/nhmis']);
     }
   }
 
-  route(link){
-    if(link === 'nhmis'){
-      this.nhmis = true;
-      this.register = false;
-    } else if(link === 'register'){
-      this.nhmis = false;
-      this.register = true;
-    } else{
-      this.nhmis = true;
-      this.register = false;
-    }
-    this._router.navigate(['/dashboard/reports/report-dashboard/dhis-report' + link]);
+  // route(link){
+  //   if(link === 'nhmis'){
+  //     this.nhmis = true;
+  //     this.registers = false;
+  //     this._router.navigate(['/dashboard/reports/report-dashboard/dhisReport/nhmis']);
+  //   } else if(link === 'registers'){
+  //     this.nhmis = false;
+  //     this.registers = true;
+  //     console.log('going to resiger');
+  //     this._router.navigate(['/dashboard/reports/report-dashboard/dhisReport/registers']).then(r =>{
+
+  //     }, error =>{
+  //       console.log(error);
+  //     });
+  //   } else{
+  //     this.nhmis = true;
+  //     this.registers = false;
+  //   }
+  //   this._router.navigate(['/dashboard/reports/report-dashboard/dhisReport' + link]);
+  // }
+
+  call_nhmis(){
+    this._router.navigate(['/dashboard/reports/report-dashboard/dhisReport/nhmis']);
   }
 
+  call_registers(){
+    this._router.navigate(['/dashboard/reports/report-dashboard/dhisReport/registers']);
+  }
+
+  back_dashboard() {
+		this._router.navigate(['/dashboard/reports/report-dashboard']);
+	  }
 }
+

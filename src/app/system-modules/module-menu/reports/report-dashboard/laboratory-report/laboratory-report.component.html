@@ -2,7 +2,7 @@
     <div class="facility-title">{{pageInView}}</div>
     <div class="rpt-wrap">
         <ul class="top-links">
-            <i class="fa fa-home blue-nav" (click)="back_dashboard()" aria-hidden="true"><span class="back">Dashboard</span></i>
+            <i class="fa fa-home fa-2x blue-nav" (click)="back_dashboard()" aria-hidden="true"><span class="back">Dashboard</span></i>
         </ul>
     </div>
 
@@ -17,7 +17,7 @@
             <div class="searchInputWrap col-sm row">
                 <mat-form-field>
                     <mat-select [formControl]="searchCriteria" placeholder="Search ">
-                        <mat-option value="Enter Patient Name">By Provider</mat-option>
+                        <mat-option value="Enter Provider Name">By Provider</mat-option>
                         <mat-option value="Enter Clinic name">By Clinic Name</mat-option>
                     </mat-select>
                 </mat-form-field>
@@ -29,38 +29,25 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div class="card-list-item">
-            <div class="row">
-                <div class="table-list col-md-3"> John Doe </div>
-                <div class="table-list col-md-1"> SO-6***</div>
-                <div class="table-list col-md-1"> Laboratory</div>
-                <div class="table-list col-md-1"> Radiology</div>
-                <div class="table-list col-md-2">Urinalysis</div>
-                <div class="table-list col-md-2">Dr Mofe Ejegi</div>
-                <div class="table-list col-md-2" style="color: #00ff00;"> Completed</div>
-
-                <div class="col-sm" style="padding-left: 30px;">
-                    <h3 style="text-align: center;
-                text-decoration: underline;">Group</h3>
-                    <div style="display:flex;">
-                        <mat-form-field class="select">
-                            <mat-select placeholder="Select Location">
-                                <mat-option>PP Lab</mat-option>
-                                <mat-option>Dental Lab</mat-option>
-                                <mat-option>Optometric Lab</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-                        <mat-form-field class="select">
-                            <mat-select placeholder="Select Workbench">
-                                <mat-option>Haematology</mat-option>
-                                <mat-option>Microbiology</mat-option>
-                                <mat-option>Chemical Pathology</mat-option>
-                                <mat-option>Serology</mat-option>
-                            </mat-select>
-                        </mat-form-field>
-
-                    </div>
+            <div class="col-sm" style="padding-left: 30px;">
+                <h3 style="text-align: center;
+                text-decoration: underline;">Filter by Group</h3>
+                <div style="display:flex;">
+                    <mat-form-field class="select">
+                        <mat-select placeholder="Select Location">
+                            <mat-option>PP Lab</mat-option>
+                            <mat-option>Dental Lab</mat-option>
+                            <mat-option>Optometric Lab</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field class="select">
+                        <mat-select placeholder="Select Workbench">
+                            <mat-option>Haematology</mat-option>
+                            <mat-option>Microbiology</mat-option>
+                            <mat-option>Chemical Pathology</mat-option>
+                            <mat-option>Serology</mat-option>
+                        </mat-select>
+                    </mat-form-field>
                 </div>
             </div>
         </div>
@@ -68,16 +55,73 @@
             <hr>
         </div>
 
-        <div class="card-list-item">
-            <div class="row">
-                <div class="table-list col-md-3"> John Doe </div>
-                <div class="table-list col-md-1"> SO-6***</div>
-                <div class="table-list col-md-1"> Laboratory</div>
-                <div class="table-list col-md-1"> Radiology</div>
-                <div class="table-list col-md-2">Urinalysis</div>
-                <div class="table-list col-md-2">Dr Mofe Ejegi</div>
-                <div class="table-list col-md-2" style="color: #FF5B47;"> Not Completed</div>
-            </div>
+        <tbody>
+            <tr class="th-xxx">
+                <td>1</td>
+                <td>Omolayo Susan</td>
+                <td> GT-888463 </td>
+                <td>
+                    <div>Malaria Parasite</div>
+                    <div>Urinalysis</div>
+                    <div>Pregnancy Test</div>
+                    <div>Blood Group</div>
+                </td>
+                <td>Gynecology Lab</td>
+                <td>Dr Daniel</td>
+                <td>Ante-Natal</td>
+                <td style="color:green;">Completed</td>
+            </tr>
+            <tr class="th-xxx">
+                <td>2</td>
+                <td>John Yedenu</td>
+                <td> FM-88772 </td>
+                <td>
+                    <div>Blood Profile</div>
+                    <div>Full Blood Count</div>
+                    <div>Genotype</div>
+                    <div>Cretinine Kinase</div>
+                </td>
+                <td>PP Lab</td>
+                <td>Dr Oladele</td>
+                <td>General OPD</td>
+                <td style="color:orange;">Incomplete</td>
+            </tr>
+            <tr class="th-xxx">
+                <td>3</td>
+                <td>Olaniyi Adedejo</td>
+                <td> JK-22449 </td>
+                <td>
+                    <div>Widal</div>
+                    <div>Urinalysis</div>
+                    <div>Pregnancy Test</div>
+                    <div>Cretinine Kinase</div>
+                </td>
+                <td>PP Lab</td>
+                <td>Dr Oladele</td>
+                <td>General OPD</td>
+                <td style="color:red;">Not Treated</td>
+            </tr>
+        </tbody>
+        </table>
+        <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
+        </mat-paginator>
+        <div class="billSummarySect">
+            <table class="rhs">
+                <div class="summaryItems">
+                    <tr class="summaryItem">
+                        <td class="label" style="width:auto !important;">Total Number of Request:</td>
+                        <td class="data">
+                            <span>35 Requests</span></td>
+                        <td></td>
+                    </tr>
+                    <tr class="summaryItem">
+                        <td class="label" style="width:auto !important;">Total Number of Reports:</td>
+                        <td class="data">
+                            <span>40 Investigations Reported</span></td>
+                        <td></td>
+                    </tr>
+                </div>
+            </table>
         </div>
 
         <div class="card-list-item">
