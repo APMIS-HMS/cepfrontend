@@ -11,9 +11,9 @@
       <div class="dropdown-container">
         <mat-form-field>
           <mat-select placeholder="Filter By Clinic">
-            <mat-option value="option">General Clinic</mat-option>
-            <mat-option value="option1">Cardiology Clinic</mat-option>
-            <mat-option value="option2">Optometric Clinic</mat-option>
+            <mat-option value="option" *ngFor="let item of facilityClinics" >{{item.name}}</mat-option>
+            <!-- <mat-option value="option1">Cardiology Clinic</mat-option>
+            <mat-option value="option2">Optometric Clinic</mat-option> -->
           </mat-select>
         </mat-form-field>
       </div>

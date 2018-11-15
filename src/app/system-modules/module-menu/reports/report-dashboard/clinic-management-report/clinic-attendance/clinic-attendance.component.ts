@@ -1,6 +1,7 @@
-import { ClinicTabGroup } from './../../../../../../models/reports/clinic-attendance';
+import { from } from 'rxjs/observable/from';
+import { ClinicTabGroup, AppointmentReportStatus, AppointmentSearchCriteria } from './../../../../../../models/reports/clinic-attendance';
 import { AppointmentReportService } from './../../../../../../services/reports/clinic-manager/appointment-report.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ClinicAttendanceReportService } from 'app/services/reports';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility } from 'app/models';
@@ -24,22 +25,75 @@ export class ClinicAttendanceComponent implements OnInit {
   searchCriteriaOptions = [];
   searchControl = new FormControl();
   searchCriteria = new FormControl('Search');
-  activeTabIndex = 0;
+  activeTabIndex;
+  appointmentStatus = [];
+  selectedSearchCriteria = '';
+  searchedProvider = '';
+  searchedPatient = '';
+  selectedStatus = '';
+
+
+
   constructor(private clinicAttendance: ClinicAttendanceReportService,
     private locker: CoolLocalStorage, private systemModuleService: SystemModuleService,
-    private appointmentService: AppointmentReportService) { }
+    private appointmentService: AppointmentReportService) {
+      this.activeTabIndex = 0;
+    }
     ngOnInit() {
       this.currentFacility = <Facility>this.locker.getObject('selectedFacility');
-      this.getSearchCriteria();
+      this.appointmentStatus = Object.keys(AppointmentReportStatus).map(val => AppointmentReportStatus[val]);
       this.getFacilityAttendance();
+      this.getSearchCriteria();
+      this.setDateRangeToDefault();
+      this.searchControl.valueChanges.debounceTime(200).distinctUntilChanged().subscribe(val => {
+        if (this.selectedSearchCriteria === AppointmentSearchCriteria.ByProvider && this.searchControl.value.length > 3) {
+            this.appointmentService.find({
+              query: {
+                facilityId: this.currentFacility._id,
+                searchText: val,
+                from: this.dateRange.from,
+                to: this.dateRange.to,
+                status: this.selectedStatus
+              }
+            }).then((pay) => {
+              this.fileteredAppointments = pay;
+            });
+        } else if (this.selectedSearchCriteria === AppointmentSearchCriteria.ByPatient && this.searchControl.value.length > 3) {
+            this.appointmentService.find({
+              query: {
+                facilityId: this.currentFacility._id,
+                searchText: val,
+                from: this.dateRange.from,
+                to: this.dateRange.to,
+                status: this.selectedStatus
+              }
+            }).then((payload) => {
+              this.fileteredAppointments = payload;
+            });
+        }
+      });
     }
 
-	setFacilityAttendanceByDateRange(dateRange: IDateRange): any {
+    setDateRangeToDefault() {
+      if (this.dateRange === undefined) {
+        this.dateRange = {
+          from: new Date(),
+          to: new Date()
+          };
+      }
+    }
+    setSearchFilter(data) {
+      this.selectedSearchCriteria = data;
+      this.searchControl.setValue('');
+   }
+
+   setFilterByDateRange(dateRange: IDateRange): any {
+    this.dateRange = dateRange;
 		if (dateRange !== null) {
       if (this.activeTabIndex === ClinicTabGroup.ClinicAttendance) {
             this.clinicAttendance.find({
             query: {
-              facilityId: this.currentFacility,
+              facilityId: this.currentFacility._id,
               from: dateRange.from,
               to: dateRange.to
             }
@@ -50,43 +104,36 @@ export class ClinicAttendanceComponent implements OnInit {
       } else if (this.activeTabIndex === ClinicTabGroup.AppointmentReport) {
         this.appointmentService.find({
           query: {
-            facilityId: this.currentFacility,
-            from: dateRange.from,
-            to: dateRange.to
+            facilityId: this.currentFacility._id,
+            searchText: this.searchControl.value,
+            from: this.dateRange.from,
+            to: this.dateRange.to,
+            status: this.selectedStatus
           }
           }).then(payload => {
+            console.log(payload);
             this.fileteredAppointments = payload;
           });
       }
 		}
   }
-  
   onTabClick(tabIndex) {
     this.activeTabIndex = tabIndex;
   }
 
   getSearchCriteria() {
-    this.searchCriteriaOptions = [
-      {
-        _id: 1,
-        name: 'By Patient'
-    },
-    {
-      _id: 2,
-      name: 'By Provider'
-    }];
+    this.searchCriteriaOptions = Object.keys(AppointmentSearchCriteria).map(val => AppointmentSearchCriteria[val]);
   }
 
   getFacilityAttendance() {
     if (this.currentFacility !== undefined || this.currentFacility._id !== '') {
         this.clinicAttendance.find({
           query: {
-            facilityId: this.currentFacility
+            facilityId: this.currentFacility._id
           }
         }).then(payload => {
             this.isClinicAttendanceLoading = false;
             this.filteredAttendance = payload;
-            console.log(payload);
             this.calculateGrandTotal(this.filteredAttendance);
         });
     } else {
@@ -105,10 +152,10 @@ export class ClinicAttendanceComponent implements OnInit {
   }
 
   getFacilityAppointments() {
-    if (this.currentFacility !== undefined || this.currentFacility._id !== ''){
+    if (this.currentFacility !== undefined || this.currentFacility._id !== '') {
       this.appointmentService.find({
         query: {
-          facilityId: this.currentFacility
+          facilityId: this.currentFacility._id
         }
       }).then(payload => {
           this.fileteredAppointments = payload;
@@ -116,14 +163,31 @@ export class ClinicAttendanceComponent implements OnInit {
     }
   }
 
-  calculateGrandTotal(data) {
-    const newAppointmentCount = [];
-    const followUpAppointmentCount = [];
-    data.forEach(item => {
-      newAppointmentCount.push(item.new.totalMale + item.new.totalFemale);
-      followUpAppointmentCount.push(item.followUp.totalMale + item.followUp.totalFemale);
+  onStatusChanged(selectedStatus) {
+    this.selectedStatus = selectedStatus;
+    this.appointmentService.find({
+      query: {
+        facilityId: this.currentFacility._id,
+        searchText: this.searchControl.value,
+        from: this.dateRange.from,
+        to: this.dateRange.to,
+        status: this.selectedStatus
+      }
+    }).then(payload => {
+      this.fileteredAppointments = payload;
     });
-    this.totalNewAppointment = newAppointmentCount.reduce((totalSum, nextVal) => totalSum + nextVal, 0);
-    this.totalFollowUpAppointment = followUpAppointmentCount.reduce((totalSum, nextVal) => totalSum + nextVal, 0);
+  }
+
+  calculateGrandTotal(data) {
+    if (data !== undefined || data !== null) {
+      const newAppointmentCount = [];
+      const followUpAppointmentCount = [];
+      data.forEach(item => {
+        newAppointmentCount.push(item.new.totalMale + item.new.totalFemale);
+        followUpAppointmentCount.push(item.followUp.totalMale + item.followUp.totalFemale);
+      });
+      this.totalNewAppointment = newAppointmentCount.reduce((totalSum, nextVal) => totalSum + nextVal, 0);
+      this.totalFollowUpAppointment = followUpAppointmentCount.reduce((totalSum, nextVal) => totalSum + nextVal, 0);
+    }
   }
 }

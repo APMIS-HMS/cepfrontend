@@ -43,10 +43,11 @@ facilityClinics: any;
   getClinicByFacility() {
       this.facilityService.find( {
         query: {
-          facilityId: this.currentFacility
+          _id: this.currentFacility._id
         }
       }).then(payload => {
-        this.facilityClinics = payload.minorLocations;
+        console.log(payload);
+        this.facilityClinics = payload.data[0].minorLocations;
         console.log(this.facilityClinics);
       });
   }
