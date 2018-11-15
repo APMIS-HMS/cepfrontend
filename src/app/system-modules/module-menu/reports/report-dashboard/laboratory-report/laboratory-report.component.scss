@@ -3,6 +3,33 @@
     margin-top: 60px;
 }
 
+.optionGuide {
+    color: #828282;
+}
+
+.print {
+    color: #337ab7;
+    font-size: 2.5rem;
+    cursor: pointer;
+    margin-top: -105px;
+     :hover {
+        color: #828282;
+    }
+    padding-right: 10px;
+}
+
+.reportSummary {
+    font-size: 1.5rem;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.table-list {
+    color: #292929;
+    font-weight: 2rem;
+    font-size: 1.5rem;
+}
+
 .searchInputWrap {
     display: flex;
     align-items: center;
@@ -10,6 +37,10 @@
     /*width: 300px;*/
     padding: 5px 2px;
     margin-top: 99px;
+    display: flex;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
+    flex-wrap: wrap;
 }
 
 .mat-form-field-wrapper {

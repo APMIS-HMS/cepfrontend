@@ -1,9 +1,13 @@
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title">{{pageInView}}</div>
 
+
+
     <div class="searchInputWrap row">
         <mat-form-field class="col-xs-4">
+            <div class="optionGuide"> Select search options </div>
             <mat-select [formControl]="searchCriteria">
+                <mat-option value="Enter Patient Name">By Date Range</mat-option>
                 <mat-option value="Enter Patient Name">By Patient</mat-option>
                 <mat-option value="Enter Doctor's Name">By Referring Doctor</mat-option>
                 <mat-option value="Enter Location or Workbench">By Location or Workbench</mat-option>
@@ -25,6 +29,17 @@
             <span class="fa fa-spinner fa-spin"></span>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-sm-12 col-md-12">
+            <div class="print pull-right">
+                <a><span class="fa fa-print">Print</span></a>
+                <a><span class="reportSummary">View Report Summary</span></a>
+            </div>
+        </div>
+    </div>
+
+
     <div class="card">
         <div class="card-header">
             <div class="row">
@@ -63,9 +78,11 @@
             <div class="card-list-item">
                 <div class="row">
                     <div class="table-list col-md-3"> John Doe </div>
-                    <div class="table-list col-md-2"> SO-6***</div>
+                    <div class="table-list col-md-1"> SO-6***</div>
+                    <div class="table-list col-md-1"> Laboratory</div>
+                    <div class="table-list col-md-1"> Radiology</div>
                     <div class="table-list col-md-2">Urinalysis</div>
-                    <div class="table-list col-md-3">Dr Mofe Ejegi</div>
+                    <div class="table-list col-md-2">Dr Mofe Ejegi</div>
                     <div class="table-list col-md-2" style="color: #00ff00;"> Completed</div>
                 </div>
             </div>
@@ -73,10 +90,24 @@
             <div class="card-list-item">
                 <div class="row">
                     <div class="table-list col-md-3"> John Doe </div>
-                    <div class="table-list col-md-2"> SO-6***</div>
+                    <div class="table-list col-md-1"> SO-6***</div>
+                    <div class="table-list col-md-1"> Laboratory</div>
+                    <div class="table-list col-md-1"> Radiology</div>
                     <div class="table-list col-md-2">Urinalysis</div>
-                    <div class="table-list col-md-3">Dr Mofe Ejegi</div>
-                    <div class="table-list col-md-2" style="color: #FF5B47;"> Completed</div>
+                    <div class="table-list col-md-2">Dr Mofe Ejegi</div>
+                    <div class="table-list col-md-2" style="color: #FF5B47;"> Not Completed</div>
+                </div>
+            </div>
+
+            <div class="card-list-item">
+                <div class="row">
+                    <div class="table-list col-md-3"> John Doe </div>
+                    <div class="table-list col-md-1"> SO-6***</div>
+                    <div class="table-list col-md-1"> Laboratory</div>
+                    <div class="table-list col-md-1"> Radiology</div>
+                    <div class="table-list col-md-2">Urinalysis</div>
+                    <div class="table-list col-md-2">Dr Mofe Ejegi</div>
+                    <div class="table-list col-md-2" style="color: #FF5B47;"> Not Completed</div>
                 </div>
             </div>
         </div>
