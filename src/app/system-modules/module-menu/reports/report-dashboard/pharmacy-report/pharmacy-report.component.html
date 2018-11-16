@@ -52,19 +52,19 @@
     </div>
   </div>
   <mat-tab-group>
-    <mat-tab label="• Dispense"  (click)="onclick_dispense()">
+    <mat-tab label="• Dispense (List of Items Sold)"  (click)="onclick_dispense()">
       <div class="tbl-resp-wrap">
-        <table class="card" style="color:black;" cellpadding="0" cellspacing="0" border="0.5">
+        <table class="card" style="color:black; margin-top: 10px !important;" cellpadding="0" cellspacing="0" border="0.5">
           <thead>
             <tr class="th-r1 th-xxx">
               <th>S/N</th>
               <th>Patient Name</th>
-              <th>APMIS ID</th>
-              <th>Requests</th>
-              <th>Laboratory Location</th>
-              <th>Reffering Doctor</th>
-              <th>Clinic</th>
-              <th>Status</th>
+              <th>Product</th>
+              <th>Batch</th>
+              <th>Quantity</th>
+              <th>Unite Price</th>
+              <th>Total Price</th>
+              <th>Employee Name</th>
             </tr>
           </thead>
 
@@ -73,16 +73,11 @@
               <td>1</td>
               <td>Omolayo Susan</td>
               <td> GT-888463 </td>
-              <td>
-                <div>Malaria Parasite</div>
-                <div>Urinalysis</div>
-                <div>Pregnancy Test</div>
-                <div>Blood Group</div>
-              </td>
+              <td>Malaria Parasite</td>
               <td>Gynecology Lab</td>
               <td>Dr Daniel</td>
               <td>Ante-Natal</td>
-              <td style="color:green;">Completed</td>
+              <td>Completed</td>
             </tr>
             <tr class="th-xxx">
               <td>2</td>
