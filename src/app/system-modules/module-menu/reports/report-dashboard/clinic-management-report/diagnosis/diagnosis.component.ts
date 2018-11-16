@@ -17,6 +17,7 @@ currentFacility: Facility = <Facility>{};
 filteredDiagnosis;
 isDiagnosisLoading = true;
 dateRange: any;
+selectedClinic;
 facilityClinics: any;
   constructor(private diagnosisService: DiagnosisReportService,
     private locker: CoolLocalStorage, private systemModuleService: SystemModuleService,
@@ -26,12 +27,16 @@ facilityClinics: any;
     this.currentFacility = <Facility>this.locker.getObject('selectedFacility');
     this.getFacilityDiagnosisReport();
     this.getClinicByFacility();
+    this.setDateRangeToDefault();
   }
+
   setDiagnosisByDateRange(dateRange: IDateRange) {
     if (dateRange != null) {
+      this.dateRange = dateRange;
       this.diagnosisService.find({
         query: {
-          facilityId: this.currentFacility,
+          facilityId: this.currentFacility._id,
+          clinicId: this.selectedClinic,
           from: dateRange.from,
           to: dateRange.to
         }
@@ -40,15 +45,27 @@ facilityClinics: any;
       });
     }
   }
+  setSearchFilter(selectedVal) {
+    console.log(this.dateRange);
+    this.selectedClinic = selectedVal;
+      this.diagnosisService.find({
+        query: {
+          facilityId: this.currentFacility._id,
+          clinicId: this.selectedClinic,
+          from: this.dateRange.from,
+          to: this.dateRange.to
+        }
+      }).then(payload => {
+        this.filteredDiagnosis = payload;
+      });
+  }
   getClinicByFacility() {
       this.facilityService.find( {
         query: {
           _id: this.currentFacility._id
         }
       }).then(payload => {
-        console.log(payload);
         this.facilityClinics = payload.data[0].minorLocations;
-        console.log(this.facilityClinics);
       });
   }
     getFacilityDiagnosisReport() {
@@ -74,6 +91,14 @@ facilityClinics: any;
         null,
         null
       );
+    }
+  }
+  setDateRangeToDefault() {
+    if (this.dateRange === undefined) {
+      this.dateRange = {
+        from: new Date(),
+        to: new Date()
+        };
     }
   }
 }

@@ -45,6 +45,9 @@ export class ClinicAttendanceComponent implements OnInit {
       this.getFacilityAttendance();
       this.getSearchCriteria();
       this.setDateRangeToDefault();
+
+      // search filter is performed based on the search criteria selected by the user
+      // searchCriterias = ['By Provider', 'By Patient']
       this.searchControl.valueChanges.debounceTime(200).distinctUntilChanged().subscribe(val => {
         if (this.selectedSearchCriteria === AppointmentSearchCriteria.ByProvider && this.searchControl.value.length > 3) {
             this.appointmentService.find({
@@ -74,6 +77,8 @@ export class ClinicAttendanceComponent implements OnInit {
       });
     }
 
+    // we set default dateRange to current date for filter selection
+    // without date selection
     setDateRangeToDefault() {
       if (this.dateRange === undefined) {
         this.dateRange = {

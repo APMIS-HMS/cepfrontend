@@ -10,10 +10,8 @@
       </div>
       <div class="dropdown-container">
         <mat-form-field>
-          <mat-select placeholder="Filter By Clinic">
-            <mat-option value="option" *ngFor="let item of facilityClinics" >{{item.name}}</mat-option>
-            <!-- <mat-option value="option1">Cardiology Clinic</mat-option>
-            <mat-option value="option2">Optometric Clinic</mat-option> -->
+          <mat-select placeholder="Filter By Clinic" (change)="setSearchFilter($event.value)">
+            <mat-option [value]="item._id" *ngFor="let item of facilityClinics" >{{item.name}}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -35,7 +33,7 @@
                 </tr>
             </thead>
   
-            <tbody>
+            <tbody *ngIf="!isDiagnosisLoading">
                 <tr class="th-xxx" *ngFor="let item of filteredDiagnosis;let i = index">
                     <td>{{i+1}}</td>
                     <td>{{item.hospitalNumber}}</td>
@@ -45,6 +43,12 @@
                     <td>{{item.clinic}}</td>
                 </tr>
             </tbody>
+            <tbody *ngIf="isDiagnosisLoading">
+              <tr class="th-xxx">
+                  <td></td><td></td><td></td>
+                  <td><div><i class="fa fa-spinner fa-spin"></i></div></td>
+              </tr>
+          </tbody>
         </table>
         <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
           </mat-paginator>
