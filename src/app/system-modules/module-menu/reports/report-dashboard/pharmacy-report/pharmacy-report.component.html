@@ -1,0 +1,146 @@
+<div class="inner-wrap-b body-wrap">
+  <div class="facility-title">{{pageInView}}</div>
+  <div class="rpt-wrap">
+    <ul class="top-links">
+      <i class="fa fa-home fa-2x blue-nav" (click)="back_dashboard()" aria-hidden="true"><span class="back">Dashboard</span></i>
+    </ul>
+  </div>
+
+  <div class="divider">
+  </div>
+
+  <div class="filter">
+    <div class="row" style="padding: 10px 40px 10px 40px;">
+      <div class="dr-wrap survery">
+        <app-date-range></app-date-range>
+      </div>
+      <div class="searchInputWrap col-sm row">
+        <div class="col-sm group">
+          <h3 style="padding-left: 20px;
+                      padding-bottom: 12px;
+                    text-decoration: underline;">Filter
+            by Group :</h3>
+          <div class="group-content"  *ngIf="dispenseFilter">
+            <mat-form-field class="group-item" style="width:20% !important;">
+              <mat-select [formControl]="searchCriteria" placeholder="Group By ">
+                <mat-option value="User">User</mat-option>
+                <mat-option value="Product">Product</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <div class="group-item" style="padding-top: 1em; margin-left: 5px;">
+              <div class="row">
+                <div class="col-xs-7">
+                  <input [formControl]="searchControl" type="search" autofocus class="searchInput " placeholder=" {{searchCriteria.value}}" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="group-content" *ngIf="prescriberFilter">
+            <mat-checkbox class="group-item">BY Prescriber</mat-checkbox>
+            <div class="group-item" style="padding-top: 1em; margin-left: 5px;">
+              <div class="row">
+                <div class="col-xs-7">
+                  <input [formControl]="searchControl" type="search" class="searchInput " placeholder="search prescriber" />
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+  <mat-tab-group>
+    <mat-tab label="• Dispense"  (click)="onclick_dispense()">
+      <div class="tbl-resp-wrap">
+        <table class="card" style="color:black;" cellpadding="0" cellspacing="0" border="0.5">
+          <thead>
+            <tr class="th-r1 th-xxx">
+              <th>S/N</th>
+              <th>Patient Name</th>
+              <th>APMIS ID</th>
+              <th>Requests</th>
+              <th>Laboratory Location</th>
+              <th>Reffering Doctor</th>
+              <th>Clinic</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr class="th-xxx">
+              <td>1</td>
+              <td>Omolayo Susan</td>
+              <td> GT-888463 </td>
+              <td>
+                <div>Malaria Parasite</div>
+                <div>Urinalysis</div>
+                <div>Pregnancy Test</div>
+                <div>Blood Group</div>
+              </td>
+              <td>Gynecology Lab</td>
+              <td>Dr Daniel</td>
+              <td>Ante-Natal</td>
+              <td style="color:green;">Completed</td>
+            </tr>
+            <tr class="th-xxx">
+              <td>2</td>
+              <td>John Yedenu</td>
+              <td> FM-88772 </td>
+              <td>
+                <div>Blood Profile</div>
+                <div>Full Blood Count</div>
+                <div>Genotype</div>
+                <div>Cretinine Kinase</div>
+              </td>
+              <td>PP Lab</td>
+              <td>Dr Oladele</td>
+              <td>General OPD</td>
+              <td style="color:orange;">Incomplete</td>
+            </tr>
+            <tr class="th-xxx">
+              <td>3</td>
+              <td>Olaniyi Adedejo</td>
+              <td> JK-22449 </td>
+              <td>
+                <div>Widal</div>
+                <div>Urinalysis</div>
+                <div>Pregnancy Test</div>
+                <div>Cretinine Kinase</div>
+              </td>
+              <td>PP Lab</td>
+              <td>Dr Oladele</td>
+              <td>General OPD</td>
+              <td style="color:red;">Not Treated</td>
+            </tr>
+          </tbody>
+        </table>
+        <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
+        </mat-paginator>
+        <div class="billSummarySect">
+          <table class="rhs">
+            <div class="summaryItems">
+              <tr class="summaryItem">
+                <td class="label" style="width:auto !important;">Total Number of Request:</td>
+                <td class="data">
+                  <span>35 Requests</span></td>
+                <td></td>
+              </tr>
+              <tr class="summaryItem">
+                <td class="label" style="width:auto !important;">Total Number of Reports:</td>
+                <td class="data">
+                  <span>40 Investigations Reported</span></td>
+                <td></td>
+              </tr>
+            </div>
+          </table>
+        </div>
+      </div>
+
+    </mat-tab>
+
+    <mat-tab label="•	Prescription" (click)="onclick_prescribe()">
+
+    </mat-tab>
+  </mat-tab-group>

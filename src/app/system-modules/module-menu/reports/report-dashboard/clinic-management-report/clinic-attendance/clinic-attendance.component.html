@@ -128,32 +128,52 @@
                 <table class="card" style="color:black;" cellpadding="0" cellspacing="0" border="0.5">
                     <thead>
                         <tr class="th-r1 th-xxx">
-                            <th rowspan="2">Date</th>
-                            <th rowspan="2">Clinic</th>
-                            <th rowspan="2">Total Checked-In Appointment</th>
-                            <th colspan="2">New Appointments</th>
-                            <th colspan="2">Follow-Up Appointments</th>
-                        </tr>
-                        <tr class="th-r2 th-xxx">
-                            <th>Male</th>
-                            <th>Female</th>
-                            <th>Male</th>
-                            <th>Female</th>
+                            <th>S/N</th>
+                            <th>Provider</th>
+                            <th>Date / Time</th>
+                            <th>Patient Name</th>
+                            <th>APMIS ID</th>
+                            <th>Phone</th>
+                            <th>Appointment Type</th>
+                            <th>Status</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         <tr class="th-xxx">
-                            <td>11th Oct 2018</td>
-                            <td>General Clinic</td>
-                            <td> 50 Patients </td>
-                            <td>10 Patients</td>
-                            <td>5 Patients</td>
-                            <td>20 Patients</td>
-                            <td>15 Patients</td>
+                            <td>1</td>
+                            <td>Dr Poju Oyemade</td>
+                            <td>8th Jan, 2017 8:10am</td>
+                            <td> Olamide Omoniyi </td>
+                            <td>GX-38882</td>
+                            <td>08142214995</td>
+                            <td>Follow-Up Appointment</td>
+                            <td>Suspend</td>
+                        </tr>
+                        <tr class="th-xxx">
+                            <td>2</td>
+                            <td>Dr Poju Oyemade</td>
+                            <td>12th Jan, 2017 8:10am</td>
+                            <td> Admola Opeyemi </td>
+                            <td>JJ-38882</td>
+                            <td>08142214995</td>
+                            <td>New Appointment</td>
+                            <td>Checked-In</td>
+                        </tr>
+                        <tr class="th-xxx">
+                            <td>3</td>
+                            <td>Dr Poju Oyemade</td>
+                            <td>12th April, 2017 12:00pm</td>
+                            <td> Olwasegun Olayemi </td>
+                            <td>WD-76535</td>
+                            <td>08142214995</td>
+                            <td>New Appointment</td>
+                            <td>Postpone</td>
                         </tr>
                     </tbody>
                 </table>
+                <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
+                </mat-paginator>
             </div>
         </mat-tab>
     </mat-tab-group>
