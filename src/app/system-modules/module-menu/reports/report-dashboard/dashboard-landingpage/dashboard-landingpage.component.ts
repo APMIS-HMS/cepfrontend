@@ -24,4 +24,7 @@ export class DashboardLandingpageComponent implements OnInit {
 	call_laboratoryReport() {
 		this._router.navigate(['/dashboard/reports/report-dashboard/labReport']);
 	}
+	call_pharmacyReport() {
+		this._router.navigate(['/dashboard/reports/report-dashboard/pharmacyReport']);
+	}
 }

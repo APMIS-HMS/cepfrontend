@@ -22,7 +22,6 @@ export class DhisReportComponent implements OnInit {
 
   
   checkPageUrl(param: string) {
-    console.log(param);
     if (param.includes('nhmis')) {
       this.nhmis = true;
       this.registers = false;
@@ -30,12 +29,7 @@ export class DhisReportComponent implements OnInit {
     } else if (param.includes('registers')) {
       this.nhmis = false;
       this.registers = true; 
-      console.log('going to resiger');
-      this._router.navigate(['/dashboard/reports/report-dashboard/dhisReport/registers']).then(r =>{
-
-      }, error =>{
-        console.log(error);
-      });
+      this._router.navigate(['/dashboard/reports/report-dashboard/dhisReport/registers']);
     } else {
       this.nhmis = true;
       this.registers = false; 
@@ -65,10 +59,14 @@ export class DhisReportComponent implements OnInit {
   // }
 
   call_nhmis(){
+    this.nhmis = true;
+    this.registers = false;
     this._router.navigate(['/dashboard/reports/report-dashboard/dhisReport/nhmis']);
   }
 
   call_registers(){
+    this.nhmis = false;
+    this.registers = true;
     this._router.navigate(['/dashboard/reports/report-dashboard/dhisReport/registers']);
   }
 
