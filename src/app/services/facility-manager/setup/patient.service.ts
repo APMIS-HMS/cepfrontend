@@ -26,7 +26,7 @@ export class PatientService {
   ) {
     this._rest = _restService.getService('patients');
     this._socket = _socketService.getService('patients');
-    this._socket.timeout =50000;
+    this._socket.timeout = 50000;
     this._patientSearchSocket = _socketService.getService('patient-search');
     this._patientSearchSocket.timeout = 30000;
     this._bulkUploadSocket = _socketService.getService('bulk-patient-upload');
@@ -99,9 +99,14 @@ export class PatientService {
     }
   }
 
-  createUnknowPatient(object){
-    return this.unknownPatientSocket.create(object,{});
+  createUnknowPatient(object) {
+    return this.unknownPatientSocket.create(object, {});
   }
+
+  mergeUnknowPatient(id, query) {
+    return this.unknownPatientSocket.remove(id, query);
+  }
+
 
   create(patient: any) {
     return this._socket.create(patient);
@@ -129,7 +134,7 @@ export class PatientService {
   }
 
   uploadExcel(data) {
-   return this._excelUploadSocket.create(data);
+    return this._excelUploadSocket.create(data);
   }
 
 

@@ -1029,6 +1029,11 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 		this.addTagsPop = true;
 	}
 
+	onPersonValueUpdated(value){
+		this.patient = value;
+		this.mergePatient = false;
+	}
+
 	ngOnDestroy() {
 		this.locker.removeItem('patient');
 

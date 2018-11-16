@@ -542,6 +542,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
             this.getShowing();
         })
             .catch((errr) => {
+                console.dir(errr);
                 this.systemService.off();
                 this.loading = false;
             });
