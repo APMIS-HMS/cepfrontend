@@ -5,7 +5,7 @@ import { ClinicManagementReportComponent } from './clinic-management-report/clin
 import { DhisReportComponent } from './dhis-report/dhis-report.component';
 import { LaboratoryReportComponent } from './laboratory-report/laboratory-report.component';
 import { PatientManagerReportComponent } from './patient-manager-report/patient-manager-report.component';
-import { PatientRegistrationAnalyticsComponent } from './patient-manager-report/patient-registration-analytics/patient-registration-analytics.component';
+
 
 import { PharmacyReportComponent } from './pharmacy-report/pharmacy-report.component';
 
@@ -26,12 +26,12 @@ const REPORTS_DASHBOARD_ROUTE: Routes = [
 				loadChildren: './dhis-report/dhis-report.module#DhisReportModule'
 			},
 			{ path: 'labReport', component: LaboratoryReportComponent},
-			
+
 			{
 				path: 'patientManagerReport',
 				loadChildren: './patient-manager-report/patient-manager-report.module#PatientManagerReportModule'
-			},			
-			
+			},
+
 			{ path: 'pharmacyReport', component: PharmacyReportComponent}
 
 		]

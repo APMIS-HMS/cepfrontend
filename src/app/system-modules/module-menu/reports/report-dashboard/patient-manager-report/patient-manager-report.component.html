@@ -3,11 +3,8 @@
     <div class="rpt-wrap">
         <ul class="top-links">
             <i class="fa fa-home fa-2x blue-nav" (click)="back_dashboard()" aria-hidden="true"><span class="back">Dashboard</span></i>
-            <i class="fa fa-list-alt fa-2x blue-nav" (click)="patientRegistrationReport()"
-            [class.top-links-active]="patientRegistration" aria-hidden="true"><span class="back">Patient Registration List</span></i>
-            <i class="fa fa-bar-chart fa-2x blue-nav" (click)="patientRegistration_analytics()"
-                [class.top-links-active]="patientRegistrationAnalytics" aria-hidden="true"><span class="back">View
-                    Analytics</span></i>
+            <li (click)="patientRegistrationReport()" [class.top-links-active]="patientRegistration">Patient Registration List</li>
+            <li (click)="patientRegistration_analytics()" [class.top-links-active]="patientRegistrationAnalytics">View Analytics</li>
         </ul>
     </div>
 
