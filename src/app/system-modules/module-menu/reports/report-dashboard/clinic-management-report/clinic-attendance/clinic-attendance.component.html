@@ -3,12 +3,15 @@
     <div class="filterWrap">
         <div class="row">
             <div class="dr-wrap survery">
-                <app-date-range></app-date-range>
+                <app-date-range [dateRange]="dateRange" (dateRangeChange)="setFilterByDateRange($event)"></app-date-range>
             </div>
         </div>
+
     </div>
 
-    <mat-tab-group>
+    <div class="divider"></div>
+
+    <mat-tab-group (selectedIndexChange)="onTabClick($event)">
         <mat-tab label="• Clinic Attendance Report">
             <div class="tbl-resp-wrap">
                 <table class="card" style="color:black;" cellpadding="0" cellspacing="0" border="0.5">
@@ -29,41 +32,30 @@
                         </tr>
                     </thead>
 
-                    <tbody>
-                        <tr class="th-xxx">
-                            <td>1</td>
-                            <td>11th Oct 2018</td>
-                            <td>General Clinic</td>
-                            <td> 50 Patients </td>
-                            <td>10 Patients</td>
-                            <td>5 Patients</td>
-                            <td>20 Patients</td>
-                            <td>15 Patients</td>
+                    <tbody *ngIf="!isClinicAttendanceLoading">
+                        <!-- <span *ngIf="filteredAttendance.length < 1"><i>There are currently no records to show</i></span> -->
+                        <tr class="th-xxx" *ngFor="let item of filteredAttendance; let i = index">
+                            <td>{{i+1}}</td>
+                            <td>{{item.date}}</td>
+                            <td>{{item.clinicName}}</td>
+                            <td> {{item.totalCheckedInPatients}}</td>
+                            <td>{{item.new.totalMale}}</td>
+                            <td>{{item.new.totalFemale}}</td>
+                            <td>{{item.followUp.totalMale}}</td>
+                            <td>{{item.followUp.totalFemale}}</td>
                         </tr>
+                    </tbody>
+                    <tbody *ngIf="isClinicAttendanceLoading">
                         <tr class="th-xxx">
-                            <td>2</td>
-                            <td>11th Oct 2018</td>
-                            <td>General Clinic</td>
-                            <td> 50 Patients </td>
-                            <td>10 Patients</td>
-                            <td>5 Patients</td>
-                            <td>20 Patients</td>
-                            <td>15 Patients</td>
-                        </tr>
-                        <tr class="th-xxx">
-                            <td>3</td>
-                            <td>11th Oct 2018</td>
-                            <td>General Clinic</td>
-                            <td> 50 Patients </td>
-                            <td>10 Patients</td>
-                            <td>5 Patients</td>
-                            <td>20 Patients</td>
-                            <td>15 Patients</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <div><i class="fa fa-spinner fa-spin"></i></div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
-                <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
-                </mat-paginator>
             </div>
             <div class="billSummarySect">
                 <table class="rhs">
@@ -71,13 +63,13 @@
                         <tr class="summaryItem">
                             <td class="label" style="width:auto !important;">New Appointment Sum Total</td>
                             <td class="data">
-                                <span>350 Pateints</span></td>
+                                <span>{{totalNewAppointment}} <i>Patient(s)</i></span></td>
                             <td></td>
                         </tr>
                         <tr class="summaryItem">
                             <td class="label" style="width:auto !important;">Follow-Up Appointment Sum Total</td>
                             <td class="data">
-                                <span>400 Patients</span></td>
+                                <span>{{totalFollowUpAppointment}} <i>Patients(s)</i></span></td>
                             <td></td>
                         </tr>
                     </div>
@@ -90,9 +82,17 @@
                     <div class="middle-xs">
                         <div class="dropdown-container">
                             <mat-form-field>
-                                <mat-select [formControl]="searchCriteria" placeholder="Search Criteria">
-                                    <mat-option value="Enter Patient Name">By Patient</mat-option>
-                                    <mat-option value="Enter Doctor's Name">By Provider</mat-option>
+                                <!-- <mat-autocomplete #auto="matAutocomplete" [displayWith]="statusDisplayFn">
+                                            <mat-option *ngFor="let status of orderStatuses" [value]="status">
+                                                {{ status.name }}
+                                            </mat-option>
+                                        </mat-autocomplete> -->
+                                <mat-select [formControl]="searchCriteria" placeholder="select search criteria"
+                                    (change)="setSearchFilter($event.value)">
+                                    <mat-option [value]="criteria" *ngFor="let criteria of searchCriteriaOptions">
+                                        {{criteria}}
+                                    </mat-option>
+                                    <!-- <mat-option value="Enter Doctor's Name">By Provider</mat-option> -->
                                 </mat-select>
                             </mat-form-field>
                             <!-- <div class="col-xs-8 mr-4">
@@ -108,7 +108,7 @@
                         </div>
                     </div>
                     <div class="filter-space">
-                            <input [formControl]="searchControl" type="search" autofocus class="searchInput " placeholder=" {{searchCriteria.value}}" />
+                        <input [formControl]="searchControl" type="search" autofocus class="searchInput " placeholder=" {{selectedSearchCriteria}}" />
                     </div>
 
                     <div class="col-md-4 status-filter">
@@ -116,10 +116,8 @@
                             <div>
                                 Status Filter:
                                 <mat-radio-group>
-                                    <mat-radio-button value="auto">Checked In</mat-radio-button>
-                                    <mat-radio-button value="always">Checked Out</mat-radio-button>
-                                    <mat-radio-button value="never">Suspend</mat-radio-button>
-                                    <mat-radio-button value="never">Postponed</mat-radio-button>
+                                    <mat-radio-button value="auto" *ngFor="let item of appointmentStatus" (change)="onStatusChanged($event.value)"
+                                        [checked]="false" [value]="item">{{item}}</mat-radio-button>
                                 </mat-radio-group>
                             </div>
                         </div>
@@ -130,52 +128,32 @@
                 <table class="card" style="color:black;" cellpadding="0" cellspacing="0" border="0.5">
                     <thead>
                         <tr class="th-r1 th-xxx">
-                            <th>S/N</th>
-                            <th>Provider</th>
-                            <th>Date / Time</th>
-                            <th>Patient Name</th>
-                            <th>APMIS ID</th>
-                            <th>Phone</th>
-                            <th>Appointment Type</th>
-                            <th>Status</th>
+                            <th rowspan="2">Date</th>
+                            <th rowspan="2">Clinic</th>
+                            <th rowspan="2">Total Checked-In Appointment</th>
+                            <th colspan="2">New Appointments</th>
+                            <th colspan="2">Follow-Up Appointments</th>
+                        </tr>
+                        <tr class="th-r2 th-xxx">
+                            <th>Male</th>
+                            <th>Female</th>
+                            <th>Male</th>
+                            <th>Female</th>
                         </tr>
                     </thead>
 
                     <tbody>
                         <tr class="th-xxx">
-                            <td>1</td>
-                            <td>Dr Poju Oyemade</td>
-                            <td>8th Jan, 2017 8:10am</td>
-                            <td> Olamide Omoniyi </td>
-                            <td>GX-38882</td>
-                            <td>08142214995</td>
-                            <td>Follow-Up Appointment</td>
-                            <td>Suspend</td>
-                        </tr>
-                        <tr class="th-xxx">
-                            <td>2</td>
-                            <td>Dr Poju Oyemade</td>
-                            <td>12th Jan, 2017 8:10am</td>
-                            <td> Admola Opeyemi </td>
-                            <td>JJ-38882</td>
-                            <td>08142214995</td>
-                            <td>New Appointment</td>
-                            <td>Checked-In</td>
-                        </tr>
-                        <tr class="th-xxx">
-                            <td>3</td>
-                            <td>Dr Poju Oyemade</td>
-                            <td>12th April, 2017 12:00pm</td>
-                            <td> Olwasegun Olayemi </td>
-                            <td>WD-76535</td>
-                            <td>08142214995</td>
-                            <td>New Appointment</td>
-                            <td>Postpone</td>
+                            <td>11th Oct 2018</td>
+                            <td>General Clinic</td>
+                            <td> 50 Patients </td>
+                            <td>10 Patients</td>
+                            <td>5 Patients</td>
+                            <td>20 Patients</td>
+                            <td>15 Patients</td>
                         </tr>
                     </tbody>
                 </table>
-                <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
-                </mat-paginator>
             </div>
         </mat-tab>
     </mat-tab-group>
