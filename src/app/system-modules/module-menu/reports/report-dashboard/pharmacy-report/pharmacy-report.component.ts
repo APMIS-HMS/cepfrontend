@@ -15,7 +15,7 @@ export class PharmacyReportComponent implements OnInit {
 
   prescriberFilter = false;
   prescriberSearch = false;
-  dispenseFilter = false;
+  dispenseFilter = true;
 
   pageInView = 'Pharmacy Report';
 
