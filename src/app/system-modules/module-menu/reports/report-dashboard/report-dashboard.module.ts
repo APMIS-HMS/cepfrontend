@@ -27,9 +27,7 @@ import { PharmacyReportComponent } from './pharmacy-report/pharmacy-report.compo
 	declarations: [
 		ReportDashboardComponent,
 		DashboardLandingpageComponent,
-		PatientManagerReportComponent,
 		LaboratoryReportComponent,
-		PatientRegistrationAnalyticsComponent,
 		PharmacyReportComponent
 	]
 })

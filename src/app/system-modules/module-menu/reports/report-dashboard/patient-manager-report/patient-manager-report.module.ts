@@ -6,6 +6,7 @@ import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-modu
 import { PatientManagerReportRoutingModule } from './patient-manager-report-routing.module';
 import { PatientManagerReportComponent } from './patient-manager-report.component';
 import { PatientRegistrationAnalyticsComponent } from './patient-registration-analytics/patient-registration-analytics.component';
+import { PatientRegistrationReportComponent } from './patient-registration-report/patient-registration-report.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,7 @@ import { PatientRegistrationAnalyticsComponent } from './patient-registration-an
   ],
   declarations: [
     PatientRegistrationAnalyticsComponent,
-    PatientManagerReportComponent ]
+    PatientManagerReportComponent,
+    PatientRegistrationReportComponent ]
 })
 export class PatientManagerReportModule { }

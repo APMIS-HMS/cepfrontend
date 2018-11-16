@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { PatientManagerReportComponent } from './patient-manager-report.component';
 import { PatientRegistrationAnalyticsComponent } from './patient-registration-analytics/patient-registration-analytics.component';
+import { PatientRegistrationReportComponent } from './patient-registration-report/patient-registration-report.component';
 
 const PATIENT_MANAGER_REPORT_ROUTE: Routes = [
 {
@@ -9,8 +10,8 @@ const PATIENT_MANAGER_REPORT_ROUTE: Routes = [
   component: PatientManagerReportComponent,
   children: [
     // { path: '', redirectTo: 'clinic-report-page' },
-    // { path: 'clinic-report-page', component: ClinicManagementReportComponent },
-    { path: 'patient-registration-analytics', component: PatientRegistrationAnalyticsComponent },
+    { path: 'patientRegistration', component: PatientRegistrationReportComponent },
+    { path: 'patientAnalytics', component: PatientRegistrationAnalyticsComponent },
   ]
 }
 ];

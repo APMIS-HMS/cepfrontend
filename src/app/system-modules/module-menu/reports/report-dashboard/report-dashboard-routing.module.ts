@@ -27,10 +27,10 @@ const REPORTS_DASHBOARD_ROUTE: Routes = [
 			},
 			{ path: 'labReport', component: LaboratoryReportComponent},
 			
-			{ path: 'patientReport', component: PatientManagerReportComponent },
-			{ path: 'patient-registration-analytics', component: PatientRegistrationAnalyticsComponent },
-			{ path: 'patientReport', component: PatientManagerReportComponent},
-			
+			{
+				path: 'patientManagerReport',
+				loadChildren: './patient-manager-report/patient-manager-report.module#PatientManagerReportModule'
+			},			
 			
 			{ path: 'pharmacyReport', component: PharmacyReportComponent}
 

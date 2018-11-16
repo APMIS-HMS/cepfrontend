@@ -8,38 +8,41 @@ import { Router } from '@angular/router';
 })
 export class PatientManagerReportComponent implements OnInit {
 
-  searchControl = new FormControl();
-  searchCriteria = new FormControl('Search');
-  patientRegistrationAnalytics = false;
-
+	patientRegistrationAnalytics = false;
+	patientRegistration = false;
   pageInView = 'Patient Registration Report';
 
   constructor(private _router: Router) { }
 
   ngOnInit() {
-    const page: string = this._router.url;
+		const page: string = this._router.url;
 		this.checkPageUrl(page);
   }
 
   checkPageUrl(param: string) {
-		if (param.includes('patient-registration-analytics')) {
+		if (param.includes('patientRegistration')) {
+			this.patientRegistrationAnalytics = false;
+			this.patientRegistration = true;
+			this._router.navigate([ '/dashboard/reports/report-dashboard/patientManagerReport/patientRegistration' ]);
+		} else if (param.includes('patientAnalytics')) {
 			this.patientRegistrationAnalytics = true;
-      this._router.navigate(['/dashboard/reports/patient-manager-report/patient-registration-analytics']);
+			this.patientRegistration = false;
+			this._router.navigate([ '/dashboard/reports/report-dashboard/patientManagerReport/patientAnalytics' ]);
 		} else {
 			this.patientRegistrationAnalytics = false;
-			//this._router.navigate([ '/dashboard/reports/report-dashboard/patient-manager-report' ]);
+			this.patientRegistration = true;
+			this._router.navigate([ '/dashboard/reports/report-dashboard/patientManagerReport/patientRegistration' ]);
 		}
-  }
-
-	route(link) {
-		console.log(link);
-		if (link === 'patient-registration-analytics') {
-			this.patientRegistrationAnalytics = true;
-		}  else {
-			this.patientRegistrationAnalytics = false;
-		}
-		this._router.navigate([ '/dashboard/reports/report-dashboard/patient-manager-report' + link ]);
 	}
+	// route(link) {
+	// 	console.log(link);
+	// 	if (link === 'patientAnalytics') {
+	// 		this.patientRegistrationAnalytics = true;
+	// 	}  else {
+	// 		this.patientRegistrationAnalytics = false;
+	// 	}
+	// 	this._router.navigate([ '/dashboard/reports/report-dashboard/patient-manager-report' + link ]);
+	// }
 
   pageInViewLoader(title) {
 		this.pageInView = title;
@@ -48,9 +51,13 @@ export class PatientManagerReportComponent implements OnInit {
   back_dashboard() {
 		this._router.navigate(['/dashboard/reports/report-dashboard']);
   }
+	patientRegistrationReport() {
+		this._router.navigate(['/dashboard/reports/report-dashboard/patientManagerReport/patientRegistration']);
+	 }
 
- // patientRegistration_analytics() {
-	//	this._router.navigate(['/dashboard/reports/report-dashboard/patient-manager-report/patient-registration-analytics']);
-	 // }
+
+ patientRegistration_analytics() {
+		this._router.navigate(['/dashboard/reports/report-dashboard/patientManagerReport/patientAnalytics']);
+	 }
 
 }
