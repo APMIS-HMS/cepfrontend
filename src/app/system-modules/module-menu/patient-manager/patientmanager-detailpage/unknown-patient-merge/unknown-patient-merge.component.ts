@@ -61,24 +61,20 @@ export class UnknownPatientMergeComponent implements OnInit {
         this.patientService.announcePatient(value);
         this.personValueChanged.emit(value);
     }).catch(err => {
-      console.log(err);
     });
 }
 
   onMergePatient() {
     this._systemModuleService.on();
-    console.log(this.selectedPatient,this.incomingPatient);
     this.patientService.mergeUnknowPatient(this.selectedPatient._id,{query:{
       unknownPersonId: this.selectedPatient.personId,
       verifiedPersonId: this.incomingPatient.personId,
       verifiedPatientId: this.incomingPatient._id,
       facilityId: this.selectedFacility._id
     }}).then(payload => {
-      console.dir(payload);
       this.navEpDetail(payload.data)
       this._systemModuleService.off();
     }, err => {
-      console.log(err);
       this._systemModuleService.off();
     });
   }
