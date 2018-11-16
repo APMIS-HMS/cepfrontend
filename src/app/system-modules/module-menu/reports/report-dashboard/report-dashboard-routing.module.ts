@@ -5,12 +5,9 @@ import { ClinicManagementReportComponent } from './clinic-management-report/clin
 import { DhisReportComponent } from './dhis-report/dhis-report.component';
 import { LaboratoryReportComponent } from './laboratory-report/laboratory-report.component';
 import { PatientManagerReportComponent } from './patient-manager-report/patient-manager-report.component';
-<<<<<<< HEAD
 import { PatientRegistrationAnalyticsComponent } from './patient-manager-report/patient-registration-analytics/patient-registration-analytics.component';
 
-=======
 import { PharmacyReportComponent } from './pharmacy-report/pharmacy-report.component';
->>>>>>> 64abd973a7d6e6c28d7e4c043843445eca029b00
 
 const REPORTS_DASHBOARD_ROUTE: Routes = [
 	{
@@ -30,15 +27,12 @@ const REPORTS_DASHBOARD_ROUTE: Routes = [
 			},
 			{ path: 'labReport', component: LaboratoryReportComponent},
 			
-<<<<<<< HEAD
 			{ path: 'patientReport', component: PatientManagerReportComponent },
-			{ path: 'patient-registration-analytics', component: PatientRegistrationAnalyticsComponent }
-=======
+			{ path: 'patient-registration-analytics', component: PatientRegistrationAnalyticsComponent },
 			{ path: 'patientReport', component: PatientManagerReportComponent},
 			
 			
 			{ path: 'pharmacyReport', component: PharmacyReportComponent}
->>>>>>> 64abd973a7d6e6c28d7e4c043843445eca029b00
 
 		]
 	}
