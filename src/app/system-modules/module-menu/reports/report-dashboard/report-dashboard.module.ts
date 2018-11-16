@@ -11,6 +11,7 @@ import { DhisReportComponent } from './dhis-report/dhis-report.component';
 import { ClinicReportModule } from './clinic-management-report/clinic-management-report.module';
 import { PatientManagerReportComponent } from './patient-manager-report/patient-manager-report.component';
 import { LaboratoryReportComponent } from './laboratory-report/laboratory-report.component';
+import { PharmacyReportComponent } from './pharmacy-report/pharmacy-report.component';
 
 @NgModule({
 	imports: [
@@ -26,7 +27,8 @@ import { LaboratoryReportComponent } from './laboratory-report/laboratory-report
 		ReportDashboardComponent,
 		DashboardLandingpageComponent,
 		PatientManagerReportComponent,
-		LaboratoryReportComponent
+		LaboratoryReportComponent,
+		PharmacyReportComponent
 	]
 })
 export class ReportDashboardModule {}
