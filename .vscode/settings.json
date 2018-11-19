@@ -1,3 +1,35 @@
 {
+<<<<<<< HEAD
     "window.zoomLevel": 0
+=======
+    "files.autoSave": "onFocusChange",
+    "workbench.iconTheme": "material-icon-theme",
+    "git.confirmSync": false,
+    "vsicons.projectDetection.disableDetect": true,
+    "git.enableSmartCommit": true,
+    "editor.formatOnType": false,
+    "vsicons.dontShowNewVersionMessage": true,
+    "gitlens.advanced.messages": {
+        "suppressCommitHasNoPreviousCommitWarning": false,
+        "suppressCommitNotFoundWarning": false,
+        "suppressFileNotUnderSourceControlWarning": false,
+        "suppressGitVersionWarning": false,
+        "suppressLineUncommittedWarning": false,
+        "suppressNoRepositoryWarning": false,
+        "suppressResultsExplorerNotice": false,
+        "suppressShowKeyBindingsNotice": true,
+        "suppressUpdateNotice": true,
+        "suppressWelcomeNotice": false
+    },
+    "tfvc.location": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\TF.exe",
+    "terminal.integrated.shell.windows": "C:\\windows\\System32\\cmd.exe",
+    "git.autofetch": true,
+    "window.zoomLevel": -1,
+    "team.showWelcomeMessage": false,
+    "editor.insertSpaces": true,
+    "editor.tabSize": 4,
+    "editor.detectIndentation": true,
+    "gitlens.keymap": "alternate",
+    "editor.snippetSuggestions": "top"
+>>>>>>> 89a05caca8a21fafce72eb3aa6e3016703dede74
 }
