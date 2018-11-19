@@ -88,7 +88,7 @@ export class ClinicAttendanceComponent implements OnInit {
       }
     }
     setSearchFilter(data) {
-      this.selectedSearchCriteria = data;
+      this.selectedSearchCriteria = data; 
       this.searchControl.setValue('');
    }
 

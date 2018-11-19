@@ -50,7 +50,8 @@
                                 <img *ngIf="patient?.personDetails?.profileImageObject != undefined" class="shadow"
                                     [src]="patient?.personDetails?.profileImageObject?.thumbnail">
                             </span>
-                            <span> {{patient.personDetails?.lastName}} {{patient.personDetails?.firstName}}</span>
+                            <span *ngIf="!patient.isUnknown"> {{patient.personDetails?.lastName}} {{patient.personDetails?.firstName}}</span>
+                            <span *ngIf="patient.isUnknown"> {{patient.personDetails?.firstName}}</span>
                         </div>
                     </div>
                     <div (click)="navEpDetail(patient)" class="table-list col-xs-1">{{patient?.age}}</div>
