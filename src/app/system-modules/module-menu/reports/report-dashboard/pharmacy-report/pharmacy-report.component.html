@@ -37,8 +37,8 @@
           </div>
 
           <div class="group-content" *ngIf="prescriberFilter">
-            <mat-checkbox class="group-item">BY Prescriber</mat-checkbox>
-            <div class="group-item" style="padding-top: 1em; margin-left: 5px;">
+            <mat-checkbox class="group-item">By Prescriber</mat-checkbox>
+            <div class="group-item" style="padding-top: 1em; margin-left: 1em;">
               <div class="row">
                 <div class="col-xs-7">
                   <input [formControl]="searchControl" type="search" class="searchInput " placeholder="search prescriber" />
@@ -51,96 +51,133 @@
       </div>
     </div>
   </div>
-  <mat-tab-group>
-    <mat-tab label="• Dispense"  (click)="onclick_dispense()">
-      <div class="tbl-resp-wrap">
-        <table class="card" style="color:black;" cellpadding="0" cellspacing="0" border="0.5">
+
+<mat-tab-group>
+    <mat-tab label="• Dispense (List of Items Sold)" ><i (click)="onclick_dispense()">Dispense</i>
+      <div class="tbl-resp-wrap" style="padding-bottom: 20px !important;">
+        <table class="card" style="color:black; margin-top: 10px !important;" cellpadding="0" cellspacing="0" border="0.5">
           <thead>
             <tr class="th-r1 th-xxx">
               <th>S/N</th>
+              <th>Date</th>
               <th>Patient Name</th>
-              <th>APMIS ID</th>
-              <th>Requests</th>
-              <th>Laboratory Location</th>
-              <th>Reffering Doctor</th>
-              <th>Clinic</th>
-              <th>Status</th>
+              <th>Product</th>
+              <th>Batch</th>
+              <th>Quantity (Per Unit)</th>
+              <th>
+                <div>Unit Price</div>
+                <div style="font-weight:Bold;">(#)</div>
+              </th>
+              <th>
+                  <div>Total Price</div>
+                  <div style="font-weight:Bold;">(#)</div>
+              </th>
+              <th>Employee Name</th>
             </tr>
           </thead>
 
           <tbody>
             <tr class="th-xxx">
-              <td>1</td>
-              <td>Omolayo Susan</td>
-              <td> GT-888463 </td>
-              <td>
-                <div>Malaria Parasite</div>
-                <div>Urinalysis</div>
-                <div>Pregnancy Test</div>
-                <div>Blood Group</div>
-              </td>
-              <td>Gynecology Lab</td>
-              <td>Dr Daniel</td>
-              <td>Ante-Natal</td>
-              <td style="color:green;">Completed</td>
-            </tr>
+              <td>1</td>              
+              <td>12/Oct/2018</td>
+              <td>Oladejo Adetinwo</td>
+              <td>Amoxiccilin 60MG</td>
+              <td>BC/0032</td>
+              <td>10</td>
+              <td>200</td>
+              <td>2000</td>
+              <td>Vera Nwosu</td>
+            </tr>   
             <tr class="th-xxx">
-              <td>2</td>
-              <td>John Yedenu</td>
-              <td> FM-88772 </td>
-              <td>
-                <div>Blood Profile</div>
-                <div>Full Blood Count</div>
-                <div>Genotype</div>
-                <div>Cretinine Kinase</div>
-              </td>
-              <td>PP Lab</td>
-              <td>Dr Oladele</td>
-              <td>General OPD</td>
-              <td style="color:orange;">Incomplete</td>
-            </tr>
-            <tr class="th-xxx">
-              <td>3</td>
-              <td>Olaniyi Adedejo</td>
-              <td> JK-22449 </td>
-              <td>
-                <div>Widal</div>
-                <div>Urinalysis</div>
-                <div>Pregnancy Test</div>
-                <div>Cretinine Kinase</div>
-              </td>
-              <td>PP Lab</td>
-              <td>Dr Oladele</td>
-              <td>General OPD</td>
-              <td style="color:red;">Not Treated</td>
-            </tr>
+                <td>2</td>              
+                <td>12/Oct/2018</td>
+                <td>Oladejo Adetinwo</td>
+                <td>Catheter (2m)</td>
+                <td>AA/773</td>
+                <td>1</td>
+                <td>5000</td>
+                <td>5000</td>
+                <td>Vera Nwosu</td>
+              </tr>            
           </tbody>
         </table>
         <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
         </mat-paginator>
-        <div class="billSummarySect">
-          <table class="rhs">
-            <div class="summaryItems">
-              <tr class="summaryItem">
-                <td class="label" style="width:auto !important;">Total Number of Request:</td>
-                <td class="data">
-                  <span>35 Requests</span></td>
-                <td></td>
-              </tr>
-              <tr class="summaryItem">
-                <td class="label" style="width:auto !important;">Total Number of Reports:</td>
-                <td class="data">
-                  <span>40 Investigations Reported</span></td>
-                <td></td>
-              </tr>
-            </div>
-          </table>
-        </div>
       </div>
+      <div class="billSummarySect">
+        <table class="rhs">
+            <div class="summaryItems">
+                <tr class="summaryItem">
+                    <td class="label" style="width:auto !important;">Total Income: </td>
+                    <td class="data">
+                        <span>#120,000.00</span></td>
+                    <td></td>
+                </tr>               
+            </div>
+        </table>
+    </div>
 
     </mat-tab>
 
-    <mat-tab label="•	Prescription" (click)="onclick_prescribe()">
+    <mat-tab label="•	Prescription" (click)="onclick_prescribe()"><i (click)="onclick_prescribe()">Prescription</i>
+      <div class="tbl-resp-wrap" style="padding-bottom: 20px !important;">
+        <table class="card" style="color:black; margin-top: 10px !important;" cellpadding="0" cellspacing="0" border="0.5">
+          <thead>
+            <tr class="th-r1 th-xxx">
+              <th>S/N</th>
+              <th>Date Written</th>
+              <th>Patient Name</th>
+              <th>Prescription</th>
+              <th>Pharmacy</th>
+              <th>Refill Status</th>
+            </tr> 
+          </thead>
 
+          <tbody>
+            <tr class="th-xxx">
+              <td>1</td>              
+              <td>12/Oct/2018</td>
+              <td>Oladejo Adetinwo</td>
+              <td>
+                <div>Amoxiccilin 60MG</div>
+                <div>Diclofenac 45MG</div>
+                <div>Paracetamol 500MG</div>
+                <div>B-Complex</div>
+              </td>
+              <td>Emergency Pharmacy</td>
+              <td>fulfilld</td>
+            </tr>   
+            <tr class="th-xxx">
+                <td>2</td>              
+                <td>17/Oct/2018</td>
+                <td>Oladejo Adetinwo</td>
+                <td>
+                  <div>Amoxiccilin 60MG</div>
+                  <div>Diclofenac 45MG</div>
+                  <div>Paracetamol 500MG</div>
+                  <div>B-Complex</div>
+                </td>
+                <td>4th Floor Pharmacy</td>
+                <td>Partial</td>
+              </tr>     
+              <tr class="th-xxx">
+                  <td>3</td>              
+                  <td>22/Oct/2018</td>
+                  <td>Oladejo Adetinwo</td>
+                  <td>
+                    <div>Amoxiccilin 60MG</div>
+                    <div>Diclofenac 45MG</div>
+                    <div>Paracetamol 500MG</div>
+                    <div>B-Complex</div>
+                  </td>
+                  <td>Kunle-Ara Pharmacy</td>
+                  <td>isExternal</td>
+                </tr>          
+          </tbody>
+        </table>
+        <i style="font-weight: bold;">refill status: fulfilled, Unfulfilled, partial and isExternal</i>
+        <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
+        </mat-paginator>
+      </div>
     </mat-tab>
   </mat-tab-group>
