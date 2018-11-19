@@ -2,3 +2,12 @@
     align-items: right;
     display: flex;
 }
+
+.blue-nav {
+    font-size: 1.5rem;
+    padding-right: 10px;
+    color: #0288d1;
+    &.active {
+        text-decoration: underline;
+    }
+}

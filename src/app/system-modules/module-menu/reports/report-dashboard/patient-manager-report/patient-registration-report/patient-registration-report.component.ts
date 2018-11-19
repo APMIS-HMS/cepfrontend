@@ -11,16 +11,14 @@ export class PatientRegistrationReportComponent implements OnInit {
 
   searchControl = new FormControl();
   searchCriteria = new FormControl('Search');
- 
-  
+
   pageInView = 'Patient Registration Analytics';
 
   constructor(private _router: Router) { }
 
   ngOnInit() {
- 
+
   }
 
-  
 
 }
