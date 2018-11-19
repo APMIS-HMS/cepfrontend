@@ -28,7 +28,6 @@ export class OrderSetComponent implements OnInit {
   investigationData: any = <any>{};
   template: FormControl = new FormControl();
   diagnosis: FormControl = new FormControl();
-  problemFormControl: FormControl = new FormControl({},[<any>Validators.required]);
   selectedProblem: any = <any>{};
   disableAuthorizerxButton = false;
   selectedTreatmentSheet: any;
@@ -282,22 +281,25 @@ export class OrderSetComponent implements OnInit {
 
   authorizerx() {
     this.disableAuthorizerxButton = true;
-    if (this.problemFormControl.value.problem !== undefined && this.selectedProblem.problem === undefined) {
+    if (this.selectedTreatmentSheet === undefined) {
       this.systemModuleService.on();
       this.isButtonEnabled = false;
-      const treatementSheet = {
-        problem: this.problemFormControl.value,
+      const data = {
         personId: this.selectedPatient.personDetails._id,
         treatmentSheet: this.orderSet,
         facilityId: this.facility._id,
-        createdBy: this.employeeDetails._id,
+        createdBy: this.employeeDetails._id
       };
-      this._treatmentSheetService.setTreatmentSheet(treatementSheet).then(treatment => {
+      this._treatmentSheetService.setTreatmentSheet(data,{query:{
+        facilityId:this.facility._id,
+        personId:this.selectedPatient.personId
+      }}).then(treatment => {
         this.disableAuthorizerxButton = false;
         this.systemModuleService.off();
         this.isButtonEnabled = true;
         this.sharedService.announceOrderSet(this.orderSet);
         this.close_onClickModal();
+      },err=>{
       }).catch(err => {
         this.disableAuthorizerxButton = false;
         this.systemModuleService.off();
@@ -306,11 +308,10 @@ export class OrderSetComponent implements OnInit {
         this.close_onClickModal();
       });
       this.showDoc.emit(true);
-    } else if (this.problemFormControl.value.problem === undefined && this.selectedProblem.problem !== undefined) {
+    } else if (this.selectedTreatmentSheet !== undefined) {
       this.systemModuleService.on();
       this.isButtonEnabled = false;
       const treatementSheet = {
-        problem: this.problemFormControl.value,
         personId: this.selectedPatient.personDetails._id,
         treatmentSheet: this.orderSet,
         facilityId: this.facility._id,
@@ -331,7 +332,7 @@ export class OrderSetComponent implements OnInit {
       });
       this.showDoc.emit(true);
     }
-    else if (this.problemFormControl.value.problem === undefined && this.selectedProblem.problem === undefined) {
+    else {
       this.disableAuthorizerxButton = false;
       this.systemModuleService.announceSweetProxy('Please select a problem before creating an order set', 'error');
     }
