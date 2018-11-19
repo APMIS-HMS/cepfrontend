@@ -43,13 +43,26 @@ export class TreatmentSheetService {
     return this._socket.create(treatment);
   }
 
-  setTreatmentSheet(treatment: any) {
-    return this._socketTreatment.create(treatment);
+  setTreatmentSheet(object: any,query) {
+    return this._socketTreatment.create(object,query);
+  }
+
+  updateTreatmentSheet(id, data: any, params: any) {
+    return this._socketTreatment.patch(id, data, {});
+  }
+
+  patchTreatmentSheetMedication(id, data: any, params: any) {
+    return this._socketTreatment.update(id, data, {});
   }
 
   update(treatment: any) {
     return this._socket.update(treatment._id, treatment, {});
   }
+
+  patch(id, data, query: any) {
+    return this._socket.patch(id, data, query);
+  }
+
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }

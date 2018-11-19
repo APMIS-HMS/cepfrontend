@@ -532,7 +532,10 @@ export class ScheduleFrmComponent implements OnInit {
 					patientId: this.selectedPatient._id
 				}
 			})
-			.then((payld) => {}, (err) => {});
+			.then((payld) => {
+			}, (err) => {
+			}).catch(er=>{
+			});
 	}
 
 	isAppointmentToday() {

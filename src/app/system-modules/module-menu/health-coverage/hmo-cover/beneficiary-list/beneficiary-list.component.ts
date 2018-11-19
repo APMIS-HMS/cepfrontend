@@ -171,30 +171,40 @@ export class BeneficiaryListComponent implements OnInit {
 	}
 
 	edit_show(value, i) {
-		this.newBeneficiary = !this.newBeneficiary;
-		value.id = this.selectedBeneficiary.id;
-		value.index = i;
-		this.selectedBeneficiary = value;
-		this.selectedBeneficiary.type =
-			this.selectedBeneficiary.type !== undefined ? this.removeWhiteSpace(this.selectedBeneficiary.type) : '';
-		this.selectedBeneficiary.status =
-			this.selectedBeneficiary.status === 'active' || this.selectedBeneficiary.status === true ? true : false;
-		this.selectedBeneficiary.category =
-			this.selectedBeneficiary.category === undefined || this.selectedBeneficiary.status === null
-				? ''
-				: this.selectedBeneficiary.category;
-		this.selectedBeneficiary.gender =
-			this.selectedBeneficiary.gender === undefined || this.selectedBeneficiary.gender === null
-				? 'M'
-				: this.selectedBeneficiary.gender;
-		this.selectedBeneficiary.sponsor =
-			this.selectedBeneficiary.sponsor === undefined || this.selectedBeneficiary.sponsor === null
-				? ''
-				: this.selectedBeneficiary.sponsor;
-		this.selectedBeneficiary.date =
-			this.selectedBeneficiary.date === undefined || this.selectedBeneficiary.date === null
-				? new Date()
-				: this.selectedBeneficiary.date;
+		try {
+			console.log(1);
+			this.newBeneficiary = !this.newBeneficiary;
+			value.id = this.selectedBeneficiary.id;
+			value.index = i;
+			console.log(2);
+			this.selectedBeneficiary = value;
+			this.selectedBeneficiary.type =
+				this.selectedBeneficiary.type !== undefined ? this.removeWhiteSpace(this.selectedBeneficiary.type) : '';
+			console.log(3);
+			this.selectedBeneficiary.status =
+				this.selectedBeneficiary.status === 'active' || this.selectedBeneficiary.status === true ? true : false;
+			this.selectedBeneficiary.category =
+				this.selectedBeneficiary.category === undefined || this.selectedBeneficiary.status === null
+					? ''
+					: this.selectedBeneficiary.category;
+			console.log(4);
+			this.selectedBeneficiary.gender =
+				this.selectedBeneficiary.gender === undefined || this.selectedBeneficiary.gender === null
+					? 'M'
+					: this.selectedBeneficiary.gender;
+			this.selectedBeneficiary.sponsor =
+				this.selectedBeneficiary.sponsor === undefined || this.selectedBeneficiary.sponsor === null
+					? ''
+					: this.selectedBeneficiary.sponsor;
+			console.log(5);
+			this.selectedBeneficiary.date =
+				this.selectedBeneficiary.date === undefined || this.selectedBeneficiary.date === null
+					? new Date()
+					: this.selectedBeneficiary.date;
+			console.log(6);
+		} catch (error) {
+			console.log(console.error());
+		}
 	}
 
 	removeWhiteSpace(value) {

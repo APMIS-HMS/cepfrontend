@@ -88,6 +88,8 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
 				} else {
 					this.results = payload;
 				}
+			},err=>{
+				console.log(err);
 			});
 	}
 
