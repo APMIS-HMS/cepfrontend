@@ -15,13 +15,14 @@ export class PharmacyReportComponent implements OnInit {
 
   prescriberFilter = false;
   prescriberSearch = false;
-  dispenseFilter = true;
+  dispenseFilter = false;
 
   pageInView = 'Pharmacy Report';
 
   constructor(private _router: Router) { }
 
   ngOnInit() {
+    this.dispenseFilter = true;
   }
 
   pageInViewLoader(title) {
