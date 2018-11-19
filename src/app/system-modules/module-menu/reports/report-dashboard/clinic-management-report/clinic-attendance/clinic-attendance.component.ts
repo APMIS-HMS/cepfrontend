@@ -31,6 +31,8 @@ export class ClinicAttendanceComponent implements OnInit {
   searchedProvider = '';
   searchedPatient = '';
   selectedStatus = '';
+  providerId = '';
+  patientId = '';
 
 
 
@@ -88,7 +90,8 @@ export class ClinicAttendanceComponent implements OnInit {
       }
     }
     setSearchFilter(data) {
-      this.selectedSearchCriteria = data; 
+      console.log(data);
+      this.selectedSearchCriteria = data;
       this.searchControl.setValue('');
    }
 
@@ -99,8 +102,8 @@ export class ClinicAttendanceComponent implements OnInit {
             this.clinicAttendance.find({
             query: {
               facilityId: this.currentFacility._id,
-              from: dateRange.from,
-              to: dateRange.to
+              startDate: dateRange.from,
+              endDate: dateRange.to
             }
           }).then(payload => {
             this.filteredAttendance = payload;
@@ -111,8 +114,8 @@ export class ClinicAttendanceComponent implements OnInit {
           query: {
             facilityId: this.currentFacility._id,
             searchText: this.searchControl.value,
-            from: this.dateRange.from,
-            to: this.dateRange.to,
+            startDate: this.dateRange.from,
+            endDate: this.dateRange.to,
             status: this.selectedStatus
           }
           }).then(payload => {
