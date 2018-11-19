@@ -57,7 +57,7 @@
                                 <td>{{ orderSetMed.genericName }} - {{ orderSetMed.dosage }}{{ orderSetMed.dosageUnit
                                     }}, {{ orderSetMed.frequency }} for {{ orderSetMed.duration }} {{
                                     orderSetMed.durationUnit }}</td>
-                                <td *ngIf="orderSetMed.isExisting!==true" class="action-placeholder" style="text-align:center;width:100px">
+                                <td *ngIf="orderSetMed.isBilled!==true" class="action-placeholder" style="text-align:center;width:100px">
                                     <button *ngIf="orderSetMed.isBilled ===undefined || !orderSetMed.isBilled" (click)="onClickBillPrescription(i, orderSetMed);"
                                         mat-raised-button class="text-white mat-xs-btn bg-primary ">
                                         <span *ngIf="orderSetMed.isBilled === undefined || !orderSetMed.isBilled">Bill</span>
@@ -94,7 +94,7 @@
                             <tr *ngFor="let orderSetInves of orderSet?.investigations; let i=index">
                                 <td style="width:30px;text-align:center">{{ i+1 }}</td>
                                 <td>{{ orderSetInves.name }}</td>
-                                <td *ngIf="orderSetInves.isExisting!==true" class="action-placeholder" style="text-align:center;width:100px">
+                                <td *ngIf="orderSetInves.isBilled!==true" class="action-placeholder" style="text-align:center;width:100px">
                                     <button *ngIf="orderSetInves.isBilled ===undefined || !orderSetInves.isBilled"
                                         (click)="onClickBillInvestigation(i, orderSetInves);" mat-raised-button class="text-white mat-xs-btn bg-primary ">
                                         <span *ngIf="orderSetInves.isBilled === undefined || !orderSetInves.isBilled">Bill</span>
@@ -225,6 +225,6 @@
     <app-edit-procedure (closeModal)="close_onClick($event)" [editedValue]="editedValue" id="form-modal" class="form-modal center-center"></app-edit-procedure>
 </div>
 
-<div *ngIf="addProblem" class="modal-overlay">
+<!-- <div *ngIf="addProblem" class="modal-overlay">
     <app-add-patient-problem [patient]="selectedPatient" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-patient-problem>
-</div>
+</div> -->
