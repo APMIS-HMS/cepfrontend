@@ -89,6 +89,10 @@ export class ClinicAttendanceComponent implements OnInit {
               this.fileteredAppointments = payload.data;
               this.isAppointmentLoading = false;
             });
+        } else if (this.selectedSearchCriteria === AppointmentSearchCriteria.ByPatient && this.searchControl.value.length < 1) {
+              this.getFacilityAppointments();
+        } else if (this.selectedSearchCriteria === AppointmentSearchCriteria.ByProvider && this.searchControl.value.length < 1) {
+          this.getFacilityAppointments();
         }
       });
     }
@@ -109,7 +113,6 @@ export class ClinicAttendanceComponent implements OnInit {
    }
 
    loadActiveTabIndexData() {
-     console.log(this.activeTabIndex);
     if (this.activeTabIndex === ClinicTabGroup.AppointmentReport) {
         this.getFacilityAppointments();
     } else if (this.activeTabIndex === ClinicTabGroup.ClinicAttendance) {
