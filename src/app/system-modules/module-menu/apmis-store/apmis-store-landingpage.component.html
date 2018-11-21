@@ -5,6 +5,8 @@
 	<li (click)="changeRoute('productEntry')" [class.pg-menuActive]="productEntryContentArea">Product Entry</li> 
 	<li (click)="changeRoute('productMovement')" [class.pg-menuActive]="productMovementContentArea">Product Movement</li>
 	<li (click)="changeRoute('productExit')" [class.pg-menuActive]="productExitContentArea">Product Exit</li>
-</ul> 
+</ul>  
 
-<router-outlet></router-outlet>
+<div class="pg-ct-wrap">
+  <router-outlet></router-outlet>
+</div> 
