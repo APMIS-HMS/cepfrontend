@@ -42,7 +42,8 @@ facilityClinics: any;
           endDate: dateRange.to
         }
       }).then(payload => {
-        this.filteredDiagnosis = payload;
+        console.log(payload);
+        this.filteredDiagnosis = payload.data;
         this.isDiagnosisLoading = false;
       });
     }
@@ -58,7 +59,8 @@ facilityClinics: any;
           endDate: this.dateRange.to
         }
       }).then(payload => {
-        this.filteredDiagnosis = payload;
+        console.log(payload);
+        this.filteredDiagnosis = payload.data;
         this.isDiagnosisLoading = false;
       });
   }
@@ -78,7 +80,8 @@ facilityClinics: any;
           facilityId: this.currentFacility._id
         }
       }).then(payload => {
-          this.filteredDiagnosis = payload;
+        console.log(payload);
+          this.filteredDiagnosis = payload.data;
           this.isDiagnosisLoading = false;
 
       });

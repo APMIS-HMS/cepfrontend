@@ -9,7 +9,7 @@ export interface ClinicAttendance {
 
 export enum ClinicTabGroup {
     ClinicAttendance = 0,
-    AppointmentReport
+    AppointmentReport = 1
 }
 
 export const AppointmentSearchCriteria = {

@@ -33,7 +33,7 @@
                     </thead>
 
                     <tbody *ngIf="!isClinicAttendanceLoading">
-                        <!-- <span *ngIf="filteredAttendance.length < 1"><i>There are currently no records to show</i></span> -->
+                        <span *ngIf="filteredAttendance.length < 1"><i>There are currently no records to show</i></span>
                         <tr class="th-xxx" *ngFor="let item of filteredAttendance; let i = index">
                             <td>{{i+1}}</td>
                             <td>{{item.date}}</td>
@@ -125,10 +125,11 @@
                         </tr>
                     </thead>
                     <tbody *ngIf="!isAppointmentLoading">
+                            <span *ngIf="fileteredAppointments.length < 1"><i>There are currently no records to show</i></span>
                         <tr class="th-xxx" *ngFor="let item of fileteredAppointments; let i = index">
                             <td>{{i+1}}</td>
                             <td>{{item.provider}}</td>
-                            <td>{{item.dateTime}}</td>
+                            <td>{{item.time}}</td>
                             <td> {{item.patientName}} </td>
                             <td>{{item.apmisId}}</td>
                             <td>{{item.phone}}</td>

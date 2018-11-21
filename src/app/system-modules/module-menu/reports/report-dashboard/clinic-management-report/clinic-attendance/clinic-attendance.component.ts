@@ -46,8 +46,7 @@ export class ClinicAttendanceComponent implements OnInit {
       this.currentFacility = <Facility>this.locker.getObject('selectedFacility');
       this.appointmentStatus = this.getObjeckKeys(AppointmentReportStatus);
       this.searchCriteriaOptions = this.getObjeckKeys(AppointmentSearchCriteria);
-      this.getFacilityAttendance();
-      this.getFacilityAppointments();
+      this.loadActiveTabIndexData();
       this.initialiseDateRange();
 
       // TODO:: disable searchControl on component init;
@@ -69,7 +68,8 @@ export class ClinicAttendanceComponent implements OnInit {
                 status: this.selectedStatus
               }
             }).then((paydata) => {
-              this.fileteredAppointments = paydata;
+              console.log(paydata);
+              this.fileteredAppointments = paydata.data;
               this.isAppointmentLoading = false;
             });
         } else if (this.selectedSearchCriteria === AppointmentSearchCriteria.ByPatient && this.searchControl.value.length > 3) {
@@ -85,7 +85,8 @@ export class ClinicAttendanceComponent implements OnInit {
                 status: this.selectedStatus
               }
             }).then((payload) => {
-              this.fileteredAppointments = payload;
+              console.log(payload);
+              this.fileteredAppointments = payload.data;
               this.isAppointmentLoading = false;
             });
         }
@@ -107,6 +108,14 @@ export class ClinicAttendanceComponent implements OnInit {
       this.searchControl.setValue('');
    }
 
+   loadActiveTabIndexData() {
+     console.log(this.activeTabIndex);
+    if (this.activeTabIndex === ClinicTabGroup.AppointmentReport) {
+        this.getFacilityAppointments();
+    } else if (this.activeTabIndex === ClinicTabGroup.ClinicAttendance) {
+        this.getFacilityAttendance();
+    }
+   }
    getObjeckKeys(obj) {
      return Object.keys(obj).map(val => obj[val]);
    }
@@ -125,7 +134,7 @@ export class ClinicAttendanceComponent implements OnInit {
               status: this.selectedStatus
             }
           }).then(payload => {
-            this.filteredAttendance = payload;
+            this.filteredAttendance = payload.data;
             this.calculateGrandTotal(this.filteredAttendance);
             this.isClinicAttendanceLoading = false;
           });
@@ -141,7 +150,7 @@ export class ClinicAttendanceComponent implements OnInit {
             status: this.selectedStatus
           }
           }).then(payload => {
-            this.fileteredAppointments = payload;
+            this.fileteredAppointments = payload.data;
             this.isAppointmentLoading = false;
           });
       }
@@ -149,6 +158,7 @@ export class ClinicAttendanceComponent implements OnInit {
   }
   onTabClick(tabIndex) {
     this.activeTabIndex = tabIndex;
+    this.loadActiveTabIndexData();
   }
 
   getFacilityAttendance() {
@@ -157,7 +167,8 @@ export class ClinicAttendanceComponent implements OnInit {
           facilityId: this.currentFacility._id
         }
       }).then(payload => {
-          this.filteredAttendance = payload;
+        console.log(payload);
+          this.filteredAttendance = payload.data;
           this.isClinicAttendanceLoading = false;
           this.calculateGrandTotal(this.filteredAttendance);
       });
@@ -170,12 +181,14 @@ export class ClinicAttendanceComponent implements OnInit {
           facilityId: this.currentFacility._id
         }
       }).then(payload => {
-          this.fileteredAppointments = payload;
+        console.log(payload);
+          this.fileteredAppointments = payload.data;
           this.isAppointmentLoading = false;
       });
     }
   }
   onStatusChanged(selectedStatus) {
+    console.log(selectedStatus);
     this.selectedStatus = selectedStatus;
     this.isAppointmentLoading = false;
     this.appointmentService.find({
@@ -188,7 +201,8 @@ export class ClinicAttendanceComponent implements OnInit {
         status: this.selectedStatus
       }
     }).then(payload => {
-      this.fileteredAppointments = payload;
+      console.log(payload);
+      this.fileteredAppointments = payload.data;
       this.isAppointmentLoading = false;
     });
   }
