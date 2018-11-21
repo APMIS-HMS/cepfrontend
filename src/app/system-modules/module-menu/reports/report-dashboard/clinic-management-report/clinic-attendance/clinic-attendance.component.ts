@@ -68,7 +68,6 @@ export class ClinicAttendanceComponent implements OnInit {
                 status: this.selectedStatus
               }
             }).then((paydata) => {
-              console.log(paydata);
               this.fileteredAppointments = paydata.data;
               this.isAppointmentLoading = false;
             });
@@ -85,7 +84,6 @@ export class ClinicAttendanceComponent implements OnInit {
                 status: this.selectedStatus
               }
             }).then((payload) => {
-              console.log(payload);
               this.fileteredAppointments = payload.data;
               this.isAppointmentLoading = false;
             });
@@ -170,7 +168,6 @@ export class ClinicAttendanceComponent implements OnInit {
           facilityId: this.currentFacility._id
         }
       }).then(payload => {
-        console.log(payload);
           this.filteredAttendance = payload.data;
           this.isClinicAttendanceLoading = false;
           this.calculateGrandTotal(this.filteredAttendance);
@@ -184,14 +181,12 @@ export class ClinicAttendanceComponent implements OnInit {
           facilityId: this.currentFacility._id
         }
       }).then(payload => {
-        console.log(payload);
           this.fileteredAppointments = payload.data;
           this.isAppointmentLoading = false;
       });
     }
   }
   onStatusChanged(selectedStatus) {
-    console.log(selectedStatus);
     this.selectedStatus = selectedStatus;
     this.isAppointmentLoading = false;
     this.appointmentService.find({
@@ -204,7 +199,6 @@ export class ClinicAttendanceComponent implements OnInit {
         status: this.selectedStatus
       }
     }).then(payload => {
-      console.log(payload);
       this.fileteredAppointments = payload.data;
       this.isAppointmentLoading = false;
     });
