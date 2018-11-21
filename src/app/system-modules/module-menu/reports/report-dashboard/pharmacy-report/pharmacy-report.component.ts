@@ -22,6 +22,7 @@ export class PharmacyReportComponent implements OnInit {
   constructor(private _router: Router) { }
 
   ngOnInit() {
+    this.dispenseFilter = true;
   }
 
   pageInViewLoader(title) {

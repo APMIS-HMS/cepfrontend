@@ -58,8 +58,7 @@ export class UnknownPatientMergeComponent implements OnInit {
   navEpDetail(value) {
     this.locker.setObject('patient', value);
     this.router.navigate(['/dashboard/patient-manager/patient-manager-detail', value.personId]).then(() => {
-        this.patientService.announcePatient(value);
-        this.personValueChanged.emit(value);
+      this.personValueChanged.emit(this.selectedPatient);
     }).catch(err => {
     });
 }

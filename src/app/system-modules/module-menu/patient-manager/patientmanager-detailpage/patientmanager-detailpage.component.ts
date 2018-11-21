@@ -1032,6 +1032,7 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 	onPersonValueUpdated(value){
 		this.patient = value;
 		this.mergePatient = false;
+		this.ngOnInit();
 	}
 
 	ngOnDestroy() {
