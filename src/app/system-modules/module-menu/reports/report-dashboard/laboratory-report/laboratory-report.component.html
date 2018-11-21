@@ -13,7 +13,8 @@
         <div class="row" style="padding: 10px 40px 10px 40px;">
             <div class="dr-wrap survery" style="margin-top: 20px;">
                 <app-date-range
-                        [dateRange]="{from : reportOptions.startDate, to: reportOptions.endDate}"></app-date-range>
+                        [dateRange]="{from : reportOptions.startDate, to: reportOptions.endDate}"
+                        (dateRangeChange)="assignDate($event)"></app-date-range>
             </div>
             <div class="searchInputWrap col-sm row">
                 <mat-form-field>

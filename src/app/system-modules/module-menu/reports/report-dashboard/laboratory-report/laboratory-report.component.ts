@@ -8,6 +8,7 @@ import {
     ILabReportSummaryModel
 } from "../../../../../core-ui-modules/ui-components/LabReportModel";
 import {IPagerSource} from "../../../../../core-ui-modules/ui-components/PagerComponent";
+import {IDateRange} from "ng-pick-daterange";
 
 @Component({
     selector: 'app-laboratory-report',
@@ -75,6 +76,11 @@ export class LaboratoryReportComponent implements OnInit {
         // goto next page using the current index
         this.pagerSource.currentPage = index;
         this.getReportData();
+    }
+    assignDate(date:IDateRange)
+    {
+        this.reportOptions.startDate  = date.from;
+        this.reportOptions.endDate  = date.to;
     }
 
 }
