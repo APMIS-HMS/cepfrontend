@@ -51,6 +51,7 @@ export class ClinicAttendanceComponent implements OnInit {
 
       // TODO:: disable searchControl on component init;
       //        enable only when search criteria is enabled
+      
 
       // search filter is performed based on the search criteria selected by the user
       // searchCriterias = ['By Provider', 'By Patient']
