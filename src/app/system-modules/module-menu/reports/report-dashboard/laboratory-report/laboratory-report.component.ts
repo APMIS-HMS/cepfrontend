@@ -82,5 +82,11 @@ export class LaboratoryReportComponent implements OnInit {
         this.reportOptions.startDate  = date.from;
         this.reportOptions.endDate  = date.to;
     }
+    
+    search(queryString  : string)
+    {
+        this.reportOptions.queryString  = queryString;
+        // this.reportOptions.searchBy =
+    }
 
 }

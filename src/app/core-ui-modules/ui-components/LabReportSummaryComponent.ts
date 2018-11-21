@@ -169,7 +169,7 @@ export class LabReportDetails implements  OnInit,OnChanges, DoCheck{
         }
         this.reportSource.getLabReport(this.reportOptions)
             .then(x => {
-                console.log(x);
+                console.log("LAB REPORT CALL",x);
                 this.reportData = x.data;
                 this.processing = false;
                 this.pagerSource.totalRecord  = x.total;
