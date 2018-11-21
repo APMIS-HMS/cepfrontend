@@ -533,9 +533,8 @@ export class ScheduleFrmComponent implements OnInit {
 				}
 			})
 			.then((payld) => {
-				console.log(payld);
 			}, (err) => {
-				console.log(err);
+			}).catch(er=>{
 			});
 	}
 
