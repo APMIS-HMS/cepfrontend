@@ -22,7 +22,6 @@ export class LaboratoryReportComponent implements OnInit {
   pageInViewLoader(title) {
 		this.pageInView = title;
   }
-  
   back_dashboard() {
 		this._router.navigate(['/dashboard/reports/report-dashboard']);
 	  }

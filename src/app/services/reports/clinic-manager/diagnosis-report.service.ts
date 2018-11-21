@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
 import { SocketService, RestService } from '../../../feathers/feathers.service';
+import { DiagnosisReport } from 'app/models/reports/diagnosis-report';
 
 @Injectable()
-export class DiagnosisReportService{
+export class DiagnosisReportService {
     public _socket;
     public _rest;
-    diagnosis: any;
+    diagnosis: DiagnosisReport[] = [];
     constructor(private socketService: SocketService, private restService: RestService) {
         this._socket = this.socketService.getService('diagnosis-report');
         this._rest = this.socketService.getService('disgnosis-report');
@@ -13,23 +14,23 @@ export class DiagnosisReportService{
             {
                 hospitalNumber: 'LT/777/108A',
                 sex: 'Female',
-                Age: '18',
+                age: 18,
                 diagnosisCode: 'Mal/8739',
                 clinic: 'Cardiology'
             },
             {
                 hospitalNumber: 'LT/877/107A',
                 sex: 'Male',
-                Age: '108',
+                age: 108,
                 diagnosisCode: 'Thy/8739',
                 clinic: 'Radiology'
             },
             {
-                hospitalNumber: 'LT/666/108A',
-                sex: 'Female',
-                Age: '6 months',
+                hospitalNumber: 'LT/877/107A',
+                sex: 'Male',
+                age: 30,
                 diagnosisCode: 'Mal/8739',
-                clinic: 'Cou/102'
+                clinic: 'Cardiology'
             }
         ];
     }

@@ -52,7 +52,7 @@
     </div>
   </div>
 
-<mat-tab-group>
+<mat-tab-group (selectedIndexChange)="onTabClick($event)">
     <mat-tab label="• Dispense (List of Items Sold)" ><i (click)="onclick_dispense()">Dispense</i>
       <div class="tbl-resp-wrap" style="padding-bottom: 20px !important;">
         <table class="card" style="color:black; margin-top: 10px !important;" cellpadding="0" cellspacing="0" border="0.5">
@@ -76,30 +76,25 @@
             </tr>
           </thead>
 
-          <tbody>
-            <tr class="th-xxx">
-              <td>1</td>              
-              <td>12/Oct/2018</td>
-              <td>Oladejo Adetinwo</td>
-              <td>Amoxiccilin 60MG</td>
-              <td>BC/0032</td>
-              <td>10</td>
-              <td>200</td>
+          <tbody *ngIf="!isDispenseLoading">
+            <tr class="th-xxx" *ngFor="let item of dispenses; let i = index">
+              <td>{{i+1}}</td>              
+              <td>{{item.dateTime}}</td>
+              <td>{{item.patientName}}</td>
+              <td>{{item.product}}</td>
+              <td>{{item.batch}}</td>
+              <td>{{item.quantity}}</td>
+              <td>{{item.unitPrice}}</td>
               <td>2000</td>
-              <td>Vera Nwosu</td>
-            </tr>   
-            <tr class="th-xxx">
-                <td>2</td>              
-                <td>12/Oct/2018</td>
-                <td>Oladejo Adetinwo</td>
-                <td>Catheter (2m)</td>
-                <td>AA/773</td>
-                <td>1</td>
-                <td>5000</td>
-                <td>5000</td>
-                <td>Vera Nwosu</td>
-              </tr>            
+              <td>{{item.employeeName}}</td>
+            </tr>              
           </tbody>
+          <tbody *ngIf="isDispenseLoading">
+            <tr class="th-xxx">
+                <td></td><td></td><td></td><td></td>
+                <td><div><i class="fa fa-spinner fa-spin"></i></div></td>
+            </tr>
+        </tbody>
         </table>
         <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
         </mat-paginator>

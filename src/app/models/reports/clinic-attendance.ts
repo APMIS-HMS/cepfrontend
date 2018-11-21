@@ -1,5 +1,4 @@
-import { NumberOfAppointments } from './number-of-appointments';
-
+import { NumberOfAppointments } from './clinic-attendance';
 export interface ClinicAttendance {
     date: string;
     clinicName: string;
@@ -24,4 +23,18 @@ export const AppointmentReportStatus = {
     Suspend: 'Suspend',
     Postponed: 'Postponed'
 };
+export interface NumberOfAppointments {
+    total: number;
+    totalMale: number;
+    totalFemale: number;
+}
 
+export interface AppointmentReport {
+    provider: string;
+    dateTime: string;
+    patientName: string;
+    apmisId: string;
+    phone: string;
+    appointmentType: string;
+    status: string;
+}

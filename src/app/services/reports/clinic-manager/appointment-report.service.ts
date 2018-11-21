@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SocketService, RestService } from '../../../feathers/feathers.service';
-import { AppointmentReport } from 'app/models/reports/appointment-report';
+import { AppointmentReport } from 'app/models/reports/clinic-attendance';
 
 @Injectable()
 export class AppointmentReportService {
@@ -14,7 +14,7 @@ constructor(private socketService: SocketService, private restService: RestServi
     this.appointments = [
         {
           provider: 'Dr. Kemi Awosile',
-          time: '12:20 PM',
+          dateTime: '12:20 PM',
           patientName: 'Oyelola Ola',
           apmisId: '***89J',
           phone: '080807487585',
@@ -23,7 +23,7 @@ constructor(private socketService: SocketService, private restService: RestServi
         },
         {
           provider: 'Dr. Kemi Awosile',
-          time: '12:20 PM',
+          dateTime: '12:20 PM',
           patientName: 'Oyelola Ola',
           apmisId: '***0LB',
           phone: '080807487585',

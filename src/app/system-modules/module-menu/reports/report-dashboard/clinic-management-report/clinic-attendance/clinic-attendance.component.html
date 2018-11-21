@@ -84,29 +84,13 @@
                     <div class="middle-xs">
                         <div class="dropdown-container">
                             <mat-form-field>
-                                <!-- <mat-autocomplete #auto="matAutocomplete" [displayWith]="statusDisplayFn">
-                                            <mat-option *ngFor="let status of orderStatuses" [value]="status">
-                                                {{ status.name }}
-                                            </mat-option>
-                                        </mat-autocomplete> -->
                                 <mat-select [formControl]="searchCriteria" placeholder="select search criteria"
                                     (change)="setSearchFilter($event.value)">
                                     <mat-option [value]="criteria" *ngFor="let criteria of searchCriteriaOptions">
-                                        {{criteria}}
+                                        {{ criteria }}
                                     </mat-option>
-                                    <!-- <mat-option value="Enter Doctor's Name">By Provider</mat-option> -->
                                 </mat-select>
                             </mat-form-field>
-                            <!-- <div class="col-xs-8 mr-4">
-                                <div class="row">
-                                    <div class="col-xs-7">
-                                        <input [formControl]="searchControl" type="search" autofocus class="searchInput " placeholder=" {{searchCriteria.value}}" />
-                                    </div>
-                                    <div class="col-xs-5">
-                    
-                                    </div>
-                                </div>
-                            </div> -->
                         </div>
                     </div>
                     <div class="filter-space">
@@ -140,37 +124,26 @@
                             <th>Status</th>
                         </tr>
                     </thead>
-
-                    <tbody>
-                        <tr class="th-xxx">
-                            <td>1</td>
-                            <td>Dr Poju Oyemade</td>
-                            <td>8th Jan, 2017 8:10am</td>
-                            <td> Olamide Omoniyi </td>
-                            <td>GX-38882</td>
-                            <td>08142214995</td>
-                            <td>Follow-Up Appointment</td>
-                            <td>Suspend</td>
+                    <tbody *ngIf="!isAppointmentLoading">
+                        <tr class="th-xxx" *ngFor="let item of fileteredAppointments; let i = index">
+                            <td>{{i+1}}</td>
+                            <td>{{item.provider}}</td>
+                            <td>{{item.dateTime}}</td>
+                            <td> {{item.patientName}} </td>
+                            <td>{{item.apmisId}}</td>
+                            <td>{{item.phone}}</td>
+                            <td>{{item.appointmentType}}</td>
+                            <td>{{item.status}}</td>
                         </tr>
+                    </tbody>
+                    <tbody *ngIf="isAppointmentLoading">
                         <tr class="th-xxx">
-                            <td>2</td>
-                            <td>Dr Poju Oyemade</td>
-                            <td>12th Jan, 2017 8:10am</td>
-                            <td> Admola Opeyemi </td>
-                            <td>JJ-38882</td>
-                            <td>08142214995</td>
-                            <td>New Appointment</td>
-                            <td>Checked-In</td>
-                        </tr>
-                        <tr class="th-xxx">
-                            <td>3</td>
-                            <td>Dr Poju Oyemade</td>
-                            <td>12th April, 2017 12:00pm</td>
-                            <td> Olwasegun Olayemi </td>
-                            <td>WD-76535</td>
-                            <td>08142214995</td>
-                            <td>New Appointment</td>
-                            <td>Postpone</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>
+                                <div><i class="fa fa-spinner fa-spin"></i></div>
+                            </td>
                         </tr>
                     </tbody>
                 </table>
