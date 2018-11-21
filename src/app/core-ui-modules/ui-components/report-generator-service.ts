@@ -27,6 +27,7 @@ export class ReportGeneratorService implements ICustomReportService {
 
     getLabReport(options: ILabReportOption): Promise<IApiResponse<ILabReportModel[]>> {
         options.facilityId  = this.selectedFacility._id;
+        console.log(options,"OPTIONS");
         return this.restEndpoint.getService("laboratory-report-summary")
             .find({params: options});
     }

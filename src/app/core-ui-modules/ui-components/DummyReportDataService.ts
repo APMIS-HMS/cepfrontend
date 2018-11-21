@@ -20,6 +20,7 @@ export class DummyReportDataService extends ReportGeneratorService //  implement
     getLabReport(options: ILabReportOption): Promise<IApiResponse<ILabReportModel[]>> {
         
         /* return  a resolved promise with a collection of LabReportModel*/
+        options.facilityId   = this.selectedFacility._id;
         const labRpt  :  ILabReportModel[]  = [
             {
                 apmisId  : 'SO-2341',
@@ -61,6 +62,7 @@ export class DummyReportDataService extends ReportGeneratorService //  implement
                 limit : options.paginate ? options.paginationOptions.limit  : 0
             }
         const endPoint  = this.restService.getService("laboratory-report-summary");
+            console.log("Facility Id :" , options.facilityId);
         endPoint.find({
             query : {
                 facilityId  : options.facilityId,

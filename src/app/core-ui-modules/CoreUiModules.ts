@@ -18,7 +18,7 @@ const exportableComponents = [AsomDataPagerComponent, PagerButtonComponent, Docu
     declarations: [...exportableComponents],
 
     providers: [
-        {provide: ReportGeneratorService, useExisting: DummyReportDataService},
+        {provide: ReportGeneratorService, useClass: ReportGeneratorService},
         {provide: DummyReportDataService, useClass: DummyReportDataService},
         {provide: PaymentReportGenerator, useExisting: DummyPaymentReportService},
         {provide: DummyPaymentReportService, useClass: DummyPaymentReportService},
