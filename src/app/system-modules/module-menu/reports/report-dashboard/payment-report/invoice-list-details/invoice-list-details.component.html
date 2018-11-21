@@ -1,3 +1,170 @@
-<p>
-  invoice-list-details works!
-</p>
+<div class="invoiceWrap">
+
+  <div class="selectWrap">
+    <mat-form-field>
+      <mat-select placeholder="Select Cashier">
+        <mat-option>Mr Aladeluwa</mat-option>
+        <mat-option>Mrs Eniola</mat-option>
+        <mat-option>Mr Omolere</mat-option>
+        <mat-option>Mr Dele Adeola</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div class="invoiceListWrap">
+    <div style="margin: 10px;">
+      <div class="row">
+
+        <!-- Please group this according to the list of invoices coming from the backend -->
+        <!-- Invoice A -->
+        <div class="col-sm-12 sheet-column">
+          <div class="row sheet-table-list invoice-sub-header" (click)="showMedication()">
+            <div class="col-6 invoice-header-text">
+              Invoice A
+            </div>
+            <div class="col-6 invoice-header-text">
+              Invoice No.:BC-889477GGD
+            </div>
+            <div class="col-6 invoice-header-text">
+              Services (7 Services)
+            </div>
+            <div class="col-6 invoice-header-text">
+              Total Cost: #75,000
+            </div>
+            <div class="col-6 invoice-header-text">
+              Payment Mode : Cash
+            </div>
+          </div>
+          <div *ngIf="toggleMedication">
+            <div class="row sheet-table-list">
+              <div style="min-width: 100%;">
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <br>
+        <!-- Invoice B-->
+        <div class="col-sm-12 sheet-column">
+          <div class="row sheet-table-list invoice-sub-header" (click)="showMedication()">
+            <div class="col-6 invoice-header-text">
+              Invoice B
+            </div>
+            <div class="col-6 invoice-header-text">
+              Invoice No.:FG-896553
+            </div>
+            <div class="col-6 invoice-header-text">
+              Services (3 Services)
+            </div>
+            <div class="col-6 invoice-header-text">
+              Total Cost: #150,000
+            </div>
+            <div class="col-6 invoice-header-text">
+              Payment Mode : Transfer
+            </div>
+          </div>
+          <div *ngIf="toggleMedication">
+            <div class="row sheet-table-list">
+              <div style="min-width: 100%;">
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <br>
+
+        <!-- Invoice C-->
+        <div class="col-sm-12 sheet-column">
+          <div class="row sheet-table-list invoice-sub-header" (click)="showMedication()">
+            <div class="col-6 invoice-header-text">
+              Invoice C
+            </div>
+            <div class="col-6 invoice-header-text">
+              Invoice No.:FG-863897G
+            </div>
+            <div class="col-6 invoice-header-text">
+              Services (4 Services)
+            </div>
+            <div class="col-6 invoice-header-text">
+              Total Cost: #250,000
+            </div>
+            <div class="col-6 invoice-header-text">
+              Payment Mode : Cheque
+            </div>
+          </div>
+          <div *ngIf="toggleMedication">
+            <div class="row sheet-table-list">
+              <div style="min-width: 100%;">
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <br>
+
+        <!-- Invoice D -->
+        <div class="col-sm-12 sheet-column">
+          <div class="row sheet-table-list invoice-sub-header" (click)="showMedication()">
+            <div class="col-6 invoice-header-text">
+              Invoice D
+            </div>
+            <div class="col-6 invoice-header-text">
+              Invoice No.:BC796785GGJ
+            </div>
+            <div class="col-6 invoice-header-text">
+              Services (10 Services)
+            </div>
+            <div class="col-6 invoice-header-text">
+              Total Cost: #750,000
+            </div>
+            <div class="col-6 invoice-header-text">
+              Payment Mode : Cash / Transfer
+            </div>
+          </div>
+          <div *ngIf="toggleMedication">
+            <div class="row sheet-table-list">
+              <div style="min-width: 100%;">
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <br>
+        <!-- Invoice E -->
+        <div class="col-sm-12 sheet-column">
+          <div class="row sheet-table-list invoice-sub-header" (click)="showMedication()">
+            <div class="col-6 invoice-header-text">
+              Invoice E
+            </div>
+            <div class="col-6 invoice-header-text">
+              Invoice No.:BC-889477GGD
+            </div>
+            <div class="col-6 invoice-header-text">
+              Services (2 Services)
+            </div>
+            <div class="col-6 invoice-header-text">
+              Total Cost: #60,000
+            </div>
+            <div class="col-6 invoice-header-text">
+              Payment Mode : Cash
+            </div>
+          </div>
+          <div *ngIf="toggleMedication">
+            <div class="row sheet-table-list">
+              <div style="min-width: 100%;">
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
+    </mat-paginator>
+  </div>
+</div>

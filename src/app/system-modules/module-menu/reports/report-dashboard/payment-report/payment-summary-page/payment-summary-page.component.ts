@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-payment-summary-page',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PaymentSummaryPageComponent implements OnInit {
 
-  constructor() { }
+  constructor(private _router: Router) { }
 
   ngOnInit() {
   }
@@ -23,4 +24,7 @@ export class PaymentSummaryPageComponent implements OnInit {
     console.log(e);
   }
 
+  call_invoiceList(){
+    this._router.navigate(['/dashboard/reports/report-dashboard/paymentReport/invoiceList']);
+  }
 }

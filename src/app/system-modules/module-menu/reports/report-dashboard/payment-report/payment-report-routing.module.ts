@@ -9,7 +9,7 @@ import { InvoiceListDetailsComponent } from './invoice-list-details/invoice-list
 const PAYMENT_REPORT_ROUTE: Routes = [
 	{
 		path: '',
-		component: PaymentSummaryPageComponent,
+		component: PaymentReportComponent,
 		children: [
 			{ path: 'paymentSummary', component: PaymentSummaryPageComponent},
 			{ path: 'invoiceList', component: InvoiceListDetailsComponent}

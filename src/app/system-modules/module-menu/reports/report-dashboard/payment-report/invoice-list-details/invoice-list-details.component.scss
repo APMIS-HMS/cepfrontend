@@ -1,0 +1,39 @@
+@import "./../../../reports.component.scss";
+@import "./../../../../patient-manager/patientmanager-detailpage/treatement-plan/treatement-plan.component.scss";
+.invoiceWrap{
+    margin: 20px 100px 20px 100px;
+    padding: 10px;
+}
+
+.selectWrap{
+    max-width: 200px;
+    padding-bottom: 10px;
+}
+
+.invoiceListWrap{    
+    border-radius: 10px;
+    box-shadow: 1px 1px 3px #888;
+    padding: 5px;
+    margin: 10px;
+    overflow: auto;
+}
+.invoice-sub-header {
+    border: solid 0.5px rgba(0,0,0,.12);
+    color: #01579B;
+    font-size: 12px;
+    font-weight: 900;
+    text-transform: uppercase;
+    cursor: pointer;
+    background: #F5F6FA;
+    width: auto;
+    height: 50px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px
+}
+
+.invoice-header-text{
+    padding-left: 10px;
+    padding-right: 10px;
+    align-self: center;
+    width: 200px;
+}
