@@ -2,17 +2,17 @@
     <div class="chart-item">
         <div>
             <div style="display: block">
-                <!--<canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>-->
+                <canvas baseChart [datasets]="pieChartData" [labels]="pieChartLabels" [options]="pieChartOptions" [legend]="pieChartLegend" [chartType]="pieChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
             </div>
         </div>
-        <div class="chart-label">Table of registered patients</div>
+        <div class="chart-label">Patient registration </div>
     </div>
     <div class="chart-item">
         <div>
             <div style="display: block">
-                <!--  <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>-->
+                <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
             </div>
         </div>
-        <div class="chart-label">Table of appointments against checked in patients</div>
+        <div class="chart-label">Patient registration demography Chart</div>
     </div>
 </div>

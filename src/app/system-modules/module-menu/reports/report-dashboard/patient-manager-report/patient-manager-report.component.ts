@@ -10,7 +10,7 @@ export class PatientManagerReportComponent implements OnInit {
 
 	patientRegistrationAnalytics = false;
 	patientRegistration = false;
-  pageInView = 'Patient Registration Report';
+    pageInView = 'Patient Registration Report';
 
   constructor(private _router: Router) { }
 
@@ -44,9 +44,9 @@ export class PatientManagerReportComponent implements OnInit {
 	// 	this._router.navigate([ '/dashboard/reports/report-dashboard/patient-manager-report' + link ]);
 	// }
 
-  pageInViewLoader(title) {
-		this.pageInView = title;
-  }
+ // pageInViewLoader(title) {
+		//this.pageInView = title;
+  //}
 
   back_dashboard() {
 		this._router.navigate(['/dashboard/reports/report-dashboard']);
