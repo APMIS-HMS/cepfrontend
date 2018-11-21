@@ -37,7 +37,6 @@ export class ClinicManagementReportComponent implements OnInit {
 	}
 
 	route(link) {
-		console.log(link);
 		if (link === 'clinic-attendance') {
 			this.clinicAttendance = true;
 			this.diagnosis = false;
