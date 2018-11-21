@@ -1,18 +1,45 @@
-<div class="pg-wrap">
-    <div class="chart-item">
-        <div>
-            <div style="display: block">
-                <canvas baseChart [datasets]="pieChartData" [labels]="pieChartLabels" [options]="pieChartOptions" [legend]="pieChartLegend" [chartType]="pieChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+<div class="facility-title">{{pageInView}}</div>
+<mat-tab-group (selectedIndexChange)="onTabClick($event)">
+    <mat-tab label="• Registration Analytics">
+        <div class="pg-wrap">
+            <div class="chart-item">
+                <div>
+                    <div style="display: block">
+                        <canvas class='pieSize' baseChart [datasets]="pieChartData" [labels]="pieChartLabels" [options]="pieChartOptions" [legend]="pieChartLegend" [chartType]="pieChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+                    </div>
+                </div>
+                <div class="chart-label">Patient registration by registration type chart </div>
+            </div>
+            <div class="chart-item">
+                <div>
+                    <div style="display: block">
+                        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+                    </div>
+                </div>
+                <div class="chart-label">Patient registration demography Chart</div>
             </div>
         </div>
-        <div class="chart-label">Patient registration </div>
-    </div>
-    <div class="chart-item">
-        <div>
-            <div style="display: block">
-                <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+    </mat-tab>
+
+
+    <mat-tab label="• Payment Plan Analytics">
+        <div class="pg-wrap">
+            <div class="chart-item">
+                <div>
+                    <div style="display: block">
+                        <canvas class='chartSize' baseChart [datasets]="barChart1Data" [labels]="barChart1Labels" [options]="barChart1Options" [legend]="barChart1Legend" [chartType]="barChart1Type" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+                    </div>
+                </div>
+                <div class="chart-label">Patient registration by registration type chart </div>
+            </div>
+            <div class="chart-item">
+                <div>
+                    <div style="display: block">
+                        <canvas baseChart [datasets]="barChart1Data" [labels]="barChart1Labels" [options]="barChart1Options" [legend]="barChart1Legend" [chartType]="barChart1Type" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+                    </div>
+                </div>
+                <div class="chart-label">Patient registration demography Chart</div>
             </div>
         </div>
-        <div class="chart-label">Patient registration demography Chart</div>
-    </div>
-</div>
+    </mat-tab>
+</mat-tab-group>

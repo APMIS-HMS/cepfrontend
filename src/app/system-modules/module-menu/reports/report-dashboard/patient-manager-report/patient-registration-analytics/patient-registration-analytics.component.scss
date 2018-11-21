@@ -19,6 +19,11 @@
     }
 }
 
+.pieSize {
+    width: 440px;
+    height: 440px;
+}
+
 .pg-rap {
     margin: 40px 0;
 }
@@ -28,7 +33,7 @@
     justify-content: space-between;
     flex-wrap: wrap;
     .analytic-card {
-        margin-top: 20px !important;
+        //margin-top: 20px !important;
         background: #f8f8f8;
         border: 1px solid #ddd;
         padding: 10px;
