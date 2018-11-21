@@ -27,7 +27,6 @@ import { PaymentReportComponent } from './payment-report/payment-report.componen
 	declarations: [
 		ReportDashboardComponent,
 		DashboardLandingpageComponent,
-		PatientManagerReportComponent,
 		LaboratoryReportComponent,
 		PharmacyReportComponent
 	]
