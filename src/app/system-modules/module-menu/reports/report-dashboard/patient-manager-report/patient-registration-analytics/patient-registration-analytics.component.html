@@ -1,0 +1,18 @@
+<div class="pg-wrap">
+    <div class="chart-item">
+        <div>
+            <div style="display: block">
+                <canvas baseChart [datasets]="pieChartData" [labels]="pieChartLabels" [options]="pieChartOptions" [legend]="pieChartLegend" [chartType]="pieChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+            </div>
+        </div>
+        <div class="chart-label">Patient registration </div>
+    </div>
+    <div class="chart-item">
+        <div>
+            <div style="display: block">
+                <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [legend]="barChartLegend" [chartType]="barChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+            </div>
+        </div>
+        <div class="chart-label">Patient registration demography Chart</div>
+    </div>
+</div>
