@@ -2,14 +2,16 @@
 <mat-tab-group (selectedIndexChange)="onTabClick($event)">
     <mat-tab label="• Registration Analytics">
         <div class="pg-wrap">
+            <div class="chart-label">Patient registration by registration type chart </div>
             <div class="chart-item">
                 <div>
                     <div style="display: block">
                         <canvas class='pieSize' baseChart [datasets]="pieChartData" [labels]="pieChartLabels" [options]="pieChartOptions" [legend]="pieChartLegend" [chartType]="pieChartType" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
                     </div>
                 </div>
-                <div class="chart-label">Patient registration by registration type chart </div>
+
             </div>
+
             <div class="chart-item">
                 <div>
                     <div style="display: block">
@@ -19,6 +21,7 @@
                 <div class="chart-label">Patient registration demography Chart</div>
             </div>
         </div>
+
     </mat-tab>
 
 
@@ -31,7 +34,35 @@
                     </div>
                 </div>
                 <div class="chart-label">Patient registration by registration type chart </div>
+                <div class="row">
+                    <div class="tbl-resp-wrap">
+                        <table class="card" style="color:black;" cellpadding="0" cellspacing="0" border="0.5">
+                            <thead>
+                                <tr class="th-r1 th-xxx">
+                                    <th>Patient Name</th>
+                                    <th>APMIS ID</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr class="th-xxx">
+                                    <td>Olaniyi Adedejo</td>
+                                    <td> JK-22449 </td>
+                                </tr>
+
+                                <tr class="th-xxx">
+                                    <td>Omolayo Susan</td>
+                                    <td> GT-888463 </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
+                        </mat-paginator>
+                    </div>
+                </div>
             </div>
+
+
             <div class="chart-item">
                 <div>
                     <div style="display: block">
@@ -39,7 +70,34 @@
                     </div>
                 </div>
                 <div class="chart-label">Patient registration demography Chart</div>
+                <div class="row">
+                    <div class="tbl-resp-wrap">
+                        <table class="card" style="color:black;" cellpadding="0" cellspacing="0" border="0.5">
+                            <thead>
+                                <tr class="th-r1 th-xxx">
+                                    <th>Patient Name</th>
+                                    <th>APMIS ID</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr class="th-xxx">
+                                    <td>Olaniyi Adedejo</td>
+                                    <td> JK-22449 </td>
+                                </tr>
+
+                                <tr class="th-xxx">
+                                    <td>Omolayo Susan</td>
+                                    <td> GT-888463 </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
+                        </mat-paginator>
+                    </div>
+                </div>
             </div>
         </div>
+
     </mat-tab>
 </mat-tab-group>

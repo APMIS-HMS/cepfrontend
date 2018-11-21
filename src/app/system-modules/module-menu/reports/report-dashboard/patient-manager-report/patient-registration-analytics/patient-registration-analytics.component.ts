@@ -39,7 +39,7 @@ public barChart1Options: any = {
 };
 public barChart1Labels:string[] = ['Hygiea HMO', '3-10', '11-30', '31-50', '51 above'];
 public barChart1Data: any[] = [
-  { data: [ 4, 8, 12, 16, 20, 24, 28 ], label: 'HMO' },
+  { data: [ 4, 8, 12, 16, 20, 24, 28 ], label: 'HMO Cover' },
 ];
 public barChart1Type: string = 'bar';
   public barChart1Legend: boolean = true;
