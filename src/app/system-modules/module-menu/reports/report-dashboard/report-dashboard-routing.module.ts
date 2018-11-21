@@ -26,6 +26,16 @@ const REPORTS_DASHBOARD_ROUTE: Routes = [
 				loadChildren: './dhis-report/dhis-report.module#DhisReportModule'
 			},
 			{ path: 'labReport', component: LaboratoryReportComponent},
+			
+			// { path: 'patientReport', component: PatientManagerReportComponent},
+			
+			
+			{ path: 'pharmacyReport', component: PharmacyReportComponent},
+
+			{
+				path: 'paymentReport',
+				loadChildren: './payment-report/payment-report.module#PaymentReportModule'
+			},
 
 			{
 				path: 'patientManagerReport',

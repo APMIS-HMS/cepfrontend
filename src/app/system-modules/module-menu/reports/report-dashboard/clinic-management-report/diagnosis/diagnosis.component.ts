@@ -25,38 +25,43 @@ facilityClinics: any;
 
   ngOnInit() {
     this.currentFacility = <Facility>this.locker.getObject('selectedFacility');
-    this.getFacilityDiagnosisReport();
     this.getClinicByFacility();
-    this.setDateRangeToDefault();
+    this.initialiseDateRange();
+    this.getFacilityDiagnosisReport();
   }
 
   setDiagnosisByDateRange(dateRange: IDateRange) {
+    this.isDiagnosisLoading = true;
     if (dateRange != null) {
       this.dateRange = dateRange;
       this.diagnosisService.find({
         query: {
           facilityId: this.currentFacility._id,
           clinicId: this.selectedClinic,
-          from: dateRange.from,
-          to: dateRange.to
+          startDate: dateRange.from,
+          endDate: dateRange.to
         }
       }).then(payload => {
-        this.filteredDiagnosis = payload;
+        console.log(payload);
+        this.filteredDiagnosis = payload.data;
+        this.isDiagnosisLoading = false;
       });
     }
   }
   setSearchFilter(selectedVal) {
-    console.log(this.dateRange);
+    this.isDiagnosisLoading = true;
     this.selectedClinic = selectedVal;
       this.diagnosisService.find({
         query: {
           facilityId: this.currentFacility._id,
           clinicId: this.selectedClinic,
-          from: this.dateRange.from,
-          to: this.dateRange.to
+          stateDate: this.dateRange.from,
+          endDate: this.dateRange.to
         }
       }).then(payload => {
-        this.filteredDiagnosis = payload;
+        console.log(payload);
+        this.filteredDiagnosis = payload.data;
+        this.isDiagnosisLoading = false;
       });
   }
   getClinicByFacility() {
@@ -69,31 +74,19 @@ facilityClinics: any;
       });
   }
     getFacilityDiagnosisReport() {
-      if (this.currentFacility !== undefined || this.currentFacility._id !== '') {
-        this.diagnosisService.find({
-          query: {
-            facilityId: this.currentFacility
-          }
-        }).then(payload => {
-            this.isDiagnosisLoading = false;
-            this.filteredDiagnosis = payload;
+      this.isDiagnosisLoading = true;
+      this.diagnosisService.find({
+        query: {
+          facilityId: this.currentFacility._id
+        }
+      }).then(payload => {
+        console.log(payload);
+          this.filteredDiagnosis = payload.data;
+          this.isDiagnosisLoading = false;
 
-        });
-    } else {
-      this.systemModuleService.announceSweetProxy(
-        'You must login to perform this operation',
-        'Error',
-        null,
-        null,
-        null,
-        null,
-        null,
-        null,
-        null
-      );
-    }
+      });
   }
-  setDateRangeToDefault() {
+  initialiseDateRange() {
     if (this.dateRange === undefined) {
       this.dateRange = {
         from: new Date(),
