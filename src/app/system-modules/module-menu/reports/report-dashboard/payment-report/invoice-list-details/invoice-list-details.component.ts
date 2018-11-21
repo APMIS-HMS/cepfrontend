@@ -8,14 +8,16 @@ import { Router } from '@angular/router';
 })
 export class InvoiceListDetailsComponent implements OnInit {
 
+
+  dateRange: any;
+  
   paymentSummary = false;
 
-  toggleInvestigation = false;
-  toggleProcedure = false;
-  toggleMedication = true;
-  toggleNurseingCare = false;
-  togglePhysicianOrder = false;
-  toggleSheetDetails = false;
+  invoiceA = false;
+  invoiceB = false;
+  invoiceC = false;
+  invoiceD = false;
+  invoiceE = false;
 
   constructor(private _router: Router) { }
 
@@ -25,41 +27,41 @@ export class InvoiceListDetailsComponent implements OnInit {
   }
 
 
-  showInvestigation() {
-    this.toggleInvestigation = !this.toggleInvestigation;
-    this.toggleProcedure = false;
-    this.toggleMedication = false;
-    this.toggleNurseingCare = false;
-    this.togglePhysicianOrder = false;
+  showInvoiceA() {
+    this.invoiceA = !this.invoiceA;
+    this.invoiceB = false;
+    this.invoiceC = false;
+    this.invoiceD = false;
+    this.invoiceE = false;
   }
 
-  showProcedure() {
-    this.toggleProcedure = !this.toggleProcedure;
-    this.toggleInvestigation = false;
-    this.toggleMedication = false;
-    this.toggleNurseingCare = false;
-    this.togglePhysicianOrder = false;
+  showInvoiceB() {
+    this.invoiceB = !this.invoiceB;
+    this.invoiceA = false;
+    this.invoiceC = false;
+    this.invoiceD = false;
+    this.invoiceE = false;
   }
-  showMedication() {
-    this.toggleMedication = !this.toggleMedication;
-    this.toggleInvestigation = false;
-    this.toggleProcedure = false;
-    this.toggleNurseingCare = false;
-    this.togglePhysicianOrder = false;
+  showInvoiceC() {
+    this.invoiceC = !this.invoiceC;
+    this.invoiceA = false;
+    this.invoiceB = false;
+    this.invoiceD = false;
+    this.invoiceE = false;
   }
-  showNursingCare() {
-    this.toggleNurseingCare = !this.toggleNurseingCare;
-    this.toggleInvestigation = false;
-    this.toggleProcedure = false;
-    this.toggleMedication = false;
-    this.togglePhysicianOrder = false;
+  showInvoiceD() {
+    this.invoiceD = !this.invoiceD;
+    this.invoiceA = false;
+    this.invoiceB = false;
+    this.invoiceC = false;
+    this.invoiceE = false;
   }
-  showPhysicianOrder() {
-    this.togglePhysicianOrder = !this.togglePhysicianOrder;
-    this.toggleInvestigation = false;
-    this.toggleProcedure = false;
-    this.toggleMedication = false;
-    this.toggleNurseingCare = false;
+  showInvoiceE() {
+    this.invoiceE = !this.invoiceE;
+    this.invoiceA = false;
+    this.invoiceB = false;
+    this.invoiceC = false;
+    this.invoiceD = false;
   }
 
 }
