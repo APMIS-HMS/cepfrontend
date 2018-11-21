@@ -11,7 +11,7 @@
     <div *ngIf="tab1">
         <div class="card-title">Pending Bills</div>
         <div *ngIf="loading" style="display: flex; flex-direction: column;align-content: center; justify-content: center; padding:10px min-height: 40px;">
-            <span class="fa fa-3x fa-spin fa-refresh"></span>
+            <span class="fa fa-3x blue-text fa-refresh"></span>
         </div>
         <hmo-billing-grouping [newData]="newDataPending" (itemSelected)="billDetail($event)"></hmo-billing-grouping>
         <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5">
@@ -59,7 +59,7 @@
             <button class="btn-norm" (click)="hmo_report()"><i class="fa fa-file"></i> &nbsp; Generate Report</button>
         </div>
         <div *ngIf="loading" style="display: flex; flex-direction: column;align-content: center; justify-content: center; padding:10px; min-height: 40px;">
-            <span class="fa fa-3x fa-spin fa-refresh"></span>
+            <span class="fa fa-3x fa-spin blue-text fa-refresh"></span>
         </div>
         <hmo-billing-grouping [newData]="newData" (itemSelected)="billHistoryDetail($event)"></hmo-billing-grouping>
         <div style="padding:4px 10px; background-color: #d5e4f9;">

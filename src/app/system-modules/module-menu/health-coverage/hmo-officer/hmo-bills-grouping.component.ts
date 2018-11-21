@@ -5,18 +5,18 @@ import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
     template: `
         <div class="p-3 m-3" *ngFor="let nd of newData ">
             <h2 (click)="nd.showDetails = !nd.showDetails" style="cursor: pointer;">
-                <span   [ngClass]="{'fa fa-arrow-down ': !nd.showDetails,'fa fa-arrow-up ': nd.showDetails}"></span>
+                <span   [ngClass]="{'fa fa-chevron-down ': !nd.showDetails,'fa fa-chevron-up ': nd.showDetails}"></span>
                 {{nd.key}} <span
                     *ngIf="!nd.showDetails" style="float:right; font-weight:bold; color:blue;">Total : {{nd.sum | number}}</span>
             </h2>
-            <table class="table table-bordered table-hover table-light" *ngIf="nd.showDetails">
+            <table class="table table-bordered table-hover  table-light" *ngIf="nd.showDetails">
 
                 <tr>
                     <td colspan="5">
                         <div *ngFor="let sg of nd.subGroup">
                             <h4 style="cursor: pointer;" [ngClass]="{'show-details-heading':sg.showDetails}"
                                 (click)="sg.showDetails = !sg.showDetails">
-                                <span   [ngClass]="{'fa fa-arrow-down ': !sg.showDetails,'fa fa-arrow-up ': sg.showDetails}"></span>
+                                <span   [ngClass]="{'fa fa-chevron-down ': !sg.showDetails,'fa fa-chevron-up ': sg.showDetails}"></span>
                                 File No : {{sg.key}} <span
                                     style="float:right; font-weight:bold; color:blue;">Sub Total : {{sg.sum | number}}</span>
                             </h4>
@@ -36,7 +36,7 @@ import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
                                             <span style="color:#2027ab;font-weight: bold;">
                                         ({{s.billItems[0]?.patientObject?.personDetails?.apmisId}}) 
                                                
-                                    </span> <span class="fa fa-arrow-right" *ngIf="s.billItems[0]?.serviceObject?.name"></span> {{s.billItems[0]?.serviceObject?.name}}</td>
+                                    </span> <span class="fa fa-chevron-right" *ngIf="s.billItems[0]?.serviceObject?.name"></span> {{s.billItems[0]?.serviceObject?.name}}</td>
                                         <td>{{s.updatedAt | date:'dd MMM, yyyy'}}</td>
                                         <td class="font-weight-bold text-right"
                                             style="font-weight: bold;text-align: right">{{s.grandTotal | number}}
@@ -65,18 +65,19 @@ import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 
         </div>`, 
     styles :[`
-        .show-details-heading
-        {
+        .show-details-heading {
 
-            padding : 7px 10px;
+            padding: 7px 10px;
             background-color: #f0ffc7;
 
         }
-        .show-details-table{
-            background-color: #b8dff8;
-            box-shadow:1px 1px 10px rgba(56, 61, 63, 0.27);
+
+        .show-details-table {
+            background-color: #e1f3f8;
+            box-shadow: 1px 1px 10px rgba(56, 61, 63, 0.27);
         }
-        .show-details-table td{
+
+        .show-details-table td {
             padding: 7px 12px;
         }
     `]
