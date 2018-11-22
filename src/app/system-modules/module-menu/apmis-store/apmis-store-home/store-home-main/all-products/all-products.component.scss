@@ -1,74 +1,46 @@
-/*Table style rules*/
-.table {
-    width: 100%;
-    position: relative;
-    font-size: 1.4rem;
-  }
-  
-  .thead .tr {
-    background-color: transparent;
-  }
-  
-  .tbody .tr {
-    background-color: var(--white);
-  }
-  
-  .tr {
-    display: grid;
-    margin-bottom: 1rem;
-    grid-template-columns: 1fr 1fr;
-    grid-auto-columns: 1fr;
-    grid-auto-rows: auto;
-    grid-auto-flow: column;
-    border-radius: 0.2rem;
-    padding: 0.3rem 1rem;
-  }
-  
-  .th {
-    background: transparent;
-    font-weight: normal;
-    color: var(--text-secondary);
-    font-size: 1.2rem;
-  }
-  
-  .td {
+.spc-lft{
+    padding-right: 20px;
+}
+.batches{
     display: flex;
-    align-items: center;
-    vertical-align: center;
-    text-align: left;
-    min-height: 3.5rem;
-    color: var(--text-primary);
-  }
-  
-  .td-actions {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-  }
-  .td-actions img {
-    cursor: pointer;
-  }
-  
-  .td-user {
-    display: flex;
-    align-items: center;
-  }
-  .td-user .td-img-wrap {
-    margin-right: 1rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 2.5rem;
-    height: 2.5rem;
-    border-radius: 50%;
-    background-color: var(--bg-grey-medium);
-    overflow: hidden;
-  }
-  .td-user .td-img-wrap img {
-    width: 100%;
-  }
-  
-  .tr:hover {
-    background-color: var(--table-row-hover);
-  }
-  
+    font-size: 12px;
+    .batch{
+        margin-right: 10px;
+        border: 1px solid #C4C4C4;
+        width: 257px;
+        padding: 20px 10px;
+        .btc-top{
+            display: flex;
+            justify-content: space-between;
+            .val-wrap{
+                display: flex;
+                .val-label{
+                    color: #5A5D5A;
+                    padding-right: 5px;
+                }
+                .val-val{
+                    color: #292929;
+                    font-weight: bold;
+                }
+            }
+            .red-label{
+                color: #FF3838;
+            }
+        }
+        .btc-body{
+            display: flex;
+            .btc-body-item{
+                margin-right: 10px;
+                margin-top: 20px;
+                .val-label{
+                    color: #5A5D5A;
+                    padding-right: 10px;
+                }
+                .val-val{
+                    color: #292929;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}
