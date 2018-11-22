@@ -68,7 +68,7 @@ export class LabReportSummaryComponent implements OnInit {
         this.paymentReprotService.getPaymentReportSummary({isSummary  : true})
             .then(x => {
                 console.log(x);
-                
+
             });
         
     }
@@ -86,7 +86,6 @@ export class LabReportSummaryComponent implements OnInit {
                     <th>Patient Info</th>
                     <th>Date</th>
                     <th style="width:25%">Request</th>
-
                     <th>Refering Doctor</th>
                     <th>Clinic</th>
                     <th>Status</th>
@@ -96,7 +95,7 @@ export class LabReportSummaryComponent implements OnInit {
                 <tbody>
                 <tr *ngIf="processing">
                     <td colspan="7">
-                        <div class="pad20 flex-container">
+                        <div class="pad20 flex-container" style="text-align : center">
                             <span class="fa fa-3x fa-spin fa-spinner"></span>
                         </div>
                     </td>
@@ -167,6 +166,7 @@ export class LabReportDetails implements  OnInit,OnChanges, DoCheck{
                 skip : this.pagerSource.currentPage * this.pagerSource.pageSize
             }
         }
+       
         this.reportSource.getLabReport(this.reportOptions)
             .then(x => {
                 console.log("LAB REPORT CALL",x);

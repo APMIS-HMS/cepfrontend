@@ -30,6 +30,7 @@ export interface ILabReportOption extends IDefaultReportOption{
     isInvestigation? : boolean;  
     // Groupings
     groupBy? : 'location' | 'bench';
+    location?  :  string;
     
 }
 

@@ -1,14 +1,12 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {Router} from '@angular/router';
 import {FormControl} from '@angular/forms';
-import {ReportGeneratorService} from "../../../../../core-ui-modules/ui-components/report-generator-service";
 import {
-    ILabReportModel,
-    ILabReportOption,
-    ILabReportSummaryModel
+    ILabReportOption
 } from "../../../../../core-ui-modules/ui-components/LabReportModel";
-import {IPagerSource} from "../../../../../core-ui-modules/ui-components/PagerComponent";
 import {IDateRange} from "ng-pick-daterange";
+import {LabReportDetails} from "../../../../../core-ui-modules/ui-components/LabReportSummaryComponent";
+import {ReportGeneratorService} from "../../../../../core-ui-modules/ui-components/report-generator-service";
 
 @Component({
     selector: 'app-laboratory-report',
@@ -19,50 +17,36 @@ export class LaboratoryReportComponent implements OnInit {
 
     searchControl = new FormControl();
     searchCriteria = new FormControl('Search');
-
+    locations : any[]  = [] ;  
     pageInView = 'Laboratory Report';
     processing: boolean = false;
-    reportData: ILabReportModel[] = [];
+    @ViewChild("lrd") labRptComponentRef: LabReportDetails;
     reportOptions: ILabReportOption = {
         filterByDate: true,
-        startDate: new Date(2018, 7, 20, 0, 30, 10),
-        endDate: new Date()
+        startDate: new Date(2018, 8, 20, 0, 30, 10),
+        endDate: new Date(),
+        paginate  : true,
+        paginationOptions  : { skip  : 0 ,  limit  : 20},
+        searchBy  : "all",
+        queryString  : ""
     }
-    reportSummaryData: ILabReportSummaryModel[] = [];
-    pagerSource : IPagerSource = { totalPages : 0 , totalRecord : 0 , currentPage : 0 , pageSize : 30};
-    constructor(private _router: Router, private reportSource: ReportGeneratorService) {
+
+    constructor(private _router: Router, private rptService: ReportGeneratorService) {
     }
 
     ngOnInit() {
-        this.getReportData();
-        this.getReportSummary();
-    }
-
-    getReportData() {
-        this.processing = true;
-        if(this.reportOptions.paginate)
-        {
-            this.reportOptions.paginationOptions = {
-                limit  : this.pagerSource.pageSize,
-                skip : this.pagerSource.currentPage * this.pagerSource.pageSize
-            }
-        }
-        this.reportSource.getLabReport(this.reportOptions)
+        this.locations   =  this.rptService.getLocations()
+           /* .then(x => {
+                
+            });*/
+           console.log("locations", this.locations);
+        this.rptService.getWorkBenches()
             .then(x => {
-                console.log(x);
-                this.reportData = x.data;
-                this.processing = false;
-                this.pagerSource.totalRecord  = x.total;
+                console.log("Workbenches", x);
             });
-    }
-
-    getReportSummary() {
-        this.reportSource.getLabReportInvestigationSummary(this.reportOptions)
-            .then(x => {
-                console.log(x);
-                this.reportSummaryData = x.data;
-            });
-        console.log(this.reportOptions);
+        
+       
+        
     }
 
     pageInViewLoader(title) {
@@ -72,21 +56,23 @@ export class LaboratoryReportComponent implements OnInit {
     back_dashboard() {
         this._router.navigate(['/dashboard/reports/report-dashboard']);
     }
-    pageClickedEvent(index: number) {
-        // goto next page using the current index
-        this.pagerSource.currentPage = index;
-        this.getReportData();
+
+    assignDate(date: IDateRange) {
+        this.reportOptions.startDate = date.from;
+        this.reportOptions.endDate = date.to;
+       /* console.log("Parent Component Option: ", this.reportOptions);
+        this.labRptComponentRef.getReportData();*/
     }
-    assignDate(date:IDateRange)
-    {
-        this.reportOptions.startDate  = date.from;
-        this.reportOptions.endDate  = date.to;
+
+    search() {
+       // this.labRptComponentRef.processing 
+        this.reportOptions.queryString = this.searchControl.value;
+        this.reportOptions.searchBy = this.searchCriteria.value;
+        this.labRptComponentRef.getReportData();
     }
-    
-    search(queryString  : string)
+    setLocation(value )
     {
-        this.reportOptions.queryString  = queryString;
-        // this.reportOptions.searchBy =
+        this.reportOptions.location    = value
     }
 
 }

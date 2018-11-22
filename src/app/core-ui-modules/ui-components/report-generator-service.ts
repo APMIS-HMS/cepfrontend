@@ -18,51 +18,69 @@ import {CoolLocalStorage} from "angular2-cool-storage";
 
 @Injectable()
 export class ReportGeneratorService implements ICustomReportService {
-    selectedFacility : any;
-    constructor(private restEndpoint: RestService, localStorage  :  CoolLocalStorage) {
+    selectedFacility: any;
+
+    constructor(private restEndpoint: RestService, localStorage: CoolLocalStorage) {
         //super();
-        this.selectedFacility  = localStorage.getObject("selectedFacility");
-        
+        this.selectedFacility = localStorage.getObject("selectedFacility");
+
     }
 
     getLabReport(options: ILabReportOption): Promise<IApiResponse<ILabReportModel[]>> {
-        options.facilityId  = this.selectedFacility._id;
-        console.log(options,"OPTIONS");
+        options.facilityId = this.selectedFacility._id;
+        const newOption: any = {...options};
+        if (options.paginate) {
+            // set the appropriate fields
+            newOption.limit = options.paginationOptions.limit;
+            newOption.skip = options.paginationOptions.limit * options.paginationOptions.skip;
+        }
+
         return this.restEndpoint.getService("laboratory-report-summary")
-            .find({params: options});
+            .find({query: newOption});
     }
 
     getGroupedLabReport(options: ILabReportOption): Promise<IApiResponse<IGroupableLabReportModel[]>> {
-        options.facilityId  = this.selectedFacility._id;
-        return this.restEndpoint.getService("grouped-lab-report-service")
-            .find({params: options});
+
+        options.facilityId = this.selectedFacility._id;
+        // Check for pagination and fix the request appropriately
+        const newOption: any = {...options};
+        if (options.paginate) {
+            // set the appropriate fields
+            newOption.$limit = options.paginationOptions.limit;
+            newOption.$skip = options.paginationOptions.limit * options.paginationOptions.skip;
+        }
+        return this.restEndpoint.getService("laboratory-report-group")
+            .find({query: newOption});
 
     }
 
     getLabReportInvestigationSummary(options?: ILabReportOption): Promise<IApiResponse<ILabReportSummaryModel[]>> {
-        options.facilityId  = this.selectedFacility._id;
+        options = options || {};
+        options.facilityId = this.selectedFacility._id;
+        options.isInvestigation = true;
         return this.restEndpoint.getService("laboratory-report-summary")
-            .find({params: options});
+            .find({query: options});
     }
 
     getPatientReport(options: IPatientReportOptions): Promise<IApiResponse<IPatientReportModel[]>> {
         return Promise.resolve({data: []});
     }
-    
-    getWorkBenches() :any
-    {
+
+    getWorkBenches(): any {
         // get the Service end point;
-       return this.restEndpoint.getService("workbenches").find( {
-            query : {
-                facilityID  : this.selectedFacility._id
+        console.log(this.selectedFacility);
+        return this.restEndpoint.getService("workbenches").find({
+            query: {
+                facilityId: this.selectedFacility._id
             }
         });
     }
-    getLocations()
-    {
-        return this.restEndpoint.getService("locations").find( {
-            query : {
-                facilityID  : this.selectedFacility._id
+
+    getLocations() {
+        return this.selectedFacility.minorLocations.map(x => {
+            return {
+                id: x.locationId,
+                location: x.name
             }
         });
     }
@@ -72,43 +90,52 @@ export class ReportGeneratorService implements ICustomReportService {
     * */
 
 }
+
 @Injectable()
 export class PaymentReportGenerator implements IPaymentReportServiceEndPoint {
     paymentReportServiceRef;
-    selectedFacility  :any ;
+    selectedFacility: any;
+
     constructor(private restEndpoint: RestService, locker: CoolLocalStorage) {
         //super();
         this.paymentReportServiceRef = this.restEndpoint.getService("payment-reports");
         this.selectedFacility = locker.getObject("selectedFacility");
     }
 
-    getInvoicePaymentReport(rptOption: IPaymentReportOptions): Promise<IApiResponse<IPaymentReportModel[]>> {
-        rptOption.facilityId  = this.selectedFacility._id;
-        return  this.paymentReportServiceRef.get(rptOption.facilityId,
+    getInvoicePaymentReport(options: IPaymentReportOptions): Promise<IApiResponse<IPaymentReportModel[]>> {
+        options.facilityId = this.selectedFacility._id;
+        const newOption:any  = {...options};
+        if(options.paginate)
+        {
+            // set the appropriate fields
+            newOption.$limit  = options.paginationOptions.limit;
+            newOption.$skip  = options.paginationOptions.limit * options.paginationOptions.skip;
+        }
+        return this.paymentReportServiceRef.get(options.facilityId,
             {
-                query: rptOption
+                query: options
             }
         );
-       
+
     }
 
     getPaymentGroups(rptOption: IPaymentReportOptions): Promise<IApiResponse<IPaymentGroups[]>> {
-        rptOption.facilityId  = this.selectedFacility._id;
+        rptOption.facilityId = this.selectedFacility._id;
         return undefined;
     }
 
-    getPaymentReportSummary(rptOption: IPaymentReportOptions): Promise<IApiResponse<IPaymentReportSummaryModel>> {
-        rptOption.facilityId  = this.selectedFacility._id;
+    getPaymentReportSummary(rptOption: IPaymentReportOptions = {}): Promise<IApiResponse<IPaymentReportSummaryModel>> {
+        rptOption.facilityId = this.selectedFacility._id;
 
         /* So to get  all report summary we simply send a 'isSummary' variable to the server, Date range might be checked on server*/
         // we also expect the facility id to be set
         rptOption.isSummary = true;
-       return  this.paymentReportServiceRef.get(rptOption.facilityId,
+        return this.paymentReportServiceRef.get(rptOption.facilityId,
             {
                 query: rptOption
             }
         );
-       
+
     }
 
 }
