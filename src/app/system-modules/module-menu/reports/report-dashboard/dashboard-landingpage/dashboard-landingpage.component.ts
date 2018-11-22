@@ -19,12 +19,17 @@ export class DashboardLandingpageComponent implements OnInit {
 		this._router.navigate([ '/dashboard/reports/report-dashboard/clinic-report' ]);
 	}
 	call_patientReport() {
-		this._router.navigate([ '/dashboard/reports/report-dashboard/patientReport' ]);
+		console.log('this is Patient Manager report');
+		this._router.navigate([ '/dashboard/reports/report-dashboard/patientManagerReport' ]);
 	}
 	call_laboratoryReport() {
 		this._router.navigate(['/dashboard/reports/report-dashboard/labReport']);
 	}
 	call_pharmacyReport() {
 		this._router.navigate(['/dashboard/reports/report-dashboard/pharmacyReport']);
+	}
+	call_paymentReport() {
+		this._router.navigate(['/dashboard/reports/report-dashboard/paymentReport']);
+		console.log('this is payment');
 	}
 }

@@ -12,6 +12,7 @@ import { ClinicReportModule } from './clinic-management-report/clinic-management
 import { PatientManagerReportComponent } from './patient-manager-report/patient-manager-report.component';
 import { LaboratoryReportComponent } from './laboratory-report/laboratory-report.component';
 import { PharmacyReportComponent } from './pharmacy-report/pharmacy-report.component';
+import { PaymentReportComponent } from './payment-report/payment-report.component';
 
 @NgModule({
 	imports: [
@@ -26,7 +27,6 @@ import { PharmacyReportComponent } from './pharmacy-report/pharmacy-report.compo
 	declarations: [
 		ReportDashboardComponent,
 		DashboardLandingpageComponent,
-		PatientManagerReportComponent,
 		LaboratoryReportComponent,
 		PharmacyReportComponent
 	]
