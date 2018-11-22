@@ -1,13 +1,21 @@
-import {Component, Input, OnInit, DoCheck, OnChanges, KeyValueDiffers, KeyValueDiffer, SimpleChanges} from '@angular/core';
-import {ILabReportModel, ILabReportOption, ILabReportSummaryModel} from "./LabReportModel";
-import {IPagerSource} from "./PagerComponent";
+import {
+	Component,
+	Input,
+	OnInit,
+	DoCheck,
+	OnChanges,
+	KeyValueDiffers,
+	KeyValueDiffer,
+	SimpleChanges
+} from '@angular/core';
+import { ILabReportModel, ILabReportOption, ILabReportSummaryModel } from './LabReportModel';
+import { IPagerSource } from './PagerComponent';
 
-import {PaymentReportGenerator, ReportGeneratorService} from "./report-generator-service";
-
+import { PaymentReportGenerator, ReportGeneratorService } from './report-generator-service';
 
 @Component({
-    selector: 'app-lab-report-summary',
-    template: `
+	selector: 'app-lab-report-summary',
+	template: `
         <div class="pad20">
             <h3>Lab Report Summary</h3>
             <table class="table">
@@ -35,49 +43,45 @@ import {PaymentReportGenerator, ReportGeneratorService} from "./report-generator
             </table>
 
         </div>`,
-    styles: [`
+	styles: [
+		`
         .pad20 {
             padding: 20px;
             margin-top: 10px;
         }
-    `]
+    `
+	]
 })
 export class LabReportSummaryComponent implements OnInit {
-    reportData: ILabReportSummaryModel[] = [];
-    @Input() reportOption: ILabReportOption =  {
-        paginate  : false,
-        isInvestigation   : true
-        
-    };
+	reportData: ILabReportSummaryModel[] = [];
+	@Input()
+	reportOption: ILabReportOption = {
+		paginate: false,
+		isInvestigation: true
+	};
 
-    constructor(private reportSource  : ReportGeneratorService, private paymentReprotService  : PaymentReportGenerator) {
-    }
+	constructor(private reportSource: ReportGeneratorService, private paymentReprotService: PaymentReportGenerator) {}
 
-    ngOnInit() {
-        this.getReportSummary();
-    }
+	ngOnInit() {
+		this.getReportSummary();
+	}
 
-    getReportSummary()
-    {
-        this.reportSource.getLabReportInvestigationSummary(this.reportOption)
-            .then( x => {
-                console.log(x);
-                this.reportData = x.data;
-            });
-        console.log(this.reportOption);
-        this.paymentReprotService.getPaymentReportSummary({isSummary  : true})
-            .then(x => {
-                console.log(x);
-
-            });
-        
-    }
+	getReportSummary() {
+		this.reportSource.getLabReportInvestigationSummary(this.reportOption).then((x: any) => {
+			console.log(x);
+			this.reportData = x.data;
+		});
+		console.log(this.reportOption);
+		this.paymentReprotService.getPaymentReportSummary({ isSummary: true }).then((x) => {
+			console.log(x);
+		});
+	}
 }
 
 /* Lab report for Patient */
 @Component({
-    selector  : "app-lab-report-detail",
-    template : `
+	selector: 'app-lab-report-detail',
+	template: `
         <div class="tbl-resp-wrap" id="printableArea">
             <table class="" style="color:black;" cellpadding="0" cellspacing="0" border="0.5">
                 <thead>
@@ -86,6 +90,7 @@ export class LabReportSummaryComponent implements OnInit {
                     <th>Patient Info</th>
                     <th>Date</th>
                     <th style="width:25%">Request</th>
+
                     <th>Refering Doctor</th>
                     <th>Clinic</th>
                     <th>Status</th>
@@ -95,7 +100,7 @@ export class LabReportSummaryComponent implements OnInit {
                 <tbody>
                 <tr *ngIf="processing">
                     <td colspan="7">
-                        <div class="pad20 flex-container" style="text-align : center">
+                        <div class="pad20 flex-container">
                             <span class="fa fa-3x fa-spin fa-spinner"></span>
                         </div>
                     </td>
@@ -135,57 +140,47 @@ export class LabReportSummaryComponent implements OnInit {
         </div>
     `
 })
-export class LabReportDetails implements  OnInit,OnChanges, DoCheck{
+export class LabReportDetails implements OnInit, OnChanges, DoCheck {
+	processing: boolean = false;
+	reportData: ILabReportModel[] = [];
+	@Input('options')
+	reportOptions: ILabReportOption = {
+		filterByDate: true,
+		startDate: new Date(2018, 7, 20, 0, 30, 10),
+		endDate: new Date(),
+		paginate: true
+	};
 
+	pagerSource: IPagerSource = { totalPages: 0, totalRecord: 0, currentPage: 0, pageSize: 30 };
+	constructor(private reportSource: ReportGeneratorService) {}
 
-    processing: boolean = false;
-    reportData: ILabReportModel[] = [];
-    @Input("options") reportOptions: ILabReportOption = {
-        filterByDate: true,
-        startDate: new Date(2018, 7, 20, 0, 30, 10),
-        endDate: new Date(),
-        paginate : true
-        
-    }
-   
-    pagerSource : IPagerSource = { totalPages : 0 , totalRecord : 0 , currentPage : 0 , pageSize : 30};
-    constructor( private reportSource: ReportGeneratorService) {
-    }
+	ngOnInit() {
+		this.getReportData();
+	}
 
-    ngOnInit() {
-        this.getReportData();
-        
-    }
+	getReportData() {
+		this.processing = true;
+		if (this.reportOptions.paginate) {
+			this.reportOptions.paginationOptions = {
+				limit: this.pagerSource.pageSize,
+				skip: this.pagerSource.currentPage * this.pagerSource.pageSize
+			};
+		}
+		this.reportSource.getLabReport(this.reportOptions).then((x: any) => {
+			console.log('LAB REPORT CALL', x);
+			this.reportData = x.data.data;
+			this.processing = false;
+			this.pagerSource.totalRecord = x.data.total;
+		});
+	}
 
-    getReportData() {
-        this.processing = true;
-        if(this.reportOptions.paginate)
-        {
-            this.reportOptions.paginationOptions = {
-                limit  : this.pagerSource.pageSize,
-                skip : this.pagerSource.currentPage * this.pagerSource.pageSize
-            }
-        }
-       
-        this.reportSource.getLabReport(this.reportOptions)
-            .then(x => {
-                console.log("LAB REPORT CALL",x);
-                this.reportData = x.data;
-                this.processing = false;
-                this.pagerSource.totalRecord  = x.total;
-            });
-    }
+	pagerButtonClick(index: number) {
+		// goto next page using the current index
+		this.pagerSource.currentPage = index;
+		this.getReportData();
+	}
 
-    pagerButtonClick(index: number) {
-        // goto next page using the current index
-        this.pagerSource.currentPage = index;
-        this.getReportData();
-    }
+	ngDoCheck(): void {}
 
-    ngDoCheck(): void {
-    }
-    
-    ngOnChanges(changes: SimpleChanges): void {
-        
-    }
+	ngOnChanges(changes: SimpleChanges): void {}
 }

@@ -46,7 +46,7 @@
                 <div style="display:flex;">
                     <mat-form-field class="select">
                         <mat-select placeholder="Select Location" (valueChange)="setLocation($event)" >
-                            <mat-option [value]="loc.id" *ngIf="let loc of locations">{{loc.value}}</mat-option>
+                            <mat-option [value]="loc.id" *ngIf="let loc of locations">{{loc.location}}</mat-option>
                           
                         </mat-select>
                     </mat-form-field>

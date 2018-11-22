@@ -235,6 +235,8 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 		ReportService.ClinicAttendanceReportService,
 		ReportService.AppointmentReportService,
 		ReportService.DiagnosisReportService,
+		ReportService.DispenseReportService,
+		ReportService.PrescriptionReportService,
 		ChannelService,
 		{
 			provide: HTTP_INTERCEPTORS,

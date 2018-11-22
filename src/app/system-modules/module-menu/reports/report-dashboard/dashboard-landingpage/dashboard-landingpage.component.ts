@@ -28,4 +28,8 @@ export class DashboardLandingpageComponent implements OnInit {
 	call_pharmacyReport() {
 		this._router.navigate(['/dashboard/reports/report-dashboard/pharmacyReport']);
 	}
+	call_paymentReport() {
+		this._router.navigate(['/dashboard/reports/report-dashboard/paymentReport']);
+		console.log('this is payment');
+	}
 }

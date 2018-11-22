@@ -42,6 +42,9 @@ export class ReportGeneratorService implements ICustomReportService {
     getGroupedLabReport(options: ILabReportOption): Promise<IApiResponse<IGroupableLabReportModel[]>> {
 
         options.facilityId = this.selectedFacility._id;
+        options.useGrouping  = true;
+        options.groupBy = options.groupBy || 'location';
+        
         // Check for pagination and fix the request appropriately
         const newOption: any = {...options};
         if (options.paginate) {
@@ -49,7 +52,7 @@ export class ReportGeneratorService implements ICustomReportService {
             newOption.$limit = options.paginationOptions.limit;
             newOption.$skip = options.paginationOptions.limit * options.paginationOptions.skip;
         }
-        return this.restEndpoint.getService("laboratory-report-group")
+        return this.restEndpoint.getService("laboratory-report-summary")
             .find({query: newOption});
 
     }

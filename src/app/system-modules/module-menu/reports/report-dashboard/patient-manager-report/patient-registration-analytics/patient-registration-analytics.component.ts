@@ -9,7 +9,8 @@ import { RouterModule, Routes } from '@angular/router';
 })
 export class PatientRegistrationAnalyticsComponent implements OnInit {
   patientManagerReport = false;
-	patientRegistration = false;
+  patientRegistration = false;
+  activeTabIndex;
 
   pageInView = 'Patient Registration Analytics';
 
@@ -30,6 +31,30 @@ export class PatientRegistrationAnalyticsComponent implements OnInit {
 	];
   public barChartType: string = 'bar';
   public barChartLegend: boolean = true;
+
+//payment plan analytics barcharts
+public barChart1Options: any = {
+  scaleShowVerticalLines: false,
+  responsive: true
+};
+public barChart1Labels:string[] = ['Hygiea HMO', 'Avon HMO', 'Medicare HMO', 'Reliance HMO', 'Medi Plan HMO'];
+public barChart1Data: any[] = [
+  { data: [ 4, 8, 12, 16, 20, 24, 28 ], label: 'HMO Cover' },
+];
+public barChart1Type: string = 'bar';
+  public barChart1Legend: boolean = true;
+
+  //second payment plan analytics barcharts
+  public barChart2Options: any = {
+    scaleShowVerticalLines: false,
+    responsive: true
+  };
+  public barChart2Labels:string[] = ['SIDMACH', 'APMIS HMS', 'EMEDREP', 'NECA', 'CHEVRON OIL'];
+  public barChart2Data: any[] = [
+    { data: [ 4, 8, 12, 16, 20, 24, 28 ], label: 'COMPANY COVER' },
+  ];
+  public barChart2Type: string = 'bar';
+    public barChart2Legend: boolean = true;
 
 
   //pieChart
@@ -56,7 +81,10 @@ export class PatientRegistrationAnalyticsComponent implements OnInit {
   patientRegistration_analytics() {
 		this._router.navigate(['/dashboard/reports/report-dashboard']);
   }
- 
+
+  onTabClick(tabIndex) {
+    this.activeTabIndex = tabIndex;
+  }
  }
 
 
