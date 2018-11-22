@@ -34,11 +34,12 @@
             </thead>
   
             <tbody *ngIf="!isDiagnosisLoading">
+                <span *ngIf="filteredDiagnosis.length < 1"><i>There are currently no records to show</i></span>
                 <tr class="th-xxx" *ngFor="let item of filteredDiagnosis;let i = index">
                     <td>{{i+1}}</td>
                     <td>{{item.hospitalNumber}}</td>
                     <td>{{item.sex}}</td>
-                    <td>{{item.Age}}</td>
+                    <td>{{item.age}}</td>
                     <td>{{item.diagnosisCode}}</td>
                     <td>{{item.clinic}}</td>
                 </tr>

@@ -1,7 +1,6 @@
 @import "globals/variables.scss";
 @import "globals/normalize.scss";
 @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
-
 html,
 body {
     font-family: $font-main;
@@ -220,7 +219,6 @@ select {
     color: #444;
     text-align: center;
     position: relative;
-
     .c-page-title {
         display: inline-block;
         font-size: 1.8rem;
@@ -413,7 +411,6 @@ select {
     color: #fff;
     background-color: #03a9f4;
     border-color: #03a9f4;
-
     &:hover {
         background-color: darken(#03a9f4, 30%);
     }
@@ -600,7 +597,6 @@ select {
     // width: 100vw; height: stretch;
     height: 100vh;
     background: rgba(73, 73, 73, 0.27);
-
     .center-center {
         display: -webkit-box;
         /* OLD - iOS 6-, Safari 3.1-6 */
@@ -2148,7 +2144,6 @@ button,
     cursor: pointer;
     border: 4px solid lighten($primaryColor, 10%);
     box-shadow: 1px 1px 5px 9px rgba(0, 0, 0, 0.05);
-
     &:hover {
         background: lighten($primaryColor, 30%);
         border: 4px solid lighten($primaryColor, 20%);
@@ -2328,13 +2323,11 @@ button,
         height: 130px;
         margin: 35px;
     }
-
     50% {
         width: 190px;
         height: 190px;
         margin: 5px;
     }
-
     100% {
         width: 130px;
         height: 130px;
@@ -2346,11 +2339,9 @@ button,
     0% {
         color: black;
     }
-
     50% {
         color: rgb(0, 161, 223);
     }
-
     100% {
         color: black;
     }
@@ -2360,11 +2351,9 @@ button,
     0% {
         border-color: rgb(0, 161, 223);
     }
-
     50% {
         border-color: lightgrey;
     }
-
     100% {
         border-color: rgb(0, 161, 223);
     }
@@ -2388,49 +2377,39 @@ button,
         min-width: 100% !important;
         width: 100% !important;
     }
-
     .modal-header-wrap {
         min-width: 100% !important;
         width: 100% !important;
     }
-
     .pulse {
         width: 90%;
     }
-
     form .lhs,
     form .rhs {
         float: none;
     }
-
     .frm-item-wrap {
         padding-bottom: 15px;
     }
-
     .CTAs-wrap {
         margin-top: 10px;
     }
-
     .cta-1 {
         width: 80%;
         height: 35px;
         font-size: 1.6rem;
     }
-
     .modal_mini_title {
         display: none;
     }
-
     .modal_title {
         margin-bottom: 10px;
     }
-
     .frm-item-wrap small,
     .frm-singleItem-wrap small {
         font-size: 0.8rem;
         bottom: 3px;
     }
-
     .mainErr {
         margin-bottom: 2px;
         font-size: 1rem;
@@ -2465,22 +2444,20 @@ button,
     text-align: center;
     font-size: 1.1rem;
     color: #fff;
+    z-index: 10;
 }
 
 @media only screen and (max-width: 900px) {
     .search-wrap {
         display: none;
     }
-
     .pg-menuWrapa {
         position: relative;
         display: block;
     }
-
     .pg-menuWrap {
         display: none;
     }
-
     .pg-menuWrap-mobile {
         display: block;
         position: fixed;
@@ -2491,21 +2468,17 @@ button,
         -moz-box-shadow: 2px 16px 31px 0px #777;
         box-shadow: 2px 16px 31px 0px #777;
     }
-
     .secondary-tab li {
         padding: 10px 0;
         margin: 5px 0;
     }
-
     .secondary-tab {
         position: fixed;
         top: 40px;
     }
-
     .pgMenu-ico {
         display: block;
     }
-
     .pg-menuWrap,
     .pg-menuWrap-mobile {
         position: fixed;
@@ -2568,7 +2541,6 @@ button,
 
 .tooltip {
     font-size: 1.3em !important;
-
     &:after {
         font-family: Arial, Helvetica, sans-serif;
         opacity: 0;
@@ -2585,7 +2557,6 @@ button,
         min-width: auto;
         text-align: center;
     }
-
     &:hover {
         &:after {
             opacity: 1;

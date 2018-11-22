@@ -1,0 +1,162 @@
+<div class="inner-wrap-b body-wrap">
+    <!-- <div class="facility-title">{{pageInView}}</div>-->
+    <div class="filter" style="width: 65%;">
+        <div class="row" style="padding: 10px 40px 10px 40px;">
+            <div class="dr-wrap survery" style="margin-top: 20px;">
+                <app-date-range></app-date-range>
+            </div>
+            <div class="searchInputWrap col-sm ">
+                <mat-form-field>
+                    <mat-select [formControl]="searchCriteria" placeholder="Search">
+                        <mat-option value="Enter Gender type eg: Female">By Gender</mat-option>
+                        <mat-option value="choose date range">By Registration Date Range</mat-option>
+                        <mat-option value="enter apmis id">By APMIS ID</mat-option>
+                        <mat-option value="enter patient name">By Patient Name</mat-option>
+                        <mat-option value="enter tag name">By Tag</mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <div class="inputWrap">
+                    <div class="row">
+                        <div class="col-xs-7">
+                            <input [formControl]="searchControl" type="search" autofocus class="searchInput " placeholder=" {{searchCriteria.value}}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+        <div class="tbl-resp-wrap">
+            <table class="card" style="color:black;" cellpadding="0" cellspacing="0" border="0.5">
+                <thead>
+                    <tr class="th-r1 th-xxx">
+                        <th>Patient Name</th>
+                        <th>APMIS ID</th>
+                        <th>Address</th>
+                        <th>Age</th>
+                        <th>Gender</th>
+                        <th>Plan</th>
+                        <th>Phone Number</th>
+                        <th>Creation Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr class="th-xxx">
+                        <td>Olaniyi Adedejo</td>
+                        <td> JK-22449 </td>
+                        <td>
+                            <div>Plot 15, Otunba Jobi Fele Way......</div>
+                            <div>Alausa, Ikeja</div>
+                            <div>
+                                <b>Kaduna State </b>
+                            </div>
+
+                        </td>
+                        <td>25years</td>
+                        <td>Female</td>
+                        <td>HMO</td>
+                        <td>08063547514</td>
+                        <td>14-July-2018</td>
+                    </tr>
+                    <tr class="th-xxx">
+                        <td>Omolayo Susan</td>
+                        <td> GT-888463 </td>
+                        <td>
+                            <div>Block 9,Flat 4,Robin Close</div>
+                            <div>Alausa, Ikeja</div>
+                            <div>
+                                <b>Lagos State </b>
+                            </div>
+                        </td>
+                        <td>35 Years</td>
+                        <td>Male</td>
+                        <td>Family Cover</td>
+                        <td>089567890</td>
+                        <td>20-April-2016</td>
+                    </tr>
+                    <tr class="th-xxx">
+                        <td>Omolayo Susan</td>
+                        <td> GT-888463 </td>
+                        <td>
+                            <div>Block 9,Flat 4,Robin Close</div>
+                            <div>Alausa, Ikeja</div>
+                            <div>
+                                <b>Lagos State </b>
+                            </div>
+                        </td>
+                        <td>35 Years</td>
+                        <td>Male</td>
+                        <td>Cash Payment</td>
+                        <td>089567890</td>
+                        <td>20-April-2016</td>
+                    </tr>
+                    <tr class="th-xxx">
+                        <td>Omolayo Susan</td>
+                        <td> GT-888463 </td>
+                        <td>
+                            <div>Block 9,Flat 4,Robin Close</div>
+                            <div>Alausa, Ikeja</div>
+                            <div>
+                                <b>Lagos State </b>
+                            </div>
+                        </td>
+                        <td>35 Years</td>
+                        <td>Male</td>
+                        <td>HMO Cover</td>
+                        <td>089567890</td>
+                        <td>20-April-2016</td>
+                    </tr>
+                </tbody>
+            </table>
+            <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
+            </mat-paginator>
+            <div class="billSummarySect">
+                <table class="rhs">
+                    <div class="summaryItems">
+                        <div class="description">Select options to view Total Registrations</div>
+                        <div class="control-group">
+                            <label class="control control--checkbox">All
+                              <input type="checkbox" [checked]="" />
+                              <div class="control__indicator"></div>
+                          </label>
+                            <div>1500 Registrations</div>
+                            <div class="secondaryText">
+                                <div>1000 Females</div>
+                                <div>500 Males</div>
+                            </div>
+                        </div>
+                        <div class="control-group">
+                            <label class="control control--checkbox">Cash Payment
+                              <input type="checkbox" [checked]="checked" />
+                              <div class="control__indicator"></div>
+                          </label>
+                        </div>
+                        <div class="control-group">
+                            <label class="control control--checkbox">Family Cover
+                              <input type="checkbox" [checked]="checked" />
+                              <div class="control__indicator"></div>
+                          </label>
+                        </div>
+                        <div class="control-group">
+                            <label class="control control--checkbox">Company Cover
+                              <input type="checkbox" [checked]="checked" />
+                              <div class="control__indicator"></div>
+                          </label>
+                        </div>
+
+                        <div class="control-group">
+                            <label class="control control--checkbox">HMO
+                              <input type="checkbox" [checked]="checked" />
+                              <div class="control__indicator"></div>
+                          </label>
+                        </div>
+                    </div>
+
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

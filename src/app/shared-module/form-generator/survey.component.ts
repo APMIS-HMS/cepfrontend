@@ -56,7 +56,7 @@ export class SurveyComponent implements OnInit, OnDestroy {
 						this.orderSet.nursingCares.slice(index, 1);
 					}
 				}
-			} else if (payload.type === 'Diagnoses') {
+			} else if (payload.type === 'ICD 10 Diagnosis') {
 				if (payload.action === 'add') {
 					this.diagnoses.push(payload.data);
 				} else {
@@ -138,7 +138,7 @@ export class SurveyComponent implements OnInit, OnDestroy {
 			});
 
 			if (!!diagnosis) {
-				obj.diagnoses = diagnosis;
+				obj.ICD10Diagnosis = diagnosis;
 			}
 
 			// Medication
