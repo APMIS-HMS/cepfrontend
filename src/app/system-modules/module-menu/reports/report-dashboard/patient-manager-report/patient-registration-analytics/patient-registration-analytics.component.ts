@@ -37,7 +37,7 @@ public barChart1Options: any = {
   scaleShowVerticalLines: false,
   responsive: true
 };
-public barChart1Labels:string[] = ['Hygiea HMO', '3-10', '11-30', '31-50', '51 above'];
+public barChart1Labels:string[] = ['Hygiea HMO', 'Avon HMO', 'Medicare HMO', 'Reliance HMO', 'Medi Plan HMO'];
 public barChart1Data: any[] = [
   { data: [ 4, 8, 12, 16, 20, 24, 28 ], label: 'HMO Cover' },
 ];
