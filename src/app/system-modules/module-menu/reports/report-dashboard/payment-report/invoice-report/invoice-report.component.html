@@ -1,0 +1,134 @@
+<div class="gridLayout">
+  <div style="box-sizing: border-box;">
+    <h2>Summary Table</h2>
+    <mat-tab-group>
+      <mat-tab label="• Self (Out of Pocket)">
+        <div class="search-container">   
+           <h3 style="text-align: center;">Search Patient</h3>     
+          <div class="search-bx">
+            <input type="text">
+            <span></span>
+          </div>
+        </div>
+        <div class="tbl-resp-wrap">
+          <table class="card" style="color:black;" cellpadding="0" cellspacing="0" border="0.5">
+            <thead>
+              <tr class="th-r1 th-xxx">
+                <th>S/N</th>
+                <th>Date / Time</th>
+                <th>Services</th>
+                <th>Ammount</th>
+                <th>Issued By</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="th-xxx">
+                <td>1</td>
+                <td>02 Oct., 2018</td>
+                <td class="tooltip">3 Services
+                  <div class="tooltiptext">
+                    <span>Widal Test,</span>
+                    <span>Pregnancy Test,</span>
+                    <span>Heart Surgery</span>
+                  </div>
+                </td>
+                <td>#75,000</td>
+                <td>Olanrewaju Hammed</td>
+              </tr>
+              <tr class="th-xxx">
+                <td>2</td>
+                <td>08 Sep., 2018</td>
+                <td class="tooltip">5 Services
+                  <div class="tooltiptext">
+                    <span>Widal Test,</span>
+                    <span>Pregnancy Test,</span>
+                    <span>Heart Surgery,</span>
+                    <span>Diclofenac 600mg,</span>
+                    <span>X-Ray</span>
+                  </div>
+                </td>
+                <td>#105,000</td>
+                <td>Olanrewaju Hammed</td>
+              </tr>
+              <tr class="th-xxx">
+                <td>3</td>
+                <td>08 Sep., 2018</td>
+                <td class="tooltip">5 Services
+                  <div class="tooltiptext">
+                    <span>Widal Test,</span>
+                    <span>Pregnancy Test,</span>
+                    <span>Heart Surgery,</span>
+                    <span>Diclofenac 600mg,</span>
+                    <span>X-Ray</span>
+                  </div>
+                </td>
+                <td>#155,000</td>
+                <td>Olanrewaju Hammed</td>
+              </tr>
+              <tr class="th-xxx">
+                <td>4</td>
+                <td>08 Sep., 2018</td>
+                <td class="tooltip">5 Services
+                  <div class="tooltiptext">
+                    <span>Widal Test,</span>
+                    <span>Pregnancy Test,</span>
+                    <span>Heart Surgery,</span>
+                    <span>Diclofenac 600mg,</span>
+                    <span>X-Ray</span>
+                  </div>
+                </td>
+                <td>#90,000</td>
+                <td>Olanrewaju Hammed</td>
+              </tr>
+              <tr class="th-xxx">
+                <td>5</td>
+                <td>08 Sep., 2018</td>
+                <td class="tooltip">5 Services
+                  <div class="tooltiptext">
+                    <span>Widal Test,</span>
+                    <span>Pregnancy Test,</span>
+                    <span>Heart Surgery,</span>
+                    <span>Diclofenac 600mg,</span>
+                    <span>X-Ray</span>
+                  </div>
+                </td>
+                <td>#30,000</td>
+                <td>Olanrewaju Hammed</td>
+              </tr>
+              <tr class="th-xxx">
+                <td>6</td>
+                <td>08 Sep., 2018</td>
+                <td class="tooltip">5 Services
+                  <div class="tooltiptext">
+                    <span>Widal Test,</span>
+                    <span>Pregnancy Test,</span>
+                    <span>Heart Surgery,</span>
+                    <span>Diclofenac 600mg,</span>
+                    <span>X-Ray</span>
+                  </div>
+                </td>
+                <td>#200,000</td>
+                <td>Olanrewaju Hammed</td>
+              </tr>
+            </tbody>
+          </table>
+          <mat-paginator [length]="150" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
+          </mat-paginator>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+
+
+
+  <div class="chartWrap">
+    <div style="text-align: center;">
+      <canvas class="pieChart" baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
+        (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+      </canvas>
+      <div style="display: flex; margin-left: 30%;">
+        <h3>Total Amount: #690,000</h3>
+      </div>
+    </div>
+  </div>
+</div>
