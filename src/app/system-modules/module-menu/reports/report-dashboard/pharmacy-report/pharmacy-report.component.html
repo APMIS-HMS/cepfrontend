@@ -18,12 +18,13 @@
         <div class="col-sm group">
           <h3 style="padding-left: 20px;
                       padding-bottom: 12px;
-                    text-decoration: underline;">
-                    {{filterType}} :</h3>
+                    text-decoration: underline;">Filter
+            by Group :</h3>
           <div class="group-content"  *ngIf="dispenseFilter">
             <mat-form-field class="group-item" style="width:20% !important;">
-              <mat-select [formControl]="searchCriteria" placeholder="Group By" (change)="setSearchFilter($event.value)">
-                <mat-option [value]="criteria" *ngFor="let criteria of searchCriteriaOptions">{{criteria}}</mat-option>
+              <mat-select [formControl]="searchCriteria" placeholder="Group By ">
+                <mat-option value="User">User</mat-option>
+                <mat-option value="Product">Product</mat-option>
               </mat-select>
             </mat-form-field>
             <div class="group-item" style="padding-top: 1em; margin-left: 5px;">
@@ -40,7 +41,7 @@
             <div class="group-item" style="padding-top: 1em; margin-left: 1em;">
               <div class="row">
                 <div class="col-xs-7">
-                  <input [formControl]="prescriberSearchCtr" type="search" class="searchInput " placeholder="search prescriber" />
+                  <input [formControl]="searchControl" type="search" class="searchInput " placeholder="search prescriber" />
                 </div>
               </div>
             </div>
@@ -52,7 +53,7 @@
   </div>
 
 <mat-tab-group (selectedIndexChange)="onTabClick($event)">
-    <mat-tab label="• Dispense (List of Items Sold)" >
+    <mat-tab label="• Dispense (List of Items Sold)" ><i (click)="onclick_dispense()">Dispense</i>
       <div class="tbl-resp-wrap" style="padding-bottom: 20px !important;">
         <table class="card" style="color:black; margin-top: 10px !important;" cellpadding="0" cellspacing="0" border="0.5">
           <thead>
@@ -90,7 +91,7 @@
           </tbody>
           <tbody *ngIf="isDispenseLoading">
             <tr class="th-xxx">
-                <td></td><td></td><td></td><td></td><td></td>
+                <td></td><td></td><td></td><td></td>
                 <td><div><i class="fa fa-spinner fa-spin"></i></div></td>
             </tr>
         </tbody>
@@ -113,7 +114,7 @@
 
     </mat-tab>
 
-    <mat-tab label="•	Prescription" (click)="onclick_prescribe()">
+    <mat-tab label="•	Prescription" (click)="onclick_prescribe()"><i (click)="onclick_prescribe()">Prescription</i>
       <div class="tbl-resp-wrap" style="padding-bottom: 20px !important;">
         <table class="card" style="color:black; margin-top: 10px !important;" cellpadding="0" cellspacing="0" border="0.5">
           <thead>
@@ -127,24 +128,47 @@
             </tr> 
           </thead>
 
-          <tbody *ngIf="!isPrescriptionLoading">
-            <tr class="th-xxx" *ngFor="let item of prescriptions;let i = index">
-              <td>{{i+1}}</td>              
-              <td>{{item.dateWritten}}</td>
-              <td>{{item.patientName}}</td>
-              <td>
-                <div>{{item.prescription}}</div>
-              </td>
-              <td>{{item.pharmacy}}</td>
-              <td>{{item.refillStatus}}</td>
-            </tr>              
-          </tbody>
-          <tbody *ngIf="isPrescriptionLoading">
+          <tbody>
             <tr class="th-xxx">
-                <td></td><td></td><td></td>
-                <td><div><i class="fa fa-spinner fa-spin"></i></div></td>
-            </tr>
-        </tbody>
+              <td>1</td>              
+              <td>12/Oct/2018</td>
+              <td>Oladejo Adetinwo</td>
+              <td>
+                <div>Amoxiccilin 60MG</div>
+                <div>Diclofenac 45MG</div>
+                <div>Paracetamol 500MG</div>
+                <div>B-Complex</div>
+              </td>
+              <td>Emergency Pharmacy</td>
+              <td>fulfilld</td>
+            </tr>   
+            <tr class="th-xxx">
+                <td>2</td>              
+                <td>17/Oct/2018</td>
+                <td>Oladejo Adetinwo</td>
+                <td>
+                  <div>Amoxiccilin 60MG</div>
+                  <div>Diclofenac 45MG</div>
+                  <div>Paracetamol 500MG</div>
+                  <div>B-Complex</div>
+                </td>
+                <td>4th Floor Pharmacy</td>
+                <td>Partial</td>
+              </tr>     
+              <tr class="th-xxx">
+                  <td>3</td>              
+                  <td>22/Oct/2018</td>
+                  <td>Oladejo Adetinwo</td>
+                  <td>
+                    <div>Amoxiccilin 60MG</div>
+                    <div>Diclofenac 45MG</div>
+                    <div>Paracetamol 500MG</div>
+                    <div>B-Complex</div>
+                  </td>
+                  <td>Kunle-Ara Pharmacy</td>
+                  <td>isExternal</td>
+                </tr>          
+          </tbody>
         </table>
         <i style="font-weight: bold;">refill status: fulfilled, Unfulfilled, partial and isExternal</i>
         <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">

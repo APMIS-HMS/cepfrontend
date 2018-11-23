@@ -1,4 +1,3 @@
-import { ErrorsService } from './feathers/errors.service';
 import { OnlyMaterialModule } from './shared-common-modules/only-material-module';
 import { CanActivateViaAuthGuardCompleteFacilityService } from './services/facility-manager/setup/can-activate-via-auth-guard-complete-facility.service';
 import { AuthInterceptor } from './feathers/auth.interceptor';
@@ -75,7 +74,6 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { APP_DATE_FORMATS, AppDateAdapter } from 'app/date-format';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
-import { ServerErrorsInterceptor } from './feathers/server.errors.interceptor';
 
 @NgModule({
 	declarations: [
@@ -246,13 +244,7 @@ import { ServerErrorsInterceptor } from './feathers/server.errors.interceptor';
 			multi: true
 		},
 		CanActivateViaAuthGuardCompleteFacilityService,
-		UpperCasePipe,
-		{
-			provide: HTTP_INTERCEPTORS,
-			useClass: ServerErrorsInterceptor,
-			multi: true
-		},
-		ErrorsService
+		UpperCasePipe
 	],
 	bootstrap: [ AppComponent ]
 })

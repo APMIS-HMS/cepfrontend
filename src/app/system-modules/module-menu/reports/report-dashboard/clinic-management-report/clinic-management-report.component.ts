@@ -55,6 +55,6 @@ export class ClinicManagementReportComponent implements OnInit {
 	}
 
 	back_dashboard() {
-		this._router.navigate([ '/dashboard/reports/report-dashboard' ]);
-	}
+		this._router.navigate(['/dashboard/reports/report-dashboard']);
+	  }
 }

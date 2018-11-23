@@ -23,6 +23,6 @@ export enum PharmacyTabGroup {
 }
 
 export const PharmacySearchCriteria = {
-    ByUser: 'By Employee',
-    ByProduct: 'By Product'
+    ByProvider: 'By User',
+    ByPatient: 'By Product'
 };
