@@ -95,16 +95,9 @@ export class AddItemComponent implements OnInit, OnDestroy {
 				}
 			})
 			.then((payload) => {
-				console.log(payload);
 				if (payload.data.length > 0) {
-					console.log(payload.data[0].price);
-					if (payload.data[0].price === 0 && payload.data[0].modifiers.length > 0) {
-						this.frmAddItem.controls['unitPrice'].setValue(payload.data[0].modifiers[0].modifierValue);
-						this.frmAddItem.controls['qty'].setValue(1);
-					} else {
-						this.frmAddItem.controls['unitPrice'].setValue(payload.data[0].price);
-						this.frmAddItem.controls['qty'].setValue(1);
-					}
+					this.frmAddItem.controls['unitPrice'].setValue(payload.data[0].price);
+					this.frmAddItem.controls['qty'].setValue(1);
 				} else {
 					this.frmAddItem.controls['unitPrice'].setValue(0);
 					this.frmAddItem.controls['qty'].setValue(0);

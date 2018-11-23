@@ -212,7 +212,7 @@
 </div>
 
 <div *ngIf="showOrderSet" class="modal-overlay">
-    <app-order-set (closeModal)="close_onClick($event)" class="form-modal center-center"></app-order-set>
+    <app-order-set (closeModal)="close_onClick($event)"></app-order-set>
 </div>
 <div *ngIf="docSymptom_view" class="modal-overlay">
     <app-doc-symptom (symptom)="addSymptom($event)" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-doc-symptom>

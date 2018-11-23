@@ -47,7 +47,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 	subsect_vitals = true;
 	subsect_tags = true;
 	addVitalsPop = false;
-	mergePatient = false;
 	addTagsPop = false;
 	checkoutPatient = false;
 	menuUploads = false;
@@ -278,7 +277,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 	close_onClick(message: boolean): void {
 		this.changeUserImg = false;
 		this.addVitalsPop = false;
-		this.mergePatient = false;
 		this.addTagsPop = false;
 		this.checkoutPatient = false;
 		this.modal_on = false;
@@ -1001,10 +999,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 	addVitalsPop_show() {
 		this.addVitalsPop = true;
 	}
-
-	addMergePatient_show() {
-		this.mergePatient = true;
-	}
 	checkoutPatient_show() {
 		// Check is this patient has an appointment. If not, redirect the user to
 		// the appointment page if (!!this.selectedAppointment &&
@@ -1027,12 +1021,6 @@ export class PatientmanagerDetailpageComponent implements OnInit, OnDestroy {
 
 	addTagsPop_show() {
 		this.addTagsPop = true;
-	}
-
-	onPersonValueUpdated(value){
-		this.patient = value;
-		this.mergePatient = false;
-		this.ngOnInit();
 	}
 
 	ngOnDestroy() {

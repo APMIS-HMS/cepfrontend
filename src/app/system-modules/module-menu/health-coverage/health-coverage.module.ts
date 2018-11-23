@@ -49,7 +49,6 @@ import { NewBeneficiaryComponent } from './hmo-cover/beneficiary-list/new-benefi
 import { HmoReportComponent } from './hmo-officer/hmo-report/hmo-report.component';
 import { DateRangePickerModule } from "ng-pick-daterange";
 import { DateTimePickerModule } from "ng-pick-datetime";
-import {HmoBillingGroupingComponent} from "./hmo-officer/hmo-bills-grouping.component";
 
 
 @NgModule({
@@ -90,8 +89,7 @@ import {HmoBillingGroupingComponent} from "./hmo-officer/hmo-bills-grouping.comp
         FamilyBillDetailComponent,
         FamilyBillHistoryDetailComponent,
         NewBeneficiaryComponent,
-        HmoReportComponent,
-        HmoBillingGroupingComponent
+        HmoReportComponent
     ],
     exports: [
     ],

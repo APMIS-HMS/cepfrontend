@@ -90,7 +90,6 @@ export class FamilyBillDetailComponent implements OnInit {
         }, error => { console.log(error);});
         this.systemModuleService.announceSweetProxy('Service successfully cleared', 'success');
         this.refreshBills.emit(true);
-        this.close_onClick();
       });
     }
   }

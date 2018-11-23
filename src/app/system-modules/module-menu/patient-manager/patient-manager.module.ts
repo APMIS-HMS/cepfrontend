@@ -89,7 +89,6 @@ import { BcrAssessmentComponent } from './patientmanager-detailpage/bcr-assessme
 import { PrintDocumentationComponent } from './patientmanager-detailpage/documentation/print-documentation/print-documentation.component';
 import { DocUploadViewComponent } from './patientmanager-detailpage/documentation/doc-upload-view/doc-upload-view.component';
 import { RightTabTooltipComponent } from './patientmanager-detailpage/documentation/right-tab/right-tab-tooltip/right-tab-tooltip.component';
-import { UnknownPatientMergeComponent } from './patientmanager-detailpage/unknown-patient-merge/unknown-patient-merge.component';
 
 @NgModule({
 	declarations: [
@@ -146,8 +145,7 @@ import { UnknownPatientMergeComponent } from './patientmanager-detailpage/unknow
 		BcrAssessmentComponent,
 		PrintDocumentationComponent,
 		DocUploadViewComponent,
-		RightTabTooltipComponent,
-		UnknownPatientMergeComponent
+		RightTabTooltipComponent
 	],
 	exports: [],
 	imports: [ SharedModule, patientManagerRoutes, OnlyMaterialModule, MaterialModule, ChartsModule, PdfViewerModule ],

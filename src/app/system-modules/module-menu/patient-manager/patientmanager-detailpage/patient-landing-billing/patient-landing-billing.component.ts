@@ -383,24 +383,17 @@ export class PatientLandingBillingComponent implements OnInit, OnDestroy {
 					subTotal: bill.amount,
 					grandTotal: bill.amount
 				};
-				this.billingService
-					.createBill(Array.of(newBillItem), {
-						query: {
-							facilityId: this.selectedFacility._id,
-							patientId: this.selectedPatient._id
-						}
-					})
-					.then(
-						(newBills_payload) => {
-							this.getPatientBills();
-							this.isProcessing = false;
-							this._notification('Success', 'Created new billitems successfully.');
-						},
-						(error) => {
-							this.isProcessing = false;
-							this._notification('Error', 'Failed to create new billitems');
-						}
-					);
+				this.billingService.create(newBills).then(
+					(newBills_payload) => {
+						this.getPatientBills();
+						this.isProcessing = false;
+						this._notification('Success', 'Created new billitems successfully.');
+					},
+					(error) => {
+						this.isProcessing = false;
+						this._notification('Error', 'Failed to create new billitems');
+					}
+				);
 			}
 		}
 	}

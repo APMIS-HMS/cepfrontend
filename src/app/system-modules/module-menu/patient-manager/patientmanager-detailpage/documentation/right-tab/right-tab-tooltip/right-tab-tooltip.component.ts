@@ -4,7 +4,6 @@ import { Documentation } from 'app/models';
 import { DocumentationService } from 'app/services/facility-manager/setup';
 import { FormControl } from '@angular/forms';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
-import { SystemModuleService } from '../../../../../../../services/module-manager/setup/system-module.service';
 
 @Component({
   selector: 'app-right-tab-tooltip',
@@ -18,8 +17,7 @@ export class RightTabTooltipComponent implements OnInit, OnChanges {
   loginEmployee: Employee = <Employee>{};
 
   constructor(private documentationService: DocumentationService,
-    private authFacadeService: AuthFacadeService,
-    private systemModuleService: SystemModuleService) {
+    private authFacadeService: AuthFacadeService) {
     this.noteFormCtrl = new FormControl();
    }
 
@@ -81,15 +79,8 @@ export class RightTabTooltipComponent implements OnInit, OnChanges {
     // console.log(this.patientDocumentation);
     this.patientDocumentation.documentations[documentationIndex].document.body.problems[problemIndex] = updateProblem;
     this.documentationService.update(this.patientDocumentation).then(uload => {
-      // update success callback, show success notification
-      this.documentationService.announceDocumentation({ type: 'Problem' });
-      this.systemModuleService.off();
-      this.systemModuleService.announceSweetProxy('Problem updated successfully!', 'success', null, null, null, null, null, null, null);
-    },
-    err => {
-      // update error callback, show error notification
-      this.systemModuleService.off();
-      this.systemModuleService.announceSweetProxy('Problem not updated due error while saving!', 'error');
+      // this is meant to show a pop  for successful update of the problem record
+      //
     });
 
   }
