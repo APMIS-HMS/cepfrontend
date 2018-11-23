@@ -42,6 +42,6 @@ export interface IPaymentReportOptions extends IDefaultReportOption{
 }
 export interface IPaymentGroups {
     key? : string;
-    value? : number;
+    value? : number | object;
 }
 

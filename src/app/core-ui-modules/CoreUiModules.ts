@@ -9,8 +9,9 @@ import {DocumentPrinterComponent} from "./ui-components/DocumentPrinterComponent
 import {LabReportDetails, LabReportSummaryComponent} from "./ui-components/LabReportSummaryComponent";
 import {InvoicePaymentReportComponent} from "./ui-components/InvoicePaymentReportComponent";
 
+
 const exportableComponents = [AsomDataPagerComponent, PagerButtonComponent, DocumentPrinterComponent,
-    LabReportSummaryComponent, LabReportDetails, InvoicePaymentReportComponent]
+    LabReportSummaryComponent, LabReportDetails, InvoicePaymentReportComponent];//,PaymentReportSummaryComponent
 
 @NgModule({
     imports: [CommonModule/*, MatDialogModule*/],
@@ -18,7 +19,7 @@ const exportableComponents = [AsomDataPagerComponent, PagerButtonComponent, Docu
     declarations: [...exportableComponents],
 
     providers: [
-        {provide: ReportGeneratorService, useExisting: DummyReportDataService},
+        {provide: ReportGeneratorService, useClass: ReportGeneratorService},
         {provide: DummyReportDataService, useClass: DummyReportDataService},
         {provide: PaymentReportGenerator, useExisting: DummyPaymentReportService},
         {provide: DummyPaymentReportService, useClass: DummyPaymentReportService},

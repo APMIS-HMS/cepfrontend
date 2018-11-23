@@ -22,7 +22,7 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
 })
 export class TreatementPlanComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
-  treatmentSheetData: any;
+  treatmentSheetData: any = <any>{};
   isSaving: boolean;
   @Input() patient: any;
   facility: Facility = <Facility>{};
@@ -182,6 +182,11 @@ export class TreatementPlanComponent implements OnInit {
     }
     if (this.treatmentSheet.medications !== undefined) {
       this.treatmentSheet.medications.forEach((item, index) => {
+        item.regimen = (item.regimen !== undefined) ? item.regimen : [{
+          frequency: '',
+          duration: '',
+          durationUnit: ''
+        }];
         (<FormArray>this.medicationTableForm.controls['medicationTableArray']).push(
           this.formBuilder.group({
             index: index,
@@ -289,50 +294,50 @@ export class TreatementPlanComponent implements OnInit {
 
   onSuspendInvestigationItem(investigation, statue) {
     this.treatmentSheet.investigations[investigation.index].tracks = (this.treatmentSheet.investigations[investigation.index].tracks === undefined) ? [] : this.treatmentSheet.investigations[investigation.index].tracks;
-      const treatmentSheetTrack = {
-        action: (statue === true) ? TreatmentSheetActions.SUSPENDED : TreatmentSheetActions.ACTIVATED,
-        createdBy: this.loginEmployee._id,
-        comment: investigation.comment
-      }
-      this.treatmentSheet.investigations[investigation.index].status = (statue === true) ? TreatmentSheetActions.SUSPENDED : TreatmentSheetActions.ACTIVATED;
-      this.treatmentSheet.investigations[investigation.index].isSuspended = statue;
-      this.treatmentSheet.investigations[investigation.index].tracks.push(treatmentSheetTrack);
-      this._treatmentSheetService.patch(this.treatmentSheetData._id, { 'treatmentSheet': this.treatmentSheet }, {}).then(payload => {
-        this.onActivityTreatmentSheet();
-      }, err => {
-      });
+    const treatmentSheetTrack = {
+      action: (statue === true) ? TreatmentSheetActions.SUSPENDED : TreatmentSheetActions.ACTIVATED,
+      createdBy: this.loginEmployee._id,
+      comment: investigation.comment
+    }
+    this.treatmentSheet.investigations[investigation.index].status = (statue === true) ? TreatmentSheetActions.SUSPENDED : TreatmentSheetActions.ACTIVATED;
+    this.treatmentSheet.investigations[investigation.index].isSuspended = statue;
+    this.treatmentSheet.investigations[investigation.index].tracks.push(treatmentSheetTrack);
+    this._treatmentSheetService.patch(this.treatmentSheetData._id, { 'treatmentSheet': this.treatmentSheet }, {}).then(payload => {
+      this.onActivityTreatmentSheet();
+    }, err => {
+    });
   }
 
   onDonePhysicianOrderItem(physicianOrder) {
     this.treatmentSheet.physicianOrders[physicianOrder.index].tracks = (this.treatmentSheet.physicianOrders[physicianOrder.index].tracks === undefined) ? [] : this.treatmentSheet.physicianOrders[physicianOrder.index].tracks;
-      const treatmentSheetTrack = {
-        action: TreatmentSheetActions.DONE,
-        createdBy: this.loginEmployee._id,
-        comment: physicianOrder.comment
-      }
-      this.treatmentSheet.physicianOrders[physicianOrder.index].status = TreatmentSheetActions.DONE;
-      this.treatmentSheet.physicianOrders[physicianOrder.index].isDone = true;
-      this.treatmentSheet.physicianOrders[physicianOrder.index].tracks.push(treatmentSheetTrack);
-      this._treatmentSheetService.patch(this.treatmentSheetData._id, { 'treatmentSheet': this.treatmentSheet }, {}).then(payload => {
-        this.onActivityTreatmentSheet();
-      }, err => {
-      });
+    const treatmentSheetTrack = {
+      action: TreatmentSheetActions.DONE,
+      createdBy: this.loginEmployee._id,
+      comment: physicianOrder.comment
+    }
+    this.treatmentSheet.physicianOrders[physicianOrder.index].status = TreatmentSheetActions.DONE;
+    this.treatmentSheet.physicianOrders[physicianOrder.index].isDone = true;
+    this.treatmentSheet.physicianOrders[physicianOrder.index].tracks.push(treatmentSheetTrack);
+    this._treatmentSheetService.patch(this.treatmentSheetData._id, { 'treatmentSheet': this.treatmentSheet }, {}).then(payload => {
+      this.onActivityTreatmentSheet();
+    }, err => {
+    });
   }
 
   onSuspendPhysicianOrderItem(physicianOrder, statue) {
     this.treatmentSheet.physicianOrders[physicianOrder.index].tracks = (this.treatmentSheet.physicianOrders[physicianOrder.index].tracks === undefined) ? [] : this.treatmentSheet.physicianOrders[physicianOrder.index].tracks;
-      const treatmentSheetTrack = {
-        action: (statue === true) ? TreatmentSheetActions.SUSPENDED : TreatmentSheetActions.ACTIVATED,
-        createdBy: this.loginEmployee._id,
-        comment: physicianOrder.comment
-      }
-      this.treatmentSheet.physicianOrders[physicianOrder.index].status = (statue === true) ? TreatmentSheetActions.SUSPENDED : TreatmentSheetActions.ACTIVATED;
-      this.treatmentSheet.physicianOrders[physicianOrder.index].isSuspended = statue;
-      this.treatmentSheet.physicianOrders[physicianOrder.index].tracks.push(treatmentSheetTrack);
-      this._treatmentSheetService.patch(this.treatmentSheetData._id, { 'treatmentSheet': this.treatmentSheet }, {}).then(payload => {
-        this.onActivityTreatmentSheet();
-      }, err => {
-      });
+    const treatmentSheetTrack = {
+      action: (statue === true) ? TreatmentSheetActions.SUSPENDED : TreatmentSheetActions.ACTIVATED,
+      createdBy: this.loginEmployee._id,
+      comment: physicianOrder.comment
+    }
+    this.treatmentSheet.physicianOrders[physicianOrder.index].status = (statue === true) ? TreatmentSheetActions.SUSPENDED : TreatmentSheetActions.ACTIVATED;
+    this.treatmentSheet.physicianOrders[physicianOrder.index].isSuspended = statue;
+    this.treatmentSheet.physicianOrders[physicianOrder.index].tracks.push(treatmentSheetTrack);
+    this._treatmentSheetService.patch(this.treatmentSheetData._id, { 'treatmentSheet': this.treatmentSheet }, {}).then(payload => {
+      this.onActivityTreatmentSheet();
+    }, err => {
+    });
   }
 
   close_onClick() {
@@ -448,19 +453,19 @@ export class TreatementPlanComponent implements OnInit {
     this.patientDocumentation.documentations.push(doc);
 
     this.treatmentSheet.doc = this.patientDocumentation;
-      this.treatmentSheet.procedures[procedure.index].tracks = (this.treatmentSheet.procedures[procedure.index].tracks === undefined) ? [] : this.treatmentSheet.procedures[procedure.index].tracks;
-      const treatmentSheetTrack = {
-        action: TreatmentSheetActions.DONE,
-        createdBy: this.loginEmployee._id,
-        comment: procedure.comment
-      }
-      this.treatmentSheet.procedures[procedure.index].isDone = true;
-      this.treatmentSheet.procedures[procedure.index].status = TreatmentSheetActions.DONE;
-      this.treatmentSheet.procedures[procedure.index].tracks.push(treatmentSheetTrack);
-      this._treatmentSheetService.patchTreatmentSheetMedication(this.treatmentSheetData._id, { 'treatmentSheet': this.treatmentSheet }, {}).then(payload => {
-        this.onActivityTreatmentSheet();
-      }, err => {
-      });
+    this.treatmentSheet.procedures[procedure.index].tracks = (this.treatmentSheet.procedures[procedure.index].tracks === undefined) ? [] : this.treatmentSheet.procedures[procedure.index].tracks;
+    const treatmentSheetTrack = {
+      action: TreatmentSheetActions.DONE,
+      createdBy: this.loginEmployee._id,
+      comment: procedure.comment
+    }
+    this.treatmentSheet.procedures[procedure.index].isDone = true;
+    this.treatmentSheet.procedures[procedure.index].status = TreatmentSheetActions.DONE;
+    this.treatmentSheet.procedures[procedure.index].tracks.push(treatmentSheetTrack);
+    this._treatmentSheetService.patchTreatmentSheetMedication(this.treatmentSheetData._id, { 'treatmentSheet': this.treatmentSheet }, {}).then(payload => {
+      this.onActivityTreatmentSheet();
+    }, err => {
+    });
   }
 
   onSuspendProcedure(procedure, status) {
@@ -518,18 +523,18 @@ export class TreatementPlanComponent implements OnInit {
 
   onSuspendNursingCare(nursingCare, status) {
     this.treatmentSheet.nursingCares[nursingCare.index].tracks = (this.treatmentSheet.nursingCares[nursingCare.index].tracks === undefined) ? [] : this.treatmentSheet.nursingCares[nursingCare.index].tracks;
-      const treatmentSheetTrack = {
-        action: (status === true) ? TreatmentSheetActions.SUSPENDED : TreatmentSheetActions.ACTIVATED,
-        createdBy: this.loginEmployee._id,
-        comment: nursingCare.comment
-      }
-      this.treatmentSheet.nursingCares[nursingCare.index].isSuspended = status;
-      this.treatmentSheet.nursingCares[nursingCare.index].status = (status === true) ? TreatmentSheetActions.SUSPENDED : TreatmentSheetActions.ACTIVATED;
-      this.treatmentSheet.nursingCares[nursingCare.index].tracks.push(treatmentSheetTrack);
-      this._treatmentSheetService.patch(this.treatmentSheetData._id, { 'treatmentSheet': this.treatmentSheet }, {}).then(payload => {
-        this.onActivityTreatmentSheet();
-      }, err => {
-      });
+    const treatmentSheetTrack = {
+      action: (status === true) ? TreatmentSheetActions.SUSPENDED : TreatmentSheetActions.ACTIVATED,
+      createdBy: this.loginEmployee._id,
+      comment: nursingCare.comment
+    }
+    this.treatmentSheet.nursingCares[nursingCare.index].isSuspended = status;
+    this.treatmentSheet.nursingCares[nursingCare.index].status = (status === true) ? TreatmentSheetActions.SUSPENDED : TreatmentSheetActions.ACTIVATED;
+    this.treatmentSheet.nursingCares[nursingCare.index].tracks.push(treatmentSheetTrack);
+    this._treatmentSheetService.patch(this.treatmentSheetData._id, { 'treatmentSheet': this.treatmentSheet }, {}).then(payload => {
+      this.onActivityTreatmentSheet();
+    }, err => {
+    });
   }
 
   administer(medication) {
@@ -557,19 +562,19 @@ export class TreatementPlanComponent implements OnInit {
     }
     this.patientDocumentation.documentations.push(doc);
     this.treatmentSheet.doc = this.patientDocumentation;
-      this.treatmentSheet.medications[medication.index].tracks = (this.treatmentSheet.medications[medication.index].tracks === undefined) ? [] : this.treatmentSheet.medications[medication.index].tracks;
-      const treatmentSheetTrack = {
-        action: TreatmentSheetActions.ADMINISTERED,
-        createdBy: this.loginEmployee._id,
-        comment: medication.comment
-      }
-      this.treatmentSheet.medications[medication.index].isAdministered = true;
-      this.treatmentSheet.medications[medication.index].status = TreatmentSheetActions.ADMINISTERED;
-      this.treatmentSheet.medications[medication.index].tracks.push(treatmentSheetTrack);
-      this._treatmentSheetService.patchTreatmentSheetMedication(this.treatmentSheetData._id, { 'treatmentSheet': this.treatmentSheet }, {}).then(payload => {
-        this.onActivityTreatmentSheet();
-      }, err => {
-      });
+    this.treatmentSheet.medications[medication.index].tracks = (this.treatmentSheet.medications[medication.index].tracks === undefined) ? [] : this.treatmentSheet.medications[medication.index].tracks;
+    const treatmentSheetTrack = {
+      action: TreatmentSheetActions.ADMINISTERED,
+      createdBy: this.loginEmployee._id,
+      comment: medication.comment
+    }
+    this.treatmentSheet.medications[medication.index].isAdministered = true;
+    this.treatmentSheet.medications[medication.index].status = TreatmentSheetActions.ADMINISTERED;
+    this.treatmentSheet.medications[medication.index].tracks.push(treatmentSheetTrack);
+    this._treatmentSheetService.patchTreatmentSheetMedication(this.treatmentSheetData._id, { 'treatmentSheet': this.treatmentSheet }, {}).then(payload => {
+      this.onActivityTreatmentSheet();
+    }, err => {
+    });
   }
 
   _updateTreatmentSheet(medication, index) {
@@ -600,18 +605,18 @@ export class TreatementPlanComponent implements OnInit {
     // });
 
     this.treatmentSheet.medications[medication.index].tracks = (this.treatmentSheet.medications[medication.index].tracks === undefined) ? [] : this.treatmentSheet.medications[medication.index].tracks;
-      const treatmentSheetTrack = {
-        action: TreatmentSheetActions.COMPLETED,
-        createdBy: this.loginEmployee._id,
-        comment: medication.comment
-      }
-      this.treatmentSheet.medications[medication.index].isCompleted = true;
-      this.treatmentSheet.medications[medication.index].status = TreatmentSheetActions.COMPLETED;
-      this.treatmentSheet.medications[medication.index].tracks.push(treatmentSheetTrack);
-      this._treatmentSheetService.patch(this.treatmentSheetData._id, { 'treatmentSheet': this.treatmentSheet }, {}).then(payload => {
-        this.onActivityTreatmentSheet();
-      }, err => {
-      });
+    const treatmentSheetTrack = {
+      action: TreatmentSheetActions.COMPLETED,
+      createdBy: this.loginEmployee._id,
+      comment: medication.comment
+    }
+    this.treatmentSheet.medications[medication.index].isCompleted = true;
+    this.treatmentSheet.medications[medication.index].status = TreatmentSheetActions.COMPLETED;
+    this.treatmentSheet.medications[medication.index].tracks.push(treatmentSheetTrack);
+    this._treatmentSheetService.patch(this.treatmentSheetData._id, { 'treatmentSheet': this.treatmentSheet }, {}).then(payload => {
+      this.onActivityTreatmentSheet();
+    }, err => {
+    });
   }
   discontinueMedication(medication, index) {
     // const medicationObj = this.treatmentSheet.medications[index];
@@ -626,7 +631,7 @@ export class TreatementPlanComponent implements OnInit {
     // }).catch(error => {
     //   this.isSaving = false;
     // })
-    
+
     this.treatmentSheet.medications[medication.index].tracks = (this.treatmentSheet.medications[medication.index].tracks === undefined) ? [] : this.treatmentSheet.medications[medication.index].tracks;
     const treatmentSheetTrack = {
       action: TreatmentSheetActions.DISCONTINUED,
@@ -643,34 +648,34 @@ export class TreatementPlanComponent implements OnInit {
   }
   suspendMedication(medication) {
     this.treatmentSheet.medications[medication.index].tracks = (this.treatmentSheet.medications[medication.index].tracks === undefined) ? [] : this.treatmentSheet.medications[medication.index].tracks;
-      const treatmentSheetTrack = {
-        action: TreatmentSheetActions.SUSPENDED,
-        createdBy: this.loginEmployee._id,
-        comment: medication.comment
-      }
-      this.treatmentSheet.medications[medication.index].isSuspended = true;
-      this.treatmentSheet.medications[medication.index].status = TreatmentSheetActions.SUSPENDED;
-      this.treatmentSheet.medications[medication.index].tracks.push(treatmentSheetTrack);
-      this._treatmentSheetService.patch(this.treatmentSheetData._id, { 'treatmentSheet': this.treatmentSheet }, {}).then(payload => {
-        this.onActivityTreatmentSheet();
-      }, err => {
-      });
+    const treatmentSheetTrack = {
+      action: TreatmentSheetActions.SUSPENDED,
+      createdBy: this.loginEmployee._id,
+      comment: medication.comment
+    }
+    this.treatmentSheet.medications[medication.index].isSuspended = true;
+    this.treatmentSheet.medications[medication.index].status = TreatmentSheetActions.SUSPENDED;
+    this.treatmentSheet.medications[medication.index].tracks.push(treatmentSheetTrack);
+    this._treatmentSheetService.patch(this.treatmentSheetData._id, { 'treatmentSheet': this.treatmentSheet }, {}).then(payload => {
+      this.onActivityTreatmentSheet();
+    }, err => {
+    });
   }
 
   activateMedication(medication, index) {
     this.treatmentSheet.medications[medication.index].tracks = (this.treatmentSheet.medications[medication.index].tracks === undefined) ? [] : this.treatmentSheet.medications[medication.index].tracks;
-      const treatmentSheetTrack = {
-        action: TreatmentSheetActions.ACTIVATED,
-        createdBy: this.loginEmployee._id,
-        comment: medication.comment
-      }
-      this.treatmentSheet.medications[medication.index].isActivate = true;
-      this.treatmentSheet.medications[medication.index].status = TreatmentSheetActions.ACTIVATED;
-      this.treatmentSheet.medications[medication.index].tracks.push(treatmentSheetTrack);
-      this._treatmentSheetService.patch(this.treatmentSheetData._id, { 'treatmentSheet': this.treatmentSheet }, {}).then(payload => {
-        this.onActivityTreatmentSheet();
-      }, err => {
-      });
+    const treatmentSheetTrack = {
+      action: TreatmentSheetActions.ACTIVATED,
+      createdBy: this.loginEmployee._id,
+      comment: medication.comment
+    }
+    this.treatmentSheet.medications[medication.index].isActivate = true;
+    this.treatmentSheet.medications[medication.index].status = TreatmentSheetActions.ACTIVATED;
+    this.treatmentSheet.medications[medication.index].tracks.push(treatmentSheetTrack);
+    this._treatmentSheetService.patch(this.treatmentSheetData._id, { 'treatmentSheet': this.treatmentSheet }, {}).then(payload => {
+      this.onActivityTreatmentSheet();
+    }, err => {
+    });
   }
 
   onCompletedTreatmentSheet() {
