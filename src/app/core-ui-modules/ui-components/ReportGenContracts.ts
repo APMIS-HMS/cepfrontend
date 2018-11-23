@@ -1,6 +1,6 @@
 import {IGroupableLabReportModel, ILabReportModel, ILabReportOption, ILabReportSummaryModel} from "./LabReportModel";
-import {DummyReportDataService} from "./DummyReportDataService";
-import {ReportGeneratorService} from "./report-generator-service";
+/*import {DummyReportDataService} from "./DummyReportDataService";
+import {ReportGeneratorService} from "./report-generator-service";*/
 
 import {IPatientReportModel, IPatientReportOptions} from "./PatientReportModel";
 import {
@@ -50,19 +50,16 @@ export interface ICustomReportService {
 
     //getLabReportInvestigation(options? : ILabReportOption) : Promise<any[]>;
     // patient investigation
-    getPatientReport(options? : IPatientReportOptions) : Promise<IApiResponse<IPatientReportModel[]>>
+    getPatientReport(options?: IPatientReportOptions) : Promise<IApiResponse<IPatientReportModel[]>>
 
 }
 
 export interface IPaymentReportServiceEndPoint
 {
-    getPaymentReportSummary(rptOption : IPaymentReportOptions) : Promise<IApiResponse<IPaymentReportSummaryModel>>;
-    getInvoicePaymentReport(rptOption : IPaymentReportOptions) : Promise<IApiResponse<IPaymentReportModel[]>>;
-    getPaymentGroups(rptOption : IPaymentReportOptions) : Promise<IApiResponse<IPaymentGroups[]>>;
+    getPaymentReportSummary(rptOption: IPaymentReportOptions): Promise<IApiResponse<IPaymentReportSummaryModel>>;
+    getInvoicePaymentReport(rptOption: IPaymentReportOptions): Promise<IApiResponse<IPaymentReportModel[]>>;
+    getPaymentGroups(rptOption: IPaymentReportOptions) : Promise<IApiResponse<IPaymentGroups[]>>;
 }
 
-export function reportServiceFactory() {
-    const useDummyData = true;
-    return useDummyData ? DummyReportDataService : ReportGeneratorService;
-}
+
 
