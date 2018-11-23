@@ -360,19 +360,19 @@ export class ClinicalNoteComponent implements OnInit, OnDestroy {
 	}
 	deleteDiagnosis(item) {
 		this.diagnoses = this.diagnoses.filter((e) => e !== item);
-		this.sharedService.announceDiagnosisSystemOrder({ type: 'Diagnoses', action: 'remove', data: item });
+		this.sharedService.announceDiagnosisSystemOrder({ type: 'ICD 10 Diagnosis', action: 'remove', data: item });
 	}
 
 	addDiagnosis(item) {
 		if (item.name && item.code) {
 			this.diagnoses.push(item);
 		}
-		this.sharedService.announceDiagnosisSystemOrder({ type: 'Diagnoses', action: 'add', data: item });
+		this.sharedService.announceDiagnosisSystemOrder({ type: 'ICD 10 Diagnosis', action: 'add', data: item });
 	}
 
 	removeDiagnosis(item) {
 		this.diagnoses = this.diagnoses.filter((e) => e !== item);
-		this.sharedService.announceDiagnosisSystemOrder({ type: 'Diagnoses', action: 'remove', data: item });
+		this.sharedService.announceDiagnosisSystemOrder({ type: 'ICD 10 Diagnosis', action: 'remove', data: item });
 	}
 	ngOnDestroy() {
 		this.surveyjs = undefined;
