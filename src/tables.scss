@@ -206,3 +206,13 @@ td .empWrap .list-img{
     align-items: center;
     box-sizing: border-box;
 }
+.tbl-cont-cta{
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #0288D1;
+    margin-top: 20px;
+    i{
+        padding-right: 10px;
+    }
+}
