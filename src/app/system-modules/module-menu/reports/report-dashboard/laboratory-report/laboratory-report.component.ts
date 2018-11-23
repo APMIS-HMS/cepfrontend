@@ -1,84 +1,78 @@
-import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormControl } from '@angular/forms';
-import { ReportGeneratorService } from '../../../../../core-ui-modules/ui-components/report-generator-service';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import {Router} from '@angular/router';
+import {FormControl} from '@angular/forms';
 import {
-	ILabReportModel,
-	ILabReportOption,
-	ILabReportSummaryModel
-} from '../../../../../core-ui-modules/ui-components/LabReportModel';
-import { IPagerSource } from '../../../../../core-ui-modules/ui-components/PagerComponent';
-import { IDateRange } from 'ng-pick-daterange';
+    ILabReportOption
+} from "../../../../../core-ui-modules/ui-components/LabReportModel";
+import {IDateRange} from "ng-pick-daterange";
+import {LabReportDetails} from "../../../../../core-ui-modules/ui-components/LabReportSummaryComponent";
+import {ReportGeneratorService} from "../../../../../core-ui-modules/ui-components/report-generator-service";
 
 @Component({
-	selector: 'app-laboratory-report',
-	templateUrl: './laboratory-report.component.html',
-	styleUrls: [ './laboratory-report.component.scss' ]
+    selector: 'app-laboratory-report',
+    templateUrl: './laboratory-report.component.html',
+    styleUrls: ['./laboratory-report.component.scss']
 })
 export class LaboratoryReportComponent implements OnInit {
-	searchControl = new FormControl();
-	searchCriteria = new FormControl('Search');
 
-	pageInView = 'Laboratory Report';
-	processing: boolean = false;
-	reportData: ILabReportModel[] = [];
-	reportOptions: ILabReportOption = {
-		filterByDate: true,
-		startDate: new Date(2018, 7, 20, 0, 30, 10),
-		endDate: new Date()
-	};
-	reportSummaryData: ILabReportSummaryModel[] = [];
-	pagerSource: IPagerSource = { totalPages: 0, totalRecord: 0, currentPage: 0, pageSize: 30 };
-	constructor(private _router: Router, private reportSource: ReportGeneratorService) {}
+    searchControl = new FormControl();
+    searchCriteria = new FormControl('Search');
+    locations : any[]  = [] ;  
+    pageInView = 'Laboratory Report';
+    processing: boolean = false;
+    @ViewChild("lrd") labRptComponentRef: LabReportDetails;
+    reportOptions: ILabReportOption = {
+        filterByDate: true,
+        startDate: new Date(2018, 8, 20, 0, 30, 10),
+        endDate: new Date(),
+        paginate  : true,
+        paginationOptions  : { skip  : 0 ,  limit  : 20},
+        searchBy  : "all",
+        queryString  : ""
+    }
 
-	ngOnInit() {
-		this.getReportData();
-		this.getReportSummary();
-	}
+    constructor(private _router: Router, private rptService: ReportGeneratorService) {
+    }
 
-	getReportData() {
-		this.processing = true;
-		if (this.reportOptions.paginate) {
-			this.reportOptions.paginationOptions = {
-				limit: this.pagerSource.pageSize,
-				skip: this.pagerSource.currentPage * this.pagerSource.pageSize
-			};
-		}
-		this.reportSource.getLabReport(this.reportOptions).then((x: any) => {
-			console.log(x);
-			this.reportData = x.data.data;
-			this.processing = false;
-			this.pagerSource.totalRecord = x.data.total;
-		});
-	}
+    ngOnInit() {
+        this.locations   =  this.rptService.getLocations()
+           /* .then(x => {
+                
+            });*/
+           console.log("locations", this.locations);
+        this.rptService.getWorkBenches()
+            .then(x => {
+                console.log("Workbenches", x);
+            });
+        
+       
+        
+    }
 
-	getReportSummary() {
-		this.reportSource.getLabReportInvestigationSummary(this.reportOptions).then((x) => {
-			console.log(x);
-			this.reportSummaryData = x.data;
-		});
-		console.log(this.reportOptions);
-	}
+    pageInViewLoader(title) {
+        this.pageInView = title;
+    }
 
-	pageInViewLoader(title) {
-		this.pageInView = title;
-	}
+    back_dashboard() {
+        this._router.navigate(['/dashboard/reports/report-dashboard']);
+    }
 
-	back_dashboard() {
-		this._router.navigate([ '/dashboard/reports/report-dashboard' ]);
-	}
-	pageClickedEvent(index: number) {
-		// goto next page using the current index
-		this.pagerSource.currentPage = index;
-		this.getReportData();
-	}
-	assignDate(date: IDateRange) {
-		this.reportOptions.startDate = date.from;
-		this.reportOptions.endDate = date.to;
-	}
+    assignDate(date: IDateRange) {
+        this.reportOptions.startDate = date.from;
+        this.reportOptions.endDate = date.to;
+       /* console.log("Parent Component Option: ", this.reportOptions);
+        this.labRptComponentRef.getReportData();*/
+    }
 
-	search(queryString: string) {
-		this.reportOptions.queryString = queryString;
-		// this.reportOptions.searchBy =
-	}
+    search() {
+       // this.labRptComponentRef.processing 
+        this.reportOptions.queryString = this.searchControl.value;
+        this.reportOptions.searchBy = this.searchCriteria.value;
+        this.labRptComponentRef.getReportData();
+    }
+    setLocation(value )
+    {
+        this.reportOptions.location    = value
+    }
+
 }

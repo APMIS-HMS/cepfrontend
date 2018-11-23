@@ -194,7 +194,7 @@
                             aria-hidden="true"></i> Add Physician Order</div>
                 </div>
             </div>
-            <div *ngIf="isButtonEnabled && orderSet.medications!==undefined || orderSet.investigations!==undefined || orderSet.physicianOrders!==undefined || orderSet.nursingCares!==undefined"
+            <div *ngIf="isButtonEnabled && orderSet.medications!==undefined || orderSet.investigations!==undefined || orderSet.procedures!==undefined || orderSet.physicianOrders!==undefined || orderSet.nursingCares!==undefined"
                 class="text-center btn-box">
                 <button [disabled]="disableAuthorizerxButton" (click)="authorizerx()" mat-raised-button class="mat-lg-btn">Authorize</button>
             </div>
