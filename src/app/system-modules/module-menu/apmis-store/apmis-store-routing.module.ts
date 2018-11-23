@@ -5,33 +5,33 @@ import { ApmisStoreLandingpageComponent } from './apmis-store-landingpage.compon
 import { StoreStoresComponent } from './store-stores/store-stores.component';
 import { ApmisStoreProductComponent } from './apmis-store-product/apmis-store-product.component';
 
-
 const routes: Routes = [
-  {
-    path: "",
-    component: ApmisStoreLandingpageComponent,
-    children: [
-      {
-        path: "",
-        component: ApmisStoreHomeComponent
-      },
-      {
-        path: "home",
-        component: ApmisStoreHomeComponent
-      },
-      {
-        path: "store",
-        component: StoreStoresComponent
-      }
-        path: "product",
-        component: ApmisStoreProductComponent
-      },
-    ]
-  }
+	{
+		path: '',
+		component: ApmisStoreLandingpageComponent,
+		children: [
+			{
+				path: '',
+				component: ApmisStoreHomeComponent
+			},
+			{
+				path: 'home',
+				component: ApmisStoreHomeComponent
+			},
+			{
+				path: 'store',
+				component: StoreStoresComponent
+			},
+			{
+				path: 'product',
+				component: ApmisStoreProductComponent
+			}
+		]
+	}
 ];
 
 @NgModule({
-  imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+	imports: [ RouterModule.forChild(routes) ],
+	exports: [ RouterModule ]
 })
-export class ApmisStoreRoutingModule { }
+export class ApmisStoreRoutingModule {}
