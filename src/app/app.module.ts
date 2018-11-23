@@ -75,11 +75,6 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_DATE_FORMATS, AppDateAdapter } from 'app/date-format';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
 
-import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { EffectsModule } from '@ngrx/effects';
-import { environment } from 'environments/environment';
-
 @NgModule({
 	declarations: [
 		AppComponent,
@@ -104,14 +99,7 @@ import { environment } from 'environments/environment';
 			customClass: 'modal-content',
 			confirmButtonClass: 'btn btn-primary',
 			cancelButtonClass: 'btn'
-		}),
-		StoreModule.forRoot({}),
-		StoreDevtoolsModule.instrument({
-			name: 'APMIS CEP',
-			maxAge: 25,
-			logOnly: environment.production
-		}),
-		EffectsModule.forRoot([])
+		})
 	],
 	providers: [
 		{

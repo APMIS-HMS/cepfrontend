@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { ApmisStoreRoutingModule } from './apmis-store-routing.module';
 import { ApmisStoreLandingpageComponent } from './apmis-store-landingpage.component';
 import { ApmisStoreHomeComponent } from './apmis-store-home/apmis-store-home.component';
@@ -8,16 +7,9 @@ import { StoreHomeAnalyticsComponent } from './apmis-store-home/store-home-analy
 import { StoreHomeMainComponent } from './apmis-store-home/store-home-main/store-home-main.component';
 import { AllProductsComponent } from './apmis-store-home/store-home-main/all-products/all-products.component';
 import { ApmisPaginationComponent } from './components/apmis-pagination/apmis-pagination.component';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
 
 @NgModule({
-	imports: [
-		CommonModule,
-		ApmisStoreRoutingModule,
-		StoreModule.forFeature('apmis-store', {}),
-		EffectsModule.forFeature([])
-	],
+	imports: [ CommonModule, ApmisStoreRoutingModule ],
 	declarations: [
 		ApmisStoreLandingpageComponent,
 		ApmisStoreHomeComponent,
