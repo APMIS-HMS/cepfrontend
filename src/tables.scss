@@ -209,10 +209,15 @@ td .empWrap .list-img{
 .tbl-cont-cta{
     display: flex;
     align-items: center;
+    cursor: pointer;
     font-size: 14px;
     color: #0288D1;
     margin-top: 20px;
+    width: 166px;
     i{
         padding-right: 10px;
     }
+}
+.tbl-cont-cta:hover{
+    border-bottom: 1px solid #0288D1;
 }

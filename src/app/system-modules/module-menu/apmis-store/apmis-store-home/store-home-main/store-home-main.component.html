@@ -1,13 +1,13 @@
 <div class="home-main">
 	<ul class="hm-tabs">
-		<li class="hm-tab">All Products</li>
-		<li class="hm-tab">Expiring this Month</li>
-		<li class="hm-tab">Expired Products</li>
-		<li class="hm-tab">Requisition Status</li>
-		<li class="hm-tab">Below Re-Sock Level</li>
+		<li (click)="tab_click('product')" [class.hm-tab-active]='tab_all_products' class="hm-tab">All Products</li>
+		<li (click)="tab_click('expiring')" [class.hm-tab-active]='tab_expiring' class="hm-tab">Expiring this Month</li>
+		<li (click)="tab_click('expired')" [class.hm-tab-active]='tab_expired' class="hm-tab">Expired Products</li>
+		<li (click)="tab_click('requisition')" [class.hm-tab-active]='tab_requisition' class="hm-tab">Requisition Status</li>
+		<li (click)="tab_click('restock')" [class.hm-tab-active]='tab_restock_level' class="hm-tab">Below Re-Sock Level</li>
 	</ul>
 
-	<div class="tab-content">
+	<div class="tab-content" *ngIf="tab_all_products">
 		<app-all-products> </app-all-products>
 	</div>
 </div>;
