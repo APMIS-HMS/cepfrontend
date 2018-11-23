@@ -1,5 +1,5 @@
 @import "./../../clinic-management-report/diagnosis/diagnosis.component.scss";
-
+@import "./../invoice-list-details/invoice-list-details.component.scss";
 .gridLayout{
     display: grid;
     grid-column-gap: 1em;
@@ -63,76 +63,13 @@
     opacity: 1;
 }
 
-.search-container{
-    // transform: translate(-50%);
+th, td{
+    text-align: start !important;
+}
+
+.filterTop{
     display: grid;
     grid-column-gap: 1em;
-    grid-template-columns: 15% 80%;
-    padding: 3px;
-    margin-bottom: -10px;
-}
-
-.search-bx input{
-    border: none;
-    background: none;
-    z-index: 1;
-    width: 25px;
-    height: 25px;
-    transition: all .25s ease-in .25s;
-    color: transparent;
-    font-size: 1em;
-    line-height: 25px;
-}
-
-
-.search-bx input:hover{
-    cursor: pointer;
-}
-
-.search-bx input:hover:focus{
-    cursor: text;
-}
-
-.search-bx input:hover + span{
-    background: rgba(225, 225, 225, .2);
-}
-
-.search-bx input:focus{
-    width: 200px;
-    padding: 0 10px;
-    outline: none;
-    background: none;
-    color: black;
-}
-
-.search-bx input:focus + span{
-    width: 200px;
-}
-
-.search-bx input:focus + span::before{
-    width: 2px;
-    opacity: 0;
-    transition: all .25s ease-in;
-}
-
-.search-bx input + span {
-    z-index: -1;
-    position: absolute;
-    border: 2px solid rgb(97, 113, 131);
-    width: 25px;
-    height: 25px;
-    transition: all .25s ease-in .25s;
-    border-radius: 25px;
-    left: 140px;
-}
-
-.search-bx input + span::before{
-    transform-origin: left bottom;
-    content: '';
-    position: absolute;
-    width: 14px;
-    height: 7px;
-    border-radius: 20px;
-    background:rgb(97, 113, 131);
-    -webkit-transform: rotate(45deg) translate(26px, -2px);
+    grid-row-gap: 1em;
+    grid-template-columns: 40% 40%;
 }
