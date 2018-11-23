@@ -118,7 +118,7 @@ td .empWrap .list-img{
   color: #292929;
 }
 .store-tbody{
-  height: 300px;
+  max-height: 400px;
   overflow-y: scroll;
 }
 
@@ -145,7 +145,7 @@ td .empWrap .list-img{
 }
 .store-th {
   background: transparent;
-  font-weight: normal;
+  font-weight: bold;
   color: var(--text-secondary);
   font-size: 1.2rem;
 }
@@ -196,4 +196,13 @@ td .empWrap .list-img{
 }
 .store-tr-content{
     padding: 10px 50px;
+}
+.store-tfooter{
+    padding: 15px;
+    font-size: 14px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
 }
