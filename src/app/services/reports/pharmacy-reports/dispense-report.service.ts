@@ -10,36 +10,36 @@ export class DispenseReportService {
     constructor(private socketService: SocketService, private restService: RestService) {
         this._socket = this.socketService.getService('dispense-report');
         this._rest = this.restService.getService('dispense-report');
-        // this.dispenses = [
-        //     {
-        //         dateTime : '12/Oct/2018',
-        //         patientName: 'Kemi Awosile',
-        //         product: 'Penicilin',
-        //         batch: 'BC/0032',
-        //         quantity: 2,
-        //         unitPrice: 200,
-        //         employeeName: 'Mr Olutayo Ojo'
-        //     },
-        //     {
-        //         dateTime : '12/Oct/2018',
-        //         patientName: 'Joke Silva',
-        //         product: 'Panadol',
-        //         batch: 'APC/0022',
-        //         quantity: 5,
-        //         unitPrice: 500,
-        //         employeeName: 'Mr Oluwatosin Ojo'
-        //     }
-        // ];
+        this.dispenses = [
+            {
+                dateTime : '12/Oct/2018',
+                patientName: 'Kemi Awosile',
+                product: 'Penicilin',
+                batch: 'BC/0032',
+                quantity: 2,
+                unitPrice: 200,
+                employeeName: 'Mr Olutayo Ojo'
+            },
+            {
+                dateTime : '12/Oct/2018',
+                patientName: 'Joke Silva',
+                product: 'Panadol',
+                batch: 'APC/0022',
+                quantity: 5,
+                unitPrice: 500,
+                employeeName: 'Mr Oluwatosin Ojo'
+            }
+        ];
     }
 
     find(query) {
-        // const dispensePromise = new Promise((resolve) => {
-        //     setTimeout(() => {
-        //         resolve(this.dispenses);
-        //     }, 1000);
-        // });
-        // return dispensePromise;
-        return this._socket.find(query);
+        const dispensePromise = new Promise((resolve) => {
+            setTimeout(() => {
+                resolve(this.dispenses);
+            }, 1000);
+        });
+        return dispensePromise;
+        //return this._socket.find(query);
     }
     get(query) {
         return this._socket.find(query);
