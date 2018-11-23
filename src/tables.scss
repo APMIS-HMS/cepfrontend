@@ -112,6 +112,7 @@ td .empWrap .list-img{
 .store-thead .store-tr {
   color: #0288D1;
   font-weight: bold;
+  border-bottom: ridge;
 }
 
 .store-tbody .store-tr {
@@ -137,7 +138,7 @@ td .empWrap .list-img{
 }
 .store-tr-in {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 3fr 1fr;
     grid-auto-columns: 1fr;
     grid-gap: 20px;
     grid-auto-rows: auto;

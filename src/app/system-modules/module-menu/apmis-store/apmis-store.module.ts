@@ -7,12 +7,20 @@ import { ApmisStoreHomeComponent } from './apmis-store-home/apmis-store-home.com
 import { StoreHomeAnalyticsComponent } from './apmis-store-home/store-home-analytics/store-home-analytics.component';
 import { StoreHomeMainComponent } from './apmis-store-home/store-home-main/store-home-main.component';
 import { AllProductsComponent } from './apmis-store-home/store-home-main/all-products/all-products.component';
+import { ApmisStoreProductComponent } from './apmis-store-product/apmis-store-product.component';
+import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-module';
 
 @NgModule({
   imports: [
     CommonModule,
-    ApmisStoreRoutingModule
+    ApmisStoreRoutingModule,
+    OnlyMaterialModule
   ],
-  declarations: [ApmisStoreLandingpageComponent, ApmisStoreHomeComponent, StoreHomeAnalyticsComponent, StoreHomeMainComponent, AllProductsComponent]
+  declarations: [
+    ApmisStoreLandingpageComponent, 
+    ApmisStoreHomeComponent, 
+    StoreHomeAnalyticsComponent, 
+    StoreHomeMainComponent, 
+    AllProductsComponent, ApmisStoreProductComponent]
 })
 export class ApmisStoreModule { }
