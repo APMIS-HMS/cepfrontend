@@ -50,15 +50,15 @@ export interface ICustomReportService {
 
     //getLabReportInvestigation(options? : ILabReportOption) : Promise<any[]>;
     // patient investigation
-    getPatientReport(options? : IPatientReportOptions) : Promise<IApiResponse<IPatientReportModel[]>>
+    getPatientReport(options?: IPatientReportOptions) : Promise<IApiResponse<IPatientReportModel[]>>
 
 }
 
 export interface IPaymentReportServiceEndPoint
 {
-    getPaymentReportSummary(rptOption : IPaymentReportOptions) : Promise<IApiResponse<IPaymentReportSummaryModel>>;
-    getInvoicePaymentReport(rptOption : IPaymentReportOptions) : Promise<IApiResponse<IPaymentReportModel[]>>;
-    getPaymentGroups(rptOption : IPaymentReportOptions) : Promise<IApiResponse<IPaymentGroups[]>>;
+    getPaymentReportSummary(rptOption: IPaymentReportOptions): Promise<IApiResponse<IPaymentReportSummaryModel>>;
+    getInvoicePaymentReport(rptOption: IPaymentReportOptions): Promise<IApiResponse<IPaymentReportModel[]>>;
+    getPaymentGroups(rptOption: IPaymentReportOptions) : Promise<IApiResponse<IPaymentGroups[]>>;
 }
 
 export function reportServiceFactory() {
