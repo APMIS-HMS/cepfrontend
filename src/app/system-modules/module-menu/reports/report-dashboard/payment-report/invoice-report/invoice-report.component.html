@@ -248,42 +248,42 @@
               <tr class="th-xxx">
                 <td>1</td>
                 <td>02 Oct., 2018 3:00PM</td>
-                <td>Otolo Tomide</td>
-                <td>SIDMACH</td>
                 <td>Heart Surgery</td>
                 <td>#250,000</td>
+                <td>SIDMACH</td>
+                <td>Otolo Tomide</td>
               </tr>
               <tr class="th-xxx">
                 <td>2</td>
                 <td>08 Sep., 2018 9:00AM</td>
-                <td>Otolo Tomide</td>
-                <td>SIDMACH</td>
                 <td>Abdominal X-Ray</td>
                 <td>#105,000</td>
+                <td>SIDMACH</td>
+                <td>Otolo Tomide</td>
               </tr>
               <tr class="th-xxx">
                 <td>3</td>
                 <td>08 Sep., 2018 8:45AM</td>
-                <td>Omolade Kehinde</td>
-                <td>Shell</td>
                 <td>Physician Consultation</td>
                 <td>#155,000</td>
+                <td>Shell</td>
+                <td>Omolade Kehinde</td>
               </tr>
               <tr class="th-xxx">
                 <td>4</td>
                 <td>08 Sep., 2018</td>
-                <td>Omolade Kehinde</td>
-                <td>Shell</td>
                 <td>Ankle X-Ray</td>
                 <td>#90,000</td>
+                <td>Shell</td>
+                <td>Omolade Kehinde</td>
               </tr>
               <tr class="th-xxx">
                 <td>5</td>
                 <td>08 Sep., 2018</td>
-                <td>Susan Chinwe</td>
-                <td>First Bank</td>
                 <td>24 Hours Hotler Monitor</td>
                 <td>#30,000</td>
+                <td>First Bank</td>
+                <td>Susan Chinwe</td>
               </tr>
             </tbody>
           </table>
@@ -311,43 +311,49 @@
                 <th>Patient Name</th>
                 <th>Services</th>
                 <th>Ammount</th>
+                <th>Issued By</th>
               </tr>
             </thead>
             <tbody>
               <tr class="th-xxx">
                 <td>1</td>
                 <td>02 Oct., 2018 3:00PM</td>
-                <td>Otolo Tomide</td>
                 <td>Heart Surgery</td>
                 <td>#250,000</td>
+                <td>SIDMACH</td>
+                <td>Otolo Tomide</td>
               </tr>
               <tr class="th-xxx">
                 <td>2</td>
                 <td>08 Sep., 2018 9:00AM</td>
-                <td>Otolo Tomide</td>
                 <td>Abdominal X-Ray</td>
                 <td>#105,000</td>
+                <td>SIDMACH</td>
+                <td>Otolo Tomide</td>
               </tr>
               <tr class="th-xxx">
                 <td>3</td>
                 <td>08 Sep., 2018 8:45AM</td>
-                <td>Omolade Kehinde</td>
                 <td>Physician Consultation</td>
                 <td>#155,000</td>
+                <td>Shell</td>
+                <td>Omolade Kehinde</td>
               </tr>
               <tr class="th-xxx">
                 <td>4</td>
                 <td>08 Sep., 2018</td>
-                <td>Omolade Kehinde</td>
                 <td>Ankle X-Ray</td>
                 <td>#90,000</td>
+                <td>Shell</td>
+                <td>Omolade Kehinde</td>
               </tr>
               <tr class="th-xxx">
                 <td>5</td>
                 <td>08 Sep., 2018</td>
-                <td>Susan Chinwe</td>
                 <td>24 Hours Hotler Monitor</td>
                 <td>#30,000</td>
+                <td>First Bank</td>
+                <td>Susan Chinwe</td>
               </tr>
             </tbody>
           </table>
@@ -358,9 +364,11 @@
     </mat-tab-group>
   </div>
 
+
+
   <div class="chartWrap">
     <div style="text-align: center;">
-      <canvas style="max-height: 380px;" class="pieChart" baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
+      <canvas class="pieChart" baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
         (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
       </canvas>
       <div style="display: flex; margin-left: 30%;">
