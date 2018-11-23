@@ -48,6 +48,7 @@ export class PharmacyReportComponent implements OnInit {
     this.searchCriteriaOptions = this.getObjeckKeys(PharmacySearchCriteria);
     this.initialiseDateRange();
 
+
     this.searchControl.valueChanges.debounceTime(200).distinctUntilChanged().subscribe(val => {
         if (this.selectedSearchCriteria === PharmacySearchCriteria.ByUser && this.searchControl.value.length > 2) {
             this.userName = val;
@@ -61,6 +62,7 @@ export class PharmacyReportComponent implements OnInit {
                 endDate: this.dateRange.to
               }
             }).then(payload => {
+              console.log(payload);
               this.dispenses = payload;
               this.isDispenseLoading = false;
             });
