@@ -25,6 +25,8 @@ import {} from './facility-setup/facility-setup.module';
 import { LoginComponent } from './login/login.component';
 import { SocketService, RestService } from './feathers/feathers.service';
 import * as SetupService from './services/facility-manager/setup/index';
+import * as ReportService from './services/reports/index';
+
 import * as ModuleManagerService from './services/module-manager/setup/index';
 import { UserAccountsComponent } from './system-modules/user-accounts/user-accounts.component';
 import { SharedModule } from './shared-module/shared.module';
@@ -232,6 +234,11 @@ import { ServerErrorsInterceptor } from './feathers/server.errors.interceptor';
 		AuthFacadeService,
 		SetupService.DepartmentService,
 		CanActivateViaAuthGuardAccessService,
+		ReportService.ClinicAttendanceReportService,
+		ReportService.AppointmentReportService,
+		ReportService.DiagnosisReportService,
+		ReportService.DispenseReportService,
+		ReportService.PrescriptionReportService,
 		ChannelService,
 		{
 			provide: HTTP_INTERCEPTORS,

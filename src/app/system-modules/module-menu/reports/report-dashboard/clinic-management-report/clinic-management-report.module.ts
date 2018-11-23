@@ -10,6 +10,7 @@ import { ClinicManagementReportComponent } from './clinic-management-report.comp
 
 @NgModule({
 	imports: [ CommonModule, MaterialModule, OnlyMaterialModule, SharedModule, ClinicManagementRoutingModule ],
+
 	declarations: [ ClinicAttendanceComponent, DiagnosisComponent, ClinicManagementReportComponent ]
 })
 export class ClinicReportModule {}
