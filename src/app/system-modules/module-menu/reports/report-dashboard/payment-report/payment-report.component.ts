@@ -10,6 +10,7 @@ export class PaymentReportComponent implements OnInit {
 
   paymentSummary = false;
   invoiceListPage = false;
+  invoiceReport = false;
 
   pageInView = 'Payment Report Page';
 
@@ -25,14 +26,22 @@ export class PaymentReportComponent implements OnInit {
     if (param.includes('paymentSummary')) {
       this.paymentSummary = true;
       this.invoiceListPage = false;
+      this.invoiceReport = false;
       this._router.navigate(['/dashboard/reports/report-dashboard/paymentReport/paymentSummary']);
     } else if (param.includes('invoiceListPage')) {
       this.paymentSummary = false;
       this.invoiceListPage = true; 
+      this.invoiceReport = false;
       this._router.navigate(['/dashboard/reports/report-dashboard/paymentReport/invoiceList']);
+    } else if (param.includes('invoiceReport')) {
+      this.paymentSummary = false;
+      this.invoiceListPage = false; 
+      this.invoiceReport = true;
+      this._router.navigate(['/dashboard/reports/report-dashboard/paymentReport/invoiceReport']);
     } else {
       this.paymentSummary = true;
       this.invoiceListPage = false; 
+      this.invoiceReport = false;
       this._router.navigate(['/dashboard/reports/report-dashboard/paymentReport/paymentSummary']);
     }
   }
@@ -41,13 +50,22 @@ export class PaymentReportComponent implements OnInit {
   call_paymentSummary(){
     this.paymentSummary = true;
     this.invoiceListPage = false;
+    this.invoiceReport = false;
     this._router.navigate(['/dashboard/reports/report-dashboard/paymentReport/paymentSummary']);
   }
 
   call_invoiceList(){
     this.paymentSummary = false;
     this.invoiceListPage = true;
+    this.invoiceReport = false;
     this._router.navigate(['/dashboard/reports/report-dashboard/paymentReport/invoiceList']);
+  }
+
+  call_invoiceReport(){
+    this.paymentSummary = false;
+    this.invoiceListPage = false;
+    this.invoiceReport = true;
+    this._router.navigate(['/dashboard/reports/report-dashboard/paymentReport/invoiceReport']);
   }
 
   back_dashboard() {
