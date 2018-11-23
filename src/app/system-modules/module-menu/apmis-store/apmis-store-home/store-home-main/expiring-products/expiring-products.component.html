@@ -3,16 +3,10 @@
     <div class="store-tr">
       <div class="store-th store-td-actions"></div>
       <div class="store-tr-in">
-        <div class="store-th">
-          <mat-button-toggle-group aria-label="Font Style">
-            <mat-button-toggle class="mat-button-toggle-checked" value="all">All</mat-button-toggle>
-            <mat-button-toggle class="mat-button-toggle-checked" value="drug">Drug</mat-button-toggle>
-            <mat-button-toggle class="mat-button-toggle-checked" value="consumables">Consumables</mat-button-toggle>
-          </mat-button-toggle-group>
-        </div>
+        <div class="store-th">Product</div>
         <div class="store-th">Available Quantity</div>
-        <div class="store-th" style="margin-left: 15px;">Re-Order Level</div>
-        <div class="store-th" style="margin-left: 8px;">Cost/Unit</div>
+        <div class="store-th">Re-Order Level</div>
+        <div class="store-th">Cost/Unit</div>
         <div class="store-th">Total Cost Price</div>
         <div class="store-th">Unit Selling Price</div>
       </div>
@@ -20,7 +14,7 @@
     </div>
   </div>
 
-  <div class="store-tbody">
+  <div class="store-tbody"> 
     <div *ngFor="let person of people; let i = index" class="store-pre-tr">
       <div class="store-tr">
         <div class="store-td store-td-actions">
@@ -29,7 +23,7 @@
         </div>
         <div class="store-tr-in">
           <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-          <div class="store-td">
+          <div class="store-td"> 
             <span class="spc-lft">300,000</span>
             <select>
               <option selected>Sachets</option>
@@ -37,12 +31,12 @@
           </div>
           <div class="store-td">20 Sachets</div>
           <div class="store-td">#5/Sachet</div>
-          <div class="store-td">#300,000</div>
+          <div class="store-td">#300,000</div> 
           <div class="store-td">#5/Sachet</div>
         </div>
         <div class="store-td store-td-actions">
           <i class="fa fa-ellipsis-v"></i>
-        </div>
+        </div> 
       </div>
 
       <div *ngIf="item_to_show(i)" class="store-tr-content">
@@ -106,9 +100,34 @@
           </li>
         </ul>
 
-        <div class="tbl-cont-cta"><i class="fa fa-plus"></i> Add Another Item</div>
+        <div class="tbl-cont-cta"><i class="fa fa-plus"></i>  Add Another Item</div>
       </div>
     </div>
   </div>
-  <app-apmis-pagination></app-apmis-pagination>
+
+  <div class="store-tfooter">
+    <div>
+      <span>Showing</span>
+      <span class="bold">1</span>
+      <span>to</span>
+      <span class="bold">10</span>
+      <span>of</span>
+      <span class="bold">300</span>
+    </div>
+
+    <ul class="apmis-pagination">
+      <li class="pg-child"><i class="fa fa-angle-left"></i> </li>
+      <li class="pg-child">1</li>
+      <li class="pg-child">2</li>
+      <li class="pg-child active-page">3</li>
+      <li class="pg-child">4</li>
+      <li class="pg-child">5</li>
+      <li class="pg-child">6</li>
+      <li class="pg-child">7</li>
+      <li class="pg-child">8</li>
+      <li class="pg-child">9</li>
+      <li class="pg-child">10</li>
+      <li class="pg-child"><i class="fa fa-angle-right"></i> </li>
+    </ul>
+  </div> 
 </div>
