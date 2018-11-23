@@ -1,0 +1,22 @@
+<div class="baseWrap">
+  <div class="details">
+    <div style="padding: 30px;">
+        <h2>Today’s Sales Summary</h2>
+        <span class="totalPayment">#{{summary.totalSales}}</span>
+    </div> 
+    <i (click)="call_invoiceList()" >View List of Invoices</i>
+  </div>
+
+
+
+  <div style="text-align: center;">
+    <canvas class="pieChart" baseChart [data]="pieChartData" [labels]="pieChartLabels" [chartType]="pieChartType"
+      (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
+    </canvas>
+    <div style="display: flex; margin-left: 60px;">
+      <h3>Total Payment: #15,000,000</h3>
+      <h3 style="padding-left: 20px;">BALANCE: #70,000</h3>
+    </div>
+  </div>
+
+</div>

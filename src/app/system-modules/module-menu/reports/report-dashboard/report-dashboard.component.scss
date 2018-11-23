@@ -1,4 +1,4 @@
-.dashboard-grid{
+.dashboard-grid {
     display: grid;
     grid-column-gap: 1em;
     grid-row-gap: 1em;
@@ -7,31 +7,43 @@
     margin-left: 30px;
 }
 
-.title{
+.control-group {
+     :hover {
+        color: #5691c8
+    }
+}
+
+.title {
     font-size: 14px;
     font-weight: bold;
     text-align: center;
 }
 
-.row{
+.row {
     width: auto !important;
     display: contents !important;
 }
 
-.subtitle{
+.subtitle {
     text-align: center;
     font-style: italic;
     font-weight: bold;
     vertical-align: sub;
     font-size: smaller;
 }
-.header{
+
+.header {
     height: 40px;
 }
 
-hr{
+hr {
     max-width: 1500px;
 }
+
 p {
     margin: 0em;
-  }
+}
+
+i {
+    text-align: center;
+}
