@@ -43,7 +43,7 @@ export interface IPagerSource {
             </ng-content>
         </p>  `,
     styles: [
-        `
+            `
             p.asom-pager-button:hover, p.asom-pager-button:focus {
                 background-color: rgba(213, 255, 236, 0.8) !important;
                 color: #3c3c3c !important;
@@ -151,8 +151,10 @@ export class PagerButtonComponent implements OnChanges {
     selector: 'asom-data-pager',
     template: `
         <div *ngIf="pagerSource && !displaySummary">
-            <div class="asom-pager-button-container" *ngIf="pagerSource " [ngStyle]="{'justify-content' : flexJustify }">
-                <asom-pager-button title="Busy loading Page Data" [size]="buttonSize" [is-disable]="true" *ngIf="showProgress && inProgress"
+            <div class="asom-pager-button-container" *ngIf="pagerSource "
+                 [ngStyle]="{'justify-content' : flexJustify }">
+                <asom-pager-button title="Busy loading Page Data" [size]="buttonSize" [is-disable]="true"
+                                   *ngIf="showProgress && inProgress"
                                    [is-oval]="useOvalButton">
                <span class="fa fa-refresh fa-spin" *ngIf="inProgress">
                    
@@ -161,14 +163,16 @@ export class PagerButtonComponent implements OnChanges {
                    
                </span>
                 </asom-pager-button>
-                <asom-pager-button title="Goto First Page" [size]="buttonSize" [is-disable]="pageIndex <= 0 || inProgress"
+                <asom-pager-button title="Goto First Page" [size]="buttonSize"
+                                   [is-disable]="pageIndex <= 0 || inProgress"
                                    (onClick)="gotoFirstPage()"
                                    *ngIf="showFirstLast" #first
                                    [is-oval]="useOvalButton" [background-color]="firstLastColor">
                     <span>&#8676;</span>
                 </asom-pager-button>
                 <asom-pager-button title="Go to Previous Page"
-                                   [size]="buttonSize" [is-disable]="pageIndex <= 0 || inProgress" (onClick)="gotoPrevPage()"
+                                   [size]="buttonSize" [is-disable]="pageIndex <= 0 || inProgress"
+                                   (onClick)="gotoPrevPage()"
                                    *ngIf="showNextPrev" #prev
                                    [is-oval]="useOvalButton" [background-color]="nextPrevColor">
                     &#10094;
@@ -178,25 +182,31 @@ export class PagerButtonComponent implements OnChanges {
                                    (onClick)="pagerButtonClick(index)" [is-disable]="inProgress"
                                    *ngFor="let p of totalPages; let index = index">{{index + 1}}
                 </asom-pager-button>
-                <asom-pager-button title="Go to Next Page" [size]="buttonSize" [is-disable]="pageIndex >= totalPages.length-1 || inProgress"
+                <asom-pager-button title="Go to Next Page" [size]="buttonSize"
+                                   [is-disable]="pageIndex >= totalPages.length-1 || inProgress"
                                    (onClick)="gotoNextPage()"
                                    *ngIf="showNextPrev" #next [background-color]="nextPrevColor"
                                    [is-oval]="useOvalButton">&#10095;
                 </asom-pager-button>
-                <asom-pager-button title="Go to Last Page" [size]="buttonSize" [is-disable]="pageIndex >= totalPages.length-1 || inProgress"
+                <asom-pager-button title="Go to Last Page" [size]="buttonSize"
+                                   [is-disable]="pageIndex >= totalPages.length-1 || inProgress"
                                    (onClick)="gotoLastPage()"
                                    *ngIf="showFirstLast" #next [background-color]="firstLastColor"
                                    [is-oval]="useOvalButton"><span>&#8677;</span>
-                </asom-pager-button> 
-                
+                </asom-pager-button>
+
             </div>
-            <p *ngIf="showTotalRecord" style="font-weight : bold; text-align: center;" [ngStyle]="{'font-size':(buttonSize ==='large' ? '15px' : '13px')}">
-            {{pagerSource.totalRecord | number}} record<span *ngIf="pagerSource.totalRecord>1">s</span> in {{pagerSource.totalPages | number}} page<span *ngIf="pagerSource.totalPages>1">s</span>  
+            <p *ngIf="showTotalRecord" style="font-weight : bold; text-align: center;"
+               [ngStyle]="{'font-size':(buttonSize ==='large' ? '15px' : '13px')}">
+                {{pagerSource.totalRecord | number}} record<span *ngIf="pagerSource.totalRecord>1">s</span> in
+                {{pagerSource.totalPages | number}} page<span *ngIf="pagerSource.totalPages>1">s</span>
             </p>
             <div class="" *ngIf="showPageSizeOption" style="font-size:12px; padding:7px; text-align: center;">
-             <select name="cboPageSize" id="" #pgSizes (change)="assignPageSizeOption(pgSizes)">
-                <option *ngFor="let pz of pageSizeOptions" [selected]="pagerSource.pageSize === pz" [value]="pz">{{pz | number}} / Page</option>
-            </select>
+                <select name="cboPageSize" id="" #pgSizes (change)="assignPageSizeOption(pgSizes)">
+                    <option *ngFor="let pz of pageSizeOptions" [selected]="pagerSource.pageSize === pz" [value]="pz">
+                        {{pz | number}} / Page
+                    </option>
+                </select>
             </div>
         </div>
         <div *ngIf="pagerSource && displaySummary" style="padding: 10px;">
@@ -205,12 +215,13 @@ export class PagerButtonComponent implements OnChanges {
                     Record<span *ngIf="pagerSource.totalRecord>1">s</span> </span>
         </div>
         <div class="asom-pager-button-container" *ngIf="!pagerSource" #pagerSourceNotSet>
-            <p class="text-danger" style="background-color: #ffd6da; padding: 10px; color:#ca0100;">Pager Source not Set</p>
+            <p class="text-danger" style="background-color: #ffd6da; padding: 10px; color:#ca0100;">Pager Source not
+                Set</p>
         </div>
 
     `,
     styles: [
-        `
+            `
             div.asom-pager-button-container {
                 display: flex;
                 justify-content: center;
@@ -218,7 +229,7 @@ export class PagerButtonComponent implements OnChanges {
                 align-content: center;
             }
 
-            
+
 
         `
     ]
@@ -251,7 +262,7 @@ export class AsomDataPagerComponent implements OnInit, AfterViewInit, OnChanges,
     flexJustify: string = PAGER_HORIZONTAL_ALIGNMENT_CENTER;
     //diff : { [any : string] : KeyValueDiffer<string, IPagerSource>};
     differ: any;
-    pageSizeOptions: number[] = [5, 10, 20, 30, 50, 100, 150, 200, 300];
+    pageSizeOptions: number[] = [3, 5, 10, 15, 20, 30, 40, 50, 70, 100, 150, 200, 250, 300];
 
 
     constructor(private differs: KeyValueDiffers) {
