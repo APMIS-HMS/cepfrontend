@@ -7,6 +7,12 @@ import { ApmisStoreHomeComponent } from './apmis-store-home/apmis-store-home.com
 import { StoreHomeAnalyticsComponent } from './apmis-store-home/store-home-analytics/store-home-analytics.component';
 import { StoreHomeMainComponent } from './apmis-store-home/store-home-main/store-home-main.component';
 import { AllProductsComponent } from './apmis-store-home/store-home-main/all-products/all-products.component';
+import { ExpiringProductsComponent } from './apmis-store-home/store-home-main/expiring-products/expiring-products.component';
+import { ExpiredProductsComponent } from './apmis-store-home/store-home-main/expired-products/expired-products.component';
+import { ProductRequisitionComponent } from './apmis-store-home/store-home-main/product-requisition/product-requisition.component';
+import { ProductRestockComponent } from './apmis-store-home/store-home-main/product-restock/product-restock.component';
+import { StoreStoresComponent } from './store-stores/store-stores.component';
+import { StoreTabComponent } from './store-stores/store-tab/store-tab.component';
 import { ApmisStoreProductComponent } from './apmis-store-product/apmis-store-product.component';
 import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-module';
 
@@ -16,11 +22,8 @@ import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-modu
     ApmisStoreRoutingModule,
     OnlyMaterialModule
   ],
-  declarations: [
-    ApmisStoreLandingpageComponent, 
-    ApmisStoreHomeComponent, 
-    StoreHomeAnalyticsComponent, 
-    StoreHomeMainComponent, 
-    AllProductsComponent, ApmisStoreProductComponent]
+  declarations: [ApmisStoreLandingpageComponent, ApmisStoreHomeComponent, StoreHomeAnalyticsComponent, StoreHomeMainComponent,
+  AllProductsComponent, ExpiringProductsComponent, ExpiredProductsComponent, ProductRequisitionComponent,
+  ProductRestockComponent, StoreStoresComponent, StoreTabComponent, ApmisStoreProductComponent]
 })
 export class ApmisStoreModule { }

@@ -124,8 +124,7 @@ td .empWrap .list-img{
 }
 
 .store-pre-tr{
-    border-bottom: 1px solid #C4C4C4;
-    
+    border-bottom: 1px solid #C4C4C4; 
 }
 .store-tr {
   display: grid;
@@ -206,6 +205,7 @@ td .empWrap .list-img{
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
+    background: #fcfcfc;
 }
 .tbl-cont-cta{
     display: flex;
