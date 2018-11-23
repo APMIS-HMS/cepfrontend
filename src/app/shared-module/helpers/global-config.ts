@@ -103,6 +103,8 @@ export const TreatmentSheetActions = {
 	COMPLETED: 'Completed',
 	CANCELLED: 'Cancelled',
 	EXPIRED: 'Expired',
+	TAKEN: 'Taken',
+	NOT_TAKEN: 'Not Taken',
 	DONE: 'Done',
 	NOT_DONE: 'NOT Done',
 	EDIT: 'Edit',
