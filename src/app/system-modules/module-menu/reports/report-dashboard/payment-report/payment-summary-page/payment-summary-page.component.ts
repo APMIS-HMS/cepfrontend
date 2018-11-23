@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import {IPaymentReportSummaryModel} from "../../../../../../core-ui-modules/ui-components/PaymentReportModel";
+import {PaymentReportGenerator} from "../../../../../../core-ui-modules/ui-components/report-generator-service";
 
 @Component({
   selector: 'app-payment-summary-page',
@@ -7,10 +9,13 @@ import { Router } from '@angular/router';
   styleUrls: ['./payment-summary-page.component.scss']
 })
 export class PaymentSummaryPageComponent implements OnInit {
-
-  constructor(private _router: Router) { }
+  
+  summary : IPaymentReportSummaryModel = { totalSales :  0};
+  loading  : boolean = false;
+  constructor(private _router: Router,  private paymentReportService : PaymentReportGenerator) { }
 
   ngOnInit() {
+    this.getReportSummary();
   }
 
   public pieChartLabels:string[] = ['Cash', 'E-Payment', 'Cheque', 'Transfer'];
@@ -27,4 +32,17 @@ export class PaymentSummaryPageComponent implements OnInit {
   call_invoiceList(){
     this._router.navigate(['/dashboard/reports/report-dashboard/paymentReport/invoiceList']);
   }
+  
+  getReportSummary()
+  {
+    this.loading  = true;
+    this.paymentReportService.getPaymentReportSummary()
+        .then(x => {
+          this.summary   = x.data;
+          this.loading = false;
+        });
+  }
+  
+  
+  
 }
