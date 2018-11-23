@@ -1,0 +1,44 @@
+<div class="store-table">
+  <div class="store-thead">
+    <div class="store-tr">
+      <div class="store-th store-td-actions"></div>
+      <div class="store-tr-in">
+        <div class="store-th">Store Name</div>
+        <div class="store-th">Major Location</div>
+        <div class="store-th">Minor Location</div>
+        <div class="store-th">Product Types</div>
+      </div>
+      <div class="store-th store-td-actions"></div>
+    </div>
+  </div>
+
+  <div class="store-tbody"> 
+    <div *ngFor="let person of people; let i = index" class="store-pre-tr">
+      <div class="store-tr">
+        <div class="store-td store-td-actions"></div>
+        <div class="store-tr-in">
+          <div class="store-td">All Saints women maternity store</div>
+          <div class="store-td">Ward</div>
+          <div class="store-td">Maternity Ward</div>
+          <div class="store-td">Consumables, infusion, Beverages, Drugs, Syringes </div>
+        </div>
+        <div class="store-td store-td-actions">
+          <i class="fa fa-ellipsis-v"></i>
+        </div> 
+      </div>
+    </div>
+  </div>
+
+  <div class="store-tfooter">
+    <div>
+      <span>Showing</span>
+      <span class="bold">1</span>
+      <span>to</span>
+      <span class="bold">10</span>
+      <span>of</span>
+      <span class="bold">300</span>
+    </div>
+
+    <!-- <app-apmis-pagination> </app-apmis-pagination> -->
+  </div>
+</div>

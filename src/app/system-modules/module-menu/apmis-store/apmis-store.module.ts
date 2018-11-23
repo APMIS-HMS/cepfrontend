@@ -11,12 +11,14 @@ import { ExpiringProductsComponent } from './apmis-store-home/store-home-main/ex
 import { ExpiredProductsComponent } from './apmis-store-home/store-home-main/expired-products/expired-products.component';
 import { ProductRequisitionComponent } from './apmis-store-home/store-home-main/product-requisition/product-requisition.component';
 import { ProductRestockComponent } from './apmis-store-home/store-home-main/product-restock/product-restock.component';
+import { StoreStoresComponent } from './store-stores/store-stores.component';
+import { StoreTabComponent } from './store-stores/store-tab/store-tab.component';
 
 @NgModule({
   imports: [
     CommonModule,
     ApmisStoreRoutingModule
   ],
-  declarations: [ApmisStoreLandingpageComponent, ApmisStoreHomeComponent, StoreHomeAnalyticsComponent, StoreHomeMainComponent, AllProductsComponent, ExpiringProductsComponent, ExpiredProductsComponent, ProductRequisitionComponent, ProductRestockComponent]
+  declarations: [ApmisStoreLandingpageComponent, ApmisStoreHomeComponent, StoreHomeAnalyticsComponent, StoreHomeMainComponent, AllProductsComponent, ExpiringProductsComponent, ExpiredProductsComponent, ProductRequisitionComponent, ProductRestockComponent, StoreStoresComponent, StoreTabComponent]
 })
 export class ApmisStoreModule { }
