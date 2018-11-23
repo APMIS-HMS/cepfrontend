@@ -34,6 +34,7 @@ export class ClinicAttendanceComponent implements OnInit {
   selectedStatus: string;
   providerName: string;
   patientName: string;
+  disabled: boolean;
 
 
 
@@ -41,6 +42,7 @@ export class ClinicAttendanceComponent implements OnInit {
     private locker: CoolLocalStorage, private systemModuleService: SystemModuleService,
     private appointmentService: AppointmentReportService) {
       this.activeTabIndex = 0;
+      this.disabled = true;
     }
     ngOnInit() {
       this.currentFacility = <Facility>this.locker.getObject('selectedFacility');
@@ -52,11 +54,10 @@ export class ClinicAttendanceComponent implements OnInit {
       // TODO:: disable searchControl on component init;
       //        enable only when search criteria is enabled
       
-
       // search filter is performed based on the search criteria selected by the user
       // searchCriterias = ['By Provider', 'By Patient']
       this.searchControl.valueChanges.debounceTime(200).distinctUntilChanged().subscribe(val => {
-        if (this.selectedSearchCriteria === AppointmentSearchCriteria.ByProvider && this.searchControl.value.length > 3) {
+        if (this.selectedSearchCriteria === AppointmentSearchCriteria.ByProvider && this.searchControl.value.length > 2) {
           this.providerName = val;
           this.isAppointmentLoading = true;
             this.appointmentService.find({
@@ -72,7 +73,7 @@ export class ClinicAttendanceComponent implements OnInit {
               this.fileteredAppointments = paydata.data;
               this.isAppointmentLoading = false;
             });
-        } else if (this.selectedSearchCriteria === AppointmentSearchCriteria.ByPatient && this.searchControl.value.length > 3) {
+        } else if (this.selectedSearchCriteria === AppointmentSearchCriteria.ByPatient && this.searchControl.value.length > 2) {
           this.patientName = val;
           this.isAppointmentLoading = false;
             this.appointmentService.find({
@@ -107,6 +108,7 @@ export class ClinicAttendanceComponent implements OnInit {
       }
     }
     setSearchFilter(data) {
+      this.disabled = false;
       this.selectedSearchCriteria = data;
       this.searchControl.setValue('');
    }
