@@ -1,9 +1,9 @@
-import {Component, Input, OnInit, ElementRef, Output,EventEmitter} from '@angular/core';
+import {Component, Input, OnInit, ElementRef} from '@angular/core';
 
 @Component({
     selector: 'app-document-printer',
     template: `
-        <asom-pager-button [is-oval]="true" (onClick)="printReport()" >
+        <asom-pager-button [is-oval]="true" (onClick)="printReport()">
             <span class="fa fa-print fa-2x"></span>
         </asom-pager-button>
     `
@@ -11,15 +11,15 @@ import {Component, Input, OnInit, ElementRef, Output,EventEmitter} from '@angula
 
 export class DocumentPrinterComponent implements OnInit {
     @Input() content: string;
-   // @Output() onPrint : EventEmitter<Promise<boolean>>  =  new EventEmitter<Promise<boolean>>();
-    
+   
+
     constructor() {
     }
 
     ngOnInit() {
         //console.log(this.content);
     }
-  
+
     printReport() {
         if (this.content) {
 

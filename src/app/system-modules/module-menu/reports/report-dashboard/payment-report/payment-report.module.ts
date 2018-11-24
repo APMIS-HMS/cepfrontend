@@ -8,6 +8,7 @@ import { PaymentReportComponent } from './payment-report.component';
 import { PaymentSummaryPageComponent } from './payment-summary-page/payment-summary-page.component';
 import { InvoiceListDetailsComponent } from './invoice-list-details/invoice-list-details.component';
 import { ChartsModule } from 'ng2-charts';
+import { InvoiceReportComponent } from './invoice-report/invoice-report.component';
 
 
 @NgModule({
@@ -20,7 +21,7 @@ import { ChartsModule } from 'ng2-charts';
      ],
 	
 	declarations: [ 
-		PaymentReportComponent, PaymentSummaryPageComponent, InvoiceListDetailsComponent
+		PaymentReportComponent, PaymentSummaryPageComponent, InvoiceListDetailsComponent, InvoiceReportComponent
     ]
 })
 export class PaymentReportModule {}
