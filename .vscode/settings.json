@@ -22,7 +22,7 @@
     "tfvc.location": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2017\\Enterprise\\Common7\\IDE\\CommonExtensions\\Microsoft\\TeamFoundation\\Team Explorer\\TF.exe",
     "terminal.integrated.shell.windows": "C:\\windows\\System32\\cmd.exe",
     "git.autofetch": true,
-    "window.zoomLevel": 0,
+    "window.zoomLevel": -1,
     "team.showWelcomeMessage": false,
     "editor.insertSpaces": true,
     "editor.tabSize": 4,

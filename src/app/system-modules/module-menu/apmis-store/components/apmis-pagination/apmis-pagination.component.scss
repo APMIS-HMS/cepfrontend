@@ -1,42 +1,53 @@
-.spc-lft{
+.spc-lft {
     padding-right: 20px;
 }
-.batches{
+
+.batches {
     display: flex;
     font-size: 12px;
-    .batch{
+
+    .batch {
         margin-right: 10px;
         border: 1px solid #C4C4C4;
         width: 257px;
         padding: 20px 10px;
-        .btc-top{
+
+        .btc-top {
             display: flex;
             justify-content: space-between;
-            .val-wrap{
+
+            .val-wrap {
                 display: flex;
-                .val-label{
+
+                .val-label {
                     color: #5A5D5A;
                     padding-right: 5px;
                 }
-                .val-val{
+
+                .val-val {
                     color: #292929;
                     font-weight: bold;
                 }
             }
-            .red-label{
+
+            .red-label {
                 color: #FF3838;
             }
         }
-        .btc-body{
+
+        .btc-body {
             display: flex;
-            .btc-body-item{
+
+            .btc-body-item {
                 margin-right: 10px;
                 margin-top: 20px;
-                .val-label{
+
+                .val-label {
                     color: #5A5D5A;
                     padding-right: 10px;
                 }
-                .val-val{
+
+                .val-val {
                     color: #292929;
                     font-weight: bold;
                 }
@@ -44,4 +55,3 @@
         }
     }
 }
-
