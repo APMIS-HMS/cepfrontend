@@ -2,7 +2,7 @@
   <div class="details">
     <div style="padding: 30px;">
         <h2>Today’s Sales Summary</h2>
-        <span class="totalPayment">#15,000,000</span>
+        <span class="totalPayment">#{{summaryData.totalSales | number}}</span>
     </div> 
     <i (click)="call_invoiceList()" >View List of Invoices</i>
   </div>
@@ -14,7 +14,7 @@
       (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)">
     </canvas>
     <div style="display: flex; margin-left: 60px;">
-      <h3>Total Payment: #15,000,000</h3>
+      <h3>Total Payment: #{{summaryData.totalSales | number}}</h3>
       <h3 style="padding-left: 20px;">BALANCE: #70,000</h3>
     </div>
   </div>

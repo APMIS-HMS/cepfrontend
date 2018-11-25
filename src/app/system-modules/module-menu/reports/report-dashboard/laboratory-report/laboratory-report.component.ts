@@ -49,7 +49,9 @@ export class LaboratoryReportComponent implements OnInit {
 			this.reportData = x.data.data;
 			this.processing = false;
 			this.pagerSource.totalRecord = x.data.total;
-		});
+		}, x => {
+			this.processing  =false;
+		} );
 	}
 
 	getReportSummary() {
