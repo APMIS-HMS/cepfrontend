@@ -13,12 +13,13 @@ import { ProductRequisitionComponent } from './apmis-store-home/store-home-main/
 import { ProductRestockComponent } from './apmis-store-home/store-home-main/product-restock/product-restock.component';
 import { StoreStoresComponent } from './store-stores/store-stores.component';
 import { StoreTabComponent } from './store-stores/store-tab/store-tab.component';
+import { ApmisNewStoreComponent } from './store-stores/apmis-new-store/apmis-new-store.component';
 
 @NgModule({
   imports: [
     CommonModule,
     ApmisStoreRoutingModule
   ],
-  declarations: [ApmisStoreLandingpageComponent, ApmisStoreHomeComponent, StoreHomeAnalyticsComponent, StoreHomeMainComponent, AllProductsComponent, ExpiringProductsComponent, ExpiredProductsComponent, ProductRequisitionComponent, ProductRestockComponent, StoreStoresComponent, StoreTabComponent]
+  declarations: [ApmisStoreLandingpageComponent, ApmisStoreHomeComponent, StoreHomeAnalyticsComponent, StoreHomeMainComponent, AllProductsComponent, ExpiringProductsComponent, ExpiredProductsComponent, ProductRequisitionComponent, ProductRestockComponent, StoreStoresComponent, StoreTabComponent, ApmisNewStoreComponent]
 })
 export class ApmisStoreModule { }

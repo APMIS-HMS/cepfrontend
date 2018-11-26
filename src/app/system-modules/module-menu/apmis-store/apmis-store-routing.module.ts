@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { ApmisStoreHomeComponent } from './apmis-store-home/apmis-store-home.component';
 import { ApmisStoreLandingpageComponent } from './apmis-store-landingpage.component';
 import { StoreStoresComponent } from './store-stores/store-stores.component';
+import { ApmisNewStoreComponent } from './store-stores/apmis-new-store/apmis-new-store.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,10 @@ const routes: Routes = [
       {
         path: "store",
         component: StoreStoresComponent
+      },
+      {
+        path: "new-store",
+        component: ApmisNewStoreComponent
       }
     ]
   }
