@@ -1,3 +1,4 @@
+import { ApmisPaginationComponent } from './components/apmis-pagination/apmis-pagination.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApmisStoreRoutingModule } from './apmis-store-routing.module';
@@ -16,13 +17,21 @@ import { ApmisStoreProductComponent } from './apmis-store-product/apmis-store-pr
 import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-module';
 
 @NgModule({
-  imports: [
-    CommonModule,
-    ApmisStoreRoutingModule,
-    OnlyMaterialModule
-  ],
-  declarations: [ApmisStoreLandingpageComponent, ApmisStoreHomeComponent, StoreHomeAnalyticsComponent, StoreHomeMainComponent,
-  AllProductsComponent, ExpiringProductsComponent, ExpiredProductsComponent, ProductRequisitionComponent,
-  ProductRestockComponent, StoreStoresComponent, StoreTabComponent, ApmisStoreProductComponent]
+	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule ],
+	declarations: [
+		ApmisStoreLandingpageComponent,
+		ApmisStoreHomeComponent,
+		StoreHomeAnalyticsComponent,
+		StoreHomeMainComponent,
+		AllProductsComponent,
+		ExpiringProductsComponent,
+		ExpiredProductsComponent,
+		ProductRequisitionComponent,
+		ProductRestockComponent,
+		StoreStoresComponent,
+		StoreTabComponent,
+		ApmisStoreProductComponent,
+		ApmisPaginationComponent
+	]
 })
 export class ApmisStoreModule {}
