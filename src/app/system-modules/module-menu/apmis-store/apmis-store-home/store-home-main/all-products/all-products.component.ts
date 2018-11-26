@@ -8,6 +8,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 export class AllProductsComponent implements OnInit {
 
 	showAdjustStock = false;
+	showProductDistribution = false;
 	clickItemIndex: number;
 	expand_row = false;
 	total = 0;
@@ -130,8 +131,13 @@ export class AllProductsComponent implements OnInit {
 
 	close_onClick(e){
 		this.showAdjustStock = false;
+		this.showProductDistribution = false;
 	}
 
+	productDistribution(){
+		this.showProductDistribution = true;
+	}
+	
 	adjustStock(){
 		this.showAdjustStock = true;
 	}

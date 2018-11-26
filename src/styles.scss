@@ -2635,33 +2635,6 @@ button,
     }
 }
 
-.mat-button-toggle-checked {
-    background-color: #0288D1 !important;
-    color: #f5f5f5 !important;
-}
-
-.ft-btn{
-    width: fit-content;
-    max-height: 17px;
-    /* position: relative; */
-    padding: 8px;
-    font-size: 1.2rem;
-    text-align: center;
-    color: #0288D1;
-    -ms-flex-pack: distribute;
-    justify-content: space-around;
-    background: #bfd7eb;
-    cursor: pointer;
-    /* border: 1px solid #3535ff; */
-    border-radius: 4px;
-    align-self: center;
-     font-weight: 12px;         
-}
-
-.ft-btn-selected{
-color: white;
-background: #0288D1;
-}
 
 // New modal css
 .new-modal{
@@ -2670,7 +2643,7 @@ background: #0288D1;
     animation-fill-mode: both;
 }
 
-.new-modal-header-wrap {
+.new-modal-wrap {
     position: relative;
     padding: 10px;
     box-sizing: border-box;    
@@ -2700,7 +2673,6 @@ background: #0288D1;
 
 .new-modal-baseWrap {
     position: relative;
-    width: 800px;
     min-width: 380px;
     height: auto;
     max-height: 90vh;
@@ -2709,3 +2681,32 @@ background: #0288D1;
     padding: 20px;
     box-sizing: border-box;
 }
+
+// Custom Drop-Down
+.dropDown-container{
+    font-size: 13px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .dropDown-container .select{
+    width: auto;
+    // background:url('arrow.png') no-repeat;
+    background-position:80% center;
+  }
+  
+  .dropDown-container .select select{
+    background: transparent;
+    line-height: 1;
+    border: 0;
+    padding: 5px;
+    border-radius: 0;
+    width: auto;
+    position: relative;
+    z-index: 10;
+    font-size: 1em;
+    outline: 0;
+  }

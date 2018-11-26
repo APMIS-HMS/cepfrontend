@@ -196,7 +196,7 @@ td .empWrap .list-img{
     font-size: 20px;
 }
 .store-tr-content{
-    padding: 10px 50px;
+    padding: 0px 50px;
 }
 .store-tfooter{
     padding: 15px;
@@ -222,4 +222,62 @@ td .empWrap .list-img{
 }
 .tbl-cont-cta:hover{
     border-bottom: 1px solid #0288D1;
+}
+
+// table Filter
+
+.mat-button-toggle-checked {
+    background-color: #0288D1 !important;
+    color: #f5f5f5 !important;
+}
+
+.filterBtn{
+    display: grid;
+    grid-column-gap: 10px;
+    grid-row-gap: 5px;
+    grid-template-columns: repeat(7, auto);
+    align-self: center;
+    text-align: center;
+}
+
+.ft-btn{
+    width: fit-content;
+    max-height: 17px;
+    /* position: relative; */
+    padding: 8px;
+    font-size: 1.2rem;
+    text-align: center;
+    color: #0288D1;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    background: #bfd7eb;
+    cursor: pointer;
+    /* border: 1px solid #3535ff; */
+    border-radius: 4px;
+    align-self: center;
+     font-weight: 12px;         
+}
+
+.tag-btn-wrap{
+    display: flex;
+    padding: 5px;
+}
+
+.tag-btn {
+    width: fit-content;
+    padding: 8px;
+    font-size: 1.2rem;
+    text-align: center;
+    color: #0288D1;
+    justify-content: space-around;
+    background: #bfd7eb;
+    cursor: pointer;
+    align-self: center;
+    margin-right: 10px;
+    height: 10px;
+}
+
+.ft-btn-selected{
+color: white;
+background: #0288D1;
 }

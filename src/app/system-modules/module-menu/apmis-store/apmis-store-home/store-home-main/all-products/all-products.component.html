@@ -11,8 +11,8 @@
           </mat-button-toggle-group>
         </div>
         <div class="store-th">Available Quantity</div>
-        <div class="store-th" style="margin-left: 15px;">Re-Order Level</div>
-        <div class="store-th" style="margin-left: 8px;">Cost/Unit</div>
+        <div class="store-th">Re-Order Level</div>
+        <div class="store-th">Cost/Unit</div>
         <div class="store-th">Total Cost Price</div>
         <div class="store-th">Unit Selling Price</div>
       </div>
@@ -46,25 +46,41 @@
         <div class="table-list col-xs-1 action-placeholder">
           <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
           <div class="action-container shadow-RB">
-              <div class="action-item" (click)="adjustStock()">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                  <span>Adjust Stock</span>
-              </div>
+            
+            <div class="action-item opt-menu" (click)="productDistribution()">
+              <span>Check Distribution</span>
+            </div>
 
-              <div class="action-item">
-                  <i class="fa fa-tags" aria-hidden="true"></i>
-                  <span>Edit Details</span>
-              </div>
+            <div class="action-item opt-menu" (click)="adjustStock()">
+              <span>Adjust Stock</span>
+            </div>
 
-              <div class="action-item">
-                  <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
-                  <span>Edit Configuration</span>
-              </div>
+            <div class="action-item opt-menu">
+              <span>Edit Details</span>
+            </div>
+
+            <div class="action-item opt-menu">
+              <span>Edit Configuration</span>
+            </div>
           </div>
+        </div>
       </div>
-      </div>
+
 
       <div *ngIf="item_to_show(i)" class="store-tr-content">
+
+        <div class="tag-btn-wrap">
+          <div class="tag-btn" matTooltip="600 Tablets">
+            <span>Central Store</span>
+          </div>
+          <div class="tag-btn" matTooltip="150 Tablets">
+            <span>Pharmacy Store A</span>
+          </div>
+          <div class="tag-btn" matTooltip="200 Tablets">
+            <span>Pharmacy Store B</span>
+          </div>
+        </div>
+
         <ul class="batches">
           <li class="batch">
             <div class="btc-top">
@@ -72,16 +88,16 @@
                 <div class="val-label">Batch:</div>
                 <div class="val-val">1243ERTCH</div>
               </div>
-              <div class="red-label">Expired</div>
+              <div class="orange-label">Out of Stock</div>
             </div>
             <div class="btc-body">
               <div class="btc-body-item">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
+                <div class="val-label">Batch Quantity:</div>
+                <div class="val-val">0 Tablets</div>
               </div>
               <div class="btc-body-item">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
+                <div class="val-label">Batch Expiring Date:</div>
+                <div class="val-val">14/10/2020</div>
               </div>
             </div>
           </li>
@@ -95,12 +111,12 @@
             </div>
             <div class="btc-body">
               <div class="btc-body-item">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
+                <div class="val-label">Batch Quantity:</div>
+                <div class="val-val">300 Tablets</div>
               </div>
               <div class="btc-body-item">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
+                <div class="val-label">Batch Expiring Date:</div>
+                <div class="val-val">19/11/2018</div>
               </div>
             </div>
           </li>
@@ -110,16 +126,16 @@
                 <div class="val-label">Batch:</div>
                 <div class="val-val">1243ERTCH</div>
               </div>
-              <div class="red-label">Expired</div>
+              <!-- <div class="red-label">Expired</div> -->
             </div>
             <div class="btc-body">
               <div class="btc-body-item">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
+                <div class="val-label">Batch Quantity:</div>
+                <div class="val-val">1,200 table-list</div>
               </div>
               <div class="btc-body-item">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
+                <div class="val-label">Batch Expiring Date:</div>
+                <div class="val-val">05/08/2022</div>
               </div>
             </div>
           </li>
@@ -134,5 +150,9 @@
 
 
 <div *ngIf="showAdjustStock" class="modal-overlay">
-    <app-adjust-stock (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-adjust-stock>
+  <app-adjust-stock (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-adjust-stock>
 </div>
+
+<div *ngIf="showProductDistribution" class="modal-overlay">
+    <app-check-product-distribution (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-check-product-distribution>
+  </div>

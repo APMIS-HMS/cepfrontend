@@ -1,16 +1,20 @@
 <div class="new-modal">
-  <div class="new-modal-header-wrap">
+  <div class="new-modal-wrap">
     <div class="new-modal_title">Adjust Stock</div>
     <div (click)="close_onClick()" class="new-modal-close-ico"><i class="fa fa-times-circle" aria-hidden="true"></i></div>
-  </div>
-  <div class="new-modal-baseWrap">
-    <div>
-      <mat-form-field>
-        <input matInput placeholder="Physical Count" >
-      </mat-form-field>
-      <mat-form-field >
-        <input matInput placeholder="System Count" >
+    <div class="new-modal-baseWrap">
+      <div>
+        <mat-form-field style="margin-right:5px;">
+          <input matInput placeholder="Physical Count">
+        </mat-form-field>
+        <mat-form-field style="margin-right:5px;">
+          <input matInput placeholder="System Count">
+        </mat-form-field>
+      </div>
+      <mat-form-field style="width:100% !important;" >
+        <textarea matInput placeholder="Add Note"></textarea>
       </mat-form-field>
     </div>
   </div>
+
 </div>
