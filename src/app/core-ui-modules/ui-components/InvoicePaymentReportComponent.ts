@@ -11,10 +11,7 @@ import {IPagerSource} from "./PagerComponent";
             <h1>Invoice Payment Report Details</h1>
             <hr>
             <div>
-                <h1>
-                    {{reportData.length| number}} Record Found
-                    
-                </h1>
+                
             </div>
 
             <div>
@@ -56,7 +53,7 @@ export class InvoicePaymentReportComponent implements OnInit {
             .then(x => {
                 this.loading  = false;
                 console.log(x.data);
-                this.reportData  = x.data;
+                
             }, x =>{
                 this.loading   = false;
             });

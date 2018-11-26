@@ -55,7 +55,7 @@ export class ClinicAttendanceComponent implements OnInit {
       //        enable only when search criteria is enabled
 
       // search filter is performed based on the search criteria selected by the user
-      // searchCriterias = ['By Provider' | 'By Patient | 'By All]
+      // searchCriterias = ['By Provider' | 'By Patient | 'By All']
 
       this.searchControl.valueChanges.debounceTime(200).distinctUntilChanged().subscribe(val => {
         switch (this.selectedSearchCriteria) {
@@ -97,7 +97,6 @@ export class ClinicAttendanceComponent implements OnInit {
       }
     }
     setSearchFilter(data) {
-      this.disabled = false;
       this.selectedSearchCriteria = data;
       this.searchControl.setValue('');
    }

@@ -1,0 +1,9 @@
+<div class="home-main">
+	<ul class="hm-tabs">
+		<li (click)="tab_click('store')" [class.hm-tab-active]='tab_store' class="hm-tab">Stores</li>
+	</ul>
+
+	<div class="tab-content">
+		<app-store-tab *ngIf="tab_store"> </app-store-tab>
+	</div>
+</div>
