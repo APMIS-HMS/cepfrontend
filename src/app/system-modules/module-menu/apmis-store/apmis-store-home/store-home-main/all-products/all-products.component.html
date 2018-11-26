@@ -21,18 +21,18 @@
   </div>
 
   <div class="store-tbody">
-    <div *ngFor="let person of people; let i = index" class="store-pre-tr">
+    <div *ngFor="let product of getProductSlice(products); let i = index" class="store-pre-tr">
       <div class="store-tr">
         <div class="store-td store-td-actions">
           <i *ngIf="item_to_show(i)" (click)="toggle_tr(i)" class="exp-tr fa fa-angle-down"></i>
           <i *ngIf="!item_to_show(i)" (click)="toggle_tr(i)" class="exp-tr fa fa-angle-right"></i>
         </div>
         <div class="store-tr-in">
-          <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
+          <div class="store-td">{{product.productName}}</div>
           <div class="store-td">
-            <span class="spc-lft">300,000</span>
+            <span class="spc-lft">{{product.quantity| number}}</span>
             <select>
-              <option selected>Sachets</option>
+              <option *ngFor="let pack of packTypes" value="{{pack.id}}">{{pack.name}}</option>
             </select>
           </div>
           <div class="store-td">20 Sachets</div>
@@ -110,5 +110,5 @@
       </div>
     </div>
   </div>
-  <app-apmis-pagination></app-apmis-pagination>
+  <app-apmis-pagination (emitCurrentPage)="loadCurrentPage($event)" [total]="total" [limit]="limit" [numberOfPages]="numberOfPages"></app-apmis-pagination>
 </div>

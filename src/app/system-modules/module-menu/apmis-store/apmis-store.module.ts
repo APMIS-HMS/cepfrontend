@@ -1,3 +1,4 @@
+import { ApmisPaginationComponent } from './components/apmis-pagination/apmis-pagination.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApmisStoreRoutingModule } from './apmis-store-routing.module';
@@ -29,7 +30,8 @@ import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-modu
 		ProductRestockComponent,
 		StoreStoresComponent,
 		StoreTabComponent,
-		ApmisStoreProductComponent
+		ApmisStoreProductComponent,
+		ApmisPaginationComponent
 	]
 })
 export class ApmisStoreModule {}
