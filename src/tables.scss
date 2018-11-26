@@ -281,3 +281,20 @@ td .empWrap .list-img{
 color: white;
 background: #0288D1;
 }
+.filterTop{
+    display: flex;
+    justify-content: space-between;
+}
+
+.tbl-header-lhs{
+    display: flex;
+    align-items: center;
+}
+.tbl-header-rhs{
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    .ft-btn{
+        margin-left: 10px;
+    }
+}

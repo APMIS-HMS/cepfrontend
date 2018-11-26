@@ -2710,3 +2710,15 @@ button,
     font-size: 1em;
     outline: 0;
   }
+.new-btn-blue{
+    border: 1px solid #0288D1;
+    color: #0288D1;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    cursor: pointer;
+    i{
+        padding-right: 5px;
+    }
+}
