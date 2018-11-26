@@ -22,7 +22,11 @@ const routes: Routes = [
 			{
 				path: 'store',
 				component: StoreStoresComponent
-			},
+      },
+      {
+        path: "new-store",
+        component: ApmisNewStoreComponent
+      },
 			{
 				path: 'product',
 				component: ApmisStoreProductComponent
