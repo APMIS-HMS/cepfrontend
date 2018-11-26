@@ -7,39 +7,83 @@ import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
 })
 export class ApmisPaginationComponent implements OnInit {
 	@Input() total = 0;
-	@Input() skip = 0;
 	@Input() numberOfPages = 0;
 	@Input() currentPage = 0;
-	@Output() fireCurrentPage: EventEmitter<number> = new EventEmitter<number>();
-	defaultPages = [ { id: 0 }, { id: 1 }, { id: 2 } ];
-	selectedNumber = 0;
+	@Input() limit = 0;
+	@Output() emitCurrentPage: EventEmitter<number> = new EventEmitter<number>();
+	defaultPages = [];
+	firstNumberPart = 0;
+	secondNumberPart = 0;
+	skip = 0;
+
 	constructor() {}
 
-	ngOnInit() {}
+	ngOnInit() {
+		this.numberOfPages = Math.ceil(this.numberOfPages);
+		this.defaultPages = [];
+		for (let i = 0; i < this.limit; i++) {
+			this.defaultPages.push({ id: i });
+		}
+		this.getFirstPart();
+		this.getSecondPart();
+	}
 
 	moveNext() {
 		this.defaultPages.forEach((page) => {
-			if (page.id <= this.numberOfPages) {
-				page.id = page.id + 1;
+			if (page.id < this.total) {
+				page.id = page.id + this.limit;
 			}
 		});
-		this.selectCurrentPage(this.defaultPages[0].id);
-		this.selectedNumber = this.defaultPages[0].id;
+		if (this.currentPage <= this.numberOfPages) {
+			this.currentPage = this.currentPage + 1;
+			this.selectCurrentPage(this.currentPage);
+		}
 	}
 	movePrevious() {
 		this.defaultPages.forEach((page, i) => {
 			let j = 0;
 			do {
-				page.id = page.id - 1;
+				page.id = page.id - this.limit;
 				j = j + 1;
 			} while (this.defaultPages[i].id - i !== this.defaultPages[i].id && j >= 2);
 		});
-		this.selectCurrentPage(this.defaultPages[0].id);
-		this.selectedNumber = this.defaultPages[0].id;
+		if (this.currentPage > 0) {
+			this.currentPage = this.currentPage - 1;
+			this.selectCurrentPage(this.currentPage);
+		}
 	}
 
-	selectCurrentPage(page) {
-		this.selectedNumber = page;
-		this.fireCurrentPage.emit(page);
+	selectCurrentPage(page, direct?) {
+		if (direct) {
+			this.getCurrentPageDefaultPages(page);
+			this.currentPage = page;
+		}
+		this.getFirstPart();
+		this.getSecondPart();
+		this.emitCurrentPage.emit(page);
+	}
+	getCurrentPageDefaultPages(page) {
+		this.defaultPages = [];
+		for (let i = page * this.limit; i < this.limit + page * this.limit; i++) {
+			this.defaultPages.push({ id: i });
+		}
+	}
+	getFirstPart() {
+		this.firstNumberPart = this.defaultPages[0].id + 1;
+	}
+	getSecondPart() {
+		if (this.skip === 0) {
+			this.secondNumberPart = this.defaultPages[this.limit - 1].id + 1;
+		} else {
+			this.secondNumberPart = this.defaultPages[this.limit - 1].id;
+		}
+	}
+
+	getPages() {
+		const pages = [];
+		for (let i = 0; i < this.numberOfPages; i++) {
+			pages.push({ id: i });
+		}
+		return pages;
 	}
 }
