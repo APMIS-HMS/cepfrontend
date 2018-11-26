@@ -11,6 +11,7 @@ export class PatientRegistrationReportComponent implements OnInit {
 
   searchControl = new FormControl();
   searchCriteria = new FormControl('Search');
+  checked = false;
 
   pageInView = 'Patient Registration Analytics';
 
