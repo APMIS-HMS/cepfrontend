@@ -82,6 +82,8 @@ onclick_dispense() {
   onTabClick(tabIndex) {
     console.log(tabIndex);
     this.activeTabIndex = tabIndex;
+    this.prescriberFilter = false;
+    this.dispenseFilter = true;
   }
 
   getFacilityDispenseList() {
