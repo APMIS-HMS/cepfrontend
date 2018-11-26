@@ -17,6 +17,7 @@ import { ApmisStoreProductComponent } from './apmis-store-product/apmis-store-pr
 import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-module';
 import { AdjustStockComponent } from './apmis-store-product/adjust-stock/adjust-stock.component';
 import { StoreGlobalUtilService } from './store-utils/global-service';
+import { ApmisNewStoreComponent } from './store-stores/apmis-new-store/apmis-new-store.component';
 
 @NgModule({
 	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule ],
@@ -34,7 +35,8 @@ import { StoreGlobalUtilService } from './store-utils/global-service';
 		StoreTabComponent,
 		ApmisStoreProductComponent,
 		ApmisPaginationComponent,
-		AdjustStockComponent
+		AdjustStockComponent,
+		ApmisNewStoreComponent
 	],
 	providers: [
 		StoreGlobalUtilService

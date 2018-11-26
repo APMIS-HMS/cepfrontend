@@ -80,7 +80,6 @@ onclick_dispense() {
     } else { }
   }
   onTabClick(tabIndex) {
-    console.log(tabIndex);
     this.activeTabIndex = tabIndex;
     this.prescriberFilter = false;
     this.dispenseFilter = true;

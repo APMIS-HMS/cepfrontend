@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { RouterModule, Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-store-manager-report',
@@ -7,9 +9,19 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StoreManagerReportComponent implements OnInit {
 
-  constructor() { }
+  pageInView = 'Store Report';
+
+  constructor(private _router: Router) { }
 
   ngOnInit() {
   }
+
+  pageInViewLoader(title) {
+		this.pageInView = title;
+  }
+
+  back_dashboard() {
+		this._router.navigate(['/dashboard/reports/report-dashboard']);
+	  }
 
 }
