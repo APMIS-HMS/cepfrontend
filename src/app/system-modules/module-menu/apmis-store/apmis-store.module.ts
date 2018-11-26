@@ -18,19 +18,6 @@ import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-modu
 import { AdjustStockComponent } from './apmis-store-product/adjust-stock/adjust-stock.component';
 
 @NgModule({
-<<<<<<< HEAD
-  imports: [
-    CommonModule,
-    ApmisStoreRoutingModule,
-    OnlyMaterialModule
-  ],
-  declarations: [
-    ApmisStoreLandingpageComponent, 
-    ApmisStoreHomeComponent, 
-    StoreHomeAnalyticsComponent, 
-    StoreHomeMainComponent, 
-    AllProductsComponent, ApmisStoreProductComponent, AdjustStockComponent]
-=======
 	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule ],
 	declarations: [
 		ApmisStoreLandingpageComponent,
@@ -45,8 +32,8 @@ import { AdjustStockComponent } from './apmis-store-product/adjust-stock/adjust-
 		StoreStoresComponent,
 		StoreTabComponent,
 		ApmisStoreProductComponent,
-		ApmisPaginationComponent
+		ApmisPaginationComponent,
+		AdjustStockComponent
 	]
->>>>>>> 0daf7e2aeb487bc9c9f09f368cc49370e0368dab
 })
 export class ApmisStoreModule {}

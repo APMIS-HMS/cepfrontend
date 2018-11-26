@@ -129,39 +129,10 @@
       </div>
     </div>
   </div>
-<<<<<<< HEAD
-
-  <div class="store-tfooter">
-    <div>
-      <span>Showing</span>
-      <span class="bold">1</span>
-      <span>to</span>
-      <span class="bold">10</span>
-      <span>of</span>
-      <span class="bold">300</span>
-    </div>
-
-    <ul class="apmis-pagination">
-      <li class="pg-child"><i class="fa fa-angle-left"></i> </li>
-      <li class="pg-child">1</li>
-      <li class="pg-child">2</li>
-      <li class="pg-child active-page">3</li>
-      <li class="pg-child">4</li>
-      <li class="pg-child">5</li>
-      <li class="pg-child">6</li>
-      <li class="pg-child">7</li>
-      <li class="pg-child">8</li>
-      <li class="pg-child">9</li>
-      <li class="pg-child">10</li>
-      <li class="pg-child"><i class="fa fa-angle-right"></i> </li>
-    </ul>
-  </div>
+  <app-apmis-pagination (emitCurrentPage)="loadCurrentPage($event)" [total]="total" [limit]="limit" [numberOfPages]="numberOfPages"></app-apmis-pagination>
 </div>
 
 
 <div *ngIf="showAdjustStock" class="modal-overlay">
     <app-adjust-stock (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-adjust-stock>
-=======
-  <app-apmis-pagination (emitCurrentPage)="loadCurrentPage($event)" [total]="total" [limit]="limit" [numberOfPages]="numberOfPages"></app-apmis-pagination>
->>>>>>> 0daf7e2aeb487bc9c9f09f368cc49370e0368dab
 </div>
