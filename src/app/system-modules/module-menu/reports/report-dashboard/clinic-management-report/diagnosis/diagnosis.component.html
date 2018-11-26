@@ -11,6 +11,7 @@
       <div class="dropdown-container">
         <mat-form-field>
           <mat-select placeholder="Filter By Clinic" (change)="setSearchFilter($event.value)">
+              <mat-option value="All">All</mat-option>
             <mat-option [value]="item._id" *ngFor="let item of facilityClinics" >{{item.name}}</mat-option>
           </mat-select>
         </mat-form-field>
