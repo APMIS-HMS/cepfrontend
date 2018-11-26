@@ -16,7 +16,7 @@ import { ProductRestockComponent } from './apmis-store-home/store-home-main/prod
 import { StoreStoresComponent } from './store-stores/store-stores.component';
 import { StoreTabComponent } from './store-stores/store-tab/store-tab.component';
 import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-module';
-import { StoreService } from 'app/services/facility-manager/setup';
+import { StoreService, InventoryService } from 'app/services/facility-manager/setup';
 import { ApmisPaginationComponent } from './components/apmis-pagination/apmis-pagination.component';
 import { ApmisNewStoreComponent } from './store-stores/apmis-new-store/apmis-new-store.component';
 
@@ -40,6 +40,6 @@ import { ApmisNewStoreComponent } from './store-stores/apmis-new-store/apmis-new
 		CheckProductDistributionComponent,
 		ApmisNewStoreComponent
 	],
-	providers: [ StoreService ]
+	providers: [ StoreService, InventoryService ]
 })
 export class ApmisStoreModule {}
