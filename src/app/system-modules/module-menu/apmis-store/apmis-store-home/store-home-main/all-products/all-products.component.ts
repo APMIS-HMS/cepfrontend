@@ -1,4 +1,7 @@
+import { InventoryService } from './../../../../../../services/facility-manager/setup/inventory.service';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Facility } from 'app/models';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
 	selector: 'app-all-products',
@@ -6,7 +9,6 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 	styleUrls: [ './all-products.component.scss' ]
 })
 export class AllProductsComponent implements OnInit {
-
 	showAdjustStock = false;
 	clickItemIndex: number;
 	expand_row = false;
@@ -99,12 +101,32 @@ export class AllProductsComponent implements OnInit {
 			unitSellingPrice: 700
 		}
 	];
+	storeId: string;
+	selectedFacility: any;
 
-	constructor() {}
+	constructor(private _inventoryService: InventoryService, private _locker: CoolLocalStorage) {}
 
 	ngOnInit() {
 		this.numberOfPages = this.products.length / this.limit;
 		this.total = this.products.length;
+		this.storeId = '5a88a0d26e6d17335cf318bc';
+		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
+		this.getInventoryList();
+	}
+
+	getInventoryList() {
+		this._inventoryService
+			.findList({
+				query: { facilityId: this.selectedFacility._id, name: '', storeId: this.storeId }
+			})
+			.then(
+				(payload) => {
+					console.log(payload);
+				},
+				(error) => {
+					console.log(error);
+				}
+			);
 	}
 
 	item_to_show(i) {
@@ -128,11 +150,11 @@ export class AllProductsComponent implements OnInit {
 		return slicedProducts;
 	}
 
-	close_onClick(e){
+	close_onClick(e) {
 		this.showAdjustStock = false;
 	}
 
-	adjustStock(){
+	adjustStock() {
 		this.showAdjustStock = true;
 	}
 }
