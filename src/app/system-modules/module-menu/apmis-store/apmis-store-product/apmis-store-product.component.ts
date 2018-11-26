@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-apmis-store-product',
@@ -7,7 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ApmisStoreProductComponent implements OnInit {
 
-
+  
+  showAdjustStock = false;
   tab_all_products = true;
   tab_product_config = false;
   constructor() { }
@@ -23,4 +24,8 @@ export class ApmisStoreProductComponent implements OnInit {
       this.tab_product_config = !this.tab_product_config;
     }  
   }
+
+  
 }
+
+

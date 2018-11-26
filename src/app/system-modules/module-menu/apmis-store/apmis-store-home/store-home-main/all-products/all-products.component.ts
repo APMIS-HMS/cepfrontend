@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-all-products',
@@ -7,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AllProductsComponent implements OnInit {
 
+  @Output() switch: EventEmitter<number> = new EventEmitter<number>();
   clickItemIndex: number;
   expand_row = false;
   people: any[] = [
@@ -15,6 +16,8 @@ export class AllProductsComponent implements OnInit {
     {firstname: "Ikechukwu"},
     {firstname: "Ikechukwu"}
   ];
+
+  showAdjustStock = false;
 
   constructor() { }
 
@@ -31,4 +34,12 @@ export class AllProductsComponent implements OnInit {
     this.expand_row = !this.expand_row;
   }
 
+
+  close_onClick(e){
+    this.showAdjustStock = false;
+  }
+
+  adjustStock(){
+    this.showAdjustStock = true;
+  }
 }

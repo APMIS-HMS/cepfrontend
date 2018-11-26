@@ -9,6 +9,7 @@ import { StoreHomeMainComponent } from './apmis-store-home/store-home-main/store
 import { AllProductsComponent } from './apmis-store-home/store-home-main/all-products/all-products.component';
 import { ApmisStoreProductComponent } from './apmis-store-product/apmis-store-product.component';
 import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-module';
+import { AdjustStockComponent } from './apmis-store-product/adjust-stock/adjust-stock.component';
 
 @NgModule({
   imports: [
@@ -21,6 +22,6 @@ import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-modu
     ApmisStoreHomeComponent, 
     StoreHomeAnalyticsComponent, 
     StoreHomeMainComponent, 
-    AllProductsComponent, ApmisStoreProductComponent]
+    AllProductsComponent, ApmisStoreProductComponent, AdjustStockComponent]
 })
 export class ApmisStoreModule { }

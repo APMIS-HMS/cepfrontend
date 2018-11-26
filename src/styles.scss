@@ -2639,3 +2639,73 @@ button,
     background-color: #0288D1 !important;
     color: #f5f5f5 !important;
 }
+
+.ft-btn{
+    width: fit-content;
+    max-height: 17px;
+    /* position: relative; */
+    padding: 8px;
+    font-size: 1.2rem;
+    text-align: center;
+    color: #0288D1;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    background: #bfd7eb;
+    cursor: pointer;
+    /* border: 1px solid #3535ff; */
+    border-radius: 4px;
+    align-self: center;
+     font-weight: 12px;         
+}
+
+.ft-btn-selected{
+color: white;
+background: #0288D1;
+}
+
+// New modal css
+.new-modal{
+    animation-name: pulse;
+    animation-duration: 0.25s;
+    animation-fill-mode: both;
+}
+
+.new-modal-header-wrap {
+    position: relative;
+    padding: 10px;
+    box-sizing: border-box;    
+    background: #fff;
+    border-radius: 10px 10px 0px 0px;
+    padding: 20px;
+}
+
+.new-modal-close-ico {
+    cursor: pointer;
+    position: absolute;
+    z-index: 1;
+    top: 15px;
+    right: 20px;
+    font-size: 1.6rem;
+    color: rgb(0, 0, 0);
+    padding: 5px;
+}
+
+.new-modal_title {
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 2rem;
+    color: #0288D1;
+    text-align: left;
+    padding-left: 5px;
+}
+
+.new-modal-baseWrap {
+    position: relative;
+    width: 800px;
+    min-width: 380px;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #fff;
+    padding: 20px;
+    box-sizing: border-box;
+}

@@ -5,7 +5,7 @@
       <div class="store-tr-in">
         <div class="store-th">
           <mat-button-toggle-group aria-label="Font Style">
-            <mat-button-toggle class="mat-button-toggle-checked" value="all">All</mat-button-toggle>
+            <mat-button-toggle class="mat-button-toggle-checked ft-btn-selected" value="all">All</mat-button-toggle>
             <mat-button-toggle class="mat-button-toggle-checked" value="drug">Drug</mat-button-toggle>
             <mat-button-toggle class="mat-button-toggle-checked" value="consumables">Consumables</mat-button-toggle>
           </mat-button-toggle-group>
@@ -40,9 +40,28 @@
           <div class="store-td">#300,000</div>
           <div class="store-td">#5/Sachet</div>
         </div>
-        <div class="store-td store-td-actions">
+        <!-- <div class="store-td store-td-actions">
           <i class="fa fa-ellipsis-v"></i>
-        </div>
+        </div> -->
+        <div class="table-list col-xs-1 action-placeholder">
+          <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+          <div class="action-container shadow-RB">
+              <div class="action-item" (click)="adjustStock()">
+                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                  <span>Adjust Stock</span>
+              </div>
+
+              <div class="action-item">
+                  <i class="fa fa-tags" aria-hidden="true"></i>
+                  <span>Edit Details</span>
+              </div>
+
+              <div class="action-item">
+                  <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
+                  <span>Edit Configuration</span>
+              </div>
+          </div>
+      </div>
       </div>
 
       <div *ngIf="item_to_show(i)" class="store-tr-content">
@@ -136,4 +155,9 @@
       <li class="pg-child"><i class="fa fa-angle-right"></i> </li>
     </ul>
   </div>
+</div>
+
+
+<div *ngIf="showAdjustStock" class="modal-overlay">
+    <app-adjust-stock (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-adjust-stock>
 </div>
