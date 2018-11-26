@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
 	selector: 'app-all-products',
@@ -6,13 +6,15 @@ import { Component, OnInit } from '@angular/core';
 	styleUrls: [ './all-products.component.scss' ]
 })
 export class AllProductsComponent implements OnInit {
+
+	showAdjustStock = false;
 	clickItemIndex: number;
 	expand_row = false;
 	total = 0;
 	skip = 0;
 	numberOfPages = 0;
 	currentPage = 0;
-	limit = 4;
+	limit = 2;
 	packTypes = [ { id: 1, name: 'Sachet' }, { id: 2, name: 'Cartoon' } ];
 	products: any[] = [
 		{
@@ -124,5 +126,13 @@ export class AllProductsComponent implements OnInit {
 		const second = this.limit + this.skip * this.limit;
 		const slicedProducts = products.slice(first, second);
 		return slicedProducts;
+	}
+
+	close_onClick(e){
+		this.showAdjustStock = false;
+	}
+
+	adjustStock(){
+		this.showAdjustStock = true;
 	}
 }
