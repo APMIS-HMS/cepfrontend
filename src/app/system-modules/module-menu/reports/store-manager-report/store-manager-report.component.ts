@@ -16,4 +16,12 @@ export class StoreManagerReportComponent implements OnInit {
   ngOnInit() {
   }
 
+  pageInViewLoader(title) {
+		this.pageInView = title;
+  }
+
+  back_dashboard() {
+		this._router.navigate(['/dashboard/reports/report-dashboard']);
+	  }
+
 }
