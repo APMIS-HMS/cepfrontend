@@ -46,10 +46,10 @@ const REPORTS_DASHBOARD_ROUTE: Routes = [
 				path: 'pharmacyReport', component: PharmacyReportComponent
 			},
 
-			//{
-				//path: 'storeReport', component: StoreManagerReportComponent
+			{
+				path: 'storeReport', component: StoreManagerReportComponent
 
-				//}
+				}
 
 		]
 	}
