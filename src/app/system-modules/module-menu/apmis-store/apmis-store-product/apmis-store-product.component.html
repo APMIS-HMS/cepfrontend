@@ -14,16 +14,18 @@
   <div class="tab-content" *ngIf="tab_all_products">
     <div class="filterTop">
       <div class="searchproduct">
-        <mat-form-field>
-          <input matInput placeholder="Search Product">
-        </mat-form-field>
+        <div class="InputGroup">
+          <input class="customInput" type="text" required>
+          <span class="highlight"></span>
+          <label class="customLabel">Search Product</label>
+        </div>
       </div>
       <div class="tbl-header-rhs">
         <div>
-            <h3>Show:</h3>
-        </div>  
-        <div [className]="selectedFilterIndex === i ? 'ft-btn ft-btn-selected' : 'ft-btn'" 
-          *ngFor="let filter of storeFilters; let i = index" (click)="setSelectedFilter(i,filter)">
+          <h3>Show:</h3>
+        </div>
+        <div [className]="selectedFilterIndex === i ? 'ft-btn ft-btn-selected' : 'ft-btn'" *ngFor="let filter of storeFilters; let i = index"
+          (click)="setSelectedFilter(i,filter)">
           <span>{{filter}}</span>
         </div>
       </div>
@@ -31,4 +33,3 @@
     <app-all-products> </app-all-products>
   </div>
 </div>
-
