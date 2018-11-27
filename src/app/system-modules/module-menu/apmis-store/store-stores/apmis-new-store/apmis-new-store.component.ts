@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-apmis-new-store',
@@ -8,10 +9,19 @@ import { Component, OnInit } from '@angular/core';
 export class ApmisNewStoreComponent implements OnInit {
 
   tab_store = true;
+  newStoreForm: FormGroup;
 
-  constructor() { }
+  constructor(private fb: FormBuilder) { }
 
   ngOnInit() {
+    this.newStoreForm = this.fb.group({
+      'majorLoc': [' ', Validators.required ],
+      'minorLoc': [' ', Validators.required ],
+      'storeName': [' ', Validators.required ],
+      'desc': [' ', Validators.required ],
+      'dispense': [' ', Validators.required ],
+      'recievePurchase': [' ', Validators.required ]
+    });
   }
 
   tab_click(tab){

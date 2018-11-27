@@ -17,9 +17,11 @@ import { ApmisStoreProductComponent } from './apmis-store-product/apmis-store-pr
 import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-module';
 import { AdjustStockComponent } from './apmis-store-product/adjust-stock/adjust-stock.component';
 import { ApmisNewStoreComponent } from './store-stores/apmis-new-store/apmis-new-store.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule ],
+	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule,
+		FormsModule, ReactiveFormsModule ],
 	declarations: [
 		ApmisStoreLandingpageComponent,
 		ApmisStoreHomeComponent,

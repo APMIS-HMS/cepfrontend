@@ -6,6 +6,16 @@
   <div class="tab-content">
     <div *ngIf="tab_store">
       <legend class="sect-title">Add New Store</legend>
+
+      <form [formGroup]="newStoreForm">
+        <fieldset class="form-group">
+          <input
+              formControlName="username"
+              placeholder="Username"
+              class="form-control form-control-lg"
+              type="text" />
+        </fieldset>
+      </form>
     </div>
   </div>
 </div>
