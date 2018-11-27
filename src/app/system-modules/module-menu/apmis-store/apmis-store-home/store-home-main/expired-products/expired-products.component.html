@@ -6,128 +6,66 @@
         <div class="store-th">Product</div>
         <div class="store-th">Available Quantity</div>
         <div class="store-th">Re-Order Level</div>
-        <div class="store-th">Cost/Unit</div>
-        <div class="store-th">Total Cost Price</div>
+        <!-- <div class="store-th">Cost/Unit</div>
+        <div class="store-th">Total Cost Price</div> -->
         <div class="store-th">Unit Selling Price</div>
       </div>
       <div class="store-th store-td-actions"></div>
     </div>
   </div>
 
-  <div class="store-tbody"> 
-    <div *ngFor="let person of people; let i = index" class="store-pre-tr">
+  <div class="store-tbody">
+    <div *ngFor="let product of products; let i = index" class="store-pre-tr">
       <div class="store-tr">
         <div class="store-td store-td-actions">
-          <i *ngIf="item_to_show(i)" (click)="toggle_tr(i)" class="exp-tr fa fa-angle-down"></i>
-          <i *ngIf="!item_to_show(i)" (click)="toggle_tr(i)" class="exp-tr fa fa-angle-right"></i>
+          <i *ngIf="item_to_show(i)" (click)="toggle_tr(i, 'down')" class="exp-tr fa fa-angle-down"></i>
+          <i *ngIf="!item_to_show(i)" (click)="toggle_tr(i, 'right')" class="exp-tr fa fa-angle-right"></i>
         </div>
         <div class="store-tr-in">
-          <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-          <div class="store-td"> 
-            <span class="spc-lft">300,000</span>
+          <div class="store-td">{{product.productName}}</div>
+          <div class="store-td">
+            <span class="spc-lft">{{product.availableQuantity | number}}</span>
             <select>
               <option selected>Sachets</option>
             </select>
           </div>
-          <div class="store-td">20 Sachets</div>
-          <div class="store-td">#5/Sachet</div>
-          <div class="store-td">#300,000</div> 
-          <div class="store-td">#5/Sachet</div>
+          <div class="store-td">{{product.reOrderLevel}} Sachets</div>
+          <!-- <div class="store-td">#5/Sachet</div>
+          <div class="store-td">#300,000</div> -->
+          <div class="store-td">&#8358;{{product.price}}/Sachet</div>
         </div>
         <div class="store-td store-td-actions">
           <i class="fa fa-ellipsis-v"></i>
-        </div> 
+        </div>
       </div>
 
       <div *ngIf="item_to_show(i)" class="store-tr-content">
         <ul class="batches">
-          <li class="batch">
+          <li class="batch" *ngFor="let transaction of product.transactions">
             <div class="btc-top">
               <div class="val-wrap">
                 <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
+                <div class="val-val">{{transaction.batchNumber}}</div>
               </div>
-              <div class="red-label">Expired</div>
+              <div class="orange-label">Out of Stock</div>
             </div>
             <div class="btc-body">
               <div class="btc-body-item">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
+                <div class="val-label">Batch Quantity:</div>
+                <div class="val-val">{{transaction.quantity}} Tablets</div>
               </div>
               <div class="btc-body-item">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
-              </div>
-            </div>
-          </li>
-          <li class="batch">
-            <div class="btc-top">
-              <div class="val-wrap">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
-              </div>
-              <div class="red-label">Expired</div>
-            </div>
-            <div class="btc-body">
-              <div class="btc-body-item">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
-              </div>
-              <div class="btc-body-item">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
-              </div>
-            </div>
-          </li>
-          <li class="batch">
-            <div class="btc-top">
-              <div class="val-wrap">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
-              </div>
-              <div class="red-label">Expired</div>
-            </div>
-            <div class="btc-body">
-              <div class="btc-body-item">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
-              </div>
-              <div class="btc-body-item">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
+                <div class="val-label">Batch Expiring Date:</div>
+                <div class="val-val">{{transaction.expiryDate | date:'dd/MM/yyyy'}}</div>
               </div>
             </div>
           </li>
         </ul>
 
-        <div class="tbl-cont-cta"><i class="fa fa-plus"></i>  Add Another Item</div>
+        <div class="tbl-cont-cta"><i class="fa fa-plus"></i> Add Another Item</div>
       </div>
     </div>
   </div>
 
-  <div class="store-tfooter">
-    <div>
-      <span>Showing</span>
-      <span class="bold">1</span>
-      <span>to</span>
-      <span class="bold">10</span>
-      <span>of</span>
-      <span class="bold">300</span>
-    </div>
-
-    <ul class="apmis-pagination">
-      <li class="pg-child"><i class="fa fa-angle-left"></i> </li>
-      <li class="pg-child">1</li>
-      <li class="pg-child">2</li>
-      <li class="pg-child active-page">3</li>
-      <li class="pg-child">4</li>
-      <li class="pg-child">5</li>
-      <li class="pg-child">6</li>
-      <li class="pg-child">7</li>
-      <li class="pg-child">8</li>
-      <li class="pg-child">9</li>
-      <li class="pg-child">10</li>
-      <li class="pg-child"><i class="fa fa-angle-right"></i> </li>
-    </ul> 
-  </div>
+  <app-apmis-pagination (emitCurrentPage)="loadCurrentPage($event)" [total]="total" [limit]="limit" [numberOfPages]="numberOfPages"></app-apmis-pagination>
 </div>

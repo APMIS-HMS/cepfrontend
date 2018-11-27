@@ -52,12 +52,18 @@ export class ExpiringProductsComponent implements OnInit {
 	}
 
 	item_to_show(i) {
-		if (this.expand_row) {
-			return this.clickItemIndex === i;
-		}
+		// if (this.expand_row) {
+		// 	return this.clickItemIndex === i;
+		// }
+		return this.clickItemIndex === i;
 	}
-	toggle_tr(itemIndex) {
-		this.clickItemIndex = itemIndex;
-		this.expand_row = !this.expand_row;
+	toggle_tr(itemIndex, direction) {
+		if (direction === 'down' && itemIndex === this.clickItemIndex) {
+			this.expand_row = false;
+			this.clickItemIndex = -1;
+		} else {
+			this.clickItemIndex = itemIndex;
+			this.expand_row = !this.expand_row;
+		}
 	}
 }
