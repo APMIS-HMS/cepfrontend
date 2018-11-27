@@ -3,17 +3,22 @@
     <div class="new-modal_title">Adjust Stock</div>
     <div (click)="close_onClick()" class="new-modal-close-ico"><i class="fa fa-times-circle" aria-hidden="true"></i></div>
     <div class="new-modal-baseWrap">
-      <div>
-        <mat-form-field style="margin-right:5px;">
-          <input matInput placeholder="Physical Count">
-        </mat-form-field>
-        <mat-form-field style="margin-right:5px;">
-          <input matInput placeholder="System Count">
-        </mat-form-field>
+      <div style="display: flex;">
+        <div class="InputGroup" style="margin-right:10px;">      
+          <input class="customInput" type="text" required>
+          <span class="highlight"></span>
+          <label class="customLabel">Physical Count</label>
+        </div>
+        <div class="InputGroup" style="margin-right:10px;">      
+          <input class="customInput" type="text" required>
+          <span class="highlight"></span>
+          <label class="customLabel">System Count</label>
+        </div>
       </div>
-      <mat-form-field style="width:100% !important;" >
-        <textarea matInput placeholder="Add Note"></textarea>
-      </mat-form-field>
+      <div class="InputGroup" style="margin-right:5px;">      
+        <textarea class="customTextarea" placeholder="Add Note"></textarea> 
+        <span class="highlight"></span>       
+      </div>
     </div>
   </div>
 
