@@ -17,8 +17,8 @@ currentFacility: Facility = <Facility>{};
 filteredDiagnosis;
 isDiagnosisLoading = true;
 dateRange: any;
-selectedClinic;
-facilityClinics: any;
+selectedClinic = '';
+facilityClinics = [];
   constructor(private diagnosisService: DiagnosisReportService,
     private locker: CoolLocalStorage, private systemModuleService: SystemModuleService,
     private facilityService: FacilitiesService) { }
@@ -34,35 +34,12 @@ facilityClinics: any;
     this.isDiagnosisLoading = true;
     if (dateRange != null) {
       this.dateRange = dateRange;
-      this.diagnosisService.find({
-        query: {
-          facilityId: this.currentFacility._id,
-          clinicId: this.selectedClinic,
-          startDate: dateRange.from,
-          endDate: dateRange.to
-        }
-      }).then(payload => {
-        console.log(payload);
-        this.filteredDiagnosis = payload.data;
-        this.isDiagnosisLoading = false;
-      });
+      this.getFacilityDiagnosisReport();
     }
   }
   setSearchFilter(selectedVal) {
-    this.isDiagnosisLoading = true;
     this.selectedClinic = selectedVal;
-      this.diagnosisService.find({
-        query: {
-          facilityId: this.currentFacility._id,
-          clinicId: this.selectedClinic,
-          stateDate: this.dateRange.from,
-          endDate: this.dateRange.to
-        }
-      }).then(payload => {
-        console.log(payload);
-        this.filteredDiagnosis = payload.data;
-        this.isDiagnosisLoading = false;
-      });
+    this.getFacilityDiagnosisReport();
   }
   getClinicByFacility() {
       this.facilityService.find( {
@@ -77,10 +54,12 @@ facilityClinics: any;
       this.isDiagnosisLoading = true;
       this.diagnosisService.find({
         query: {
-          facilityId: this.currentFacility._id
+          facilityId: this.currentFacility._id,
+          clinicId: this.selectedClinic === 'All' ? '' : this.selectedClinic,
+          stateDate: this.dateRange.from,
+          endDate: this.dateRange.to
         }
       }).then(payload => {
-        console.log(payload);
           this.filteredDiagnosis = payload.data;
           this.isDiagnosisLoading = false;
 

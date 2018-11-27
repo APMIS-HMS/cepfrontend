@@ -1,4 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { StoreGlobalUtilService } from '../../../store-utils/global-service';
+import { ProductsToggle } from '../../../store-utils/global';
 
 @Component({
 	selector: 'app-all-products',
@@ -16,6 +18,8 @@ export class AllProductsComponent implements OnInit {
 	currentPage = 0;
 	limit = 2;
 	packTypes = [ { id: 1, name: 'Sachet' }, { id: 2, name: 'Cartoon' } ];
+	productToggles = [];
+	selectedToggleIndex = 0;
 	products: any[] = [
 		{
 			productName: 'Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]',
@@ -100,11 +104,12 @@ export class AllProductsComponent implements OnInit {
 		}
 	];
 
-	constructor() {}
+	constructor(private storeUtilService: StoreGlobalUtilService) {}
 
 	ngOnInit() {
 		this.numberOfPages = this.products.length / this.limit;
 		this.total = this.products.length;
+		this.productToggles = this.storeUtilService.getObjectKeys(ProductsToggle);
 	}
 
 	item_to_show(i) {
@@ -128,11 +133,14 @@ export class AllProductsComponent implements OnInit {
 		return slicedProducts;
 	}
 
-	close_onClick(e){
+	close_onClick(e) {
 		this.showAdjustStock = false;
 	}
 
-	adjustStock(){
+	adjustStock() {
 		this.showAdjustStock = true;
+	}
+	setSelectedToggle(index, toggle) {
+		this.selectedToggleIndex = index;
 	}
 }
