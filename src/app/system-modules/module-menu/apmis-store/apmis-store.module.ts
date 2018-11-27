@@ -20,6 +20,7 @@ import { StoreService, InventoryService } from 'app/services/facility-manager/se
 import { ApmisPaginationComponent } from './components/apmis-pagination/apmis-pagination.component';
 import { StoreGlobalUtilService } from './store-utils/global-service';
 import { ApmisNewStoreComponent } from './store-stores/apmis-new-store/apmis-new-store.component';
+import { ProductCongurationComponent } from './apmis-store-product/product-conguration/product-conguration.component';
 
 @NgModule({
 	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule ],
@@ -39,7 +40,8 @@ import { ApmisNewStoreComponent } from './store-stores/apmis-new-store/apmis-new
 		ApmisPaginationComponent,
 		AdjustStockComponent,
 		CheckProductDistributionComponent,
-		ApmisNewStoreComponent
+		ApmisNewStoreComponent,
+		ProductCongurationComponent
 	],
 	providers: [ StoreService, InventoryService, StoreGlobalUtilService ]
 })

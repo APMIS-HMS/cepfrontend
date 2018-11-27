@@ -2799,3 +2799,23 @@ button,
         padding-right: 5px;
     }
 }
+
+
+.toggle-base-wrap{
+    display: flex;
+    border-radius: 5px;
+    border: 1px solid #bebebe;
+    width: 200px;
+    justify-content: center;
+}
+.toggle-wrap {
+    position: relative;
+    width: fit-content;
+    max-height: 15px;
+    padding: 9px;
+    margin: 1px;
+    font-size: 1.2rem;
+    text-align: center;
+    justify-content: space-around;
+    cursor: pointer;
+}

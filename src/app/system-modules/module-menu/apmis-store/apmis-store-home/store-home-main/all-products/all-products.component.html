@@ -4,16 +4,12 @@
       <div class="store-th store-td-actions"></div>
       <div class="store-tr-in">
         <div class="store-th">
-          <!-- <mat-button-toggle-group aria-label="Font Style">
-            <div [className]="selectedToggleIndex === i ? 'mat-button-toggle-checked ft-btn-selected' : 'mat-button-toggle-checked'"
-              *ngFor="let toggle of productToggles;let i" (click)="setSelectedToggle(i,toggle)">{{toggle}}
-          </div>
-          </mat-button-toggle-group> -->
-          <!-- <div>
-            <div [className]="selectedToggleIndex === i ?  *ngFor="let toggle of productToggles;let i">
+          <div class="toggle-base-wrap">
+            <div [className]="selectedToggleIndex === i ? 'toggle-wrap ft-btn-selected' : 'toggle-wrap'" *ngFor="let toggle of productToggles;let i"
+              (click)="setSelectedToggle(i,toggle)">
               <span> {{toggle}}</span>
             </div>
-          </div> -->
+          </div>
 
         </div>
         <div class="store-th">Available Quantity</div>
