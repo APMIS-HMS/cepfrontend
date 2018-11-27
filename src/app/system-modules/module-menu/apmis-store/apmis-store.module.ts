@@ -42,6 +42,5 @@ import { ApmisNewStoreComponent } from './store-stores/apmis-new-store/apmis-new
 		ApmisNewStoreComponent
 	],
 	providers: [ StoreService, InventoryService, StoreGlobalUtilService ]
-
 })
 export class ApmisStoreModule {}

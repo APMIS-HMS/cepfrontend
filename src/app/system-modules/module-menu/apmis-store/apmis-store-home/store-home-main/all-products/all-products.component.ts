@@ -21,118 +21,34 @@ export class AllProductsComponent implements OnInit {
 	currentPage = 0;
 	limit = 2;
 	packTypes = [ { id: 1, name: 'Sachet' }, { id: 2, name: 'Cartoon' } ];
-	productToggles = [];
-	selectedToggleIndex = 0;
-	products: any[] = [
-		{
-			productName: 'Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]',
-			quantity: '100',
-			pack: 'Sachet',
-			costPrice: 500,
-			reOrderLevel: 20,
-			totalCostPrice: 3000,
-			unitSellingPrice: 700
-		},
-		{
-			productName: 'Tetracycline 0.01 MG/MG Ophthalmic Ointment [Achromycin]',
-			quantity: '1005',
-			pack: 'Sachet',
-			costPrice: 500,
-			reOrderLevel: 20,
-			totalCostPrice: 3000,
-			unitSellingPrice: 700
-		},
-		{
-			productName: 'Nifedipine 10 MG Oral Capsule [Adalat]',
-			quantity: '3500',
-			pack: 'Sachet',
-			costPrice: 500,
-			reOrderLevel: 20,
-			totalCostPrice: 3000,
-			unitSellingPrice: 700
-		},
-		{
-			productName: 'Oxymetholone 50 MG Oral Tablet [Anadrol-50]',
-			quantity: '900',
-			pack: 'Sachet',
-			costPrice: 500,
-			reOrderLevel: 20,
-			totalCostPrice: 3000,
-			unitSellingPrice: 700
-		},
-		{
-			productName: 'Oxymetholone 50 MG Oral Tablet [Anadrol-50]',
-			quantity: '900',
-			pack: 'Sachet',
-			costPrice: 500,
-			reOrderLevel: 20,
-			totalCostPrice: 3000,
-			unitSellingPrice: 700
-		},
-		{
-			productName: 'Oxymetholone 50 MG Oral Tablet [Anadrol-50]',
-			quantity: '900',
-			pack: 'Sachet',
-			costPrice: 500,
-			reOrderLevel: 20,
-			totalCostPrice: 3000,
-			unitSellingPrice: 700
-		},
-		{
-			productName: 'Oxymetholone 50 MG Oral Tablet [Anadrol-50]',
-			quantity: '900',
-			pack: 'Sachet',
-			costPrice: 500,
-			reOrderLevel: 20,
-			totalCostPrice: 3000,
-			unitSellingPrice: 700
-		},
-		{
-			productName: 'Oxymetholone 50 MG Oral Tablet [Anadrol-50]',
-			quantity: '900',
-			pack: 'Sachet',
-			costPrice: 500,
-			reOrderLevel: 20,
-			totalCostPrice: 3000,
-			unitSellingPrice: 700
-		},
-		{
-			productName: 'Oxymetholone 50 MG Oral Tablet [Anadrol-50]',
-			quantity: '900',
-			pack: 'Sachet',
-			costPrice: 500,
-			reOrderLevel: 20,
-			totalCostPrice: 3000,
-			unitSellingPrice: 700
-		}
-	];
 	storeId: string;
 	selectedFacility: any;
+	products: any = [];
 
-	constructor(private _inventoryService: InventoryService, private _locker: CoolLocalStorage, storeUtilService: StoreGlobalUtilService) {}
+	constructor(private _inventoryService: InventoryService, private _locker: CoolLocalStorage) {}
 
 	ngOnInit() {
-		this.numberOfPages = this.products.length / this.limit;
-		this.total = this.products.length;
 		this.storeId = '5a88a0d26e6d17335cf318bc';
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
 		this.getInventoryList();
+		// this.productToggles = this.storeUtilService.getObjectKeys(ProductsToggle);
 	}
 
 	getInventoryList() {
 		this._inventoryService
-			.findList({
-				query: { facilityId: this.selectedFacility._id, name: '', storeId: this.storeId }
+			.findFacilityProductList({
+				query: { facilityId: this.selectedFacility._id, storeId: this.storeId }
 			})
 			.then(
 				(payload) => {
-					console.log(payload);
+					this.products = payload.data;
+					this.numberOfPages = this.products.length / this.limit;
+					this.total = this.products.length;
 				},
 				(error) => {
 					console.log(error);
 				}
 			);
-		this.productToggles = this.storeUtilService.getObjectKeys(ProductsToggle);
 	}
 
 	item_to_show(i) {
@@ -169,6 +85,6 @@ export class AllProductsComponent implements OnInit {
 		this.showAdjustStock = true;
 	}
 	setSelectedToggle(index, toggle) {
-		this.selectedToggleIndex = index;
+		// this.selectedToggleIndex = index;
 	}
 }
