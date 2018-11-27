@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-apmis-store-home',
@@ -7,9 +8,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ApmisStoreHomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
+  }
+
+  changeRoute(value: string) {
+    this.router.navigate(['/dashboard/store/' + value]).then(
+      payload => {
+      }
+    ).catch(error => { 
+    });
   }
 
 }

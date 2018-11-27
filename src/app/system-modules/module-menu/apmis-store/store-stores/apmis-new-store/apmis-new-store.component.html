@@ -1,3 +1,11 @@
-<p>
-  apmis-new-store works!
-</p>
+<div class="home-main">
+  <ul class="hm-tabs">
+    <li (click)="tab_click('store')" [class.hm-tab-active]='tab_store' class="hm-tab">Store</li>
+  </ul>
+
+  <div class="tab-content">
+    <div *ngIf="tab_store">
+      <legend class="sect-title">Add New Store</legend>
+    </div>
+  </div>
+</div>

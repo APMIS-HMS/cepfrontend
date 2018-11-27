@@ -7,9 +7,17 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ApmisNewStoreComponent implements OnInit {
 
+  tab_store = true;
+
   constructor() { }
 
   ngOnInit() {
   }
+
+  tab_click(tab){
+    if(tab==='store'){
+      this.tab_store = true;
+    }
+  } 
 
 }
