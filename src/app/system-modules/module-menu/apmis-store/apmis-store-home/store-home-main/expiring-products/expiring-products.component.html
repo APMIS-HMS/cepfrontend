@@ -6,8 +6,8 @@
         <div class="store-th">Product</div>
         <div class="store-th">Available Quantity</div>
         <div class="store-th">Re-Order Level</div>
-        <div class="store-th">Cost/Unit</div>
-        <div class="store-th">Total Cost Price</div>
+        <!-- <div class="store-th">Cost/Unit</div>
+        <div class="store-th">Total Cost Price</div> -->
         <div class="store-th">Unit Selling Price</div>
       </div>
       <div class="store-th store-td-actions"></div>
@@ -15,23 +15,23 @@
   </div>
 
   <div class="store-tbody">
-    <div *ngFor="let person of products; let i = index" class="store-pre-tr">
+    <div *ngFor="let product of products; let i = index" class="store-pre-tr">
       <div class="store-tr">
         <div class="store-td store-td-actions">
           <i *ngIf="item_to_show(i)" (click)="toggle_tr(i)" class="exp-tr fa fa-angle-down"></i>
           <i *ngIf="!item_to_show(i)" (click)="toggle_tr(i)" class="exp-tr fa fa-angle-right"></i>
         </div>
         <div class="store-tr-in">
-          <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
+          <div class="store-td">{{product.productName}}</div>
           <div class="store-td">
             <span class="spc-lft">300,000</span>
             <select>
               <option selected>Sachets</option>
             </select>
           </div>
-          <div class="store-td">20 Sachets</div>
-          <div class="store-td">#5/Sachet</div>
-          <div class="store-td">#300,000</div>
+          <div class="store-td">{{product.availableQuantity}} Sachets</div>
+          <!-- <div class="store-td">#5/Sachet</div>
+          <div class="store-td">#300,000</div> -->
           <div class="store-td">#5/Sachet</div>
         </div>
         <div class="store-td store-td-actions">

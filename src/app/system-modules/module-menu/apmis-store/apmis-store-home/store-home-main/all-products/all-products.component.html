@@ -4,18 +4,20 @@
       <div class="store-th store-td-actions"></div>
       <div class="store-tr-in">
         <div class="store-th">
-          <mat-button-toggle-group aria-label="Font Style">
-            <mat-button-toggle [className]="selectedToggleIndex === i ? 'mat-button-toggle-checked ft-btn-selected' : 'mat-button-toggle-checked'"
+          <!-- <mat-button-toggle-group aria-label="Font Style">
+            <div [className]="selectedToggleIndex === i ? 'mat-button-toggle-checked ft-btn-selected' : 'mat-button-toggle-checked'"
               *ngFor="let toggle of productToggles;let i" (click)="setSelectedToggle(i,toggle)">{{toggle}}
-           </mat-button-toggle>
-            <!-- <mat-button-toggle class="mat-button-toggle-checked" value="drug">Drug</mat-button-toggle>
-            <mat-button-toggle class="mat-button-toggle-checked" value="consumables">Consumables</mat-button-toggle> -->
-          </mat-button-toggle-group>
+          </div>
+          </mat-button-toggle-group> -->
+          <!-- <div>
+            <div [className]="selectedToggleIndex === i ?  *ngFor="let toggle of productToggles;let i">
+              <span> {{toggle}}</span>
+            </div>
+          </div> -->
+
         </div>
         <div class="store-th">Available Quantity</div>
         <div class="store-th">Re-Order Level</div>
-        <!-- <div class="store-th">Cost/Unit</div>
-        <div class="store-th">Total Cost Price</div> -->
         <div class="store-th">Unit Selling Price</div>
       </div>
       <div class="store-th store-td-actions"></div>
