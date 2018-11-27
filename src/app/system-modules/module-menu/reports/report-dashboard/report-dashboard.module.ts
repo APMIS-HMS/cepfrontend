@@ -14,7 +14,7 @@ import { LaboratoryReportComponent } from './laboratory-report/laboratory-report
 import { PharmacyReportComponent } from './pharmacy-report/pharmacy-report.component';
 import { PaymentReportComponent } from './payment-report/payment-report.component';
 import { StoreManagerReportComponent } from '../store-manager-report/store-manager-report.component';
-
+import { WardManagerReportComponent } from '../ward-manager-report/ward-manager-report.component';
 @NgModule({
 	imports: [
 		CommonModule,
@@ -30,7 +30,8 @@ import { StoreManagerReportComponent } from '../store-manager-report/store-manag
 		DashboardLandingpageComponent,
 		LaboratoryReportComponent,
 		PharmacyReportComponent,
-		StoreManagerReportComponent
+		StoreManagerReportComponent,
+		WardManagerReportComponent
 	]
 })
 export class ReportDashboardModule {}

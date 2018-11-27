@@ -8,6 +8,6 @@ import { StoreManagerReportComponent } from './store-manager-report/store-manage
 
 @NgModule({
 	imports: [ CommonModule, ReportsRoutingModule ],
-	declarations: [ ReportsComponent, WardManagerReportComponent ]
+	declarations: [ ReportsComponent ]
 })
 export class ReportsModule {}

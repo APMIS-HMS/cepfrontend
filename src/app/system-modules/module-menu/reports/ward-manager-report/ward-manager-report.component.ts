@@ -9,6 +9,9 @@ import { FormControl } from '@angular/forms';
 })
 export class WardManagerReportComponent implements OnInit {
 
+  searchControl = new FormControl();
+  searchCriteria = new FormControl('Search');
+
   pageInView = 'Ward Report';
 
   constructor(private _router: Router) { }
