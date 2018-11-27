@@ -41,7 +41,6 @@ export class AllProductsComponent implements OnInit {
 					this.products = payload.data;
 					this.numberOfPages = this.products.length / this.limit;
 					this.total = this.products.length;
-					console.log(this.products);
 				},
 				(error) => {
 					console.log(error);
