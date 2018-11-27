@@ -2,6 +2,8 @@ import { InventoryService } from './../../../../../../services/facility-manager/
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Facility } from 'app/models';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { StoreGlobalUtilService } from '../../../store-utils/global-service';
+import { ProductsToggle } from '../../../store-utils/global';
 
 @Component({
 	selector: 'app-all-products',
@@ -19,6 +21,8 @@ export class AllProductsComponent implements OnInit {
 	currentPage = 0;
 	limit = 2;
 	packTypes = [ { id: 1, name: 'Sachet' }, { id: 2, name: 'Cartoon' } ];
+	productToggles = [];
+	selectedToggleIndex = 0;
 	products: any[] = [
 		{
 			productName: 'Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]',
@@ -105,7 +109,7 @@ export class AllProductsComponent implements OnInit {
 	storeId: string;
 	selectedFacility: any;
 
-	constructor(private _inventoryService: InventoryService, private _locker: CoolLocalStorage) {}
+	constructor(private _inventoryService: InventoryService, private _locker: CoolLocalStorage, storeUtilService: StoreGlobalUtilService) {}
 
 	ngOnInit() {
 		this.numberOfPages = this.products.length / this.limit;
@@ -128,6 +132,7 @@ export class AllProductsComponent implements OnInit {
 					console.log(error);
 				}
 			);
+		this.productToggles = this.storeUtilService.getObjectKeys(ProductsToggle);
 	}
 
 	item_to_show(i) {
@@ -162,5 +167,8 @@ export class AllProductsComponent implements OnInit {
 
 	adjustStock() {
 		this.showAdjustStock = true;
+	}
+	setSelectedToggle(index, toggle) {
+		this.selectedToggleIndex = index;
 	}
 }

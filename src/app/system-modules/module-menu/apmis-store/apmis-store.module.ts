@@ -18,6 +18,7 @@ import { StoreTabComponent } from './store-stores/store-tab/store-tab.component'
 import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-module';
 import { StoreService, InventoryService } from 'app/services/facility-manager/setup';
 import { ApmisPaginationComponent } from './components/apmis-pagination/apmis-pagination.component';
+import { StoreGlobalUtilService } from './store-utils/global-service';
 import { ApmisNewStoreComponent } from './store-stores/apmis-new-store/apmis-new-store.component';
 
 @NgModule({
@@ -40,6 +41,7 @@ import { ApmisNewStoreComponent } from './store-stores/apmis-new-store/apmis-new
 		CheckProductDistributionComponent,
 		ApmisNewStoreComponent
 	],
-	providers: [ StoreService, InventoryService ]
+	providers: [ StoreService, InventoryService, StoreGlobalUtilService ]
+
 })
 export class ApmisStoreModule {}

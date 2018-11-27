@@ -36,7 +36,7 @@
                         <span *ngIf="filteredAttendance.length < 1"><i>There are currently no records to show</i></span>
                         <tr class="th-xxx" *ngFor="let item of filteredAttendance; let i = index">
                             <td>{{i+1}}</td>
-                            <td>{{item.date}}</td>
+                            <td>{{item.date | date:'shortDate'}}</td>
                             <td>{{item.clinicName}}</td>
                             <td> {{item.totalCheckedInPatients}}</td>
                             <td>{{item.new.totalMale}}</td>
@@ -129,7 +129,7 @@
                         <tr class="th-xxx" *ngFor="let item of fileteredAppointments; let i = index">
                             <td>{{i+1}}</td>
                             <td>{{item.provider}}</td>
-                            <td>{{item.time}}</td>
+                            <td>{{item.time | date:'shortDate'}}</td>
                             <td> {{item.patientName}} </td>
                             <td>{{item.apmisId}}</td>
                             <td>{{item.phone}}</td>
