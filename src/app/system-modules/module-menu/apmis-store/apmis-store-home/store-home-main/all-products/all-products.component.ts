@@ -24,14 +24,20 @@ export class AllProductsComponent implements OnInit {
 	storeId: string;
 	selectedFacility: any;
 	products: any = [];
+	productToggles = [];
+	selectedToggleIndex = 0;
 
-	constructor(private _inventoryService: InventoryService, private _locker: CoolLocalStorage) {}
+	constructor(
+		private _inventoryService: InventoryService,
+		private _locker: CoolLocalStorage,
+		private storeUtilService: StoreGlobalUtilService
+	) {}
 
 	ngOnInit() {
 		this.storeId = '5a88a0d26e6d17335cf318bc';
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
 		this.getInventoryList();
-		// this.productToggles = this.storeUtilService.getObjectKeys(ProductsToggle);
+		this.productToggles = this.storeUtilService.getObjectKeys(ProductsToggle);
 	}
 
 	getInventoryList() {
@@ -85,6 +91,6 @@ export class AllProductsComponent implements OnInit {
 		this.showAdjustStock = true;
 	}
 	setSelectedToggle(index, toggle) {
-		// this.selectedToggleIndex = index;
+		this.selectedToggleIndex = index;
 	}
 }

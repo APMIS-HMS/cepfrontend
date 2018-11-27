@@ -37,7 +37,7 @@ export class ExpiringProductsComponent implements OnInit {
 			.then(
 				(payload) => {
 					console.log(payload);
-					this.products = payload.data;
+					this.products = payload.data.data;
 					this.numberOfPages = this.products.length / this.limit;
 					this.total = this.products.length;
 				},
