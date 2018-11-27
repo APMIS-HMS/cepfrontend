@@ -37,7 +37,6 @@ export class StoreHomeAnalyticsComponent implements OnInit {
 			})
 			.then(
 				(payload) => {
-					console.log(payload);
 					if (payload.status === 'success' && payload.data.length > 0) {
 						this.extractInventoryCountItem(payload.data[0]);
 						this.extractExpiredInventoryCountItem(payload.data[1]);
