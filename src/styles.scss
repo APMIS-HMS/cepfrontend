@@ -2689,9 +2689,10 @@ button,
 .dropDown-container{
     font-size: 13px;
     background: #fff;
-    border-bottom:1px solid #757575;
+    border-bottom:1px solid #ddd;
     overflow: hidden;
     position: relative;
+    box-sizing: border-box;
   }
   
   .dropDown-container .select{
@@ -2699,48 +2700,50 @@ button,
     background-position:80% center;
   }
   
-  .dropDown-container .select select{
+  .dropDown-container .select select, .customInput, .customTextarea{
     background: transparent;
     line-height: 1;
     border: 0;
-    padding: 5px;
     border-radius: 0;
-    width: auto;
+    padding:10px;
+    box-sizing: border-box;
+    width: 100%;
     position: relative;
     z-index: 10;
-    font-size: 1em;
+    font-size: 16px;
     outline: 0;
   }
 
 //   Custom Input
+.customInput{
+    display:block;
+    border-bottom: 1px solid #ddd;
+  }
+.input-group-x2{
+    display: flex;
+    justify-content: space-between;
+    .dropDown-container, .InputGroup{
+        width: 47% !important;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+    }
+}
 .InputGroup{ 
     position:relative; 
     padding-bottom: 10px;
   }
-  .customInput{
-    font-size:18px;
-    padding:10px 10px 10px 5px;
-    display:block;
-    width:auto;
-    border:none;
-    border-bottom:1px solid #757575;
-  }
 
   .customTextarea{
-    font-size:18px;
-    padding:10px 10px 10px 5px;
     display:block;
     min-height: 70px;
-    width:100%;
-    border:none;
     outline: 0;
-    border-bottom:1px solid #757575;
+    border-bottom: 1px solid #ddd;
   }
 
   .customInput:focus{ outline:none; }
   .customLabel{
-    color:#999; 
-    font-size:18px;
+    color:#000; 
+    font-size:16px;
     font-weight:normal;
     position:absolute;
     pointer-events:none;
@@ -2750,13 +2753,11 @@ button,
     -webkit-transition:0.2s ease all;
   }
   
-  .customInput:focus ~ .customLabel, .customInput:valid ~ .customLabel{
+  .customInput:focus ~ .customLabel{
     top:-12px;
     font-size:12px;
     color:#5264AE;
   }
-  
-  .bar 	{ position:relative; display:block; width:300px; }
 
   .highlight {
     position:absolute;

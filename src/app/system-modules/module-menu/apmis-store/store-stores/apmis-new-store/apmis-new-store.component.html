@@ -1,3 +1,52 @@
-<p>
-  apmis-new-store works!
-</p>
+<div class="home-main">
+  <ul class="hm-tabs">
+    <li (click)="tab_click('store')" [class.hm-tab-active]='tab_store' class="hm-tab">Store</li>
+  </ul>
+
+  <div class="tab-content">
+    <div *ngIf="tab_store">
+      <legend class="sect-title">Add New Store</legend>
+
+      <form [formGroup]="newStoreForm">
+        <div class="input-group-x2">
+          <div class="dropDown-container">
+            <div class="select">
+              <select formControlName="majorLoc" name="dropDown-container" id="dropDown-container">
+                <option value="0">Select Store</option>
+                <option value="1">Central Store</option>
+              </select>
+            </div>
+          </div>
+          <div class="dropDown-container">
+            <div class="select">
+              <select formControlName="minorLoc" name="dropDown-container" id="dropDown-container">
+                <option value="0">Select Batch</option>
+                <option value="1">1234ERTCH</option>
+                <option value="2">6434ERRSH</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="input-group-x2">
+          <div class="InputGroup">      
+            <input formControlName="storeName" class="customInput" type="text" required>
+            <span class="highlight"></span>
+            <label class="customLabel">Store Name</label>
+          </div>
+          <div class="InputGroup">      
+            <input formControlName="productType" class="customInput" type="text" required>
+            <span class="highlight"></span>
+            <label class="customLabel">Product Type</label>
+          </div>
+        </div>
+        <!-- <div class="input-group-x2">
+          <div class="InputGroup" style="margin-right:5px;">      
+            <textarea formControlName="desc" class="customTextarea" placeholder="Add Note"></textarea> 
+            <span class="highlight"></span>       
+          </div>
+          <div></div>
+        </div> -->
+      </form>
+    </div>
+  </div>
+</div>
