@@ -4,16 +4,20 @@
       <div class="store-th store-td-actions"></div>
       <div class="store-tr-in">
         <div class="store-th">
-          <mat-button-toggle-group aria-label="Font Style">
-            <mat-button-toggle class="mat-button-toggle-checked ft-btn-selected" value="all">All</mat-button-toggle>
-            <mat-button-toggle class="mat-button-toggle-checked" value="drug">Drug</mat-button-toggle>
-            <mat-button-toggle class="mat-button-toggle-checked" value="consumables">Consumables</mat-button-toggle>
-          </mat-button-toggle-group>
+          <!-- <mat-button-toggle-group aria-label="Font Style">
+            <div [className]="selectedToggleIndex === i ? 'mat-button-toggle-checked ft-btn-selected' : 'mat-button-toggle-checked'"
+              *ngFor="let toggle of productToggles;let i" (click)="setSelectedToggle(i,toggle)">{{toggle}}
+          </div>
+          </mat-button-toggle-group> -->
+          <!-- <div>
+            <div [className]="selectedToggleIndex === i ?  *ngFor="let toggle of productToggles;let i">
+              <span> {{toggle}}</span>
+            </div>
+          </div> -->
+
         </div>
         <div class="store-th">Available Quantity</div>
-        <div class="store-th" style="margin-left: 15px;">Re-Order Level</div>
-        <div class="store-th" style="margin-left: 8px;">Cost/Unit</div>
-        <div class="store-th">Total Cost Price</div>
+        <div class="store-th">Re-Order Level</div>
         <div class="store-th">Unit Selling Price</div>
       </div>
       <div class="store-th store-td-actions"></div>
@@ -21,7 +25,7 @@
   </div>
 
   <div class="store-tbody">
-    <div *ngFor="let product of getProductSlice(products); let i = index" class="store-pre-tr">
+    <div *ngFor="let product of products; let i = index" class="store-pre-tr">
       <div class="store-tr">
         <div class="store-td store-td-actions">
           <i *ngIf="item_to_show(i)" (click)="toggle_tr(i)" class="exp-tr fa fa-angle-down"></i>
@@ -30,15 +34,15 @@
         <div class="store-tr-in">
           <div class="store-td">{{product.productName}}</div>
           <div class="store-td">
-            <span class="spc-lft">{{product.quantity| number}}</span>
+            <span class="spc-lft">{{product.availableQuantity| number}}</span>
             <select>
               <option *ngFor="let pack of packTypes" value="{{pack.id}}">{{pack.name}}</option>
             </select>
           </div>
-          <div class="store-td">20 Sachets</div>
-          <div class="store-td">#5/Sachet</div>
-          <div class="store-td">#300,000</div>
-          <div class="store-td">#5/Sachet</div>
+          <div class="store-td">{{product.reOrderLevel}} Sachets</div>
+          <!-- <div class="store-td">#5/Sachet</div>
+          <div class="store-td">#300,000</div> -->
+          <div class="store-td">&#8358;{{product.price}}/Sachet</div>
         </div>
         <!-- <div class="store-td store-td-actions">
           <i class="fa fa-ellipsis-v"></i>
@@ -46,25 +50,41 @@
         <div class="table-list col-xs-1 action-placeholder">
           <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
           <div class="action-container shadow-RB">
-              <div class="action-item" (click)="adjustStock()">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                  <span>Adjust Stock</span>
-              </div>
 
-              <div class="action-item">
-                  <i class="fa fa-tags" aria-hidden="true"></i>
-                  <span>Edit Details</span>
-              </div>
+            <div class="action-item opt-menu" (click)="productDistribution()">
+              <span>Check Distribution</span>
+            </div>
 
-              <div class="action-item">
-                  <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
-                  <span>Edit Configuration</span>
-              </div>
+            <div class="action-item opt-menu" (click)="adjustStock()">
+              <span>Adjust Stock</span>
+            </div>
+
+            <div class="action-item opt-menu">
+              <span>Edit Details</span>
+            </div>
+
+            <div class="action-item opt-menu">
+              <span>Edit Configuration</span>
+            </div>
           </div>
         </div>
       </div>
 
+
       <div *ngIf="item_to_show(i)" class="store-tr-content">
+
+        <div class="tag-btn-wrap">
+          <div class="tag-btn" matTooltip="600 Tablets">
+            <span>Central Store</span>
+          </div>
+          <div class="tag-btn" matTooltip="150 Tablets">
+            <span>Pharmacy Store A</span>
+          </div>
+          <div class="tag-btn" matTooltip="200 Tablets">
+            <span>Pharmacy Store B</span>
+          </div>
+        </div>
+
         <ul class="batches">
           <li class="batch">
             <div class="btc-top">
@@ -72,16 +92,16 @@
                 <div class="val-label">Batch:</div>
                 <div class="val-val">1243ERTCH</div>
               </div>
-              <div class="red-label">Expired</div>
+              <div class="orange-label">Out of Stock</div>
             </div>
             <div class="btc-body">
               <div class="btc-body-item">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
+                <div class="val-label">Batch Quantity:</div>
+                <div class="val-val">0 Tablets</div>
               </div>
               <div class="btc-body-item">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
+                <div class="val-label">Batch Expiring Date:</div>
+                <div class="val-val">14/10/2020</div>
               </div>
             </div>
           </li>
@@ -95,12 +115,12 @@
             </div>
             <div class="btc-body">
               <div class="btc-body-item">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
+                <div class="val-label">Batch Quantity:</div>
+                <div class="val-val">300 Tablets</div>
               </div>
               <div class="btc-body-item">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
+                <div class="val-label">Batch Expiring Date:</div>
+                <div class="val-val">19/11/2018</div>
               </div>
             </div>
           </li>
@@ -110,16 +130,16 @@
                 <div class="val-label">Batch:</div>
                 <div class="val-val">1243ERTCH</div>
               </div>
-              <div class="red-label">Expired</div>
+              <!-- <div class="red-label">Expired</div> -->
             </div>
             <div class="btc-body">
               <div class="btc-body-item">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
+                <div class="val-label">Batch Quantity:</div>
+                <div class="val-val">1,200 table-list</div>
               </div>
               <div class="btc-body-item">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
+                <div class="val-label">Batch Expiring Date:</div>
+                <div class="val-val">05/08/2022</div>
               </div>
             </div>
           </li>
@@ -134,5 +154,9 @@
 
 
 <div *ngIf="showAdjustStock" class="modal-overlay">
-    <app-adjust-stock (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-adjust-stock>
+  <app-adjust-stock (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-adjust-stock>
+</div>
+
+<div *ngIf="showProductDistribution" class="modal-overlay">
+  <app-check-product-distribution (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-check-product-distribution>
 </div>

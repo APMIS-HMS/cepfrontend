@@ -1,8 +1,8 @@
 <div class="home-main" style="margin-top: 30px;">
   <ul class="hm-tabs">
     <li (click)="tab_click('product')" [class.hm-tab-active]='tab_all_products' class="hm-tab">All Products</li>
-    <li (click)="tab_click('productConfig')" [class.hm-tab-active]='tab_product_config' class="hm-tab">Product
-      Configuration</li>
+    <li (click)="tab_click('productConfig')" [class.hm-tab-active]='tab_product_config' class="hm-tab">
+      Product Configuration </li>
     <div class="btnContainer">
       <div class="st-btn">
         <i class="fa fa-plus" aria-hidden="true"></i>
@@ -14,35 +14,22 @@
   <div class="tab-content" *ngIf="tab_all_products">
     <div class="filterTop">
       <div class="searchproduct">
-        <mat-form-field>
-          <input matInput placeholder="Search Product">
-        </mat-form-field>
+        <div class="InputGroup">
+          <input class="customInput" type="text" required>
+          <span class="highlight"></span>
+          <label class="customLabel">Search Product</label>
+        </div>
       </div>
       <div class="tbl-header-rhs">
         <div>
-            <h3>Show:</h3>
-        </div>        
-        <div class="ft-btn ft-btn-selected">
-          <span>All</span>
+          <h3>Show:</h3>
         </div>
-        <div class="ft-btn">
-          <span>Expire: This Week</span>
-        </div>
-        <div class="ft-btn">
-          <span>Expired</span>
-        </div>
-        <div class="ft-btn">
-          <span>Below Re-Order Level</span>
-        </div>
-        <div class="ft-btn">
-          <span>Out of Stock</span>
-        </div>
-        <div class="ft-btn">
-          <span>High Consumption Rate</span>
+        <div [className]="selectedFilterIndex === i ? 'ft-btn ft-btn-selected' : 'ft-btn'" *ngFor="let filter of storeFilters; let i = index"
+          (click)="setSelectedFilter(i,filter)">
+          <span>{{filter}}</span>
         </div>
       </div>
     </div>
     <app-all-products> </app-all-products>
   </div>
 </div>
-

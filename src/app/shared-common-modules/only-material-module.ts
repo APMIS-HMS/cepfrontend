@@ -18,6 +18,7 @@ import {
     MatPaginatorModule,
     MatDialogModule,
     MatButtonToggleModule,
+    MatTooltipModule
 }
     from '@angular/material';
 
@@ -39,7 +40,8 @@ import {
         MatRadioModule,
         MatTabsModule,
         MatDialogModule,
-        MatButtonToggleModule
+        MatButtonToggleModule,
+        MatTooltipModule
        
     ],
     exports: [
@@ -58,7 +60,8 @@ import {
         MatListModule,
         MatTabsModule,
         MatDialogModule,
-        MatButtonToggleModule
+        MatButtonToggleModule,
+        MatTooltipModule
     ],
     providers: []
 })

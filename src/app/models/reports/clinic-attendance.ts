@@ -14,14 +14,16 @@ export enum ClinicTabGroup {
 
 export const AppointmentSearchCriteria = {
     ByProvider: 'By Provider',
-    ByPatient: 'By Patient'
+    ByPatient: 'By Patient',
+    ByAll: 'All'
 };
 
 export const AppointmentReportStatus = {
     CheckedIn: 'Checked In',
     CheckedOut: 'Checked Out',
     Suspend: 'Suspend',
-    Postponed: 'Postponed'
+    Postponed: 'Postponed',
+    All: 'All'
 };
 export interface NumberOfAppointments {
     total: number;
