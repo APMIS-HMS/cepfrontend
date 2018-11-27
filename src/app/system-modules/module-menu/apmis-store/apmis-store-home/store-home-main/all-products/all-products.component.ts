@@ -2,6 +2,8 @@ import { InventoryService } from './../../../../../../services/facility-manager/
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Facility } from 'app/models';
 import { CoolLocalStorage } from 'angular2-cool-storage';
+import { StoreGlobalUtilService } from '../../../store-utils/global-service';
+import { ProductsToggle } from '../../../store-utils/global';
 
 @Component({
 	selector: 'app-all-products',
@@ -29,6 +31,7 @@ export class AllProductsComponent implements OnInit {
 		this.storeId = '5a88a0d26e6d17335cf318bc';
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
 		this.getInventoryList();
+		// this.productToggles = this.storeUtilService.getObjectKeys(ProductsToggle);
 	}
 
 	getInventoryList() {
@@ -80,5 +83,8 @@ export class AllProductsComponent implements OnInit {
 
 	adjustStock() {
 		this.showAdjustStock = true;
+	}
+	setSelectedToggle(index, toggle) {
+		// this.selectedToggleIndex = index;
 	}
 }
