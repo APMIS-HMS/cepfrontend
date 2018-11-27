@@ -18,6 +18,7 @@ export class ApmisNewStoreComponent implements OnInit {
       'majorLoc': [' ', Validators.required ],
       'minorLoc': [' ', Validators.required ],
       'storeName': [' ', Validators.required ],
+      'productType': [' ', Validators.required ],
       'desc': [' ', Validators.required ],
       'dispense': [' ', Validators.required ],
       'recievePurchase': [' ', Validators.required ]
