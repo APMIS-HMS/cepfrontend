@@ -1,15 +1,15 @@
 <div class="invoiceWrap">
 
   <div style="display: flex; flex:0;">
-
     <div class="filterWrap">
       <div class="row">
         <div class="dr-wrap survery">
-          <app-date-range></app-date-range>
+          <app-date-range
+                  [dateRange]="{from : reportOptions.startDate, to: reportOptions.endDate}"
+                  (dateRangeChange)="assignDate($event)"></app-date-range>
         </div>
       </div>
     </div>
-
     <div class="selectWrap">
       <mat-form-field>
         <mat-select placeholder="Select Cashier">
@@ -20,13 +20,6 @@
         </mat-select>
       </mat-form-field>
     </div>
-
-    <div class="searchinvoice">
-      <mat-form-field style="width:300px;">
-        <input matInput placeholder="Search Invoice Number">
-      </mat-form-field>
-    </div>
-
   </div>
 
   <div class="invoiceListWrap">
@@ -35,25 +28,25 @@
 
         <!-- Please group this according to the list of invoices coming from the backend -->
         <!-- Invoice A -->
-        <div class="col-sm-12 sheet-column">
+        <div class="col-sm-12 sheet-column" *ngFor="let pay of apiResponse.data">
           <div class="row sheet-table-list invoice-sub-header" (click)="showInvoiceA()">
             <i class="fa fa-sort-desc fa-2x" style="align-self: center; padding-left: 20px; margin-bottom: 10px;"
-              aria-hidden="true"></i>
+               aria-hidden="true"></i>
             <div class="col-6 invoice-header-text">
-              Orimoyegun Sunday
+              {{pay.person}}
             </div>
             <div class="col-6 invoice-header-text">
-              IV/76/9473
+              {{pay.invoiceNo}}
             </div>
 
             <div class="col-6 invoice-header-text">
-              Payment Mode : Cash
+              Payment Status : {{pay.paymentCompleted ? 'Complete' : 'Incomplete'}}
             </div>
             <div class="col-6 invoice-header-text">
               Employee : Mr Dele Adeola
             </div>
             <div class="col-6 invoicePrice">
-              Total Cost: #75,000
+              Total Cost: #{{pay.totalPrice | number:1.1-2}}
             </div>
           </div>
           <div *ngIf="invoiceA">
@@ -70,57 +63,57 @@
                     <div class="pay-tag">PAID</div>
                     <!--this is the invoice status if Paid or Unpaid-->
                     <thead>
-                      <tr>
-                        <th class="col1">Item Description</th>
-                        <th class="col2">Unit Price</th>
-                        <th class="col3">Quantity</th>
-                        <th class="col4">Total Price</th>
-                      </tr>
+                    <tr>
+                      <th class="col1">Item Description</th>
+                      <th class="col2">Unit Price</th>
+                      <th class="col3">Quantity</th>
+                      <th class="col4">Total Price</th>
+                    </tr>
                     </thead>
 
                     <tbody>
-                      <tr>
-                        <td class="col1">
-                          <div class="itemName">Widal Test</div>
-                          <div class="itemName">24 Hours Hotler Monitor</div>
-                          <div class="itemName">Consultation</div>
-                          <div class="itemName">Registration</div>
-                        </td>
-                        <td class="col2">
-                          <div class="topTotal">
-                            <span>&#8358;</span> 5,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 50,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 15,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 5,000
-                          </div>
-                        </td>
-                        <td class="col3">
-                          <div class="topTotal"> 1 </div>
-                          <div class="topTotal"> 1 </div>
-                          <div class="topTotal"> 1 </div>
-                          <div class="topTotal"> 1 </div>
-                        </td>
-                        <td class="col4">
-                          <div class="topTotal">
-                            <span>&#8358;</span> 5,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 50,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 15,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 5,000
-                          </div>
-                        </td>
-                      </tr>
+                    <tr>
+                      <td class="col1">
+                        <div class="itemName">Widal Test</div>
+                        <div class="itemName">24 Hours Hotler Monitor</div>
+                        <div class="itemName">Consultation</div>
+                        <div class="itemName">Registration</div>
+                      </td>
+                      <td class="col2">
+                        <div class="topTotal">
+                          <span>&#8358;</span> 5,000
+                        </div>
+                        <div class="topTotal">
+                          <span>&#8358;</span> 50,000
+                        </div>
+                        <div class="topTotal">
+                          <span>&#8358;</span> 15,000
+                        </div>
+                        <div class="topTotal">
+                          <span>&#8358;</span> 5,000
+                        </div>
+                      </td>
+                      <td class="col3">
+                        <div class="topTotal"> 1 </div>
+                        <div class="topTotal"> 1 </div>
+                        <div class="topTotal"> 1 </div>
+                        <div class="topTotal"> 1 </div>
+                      </td>
+                      <td class="col4">
+                        <div class="topTotal">
+                          <span>&#8358;</span> 5,000
+                        </div>
+                        <div class="topTotal">
+                          <span>&#8358;</span> 50,000
+                        </div>
+                        <div class="topTotal">
+                          <span>&#8358;</span> 15,000
+                        </div>
+                        <div class="topTotal">
+                          <span>&#8358;</span> 5,000
+                        </div>
+                      </td>
+                    </tr>
                     </tbody>
                   </table>
                   <div class="billSummarySect">
@@ -154,483 +147,7 @@
         </div>
 
         <br>
-        <!-- Invoice B-->
-        <div class="col-sm-12 sheet-column">
-          <div class="row sheet-table-list invoice-sub-header" (click)="showInvoiceB()">
-            <i class="fa fa-sort-desc fa-2x" style="align-self: center; padding-left: 20px; margin-bottom: 10px;"
-              aria-hidden="true"></i>
-            <div class="col-6 invoice-header-text">
-              Oderinde Sholaarin
-            </div>
-            <div class="col-6 invoice-header-text">
-              IV/76/7723
-            </div>
-            <div class="col-6 invoice-header-text">
-              Payment Mode : Transfer
-            </div>
-            <div class="col-6 invoice-header-text">
-              Employee : Mr Aladeluwa
-            </div>
-            <div class="col-6 invoicePrice">
-              Total Cost: #450,000
-            </div>
-          </div>
-          <div *ngIf="invoiceB">
-            <div class="row sheet-table-list">
-              <div style="min-width: 100%;">
-                <div class="inovice-item-details">
-                  <!-- <div class="invoice-item-details-header">
-                    <h2> Oderinde Sholaarin</h2>
-                    <div>Uknnuyi Makurdi Benue State Nigeria </div>
-                    <div>08142214995</div>
-                    <div>elliot@mail.com</div>
-                  </div> -->
-                  <table class="tblBg" style="padding: 1em;">
-                    <div class="pay-tag">UNPAID</div>
-                    <!--this is the invoice status if Paid or Unpaid-->
-                    <thead>
-                      <tr>
-                        <th class="col1">Item Description</th>
-                        <th class="col2">Unit Price</th>
-                        <th class="col3">Quantity</th>
-                        <th class="col4">Total Price</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      <tr>
-                        <td class="col1">
-                          <div class="itemName">Widal Test</div>
-                          <div class="itemName">24 Hours Hotler Monitor</div>
-                          <div class="itemName">Consultation</div>
-                          <div class="itemName">Registration</div>
-                        </td>
-                        <td class="col2">
-                          <div class="topTotal">
-                            <span>&#8358;</span> 5,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 50,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 15,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 5,000
-                          </div>
-                        </td>
-                        <td class="col3">
-                          <div class="topTotal"> 1 </div>
-                          <div class="topTotal"> 1 </div>
-                          <div class="topTotal"> 1 </div>
-                          <div class="topTotal"> 1 </div>
-                        </td>
-                        <td class="col4">
-                          <div class="topTotal">
-                            <span>&#8358;</span> 5,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 50,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 15,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 5,000
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="billSummarySect">
-                    <table class="rhs">
-                      <div class="summaryItems">
-                        <tr class="summaryItem">
-                          <td class="label">Sub Total</td>
-                          <td class="data">
-                            <span>&#x20a6;</span>75,000</td>
-                          <td></td>
-                        </tr>
-                        <tr class="summaryItem">
-                          <td class="label">Discount</td>
-                          <td class="data">
-                            <span>&#x20a6;</span>0.00</td>
-                          <td></td>
-                        </tr>
-                      </div>
-                      <tr class="grandTotalWrap">
-                        <td class="label">GRAND TOTAL</td>
-                        <td class="data">
-                          <span>&#x20a6;</span>75,000</td>
-                        <td></td>
-                      </tr>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <br>
-
-        <!-- Invoice C-->
-        <div class="col-sm-12 sheet-column">
-          <div class="row sheet-table-list invoice-sub-header" (click)="showInvoiceC()">
-            <i class="fa fa-sort-desc fa-2x" style="align-self: center; padding-left: 20px; margin-bottom: 10px;"
-              aria-hidden="true"></i>
-            <div class="col-6 invoice-header-text">
-              Kemi Shobowale
-            </div>
-            <div class="col-6 invoice-header-text">
-              IV/76/0011
-            </div>
-            <div class="col-6 invoice-header-text">
-              Payment Mode : Cheque
-            </div>
-            <div class="col-6 invoice-header-text">
-              Employee : Mr Omolere
-            </div>
-            <div class="col-6 invoicePrice">
-              Total Cost: #250,000
-            </div>
-          </div>
-          <div *ngIf="invoiceC">
-            <div class="row sheet-table-list">
-              <div style="min-width: 100%;">
-                <div class="inovice-item-details">
-                  <!-- <div class="invoice-item-details-header">
-                    <h2>Oregun Sunday</h2>
-                    <div>Uknnuyi Makurdi Benue State Nigeria </div>
-                    <div>08142214995</div>
-                    <div>elliot@mail.com</div>
-                  </div> -->
-                  <table class="tblBg" style="padding: 1em;">
-                    <div class="pay-tag">PAID</div>
-                    <!--this is the invoice status if Paid or Unpaid-->
-                    <thead>
-                      <tr>
-                        <th class="col1">Item Description</th>
-                        <th class="col2">Unit Price</th>
-                        <th class="col3">Quantity</th>
-                        <th class="col4">Total Price</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      <tr>
-                        <td class="col1">
-                          <div class="itemName">Widal Test</div>
-                          <div class="itemName">24 Hours Hotler Monitor</div>
-                          <div class="itemName">Consultation</div>
-                          <div class="itemName">Registration</div>
-                        </td>
-                        <td class="col2">
-                          <div class="topTotal">
-                            <span>&#8358;</span> 5,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 50,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 15,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 5,000
-                          </div>
-                        </td>
-                        <td class="col3">
-                          <div class="topTotal"> 1 </div>
-                          <div class="topTotal"> 1 </div>
-                          <div class="topTotal"> 1 </div>
-                          <div class="topTotal"> 1 </div>
-                        </td>
-                        <td class="col4">
-                          <div class="topTotal">
-                            <span>&#8358;</span> 5,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 50,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 15,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 5,000
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="billSummarySect">
-                    <table class="rhs">
-                      <div class="summaryItems">
-                        <tr class="summaryItem">
-                          <td class="label">Sub Total</td>
-                          <td class="data">
-                            <span>&#x20a6;</span>75,000</td>
-                          <td></td>
-                        </tr>
-                        <tr class="summaryItem">
-                          <td class="label">Discount</td>
-                          <td class="data">
-                            <span>&#x20a6;</span>0.00</td>
-                          <td></td>
-                        </tr>
-                      </div>
-                      <tr class="grandTotalWrap">
-                        <td class="label">GRAND TOTAL</td>
-                        <td class="data">
-                          <span>&#x20a6;</span>75,000</td>
-                        <td></td>
-                      </tr>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <br>
-
-        <!-- Invoice D -->
-        <div class="col-sm-12 sheet-column">
-          <div class="row sheet-table-list invoice-sub-header" (click)="showInvoiceD()">
-            <i class="fa fa-sort-desc fa-2x" style="align-self: center; padding-left: 20px; margin-bottom: 10px;"
-              aria-hidden="true"></i>
-            <div class="col-6 invoice-header-text">
-              Oni Omoniyi
-            </div>
-            <div class="col-6 invoice-header-text">
-              IV/77/0993
-            </div>
-            <div class="col-6 invoice-header-text">
-              Payment Mode : Cash / Transfer
-            </div>
-            <div class="col-6 invoice-header-text">
-              Employee : Mrs Eniola
-            </div>
-            <div class="col-6 invoicePrice">
-              Total Cost: #750,000
-            </div>
-          </div>
-          <div *ngIf="invoiceD">
-            <div class="row sheet-table-list">
-              <div style="min-width: 100%;">
-                <div class="inovice-item-details">
-                  <!-- <div class="invoice-item-details-header">
-                    <h2>Oregun Sunday</h2>
-                    <div>Uknnuyi Makurdi Benue State Nigeria </div>
-                    <div>08142214995</div>
-                    <div>elliot@mail.com</div>
-                  </div> -->
-                  <table class="tblBg" style="padding: 1em;">
-                    <div class="pay-tag">PAID</div>
-                    <!--this is the invoice status if Paid or Unpaid-->
-                    <thead>
-                      <tr>
-                        <th class="col1">Item Description</th>
-                        <th class="col2">Unit Price</th>
-                        <th class="col3">Quantity</th>
-                        <th class="col4">Total Price</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      <tr>
-                        <td class="col1">
-                          <div class="itemName">Widal Test</div>
-                          <div class="itemName">24 Hours Hotler Monitor</div>
-                          <div class="itemName">Consultation</div>
-                          <div class="itemName">Registration</div>
-                        </td>
-                        <td class="col2">
-                          <div class="topTotal">
-                            <span>&#8358;</span> 5,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 50,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 15,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 5,000
-                          </div>
-                        </td>
-                        <td class="col3">
-                          <div class="topTotal"> 1 </div>
-                          <div class="topTotal"> 1 </div>
-                          <div class="topTotal"> 1 </div>
-                          <div class="topTotal"> 1 </div>
-                        </td>
-                        <td class="col4">
-                          <div class="topTotal">
-                            <span>&#8358;</span> 5,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 50,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 15,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 5,000
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="billSummarySect">
-                    <table class="rhs">
-                      <div class="summaryItems">
-                        <tr class="summaryItem">
-                          <td class="label">Sub Total</td>
-                          <td class="data">
-                            <span>&#x20a6;</span>75,000</td>
-                          <td></td>
-                        </tr>
-                        <tr class="summaryItem">
-                          <td class="label">Discount</td>
-                          <td class="data">
-                            <span>&#x20a6;</span>0.00</td>
-                          <td></td>
-                        </tr>
-                      </div>
-                      <tr class="grandTotalWrap">
-                        <td class="label">GRAND TOTAL</td>
-                        <td class="data">
-                          <span>&#x20a6;</span>75,000</td>
-                        <td></td>
-                      </tr>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <br>
-        <!-- Invoice E -->
-        <div class="col-sm-12 sheet-column">
-          <div class="row sheet-table-list invoice-sub-header" (click)="showInvoiceE()">
-            <i class="fa fa-sort-desc fa-2x" style="align-self: center; padding-left: 20px; margin-bottom: 10px;"
-              aria-hidden="true"></i>
-            <div class="col-6 invoice-header-text">
-              Gorge Sylva
-            </div>
-            <div class="col-6 invoice-header-text">
-              IV/23/00239
-            </div>
-            <div class="col-6 invoice-header-text">
-              Payment Mode : Cash
-            </div>
-            <div class="col-6 invoice-header-text">
-              Employee : Mr Dele Adeola
-            </div>
-            <div class="col-6 invoicePrice">
-              Total Cost: #60,000
-            </div>
-          </div>
-          <div *ngIf="invoiceE">
-            <div class="row sheet-table-list">
-              <div style="min-width: 100%;">
-                <div class="inovice-item-details">
-                  <!-- <div class="invoice-item-details-header">
-                    <h2>Oregun Sunday</h2>
-                    <div>Uknnuyi Makurdi Benue State Nigeria </div>
-                    <div>08142214995</div>
-                    <div>elliot@mail.com</div>
-                  </div> -->
-                  <table class="tblBg" style="padding: 1em;">
-                    <div class="pay-tag">PAID</div>
-                    <!--this is the invoice status if Paid or Unpaid-->
-                    <thead>
-                      <tr>
-                        <th class="col1">Item Description</th>
-                        <th class="col2">Unit Price</th>
-                        <th class="col3">Quantity</th>
-                        <th class="col4">Total Price</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      <tr>
-                        <td class="col1">
-                          <div class="itemName">Widal Test</div>
-                          <div class="itemName">24 Hours Hotler Monitor</div>
-                          <div class="itemName">Consultation</div>
-                          <div class="itemName">Registration</div>
-                        </td>
-                        <td class="col2">
-                          <div class="topTotal">
-                            <span>&#8358;</span> 5,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 50,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 15,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 5,000
-                          </div>
-                        </td>
-                        <td class="col3">
-                          <div class="topTotal"> 1 </div>
-                          <div class="topTotal"> 1 </div>
-                          <div class="topTotal"> 1 </div>
-                          <div class="topTotal"> 1 </div>
-                        </td>
-                        <td class="col4">
-                          <div class="topTotal">
-                            <span>&#8358;</span> 5,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 50,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 15,000
-                          </div>
-                          <div class="topTotal">
-                            <span>&#8358;</span> 5,000
-                          </div>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                  <div class="billSummarySect">
-                    <table class="rhs">
-                      <div class="summaryItems">
-                        <tr class="summaryItem">
-                          <td class="label">Sub Total</td>
-                          <td class="data">
-                            <span>&#x20a6;</span>75,000</td>
-                          <td></td>
-                        </tr>
-                        <tr class="summaryItem">
-                          <td class="label">Discount</td>
-                          <td class="data">
-                            <span>&#x20a6;</span>0.00</td>
-                          <td></td>
-                        </tr>
-                      </div>
-                      <tr class="grandTotalWrap">
-                        <td class="label">GRAND TOTAL</td>
-                        <td class="data">
-                          <span>&#x20a6;</span>75,000</td>
-                        <td></td>
-                      </tr>
-                    </table>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
+       
       </div>
     </div>
     <!-- <div class="billSummarySect">

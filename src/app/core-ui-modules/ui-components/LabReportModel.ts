@@ -27,7 +27,7 @@ export interface IGroupableLabReportModel
 export interface ILabReportOption extends IDefaultReportOption{
     
     // if it an investigation summary report.
-    isInvestigation? : boolean;  
+    isSummary? : boolean;  
     // Groupings
     groupBy? : 'location' | 'bench';
     

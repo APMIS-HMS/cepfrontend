@@ -1,0 +1,98 @@
+<div class="pad10">
+    <div class="row sheet-table-list">
+        <div style="min-width: 100%;">
+            <div class="inovice-item-details">
+           
+                <table class="tblBg" style="padding: 1em;">
+                    <div class="pay-tag">PAID</div>
+                    <!--this is the invoice status if Paid or Unpaid-->
+                    <thead>
+                    <tr>
+                        <th class="col1">Item Description</th>
+                        <th class="col2">Unit Price</th>
+                        <th class="col3">Quantity</th>
+                        <th class="col4">Total Price</th>
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    <tr>
+                        <td class="col1">
+                            <div class="itemName">Widal Test</div>
+                            <div class="itemName">24 Hours Hotler Monitor</div>
+                            <div class="itemName">Consultation</div>
+                            <div class="itemName">Registration</div>
+                        </td>
+                        <td class="col2">
+                            <div class="topTotal">
+                                <span>&#8358;</span> 5,000
+                            </div>
+                            <div class="topTotal">
+                                <span>&#8358;</span> 50,000
+                            </div>
+                            <div class="topTotal">
+                                <span>&#8358;</span> 15,000
+                            </div>
+                            <div class="topTotal">
+                                <span>&#8358;</span> 5,000
+                            </div>
+                        </td>
+                        <td class="col3">
+                            <div class="topTotal"> 1 </div>
+                            <div class="topTotal"> 1 </div>
+                            <div class="topTotal"> 1 </div>
+                            <div class="topTotal"> 1 </div>
+                        </td>
+                        <td class="col4">
+                            <div class="topTotal">
+                                <span>&#8358;</span> 5,000
+                            </div>
+                            <div class="topTotal">
+                                <span>&#8358;</span> 50,000
+                            </div>
+                            <div class="topTotal">
+                                <span>&#8358;</span> 15,000
+                            </div>
+                            <div class="topTotal">
+                                <span>&#8358;</span> 5,000
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="billSummarySect">
+                    <table class="rhs">
+                        <div class="summaryItems">
+                            <tr class="summaryItem">
+                                <td class="label">Sub Total</td>
+                                <td class="data">
+                                    <span>&#x20a6;</span>75,000</td>
+                                <td></td>
+                            </tr>
+                            <tr class="summaryItem">
+                                <td class="label">Discount</td>
+                                <td class="data">
+                                    <span>&#x20a6;</span>0.00</td>
+                                <td></td>
+                            </tr>
+                        </div>
+                        <tr class="grandTotalWrap">
+                            <td class="label">GRAND TOTAL</td>
+                            <td class="data">
+                                <span>&#x20a6;</span>75,000</td>
+                            <td></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div>
+        <asom-data-pager [show-progress]="true" [in-progress]="loading"
+                         (onPageClick)="gotoPage($event)"
+                         [pager-source]="pagerSource"
+
+        ></asom-data-pager>
+    </div>
+</div>

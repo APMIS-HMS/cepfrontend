@@ -57,7 +57,7 @@ export class LabReportSummaryComponent implements OnInit {
 	@Input()
 	reportOption: ILabReportOption = {
 		paginate: false,
-		isInvestigation: true
+		isSummary: true
 	};
 
 	constructor(private reportSource: ReportGeneratorService, private paymentReprotService: PaymentReportGenerator) {}
@@ -71,10 +71,7 @@ export class LabReportSummaryComponent implements OnInit {
 			console.log(x);
 			this.reportData = x.data;
 		});
-		console.log(this.reportOption);
-		this.paymentReprotService.getPaymentReportSummary({ isSummary: true }).then((x) => {
-			console.log(x);
-		});
+		
 	}
 }
 
@@ -85,7 +82,7 @@ export class LabReportSummaryComponent implements OnInit {
         <div class="tbl-resp-wrap" id="printableArea">
             <table class="" style="color:black;" cellpadding="0" cellspacing="0" border="0.5">
                 <thead>
-                <tr class="th-r1 th-xxx">
+                <tr class="th-r1 th-xxx" >
                     <th>S/N</th>
                     <th>Patient Info</th>
                     <th>Date</th>
@@ -100,7 +97,7 @@ export class LabReportSummaryComponent implements OnInit {
                 <tbody>
                 <tr *ngIf="processing">
                     <td colspan="7">
-                        <div class="pad20 flex-container">
+                        <div class="pad20 text-center" style="text-align:center">
                             <span class="fa fa-3x fa-spin fa-spinner"></span>
                         </div>
                     </td>
@@ -171,7 +168,11 @@ export class LabReportDetails implements OnInit, OnChanges, DoCheck {
 			this.reportData = x.data.data;
 			this.processing = false;
 			this.pagerSource.totalRecord = x.data.total;
-		});
+		}, x => {
+			  this.processing  = false;
+			  
+			}
+		);
 	}
 
 	pagerButtonClick(index: number) {

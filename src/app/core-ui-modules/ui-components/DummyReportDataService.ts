@@ -74,12 +74,8 @@ export class DummyReportDataService extends ReportGeneratorService //  implement
             console.log("TESTING Backend Service Call: " , x);
 
         });
-        this.getLocations().then(x => {
-            console.log("LOCATIONS" , x);
-        }); 
-        this.getWorkBenches().then(x => {
-            console.log("Work Benches" , x);
-        });
+      
+       
             return Promise.resolve(result);
         
     }
