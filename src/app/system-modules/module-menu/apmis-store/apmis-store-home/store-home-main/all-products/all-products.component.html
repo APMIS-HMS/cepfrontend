@@ -12,8 +12,8 @@
         </div>
         <div class="store-th">Available Quantity</div>
         <div class="store-th">Re-Order Level</div>
-        <div class="store-th">Cost/Unit</div>
-        <div class="store-th">Total Cost Price</div>
+        <!-- <div class="store-th">Cost/Unit</div>
+        <div class="store-th">Total Cost Price</div> -->
         <div class="store-th">Unit Selling Price</div>
       </div>
       <div class="store-th store-td-actions"></div>
@@ -21,7 +21,7 @@
   </div>
 
   <div class="store-tbody">
-    <div *ngFor="let product of getProductSlice(products); let i = index" class="store-pre-tr">
+    <div *ngFor="let product of products; let i = index" class="store-pre-tr">
       <div class="store-tr">
         <div class="store-td store-td-actions">
           <i *ngIf="item_to_show(i)" (click)="toggle_tr(i)" class="exp-tr fa fa-angle-down"></i>
@@ -30,15 +30,15 @@
         <div class="store-tr-in">
           <div class="store-td">{{product.productName}}</div>
           <div class="store-td">
-            <span class="spc-lft">{{product.quantity| number}}</span>
+            <span class="spc-lft">{{product.availableQuantity| number}}</span>
             <select>
               <option *ngFor="let pack of packTypes" value="{{pack.id}}">{{pack.name}}</option>
             </select>
           </div>
-          <div class="store-td">20 Sachets</div>
-          <div class="store-td">#5/Sachet</div>
-          <div class="store-td">#300,000</div>
-          <div class="store-td">#5/Sachet</div>
+          <div class="store-td">{{product.reOrderLevel}} Sachets</div>
+          <!-- <div class="store-td">#5/Sachet</div>
+          <div class="store-td">#300,000</div> -->
+          <div class="store-td">&#8358;{{product.price}}/Sachet</div>
         </div>
         <!-- <div class="store-td store-td-actions">
           <i class="fa fa-ellipsis-v"></i>
@@ -46,7 +46,7 @@
         <div class="table-list col-xs-1 action-placeholder">
           <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
           <div class="action-container shadow-RB">
-            
+
             <div class="action-item opt-menu" (click)="productDistribution()">
               <span>Check Distribution</span>
             </div>
@@ -154,5 +154,5 @@
 </div>
 
 <div *ngIf="showProductDistribution" class="modal-overlay">
-    <app-check-product-distribution (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-check-product-distribution>
-  </div>
+  <app-check-product-distribution (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-check-product-distribution>
+</div>
