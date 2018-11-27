@@ -114,4 +114,8 @@ export class InventoryService {
 	getExpiredInventoryDetails(storeId: string, noOfDays: string) {
 		return this._inventoryExpiredServiceEndPt.get(noOfDays, { query: { storeId: storeId } });
 	}
+
+	getAboutToExpireInventoryDetails(query) {
+		return this._inventoryAboutToExpireServiceEndPt.find(query);
+	}
 }
