@@ -33,19 +33,28 @@
             <span class="highlight"></span>
             <label class="customLabel">Store Name</label>
           </div>
-          <div class="InputGroup">      
-            <input formControlName="productType" class="customInput" type="text" required>
-            <span class="highlight"></span>
-            <label class="customLabel">Product Type</label>
-          </div>
+          <app-apmis-search class="apmis-search"></app-apmis-search>
         </div>
-        <!-- <div class="input-group-x2">
+        <div class="input-group-x2">
           <div class="InputGroup" style="margin-right:5px;">      
             <textarea formControlName="desc" class="customTextarea" placeholder="Add Note"></textarea> 
             <span class="highlight"></span>       
           </div>
-          <div></div>
-        </div> -->
+          <div class="chk-flex">
+            <div class="check-wrap">
+              <label class="control control--checkbox">Dispense
+                <input type="checkbox" formControlName="dispense" />
+                <div class="control__indicator"></div>
+              </label>
+            </div>
+            <div class="check-wrap">
+              <label class="control control--checkbox">Recieve Purchase
+                <input type="checkbox" formControlName="recievePurchase" />
+                <div class="control__indicator"></div>
+              </label>
+            </div>
+          </div>
+        </div>
       </form>
     </div>
   </div>
