@@ -4,6 +4,7 @@ import { ApmisStoreHomeComponent } from './apmis-store-home/apmis-store-home.com
 import { ApmisStoreLandingpageComponent } from './apmis-store-landingpage.component';
 import { ApmisStoreProductComponent } from './apmis-store-product/apmis-store-product.component';
 import { StoreStoresComponent } from './store-stores/store-stores.component';
+import { ProductMovementComponent } from './product-movement/product-movement.component';
 import { ApmisNewStoreComponent } from './store-stores/apmis-new-store/apmis-new-store.component';
 const routes: Routes = [
 	{
@@ -21,14 +22,18 @@ const routes: Routes = [
 			{
 				path: 'store',
 				component: StoreStoresComponent
-      },
-      {
-        path: "new-store",
-        component: ApmisNewStoreComponent
-      },
+			},
+			{
+				path: "new-store",
+				component: ApmisNewStoreComponent
+			},
 			{
 				path: 'product',
 				component: ApmisStoreProductComponent
+			},
+			{
+				path: 'product-movement',
+				component: ProductMovementComponent
 			}
 		]
 	}
