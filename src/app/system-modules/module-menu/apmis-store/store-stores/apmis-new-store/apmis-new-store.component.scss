@@ -3,3 +3,9 @@
 fieldset{
     border: 0;
 }
+.chk-flex{
+    display: flex;
+    .control-group{
+        margin-right: 20px;
+    }
+}

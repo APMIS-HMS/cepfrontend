@@ -44,7 +44,20 @@
             <textarea formControlName="desc" class="customTextarea" placeholder="Add Note"></textarea> 
             <span class="highlight"></span>       
           </div>
-          <div></div>
+          <div class="chk-flex">
+            <div class="control-group">
+              <label class="control control--checkbox">Dispense
+                <input type="checkbox" formControlName="dispense" />
+                <div class="control__indicator"></div>
+              </label>
+            </div>
+            <div class="control-group">
+              <label class="control control--checkbox">Recieve Purchase
+                <input type="checkbox" formControlName="recievePurchase" />
+                <div class="control__indicator"></div>
+              </label>
+            </div>
+          </div>
         </div>
       </form>
     </div>
