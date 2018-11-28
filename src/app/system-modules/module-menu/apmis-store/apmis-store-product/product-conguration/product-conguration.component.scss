@@ -1,0 +1,54 @@
+.fa{
+    padding-right: 15px !important;
+}
+
+.config-container{
+    display: flex;    
+}
+.config-layout{
+    display: block;
+    padding-top: 30px;
+    padding-right: 100px;
+}
+.config-wrap{
+	display: flex;
+	i{
+        margin: 15px;
+        padding-left: 200px;
+        align-self: flex-end;
+    }
+}
+.config-tags-wrap-x2{
+    display: flex;
+    align-items: center;    
+    justify-content: space-between;
+    padding-right: 45px;
+    span{
+        color: black;
+        font-weight: bold;
+    }
+}
+
+.config-tags-wrap{
+    display: flex;
+    align-items: center;    
+}
+
+.config-tr-in {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    grid-auto-columns: 1fr;
+    grid-gap: 20px;
+    align-items: left;
+    grid-auto-rows: auto;
+    grid-auto-flow: column;
+}
+
+.tbl-config-wrap{
+    margin-top:20px
+}
+
+legend {
+    font-size: 18px;
+    margin-right: 30px;
+}
