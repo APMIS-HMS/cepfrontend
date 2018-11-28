@@ -1,5 +1,6 @@
 .fa{
     padding-right: 15px !important;
+    cursor: pointer;
 }
 
 .config-container{
@@ -58,4 +59,9 @@ h2 {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.apmisSearch-wrap{
+    width: 30% !important; 
+    position: absolute;
 }
