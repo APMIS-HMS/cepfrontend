@@ -15,6 +15,7 @@ export class PaymentSummaryPageComponent implements OnInit {
     }
 
     ngOnInit() {
+       
         this.getReportSummaryData();
     }
 
@@ -41,7 +42,7 @@ export class PaymentSummaryPageComponent implements OnInit {
                     this.summaryData = x.data;
                     console.log(x);
                 }, x => {
-                    console.log(x);
+                   // console.log(x);
                 }
             );
     }

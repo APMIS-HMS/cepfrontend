@@ -101,6 +101,7 @@ export class PaymentReportGenerator implements IPaymentReportServiceEndPoint {
 
     constructor(private restEndpoint: RestService, locker: CoolLocalStorage) {
         //super();
+        
         this.paymentReportServiceRef = this.restEndpoint.getService("payment-reports");
         this.selectedFacility = locker.getObject("selectedFacility");
     }
@@ -116,7 +117,7 @@ export class PaymentReportGenerator implements IPaymentReportServiceEndPoint {
         }
         return this.paymentReportServiceRef.get(options.facilityId,
             {
-                query: options
+               // query: options
             }
         );
 
@@ -128,6 +129,7 @@ export class PaymentReportGenerator implements IPaymentReportServiceEndPoint {
     }
 
     getPaymentReportSummary(rptOption: IPaymentReportOptions = {}): Promise<IApiResponse<IPaymentReportSummaryModel>> {
+        console.log(this.paymentReportServiceRef);
         rptOption.facilityId = this.selectedFacility._id;
 
         /* So to get  all report summary we simply send a 'isSummary' variable to the server, Date range might be checked on server*/
@@ -141,4 +143,21 @@ export class PaymentReportGenerator implements IPaymentReportServiceEndPoint {
 
     }
 
+}
+
+@Injectable()
+export class PaymentChartDataService
+{
+    selectedFacility  : any;
+    paymentChartDataServiceRef : any;
+    constructor(private restEndPoint : RestService, localStorage : CoolLocalStorage)
+    {
+        this.selectedFacility  = localStorage.getObject("SelectedFacility");
+        this.paymentChartDataServiceRef  =  this.restEndPoint.getService("payment-chart-data");
+    }
+    
+    async  getChartData()  : Promise<any>
+    {
+        return await this.paymentChartDataServiceRef.get(this.selectedFacility._id, {});
+    }
 }

@@ -6,10 +6,11 @@ import {
 import {Observable} from "rxjs";
 import {Injectable} from "@angular/core";
 import {RestService} from "../../feathers/feathers.service";
-import {PaymentReportGenerator, ReportGeneratorService} from "./report-generator-service";
+import {PaymentChartDataService, PaymentReportGenerator, ReportGeneratorService} from "./report-generator-service";
 import {IApiResponse} from "./ReportGenContracts";
 import {IPaymentReportModel, IPaymentReportOptions, IPaymentReportSummaryModel} from "./PaymentReportModel";
 import {CoolLocalStorage} from "angular2-cool-storage";
+import {Local} from "protractor/built/driverProviders";
 @Injectable()
 export class DummyReportDataService extends ReportGeneratorService //  implements ICustomReportService
 {
@@ -1442,4 +1443,83 @@ export class DummyPaymentReportService extends PaymentReportGenerator
         };
         return Promise.resolve(result);
     }
+}
+
+@Injectable()
+export class DummyPaymentChartDataService  extends  PaymentChartDataService
+{
+    constructor(private rest  : RestService , localStorage : CoolLocalStorage)
+    {
+        super(rest , localStorage);
+    }
+    
+    async  getChartData() : Promise<any>
+    {
+        const dummyData  = {
+            "lineChartData": [
+                {
+                    "label": "Appointment",
+                    "data": [
+                        20000
+                    ]
+                },
+                {
+                    "label": "Laboratory",
+                    "data": [
+                        9800
+                    ]
+                },
+                {
+                    "label": "Medical Records",
+                    "data": [
+                        1000
+                    ]
+                },
+                {
+                    "label": "Ward",
+                    "data": [
+                        300000
+                    ]
+                }
+            ],
+            "lineChartLabels": [
+                "14th Nov",
+                "15th Nov"
+            ],
+            "lineChartColors": [
+                {
+                    "backgroundColor": "rgba(148,159,177,0.2)",
+                    "borderColor": "rgba(148,159,177,1)",
+                    "pointBackgroundColor": "rgba(148,159,177,1)",
+                    "pointBorderColor": "#fff",
+                    "pointHoverBackgroundColor": "#fff",
+                    "pointHoverBorderColor": "rgba(148,159,177,0.8)"
+                },
+                {
+                    "backgroundColor": "rgba(77,83,96,0.2)",
+                    "borderColor": "rgba(77,83,96,1)",
+                    "pointBackgroundColor": "rgba(77,83,96,1)",
+                    "pointBorderColor": "#fff",
+                    "pointHoverBackgroundColor": "#fff",
+                    "pointHoverBorderColor": "rgba(77,83,96,1)"
+                },
+                {
+                    "backgroundColor": "rgba(148,159,177,0.2)",
+                    "borderColor": "rgba(148,159,177,1)",
+                    "pointBackgroundColor": "rgba(148,159,177,1)",
+                    "pointBorderColor": "#fff",
+                    "pointHoverBackgroundColor": "#fff",
+                    "pointHoverBorderColor": "rgba(148,159,177,0.8)"
+                }
+            ],
+            "lineChartLegend": true,
+            "lineChartType": "line",
+            "lineChartOptions": {
+                "responsive": true
+            }
+        };
+        const result  =  await Promise.resolve(dummyData);
+        return result;
+    }
+    
 }
