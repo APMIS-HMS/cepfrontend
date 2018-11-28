@@ -1,4 +1,3 @@
-import { ApmisPaginationComponent } from './components/apmis-pagination/apmis-pagination.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ApmisStoreRoutingModule } from './apmis-store-routing.module';
@@ -7,17 +6,25 @@ import { ApmisStoreHomeComponent } from './apmis-store-home/apmis-store-home.com
 import { StoreHomeAnalyticsComponent } from './apmis-store-home/store-home-analytics/store-home-analytics.component';
 import { StoreHomeMainComponent } from './apmis-store-home/store-home-main/store-home-main.component';
 import { AllProductsComponent } from './apmis-store-home/store-home-main/all-products/all-products.component';
+import { ApmisStoreProductComponent } from './apmis-store-product/apmis-store-product.component';
+import { AdjustStockComponent } from './apmis-store-product/adjust-stock/adjust-stock.component';
+import { CheckProductDistributionComponent } from './apmis-store-product/check-product-distribution/check-product-distribution.component';
 import { ExpiringProductsComponent } from './apmis-store-home/store-home-main/expiring-products/expiring-products.component';
 import { ExpiredProductsComponent } from './apmis-store-home/store-home-main/expired-products/expired-products.component';
 import { ProductRequisitionComponent } from './apmis-store-home/store-home-main/product-requisition/product-requisition.component';
 import { ProductRestockComponent } from './apmis-store-home/store-home-main/product-restock/product-restock.component';
 import { StoreStoresComponent } from './store-stores/store-stores.component';
 import { StoreTabComponent } from './store-stores/store-tab/store-tab.component';
-import { ApmisStoreProductComponent } from './apmis-store-product/apmis-store-product.component';
 import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-module';
+import { StoreService, InventoryService } from 'app/services/facility-manager/setup';
+import { ApmisPaginationComponent } from './components/apmis-pagination/apmis-pagination.component';
+import { StoreGlobalUtilService } from './store-utils/global-service';
+import { ApmisNewStoreComponent } from './store-stores/apmis-new-store/apmis-new-store.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
-	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule ],
+	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule,
+		FormsModule, ReactiveFormsModule ],
 	declarations: [
 		ApmisStoreLandingpageComponent,
 		ApmisStoreHomeComponent,
@@ -31,7 +38,11 @@ import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-modu
 		StoreStoresComponent,
 		StoreTabComponent,
 		ApmisStoreProductComponent,
-		ApmisPaginationComponent
-	]
+		ApmisPaginationComponent,
+		AdjustStockComponent,
+		CheckProductDistributionComponent,
+		ApmisNewStoreComponent
+	],
+	providers: [ StoreService, InventoryService, StoreGlobalUtilService ]
 })
 export class ApmisStoreModule {}
