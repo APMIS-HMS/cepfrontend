@@ -1,17 +1,7 @@
-<div class="apmis-search-wrap">
-  <div class="apmis-search-header">
-    <div class="apmis-search-label">Add Product Type</div> 
-    <img (click)="toggler_click()" class="plus-ico" src="assets/images/report_icons/plus.svg" /> 
-  </div>
-  
- <div *ngIf="showSearch">
-   <app-apmis-search-result></app-apmis-search-result>
- </div>
- 
- <!-- <div *ngIf="showSearch" class="apmis-search-content"> 
+<div  class="apmis-search-content"> 
   <div class="apmis-search-item input-wrap">   
     <img class="search-ico" src="assets/images/report_icons/search-small.svg" />   
-    <input class="input" [formControl]="apmisSearch" type="text">
+    <input class="input" [formControl]="apmisSearchResult" type="text">
   </div>
   <ul>
     <li class="apmis-search-item asi-list">
@@ -32,13 +22,5 @@
       </div>
       <img class="ico" src="assets/images/report_icons/times.svg" />  
     </li>
-  </ul>
-</div> -->
-
-  <ul class="apmis-search-selected-list">
-    <li class="ft-btn">Consumables</li>
-    <li class="ft-btn">Infusion</li>
-    <li class="ft-btn">Breverages</li>
-    <li class="ft-btn">Injection</li>
   </ul>
 </div>

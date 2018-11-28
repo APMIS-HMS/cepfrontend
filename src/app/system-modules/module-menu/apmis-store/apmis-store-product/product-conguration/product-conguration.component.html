@@ -25,8 +25,12 @@
   <div class="config-layout">
     <div class="config-wrap">
       <h3 style="margin-right: 120px;">Set Base Unit</h3>
-      <i class="fa fa-plus" aria-hidden="true"></i>
+      <i (click)="onShowSearch()" class="fa fa-plus" aria-hidden="true"></i>
+      <div class="apmisSearch-wrap" *ngIf="apmisSearch">
+        <app-apmis-search-result></app-apmis-search-result>
+      </div>
     </div>
+
     <div class="config-tags-wrap-x2">
       <div class="tag-btn">
         <span>Tablets</span>
@@ -94,6 +98,8 @@
     <span>Save Configuration</span>
   </div>
 </div>
+
+
 <div class="tbl-config-wrap">
   <h2>Configured Product</h2>
   <div class="store-table">
