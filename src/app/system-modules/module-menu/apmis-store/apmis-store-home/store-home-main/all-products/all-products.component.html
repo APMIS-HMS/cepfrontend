@@ -24,8 +24,8 @@
     <div *ngFor="let product of products; let i = index" class="store-pre-tr">
       <div class="store-tr">
         <div class="store-td store-td-actions">
-          <i *ngIf="item_to_show(i)" (click)="toggle_tr(i)" class="exp-tr fa fa-angle-down"></i>
-          <i *ngIf="!item_to_show(i)" (click)="toggle_tr(i)" class="exp-tr fa fa-angle-right"></i>
+          <i *ngIf="item_to_show(i)" (click)="toggle_tr(i, 'down')" class="exp-tr fa fa-angle-down"></i>
+          <i *ngIf="!item_to_show(i)" (click)="toggle_tr(i, 'right')" class="exp-tr fa fa-angle-right"></i>
         </div>
         <div class="store-tr-in">
           <div class="store-td">{{product.productName}}</div>
@@ -82,60 +82,22 @@
         </div>
 
         <ul class="batches">
-          <li class="batch">
+          <li class="batch" *ngFor="let transaction of product.transactions">
             <div class="btc-top">
               <div class="val-wrap">
                 <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
+                <div class="val-val">{{transaction.batchNumber}}</div>
               </div>
               <div class="orange-label">Out of Stock</div>
             </div>
             <div class="btc-body">
               <div class="btc-body-item">
                 <div class="val-label">Batch Quantity:</div>
-                <div class="val-val">0 Tablets</div>
+                <div class="val-val">{{transaction.quantity}} Tablets</div>
               </div>
               <div class="btc-body-item">
                 <div class="val-label">Batch Expiring Date:</div>
-                <div class="val-val">14/10/2020</div>
-              </div>
-            </div>
-          </li>
-          <li class="batch">
-            <div class="btc-top">
-              <div class="val-wrap">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
-              </div>
-              <div class="red-label">Expired</div>
-            </div>
-            <div class="btc-body">
-              <div class="btc-body-item">
-                <div class="val-label">Batch Quantity:</div>
-                <div class="val-val">300 Tablets</div>
-              </div>
-              <div class="btc-body-item">
-                <div class="val-label">Batch Expiring Date:</div>
-                <div class="val-val">19/11/2018</div>
-              </div>
-            </div>
-          </li>
-          <li class="batch">
-            <div class="btc-top">
-              <div class="val-wrap">
-                <div class="val-label">Batch:</div>
-                <div class="val-val">1243ERTCH</div>
-              </div>
-              <!-- <div class="red-label">Expired</div> -->
-            </div>
-            <div class="btc-body">
-              <div class="btc-body-item">
-                <div class="val-label">Batch Quantity:</div>
-                <div class="val-val">1,200 table-list</div>
-              </div>
-              <div class="btc-body-item">
-                <div class="val-label">Batch Expiring Date:</div>
-                <div class="val-val">05/08/2022</div>
+                <div class="val-val">{{transaction.expiryDate | date:'dd/MM/yyyy'}}</div>
               </div>
             </div>
           </li>
