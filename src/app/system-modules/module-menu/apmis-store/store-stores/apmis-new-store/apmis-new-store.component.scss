@@ -5,7 +5,8 @@ fieldset{
 }
 .chk-flex{
     display: flex;
-    .control-group{
+    align-items: flex-end;
+    .check-wrap{
         margin-right: 20px;
     }
 }
