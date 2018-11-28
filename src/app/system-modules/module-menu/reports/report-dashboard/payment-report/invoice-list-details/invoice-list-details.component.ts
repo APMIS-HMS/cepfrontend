@@ -3,8 +3,8 @@ import {Router} from '@angular/router';
 import {PaymentReportGenerator} from "../../../../../../core-ui-modules/ui-components/report-generator-service";
 import {
     IPaymentReportModel,
-    IPaymentReportOptions,
-    IPaymentReportSummaryModel
+    IPaymentReportOptions
+    
 } from "../../../../../../core-ui-modules/ui-components/PaymentReportModel";
 import {IDateRange} from "ng-pick-daterange";
 import {IApiResponse} from "../../../../../../core-ui-modules/ui-components/ReportGenContracts";
@@ -58,49 +58,25 @@ export class InvoiceListDetailsComponent implements OnInit {
             .then(x => { 
                 this.loading = false;
                 this.apiResponse = x;
+                this.apiResponse.data[0].isExpanded  = true;
+                this.pagerSource.totalRecord  = x.total;
+                
                 console.log(this.apiResponse,  "API Response");
             });
     }
 
-    showInvoiceA() {
-        this.invoiceA = !this.invoiceA;
-        this.invoiceB = false;
-        this.invoiceC = false;
-        this.invoiceD = false;
-        this.invoiceE = false;
-    }
-
-    showInvoiceB() {
-        this.invoiceB = !this.invoiceB;
-        this.invoiceA = false;
-        this.invoiceC = false;
-        this.invoiceD = false;
-        this.invoiceE = false;
-    }
-
-    showInvoiceC() {
-        this.invoiceC = !this.invoiceC;
-        this.invoiceA = false;
-        this.invoiceB = false;
-        this.invoiceD = false;
-        this.invoiceE = false;
-    }
-
-    showInvoiceD() {
-        this.invoiceD = !this.invoiceD;
-        this.invoiceA = false;
-        this.invoiceB = false;
-        this.invoiceC = false;
-        this.invoiceE = false;
-    }
-
-    showInvoiceE() {
-        this.invoiceE = !this.invoiceE;
-        this.invoiceA = false;
-        this.invoiceB = false;
-        this.invoiceC = false;
-        this.invoiceD = false;
-    }
+  toggleExpandFor( payment  :IPaymentReportModel )
+  {
+      // Colaspe all and expand the selected payment details
+      this.apiResponse.data.forEach(x => {
+          if(x._id !== payment._id)
+          {
+              x.isExpanded =  false;
+          }
+          
+      });
+      payment.isExpanded  = !payment.isExpanded;
+  }
 
     assignDate(date: IDateRange) {
         this.reportOptions.startDate = date.from;
@@ -112,6 +88,7 @@ export class InvoiceListDetailsComponent implements OnInit {
     gotoPage (index  : number)
     {
         this.pagerSource.currentPage   = index;
-        this.reportOptions.paginationOptions.skip= index * this.pagerSource.pageSize; 
+        this.reportOptions.paginationOptions.skip= index * this.pagerSource.pageSize;
+        this.getPaymentReport();
     }
 }

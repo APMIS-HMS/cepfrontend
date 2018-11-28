@@ -7,10 +7,11 @@ import {DummyPaymentReportService, DummyReportDataService} from "./ui-components
 import {PaymentReportGenerator, ReportGeneratorService} from "./ui-components/report-generator-service";
 import {DocumentPrinterComponent} from "./ui-components/DocumentPrinterComponent";
 import {LabReportDetails, LabReportSummaryComponent} from "./ui-components/LabReportSummaryComponent";
+import {NairaCurrencySymbolComponent} from "./ui-components/NairaCurrencySymbolComponent";
 
 
 const exportableComponents = [AsomDataPagerComponent, PagerButtonComponent, DocumentPrinterComponent,
-    LabReportSummaryComponent, LabReportDetails]
+    LabReportSummaryComponent, LabReportDetails,NairaCurrencySymbolComponent]
 
 @NgModule({
     imports: [CommonModule/*, MatDialogModule*/],
@@ -18,10 +19,10 @@ const exportableComponents = [AsomDataPagerComponent, PagerButtonComponent, Docu
     declarations: [...exportableComponents],
 
     providers: [
-        //PaymentReportGenerator , 
+        PaymentReportGenerator , 
         {provide: ReportGeneratorService, useClass: ReportGeneratorService},
         {provide: DummyReportDataService, useClass: DummyReportDataService},
-        {provide: PaymentReportGenerator, useExisting: DummyPaymentReportService},
+        //{provide: PaymentReportGenerator, useExisting: DummyPaymentReportService},
         {provide: DummyPaymentReportService, useClass: DummyPaymentReportService},
     ],
     entryComponents: []
