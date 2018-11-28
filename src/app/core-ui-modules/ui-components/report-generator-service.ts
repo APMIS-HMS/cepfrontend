@@ -34,7 +34,7 @@ export class ReportGeneratorService implements ICustomReportService {
             newOption.$limit = options.paginationOptions.limit;
             newOption.$skip = options.paginationOptions.limit * options.paginationOptions.skip;
         }
-        console.log("OPTIONS BEFORE SERVER CALL",  newOption);
+       
         return this.restEndpoint.getService("laboratory-report-summary")
             .find({query: newOption});
     }
