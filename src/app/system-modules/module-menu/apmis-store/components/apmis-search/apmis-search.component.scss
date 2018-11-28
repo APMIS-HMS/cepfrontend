@@ -4,6 +4,7 @@
 .apmis-search-wrap{
     position: relative;
     font-size: 16px;
+    background-color: #fff;
     .apmis-search-header{
         display: flex;
         justify-content: space-between;
@@ -13,13 +14,16 @@
         cursor: pointer;
     }
     .apmis-search-content{
+        position: absolute;
+        z-index: 10;
+        background-color: #fff;
         border: 1px solid #0288D1;
         border-radius: 6px;
         width: 100%;
         margin-top: 10px;
-        -webkit-box-shadow: 0 4px 8px var(--shadow-color);
-        -moz-box-shadow: 0 4px 8px var(--shadow-color);
-        box-shadow: 0 4px 8px var(--shadow-color);
+        -webkit-box-shadow: 0 8px 16px var(--shadow-color);
+        -moz-box-shadow: 0 8px 16px var(--shadow-color);
+        box-shadow: 0 8px 16px var(--shadow-color); 
         ul{
             width: 100%;
         }
@@ -35,9 +39,10 @@
                 position: relative;
                 width: 100%;
             }
-            .ico{
+            .search-ico{
                 position: absolute;
-                left: 10px;
+                left: 32px;
+                top: 32px;
             }
             .input{
                 font-size: 12px;
@@ -45,7 +50,7 @@
                 border: 1px solid #C4C4C4;
                 padding: 5px;
                 box-sizing: border-box;
-                padding-left: 50px;
+                padding-left: 20px;
                 width: 100% !important; 
             }
             
@@ -69,5 +74,16 @@
                 align-items: center
             }
         }
+    }
+}
+.apmis-search-selected-list{
+    margin-top: 30px;
+    display: flex;
+    li{
+        margin-left: 10px;
+    }
+    .ft-btn{
+        color: #000 !important;
+        font-size: 16px !important;
     }
 }
