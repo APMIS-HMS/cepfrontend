@@ -23,6 +23,7 @@ import { ApmisNewStoreComponent } from './store-stores/apmis-new-store/apmis-new
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ApmisSearchComponent } from './components/apmis-search/apmis-search.component';
 import { ProductCongurationComponent } from './apmis-store-product/product-conguration/product-conguration.component';
+import { ApmisSearchResultComponent } from './components/apmis-search/apmis-search-result/apmis-search-result.component';
 
 @NgModule({
 	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule,
@@ -45,7 +46,8 @@ import { ProductCongurationComponent } from './apmis-store-product/product-congu
 		CheckProductDistributionComponent,
 		ApmisNewStoreComponent,
 		ProductCongurationComponent,
-		ApmisSearchComponent
+		ApmisSearchComponent,
+		ApmisSearchResultComponent
 	],
 	providers: [ StoreService, InventoryService, StoreGlobalUtilService ]
 })

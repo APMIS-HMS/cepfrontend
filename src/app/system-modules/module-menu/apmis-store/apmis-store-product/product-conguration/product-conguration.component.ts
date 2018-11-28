@@ -7,9 +7,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProductCongurationComponent implements OnInit {
 
+  apmisSearch = false;
   constructor() { }
 
   ngOnInit() {
   }
 
+  onShowSearch(){
+    this.apmisSearch = !this.apmisSearch;
+  }
 }
