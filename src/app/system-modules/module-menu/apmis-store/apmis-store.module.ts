@@ -22,6 +22,7 @@ import { StoreGlobalUtilService } from './store-utils/global-service';
 import { ApmisNewStoreComponent } from './store-stores/apmis-new-store/apmis-new-store.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ApmisSearchComponent } from './components/apmis-search/apmis-search.component';
+import { ProductCongurationComponent } from './apmis-store-product/product-conguration/product-conguration.component';
 
 @NgModule({
 	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule,
@@ -43,6 +44,7 @@ import { ApmisSearchComponent } from './components/apmis-search/apmis-search.com
 		AdjustStockComponent,
 		CheckProductDistributionComponent,
 		ApmisNewStoreComponent,
+		ProductCongurationComponent,
 		ApmisSearchComponent
 	],
 	providers: [ StoreService, InventoryService, StoreGlobalUtilService ]
