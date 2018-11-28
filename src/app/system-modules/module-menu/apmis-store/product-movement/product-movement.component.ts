@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-movement',
@@ -7,9 +8,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ProductMovementComponent implements OnInit {
 
-  constructor() { }
+  tab_outbound = true;
+  tab_inbound = false;
+
+  constructor(private router: Router) { }
 
   ngOnInit() {
+  }
+  tab_click(tab){
+    if(tab==='outbound'){
+      this.tab_outbound = true;
+      this.tab_inbound = false;
+    } else if(tab==='inbound'){
+      this.tab_outbound = false;
+      this.tab_inbound = true;
+    }
+  } 
+
+  changeRoute(value: string) {
+    this.router.navigate(['/dashboard/store/' + value]).then(
+      payload => {
+      }
+    ).catch(error => { 
+    });
   }
 
 }

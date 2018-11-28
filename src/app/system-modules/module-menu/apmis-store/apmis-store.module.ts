@@ -24,6 +24,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ApmisSearchComponent } from './components/apmis-search/apmis-search.component';
 import { ProductCongurationComponent } from './apmis-store-product/product-conguration/product-conguration.component';
 import { ProductMovementComponent } from './product-movement/product-movement.component';
+import { OutboundTransferComponent } from './product-movement/outbound-transfer/outbound-transfer.component';
+import { InboundTransferComponent } from './product-movement/inbound-transfer/inbound-transfer.component';
 
 @NgModule({
 	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule,
@@ -47,7 +49,9 @@ import { ProductMovementComponent } from './product-movement/product-movement.co
 		ApmisNewStoreComponent,
 		ProductCongurationComponent,
 		ApmisSearchComponent,
-		ProductMovementComponent
+		ProductMovementComponent,
+		OutboundTransferComponent,
+		InboundTransferComponent
 	],
 	providers: [ StoreService, InventoryService, StoreGlobalUtilService ]
 })
