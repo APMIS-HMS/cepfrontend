@@ -118,6 +118,8 @@ export class PaymentReportGenerator implements IPaymentReportServiceEndPoint {
         return this.paymentReportServiceRef.get(options.facilityId,
             {
                // query: options
+                $limit : options.paginationOptions.limit,
+                $skip : options.paginationOptions.skip
             }
         );
 
