@@ -2722,7 +2722,7 @@ button,
 .input-group-x2{
     display: flex;
     justify-content: space-between;
-    .dropDown-container, .InputGroup{
+    .dropDown-container, .InputGroup,{
         width: 47% !important;
         box-sizing: border-box;
         margin-bottom: 20px;
@@ -2731,7 +2731,10 @@ button,
 .InputGroup{ 
     position:relative; 
     padding-bottom: 10px;
-  }
+}
+.apmis-search{
+    width: 47% !important;
+}
 
   .customTextarea{
     display:block;
