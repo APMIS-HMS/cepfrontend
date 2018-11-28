@@ -25,12 +25,11 @@ const REPORTS_DASHBOARD_ROUTE: Routes = [
 				path: 'dhisReport',
 				loadChildren: './dhis-report/dhis-report.module#DhisReportModule'
 			},
-			{ path: 'labReport', component: LaboratoryReportComponent},
-			
+			{ path: 'labReport', component: LaboratoryReportComponent },
+
 			// { path: 'patientReport', component: PatientManagerReportComponent},
-			
-			
-			{ path: 'pharmacyReport', component: PharmacyReportComponent},
+
+			{ path: 'pharmacyReport', component: PharmacyReportComponent },
 
 			{
 				path: 'paymentReport',
@@ -43,14 +42,14 @@ const REPORTS_DASHBOARD_ROUTE: Routes = [
 			},
 
 			{
-				path: 'pharmacyReport', component: PharmacyReportComponent
+				path: 'pharmacyReport',
+				component: PharmacyReportComponent
 			},
 
-			//{
-				//path: 'storeReport', component: StoreManagerReportComponent
-
-				//}
-
+			{
+				path: 'storeReport',
+				component: StoreManagerReportComponent
+			}
 		]
 	}
 ];

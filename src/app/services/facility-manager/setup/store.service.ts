@@ -52,6 +52,10 @@ export class StoreService {
 		return this._socket_list.get(id, query);
 	}
 
+	getStoreList(query: any) {
+		return this._socket_list.find(query);
+	}
+
 	getStatistics(data: any, query: any) {
 		return this._statisticsSocket.get(data, query);
 	}
