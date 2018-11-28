@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-import { Observable } from 'rxjs/Observable';
-=======
 import { InventoryService } from './../../../../../../services/facility-manager/setup/inventory.service';
->>>>>>> e6a7c1e12343f41f555bb66896e1c150b84f00c5
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Facility } from 'app/models';
 import { CoolLocalStorage } from 'angular2-cool-storage';
