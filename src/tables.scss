@@ -134,6 +134,7 @@ td .empWrap .list-img{
   grid-auto-flow: column;
   padding: 15px;
   font-size: 14px;
+  border-bottom: 1px solid #C4C4C4;
 }
 .store-tr-in {
     display: grid;
@@ -242,7 +243,6 @@ td .empWrap .list-img{
 
 .ft-btn{
     width: fit-content;
-    max-height: 17px;
     /* position: relative; */
     padding: 8px;
     font-size: 1.2rem;
@@ -289,6 +289,7 @@ background: #0288D1;
 .tbl-header-lhs{
     display: flex;
     align-items: center;
+    justify-content: space-between;
 }
 .tbl-header-rhs{
     display: flex;
