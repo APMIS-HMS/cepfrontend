@@ -4,7 +4,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 // Cool library to deal with errors: https://www.stacktracejs.com
-import * as StackTraceParser from  'error-stack-parser';
+import * as StackTraceParser from 'error-stack-parser';
 import { Router, NavigationError, Event } from '@angular/router';
 @Injectable()
 export class ErrorsService {
