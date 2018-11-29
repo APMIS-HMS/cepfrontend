@@ -260,7 +260,10 @@ export class ScheduleFrmComponent implements OnInit {
 							professionId: { $regex: 'nurse', $options: 'i' }
 						}
 					],
-					apmisLookup: true
+					apmisLookup: true,
+					filterByRole: true,
+					moduleName: 'Clinic Management',
+					roleName: 'Providers'
 				};
 			} else {
 				// this.apmisProviderLookupQuery = {
