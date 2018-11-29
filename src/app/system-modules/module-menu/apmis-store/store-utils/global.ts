@@ -12,3 +12,12 @@ export const ProductsToggle = {
     Drug: 'Drug',
     Consumables: 'Consumables'
 };
+export interface FormularyProduct {
+    code: string;
+    id: string;
+    name: string;
+}
+export interface ProductPackSize {
+    _id: string;
+    name: string;
+}

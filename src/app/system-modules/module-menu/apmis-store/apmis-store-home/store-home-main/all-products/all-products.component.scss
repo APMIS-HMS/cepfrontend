@@ -1,4 +1,4 @@
-.spc-lft{
+a.spc-lft{
     padding-right: 20px;
 }
 .batches{
@@ -26,6 +26,9 @@
             .red-label{
                 color: #FF3838;
             }
+            .orange-label{
+                color: orange;
+            }
         }
         .btc-body{
             display: flex;
@@ -43,5 +46,9 @@
             }
         }
     }
+}
+
+.opt-menu{
+    box-shadow: 0 0px 1px 0 rgba(0,0,0,0.1);
 }
 

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-store-stores',
@@ -9,7 +10,7 @@ export class StoreStoresComponent implements OnInit {
 
   tab_store = true;
 
-  constructor() { }
+  constructor(private router: Router) { }
 
   ngOnInit() {
   }
@@ -19,5 +20,13 @@ export class StoreStoresComponent implements OnInit {
       this.tab_store = true;
     }
   } 
+
+  changeRoute(value: string) {
+    this.router.navigate(['/dashboard/store/' + value]).then(
+      payload => {
+      }
+    ).catch(error => { 
+    });
+  }
 
 }

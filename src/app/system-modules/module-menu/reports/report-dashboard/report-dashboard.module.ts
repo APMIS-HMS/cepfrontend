@@ -30,8 +30,7 @@ import { WardManagerReportComponent } from './ward-manager-report/ward-manager-r
 		DashboardLandingpageComponent,
 		LaboratoryReportComponent,
 		PharmacyReportComponent,
-		StoreManagerReportComponent,
-		WardManagerReportComponent
+		StoreManagerReportComponent
 	]
 })
 export class ReportDashboardModule {}

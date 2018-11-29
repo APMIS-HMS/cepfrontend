@@ -14,7 +14,8 @@ export class ApmisStoreProductComponent implements OnInit {
   tab_product_config = false;
   storeFilters = [];
   selectedFilterIndex = 0;
-  filterText = '';
+  filterType = '';
+  
   constructor(private storeUtilService: StoreGlobalUtilService) { }
 
   ngOnInit() {
@@ -22,17 +23,17 @@ export class ApmisStoreProductComponent implements OnInit {
   }
   tab_click(tab) {
     if (tab === 'products') {
-      this.tab_all_products = !this.tab_all_products;
+      this.tab_all_products = true;
       this.tab_product_config = false;
     } else if ( tab === 'productConfig') {
       this.tab_all_products = false;
-      this.tab_product_config = !this.tab_product_config;
+      this.tab_product_config = true;
     }
   }
   setSelectedFilter(index, filter) {
       this.selectedFilterIndex = index;
-      this.filterText = filter;
-      console.log(this.filterText);
+      this.filterType = filter;
+      //console.log(this.filterText);
   }
 }
 

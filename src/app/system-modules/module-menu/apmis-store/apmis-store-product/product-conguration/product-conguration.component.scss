@@ -1,0 +1,23 @@
+.tbl-config-wrap{
+    margin-top:20px
+}
+
+.config-tr-in {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    grid-auto-columns: 1fr;
+    grid-gap: 20px;
+    align-items: left;
+    grid-auto-rows: auto;
+    grid-auto-flow: column;
+}
+
+.config-tags-wrap{
+    display: flex;
+    align-items: center;    
+}
+
+h2 {
+    padding-top: 30px;
+    font-size: 15px;
+}
