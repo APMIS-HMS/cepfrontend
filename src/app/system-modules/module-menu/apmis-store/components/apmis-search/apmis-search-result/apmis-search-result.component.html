@@ -4,21 +4,12 @@
     <input class="input" [formControl]="apmisSearchResult" type="text">
   </div>
   <ul>
-    <li class="apmis-search-item asi-list">
+    <li class="apmis-search-item asi-list" *ngFor="let pack of PackSizes">
       <div class="item-payload">
         <div class="item-img">
           <img class="ico" src="assets/images/report_icons/check.svg" /> 
         </div> 
-        <div class="item-val">Consumables</div>
-      </div>
-      <img class="ico" src="assets/images/report_icons/times.svg" />  
-    </li>
-    <li class="apmis-search-item asi-list">
-      <div class="item-payload">
-        <div class="item-img">
-          <img class="ico" src="assets/images/report_icons/check.svg" /> 
-        </div> 
-        <div class="item-val">Drugs</div>
+        <div class="item-val">{{pack.name}}</div>
       </div>
       <img class="ico" src="assets/images/report_icons/times.svg" />  
     </li>
