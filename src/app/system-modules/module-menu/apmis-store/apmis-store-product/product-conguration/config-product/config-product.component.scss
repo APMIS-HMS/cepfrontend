@@ -1,0 +1,48 @@
+.fa{
+    padding-right: 15px !important;
+    cursor: pointer;
+}
+
+.modal-wraper{
+    width: auto;
+    height: auto;
+}
+
+.config-container{
+    display: flex;    
+}
+.config-layout{
+    display: block;
+    padding-top: 30px;
+    padding-right: 100px;
+}
+.config-wrap{
+	display: flex;
+	i{
+        margin: 15px;
+        padding-left: 200px;
+        align-self: flex-end;
+    }
+}
+.config-tags-wrap-x2{
+    display: flex;
+    align-items: center;    
+    justify-content: space-between;
+    padding-right: 45px;
+    span{
+        color: black;
+        font-weight: bold;
+    }
+}
+
+.sv-btn-container{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.apmisSearch-wrap{
+    width: 30% !important; 
+    position: absolute;
+}
