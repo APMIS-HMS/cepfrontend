@@ -33,10 +33,10 @@ const REPORTS_DASHBOARD_ROUTE: Routes = [
 
 			{ path: 'pharmacyReport', component: PharmacyReportComponent },
 
-			{
-				path: 'paymentReport',
-				loadChildren: './payment-report/payment-report.module#PaymentReportModule'
-			},
+			// {
+			// 	path: 'paymentReport',
+			// 	loadChildren: './payment-report/payment-report.module#PaymentReportModule'
+			// },
 
 			{
 				path: 'patientManagerReport',
