@@ -6,7 +6,7 @@ export interface ILabReportModel {
     request? :string;
     doctor : string;
     status? : string;
-    clinic? :string;
+    location? :string;
     date? : Date;
 }
 // This a grouped report data
@@ -27,8 +27,9 @@ export interface IGroupableLabReportModel
 export interface ILabReportOption extends IDefaultReportOption{
     
     // if it an investigation summary report.
-    isInvestigation? : boolean;  
+    isSummary? : boolean;  
     // Groupings
+    isGroup? : boolean;
     groupBy? : 'location' | 'bench';
     
 }

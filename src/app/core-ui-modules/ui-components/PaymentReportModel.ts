@@ -23,6 +23,7 @@ export interface Payment {
 }
 
 export interface IPaymentReportModel {
+    isExpanded? : boolean;
     _id: string;
     patientId: string;
     totalPrice: number;
