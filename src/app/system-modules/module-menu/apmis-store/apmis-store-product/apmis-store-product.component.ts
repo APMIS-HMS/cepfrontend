@@ -14,7 +14,8 @@ export class ApmisStoreProductComponent implements OnInit {
   tab_product_config = false;
   storeFilters = [];
   selectedFilterIndex = 0;
-  filterText = '';
+  filterType = '';
+  
   constructor(private storeUtilService: StoreGlobalUtilService) { }
 
   ngOnInit() {
@@ -31,8 +32,8 @@ export class ApmisStoreProductComponent implements OnInit {
   }
   setSelectedFilter(index, filter) {
       this.selectedFilterIndex = index;
-      this.filterText = filter;
-      console.log(this.filterText);
+      this.filterType = filter;
+      //console.log(this.filterText);
   }
 }
 
