@@ -82,7 +82,7 @@ export const API_DEV = 'https://apmisapidev.azurewebsites.net';
 export const API_LIVE = 'https://apmisapilive.azurewebsites.net';
 export const API_LOCALHOST = 'http://172.16.16.47:3031';
 export const USE_LOGIN_ENCRYPTION = false;
-export const USE_FACILITY_ACTIVATION = false;
+export const USE_FACILITY_ACTIVATION = true;
 export const ApointmentScheduleStatus = {
 	ACTIVE: 'Active',
 	SUSPENDED: 'Suspended',

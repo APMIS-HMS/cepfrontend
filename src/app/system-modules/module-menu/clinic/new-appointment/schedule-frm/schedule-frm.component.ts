@@ -247,17 +247,30 @@ export class ScheduleFrmComponent implements OnInit {
 
 		this.provider = new FormControl();
 		this.provider.valueChanges.subscribe((value) => {
-			this.apmisProviderLookupQuery = {
-				facilityId: this.selectedFacility._id,
-				searchText: value,
-				employeeTable: true,
-				$or: [
-					{
-						professionId: { $regex: [ 'doctor', 'nurse' ], $options: 'i' }
-					}
-				]
-			};
+			if (value.length > 3) {
+				this.apmisProviderLookupQuery = {
+					facilityId: this.selectedFacility._id,
+					searchText: value,
+					employeeTable: true,
+					$or: [
+						{
+							professionId: { $regex: 'doctor', $options: 'i' }
+						},
+						{
+							professionId: { $regex: 'nurse', $options: 'i' }
+						}
+					],
+					apmisLookup: true,
+					filterByRole: true,
+					moduleName: 'Clinic Management',
+					roleName: 'Providers'
+				};
+			} else {
+				// this.apmisProviderLookupQuery = {
+				// }
+			}
 		});
+
 		// this.filteredProviders = this.provider.valueChanges
 		//   .startWith(null)
 		//   .map(
@@ -532,10 +545,8 @@ export class ScheduleFrmComponent implements OnInit {
 					patientId: this.selectedPatient._id
 				}
 			})
-			.then((payld) => {
-			}, (err) => {
-			}).catch(er=>{
-			});
+			.then((payld) => {}, (err) => {})
+			.catch((er) => {});
 	}
 
 	isAppointmentToday() {
