@@ -31,6 +31,8 @@ import { PurchaseListComponent } from './product-entry/purchase-list/purchase-li
 import { PurchaseOrderComponent } from './product-entry/purchase-order/purchase-order.component';
 import { SuppliersComponent } from './product-entry/suppliers/suppliers.component';
 import { ProductConfigPopupComponent } from './product-entry/initialize-store/product-config-popup/product-config-popup.component';
+import { ConfigProductComponent } from './apmis-store-product/product-conguration/config-product/config-product.component';
+
 
 
 @NgModule({
@@ -62,7 +64,8 @@ import { ProductConfigPopupComponent } from './product-entry/initialize-store/pr
 		PurchaseListComponent,
 		PurchaseOrderComponent,
 		SuppliersComponent,
-		ProductConfigPopupComponent
+		ProductConfigPopupComponent,
+		ConfigProductComponent,
 	],
 	providers: [ StoreService, InventoryService, StoreGlobalUtilService ]
 })
