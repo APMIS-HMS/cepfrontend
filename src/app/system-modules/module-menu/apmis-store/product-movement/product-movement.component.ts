@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-product-movement',
@@ -10,6 +11,8 @@ export class ProductMovementComponent implements OnInit {
 
   tab_outbound = true;
   tab_inbound = false;
+  storeLocation:FormControl = new FormControl();
+  storeName:FormControl = new FormControl();
 
   constructor(private router: Router) { }
 
