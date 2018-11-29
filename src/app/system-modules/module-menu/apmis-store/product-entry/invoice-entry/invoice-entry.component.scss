@@ -1,0 +1,33 @@
+
+@import "./../initialize-store/initialize-store.component.scss";
+
+.div-space{
+    height: 40px;
+}
+.sel-txt{   
+    text-align: center;
+    align-self: center;
+}
+
+.in-tr{
+    grid-template-columns: 3fr repeat(4, 1fr) !important;
+}
+.item-action{
+    i{
+        padding-right: 5px;
+       cursor: pointer;       
+    }
+    i:hover{
+        color: rgba(0,0,0,.54);
+       }
+}
+
+.tbl-btn-action{
+    display: flex;
+    justify-content: flex-end;
+    padding: 15px;
+    flex: 0;
+    .action-pad{
+        padding: 0px 5px;
+    }
+}
