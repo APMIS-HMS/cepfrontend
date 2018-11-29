@@ -1,0 +1,115 @@
+<div class="search-container">
+  <div class="searchproduct">
+    <div class="InputGroup">
+      <input class="customInput" type="text" required>
+      <span class="highlight"></span>
+      <label class="customLabel"><i class="fa fa-search" aria-hidden="true"></i>Search Product</label>
+
+      **Please Uncomment for the search result***
+      <!-- <ul class="search-sugestions">
+          <li class="search-sugestion">Diclofenac</li>
+          <li class="search-sugestion">Paracetamol</li>
+        </ul> -->
+    </div>
+    <div class="search-noResult-blue">
+      <span>Product configuration not found <i (click)="configureProduct()">- Configure</i></span>
+    </div>
+  </div>
+  <div class="new-btn-solid-blue">
+    <span>Add Product</span>
+  </div>
+</div>
+
+
+<div>
+  <div class="store-table">
+    <div class="store-thead">
+      <div class="store-tr">
+        <div class="store-th store-td-actions"></div>
+        <div class="store-tr-in">
+          <div class="store-th"> Product </div>
+          <div class="store-th">Available Quantity</div>
+          <div class="store-th">Re-Order Level</div>
+          <div class="store-th">Unit Selling Price</div>
+        </div>
+        <div class="store-th store-td-actions"></div>
+      </div>
+    </div>
+
+    <div class="store-tbody">
+      <div class="store-pre-tr">
+        <div class="store-tr">
+          <div class="store-td store-td-actions">
+            <i *ngIf="item_to_show()" (click)="toggle_tr('down')" class="exp-tr fa fa-angle-down"></i>
+            <i *ngIf="!item_to_show()" (click)="toggle_tr('right')" class="exp-tr fa fa-angle-right"></i>
+          </div>
+          <div class="store-tr-in">
+            <div class="store-td">item_to_show</div>
+            <div class="store-td">
+              <span class="spc-lft"></span>
+              <select>
+                <option>Sachet</option>
+              </select>
+            </div>
+            <div class="store-td">10 Sachets</div>
+            <!-- <div class="store-td">#5/Sachet</div>
+                <div class="store-td">#300,000</div> -->
+            <div class="store-td">&#8358;500/Sachet</div>
+          </div>
+          <!-- <div class="store-td store-td-actions">
+                <i class="fa fa-ellipsis-v"></i>
+              </div> -->
+          <div class="table-list col-xs-1 action-placeholder">
+            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+            <div class="action-container shadow-RB">
+
+              <div class="action-item opt-menu">
+                <span>Edit Details </span>
+              </div>
+
+              <div class="action-item opt-menu" >
+                <span>Edit configuration </span>
+              </div>
+
+              <div class="action-item opt-menu">
+                <span>Remove Product</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="store-tr-content">
+          <ul class="batches">
+            <li class="batch">
+              <div class="btc-top">
+                <div class="val-wrap">
+                  <div class="val-label">Batch:</div>
+                  <div class="val-val">HF48834F</div>
+                </div>
+                <div class="orange-label">Out of Stock</div>
+              </div>
+              <div class="btc-body">
+                <div class="btc-body-item">
+                  <div class="val-label">Batch Quantity:</div>
+                  <div class="val-val">700 Tablets</div>
+                </div>
+                <div class="btc-body-item">
+                  <div class="val-label">Batch Expiring Date:</div>
+                  <div class="val-val">04/12/2020</div>
+                </div>
+              </div>
+            </li>
+          </ul>
+
+          <div class="tbl-cont-cta"><i class="fa fa-plus"></i> Add Another Item</div>
+        </div>
+      </div>
+    </div>
+    <!-- <app-apmis-pagination (emitCurrentPage)="loadCurrentPage($event)" [total]="total" [limit]="limit" [numberOfPages]="numberOfPages"></app-apmis-pagination> -->
+  </div>
+</div>
+
+<div *ngIf="showConfigureProduct" class="modal-overlay">
+  <app-product-config-popup (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-product-config-popup>
+</div>
