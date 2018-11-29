@@ -10,46 +10,11 @@
     </ul>
     <div *ngIf="tab1">
         <div class="card-title">Pending Bills</div>
-        <div *ngIf="loading" style="display: flex; flex-direction: column;align-content: center; justify-content: center; padding:10px min-height: 40px;">
+        <div *ngIf="loading" style="text-align: center;  padding:10px; min-height: 40px;">
             <span class="fa fa-3x blue-text fa-refresh"></span>
         </div>
         <hmo-billing-grouping [newData]="newDataPending" (itemSelected)="billDetail($event)"></hmo-billing-grouping>
-        <table class="workspace-tbl" cellpadding="0" cellspacing="0" border="0.5">
-            <thead>
-                <tr>
-                    <th>
-                        <span style="padding-left: 3px;">Date</span>
-                    </th>
-                    <th>
-                        <span style="padding-left: 3px;">File No.</span>
-                    </th>
-                    <th>
-                        <span style="padding-left: 3px;">HMO</span>
-                    </th>
-                    <!-- <th>
-                        <span style="padding-left: 3px;">Amount</span>
-                    </th> -->
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr (click)="billDetail(bill)" *ngFor="let bill of bills">
-                    <td>{{bill.updatedAt|date:'medium'}}</td>
-                    <td>
-                        {{bill.coverFile.id}}
-                    </td>
-                    <td>
-                        <div class="empWrap">
-                            <div class="list-img">
-                                <img src="assets/images/logos/default.png">
-                            </div>
-                            <div>{{bill.coverFile.name}}</div>
-                        </div>
-                    </td>
-                    <!-- <td class="td-worspace">&#8358; {{bill.grandTotal|number:'1.2-2'}}</td> -->
-                </tr>
-            </tbody>
-        </table>
+       
         
     </div>
     <div *ngIf="tab2">
@@ -58,7 +23,7 @@
             <div class="card-title">Billing History</div>
             <button class="btn-norm" (click)="hmo_report()"><i class="fa fa-file"></i> &nbsp; Generate Report</button>
         </div>
-        <div *ngIf="loading" style="display: flex; flex-direction: column;align-content: center; justify-content: center; padding:10px; min-height: 40px;">
+        <div *ngIf="loading" style=" text-align: center; padding:10px; min-height: 40px;">
             <span class="fa fa-3x fa-spin blue-text fa-refresh"></span>
         </div>
         <hmo-billing-grouping [newData]="newData" (itemSelected)="billHistoryDetail($event)"></hmo-billing-grouping>

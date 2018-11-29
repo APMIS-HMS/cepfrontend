@@ -57,7 +57,7 @@ export class LabReportSummaryComponent implements OnInit {
 	@Input()
 	reportOption: ILabReportOption = {
 		paginate: false,
-		isInvestigation: true
+		isSummary: true
 	};
 
 	constructor(private reportSource: ReportGeneratorService, private paymentReprotService: PaymentReportGenerator) {}
@@ -71,10 +71,7 @@ export class LabReportSummaryComponent implements OnInit {
 			console.log(x);
 			this.reportData = x.data;
 		});
-		console.log(this.reportOption);
-		this.paymentReprotService.getPaymentReportSummary({ isSummary: true }).then((x) => {
-			console.log(x);
-		});
+		
 	}
 }
 
@@ -85,14 +82,14 @@ export class LabReportSummaryComponent implements OnInit {
         <div class="tbl-resp-wrap" id="printableArea">
             <table class="" style="color:black;" cellpadding="0" cellspacing="0" border="0.5">
                 <thead>
-                <tr class="th-r1 th-xxx">
+                <tr class="th-r1 th-xxx" >
                     <th>S/N</th>
                     <th>Patient Info</th>
                     <th>Date</th>
                     <th style="width:25%">Request</th>
 
-                    <th>Refering Doctor</th>
-                    <th>Clinic</th>
+                    <th>Referring Doctor</th>
+                  	<th>Location</th>
                     <th>Status</th>
                 </tr>
                 </thead>
@@ -100,7 +97,7 @@ export class LabReportSummaryComponent implements OnInit {
                 <tbody>
                 <tr *ngIf="processing">
                     <td colspan="7">
-                        <div class="pad20 flex-container">
+                        <div class="pad20 text-center" style="text-align:center">
                             <span class="fa fa-3x fa-spin fa-spinner"></span>
                         </div>
                     </td>
@@ -121,8 +118,8 @@ export class LabReportSummaryComponent implements OnInit {
                     <td><span>{{r.date | date:'MMM dd, yyyy'}}</span></td>
                     <td><span>{{r.request}}</span></td>
                     <td><span>{{r.doctor}}</span></td>
-                    <td><span>{{r.clinic}}</span></td>
-                    <td><span class="green highlight">{{r.status}}</span></td>
+                    <td><span>{{r.location}}</span></td>
+                    <td><span class="green highlight">{{r.status }}</span></td>
                 </tr>
 
                 </tbody>
@@ -167,16 +164,21 @@ export class LabReportDetails implements OnInit, OnChanges, DoCheck {
 			};
 		}
 		this.reportSource.getLabReport(this.reportOptions).then((x: any) => {
-			console.log('LAB REPORT CALL', x);
-			this.reportData = x.data.data;
+			
+			this.reportData = x.data;
 			this.processing = false;
-			this.pagerSource.totalRecord = x.data.total;
-		});
+			this.pagerSource.totalRecord = x.total;
+		}, x => {
+			  this.processing  = false;
+			  
+			}
+		);
 	}
 
 	pagerButtonClick(index: number) {
 		// goto next page using the current index
 		this.pagerSource.currentPage = index;
+		this.reportOptions.paginationOptions.skip  = index * this.pagerSource.pageSize;
 		this.getReportData();
 	}
 

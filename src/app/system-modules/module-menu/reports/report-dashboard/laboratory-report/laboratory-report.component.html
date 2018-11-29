@@ -19,25 +19,35 @@
             <div class="searchInputWrap col-sm row">
                 <mat-form-field>
                     <mat-select [formControl]="searchCriteria" placeholder="Search ">
-                        <mat-option value="Enter Provider Name">By Provider</mat-option>
-                        <mat-option value="Enter Clinic name">By Clinic Name</mat-option>
+                        <mat-option value="provider">By Provider</mat-option>
+                        <mat-option value="clinic">By Clinic Name</mat-option> 
+                        <mat-option value="all">All</mat-option>
                     </mat-select>
                 </mat-form-field>
                 <div class="inputWrap">
                     <div class="row">
                         <div class="col-xs-7">
                             <input [formControl]="searchControl" type="search" autofocus class="searchInput "
-                                   placeholder=" {{searchCriteria.value}}"/>
+                                   placeholder=" {{searchCriteria.value}}" style="text-align:left;"/>
                         </div>
+                       
+                    </div>
+                    <div style="float:right; margin: -5px 10px;">
+                        <asom-pager-button background-color="blue" (onClick)="search()"
+                                           [is-disable]="lrd.processing" [is-oval]="true"
+
+                        ><span class="fa fa-search fa-2x"></span></asom-pager-button>
                     </div>
                 </div>
+               
+                
             </div>
             <div class="col-sm" style="padding-left: 30px;">
                 <h3 style="text-align: center;
                 text-decoration: underline;">Group</h3>
                 <div style="display:flex;">
                     <mat-form-field class="select">
-                        <mat-select placeholder="Select Location">
+                        <mat-select placeholder="Select Location" >
                             <mat-option>PP Lab</mat-option>
                             <mat-option>Dental Lab</mat-option>
                             <mat-option>Optometric Lab</mat-option>
@@ -63,15 +73,15 @@
     </div>
     <mat-tab-group>
         <mat-tab label="Patient Lab Report">
-          <app-lab-report-detail [options]="reportOptions">  </app-lab-report-detail>
+          <app-lab-report-detail [options]="reportOptions" #lrd>  </app-lab-report-detail>
         </mat-tab>
         <mat-tab label="Report Summary">
-           <app-lab-report-summary>
+           <app-lab-report-summary [reportOption]="reportOptions">
                
            </app-lab-report-summary>
         </mat-tab>
         <mat-tab label="Summary By Location">
-
+           
         </mat-tab>
     </mat-tab-group>
 
