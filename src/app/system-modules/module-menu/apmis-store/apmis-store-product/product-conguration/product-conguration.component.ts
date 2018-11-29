@@ -74,6 +74,9 @@ export class ProductCongurationComponent implements OnInit {
         $limit: false
       }
     }).then(payload => {
+      for (const val of payload.data) {
+          val['checked'] = false;
+      }
       this.packSizes = payload.data;
     });
   }
