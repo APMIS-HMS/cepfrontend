@@ -27,6 +27,7 @@
 
     ></asom-data-pager>
     <div class="invoiceListWrap">
+        <p *ngIf="loading" style="text-align: center padding:5px;"><span class="fa-fa-3x fa-spin fa-refresh"></span></p>
         <div style="margin: 10px;">
             <div class="row">
 
@@ -55,7 +56,7 @@
                         </div>
                         <div class="col-6 invoicePrice">
                             Total Cost:
-                            <naira-currency-symbol></naira-currency-symbol>
+                            <naira-currency></naira-currency>
                             {{pay.totalPrice | number}}
                         </div>
                     </div>

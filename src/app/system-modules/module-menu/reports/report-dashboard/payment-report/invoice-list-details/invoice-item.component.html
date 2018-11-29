@@ -28,30 +28,30 @@
                         </td>
                         <td class="col2">
                             <div class="topTotal">
-                                <naira-currency-symbol></naira-currency-symbol>
+                                <naira-currency></naira-currency>
                                 {{(i.totalPrice / i.qty) | number }}
                             </div>
 
                         </td>
                         <td class="col3">
                             <div class="topTotal">
-                                <naira-currency-symbol></naira-currency-symbol>
+                                <naira-currency></naira-currency>
                                 {{i.qty | number}}
                             </div>
 
                         </td>
                         <td class="col4">
                             <div class="topTotal">
-                                <naira-currency-symbol></naira-currency-symbol>
+                                <naira-currency></naira-currency>
                                 {{i.totalPrice | number}}
                             </div>
                         </td>
                         <td class="col2">
                             <div class="topTotal">
-                                <naira-currency-symbol></naira-currency-symbol>
+                                <naira-currency></naira-currency>
                                 {{i.amountPaid | number}}
                                 <span style="color:red"><br>
-                                  Bal:  <naira-currency-symbol> </naira-currency-symbol>{{i.balance | number}}
+                                  Bal:  <naira-currency> </naira-currency>{{i.balance | number}}
                                 </span>
                             </div>
 
@@ -67,7 +67,7 @@
                             <tr class="summaryItem">
                                 <td class="label">Sub Total</td>
                                 <td class="data">
-                                    <naira-currency-symbol></naira-currency-symbol>
+                                    <naira-currency></naira-currency>
                                     {{subTotal|number}}
                                 </td>
                                 <td></td>
@@ -75,7 +75,7 @@
                             <tr class="summaryItem">
                                 <td class="label">Discount</td>
                                 <td class="data">
-                                    <naira-currency-symbol></naira-currency-symbol>
+                                    <naira-currency></naira-currency>
                                     {{discount | number}}
                                 </td>
                                 <td></td>
@@ -84,7 +84,7 @@
                         <tr class="grandTotalWrap">
                             <td class="label">GRAND TOTAL</td>
                             <td class="data">
-                                <naira-currency-symbol></naira-currency-symbol>
+                                <naira-currency></naira-currency>
                                 {{grandTotal | number}}
                             </td>
                             <td></td>

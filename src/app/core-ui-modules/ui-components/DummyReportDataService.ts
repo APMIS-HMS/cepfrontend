@@ -25,7 +25,7 @@ export class DummyReportDataService extends ReportGeneratorService //  implement
         const labRpt  :  ILabReportModel[]  = [
             {
                 apmisId  : 'SO-2341',
-                clinic : "CK-Lab Clinic",
+                location : "CK-Lab Clinic",
                 patientName : "Mr James Iburio",
                 doctor : "Dr. C Madu",
                 date : new Date(),
@@ -34,7 +34,7 @@ export class DummyReportDataService extends ReportGeneratorService //  implement
             },
             {
                 apmisId  : 'MK-2801',
-                clinic : "HMR-Lab Clinic",
+                location : "HMR-Lab Clinic",
                 patientName : "Mr Peter Asuokwou",
                 doctor : "Dr. C Madu",
                 date : new Date(),
@@ -43,7 +43,7 @@ export class DummyReportDataService extends ReportGeneratorService //  implement
             },
             {
                 apmisId  : 'CG-12003',
-                clinic : "Bload-Lab Clinic",
+                location : "Bload-Lab Clinic",
                 patientName : "Mr Bayo Akindele",
                 doctor : "Dr. Dike Okoye",
                 date : new Date(),
@@ -93,7 +93,7 @@ export class DummyReportDataService extends ReportGeneratorService //  implement
                         apmisId : "KO-00022",
                         patientName : "Chidi Ezidiegwu",
                         status : "Completed",
-                        clinic : "West Lab Clinic",
+                        location : "West Lab Clinic",
                         doctor :"Dr Felicia Adanbel",
                         request : "Blood Glucose Test",
                         date  : new  Date()
@@ -104,7 +104,7 @@ export class DummyReportDataService extends ReportGeneratorService //  implement
                         apmisId : "XC-013292",
                         patientName : "Maryann Ikonah",
                         status : "Completed",
-                        clinic : "West Lab Clinic",
+                        location : "West Lab Clinic",
                         doctor :"Dr Bello Ahmed",
                         request : "Urinary Analysis",
                         date  : new  Date()
@@ -121,7 +121,7 @@ export class DummyReportDataService extends ReportGeneratorService //  implement
                         apmisId : "KO-00022",
                         patientName : "Hadiza Adamu",
                         status : "In Progress",
-                        clinic : "North Lab Clinic",
+                        location : "North Lab Clinic",
                         doctor :"Dr Chima Okoye",
                         request : "Pregnancy Test",
                         date  : new  Date()

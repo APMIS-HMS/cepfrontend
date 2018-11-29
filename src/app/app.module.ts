@@ -5,7 +5,7 @@ import { AuthFacadeService } from './system-modules/service-facade/auth-facade.s
 import { TitleCasePipe, UpperCasePipe } from '@angular/common';
 import { SecurityQuestionsService } from './services/facility-manager/setup/security-questions.service';
 import { CountryServiceFacadeService } from './system-modules/service-facade/country-service-facade.service';
-//import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { PayStackService } from './services/facility-manager/setup/paystack.service';
 import { PolicyService } from './services/facility-manager/setup/policy.service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -56,39 +56,26 @@ import { SingUpAccountsSharedModule } from './shared-common-modules/signup-accou
 import { MaterialModule } from './shared-common-modules/material-module';
 import { LoadingBarRouterModule } from '@ngx-loading-bar/router';
 import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
-
+import { TitleGenderFacadeService } from 'app/system-modules/service-facade/title-gender-facade.service';
+import { FacilityFacadeService } from 'app/system-modules/service-facade/facility-facade.service';
+import { UserFacadeService } from 'app/system-modules/service-facade/user-facade.service';
+import { FacilityTypeFacilityClassFacadeService } from 'app/system-modules/service-facade/facility-type-facility-class-facade.service';
+import { JoinChannelService } from 'app/services/facility-manager/setup/join-channel.service';
 import { ChannelService } from './services/communication-manager/channel-service';
 import { NotificationService } from './services/communication-manager/notification.service';
 
 //import { IkeComponent } from './ike/ike.component';
-//import { RadiologyInvestigationService } from 'app/services/facility-manager/setup/radiologyinvestigation.service';
+import { RadiologyInvestigationService } from 'app/services/facility-manager/setup/radiologyinvestigation.service';
 // import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
-//import { CanActivateViaAuthGuardAccessService } from 'app/services/facility-manager/setup/can-activate-via-auth-guard-access.service';
+import { CanActivateViaAuthGuardAccessService } from 'app/services/facility-manager/setup/can-activate-via-auth-guard-access.service';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 // import { MessagingComponent } from './messaging/messaging.component';
 
-import { APP_DATE_FORMATS, AppDateAdapter } from "app/date-format";
+import { APP_DATE_FORMATS, AppDateAdapter } from 'app/date-format';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
+import { ErrorsService } from './feathers/errors.service';
 
-/*import { TitleGenderFacadeService } from 'app/system-modules/service-facade/title-gender-facade.service';
-import { FacilityFacadeService } from 'app/system-modules/service-facade/facility-facade.service';
-import { UserFacadeService } from 'app/system-modules/service-facade/user-facade.service';
-import { FacilityTypeFacilityClassFacadeService } from 'app/system-modules/service-facade/facility-type-facility-class-facade.service';
-import { JoinChannelService } from 'app/services/facility-manager/setup/join-channel.service';*/
-
-/*import { StoreModule } from '@ngrx/store';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { EffectsModule } from '@ngrx/effects';*/
-/*import { environment } from "environments";*/
-import {SystemModuleService} from "./services/module-manager/setup/system-module.service";
-import {CanActivateViaAuthGuardAccessService} from "./services/facility-manager/setup/can-activate-via-auth-guard-access.service";
-import {RadiologyInvestigationService} from "./services/facility-manager/setup/index";
-import {FacilityTypeFacilityClassFacadeService} from "./system-modules/service-facade/facility-type-facility-class-facade.service";
-import {TitleGenderFacadeService} from "./system-modules/service-facade/title-gender-facade.service";
-import {UserFacadeService} from "./system-modules/service-facade/user-facade.service";
-import {FacilityFacadeService} from "./system-modules/service-facade/facility-facade.service";
-import {JoinChannelService} from "./services/facility-manager/setup/join-channel.service";
 
 @NgModule({
 	declarations: [
@@ -114,14 +101,7 @@ import {JoinChannelService} from "./services/facility-manager/setup/join-channel
 			customClass: 'modal-content',
 			confirmButtonClass: 'btn btn-primary',
 			cancelButtonClass: 'btn'
-		}),
-		/*StoreModule.forRoot({}),
-		StoreDevtoolsModule.instrument({
-			name: 'APMIS CEP',
-			maxAge: 25,
-			logOnly: environment.production
-		}),
-		EffectsModule.forRoot([])*/
+		})
 	],
 	providers: [
 		{
@@ -266,7 +246,8 @@ import {JoinChannelService} from "./services/facility-manager/setup/join-channel
 			multi: true
 		},
 		CanActivateViaAuthGuardCompleteFacilityService,
-		UpperCasePipe
+		UpperCasePipe,
+		ErrorsService
 	],
 	bootstrap: [ AppComponent ]
 })

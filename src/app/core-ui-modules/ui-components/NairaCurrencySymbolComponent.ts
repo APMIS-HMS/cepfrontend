@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 
 @Component({
-    selector: 'naira-currency-symbol',
+    selector: 'naira-currency',
     template: `<span [class]="cssClass">&#8358;</span>`
 })
 

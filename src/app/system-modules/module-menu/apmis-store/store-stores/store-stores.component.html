@@ -4,6 +4,32 @@
 	</ul>
 
 	<div class="tab-content">
+		<div class="filterTop">
+			<div class="tbl-header-lhs">
+				<div class="searchproduct">
+					<mat-form-field>
+					<input matInput placeholder="Search Product">
+					</mat-form-field>
+				</div>
+				<div (click)="changeRoute('new-store')" class="new-btn-blue"><i class="fa fa-plus"></i> Add New Store</div>
+			</div>
+			<div class="tbl-header-rhs">
+				<div>
+					<h3>Show:</h3>
+				</div>        
+				<div class="ft-btn ft-btn-selected">
+					<span>All</span>
+				</div>
+				<div class="ft-btn">
+					<span>Major Location</span>
+					<span class="item-val">Ward</span>
+				</div>
+				<div class="ft-btn">
+					<span>Minor Location</span>
+					<span class="item-val">Mateernity Ward</span>
+				</div>
+			</div>
+			</div>
 		<app-store-tab *ngIf="tab_store"> </app-store-tab>
 	</div>
 </div>

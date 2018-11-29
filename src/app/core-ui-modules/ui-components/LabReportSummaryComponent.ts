@@ -88,8 +88,8 @@ export class LabReportSummaryComponent implements OnInit {
                     <th>Date</th>
                     <th style="width:25%">Request</th>
 
-                    <th>Refering Doctor</th>
-                    <th>Clinic</th>
+                    <th>Referring Doctor</th>
+                  	<th>Location</th>
                     <th>Status</th>
                 </tr>
                 </thead>
@@ -118,8 +118,8 @@ export class LabReportSummaryComponent implements OnInit {
                     <td><span>{{r.date | date:'MMM dd, yyyy'}}</span></td>
                     <td><span>{{r.request}}</span></td>
                     <td><span>{{r.doctor}}</span></td>
-                    <td><span>{{r.clinic}}</span></td>
-                    <td><span class="green highlight">{{r.status}}</span></td>
+                    <td><span>{{r.location}}</span></td>
+                    <td><span class="green highlight">{{r.status }}</span></td>
                 </tr>
 
                 </tbody>
@@ -164,10 +164,10 @@ export class LabReportDetails implements OnInit, OnChanges, DoCheck {
 			};
 		}
 		this.reportSource.getLabReport(this.reportOptions).then((x: any) => {
-			console.log('LAB REPORT CALL', x);
-			this.reportData = x.data.data;
+			
+			this.reportData = x.data;
 			this.processing = false;
-			this.pagerSource.totalRecord = x.data.total;
+			this.pagerSource.totalRecord = x.total;
 		}, x => {
 			  this.processing  = false;
 			  
@@ -178,6 +178,7 @@ export class LabReportDetails implements OnInit, OnChanges, DoCheck {
 	pagerButtonClick(index: number) {
 		// goto next page using the current index
 		this.pagerSource.currentPage = index;
+		this.reportOptions.paginationOptions.skip  = index * this.pagerSource.pageSize;
 		this.getReportData();
 	}
 

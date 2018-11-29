@@ -1,4 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { StoreGlobalUtilService } from '../store-utils/global-service';
+import { Filters } from '../store-utils/global';
 
 @Component({
   selector: 'app-apmis-store-product',
@@ -7,20 +9,31 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ApmisStoreProductComponent implements OnInit {
 
-
+  showAdjustStock = false;
   tab_all_products = true;
   tab_product_config = false;
-  constructor() { }
+  storeFilters = [];
+  selectedFilterIndex = 0;
+  filterText = '';
+  constructor(private storeUtilService: StoreGlobalUtilService) { }
 
   ngOnInit() {
+    this.storeFilters = this.storeUtilService.getObjectKeys(Filters);
   }
-  tab_click(tab){
-    if(tab==='products'){
-      this.tab_all_products = !this.tab_all_products;
+  tab_click(tab) {
+    if (tab === 'products') {
+      this.tab_all_products = true;
       this.tab_product_config = false;
-    } else if(tab==='productConfig'){
+    } else if ( tab === 'productConfig') {
       this.tab_all_products = false;
-      this.tab_product_config = !this.tab_product_config;
-    }  
+      this.tab_product_config = true;
+    }
+  }
+  setSelectedFilter(index, filter) {
+      this.selectedFilterIndex = index;
+      this.filterText = filter;
+      console.log(this.filterText);
   }
 }
+
+

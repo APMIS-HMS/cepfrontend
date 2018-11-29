@@ -37,13 +37,7 @@ export class InvoiceListDetailsComponent implements OnInit {
 
 
     };
-    paymentSummary = false;
-
-    invoiceA = false;
-    invoiceB = false;
-    invoiceC = false;
-    invoiceD = false;
-    invoiceE = false;
+  
 
     constructor(private _router: Router, private paymentReportService: PaymentReportGenerator) {
     }
@@ -53,6 +47,7 @@ export class InvoiceListDetailsComponent implements OnInit {
     }
 
     getPaymentReport() {
+        console.log(this.reportOptions);
         this.loading = true;
         this.paymentReportService.getInvoicePaymentReport(this.reportOptions)
             .then(x => { 
@@ -79,6 +74,7 @@ export class InvoiceListDetailsComponent implements OnInit {
   }
 
     assignDate(date: IDateRange) {
+        this.reportOptions.filterByDate  = true;
         this.reportOptions.startDate = date.from;
         this.reportOptions.endDate = date.to;
         /* console.log("Parent Component Option: ", this.reportOptions);

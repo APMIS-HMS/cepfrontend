@@ -2,6 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {PaymentReportGenerator} from "../../../../../../core-ui-modules/ui-components/report-generator-service";
 import {IPaymentReportSummaryModel} from "../../../../../../core-ui-modules/ui-components/PaymentReportModel";
+import * as _ from "lodash";
+import * as ErrorStackParser from "error-stack-parser";
 
 @Component({
     selector: 'app-payment-summary-page',
@@ -10,12 +12,13 @@ import {IPaymentReportSummaryModel} from "../../../../../../core-ui-modules/ui-c
 })
 export class PaymentSummaryPageComponent implements OnInit {
     summaryData: IPaymentReportSummaryModel = {totalSales: 0};
+    loading: boolean = false;
 
     constructor(private _router: Router, private rptService: PaymentReportGenerator) {
     }
 
     ngOnInit() {
-       
+
         this.getReportSummaryData();
     }
 
@@ -37,12 +40,19 @@ export class PaymentSummaryPageComponent implements OnInit {
     }
 
     getReportSummaryData() {
+        this.loading = false;
         this.rptService.getPaymentReportSummary({})
             .then(x => {
                     this.summaryData = x.data;
-                    console.log(x);
+                    this.loading = false;
+                    if (!_.isNil(this.summaryData)) {
+                        this.pieChartData[0]  = this.summaryData.totalSales;
+                    }
+
                 }, x => {
-                   // console.log(x);
+                  const errorParser   = ErrorStackParser.parse(x);
+                  console.log(errorParser);
+                  this.loading = false;
                 }
             );
     }

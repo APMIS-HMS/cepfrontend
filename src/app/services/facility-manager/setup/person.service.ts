@@ -113,7 +113,7 @@ export class PersonService {
 
   fundWallet(payload: any, facilityId?: any) {
     return this._fundWalletSocket.create(payload, {
-      query: { facilityId: facilityId }
+      query: { facilityId: facilityId, isCardReused: false, saveCard: true }
     });
     // return this._fundWalletRest.create(payload);
   }
@@ -174,9 +174,9 @@ export class PersonService {
     const token = 'Bearer' + localStorage.getItem('token');
     // const bearer = '';
     const headers = new Headers();
-        headers.append('Content-Type', 'application/json');
-        headers.append('Authorization', token);
-    const options = new RequestOptions({headers: headers});
+    headers.append('Content-Type', 'application/json');
+    headers.append('Authorization', token);
+    const options = new RequestOptions({ headers: headers });
     this.http.post(path, payload, options).subscribe(subPayload => {
     });
   }
