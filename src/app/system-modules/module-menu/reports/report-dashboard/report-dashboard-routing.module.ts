@@ -5,8 +5,8 @@ import { ClinicManagementReportComponent } from './clinic-management-report/clin
 import { DhisReportComponent } from './dhis-report/dhis-report.component';
 import { LaboratoryReportComponent } from './laboratory-report/laboratory-report.component';
 import { PatientManagerReportComponent } from './patient-manager-report/patient-manager-report.component';
-import { StoreManagerReportComponent } from '../store-manager-report/store-manager-report.component';
-import { WardManagerReportComponent } from '../ward-manager-report/ward-manager-report.component';
+import { StoreManagerReportComponent } from './store-manager-report/store-manager-report.component';
+import { WardManagerReportComponent } from './ward-manager-report/ward-manager-report.component';
 import { PharmacyReportComponent } from './pharmacy-report/pharmacy-report.component';
 
 const REPORTS_DASHBOARD_ROUTE: Routes = [
