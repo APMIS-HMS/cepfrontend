@@ -47,7 +47,9 @@ const REPORTS_DASHBOARD_ROUTE: Routes = [
 			},
 
 			{
-				path: 'storeReport', component: StoreManagerReportComponent
+				//path: 'storeReport', component: StoreManagerReportComponent
+				path: 'storeReport',
+				loadChildren: './store-manager-report/store-manager-report.module#StoreManagerReportModule'
 
 			},
 
