@@ -3,7 +3,8 @@
     <div class="filter" style="width: 65%;">
         <div class="row" style="padding: 10px 40px 10px 40px;">
             <div class="dr-wrap survery" style="margin-top: 20px;">
-                <app-date-range></app-date-range>
+                <app-date-range [dateRange]="{from : reportOptions.startDate, to : reportOptions.endDate}" 
+                                (dateRangeChange)="assignDate($event)"></app-date-range>
             </div>
             <div class="searchInputWrap col-sm ">
                 <mat-form-field>
@@ -26,12 +27,21 @@
         </div>
 
     </div>
+    <asom-data-pager
+            [display-summary]="true"
+            [pager-source]="pagerSource"
 
+    ></asom-data-pager>
     <div class="row">
         <div class="tbl-resp-wrap">
             <table class="card" style="color:black;" cellpadding="0" cellspacing="0" border="0.5">
                 <thead>
-                    <tr class="th-r1 th-xxx">
+                <tr>
+                    <td colspan="8" style="text-align: center;color : blue;" *ngIf="loading">
+                        <span class="fa fa-3x fa-spin fa-refresh"></span>
+                    </td>
+                </tr>
+                    <tr class="th-r1 th-xxx" >
                         <th>Patient Name</th>
                         <th>APMIS ID</th>
                         <th>Address</th>
@@ -44,75 +54,29 @@
                 </thead>
 
                 <tbody>
-                    <tr class="th-xxx">
-                        <td>Olaniyi Adedejo</td>
-                        <td> JK-22449 </td>
+                    <tr class="th-xxx" *ngFor="let p of data">
+                        <td>{{p.patientName}}</td>
+                        <td>{{p.apmisId}} </td>
                         <td>
-                            <div>Plot 15, Otunba Jobi Fele Way......</div>
-                            <div>Alausa, Ikeja</div>
-                            <div>
-                                <b>Kaduna State </b>
-                            </div>
+                         {{p.address}}
 
                         </td>
-                        <td>25years</td>
-                        <td>Female</td>
-                        <td>HMO</td>
-                        <td>08063547514</td>
-                        <td>14-July-2018</td>
+                        <td>{{p.age}} years</td>
+                        <td>{{p.gender}}</td>
+                        <td>[----------]</td>
+                        <td>{{p.phoneNo}}</td>
+                        <td>{{p.dateCreated | date :'dd-MMM-yyyy'}}</td>
                     </tr>
-                    <tr class="th-xxx">
-                        <td>Omolayo Susan</td>
-                        <td> GT-888463 </td>
-                        <td>
-                            <div>Block 9,Flat 4,Robin Close</div>
-                            <div>Alausa, Ikeja</div>
-                            <div>
-                                <b>Lagos State </b>
-                            </div>
-                        </td>
-                        <td>35 Years</td>
-                        <td>Male</td>
-                        <td>Family Cover</td>
-                        <td>089567890</td>
-                        <td>20-April-2016</td>
-                    </tr>
-                    <tr class="th-xxx">
-                        <td>Omolayo Susan</td>
-                        <td> GT-888463 </td>
-                        <td>
-                            <div>Block 9,Flat 4,Robin Close</div>
-                            <div>Alausa, Ikeja</div>
-                            <div>
-                                <b>Lagos State </b>
-                            </div>
-                        </td>
-                        <td>35 Years</td>
-                        <td>Male</td>
-                        <td>Cash Payment</td>
-                        <td>089567890</td>
-                        <td>20-April-2016</td>
-                    </tr>
-                    <tr class="th-xxx">
-                        <td>Omolayo Susan</td>
-                        <td> GT-888463 </td>
-                        <td>
-                            <div>Block 9,Flat 4,Robin Close</div>
-                            <div>Alausa, Ikeja</div>
-                            <div>
-                                <b>Lagos State </b>
-                            </div>
-                        </td>
-                        <td>35 Years</td>
-                        <td>Male</td>
-                        <td>HMO Cover</td>
-                        <td>089567890</td>
-                        <td>20-April-2016</td>
-                    </tr>
+                   
                 </tbody>
             </table>
-            <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
-            </mat-paginator>
+            <div>
+                <asom-data-pager [show-progress]="true" [show-total-record]="false" [in-progress]="loading"
+                                 (onPageClick)="gotoPage($event)"
+                                 [pager-source]="pagerSource"
+
+                ></asom-data-pager>
+            </div>
             <div class="billSummarySect">
                 <table class="rhs">
                     <div class="summaryItems">

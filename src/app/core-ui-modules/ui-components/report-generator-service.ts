@@ -66,12 +66,20 @@ export class ReportGeneratorService implements ICustomReportService {
     }
 
     getPatientReport(options: IPatientReportOptions): Promise<IApiResponse<IPatientReportModel[]>> {
-        return Promise.resolve({data: []});
+        options.facilityId  = this.selectedFacility._id;
+        const newOption : any   = {...options};
+        if(options.paginate)
+        {
+            newOption.$skip  = options.paginationOptions.skip;
+            newOption.$limit  = options.paginationOptions.limit;
+        }
+        return this.restEndpoint.getService("patient-reg-report")
+            .find(  {query :  newOption});
     }
 
     getWorkBenches(): any {
         // get the Service end point;
-        console.log(this.selectedFacility);
+        //console.log(this.selectedFacility);
         return this.restEndpoint.getService("workbenches").find({
             query: {
                 facilityId: this.selectedFacility._id
@@ -131,7 +139,7 @@ export class PaymentReportGenerator implements IPaymentReportServiceEndPoint {
     }
 
     getPaymentReportSummary(rptOption: IPaymentReportOptions = {}): Promise<IApiResponse<IPaymentReportSummaryModel>> {
-        console.log(this.paymentReportServiceRef);
+        //console.log(this.paymentReportServiceRef);
         rptOption.facilityId = this.selectedFacility._id;
 
         /* So to get  all report summary we simply send a 'isSummary' variable to the server, Date range might be checked on server*/
