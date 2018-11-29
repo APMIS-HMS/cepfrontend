@@ -25,7 +25,7 @@
     <div class="config-layout" *ngIf="showSetBaseUnit">
       <div class="config-wrap">
         <h3 style="margin-right: 120px;">Set Base Unit</h3>
-        <i (click)="onShowSearch()" class="fa fa-plus" aria-hidden="true"></i>
+        <div (click)="onShowSearch()"><i class="fa fa-plus" aria-hidden="true"></i></div>
         <div class="apmisSearch-wrap" *ngIf="apmisSearch">
           <app-apmis-search-result [PackSizes]="packSizes"></app-apmis-search-result>
         </div>

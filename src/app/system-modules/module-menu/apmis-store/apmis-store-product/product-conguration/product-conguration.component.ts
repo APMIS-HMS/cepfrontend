@@ -10,8 +10,5 @@ export class ProductCongurationComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    // this.storeId = '5a88a0d26e6d17335cf318bc';
-    // this.currentFacility = <Facility>this.locker.getObject('selectedFacility');
-    // this.getInventories();
   }
 }

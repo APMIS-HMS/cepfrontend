@@ -30,7 +30,7 @@ export class ConfigProductComponent implements OnInit {
       private locker: CoolLocalStorage
     ) { }
 
-  ngOnInit() { 
+  ngOnInit() {
     this.productSearch.valueChanges.debounceTime(200).distinctUntilChanged().subscribe(val => {
     if (this.productSearch.value.length >= 3) {
       // get searched product from formulary
@@ -52,6 +52,7 @@ export class ConfigProductComponent implements OnInit {
 });
   }
   onShowSearch() {
+    console.log('CLICKED');
     this.apmisSearch = !this.apmisSearch;
     this.getProductPackTypes();
   }
