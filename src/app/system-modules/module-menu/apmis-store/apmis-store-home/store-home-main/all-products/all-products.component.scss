@@ -8,12 +8,13 @@ a.spc-lft{
         margin-right: 10px;
         border: 1px solid #C4C4C4;
         width: 257px;
-        padding: 20px 10px;
+        padding: 5px 10px;
         .btc-top{
             display: flex;
             justify-content: space-between;
             .val-wrap{
                 display: flex;
+                align-items: center;
                 .val-label{
                     color: #5A5D5A;
                     padding-right: 5px;
