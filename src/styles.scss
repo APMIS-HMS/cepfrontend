@@ -2884,3 +2884,24 @@ button,
         color: #FF3838
     }
 }
+
+
+.search-noResult-blue{
+    background: #0288d130;
+    border: none;
+    border-radius: 2px;
+    text-align: center;
+    height: 30px;
+    span{
+        font-size: 14px;
+        line-height: 30px;
+        text-align: center;
+        align-self: center;
+        color: #03A9F4;
+    }
+    i{
+        color: rgb(0, 110, 253);
+        cursor: pointer; 
+        font-weight: bold;
+    }
+}
