@@ -1,99 +1,65 @@
 <div class="search-container">
   <div class="searchproduct">
     <div class="InputGroup">
-      <input class="customInput" type="text" required>
+      <input class="customInput" [formControl]="productSearch" [value]="selectedProductName" type="text" required>
       <span class="highlight"></span>
       <label class="customLabel"><i class="fa fa-search" aria-hidden="true"></i>Search Product</label>
 
-      **Please Uncomment for the search result***
-      <!-- <ul class="search-sugestions">
-        <li class="search-sugestion">Diclofenac</li>
-        <li class="search-sugestion">Paracetamol</li>
-      </ul> -->
+      <ul class="search-sugestions" *ngIf="showProduct">
+        <li class="search-sugestion" *ngFor="let product of searchedProducts; let i = index" (click)="setSelectedOption(product)">{{product.name}}</li>
+      </ul>
     </div>
     <div class="search-noResult">
       <span>This product configuration
         already exists</span>
     </div>
   </div>
-  <div class="new-btn-solid-blue">
+  <div class="new-btn-solid-blue" (click)="onClickConfigure()">
     <span>Configure</span>
   </div>
 </div>
 
 <div class="config-container">
-  <div class="config-layout">
+
+  <div class="config-layout" *ngIf="showSetBaseUnit">
     <div class="config-wrap">
       <h3 style="margin-right: 120px;">Set Base Unit</h3>
       <i (click)="onShowSearch()" class="fa fa-plus" aria-hidden="true"></i>
       <div class="apmisSearch-wrap" *ngIf="apmisSearch">
-        <app-apmis-search-result></app-apmis-search-result>
+        <app-apmis-search-result [PackSizes]="packSizes"></app-apmis-search-result>
       </div>
     </div>
 
-    <div class="config-tags-wrap-x2">
+    <div class="config-tags-wrap-x2" *ngIf="isBaseUnitSet">
       <div class="tag-btn">
         <span>Tablets</span>
       </div>
     </div>
   </div>
-  <div class="config-layout">
-    <div class="config-wrap">
-      <h3>Add Configuration (Based on Unit)</h3>
-      <i class="fa fa-plus" aria-hidden="true"></i>
-    </div>
-    <div class="config-tags-wrap-x2">
-      <div class="tag-btn">
-        <span>Sachet</span>
-      </div>
-      <span>=</span>
-      <div class="InputGroup">
-        <input class="customInput" type="text" required>
-        <span class="highlight"></span>
-      </div>
-      <h4>Tablets</h4>
-    </div>
-  </div>
+      <!-- took out the div here -->
 </div>
 
-<div class="config-container">
+<div class="config-container" *ngIf="showConfigContainer">
   <div class="config-layout">
-    <div class="config-wrap">
-      <h3>Add Configuration (Based on Unit)</h3>
-      <i class="fa fa-plus" aria-hidden="true"></i>
-    </div>
-    <div class="config-tags-wrap-x2">
-      <div class="tag-btn">
-        <span>Packs</span>
+      <div class="config-wrap">
+        <h3>Add Configuration (Based on Unit)</h3>
+        <i class="fa fa-plus" aria-hidden="true"></i>
       </div>
-      <span>=</span>
-      <div class="InputGroup">
-        <input class="customInput" type="text" required>
-        <span class="highlight"></span>
+      <div class="config-tags-wrap-x2">
+        <div class="tag-btn">
+          <span>Packs</span>
+        </div>
+        <span>=</span>
+        <div class="InputGroup">
+          <input class="customInput" type="text" required>
+          <span class="highlight"></span>
+        </div>
+        <h4>Tablets</h4>
       </div>
-      <h4>Tablets</h4>
     </div>
-  </div>
-  <div class="config-layout">
-    <div class="config-wrap">
-      <h3>Add Configuration (Based on Unit)</h3>
-      <i class="fa fa-plus" aria-hidden="true"></i>
-    </div>
-    <div class="config-tags-wrap-x2">
-      <div class="tag-btn">
-        <span>Carton</span>
-      </div>
-      <span>=</span>
-      <div class="InputGroup">
-        <input class="customInput" type="text" required>
-        <span class="highlight"></span>
-      </div>
-      <h4>Tablets</h4>
-    </div>
-  </div>
 </div>
 
-<div class="sv-btn-container">
+<div class="sv-btn-container" *ngIf="showConfigContainer">
   <div class="new-btn-solid-blue">
     <span>Save Configuration</span>
   </div>
