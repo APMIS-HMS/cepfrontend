@@ -33,11 +33,8 @@ import { SuppliersComponent } from './product-entry/suppliers/suppliers.componen
 import { ProductConfigPopupComponent } from './product-entry/initialize-store/product-config-popup/product-config-popup.component';
 import { ConfigProductComponent } from './apmis-store-product/product-conguration/config-product/config-product.component';
 
-
-
 @NgModule({
-	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule,
-		FormsModule, ReactiveFormsModule ],
+	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule ],
 	declarations: [
 		ApmisStoreLandingpageComponent,
 		ApmisStoreHomeComponent,
@@ -65,7 +62,7 @@ import { ConfigProductComponent } from './apmis-store-product/product-conguratio
 		PurchaseOrderComponent,
 		SuppliersComponent,
 		ProductConfigPopupComponent,
-		ConfigProductComponent,
+		ConfigProductComponent
 	],
 	providers: [ StoreService, InventoryService, StoreGlobalUtilService ]
 })

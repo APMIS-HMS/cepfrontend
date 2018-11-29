@@ -81,16 +81,23 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
 					this.isSocket
 				)
 			)
-			.subscribe((payload: any) => {
-				this.cuDropdownLoading = false;
-				if (payload !== undefined && payload.data !== undefined) {
-					this.results = payload.data;
-				} else {
-					this.results = payload;
+			.subscribe(
+				(payload: any) => {
+					this.cuDropdownLoading = false;
+					if (payload !== undefined && payload.data !== undefined) {
+						this.results = payload.data;
+					} else {
+						this.results = payload;
+					}
+				},
+				(err) => {
+					console.log(err);
 				}
-			},err=>{
-				console.log(err);
-			});
+			);
+	}
+
+	cancel() {
+		this.results = [];
 	}
 
 	getImgUrl(item) {
@@ -109,7 +116,7 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
 				const imgUri = undefined;
 				return imgUri;
 			} else {
-				const imgUri = this.baseUrl + '/' + item;
+				const imgUri = item; // this.baseUrl + '/' + item;
 				// this.imgError = false;
 				return imgUri;
 			}
