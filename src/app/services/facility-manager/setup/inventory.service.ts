@@ -105,8 +105,10 @@ export class InventoryService {
 	getReOrderStockDetails(storeId: string) {
 		return this._inventoryOutOfStockServiceEndPt.get('1', { query: { storeId: storeId } });
 	}
-	getOutOfStockDetails(storeId: string) {
-		return this._inventoryOutOfStockServiceEndPt.get('0', { query: { storeId: storeId } });
+	getOutOfStockDetails(storeId: string, limit, skip) {
+		return this._inventoryOutOfStockServiceEndPt.get('0', {
+			query: { storeId: storeId, limit: limit, skip: skip }
+		});
 	}
 	getInventoryCountDetails(storeId: string) {
 		return this._inventoryCountServiceEndPt.get({ query: { storeId: storeId } });
