@@ -28,7 +28,7 @@ import { PaymentChannels } from '../../../../shared-module/helpers/global-config
 @Component({
 	selector: 'app-make-payment',
 	templateUrl: './make-payment.component.html',
-	styleUrls: [ './make-payment.component.scss' ]
+	styleUrls: ['./make-payment.component.scss']
 })
 export class MakePaymentComponent implements OnInit {
 	@Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -119,6 +119,9 @@ export class MakePaymentComponent implements OnInit {
 	}
 	ngOnInit() {
 		this.user = <any>this.locker.getObject('auth');
+		this.personService.get(this.selectedPatient.personDetails._id, { query: { $select: ['wallet'] } }).then(payload => {
+			this.selectedPatient.personDetails.wallet = payload.wallet;
+		}, err => { });
 		this.checkAllWaive.setValue(false);
 		this.getPatientCovers();
 		this.balance = new FormControl(this.cost, []);
@@ -232,20 +235,20 @@ export class MakePaymentComponent implements OnInit {
 		this.productTableForm = this.formBuilder.group({
 			productTableArray: this.formBuilder.array([
 				this.formBuilder.group({
-					date: [ '', [ <any>Validators.required ] ],
-					balance: [ 0, [ <any>Validators.required ] ],
-					billModelId: [ '', [ <any>Validators.required ] ],
-					billObjectId: [ '', [ <any>Validators.required ] ],
-					totalPrice: [ 0, [ <any>Validators.required ] ],
-					isSubCharge: [ false, [ <any>Validators.required ] ],
-					isPaymentCompleted: [ false, [ <any>Validators.required ] ],
-					isItemTxnClosed: [ false, [ <any>Validators.required ] ],
-					qty: [ 0, [ <any>Validators.required ] ],
-					facilityServiceObject: [ {}, [ <any>Validators.required ] ],
-					amountPaid: [ 0, [ <any>Validators.required ] ],
-					isWaiver: [ false, [ <any>Validators.required ] ],
-					waiverComment: [ '', [ <any>Validators.required ] ],
-					createdBy: [ '' ]
+					date: ['', [<any>Validators.required]],
+					balance: [0, [<any>Validators.required]],
+					billModelId: ['', [<any>Validators.required]],
+					billObjectId: ['', [<any>Validators.required]],
+					totalPrice: [0, [<any>Validators.required]],
+					isSubCharge: [false, [<any>Validators.required]],
+					isPaymentCompleted: [false, [<any>Validators.required]],
+					isItemTxnClosed: [false, [<any>Validators.required]],
+					qty: [0, [<any>Validators.required]],
+					facilityServiceObject: [{}, [<any>Validators.required]],
+					amountPaid: [0, [<any>Validators.required]],
+					isWaiver: [false, [<any>Validators.required]],
+					waiverComment: ['', [<any>Validators.required]],
+					createdBy: ['']
 				})
 			])
 		});
@@ -413,6 +416,7 @@ export class MakePaymentComponent implements OnInit {
 
 	onChangeAmount(item) {
 		const val = item.value.totalPrice - item.value.amountPaid;
+		console.log(val);
 		if (val >= 0 && val < item.value.totalPrice) {
 			item.controls.balance.setValue(val);
 			if (val === 0) {
@@ -441,6 +445,7 @@ export class MakePaymentComponent implements OnInit {
 		}
 		(<FormArray>this.productTableForm.controls['productTableArray']).value.forEach((element) => {
 			const mVal = element.totalPrice - element.amountPaid;
+			console.log(mVal);
 			if (mVal === 0) {
 				element.isPaymentCompleted = true;
 				element.isItemTxnClosed = true;
@@ -449,9 +454,11 @@ export class MakePaymentComponent implements OnInit {
 				element.isItemTxnClosed = false;
 			}
 		});
+		
 		(<FormArray>this.productTableForm.controls['productTableArray']).setValue(
 			JSON.parse(JSON.stringify((<FormArray>this.productTableForm.controls['productTableArray']).value))
 		);
+		console.log(this.productTableForm.controls['productTableArray']);
 	}
 
 	onChangeWaiver(item) {
@@ -526,6 +533,8 @@ export class MakePaymentComponent implements OnInit {
 	}
 
 	getTotalAmounBAlance() {
+		this.totalAmountPaid = 0;
+		this.totalAmountBalance = 0;
 		(<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
 			this.totalAmountPaid += item.value.amountPaid;
 			const balance = item.value.totalPrice - item.value.amountPaid;
@@ -560,6 +569,7 @@ export class MakePaymentComponent implements OnInit {
 	onOutOfPocket() {
 		this.getTotalAmounBAlance();
 		if (this.productTableForm.controls['productTableArray'].valid) {
+			console.log(this.selectedPatient.personDetails);
 			if (this.selectedPatient.personDetails.wallet !== undefined) {
 				if (
 					this.selectedPatient.personDetails.wallet.balance < this.totalAmountPaid &&
@@ -621,6 +631,7 @@ export class MakePaymentComponent implements OnInit {
 			if (this.totalAmountBalance === 0) {
 				paymantObj.transactionStatus = TransactionStatus.Complete;
 			}
+			console.log(paymantObj);
 		} else {
 			paymantObj = {
 				inputedValue: {
@@ -724,7 +735,7 @@ export class MakePaymentComponent implements OnInit {
 
 	private _notification(type: String, text: String): void {
 		this.facilityService.announceNotification({
-			users: [ this.user._id ],
+			users: [this.user._id],
 			type: type,
 			text: text
 		});
