@@ -15,7 +15,7 @@ export class ExpiringProductsComponent implements OnInit {
 	skip = 0;
 	numberOfPages = 0;
 	currentPage = 0;
-	limit = 2;
+	limit = 1;
 	packTypes = [ { id: 1, name: 'Sachet' }, { id: 2, name: 'Cartoon' } ];
 	storeId: string;
 	selectedFacility: any;
@@ -32,14 +32,20 @@ export class ExpiringProductsComponent implements OnInit {
 	getAboutToExpireInventoryList() {
 		this._inventoryService
 			.getAboutToExpireInventoryDetails({
-				query: { facilityId: this.selectedFacility._id, storeId: this.storeId, numberOfDays: 3000 }
+				query: {
+					facilityId: this.selectedFacility._id,
+					storeId: this.storeId,
+					numberOfDays: 3000,
+					limit: this.limit,
+					skip: this.skip * this.limit
+				}
 			})
 			.then(
 				(payload) => {
 					console.log(payload);
 					this.products = payload.data.data;
-					this.numberOfPages = this.products.length / this.limit;
-					this.total = this.products.length;
+					this.numberOfPages = payload.data.total / this.limit;
+					this.total = payload.data.total;
 				},
 				(error) => {
 					console.log(error);
@@ -49,6 +55,7 @@ export class ExpiringProductsComponent implements OnInit {
 
 	loadCurrentPage(event) {
 		this.skip = event;
+		this.getAboutToExpireInventoryList();
 	}
 
 	item_to_show(i) {
