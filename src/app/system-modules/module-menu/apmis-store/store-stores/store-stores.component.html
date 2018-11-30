@@ -8,7 +8,7 @@
 			<div class="tbl-header-lhs">
 				<div class="searchproduct">
 					<mat-form-field>
-					<input matInput placeholder="Search Product">
+						<input matInput placeholder="Search Product">
 					</mat-form-field>
 				</div>
 				<div (click)="changeRoute('new-store')" class="new-btn-blue"><i class="fa fa-plus"></i> Add New Store</div>
@@ -16,20 +16,33 @@
 			<div class="tbl-header-rhs">
 				<div>
 					<h3>Show:</h3>
-				</div>        
+				</div>
 				<div class="ft-btn ft-btn-selected">
 					<span>All</span>
 				</div>
-				<div class="ft-btn">
-					<span>Major Location</span>
-					<span class="item-val">Ward</span>
+				<div>
+					<!-- <span>Major Location</span>
+					<span class="item-val">Ward</span> -->
+					<div>
+						<select [formControl]="formControlLocation">
+							<option value="" disabled selected>Major Location</option>
+							<option value={{item._id}} *ngFor="let item of locations">{{item.name}}</option>
+						</select>
+					</div>
 				</div>
-				<div class="ft-btn">
-					<span>Minor Location</span>
-					<span class="item-val">Mateernity Ward</span>
+				<div>
+					<!-- <span>Minor Location</span>
+					<span class="item-val">Mateernity Ward</span> -->
+					<div class="select">
+						<select [formControl]="formControlMinorLocation">
+							<option value="" disabled selected>Minor Location</option>
+							<option *ngFor="let item of storeLocations" value="{{item._id}}">{{item.name}}</option>
+						</select>
+					</div>
 				</div>
 			</div>
-			</div>
-		<app-store-tab *ngIf="tab_store"> </app-store-tab>
+		</div>
+		<app-store-tab *ngIf="tab_store" [minorLocationId]="loc" [locationId]="formControlLocation.name">
+		</app-store-tab>
 	</div>
 </div>
