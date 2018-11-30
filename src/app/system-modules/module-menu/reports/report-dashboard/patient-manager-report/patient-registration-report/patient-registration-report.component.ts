@@ -37,9 +37,7 @@ export class PatientRegistrationReportComponent implements OnInit {
       startAge : 0 ,
       endAge : 1500
   };
-      
-  
- // apiResponse : IApiResponse<IPatientReportModel[]>  = {data : [] } ;
+  // apiResponse : IApiResponse<IPatientReportModel[]>  = {data : [] } ;
   data:IPatientReportModel[]   =  [] ; 
   // Data Pager Component Setup
     pagerSource :  IPagerSource = {
@@ -90,8 +88,15 @@ export class PatientRegistrationReportComponent implements OnInit {
             if(!_.isEmpty(this.reportOptions.queryString) && this.reportOptions.queryString.toLowerCase() != 'all')
             {
                 const qy = this.reportOptions.queryString.split("-");
-                console.log(qy);
+              
+                if(_.isArray(qy) && qy.length == 2)
+                {
+                    this.reportOptions.startAge  = parseInt(qy[0]);
+                    this.reportOptions.endAge  = parseInt(qy[1]);
+                    this.reportOptions.ageRange  = this.reportOptions.queryString;
+                }
                 
+                console.log("Report Options : " , this.reportOptions);
             }
             else{
                 // set to all age ranges
