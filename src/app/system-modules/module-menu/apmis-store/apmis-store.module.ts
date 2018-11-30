@@ -16,7 +16,7 @@ import { ProductRestockComponent } from './apmis-store-home/store-home-main/prod
 import { StoreStoresComponent } from './store-stores/store-stores.component';
 import { StoreTabComponent } from './store-stores/store-tab/store-tab.component';
 import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-module';
-import { StoreService, InventoryService } from 'app/services/facility-manager/setup';
+import { StoreService, InventoryService,ProductTypeService } from 'app/services/facility-manager/setup';
 import { ApmisPaginationComponent } from './components/apmis-pagination/apmis-pagination.component';
 import { StoreGlobalUtilService } from './store-utils/global-service';
 import { ApmisNewStoreComponent } from './store-stores/apmis-new-store/apmis-new-store.component';
@@ -24,10 +24,17 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ApmisSearchComponent } from './components/apmis-search/apmis-search.component';
 import { ProductCongurationComponent } from './apmis-store-product/product-conguration/product-conguration.component';
 import { ApmisSearchResultComponent } from './components/apmis-search/apmis-search-result/apmis-search-result.component';
+import { ProductEntryComponent } from './product-entry/product-entry.component';
+import { InitializeStoreComponent } from './product-entry/initialize-store/initialize-store.component';
+import { InvoiceEntryComponent } from './product-entry/invoice-entry/invoice-entry.component';
+import { PurchaseListComponent } from './product-entry/purchase-list/purchase-list.component';
+import { PurchaseOrderComponent } from './product-entry/purchase-order/purchase-order.component';
+import { SuppliersComponent } from './product-entry/suppliers/suppliers.component';
+import { ProductConfigPopupComponent } from './product-entry/initialize-store/product-config-popup/product-config-popup.component';
+import { ConfigProductComponent } from './apmis-store-product/product-conguration/config-product/config-product.component';
 
 @NgModule({
-	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule,
-		FormsModule, ReactiveFormsModule ],
+	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule ],
 	declarations: [
 		ApmisStoreLandingpageComponent,
 		ApmisStoreHomeComponent,
@@ -47,8 +54,16 @@ import { ApmisSearchResultComponent } from './components/apmis-search/apmis-sear
 		ApmisNewStoreComponent,
 		ProductCongurationComponent,
 		ApmisSearchComponent,
-		ApmisSearchResultComponent
+		ApmisSearchResultComponent,
+		ProductEntryComponent,
+		InitializeStoreComponent,
+		InvoiceEntryComponent,
+		PurchaseListComponent,
+		PurchaseOrderComponent,
+		SuppliersComponent,
+		ProductConfigPopupComponent,
+		ConfigProductComponent
 	],
-	providers: [ StoreService, InventoryService, StoreGlobalUtilService ]
+	providers: [ StoreService, InventoryService, StoreGlobalUtilService,ProductTypeService ]
 })
 export class ApmisStoreModule {}

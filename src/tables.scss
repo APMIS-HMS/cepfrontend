@@ -197,7 +197,7 @@ td .empWrap .list-img{
     font-size: 20px;
 }
 .store-tr-content{
-    padding: 0px 50px;
+    padding: 5px 50px;
 }
 .store-tfooter{
     padding: 15px;
@@ -298,4 +298,23 @@ background: #0288D1;
     .ft-btn{
         margin-left: 10px;
     }
+}
+
+.tbl-config-wrap{
+    margin-top:20px
+}
+
+.config-tr-in {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr;
+    grid-auto-columns: 1fr;
+    grid-gap: 20px;
+    align-items: left;
+    grid-auto-rows: auto;
+    grid-auto-flow: column;
+}
+
+.config-tags-wrap{
+    display: flex;
+    align-items: center;    
 }

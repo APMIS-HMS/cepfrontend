@@ -15,7 +15,7 @@ export class ExpiredProductsComponent implements OnInit {
 	skip = 0;
 	numberOfPages = 0;
 	currentPage = 0;
-	limit = 2;
+	limit = 1;
 	packTypes = [ { id: 1, name: 'Sachet' }, { id: 2, name: 'Cartoon' } ];
 	storeId: string;
 	selectedFacility: any;
@@ -26,25 +26,34 @@ export class ExpiredProductsComponent implements OnInit {
 	ngOnInit() {
 		this.storeId = '5a88a0d26e6d17335cf318bc';
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
-		this.getAboutToExpireInventoryList();
+		this.getExpireInventoryList();
 	}
 
-	getAboutToExpireInventoryList() {
-		this._inventoryService.getExpiredInventoryDetails(this.storeId).then(
-			(payload) => {
-				console.log(payload);
-				this.products = payload.data.data;
-				this.numberOfPages = this.products.length / this.limit;
-				this.total = this.products.length;
-			},
-			(error) => {
-				console.log(error);
-			}
-		);
+	getExpireInventoryList() {
+		this._inventoryService
+			.getExpiredInventoryDetails({
+				query: {
+					storeId: this.storeId,
+					limit: this.limit,
+					skip: this.skip * this.limit
+				}
+			})
+			.then(
+				(payload) => {
+					console.log(payload);
+					this.products = payload.data.data;
+					this.numberOfPages = payload.data.total / this.limit;
+					this.total = payload.data.total;
+				},
+				(error) => {
+					console.log(error);
+				}
+			);
 	}
 
 	loadCurrentPage(event) {
 		this.skip = event;
+		this.getExpireInventoryList();
 	}
 
 	item_to_show(i) {
