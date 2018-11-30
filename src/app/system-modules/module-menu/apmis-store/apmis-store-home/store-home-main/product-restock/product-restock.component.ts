@@ -26,16 +26,16 @@ export class ProductRestockComponent implements OnInit {
 	ngOnInit() {
 		this.storeId = '5a88a0d26e6d17335cf318bc';
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
-		this.getAboutToExpireInventoryList();
+		this.getOutOfStockInventoryList();
 	}
 
-	getAboutToExpireInventoryList() {
-		this._inventoryService.getOutOfStockDetails(this.storeId).then(
+	getOutOfStockInventoryList() {
+		this._inventoryService.getOutOfStockDetails(this.storeId, this.limit, this.skip).then(
 			(payload) => {
 				console.log(payload);
 				this.products = payload.data;
-				this.numberOfPages = this.products.length / this.limit;
-				this.total = this.products.length;
+				this.numberOfPages = payload.data.total / this.limit;
+				this.total = payload.data.total;
 			},
 			(error) => {
 				console.log(error);

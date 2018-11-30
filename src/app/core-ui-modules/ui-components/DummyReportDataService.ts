@@ -6,10 +6,11 @@ import {
 import {Observable} from "rxjs";
 import {Injectable} from "@angular/core";
 import {RestService} from "../../feathers/feathers.service";
-import {PaymentReportGenerator, ReportGeneratorService} from "./report-generator-service";
+import {PaymentChartDataService, PaymentReportGenerator, ReportGeneratorService} from "./report-generator-service";
 import {IApiResponse} from "./ReportGenContracts";
 import {IPaymentReportModel, IPaymentReportOptions, IPaymentReportSummaryModel} from "./PaymentReportModel";
 import {CoolLocalStorage} from "angular2-cool-storage";
+import {Local} from "protractor/built/driverProviders";
 @Injectable()
 export class DummyReportDataService extends ReportGeneratorService //  implements ICustomReportService
 {
@@ -24,7 +25,7 @@ export class DummyReportDataService extends ReportGeneratorService //  implement
         const labRpt  :  ILabReportModel[]  = [
             {
                 apmisId  : 'SO-2341',
-                clinic : "CK-Lab Clinic",
+                location : "CK-Lab Clinic",
                 patientName : "Mr James Iburio",
                 doctor : "Dr. C Madu",
                 date : new Date(),
@@ -33,7 +34,7 @@ export class DummyReportDataService extends ReportGeneratorService //  implement
             },
             {
                 apmisId  : 'MK-2801',
-                clinic : "HMR-Lab Clinic",
+                location : "HMR-Lab Clinic",
                 patientName : "Mr Peter Asuokwou",
                 doctor : "Dr. C Madu",
                 date : new Date(),
@@ -42,7 +43,7 @@ export class DummyReportDataService extends ReportGeneratorService //  implement
             },
             {
                 apmisId  : 'CG-12003',
-                clinic : "Bload-Lab Clinic",
+                location : "Bload-Lab Clinic",
                 patientName : "Mr Bayo Akindele",
                 doctor : "Dr. Dike Okoye",
                 date : new Date(),
@@ -74,12 +75,8 @@ export class DummyReportDataService extends ReportGeneratorService //  implement
             console.log("TESTING Backend Service Call: " , x);
 
         });
-        this.getLocations().then(x => {
-            console.log("LOCATIONS" , x);
-        }); 
-        this.getWorkBenches().then(x => {
-            console.log("Work Benches" , x);
-        });
+      
+       
             return Promise.resolve(result);
         
     }
@@ -96,7 +93,7 @@ export class DummyReportDataService extends ReportGeneratorService //  implement
                         apmisId : "KO-00022",
                         patientName : "Chidi Ezidiegwu",
                         status : "Completed",
-                        clinic : "West Lab Clinic",
+                        location : "West Lab Clinic",
                         doctor :"Dr Felicia Adanbel",
                         request : "Blood Glucose Test",
                         date  : new  Date()
@@ -107,7 +104,7 @@ export class DummyReportDataService extends ReportGeneratorService //  implement
                         apmisId : "XC-013292",
                         patientName : "Maryann Ikonah",
                         status : "Completed",
-                        clinic : "West Lab Clinic",
+                        location : "West Lab Clinic",
                         doctor :"Dr Bello Ahmed",
                         request : "Urinary Analysis",
                         date  : new  Date()
@@ -124,7 +121,7 @@ export class DummyReportDataService extends ReportGeneratorService //  implement
                         apmisId : "KO-00022",
                         patientName : "Hadiza Adamu",
                         status : "In Progress",
-                        clinic : "North Lab Clinic",
+                        location : "North Lab Clinic",
                         doctor :"Dr Chima Okoye",
                         request : "Pregnancy Test",
                         date  : new  Date()
@@ -1446,4 +1443,83 @@ export class DummyPaymentReportService extends PaymentReportGenerator
         };
         return Promise.resolve(result);
     }
+}
+
+@Injectable()
+export class DummyPaymentChartDataService  extends  PaymentChartDataService
+{
+    constructor(private rest  : RestService , localStorage : CoolLocalStorage)
+    {
+        super(rest , localStorage);
+    }
+    
+    async  getChartData() : Promise<any>
+    {
+        const dummyData  = {
+            "lineChartData": [
+                {
+                    "label": "Appointment",
+                    "data": [
+                        20000
+                    ]
+                },
+                {
+                    "label": "Laboratory",
+                    "data": [
+                        9800
+                    ]
+                },
+                {
+                    "label": "Medical Records",
+                    "data": [
+                        1000
+                    ]
+                },
+                {
+                    "label": "Ward",
+                    "data": [
+                        300000
+                    ]
+                }
+            ],
+            "lineChartLabels": [
+                "14th Nov",
+                "15th Nov"
+            ],
+            "lineChartColors": [
+                {
+                    "backgroundColor": "rgba(148,159,177,0.2)",
+                    "borderColor": "rgba(148,159,177,1)",
+                    "pointBackgroundColor": "rgba(148,159,177,1)",
+                    "pointBorderColor": "#fff",
+                    "pointHoverBackgroundColor": "#fff",
+                    "pointHoverBorderColor": "rgba(148,159,177,0.8)"
+                },
+                {
+                    "backgroundColor": "rgba(77,83,96,0.2)",
+                    "borderColor": "rgba(77,83,96,1)",
+                    "pointBackgroundColor": "rgba(77,83,96,1)",
+                    "pointBorderColor": "#fff",
+                    "pointHoverBackgroundColor": "#fff",
+                    "pointHoverBorderColor": "rgba(77,83,96,1)"
+                },
+                {
+                    "backgroundColor": "rgba(148,159,177,0.2)",
+                    "borderColor": "rgba(148,159,177,1)",
+                    "pointBackgroundColor": "rgba(148,159,177,1)",
+                    "pointBorderColor": "#fff",
+                    "pointHoverBackgroundColor": "#fff",
+                    "pointHoverBorderColor": "rgba(148,159,177,0.8)"
+                }
+            ],
+            "lineChartLegend": true,
+            "lineChartType": "line",
+            "lineChartOptions": {
+                "responsive": true
+            }
+        };
+        const result  =  await Promise.resolve(dummyData);
+        return result;
+    }
+    
 }

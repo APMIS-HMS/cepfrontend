@@ -2795,6 +2795,7 @@ button,
     border: 1px solid #0288D1;
     color: #0288D1;
     font-size: 12px;
+    border-radius: 5px;
     display: flex;
     align-items: center;
     padding: 5px;
@@ -2851,7 +2852,7 @@ button,
     top: 105%;
     width: 100%;
     min-height: 35px;
-    max-height: 500px;
+    max-height: 450px;
     background: #fff;
     border: 1px solid #eee;
     z-index: 2;
@@ -2861,9 +2862,7 @@ button,
     width: 100%;
     padding: 10px;
     box-sizing: border-box;
-    cursor: pointer;    
-    min-height: 50px;
-    max-height: 500px;
+    cursor: pointer;   
     overflow: auto;
 }
 
@@ -2877,10 +2876,31 @@ button,
     text-align: center;
     height: 30px;
     span{
-        font-size: 14px;
+        font-size: 10px;
         line-height: 30px;
         text-align: center;
         align-self: center;
         color: #FF3838
+    }
+}
+
+
+.search-noResult-blue{
+    background: #0288d130;
+    border: none;
+    border-radius: 2px;
+    text-align: center;
+    height: 30px;
+    span{
+        font-size: 10px;
+        line-height: 30px;
+        text-align: center;
+        align-self: center;
+        color: #03A9F4;
+    }
+    i{
+        color: rgb(0, 110, 253);
+        cursor: pointer; 
+        font-weight: bold;
     }
 }

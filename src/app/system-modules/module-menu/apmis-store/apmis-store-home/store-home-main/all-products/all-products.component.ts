@@ -19,7 +19,7 @@ export class AllProductsComponent implements OnInit {
 	skip = 0;
 	numberOfPages = 0;
 	currentPage = 0;
-	limit = 2;
+	limit = 1;
 	packTypes = [ { id: 1, name: 'Sachet' }, { id: 2, name: 'Cartoon' } ];
 	storeId: string;
 	selectedFacility: any;
@@ -43,13 +43,18 @@ export class AllProductsComponent implements OnInit {
 	getInventoryList() {
 		this._inventoryService
 			.findFacilityProductList({
-				query: { facilityId: this.selectedFacility._id, storeId: this.storeId }
+				query: {
+					facilityId: this.selectedFacility._id,
+					storeId: this.storeId,
+					limit: this.limit,
+					skip: this.skip * this.limit
+				}
 			})
 			.then(
 				(payload) => {
 					this.products = payload.data;
-					this.numberOfPages = this.products.length / this.limit;
-					this.total = this.products.length;
+					this.numberOfPages = payload.total / this.limit;
+					this.total = payload.total;
 				},
 				(error) => {
 					console.log(error);
@@ -75,13 +80,7 @@ export class AllProductsComponent implements OnInit {
 
 	loadCurrentPage(event) {
 		this.skip = event;
-	}
-
-	getProductSlice(products) {
-		const first = this.skip * this.limit;
-		const second = this.limit + this.skip * this.limit;
-		const slicedProducts = products.slice(first, second);
-		return slicedProducts;
+		this.getInventoryList();
 	}
 
 	close_onClick(e) {

@@ -4,7 +4,7 @@ import {PagerButtonComponent} from "./PagerComponent";
 
 
 @Injectable()
-export class AsomModalDialogService {
+export class ApmisModalDialogService {
     constructor(private modalRef: MatDialog) {
     }
 
@@ -32,14 +32,14 @@ export class AsomModalDialogService {
 }
 
 @Component({
-    selector: 'asom-modal-dialog',
+    selector: 'apmis-modal-dialog',
     template: `
         <div class="">
             <h2>Dialog Component Shell</h2>
         </div>`
 })
 
-export class AsomModalDialogComponent implements OnInit {
+export class ApmisModalDialogComponent implements OnInit {
     constructor() {
     }
 
@@ -48,12 +48,12 @@ export class AsomModalDialogComponent implements OnInit {
 }
 
 @Component({
-    selector: "asom-modal-trigger",
+    selector: "apmis-modal-trigger",
     template: `
         <span>{{text}}</span>
     `
 })
-export class AsomModalTrigger {
+export class ApmisModalTrigger {
     @Input() text: string = "Open Dialog";
     @Input() title: string = "Dialog Title Goes here!";
     @Input() disableClose: boolean = false;
@@ -62,7 +62,7 @@ export class AsomModalTrigger {
         this.onClick();
     }
 
-    constructor(private dialogService: AsomModalDialogService) {
+    constructor(private dialogService: ApmisModalDialogService) {
 
     }
 
