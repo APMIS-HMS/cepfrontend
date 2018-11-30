@@ -9,19 +9,62 @@ import { FormControl } from '@angular/forms';
 })
 export class StoreManagerReportComponent implements OnInit {
 
-  pageInView = 'Store Report';
+	stockReport = false;
+   storeSalesReport = false;
+
+    pageInView = 'Store Report';
 
   constructor(private _router: Router) { }
 
   ngOnInit() {
+		const page: string = this._router.url;
+		this.checkPageUrl(page);
   }
 
-  pageInViewLoader(title) {
-		this.pageInView = title;
-  }
+  checkPageUrl(param: string) {
+		if (param.includes('storeSales')) {
+			this.stockReport = false;
+			this.storeSalesReport = true;
+			this._router.navigate([ '/dashboard/reports/report-dashboard/storeManagerReport/storeSales' ]);
+		} else if (param.includes('stockReport')) {
+			this.stockReport = true;
+			this.storeSalesReport = false;
+			this._router.navigate([ '/dashboard/reports/report-dashboard/storeManagerReport/stockReport' ]);
+		} else {
+			this.stockReport = false;
+			this.storeSalesReport = true;
+			this._router.navigate([ '/dashboard/reports/report-dashboard/storeManagerReport/storeSales' ]);
+		}
+	}
+	// route(link) {
+	// 	console.log(link);
+	// 	if (link === 'patientAnalytics') {
+	// 		this.patientRegistrationAnalytics = true;
+	// 	}  else {
+	// 		this.patientRegistrationAnalytics = false;
+	// 	}
+	// 	this._router.navigate([ '/dashboard/reports/report-dashboard/patient-manager-report' + link ]);
+	// }
+
+ // pageInViewLoader(title) {
+		//this.pageInView = title;
+  //}
 
   back_dashboard() {
 		this._router.navigate(['/dashboard/reports/report-dashboard']);
-	  }
+  }
+	patientRegistrationReport() {
+		this._router.navigate(['/dashboard/reports/report-dashboard/storeManagerReport/storeSales']);
+	 }
+
+
+ patientRegistration_analytics() {
+		this._router.navigate(['/dashboard/reports/report-dashboard/storeManagerReport/stockReport']);
+ }
+
+ pageInViewLoader(title) {
+  this.pageInView = title;
+}
 
 }
+
