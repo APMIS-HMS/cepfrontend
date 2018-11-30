@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms'; 
 
 @Component({
   selector: 'app-inbound-transfer',
@@ -7,9 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class InboundTransferComponent implements OnInit {
 
-  constructor() { }
+  check:FormControl = new FormControl(); 
 
-  ngOnInit() {
+  constructor() { } 
+
+  ngOnInit() { 
   }
 
 }
