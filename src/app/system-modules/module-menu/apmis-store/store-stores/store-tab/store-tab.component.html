@@ -21,7 +21,9 @@
           <div class="store-td">{{store.name}}</div>
           <div class="store-td">{{store.location.majorLocation.name}}</div>
           <div class="store-td">{{store.location.minorLocation.name}}</div>
-          <div class="store-td">Consumables, infusion, Beverages, Drugs, Syringes </div>
+          <div class="store-td" *ngFor="let item of store.productTypes">
+            {{item.name}},
+          </div>
           <div class="store-td">
             <div class="ft-btn">Open Store</div>
           </div>
