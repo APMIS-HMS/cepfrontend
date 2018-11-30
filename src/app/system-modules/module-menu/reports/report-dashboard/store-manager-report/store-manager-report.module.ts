@@ -5,6 +5,8 @@ import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-modu
 import { SharedModule } from 'app/shared-module/shared.module';
 import { StoreManagerReportComponent } from './store-manager-report.component';
 import { StoreManagerReportRoutingModule } from './store-manager-report-routing.module';
+import { StockReportComponent } from './stock-report/stock-report.component';
+import { StoreSalesReportComponent } from './store-sales-report/store-sales-report.component';
 
 @NgModule({
   imports: [
@@ -15,6 +17,8 @@ import { StoreManagerReportRoutingModule } from './store-manager-report-routing.
     SharedModule
   ],
   declarations: [
-    StoreManagerReportComponent ]
+    StoreManagerReportComponent,
+    StockReportComponent,
+    StoreSalesReportComponent ]
 })
 export class StoreManagerReportModule { }
