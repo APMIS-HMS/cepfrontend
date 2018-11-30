@@ -10,7 +10,7 @@ import { FormControl } from '@angular/forms';
 export class StoreManagerReportComponent implements OnInit {
 
 	stockReport = false;
-   storeSalesReport = false;
+  storeSalesReport = false;
 
     pageInView = 'Store Report';
 
@@ -25,15 +25,15 @@ export class StoreManagerReportComponent implements OnInit {
 		if (param.includes('storeSales')) {
 			this.stockReport = false;
 			this.storeSalesReport = true;
-			this._router.navigate([ '/dashboard/reports/report-dashboard/storeManagerReport/storeSales' ]);
+			this._router.navigate([ '/dashboard/reports/report-dashboard/storeReport/salesReport' ]);
 		} else if (param.includes('stockReport')) {
 			this.stockReport = true;
 			this.storeSalesReport = false;
-			this._router.navigate([ '/dashboard/reports/report-dashboard/storeManagerReport/stockReport' ]);
+			this._router.navigate([ '/dashboard/reports/report-dashboard/storeReport/stockReport' ]);
 		} else {
 			this.stockReport = false;
 			this.storeSalesReport = true;
-			this._router.navigate([ '/dashboard/reports/report-dashboard/storeManagerReport/storeSales' ]);
+			this._router.navigate([ '/dashboard/reports/report-dashboard/storeReport/salesReport' ]);
 		}
 	}
 	// route(link) {
@@ -53,13 +53,13 @@ export class StoreManagerReportComponent implements OnInit {
   back_dashboard() {
 		this._router.navigate(['/dashboard/reports/report-dashboard']);
   }
-	patientRegistrationReport() {
-		this._router.navigate(['/dashboard/reports/report-dashboard/storeManagerReport/storeSales']);
+	storeSales() {
+		this._router.navigate(['/dashboard/reports/report-dashboard/storeReport/salesReport']);
 	 }
 
 
- patientRegistration_analytics() {
-		this._router.navigate(['/dashboard/reports/report-dashboard/storeManagerReport/stockReport']);
+ storeStockReport() {
+		this._router.navigate(['/dashboard/reports/report-dashboard/storeReport/stockReport']);
  }
 
  pageInViewLoader(title) {
