@@ -33,10 +33,7 @@
                        
                     </div>
                     <div style="float:right; margin: -5px 10px;">
-                        <asom-pager-button background-color="blue" (onClick)="search()"
-                                           [is-disable]="lrd.processing" [is-oval]="true"
-
-                        ><span class="fa fa-search fa-2x"></span></asom-pager-button>
+                      <apmis-search-button [processing]="lrd.processing" (onSearch)="search()" ></apmis-search-button>
                     </div>
                 </div>
                
@@ -47,10 +44,11 @@
                 text-decoration: underline;">Group</h3>
                 <div style="display:flex;">
                     <mat-form-field class="select">
-                        <mat-select placeholder="Select Location" >
-                            <mat-option>PP Lab</mat-option>
-                            <mat-option>Dental Lab</mat-option>
-                            <mat-option>Optometric Lab</mat-option>
+                        <mat-select placeholder="Select Location"  (valueChange)="setLocation($event)" >
+                            <mat-option *ngFor="let l of locations" [value]="l.location">
+                                <span>{{l.location}}</span>
+                            </mat-option>
+                          
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field class="select">

@@ -33,7 +33,7 @@ export class LaboratoryReportComponent implements OnInit {
 
     constructor(private _router: Router, private rptService: ReportGeneratorService) {
     }
-
+    
     ngOnInit() {
         this.locations   =  this.rptService.getLocations()
         /* .then(x => {
@@ -70,6 +70,7 @@ export class LaboratoryReportComponent implements OnInit {
         console.log(value);
         this.reportOptions.queryString   = value;
         this.reportOptions.searchBy  = "location";
+        this.reportOptions.location  = value;
     }
 
 }

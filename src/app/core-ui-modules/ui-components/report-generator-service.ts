@@ -67,7 +67,7 @@ export class ReportGeneratorService implements ICustomReportService {
 
     getPatientReport(options: IPatientReportOptions): Promise<IApiResponse<IPatientReportModel[]>> {
         options.facilityId  = this.selectedFacility._id;
-        const newOption : any   = {...options};
+        const newOption : any   = {facilityId  : options.facilityId};//...options
         if(options.paginate)
         {
             newOption.$skip  = options.paginationOptions.skip;

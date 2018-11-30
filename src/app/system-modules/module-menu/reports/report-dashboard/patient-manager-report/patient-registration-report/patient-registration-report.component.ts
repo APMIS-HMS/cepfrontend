@@ -6,10 +6,9 @@ import {
     IPatientReportModel,
     IPatientReportOptions
 } from "../../../../../../core-ui-modules/ui-components/PatientReportModel";
-import {IApiResponse} from "../../../../../../core-ui-modules/ui-components/ReportGenContracts";
 import {IDateRange} from "ng-pick-daterange";
 import {IPagerSource} from "../../../../../../core-ui-modules/ui-components/PagerComponent";
-
+import * as _ from 'lodash';
 @Component({
   selector: 'app-patient-registration-report',
   templateUrl: './patient-registration-report.component.html',
@@ -33,9 +32,14 @@ export class PatientRegistrationReportComponent implements OnInit {
   reportOptions : IPatientReportOptions = { 
       startDate  : new Date(),
       endDate : new Date(),
-      searchBy : "all", paginate  : true, paginationOptions : {skip : 0, limit : 20}};
+      searchBy : "all", paginate  : true, paginationOptions : {skip : 0, limit : 20},
+      ageRange : 'all',
+      startAge : 0 ,
+      endAge : 1500
+  };
+      
   
-  apiResponse : IApiResponse<IPatientReportModel[]>  = {data : [] } ;
+ // apiResponse : IApiResponse<IPatientReportModel[]>  = {data : [] } ;
   data:IPatientReportModel[]   =  [] ; 
   // Data Pager Component Setup
     pagerSource :  IPagerSource = {
@@ -57,7 +61,7 @@ export class PatientRegistrationReportComponent implements OnInit {
       this.reportService.getPatientReport(this.reportOptions)
           .then( x => {
             this.loading  = false;
-            this.apiResponse  = x;
+            //this.apiResponse  = x;
             this.data  = x.data; // for Intellisense, this field is not required (DRY)
             this.pagerSource.totalRecord  = x.total;
             console.log(x);
@@ -79,7 +83,23 @@ export class PatientRegistrationReportComponent implements OnInit {
         // this.labRptComponentRef.processing 
         this.reportOptions.queryString = this.searchControl.value;
         this.reportOptions.searchBy = this.searchCriteria.value;
-        
+        // Check if we are searching by Age Range and if a valid age range was supplied
+        if(this.reportOptions.searchBy.toLowerCase() === 'age')
+        {
+            // check if we have a queryString
+            if(!_.isEmpty(this.reportOptions.queryString) && this.reportOptions.queryString.toLowerCase() != 'all')
+            {
+                const qy = this.reportOptions.queryString.split("-");
+                console.log(qy);
+                
+            }
+            else{
+                // set to all age ranges
+                this.reportOptions.queryString  = "all"; // may be server may be using this value for conditional branching
+                this.reportOptions.ageRange = "all";
+            }
+        }
+        this.getPatientReport();
     }
     gotoPage (index  : number)
     {

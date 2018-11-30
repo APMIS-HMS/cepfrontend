@@ -16,10 +16,11 @@ import {
 import {DocumentPrinterComponent} from "./ui-components/DocumentPrinterComponent";
 import {LabReportDetails, LabReportSummaryComponent} from "./ui-components/LabReportSummaryComponent";
 import {NairaCurrencySymbolComponent} from "./ui-components/NairaCurrencySymbolComponent";
+import {SearchButtonComponent} from "./ui-components/SearchButtonComponent";
 
 
 const exportableComponents = [AsomDataPagerComponent, PagerButtonComponent, DocumentPrinterComponent,
-    LabReportSummaryComponent, LabReportDetails,NairaCurrencySymbolComponent]
+    LabReportSummaryComponent, LabReportDetails,NairaCurrencySymbolComponent, SearchButtonComponent]
 
 @NgModule({
     imports: [CommonModule/*, MatDialogModule*/],

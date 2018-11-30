@@ -9,18 +9,25 @@
             <div class="searchInputWrap col-sm ">
                 <mat-form-field>
                     <mat-select [formControl]="searchCriteria" placeholder="Search">
-                        <mat-option value="Enter Gender type eg: Female">By Gender</mat-option>
-                        <mat-option value="choose date range">By Registration Date Range</mat-option>
-                        <mat-option value="enter apmis id">By APMIS ID</mat-option>
-                        <mat-option value="enter patient name">By Patient Name</mat-option>
-                        <mat-option value="enter tag name">By Tag</mat-option>
+                        <mat-option value="all">Any Criteria</mat-option>
+                        <mat-option value="age">By Age Range</mat-option>
+                        <mat-option value="gender">By Gender</mat-option>
+                        <mat-option value="location">By Registration Location</mat-option>
+                        <mat-option value="apmisId">By APMIS ID</mat-option>
+                        <mat-option value="patient">By Patient Name</mat-option>
+                        <mat-option value="tag">By Tag</mat-option>
                     </mat-select>
                 </mat-form-field>
                 <div class="inputWrap">
                     <div class="row">
                         <div class="col-xs-7">
-                            <input [formControl]="searchControl" type="search" autofocus class="searchInput " placeholder=" {{searchCriteria.value}}" />
+                            <input [formControl]="searchControl" type="search" autofocus class="searchInput " placeholder=" 
+                            {{(searchCriteria.value=='age' ? 'Eg: 20-30' : searchCriteria.value) }}" />
                         </div>
+                       
+                    </div>
+                    <div class="">
+                        <apmis-search-button (onSearch)="search()" [processing]="loading" ></apmis-search-button>
                     </div>
                 </div>
             </div>
@@ -32,6 +39,7 @@
             [pager-source]="pagerSource"
 
     ></asom-data-pager>
+    <ng-template #noAddress >No Contact Address</ng-template>
     <div class="row">
         <div class="tbl-resp-wrap">
             <table class="card" style="color:black;" cellpadding="0" cellspacing="0" border="0.5">
@@ -58,13 +66,19 @@
                         <td>{{p.patientName}}</td>
                         <td>{{p.apmisId}} </td>
                         <td>
-                         {{p.address}}
+                         <div *ngIf="p.address; else noAddress;">
+                             <div>{{p.address?.street}}</div>
+                             <div>{{p.address?.city}}, {{p.address?.state}}</div>
+                            <!-- <div>
+                                 <b>{{p.address?.country}}</b>
+                             </div>-->
+                         </div>
 
                         </td>
-                        <td>{{p.age}} years</td>
+                        <td>{{p.age}}</td>
                         <td>{{p.gender}}</td>
                         <td>[----------]</td>
-                        <td>{{p.phoneNo}}</td>
+                        <td>{{p.phone}}</td>
                         <td>{{p.dateCreated | date :'dd-MMM-yyyy'}}</td>
                     </tr>
                    
