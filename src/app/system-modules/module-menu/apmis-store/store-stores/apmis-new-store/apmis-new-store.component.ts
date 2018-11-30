@@ -53,7 +53,6 @@ export class ApmisNewStoreComponent implements OnInit {
     this.getLocationService();
     this.newStoreForm.controls['majorLoc'].valueChanges.subscribe(value => {
       this.storeLocations = this.minorLocations.filter(x => x.locationId.toString() === value.toString());
-      console.log(this.storeLocations);
     });
   }
 
@@ -72,14 +71,12 @@ export class ApmisNewStoreComponent implements OnInit {
   getFacilityService() {
     this.facilitiesService.get(this.selectedFacility._id, { query: { $select: ['minorLocations'] } }).then(payload => {
       this.minorLocations = payload.minorLocations;
-      console.log(this.minorLocations);
     }, err => { })
   }
 
   getLocationService() {
     this.locationService.find({}).then(payload => {
       this.locations = payload.data;
-      console.log(this.locations);
     }, err => { })
   }
 
