@@ -32,6 +32,10 @@ import { PurchaseOrderComponent } from './product-entry/purchase-order/purchase-
 import { SuppliersComponent } from './product-entry/suppliers/suppliers.component';
 import { ProductConfigPopupComponent } from './product-entry/initialize-store/product-config-popup/product-config-popup.component';
 import { ConfigProductComponent } from './apmis-store-product/product-conguration/config-product/config-product.component';
+import { NewPurchaseListComponent } from './product-entry/purchase-list/new-purchase-list/new-purchase-list.component';
+import { PurchaseListDetailsComponent } from './product-entry/purchase-list/purchase-list-details/purchase-list-details.component';
+import { NewPurchaseOrderListComponent } from './product-entry/purchase-order/new-purchase-order-list/new-purchase-order-list.component';
+import { PurchaseOrderListDetailsComponent } from './product-entry/purchase-order/purchase-order-list-details/purchase-order-list-details.component';
 
 @NgModule({
 	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule ],
@@ -62,7 +66,11 @@ import { ConfigProductComponent } from './apmis-store-product/product-conguratio
 		PurchaseOrderComponent,
 		SuppliersComponent,
 		ProductConfigPopupComponent,
-		ConfigProductComponent
+		ConfigProductComponent,
+		NewPurchaseListComponent,
+		PurchaseListDetailsComponent,
+		NewPurchaseOrderListComponent,
+		PurchaseOrderListDetailsComponent
 	],
 	providers: [ StoreService, InventoryService, StoreGlobalUtilService ]
 })

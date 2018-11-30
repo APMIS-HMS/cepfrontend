@@ -9,20 +9,12 @@ import { Filters } from '../../store-utils/global';
 })
 export class InvoiceEntryComponent implements OnInit {
 
-  storeFilters = [];
-  selectedFilterIndex = 0;
-  filterType = '';
 
-  constructor(private storeUtilService: StoreGlobalUtilService) { }
+
+  constructor() { }
 
   ngOnInit() {
-    this.storeFilters = this.storeUtilService.getObjectKeys(Filters);
+ 
   }
-
-  setSelectedFilter(index, filter) {
-    this.selectedFilterIndex = index;
-    this.filterType = filter;
-    //console.log(this.filterText);
-}
 
 }
