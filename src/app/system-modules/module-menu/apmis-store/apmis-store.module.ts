@@ -16,13 +16,16 @@ import { ProductRestockComponent } from './apmis-store-home/store-home-main/prod
 import { StoreStoresComponent } from './store-stores/store-stores.component';
 import { StoreTabComponent } from './store-stores/store-tab/store-tab.component';
 import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-module';
-import { StoreService, InventoryService } from 'app/services/facility-manager/setup';
+import { StoreService, InventoryService,ProductTypeService } from 'app/services/facility-manager/setup';
 import { ApmisPaginationComponent } from './components/apmis-pagination/apmis-pagination.component';
 import { StoreGlobalUtilService } from './store-utils/global-service';
 import { ApmisNewStoreComponent } from './store-stores/apmis-new-store/apmis-new-store.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ApmisSearchComponent } from './components/apmis-search/apmis-search.component';
 import { ProductCongurationComponent } from './apmis-store-product/product-conguration/product-conguration.component';
+import { ProductMovementComponent } from './product-movement/product-movement.component';
+import { OutboundTransferComponent } from './product-movement/outbound-transfer/outbound-transfer.component';
+import { InboundTransferComponent } from './product-movement/inbound-transfer/inbound-transfer.component';
 import { ApmisSearchResultComponent } from './components/apmis-search/apmis-search-result/apmis-search-result.component';
 import { ProductEntryComponent } from './product-entry/product-entry.component';
 import { InitializeStoreComponent } from './product-entry/initialize-store/initialize-store.component';
@@ -54,7 +57,10 @@ import { ConfigProductComponent } from './apmis-store-product/product-conguratio
 		ApmisNewStoreComponent,
 		ProductCongurationComponent,
 		ApmisSearchComponent,
-		ApmisSearchResultComponent,
+		ProductMovementComponent,
+		OutboundTransferComponent,
+		InboundTransferComponent,
+		ApmisSearchResultComponent, 
 		ProductEntryComponent,
 		InitializeStoreComponent,
 		InvoiceEntryComponent,
@@ -64,6 +70,6 @@ import { ConfigProductComponent } from './apmis-store-product/product-conguratio
 		ProductConfigPopupComponent,
 		ConfigProductComponent
 	],
-	providers: [ StoreService, InventoryService, StoreGlobalUtilService ]
+	providers: [ StoreService, InventoryService, StoreGlobalUtilService,ProductTypeService ]
 })
 export class ApmisStoreModule {}
