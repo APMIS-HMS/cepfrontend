@@ -17,27 +17,14 @@ export class InitializeStoreComponent implements OnInit {
 	productConfigs: any[] = [];
 	selectedProductName: any;
 	showProduct: boolean;
+	searchHasBeenDone = false;
 
 	constructor(private _productService: ProductService) {}
 
 	ngOnInit() {
-		//  .distinctUntilChanged()
-		// 	.debounceTime(200)
-		// 	.switchMap((term) => Observable.fromPromise(this.patientService.find({
-		// 		query:
-		// 		{
-		// 			search: term,
-		// 			facilityId: this.selectedFacility._id
-		// 		}
-		// 	}))).subscribe((payload: any) => {
-		// 		this.people = payload.data;
-		// 	});
-
-		// name:{
-		//  $regex: this.searchControl.value, '$options': 'i' }
-
 		this.productConfigSearch.valueChanges.distinctUntilChanged().debounceTime(200).subscribe((value) => {
-			if (value.length > 0) {
+			this.searchHasBeenDone = false;
+			if (value.length > 0 && this.selectedProductName.length === 0) {
 				this._productService
 					.findProductConfigs({
 						query: {
@@ -49,12 +36,19 @@ export class InitializeStoreComponent implements OnInit {
 							console.log(payload);
 							this.productConfigs = payload.data;
 							this.showProduct = true;
+							if (this.productConfigs.length < 0) {
+								this.searchHasBeenDone = true;
+							} else {
+								this.searchHasBeenDone = false;
+							}
 						},
 						(error) => {
-							console.log(error);
 							this.showProduct = false;
+							this.searchHasBeenDone = false;
 						}
 					);
+			} else {
+				this.selectedProductName = '';
 			}
 		});
 	}
@@ -77,7 +71,23 @@ export class InitializeStoreComponent implements OnInit {
 	}
 
 	setSelectedOption(data: any) {
-		this.selectedProductName = data.productObject.anem;
-		this.showProduct = false;
+		try {
+			this.selectedProductName = data.productObject.name;
+			this.showProduct = false;
+			this.productConfigSearch.setValue(this.selectedProductName);
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	onFocus(focus) {
+		if (focus === 'in') {
+			this.selectedProductName = '';
+			this.showProduct = true;
+		} else {
+			setTimeout(() => {
+				this.showProduct = false;
+			}, 300);
+		}
 	}
 }

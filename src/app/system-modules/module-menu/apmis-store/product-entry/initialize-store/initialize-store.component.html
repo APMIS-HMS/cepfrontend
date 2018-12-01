@@ -1,16 +1,15 @@
 <div class="search-container">
   <div class="searchproduct">
     <div class="InputGroup">
-      <input [formControl]="productConfigSearch" class="customInput" type="text" required>
+      <input [formControl]="productConfigSearch" (focus)="onFocus('in')" (focusout)="onFocus('out')" class="customInput"
+        type="text" required>
       <span class="highlight"></span>
       <label class="customLabel"><i class="fa fa-search" aria-hidden="true"></i>Search Product</label>
-
-      <!-- **Please Uncomment for the search result*** -->
       <ul class="search-sugestions" *ngIf="showProduct">
         <li *ngFor="let config of productConfigs" (click)="setSelectedOption(config)" class="search-sugestion">{{config.productObject.name}}</li>
       </ul>
     </div>
-    <div class="search-noResult-blue">
+    <div class="search-noResult-blue" *ngIf="searchHasBeenDone">
       <span>Product configuration not found <i (click)="configureProduct()">- Configure</i></span>
     </div>
   </div>
