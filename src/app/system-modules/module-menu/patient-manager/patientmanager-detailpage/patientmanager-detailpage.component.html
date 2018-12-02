@@ -201,7 +201,7 @@
 
 
     <div *ngIf="mergePatient" class="modal-overlay">
-            <app-unknown-patient-merge (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-unknown-patient-merge>
+            <app-unknown-patient-merge [selectedPatient]="patient" (personValueChanged)="onPersonValueUpdated($event)" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-unknown-patient-merge>
         </div>   
     <div *ngIf="addVitalsPop" class="modal-overlay">
         <app-add-vitals [patient]="patient" (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-add-vitals>

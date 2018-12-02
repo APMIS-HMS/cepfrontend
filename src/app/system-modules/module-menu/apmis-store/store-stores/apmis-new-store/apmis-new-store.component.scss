@@ -1,0 +1,13 @@
+@import '../../apmis-store-home/store-home-main/store-home-main.component.scss';
+
+fieldset{
+    border: 0;
+}
+.chk-flex{
+    display: flex;
+    align-items: flex-end;
+    width: 47%;
+    .check-wrap{
+        margin-right: 20px;
+    }
+}
