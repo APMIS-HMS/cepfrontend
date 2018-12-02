@@ -234,7 +234,7 @@ export class PagerButtonComponent implements OnChanges {
         `
     ]
 })
-export class AsomDataPagerComponent implements OnInit, AfterViewInit, OnChanges, DoCheck {
+export class ApmisDataPagerComponent implements OnInit, AfterViewInit, OnChanges, DoCheck {
     @Output() onPageClick: EventEmitter<number> = new EventEmitter<number>();
     @ViewChild('prev') prevButton: PagerButtonComponent;
     @ViewChild('next') nextButton: PagerButtonComponent;

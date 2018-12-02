@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 
-import {PagerButtonComponent, AsomDataPagerComponent} from './ui-components/PagerComponent';
+import {PagerButtonComponent, ApmisDataPagerComponent} from './ui-components/PagerComponent';
 import {CommonModule} from '@angular/common';
 
 import {
@@ -19,7 +19,7 @@ import {NairaCurrencySymbolComponent} from "./ui-components/NairaCurrencySymbolC
 import {SearchButtonComponent} from "./ui-components/SearchButtonComponent";
 
 
-const exportableComponents = [AsomDataPagerComponent, PagerButtonComponent, DocumentPrinterComponent,
+const exportableComponents = [ApmisDataPagerComponent, PagerButtonComponent, DocumentPrinterComponent,
     LabReportSummaryComponent, LabReportDetails,NairaCurrencySymbolComponent, SearchButtonComponent]
 
 @NgModule({
