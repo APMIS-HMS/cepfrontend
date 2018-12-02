@@ -25,7 +25,7 @@ const routes: Routes = [
 				component: StoreStoresComponent
 			},
 			{
-				path: "new-store",
+				path: 'new-store',
 				component: ApmisNewStoreComponent
 			},
 			{
@@ -35,6 +35,10 @@ const routes: Routes = [
 			{
 				path: 'product-movement',
 				component: ProductMovementComponent
+			},
+			{
+				path: 'productEntry',
+				component: ProductEntryComponent
 			}
 		]
 	}

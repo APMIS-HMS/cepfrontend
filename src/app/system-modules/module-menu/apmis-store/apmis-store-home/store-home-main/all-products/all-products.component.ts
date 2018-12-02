@@ -19,7 +19,7 @@ export class AllProductsComponent implements OnInit {
 	skip = 0;
 	numberOfPages = 0;
 	currentPage = 0;
-	limit = 1;
+	limit = 2;
 	packTypes = [ { id: 1, name: 'Sachet' }, { id: 2, name: 'Cartoon' } ];
 	storeId: string;
 	selectedFacility: any;
