@@ -11,7 +11,8 @@ import { DatePipe } from '@angular/common';
 	styleUrls: [ './initialize-store.component.scss' ]
 })
 export class InitializeStoreComponent implements OnInit {
-	item_to_show = true;
+	// item_to_show = true;
+	clickItemIndex: number;
 	expand_row = false;
 	showConfigureProduct = false;
 	newBatchEntry = false;
@@ -82,10 +83,10 @@ export class InitializeStoreComponent implements OnInit {
 		this.newBatchEntry = true;
 	}
 
-	clickItemIndex(picked) {
-		console.log(picked);
-		return (this.item_to_show = !this.item_to_show);
-	}
+	// clickItemIndex(picked) {
+	// 	console.log(picked);
+	// 	return (this.item_to_show = !this.item_to_show);
+	// }
 
 	setSelectedOption(data: any) {
 		try {
@@ -238,6 +239,20 @@ export class InitializeStoreComponent implements OnInit {
 		} else if (control === 'margin') {
 			value.sellingPrice = value.costPrice * (value.margin / 100) + value.costPrice;
 			array.controls['sellingPrice'].setValue(value.sellingPrice);
+		}
+	}
+
+	item_to_show(i) {
+		return this.clickItemIndex === i;
+	}
+
+	toggle_tr(itemIndex, direction) {
+		if (direction === 'down' && itemIndex === this.clickItemIndex) {
+			this.expand_row = false;
+			this.clickItemIndex = -1;
+		} else {
+			this.clickItemIndex = itemIndex;
+			this.expand_row = !this.expand_row;
 		}
 	}
 

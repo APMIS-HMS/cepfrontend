@@ -44,7 +44,9 @@
             <div formGroupName="{{i}}">
               <div class="store-tr">
                 <div class="store-td store-td-actions">
-                  <i (click)="clickItemIndex(picked)" class="exp-tr fa fa-angle-down"></i>
+                  <!-- <i (click)="clickItemIndex(picked)" class="exp-tr fa fa-angle-down"></i> -->
+                    <i *ngIf="item_to_show(i)" (click)="toggle_tr(i, 'down')" class="exp-tr fa fa-angle-down"></i>
+                    <i *ngIf="!item_to_show(i)" (click)="toggle_tr(i, 'right')" class="exp-tr fa fa-angle-right"></i>
                 </div>
                 <div class="store-tr-in">
                   <div class="store-td">{{picked?.value?.configProduct?.name}}</div>
