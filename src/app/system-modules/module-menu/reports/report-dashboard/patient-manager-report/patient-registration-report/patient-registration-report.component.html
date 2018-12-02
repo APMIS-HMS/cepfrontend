@@ -34,11 +34,11 @@
         </div>
 
     </div>
-    <asom-data-pager
+    <apmis-data-pager
             [display-summary]="true"
             [pager-source]="pagerSource"
 
-    ></asom-data-pager>
+    ></apmis-data-pager>
     <ng-template #noAddress >No Contact Address</ng-template>
     <div class="row">
         <div class="tbl-resp-wrap">
@@ -85,11 +85,11 @@
                 </tbody>
             </table>
             <div>
-                <asom-data-pager [show-progress]="true" [show-total-record]="false" [in-progress]="loading"
+                <apmis-data-pager [show-progress]="true" [show-total-record]="false" [in-progress]="loading"
                                  (onPageClick)="gotoPage($event)"
                                  [pager-source]="pagerSource"
 
-                ></asom-data-pager>
+                ></apmis-data-pager>
             </div>
             <div class="billSummarySect">
                 <table class="rhs">
