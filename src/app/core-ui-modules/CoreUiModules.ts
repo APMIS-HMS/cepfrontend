@@ -1,6 +1,6 @@
 import {NgModule} from '@angular/core';
 
-import {PagerButtonComponent, AsomDataPagerComponent} from './ui-components/PagerComponent';
+import {PagerButtonComponent, ApmisDataPagerComponent} from './ui-components/PagerComponent';
 import {CommonModule} from '@angular/common';
 
 import {
@@ -16,10 +16,11 @@ import {
 import {DocumentPrinterComponent} from "./ui-components/DocumentPrinterComponent";
 import {LabReportDetails, LabReportSummaryComponent} from "./ui-components/LabReportSummaryComponent";
 import {NairaCurrencySymbolComponent} from "./ui-components/NairaCurrencySymbolComponent";
+import {SearchButtonComponent} from "./ui-components/SearchButtonComponent";
 
 
-const exportableComponents = [AsomDataPagerComponent, PagerButtonComponent, DocumentPrinterComponent,
-    LabReportSummaryComponent, LabReportDetails,NairaCurrencySymbolComponent]
+const exportableComponents = [ApmisDataPagerComponent, PagerButtonComponent, DocumentPrinterComponent,
+    LabReportSummaryComponent, LabReportDetails,NairaCurrencySymbolComponent, SearchButtonComponent]
 
 @NgModule({
     imports: [CommonModule/*, MatDialogModule*/],

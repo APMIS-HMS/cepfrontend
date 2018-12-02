@@ -93,9 +93,9 @@ export class ApmisModalTrigger {
                         <br>
                         Data : {{data.content.name}}
                         <br>
-                        <asom-pager-button size="large" background-color="orange" [is-oval]="false">
+                        <apmis-pager-button size="large" background-color="orange" [is-oval]="false">
                             <i class="fa fa-plus"></i>
-                        </asom-pager-button>
+                        </apmis-pager-button>
                     </div>
 
                 </mat-dialog-content>

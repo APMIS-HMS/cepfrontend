@@ -19,6 +19,16 @@ export interface IApiResponse<T>
     success? : boolean;
     
 }
+export interface IContactAddress
+{
+   
+    city?: string,
+    country?: string ; 
+    lga?: string ; 
+    state?: string ;  
+    street?: string ;
+
+}
 export interface IDefaultReportOption {
     facilityId?: string;
     filterByDate?  :boolean;

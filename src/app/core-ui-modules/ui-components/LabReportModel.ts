@@ -31,7 +31,7 @@ export interface ILabReportOption extends IDefaultReportOption{
     // Groupings
     isGroup? : boolean;
     groupBy? : 'location' | 'bench';
-    
+    location? : string;
 }
 
 
