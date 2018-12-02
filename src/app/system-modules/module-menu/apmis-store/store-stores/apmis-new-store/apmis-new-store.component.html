@@ -27,34 +27,35 @@
           </div>
         </div>
         <div class="input-group-x2">
-          <div class="InputGroup">      
+          <div class="InputGroup">
             <input formControlName="name" class="customInput" type="text" required>
             <span class="highlight"></span>
             <label class="customLabel">Store Name</label>
           </div>
-          <app-apmis-search class="apmis-search"></app-apmis-search>
+          <app-apmis-search class="apmis-search" [data]="productTypes" [placeholder]="placeholder" (onSelectedItems)="onSearchSelectedItems($event)" (onCreateItem)="onCreateNewItem($event)"></app-apmis-search>
         </div>
         <div class="input-group-x2">
-          <div class="InputGroup" style="margin-right:5px;">      
-            <textarea formControlName="description" class="customTextarea" placeholder="Add Note"></textarea> 
-            <span class="highlight"></span>       
+          <div class="InputGroup" style="margin-right:5px;">
+            <textarea formControlName="description" class="customTextarea" placeholder="Add Note"></textarea>
+            <span class="highlight"></span>
           </div>
           <div class="chk-flex">
             <div class="check-wrap">
               <label class="control control--checkbox">Dispense
-                <input type="checkbox" formControlName="canDespense" />
+                <input type="checkbox" formControlName="canDespense" (click)="onDespense($event)" />
                 <div class="control__indicator"></div>
               </label>
             </div>
             <div class="check-wrap">
               <label class="control control--checkbox">Recieve Purchase
-                <input type="checkbox" formControlName="canReceivePurchaseOrder" />
+                <input type="checkbox" (click)="onReceivePurchaseOrder($event)" formControlName="canReceivePurchaseOrder" />
                 <div class="control__indicator"></div>
               </label>
             </div>
           </div>
         </div>
       </form>
+      <button (click)="onSave()">Save</button>
     </div>
   </div>
 </div>
