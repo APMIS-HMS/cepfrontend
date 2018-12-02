@@ -173,9 +173,9 @@ export class RightTabComponent implements OnInit {
         documentation.document.body.problems.forEach(problem => {
           // this is used to check the existing record without displayStatus
           // it sets it to default true if the displayStatus is undefined
-          problem.displayStatus ? undefined : true;
-          console.log(problem.displayStatus);
-          if (problem.status !== null && problem.status.name === 'Active' && problem.displayStatus) {
+          const displayStatus = problem.displayStatus || true;
+          // added extra check displayStatus to check if problem has not been deactivated
+          if (problem.status !== null && problem.status.name === 'Active' && displayStatus) {
             // Adding extra properties to the object property that the right-tab-tooltip component needs
             problem.documentationId = documentation._id;
             problem.personId = this.patient.personId,
