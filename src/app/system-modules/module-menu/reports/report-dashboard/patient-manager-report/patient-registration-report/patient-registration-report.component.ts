@@ -3,6 +3,7 @@ import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
 import {ReportGeneratorService} from "../../../../../../core-ui-modules/ui-components/report-generator-service";
 import {
+    IPatientAnalyticsReport,
     IPatientReportModel,
     IPatientReportOptions
 } from "../../../../../../core-ui-modules/ui-components/PatientReportModel";
@@ -46,10 +47,13 @@ export class PatientRegistrationReportComponent implements OnInit {
         pageSize : 20,
         totalRecord : 0
     }
+     analyticData: IPatientAnalyticsReport[]  = [];
+     allAnalyticSummary  : IPatientAnalyticsReport  =   {};
   constructor(private _router: Router, private reportService  :  ReportGeneratorService) { }
 
   ngOnInit() {
     this.getPatientReport();
+    this.getPatientAnalyticReport();
   }
 
   getPatientReport()
@@ -69,7 +73,20 @@ export class PatientRegistrationReportComponent implements OnInit {
               console.log(x);
           });
   }
-
+  getPatientAnalyticReport(/* we could supply date ranges for certain analytics*/)
+  {
+      this.reportService.getPatientAnalyticReport({})
+          .then(x => {
+             this.analyticData =  x.data; 
+             this.allAnalyticSummary   = {
+                 female  : _.sumBy(x.data, x => x.female),
+                 male  : _.sumBy(x.data, x => x.male),
+                 totalPatient  : _.sumBy(x.data, x => x.totalPatient),
+                 tag  : "All"
+             }
+          });
+      
+  }
     assignDate(date: IDateRange) {
         this.reportOptions.startDate = date.from;
         this.reportOptions.endDate = date.to;
@@ -81,6 +98,7 @@ export class PatientRegistrationReportComponent implements OnInit {
         // this.labRptComponentRef.processing 
         this.reportOptions.queryString = this.searchControl.value;
         this.reportOptions.searchBy = this.searchCriteria.value;
+        this.reportOptions.queryString  = _.isEmpty(this.reportOptions.queryString)  ? "all" : this.reportOptions.queryString;
         // Check if we are searching by Age Range and if a valid age range was supplied
         if(this.reportOptions.searchBy.toLowerCase() === 'age')
         {
@@ -104,6 +122,7 @@ export class PatientRegistrationReportComponent implements OnInit {
                 this.reportOptions.ageRange = "all";
             }
         }
+        
         this.getPatientReport();
     }
     gotoPage (index  : number)

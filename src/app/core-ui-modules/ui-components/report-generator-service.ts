@@ -6,7 +6,7 @@ import {
 } from "./LabReportModel";
 import {RestService} from "../../feathers/feathers.service";
 import {IApiResponse, ICustomReportService, IPaymentReportServiceEndPoint} from "./ReportGenContracts";
-import {IPatientReportModel, IPatientReportOptions} from "./PatientReportModel";
+import {IPatientAnalyticsReport, IPatientReportModel, IPatientReportOptions} from "./PatientReportModel";
 import {
     IPaymentGroups,
     IPaymentReportModel,
@@ -19,11 +19,11 @@ import {CoolLocalStorage} from "angular2-cool-storage";
 @Injectable()
 export class ReportGeneratorService implements ICustomReportService {
     protected selectedFacility: any;
-
+    protected patientReportServiceRef  : any;
     constructor(private restEndpoint: RestService, localStorage: CoolLocalStorage) {
         //super();
         this.selectedFacility = localStorage.getObject("selectedFacility");
-
+        this.patientReportServiceRef  =  this.restEndpoint.getService("patient-reg-report")  ; 
     }
 
     getLabReport(options: ILabReportOption): Promise<IApiResponse<ILabReportModel[]>> {
@@ -73,8 +73,47 @@ export class ReportGeneratorService implements ICustomReportService {
             newOption.$skip  = options.paginationOptions.skip;
             newOption.$limit  = options.paginationOptions.limit;
         }
-        return this.restEndpoint.getService("patient-reg-report")
+        return this.patientReportServiceRef
             .find(  {query :  newOption});
+    }
+    
+    getPatientAnalyticReport(options  :  IPatientReportOptions) : Promise<IApiResponse<IPatientAnalyticsReport[]>>
+    {
+        options  = options || {};
+        options.facilityId  = this.selectedFacility._id;
+        //TODO : uncomment if backend service is fixed!
+       /* return this.patientReportServiceRef
+            .find(  {query :  options});*/
+     
+        //  return  a sample dummy data for now until the backend is complete;
+        //return this.restEndpoint
+        const result   = { data   : [
+                {
+                    tag : "HMO",
+                    totalPatient  : 200,
+                    male : 80,
+                    female : 120
+                },
+                {
+                    tag : "Company Cover",
+                    totalPatient  : 100,
+                    male : 60,
+                    female : 40
+                },
+                {
+                    tag : "Family Cover",
+                    totalPatient  : 300,
+                    male : 20,
+                    female : 280
+                },
+                {
+                    tag : "Cash Payment",
+                    totalPatient  : 100,
+                    male : 92,
+                    female : 8
+                },
+            ] };
+        return  Promise.resolve(result);
     }
 
     getWorkBenches(): any {
