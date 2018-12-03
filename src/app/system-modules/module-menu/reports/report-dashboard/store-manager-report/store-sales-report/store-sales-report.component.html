@@ -1,3 +1,166 @@
-<p>
-  store-sales-report works!
-</p>
+<div class="inner-wrap-b body-wrap">
+    <div class="divider">
+    </div>
+
+    <div class="filter">
+        <div class="row" style="padding: 10px 40px 10px 40px;">
+            <div class="dr-wrap survery">
+                <app-date-range></app-date-range>
+            </div>
+            <div class="searchInputWrap col-sm row">
+                <div class="col-sm group">
+                    <h3 style="padding-left: 20px;
+                      padding-bottom: 12px;
+                    text-decoration: underline;">Filter by Group :</h3>
+                    <div class="group-content">
+                        <mat-form-field class="group-item" style="width:20% !important;">
+                            <mat-select [formControl]="searchCriteria" placeholder="Group By ">
+                                <mat-option value="User">User</mat-option>
+                                <mat-option value="Product">Product</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <div class="group-item" style="padding-top: 1em; margin-left: 5px;">
+                            <div class="row">
+                                <div class="col-xs-7">
+                                    <input [formControl]="searchControl" type="search" autofocus class="searchInput " placeholder=" {{searchCriteria.value}}" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <mat-tab-group (selectedIndexChange)="onTabClick($event)">
+        <mat-tab label="• Dispense">
+            <div class="tbl-resp-wrap" style="padding-bottom: 20px !important;">
+                <table class="card" style="color:black; margin-top: 10px !important;" cellpadding="0" cellspacing="0" border="0.5">
+                    <thead>
+                        <tr class="th-r1 th-xxx">
+                            <th>S/N</th>
+                            <th>Date</th>
+                            <th>Patient Name</th>
+                            <th>Product</th>
+                            <th>Batch</th>
+                            <th>Quantity (Per Unit)</th>
+                            <th>
+                                <div>Unit Price</div>
+                                <div style="font-weight:Bold;">(#)</div>
+                            </th>
+                            <th>
+                                <div>Total Price</div>
+                                <div style="font-weight:Bold;">(#)</div>
+                            </th>
+                            <th>Employee Name</th>
+                        </tr>
+                    </thead>
+
+                    <tbody style="text-align:center;">
+                        <tr class="th-xxx">
+                            <td class="td-x">Test</td>
+                            <td class="td-x">Test</td>
+                            <td class="td-x">Test</td>
+                            <td class="td-x">Test</td>
+                            <td class="td-x">Test</td>
+                            <td class="td-x">Test</td>
+                            <td class="td-x">Test</td>
+                            <td class="td-x">Test</td>
+                            <td class="td-x">Test</td>
+                        </tr>
+                    </tbody>
+                    <tbody>
+                        <tr class="th-xxx">
+                            <td>Test</td>
+                            <td>Test</td>
+                            <td>Test</td>
+                            <td>Test</td>
+                            <td>Test</td>
+                            <td>Test</td>
+                            <td>Test</td>
+                            <td>Test</td>
+                            <td>Test</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
+                </mat-paginator>
+            </div>
+            <div class="billSummarySect">
+                <table class="rhs">
+                    <div class="summaryItems">
+                        <tr class="summaryItem">
+                            <td class="label" style="width:auto !important;">Total Income: </td>
+                            <td class="data">
+                                <span>#120,000.00</span></td>
+                            <td></td>
+                        </tr>
+                    </div>
+                </table>
+            </div>
+
+        </mat-tab>
+
+        <mat-tab label="•	Prescription">
+            <div class="tbl-resp-wrap" style="padding-bottom: 20px !important;">
+                <table class="card" style="color:black; margin-top: 10px !important;" cellpadding="0" cellspacing="0" border="0.5">
+                    <thead>
+                        <tr class="th-r1 th-xxx">
+                            <th>S/N</th>
+                            <th>Date Written</th>
+                            <th>Patient Name</th>
+                            <th>Prescription</th>
+                            <th>Pharmacy</th>
+                            <th>Refill Status</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr class="th-xxx">
+                            <td>1</td>
+                            <td>12/Oct/2018</td>
+                            <td>Oladejo Adetinwo</td>
+                            <td>
+                                <div>Amoxiccilin 60MG</div>
+                                <div>Diclofenac 45MG</div>
+                                <div>Paracetamol 500MG</div>
+                                <div>B-Complex</div>
+                            </td>
+                            <td>Emergency Pharmacy</td>
+                            <td>fulfilld</td>
+                        </tr>
+                        <tr class="th-xxx">
+                            <td>2</td>
+                            <td>17/Oct/2018</td>
+                            <td>Oladejo Adetinwo</td>
+                            <td>
+                                <div>Amoxiccilin 60MG</div>
+                                <div>Diclofenac 45MG</div>
+                                <div>Paracetamol 500MG</div>
+                                <div>B-Complex</div>
+                            </td>
+                            <td>4th Floor Pharmacy</td>
+                            <td>Partial</td>
+                        </tr>
+                        <tr class="th-xxx">
+                            <td>3</td>
+                            <td>22/Oct/2018</td>
+                            <td>Oladejo Adetinwo</td>
+                            <td>
+                                <div>Amoxiccilin 60MG</div>
+                                <div>Diclofenac 45MG</div>
+                                <div>Paracetamol 500MG</div>
+                                <div>B-Complex</div>
+                            </td>
+                            <td>Kunle-Ara Pharmacy</td>
+                            <td>isExternal</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <i style="font-weight: bold;">refill status: fulfilled, Unfulfilled, partial and isExternal</i>
+                <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
+                </mat-paginator>
+            </div>
+        </mat-tab>
+    </mat-tab-group>

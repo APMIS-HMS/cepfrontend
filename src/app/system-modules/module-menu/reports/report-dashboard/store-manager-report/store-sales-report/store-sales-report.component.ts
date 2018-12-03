@@ -12,9 +12,20 @@ export class StoreSalesReportComponent implements OnInit {
   searchControl = new FormControl();
   searchCriteria = new FormControl('Search');
 
+  prescriberFilter = false;
+  prescriberSearch = false;
+  dispenseFilter = false;
+
+  dateRange: any;
+  activeTabIndex: number;
+
   constructor(private _router: Router) { }
 
   ngOnInit() {
   }
+
+  back_dashboard() {
+		this._router.navigate(['/dashboard/reports/report-dashboard']);
+	  }
 
 }

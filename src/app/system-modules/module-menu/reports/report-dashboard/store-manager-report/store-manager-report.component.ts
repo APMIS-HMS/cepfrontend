@@ -25,7 +25,7 @@ export class StoreManagerReportComponent implements OnInit {
 		if (param.includes('storeSales')) {
 			this.stockReport = false;
 			this.storeSalesReport = true;
-			this._router.navigate([ '/dashboard/reports/report-dashboard/storeReport/salesReport' ]);
+			this._router.navigate([ '/dashboard/reports/report-dashboard/storeManagerReport/storeSales' ]);
 		} else if (param.includes('stockReport')) {
 			this.stockReport = true;
 			this.storeSalesReport = false;
