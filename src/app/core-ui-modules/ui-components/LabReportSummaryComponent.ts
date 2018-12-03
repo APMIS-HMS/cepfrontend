@@ -98,7 +98,7 @@ export class LabReportSummaryComponent implements OnInit {
                 <tr *ngIf="processing">
                     <td colspan="7">
                         <div class="pad20 text-center" style="text-align:center">
-                            <span class="fa fa-3x fa-spin fa-spinner"></span>
+							<apmis-spinner></apmis-spinner>
                         </div>
                     </td>
                 </tr>
