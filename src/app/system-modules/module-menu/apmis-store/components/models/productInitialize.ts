@@ -6,7 +6,7 @@ export interface ProductInitialize {
 	totalCostPrice: number;
 	margin: number;
 	sellingPrice: number;
-	batches: [Batch];
+	batches: Batch[];
 }
 
 export interface Batch {

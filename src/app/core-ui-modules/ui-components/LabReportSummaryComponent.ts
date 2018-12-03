@@ -129,11 +129,11 @@ export class LabReportSummaryComponent implements OnInit {
 
         </div>
         <div>
-            <asom-data-pager (onPageClick)="pagerButtonClick($event)"
+            <apmis-data-pager (onPageClick)="pagerButtonClick($event)"
                              [pager-source]="pagerSource"
                              color="blue"
 
-            ></asom-data-pager>
+            ></apmis-data-pager>
         </div>
     `
 })
