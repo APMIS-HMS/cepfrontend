@@ -10,7 +10,7 @@
           <li class="search-sugestion" *ngFor="let product of searchedProducts; let i = index" (click)="setSelectedProductOption(product)">{{product.name}}</li>
         </ul>
       </div>
-      <div class="search-noResult">
+      <div class="search-noResult" *ngIf="productExist">
         <span>This product configuration
           already exisst</span>
       </div>

@@ -17,22 +17,21 @@ export class ProductCongurationComponent implements OnInit {
   ngOnInit() {
     this.currentFacility = <Facility>this.locker.getObject('selectedFacility');
     this.getProductConfigsByFacility();
-    console.log('in product');
   }
+
   getProductConfigsByFacility() {
     console.log(this.currentFacility._id);
     this.productService.findProductConfigs({
       query: {
+        $limit: false,
         facilityId: this.currentFacility._id
       }
     }).then(payload => {
       if (payload.data.length > 0) {
-        console.log(payload.data);
         this.productConfigs = payload.data;
         this.productConfigs.forEach(x => {
             x.baseUnit = x.packSizes.filter(y => y.isBase);
         });
-        console.log(this.productConfigs);
       }
     });
   }

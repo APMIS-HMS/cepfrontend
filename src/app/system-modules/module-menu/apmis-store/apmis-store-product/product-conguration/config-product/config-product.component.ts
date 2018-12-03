@@ -19,6 +19,7 @@ export class ConfigProductComponent implements OnInit {
   showConfigContainer = false;
   showSaveConfig = false;
   showSetBaseUnit = false;
+  productExist = false;
   storeId = '';
   searchedProducts: any = [];
   selectedPackSizes = [];
@@ -41,6 +42,7 @@ export class ConfigProductComponent implements OnInit {
     ) { }
 
   ngOnInit() {
+    this.currentFacility = <Facility>this.locker.getObject('selectedFacility');
       this.productSearch.valueChanges.debounceTime(200).distinctUntilChanged().subscribe(val => {
       if (this.productSearch.value.length >= 3) {
         // get searched product from formulary
@@ -60,6 +62,7 @@ export class ConfigProductComponent implements OnInit {
           this.selectedProductName = '';
           this.showConfigContainer = false;
           this.showSaveConfig = false;
+          this.productExist = false;
       }
       });
       this.getProductPackTypes();
@@ -69,6 +72,7 @@ export class ConfigProductComponent implements OnInit {
   }
   setSelectedProductOption(data) {
     this.selectedProduct = data;
+    this.getProductConfigByProduct();
     this.selectedProductName = data.name;
     this.showProduct = false;
   }
@@ -94,11 +98,10 @@ export class ConfigProductComponent implements OnInit {
     }
   }
   onSaveConfiguration() {
-      const currentFacility = <Facility>this.locker.getObject('selectedFacility');
       this.transformPackSizes(this.selectedPackSizes);
       const newProductConfig: ProductConfig = {
           productId: this.selectedProduct.id,
-          facilityId: currentFacility._id,
+          facilityId: this.currentFacility._id,
           productObject: this.selectedProduct,
           rxCode: this.selectedProduct.code,
           packSizes: this.modifiedPackSizes
@@ -119,6 +122,18 @@ export class ConfigProductComponent implements OnInit {
         }
         return this.modifiedPackSizes;
     }
+  }
+  getProductConfigByProduct() {
+    this.productService.findProductConfigs({
+      query: {
+        facilityId: this.currentFacility._id,
+        productId: this.selectedProduct.id
+      }
+    }).then(payload => {
+        if (payload.data.length > 0) {
+          this.productExist = true;
+        }
+    });
   }
   getProductPackTypes() {
     this.productService.findPackageSize({

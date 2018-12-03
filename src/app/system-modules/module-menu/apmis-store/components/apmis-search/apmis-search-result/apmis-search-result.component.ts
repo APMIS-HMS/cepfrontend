@@ -80,28 +80,4 @@ export class ApmisSearchResultComponent implements OnInit {
   onCreateNewItem() {
     this.onCreateItem.emit(this.apmisSearchResult.value);
   }
-  // onSelect(index, data) {
-  //   let baseIndex;
-  //     this.PackSizes[index].checked = !this.PackSizes[index].checked;
-  //   // add selected pack type to array collection
-  //   if (this.selectedPack.length < 1) {
-  //     this.selectedPack.push(data);
-  //     // find element in packSizes array to modify
-  //       baseIndex = this.arrayFunc.getIndexofObjectInArray(this.PackSizes, data._id);
-  //       // we modify the base pack
-  //       // this.PackSizes[baseIndex].name = `${data.name} - Base Unit`;
-  //   } else {
-  //       const packIndex = this.arrayFunc.getIndexofObjectInArray(this.selectedPack, data._id);
-  //     if (packIndex !== undefined) {
-  //       // if pack type is unchecked, remove from array collection
-  //         this.selectedPack.splice(packIndex, 1);
-  //         // this.PackSizes[baseIndex].name = data.name;
-  //     } else {
-  //       this.selectedPack.push(data);
-  //     }
-  //   }
-
-
-
-  // }
 }
