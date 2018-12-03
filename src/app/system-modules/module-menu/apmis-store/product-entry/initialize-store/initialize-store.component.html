@@ -5,11 +5,11 @@
         type="text" required>
       <span class="highlight"></span>
       <label class="customLabel"><i class="fa fa-search" aria-hidden="true"></i>Search Product</label>
-      <ul class="search-sugestions" *ngIf="showProduct">
+      <ul class="search-sugestions" *ngIf="(showProduct && productConfigs.length > 0)">
         <li *ngFor="let config of productConfigs" (click)="setSelectedOption(config)" class="search-sugestion">{{config.productObject.name}}</li>
       </ul>
     </div>
-    <div class="search-noResult-blue" *ngIf="searchHasBeenDone">
+    <div class="search-noResult-blue" *ngIf="searchHasBeenDone === true">
       <span>Product configuration not found <i (click)="configureProduct()">- Configure</i></span>
     </div>
   </div>

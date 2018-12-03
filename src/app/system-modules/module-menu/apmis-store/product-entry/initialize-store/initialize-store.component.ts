@@ -48,7 +48,7 @@ export class InitializeStoreComponent implements OnInit {
 						(payload) => {
 							this.productConfigs = payload.data;
 							this.showProduct = true;
-							if (this.productConfigs.length < 0) {
+							if (this.productConfigs.length === 0) {
 								this.searchHasBeenDone = true;
 							} else {
 								this.searchHasBeenDone = false;
