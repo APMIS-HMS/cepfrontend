@@ -5,7 +5,8 @@
         <div class="select">
           <label>Store Location:</label>
           <select [formControl]="storeLocation" name="dropDown-container" id="dropDown-container">
-            <option *ngFor="let item of minorLocations" value="item">{{item.name}}</option>
+            <option value="0">Select Store</option>
+            <option value="1">Central Store</option>
           </select>
         </div>
       </div>
@@ -13,7 +14,9 @@
         <div class="select">
           <label>Store Name:</label>
           <select [formControl]="storeName" name="dropDown-container" id="dropDown-container">
-            <option *ngFor="let item of stores" value="item">{{item.name}}</option>
+            <option value="0">Select Batch</option>
+            <option value="1">1234ERTCH</option>
+            <option value="2">6434ERRSH</option>
           </select>
         </div>
       </div>
@@ -22,11 +25,11 @@
   <div class="tbl-header-rhs">
     <div class="items">
       <label class="label">Total Items Requested</label>
-      <div class="val">{{totalTransferredQties}}</div>
+      <div class="val">400</div>
     </div>
     <div class="items">
       <label class="label">Total Items Value</label>
-      <div class="val">#{{totalTransferredAmount | number : '1.2-2'}}</div>
+      <div class="val">#400,000</div>
     </div>
   </div>
 </div>
@@ -49,19 +52,20 @@
         <div class="store-th store-td-actions"></div>
       </div>
     </div>
+
     <div class="store-tbody">
       <div class="store-pre-tr">
-        <div *ngIf="transferObjs.length !== 0" class="store-tr">
+        <div class="store-tr">
           <div class="store-td store-td-actions">
             <input type="checkbox" [formControl]="check" />
           </div>
-          <div class="store-tr-in" *ngFor="let item of transferObjs">
-            <div class="store-td">{{item?.productObject?.name}}</div>
-            <div class="store-td">{{item?.availableQuantity}} {{item?.productObject?.baseItem?.name}}</div>
-            <div class="store-td">{{item?.availableOnHold}} {{item?.productObject?.baseItem?.name}}</div>
-            <div class="store-td">{{item.quantity}}</div>
-            <div class="store-td">#{{item.costPrice}}/{{item?.productObject?.baseItem?.name}}</div>
-            <div class="store-td">#{{item.lineCostPrice}} </div>
+          <div class="store-tr-in">
+            <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
+            <div class="store-td">60 Packs</div>
+            <div class="store-td">40 Packs</div>
+            <div class="store-td">5 Packs</div>
+            <div class="store-td">#10/Pack</div>
+            <div class="store-td">#20,000 </div>
           </div>
           <div class="store-td store-td-actions">
             <div class="table-list col-xs-1 action-placeholder">
@@ -96,7 +100,7 @@
 </div>
 
 <div class="tbl-sect-wrap tbl-top-with-border">
-  <div class="has-title">Outbound Transfer Status</div>
+  <div class="has-title">Outbound Requisition Status</div>
   <div class="date-sent">
     <span>Date Sent:</span>
     <div class="val">23/10/2018</div>
@@ -370,7 +374,7 @@
           <div class="tbl-cont-cta"><i class="fa fa-plus"></i> Add Another Item</div>
         </div>
       </div>
-    </div>
+    </div> 
     <!-- <app-apmis-pagination></app-apmis-pagination> -->
   </div>
 </div>

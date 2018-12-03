@@ -83,7 +83,6 @@ export class InitializeStoreComponent implements OnInit {
 	}
 
 	clickItemIndex(picked) {
-		console.log(picked);
 		return (this.item_to_show = !this.item_to_show);
 	}
 
