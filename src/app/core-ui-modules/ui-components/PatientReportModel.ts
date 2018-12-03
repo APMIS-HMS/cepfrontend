@@ -17,3 +17,11 @@ export interface IPatientReportOptions extends IDefaultReportOption{
     endAge? : number;
     
 }
+
+export interface IPatientAnalyticsReport
+{
+    tag? : string ;  // Tag is used to identify the key field to return
+    totalPatient? : number; 
+    male? : number; 
+    female? : number;
+}

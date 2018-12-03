@@ -11,7 +11,7 @@
     <div *ngIf="tab1">
         <div class="card-title">Pending Bills</div>
         <div *ngIf="loading" style="text-align: center;  padding:10px; min-height: 40px;">
-            <span class="fa fa-3x blue-text fa-refresh"></span>
+            <apmis-spinner></apmis-spinner>
         </div>
         <hmo-billing-grouping [newData]="newDataPending" (itemSelected)="billDetail($event)"></hmo-billing-grouping>
        
@@ -24,11 +24,11 @@
             <button class="btn-norm" (click)="hmo_report()"><i class="fa fa-file"></i> &nbsp; Generate Report</button>
         </div>
         <div *ngIf="loading" style=" text-align: center; padding:10px; min-height: 40px;">
-            <span class="fa fa-3x fa-spin blue-text fa-refresh"></span>
+            <apmis-spinner></apmis-spinner>
         </div>
         <hmo-billing-grouping [newData]="newData" (itemSelected)="billHistoryDetail($event)"></hmo-billing-grouping>
         <div style="padding:4px 10px; background-color: #d5e4f9;">
-            <h4 style="font-size: 16px;">Grand Total: <span style="float:right"> {{grandTotal | number}}</span>    </h4>
+            <h4 style="font-size: 16px;">Grand Total: <span style="float:right"><naira-currency></naira-currency> {{grandTotal | number}}</span>    </h4>
         </div>
     </div>
 </div>
