@@ -223,7 +223,12 @@ export class InitializeStoreComponent implements OnInit {
 				(<FormGroup>batchArray).controls['quantity'].valueChanges
 					.pipe(tap((val) => {}), debounceTime(200), distinctUntilChanged())
 					.subscribe((value) => {
-						// this.reCalculatePrices(frmArray, frmArray.value, 'margin');
+						// console.log(value);
+						// console.log((<FormGroup>frmArray).controls['totalQuantity'].value);
+						const existingQuantity = (<FormGroup>frmArray).controls['totalQuantity'].value;
+						const finalQuantity = value + existingQuantity;
+						(<FormGroup>frmArray).controls['totalQuantity'].setValue(finalQuantity);
+						this.reCalculatePrices(frmArray, frmArray.value, 'totalQuantity');
 					});
 			});
 		});
@@ -239,6 +244,9 @@ export class InitializeStoreComponent implements OnInit {
 		} else if (control === 'margin') {
 			value.sellingPrice = value.costPrice * (value.margin / 100) + value.costPrice;
 			array.controls['sellingPrice'].setValue(value.sellingPrice);
+		} else if (control === 'totalQuantity') {
+			value.totalCostPrice = value.costPrice * value.totalQuantity;
+			array.controls['totalCostPrice'].setValue(value.totalCostPrice);
 		}
 	}
 
