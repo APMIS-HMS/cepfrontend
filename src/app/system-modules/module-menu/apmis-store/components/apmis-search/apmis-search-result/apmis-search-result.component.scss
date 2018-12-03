@@ -51,18 +51,18 @@
         align-items: center;
 
         .item-payload{
+            position: relative;
             display: flex;
             align-items: center;
             .item-val{
                 font-weight: 400;
                 cursor: pointer;
+                padding-left: 40px;
             }
         }
         .item-img{
-            width: 40px;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center
+            position: absolute;
+            left: 2px;
         }
     }
 }
