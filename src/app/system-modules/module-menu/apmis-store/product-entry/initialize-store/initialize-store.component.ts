@@ -36,6 +36,8 @@ export class InitializeStoreComponent implements OnInit {
 		this.productConfigSearch.valueChanges.distinctUntilChanged().debounceTime(200).subscribe((value) => {
 			this.searchHasBeenDone = false;
 			if (value !== null && value.length > 3 && this.selectedProductName.length === 0) {
+				this.selectedProduct = undefined;
+				this.selectedProductName = '';
 				this._productService
 					.findProductConfigs({
 						query: {
@@ -73,6 +75,7 @@ export class InitializeStoreComponent implements OnInit {
 
 	checkBatchValidation(batch: FormGroup) {
 		batch.controls['complete'].setValue(true);
+		console.log((<FormArray>this.productForm.get('productArray')).value);
 	}
 
 	configureProduct() {
@@ -109,7 +112,7 @@ export class InitializeStoreComponent implements OnInit {
 	}
 
 	addProduct() {
-		let product: ProductInitialize = {
+		const product: ProductInitialize = {
 			configProduct: this.selectedProduct,
 			batches: [],
 			costPrice: 0,
@@ -119,8 +122,18 @@ export class InitializeStoreComponent implements OnInit {
 			totalQuantity: 0,
 			basePackType: ''
 		};
-		this.selectedProducts.push(product);
-		this.pushProduct(product);
+		// this.selectedProducts.push(product);
+
+		if (this.validateAgainstDuplicateProductEntry(product)) {
+			this.pushProduct(product);
+		}
+	}
+
+	validateAgainstDuplicateProductEntry(product) {
+		const result = (<FormArray>this.productForm.get('productArray')).value.find(
+			(x) => x.configProduct.id.toString() === product.configProduct.productObject.id.toString()
+		);
+		return result === undefined ? true : false;
 	}
 
 	InitializeProductArray() {
@@ -167,7 +180,7 @@ export class InitializeStoreComponent implements OnInit {
 	}
 
 	initBatch(batch?) {
-		return new FormGroup({
+		const newGrp = new FormGroup({
 			batchNumber: new FormControl(
 				batch === undefined || batch.batchNumber === undefined ? '' : batch.batchNumber
 			),
@@ -179,6 +192,12 @@ export class InitializeStoreComponent implements OnInit {
 			),
 			complete: new FormControl(false, [])
 		});
+		this.subscribToFormControls();
+		return newGrp;
+	}
+
+	pushBatch(picked: FormArray) {
+		picked.controls['batches'].push(this.initBatch());
 	}
 
 	removeProduct(i) {
@@ -198,40 +217,61 @@ export class InitializeStoreComponent implements OnInit {
 	}
 
 	subscribToFormControls() {
-		const formArray = (<FormArray>this.productForm.get('productArray')).controls;
-		formArray.forEach((frmArray, i) => {
-			(<FormGroup>frmArray).controls['costPrice'].valueChanges
-				.pipe(tap((val) => {}), debounceTime(400), distinctUntilChanged())
-				.subscribe((value) => {
-					this.reCalculatePrices(frmArray, frmArray.value, 'costPrice');
-				});
+		try {
+			if (this.productForm !== undefined) {
+				const formArray = (<FormArray>this.productForm.get('productArray')).controls;
+				formArray.forEach((frmArray, i) => {
+					(<FormGroup>frmArray).controls['costPrice'].valueChanges
+						.pipe(tap((val) => {}), debounceTime(400), distinctUntilChanged())
+						.subscribe((value) => {
+							this.reCalculatePrices(frmArray, frmArray.value, 'costPrice');
+						});
 
-			(<FormGroup>frmArray).controls['totalCostPrice'].valueChanges
-				.pipe(tap((val) => {}), debounceTime(400), distinctUntilChanged())
-				.subscribe((value) => {
-					this.reCalculatePrices(frmArray, frmArray.value, 'totalCostPrice');
-				});
+					(<FormGroup>frmArray).controls['totalCostPrice'].valueChanges
+						.pipe(tap((val) => {}), debounceTime(400), distinctUntilChanged())
+						.subscribe((value) => {
+							this.reCalculatePrices(frmArray, frmArray.value, 'totalCostPrice');
+						});
 
-			(<FormGroup>frmArray).controls['margin'].valueChanges
-				.pipe(tap((val) => {}), debounceTime(400), distinctUntilChanged())
-				.subscribe((value) => {
-					this.reCalculatePrices(frmArray, frmArray.value, 'margin');
-				});
-
-			const batchFormArray = (<FormArray>(<FormGroup>frmArray).controls['batches']).controls;
-			batchFormArray.forEach((batchArray, j) => {
-				(<FormGroup>batchArray).controls['quantity'].valueChanges
-					.pipe(tap((val) => {}), debounceTime(200), distinctUntilChanged())
-					.subscribe((value) => {
-						// console.log(value);
-						// console.log((<FormGroup>frmArray).controls['totalQuantity'].value);
-						const existingQuantity = (<FormGroup>frmArray).controls['totalQuantity'].value;
-						const finalQuantity = value + existingQuantity;
-						(<FormGroup>frmArray).controls['totalQuantity'].setValue(finalQuantity);
+					(<FormGroup>frmArray).controls['margin'].valueChanges
+						.pipe(tap((val) => {}), debounceTime(400), distinctUntilChanged())
+						.subscribe((value) => {
+							this.reCalculatePrices(frmArray, frmArray.value, 'margin');
+						});
+					(<FormArray>(<FormGroup>frmArray).controls['batches']).valueChanges.subscribe((value) => {
+						(<FormGroup>frmArray).controls['totalQuantity'].setValue(this.getProductBatchQuantity(value));
 						this.reCalculatePrices(frmArray, frmArray.value, 'totalQuantity');
 					});
-			});
+
+					const batchFormArray = (<FormArray>(<FormGroup>frmArray).controls['batches']).controls;
+					batchFormArray.forEach((batchArray, j) => {
+						(<FormGroup>batchArray).controls['quantity'].valueChanges
+							.pipe(tap((val) => {}), debounceTime(200), distinctUntilChanged())
+							.subscribe((value) => {
+								// console.log(value);
+								// console.log((<FormGroup>frmArray).controls['totalQuantity'].value);
+								// const existingQuantity = (<FormGroup>frmArray).controls['totalQuantity'].value;
+								// const finalQuantity = value + existingQuantity;
+								// console.log(finalQuantity);
+								// (<FormGroup>frmArray).controls['totalQuantity'].setValue(finalQuantity);
+								// this.reCalculatePrices(frmArray, frmArray.value, 'totalQuantity');
+								// this.getProductBatchQuantity(batchFormArray);
+							});
+					});
+				});
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	getProductBatchQuantity(batchFormArray) {
+		let productQuantity = 0;
+		batchFormArray.forEach((batchArray, j) => {
+			const currentQuantity = batchArray.quantity;
+			productQuantity = productQuantity + currentQuantity;
 		});
+		return productQuantity;
 	}
 
 	reCalculatePrices(array, value: ProductInitialize, control) {

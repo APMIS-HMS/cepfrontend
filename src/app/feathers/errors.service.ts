@@ -23,11 +23,11 @@ export class ErrorsService {
 		});
 	}
 	log(error) {
-		console.log('error: ', 1);
+		console.log('error: ', error);
 		// Log the error to the console
 		console.error(error);
 		// Send error to server
-		console.log('error: ', 1);
+		// console.log('error: ', 1);
 		const errorToSend = this.addContextInfo(error);
 		return Observable.of({ error: error }); // this was done by me starday
 		// return fakeHttpService.post(errorToSend); // commented out by starday, to do when ready by starday
