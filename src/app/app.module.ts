@@ -176,6 +176,7 @@ import { ErrorsService } from './feathers/errors.service';
 		SetupService.DrugDetailsService,
 		CustomPreloading,
 		SetupService.InventoryService,
+		SetupService.InventoryTransferService,
 		SetupService.DispenseService,
 		SetupService.FacilityPriceService,
 		SetupService.ProductService,

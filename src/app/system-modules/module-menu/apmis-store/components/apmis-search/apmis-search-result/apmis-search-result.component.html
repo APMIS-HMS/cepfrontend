@@ -5,7 +5,7 @@
   </div>
   <div *ngIf="bindableData.length>0">
     <ul>
-      <li *ngFor="let item of bindableData;let i=index" class="apmis-search-item asi-list" (click)="onToggleItem(item)">
+      <li class="apmis-search-item asi-list" *ngFor="let item of bindableData;let i=index" (click)="onToggleItem(item)">
         <div class="item-payload">
           <div class="item-img" *ngIf="item.isSelected">
             <img class="ico" src="assets/images/report_icons/check.svg" />
