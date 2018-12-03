@@ -21,11 +21,11 @@
             </mat-form-field>
         </div>
     </div>
-    <asom-data-pager
+    <apmis-data-pager
             [display-summary]="true"
             [pager-source]="pagerSource"
 
-    ></asom-data-pager>
+    ></apmis-data-pager>
     <div class="invoiceListWrap">
         <p *ngIf="loading" style="text-align: center padding:5px;"><span class="fa-fa-3x fa-spin fa-refresh"></span></p>
         <div style="margin: 10px;">
@@ -85,11 +85,11 @@
          </mat-paginator>-->
 
         <div>
-            <asom-data-pager [show-progress]="true" [show-total-record]="false" [in-progress]="loading"
+            <apmis-data-pager [show-progress]="true" [show-total-record]="false" [in-progress]="loading"
                              (onPageClick)="gotoPage($event)"
                              [pager-source]="pagerSource"
 
-            ></asom-data-pager>
+            ></apmis-data-pager>
         </div>
     </div>
 </div>
