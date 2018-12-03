@@ -33,15 +33,13 @@
 
       <div class="config-tags-wrap-x2" *ngIf="isBaseUnitSet">
         <div class="tag-btn">
-          <span>Tablets</span>
+          <span>{{ baseName }}</span>
         </div>
       </div>
     </div>
     <!-- took out the div here -->
-  </div>
-
-  <div class="config-container" *ngIf="showConfigContainer">
-    <div class="config-layout">
+    <!-- make this your base config section -->
+    <!-- <div class="config-layout">
       <div class="config-wrap">
         <h3>Add Configuration (Based on Unit)</h3>
         <i class="fa fa-plus" aria-hidden="true"></i>
@@ -56,6 +54,26 @@
           <span class="highlight"></span>
         </div>
         <h4>Tablets</h4>
+      </div>
+    </div> -->
+  </div>
+
+  <div class="config-container" *ngIf="showConfigContainer">
+    <div class="config-layout" *ngFor="let config of packConfigurations">
+      <div class="config-wrap">
+        <h3>Add Configuration (Based on Unit)</h3>
+        <i class="fa fa-plus" aria-hidden="true"></i>
+      </div>
+      <div class="config-tags-wrap-x2">
+        <div class="tag-btn">
+          <span>{{config.name}}</span>
+        </div>
+        <span>=</span>
+        <div class="InputGroup">
+          <input class="customInput" type="text" required>
+          <span class="highlight"></span>
+        </div>
+        <h4>{{baseName}}</h4>
       </div>
     </div>
   </div>

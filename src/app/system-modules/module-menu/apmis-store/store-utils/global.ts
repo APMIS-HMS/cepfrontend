@@ -20,4 +20,5 @@ export interface FormularyProduct {
 export interface ProductPackSize {
     _id: string;
     name: string;
+    checked?: boolean;
 }

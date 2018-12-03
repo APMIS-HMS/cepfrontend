@@ -1,6 +1,9 @@
+import { Subject } from 'rxjs/Subject';
 import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { ProductPackSize } from 'app/system-modules/module-menu/apmis-store/store-utils/global';
 
 @Injectable()
 export class ProductService {
@@ -14,6 +17,9 @@ export class ProductService {
   public listenerCreate;
   public listenerUpdate;
   public listenerDelete;
+  private productSubject = new Subject<any[]>();
+  private packSubject: BehaviorSubject<string> = new BehaviorSubject('');
+  private elEventListerner = new Subject<string>();
   constructor(
     private _socketService: SocketService,
     private _restService: RestService
@@ -32,7 +38,6 @@ export class ProductService {
     this.listenerCreate = Observable.fromEvent(this._socket, 'created');
     this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
     this.listenerDelete = Observable.fromEvent(this._socket, 'deleted');
-
 
   }
 
@@ -89,11 +94,25 @@ export class ProductService {
   createReorder(serviceprice: any) {
     return this._socketReorderLevel.create(serviceprice);
   }
-  patchReorder(id,serviceprice: any) {
+  patchReorder(id, serviceprice: any) {
     return this._socketReorderLevel.patch(id, serviceprice);
   }
   removeReorder(id: string, query: any) {
     return this._socketReorderLevel.remove(id, query);
   }
+  sendSelectedProductPackSize(data: any[]) {
+      this.productSubject.next(data);
+  }
+  getSelectedProductPackSize(): Observable<any[]> {
+    return this.productSubject.asObservable();
+  }
+  sendPackSizeViewState(data: string) {
+    this.packSubject.next(data);
+  }
+  getPackSizeViewState(): Observable<string> {
+    return this.packSubject.asObservable();
+  }
 
 }
+
+
