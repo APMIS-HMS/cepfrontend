@@ -68,12 +68,12 @@ import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
         .show-details-heading {
 
             padding: 7px 10px;
-            background-color: #f0ffc7;
+            background-color: #ced7cf;
 
         }
 
         .show-details-table {
-            background-color: #e1f3f8;
+            background-color: #cadde4;
             box-shadow: 1px 1px 10px rgba(56, 61, 63, 0.27);
         }
 

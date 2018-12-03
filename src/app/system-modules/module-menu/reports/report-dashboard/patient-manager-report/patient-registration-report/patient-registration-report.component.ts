@@ -75,7 +75,10 @@ export class PatientRegistrationReportComponent implements OnInit {
   }
   getPatientAnalyticReport(/* we could supply date ranges for certain analytics*/)
   {
-      this.reportService.getPatientAnalyticReport({})
+      this.reportService.getPatientAnalyticReport({
+          searchBy  : "planType",
+          queryString :"all"  // All plan types eg: HMO, Family Cover, Company Cover and Private individual
+      })
           .then(x => {
              this.analyticData =  x.data; 
              this.allAnalyticSummary   = {
