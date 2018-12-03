@@ -1,0 +1,52 @@
+.supplierBase {
+    display: grid;
+    grid-template-columns: 30% 70%;
+    grid-auto-columns: 1fr;
+    grid-gap: 20px;
+    align-items: left;
+    grid-auto-rows: auto;
+    grid-auto-flow: column;
+}
+
+@import "./../invoice-entry/view-invoice/view-invoice.component.scss";
+
+.contentLeftGrid{
+    padding: 5px;
+}
+
+.suppSearch{
+    overflow: auto;
+    display: block;
+    position: relative;
+}
+
+.x2{
+    margin-top: 20px;
+    justify-content: space-between;
+}
+
+.lst-inner-wrap{
+    display: flex;
+}
+
+.tbl-header-lhs{
+    h2{
+        color: #337AB7;
+    }
+}
+
+.supp-ft-btn {
+    width: fit-content;
+    padding: 8px;
+    font-size: 1.2rem;
+    text-align: center;
+    color: #0288D1;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    border: 1px solid #878484;
+    cursor: pointer;
+    border-radius: 4px;
+    align-self: center;
+    margin-right: 5px;
+    margin-left: 5px;
+}

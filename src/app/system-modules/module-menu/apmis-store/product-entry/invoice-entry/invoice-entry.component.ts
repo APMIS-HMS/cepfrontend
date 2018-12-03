@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {  Component, EventEmitter, OnInit, Output  } from '@angular/core';
 import { StoreGlobalUtilService } from '../../store-utils/global-service';
 import { Filters } from '../../store-utils/global';
 
@@ -9,7 +9,7 @@ import { Filters } from '../../store-utils/global';
 })
 export class InvoiceEntryComponent implements OnInit {
 
-
+showViewInvoice = false;
 
   constructor() { }
 
@@ -17,4 +17,11 @@ export class InvoiceEntryComponent implements OnInit {
  
   }
 
+  close_onClick(e) {
+		this.showViewInvoice = false;
+  }
+  
+  viewInvoice(){
+    this.showViewInvoice = true;
+  }
 }
