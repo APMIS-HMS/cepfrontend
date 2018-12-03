@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { ProductService } from 'app/services/facility-manager/setup/product.service';
+import { Facility } from 'app/models';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Component({
   selector: 'app-product-conguration',
@@ -6,9 +9,32 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./product-conguration.component.scss']
 })
 export class ProductCongurationComponent implements OnInit {
-
-  constructor() { }
-
+  currentFacility: Facility = <Facility>{};
+  productConfigs = [];
+  baseUnit = '';
+  constructor(private productService: ProductService,
+      private locker: CoolLocalStorage) { }
   ngOnInit() {
+    this.currentFacility = <Facility>this.locker.getObject('selectedFacility');
+    this.getProductConfigsByFacility();
+    console.log('in product');
   }
+  getProductConfigsByFacility() {
+    console.log(this.currentFacility._id);
+    this.productService.findProductConfigs({
+      query: {
+        facilityId: this.currentFacility._id
+      }
+    }).then(payload => {
+      if (payload.data.length > 0) {
+        console.log(payload.data);
+        this.productConfigs = payload.data;
+        this.productConfigs.forEach(x => {
+            x.baseUnit = x.packSizes.filter(y => y.isBase);
+        });
+        console.log(this.productConfigs);
+      }
+    });
+  }
+
 }

@@ -1,6 +1,7 @@
-import { FormularyProduct, ProductPackSize } from './../../../store-utils/global';
-import { ProductService } from './../../../../../../services/facility-manager/setup/index';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ApmisFilterBadgeService } from './../../../../../../services/tools/apmis-filter-badge.service';
+import { ProductService } from './../../../../../../services/facility-manager/setup/product.service';
+import { FormularyProduct, ProductPackSize, ProductConfig } from './../../../store-utils/global';
+import { Component, OnInit } from '@angular/core';
 import { Facility } from 'app/models';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
@@ -12,28 +13,31 @@ import { Subscription } from 'rxjs/Subscription';
   templateUrl: './config-product.component.html',
   styleUrls: ['./config-product.component.scss']
 })
-export class ConfigProductComponent implements OnInit, OnDestroy {
+export class ConfigProductComponent implements OnInit {
 
   apmisSearch = false;
   showConfigContainer = false;
+  showSaveConfig = false;
   showSetBaseUnit = false;
   storeId = '';
   searchedProducts: any = [];
+  selectedPackSizes = [];
+  modifiedPackSizes = [];
   selectedProductName = '';
+  selectedProduct: FormularyProduct;
   isBaseUnitSet = false;
-  packSizes: ProductPackSize[] = [];
+  packSizes = [];
   productSearch = new FormControl();
   showProduct = false;
   currentFacility: Facility = <Facility>{};
-  subscription: Subscription;
-  packClickSubscription: Subscription;
   baseName = '';
   basePackType: ProductPackSize = <ProductPackSize>{};
   packConfigurations: ProductPackSize[] = [];
 
   constructor(
       private productService: ProductService,
-      private locker: CoolLocalStorage
+      private locker: CoolLocalStorage,
+      private apmisFilterService: ApmisFilterBadgeService
     ) { }
 
   ngOnInit() {
@@ -54,40 +58,33 @@ export class ConfigProductComponent implements OnInit, OnDestroy {
           this.showProduct = false;
           this.showSetBaseUnit = false;
           this.selectedProductName = '';
+          this.showConfigContainer = false;
+          this.showSaveConfig = false;
       }
       });
-      this.subscription = this.productService.getSelectedProductPackSize().subscribe((data: ProductPackSize[]) => {
-          const packSizes = data;
-          if (packSizes.length > 0) {
-            this.isBaseUnitSet = true;
-            this.showConfigContainer = true;
-            // TODO: Send base name from parent to child component
-            this.baseName = packSizes[0].name;
-            this.basePackType = packSizes[0];
-            this.packConfigurations = [...packSizes];
-            this.packConfigurations.splice(0, 1);
-
-            this.packSizes = this.packConfigurations;
-          }
-      });
+      this.getProductPackTypes();
   }
   onShowSearch() {
     this.apmisSearch = !this.apmisSearch;
-    const selectState = this.apmisSearch ? 'open' : 'close';
-    this.productService.sendPackSizeViewState(selectState);
-    this.getProductPackTypes();
-    //console.log(this.productService.sendPackSizeViewState(this.apmisSearch));
-    // if (this.apmisSearch) {
-    //     const state = this.apmisSearch;
-    //   this.productService.sendPackSizeViewState(state);
-    // } else {
-    //   this.productService.sendPackSizeViewState(false);
-    // }
   }
-
-  setSelectedOption(data: FormularyProduct) {
+  setSelectedProductOption(data) {
+    this.selectedProduct = data;
     this.selectedProductName = data.name;
     this.showProduct = false;
+  }
+  onSearchSelectedItems(data) {
+    if (data.length > 0) {
+      this.isBaseUnitSet = true;
+      this.showConfigContainer = true;
+      this.showSaveConfig = false;
+      // TODO: Send base name from parent to child component
+      this.baseName = data[0].label;
+      this.basePackType = data[0];
+      this.selectedPackSizes = [...data];
+      this.packConfigurations = [...data];
+      this.packConfigurations.splice(0, 1);
+      if (this.packConfigurations.length > 0) { this.showSaveConfig = true; }
+    }
   }
   onClickConfigure() {
     if (this.selectedProductName !== '') {
@@ -96,33 +93,52 @@ export class ConfigProductComponent implements OnInit, OnDestroy {
       this.showSetBaseUnit = false;
     }
   }
+  onSaveConfiguration() {
+      const currentFacility = <Facility>this.locker.getObject('selectedFacility');
+      this.transformPackSizes(this.selectedPackSizes);
+      const newProductConfig: ProductConfig = {
+          productId: this.selectedProduct.id,
+          facilityId: currentFacility._id,
+          productObject: this.selectedProduct,
+          rxCode: this.selectedProduct.code,
+          packSizes: this.modifiedPackSizes
+      };
+      this.productService.createProductConfig(newProductConfig).then(payload => {
+          this.apmisFilterService.clearItemsStorage(true);
+      });
+  }
+
+  transformPackSizes(packs) {
+    if (packs.length > 1) {
+      const selected = packs.map(({id: packId, label: name, size: size}) => ({packId, name, size}));
+        for (let i = 0; i < selected.length; i++) {
+            if ( i === 0) {
+              selected[i].isBase = true;
+              } else { selected[i].isBase = false; }
+            this.modifiedPackSizes.push(selected[i]);
+        }
+        return this.modifiedPackSizes;
+    }
+  }
   getProductPackTypes() {
     this.productService.findPackageSize({
       query: {
         $limit: false
       }
     }).then(payload => {
-      this.packSizes = payload.data;
+      if (payload.data.length > 0) {
+        this.packSizes = payload.data.map(({_id: id, name: label}) => ({id, label}));
+      }
     });
   }
-  getInventories() {
-    // this.inventoryService
-    // .findFacilityProductList({
-    //   query: { facilityId: this.currentFacility._id, storeId: this.storeId }
-    // })
-    // .then(
-    //   (payload) => {
-    //     this.products = payload.data;
-    //     console.log(this.products);
-    //   },
-    //   (error) => {
-    //     console.log(error);
-    //   }
-    // );
-  }
-  ngOnDestroy() {
-    if (this.subscription !== null) {
-      this.subscription.unsubscribe();
+  onCreateNewItem(item) {
+    if (item !== '' || item !== undefined) {
+        const newPackSize = {
+          name: item
+        };
+        this.productService.createPackageSize(newPackSize).then(payload => {
+            this.getProductPackTypes();
+        });
     }
   }
 }

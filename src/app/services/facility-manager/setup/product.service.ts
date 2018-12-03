@@ -73,6 +73,9 @@ export class ProductService {
   createProductConfig(serviceprice: any) {
     return this._socketProductConfig.create(serviceprice);
   }
+  createPackageSize(packageSize: any) {
+    return this._socketPackageList.create(packageSize);
+  }
   patchProductConfig(_id: any, obj: any, params) {
     return this._socketProductConfig.patch(_id, obj, params);
   }
@@ -100,19 +103,6 @@ export class ProductService {
   removeReorder(id: string, query: any) {
     return this._socketReorderLevel.remove(id, query);
   }
-  sendSelectedProductPackSize(data: any[]) {
-      this.productSubject.next(data);
-  }
-  getSelectedProductPackSize(): Observable<any[]> {
-    return this.productSubject.asObservable();
-  }
-  sendPackSizeViewState(data: string) {
-    this.packSubject.next(data);
-  }
-  getPackSizeViewState(): Observable<string> {
-    return this.packSubject.asObservable();
-  }
-
 }
 
 
