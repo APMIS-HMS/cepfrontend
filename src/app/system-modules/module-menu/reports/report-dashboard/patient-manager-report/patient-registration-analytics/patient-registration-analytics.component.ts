@@ -30,7 +30,7 @@ export class PatientRegistrationAnalyticsComponent implements OnInit {
               const ageRangeData  = [
                   {
                       data : _.map(data, p => p.female),
-                      labele : "Female"
+                      label : "Female"
                   },
                   {
                       data : _.map(data, p => p.male),
@@ -39,8 +39,7 @@ export class PatientRegistrationAnalyticsComponent implements OnInit {
               ];
               this.barChartData =   ageRangeData;
               this.barChartData.forEach((x, index) =>{
-                  this.barChartData[index]  = Object.assign({},this.barChartData[index], {
-                      data: [...this.barChartData[index].data, dataArr[index]] )
+                  this.barChartData[index]  =  x;   
               });
               console.log(ageRangeData);
              // this.barChartLabels  = x.data
