@@ -2727,6 +2727,10 @@ button,
         box-sizing: border-box;
         margin-bottom: 20px;
     }
+    .InputGroup-textarea{
+        width: 100% !important;
+        min-height: 120px;
+    }
 }
 .InputGroup{ 
     position:relative; 
@@ -2798,9 +2802,10 @@ button,
     border-radius: 5px;
     display: flex;
     align-items: center;
-    padding: 5px;
+    padding: 20px;
+    height: 0px;
     cursor: pointer;
-    i{
+    i, span{
         padding-right: 5px;
     }
 }
@@ -2812,9 +2817,12 @@ button,
     align-items: center;
     padding: 20px;
     cursor: pointer;
-    border-radius: 4px;
+    border-radius: 5px;
     background: #337AB7;
     height: 0px;
+    i, span{
+        padding-right: 5px;
+    }
 }
 
 .toggle-base-wrap{
@@ -2886,7 +2894,7 @@ button,
 
 
 .search-noResult-blue{
-    background: #0288d130;
+    background: #0288d1;
     border: none;
     border-radius: 2px;
     text-align: center;
@@ -2903,4 +2911,11 @@ button,
         cursor: pointer; 
         font-weight: bold;
     }
+}
+
+.sv-btn-container{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

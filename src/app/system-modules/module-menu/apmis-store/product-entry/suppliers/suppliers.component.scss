@@ -1,0 +1,90 @@
+.supplierBase {
+    display: grid;
+    grid-template-columns: 20% 80%;
+    grid-auto-columns: 1fr;
+    grid-gap: 20px;
+    align-items: left;
+    grid-auto-rows: auto;
+    grid-auto-flow: column;
+}
+
+@import "./../invoice-entry/view-invoice/view-invoice.component.scss";
+@import "./../invoice-entry/invoice-entry.component.scss";
+@import "./../purchase-list/new-purchase-list/new-purchase-list.component.scss";
+
+.contentLeftGrid{
+    padding: 5px;
+}
+
+.suppSearch{
+    overflow: auto;
+    display: block;
+    position: relative;
+}
+
+.x2{
+    margin-top: 20px;
+    align-content: center !important;
+    justify-content: space-between;
+}
+
+.lst-inner-wrap{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+}
+
+// .customImput{
+//     input[type=date]::-webkit-inner-spin-button, 
+// input[type=date]::-webkit-outer-spin-button { 
+//   -webkit-appearance: none; 
+//   margin: 0; 
+// }
+// }
+.con-inner{
+    display: flex;
+    .fa-icon{
+    margin-right: 20px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    /* display: flex; */
+    /* align-items: center; */
+    align-content: center;
+    }
+}
+
+
+
+.tbl-header-lhs{
+    h2{
+        color: #337AB7;
+    }
+}
+
+.supp-ft-btn {
+    width: fit-content;
+    padding: 8px;
+    font-size: 1.2rem;
+    text-align: center;
+    color: #0288D1;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    border: 1px solid #878484;
+    cursor: pointer;
+    border-radius: 4px;
+    align-self: center;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.pur-wrap{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    align-items: center;
+    margin-top: 25px;
+}
+
+.pur-con-wrap{
+    padding: 0px 70px 0px 0px;
+}

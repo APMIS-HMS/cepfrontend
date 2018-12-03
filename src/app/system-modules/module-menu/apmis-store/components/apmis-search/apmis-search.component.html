@@ -1,44 +1,14 @@
 <div class="apmis-search-wrap">
   <div class="apmis-search-header">
-    <div class="apmis-search-label">Add Product Type</div> 
+    <div class="apmis-search-label">{{placeholder}}</div> 
     <img (click)="toggler_click()" class="plus-ico" src="assets/images/report_icons/plus.svg" /> 
   </div>
   
  <div *ngIf="showSearch">
-   <app-apmis-search-result></app-apmis-search-result>
+   <app-apmis-search-result [data]="data" (onSelectedItems)="onSearchSelectedItems($event)" (onCreateItem)="onCreateNewItem($event)"></app-apmis-search-result>
  </div>
  
- <!-- <div *ngIf="showSearch" class="apmis-search-content"> 
-  <div class="apmis-search-item input-wrap">   
-    <img class="search-ico" src="assets/images/report_icons/search-small.svg" />   
-    <input class="input" [formControl]="apmisSearch" type="text">
-  </div>
-  <ul>
-    <li class="apmis-search-item asi-list">
-      <div class="item-payload">
-        <div class="item-img">
-          <img class="ico" src="assets/images/report_icons/check.svg" /> 
-        </div> 
-        <div class="item-val">Consumables</div>
-      </div>
-      <img class="ico" src="assets/images/report_icons/times.svg" />  
-    </li>
-    <li class="apmis-search-item asi-list">
-      <div class="item-payload">
-        <div class="item-img">
-          <img class="ico" src="assets/images/report_icons/check.svg" /> 
-        </div> 
-        <div class="item-val">Drugs</div>
-      </div>
-      <img class="ico" src="assets/images/report_icons/times.svg" />  
-    </li>
-  </ul>
-</div> -->
-
-  <ul class="apmis-search-selected-list">
-    <li class="ft-btn">Consumables</li>
-    <li class="ft-btn">Infusion</li>
-    <li class="ft-btn">Breverages</li>
-    <li class="ft-btn">Injection</li>
+ <ul class="apmis-search-selected-list">
+    <li class="ft-btn" *ngFor="let item of selectedItems">{{item.label}}</li>
   </ul>
 </div>

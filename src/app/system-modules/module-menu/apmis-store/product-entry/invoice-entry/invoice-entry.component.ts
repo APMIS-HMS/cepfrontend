@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {  Component, EventEmitter, OnInit, Output  } from '@angular/core';
 import { StoreGlobalUtilService } from '../../store-utils/global-service';
 import { Filters } from '../../store-utils/global';
 
@@ -9,20 +9,19 @@ import { Filters } from '../../store-utils/global';
 })
 export class InvoiceEntryComponent implements OnInit {
 
-  storeFilters = [];
-  selectedFilterIndex = 0;
-  filterType = '';
+showViewInvoice = false;
 
-  constructor(private storeUtilService: StoreGlobalUtilService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.storeFilters = this.storeUtilService.getObjectKeys(Filters);
+ 
   }
 
-  setSelectedFilter(index, filter) {
-    this.selectedFilterIndex = index;
-    this.filterType = filter;
-    //console.log(this.filterText);
-}
-
+  close_onClick(e) {
+		this.showViewInvoice = false;
+  }
+  
+  viewInvoice(){
+    this.showViewInvoice = true;
+  }
 }

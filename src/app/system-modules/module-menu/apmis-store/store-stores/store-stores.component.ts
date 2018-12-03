@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FacilitiesService } from './../../../../services/facility-manager/setup/facility.service';
 import { LocationService } from './../../../../services/module-manager/setup/location.service';
+import { StoreService } from './../../../../services/facility-manager/setup/store.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Router } from '@angular/router';
 import { Facility } from 'app/models';
@@ -25,7 +26,8 @@ export class StoreStoresComponent implements OnInit {
 
   constructor(private router: Router, private _locker: CoolLocalStorage,
     private facilitiesService: FacilitiesService,
-    private locationService: LocationService) { }
+    private locationService: LocationService,
+    private storeService: StoreService) { }
 
   ngOnInit() {
     this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
@@ -33,25 +35,23 @@ export class StoreStoresComponent implements OnInit {
     this.getLocationService();
     this.formControlLocation.valueChanges.subscribe(value => {
       this.storeLocations = this.minorLocations.filter(x => x.locationId.toString() === value.toString());
-      console.log(this.storeLocations);
     });
 
     this.formControlMinorLocation.valueChanges.subscribe(value => {
       this.loc = value;
+      this.storeService.listenStoreValue(value);
     });
   }
 
   getFacilityService() {
     this.facilitiesService.get(this.selectedFacility._id, { query: { $select: ['minorLocations'] } }).then(payload => {
       this.minorLocations = payload.minorLocations;
-      console.log(this.minorLocations);
     }, err => { })
   }
 
   getLocationService() {
     this.locationService.find({}).then(payload => {
       this.locations = payload.data;
-      console.log(this.locations);
     }, err => { })
   }
 

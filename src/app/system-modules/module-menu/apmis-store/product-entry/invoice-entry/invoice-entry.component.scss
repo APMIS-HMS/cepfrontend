@@ -1,40 +1,26 @@
-
+@import "./../../apmis-store-home/store-home-main/all-products/all-products.component.scss";
 @import "./../initialize-store/initialize-store.component.scss";
+@import "./../purchase-list/new-purchase-list/new-purchase-list.component.scss";
 
-.div-space{
-    height: 40px;
-}
-.sel-txt{   
-    text-align: center;
-    align-self: center;
-}
 
-.in-tr{
-    grid-template-columns: 3fr repeat(4, 1fr) !important;
-}
-.item-action{
-    i{
-        padding-right: 5px;
-       cursor: pointer;       
+
+
+.inv-action{
+    display:flex;
+    justify-content: space-between;
+    .btn-act-margin{
+        margin-right: 10px;
     }
-    i:hover{
-        color: rgba(0,0,0,.54);
-       }
 }
 
-.tbl-btn-action{
-    display: flex;
-    justify-content: flex-end;
-    padding: 15px;   
-}
-.action-pad{
-    padding: 0px 5px;
+.orange-lbl{
+    color: orange;
 }
 
-.sel-sup{
-    display: flex;
-    .input-group-x2{
-        padding-left: 10px;
-        width: 40% !important;
-    }
+.green-lbl{
+    color: green;
+}
+
+.red-lbl{
+    color: red;
 }

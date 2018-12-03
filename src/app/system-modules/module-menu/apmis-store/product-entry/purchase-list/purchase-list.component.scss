@@ -1,0 +1,30 @@
+@import "./new-purchase-list/new-purchase-list.component.scss";
+
+
+
+.list-wrap{
+    padding: 20px;
+    display: block;
+    border: 1px solid #dddddd;
+    margin-bottom: 10px;
+}
+
+.list-con{
+    border: 1px solid #dddddd;
+}
+
+.list-con-wrap {
+    display: flex; 
+    padding-bottom: 20px;
+}
+
+.sup-list{
+    display: flex;
+    h3{
+        padding-right: 20px;
+    }
+}
+
+.con-wrap{
+    padding: 0px 50px;
+}

@@ -25,6 +25,7 @@ import { LoginComponent } from './login/login.component';
 import { SocketService, RestService } from './feathers/feathers.service';
 import * as SetupService from './services/facility-manager/setup/index';
 import * as ReportService from './services/reports/index';
+import * as ToolsService from './services/tools/index';
 
 import * as ModuleManagerService from './services/module-manager/setup/index';
 import { UserAccountsComponent } from './system-modules/user-accounts/user-accounts.component';
@@ -175,6 +176,7 @@ import { ErrorsService } from './feathers/errors.service';
 		SetupService.DrugDetailsService,
 		CustomPreloading,
 		SetupService.InventoryService,
+		SetupService.InventoryTransferService,
 		SetupService.DispenseService,
 		SetupService.FacilityPriceService,
 		SetupService.ProductService,
@@ -234,6 +236,7 @@ import { ErrorsService } from './feathers/errors.service';
 		AuthFacadeService,
 		SetupService.DepartmentService,
 		CanActivateViaAuthGuardAccessService,
+		ToolsService.ApmisFilterBadgeService,
 		ReportService.ClinicAttendanceReportService,
 		ReportService.AppointmentReportService,
 		ReportService.DiagnosisReportService,

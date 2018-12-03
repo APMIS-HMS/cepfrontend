@@ -9,14 +9,14 @@ import { DiagnosisComponent } from './diagnosis/diagnosis.component';
 import { ClinicManagementReportComponent } from './clinic-management-report.component';
 
 @NgModule({
-	imports: [ CommonModule, 
-		MaterialModule, 
+	imports: [ CommonModule,
+		MaterialModule,
 		OnlyMaterialModule,
-		SharedModule, 
+		SharedModule,
 		ClinicManagementRoutingModule ],
-	
-	declarations: [ ClinicAttendanceComponent, 
-		DiagnosisComponent, 
+
+	declarations: [ ClinicAttendanceComponent,
+		DiagnosisComponent,
 		ClinicManagementReportComponent ]
 })
 export class ClinicReportModule {}
