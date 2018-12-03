@@ -35,6 +35,8 @@ import { PurchaseOrderComponent } from './product-entry/purchase-order/purchase-
 import { SuppliersComponent } from './product-entry/suppliers/suppliers.component';
 import { ProductConfigPopupComponent } from './product-entry/initialize-store/product-config-popup/product-config-popup.component';
 import { ConfigProductComponent } from './apmis-store-product/product-conguration/config-product/config-product.component';
+import { InboundRequisitionComponent } from './product-movement/inbound-requisition/inbound-requisition.component';
+import { OutboundRequisitionComponent } from './product-movement/outbound-requisition/outbound-requisition.component';
 
 @NgModule({
 	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule ],
@@ -68,7 +70,9 @@ import { ConfigProductComponent } from './apmis-store-product/product-conguratio
 		PurchaseOrderComponent,
 		SuppliersComponent,
 		ProductConfigPopupComponent,
-		ConfigProductComponent
+		ConfigProductComponent,
+		InboundRequisitionComponent,
+		OutboundRequisitionComponent
 	],
 	providers: [ StoreService, InventoryService, StoreGlobalUtilService,ProductTypeService ]
 })
