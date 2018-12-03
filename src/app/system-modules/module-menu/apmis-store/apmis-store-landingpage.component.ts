@@ -55,7 +55,7 @@ export class ApmisStoreLandingpageComponent implements OnInit {
       this.productEntryContentArea = true;
       this.productMovementContentArea = false;
       this.productExitContentArea = false;
-    } else if(value === 'productMovement'){
+    } else if(value === 'product-movement'){
       this.homeContentArea = false;
       this.storeContentArea = false;
       this.productContentArea = false;

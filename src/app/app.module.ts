@@ -25,6 +25,7 @@ import { LoginComponent } from './login/login.component';
 import { SocketService, RestService } from './feathers/feathers.service';
 import * as SetupService from './services/facility-manager/setup/index';
 import * as ReportService from './services/reports/index';
+import * as ToolsService from './services/tools/index';
 
 import * as ModuleManagerService from './services/module-manager/setup/index';
 import { UserAccountsComponent } from './system-modules/user-accounts/user-accounts.component';
@@ -235,6 +236,7 @@ import { ArrayFunctionHelper } from './shared-module/helpers/array-function-help
 		AuthFacadeService,
 		SetupService.DepartmentService,
 		CanActivateViaAuthGuardAccessService,
+		ToolsService.ApmisFilterBadgeService,
 		ReportService.ClinicAttendanceReportService,
 		ReportService.AppointmentReportService,
 		ReportService.DiagnosisReportService,

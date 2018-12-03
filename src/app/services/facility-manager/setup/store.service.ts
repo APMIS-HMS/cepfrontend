@@ -1,6 +1,7 @@
 import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class StoreService {
@@ -11,6 +12,10 @@ export class StoreService {
 	public listenerCreate;
 	public listenerUpdate;
 	public listenerDelete;
+
+	store$: Observable<any>;
+	private storeSubject = new Subject<any>();
+
 	constructor(private _socketService: SocketService, private _restService: RestService) {
 		this._rest = _restService.getService('stores');
 		this._socket = _socketService.getService('stores');
@@ -22,6 +27,11 @@ export class StoreService {
 		this.listenerCreate = Observable.fromEvent(this._socket, 'created');
 		this.listenerUpdate = Observable.fromEvent(this._socket, 'updated');
 		this.listenerDelete = Observable.fromEvent(this._socket, 'deleted');
+		this.store$ = this.storeSubject.asObservable();
+	}
+
+	listenStoreValue(data) {
+		this.storeSubject.next(data);
 	}
 
 	find(query: any) {

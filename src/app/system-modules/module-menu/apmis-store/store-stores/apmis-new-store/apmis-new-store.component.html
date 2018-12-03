@@ -12,50 +12,50 @@
           <div class="dropDown-container">
             <div class="select">
               <select formControlName="majorLoc" name="dropDown-container" id="dropDown-container">
-                <option value="0">Select Store</option>
-                <option value="1">Central Store</option>
+                <option value="" disabled selected>Major Location</option>
+                <option value={{item._id}} *ngFor="let item of locations">{{item.name}}</option>
               </select>
             </div>
           </div>
           <div class="dropDown-container">
             <div class="select">
-              <select formControlName="minorLoc" name="dropDown-container" id="dropDown-container">
-                <option value="0">Select Batch</option>
-                <option value="1">1234ERTCH</option>
-                <option value="2">6434ERRSH</option>
+              <select formControlName="minorLocationId" name="dropDown-container" id="dropDown-container">
+                <option value="" disabled selected>Minor Location</option>
+                <option *ngFor="let item of storeLocations" value="{{item._id}}">{{item.name}}</option>
               </select>
             </div>
           </div>
         </div>
         <div class="input-group-x2">
-          <div class="InputGroup">      
-            <input formControlName="storeName" class="customInput" type="text" required>
+          <div class="InputGroup">
+            <input formControlName="name" class="customInput" type="text" required>
             <span class="highlight"></span>
             <label class="customLabel">Store Name</label>
           </div>
-          <app-apmis-search class="apmis-search"></app-apmis-search>
+          <app-apmis-search class="apmis-search" [data]="productTypes" [placeholder]="placeholder" (onSelectedItems)="onSearchSelectedItems($event)" (onCreateItem)="onCreateNewItem($event)"></app-apmis-search>
         </div>
         <div class="input-group-x2">
-          <div class="InputGroup" style="margin-right:5px;">      
-            <textarea formControlName="desc" class="customTextarea" placeholder="Add Note"></textarea> 
-            <span class="highlight"></span>       
+          <div class="InputGroup" style="margin-right:5px;">
+            <textarea formControlName="description" class="customTextarea" placeholder="Add Note"></textarea>
+            <span class="highlight"></span>
           </div>
           <div class="chk-flex">
             <div class="check-wrap">
               <label class="control control--checkbox">Dispense
-                <input type="checkbox" formControlName="dispense" />
+                <input type="checkbox" formControlName="canDespense" (click)="onDespense($event)" />
                 <div class="control__indicator"></div>
               </label>
             </div>
             <div class="check-wrap">
               <label class="control control--checkbox">Recieve Purchase
-                <input type="checkbox" formControlName="recievePurchase" />
+                <input type="checkbox" (click)="onReceivePurchaseOrder($event)" formControlName="canReceivePurchaseOrder" />
                 <div class="control__indicator"></div>
               </label>
             </div>
           </div>
         </div>
       </form>
+      <button (click)="onSave()">Save</button>
     </div>
   </div>
 </div>
