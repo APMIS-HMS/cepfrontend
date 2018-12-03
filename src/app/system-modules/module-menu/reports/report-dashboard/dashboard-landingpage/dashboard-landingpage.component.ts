@@ -33,4 +33,8 @@ export class DashboardLandingpageComponent implements OnInit {
 	call_storeReport() {
 		this._router.navigate(['/dashboard/reports/report-dashboard/storeReport']);
 	}
+
+	call_wardManagerReport() {
+		this._router.navigate(['/dashboard/reports/report-dashboard/wardReport']);
+	}
 }

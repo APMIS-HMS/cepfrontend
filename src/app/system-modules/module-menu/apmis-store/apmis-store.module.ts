@@ -41,6 +41,9 @@ import { NewPurchaseOrderListComponent } from './product-entry/purchase-order/ne
 import { PurchaseOrderListDetailsComponent } from './product-entry/purchase-order/purchase-order-list-details/purchase-order-list-details.component';
 import { ViewInvoiceComponent } from './product-entry/invoice-entry/view-invoice/view-invoice.component';
 import { NewSupplierComponent } from './product-entry/suppliers/new-supplier/new-supplier.component';
+import { InboundRequisitionComponent } from './product-movement/inbound-requisition/inbound-requisition.component';
+import { OutboundRequisitionComponent } from './product-movement/outbound-requisition/outbound-requisition.component';
+
 
 @NgModule({
 	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule ],
@@ -81,6 +84,8 @@ import { NewSupplierComponent } from './product-entry/suppliers/new-supplier/new
 		PurchaseOrderListDetailsComponent,
 		ViewInvoiceComponent,
 		NewSupplierComponent
+		InboundRequisitionComponent,
+		OutboundRequisitionComponent
 	],
 	providers: [ StoreService, InventoryService, StoreGlobalUtilService,ProductTypeService ]
 })
