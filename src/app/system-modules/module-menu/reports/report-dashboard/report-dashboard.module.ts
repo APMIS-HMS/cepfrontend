@@ -10,10 +10,10 @@ import { DashboardLandingpageComponent } from './dashboard-landingpage/dashboard
 import { DhisReportComponent } from './dhis-report/dhis-report.component';
 import { ClinicReportModule } from './clinic-management-report/clinic-management-report.module';
 import { PatientManagerReportComponent } from './patient-manager-report/patient-manager-report.component';
-// import { LaboratoryReportComponent } from './laboratory-report/laboratory-report.component';
+import { LaboratoryReportComponent } from './laboratory-report/laboratory-report.component';
 import { PharmacyReportComponent } from './pharmacy-report/pharmacy-report.component';
 import { PaymentReportComponent } from './payment-report/payment-report.component';
-//import { StoreManagerReportComponent } from './store-manager-report/store-manager-report.component';
+import { StoreManagerReportComponent } from './store-manager-report/store-manager-report.component';
 import { WardManagerReportComponent } from './ward-manager-report/ward-manager-report.component';
 // import { MatFormFieldModule, MatInputModule } from '@angular/material';
 
@@ -32,9 +32,9 @@ import { WardManagerReportComponent } from './ward-manager-report/ward-manager-r
 	declarations: [
 		ReportDashboardComponent,
 		DashboardLandingpageComponent,
-		// LaboratoryReportComponent,
+		LaboratoryReportComponent,
 		PharmacyReportComponent,
-		//StoreManagerReportComponent,
+		StoreManagerReportComponent,
 		WardManagerReportComponent
 	]
 })

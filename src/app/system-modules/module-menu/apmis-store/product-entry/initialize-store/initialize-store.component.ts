@@ -11,7 +11,8 @@ import { DatePipe } from '@angular/common';
 	styleUrls: [ './initialize-store.component.scss' ]
 })
 export class InitializeStoreComponent implements OnInit {
-	item_to_show = true;
+	// item_to_show = true;
+	clickItemIndex: number;
 	expand_row = false;
 	showConfigureProduct = false;
 	newBatchEntry = false;
@@ -35,6 +36,8 @@ export class InitializeStoreComponent implements OnInit {
 		this.productConfigSearch.valueChanges.distinctUntilChanged().debounceTime(200).subscribe((value) => {
 			this.searchHasBeenDone = false;
 			if (value !== null && value.length > 3 && this.selectedProductName.length === 0) {
+				this.selectedProduct = undefined;
+				this.selectedProductName = '';
 				this._productService
 					.findProductConfigs({
 						query: {
@@ -45,7 +48,7 @@ export class InitializeStoreComponent implements OnInit {
 						(payload) => {
 							this.productConfigs = payload.data;
 							this.showProduct = true;
-							if (this.productConfigs.length < 0) {
+							if (this.productConfigs.length === 0) {
 								this.searchHasBeenDone = true;
 							} else {
 								this.searchHasBeenDone = false;
@@ -72,6 +75,7 @@ export class InitializeStoreComponent implements OnInit {
 
 	checkBatchValidation(batch: FormGroup) {
 		batch.controls['complete'].setValue(true);
+		console.log((<FormArray>this.productForm.get('productArray')).value);
 	}
 
 	configureProduct() {
@@ -82,9 +86,10 @@ export class InitializeStoreComponent implements OnInit {
 		this.newBatchEntry = true;
 	}
 
-	clickItemIndex(picked) {
-		return (this.item_to_show = !this.item_to_show);
-	}
+	// clickItemIndex(picked) {
+	// 	console.log(picked);
+	// 	return (this.item_to_show = !this.item_to_show);
+	// }
 
 	setSelectedOption(data: any) {
 		try {
@@ -107,7 +112,7 @@ export class InitializeStoreComponent implements OnInit {
 	}
 
 	addProduct() {
-		let product: ProductInitialize = {
+		const product: ProductInitialize = {
 			configProduct: this.selectedProduct,
 			batches: [],
 			costPrice: 0,
@@ -117,8 +122,18 @@ export class InitializeStoreComponent implements OnInit {
 			totalQuantity: 0,
 			basePackType: ''
 		};
-		this.selectedProducts.push(product);
-		this.pushProduct(product);
+		// this.selectedProducts.push(product);
+
+		if (this.validateAgainstDuplicateProductEntry(product)) {
+			this.pushProduct(product);
+		}
+	}
+
+	validateAgainstDuplicateProductEntry(product) {
+		const result = (<FormArray>this.productForm.get('productArray')).value.find(
+			(x) => x.configProduct.id.toString() === product.configProduct.productObject.id.toString()
+		);
+		return result === undefined ? true : false;
 	}
 
 	InitializeProductArray() {
@@ -165,7 +180,7 @@ export class InitializeStoreComponent implements OnInit {
 	}
 
 	initBatch(batch?) {
-		return new FormGroup({
+		const newGrp = new FormGroup({
 			batchNumber: new FormControl(
 				batch === undefined || batch.batchNumber === undefined ? '' : batch.batchNumber
 			),
@@ -177,6 +192,12 @@ export class InitializeStoreComponent implements OnInit {
 			),
 			complete: new FormControl(false, [])
 		});
+		this.subscribToFormControls();
+		return newGrp;
+	}
+
+	pushBatch(picked: FormArray) {
+		picked.controls['batches'].push(this.initBatch());
 	}
 
 	removeProduct(i) {
@@ -196,35 +217,61 @@ export class InitializeStoreComponent implements OnInit {
 	}
 
 	subscribToFormControls() {
-		const formArray = (<FormArray>this.productForm.get('productArray')).controls;
-		formArray.forEach((frmArray, i) => {
-			(<FormGroup>frmArray).controls['costPrice'].valueChanges
-				.pipe(tap((val) => {}), debounceTime(400), distinctUntilChanged())
-				.subscribe((value) => {
-					this.reCalculatePrices(frmArray, frmArray.value, 'costPrice');
-				});
+		try {
+			if (this.productForm !== undefined) {
+				const formArray = (<FormArray>this.productForm.get('productArray')).controls;
+				formArray.forEach((frmArray, i) => {
+					(<FormGroup>frmArray).controls['costPrice'].valueChanges
+						.pipe(tap((val) => {}), debounceTime(400), distinctUntilChanged())
+						.subscribe((value) => {
+							this.reCalculatePrices(frmArray, frmArray.value, 'costPrice');
+						});
 
-			(<FormGroup>frmArray).controls['totalCostPrice'].valueChanges
-				.pipe(tap((val) => {}), debounceTime(400), distinctUntilChanged())
-				.subscribe((value) => {
-					this.reCalculatePrices(frmArray, frmArray.value, 'totalCostPrice');
-				});
+					(<FormGroup>frmArray).controls['totalCostPrice'].valueChanges
+						.pipe(tap((val) => {}), debounceTime(400), distinctUntilChanged())
+						.subscribe((value) => {
+							this.reCalculatePrices(frmArray, frmArray.value, 'totalCostPrice');
+						});
 
-			(<FormGroup>frmArray).controls['margin'].valueChanges
-				.pipe(tap((val) => {}), debounceTime(400), distinctUntilChanged())
-				.subscribe((value) => {
-					this.reCalculatePrices(frmArray, frmArray.value, 'margin');
-				});
-
-			const batchFormArray = (<FormArray>(<FormGroup>frmArray).controls['batches']).controls;
-			batchFormArray.forEach((batchArray, j) => {
-				(<FormGroup>batchArray).controls['quantity'].valueChanges
-					.pipe(tap((val) => {}), debounceTime(200), distinctUntilChanged())
-					.subscribe((value) => {
-						// this.reCalculatePrices(frmArray, frmArray.value, 'margin');
+					(<FormGroup>frmArray).controls['margin'].valueChanges
+						.pipe(tap((val) => {}), debounceTime(400), distinctUntilChanged())
+						.subscribe((value) => {
+							this.reCalculatePrices(frmArray, frmArray.value, 'margin');
+						});
+					(<FormArray>(<FormGroup>frmArray).controls['batches']).valueChanges.subscribe((value) => {
+						(<FormGroup>frmArray).controls['totalQuantity'].setValue(this.getProductBatchQuantity(value));
+						this.reCalculatePrices(frmArray, frmArray.value, 'totalQuantity');
 					});
-			});
+
+					const batchFormArray = (<FormArray>(<FormGroup>frmArray).controls['batches']).controls;
+					batchFormArray.forEach((batchArray, j) => {
+						(<FormGroup>batchArray).controls['quantity'].valueChanges
+							.pipe(tap((val) => {}), debounceTime(200), distinctUntilChanged())
+							.subscribe((value) => {
+								// console.log(value);
+								// console.log((<FormGroup>frmArray).controls['totalQuantity'].value);
+								// const existingQuantity = (<FormGroup>frmArray).controls['totalQuantity'].value;
+								// const finalQuantity = value + existingQuantity;
+								// console.log(finalQuantity);
+								// (<FormGroup>frmArray).controls['totalQuantity'].setValue(finalQuantity);
+								// this.reCalculatePrices(frmArray, frmArray.value, 'totalQuantity');
+								// this.getProductBatchQuantity(batchFormArray);
+							});
+					});
+				});
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	}
+
+	getProductBatchQuantity(batchFormArray) {
+		let productQuantity = 0;
+		batchFormArray.forEach((batchArray, j) => {
+			const currentQuantity = batchArray.quantity;
+			productQuantity = productQuantity + currentQuantity;
 		});
+		return productQuantity;
 	}
 
 	reCalculatePrices(array, value: ProductInitialize, control) {
@@ -237,6 +284,23 @@ export class InitializeStoreComponent implements OnInit {
 		} else if (control === 'margin') {
 			value.sellingPrice = value.costPrice * (value.margin / 100) + value.costPrice;
 			array.controls['sellingPrice'].setValue(value.sellingPrice);
+		} else if (control === 'totalQuantity') {
+			value.totalCostPrice = value.costPrice * value.totalQuantity;
+			array.controls['totalCostPrice'].setValue(value.totalCostPrice);
+		}
+	}
+
+	item_to_show(i) {
+		return this.clickItemIndex === i;
+	}
+
+	toggle_tr(itemIndex, direction) {
+		if (direction === 'down' && itemIndex === this.clickItemIndex) {
+			this.expand_row = false;
+			this.clickItemIndex = -1;
+		} else {
+			this.clickItemIndex = itemIndex;
+			this.expand_row = !this.expand_row;
 		}
 	}
 
