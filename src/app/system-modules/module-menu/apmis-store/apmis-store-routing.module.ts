@@ -7,6 +7,7 @@ import { StoreStoresComponent } from './store-stores/store-stores.component';
 import { ProductMovementComponent } from './product-movement/product-movement.component';
 import { ApmisNewStoreComponent } from './store-stores/apmis-new-store/apmis-new-store.component';
 import { ProductEntryComponent } from './product-entry/product-entry.component';
+import { NewPurchaseListComponent } from './product-entry/purchase-list/new-purchase-list/new-purchase-list.component';
 const routes: Routes = [
 	{
 		path: '',
