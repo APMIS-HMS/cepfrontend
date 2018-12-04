@@ -40,6 +40,7 @@ export class FacilitiesService {
 		this._socket = _socketService.getService('facilities');
 		this._socketSubscription = _socketService.getService('apmis-subscriptions');
 		this._saveFacilitySocket = _socketService.getService('save-facility');
+		this._saveFacilitySocket.timeout = 30000;
 		this._sendFacilityTokenSocket = _socketService.getService('resend-token');
 		this._socket.timeout = 30000;
 		this._socketSubscription.timeout = 50000;
@@ -109,8 +110,7 @@ export class FacilitiesService {
 		});
 	}
 	update(facility: any) {
-		return this._socket.update(facility._id, facility).then((d) => {
-		});
+		return this._socket.update(facility._id, facility).then((d) => {});
 	}
 	patch(_id: any, data: any, param: any) {
 		return this._socket.patch(_id, data, param);
