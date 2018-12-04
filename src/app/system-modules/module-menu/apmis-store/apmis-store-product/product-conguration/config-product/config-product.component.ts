@@ -5,7 +5,6 @@ import { Component, OnInit } from '@angular/core';
 import { Facility } from 'app/models';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
-import { Subscription } from 'rxjs/Subscription';
 
 
 @Component({
@@ -34,6 +33,7 @@ export class ConfigProductComponent implements OnInit {
   baseName = '';
   basePackType: ProductPackSize = <ProductPackSize>{};
   packConfigurations: ProductPackSize[] = [];
+  saving = false;
 
   constructor(
       private productService: ProductService,
@@ -81,7 +81,6 @@ export class ConfigProductComponent implements OnInit {
       this.isBaseUnitSet = true;
       this.showConfigContainer = true;
       this.showSaveConfig = false;
-      // TODO: Send base name from parent to child component
       this.baseName = data[0].label;
       this.basePackType = data[0];
       this.selectedPackSizes = [...data];
@@ -98,6 +97,7 @@ export class ConfigProductComponent implements OnInit {
     }
   }
   onSaveConfiguration() {
+    this.saving = true;
       this.transformPackSizes(this.selectedPackSizes);
       const newProductConfig: ProductConfig = {
           productId: this.selectedProduct.id,
@@ -108,6 +108,7 @@ export class ConfigProductComponent implements OnInit {
       };
       this.productService.createProductConfig(newProductConfig).then(payload => {
           this.apmisFilterService.clearItemsStorage(true);
+          this.getProductConfigByProduct();
       });
   }
 
@@ -117,6 +118,7 @@ export class ConfigProductComponent implements OnInit {
         for (let i = 0; i < selected.length; i++) {
             if ( i === 0) {
               selected[i].isBase = true;
+              selected[i].size = 1;
               } else { selected[i].isBase = false; }
             this.modifiedPackSizes.push(selected[i]);
         }
