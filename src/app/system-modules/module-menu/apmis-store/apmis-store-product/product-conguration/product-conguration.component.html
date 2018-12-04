@@ -21,134 +21,17 @@
 
     <div class="store-tbody">
       <div class="store-pre-tr">
-        <div class="store-tr">
+        <div class="store-tr" *ngFor="let item of productConfigs">
           <div class="store-td store-td-actions">
             <input type="checkbox">
           </div>
           <div class="config-tr-in">
-            <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-            <div class="store-td">Tablet</div>
+            <div class="store-td">{{ item?.productObject?.name }}</div>
+            <div class="store-td">{{item?.baseUnit[0]?.name}}</div>
             <div class="store-td">
               <div class="config-tags-wrap">
-                <div class="tag-btn">
-                  <span>500 Tablets</span>
-                </div>
-                <div class="tag-btn">
-                  <span>100 Sachets</span>
-                </div>
-                <div class="tag-btn">
-                  <span>10 Packs</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="store-td store-td-actions">
-            <div class="table-list col-xs-1 action-placeholder">
-              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-              <div class="action-container shadow-RB">
-                <div class="action-item">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                  <span>Edit</span>
-                </div>
-                <div class="action-item">
-                  <i class="fa fa-trash" aria-hidden="true"></i>
-                  <span>Delete</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="store-tr">
-          <div class="store-td store-td-actions">
-            <input type="checkbox">
-          </div>
-          <div class="config-tr-in">
-            <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-            <div class="store-td">Tablet</div>
-            <div class="store-td">
-              <div class="config-tags-wrap">
-                <div class="tag-btn">
-                  <span>500 Tablets</span>
-                </div>
-                <div class="tag-btn">
-                  <span>100 Sachets</span>
-                </div>
-                <div class="tag-btn">
-                  <span>10 Packs</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="store-td store-td-actions">
-            <div class="table-list col-xs-1 action-placeholder">
-              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-              <div class="action-container shadow-RB">
-                <div class="action-item">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                  <span>Edit</span>
-                </div>
-                <div class="action-item">
-                  <i class="fa fa-trash" aria-hidden="true"></i>
-                  <span>Delete</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="store-tr">
-          <div class="store-td store-td-actions">
-            <input type="checkbox">
-          </div>
-          <div class="config-tr-in">
-            <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-            <div class="store-td">Tablet</div>
-            <div class="store-td">
-              <div class="config-tags-wrap">
-                <div class="tag-btn">
-                  <span>500 Tablets</span>
-                </div>
-                <div class="tag-btn">
-                  <span>100 Sachets</span>
-                </div>
-                <div class="tag-btn">
-                  <span>10 Packs</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="store-td store-td-actions">
-            <div class="table-list col-xs-1 action-placeholder">
-              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-              <div class="action-container shadow-RB">
-                <div class="action-item">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                  <span>Edit</span>
-                </div>
-                <div class="action-item">
-                  <i class="fa fa-trash" aria-hidden="true"></i>
-                  <span>Delete</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="store-tr">
-          <div class="store-td store-td-actions">
-            <input type="checkbox">
-          </div>
-          <div class="config-tr-in">
-            <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-            <div class="store-td">Tablet</div>
-            <div class="store-td">
-              <div class="config-tags-wrap">
-                <div class="tag-btn">
-                  <span>500 Tablets</span>
-                </div>
-                <div class="tag-btn">
-                  <span>100 Sachets</span>
-                </div>
-                <div class="tag-btn">
-                  <span>10 Packs</span>
+                <div class="tag-btn" *ngFor="let pack of item.packSizes">
+                  <span>{{pack.size}} {{pack.name}}</span>
                 </div>
               </div>
             </div>

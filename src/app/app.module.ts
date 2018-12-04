@@ -76,6 +76,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { APP_DATE_FORMATS, AppDateAdapter } from 'app/date-format';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
 import { ErrorsService } from './feathers/errors.service';
+import { ArrayFunctionHelper } from './shared-module/helpers/array-function-helper';
 
 
 @NgModule({
@@ -176,6 +177,7 @@ import { ErrorsService } from './feathers/errors.service';
 		SetupService.DrugDetailsService,
 		CustomPreloading,
 		SetupService.InventoryService,
+		SetupService.InventoryTransferService,
 		SetupService.DispenseService,
 		SetupService.FacilityPriceService,
 		SetupService.ProductService,
@@ -249,7 +251,8 @@ import { ErrorsService } from './feathers/errors.service';
 		},
 		CanActivateViaAuthGuardCompleteFacilityService,
 		UpperCasePipe,
-		ErrorsService
+		ErrorsService,
+		ArrayFunctionHelper
 	],
 	bootstrap: [ AppComponent ]
 })
