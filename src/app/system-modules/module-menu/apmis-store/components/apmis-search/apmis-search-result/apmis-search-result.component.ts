@@ -13,6 +13,7 @@ export class ApmisSearchResultComponent implements OnInit {
   @Input() data: any = <any>[];
   @Output() onSelectedItems = new EventEmitter();
   @Output() onCreateItem = new EventEmitter();
+  @Output() onCloseEvent = new EventEmitter();
   bindableData: any = <any>[];
   apmisSearchResult: FormControl = new FormControl();
   selectedItems: any = <any>[];
@@ -55,6 +56,14 @@ export class ApmisSearchResultComponent implements OnInit {
         }
       }
     });
+
+    this.bindableData.map(element => {
+      this.selectedItems.map(element2 => {
+        if (element.id === element2.id) {
+          element.isSelected = true;
+        }
+      });
+    });
   }
 
   onToggleItem(item) {
@@ -73,11 +82,14 @@ export class ApmisSearchResultComponent implements OnInit {
       });
     }
     this._locker.setObject('APMIS_SELECTED_ITEMS', this.selectedItems);
-    const _selectedItems = <any>this._locker.getObject('APMIS_SELECTED_ITEMS');
     this.onSelectedItems.emit(this.selectedItems);
   }
 
   onCreateNewItem() {
     this.onCreateItem.emit(this.apmisSearchResult.value);
+  }
+
+  onCloseFilterDialog(){
+    this.onCloseEvent.emit(false);
   }
 }

@@ -6,15 +6,15 @@
       <span class="highlight"></span>
       <span class="bar"></span>
       <label class="customLabel"><i class="fa fa-search" aria-hidden="true"></i>Search Product</label>
-      <ul class="search-sugestions" *ngIf="showProduct">
+      <ul class="search-sugestions" *ngIf="(showProduct && productConfigs.length > 0)">
         <li *ngFor="let config of productConfigs" (click)="setSelectedOption(config)" class="search-sugestion">{{config.productObject.name}}</li>
       </ul>
     </div>
-    <div class="search-noResult-blue" *ngIf="searchHasBeenDone">
+    <div class="search-noResult-blue" *ngIf="searchHasBeenDone === true">
       <span>Product configuration not found <i (click)="configureProduct()">- Configure</i></span>
     </div>
   </div>
-  <div (click)="addProduct()" class="new-btn-solid-blue">
+  <div [class.disabled]="selectedProduct===undefined" (click)="addProduct()" class="new-btn-solid-blue">
     <span>Add Product</span>
   </div>
 </div>
@@ -45,7 +45,8 @@
             <div formGroupName="{{i}}">
               <div class="store-tr">
                 <div class="store-td store-td-actions">
-                  <i (click)="clickItemIndex(picked)" class="exp-tr fa fa-angle-down"></i>
+                  <i *ngIf="item_to_show(i)" (click)="toggle_tr(i, 'down')" class="exp-tr fa fa-angle-down"></i>
+                  <i *ngIf="!item_to_show(i)" (click)="toggle_tr(i, 'right')" class="exp-tr fa fa-angle-right"></i>
                 </div>
                 <div class="store-tr-in">
                   <div class="store-td">{{picked?.value?.configProduct?.name}}</div>
@@ -97,7 +98,9 @@
                   </div>
                 </div>
               </div>
-              <div *ngIf="item_to_show" class="store-tr-content">
+
+
+              <div *ngIf="item_to_show(i)" class="store-tr-content">
                 <div class="batches-wrap" formArrayName="batches">
                   <ul class="batches" [formGroupName]="j" *ngFor="let batch of picked['controls'].batches['controls']; let j = index">
                     <li class="batch" *ngIf="!batch.value.complete">
@@ -155,7 +158,8 @@
                     </li>
                   </ul>
                 </div>
-                <div (click)="picked['controls'].batches['controls'].push(initBatch())" class="tbl-cont-cta"><i class="fa fa-plus"></i>
+                <!-- "picked['controls'].batches['controls'].push(initBatch()) -->
+                <div (click)="pushBatch(picked)" class="tbl-cont-cta"><i class="fa fa-plus"></i>
                   Add Batches</div>
               </div>
             </div>

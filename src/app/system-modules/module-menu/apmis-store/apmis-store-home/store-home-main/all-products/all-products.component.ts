@@ -63,9 +63,6 @@ export class AllProductsComponent implements OnInit {
 	}
 
 	item_to_show(i) {
-		// if (this.expand_row) {
-
-		// }
 		return this.clickItemIndex === i;
 	}
 	toggle_tr(itemIndex, direction) {
