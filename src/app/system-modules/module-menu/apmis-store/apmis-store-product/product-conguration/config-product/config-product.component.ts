@@ -33,6 +33,7 @@ export class ConfigProductComponent implements OnInit {
   baseName = '';
   basePackType: ProductPackSize = <ProductPackSize>{};
   packConfigurations: ProductPackSize[] = [];
+  saving = false;
 
   constructor(
       private productService: ProductService,
@@ -96,6 +97,7 @@ export class ConfigProductComponent implements OnInit {
     }
   }
   onSaveConfiguration() {
+    this.saving = true;
       this.transformPackSizes(this.selectedPackSizes);
       const newProductConfig: ProductConfig = {
           productId: this.selectedProduct.id,
@@ -106,6 +108,7 @@ export class ConfigProductComponent implements OnInit {
       };
       this.productService.createProductConfig(newProductConfig).then(payload => {
           this.apmisFilterService.clearItemsStorage(true);
+          this.getProductConfigByProduct();
       });
   }
 
