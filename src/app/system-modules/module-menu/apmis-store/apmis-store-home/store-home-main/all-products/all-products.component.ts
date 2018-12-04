@@ -54,7 +54,6 @@ export class AllProductsComponent implements OnInit {
 		this.authFacadeService.getLogingEmployee().then((payload: any) => {
 			this.loginEmployee = payload;
 			this.checkingStore = this.loginEmployee.storeCheckIn.find((x) => x.isOn === true);
-			console.log(this.checkingStore);
 			if (this.loginEmployee.storeCheckIn === undefined || this.loginEmployee.storeCheckIn.length === 0) {
 				// this.modal_on = true;
 			} else {
