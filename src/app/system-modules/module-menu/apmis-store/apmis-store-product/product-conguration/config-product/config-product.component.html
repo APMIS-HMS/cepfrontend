@@ -7,10 +7,10 @@
         <label class="customLabel"><i class="fa fa-search" aria-hidden="true"></i>Search Product</label>
 
         <ul class="search-sugestions" *ngIf="showProduct">
-          <li class="search-sugestion" *ngFor="let product of searchedProducts; let i = index" (click)="setSelectedOption(product)">{{product.name}}</li>
+          <li class="search-sugestion" *ngFor="let product of searchedProducts; let i = index" (click)="setSelectedProductOption(product)">{{product.name}}</li>
         </ul>
       </div>
-      <div class="search-noResult">
+      <div class="search-noResult" *ngIf="productExist">
         <span>This product configuration
           already exisst</span>
       </div>
@@ -25,42 +25,41 @@
     <div class="config-layout" *ngIf="showSetBaseUnit">
       <div class="config-wrap">
         <h3 style="margin-right: 120px;">Set Base Unit</h3>
-        <i (click)="onShowSearch()" class="fa fa-plus" aria-hidden="true"></i>
+        <div (click)="onShowSearch()"><i class="fa fa-plus" aria-hidden="true"></i></div>
         <div class="apmisSearch-wrap" *ngIf="apmisSearch">
-          <!-- <app-apmis-search-result [PackSizes]="packSizes"></app-apmis-search-result> -->
+          <app-apmis-search-result [data]="packSizes" (onSelectedItems)="onSearchSelectedItems($event)" (onCreateItem)="onCreateNewItem($event)"></app-apmis-search-result>
         </div>
       </div>
 
       <div class="config-tags-wrap-x2" *ngIf="isBaseUnitSet">
         <div class="tag-btn">
-          <span>Tablets</span>
+          <span>{{ baseName }}</span>
         </div>
       </div>
     </div>
-    <!-- took out the div here -->
   </div>
 
   <div class="config-container" *ngIf="showConfigContainer">
-    <div class="config-layout">
+    <div class="config-layout" *ngFor="let config of packConfigurations; let i = index">
       <div class="config-wrap">
         <h3>Add Configuration (Based on Unit)</h3>
         <i class="fa fa-plus" aria-hidden="true"></i>
       </div>
       <div class="config-tags-wrap-x2">
         <div class="tag-btn">
-          <span>Packs</span>
+          <span>{{config.label}}</span>
         </div>
         <span>=</span>
         <div class="InputGroup">
-          <input class="customInput" type="text" required>
+          <input class="customInput" type="text" [(ngModel)]="config.size" required>
           <span class="highlight"></span>
         </div>
-        <h4>Tablets</h4>
+        <h4>{{baseName}}</h4>
       </div>
     </div>
   </div>
 
-  <div class="sv-btn-container" *ngIf="showConfigContainer">
+  <div class="sv-btn-container" *ngIf="showSaveConfig" (click)="onSaveConfiguration()">
     <div class="new-btn-solid-blue">
       <span>Save Configuration</span>
     </div>

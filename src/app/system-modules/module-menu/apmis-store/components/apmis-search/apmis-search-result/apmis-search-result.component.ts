@@ -8,7 +8,7 @@ import { ApmisFilterBadgeService } from './../../../../../../services/tools/apmi
   templateUrl: './apmis-search-result.component.html',
   styleUrls: ['./apmis-search-result.component.scss']
 })
-export class ApmisSearchResultComponent implements OnInit, OnChanges {
+export class ApmisSearchResultComponent implements OnInit {
 
   @Input() data: any = <any>[];
   @Output() onSelectedItems = new EventEmitter();
@@ -80,9 +80,4 @@ export class ApmisSearchResultComponent implements OnInit, OnChanges {
   onCreateNewItem() {
     this.onCreateItem.emit(this.apmisSearchResult.value);
   }
-
-  ngOnChanges() {
-
-  }
-
 }

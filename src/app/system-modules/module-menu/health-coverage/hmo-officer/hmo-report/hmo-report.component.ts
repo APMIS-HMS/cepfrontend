@@ -107,12 +107,14 @@ export class HmoReportComponent implements OnInit {
 										title: x.patientObject.personDetails.title
 									},
 									service: x.serviceObject ? x.serviceObject.name : undefined,
-									hmoName: a.coverFile.name
+									hmoName: a.coverFile.name,
+									fileId  : a.coverFile.id
 								});
 							});
 						});
 
 						this.hmoBillHistory = totalBills;
+						
 					}
 				})
 				.catch((err) => {
