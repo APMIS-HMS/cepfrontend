@@ -18,6 +18,14 @@ export interface FormularyProduct {
     name: string;
 }
 export interface ProductPackSize {
-    _id: string;
-    name: string;
+    id: string;
+    label: string;
+    size: number;
+}
+export interface ProductConfig {
+    productId: string;
+    productObject: FormularyProduct;
+    facilityId: string;
+    rxCode: string;
+    packSizes: any[];
 }
