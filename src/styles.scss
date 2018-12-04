@@ -1742,7 +1742,7 @@ ul.topmenuwrap li:hover {
     width: auto;
     min-width: 190px;
     right: 0;
-    top: 50%;
+    top: 100%;
     text-align: left;
     font-size: 1.2rem;
     color: #333;
@@ -2732,6 +2732,7 @@ button,
         min-height: 120px;
     }
 }
+
 .InputGroup{ 
     position:relative; 
     padding-bottom: 10px;
@@ -2760,7 +2761,7 @@ button,
     -webkit-transition:0.2s ease all;
   }
   
-  .customInput:focus ~ .customLabel{
+  .customInput:focus ~ .customLabel, .customInput:valid ~ .customLabel {
     top:-12px;
     font-size:12px;
     color:#5264AE;
@@ -2918,4 +2919,10 @@ button,
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.suppSearch{
+    overflow: auto;
+    display: block;
+    position: relative;
 }

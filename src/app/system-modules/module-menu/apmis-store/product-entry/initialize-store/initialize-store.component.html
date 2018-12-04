@@ -4,6 +4,7 @@
       <input [formControl]="productConfigSearch" (focus)="onFocus('in')" (focusout)="onFocus('out')" class="customInput"
         type="text" required>
       <span class="highlight"></span>
+      <span class="bar"></span>
       <label class="customLabel"><i class="fa fa-search" aria-hidden="true"></i>Search Product</label>
       <ul class="search-sugestions" *ngIf="showProduct">
         <li *ngFor="let config of productConfigs" (click)="setSelectedOption(config)" class="search-sugestion">{{config.productObject.name}}</li>
@@ -81,23 +82,21 @@
                 <div class="table-list col-xs-1 action-placeholder">
                   <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                   <div class="action-container shadow-RB">
-
-                    <div class="action-item opt-menu">
+                    <div class="action-item">
+                      <i class="fa fa-pencil"></i>
                       <span>Edit Details </span>
                     </div>
-
-                    <div class="action-item opt-menu">
+                    <div class="action-item">
+                        <i class="fa fa-cogs"></i>
                       <span>Edit configuration </span>
                     </div>
-
-                    <div class="action-item opt-menu">
+                    <div class="action-item">
+                        <i class="fa fa-trash"></i>
                       <span>Remove Product</span>
                     </div>
                   </div>
                 </div>
               </div>
-
-
               <div *ngIf="item_to_show" class="store-tr-content">
                 <div class="batches-wrap" formArrayName="batches">
                   <ul class="batches" [formGroupName]="j" *ngFor="let batch of picked['controls'].batches['controls']; let j = index">
