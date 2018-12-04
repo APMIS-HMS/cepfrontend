@@ -8,13 +8,19 @@ import { FormGroup, FormControl, FormBuilder, Validators, AbstractControl } from
 import { Facility } from '../../models/index';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { EMAIL_REGEX, WEBSITE_REGEX, PHONE_REGEX, CACNO_REGEX, GEO_LOCATIONS } from 'app/shared-module/helpers/global-config';
+import {
+	EMAIL_REGEX,
+	WEBSITE_REGEX,
+	PHONE_REGEX,
+	CACNO_REGEX,
+	GEO_LOCATIONS
+} from 'app/shared-module/helpers/global-config';
 import { FacilityFacadeService } from 'app/system-modules/service-facade/facility-facade.service';
 
 @Component({
 	selector: 'app-facility-info',
 	templateUrl: './facility-info.component.html',
-	styleUrls: ['../facility-setup.component.scss']
+	styleUrls: [ '../facility-setup.component.scss' ]
 })
 export class FacilityInfoComponent implements OnInit {
 	isSaving = false;
@@ -28,7 +34,7 @@ export class FacilityInfoComponent implements OnInit {
 	public facilityForm1: FormGroup;
 	selectedLocation: any;
 	userSettings: any = {
-		geoCountryRestriction: [GEO_LOCATIONS],
+		geoCountryRestriction: [ GEO_LOCATIONS ],
 		showCurrentLocation: false,
 		resOnSearchButtonClickOnly: false,
 		// inputPlaceholderText: 'Type anything and you will get a location',
@@ -43,40 +49,47 @@ export class FacilityInfoComponent implements OnInit {
 		private _systemModuleService: SystemModuleService,
 		private titleCasePipe: TitleCasePipe,
 		private upperCasePipe: UpperCasePipe
-	) { }
+	) {}
 
 	ngOnInit() {
 		this.facilityForm1 = this.formBuilder.group({
-
-			facilityname: ['', [<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50)]],
-			facilityemail: ['', [<any>Validators.required, Validators.pattern(EMAIL_REGEX)]],
+			facilityname: [
+				'',
+				[ <any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50) ]
+			],
+			facilityemail: [ '', [ <any>Validators.required, Validators.pattern(EMAIL_REGEX) ] ],
 			// facilitywebsite: ['', [ <any>Validators.pattern(WEBSITE_REGEX)]],
 			// network: ['', [<any>Validators.minLength(2)]],
-			address: ['', []],
-			cac: ['', [<any>Validators.required, Validators.pattern(CACNO_REGEX)]],
-			facilitystreet: ['', [<any>Validators.required]],
-			facilitycity: ['', [<any>Validators.required]],
-			facilitystate: ['', [<any>Validators.required]],
-			facilitycountry: ['', [<any>Validators.required]],
-			facilityhdo: [true, [<any>Validators.required]],
-			facilityphonNo: ['', [<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]]
+			address: [ '', [] ],
+			cac: [ '', [ <any>Validators.required, Validators.pattern(CACNO_REGEX) ] ],
+			facilitystreet: [ '', [ <any>Validators.required ] ],
+			facilitycity: [ '', [ <any>Validators.required ] ],
+			facilitystate: [ '', [ <any>Validators.required ] ],
+			facilitycountry: [ '', [ <any>Validators.required ] ],
+			facilityhdo: [ true, [ <any>Validators.required ] ],
+			facilityphonNo: [
+				'',
+				[ <any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$') ]
+			]
 		});
-		this.facilityForm1.controls.facilitycountry.valueChanges.subscribe(country => {
-			this._countryServiceFacade.getOnlyStates(country, true).then((payload: any) => {
-				this.states = payload;
-			}).catch(error => {
-
-			});
-		})
+		this.facilityForm1.controls.facilitycountry.valueChanges.subscribe((country) => {
+			this._countryServiceFacade
+				.getOnlyStates(country, true)
+				.then((payload: any) => {
+					this.states = payload;
+				})
+				.catch((error) => {});
+		});
 		this._getCountries();
 	}
 
 	_getCountries() {
-		this._countryServiceFacade.getOnlyCountries().then((payload: any) => {
-			this.countries = payload;
-		}).catch(error => {
-
-		});
+		this._countryServiceFacade
+			.getOnlyCountries()
+			.then((payload: any) => {
+				this.countries = payload;
+			})
+			.catch((error) => {});
 	}
 
 	// cacCheck(control: FormControl) {
@@ -96,18 +109,18 @@ export class FacilityInfoComponent implements OnInit {
 	// 	 }
 	// }
 
-// 	cacCheck(c: AbstractControl): {[key: string]: boolean} | null {
-// 		if (c.value !== undefined) {
-// 		   const cac = c.value;
-// 		   const cacNo = cac.substr(0, 1);
-// 		   console.log(cac);
-// 		   if (cacNo !== 'RC' || cac !== 'BN') {
-// 			   return {error: true};
-// 		   }else {
-// 			   return {error: false};
-// 		   }
-// 		}
-//    }
+	// 	cacCheck(c: AbstractControl): {[key: string]: boolean} | null {
+	// 		if (c.value !== undefined) {
+	// 		   const cac = c.value;
+	// 		   const cacNo = cac.substr(0, 1);
+	// 		   console.log(cac);
+	// 		   if (cacNo !== 'RC' || cac !== 'BN') {
+	// 			   return {error: true};
+	// 		   }else {
+	// 			   return {error: false};
+	// 		   }
+	// 		}
+	//    }
 
 	close_onClick() {
 		this.closeModal.emit(true);
@@ -158,24 +171,38 @@ export class FacilityInfoComponent implements OnInit {
 			city: form.facilitycity,
 			isHDO: form.facilityhdo,
 			street: this.titleCasePipe.transform(form.facilitystreet)
-		}
+		};
 		const payload = {
 			facility: facility,
 			apmisId: this._facilityServiceFacade.facilityCreatorApmisID,
 			personId: this._facilityServiceFacade.facilityCreatorPersonId
-		}
-		this._facilityServiceFacade.saveFacility(payload).then(payload => {
-			this.isSaving = false;
-			this.facilityForm1.reset();
-			this.userSettings['inputString'] = '';
-			this._systemModuleService.off();
-			this.close_onClick();
-			this._systemModuleService.announceSweetProxy('Facility created successfully', 'success', null, null, null, null, null, null, null);
-		}, error => {
-			this.isSaving = false;
-			this._systemModuleService.off();
-			const errMsg = 'There was an error while creating the facility, try again!';
-			this._systemModuleService.announceSweetProxy(errMsg, 'error');
-		})
+		};
+		this._facilityServiceFacade.saveFacility(payload).then(
+			(payload) => {
+				this.isSaving = false;
+				this.facilityForm1.reset();
+				this.userSettings['inputString'] = '';
+				this._systemModuleService.off();
+				this.close_onClick();
+				this._systemModuleService.announceSweetProxy(
+					'Facility created successfully',
+					'success',
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null
+				);
+			},
+			(error) => {
+				console.log(error);
+				this.isSaving = false;
+				this._systemModuleService.off();
+				const errMsg = 'There was an error while creating the facility, try again!';
+				this._systemModuleService.announceSweetProxy(errMsg, 'error');
+			}
+		);
 	}
 }
