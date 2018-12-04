@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
+import { CoolLocalStorage } from 'angular2-cool-storage';
 
 @Injectable()
 export class ApmisFilterBadgeService {
@@ -10,16 +11,22 @@ export class ApmisFilterBadgeService {
 	storage$: Observable<any>;
 	private storageSubject = new Subject<any>();
 
-	constructor() {
+	constructor(private _locker: CoolLocalStorage) {
 		this.item$ = this.itemSubject.asObservable();
 		this.storage$ = this.storageSubject.asObservable();
 	}
 
-	reset(status:boolean) {
+	reset(status: boolean) {
 		this.itemSubject.next(status);
-	}	
+	}
 
-	clearItemsStorage(status:boolean) {
+	clearItemsStorage(status: boolean) {
 		this.storageSubject.next(status);
-	}	
+	}
+
+	edit(status: boolean, data) {
+		if (status) {
+			this._locker.setObject('APMIS_SELECTED_ITEMS', data);
+		}
+	}
 }

@@ -41,4 +41,8 @@ export class ApmisSearchComponent implements OnInit {
     this.onCreateItem.emit(value);
     this.showSearch = false;
   }
+
+  onClickClose(event) {
+    this.showSearch = event;
+  }
 }
