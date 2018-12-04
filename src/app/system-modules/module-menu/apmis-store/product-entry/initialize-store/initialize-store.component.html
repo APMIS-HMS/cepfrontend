@@ -99,7 +99,6 @@
                 </div>
               </div>
 
-
               <div *ngIf="item_to_show(i)" class="store-tr-content">
                 <div class="batches-wrap" formArrayName="batches">
                   <ul class="batches" [formGroupName]="j" *ngFor="let batch of picked['controls'].batches['controls']; let j = index">
