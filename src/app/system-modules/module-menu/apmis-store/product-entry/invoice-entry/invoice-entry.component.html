@@ -1,27 +1,15 @@
-<h2>General Store</h2>
-<h3>Create purchase list</h3>
-<span>Select products you will like to add to the purchase list below this table, Click Add items to purchase list when
-  done</span>
-
-
-<div class="div-space"></div>
-
-
-<div class="filterTop">
+<div class="search-container">
   <div class="searchproduct">
     <div class="InputGroup">
       <input class="customInput" type="text" required>
       <span class="highlight"></span>
-      <label class="customLabel"><i class="fa fa-search" aria-hidden="true"></i>Search...</label>
-    </div>
-  </div>
-  <div class="tbl-header-rhs">
-    <div>
-      <h3>Show:</h3>
-    </div>
-    <div [className]="selectedFilterIndex === i ? 'ft-btn ft-btn-selected' : 'ft-btn'" *ngFor="let filter of storeFilters; let i = index"
-      (click)="setSelectedFilter(i,filter)">
-      <span>{{filter}}</span>
+      <label class="customLabel"><i class="fa fa-search" aria-hidden="true"></i>Search</label>
+      **Please un-comment the search result**
+      <!-- <ul class="search-sugestions">
+        <li class="search-sugestion">INVOICE1234567890</li>
+        <li class="search-sugestion">INVOICE1234567890</li>
+        <li class="search-sugestion">INVOICE1234567890</li>
+      </ul> -->
     </div>
   </div>
 </div>
@@ -32,13 +20,13 @@
       <div class="store-th store-td-actions">
         <input type="checkbox">
       </div>
-      <div class="config-tr-in in-tr">
-        <div class="store-th">Products</div>
-        <div class="store-th">Available Quantity</div>
-        <div class="store-th">Re-Order Level</div>
-        <div class="store-th">Cost/Unit</div>
-        <div class="store-th">Total Cost Price</div>
-        <div class="store-th">Unit Selling Price</div>
+      <div class="invoice-tr-in">
+        <div class="store-th">Invoices</div>
+        <div class="store-th">Supplier</div>
+        <div class="store-th">Invoice Date</div>
+        <div class="store-th">Status</div>
+        <div class="store-th">Amount</div>
+        <div class="store-th">Action</div>
       </div>
       <div class="store-th store-td-actions"></div>
     </div>
@@ -50,158 +38,77 @@
         <div class="store-td store-td-actions">
           <input type="checkbox">
         </div>
-        <div class="config-tr-in in-tr">
-          <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-          <div class="store-td">300,000 Sachets</div>
-          <div class="store-td">20 Sachets</div>
-          <div class="store-td">#5/Sachet</div>
-          <div class="store-td">#300,000</div>
-          <div class="store-td">#10/Sachet</div>
-        </div>
-        <div class="store-td store-td-actions">
-          <div class="table-list col-xs-1 action-placeholder">
-            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-            <div class="action-container shadow-RB">
-              <div class="action-item">
-                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                <span>Edit</span>
-              </div>
-              <div class="action-item">
-                <i class="fa fa-trash" aria-hidden="true"></i>
-                <span>Delete</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="store-tr">
-        <div class="store-td store-td-actions">
-          <input type="checkbox">
-        </div>
-        <div class="config-tr-in in-tr">
-          <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-          <div class="store-td">300,000 Sachets</div>
-          <div class="store-td">20 Sachets</div>
-          <div class="store-td">#5/Sachet</div>
-          <div class="store-td">#300,000</div>
-          <div class="store-td">#10/Sachet</div>
-        </div>
-        <div class="store-td store-td-actions">
-          <div class="table-list col-xs-1 action-placeholder">
-            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-            <div class="action-container shadow-RB">
-              <div class="action-item">
-                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                <span>Edit</span>
-              </div>
-              <div class="action-item">
-                <i class="fa fa-trash" aria-hidden="true"></i>
-                <span>Delete</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="store-tr">
-        <div class="store-td store-td-actions">
-          <input type="checkbox">
-        </div>
-        <div class="config-tr-in in-tr">
-          <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-          <div class="store-td">300,000 Sachets</div>
-          <div class="store-td">20 Sachets</div>
-          <div class="store-td">#5/Sachet</div>
-          <div class="store-td">#300,000</div>
-          <div class="store-td">#10/Sachet</div>
-        </div>
-        <div class="store-td store-td-actions">
-          <div class="table-list col-xs-1 action-placeholder">
-            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-            <div class="action-container shadow-RB">
-              <div class="action-item">
-                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                <span>Edit</span>
-              </div>
-              <div class="action-item">
-                <i class="fa fa-trash" aria-hidden="true"></i>
-                <span>Delete</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="store-tr">
-        <div class="store-td store-td-actions">
-          <input type="checkbox">
-        </div>
-        <div class="config-tr-in in-tr">
-          <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-          <div class="store-td">300,000 Sachets</div>
-          <div class="store-td">20 Sachets</div>
-          <div class="store-td">#5/Sachet</div>
-          <div class="store-td">#300,000</div>
-          <div class="store-td">#10/Sachet</div>
-        </div>
-        <div class="store-td store-td-actions">
-          <div class="table-list col-xs-1 action-placeholder">
-            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-            <div class="action-container shadow-RB">
-              <div class="action-item">
-                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                <span>Edit</span>
-              </div>
-              <div class="action-item">
-                <i class="fa fa-trash" aria-hidden="true"></i>
-                <span>Delete</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="div-space"></div>
-<h3 class="sel-txt">50 Items selected and added to purchase list</h3>
-<div class="div-space"></div>
-
-<div class="store-table">
-  <div class="store-thead">
-    <div class="store-tr">
-      <div class="store-th store-td-actions">
-        <input type="checkbox">
-      </div>
-      <div class="config-tr-in in-tr">
-        <div class="store-th">Products</div>
-        <div class="store-th">Unit</div>
-        <div class="store-th">Available Required</div>
-        <div class="store-th">Cost/Unit</div>
-        <div class="store-th">Total Cost Price</div>
-        <div class="store-th">Actions</div>
-      </div>
-      <div class="store-th store-td-actions"></div>
-    </div>
-  </div>
-
-  <div class="store-tbody">
-    <div class="store-pre-tr">
-      <div class="store-tr">
-        <div class="store-td store-td-actions">
-          <input type="checkbox">
-        </div>
-        <div class="config-tr-in in-tr">
-          <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-          <div class="store-td">20 Sachets</div>
-          <div class="store-td">300,000 Sachets</div>
-          <div class="store-td">#5/Sachet</div>
+        <div class="invoice-tr-in">
+          <div class="store-td">INVOICE1234567890</div>
+          <div class="store-td">Sidmach Drug Supplier</div>
+          <div class="store-td">02/11/2019</div>
+          <div class="store-td green-lbl">Paid</div>
           <div class="store-td">#300,000</div>
           <div class="store-td">
-            <div class="btc-body-item item-action">
-              <i class="fa fa-2x fa-check-circle" aria-hidden="true"></i>
-              <i class="fa fa-2x fa-times-circle" aria-hidden="true"></i>
+            <div class="inv-action">
+              <div (click)="viewInvoice()" class="ft-btn btn-act-margin">
+                <span>View Invoice</span>
+              </div>
+              <div class="ft-btn btn-act-margin">
+                <span>Add to Inventory</span>
+              </div>
             </div>
           </div>
+        </div>
+        <div class="store-th store-td-actions">
+
+        </div>
+      </div>
+
+      <div class="store-tr">
+        <div class="store-td store-td-actions">
+          <input type="checkbox">
+        </div>
+        <div class="invoice-tr-in">
+          <div class="store-td">INVOICE1234567890</div>
+          <div class="store-td">Sidmach Drug Supplier</div>
+          <div class="store-td">02/11/2019</div>
+          <div class="store-td red-lbl">Unpaid</div>
+          <div class="store-td">#300,000</div>
+          <div class="store-td">
+            <div class="inv-action">
+              <div class="ft-btn btn-act-margin">
+                <span>View Invoice</span>
+              </div>
+              <div class="ft-btn btn-act-margin">
+                <span>Add to Inventory</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="store-th store-td-actions">
+
+        </div>
+      </div>
+
+      <div class="store-tr">
+        <div class="store-td store-td-actions">
+          <input type="checkbox">
+        </div>
+        <div class="invoice-tr-in">
+          <div class="store-td">INVOICE1234567890</div>
+          <div class="store-td">Sidmach Drug Supplier</div>
+          <div class="store-td">02/11/2019</div>
+          <div class="store-td orange-lbl">Partial Payment</div>
+          <div class="store-td">#300,000</div>
+          <div class="store-td">
+            <div class="inv-action">
+              <div class="ft-btn btn-act-margin">
+                <span>View Invoice</span>
+              </div>
+              <div class="ft-btn btn-act-margin">
+                <span>Add to Inventory</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="store-th store-td-actions">
+
         </div>
       </div>
     </div>
@@ -209,38 +116,6 @@
 </div>
 
 
-<div class="tbl-btn-action">
-  <div class="action-pad">
-    <div class="new-btn-blue">
-      <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-      <span>Export</span>
-    </div>
-  </div>
-  <div class="action-pad">
-    <div class="new-btn-blue">
-      <i class="fa fa-envelope-o" aria-hidden="true"></i>
-      <span>E-Mail</span>
-    </div>
-  </div>
-  <div class="action-pad">
-    <div class="new-btn-blue">
-      <i class="fa fa-print" aria-hidden="true"></i>
-      <span>Print</span>
-    </div>
-  </div>
+<div *ngIf="showViewInvoice" class="modal-overlay">
+  <app-view-invoice (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-view-invoice>
 </div>
-
-<div class="sel-sup">
-  <h3>Add Suppliers to send purchase list to:</h3>
-  <!-- <div class="input-group-x2">
-    <div class="dropDown-container">
-      <div class="select">
-        <select formControlName="majorLoc" name="dropDown-container" id="dropDown-container">
-          <option>SIdmach Medical Supplier</option>
-        </select>
-      </div>
-    </div>
-  </div> -->
-</div>
-
-<!-- <div class="div-space"></div> -->

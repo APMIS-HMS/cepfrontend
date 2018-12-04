@@ -5,7 +5,7 @@ import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
     template: ` <apmis-pager-button [background-color]="color" (onClick)="search()"
                                    [is-disable]="processing" [is-oval]="true"
 
-    ><span [ngClass]="{'fa-refresh fa-spin' : processing}" class="fa fa-search fa-2x"></span></apmis-pager-button>`
+    ><span [ngClass]="{'fa-circle-o-notch fa-spin' : processing}" class="fa fa-search fa-2x"></span></apmis-pager-button>`
 })
 export class SearchButtonComponent implements OnInit {
     @Input() color : string  = 'blue';

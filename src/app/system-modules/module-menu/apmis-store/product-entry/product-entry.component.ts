@@ -1,5 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
+
+
 @Component({
   selector: 'app-product-entry',
   templateUrl: './product-entry.component.html',
@@ -12,6 +14,8 @@ export class ProductEntryComponent implements OnInit {
   tab_purchase_list = false;
   tab_purchase_order = false;
   tab_supplier = false;
+
+
   constructor() { }
 
   ngOnInit() {
@@ -51,4 +55,6 @@ export class ProductEntryComponent implements OnInit {
     }
   }
 
+
+  
 }

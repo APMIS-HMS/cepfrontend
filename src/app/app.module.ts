@@ -177,6 +177,7 @@ import { ArrayFunctionHelper } from './shared-module/helpers/array-function-help
 		SetupService.DrugDetailsService,
 		CustomPreloading,
 		SetupService.InventoryService,
+		SetupService.InventoryTransferService,
 		SetupService.DispenseService,
 		SetupService.FacilityPriceService,
 		SetupService.ProductService,
