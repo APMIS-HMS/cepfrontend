@@ -20,13 +20,14 @@ import {CoolLocalStorage} from "angular2-cool-storage";
 export class ReportGeneratorService implements ICustomReportService {
     protected selectedFacility: any;
     protected patientReportServiceRef: any;
-
+    public facilityId : string  ="";
     constructor(private restEndpoint: RestService, localStorage: CoolLocalStorage) {
         //super();
         this.selectedFacility = localStorage.getObject("selectedFacility");
+        this.facilityId  = this.selectedFacility._id;
         this.patientReportServiceRef = this.restEndpoint.getService("patient-reg-report");
     }
-
+    
     getLabReport(options: ILabReportOption): Promise<IApiResponse<ILabReportModel[]>> {
         options.facilityId = this.selectedFacility._id;
         const newOption: any = {...options};

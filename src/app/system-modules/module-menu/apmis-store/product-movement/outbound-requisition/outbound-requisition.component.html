@@ -4,19 +4,18 @@
       <div class="dropDown-container">
         <div class="select">
           <label>Store Location:</label>
-          <select [formControl]="storeLocation" name="dropDown-container" id="dropDown-container">
-            <option value="0">Select Store</option>
-            <option value="1">Central Store</option>
+          <select [formControl]="storeLocation" (change)="getStoresInLocation()" name="dropDown-container" id="dropDown-container">
+            <option [value]="l.id" *ngFor="let l of locations">{{l.location}}</option>
+           
           </select>
         </div>
       </div>
       <div class="dropDown-container">
         <div class="select">
           <label>Store Name:</label>
-          <select [formControl]="storeName" name="dropDown-container" id="dropDown-container">
-            <option value="0">Select Batch</option>
-            <option value="1">1234ERTCH</option>
-            <option value="2">6434ERRSH</option>
+          <select (change)="findProductInStore('metro')" [formControl]="storeName" name="dropDown-container" id="dropDown-container2">
+            <option [value]="s.storeId" *ngFor="let s of stores">{{s.storeName}}</option>
+           
           </select>
         </div>
       </div>
