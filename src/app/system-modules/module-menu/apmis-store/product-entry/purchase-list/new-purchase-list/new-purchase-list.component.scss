@@ -15,11 +15,13 @@
     border-radius: 10px;
     padding: 10px;
     margin-right: 10px;
+    margin-top: 5px;
 }
 
 .supplier-list-wrap{
     display: flex;
     padding: 20px;
+    flex-wrap: wrap;
 }
  
 .cls-ico{
@@ -29,9 +31,9 @@
 .in-tr{
     grid-template-columns: 3fr 1fr 2fr repeat(2, 1fr) !important;
 }
-.item-action{
+.item-action, .cls-ico{
     i{
-        padding-right: 5px;
+        padding-right: 10px;
         color: #BEBEBE;            
     }
     i:hover{
