@@ -10,9 +10,13 @@
 <div class="filterTop">
   <div class="searchproduct">
     <div class="InputGroup">
-      <input class="customInput" type="text" required>
+      <input class="customInput" [formControl]="productConfigSearch" (focus)="onFocus('in')" (focusout)="onFocus('out')"
+        type="text" required>
       <span class="highlight"></span>
       <label class="customLabel"><i class="fa fa-search" aria-hidden="true"></i>Search...</label>
+      <!-- <ul class="search-sugestions" *ngIf="(showProduct && productConfigs.length > 0)">
+        <li *ngFor="let config of productConfigs" (click)="setSelectedOption(config)" class="search-sugestion">{{config.productName}}</li>
+      </ul> -->
     </div>
   </div>
   <div class="tbl-header-rhs">
@@ -46,101 +50,17 @@
 
   <div class="store-tbody">
     <div class="store-pre-tr">
-      <div class="store-tr">
+      <div class="store-tr" *ngFor="let picked of productConfigs">
         <div class="store-td store-td-actions">
-          <input type="checkbox">
+          <input type="checkbox" [checked]="picked.isChecked" (change)="setSelectedOption($event, picked)">
         </div>
         <div class="config-tr-in in-tr">
-          <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-          <div class="store-td">300,000 Sachets</div>
-          <div class="store-td">20 Sachets</div>
+          <div class="store-td">{{picked.productName}}</div>
+          <div class="store-td">{{picked.availableQuantity | number}} {{picked.productConfiguration.name}}</div>
+          <div class="store-td">{{picked.reOrderLevel}} {{picked.productConfiguration.name}}</div>
           <div class="store-td">#5/Sachet</div>
           <div class="store-td">#300,000</div>
-          <div class="store-td">#10/Sachet</div>
-        </div>
-        <div class="store-td store-td-actions">
-          <div class="table-list col-xs-1 action-placeholder">
-            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-            <div class="action-container shadow-RB">
-              <div class="action-item">
-                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                <span>Edit</span>
-              </div>
-              <div class="action-item">
-                <i class="fa fa-trash" aria-hidden="true"></i>
-                <span>Delete</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="store-tr">
-        <div class="store-td store-td-actions">
-          <input type="checkbox">
-        </div>
-        <div class="config-tr-in in-tr">
-          <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-          <div class="store-td">300,000 Sachets</div>
-          <div class="store-td">20 Sachets</div>
-          <div class="store-td">#5/Sachet</div>
-          <div class="store-td">#300,000</div>
-          <div class="store-td">#10/Sachet</div>
-        </div>
-        <div class="store-td store-td-actions">
-          <div class="table-list col-xs-1 action-placeholder">
-            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-            <div class="action-container shadow-RB">
-              <div class="action-item">
-                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                <span>Edit</span>
-              </div>
-              <div class="action-item">
-                <i class="fa fa-trash" aria-hidden="true"></i>
-                <span>Delete</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="store-tr">
-        <div class="store-td store-td-actions">
-          <input type="checkbox">
-        </div>
-        <div class="config-tr-in in-tr">
-          <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-          <div class="store-td">300,000 Sachets</div>
-          <div class="store-td">20 Sachets</div>
-          <div class="store-td">#5/Sachet</div>
-          <div class="store-td">#300,000</div>
-          <div class="store-td">#10/Sachet</div>
-        </div>
-        <div class="store-td store-td-actions">
-          <div class="table-list col-xs-1 action-placeholder">
-            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-            <div class="action-container shadow-RB">
-              <div class="action-item">
-                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                <span>Edit</span>
-              </div>
-              <div class="action-item">
-                <i class="fa fa-trash" aria-hidden="true"></i>
-                <span>Delete</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="store-tr">
-        <div class="store-td store-td-actions">
-          <input type="checkbox">
-        </div>
-        <div class="config-tr-in in-tr">
-          <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-          <div class="store-td">300,000 Sachets</div>
-          <div class="store-td">20 Sachets</div>
-          <div class="store-td">#5/Sachet</div>
-          <div class="store-td">#300,000</div>
-          <div class="store-td">#10/Sachet</div>
+          <div class="store-td">#{{picked.price}}/{{picked.productConfiguration.name}}</div>
         </div>
         <div class="store-td store-td-actions">
           <div class="table-list col-xs-1 action-placeholder">
@@ -175,7 +95,7 @@
       <div class="config-tr-in in-tr">
         <div class="store-th">Products</div>
         <div class="store-th">Unit</div>
-        <div class="store-th">Available Required</div>
+        <div class="store-th">Quantity Required</div>
         <div class="store-th">Cost/Unit</div>
         <div class="store-th">Total Cost Price</div>
         <div class="store-th">Actions</div>
@@ -186,15 +106,16 @@
 
   <div class="store-tbody">
     <div class="store-pre-tr">
-      <div class="store-tr">
+      <div class="store-tr" *ngFor="let picked of selectedProducts">
         <div class="store-td store-td-actions">
           <input type="checkbox">
         </div>
         <div class="config-tr-in in-tr">
-          <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-          <div class="store-td">20 Sachets</div>
-          <div class="store-td">300,000 Sachets</div>
-          <div class="store-td">#5/Sachet</div>
+          <div class="store-td">{{picked.productName}}</div>
+          <div class="store-td">{{picked.productConfiguration.name}}</div>
+          <div class="store-td"> <input min="0" class="customInput" type="number" placeholder="&#8358;300,000 "
+              required> {{picked.productConfiguration.name}}</div>
+          <div class="store-td">#5/{{picked.productConfiguration.name}}</div>
           <div class="store-td">#300,000</div>
           <div class="store-td">
             <div class="btc-body-item item-action">
@@ -233,8 +154,16 @@
 <div class="sel-sup">
   <h3>Add Suppliers to send purchase list to:</h3>
   <div class="input-group-x2">
-    <div>
-      <app-apmis-search-result></app-apmis-search-result>
+    <div class="dropDown-container" style="margin-right:40px;">
+      <div class="select">
+        <select name="dropDown-container" id="dropDown-container">
+          <option value="0">Select Store</option>
+          <option value="1">Central Store</option>
+          <option value="2">General Store</option>
+          <option value="3">Pharmacy Store A</option>
+          <option value="4">Pharmacy Store B</option>
+        </select>
+      </div>
     </div>
   </div>
 </div>
