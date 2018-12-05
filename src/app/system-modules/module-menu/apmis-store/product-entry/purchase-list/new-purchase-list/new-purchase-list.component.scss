@@ -27,15 +27,16 @@
     cursor: pointer;
 }
 .in-tr{
-    grid-template-columns: 3fr repeat(4, 1fr) !important;
+    grid-template-columns: 3fr 1fr 2fr repeat(2, 1fr) !important;
 }
 .item-action{
     i{
         padding-right: 5px;
-       cursor: pointer;       
+        color: #BEBEBE;            
     }
     i:hover{
-        color: rgba(0,0,0,.54);
+        cursor: pointer;  
+        color: rgba(0, 0, 0, 0.623);
        }
 }
 
