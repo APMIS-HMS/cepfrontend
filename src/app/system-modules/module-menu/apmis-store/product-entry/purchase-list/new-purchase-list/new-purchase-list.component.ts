@@ -160,6 +160,7 @@ export class NewPurchaseListComponent implements OnInit {
 
 	modifyProducts(configs: any[]) {
 		return configs.map((config) => {
+			console.log(config);
 			config.isChecked = this.validateAgainstDuplicateProductEntry(config) ? false : true;
 			return config;
 		});

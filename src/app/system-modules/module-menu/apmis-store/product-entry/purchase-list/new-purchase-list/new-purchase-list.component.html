@@ -56,11 +56,11 @@
         </div>
         <div class="config-tr-in in-tr">
           <div class="store-td">{{picked.productName}}</div>
-          <div class="store-td">300,000 Sachets</div>
-          <div class="store-td">20 Sachets</div>
+          <div class="store-td">{{picked.availableQuantity | number}} {{picked.productConfiguration.name}}</div>
+          <div class="store-td">{{picked.reOrderLevel}} {{picked.productConfiguration.name}}</div>
           <div class="store-td">#5/Sachet</div>
           <div class="store-td">#300,000</div>
-          <div class="store-td">#10/Sachet</div>
+          <div class="store-td">#{{picked.price}}/{{picked.productConfiguration.name}}</div>
         </div>
         <div class="store-td store-td-actions">
           <div class="table-list col-xs-1 action-placeholder">
@@ -95,7 +95,7 @@
       <div class="config-tr-in in-tr">
         <div class="store-th">Products</div>
         <div class="store-th">Unit</div>
-        <div class="store-th">Available Required</div>
+        <div class="store-th">Quantity Required</div>
         <div class="store-th">Cost/Unit</div>
         <div class="store-th">Total Cost Price</div>
         <div class="store-th">Actions</div>
@@ -112,9 +112,10 @@
         </div>
         <div class="config-tr-in in-tr">
           <div class="store-td">{{picked.productName}}</div>
-          <div class="store-td">20 Sachets</div>
-          <div class="store-td">300,000 Sachets</div>
-          <div class="store-td">#5/Sachet</div>
+          <div class="store-td">{{picked.productConfiguration.name}}</div>
+          <div class="store-td"> <input min="0" class="customInput" type="number" placeholder="&#8358;300,000 "
+              required> {{picked.productConfiguration.name}}</div>
+          <div class="store-td">#5/{{picked.productConfiguration.name}}</div>
           <div class="store-td">#300,000</div>
           <div class="store-td">
             <div class="btc-body-item item-action">
