@@ -1,8 +1,8 @@
 .supplierBase {
     display: grid;
     grid-template-columns: 20% 80%;
-    grid-auto-columns: 1fr;
-    grid-gap: 20px;
+    //grid-auto-columns: 1fr;
+    column-rule: 1px solid #C4C4C4;
     align-items: left;
     grid-auto-rows: auto;
     grid-auto-flow: column;
@@ -13,7 +13,7 @@
 @import "./../purchase-list/new-purchase-list/new-purchase-list.component.scss";
 
 .contentLeftGrid{
-    padding: 5px;
+    padding: 30px;
 }
 
 

@@ -113,13 +113,18 @@
         <div class="config-tr-in in-tr">
           <div class="store-td">{{picked.productName}}</div>
           <div class="store-td">{{picked.productConfiguration.name}}</div>
-          <div class="store-td"> <input min="0" class="customInput" type="number" placeholder="&#8358;300,000 "
-              required> {{picked.productConfiguration.name}}</div>
+          <div class="store-td">
+            <div class="InputGroup input-space">
+              <input min="0" class="customInput" type="number" required>
+              <span class="highlight"></span>
+            </div>
+            <span>{{picked.productConfiguration.name}}</span>
+          </div>
           <div class="store-td">#5/{{picked.productConfiguration.name}}</div>
           <div class="store-td">#300,000</div>
           <div class="store-td">
             <div class="btc-body-item item-action">
-              <i class="fa fa-2x fa-check-circle" aria-hidden="true"></i>
+              <i class="fa fa-2x fa-pencil-square" aria-hidden="true"></i>
               <i class="fa fa-2x fa-times-circle" aria-hidden="true"></i>
             </div>
           </div>
@@ -157,16 +162,17 @@
     <div class="dropDown-container" style="margin-right:40px;">
       <div class="select">
         <select name="dropDown-container" id="dropDown-container">
-          <option value="0">Select Store</option>
-          <option value="1">Central Store</option>
-          <option value="2">General Store</option>
-          <option value="3">Pharmacy Store A</option>
-          <option value="4">Pharmacy Store B</option>
+          <option value="0">Select Supplier</option>
+          <option value="1">Kunle Ara</option>
+          <option value="2">Pham-B Store</option>
+          <option value="3">Alex Plus Store</option>
+          <option value="4">Med-Plus</option>
         </select>
       </div>
     </div>
   </div>
 </div>
+<app-apmis-search-result></app-apmis-search-result>
 
 <div class="supplier-list-wrap">
   <div class="supplier-wrap">
