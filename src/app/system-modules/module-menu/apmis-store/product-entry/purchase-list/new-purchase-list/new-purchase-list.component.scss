@@ -56,3 +56,14 @@
         width: 75% !important;
     }
 }
+.multi-sup-list-wrap{
+    display:block;
+    margin-left:20px;
+}
+.multi-sup-list{
+    overflow: auto;
+    display: inline-table;
+    position: relative;
+    border-right: 1px solid #C4C4C4;
+    width: 300px;
+}

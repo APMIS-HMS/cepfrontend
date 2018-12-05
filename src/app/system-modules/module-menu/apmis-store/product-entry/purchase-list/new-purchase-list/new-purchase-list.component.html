@@ -158,21 +158,24 @@
 
 <div class="sel-sup">
   <h3>Add Suppliers to send purchase list to:</h3>
-  <div class="input-group-x2">
-    <div class="dropDown-container" style="margin-right:40px;">
+  <div class="multi-sup-list-wrap">
+    <div class="dropDown-container" style="margin-right:40px; min-width: 300px !important;">
       <div class="select">
-        <select name="dropDown-container" id="dropDown-container">
-          <option value="0">Select Supplier</option>
+        <select name="dropDown-container" (click)="onshowSup_search()" id="dropDown-container">
+          <!-- <option value="0">Select Supplier</option>
           <option value="1">Kunle Ara</option>
           <option value="2">Pham-B Store</option>
           <option value="3">Alex Plus Store</option>
-          <option value="4">Med-Plus</option>
+          <option value="4">Med-Plus</option> -->
         </select>
       </div>
     </div>
+    <div *ngIf="sup_search" class="multi-sup-list">
+      <app-apmis-search-result></app-apmis-search-result>
+    </div>
   </div>
 </div>
-<app-apmis-search-result></app-apmis-search-result>
+
 
 <div class="supplier-list-wrap">
   <div class="supplier-wrap">
