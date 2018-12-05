@@ -2,45 +2,43 @@ import { Subscription, ISubscription } from 'rxjs/Subscription';
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import {EmployeeService} from '../../../../services/facility-manager/setup/index';
+import { EmployeeService } from '../../../../services/facility-manager/setup/index';
 import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 import { Facility, Employee } from '../../../../models/index';
 
 @Component({
-  selector: 'app-apmis-store-home',
-  templateUrl: './apmis-store-home.component.html',
-  styleUrls: ['./apmis-store-home.component.scss']
+	selector: 'app-apmis-store-home',
+	templateUrl: './apmis-store-home.component.html',
+	styleUrls: [ './apmis-store-home.component.scss' ]
 })
-export class ApmisStoreHomeComponent implements OnInit,OnDestroy {
-
-  modal_on = false;
-  checkingStore: any = <any>{};
+export class ApmisStoreHomeComponent implements OnInit, OnDestroy {
+	modal_on = false;
+	checkingStore: any = <any>{};
 	selectedFacility: Facility = <Facility>{};
 	loginEmployee: Employee = <Employee>{};
 	workSpace: any;
 	isRunningQuery = false;
 	subscription: ISubscription;
 	showDialog = false;
-	constructor(private router: Router,
-    private _locker:CoolLocalStorage,
-    private _employeeService: EmployeeService,
-		private authFacadeService: AuthFacadeService) { 
-    this.subscription = this._employeeService.checkInAnnounced$.subscribe((res) => {
+	constructor(
+		private router: Router,
+		private _locker: CoolLocalStorage,
+		private _employeeService: EmployeeService,
+		private authFacadeService: AuthFacadeService
+	) {
+		this.subscription = this._employeeService.checkInAnnounced$.subscribe((res) => {
 			if (!!res) {
 				if (!!res.typeObject) {
 					this.checkingStore = res.typeObject;
-					console.log(this.checkingStore);
 					if (!!this.checkingStore.storeId) {
-						
 					}
 				}
 			}
 		});
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
-    this.authFacadeService.getLogingEmployee().then((payload: any) => {
+		this.authFacadeService.getLogingEmployee().then((payload: any) => {
 			this.loginEmployee = payload;
 			this.checkingStore = this.loginEmployee.storeCheckIn.find((x) => x.isOn === true);
-			console.log(this.checkingStore);
 			if (this.loginEmployee.storeCheckIn === undefined || this.loginEmployee.storeCheckIn.length === 0) {
 				this.modal_on = true;
 			} else {
@@ -50,8 +48,8 @@ export class ApmisStoreHomeComponent implements OnInit,OnDestroy {
 						itemr.isOn = true;
 						itemr.lastLogin = new Date();
 						isOn = true;
-            let checkingObject = { typeObject: itemr, type: 'store' };
-            this._employeeService
+						let checkingObject = { typeObject: itemr, type: 'store' };
+						this._employeeService
 							.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn })
 							.then((payload) => {
 								this.loginEmployee = payload;
@@ -79,28 +77,23 @@ export class ApmisStoreHomeComponent implements OnInit,OnDestroy {
 				}
 			}
 		});
-  }
+	}
 
-  ngOnInit() {
-  }
+	ngOnInit() {}
 
-  changeRoute(value: string) {
-    this.router.navigate(['/dashboard/store/' + value]).then(
-      payload => {
-      }
-    ).catch(error => {
-    });
-  }
+	changeRoute(value: string) {
+		this.router.navigate([ '/dashboard/store/' + value ]).then((payload) => {}).catch((error) => {});
+	}
 
-  onSwitchStore() {
-    this.modal_on = !this.modal_on;
-  }
+	onSwitchStore() {
+		this.modal_on = !this.modal_on;
+	}
 
-  close_onClick(message: boolean): void {
-    this.modal_on = false;
-  }
+	close_onClick(message: boolean): void {
+		this.modal_on = false;
+	}
 
-  ngOnDestroy() {
+	ngOnDestroy() {
 		if (this.loginEmployee.storeCheckIn !== undefined) {
 			this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
 				if (itemr.isDefault === true && itemr.isOn === true) {
@@ -115,5 +108,4 @@ export class ApmisStoreHomeComponent implements OnInit,OnDestroy {
 		this._locker.setObject('checkingObject', {});
 		this.subscription.unsubscribe();
 	}
-
 }
