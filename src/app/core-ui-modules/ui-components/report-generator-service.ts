@@ -164,6 +164,101 @@ export class ReportGeneratorService implements ICustomReportService {
                 },
             ]
         }
+        else if(searchBy ==="hmo")
+        {
+            data = [
+                {
+                    tag: "HMO A",
+                    totalPatient: 70,
+                    male: 50,
+                    female: 20
+
+                },
+                {
+                    tag: "HMO B",
+                    totalPatient: 120,
+                    male: 60,
+                    female: 60
+
+                },
+                {
+                    tag: "HMO C",
+                    totalPatient: 50,
+                    male: 10,
+                    female: 40
+
+                },
+                {
+                    tag: "HMO D",
+                    totalPatient: 75,
+                    male: 25,
+                    female: 50
+
+                },
+               
+            ]
+        }
+        else if(searchBy ==="company")
+        {
+            data = [
+                {
+                    tag: "Company A",
+                    totalPatient: 40,
+                    male: 10,
+                    female: 30
+
+                },
+                {
+                    tag: "Sidmach Tech",
+                    totalPatient: 60,
+                    male: 25,
+                    female: 35
+
+                },
+                {
+                    tag: "Apmis Health",
+                    totalPatient: 20,
+                    male: 12,
+                    female: 8
+
+                },
+                {
+                    tag: "Company B",
+                    totalPatient: 75,
+                    male: 25,
+                    female: 50
+
+                },
+
+            ]
+        }
+        else if(searchBy =="family")
+        {
+            data = [
+                {
+                    tag: "Mr Udor",
+                    totalPatient: 3,
+                    male: 1,
+                    female: 2
+
+                },
+                {
+                    tag: "Mr & Mrs Okoye",
+                    totalPatient: 10,
+                    male: 4,
+                    female: 6
+
+                },
+                {
+                    tag: "Mrs Lilian O.",
+                    totalPatient: 5,
+                    male: 2,
+                    female: 3
+
+                },
+               
+            ]
+        }
         result.data = data;
         return Promise.resolve(result);
     }
