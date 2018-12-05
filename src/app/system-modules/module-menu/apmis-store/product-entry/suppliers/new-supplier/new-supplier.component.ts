@@ -26,7 +26,8 @@ export class NewSupplierComponent implements OnInit {
 	checkingStore: any = <any>{};
 	loginEmployee: Employee = <Employee>{};
 	workSpace: any;
-	selectedFacility: any;
+  selectedFacility: any;
+  suppliers: any[] = [];
 	constructor(
 		private formBuilder: FormBuilder,
 		private supplier: SupplierService,
@@ -221,5 +222,24 @@ export class NewSupplierComponent implements OnInit {
 				this.selectedCity = city;
 			})
 			.catch((error) => {});
-	}
+  }
+  
+  getSuppliers() {
+    this.supplierService
+      .find({
+        query: {
+          facilityId: this.selectedFacility._id
+        }
+      })
+      .then(
+        (payload) => {
+          console.log(payload);
+          this.suppliers = payload.data.map((c) => {
+            return { id: c._id, label: c.supplier.name };
+          });
+          console.log(this.suppliers);
+        },
+        (error) => { }
+      );
+  }
 }
