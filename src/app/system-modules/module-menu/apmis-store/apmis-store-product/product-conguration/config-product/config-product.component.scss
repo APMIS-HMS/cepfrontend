@@ -3,6 +3,11 @@
     cursor: pointer;
 }
 
+.disabled {
+    cursor: not-allowed;
+    background: gray;
+  }
+
 .modal-wraper{
     width: auto;
     height: auto;

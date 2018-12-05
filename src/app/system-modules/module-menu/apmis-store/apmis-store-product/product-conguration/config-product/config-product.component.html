@@ -15,7 +15,7 @@
           already exisst</span>
       </div>
     </div>
-    <div class="new-btn-solid-blue" (click)="onClickConfigure()" >
+    <div class="new-btn-solid-blue" [class.disabled]="!isConfigure" (click)="onClickConfigure()">
       <span>Configure</span>
     </div>
   </div>
@@ -27,7 +27,7 @@
         <h3 style="margin-right: 120px;">Set Base Unit</h3>
         <div (click)="onShowSearch()"><i class="fa fa-plus" aria-hidden="true"></i></div>
         <div class="apmisSearch-wrap" *ngIf="apmisSearch">
-          <app-apmis-search-result [data]="packSizes" (onSelectedItems)="onSearchSelectedItems($event)" (onCreateItem)="onCreateNewItem($event)"></app-apmis-search-result>
+          <app-apmis-search-result [data]="packSizes" (onSelectedItems)="onSearchSelectedItems($event)" (onCreateItem)="onCreateNewItem($event)" (onCloseEvent)="onClickClose($event)"></app-apmis-search-result>
         </div>
       </div>
 
@@ -60,7 +60,7 @@
   </div>
 
   <div class="sv-btn-container" *ngIf="showSaveConfig" (click)="onSaveConfiguration()">
-    <div class="new-btn-solid-blue">
+    <div class="new-btn-solid-blue" [class.disabled]="isSaving">
       <span>Save Configuration</span>
     </div>
   </div>

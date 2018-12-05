@@ -17,9 +17,8 @@ export class ProductService {
   public listenerCreate;
   public listenerUpdate;
   public listenerDelete;
-  private productSubject = new Subject<any[]>();
-  private packSubject: BehaviorSubject<string> = new BehaviorSubject('');
-  private elEventListerner = new Subject<string>();
+	private productConfigChanged = new Subject<any>();
+  productConfigChanged$ = this.productConfigChanged.asObservable();
   constructor(
     private _socketService: SocketService,
     private _restService: RestService
@@ -62,6 +61,7 @@ export class ProductService {
   }
   get(id: string, query: any) {
     return this._socket.get(id, query);
+    //return this._socket.get(id, query);
   }
 
   create(serviceprice: any) {
@@ -102,6 +102,15 @@ export class ProductService {
   }
   removeReorder(id: string, query: any) {
     return this._socketReorderLevel.remove(id, query);
+  }
+  removeProductConfig(id: string, query: any) {
+    return this._socketProductConfig.remove(id, query);
+  }
+  productConfigAnnounced(productConfig: any) {
+		this.productConfigChanged.next(productConfig);
+  }
+  productConfigRecieved(): Observable<any> {
+    return this.productConfigChanged.asObservable();
   }
 }
 

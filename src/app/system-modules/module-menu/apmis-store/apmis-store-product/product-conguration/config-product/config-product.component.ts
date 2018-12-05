@@ -1,10 +1,11 @@
 import { ApmisFilterBadgeService } from './../../../../../../services/tools/apmis-filter-badge.service';
 import { ProductService } from './../../../../../../services/facility-manager/setup/product.service';
 import { FormularyProduct, ProductPackSize, ProductConfig } from './../../../store-utils/global';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, OnChanges, SimpleChanges, EventEmitter } from '@angular/core';
 import { Facility } from 'app/models';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 
 @Component({
@@ -12,7 +13,7 @@ import { FormControl } from '@angular/forms';
   templateUrl: './config-product.component.html',
   styleUrls: ['./config-product.component.scss']
 })
-export class ConfigProductComponent implements OnInit {
+export class ConfigProductComponent implements OnInit, OnChanges {
 
   apmisSearch = false;
   showConfigContainer = false;
@@ -33,12 +34,16 @@ export class ConfigProductComponent implements OnInit {
   baseName = '';
   basePackType: ProductPackSize = <ProductPackSize>{};
   packConfigurations: ProductPackSize[] = [];
-  saving = false;
+  isSaving = false;
+  isConfigure = false;
+  @Input() editableProductConfigObj;
+  @Output() newProductConfig = new EventEmitter();
 
   constructor(
       private productService: ProductService,
       private locker: CoolLocalStorage,
-      private apmisFilterService: ApmisFilterBadgeService
+      private apmisFilterService: ApmisFilterBadgeService,
+      private systemModuleService: SystemModuleService
     ) { }
 
   ngOnInit() {
@@ -63,6 +68,7 @@ export class ConfigProductComponent implements OnInit {
           this.showConfigContainer = false;
           this.showSaveConfig = false;
           this.productExist = false;
+          this.isConfigure = false;
       }
       });
       this.getProductPackTypes();
@@ -71,6 +77,7 @@ export class ConfigProductComponent implements OnInit {
     this.apmisSearch = !this.apmisSearch;
   }
   setSelectedProductOption(data) {
+    this.isConfigure = true;
     this.selectedProduct = data;
     this.getProductConfigByProduct();
     this.selectedProductName = data.name;
@@ -78,28 +85,71 @@ export class ConfigProductComponent implements OnInit {
   }
   onSearchSelectedItems(data) {
     if (data.length > 0) {
-      this.isBaseUnitSet = true;
-      this.showConfigContainer = true;
-      this.showSaveConfig = false;
-      this.baseName = data[0].label;
-      this.basePackType = data[0];
-      this.selectedPackSizes = [...data];
-      this.packConfigurations = [...data];
-      this.packConfigurations.splice(0, 1);
-      if (this.packConfigurations.length > 0) { this.showSaveConfig = true; }
+      this.setPackSizes(data);
     }
+  }
+  setPackSizes(data) {
+    this.isBaseUnitSet = true;
+    this.showConfigContainer = true;
+    this.showSaveConfig = false;
+    this.showSetBaseUnit = true;
+    this.baseName = data[0].label;
+    this.basePackType = data[0];
+    this.selectedPackSizes = [...data];
+    this.packConfigurations = [...data];
+    this.packConfigurations.splice(0, 1);
+    if (this.packConfigurations.length > 0) { this.showSaveConfig = true; }
   }
   onClickConfigure() {
     if (this.selectedProductName !== '') {
       this.showSetBaseUnit = true;
+      this.baseName = '';
     } else {
       this.showSetBaseUnit = false;
+      this.showConfigContainer = false;
     }
   }
+  ngOnChanges(change: SimpleChanges) {
+      if (change['editableProductConfigObj'] !== null) {
+        if (this.editableProductConfigObj !== undefined) {
+          this.getProductById(this.editableProductConfigObj);
+        }
+      }
+  }
+  getProductById(data) {
+    const id = data.productId;
+      if (id !== '' || id !== undefined) {
+        this.productService.get(id, {}).then(payload => {
+            if (payload.data.name === undefined) {
+                // handle error: show sweet alert to retry fetching again
+                this.systemModuleService.announceSweetProxy(
+                  'Product: Unable to fetch data. Please try again.',
+                  'error', null, null, null, null, null, null, null
+                );
+                this.showConfigContainer = false;
+                this.showSaveConfig = false;
+                this.showSetBaseUnit = false;
+                this.baseName = '';
+            } else {
+              this.selectedProduct = payload.data;
+              this.selectedProductName = payload.data.name;
+              this.transformIncomingPackSizes(data.packSizes);
+            }
+        }, error => {
+        });
+      }
+  }
+
+  transformIncomingPackSizes(data) {
+    const editable = data
+    .map(({packId: id, name: label, size: size}) => ({id, label, size}));
+    this.setPackSizes(editable);
+  }
   onSaveConfiguration() {
-    this.saving = true;
-      this.transformPackSizes(this.selectedPackSizes);
-      const newProductConfig: ProductConfig = {
+    this.isSaving = true;
+    if (this.selectedPackSizes[1].size > 1) {
+        this.modifyPackSizes(this.selectedPackSizes);
+        const newProductConfig: ProductConfig = {
           productId: this.selectedProduct.id,
           facilityId: this.currentFacility._id,
           productObject: this.selectedProduct,
@@ -107,12 +157,25 @@ export class ConfigProductComponent implements OnInit {
           packSizes: this.modifiedPackSizes
       };
       this.productService.createProductConfig(newProductConfig).then(payload => {
-          this.apmisFilterService.clearItemsStorage(true);
-          this.getProductConfigByProduct();
+          this.isSaving = false;
+          this.systemModuleService.announceSweetProxy(
+            'Product: Product configured successfully.',
+            'success', null, null, null, null, null, null, null
+          );
+          this.productService.productConfigAnnounced(payload);
       });
+      this.apmisFilterService.clearItemsStorage(true);
+    } else {
+      this.systemModuleService.announceSweetProxy(
+        'Product: Please enter size for product pack.',
+        'error', null, null, null, null, null, null, null
+      );
+      this.apmisFilterService.clearItemsStorage(true);
+      this.isSaving = false;
+    }
   }
 
-  transformPackSizes(packs) {
+  modifyPackSizes(packs) {
     if (packs.length > 1) {
       const selected = packs.map(({id: packId, label: name, size: size}) => ({packId, name, size}));
         for (let i = 0; i < selected.length; i++) {
@@ -156,6 +219,11 @@ export class ConfigProductComponent implements OnInit {
         this.productService.createPackageSize(newPackSize).then(payload => {
             this.getProductPackTypes();
         });
+    }
+  }
+  onClickClose(val) {
+    if (!val) {
+        this.apmisSearch = !this.apmisSearch;
     }
   }
 }
