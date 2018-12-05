@@ -1,14 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { StoreService, InventoryService } from 'app/services/facility-manager/setup';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { Facility } from 'app/models';
+import { Facility, Employee } from 'app/models';
+import { EmployeeService } from '../../../../../services/facility-manager/setup/index';
+import { AuthFacadeService } from '../../../../service-facade/auth-facade.service';
+import { ISubscription } from 'rxjs/Subscription';
 
 @Component({
 	selector: 'app-store-home-analytics',
 	templateUrl: './store-home-analytics.component.html',
 	styleUrls: [ './store-home-analytics.component.scss' ]
 })
-export class StoreHomeAnalyticsComponent implements OnInit {
+export class StoreHomeAnalyticsComponent implements OnInit, OnDestroy {
 	selectedFacility: Facility;
 	storeStatistics: any;
 	inventoryItemCount: number;
@@ -22,18 +25,84 @@ export class StoreHomeAnalyticsComponent implements OnInit {
 	transactionInventoryItemCount: any;
 	revenueInventoryItemCount: any;
 	storeId: any;
-	constructor(private _inventoryService: InventoryService, private _locker: CoolLocalStorage) {}
+
+	modal_on = false;
+	checkingStore: any = <any>{};
+	loginEmployee: Employee = <Employee>{};
+	workSpace: any;
+	isRunningQuery = false;
+	subscription: ISubscription;
+	showDialog = false;
+	constructor(
+		private _inventoryService: InventoryService,
+		private _locker: CoolLocalStorage,
+		private _employeeService: EmployeeService,
+		private authFacadeService: AuthFacadeService
+	) {
+		this.subscription = this._employeeService.checkInAnnounced$.subscribe((res) => {
+			if (!!res) {
+				if (!!res.typeObject) {
+					this.checkingStore = res.typeObject;
+					if (!!this.checkingStore.storeId) {
+						this.getStoreStatistics();
+					}
+				}
+			}
+		});
+		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
+		this.authFacadeService.getLogingEmployee().then((payload: any) => {
+			this.loginEmployee = payload;
+			this.checkingStore = this.loginEmployee.storeCheckIn.find((x) => x.isOn === true);
+			if (this.loginEmployee.storeCheckIn === undefined || this.loginEmployee.storeCheckIn.length === 0) {
+				this.modal_on = true;
+			} else {
+				let isOn = false;
+				this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+					if (itemr.isDefault === true) {
+						itemr.isOn = true;
+						itemr.lastLogin = new Date();
+						isOn = true;
+						let checkingObject = { typeObject: itemr, type: 'store' };
+						this._employeeService
+							.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn })
+							.then((payload) => {
+								this.loginEmployee = payload;
+								checkingObject = { typeObject: itemr, type: 'store' };
+								this._employeeService.announceCheckIn(checkingObject);
+								this._locker.setObject('checkingObject', checkingObject);
+							});
+					}
+				});
+				if (isOn === false) {
+					this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+						if (r === 0) {
+							itemr.isOn = true;
+							itemr.lastLogin = new Date();
+							this._employeeService
+								.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn })
+								.then((payload) => {
+									this.loginEmployee = payload;
+									const checkingObject = { typeObject: itemr, type: 'store' };
+									this._employeeService.announceCheckIn(checkingObject);
+									this._locker.setObject('checkingObject', checkingObject);
+								});
+						}
+					});
+				}
+			}
+		});
+	}
 
 	ngOnInit() {
-		this.getStoreStatistics();
-		this.storeId = '5a88a0d26e6d17335cf318bc';
+		// this.getStoreStatistics();
+		// this.storeId = '5a88a0d26e6d17335cf318bc';
 	}
 
 	getStoreStatistics() {
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
 		this._inventoryService
 			.getInventoryBriefStatus(120, {
-				query: { storeId: this.storeId, facilityId: this.selectedFacility._id }
+				query: { storeId: this.checkingStore.storeId, facilityId: this.selectedFacility._id }
 			})
 			.then(
 				(payload) => {
@@ -47,9 +116,7 @@ export class StoreHomeAnalyticsComponent implements OnInit {
 						this.extractRevenueInventoryCountItem(payload.data[6]);
 					}
 				},
-				(error) => {
-					console.log(error);
-				}
+				(error) => {}
 			);
 	}
 	extractInventoryCountItem(storeStatistics) {
@@ -85,5 +152,21 @@ export class StoreHomeAnalyticsComponent implements OnInit {
 	extractRevenueInventoryCountItem(revenueStatistics) {
 		this.revenueInventoryItemCount = revenueStatistics;
 		this.revenueInventoryItemCount = revenueStatistics.values[0].value;
+	}
+
+	ngOnDestroy() {
+		if (this.loginEmployee.storeCheckIn !== undefined) {
+			this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+				if (itemr.isDefault === true && itemr.isOn === true) {
+					itemr.isOn = false;
+					this._employeeService.update(this.loginEmployee).then((payload) => {
+						this.loginEmployee = payload;
+					});
+				}
+			});
+		}
+		this._employeeService.announceCheckIn(undefined);
+		this._locker.setObject('checkingObject', {});
+		this.subscription.unsubscribe();
 	}
 }

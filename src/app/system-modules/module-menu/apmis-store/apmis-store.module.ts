@@ -43,6 +43,7 @@ import { ViewInvoiceComponent } from './product-entry/invoice-entry/view-invoice
 import { NewSupplierComponent } from './product-entry/suppliers/new-supplier/new-supplier.component';
 import { InboundRequisitionComponent } from './product-movement/inbound-requisition/inbound-requisition.component';
 import { OutboundRequisitionComponent } from './product-movement/outbound-requisition/outbound-requisition.component';
+import { StoreCheckInComponent } from './components/store-check-in/store-check-in.component';
 
 @NgModule({
 	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule ],
@@ -84,7 +85,8 @@ import { OutboundRequisitionComponent } from './product-movement/outbound-requis
 		ViewInvoiceComponent,
 		NewSupplierComponent,
 		InboundRequisitionComponent,
-		OutboundRequisitionComponent
+		OutboundRequisitionComponent,
+		StoreCheckInComponent
 	],
 	providers: [ StoreService, InventoryService, StoreGlobalUtilService, ProductTypeService ]
 })

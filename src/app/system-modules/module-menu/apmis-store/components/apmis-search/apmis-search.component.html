@@ -5,7 +5,7 @@
   </div>
   
  <div *ngIf="showSearch">
-   <app-apmis-search-result [data]="data" (onSelectedItems)="onSearchSelectedItems($event)" (onCreateItem)="onCreateNewItem($event)"></app-apmis-search-result>
+   <app-apmis-search-result [data]="data" (onSelectedItems)="onSearchSelectedItems($event)" (onCreateItem)="onCreateNewItem($event)" (onCloseEvent)="onClickClose($event)"></app-apmis-search-result>
  </div>
  
  <ul class="apmis-search-selected-list">
