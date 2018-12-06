@@ -97,4 +97,7 @@ export class ApmisSearchResultComponent implements OnInit, OnDestroy {
 	onCloseFilterDialog() {
 		this.onCloseEvent.emit(false);
 	}
+
 }
+
+
