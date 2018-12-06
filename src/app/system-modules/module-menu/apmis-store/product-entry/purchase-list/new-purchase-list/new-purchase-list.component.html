@@ -83,7 +83,7 @@
 </div>
 
 <div class="div-space"></div>
-<h3 class="sel-txt">50 Items selected and added to purchase list</h3>
+<h3 class="sel-txt">{{selectedProducts.length}} Items selected and added to purchase list</h3>
 <div class="div-space"></div>
 
 <div class="store-table">
@@ -115,7 +115,7 @@
           <div class="store-td">{{picked.productConfiguration.name}}</div>
           <div class="store-td">
             <div class="InputGroup input-space">
-              <input min="0" class="customInput" type="number" required>
+              <input min="0" [(ngModel)]="picked.quantityRequired" class="customInput" type="number" required>
               <span class="highlight"></span>
             </div>
             <span>{{picked.productConfiguration.name}}</span>
@@ -188,8 +188,9 @@
 
 <hr>
 <div class="sv-btn-container">
-  <h3 class="sel-txt">Send purchase list with 50 items to 6 suppliers ? </h3>
-  <div class="new-btn-solid-blue">
+  <h3 class="sel-txt">Send purchase list with {{selectedProducts.length}} items to
+    {{selectedLocalStorageSuppliers.length}} suppliers ? </h3>
+  <div (click)="submit()" [class.disabled]="selectedProducts.length === 0" class="new-btn-solid-blue">
     <span>Send Purchase List</span>
   </div>
 </div>

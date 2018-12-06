@@ -14,12 +14,13 @@ export class SuppliersComponent implements OnInit {
 	main_content = true;
 	selectedFacility: any;
 	suppliers: any[] = [];
+	selectedSupplier: any;
 
 	constructor(private supplierService: SupplierService, private _locker: CoolLocalStorage) {}
 
 	ngOnInit() {
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
-		this.getSuppliers();
+		// this.getSuppliers();
 	}
 
 	getSuppliers() {
@@ -31,11 +32,10 @@ export class SuppliersComponent implements OnInit {
 			})
 			.then(
 				(payload) => {
-					console.log(payload);
-					this.suppliers = payload.data.map((c) => {
-						return { id: c._id, label: c.supplier.name };
-					});
-					console.log(this.suppliers);
+					this.suppliers = payload.data;
+					// .map((c) => {
+					//   return { id: c._id, label: c.supplier.name };
+					// });
 				},
 				(error) => {}
 			);
@@ -77,6 +77,16 @@ export class SuppliersComponent implements OnInit {
 			// this.productService.createPackageSize(newPackSize).then(payload => {
 			//   this.getProductPackTypes();
 			// });
+		}
+	}
+
+	loadCurrentPage(event) {
+		if (event.index === -1) {
+			this.onShowNewSupplier();
+		} else {
+			this.selectedSupplier = event.supplier;
+			this.showNewSupplier = false;
+			this.main_content = true;
 		}
 	}
 }

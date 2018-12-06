@@ -172,6 +172,8 @@ export class NewPurchaseListComponent implements OnInit {
 	modifyProducts(configs: any[]) {
 		return configs.map((config) => {
 			config.isChecked = this.validateAgainstDuplicateProductEntry(config) ? false : true;
+			config.quantityRequired = 0;
+			config.costPrice = 0;
 			return config;
 		});
 	}
@@ -263,5 +265,12 @@ export class NewPurchaseListComponent implements OnInit {
 			//   this.getProductPackTypes();
 			// });
 		}
+	}
+	submit() {
+		console.log(this.selectedProducts);
+	}
+
+	isAllCheckedProductValid() {
+		// this.selectedProducts.find(product => product.)
 	}
 }

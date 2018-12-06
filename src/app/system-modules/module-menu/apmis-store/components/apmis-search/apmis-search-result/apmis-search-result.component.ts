@@ -67,8 +67,8 @@ export class ApmisSearchResultComponent implements OnInit, OnDestroy {
 	}
 
 	ngOnDestroy() {
-		this.subscription.unsubscribe();
-		this._locker.setObject('APMIS_SELECTED_ITEMS', []);
+		// this.subscription.unsubscribe();
+		// this._locker.setObject('APMIS_SELECTED_ITEMS', []);
 	}
 
 	onToggleItem(item) {
