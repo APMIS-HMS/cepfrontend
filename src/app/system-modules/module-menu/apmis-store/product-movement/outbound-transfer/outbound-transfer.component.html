@@ -22,11 +22,11 @@
   <div class="tbl-header-rhs">
     <div class="items">
       <label class="label">Total Items Requested</label>
-      <div class="val">{{totalTransferredQties}}</div>
+      <div class="val">{{totalCount}}</div>
     </div>
     <div class="items">
       <label class="label">Total Items Value</label>
-      <div class="val">#{{totalTransferredAmount | number : '1.2-2'}}</div>
+      <div class="val">#{{totalCostPrice | number : '1.2-2'}}</div>
     </div>
   </div>
 </div>
@@ -36,7 +36,7 @@
     <div class="store-thead">
       <div class="store-tr">
         <div class="store-th store-td-actions">
-          <input type="checkbox" [formControl]="check" (change)="onCheckAll($event)"/>
+          <input type="checkbox" [formControl]="check" (change)="onCheckAll($event)" />
         </div>
         <div class="store-tr-in">
           <div class="store-th">Product</div>
@@ -51,59 +51,57 @@
     </div>
     <div class="store-tbody">
       <div class="store-pre-tr">
-        <div *ngFor="let item of transferObjs" class="store-tr">
+        <div *ngFor="let item of transferObjs;let i=index" class="store-tr">
           <div class="store-td store-td-actions">
-            <input type="checkbox" [formControl]="check" [checked]="item.isSelected" (change)="onCheckItem($event,item)"/>
+            <input type="checkbox" [formControl]="check" [checked]="item?.isSelected" (change)="onCheckItem($event,item)" />
           </div>
           <div class="store-tr-in">
             <div class="store-td">{{item?.productObject?.name}}</div>
-            <div class="store-td">{{item?.selectedItem?.totalQuantity}} {{item?.selectedItem?.productConfiguration?.name}}</div>
+            <div class="store-td">{{item?.selectedItem?.totalQuantity}}
+              {{item?.selectedItem?.productConfiguration?.name}}</div>
             <div class="store-td">{{item?.selectedItem?.totalQuantity - item?.selectedItem?.totalQuantity}}</div>
-            <div class="store-td">{{item.quantity}}</div>
-            <div class="store-td">#{{item.costPrice}}/{{item?.selectedItem?.productConfiguration?.name}}</div>
-            <div class="store-td">#{{item.lineCostPrice}} </div>
+            <div class="store-td" *ngIf="!item?.isEdit">{{item?.quantity}}</div>
+            <div class="store-td" *ngIf="item?.isEdit"><input (focusout)="onFocusChangeItemValue($event,i)"></div>
+            <div class="store-td">#{{item?.costPrice}}/{{item?.selectedItem?.productConfiguration?.name}}</div>
+            <div class="store-td">#{{item?.lineCostPrice}} </div>
           </div>
           <div class="store-td store-td-actions">
             <div class="table-list col-xs-1 action-placeholder">
               <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
               <div class="action-container shadow-RB">
-                <div class="action-item">
+                <div class="action-item" (click)="onEditItem(i)">
                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                  <span>Adjust Stock</span>
+                  <span>Edit</span>
                 </div>
-                <div class="action-item">
+                <div class="action-item" (click)="onRemoveItem(i)">
                   <i class="fa fa-tags" aria-hidden="true"></i>
-                  <span>Edit Details</span>
-                </div>
-                <div class="action-item">
-                  <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
-                  <span>Edit Configuration</span>
+                  <span>Remove</span>
                 </div>
               </div>
             </div>
           </div>
         </div>
         <div *ngIf="!hideSearchTool" class="store-tr-in">
-            <div *ngIf="hideSearchResultList" class="store-td">{{selectedProduct?.productName}}</div>
+          <div *ngIf="hideSearchResultList" class="store-td">{{selectedProduct?.productName}}</div>
           <div class="store-td">
             <div *ngIf="selectedProduct.productId === undefined" class="apmis-search-item input-wrap">
               <input class="input" [formControl]="productSearch" type="text">
               <div *ngIf="!hideSearchResultList">
-                  <div *ngFor="let item of inventorySearchResults"  class="store-tr">
-                      <div class="store-tr-in" (click)="onSelectProduct(item)">{{item.productName}}</div>
-                    </div>
+                <div *ngFor="let item of inventorySearchResults" class="store-tr">
+                  <div class="store-tr-in" (click)="onSelectProduct(item)">{{item.productName}}</div>
+                </div>
               </div>
             </div>
           </div>
           <div class="store-td">
-              <div class="dropDown-container" *ngIf="selectedProduct?.transactions?.length > 0">
-                  <div class="select">
-                    <label>Batch:</label>
-                    <select [formControl]="productQtyBatch" name="dropDown-container" id="dropDown-container">
-                      <option *ngFor="let item of selectedProduct?.transactions" value="{{item._id}}">{{item.batchNumber}}</option>
-                    </select>
-                  </div>
-                </div>
+            <div class="dropDown-container" *ngIf="selectedProduct?.transactions?.length > 0">
+              <div class="select">
+                <label>Batch:</label>
+                <select [formControl]="productQtyBatch" name="dropDown-container" id="dropDown-container">
+                  <option *ngFor="let item of selectedProduct?.transactions" value="{{item._id}}">{{item.batchNumber}}</option>
+                </select>
+              </div>
+            </div>
           </div>
           <div class="store-td">{{selectedProduct.availableQuantity}}</div>
           <div class="store-td">{{selectedProduct?.totalQuantity - selectedProduct?.availableQuantity}}</div>
@@ -116,8 +114,10 @@
           <div class="store-td">#{{productQtyRequestSearch.value * selectedProduct?.price}}</div>
         </div>
         <div class="store-tr">
-          <div *ngIf="hideSearchTool" class="tbl-cont-cta" (click)="onAddNewTransItem()"><i class="fa fa-plus"></i> Add Another Item</div>
-          <div *ngIf="!hideSearchTool" class="tbl-cont-cta" (click)="onRemoveNewtem()"><i class="fa fa-plus"></i> Remove Item</div>
+          <div *ngIf="hideSearchTool" class="tbl-cont-cta" (click)="onAddNewTransItem()"><i class="fa fa-plus"></i> Add
+            Another Item</div>
+          <div *ngIf="!hideSearchTool" class="tbl-cont-cta" (click)="onRemoveNewtem()"><i class="fa fa-plus"></i>
+            Remove Item</div>
         </div>
       </div>
     </div>
@@ -128,150 +128,15 @@
   </div>
 </div>
 
-<div class="tbl-sect-wrap tbl-top-with-border">
+<div class="tbl-sect-wrap tbl-top-with-border" *ngFor = "let item of existingStockTransfers">
   <div class="has-title">Outbound Transfer Status</div>
   <div class="date-sent">
-    <span>Date Sent:</span>
-    <div class="val">23/10/2018</div>
+    <span>Store Sent:</span>
+    <div class="val">{{item?.storeObject?.name}}</div>
   </div>
-  <div class="store-table">
-    <div class="store-thead">
-      <div class="store-tr">
-        <div class="store-th store-td-actions">
-          <input type="checkbox" [formControl]="check" />
-        </div>
-        <div class="store-tr-in">
-          <div class="store-th">Product</div>
-          <div class="store-th">Qty Available</div>
-          <div class="store-th">Qty On Hold</div>
-          <div class="store-th">Qty To Send</div>
-          <div class="store-th">Unit Price</div>
-          <div class="store-th">Amount</div>
-          <div class="store-th"></div>
-        </div>
-        <div class="store-th store-td-actions"></div>
-      </div>
-    </div>
-
-    <div class="store-tbody">
-      <div class="store-pre-tr">
-        <div class="store-tr">
-          <div class="store-td store-td-actions">
-            <input type="checkbox" [formControl]="check" />
-          </div>
-          <div class="store-tr-in">
-            <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-            <div class="store-td">60 Packs</div>
-            <div class="store-td">40 Packs</div>
-            <div class="store-td">5 Packs</div>
-            <div class="store-td">#10/Pack</div>
-            <div class="store-td">#20,000 </div>
-            <div class="store-td">
-              <div class="tbl-status status-green">Accepted</div>
-            </div>
-          </div>
-          <div class="store-td store-td-actions">
-            <div class="table-list col-xs-1 action-placeholder">
-              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-              <div class="action-container shadow-RB">
-                <div class="action-item">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                  <span>Adjust Stock</span>
-                </div>
-                <div class="action-item">
-                  <i class="fa fa-tags" aria-hidden="true"></i>
-                  <span>Edit Details</span>
-                </div>
-                <div class="action-item">
-                  <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
-                  <span>Edit Configuration</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="store-tr">
-          <div class="store-td store-td-actions">
-            <input type="checkbox" [formControl]="check" />
-          </div>
-          <div class="store-tr-in">
-            <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-            <div class="store-td">60 Packs</div>
-            <div class="store-td">40 Packs</div>
-            <div class="store-td">5 Packs</div>
-            <div class="store-td">#10/Pack</div>
-            <div class="store-td">#20,000 </div>
-            <div class="store-td">
-              <div class="tbl-status status-red">Rejected</div>
-            </div>
-          </div>
-          <div class="store-td store-td-actions">
-            <div class="table-list col-xs-1 action-placeholder">
-              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-              <div class="action-container shadow-RB">
-                <div class="action-item">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                  <span>Adjust Stock</span>
-                </div>
-                <div class="action-item">
-                  <i class="fa fa-tags" aria-hidden="true"></i>
-                  <span>Edit Details</span>
-                </div>
-                <div class="action-item">
-                  <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
-                  <span>Edit Configuration</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="store-tr">
-          <div class="store-td store-td-actions">
-            <input type="checkbox" [formControl]="check" />
-          </div>
-          <div class="store-tr-in">
-            <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-            <div class="store-td">60 Packs</div>
-            <div class="store-td">40 Packs</div>
-            <div class="store-td">5 Packs</div>
-            <div class="store-td">#10/Pack</div>
-            <div class="store-td">#20,000 </div>
-            <div class="store-td">
-              <div class="tbl-status status-green">Accepted</div>
-            </div>
-          </div>
-          <div class="store-td store-td-actions">
-            <div class="table-list col-xs-1 action-placeholder">
-              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-              <div class="action-container shadow-RB">
-                <div class="action-item">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                  <span>Adjust Stock</span>
-                </div>
-                <div class="action-item">
-                  <i class="fa fa-tags" aria-hidden="true"></i>
-                  <span>Edit Details</span>
-                </div>
-                <div class="action-item">
-                  <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
-                  <span>Edit Configuration</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="store-tr">
-          <div class="tbl-cont-cta"><i class="fa fa-plus"></i> Add Another Item</div>
-        </div>
-      </div>
-    </div>
-    <!-- <app-apmis-pagination></app-apmis-pagination> -->
-  </div>
-</div>
-<div class="tbl-sect-wrap">
   <div class="date-sent">
     <span>Date Sent:</span>
-    <div class="val">23/10/2018</div>
+    <div class="val">{{item.createdAt|date:'short'}}</div>
   </div>
   <div class="store-table">
     <div class="store-thead">
@@ -294,19 +159,20 @@
 
     <div class="store-tbody">
       <div class="store-pre-tr">
-        <div class="store-tr">
+        <div class="store-tr" *ngFor="let stock of item.inventoryTransferTransactions">
           <div class="store-td store-td-actions">
             <input type="checkbox" [formControl]="check" />
           </div>
           <div class="store-tr-in">
-            <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-            <div class="store-td">60 Packs</div>
-            <div class="store-td">40 Packs</div>
-            <div class="store-td">5 Packs</div>
-            <div class="store-td">#10/Pack</div>
-            <div class="store-td">#20,000 </div>
+            <div class="store-td">{{stock.productObject.name}}</div>
+            <div class="store-td">{{stock.availableQuantity}} {{stock.productObject.baseItem.name}}</div>
+            <div class="store-td">{{stock.quantityOnHold}} {{stock.productObject.baseItem.name}}</div>
+            <div class="store-td">{{stock.quantity}} {{stock.productObject.baseItem.name}}</div>
+            <div class="store-td">#{{stock.costPrice}}/{{stock.productObject.baseItem.name}}</div>
+            <div class="store-td">#{{stock.lineCostPrice}} </div>
             <div class="store-td">
-              <div class="tbl-status status-green">Accepted</div>
+              <div class="tbl-status status-green" *ngIf="stock.transferStatusObject.name ==='Completed'">{{stock.transferStatusObject.name}}</div>
+              <div class="tbl-status status-red" *ngIf="stock.transferStatusObject.name ==='Pending'">{{stock.transferStatusObject.name}}</div>
             </div>
           </div>
           <div class="store-td store-td-actions">
@@ -315,85 +181,11 @@
               <div class="action-container shadow-RB">
                 <div class="action-item">
                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                  <span>Adjust Stock</span>
+                  <span>Edit</span>
                 </div>
                 <div class="action-item">
                   <i class="fa fa-tags" aria-hidden="true"></i>
-                  <span>Edit Details</span>
-                </div>
-                <div class="action-item">
-                  <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
-                  <span>Edit Configuration</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="store-tr">
-          <div class="store-td store-td-actions">
-            <input type="checkbox" [formControl]="check" />
-          </div>
-          <div class="store-tr-in">
-            <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-            <div class="store-td">60 Packs</div>
-            <div class="store-td">40 Packs</div>
-            <div class="store-td">5 Packs</div>
-            <div class="store-td">#10/Pack</div>
-            <div class="store-td">#20,000 </div>
-            <div class="store-td">
-              <div class="tbl-status status-red">Rejected</div>
-            </div>
-          </div>
-          <div class="store-td store-td-actions">
-            <div class="table-list col-xs-1 action-placeholder">
-              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-              <div class="action-container shadow-RB">
-                <div class="action-item">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                  <span>Adjust Stock</span>
-                </div>
-                <div class="action-item">
-                  <i class="fa fa-tags" aria-hidden="true"></i>
-                  <span>Edit Details</span>
-                </div>
-                <div class="action-item">
-                  <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
-                  <span>Edit Configuration</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="store-tr">
-          <div class="store-td store-td-actions">
-            <input type="checkbox" [formControl]="check" />
-          </div>
-          <div class="store-tr-in">
-            <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-            <div class="store-td">60 Packs</div>
-            <div class="store-td">40 Packs</div>
-            <div class="store-td">5 Packs</div>
-            <div class="store-td">#10/Pack</div>
-            <div class="store-td">#20,000 </div>
-            <div class="store-td">
-              <div class="tbl-status status-green">Accepted</div>
-            </div>
-          </div>
-          <div class="store-td store-td-actions">
-            <div class="table-list col-xs-1 action-placeholder">
-              <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-              <div class="action-container shadow-RB">
-                <div class="action-item">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                  <span>Adjust Stock</span>
-                </div>
-                <div class="action-item">
-                  <i class="fa fa-tags" aria-hidden="true"></i>
-                  <span>Edit Details</span>
-                </div>
-                <div class="action-item">
-                  <i class="fa fa-calendar-plus-o" aria-hidden="true"></i>
-                  <span>Edit Configuration</span>
+                  <span>Remove</span>
                 </div>
               </div>
             </div>
