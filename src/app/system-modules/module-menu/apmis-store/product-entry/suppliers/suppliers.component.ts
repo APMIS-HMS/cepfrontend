@@ -1,3 +1,4 @@
+import { FormControl } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { SupplierService } from 'app/services/facility-manager/setup';
 import { Facility } from 'app/models';
@@ -15,10 +16,18 @@ export class SuppliersComponent implements OnInit {
 	selectedFacility: any;
 	suppliers: any[] = [];
 	selectedSupplier: any;
+	fromDate: FormControl;
+	toDate: FormControl;
+	pendingFromDate: FormControl;
+	pendingToDate: FormControl;
 
 	constructor(private supplierService: SupplierService, private _locker: CoolLocalStorage) {}
 
 	ngOnInit() {
+		this.fromDate = new FormControl(new Date().toISOString().substring(0, 10));
+		this.toDate = new FormControl(new Date().toISOString().substring(0, 10));
+		this.pendingFromDate = new FormControl(new Date().toISOString().substring(0, 10));
+		this.pendingToDate = new FormControl(new Date().toISOString().substring(0, 10));
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
 		// this.getSuppliers();
 	}
