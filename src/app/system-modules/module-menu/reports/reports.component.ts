@@ -7,7 +7,10 @@ import { Router } from '@angular/router';
 	styleUrls: [ './reports.component.scss' ]
 })
 export class ReportsComponent implements OnInit {
-	constructor(private _router: Router) {}
+	constructor(private _router: Router) {
+	}
 
-	ngOnInit() {}
+	ngOnInit() {
+
+	}
 }

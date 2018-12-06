@@ -26,6 +26,7 @@ export class AddPatientProblemComponent implements OnInit {
   noteFormCtrl: FormControl;
   filteredStates: any;
   orderStatuses: any[] = [];
+  createdBy: string = '';
 
   mainErr = true;
   errMsg = 'you have unresolved errors';
@@ -56,6 +57,7 @@ export class AddPatientProblemComponent implements OnInit {
       this.getOrderStatuses();
       this.getPersonDocumentation();
       this.getForm();
+      this.getCreatedBy();
     });
 
   }
@@ -102,7 +104,7 @@ export class AddPatientProblemComponent implements OnInit {
         }
       }
 
-    })
+    });
   }
   getOrderStatuses() {
     this.orderStatuses = [
@@ -127,6 +129,11 @@ export class AddPatientProblemComponent implements OnInit {
     this.closeModal.emit(true);
   }
 
+  getCreatedBy(): string {
+      this.createdBy = this.loginEmployee.personDetails.title + ' ' + this.loginEmployee.personDetails.lastName + ' '
+      + this.loginEmployee.personDetails.firstName;
+      return this.createdBy;
+  }
 
   statusDisplayFn(status: any): string {
     return status ? status.name : status;
@@ -162,8 +169,7 @@ export class AddPatientProblemComponent implements OnInit {
               status: problemByName[0].status,
               displayStatus: true,
               history: [{
-                  createdBy: this.loginEmployee.personDetails.title + ' ' + this.loginEmployee.personDetails.lastName + ' '
-                              + this.loginEmployee.personDetails.firstName,
+                  createdBy: this.createdBy,
                   note: this.noteFormCtrl.value,
                   status: {
                     _id: 1,
@@ -174,7 +180,7 @@ export class AddPatientProblemComponent implements OnInit {
             };
             documentation.document.body.problems[problemIndex] = update;
           } else {
-            // The problem does not exist in , so this adds a new problem to the problems array
+            // The problem does not exist in the database, so this adds a new problem to the problems array
             documentation.document.body.problems.push({
               problem: this.problemFormCtrl.value,
               status: this.statusFormCtrl.value,
@@ -198,7 +204,7 @@ export class AddPatientProblemComponent implements OnInit {
     });
     if (!isExisting) {
       const doc: PatientDocumentation = <PatientDocumentation>{};
-      doc.createdBy = this.loginEmployee.personDetails.title + ' ' + this.loginEmployee.personDetails.lastName + ' ' + this.loginEmployee.personDetails.firstName;
+      doc.createdBy = this.createdBy;
       doc.facilityId = this.selectedFacility._id;
       doc.facilityName = this.selectedFacility.name;
       doc.patientId = this.patient._id,

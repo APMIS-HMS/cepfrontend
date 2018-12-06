@@ -1,0 +1,277 @@
+<div class="supplierBase">
+  <!-- <div class="suppSearch">
+    <div class="src-content">
+      <div class="src-item src-input-wrap">
+        <img class="src-ico" src="assets/images/report_icons/search-small.svg" />
+        <input class="src-input" type="text">
+      </div>
+      <ul>
+        <li class="src-item">
+          <h3>SIDMACH Medical Suppliers </h3>
+          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
+        </li>
+        <li class="src-item">
+          <h3>SIDMACH Medical Suppliers </h3>
+          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
+        </li>
+        <li class="src-item">
+          <h3>SIDMACH Medical Suppliers </h3>
+          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
+        </li>
+        <li class="src-item">
+          <h3>SIDMACH Medical Suppliers </h3>
+          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
+        </li>
+        <li class="src-item selected-li">
+          <h3>SIDMACH Medical Suppliers </h3>
+          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
+        </li>
+        <li class="src-item">
+          <h3>SIDMACH Medical Suppliers </h3>
+          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
+        </li>
+        <div class="ul-action">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+          <span>Add Supplier</span>
+        </div>
+      </ul>
+    </div>
+  </div> -->
+  <app-apmis-store-supplier-search (emitCurrentPage)="loadCurrentPage($event)"></app-apmis-store-supplier-search>
+  <div *ngIf="main_content" class="contentLeftGrid">
+    <div class="tbl-btn-action" (click)="onShowNewSupplier()">
+      <div class="action-pad">
+        <div class="new-btn-blue">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+          <span>Add New Supplier</span>
+        </div>
+      </div>
+    </div>
+    <div class="lst-inner-wrap">
+      <div class="con-inner-wrap">
+        <h4>Supplier</h4>
+        <h2>{{selectedSupplier?.supplier.name}}</h2>
+      </div>
+      <div class="con-inner">
+        <div class="fa-icon">
+          <i class="fa fa-pencil-square-o fa-2x"></i>
+          <span>Edit</span>
+        </div>
+        <div>
+          <i class="fa fa-pencil-square-o fa-2x"></i>
+          <span>Delete</span>
+        </div>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="lst-inner-wrap x2">
+      <div class="con-inner-wrap">
+        <h4>Contacts</h4>
+        <h2>{{selectedSupplier?.supplier.contactPerson}}</h2>
+      </div>
+      <div class="con-inner-wrap">
+        <h4>Phone </h4>
+        <h2>{{selectedSupplier?.supplier.primaryContactPhoneNo}}</h2>
+      </div>
+      <div class="con-inner-wrap">
+        <h4>Email</h4>
+        <h2>{{selectedSupplier?.supplier.email}}</h2>
+      </div>
+    </div>
+    <div class="lst-inner-wrap">
+      <div class="con-inner-wrap">
+        <h4>Contact Address</h4>
+        <h2>{{selectedSupplier?.supplier.address}}</h2>
+      </div>
+    </div>
+
+    <hr>
+
+    <div class="filterTop x2">
+      <div class="tbl-header-lhs">
+        <h2>Invoices</h2>
+      </div>
+      <div class="tbl-header-rhs">
+        <div>
+          <h3>Show from:</h3>
+        </div>
+        <div class="InputGroup input-space" style="width: 125px !important;">
+          <input [formControl]="fromDate" class="customInput" type="date" required>
+          <span class="highlight"></span>
+        </div>
+        <div>
+          <span>--</span>
+        </div>
+        <div class="InputGroup input-space" style="width: 125px !important;">
+          <input [formControl]="toDate" class="customInput" type="date" required>
+          <span class="highlight"></span>
+        </div>
+      </div>
+      <div class="tbl-header-rhs">
+        <div>
+          <h3>Show:</h3>
+        </div>
+        <div class="ft-btn ft-btn-selected">
+          <span>All</span>
+        </div>
+        <div class="ft-btn">
+          <span>Unpaid</span>
+        </div>
+        <div class="ft-btn">
+          <span>Partial payment</span>
+        </div>
+        <div class="ft-btn">
+          <span>Paid</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="store-table">
+      <div class="store-thead">
+        <div class="store-tr">
+          <div class="store-th store-td-actions">
+            <input type="checkbox">
+          </div>
+          <div class="invoice-tr-in">
+            <div class="store-th">Invoices</div>
+            <div class="store-th">Invoice Date</div>
+            <div class="store-th">Status</div>
+            <div class="store-th">Amount</div>
+            <div class="store-th">Action</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="store-tbody">
+        <div class="store-pre-tr">
+          <div class="store-tr">
+            <div class="store-td store-td-actions">
+              <input type="checkbox">
+            </div>
+            <div class="invoice-tr-in">
+              <div class="store-td">VCE1290</div>
+              <div class="store-td">02/11/2019</div>
+              <div class="store-td green-lbl">Paid</div>
+              <div class="store-td">#300,000</div>
+              <div class="store-td">
+                <div class="inv-action">
+                  <div (click)="viewInvoice()" class="ft-btn btn-act-margin">
+                    <span>View Invoice</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="store-tr">
+            <div class="store-td store-td-actions">
+              <input type="checkbox">
+            </div>
+            <div class="invoice-tr-in">
+              <div class="store-td">ICE1234</div>
+              <div class="store-td">02/11/2019</div>
+              <div class="store-td red-lbl">Unpaid</div>
+              <div class="store-td">#300,000</div>
+              <div class="store-td">
+                <div class="inv-action">
+                  <div class="ft-btn btn-act-margin">
+                    <span>View Invoice</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="store-tr">
+            <div class="store-td store-td-actions">
+              <input type="checkbox">
+            </div>
+            <div class="invoice-tr-in">
+              <div class="store-td">INV7890</div>
+              <div class="store-td">02/11/2019</div>
+              <div class="store-td orange-lbl">Partial Payment</div>
+              <div class="store-td">#20,000 of #240,000</div>
+              <div class="store-td">
+                <div class="inv-action">
+                  <div class="ft-btn btn-act-margin">
+                    <span>View Invoice</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="div-space"></div>
+
+    <div class="filterTop x2">
+      <div class="tbl-header-lhs">
+        <h2>Pending Orders</h2>
+      </div>
+      <div class="tbl-header-rhs">
+        <div>
+          <h3>Show from:</h3>
+        </div>
+        <div class="InputGroup input-space" style="width: 125px !important;">
+          <input [formControl]="pendingFromDate" class="customInput" type="date" required>
+          <span class="highlight"></span>
+        </div>
+        <div>
+          <span>--</span>
+        </div>
+        <div class="InputGroup input-space" style="width: 125px !important;">
+          <input [formControl]="pendingToDate" class="customInput" type="date" required>
+          <span class="highlight"></span>
+        </div>
+      </div>
+      <div class="tbl-header-rhs">
+        <div>
+          <h3>Show:</h3>
+        </div>
+        <div class="ft-btn ft-btn-selected">
+          <span>All</span>
+        </div>
+        <div class="ft-btn">
+          <span>Unpaid</span>
+        </div>
+        <div class="ft-btn">
+          <span>Partial payment</span>
+        </div>
+        <div class="ft-btn">
+          <span>Paid</span>
+        </div>
+      </div>
+    </div>
+    <hr>
+    <div class="pur-wrap">
+      <div class="pur-con-wrap">
+        <span>Date Generated</span>
+        <h3>Tuesday 27th November 2018</h3>
+      </div>
+      <div class="pur-con-wrap">
+        <span>Status</span>
+        <h3>Pending</h3>
+      </div>
+      <div class="pur-con-wrap">
+        <span>Action</span>
+        <div class="ft-btn">
+          <span>View Purchase Items</span>
+        </div>
+      </div>
+    </div>
+    <hr>
+  </div>
+  <div *ngIf="showNewSupplier">
+    <app-new-supplier></app-new-supplier>
+  </div>
+
+
+
+
+  <div *ngIf="showViewInvoice" class="modal-overlay">
+    <app-view-invoice (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-view-invoice>
+  </div>

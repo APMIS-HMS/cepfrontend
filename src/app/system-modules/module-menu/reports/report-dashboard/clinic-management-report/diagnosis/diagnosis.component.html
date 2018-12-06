@@ -6,14 +6,13 @@
     </div>
     <div class="row">
       <div class="dr-wrap survery">
-        <app-date-range></app-date-range>
+        <app-date-range [dateRange]="dateRange" (dateRangeChange)="setDiagnosisByDateRange($event)"></app-date-range>
       </div>
       <div class="dropdown-container">
         <mat-form-field>
-          <mat-select placeholder="Filter By Clinic">
-            <mat-option value="option">General Clinic</mat-option>
-            <mat-option value="option1">Cardiology Clinic</mat-option>
-            <mat-option value="option2">Optometric Clinic</mat-option>
+          <mat-select placeholder="Filter By Clinic" (change)="setSearchFilter($event.value)">
+              <mat-option value="All">All</mat-option>
+            <mat-option [value]="item._id" *ngFor="let item of facilityClinics" >{{item.name}}</mat-option>
           </mat-select>
         </mat-form-field>
       </div>
@@ -35,24 +34,23 @@
                 </tr>
             </thead>
   
-            <tbody>
-                <tr class="th-xxx">
-                    <td>1</td>
-                    <td>LT/777/10B</td>
-                    <td> Male  </td>
-                    <td>65 Year Old</td>
-                    <td>Mal/887</td>
-                    <td>General OPD</td>
-                </tr>
-                <tr class="th-xxx">
-                    <td>2</td>
-                    <td>LT/767/14F</td>
-                    <td> Male  </td>
-                    <td>45 Year Old</td>
-                    <td>HIV/0-047</td>
-                    <td>Cardiology</td>
+            <tbody *ngIf="!isDiagnosisLoading">
+                <span *ngIf="filteredDiagnosis.length < 1"><i>There are currently no records to show</i></span>
+                <tr class="th-xxx" *ngFor="let item of filteredDiagnosis;let i = index">
+                    <td>{{i+1}}</td>
+                    <td>{{item.hospitalNumber}}</td>
+                    <td>{{item.sex}}</td>
+                    <td>{{item.age}}</td>
+                    <td>{{item.diagnosisCode}}</td>
+                    <td>{{item.clinic}}</td>
                 </tr>
             </tbody>
+            <tbody *ngIf="isDiagnosisLoading">
+              <tr class="th-xxx">
+                  <td></td><td></td><td></td>
+                  <td><div><i class="fa fa-spinner fa-spin"></i></div></td>
+              </tr>
+          </tbody>
         </table>
         <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
           </mat-paginator>

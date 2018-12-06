@@ -3,9 +3,8 @@
 
 <div class="doc-mainWrap">
     <div class="doc-contentArea">
-        <div class="tbl-listWrap">
-            <div class="sect-title">
-                <!-- {{treatmentSheetData?.problem?.problem}} -->
+        <!-- <div class="tbl-listWrap">
+            <div class="sect-title">              
                 <mat-form-field style="width: 350px !important;">
                     <mat-select [formControl]="problemFormControl" placeholder="Select Patient Problem">
                         <mat-option *ngFor="let item of treatmentSheetItems" [value]="item">
@@ -19,10 +18,10 @@
                     <h3>**** Note: {{treatmentSheetData?.problem?.note}} ****</h3>
                 </div>
             </div>
-        </div>
+        </div> -->
 
-        <div *ngIf="!treatmentSheetData?.completed">
-            <div *ngIf="problemFormControl.valid" (click)="onEditTreatmentSheet()" class="act-wrap">
+        <div *ngIf="!treatmentSheetData.completed && treatmentSheetData.completed !== undefined">
+            <div (click)="onEditTreatmentSheet()" class="act-wrap">
                 <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                 <span>Edit Treatment Sheet</span>
             </div>
@@ -35,14 +34,13 @@
 
                     <!-- MEdication -->
                     <div class="col-sm-12 sheet-column">
-                        <div class="row sheet-table-list sheet-sub-header">
-                            <div class="col-sm-8" (click)="showMedication()">
+                        <div class="row sheet-table-list sheet-sub-header" (click)="showMedication()">
+                            <div class="col-sm-8">
                                 Medication
                             </div>
-                            <!-- <div class="col-sm-3" (click)="showMedication()">
-                                Item Count ()
-                                {{binding goes here}}
-                            </div> -->
+                            <div class="col-sm-3">
+                                Item Count ({{treatmentSheet?.medications?.length}})
+                            </div>
                         </div>
                         <div *ngIf="toggleMedication">
                             <div class="row sheet-table-list">
@@ -118,9 +116,12 @@
                     <br>
                     <!-- investigation -->
                     <div class="col-sm-12 sheet-column">
-                        <div class="row sheet-table-list sheet-sub-header">
-                            <div class="col-sm-8" (click)="showInvestigation()">
+                        <div class="row sheet-table-list sheet-sub-header" (click)="showInvestigation()">
+                            <div class="col-sm-8">
                                 Investigations
+                            </div>
+                            <div class="col-sm-3">
+                                Item Count ({{treatmentSheet?.investigations?.length}})
                             </div>
                         </div>
                         <div *ngIf="toggleInvestigation">
@@ -179,9 +180,12 @@
 
                     <!-- Procedure -->
                     <div class="col-sm-12 sheet-column">
-                        <div class="row sheet-table-list sheet-sub-header">
-                            <div class="col-sm-8" (click)="showProcedure()">
+                        <div class="row sheet-table-list sheet-sub-header" (click)="showProcedure()">
+                            <div class="col-sm-8">
                                 Procedure
+                            </div>
+                            <div class="col-sm-3">
+                                Item Count ({{treatmentSheet?.procedures?.length}})
                             </div>
                         </div>
                         <div *ngIf="toggleProcedure">
@@ -237,9 +241,12 @@
 
                     <!-- Nursing Care -->
                     <div class="col-sm-12 sheet-column">
-                        <div class="row sheet-table-list sheet-sub-header">
-                            <div class="col-sm-8" (click)="showNursingCare()">
+                        <div class="row sheet-table-list sheet-sub-header" (click)="showNursingCare()">
+                            <div class="col-sm-8">
                                 Nursing Care
+                            </div>
+                            <div class="col-sm-3">
+                                Item Count ({{treatmentSheet?.nursingCares?.length}})
                             </div>
                         </div>
                         <div *ngIf="toggleNurseingCare">
@@ -302,9 +309,12 @@
                     <br>
                     <!-- Physician Order -->
                     <div class="col-sm-12 sheet-column">
-                        <div class="row sheet-table-list sheet-sub-header">
-                            <div class="col-sm-8" (click)="showPhysicianOrder()">
+                        <div class="row sheet-table-list sheet-sub-header" (click)="showPhysicianOrder()">
+                            <div class="col-sm-8">
                                 Physician Order
+                            </div>
+                            <div class="col-sm-3">
+                                Item Count ({{treatmentSheet?.physicianOrders?.length}})
                             </div>
                         </div>
                         <div *ngIf="togglePhysicianOrder">

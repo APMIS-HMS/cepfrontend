@@ -31,11 +31,11 @@
         </form>
         <div class="epayment-box">
             <div *ngIf="flutterwavePayment">
-                <angular-4-flutterwave [amount]="paymentFormGroup.controls['fundAmount'].value" [customer_email]="patient.personDetails.email" [PBFPubKey]="flutterwaveClientKey" [txref]="refKey" [currency]="'NGN'" [country]="'NG'" [payment_method]="'card'" [custom_title]="'APMIS'"
+                <angular-4-flutterwave [amount]="paymentFormGroup.controls['fundAmount'].value" [customer_email]="(patient.personDetails.email===undefined)?patient.personDetails.apmisId+'@apmis.ng':patient.personDetails.email" [PBFPubKey]="flutterwaveClientKey" [txref]="refKey" [currency]="'NGN'" [country]="'NG'" [payment_method]="'card'" [custom_title]="'APMIS'"
                     [btnColor]="'btn-blue'" [custom_description]="" [exclude_banks]="" (close)="paymentCancel();" (callback)="paymentDone($event);"></angular-4-flutterwave>
             </div>
             <div *ngIf="paystackPayment">
-                <angular4-paystack [key]="paystackClientKey" [email]="patient.personDetails.email" [amount]="paymentFormGroup.controls[ 'fundAmount'].value*100" [ref]="refKey" [class]=" 'btn btn-primary btn-medium btn-blue' " (close)="paymentCancel() " (callback)="paymentDone($event) ">Paystack</angular4-paystack>
+                <angular4-paystack [key]="paystackClientKey" [email]="(patient.personDetails.email===undefined)?patient.personDetails.apmisId+'@apmis.ng':patient.personDetails.email" [amount]="paymentFormGroup.controls[ 'fundAmount'].value*100" [ref]="refKey" [class]=" 'btn btn-primary btn-medium btn-blue' " (close)="paymentCancel() " (callback)="paymentDone($event) ">Paystack</angular4-paystack>
             </div>
             <div *ngIf="cashPayment">
                 <button (click)="fundWalletViaCashPayment(paymentFormGroup.valid, paymentFormGroup.value); " [disabled]="disableBtn " class="btn btn-primary ">

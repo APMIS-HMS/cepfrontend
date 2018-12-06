@@ -74,6 +74,10 @@ textarea {
     font-size: 1.2rem;
 }
 
+.bold {
+    font-weight: bold;
+}
+
 .clickable-ico {
     cursor: pointer;
     margin: 0 20px;
@@ -1727,6 +1731,9 @@ ul.topmenuwrap li:hover {
     font-size: 1.6rem;
     color: #0288D1;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .action-placeholder:hover {
@@ -1741,7 +1748,7 @@ ul.topmenuwrap li:hover {
     width: auto;
     min-width: 190px;
     right: 0;
-    top: 50%;
+    top: 100%;
     text-align: left;
     font-size: 1.2rem;
     color: #333;
@@ -2465,6 +2472,7 @@ button,
     text-align: center;
     font-size: 1.1rem;
     color: #fff;
+    z-index: 10;
 }
 
 @media only screen and (max-width: 900px) {
@@ -2632,4 +2640,420 @@ button,
 
 .txt-transparent {
     color: transparent !important;
+}
+
+.apmis-pagination {
+    display: flex;
+
+    .pg-child {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        font-size: 12px;
+        color: #000;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 1px solid #828282;
+        margin: 10px;
+        cursor: pointer;
+
+        i {
+            font-size: 20px;
+        }
+    }
+
+    .pg-child:hover {
+        border: 1px solid #337AB7;
+        color: #337AB7;
+    }
+
+    .active-page {
+        background: #337AB7;
+        color: #fff !important;
+    }
+}
+
+
+// New modal css
+.new-modal {
+    animation-name: pulse;
+    animation-duration: 0.25s;
+    animation-fill-mode: both;
+}
+
+.new-modal-wrap {
+    position: relative;
+    padding: 10px;
+    box-sizing: border-box;
+    background: #fff;
+    border-radius: 10px 10px 0px 0px;
+    padding: 20px;
+}
+
+.new-modal-close-ico {
+    cursor: pointer;
+    position: absolute;
+    z-index: 1;
+    top: 15px;
+    right: 20px;
+    font-size: 1.6rem;
+    color: rgb(0, 0, 0);
+    padding: 5px;
+}
+
+.new-modal_title {
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 2rem;
+    color: #0288D1;
+    text-align: left;
+    padding-left: 5px;
+}
+
+.new-modal-baseWrap {
+    position: relative;
+    min-width: 380px;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #fff;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+// Custom Drop-Down
+.dropDown-container {
+    font-size: 13px;
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.dropDown-container .select {
+    width: auto;
+    background-position: 80% center;
+}
+
+.dropDown-container .select select,
+.customInput,
+.customTextarea {
+    background: transparent;
+    line-height: 1;
+    border: 0;
+    border-radius: 0;
+    padding: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+    font-size: 16px;
+    outline: 0;
+}
+
+//   Custom Input
+.customInput {
+    display: block;
+    border-bottom: 1px solid #ddd;
+}
+
+.input-group-x2 {
+    display: flex;
+    justify-content: space-between;
+
+    .dropDown-container,
+    .InputGroup,
+        {
+        width: 47% !important;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+    }
+
+    .InputGroup-textarea {
+        width: 100% !important;
+        min-height: 120px;
+    }
+}
+
+.InputGroup{ 
+    position:relative; 
+    padding-bottom: 10px;
+}
+
+.apmis-search {
+    width: 47% !important;
+}
+
+.customTextarea {
+    display: block;
+    min-height: 70px;
+    outline: 0;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .customInput:focus{ outline:none; }
+  .customLabel{
+    color:#000; 
+    font-size:16px;
+    font-weight:normal;
+    position:absolute;
+    pointer-events:none;
+    top:10px;
+    transition:0.2s ease all; 
+    -moz-transition:0.2s ease all; 
+    -webkit-transition:0.2s ease all;
+  }
+  
+  .customInput:focus ~ .customLabel, .customInput:valid ~ .customLabel {
+    top:-12px;
+    font-size:12px;
+    color:#5264AE;
+  }
+
+  .highlight {
+    position:absolute;
+    height:60%; 
+    width:100px; 
+    top:25%; 
+    left:0;
+    pointer-events:none;
+    opacity:0.5;
+  }
+  .customInput:focus ~ .highlight {
+    -webkit-animation:inputHighlighter 0.3s ease;
+    -moz-animation:inputHighlighter 0.3s ease;
+    animation:inputHighlighter 0.3s ease;
+  }
+  
+  @-webkit-keyframes inputHighlighter {
+      from { background:#5264AE; }
+    to 	{ width:0; background:transparent; }
+  }
+  @-moz-keyframes inputHighlighter {
+      from { background:#5264AE; }
+    to 	{ width:0; background:transparent; }
+  }
+  @keyframes inputHighlighter {
+      from { background:#5264AE; }
+    to 	{ width:0; background:transparent; }
+  }
+
+
+.customInput:focus {
+    outline: none;
+}
+
+.customLabel {
+    color: #000;
+    font-size: 16px;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    top: 10px;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+}
+
+.customInput:focus~.customLabel {
+    top: -12px;
+    font-size: 12px;
+    color: #5264AE;
+}
+
+.highlight {
+    position: absolute;
+    height: 60%;
+    width: 100px;
+    top: 25%;
+    left: 0;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.customInput:focus~.highlight {
+    -webkit-animation: inputHighlighter 0.3s ease;
+    -moz-animation: inputHighlighter 0.3s ease;
+    animation: inputHighlighter 0.3s ease;
+}
+
+@-webkit-keyframes inputHighlighter {
+    from {
+        background: #5264AE;
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@-moz-keyframes inputHighlighter {
+    from {
+        background: #5264AE;
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@keyframes inputHighlighter {
+    from {
+        background: #5264AE;
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+
+.new-btn-blue {
+    border: 1px solid #0288D1;
+    color: #0288D1;
+    font-size: 12px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    height: 0px;
+    cursor: pointer;
+    i,
+    span {
+        padding-right: 5px;
+    }
+}
+
+.new-btn-solid-blue {
+    color: white;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    background: #337AB7;
+    height: 0px;
+    .disabled {
+        cursor: not-allowed;
+        background: gray;
+      }
+    i,
+    span {
+        padding-right: 5px;
+    }
+}
+
+.toggle-base-wrap {
+    display: flex;
+    border-radius: 5px;
+    border: 1px solid #bebebe;
+    width: 200px;
+    justify-content: center;
+}
+
+.toggle-wrap {
+    position: relative;
+    width: fit-content;
+    max-height: 15px;
+    padding: 9px;
+    margin: 1px;
+    font-size: 1.2rem;
+    text-align: center;
+    justify-content: space-around;
+    cursor: pointer;
+}
+
+// Product Search
+.search-container {
+    display: flex;
+}
+
+.searchproduct {
+    width: 30%;
+    position: relative;
+    margin-bottom: 10px;
+    margin-right: 50px !important;
+}
+
+.search-sugestions {
+    position: absolute;
+    top: 105%;
+    width: 100%;
+    min-height: 35px;
+    max-height: 450px;
+    background: #fff;
+    border: 1px solid #eee;
+    z-index: 2;
+    overflow: auto;
+}
+
+.search-sugestion {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    cursor: pointer;
+    overflow: auto;
+}
+
+.search-sugestion:hover {
+    background: #eee;
+}
+
+.search-noResult {
+    background: rgba(255, 0, 0, 0.19);
+    border: none;
+    border-radius: 2px;
+    text-align: center;
+    height: 30px;
+
+    span {
+        font-size: 12px;
+        line-height: 30px;
+        text-align: center;
+        align-self: center;
+        color: #FF3838
+    }
+}
+
+
+.search-noResult-blue {
+    background: #0288d1;
+    border: none;
+    border-radius: 2px;
+    text-align: center;
+    height: 30px;
+
+    span {
+        font-size: 12px;
+        line-height: 30px;
+        text-align: center;
+        align-self: center;
+        color: #ffffff; //#03A9F4;
+    }
+
+    i {
+        color: #09229b; // rgb(0, 110, 253);
+        cursor: pointer;
+        font-weight: bold;
+    }
+}
+
+.sv-btn-container {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.suppSearch{
+    overflow: auto;
+    display: block;
+    position: relative;
+    border-right: 1px solid #C4C4C4;
 }
