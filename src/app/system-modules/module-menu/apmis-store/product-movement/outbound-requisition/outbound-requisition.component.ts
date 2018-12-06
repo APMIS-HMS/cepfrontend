@@ -51,8 +51,6 @@ export class OutboundRequisitionComponent implements OnInit {
          });
      }
      
-     
-     
   }
   
   findProductInStore(searchText : string)
@@ -60,6 +58,7 @@ export class OutboundRequisitionComponent implements OnInit {
       // 
       
       const selectedStore : string   =  this.storeName.value;
+      console.log("Selected Store Id  : ", selectedStore, "Facility ID :", this.locService.facilityId);
       if(_.isEmpty(selectedStore))
       {
           alert("Select a Store");
