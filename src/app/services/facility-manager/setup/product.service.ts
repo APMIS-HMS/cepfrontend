@@ -2,9 +2,6 @@ import { Subject } from 'rxjs/Subject';
 import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { ProductPackSize } from 'app/system-modules/module-menu/apmis-store/store-utils/global';
-
 @Injectable()
 export class ProductService {
   public _socket;
@@ -17,9 +14,10 @@ export class ProductService {
   public listenerCreate;
   public listenerUpdate;
   public listenerDelete;
-  private productSubject = new Subject<any[]>();
-  private packSubject: BehaviorSubject<string> = new BehaviorSubject('');
-  private elEventListerner = new Subject<string>();
+	private productConfigChanged = new Subject<any>();
+  productConfigChanged$ = this.productConfigChanged.asObservable();
+  private productConfigUpdated = new Subject<any>();
+  productConfigUpdated$ = this.productConfigUpdated.asObservable();
   constructor(
     private _socketService: SocketService,
     private _restService: RestService
@@ -62,6 +60,7 @@ export class ProductService {
   }
   get(id: string, query: any) {
     return this._socket.get(id, query);
+    //return this._socket.get(id, query);
   }
 
   create(serviceprice: any) {
@@ -79,7 +78,6 @@ export class ProductService {
   patchProductConfig(_id: any, obj: any, params) {
     return this._socketProductConfig.patch(_id, obj, params);
   }
-
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }
@@ -103,6 +101,19 @@ export class ProductService {
   removeReorder(id: string, query: any) {
     return this._socketReorderLevel.remove(id, query);
   }
+  removeProductConfig(id: string, query: any) {
+    return this._socketProductConfig.remove(id, query);
+  }
+  productConfigAnnounced(productConfig: any) {
+		this.productConfigChanged.next(productConfig);
+  }
+  productConfigRecieved(): Observable<any> {
+    return this.productConfigChanged.asObservable();
+  }
+  productConfigUpdateAnnounced(productConfig: any) {
+		this.productConfigUpdated.next(productConfig);
+  }
+  productConfigUpdateRecieved(): Observable<any> {
+    return this.productConfigUpdated.asObservable();
+  }
 }
-
-

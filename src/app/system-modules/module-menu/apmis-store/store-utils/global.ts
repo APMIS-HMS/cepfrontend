@@ -23,6 +23,7 @@ export interface ProductPackSize {
     size: number;
 }
 export interface ProductConfig {
+    _id?: string;
     productId: string;
     productObject: FormularyProduct;
     facilityId: string;
