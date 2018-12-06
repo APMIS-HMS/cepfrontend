@@ -1,5 +1,5 @@
-import { ArrayFunctionHelper } from './../../../../../shared-module/helpers/array-function-helper';
-import { Component, OnInit } from '@angular/core';
+import { Subscription } from 'rxjs/Subscription';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ProductService } from './../../../../../services/facility-manager/setup/product.service';
 import { Facility } from 'app/models';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -11,13 +11,14 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
   templateUrl: './product-conguration.component.html',
   styleUrls: ['./product-conguration.component.scss']
 })
-export class ProductCongurationComponent implements OnInit {
+export class ProductCongurationComponent implements OnInit, OnDestroy {
   currentFacility: Facility = <Facility>{};
   productConfigs = [];
   baseUnit = '';
   selectedProductConfig;
   productConfigLoading = true;
   configToDelete: any = <any>{};
+  subscription: Subscription;
   
   constructor(private productService: ProductService,
     private systemModuleService: SystemModuleService,
@@ -26,7 +27,7 @@ export class ProductCongurationComponent implements OnInit {
     this.currentFacility = <Facility>this.locker.getObject('selectedFacility');
     this.getProductConfigsByFacility();
 
-    this.productService.productConfigRecieved().subscribe(payload => {
+    this.subscription = this.productService.productConfigRecieved().subscribe(payload => {
         this.productConfigs.push(payload);
         const index = this.productConfigs.length - 1;
         this.productConfigs[index].baseUnit = payload.packSizes.filter(y => y.isBase);
@@ -83,5 +84,10 @@ export class ProductCongurationComponent implements OnInit {
              this.getProductConfigsByFacility();
         });
       }
+  }
+  ngOnDestroy() {
+    if (this.subscription !== null) {
+      this.subscription.unsubscribe();
+    }
   }
 }
