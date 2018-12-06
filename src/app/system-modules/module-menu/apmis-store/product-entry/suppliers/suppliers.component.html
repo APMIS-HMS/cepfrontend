@@ -1,6 +1,7 @@
 <div class="supplierBase">
-  <!-- <div class="suppSearch">
-    <div class="src-content">
+  <div class="suppSearch">
+      <app-apmis-store-supplier-search (emitCurrentPage)="loadCurrentPage($event)"></app-apmis-store-supplier-search>
+    <!-- <div class="src-content">
       <div class="src-item src-input-wrap">
         <img class="src-ico" src="assets/images/report_icons/search-small.svg" />
         <input class="src-input" type="text">
@@ -35,13 +36,13 @@
           <span>Add Supplier</span>
         </div>
       </ul>
-    </div>
-  </div> -->
-  <app-apmis-store-supplier-search (emitCurrentPage)="loadCurrentPage($event)"></app-apmis-store-supplier-search>
+    </div> -->
+  </div>
+
   <div *ngIf="main_content" class="contentLeftGrid">
-    <div class="tbl-btn-action" (click)="onShowNewSupplier()">
+    <div class="tbl-btn-action" >
       <div class="action-pad">
-        <div class="new-btn-blue">
+        <div class="new-btn-blue" (click)="onShowNewSupplier()">
           <i class="fa fa-plus" aria-hidden="true"></i>
           <span>Add New Supplier</span>
         </div>
@@ -58,7 +59,7 @@
           <span>Edit</span>
         </div>
         <div>
-          <i class="fa fa-pencil-square-o fa-2x"></i>
+          <i class="fa fa-trash fa-2x"></i>
           <span>Delete</span>
         </div>
       </div>

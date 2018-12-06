@@ -28,3 +28,24 @@
 .con-wrap{
     padding: 0px 50px;
 }
+
+
+.action-placeholder-hr{
+    position: relative;
+    font-size: 1.6rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: flex-end;
+    align-items: end;
+}
+.action-placeholder-hr:hover {
+    .action-container {
+        display: block;
+    }
+}
+
+
+.action-lft{
+    display: flex;
+    justify-content: space-between;
+}

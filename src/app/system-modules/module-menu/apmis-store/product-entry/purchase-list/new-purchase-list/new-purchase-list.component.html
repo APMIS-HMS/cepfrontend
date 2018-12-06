@@ -134,27 +134,7 @@
   </div>
 </div>
 
-
-<div class="tbl-btn-action">
-  <div class="action-pad">
-    <div class="new-btn-blue">
-      <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-      <span>Export</span>
-    </div>
-  </div>
-  <div class="action-pad">
-    <div class="new-btn-blue">
-      <i class="fa fa-envelope-o" aria-hidden="true"></i>
-      <span>E-Mail</span>
-    </div>
-  </div>
-  <div class="action-pad">
-    <div class="new-btn-blue">
-      <i class="fa fa-print" aria-hidden="true"></i>
-      <span>Print</span>
-    </div>
-  </div>
-</div>
+<div class="div-space"></div>
 
 <div class="sel-sup">
   <h3>Add Suppliers to send purchase list to:</h3>
@@ -175,9 +155,9 @@
 
 <div class="supplier-list-wrap">
   <div class="supplier-wrap" *ngFor="let supplier of selectedSuppliers">
-    <div style="display: flex;">
+    <div class="sup-name-wrap">
       <h3>{{supplier.supplier.name}}</h3>
-      <div (click)="removeSupplier(supplier)" class="cls-ico"><i class="fa fa-times-circle" aria-hidden="true"></i></div>
+      <div (click)="removeSupplier(supplier)" class="cls-ico"><i class="fa fa-2x fa-times-circle" aria-hidden="true"></i></div>
     </div>
     <span>{{supplier.supplier.primaryContactPhoneNo}} | {{supplier.supplier.email}}</span>
   </div>
@@ -190,7 +170,14 @@
 <div class="sv-btn-container">
   <h3 class="sel-txt">Send purchase list with {{selectedProducts.length}} items to
     {{selectedLocalStorageSuppliers.length}} suppliers ? </h3>
-  <div (click)="submit()" [class.disabled]="selectedProducts.length === 0" class="new-btn-solid-blue">
-    <span>Send Purchase List</span>
+  <div (click)="submit()"  class="new-btn-solid-blue">
+    <div class="dropDown-container">
+      <div class="select" >
+        <select style="color: white !important; cursor: pointer;" name="dropDown-container" id="dropDown-container">
+          <option style="color: black !important;">Save as Draft</option>
+          <option style="color: black !important;">Save Completely</option>
+        </select>
+      </div>
+    </div>
   </div>
 </div>
