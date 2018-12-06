@@ -1,42 +1,102 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Employee } from 'app/models';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { EmployeeService } from 'app/services/facility-manager/setup';
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
 
 @Component({
-  selector: 'app-purchase-list',
-  templateUrl: './purchase-list.component.html',
-  styleUrls: ['./purchase-list.component.scss']
+	selector: 'app-purchase-list',
+	templateUrl: './purchase-list.component.html',
+	styleUrls: [ './purchase-list.component.scss' ]
 })
 export class PurchaseListComponent implements OnInit {
+	purchaseList = true;
+	newPurcaseList = false;
+	purchaseListDetails = false;
+	back_to_purchaseList = false;
+	subscription: any;
+	checkingStore: any = <any>{};
+	loginEmployee: Employee = <Employee>{};
+	workSpace: any;
+	constructor(
+		private _locker: CoolLocalStorage,
+		private _employeeService: EmployeeService,
+		private authFacadeService: AuthFacadeService
+	) {
+		this.subscription = this._employeeService.checkInAnnounced$.subscribe((res) => {
+			if (!!res) {
+				if (!!res.typeObject) {
+					this.checkingStore = res.typeObject;
+					if (!!this.checkingStore.storeId) {
+						this._locker.setObject('checkingObject', this.checkingStore);
+					}
+				}
+			}
+		});
 
-  purchaseList = true;
-  newPurcaseList = false;
-  purchaseListDetails = false;
-  back_to_purchaseList = false;
-  constructor() { }
+		this.authFacadeService.getLogingEmployee().then((payload: any) => {
+			this.loginEmployee = payload;
+			this.checkingStore = this.loginEmployee.storeCheckIn.find((x) => x.isOn === true);
+			if (this.loginEmployee.storeCheckIn === undefined || this.loginEmployee.storeCheckIn.length === 0) {
+				// this.modal_on = true;
+			} else {
+				let isOn = false;
+				this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+					if (itemr.isDefault === true) {
+						itemr.isOn = true;
+						itemr.lastLogin = new Date();
+						isOn = true;
+						let checkingObject = { typeObject: itemr, type: 'store' };
+						this._employeeService
+							.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn })
+							.then((payload) => {
+								this.loginEmployee = payload;
+								checkingObject = { typeObject: itemr, type: 'store' };
+								this._employeeService.announceCheckIn(checkingObject);
+								this._locker.setObject('checkingObject', checkingObject);
+							});
+					}
+				});
+				if (isOn === false) {
+					this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+						if (r === 0) {
+							itemr.isOn = true;
+							itemr.lastLogin = new Date();
+							this._employeeService
+								.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn })
+								.then((payload) => {
+									this.loginEmployee = payload;
+									const checkingObject = { typeObject: itemr, type: 'store' };
+									this._employeeService.announceCheckIn(checkingObject);
+									this._locker.setObject('checkingObject', checkingObject);
+								});
+						}
+					});
+				}
+			}
+		});
+	}
 
-  ngOnInit() {
+	ngOnInit() {}
 
-  }
+	backPurchaseList() {
+		this.purchaseList = true;
+		this.newPurcaseList = false;
+		this.purchaseListDetails = false;
+		this.back_to_purchaseList = false;
+	}
 
-backPurchaseList(){
-  this.purchaseList = true;
-    this.newPurcaseList = false;
-    this.purchaseListDetails = false;
-    this.back_to_purchaseList = false;
-}
+	showNewPurchaseList() {
+		this.purchaseList = false;
+		this.newPurcaseList = true;
+		this.purchaseListDetails = false;
+		this.back_to_purchaseList = true;
+	}
 
-  showNewPurchaseList(){
-    this.purchaseList = false;
-    this.newPurcaseList = true;
-    this.purchaseListDetails = false;
-    this.back_to_purchaseList = true;
-  }
-
-  showPurchaseListDetail(){
-    this.purchaseList = false;
-    this.newPurcaseList = false;
-    this.purchaseListDetails = true;
-    this.back_to_purchaseList = true;
-  }
-
+	showPurchaseListDetail() {
+		this.purchaseList = false;
+		this.newPurcaseList = false;
+		this.purchaseListDetails = true;
+		this.back_to_purchaseList = true;
+	}
 }

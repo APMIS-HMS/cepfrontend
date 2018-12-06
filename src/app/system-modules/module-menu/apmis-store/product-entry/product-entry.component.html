@@ -10,11 +10,17 @@
 
 
 
-  <div class="tab-content">
-    <app-initialize-store *ngIf="tab_initialize_store"></app-initialize-store>
-    <app-invoice-entry *ngIf="tab_invoice_entry"></app-invoice-entry>
-    <app-purchase-list *ngIf="tab_purchase_list"></app-purchase-list>
-    <app-purchase-order *ngIf="tab_purchase_order"></app-purchase-order>
-    <app-suppliers *ngIf="tab_supplier"></app-suppliers>
+  <div class="tab-content"  *ngIf="tab_initialize_store">
+    <app-initialize-store></app-initialize-store>
   </div>
+  <div class="tab-content" *ngIf="tab_invoice_entry">
+      <app-invoice-entry></app-invoice-entry>
+  </div>
+  <div class="tab-content" *ngIf="tab_purchase_list">
+      <app-purchase-list></app-purchase-list>
+  </div>
+  <div class="tab-content"  *ngIf="tab_purchase_order">
+      <app-purchase-order></app-purchase-order>
+  </div>
+  <app-suppliers *ngIf="tab_supplier"></app-suppliers>
 </div>
