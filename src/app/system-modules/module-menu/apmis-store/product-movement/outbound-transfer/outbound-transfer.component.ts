@@ -5,11 +5,15 @@ import { LocationService } from './../../../../../services/module-manager/setup/
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { StoreService } from './../../../../../services/facility-manager/setup/store.service';
 import { InventoryTransferService } from './../../../../../services/facility-manager/setup/inventory-transfer.service';
+import { InventoryTransferStatusService } from './../../../../../services/facility-manager/setup/inventory-transaction-status.service';
+import { InventoryTransactionTypeService } from './../../../../../services/facility-manager/setup/inventory-transaction-type.service';
+import { InventoryService } from './../../../../../services/facility-manager/setup/inventory.service';
+import { EmployeeService } from './../../../../../services/facility-manager/setup/employee.service';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { Facility, Employee } from 'app/models';
 import { Subscription, ISubscription } from 'rxjs/Subscription';
-import { EmployeeService } from '../../../../../services/facility-manager/setup/index';
 import { AuthFacadeService } from '../../../../service-facade/auth-facade.service';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'app-outbound-transfer',
@@ -21,6 +25,9 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
   check: FormControl = new FormControl();
   storeLocation: FormControl = new FormControl();
   storeName: FormControl = new FormControl();
+  productSearch: FormControl = new FormControl();
+  productQtyRequestSearch: FormControl = new FormControl();
+  productQtyBatch: FormControl = new FormControl();
   selectedFacility: any;
   minorLocations: any = [];
   locations: any = [];
@@ -28,6 +35,10 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
   transferObjs: any = [];
   totalTransferredQties = 0;
   totalTransferredAmount = 0;
+  inventorySearchResults: any = [];
+  selectedProduct: any = {};
+  hideSearchTool = true;
+  hideSearchResultList = true;
   // storeId = '5c043868d585f38d1a730924';
 
   loginEmployee: Employee = <Employee>{};
@@ -36,6 +47,8 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
   isRunningQuery = false;
   subscription: ISubscription;
   showDialog = false;
+  transferItemState: any = <any>{};
+  stockTransferItems: any = <any>{};
 
   constructor(private facilitiesService: FacilitiesService,
     private locationService: LocationService,
@@ -44,15 +57,18 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
     private inventoryTransferService: InventoryTransferService,
     private systemModuleService: SystemModuleService,
     private _employeeService: EmployeeService,
-    private authFacadeService: AuthFacadeService) {
+    private authFacadeService: AuthFacadeService,
+    private inventoryService: InventoryService,
+    private inventoryTransactionTypeService: InventoryTransactionTypeService,
+    private inventoryTransferStatusService: InventoryTransferStatusService) {
     this.subscription = this._employeeService.checkInAnnounced$.subscribe((res) => {
       if (!!res) {
         if (!!res.typeObject) {
           this.checkingStore = res.typeObject;
           console.log(this.checkingStore);
           if (!!this.checkingStore.storeId) {
-            const _id = (this.storeName.value === null) ? null : this.storeName.value._id;
-            this.getSelectedStoreSummations(_id)
+            const _id = (this.storeName.value === null) ? null : this.storeName.value;
+            // this.getSelectedStoreSummations(_id)
           }
         }
       }
@@ -60,6 +76,8 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
       this.checkingStore = this.loginEmployee.storeCheckIn.find((x) => x.isOn === true);
+      const _id = (this.storeName.value === null) ? null : this.storeName.value;
+      // this.getSelectedStoreSummations(_id)
       console.log(this.checkingStore);
       if (this.loginEmployee.storeCheckIn === undefined || this.loginEmployee.storeCheckIn.length === 0) {
         // this.modal_on = true;
@@ -108,9 +126,37 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
       this.getStores();
     });
     this.storeName.valueChanges.subscribe(value => {
-      this.getSelectedStoreSummations(value._id);
+      console.log(value);
+      // this.getSelectedStoreSummations(value);
     });
-    this.getSelectedStoreSummations();
+
+    this.productSearch.valueChanges
+      .debounceTime(400)
+      .distinctUntilChanged()
+      .subscribe(value => {
+        this.selectedProduct = {};
+        this.hideSearchResultList = true;
+        console.log(name);
+        this.inventoryService.findFacilityProductList({
+          query: {
+            facilityId: this.selectedFacility._id,
+            storeId: this.checkingStore.storeId,
+            limit: 10,
+            skip: 0,
+            searchText: value
+
+          }
+        }).then(payload => {
+          console.log(payload);
+          this.inventorySearchResults = payload.data;
+          this.hideSearchResultList = false;
+          console.log(this.inventorySearchResults);
+        }, err => {
+          console.log(err);
+        });
+      });
+
+    this.GetInventoryTransferState();
   }
 
 
@@ -132,7 +178,8 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
 
   getStores() {
     this.systemModuleService.on();
-    this.storeService.find({ query: { facilityId: this.selectedFacility._id, minorLocationId: this.storeLocation.value._id } }).then(payload => {
+    console.log(this.storeLocation.value);
+    this.storeService.find({ query: { facilityId: this.selectedFacility._id, minorLocationId: this.storeLocation.value } }).then(payload => {
       this.stores = payload.data;
       this.systemModuleService.off();
     }, er => {
@@ -150,10 +197,14 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
       storeId: this.checkingStore.storeId,
       destinationStoreId: destinationStoreId
     };
-    if (query.destinationStoreId === null) {
+    if (query.destinationStoreId === null || query.destinationStoreId === undefined) {
       delete query.destinationStoreId;
     }
+    console.log(query, this.checkingStore);
     this.inventoryTransferService.find({ query: query }).then(payload => {
+      this.transferObjs = [];
+      this.totalTransferredAmount = 0;
+      this.totalTransferredQties = 0;
       console.log(payload);
       payload.data.map(x => {
         x.inventoryTransferTransactions.map(y => {
@@ -167,6 +218,46 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
     }, err => {
       this.systemModuleService.off();
     });
+  }
+
+  onAddNewTransItem() {
+    this.hideSearchTool = !this.hideSearchTool;
+  }
+
+  onSelectProduct(item) {
+    console.log(item);
+    if (this.storeName.value !== null) {
+      this.selectedProduct = item;
+      this.hideSearchResultList = true;
+      this.stockTransferItems.transferBy = this.loginEmployee._id;
+      this.stockTransferItems.facilityId = this.selectedFacility._id;
+      this.stockTransferItems.storeId = this.checkingStore.storeId;
+      this.stockTransferItems.inventorytransactionTypeId = this.transferItemState.transferStatus._id;
+      this.stockTransferItems.destinationStoreId = this.storeName.value;
+      item.transactions.map(x => {
+        if (x.costPrice !== undefined) {
+          this.stockTransferItems.inventoryTransferTransactions += x.costPrice;
+        }
+      });
+      this.stockTransferItems.inventoryTransferTransactions = (this.stockTransferItems.transactions === undefined) ? [] : this.stockTransferItems.transactions;
+      this.stockTransferItems.inventoryTransferTransactions.push({
+        transactionId: this.productQtyBatch.value,
+        transferStatusId: this.transferItemState.transferStatus._id,
+        lineCostPrice: (this.productQtyRequestSearch.value * this.selectedProduct.price),
+        costPrice: this.selectedProduct.price,
+        quantity: this.productQtyRequestSearch.value,
+        productObject: {
+          name: item.productName,
+          code: item.productCode
+        },
+        productId: item.productId,
+        selectedItem: this.selectedProduct,
+        inventoryId: this.selectedProduct._id
+      });
+    } else {
+      this.systemModuleService.announceSweetProxy('Can not add transfer item with an empty destination store', 'error');
+      this.systemModuleService.off();
+    }
   }
 
 
@@ -184,5 +275,59 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
     this._employeeService.announceCheckIn(undefined);
     this._locker.setObject('checkingObject', {});
     this.subscription.unsubscribe();
+  }
+
+  focusOutQties() {
+    this.systemModuleService.on();
+    console.log(this.stockTransferItems);
+    this.stockTransferItems.inventoryTransferTransactions[this.stockTransferItems.inventoryTransferTransactions.length - 1].transactionId = this.productQtyBatch.value;
+    this.stockTransferItems.inventoryTransferTransactions[this.stockTransferItems.inventoryTransferTransactions.length - 1].quantity = +this.productQtyRequestSearch.value;
+    this.stockTransferItems.inventoryTransferTransactions[this.stockTransferItems.inventoryTransferTransactions.length - 1].lineCostPrice = (+this.productQtyRequestSearch.value) * this.selectedProduct.price;
+    this.systemModuleService.off();
+    this.transferObjs = this.stockTransferItems.inventoryTransferTransactions;
+    this.hideSearchTool = true;
+    this.hideSearchResultList = true;
+    this.selectedProduct = {};
+    this.productSearch.reset();
+    this.productQtyBatch.reset();
+    this.productQtyRequestSearch.reset();
+  }
+
+  onRemoveNewtem() {
+
+  }
+
+  GetInventoryTransferState() {
+    let selectedInventoryTransferStatus = {};
+    let selectedInventoryTransactionType = {};
+    const status$ = Observable.fromPromise(this.inventoryTransferStatusService.find({ query: { name: 'Pending' } }));
+    const type$ = Observable.fromPromise(this.inventoryTransactionTypeService.find({ query: { name: 'transfer', $limit: 20 } }));
+
+    Observable.forkJoin([status$, type$]).subscribe((results: any) => {
+      console.log(results);
+      const statusResult: any = results[0];
+      const typeResult: any = results[1];
+
+      if (statusResult.data.length > 0) {
+        selectedInventoryTransferStatus = statusResult.data[0];
+      }
+      if (typeResult.data.length > 0) {
+        selectedInventoryTransactionType = typeResult.data[0];
+      }
+      this.transferItemState = {
+        transferStatus: selectedInventoryTransferStatus,
+        transactionType: selectedInventoryTransactionType
+      };
+      console.log(this.transferItemState);
+    }, err => {
+      console.log(err);
+    });
+  }
+
+  onCheckAll() {
+    
+    this.stockTransferItems.inventoryTransferTransactions.map(x => { 
+      x.isSelected = true;
+    });
   }
 }

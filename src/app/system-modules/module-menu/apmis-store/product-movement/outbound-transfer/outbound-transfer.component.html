@@ -5,7 +5,7 @@
         <div class="select">
           <label>Store Location:</label>
           <select [formControl]="storeLocation" name="dropDown-container" id="dropDown-container">
-            <option *ngFor="let item of minorLocations" value="item">{{item.name}}</option>
+            <option *ngFor="let item of minorLocations" value="{{item._id}}">{{item.name}}</option>
           </select>
         </div>
       </div>
@@ -13,7 +13,7 @@
         <div class="select">
           <label>Store Name:</label>
           <select [formControl]="storeName" name="dropDown-container" id="dropDown-container">
-            <option *ngFor="let item of stores" value="item">{{item.name}}</option>
+            <option *ngFor="let item of stores" value="{{item._id}}">{{item.name}}</option>
           </select>
         </div>
       </div>
@@ -36,7 +36,7 @@
     <div class="store-thead">
       <div class="store-tr">
         <div class="store-th store-td-actions">
-          <input type="checkbox" [formControl]="check" />
+          <input type="checkbox" [formControl]="check" (change)="onCheckAll($event)"/>
         </div>
         <div class="store-tr-in">
           <div class="store-th">Product</div>
@@ -51,16 +51,16 @@
     </div>
     <div class="store-tbody">
       <div class="store-pre-tr">
-        <div *ngIf="transferObjs.length !== 0" class="store-tr">
+        <div *ngFor="let item of transferObjs" class="store-tr">
           <div class="store-td store-td-actions">
-            <input type="checkbox" [formControl]="check" />
+            <input type="checkbox" [formControl]="check" [checked]="item.isSelected"/>
           </div>
-          <div class="store-tr-in" *ngFor="let item of transferObjs">
+          <div class="store-tr-in">
             <div class="store-td">{{item?.productObject?.name}}</div>
-            <div class="store-td">{{item?.availableQuantity}} {{item?.productObject?.baseItem?.name}}</div>
-            <div class="store-td">{{item?.availableOnHold}} {{item?.productObject?.baseItem?.name}}</div>
+            <div class="store-td">{{item?.selectedItem?.totalQuantity}} {{item?.selectedItem?.productConfiguration?.name}}</div>
+            <div class="store-td">{{item?.selectedItem?.totalQuantity - item?.selectedItem?.totalQuantity}}</div>
             <div class="store-td">{{item.quantity}}</div>
-            <div class="store-td">#{{item.costPrice}}/{{item?.productObject?.baseItem?.name}}</div>
+            <div class="store-td">#{{item.costPrice}}/{{item?.selectedItem?.productConfiguration?.name}}</div>
             <div class="store-td">#{{item.lineCostPrice}} </div>
           </div>
           <div class="store-td store-td-actions">
@@ -83,8 +83,41 @@
             </div>
           </div>
         </div>
+        <div *ngIf="!hideSearchTool" class="store-tr-in">
+            <div *ngIf="hideSearchResultList" class="store-td">{{selectedProduct?.productName}}</div>
+          <div class="store-td">
+            <div *ngIf="selectedProduct.productId === undefined" class="apmis-search-item input-wrap">
+              <input class="input" [formControl]="productSearch" type="text">
+              <div *ngIf="!hideSearchResultList">
+                  <div *ngFor="let item of inventorySearchResults"  class="store-tr">
+                      <div class="store-tr-in" (click)="onSelectProduct(item)">{{item.productName}}</div>
+                    </div>
+              </div>
+            </div>
+          </div>
+          <div class="store-td">
+              <div class="dropDown-container" *ngIf="selectedProduct?.transactions?.length > 0">
+                  <div class="select">
+                    <label>Batch:</label>
+                    <select [formControl]="productQtyBatch" name="dropDown-container" id="dropDown-container">
+                      <option *ngFor="let item of selectedProduct?.transactions" value="{{item._id}}">{{item.batchNumber}}</option>
+                    </select>
+                  </div>
+                </div>
+          </div>
+          <div class="store-td">{{selectedProduct.availableQuantity}}</div>
+          <div class="store-td">{{selectedProduct?.totalQuantity - selectedProduct?.availableQuantity}}</div>
+          <div class="store-td">
+            <div class="apmis-search-item input-wrap">
+              <input class="input" [formControl]="productQtyRequestSearch" (focusout)="focusOutQties()" type="text">
+            </div>
+          </div>
+          <div class="store-td">#{{selectedProduct?.price}}/{{selectedProduct?.productConfiguration?.name}}</div>
+          <div class="store-td">#{{productQtyRequestSearch.value * selectedProduct?.price}}</div>
+        </div>
         <div class="store-tr">
-          <div class="tbl-cont-cta"><i class="fa fa-plus"></i> Add Another Item</div>
+          <div *ngIf="hideSearchTool" class="tbl-cont-cta" (click)="onAddNewTransItem()"><i class="fa fa-plus"></i> Add Another Item</div>
+          <div *ngIf="!hideSearchTool" class="tbl-cont-cta" (click)="onRemoveNewtem()"><i class="fa fa-plus"></i> Remove Item</div>
         </div>
       </div>
     </div>

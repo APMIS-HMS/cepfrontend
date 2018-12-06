@@ -178,6 +178,8 @@ import { ArrayFunctionHelper } from './shared-module/helpers/array-function-help
 		CustomPreloading,
 		SetupService.InventoryService,
 		SetupService.InventoryTransferService,
+		SetupService.InventoryTransactionTypeService,
+		SetupService.InventoryTransferStatusService,
 		SetupService.DispenseService,
 		SetupService.FacilityPriceService,
 		SetupService.ProductService,
