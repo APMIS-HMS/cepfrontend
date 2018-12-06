@@ -54,6 +54,8 @@ export class ProductCongurationComponent implements OnInit {
         this.productConfigs.forEach(x => {
             x.baseUnit = x.packSizes.filter(y => y.isBase);
         });
+        // calling reverse on array to display most recent record in array
+        // this.reverseArray(this.productConfigs);
       }
     });
   }

@@ -89,7 +89,7 @@ export class ApmisSearchResultComponent implements OnInit {
     this.onCreateItem.emit(this.apmisSearchResult.value);
   }
 
-  onCloseFilterDialog(){
+  onCloseFilterDialog() {
     this.onCloseEvent.emit(false);
   }
 }

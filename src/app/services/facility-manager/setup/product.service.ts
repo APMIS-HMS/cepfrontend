@@ -2,9 +2,6 @@ import { Subject } from 'rxjs/Subject';
 import { SocketService, RestService } from '../../../feathers/feathers.service';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import { ProductPackSize } from 'app/system-modules/module-menu/apmis-store/store-utils/global';
-
 @Injectable()
 export class ProductService {
   public _socket;
