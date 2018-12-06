@@ -16,6 +16,7 @@ export class ApmisSearchComponent implements OnInit {
   @Input() placeholder: any;
   @Output() onSelectedItems = new EventEmitter();
   @Output() onCreateItem = new EventEmitter();
+  @Output() onCloseEvent = new EventEmitter();
 
   constructor(private apmisFilterBadgeService: ApmisFilterBadgeService) { }
 

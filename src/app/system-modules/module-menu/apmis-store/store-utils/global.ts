@@ -2,7 +2,7 @@ export const Filters = {
     All: 'All',
     ToExpire: 'Expire: This Week',
     Expired: 'Expired',
-    BelowReOrder: 'Below Re-Order Leve',
+    BelowReOrder: 'Below Re-Order Level',
     OutOfStock: 'Out of Stock',
     HighConsumptionRate: 'High Consumption Rate'
 };
@@ -23,6 +23,7 @@ export interface ProductPackSize {
     size: number;
 }
 export interface ProductConfig {
+    _id?: string;
     productId: string;
     productObject: FormularyProduct;
     facilityId: string;

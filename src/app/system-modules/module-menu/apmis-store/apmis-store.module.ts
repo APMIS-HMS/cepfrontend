@@ -49,6 +49,7 @@ import { NewSupplierComponent } from './product-entry/suppliers/new-supplier/new
 import { InboundRequisitionComponent } from './product-movement/inbound-requisition/inbound-requisition.component';
 import { OutboundRequisitionComponent } from './product-movement/outbound-requisition/outbound-requisition.component';
 import { StoreCheckInComponent } from './components/store-check-in/store-check-in.component';
+import { ApmisStoreSupplierSearchComponent } from './components/apmis-store-supplier-search/apmis-store-supplier-search.component';
 
 @NgModule({
 	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule ],
@@ -91,7 +92,8 @@ import { StoreCheckInComponent } from './components/store-check-in/store-check-i
 		NewSupplierComponent,
 		InboundRequisitionComponent,
 		OutboundRequisitionComponent,
-		StoreCheckInComponent
+		StoreCheckInComponent,
+		ApmisStoreSupplierSearchComponent
 	],
 	providers: [ StoreService, InventoryService, StoreGlobalUtilService, ProductTypeService, SupplierService ]
 })
