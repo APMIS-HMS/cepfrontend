@@ -49,6 +49,7 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
   showDialog = false;
   transferItemState: any = <any>{};
   stockTransferItems: any = <any>{};
+  totalCostPrice = 0;
 
   constructor(private facilitiesService: FacilitiesService,
     private locationService: LocationService,
@@ -136,24 +137,33 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
       .subscribe(value => {
         this.selectedProduct = {};
         this.hideSearchResultList = true;
-        console.log(name);
-        this.inventoryService.findFacilityProductList({
-          query: {
-            facilityId: this.selectedFacility._id,
-            storeId: this.checkingStore.storeId,
-            limit: 10,
-            skip: 0,
-            searchText: value
+        if (this.storeName.value !== null) {
+          this.inventoryService.findFacilityProductList({
+            query: {
+              facilityId: this.selectedFacility._id,
+              storeId: this.storeName.value,
+              limit: 10,
+              skip: 0,
+              searchText: value
 
-          }
-        }).then(payload => {
-          console.log(payload);
-          this.inventorySearchResults = payload.data;
-          this.hideSearchResultList = false;
-          console.log(this.inventorySearchResults);
-        }, err => {
-          console.log(err);
-        });
+            }
+          }).then(payload => {
+            console.log(payload);
+            this.inventorySearchResults = payload.data;
+            this.hideSearchResultList = false;
+            console.log(this.inventorySearchResults);
+          }, err => {
+            console.log(err);
+          });
+        } else {
+          this.systemModuleService.announceSweetProxy('Can not add transfer item with an empty destination store', 'error', null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null);
+        }
       });
 
     this.GetInventoryTransferState();
@@ -234,12 +244,8 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
       this.stockTransferItems.storeId = this.checkingStore.storeId;
       this.stockTransferItems.inventorytransactionTypeId = this.transferItemState.transferStatus._id;
       this.stockTransferItems.destinationStoreId = this.storeName.value;
-      item.transactions.map(x => {
-        if (x.costPrice !== undefined) {
-          this.stockTransferItems.inventoryTransferTransactions += x.costPrice;
-        }
-      });
-      this.stockTransferItems.inventoryTransferTransactions = (this.stockTransferItems.transactions === undefined) ? [] : this.stockTransferItems.transactions;
+      console.log(this.stockTransferItems.inventoryTransferTransactions);
+      this.stockTransferItems.inventoryTransferTransactions = (this.stockTransferItems.inventoryTransferTransactions === undefined || this.stockTransferItems.inventoryTransferTransactions === NaN) ? [] : this.stockTransferItems.inventoryTransferTransactions;
       this.stockTransferItems.inventoryTransferTransactions.push({
         transactionId: this.productQtyBatch.value,
         transferStatusId: this.transferItemState.transferStatus._id,
@@ -255,7 +261,13 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
         inventoryId: this.selectedProduct._id
       });
     } else {
-      this.systemModuleService.announceSweetProxy('Can not add transfer item with an empty destination store', 'error');
+      this.systemModuleService.announceSweetProxy('Can not add transfer item with an empty destination store', 'error', null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null);
       this.systemModuleService.off();
     }
   }
@@ -284,7 +296,7 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
     this.stockTransferItems.inventoryTransferTransactions[this.stockTransferItems.inventoryTransferTransactions.length - 1].quantity = +this.productQtyRequestSearch.value;
     this.stockTransferItems.inventoryTransferTransactions[this.stockTransferItems.inventoryTransferTransactions.length - 1].lineCostPrice = (+this.productQtyRequestSearch.value) * this.selectedProduct.price;
     this.systemModuleService.off();
-    this.transferObjs = this.stockTransferItems.inventoryTransferTransactions;
+    this.transferObjs = JSON.parse(JSON.stringify(this.stockTransferItems.inventoryTransferTransactions));
     this.hideSearchTool = true;
     this.hideSearchResultList = true;
     this.selectedProduct = {};
@@ -294,7 +306,12 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
   }
 
   onRemoveNewtem() {
-
+    this.hideSearchTool = true;
+    this.hideSearchResultList = true;
+    this.selectedProduct = {};
+    this.productSearch.reset();
+    this.productQtyBatch.reset();
+    this.productQtyRequestSearch.reset();
   }
 
   GetInventoryTransferState() {
@@ -324,10 +341,71 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
     });
   }
 
-  onCheckAll() {
-    
-    this.stockTransferItems.inventoryTransferTransactions.map(x => { 
-      x.isSelected = true;
-    });
+  onCheckAll(event) {
+    console.log(event);
+    if (this.transferObjs.length > 0) {
+      if (event.target.checked) {
+        this.transferObjs.map(x => {
+          x.isSelected = true;
+        });
+      } else {
+        this.transferObjs.map(x => {
+          x.isSelected = false;
+        });
+      }
+    } else {
+      this.check.setValue(false);
+    }
+    this.getTotalItemCost();
+  }
+
+  getTotalItemCost() {
+    const selectedStocks = this.transferObjs.map(x => x.isSelected === true);
+    selectedStocks.map(x => {
+      if (x.lineCostPrice !== undefined) {
+        this.totalCostPrice += x.lineCostPrice;
+      }
+    })
+  }
+
+  onCheckItem(event, value) {
+    console.log(this.transferObjs);
+    if (event.target.checked) {
+      value.isSelected = true;
+    }
+    else {
+      value.isSelected = false;
+    }
+    console.log(this.transferObjs.filter(x => x.isSelected === true).length, this.transferObjs.filter(x => x.isSelected === false).length);
+    this.getTotalItemCost();
+  }
+
+  sendRequest() {
+    this.stockTransferItems.inventoryTransferTransactions = [];
+    const checkedItems = this.transferObjs.filter(x => x.isSelected === true);
+    console.log(this.stockTransferItems, checkedItems);
+    this.stockTransferItems.inventoryTransferTransactions = JSON.parse(JSON.stringify(checkedItems));
+    this.systemModuleService.announceSweetProxy('You are about to transfer', 'question', this);
+  }
+
+  sweetAlertCallback(result) {
+    if (result.value) {
+      this.systemModuleService.on();
+      console.log(this.stockTransferItems);
+      this.inventoryTransferService.create(this.stockTransferItems).then(payload => {
+        this.systemModuleService.off();
+        this.systemModuleService.announceSweetProxy('Stock transfer created successfully', 'success',
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null);
+        this.transferObjs = JSON.parse(JSON.stringify(this.stockTransferItems.inventoryTransferTransactions.filter(x => x.isSelected === false)));
+      }, err => {
+        this.systemModuleService.off();
+      });
+    }
   }
 }

@@ -53,7 +53,7 @@
       <div class="store-pre-tr">
         <div *ngFor="let item of transferObjs" class="store-tr">
           <div class="store-td store-td-actions">
-            <input type="checkbox" [formControl]="check" [checked]="item.isSelected"/>
+            <input type="checkbox" [formControl]="check" [checked]="item.isSelected" (change)="onCheckItem($event,item)"/>
           </div>
           <div class="store-tr-in">
             <div class="store-td">{{item?.productObject?.name}}</div>
@@ -124,7 +124,7 @@
     <!-- <app-apmis-pagination></app-apmis-pagination> -->
   </div>
   <div class="ob-btn-wrap">
-    <button class="ob-btn">Send Items</button>
+    <button (click)="sendRequest()" class="ob-btn">Send Items</button>
   </div>
 </div>
 
