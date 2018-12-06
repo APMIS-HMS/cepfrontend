@@ -15,11 +15,13 @@
     border-radius: 10px;
     padding: 10px;
     margin-right: 10px;
+    margin-top: 5px;
 }
 
 .supplier-list-wrap{
     display: flex;
     padding: 20px;
+    flex-wrap: wrap;
 }
  
 .cls-ico{
@@ -27,15 +29,16 @@
     cursor: pointer;
 }
 .in-tr{
-    grid-template-columns: 3fr repeat(4, 1fr) !important;
+    grid-template-columns: 3fr 1fr 2fr repeat(2, 1fr) !important;
 }
-.item-action{
+.item-action, .cls-ico{
     i{
-        padding-right: 5px;
-       cursor: pointer;       
+        padding-right: 10px;
+        color: #BEBEBE;            
     }
     i:hover{
-        color: rgba(0,0,0,.54);
+        cursor: pointer;  
+        color: rgba(0, 0, 0, 0.623);
        }
 }
 
@@ -54,4 +57,15 @@
         padding-left: 10px;
         width: 75% !important;
     }
+}
+.multi-sup-list-wrap{
+    display:block;
+    margin-left:20px;
+}
+.multi-sup-list{
+    overflow: auto;
+    display: inline-table;
+    position: relative;
+    border-right: 1px solid #C4C4C4;
+    width: 300px;
 }

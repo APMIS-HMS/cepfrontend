@@ -4,13 +4,11 @@
     position: absolute;
     z-index: 10;
     background-color: #fff;
-    border: 1px solid #0288D1;
-    border-radius: 6px;
-    width: 95%;
+    border:  1px solid #0288D1;
+    width: 100%;
+    border-radius: 5px;
     // min-width: 300px;
-    margin-top: 10px;
-    -webkit-box-shadow: 0 8px 16px var(--shadow-color);
-    -moz-box-shadow: 0 8px 16px var(--shadow-color);
+    //margin-top: 10px;
     box-shadow: 0 8px 16px var(--shadow-color); 
     ul{
         width: 100%;
@@ -38,6 +36,7 @@
             position: absolute;
             left: 32px;
             top: 32px;
+            margin-right: 5px;
         }
         .input{
             font-size: 12px;
@@ -46,7 +45,9 @@
             padding: 5px;
             box-sizing: border-box;
             padding-left: 20px;
-            width: 100% !important; 
+            border-radius: 3px;
+            box-shadow: -1px 0px 5px 0px #C4C4C4;
+            width: 100% !important;
         }
         
     }
@@ -74,7 +75,9 @@
 .asi-create-item{
     cursor: pointer;
     background: #ddd;
-    padding: 5px 2px;
+    padding: 5px;
     text-align: center;
-    font-size: 12px;
+    font-size: 10px;
+    color: #0288D1;
+    height: 25px;
 }

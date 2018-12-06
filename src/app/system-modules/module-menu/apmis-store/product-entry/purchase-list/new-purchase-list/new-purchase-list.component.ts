@@ -15,6 +15,7 @@ import { FormControl } from '@angular/forms';
 	styleUrls: [ './new-purchase-list.component.scss' ]
 })
 export class NewPurchaseListComponent implements OnInit {
+	sup_search = false;
 	storeFilters = [];
 	selectedFilterIndex = 0;
 	filterType = '';
@@ -198,5 +199,9 @@ export class NewPurchaseListComponent implements OnInit {
 				this.showProduct = false;
 			}, 300);
 		}
+	}
+
+	onshowSup_search(){
+		this.sup_search = !this.sup_search;
 	}
 }

@@ -1,7 +1,41 @@
 <div class="supplierBase">
-
   <div class="suppSearch">
-    <app-apmis-search-result></app-apmis-search-result>
+    <div class="src-content">
+      <div class="src-item src-input-wrap">
+        <img class="src-ico" src="assets/images/report_icons/search-small.svg" />
+        <input class="src-input" type="text">
+      </div>
+      <ul>
+        <li class="src-item">
+          <h3>SIDMACH Medical Suppliers </h3>
+          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
+        </li>
+        <li class="src-item">
+          <h3>SIDMACH Medical Suppliers </h3>
+          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
+        </li>
+        <li class="src-item">
+          <h3>SIDMACH Medical Suppliers </h3>
+          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
+        </li>
+        <li class="src-item">
+          <h3>SIDMACH Medical Suppliers </h3>
+          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
+        </li>
+        <li class="src-item selected-li">
+          <h3>SIDMACH Medical Suppliers </h3>
+          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
+        </li>
+        <li class="src-item">
+          <h3>SIDMACH Medical Suppliers </h3>
+          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
+        </li>
+        <div class="ul-action">
+          <i class="fa fa-plus" aria-hidden="true"></i>
+          <span>Add Supplier</span>
+        </div>
+      </ul>
+    </div>
   </div>
   <div *ngIf="main_content" class="contentLeftGrid">
     <div class="tbl-btn-action" (click)="onShowNewSupplier()">
@@ -14,8 +48,8 @@
     </div>
     <div class="lst-inner-wrap">
       <div class="con-inner-wrap">
-        <span>Supplier</span>
-        <h3>Sidmach Medical Supplier</h3>
+        <h4>Supplier</h4>
+        <h2>Sidmach Medical Supplier</h2>
       </div>
       <div class="con-inner">
         <div class="fa-icon">
@@ -33,22 +67,22 @@
 
     <div class="lst-inner-wrap x2">
       <div class="con-inner-wrap">
-        <span>Contacts</span>
-        <h3>Oluwatomide Adesidmach</h3>
+        <h4>Contacts</h4>
+        <h2>Oluwatomide Adesidmach</h2>
       </div>
       <div class="con-inner-wrap">
-        <span>Phone </span>
-        <h3>08067710761</h3>
+        <h4>Phone </h4>
+        <h2>08067710761</h2>
       </div>
       <div class="con-inner-wrap">
-        <span>Email</span>
-        <h3>sidmachmedicalsupply@gmail.com</h3>
+        <h4>Email</h4>
+        <h2>sidmachmedicalsupply@gmail.com</h2>
       </div>
     </div>
     <div class="lst-inner-wrap">
       <div class="con-inner-wrap">
-        <span>Contact Address</span>
-        <h3>Block J CBD Ikeja, Plot 15 Otunba Jobi Fele Way, 100212, Ojodu</h3>
+        <h4>Contact Address</h4>
+        <h2>Block J CBD Ikeja, Plot 15 Otunba Jobi Fele Way, 100212, Ojodu</h2>
       </div>
     </div>
 
@@ -101,13 +135,11 @@
           </div>
           <div class="invoice-tr-in">
             <div class="store-th">Invoices</div>
-            <div class="store-th">Supplier</div>
             <div class="store-th">Invoice Date</div>
             <div class="store-th">Status</div>
             <div class="store-th">Amount</div>
             <div class="store-th">Action</div>
           </div>
-          <div class="store-th store-td-actions"></div>
         </div>
       </div>
 
@@ -119,7 +151,6 @@
             </div>
             <div class="invoice-tr-in">
               <div class="store-td">VCE1290</div>
-              <div class="store-td">Sidmach Drug Supplier</div>
               <div class="store-td">02/11/2019</div>
               <div class="store-td green-lbl">Paid</div>
               <div class="store-td">#300,000</div>
@@ -128,14 +159,8 @@
                   <div (click)="viewInvoice()" class="ft-btn btn-act-margin">
                     <span>View Invoice</span>
                   </div>
-                  <div class="ft-btn btn-act-margin">
-                    <span>Add to Inventory</span>
-                  </div>
                 </div>
               </div>
-            </div>
-            <div class="store-th store-td-actions">
-
             </div>
           </div>
 
@@ -145,7 +170,6 @@
             </div>
             <div class="invoice-tr-in">
               <div class="store-td">ICE1234</div>
-              <div class="store-td">Sidmach Drug Supplier</div>
               <div class="store-td">02/11/2019</div>
               <div class="store-td red-lbl">Unpaid</div>
               <div class="store-td">#300,000</div>
@@ -154,14 +178,8 @@
                   <div class="ft-btn btn-act-margin">
                     <span>View Invoice</span>
                   </div>
-                  <div class="ft-btn btn-act-margin">
-                    <span>Add to Inventory</span>
-                  </div>
                 </div>
               </div>
-            </div>
-            <div class="store-th store-td-actions">
-
             </div>
           </div>
 
@@ -171,23 +189,16 @@
             </div>
             <div class="invoice-tr-in">
               <div class="store-td">INV7890</div>
-              <div class="store-td">Sidmach Drug Supplier</div>
               <div class="store-td">02/11/2019</div>
               <div class="store-td orange-lbl">Partial Payment</div>
-              <div class="store-td">#300,000</div>
+              <div class="store-td">#20,000 of #240,000</div>
               <div class="store-td">
                 <div class="inv-action">
                   <div class="ft-btn btn-act-margin">
                     <span>View Invoice</span>
                   </div>
-                  <div class="ft-btn btn-act-margin">
-                    <span>Add to Inventory</span>
-                  </div>
                 </div>
               </div>
-            </div>
-            <div class="store-th store-td-actions">
-
             </div>
           </div>
         </div>
