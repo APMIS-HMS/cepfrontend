@@ -2,7 +2,7 @@ export const Filters = {
     All: 'All',
     ToExpire: 'Expire: This Week',
     Expired: 'Expired',
-    BelowReOrder: 'Below Re-Order Leve',
+    BelowReOrder: 'Below Re-Order Level',
     OutOfStock: 'Out of Stock',
     HighConsumptionRate: 'High Consumption Rate'
 };

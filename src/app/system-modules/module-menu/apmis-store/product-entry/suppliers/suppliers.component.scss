@@ -107,12 +107,11 @@
 // }
 .con-inner{
     display: flex;
+    cursor: pointer;
     .fa-icon{
     margin-right: 20px;
     display: -webkit-box;
     display: -ms-flexbox;
-    /* display: flex; */
-    /* align-items: center; */
     align-content: center;
     }
 }
