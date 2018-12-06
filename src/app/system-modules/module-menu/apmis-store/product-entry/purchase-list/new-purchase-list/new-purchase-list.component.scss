@@ -8,6 +8,7 @@
     text-align: center;
     align-self: center;
     padding: 5px;
+    margin-right: 10px;
 }
 
 .supplier-wrap {
@@ -24,10 +25,16 @@
     flex-wrap: wrap;
 }
 
-.cls-ico {
-    margin-left: 100px;
-    cursor: pointer;
+
+.sup-name-wrap{
+    display: flex;
+    justify-content: space-between;
+    .cls-ico {
+        //margin-left: 100px;
+        cursor: pointer;
+    }
 }
+
 
 .in-tr {
     grid-template-columns: 3fr 1fr 2fr repeat(2, 1fr) !important;

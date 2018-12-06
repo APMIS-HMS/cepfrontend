@@ -15,6 +15,9 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
 })
 export class ConfigProductComponent implements OnInit, OnChanges {
 
+  selectedIndex: any;
+  drupSearchEntry = false;
+  consumableEntry= false;
   apmisSearch = false;
   showConfigContainer = false;
   showSaveConfig = false;
@@ -267,4 +270,20 @@ export class ConfigProductComponent implements OnInit, OnChanges {
         this.apmisSearch = !this.apmisSearch;
     }
   }
+
+  onShowDrugSearchEntry(){
+    this.drupSearchEntry = true;
+    this.consumableEntry= false;
+  }
+
+  onShowComsumableEntry(){
+    this.drupSearchEntry = false;
+    this.consumableEntry= true;
+  }
+
+
+  setSelectedIndex(i) {
+    this.selectedIndex = i;
+    this.onShowDrugSearchEntry();
+	}
 }
