@@ -2777,8 +2777,8 @@ button,
     }
 }
 
-.InputGroup {
-    position: relative;
+.InputGroup{ 
+    position:relative; 
     padding-bottom: 10px;
 }
 
@@ -2791,7 +2791,55 @@ button,
     min-height: 70px;
     outline: 0;
     border-bottom: 1px solid #ddd;
-}
+  }
+
+  .customInput:focus{ outline:none; }
+  .customLabel{
+    color:#000; 
+    font-size:16px;
+    font-weight:normal;
+    position:absolute;
+    pointer-events:none;
+    top:10px;
+    transition:0.2s ease all; 
+    -moz-transition:0.2s ease all; 
+    -webkit-transition:0.2s ease all;
+  }
+  
+  .customInput:focus ~ .customLabel, .customInput:valid ~ .customLabel {
+    top:-12px;
+    font-size:12px;
+    color:#5264AE;
+  }
+
+  .highlight {
+    position:absolute;
+    height:60%; 
+    width:100px; 
+    top:25%; 
+    left:0;
+    pointer-events:none;
+    opacity:0.5;
+  }
+  .customInput:focus ~ .highlight {
+    -webkit-animation:inputHighlighter 0.3s ease;
+    -moz-animation:inputHighlighter 0.3s ease;
+    animation:inputHighlighter 0.3s ease;
+  }
+  
+  @-webkit-keyframes inputHighlighter {
+      from { background:#5264AE; }
+    to 	{ width:0; background:transparent; }
+  }
+  @-moz-keyframes inputHighlighter {
+      from { background:#5264AE; }
+    to 	{ width:0; background:transparent; }
+  }
+  @keyframes inputHighlighter {
+      from { background:#5264AE; }
+    to 	{ width:0; background:transparent; }
+  }
+
 
 .customInput:focus {
     outline: none;
@@ -2965,7 +3013,7 @@ button,
     height: 30px;
 
     span {
-        font-size: 10px;
+        font-size: 12px;
         line-height: 30px;
         text-align: center;
         align-self: center;
@@ -2982,7 +3030,7 @@ button,
     height: 30px;
 
     span {
-        font-size: 10px;
+        font-size: 12px;
         line-height: 30px;
         text-align: center;
         align-self: center;
