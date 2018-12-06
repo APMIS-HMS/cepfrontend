@@ -2,7 +2,7 @@ import { Component, OnInit, Input, Output, OnChanges, EventEmitter, OnDestroy } 
 import { FormControl } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ApmisFilterBadgeService } from './../../../../../../services/tools/apmis-filter-badge.service';
-import { Subscription } from 'rxjs';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
 	selector: 'app-apmis-search-result',
