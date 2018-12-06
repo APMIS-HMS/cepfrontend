@@ -6,7 +6,8 @@ import { SharedService } from '../shared.service';
 
 @Component({
 	selector: 'survey',
-	template: `<div class="survey-container contentcontainer codecontainer survery"><div id="surveyElement"></div></div>`
+	template: `<div class="survey-container contentcontainer codecontainer 
+	survery"><div id="surveyElement"></div></div>`
 })
 export class SurveyComponent implements OnInit, OnDestroy {
 	@Input() json: any;
