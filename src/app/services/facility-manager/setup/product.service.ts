@@ -117,5 +117,3 @@ export class ProductService {
     return this.productConfigUpdated.asObservable();
   }
 }
-
-
