@@ -1,3 +1,4 @@
+import { ArrayFunctionHelper } from './../../../../../shared-module/helpers/array-function-helper';
 import { Component, OnInit } from '@angular/core';
 import { ProductService } from './../../../../../services/facility-manager/setup/product.service';
 import { Facility } from 'app/models';
@@ -20,7 +21,7 @@ export class ProductCongurationComponent implements OnInit {
   
   constructor(private productService: ProductService,
     private systemModuleService: SystemModuleService,
-      private locker: CoolLocalStorage) { }
+    private locker: CoolLocalStorage) { }
   ngOnInit() {
     this.currentFacility = <Facility>this.locker.getObject('selectedFacility');
     this.getProductConfigsByFacility();
@@ -29,8 +30,12 @@ export class ProductCongurationComponent implements OnInit {
         this.productConfigs.push(payload);
         const index = this.productConfigs.length - 1;
         this.productConfigs[index].baseUnit = payload.packSizes.filter(y => y.isBase);
-        // calling reverse on array to display most recent record in array
-        this.reverseArray(this.productConfigs);
+    });
+    this.productService.productConfigUpdateRecieved().subscribe(payload => {
+      if (payload) {
+        this.getProductConfigsByFacility();
+      }
+    }, err => {
     });
   }
   onEdit(data) {
@@ -50,7 +55,7 @@ export class ProductCongurationComponent implements OnInit {
             x.baseUnit = x.packSizes.filter(y => y.isBase);
         });
         // calling reverse on array to display most recent record in array
-        this.reverseArray(this.productConfigs);
+        // this.reverseArray(this.productConfigs);
       }
     });
   }

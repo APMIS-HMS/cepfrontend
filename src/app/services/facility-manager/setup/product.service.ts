@@ -19,6 +19,8 @@ export class ProductService {
   public listenerDelete;
 	private productConfigChanged = new Subject<any>();
   productConfigChanged$ = this.productConfigChanged.asObservable();
+  private productConfigUpdated = new Subject<any>();
+  productConfigUpdated$ = this.productConfigUpdated.asObservable();
   constructor(
     private _socketService: SocketService,
     private _restService: RestService
@@ -79,7 +81,6 @@ export class ProductService {
   patchProductConfig(_id: any, obj: any, params) {
     return this._socketProductConfig.patch(_id, obj, params);
   }
-
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }
@@ -111,6 +112,12 @@ export class ProductService {
   }
   productConfigRecieved(): Observable<any> {
     return this.productConfigChanged.asObservable();
+  }
+  productConfigUpdateAnnounced(productConfig: any) {
+		this.productConfigUpdated.next(productConfig);
+  }
+  productConfigUpdateRecieved(): Observable<any> {
+    return this.productConfigUpdated.asObservable();
   }
 }
 

@@ -38,6 +38,11 @@ export class ConfigProductComponent implements OnInit, OnChanges {
   isConfigure = false;
   @Input() editableProductConfigObj;
   @Output() newProductConfig = new EventEmitter();
+  configProductBtn = '';
+  preSelectedPackWithSizes = [];
+  sizeIsEdited = false;
+  updateSizePackObj = [];
+  updateObj = [];
 
   constructor(
       private productService: ProductService,
@@ -84,10 +89,20 @@ export class ConfigProductComponent implements OnInit, OnChanges {
     this.showProduct = false;
   }
   onSearchSelectedItems(data) {
-    if (data.length > 0) {
+    if (this.preSelectedPackWithSizes.length > 0) {
+      for (let i = 0; i < data.length; i++) {
+        const found = this.preSelectedPackWithSizes.filter(x => x.packId === data[i].id);
+        if (found.length > 0) {
+          data[i].size = found[0].size;
+        } else {}
+       }
+       this.setPackSizes(data);
+       this.updateSizePackObj = data;
+    } else {
       this.setPackSizes(data);
     }
   }
+
   setPackSizes(data) {
     this.isBaseUnitSet = true;
     this.showConfigContainer = true;
@@ -104,6 +119,7 @@ export class ConfigProductComponent implements OnInit, OnChanges {
     if (this.selectedProductName !== '') {
       this.showSetBaseUnit = true;
       this.baseName = '';
+      this.configProductBtn = 'Save Configuration';
     } else {
       this.showSetBaseUnit = false;
       this.showConfigContainer = false;
@@ -112,70 +128,95 @@ export class ConfigProductComponent implements OnInit, OnChanges {
   ngOnChanges(change: SimpleChanges) {
       if (change['editableProductConfigObj'] !== null) {
         if (this.editableProductConfigObj !== undefined) {
+          this.isConfigure = false;
+          this.configProductBtn = 'Edit Configuration';
+          this.emitpackSizes(this.editableProductConfigObj);
           this.getProductById(this.editableProductConfigObj);
+          if (this.sizeIsEdited) {
+            this.preSelectedPackWithSizes = this.modifiedPackSizes;
+          } else {
+            this.preSelectedPackWithSizes = this.editableProductConfigObj.packSizes;
+          }
         }
       }
   }
   getProductById(data) {
-    const id = data.productId;
-      if (id !== '' || id !== undefined) {
-        this.productService.get(id, {}).then(payload => {
-            if (payload.data.name === undefined) {
-                // handle error: show sweet alert to retry fetching again
-                this.systemModuleService.announceSweetProxy(
-                  'Product: Unable to fetch data. Please try again.',
-                  'error', null, null, null, null, null, null, null
-                );
-                this.showConfigContainer = false;
-                this.showSaveConfig = false;
-                this.showSetBaseUnit = false;
-                this.baseName = '';
-            } else {
-              this.selectedProduct = payload.data;
-              this.selectedProductName = payload.data.name;
-              this.transformIncomingPackSizes(data.packSizes);
-            }
-        }, error => {
-        });
-      }
+    if (data.productObject.name === undefined) {
+          this.systemModuleService.announceSweetProxy(
+            'Product: Unable to fetch data. Please try again.',
+            'error', null, null, null, null, null, null, null
+          );
+          this.showConfigContainer = false;
+          this.showSaveConfig = false;
+          this.showSetBaseUnit = false;
+          this.baseName = '';
+    } else {
+          this.selectedProduct = data.productObject;
+          this.selectedProductName = data.productObject.name;
+          this.transformIncomingPackSizes(data.packSizes);
+    }
   }
-
+  emitpackSizes(data) {
+    const genericPackSizes = data.packSizes
+    .map(({packId: id, name: label}) => ({id, label}));
+    this.apmisFilterService.edit(true, genericPackSizes);
+  }
   transformIncomingPackSizes(data) {
     const editable = data
     .map(({packId: id, name: label, size: size}) => ({id, label, size}));
     this.setPackSizes(editable);
   }
+
   onSaveConfiguration() {
-    this.isSaving = true;
-    if (this.selectedPackSizes[1].size > 1) {
+    if (this.configProductBtn === 'Save Configuration') {
+      this.isSaving = true;
+      if (this.selectedPackSizes[1].size > 1) {
         this.modifyPackSizes(this.selectedPackSizes);
-        const newProductConfig: ProductConfig = {
-          productId: this.selectedProduct.id,
-          facilityId: this.currentFacility._id,
-          productObject: this.selectedProduct,
-          rxCode: this.selectedProduct.code,
-          packSizes: this.modifiedPackSizes
-      };
-      this.productService.createProductConfig(newProductConfig).then(payload => {
+          const newProductConfig: ProductConfig = {
+            productId: this.selectedProduct.id,
+            facilityId: this.currentFacility._id,
+            productObject: this.selectedProduct,
+            rxCode: this.selectedProduct.code,
+            packSizes: this.modifiedPackSizes
+        };
+        this.productService.createProductConfig(newProductConfig).then(payload => {
           this.isSaving = false;
-          this.systemModuleService.announceSweetProxy(
-            'Product: Product configured successfully.',
-            'success', null, null, null, null, null, null, null
-          );
           this.productService.productConfigAnnounced(payload);
       });
-      this.apmisFilterService.clearItemsStorage(true);
-    } else {
-      this.systemModuleService.announceSweetProxy(
-        'Product: Please enter size for product pack.',
-        'error', null, null, null, null, null, null, null
-      );
-      this.apmisFilterService.clearItemsStorage(true);
-      this.isSaving = false;
+        this.apmisFilterService.clearItemsStorage(true);
+      } else {
+        this.systemModuleService.announceSweetProxy(
+          'Product: Please enter size for product pack.',
+          'error', null, null, null, null, null, null, null
+        );
+        this.apmisFilterService.clearItemsStorage(true);
+        this.isSaving = false;
+      }
+    } else if (this.configProductBtn === 'Edit Configuration') {
+          if (this.selectedPackSizes[1].size > 1) {
+            this.isSaving = true;
+            this.updateObj = this.updateSizePackObj.length > 0 ? this.updateSizePackObj : this.selectedPackSizes;
+            console.log(this.modifyPackSizes(this.updateObj));
+
+            this.productService.patchProductConfig(this.editableProductConfigObj._id,
+                {packSizes: this.modifiedPackSizes}, {}).then(payload => {
+                this.isSaving = false;
+                this.sizeIsEdited = true;
+                this.productService.productConfigUpdateAnnounced(payload);
+                this.apmisFilterService.clearItemsStorage(true);
+          });
+        } else {
+          this.systemModuleService.announceSweetProxy(
+            'Product: Please enter size for product pack.',
+            'error', null, null, null, null, null, null, null
+          );
+          this.apmisFilterService.clearItemsStorage(true);
+          this.isSaving = false;
+        }
     }
   }
-
   modifyPackSizes(packs) {
+    this.modifiedPackSizes = [];
     if (packs.length > 1) {
       const selected = packs.map(({id: packId, label: name, size: size}) => ({packId, name, size}));
         for (let i = 0; i < selected.length; i++) {
