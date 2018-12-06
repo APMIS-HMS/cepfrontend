@@ -27,6 +27,7 @@ export class NewSupplierComponent implements OnInit {
 	loginEmployee: Employee = <Employee>{};
 	workSpace: any;
 	selectedFacility: any;
+	suppliers: any[] = [];
 	constructor(
 		private formBuilder: FormBuilder,
 		private supplier: SupplierService,
@@ -132,12 +133,7 @@ export class NewSupplierComponent implements OnInit {
 			],
 			contactAddress: [
 				'',
-				[
-					<any>Validators.required,
-					<any>Validators.minLength(3),
-					<any>Validators.maxLength(50),
-					Validators.pattern(ALPHABET_REGEX)
-				]
+				[ <any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(50) ]
 			]
 		});
 
@@ -156,6 +152,7 @@ export class NewSupplierComponent implements OnInit {
 			country: this.selectedCountry.name,
 			state: this.selectedState.name,
 			city: this.selectedCity.name,
+			contactPerson: form.contactPerson,
 			isHDO: false,
 			street: 'Ikeja'
 		};
@@ -172,10 +169,12 @@ export class NewSupplierComponent implements OnInit {
 			.then((res) => {
 				if (res.status === 'success') {
 					this._systemModuleService.announceSweetProxy('Facility created successfully', 'success');
+					this.supplierFormGroup.reset();
 				}
 				this._systemModuleService.off();
 			})
 			.catch((err) => {
+				this._systemModuleService.off();
 				this._systemModuleService.announceSweetProxy('An error occured', 'error');
 			});
 	}
@@ -221,5 +220,22 @@ export class NewSupplierComponent implements OnInit {
 				this.selectedCity = city;
 			})
 			.catch((error) => {});
+	}
+
+	getSuppliers() {
+		this.supplierService
+			.find({
+				query: {
+					facilityId: this.selectedFacility._id
+				}
+			})
+			.then(
+				(payload) => {
+					this.suppliers = payload.data.map((c) => {
+						return { id: c._id, label: c.supplier.name };
+					});
+				},
+				(error) => {}
+			);
 	}
 }
