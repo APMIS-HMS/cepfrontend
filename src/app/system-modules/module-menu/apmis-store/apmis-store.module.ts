@@ -16,7 +16,12 @@ import { ProductRestockComponent } from './apmis-store-home/store-home-main/prod
 import { StoreStoresComponent } from './store-stores/store-stores.component';
 import { StoreTabComponent } from './store-stores/store-tab/store-tab.component';
 import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-module';
-import { StoreService, InventoryService, ProductTypeService } from 'app/services/facility-manager/setup';
+import {
+	StoreService,
+	InventoryService,
+	ProductTypeService,
+	SupplierService
+} from 'app/services/facility-manager/setup';
 import { ApmisPaginationComponent } from './components/apmis-pagination/apmis-pagination.component';
 import { StoreGlobalUtilService } from './store-utils/global-service';
 import { ApmisNewStoreComponent } from './store-stores/apmis-new-store/apmis-new-store.component';
@@ -43,6 +48,7 @@ import { ViewInvoiceComponent } from './product-entry/invoice-entry/view-invoice
 import { NewSupplierComponent } from './product-entry/suppliers/new-supplier/new-supplier.component';
 import { InboundRequisitionComponent } from './product-movement/inbound-requisition/inbound-requisition.component';
 import { OutboundRequisitionComponent } from './product-movement/outbound-requisition/outbound-requisition.component';
+import { StoreCheckInComponent } from './components/store-check-in/store-check-in.component';
 
 @NgModule({
 	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule ],
@@ -84,8 +90,9 @@ import { OutboundRequisitionComponent } from './product-movement/outbound-requis
 		ViewInvoiceComponent,
 		NewSupplierComponent,
 		InboundRequisitionComponent,
-		OutboundRequisitionComponent
+		OutboundRequisitionComponent,
+		StoreCheckInComponent
 	],
-	providers: [ StoreService, InventoryService, StoreGlobalUtilService, ProductTypeService ]
+	providers: [ StoreService, InventoryService, StoreGlobalUtilService, ProductTypeService, SupplierService ]
 })
 export class ApmisStoreModule {}
