@@ -1,8 +1,8 @@
 .supplierBase {
     display: grid;
-    grid-template-columns: 20% 80%;
-    grid-auto-columns: 1fr;
-    grid-gap: 20px;
+    grid-template-columns: 25% 75%;
+    //grid-auto-columns: 1fr;
+    column-rule: 1px solid #C4C4C4;
     align-items: left;
     grid-auto-rows: auto;
     grid-auto-flow: column;
@@ -13,14 +13,78 @@
 @import "./../purchase-list/new-purchase-list/new-purchase-list.component.scss";
 
 .contentLeftGrid{
-    padding: 5px;
+    padding: 30px;
 }
 
-.suppSearch{
-    overflow: auto;
-    display: block;
-    position: relative;
+
+
+.src-content{
+    position: absolute;
+    z-index: 10;
+    background-color: #fff;
+    width: 100%;
+    box-shadow: 0 8px 16px var(--shadow-color); 
+    ul{
+        width: 100%;
+        min-height: 100px;
+        overflow: auto;
+        span{
+            color: #777777;
+        }
+        .ul-action{
+            background: #DDDDDD;
+            cursor: pointer;
+            height: 15px;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            cursor: pointer;
+            i, span{
+                color: #0288D1; 
+            }
+        }
+        .selected-li{
+            background: #337AB7;
+            i, span, h3{
+                color: white; 
+            }
+        }
+    }
+    .src-item{
+        width: 100%;
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+        box-sizing: border-box;
+        cursor: pointer;
+        &:hover{
+            background: #f8f8f8;
+        }
+        .src-input-wrap{
+            position: relative;
+            width: 100%;
+        }
+        .src-ico{
+            position: absolute;
+            left: 16px;
+            top: 23px;
+            margin-right: 8px;
+        }
+        .src-input{
+            font-size: 12px;
+            color: #777777;
+            border: 1px solid #C4C4C4;
+            padding: 7px;
+            box-sizing: border-box;
+            border-radius: 3px;
+            box-shadow: -1px 0px 5px 0px #C4C4C4;
+            width: 100% !important;
+        }
+
+        
+    }
 }
+
+
 
 .x2{
     margin-top: 20px;

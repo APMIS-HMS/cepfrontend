@@ -9,7 +9,7 @@ import { ISubscription } from 'rxjs/Subscription';
 @Component({
 	selector: 'app-store-home-analytics',
 	templateUrl: './store-home-analytics.component.html',
-	styleUrls: ['./store-home-analytics.component.scss']
+	styleUrls: [ './store-home-analytics.component.scss' ]
 })
 export class StoreHomeAnalyticsComponent implements OnInit, OnDestroy {
 	selectedFacility: Facility;
@@ -33,15 +33,16 @@ export class StoreHomeAnalyticsComponent implements OnInit, OnDestroy {
 	isRunningQuery = false;
 	subscription: ISubscription;
 	showDialog = false;
-	constructor(private _inventoryService: InventoryService,
+	constructor(
+		private _inventoryService: InventoryService,
 		private _locker: CoolLocalStorage,
 		private _employeeService: EmployeeService,
-		private authFacadeService: AuthFacadeService) {
+		private authFacadeService: AuthFacadeService
+	) {
 		this.subscription = this._employeeService.checkInAnnounced$.subscribe((res) => {
 			if (!!res) {
 				if (!!res.typeObject) {
 					this.checkingStore = res.typeObject;
-					console.log(this.checkingStore);
 					if (!!this.checkingStore.storeId) {
 						this.getStoreStatistics();
 					}
@@ -52,7 +53,6 @@ export class StoreHomeAnalyticsComponent implements OnInit, OnDestroy {
 		this.authFacadeService.getLogingEmployee().then((payload: any) => {
 			this.loginEmployee = payload;
 			this.checkingStore = this.loginEmployee.storeCheckIn.find((x) => x.isOn === true);
-			console.log(this.checkingStore);
 			if (this.loginEmployee.storeCheckIn === undefined || this.loginEmployee.storeCheckIn.length === 0) {
 				this.modal_on = true;
 			} else {
@@ -91,7 +91,6 @@ export class StoreHomeAnalyticsComponent implements OnInit, OnDestroy {
 				}
 			}
 		});
-
 	}
 
 	ngOnInit() {
@@ -117,9 +116,7 @@ export class StoreHomeAnalyticsComponent implements OnInit, OnDestroy {
 						this.extractRevenueInventoryCountItem(payload.data[6]);
 					}
 				},
-				(error) => {
-					console.log(error);
-				}
+				(error) => {}
 			);
 	}
 	extractInventoryCountItem(storeStatistics) {

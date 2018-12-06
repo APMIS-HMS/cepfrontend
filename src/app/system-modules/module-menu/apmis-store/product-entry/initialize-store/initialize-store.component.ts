@@ -75,7 +75,6 @@ export class InitializeStoreComponent implements OnInit {
 
 	checkBatchValidation(batch: FormGroup) {
 		batch.controls['complete'].setValue(true);
-		console.log((<FormArray>this.productForm.get('productArray')).value);
 	}
 
 	configureProduct() {
