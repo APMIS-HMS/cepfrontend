@@ -125,7 +125,8 @@ export class InitializeStoreComponent implements OnInit {
 				this._productService
 					.findProductConfigs({
 						query: {
-							'productObject.name': { $regex: value, $options: 'i' }
+							'productObject.name': { $regex: value, $options: 'i' },
+							storeId: this.checkingObject.storeId
 						}
 					})
 					.then(
@@ -182,12 +183,20 @@ export class InitializeStoreComponent implements OnInit {
 	// }
 
 	setSelectedOption(data: any) {
-		try {
-			this.selectedProductName = data.productObject.name;
-			this.selectedProduct = data;
+		if (!data.isVented) {
+			try {
+				this.selectedProductName = data.productObject.name;
+				this.selectedProduct = data;
+				this.showProduct = false;
+				this.productConfigSearch.setValue(this.selectedProductName);
+			} catch (error) {}
+		} else {
+			const text = 'This product exist in your inventory';
+			this.systemModuleService.announceSweetProxy(text, 'info');
+			this.selectedProductName = '';
+			this.selectedProduct = undefined;
 			this.showProduct = false;
-			this.productConfigSearch.setValue(this.selectedProductName);
-		} catch (error) {}
+		}
 	}
 
 	setCategorySelectedOption(data: any) {
@@ -372,16 +381,7 @@ export class InitializeStoreComponent implements OnInit {
 					batchFormArray.forEach((batchArray, j) => {
 						(<FormGroup>batchArray).controls['quantity'].valueChanges
 							.pipe(tap((val) => {}), debounceTime(200), distinctUntilChanged())
-							.subscribe((value) => {
-								// console.log(value);
-								// console.log((<FormGroup>frmArray).controls['totalQuantity'].value);
-								// const existingQuantity = (<FormGroup>frmArray).controls['totalQuantity'].value;
-								// const finalQuantity = value + existingQuantity;
-								// console.log(finalQuantity);
-								// (<FormGroup>frmArray).controls['totalQuantity'].setValue(finalQuantity);
-								// this.reCalculatePrices(frmArray, frmArray.value, 'totalQuantity');
-								// this.getProductBatchQuantity(batchFormArray);
-							});
+							.subscribe((value) => {});
 					});
 				});
 			}
@@ -447,11 +447,6 @@ export class InitializeStoreComponent implements OnInit {
 		console.log(value.productArray);
 		const _saveProductList = [];
 		value.productArray.forEach((inproduct, i) => {
-			// costPrice: 0
-			// margin: 0
-			// sellingPrice: 0
-			// totalCostPrice: 0
-			// totalQuantity: 0
 			const mainProductObject = this.selectedProducts.find(
 				(pro) => pro.productObject.id.toString() === inproduct.configProduct.id.toString()
 			);
@@ -481,6 +476,8 @@ export class InitializeStoreComponent implements OnInit {
 
 		console.log(_saveProductList);
 		console.log(this.selectedProducts);
+		this.productForm.reset();
+		this.productForm.controls['productArray'] = new FormArray([]);
 		this._inventoryInitialiserService.create(_saveProductList, true).then(
 			(result) => {
 				if (result.status === 'success') {
@@ -495,7 +492,7 @@ export class InitializeStoreComponent implements OnInit {
 						null,
 						null
 					);
-					this.productForm.reset();
+					this.productForm.controls['productArray'] = new FormArray([]);
 				} else {
 					const text = 'This product exist in your inventory';
 					this.systemModuleService.announceSweetProxy(text, 'info');

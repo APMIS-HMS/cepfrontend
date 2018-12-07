@@ -20,7 +20,8 @@ import {
 	StoreService,
 	InventoryService,
 	ProductTypeService,
-	SupplierService
+	SupplierService,
+	PurchaseOrderService
 } from 'app/services/facility-manager/setup';
 import { ApmisPaginationComponent } from './components/apmis-pagination/apmis-pagination.component';
 import { StoreGlobalUtilService } from './store-utils/global-service';
@@ -95,6 +96,13 @@ import { ApmisStoreSupplierSearchComponent } from './components/apmis-store-supp
 		StoreCheckInComponent,
 		ApmisStoreSupplierSearchComponent
 	],
-	providers: [ StoreService, InventoryService, StoreGlobalUtilService, ProductTypeService, SupplierService ]
+	providers: [
+		StoreService,
+		InventoryService,
+		StoreGlobalUtilService,
+		ProductTypeService,
+		SupplierService,
+		PurchaseOrderService
+	]
 })
 export class ApmisStoreModule {}
