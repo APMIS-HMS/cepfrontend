@@ -18,7 +18,7 @@
   </div>
 
 
-  <div class="list-wrap"  *ngFor="let purchaseList of purchaseListCollection">
+  <div class="list-wrap" *ngFor="let purchaseList of purchaseListCollection">
     <div class="action-lft">
       <div>
         <div class="list-con-wrap">
@@ -28,7 +28,8 @@
           </div>
           <div class="con-wrap">
             <span>Status</span>
-            <h3 *ngIf="purchaseList.isDraft===true">Pending</h3><h3 *ngIf="!purchaseList.isDraft===true">Pending</h3>
+            <h3 *ngIf="purchaseList.isDraft===true">Pending</h3>
+            <h3 *ngIf="!purchaseList.isDraft===true">Pending</h3>
           </div>
           <div class="con-wrap">
             <span>Action</span>
@@ -42,7 +43,10 @@
           <div class="con-wrap">
             <span>Supplier(s)</span>
             <div class="sup-list">
-              <h3 *ngFor="let supplier of  purchaseList.suppliersId">{{supplier.label}}</h3>
+              <div class="sup-list-items" data-toggle="tooltip" data-placement="top" title="Click to make purchase" *ngFor="let supplier of  purchaseList.suppliersId">
+                <h3 style="margin-block-end: 0em !important; margin-block-start: 0em !important;">{{supplier.label}}</h3>
+                <span>{{supplier.primaryContactPhoneNo}} | {{supplier.email}}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -57,7 +61,7 @@
           <div class="action-item">
             <i class="fa fa-trash" aria-hidden="true"></i>
             <span>Delete List</span>
-          </div>          
+          </div>
         </div>
       </div>
     </div>

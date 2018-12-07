@@ -27,7 +27,7 @@
     </div>
   </div>
   <div [class.disabled]="selectedProduct===undefined" (click)="addProduct()" class="new-btn-solid-blue">
-    <span>Add Product</span>
+    <span>Add to List</span>
   </div>
 </div>
 
@@ -47,7 +47,7 @@
     </div>
   </div>
 
-  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+  <form  [formGroup]="productForm" (ngSubmit)="onSubmit()">
     <div formArrayName="productArray">
       <div class="store-tbody">
         <div *ngFor="let picked of productForm['controls'].productArray['controls']; let i = index;">
@@ -174,9 +174,12 @@
         </div>
       </div>
     </div>
-    <div [class.disabled]="selectedProduct===undefined" (click)="save(productForm.value, selectedProduct)" class="new-btn-solid-blue">
+    <div class="formWrap">
+      <div [class.disabled]="selectedProduct===undefined" (click)="save(productForm.value, selectedProduct)" class="new-btn-solid-blue">
       <span>Add Product</span>
     </div>
+    </div>
+    
   </form>
 
   <div *ngIf="showConfigureProduct" class="modal-overlay">
