@@ -43,6 +43,7 @@ export class ConfigProductComponent implements OnInit, OnChanges {
   sizeIsEdited = false;
   updateSizePackObj = [];
   updateObj = [];
+  alreadyConfiguredProduct;
 
   constructor(
       private productService: ProductService,
@@ -102,7 +103,6 @@ export class ConfigProductComponent implements OnInit, OnChanges {
       this.setPackSizes(data);
     }
   }
-
   setPackSizes(data) {
     this.isBaseUnitSet = true;
     this.showConfigContainer = true;
@@ -166,31 +166,49 @@ export class ConfigProductComponent implements OnInit, OnChanges {
     .map(({packId: id, name: label, size: size}) => ({id, label, size}));
     this.setPackSizes(editable);
   }
-
-  onSaveConfiguration() {
+  onClickBtn() {
     if (this.configProductBtn === 'Save Configuration') {
       this.isSaving = true;
-      if (this.selectedPackSizes[1].size > 1) {
-        this.modifyPackSizes(this.selectedPackSizes);
-          const newProductConfig: ProductConfig = {
-            productId: this.selectedProduct.id,
-            facilityId: this.currentFacility._id,
-            productObject: this.selectedProduct,
-            rxCode: this.selectedProduct.code,
-            packSizes: this.modifiedPackSizes
-        };
-        this.productService.createProductConfig(newProductConfig).then(payload => {
-          this.isSaving = false;
-          this.productService.productConfigAnnounced(payload);
-      });
-        this.apmisFilterService.clearItemsStorage(true);
+      if (this.selectedProduct.id !== '' || this.selectedProduct.id !== undefined) {
+        this.getProductConfigByProduct();
+        if (this.alreadyConfiguredProduct !== undefined && this.productExist) {
+            // product has been configured
+            // TODO:  Prompt the user to proceed with edit
+            
+            // this.systemModuleService.announceSweetProxy(
+            //   `Product: ${} has been configued before`,
+            //   'error', null, null, null, null, null, null, null
+            // );
+        } else {
+            // proceed with saving
+            if (this.selectedPackSizes[1].size > 1) {
+            this.modifyPackSizes(this.selectedPackSizes);
+              const newProductConfig: ProductConfig = {
+                productId: this.selectedProduct.id,
+                facilityId: this.currentFacility._id,
+                productObject: this.selectedProduct,
+                rxCode: this.selectedProduct.code,
+                packSizes: this.modifiedPackSizes
+            };
+            this.productService.createProductConfig(newProductConfig).then(payload => {
+              this.isSaving = false;
+              this.productService.productConfigAnnounced(payload);
+          }, err => {
+            this.isSaving = false;
+            this.configProductBtn = 'Save Configuration';
+          });
+            this.apmisFilterService.clearItemsStorage(true);
+          } else {
+            this.systemModuleService.announceSweetProxy(
+              'Product: Please enter size for product pack.',
+              'error', null, null, null, null, null, null, null
+            );
+            this.apmisFilterService.clearItemsStorage(true);
+            this.isSaving = false;
+          }
+        }
       } else {
-        this.systemModuleService.announceSweetProxy(
-          'Product: Please enter size for product pack.',
-          'error', null, null, null, null, null, null, null
-        );
-        this.apmisFilterService.clearItemsStorage(true);
-        this.isSaving = false;
+
       }
     } else if (this.configProductBtn === 'Edit Configuration') {
           if (this.selectedPackSizes[1].size > 1) {
@@ -204,6 +222,9 @@ export class ConfigProductComponent implements OnInit, OnChanges {
                 this.sizeIsEdited = true;
                 this.productService.productConfigUpdateAnnounced(payload);
                 this.apmisFilterService.clearItemsStorage(true);
+          }, err => {
+              this.configProductBtn = 'Edit Configuration';
+              this.isSaving = false;
           });
         } else {
           this.systemModuleService.announceSweetProxy(
@@ -236,8 +257,10 @@ export class ConfigProductComponent implements OnInit, OnChanges {
         productId: this.selectedProduct.id
       }
     }).then(payload => {
+        console.log(payload);
         if (payload.data.length > 0) {
           this.productExist = true;
+          console.log(this.alreadyConfiguredProduct = payload.data);
         }
     });
   }
