@@ -15,13 +15,19 @@
 
 .list-con-wrap {
     display: flex; 
-    padding-bottom: 20px;
+    padding-bottom: 5px;
 }
 
 .sup-list{
+    margin-top: 3px;
     display: flex;
-    h3{
+    background: #dddddd1a;
+    padding: 5px;
+    border-radius: 3px;
+    .sup-list-items{
+        //background: #dddddd;
         padding-right: 20px;
+        cursor: pointer;
     }
 }
 
