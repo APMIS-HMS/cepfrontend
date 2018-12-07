@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Employee } from 'app/models';
 import { CoolLocalStorage } from 'angular2-cool-storage';
-import { EmployeeService } from 'app/services/facility-manager/setup';
+import { EmployeeService, PurchaseOrderService } from 'app/services/facility-manager/setup';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
+import { Facility, Employee } from 'app/models';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
 	selector: 'app-purchase-list',
@@ -18,10 +19,15 @@ export class PurchaseListComponent implements OnInit {
 	checkingStore: any = <any>{};
 	loginEmployee: Employee = <Employee>{};
 	workSpace: any;
+	selectedPurchaseOrder: any;
+	selectedFacility: any;
+	purchaseListCollection: any[] = [];
 	constructor(
 		private _locker: CoolLocalStorage,
 		private _employeeService: EmployeeService,
-		private authFacadeService: AuthFacadeService
+		private authFacadeService: AuthFacadeService,
+		private purchaseListService: PurchaseOrderService,
+			private systemModuleService: SystemModuleService
 	) {
 		this.subscription = this._employeeService.checkInAnnounced$.subscribe((res) => {
 			if (!!res) {
@@ -77,7 +83,27 @@ export class PurchaseListComponent implements OnInit {
 		});
 	}
 
-	ngOnInit() {}
+	ngOnInit() {
+		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
+		this.getPurchaseList();
+	}
+
+	getPurchaseList(){
+		this.systemModuleService.on();
+		this.purchaseListService.findPurchaseList({
+			facilityId: this.selectedFacility._id,
+			storeId: this.checkingStore.storeId
+		}).then(payload =>{
+			this.purchaseListCollection = payload.data;
+			console.log(this.purchaseListCollection);
+			this.systemModuleService.off();
+		}, error =>{
+			console.log(error);
+			this.systemModuleService.off();
+				const text = 'There was an error loading Purchase List';
+					this.systemModuleService.announceSweetProxy(text, 'error');
+		})
+	}
 
 	backPurchaseList() {
 		this.purchaseList = true;
