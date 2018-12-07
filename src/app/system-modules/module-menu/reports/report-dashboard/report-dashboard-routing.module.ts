@@ -9,6 +9,8 @@ import { StoreManagerReportComponent } from './store-manager-report/store-manage
 import { WardManagerReportComponent } from './ward-manager-report/ward-manager-report.component';
 import { PharmacyReportComponent } from './pharmacy-report/pharmacy-report.component';
 
+
+
 const REPORTS_DASHBOARD_ROUTE: Routes = [
 	{
 		path: '',

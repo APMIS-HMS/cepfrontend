@@ -83,7 +83,7 @@
 </div>
 
 <div class="div-space"></div>
-<h3 class="sel-txt">50 Items selected and added to purchase list</h3>
+<h3 class="sel-txt">{{selectedProducts.length}} Items selected and added to purchase list</h3>
 <div class="div-space"></div>
 
 <div class="store-table">
@@ -113,13 +113,18 @@
         <div class="config-tr-in in-tr">
           <div class="store-td">{{picked.productName}}</div>
           <div class="store-td">{{picked.productConfiguration.name}}</div>
-          <div class="store-td"> <input min="0" class="customInput" type="number" placeholder="&#8358;300,000 "
-              required> {{picked.productConfiguration.name}}</div>
+          <div class="store-td">
+            <div class="InputGroup input-space">
+              <input min="0" [(ngModel)]="picked.quantityRequired" class="customInput" type="number" required>
+              <span class="highlight"></span>
+            </div>
+            <span>{{picked.productConfiguration.name}}</span>
+          </div>
           <div class="store-td">#5/{{picked.productConfiguration.name}}</div>
           <div class="store-td">#300,000</div>
           <div class="store-td">
             <div class="btc-body-item item-action">
-              <i class="fa fa-2x fa-check-circle" aria-hidden="true"></i>
+              <i class="fa fa-2x fa-pencil-square" aria-hidden="true"></i>
               <i class="fa fa-2x fa-times-circle" aria-hidden="true"></i>
             </div>
           </div>
@@ -129,73 +134,32 @@
   </div>
 </div>
 
-
-<div class="tbl-btn-action">
-  <div class="action-pad">
-    <div class="new-btn-blue">
-      <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
-      <span>Export</span>
-    </div>
-  </div>
-  <div class="action-pad">
-    <div class="new-btn-blue">
-      <i class="fa fa-envelope-o" aria-hidden="true"></i>
-      <span>E-Mail</span>
-    </div>
-  </div>
-  <div class="action-pad">
-    <div class="new-btn-blue">
-      <i class="fa fa-print" aria-hidden="true"></i>
-      <span>Print</span>
-    </div>
-  </div>
-</div>
+<div class="div-space"></div>
 
 <div class="sel-sup">
   <h3>Add Suppliers to send purchase list to:</h3>
-  <div class="input-group-x2">
-    <div class="dropDown-container" style="margin-right:40px;">
+  <div class="multi-sup-list-wrap">
+    <div class="dropDown-container" style="margin-right:40px; min-width: 300px !important;">
       <div class="select">
-        <select name="dropDown-container" id="dropDown-container">
-          <option value="0">Select Store</option>
-          <option value="1">Central Store</option>
-          <option value="2">General Store</option>
-          <option value="3">Pharmacy Store A</option>
-          <option value="4">Pharmacy Store B</option>
+        <select name="dropDown-container" (click)="onshowSup_search()" id="dropDown-container">
         </select>
       </div>
+    </div>
+    <div *ngIf="sup_search" class="multi-sup-list">
+      <app-apmis-search-result [data]="supplierSearchResult" (onSelectedItems)="onSearchSelectedItems($event)"
+        (onCreateItem)="onCreateNewItem($event)"></app-apmis-search-result>
     </div>
   </div>
 </div>
 
+
 <div class="supplier-list-wrap">
-  <div class="supplier-wrap">
-    <div style="display: flex;">
-      <h3>SIDMACH Medical Suppliers </h3>
-      <div class="cls-ico"><i class="fa fa-times-circle" aria-hidden="true"></i></div>
+  <div class="supplier-wrap" *ngFor="let supplier of selectedSuppliers">
+    <div class="sup-name-wrap">
+      <h3>{{supplier.supplier.name}}</h3>
+      <div (click)="removeSupplier(supplier)" class="cls-ico"><i class="fa fa-2x fa-times-circle" aria-hidden="true"></i></div>
     </div>
-    <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
-  </div>
-  <div class="supplier-wrap">
-    <div style="display: flex;">
-      <h3>SIDMACH Medical Suppliers </h3>
-      <div class="cls-ico"><i class="fa fa-times-circle" aria-hidden="true"></i></div>
-    </div>
-    <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
-  </div>
-  <div class="supplier-wrap">
-    <div style="display: flex;">
-      <h3>SIDMACH Medical Suppliers </h3>
-      <div class="cls-ico"><i class="fa fa-times-circle" aria-hidden="true"></i></div>
-    </div>
-    <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
-  </div>
-  <div class="supplier-wrap">
-    <div style="display: flex;">
-      <h3>SIDMACH Medical Suppliers </h3>
-      <div class="cls-ico"><i class="fa fa-times-circle" aria-hidden="true"></i></div>
-    </div>
-    <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
+    <span>{{supplier.supplier.primaryContactPhoneNo}} | {{supplier.supplier.email}}</span>
   </div>
 </div>
 
@@ -204,8 +168,16 @@
 
 <hr>
 <div class="sv-btn-container">
-  <h3 class="sel-txt">Send purchase list with 50 items to 6 suppliers ? </h3>
-  <div class="new-btn-solid-blue">
-    <span>Send Purchase List</span>
+  <h3 class="sel-txt">Send purchase list with {{selectedProducts.length}} items to
+    {{selectedLocalStorageSuppliers.length}} suppliers ? </h3>
+  <div (click)="submit()"  class="new-btn-solid-blue">
+    <div class="dropDown-container">
+      <div class="select" >
+        <select style="color: white !important; cursor: pointer;" name="dropDown-container" id="dropDown-container">
+          <option style="color: black !important;">Save as Draft</option>
+          <option style="color: black !important;">Save Completely</option>
+        </select>
+      </div>
+    </div>
   </div>
 </div>

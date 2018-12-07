@@ -284,10 +284,11 @@ td .empWrap .list-img {
     padding: 8px;
     font-size: 1.2rem;
     text-align: center;
-    color: #0288D1;
+    color: #3535ff;
+    font-weight: bold;
     -ms-flex-pack: distribute;
     justify-content: space-around;
-    background: #bfd7eb;
+    background: rgba(2, 136, 209, 0.07);
     cursor: pointer;
     /* border: 1px solid #3535ff; */
     border-radius: 4px;
@@ -356,7 +357,7 @@ td .empWrap .list-img {
 
 .invoice-tr-in {
     display: grid;
-    grid-template-columns: 1fr 2fr 1fr 1fr 1fr 3fr;
+    grid-template-columns: repeat(2, 2fr) repeat(3, 3fr);
     grid-auto-columns: 1fr;
     grid-gap: 20px;
     align-items: left;
