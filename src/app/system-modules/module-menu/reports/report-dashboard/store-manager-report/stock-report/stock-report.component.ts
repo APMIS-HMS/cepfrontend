@@ -14,4 +14,6 @@ export class StockReportComponent implements OnInit {
   ngOnInit() {
   }
 
+
+
 }

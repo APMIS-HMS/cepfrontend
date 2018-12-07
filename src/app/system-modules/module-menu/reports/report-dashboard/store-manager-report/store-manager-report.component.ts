@@ -25,7 +25,7 @@ export class StoreManagerReportComponent implements OnInit {
 		if (param.includes('storeSales')) {
 			this.stockReport = false;
 			this.storeSalesReport = true;
-			this._router.navigate([ '/dashboard/reports/report-dashboard/storeManagerReport/storeSales' ]);
+			this._router.navigate([ '/dashboard/reports/report-dashboard/storeManagerReport/salesReport' ]);
 		} else if (param.includes('stockReport')) {
 			this.stockReport = true;
 			this.storeSalesReport = false;
@@ -35,30 +35,32 @@ export class StoreManagerReportComponent implements OnInit {
 			this.storeSalesReport = true;
 			this._router.navigate([ '/dashboard/reports/report-dashboard/storeReport/salesReport' ]);
 		}
-	}
-	// route(link) {
-	// 	console.log(link);
-	// 	if (link === 'patientAnalytics') {
-	// 		this.patientRegistrationAnalytics = true;
-	// 	}  else {
-	// 		this.patientRegistrationAnalytics = false;
-	// 	}
-	// 	this._router.navigate([ '/dashboard/reports/report-dashboard/patient-manager-report' + link ]);
-	// }
+  }
 
- // pageInViewLoader(title) {
-		//this.pageInView = title;
-  //}
+	route(link) {
+		if (link === 'storeSales') {
+			this.storeSalesReport = true;
+			this.stockReport = false;
+		} else if (link === 'stockReport') {
+			this.storeSalesReport = false;
+			this.stockReport = true;
+		} else {
+			this.storeSalesReport = false;
+			this.stockReport = true;
+		}
+		this._router.navigate(['/dashboard/reports/report-dashboard/storeReport/stockReport' + link ]);
+	}
 
   back_dashboard() {
 		this._router.navigate(['/dashboard/reports/report-dashboard']);
   }
+
 	storeSales() {
 		this._router.navigate(['/dashboard/reports/report-dashboard/storeReport/salesReport']);
 	 }
 
 
- storeStockReport() {
+ StockReport() {
 		this._router.navigate(['/dashboard/reports/report-dashboard/storeReport/stockReport']);
  }
 
