@@ -6,8 +6,9 @@ import { Filters } from '../../../store-utils/global';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility, Employee } from 'app/models';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
-import { EmployeeService, ProductService } from 'app/services/facility-manager/setup';
+import { EmployeeService, ProductService, SupplierService } from 'app/services/facility-manager/setup';
 import { FormControl } from '@angular/forms';
+import { ApmisFilterBadgeService } from 'app/services/tools';
 
 @Component({
 	selector: 'app-new-purchase-list',
@@ -37,6 +38,10 @@ export class NewPurchaseListComponent implements OnInit {
 	selectedProduct: any;
 	productConfigs: any[] = [];
 	selectedProducts: any[] = [];
+	suppliers: any[] = [];
+	selectedSuppliers: any[] = [];
+	selectedLocalStorageSuppliers: any[] = [];
+	supplierSearchResult: any[] = [];
 
 	constructor(
 		private storeUtilService: StoreGlobalUtilService,
@@ -44,8 +49,11 @@ export class NewPurchaseListComponent implements OnInit {
 		private _locker: CoolLocalStorage,
 		private _employeeService: EmployeeService,
 		private authFacadeService: AuthFacadeService,
-		private _productService: ProductService
+		private _productService: ProductService,
+		private supplierService: SupplierService,
+		private apmisFilterService: ApmisFilterBadgeService
 	) {
+		this.apmisFilterService.clearItemsStorage(true);
 		this.subscription = this._employeeService.checkInAnnounced$.subscribe((res) => {
 			if (!!res) {
 				if (!!res.typeObject) {
@@ -72,8 +80,8 @@ export class NewPurchaseListComponent implements OnInit {
 						let checkingObject = { typeObject: itemr, type: 'store' };
 						this._employeeService
 							.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn })
-							.then((payload) => {
-								this.loginEmployee = payload;
+							.then((payload2) => {
+								this.loginEmployee = payload2;
 								checkingObject = { typeObject: itemr, type: 'store' };
 								this._employeeService.announceCheckIn(checkingObject);
 								this._locker.setObject('checkingObject', checkingObject);
@@ -87,8 +95,8 @@ export class NewPurchaseListComponent implements OnInit {
 							itemr.lastLogin = new Date();
 							this._employeeService
 								.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn })
-								.then((payload) => {
-									this.loginEmployee = payload;
+								.then((payload2) => {
+									this.loginEmployee = payload2;
 									const checkingObject = { typeObject: itemr, type: 'store' };
 									this._employeeService.announceCheckIn(checkingObject);
 									this._locker.setObject('checkingObject', checkingObject);
@@ -101,6 +109,7 @@ export class NewPurchaseListComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.apmisFilterService.clearItemsStorage(true);
 		this.checkingStore = (<any>this._locker.getObject('checkingObject')).typeObject;
 		this.storeFilters = this.storeUtilService.getObjectKeys(Filters);
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
@@ -116,6 +125,7 @@ export class NewPurchaseListComponent implements OnInit {
 			}
 		});
 		this.getInventoryList();
+		this.getSuppliers();
 	}
 
 	getInventoryList(searchText?) {
@@ -161,8 +171,9 @@ export class NewPurchaseListComponent implements OnInit {
 
 	modifyProducts(configs: any[]) {
 		return configs.map((config) => {
-			console.log(config);
 			config.isChecked = this.validateAgainstDuplicateProductEntry(config) ? false : true;
+			config.quantityRequired = 0;
+			config.costPrice = 0;
 			return config;
 		});
 	}
@@ -201,7 +212,65 @@ export class NewPurchaseListComponent implements OnInit {
 		}
 	}
 
-	onshowSup_search(){
+	onshowSup_search() {
 		this.sup_search = !this.sup_search;
+	}
+
+	getSuppliers() {
+		this.supplierService
+			.find({
+				query: {
+					facilityId: this.selectedFacility._id
+				}
+			})
+			.then(
+				(payload) => {
+					this.suppliers = payload.data;
+					this.supplierSearchResult = payload.data.map((c) => {
+						return { id: c._id, label: c.supplier.name };
+					});
+				},
+				(error) => {}
+			);
+	}
+
+	onSearchSelectedItems(data: any[]) {
+		if (data.length > 0) {
+			this.selectedSuppliers = this.suppliers.filter((supplier) => {
+				const res = data.find((dt) => dt.id.toString() === supplier._id.toString());
+				if (res !== undefined) {
+					return supplier;
+				}
+			});
+			this.selectedLocalStorageSuppliers = data;
+		} else {
+			this.selectedSuppliers = [];
+		}
+	}
+
+	removeSupplier(supplier) {
+		const res = this.selectedLocalStorageSuppliers.filter((dt) => dt.id.toString() !== supplier._id.toString());
+		console.log(res);
+		this.apmisFilterService.edit(true, res);
+		this.onSearchSelectedItems(res);
+		this.selectedLocalStorageSuppliers = res;
+	}
+
+	onCreateNewItem(item) {
+		if (item !== '' || item !== undefined) {
+			const newPackSize = {
+				name: item
+			};
+			// this.productService.createPackageSize(newPackSize).then(payload => {
+			//   this.getProductPackTypes();
+			// });
+		}
+	}
+	submit() {
+		console.log(this.selectedProducts);
+	}
+
+	isAllCheckedProductValid() {
+		// this.selectedProducts.find(product => product.)
 	}
 }
