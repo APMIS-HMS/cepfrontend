@@ -1,6 +1,18 @@
 <div class="search-container">
   <div class="searchproduct">
     <div class="InputGroup">
+      <input [formControl]="serviceCategorySearch" (focus)="onFocus('in', 'category')" (focusout)="onFocus('out', 'category')"
+        class="customInput" type="text" required>
+      <span class="highlight"></span>
+      <span class="bar"></span>
+      <label class="customLabel"><i class="fa fa-search" aria-hidden="true"></i>Search Service Category</label>
+      <ul class="search-sugestions" *ngIf="(showCategory && categories.length > 0)">
+        <li *ngFor="let category of categories" (click)="setCategorySelectedOption(category)" class="search-sugestion">{{category.name}}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="searchproduct">
+    <div class="InputGroup">
       <input [formControl]="productConfigSearch" (focus)="onFocus('in')" (focusout)="onFocus('out')" class="customInput"
         type="text" required>
       <span class="highlight"></span>
@@ -15,7 +27,7 @@
     </div>
   </div>
   <div [class.disabled]="selectedProduct===undefined" (click)="addProduct()" class="new-btn-solid-blue">
-    <span>Add Product</span>
+    <span>Add to List</span>
   </div>
 </div>
 
@@ -35,10 +47,9 @@
     </div>
   </div>
 
-  <form [formGroup]="productForm" (ngSubmit)="onSubmit()">
+  <form  [formGroup]="productForm" (ngSubmit)="onSubmit()">
     <div formArrayName="productArray">
       <div class="store-tbody">
-        <!-- <div class="store-pre-tr" *ngFor="let picked of selectedProducts"> -->
         <div *ngFor="let picked of productForm['controls'].productArray['controls']; let i = index;">
           <div formGroupName="{{i}}">
             <div class="store-tr">
@@ -58,7 +69,7 @@
                 </div>
                 <div class="store-td">
                   <div class="InputGroup input-space">
-                    <input formControlName="totalCostPrice" min="0" class="customInput" type="number" placeholder="&#8358;300,000 "
+                    <input [readOnly]=true formControlName="totalCostPrice" min="0" class="customInput" type="number" placeholder="&#8358;300,000 "
                       required>
                     <span class="highlight"></span>
                   </div>
@@ -163,6 +174,12 @@
         </div>
       </div>
     </div>
+    <div class="formWrap">
+      <div [class.disabled]="selectedProduct===undefined" (click)="save(productForm.value, selectedProduct)" class="new-btn-solid-blue">
+      <span>Add Product</span>
+    </div>
+    </div>
+    
   </form>
 
   <div *ngIf="showConfigureProduct" class="modal-overlay">

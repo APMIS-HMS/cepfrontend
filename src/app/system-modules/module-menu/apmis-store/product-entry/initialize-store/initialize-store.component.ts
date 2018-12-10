@@ -4,6 +4,18 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, FormBuilder, Validators, FormArray } from '@angular/forms';
 import { tap, debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { DatePipe } from '@angular/common';
+import {
+	FacilitiesServiceCategoryService,
+	EmployeeService,
+	InventoryInitialiserService
+} from 'app/services/facility-manager/setup';
+import { Facility } from 'app/models';
+import { CoolLocalStorage } from 'angular2-cool-storage';
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { Subscription } from 'rxjs/Subscription';
+import { Inventory } from '../../components/models/inventory';
+import { InventoryTransaction } from '../../components/models/inventorytransaction';
 
 @Component({
 	selector: 'app-initialize-store',
@@ -18,6 +30,8 @@ export class InitializeStoreComponent implements OnInit {
 	newBatchEntry = false;
 
 	productConfigSearch: FormControl = new FormControl();
+	serviceCategorySearch: FormControl = new FormControl();
+	productServiceControl = new FormControl('');
 	productConfigs: any[] = [];
 	selectedProductName: any;
 	showProduct: boolean;
@@ -27,10 +41,80 @@ export class InitializeStoreComponent implements OnInit {
 	productForm: FormGroup;
 	dateP;
 	dateFormat = 'dd/MM/yyyy';
+	selectedFacility: Facility;
+	selectedFacilityService: any = <any>{};
+	categories: any = <any>[];
+	selelctedCategoryId: any = <any>{};
+	subscription: Subscription;
+	checkingObject: any = <any>{};
+	inventoryModel: Inventory = <Inventory>{};
+	InventoryTxnModel: InventoryTransaction = <InventoryTransaction>{};
+	loginEmployee: any;
+	selectedCategoryName: any;
+	showCategory: boolean;
 
-	constructor(private _productService: ProductService, private formBuilder: FormBuilder) {}
+	constructor(
+		private _productService: ProductService,
+		private formBuilder: FormBuilder,
+		private facilityServiceCategoryService: FacilitiesServiceCategoryService,
+		private _locker: CoolLocalStorage,
+		private authFacadeService: AuthFacadeService,
+		private systemModuleService: SystemModuleService,
+		private employeeService: EmployeeService,
+		private _inventoryInitialiserService: InventoryInitialiserService
+	) {
+		this.subscription = this.employeeService.checkInAnnounced$.subscribe((res) => {
+			if (!!res) {
+				if (!!res.typeObject) {
+					this.checkingObject = res.typeObject;
+				}
+			}
+		});
+
+		this.authFacadeService.getLogingEmployee().then((payload: any) => {
+			this.loginEmployee = payload;
+			if (this.loginEmployee.storeCheckIn !== undefined || this.loginEmployee.storeCheckIn.length > 0) {
+				let isOn = false;
+				this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+					if (itemr.isDefault === true) {
+						itemr.isOn = true;
+						itemr.lastLogin = new Date();
+						isOn = true;
+						this.checkingObject = { typeObject: itemr, type: 'store' };
+						this.employeeService.announceCheckIn(this.checkingObject);
+
+						this.employeeService
+							.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn })
+							.then((payload2) => {
+								this.loginEmployee = payload2;
+								this.checkingObject = { typeObject: itemr, type: 'store' };
+								this.employeeService.announceCheckIn(this.checkingObject);
+								this._locker.setObject('checkingObject', this.checkingObject);
+							});
+					}
+				});
+				if (isOn === false) {
+					this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+						if (r === 0) {
+							itemr.isOn = true;
+							itemr.lastLogin = new Date();
+							this.employeeService
+								.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn })
+								.then((payload3) => {
+									this.loginEmployee = payload3;
+									this.checkingObject = { typeObject: itemr, type: 'store' };
+									this.employeeService.announceCheckIn(this.checkingObject);
+									this._locker.setObject('checkingObject', this.checkingObject);
+								});
+						}
+					});
+				}
+			}
+		});
+	}
 
 	ngOnInit() {
+		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
 		this.dateP = new DatePipe(navigator.language);
 		this.selectedProducts = [];
 		this.productConfigSearch.valueChanges.distinctUntilChanged().debounceTime(200).subscribe((value) => {
@@ -41,12 +125,14 @@ export class InitializeStoreComponent implements OnInit {
 				this._productService
 					.findProductConfigs({
 						query: {
-							'productObject.name': { $regex: value, $options: 'i' }
+							'productObject.name': { $regex: value, $options: 'i' },
+							storeId: this.checkingObject.storeId
 						}
 					})
 					.then(
 						(payload) => {
 							this.productConfigs = payload.data;
+							this.selectedProducts = payload.data;
 							this.showProduct = true;
 							if (this.productConfigs.length === 0) {
 								this.searchHasBeenDone = true;
@@ -64,8 +150,13 @@ export class InitializeStoreComponent implements OnInit {
 			}
 		});
 
+		this.productServiceControl.valueChanges.subscribe((value) => {
+			this.selelctedCategoryId = value;
+		});
+
 		this.InitializeProductArray();
 		this.removeProduct(0);
+		this.getServiceCategories();
 	}
 
 	close_onClick(e) {
@@ -85,28 +176,51 @@ export class InitializeStoreComponent implements OnInit {
 		this.newBatchEntry = true;
 	}
 
-	// clickItemIndex(picked) {
-	// 	console.log(picked);
-	// 	return (this.item_to_show = !this.item_to_show);
-	// }
-
 	setSelectedOption(data: any) {
-		try {
-			this.selectedProductName = data.productObject.name;
-			this.selectedProduct = data;
+		if (!data.isVented) {
+			try {
+				this.selectedProductName = data.productObject.name;
+				this.selectedProduct = data;
+				this.showProduct = false;
+				this.productConfigSearch.setValue(this.selectedProductName);
+			} catch (error) {}
+		} else {
+			const text = 'This product exist in your inventory';
+			this.systemModuleService.announceSweetProxy(text, 'info');
+			this.selectedProductName = '';
+			this.selectedProduct = undefined;
 			this.showProduct = false;
-			this.productConfigSearch.setValue(this.selectedProductName);
+		}
+	}
+
+	setCategorySelectedOption(data: any) {
+		try {
+			this.selectedCategoryName = data.name;
+			this.selelctedCategoryId = data;
+			this.showCategory = false;
+			this.serviceCategorySearch.setValue(this.selectedCategoryName);
 		} catch (error) {}
 	}
 
-	onFocus(focus) {
-		if (focus === 'in') {
-			this.selectedProductName = '';
-			this.showProduct = true;
+	onFocus(focus, type?) {
+		if (type === 'category') {
+			if (focus === 'in') {
+				this.selectedCategoryName = '';
+				this.showCategory = true;
+			} else {
+				setTimeout(() => {
+					this.showProduct = false;
+				}, 300);
+			}
 		} else {
-			setTimeout(() => {
-				this.showProduct = false;
-			}, 300);
+			if (focus === 'in') {
+				this.selectedProductName = '';
+				this.showProduct = true;
+			} else {
+				setTimeout(() => {
+					this.showProduct = false;
+				}, 300);
+			}
 		}
 	}
 
@@ -178,6 +292,19 @@ export class InitializeStoreComponent implements OnInit {
 		});
 	}
 
+	getServiceCategories() {
+		this.facilityServiceCategoryService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(
+			(payload) => {
+				if (payload.data.length > 0) {
+					this.selectedFacilityService = payload.data[0];
+					this.categories = payload.data[0].categories;
+					this.productServiceControl.setValue(this.categories[0]._id);
+				}
+			},
+			(error) => {}
+		);
+	}
+
 	initBatch(batch?) {
 		const newGrp = new FormGroup({
 			batchNumber: new FormControl(
@@ -246,22 +373,11 @@ export class InitializeStoreComponent implements OnInit {
 					batchFormArray.forEach((batchArray, j) => {
 						(<FormGroup>batchArray).controls['quantity'].valueChanges
 							.pipe(tap((val) => {}), debounceTime(200), distinctUntilChanged())
-							.subscribe((value) => {
-								// console.log(value);
-								// console.log((<FormGroup>frmArray).controls['totalQuantity'].value);
-								// const existingQuantity = (<FormGroup>frmArray).controls['totalQuantity'].value;
-								// const finalQuantity = value + existingQuantity;
-								// console.log(finalQuantity);
-								// (<FormGroup>frmArray).controls['totalQuantity'].setValue(finalQuantity);
-								// this.reCalculatePrices(frmArray, frmArray.value, 'totalQuantity');
-								// this.getProductBatchQuantity(batchFormArray);
-							});
+							.subscribe((value) => {});
 					});
 				});
 			}
-		} catch (error) {
-			console.log(error);
-		}
+		} catch (error) {}
 	}
 
 	getProductBatchQuantity(batchFormArray) {
@@ -278,8 +394,8 @@ export class InitializeStoreComponent implements OnInit {
 			value.totalCostPrice = value.costPrice * value.totalQuantity;
 			array.controls['totalCostPrice'].setValue(value.totalCostPrice);
 		} else if (control === 'totalCostPrice') {
-			value.costPrice = value.totalCostPrice / value.totalQuantity;
-			array.controls['costPrice'].setValue(value.costPrice);
+			// value.costPrice = value.totalCostPrice / value.totalQuantity;
+			// array.controls['costPrice'].setValue(value.costPrice);
 		} else if (control === 'margin') {
 			value.sellingPrice = value.costPrice * (value.margin / 100) + value.costPrice;
 			array.controls['sellingPrice'].setValue(value.sellingPrice);
@@ -301,6 +417,78 @@ export class InitializeStoreComponent implements OnInit {
 			this.clickItemIndex = itemIndex;
 			this.expand_row = !this.expand_row;
 		}
+	}
+
+	save(value, product) {
+		if (this.checkingObject.storeId === undefined) {
+			if (!!this.checkingObject.typeObject) {
+				this.checkingObject = this.checkingObject.typeObject;
+			}
+		}
+		const batches = {
+			batchItems: [],
+			product: {},
+			storeId: this.checkingObject.storeId,
+			facilityServiceId: this.selectedFacilityService._id,
+			categoryId: this.selelctedCategoryId._id
+		};
+		const _saveProductList = [];
+		value.productArray.forEach((inproduct, i) => {
+			const mainProductObject = this.selectedProducts.find(
+				(pro) => pro.productObject.id.toString() === inproduct.configProduct.id.toString()
+			);
+			const basePackType = mainProductObject.packSizes.find((pack) => pack.isBase === true);
+			const _saveProduct = {
+				categoryId: this.selelctedCategoryId._id,
+				batchItems: [],
+				facilityServiceId: this.selectedFacilityService._id,
+				product: mainProductObject,
+				storeId: this.checkingObject.storeId,
+				margin: inproduct.margin,
+				sellingPrice: inproduct.sellingPrice,
+				costPrice: inproduct.costPrice
+			};
+			inproduct.batches.forEach((batch, j) => {
+				const _saveBatch = {
+					availableQuantity: batch.quantity,
+					batchNumber: batch.batchNumber,
+					config: basePackType, // product pack config
+					expiryDate: batch.expiryDate,
+					quantity: batch.quantity,
+					costPrice: inproduct.costPrice
+				};
+				_saveProduct.batchItems.push(_saveBatch);
+			});
+			_saveProductList.push(_saveProduct);
+		});
+
+		this.productForm.reset();
+		this.productForm.controls['productArray'] = new FormArray([]);
+		this._inventoryInitialiserService.create(_saveProductList, true).then(
+			(result) => {
+				if (result.status === 'success') {
+					this.systemModuleService.announceSweetProxy(
+						'Your product has been initialised successfully',
+						'success',
+						null,
+						null,
+						null,
+						null,
+						null,
+						null,
+						null
+					);
+					this.productForm.controls['productArray'] = new FormArray([]);
+				} else {
+					const text = 'This product exist in your inventory';
+					this.systemModuleService.announceSweetProxy(text, 'info');
+				}
+			},
+			(error) => {
+				const errMsg = 'There was an error while initialising product, please try again!';
+				this.systemModuleService.announceSweetProxy(errMsg, 'error');
+			}
+		);
 	}
 
 	onSubmit() {}
