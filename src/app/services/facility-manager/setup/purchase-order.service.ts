@@ -55,6 +55,10 @@ export class PurchaseOrderService {
 		return this._socket3.find(query);
 	}
 
+	removePurchaseList(id: string, query: any) {
+		return this._socket3.remove(id, query);
+	}
+
 	update(serviceprice: any) {
 		return this._socket.update(serviceprice._id, serviceprice);
 	}

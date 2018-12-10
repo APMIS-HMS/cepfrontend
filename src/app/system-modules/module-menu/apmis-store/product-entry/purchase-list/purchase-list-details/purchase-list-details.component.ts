@@ -1,15 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-purchase-list-details',
-  templateUrl: './purchase-list-details.component.html',
-  styleUrls: ['./purchase-list-details.component.scss']
+	selector: 'app-purchase-list-details',
+	templateUrl: './purchase-list-details.component.html',
+	styleUrls: [ './purchase-list-details.component.scss' ]
 })
 export class PurchaseListDetailsComponent implements OnInit {
+	@Input() selectedPurchaseList = {};
+	constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+	ngOnInit() {
+		console.log(this.selectedPurchaseList);
+	}
 }
