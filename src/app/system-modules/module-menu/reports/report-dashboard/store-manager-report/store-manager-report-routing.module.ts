@@ -6,19 +6,6 @@ import { StoreSalesReportComponent } from './store-sales-report/store-sales-repo
 
 const STORE_MANAGER_REPORT_ROUTE: Routes = [
 
-  {
-    path: '',
-    component: StoreManagerReportComponent,
-    children: [
-      { path: '', redirectTo: 'salesReport' },
-
-      {
-        path: 'salesReport',
-        loadChildren: './store-manager-report/store-manager-report.module#StoreManagerReportModule'
-      }
-    ]
-  }
-];
 
 // {
 //   path: '',
@@ -32,6 +19,17 @@ const STORE_MANAGER_REPORT_ROUTE: Routes = [
 //   ]
 // }
 // ];
+
+{
+  path: '',
+  component: StoreManagerReportComponent,
+  children: [
+    // { path: '', redirectTo: 'clinic-report-page' },
+    { path: 'salesReport', component: StoreSalesReportComponent },
+    { path: 'stockReport', component: StockReportComponent },
+  ]
+}
+];  
 
 
 export const StoreManagerReportRoutingModule = RouterModule.forChild(STORE_MANAGER_REPORT_ROUTE);
