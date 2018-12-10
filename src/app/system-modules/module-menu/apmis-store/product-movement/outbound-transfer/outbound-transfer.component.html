@@ -128,7 +128,7 @@
   </div>
 </div>
 
-<div class="tbl-sect-wrap tbl-top-with-border" *ngFor = "let item of existingStockTransfers">
+<div class="tbl-sect-wrap tbl-top-with-border" *ngFor = "let item of existingStockTransfers;let i = index">
   <div class="has-title">Outbound Transfer Status</div>
   <div class="date-sent">
     <span>Store Sent:</span>
@@ -142,7 +142,7 @@
     <div class="store-thead">
       <div class="store-tr">
         <div class="store-th store-td-actions">
-          <input type="checkbox" [formControl]="check" />
+          <!-- <input type="checkbox" [formControl]="check" /> -->
         </div>
         <div class="store-tr-in">
           <div class="store-th">Product</div>
@@ -159,15 +159,16 @@
 
     <div class="store-tbody">
       <div class="store-pre-tr">
-        <div class="store-tr" *ngFor="let stock of item.inventoryTransferTransactions">
+        <div class="store-tr" *ngFor="let stock of item.inventoryTransferTransactions;let j = index">
           <div class="store-td store-td-actions">
-            <input type="checkbox" [formControl]="check" />
+            <!-- <input type="checkbox" [formControl]="check" /> -->
           </div>
           <div class="store-tr-in">
             <div class="store-td">{{stock.productObject.name}}</div>
             <div class="store-td">{{stock.availableQuantity}} {{stock.productObject.baseItem.name}}</div>
             <div class="store-td">{{stock.quantityOnHold}} {{stock.productObject.baseItem.name}}</div>
-            <div class="store-td">{{stock.quantity}} {{stock.productObject.baseItem.name}}</div>
+            <div class="store-td" *ngIf="!stock?.isEdit">{{stock.quantity}} {{stock.productObject.baseItem.name}}</div>
+            <div class="store-td" *ngIf="stock?.isEdit"><input (focusout)="onFocusChangeExistingItemValue($event,i,j)"> {{stock.productObject.baseItem.name}}</div>
             <div class="store-td">#{{stock.costPrice}}/{{stock.productObject.baseItem.name}}</div>
             <div class="store-td">#{{stock.lineCostPrice}} </div>
             <div class="store-td">
@@ -179,11 +180,11 @@
             <div class="table-list col-xs-1 action-placeholder">
               <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
               <div class="action-container shadow-RB">
-                <div class="action-item">
+                <div class="action-item" *ngIf="stock.transferStatusObject.name !=='Completed'" (click)="onEditExistingItem(i, j)">
                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                   <span>Edit</span>
                 </div>
-                <div class="action-item">
+                <div class="action-item" *ngIf="stock.transferStatusObject.name !=='Completed'" (click)="onRemoveExistingItem(i, j)">
                   <i class="fa fa-tags" aria-hidden="true"></i>
                   <span>Remove</span>
                 </div>
@@ -191,9 +192,9 @@
             </div>
           </div>
         </div>
-        <div class="store-tr">
+        <!-- <div class="store-tr">
           <div class="tbl-cont-cta"><i class="fa fa-plus"></i> Add Another Item</div>
-        </div>
+        </div> -->
       </div>
     </div>
     <!-- <app-apmis-pagination></app-apmis-pagination> -->

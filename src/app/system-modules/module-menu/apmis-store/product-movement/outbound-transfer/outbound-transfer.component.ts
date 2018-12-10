@@ -78,8 +78,8 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
       this.checkingStore = this.loginEmployee.storeCheckIn.find((x) => x.isOn === true);
-      const _id = (this.storeName.value === null) ? null : this.storeName.value;
-      this.getSelectedStoreSummations()
+      console.log(this.checkingStore);
+      this.getSelectedStoreSummations();
       console.log(this.checkingStore);
       if (this.loginEmployee.storeCheckIn === undefined || this.loginEmployee.storeCheckIn.length === 0) {
         // this.modal_on = true;
@@ -190,7 +190,7 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
     this.systemModuleService.on();
     console.log(this.storeLocation.value);
     this.storeService.find({ query: { facilityId: this.selectedFacility._id, minorLocationId: this.storeLocation.value } }).then(payload => {
-      this.stores = payload.data;
+      this.stores = payload.data.filter(x => x._id.toString() !== this.checkingStore.storeId.toString());
       this.systemModuleService.off();
     }, er => {
       this.systemModuleService.off();
@@ -199,6 +199,7 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
 
 
   getSelectedStoreSummations() {
+    this.existingStockTransfers = [];
     this.systemModuleService.on();
     let query = {
       facilityId: this.selectedFacility._id,
@@ -207,9 +208,12 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
     console.log(query, this.checkingStore);
     this.inventoryTransferService.find({ query: query }).then(payload => {
       this.transferObjs = [];
-      this.totalTransferredAmount = 0;
-      this.totalTransferredQties = 0;
-      this.existingStockTransfers = payload.data;
+      payload.data.forEach(element => {
+        const completedTransfers = element.inventoryTransferTransactions.filter(x => x.transferStatusObject.name === 'Completed');
+        if (completedTransfers.length !== element.inventoryTransferTransactions.length) {
+          this.existingStockTransfers.push(element);
+        }
+      });
       console.log(this.existingStockTransfers);
       this.systemModuleService.off();
     }, err => {
@@ -383,7 +387,7 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
     if (result.value) {
       this.systemModuleService.on();
       console.log(this.stockTransferItems);
-      this.inventoryTransferService.create(this.stockTransferItems).then(payload => {
+      this.inventoryTransferService.create2(this.stockTransferItems).then(payload => {
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy('Stock transfer created successfully', 'success',
           null,
@@ -419,5 +423,26 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
   onFocusChangeItemValue(event, index) {
     this.transferObjs[index].quantity = event.srcElement.value;
     this.transferObjs[index].isEdit = false;
+  }
+  onFocusChangeExistingItemValue(event, index, index2) {
+    this.existingStockTransfers[index].inventoryTransferTransactions[index2].quantity = event.srcElement.value;
+    this.existingStockTransfers[index].inventoryTransferTransactions[index2].lineCostPrice = this.existingStockTransfers[index].inventoryTransferTransactions[index2].quantity * this.existingStockTransfers[index].inventoryTransferTransactions[index2].costPrice;
+    this.existingStockTransfers[index].inventoryTransferTransactions[index2].isEdit = false;
+    this.systemModuleService.on();
+    this.inventoryTransferService.patch(this.existingStockTransfers[index]._id, { inventoryTransferTransactions: this.existingStockTransfers[index].inventoryTransferTransactions }, {}).then(payload => {
+      this.systemModuleService.off();
+    }, err => {
+      this.systemModuleService.off();
+    });
+  }
+
+  onEditExistingItem(index, index2) {
+    this.existingStockTransfers[index].inventoryTransferTransactions[index2].isEdit = (this.existingStockTransfers[index].inventoryTransferTransactions[index2].isEdit === undefined) ?
+      false : this.existingStockTransfers[index].inventoryTransferTransactions[index2].isEdit;
+    this.existingStockTransfers[index].inventoryTransferTransactions[index2].isEdit = true;
+  }
+
+  onRemoveExistingItem(index, index2) {
+
   }
 }
