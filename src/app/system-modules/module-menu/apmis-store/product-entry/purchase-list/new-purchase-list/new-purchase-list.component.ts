@@ -169,7 +169,6 @@ export class NewPurchaseListComponent implements OnInit {
 				})
 				.then(
 					(payload) => {
-						console.log(payload);
 						this.productConfigs = this.modifyProducts(payload.data);
 						this.numberOfPages = payload.total / this.limit;
 						this.total = payload.total;
@@ -260,7 +259,6 @@ export class NewPurchaseListComponent implements OnInit {
 
 	removeSupplier(supplier) {
 		const res = this.selectedLocalStorageSuppliers.filter((dt) => dt.id.toString() !== supplier._id.toString());
-		console.log(res);
 		this.apmisFilterService.edit(true, res);
 		this.onSearchSelectedItems(res);
 		this.selectedLocalStorageSuppliers = res;
@@ -278,13 +276,21 @@ export class NewPurchaseListComponent implements OnInit {
 	}
 	submit() {
 		this.systemModuleService.on();
+
+		const supplierIds = this.selectedLocalStorageSuppliers.map((local) => local.id);
+		const suppliersToSave = this.selectedSuppliers.map((supplier) => {
+			const existObj = supplierIds.find((i) => i.toString() === supplier._id.toString());
+			if (existObj) {
+				return supplier.supplier;
+			}
+		});
 		const purchaseList: PurchaseList = <PurchaseList>{};
 		purchaseList.facilityId = this.selectedFacility._id;
 		purchaseList.storeId = this.checkingStore.storeId;
 		purchaseList.listedProducts = [];
 		purchaseList.purchaseListNumber = '';
 		purchaseList.createdBy = this.loginEmployee._id;
-		purchaseList.suppliersId = this.selectedLocalStorageSuppliers;
+		purchaseList.suppliersId = suppliersToSave;
 		this.selectedProducts.forEach((product) => {
 			const listedItem: ListedItem = <ListedItem>{};
 			listedItem.costPrice = product.costPrice;
@@ -298,6 +304,7 @@ export class NewPurchaseListComponent implements OnInit {
 		this.purchaseListService.createPurchaseList(purchaseList).then(
 			(payload) => {
 				this.selectedProducts = [];
+				this.selectedSuppliers = [];
 				this.getInventoryList();
 				this.modifyProducts(this.productConfigs);
 				this.systemModuleService.off();
@@ -314,113 +321,9 @@ export class NewPurchaseListComponent implements OnInit {
 				);
 			},
 			(error) => {
-				console.log(error);
 				this.systemModuleService.off();
 			}
 		);
-	}
-
-	save() {
-		// if (this.saveBtnText === 'Done') {
-		const purchaseOrder: PurchaseOrder = <PurchaseOrder>{};
-		// 	purchaseOrder.expectedDate = this.frm_purchaseOrder.value.deliveryDate;
-		// 	purchaseOrder.supplierId = this.frm_purchaseOrder.value.supplier;
-		// 	purchaseOrder.remark = this.frm_purchaseOrder.value.desc;
-		// 	purchaseOrder.storeId = this.checkingObject.storeId;
-		// 	purchaseOrder.facilityId = this.selectedFacility._id;
-		// 	purchaseOrder.createdBy = this.loginEmployee._id;
-		// 	purchaseOrder.orderedProducts = [];
-		// 	(<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((itemi, i) => {
-		// 		const item = itemi.value;
-		// 		const product: any = <any>{};
-		// 		product.productId = item.id;
-		// 		let val = JSON.parse(JSON.stringify(item));
-		// 		val.name = val.product;
-		// 		delete val.product;
-		// 		product.productObject = val;
-		// 		product.quantity = item.qty;
-		// 		product.qtyDetails = [];
-		// 		item.config.forEach((element) => {
-		// 			product.qtyDetails.push({
-		// 				packId: element.packItem,
-		// 				quantity: element.size
-		// 			});
-		// 		});
-		// 		purchaseOrder.orderedProducts.push(product);
-		// 	});
-		// 	this.purchaseOrderService.create(purchaseOrder).then(
-		// 		(payload) => {
-		// 			this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
-		// 			this.systemModuleService.announceSweetProxy(
-		// 				'Purchase order ' + payload.purchaseOrderNumber + ' was created',
-		// 				'success',
-		// 				null,
-		// 				null,
-		// 				null,
-		// 				null,
-		// 				null,
-		// 				null,
-		// 				null
-		// 			);
-		// 			this.frm_purchaseOrder.reset();
-		// 			this.router.navigate([ '/dashboard/purchase-manager/orders' ]);
-		// 			this.loading = false;
-		// 		},
-		// 		(error) => {
-		// 			this.systemModuleService.announceSweetProxy('Failed to create purchase order', 'error');
-		// 			this.loading = false;
-		// 		}
-		// 	);
-		// } else {
-		// 	this.selectedPurchaseOrder.expectedDate = this.frm_purchaseOrder.value.deliveryDate;
-		// 	this.selectedPurchaseOrder.supplierId = this.frm_purchaseOrder.value.supplier;
-		// 	this.selectedPurchaseOrder.remark = this.frm_purchaseOrder.value.desc;
-		// 	this.selectedPurchaseOrder.storeId = this.checkingObject.storeId;
-		// 	this.selectedPurchaseOrder.facilityId = this.selectedFacility._id;
-		// 	this.selectedPurchaseOrder.createdBy = this.loginEmployee._id;
-		// 	this.selectedPurchaseOrder.orderedProducts = [];
-		// 	(<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((itemi, i) => {
-		// 		const item = itemi.value;
-		// 		const product: any = <any>{};
-		// 		product.productId = item.id;
-		// 		let val = JSON.parse(JSON.stringify(item));
-		// 		val.name = val.product;
-		// 		delete val.product;
-		// 		product.productObject = val;
-		// 		product.quantity = item.qty;
-		// 		product.qtyDetails = [];
-		// 		item.config.forEach((element) => {
-		// 			let val: any = <any>{};
-		// 			val.packId = element.packItem;
-		// 			val.quantity = element.size;
-		// 			product.qtyDetails.push(val);
-		// 		});
-		// 		this.selectedPurchaseOrder.orderedProducts.push(product);
-		// 	});
-		// 	this.purchaseOrderService.patch(this.selectedPurchaseOrder._id, this.selectedPurchaseOrder).subscribe(
-		// 		(payload) => {
-		// 			this.systemModuleService.announceSweetProxy(
-		// 				'Purchase order ' + payload.purchaseOrderNumber + ' was updated',
-		// 				'success',
-		// 				null,
-		// 				null,
-		// 				null,
-		// 				null,
-		// 				null,
-		// 				null,
-		// 				null
-		// 			);
-		// 			this.productTableForm.controls['productTableArray'] = this.formBuilder.array([]);
-		// 			this.unCheckedAllProducts();
-		// 			this.router.navigate([ '/dashboard/purchase-manager/orders' ]);
-		// 			this.loading = false;
-		// 		},
-		// 		(error) => {
-		// 			this.systemModuleService.announceSweetProxy('Failed to create purchase order', 'error');
-		// 			this.loading = false;
-		// 		}
-		// 	);
-		// }
 	}
 
 	isAllCheckedProductValid() {

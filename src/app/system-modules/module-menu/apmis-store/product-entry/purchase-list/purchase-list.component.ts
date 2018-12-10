@@ -19,7 +19,7 @@ export class PurchaseListComponent implements OnInit {
 	checkingStore: any = <any>{};
 	loginEmployee: Employee = <Employee>{};
 	workSpace: any;
-	selectedPurchaseOrder: any;
+	selectedPurchaseList: any;
 	selectedFacility: any;
 	purchaseListCollection: any[] = [];
 	constructor(
@@ -27,7 +27,7 @@ export class PurchaseListComponent implements OnInit {
 		private _employeeService: EmployeeService,
 		private authFacadeService: AuthFacadeService,
 		private purchaseListService: PurchaseOrderService,
-			private systemModuleService: SystemModuleService
+		private systemModuleService: SystemModuleService
 	) {
 		this.subscription = this._employeeService.checkInAnnounced$.subscribe((res) => {
 			if (!!res) {
@@ -88,21 +88,48 @@ export class PurchaseListComponent implements OnInit {
 		this.getPurchaseList();
 	}
 
-	getPurchaseList(){
+	getPurchaseList() {
 		this.systemModuleService.on();
-		this.purchaseListService.findPurchaseList({
-			facilityId: this.selectedFacility._id,
-			storeId: this.checkingStore.storeId
-		}).then(payload =>{
-			this.purchaseListCollection = payload.data;
-			console.log(this.purchaseListCollection);
-			this.systemModuleService.off();
-		}, error =>{
-			console.log(error);
-			this.systemModuleService.off();
-				const text = 'There was an error loading Purchase List';
+		this.purchaseListService
+			.findPurchaseList({
+				facilityId: this.selectedFacility._id,
+				storeId: this.checkingStore.storeId
+			})
+			.then(
+				(payload) => {
+					this.purchaseListCollection = payload.data;
+					this.systemModuleService.off();
+				},
+				(error) => {
+					this.systemModuleService.off();
+					const text = 'There was an error loading Purchase List';
 					this.systemModuleService.announceSweetProxy(text, 'error');
-		})
+				}
+			);
+	}
+	deleteSelectedPurchaseList(purchaseList: any) {
+		this.systemModuleService.announceSweetProxy(
+			'Are you sure you want to delete this item?',
+			'question',
+			this,
+			null,
+			null,
+			purchaseList
+		);
+	}
+
+	sweetAlertCallback(result, purchaseList) {
+		if (result.value) {
+			this.purchaseListService.removePurchaseList(purchaseList._id, {}).subscribe(
+				(payload) => {
+					this.getPurchaseList();
+				},
+				(error) => {
+					const text = 'There was an error removing this Purchase List';
+					this.systemModuleService.announceSweetProxy(text, 'error');
+				}
+			);
+		}
 	}
 
 	backPurchaseList() {
@@ -119,10 +146,11 @@ export class PurchaseListComponent implements OnInit {
 		this.back_to_purchaseList = true;
 	}
 
-	showPurchaseListDetail() {
+	showPurchaseListDetail(purchaseList: any) {
 		this.purchaseList = false;
 		this.newPurcaseList = false;
 		this.purchaseListDetails = true;
 		this.back_to_purchaseList = true;
+		this.selectedPurchaseList = purchaseList;
 	}
 }

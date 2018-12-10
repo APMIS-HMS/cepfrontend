@@ -131,7 +131,6 @@ export class InitializeStoreComponent implements OnInit {
 					})
 					.then(
 						(payload) => {
-							console.log(payload);
 							this.productConfigs = payload.data;
 							this.selectedProducts = payload.data;
 							this.showProduct = true;
@@ -177,11 +176,6 @@ export class InitializeStoreComponent implements OnInit {
 		this.newBatchEntry = true;
 	}
 
-	// clickItemIndex(picked) {
-	// 	console.log(picked);
-	// 	return (this.item_to_show = !this.item_to_show);
-	// }
-
 	setSelectedOption(data: any) {
 		if (!data.isVented) {
 			try {
@@ -200,7 +194,6 @@ export class InitializeStoreComponent implements OnInit {
 	}
 
 	setCategorySelectedOption(data: any) {
-		console.log(data);
 		try {
 			this.selectedCategoryName = data.name;
 			this.selelctedCategoryId = data;
@@ -302,7 +295,6 @@ export class InitializeStoreComponent implements OnInit {
 	getServiceCategories() {
 		this.facilityServiceCategoryService.find({ query: { facilityId: this.selectedFacility._id } }).subscribe(
 			(payload) => {
-				console.log(payload);
 				if (payload.data.length > 0) {
 					this.selectedFacilityService = payload.data[0];
 					this.categories = payload.data[0].categories;
@@ -385,9 +377,7 @@ export class InitializeStoreComponent implements OnInit {
 					});
 				});
 			}
-		} catch (error) {
-			console.log(error);
-		}
+		} catch (error) {}
 	}
 
 	getProductBatchQuantity(batchFormArray) {
@@ -401,7 +391,6 @@ export class InitializeStoreComponent implements OnInit {
 
 	reCalculatePrices(array, value: ProductInitialize, control) {
 		if (control === 'costPrice') {
-			console.log(value.totalQuantity);
 			value.totalCostPrice = value.costPrice * value.totalQuantity;
 			array.controls['totalCostPrice'].setValue(value.totalCostPrice);
 		} else if (control === 'totalCostPrice') {
@@ -443,8 +432,6 @@ export class InitializeStoreComponent implements OnInit {
 			facilityServiceId: this.selectedFacilityService._id,
 			categoryId: this.selelctedCategoryId._id
 		};
-		console.log(product);
-		console.log(value.productArray);
 		const _saveProductList = [];
 		value.productArray.forEach((inproduct, i) => {
 			const mainProductObject = this.selectedProducts.find(
@@ -474,8 +461,6 @@ export class InitializeStoreComponent implements OnInit {
 			_saveProductList.push(_saveProduct);
 		});
 
-		console.log(_saveProductList);
-		console.log(this.selectedProducts);
 		this.productForm.reset();
 		this.productForm.controls['productArray'] = new FormArray([]);
 		this._inventoryInitialiserService.create(_saveProductList, true).then(

@@ -170,9 +170,9 @@
 <div class="sv-btn-container">
   <h3 class="sel-txt">Send purchase list with {{selectedProducts.length}} items to
     {{selectedLocalStorageSuppliers.length}} suppliers ? </h3>
-  <div (click)="submit()" [class.disabled]="selectedProducts.length === 0" class="new-btn-solid-blue">
+  <div (click)="submit()" [class.disabled]="selectedProducts.length === 0 || selectedSuppliers.length === 0" class="new-btn-solid-blue">
     <div class="dropDown-container">
-      <div class="select" >
+      <div class="select">
         <select style="color: white !important; cursor: pointer;" name="dropDown-container" id="dropDown-container">
           <option style="color: black !important;">Save as Draft</option>
           <option style="color: black !important;">Save Completely</option>
