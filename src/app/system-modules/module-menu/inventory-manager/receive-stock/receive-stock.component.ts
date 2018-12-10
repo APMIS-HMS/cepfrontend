@@ -206,8 +206,8 @@ export class ReceiveStockComponent implements OnInit {
         item.transferStatusId = this.completedInventoryStatus._id;
       }
     });
-    this.inventoryTransferService.patch(this.selectedInventoryTransfer._id,
-      { inventoryTransferTransactions: this.selectedInventoryTransfer.inventoryTransferTransactions }).then(payload => {
+    this.inventoryTransferService.patchTransferItem(this.selectedInventoryTransfer._id,
+      { inventoryTransferTransactions: this.selectedInventoryTransfer.inventoryTransferTransactions },{}).then(payload => {
         this.slideDetailsShow(payload, false);
         this.getTransfers();
         this.systemModuleService.announceSweetProxy('Stock tran successfully', 'success', null, null, null, null, null, null, null);
@@ -224,8 +224,8 @@ export class ReceiveStockComponent implements OnInit {
         item.transferStatusId = this.rejectedInventoryStatus._id;
       }
     });
-    this.inventoryTransferService.patch(this.selectedInventoryTransfer._id,
-      { inventoryTransferTransactions: this.selectedInventoryTransfer.inventoryTransferTransactions }).then(payload => {
+    this.inventoryTransferService.patchTransferItem(this.selectedInventoryTransfer._id,
+      { inventoryTransferTransactions: this.selectedInventoryTransfer.inventoryTransferTransactions },{}).then(payload => {
         this.slideDetailsShow(payload.inventoryTransfers, false);
       });
   }
