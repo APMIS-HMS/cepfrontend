@@ -1,16 +1,15 @@
 <div class="modal-wraper">
   <div class="toggle-base-wrap">
-    <div class="toggle-wrap ft-btn-selected" (click)="onShowDrugSearchEntry()" >
-      <span> Drug</span>
-    </div>
-    <div class="toggle-wrap" (click)="onShowComsumableEntry()">
-      <span> Cusumables</span>
+    <div [className]="selectedToggleIndex === i ?
+     'toggle-wrap ft-btn-selected' : 'toggle-wrap'"
+      *ngFor="let item of toggleData; let i = index" (click)="onToggle(i)" >
+      <span> {{item.name}}</span>
     </div>
   </div>
 
 
 
-  <div class="search-container" *ngIf="drupSearchEntry">
+  <div class="search-container" *ngIf="drugSearchEntry">
     <div class="searchproduct">
       <div class="InputGroup">
         <input class="customInput" style="width: 100% !important;" [formControl]="productSearch" [value]="selectedProductName"
@@ -22,7 +21,7 @@
           <li class="search-sugestion" *ngFor="let product of searchedProducts; let i = index" (click)="setSelectedProductOption(product)">{{product.name}}</li>
         </ul>
       </div>
-      <div class="search-noResult" *ngIf="productExist">
+      <div class="search-noResult" *ngIf="showProductExist">
         <span>This product configuration
           already exisst</span>
       </div>
