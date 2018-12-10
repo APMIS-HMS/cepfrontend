@@ -445,7 +445,8 @@ export class InitializeStoreComponent implements OnInit {
 				product: mainProductObject,
 				storeId: this.checkingObject.storeId,
 				margin: inproduct.margin,
-				sellingPrice: inproduct.sellingPrice
+				sellingPrice: inproduct.sellingPrice,
+				costPrice: inproduct.costPrice
 			};
 			inproduct.batches.forEach((batch, j) => {
 				const _saveBatch = {
