@@ -9,6 +9,9 @@ import { FormControl } from '@angular/forms';
 })
 export class StockReportComponent implements OnInit {
 
+  searchControl = new FormControl();
+  searchCriteria = new FormControl('Search');
+
   activeTabIndex: number;
 
   constructor(private _router: Router) { }
