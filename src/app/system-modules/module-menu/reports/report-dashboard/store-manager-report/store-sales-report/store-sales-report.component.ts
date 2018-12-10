@@ -28,4 +28,11 @@ export class StoreSalesReportComponent implements OnInit {
 		this._router.navigate(['/dashboard/reports/report-dashboard']);
 	  }
 
+  //   storeSales() {
+  //     this._router.navigate(['/dashboard/reports/report-dashboard/storeReport/salesReport']);
+  //    }
+
+  //  StockReport() {
+  //     this._router.navigate(['/dashboard/reports/report-dashboard/storeReport/stockReport']);
+  //  }
 }

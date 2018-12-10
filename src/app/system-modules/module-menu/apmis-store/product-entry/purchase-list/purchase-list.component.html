@@ -18,21 +18,22 @@
   </div>
 
 
-  <div class="list-wrap">
+  <div class="list-wrap" *ngFor="let purchaseList of purchaseListCollection">
     <div class="action-lft">
       <div>
         <div class="list-con-wrap">
           <div class="con-wrap">
             <span>Date Generated</span>
-            <h3>Tuesday 27th November 2018</h3>
+            <h3>{{purchaseList.createdAt| date:'fullDate'}}</h3>
           </div>
           <div class="con-wrap">
             <span>Status</span>
-            <h3>Pending</h3>
+            <h3 *ngIf="purchaseList.isDraft===true">Pending</h3>
+            <h3 *ngIf="!purchaseList.isDraft===true">Pending</h3>
           </div>
           <div class="con-wrap">
             <span>Action</span>
-            <div (click)="showPurchaseListDetail()" class="ft-btn">
+            <div (click)="showPurchaseListDetail(purchaseList)" class="ft-btn">
               <span>View Purchase List Items</span>
             </div>
           </div>
@@ -42,11 +43,11 @@
           <div class="con-wrap">
             <span>Supplier(s)</span>
             <div class="sup-list">
-              <h3>SIDMACH Medical Suppliers </h3>
-              <h3>SIDMACH Medical Suppliers </h3>
-              <h3>SIDMACH Medical Suppliers </h3>
-              <h3>SIDMACH Medical Suppliers </h3>
-              <h3>SIDMACH Medical Suppliers </h3>
+              <div class="sup-list-items" data-toggle="tooltip" data-placement="top" title="Click to make purchase"
+                *ngFor="let supplier of  purchaseList.suppliersId">
+                <h3 style="margin-block-end: 0em !important; margin-block-start: 0em !important;">{{supplier.name}}</h3>
+                <span>{{supplier.primaryContactPhoneNo}} | {{supplier.email}}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -58,10 +59,10 @@
             <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
             <span>Edit List</span>
           </div>
-          <div class="action-item">
+          <div class="action-item" (click)="deleteSelectedPurchaseList(purchaseList)">
             <i class="fa fa-trash" aria-hidden="true"></i>
             <span>Delete List</span>
-          </div>          
+          </div>
         </div>
       </div>
     </div>
@@ -69,4 +70,4 @@
 </div>
 
 <app-new-purchase-list *ngIf="newPurcaseList"></app-new-purchase-list>
-<app-purchase-list-details *ngIf="purchaseListDetails"></app-purchase-list-details>
+<app-purchase-list-details [selectedPurchaseList]="selectedPurchaseList" *ngIf="purchaseListDetails"></app-purchase-list-details>

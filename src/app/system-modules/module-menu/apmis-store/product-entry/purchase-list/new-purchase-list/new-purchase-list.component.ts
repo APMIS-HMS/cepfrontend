@@ -6,9 +6,16 @@ import { Filters } from '../../../store-utils/global';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility, Employee } from 'app/models';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
-import { EmployeeService, ProductService, SupplierService } from 'app/services/facility-manager/setup';
+import {
+	EmployeeService,
+	ProductService,
+	SupplierService,
+	PurchaseOrderService
+} from 'app/services/facility-manager/setup';
 import { FormControl } from '@angular/forms';
 import { ApmisFilterBadgeService } from 'app/services/tools';
+import { PurchaseOrder, PurchaseList, ListedItem } from '../../../components/models/purchaseorder';
+import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 
 @Component({
 	selector: 'app-new-purchase-list',
@@ -51,7 +58,9 @@ export class NewPurchaseListComponent implements OnInit {
 		private authFacadeService: AuthFacadeService,
 		private _productService: ProductService,
 		private supplierService: SupplierService,
-		private apmisFilterService: ApmisFilterBadgeService
+		private apmisFilterService: ApmisFilterBadgeService,
+		private systemModuleService: SystemModuleService,
+		private purchaseListService: PurchaseOrderService
 	) {
 		this.apmisFilterService.clearItemsStorage(true);
 		this.subscription = this._employeeService.checkInAnnounced$.subscribe((res) => {
@@ -250,7 +259,6 @@ export class NewPurchaseListComponent implements OnInit {
 
 	removeSupplier(supplier) {
 		const res = this.selectedLocalStorageSuppliers.filter((dt) => dt.id.toString() !== supplier._id.toString());
-		console.log(res);
 		this.apmisFilterService.edit(true, res);
 		this.onSearchSelectedItems(res);
 		this.selectedLocalStorageSuppliers = res;
@@ -267,7 +275,55 @@ export class NewPurchaseListComponent implements OnInit {
 		}
 	}
 	submit() {
-		console.log(this.selectedProducts);
+		this.systemModuleService.on();
+
+		const supplierIds = this.selectedLocalStorageSuppliers.map((local) => local.id);
+		const suppliersToSave = this.selectedSuppliers.map((supplier) => {
+			const existObj = supplierIds.find((i) => i.toString() === supplier._id.toString());
+			if (existObj) {
+				return supplier.supplier;
+			}
+		});
+		const purchaseList: PurchaseList = <PurchaseList>{};
+		purchaseList.facilityId = this.selectedFacility._id;
+		purchaseList.storeId = this.checkingStore.storeId;
+		purchaseList.listedProducts = [];
+		purchaseList.purchaseListNumber = '';
+		purchaseList.createdBy = this.loginEmployee._id;
+		purchaseList.suppliersId = suppliersToSave;
+		this.selectedProducts.forEach((product) => {
+			const listedItem: ListedItem = <ListedItem>{};
+			listedItem.costPrice = product.costPrice;
+			listedItem.productId = product.productId;
+			listedItem.productName = product.productName;
+			listedItem.quantity = product.quantityRequired;
+			listedItem.productConfiguration = product.productConfiguration;
+			purchaseList.listedProducts.push(listedItem);
+		});
+
+		this.purchaseListService.createPurchaseList(purchaseList).then(
+			(payload) => {
+				this.selectedProducts = [];
+				this.selectedSuppliers = [];
+				this.getInventoryList();
+				this.modifyProducts(this.productConfigs);
+				this.systemModuleService.off();
+				this.systemModuleService.announceSweetProxy(
+					'Your product has been initialised successfully',
+					'success',
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null
+				);
+			},
+			(error) => {
+				this.systemModuleService.off();
+			}
+		);
 	}
 
 	isAllCheckedProductValid() {

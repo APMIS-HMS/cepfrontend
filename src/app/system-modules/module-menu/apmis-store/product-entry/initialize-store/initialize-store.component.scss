@@ -11,6 +11,15 @@
     }
 }
 
+
+.formWrap{
+    justify-items: center;
+    display: grid;
+    .new-btn-solid-blue{
+        margin: 10px;
+    }
+}
+
 .batches-wrap {
     display: flex;
 }
