@@ -1,3 +1,4 @@
+import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 import { ApmisFilterBadgeService } from './../../../../../../services/tools/apmis-filter-badge.service';
 import { ProductService } from './../../../../../../services/facility-manager/setup/product.service';
 import { FormularyProduct, ProductPackSize, ProductConfig } from './../../../store-utils/global';
@@ -16,13 +17,13 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
 export class ConfigProductComponent implements OnInit, OnChanges {
 
   selectedIndex: any;
-  drupSearchEntry = false;
+  drugSearchEntry = false;
   consumableEntry= false;
   apmisSearch = false;
   showConfigContainer = false;
   showSaveConfig = false;
   showSetBaseUnit = false;
-  productExist = false;
+  productExist: boolean;
   storeId = '';
   searchedProducts: any = [];
   selectedPackSizes = [];
@@ -46,6 +47,9 @@ export class ConfigProductComponent implements OnInit, OnChanges {
   sizeIsEdited = false;
   updateSizePackObj = [];
   updateObj = [];
+  showProductExist: boolean;
+  selectedToggleIndex = 0;
+  toggleData = [];
 
   constructor(
       private productService: ProductService,
@@ -55,6 +59,9 @@ export class ConfigProductComponent implements OnInit, OnChanges {
     ) { }
 
   ngOnInit() {
+    console.log('in config..set default tab to 0');
+    this.toggleData = [{id: 1, name: 'Drug'}, { id: 2, name: 'Consumables'}];
+    this.onToggle(this.selectedToggleIndex);
     this.currentFacility = <Facility>this.locker.getObject('selectedFacility');
       this.productSearch.valueChanges.debounceTime(200).distinctUntilChanged().subscribe(val => {
       if (this.productSearch.value.length >= 3) {
@@ -74,6 +81,7 @@ export class ConfigProductComponent implements OnInit, OnChanges {
           this.showSetBaseUnit = false;
           this.selectedProductName = '';
           this.showConfigContainer = false;
+          this.showProductExist = false;
           this.showSaveConfig = false;
           this.productExist = false;
           this.isConfigure = false;
@@ -81,14 +89,28 @@ export class ConfigProductComponent implements OnInit, OnChanges {
       });
       this.getProductPackTypes();
   }
+  onToggle(index) {
+    this.selectedToggleIndex = index;
+    switch (index) {
+        case 0:
+        this.drugSearchEntry = true;
+        this.consumableEntry = false;
+          break;
+        case 1:
+        this.consumableEntry = true;
+        this.drugSearchEntry = false;
+          break;
+        default:
+          break;
+    }
+  }
   onShowSearch() {
     this.apmisSearch = !this.apmisSearch;
   }
   setSelectedProductOption(data) {
-    this.isConfigure = true;
     this.selectedProduct = data;
-    this.getProductConfigByProduct();
     this.selectedProductName = data.name;
+    this.getProductConfigByProduct(this.selectedProduct.id);
     this.showProduct = false;
   }
   onSearchSelectedItems(data) {
@@ -105,18 +127,19 @@ export class ConfigProductComponent implements OnInit, OnChanges {
       this.setPackSizes(data);
     }
   }
-
   setPackSizes(data) {
-    this.isBaseUnitSet = true;
-    this.showConfigContainer = true;
-    this.showSaveConfig = false;
-    this.showSetBaseUnit = true;
-    this.baseName = data[0].label;
-    this.basePackType = data[0];
-    this.selectedPackSizes = [...data];
-    this.packConfigurations = [...data];
-    this.packConfigurations.splice(0, 1);
-    if (this.packConfigurations.length > 0) { this.showSaveConfig = true; }
+    if (data.length > 0) {
+      this.isBaseUnitSet = true;
+      this.showConfigContainer = true;
+      this.showSaveConfig = false;
+      this.showSetBaseUnit = true;
+      this.baseName = data[0].label;
+      this.basePackType = data[0];
+      this.selectedPackSizes = [...data];
+      this.packConfigurations = [...data];
+      this.packConfigurations.splice(0, 1);
+      if (this.packConfigurations.length > 0) { this.showSaveConfig = true; }
+    }
   }
   onClickConfigure() {
     if (this.selectedProductName !== '') {
@@ -169,53 +192,108 @@ export class ConfigProductComponent implements OnInit, OnChanges {
     .map(({packId: id, name: label, size: size}) => ({id, label, size}));
     this.setPackSizes(editable);
   }
-
-  onSaveConfiguration() {
-    if (this.configProductBtn === 'Save Configuration') {
-      this.isSaving = true;
-      if (this.selectedPackSizes[1].size > 1) {
-        this.modifyPackSizes(this.selectedPackSizes);
-          const newProductConfig: ProductConfig = {
-            productId: this.selectedProduct.id,
-            facilityId: this.currentFacility._id,
-            productObject: this.selectedProduct,
-            rxCode: this.selectedProduct.code,
-            packSizes: this.modifiedPackSizes
-        };
-        this.productService.createProductConfig(newProductConfig).then(payload => {
-          this.isSaving = false;
-          this.productService.productConfigAnnounced(payload);
+    getProductConfigByProduct(id) {
+      this.productExist = false;
+      this.productService.findProductConfigs({
+        query: {
+          facilityId: this.currentFacility._id,
+          productId: id
+        }
+      }).then(payload => {
+        if (payload.data.length > 0) {
+          this.productExist = true;
+          this.showProductExist = true;
+          this.isConfigure = false;
+          this.showProduct = false;
+        } else {
+          this.isConfigure = true;
+          this.showProduct = false;
+          this.productExist = false;
+          this.showProductExist = false;
+        }
       });
-        this.apmisFilterService.clearItemsStorage(true);
+      return this.productExist;
+    }
+
+    InputValidationForPackSizes(data): boolean {
+      data[0].size = 1;
+      for (let i = 0; i < data.length; i++) {
+          if (!data[i].hasOwnProperty('size')) {
+            return false;
+          }
+      } return true;
+    }
+  onClickBtn() {
+    // This is checking if the user has entered sizes for selected pack sizes
+    const isInputValid = this.InputValidationForPackSizes(this.selectedPackSizes);
+    if (this.configProductBtn === 'Save Configuration') {
+        if (this.selectedProduct.id !== '' || this.selectedProduct.id !== undefined) {
+          if (this.productExist) {
+            // this disallows multiple saves
+              this.showConfigContainer = false;
+              this.showSetBaseUnit = false;
+              this.showSaveConfig = false;
+          } else {
+              if (isInputValid) {
+                this.isSaving = true;
+                this.modifyPackSizes(this.selectedPackSizes);
+                const newProductConfig: ProductConfig = {
+                  productId: this.selectedProduct.id,
+                  facilityId: this.currentFacility._id,
+                  productObject: this.selectedProduct,
+                  rxCode: this.selectedProduct.code,
+                  packSizes: this.modifiedPackSizes
+              };
+              this.productService.createProductConfig(newProductConfig).then(payload => {
+                this.isSaving = false;
+                this.productExist = true;
+                this.productService.productConfigAnnounced(payload);
+                this.apmisFilterService.clearItemsStorage(true);
+            }, err => {
+              this.productExist = false;
+              this.systemModuleService.announceSweetProxy(
+                'Product: An error occured while saving product configuration.',
+                'error', null, null, null, null, null, null, null
+              );
+                this.isSaving = false;
+                this.configProductBtn = 'Save Configuration';
+              });
+              } else {
+                this.isSaving = false;
+                this.showConfigContainer = true;
+                this.systemModuleService.announceSweetProxy(
+                  'Product: Please enter size for all product pack.',
+                  'error', null, null, null, null, null, null, null
+                );
+              }
+          }
+        } else {
+          // selected id is null
+        }
+    } else if (this.configProductBtn === 'Edit Configuration') {
+      if (isInputValid) {
+        this.InputValidationForPackSizes(this.selectedPackSizes);
+        this.isSaving = true;
+        this.updateObj = this.updateSizePackObj.length > 0 ? this.updateSizePackObj : this.selectedPackSizes;
+        this.modifyPackSizes(this.updateObj);
+        this.productService.patchProductConfig(this.editableProductConfigObj._id,
+          {packSizes: this.modifiedPackSizes}, {}).then(payload => {
+          this.isSaving = false;
+          this.sizeIsEdited = true;
+          this.productService.productConfigUpdateAnnounced(payload);
+          this.apmisFilterService.clearItemsStorage(true);
+        }, err => {
+            this.configProductBtn = 'Edit Configuration';
+            this.isSaving = false;
+        });
       } else {
+        this.isSaving = false;
+        this.showConfigContainer = true;
         this.systemModuleService.announceSweetProxy(
-          'Product: Please enter size for product pack.',
+          'Product: Please enter size for all product pack.',
           'error', null, null, null, null, null, null, null
         );
-        this.apmisFilterService.clearItemsStorage(true);
-        this.isSaving = false;
       }
-    } else if (this.configProductBtn === 'Edit Configuration') {
-          if (this.selectedPackSizes[1].size > 1) {
-            this.isSaving = true;
-            this.updateObj = this.updateSizePackObj.length > 0 ? this.updateSizePackObj : this.selectedPackSizes;
-            console.log(this.modifyPackSizes(this.updateObj));
-
-            this.productService.patchProductConfig(this.editableProductConfigObj._id,
-                {packSizes: this.modifiedPackSizes}, {}).then(payload => {
-                this.isSaving = false;
-                this.sizeIsEdited = true;
-                this.productService.productConfigUpdateAnnounced(payload);
-                this.apmisFilterService.clearItemsStorage(true);
-          });
-        } else {
-          this.systemModuleService.announceSweetProxy(
-            'Product: Please enter size for product pack.',
-            'error', null, null, null, null, null, null, null
-          );
-          this.apmisFilterService.clearItemsStorage(true);
-          this.isSaving = false;
-        }
     }
   }
   modifyPackSizes(packs) {
@@ -231,18 +309,6 @@ export class ConfigProductComponent implements OnInit, OnChanges {
         }
         return this.modifiedPackSizes;
     }
-  }
-  getProductConfigByProduct() {
-    this.productService.findProductConfigs({
-      query: {
-        facilityId: this.currentFacility._id,
-        productId: this.selectedProduct.id
-      }
-    }).then(payload => {
-        if (payload.data.length > 0) {
-          this.productExist = true;
-        }
-    });
   }
   getProductPackTypes() {
     this.productService.findPackageSize({
@@ -271,14 +337,14 @@ export class ConfigProductComponent implements OnInit, OnChanges {
     }
   }
 
-  onShowDrugSearchEntry(){
-    this.drupSearchEntry = true;
-    this.consumableEntry= false;
+  onShowDrugSearchEntry() {
+    this.drugSearchEntry = true;
+    this.consumableEntry = false;
   }
 
-  onShowComsumableEntry(){
-    this.drupSearchEntry = false;
-    this.consumableEntry= true;
+  onShowComsumableEntry() {
+    this.drugSearchEntry = false;
+    this.consumableEntry = true;
   }
 
 

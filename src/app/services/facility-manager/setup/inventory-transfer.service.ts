@@ -56,8 +56,12 @@ export class InventoryTransferService {
   update(serviceprice: any) {
     return this._socket.update(serviceprice._id, serviceprice);
   }
-  patch(_id: any, data: any) {
-    return this._socket2.patch(_id, data);
+  patchTransferItem(_id: any, data: any, params) {
+    return this._socket2.patch(_id, data, params);
+  }
+
+  patch(_id: any, data: any, params) {
+    return this._socket.patch(_id, data, params);
   }
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
