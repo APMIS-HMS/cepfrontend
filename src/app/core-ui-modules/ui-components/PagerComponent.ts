@@ -37,8 +37,8 @@ export interface IPagerSource {
            [ngClass]="{'apmis-pager-button-disable' : disable, 'apmis-pager-button' : !disable}"
            [ngStyle]="{'color' : foreColor,'background-color' : !disable? bgColor : 'white',
            'border-radius':isOval ? '100%':'0px','padding' : padding,'font-size' : fontSize,
-           'margin-left':isOval ? '4px':'0px','margin-right':isOval ? '4px':'0px','width' : (size==='small') ? '25px' : '40px', 
-           'height' : (size==='small') ? '25px' : '40px'}">
+           'margin-left':isOval ? '4px':'0px','margin-right':isOval ? '4px':'0px','width' : (size==='small') ? '25px' : isOval ? '40px' : '30px', 
+           'height' : (size==='small') ? '25px' : isOval ? '40px' : '30px'}">
             <ng-content>
 
             </ng-content>
