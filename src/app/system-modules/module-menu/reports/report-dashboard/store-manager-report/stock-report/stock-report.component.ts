@@ -9,9 +9,16 @@ import { FormControl } from '@angular/forms';
 })
 export class StockReportComponent implements OnInit {
 
+  activeTabIndex: number;
+
   constructor(private _router: Router) { }
 
   ngOnInit() {
+    this.activeTabIndex = 0;
+  }
+
+  onTabClick(tabIndex) {
+    this.activeTabIndex = tabIndex;
   }
 
 }

@@ -73,7 +73,7 @@ onclick_dispense() {
     this.dateRange = dateRange;
 		if (dateRange !== null) {
       if (this.activeTabIndex === PharmacyTabGroup.Prescription) {
-          
+
       } else if (this.activeTabIndex === PharmacyTabGroup.Dispense) {
 
       }
