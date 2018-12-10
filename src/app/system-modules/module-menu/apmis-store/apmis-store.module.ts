@@ -50,6 +50,8 @@ import { InboundRequisitionComponent } from './product-movement/inbound-requisit
 import { OutboundRequisitionComponent } from './product-movement/outbound-requisition/outbound-requisition.component';
 import { StoreCheckInComponent } from './components/store-check-in/store-check-in.component';
 import {CoreUiModules} from "../../../core-ui-modules/CoreUiModules";
+import {ProductGridComponent} from "./product-movement/helper-components/products/product-grid-component";
+import {ProductGridItemComponent} from "./product-movement/helper-components/products/product-grid-item-component";
 
 @NgModule({
 	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule, CoreUiModules ],
@@ -92,7 +94,9 @@ import {CoreUiModules} from "../../../core-ui-modules/CoreUiModules";
 		NewSupplierComponent,
 		InboundRequisitionComponent,
 		OutboundRequisitionComponent,
-		StoreCheckInComponent
+		StoreCheckInComponent,
+		ProductGridComponent,
+		ProductGridItemComponent
 	],
 	providers: [ StoreService, InventoryService, StoreGlobalUtilService, ProductTypeService, SupplierService ]
 })

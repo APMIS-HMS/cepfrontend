@@ -15,7 +15,7 @@ import {
     ViewChildren,
     ViewEncapsulation
 } from '@angular/core';
-
+export const BUTTON_SIZE_SMALL: string = 'small';
 export const BUTTON_SIZE_DEFAULT: string = 'default';
 export const BUTTON_SIZE_MEDIUM: string = 'medium';
 export const BUTTON_SIZE_LARGE: string = 'large';
@@ -37,7 +37,8 @@ export interface IPagerSource {
            [ngClass]="{'apmis-pager-button-disable' : disable, 'apmis-pager-button' : !disable}"
            [ngStyle]="{'color' : foreColor,'background-color' : !disable? bgColor : 'white',
            'border-radius':isOval ? '100%':'0px','padding' : padding,'font-size' : fontSize,
-           'margin-left':isOval ? '4px':'0px','margin-right':isOval ? '4px':'0px' }">
+           'margin-left':isOval ? '4px':'0px','margin-right':isOval ? '4px':'0px','width' : (size==='small') ? '25px' : '40px', 
+           'height' : (size==='small') ? '25px' : '40px'}">
             <ng-content>
 
             </ng-content>
@@ -58,8 +59,8 @@ export interface IPagerSource {
                 flex-direction: row;
                 justify-content: center;
                 align-content: center;
-                width: 40px;
-                height: 40px;
+                width: 25px;
+                height: 25px;
                 border-radius: 100%;
             }
 
@@ -109,19 +110,23 @@ export class PagerButtonComponent implements OnChanges {
     private updateButtonSize() {
         switch (this.size) {
             case BUTTON_SIZE_DEFAULT:
-                this.padding = '0px';
+                this.padding = '6px';
                 this.fontSize = '13px';
                 break;
+                case BUTTON_SIZE_SMALL:
+            this.padding = '0px';
+            this.fontSize = '11px';
+            break;
             case BUTTON_SIZE_MEDIUM:
                 this.padding = '30px';
                 this.fontSize = '18px';
                 break;
             case BUTTON_SIZE_LARGE:
-                this.padding = '45px';
+                this.padding = '40px';
                 this.fontSize = '24px';
                 break;
             default:
-                this.padding = '0px';
+                this.padding = '6px';
                 this.fontSize = '13px';
                 break;
         }

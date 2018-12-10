@@ -82,12 +82,12 @@ export class ReportGeneratorService implements ICustomReportService {
         options = options || {};
         options.facilityId = this.selectedFacility._id;
         //TODO : uncomment if backend service is fixed!
-        /* return this.patientReportServiceRef
-             .find(  {query :  options});*/
+         return this.patientReportServiceRef
+             .find(  {query :  options});
 
         //  return  a sample dummy data for now until the backend is complete;
         //return this.restEndpoint
-        const searchBy = options.searchBy.toLowerCase();
+       /* const searchBy = options.searchBy.toLowerCase();
         const queryString = options.queryString ? options.queryString.toLowerCase()  : "";
         const result = {data: []};
         let data: IPatientAnalyticsReport[] = [];
@@ -261,7 +261,7 @@ export class ReportGeneratorService implements ICustomReportService {
             ]
         }
         result.data = data;
-        return Promise.resolve(result);
+        return Promise.resolve(result);*/
     }
 
     getWorkBenches(): any {
@@ -276,9 +276,10 @@ export class ReportGeneratorService implements ICustomReportService {
 
     getLocations() {
         return this.selectedFacility.minorLocations.map(x => {
-            return {
-                id: x.locationId,
-                location: x.name
+          return {
+                id: x._id,
+                location: x.name,
+                locationId: x.locationId
             }
         });
     }
