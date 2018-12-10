@@ -51,6 +51,9 @@ import { InboundRequisitionComponent } from './product-movement/inbound-requisit
 import { OutboundRequisitionComponent } from './product-movement/outbound-requisition/outbound-requisition.component';
 import { StoreCheckInComponent } from './components/store-check-in/store-check-in.component';
 import { ApmisStoreSupplierSearchComponent } from './components/apmis-store-supplier-search/apmis-store-supplier-search.component';
+import { ProductExitComponent } from './product-exit/product-exit.component';
+import { SalesComponent } from './product-exit/sales/sales.component';
+import { RefundComponent } from './product-exit/refund/refund.component';
 import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invoice-entry/new-invoice-entry.component';
 
 @NgModule({
@@ -96,6 +99,9 @@ import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invo
 		OutboundRequisitionComponent,
 		StoreCheckInComponent,
 		ApmisStoreSupplierSearchComponent,
+		ProductExitComponent,
+		SalesComponent,
+		RefundComponent
 		NewInvoiceEntryComponent
 	],
 	providers: [
