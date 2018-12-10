@@ -6,7 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
 	styleUrls: [ './purchase-list-details.component.scss' ]
 })
 export class PurchaseListDetailsComponent implements OnInit {
-	@Input() selectedPurchaseList = {};
+	@Input() selectedPurchaseList;
 	constructor() {}
 
 	ngOnInit() {

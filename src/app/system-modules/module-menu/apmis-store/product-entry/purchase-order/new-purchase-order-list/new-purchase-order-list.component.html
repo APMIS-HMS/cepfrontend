@@ -20,7 +20,7 @@
     <div class="dropDown-container">
       <div class="select">
         <select [formControl]="purchaseListFormControl" name="dropDown-container" id="dropDown-container">
-          <option value="0">Select Supplier</option>
+          <option value="0">Select Purchase List</option>
           <option *ngFor="let list of purchaseListCollection" [ngValue]="list">{{list.purchaseListNumber}}</option>
         </select>
       </div>
@@ -165,7 +165,7 @@
 <div class="sv-btn-container">
   <h3 class="sel-txt">Send purchase Order with {{selectedProducts.length}} items to
     {{supplierFormControl?.value?.supplier?.name}}?</h3>
-  <div (click)="save()" class="new-btn-solid-blue">
+  <div (click)="submit()" class="new-btn-solid-blue">
     <span>Send Purchase Order</span>
   </div>
 </div>

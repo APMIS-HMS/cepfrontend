@@ -138,12 +138,14 @@ export class NewPurchaseOrderListComponent implements OnInit {
 			}
 		});
 		this.supplierFormControl.valueChanges.subscribe((value) => {
-			console.log(value);
+			this.selectedProducts = [];
+			this.productConfigs = this.modifyProducts(this.productConfigs);
 			this.getSupplierPurchaseList(value);
 		});
 
 		this.purchaseListFormControl.valueChanges.subscribe((value) => {
 			this.selectedProducts = value.listedProducts;
+			this.productConfigs = this.modifyProducts(this.productConfigs);
 		});
 		this.getSuppliers();
 	}
@@ -161,14 +163,6 @@ export class NewPurchaseOrderListComponent implements OnInit {
 			.then((payload) => {
 				this.purchaseListCollection = payload.data;
 			});
-
-		// that.countriesService.find({
-		// 	query: {
-		// 		name: country,
-		// 		'states.name': state,
-		// 		$select: { 'states.$': 1 }
-
-		// 	}
 	}
 
 	getInventoryList(searchText?) {
@@ -220,6 +214,7 @@ export class NewPurchaseOrderListComponent implements OnInit {
 			return config;
 		});
 	}
+
 	setSelectedFilter(index, filter) {
 		this.selectedFilterIndex = index;
 		this.filterType = filter;
@@ -301,32 +296,31 @@ export class NewPurchaseOrderListComponent implements OnInit {
 				return supplier.supplier;
 			}
 		});
-		const purchaseList: PurchaseOrder = <PurchaseOrder>{};
-		purchaseList.facilityId = this.selectedFacility._id;
-		purchaseList.storeId = this.checkingStore.storeId;
-		purchaseList.orderedProducts = [];
-		purchaseList.purchaseOrderNumber = '';
-		purchaseList.createdBy = this.loginEmployee._id;
-		purchaseList.isSupplied = false;
+		const purchaseOrder: PurchaseOrder = <PurchaseOrder>{};
+		purchaseOrder.facilityId = this.selectedFacility._id;
+		purchaseOrder.storeId = this.checkingStore.storeId;
+		purchaseOrder.orderedProducts = [];
+		purchaseOrder.purchaseOrderNumber = '';
+		purchaseOrder.createdBy = this.loginEmployee._id;
+		purchaseOrder.isSupplied = false;
+		purchaseOrder.supplierId = this.supplierFormControl.value._id;
 		this.selectedProducts.forEach((product) => {
 			const listedItem: OrderedItem = <OrderedItem>{};
 			listedItem.costPrice = product.costPrice;
 			listedItem.productId = product.productId;
 			listedItem.productName = product.productName;
-			listedItem.quantity = product.quantityRequired;
+			listedItem.quantity = product.quantity;
 			listedItem.productConfiguration = product.productConfiguration;
-			purchaseList.orderedProducts.push(listedItem);
+			purchaseOrder.orderedProducts.push(listedItem);
 		});
 
-		this.purchaseListService.createPurchaseList(purchaseList).then(
+		this.purchaseListService.create(purchaseOrder).then(
 			(payload) => {
 				this.selectedProducts = [];
-				this.selectedSuppliers = [];
 				this.getInventoryList();
-				this.modifyProducts(this.productConfigs);
 				this.systemModuleService.off();
 				this.systemModuleService.announceSweetProxy(
-					'Your product has been initialised successfully',
+					'Your product has been ordered successfully',
 					'success',
 					null,
 					null,

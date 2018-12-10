@@ -115,12 +115,14 @@ export class ClinicScheduleComponent implements OnInit {
 		this.locationTypeControl.valueChanges.subscribe((value) => {
 			if (value !== undefined) {
 				this.clearAllSchedules();
-				this.schedulerService.find({ query: { clinic: value.clinicName } }).then((payload) => {
-					if (payload.data.length > 0) {
-						this.selectedManager = payload.data[0];
-						this.loadManagerSchedules(false);
-					}
-				});
+				this.schedulerService
+					.find({ query: { clinic: value.clinicName, facilityId: this.selectedFacility._id } })
+					.then((payload) => {
+						if (payload.data.length > 0) {
+							this.selectedManager = payload.data[0];
+							this.loadManagerSchedules(false);
+						}
+					});
 			}
 		});
 	}
