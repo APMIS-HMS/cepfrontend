@@ -54,6 +54,7 @@ import { ApmisStoreSupplierSearchComponent } from './components/apmis-store-supp
 import { ProductExitComponent } from './product-exit/product-exit.component';
 import { SalesComponent } from './product-exit/sales/sales.component';
 import { RefundComponent } from './product-exit/refund/refund.component';
+import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invoice-entry/new-invoice-entry.component';
 
 @NgModule({
 	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule ],
@@ -101,6 +102,7 @@ import { RefundComponent } from './product-exit/refund/refund.component';
 		ProductExitComponent,
 		SalesComponent,
 		RefundComponent
+		NewInvoiceEntryComponent
 	],
 	providers: [
 		StoreService,

@@ -1,57 +1,35 @@
-<h3>Create purchase list</h3>
-<span>Select products you will like to add to the purchase list below this table, Click Add items to purchase list when
+<h3>Inventory Entry</h3>
+<span>Select products you will like to add to the inventory list below this table, Click Add items to inventory when
   done</span>
 
 
 <div class="div-space"></div>
 
 <div class="sel-sup">
+  <!-- <div class="InputGroup" style="margin-left:30px;">
+    <input [formControl]="invoiceNo" class="customInput" type="text" required>
+    <span class="highlight"></span>
+    <label class="customLabel">Invoice No:</label>
+  </div> -->
   <div class="input-group-x2">
     <div class="dropDown-container">
       <div class="select">
         <select [formControl]="supplierFormControl" name="dropDown-container" id="dropDown-container">
-          <option value="0">Select Supplier</option>
-          <option *ngFor="let supplier of suppliers" [ngValue]="supplier">{{supplier.supplier.name}}</option>
         </select>
+        <label class="customLabel">Select Supplier</label>
       </div>
     </div>
-  </div>
-  <div class="input-group-x2">
     <div class="dropDown-container">
       <div class="select">
-        <select [formControl]="purchaseListFormControl" name="dropDown-container" id="dropDown-container">
-          <option value="0">Select Purchase List</option>
-          <option *ngFor="let list of purchaseListCollection" [ngValue]="list">{{list.purchaseListNumber}}</option>
+        <select [formControl]="purchaseOrderFormControl" name="dropDown-container" id="dropDown-container">
         </select>
+        <label class="customLabel">Select Purchase Order</label>
       </div>
     </div>
   </div>
   <div class="InputGroup" style="margin-left:30px;">
     <input [formControl]="currentDate" class="customInput" type="date" required>
     <span class="highlight"></span>
-    <label class="customLabel">Date Required</label>
-  </div>
-</div>
-
-<div class="div-space"></div>
-
-<div class="filterTop">
-  <div class="searchproduct">
-    <div class="InputGroup">
-      <input class="customInput" [formControl]="productConfigSearch" (focus)="onFocus('in')" (focusout)="onFocus('out')"
-        type="text" required>
-      <span class="highlight"></span>
-      <label class="customLabel"><i class="fa fa-search" aria-hidden="true"></i>Search...</label>
-    </div>
-  </div>
-  <div class="tbl-header-rhs">
-    <div>
-      <h3>Show:</h3>
-    </div>
-    <div [className]="selectedFilterIndex === i ? 'ft-btn ft-btn-selected' : 'ft-btn'" *ngFor="let filter of storeFilters; let i = index"
-      (click)="setSelectedFilter(i,filter)">
-      <span>{{filter}}</span>
-    </div>
   </div>
 </div>
 
@@ -75,17 +53,17 @@
 
   <div class="store-tbody">
     <div class="store-pre-tr">
-      <div class="store-tr" *ngFor="let picked of productConfigs">
+      <div class="store-tr">
         <div class="store-td store-td-actions">
-          <input type="checkbox" [checked]="picked.isChecked" (change)="setSelectedOption($event, picked)">
+          <input type="checkbox">
         </div>
         <div class="config-tr-in in-tr">
-          <div class="store-td">{{picked.productName}}</div>
-          <div class="store-td">{{picked.availableQuantity | number}} {{picked.productConfiguration.name}}</div>
-          <div class="store-td">{{picked.reOrderLevel}} {{picked.productConfiguration.name}}</div>
+          <div class="store-td">Panadol</div>
+          <div class="store-td">200 packs</div>
+          <div class="store-td">10 packs</div>
           <div class="store-td">#5/Sachet</div>
           <div class="store-td">#300,000</div>
-          <div class="store-td">#{{picked.price}}/{{picked.productConfiguration.name}}</div>
+          <div class="store-td">#200/sachet</div>
         </div>
         <div class="store-td store-td-actions">
           <div class="table-list col-xs-1 action-placeholder">
@@ -108,7 +86,7 @@
 </div>
 
 <div class="div-space"></div>
-<h3 class="sel-txt">{{selectedProducts.length}} Items selected and added to purchase list</h3>
+<h3 class="sel-txt">10 Items selected and added to invoice list</h3>
 <div class="div-space"></div>
 
 <div class="store-table">
@@ -131,22 +109,22 @@
 
   <div class="store-tbody">
     <div class="store-pre-tr">
-      <div class="store-tr" *ngFor="let picked of selectedProducts">
+      <div class="store-tr">
         <div class="store-td store-td-actions">
           <input type="checkbox">
         </div>
         <div class="config-tr-in in-tr">
-          <div class="store-td">{{picked.productName}}</div>
-          <div class="store-td">{{picked.productConfiguration.name}}</div>
+          <div class="store-td">Panadol</div>
+          <div class="store-td">cards</div>
           <div class="store-td">
             <div class="InputGroup input-space">
-              <input min="0" [(ngModel)]="picked.quantity" class="customInput" type="number" required>
+              <input min="0" class="customInput" type="number" required>
               <span class="highlight"></span>
             </div>
-            <span>{{picked.productConfiguration.name}}</span>
+            <span>cards</span>
           </div>
-          <div class="store-td">#{{picked.costPrice}}/{{picked.productConfiguration.name}}</div>
-          <div class="store-td">#{{picked.costPrice * picked.quantity}} </div>
+          <div class="store-td">#100/card</div>
+          <div class="store-td">#1,000</div>
           <div class="store-td">
             <div class="btc-body-item item-action">
               <i class="fa fa-2x fa-pencil-square" aria-hidden="true"></i>
@@ -162,10 +140,47 @@
 <div class="div-space"></div>
 
 <hr>
+<div>
+  <div class="input-group-x2">
+    <div class="InputGroup" style="margin-left:30px;">
+      <input [formControl]="invoiceNo" class="customInput" type="text" required>
+      <span class="highlight"></span>
+      <label class="customLabel">Invoice No:</label>
+    </div>
+    <div class="InputGroup" style="margin-left:30px;">
+      <input [formControl]="invoiceAmount" class="customInput" type="text" required>
+      <span class="highlight"></span>
+      <label class="customLabel">Amount:</label>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="input-group-x2">
+    <div class="InputGroup" style="margin-left:30px;">
+      <input [formControl]="discount" class="customInput" type="text" required>
+      <span class="highlight"></span>
+      <label class="customLabel">Discount:</label>
+    </div>
+    <div class="InputGroup" style="margin-left:30px;">
+      <input [formControl]="vat" class="customInput" type="text" required>
+      <span class="highlight"></span>
+      <label class="customLabel">VAT:</label>
+    </div>
+  </div>
+</div>
+<div>
+  <div class="InputGroup" style="margin-left:30px;">
+    <textarea [formControl]="remark" class="customInput"></textarea>
+    <span class="highlight"></span>
+    <label class="customLabel">Remark</label>
+  </div>
+</div>
+<div class="div-space"></div>
+
+<hr>
 <div class="sv-btn-container">
-  <h3 class="sel-txt">Send purchase Order with {{selectedProducts.length}} items to
-    {{supplierFormControl?.value?.supplier?.name}}?</h3>
-  <div (click)="submit()" class="new-btn-solid-blue">
-    <span>Send Purchase Order</span>
+  <h3 class="sel-txt">Enter invoice with 200 items</h3>
+  <div class="new-btn-solid-blue">
+    <span>Enter Invoice</span>
   </div>
 </div>
