@@ -47,4 +47,4 @@
 </div>
 
 <app-new-purchase-order-list *ngIf="newPurcaseOrderList"></app-new-purchase-order-list>
-<app-purchase-order-list-details *ngIf="purchaseOrderListDetails"></app-purchase-order-list-details>
+<app-purchase-order-list-details [selectedOrder]="selectedOrder" *ngIf="purchaseOrderListDetails"></app-purchase-order-list-details>

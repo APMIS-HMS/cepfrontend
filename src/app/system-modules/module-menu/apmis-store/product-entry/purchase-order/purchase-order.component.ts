@@ -123,7 +123,6 @@ export class PurchaseOrderComponent implements OnInit {
 				}
 			})
 			.then((payload) => {
-				console.log(payload);
 				this.purchaseOrderCollection = payload.data;
 			});
 	}
