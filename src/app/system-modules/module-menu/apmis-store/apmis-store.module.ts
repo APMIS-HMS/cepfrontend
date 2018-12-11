@@ -101,7 +101,7 @@ import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invo
 		ApmisStoreSupplierSearchComponent,
 		ProductExitComponent,
 		SalesComponent,
-		RefundComponent
+		RefundComponent,
 		NewInvoiceEntryComponent
 	],
 	providers: [
