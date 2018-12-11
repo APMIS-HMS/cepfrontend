@@ -34,6 +34,7 @@ export class PurchaseOrderComponent implements OnInit {
 	subscription: Subscription;
 	checkingStore: any = <any>{};
 	selectedFacility: any;
+	selectedOrder: any;
 	constructor(
 		private storeUtilService: StoreGlobalUtilService,
 		private _inventoryService: InventoryService,
@@ -122,7 +123,6 @@ export class PurchaseOrderComponent implements OnInit {
 				}
 			})
 			.then((payload) => {
-				console.log(payload);
 				this.purchaseOrderCollection = payload.data;
 			});
 	}
@@ -141,7 +141,8 @@ export class PurchaseOrderComponent implements OnInit {
 		this.back_to_purchaseOrderList = true;
 	}
 
-	showPurchaseOrderListDetail() {
+	showPurchaseOrderListDetail(order) {
+		this.selectedOrder = order;
 		this.purchaseOrderList = false;
 		this.newPurcaseOrderList = false;
 		this.purchaseOrderListDetails = true;

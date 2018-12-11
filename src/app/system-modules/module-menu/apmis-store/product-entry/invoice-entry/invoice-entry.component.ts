@@ -9,7 +9,8 @@ import { Filters } from '../../store-utils/global';
 })
 export class InvoiceEntryComponent implements OnInit {
 
-showViewInvoice = false;
+  InvoiceEntryLanding = true;
+  showViewInvoice = false;
 
   constructor() { }
 
@@ -17,6 +18,10 @@ showViewInvoice = false;
  
   }
 
+  toggleView(){
+    this.InvoiceEntryLanding = !this.InvoiceEntryLanding;
+    console.log(this.InvoiceEntryLanding); 
+  }
   close_onClick(e) {
 		this.showViewInvoice = false;
   }

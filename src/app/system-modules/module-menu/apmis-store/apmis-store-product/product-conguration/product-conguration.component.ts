@@ -61,12 +61,10 @@ export class ProductCongurationComponent implements OnInit, OnDestroy {
     });
   }
   confirmDelete(data) {
-    console.log(data);
     this.configToDelete = data;
-		this.configToDelete.acceptFunction = true;
+    this.configToDelete.acceptFunction = true;
     this.systemModuleService.announceSweetProxy(`You are about to delete configuration for
                   : '${data.productObject.name}'`, 'question', this);
-
   }
   sweetAlertCallback(result) {
 		if (result.value) {
