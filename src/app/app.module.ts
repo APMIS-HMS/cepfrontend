@@ -240,6 +240,7 @@ import { ArrayFunctionHelper } from './shared-module/helpers/array-function-help
 		SetupService.DepartmentService,
 		CanActivateViaAuthGuardAccessService,
 		ToolsService.ApmisFilterBadgeService,
+		ToolsService.EventStateService,
 		ReportService.ClinicAttendanceReportService,
 		ReportService.AppointmentReportService,
 		ReportService.DiagnosisReportService,

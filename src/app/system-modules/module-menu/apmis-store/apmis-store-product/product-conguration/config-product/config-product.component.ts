@@ -1,3 +1,4 @@
+import { EventStateService } from './../../../../../../services/tools/event-state.service';
 import { SweetAlert2Module } from '@toverux/ngx-sweetalert2';
 import { ApmisFilterBadgeService } from './../../../../../../services/tools/apmis-filter-badge.service';
 import { ProductService } from './../../../../../../services/facility-manager/setup/product.service';
@@ -7,7 +8,6 @@ import { Facility } from 'app/models';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { FormControl } from '@angular/forms';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
-
 
 @Component({
   selector: 'app-config-product',
@@ -19,6 +19,7 @@ export class ConfigProductComponent implements OnInit, OnChanges {
   selectedIndex: any;
   drugSearchEntry = false;
   consumableEntry= false;
+  showSubConsumablentry = true;
   apmisSearch = false;
   showConfigContainer = false;
   showSaveConfig = false;
@@ -26,13 +27,16 @@ export class ConfigProductComponent implements OnInit, OnChanges {
   productExist: boolean;
   storeId = '';
   searchedProducts: any = [];
+  searchedConsumables: any = [];
   selectedPackSizes = [];
   modifiedPackSizes = [];
   selectedProductName = '';
+  selectedConsumableName = '';
   selectedProduct: FormularyProduct;
   isBaseUnitSet = false;
   packSizes = [];
   productSearch = new FormControl();
+  consumableSearch = new FormControl();
   showProduct = false;
   currentFacility: Facility = <Facility>{};
   baseName = '';
@@ -50,16 +54,17 @@ export class ConfigProductComponent implements OnInit, OnChanges {
   showProductExist: boolean;
   selectedToggleIndex = 0;
   toggleData = [];
+  consumableManufacturers: any = [];
 
   constructor(
       private productService: ProductService,
       private locker: CoolLocalStorage,
       private apmisFilterService: ApmisFilterBadgeService,
-      private systemModuleService: SystemModuleService
+      private systemModuleService: SystemModuleService,
+      private eventState: EventStateService
     ) { }
 
   ngOnInit() {
-    console.log('in config..set default tab to 0');
     this.toggleData = [{id: 1, name: 'Drug'}, { id: 2, name: 'Consumables'}];
     this.onToggle(this.selectedToggleIndex);
     this.currentFacility = <Facility>this.locker.getObject('selectedFacility');
@@ -73,11 +78,13 @@ export class ConfigProductComponent implements OnInit, OnChanges {
           }).then(payload => {
             this.searchedProducts = payload.data;
             if (this.searchedProducts.length > 0) {
-              this.showProduct = true;
+              //this.showProduct = true;
+              this.eventState.show();
             }
           });
       } else if (this.productSearch.value.length < 1) {
-          this.showProduct = false;
+          //this.showProduct = false;
+            this.eventState.hide();
           this.showSetBaseUnit = false;
           this.selectedProductName = '';
           this.showConfigContainer = false;
@@ -86,6 +93,30 @@ export class ConfigProductComponent implements OnInit, OnChanges {
           this.productExist = false;
           this.isConfigure = false;
       }
+      });
+
+      this.consumableSearch.valueChanges.debounceTime(200).distinctUntilChanged().subscribe(val => {
+          if (this.consumableSearch.value.length >= 3) {
+              this.productService.findConSumables({
+                query: {
+                  name: val
+                }
+              }).then(res => {
+                  this.searchedConsumables = res.data;
+                  if (this.searchedConsumables.length > 0) {
+                    //this.showProduct = true;
+                    this.eventState.show();
+                  }
+              });
+          } else if (this.consumableSearch.value.length < 1) {
+            this.showSetBaseUnit = false;
+            this.selectedProductName = '';
+            this.showConfigContainer = false;
+            this.showProductExist = false;
+            this.showSaveConfig = false;
+            this.productExist = false;
+            this.isConfigure = false;
+          }
       });
       this.getProductPackTypes();
   }
@@ -107,11 +138,20 @@ export class ConfigProductComponent implements OnInit, OnChanges {
   onShowSearch() {
     this.apmisSearch = !this.apmisSearch;
   }
+  getManufacturerForSelectedConsumable() {
+    this.productService.find({
+      query: {
+        name: this.selectedProduct.name
+      }
+    }).then(payload => {
+        this.consumableManufacturers = payload.data;
+    });
+  }
   setSelectedProductOption(data) {
     this.selectedProduct = data;
     this.selectedProductName = data.name;
     this.getProductConfigByProduct(this.selectedProduct.id);
-    this.showProduct = false;
+    this.eventState.hide();
   }
   onSearchSelectedItems(data) {
     if (this.preSelectedPackWithSizes.length > 0) {
@@ -204,10 +244,12 @@ export class ConfigProductComponent implements OnInit, OnChanges {
           this.productExist = true;
           this.showProductExist = true;
           this.isConfigure = false;
-          this.showProduct = false;
+          //this.showProduct = false;
+          this.eventState.hide();
         } else {
           this.isConfigure = true;
-          this.showProduct = false;
+          //this.showProduct = false;
+          this.eventState.hide();
           this.productExist = false;
           this.showProductExist = false;
         }
@@ -320,6 +362,18 @@ export class ConfigProductComponent implements OnInit, OnChanges {
         this.packSizes = payload.data.map(({_id: id, name: label}) => ({id, label}));
       }
     });
+  }
+
+  onCreateConsumableCategory(item) {
+    if (item !== '' || item !== undefined) {
+        const newCategory = {
+          name: item
+        };
+        this.productService.createConsumableCategory(newCategory).then(payload => {
+            //this.getProductPackTypes();
+            // get list of consumable categories
+        });
+    }
   }
   onCreateNewItem(item) {
     if (item !== '' || item !== undefined) {
