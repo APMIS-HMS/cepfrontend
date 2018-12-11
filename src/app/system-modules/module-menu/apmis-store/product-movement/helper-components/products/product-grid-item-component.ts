@@ -21,7 +21,7 @@ import * as _ from "lodash";
             box-shadow: 1px 2px 12px rgba(95, 95, 95, 0.5);
             padding: 0px;
             top: 40px;
-            height: 300px;
+            max-height: 300px;
             overflow-y: auto;
             min-height: 50px;
 
