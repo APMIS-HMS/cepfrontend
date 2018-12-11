@@ -23,21 +23,35 @@ import * as _ from "lodash";
             max-height: 450px;
             overflow-y: auto;
             min-height: 100px;
-           
-           
+
         }
-        div.product-suggestion-popup .item
-        { 
+
+        div.product-suggestion-popup .item {
             cursor: pointer;
             transition: all 300ms linear;
             padding: 5px 15px;
-            font-size : 12px;
+            font-size: 12px;
         }
+
         div.product-suggestion-popup .item:hover, div.product-suggestion-popup .item:focus {
             background-color: #c7dff9;
-            font-weight : 400;
-            
+            font-weight: 400;
 
+        }
+
+        input[type=text].form-control, input[type].form-control {
+            transition: all 100ms linear;
+            padding: 7px 10px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            border-radius: 5px;
+            border: solid 1px #b9b9b9;
+            box-shadow: 1px 1px 13px rgba(167, 167, 167, 0.4) inset;
+        }
+
+        input[type].form-control:hover, input[type].form-control:focus {
+            border: solid 1px #99acb9;
+            box-shadow: 1px 1px 13px rgba(150, 150, 150, 0.4) inset;
         }
     `]
 })
@@ -59,6 +73,8 @@ export class ProductGridItemComponent implements OnInit {
 
     ngOnInit() {
         this.productName.valueChanges
+            .debounceTime(300)
+            .distinctUntilChanged()
             .subscribe(x => {
             this.data.productName  = x;
             // perform a search Here
@@ -138,4 +154,21 @@ export class ProductGridItemComponent implements OnInit {
        this.onRemove.emit(item);
     }
    
-}
+}/*
+data:
+availableQuantity: 500
+price: 40
+productConfiguration:
+isBase: true
+name: "Tablet"
+packId: "5ab0ea0ade9b2431b88b50ad"
+size: 1
+_id: "5b7581ab2a8f7034b42a4488"
+__proto__: Object
+productId: "5abc02a5c8ac614026973932"
+productName: "Ibuprofen 50 MG/ML Topical Cream [Proflex Pain Relief]"
+qtyToSend: 80
+reOrderLevel: 0
+transactions: [{…}]
+
+*/

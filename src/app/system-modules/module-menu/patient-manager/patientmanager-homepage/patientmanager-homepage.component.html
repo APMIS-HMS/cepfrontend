@@ -115,7 +115,8 @@
 
         </div>
     </div>
-    <apmis-data-pager [show-next-prev]="true" color="blue" (onPageClick)="pageClickedEvent($event)" [in-progress]="loading"
+    <apmis-data-pager [show-next-prev]="true" color="blue" button-size="default" 
+                      [use-oval-button]="false" (onPageClick)="pageClickedEvent($event)" [in-progress]="loading"
         [show-progress]="true" next-prev-color="grey" [pager-source]="paginationObj"></apmis-data-pager>
       
     <!--<div class="btn-center">

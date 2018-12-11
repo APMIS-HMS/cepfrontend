@@ -37,8 +37,8 @@ export interface IPagerSource {
            [ngClass]="{'apmis-pager-button-disable' : disable, 'apmis-pager-button' : !disable}"
            [ngStyle]="{'color' : foreColor,'background-color' : !disable? bgColor : 'white',
            'border-radius':isOval ? '100%':'0px','padding' : padding,'font-size' : fontSize,
-           'margin-left':isOval ? '4px':'0px','margin-right':isOval ? '4px':'0px','width' : (size==='small') ? '25px' : isOval ? '40px' : '30px', 
-           'height' : (size==='small') ? '25px' : isOval ? '40px' : '30px'}">
+           'margin-left':isOval ? '4px':'0px','margin-right':isOval ? '4px':'0px','width' : (size==='small') ? '25px' : isOval ? '35px' : '30px', 
+           'height' : (size==='small') ? '25px' : isOval ? '35px' : '30px'}">
             <ng-content>
 
             </ng-content>
@@ -267,7 +267,7 @@ export class ApmisDataPagerComponent implements OnInit, AfterViewInit, OnChanges
     flexJustify: string = PAGER_HORIZONTAL_ALIGNMENT_CENTER;
     //diff : { [any : string] : KeyValueDiffer<string, IPagerSource>};
     differ: any;
-    pageSizeOptions: number[] = [5, 10, 15, 20, 30, 40, 50, 50, 100, 150, 200, 250, 300];
+    pageSizeOptions: number[] = [3, 5, 10, 15, 20, 30, 40, 50, 75, 100, 120, 150, 200, 250, 300];
 
 
     constructor(private differs: KeyValueDiffers) {
