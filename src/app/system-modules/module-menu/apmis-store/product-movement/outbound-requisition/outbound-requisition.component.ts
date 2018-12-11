@@ -39,7 +39,7 @@ export class OutboundRequisitionComponent implements OnInit {
         this.getCurrentStoreInfoFromAuthenticatedUser();
         this.getCurrentAuthenticatedUser();
         this.getLocations();
-        this.data   = [
+        /*this.data   = [
             {
                 _id  : _.uniqueId("000-0"),
                 availableQuantity : 100,
@@ -66,7 +66,7 @@ export class OutboundRequisitionComponent implements OnInit {
                 totalQuantity : 70,
                 qtyToSend : 5
             },
-        ];
+        ];*/
         
     }
     

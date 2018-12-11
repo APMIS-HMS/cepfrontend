@@ -16,7 +16,9 @@
                     <input type="text" [formControl]="productName" 
                            (focus)="inputHasFocus=true"
                            (blur)="inputHasFocus=false"
-                           [value]="data?.productName" class="form-control">
+                           [value]="data?.productName" class="form-control"
+                           #txtProductNameRef
+                    >
                     <div class="product-suggestion-popup" 
                          (mouseover)="makePopupVisible = true"
                          (mouseout)="makePopupVisible = false"
@@ -36,7 +38,11 @@
             <div class="store-td">{{data?.qtyOnHold|number}} {{data?.unitOfMeasure || data?.productConfiguration?.name}}</div>
             <div class="store-td">
                <span *ngIf="!isEditMode">{{data?.qtyToSend}} {{data?.unitOfMeasure}}</span>
-                <span *ngIf="isEditMode"><input [formControl]="qtyToSend" type="number" maxlength="7"  [style.width.px]="50"  [value]="data?.qtyToSend || 1" class="form-control">{{data?.unitOfMeasure}}</span>
+                <span *ngIf="isEditMode"><input [formControl]="qtyToSend"
+                                                type="number" maxlength="7"  
+                                                [style.width.px]="50"  
+                                                [value]="data?.qtyToSend || 1" 
+                                                class="form-control">{{data?.unitOfMeasure}}</span>
             </div>
             <div class="store-td"><naira-currency></naira-currency>{{(data?.price ) |number}}/{{data?.unitOfMeasure || data?.productConfiguration?.name}}</div>
             <div class="store-td"><naira-currency></naira-currency>{{(data.price * (data.qtyToSend || 1.0)) |  number}} </div>

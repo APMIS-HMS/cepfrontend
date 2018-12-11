@@ -17,10 +17,11 @@ import { StoreStoresComponent } from './store-stores/store-stores.component';
 import { StoreTabComponent } from './store-stores/store-tab/store-tab.component';
 import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-module';
 import {
-	StoreService,
-	InventoryService,
-	ProductTypeService,
-	SupplierService
+    StoreService,
+    InventoryService,
+    ProductTypeService,
+	SupplierService,
+	PurchaseOrderService
 } from 'app/services/facility-manager/setup';
 import { ApmisPaginationComponent } from './components/apmis-pagination/apmis-pagination.component';
 import { StoreGlobalUtilService } from './store-utils/global-service';
@@ -52,6 +53,11 @@ import { StoreCheckInComponent } from './components/store-check-in/store-check-i
 import {CoreUiModules} from "../../../core-ui-modules/CoreUiModules";
 import {ProductGridComponent} from "./product-movement/helper-components/products/product-grid-component";
 import {ProductGridItemComponent} from "./product-movement/helper-components/products/product-grid-item-component";
+import { ApmisStoreSupplierSearchComponent } from './components/apmis-store-supplier-search/apmis-store-supplier-search.component';
+import { ProductExitComponent } from './product-exit/product-exit.component';
+import { SalesComponent } from './product-exit/sales/sales.component';
+import { RefundComponent } from './product-exit/refund/refund.component';
+import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invoice-entry/new-invoice-entry.component';
 
 @NgModule({
 	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule, CoreUiModules ],
@@ -96,8 +102,21 @@ import {ProductGridItemComponent} from "./product-movement/helper-components/pro
 		OutboundRequisitionComponent,
 		StoreCheckInComponent,
 		ProductGridComponent,
-		ProductGridItemComponent
+		ProductGridItemComponent,
+		StoreCheckInComponent,
+		ApmisStoreSupplierSearchComponent,
+		ProductExitComponent,
+		SalesComponent,
+		RefundComponent,
+		NewInvoiceEntryComponent
 	],
-	providers: [ StoreService, InventoryService, StoreGlobalUtilService, ProductTypeService, SupplierService ]
+	providers: [
+		StoreService,
+		InventoryService,
+		StoreGlobalUtilService,
+		ProductTypeService,
+		SupplierService,
+		PurchaseOrderService
+	]
 })
 export class ApmisStoreModule {}

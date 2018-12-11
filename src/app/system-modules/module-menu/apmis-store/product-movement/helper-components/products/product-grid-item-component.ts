@@ -1,4 +1,4 @@
-import {Component, OnInit, Input, EventEmitter, Output} from '@angular/core';
+import {Component, OnInit, Input, EventEmitter, Output,ViewChild, ElementRef, AfterViewInit} from '@angular/core';
 import {ProductGridModel} from "../ProductGridModel";
 import {Form, FormControl} from "@angular/forms";
 import {InventoryService} from "../../../../../../services/facility-manager/setup";
@@ -15,14 +15,15 @@ import * as _ from "lodash";
         div.product-suggestion-popup {
             z-index: 2100;
             position: absolute;
-            width: 300px;
+            min-width: 350px;
+            max-width:550px;
             background-color: white;
             box-shadow: 1px 2px 12px rgba(95, 95, 95, 0.5);
             padding: 0px;
-            top: 30px;
-            max-height: 450px;
+            top: 40px;
+            height: 300px;
             overflow-y: auto;
-            min-height: 100px;
+            min-height: 50px;
 
         }
 
@@ -56,7 +57,7 @@ import * as _ from "lodash";
     `]
 })
 
-export class ProductGridItemComponent implements OnInit {
+export class ProductGridItemComponent implements OnInit , AfterViewInit{
     //lineCheck : FormControl =  new FormControl();
     isEditMode: boolean = false;
     isSelected: boolean = false;
@@ -64,6 +65,7 @@ export class ProductGridItemComponent implements OnInit {
   
     productName: FormControl  =  new FormControl();
     qtyToSend : FormControl  =  new FormControl(1);
+    @ViewChild("txtProductNameRef") productInputRef  : ElementRef;
     @Input() data: ProductGridModel;
     @Input() storeId: string;
     @Output() onRemove : EventEmitter<ProductGridModel> =  new EventEmitter<ProductGridModel>();
@@ -72,30 +74,36 @@ export class ProductGridItemComponent implements OnInit {
     }
 
     ngOnInit() {
+        if(this.data.isNew)
+        {
+            this.makeEditable();
+        }
         this.productName.valueChanges
             .debounceTime(300)
             .distinctUntilChanged()
             .subscribe(x => {
             this.data.productName  = x;
             // perform a search Here
-             
+             if(this.data.isNew && !_.isEmpty(x))
+             {
+                 this.data.isNew = false;
+             }
                 if((!_.isEmpty(x) && x.length>2)  &&  !_.isEmpty(this.storeId))
                 {
                     this.findProductInStore(x);
                 }
-                else{
-                    console.log("Empty value")
-                }
+                
         });
         this.qtyToSend.valueChanges.subscribe(x => {
-            this.data.qtyToSend  = x  ;
+            const  qty  = _.isNumber(_.parseInt(x)) ? _.toNumber(x)  : 1;
+            this.data.qtyToSend  = qty ;
         });
     }
 
     makeEditable() {
         this.isEditMode = true;
         this.isSelected  = false;
-        console.log(this.isEditMode);
+        
     }
     resetEditMode()
     {
@@ -153,22 +161,21 @@ export class ProductGridItemComponent implements OnInit {
     {
        this.onRemove.emit(item);
     }
-   
-}/*
-data:
-availableQuantity: 500
-price: 40
-productConfiguration:
-isBase: true
-name: "Tablet"
-packId: "5ab0ea0ade9b2431b88b50ad"
-size: 1
-_id: "5b7581ab2a8f7034b42a4488"
-__proto__: Object
-productId: "5abc02a5c8ac614026973932"
-productName: "Ibuprofen 50 MG/ML Topical Cream [Proflex Pain Relief]"
-qtyToSend: 80
-reOrderLevel: 0
-transactions: [{…}]
+    // focus on ProductName Text input on Edit
+    makeProductNameInputUiActive()
+    {
+       const elem  : HTMLInputElement  = this.productInputRef.nativeElement; 
+       elem.focus();
+       //elem.setSelectionRange(0, elem.value.length-1);
+       elem.select();
+    }
 
-*/
+    ngAfterViewInit(): void {
+       // console.log(this.productInputRef , "Product Name TextBox Reference");
+        if(this.isEditMode)
+        {
+            this.makeProductNameInputUiActive();
+        }
+    }
+   
+}

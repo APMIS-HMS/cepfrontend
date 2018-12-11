@@ -202,6 +202,4 @@ export class AppComponent implements OnInit, OnDestroy {
 		this.loaderSubscription.unsubscribe();
 		this.sweetAlertSubscription.unsubscribe();
 	}
-
-
 }

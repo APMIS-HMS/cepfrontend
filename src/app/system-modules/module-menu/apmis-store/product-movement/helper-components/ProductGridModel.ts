@@ -11,6 +11,7 @@ export interface ProductGridModel
     size? : number
     _id? : string;
      qtyToSend? : number;
+     isNew? :boolean;
 }
 
 export interface StoreOutbound {

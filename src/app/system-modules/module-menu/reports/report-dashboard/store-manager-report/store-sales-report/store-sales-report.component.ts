@@ -12,10 +12,6 @@ export class StoreSalesReportComponent implements OnInit {
   searchControl = new FormControl();
   searchCriteria = new FormControl('Search');
 
-  prescriberFilter = false;
-  prescriberSearch = false;
-  dispenseFilter = false;
-
   dateRange: any;
   activeTabIndex: number;
 
@@ -24,8 +20,19 @@ export class StoreSalesReportComponent implements OnInit {
   ngOnInit() {
   }
 
+  onTabClick(tabIndex) {
+    this.activeTabIndex = tabIndex;
+  }
+
   back_dashboard() {
 		this._router.navigate(['/dashboard/reports/report-dashboard']);
 	  }
 
+  //   storeSales() {
+  //     this._router.navigate(['/dashboard/reports/report-dashboard/storeReport/salesReport']);
+  //    }
+
+  //  StockReport() {
+  //     this._router.navigate(['/dashboard/reports/report-dashboard/storeReport/stockReport']);
+  //  }
 }

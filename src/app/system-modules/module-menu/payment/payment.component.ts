@@ -107,6 +107,7 @@ export class PaymentComponent implements OnInit {
 						}
 					})
 					.then((payload: any) => {
+						console.log(payload);
 						if (payload.data.reason !== undefined) {
 							this.pendingBills = payload.data.data;
 							this.loadingPendingBills = false;
@@ -158,12 +159,14 @@ export class PaymentComponent implements OnInit {
 		this._pendingBillService
 			.get(this.selectedFacility._id, {})
 			.then((payload: any) => {
+				console.log(payload);
 				this.systemModuleService.off();
 				this.pendingBills = payload.data;
 				this.holdMostRecentBills = payload.data;
 				this.loadingPendingBills = false;
 			})
 			.catch((err) => {
+				console.log(err);
 				this.systemModuleService.off();
 				this.loadingPendingBills = false;
 				this._notification('Error', err);
@@ -175,10 +178,12 @@ export class PaymentComponent implements OnInit {
 		this._pendingBillService
 			.getDataSummary(this.selectedFacility._id, {})
 			.then((payload: any) => {
+				console.log(payload);
 				this.systemModuleService.off();
 				this.billSummaryData = payload.data;
 			})
 			.catch((err) => {
+				console.log(err);
 				this.systemModuleService.off();
 				this._notification('Error', err);
 			});

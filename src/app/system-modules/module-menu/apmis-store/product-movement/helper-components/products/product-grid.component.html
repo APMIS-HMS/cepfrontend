@@ -1,4 +1,4 @@
-<div class="store-table" *ngIf="selectedStore && selectedStore !== '' ; else showThis;">
+<div   class="store-table" *ngIf="selectedStore && selectedStore !== '' ; else showThis;">
     <div class="store-thead">
         <div class="store-tr">
             <div class="store-th store-td-actions">
@@ -17,7 +17,7 @@
         </div>
     </div>
 
-    <div class="store-tbody">
+    <div class="store-tbody" style="min-height: 350px;">
         <div class="store-pre-tr">
             <product-grid-item (onRemove)="removeItem($event, item)"
                                [storeId]="selectedStore" 
@@ -35,12 +35,12 @@
 </div>
 <ng-template #showThis>
     <div style="" class="store-table" >
-        <div style="min-height: 120px;font-size  : 26px; color : #a9a9ad; 
+        <div style="min-height: 120px;font-size  : 26px; color : #fafaff; 
         display : flex;
         justify-content: center;
         flex-direction: row;
         align-items:  center;
-        text-shadow: 1px 0px 8px #838383;">
+        text-shadow: 1px 0px 5px #838383;">
             <span>
                 You should select a Store First.
             </span>

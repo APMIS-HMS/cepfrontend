@@ -33,7 +33,7 @@ export interface IPagerSource {
 @Component({
     selector: 'apmis-pager-button',
     template: `
-        <p (click)="emitButtonClickEvent($event)" class="button"
+        <button (click)="emitButtonClickEvent($event)" class="button"
            [ngClass]="{'apmis-pager-button-disable' : disable, 'apmis-pager-button' : !disable}"
            [ngStyle]="{'color' : foreColor,'background-color' : !disable? bgColor : 'white',
            'border-radius':isOval ? '100%':'0px','padding' : padding,'font-size' : fontSize,
@@ -42,15 +42,15 @@ export interface IPagerSource {
             <ng-content>
 
             </ng-content>
-        </p>  `,
+        </button>  `,
     styles: [
             `
-            p.apmis-pager-button:hover, p.apmis-pager-button:focus {
+            button.apmis-pager-button:hover, button.apmis-pager-button:focus {
                 background-color: rgba(213, 255, 236, 0.8) !important;
                 color: #3c3c3c !important;
             }
 
-            p.button {
+            button.button {
                 align-items: center;
                 transition: all linear 400ms;
                 font-size: 1rem;
@@ -62,9 +62,10 @@ export interface IPagerSource {
                 width: 25px;
                 height: 25px;
                 border-radius: 100%;
+                border : none !important;
             }
 
-            p.apmis-pager-button-disable {
+            button.apmis-pager-button-disable {
 
                 border: solid 1px #e7e7e7;
                 background-color: #e4e4e4 !important;
@@ -73,7 +74,7 @@ export interface IPagerSource {
 
             }
 
-            p.apmis-pager-button {
+            button.apmis-pager-button {
                 box-shadow: 1px 1px 7px rgba(132, 132, 132, 0.68);
                 background-color: #ffffff;
                 cursor: pointer;

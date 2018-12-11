@@ -1,6 +1,7 @@
 <div class="supplierBase">
   <div class="suppSearch">
-    <div class="src-content">
+      <app-apmis-store-supplier-search (emitCurrentPage)="loadCurrentPage($event)"></app-apmis-store-supplier-search>
+    <!-- <div class="src-content">
       <div class="src-item src-input-wrap">
         <img class="src-ico" src="assets/images/report_icons/search-small.svg" />
         <input class="src-input" type="text">
@@ -35,12 +36,13 @@
           <span>Add Supplier</span>
         </div>
       </ul>
-    </div>
+    </div> -->
   </div>
+
   <div *ngIf="main_content" class="contentLeftGrid">
-    <div class="tbl-btn-action" (click)="onShowNewSupplier()">
+    <div class="tbl-btn-action" >
       <div class="action-pad">
-        <div class="new-btn-blue">
+        <div class="new-btn-blue" (click)="onShowNewSupplier()">
           <i class="fa fa-plus" aria-hidden="true"></i>
           <span>Add New Supplier</span>
         </div>
@@ -49,7 +51,7 @@
     <div class="lst-inner-wrap">
       <div class="con-inner-wrap">
         <h4>Supplier</h4>
-        <h2>Sidmach Medical Supplier</h2>
+        <h2>{{selectedSupplier?.supplier.name}}</h2>
       </div>
       <div class="con-inner">
         <div class="fa-icon">
@@ -57,7 +59,7 @@
           <span>Edit</span>
         </div>
         <div>
-          <i class="fa fa-pencil-square-o fa-2x"></i>
+          <i class="fa fa-trash fa-2x"></i>
           <span>Delete</span>
         </div>
       </div>
@@ -68,21 +70,21 @@
     <div class="lst-inner-wrap x2">
       <div class="con-inner-wrap">
         <h4>Contacts</h4>
-        <h2>Oluwatomide Adesidmach</h2>
+        <h2>{{selectedSupplier?.supplier.contactPerson}}</h2>
       </div>
       <div class="con-inner-wrap">
         <h4>Phone </h4>
-        <h2>08067710761</h2>
+        <h2>{{selectedSupplier?.supplier.primaryContactPhoneNo}}</h2>
       </div>
       <div class="con-inner-wrap">
         <h4>Email</h4>
-        <h2>sidmachmedicalsupply@gmail.com</h2>
+        <h2>{{selectedSupplier?.supplier.email}}</h2>
       </div>
     </div>
     <div class="lst-inner-wrap">
       <div class="con-inner-wrap">
         <h4>Contact Address</h4>
-        <h2>Block J CBD Ikeja, Plot 15 Otunba Jobi Fele Way, 100212, Ojodu</h2>
+        <h2>{{selectedSupplier?.supplier.address}}</h2>
       </div>
     </div>
 
@@ -97,14 +99,14 @@
           <h3>Show from:</h3>
         </div>
         <div class="InputGroup input-space" style="width: 125px !important;">
-          <input class="customInput" type="date" required>
+          <input [formControl]="fromDate" class="customInput" type="date" required>
           <span class="highlight"></span>
         </div>
         <div>
           <span>--</span>
         </div>
         <div class="InputGroup input-space" style="width: 125px !important;">
-          <input class="customInput" type="date" required>
+          <input [formControl]="toDate" class="customInput" type="date" required>
           <span class="highlight"></span>
         </div>
       </div>
@@ -216,14 +218,14 @@
           <h3>Show from:</h3>
         </div>
         <div class="InputGroup input-space" style="width: 125px !important;">
-          <input class="customInput" type="date" required>
+          <input [formControl]="pendingFromDate" class="customInput" type="date" required>
           <span class="highlight"></span>
         </div>
         <div>
           <span>--</span>
         </div>
         <div class="InputGroup input-space" style="width: 125px !important;">
-          <input class="customInput" type="date" required>
+          <input [formControl]="pendingToDate" class="customInput" type="date" required>
           <span class="highlight"></span>
         </div>
       </div>

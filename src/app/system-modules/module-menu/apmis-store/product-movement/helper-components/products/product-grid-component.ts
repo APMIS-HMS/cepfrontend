@@ -77,8 +77,8 @@ export class ProductGridComponent implements OnInit {
     {
        this._resetEditable();
         // This creates an Empty ProductGridModel 
-        const pm : ProductGridModel = {
-            productName : "[New Line Item]",
+          const pm : ProductGridModel = {
+            productName : "[New Item]",
             qtyToSend : 1,
             availableQuantity : 0,
             unitOfMeasure : "",
@@ -88,7 +88,8 @@ export class ProductGridComponent implements OnInit {
             size  : 0,
             reorderLevel  : 0,
             productId : "",
-            _id  : null
+            _id  : null,
+            isNew : true
         };
         this.products.push(pm);
         // make the component editable at the index of data

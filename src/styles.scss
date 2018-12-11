@@ -1748,7 +1748,7 @@ ul.topmenuwrap li:hover {
     width: auto;
     min-width: 190px;
     right: 0;
-    top: 100%;
+    top: 10%;
     text-align: left;
     font-size: 1.2rem;
     color: #333;
@@ -2725,7 +2725,7 @@ button,
 // Custom Drop-Down
 .dropDown-container {
     font-size: 13px;
-    background: #fff;
+   // background: #fff;
     border-bottom: 1px solid #ddd;
     overflow: hidden;
     position: relative;
@@ -2804,6 +2804,9 @@ button,
     transition:0.2s ease all; 
     -moz-transition:0.2s ease all; 
     -webkit-transition:0.2s ease all;
+    i{
+        margin-right: 10px !important;
+    }
   }
   
   .customInput:focus ~ .customLabel, .customInput:valid ~ .customLabel {
@@ -2923,7 +2926,6 @@ button,
     padding: 20px;
     height: 0px;
     cursor: pointer;
-
     i,
     span {
         padding-right: 5px;
@@ -2940,7 +2942,10 @@ button,
     border-radius: 5px;
     background: #337AB7;
     height: 0px;
-
+    .disabled {
+        cursor: not-allowed;
+        background: gray;
+      }
     i,
     span {
         padding-right: 5px;
@@ -2951,8 +2956,8 @@ button,
     display: flex;
     border-radius: 5px;
     border: 1px solid #bebebe;
-    width: 200px;
-    justify-content: center;
+    width: fit-content;
+    padding:3px;
 }
 
 .toggle-wrap {
@@ -2970,6 +2975,7 @@ button,
 // Product Search
 .search-container {
     display: flex;
+    margin-top: 40px;
 }
 
 .searchproduct {

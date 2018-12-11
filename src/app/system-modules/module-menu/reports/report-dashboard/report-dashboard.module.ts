@@ -15,7 +15,7 @@ import { PharmacyReportComponent } from './pharmacy-report/pharmacy-report.compo
 import { PaymentReportComponent } from './payment-report/payment-report.component';
 import { StoreManagerReportComponent } from './store-manager-report/store-manager-report.component';
 import { WardManagerReportComponent } from './ward-manager-report/ward-manager-report.component';
-// import { MatFormFieldModule, MatInputModule } from '@angular/material';
+
 
 @NgModule({
 	imports: [
@@ -34,7 +34,7 @@ import { WardManagerReportComponent } from './ward-manager-report/ward-manager-r
 		DashboardLandingpageComponent,
 		LaboratoryReportComponent,
 		PharmacyReportComponent,
-		StoreManagerReportComponent,
+		//StoreManagerReportComponent,
 		WardManagerReportComponent
 	]
 })
