@@ -24,6 +24,9 @@ import {} from './facility-setup/facility-setup.module';
 import { LoginComponent } from './login/login.component';
 import { SocketService, RestService } from './feathers/feathers.service';
 import * as SetupService from './services/facility-manager/setup/index';
+import * as ReportService from './services/reports/index';
+import * as ToolsService from './services/tools/index';
+
 import * as ModuleManagerService from './services/module-manager/setup/index';
 import { UserAccountsComponent } from './system-modules/user-accounts/user-accounts.component';
 import { SharedModule } from './shared-module/shared.module';
@@ -72,6 +75,9 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { APP_DATE_FORMATS, AppDateAdapter } from 'app/date-format';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material';
+import { ErrorsService } from './feathers/errors.service';
+import { ArrayFunctionHelper } from './shared-module/helpers/array-function-helper';
+
 
 @NgModule({
 	declarations: [
@@ -171,6 +177,9 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 		SetupService.DrugDetailsService,
 		CustomPreloading,
 		SetupService.InventoryService,
+		SetupService.InventoryTransferService,
+		SetupService.InventoryTransactionTypeService,
+		SetupService.InventoryTransferStatusService,
 		SetupService.DispenseService,
 		SetupService.FacilityPriceService,
 		SetupService.ProductService,
@@ -230,6 +239,12 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 		AuthFacadeService,
 		SetupService.DepartmentService,
 		CanActivateViaAuthGuardAccessService,
+		ToolsService.ApmisFilterBadgeService,
+		ReportService.ClinicAttendanceReportService,
+		ReportService.AppointmentReportService,
+		ReportService.DiagnosisReportService,
+		ReportService.DispenseReportService,
+		ReportService.PrescriptionReportService,
 		ChannelService,
 		{
 			provide: HTTP_INTERCEPTORS,
@@ -237,7 +252,9 @@ import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/materia
 			multi: true
 		},
 		CanActivateViaAuthGuardCompleteFacilityService,
-		UpperCasePipe
+		UpperCasePipe,
+		ErrorsService,
+		ArrayFunctionHelper
 	],
 	bootstrap: [ AppComponent ]
 })

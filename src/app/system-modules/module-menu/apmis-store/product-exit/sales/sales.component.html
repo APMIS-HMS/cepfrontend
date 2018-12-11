@@ -1,0 +1,204 @@
+<div class="list-wrap" style="border:none !important; margin-bottom: 0;">
+  <div class="list-con-wrap">
+    <div class="con-wrap">
+      <span>CUSTOMER TYPE</span>
+      <div class="toggle-base-wrap" style="margin-top: 5px;">
+        <div (click)="onShowCashCustomer()" class="toggle-wrap ft-btn-selected">
+          <span> Cash Customer</span>
+        </div>
+        <div (click)="onShowAPMISCustomer()" class="toggle-wrap">
+          <span> APMIS Customer</span>
+        </div>
+      </div>
+    </div>
+    <div class="con-wrap">
+      <span>DATE</span>
+      <h3>19/10/2018</h3>
+    </div>
+    <div class="con-wrap">
+      <span>INVOICE NUMBER</span>
+      <h3>2306TE5DG7U</h3>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+<div *ngIf="showCashCustomer" class="list-wrap" style="border:none !important; margin-bottom: 0;">
+  <div class="store-table">
+    <div class="store-thead">
+      <div class="store-tr">
+        <div class="store-th store-td-actions">
+          <input type="checkbox">
+        </div>
+        <div class="config-tr-in in-tr">
+          <div class="store-th">Products</div>
+          <div class="store-th">QUANTITY</div>
+          <div class="store-th">UNIT PRICE</div>
+          <div class="store-th">Amount</div>
+        </div>
+        <div class="store-th store-td-actions"></div>
+      </div>
+    </div>
+
+    <div class="store-tbody">
+      <div class="store-pre-tr">
+        <div class="store-tr">
+          <div class="store-td store-td-actions">
+            <input type="checkbox">
+          </div>
+          <div class="config-tr-in in-tr">
+            <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
+            <div class="store-td">5 Packs</div>
+            <div class="store-td"> #10/Pack </div>
+            <div class="store-td">#20,000</div>
+          </div>
+          <div class="store-td store-td-actions">
+            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="store-tr">
+          <div class="store-td store-td-actions">
+            <input type="checkbox">
+          </div>
+          <div class="config-tr-in in-tr">
+            <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
+            <div class="store-td">5 Packs</div>
+            <div class="store-td"> #10/Pack </div>
+            <div class="store-td">#20,000</div>
+          </div>
+          <div class="store-td store-td-actions">
+            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="store-tr">
+          <div class="store-td store-td-actions">
+            <input type="checkbox">
+          </div>
+          <div class="config-tr-in in-tr">
+            <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
+            <div class="store-td">5 Packs</div>
+            <div class="store-td"> #10/Pack </div>
+            <div class="store-td">#20,000</div>
+          </div>
+          <div class="store-td store-td-actions">
+            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="store-tr">
+          <div class="store-td store-td-actions">
+          </div>
+          <div class="amt-summ">
+            <div class="summ">
+              <span>SUB TOTAL:</span>
+              <a>#350,000</a>
+            </div>
+            <div class="summ">
+              <span>VAT (20%):</span>
+              <a>#70,000</a>
+            </div>
+            <div class="summ">
+              <span>DISCOUNT:</span>
+              <a>#2,000</a>
+            </div>
+            <br>
+            <div class="summ">
+              <span>AMOUNT RECEIVED:</span>
+              <a>#300,000</a>
+            </div>
+          </div>
+          <div class="store-td store-td-actions">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div *ngIf="showAPMIScustomer" class="list-wrap" style="border:none !important; margin-bottom: 0;">
+  <div class="tp-act">
+    <h3>CUSTOMER APMIS ID</h3>
+    <div class="InputGroup" style="margin-right:10px;">
+      <input class="customInput" type="text" required>
+      <span class="highlight"></span>
+    </div>
+    <div (click)="onShowCustomerDetail()" *ngIf="viewPrescriptionBTN" class="new-btn-solid-blue">
+      <span>View Prescription</span>
+    </div>
+    <div *ngIf="showCustomerDetail" class="cus-details">
+      <div class="detail-cont">
+        <span>Customer: </span>
+        <a>Omoike Sarah Igho</a>
+      </div>
+      <div class="detail-cont">
+        <span>Priscription Date: </span>
+        <a>24/11/2018</a>
+      </div>
+      <div class="detail-cont">
+        <span>Gender: </span>
+        <a>Female</a>
+      </div>
+    </div>
+  </div>
+
+  <h3>Prescription</h3>
+  <div class="store-table">
+    <div class="store-tbody">
+      <div class="store-pre-tr">
+        <div class="store-tr">
+          <div class="store-td store-td-actions">
+          </div>
+          <div class="config-tr-in in-tr">
+            <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
+            <div class="store-td">5 Packs</div>
+            <div class="store-td"> #10/Pack </div>
+            <div class="store-td">#20,000</div>
+          </div>
+          <div class="store-td store-td-actions">
+            <div class="btc-body-item item-action">
+              <i class="fa fa-2x fa-times-circle" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+        <div class="store-tr">
+          <div class="store-td store-td-actions">
+          </div>
+          <div class="config-tr-in in-tr">
+            <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
+            <div class="store-td">5 Packs</div>
+            <div class="store-td"> #10/Pack </div>
+            <div class="store-td">#20,000</div>
+          </div>
+          <div class="store-td store-td-actions">
+            <div class="btc-body-item item-action">
+              <i class="fa fa-2x fa-times-circle" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+        <div class="store-tr">
+          <div class="store-td store-td-actions">
+          </div>
+          <div class="config-tr-in in-tr">
+            <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
+            <div class="store-td">5 Packs</div>
+            <div class="store-td"> #10/Pack </div>
+            <div class="store-td">#20,000</div>
+          </div>
+          <div class="store-td store-td-actions">
+            <div class="btc-body-item item-action">
+              <i class="fa fa-2x fa-times-circle" aria-hidden="true"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br>
+  <div class="btnWrap">
+    <div class="new-btn-solid-blue">
+      <span>Dispense</span>
+    </div>
+  </div>
+
+</div>

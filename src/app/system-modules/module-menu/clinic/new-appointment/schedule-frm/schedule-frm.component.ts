@@ -247,17 +247,30 @@ export class ScheduleFrmComponent implements OnInit {
 
 		this.provider = new FormControl();
 		this.provider.valueChanges.subscribe((value) => {
-			this.apmisProviderLookupQuery = {
-				facilityId: this.selectedFacility._id,
-				searchText: value,
-				employeeTable: true,
-				$or: [
-					{
-						professionId: { $regex: [ 'doctor', 'nurse' ], $options: 'i' }
-					}
-				]
-			};
+			if (value.length > 3) {
+				this.apmisProviderLookupQuery = {
+					facilityId: this.selectedFacility._id,
+					searchText: value,
+					employeeTable: true,
+					$or: [
+						{
+							professionId: { $regex: 'doctor', $options: 'i' }
+						},
+						{
+							professionId: { $regex: 'nurse', $options: 'i' }
+						}
+					],
+					apmisLookup: true,
+					filterByRole: true,
+					moduleName: 'Clinic Management',
+					roleName: 'Providers'
+				};
+			} else {
+				// this.apmisProviderLookupQuery = {
+				// }
+			}
 		});
+
 		// this.filteredProviders = this.provider.valueChanges
 		//   .startWith(null)
 		//   .map(
@@ -493,50 +506,49 @@ export class ScheduleFrmComponent implements OnInit {
 	}
 
 	createBill() {
-		let bills = [];
-		let patientDefaultPaymentPlan = this.selectedPatient.paymentPlan.find((x) => x.isDefault === true);
-		let covered = {};
-		if (patientDefaultPaymentPlan.planType === 'wallet') {
-			covered = { coverType: patientDefaultPaymentPlan.planType };
-		} else if (patientDefaultPaymentPlan.planType === 'insurance') {
-			covered = {
-				coverType: patientDefaultPaymentPlan.planType,
-				hmoId: patientDefaultPaymentPlan.planDetails.hmoId
-			};
-		} else if (patientDefaultPaymentPlan.planType === 'company') {
-			covered = {
-				coverType: patientDefaultPaymentPlan.planType,
-				companyId: patientDefaultPaymentPlan.planDetails.companyId
-			};
-		} else if (patientDefaultPaymentPlan.planType === 'family') {
-			covered = {
-				coverType: patientDefaultPaymentPlan.planType,
-				familyId: patientDefaultPaymentPlan.planDetails.familyId
-			};
-		}
-		bills.push({
-			unitPrice: this.organizationalServicePrice,
-			facilityId: this.selectedFacility._id,
-			facilityServiceId: this.organizationalServiceId.facilityServiceId,
-			serviceId: this.category.value,
-			patientId: this.selectedPatient._id,
-			quantity: 1,
-			active: true,
-			totalPrice: this.organizationalServicePrice,
-			covered: covered
-		});
-		this.billingService
-			.createBill(bills, {
-				query: {
-					facilityId: this.selectedFacility._id,
-					patientId: this.selectedPatient._id
-				}
-			})
-			.then((payld) => {
-				console.log(payld);
-			}, (err) => {
-				console.log(err);
+		try {
+			const bills = [];
+			const patientDefaultPaymentPlan = this.selectedPatient.paymentPlan.find((x) => x.isDefault === true);
+			let covered = {};
+			if (patientDefaultPaymentPlan.planType === 'wallet') {
+				covered = { coverType: patientDefaultPaymentPlan.planType };
+			} else if (patientDefaultPaymentPlan.planType === 'insurance') {
+				covered = {
+					coverType: patientDefaultPaymentPlan.planType,
+					hmoId: patientDefaultPaymentPlan.planDetails.hmoId
+				};
+			} else if (patientDefaultPaymentPlan.planType === 'company') {
+				covered = {
+					coverType: patientDefaultPaymentPlan.planType,
+					companyId: patientDefaultPaymentPlan.planDetails.companyId
+				};
+			} else if (patientDefaultPaymentPlan.planType === 'family') {
+				covered = {
+					coverType: patientDefaultPaymentPlan.planType,
+					familyId: patientDefaultPaymentPlan.planDetails.familyId
+				};
+			}
+			bills.push({
+				unitPrice: this.organizationalServicePrice,
+				facilityId: this.selectedFacility._id,
+				facilityServiceId: this.organizationalServiceId.facilityServiceId,
+				serviceId: this.category.value,
+				patientId: this.selectedPatient._id,
+				quantity: 1,
+				active: true,
+				totalPrice: this.organizationalServicePrice,
+				covered: covered
 			});
+			this.billingService
+				.createBill(bills, {
+					query: {
+						facilityId: this.selectedFacility._id,
+						patientId: this.selectedPatient._id
+					}
+				})
+				.then((payld) => {}, (err) => {})
+				.catch((er) => {});
+		} catch (error) {}
 	}
 
 	isAppointmentToday() {

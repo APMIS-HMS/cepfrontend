@@ -542,6 +542,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
             this.getShowing();
         })
             .catch((errr) => {
+                console.dir(errr);
                 this.systemService.off();
                 this.loading = false;
             });
@@ -710,6 +711,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     updatePatient(value: any, valid: boolean) {
         this.updatePatientBtnText = 'Updating... <i class="fa fa-spinner fa-spin"></i>';
         const nextOfKinArray = [];
+         this.selectedPatient['title'] = value.title;
         this.selectedPatient['firstName'] = value.firstName;
         this.selectedPatient['lastName'] = value.lastName;
         this.selectedPatient['personFullName'] = value.firstName + ' ' + value.lastName;

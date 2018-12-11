@@ -1,0 +1,133 @@
+<div class="search-container">
+  <div class="searchproduct">
+    <div *ngIf="InvoiceEntryLanding" class="InputGroup">
+      <input class="customInput" type="text" required>
+      <span class="highlight"></span>
+      <label class="customLabel"><i class="fa fa-search" aria-hidden="true"></i>Search</label>
+      **Please un-comment the search result**
+      <!-- <ul class="search-sugestions">
+        <li class="search-sugestion">INVOICE1234567890</li>
+        <li class="search-sugestion">INVOICE1234567890</li>
+        <li class="search-sugestion">INVOICE1234567890</li>
+      </ul> -->
+    </div>
+  </div>
+  <div (click)="toggleView()" class="tbl-btn-action">
+    <div class="action-pad">
+      <div *ngIf="InvoiceEntryLanding" class="new-btn-blue">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+        <span>New Invioce Entry</span>
+      </div>
+      <div *ngIf="!InvoiceEntryLanding" class="new-btn-blue">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        <span>Invioce Entry Landing Page</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="InvoiceEntryLanding" class="store-table">
+  <div class="store-thead">
+    <div class="store-tr">
+      <div class="store-th store-td-actions">
+        <input type="checkbox">
+      </div>
+      <div class="invoice-tr-in">
+        <div class="store-th">Invoices</div>
+        <div class="store-th">Supplier</div>
+        <div class="store-th">Invoice Date</div>
+        <div class="store-th">Status</div>
+        <div class="store-th">Amount</div>
+        <div class="store-th">Action</div>
+      </div>
+      <div class="store-th store-td-actions"></div>
+    </div>
+  </div>
+
+  <div class="store-tbody">
+    <div class="store-pre-tr">
+      <div class="store-tr">
+        <div class="store-td store-td-actions">
+          <input type="checkbox">
+        </div>
+        <div class="invoice-tr-in">
+          <div class="store-td">IV/890</div>
+          <div class="store-td">Sidmach Drug Supplier</div>
+          <div class="store-td">02/11/2019</div>
+          <div class="store-td green-lbl">Paid</div>
+          <div class="store-td">#300,000</div>
+          <div class="store-td">
+            <div class="inv-action">
+              <div (click)="viewInvoice()" class="ft-btn btn-act-margin">
+                <span>View Invoice</span>
+              </div>
+              <div class="ft-btn btn-act-margin">
+                <span>Add to Inventory</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="store-th store-td-actions">
+
+        </div>
+      </div>
+
+      <div class="store-tr">
+        <div class="store-td store-td-actions">
+          <input type="checkbox">
+        </div>
+        <div class="invoice-tr-in">
+          <div class="store-td">IV/890/64</div>
+          <div class="store-td">Sidmach Drug Supplier</div>
+          <div class="store-td">02/11/2019</div>
+          <div class="store-td red-lbl">Unpaid</div>
+          <div class="store-td">#300,000</div>
+          <div class="store-td">
+            <div class="inv-action">
+              <div class="ft-btn btn-act-margin">
+                <span>View Invoice</span>
+              </div>
+              <div class="ft-btn btn-act-margin">
+                <span>Add to Inventory</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="store-th store-td-actions">
+
+        </div>
+      </div>
+
+      <div class="store-tr">
+        <div class="store-td store-td-actions">
+          <input type="checkbox">
+        </div>
+        <div class="invoice-tr-in">
+          <div class="store-td">IV/890/22</div>
+          <div class="store-td">Sidmach Drug Supplier</div>
+          <div class="store-td">02/11/2019</div>
+          <div class="store-td orange-lbl">Partial Payment</div>
+          <div class="store-td">#300,000</div>
+          <div class="store-td">
+            <div class="inv-action">
+              <div class="ft-btn btn-act-margin">
+                <span>View Invoice</span>
+              </div>
+              <div class="ft-btn btn-act-margin">
+                <span>Add to Inventory</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="store-th store-td-actions">
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-new-invoice-entry *ngIf="!InvoiceEntryLanding"></app-new-invoice-entry>
+<div *ngIf="showViewInvoice" class="modal-overlay">
+  <app-view-invoice (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-view-invoice>
+</div>

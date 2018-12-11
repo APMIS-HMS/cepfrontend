@@ -68,6 +68,7 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
 	ngOnInit() {
 		this._rest = this._restService.getService(this.url);
 		this._socket = this._socketService.getService(this.url);
+		this._socket.timeout = 90000;
 		this.baseUrl = this._restService.HOST;
 		this.form = this.fb.group({ searchtext: [ '' ] });
 		this.form.controls['searchtext'].valueChanges
@@ -81,16 +82,23 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
 					this.isSocket
 				)
 			)
-			.subscribe((payload: any) => {
-				this.cuDropdownLoading = false;
-				if (payload !== undefined && payload.data !== undefined) {
-					this.results = payload.data;
-				} else {
-					this.results = payload;
-				}
-			},err=>{
-				console.log(err);
-			});
+			.subscribe(
+				(payload: any) => {
+					try {
+						this.cuDropdownLoading = false;
+						if (payload !== undefined && payload.status === 'success' && payload.data !== undefined) {
+							this.results = payload.data;
+						} else if (payload.status !== 'error') {
+							this.results = payload;
+						}
+					} catch (error) {}
+				},
+				(err) => {}
+			);
+	}
+
+	cancel() {
+		this.results = [];
 	}
 
 	getImgUrl(item) {
@@ -109,7 +117,7 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
 				const imgUri = undefined;
 				return imgUri;
 			} else {
-				const imgUri = this.baseUrl + '/' + item;
+				const imgUri = item; // this.baseUrl + '/' + item;
 				// this.imgError = false;
 				return imgUri;
 			}

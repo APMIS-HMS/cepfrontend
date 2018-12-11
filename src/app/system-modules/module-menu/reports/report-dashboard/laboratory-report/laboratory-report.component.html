@@ -12,33 +12,43 @@
     <div class="filter">
         <div class="row" style="padding: 10px 40px 10px 40px;">
             <div class="dr-wrap survery" style="margin-top: 20px;">
-                <app-date-range></app-date-range>
+                <app-date-range
+                        [dateRange]="{from : reportOptions.startDate, to: reportOptions.endDate}"
+                        (dateRangeChange)="assignDate($event)"></app-date-range>
             </div>
             <div class="searchInputWrap col-sm row">
                 <mat-form-field>
                     <mat-select [formControl]="searchCriteria" placeholder="Search ">
-                        <mat-option value="Enter Provider Name">By Provider</mat-option>
-                        <mat-option value="Enter Clinic name">By Clinic Name</mat-option>
+                        <mat-option value="provider">By Provider</mat-option>
+                        <mat-option value="clinic">By Clinic Name</mat-option> 
+                        <mat-option value="all">All</mat-option>
                     </mat-select>
                 </mat-form-field>
                 <div class="inputWrap">
                     <div class="row">
                         <div class="col-xs-7">
                             <input [formControl]="searchControl" type="search" autofocus class="searchInput "
-                                placeholder=" {{searchCriteria.value}}" />
+                                   placeholder=" {{searchCriteria.value}}" style="text-align:left;"/>
                         </div>
+                       
+                    </div>
+                    <div style="float:right; margin: -5px 10px;">
+                      <apmis-search-button [processing]="lrd.processing" (onSearch)="search()" ></apmis-search-button>
                     </div>
                 </div>
+               
+                
             </div>
             <div class="col-sm" style="padding-left: 30px;">
                 <h3 style="text-align: center;
-                text-decoration: underline;">Filter by Group</h3>
+                text-decoration: underline;">Group</h3>
                 <div style="display:flex;">
                     <mat-form-field class="select">
-                        <mat-select placeholder="Select Location">
-                            <mat-option>PP Lab</mat-option>
-                            <mat-option>Dental Lab</mat-option>
-                            <mat-option>Optometric Lab</mat-option>
+                        <mat-select placeholder="Select Location"  (valueChange)="setLocation($event)" >
+                            <mat-option *ngFor="let l of locations" [value]="l.location">
+                                <span>{{l.location}}</span>
+                            </mat-option>
+                          
                         </mat-select>
                     </mat-form-field>
                     <mat-form-field class="select">
@@ -56,88 +66,24 @@
     <div>
         <hr>
     </div>
-
-    <div class="tbl-resp-wrap">
-        <table class="card" style="color:black;" cellpadding="0" cellspacing="0" border="0.5">
-            <thead>
-                <tr class="th-r1 th-xxx">
-                    <th>S/N</th>
-                    <th>Patient Name</th>
-                    <th>APMIS ID</th>
-                    <th>Requests</th>
-                    <th>Laboratory Location</th>
-                    <th>Reffering Doctor</th>
-                    <th>Clinic</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <tr class="th-xxx">
-                    <td>1</td>
-                    <td>Omolayo Susan</td>
-                    <td> GT-888463 </td>
-                    <td>
-                        <div>Malaria Parasite</div>
-                        <div>Urinalysis</div>
-                        <div>Pregnancy Test</div>
-                        <div>Blood Group</div>
-                    </td>
-                    <td>Gynecology Lab</td>
-                    <td>Dr Daniel</td>
-                    <td>Ante-Natal</td>
-                    <td style="color:green;">Completed</td>
-                </tr>
-                <tr class="th-xxx">
-                    <td>2</td>
-                    <td>John Yedenu</td>
-                    <td> FM-88772 </td>
-                    <td>
-                        <div>Blood Profile</div>
-                        <div>Full Blood Count</div>
-                        <div>Genotype</div>
-                        <div>Cretinine Kinase</div>
-                    </td>
-                    <td>PP Lab</td>
-                    <td>Dr Oladele</td>
-                    <td>General OPD</td>
-                    <td style="color:orange;">Incomplete</td>
-                </tr>
-                <tr class="th-xxx">
-                    <td>3</td>
-                    <td>Olaniyi Adedejo</td>
-                    <td> JK-22449 </td>
-                    <td>
-                        <div>Widal</div>
-                        <div>Urinalysis</div>
-                        <div>Pregnancy Test</div>
-                        <div>Cretinine Kinase</div>
-                    </td>
-                    <td>PP Lab</td>
-                    <td>Dr Oladele</td>
-                    <td>General OPD</td>
-                    <td style="color:red;">Not Treated</td>
-                </tr>
-            </tbody>
-        </table>
-        <mat-paginator [length]="100" [pageSize]="30" [pageSizeOptions]="[5, 10, 25, 100]">
-        </mat-paginator>
-        <div class="billSummarySect">
-            <table class="rhs">
-                <div class="summaryItems">
-                    <tr class="summaryItem">
-                        <td class="label" style="width:auto !important;">Total Number of Request:</td>
-                        <td class="data">
-                            <span>35 Requests</span></td>
-                        <td></td>
-                    </tr>
-                    <tr class="summaryItem">
-                        <td class="label" style="width:auto !important;">Total Number of Reports:</td>
-                        <td class="data">
-                            <span>40 Investigations Reported</span></td>
-                        <td></td>
-                    </tr>
-                </div>
-            </table>
-        </div>
+    <div class="pull-right">
+        <app-document-printer content="printableArea"></app-document-printer>
     </div>
+    <mat-tab-group>
+        <mat-tab label="Patient Lab Report">
+          <app-lab-report-detail [options]="reportOptions" #lrd>  </app-lab-report-detail>
+        </mat-tab>
+        <mat-tab label="Report Summary">
+           <app-lab-report-summary [reportOption]="reportOptions">
+               
+           </app-lab-report-summary>
+        </mat-tab>
+        <mat-tab label="Summary By Location">
+           
+        </mat-tab>
+    </mat-tab-group>
+
+   
+    
+
+</div>
