@@ -50,6 +50,7 @@ export class ConfigProductComponent implements OnInit, OnChanges {
   showProductExist: boolean;
   selectedToggleIndex = 0;
   toggleData = [];
+  category_select = false;
 
   constructor(
       private productService: ProductService,
@@ -340,6 +341,12 @@ export class ConfigProductComponent implements OnInit, OnChanges {
   onShowDrugSearchEntry() {
     this.drugSearchEntry = true;
     this.consumableEntry = false;
+  }
+
+
+
+  onShowCategorySelect(){
+    this.category_select = !this.category_select;
   }
 
   onShowComsumableEntry() {
