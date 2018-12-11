@@ -122,26 +122,26 @@ export class InboundTransferComponent implements OnInit {
       facilityId: this.selectedFacility._id,
       destinationStoreId: this.checkingStore.storeId
     };
-    console.log(query, this.checkingStore);
     this.inventoryTransferService.find({ query: query }).then(payload => {
-      console.log(payload);
       this.transferObjs = [];
       payload.data.forEach(element => {
-        const completedTransfers = element.inventoryTransferTransactions.filter(x => x.transferStatusObject.name === 'Completed');
-        if (completedTransfers.length !== element.inventoryTransferTransactions.length) {
+        const completedTransfers = element.inventoryTransferTransactions.filter(x => x.transferStatusObject !== undefined && x.transferStatusObject.name !== 'Completed');
+        if (completedTransfers.length > 0) {
+          element.inventoryTransferTransactions = JSON.parse(JSON.stringify(completedTransfers));
           this.existingStockTransfers.push(element);
         }
       });
 
       this.existingStockTransfers.forEach(element => {
+        element.totalQties = 0;
+        element.totalCost = 0;
         const minorLocationObj = this.minorLocations.find(x => x._id.toString() === element.storeObject.minorLocationId.toString());
         element.storeObject.minorLocationObject = minorLocationObj;
         element.inventoryTransferTransactions.forEach(element2 => {
-          this.totalQties += element2.quantity;
-          this.totalCost += element2.lineCostPrice
+          element.totalQties += element2.quantity;
+          element.totalCost += element2.lineCostPrice
         });
       });
-      console.log(this.existingStockTransfers);
       this.systemModuleService.off();
     }, err => {
       this.systemModuleService.off();
@@ -164,24 +164,19 @@ export class InboundTransferComponent implements OnInit {
     this.subscription.unsubscribe();
   }
 
-  onCheckAll(event) {
-    this.totalQties = 0;
-    this.totalCost = 0;
-    console.log(event);
-    if (this.existingStockTransfers.length > 0) {
+  onCheckAll(event, i) {
+    if (this.existingStockTransfers[i].inventoryTransferTransactions.length > 0) {
       if (event.target.checked) {
-        this.existingStockTransfers.forEach(element => {
-          element.inventoryTransferTransactions.forEach(element2 => {
-            element2.isSelected = true;
-            this.totalQties += element2.quantity;
-            this.totalCost += element2.lineCostPrice
-          });
+        this.existingStockTransfers[i].totalQties = 0;
+        this.existingStockTransfers[i].totalCost = 0;
+        this.existingStockTransfers[i].inventoryTransferTransactions.forEach(element2 => {
+          element2.isSelected = true;
+          this.existingStockTransfers[i].totalQties += element2.quantity;
+          this.existingStockTransfers[i].totalCost += element2.lineCostPrice;
         });
       } else {
-        this.existingStockTransfers.forEach(element => {
-          element.inventoryTransferTransactions.forEach(element2 => {
-            element2.isSelected = false;
-          });
+        this.existingStockTransfers[i].inventoryTransferTransactions.forEach(element2 => {
+          element2.isSelected = false;
         });
       }
     } else {
@@ -190,23 +185,19 @@ export class InboundTransferComponent implements OnInit {
   }
 
   onCheckItem(event, index, index2) {
-    console.log(this.transferObjs);
     if (event.target.checked) {
       this.existingStockTransfers[index].inventoryTransferTransactions[index2].isSelected = true;
     }
     else {
       this.existingStockTransfers[index].inventoryTransferTransactions[index2].isSelected = false;
     }
-    this.totalQties = 0;
-    this.totalCost = 0;
-    this.existingStockTransfers.forEach(element => {
-      element.inventoryTransferTransactions.forEach(element2 => {
-        console.log(element2);
-        if (element2.isSelected === true) {
-          this.totalQties += element2.quantity;
-          this.totalCost += element2.lineCostPrice
-        }
-      });
+    this.existingStockTransfers[index].totalQties = 0;
+    this.existingStockTransfers[index].totalCost = 0;
+    this.existingStockTransfers[index].inventoryTransferTransactions.forEach(element2 => {
+      if (element2.isSelected === true) {
+        this.existingStockTransfers[index].totalQties += element2.quantity;
+        this.existingStockTransfers[index].totalCost += element2.lineCostPrice;
+      }
     });
   }
 
@@ -238,24 +229,61 @@ export class InboundTransferComponent implements OnInit {
     }, err => { });
   }
 
-  onAcceptItem(index, index2) {
-    console.log(this.status);
+  onChangeStatue(value, index, index2) {
+    this.existingStockTransfers[index].inventoryTransferTransactions[index2].transferStatusId = value._id;
+  }
+  isButtonDisabled = false;
+  onAcceptItem(index) {
+    this.isButtonDisabled = true;
     const completed = this.status.find(x => x.name === 'Completed');
-
-    this.existingStockTransfers[index].inventoryTransferTransactions.map(x => {
-      if (x.isSelected === true) {
-        x.transferStatusId = completed._id;
+    this.existingStockTransfers[index].inventoryTransferTransactions = JSON.parse(JSON.stringify(this.existingStockTransfers[index].inventoryTransferTransactions.filter(x => x.isSelected === true)));
+    if (this.existingStockTransfers[index].inventoryTransferTransactions.length > 0) {
+      const checkValueStocks = this.existingStockTransfers[index].inventoryTransferTransactions.filter(x => x.transferStatusId !== undefined);
+      if (checkValueStocks.length > 0) {
+        this.isButtonDisabled = true;
+        this.systemModuleService.on();
+        this.inventoryTransferService.patchTransferItem(this.existingStockTransfers[index]._id,
+          { inventoryTransferTransactions: this.existingStockTransfers[index].inventoryTransferTransactions },
+          {}).then(payload => {
+            this.isButtonDisabled = false;
+            this.systemModuleService.off();
+            this.getSelectedStoreSummations();
+            this.systemModuleService.announceSweetProxy('Stock transferred confirmed successfully', 'success',
+              null,
+              null,
+              null,
+              null,
+              null,
+              null,
+              null);
+          }, error => {
+            this.isButtonDisabled = false;
+            this.getSelectedStoreSummations();
+            this.systemModuleService.off();
+          });
+      } else {
+        this.systemModuleService.off();
+        this.systemModuleService.announceSweetProxy('Stock transferred confirmation can not be completed without transfer status', 'error',
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null);
       }
-    });
-    console.log(this.existingStockTransfers[index]);
-    this.inventoryTransferService.patchTransferItem(this.existingStockTransfers[index]._id,
-      { inventoryTransferTransactions: this.existingStockTransfers[index].inventoryTransferTransactions },
-      {}).then(payload => {
-        console.log(payload);
-      }, error => {
-        console.log(error);
-      });
+    } else {
+      this.getSelectedStoreSummations();
+      this.systemModuleService.announceSweetProxy('You have not selected any item', 'error',
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null);
 
+    }
   }
 
 }
