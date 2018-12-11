@@ -310,6 +310,7 @@ export class NewPurchaseOrderListComponent implements OnInit {
 			listedItem.productId = product.productId;
 			listedItem.productName = product.productName;
 			listedItem.quantity = product.quantity;
+			listedItem.productPackType = product.productConfiguration.name;
 			listedItem.productConfiguration = product.productConfiguration;
 			purchaseOrder.orderedProducts.push(listedItem);
 		});
