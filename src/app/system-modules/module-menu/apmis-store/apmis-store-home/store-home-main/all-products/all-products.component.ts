@@ -6,6 +6,7 @@ import { StoreGlobalUtilService } from '../../../store-utils/global-service';
 import { ProductsToggle } from '../../../store-utils/global';
 import { EmployeeService } from 'app/services/facility-manager/setup';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
+import { APMIS_STORE_PAGINATION_LIMIT } from 'app/shared-module/helpers/global-config';
 
 @Component({
 	selector: 'app-all-products',
@@ -21,7 +22,7 @@ export class AllProductsComponent implements OnInit {
 	skip = 0;
 	numberOfPages = 0;
 	currentPage = 0;
-	limit = 1;
+	limit = APMIS_STORE_PAGINATION_LIMIT;
 	packTypes = [ { id: 1, name: 'Sachet' }, { id: 2, name: 'Cartoon' } ];
 	selectedFacility: any;
 	products: any = [];
