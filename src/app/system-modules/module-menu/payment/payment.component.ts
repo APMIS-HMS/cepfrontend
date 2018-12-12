@@ -70,8 +70,6 @@ export class PaymentComponent implements OnInit {
 		this._getBillSummaryData();
 	}
 	ngOnInit() {
-		
-		
 		this.searchPendingInvoices.valueChanges.debounceTime(400).distinctUntilChanged().subscribe((value) => {
 			if (this.searchPendingInvoices.value !== '' && this.searchPendingInvoices.value.length >= 3) {
 				this.isLoadingInvoice = true;
