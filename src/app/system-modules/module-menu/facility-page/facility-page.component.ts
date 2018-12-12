@@ -4,6 +4,7 @@ import { Facility } from '../../../models/index';
 import { UserService } from '../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { DomSanitizer } from '@angular/platform-browser';
+import { Router } from '@angular/router';
 
 @Component({
 	selector: 'app-facility-page',
@@ -27,6 +28,7 @@ export class FacilityPageComponent implements OnInit {
 	constructor(
 		public facilityService: FacilitiesService,
 		private _DomSanitizationService: DomSanitizer,
+		private router: Router,
 		private locker: CoolLocalStorage
 	) {
 		this.facilityService.listner.subscribe((payload) => {
@@ -36,6 +38,9 @@ export class FacilityPageComponent implements OnInit {
 
 	ngOnInit() {
 		this.facilityObj = this.facilityService.getSelectedFacilityId();
+		if (this.facilityObj === undefined || this.facilityObj === null) {
+			this.router.navigate([ '/accounts' ]);
+		}
 	}
 	navFpHome() {
 		this.homeContentArea = true;
