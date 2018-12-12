@@ -48,5 +48,6 @@ export interface OrderedItem {
 	createdAt: Date;
 	updatedAt: Date;
 	productName: string;
+	productPackType: string;
 	productConfiguration: any;
 }
