@@ -12,15 +12,17 @@
                 <div class="store-th">Qty To Send</div>
                 <div class="store-th">Unit Price</div>
                 <div class="store-th">Amount</div>
+                <div class="store-th" *ngIf="showStatus"></div>
             </div>
             <div class="store-th store-td-actions"></div>
         </div>
     </div>
 
-    <div class="store-tbody" style="min-height: 350px;">
+    <div class="store-tbody" style="min-height: 300px;">
         <div class="store-pre-tr">
             <product-grid-item (onRemove)="removeItem($event, item)"
                                [storeId]="selectedStore" 
+                               [showStatus]="showStatus || false"
                                (dblclick)="manageEditting(item)" 
                                #item *ngFor="let p of products" 
                                [data]="p"></product-grid-item>

@@ -54,6 +54,18 @@ import * as _ from "lodash";
             border: solid 1px #99acb9;
             box-shadow: 1px 1px 13px rgba(150, 150, 150, 0.4) inset;
         }
+        .tbl-status{
+            padding: 3px 10px;
+            font-size: 14px;
+        }
+        .status-green{
+            color: #00D455;
+            border: 1px solid #00D455;
+        }
+        .status-red{
+            color: #FF3838;
+            border: 1px solid #FF3838;
+        }
     `]
 })
 
@@ -67,6 +79,7 @@ export class ProductGridItemComponent implements OnInit , AfterViewInit{
     qtyToSend : FormControl  =  new FormControl(1);
     @ViewChild("txtProductNameRef") productInputRef  : ElementRef;
     @Input() data: ProductGridModel;
+    @Input() showStatus : boolean = false;
     @Input() storeId: string;
     @Output() onRemove : EventEmitter<ProductGridModel> =  new EventEmitter<ProductGridModel>();
     searchedProducts : ProductGridModel[] = [];
@@ -97,6 +110,7 @@ export class ProductGridItemComponent implements OnInit , AfterViewInit{
         this.qtyToSend.valueChanges.subscribe(x => {
             const  qty  = _.isNumber(_.parseInt(x)) ? _.toNumber(x)  : 1;
             this.data.qtyToSend  = qty ;
+            //this.data.isAccepted = true; Tested the Accepted Property on the UI
         });
     }
 

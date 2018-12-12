@@ -7,7 +7,8 @@
                     size="small"
                     *ngIf="isEditMode"
                     (onClick)="removeItem(data)"><i class="fa fa-trash" ></i></apmis-pager-button>
-            <input type="checkbox" *ngIf="!isEditMode"  [checked]="isSelected" (click)="toggleSelect()"  />
+            <input type="checkbox" *ngIf="!isEditMode"  
+                   [checked]="isSelected" (click)="toggleSelect()"  />
         </div>
         <div class="store-tr-in"  >
             <div class="store-td">
@@ -46,6 +47,11 @@
             </div>
             <div class="store-td"><naira-currency></naira-currency>{{(data?.price ) |number}}/{{data?.unitOfMeasure || data?.productConfiguration?.name}}</div>
             <div class="store-td"><naira-currency></naira-currency>{{(data.price * (data.qtyToSend || 1.0)) |  number}} </div>
+            <div class="store-td" *ngIf="showStatus && !isEditMode">
+                <div class="tbl-status " [ngClass]="{'status-green' : data.isAccepted,'status-red' : !data.isAccepted}">
+                    {{(data.isAccepted ? 'Accepted' : 'Rejected')}}
+                </div>
+            </div>
         </div>
         <div *ngIf="!isEditMode" class="store-td store-td-actions">
             <div class="table-list col-xs-1 action-placeholder">

@@ -14,6 +14,7 @@
       <div class="dropDown-container">
         <div class="select">
           <label>Store Name:</label>
+            <apmis-spinner size="small" [visible]="processing"></apmis-spinner>
           <select  [formControl]="storeName" name="dropDown-container" id="dropDown-container2">
             <option [value]="s.storeId" *ngFor="let s of stores">{{s.storeName}}</option>
            
@@ -36,12 +37,12 @@
 
 <div class="tbl-sect-wrap" >
   
-  <product-grid  [products]="data" [selectedStore]="storeName.value">
+  <product-grid #grid [showStatus]="false" [products]="data" [selectedStore]="storeName.value">
       
       
   </product-grid>
   <div class="ob-btn-wrap">
-    <button class="ob-btn">Send Items</button>
+    <button class="ob-btn" (click)="sendSelectedItems()">Send Items</button>
   </div>
 </div>
 
