@@ -454,7 +454,7 @@ export class MakePaymentComponent implements OnInit {
 				element.isItemTxnClosed = false;
 			}
 		});
-		
+
 		(<FormArray>this.productTableForm.controls['productTableArray']).setValue(
 			JSON.parse(JSON.stringify((<FormArray>this.productTableForm.controls['productTableArray']).value))
 		);
@@ -685,6 +685,7 @@ export class MakePaymentComponent implements OnInit {
 					}
 				},
 				(error) => {
+					console.log(error);
 					this.systemModuleService.announceSweetProxy(
 						'Failed to make payment. Please try again later',
 						'error'
@@ -718,6 +719,7 @@ export class MakePaymentComponent implements OnInit {
 					}
 				},
 				(error) => {
+					console.dir(error);
 					this.isProcessing = false;
 					this.systemModuleService.announceSweetProxy(
 						'Failed to make payment. Please try again later',

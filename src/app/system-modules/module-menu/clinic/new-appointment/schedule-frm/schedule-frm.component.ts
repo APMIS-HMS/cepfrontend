@@ -506,47 +506,49 @@ export class ScheduleFrmComponent implements OnInit {
 	}
 
 	createBill() {
-		let bills = [];
-		let patientDefaultPaymentPlan = this.selectedPatient.paymentPlan.find((x) => x.isDefault === true);
-		let covered = {};
-		if (patientDefaultPaymentPlan.planType === 'wallet') {
-			covered = { coverType: patientDefaultPaymentPlan.planType };
-		} else if (patientDefaultPaymentPlan.planType === 'insurance') {
-			covered = {
-				coverType: patientDefaultPaymentPlan.planType,
-				hmoId: patientDefaultPaymentPlan.planDetails.hmoId
-			};
-		} else if (patientDefaultPaymentPlan.planType === 'company') {
-			covered = {
-				coverType: patientDefaultPaymentPlan.planType,
-				companyId: patientDefaultPaymentPlan.planDetails.companyId
-			};
-		} else if (patientDefaultPaymentPlan.planType === 'family') {
-			covered = {
-				coverType: patientDefaultPaymentPlan.planType,
-				familyId: patientDefaultPaymentPlan.planDetails.familyId
-			};
-		}
-		bills.push({
-			unitPrice: this.organizationalServicePrice,
-			facilityId: this.selectedFacility._id,
-			facilityServiceId: this.organizationalServiceId.facilityServiceId,
-			serviceId: this.category.value,
-			patientId: this.selectedPatient._id,
-			quantity: 1,
-			active: true,
-			totalPrice: this.organizationalServicePrice,
-			covered: covered
-		});
-		this.billingService
-			.createBill(bills, {
-				query: {
-					facilityId: this.selectedFacility._id,
-					patientId: this.selectedPatient._id
-				}
-			})
-			.then((payld) => {}, (err) => {})
-			.catch((er) => {});
+		try {
+			const bills = [];
+			const patientDefaultPaymentPlan = this.selectedPatient.paymentPlan.find((x) => x.isDefault === true);
+			let covered = {};
+			if (patientDefaultPaymentPlan.planType === 'wallet') {
+				covered = { coverType: patientDefaultPaymentPlan.planType };
+			} else if (patientDefaultPaymentPlan.planType === 'insurance') {
+				covered = {
+					coverType: patientDefaultPaymentPlan.planType,
+					hmoId: patientDefaultPaymentPlan.planDetails.hmoId
+				};
+			} else if (patientDefaultPaymentPlan.planType === 'company') {
+				covered = {
+					coverType: patientDefaultPaymentPlan.planType,
+					companyId: patientDefaultPaymentPlan.planDetails.companyId
+				};
+			} else if (patientDefaultPaymentPlan.planType === 'family') {
+				covered = {
+					coverType: patientDefaultPaymentPlan.planType,
+					familyId: patientDefaultPaymentPlan.planDetails.familyId
+				};
+			}
+			bills.push({
+				unitPrice: this.organizationalServicePrice,
+				facilityId: this.selectedFacility._id,
+				facilityServiceId: this.organizationalServiceId.facilityServiceId,
+				serviceId: this.category.value,
+				patientId: this.selectedPatient._id,
+				quantity: 1,
+				active: true,
+				totalPrice: this.organizationalServicePrice,
+				covered: covered
+			});
+			this.billingService
+				.createBill(bills, {
+					query: {
+						facilityId: this.selectedFacility._id,
+						patientId: this.selectedPatient._id
+					}
+				})
+				.then((payld) => {}, (err) => {})
+				.catch((er) => {});
+		} catch (error) {}
 	}
 
 	isAppointmentToday() {

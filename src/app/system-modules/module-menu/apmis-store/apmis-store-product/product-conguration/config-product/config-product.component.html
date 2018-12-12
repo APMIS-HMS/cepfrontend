@@ -1,68 +1,116 @@
 <div class="modal-wraper">
-  <div class="search-container">
+  <div class="toggle-base-wrap">
+    <div [className]="selectedToggleIndex === i ?
+     'toggle-wrap ft-btn-selected' : 'toggle-wrap'" *ngFor="let item of toggleData; let i = index"
+      (click)="onToggle(i)">
+      <span> {{item.name}}</span>
+    </div>
+  </div>
+
+
+
+  <div class="search-container" *ngIf="drugSearchEntry">
     <div class="searchproduct">
       <div class="InputGroup">
-        <input class="customInput" style="width: 100% !important;" [formControl]="productSearch" [value]="selectedProductName" type="text" required>
+        <input class="customInput" style="width: 100% !important;" [formControl]="productSearch" [value]="selectedProductName"
+          type="text" required>
         <span class="highlight"></span>
         <label class="customLabel"><i class="fa fa-search" aria-hidden="true"></i>Search Product</label>
 
         <ul class="search-sugestions" *ngIf="showProduct">
-          <li class="search-sugestion" *ngFor="let product of searchedProducts; let i = index" (click)="setSelectedOption(product)">{{product.name}}</li>
+          <li class="search-sugestion" *ngFor="let product of searchedProducts; let i = index" (click)="setSelectedProductOption(product)">{{product.name}}</li>
         </ul>
       </div>
-      <div class="search-noResult">
+      <div class="search-noResult" *ngIf="showProductExist">
         <span>This product configuration
           already exisst</span>
       </div>
     </div>
-    <div class="new-btn-solid-blue" (click)="onClickConfigure()">
+    <div class="new-btn-solid-blue" [class.disabled]="!isConfigure" (click)="onClickConfigure()">
       <span>Configure</span>
     </div>
   </div>
 
-  <div class="config-container">
+  <div class="" *ngIf="consumableEntry">
+    <form class="new-supp-base">
+      <div style="width: 450px;">
+        <div class="InputGroup" style="width: 100% !important;">
+          <input class="customInput" type="text" required>
+          <span class="highlight"></span>
+          <label class="customLabel">Product Name</label>
+          <ul class="search-sugestions">
+            <li class="search-sugestion">Always Lady Care</li>
+          </ul>
+        </div>
+      </div>
 
+      <div class="ot-cons">
+        <div class="InputGroup" style="margin-right: 20px;">
+          <input class="customInput" type="text" required>
+          <span class="highlight"></span>
+          <label class="customLabel">Manufacturer</label>
+          <ul class="search-sugestions">
+            <li class="search-sugestion">GSK Company</li>
+          </ul>
+        </div>
+        <div class="multi-sup-list-wrap" style="min-width: 200px;">
+          <div class="dropDown-container">
+            <label class="customLabel">Category</label>
+            <div class="select">
+              <select name="dropDown-container" (click)="onShowCategorySelect()" id="dropDown-container"></select>
+            </div>
+          </div>
+          <div *ngIf="category_select" class="multi-sup-list">
+            <app-apmis-search-result></app-apmis-search-result>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+
+  <div class="config-container">
     <div class="config-layout" *ngIf="showSetBaseUnit">
       <div class="config-wrap">
         <h3 style="margin-right: 120px;">Set Base Unit</h3>
-        <i (click)="onShowSearch()" class="fa fa-plus" aria-hidden="true"></i>
+        <div (click)="onShowSearch()"><i class="fa fa-2x fa-plus" aria-hidden="true"></i></div>
         <div class="apmisSearch-wrap" *ngIf="apmisSearch">
-          <!-- <app-apmis-search-result [PackSizes]="packSizes"></app-apmis-search-result> -->
+          <app-apmis-search-result [data]="packSizes" (onSelectedItems)="onSearchSelectedItems($event)" (onCreateItem)="onCreateNewItem($event)"
+            (onCloseEvent)="onClickClose($event)"></app-apmis-search-result>
         </div>
       </div>
 
       <div class="config-tags-wrap-x2" *ngIf="isBaseUnitSet">
         <div class="tag-btn">
-          <span>Tablets</span>
+          <span>{{ baseName }}</span>
         </div>
       </div>
     </div>
-    <!-- took out the div here -->
   </div>
 
   <div class="config-container" *ngIf="showConfigContainer">
-    <div class="config-layout">
+    <div class="config-layout" *ngFor="let config of packConfigurations; let i = index">
       <div class="config-wrap">
         <h3>Add Configuration (Based on Unit)</h3>
-        <i class="fa fa-plus" aria-hidden="true"></i>
+        <!-- <i class="fa fa-plus" aria-hidden="true"></i> -->
       </div>
       <div class="config-tags-wrap-x2">
         <div class="tag-btn">
-          <span>Packs</span>
+          <span>{{config.label}}</span>
         </div>
-        <span>=</span>
+        <span class="fnt">=</span>
         <div class="InputGroup">
-          <input class="customInput" type="text" required>
+          <input class="customInput" type="text" [(ngModel)]="config.size" required>
           <span class="highlight"></span>
         </div>
-        <h4>Tablets</h4>
+        <h4>{{baseName}}</h4>
       </div>
     </div>
   </div>
 
-  <div class="sv-btn-container" *ngIf="showConfigContainer">
-    <div class="new-btn-solid-blue">
-      <span>Save Configuration</span>
+  <div class="sv-btn-container" *ngIf="showSaveConfig">
+    <div class="new-btn-solid-blue" [class.disabled]="isSaving" (click)="onClickBtn()">
+      <span>{{configProductBtn}}</span>
     </div>
   </div>
-</div>

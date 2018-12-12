@@ -68,6 +68,7 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
 	ngOnInit() {
 		this._rest = this._restService.getService(this.url);
 		this._socket = this._socketService.getService(this.url);
+		this._socket.timeout = 90000;
 		this.baseUrl = this._restService.HOST;
 		this.form = this.fb.group({ searchtext: [ '' ] });
 		this.form.controls['searchtext'].valueChanges
@@ -83,16 +84,18 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
 			)
 			.subscribe(
 				(payload: any) => {
-					this.cuDropdownLoading = false;
-					if (payload !== undefined && payload.data !== undefined) {
-						this.results = payload.data;
-					} else {
-						this.results = payload;
-					}
+					try {
+						this.cuDropdownLoading = false;
+						if (payload !== undefined && payload.status === 'success' && payload.data !== undefined) {
+							this.results = payload.data;
+						} else if (payload.status !== undefined && payload.status !== 'error') {
+							this.results = payload;
+						} else {
+							this.results = payload.data;
+						}
+					} catch (error) {}
 				},
-				(err) => {
-					console.log(err);
-				}
+				(err) => {}
 			);
 	}
 

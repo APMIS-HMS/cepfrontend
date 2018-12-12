@@ -1,9 +1,12 @@
 import { InventoryService } from './../../../../../../services/facility-manager/setup/inventory.service';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { Facility } from 'app/models';
+import { Facility, Employee } from 'app/models';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { StoreGlobalUtilService } from '../../../store-utils/global-service';
 import { ProductsToggle } from '../../../store-utils/global';
+import { EmployeeService } from 'app/services/facility-manager/setup';
+import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
+import { APMIS_STORE_PAGINATION_LIMIT } from 'app/shared-module/helpers/global-config';
 
 @Component({
 	selector: 'app-all-products',
@@ -19,24 +22,85 @@ export class AllProductsComponent implements OnInit {
 	skip = 0;
 	numberOfPages = 0;
 	currentPage = 0;
-	limit = 2;
+	limit = APMIS_STORE_PAGINATION_LIMIT;
 	packTypes = [ { id: 1, name: 'Sachet' }, { id: 2, name: 'Cartoon' } ];
-	storeId: string;
 	selectedFacility: any;
 	products: any = [];
 	productToggles = [];
 	selectedToggleIndex = 0;
+	subscription: any;
+	checkingStore: any = <any>{};
+	loginEmployee: Employee = <Employee>{};
+	workSpace: any;
 
 	constructor(
 		private _inventoryService: InventoryService,
 		private _locker: CoolLocalStorage,
-		private storeUtilService: StoreGlobalUtilService
-	) {}
+		private storeUtilService: StoreGlobalUtilService,
+		private _employeeService: EmployeeService,
+		private authFacadeService: AuthFacadeService
+	) {
+		this.subscription = this._employeeService.checkInAnnounced$.subscribe((res) => {
+			if (!!res) {
+				if (!!res.typeObject) {
+					this.checkingStore = res.typeObject;
+					if (!!this.checkingStore.storeId) {
+						this._locker.setObject('checkingObject', this.checkingStore);
+						this.getInventoryList();
+					}
+				}
+			}
+		});
+
+		this.authFacadeService.getLogingEmployee().then((payload: any) => {
+			this.loginEmployee = payload;
+			this.checkingStore = this.loginEmployee.storeCheckIn.find((x) => x.isOn === true);
+			if (this.loginEmployee.storeCheckIn === undefined || this.loginEmployee.storeCheckIn.length === 0) {
+				// this.modal_on = true;
+			} else {
+				let isOn = false;
+				this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+					if (itemr.isDefault === true) {
+						itemr.isOn = true;
+						itemr.lastLogin = new Date();
+						isOn = true;
+						let checkingObject = { typeObject: itemr, type: 'store' };
+						this._employeeService
+							.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn })
+							.then((payload) => {
+								this.loginEmployee = payload;
+								checkingObject = { typeObject: itemr, type: 'store' };
+								this._employeeService.announceCheckIn(checkingObject);
+								this._locker.setObject('checkingObject', checkingObject);
+							});
+					}
+				});
+				if (isOn === false) {
+					this.loginEmployee.storeCheckIn.forEach((itemr, r) => {
+						if (r === 0) {
+							itemr.isOn = true;
+							itemr.lastLogin = new Date();
+							this._employeeService
+								.patch(this.loginEmployee._id, { storeCheckIn: this.loginEmployee.storeCheckIn })
+								.then((payload) => {
+									this.loginEmployee = payload;
+									const checkingObject = { typeObject: itemr, type: 'store' };
+									this._employeeService.announceCheckIn(checkingObject);
+									this._locker.setObject('checkingObject', checkingObject);
+								});
+						}
+					});
+				}
+			}
+		});
+	}
 
 	ngOnInit() {
-		this.storeId = '5a88a0d26e6d17335cf318bc';
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
-		this.getInventoryList();
+		if (this.checkingStore.storeId !== undefined) {
+			this.getInventoryList();
+		}
+
 		this.productToggles = this.storeUtilService.getObjectKeys(ProductsToggle);
 	}
 
@@ -45,7 +109,7 @@ export class AllProductsComponent implements OnInit {
 			.findFacilityProductList({
 				query: {
 					facilityId: this.selectedFacility._id,
-					storeId: this.storeId,
+					storeId: this.checkingStore.storeId,
 					limit: this.limit,
 					skip: this.skip * this.limit
 				}
@@ -56,16 +120,11 @@ export class AllProductsComponent implements OnInit {
 					this.numberOfPages = payload.total / this.limit;
 					this.total = payload.total;
 				},
-				(error) => {
-					console.log(error);
-				}
+				(error) => {}
 			);
 	}
 
 	item_to_show(i) {
-		// if (this.expand_row) {
-
-		// }
 		return this.clickItemIndex === i;
 	}
 	toggle_tr(itemIndex, direction) {

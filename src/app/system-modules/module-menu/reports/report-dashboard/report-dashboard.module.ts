@@ -1,5 +1,5 @@
 import { ReportDashboardComponent } from './report-dashboard.component';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReportDashboardRoutingModule } from './report-dashboard-routing.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -13,7 +13,9 @@ import { PatientManagerReportComponent } from './patient-manager-report/patient-
 import { LaboratoryReportComponent } from './laboratory-report/laboratory-report.component';
 import { PharmacyReportComponent } from './pharmacy-report/pharmacy-report.component';
 import { PaymentReportComponent } from './payment-report/payment-report.component';
-import { StoreManagerReportComponent } from '../store-manager-report/store-manager-report.component';
+import { StoreManagerReportComponent } from './store-manager-report/store-manager-report.component';
+import { WardManagerReportComponent } from './ward-manager-report/ward-manager-report.component';
+
 
 @NgModule({
 	imports: [
@@ -22,6 +24,8 @@ import { StoreManagerReportComponent } from '../store-manager-report/store-manag
 		FormsModule,
 		ReactiveFormsModule,
 		MaterialModule,
+		// MatFormFieldModule,
+		// MatInputModule,
 		OnlyMaterialModule,
 		SharedModule
 	],
@@ -30,7 +34,8 @@ import { StoreManagerReportComponent } from '../store-manager-report/store-manag
 		DashboardLandingpageComponent,
 		LaboratoryReportComponent,
 		PharmacyReportComponent,
-		StoreManagerReportComponent
+		//StoreManagerReportComponent,
+		WardManagerReportComponent
 	]
 })
 export class ReportDashboardModule {}

@@ -9,20 +9,24 @@ import { PaymentSummaryPageComponent } from './payment-summary-page/payment-summ
 import { InvoiceListDetailsComponent } from './invoice-list-details/invoice-list-details.component';
 import { ChartsModule } from 'ng2-charts';
 import { InvoiceReportComponent } from './invoice-report/invoice-report.component';
-import {InvoiceItemComponent} from "./invoice-list-details/invoice-item.component";
-
+import { InvoiceItemComponent } from './invoice-list-details/invoice-item.component';
 
 @NgModule({
-	imports: [ CommonModule, 
-		MaterialModule, 
+	imports: [
+		CommonModule,
+		MaterialModule,
 		OnlyMaterialModule,
 		SharedModule,
 		PaymentReportRoutingModule,
 		ChartsModule
-     ],
-	
-	declarations: [ 
-		PaymentReportComponent, PaymentSummaryPageComponent, InvoiceListDetailsComponent, InvoiceReportComponent,InvoiceItemComponent
-    ]
+	],
+
+	declarations: [
+		PaymentReportComponent,
+		PaymentSummaryPageComponent,
+		InvoiceListDetailsComponent,
+		InvoiceReportComponent,
+		InvoiceItemComponent
+	]
 })
 export class PaymentReportModule {}

@@ -16,7 +16,13 @@ import { ProductRestockComponent } from './apmis-store-home/store-home-main/prod
 import { StoreStoresComponent } from './store-stores/store-stores.component';
 import { StoreTabComponent } from './store-stores/store-tab/store-tab.component';
 import { OnlyMaterialModule } from 'app/shared-common-modules/only-material-module';
-import { StoreService, InventoryService,ProductTypeService } from 'app/services/facility-manager/setup';
+import {
+	StoreService,
+	InventoryService,
+	ProductTypeService,
+	SupplierService,
+	PurchaseOrderService
+} from 'app/services/facility-manager/setup';
 import { ApmisPaginationComponent } from './components/apmis-pagination/apmis-pagination.component';
 import { StoreGlobalUtilService } from './store-utils/global-service';
 import { ApmisNewStoreComponent } from './store-stores/apmis-new-store/apmis-new-store.component';
@@ -35,6 +41,20 @@ import { PurchaseOrderComponent } from './product-entry/purchase-order/purchase-
 import { SuppliersComponent } from './product-entry/suppliers/suppliers.component';
 import { ProductConfigPopupComponent } from './product-entry/initialize-store/product-config-popup/product-config-popup.component';
 import { ConfigProductComponent } from './apmis-store-product/product-conguration/config-product/config-product.component';
+import { NewPurchaseListComponent } from './product-entry/purchase-list/new-purchase-list/new-purchase-list.component';
+import { PurchaseListDetailsComponent } from './product-entry/purchase-list/purchase-list-details/purchase-list-details.component';
+import { NewPurchaseOrderListComponent } from './product-entry/purchase-order/new-purchase-order-list/new-purchase-order-list.component';
+import { PurchaseOrderListDetailsComponent } from './product-entry/purchase-order/purchase-order-list-details/purchase-order-list-details.component';
+import { ViewInvoiceComponent } from './product-entry/invoice-entry/view-invoice/view-invoice.component';
+import { NewSupplierComponent } from './product-entry/suppliers/new-supplier/new-supplier.component';
+import { InboundRequisitionComponent } from './product-movement/inbound-requisition/inbound-requisition.component';
+import { OutboundRequisitionComponent } from './product-movement/outbound-requisition/outbound-requisition.component';
+import { StoreCheckInComponent } from './components/store-check-in/store-check-in.component';
+import { ApmisStoreSupplierSearchComponent } from './components/apmis-store-supplier-search/apmis-store-supplier-search.component';
+import { ProductExitComponent } from './product-exit/product-exit.component';
+import { SalesComponent } from './product-exit/sales/sales.component';
+import { RefundComponent } from './product-exit/refund/refund.component';
+import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invoice-entry/new-invoice-entry.component';
 
 @NgModule({
 	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule ],
@@ -60,7 +80,7 @@ import { ConfigProductComponent } from './apmis-store-product/product-conguratio
 		ProductMovementComponent,
 		OutboundTransferComponent,
 		InboundTransferComponent,
-		ApmisSearchResultComponent, 
+		ApmisSearchResultComponent,
 		ProductEntryComponent,
 		InitializeStoreComponent,
 		InvoiceEntryComponent,
@@ -68,8 +88,29 @@ import { ConfigProductComponent } from './apmis-store-product/product-conguratio
 		PurchaseOrderComponent,
 		SuppliersComponent,
 		ProductConfigPopupComponent,
-		ConfigProductComponent
+		ConfigProductComponent,
+		NewPurchaseListComponent,
+		PurchaseListDetailsComponent,
+		NewPurchaseOrderListComponent,
+		PurchaseOrderListDetailsComponent,
+		ViewInvoiceComponent,
+		NewSupplierComponent,
+		InboundRequisitionComponent,
+		OutboundRequisitionComponent,
+		StoreCheckInComponent,
+		ApmisStoreSupplierSearchComponent,
+		ProductExitComponent,
+		SalesComponent,
+		RefundComponent,
+		NewInvoiceEntryComponent
 	],
-	providers: [ StoreService, InventoryService, StoreGlobalUtilService,ProductTypeService ]
+	providers: [
+		StoreService,
+		InventoryService,
+		StoreGlobalUtilService,
+		ProductTypeService,
+		SupplierService,
+		PurchaseOrderService
+	]
 })
 export class ApmisStoreModule {}

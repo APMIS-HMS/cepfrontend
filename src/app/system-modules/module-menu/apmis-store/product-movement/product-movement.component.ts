@@ -9,8 +9,10 @@ import { FormControl } from '@angular/forms';
 })
 export class ProductMovementComponent implements OnInit {
 
-  tab_outbound = true;
+  tab_outbound = false;
   tab_inbound = false;
+  tab_outbound_requisition = true;
+  tab_inbound_requisition = false;
 
   constructor(private router: Router) { }
 
@@ -20,9 +22,23 @@ export class ProductMovementComponent implements OnInit {
     if(tab==='outbound'){
       this.tab_outbound = true;
       this.tab_inbound = false;
+      this.tab_outbound_requisition = false;
+      this.tab_inbound_requisition = false;
     } else if(tab==='inbound'){
       this.tab_outbound = false;
       this.tab_inbound = true;
+      this.tab_outbound_requisition = false;
+      this.tab_inbound_requisition = false;
+    } else if(tab==='outbound_requisition'){
+      this.tab_outbound = false;
+      this.tab_inbound = false;
+      this.tab_outbound_requisition = true;
+      this.tab_inbound_requisition = false;
+    } else if(tab==='inbound_requisition'){
+      this.tab_outbound = false;
+      this.tab_inbound = false;
+      this.tab_outbound_requisition = false;
+      this.tab_inbound_requisition = true;
     }
   } 
 

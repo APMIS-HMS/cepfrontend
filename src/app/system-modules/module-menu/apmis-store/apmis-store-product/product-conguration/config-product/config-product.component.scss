@@ -1,7 +1,15 @@
+@import "./../../../product-entry/purchase-list/new-purchase-list/new-purchase-list.component.scss";
+
+
 .fa{
     padding-right: 15px !important;
     cursor: pointer;
 }
+
+.disabled {
+    cursor: not-allowed;
+    background: gray;
+  }
 
 .modal-wraper{
     width: auto;
@@ -10,6 +18,7 @@
 
 .config-container{
     display: flex;    
+    flex-wrap: wrap;
 }
 .config-layout{
     display: block;
@@ -33,16 +42,27 @@
         color: black;
         font-weight: bold;
     }
+    .fnt{
+        font-size: large;
+    }
 }
 
-.sv-btn-container{
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
+
 
 .apmisSearch-wrap{
     width: 30% !important; 
     position: absolute;
+}
+
+
+
+.new-supp-base{
+   display: flex;
+    justify-content: space-between; 
+    margin-top: 40px;
+    .ot-cons{
+        display: flex;
+        position: relative;
+        justify-content: space-between;
+    }
 }

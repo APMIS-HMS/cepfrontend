@@ -66,9 +66,7 @@
         </div>
       </div>
 
-
       <div *ngIf="item_to_show(i)" class="store-tr-content">
-
         <div class="tag-btn-wrap">
           <div class="tag-btn" matTooltip="600 Tablets">
             <span>Central Store</span>
@@ -107,7 +105,7 @@
       </div>
     </div>
   </div>
-  <app-apmis-pagination (emitCurrentPage)="loadCurrentPage($event)" [total]="total" [limit]="limit" [numberOfPages]="numberOfPages"></app-apmis-pagination>
+  <app-apmis-pagination (emitCurrentPage)="loadCurrentPage($event)" [total]="total"></app-apmis-pagination>
 </div>
 
 

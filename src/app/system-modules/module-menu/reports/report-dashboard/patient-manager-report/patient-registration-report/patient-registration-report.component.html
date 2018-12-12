@@ -44,24 +44,31 @@
         <div class="tbl-resp-wrap">
             <table class="card" style="color:black;" cellpadding="0" cellspacing="0" border="0.5">
                 <thead>
-                <tr>
-                    <td colspan="8" style="text-align: center;color : blue;" *ngIf="loading">
-                        <span class="fa fa-3x fa-spin fa-refresh"></span>
-                    </td>
-                </tr>
+              
                     <tr class="th-r1 th-xxx" >
                         <th>Patient Name</th>
                         <th>APMIS ID</th>
                         <th>Address</th>
                         <th>Age</th>
                         <th>Gender</th>
-                        <th>Plan</th>
+                        <!--<th>Plan</th>-->
                         <th>Phone Number</th>
                         <th>Creation Date</th>
                     </tr>
                 </thead>
 
                 <tbody>
+                <tr *ngIf="loading">
+                    <td colspan="8" style="text-align: center;color : blue;" >
+                        <apmis-spinner></apmis-spinner>
+                    </td>
+                </tr>
+                <tr *ngIf="data.length === 0">
+                    <td colspan="8" style="text-align: center;font-size : 14px; color : #ff9494;" >
+                        <span *ngIf="loading">No Record Available yet. Fetching data from server...</span>
+                        <span *ngIf="loading==false">No record found matching the specified criteria</span>
+                    </td>
+                </tr>
                     <tr class="th-xxx" *ngFor="let p of data">
                         <td>{{p.patientName}}</td>
                         <td>{{p.apmisId}} </td>
@@ -77,7 +84,7 @@
                         </td>
                         <td>{{p.age}}</td>
                         <td>{{p.gender}}</td>
-                        <td>[----------]</td>
+                       <!-- <td>[]</td>-->
                         <td>{{p.phone}}</td>
                         <td>{{p.dateCreated | date :'dd-MMM-yyyy'}}</td>
                     </tr>
@@ -96,41 +103,28 @@
                     <div class="summaryItems">
                         <div class="description">Select options to view Total Registrations</div>
                         <div class="control-group">
-                            <label class="control control--checkbox">All
+                            <label class="control control--checkbox">{{allAnalyticSummary?.tag}}
                               <input type="checkbox" [checked]="" />
                               <div class="control__indicator"></div>
                           </label>
-                            <div>1500 Registrations</div>
+                            <div>{{(allAnalyticSummary.totalPatient || 0) | number}} Registrations</div>
                             <div class="secondaryText">
-                                <div>1000 Females</div>
-                                <div>500 Males</div>
+                                <div>{{(allAnalyticSummary.female || 0) | number}} Females</div>
+                                <div>{{(allAnalyticSummary.male || 0) | number}} Males</div>
                             </div>
                         </div>
-                        <div class="control-group">
-                            <label class="control control--checkbox">Cash Payment
+                        <div class="control-group" *ngFor="let n of analyticData">
+                            <label class="control control--checkbox">{{n?.tag}}
                               <input type="checkbox" [checked]="checked" />
                               <div class="control__indicator"></div>
                           </label>
+                            <div>{{(n.totalPatient || 0) | number}} Registrations</div>
+                            <div class="secondaryText">
+                                <div>{{(n.female || 0) | number}} Females</div>
+                                <div>{{(n.male || 0) | number}} Males</div>
+                            </div>
                         </div>
-                        <div class="control-group">
-                            <label class="control control--checkbox">Family Cover
-                              <input type="checkbox" [checked]="checked" />
-                              <div class="control__indicator"></div>
-                          </label>
-                        </div>
-                        <div class="control-group">
-                            <label class="control control--checkbox">Company Cover
-                              <input type="checkbox" [checked]="checked" />
-                              <div class="control__indicator"></div>
-                          </label>
-                        </div>
-
-                        <div class="control-group">
-                            <label class="control control--checkbox">HMO
-                              <input type="checkbox" [checked]="checked" />
-                              <div class="control__indicator"></div>
-                          </label>
-                        </div>
+                      
                     </div>
 
                 </table>

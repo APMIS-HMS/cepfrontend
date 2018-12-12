@@ -16,6 +16,7 @@ export class ApmisSearchComponent implements OnInit {
   @Input() placeholder: any;
   @Output() onSelectedItems = new EventEmitter();
   @Output() onCreateItem = new EventEmitter();
+  @Output() onCloseEvent = new EventEmitter();
 
   constructor(private apmisFilterBadgeService: ApmisFilterBadgeService) { }
 
@@ -40,5 +41,9 @@ export class ApmisSearchComponent implements OnInit {
   onCreateNewItem(value) {
     this.onCreateItem.emit(value);
     this.showSearch = false;
+  }
+
+  onClickClose(event) {
+    this.showSearch = event;
   }
 }

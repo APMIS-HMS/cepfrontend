@@ -11,6 +11,7 @@ export class PaymentReportComponent implements OnInit {
   paymentSummary = false;
   invoiceListPage = false;
   invoiceReport = false;
+  dashBoard = false;
 
   pageInView = 'Payment Report Page';
 

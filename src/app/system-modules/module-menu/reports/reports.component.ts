@@ -8,7 +8,6 @@ import { Router } from '@angular/router';
 })
 export class ReportsComponent implements OnInit {
 	constructor(private _router: Router) {
-		console.log('in report');
 	}
 
 	ngOnInit() {
