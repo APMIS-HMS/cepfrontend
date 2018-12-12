@@ -1,4 +1,5 @@
 import { Component, OnInit, EventEmitter, Input, Output } from '@angular/core';
+import { APMIS_STORE_PAGINATION_LIMIT } from 'app/shared-module/helpers/global-config';
 
 @Component({
 	selector: 'app-apmis-pagination',
@@ -19,6 +20,8 @@ export class ApmisPaginationComponent implements OnInit {
 	constructor() {}
 
 	ngOnInit() {
+		this.limit = APMIS_STORE_PAGINATION_LIMIT;
+		this.numberOfPages = this.total / this.limit;
 		this.numberOfPages = Math.ceil(this.numberOfPages);
 		this.defaultPages = [];
 		for (let i = 0; i < this.limit; i++) {
@@ -29,6 +32,8 @@ export class ApmisPaginationComponent implements OnInit {
 	}
 
 	moveNext() {
+		this.numberOfPages = this.total / this.limit;
+		this.numberOfPages = Math.ceil(this.numberOfPages);
 		this.defaultPages.forEach((page) => {
 			if (page.id < this.total) {
 				page.id = page.id + this.limit;
@@ -69,17 +74,25 @@ export class ApmisPaginationComponent implements OnInit {
 		}
 	}
 	getFirstPart() {
-		this.firstNumberPart = this.defaultPages[0].id + 1;
+		this.firstNumberPart = this.defaultPages.length > 0 ? this.defaultPages[0].id + 1 : 1;
 	}
 	getSecondPart() {
-		if (this.skip === 0) {
-			this.secondNumberPart = this.defaultPages[this.limit - 1].id + 1;
-		} else {
-			this.secondNumberPart = this.defaultPages[this.limit - 1].id;
+		if (this.defaultPages.length > 0) {
+			if (this.skip === 0) {
+				this.secondNumberPart = this.defaultPages[this.limit - 1].id + 1;
+			} else {
+				this.secondNumberPart = this.defaultPages[this.limit - 1].id;
+			}
 		}
 	}
 
 	getPages() {
+		if (this.limit > this.total) {
+			this.limit = this.total;
+			this.getSecondPart();
+		}
+		this.numberOfPages = this.total / this.limit;
+		this.numberOfPages = Math.ceil(this.numberOfPages);
 		const pages = [];
 		for (let i = 0; i < this.numberOfPages; i++) {
 			pages.push({ id: i });

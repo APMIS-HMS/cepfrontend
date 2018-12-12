@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { InventoryService } from 'app/services/facility-manager/setup';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility } from 'app/models';
+import { APMIS_STORE_PAGINATION_LIMIT } from 'app/shared-module/helpers/global-config';
 
 @Component({
 	selector: 'app-product-restock',
@@ -15,7 +16,7 @@ export class ProductRestockComponent implements OnInit {
 	skip = 0;
 	numberOfPages = 0;
 	currentPage = 0;
-	limit = 2;
+	limit = APMIS_STORE_PAGINATION_LIMIT;
 	packTypes = [ { id: 1, name: 'Sachet' }, { id: 2, name: 'Cartoon' } ];
 	storeId: string;
 	selectedFacility: any;
@@ -32,14 +33,11 @@ export class ProductRestockComponent implements OnInit {
 	getOutOfStockInventoryList() {
 		this._inventoryService.getOutOfStockDetails(this.storeId, this.limit, this.skip).then(
 			(payload) => {
-				console.log(payload);
-				this.products = payload.data;
-				this.numberOfPages = payload.data.total / this.limit;
-				this.total = payload.data.total;
+				this.products = payload.data.data;
+				this.numberOfPages = payload.data.data.total / this.limit;
+				this.total = payload.data.data.total;
 			},
-			(error) => {
-				console.log(error);
-			}
+			(error) => {}
 		);
 	}
 
