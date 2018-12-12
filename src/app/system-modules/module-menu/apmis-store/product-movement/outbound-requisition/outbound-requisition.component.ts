@@ -20,7 +20,7 @@ export class OutboundRequisitionComponent implements OnInit {
     private subscription$ : Subscription;
     mainStore : any ={};
     data : ProductGridModel[] = [];
-    
+    selectedProductItems : any[]  = [];
     locations: any[] = [];// we have to cache all stores in the selected location so that we don't hit the server for every selection
     stores: any[] = []; // we have to cache all products in the selected store for reuse
     activeStoreObj: any = null;
