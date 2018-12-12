@@ -1,7 +1,22 @@
 @import "./../../purchase-list/purchase-list.component.scss";
 @import "./../invoice-entry.component.scss";
 
-
+thead{
+    border: 0;
+    tr{
+        border: 0;
+    }
+} 
+    
+th{
+    text-align: left;
+    border: 0;
+    padding: 10px;
+    height: auto;
+}
+td{
+    padding: 10px;
+}
 .prd-dlv-list{
     border: 1px solid #c4c4c4;
     padding: 10px;
