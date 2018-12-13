@@ -15,7 +15,7 @@ import {
     ViewChildren,
     ViewEncapsulation
 } from '@angular/core';
-
+export const BUTTON_SIZE_SMALL: string = 'small';
 export const BUTTON_SIZE_DEFAULT: string = 'default';
 export const BUTTON_SIZE_MEDIUM: string = 'medium';
 export const BUTTON_SIZE_LARGE: string = 'large';
@@ -33,23 +33,24 @@ export interface IPagerSource {
 @Component({
     selector: 'apmis-pager-button',
     template: `
-        <p (click)="emitButtonClickEvent($event)" class="button"
+        <button (click)="emitButtonClickEvent($event)" class="button"
            [ngClass]="{'apmis-pager-button-disable' : disable, 'apmis-pager-button' : !disable}"
            [ngStyle]="{'color' : foreColor,'background-color' : !disable? bgColor : 'white',
            'border-radius':isOval ? '100%':'0px','padding' : padding,'font-size' : fontSize,
-           'margin-left':isOval ? '4px':'0px','margin-right':isOval ? '4px':'0px' }">
+           'margin-left':isOval ? '4px':'0px','margin-right':isOval ? '4px':'0px','width' : (size==='small') ? '25px' : isOval ? '35px' : '30px', 
+           'height' : (size==='small') ? '25px' : isOval ? '35px' : '30px'}">
             <ng-content>
 
             </ng-content>
-        </p>  `,
+        </button>  `,
     styles: [
             `
-            p.apmis-pager-button:hover, p.apmis-pager-button:focus {
+            button.apmis-pager-button:hover, button.apmis-pager-button:focus {
                 background-color: rgba(213, 255, 236, 0.8) !important;
                 color: #3c3c3c !important;
             }
 
-            p.button {
+            button.button {
                 align-items: center;
                 transition: all linear 400ms;
                 font-size: 1rem;
@@ -58,12 +59,13 @@ export interface IPagerSource {
                 flex-direction: row;
                 justify-content: center;
                 align-content: center;
-                width: 40px;
-                height: 40px;
+                width: 25px;
+                height: 25px;
                 border-radius: 100%;
+                border : none !important;
             }
 
-            p.apmis-pager-button-disable {
+            button.apmis-pager-button-disable {
 
                 border: solid 1px #e7e7e7;
                 background-color: #e4e4e4 !important;
@@ -72,7 +74,7 @@ export interface IPagerSource {
 
             }
 
-            p.apmis-pager-button {
+            button.apmis-pager-button {
                 box-shadow: 1px 1px 7px rgba(132, 132, 132, 0.68);
                 background-color: #ffffff;
                 cursor: pointer;
@@ -109,19 +111,23 @@ export class PagerButtonComponent implements OnChanges {
     private updateButtonSize() {
         switch (this.size) {
             case BUTTON_SIZE_DEFAULT:
-                this.padding = '0px';
+                this.padding = '6px';
                 this.fontSize = '13px';
                 break;
+                case BUTTON_SIZE_SMALL:
+            this.padding = '0px';
+            this.fontSize = '11px';
+            break;
             case BUTTON_SIZE_MEDIUM:
                 this.padding = '30px';
                 this.fontSize = '18px';
                 break;
             case BUTTON_SIZE_LARGE:
-                this.padding = '45px';
+                this.padding = '40px';
                 this.fontSize = '24px';
                 break;
             default:
-                this.padding = '0px';
+                this.padding = '6px';
                 this.fontSize = '13px';
                 break;
         }
@@ -262,7 +268,7 @@ export class ApmisDataPagerComponent implements OnInit, AfterViewInit, OnChanges
     flexJustify: string = PAGER_HORIZONTAL_ALIGNMENT_CENTER;
     //diff : { [any : string] : KeyValueDiffer<string, IPagerSource>};
     differ: any;
-    pageSizeOptions: number[] = [5, 10, 15, 20, 30, 40, 50, 50, 100, 150, 200, 250, 300];
+    pageSizeOptions: number[] = [3, 5, 10, 15, 20, 30, 40, 50, 75, 100, 120, 150, 200, 250, 300];
 
 
     constructor(private differs: KeyValueDiffers) {
