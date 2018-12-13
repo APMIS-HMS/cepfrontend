@@ -10,19 +10,25 @@ export class NewInvoiceEntryComponent implements OnInit {
 
   productConfigSearch: FormControl = new FormControl();
   purchaseListFormControl: FormControl = new FormControl();
-  
-	supplierFormControl: FormControl = new FormControl();
-	purchaseOrderFormControl: FormControl = new FormControl();
-	invoiceNo: FormControl = new FormControl();
-	invoiceAmount: FormControl = new FormControl();
-	discount: FormControl = new FormControl();
-	vat: FormControl = new FormControl();
-	remark: FormControl = new FormControl();
-	currentDate: FormControl = new FormControl();
+  switchView = true;
+
+
+  invoiceNo: FormControl = new FormControl();
+  invoiceAmount: FormControl = new FormControl();
+  discount: FormControl = new FormControl();
+  vat: FormControl = new FormControl();
+  remark: FormControl = new FormControl();
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  switcher1_click() {
+    this.switchView = true;
+  }
+  switcher2_click() {
+    this.switchView = false;
   }
 
 }

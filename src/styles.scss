@@ -3061,3 +3061,19 @@ button,
     position: relative;
     border-right: 1px solid #C4C4C4;
 }
+.dual-btn-wrap{
+    padding: 2px;
+    border: 1px solid #c4c4c4;
+    display: flex;
+    margin-top: 20px;
+    width: fit-content;
+    .dual-btn{
+        padding: 10px;
+        font-size: 1.4rem;
+        cursor: pointer;
+    }
+    .dual-active{
+        background: #0288D1;
+        color: #fff;
+    }
+}
