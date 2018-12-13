@@ -55,6 +55,8 @@ export class DashboardComponent implements OnInit {
 		if (this.selectedFacility !== null) {
 			this.departments = this.selectedFacility.departments;
 			this.primeApp();
+		} else {
+			this.router.navigate([ '/accounts' ]);
 		}
 	}
 

@@ -38,7 +38,7 @@
     <div class="list-con-wrap">
       <div class="con-wrap">
         <span>Action</span>
-        <div class="ft-btn" (click)="showPurchaseOrderListDetail()">
+        <div class="ft-btn" (click)="showPurchaseOrderListDetail(order)">
           <span>View Purchase Order Items</span>
         </div>
       </div>
@@ -47,4 +47,4 @@
 </div>
 
 <app-new-purchase-order-list *ngIf="newPurcaseOrderList"></app-new-purchase-order-list>
-<app-purchase-order-list-details *ngIf="purchaseOrderListDetails"></app-purchase-order-list-details>
+<app-purchase-order-list-details [selectedOrder]="selectedOrder" *ngIf="purchaseOrderListDetails"></app-purchase-order-list-details>

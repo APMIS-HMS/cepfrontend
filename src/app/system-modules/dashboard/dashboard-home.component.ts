@@ -87,39 +87,42 @@ export class DashboardHomeComponent implements OnInit {
 			if (this.facilityObj.logoObject) {
 				this.imageEmitter.setSrc(this.facilityObj.logoObject.thumbnail);
 			}
+
+			this.getFacilitySubscription();
+			this.employeeService.checkInAnnounced$.subscribe((payload) => {
+				this.checkedInObject = payload;
+			});
+			this.facilityService.listner.subscribe((pay) => {
+				this.facilityName = pay.name;
+			});
+			this.facilityService.patchListner.subscribe((pay) => {
+				this.facilityName = pay.name;
+			});
+			// this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
+			try {
+				this.authFacadeService.getLogingEmployee().then(
+					(payload: any) => {
+						this.loginEmployee = payload;
+						const auth = <any>this.locker.getObject('auth');
+						if (this.loginEmployee !== undefined) {
+							this.locker.setObject('workspaces', this.loginEmployee.workSpaces);
+						}
+
+						this.locker.setObject('miniFacility', this.loginEmployee);
+						this.getUserRoles();
+						/* if (this.loginEmployee !== undefined && this.loginEmployee._id
+			  !== undefined && auth.data.personId === this.loginEmployee.personId) {
+			  return;
+			} */
+					},
+					(error) => {}
+				);
+			} catch (error) {}
+
+			this.loadIndicatorVisible = true;
+		} else {
+			this.router.navigate([ '/accounts' ]);
 		}
-		this.getFacilitySubscription();
-		this.employeeService.checkInAnnounced$.subscribe((payload) => {
-			this.checkedInObject = payload;
-		});
-		this.facilityService.listner.subscribe((pay) => {
-			this.facilityName = pay.name;
-		});
-		this.facilityService.patchListner.subscribe((pay) => {
-			this.facilityName = pay.name;
-		});
-		// this.loginEmployee = <Employee>this.locker.getObject('loginEmployee');
-		try {
-			this.authFacadeService.getLogingEmployee().then(
-				(payload: any) => {
-					this.loginEmployee = payload;
-					const auth = <any>this.locker.getObject('auth');
-					if (this.loginEmployee !== undefined) {
-						this.locker.setObject('workspaces', this.loginEmployee.workSpaces);
-					}
-
-					this.locker.setObject('miniFacility', this.loginEmployee);
-					this.getUserRoles();
-					/* if (this.loginEmployee !== undefined && this.loginEmployee._id
-          !== undefined && auth.data.personId === this.loginEmployee.personId) {
-          return;
-        } */
-				},
-				(error) => {}
-			);
-		} catch (error) {}
-
-		this.loadIndicatorVisible = true;
 
 		// const emp$ = Observable.fromPromise(this.employeeService.find({
 		//   query: {
@@ -169,17 +172,19 @@ export class DashboardHomeComponent implements OnInit {
 		// })
 	}
 	getFacilitySubscription() {
-		this.facilityService
-			.findValidSubscription({
-				query: {
-					facilityId: this.facilityObj._id
-				}
-			})
-			.then((payload) => {
-				this.loadedMenu = true;
-				this.facilitySubscriptions = payload.data;
-				this.facilitySubscriptions.subscriptions_status = payload.data.subscriptions_status;
-			});
+		try {
+			this.facilityService
+				.findValidSubscription({
+					query: {
+						facilityId: this.facilityObj._id
+					}
+				})
+				.then((payload) => {
+					this.loadedMenu = true;
+					this.facilitySubscriptions = payload.data;
+					this.facilitySubscriptions.subscriptions_status = payload.data.subscriptions_status;
+				});
+		} catch (error) {}
 	}
 
 	getSubscribedModule(value) {

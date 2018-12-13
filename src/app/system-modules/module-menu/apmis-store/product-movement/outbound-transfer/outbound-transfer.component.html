@@ -98,13 +98,13 @@
               <div class="select">
                 <label>Batch:</label>
                 <select [formControl]="productQtyBatch" name="dropDown-container" id="dropDown-container">
-                  <option *ngFor="let item of selectedProduct?.transactions" value="{{item._id}}">{{item.batchNumber}}</option>
+                  <option *ngFor="let item of selectedProduct?.transactions" [ngValue]="item">{{item.batchNumber}}</option>
                 </select>
               </div>
             </div>
           </div>
-          <div class="store-td">{{selectedProduct.availableQuantity}}</div>
-          <div class="store-td">{{selectedProduct?.totalQuantity - selectedProduct?.availableQuantity}}</div>
+          <div class="store-td">{{selectedProduct.batchAvailableQuantity}}</div>
+          <div class="store-td">{{selectedProduct?.batchQuantity - selectedProduct?.batchAvailableQuantity}}</div>
           <div class="store-td">
             <div class="apmis-search-item input-wrap">
               <input class="input" [formControl]="productQtyRequestSearch" (focusout)="focusOutQties()" type="text">

@@ -15,6 +15,7 @@ import {
 import { ApmisFilterBadgeService } from 'app/services/tools';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { OrderedItem } from '../../../components/models/purchaseorder';
+import { APMIS_STORE_PAGINATION_LIMIT } from 'app/shared-module/helpers/global-config';
 
 @Component({
 	selector: 'app-new-purchase-order-list',
@@ -30,10 +31,10 @@ export class NewPurchaseOrderListComponent implements OnInit {
 	selectedFacility: any;
 	storeId: string;
 	products: any;
-	numberOfPages: number;
-	limit: any;
-	total: any;
-	skip: any;
+	numberOfPages = 0;
+	limit = APMIS_STORE_PAGINATION_LIMIT;
+	total = 0;
+	skip = 0;
 	subscription: any;
 	checkingStore: any = <any>{};
 	loginEmployee: Employee = <Employee>{};
@@ -71,7 +72,6 @@ export class NewPurchaseOrderListComponent implements OnInit {
 					this.checkingStore = res.typeObject;
 					if (!!this.checkingStore.storeId) {
 						this._locker.setObject('checkingObject', this.checkingStore);
-						this.getInventoryList();
 					}
 				}
 			}
@@ -148,6 +148,7 @@ export class NewPurchaseOrderListComponent implements OnInit {
 			this.productConfigs = this.modifyProducts(this.productConfigs);
 		});
 		this.getSuppliers();
+		this.getInventoryList();
 	}
 
 	getSupplierPurchaseList(supplier) {
@@ -310,6 +311,7 @@ export class NewPurchaseOrderListComponent implements OnInit {
 			listedItem.productId = product.productId;
 			listedItem.productName = product.productName;
 			listedItem.quantity = product.quantity;
+			listedItem.productPackType = product.productConfiguration.name;
 			listedItem.productConfiguration = product.productConfiguration;
 			purchaseOrder.orderedProducts.push(listedItem);
 		});
@@ -335,5 +337,10 @@ export class NewPurchaseOrderListComponent implements OnInit {
 				this.systemModuleService.off();
 			}
 		);
+	}
+
+	loadCurrentPage(event) {
+		this.skip = event;
+		this.getInventoryList();
 	}
 }
