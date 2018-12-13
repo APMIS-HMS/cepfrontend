@@ -7,13 +7,33 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SalesComponent implements OnInit {
 
+  selectedIndex: any;
+  selectedToggleIndex = 0;
+  toggleData = [];
+
   showCashCustomer = true;
   showAPMIScustomer= false;
-  showCustomerDetail = false;
-  viewPrescriptionBTN = true;
   constructor() { }
 
   ngOnInit() {
+    this.toggleData = [{id: 1, name: 'Cash Customer'}, { id: 2, name: 'APMIS Customer'}];
+    this.onToggle(this.selectedToggleIndex);
+  }
+
+  onToggle(index) {
+    this.selectedToggleIndex = index;
+    switch (index) {
+        case 0:
+        this.showCashCustomer = true;
+        this.showAPMIScustomer= false;
+          break;
+        case 1:
+        this.showCashCustomer = false;
+        this.showAPMIScustomer= true;
+          break;
+        default:
+          break;
+    }
   }
 
   onShowCashCustomer(){
@@ -25,10 +45,11 @@ export class SalesComponent implements OnInit {
     this.showCashCustomer = false;
     this.showAPMIScustomer= true;
   }
+ 
 
-  onShowCustomerDetail(){
-    this.showCustomerDetail = true;
-    this.viewPrescriptionBTN = false;
-  }
-
+  setSelectedIndex(i) {
+    this.selectedIndex = i;
+    this.onShowCashCustomer();
+	}
 }
+
