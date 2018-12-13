@@ -42,7 +42,11 @@
       
   </product-grid>
   <div class="ob-btn-wrap">
-    <button class="ob-btn" (click)="sendSelectedItems()">Send Items</button>
+    <button class="ob-btn" [disabled]="saving"
+            (click)="sendSelectedItems()"> 
+      <apmis-spinner size="medium" [visible]="saving"></apmis-spinner>
+     <span *ngIf="saving"> &nbsp; Saving...</span>
+      <span *ngIf="!saving">Send Items</span></button>
   </div>
 </div>
 

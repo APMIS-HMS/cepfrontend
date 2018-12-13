@@ -1,5 +1,5 @@
 
-    <div class="store-tr" [ngClass]="{'marked':isSelected || isEditMode}">
+    <div class="store-tr" [ngClass]="{'marked':isSelected , 'focused' : isEditMode}">
         <div class="store-td store-td-actions">
                 <apmis-pager-button 
                     background-color="red"

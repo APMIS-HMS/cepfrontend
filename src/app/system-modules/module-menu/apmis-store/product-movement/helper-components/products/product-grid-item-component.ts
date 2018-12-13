@@ -9,14 +9,20 @@ import * as _ from "lodash";
     templateUrl: 'product-grid-item-component.html',
     styles: [`
         .marked {
+            transition: all 120ms linear;
             background-color: #fff6da;
+        }
+
+        .focused {
+            transition: all 120ms linear;
+            background-color: #dff8ff;
         }
 
         div.product-suggestion-popup {
             z-index: 2100;
             position: absolute;
             min-width: 350px;
-            max-width:550px;
+            max-width: 550px;
             background-color: white;
             box-shadow: 1px 2px 12px rgba(95, 95, 95, 0.5);
             padding: 0px;
@@ -54,15 +60,18 @@ import * as _ from "lodash";
             border: solid 1px #99acb9;
             box-shadow: 1px 1px 13px rgba(150, 150, 150, 0.4) inset;
         }
-        .tbl-status{
+
+        .tbl-status {
             padding: 3px 10px;
             font-size: 14px;
         }
-        .status-green{
+
+        .status-green {
             color: #00D455;
             border: 1px solid #00D455;
         }
-        .status-red{
+
+        .status-red {
             color: #FF3838;
             border: 1px solid #FF3838;
         }

@@ -9,6 +9,7 @@ import {AuthFacadeService} from "../../../../service-facade/auth-facade.service"
 import {Employee} from "../../../../../models";
 import {ProductGridComponent} from "../helper-components/products/product-grid-component";
 import {SystemModuleService} from "../../../../../services/module-manager/setup/system-module.service";
+import {StoreOutboundService} from "../../../../../services/facility-manager/setup/store-outbound-requisitory-service";
 
 @Component({
     selector: 'app-outbound-requisition',
@@ -28,7 +29,8 @@ export class OutboundRequisitionComponent implements OnInit {
     stores: any[] = []; // we have to cache all products in the selected store for reuse
     activeStoreObj: any = null;
     activeLocationObj: any = null;
-    processing: boolean = false;
+    processing: boolean = false; 
+    saving: boolean = false;
     loginEmployee: Employee = null;
 
     @ViewChild("grid") grid: ProductGridComponent;
@@ -37,7 +39,8 @@ export class OutboundRequisitionComponent implements OnInit {
                 private storeService: StoreService,
                 private employeeService: EmployeeService,
                 private authFacadeService: AuthFacadeService,
-                private systemService: SystemModuleService
+                private systemService: SystemModuleService,
+                private storeOutboundService : StoreOutboundService
     ) {
         this.getCurrentStoreInfoFromAuthenticatedUser();
         this.getCurrentAuthenticatedUser();
@@ -57,19 +60,19 @@ export class OutboundRequisitionComponent implements OnInit {
             if (!!res) {
                 if (!!res.typeObject) {
                     this.mainStore = res.typeObject;
-                    console.log(this.mainStore, "Main Store!");
+                    //console.log(this.mainStore, "Main Store!");
                     if (!!this.mainStore.storeId) {
                         // this.getSelectedStoreSummations();
                     }
                 }
             }
-            console.log(this.mainStore , "Result for Main Store")
+            //console.log(this.mainStore , "Result for Main Store")
         });*/
     }
 
     getCurrentAuthenticatedUser() {
         this.authFacadeService.getLogingEmployee().then((payload: any) => {
-            console.log("Get Logged In Employee Payload", payload);
+            //console.log("Get Logged In Employee Payload", payload);
             this.loginEmployee = payload;
             // get the current active store from the checkinStore property
             this.mainStore = this.loginEmployee.storeCheckIn.find(x => x.isOn == true)
@@ -86,7 +89,7 @@ export class OutboundRequisitionComponent implements OnInit {
             }
 
         });
-        console.log(this.locations, "LOCATIONS");
+        //console.log(this.locations, "LOCATIONS");
     }
 
     getStoresInLocation() {
@@ -114,7 +117,7 @@ export class OutboundRequisitionComponent implements OnInit {
                 this.stores = stores;
             }, x => {
                 this.processing = false;
-                console.log("There is an issue connecting with the server!", x);
+                //console.log("There is an issue connecting with the server!", x);
             });
         }
         else {
@@ -126,7 +129,7 @@ export class OutboundRequisitionComponent implements OnInit {
     sendSelectedItems() {
         // log the selected items from the Product Grid Component
         const selectedItems: ProductGridModel[] = this.grid.getSelectedItems();
-        console.log(selectedItems);
+        //console.log(selectedItems);
         this.buildOutboundData(selectedItems);
     }
 
@@ -161,7 +164,19 @@ export class OutboundRequisitionComponent implements OnInit {
             }
            
             // Log the result
-            console.log(result);
+           this.saving  = true;
+            this.storeOutboundService.create(result)
+            .then(x => {
+                //console.log(x);
+                this.saving  = false;
+                // clear all entries
+                this.data  = [];
+                this.systemService.announceSweetProxy("Outbound Requisition Created with Ref No: " +
+                 x.storeRequisitionNumber  + ". ", "success");
+            }, x => {
+                this.saving  = false;
+                //console.log(x);
+            })
         }
         else {
             // inform user to select at least on item and try again
