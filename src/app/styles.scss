@@ -2806,7 +2806,7 @@ button,
     -webkit-transition:0.2s ease all;
   }
   
-  .customInput:focus ~ .customLabel, .customInput:valid ~ .customLabel {
+  .customInput:focus ~ .customLabel{
     top:-12px;
     font-size:12px;
     color:#5264AE;
@@ -2857,7 +2857,7 @@ button,
     -webkit-transition: 0.2s ease all;
 }
 
-.customInput:focus~.customLabel {
+.customInput:focus~.customLabel,  .customInput:valid ~ .customLabel{
     top: -12px;
     font-size: 12px;
     color: #5264AE;
@@ -3058,3 +3058,8 @@ button,
     position: relative;
     border-right: 1px solid #C4C4C4;
 }
+
+
+
+
+

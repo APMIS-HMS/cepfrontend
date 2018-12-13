@@ -59,6 +59,9 @@ import { SalesComponent } from './product-exit/sales/sales.component';
 import { RefundComponent } from './product-exit/refund/refund.component';
 import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invoice-entry/new-invoice-entry.component';
 import {StoreOutboundService} from "../../../services/facility-manager/setup/store-outbound-requisitory-service";
+import { CustomerComponent } from './product-exit/customer/customer.component';
+import { CustomerPrescriptionComponent } from './product-exit/customer/customer-prescription/customer-prescription.component';
+
 
 @NgModule({
 	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule, CoreUiModules ],
@@ -109,7 +112,9 @@ import {StoreOutboundService} from "../../../services/facility-manager/setup/sto
 		ProductExitComponent,
 		SalesComponent,
 		RefundComponent,
-		NewInvoiceEntryComponent
+		NewInvoiceEntryComponent,
+		CustomerComponent,
+		CustomerPrescriptionComponent
 	],
 	providers: [
 		StoreService,

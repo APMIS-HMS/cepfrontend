@@ -27,6 +27,7 @@ export class ApmisErrorHandler extends ErrorHandler {
 	// }
 
 	handleError(error: Error | HttpErrorResponse) {
+		this.systemModuleService.off();
 		// const notificationService = this.injector.get(NotificationService);
 		const errorsService = this.injector.get(ErrorsService);
 		const router = this.injector.get(Router);
