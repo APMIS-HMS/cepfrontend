@@ -24,12 +24,14 @@ export class OutboundRequisitionComponent implements OnInit {
     private subscription$: Subscription;
     mainStore: any = {};
     data: ProductGridModel[] = [];
+    dataFromServer: ProductGridModel[] = [];
+    isLoadingFromServer: boolean = false;
     selectedProductItems: any[] = [];
     locations: any[] = [];// we have to cache all stores in the selected location so that we don't hit the server for every selection
     stores: any[] = []; // we have to cache all products in the selected store for reuse
-    activeStoreObj: any = null;
+
     activeLocationObj: any = null;
-    processing: boolean = false; 
+    processing: boolean = false;
     saving: boolean = false;
     loginEmployee: Employee = null;
 
@@ -40,7 +42,7 @@ export class OutboundRequisitionComponent implements OnInit {
                 private employeeService: EmployeeService,
                 private authFacadeService: AuthFacadeService,
                 private systemService: SystemModuleService,
-                private storeOutboundService : StoreOutboundService
+                private storeOutboundService: StoreOutboundService
     ) {
         this.getCurrentStoreInfoFromAuthenticatedUser();
         this.getCurrentAuthenticatedUser();
@@ -50,8 +52,6 @@ export class OutboundRequisitionComponent implements OnInit {
     ngOnInit() {
 
         this.getLocations();
-
-
     }
 
     getCurrentStoreInfoFromAuthenticatedUser() {
@@ -162,21 +162,21 @@ export class OutboundRequisitionComponent implements OnInit {
 
                 })
             }
-           
+
             // Log the result
-           this.saving  = true;
+            this.saving = true;
             this.storeOutboundService.create(result)
-            .then(x => {
-                //console.log(x);
-                this.saving  = false;
-                // clear all entries
-                this.data  = [];
-                this.systemService.announceSweetProxy("Outbound Requisition Created with Ref No: " +
-                 x.storeRequisitionNumber  + ". ", "success");
-            }, x => {
-                this.saving  = false;
-                //console.log(x);
-            })
+                .then(x => {
+                    //console.log(x);
+                    this.saving = false;
+                    // clear all entries
+                    this.data = [];
+                    this.systemService.announceSweetProxy("Outbound Requisition Created with Ref No: " +
+                        x.storeRequisitionNumber + ". ", "success");
+                }, x => {
+                    this.saving = false;
+                    //console.log(x);
+                })
         }
         else {
             // inform user to select at least on item and try again
@@ -184,4 +184,76 @@ export class OutboundRequisitionComponent implements OnInit {
                 " the list, or add a new item", "error");
         }
     }
+
+    buildProductGridDataFromServerResponse(serverModel: StoreOutboundModel[]): ProductGridModel[] {
+        /*
+    comment: "OUTBOUND-REQ"
+    createdAt: "2018-12-13T03:13:10.079Z"
+    destinationStoreId: "5b0282ad3d853313d0cb3217"
+    destinationStoreObject: {_id: "5b0282ad3d853313d0cb3217", updatedAt: "2018-05-31T22:59:00.048Z", createdAt: "2018-05-21T08:26:21.794Z", name: "Central Store", minorLocationId: "5afbe845dbffe92c90559112", …}
+    employeeId: "5afbe472dbffe92c90559101"
+    employeeObject: {_id: "5afbe472dbffe92c90559101", updatedAt: "2018-12-13T10:42:41.573Z", createdAt: "2018-05-16T07:57:38.735Z", facilityId: "5af54ca6dbffe92c90559044", departmentId: "Medicine", …}
+    facilityId: "5af54ca6dbffe92c90559044"
+    isSupplied: false
+    products: Array(4)
+    0: {productId: "5abc02a5c8ac61402697488f", qty: 400, productObject: {…}, _id: "5c11ce4632295b6821ceea2f", updatedAt: "2018-12-13T03:13:10.077Z", …}
+    1: {productId: "5abc02a4c8ac614026971560", qty: 1000, productObject: {…}, _id: "5c11ce4632295b6821ceea2e", updatedAt: "2018-12-13T03:13:10.076Z", …}
+    2: {productId: "5b6315b1b9ed40022cd4f968", qty: 320, productObject: {…}, _id: "5c11ce4632295b6821ceea2d", updatedAt: "2018-12-13T03:13:10.076Z", …}
+    3: {productId: "5abc02a5c8ac6140269744c7", qty: 400, productObject: {…}, _id: "5c11ce4632295b6821ceea2c", updatedAt: "2018-12-13T03:13:10.075Z", …}
+    length: 4
+    __proto__: Array(0)
+    storeId: "5b0283d13d853313d0cb3219"
+    storeRequisitionNumber: "RQ9401843QK"
+    updatedAt: "2018-12-13T03:13:10.079Z"
+    __v: 0
+    _id: "5c11ce4632295b6821ceea2b"
+     */
+       const res: any[]  =  _.map(serverModel, (x, index) =>{
+            const viewData : any = {
+                createdAt  : x.createdAt,
+                comment : x.comment,
+                storeId : x.storeId,
+                destinationStoreId : x.destinationStoreId,
+                storeRequisitionNumber : x.storeRequisitionNumber,
+                id : x._id,
+                employeeId : x.employeeId,
+                items : _.map(x.products, i => {
+                    return {
+                        //availableQuantity : i.
+                    }
+                })
+                
+            }
+            const m :ProductGridModel = {
+                
+            }
+        })
+        return [];
+    }
+
+    getStoreOutboundFromServer() {
+        //TODO Add Pagination Logic
+
+        this.isLoadingFromServer = true;
+        this.storeOutboundService.find({
+            query: {
+                comment: "OUTBOUND-REQ",
+                facilityId: this.locService.facilityId,
+                destinationStoreId: this.storeName.value,
+                storeId: this.mainStore._id
+            }
+        })
+            .then(x => {
+                console.log(x.data, x, "Record from Server");
+                this.isLoadingFromServer = false;
+                if (x.data.length > 0) {
+
+                }
+            }, x => {
+                this.isLoadingFromServer = false;
+                console.log("Could not complete operation on the server", x);
+            })
+    }
+
+
 }
