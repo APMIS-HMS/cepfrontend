@@ -25,6 +25,7 @@ export class OutboundRequisitionComponent implements OnInit {
     mainStore: any = {};
     data: ProductGridModel[] = [];
     dataFromServer: ProductGridModel[] = [];
+    serverData = [];
     isLoadingFromServer: boolean = false;
     selectedProductItems: any[] = [];
     locations: any[] = [];// we have to cache all stores in the selected location so that we don't hit the server for every selection
@@ -148,7 +149,10 @@ export class OutboundRequisitionComponent implements OnInit {
                         isAccepted: false,
                         productId: x.productId,
                         qty: x.qtyToSend,
-                        qtyDetails: {totalQuantity: x.totalQuantity, qtyOnHold: x.qtyOnHold},
+                        qtyDetails: [{totalQuantity: x.totalQuantity, 
+                            qtyOnHold: x.qtyOnHold,
+                            availableQuantity : x.availableQuantity
+                        }],
                         productObject:
                             {
                                 price: x.price,
@@ -185,50 +189,47 @@ export class OutboundRequisitionComponent implements OnInit {
         }
     }
 
-    buildProductGridDataFromServerResponse(serverModel: StoreOutboundModel[]): ProductGridModel[] {
-        /*
-    comment: "OUTBOUND-REQ"
-    createdAt: "2018-12-13T03:13:10.079Z"
-    destinationStoreId: "5b0282ad3d853313d0cb3217"
-    destinationStoreObject: {_id: "5b0282ad3d853313d0cb3217", updatedAt: "2018-05-31T22:59:00.048Z", createdAt: "2018-05-21T08:26:21.794Z", name: "Central Store", minorLocationId: "5afbe845dbffe92c90559112", …}
-    employeeId: "5afbe472dbffe92c90559101"
-    employeeObject: {_id: "5afbe472dbffe92c90559101", updatedAt: "2018-12-13T10:42:41.573Z", createdAt: "2018-05-16T07:57:38.735Z", facilityId: "5af54ca6dbffe92c90559044", departmentId: "Medicine", …}
-    facilityId: "5af54ca6dbffe92c90559044"
-    isSupplied: false
-    products: Array(4)
-    0: {productId: "5abc02a5c8ac61402697488f", qty: 400, productObject: {…}, _id: "5c11ce4632295b6821ceea2f", updatedAt: "2018-12-13T03:13:10.077Z", …}
-    1: {productId: "5abc02a4c8ac614026971560", qty: 1000, productObject: {…}, _id: "5c11ce4632295b6821ceea2e", updatedAt: "2018-12-13T03:13:10.076Z", …}
-    2: {productId: "5b6315b1b9ed40022cd4f968", qty: 320, productObject: {…}, _id: "5c11ce4632295b6821ceea2d", updatedAt: "2018-12-13T03:13:10.076Z", …}
-    3: {productId: "5abc02a5c8ac6140269744c7", qty: 400, productObject: {…}, _id: "5c11ce4632295b6821ceea2c", updatedAt: "2018-12-13T03:13:10.075Z", …}
-    length: 4
-    __proto__: Array(0)
-    storeId: "5b0283d13d853313d0cb3219"
-    storeRequisitionNumber: "RQ9401843QK"
-    updatedAt: "2018-12-13T03:13:10.079Z"
-    __v: 0
-    _id: "5c11ce4632295b6821ceea2b"
-     */
+    buildProductGridDataFromServerResponse(serverModel: any[]): ProductGridModel[] {
+       
        const res: any[]  =  _.map(serverModel, (x, index) =>{
             const viewData : any = {
                 createdAt  : x.createdAt,
                 comment : x.comment,
                 storeId : x.storeId,
                 destinationStoreId : x.destinationStoreId,
+                destinationStoreName : x.destinationStoreObject.name,
                 storeRequisitionNumber : x.storeRequisitionNumber,
-                id : x._id,
+                facilityId: x.facilityId,
+                isSupplied: x.isSupplied,
+                minorLocationId : x.minorLocationId,
+                description: x.description,
+                _id : x._id,
                 employeeId : x.employeeId,
                 items : _.map(x.products, i => {
                     return {
-                        //availableQuantity : i.
+                        availableQuantity :i.qtyDetails[0].availableQuantity || i.qtyDetails[0].totalQuantity ,
+                        totalQuantity : i.qtyDetails[0].totalQuantity,
+                        qtyOnHold : i.qtyDetails[0].qtyOnHold,
+                        productObject : i.productObject,
+                        unitOfMeasure : i.productObject.productConfiguration.name,
+                        productId : i.productObject.productId,
+                        productName : i.productObject.productName,
+                        productCode : i.productObject.productCode,
+                        price : i.productObject.price,
+                        qtyToSend : i.qty,
+                        isNew:false,
+                        isAccepted : i.isAccepted || false,
+                        productConfiguration: i.productObject.productConfiguration
+                        
+                        
                     }
                 })
                 
-            }
-            const m :ProductGridModel = {
-                
-            }
-        })
-        return [];
+            };
+          return viewData;
+        });
+      
+        return res;
     }
 
     getStoreOutboundFromServer() {
@@ -244,10 +245,10 @@ export class OutboundRequisitionComponent implements OnInit {
             }
         })
             .then(x => {
-                console.log(x.data, x, "Record from Server");
+            
                 this.isLoadingFromServer = false;
                 if (x.data.length > 0) {
-
+                    this.serverData  = this.buildProductGridDataFromServerResponse(x.data);
                 }
             }, x => {
                 this.isLoadingFromServer = false;

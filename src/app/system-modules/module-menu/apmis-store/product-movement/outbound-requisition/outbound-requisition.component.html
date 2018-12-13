@@ -49,14 +49,20 @@
       <span *ngIf="!saving">Send Items</span></button>
   </div>
 </div>
+<div style="text-align: center;">
+    <apmis-spinner  [visible]="isLoadingFromServer" size="x-large">
 
-<div class="tbl-sect-wrap tbl-top-with-border">
-  <div class="has-title">Outbound Requisition Status</div>
+    </apmis-spinner>
+</div>
+<div class="tbl-sect-wrap tbl-top-with-border" *ngFor="let s of serverData">
+  <div class="has-title">Outbound Requisition Ref: {{s.storeRequisitionNumber}}</div>
   <div class="date-sent">
     <span>Date Sent:</span>
-    <div class="val">23/10/2018</div>
+    <div class="val">{{s.createdAt | date:'medium'}}</div>
   </div>
-  <product-grid [selectedStore]="storeName.value" [products]="dataFromServer" [showStatus]="true"></product-grid>
+  
+ 
+  <product-grid [selectedStore]="s.storeId" [products]="s.items" [showStatus]="true"></product-grid>
 </div>
 <div class="tbl-sect-wrap">
   <div class="date-sent">
