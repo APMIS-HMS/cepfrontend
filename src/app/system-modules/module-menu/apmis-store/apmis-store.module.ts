@@ -50,6 +50,9 @@ import { NewSupplierComponent } from './product-entry/suppliers/new-supplier/new
 import { InboundRequisitionComponent } from './product-movement/inbound-requisition/inbound-requisition.component';
 import { OutboundRequisitionComponent } from './product-movement/outbound-requisition/outbound-requisition.component';
 import { StoreCheckInComponent } from './components/store-check-in/store-check-in.component';
+import { CoreUiModules } from "../../../core-ui-modules/CoreUiModules";
+import { ProductGridComponent } from "./product-movement/helper-components/products/product-grid-component";
+import { ProductGridItemComponent } from "./product-movement/helper-components/products/product-grid-item-component";
 import { ApmisStoreSupplierSearchComponent } from './components/apmis-store-supplier-search/apmis-store-supplier-search.component';
 import { ProductExitComponent } from './product-exit/product-exit.component';
 import { SalesComponent } from './product-exit/sales/sales.component';
@@ -57,9 +60,13 @@ import { RefundComponent } from './product-exit/refund/refund.component';
 import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invoice-entry/new-invoice-entry.component';
 import { FromPurchaseOrderComponent } from './product-entry/invoice-entry/new-invoice-entry/from-purchase-order/from-purchase-order.component';
 import { NoPurchaseOrderComponent } from './product-entry/invoice-entry/new-invoice-entry/no-purchase-order/no-purchase-order.component';
+import { StoreOutboundService } from "../../../services/facility-manager/setup/store-outbound-requisitory-service";
+import { CustomerComponent } from './product-exit/customer/customer.component';
+import { CustomerPrescriptionComponent } from './product-exit/customer/customer-prescription/customer-prescription.component';
+
 
 @NgModule({
-	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule ],
+	imports: [CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule, CoreUiModules],
 	declarations: [
 		ApmisStoreLandingpageComponent,
 		ApmisStoreHomeComponent,
@@ -100,13 +107,18 @@ import { NoPurchaseOrderComponent } from './product-entry/invoice-entry/new-invo
 		InboundRequisitionComponent,
 		OutboundRequisitionComponent,
 		StoreCheckInComponent,
+		ProductGridComponent,
+		ProductGridItemComponent,
+		StoreCheckInComponent,
 		ApmisStoreSupplierSearchComponent,
 		ProductExitComponent,
 		SalesComponent,
 		RefundComponent,
 		NewInvoiceEntryComponent,
 		FromPurchaseOrderComponent,
-		NoPurchaseOrderComponent
+		NoPurchaseOrderComponent,
+		CustomerComponent,
+		CustomerPrescriptionComponent
 	],
 	providers: [
 		StoreService,
@@ -114,7 +126,8 @@ import { NoPurchaseOrderComponent } from './product-entry/invoice-entry/new-invo
 		StoreGlobalUtilService,
 		ProductTypeService,
 		SupplierService,
-		PurchaseOrderService
+		PurchaseOrderService,
+		StoreOutboundService
 	]
 })
-export class ApmisStoreModule {}
+export class ApmisStoreModule { }

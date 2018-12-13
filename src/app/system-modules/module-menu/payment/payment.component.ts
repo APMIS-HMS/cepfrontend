@@ -60,8 +60,7 @@ export class PaymentComponent implements OnInit {
 		private _todayInvoiceService: TodayInvoiceService,
 		private _locSummaryCashService: LocSummaryCashService,
 		private systemModuleService: SystemModuleService
-	) {}
-	ngOnInit() {
+	) {
 		this.selectedFacility = <Facility>this.locker.getObject('selectedFacility');
 		this.user = <User>this.locker.getObject('auth');
 		this.searchInvestigation = new FormControl('', []);
@@ -69,6 +68,8 @@ export class PaymentComponent implements OnInit {
 		this._getBills();
 		this._getInvoices();
 		this._getBillSummaryData();
+	}
+	ngOnInit() {
 		this.searchPendingInvoices.valueChanges.debounceTime(400).distinctUntilChanged().subscribe((value) => {
 			if (this.searchPendingInvoices.value !== '' && this.searchPendingInvoices.value.length >= 3) {
 				this.isLoadingInvoice = true;

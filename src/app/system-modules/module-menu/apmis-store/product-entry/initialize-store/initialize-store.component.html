@@ -6,7 +6,7 @@
       <span class="highlight"></span>
       <span class="bar"></span>
       <label class="customLabel"><i class="fa fa-search" aria-hidden="true"></i>Search Service Category</label>
-      <ul class="search-sugestions" *ngIf="(showCategory && categories.length > 0)">
+      <ul class="search-sugestions bar" *ngIf="(showCategory && categories.length > 0)">
         <li *ngFor="let category of categories" (click)="setCategorySelectedOption(category)" class="search-sugestion">{{category.name}}</li>
       </ul>
     </div>
