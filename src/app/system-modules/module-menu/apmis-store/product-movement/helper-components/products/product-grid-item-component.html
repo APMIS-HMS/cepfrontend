@@ -42,6 +42,7 @@
                 <span *ngIf="isEditMode"><input [formControl]="qtyToSend"
                                                 type="number" maxlength="7"  
                                                 [style.width.px]="50"  
+                                                (keyup.enter)="resetEditMode()"
                                                 [value]="data?.qtyToSend || 1" 
                                                 class="form-control">{{data?.unitOfMeasure}}</span>
             </div>
