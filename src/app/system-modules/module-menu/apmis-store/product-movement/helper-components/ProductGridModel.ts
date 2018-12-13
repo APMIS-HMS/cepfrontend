@@ -26,6 +26,7 @@ export interface StoreOutboundModel {
     comment?: string;  // am using this field to differenciate between outbound and inbound requistory
     storeRequisitionNumber?: string;
     products?  : ProductRequisitoryModel[];
+    employeeObject? : any;
 }
 export interface ProductRequisitoryModel
 {

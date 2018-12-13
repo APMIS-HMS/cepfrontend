@@ -7,7 +7,7 @@
                     size="small"
                     *ngIf="isEditMode"
                     (onClick)="removeItem(data)"><i class="fa fa-trash" ></i></apmis-pager-button>
-            <input type="checkbox" *ngIf="!isEditMode"  
+            <input type="checkbox" *ngIf="!isEditMode || !showStatus"  
                    [checked]="isSelected" (click)="toggleSelect()"  />
         </div>
         <div class="store-tr-in"  >

@@ -2,7 +2,7 @@
     <div class="store-thead">
         <div class="store-tr">
             <div class="store-th store-td-actions">
-                <input type="checkbox" [formControl]="checkAll" 
+                <input *ngIf="!showStatus" type="checkbox" [formControl]="checkAll" 
                        />
             </div>
             <div class="store-tr-in">
@@ -27,7 +27,7 @@
                                #item *ngFor="let p of products" 
                                [data]="p"></product-grid-item>
             
-            <div class="store-tr">
+            <div class="store-tr" *ngIf="!showStatus">
                 <div class="tbl-cont-cta" (click)="addNewItem()"><i class="fa fa-plus"></i> Add Another Item</div>
             </div>
         </div>
@@ -37,16 +37,19 @@
 </div>
 <ng-template #showThis>
     <div style="" class="store-table" >
-        <div style="min-height: 120px;font-size  : 26px; color : #fafaff; 
+        <div style="min-height: 120px;font-size  : 26px; color : #bdbdc0; 
         display : flex;
         justify-content: center;
         flex-direction: row;
         align-items:  center;
-        text-shadow: 1px 0px 5px #838383;">
-            <span>
+       "> 
+            <!--text-shadow: 1px 0px 5px #838383;-->
+            <span *ngIf="!showStatus">
                 You should select a Store First.
             </span>
-            
+            <span *ngIf="showStatus">
+                No Record to display. Please select a Store location then a Store.
+            </span>
         </div>
     </div>  
 </ng-template>

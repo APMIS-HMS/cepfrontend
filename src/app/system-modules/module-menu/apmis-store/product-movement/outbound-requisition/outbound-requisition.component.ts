@@ -24,12 +24,15 @@ export class OutboundRequisitionComponent implements OnInit {
     private subscription$: Subscription;
     mainStore: any = {};
     data: ProductGridModel[] = [];
+    dataFromServer: ProductGridModel[] = [];
+    serverData = [];
+    isLoadingFromServer: boolean = false;
     selectedProductItems: any[] = [];
     locations: any[] = [];// we have to cache all stores in the selected location so that we don't hit the server for every selection
     stores: any[] = []; // we have to cache all products in the selected store for reuse
-    activeStoreObj: any = null;
+
     activeLocationObj: any = null;
-    processing: boolean = false; 
+    processing: boolean = false;
     saving: boolean = false;
     loginEmployee: Employee = null;
 
@@ -40,7 +43,7 @@ export class OutboundRequisitionComponent implements OnInit {
                 private employeeService: EmployeeService,
                 private authFacadeService: AuthFacadeService,
                 private systemService: SystemModuleService,
-                private storeOutboundService : StoreOutboundService
+                private storeOutboundService: StoreOutboundService
     ) {
         this.getCurrentStoreInfoFromAuthenticatedUser();
         this.getCurrentAuthenticatedUser();
@@ -50,8 +53,6 @@ export class OutboundRequisitionComponent implements OnInit {
     ngOnInit() {
 
         this.getLocations();
-
-
     }
 
     getCurrentStoreInfoFromAuthenticatedUser() {
@@ -148,7 +149,10 @@ export class OutboundRequisitionComponent implements OnInit {
                         isAccepted: false,
                         productId: x.productId,
                         qty: x.qtyToSend,
-                        qtyDetails: {totalQuantity: x.totalQuantity, qtyOnHold: x.qtyOnHold},
+                        qtyDetails: [{totalQuantity: x.totalQuantity, 
+                            qtyOnHold: x.qtyOnHold,
+                            availableQuantity : x.availableQuantity
+                        }],
                         productObject:
                             {
                                 price: x.price,
@@ -162,21 +166,21 @@ export class OutboundRequisitionComponent implements OnInit {
 
                 })
             }
-           
+
             // Log the result
-           this.saving  = true;
+            this.saving = true;
             this.storeOutboundService.create(result)
-            .then(x => {
-                //console.log(x);
-                this.saving  = false;
-                // clear all entries
-                this.data  = [];
-                this.systemService.announceSweetProxy("Outbound Requisition Created with Ref No: " +
-                 x.storeRequisitionNumber  + ". ", "success");
-            }, x => {
-                this.saving  = false;
-                //console.log(x);
-            })
+                .then(x => {
+                    //console.log(x);
+                    this.saving = false;
+                    // clear all entries
+                    this.data = [];
+                    this.systemService.announceSweetProxy("Outbound Requisition Created with Ref No: " +
+                        x.storeRequisitionNumber + ". ", "success");
+                }, x => {
+                    this.saving = false;
+                    //console.log(x);
+                })
         }
         else {
             // inform user to select at least on item and try again
@@ -184,4 +188,73 @@ export class OutboundRequisitionComponent implements OnInit {
                 " the list, or add a new item", "error");
         }
     }
+
+    buildProductGridDataFromServerResponse(serverModel: any[]): ProductGridModel[] {
+       
+       const res: any[]  =  _.map(serverModel, (x, index) =>{
+            const viewData : any = {
+                createdAt  : x.createdAt,
+                comment : x.comment,
+                storeId : x.storeId,
+                destinationStoreId : x.destinationStoreId,
+                destinationStoreName : x.destinationStoreObject.name,
+                storeRequisitionNumber : x.storeRequisitionNumber,
+                facilityId: x.facilityId,
+                isSupplied: x.isSupplied,
+                minorLocationId : x.minorLocationId,
+                description: x.description,
+                _id : x._id,
+                employeeId : x.employeeId,
+                items : _.map(x.products, i => {
+                    return {
+                        availableQuantity :i.qtyDetails[0].availableQuantity || i.qtyDetails[0].totalQuantity ,
+                        totalQuantity : i.qtyDetails[0].totalQuantity,
+                        qtyOnHold : i.qtyDetails[0].qtyOnHold,
+                        productObject : i.productObject,
+                        unitOfMeasure : i.productObject.productConfiguration.name,
+                        productId : i.productObject.productId,
+                        productName : i.productObject.productName,
+                        productCode : i.productObject.productCode,
+                        price : i.productObject.price,
+                        qtyToSend : i.qty,
+                        isNew:false,
+                        isAccepted : i.isAccepted || false,
+                        productConfiguration: i.productObject.productConfiguration
+                        
+                        
+                    }
+                })
+                
+            };
+          return viewData;
+        });
+      
+        return res;
+    }
+
+    getStoreOutboundFromServer() {
+        //TODO Add Pagination Logic
+
+        this.isLoadingFromServer = true;
+        this.storeOutboundService.find({
+            query: {
+                comment: "OUTBOUND-REQ",
+                facilityId: this.locService.facilityId,
+                destinationStoreId: this.storeName.value,
+                storeId: this.mainStore._id
+            }
+        })
+            .then(x => {
+            
+                this.isLoadingFromServer = false;
+                if (x.data.length > 0) {
+                    this.serverData  = this.buildProductGridDataFromServerResponse(x.data);
+                }
+            }, x => {
+                this.isLoadingFromServer = false;
+                console.log("Could not complete operation on the server", x);
+            })
+    }
+
+
 }
