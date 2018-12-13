@@ -1,4 +1,4 @@
-<div class="modal-wraper">
+<div (click)="closeSearch()" class="modal-wraper">
   <div class="toggle-base-wrap">
     <div [className]="selectedToggleIndex === i ?
      'toggle-wrap ft-btn-selected' : 'toggle-wrap'" *ngFor="let item of toggleData; let i = index"

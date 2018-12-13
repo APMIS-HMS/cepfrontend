@@ -55,6 +55,8 @@ import { ProductExitComponent } from './product-exit/product-exit.component';
 import { SalesComponent } from './product-exit/sales/sales.component';
 import { RefundComponent } from './product-exit/refund/refund.component';
 import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invoice-entry/new-invoice-entry.component';
+import { FromPurchaseOrderComponent } from './product-entry/invoice-entry/new-invoice-entry/from-purchase-order/from-purchase-order.component';
+import { NoPurchaseOrderComponent } from './product-entry/invoice-entry/new-invoice-entry/no-purchase-order/no-purchase-order.component';
 
 @NgModule({
 	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule ],
@@ -102,7 +104,9 @@ import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invo
 		ProductExitComponent,
 		SalesComponent,
 		RefundComponent,
-		NewInvoiceEntryComponent
+		NewInvoiceEntryComponent,
+		FromPurchaseOrderComponent,
+		NoPurchaseOrderComponent
 	],
 	providers: [
 		StoreService,
