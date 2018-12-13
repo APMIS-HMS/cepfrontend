@@ -88,8 +88,10 @@ export class ApmisLookupComponent implements OnInit, ControlValueAccessor, Valid
 						this.cuDropdownLoading = false;
 						if (payload !== undefined && payload.status === 'success' && payload.data !== undefined) {
 							this.results = payload.data;
-						} else if (payload.status !== 'error') {
+						} else if (payload.status !== undefined && payload.status !== 'error') {
 							this.results = payload;
+						} else {
+							this.results = payload.data;
 						}
 					} catch (error) {}
 				},

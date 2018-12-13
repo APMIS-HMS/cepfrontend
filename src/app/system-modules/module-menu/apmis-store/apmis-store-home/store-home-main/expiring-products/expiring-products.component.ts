@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { InventoryService } from 'app/services/facility-manager/setup';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility } from 'app/models';
+import { APMIS_STORE_PAGINATION_LIMIT } from 'app/shared-module/helpers/global-config';
 
 @Component({
 	selector: 'app-expiring-products',
@@ -15,7 +16,7 @@ export class ExpiringProductsComponent implements OnInit {
 	skip = 0;
 	numberOfPages = 0;
 	currentPage = 0;
-	limit = 1;
+	limit = APMIS_STORE_PAGINATION_LIMIT;
 	packTypes = [ { id: 1, name: 'Sachet' }, { id: 2, name: 'Cartoon' } ];
 	storeId: string;
 	selectedFacility: any;
