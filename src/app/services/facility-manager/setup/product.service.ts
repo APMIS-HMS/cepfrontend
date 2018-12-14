@@ -45,6 +45,9 @@ export class ProductService {
 	findConSumables(query: any) {
 		return this._socketConsumable.find(query);
 	}
+	findConsumableCategories() {
+		return this._socketConsumableCategory.find();
+	}
 	findList(query: any) {
 		return this._socketList.find(query);
 	}
@@ -79,6 +82,9 @@ export class ProductService {
 	}
 	createConsumableCategory(category: any) {
 		return this._socketConsumableCategory.create(category);
+	}
+	createApmisConsumable(consumable: any) {
+		return this._socketConsumable.create(consumable);
 	}
 	patchProductConfig(_id: any, obj: any, params) {
 		return this._socketProductConfig.patch(_id, obj, params);

@@ -56,6 +56,11 @@ import { ProductExitComponent } from './product-exit/product-exit.component';
 import { SalesComponent } from './product-exit/sales/sales.component';
 import { RefundComponent } from './product-exit/refund/refund.component';
 import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invoice-entry/new-invoice-entry.component';
+import { ProductToggleComponent } from './apmis-store-product/product-conguration/config-product/product-toggle/product-toggle.component';
+import { ConsumableEntryComponent } from './apmis-store-product/product-conguration/config-product/consumable-entry/consumable-entry.component';
+import { DrugEntryComponent } from './apmis-store-product/product-conguration/config-product/drug-entry/drug-entry.component';
+import { BaseUnitComponent } from './apmis-store-product/product-conguration/config-product/base-unit/base-unit.component';
+import { ConfigContainerComponent } from './apmis-store-product/product-conguration/config-product/config-container/config-container.component';
 
 @NgModule({
 	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule ],
@@ -104,7 +109,12 @@ import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invo
 		ProductExitComponent,
 		SalesComponent,
 		RefundComponent,
-		NewInvoiceEntryComponent
+		NewInvoiceEntryComponent,
+		ProductToggleComponent,
+		ConsumableEntryComponent,
+		DrugEntryComponent,
+		BaseUnitComponent,
+		ConfigContainerComponent
 	],
 	providers: [
 		StoreService,
