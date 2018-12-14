@@ -51,9 +51,6 @@ import { InboundRequisitionComponent } from './product-movement/inbound-requisit
 import { OutboundRequisitionComponent } from './product-movement/outbound-requisition/outbound-requisition.component';
 import { StoreCheckInComponent } from './components/store-check-in/store-check-in.component';
 import { ApmisStoreSupplierSearchComponent } from './components/apmis-store-supplier-search/apmis-store-supplier-search.component';
-<<<<<<< HEAD
-=======
-import { SearchSuggestionComponent } from './apmis-store-product/product-conguration/config-product/search-suggestion/search-suggestion.component';
 import { ProductExitComponent } from './product-exit/product-exit.component';
 import { SalesComponent } from './product-exit/sales/sales.component';
 import { RefundComponent } from './product-exit/refund/refund.component';
@@ -63,7 +60,6 @@ import { ConsumableEntryComponent } from './apmis-store-product/product-congurat
 import { DrugEntryComponent } from './apmis-store-product/product-conguration/config-product/drug-entry/drug-entry.component';
 import { BaseUnitComponent } from './apmis-store-product/product-conguration/config-product/base-unit/base-unit.component';
 import { ConfigContainerComponent } from './apmis-store-product/product-conguration/config-product/config-container/config-container.component';
->>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
 
 @NgModule({
 	imports: [ CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule ],
@@ -107,11 +103,7 @@ import { ConfigContainerComponent } from './apmis-store-product/product-congurat
 		InboundRequisitionComponent,
 		OutboundRequisitionComponent,
 		StoreCheckInComponent,
-<<<<<<< HEAD
-		ApmisStoreSupplierSearchComponent
-=======
-		ApmisStoreSupplierSearchComponent,
-		SearchSuggestionComponent,
+		ApmisStoreSupplierSearchComponent,		
 		ProductExitComponent,
 		SalesComponent,
 		RefundComponent,
@@ -121,7 +113,6 @@ import { ConfigContainerComponent } from './apmis-store-product/product-congurat
 		DrugEntryComponent,
 		BaseUnitComponent,
 		ConfigContainerComponent
->>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
 	],
 	providers: [
 		StoreService,
