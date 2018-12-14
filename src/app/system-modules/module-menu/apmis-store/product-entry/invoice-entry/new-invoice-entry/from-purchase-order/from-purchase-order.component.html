@@ -108,7 +108,18 @@
       <div class="store-tr">
         <div class="store-td store-td-actions"></div>
         <div class="config-tr-in in-tr">
-          <div class="store-td">Panadol</div>
+          <div class="store-td">
+            <div class="searchproduct">
+              <div class="InputGroup">
+                <input class="customInput" type="text">
+                <ul class="search-sugestions bar" *ngIf="searchProduct">
+                  <li class="search-sugestion">Paracetamol</li>
+                  <li class="search-sugestion">Paracetamol</li>
+                  <li class="search-sugestion">Paracetamol</li>
+                </ul>
+              </div>
+            </div>
+          </div>
           <div class="store-td">200 packs</div>
           <div class="store-td">10 packs</div>
           <div class="store-td">
