@@ -88,7 +88,7 @@ export class PagerButtonComponent implements OnChanges {
     @Input() size: string = BUTTON_SIZE_DEFAULT;
     @Input('background-color') bgColor: string = 'white';
     @Input('fore-color') foreColor: string = '#404040';
-    @Input('is-oval') isOval: boolean = false;
+    @Input('is-oval') isOval: boolean = true;
     @Input('is-disable') disable: boolean = false;
     @Output() onClick: EventEmitter<void> = new EventEmitter<void>();
     fontSize: string;

@@ -1,1 +1,11 @@
 @import '../outbound-transfer/outbound-transfer.component.scss';
+
+/* Override of some style margin and padding*/
+
+.tbl-sect-wrap{
+  margin-bottom: 0px;
+}
+.tbl-top-with-border{
+  
+  padding-top: 20px;
+}

@@ -10,12 +10,12 @@ import * as _ from "lodash";
     styles: [`
         .marked {
             transition: all 120ms linear;
-            background-color: #fff6da;
+            background-color: #feffdd;
         }
 
         .focused {
             transition: all 120ms linear;
-            background-color: #dff8ff;
+            background-color: #e4e8ff;
         }
 
         div.product-suggestion-popup {

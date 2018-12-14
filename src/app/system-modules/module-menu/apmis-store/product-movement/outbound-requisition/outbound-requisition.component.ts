@@ -10,6 +10,7 @@ import {Employee} from "../../../../../models";
 import {ProductGridComponent} from "../helper-components/products/product-grid-component";
 import {SystemModuleService} from "../../../../../services/module-manager/setup/system-module.service";
 import {StoreOutboundService} from "../../../../../services/facility-manager/setup/store-outbound-requisitory-service";
+import {IPagerSource} from "../../../../../core-ui-modules/ui-components/PagerComponent";
 
 @Component({
     selector: 'app-outbound-requisition',
@@ -35,7 +36,12 @@ export class OutboundRequisitionComponent implements OnInit {
     processing: boolean = false;
     saving: boolean = false;
     loginEmployee: Employee = null;
-
+    pagerSource : IPagerSource = {
+        totalRecord : 0 ,
+        pageSize : 5,
+        currentPage : 0,
+        totalPages : 0
+    }
     @ViewChild("grid") grid: ProductGridComponent;
 
     constructor(private locService: ReportGeneratorService,
@@ -53,6 +59,7 @@ export class OutboundRequisitionComponent implements OnInit {
     ngOnInit() {
 
         this.getLocations();
+        this.getStoreOutboundFromServer()
     }
 
     getCurrentStoreInfoFromAuthenticatedUser() {
@@ -76,7 +83,8 @@ export class OutboundRequisitionComponent implements OnInit {
             //console.log("Get Logged In Employee Payload", payload);
             this.loginEmployee = payload;
             // get the current active store from the checkinStore property
-            this.mainStore = this.loginEmployee.storeCheckIn.find(x => x.isOn == true)
+            this.mainStore = this.loginEmployee.storeCheckIn.find(x => x.isOn == true);
+           
 
         });
     }
@@ -106,16 +114,24 @@ export class OutboundRequisitionComponent implements OnInit {
                 }
             }).then(x => {
                 this.processing = false;
-                const stores = _.map(x.data, s => {
+              
+                const stores = _.map(x.data.filter(y => {
+                    return  (y._id != this.mainStore.storeId);
+                    
+                }), s => {
+                   
+                        return {
+                            storeName: s.name, storeId: s._id, description: s.description,
+                            products: [], // products for this store will be cached here for reuse
 
-                    return {
-                        storeName: s.name, storeId: s._id, description: s.description,
-                        products: [], // products for this store will be cached here for reuse
-
-                    };
+                        }; 
+                    
+                   
                 });
 
                 this.stores = stores;
+               
+               
             }, x => {
                 this.processing = false;
                 //console.log("There is an issue connecting with the server!", x);
@@ -240,13 +256,16 @@ export class OutboundRequisitionComponent implements OnInit {
             query: {
                 comment: "OUTBOUND-REQ",
                 facilityId: this.locService.facilityId,
-                destinationStoreId: this.storeName.value,
-                storeId: this.mainStore._id
+                //destinationStoreId: this.storeName.value,
+                storeId: this.mainStore._id,
+                $limit : this.pagerSource.pageSize,
+                $skip  : this.pagerSource.currentPage * this.pagerSource.pageSize
             }
         })
             .then(x => {
             
                 this.isLoadingFromServer = false;
+                this.pagerSource.totalRecord =  x.total;
                 if (x.data.length > 0) {
                     this.serverData  = this.buildProductGridDataFromServerResponse(x.data);
                 }
@@ -256,5 +275,9 @@ export class OutboundRequisitionComponent implements OnInit {
             })
     }
 
-
+    gotoPage(pageIndex : number)
+    {
+        this.pagerSource.currentPage = pageIndex;
+        this.getStoreOutboundFromServer();
+    }
 }
