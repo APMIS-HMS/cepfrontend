@@ -98,22 +98,13 @@
               <div class="select">
                 <label>Batch:</label>
                 <select [formControl]="productQtyBatch" name="dropDown-container" id="dropDown-container">
-<<<<<<< HEAD
-                  <option *ngFor="let item of selectedProduct?.transactions" value="{{item._id}}">{{item.batchNumber}}</option>
-=======
                   <option *ngFor="let item of selectedProduct?.transactions" [ngValue]="item">{{item.batchNumber}}</option>
->>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
                 </select>
               </div>
             </div>
           </div>
-<<<<<<< HEAD
-          <div class="store-td">{{selectedProduct.availableQuantity}}</div>
-          <div class="store-td">{{selectedProduct?.totalQuantity - selectedProduct?.availableQuantity}}</div>
-=======
           <div class="store-td">{{selectedProduct.batchAvailableQuantity}}</div>
           <div class="store-td">{{selectedProduct?.batchQuantity - selectedProduct?.batchAvailableQuantity}}</div>
->>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
           <div class="store-td">
             <div class="apmis-search-item input-wrap">
               <input class="input" [formControl]="productQtyRequestSearch" (focusout)="focusOutQties()" type="text">
@@ -137,11 +128,7 @@
   </div>
 </div>
 
-<<<<<<< HEAD
-<div class="tbl-sect-wrap tbl-top-with-border" *ngFor = "let item of existingStockTransfers">
-=======
 <div class="tbl-sect-wrap tbl-top-with-border" *ngFor = "let item of existingStockTransfers;let i = index">
->>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
   <div class="has-title">Outbound Transfer Status</div>
   <div class="date-sent">
     <span>Store Sent:</span>
@@ -172,26 +159,16 @@
 
     <div class="store-tbody">
       <div class="store-pre-tr">
-<<<<<<< HEAD
-        <div class="store-tr" *ngFor="let stock of item.inventoryTransferTransactions">
-          <div class="store-td store-td-actions">
-            <input type="checkbox" [formControl]="check" />
-=======
         <div class="store-tr" *ngFor="let stock of item.inventoryTransferTransactions;let j = index">
           <div class="store-td store-td-actions">
             <!-- <input type="checkbox" [formControl]="check" /> -->
->>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
           </div>
           <div class="store-tr-in">
             <div class="store-td">{{stock.productObject.name}}</div>
             <div class="store-td">{{stock.availableQuantity}} {{stock.productObject.baseItem.name}}</div>
             <div class="store-td">{{stock.quantityOnHold}} {{stock.productObject.baseItem.name}}</div>
-<<<<<<< HEAD
-            <div class="store-td">{{stock.quantity}} {{stock.productObject.baseItem.name}}</div>
-=======
             <div class="store-td" *ngIf="!stock?.isEdit">{{stock.quantity}} {{stock.productObject.baseItem.name}}</div>
             <div class="store-td" *ngIf="stock?.isEdit"><input (focusout)="onFocusChangeExistingItemValue($event,i,j)"> {{stock.productObject.baseItem.name}}</div>
->>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
             <div class="store-td">#{{stock.costPrice}}/{{stock.productObject.baseItem.name}}</div>
             <div class="store-td">#{{stock.lineCostPrice}} </div>
             <div class="store-td">
@@ -203,19 +180,11 @@
             <div class="table-list col-xs-1 action-placeholder">
               <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
               <div class="action-container shadow-RB">
-<<<<<<< HEAD
-                <div class="action-item">
-                  <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
-                  <span>Edit</span>
-                </div>
-                <div class="action-item">
-=======
                 <div class="action-item" *ngIf="stock.transferStatusObject.name !=='Completed'" (click)="onEditExistingItem(i, j)">
                   <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                   <span>Edit</span>
                 </div>
                 <div class="action-item" *ngIf="stock.transferStatusObject.name !=='Completed'" (click)="onRemoveExistingItem(i, j)">
->>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
                   <i class="fa fa-tags" aria-hidden="true"></i>
                   <span>Remove</span>
                 </div>
@@ -223,11 +192,7 @@
             </div>
           </div>
         </div>
-<<<<<<< HEAD
-        <div class="store-tr">
-=======
         <!-- <div class="store-tr">
->>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
           <div class="tbl-cont-cta"><i class="fa fa-plus"></i> Add Another Item</div>
         </div> -->
       </div>
