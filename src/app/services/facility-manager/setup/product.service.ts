@@ -9,7 +9,9 @@ export class ProductService {
 	public _socketPackageList;
 	public _socketList;
 	public _socketReorderLevel;
+	public _socketConsumable;
 	public _socketProductUniqueReorders;
+	public _socketConsumableCategory;
 	private _rest;
 	public listenerCreate;
 	public listenerUpdate;
@@ -21,11 +23,13 @@ export class ProductService {
 	constructor(private _socketService: SocketService, private _restService: RestService) {
 		this._rest = _restService.getService('products');
 		this._socket = _socketService.getService('formulary-products');
+		this._socketConsumableCategory = _socketService.getService('consumable-categories');
 		this._socketProductConfig = _socketService.getService('product-configs');
 		this._socketPackageList = _socketService.getService('product-pack-sizes');
 		this._socketList = _socketService.getService('list-of-products');
 		this._socketReorderLevel = _socketService.getService('product-reorders');
 		this._socketProductUniqueReorders = _socketService.getService('product-unique-reorders');
+		this._socketConsumable = _socketService.getService('apmis-consumables');
 		this._socket.timeout = 50000;
 		this._socketProductUniqueReorders.timeout = 50000;
 		this._socketProductConfig.timeout = 50000;
@@ -38,7 +42,12 @@ export class ProductService {
 	find(query: any) {
 		return this._socket.find(query);
 	}
-
+	findConSumables(query: any) {
+		return this._socketConsumable.find(query);
+	}
+	findConsumableCategories() {
+		return this._socketConsumableCategory.find();
+	}
 	findList(query: any) {
 		return this._socketList.find(query);
 	}
@@ -70,6 +79,12 @@ export class ProductService {
 	}
 	createPackageSize(packageSize: any) {
 		return this._socketPackageList.create(packageSize);
+	}
+	createConsumableCategory(category: any) {
+		return this._socketConsumableCategory.create(category);
+	}
+	createApmisConsumable(consumable: any) {
+		return this._socketConsumable.create(consumable);
 	}
 	patchProductConfig(_id: any, obj: any, params) {
 		return this._socketProductConfig.patch(_id, obj, params);
