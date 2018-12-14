@@ -16,10 +16,7 @@ import { FormControl } from '@angular/forms';
 import { ApmisFilterBadgeService } from 'app/services/tools';
 import { PurchaseOrder, PurchaseList, ListedItem } from '../../../components/models/purchaseorder';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
-<<<<<<< HEAD
-=======
 import { APMIS_STORE_PAGINATION_LIMIT } from 'app/shared-module/helpers/global-config';
->>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
 
 @Component({
 	selector: 'app-new-purchase-list',
@@ -334,12 +331,9 @@ export class NewPurchaseListComponent implements OnInit {
 	isAllCheckedProductValid() {
 		// this.selectedProducts.find(product => product.)
 	}
-<<<<<<< HEAD
-=======
 
 	loadCurrentPage(event) {
 		this.skip = event;
 		this.getInventoryList();
 	}
->>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
 }

@@ -50,8 +50,4 @@ export class ConfigProductComponent implements OnInit {
     this.selectedIndex = i;
     this.onShowDrugSearchEntry();
   }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
