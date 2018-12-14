@@ -58,20 +58,17 @@ import { ProductExitComponent } from './product-exit/product-exit.component';
 import { SalesComponent } from './product-exit/sales/sales.component';
 import { RefundComponent } from './product-exit/refund/refund.component';
 import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invoice-entry/new-invoice-entry.component';
-<<<<<<< HEAD
 import { ProductToggleComponent } from './apmis-store-product/product-conguration/config-product/product-toggle/product-toggle.component';
 import { ConsumableEntryComponent } from './apmis-store-product/product-conguration/config-product/consumable-entry/consumable-entry.component';
 import { DrugEntryComponent } from './apmis-store-product/product-conguration/config-product/drug-entry/drug-entry.component';
 import { BaseUnitComponent } from './apmis-store-product/product-conguration/config-product/base-unit/base-unit.component';
 import { ConfigContainerComponent } from './apmis-store-product/product-conguration/config-product/config-container/config-container.component';
-=======
 import { FromPurchaseOrderComponent } from './product-entry/invoice-entry/new-invoice-entry/from-purchase-order/from-purchase-order.component';
 import { NoPurchaseOrderComponent } from './product-entry/invoice-entry/new-invoice-entry/no-purchase-order/no-purchase-order.component';
 import { StoreOutboundService } from "../../../services/facility-manager/setup/store-outbound-requisitory-service";
 import { CustomerComponent } from './product-exit/customer/customer.component';
 import { CustomerPrescriptionComponent } from './product-exit/customer/customer-prescription/customer-prescription.component';
 
->>>>>>> 389248b2862280e902162cfe1b7fb603c581652d
 
 @NgModule({
 	imports: [CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule, CoreUiModules],
@@ -115,30 +112,19 @@ import { CustomerPrescriptionComponent } from './product-exit/customer/customer-
 		InboundRequisitionComponent,
 		OutboundRequisitionComponent,
 		StoreCheckInComponent,
-<<<<<<< HEAD
-		ApmisStoreSupplierSearchComponent,		
-=======
 		ProductGridComponent,
 		ProductGridItemComponent,
 		StoreCheckInComponent,
 		ApmisStoreSupplierSearchComponent,
->>>>>>> 389248b2862280e902162cfe1b7fb603c581652d
 		ProductExitComponent,
 		SalesComponent,
 		RefundComponent,
 		NewInvoiceEntryComponent,
-<<<<<<< HEAD
 		ProductToggleComponent,
 		ConsumableEntryComponent,
 		DrugEntryComponent,
 		BaseUnitComponent,
 		ConfigContainerComponent
-=======
-		FromPurchaseOrderComponent,
-		NoPurchaseOrderComponent,
-		CustomerComponent,
-		CustomerPrescriptionComponent
->>>>>>> 389248b2862280e902162cfe1b7fb603c581652d
 	],
 	providers: [
 		StoreService,
