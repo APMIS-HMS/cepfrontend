@@ -2,11 +2,12 @@
   <div class="list-con-wrap">
     <div class="con-wrap">
       <span>Date Generated</span>
-      <h3>Tuesday 27th November 2018</h3>
+      <h3>{{selectedPurchaseList?.createdAt| date:'fullDate'}}</h3>
     </div>
     <div class="con-wrap">
       <span>Status</span>
-      <h3>Pending</h3>
+      <h3 *ngIf="selectedPurchaseList?.isDraft===true">Pending</h3>
+      <h3 *ngIf="!selectedPurchaseList?.isDraft===true">Pending</h3>
     </div>
   </div>
 
@@ -14,11 +15,10 @@
     <div class="con-wrap">
       <span>Supplier(s)</span>
       <div class="sup-list">
-        <h3>SIDMACH Medical Suppliers </h3>
-        <h3>SIDMACH Medical Suppliers </h3>
-        <h3>SIDMACH Medical Suppliers </h3>
-        <h3>SIDMACH Medical Suppliers </h3>
-        <h3>SIDMACH Medical Suppliers </h3>
+        <div class="sup-list-items" data-toggle="tooltip" data-placement="top" title="Click to make purchase" *ngFor="let supplier of  selectedPurchaseList?.suppliersId">
+          <h3 style="margin-block-end: 0em !important; margin-block-start: 0em !important;">{{supplier.name}}</h3>
+          <span>{{supplier.primaryContactPhoneNo}} | {{supplier.email}}</span>
+        </div>
       </div>
     </div>
   </div>
@@ -32,7 +32,7 @@
       <div class="config-tr-in in-tr">
         <div class="store-th">Products</div>
         <div class="store-th">Unit</div>
-        <div class="store-th">Available Required</div>
+        <div class="store-th">Quantity Required</div>
         <div class="store-th">Cost/Unit</div>
         <div class="store-th">Total Cost Price</div>
       </div>
@@ -42,46 +42,40 @@
 
   <div class="store-tbody">
     <div class="store-pre-tr">
-      <div class="store-tr">
-        <div class="store-td store-td-actions">
-          <!-- <input type="checkbox"> -->
-        </div>
-        <div class="config-tr-in in-tr">
-          <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-          <div class="store-td">20 Sachets</div>
-          <div class="store-td">300,000 Sachets</div>
-          <div class="store-td">#5/Sachet</div>
-          <div class="store-td">#300,000</div>
-          <!-- <div class="store-td">
-            <div class="btc-body-item item-action">
-              <i class="fa fa-2x fa-check-circle" aria-hidden="true"></i>
-              <i class="fa fa-2x fa-times-circle" aria-hidden="true"></i>
-            </div>
-          </div> -->
-        </div>
-      </div>
-      <div class="store-tr">
+      <div class="store-tr" *ngFor="let product of selectedPurchaseList?.listedProducts">
         <div class="store-td store-td-actions">
         </div>
         <div class="config-tr-in in-tr">
-          <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-          <div class="store-td">20 Sachets</div>
-          <div class="store-td">300,000 Sachets</div>
-          <div class="store-td">#5/Sachet</div>
+          <div class="store-td">{{product.productName}}</div>
+          <div class="store-td">{{product.productConfiguration.name}}</div>
+          <div class="store-td">{{product.quantity| number}} {{product.productConfiguration.name}}</div>
+          <div class="store-td">#5/{{product.productConfiguration.name}}</div>
           <div class="store-td">#300,000</div>
         </div>
       </div>
-      <div class="store-tr">
-        <div class="store-td store-td-actions">
-        </div>
-        <div class="config-tr-in in-tr">
-          <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-          <div class="store-td">20 Sachets</div>
-          <div class="store-td">300,000 Sachets</div>
-          <div class="store-td">#5/Sachet</div>
-          <div class="store-td">#300,000</div>
-        </div>
-      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="tbl-btn-action">
+  <div class="action-pad">
+    <div class="new-btn-blue">
+      <i class="fa fa-file-pdf-o" aria-hidden="true"></i>
+      <span>Export</span>
+    </div>
+  </div>
+  <div class="action-pad">
+    <div class="new-btn-blue">
+      <i class="fa fa-envelope-o" aria-hidden="true"></i>
+      <span>E-Mail</span>
+    </div>
+  </div>
+  <div class="action-pad">
+    <div class="new-btn-blue">
+      <i class="fa fa-print" aria-hidden="true"></i>
+      <span>Print</span>
     </div>
   </div>
 </div>
