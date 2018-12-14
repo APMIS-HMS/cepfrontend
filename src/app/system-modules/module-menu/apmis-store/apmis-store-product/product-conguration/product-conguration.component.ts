@@ -1,7 +1,7 @@
-import { ProductObserverService } from './../../../../../services/tools/product-observer.service';
+import { ProductObserverService } from '../../../../../services/tools/product-observer.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ProductService } from './../../../../../services/facility-manager/setup/product.service';
+import { ProductService } from '../../../../../services/facility-manager/setup/product.service';
 import { Facility } from 'app/models';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
