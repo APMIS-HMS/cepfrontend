@@ -20,13 +20,14 @@ import {CoolLocalStorage} from "angular2-cool-storage";
 export class ReportGeneratorService implements ICustomReportService {
     protected selectedFacility: any;
     protected patientReportServiceRef: any;
-
+    public facilityId : string  ="";
     constructor(private restEndpoint: RestService, localStorage: CoolLocalStorage) {
         //super();
         this.selectedFacility = localStorage.getObject("selectedFacility");
+        this.facilityId  = this.selectedFacility._id;
         this.patientReportServiceRef = this.restEndpoint.getService("patient-reg-report");
     }
-
+    
     getLabReport(options: ILabReportOption): Promise<IApiResponse<ILabReportModel[]>> {
         options.facilityId = this.selectedFacility._id;
         const newOption: any = {...options};
@@ -81,12 +82,12 @@ export class ReportGeneratorService implements ICustomReportService {
         options = options || {};
         options.facilityId = this.selectedFacility._id;
         //TODO : uncomment if backend service is fixed!
-        /* return this.patientReportServiceRef
-             .find(  {query :  options});*/
+         return this.patientReportServiceRef
+             .find(  {query :  options});
 
         //  return  a sample dummy data for now until the backend is complete;
         //return this.restEndpoint
-        const searchBy = options.searchBy.toLowerCase();
+       /* const searchBy = options.searchBy.toLowerCase();
         const queryString = options.queryString ? options.queryString.toLowerCase()  : "";
         const result = {data: []};
         let data: IPatientAnalyticsReport[] = [];
@@ -164,8 +165,103 @@ export class ReportGeneratorService implements ICustomReportService {
                 },
             ]
         }
+        else if(searchBy ==="hmo")
+        {
+            data = [
+                {
+                    tag: "HMO A",
+                    totalPatient: 70,
+                    male: 50,
+                    female: 20
+
+                },
+                {
+                    tag: "HMO B",
+                    totalPatient: 120,
+                    male: 60,
+                    female: 60
+
+                },
+                {
+                    tag: "HMO C",
+                    totalPatient: 50,
+                    male: 10,
+                    female: 40
+
+                },
+                {
+                    tag: "HMO D",
+                    totalPatient: 75,
+                    male: 25,
+                    female: 50
+
+                },
+               
+            ]
+        }
+        else if(searchBy ==="company")
+        {
+            data = [
+                {
+                    tag: "Company A",
+                    totalPatient: 40,
+                    male: 10,
+                    female: 30
+
+                },
+                {
+                    tag: "Sidmach Tech",
+                    totalPatient: 60,
+                    male: 25,
+                    female: 35
+
+                },
+                {
+                    tag: "Apmis Health",
+                    totalPatient: 20,
+                    male: 12,
+                    female: 8
+
+                },
+                {
+                    tag: "Company B",
+                    totalPatient: 75,
+                    male: 25,
+                    female: 50
+
+                },
+
+            ]
+        }
+        else if(searchBy =="family")
+        {
+            data = [
+                {
+                    tag: "Mr Udor",
+                    totalPatient: 3,
+                    male: 1,
+                    female: 2
+
+                },
+                {
+                    tag: "Mr & Mrs Okoye",
+                    totalPatient: 10,
+                    male: 4,
+                    female: 6
+
+                },
+                {
+                    tag: "Mrs Lilian O.",
+                    totalPatient: 5,
+                    male: 2,
+                    female: 3
+
+                },
+               
+            ]
+        }
         result.data = data;
-        return Promise.resolve(result);
+        return Promise.resolve(result);*/
     }
 
     getWorkBenches(): any {
@@ -180,9 +276,10 @@ export class ReportGeneratorService implements ICustomReportService {
 
     getLocations() {
         return this.selectedFacility.minorLocations.map(x => {
-            return {
-                id: x.locationId,
-                location: x.name
+          return {
+                id: x._id,
+                location: x.name,
+                locationId: x.locationId
             }
         });
     }

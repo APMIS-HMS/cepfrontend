@@ -58,7 +58,7 @@ export class PatientmanagerHomepageComponent implements OnInit, OnChanges {
     selectedValue: string;
     nextOfKinForm: FormGroup;
     patientEditForm: FormGroup;
-    paginationObj: IPagerSource = { totalPages: 0, totalRecord: 0, pageSize: 10, currentPage: 0 };
+    paginationObj: IPagerSource = { totalPages: 0, totalRecord: 0, pageSize: 15, currentPage: 0 };
 
     isEdit = false;
     tabWallet = false;

@@ -1,4 +1,4 @@
-<div class="modal-wraper">
+<div (click)="closeSearch()" class="modal-wraper">
   <div class="toggle-base-wrap">
     <div [className]="selectedToggleIndex === i ?
      'toggle-wrap ft-btn-selected' : 'toggle-wrap'" *ngFor="let item of toggleData; let i = index"
@@ -63,6 +63,12 @@
           <div *ngIf="category_select" class="multi-sup-list">
             <app-apmis-search-result></app-apmis-search-result>
           </div>
+        </div>
+      </div>
+
+      <div class="sv-btn-container">
+        <div class="new-btn-solid-blue">
+          <span>Save</span>
         </div>
       </div>
     </form>

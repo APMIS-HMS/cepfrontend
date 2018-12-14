@@ -16,7 +16,9 @@ export class PatientRegistrationAnalyticsComponent implements OnInit {
     activeTabIndex;
 
     pageInView = 'Patient Registration Analytics';
-
+    hmoList  : IPatientAnalyticsReport []  = [];
+    companyList : IPatientAnalyticsReport[] = [];
+    familyList : IPatientAnalyticsReport[]  = [];
     constructor(private _router: Router, private reportService: ReportGeneratorService) {
     }
 
@@ -44,7 +46,23 @@ export class PatientRegistrationAnalyticsComponent implements OnInit {
               console.log(ageRangeData);
              // this.barChartLabels  = x.data
           });
-       
+      // Get Registration By HMO 
+        this.getPatientAnalyticReport({searchBy:"hmo"})
+            .then(x => {
+                console.log("ApiResponse",x);
+                // map the result to the Age range Bar Chart
+                const data:IPatientAnalyticsReport[]     = x.data;
+                this.hmoList   = data;
+            });
+        
+        // Get Registration By Company Cover 
+        this.getPatientAnalyticReport({searchBy:"company"})
+            .then(x => {
+                console.log("ApiResponse",x);
+                // map the result to the Age range Bar Chart
+                const data:IPatientAnalyticsReport[]     = x.data;
+                this.companyList   = data;
+            });
     }
 
     //barChart 
