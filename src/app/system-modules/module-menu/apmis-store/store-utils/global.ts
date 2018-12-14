@@ -31,24 +31,6 @@ export interface ProductConfig {
     rxCode: string;
     packSizes: any[];
     productType: number;
-<<<<<<< HEAD
-=======
-}
-export interface ProductBase {
-    isBase: boolean;
-    name: string;
-}
-
-export enum ProductType {
-    Drugs = 0,
-    Consumables = 1
-}
-export interface ApmisConsumables {
-    STR: string;
-    MAT: string;
-    CODE: string;
-    CONSUMABLECATEGORYID: string;
->>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
 }
 export interface ProductBase {
     isBase: boolean;
