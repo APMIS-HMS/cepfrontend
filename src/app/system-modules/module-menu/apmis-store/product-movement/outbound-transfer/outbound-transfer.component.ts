@@ -14,6 +14,10 @@ import { Facility, Employee } from 'app/models';
 import { Subscription, ISubscription } from 'rxjs/Subscription';
 import { AuthFacadeService } from '../../../../service-facade/auth-facade.service';
 import { Observable } from 'rxjs/Observable';
+<<<<<<< HEAD
+=======
+import { convertCompileOnSaveOptionFromJson } from 'typescript';
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
 
 @Component({
   selector: 'app-outbound-transfer',
@@ -68,7 +72,6 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
       if (!!res) {
         if (!!res.typeObject) {
           this.checkingStore = res.typeObject;
-          console.log(this.checkingStore);
           if (!!this.checkingStore.storeId) {
             // this.getSelectedStoreSummations();
           }
@@ -78,9 +81,13 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
       this.checkingStore = this.loginEmployee.storeCheckIn.find((x) => x.isOn === true);
+<<<<<<< HEAD
       const _id = (this.storeName.value === null) ? null : this.storeName.value;
       this.getSelectedStoreSummations()
       console.log(this.checkingStore);
+=======
+      this.getSelectedStoreSummations();
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
       if (this.loginEmployee.storeCheckIn === undefined || this.loginEmployee.storeCheckIn.length === 0) {
         // this.modal_on = true;
       } else {
@@ -128,7 +135,10 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
       this.getStores();
     });
     this.storeName.valueChanges.subscribe(value => {
+<<<<<<< HEAD
       console.log(value);
+=======
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
     });
 
     this.productSearch.valueChanges
@@ -148,12 +158,18 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
 
             }
           }).then(payload => {
+<<<<<<< HEAD
             console.log(payload);
             this.inventorySearchResults = payload.data;
             this.hideSearchResultList = false;
             console.log(this.inventorySearchResults);
           }, err => {
             console.log(err);
+=======
+            this.inventorySearchResults = payload.data;
+            this.hideSearchResultList = false;
+          }, err => {
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
           });
         } else {
           this.systemModuleService.announceSweetProxy('Can not add transfer item with an empty destination store', 'error', null,
@@ -166,6 +182,16 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
         }
       });
 
+<<<<<<< HEAD
+=======
+    this.productQtyBatch.valueChanges.subscribe(value => {
+      if (this.selectedProduct.availableQuantity !== undefined) {
+        this.selectedProduct.batchAvailableQuantity = value.availableQuantity;
+        this.selectedProduct.batchQuantity = value.quantity;
+      }
+    });
+
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
     this.GetInventoryTransferState();
   }
 
@@ -188,9 +214,14 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
 
   getStores() {
     this.systemModuleService.on();
+<<<<<<< HEAD
     console.log(this.storeLocation.value);
     this.storeService.find({ query: { facilityId: this.selectedFacility._id, minorLocationId: this.storeLocation.value } }).then(payload => {
       this.stores = payload.data;
+=======
+    this.storeService.find({ query: { facilityId: this.selectedFacility._id, minorLocationId: this.storeLocation.value } }).then(payload => {
+      this.stores = payload.data.filter(x => x._id.toString() !== this.checkingStore.storeId.toString());
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
       this.systemModuleService.off();
     }, er => {
       this.systemModuleService.off();
@@ -199,11 +230,16 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
 
 
   getSelectedStoreSummations() {
+<<<<<<< HEAD
+=======
+    this.existingStockTransfers = [];
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
     this.systemModuleService.on();
     let query = {
       facilityId: this.selectedFacility._id,
       storeId: this.checkingStore.storeId
     };
+<<<<<<< HEAD
     console.log(query, this.checkingStore);
     this.inventoryTransferService.find({ query: query }).then(payload => {
       this.transferObjs = [];
@@ -211,6 +247,16 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
       this.totalTransferredQties = 0;
       this.existingStockTransfers = payload.data;
       console.log(this.existingStockTransfers);
+=======
+    this.inventoryTransferService.find({ query: query }).then(payload => {
+      this.transferObjs = [];
+      payload.data.forEach(element => {
+        const completedTransfers = element.inventoryTransferTransactions.filter(x => x.transferStatusObject.name === 'Completed');
+        if (completedTransfers.length !== element.inventoryTransferTransactions.length) {
+          this.existingStockTransfers.push(element);
+        }
+      });
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
       this.systemModuleService.off();
     }, err => {
       this.systemModuleService.off();
@@ -222,7 +268,10 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
   }
 
   onSelectProduct(item) {
+<<<<<<< HEAD
     console.log(item);
+=======
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
     if (this.storeName.value !== null) {
       this.selectedProduct = item;
       this.hideSearchResultList = true;
@@ -231,7 +280,10 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
       this.stockTransferItems.storeId = this.checkingStore.storeId;
       this.stockTransferItems.inventorytransactionTypeId = this.transferItemState.transferStatus._id;
       this.stockTransferItems.destinationStoreId = this.storeName.value;
+<<<<<<< HEAD
       console.log(this.stockTransferItems.inventoryTransferTransactions);
+=======
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
       this.stockTransferItems.inventoryTransferTransactions = (this.stockTransferItems.inventoryTransferTransactions === undefined || this.stockTransferItems.inventoryTransferTransactions === NaN) ? [] : this.stockTransferItems.inventoryTransferTransactions;
       this.stockTransferItems.inventoryTransferTransactions.push({
         transactionId: this.productQtyBatch.value,
@@ -259,6 +311,12 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
     }
   }
 
+<<<<<<< HEAD
+=======
+  onBatchChange(item) {
+  }
+
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
 
   ngOnDestroy() {
     if (this.loginEmployee.storeCheckIn !== undefined) {
@@ -278,7 +336,10 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
 
   focusOutQties() {
     this.systemModuleService.on();
+<<<<<<< HEAD
     console.log(this.stockTransferItems);
+=======
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
     this.stockTransferItems.inventoryTransferTransactions[this.stockTransferItems.inventoryTransferTransactions.length - 1].transactionId = this.productQtyBatch.value;
     this.stockTransferItems.inventoryTransferTransactions[this.stockTransferItems.inventoryTransferTransactions.length - 1].quantity = +this.productQtyRequestSearch.value;
     this.stockTransferItems.inventoryTransferTransactions[this.stockTransferItems.inventoryTransferTransactions.length - 1].lineCostPrice = (+this.productQtyRequestSearch.value) * this.selectedProduct.price;
@@ -308,7 +369,10 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
     const type$ = Observable.fromPromise(this.inventoryTransactionTypeService.find({ query: { name: 'transfer', $limit: 20 } }));
 
     Observable.forkJoin([status$, type$]).subscribe((results: any) => {
+<<<<<<< HEAD
       console.log(results);
+=======
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
       const statusResult: any = results[0];
       const typeResult: any = results[1];
 
@@ -322,14 +386,21 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
         transferStatus: selectedInventoryTransferStatus,
         transactionType: selectedInventoryTransactionType
       };
+<<<<<<< HEAD
       console.log(this.transferItemState);
     }, err => {
       console.log(err);
+=======
+    }, err => {
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
     });
   }
 
   onCheckAll(event) {
+<<<<<<< HEAD
     console.log(event);
+=======
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
     if (this.transferObjs.length > 0) {
       if (event.target.checked) {
         this.transferObjs.map(x => {
@@ -350,7 +421,10 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
     this.totalCostPrice = 0;
     this.totalCount = 0;
     const selectedStocks = this.transferObjs.filter(x => x.isSelected === true);
+<<<<<<< HEAD
     console.log(selectedStocks);
+=======
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
     selectedStocks.forEach(x => {
       if (x.lineCostPrice !== undefined) {
         this.totalCostPrice += x.lineCostPrice;
@@ -360,21 +434,30 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
   }
 
   onCheckItem(event, value) {
+<<<<<<< HEAD
     console.log(this.transferObjs);
+=======
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
     if (event.target.checked) {
       value.isSelected = true;
     }
     else {
       value.isSelected = false;
     }
+<<<<<<< HEAD
     console.log(this.transferObjs.filter(x => x.isSelected === true).length, this.transferObjs.filter(x => x.isSelected === false).length);
+=======
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
     this.getTotalItemCost();
   }
 
   sendRequest() {
     this.stockTransferItems.inventoryTransferTransactions = [];
     const checkedItems = this.transferObjs.filter(x => x.isSelected === true);
+<<<<<<< HEAD
     console.log(this.stockTransferItems, checkedItems);
+=======
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
     this.stockTransferItems.inventoryTransferTransactions = JSON.parse(JSON.stringify(checkedItems));
     this.systemModuleService.announceSweetProxy('You are about to transfer', 'question', this);
   }
@@ -382,8 +465,12 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
   sweetAlertCallback(result) {
     if (result.value) {
       this.systemModuleService.on();
+<<<<<<< HEAD
       console.log(this.stockTransferItems);
       this.inventoryTransferService.create(this.stockTransferItems).then(payload => {
+=======
+      this.inventoryTransferService.create2(this.stockTransferItems).then(payload => {
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
         this.systemModuleService.off();
         this.systemModuleService.announceSweetProxy('Stock transfer created successfully', 'success',
           null,
@@ -406,18 +493,48 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
   }
 
   onRemoveItem(index) {
+<<<<<<< HEAD
     console.log(index);
+=======
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
     this.transferObjs = this.transferObjs.filter((x, i) => {
       if (i !== index) {
         return x;
       }
     });
     this.stockTransferItems.inventoryTransferTransactions = JSON.parse(JSON.stringify(this.transferObjs));
+<<<<<<< HEAD
     console.log(this.transferObjs);
+=======
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
   }
 
   onFocusChangeItemValue(event, index) {
     this.transferObjs[index].quantity = event.srcElement.value;
     this.transferObjs[index].isEdit = false;
   }
+<<<<<<< HEAD
+=======
+  onFocusChangeExistingItemValue(event, index, index2) {
+    this.existingStockTransfers[index].inventoryTransferTransactions[index2].quantity = event.srcElement.value;
+    this.existingStockTransfers[index].inventoryTransferTransactions[index2].lineCostPrice = this.existingStockTransfers[index].inventoryTransferTransactions[index2].quantity * this.existingStockTransfers[index].inventoryTransferTransactions[index2].costPrice;
+    this.existingStockTransfers[index].inventoryTransferTransactions[index2].isEdit = false;
+    this.systemModuleService.on();
+    this.inventoryTransferService.patch(this.existingStockTransfers[index]._id, { inventoryTransferTransactions: this.existingStockTransfers[index].inventoryTransferTransactions }, {}).then(payload => {
+      this.systemModuleService.off();
+    }, err => {
+      this.systemModuleService.off();
+    });
+  }
+
+  onEditExistingItem(index, index2) {
+    this.existingStockTransfers[index].inventoryTransferTransactions[index2].isEdit = (this.existingStockTransfers[index].inventoryTransferTransactions[index2].isEdit === undefined) ?
+      false : this.existingStockTransfers[index].inventoryTransferTransactions[index2].isEdit;
+    this.existingStockTransfers[index].inventoryTransferTransactions[index2].isEdit = true;
+  }
+
+  onRemoveExistingItem(index, index2) {
+
+  }
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
 }

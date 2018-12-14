@@ -115,8 +115,12 @@
 
         </div>
     </div>
-    <apmis-data-pager [show-next-prev]="true" color="blue" (onPageClick)="pageClickedEvent($event)" [in-progress]="loading"
-        [show-progress]="true" next-prev-color="grey" [pager-source]="paginationObj"></apmis-data-pager>
+    <div style="margin-top: 20px;">
+        <apmis-data-pager [show-next-prev]="true" color="blue"
+                          (onPageClick)="pageClickedEvent($event)" [in-progress]="loading"
+                          [show-progress]="true" next-prev-color="grey" [pager-source]="paginationObj"></apmis-data-pager>
+    </div>
+    
       
     <!--<div class="btn-center">
         <button (click)="loadMore()" class="apmis-blue" mat-raised-button *ngIf="showLoadMore || patients.length === 0">Load

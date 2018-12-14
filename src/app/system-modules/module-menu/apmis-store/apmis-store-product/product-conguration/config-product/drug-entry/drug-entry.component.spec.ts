@@ -22,4 +22,8 @@ describe('DrugEntryComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+<<<<<<< HEAD
 });
+=======
+});
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6

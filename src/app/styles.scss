@@ -2806,7 +2806,11 @@ button,
     -webkit-transition:0.2s ease all;
   }
   
+<<<<<<< HEAD
   .customInput:focus ~ .customLabel, .customInput:valid ~ .customLabel {
+=======
+  .customInput:focus ~ .customLabel{
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
     top:-12px;
     font-size:12px;
     color:#5264AE;
@@ -2857,7 +2861,11 @@ button,
     -webkit-transition: 0.2s ease all;
 }
 
+<<<<<<< HEAD
 .customInput:focus~.customLabel {
+=======
+.customInput:focus~.customLabel,  .customInput:valid ~ .customLabel{
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
     top: -12px;
     font-size: 12px;
     color: #5264AE;
@@ -3057,4 +3065,13 @@ button,
     display: block;
     position: relative;
     border-right: 1px solid #C4C4C4;
+<<<<<<< HEAD
 }
+=======
+}
+
+
+
+
+
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6

@@ -1,5 +1,5 @@
 <div class="search-container">
-  <div class="searchproduct">
+  <div *ngIf="InvoiceEntryLanding" class="searchproduct">
     <div class="InputGroup">
       <input class="customInput" type="text" required>
       <span class="highlight"></span>
@@ -12,9 +12,21 @@
       </ul> -->
     </div>
   </div>
+  <div (click)="toggleView()" class="tbl-btn-action">
+    <div class="action-pad">
+      <div *ngIf="InvoiceEntryLanding" class="new-btn-blue">
+        <i class="fa fa-plus" aria-hidden="true"></i>
+        <span>New Invioce Entry</span>
+      </div>
+      <div *ngIf="!InvoiceEntryLanding" class="new-link-blue">
+        <i class="fa fa-arrow-left" aria-hidden="true"></i>
+        <span>Go back to invoice list</span>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="store-table">
+<div *ngIf="InvoiceEntryLanding" class="store-table">
   <div class="store-thead">
     <div class="store-tr">
       <div class="store-th store-td-actions">
@@ -49,9 +61,6 @@
               <div (click)="viewInvoice()" class="ft-btn btn-act-margin">
                 <span>View Invoice</span>
               </div>
-              <div class="ft-btn btn-act-margin">
-                <span>Add to Inventory</span>
-              </div>
             </div>
           </div>
         </div>
@@ -74,9 +83,6 @@
             <div class="inv-action">
               <div class="ft-btn btn-act-margin">
                 <span>View Invoice</span>
-              </div>
-              <div class="ft-btn btn-act-margin">
-                <span>Add to Inventory</span>
               </div>
             </div>
           </div>
@@ -101,9 +107,6 @@
               <div class="ft-btn btn-act-margin">
                 <span>View Invoice</span>
               </div>
-              <div class="ft-btn btn-act-margin">
-                <span>Add to Inventory</span>
-              </div>
             </div>
           </div>
         </div>
@@ -115,7 +118,7 @@
   </div>
 </div>
 
-
+<app-new-invoice-entry *ngIf="!InvoiceEntryLanding"></app-new-invoice-entry>
 <div *ngIf="showViewInvoice" class="modal-overlay">
   <app-view-invoice (closeModal)="close_onClick($event)" id="form-modal" class="form-modal center-center"></app-view-invoice>
 </div>

@@ -15,6 +15,10 @@ import {
 import { ApmisFilterBadgeService } from 'app/services/tools';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import { OrderedItem } from '../../../components/models/purchaseorder';
+<<<<<<< HEAD
+=======
+import { APMIS_STORE_PAGINATION_LIMIT } from 'app/shared-module/helpers/global-config';
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
 
 @Component({
 	selector: 'app-new-purchase-order-list',
@@ -30,10 +34,17 @@ export class NewPurchaseOrderListComponent implements OnInit {
 	selectedFacility: any;
 	storeId: string;
 	products: any;
+<<<<<<< HEAD
 	numberOfPages: number;
 	limit: any;
 	total: any;
 	skip: any;
+=======
+	numberOfPages = 0;
+	limit = APMIS_STORE_PAGINATION_LIMIT;
+	total = 0;
+	skip = 0;
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
 	subscription: any;
 	checkingStore: any = <any>{};
 	loginEmployee: Employee = <Employee>{};
@@ -71,7 +82,10 @@ export class NewPurchaseOrderListComponent implements OnInit {
 					this.checkingStore = res.typeObject;
 					if (!!this.checkingStore.storeId) {
 						this._locker.setObject('checkingObject', this.checkingStore);
+<<<<<<< HEAD
 						this.getInventoryList();
+=======
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
 					}
 				}
 			}
@@ -148,6 +162,10 @@ export class NewPurchaseOrderListComponent implements OnInit {
 			this.productConfigs = this.modifyProducts(this.productConfigs);
 		});
 		this.getSuppliers();
+<<<<<<< HEAD
+=======
+		this.getInventoryList();
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
 	}
 
 	getSupplierPurchaseList(supplier) {
@@ -253,6 +271,7 @@ export class NewPurchaseOrderListComponent implements OnInit {
 	onshowSup_search() {
 		this.sup_search = !this.sup_search;
 	}
+<<<<<<< HEAD
 
 	getSuppliers() {
 		this.supplierService
@@ -335,5 +354,95 @@ export class NewPurchaseOrderListComponent implements OnInit {
 				this.systemModuleService.off();
 			}
 		);
+=======
+
+	getSuppliers() {
+		this.supplierService
+			.find({
+				query: {
+					facilityId: this.selectedFacility._id
+				}
+			})
+			.then(
+				(payload) => {
+					this.suppliers = payload.data;
+					this.supplierSearchResult = payload.data.map((c) => {
+						return { id: c._id, label: c.supplier.name };
+					});
+				},
+				(error) => {}
+			);
+	}
+
+	onSearchSelectedItems(data: any[]) {
+		if (data.length > 0) {
+			this.selectedSuppliers = this.suppliers.filter((supplier) => {
+				const res = data.find((dt) => dt.id.toString() === supplier._id.toString());
+				if (res !== undefined) {
+					return supplier;
+				}
+			});
+			this.selectedLocalStorageSuppliers = data;
+		} else {
+			this.selectedSuppliers = [];
+		}
+	}
+
+	submit() {
+		this.systemModuleService.on();
+
+		const supplierIds = this.selectedLocalStorageSuppliers.map((local) => local.id);
+		const suppliersToSave = this.selectedSuppliers.map((supplier) => {
+			const existObj = supplierIds.find((i) => i.toString() === supplier._id.toString());
+			if (existObj) {
+				return supplier.supplier;
+			}
+		});
+		const purchaseOrder: PurchaseOrder = <PurchaseOrder>{};
+		purchaseOrder.facilityId = this.selectedFacility._id;
+		purchaseOrder.storeId = this.checkingStore.storeId;
+		purchaseOrder.orderedProducts = [];
+		purchaseOrder.purchaseOrderNumber = '';
+		purchaseOrder.createdBy = this.loginEmployee._id;
+		purchaseOrder.isSupplied = false;
+		purchaseOrder.supplierId = this.supplierFormControl.value._id;
+		this.selectedProducts.forEach((product) => {
+			const listedItem: OrderedItem = <OrderedItem>{};
+			listedItem.costPrice = product.costPrice;
+			listedItem.productId = product.productId;
+			listedItem.productName = product.productName;
+			listedItem.quantity = product.quantity;
+			listedItem.productPackType = product.productConfiguration.name;
+			listedItem.productConfiguration = product.productConfiguration;
+			purchaseOrder.orderedProducts.push(listedItem);
+		});
+
+		this.purchaseListService.create(purchaseOrder).then(
+			(payload) => {
+				this.selectedProducts = [];
+				this.getInventoryList();
+				this.systemModuleService.off();
+				this.systemModuleService.announceSweetProxy(
+					'Your product has been ordered successfully',
+					'success',
+					null,
+					null,
+					null,
+					null,
+					null,
+					null,
+					null
+				);
+			},
+			(error) => {
+				this.systemModuleService.off();
+			}
+		);
+	}
+
+	loadCurrentPage(event) {
+		this.skip = event;
+		this.getInventoryList();
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
 	}
 }

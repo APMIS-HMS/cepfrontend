@@ -52,4 +52,8 @@ export class ProductToggleComponent implements OnInit, OnDestroy {
       this.toggleSubscription.unsubscribe();
     }
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6

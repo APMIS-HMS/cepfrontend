@@ -2,8 +2,8 @@
   <div>
     <span>Showing</span>
     <span class="bold">{{firstNumberPart}}</span>
-    <span *ngIf="(defaultPages[0].id+1) < total">to</span>
-    <span *ngIf="(defaultPages[0].id+1) < total" class="bold">{{secondNumberPart}}</span>
+    <span *ngIf="defaultPages.length > 0 && (defaultPages[0].id+1) < total">to</span>
+    <span *ngIf="defaultPages.length > 0 && (defaultPages[0].id+1) < total" class="bold">{{secondNumberPart}}</span>
     <span>of</span>
     <span class="bold">{{total}}</span>
   </div>

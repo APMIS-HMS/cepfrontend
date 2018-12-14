@@ -93,4 +93,8 @@ export class ProductCongurationComponent implements OnInit, OnDestroy {
       this.subscription.unsubscribe();
     }
   }
+<<<<<<< HEAD:src/app/system-modules/module-menu/apmis-store/apmis-store-product/product-conguration/conguration.component.ts
 }
+=======
+}
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6:src/app/system-modules/module-menu/apmis-store/apmis-store-product/product-conguration/product-conguration.component.ts

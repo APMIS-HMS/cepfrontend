@@ -1,0 +1,69 @@
+@import "./../../product-entry/purchase-list/purchase-list.component.scss";
+
+.con-wrap{
+    span{
+        margin-bottom: 4px;
+        font-weight: bold;
+    }
+    h3{
+        font-weight: bolder;
+    }
+}
+
+.in-tr{
+    grid-template-columns: 4fr 1fr 1fr 1fr !important;
+}
+
+
+.btnWrap{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.cus-details{
+    display: flex;
+    justify-content: space-between;
+    .detail-cont{
+        display: flex;
+        font-size: 12px;
+        margin-right: 20px;
+        span{
+            font-weight: bold;
+            margin-right: 5px;
+        }
+    }
+}
+
+.tp-act{
+    display: flex;
+    //justify-content: space-around;
+    margin: 0 0px 20px 0;
+    align-items: center;
+    div, h3{
+        margin-right: 10px;
+    }
+}
+
+.amt-summ{
+    display: block;
+    align-content: right;
+    justify-content: right;
+    text-align: right;
+    .summ{
+        display: flex;
+        justify-content: flex-end;
+        margin: 5px;
+        span, a{
+            color: #337AB7; 
+            margin-right: 40px;
+            font-size: 12px;
+        }
+        span{
+            text-align: right;
+        }
+        a{
+            text-align: left;
+            font-weight: bold;
+        }
+    }
+}

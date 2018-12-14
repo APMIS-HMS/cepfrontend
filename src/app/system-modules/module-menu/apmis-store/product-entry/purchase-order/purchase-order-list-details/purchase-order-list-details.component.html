@@ -2,15 +2,16 @@
   <div class="list-con-wrap">
     <div class="con-wrap">
       <span>Date Generated</span>
-      <h3>Tuesday 27th November 2018</h3>
+      <h3>{{selectedOrder.createdAt | date:'fullDate'}}</h3>
     </div>
     <div class="con-wrap">
       <span>Status</span>
-      <h3>Pending</h3>
+      <h3 *ngIf="selectedOrder.isSupplied===true">Pending</h3>
+      <h3 *ngIf="!selectedOrder.isSupplied===true">Pending</h3>
     </div>
     <div class="con-wrap">
       <span>Supplier(s)</span>
-      <h3>SIDMACH Medical Suppliers </h3>
+      <h3>{{selectedOrder.supplierObject.name}}</h3>
     </div>
   </div>
 </div>
@@ -23,7 +24,7 @@
       <div class="config-tr-in in-tr">
         <div class="store-th">Products</div>
         <div class="store-th">Unit</div>
-        <div class="store-th">Available Required</div>
+        <div class="store-th">Quantity</div>
         <div class="store-th">Cost/Unit</div>
         <div class="store-th">Total Cost Price</div>
       </div>
@@ -33,44 +34,15 @@
 
   <div class="store-tbody">
     <div class="store-pre-tr">
-      <div class="store-tr">
-        <div class="store-td store-td-actions">
-          <!-- <input type="checkbox"> -->
-        </div>
-        <div class="config-tr-in in-tr">
-          <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-          <div class="store-td">20 Sachets</div>
-          <div class="store-td">300,000 Sachets</div>
-          <div class="store-td">#5/Sachet</div>
-          <div class="store-td">#300,000</div>
-          <!-- <div class="store-td">
-              <div class="btc-body-item item-action">
-                <i class="fa fa-2x fa-check-circle" aria-hidden="true"></i>
-                <i class="fa fa-2x fa-times-circle" aria-hidden="true"></i>
-              </div>
-            </div> -->
-        </div>
-      </div>
-      <div class="store-tr">
+      <div class="store-tr" *ngFor="let order of selectedOrder.orderedProducts">
         <div class="store-td store-td-actions">
         </div>
         <div class="config-tr-in in-tr">
-          <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-          <div class="store-td">20 Sachets</div>
-          <div class="store-td">300,000 Sachets</div>
-          <div class="store-td">#5/Sachet</div>
-          <div class="store-td">#300,000</div>
-        </div>
-      </div>
-      <div class="store-tr">
-        <div class="store-td store-td-actions">
-        </div>
-        <div class="config-tr-in in-tr">
-          <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-          <div class="store-td">20 Sachets</div>
-          <div class="store-td">300,000 Sachets</div>
-          <div class="store-td">#5/Sachet</div>
-          <div class="store-td">#300,000</div>
+          <div class="store-td">{{order.productName}}</div>
+          <div class="store-td">{{order.productPackType}}</div>
+          <div class="store-td">{{order.quantity}} {{order.productPackType}}</div>
+          <div class="store-td">#{{order.costPrice}}/{{order.productPackType}}</div>
+          <div class="store-td">#{{order.quantity * order.costPrice}}</div>
         </div>
       </div>
     </div>

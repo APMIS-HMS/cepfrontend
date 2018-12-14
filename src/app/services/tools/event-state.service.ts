@@ -17,4 +17,8 @@ export class EventStateService {
 
 export interface State {
     show: boolean;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6

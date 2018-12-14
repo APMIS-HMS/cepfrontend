@@ -16,6 +16,10 @@ import { FormControl } from '@angular/forms';
 import { ApmisFilterBadgeService } from 'app/services/tools';
 import { PurchaseOrder, PurchaseList, ListedItem } from '../../../components/models/purchaseorder';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+<<<<<<< HEAD
+=======
+import { APMIS_STORE_PAGINATION_LIMIT } from 'app/shared-module/helpers/global-config';
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
 
 @Component({
 	selector: 'app-new-purchase-list',
@@ -30,10 +34,10 @@ export class NewPurchaseListComponent implements OnInit {
 	selectedFacility: any;
 	storeId: string;
 	products: any;
-	numberOfPages: number;
-	limit: any;
-	total: any;
-	skip: any;
+	numberOfPages = 0;
+	limit = APMIS_STORE_PAGINATION_LIMIT;
+	total = 0;
+	skip = 0;
 	subscription: any;
 	checkingStore: any = <any>{};
 	loginEmployee: Employee = <Employee>{};
@@ -169,6 +173,7 @@ export class NewPurchaseListComponent implements OnInit {
 				})
 				.then(
 					(payload) => {
+						console.log(payload);
 						this.productConfigs = this.modifyProducts(payload.data);
 						this.numberOfPages = payload.total / this.limit;
 						this.total = payload.total;
@@ -329,4 +334,12 @@ export class NewPurchaseListComponent implements OnInit {
 	isAllCheckedProductValid() {
 		// this.selectedProducts.find(product => product.)
 	}
+<<<<<<< HEAD
+=======
+
+	loadCurrentPage(event) {
+		this.skip = event;
+		this.getInventoryList();
+	}
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6
 }

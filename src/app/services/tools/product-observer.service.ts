@@ -65,4 +65,8 @@ export class ProductObserverService {
     setToggleIndex(index: number) {
         this.toggleIndexSubject.next(index);
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> ab0a644967becfaf526976c70c7d6612dab07fb6

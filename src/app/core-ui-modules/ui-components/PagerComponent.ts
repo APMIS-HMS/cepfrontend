@@ -16,6 +16,7 @@ import {
     ViewEncapsulation
 } from '@angular/core';
 
+export const BUTTON_SIZE_SMALL: string = 'small';
 export const BUTTON_SIZE_DEFAULT: string = 'default';
 export const BUTTON_SIZE_MEDIUM: string = 'medium';
 export const BUTTON_SIZE_LARGE: string = 'large';
@@ -33,23 +34,24 @@ export interface IPagerSource {
 @Component({
     selector: 'apmis-pager-button',
     template: `
-        <p (click)="emitButtonClickEvent($event)" class="button"
-           [ngClass]="{'apmis-pager-button-disable' : disable, 'apmis-pager-button' : !disable}"
-           [ngStyle]="{'color' : foreColor,'background-color' : !disable? bgColor : 'white',
+        <button (click)="emitButtonClickEvent($event)" class="button"
+                [ngClass]="{'apmis-pager-button-disable' : disable, 'apmis-pager-button' : !disable}"
+                [ngStyle]="{'color' : foreColor,'background-color' : !disable? bgColor : 'white',
            'border-radius':isOval ? '100%':'0px','padding' : padding,'font-size' : fontSize,
-           'margin-left':isOval ? '4px':'0px','margin-right':isOval ? '4px':'0px' }">
+           'margin-left':isOval ? '4px':'0px','margin-right':isOval ? '4px':'0px','width' : (size==='small') ? '25px' : isOval ? '32px' : '30px', 
+           'height' : (size==='small') ? '25px' : isOval ? '32px' : '30px'}">
             <ng-content>
 
             </ng-content>
-        </p>  `,
+        </button>  `,
     styles: [
             `
-            p.apmis-pager-button:hover, p.apmis-pager-button:focus {
+            button.apmis-pager-button:hover, button.apmis-pager-button:focus {
                 background-color: rgba(213, 255, 236, 0.8) !important;
                 color: #3c3c3c !important;
             }
 
-            p.button {
+            button.button {
                 align-items: center;
                 transition: all linear 400ms;
                 font-size: 1rem;
@@ -58,12 +60,13 @@ export interface IPagerSource {
                 flex-direction: row;
                 justify-content: center;
                 align-content: center;
-                width: 40px;
-                height: 40px;
+                width: 25px;
+                height: 25px;
                 border-radius: 100%;
+                border: none !important;
             }
 
-            p.apmis-pager-button-disable {
+            button.apmis-pager-button-disable {
 
                 border: solid 1px #e7e7e7;
                 background-color: #e4e4e4 !important;
@@ -72,7 +75,7 @@ export interface IPagerSource {
 
             }
 
-            p.apmis-pager-button {
+            button.apmis-pager-button {
                 box-shadow: 1px 1px 7px rgba(132, 132, 132, 0.68);
                 background-color: #ffffff;
                 cursor: pointer;
@@ -109,19 +112,23 @@ export class PagerButtonComponent implements OnChanges {
     private updateButtonSize() {
         switch (this.size) {
             case BUTTON_SIZE_DEFAULT:
-                this.padding = '0px';
+                this.padding = '5px';
                 this.fontSize = '13px';
                 break;
+            case BUTTON_SIZE_SMALL:
+                this.padding = '0px';
+                this.fontSize = '11px';
+                break;
             case BUTTON_SIZE_MEDIUM:
-                this.padding = '30px';
+                this.padding = '20px';
                 this.fontSize = '18px';
                 break;
             case BUTTON_SIZE_LARGE:
-                this.padding = '45px';
-                this.fontSize = '24px';
+                this.padding = '30px';
+                this.fontSize = '26px';
                 break;
             default:
-                this.padding = '0px';
+                this.padding = '5px';
                 this.fontSize = '13px';
                 break;
         }
@@ -154,8 +161,8 @@ export class PagerButtonComponent implements OnChanges {
             <div class="apmis-pager-button-container" *ngIf="pagerSource "
                  [ngStyle]="{'justify-content' : flexJustify }">
                 <apmis-pager-button title="Busy loading Page Data" [size]="buttonSize" [is-disable]="true"
-                                   *ngIf="showProgress && inProgress"
-                                   [is-oval]="useOvalButton">
+                                    *ngIf="showProgress && inProgress"
+                                    [is-oval]="useOvalButton">
                <span class="fa fa-refresh fa-spin" *ngIf="inProgress">
                    
                </span>
@@ -164,35 +171,35 @@ export class PagerButtonComponent implements OnChanges {
                </span>
                 </apmis-pager-button>
                 <apmis-pager-button title="Goto First Page" [size]="buttonSize"
-                                   [is-disable]="pageIndex <= 0 || inProgress"
-                                   (onClick)="gotoFirstPage()"
-                                   *ngIf="showFirstLast" #first
-                                   [is-oval]="useOvalButton" [background-color]="firstLastColor">
+                                    [is-disable]="pageIndex <= 0 || inProgress"
+                                    (onClick)="gotoFirstPage()"
+                                    *ngIf="showFirstLast" #first
+                                    [is-oval]="useOvalButton" [background-color]="firstLastColor">
                     <span>&#8676;</span>
                 </apmis-pager-button>
                 <apmis-pager-button title="Go to Previous Page"
-                                   [size]="buttonSize" [is-disable]="pageIndex <= 0 || inProgress"
-                                   (onClick)="gotoPrevPage()"
-                                   *ngIf="showNextPrev" #prev
-                                   [is-oval]="useOvalButton" [background-color]="nextPrevColor">
+                                    [size]="buttonSize" [is-disable]="pageIndex <= 0 || inProgress"
+                                    (onClick)="gotoPrevPage()"
+                                    *ngIf="showNextPrev" #prev
+                                    [is-oval]="useOvalButton" [background-color]="nextPrevColor">
                     &#10094;
                 </apmis-pager-button>
                 <apmis-pager-button [size]="buttonSize" #pg [is-oval]="useOvalButton"
-                                   [background-color]="pageIndex === index ? color:'white'"
-                                   (onClick)="pagerButtonClick(index)" [is-disable]="inProgress"
-                                   *ngFor="let p of totalPages; let index = index">{{index + 1}}
+                                    [background-color]="pageIndex === index ? color:'white'"
+                                    (onClick)="pagerButtonClick(index)" [is-disable]="inProgress"
+                                    *ngFor="let p of totalPages; let index = index">{{index + 1}}
                 </apmis-pager-button>
                 <apmis-pager-button title="Go to Next Page" [size]="buttonSize"
-                                   [is-disable]="pageIndex >= totalPages.length-1 || inProgress"
-                                   (onClick)="gotoNextPage()"
-                                   *ngIf="showNextPrev" #next [background-color]="nextPrevColor"
-                                   [is-oval]="useOvalButton">&#10095;
+                                    [is-disable]="pageIndex >= totalPages.length-1 || inProgress"
+                                    (onClick)="gotoNextPage()"
+                                    *ngIf="showNextPrev" #next [background-color]="nextPrevColor"
+                                    [is-oval]="useOvalButton">&#10095;
                 </apmis-pager-button>
                 <apmis-pager-button title="Go to Last Page" [size]="buttonSize"
-                                   [is-disable]="pageIndex >= totalPages.length-1 || inProgress"
-                                   (onClick)="gotoLastPage()"
-                                   *ngIf="showFirstLast" #next [background-color]="firstLastColor"
-                                   [is-oval]="useOvalButton"><span>&#8677;</span>
+                                    [is-disable]="pageIndex >= totalPages.length-1 || inProgress"
+                                    (onClick)="gotoLastPage()"
+                                    *ngIf="showFirstLast" #next [background-color]="firstLastColor"
+                                    [is-oval]="useOvalButton"><span>&#8677;</span>
                 </apmis-pager-button>
 
             </div>
@@ -239,7 +246,7 @@ export class ApmisDataPagerComponent implements OnInit, AfterViewInit, OnChanges
     @ViewChild('prev') prevButton: PagerButtonComponent;
     @ViewChild('next') nextButton: PagerButtonComponent;
     @ViewChildren('pg') buttons: QueryList<PagerButtonComponent>; // this may be redundant
-    @Input('use-oval-button') useOvalButton: boolean = false;
+    @Input('use-oval-button') useOvalButton: boolean = true;
     @Input('in-progress') inProgress: boolean = false;
     @Input('display-summary') displaySummary: boolean = false;
     @Input('show-total-record') showTotalRecord: boolean = true;
@@ -262,7 +269,7 @@ export class ApmisDataPagerComponent implements OnInit, AfterViewInit, OnChanges
     flexJustify: string = PAGER_HORIZONTAL_ALIGNMENT_CENTER;
     //diff : { [any : string] : KeyValueDiffer<string, IPagerSource>};
     differ: any;
-    pageSizeOptions: number[] = [5, 10, 15, 20, 30, 40, 50, 50, 100, 150, 200, 250, 300];
+    pageSizeOptions: number[] = [3, 5, 10, 15, 20, 30, 40, 50, 75, 100, 120, 150, 200, 250, 300];
 
 
     constructor(private differs: KeyValueDiffers) {
