@@ -12,10 +12,11 @@ export const ProductsToggle = {
     Drug: 'Drug',
     Consumables: 'Consumables'
 };
-export interface FormularyProduct {
+export interface StoreProduct {
     code: string;
     id: string;
     name: string;
+    type: number;
 }
 export interface ProductPackSize {
     id: string;
@@ -25,8 +26,24 @@ export interface ProductPackSize {
 export interface ProductConfig {
     _id?: string;
     productId: string;
-    productObject: FormularyProduct;
+    productObject: StoreProduct;
     facilityId: string;
     rxCode: string;
     packSizes: any[];
+    productType: number;
+}
+export interface ProductBase {
+    isBase: boolean;
+    name: string;
+}
+
+export enum ProductType {
+    Drugs = 0,
+    Consumables = 1
+}
+export interface ApmisConsumables {
+    STR: string;
+    MAT: string;
+    CODE: string;
+    CONSUMABLECATEGORYID: string;
 }

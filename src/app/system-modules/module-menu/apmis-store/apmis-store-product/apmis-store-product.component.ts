@@ -15,7 +15,6 @@ export class ApmisStoreProductComponent implements OnInit {
   storeFilters = [];
   selectedFilterIndex = 0;
   filterType = '';
-  
   constructor(private storeUtilService: StoreGlobalUtilService) { }
 
   ngOnInit() {
