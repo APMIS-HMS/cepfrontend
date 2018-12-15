@@ -1,9 +1,11 @@
+import { ProductObserverService } from '../../../../../services/tools/product-observer.service';
 import { Subscription } from 'rxjs/Subscription';
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ProductService } from './../../../../../services/facility-manager/setup/product.service';
+import { ProductService } from '../../../../../services/facility-manager/setup/product.service';
 import { Facility } from 'app/models';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { ProductConfig } from '../../store-utils/global';
 
 
 @Component({
@@ -15,13 +17,16 @@ export class ProductCongurationComponent implements OnInit, OnDestroy {
   currentFacility: Facility = <Facility>{};
   productConfigs = [];
   baseUnit = '';
+  productConfigType;
   selectedProductConfig;
   productConfigLoading = true;
   configToDelete: any = <any>{};
   subscription: Subscription;
+  editObject: ProductConfig = <ProductConfig>{};
   
   constructor(private productService: ProductService,
     private systemModuleService: SystemModuleService,
+    private pdObserverService: ProductObserverService,
     private locker: CoolLocalStorage) { }
   ngOnInit() {
     this.currentFacility = <Facility>this.locker.getObject('selectedFacility');
@@ -39,8 +44,11 @@ export class ProductCongurationComponent implements OnInit, OnDestroy {
     }, err => {
     });
   }
-  onEdit(data) {
-    this.selectedProductConfig = data;
+  onEdit(data: ProductConfig) {
+    this.productConfigType = data.productType ? data.productType : 0;
+    data.productType = data.productType ? data.productType : 0;
+    this.pdObserverService.setToggleIndex(this.productConfigType);
+    this.pdObserverService.setConfigDataToEdit(data);
   }
   getProductConfigsByFacility() {
     this.productService.findProductConfigs({

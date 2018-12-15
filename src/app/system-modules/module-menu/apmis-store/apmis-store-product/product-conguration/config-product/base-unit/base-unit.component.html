@@ -1,0 +1,16 @@
+<div class="config-layout" *ngIf="showDrugBaseUnit">
+    <div class="config-wrap">
+      <h3 style="margin-right: 120px;">Set Base Unit</h3>
+      <div (click)="onShowSearch()"><i class="fa fa-2x fa-plus" aria-hidden="true"></i></div>
+      <div class="apmisSearch-wrap" *ngIf="apmisSearch">
+        <app-apmis-search-result [data]="packSizes" (onSelectedItems)="onSearchSelectedItems($event)" (onCreateItem)="onCreateNewItem($event)"
+          (onCloseEvent)="onClickClose($event)"></app-apmis-search-result>
+      </div>
+    </div>
+
+    <div class="config-tags-wrap-x2" *ngIf="isBaseUnitSet">
+      <div class="tag-btn">
+        <span>{{ baseName }}</span>
+      </div>
+    </div>
+  </div>
