@@ -1297,6 +1297,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 				}
 			]
 		};
+
 		this.patientService
 			.create(patient)
 			.then((payl) => {
@@ -1992,7 +1993,8 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 							this.loading = false;
 						} else {
 							this.duplicate = false;
-							this.submitForm(frm);
+							// this.submitForm(frm);
+							this.submitNewForm(frm);
 						}
 					},
 					(error) => {}
@@ -2044,6 +2046,190 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 					// this.apmisId_show = false;
 				},
 				(err) => {
+					this.isSaving = false;
+					this.systemModuleService.off();
+					this.systemModuleService.announceSweetProxy(errMsg, 'error');
+				}
+			)
+			.catch((err) => {
+				this.isSaving = false;
+				this.systemModuleService.off();
+				this.systemModuleService.announceSweetProxy(errMsg, 'error');
+			});
+	}
+
+	submitNewForm(frm) {
+		this.isSaving = true;
+		this.systemModuleService.on();
+		const personModel = <any>{
+			title: this.titleCasePipe.transform(this.frmPerson.controls['persontitle'].value.toString()),
+			firstName: this.titleCasePipe.transform(this.frmPerson.controls['firstname'].value),
+			lastName: this.titleCasePipe.transform(this.frmPerson.controls['lastname'].value),
+			gender: this.frmPerson.controls['gender'].value,
+			dateOfBirth: this.frmPerson.controls['dob'].value,
+			motherMaidenName: this.titleCasePipe.transform(this.frmPerson.controls['motherMaidenName'].value),
+			// email: this.frmPerson.controls['email'].value,
+			primaryContactPhoneNo: this.frmPerson.controls['phone'].value
+			// securityQuestion: this.frmPerson.controls['securityQuestion'].value,
+			// securityAnswer: this.titleCasePipe.transform(this.frmPerson.controls['securityAnswer'].value)
+		};
+		const body = {
+			person: personModel
+		};
+
+		let paymentPlan = [];
+		let billing = [];
+
+		if (this.coverType === 'insurance') {
+			paymentPlan = [
+				{
+					planType: 'wallet',
+					bearerPersonId: this.selectedPerson._id,
+					isDefault: false
+				},
+				{
+					planType: this.coverType,
+					isDefault: true,
+					planDetails: {
+						hmoId: this.hmo.hmoId,
+						hmoName: this.hmo.hmoName,
+						principalId: this.hmoInsuranceId
+					}
+				}
+			];
+
+			billing = [
+				{
+					unitPrice: this.planPrice,
+					facilityId: this.facility._id,
+					description: '',
+					facilityServiceId: this.facilityServiceId.value,
+					serviceId: this.planId,
+					quantity: 1,
+					totalPrice: this.planPrice,
+					unitDiscountedAmount: 0,
+					totalDiscoutedAmount: 0,
+					modifierId: [],
+					covered: {
+						hmoId: this.hmo.hmoId,
+						coverType: this.coverType
+					},
+					isServiceEnjoyed: false,
+					paymentCompleted: false,
+					paymentStatus: [],
+					payments: []
+				}
+			];
+		} else if (this.coverType === 'company') {
+			paymentPlan = [
+				{
+					planType: 'wallet',
+					bearerPersonId: this.selectedPerson._id,
+					isDefault: false
+				},
+				{
+					planType: this.coverType,
+					isDefault: true,
+					planDetails: {
+						companyId: this.companyCover._id,
+						companyName: this.companyCover.name,
+						principalId: this.ccEmployeeId
+					}
+				}
+			];
+			billing = [
+				{
+					unitPrice: this.planPrice,
+					facilityId: this.facility._id,
+					description: '',
+					facilityServiceId: this.facilityServiceId.value,
+					serviceId: this.planId,
+					quantity: 1,
+					totalPrice: this.planPrice,
+					unitDiscountedAmount: 0,
+					totalDiscoutedAmount: 0,
+					modifierId: [],
+					covered: {
+						companyId: this.companyCover._id,
+						coverType: this.coverType
+					},
+					isServiceEnjoyed: false,
+					paymentCompleted: false,
+					paymentStatus: [],
+					payments: []
+				}
+			];
+		} else if (this.coverType === 'wallet') {
+			paymentPlan = [
+				{
+					planType: 'wallet',
+					isDefault: true
+				}
+			];
+			billing = [
+				{
+					unitPrice: this.planPrice,
+					facilityId: this.facility._id,
+					description: '',
+					facilityServiceId: this.facilityServiceId.value,
+					serviceId: this.planId,
+					quantity: 1,
+					totalPrice: this.planPrice,
+					unitDiscountedAmount: 0,
+					totalDiscoutedAmount: 0,
+					modifierId: [],
+					covered: {
+						coverType: this.coverType
+					},
+					isServiceEnjoyed: false,
+					paymentCompleted: false,
+					paymentStatus: [],
+					payments: []
+				}
+			];
+		} else if (this.coverType === 'family') {
+			this.saveFamilyPerson();
+			paymentPlan = [
+				{
+					planType: 'wallet',
+					bearerPersonId: this.selectedPerson._id,
+					isDefault: false
+				},
+				{
+					planType: this.coverType,
+					bearerPersonId: this.noPatientId !== true ? this.principalPersonId.value : this.selectedPerson._id,
+					planDetails: {
+						principalId: this.faId,
+						principalName: this.principalName.value,
+						familyId: this.principalFamilyId.value
+					},
+					isDefault: true
+				}
+			];
+		}
+
+		const newPatient = {
+			person: body,
+			facilityId: this.facility._id,
+			paymentPlan: paymentPlan,
+			billing: billing
+		};
+		const errMsg = 'There was an error while creating person, try again!';
+		this.patientService
+			.createCustomPatient(newPatient)
+			.then(
+				(ppayload) => {
+					console.log(ppayload);
+					this.systemModuleService.off();
+					const text =
+						ppayload.savedPerson.lastName + ' ' + ppayload.savedPerson.firstName + ' added successfully';
+					ppayload.savedPatient.showEdit = true;
+					this.systemModuleService.changeMessage(ppayload.savedPatient); // This is responsible for showing the edit patient modal box
+					this.systemModuleService.announceSweetProxy(text, 'success');
+					this.close_onClick();
+				},
+				(err) => {
+					console.log(err);
 					this.isSaving = false;
 					this.systemModuleService.off();
 					this.systemModuleService.announceSweetProxy(errMsg, 'error');
