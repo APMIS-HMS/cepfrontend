@@ -18,20 +18,22 @@ export class ProductToggleComponent implements OnInit, OnDestroy {
   constructor(private pdObserverService: ProductObserverService) {
   }
   ngOnInit() {
+    // this.onToggle(this.selectedToggleIndex);
     this.toggleSubscription = this.pdObserverService.toggleIndexChanged.subscribe((payload: number) => {
       this.selectedToggleIndex = payload;
-      if (payload === this.selectedToggleIndex) {
-        this.drugSearchEntry = true;
-        this.consumableEntry = false;
-      } else {
-        this.consumableEntry = true;
-        this.drugSearchEntry = false;
-      }
-  });
+      if (this.selectedToggleIndex === ProductType.Drugs) {
+          this.drugSearchEntry = true;
+          this.consumableEntry = false;
+        } else if (this.selectedToggleIndex === ProductType.Consumables) {
+          this.consumableEntry = true;
+          this.drugSearchEntry = false;
+        }
+    });
   }
   onToggle(index) {
     this.pdObserverService.setToggleIndex(index);
     this.selectedToggleIndex = index;
+    this.pdObserverService.setBaseUnitState(false);
     switch (this.selectedToggleIndex) {
         case ProductType.Drugs:
             this.drugSearchEntry = true;
@@ -44,8 +46,6 @@ export class ProductToggleComponent implements OnInit, OnDestroy {
         default:
           break;
     }
-      // this.selectedToggleIndex = index;
-      // this.onToggleSelected.emit(index);
   }
   ngOnDestroy() {
     if (this.toggleSubscription !== null) {

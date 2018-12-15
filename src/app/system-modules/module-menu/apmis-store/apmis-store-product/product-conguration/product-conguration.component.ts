@@ -5,6 +5,7 @@ import { ProductService } from '../../../../../services/facility-manager/setup/p
 import { Facility } from 'app/models';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
+import { ProductConfig } from '../../store-utils/global';
 
 
 @Component({
@@ -21,6 +22,7 @@ export class ProductCongurationComponent implements OnInit, OnDestroy {
   productConfigLoading = true;
   configToDelete: any = <any>{};
   subscription: Subscription;
+  editObject: ProductConfig = <ProductConfig>{};
   
   constructor(private productService: ProductService,
     private systemModuleService: SystemModuleService,
@@ -42,8 +44,9 @@ export class ProductCongurationComponent implements OnInit, OnDestroy {
     }, err => {
     });
   }
-  onEdit(data) {
+  onEdit(data: ProductConfig) {
     this.productConfigType = data.productType ? data.productType : 0;
+    data.productType = data.productType ? data.productType : 0;
     this.pdObserverService.setToggleIndex(this.productConfigType);
     this.pdObserverService.setConfigDataToEdit(data);
   }

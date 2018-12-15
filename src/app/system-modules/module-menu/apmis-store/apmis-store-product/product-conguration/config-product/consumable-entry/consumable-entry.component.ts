@@ -26,6 +26,7 @@ showProduct = false;
 showOtherProp = false;
 showManufactuerBtn = false;
 showManufacturers = false;
+consumableEntry = false;
 category_select = false;
 selectedConsumableName = '';
 selectedManufacturerName = '';
@@ -37,6 +38,8 @@ currentFacility: Facility = <Facility>{};
 consumableSearch = new FormControl();
 manufacturerSearch = new FormControl();
 productNameSubscription: Subscription;
+editableConfigSubscription: Subscription;
+viewSubscription: Subscription;
   constructor(private productService: ProductService,
     private pdObserverService: ProductObserverService,
     private locker: CoolLocalStorage,
@@ -87,22 +90,19 @@ productNameSubscription: Subscription;
       } else if (this.manufacturerSearch.value.length < 1) {
         this.canConfigure = false;
         this.pdObserverService.setBaseUnitState(false);
-        console.log('seting...');
         this.pdObserverService.setConfigContainerState(false);
       }
     });
-    this.productNameSubscription = this.pdObserverService.productNameChanged.subscribe(name => {
-      console.log(name);
-      // this.consumableSearch.setValue(name);
-      if (this.selectedConsumableName !== null || this.selectedConsumableName !== '') {
-          console.log('nothing');
+    this.editableConfigSubscription = this.pdObserverService.editableConfigChanged.subscribe(data => {
+      console.log(data);
+      this.consumableSearch.setValue(data.productObject.name);
+      if (data.ProductType === ProductType.Consumables) {
+          this.consumableSearch.setValue(data.productObject.name);
+          this.canConfigure = false;
+          this.showOtherProp = false;
       }
-      // if (name !== undefined) {
-      //   console.log(this.consumableSearch.setValue(name));
-      //   this.showOtherProp = true;
-      // }
-      //this.showOtherProp = true;
-  });
+});
+
   }
 setSelectedProduct(option) {
     this.selectedConsumable.type = ProductType.Consumables;
@@ -199,11 +199,14 @@ setSelectedProduct(option) {
       }
   }
   ngOnDestroy() {
-    if (this.selectedCategory !== undefined) {
+    if (this.selectedCategory !== null) {
       this.apmisFilterService.clearItemsStorage(true);
     }
-    if (this.productNameSubscription !== null) {
-      this.productNameSubscription.unsubscribe();
+    if (this.editableConfigSubscription !== null) {
+        this.editableConfigSubscription.unsubscribe();
     }
+    // if (this.viewSubscription !== null) {
+    //   this.viewSubscription.unsubscribe();
+    // }
   }
 }

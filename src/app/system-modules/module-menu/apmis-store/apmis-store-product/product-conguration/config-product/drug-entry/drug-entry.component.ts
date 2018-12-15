@@ -19,10 +19,12 @@ export class DrugEntryComponent implements OnInit, OnDestroy {
   selectedDrugName = '';
   selectedDrug: StoreProduct = <StoreProduct>{};
   showProduct = false;
+  drugSearchEntry = false;
   configProductBtn = '';
   @Input() drugExist: boolean;
   @Input() canConfigure = false;
-  productNameSubscription: Subscription;
+  editableConfigSubscription: Subscription;
+  viewSubscription: Subscription;
   currentFacility: Facility = <Facility>{};
   constructor(private productService: ProductService,
         private pdObserverService: ProductObserverService,
@@ -49,9 +51,16 @@ export class DrugEntryComponent implements OnInit, OnDestroy {
           this.pdObserverService.setConfigContainerState(false);
         }
     });
-    this.productNameSubscription = this.pdObserverService.productNameChanged.subscribe(name => {
-        this.drugSearch.setValue(name);
-    });
+    this.editableConfigSubscription = this.pdObserverService.editableConfigChanged.subscribe(data => {
+      console.log(data);
+        this.drugSearch.setValue(data.productObject.name);
+        if (data.ProductType === ProductType.Drugs) {
+          console.log('in drug');
+            this.selectedDrugName = data.productObject.name;
+            //this.drugSearch.setValue(data.productObject.name);
+            this.canConfigure = false;
+        }
+  });
   }
   setSelectedProduct(option) {
     this.selectedDrug.type = ProductType.Drugs;
@@ -85,8 +94,11 @@ export class DrugEntryComponent implements OnInit, OnDestroy {
     }
   }
   ngOnDestroy() {
-    if (this.productNameSubscription !== null) {
-      this.productNameSubscription.unsubscribe();
+    if (this.editableConfigSubscription !== null) {
+      this.editableConfigSubscription.unsubscribe();
     }
+    // if (this.viewSubscription !== null) {
+    //   this.viewSubscription.unsubscribe();
+    // }
   }
 }

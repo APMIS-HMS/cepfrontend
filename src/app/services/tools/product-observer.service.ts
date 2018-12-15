@@ -35,6 +35,9 @@ export class ProductObserverService {
     private toggleIndexSubject = new BehaviorSubject(0);
     toggleIndexChanged = this.toggleIndexSubject.asObservable();
 
+    private toggleFilterViewSubject = new BehaviorSubject('');
+    filterViewChanged = this.toggleFilterViewSubject.asObservable();
+
     setSelectedProduct(data: StoreProduct) {
         this.productSubject.next(data);
     }
@@ -64,5 +67,8 @@ export class ProductObserverService {
     }
     setToggleIndex(index: number) {
         this.toggleIndexSubject.next(index);
+    }
+    setFilterView(filter: string) {
+        this.toggleFilterViewSubject.next(filter);
     }
 }

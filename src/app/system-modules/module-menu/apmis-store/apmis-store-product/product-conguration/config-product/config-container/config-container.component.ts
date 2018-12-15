@@ -56,14 +56,6 @@ export class ConfigContainerComponent implements OnInit, OnDestroy {
       this.showConfigContainer = show;
     });
     this.editableConfigSubscription = this.pdObserverService.editableConfigChanged.subscribe(data => {
-          console.log(data);
-        // const isBaseProp: ProductBase = {
-        //   isBase: true,
-        //   name: data.productObject.name
-        // };
-        // this.pdObserverService.setBaseUnitState(true);
-        // this.pdObserverService.setIsBaseUnit(isBaseProp);
-        // this.pdObserverService.setConfigContainerState(true);
         this.productConfigId = data._id;
         this.btnName = 'Edit Configuration';
         this.emitpackSizes(data);
@@ -109,7 +101,6 @@ export class ConfigContainerComponent implements OnInit, OnDestroy {
             'Product: Unable to fetch data. Please try again.',
             'error', null, null, null, null, null, null, null
           );
-          console.log('here');
           this.showConfigContainer = false;
           this.showSaveConfig = false;
           this.pdObserverService.setBaseUnitState(false);
@@ -117,7 +108,6 @@ export class ConfigContainerComponent implements OnInit, OnDestroy {
     } else {
           this.selectedProduct = data.productObject;
           this.transformIncomingPackSizes(data.packSizes);
-          console.log('found');
     }
   }
   private emitpackSizes(data) {

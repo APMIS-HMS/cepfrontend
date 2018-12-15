@@ -28,7 +28,6 @@ export class BaseUnitComponent implements OnInit, OnDestroy {
           this.showDrugBaseUnit = baseState;
       });
       this.isBaseUnitSubscription = this.pdObserverService.isBaseUnitChanged.subscribe((baseData: ProductBase) => {
-        console.log(baseData);
         this.isBaseUnitSet = baseData.isBase;
         this.baseName = baseData.name;
     });
