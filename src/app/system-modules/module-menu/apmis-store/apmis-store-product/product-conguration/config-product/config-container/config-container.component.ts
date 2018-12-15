@@ -223,7 +223,6 @@ export class ConfigContainerComponent implements OnInit, OnDestroy {
   }
   ngOnDestroy() {
     if (this.packSizeSubscription !== null) {
-      this.apmisFilterService.clearItemsStorage(true);
       this.packSizeSubscription.unsubscribe();
     }
     if (this.configContainerSubscription !== null) {
@@ -232,5 +231,6 @@ export class ConfigContainerComponent implements OnInit, OnDestroy {
     if (this.editableConfigSubscription !== null) {
       this.editableConfigSubscription.unsubscribe();
     }
+    this.apmisFilterService.clearItemsStorage(true);
   }
 }
