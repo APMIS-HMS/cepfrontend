@@ -4,13 +4,11 @@
     <span class="highlight"></span>
     <label class="customLabel">Supplier:</label>
   </div>
-  <div class="input-group-x2">
-    <div class="dropDown-container">
-      <div class="select">
-        <select [formControl]="purchaseOrderFormControl" name="dropDown-container" id="dropDown-container">
-        </select>
-        <label class="customLabel">Purchase Order</label>
-      </div>
+  <div class="InputGroup dropDown-container">
+    <div class="select">
+      <select [formControl]="purchaseOrderFormControl" name="dropDown-container" id="dropDown-container">
+      </select>
+      <label class="customLabel">Purchase Order</label>
     </div>
   </div>
   <div class="InputGroup" style="margin-left:30px;">
@@ -101,6 +99,72 @@
                 <span>Delete</span>
               </div>
             </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="store-pre-tr">
+      <div class="store-tr">
+        <div class="store-td store-td-actions"></div>
+        <div class="config-tr-in in-tr">
+          <div class="store-td">
+            <div class="searchproduct">
+              <div class="InputGroup">
+                <input class="customInput" type="text">
+                <ul class="search-sugestions bar" *ngIf="searchProduct">
+                  <li class="search-sugestion">Paracetamol</li>
+                  <li class="search-sugestion">Paracetamol</li>
+                  <li class="search-sugestion">Paracetamol</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+          <div class="store-td">200 packs</div>
+          <div class="store-td">10 packs</div>
+          <div class="store-td">
+            <div class="InputGroup" style="width:60px;">
+              <input [formControl]="searchSuplier" class="customInput" type="text">
+            </div>
+          </div>
+          <div class="store-td">
+            <div class="InputGroup" style="width:60px;">
+              <input [formControl]="searchSuplier" class="customInput" type="text">
+            </div>
+          </div>
+          <div class="store-td">
+            <div class="InputGroup" style="width:60px;">
+              <input [formControl]="searchSuplier" class="customInput" type="text">
+            </div>
+          </div>
+          <div class="store-td">
+            <div class="InputGroup" style="width:60px;">
+              <input [formControl]="searchSuplier" class="customInput" type="text">
+            </div>
+          </div>
+        </div>
+        <div class="store-td store-td-actions">
+          <div class="table-list col-xs-1 action-placeholder">
+            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+            <div class="action-container shadow-RB">
+              <div class="action-item">
+                <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                <span>Edit</span>
+              </div>
+              <div class="action-item">
+                <i class="fa fa-trash" aria-hidden="true"></i>
+                <span>Delete</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="store-tr">
+        <div class="store-td"></div>
+        <div class="store-td">
+          <div class="link-cta">
+            <i class="fa fa-plus"></i>
+            <span>Add another item to the purchase order</span>
           </div>
         </div>
       </div>
