@@ -1,8 +1,19 @@
 <div class="sel-sup">
-  <div class="InputGroup" style="margin-left:30px;">
-    <input [formControl]="searchSuplier" class="customInput" type="text" required>
-    <span class="highlight"></span>
+  <!-- <div class="InputGroup" style="margin-left:30px;">
+    <select [formControl]="supplierFormControl" name="dropDown-container" id="dropDown-container">
+      <option value="0">Select Supplier</option>
+      <option *ngFor="let supplier of suppliers" [ngValue]="supplier">{{supplier.supplier.name}}</option>
+    </select>
     <label class="customLabel">Supplier:</label>
+  </div> -->
+  <div class="InputGroup dropDown-container">
+    <div class="select">
+      <select [formControl]="supplierFormControl" name="dropDown-container" id="dropDown-container">
+        <option value="0">Select Supplier</option>
+        <option *ngFor="let supplier of suppliers" [ngValue]="supplier">{{supplier.supplier.name}}</option>
+      </select>
+      <label class="customLabel">Supplier:</label>
+    </div>
   </div>
   <div class="InputGroup dropDown-container">
     <div class="select">
