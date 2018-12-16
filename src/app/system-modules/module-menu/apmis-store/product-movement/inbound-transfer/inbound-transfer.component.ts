@@ -116,22 +116,24 @@ export class InboundTransferComponent implements OnInit {
   }
 
   getSelectedStoreSummations() {
+    console.log(this.checkingStore);
     this.existingStockTransfers = [];
     this.systemModuleService.on();
-    let query = {
-      facilityId: this.selectedFacility._id,
-      destinationStoreId: this.checkingStore.storeId
-    };
-    this.inventoryTransferService.find({ query: query }).then(payload => {
+    this.inventoryTransferService.find({
+      query: {
+        facilityId: this.selectedFacility._id,
+        destinationStoreId: this.checkingStore.storeId,
+        $sort: { createdAt: -1 }
+      }
+    }).then(payload => {
+      console.log(payload);
       this.transferObjs = [];
       payload.data.forEach(element => {
-        const completedTransfers = element.inventoryTransferTransactions.filter(x => x.transferStatusObject !== undefined && x.transferStatusObject.name !== 'Completed');
-        if (completedTransfers.length > 0) {
-          element.inventoryTransferTransactions = JSON.parse(JSON.stringify(completedTransfers));
+        let unattendedTransfers = element.inventoryTransferTransactions.filter(x => x.transferStatusObject.name === 'Pending');
+        if (unattendedTransfers.length!==0) {
           this.existingStockTransfers.push(element);
         }
       });
-
       this.existingStockTransfers.forEach(element => {
         element.totalQties = 0;
         element.totalCost = 0;
@@ -146,6 +148,7 @@ export class InboundTransferComponent implements OnInit {
     }, err => {
       this.systemModuleService.off();
     });
+    
   }
 
   ngOnDestroy() {

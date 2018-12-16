@@ -69,14 +69,14 @@
               <div class="table-list col-xs-1 action-placeholder">
                 <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
                 <div class="action-container shadow-RB">
-                  <div class="action-item" *ngIf="stock?.transferStatusObject?.name !=='Completed'" (click)="onEditExistingItem(i, j)">
+                  <!-- <div class="action-item" *ngIf="stock?.transferStatusObject?.name !=='Completed'" (click)="onEditExistingItem(i, j)">
                     <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
                     <span>Edit</span>
                   </div>
                   <div class="action-item" *ngIf="stock?.transferStatusObject?.name !=='Completed'" (click)="onRemoveExistingItem(i, j)">
                     <i class="fa fa-tags" aria-hidden="true"></i>
                     <span>Remove</span>
-                  </div>
+                  </div> -->
                 </div>
               </div>
             </div>
@@ -86,7 +86,7 @@
       <!-- <app-apmis-pagination></app-apmis-pagination> -->
     </div>
     <div class="ob-btn-wrap">
-      <button [hidden]="isButtonDisabled" (click)="onAcceptItem(i,j)" class="ob-btn">Accept Items</button>
+      <button [hidden]="isButtonDisabled" (click)="onAcceptItem(i)" class="ob-btn">Accept Items</button>
     </div>
   </li>
 </ul>

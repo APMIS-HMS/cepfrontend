@@ -416,7 +416,6 @@ export class MakePaymentComponent implements OnInit {
 
 	onChangeAmount(item) {
 		const val = item.value.totalPrice - item.value.amountPaid;
-		console.log(val);
 		if (val >= 0 && val < item.value.totalPrice) {
 			item.controls.balance.setValue(val);
 			if (val === 0) {
@@ -445,7 +444,6 @@ export class MakePaymentComponent implements OnInit {
 		}
 		(<FormArray>this.productTableForm.controls['productTableArray']).value.forEach((element) => {
 			const mVal = element.totalPrice - element.amountPaid;
-			console.log(mVal);
 			if (mVal === 0) {
 				element.isPaymentCompleted = true;
 				element.isItemTxnClosed = true;
@@ -458,7 +456,6 @@ export class MakePaymentComponent implements OnInit {
 		(<FormArray>this.productTableForm.controls['productTableArray']).setValue(
 			JSON.parse(JSON.stringify((<FormArray>this.productTableForm.controls['productTableArray']).value))
 		);
-		console.log(this.productTableForm.controls['productTableArray']);
 	}
 
 	onChangeWaiver(item) {
@@ -545,10 +542,6 @@ export class MakePaymentComponent implements OnInit {
 	computeDiscountPrice(ItemGroupByService) {
 		if (this.discount > 0) {
 			const acctual = this.subTotal;
-			// (<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
-			//   acctual += item.value.totalPrice;
-			// });
-			// console.log(acctual);
 			const percentage = this.discount * 100 / acctual;
 			const checkItems = ItemGroupByService.filter((x) => x.isSubCharge === false);
 			(<FormArray>this.productTableForm.controls['productTableArray']).controls.forEach((item: any, i) => {
@@ -569,7 +562,6 @@ export class MakePaymentComponent implements OnInit {
 	onOutOfPocket() {
 		this.getTotalAmounBAlance();
 		if (this.productTableForm.controls['productTableArray'].valid) {
-			console.log(this.selectedPatient.personDetails);
 			if (this.selectedPatient.personDetails.wallet !== undefined) {
 				if (
 					this.selectedPatient.personDetails.wallet.balance < this.totalAmountPaid &&
@@ -631,7 +623,6 @@ export class MakePaymentComponent implements OnInit {
 			if (this.totalAmountBalance === 0) {
 				paymantObj.transactionStatus = TransactionStatus.Complete;
 			}
-			console.log(paymantObj);
 		} else {
 			paymantObj = {
 				inputedValue: {
