@@ -8,6 +8,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 export class ImageUploadService {
   public listner;
   public _socket;
+  public _imageSocket;
   private _rest;
   // private _restLogin;
   constructor(
@@ -18,6 +19,8 @@ export class ImageUploadService {
   ) {
     this._rest = _restService.getService('image');
     this._socket = _socketService.getService('image');
+    this._imageSocket = _socketService.getService('file-upload-facade');
+    this._imageSocket.timeout = 60000;
     // this._restLogin = _restService.getService('auth/local');
     // this.listner = Observable.fromEvent(this._socket, 'updated');
   }
@@ -33,6 +36,9 @@ export class ImageUploadService {
   }
   create(facility: any) {
     return this._rest.create(facility);
+  }
+  createImageFacade(payload: any) {
+    return this._imageSocket.create(payload);
   }
   update(facility: any) {
     return this._socket.update(facility._id, facility);

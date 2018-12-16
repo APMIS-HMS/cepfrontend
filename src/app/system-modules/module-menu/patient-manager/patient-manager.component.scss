@@ -28,13 +28,13 @@
     display: flex;
     align-items: center;
     position: relative;
-    width: 300px;
+    /*width: 300px;*/
     padding: 5px 2px;
 }
 
 .searchInputWrap i {
     position: absolute;
-    color: #939393;
+    color: #858585;
     margin-left: 10px;
 }
 
@@ -44,7 +44,7 @@
     border-radius: 7px;
     padding: 7px;
     padding-left: 30px;
-    text-align: center;
+   /* text-align: center;*/
     width: 100%;
 }
 

@@ -46,6 +46,10 @@ import { HmoBillHistoryDetailComponent } from './hmo-officer/hmo-bill-history-de
 import { HmoBillDetailComponent } from './hmo-officer/hmo-bill-detail/hmo-bill-detail.component';
 import { HmoOfficerComponent } from './hmo-officer/hmo-officer.component';
 import { NewBeneficiaryComponent } from './hmo-cover/beneficiary-list/new-beneficiary/new-beneficiary.component';
+import { HmoReportComponent } from './hmo-officer/hmo-report/hmo-report.component';
+import { DateRangePickerModule } from "ng-pick-daterange";
+import { DateTimePickerModule } from "ng-pick-datetime";
+import {HmoBillingGroupingComponent} from "./hmo-officer/hmo-bills-grouping.component";
 
 
 @NgModule({
@@ -85,14 +89,18 @@ import { NewBeneficiaryComponent } from './hmo-cover/beneficiary-list/new-benefi
         CompanyBillHistoryDetailComponent,
         FamilyBillDetailComponent,
         FamilyBillHistoryDetailComponent,
-        NewBeneficiaryComponent
+        NewBeneficiaryComponent,
+        HmoReportComponent,
+        HmoBillingGroupingComponent
     ],
     exports: [
     ],
     imports: [
         OnlyMaterialModule,
         MaterialModule,
-        healthCoverRoutes
+        healthCoverRoutes,
+        DateRangePickerModule,
+        DateTimePickerModule
     ],
     providers: [HmoService, FacilityCompanyCoverService, FacilityFamilyCoverService]
 })

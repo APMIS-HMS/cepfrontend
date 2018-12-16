@@ -2,9 +2,10 @@
     <div class="row">
         <div class="col-xs-12">
             <div class="row">
-                <div class="col-xs-6"></div>
-                <div class="col-xs-6 pull-right">
-                    <button class="btn btn-blue pull-right" (click)="onClickAddImmunizationSchedule('');"><i class="fa fa-fw fa-plus"></i> ADD IMMUNIZATION SCHEDULE</button>
+               
+                <div class="col-xs-5 pull-right">
+                    <!-- <button class="btn btn-blue pull-right" (click)="onClickAddImmunizationSchedule('');"><i class="fa fa-fw fa-plus"></i> ADD IMMUNIZATION SCHEDULE</button> -->
+                    <button class="btn btn-blue pull-right" (click)="onClickAddImmunizationSchedule('');"><i class="fa fa-fw fa-plus"></i> ADD Batch SCHEDULE</button>
                 </div>
             </div>
         </div>
@@ -74,5 +75,14 @@
                 </div>
             </div>
         </div>
+        <div class="col-xs-7">
+                <apmis-data-pager color="blue"
+                                 (onPageClick)="gotoPage($event)"
+                                 [in-progress]="loading"
+                                 [show-progress]="true"
+                                 next-prev-color="orange"
+                                 [pager-source]="paginationObj"></apmis-data-pager>
+
+            </div>
     </div>
 </div>

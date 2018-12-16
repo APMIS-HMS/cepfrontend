@@ -1,3 +1,4 @@
+
 <div class="tbl-resp-wrap">
     <table cellpadding="0" cellspacing="0" border="0.5">
         <thead>
@@ -32,7 +33,8 @@
                     <div class="empWrap">
                         <div class="list-img">
                             <div *ngIf="item?.personDetails?.profileImageObject == undefined"><img src="assets/images/users/default.png"></div>
-                            <div *ngIf="item?.personDetails?.profileImageObject != undefined"><img [src]="facilityService.transform(item?.personDetails?.profileImageObject?.thumbnail)"></div>
+                            <div *ngIf="item?.personDetails?.profileImageObject != undefined"><img [src]="item?.personDetails?.profileImageObject?.thumbnail">
+                            </div>
                         </div>
                         <div>{{item.personDetails?.lastName}} {{item.personDetails?.firstName}}</div>
                     </div>
@@ -44,7 +46,8 @@
                     <span [hidden]="!item.isActive" style="color: #43A047;">Active</span>
                 </td>
                 <td>
-                    <div *ngIf="!item.isActive" class="tr-act-btn"><i class="fa fa-sign-out" aria-hidden="true"></i>Activate</div>
+                    <div *ngIf="!item.isActive" class="tr-act-btn"><i class="fa fa-sign-out" aria-hidden="true"></i>Activate
+                    </div>
                 </td>
             </tr>
         </tbody>
@@ -54,6 +57,9 @@
             </tr>
         </tbody>
     </table>
-    <div class="btn-center">
+    <apmis-data-pager [in-progress]="loadIndicatorVisible" [show-progress]="true" [pager-source]="paginationObj"
+    next-prev-color="orange" (onPageClick)="gotoPage($event)"></apmis-data-pager>
+    <!-- <div class="btn-center">
         <button (click)="loadMore()" class="apmis-blue" mat-raised-button *ngIf="showLoadMore">Load More</button>
-    </div>
+    </div> -->
+</div>

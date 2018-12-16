@@ -1,11 +1,12 @@
 <div class="welcome-wrap">
     <div>
         <div class="img-wrap">
-            <img *ngIf="selectedFacility.logoObject != undefined" [src]="facilityService.transform(selectedFacility.logoObject.thumbnail)">
-            <img *ngIf="selectedFacility.logoObject == undefined" src="assets/images/logos/default.png">
+            <app-image-viewer [imageSrc]="selectedFacility?.logoObject?.thumbnail"></app-image-viewer>
+            <!-- <img *ngIf="selectedFacility.logoObject != undefined" [src]="selectedFacility?.logoObject?.thumbnail">
+            <img *ngIf="selectedFacility.logoObject == undefined" src="assets/images/logos/default.png"> -->
         </div>
         <div class="facility-name-wrap">
-            <div class="txt1">{{facilityObj.name}}</div>
+            <div class="txt1">{{facilityObj?.name}}</div>
             <div class="txt2">Powered by APMIS</div>
         </div>
     </div>

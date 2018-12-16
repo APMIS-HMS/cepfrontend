@@ -96,7 +96,13 @@
                         <div class="col-xs-4">
                             <div class="card">
                                 <span style="color:grey">Number of days on admission</span>
-                                <h3>{{selectedPatient?.admissionDate | amTimeAgo }}</h3>
+                                <h3>{{selectedPatient?.admissionDate | amTimeAgo}} - 
+                                    <i> ( {{daysAdmitted}}
+                                        <span *ngIf="daysAdmitted > 1">days</span>
+                                        <span *ngIf="daysAdmitted <= 1">day</span> )
+                                    </i>
+                                </h3>
+                                <!-- <h3>{{selectedPatient?.admissionDate | daysInDate: selectedPatient?.admissionDate :selectedPatient?.admissionDate}} days</h3> -->
                             </div>
                         </div>
                     </div>

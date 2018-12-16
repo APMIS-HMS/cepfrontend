@@ -9,6 +9,8 @@ import { SharedModule } from '../shared-module/shared.module';
 import { LoadingBarHttpModule } from '@ngx-loading-bar/http';
 import { LogOutConfirmModule } from '../shared-common-modules/log-out-module';
 import { ChangePasswordComponent } from './module-menu/change-password/change-password.component';
+// import { NotificationService } from './../services/communication-manager/notification.service';
+// import { ImageViewerComponent } from '../shared-module/image-viewer/image-viewer.component';
 @NgModule({
   declarations: [
   ],

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, TemplateRef } from '@angular/core';
 import { BillingService, FacilitiesService } from '../../../../../services/facility-manager/setup/index';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { AuthFacadeService } from '../../../../service-facade/auth-facade.service';
@@ -20,7 +20,8 @@ export class FacilityFamilyCoverComponent implements OnInit {
   selectedFacility: any = <any>{}
   selectedBill: any = <any>{}
   bills = []
-  historyBills = []
+  historyBills = [];
+  grandTotal: number = 0;
 
   constructor(private billingService: BillingService,
     private locker: CoolLocalStorage,
@@ -38,7 +39,8 @@ export class FacilityFamilyCoverComponent implements OnInit {
       query: {
         isCoveredPage: true,
         facilityId: this.selectedFacility._id,
-        'billItems.covered.coverType': 'family'
+        'billItems.covered.coverType': 'family',
+        $sort: { updatedAt: -1 }
       }
     }).then(payload => {
       payload.data.forEach(element => {
@@ -51,6 +53,9 @@ export class FacilityFamilyCoverComponent implements OnInit {
       });
       this.bills = payload.data.filter(x => x.isPending === true);
       this.historyBills = payload.data.filter(x => x.isPending === false);
+      this.historyBills.map(x => {
+        this.grandTotal += x.grandTotal;
+      });
     });
   }
 
@@ -79,4 +84,8 @@ export class FacilityFamilyCoverComponent implements OnInit {
     this.tab2 = true;
   }
 
+
+  familyCover_report() {
+    this.billHistoryDetail_show = true;
+  }
 }

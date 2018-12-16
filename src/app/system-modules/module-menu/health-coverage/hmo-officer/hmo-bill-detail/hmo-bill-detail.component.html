@@ -1,7 +1,8 @@
 <div class="animated pulse">
   <div class="modal-header-wrap">
     <div (click)="close_onClick()" class="modal-close-ico" aria-hidden="true">X</div>
-    <legend class="modal_title">{{selectedBill.principalObject?.personDetails?.firstName}} {{selectedBill.principalObject?.personDetails?.lastName}}</legend>
+    <legend class="modal_title">{{selectedBill.principalObject?.personDetails?.firstName}}
+      {{selectedBill.principalObject?.personDetails?.lastName}}</legend>
     <div class="modal_mini_title">HMO Bills Generated</div>
     <div class="modal_mini_title">{{selectedBill.updatedAt|date:'medium'}}</div>
   </div>
@@ -25,7 +26,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let bill of selectedBill.billItems">
+        <tr *ngFor="let bill of selectedBill.billItems;let i=index">
           <td>{{bill?.serviceObject?.name}}</td>
           <td>
             <div class="empWrap">
@@ -38,7 +39,11 @@
               <div>{{bill?.patientObject?.personDetails?.firstName}} {{bill?.patientObject?.personDetails?.lastName}}</div>
             </div>
           </td>
-          <td class="td-worspace">&#8358; {{bill.totalPrice|number:'1.2-2'}}</td>
+          <td class="td-worspace">&#8358; <mat-form-field class="sel-rap">
+              <input matInput [formControl]="priceControl" (change)="onChangePrice(i)" placeholder="Price">
+            </mat-form-field>
+            <!-- {{bill.totalPrice|number:'1.2-2'}}-->
+          </td>
           <td>
             <div class="input-x2-wrap">
               <!-- <mat-form-field class="sel-rap">

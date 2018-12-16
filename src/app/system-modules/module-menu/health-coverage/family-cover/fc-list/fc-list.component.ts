@@ -1,13 +1,13 @@
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
-import { systemModulesRoutes } from './../../../../system-module.routes';
 import { FacilityFamilyCoverService } from './../../../../../services/facility-manager/setup/facility-family-cover.service';
 import { FacilitiesService } from './../../../../../services/facility-manager/setup/facility.service';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { ActivatedRoute } from '@angular/router';
 import { User } from './../../../../../models/facility-manager/setup/user';
 import { MatPaginator } from '@angular/material';
-import { Component, OnInit, EventEmitter, Output, Renderer, ElementRef, ViewChild } from '@angular/core';
-import { FormGroup, FormBuilder, FormControl, Validators, FormArray } from '@angular/forms';
+import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 @Component({
   selector: 'app-fc-list',
@@ -29,6 +29,7 @@ export class FcListComponent implements OnInit {
   filteredBeneficiaries: any[] = [];
   operateBeneficiaries: any[] = [];
   selectedFamilyCover: any = <any>{};
+  selectedFamilyCoverId: any;
 
   loading: any = false;
   updatePatientBtnText: any = 'Add Family'
@@ -80,14 +81,14 @@ export class FcListComponent implements OnInit {
     });
     this.addDependant();
     this.getBeneficiaryList(this.selectedFacility._id);
-
+    this.closeDependant(null, 0);
   }
 
   addDependant(beneficiary?) {
 
     if (beneficiary) {
       this.showEdit(beneficiary, true);
-      this.pushNewDependant(undefined, undefined);
+      // this.pushNewDependant(undefined, undefined);
     } else {
       this.frmDependant = this.formBuilder.group({
         'dependantArray': this.formBuilder.array([
@@ -95,6 +96,7 @@ export class FcListComponent implements OnInit {
             surname: ['', [Validators.required]],
             othernames: ['', [Validators.required]],
             gender: ['', [Validators.required]],
+            address: [''],
             email: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
             phone: ['', []],
             status: ['', [<any>Validators.required]],
@@ -120,6 +122,7 @@ export class FcListComponent implements OnInit {
           gender: ['', [Validators.required]],
           email: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
           phone: ['', []],
+          address: [''],
           status: ['', [<any>Validators.required]],
           filNo: [''],
           readOnly: [true],
@@ -129,13 +132,17 @@ export class FcListComponent implements OnInit {
       );
   }
   closeDependant(dependant, i) {
-    (<FormArray>this.frmDependant.controls['dependantArray']).controls.splice(i, 1);
-    if ((<FormArray>this.frmDependant.controls['dependantArray']).controls.length === 0) {
-      this.addDependant()
+    const frmControls = (<FormArray>this.frmDependant.controls['dependantArray']).controls;
+    frmControls.splice(i, 1);
+    if (frmControls.length === 0) {
+      //this.addDependant()
+      // let log the current state for the control
+      console.log(frmControls);
     }
   }
 
   showEdit(beneficiary, isAdd?) {
+    this.selectedFamilyCoverId = beneficiary.familyId;
     if (this.getRole(beneficiary) === 'P') {
       this.frmNewBeneficiary.controls['surname'].setValue(beneficiary.surname);
       this.frmNewBeneficiary.controls['othernames'].setValue(beneficiary.othernames);
@@ -162,6 +169,7 @@ export class FcListComponent implements OnInit {
                 othernames: [filter.othernames],
                 gender: [filter.gender],
                 email: [filter.email],
+                address: [filter.address],
                 phone: [filter.phone],
                 status: [filter.status],
                 operation: ['update'],
@@ -175,7 +183,7 @@ export class FcListComponent implements OnInit {
       })
       this.newFamily = true;
       if (!hasRecord && !isAdd) {
-        this.addDependant();
+        //this.addDependant();
       }
     } else {
       this.frmNewBeneficiary.reset();
@@ -196,6 +204,7 @@ export class FcListComponent implements OnInit {
                 gender: [filter.gender],
                 email: [filter.email],
                 phone: [filter.phone],
+                address: [filter.address],
                 status: [filter.status],
                 operation: ['update'],
                 filNo: [filter.filNo],
@@ -204,7 +213,7 @@ export class FcListComponent implements OnInit {
                 readOnly: [true],
               }));
           if (!hasRecord) {
-            this.addDependant();
+            //this.addDependant();
           }
         } else if (this.getRole(filter) === 'P') {
           this.frmNewBeneficiary.controls['surname'].setValue(filter.surname);
@@ -231,42 +240,54 @@ export class FcListComponent implements OnInit {
   save(valid, value, dependantValid, dependantValue) {
     this.loading = true;
     this.updatePatientBtnText = 'Adding Family... <i class="fa fa-spinner fa-spin"></i>';
-    console.log(dependantValue.controls.dependantArray.controls);
-    const unsavedFiltered = dependantValue.controls.dependantArray.controls.filter(x => x.value.readOnly === false && x.valid);
-    console.log(unsavedFiltered,valid);
-    if (unsavedFiltered.length > 0) {
-      this.loading = false;
-      this.updatePatientBtnText = 'Add Family';
-      this.systemModuleService.
-      announceSweetProxy('There seems to unsaved but valid dependant yet to be saved, please save and try again!', 'warning' );
-      return;
-    }
     if (valid) {
+      console.log(value);
+      let _dependants = [];
+      value.serial = 0;
+      console.log(1);
+      _dependants.push(value);
+      dependantValue.controls.dependantArray.value.forEach((item, i) => {
+        console.log(item);
+        console.log('value' + i);
+        item.serial = i + 1;
+        item.filNo = value.filNo + String.fromCharCode(65 + i);
+        _dependants.push(item);
+        console.log(item);
+      });
+      console.log(2);
       const param = {
-        model: value,
-        operation: value.operation,
-        dependants: [],
-        facilityId: this.selectedFacility._id,
-        // facilityObject:this.selectedFacility
+        familyCovers: _dependants,
+        facilityId: this.selectedFacility._id
       };
       console.log(param);
-      const filtered = dependantValue.controls.dependantArray.controls.filter(x => x.value.readOnly === true);
-      console.log(filtered);
-      filtered.forEach((item, i) => {
-        param.dependants.push(item.value);
-      });
-      console.log(filtered);
-      this.familyCoverService.updateBeneficiaryList(param).then(payload => {
-        console.log(payload);
-        this.loading = false;
-        this.updatePatientBtnText = 'Add Family';
-        this.getBeneficiaryList(this.selectedFacility._id);
-        this.cancel();
-        this.systemModuleService.announceSweetProxy('Family Cover Records Updated Successfully',
-        'success', null, null, null, null, null, null, null);
-      },err=>{
-        console.log(err);
-      });
+      if (value.operation === 'save') {
+        this.familyCoverService.create(param).then(payload => {
+          console.log(payload);
+          this.loading = false;
+          this.updatePatientBtnText = 'Add Family';
+          this.getBeneficiaryList(this.selectedFacility._id);
+          this.cancel();
+          this.systemModuleService.announceSweetProxy('Family Cover Records Updated Successfully',
+            'success', null, null, null, null, null, null, null);
+        }, err => {
+          console.log(err);
+        });
+      } else {
+        console.log(this.selectedFamilyCoverId,param);
+        this.familyCoverService.patch(this.selectedFamilyCoverId, { familyCovers: param.familyCovers }, {}).then(payload => {
+          console.log(payload);
+          this.loading = false;
+          this.updatePatientBtnText = 'Add Family';
+          this.getBeneficiaryList(this.selectedFacility._id);
+          this.cancel();
+          this.systemModuleService.announceSweetProxy('Family Cover Records Updated Successfully',
+            'success', null, null, null, null, null, null, null);
+        }, err => {
+          console.log(err);
+        });
+      }
+      // this.familyCoverService.updateBeneficiaryList(param)
+
     } else {
       this.loading = false;
       this.updatePatientBtnText = 'Add Family';
@@ -278,28 +299,32 @@ export class FcListComponent implements OnInit {
     this.frmNewBeneficiary.reset();
     this.frmDependant.reset();
     this.frmDependant.controls['dependantArray'] = this.formBuilder.array([]);
-    this.pushNewDependant();
+    //this.pushNewDependant();
   }
 
-  getBeneficiaryList(id) {
-    this.familyCoverService.find({ query: { 'facilityId': this.selectedFacility._id } }).then(payload => {
-      if (payload.data.length > 0) {
-        const facFamilyCover = payload.data[0];
-        this.selectedFamilyCover = facFamilyCover;
-        this.beneficiaries = facFamilyCover.familyCovers;
-        const startIndex = 0 * 10;
-        this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
-        this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
-      }
-    })
+  getBeneficiaryList(id?) {
+    console.log(id);
+    this.familyCoverService.findBeneficiaries({ query: { 'facilityId': this.selectedFacility._id } }).then(payload => {
+      console.log(payload);
+      this.beneficiaries = payload.data;
+      // if (payload.data.length > 0) {
+      // const facFamilyCover = payload.data;
+      // this.selectedFamilyCover = facFamilyCover;
+      // facFamilyCover.map(x => {
+      //   console.log(x);
+      // });
+      // this.beneficiaries= payload.data;
+      // console.log(this.beneficiaries);
+      //   const startIndex = 0 * 10;
+      //   this.operateBeneficiaries = JSON.parse(JSON.stringify(this.beneficiaries));
+      //   this.filteredBeneficiaries = JSON.parse(JSON.stringify(this.operateBeneficiaries.splice(startIndex, this.paginator.pageSize)));
+      // }
+    }, err => {
+      console.log(err);
+    });
   }
   getRole(beneficiary) {
-    const filNo = beneficiary.filNo;
-    if (filNo !== undefined) {
-      const filNoLength = filNo.length;
-      const lastCharacter = filNo[filNoLength - 1];
-      return isNaN(lastCharacter) ? 'D' : 'P';
-    }
+    return (beneficiary.serial === 0) ? 'P' : 'D';
   }
   onPaginateChange(event) {
     const startIndex = event.pageIndex * event.pageSize;

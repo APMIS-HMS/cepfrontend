@@ -1,4 +1,4 @@
-<section class="c-page-body">
+<section class="c-page-body">   
     <div class="tab-body">
         <div label="InPatients">
             <div class="card">
@@ -105,4 +105,10 @@
             </div>
         </div>
     </div>
+    <apmis-data-pager [show-next-prev]="true" color="blue"
+    (onPageClick)="gotoPage($event)"
+    [in-progress]="loading"
+    [show-progress]="true"
+    next-prev-color="orange"
+    [pager-source]="paginationObj"></apmis-data-pager>
 </section>

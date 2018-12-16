@@ -1,19 +1,19 @@
 import { Component, OnInit, EventEmitter, Output, Input, ElementRef } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import {
-    FacilitiesService, PrescriptionService,
-    PrescriptionPriorityService, DictionariesService, BillingService,
-    RouteService, FrequencyService, DrugListApiService, DrugDetailsService, MedicationListService, PersonService
+  FacilitiesService, PrescriptionService,
+  PrescriptionPriorityService, DictionariesService, BillingService,
+  RouteService, FrequencyService, DrugListApiService, DrugDetailsService, MedicationListService, PersonService
 } from '../../../../../../services/facility-manager/setup/index';
 import { OrderSetSharedService } from '../../../../../../services/facility-manager/order-set-shared-service';
 import { Appointment, Facility, Employee, Prescription, PrescriptionItem, BillItem, BillIGroup, Dispensed, User }
-    from '../../../../../../models/index';
+  from '../../../../../../models/index';
 import { DurationUnits, DosageUnits } from '../../../../../../shared-module/helpers/global-config';
 
 @Component({
-  selector: 'app-edit-medication',
-  templateUrl: './edit-medication.component.html',
-  styleUrls: ['./edit-medication.component.scss']
+	selector: 'app-edit-medication',
+	templateUrl: './edit-medication.component.html',
+	styleUrls: [ './edit-medication.component.scss' ]
 })
 export class EditMedicationComponent implements OnInit {
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -34,7 +34,7 @@ export class EditMedicationComponent implements OnInit {
   selectedDosage: any;
   drugId = '';
   refillCount = 0;
-  selectedForm = '';
+  selectedGeneric: any = {};
   selectedIngredients: any = [];
   medications: any = [];
 
@@ -47,7 +47,7 @@ export class EditMedicationComponent implements OnInit {
     private _frequencyService: FrequencyService,
     private _routeService: RouteService,
     private _orderSetSharedService: OrderSetSharedService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.durationUnits = DurationUnits;
@@ -104,7 +104,7 @@ export class EditMedicationComponent implements OnInit {
         patientInstruction: value.specialInstruction,
         refillCount: value.refillCount,
         ingredients: this.selectedIngredients,
-        form: this.selectedForm,
+        code: this.selectedGeneric.code,
         comment: '',
         status: 'Not Started',
         completed: false,
@@ -117,14 +117,15 @@ export class EditMedicationComponent implements OnInit {
       };
 
       this.medications.push(medication);
-      this._orderSetSharedService.saveItem({ medications: this.medications});
+      this._orderSetSharedService.saveItem({ medications: this.medications });
 
-      this.addPrescriptionForm.reset();
+      // this.addPrescriptionForm.reset();
       this.addPrescriptionForm.controls['refillCount'].reset(0);
       this.addPrescriptionForm.controls['duration'].reset(0);
-      this.addPrescriptionForm.controls['startDate'].reset(new Date());
+      this.addPrescriptionForm.controls['startDate'].setValue(new Date());
       // this.addPrescriptionForm.controls['durationUnit'].reset(this.durationUnits[1].name);
       this.addPrescriptionForm.controls['dosageUnit'].reset(this.dosageUnits[0].name);
+      this.apmisLookupText = '';
     }
   }
 
@@ -140,7 +141,8 @@ export class EditMedicationComponent implements OnInit {
   }
 
   apmisLookupHandleSelectedItem(item) {
-    this.apmisLookupText = item;
+    this.apmisLookupText = item.name;
+    this.selectedGeneric = item;
     this.addPrescriptionForm.controls['drug'].setValue(item.name);
     // this._drugDetailsApi.find({ query: { productId: item.productId } }).then(res => {
     // this._drugListApi.find({ query: { method: 'drug-details', 'productId': item.productId } }).then(res => {
@@ -182,7 +184,7 @@ export class EditMedicationComponent implements OnInit {
       if (res.data.length > 0) {
         this.frequencies = res.data;
       }
-      }).catch(err => console.error(err));
+    }).catch(err => console.error(err));
   }
 
   close_onClick() {

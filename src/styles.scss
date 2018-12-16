@@ -1,12 +1,14 @@
 @import "globals/variables.scss";
 @import "globals/normalize.scss";
 @import "../node_modules/@angular/material/prebuilt-themes/deeppurple-amber.css";
+
 html,
 body {
     font-family: $font-main;
     margin: 0;
     padding: 0;
     font-size: 10px;
+    font-display: auto;
 }
 
 input,
@@ -70,6 +72,10 @@ input,
 select,
 textarea {
     font-size: 1.2rem;
+}
+
+.bold {
+    font-weight: bold;
 }
 
 .clickable-ico {
@@ -196,12 +202,15 @@ select {
     padding-top: 10px !important;
     ;
 }
+
 .no-padding-left {
     padding-left: 0 !important;
 }
+
 .no-padding-right {
     padding-right: 0 !important;
 }
+
 .no-margin {
     margin: 0 !important;
 }
@@ -215,6 +224,7 @@ select {
     color: #444;
     text-align: center;
     position: relative;
+
     .c-page-title {
         display: inline-block;
         font-size: 1.8rem;
@@ -226,6 +236,14 @@ select {
 
 // End
 .cta-1-disable {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: -webkit-box;
     /* OLD - iOS 6-, Safari 3.1-6 */
     display: -moz-box;
@@ -256,6 +274,14 @@ select {
 }
 
 .cta-1 {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: -webkit-box;
     /* OLD - iOS 6-, Safari 3.1-6 */
     display: -moz-box;
@@ -298,6 +324,14 @@ select {
 }
 
 .btn-group {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     width: 100%;
     justify-content: space-around;
@@ -309,6 +343,14 @@ select {
     display: -moz-box;
     display: -ms-flexbox;
     display: -webkit-flex;
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -375,6 +417,7 @@ select {
     color: #fff;
     background-color: #03a9f4;
     border-color: #03a9f4;
+
     &:hover {
         background-color: darken(#03a9f4, 30%);
     }
@@ -472,6 +515,14 @@ select {
 
 .btn-center {
     margin: 0 auto;
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -512,6 +563,14 @@ select {
 .inner-wrap {
     position: relative;
     padding: 5px 10px;
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     align-items: center;
     width: 100%;
@@ -542,10 +601,19 @@ select {
     left: 0;
     z-index: 12;
     width: 100%;
-    // width: 100vw;
-    height: stretch;
+    // width: 100vw; height: stretch;
+    height: 100vh;
     background: rgba(73, 73, 73, 0.27);
+
     .center-center {
+        display: -webkit-box;
+        /* OLD - iOS 6-, Safari 3.1-6 */
+        display: -moz-box;
+        /* OLD - Firefox 19- (buggy but mostly works) */
+        display: -ms-flexbox;
+        /* TWEENER - IE 10 */
+        display: -webkit-flex;
+        /* NEW - Chrome */
         display: flex;
         justify-content: center;
         align-items: center;
@@ -633,6 +701,14 @@ select {
 }
 
 .infoAlert {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -651,6 +727,14 @@ select {
 }
 
 .successAlert {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -670,6 +754,14 @@ select {
 
 .left-nav {
     position: relative;
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
@@ -679,6 +771,14 @@ select {
 
 .CTAs-wrap {
     width: 100%;
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -752,6 +852,14 @@ select {
 }
 
 .frm-item-x2 {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -784,6 +892,14 @@ select {
 }
 
 .orgLogo-wrap {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -799,6 +915,14 @@ select {
 
 .orgLogo-wrap:hover {
     .pp-overlay {
+        display: -webkit-box;
+        /* OLD - iOS 6-, Safari 3.1-6 */
+        display: -moz-box;
+        /* OLD - Firefox 19- (buggy but mostly works) */
+        display: -ms-flexbox;
+        /* TWEENER - IE 10 */
+        display: -webkit-flex;
+        /* NEW - Chrome */
         display: flex;
     }
 }
@@ -841,6 +965,14 @@ select {
 }
 
 .checker-wrap {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     align-items: center;
     width: 128px;
@@ -854,6 +986,14 @@ select {
 .checkOpt-outter {
     border-radius: 7px;
     margin-right: 10px;
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -915,6 +1055,14 @@ select {
 }
 
 .inner-page-menuTab {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: center;
     width: 25%;
@@ -1072,6 +1220,14 @@ select {
 .backBtn {
     margin-bottom: 31px;
     color: #616161;
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1152,6 +1308,14 @@ select {
 }
 
 .tbl-row {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     padding: 5px 10px;
     align-items: center;
@@ -1181,6 +1345,14 @@ select {
 
 .fullwidth-topActions {
     position: relative;
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     margin-top: 20px;
 }
@@ -1237,6 +1409,14 @@ select {
     margin-top: 20px;
     margin-bottom: -35px;
     padding: 0;
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: flex-end;
     font-size: 1.2rem;
@@ -1264,6 +1444,14 @@ select {
 
 .acc-img-name {
     position: relative;
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -1309,6 +1497,14 @@ select {
     right: 0;
     width: 100%;
     height: 100%;
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1321,6 +1517,14 @@ select {
     bottom: 0;
     left: 0;
     right: 0;
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1348,6 +1552,14 @@ select {
 }
 
 .gd-actionWrap {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: space-around;
     margin-top: 20px;
@@ -1427,6 +1639,14 @@ ul.topmenuwrap li:hover {
 }
 
 .tr-act-btn {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1446,13 +1666,21 @@ ul.topmenuwrap li:hover {
 }
 
 *,
- ::after,
- ::before {
+::after,
+::before {
     -webkit-box-sizing: initial;
     box-sizing: initial;
 }
 
 .tbl-actions-wrap {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -1464,6 +1692,14 @@ ul.topmenuwrap li:hover {
 }
 
 .td-iconCta-wrap {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -1495,6 +1731,9 @@ ul.topmenuwrap li:hover {
     font-size: 1.6rem;
     color: #0288D1;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .action-placeholder:hover {
@@ -1509,7 +1748,7 @@ ul.topmenuwrap li:hover {
     width: auto;
     min-width: 190px;
     right: 0;
-    top: 50%;
+    top: 10%;
     text-align: left;
     font-size: 1.2rem;
     color: #333;
@@ -1519,6 +1758,14 @@ ul.topmenuwrap li:hover {
 }
 
 .frm-x2 {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
@@ -1539,12 +1786,28 @@ ul.topmenuwrap li:hover {
 }
 
 .flex-btw {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
 .btns {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: space-around;
     align-items: center;
@@ -1564,6 +1827,14 @@ button,
     display: -moz-box;
     display: -ms-flexbox;
     display: -webkit-flex;
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1801,6 +2072,14 @@ button,
 .pg-menuWrap,
 .pg-menuWrap-mobile {
     width: 100%;
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -1834,6 +2113,14 @@ button,
     color: #fff;
     height: 100%;
     min-height: 90vh;
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -1868,6 +2155,7 @@ button,
     cursor: pointer;
     border: 4px solid lighten($primaryColor, 10%);
     box-shadow: 1px 1px 5px 9px rgba(0, 0, 0, 0.05);
+
     &:hover {
         background: lighten($primaryColor, 30%);
         border: 4px solid lighten($primaryColor, 20%);
@@ -1875,6 +2163,14 @@ button,
 }
 
 .filters-wraper {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -1882,15 +2178,15 @@ button,
 }
 
 .button-included {
-    padding-right: 0px!important;
+    padding-right: 0px !important;
     box-sizing: border-box;
 }
 
 .custom-autocomplete__input input {
-    padding: 5px!important;
+    padding: 5px !important;
     height: 30px !important;
-    border: 0px solid #ccc!important;
-    border-bottom: 1px solid #777!important;
+    border: 0px solid #ccc !important;
+    border-bottom: 1px solid #777 !important;
 }
 
 .custom-autocomplete {
@@ -1957,6 +2253,14 @@ button,
     display: -moz-box;
     display: -ms-flexbox;
     display: -webkit-flex;
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -1990,6 +2294,14 @@ button,
     width: 130px;
     height: 130px;
     box-shadow: 0 0 10px grey;
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2023,11 +2335,13 @@ button,
         height: 130px;
         margin: 35px;
     }
+
     50% {
         width: 190px;
         height: 190px;
         margin: 5px;
     }
+
     100% {
         width: 130px;
         height: 130px;
@@ -2039,9 +2353,11 @@ button,
     0% {
         color: black;
     }
+
     50% {
         color: rgb(0, 161, 223);
     }
+
     100% {
         color: black;
     }
@@ -2051,9 +2367,11 @@ button,
     0% {
         border-color: rgb(0, 161, 223);
     }
+
     50% {
         border-color: lightgrey;
     }
+
     100% {
         border-color: rgb(0, 161, 223);
     }
@@ -2077,39 +2395,49 @@ button,
         min-width: 100% !important;
         width: 100% !important;
     }
+
     .modal-header-wrap {
         min-width: 100% !important;
         width: 100% !important;
     }
+
     .pulse {
         width: 90%;
     }
+
     form .lhs,
     form .rhs {
         float: none;
     }
+
     .frm-item-wrap {
         padding-bottom: 15px;
     }
+
     .CTAs-wrap {
         margin-top: 10px;
     }
+
     .cta-1 {
         width: 80%;
         height: 35px;
         font-size: 1.6rem;
     }
+
     .modal_mini_title {
         display: none;
     }
+
     .modal_title {
         margin-bottom: 10px;
     }
+
     .frm-item-wrap small,
     .frm-singleItem-wrap small {
         font-size: 0.8rem;
         bottom: 3px;
     }
+
     .mainErr {
         margin-bottom: 2px;
         font-size: 1rem;
@@ -2144,19 +2472,23 @@ button,
     text-align: center;
     font-size: 1.1rem;
     color: #fff;
+    z-index: 10;
 }
 
 @media only screen and (max-width: 900px) {
     .search-wrap {
         display: none;
     }
+
     .pg-menuWrapa {
         position: relative;
         display: block;
     }
+
     .pg-menuWrap {
         display: none;
     }
+
     .pg-menuWrap-mobile {
         display: block;
         position: fixed;
@@ -2167,17 +2499,21 @@ button,
         -moz-box-shadow: 2px 16px 31px 0px #777;
         box-shadow: 2px 16px 31px 0px #777;
     }
+
     .secondary-tab li {
         padding: 10px 0;
         margin: 5px 0;
     }
+
     .secondary-tab {
         position: fixed;
         top: 40px;
     }
+
     .pgMenu-ico {
         display: block;
     }
+
     .pg-menuWrap,
     .pg-menuWrap-mobile {
         position: fixed;
@@ -2199,6 +2535,14 @@ button,
 }
 
 .ext-tabs {
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: flex-start;
     font-size: 1.4rem;
@@ -2232,6 +2576,7 @@ button,
 
 .tooltip {
     font-size: 1.3em !important;
+
     &:after {
         font-family: Arial, Helvetica, sans-serif;
         opacity: 0;
@@ -2248,6 +2593,7 @@ button,
         min-width: auto;
         text-align: center;
     }
+
     &:hover {
         &:after {
             opacity: 1;
@@ -2268,6 +2614,14 @@ button,
     height: 100vh;
     z-index: 1000;
     background: #eee;
+    display: -webkit-box;
+    /* OLD - iOS 6-, Safari 3.1-6 */
+    display: -moz-box;
+    /* OLD - Firefox 19- (buggy but mostly works) */
+    display: -ms-flexbox;
+    /* TWEENER - IE 10 */
+    display: -webkit-flex;
+    /* NEW - Chrome */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -2279,9 +2633,431 @@ button,
     font-style: italic;
     cursor: default !important;
 }
-.vertical-text{
+
+.vertical-text {
     writing-mode: vertical-rl;
 }
-.txt-transparent{
+
+.txt-transparent {
     color: transparent !important;
+}
+
+.apmis-pagination {
+    display: flex;
+
+    .pg-child {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: bold;
+        font-size: 12px;
+        color: #000;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        border: 1px solid #828282;
+        margin: 10px;
+        cursor: pointer;
+
+        i {
+            font-size: 20px;
+        }
+    }
+
+    .pg-child:hover {
+        border: 1px solid #337AB7;
+        color: #337AB7;
+    }
+
+    .active-page {
+        background: #337AB7;
+        color: #fff !important;
+    }
+}
+
+
+// New modal css
+.new-modal {
+    animation-name: pulse;
+    animation-duration: 0.25s;
+    animation-fill-mode: both;
+}
+
+.new-modal-wrap {
+    position: relative;
+    padding: 10px;
+    box-sizing: border-box;
+    background: #fff;
+    border-radius: 10px 10px 0px 0px;
+    padding: 20px;
+}
+
+.new-modal-close-ico {
+    cursor: pointer;
+    position: absolute;
+    z-index: 1;
+    top: 15px;
+    right: 20px;
+    font-size: 1.6rem;
+    color: rgb(0, 0, 0);
+    padding: 5px;
+}
+
+.new-modal_title {
+    font-family: "Josefin Sans", sans-serif;
+    font-size: 2rem;
+    color: #0288D1;
+    text-align: left;
+    padding-left: 5px;
+}
+
+.new-modal-baseWrap {
+    position: relative;
+    min-width: 380px;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #fff;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+// Custom Drop-Down
+.dropDown-container {
+    font-size: 13px;
+   // background: #fff;
+    border-bottom: 1px solid #ddd;
+    overflow: hidden;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.dropDown-container .select {
+    width: auto;
+    background-position: 80% center;
+}
+
+.dropDown-container .select select,
+.customInput,
+.customTextarea {
+    background: transparent;
+    line-height: 1;
+    border: 0;
+    border-radius: 0;
+    padding: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    position: relative;
+    z-index: 10;
+    font-size: 16px;
+    outline: 0;
+}
+
+//   Custom Input
+.customInput {
+    display: block;
+    border-bottom: 1px solid #ddd;
+}
+
+.input-group-x2 {
+    display: flex;
+    justify-content: space-between;
+
+    .dropDown-container,
+    .InputGroup,
+        {
+        width: 47% !important;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+    }
+
+    .InputGroup-textarea {
+        width: 100% !important;
+        min-height: 120px;
+    }
+}
+
+.InputGroup{ 
+    position:relative; 
+    padding-bottom: 10px;
+}
+
+.apmis-search {
+    width: 47% !important;
+}
+
+.customTextarea {
+    display: block;
+    min-height: 70px;
+    outline: 0;
+    border-bottom: 1px solid #ddd;
+  }
+
+  .customInput:focus{ outline:none; }
+  .customLabel{
+    color:#000; 
+    font-size:16px;
+    font-weight:normal;
+    position:absolute;
+    pointer-events:none;
+    top:10px;
+    transition:0.2s ease all; 
+    -moz-transition:0.2s ease all; 
+    -webkit-transition:0.2s ease all;
+    i{
+        margin-right: 10px !important;
+    }
+  }
+  
+  .customInput:focus ~ .customLabel, .customInput:valid ~ .customLabel {
+    top:-12px;
+    font-size:12px;
+    color:#5264AE;
+  }
+
+  .highlight {
+    position:absolute;
+    height:60%; 
+    width:100px; 
+    top:25%; 
+    left:0;
+    pointer-events:none;
+    opacity:0.5;
+  }
+  .customInput:focus ~ .highlight {
+    -webkit-animation:inputHighlighter 0.3s ease;
+    -moz-animation:inputHighlighter 0.3s ease;
+    animation:inputHighlighter 0.3s ease;
+  }
+  
+  @-webkit-keyframes inputHighlighter {
+      from { background:#5264AE; }
+    to 	{ width:0; background:transparent; }
+  }
+  @-moz-keyframes inputHighlighter {
+      from { background:#5264AE; }
+    to 	{ width:0; background:transparent; }
+  }
+  @keyframes inputHighlighter {
+      from { background:#5264AE; }
+    to 	{ width:0; background:transparent; }
+  }
+
+
+.customInput:focus {
+    outline: none;
+}
+
+.customLabel {
+    color: #000;
+    font-size: 16px;
+    font-weight: normal;
+    position: absolute;
+    pointer-events: none;
+    top: 10px;
+    transition: 0.2s ease all;
+    -moz-transition: 0.2s ease all;
+    -webkit-transition: 0.2s ease all;
+}
+
+.customInput:focus~.customLabel {
+    top: -12px;
+    font-size: 12px;
+    color: #5264AE;
+}
+
+.highlight {
+    position: absolute;
+    height: 60%;
+    width: 100px;
+    top: 25%;
+    left: 0;
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.customInput:focus~.highlight {
+    -webkit-animation: inputHighlighter 0.3s ease;
+    -moz-animation: inputHighlighter 0.3s ease;
+    animation: inputHighlighter 0.3s ease;
+}
+
+@-webkit-keyframes inputHighlighter {
+    from {
+        background: #5264AE;
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@-moz-keyframes inputHighlighter {
+    from {
+        background: #5264AE;
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+@keyframes inputHighlighter {
+    from {
+        background: #5264AE;
+    }
+
+    to {
+        width: 0;
+        background: transparent;
+    }
+}
+
+
+.new-btn-blue {
+    border: 1px solid #0288D1;
+    color: #0288D1;
+    font-size: 12px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    height: 0px;
+    cursor: pointer;
+    i,
+    span {
+        padding-right: 5px;
+    }
+}
+
+.new-btn-solid-blue {
+    color: white;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    background: #337AB7;
+    height: 0px;
+    .disabled {
+        cursor: not-allowed;
+        background: gray;
+      }
+    i,
+    span {
+        padding-right: 5px;
+    }
+}
+
+.toggle-base-wrap {
+    display: flex;
+    border-radius: 5px;
+    border: 1px solid #bebebe;
+    width: fit-content;
+    padding:3px;
+}
+
+.toggle-wrap {
+    position: relative;
+    width: fit-content;
+    max-height: 15px;
+    padding: 9px;
+    margin: 1px;
+    font-size: 1.2rem;
+    text-align: center;
+    justify-content: space-around;
+    cursor: pointer;
+}
+
+// Product Search
+.search-container {
+    display: flex;
+    margin-top: 40px;
+}
+
+.searchproduct {
+    width: 30%;
+    position: relative;
+    margin-bottom: 10px;
+    margin-right: 50px !important;
+}
+
+.search-sugestions {
+    position: absolute;
+    top: 105%;
+    width: 100%;
+    min-height: 35px;
+    max-height: 450px;
+    background: #fff;
+    border: 1px solid #eee;
+    z-index: 2;
+    overflow: auto;
+}
+
+.search-sugestion {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    cursor: pointer;
+    overflow: auto;
+}
+
+.search-sugestion:hover {
+    background: #eee;
+}
+
+.search-noResult {
+    background: rgba(255, 0, 0, 0.19);
+    border: none;
+    border-radius: 2px;
+    text-align: center;
+    height: 30px;
+
+    span {
+        font-size: 12px;
+        line-height: 30px;
+        text-align: center;
+        align-self: center;
+        color: #FF3838
+    }
+}
+
+
+.search-noResult-blue {
+    background: #0288d1;
+    border: none;
+    border-radius: 2px;
+    text-align: center;
+    height: 30px;
+
+    span {
+        font-size: 12px;
+        line-height: 30px;
+        text-align: center;
+        align-self: center;
+        color: #ffffff; //#03A9F4;
+    }
+
+    i {
+        color: #09229b; // rgb(0, 110, 253);
+        cursor: pointer;
+        font-weight: bold;
+    }
+}
+
+.sv-btn-container {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.suppSearch{
+    overflow: auto;
+    display: block;
+    position: relative;
+    border-right: 1px solid #C4C4C4;
 }
