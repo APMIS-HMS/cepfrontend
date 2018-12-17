@@ -11,10 +11,21 @@ export class FromPurchaseOrderComponent implements OnInit {
   searchSuplier: FormControl = new FormControl();
   purchaseOrderFormControl: FormControl = new FormControl();
   invoiceDate: FormControl = new FormControl();
+  searchProduct = true;
 
   constructor() { }
 
   ngOnInit() {
+  }
+
+  showProdList(e) {
+    console.log('bbbbbbbb ' + e);
+    if (e.value == '') {
+      this.searchProduct = true;
+    } else {
+      this.searchProduct = false;
+    }
+
   }
 
 }
