@@ -160,7 +160,7 @@ export class FacilityBasicinfoEditComponent implements OnInit {
 			container: 'facilityfolder',
 			base64: this.selectedImageObject,
 			facilityId: this.selectedFacility._id,
-			uploadType: 'Logo upload',
+			uploadType: 'logo',
 			docName: this.selectedImageObject.name,
 			size: this.selectedImageObject.size,
 			id: this.selectedFacility._id, // facilityId or patientId or personId
@@ -189,7 +189,9 @@ export class FacilityBasicinfoEditComponent implements OnInit {
 						this.systemModuleService.announceSweetProxy(res.msg, 'error');
 					}
 				},
-				(err) => {}
+				(err) => {
+					console.log(err);
+				}
 			)
 			.catch((err) => {});
 	}
