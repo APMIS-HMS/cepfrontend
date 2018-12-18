@@ -1,0 +1,30 @@
+<div class="filterTop">
+    <div class="tbl-header-rhs">
+        <div class="items">
+            <label class="label">From:</label>
+            <div class="val">{{data?.storeObject?.name}}</div>
+        </div>
+        <div class="items">
+            <label class="label">Date:</label>
+            <div class="val">{{data?.createdAt | date:'dd MMM, yyyy'}}</div>
+            
+        </div>
+        <div class="items">
+            <label class="label">Location:</label>
+            <div class="val">{{'??--??'}}</div>
+        </div>
+        <div class="items">
+            <label class="label">Total Items Requested</label>
+            <div class="val">{{totalItems|number}}</div>
+        </div>
+        <div class="items">
+            <label class="label">Total Items Value</label>
+            <div class="val"><naira-currency></naira-currency>{{totalAmount | number}}</div>
+        </div>
+    </div>
+</div>
+
+<product-grid [products]="data.items" [selectedStore]="data.destinationStoreId" [showStatus]="true">
+    
+    
+</product-grid>

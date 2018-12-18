@@ -1,31 +1,13 @@
+<div>
+    <pre>
+        {{serverData[0] |json}}
+    </pre>
+</div>
 <ul class="tbl-list">
   <li>
-    <div class="filterTop">
-      <div class="tbl-header-rhs">
-        <div class="items">
-          <label class="label">From:</label>
-          <div class="val">Central Sciences Laboratory Store</div>
-        </div>
-        <div class="items">
-          <label class="label">Date:</label>
-          <div class="val">23/10/2018</div>
-        </div>
-        <div class="items">
-          <label class="label">Location:</label>
-          <div class="val">Maternity Ward</div>
-        </div>
-        <div class="items">
-          <label class="label">Total Items Requested</label>
-          <div class="val">400</div>
-        </div>
-        <div class="items">
-          <label class="label">Total Items Value</label>
-          <div class="val">#400,000</div>
-        </div>
-      </div>
-    </div>
+   <store-line *ngFor="let d of serverData" [data]="d"></store-line> 
 
-    <div class="store-table">
+   <!-- <div class="store-table">
       <div class="store-thead">
         <div class="store-tr">
           <div class="store-th store-td-actions">
@@ -83,11 +65,11 @@
           </div>
         </div>
       </div>
-      <!-- <app-apmis-pagination></app-apmis-pagination> -->
+      &lt;!&ndash; <app-apmis-pagination></app-apmis-pagination> &ndash;&gt;
     </div>
     <div class="ob-btn-wrap">
       <button class="ob-btn">Accept Items</button>
-    </div>
+    </div>-->
   </li>
   <li>
     <div class="filterTop">

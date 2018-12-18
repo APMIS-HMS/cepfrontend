@@ -68,6 +68,7 @@ import { NoPurchaseOrderComponent } from './product-entry/invoice-entry/new-invo
 import { StoreOutboundService } from "../../../services/facility-manager/setup/store-outbound-requisitory-service";
 import { CustomerComponent } from './product-exit/customer/customer.component';
 import { CustomerPrescriptionComponent } from './product-exit/customer/customer-prescription/customer-prescription.component';
+import {StoreLineComponent} from "./product-movement/helper-components/store/store-line.component";
 
 
 @NgModule({
@@ -124,7 +125,8 @@ import { CustomerPrescriptionComponent } from './product-exit/customer/customer-
 		ConsumableEntryComponent,
 		DrugEntryComponent,
 		BaseUnitComponent,
-		ConfigContainerComponent
+		ConfigContainerComponent,
+		StoreLineComponent
 	],
 	providers: [
 		StoreService,

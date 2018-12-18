@@ -25,10 +25,8 @@ export class OutboundRequisitionComponent implements OnInit {
     private subscription$: Subscription;
     mainStore: any = {};
     data: ProductGridModel[] = [];
-    dataFromServer: ProductGridModel[] = [];
     serverData = [];
     isLoadingFromServer: boolean = false;
-    selectedProductItems: any[] = [];
     locations: any[] = [];// we have to cache all stores in the selected location so that we don't hit the server for every selection
     stores: any[] = []; // we have to cache all products in the selected store for reuse
 
@@ -36,9 +34,12 @@ export class OutboundRequisitionComponent implements OnInit {
     processing: boolean = false;
     saving: boolean = false;
     loginEmployee: Employee = null;
+    totalItems : number  = 0;
+    totalItemsAmount : number =   0.00;
+    
     pagerSource : IPagerSource = {
         totalRecord : 0 ,
-        pageSize : 5,
+        pageSize : 10,
         currentPage : 0,
         totalPages : 0
     }
@@ -263,11 +264,21 @@ export class OutboundRequisitionComponent implements OnInit {
             }
         })
             .then(x => {
-            
+                console.log(x);     
                 this.isLoadingFromServer = false;
                 this.pagerSource.totalRecord =  x.total;
+                let count  = 0 , amt  = 0 ;
+                
                 if (x.data.length > 0) {
                     this.serverData  = this.buildProductGridDataFromServerResponse(x.data);
+                    this.serverData.forEach(x  => {
+                        count += x.items.length;
+                        amt =  _.sumBy(x.items, y => {
+                            return y.qtyToSend * y.price;
+                        })
+                    });
+                    this.totalItems  = count;
+                    this.totalItemsAmount  = amt;
                 }
             }, x => {
                 this.isLoadingFromServer = false;

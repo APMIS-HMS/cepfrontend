@@ -26,11 +26,11 @@
   <div class="tbl-header-rhs">
     <div class="items">
       <label class="label">Total Items Requested</label>
-      <div class="val">400</div>
+      <div class="val">{{totalItems | number}}</div>
     </div>
     <div class="items">
       <label class="label">Total Items Value</label>
-      <div class="val">#400,000</div>
+        <div class="val"><naira-currency></naira-currency> {{totalItemsAmount | number}}</div>
     </div>
   </div>
 </div>
