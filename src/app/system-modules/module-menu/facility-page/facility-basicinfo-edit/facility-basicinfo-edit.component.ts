@@ -190,7 +190,6 @@ export class FacilityBasicinfoEditComponent implements OnInit {
 					}
 				},
 				(err) => {
-					console.log(err);
 				}
 			)
 			.catch((err) => {});
