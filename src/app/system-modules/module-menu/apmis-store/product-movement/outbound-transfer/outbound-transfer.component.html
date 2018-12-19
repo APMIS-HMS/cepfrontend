@@ -59,9 +59,9 @@
             <div class="store-td">{{item?.productObject?.name}}</div>
             <div class="store-td">{{item?.selectedItem?.totalQuantity}}
               {{item?.selectedItem?.productConfiguration?.name}}</div>
-            <div class="store-td">{{item?.selectedItem?.totalQuantity - item?.selectedItem?.totalQuantity}}</div>
-            <div class="store-td" *ngIf="!item?.isEdit">{{item?.quantity}}</div>
-            <div class="store-td" *ngIf="item?.isEdit"><input (focusout)="onFocusChangeItemValue($event,i)"></div>
+            <div class="store-td">{{item?.selectedItem?.totalQuantity - item?.selectedItem?.totalQuantity}} {{item?.selectedItem?.productConfiguration?.name}}</div>
+            <div class="store-td" *ngIf="!item?.isEdit">{{item?.quantity}} {{item?.selectedItem?.productConfiguration?.name}}</div>
+            <div class="store-td" *ngIf="item?.isEdit"><input (focusout)="onFocusChangeItemValue($event,i)"> {{item?.selectedItem?.productConfiguration?.name}}</div>
             <div class="store-td">#{{item?.costPrice}}/{{item?.selectedItem?.productConfiguration?.name}}</div>
             <div class="store-td">#{{item?.lineCostPrice}} </div>
           </div>
@@ -132,7 +132,7 @@
   <div class="has-title">Outbound Transfer Status</div>
   <div class="date-sent">
     <span>Store Sent:</span>
-    <div class="val">{{item?.storeObject?.name}}</div>
+    <div class="val">{{item?.destinationStoreObject?.name}}</div>
   </div>
   <div class="date-sent">
     <span>Date Sent:</span>
@@ -172,8 +172,8 @@
             <div class="store-td">#{{stock.costPrice}}/{{stock.productObject.baseItem.name}}</div>
             <div class="store-td">#{{stock.lineCostPrice}} </div>
             <div class="store-td">
-              <div class="tbl-status status-green" *ngIf="stock.transferStatusObject.name ==='Completed'">{{stock.transferStatusObject.name}}</div>
-              <div class="tbl-status status-red" *ngIf="stock.transferStatusObject.name ==='Pending'">{{stock.transferStatusObject.name}}</div>
+              <div class="tbl-status status-green" *ngIf="stock.transferStatusObject !==undefined">{{stock.transferStatusObject.name}}</div>
+              <div class="tbl-status status-red" *ngIf="stock.transferStatusObject ===undefined">Pending</div>
             </div>
           </div>
           <div class="store-td store-td-actions">
