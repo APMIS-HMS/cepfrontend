@@ -22,7 +22,7 @@ import { TreatmentSheetActions, InvalidTreatmentReport } from '../../../../../sh
 @Component({
 	selector: 'app-order-set',
 	templateUrl: './order-set.component.html',
-	styleUrls: [ './order-set.component.scss' ]
+	styleUrls: ['./order-set.component.scss']
 })
 export class OrderSetComponent implements OnInit {
 	@Output() showDoc: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -259,7 +259,7 @@ export class OrderSetComponent implements OnInit {
 					this.getProblems();
 				}
 			},
-			(error) => {}
+			(error) => { }
 		);
 	}
 
@@ -320,7 +320,10 @@ export class OrderSetComponent implements OnInit {
 						this.sharedService.announceOrderSet(this.orderSet);
 						this.close_onClickModal();
 					},
-					(err) => {}
+					(err) => {
+						this.disableAuthorizerxButton = false;
+						this.systemModuleService.off();
+					}
 				)
 				.catch((err) => {
 					this.disableAuthorizerxButton = false;
@@ -419,7 +422,7 @@ export class OrderSetComponent implements OnInit {
 					this.getPatientsProblems();
 				}
 			})
-			.catch((err) => {});
+			.catch((err) => { });
 	}
 
 	addProblem_show() {
@@ -462,7 +465,7 @@ export class OrderSetComponent implements OnInit {
 					this.orderSet = JSON.parse(res.data[0].body);
 				}
 			})
-			.catch((err) => {});
+			.catch((err) => { });
 	}
 
 	close_onClick(e) {
@@ -488,7 +491,7 @@ export class OrderSetComponent implements OnInit {
 	// Notification
 	private _notification(type: String, text: String): void {
 		this.facilityService.announceNotification({
-			users: [ this.user._id ],
+			users: [this.user._id],
 			type: type,
 			text: text
 		});
