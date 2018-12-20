@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Facility, Employee, PurchaseOrder } from 'app/models';
 import { AuthFacadeService } from 'app/system-modules/service-facade/auth-facade.service';
-import { FormControl } from '@angular/forms';
+import { FormControl, Validators } from '@angular/forms';
 import {
 	EmployeeService,
 	ProductService,
@@ -22,7 +22,22 @@ import { Filters } from 'app/system-modules/module-menu/apmis-store/store-utils/
 	styleUrls: [ './from-purchase-order.component.scss' ]
 })
 export class FromPurchaseOrderComponent implements OnInit {
-	searchSuplier: FormControl = new FormControl();
+	@Output() invoiceAmountEvent = new EventEmitter<number>();
+
+	searchProductFormControl: FormControl;
+	marginFormControl: FormControl = new FormControl();
+	sellingPriceFormControl: FormControl;
+	batchFormControl: FormControl;
+	expiryDateFormControl: FormControl;
+	quantityFormControl: FormControl;
+	costPriceFormControl: FormControl;
+	isMarginFocused = false;
+	isSellingPriceFocused = false;
+	isBatchFocused = false;
+	isExpiryDateFocused = false;
+	isQuantityFocused = false;
+	isCostPriceFocused = false;
+	isProductFocused = false;
 	purchaseOrderFormControl: FormControl = new FormControl();
 	supplierFormControl: FormControl = new FormControl();
 	invoiceDate: FormControl = new FormControl();
@@ -35,7 +50,7 @@ export class FromPurchaseOrderComponent implements OnInit {
 	sup_search = false;
 	selectedFacility: any;
 	storeId: string;
-	products: any;
+	products: any[] = [];
 	numberOfPages = 0;
 	limit = APMIS_STORE_PAGINATION_LIMIT;
 	total = 0;
@@ -46,17 +61,19 @@ export class FromPurchaseOrderComponent implements OnInit {
 	workSpace: any;
 	productConfigSearch: FormControl = new FormControl();
 	purchaseListFormControl: FormControl = new FormControl();
-	selectedProductName: any;
+	selectedProductName = '';
 	showProduct: boolean;
 	searchHasBeenDone = false;
 	selectedProduct: any;
+	checkedProduct: any;
 	productConfigs: any[] = [];
 	selectedProducts: any[] = [];
 	suppliers: any[] = [];
 	selectedSuppliers: any[] = [];
 	selectedLocalStorageSuppliers: any[] = [];
 	supplierSearchResult: any[] = [];
-	purchaseListCollection: any;
+	purchaseOrderCollection: any;
+	newOrder: any;
 
 	constructor(
 		private storeUtilService: StoreGlobalUtilService,
@@ -126,16 +143,69 @@ export class FromPurchaseOrderComponent implements OnInit {
 	}
 
 	ngOnInit() {
+		this.sellingPriceFormControl = new FormControl(0, [ Validators.min(0) ]);
+		this.marginFormControl = new FormControl(0, [ Validators.max(100), Validators.min(0) ]);
+		this.expiryDateFormControl = new FormControl(new Date().toISOString().substring(0, 10));
+		this.batchFormControl = new FormControl('', [ Validators.minLength(3) ]);
+		this.searchProductFormControl = new FormControl('', [ Validators.minLength(3) ]);
+
+		this.quantityFormControl = new FormControl(0, [ Validators.min(0) ]);
+		this.costPriceFormControl = new FormControl(0, [ Validators.min(0) ]);
 		this.apmisFilterService.clearItemsStorage(true);
 		this.checkingStore = (<any>this._locker.getObject('checkingObject')).typeObject;
-		this.currentDate = new FormControl(new Date().toISOString().substring(0, 10));
+		this.invoiceDate = new FormControl(new Date().toISOString().substring(0, 10));
 		this.storeFilters = this.storeUtilService.getObjectKeys(Filters);
 		this.selectedFacility = <Facility>this._locker.getObject('selectedFacility');
 
 		this.supplierFormControl.valueChanges.subscribe((value) => {
 			this.selectedProducts = [];
 			this.productConfigs = this.modifyProducts(this.productConfigs);
-			this.getSupplierPurchaseList(value);
+			this.getSupplierPurchaseOrders(value);
+		});
+
+		this.purchaseOrderFormControl.valueChanges.subscribe((value) => {
+			if (value !== '0') {
+				this.products = this.modifyProducts(value.orderedProducts);
+			}
+		});
+
+		this.marginFormControl.valueChanges.subscribe((value) => {
+			this.sellingPriceFormControl.setValue(
+				value * this.costPriceFormControl.value / 100 + this.costPriceFormControl.value
+			);
+		});
+
+		this.searchProductFormControl.valueChanges.distinctUntilChanged().debounceTime(200).subscribe((value) => {
+			this.searchHasBeenDone = false;
+			if (value !== null && value.length > 3 && this.selectedProductName.length === 0) {
+				this.selectedProduct = undefined;
+				this.selectedProductName = '';
+				this._productService
+					.findProductConfigs({
+						query: {
+							'productObject.name': { $regex: value, $options: 'i' },
+							storeId: this.checkingStore.storeId
+						}
+					})
+					.then(
+						(payload) => {
+							console.log(payload);
+							this.productConfigs = payload.data;
+							this.showProduct = true;
+							if (this.productConfigs.length === 0) {
+								this.searchHasBeenDone = true;
+							} else {
+								this.searchHasBeenDone = false;
+							}
+						},
+						(error) => {
+							this.showProduct = false;
+							this.searchHasBeenDone = false;
+						}
+					);
+			} else {
+				this.selectedProductName = '';
+			}
 		});
 
 		this.getSuppliers();
@@ -143,26 +213,30 @@ export class FromPurchaseOrderComponent implements OnInit {
 
 	showProdList(e) {
 		console.log('bbbbbbbb ' + e);
-		if (e.value == '') {
+		if (e.value === '') {
 			this.searchProduct = true;
 		} else {
 			this.searchProduct = false;
 		}
 	}
 
-	getSupplierPurchaseList(supplier) {
+	getSupplierPurchaseOrders(supplier) {
 		this.purchaseListService
 			.find({
 				query: {
 					facilityId: this.selectedFacility._id,
 					storeId: this.checkingStore.storeId,
-					'suppliersId._id': supplier.supplier._id,
-					$select: [ '_id', 'purchaseListNumber', 'listedProducts' ]
+					supplierId: supplier._id,
+					$select: [ '_id', 'purchaseOrderNumber', 'orderedProducts', 'facilityId' ]
 				}
 			})
-			.then((payload) => {
-				this.purchaseListCollection = payload.data;
-			});
+			.then(
+				(payload) => {
+					console.log(payload);
+					this.purchaseOrderCollection = payload.data;
+				},
+				(error) => {}
+			);
 	}
 
 	getInventoryList(searchText?) {
@@ -223,15 +297,37 @@ export class FromPurchaseOrderComponent implements OnInit {
 		}
 	}
 
-	setSelectedOption(event, data: any) {
+	productChecked(event, data: any) {
 		if (event.target.checked && this.validateAgainstDuplicateProductEntry(data)) {
-			this.selectedProducts.push(data);
+			// this.selectedProducts.push(data);
+			this.checkedProduct = data;
+			this.addProduct(data);
 		} else if (!event.target.checked) {
 			const selectedIndex = this.selectedProducts.findIndex((x) => x.productId.toString() === data.productId);
 			if (selectedIndex > -1) {
 				this.selectedProducts.splice(selectedIndex, 1);
 			}
 		}
+	}
+
+	setSelectedOption(data: any) {
+		try {
+			this.selectedProductName = data.productObject.name;
+			this.selectedProduct = data;
+			this.showProduct = false;
+			this.searchProductFormControl.setValue(this.selectedProductName);
+			if (!this.isQuantityFocused) {
+				this.isSellingPriceFocused = false;
+				this.isBatchFocused = false;
+				this.isExpiryDateFocused = false;
+				this.isMarginFocused = false;
+				this.isCostPriceFocused = false;
+				this.isProductFocused = false;
+				this.isQuantityFocused = true;
+			} else {
+				this.isQuantityFocused = false;
+			}
+		} catch (error) {}
 	}
 
 	validateAgainstDuplicateProductEntry(product) {
@@ -255,5 +351,147 @@ export class FromPurchaseOrderComponent implements OnInit {
 				},
 				(error) => {}
 			);
+	}
+
+	addNewOrder() {
+		this.newOrder = {};
+	}
+
+	onFocus(focus, type?) {
+		if (focus === 'in') {
+			this.selectedProductName = '';
+			this.showProduct = true;
+		} else {
+			setTimeout(() => {
+				this.showProduct = false;
+			}, 300);
+		}
+	}
+
+	onKeydown(event, i) {
+		console.log(i);
+		if (i === 1) {
+			this.isSellingPriceFocused = true;
+			this.isBatchFocused = false;
+			this.isMarginFocused = false;
+			this.isExpiryDateFocused = false;
+			this.isQuantityFocused = false;
+			this.isCostPriceFocused = false;
+		} else if (i === 2) {
+			this.isBatchFocused = true;
+			this.isSellingPriceFocused = false;
+			this.isMarginFocused = false;
+			this.isExpiryDateFocused = false;
+			this.isQuantityFocused = false;
+			this.isCostPriceFocused = false;
+		} else if (i === 3) {
+			this.isExpiryDateFocused = true;
+			this.isBatchFocused = false;
+			this.isMarginFocused = false;
+			this.isSellingPriceFocused = false;
+			this.isQuantityFocused = false;
+			this.isCostPriceFocused = false;
+		} else if (i === 4) {
+			this.isExpiryDateFocused = true;
+			this.isBatchFocused = false;
+			this.isMarginFocused = false;
+			this.isSellingPriceFocused = false;
+			this.isQuantityFocused = false;
+			this.isCostPriceFocused = false;
+			this.addProduct();
+		} else if (i === 5) {
+			console.log('am in five');
+			this.isExpiryDateFocused = false;
+			this.isBatchFocused = false;
+			this.isMarginFocused = false;
+			this.isSellingPriceFocused = false;
+			this.isQuantityFocused = false;
+			this.isCostPriceFocused = true;
+		} else if (i === 6) {
+			this.isExpiryDateFocused = false;
+			this.isBatchFocused = false;
+			this.isMarginFocused = true;
+			this.isSellingPriceFocused = false;
+			this.isQuantityFocused = false;
+			this.isCostPriceFocused = false;
+		}
+	}
+
+	addProduct(comingProduct?) {
+		if (comingProduct) {
+			console.log(comingProduct);
+			this.searchProductFormControl.setValue(comingProduct.productName);
+			this.costPriceFormControl.setValue(comingProduct.costPrice);
+			this.quantityFormControl.setValue(comingProduct.quantity);
+			this.addNewOrder();
+		} else {
+			console.log(this.selectedProduct);
+			if (this.selectedProduct !== undefined) {
+				const product = {
+					costPrice: this.costPriceFormControl.value,
+					isChecked: true,
+					productId: this.selectedProduct.productId,
+					productName: this.selectedProduct.productObject.name,
+					quantity: this.quantityFormControl.value,
+					sellingPrice: this.sellingPriceFormControl.value,
+					margin: this.marginFormControl.value,
+					expiryDate: this.expiryDateFormControl.value,
+					batchNumber: this.batchFormControl.value,
+					productPackType:
+						this.selectedProduct.packSizes.find((x) => x.isBase) !== undefined
+							? this.selectedProduct.packSizes.find((x) => x.isBase).name
+							: ''
+				};
+				this.selectedProducts.push(product);
+				console.log(this.selectedProducts);
+				this.searchProductFormControl.reset();
+				this.costPriceFormControl.reset(0);
+				this.quantityFormControl.reset(0);
+				this.marginFormControl.reset(0);
+				this.sellingPriceFormControl.reset(0);
+				this.expiryDateFormControl = new FormControl(new Date().toISOString().substring(0, 10));
+				this.batchFormControl.reset('');
+				this.sendInvoiceAmount();
+				this.isProductFocused = true;
+			} else if (this.checkedProduct !== undefined) {
+				console.log(this.checkedProduct);
+				const product = {
+					costPrice: this.costPriceFormControl.value,
+					isChecked: true,
+					productId: this.checkedProduct.productId,
+					productName: this.checkedProduct.productName,
+					quantity: this.quantityFormControl.value,
+					sellingPrice: this.sellingPriceFormControl.value,
+					margin: this.marginFormControl.value,
+					expiryDate: this.expiryDateFormControl.value,
+					batchNumber: this.batchFormControl.value,
+					productPackType: this.checkedProduct.productPackType
+				};
+				this.selectedProducts.push(product);
+				console.log(this.selectedProducts);
+				this.searchProductFormControl.reset();
+				this.costPriceFormControl.reset(0);
+				this.quantityFormControl.reset(0);
+				this.marginFormControl.reset(0);
+				this.sellingPriceFormControl.reset(0);
+				this.expiryDateFormControl = new FormControl(new Date().toISOString().substring(0, 10));
+				this.batchFormControl.reset('');
+				this.sendInvoiceAmount();
+				this.isProductFocused = true;
+			}
+		}
+	}
+
+	submit() {
+		console.log(this.selectedProducts);
+	}
+
+	sendInvoiceAmount() {
+		let sum = 0;
+		this.selectedProducts.map((product) => {
+			sum = sum + product.quantity * product.costPrice;
+			return sum;
+		});
+		this.invoiceAmountEvent.emit(sum);
 	}
 }

@@ -7,7 +7,8 @@ import { DatePipe } from '@angular/common';
 import {
 	FacilitiesServiceCategoryService,
 	EmployeeService,
-	InventoryInitialiserService
+	InventoryInitialiserService,
+	InventoryService
 } from 'app/services/facility-manager/setup';
 import { Facility } from 'app/models';
 import { CoolLocalStorage } from 'angular2-cool-storage';
@@ -16,6 +17,7 @@ import { SystemModuleService } from 'app/services/module-manager/setup/system-mo
 import { Subscription } from 'rxjs/Subscription';
 import { Inventory } from '../../components/models/inventory';
 import { InventoryTransaction } from '../../components/models/inventorytransaction';
+import { APMIS_STORE_PAGINATION_LIMIT } from 'app/shared-module/helpers/global-config';
 
 @Component({
 	selector: 'app-initialize-store',
@@ -52,6 +54,11 @@ export class InitializeStoreComponent implements OnInit {
 	loginEmployee: any;
 	selectedCategoryName: any;
 	showCategory: boolean;
+	existingProducts: any;
+	limit = APMIS_STORE_PAGINATION_LIMIT;
+	total = 0;
+	skip = 0;
+	numberOfPages = 0;
 
 	constructor(
 		private _productService: ProductService,
@@ -61,7 +68,8 @@ export class InitializeStoreComponent implements OnInit {
 		private authFacadeService: AuthFacadeService,
 		private systemModuleService: SystemModuleService,
 		private employeeService: EmployeeService,
-		private _inventoryInitialiserService: InventoryInitialiserService
+		private _inventoryInitialiserService: InventoryInitialiserService,
+		private _inventoryService: InventoryService
 	) {
 		this.subscription = this.employeeService.checkInAnnounced$.subscribe((res) => {
 			if (!!res) {
@@ -157,6 +165,41 @@ export class InitializeStoreComponent implements OnInit {
 		this.InitializeProductArray();
 		this.removeProduct(0);
 		this.getServiceCategories();
+		this.getInitializedProductList();
+	}
+
+	getInitializedProductList() {
+		this._inventoryService
+			.find({
+				query: {
+					facilityId: this.selectedFacility._id,
+					$select: [
+						'availableQuantity',
+						'categoryId',
+						'facilityId',
+						'facilityServiceId',
+						'productId',
+						'serviceId',
+						'storeId',
+						'totalQuantity',
+						'margin',
+						'productObject'
+					],
+					$limit: this.limit,
+					$skip: this.skip * this.limit
+				}
+			})
+			.then(
+				(payload) => {
+					this.existingProducts = payload.data;
+					this.numberOfPages = payload.total / this.limit;
+					this.total = payload.total;
+					console.log(payload);
+				},
+				(error) => {
+					console.log(error);
+				}
+			);
 	}
 
 	close_onClick(e) {
@@ -492,4 +535,9 @@ export class InitializeStoreComponent implements OnInit {
 	}
 
 	onSubmit() {}
+
+	loadCurrentPage(event) {
+		this.skip = event;
+		// this.getInventoryList();
+	}
 }

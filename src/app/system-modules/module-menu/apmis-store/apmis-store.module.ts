@@ -21,7 +21,8 @@ import {
 	InventoryService,
 	ProductTypeService,
 	SupplierService,
-	PurchaseOrderService
+	PurchaseOrderService,
+	PurchaseEntryService
 } from 'app/services/facility-manager/setup';
 import { ApmisPaginationComponent } from './components/apmis-pagination/apmis-pagination.component';
 import { StoreGlobalUtilService } from './store-utils/global-service';
@@ -57,7 +58,6 @@ import { ApmisStoreSupplierSearchComponent } from './components/apmis-store-supp
 import { ProductExitComponent } from './product-exit/product-exit.component';
 import { SalesComponent } from './product-exit/sales/sales.component';
 import { RefundComponent } from './product-exit/refund/refund.component';
-import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invoice-entry/new-invoice-entry.component';
 import { ProductToggleComponent } from './apmis-store-product/product-conguration/config-product/product-toggle/product-toggle.component';
 import { ConsumableEntryComponent } from './apmis-store-product/product-conguration/config-product/consumable-entry/consumable-entry.component';
 import { DrugEntryComponent } from './apmis-store-product/product-conguration/config-product/drug-entry/drug-entry.component';
@@ -68,6 +68,8 @@ import { NoPurchaseOrderComponent } from './product-entry/invoice-entry/new-invo
 import { StoreOutboundService } from '../../../services/facility-manager/setup/store-outbound-requisitory-service';
 import { CustomerComponent } from './product-exit/customer/customer.component';
 import { CustomerPrescriptionComponent } from './product-exit/customer/customer-prescription/customer-prescription.component';
+import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invoice-entry/new-invoice-entry.component';
+import { FocusDirective } from './components/directives/apmis-focus-directive';
 
 @NgModule({
 	imports: [
@@ -125,7 +127,6 @@ import { CustomerPrescriptionComponent } from './product-exit/customer/customer-
 		ProductExitComponent,
 		SalesComponent,
 		RefundComponent,
-		NewInvoiceEntryComponent,
 		ProductToggleComponent,
 		ConsumableEntryComponent,
 		DrugEntryComponent,
@@ -134,7 +135,9 @@ import { CustomerPrescriptionComponent } from './product-exit/customer/customer-
 		CustomerComponent,
 		CustomerPrescriptionComponent,
 		FromPurchaseOrderComponent,
-		NoPurchaseOrderComponent
+		NoPurchaseOrderComponent,
+		NewInvoiceEntryComponent,
+		FocusDirective
 	],
 	providers: [
 		StoreService,
@@ -143,7 +146,8 @@ import { CustomerPrescriptionComponent } from './product-exit/customer/customer-
 		ProductTypeService,
 		SupplierService,
 		PurchaseOrderService,
-		StoreOutboundService
+		StoreOutboundService,
+		PurchaseEntryService
 	]
 })
 export class ApmisStoreModule {}
