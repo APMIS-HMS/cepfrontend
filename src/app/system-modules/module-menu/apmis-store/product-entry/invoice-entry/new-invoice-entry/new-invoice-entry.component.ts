@@ -76,15 +76,7 @@ export class NewInvoiceEntryComponent implements OnInit, AfterViewInit {
 				};
 				return invItem;
 			});
-			console.log(invEntry);
-			this.purchaseEntryService.createEntry(invEntry).then(
-				(payload) => {
-					console.log(payload);
-				},
-				(error) => {
-					console.log(error);
-				}
-			);
+			this.purchaseEntryService.createEntry(invEntry).then((payload) => {}, (error) => {});
 		} else {
 			const invEntry: InvoiceEntry = {
 				facilityId: this.noChild.selectedFacility._id,
@@ -115,15 +107,7 @@ export class NewInvoiceEntryComponent implements OnInit, AfterViewInit {
 				};
 				return invItem;
 			});
-			console.log(invEntry);
-			this.purchaseEntryService.createEntry(invEntry).then(
-				(payload) => {
-					console.log(payload);
-				},
-				(error) => {
-					console.log(error);
-				}
-			);
+			this.purchaseEntryService.createEntry(invEntry).then((payload) => {}, (error) => {});
 		}
 	}
 
@@ -133,10 +117,17 @@ export class NewInvoiceEntryComponent implements OnInit, AfterViewInit {
 
 	validate() {
 		try {
-			if (!!this.fromChild && !!this.fromChild.supplierFormControl.value) {
+			if (
+				!!this.fromChild &&
+				!!this.fromChild.supplierFormControl.value &&
+				this.fromChild.selectedProducts.length > 0
+			) {
 				return false;
-			} else if (!!this.noChild && !!this.noChild.supplierFormControl.value) {
-				console.log(6);
+			} else if (
+				!!this.noChild &&
+				!!this.noChild.supplierFormControl.value &&
+				this.noChild.selectedProducts.length > 0
+			) {
 				return false;
 			} else {
 				return true;

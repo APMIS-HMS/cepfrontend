@@ -208,7 +208,6 @@ export class NoPurchaseOrderComponent implements OnInit {
 					})
 					.then(
 						(payload) => {
-							console.log(payload);
 							this.productConfigs = payload.data;
 							this.showProduct = true;
 							if (this.productConfigs.length === 0) {
@@ -242,7 +241,6 @@ export class NoPurchaseOrderComponent implements OnInit {
 					.then(
 						(payload) => {
 							this.productConfigs = payload.data;
-							console.log(this.productConfigs);
 							this.showProduct = true;
 							if (this.productConfigs.length === 0) {
 								this.searchHasBeenDone = true;
@@ -275,7 +273,6 @@ export class NoPurchaseOrderComponent implements OnInit {
 					.then(
 						(payload) => {
 							this.inProductConfigs = payload.data;
-							console.log(this.inProductConfigs);
 							this.inShowProduct = true;
 							if (this.inProductConfigs.length === 0) {
 								this.inSearchHasBeenDone = true;
@@ -308,7 +305,6 @@ export class NoPurchaseOrderComponent implements OnInit {
 			})
 			.then(
 				(payload) => {
-					console.log(payload);
 					this.purchaseOrderCollection = payload.data;
 				},
 				(error) => {}
@@ -478,7 +474,6 @@ export class NoPurchaseOrderComponent implements OnInit {
 	}
 
 	onKeydown(event, i) {
-		console.log(i);
 		if (i === 1) {
 			this.isSellingPriceFocused = true;
 			this.isBatchFocused = false;
@@ -509,7 +504,6 @@ export class NoPurchaseOrderComponent implements OnInit {
 			this.isCostPriceFocused = false;
 			this.addProduct();
 		} else if (i === 5) {
-			console.log('am in five');
 			this.isExpiryDateFocused = false;
 			this.isBatchFocused = false;
 			this.isMarginFocused = false;
@@ -527,7 +521,6 @@ export class NoPurchaseOrderComponent implements OnInit {
 	}
 
 	inOnKeydown(event, i) {
-		console.log(i);
 		if (i === 1) {
 			this.inIsSellingPriceFocused = true;
 			this.inIsBatchFocused = false;
@@ -558,7 +551,6 @@ export class NoPurchaseOrderComponent implements OnInit {
 			this.inIsCostPriceFocused = false;
 			this.inAddProduct();
 		} else if (i === 5) {
-			console.log('am in five');
 			this.inIsExpiryDateFocused = false;
 			this.inIsBatchFocused = false;
 			this.inIsMarginFocused = false;
@@ -577,13 +569,11 @@ export class NoPurchaseOrderComponent implements OnInit {
 
 	addProduct(comingProduct?) {
 		if (comingProduct) {
-			console.log(comingProduct);
 			this.searchProductFormControl.setValue(comingProduct.productName);
 			this.costPriceFormControl.setValue(comingProduct.costPrice);
 			this.quantityFormControl.setValue(comingProduct.quantity);
 			this.addNewOrder();
 		} else {
-			console.log(this.selectedProduct);
 			if (this.selectedProduct !== undefined) {
 				const product = {
 					costPrice: this.costPriceFormControl.value,
@@ -601,7 +591,6 @@ export class NoPurchaseOrderComponent implements OnInit {
 							: ''
 				};
 				this.selectedProducts.push(product);
-				console.log(this.selectedProducts);
 				this.searchProductFormControl.reset();
 				this.costPriceFormControl.reset(0);
 				this.quantityFormControl.reset(0);
@@ -612,7 +601,6 @@ export class NoPurchaseOrderComponent implements OnInit {
 				this.sendInvoiceAmount();
 				this.isProductFocused = true;
 			} else if (this.checkedProduct !== undefined) {
-				console.log(this.checkedProduct);
 				const product = {
 					costPrice: this.costPriceFormControl.value,
 					isChecked: true,
@@ -626,7 +614,6 @@ export class NoPurchaseOrderComponent implements OnInit {
 					productPackType: this.checkedProduct.productPackType
 				};
 				this.selectedProducts.push(product);
-				console.log(this.selectedProducts);
 				this.searchProductFormControl.reset();
 				this.costPriceFormControl.reset(0);
 				this.quantityFormControl.reset(0);
@@ -642,13 +629,11 @@ export class NoPurchaseOrderComponent implements OnInit {
 
 	inAddProduct(comingProduct?) {
 		if (comingProduct) {
-			console.log(comingProduct);
 			this.inSearchProductFormControl.setValue(comingProduct.productName);
 			this.costPriceFormControl.setValue(comingProduct.costPrice);
 			this.quantityFormControl.setValue(comingProduct.quantity);
 			this.addNewOrder();
 		} else {
-			console.log(this.inSelectedProduct);
 			if (this.inSelectedProduct !== undefined) {
 				const product = {
 					costPrice: this.costPriceFormControl.value,
@@ -666,7 +651,6 @@ export class NoPurchaseOrderComponent implements OnInit {
 							: ''
 				};
 				this.selectedProducts.push(product);
-				console.log(this.selectedProducts);
 				this.inProductConfigSearch.reset();
 				this.costPriceFormControl.reset(0);
 				this.quantityFormControl.reset(0);
@@ -677,7 +661,6 @@ export class NoPurchaseOrderComponent implements OnInit {
 				this.sendInvoiceAmount();
 				this.isProductFocused = true;
 			} else if (this.checkedProduct !== undefined) {
-				console.log(this.checkedProduct);
 				const product = {
 					costPrice: this.costPriceFormControl.value,
 					isChecked: true,
@@ -691,7 +674,6 @@ export class NoPurchaseOrderComponent implements OnInit {
 					productPackType: this.checkedProduct.productPackType
 				};
 				this.selectedProducts.push(product);
-				console.log(this.selectedProducts);
 				this.inSearchProductFormControl.reset();
 				this.costPriceFormControl.reset(0);
 				this.quantityFormControl.reset(0);
@@ -705,9 +687,7 @@ export class NoPurchaseOrderComponent implements OnInit {
 		}
 	}
 
-	submit() {
-		console.log(this.selectedProducts);
-	}
+	submit() {}
 
 	sendInvoiceAmount() {
 		let sum = 0;
