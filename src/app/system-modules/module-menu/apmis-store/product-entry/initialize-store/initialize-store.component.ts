@@ -194,11 +194,8 @@ export class InitializeStoreComponent implements OnInit {
 					this.existingProducts = payload.data;
 					this.numberOfPages = payload.total / this.limit;
 					this.total = payload.total;
-					console.log(payload);
 				},
-				(error) => {
-					console.log(error);
-				}
+				(error) => {}
 			);
 	}
 
@@ -538,6 +535,6 @@ export class InitializeStoreComponent implements OnInit {
 
 	loadCurrentPage(event) {
 		this.skip = event;
-		// this.getInventoryList();
+		this.getInitializedProductList();
 	}
 }

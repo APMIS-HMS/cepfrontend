@@ -6,19 +6,21 @@
       <div class="list-inner-wrap">
         <div class="con-inner-wrap">
           <span>Supplier</span>
-          <h3>Sidmach Medical Supplier</h3>
+          <h3>{{selectedInvoice.supplierObject?.supplier.name}}</h3>
         </div>
         <div class="con-inner-wrap">
           <span>Invoice Date</span>
-          <h3>19/10/2018</h3>
+          <h3>{{selectedInvoice.createdAt | date:'fullDate'}}</h3>
         </div>
         <div class="con-inner-wrap">
           <span>Amount</span>
-          <h3>#45,000 paid out of #60,000</h3>
+          <h3><span *ngIf="selectedInvoice.amountPaid > 0">#{{selectedInvoice.amountPaid|number}} paid out of </span>#{{selectedInvoice.invoiceAmount|number}}</h3>
         </div>
         <div class="con-inner-wrap">
           <span>Status</span>
-          <h3 class="orange-lbl">Partial Payment</h3>
+          <h3 [class.orange-lbl]="selectedInvoice.amountPaid > 0 && selectedInvoice.amountPaid < selectedInvoice.invoiceAmount"
+            [class.red-lbl]="selectedInvoice.amountPaid === 0" [class.green-lbl]="selectedInvoice.amountPaid >= selectedInvoice.invoiceAmount">Payment
+            Status</h3>
         </div>
       </div>
 
@@ -26,15 +28,17 @@
         <thead>
           <tr>
             <th>Product Delivered</th>
+            <th>Batch No</th>
             <th>Quantity Delivered</th>
             <th>Price</th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>Panadol 200mg</td>
-            <td>200 Packets</td>
-            <td>#2000</td>
+          <tr *ngFor="let product of invoiceProduct?.products">
+            <td>{{product.productName}}</td>
+            <td>{{product.batchNo}}</td>
+            <td>{{product.quantity}} {{product.productPackType}}</td>
+            <td>#{{product.costPrice}}</td>
           </tr>
         </tbody>
       </table>
@@ -44,11 +48,12 @@
         <div class="pay-action-wrap">
           <h5 class="action-content">Amount</h5>
           <div class="InputGroup action-content">
-            <input class="customInput" type="number" required>
+            <input [(ngModel)]="amountToPay" [formControl]="amountToPayFormControl" class="customInput" type="number"
+              required>
             <span class="highlight"></span>
           </div>
-          <div class="ft-btn ft-btn-selected action-content">
-            <span>Pay #50,000</span>
+          <div [class.disabled]="amountToPay === 0 || !(!!amountToPay)" (click)="makePayment()" class="ft-btn ft-btn-selected action-content">
+            <span>Pay &#8358;{{amountToPay| number}}</span>
           </div>
         </div>
       </div>
