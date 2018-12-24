@@ -2944,11 +2944,13 @@ button,
     height: 0px;
     .disabled {
         cursor: not-allowed;
-        background: gray;
+        background: rgba(168, 220, 255, 0.52)
       }
     i,
     span {
         padding-right: 5px;
+        align-self: center;
+        justify-self: center;
     }
 }
 
