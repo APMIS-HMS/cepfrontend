@@ -70,6 +70,7 @@ import { CustomerComponent } from './product-exit/customer/customer.component';
 import { CustomerPrescriptionComponent } from './product-exit/customer/customer-prescription/customer-prescription.component';
 import { NewInvoiceEntryComponent } from './product-entry/invoice-entry/new-invoice-entry/new-invoice-entry.component';
 import { FocusDirective } from './components/directives/apmis-focus-directive';
+import { InvoiceEntryLineItemComponent } from './product-entry/invoice-entry/new-invoice-entry/invoice-entry-line-item/invoice-entry-line-item.component';
 
 @NgModule({
 	imports: [
@@ -137,7 +138,8 @@ import { FocusDirective } from './components/directives/apmis-focus-directive';
 		FromPurchaseOrderComponent,
 		NoPurchaseOrderComponent,
 		NewInvoiceEntryComponent,
-		FocusDirective
+		FocusDirective,
+		InvoiceEntryLineItemComponent
 	],
 	providers: [
 		StoreService,

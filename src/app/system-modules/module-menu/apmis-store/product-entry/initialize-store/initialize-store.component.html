@@ -19,7 +19,9 @@
       <span class="bar"></span>
       <label class="customLabel"><i class="fa fa-search" aria-hidden="true"></i>Search Product</label>
       <ul class="search-sugestions" *ngIf="(showProduct && productConfigs.length > 0)">
-        <li *ngFor="let config of productConfigs" (click)="setSelectedOption(config)" class="search-sugestion">{{config.productObject.name}}</li>
+        <li *ngFor="let config of productConfigs" (click)="setSelectedOption(config)" class="search-sugestion">{{config.productObject.name}}
+          <i *ngIf="config.isVented" class="fa fa-check-circle fa-1x initialized-product"></i>
+        </li>
       </ul>
     </div>
     <div class="search-noResult-blue" *ngIf="searchHasBeenDone === true">
@@ -214,5 +216,5 @@
       </div>
     </div>
   </div>
-<app-apmis-pagination (emitCurrentPage)="loadCurrentPage($event)" [total]="total"></app-apmis-pagination>
+  <app-apmis-pagination (emitCurrentPage)="loadCurrentPage($event)" [total]="total"></app-apmis-pagination>
 </div>

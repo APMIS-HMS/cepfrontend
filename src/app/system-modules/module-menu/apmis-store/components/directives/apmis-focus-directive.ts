@@ -1,4 +1,6 @@
 import { ElementRef, Renderer, Input, Directive, OnInit, ViewContainerRef, TemplateRef } from '@angular/core';
+import { TypeFormatFlags } from 'typescript';
+import { type } from 'os';
 
 // tslint:disable-next-line:directive-selector
 @Directive({ selector: '[myFocus]' })
@@ -19,6 +21,7 @@ export class FocusDirective implements OnInit {
 
 	ngOnInit() {}
 	setFocus() {
+		// console.log(this.hostElement.nativeElement
 		this.renderer.invokeElementMethod(this.hostElement.nativeElement, 'focus');
 		this.renderer.invokeElementMethod(this.hostElement.nativeElement, 'select');
 	}

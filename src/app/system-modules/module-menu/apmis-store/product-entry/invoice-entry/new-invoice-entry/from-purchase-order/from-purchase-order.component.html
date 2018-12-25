@@ -49,7 +49,7 @@
           <div class="store-td">10 packs</div>
           <div class="store-td">#{{product.costPrice}}/{{product.productPackType}}</div>
           <div class="store-td">#{{product.costPrice * product.quantity}}</div>
-          <div class="store-td">#200/sachet</div>
+          <div class="store-td">#{{product.sellingPrice}}/{{product.productPackType}}</div>
         </div>
         <div class="store-td store-td-actions"></div>
       </div>
@@ -81,12 +81,13 @@
 
   <div class="store-tbody">
     <div class="store-pre-tr">
+
       <div class="store-tr" *ngFor="let picked of selectedProducts">
         <div class="store-td store-td-actions"></div>
         <div class="config-tr-in in-tr">
           <div class="store-td" style="grid-column: span 2">{{picked.productName}}</div>
-          <div class="store-td">{{picked.quantity}} packs</div>
-          <div class="store-td">{{picked.costPrice}} packs</div>
+          <div class="store-td">{{picked.quantity}} {{picked.productPackType}}</div>
+          <div class="store-td">{{picked.costPrice}} {{picked.productPackType}}</div>
           <div class="store-td">{{picked.margin}}</div>
           <div class="store-td">#{{picked.sellingPrice}}</div>
           <div class="store-td">{{picked.batchNumber | uppercase }}</div>
@@ -108,57 +109,65 @@
           </div>
         </div>
       </div>
-      <div *ngIf="newOrder!== undefined" class="store-tr">
+      <div class="store-tr">
+
+
         <div class="store-td store-td-actions"></div>
-        <div class="config-tr-in in-tr">
-          <div class="store-td" style="grid-column: span 2">
-            <div class="searchproduct">
-              <div class="InputGroup">
-                <input [myFocus]="isProductFocused" [formControl]="searchProductFormControl" (focus)="onFocus('in')"
-                  (focusout)="onFocus('out')" class="customInput" type="text">
-                <ul class="search-sugestions bar" *ngIf="showProduct && productConfigs.length > 0">
-                  <li *ngFor="let config of productConfigs" (click)="setSelectedOption(config)" class="search-sugestion">{{config.productObject.name}}</li>
-                </ul>
+        <form [formGroup]="productForm">
+          <div formArrayName="productArray">
+            <div formGroupName="{{i}}" *ngFor="let picked of productForm['controls'].productArray['controls']; let i = index;">
+              <!-- <div class="store-td" style="grid-column: span 2">
+                <div class="searchproduct">
+                  <div class="InputGroup">
+                    <input [myFocus]="isProductFocused" formControlName="productName" (focus)="onFocus('in')"
+                      (focusout)="onFocus('out')" class="customInput" type="text">
+                    <ul class="search-sugestions bar" *ngIf="showProduct && productConfigs.length > 0">
+                      <li *ngFor="let config of productConfigs" (click)="setSelectedOption(config)" class="search-sugestion">{{config.productObject.name}}</li>
+                    </ul>
+                  </div>
+                </div>
               </div>
+              <div class="store-td">
+                <div class="InputGroup" style="width:60px;">
+                  <input formControlName="quantity" (keydown.enter)="onKeydown($event, 5, i)" [myFocus]="isQuantityFocused"
+                    class="customInput" type="number" min="0">
+                </div>
+              </div>
+              <div class="store-td">
+                <div class="InputGroup" style="width:60px;">
+                  <input formControlName="costPrice" (keydown.enter)="onKeydown($event, 6, i)" [myFocus]="isCostPriceFocused"
+                    class="customInput" type="number" min="0">
+                </div>
+              </div>
+              <div class="store-td">
+                <div class="InputGroup" style="width:60px;">
+                  <input formControlName="margin" (keydown.enter)="onKeydown($event, 1, i)" [myFocus]="isMarginFocused"
+                    class="customInput" type="number" max="100" min="0">
+                </div>
+              </div>
+              <div class="store-td">
+                <div class="InputGroup" style="width:60px;">
+                  <input formControlName="sellingPrice" (keydown.enter)="onKeydown($event, 2,i)" [myFocus]="isSellingPriceFocused"
+                    class="customInput" type="number">
+                </div>
+              </div>
+              <div class="store-td">
+                <div class="InputGroup" style="width:60px;">
+                  <input formControlName="batchNumber" (keydown.enter)="onKeydown($event, 3, i)" [myFocus]="isBatchFocused"
+                    class="customInput" type="text">
+                </div>
+              </div>
+              <div class="store-td">
+                <div class="InputGroup" style="width:100px;">
+                  <input formControlName="expiryDate" (keydown.enter)="onKeydown($event, 4, i)" [myFocus]="isExpiryDateFocused"
+                    class="customInput" type="date">
+                </div>
+              </div> -->
+
+              <app-invoice-entry-line-item [product]=picked.value (pushConstructedProduct)="receiveConstructedProduct($event, i)"></app-invoice-entry-line-item>
             </div>
           </div>
-          <div class="store-td">
-            <div class="InputGroup" style="width:60px;">
-              <input [formControl]="quantityFormControl" (keydown.enter)="onKeydown($event, 5)" [myFocus]="isQuantityFocused"
-                class="customInput" type="number" min="0">
-            </div>
-          </div>
-          <div class="store-td">
-            <div class="InputGroup" style="width:60px;">
-              <input [formControl]="costPriceFormControl" (keydown.enter)="onKeydown($event, 6)" [myFocus]="isCostPriceFocused"
-                class="customInput" type="number" min="0">
-            </div>
-          </div>
-          <div class="store-td">
-            <div class="InputGroup" style="width:60px;">
-              <input [formControl]="marginFormControl" (keydown.enter)="onKeydown($event, 1)" [myFocus]="isMarginFocused"
-                class="customInput" type="number" max="100" min="0">
-            </div>
-          </div>
-          <div class="store-td">
-            <div class="InputGroup" style="width:60px;">
-              <input [formControl]="sellingPriceFormControl" (keydown.enter)="onKeydown($event, 2)" [myFocus]="isSellingPriceFocused"
-                class="customInput" type="number">
-            </div>
-          </div>
-          <div class="store-td">
-            <div class="InputGroup" style="width:60px;">
-              <input [formControl]="batchFormControl" (keydown.enter)="onKeydown($event, 3)" [myFocus]="isBatchFocused"
-                class="customInput" type="text">
-            </div>
-          </div>
-          <div class="store-td">
-            <div class="InputGroup" style="width:100px;">
-              <input [formControl]="expiryDateFormControl" (keydown.enter)="onKeydown($event, 4)" [myFocus]="isExpiryDateFocused"
-                class="customInput" type="date">
-            </div>
-          </div>
-        </div>
+        </form>
         <div class="store-td store-td-actions">
           <div class="table-list col-xs-1 action-placeholder">
             <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
@@ -174,6 +183,10 @@
             </div>
           </div>
         </div>
+
+
+
+
       </div>
       <div class="store-tr">
         <div class="store-td"></div>
