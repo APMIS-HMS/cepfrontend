@@ -69,7 +69,7 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
       if (!!res) {
         if (!!res.typeObject) {
           this.checkingStore = res.typeObject;
-          if (!!this.checkingStore.storeId) {
+          if (this.checkingStore !== undefined && !!this.checkingStore.storeId) {
             // this.getSelectedStoreSummations();
           }
         }
@@ -78,7 +78,10 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
     this.authFacadeService.getLogingEmployee().then((payload: any) => {
       this.loginEmployee = payload;
       this.checkingStore = this.loginEmployee.storeCheckIn.find((x) => x.isOn === true);
-      this.getSelectedStoreSummations();
+      console.log(this.checkingStore);
+      if (this.checkingStore !== undefined) {
+        this.getSelectedStoreSummations();
+      }
       if (this.loginEmployee.storeCheckIn === undefined || this.loginEmployee.storeCheckIn.length === 0) {
         // this.modal_on = true;
       } else {
@@ -201,18 +204,22 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
   getSelectedStoreSummations() {
     this.existingStockTransfers = [];
     this.systemModuleService.on();
-    let query = {
-      facilityId: this.selectedFacility._id,
-      storeId: this.checkingStore.storeId
-    };
-    this.inventoryTransferService.find({ query: query }).then(payload => {
+    this.inventoryTransferService.find({
+      query: {
+        facilityId: this.selectedFacility._id,
+        storeId: this.checkingStore.storeId,
+        $sort: { createdAt: -1 }
+      }
+    }).then(payload => {
+      console.log(payload);
       this.transferObjs = [];
       payload.data.forEach(element => {
-        const completedTransfers = element.inventoryTransferTransactions.filter(x => x.transferStatusObject.name === 'Completed');
-        if (completedTransfers.length !== element.inventoryTransferTransactions.length) {
+        let unattendedTransfers = element.inventoryTransferTransactions.filter(x => x.transferStatusObject.name === 'Pending');
+        if (unattendedTransfers.length!==0) {
           this.existingStockTransfers.push(element);
         }
       });
+      console.log(this.existingStockTransfers);
       this.systemModuleService.off();
     }, err => {
       this.systemModuleService.off();
@@ -370,7 +377,18 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
     this.stockTransferItems.inventoryTransferTransactions = [];
     const checkedItems = this.transferObjs.filter(x => x.isSelected === true);
     this.stockTransferItems.inventoryTransferTransactions = JSON.parse(JSON.stringify(checkedItems));
-    this.systemModuleService.announceSweetProxy('You are about to transfer', 'question', this);
+    if (this.stockTransferItems.inventoryTransferTransactions.length > 0) {
+      this.systemModuleService.announceSweetProxy('You are about to transfer', 'question', this);
+    } else {
+      this.systemModuleService.announceSweetProxy('Please kindly select the item(s) for the transfer', 'error', null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null);
+    }
+
   }
 
   sweetAlertCallback(result) {

@@ -2932,6 +2932,17 @@ button,
     }
 }
 
+
+
+.hide-actionWrap {
+    font-size: 2rem;
+    margin-left: 10px;
+    color: #ff2500;
+    cursor: pointer;
+    position: absolute;
+    top: 12px;
+}
+
 .new-btn-solid-blue {
     color: white;
     font-size: 12px;
@@ -2944,11 +2955,13 @@ button,
     height: 0px;
     .disabled {
         cursor: not-allowed;
-        background: gray;
+        background: rgba(168, 220, 255, 0.52)
       }
     i,
     span {
         padding-right: 5px;
+        align-self: center;
+        justify-self: center;
     }
 }
 
