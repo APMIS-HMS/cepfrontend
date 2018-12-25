@@ -7,9 +7,18 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PrescribedTableComponent implements OnInit {
 
+  billShow = false;
   constructor() { }
 
   ngOnInit() {
   }
+
+  onBillShow(){
+    this.billShow = true;
+  }
+
+  close_onClick(e) {
+		this.billShow = false;
+	}
 
 }

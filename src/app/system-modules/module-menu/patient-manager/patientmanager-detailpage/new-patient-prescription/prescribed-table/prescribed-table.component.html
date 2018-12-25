@@ -38,7 +38,7 @@
         <td></td>
         <td>
           <div class="action-tbl">
-            <div class="btn-tbl">
+            <div class="btn-tbl" (click)="onBillShow()">
               <span>Bill</span>
             </div>
             <div class="custom-chk">
@@ -66,4 +66,9 @@
       <span>Authorize RX</span>
     </div>
   </div>
+</div>
+
+
+<div *ngIf="billShow" class="bill-view-wrap animated slideInRight"> 
+  <app-prescription-bill (closeModal)="close_onClick($event)" id="form-modal"></app-prescription-bill>
 </div>
