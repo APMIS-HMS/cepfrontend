@@ -188,7 +188,8 @@
         <app-patient-registers *ngIf="menuRegisters"></app-patient-registers>
         <app-patient-vitals [patient]="patient" *ngIf="menuVitals"></app-patient-vitals>
         <app-doc-uploads [patient]=patient *ngIf="menuUploads"></app-doc-uploads>
-        <app-patient-prescription [selectedAppointment]="selectedAppointment" [patientDetails]="patient" *ngIf="menuPrescription"></app-patient-prescription>
+        <app-new-patient-prescription *ngIf="menuPrescription"></app-new-patient-prescription>
+        <!-- <app-patient-prescription [selectedAppointment]="selectedAppointment" [patientDetails]="patient" *ngIf="menuPrescription"></app-patient-prescription> -->
         <app-medication-history *ngIf="menuMedicationHistory"></app-medication-history>
         <app-patient-immunization [patient]="patient" *ngIf="menuImmunization"></app-patient-immunization>
         <app-external-prescription [patientDetails]="patient" *ngIf="menuExternalPrescription"></app-external-prescription>
