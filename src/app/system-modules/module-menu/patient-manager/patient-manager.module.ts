@@ -96,6 +96,7 @@ import { PrescriptionBillComponent } from './patientmanager-detailpage/new-patie
 import { PrescribeDrugComponent } from './patientmanager-detailpage/new-patient-prescription/prescribe-drug/prescribe-drug.component';
 import { PrescriptionHistoryComponent } from './patientmanager-detailpage/new-patient-prescription/prescription-history/prescription-history.component';
 import { DrugSearchComponent } from './patientmanager-detailpage/new-patient-prescription/drug-search/drug-search.component';
+import { GenBillSearchComponent } from './patientmanager-detailpage/new-patient-prescription/prescription-bill/gen-bill-search/gen-bill-search.component';
 
 
 @NgModule({
@@ -160,7 +161,8 @@ import { DrugSearchComponent } from './patientmanager-detailpage/new-patient-pre
 		PrescriptionBillComponent,
 		PrescribeDrugComponent,
 		PrescriptionHistoryComponent,
-		DrugSearchComponent
+		DrugSearchComponent,
+		GenBillSearchComponent
 	],
 	exports: [],
 	imports: [ SharedModule, patientManagerRoutes, OnlyMaterialModule, MaterialModule, ChartsModule, PdfViewerModule ],

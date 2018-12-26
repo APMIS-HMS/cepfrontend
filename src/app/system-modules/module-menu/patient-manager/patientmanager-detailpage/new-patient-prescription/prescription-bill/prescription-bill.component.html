@@ -141,7 +141,25 @@
   </div>
 
   <div *ngIf="searchProduct">
-
+    <div *ngIf="searchList" class="store-avail-bckgrnd2">
+      <span>Drugs / Brands not found in your store, Search similar replacement</span>
+    </div>
+    <div *ngIf="searchShow" class="store-avail-bckgrnd">
+      <span>Some substitute found drugs/brands found</span>
+    </div>
+    <div class="searchproduct">
+      <div class="InputGroup">
+        <input class="customInput" type="text" required>
+        <span class="highlight"></span>
+        <span class="bar"></span>
+        <label class="customLabel"><i class="fa fa-search" aria-hidden="true"></i>Search Drugs / Brands with substitute</label>
+        <ul class="search-sugestions bar" *ngIf="searchList">
+          <li (click)="onShowSearchResult()" class="search-sugestion">Artesunate panadol</li>
+        </ul>
+      </div>
+    </div>
+    <div *ngIf="searchShow">
+      <app-gen-bill-search></app-gen-bill-search>
+    </div>
   </div>
-
 </div>
