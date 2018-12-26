@@ -1,0 +1,135 @@
+@import "./../prescription-history/prescription-history.component.scss";
+@import "./../prescribe-drug/prescribe-drug.component.scss";
+
+.topLink {
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  align-items: center;
+
+  h3 {
+    font-size: 1.4rem !important;
+    font-weight: bold;
+  }
+
+  span {
+    color: #3FA9F5;
+    font-weight: bold;
+    cursor: pointer;
+  }
+}
+
+.prd-name {
+  max-width: 400px;
+  padding: 0 0 10px 20px;
+  word-wrap: break-word;
+  font-weight: bold;
+  font-size: 13px;
+  cursor: pointer;
+}
+
+.store-avail-bckgrnd {
+  background-color: rgba(0, 128, 0, 0.08);
+  align-content: center;
+  justify-content: center;
+  border-radius: 2px;
+  margin: 10px 0 10px 20px;
+  width: fit-content;
+  display: flex;
+
+  span {
+    padding: 10px;
+    color: #0AD089;
+    font-weight: bold;
+  }
+}
+
+h4 {
+  font-size: 1.2rem !important;
+  font-weight: bold;
+}
+
+.tbl-head {
+  margin: 10px 0 10px 20px;
+}
+
+.prd {
+  display: grid;
+  box-sizing: border-box;
+
+  span {
+    font-weight: bold;
+    font-size: 1.4rem;
+    color: black;
+  }
+
+  .blue {
+    font-weight: bold;
+    font-size: 1.4rem;
+    color: #337AB7;
+  }
+}
+
+.qty {
+  display: flex;
+  align-items: center;
+
+  span {
+    font-weight: bold;
+    font-size: 1.4rem;
+    color: black;
+    margin-right: 20px;
+  }
+}
+
+.drg-InStores {
+  display: block;
+  margin: 10px 0 30px 20px;
+
+  .store-in {
+    display: flex;
+    flex-wrap: wrap;
+
+    .store-in-avail {
+      margin-right: 20px;
+      cursor: pointer;
+      display: flex;
+      border-radius: 2px;
+      border: 1px solid #3FA9F5;
+
+      span {
+        padding: 10px;
+      }
+    }
+  }
+}
+
+.prd-details {
+  padding: 30px;
+
+  span {
+    font-weight: bold;
+    font-size: 1.4rem;
+    color: black;
+  }
+
+  .disp-qty {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    .qty-detail {
+      display: grid;
+      width: max-content;
+      span {
+        font-size: 1.4rem;
+        color: black;
+      }
+      .new-btn-solid-blue{
+          span{
+              color: white;
+          }
+      }
+    }
+  }
+}
