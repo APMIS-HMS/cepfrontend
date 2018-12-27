@@ -170,7 +170,6 @@ export class NewPurchaseListComponent implements OnInit {
 				})
 				.then(
 					(payload) => {
-						console.log(payload);
 						this.productConfigs = this.modifyProducts(payload.data);
 						this.numberOfPages = payload.total / this.limit;
 						this.total = payload.total;
@@ -184,7 +183,7 @@ export class NewPurchaseListComponent implements OnInit {
 		return configs.map((config) => {
 			config.isChecked = this.validateAgainstDuplicateProductEntry(config) ? false : true;
 			config.quantityRequired = 0;
-			config.costPrice = 0;
+			config.costPrice = !!config.costPrice ? config.costPrice : 0;
 			return config;
 		});
 	}

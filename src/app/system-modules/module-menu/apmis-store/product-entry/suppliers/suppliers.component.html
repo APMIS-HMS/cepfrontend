@@ -1,42 +1,6 @@
 <div class="supplierBase">
   <div class="suppSearch">
     <app-apmis-store-supplier-search (emitCurrentPage)="loadCurrentPage($event)"></app-apmis-store-supplier-search>
-    <!-- <div class="src-content">
-      <div class="src-item src-input-wrap">
-        <img class="src-ico" src="assets/images/report_icons/search-small.svg" />
-        <input class="src-input" type="text">
-      </div>
-      <ul>
-        <li class="src-item">
-          <h3>SIDMACH Medical Suppliers </h3>
-          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
-        </li>
-        <li class="src-item">
-          <h3>SIDMACH Medical Suppliers </h3>
-          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
-        </li>
-        <li class="src-item">
-          <h3>SIDMACH Medical Suppliers </h3>
-          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
-        </li>
-        <li class="src-item">
-          <h3>SIDMACH Medical Suppliers </h3>
-          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
-        </li>
-        <li class="src-item selected-li">
-          <h3>SIDMACH Medical Suppliers </h3>
-          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
-        </li>
-        <li class="src-item">
-          <h3>SIDMACH Medical Suppliers </h3>
-          <span>08067710761 | sidmachmedicalsupply@gmail.com</span>
-        </li>
-        <div class="ul-action">
-          <i class="fa fa-plus" aria-hidden="true"></i>
-          <span>Add Supplier</span>
-        </div>
-      </ul>
-    </div> -->
   </div>
 
   <div *ngIf="main_content" class="contentLeftGrid">
@@ -160,7 +124,9 @@
                 <span *ngIf="invoice.amountPaid > 0 && invoice.amountPaid < invoice.invoiceAmount" [class.orange-lbl]="invoice.amountPaid > 0 && invoice.amountPaid < invoice.invoiceAmount">Partial
                   Payment</span>
               </div>
-              <div class="store-td">#{{invoice.invoiceAmount|number}}</div>
+              <div class="store-td">
+                <app-apmis-naira></app-apmis-naira>{{invoice.invoiceAmount|number}}
+              </div>
               <div class="store-td">
                 <div class="inv-action">
                   <div (click)="viewInvoice(invoice)" class="ft-btn btn-act-margin">

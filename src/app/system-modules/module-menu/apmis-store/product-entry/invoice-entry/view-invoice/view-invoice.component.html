@@ -14,7 +14,11 @@
         </div>
         <div class="con-inner-wrap">
           <span>Amount</span>
-          <h3><span *ngIf="selectedInvoice.amountPaid > 0">#{{selectedInvoice.amountPaid|number}} paid out of </span>#{{selectedInvoice.invoiceAmount|number}}</h3>
+          <h3><span *ngIf="selectedInvoice.amountPaid > 0">
+              <app-apmis-naira></app-apmis-naira>{{selectedInvoice.amountPaid|number}} paid out of
+            </span>
+            <app-apmis-naira></app-apmis-naira>{{selectedInvoice.invoiceAmount|number}}
+          </h3>
         </div>
         <div class="con-inner-wrap">
           <span>Status</span>
@@ -37,8 +41,10 @@
           <tr *ngFor="let product of invoiceProduct?.products">
             <td>{{product.productName}}</td>
             <td>{{product.batchNo}}</td>
-            <td>{{product.quantity}} {{product.productPackType}}</td>
-            <td>#{{product.costPrice}}</td>
+            <td>{{product.quantity|number}} {{product.productPackType}}</td>
+            <td>
+              <app-apmis-naira></app-apmis-naira>{{product.costPrice}}
+            </td>
           </tr>
         </tbody>
       </table>
@@ -53,7 +59,7 @@
             <span class="highlight"></span>
           </div>
           <div [class.disabled]="amountToPay === 0 || !(!!amountToPay)" (click)="makePayment()" class="ft-btn ft-btn-selected action-content">
-            <span>Pay &#8358;{{amountToPay| number}}</span>
+            <span>Pay <app-apmis-naira></app-apmis-naira>{{amountToPay| number}}</span>
           </div>
         </div>
       </div>

@@ -183,7 +183,8 @@ export class InitializeStoreComponent implements OnInit {
 						'storeId',
 						'totalQuantity',
 						'margin',
-						'productObject'
+						'productObject',
+						'costPrice'
 					],
 					$limit: this.limit,
 					$skip: this.skip * this.limit

@@ -208,11 +208,17 @@
       <div class="store-th store-td-actions"></div>
       <div class="store-tr-in">
         <div class="store-td">{{picked.productObject.name}}</div>
-        <div class="store-td">{{picked.totalQuantity}}</div>
-        <div class="store-td">{{picked.costPrice}}</div>
-        <div class="store-td"><span *ngIf="picked.costPrice">{{picked.totalQuantity * picked.costPrice}}</span></div>
-        <div class="store-td">{{picked.margin}}</div>
-        <div class="store-td">{{picked.price?.price | number}}</div>
+        <div class="store-td">{{picked.totalQuantity|number}}</div>
+        <div class="store-td">
+          <app-apmis-naira></app-apmis-naira>{{picked.costPrice|number}}
+        </div>
+        <div class="store-td"><span *ngIf="picked.costPrice">
+            <app-apmis-naira></app-apmis-naira>{{picked.totalQuantity * picked.costPrice | number}}
+          </span></div>
+        <div class="store-td">{{picked.margin|number}}</div>
+        <div class="store-td">
+          <app-apmis-naira></app-apmis-naira>{{picked.price?.price | number}}
+        </div>
       </div>
     </div>
   </div>
