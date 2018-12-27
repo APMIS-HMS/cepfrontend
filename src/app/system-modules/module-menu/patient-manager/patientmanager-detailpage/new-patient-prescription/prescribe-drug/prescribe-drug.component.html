@@ -2,7 +2,7 @@
   <input (focus)="onFocus('in')" (focusout)="onFocus('out')" class="customInput" type="text" required>
   <span class="highlight"></span>
   <label class="customLabel">Drug</label>
-  <app-drug-search *ngIf="drugSearch"></app-drug-search>
+  <app-drug-search (closeSearch)="close_search($event)" *ngIf="drugSearch"></app-drug-search>
 </div>
 
 <div class="frm">

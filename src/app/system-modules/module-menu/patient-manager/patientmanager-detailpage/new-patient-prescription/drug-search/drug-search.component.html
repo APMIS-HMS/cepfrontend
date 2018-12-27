@@ -2,10 +2,10 @@
   <div class="search-sugestions" style="position: relative !important;">
     <div class="con-list-wrap">
       <h3>Commonly Prescribed</h3>
-      <div class="list">Compound benzoin tincture (USP) 45 MG/ML Gas for Inhalation</div>
-      <div class="list">Compound benzoin tincture (USP) 45 MG/ML Gas for Inhalation</div>
-      <div class="list green">Compound benzoin tincture (USP) 45 MG/ML Gas for Inhalation
-        <div class="custom-chk" >
+      <!-- <div class="list">Compound benzoin tincture (USP) 45 MG/ML Gas for Inhalation</div>
+      <div class="list">Compound benzoin tincture (USP) 45 MG/ML Gas for Inhalation</div> -->
+      <div *ngFor="let common of commonProducts" class="list green">{{common.name}}
+        <div class="custom-chk">
           <input type="checkbox" disabled checked id="markCommon">
           <label for="markCommon">Commonly prescribed</label>
         </div>
@@ -14,17 +14,11 @@
 
     <div class="con-list-wrap">
       <h3>All</h3>
-      <div class="list">Compound benzoin tincture (USP) 45 MG/ML Gas for Inhalation</div>
-      <div class="list">Compound benzoin tincture (USP) 45 MG/ML Gas for Inhalation</div>
-      <div class="list green">Compound benzoin tincture (USP) 45 MG/ML Gas for Inhalation
+      <!-- <div class="list">Compound benzoin tincture (USP) 45 MG/ML Gas for Inhalation</div>
+      <div class="list">Compound benzoin tincture (USP) 45 MG/ML Gas for Inhalation</div> -->
+      <div (dblclick)="selectProduct($event, product)" *ngFor="let product of products" class="list green">{{product.name}}
         <div class="custom-chk">
-          <input type="checkbox" id="markCommon">
-          <label for="markCommon">Mark as commonly prescribed</label>
-        </div>
-      </div>
-      <div class="list green">Compound benzoin tincture (USP) 45 MG/ML Gas for Inhalation
-        <div class="custom-chk">
-          <input type="checkbox" id="markCommon">
+          <input [checked]="product.marked" (change)="setMarked($event, product)" type="checkbox" id="markCommon">
           <label for="markCommon">Mark as commonly prescribed</label>
         </div>
       </div>
