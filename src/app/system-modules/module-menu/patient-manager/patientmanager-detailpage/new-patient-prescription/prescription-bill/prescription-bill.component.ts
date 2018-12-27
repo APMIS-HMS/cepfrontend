@@ -9,6 +9,8 @@ export class PrescriptionBillComponent implements OnInit {
 
   productAvailable = true;
   searchProduct = false;
+  searchShow = false;
+  searchList = true;
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
   constructor() { }
 
@@ -18,9 +20,13 @@ export class PrescriptionBillComponent implements OnInit {
 	onClickClose(e) {
 		this.closeModal.emit(true);
   }
-  
+
+  onShowSearchResult(){
+    this.searchShow = true;
+    this.searchList = false;
+  }
   onClickPrd(){
-    this.productAvailable = false;
+    this.productAvailable = !this.productAvailable;
     this.searchProduct = true;
   }
 }
