@@ -1,74 +1,84 @@
-<div class="InputGroup" style="width:60%;">
-  <input (focus)="onFocus('in')" (focusout)="onFocus('out')" class="customInput" type="text" required>
-  <span class="highlight"></span>
-  <label class="customLabel">Drug</label>
-  <app-drug-search (closeSearch)="close_search($event)" *ngIf="drugSearch"></app-drug-search>
-</div>
-
-<div class="frm">
-  <div class="frm-1">
-    <div class="InputGroup">
-      <input class="customInput" type="text" required>
-      <span class="highlight"></span>
-      <label class="customLabel">Dosage</label>
-    </div>
-    <div class="sel">
-      <select>
-        <option value="0">Frequency</option>
-      </select>
-    </div>
-    <div class="sel">
-      <select>
-        <option value="0">Duration</option>
-      </select>
-    </div>
+<form [formGroup]="addPrescriptionForm" novalidate>
+  <div class="InputGroup" style="width:60%;">
+    <input formControlName="drug" (focus)="onFocus('in')" (focusout)="onFocus('out')" class="customInput" type="text"
+      required>
+    <span class="highlight"></span>
+    <label class="customLabel">Drug</label>
+    <app-drug-search [products]="products" [commonProducts]="commonProducts" (markProduct)="mark_product($event)"
+      (closeSearch)="close_search($event)" *ngIf="drugSearch"></app-drug-search>
   </div>
-  <h2>+</h2>
-  <div>
-    <div class="frm-2">
-      <div class="InputGroup">
-        <input class="customInput" type="date" required>
-        <span class="highlight"></span>
-        <label class="customLabel">Start Date</label>
-      </div>
-      <div class="InputGroup">
-        <input class="customInput" type="date" required>
-        <span class="highlight"></span>
-        <label class="customLabel">End Date</label>
+
+  <div class="frm">
+    <div class="col-xs-7 no-padding-right" formArrayName="regimenArray">
+      <div *ngFor="let regimen of addPrescriptionForm.controls['regimenArray']['controls']; let i=index;">
+        <div [formGroupName]="i">
+          <div class="frm-1">
+            <div class="InputGroup">
+              <input formControlName="dosage" class="customInput" type="text" required>
+              <span class="highlight"></span>
+              <label class="customLabel">Dosage</label>
+            </div>
+            <div class="sel">
+              <select formControlName="frequency" placeholder="Frequency">
+                <option *ngFor="let fre of frequencies" [ngValue]="fre">{{fre.name}}</option>
+              </select>
+            </div>
+            <div class="sel">
+              <select formControlName="duration" placeholder="Duration">
+                <option *ngFor="let unit of durationUnits" [ngValue]="unit">{{unit.name}}</option>
+              </select>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="frm-2">
-      <div class="custom-chk">
-        <input type="checkbox" id="refillCheck">
-        <label for="refillCheck">Refill</label>
+    <h2 (click)="onClickAddRegimen();">+</h2>
+    <div>
+      <div class="frm-2">
+        <div class="InputGroup">
+          <input formControlName="startDate" class="customInput" type="date" required>
+          <span class="highlight"></span>
+          <label class="customLabel">Start Date</label>
+        </div>
+        <div class="InputGroup">
+          <input formControlName="endDate" class="customInput" type="date" required>
+          <span class="highlight"></span>
+          <label class="customLabel">End Date</label>
+        </div>
       </div>
-      <div class="InputGroup" style="width: 20%;">
-        <input class="customInput" type="text" required>
-        <span class="highlight"></span>
-        <label class="customLabel">Count</label>
+      <div class="frm-2">
+        <div class="custom-chk">
+          <input formControlName="refill" type="checkbox" id="refillCheck">
+          <label for="refillCheck">Refill</label>
+        </div>
+        <div *ngIf="showRefill" class="InputGroup" style="width: 20%;">
+          <input formControlName="refillCount" min="0" class="customInput" type="number" required>
+          <span class="highlight"></span>
+          <label class="customLabel">Count</label>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
-<div class="InputGroup">
-  <textarea class="customTextarea" placeholder="Special Instruction"></textarea>
-  <span class="highlight"></span>
-</div>
-
-<div class="div-space"></div>
-
-<div class="btnWrap">
-  <div class="new-btn-solid-blue disabled">
-    <span>Add</span>
+  <div class="InputGroup">
+    <textarea formControlName="specialInstruction" class="customTextarea" placeholder="Special Instruction"></textarea>
+    <span class="highlight"></span>
   </div>
-  <div class="new-btn-solid-blue">
-    <span>Reset</span>
+
+  <div class="div-space"></div>
+
+  <div class="btnWrap">
+    <div (click)="add()" class="new-btn-solid-blue" [class.disabled]="isValid()">
+      <span>Add</span>
+    </div>
+    <div class="new-btn-solid-blue">
+      <span>Reset</span>
+    </div>
   </div>
-</div>
+</form>
 
 <div class="div-space"></div>
 <div class="div-space"></div>
 <div class="div-space"></div>
 
-<app-prescribed-table></app-prescribed-table>
+<app-prescribed-table [currentPrescription]="currentPrescription"></app-prescribed-table>

@@ -10,10 +10,9 @@
     </thead>
 
     <tbody>
-      <tr class="th-xxx">
-        <td>1</td>
-        <td>Compound benzoin tincture 45 MG/ML Gas for Inhalation - 3 mL, Every six hours for 4 Hours,
-          (0)
+      <tr class="th-xxx" *ngFor="let item of currentPrescription.prescriptionItems; let i = index">
+        <td>{{i+1}}</td>
+        <td>{{item.genericName}}
           <div class="td-wrap">
             <div class="caution-note">
               <i class="fa fa-exclamation-circle"></i>
@@ -49,6 +48,45 @@
           <div class="fa-act"><a class="fa fa-trash"></a>Remove Prescription</div>
         </td>
       </tr>
+<!-- <tr class="th-xxx">
+  <td>1</td>
+  <td>Compound benzoin tincture 45 MG/ML Gas for Inhalation - 3 mL, Every six hours for 4 Hours,
+    (0)
+    <div class="td-wrap">
+      <div class="caution-note">
+        <i class="fa fa-exclamation-circle"></i>
+        <i class="">Patient is allergic to benzoin </i>
+        <i>View</i>
+      </div>
+      <div class="caution-note">
+        <i class="fa fa-exclamation-circle"></i>
+        <i class="">Patient reacts to benzoin </i>
+        <i>View</i>
+      </div>
+      <div class="caution-note">
+        <i class="fa fa-exclamation-circle"></i>
+        <i class="">Duplicate Prescription</i>
+        <i>View</i>
+      </div>
+      <div class="ft-btn  disabled">
+        <span>Refill</span>
+      </div>
+    </div>
+  </td>
+  <td></td>
+  <td>
+    <div class="action-tbl">
+      <div class="btn-tbl" (click)="onBillShow()">
+        <span>Bill</span>
+      </div>
+      <div class="custom-chk">
+        <input type="checkbox" id="externalCheck">
+        <label for="externalCheck">External</label>
+      </div>
+    </div>
+    <div class="fa-act"><a class="fa fa-trash"></a>Remove Prescription</div>
+  </td>
+</tr> -->
     </tbody>
   </table>
 </div>

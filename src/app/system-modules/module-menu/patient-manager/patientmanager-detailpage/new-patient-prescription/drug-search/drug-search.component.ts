@@ -7,32 +7,23 @@ import { Component, OnInit, Input } from '@angular/core';
 	styleUrls: [ './drug-search.component.scss' ]
 })
 export class DrugSearchComponent implements OnInit {
-	@Input()
-	products: any = [
-		{ name: 'Rimoxallin 400 MG Oral Capsule', marked: false },
-		{ name: 'Trimox 50 MG/ML Oral Suspension', marked: false },
-		{ name: 'Noltam 20 MG Oral Tablet', marked: false },
-		{ name: 'Trimox 250 MG Oral Capsule [Trimox]', marked: false }
-	];
-	@Input()
-	commonProducts: any = [
-		{ name: 'Amoxicillin 500 MG Oral Capsule [Rimoxallin]' },
-		{ name: 'Amoxicillin 50 MG/ML Oral Suspension [Trimox]' },
-		{ name: 'Tamoxifen 10 MG Oral Tablet [Noltam]' },
-		{ name: 'Amoxicillin 250 MG Oral Capsule [Trimox]' }
-	];
+	@Input() products: any = [];
+	@Input() commonProducts: any = [];
 	@Output() closeSearch: EventEmitter<any> = new EventEmitter<any>();
+	@Output() markProduct: EventEmitter<any> = new EventEmitter<any>();
 	constructor() {}
 
 	ngOnInit() {}
 
 	setMarked(event, product) {
-		// console.log(product);
-		// console.log(event.target.checked);
+		product.marked = event.target.checked;
+		this.markProduct.emit({ product: product, marked: event.target.checked });
 	}
 
 	selectProduct(event, product) {
-		// console.log(product);
 		this.closeSearch.emit(product);
+	}
+	close() {
+		this.closeSearch.emit(undefined);
 	}
 }
