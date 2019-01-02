@@ -20,6 +20,7 @@ import { LoginEmployeeResolverService } from '../../../resolvers/module-menu/ind
 import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { WalkInDetailsComponent } from './prescription-list/walk-in-details/walk-in-details.component';
 import { ExternalPrescriptionComponent } from './external-prescription/external-prescription.component';
+import { NewPrescriptionListComponent } from './new-prescription-list/new-prescription-list.component';
 
 @NgModule({
     declarations: [
@@ -31,6 +32,7 @@ import { ExternalPrescriptionComponent } from './external-prescription/external-
         NoprescriptionComponent,
         WalkInDetailsComponent,
         ExternalPrescriptionComponent,
+        NewPrescriptionListComponent,
     ],
 
     exports: [

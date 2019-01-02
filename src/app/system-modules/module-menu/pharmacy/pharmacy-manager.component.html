@@ -7,7 +7,7 @@
 </ul>
 <div class="inner-wrap-b body-wrap">
     <div class="facility-title" (pageInView)="pageInViewLoader($event)">{{pageInView}}</div>
-    <div *ngIf="isStoreAvailable" class="small-header">{{storeTitle}}</div>
+    <div *ngIf="isStoreAvailable" class="pharm-title">{{storeTitle}}</div>
     <div class="inner-page-wrap">
         <router-outlet></router-outlet>
     </div>

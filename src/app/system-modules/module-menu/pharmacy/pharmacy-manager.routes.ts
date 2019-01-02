@@ -6,12 +6,13 @@ import { PrescriptionComponent } from './dispense/prescription/prescription.comp
 import {DispenseComponent} from './dispense/dispense.component';
 import { LoginEmployeeResolverService } from '../../../resolvers/module-menu/index';
 import { ExternalPrescriptionComponent } from './external-prescription/external-prescription.component';
+import { NewPrescriptionListComponent } from './new-prescription-list/new-prescription-list.component';
 
 const PHARMACYMODULES_ROUTES: Routes = [
     {
         path: '', component: PharmacyManagerComponent, children: [
             { path: '', redirectTo: 'prescriptions', pathMatch: 'full' },
-            { path: 'prescriptions', component: PrescriptionListComponent },
+            { path: 'prescriptions', component: NewPrescriptionListComponent },
             { path: 'prescriptions/:id', component: PrescriptionComponent },
             { 
                 path: 'dispense', 

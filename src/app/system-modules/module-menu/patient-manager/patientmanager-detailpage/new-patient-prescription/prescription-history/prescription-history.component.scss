@@ -5,38 +5,6 @@ h3{
   height: 20px;
 }
 
-.filter-btn {
-  border-radius: 5px;
-  border: 1px solid;
-  padding: 5px;
-  margin: 10px;
-
-  input,
-  span {
-    font-size: 12px;
-    font-weight: bold;
-  }
-
-  input,
-  select {
-    outline: none;
-    inline-size: none;
-    border: none;
-    font-size: 10px !important;
-    font-weight: bold;
-  }
-
-  input:hover,
-  select:hover {
-    color: #337AB7;
-  }
-}
-
-.filter-btn:hover {
-  border: 2px solid #337AB7;
-  color: #337AB7;
-  cursor: pointer;
-}
 
 .th-r1 th {
     background: #67C2F2 !important;
@@ -65,3 +33,5 @@ th {
     background: transparent;
     border: 0.5px solid #ddd;
 }
+
+
