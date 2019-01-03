@@ -37,7 +37,7 @@
         <td></td>
         <td>
           <div class="action-tbl">
-            <div class="btn-tbl" (click)="onBillShow()">
+            <div class="btn-tbl" (click)="onBillShow(item)">
               <span>Bill</span>
             </div>
             <div class="custom-chk">
@@ -45,10 +45,10 @@
               <label for="externalCheck">External</label>
             </div>
           </div>
-          <div class="fa-act"><a class="fa fa-trash"></a>Remove Prescription</div>
+          <div (click)="removePrescription(item)" class="fa-act"><a class="fa fa-trash"></a>Remove Prescription</div>
         </td>
       </tr>
-<!-- <tr class="th-xxx">
+      <!-- <tr class="th-xxx">
   <td>1</td>
   <td>Compound benzoin tincture 45 MG/ML Gas for Inhalation - 3 mL, Every six hours for 4 Hours,
     (0)
@@ -97,7 +97,8 @@
   <div class="frm-1 btnWrap">
     <div class="sel" style=" width: 40% !important;">
       <select>
-        <option value="0">Priority</option>
+        <option value="" disabled selected>Priority</option>
+        <option *ngFor="let priority of priorities" [ngValue]="priority">{{priority.name}}</option>
       </select>
     </div>
     <div class="new-btn-solid-blue disabled">
@@ -107,6 +108,6 @@
 </div>
 
 
-<div *ngIf="billShow" class="bill-view-wrap animated slideInRight"> 
-  <app-prescription-bill (closeModal)="close_onClick($event)" id="form-modal"></app-prescription-bill>
+<div *ngIf="billShow" class="bill-view-wrap animated slideInRight">
+  <app-prescription-bill [drug]="selectedPrescriptionItem" (closeModal)="close_onClick($event)" id="form-modal"></app-prescription-bill>
 </div>

@@ -4,8 +4,9 @@
     <span (click)="onClickClose(true)">Close</span>
   </div>
   <div class="prd-name" (click)="onClickPrd()">
-    Compound benzoin tincture (USP) 45 MG/ML Gas for Inhalation
-    - 3 mL, Every six hours for 4 Hours, (0)
+    <!-- Compound benzoin tincture (USP) 45 MG/ML Gas for Inhalation
+    - 3 mL, Every six hours for 4 Hours, (0) -->
+    {{drug.genericName}}
   </div>
 
   <div *ngIf="productAvailable">

@@ -250,7 +250,7 @@ export class InitializeStoreComponent implements OnInit {
 				this.showCategory = true;
 			} else {
 				setTimeout(() => {
-					this.showProduct = false;
+					this.showCategory = false;
 				}, 300);
 			}
 		} else {
@@ -503,11 +503,12 @@ export class InitializeStoreComponent implements OnInit {
 			_saveProductList.push(_saveProduct);
 		});
 
-		this.productForm.reset();
-		this.productForm.controls['productArray'] = new FormArray([]);
 		this._inventoryInitialiserService.create(_saveProductList, true).then(
 			(result) => {
 				if (result.status === 'success') {
+					this.productForm.reset();
+					this.productForm.controls['productArray'] = new FormArray([]);
+					this.productConfigSearch.reset();
 					this.systemModuleService.announceSweetProxy(
 						'Your product has been initialised successfully',
 						'success',

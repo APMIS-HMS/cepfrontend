@@ -28,7 +28,7 @@
       <span>Product configuration not found <i (click)="configureProduct()">- Configure</i></span>
     </div>
   </div>
-  <div [class.disabled]="selectedProduct===undefined" (click)="addProduct()" class="new-btn-solid-blue">
+  <div [class.disabled]="selectedProduct===undefined || selectedCategoryName?.length < 3" (click)="addProduct()" class="new-btn-solid-blue">
     <span>Add to List</span>
   </div>
 </div>

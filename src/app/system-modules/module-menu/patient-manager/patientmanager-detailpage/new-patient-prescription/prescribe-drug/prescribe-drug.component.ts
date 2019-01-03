@@ -5,6 +5,7 @@ import { Component, OnInit, Output, Input } from '@angular/core';
 import { FormGroup, FormArray, FormBuilder, Validators } from '@angular/forms';
 import { CoolLocalStorage } from 'angular2-cool-storage';
 import { Subject } from 'rxjs/Subject';
+import { UUID } from 'angular2-uuid';
 import { SystemModuleService } from 'app/services/module-manager/setup/system-module.service';
 import {
 	FacilitiesService,
@@ -32,7 +33,7 @@ export class PrescribeDrugComponent implements OnInit {
 	prescriptionArray: PrescriptionItem[] = [];
 	drugs: string[] = [];
 	routes: string[] = [];
-	frequencies: string[] = [];
+	frequencies: any[] = [];
 	durationUnits: any[] = [];
 	selectedValue: any;
 	selectedDosage: any;
@@ -85,8 +86,6 @@ export class PrescribeDrugComponent implements OnInit {
 		this.selectedDosage = DosageUnits[0].name;
 
 		this.addPrescriptionForm = this.fb.group({
-			// dosage: [ '', [ <any>Validators.required ] ],
-			// dosageUnit: [ '', [ <any>Validators.required ] ],
 			drug: [ '', [ <any>Validators.required ] ],
 			code: [ '', [ <any>Validators.required ] ],
 			productId: [ '', [ <any>Validators.required ] ],
@@ -142,9 +141,9 @@ export class PrescribeDrugComponent implements OnInit {
 	initRegimen() {
 		return this.fb.group({
 			dosage: [ '', [ <any>Validators.required ] ],
-			frequency: [ '', [ <any>Validators.required ] ],
-			duration: [ '', [ <any>Validators.required ] ]
-			// durationUnit: [ this.durationUnits[1].name, [ <any>Validators.required ] ]
+			frequency: [ this.frequencies[0], [ <any>Validators.required ] ],
+			duration: [ 0, [ <any>Validators.required ] ],
+			durationUnit: [ this.durationUnits[1], [ <any>Validators.required ] ]
 		});
 	}
 
@@ -190,6 +189,10 @@ export class PrescribeDrugComponent implements OnInit {
 			.then((res) => {
 				if (res.data.length > 0) {
 					this.frequencies = res.data;
+					const control = <FormArray>this.addPrescriptionForm.controls['regimenArray'];
+					if (this.frequencies.length > 0) {
+						(<FormGroup>control.controls[0]).controls['frequency'].setValue(this.frequencies[0]);
+					}
 				}
 			})
 			.catch((err) => {});
@@ -222,18 +225,9 @@ export class PrescribeDrugComponent implements OnInit {
 			this.selectedProductName = event.name;
 			this.selectedProduct = event;
 			this.drugSearch = false;
-			// this.drugSearchFormControl.setValue(this.selectedProductName);
-			console.log(this.selectedProduct);
 			this.addPrescriptionForm.controls['drug'].setValue(this.selectedProductName);
 			this.addPrescriptionForm.controls['code'].setValue(this.selectedProduct.code);
 			this.addPrescriptionForm.controls['productId'].setValue(this.selectedProduct.id);
-			// code: ""
-			// dosage: ""
-			// dosageUnit: ""
-			// drug: "Amoxicillin 500 MG / Sulbactam 250 MG Oral Tablet"
-			// productId: ""
-			// refillCount: 0
-			// specialInstruction: ""
 		} else {
 			this.selectedProductName = '';
 			this.selectedProduct = undefined;
@@ -267,7 +261,6 @@ export class PrescribeDrugComponent implements OnInit {
 	}
 
 	isValid() {
-		// console.log(this.addPrescriptionForm.valid);
 		return this.addPrescriptionForm.valid !== true;
 	}
 	add() {
@@ -278,6 +271,7 @@ export class PrescribeDrugComponent implements OnInit {
 		item.isRefill = this.addPrescriptionForm.controls['refill'].value;
 		item.refillCount = this.addPrescriptionForm.controls['refillCount'].value;
 		item.code = this.addPrescriptionForm.controls['code'].value;
+		item._id = UUID.UUID();
 
 		this.currentPrescription.prescriptionItems.push(item);
 		this._drugInteractionService.checkDrugInteractions(this.currentPrescription.prescriptionItems);

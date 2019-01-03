@@ -20,11 +20,18 @@
             </div>
             <div class="sel">
               <select formControlName="frequency" placeholder="Frequency">
+                <option value="" disabled selected>Frequency</option>
                 <option *ngFor="let fre of frequencies" [ngValue]="fre">{{fre.name}}</option>
               </select>
             </div>
+            <div class="InputGroup">
+              <input formControlName="duration" class="customInput" type="number" min="0" required>
+              <span class="highlight"></span>
+              <label class="customLabel">Duration</label>
+            </div>
             <div class="sel">
-              <select formControlName="duration" placeholder="Duration">
+              <select formControlName="durationUnit" placeholder="Duration Unit">
+                <option value="" disabled selected>Duration Unit</option>
                 <option *ngFor="let unit of durationUnits" [ngValue]="unit">{{unit.name}}</option>
               </select>
             </div>
@@ -68,7 +75,7 @@
   <div class="div-space"></div>
 
   <div class="btnWrap">
-    <div (click)="add()" class="new-btn-solid-blue" [class.disabled]="isValid()">
+    <div (click)="add()" class="new-btn-solid-blue" [class.disabled]="addPrescriptionForm.valid !== true">
       <span>Add</span>
     </div>
     <div class="new-btn-solid-blue">
