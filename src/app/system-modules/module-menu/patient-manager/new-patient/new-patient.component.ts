@@ -49,7 +49,7 @@ import { AuthFacadeService } from '../../../service-facade/auth-facade.service';
 @Component({
 	selector: 'app-new-patient',
 	templateUrl: './new-patient.component.html',
-	styleUrls: [ './new-patient.component.scss' ]
+	styleUrls: ['./new-patient.component.scss']
 })
 export class NewPatientComponent implements OnInit, AfterViewInit {
 	user: any;
@@ -263,7 +263,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 		const file: File = $event.target.files[0];
 		const myReader: FileReader = new FileReader();
 		const that = this;
-		myReader.onloadend = function(loadEvent: any) {
+		myReader.onloadend = function (loadEvent: any) {
 			image.src = loadEvent.target.result;
 			that.cropper.setImage(image);
 		};
@@ -414,7 +414,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 			// do something with value here
 		});
 		this.frmPerson = this.formBuilder.group({
-			persontitle: [ new Date(), [ <any>Validators.required ] ],
+			persontitle: [new Date(), [<any>Validators.required]],
 			firstname: [
 				'',
 				[
@@ -433,15 +433,15 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 					Validators.pattern(ALPHABET_REGEX)
 				]
 			],
-			gender: [ [ <any>Validators.minLength(2) ] ],
-			dob: [ new Date(), [ <any>Validators.required ] ],
-			motherMaidenName: [ '', [ <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX) ] ],
+			gender: [[<any>Validators.minLength(2)]],
+			dob: [new Date(), [<any>Validators.required]],
+			motherMaidenName: ['', [<any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
 			// motherMaidenName: ['', [<any>Validators.required,
 			//     <any>Validators.minLength(3), <any>Validators.maxLength(50), Validators.pattern(ALPHABET_REGEX)]],
 			// securityQuestion: ['', [<any>Validators.required]],
 			// securityAnswer: ['', [<any>Validators.required]],
 			// email: ['', [<any>Validators.pattern(EMAIL_REGEX)]],
-			phone: [ '', [ <any>Validators.required, <any>Validators.pattern(PHONE_REGEX) ] ]
+			phone: ['', [<any>Validators.required, <any>Validators.pattern(PHONE_REGEX)]]
 		});
 
 		this.frmPerson.valueChanges.debounceTime(400).distinctUntilChanged().subscribe((value) => {
@@ -469,7 +469,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 							this.duplicate = false;
 						}
 					},
-					(error) => {}
+					(error) => { }
 				);
 		});
 
@@ -479,29 +479,29 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 		this.getMaritalStatus();
 
 		this.frmNewEmp1 = this.formBuilder.group({
-			empTitle: [ '', [ <any>Validators.required ] ],
+			empTitle: ['', [<any>Validators.required]],
 			empFirstName: [
 				'',
-				[ <any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(20) ]
+				[<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(20)]
 			],
-			empOtherNames: [ '', [ <any>Validators.minLength(3), <any>Validators.maxLength(20) ] ],
+			empOtherNames: ['', [<any>Validators.minLength(3), <any>Validators.maxLength(20)]],
 			empLastName: [
 				'',
-				[ <any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(20) ]
+				[<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(20)]
 			],
-			empGender: [ '', [ <any>Validators.required ] ],
-			empPersonId: [ '' ],
-			facId: [ '' ],
-			facName: [ '' ],
-			ffId: [ '' ],
-			empNationality: [ '', [ <any>Validators.required ] ],
-			empState: [ '', [ <any>Validators.required ] ],
-			empLga: [ '', [ <any>Validators.required ] ],
-			empEmail: [ '', [ <any>Validators.pattern('^([a-z0-9_.-]+)@([da-z.-]+).([a-z.]{2,6})$') ] ],
-			confirmEmpEmail: [ '', [ <any>Validators.pattern('^([a-z0-9_.-]+)@([da-z.-]+).([a-z.]{2,6})$') ] ],
+			empGender: ['', [<any>Validators.required]],
+			empPersonId: [''],
+			facId: [''],
+			facName: [''],
+			ffId: [''],
+			empNationality: ['', [<any>Validators.required]],
+			empState: ['', [<any>Validators.required]],
+			empLga: ['', [<any>Validators.required]],
+			empEmail: ['', [<any>Validators.pattern('^([a-z0-9_.-]+)@([da-z.-]+).([a-z.]{2,6})$')]],
+			confirmEmpEmail: ['', [<any>Validators.pattern('^([a-z0-9_.-]+)@([da-z.-]+).([a-z.]{2,6})$')]],
 			empPhonNo: [
 				'',
-				[ <any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$') ]
+				[<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]
 			]
 		});
 		this.frmNewEmp1.controls['empNationality'].valueChanges.subscribe((value: Country) => {
@@ -513,17 +513,17 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 		});
 
 		this.frmNewEmp2 = this.formBuilder.group({
-			empMaritalStatus: [ '', [ <any>Validators.required ] ],
-			empCountry: [ '', [ <any>Validators.required ] ],
-			empContactState: [ '', [ <any>Validators.required ] ],
-			empCity: [ '', [ <any>Validators.required ] ],
+			empMaritalStatus: ['', [<any>Validators.required]],
+			empCountry: ['', [<any>Validators.required]],
+			empContactState: ['', [<any>Validators.required]],
+			empCity: ['', [<any>Validators.required]],
 			empHomeAddress: [
 				'',
-				[ <any>Validators.required, <any>Validators.minLength(5), <any>Validators.maxLength(100) ]
+				[<any>Validators.required, <any>Validators.minLength(5), <any>Validators.maxLength(100)]
 			],
-			empDOB: [ new Date(), [ <any>Validators.required ] ],
-			secQst: [ '', [] ],
-			secAns: [ '', [] ]
+			empDOB: [new Date(), [<any>Validators.required]],
+			secQst: ['', []],
+			secAns: ['', []]
 		});
 		this.frmNewEmp2.controls['empCountry'].valueChanges.subscribe((value) => {
 			this.contactStates = value.states;
@@ -534,18 +534,18 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 		this.frmNewEmp3 = this.formBuilder.group({
 			nok_fullname: [
 				'',
-				[ <any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(20) ]
+				[<any>Validators.required, <any>Validators.minLength(3), <any>Validators.maxLength(20)]
 			],
-			nok_apmisID: [ '' ],
-			nok_relationship: [ '', [ <any>Validators.required ] ],
-			nok_email: [ '', [ <any>Validators.pattern('^([a-z0-9_.-]+)@([da-z.-]+).([a-z.]{2,6})$') ] ],
+			nok_apmisID: [''],
+			nok_relationship: ['', [<any>Validators.required]],
+			nok_email: ['', [<any>Validators.pattern('^([a-z0-9_.-]+)@([da-z.-]+).([a-z.]{2,6})$')]],
 			nok_phoneNo: [
 				'',
-				[ <any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$') ]
+				[<any>Validators.required, <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]
 			],
 			nok_Address: [
 				'',
-				[ <any>Validators.required, <any>Validators.minLength(5), <any>Validators.maxLength(100) ]
+				[<any>Validators.required, <any>Validators.minLength(5), <any>Validators.maxLength(100)]
 			]
 		});
 
@@ -577,15 +577,15 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 		});
 
 		this.frmNewEmp4 = this.formBuilder.group({
-			empDept: [ '', [ <any>Validators.required ] ],
-			empLoc: [ '', [ <any>Validators.required ] ],
+			empDept: ['', [<any>Validators.required]],
+			empLoc: ['', [<any>Validators.required]],
 			empWorkEmail: [
 				'',
-				[ <any>Validators.required, <any>Validators.pattern('^([a-z0-9_.-]+)@([da-z.-]+).([a-z.]{2,6})$') ]
+				[<any>Validators.required, <any>Validators.pattern('^([a-z0-9_.-]+)@([da-z.-]+).([a-z.]{2,6})$')]
 			],
-			empWorkPhonNo: [ '', [ <any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$') ] ],
-			empJobTitle: [ '', [ <any>Validators.required ] ],
-			empLevel: [ '', [ <any>Validators.required ] ]
+			empWorkPhonNo: ['', [<any>Validators.minLength(10), <any>Validators.pattern('^[0-9]+$')]],
+			empJobTitle: ['', [<any>Validators.required]],
+			empLevel: ['', [<any>Validators.required]]
 		});
 		this.frmNewEmp4.controls['empJobTitle'].valueChanges.subscribe((value: Profession) => {
 			this.cadres = value.caders;
@@ -613,7 +613,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 				query: {
 					facilityId: this.facility._id,
 					'categories.name': 'Medical Records',
-					$select: [ '_id', 'categories.name', 'categories._id' ]
+					$select: ['_id', 'categories.name', 'categories._id']
 				}
 			})
 			.then((payload) => {
@@ -663,7 +663,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 			(payload) => {
 				this.securityQuestions = payload.data;
 			},
-			(error) => {}
+			(error) => { }
 		);
 	}
 	employeeChecking(value) {
@@ -728,7 +728,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 
 				this.loading = false;
 			})
-			.catch((err) => {});
+			.catch((err) => { });
 	}
 
 	gethmos() {
@@ -741,7 +741,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 			.then((payload) => {
 				this.hmos = payload;
 			})
-			.catch((err) => {});
+			.catch((err) => { });
 	}
 
 	getLoginCompanyList() {
@@ -870,7 +870,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 					}
 				}
 			})
-			.catch((err) => {});
+			.catch((err) => { });
 	}
 
 	nextFamilyCover() {
@@ -1061,7 +1061,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 			.then((payload) => {
 				this.professions = payload.data;
 			})
-			.catch((err) => {});
+			.catch((err) => { });
 	}
 	getRelationships() {
 		this.relationshipService
@@ -1069,7 +1069,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 			.then((payload) => {
 				this.relationships = payload.data;
 			})
-			.catch((err) => {});
+			.catch((err) => { });
 	}
 	getMaritalStatus() {
 		this.maritalStatusService
@@ -1077,7 +1077,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 			.then((payload) => {
 				this.maritalStatuses = payload.data;
 			})
-			.catch((err) => {});
+			.catch((err) => { });
 	}
 	getGenders() {
 		this.genderService
@@ -1085,7 +1085,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 			.then((payload) => {
 				this.genders = payload.data;
 			})
-			.catch((err) => {});
+			.catch((err) => { });
 	}
 	getTitles() {
 		this.titleService
@@ -1093,7 +1093,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 			.then((payload) => {
 				this.titles = payload.data;
 			})
-			.catch((err) => {});
+			.catch((err) => { });
 	}
 	getCountries() {
 		this.countryService
@@ -1101,7 +1101,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 			.then((payload) => {
 				this.countries = payload.data;
 			})
-			.catch((err) => {});
+			.catch((err) => { });
 	}
 	empApmisID() {
 		// validate apimisID
@@ -1865,6 +1865,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 												this.close_onClick();
 											})
 											.catch((errr) => {
+												console.log(errr);
 												this.systemModuleService.off();
 												this.systemModuleService.announceSweetProxy(
 													'Some went wrong while creating a patient!',
@@ -1873,7 +1874,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 												this.loading = false;
 											});
 									})
-									.catch((err) => {});
+									.catch((err) => { });
 							}
 						}
 					});
@@ -1997,7 +1998,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 							this.submitNewForm(frm);
 						}
 					},
-					(error) => {}
+					(error) => { }
 				);
 		} else {
 			this.isSaving = false;
@@ -2252,7 +2253,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 				this.facilityService.announceNotification({
 					type: 'Success',
 					text: this.selectedPerson.personFullName + ' added successfully',
-					users: [ this.facilityService.getLoginUserId() ]
+					users: [this.facilityService.getLoginUserId()]
 				});
 				this.close_onClick();
 				this.paymentPlan = false;
@@ -2296,17 +2297,17 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 		this.mainErr = true;
 	}
 
-	onEmpTitleChange(val) {}
-	onEmpGenderChange(val) {}
-	onEmpNationalityChange(val: Country) {}
-	onEmpStateChange(val) {}
-	onEmpLgaChange(val) {}
-	onEmpMaritalStatusChange(val) {}
-	onEmpDeptChange(val) {}
-	onEmpLocChange(val) {}
-	onNokRelationshipChange(val) {}
-	onEmpJobTitleChange(val) {}
-	onEmpLevelChange(val) {}
+	onEmpTitleChange(val) { }
+	onEmpGenderChange(val) { }
+	onEmpNationalityChange(val: Country) { }
+	onEmpStateChange(val) { }
+	onEmpLgaChange(val) { }
+	onEmpMaritalStatusChange(val) { }
+	onEmpDeptChange(val) { }
+	onEmpLocChange(val) { }
+	onNokRelationshipChange(val) { }
+	onEmpJobTitleChange(val) { }
+	onEmpLevelChange(val) { }
 
 	onCheckEmailAddress(value) {
 		this.personService
@@ -2318,7 +2319,7 @@ export class NewPatientComponent implements OnInit, AfterViewInit {
 					this.isEmailExist = true;
 				}
 			})
-			.catch((error) => {});
+			.catch((error) => { });
 	}
 
 	close_onClick() {

@@ -1,6 +1,12 @@
 @import "./../prescription-history/prescription-history.component.scss";
 @import "./../prescribe-drug/prescribe-drug.component.scss";
 
+.lay-out{
+  // overflow: scroll;
+  // overflow-y: auto;
+  //max-height: 520px;
+}
+
 .topLink {
   display: flex;
   justify-content: space-between;

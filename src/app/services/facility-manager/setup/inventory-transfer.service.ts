@@ -6,6 +6,8 @@ export class InventoryTransferService {
   public _socket;
   public _socket2;
   public _socket3;
+  public _socketRequisition;
+  public _socketInventoryRequisition;
   private _rest;
   public listenerCreate;
   public listenerUpdate;
@@ -17,6 +19,8 @@ export class InventoryTransferService {
     this._rest = _restService.getService('inventory-transfers');
     this._socket = _socketService.getService('inventory-transfers');
     this._socket3 = _socketService.getService('list-of-stock-transfers');
+    this._socketRequisition = _socketService.getService('store-requisitions');
+    this._socketInventoryRequisition = _socketService.getService('inventory-requisitions');
     this._socket2 = _socketService.getService('stock-transfers');
     this._socket.timeout = 50000;
     this._socket2.timeout = 50000;
@@ -33,6 +37,10 @@ export class InventoryTransferService {
 
   findTransferHistories(query: any) {
     return this._socket3.find(query);
+  }
+
+  findRequisitions(query: any) {
+    return this._socketRequisition.find(query);
   }
 
   findAll() {
@@ -53,6 +61,15 @@ export class InventoryTransferService {
   create2(serviceprice: any) {
     return this._socket2.create(serviceprice);
   }
+
+  createRequisition(serviceprice: any) {
+    return this._socketRequisition.create(serviceprice);
+  }
+
+  createInventoryRequisition(serviceprice: any) {
+    return this._socketInventoryRequisition.create(serviceprice);
+  }
+
   update(serviceprice: any) {
     return this._socket.update(serviceprice._id, serviceprice);
   }
@@ -63,6 +80,11 @@ export class InventoryTransferService {
   patch(_id: any, data: any, params) {
     return this._socket.patch(_id, data, params);
   }
+
+  patchRequisition(_id: any, data: any, params) {
+    return this._socketRequisition.patch(_id, data, params);
+  }
+
   remove(id: string, query: any) {
     return this._socket.remove(id, query);
   }

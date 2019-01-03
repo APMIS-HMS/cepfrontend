@@ -157,12 +157,9 @@ import { GenBillSearchComponent } from './patientmanager-detailpage/new-patient-
 		RightTabTooltipComponent,
 		UnknownPatientMergeComponent,
 		NewPatientPrescriptionComponent,
-		PrescribedTableComponent,
-		PrescriptionBillComponent,
 		PrescribeDrugComponent,
 		PrescriptionHistoryComponent,
-		DrugSearchComponent,
-		GenBillSearchComponent
+		DrugSearchComponent
 	],
 	exports: [],
 	imports: [ SharedModule, patientManagerRoutes, OnlyMaterialModule, MaterialModule, ChartsModule, PdfViewerModule ],
