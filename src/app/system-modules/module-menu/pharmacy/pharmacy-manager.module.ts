@@ -21,6 +21,7 @@ import { MaterialModule } from '../../../shared-common-modules/material-module';
 import { WalkInDetailsComponent } from './prescription-list/walk-in-details/walk-in-details.component';
 import { ExternalPrescriptionComponent } from './external-prescription/external-prescription.component';
 import { NewPrescriptionListComponent } from './new-prescription-list/new-prescription-list.component';
+import { DispensePrescriptionComponent } from './new-prescription-list/dispense-prescription/dispense-prescription.component';
 
 @NgModule({
     declarations: [
@@ -33,15 +34,12 @@ import { NewPrescriptionListComponent } from './new-prescription-list/new-prescr
         WalkInDetailsComponent,
         ExternalPrescriptionComponent,
         NewPrescriptionListComponent,
+        DispensePrescriptionComponent,
     ],
 
     exports: [
     ],
     imports: [
-        // SharedModule,
-        // CommonModule,
-        // ReactiveFormsModule,
-        // FormsModule,
         pharmacyManagerRoutes,
         OnlyMaterialModule,
         MaterialModule
