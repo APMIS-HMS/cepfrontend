@@ -9,14 +9,6 @@
         </div>
       </div>
     </div>
-    <div class="con-wrap">
-      <span>DATE</span>
-      <h3>19/10/2018</h3>
-    </div>
-    <div class="con-wrap">
-      <span>INVOICE NUMBER</span>
-      <h3>2306TE5DG7U</h3>
-    </div>
   </div>
 </div>
 
@@ -31,6 +23,7 @@
         </div>
         <div class="config-tr-in in-tr">
           <div class="store-th">Products</div>
+          <div class="store-th">Batches</div>
           <div class="store-th">QUANTITY</div>
           <div class="store-th">UNIT PRICE</div>
           <div class="store-th">Amount</div>
@@ -46,7 +39,47 @@
             <input type="checkbox">
           </div>
           <div class="config-tr-in in-tr">
+            <div class="store-td">
+              <div class="InputGroup input-space" style="width: 65% !important;">
+                <input min="0" class="customInput" type="text" placeholder="Search Product" required>
+                <span class="highlight"></span>
+
+                <!-- search results -->
+                <!-- <ul class="search-sugestions bar">
+                  <li class="search-sugestion">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</li>
+                </ul> -->
+              </div>
+            </div>
+            <div class="store-td">
+              <div class="InputGroup input-space">
+                <select>
+                  <option value="0">--Batches--</option>
+                  <option value="1">HGXTC737</option>
+                  <option value="2">VVT67623</option>
+                  <option value="3">HJV635UI</option>
+                </select>
+              </div>
+            </div>
+            <div class="store-td">
+              <div class="InputGroup input-space">
+                <input min="0" class="customInput" type="text" placeholder="5 Packs" required>
+                <span class="highlight"></span>
+              </div>
+            </div>
+            <div class="store-td"> #10/Pack </div>
+            <div class="store-td">#20,000</div>
+          </div>
+          <div class="store-td store-td-actions">
+            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
+          </div>
+        </div>
+        <div class="store-tr">
+          <div class="store-td store-td-actions">
+            <input type="checkbox">
+          </div>
+          <div class="config-tr-in in-tr">
             <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
+            <div class="store-td">HGXTC737</div>
             <div class="store-td">5 Packs</div>
             <div class="store-td"> #10/Pack </div>
             <div class="store-td">#20,000</div>
@@ -61,6 +94,7 @@
           </div>
           <div class="config-tr-in in-tr">
             <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
+            <div class="store-td">VVT67623</div>
             <div class="store-td">5 Packs</div>
             <div class="store-td"> #10/Pack </div>
             <div class="store-td">#20,000</div>
@@ -71,41 +105,50 @@
         </div>
         <div class="store-tr">
           <div class="store-td store-td-actions">
-            <input type="checkbox">
           </div>
           <div class="config-tr-in in-tr">
-            <div class="store-td">Medroxyprogesterone acetate 10 MG Oral Tablet [Curretab]</div>
-            <div class="store-td">5 Packs</div>
-            <div class="store-td"> #10/Pack </div>
-            <div class="store-td">#20,000</div>
+            <div class="store-td">
+              <div class="con-wrap">
+                <span>DATE</span>
+                <h3>19/10/2018</h3>
+              </div>
+              <div class="con-wrap">
+                <span>INVOICE NUMBER</span>
+                <h3>2306TE5DG7U</h3>
+              </div>
+            </div>
+            <div class="store-td"></div>
+            <div class="store-td"></div>
+            <div class="store-td" style="min-width: 300px;">
+              <div class="amt-summ">
+                <div class="summ">
+                  <span>SUB TOTAL:</span>
+                  <a>#350,000</a>
+                </div>
+                <div class="summ">
+                  <span>VAT (20%):</span>
+                  <a>#70,000</a>
+                </div>
+                <div class="summ">
+                  <span>DISCOUNT:</span>
+                  <div class="InputGroup input-space">
+                    <input min="0" class="customInput" type="number" placeholder="&#8358;2,000" required>
+                    <span class="highlight"></span>
+                  </div>
+                </div>
+                <div class="summ">
+                  <span>AMOUNT RECEIVED:</span>
+                  <div class="InputGroup input-space">
+                    <input min="0" class="customInput" type="number" placeholder="&#8358;20,000" required>
+                    <span class="highlight"></span>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
+
           <div class="store-td store-td-actions">
-            <i class="fa fa-ellipsis-v" aria-hidden="true"></i>
-          </div>
-        </div>
-        <div class="store-tr">
-          <div class="store-td store-td-actions">
-          </div>
-          <div class="amt-summ">
-            <div class="summ">
-              <span>SUB TOTAL:</span>
-              <a>#350,000</a>
-            </div>
-            <div class="summ">
-              <span>VAT (20%):</span>
-              <a>#70,000</a>
-            </div>
-            <div class="summ">
-              <span>DISCOUNT:</span>
-              <a>#2,000</a>
-            </div>
-            <br>
-            <div class="summ">
-              <span>AMOUNT RECEIVED:</span>
-              <a>#300,000</a>
-            </div>
-          </div>
-          <div class="store-td store-td-actions">
+
           </div>
         </div>
       </div>
@@ -115,5 +158,5 @@
 
 
 <div *ngIf="showAPMIScustomer" class="list-wrap" style="border:none !important; margin-bottom: 0;">
-  <!-- <app-customer-prescription></app-customer-prescription> -->
+  <app-customer-prescription></app-customer-prescription>
 </div>

@@ -119,6 +119,8 @@ import { CustomerPrescriptionComponent } from './product-exit/customer/customer-
 		ProductExitComponent,
 		SalesComponent,
 		RefundComponent,
+		CustomerComponent,
+		CustomerPrescriptionComponent,
 		NewInvoiceEntryComponent,
 		ProductToggleComponent,
 		ConsumableEntryComponent,
