@@ -215,7 +215,7 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
       this.transferObjs = [];
       payload.data.forEach(element => {
         let unattendedTransfers = element.inventoryTransferTransactions.filter(x => x.transferStatusObject.name === 'Pending');
-        if (unattendedTransfers.length!==0) {
+        if (unattendedTransfers.length !== 0) {
           this.existingStockTransfers.push(element);
         }
       });
@@ -423,10 +423,13 @@ export class OutboundTransferComponent implements OnInit, OnDestroy {
       }
     });
     this.stockTransferItems.inventoryTransferTransactions = JSON.parse(JSON.stringify(this.transferObjs));
+    this.totalCostPrice = 0;
+    this.totalCount = 0;
   }
 
   onFocusChangeItemValue(event, index) {
     this.transferObjs[index].quantity = event.srcElement.value;
+    this.transferObjs[index].lineCostPrice = this.transferObjs[index].costPrice * this.transferObjs[index].quantity;
     this.transferObjs[index].isEdit = false;
   }
   onFocusChangeExistingItemValue(event, index, index2) {

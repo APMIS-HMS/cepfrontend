@@ -90,6 +90,14 @@ import { PrintDocumentationComponent } from './patientmanager-detailpage/documen
 import { DocUploadViewComponent } from './patientmanager-detailpage/documentation/doc-upload-view/doc-upload-view.component';
 import { RightTabTooltipComponent } from './patientmanager-detailpage/documentation/right-tab/right-tab-tooltip/right-tab-tooltip.component';
 import { UnknownPatientMergeComponent } from './patientmanager-detailpage/unknown-patient-merge/unknown-patient-merge.component';
+import { NewPatientPrescriptionComponent } from './patientmanager-detailpage/new-patient-prescription/new-patient-prescription.component';
+import { PrescribedTableComponent } from './patientmanager-detailpage/new-patient-prescription/prescribed-table/prescribed-table.component';
+import { PrescriptionBillComponent } from './patientmanager-detailpage/new-patient-prescription/prescription-bill/prescription-bill.component';
+import { PrescribeDrugComponent } from './patientmanager-detailpage/new-patient-prescription/prescribe-drug/prescribe-drug.component';
+import { PrescriptionHistoryComponent } from './patientmanager-detailpage/new-patient-prescription/prescription-history/prescription-history.component';
+import { DrugSearchComponent } from './patientmanager-detailpage/new-patient-prescription/drug-search/drug-search.component';
+import { GenBillSearchComponent } from './patientmanager-detailpage/new-patient-prescription/prescription-bill/gen-bill-search/gen-bill-search.component';
+
 
 @NgModule({
 	declarations: [
@@ -147,7 +155,11 @@ import { UnknownPatientMergeComponent } from './patientmanager-detailpage/unknow
 		PrintDocumentationComponent,
 		DocUploadViewComponent,
 		RightTabTooltipComponent,
-		UnknownPatientMergeComponent
+		UnknownPatientMergeComponent,
+		NewPatientPrescriptionComponent,
+		PrescribeDrugComponent,
+		PrescriptionHistoryComponent,
+		DrugSearchComponent
 	],
 	exports: [],
 	imports: [ SharedModule, patientManagerRoutes, OnlyMaterialModule, MaterialModule, ChartsModule, PdfViewerModule ],
@@ -166,7 +178,6 @@ import { UnknownPatientMergeComponent } from './patientmanager-detailpage/unknow
 		ScopeLevelService,
 		FacilityCompanyCoverService,
 		LabEventEmitterService,
-		ImmunizationRecordService
-	]
+		ImmunizationRecordService]
 })
 export class PatientManagerModule {}

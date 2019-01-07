@@ -1,0 +1,87 @@
+<div class="InputGroup" style="width:60%;">
+  <input (focus)="onFocus('in')" (focusout)="onFocus('out')" class="customInput" type="text" required>
+  <span class="highlight"></span>
+  <label class="customLabel">Drug</label>
+  <app-drug-search *ngIf="drugSearch"></app-drug-search>
+</div>
+
+<div class="frm">
+  <div class="frm-1">
+    <div class="InputGroup">
+      <input class="customInput" type="text" required>
+      <span class="highlight"></span>
+      <label class="customLabel">Dosage</label>
+    </div>
+    <div class="sel">
+      <select>
+        <option value="0">Frequency</option>
+      </select>
+    </div>
+    <div class="sel">
+      <select>
+        <option value="0">Duration</option>
+      </select>
+    </div>
+  </div>
+  <h2>+</h2>
+  <div>
+    <div class="frm-2">
+      <div class="InputGroup">
+        <input class="customInput" type="date" required>
+        <span class="highlight"></span>
+        <label class="customLabel">Start Date</label>
+      </div>
+      <div class="InputGroup">
+        <input class="customInput" type="date" required>
+        <span class="highlight"></span>
+        <label class="customLabel">End Date</label>
+      </div>
+    </div>
+    <div class="frm-2">
+      <div class="custom-chk">
+        <input type="checkbox" id="refillCheck">
+        <label for="refillCheck">Refill</label>
+      </div>
+      <div class="InputGroup" style="width: 20%;">
+        <input class="customInput" type="text" required>
+        <span class="highlight"></span>
+        <label class="customLabel">Count</label>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="InputGroup">
+  <textarea class="customTextarea" placeholder="Special Instruction"></textarea>
+  <span class="highlight"></span>
+</div>
+
+<div class="div-space"></div>
+
+<div class="btnWrap">
+  <div class="new-btn-solid-blue disabled">
+    <span>Add</span>
+  </div>
+  <div class="new-btn-solid-blue">
+    <span>Reset</span>
+  </div>
+</div>
+
+<div class="div-space"></div>
+<div class="div-space"></div>
+<div class="div-space"></div>
+
+<app-prescribed-table></app-prescribed-table>
+<div class="div-space"></div>
+<div class="frm btm-action">
+    <div class="frm-1 btnWrap">
+      <div class="sel" style=" width: 40% !important;">
+        <select>
+          <option value="0">Priority</option>
+        </select>
+      </div>
+      <div class="new-btn-solid-blue disabled">
+        <span>Authorize RX</span>
+      </div>
+    </div>
+  </div>
