@@ -51,7 +51,7 @@ import { InboundRequisitionComponent } from './product-movement/inbound-requisit
 import { OutboundRequisitionComponent } from './product-movement/outbound-requisition/outbound-requisition.component';
 import { StoreCheckInComponent } from './components/store-check-in/store-check-in.component';
 import { CoreUiModules } from "../../../core-ui-modules/CoreUiModules";
-import { ProductGridComponent } from "./product-movement/helper-components/products/product-grid-component";
+import { ProductGridComponent } from './product-movement/helper-components/products/product-grid-component';
 import { ProductGridItemComponent } from "./product-movement/helper-components/products/product-grid-item-component";
 import { ApmisStoreSupplierSearchComponent } from './components/apmis-store-supplier-search/apmis-store-supplier-search.component';
 import { ProductExitComponent } from './product-exit/product-exit.component';
@@ -70,8 +70,9 @@ import { CustomerComponent } from './product-exit/customer/customer.component';
 import { CustomerPrescriptionComponent } from './product-exit/customer/customer-prescription/customer-prescription.component';
 
 
+
 @NgModule({
-	imports: [CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule, CoreUiModules],
+	imports: [CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule, CoreUiModules ],
 	declarations: [
 		ApmisStoreLandingpageComponent,
 		ApmisStoreHomeComponent,

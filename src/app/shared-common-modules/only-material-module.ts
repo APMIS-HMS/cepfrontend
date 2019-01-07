@@ -1,4 +1,9 @@
 import { NgModule } from '@angular/core';
+
+// import {PrescribedTableComponent} from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/new-patient-prescription/prescribed-table/prescribed-table.component';
+// import {PrescriptionBillComponent} from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/new-patient-prescription/prescription-bill/prescription-bill.component';
+// import {GenBillSearchComponent} from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/new-patient-prescription/prescription-bill/gen-bill-search/gen-bill-search.component';
+
 import {
     MatDatepickerModule,
     MatNativeDateModule,
@@ -62,6 +67,9 @@ import {
         MatDialogModule,
         MatButtonToggleModule,
         MatTooltipModule
+        // PrescribedTableComponent,
+        // PrescriptionBillComponent,
+        // GenBillSearchComponent
     ],
     providers: []
 })

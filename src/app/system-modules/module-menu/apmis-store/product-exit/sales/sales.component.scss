@@ -1,4 +1,21 @@
 @import "./../../product-entry/purchase-list/purchase-list.component.scss";
+@import "./../../product-entry/purchase-list/new-purchase-list/new-purchase-list.component.scss";
+
+.list-wrap {
+  padding: 20px;
+  display: flex;
+  border: 1px solid #dddddd;
+  margin-bottom: 10px;
+  align-items: center;
+  border: none !important;
+  margin-bottom: 0;
+}
+
+.searchpriscription {
+    width: 28%;
+    position: relative;
+    margin-left: 80px !important;
+}
 
 .con-wrap {
   span {
@@ -48,8 +65,8 @@
   }
 }
 
-.search-sugestion{
-    font-size: 10px;
+.search-sugestion {
+  font-size: 10px;
 }
 
 .input-space {
@@ -98,5 +115,42 @@
       font-weight: bold;
     }
 
+  }
+}
+
+.btm-wrap {
+  display: flex;
+  justify-content: center;
+  padding: 15px;
+  align-items: center;
+}
+
+.btnBlue {
+  border: 1px solid #0288D1;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  height: 0;
+  cursor: pointer;
+
+  i {
+    margin-right: 5px;
+  }
+
+  i,
+  span {
+    color: #0288D1;
+    font-size: 12px;
+  }
+}
+
+.dwnld {
+  display: flex;
+  align-items: center;
+  margin-right: 60px;
+
+  h4 {
+    margin-right: 20px;
   }
 }

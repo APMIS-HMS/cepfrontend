@@ -44,9 +44,7 @@ import {ImageCropperModule} from 'ng2-img-cropper';
 import {ImageViewerComponent} from '../shared-module/image-viewer/image-viewer.component';
 import {CustomLogoComponent} from './CustomLogoComponent';
 import {CoreUiModules} from '../core-ui-modules/CoreUiModules';
-import {PrescribedTableComponent} from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/new-patient-prescription/prescribed-table/prescribed-table.component';
-import {PrescriptionBillComponent} from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/new-patient-prescription/prescription-bill/prescription-bill.component';
-import {GenBillSearchComponent} from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/new-patient-prescription/prescription-bill/gen-bill-search/gen-bill-search.component';
+
 
 @NgModule({
     declarations: [
@@ -72,10 +70,7 @@ import {GenBillSearchComponent} from '../system-modules/module-menu/patient-mana
         CheckoutPatientComponent,
         PasswordResetComponent,
         ImageViewerComponent,
-        CustomLogoComponent,
-        PrescribedTableComponent,
-        PrescriptionBillComponent,
-        GenBillSearchComponent
+        CustomLogoComponent
     ],
     exports: [
         NgbModule,
@@ -114,10 +109,7 @@ import {GenBillSearchComponent} from '../system-modules/module-menu/patient-mana
         SharedModuleMaterialModule,
         ImageViewerComponent,
         CustomLogoComponent,
-        CoreUiModules,
-        PrescribedTableComponent,
-        PrescriptionBillComponent,
-        GenBillSearchComponent
+        CoreUiModules
     ],
     imports: [
         OnlyMaterialModule,

@@ -7,15 +7,25 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CustomerPrescriptionComponent implements OnInit {
 
-  showCustomerDetail = false;
+  clickItemIndex: number;
+  expand_row = false;
   constructor() { }
 
   ngOnInit() {
   }
 
 
-  onShowCustomerDetail(){
-    this.showCustomerDetail = true;
+  item_to_show(i) {
+		return this.clickItemIndex === i;
   }
- 
+
+  toggle_tr(itemIndex, direction) {
+		if (direction === 'down' && itemIndex === this.clickItemIndex) {
+			this.expand_row = false;
+			this.clickItemIndex = -1;
+		} else {
+			this.clickItemIndex = itemIndex;
+			this.expand_row = !this.expand_row;
+		}
+	}
 }
