@@ -14,25 +14,27 @@ export class PrescriptionBillComponent implements OnInit {
 	searchProduct = false;
 	searchShow = false;
 	searchList = true;
+	drugs: any[] = [];
 
 	constructor(private _inventoryService: InventoryService) {}
 
 	ngOnInit() {
-		console.log(this.drug);
+		this.getDrugList();
+	}
+
+	getDrugList() {
+		// query: { facilityId: this.facility._id, name: this.title, storeId: this.storeId }
 		this._inventoryService
-			.find({
-				query: {
-					'productObject.code': this.drug.code
-				}
+			.findList({
+				query: { code: this.drug.code }
 			})
-			.then(
-				(payload) => {
-					console.log(payload);
-				},
-				(error) => {
-					console.log(error);
-				}
-			);
+			.then((res) => {
+				console.log(res);
+				this.drugs = res.data;
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	}
 
 	onClickClose(e) {

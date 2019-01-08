@@ -59,6 +59,7 @@ export class InitializeStoreComponent implements OnInit {
 	total = 0;
 	skip = 0;
 	numberOfPages = 0;
+	saving = false;
 
 	constructor(
 		private _productService: ProductService,
@@ -460,7 +461,9 @@ export class InitializeStoreComponent implements OnInit {
 		}
 	}
 
-	save(value, product) {
+	save() {
+		const value = this.productForm.controls['productArray'].value;
+		this.saving = true;
 		if (this.checkingObject.storeId === undefined) {
 			if (!!this.checkingObject.typeObject) {
 				this.checkingObject = this.checkingObject.typeObject;
@@ -474,7 +477,7 @@ export class InitializeStoreComponent implements OnInit {
 			categoryId: this.selelctedCategoryId._id
 		};
 		const _saveProductList = [];
-		value.productArray.forEach((inproduct, i) => {
+		value.forEach((inproduct, i) => {
 			const mainProductObject = this.selectedProducts.find(
 				(pro) => pro.productObject.id.toString() === inproduct.configProduct.id.toString()
 			);
@@ -506,9 +509,11 @@ export class InitializeStoreComponent implements OnInit {
 		this._inventoryInitialiserService.create(_saveProductList, true).then(
 			(result) => {
 				if (result.status === 'success') {
-					this.productForm.reset();
+					this.saving = false;
 					this.productForm.controls['productArray'] = new FormArray([]);
 					this.productConfigSearch.reset();
+					this.selectedProducts = [];
+					this.productConfigs = [];
 					this.systemModuleService.announceSweetProxy(
 						'Your product has been initialised successfully',
 						'success',
@@ -522,11 +527,13 @@ export class InitializeStoreComponent implements OnInit {
 					);
 					this.productForm.controls['productArray'] = new FormArray([]);
 				} else {
+					this.saving = false;
 					const text = 'This product exist in your inventory';
 					this.systemModuleService.announceSweetProxy(text, 'info');
 				}
 			},
 			(error) => {
+				this.saving = false;
 				const errMsg = 'There was an error while initialising product, please try again!';
 				this.systemModuleService.announceSweetProxy(errMsg, 'error');
 			}

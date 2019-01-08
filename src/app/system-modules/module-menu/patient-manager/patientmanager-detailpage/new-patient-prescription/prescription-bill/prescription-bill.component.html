@@ -39,7 +39,32 @@
         </thead>
 
         <tbody>
-          <tr class="th-xxx">
+          <tr class="th-xxx" *ngFor="let product of drugs">
+            <td style="width: 5%;">
+              <input type="radio">
+            </td>
+            <td>
+              <div class="prd">
+                <span>{{product.productObject.name}},</span>
+                <a class="blue">Unit Cost: {{product?.price?.price|number}}</a>
+              </div>
+            </td>
+            <td>
+              <div class="qty">
+                <span>{{product.availableQuantity|number}}</span>
+                <div class="frm">
+                  <div class="frm-1">
+                    <div class="sel" style=" width: 100% !important;">
+                      <select>
+                        <option *ngFor="let config of product?.productObject?.productConfigObject" value="0">{{config.name}}</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <!-- <tr class="th-xxx">
             <td style="width: 5%;">
               <input type="radio">
             </td>
@@ -63,32 +88,7 @@
                 </div>
               </div>
             </td>
-          </tr>
-          <tr class="th-xxx">
-            <td style="width: 5%;">
-              <input type="radio">
-            </td>
-            <td>
-              <div class="prd">
-                <span>EMZOR PARACETAMOL TABLET 500 MG],</span>
-                <a class="blue">Unit Cost: 60</a>
-              </div>
-            </td>
-            <td>
-              <div class="qty">
-                <span>200</span>
-                <div class="frm">
-                  <div class="frm-1">
-                    <div class="sel" style=" width: 100% !important;">
-                      <select>
-                        <option value="0">Tablets</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </td>
-          </tr>
+          </tr> -->
         </tbody>
       </table>
     </div>

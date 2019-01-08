@@ -177,7 +177,7 @@
       </div>
     </div>
     <div class="formWrap">
-      <div [class.disabled]="selectedProduct===undefined" (click)="save(productForm.value, selectedProduct)" class="new-btn-solid-blue">
+      <div [class.disabled]="selectedProduct===undefined || saving===true" (click)="save()" class="new-btn-solid-blue">
         <span>Add Product</span>
       </div>
     </div>
