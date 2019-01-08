@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'app-customer-prescription',
-  templateUrl: './customer-prescription.component.html',
-  styleUrls: ['./customer-prescription.component.scss']
+  selector: 'app-apmis-customer',
+  templateUrl: './apmis-customer.component.html',
+  styleUrls: ['./apmis-customer.component.scss']
 })
-export class CustomerPrescriptionComponent implements OnInit {
+export class ApmisCustomerComponent implements OnInit {
 
   clickItemIndex: number;
   expand_row = false;
@@ -28,4 +28,5 @@ export class CustomerPrescriptionComponent implements OnInit {
 			this.expand_row = !this.expand_row;
 		}
 	}
+
 }

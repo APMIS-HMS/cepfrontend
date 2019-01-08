@@ -49,9 +49,9 @@ import { ViewInvoiceComponent } from './product-entry/invoice-entry/view-invoice
 import { NewSupplierComponent } from './product-entry/suppliers/new-supplier/new-supplier.component';
 import { InboundRequisitionComponent } from './product-movement/inbound-requisition/inbound-requisition.component';
 import { OutboundRequisitionComponent } from './product-movement/outbound-requisition/outbound-requisition.component';
-import { StoreCheckInComponent } from './components/store-check-in/store-check-in.component';
+// import { StoreCheckInComponent } from './components/store-check-in/store-check-in.component';
 import { CoreUiModules } from "../../../core-ui-modules/CoreUiModules";
-import { ProductGridComponent } from "./product-movement/helper-components/products/product-grid-component";
+import { ProductGridComponent } from './product-movement/helper-components/products/product-grid-component';
 import { ProductGridItemComponent } from "./product-movement/helper-components/products/product-grid-item-component";
 import { ApmisStoreSupplierSearchComponent } from './components/apmis-store-supplier-search/apmis-store-supplier-search.component';
 import { ProductExitComponent } from './product-exit/product-exit.component';
@@ -68,10 +68,13 @@ import { NoPurchaseOrderComponent } from './product-entry/invoice-entry/new-invo
 import { StoreOutboundService } from "../../../services/facility-manager/setup/store-outbound-requisitory-service";
 import { CustomerComponent } from './product-exit/customer/customer.component';
 import { CustomerPrescriptionComponent } from './product-exit/customer/customer-prescription/customer-prescription.component';
+import { MaterialModule } from 'app/shared-common-modules/material-module';
+import { ApmisCustomerComponent } from './product-exit/sales/apmis-customer/apmis-customer.component';
+
 
 
 @NgModule({
-	imports: [CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule, CoreUiModules],
+	imports: [CommonModule, ApmisStoreRoutingModule, OnlyMaterialModule, FormsModule, ReactiveFormsModule, CoreUiModules, MaterialModule],
 	declarations: [
 		ApmisStoreLandingpageComponent,
 		ApmisStoreHomeComponent,
@@ -111,20 +114,23 @@ import { CustomerPrescriptionComponent } from './product-exit/customer/customer-
 		NewSupplierComponent,
 		InboundRequisitionComponent,
 		OutboundRequisitionComponent,
-		StoreCheckInComponent,
+		// StoreCheckInComponent,
 		ProductGridComponent,
 		ProductGridItemComponent,
-		StoreCheckInComponent,
+		// StoreCheckInComponent,
 		ApmisStoreSupplierSearchComponent,
 		ProductExitComponent,
 		SalesComponent,
 		RefundComponent,
+		CustomerComponent,
+		CustomerPrescriptionComponent,
 		NewInvoiceEntryComponent,
 		ProductToggleComponent,
 		ConsumableEntryComponent,
 		DrugEntryComponent,
 		BaseUnitComponent,
-		ConfigContainerComponent
+		ConfigContainerComponent,
+		ApmisCustomerComponent
 	],
 	providers: [
 		StoreService,

@@ -34,7 +34,7 @@ import { DispensePrescriptionComponent } from './new-prescription-list/dispense-
         WalkInDetailsComponent,
         ExternalPrescriptionComponent,
         NewPrescriptionListComponent,
-        DispensePrescriptionComponent,
+        DispensePrescriptionComponent
     ],
 
     exports: [

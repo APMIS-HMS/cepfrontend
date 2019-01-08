@@ -1,4 +1,6 @@
 import { NgModule } from '@angular/core';
+
+
 import {
     MatDatepickerModule,
     MatNativeDateModule,
@@ -62,6 +64,9 @@ import {
         MatDialogModule,
         MatButtonToggleModule,
         MatTooltipModule
+        // PrescribedTableComponent,
+        // PrescriptionBillComponent,
+        // GenBillSearchComponent
     ],
     providers: []
 })

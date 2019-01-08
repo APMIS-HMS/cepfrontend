@@ -15,6 +15,13 @@ import {AddVitalsComponent} from '../system-modules/module-menu/patient-manager/
 import {AddPrescriptionComponent} from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/add-prescription/add-prescription.component';
 import {BillPrescriptionComponent} from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/bill-prescription/bill-prescription.component';
 import {PatientPrescriptionComponent} from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/patient-prescription/patient-prescription.component';
+
+
+import {PrescribedTableComponent} from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/new-patient-prescription/prescribed-table/prescribed-table.component';
+import {PrescriptionBillComponent} from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/new-patient-prescription/prescription-bill/prescription-bill.component';
+import {GenBillSearchComponent} from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/new-patient-prescription/prescription-bill/gen-bill-search/gen-bill-search.component';
+
+
 import {GlobalPatientLookupComponent} from '../shared-module/global-patient-lookup/global-patient-lookup.component';
 import {ApmisLookupComponent} from '../shared-module/apmis-lookup/apmis-lookup.component';
 import {ApmisPaginatedLookupComponent} from '../shared-module/apmis-paginated-lookup/apmis-paginated-lookup.component';
@@ -44,9 +51,7 @@ import {ImageCropperModule} from 'ng2-img-cropper';
 import {ImageViewerComponent} from '../shared-module/image-viewer/image-viewer.component';
 import {CustomLogoComponent} from './CustomLogoComponent';
 import {CoreUiModules} from '../core-ui-modules/CoreUiModules';
-import {PrescribedTableComponent} from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/new-patient-prescription/prescribed-table/prescribed-table.component';
-import {PrescriptionBillComponent} from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/new-patient-prescription/prescription-bill/prescription-bill.component';
-import {GenBillSearchComponent} from '../system-modules/module-menu/patient-manager/patientmanager-detailpage/new-patient-prescription/prescription-bill/gen-bill-search/gen-bill-search.component';
+
 
 @NgModule({
     declarations: [

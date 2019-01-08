@@ -7,9 +7,16 @@ import { Component, OnInit } from '@angular/core';
 })
 export class CustomerComponent implements OnInit {
 
+  prescriptionList = true;
+  selectedPrescription = false;
   constructor() { }
 
   ngOnInit() {
+  }
+
+  onSelectedPrescription() {
+    this.prescriptionList = false;
+    this.selectedPrescription = true;
   }
 
 }
